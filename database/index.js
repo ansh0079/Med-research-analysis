@@ -1266,9 +1266,12 @@ class Database {
             ? `${normalizedTopic}|claim|${attempt.claimKey}`
             : `${normalizedTopic}|${attempt.questionType || ''}|${String(attempt.questionText || '').slice(0, 100)}`;
         const conceptHash = require('crypto').createHash('sha256').update(conceptSeed).digest('hex').slice(0, 32);
+        const reasoningTags = Array.isArray(attempt.reasoningTags)
+            ? attempt.reasoningTags.map((tag) => String(tag || '').trim()).filter(Boolean).slice(0, 8)
+            : [];
         const result = await this.run(
-            `INSERT INTO quiz_attempts (user_id, topic, normalized_topic, question_id, question_type, question_text, user_answer, correct_answer, is_correct, time_ms, confidence, source_article_uid, study_run_id, outline_node_id, concept_hash, claim_key, created_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+            `INSERT INTO quiz_attempts (user_id, topic, normalized_topic, question_id, question_type, question_text, user_answer, correct_answer, is_correct, time_ms, confidence, source_article_uid, study_run_id, outline_node_id, concept_hash, claim_key, reasoning_tags, reasoning_note, created_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
             [
                 attempt.userId,
                 attempt.topic,
@@ -1286,18 +1289,15 @@ class Database {
                 attempt.outlineNodeId || null,
                 conceptHash,
                 attempt.claimKey || null,
+                JSON.stringify(reasoningTags),
+                attempt.reasoningNote ? String(attempt.reasoningNote).slice(0, 500) : null,
             ]
         );
         return { id: result.id, conceptHash, ...attempt };
     }
 
-    async getQuizAttempts({ userId, topic = '', limit = 50, offset = 0 } = {}) {
-        const normalized = topic ? this.normalizeTopic(topic) : '';
-        const rows = await this.all(
-            `SELECT * FROM quiz_attempts WHERE user_id = ? AND (? = '' OR normalized_topic = ?) ORDER BY created_at DESC LIMIT ? OFFSET ?`,
-            [userId, normalized, normalized, limit, offset]
-        );
-        return rows.map((r) => ({
+    mapQuizAttemptRow(r) {
+        return {
             id: r.id,
             userId: r.user_id,
             topic: r.topic,
@@ -1315,8 +1315,19 @@ class Database {
             outlineNodeId: r.outline_node_id,
             conceptHash: r.concept_hash || null,
             claimKey: r.claim_key || null,
+            reasoningTags: safeJsonParse(r.reasoning_tags, []),
+            reasoningNote: r.reasoning_note || null,
             createdAt: r.created_at,
-        }));
+        };
+    }
+
+    async getQuizAttempts({ userId, topic = '', limit = 50, offset = 0 } = {}) {
+        const normalized = topic ? this.normalizeTopic(topic) : '';
+        const rows = await this.all(
+            `SELECT * FROM quiz_attempts WHERE user_id = ? AND (? = '' OR normalized_topic = ?) ORDER BY created_at DESC LIMIT ? OFFSET ?`,
+            [userId, normalized, normalized, limit, offset]
+        );
+        return rows.map((r) => this.mapQuizAttemptRow(r));
     }
 
     async getRepeatedMisconceptions(userId, { limit = 10, minAttempts = 2 } = {}) {
@@ -3899,6 +3910,37 @@ class Database {
         return rows.map((r) => this.mapAiGenerationClaimRow(r));
     }
 
+    // ── Synthesis snapshots (staleness detection) ─────────────────────────────
+
+    async saveSynthesisSnapshot(topic, synthesis, articleUids = []) {
+        const normalized = this.normalizeTopic(topic);
+        const consensusText = String(synthesis?.consensus || synthesis?.overallAnswer || '').slice(0, 2000);
+        const keyFindingCount = Array.isArray(synthesis?.keyFindings) ? synthesis.keyFindings.length : 0;
+        await this.run(
+            `INSERT INTO synthesis_snapshots
+               (normalized_topic, topic, consensus_text, evidence_grade, key_finding_count, article_count, article_uids, generated_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+            [
+                normalized,
+                String(topic).slice(0, 200),
+                consensusText,
+                String(synthesis?.evidenceGrade || 'MODERATE'),
+                keyFindingCount,
+                Array.isArray(articleUids) ? articleUids.length : 0,
+                JSON.stringify(Array.isArray(articleUids) ? articleUids.slice(0, 20) : []),
+            ]
+        );
+    }
+
+    async getLatestSynthesisSnapshots(topic, limit = 2) {
+        const normalized = this.normalizeTopic(topic);
+        return this.all(
+            `SELECT * FROM synthesis_snapshots WHERE normalized_topic = ?
+             ORDER BY generated_at DESC LIMIT ?`,
+            [normalized, Math.min(limit, 10)]
+        );
+    }
+
     // ==========================================
     // Review Assistant + PICO
     // ==========================================
@@ -4287,6 +4329,8 @@ const _dbMethodsFromMixins = [
     'listTeachingClaimsForReview',
     'updateTeachingClaimVerification',
     'getTeachingObjectStats',
+    'getEvidenceJudgementProfile',
+    'listPracticeChangingTeachingObjects',
 ];
 for (const name of _dbMethodsFromMixins) {
   const fn = _m08Proto[name] || _m02Proto[name];

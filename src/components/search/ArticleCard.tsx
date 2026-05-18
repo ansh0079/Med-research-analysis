@@ -8,6 +8,7 @@ import { getArticleLinkInfo } from '@services/articleLinks';
 import api from '@services/api';
 import type { Article, ArticleSynopsisFields } from '@types';
 import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
+import { VerificationBadge } from '@components/ui/VerificationBadge';
 
 interface ArticleCardProps {
   article: Article;
@@ -72,7 +73,7 @@ function SynopsisList({ label, items }: { label: string; items?: string[] }) {
   );
 }
 
-function InlineSynopsisPanel({ synopsis, onClose }: { synopsis: ArticleSynopsisFields; onClose: () => void }) {
+function InlineSynopsisPanel({ synopsis, isFree, onClose }: { synopsis: ArticleSynopsisFields; isFree?: boolean; onClose: () => void }) {
   const trust = TRUST_BADGE[synopsis.trustRating] ?? TRUST_BADGE.MODERATE;
   return (
     <div className="mx-0 mt-3 mb-2 rounded-xl border border-violet-200/60 dark:border-violet-800/40 bg-violet-50/60 dark:bg-violet-950/20 overflow-hidden animate-fade-in">
@@ -83,6 +84,11 @@ function InlineSynopsisPanel({ synopsis, onClose }: { synopsis: ArticleSynopsisF
           <span className={`text-[10px] font-bold rounded-full px-2 py-0.5 ${trust.cls}`}>
             Trust: {trust.label}
           </span>
+          {isFree !== undefined && (
+            <span className={`text-[9px] font-bold uppercase tracking-wider rounded-full px-1.5 py-0.5 ${isFree ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'}`}>
+              {isFree ? 'Full Text' : 'Abstract Only'}
+            </span>
+          )}
         </div>
         <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors p-0.5">
           <i className="fas fa-times text-xs" />
@@ -639,7 +645,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
         {/* Inline synopsis panel */}
         {synopsisExpanded && synopsis && (
           <div className="mt-2 space-y-2">
-            <InlineSynopsisPanel synopsis={synopsis} onClose={() => { setSynopsisExpanded(false); setSynopsisAudit(null); }} />
+            <InlineSynopsisPanel synopsis={synopsis} isFree={isFree} onClose={() => { setSynopsisExpanded(false); setSynopsisAudit(null); }} />
             {synopsisAudit && <EvidenceAuditPanel snapshot={synopsisAudit} />}
           </div>
         )}

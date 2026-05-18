@@ -33,6 +33,8 @@ describe('Database Integration (real SQLite)', () => {
             'search_result_feedback',
             'quiz_attempts',
             'study_runs',
+            'teaching_object_claims',
+            'teaching_objects',
             'topic_knowledge_proposals',
             'topic_knowledge',
             'search_alerts',
@@ -267,6 +269,67 @@ describe('Database Integration (real SQLite)', () => {
             studyRunId: run.id,
             outlineNodeId: 'tp-1',
             isCorrect: true,
+        });
+    });
+
+    test('quiz attempts persist evidence judgement tags and profile aggregates them', async () => {
+        await db.run(
+            `INSERT OR IGNORE INTO users (id, email, password, name, role) VALUES (?, ?, ?, ?, ?)`,
+            ['u-judgement', 'judge@example.com', 'hash', 'Judge User', 'user']
+        );
+
+        await db.createQuizAttempt({
+            userId: 'u-judgement',
+            topic: 'Sepsis',
+            questionId: 'q-judge-1',
+            questionType: 'trial_interpretation',
+            questionText: 'Which limitation stops you overclaiming this subgroup result?',
+            userAnswer: 'It changes practice for all patients',
+            correctAnswer: 'It is hypothesis-generating and needs confirmation',
+            isCorrect: false,
+            reasoningTags: ['overclaims_evidence', 'misses_applicability'],
+            reasoningNote: 'Auto-classified evidence judgement signal: overclaims_evidence, misses_applicability',
+        });
+
+        const row = await db.get(`SELECT reasoning_tags, reasoning_note FROM quiz_attempts WHERE user_id = ?`, ['u-judgement']);
+        expect(JSON.parse(row.reasoning_tags)).toEqual(['overclaims_evidence', 'misses_applicability']);
+        expect(row.reasoning_note).toContain('overclaims_evidence');
+
+        const attempts = await db.getQuizAttempts({ userId: 'u-judgement', topic: 'Sepsis' });
+        expect(attempts[0]).toMatchObject({ reasoningTags: ['overclaims_evidence', 'misses_applicability'] });
+
+        const profile = await db.getEvidenceJudgementProfile('u-judgement', { topic: 'Sepsis', limit: 5 });
+        expect(profile.tags.map((tag) => tag.tag)).toEqual(expect.arrayContaining(['overclaims_evidence', 'misses_applicability']));
+        expect(profile.topics[0]).toMatchObject({ topic: 'sepsis', attempts: 1, correct: 0, accuracy: 0 });
+    });
+
+    test('practice-changing teaching objects return dashboard alert shape', async () => {
+        await db.upsertTeachingObject({
+            objectKey: 'paper:practice-alert-1',
+            objectType: 'paper',
+            articleUid: 'pmid-practice-alert-1',
+            topic: 'COPD',
+            title: 'Practice changing COPD trial',
+            confidence: 0.8,
+            payload: {
+                claimAnchors: [
+                    {
+                        claimKey: 'practice-alert-claim-1',
+                        claimText: 'This finding may change practice for selected COPD patients.',
+                        conceptKey: 'clinical_bottom_line',
+                        verificationStatus: 'source_verified',
+                    },
+                ],
+            },
+        });
+
+        const alerts = await db.listPracticeChangingTeachingObjects({ topic: 'COPD', limit: 5 });
+        expect(alerts[0]).toMatchObject({
+            objectKey: 'paper:practice-alert-1',
+            title: 'Practice changing COPD trial',
+            topic: 'COPD',
+            classification: 'practice_changing',
+            rationale: 'This finding may change practice for selected COPD patients.',
         });
     });
 

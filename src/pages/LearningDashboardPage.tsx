@@ -360,6 +360,17 @@ export const LearningDashboardPage: React.FC = () => {
   const [insights, setInsights] = useState<LearningInsight[]>([]);
   const [profile, setProfile] = useState<LearningProfile | null>(null);
   const [topicMemories, setTopicMemories] = useState<import('../types').UserTopicMemory[]>([]);
+  const [practiceAlerts, setPracticeAlerts] = useState<Array<{
+    objectKey: string; objectType: string; topic?: string | null;
+    title: string; classification: string; rationale?: string | null;
+  }>>([]);
+  const [judgementProfile, setJudgementProfile] = useState<Array<{
+    topic: string; attempts: number; correct: number; accuracy: number; lastAttemptAt?: string | null;
+  }>>([]);
+  const [judgementTags, setJudgementTags] = useState<Array<{
+    tag: string; count: number; wrongCount: number; lastSeenAt?: string | null;
+    examples?: Array<{ topic: string | null; questionText: string; isCorrect: boolean }>;
+  }>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showAllTopics, setShowAllTopics] = useState(false);
@@ -388,6 +399,23 @@ export const LearningDashboardPage: React.FC = () => {
         if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load');
       } finally {
         if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const [alertsRes, judgRes] = await Promise.allSettled([
+        api.getPracticeAlerts('', 15),
+        api.getEvidenceJudgementProfile('', 12),
+      ]);
+      if (cancelled) return;
+      if (alertsRes.status === 'fulfilled') setPracticeAlerts(alertsRes.value.alerts);
+      if (judgRes.status === 'fulfilled') {
+        setJudgementProfile(judgRes.value.profile.topics || []);
+        setJudgementTags(judgRes.value.profile.tags || []);
       }
     })();
     return () => { cancelled = true; };
@@ -764,6 +792,34 @@ export const LearningDashboardPage: React.FC = () => {
               </div>
             )}
 
+            {/* Practice-changing alerts */}
+            {practiceAlerts.length > 0 && (
+              <div className="neo-card p-5">
+                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center gap-2">
+                  <i className="fas fa-bell text-rose-500" /> Practice-changing evidence
+                  <span className="ml-auto text-[10px] font-normal text-slate-400">{practiceAlerts.length} item{practiceAlerts.length !== 1 ? 's' : ''}</span>
+                </h3>
+                <div className="space-y-2">
+                  {practiceAlerts.slice(0, 6).map((alert) => (
+                    <div key={alert.objectKey} className="flex items-start gap-3 rounded-xl border border-rose-100 dark:border-rose-900/30 bg-rose-50/60 dark:bg-rose-950/20 px-3 py-2.5">
+                      <i className="fas fa-stethoscope text-rose-400 text-xs mt-0.5 shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-slate-800 dark:text-slate-100 leading-snug">{alert.title}</p>
+                        {alert.topic && <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 capitalize">{alert.topic}</p>}
+                        {alert.rationale && <p className="text-[10px] text-rose-600 dark:text-rose-400 mt-0.5 leading-relaxed">{alert.rationale}</p>}
+                      </div>
+                      {alert.topic && (
+                        <button type="button" onClick={() => drillTopic(alert.topic!)}
+                          className="shrink-0 text-[10px] font-bold px-2 py-1 rounded-lg bg-rose-100 text-rose-700 hover:bg-rose-200 dark:bg-rose-900/40 dark:text-rose-300 transition-colors">
+                          Quiz
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Review due banner */}
             {dueCount > 0 && (
               <div className="rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 p-4 flex items-center gap-4">
@@ -817,6 +873,33 @@ export const LearningDashboardPage: React.FC = () => {
               </div>
             )}
 
+            {/* Stale topics — searched but not recently quizzed */}
+            {topicMemories.filter((m) => m.memoryTier === 'sparse' && m.weakOutlineNodeIds.length > 0).length > 0 && (
+              <div className="neo-card p-5">
+                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center gap-2">
+                  <i className="fas fa-hourglass-half text-orange-500" /> Stale topics — knowledge gaps detected
+                </h3>
+                <div className="space-y-2">
+                  {topicMemories
+                    .filter((m) => m.memoryTier === 'sparse' && m.weakOutlineNodeIds.length > 0)
+                    .slice(0, 5)
+                    .map((m) => (
+                      <div key={m.normalizedTopic} className="flex items-center gap-3 rounded-xl border border-orange-100 dark:border-orange-900/30 bg-orange-50/50 dark:bg-orange-950/20 px-3 py-2.5">
+                        <i className="fas fa-exclamation-circle text-orange-400 text-xs shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-semibold text-slate-700 dark:text-slate-200 truncate capitalize">{m.displayTopic || m.normalizedTopic}</p>
+                          <p className="text-[10px] text-slate-400 mt-0.5">{m.weakOutlineNodeIds.length} weak concept{m.weakOutlineNodeIds.length !== 1 ? 's' : ''} · {m.searchCount} search{m.searchCount !== 1 ? 'es' : ''}</p>
+                        </div>
+                        <button type="button" onClick={() => drillTopic(m.displayTopic || m.normalizedTopic)}
+                          className="shrink-0 text-[10px] font-bold px-2 py-1 rounded-lg bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/40 dark:text-orange-300 transition-colors">
+                          Refresh
+                        </button>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+
             {/* Topic Memory */}
             {topicMemories.length > 0 && (
               <div className="neo-card p-5">
@@ -866,6 +949,54 @@ export const LearningDashboardPage: React.FC = () => {
                     );
                     return <MasteryBar key={b.key} label={b.label} score={avg} color={b.color} />;
                   })}
+                </div>
+              </div>
+            )}
+
+            {/* Evidence judgement profile — reasoning patterns + accuracy per topic */}
+            {(judgementTags.length > 0 || judgementProfile.length > 0) && (
+              <div className="neo-card p-5">
+                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center gap-2">
+                  <i className="fas fa-balance-scale text-sky-500" /> Evidence judgement profile
+                </h3>
+                {judgementTags.length > 0 && (
+                  <div className="mb-4 space-y-2">
+                    {judgementTags.slice(0, 5).map((tag) => (
+                      <div key={tag.tag} className="rounded-xl border border-sky-100 dark:border-sky-900/30 bg-sky-50/50 dark:bg-sky-950/20 px-3 py-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-bold text-slate-700 dark:text-slate-200 capitalize">{tag.tag.replace(/_/g, ' ')}</span>
+                          <span className="ml-auto text-[10px] text-sky-600 dark:text-sky-300">{tag.wrongCount}/{tag.count} missed</span>
+                        </div>
+                        {tag.examples?.[0]?.questionText && (
+                          <p className="mt-1 text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2">{tag.examples[0].questionText}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {judgementProfile.filter((t) => t.attempts === 0).length > 0 && (
+                  <p className="text-[11px] text-amber-600 dark:text-amber-400 mb-3 flex items-center gap-1.5">
+                    <i className="fas fa-question-circle" />
+                    {judgementProfile.filter((t) => t.attempts === 0).length} topic{judgementProfile.filter((t) => t.attempts === 0).length !== 1 ? 's' : ''} untested — quiz them to build your profile
+                  </p>
+                )}
+                <div className="space-y-2">
+                  {judgementProfile.filter((t) => t.attempts > 0).slice(0, 8).map((t) => (
+                    <div key={t.topic} className="flex items-center gap-3">
+                      <span className="text-xs font-medium text-slate-500 dark:text-slate-400 w-28 shrink-0 truncate capitalize">{t.topic}</span>
+                      <div className="flex-1 h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all duration-500 ${t.accuracy >= 80 ? 'bg-emerald-500' : t.accuracy >= 60 ? 'bg-amber-500' : 'bg-red-400'}`}
+                          style={{ width: `${Math.min(t.accuracy, 100)}%` }}
+                        />
+                      </div>
+                      <span className="text-xs font-bold text-slate-700 dark:text-slate-300 w-8 text-right">{t.accuracy}%</span>
+                      <button type="button" onClick={() => drillTopic(t.topic)}
+                        className="shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-lg bg-sky-100 text-sky-700 hover:bg-sky-200 dark:bg-sky-900/40 dark:text-sky-300 transition-colors">
+                        Drill
+                      </button>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}

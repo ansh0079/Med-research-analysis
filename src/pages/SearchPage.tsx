@@ -112,6 +112,7 @@ export const SearchPage: React.FC = () => {
   const [synthesisLoading, setSynthesisLoading] = useState(false);
   const [synthesisError, setSynthesisError] = useState<string | null>(null);
   const [synthesisLiveText, setSynthesisLiveText] = useState('');
+  const [stalenessBanner, setStalenessBanner] = useState<{ changes: string[]; priorGrade: string; newGrade: string } | null>(null);
   const [knowledgeReviewStatus, setKnowledgeReviewStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [proposingKnowledge, setProposingKnowledge] = useState(false);
   const [proposedGuidance, setProposedGuidance] = useState<AgentGuidance | null>(null);
@@ -338,7 +339,22 @@ export const SearchPage: React.FC = () => {
           onDone: resolve,
         });
       });
-      if (finalResult) setSynthesis(finalResult);
+      const resolved = finalResult as SynthesisResult | null;
+      if (resolved) {
+        setSynthesis(resolved);
+        // Check for evidence shift vs prior synthesis for this topic
+        if (isAuthenticated && resolved.topic) {
+          api.getTopicStaleness(resolved.topic).then((s) => {
+            if (s.significantChange && s.changes.length > 0) {
+              setStalenessBanner({
+                changes: s.changes,
+                priorGrade: s.prior?.evidence_grade ?? '',
+                newGrade: s.latest?.evidence_grade ?? '',
+              });
+            }
+          }).catch(() => undefined);
+        }
+      }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Synthesis failed';
       setSynthesisError(msg === 'AUTH_REQUIRED' ? 'Sign in to use Evidence Synthesis' : msg);
@@ -1202,6 +1218,24 @@ export const SearchPage: React.FC = () => {
           </div>
         )}
 
+        {stalenessBanner && (
+          <div className="mb-4 rounded-2xl border border-amber-200 dark:border-amber-800/50 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 flex items-start gap-3">
+            <i className="fas fa-exclamation-triangle text-amber-500 text-sm mt-0.5 shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold text-amber-800 dark:text-amber-200">Evidence has shifted since your last synthesis</p>
+              <ul className="mt-1 space-y-0.5">
+                {stalenessBanner.changes.map((c, i) => (
+                  <li key={i} className="text-[11px] text-amber-700 dark:text-amber-300">{c}</li>
+                ))}
+              </ul>
+            </div>
+            <button type="button" onClick={() => setStalenessBanner(null)}
+              className="shrink-0 text-amber-400 hover:text-amber-600 dark:hover:text-amber-200 transition-colors">
+              <i className="fas fa-times text-xs" />
+            </button>
+          </div>
+        )}
+
         {synthesis && (
           <div className="mb-8">
             <SynthesisPanel
@@ -1221,6 +1255,19 @@ export const SearchPage: React.FC = () => {
             window.open(`https://pubmed.ncbi.nlm.nih.gov/?term=${q}`, '_blank', 'noopener');
           }}
         />
+
+        {currentQuery && results.length > 0 && isAuthenticated && (
+          <div className="mb-4 flex justify-end">
+            <button
+              type="button"
+              onClick={() => navigate(`/topic/${encodeURIComponent(currentQuery)}`)}
+              className="flex items-center gap-2 rounded-xl border border-indigo-200 dark:border-indigo-800/50 bg-indigo-50/60 dark:bg-indigo-950/20 text-indigo-700 dark:text-indigo-300 text-xs font-bold px-4 py-2 hover:bg-indigo-100 dark:hover:bg-indigo-950/40 transition-colors"
+            >
+              <i className="fas fa-graduation-cap text-[11px]" />
+              Open topic workspace
+            </button>
+          </div>
+        )}
 
         <GuidelineSnapshot query={currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
 

@@ -412,4 +412,35 @@ async listAiGenerationClaimsByJobKey(jobKey) {
     return rows.map((r) => this.mapAiGenerationClaimRow(r));
 }
 
+// ── Synthesis snapshots (staleness detection) ─────────────────────────────
+
+async saveSynthesisSnapshot(topic, synthesis, articleUids = []) {
+    const normalized = this.normalizeTopic(topic);
+    const consensusText = String(synthesis?.consensus || synthesis?.overallAnswer || '').slice(0, 2000);
+    const keyFindingCount = Array.isArray(synthesis?.keyFindings) ? synthesis.keyFindings.length : 0;
+    await this.run(
+        `INSERT INTO synthesis_snapshots
+           (normalized_topic, topic, consensus_text, evidence_grade, key_finding_count, article_count, article_uids, generated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+        [
+            normalized,
+            String(topic).slice(0, 200),
+            consensusText,
+            String(synthesis?.evidenceGrade || 'MODERATE'),
+            keyFindingCount,
+            Array.isArray(articleUids) ? articleUids.length : 0,
+            JSON.stringify(Array.isArray(articleUids) ? articleUids.slice(0, 20) : []),
+        ]
+    );
+}
+
+async getLatestSynthesisSnapshots(topic, limit = 2) {
+    const normalized = this.normalizeTopic(topic);
+    return this.all(
+        `SELECT * FROM synthesis_snapshots WHERE normalized_topic = ?
+         ORDER BY generated_at DESC LIMIT ?`,
+        [normalized, Math.min(limit, 10)]
+    );
+}
+
 };

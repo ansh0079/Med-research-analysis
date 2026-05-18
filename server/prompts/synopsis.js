@@ -10,10 +10,31 @@ function buildSynopsisPrompt(article) {
     const authors = (article.authors || []).slice(0, 3).map((a) => a.name).join(', ');
     const pubtypes = (article.pubtype || []).join(', ') || 'Not specified';
 
+    // Build full-text block when available (same section order as synthesis prompt)
+    let fullTextBlock = '';
+    if (article._fullTextIndexed && article._fullTextSections) {
+        const sections = article._fullTextSections;
+        const ordered = ['methods', 'results', 'discussion', 'conclusion'];
+        const parts = [];
+        for (const key of ordered) {
+            const text = sections[key];
+            if (text && String(text).trim().length > 20) {
+                parts.push(`${key.toUpperCase()}: ${String(text).slice(0, 1400)}`);
+            }
+        }
+        if (parts.length > 0) {
+            fullTextBlock = `\n\nFull-text excerpts (${article._fullTextWordCount || '?'} words indexed):\n${parts.join('\n')}`;
+        }
+    }
+
+    const sourceNote = fullTextBlock
+        ? 'You have access to both the abstract AND full-text sections below. Prefer full-text data for numerical results, methods detail, and safety outcomes.'
+        : 'ONLY use information present in the title, abstract, and metadata below. Do NOT invent, infer, or embellish anything not stated.';
+
     return `You are a medical research assistant producing a rapid critical-appraisal synopsis for a doctor.
 Style target: a concise "The Bottom Line"-style appraisal, not a generic abstract summary.
 
-ONLY use information present in the title, abstract, and metadata below. Do NOT invent, infer, or embellish anything not stated.
+${sourceNote}
 If a field cannot be determined, use null or [].
 
 Article metadata:
@@ -25,7 +46,7 @@ Study type (pubtype): ${pubtypes}
 DOI: ${article.doi || 'Not available'}
 
 Abstract:
-${article.abstract || '[No abstract available — extract what you can from the title alone]'}
+${article.abstract || '[No abstract available — extract what you can from the title alone]'}${fullTextBlock}
 
 Return a single JSON object with EXACTLY these fields:
 

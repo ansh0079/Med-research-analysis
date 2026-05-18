@@ -160,6 +160,7 @@ async function runFullSynthesisGeneration({
     }
     await db.cacheAnalysis(`synthesis:${promptHashDigest}`, 'synthesis', usedModel, result, 0, 0, 72);
     await claimMapService.persistClaimsForJob(db, claimsJobKey, 'full_synthesis', result).catch((err) => { logger.warn({ err }, 'persistClaimsForJob failed'); });
+    await db.saveSynthesisSnapshot(topic, synthesis, topArticles.map((a) => a.uid)).catch((err) => { logger.warn({ err }, 'saveSynthesisSnapshot failed'); });
 
     return result;
 }

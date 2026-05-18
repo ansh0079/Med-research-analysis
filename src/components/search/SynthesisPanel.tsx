@@ -3,6 +3,8 @@ import { api } from '@services/api';
 import type { SynthesisResult, Article, GuidelineAlignment } from '@types';
 import { EvidenceAuditPanel } from '@components/search/EvidenceAuditPanel';
 import { ClaimProvenanceModal, type AiJobClaimRow } from '@components/search/ClaimProvenanceModal';
+import { VerificationBadge } from '@components/ui/VerificationBadge';
+import { StudyEncounterPanel } from '@components/search/StudyEncounterPanel';
 
 interface SynthesisPanelProps {
   result: SynthesisResult;
@@ -331,12 +333,23 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
                     >
                       Why?
                     </button>
-                    <span className="text-slate-700 dark:text-slate-300 leading-relaxed">{c.claimText}</span>
+                    <span className="flex-1 text-slate-700 dark:text-slate-300 leading-relaxed">{c.claimText}</span>
+                    <VerificationBadge status={c.validationStatus} />
                   </li>
                 ))}
               </ul>
             )}
           </div>
+        )}
+
+        {/* Inline study encounter: quiz → feedback → schedule */}
+        {articles.length > 0 && (
+          <StudyEncounterPanel
+            topic={result.topic}
+            articles={articles}
+            jobClaims={jobClaims}
+            guidelineConflictCount={alignment?.contradictions?.length ?? 0}
+          />
         )}
 
         {journalErr && (

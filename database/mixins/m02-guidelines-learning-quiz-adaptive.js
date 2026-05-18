@@ -286,9 +286,12 @@ async createQuizAttempt(attempt) {
         ? `${normalizedTopic}|claim|${attempt.claimKey}`
         : `${normalizedTopic}|${attempt.questionType || ''}|${String(attempt.questionText || '').slice(0, 100)}`;
     const conceptHash = require('crypto').createHash('sha256').update(conceptSeed).digest('hex').slice(0, 32);
+    const reasoningTags = Array.isArray(attempt.reasoningTags)
+        ? attempt.reasoningTags.map((tag) => String(tag || '').trim()).filter(Boolean).slice(0, 8)
+        : [];
     const result = await this.run(
-        `INSERT INTO quiz_attempts (user_id, topic, normalized_topic, question_id, question_type, question_text, user_answer, correct_answer, is_correct, time_ms, confidence, source_article_uid, study_run_id, outline_node_id, concept_hash, claim_key, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+        `INSERT INTO quiz_attempts (user_id, topic, normalized_topic, question_id, question_type, question_text, user_answer, correct_answer, is_correct, time_ms, confidence, source_article_uid, study_run_id, outline_node_id, concept_hash, claim_key, reasoning_tags, reasoning_note, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
         [
             attempt.userId,
             attempt.topic,
@@ -306,18 +309,15 @@ async createQuizAttempt(attempt) {
             attempt.outlineNodeId || null,
             conceptHash,
             attempt.claimKey || null,
+            JSON.stringify(reasoningTags),
+            attempt.reasoningNote ? String(attempt.reasoningNote).slice(0, 500) : null,
         ]
     );
     return { id: result.id, conceptHash, ...attempt };
 }
 
-async getQuizAttempts({ userId, topic = '', limit = 50, offset = 0 } = {}) {
-    const normalized = topic ? this.normalizeTopic(topic) : '';
-    const rows = await this.all(
-        `SELECT * FROM quiz_attempts WHERE user_id = ? AND (? = '' OR normalized_topic = ?) ORDER BY created_at DESC LIMIT ? OFFSET ?`,
-        [userId, normalized, normalized, limit, offset]
-    );
-    return rows.map((r) => ({
+mapQuizAttemptRow(r) {
+    return {
         id: r.id,
         userId: r.user_id,
         topic: r.topic,
@@ -335,8 +335,19 @@ async getQuizAttempts({ userId, topic = '', limit = 50, offset = 0 } = {}) {
         outlineNodeId: r.outline_node_id,
         conceptHash: r.concept_hash || null,
         claimKey: r.claim_key || null,
+        reasoningTags: safeJsonParse(r.reasoning_tags, []),
+        reasoningNote: r.reasoning_note || null,
         createdAt: r.created_at,
-    }));
+    };
+}
+
+async getQuizAttempts({ userId, topic = '', limit = 50, offset = 0 } = {}) {
+    const normalized = topic ? this.normalizeTopic(topic) : '';
+    const rows = await this.all(
+        `SELECT * FROM quiz_attempts WHERE user_id = ? AND (? = '' OR normalized_topic = ?) ORDER BY created_at DESC LIMIT ? OFFSET ?`,
+        [userId, normalized, normalized, limit, offset]
+    );
+    return rows.map((r) => this.mapQuizAttemptRow(r));
 }
 
 async getQuizAttemptsForClaimKey(userId, claimKey, { limit = 40 } = {}) {
@@ -346,26 +357,7 @@ async getQuizAttemptsForClaimKey(userId, claimKey, { limit = 40 } = {}) {
         `SELECT * FROM quiz_attempts WHERE user_id = ? AND claim_key = ? ORDER BY created_at DESC LIMIT ?`,
         [userId, String(claimKey), safeLimit]
     );
-    return rows.map((r) => ({
-        id: r.id,
-        userId: r.user_id,
-        topic: r.topic,
-        normalizedTopic: r.normalized_topic,
-        questionId: r.question_id,
-        questionType: r.question_type,
-        questionText: r.question_text,
-        userAnswer: r.user_answer,
-        correctAnswer: r.correct_answer,
-        isCorrect: r.is_correct === 1,
-        timeMs: r.time_ms,
-        confidence: r.confidence,
-        sourceArticleUid: r.source_article_uid,
-        studyRunId: r.study_run_id,
-        outlineNodeId: r.outline_node_id,
-        conceptHash: r.concept_hash || null,
-        claimKey: r.claim_key || null,
-        createdAt: r.created_at,
-    }));
+    return rows.map((r) => this.mapQuizAttemptRow(r));
 }
 
 async getRepeatedMisconceptions(userId, { limit = 10, minAttempts = 2 } = {}) {

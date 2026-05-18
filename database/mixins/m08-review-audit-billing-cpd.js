@@ -827,13 +827,24 @@ async getTeachingObjectStats({ limit = 10 } = {}) {
     };
 }
 
-// Per-topic quiz performance aggregated into a judgement profile for a user.
+// Evidence-judgement failure patterns inferred from quiz attempts.
 async getEvidenceJudgementProfile(userId, { topic = '', limit = 8 } = {}) {
     const uid = String(userId || '').trim();
-    if (!uid) return [];
+    if (!uid) return { topic: topic || null, totalTaggedAttempts: 0, tags: [], topics: [], generatedAt: new Date().toISOString() };
     const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 8, 1), 20);
     const normalized = this.normalizeTopic(topic);
-    const rows = await this.all(
+    const taggedRows = await this.all(
+        `SELECT topic, normalized_topic, question_type, question_text, is_correct, reasoning_tags, reasoning_note, created_at
+         FROM quiz_attempts
+         WHERE user_id = ?
+           AND (? = '' OR normalized_topic = ?)
+           AND reasoning_tags IS NOT NULL
+           AND reasoning_tags != '[]'
+         ORDER BY created_at DESC
+         LIMIT 500`,
+        [uid, normalized, normalized]
+    );
+    const topicRows = await this.all(
         `SELECT
             COALESCE(normalized_topic, topic, 'general') AS topic,
             COUNT(*) AS attempts,
@@ -847,13 +858,54 @@ async getEvidenceJudgementProfile(userId, { topic = '', limit = 8 } = {}) {
          LIMIT ?`,
         [uid, normalized, normalized, safeLimit]
     );
-    return rows.map((row) => ({
+    const byTag = new Map();
+    for (const row of taggedRows) {
+        const tags = safeJsonParse(row.reasoning_tags, []);
+        for (const tag of Array.isArray(tags) ? tags : []) {
+            const key = String(tag || '').trim();
+            if (!key) continue;
+            const current = byTag.get(key) || {
+                tag: key,
+                count: 0,
+                wrongCount: 0,
+                lowConfidenceCorrectCount: 0,
+                lastSeenAt: null,
+                examples: [],
+            };
+            current.count += 1;
+            if (row.is_correct === 0) current.wrongCount += 1;
+            if (row.is_correct === 1 && key === 'low_confidence_correct') current.lowConfidenceCorrectCount += 1;
+            if (!current.lastSeenAt || String(row.created_at || '') > current.lastSeenAt) current.lastSeenAt = row.created_at || null;
+            if (current.examples.length < 3) {
+                current.examples.push({
+                    topic: row.topic || row.normalized_topic || null,
+                    questionType: row.question_type || null,
+                    questionText: String(row.question_text || '').slice(0, 240),
+                    isCorrect: row.is_correct === 1,
+                    reasoningNote: row.reasoning_note || null,
+                    createdAt: row.created_at || null,
+                });
+            }
+            byTag.set(key, current);
+        }
+    }
+    const tags = [...byTag.values()]
+        .sort((a, b) => (b.wrongCount - a.wrongCount) || (b.count - a.count) || String(b.lastSeenAt || '').localeCompare(String(a.lastSeenAt || '')))
+        .slice(0, safeLimit);
+    const topics = topicRows.map((row) => ({
         topic: row.topic,
         attempts: Number(row.attempts || 0),
         correct: Number(row.correct || 0),
         accuracy: row.attempts > 0 ? Math.round((Number(row.correct) / Number(row.attempts)) * 100) : 0,
         lastAttemptAt: row.last_attempt_at || null,
     }));
+    return {
+        topic: topic || null,
+        totalTaggedAttempts: taggedRows.length,
+        tags,
+        topics,
+        generatedAt: new Date().toISOString(),
+    };
 }
 
 // Teaching object claims flagged as practice-changing or clinical bottom lines.
@@ -878,11 +930,19 @@ async listPracticeChangingTeachingObjects({ topic = '', limit = 20 } = {}) {
          LIMIT ?`,
         [normalized, normalized, safeLimit]
     );
-    return rows.map((row) => ({
-        ...this.mapTeachingObjectClaimRow(row),
-        objectTopic: row.object_topic || null,
-        objectTitle: row.object_title || null,
-        objectType: row.object_type || null,
-    }));
+    return rows.map((row) => {
+        const claim = this.mapTeachingObjectClaimRow(row);
+        const isGuideline = claim.conceptKey === 'guideline_recommendation';
+        return {
+            ...claim,
+            title: row.object_title || claim.claimText || 'Practice-changing evidence',
+            topic: row.object_topic || claim.normalizedTopic || null,
+            classification: isGuideline ? 'guideline_recommendation' : 'practice_changing',
+            rationale: claim.claimText || null,
+            objectTopic: row.object_topic || null,
+            objectTitle: row.object_title || null,
+            objectType: row.object_type || null,
+        };
+    });
 }
 };

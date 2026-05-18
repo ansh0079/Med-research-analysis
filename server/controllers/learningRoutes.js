@@ -345,6 +345,50 @@ function registerLearningRoutes(app, deps) {
         }
     });
 
+    app.get('/api/learning/staleness', requireAuthJwt, rateLimit(60, 60), async (req, res) => {
+        try {
+            const topic = String(req.query.topic || '').trim();
+            if (topic.length < 2) return res.status(400).json({ error: 'topic is required' });
+            const snapshots = await db.getLatestSynthesisSnapshots(topic, 2);
+            if (snapshots.length < 2) {
+                return res.json({ hasPrior: snapshots.length > 0, significantChange: false, snapshots });
+            }
+            const [latest, prior] = snapshots;
+            // Detect meaningful change: grade shift, large finding-count delta, or consensus divergence
+            const gradeDiffers = latest.evidence_grade !== prior.evidence_grade;
+            const findingCountDelta = Math.abs(latest.key_finding_count - prior.key_finding_count);
+            const significantChange = gradeDiffers || findingCountDelta >= 2;
+            const changes = [];
+            if (gradeDiffers) changes.push(`Evidence grade changed from ${prior.evidence_grade} to ${latest.evidence_grade}`);
+            if (findingCountDelta >= 2) changes.push(`Key finding count shifted from ${prior.key_finding_count} to ${latest.key_finding_count}`);
+            res.json({ hasPrior: true, significantChange, changes, latest, prior });
+        } catch (error) {
+            req.log.error({ err: error }, 'Staleness check error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.get('/api/learning/topic-overview', requireAuthJwt, rateLimit(30, 60), async (req, res) => {
+        try {
+            const topic = String(req.query.topic || '').trim();
+            if (topic.length < 2) return res.status(400).json({ error: 'topic is required' });
+            const [activeRun, practiceAlerts, snapshots] = await Promise.all([
+                db.getActiveStudyRun(req.user.id, topic).catch(() => null),
+                db.listPracticeChangingTeachingObjects({ topic, limit: 6 }).catch(() => []),
+                db.getLatestSynthesisSnapshots(topic, 1).catch(() => []),
+            ]);
+            res.json({
+                topic,
+                activeRun: activeRun || null,
+                practiceAlerts,
+                latestSnapshot: snapshots[0] || null,
+            });
+        } catch (error) {
+            req.log.error({ err: error }, 'Topic overview error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
     app.get('/api/learning/topic-memory', requireAuthJwt, rateLimit(60, 60), async (req, res) => {
         try {
             const limit = Math.min(parseInt(req.query.limit, 10) || 20, 100);

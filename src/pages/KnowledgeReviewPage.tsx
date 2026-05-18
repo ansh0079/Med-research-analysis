@@ -525,14 +525,6 @@ function LearningHealthPanel({ health, loading, error, onRefresh }: {
   );
 }
 
-const CLAIM_STATUS_OPTIONS = [
-  { value: 'human_reviewed', label: 'Reviewed' },
-  { value: 'guideline_supported', label: 'Guideline supported' },
-  { value: 'guideline_conflict', label: 'Guideline conflict' },
-  { value: 'stale_needs_refresh', label: 'Needs refresh' },
-  { value: 'unverified', label: 'Unverified' },
-];
-
 function claimStatusStyle(status: string) {
   if (status === 'human_reviewed') return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300';
   if (status === 'guideline_supported') return 'bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300';
@@ -541,6 +533,142 @@ function claimStatusStyle(status: string) {
   if (status === 'agent_draft') return 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
   if (status === 'synthesis_inferred') return 'bg-violet-100 text-violet-700 dark:bg-violet-950/40 dark:text-violet-300';
   return 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400';
+}
+
+const FLAG_REASONS = [
+  { value: 'guideline_conflict', label: 'Conflicts with guideline' },
+  { value: 'stale_needs_refresh', label: 'Stale — needs refresh' },
+  { value: 'unverified', label: 'Unverified / unsupported' },
+  { value: 'agent_draft', label: 'Revert to draft' },
+];
+
+function ClaimCard({
+  claim,
+  onUpdate,
+  onGuidelineCheck,
+}: {
+  claim: TeachingClaimReviewItem;
+  onUpdate: (claim: TeachingClaimReviewItem, verificationStatus: string, opts?: { claimText?: string; verificationReason?: string }) => void;
+  onGuidelineCheck: (claim: TeachingClaimReviewItem) => void;
+}) {
+  const [mode, setMode] = React.useState<'idle' | 'flag' | 'edit'>('idle');
+  const [editText, setEditText] = React.useState(claim.claimText);
+  const [flagReason, setFlagReason] = React.useState(FLAG_REASONS[0].value);
+  const [busy, setBusy] = React.useState(false);
+
+  const handleApprove = async () => {
+    setBusy(true);
+    try { await onUpdate(claim, 'human_reviewed'); } finally { setBusy(false); setMode('idle'); }
+  };
+
+  const handleFlag = async () => {
+    setBusy(true);
+    try { await onUpdate(claim, flagReason, { verificationReason: `Curator flagged: ${FLAG_REASONS.find((r) => r.value === flagReason)?.label ?? flagReason}` }); }
+    finally { setBusy(false); setMode('idle'); }
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editText.trim() || editText.trim() === claim.claimText) { setMode('idle'); return; }
+    setBusy(true);
+    try { await onUpdate(claim, 'human_reviewed', { claimText: editText.trim(), verificationReason: 'Curator edited claim text.' }); }
+    finally { setBusy(false); setMode('idle'); }
+  };
+
+  return (
+    <div className="rounded-xl border border-slate-100 dark:border-slate-800 p-4 space-y-3">
+      {/* Header row */}
+      <div className="flex flex-wrap items-center gap-2">
+        <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase ${claimStatusStyle(claim.verificationStatus)}`}>
+          {claim.verificationStatus.replace(/_/g, ' ')}
+        </span>
+        <span className="text-[10px] text-slate-400">{claim.objectType || 'claim'} · {claim.topic || claim.normalizedTopic || 'no topic'}</span>
+        {claim.quizAttempts ? <span className="text-[10px] text-slate-400">{claim.quizCorrect || 0}/{claim.quizAttempts} quiz correct</span> : null}
+      </div>
+
+      {/* Claim text — editable or read-only */}
+      {mode === 'edit' ? (
+        <div className="space-y-2">
+          <textarea
+            aria-label="Edit claim text"
+            className="w-full rounded-lg border border-indigo-200 dark:border-indigo-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none"
+            rows={3}
+            value={editText}
+            onChange={(e) => setEditText(e.target.value)}
+            autoFocus
+          />
+          <div className="flex gap-2">
+            <button type="button" disabled={busy} onClick={() => void handleSaveEdit()}
+              className="rounded-lg bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-[11px] font-bold px-3 py-1.5 transition-colors">
+              <i className="fas fa-save mr-1" /> Save &amp; approve
+            </button>
+            <button type="button" onClick={() => { setEditText(claim.claimText); setMode('idle'); }}
+              className="rounded-lg border border-slate-200 dark:border-slate-700 text-slate-500 text-[11px] font-bold px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : (
+        <p className="text-sm font-semibold leading-relaxed text-slate-800 dark:text-slate-100">{claim.claimText}</p>
+      )}
+
+      {/* Evidence quote */}
+      {claim.evidenceQuote && mode !== 'edit' && (
+        <p className="line-clamp-2 text-xs text-slate-500 dark:text-slate-400 italic">&ldquo;{claim.evidenceQuote}&rdquo;</p>
+      )}
+
+      {/* Source line */}
+      {mode !== 'edit' && (
+        <p className="text-[10px] text-slate-400">
+          {claim.sourcePath || 'no source path'}{claim.articleUid ? ` · ${claim.articleUid}` : ''}
+          {claim.verificationReason ? ` · ${claim.verificationReason}` : ''}
+        </p>
+      )}
+
+      {/* Flag reason picker */}
+      {mode === 'flag' && (
+        <div className="flex flex-wrap items-center gap-2">
+          <select
+            aria-label="Flag reason"
+            value={flagReason}
+            onChange={(e) => setFlagReason(e.target.value)}
+            className="rounded-lg border border-rose-200 dark:border-rose-800 bg-white dark:bg-slate-800 text-xs px-2 py-1.5 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-400"
+          >
+            {FLAG_REASONS.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
+          </select>
+          <button type="button" disabled={busy} onClick={() => void handleFlag()}
+            className="rounded-lg bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white text-[11px] font-bold px-3 py-1.5 transition-colors">
+            <i className="fas fa-flag mr-1" /> Confirm flag
+          </button>
+          <button type="button" onClick={() => setMode('idle')}
+            className="rounded-lg border border-slate-200 dark:border-slate-700 text-slate-500 text-[11px] font-bold px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+            Cancel
+          </button>
+        </div>
+      )}
+
+      {/* Action bar */}
+      {mode === 'idle' && (
+        <div className="flex flex-wrap gap-1.5 pt-1">
+          <button type="button" disabled={busy} onClick={() => void handleApprove()}
+            className="rounded-lg bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white text-[11px] font-bold px-3 py-1.5 transition-colors">
+            <i className="fas fa-check mr-1" /> Approve
+          </button>
+          <button type="button" onClick={() => setMode('flag')}
+            className="rounded-lg bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/30 dark:hover:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 text-[11px] font-bold px-3 py-1.5 transition-colors">
+            <i className="fas fa-flag mr-1" /> Flag
+          </button>
+          <button type="button" onClick={() => { setEditText(claim.claimText); setMode('edit'); }}
+            className="rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-[11px] font-bold px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+            <i className="fas fa-pencil-alt mr-1" /> Edit
+          </button>
+          <button type="button" onClick={() => onGuidelineCheck(claim)}
+            className="rounded-lg border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-[11px] font-bold px-3 py-1.5 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors">
+            <i className="fas fa-balance-scale mr-1" /> Guideline check
+          </button>
+        </div>
+      )}
+    </div>
+  );
 }
 
 function ClaimsReviewPanel({
@@ -555,7 +683,7 @@ function ClaimsReviewPanel({
   loading: boolean;
   error: string;
   onRefresh: () => void;
-  onUpdate: (claim: TeachingClaimReviewItem, verificationStatus: string) => void;
+  onUpdate: (claim: TeachingClaimReviewItem, verificationStatus: string, opts?: { claimText?: string; verificationReason?: string }) => void;
   onGuidelineCheck: (claim: TeachingClaimReviewItem) => void;
 }) {
   if (loading) return <p className="text-sm text-slate-400">Loading claim review queue...</p>;
@@ -566,7 +694,7 @@ function ClaimsReviewPanel({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Claim Review Queue</p>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Verify draft, inferred, abstract-only, stale, or conflicting teaching claims.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Approve, flag, or edit teaching claims before they enter the quiz pool.</p>
         </div>
         <button
           type="button"
@@ -585,46 +713,12 @@ function ClaimsReviewPanel({
 
       <div className="space-y-3">
         {claims.map((claim) => (
-          <div key={claim.claimKey} className="rounded-xl border border-slate-100 p-4 dark:border-slate-800">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div className="min-w-0 flex-1">
-                <div className="mb-2 flex flex-wrap items-center gap-2">
-                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase ${claimStatusStyle(claim.verificationStatus)}`}>
-                    {claim.verificationStatus.replace(/_/g, ' ')}
-                  </span>
-                  <span className="text-[10px] text-slate-400">{claim.objectType || 'claim'} / {claim.topic || claim.normalizedTopic || 'no topic'}</span>
-                  {claim.quizAttempts ? <span className="text-[10px] text-slate-400">{claim.quizCorrect || 0}/{claim.quizAttempts} quiz correct</span> : null}
-                </div>
-                <p className="text-sm font-semibold leading-relaxed text-slate-800 dark:text-slate-100">{claim.claimText}</p>
-                {claim.evidenceQuote && (
-                  <p className="mt-2 line-clamp-2 text-xs text-slate-500 dark:text-slate-400">{claim.evidenceQuote}</p>
-                )}
-                <p className="mt-2 text-[10px] text-slate-400">
-                  {claim.sourcePath || 'no source path'}{claim.articleUid ? ` / ${claim.articleUid}` : ''}
-                  {claim.verificationReason ? ` / ${claim.verificationReason}` : ''}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => onGuidelineCheck(claim)}
-                  className="rounded-lg border border-blue-200 px-2 py-1 text-[10px] font-bold text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-950/40"
-                >
-                  Check guideline
-                </button>
-                {CLAIM_STATUS_OPTIONS.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    onClick={() => onUpdate(claim, option.value)}
-                    className="rounded-lg border border-slate-200 px-2 py-1 text-[10px] font-bold text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
+          <ClaimCard
+            key={claim.claimKey}
+            claim={claim}
+            onUpdate={onUpdate}
+            onGuidelineCheck={onGuidelineCheck}
+          />
         ))}
       </div>
     </div>
@@ -756,14 +850,20 @@ export const KnowledgeReviewPage: React.FC = () => {
     }
   }, [activeTab, loadClaimQueue, selected]);
 
-  const updateClaimVerification = async (claim: TeachingClaimReviewItem, verificationStatus: string) => {
-    const verificationReason = verificationStatus === 'human_reviewed'
-      ? 'Curator reviewed from claim queue.'
-      : `Curator marked as ${verificationStatus.replace(/_/g, ' ')}.`;
+  const updateClaimVerification = async (
+    claim: TeachingClaimReviewItem,
+    verificationStatus: string,
+    opts?: { claimText?: string; verificationReason?: string },
+  ) => {
+    const verificationReason = opts?.verificationReason
+      ?? (verificationStatus === 'human_reviewed'
+        ? 'Curator reviewed from claim queue.'
+        : `Curator marked as ${verificationStatus.replace(/_/g, ' ')}.`);
     try {
       const result = await api.updateTeachingClaimVerification(claim.claimKey, {
         verificationStatus,
         verificationReason,
+        claimText: opts?.claimText,
       });
       setClaimQueue((prev) => prev.map((item) => (item.claimKey === claim.claimKey ? { ...item, ...result.claim } : item)));
       setNotice(`Claim marked ${verificationStatus.replace(/_/g, ' ')}.`);
@@ -1197,7 +1297,7 @@ export const KnowledgeReviewPage: React.FC = () => {
                       loading={claimsLoading}
                       error={claimsError}
                       onRefresh={() => void loadClaimQueue()}
-                      onUpdate={(claim, verificationStatus) => void updateClaimVerification(claim, verificationStatus)}
+                      onUpdate={(claim, verificationStatus, opts) => void updateClaimVerification(claim, verificationStatus, opts)}
                       onGuidelineCheck={(claim) => void checkClaimGuideline(claim)}
                     />
                   )}

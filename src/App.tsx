@@ -40,6 +40,7 @@ const StudyRunPage        = lazyDefault(() => import('./pages/StudyRunPage'), 'S
 const GuidelineBrowserPage = lazyDefault(() => import('./pages/GuidelineBrowserPage'), 'GuidelineBrowserPage');
 
 const StudyPathsPage      = lazyDefault(() => import('./pages/StudyPathsPage'), 'StudyPathsPage');
+const TopicPage           = lazyDefault(() => import('./pages/TopicPage'), 'TopicPage');
 const LegalTermsPage      = lazyDefault(() => import('./pages/LegalTermsPage'), 'LegalTermsPage');
 const LegalPrivacyPage    = lazyDefault(() => import('./pages/LegalPrivacyPage'), 'LegalPrivacyPage');
 const NotFoundPage        = lazyDefault(() => import('./pages/NotFoundPage'), 'NotFoundPage');
@@ -105,6 +106,7 @@ const AppContent: React.FC = () => {
           <Route path="/guidelines" element={<ProtectedRoute><GuidelineReviewPage /></ProtectedRoute>} />
           <Route path="/learning" element={<ProtectedRoute><LearningDashboardPage /></ProtectedRoute>} />
           <Route path="/learning/:id" element={<ProtectedRoute><StudyRunPage /></ProtectedRoute>} />
+          <Route path="/topic/:topic"  element={<ProtectedRoute><TopicPage /></ProtectedRoute>} />
           <Route path="/study-paths" element={<ProtectedRoute><StudyPathsPage /></ProtectedRoute>} />
           <Route path="/auth"      element={<GuestRoute><AuthPage /></GuestRoute>} />
           <Route path="/review"    element={<ProtectedRoute><ReviewAssistantPage /></ProtectedRoute>} />

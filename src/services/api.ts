@@ -490,6 +490,13 @@ class MedicalResearchAPI {
           createdAt: string | null;
         }>;
       }>;
+      topics: Array<{
+        topic: string;
+        attempts: number;
+        correct: number;
+        accuracy: number;
+        lastAttemptAt?: string | null;
+      }>;
     };
   }> {
     const params = new URLSearchParams({ limit: String(limit) });
@@ -519,6 +526,35 @@ class MedicalResearchAPI {
     const params = new URLSearchParams({ limit: String(limit) });
     if (topic) params.set('topic', topic);
     const response = await this.fetchWithSession(`${API_BASE}/api/learning/practice-alerts?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getTopicStaleness(topic: string): Promise<{
+    hasPrior: boolean;
+    significantChange: boolean;
+    changes: string[];
+    latest?: { evidence_grade: string; key_finding_count: number; generated_at: string };
+    prior?:  { evidence_grade: string; key_finding_count: number; generated_at: string };
+  }> {
+    const params = new URLSearchParams({ topic });
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/staleness?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getTopicOverview(topic: string): Promise<{
+    topic: string;
+    activeRun: import('@types').StudyRun | null;
+    practiceAlerts: Array<{
+      objectKey: string; title: string; classification: string; topic?: string | null; rationale?: string | null;
+    }>;
+    latestSnapshot: {
+      evidence_grade: string; key_finding_count: number; consensus_text: string; generated_at: string;
+    } | null;
+  }> {
+    const params = new URLSearchParams({ topic });
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/topic-overview?${params}`);
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }

@@ -6,6 +6,7 @@ const { createAiService, PINNED_MODELS, TEMPERATURE, AI_DISCLAIMER } = require('
 const { buildSynopsisPrompt } = require('../prompts');
 const { persistPaperTeachingObject } = require('./teachingObjectService');
 const { resolveProvider } = require('../utils/aiProvider');
+const { enrichWithCachedFullText } = require('./pdfPreindexService');
 
 async function runPaperSynopsisGeneration({
     article,
@@ -38,7 +39,9 @@ async function runPaperSynopsisGeneration({
         if (memCached) return { ...memCached, cached: true, jobKey: jobKey || memCached.jobKey };
     }
 
-    const prompt = buildSynopsisPrompt(article);
+    // Enrich with full-text sections when cached — improves numerical result extraction
+    const [enriched] = await enrichWithCachedFullText([article], cache, db).catch(() => [article]);
+    const prompt = buildSynopsisPrompt(enriched);
     let rawText;
     if (selectedProvider === 'gemini') {
         rawText = await ai.callGemini(prompt, selectedModel, { temperature: TEMPERATURE.synopsis });
@@ -71,7 +74,7 @@ async function runPaperSynopsisGeneration({
             model: selectedModel,
             promptHash: crypto.createHash('md5').update(prompt).digest('hex'),
             sourceCount: 1,
-            fullTextCoverageRatio: article._pdfIndexed || article.pdfIndexed ? 1 : 0,
+            fullTextCoverageRatio: enriched._fullTextIndexed ? 1 : (article._pdfIndexed || article.pdfIndexed ? 1 : 0),
             citationValidation: null,
             retractionChecked: Boolean(article._retraction),
             retractionFlagged: Boolean(article._retraction?.isRetracted),
