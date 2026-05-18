@@ -1,0 +1,17 @@
+{
+  "ignore": [
+    "node_modules/**",
+    "dist/**",
+    "src/**",
+    "coverage/**",
+    "test-results/**",
+    "playwright-report/**",
+    "tests/**",
+    ".git/**",
+    "database/**/*.db",
+    "database/**/*.db-shm",
+    "database/**/*.db-wal",
+    "**/*.test.js"
+  ],
+  "ext": "js,mjs,cjs,json,sql"
+}

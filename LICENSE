@@ -1,0 +1,74 @@
+MIT License
+
+Copyright (c) 2026 Medical Research Intelligence Platform Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Third-Party Licenses
+
+This project uses the following open-source components:
+
+### Frontend
+- **React** - MIT License (c) Meta Platforms, Inc.
+- **Tailwind CSS** - MIT License (c) Tailwind Labs, Inc.
+- **D3.js** - ISC License (c) 2010-2023 Mike Bostock
+- **Font Awesome** - CC BY 4.0 / SIL OFL 1.1 (Fonticons, Inc.)
+- **html2pdf.js** - MIT License
+
+### Backend
+- **Express.js** - MIT License (c) TJ Holowaychuk
+- **FastAPI** - MIT License (c) Sebastián Ramírez
+- **Transformers** - Apache 2.0 (c) Hugging Face
+- **PyTorch** - BSD License (c) Meta Platforms, Inc.
+- **Node Cache** - MIT License
+
+### AI Models
+- **Mistral-7B-Instruct** - Apache 2.0 License (c) Mistral AI
+- **BioGPT** - MIT License (c) Microsoft Corporation
+
+See individual project repositories for full license texts.
+
+---
+
+## Disclaimer
+
+This software is intended for research and educational purposes only. It is not
+intended to provide medical advice, diagnosis, or treatment. Always seek the
+advice of qualified health providers with questions you may have regarding
+medical conditions.
+
+AI-generated summaries and analyses should be verified against original sources
+before use in clinical or research decision-making.
+
+---
+
+## Attribution
+
+If you use this software in your research, please cite:
+
+```
+Medical Research Intelligence Platform (2026).
+https://github.com/yourusername/medical-research-intelligence
+```
+
+---
+
+For questions about licensing, please contact: license@medicalresearch.app

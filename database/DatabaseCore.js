@@ -1,0 +1,361 @@
+// ==========================================
+// Database core — connection, SQL helpers, search history helpers
+// ==========================================
+
+const { Pool } = require('pg');
+const { Kysely, SqliteDialect, PostgresDialect } = require('kysely');
+const path = require('path');
+const fs = require('fs');
+const { buildPgPoolConfig, buildPgVectorPoolConfig } = require('../server/utils/pgPoolOptions');
+const { runExternalSqliteMigrations } = require('./lib/helpers');
+
+class Database {
+constructor(dbPath = './database/app.db') {
+    this.dbPath = dbPath;
+    /** @type {import('better-sqlite3').Database | null} */
+    this._bs = null;
+    /** @type {import('kysely').Kysely<Record<string, unknown>> | null} */
+    this.kysely = null;
+    this.pool = null;
+    this.pgVectorPool = null;
+    // Full app on Postgres only when explicitly migrating (not used by default)
+    this.isPostgres = process.env.USE_POSTGRES_MAIN === 'true' && Boolean(process.env.DATABASE_URL);
+}
+
+async connect() {
+    const vectorUrl = process.env.PG_VECTOR_URL || process.env.VECTOR_DATABASE_URL;
+    if (vectorUrl && String(vectorUrl).trim()) {
+        const sslVec = process.env.PGSSL === 'true' ? { rejectUnauthorized: false } : false;
+        this.pgVectorPool = new Pool(buildPgVectorPoolConfig(String(vectorUrl).trim(), sslVec));
+        console.log('✅ PG vector pool connected (pgvector / articles_cache)');
+    }
+
+    if (this.isPostgres) {
+        const sslMain = process.env.PGSSL === 'true' ? { rejectUnauthorized: false } : false;
+        const pool = new Pool(buildPgPoolConfig(process.env.DATABASE_URL, sslMain));
+        this.pool = pool;
+        this.kysely = new Kysely({
+            dialect: new PostgresDialect({ pool })
+        });
+        console.log('✅ Connected to PostgreSQL (main app)');
+        return true;
+    }
+
+    return new Promise((resolve, reject) => {
+        try {
+            const dir = path.dirname(this.dbPath);
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+
+            if (process.env.SKIP_BUILTIN_SQLITE_MIGRATE !== '1') {
+                const absDbPath = path.isAbsolute(this.dbPath)
+                    ? this.dbPath
+                    : path.resolve(process.cwd(), this.dbPath);
+                runExternalSqliteMigrations(absDbPath);
+            }
+
+            const BetterSqlite = require('better-sqlite3');
+            this._bs = new BetterSqlite(this.dbPath, { fileMustExist: false });
+            this._bs.pragma('journal_mode = WAL');
+            this._bs.pragma('foreign_keys = ON');
+            this.kysely = new Kysely({ dialect: new SqliteDialect({ database: this._bs }) });
+            console.log('✅ Connected to SQLite (better-sqlite3 + Kysely)');
+            this.initialize().then(resolve).catch(reject);
+        } catch (err) {
+            console.error('Database connection failed:', err);
+            reject(err);
+        }
+    });
+}
+
+async initialize() {
+    const schemaPath = this.isPostgres
+        ? path.join(__dirname, 'production_schema.sql')
+        : path.join(__dirname, 'schema.sql');
+    if (this._bs) {
+        this._bs.exec(fs.readFileSync(schemaPath, 'utf8'));
+        this._bs.exec(`
+            CREATE TABLE IF NOT EXISTS annotations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                article_id TEXT NOT NULL,
+                user_id TEXT NOT NULL,
+                user_name TEXT,
+                text TEXT NOT NULL,
+                position TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            );
+        `);
+    } else if (this.isPostgres) {
+        const schema = fs.readFileSync(schemaPath, 'utf8');
+        const statements = schema.split(';').filter(s => s.trim());
+        for (const statement of statements) {
+            if (statement.trim()) await this.run(statement);
+        }
+    }
+    const migrationsDdl = this.isPostgres
+        ? `CREATE TABLE IF NOT EXISTS _migrations (id SERIAL PRIMARY KEY, name TEXT UNIQUE NOT NULL, applied_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP)`
+        : `CREATE TABLE IF NOT EXISTS _migrations (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE NOT NULL, applied_at DATETIME DEFAULT CURRENT_TIMESTAMP)`;
+    await this.run(migrationsDdl);
+
+    // Audit logs
+    if (this._bs) {
+        this._bs.exec(`
+            CREATE TABLE IF NOT EXISTS audit_logs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id TEXT,
+                session_id TEXT,
+                action TEXT NOT NULL,
+                resource_type TEXT,
+                resource_id TEXT,
+                details TEXT,
+                ip_address TEXT,
+                user_agent TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        this._bs.exec(`CREATE INDEX IF NOT EXISTS idx_audit_user ON audit_logs(user_id)`);
+        this._bs.exec(`CREATE INDEX IF NOT EXISTS idx_audit_action ON audit_logs(action)`);
+        this._bs.exec(`CREATE INDEX IF NOT EXISTS idx_audit_created ON audit_logs(created_at)`);
+    }
+
+    console.log('✅ Database schema initialized');
+}
+
+/**
+ * Run database migrations
+ */
+async runMigrations() {
+    const migrationsDir = path.join(__dirname, 'migrations');
+    
+    if (!fs.existsSync(migrationsDir)) {
+        console.log('ℹ️ No migrations directory');
+        return { migrated: 0 };
+    }
+
+    const files = fs.readdirSync(migrationsDir)
+        .filter(f => f.endsWith('.sql'))
+        .sort();
+
+    const applied = await this.all('SELECT name FROM _migrations ORDER BY id');
+    const appliedNames = new Set(applied.map(m => m.name));
+    const pending = files.filter(f => !appliedNames.has(f));
+
+    if (pending.length === 0) {
+        console.log('✅ Database is up to date');
+        return { migrated: 0 };
+    }
+
+    console.log(`Running ${pending.length} migration(s)...`);
+
+    for (const file of pending) {
+        const filePath = path.join(migrationsDir, file);
+        const sql = fs.readFileSync(filePath, 'utf8');
+        
+        console.log(`Running migration: ${file}`);
+        
+        // Strip line comments before splitting on semicolons to avoid
+        // fragments from comments that contain semicolons.
+        const sqlWithoutComments = sql
+            .split('\n')
+            .map(line => line.split('--')[0])
+            .join('\n');
+        const statements = sqlWithoutComments.split(';')
+            .map(s => s.trim())
+            .filter(s => s.length > 0);
+        
+        for (const statement of statements) {
+            if (statement.trim()) {
+                try {
+                    await this.run(statement);
+                } catch (err) {
+                    // Ignore "duplicate column name" errors so migrations stay idempotent
+                    if (err && err.message && err.message.includes('duplicate column name')) {
+                        console.log(`   ⚠️  Skipped (already exists): ${statement.split(/\s+/).slice(0, 6).join(' ')}...`);
+                    } else {
+                        throw err;
+                    }
+                }
+            }
+        }
+        
+        await this.run('INSERT INTO _migrations (name) VALUES (?)', [file]);
+        console.log(`✅ Completed: ${file}`);
+    }
+
+    return { migrated: pending.length };
+}
+
+toPgQuery(sql) {
+    let paramIndex = 1;
+    let inString = false;
+    let stringChar = null;
+    let escaped = false;
+    let result = '';
+    for (let i = 0; i < sql.length; i++) {
+        const ch = sql[i];
+        if (escaped) {
+            result += ch;
+            escaped = false;
+            continue;
+        }
+        if (ch === '\\') {
+            result += ch;
+            escaped = true;
+            continue;
+        }
+        if (!inString && (ch === "'" || ch === '"')) {
+            inString = true;
+            stringChar = ch;
+            result += ch;
+            continue;
+        }
+        if (inString && ch === stringChar) {
+            inString = false;
+            stringChar = null;
+            result += ch;
+            continue;
+        }
+        if (!inString && ch === '?') {
+            result += '$' + paramIndex++;
+            continue;
+        }
+        result += ch;
+    }
+    return result;
+}
+
+run(sqlText, params = []) {
+    if (this.isPostgres) {
+        const pgSql = this.toPgQuery(sqlText);
+        return this.pool.query(pgSql, params).then((res) => {
+            const id = res.rows && res.rows[0] && res.rows[0].id !== null && res.rows[0].id !== undefined ? res.rows[0].id : null;
+            return { id: id ?? res.insertId, changes: res.rowCount, rows: res.rows };
+        });
+    }
+    return new Promise((resolve, reject) => {
+        try {
+            const st = this._bs.prepare(sqlText);
+            const r = st.run(...params);
+            resolve({ id: Number(r.lastInsertRowid) || 0, changes: r.changes });
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+
+get(sqlText, params = []) {
+    if (this.isPostgres) {
+        const pgSql = this.toPgQuery(sqlText);
+        return this.pool.query(pgSql, params).then((res) => res.rows[0]);
+    }
+    return new Promise((resolve, reject) => {
+        try {
+            const st = this._bs.prepare(sqlText);
+            const row = st.get(...params);
+            resolve(row);
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+
+all(sqlText, params = []) {
+    if (this.isPostgres) {
+        const pgSql = this.toPgQuery(sqlText);
+        return this.pool.query(pgSql, params).then((res) => res.rows);
+    }
+    return new Promise((resolve, reject) => {
+        try {
+            const st = this._bs.prepare(sqlText);
+            resolve(st.all(...params));
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+
+close() {
+    const v = this.pgVectorPool ? this.pgVectorPool.end() : Promise.resolve();
+    if (this.isPostgres) {
+        this.kysely = null;
+        if (this.pool) {
+            const p = this.pool;
+            this.pool = null;
+            return Promise.all([v, p.end()]).then(() => undefined);
+        }
+        return v;
+    }
+    return v.then(
+        () =>
+            new Promise((resolve, reject) => {
+                try {
+                    this.kysely = null;
+                    if (this._bs) {
+                        this._bs.close();
+                        this._bs = null;
+                    }
+                    resolve();
+                } catch (e) {
+                    reject(e);
+                }
+            })
+    );
+}
+
+async getSearchHistory(sessionId, limit = 50) {
+    if (!this.kysely) return [];
+    return this.kysely
+        .selectFrom('searches')
+        .selectAll()
+        .where('session_id', '=', sessionId)
+        .orderBy('created_at', 'desc')
+        .limit(limit)
+        .execute();
+}
+
+async getPopularSearches(limit = 20) {
+    if (!this.kysely) return [];
+    const { sql } = this.kysely;
+    return this.kysely
+        .selectFrom('searches')
+        .select([
+            'query',
+            sql`COUNT(*)`.as('count'),
+            sql`AVG(results_count)`.as('avg_results')
+        ])
+        .groupBy('query')
+        .having(sql`COUNT(*)`, '>', 1)
+        .orderBy('count', 'desc')
+        .limit(limit)
+        .execute();
+}
+
+async cacheArticle(articleId, source, articleData, ttlHours = 24) {
+    if (!this.kysely) return;
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + ttlHours);
+
+    return this.kysely
+        .insertInto('article_cache')
+        .values({
+            id: articleId,
+            source,
+            data: JSON.stringify(articleData),
+            title: articleData.title,
+            authors: JSON.stringify(articleData.authors),
+            abstract: articleData.abstract,
+            publication_date: articleData.pubdate || articleData.year,
+            journal: articleData.source || articleData.journal,
+            citation_count: articleData.pmcrefcount || articleData.citationCount || 0,
+            expires_at: expiresAt.toISOString()
+        })
+        .onConflict(oc => oc.column('id').doUpdateSet({
+            data: JSON.stringify(articleData),
+            expires_at: expiresAt.toISOString()
+        }))
+        .execute();
+}
+}
+
+module.exports = Database;

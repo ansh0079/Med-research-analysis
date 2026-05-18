@@ -1,0 +1,22 @@
+MEDICAL RESEARCH INTELLIGENCE PLATFORM - PENDING PLANS & ROADMAP
+
+1. TESTING & QUALITY ASSURANCE
+- Expand Unit Testing: Focus on server-enhanced.js logic and React component edge cases.
+- E2E (End-to-End) Testing: Implement Playwright suites for Search -> Save -> Analyze -> History flows.
+- Load Testing: Execute k6 stress and peak scenarios for SQLite/Cache performance validation.
+
+2. INFRASTRUCTURE & DEPLOYMENT
+- CI/CD Pipeline: Finalize GitHub Actions with security scanning (Snyk/CodeQL).
+- Production Hosting: Deploy Docker image to Railway, Render, or Fly.io.
+- Database Migration: Transition from SQLite to PostgreSQL for production concurrency.
+- Monitoring: Activate Sentry, Google Analytics 4, and UptimeRobot for live tracking.
+
+3. ADVANCED FEATURE ROADMAP
+- Collaborative Workspace: Selection Basket, Annotation Sidebar, and real-time presence indicators.
+- Researcher Tools: Browser extension for DOI clipping and a React Native mobile application.
+- Intelligence Upgrades: Vector Search (RAG) implementation and integrated side-by-side PDF viewer.
+
+4. POST-LAUNCH SUCCESS METRICS
+- Performance: P95 response time < 500ms.
+- Reliability: Cache hit rate > 70%.
+- Engagement: 500+ visitors and 50+ sign-ups within the first week.

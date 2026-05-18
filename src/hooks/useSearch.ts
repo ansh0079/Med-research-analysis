@@ -1,0 +1,270 @@
+import { useCallback, useRef, useEffect, useState } from 'react';
+import { api } from '@services/api';
+import { queryParser } from '@services/QueryParser';
+import { useSearchContext } from '@contexts/SearchContext';
+import type { Article, ProactiveAlert, ProactiveEvidenceAlert, SearchFilters } from '@types';
+import { useAuth } from '@contexts/AuthContext';
+import { useAnalytics } from './useAnalytics';
+
+const POLL_DELAYS = [8000, 12000, 18000]; // 8 s, then 12 s, then 18 s — three attempts
+const ENRICHMENT_POLL_DELAYS = [2000, 3000, 4000, 5000, 6000, 8000, 10000]; // up to ~38 s total
+
+export function useSearch() {
+  const {
+    setResults,
+    setLoading,
+    setError,
+    setDetectedTopic,
+    setAgentGuidance,
+    setTopicIntelligence,
+    setClinicalAnswer,
+    setCommunityInsight,
+    setTopicGuideStatus,
+    addToSearchHistory,
+    searchHistory,
+    loading,
+    error,
+    results,
+  } = useSearchContext();
+  const { trackSearch, trackFeatureUsage } = useAnalytics();
+
+  const [knowledgeDriftAlerts, setKnowledgeDriftAlerts] = useState<ProactiveEvidenceAlert[]>([]);
+  const { isAuthenticated } = useAuth();
+
+  const refreshKnowledgeDriftAlerts = useCallback(() => {
+    if (!isAuthenticated) {
+      setKnowledgeDriftAlerts([]);
+      return;
+    }
+    void api
+      .listEvidenceAlerts({ limit: 30, unreadOnly: true })
+      .then((r) => setKnowledgeDriftAlerts(r.alerts || []))
+      .catch(() => undefined);
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    refreshKnowledgeDriftAlerts();
+  }, [refreshKnowledgeDriftAlerts]);
+
+  const dismissKnowledgeDriftAlert = useCallback(async (id: number) => {
+    await api.markEvidenceAlertRead(id);
+    setKnowledgeDriftAlerts((prev) => prev.filter((a) => a.id !== id));
+  }, []);
+  const [lastSearchId, setLastSearchId] = useState<number | null>(null);
+  const [proactiveAlert, setProactiveAlert] = useState<ProactiveAlert | null>(null);
+  const [aiEnrichmentLoading, setAiEnrichmentLoading] = useState(false);
+  const requestIdRef = useRef(0);
+  const pollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const enrichmentTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const schedulePollRef = useRef<(topic: string, forRequestId: number, attempt?: number) => void>();
+  const scheduleEnrichmentPollRef = useRef<(key: string, forRequestId: number, attempt?: number) => void>();
+
+  const cancelPoll = () => {
+    if (pollTimerRef.current !== null) {
+      clearTimeout(pollTimerRef.current);
+      pollTimerRef.current = null;
+    }
+    if (enrichmentTimerRef.current !== null) {
+      clearTimeout(enrichmentTimerRef.current);
+      enrichmentTimerRef.current = null;
+    }
+  };
+
+  const schedulePoll = useCallback(
+    (topic: string, forRequestId: number, attempt = 0) => {
+      if (attempt >= POLL_DELAYS.length) {
+        if (forRequestId === requestIdRef.current) {
+          setTopicGuideStatus('pending');
+          trackFeatureUsage('topic_guide_pending', { topic: topic.slice(0, 200) });
+        }
+        return;
+      }
+      pollTimerRef.current = setTimeout(async () => {
+        if (forRequestId !== requestIdRef.current) return;
+        try {
+          const result = await api.getTopicKnowledge(topic);
+          if (forRequestId !== requestIdRef.current) return;
+          if (result.found && result.agentGuidance) {
+            setAgentGuidance(result.agentGuidance);
+            setTopicGuideStatus('ready');
+            trackFeatureUsage('topic_guide_ready', { source: 'poll', topic: topic.slice(0, 200) });
+            return;
+          }
+        } catch { /* ignore */ }
+        schedulePollRef.current?.(topic, forRequestId, attempt + 1);
+      }, POLL_DELAYS[attempt]);
+    },
+    [setAgentGuidance, setTopicGuideStatus, trackFeatureUsage]
+  );
+
+  const scheduleEnrichmentPoll = useCallback(
+    (key: string, forRequestId: number, attempt = 0) => {
+      if (attempt >= ENRICHMENT_POLL_DELAYS.length) {
+        // Give up — leave clinicalAnswer as null
+        if (forRequestId === requestIdRef.current) setAiEnrichmentLoading(false);
+        return;
+      }
+      enrichmentTimerRef.current = setTimeout(async () => {
+        if (forRequestId !== requestIdRef.current) return;
+        try {
+          const enrichment = await api.getAiEnrichment(key);
+          if (forRequestId !== requestIdRef.current) return;
+          if (enrichment.status === 'ready') {
+            if (enrichment.clinicalAnswer) setClinicalAnswer(enrichment.clinicalAnswer);
+            if (enrichment.consensusSynopsis) {
+              const cs = enrichment.consensusSynopsis;
+              setTopicIntelligence((prev) =>
+                prev
+                  ? {
+                      ...prev,
+                      consensusSynopsis: cs ?? undefined,
+                      actions: {
+                        ...prev.actions,
+                        canGenerateConsensusSynopsis: cs?.status === 'generated',
+                      },
+                    }
+                  : prev
+              );
+            }
+            setAiEnrichmentLoading(false);
+            return;
+          }
+          if (enrichment.status === 'failed') {
+            setAiEnrichmentLoading(false);
+            return;
+          }
+        } catch { /* ignore, retry */ }
+        scheduleEnrichmentPollRef.current?.(key, forRequestId, attempt + 1);
+      }, ENRICHMENT_POLL_DELAYS[attempt]);
+    },
+    [setClinicalAnswer, setTopicIntelligence]
+  );
+
+  useEffect(() => {
+    schedulePollRef.current = schedulePoll;
+  });
+
+  useEffect(() => {
+    scheduleEnrichmentPollRef.current = scheduleEnrichmentPoll;
+  });
+
+  const search = useCallback(
+    async (query: string, filters: SearchFilters = {}): Promise<Article[]> => {
+      const thisRequestId = ++requestIdRef.current;
+      cancelPoll();
+      setAiEnrichmentLoading(false);
+
+      if (!query.trim()) {
+        setResults([]);
+        setAgentGuidance(null);
+        setTopicIntelligence(null);
+        setTopicGuideStatus('idle');
+        return [];
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const maxResults = filters.maxResults || 20;
+        const config = await api.getClientConfig();
+        const canUseVector = Boolean(config.features?.vectorSearch);
+        const fuseVector = canUseVector && filters.useVectorSearch !== false;
+
+        // Run local query parser to extract study-type hints for backend bouquet tuning
+        const parsed = queryParser.parse(query, filters.specificity || 'moderate');
+        const enrichedFilters: SearchFilters = { ...filters, maxResults };
+        if (parsed.studyTypes.length > 0 || parsed.specificity !== 'broad') {
+          enrichedFilters.parsedQuery = {
+            studyTypes: parsed.studyTypes,
+            specificity: parsed.specificity,
+          };
+        }
+
+        const previousQueries = searchHistory.slice(-3);
+        const data = await api.search(
+          query,
+          enrichedFilters,
+          { vector: fuseVector, previousQueries }
+        );
+
+        const {
+          articles, agentGuidance, topicIntelligence, knowledgeAvailable,
+          clinicalAnswer, searchId, communityInsight, proactiveAlert,
+          aiEnrichmentKey, aiEnrichmentStatus,
+        } = data;
+
+        trackSearch(query, { filters, resultsCount: articles.length });
+
+        if (thisRequestId !== requestIdRef.current) return articles;
+        setResults(articles);
+        setLastSearchId(searchId ?? null);
+        setDetectedTopic(query.trim());
+        setAgentGuidance(agentGuidance || null);
+        setTopicIntelligence(topicIntelligence || null);
+        setClinicalAnswer(clinicalAnswer || null);
+        setCommunityInsight(communityInsight || null);
+        setProactiveAlert(proactiveAlert || null);
+        addToSearchHistory(query.trim());
+        refreshKnowledgeDriftAlerts();
+
+        if (agentGuidance) {
+          setTopicGuideStatus('ready');
+          trackFeatureUsage('topic_guide_ready', { source: 'search', query: query.slice(0, 200) });
+        } else if (articles.length >= 2 && knowledgeAvailable === false) {
+          setTopicGuideStatus('building');
+          trackFeatureUsage('topic_guide_building', { query: query.slice(0, 200) });
+        } else {
+          setTopicGuideStatus('none');
+        }
+
+        if (canUseVector && articles.length > 0) {
+          void api.indexArticlesForVector(articles).catch(() => undefined);
+        }
+
+        // If no guidance yet, poll in background until extraction completes
+        if (!agentGuidance && knowledgeAvailable === false && articles.length >= 2) {
+          schedulePoll(query.trim(), thisRequestId);
+        }
+
+        // Poll for AI enrichment (consensus synopsis + clinical answer) if still pending
+        if (aiEnrichmentKey && aiEnrichmentStatus === 'pending') {
+          setAiEnrichmentLoading(true);
+          scheduleEnrichmentPoll(aiEnrichmentKey, thisRequestId);
+        }
+
+        return articles;
+      } catch (err) {
+        if (thisRequestId !== requestIdRef.current) return [];
+        const error = err instanceof Error ? err : new Error('Search failed');
+        setError(error);
+        setResults([]);
+        setAgentGuidance(null);
+        setTopicIntelligence(null);
+        setClinicalAnswer(null);
+        setCommunityInsight(null);
+        setTopicGuideStatus('idle');
+        return [];
+      } finally {
+        if (thisRequestId === requestIdRef.current) setLoading(false);
+      }
+    },
+    [setResults, setLoading, setError, setDetectedTopic, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, trackFeatureUsage, trackSearch, schedulePoll, scheduleEnrichmentPoll, addToSearchHistory, searchHistory, refreshKnowledgeDriftAlerts]
+  );
+
+  const clearResults = useCallback(() => {
+    cancelPoll();
+    setResults([]);
+    setError(null);
+    setAgentGuidance(null);
+    setTopicIntelligence(null);
+    setClinicalAnswer(null);
+    setCommunityInsight(null);
+    setProactiveAlert(null);
+    setTopicGuideStatus('idle');
+    setLastSearchId(null);
+    setAiEnrichmentLoading(false);
+  }, [setResults, setError, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus]);
+
+  return { search, loading, error, results, clearResults, lastSearchId, proactiveAlert, aiEnrichmentLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert };
+}

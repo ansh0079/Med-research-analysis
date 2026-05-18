@@ -1,0 +1,101 @@
+# Snyk Security Policy File
+# This file defines Snyk security policies for the Medical Research Intelligence Platform
+# https://docs.snyk.io/snyk-cli/scan-and-maintain-projects-using-the-cli/snyk-policy
+
+version: v1.25.0
+
+# Ignore rules for specific vulnerabilities
+ignore:
+  # Example ignore rule (review and remove when appropriate):
+  # 'SNYK-JS-TAR-XXXXXX':
+  #   - '*':
+  #       reason: 'Vulnerability in build-time dependency only, not used in production'
+  #       expires: '2026-03-14T00:00:00.000Z'
+  #       created: '2026-02-14T00:00:00.000Z'
+
+# Patch vulnerabilities that can't be upgraded
+patch: {}
+
+# Exclude specific paths from scanning
+exclude:
+  code:
+    - node_modules/**
+    - .claude/**
+    - .vscode/**
+    - scripts/**
+    - styles/**
+  global:
+    - node_modules/**
+    - database/*.db
+    - '*.log'
+
+# Dependency management policies
+language-settings:
+  nodejs:
+    # Allow upgrades to latest minor/patch versions
+    upgradeStrategy: 'minor-patch'
+    # Ignore devDependencies in severity calculations
+    ignoreDevDependencies: false
+
+# Severity threshold for CI/CD integration
+severity-threshold: 'medium'
+
+# Compliance settings
+compliance:
+  # HIPAA compliance checks (for medical applications)
+  hipaa:
+    enabled: true
+    fail-on: 'high'
+  
+  # GDPR compliance checks
+  gdpr:
+    enabled: true
+    fail-on: 'medium'
+
+# IaC (Infrastructure as Code) settings
+iac:
+  # Enable if using Terraform/CloudFormation
+  enabled: false
+
+# Container scanning settings
+container:
+  # Enable if using Docker
+  enabled: false
+  # Base image recommendation
+  base-image-resolutions: true
+
+# Code analysis settings
+code:
+  # Static Application Security Testing (SAST)
+  enabled: true
+  severity-threshold: 'medium'
+  
+  # Ignore specific file patterns
+  ignore:
+    - '**/*.test.js'
+    - '**/*.spec.js'
+    - 'jest.config.js'
+
+# Custom rules
+rules:
+  # Enforce minimum Node.js version
+  'node-version':
+    enabled: true
+    minVersion: '18.0.0'
+  
+  # Enforce secure protocol usage
+  'insecure-protocol':
+    enabled: true
+    severity: 'high'
+  
+  # Check for hardcoded secrets
+  'hardcoded-secrets':
+    enabled: true
+    severity: 'critical'
+
+# Reporting settings
+report:
+  # Generate SARIF output for GitHub/CodeQL integration
+  sarif: true
+  # Include license information
+  licenses: true

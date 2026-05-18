@@ -1,0 +1,66 @@
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.animate-slideIn {
+    animation: slideIn 0.3s ease-out;
+}
+
+.animate-fadeOut {
+    animation: fadeOut 0.3s ease-out;
+}
+
+.abstract-expand {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 0;
+    overflow: hidden;
+}
+
+.abstract-expand.open {
+    max-height: 1000px;
+}
+/* Specificity selector animations */
+.specificity-option {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.specificity-option:hover {
+  transform: translateY(-2px);
+}
+
+/* Experimental mode badge */
+.experimental-badge {
+  animation: pulse 2s infinite;
+  background: linear-gradient(90deg, #3b82f6, #06b6d4);
+  color: white;
+}
+
+/* Gradient borders */
+.gradient-border {
+  border: 2px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(90deg, #3b82f6, #06b6d4) border-box;
+}
+
+@media (max-width: 768px) {
+  .specificity-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .specificity-option {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .specificity-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

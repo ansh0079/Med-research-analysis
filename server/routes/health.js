@@ -1,0 +1,69 @@
+const { requireAuthJwt, requireRole } = require('../middleware/auth');
+const { checkDbContract } = require('../services/dbContract');
+
+function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metricsRegistry }) {
+    app.get('/health', async (req, res) => {
+        try {
+            const cacheStats = cache.getStats();
+            const databaseContract = checkDbContract(db);
+            res.json({
+                status: 'ok',
+                version: '2.0.0',
+                timestamp: new Date().toISOString(),
+                features: {
+                    localAI: !!serverConfig.features.enableLocalAI,
+                    cloudAI: !!(serverConfig.keys.gemini || serverConfig.keys.mistral),
+                    semanticScholar: !!serverConfig.keys.semantic,
+                    openAlex: !!serverConfig.keys.openalex,
+                    database: true,
+                    caching: true,
+                },
+                cache: {
+                    keys: cacheStats.keys,
+                    hitRate: cacheStats.hitRate,
+                },
+                databaseContract: {
+                    ok: databaseContract.ok,
+                    requiredMethodCount: databaseContract.requiredMethodCount,
+                    missing: databaseContract.missing,
+                },
+            });
+        } catch (error) {
+            req.log.error({ err: error }, 'Health check failed');
+            res.status(503).json({
+                status: 'error',
+                timestamp: new Date().toISOString(),
+                message: 'Service unavailable',
+            });
+        }
+    });
+
+    app.get('/api/config', (req, res) => {
+        res.json({
+            apiEndpoints: clientConfig.apiEndpoints,
+            features: {
+                ...clientConfig.features,
+                vectorSearch:
+                    db.isVectorSearchAvailable(),
+                teamWorkspaces: true,
+                qualityScoring: true,
+                digestEmails: true,
+            },
+            gemini: clientConfig.gemini,
+            mistral: clientConfig.mistral,
+            defaultProvider: clientConfig.defaultProvider,
+        });
+    });
+
+    app.get('/metrics', requireAuthJwt, requireRole('admin'), async (req, res) => {
+        try {
+            res.set('Content-Type', metricsRegistry.contentType);
+            res.end(await metricsRegistry.metrics());
+        } catch (error) {
+            req.log.error({ err: error }, 'Failed to collect metrics');
+            res.status(500).end('metrics_unavailable');
+        }
+    });
+}
+
+module.exports = { registerHealthRoutes };

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+build/
+coverage/
+archive/
+database/*.db
+scripts/
+tests/e2e/
+tests/load/
+monitoring/

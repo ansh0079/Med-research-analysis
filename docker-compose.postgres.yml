@@ -1,0 +1,26 @@
+# Optional: run beside the app for pgvector — `docker compose -f docker-compose.postgres.yml up -d`
+# App should set DATABASE_URL=postgresql://medsearch:medsearch@localhost:5432/medsearch
+
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: medsearch-pg
+    environment:
+      POSTGRES_USER: medsearch
+      POSTGRES_PASSWORD: medsearch
+      POSTGRES_DB: medsearch
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - medsearch_pgdata:/var/lib/postgresql/data
+      - ./database/pgvector.schema.sql:/docker-entrypoint-initdb.d/10-pgvector.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medsearch -d medsearch"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  medsearch_pgdata:

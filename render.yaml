@@ -1,0 +1,51 @@
+services:
+  - type: web
+    name: medical-research-analysis
+    runtime: node
+    repo: https://github.com/yourusername/medical-research-analysis
+    buildCommand: npm install && npm run setup
+    startCommand: node server.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3002
+      - key: HUGGINGFACE_TOKEN
+        sync: false
+      - key: ADMIN_TOKEN
+        sync: false
+        generateValue: true
+    autoDeploy: true
+    plan: starter
+
+  # Optional: Python AI Server (for local model inference)
+  # Uncomment if you want to deploy the Python BioGPT server separately
+  # - type: web
+  #   name: biogpt-server
+  #   runtime: python
+  #   repo: https://github.com/yourusername/medical-research-analysis
+  #   buildCommand: pip install -r requirements.txt
+  #   startCommand: python biogpt_server.py
+  #   healthCheckPath: /health
+  #   envVars:
+  #     - key: PYTHON_VERSION
+  #       value: 3.11.0
+  #   plan: standard
+  #   scaling:
+  #     minInstances: 0
+  #     maxInstances: 1
+
+  # Static site for frontend only (alternative deployment)
+  # - type: static
+  #   name: medical-research-frontend
+  #   runtime: static
+  #   buildCommand: echo "No build step required"
+  #   staticPublishPath: ./
+  #   envVars:
+  #     - key: API_URL
+  #       value: https://medical-research-analysis.onrender.com
+  #   routes:
+  #     - type: rewrite
+  #       source: /*
+  #       destination: /index.html
