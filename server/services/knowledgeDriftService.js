@@ -180,6 +180,8 @@ function scheduleKnowledgeDrift(db, serverConfig, fetchImpl, logger) {
     }
     scheduledJob = cron.schedule('15 7 * * *', async () => {
         try {
+            const { isBackgroundAutomationPaused } = require('./backgroundAutomationService');
+            if (await isBackgroundAutomationPaused(db)) return;
             await runKnowledgeDriftScan({ db, serverConfig, fetchImpl, logger });
         } catch (e) {
             logger?.warn?.({ err: e }, 'knowledgeDrift: scheduled run failed');

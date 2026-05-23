@@ -155,6 +155,16 @@ Recommendation: ${g.recommendation_text}${g.recommendation_strength ? ` | Streng
         }).join('\n')}\n\nRULES FOR CLAIM MODE:\n- Emit exactly ${questionCount} questions (one distinct claimKey per question; no duplicates).\n- The keyed correct option must be faithful to the claim; cite Source [n] or Guideline when the claim references evidence.\n- Do not introduce new clinical claims beyond what is implied by the listed claim + provided RESEARCH/GUIDELINE context.\n`
         : '';
 
+    // Collective memory: misconceptions observed across ALL users on this topic
+    let collectiveMisconceptionContext = '';
+    const knownMisconceptions = Array.isArray(options.knownMisconceptions) ? options.knownMisconceptions : [];
+    if (knownMisconceptions.length > 0) {
+        const lines = knownMisconceptions.slice(0, 5).map((m, i) =>
+            `  ${i + 1}. "${m.questionText}" — ${m.pickRate}% of users wrongly answered: "${m.wrongAnswer}"`
+        ).join('\n');
+        collectiveMisconceptionContext = `\nCOLLECTIVE MISCONCEPTIONS — across all learners on this topic, these wrong answers were consistently chosen:\n${lines}\nINSTRUCTION: Generate at least one question directly targeting the most common misconception above. Frame it so the wrong answer is a plausible distractor — explain clearly in the rationale why it is incorrect.\n`;
+    }
+
     // Build a hint for nodes learners previously flagged as confusing, so the AI writes
     // richer, more mechanistic explanations for those specific concepts.
     let confusingNodeContext = '';
@@ -176,7 +186,7 @@ ${TRAINING_RUBRIC[trainingStage] || TRAINING_RUBRIC.finals}
 
 ${EXPLAIN_RUBRIC[explanationDepth] || EXPLAIN_RUBRIC.exam_focus}
 
-${topicBaseline ? `${topicBaseline}\n` : ''}${teachingObjectContext ? `REUSABLE PAPER TEACHING OBJECTS:\n${teachingObjectContext}\n\nINSTRUCTION: Treat these as the preferred quiz seed for bottom line, misconception traps, and paper-specific appraisal angles. Still ground source-specific claims in RESEARCH CONTEXT indices.\n\n` : ''}${outlineContext}${targetContext}${communityContext}${claimAnchorContext}${confusingNodeContext}RESEARCH CONTEXT:
+${topicBaseline ? `${topicBaseline}\n` : ''}${teachingObjectContext ? `REUSABLE PAPER TEACHING OBJECTS:\n${teachingObjectContext}\n\nINSTRUCTION: Treat these as the preferred quiz seed for bottom line, misconception traps, and paper-specific appraisal angles. Still ground source-specific claims in RESEARCH CONTEXT indices.\n\n` : ''}${outlineContext}${targetContext}${communityContext}${claimAnchorContext}${collectiveMisconceptionContext}${confusingNodeContext}RESEARCH CONTEXT:
 ${context || 'No article context supplied. Use standard evidence-based medical knowledge for the topic, and avoid unsupported claims.'}
 
 GUIDELINE CONTEXT:

@@ -3,23 +3,33 @@
 // ==========================================
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 
-// Load .env file
-function loadEnv() {
-    const envPath = path.join(__dirname, '.env');
-    if (fs.existsSync(envPath)) {
-        const envContent = fs.readFileSync(envPath, 'utf8');
-        envContent.split('\n').forEach(line => {
-            const [key, ...valueParts] = line.split('=');
-            if (key && !key.startsWith('#') && valueParts.length > 0) {
-                const envKey = key.trim();
-                if (!process.env[envKey]) {
-                    process.env[envKey] = valueParts.join('=').trim();
-                }
+function loadEnvFile(envPath, { override = false } = {}) {
+    if (!fs.existsSync(envPath)) return;
+    const envContent = fs.readFileSync(envPath, 'utf8');
+    envContent.split('\n').forEach(line => {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) return;
+        const [key, ...valueParts] = trimmed.split('=');
+        if (key && valueParts.length > 0) {
+            const envKey = key.trim();
+            const envValue = valueParts.join('=').trim().replace(/^["']|["']$/g, '');
+            if (override || !process.env[envKey]) {
+                process.env[envKey] = envValue;
             }
-        });
-    }
+        }
+    });
+}
+
+// Load env files. User-level secrets win over project defaults.
+function loadEnv() {
+    const userEnvPath = path.join(os.homedir(), '.medresearch-keys.env');
+    loadEnvFile(userEnvPath);
+
+    const envPath = path.join(__dirname, '.env');
+    loadEnvFile(envPath);
 }
 
 // Server-side config (NEVER expose to client)
@@ -35,7 +45,8 @@ const serverConfig = {
         get openalex() { return process.env.OPENALEX_KEY; },
         get openai() { return process.env.OPENAI_KEY || process.env.OPENAI_API_KEY; },
         get ncbi() { return process.env.NCBI_API_KEY || process.env.PUBMED_API_KEY; },
-        get ncbiEmail() { return process.env.NCBI_EMAIL || 'anonymous@localhost'; }
+        get ncbiEmail() { return process.env.NCBI_EMAIL || 'anonymous@localhost'; },
+        get anthropic() { return process.env.ANTHROPIC_API_KEY; }
     },
     features: {
         get enableLocalAI() {

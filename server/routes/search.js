@@ -12,7 +12,12 @@ const crypto = require('crypto');
 const { createAiService, PINNED_MODELS, TEMPERATURE } = require('../services/aiService');
 const { buildTopicKnowledgePrompt } = require('../prompts');
 const { resolveProvider } = require('../utils/aiProvider');
+const { generateAndStoreMCQs } = require('../services/mcqGeneratorService');
+const { searchGuidelines } = require('../services/guidelineService');
 const { buildEvidenceMap, persistConsensusTeachingObject } = require('../services/teachingObjectService');
+const { enqueuePdfPreindexForArticles } = require('../services/pdfPreindexService');
+const { alignTopicClaimsWithGuidelines } = require('../services/claimGuidelineEngine');
+const { parseJsonBlock, parseJsonArrayBlock } = require('../utils/parseJson');
 
 const CROSSREF_BASE = 'https://api.crossref.org';
 
@@ -28,8 +33,16 @@ function setNoStoreSearchHeaders(res) {
     res.setHeader('Cache-Control', 'private, no-store');
 }
 
-function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, requireJson, requireAuthJwt, requireRole, fetch: fetchImpl }) {
+function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, requireJson, requireAuthJwt, requireRole, fetch: fetchImpl, enqueuePdfPreindex }) {
     const f = fetchImpl || safeFetch;
+    const pdfDeps = { cache, db, serverConfig, fetch: f };
+    const queueFullTextIndexing = (articleList) => {
+        if (typeof enqueuePdfPreindex === 'function') {
+            for (const article of (articleList || []).slice(0, 6)) enqueuePdfPreindex(article, pdfDeps);
+        } else {
+            enqueuePdfPreindexForArticles(articleList, pdfDeps);
+        }
+    };
 
     function buildAgentGuidance(topicKnowledge) {
         if (!topicKnowledge?.knowledge) return null;
@@ -86,17 +99,20 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
         };
     }
 
-    async function buildTopicIntelligence(topic, articles, agentGuidance) {
-        const topicKnowledge = await db.getTopicKnowledge(topic).catch((err) => { logger.warn({ err }, 'getTopicKnowledge failed'); return null; });
+    async function buildTopicIntelligence(topic, articles, agentGuidance, { topicKnowledge = null, prefetchedObjects = null, prefetchedClaims = null } = {}) {
+        if (!topicKnowledge) {
+            topicKnowledge = await db.getTopicKnowledge(topic).catch((err) => { logger.warn({ err }, 'getTopicKnowledge failed'); return null; });
+        }
         const curatedArticles = buildCuratedEvidenceArticles(agentGuidance);
         const { articles: evidenceBouquet, ranking, archetypesCovered } = mergeCuratedWithLiveEvidence(curatedArticles, articles, 5, topic);
-        const guidelineSnapshot = await db.getGuidelinesByTopic(topic, { limit: 5 }).catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; });
         const normalized = db.normalizeTopic(topic);
-        const [teachingObjects, relatedTopics, clusterArticles, teachingClaims] = await Promise.all([
-            db.listTeachingObjectsForTopic(topic, { limit: 12 }).catch((err) => { logger.warn({ err }, 'all failed'); return []; }),
+        const [guidelineSnapshot, teachingObjects, relatedTopics, clusterArticles, teachingClaims] = await Promise.all([
+            db.getGuidelinesByTopic(topic, { limit: 5 }).catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; }),
+            // Reuse objects fetched during boost step — avoids a second DB round-trip for the same data
+            prefetchedObjects ?? db.listTeachingObjectsForTopic(topic, { limit: 12 }).catch((err) => { logger.warn({ err }, 'all failed'); return []; }),
             db.getRelatedBouquetTopicsForTopic(normalized, { limit: 5, minSharedArticles: 1 }).catch((err) => { logger.warn({ err }, 'getRelatedBouquetTopicsForTopic failed'); return []; }),
             db.getClusterBouquetArticlesForTopic(normalized, { topicLimit: 5, articleLimit: 10, minSharedArticles: 1 }).catch((err) => { logger.warn({ err }, 'getClusterBouquetArticlesForTopic failed'); return []; }),
-            db.listTeachingObjectClaimsForTopic(topic, { limit: 20 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectClaimsForTopic failed'); return []; }),
+            prefetchedClaims ?? db.listTeachingObjectClaimsForTopic(topic, { limit: 20 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectClaimsForTopic failed'); return []; }),
         ]);
         const evidenceMap = buildEvidenceMap({
             topic,
@@ -207,13 +223,13 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
             .trim();
     }
 
-    async function applyTeachingObjectSearchBoost(topic, articles) {
-        if (!Array.isArray(articles) || articles.length < 2) return articles;
+    async function applyTeachingObjectSearchBoost(topic, articles, { prefetchedObjects = null, prefetchedClaims = null } = {}) {
+        if (!Array.isArray(articles) || articles.length < 2) return { articles, teachingObjects: [], claims: [] };
         const [teachingObjects, claims] = await Promise.all([
-            db.listTeachingObjectsForTopic(topic, { limit: 50 }).catch((err) => { logger.warn({ err }, 'all failed'); return []; }),
-            db.listTeachingObjectClaimsForTopic(topic, { limit: 100 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectClaimsForTopic failed'); return []; }),
+            prefetchedObjects ?? db.listTeachingObjectsForTopic(topic, { limit: 50 }).catch((err) => { logger.warn({ err }, 'all failed'); return []; }),
+            prefetchedClaims ?? db.listTeachingObjectClaimsForTopic(topic, { limit: 100 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectClaimsForTopic failed'); return []; }),
         ]);
-        if (!teachingObjects.length && !claims.length) return articles;
+        if (!teachingObjects.length && !claims.length) return { articles, teachingObjects, claims };
         const weights = new Map();
         const add = (uid, weight) => {
             const key = String(uid || '').toLowerCase().trim();
@@ -230,14 +246,14 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                     : claim.verificationStatus === 'abstract_only' ? 0.02 : 0;
             add(claim.articleUid, 0.1 + trustBoost + Math.min(0.06, Number(claim.confidence || 0) * 0.06));
         }
-        if (weights.size === 0) return articles;
+        if (weights.size === 0) return { articles, teachingObjects, claims };
         const candidatesFor = (article) => [
             article.uid,
             article.pmid,
             article.doi,
             article.doi ? String(article.doi).replace(/^https?:\/\/(dx\.)?doi\.org\//i, '') : null,
         ].filter(Boolean).map((value) => String(value).toLowerCase().trim());
-        return articles
+        const boostedArticles = articles
             .map((article, index) => {
                 const boost = candidatesFor(article).reduce((max, key) => Math.max(max, weights.get(key) || 0), 0);
                 return {
@@ -248,6 +264,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
             })
             .sort((a, b) => b.boost - a.boost || a.index - b.index)
             .map(({ article }) => article);
+        return { articles: boostedArticles, teachingObjects, claims };
     }
 
     function mergeCuratedWithLiveEvidence(curated, live, limit, query) {
@@ -530,14 +547,18 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 if (isPredatoryJournal(a)) return false;
                 return true;
             });
-            const articles = await applyTeachingObjectSearchBoost(
+            const { articles, teachingObjects: boostedObjects, claims: boostedClaims } = await applyTeachingObjectSearchBoost(
                 queryValidation.sanitized,
                 relevant.map(sanitizeArticleOutput)
             );
             const topicKnowledge = await db.getTopicKnowledge(queryValidation.sanitized);
             const agentGuidance = buildAgentGuidance(topicKnowledge);
             const knowledgeAvailable = topicKnowledge !== null;
-            const topicIntelligence = await buildTopicIntelligence(queryValidation.sanitized, articles, agentGuidance);
+            const topicIntelligence = await buildTopicIntelligence(queryValidation.sanitized, articles, agentGuidance, {
+                topicKnowledge,
+                prefetchedObjects: boostedObjects,
+                prefetchedClaims: boostedClaims,
+            });
             const executionTime = Date.now() - startTime;
 
             let lowRecallLearning = null;
@@ -615,6 +636,137 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 ...(existingEnrich?.status === 'ready' ? { clinicalAnswer: existingEnrich.clinicalAnswer ?? null } : {}),
                 ...(lowRecallLearning ? { lowRecallLearning } : {}),
             });
+
+            queueFullTextIndexing(articles);
+
+            // Auto-seed topic knowledge for any query that has enough papers but no existing synopsis
+            if (!topicKnowledge && articles.length >= 2) {
+                const seedQuery = queryValidation.sanitized;
+                const seedArticles = articles.slice(0, 8);
+                void (async () => {
+                    try {
+                        // Double-check no concurrent seed already landed
+                        const alreadySeeded = await db.getTopicKnowledge(seedQuery);
+                        if (alreadySeeded) return;
+
+                        const ai = createAiService({ serverConfig, fetchImpl: f });
+                        const prompt = buildTopicKnowledgePrompt(seedQuery, seedArticles);
+                        let raw;
+                        if (serverConfig.keys.gemini) {
+                            raw = await ai.callGemini(prompt, PINNED_MODELS.gemini, { temperature: 0.15 });
+                        } else if (serverConfig.keys.mistral) {
+                            raw = await ai.callMistralAI(prompt, 'mistral-small-latest', { temperature: 0.15 });
+                        } else return;
+
+                        const knowledge = parseJsonBlock(raw);
+                        if (!knowledge?.mentorMessage) return;
+
+                        const sourceArticles = seedArticles.map((a, i) => ({
+                            sourceIndex: i + 1,
+                            uid: a.uid || null,
+                            title: a.title || 'Unknown',
+                            doi: a.doi || null,
+                            pmid: a.pmid || null,
+                            source: a.journal || a.source || null,
+                            pubdate: a.pubdate || null,
+                        }));
+
+                        await db.upsertTopicKnowledge(seedQuery, knowledge, sourceArticles, 'ai_generated', 0.65);
+                        logger.info({ topic: seedQuery, papers: seedArticles.length }, 'Auto-seeded new topic from user query');
+
+                        // Generate cold-start MCQs from the knowledge we just created
+                        try {
+                            await generateAndStoreMCQs(db, ai, seedQuery, knowledge, { provider: 'gemini' });
+                            logger.info({ topic: seedQuery }, 'Auto-generated cold-start MCQs');
+                        } catch (mcqErr) {
+                            logger.warn({ err: mcqErr, topic: seedQuery }, 'Auto MCQ generation failed');
+                        }
+
+                        // Search for clinical guidelines and generate guideline MCQs if found
+                        try {
+                            const ncbiKey = serverConfig.keys.ncbi;
+                            const ncbiEmail = serverConfig.keys.ncbiEmail;
+                            const guidelines = await searchGuidelines(seedQuery, ncbiKey, ncbiEmail);
+                            if (guidelines.length > 0) {
+                                // Store guidelines
+                                for (const gl of guidelines) {
+                                    await db.createGuideline({
+                                        topic: seedQuery,
+                                        sourceBody: gl.source || 'PubMed Guideline',
+                                        sourceYear: gl.pubdate ? parseInt(String(gl.pubdate).slice(0, 4), 10) : null,
+                                        recommendationText: gl.title,
+                                        sourceUrl: gl.uid ? `https://pubmed.ncbi.nlm.nih.gov/${gl.uid}/` : null,
+                                    }).catch(() => {});
+                                }
+
+                                // Generate guideline-anchored MCQs via Claude if available
+                                if (serverConfig.keys.anthropic) {
+                                    const normalizedTopic = seedQuery.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim();
+                                    const guidelineKey = `guideline-mcq:${normalizedTopic.replace(/\s+/g, '-')}`;
+                                    const existingGl = await db.getTeachingObjectByKey(guidelineKey).catch(() => null);
+                                    if (!existingGl) {
+                                        const glBlock = guidelines.slice(0, 5).map((g, i) =>
+                                            `[G${i + 1}] ${g.source || ''}: ${g.title}`
+                                        ).join('\n');
+                                        const glPrompt = `Generate 5 guideline-anchored MCQs about "${seedQuery}" for final-year medical students.
+
+GUIDELINES:
+${glBlock}
+
+Rules:
+- Each MCQ must reference a specific guideline recommendation
+- Use clinical vignettes with age, sex, presenting complaint
+- 4 options (A-D), exactly one correct
+- Mix difficulty: 2 medium, 2 hard, 1 easy
+- Mix types: guideline, clinical_application, pitfall
+
+Start your response with [ and end with ]. No markdown.
+[{"type":"multiple_choice","questionType":"guideline|clinical_application|pitfall","question":"...","options":["A: ...","B: ...","C: ...","D: ..."],"correctAnswer":"A","explanation":"2-3 sentences citing the guideline","guidelineRef":"source — recommendation","difficulty":"easy|medium|hard"}]`;
+                                        try {
+                                            const glRaw = await ai.callClaude(glPrompt, 'claude-haiku-4-5-20251001', { temperature: 0.3, maxOutputTokens: 2500 });
+                                            const glMcqs = parseJsonArrayBlock(glRaw);
+                                            if (Array.isArray(glMcqs) && glMcqs.length > 0) {
+                                                {
+                                                    await db.upsertTeachingObject({
+                                                        objectKey: guidelineKey,
+                                                        objectType: 'guideline_mcq',
+                                                        topic: normalizedTopic,
+                                                        title: `Guideline MCQs: ${seedQuery}`,
+                                                        payload: { mcqs: glMcqs.slice(0, 5), guidelineCount: guidelines.length, generatedAt: new Date().toISOString() },
+                                                        provider: 'anthropic',
+                                                        model: 'claude-haiku-4-5-20251001',
+                                                        confidence: 0.85,
+                                                    });
+                                                    logger.info({ topic: seedQuery, count: glMcqs.length, guidelines: guidelines.length }, 'Auto-generated guideline MCQs');
+                                                }
+                                            }
+                                        } catch (glMcqErr) {
+                                            logger.warn({ err: glMcqErr, topic: seedQuery }, 'Auto guideline MCQ generation failed');
+                                        }
+                                    }
+                                }
+                                logger.info({ topic: seedQuery, guidelines: guidelines.length }, 'Auto-stored guidelines for new topic');
+                            }
+                        } catch (glErr) {
+                            logger.warn({ err: glErr, topic: seedQuery }, 'Auto guideline search failed');
+                        }
+                    } catch (err) {
+                        logger.warn({ err, topic: seedQuery }, 'Auto-seed failed');
+                        // Record failure so it can be retried via the admin panel
+                        db.logEvent('auto_seed_failed', null, {
+                            topic: seedQuery,
+                            error: err.message,
+                            papers: seedArticles.length,
+                        }).catch(() => {});
+                    }
+                })();
+            }
+
+            void alignTopicClaimsWithGuidelines(db, queryValidation.sanitized, {
+                limit: 24,
+                apply: true,
+                reviewerId: null,
+            }).catch((err) => { req.log?.warn?.({ err }, 'background guideline align skipped'); });
 
             // If already cached, skip background job.
             if (existingEnrich?.status === 'ready') return;
@@ -1010,6 +1162,20 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
             res.status(500).json({ error: isDev ? error.message : 'Internal Server Error' });
         }
     });
+    // ── Topic cross-links endpoint ────────────────────────────────────────────
+    app.get('/api/topic/:topic/crosslinks', requireAuthJwt, rateLimit(60, 60), async (req, res) => {
+        const topic = String(req.params.topic || '').trim();
+        if (!topic) return res.status(400).json({ error: 'topic is required' });
+        try {
+            const normalized = db.normalizeTopic(topic);
+            const crosslinks = await db.getTopicCrosslinks(normalized, { limit: 8 });
+            return res.json({ crosslinks });
+        } catch (err) {
+            req.log?.error?.({ err, topic }, 'Topic crosslinks fetch failed');
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
     // ── AI enrichment poll endpoint ───────────────────────────────────────────
     app.get('/api/search/ai-enrichment/:key', rateLimit(60, 60), async (req, res) => {
         const key = String(req.params.key || '');

@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const logger = require('../config/logger');
 const { aiGenerationQueue } = require('./jobQueue');
-const { createAiService } = require('./aiService');
+const { createAiService, PINNED_MODELS } = require('./aiService');
 const { buildSynthesisPrompt } = require('../prompts');
 const {
     generateConsensusSynopsis,
@@ -77,7 +77,7 @@ async function generateLiveClinicalAnswer({ topic, articles = [], guidelines = [
     let model;
     if (serverConfig?.keys?.gemini) {
         provider = 'gemini';
-        model = 'gemini-2.0-flash';
+        model = PINNED_MODELS.geminiQuality;
         rawText = await ai.callGemini(prompt, model, { temperature: 0.2 });
     } else if (serverConfig?.keys?.mistral) {
         provider = 'mistral';
@@ -159,7 +159,7 @@ function enqueueConsensusJob({ db, topic, articles, serverConfig, fetchImpl, cac
             await completeJobAndClaims(db, jobKey, 'consensus_synopsis', {
                 resultPayload: { ...result, jobKey },
                 provider: result.provider || null,
-                model: result.provider === 'gemini' ? 'gemini-2.0-flash' : result.provider === 'mistral' ? 'mistral-small-latest' : null,
+                model: result.model || (result.provider === 'gemini' ? PINNED_MODELS.geminiQuality : result.provider === 'mistral' ? PINNED_MODELS.mistral : null),
                 auditPayload: {
                     citationValidation: result.citationValidation || null,
                     freePaperCount: result.freePaperCount,

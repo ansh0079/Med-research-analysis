@@ -20,6 +20,7 @@ describe('teachingObjectService', () => {
                 provider: 'gemini',
                 model: 'flash',
                 timestamp: '2026-05-18T00:00:00.000Z',
+                audit: { fullTextCoverageRatio: 1 },
                 synopsis: {
                     population: 'Adults with COPD exacerbation',
                     intervention: 'ECCO2R',
@@ -46,6 +47,39 @@ describe('teachingObjectService', () => {
             verificationStatus: 'source_verified',
         });
         expect(object.payload.claimAnchors[0].claimKey).toHaveLength(24);
+        expect(object.payload.paper.fullTextUsed).toBe(true);
+    });
+
+    test('does not mark open access paper claims source-verified unless full text was used', () => {
+        const object = buildPaperTeachingObject({
+            topic: 'COPD exacerbation',
+            article: {
+                uid: 'pmid-abstract-only',
+                title: 'Open access COPD trial',
+                pmid: '2',
+                isFree: true,
+                abstract: 'Trial abstract only.',
+            },
+            synopsisResult: {
+                provider: 'gemini',
+                model: 'flash',
+                timestamp: '2026-05-18T00:00:00.000Z',
+                audit: { fullTextCoverageRatio: 0 },
+                synopsis: {
+                    mainFindings: 'Abstract reports no clear benefit.',
+                    bottomLine: 'Do not infer mortality benefit.',
+                    trustRating: 'MODERATE',
+                    whatNotToOverclaim: ['Do not overclaim subgroup effects.'],
+                },
+            },
+        });
+
+        expect(object.payload.paper.isFree).toBe(true);
+        expect(object.payload.paper.fullTextUsed).toBe(false);
+        expect(object.payload.claimAnchors[0]).toMatchObject({
+            verificationStatus: 'abstract_only',
+        });
+        expect(object.payload.claimAnchors[0].verificationReason).toContain('indexed full text was not confirmed');
     });
 
     test('turns consensus outputs into quiz context', () => {

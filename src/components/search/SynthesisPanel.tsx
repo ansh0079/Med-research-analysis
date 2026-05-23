@@ -4,6 +4,8 @@ import type { SynthesisResult, Article, GuidelineAlignment } from '@types';
 import { EvidenceAuditPanel } from '@components/search/EvidenceAuditPanel';
 import { ClaimProvenanceModal, type AiJobClaimRow } from '@components/search/ClaimProvenanceModal';
 import { VerificationBadge } from '@components/ui/VerificationBadge';
+import { EVIDENCE_GRADE_CONFIG } from '@components/ui/evidenceGrade';
+import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
 import { StudyEncounterPanel } from '@components/search/StudyEncounterPanel';
 
 interface SynthesisPanelProps {
@@ -13,12 +15,7 @@ interface SynthesisPanelProps {
   onGenerateCase?: () => void;
 }
 
-const GRADE_CONFIG = {
-  HIGH:     { label: 'High',      bar: 'w-full',   color: 'text-emerald-500', bg: 'bg-emerald-500/10 dark:bg-emerald-500/15', border: 'border-emerald-500/20', dot: 'bg-emerald-500' },
-  MODERATE: { label: 'Moderate',  bar: 'w-3/4',    color: 'text-blue-500',    bg: 'bg-blue-500/10 dark:bg-blue-500/15',       border: 'border-blue-500/20',    dot: 'bg-blue-500' },
-  LOW:      { label: 'Low',       bar: 'w-1/2',    color: 'text-amber-500',   bg: 'bg-amber-500/10 dark:bg-amber-500/15',     border: 'border-amber-500/20',   dot: 'bg-amber-500' },
-  VERY_LOW: { label: 'Very Low',  bar: 'w-1/4',    color: 'text-red-500',     bg: 'bg-red-500/10 dark:bg-red-500/15',         border: 'border-red-500/20',     dot: 'bg-red-500' },
-} as const;
+const GRADE_CONFIG = EVIDENCE_GRADE_CONFIG;
 
 const STRENGTH_DOT: Record<string, string> = {
   strong: 'bg-emerald-500',
@@ -239,6 +236,7 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
             </svg>
           </button>
         </div>
+        <ClinicalSafetyNotice className="mt-3" status="synthesis_inferred" />
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <button
             type="button"

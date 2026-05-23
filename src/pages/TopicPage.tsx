@@ -5,15 +5,22 @@ import type { Article, SynthesisResult, StudyRun } from '@types';
 import { SynthesisPanel } from '@components/search/SynthesisPanel';
 import { StudyEncounterPanel } from '@components/search/StudyEncounterPanel';
 import { VerificationBadge } from '@components/ui/VerificationBadge';
+import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
+import { TopicEvidenceMemoryBanner } from '@components/learning/TopicEvidenceMemoryBanner';
+import type { EvidenceMemoryMessage } from '@components/learning/TopicEvidenceMemoryBanner';
+import { TopicCrosslinks } from '@components/topic/TopicCrosslinks';
+import { PracticeAlertCard, EVIDENCE_GRADE_CHIP } from '@components/ui';
 
-// ─── Evidence grade chip ──────────────────────────────────────────────────────
-
-const GRADE_STYLE: Record<string, string> = {
-  HIGH:     'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
-  MODERATE: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
-  LOW:      'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
-  VERY_LOW: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300',
-};
+function readableSynthesisSnapshot(text = '') {
+  const raw = String(text || '').trim();
+  const cleaned = raw.replace(/^```(?:json)?/i, '').replace(/```$/i, '').trim();
+  try {
+    const parsed = JSON.parse(cleaned);
+    return String(parsed.clinicalBottomLine || parsed.overallAnswer || parsed.consensus || cleaned);
+  } catch {
+    return cleaned;
+  }
+}
 
 // ─── Study plan widget ────────────────────────────────────────────────────────
 
@@ -102,6 +109,17 @@ export function TopicPage() {
   // UI state
   const [startingRun, setStartingRun] = useState(false);
   const [showSynthesis, setShowSynthesis] = useState(false);
+  const [evidenceDelta, setEvidenceDelta] = useState<{
+    summary: string | null;
+    significantChange: boolean;
+    claimsChanged: number;
+    pendingRegeneration: Array<{ claimText: string | null; triggerReason: string }>;
+  } | null>(null);
+  const [lifecycleAttention, setLifecycleAttention] = useState(0);
+  const [weakClaims, setWeakClaims] = useState<Array<{ claimKey: string; claimText: string; reasoningHint: string }>>([]);
+  const [guidelineWatch, setGuidelineWatch] = useState<Array<{ message: string; severity: string }>>([]);
+  const [roundLoading, setRoundLoading] = useState(false);
+  const [evidenceMemoryMessages, setEvidenceMemoryMessages] = useState<EvidenceMemoryMessage[]>([]);
 
   // Load overview
   useEffect(() => {
@@ -115,6 +133,35 @@ export function TopicPage() {
       })
       .catch(() => undefined)
       .finally(() => setOverviewLoading(false));
+  }, [topic]);
+
+  useEffect(() => {
+    if (!topic) return;
+    api.getEvidenceDeltaBrief(topic)
+      .then((r) => {
+        setEvidenceDelta({
+          summary: r.brief.summary,
+          significantChange: r.brief.significantChange,
+          claimsChanged: r.brief.claimsChanged,
+          pendingRegeneration: r.brief.pendingRegeneration || [],
+        });
+      })
+      .catch(() => setEvidenceDelta(null));
+    api.getTopicEvidenceMemory(topic)
+      .then((r) => setEvidenceMemoryMessages(r.memory?.messages || []))
+      .catch(() => setEvidenceMemoryMessages([]));
+    api.getClaimLifecycle(topic)
+      .then((r) => setLifecycleAttention(r.summary?.needsAttention ?? 0))
+      .catch(() => setLifecycleAttention(0));
+    api.getPersonalKnowledgeGraph(topic)
+      .then((r) => setWeakClaims(r.graph?.weakClaims || []))
+      .catch(() => setWeakClaims([]));
+    api.getGuidelineWatchEvents(topic)
+      .then((r) => setGuidelineWatch(r.events || []))
+      .catch(() => setGuidelineWatch([]));
+    return () => {
+      api.recordTopicReview(topic).catch(() => undefined);
+    };
   }, [topic]);
 
   // Load evidence on mount
@@ -167,13 +214,14 @@ export function TopicPage() {
           </button>
           <div className="flex-1 min-w-0">
             <h1 className="text-2xl font-black text-slate-900 dark:text-white leading-tight capitalize">{topic}</h1>
+            <ClinicalSafetyNotice className="mt-2" status="synthesis_inferred" />
             <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-slate-500 dark:text-slate-400">
               {articlesLoading
                 ? <span><i className="fas fa-spinner fa-spin mr-1" />Loading evidence…</span>
                 : <span><i className="fas fa-file-alt mr-1" />{articles.length} articles</span>}
               {latestSnapshot && (
                 <>
-                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${GRADE_STYLE[latestSnapshot.evidence_grade] ?? GRADE_STYLE.MODERATE}`}>
+                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${EVIDENCE_GRADE_CHIP[latestSnapshot.evidence_grade] ?? EVIDENCE_GRADE_CHIP.MODERATE}`}>
                     {latestSnapshot.evidence_grade.replace('_', ' ')} evidence
                   </span>
                   <span>{latestSnapshot.key_finding_count} stored finding{latestSnapshot.key_finding_count !== 1 ? 's' : ''}</span>
@@ -183,6 +231,62 @@ export function TopicPage() {
             </div>
           </div>
         </div>
+
+        {evidenceMemoryMessages.length > 0 && (
+          <TopicEvidenceMemoryBanner messages={evidenceMemoryMessages} />
+        )}
+
+        {evidenceDelta?.significantChange && evidenceDelta.summary && (
+          <div className="neo-card p-4 border-l-4 border-indigo-500 space-y-2">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 flex items-center gap-2">
+              <i className="fas fa-wave-square" /> Evidence delta since last review
+            </p>
+            <p className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">{evidenceDelta.summary}</p>
+            {evidenceDelta.pendingRegeneration.length > 0 && (
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                {evidenceDelta.pendingRegeneration.length} claim{evidenceDelta.pendingRegeneration.length === 1 ? '' : 's'} queued for automatic synopsis regeneration.
+              </p>
+            )}
+          </div>
+        )}
+
+        {lifecycleAttention > 0 && !evidenceDelta?.significantChange && (
+          <div className="rounded-xl border border-amber-200 dark:border-amber-800/50 bg-amber-50/60 dark:bg-amber-950/20 px-4 py-3 text-xs text-amber-800 dark:text-amber-200">
+            <i className="fas fa-route mr-1.5" />
+            {lifecycleAttention} teaching claim{lifecycleAttention === 1 ? '' : 's'} need lifecycle attention (abstract-only, full text ready, or stale).
+          </div>
+        )}
+
+        {(weakClaims.length > 0 || guidelineWatch.length > 0) && (
+          <div className="neo-card p-4 space-y-3">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Personal knowledge graph</p>
+            {weakClaims.slice(0, 3).map((w) => (
+              <p key={w.claimKey} className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                <i className="fas fa-link text-indigo-400 mr-1.5" />
+                {w.reasoningHint}
+              </p>
+            ))}
+            {guidelineWatch.slice(0, 2).map((e, i) => (
+              <p key={i} className={`text-xs leading-relaxed ${e.severity === 'high' ? 'text-rose-600 dark:text-rose-400' : 'text-amber-700 dark:text-amber-300'}`}>
+                <i className="fas fa-tower-broadcast mr-1.5" /> {e.message}
+              </p>
+            ))}
+            <button
+              type="button"
+              disabled={roundLoading}
+              onClick={() => {
+                setRoundLoading(true);
+                api.createLearningRound(topic)
+                  .then((r) => { if (r.round?.id) navigate(`/quiz?topic=${encodeURIComponent(topic)}&roundId=${r.round.id}`); })
+                  .catch(() => undefined)
+                  .finally(() => setRoundLoading(false));
+              }}
+              className="rounded-xl bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white text-xs font-bold px-4 py-2 transition-colors"
+            >
+              {roundLoading ? 'Building round…' : 'Start structured learning round'}
+            </button>
+          </div>
+        )}
 
         {/* Study plan */}
         {!overviewLoading && (
@@ -201,14 +305,12 @@ export function TopicPage() {
             </p>
             <div className="space-y-2">
               {practiceAlerts.map((a) => (
-                <div key={a.objectKey} className="flex items-start gap-3 rounded-xl border border-rose-100 dark:border-rose-900/30 bg-rose-50/50 dark:bg-rose-950/20 px-3 py-2.5">
-                  <i className="fas fa-stethoscope text-rose-400 text-xs mt-0.5 shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-slate-800 dark:text-slate-100 leading-snug">{a.title}</p>
-                    {a.rationale && <p className="text-[10px] text-rose-600 dark:text-rose-400 mt-0.5 leading-relaxed">{a.rationale}</p>}
-                  </div>
-                  <VerificationBadge status="source_verified" />
-                </div>
+                <PracticeAlertCard
+                  key={a.objectKey}
+                  objectKey={a.objectKey}
+                  title={a.title}
+                  rationale={a.rationale}
+                />
               ))}
             </div>
           </div>
@@ -227,7 +329,7 @@ export function TopicPage() {
               </button>
             </div>
             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed line-clamp-4">
-              {latestSnapshot.consensus_text}
+              {readableSynthesisSnapshot(latestSnapshot.consensus_text)}
             </p>
             <button type="button" onClick={() => void handleSynthesize()}
               disabled={articlesLoading || synthesisLoading}
@@ -256,6 +358,9 @@ export function TopicPage() {
           </div>
         )}
 
+        {/* Cross-topic links */}
+        <TopicCrosslinks topic={topic} />
+
         {/* Live synthesis panel */}
         {showSynthesis && (
           <>
@@ -281,7 +386,7 @@ export function TopicPage() {
         )}
 
         {/* Inline study encounter */}
-        {articles.length > 0 && (
+        {articles.length > 0 && !showSynthesis && (
           <StudyEncounterPanel
             topic={topic}
             articles={articles}

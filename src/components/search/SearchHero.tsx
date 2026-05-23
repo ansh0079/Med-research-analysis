@@ -70,7 +70,7 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
             <span className="gradient-text">Synthesised by AI</span>
           </h1>
           <p className="text-sm text-slate-400 dark:text-slate-500 font-mono tracking-wide">
-            PubMed · Semantic Scholar · OpenAlex · Gemini 2.0 Flash
+            PubMed · Semantic Scholar · OpenAlex · Gemini 2.5 Flash-Lite
           </p>
         </div>
 

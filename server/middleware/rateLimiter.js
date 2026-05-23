@@ -59,4 +59,37 @@ function rateLimit(maxRequests, windowSeconds) {
     });
 }
 
-module.exports = { rateLimit };
+/**
+ * Per-authenticated-user rate limiter for AI-heavy endpoints.
+ * Falls back to IP-based limiting for unauthenticated requests.
+ *
+ * @param {number} maxRequests   - Max calls per window
+ * @param {number} windowSeconds - Window size in seconds
+ */
+function userRateLimit(maxRequests, windowSeconds) {
+    const ipFallback = rateLimit(maxRequests, windowSeconds);
+
+    return createExpressRateLimit({
+        windowMs: windowSeconds * 1000,
+        limit: maxRequests,
+        standardHeaders: false,
+        legacyHeaders: true,
+        store: rateLimitStore,
+        keyGenerator: (req) => {
+            // Prefer user ID so different IPs from the same account share quota
+            const uid = req.user?.id || req.user?.sub;
+            return uid ? `user:${uid}` : `ip:${req.ip}`;
+        },
+        skip: () => process.env.NODE_ENV === 'test',
+        handler: (req, res) => {
+            res.status(429).json({
+                error: 'AI rate limit exceeded — please wait before making another request',
+                retryAfter: req.rateLimit?.resetTime
+                    ? Math.ceil((req.rateLimit.resetTime.getTime() - Date.now()) / 1000)
+                    : windowSeconds,
+            });
+        },
+    });
+}
+
+module.exports = { rateLimit, userRateLimit };

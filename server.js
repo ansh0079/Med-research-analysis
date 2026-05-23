@@ -14,6 +14,10 @@ const { getEmbeddingOptions } = require('./server/services/embeddingOptions');
 const { scheduleDigests, stopDigests } = require('./server/services/digestService');
 const { scheduleTopicRefresh, stopTopicRefresh } = require('./server/services/topicRefreshScheduler');
 const { scheduleKnowledgeDrift, stopKnowledgeDrift } = require('./server/services/knowledgeDriftService');
+const { scheduleClaimRegeneration, stopClaimRegeneration } = require('./server/services/claimRegenerationScheduler');
+const { scheduleGuidelineWatchtower, stopGuidelineWatchtower } = require('./server/services/guidelineWatchtowerScheduler');
+const { scheduleCurriculumSeed, stopCurriculumSeed } = require('./server/services/curriculumSeedScheduler');
+const { scheduleCollectiveMemory, stopCollectiveMemory } = require('./server/services/collectiveMemoryScheduler');
 const { safeFetch } = require('./server/utils/fetch');
 
 const PORT = serverConfig.ports.node;
@@ -45,6 +49,10 @@ async function gracefulShutdown(signal) {
             stopDigests();
             stopTopicRefresh();
             stopKnowledgeDrift();
+            stopClaimRegeneration();
+            stopGuidelineWatchtower();
+            stopCurriculumSeed();
+            stopCollectiveMemory();
             await db.close();
             await db.closeVectorPool?.();
             if (cache && typeof cache.close === 'function') await cache.close();
@@ -108,6 +116,10 @@ async function startServer() {
         scheduleDigests(db, process.env.APP_URL || `http://localhost:${PORT}`, serverConfig, safeFetch);
         scheduleTopicRefresh(db, serverConfig, safeFetch, logger);
         scheduleKnowledgeDrift(db, serverConfig, safeFetch, logger);
+        scheduleClaimRegeneration(db, { serverConfig, fetchImpl: safeFetch, cache }, logger);
+        scheduleGuidelineWatchtower(db, logger);
+        scheduleCurriculumSeed(db, { serverConfig, fetchImpl: safeFetch, cache }, logger);
+        scheduleCollectiveMemory(db, logger);
 
         server.listen(PORT, () => {
             logger.info({ port: PORT, env: process.env.NODE_ENV || 'development' }, 'Medical Research API Server ready');

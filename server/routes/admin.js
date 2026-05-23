@@ -1,7 +1,23 @@
 const logger = require('../config/logger');
 const { classifyClaimGuidelineAlignment } = require('../services/claimGuidelineAlignmentService');
+const { alignClaimWithGuidelines, alignTopicClaimsWithGuidelines } = require('../services/claimGuidelineEngine');
+const { seedCurriculumTopic } = require('../services/curriculumSeedService');
+const {
+    runCurriculumSeedBatch,
+    loadGuardrailState,
+    updateCurriculumSeedSchedulerSettings,
+    getCurriculumSeedSchedulerSettings,
+} = require('../services/curriculumSeedScheduler');
+const {
+    getBackgroundAutomationState,
+    setBackgroundAutomationPaused,
+} = require('../services/backgroundAutomationService');
+const { aggregateCollectiveMemory } = require('../services/collectiveMemoryService');
+const { QUALITY_QUEUES } = require('../services/clinicalQualityReviewService');
+const fs = require('fs/promises');
+const path = require('path');
 
-function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
+function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serverConfig, fetch }) {
     app.get('/api/admin/stats', requireAuthJwt, requireRole('admin'), async (req, res) => {
         try {
             const [users, searches, events, sessions, savedArticles] = await Promise.allSettled([
@@ -96,6 +112,54 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
         }
     });
 
+    app.get('/api/admin/automation', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const [automation, curriculumScheduler] = await Promise.all([
+                getBackgroundAutomationState(db),
+                getCurriculumSeedSchedulerSettings(db),
+            ]);
+            res.json({ automation, curriculumScheduler, generatedAt: new Date().toISOString() });
+        } catch (error) {
+            req.log.error({ err: error }, 'Automation status error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.patch('/api/admin/automation', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            if (req.body?.paused == null) {
+                return res.status(400).json({ error: 'paused (boolean) is required' });
+            }
+            const automation = await setBackgroundAutomationPaused(db, {
+                paused: Boolean(req.body.paused),
+                userId: req.user?.id || null,
+                reason: req.body.reason || null,
+            });
+            res.json({ automation });
+        } catch (error) {
+            req.log.error({ err: error }, 'Automation pause update error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.get('/api/admin/clinical-quality-queue', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const topic = String(req.query.topic || '').trim();
+            const queue = String(req.query.queue || '').trim();
+            const limit = Math.min(Math.max(parseInt(String(req.query.limit || '40'), 10) || 40, 1), 100);
+            const offset = Math.max(parseInt(String(req.query.offset || '0'), 10) || 0, 0);
+            const counts = await db.getClinicalQualityQueueCounts(topic);
+            const claims = queue
+                ? await db.listClinicalQualityReviewClaims({ queue, topic, limit, offset })
+                : [];
+            res.json({ queues: QUALITY_QUEUES, counts, claims, queue: queue || null, topic: topic || null, limit, offset });
+        } catch (error) {
+            const status = /Invalid quality queue/.test(error.message) ? 400 : 500;
+            req.log.error({ err: error }, 'Clinical quality queue error');
+            res.status(status).json({ error: error.message });
+        }
+    });
+
     app.get('/api/admin/teaching-claims/review', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
         try {
             const limit = Math.min(Math.max(parseInt(String(req.query.limit || '40'), 10) || 40, 1), 100);
@@ -106,6 +170,51 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
             res.json({ claims, limit, offset, status, topic });
         } catch (error) {
             req.log.error({ err: error }, 'Teaching claim review list error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.patch('/api/admin/teaching-claims/:claimKey/curator-metadata', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const claimKey = String(req.params.claimKey || '').trim();
+            if (!claimKey) return res.status(400).json({ error: 'claimKey is required' });
+            const {
+                examRelevant,
+                practiceChanging,
+                overclaimed,
+                paperSectionRef,
+                curatorNotes,
+            } = req.body || {};
+            const claim = await db.updateTeachingClaimCuratorMetadata(claimKey, {
+                ...(examRelevant != null ? { examRelevant: Boolean(examRelevant) } : {}),
+                ...(practiceChanging != null ? { practiceChanging: Boolean(practiceChanging) } : {}),
+                ...(overclaimed != null ? { overclaimed: Boolean(overclaimed) } : {}),
+                ...(paperSectionRef != null ? { paperSectionRef: String(paperSectionRef) } : {}),
+                ...(curatorNotes != null ? { curatorNotes: String(curatorNotes) } : {}),
+            }, req.user?.id || null);
+            if (!claim) return res.status(404).json({ error: 'Claim not found' });
+            if (overclaimed) {
+                await db.updateTeachingClaimVerification(claimKey, {
+                    verificationStatus: 'stale_needs_refresh',
+                    verificationReason: 'Curator marked as overclaimed.',
+                    reviewerId: req.user?.id || null,
+                }).catch(() => {});
+            }
+            res.json({ claim });
+        } catch (error) {
+            req.log.error({ err: error }, 'Curator metadata update error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.post('/api/admin/topics/:topic/guideline-watch-scan', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const topic = decodeURIComponent(String(req.params.topic || '').trim());
+            const { runGuidelineWatchtowerScan } = require('../services/guidelineWatchtowerService');
+            const result = await runGuidelineWatchtowerScan(db, topic);
+            res.json(result);
+        } catch (error) {
+            req.log.error({ err: error }, 'Guideline watch scan error');
             res.status(500).json({ error: error.message });
         }
     });
@@ -136,20 +245,251 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
             if (!claimKey) return res.status(400).json({ error: 'claimKey is required' });
             const claim = await db.getTeachingClaimByKey(claimKey);
             if (!claim) return res.status(404).json({ error: 'Claim not found' });
-            const topic = claim.topic || claim.normalizedTopic || '';
-            const guidelines = topic ? await db.getGuidelinesByTopic(topic, { limit: 8 }).catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; }) : [];
-            const alignment = classifyClaimGuidelineAlignment(claim, guidelines);
-            let updatedClaim = claim;
-            if (['guideline_supported', 'guideline_conflict'].includes(alignment.recommendedVerificationStatus)) {
-                updatedClaim = await db.updateTeachingClaimVerification(claimKey, {
-                    verificationStatus: alignment.recommendedVerificationStatus,
-                    verificationReason: alignment.reason,
-                    reviewerId: req.user?.id || null,
-                });
-            }
-            res.json({ claim: updatedClaim, alignment, guidelineCount: guidelines.length });
+            const { claim: updatedClaim, alignment, guidelineCount } = await alignClaimWithGuidelines(db, claim, {
+                apply: true,
+                reviewerId: req.user?.id || null,
+            });
+            res.json({ claim: updatedClaim, alignment, guidelineCount });
         } catch (error) {
             req.log.error({ err: error }, 'Teaching claim guideline check error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.get('/api/admin/claim-observability', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const limit = Math.min(Math.max(parseInt(String(req.query.limit || '25'), 10) || 25, 1), 80);
+            const observability = await db.getAdminClaimObservability({ limit });
+            res.json({ observability });
+        } catch (error) {
+            req.log.error({ err: error }, 'Claim observability error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.get('/api/admin/llm-cost-dashboard', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const days = Math.min(Math.max(parseInt(String(req.query.days || '30'), 10) || 30, 1), 365);
+            const limit = Math.min(Math.max(parseInt(String(req.query.limit || '15'), 10) || 15, 1), 50);
+            const dashboard = await db.getAdminLlmCostDashboard({ days, limit });
+            res.json({ dashboard });
+        } catch (error) {
+            req.log.error({ err: error }, 'LLM cost dashboard error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.post('/api/admin/curriculum/import-core-topics', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const seedPath = path.join(__dirname, '..', 'data', 'coreClinicalTopics.json');
+            const raw = await fs.readFile(seedPath, 'utf8');
+            const topics = JSON.parse(raw);
+            const result = await db.importCurriculumSeedTopics(topics, {
+                curriculumSlug: 'core-clinical-topics',
+                curriculumName: 'Core Clinical Topics',
+                examStageLabel: 'Core clinical practice',
+                description: 'Curated high-yield clinical topics for evidence synthesis, claim extraction, and adaptive review.',
+                sortOrder: 10,
+            });
+            res.json({
+                importedCount: result.importedCount,
+                topics: result.topics,
+                source: 'server/data/coreClinicalTopics.json',
+            });
+        } catch (error) {
+            req.log.error({ err: error }, 'Core curriculum topic import error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.get('/api/admin/curriculum/seed-topics', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const limit = Math.min(Math.max(parseInt(String(req.query.limit || '200'), 10) || 200, 1), 500);
+            const offset = Math.max(parseInt(String(req.query.offset || '0'), 10) || 0, 0);
+            const seedStatus = String(req.query.seedStatus || '').trim();
+            const topics = await db.listCurriculumSeedTopics({ seedStatus, limit, offset });
+            res.json({ topics, count: topics.length });
+        } catch (error) {
+            req.log.error({ err: error }, 'Curriculum seed topic list error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.get('/api/admin/curriculum/scheduler', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const limit = Math.min(Math.max(parseInt(String(req.query.limit || '10'), 10) || 10, 1), 50);
+            const [runs, dueTopics, failedTopics, statusCounts] = await Promise.all([
+                db.listLearningSchedulerRuns({ runType: 'curriculum_seed', limit }),
+                db.listCurriculumSeedCandidates({ limit: 10 }),
+                db.listCurriculumSeedCandidates({
+                    limit: 10,
+                    seedStatuses: ['failed', 'failed_low_recall', 'seeded_with_warnings'],
+                }),
+                db.getCurriculumSeedStatusCounts(),
+            ]);
+            const guardrails = await loadGuardrailState(db);
+            res.json({
+                scheduler: {
+                    generatedAt: new Date().toISOString(),
+                    runs,
+                    dueTopics,
+                    failedTopics,
+                    statusCounts,
+                    guardrails,
+                },
+            });
+        } catch (error) {
+            req.log.error({ err: error }, 'Curriculum scheduler observability error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.patch('/api/admin/curriculum/scheduler/settings', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const settings = await updateCurriculumSeedSchedulerSettings(db, req.body || {});
+            const guardrails = await loadGuardrailState(db);
+            res.json({ settings, guardrails });
+        } catch (error) {
+            req.log.error({ err: error }, 'Curriculum scheduler settings update error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.post('/api/admin/curriculum/seed-topics/:topicId/seed', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const topicId = String(req.params.topicId || '').trim();
+            if (!topicId) return res.status(400).json({ error: 'topicId is required' });
+            const body = req.body || {};
+            const seedOptions = {
+                db,
+                cache,
+                serverConfig,
+                fetchImpl: fetch,
+                provider: body.provider || 'auto',
+                topicId,
+                limits: {
+                    searchLimit: body.searchLimit,
+                    synthesisArticles: body.synthesisArticles,
+                    synopsisArticles: body.synopsisArticles,
+                },
+                log: req.log || logger,
+            };
+            if (body.background === false) {
+                const result = await seedCurriculumTopic(seedOptions);
+                return res.json(result);
+            }
+
+            const topic = await db.getCurriculumSeedTopic(topicId);
+            if (!topic) return res.status(404).json({ error: 'Curriculum topic not found' });
+            const queuedTopic = await db.updateCurriculumSeedStatus(topicId, { seedStatus: 'queued' });
+            setImmediate(() => {
+                seedCurriculumTopic(seedOptions).catch((err) => {
+                    logger.error({ err, topicId }, 'Background curriculum seed failed');
+                });
+            });
+            return res.status(202).json({ accepted: true, topic: queuedTopic || { ...topic, seedStatus: 'queued' } });
+        } catch (error) {
+            req.log.error({ err: error }, 'Curriculum seed topic error');
+            const status = /not found/i.test(error.message) ? 404 : 500;
+            res.status(status).json({ error: error.message });
+        }
+    });
+
+    app.post('/api/admin/curriculum/seed-batch', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const body = req.body || {};
+            const result = await runCurriculumSeedBatch({
+                db,
+                cache,
+                serverConfig,
+                fetchImpl: fetch,
+                log: req.log || logger,
+                batchSize: body.batchSize || 2,
+                force: body.force === true,
+                limits: {
+                    searchLimit: body.searchLimit,
+                    synthesisArticles: body.synthesisArticles,
+                    synopsisArticles: body.synopsisArticles,
+                },
+                seedStatuses: Array.isArray(body.seedStatuses) ? body.seedStatuses : [],
+            });
+            res.json(result);
+        } catch (error) {
+            req.log.error({ err: error }, 'Curriculum seed batch error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.post('/api/admin/curriculum/retry-failed', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const body = req.body || {};
+            const result = await runCurriculumSeedBatch({
+                db,
+                cache,
+                serverConfig,
+                fetchImpl: fetch,
+                log: req.log || logger,
+                batchSize: body.batchSize || 2,
+                force: body.force === true,
+                seedStatuses: ['failed', 'failed_low_recall', 'seeded_with_warnings'],
+                limits: {
+                    searchLimit: body.searchLimit,
+                    synthesisArticles: body.synthesisArticles,
+                    synopsisArticles: body.synopsisArticles,
+                },
+            });
+            res.json(result);
+        } catch (error) {
+            req.log.error({ err: error }, 'Curriculum failed seed retry error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.post('/api/admin/topics/:topic/guideline-align', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const topic = decodeURIComponent(String(req.params.topic || '').trim());
+            if (topic.length < 2) return res.status(400).json({ error: 'topic is required' });
+            const limit = Math.min(Math.max(parseInt(String(req.body?.limit || req.query?.limit || '40'), 10) || 40, 1), 100);
+            const result = await alignTopicClaimsWithGuidelines(db, topic, {
+                limit,
+                apply: req.body?.apply !== false,
+                reviewerId: req.user?.id || null,
+            });
+            res.json(result);
+        } catch (error) {
+            req.log.error({ err: error }, 'Topic guideline align error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.post('/api/admin/aggregate-memory', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            res.json(await aggregateCollectiveMemory(db));
+        } catch (error) {
+            req.log.error({ err: error }, 'Aggregate memory error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.get('/api/admin/aggregate-memory/stats', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const [topicCount, attemptCount, topicsWithMemory] = await Promise.all([
+                db.get(`SELECT COUNT(DISTINCT normalized_topic) as count FROM quiz_attempts`),
+                db.get(`SELECT COUNT(*) as count FROM quiz_attempts`),
+                db.get(`SELECT COUNT(*) as count FROM topic_knowledge WHERE knowledge LIKE '%collective_memory%'`),
+            ]);
+            const topTopics = await db.all(
+                `SELECT normalized_topic, COUNT(*) as attempts, COUNT(DISTINCT user_id) as users
+                 FROM quiz_attempts GROUP BY normalized_topic ORDER BY attempts DESC LIMIT 10`
+            );
+            res.json({
+                topicsWithAttempts: topicCount?.count ?? 0,
+                totalAttempts: attemptCount?.count ?? 0,
+                topicsWithMemory: topicsWithMemory?.count ?? 0,
+                topTopics,
+            });
+        } catch (error) {
+            req.log.error({ err: error }, 'Aggregate memory stats error');
             res.status(500).json({ error: error.message });
         }
     });

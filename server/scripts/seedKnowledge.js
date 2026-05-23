@@ -17,39 +17,14 @@ const { loadEnv, serverConfig } = require('../../config');
 loadEnv();
 
 const db = require('../../database');
-const { createAiService } = require('../services/aiService');
+const { createAiService, PINNED_MODELS } = require('../services/aiService');
 const { buildTopicKnowledgePrompt } = require('../prompts');
 const { fetchUnifiedEvidence } = require('../services/unifiedEvidenceSearch');
 const { safeFetch } = require('../utils/fetch');
+const { parseJsonBlock } = require('../utils/parseJson');
 
-const TOP_TOPICS = [
-    // Critical care
-    'sepsis', 'septic shock', 'ards', 'mechanical ventilation',
-    'acute kidney injury', 'acute liver failure', 'diabetic ketoacidosis',
-    // Cardiovascular
-    'acute coronary syndrome', 'myocardial infarction', 'heart failure',
-    'atrial fibrillation', 'pulmonary embolism', 'deep vein thrombosis',
-    'aortic dissection', 'cardiac arrest',
-    // Respiratory
-    'community acquired pneumonia', 'copd exacerbation', 'asthma exacerbation',
-    // Neurology
-    'ischaemic stroke', 'haemorrhagic stroke', 'meningitis', 'status epilepticus',
-    // Gastroenterology
-    'upper gi bleed', 'acute pancreatitis', 'inflammatory bowel disease',
-    'liver cirrhosis',
-    // Endocrine / metabolic
-    'type 2 diabetes management', 'hypertension', 'hypothyroidism',
-    'adrenal insufficiency',
-    // Infection
-    'urinary tract infection', 'cellulitis', 'infective endocarditis',
-    'covid 19 management',
-    // Rheumatology / immunology
-    'rheumatoid arthritis', 'systemic lupus erythematosus',
-    // Oncology (supportive)
-    'febrile neutropenia', 'hypercalcaemia of malignancy',
-    // Anaemia / haematology
-    'iron deficiency anaemia', 'venous thromboembolism prevention',
-];
+const topicsData = require('./topics.json');
+const TOP_TOPICS = topicsData.topics;
 
 const args = process.argv.slice(2);
 const topicArg = args.includes('--topic') ? args[args.indexOf('--topic') + 1] : null;
@@ -58,21 +33,7 @@ const dryRun = args.includes('--dry-run');
 
 const topics = topicArg ? [topicArg] : TOP_TOPICS;
 
-function sleep(ms) {
-    return new Promise((r) => setTimeout(r, ms));
-}
-
-function parseJsonBlock(text) {
-    const cleaned = (text || '').replace(/```json/g, '').replace(/```/g, '').trim();
-    const start = cleaned.indexOf('{');
-    const end = cleaned.lastIndexOf('}');
-    if (start === -1 || end === -1) return null;
-    try {
-        return JSON.parse(cleaned.slice(start, end + 1).replace(/,\s*([}\]])/g, '$1'));
-    } catch {
-        return null;
-    }
-}
+const { setTimeout: sleep } = require('timers/promises');
 
 async function seedTopic(topic, ai) {
     console.log(`\n── ${topic} ──`);
@@ -120,7 +81,7 @@ async function seedTopic(topic, ai) {
     let raw;
     try {
         if (serverConfig.keys.gemini) {
-            raw = await ai.callGemini(prompt, 'gemini-2.0-flash', { temperature: 0.15 });
+            raw = await ai.callGemini(prompt, PINNED_MODELS.gemini, { temperature: 0.15 });
         } else if (serverConfig.keys.mistral) {
             raw = await ai.callMistralAI(prompt, 'mistral-small-latest', { temperature: 0.15 });
         } else {

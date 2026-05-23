@@ -47,6 +47,8 @@ jest.mock('../../database', () => ({
   getDailyStats: jest.fn(),
   getCachedAnalysis: jest.fn(),
   cacheAnalysis: jest.fn().mockResolvedValue({ id: 1 }),
+  saveSynthesisSnapshot: jest.fn().mockResolvedValue(undefined),
+  getLatestSynthesisSnapshots: jest.fn().mockResolvedValue([]),
   createReviewProject: jest.fn(),
   getReviewProject: jest.fn(),
   addReviewArticles: jest.fn(),
@@ -105,6 +107,24 @@ jest.mock('../../database', () => ({
     refreshCandidates: [],
     schedulerRuns: [],
   }),
+  importCurriculumSeedTopics: jest.fn().mockResolvedValue({ importedCount: 0, topics: [] }),
+  listCurriculumSeedTopics: jest.fn().mockResolvedValue([]),
+  listCurriculumSeedCandidates: jest.fn().mockResolvedValue([]),
+  getCurriculumSeedStatusCounts: jest.fn().mockResolvedValue([]),
+  listLearningSchedulerRuns: jest.fn().mockResolvedValue([]),
+  getAdminRuntimeSetting: jest.fn().mockResolvedValue(null),
+  setAdminRuntimeSetting: jest.fn(),
+  getCurriculumSeedUsageForDate: jest.fn().mockResolvedValue({
+    date: '2026-05-19',
+    topicsAttempted: 0,
+    topicsSeeded: 0,
+    topicsFailed: 0,
+    synopsesGenerated: 0,
+    estimatedCostUsd: 0,
+  }),
+  incrementCurriculumSeedUsage: jest.fn(),
+  getCurriculumSeedTopic: jest.fn().mockResolvedValue(null),
+  updateCurriculumSeedStatus: jest.fn().mockResolvedValue(null),
   getUserTopicMemory: jest.fn().mockResolvedValue(null),
   getGlobalEngagedArticles: jest.fn().mockResolvedValue([]),
   listTeachingObjectsForTopic: jest.fn().mockResolvedValue([]),
@@ -211,6 +231,37 @@ jest.mock('../../server/services/vectorSearchService', () => ({
   })),
 }));
 
+jest.mock('../../server/services/curriculumSeedService', () => ({
+  seedCurriculumTopic: jest.fn().mockResolvedValue({
+    topic: { id: 1, displayName: 'Hypertension', seedStatus: 'seeded', claimCount: 9 },
+    articleCount: 24,
+    selectedArticleCount: 8,
+    synthesisJobKey: 'syn:test',
+    synopsisCount: 3,
+    synopsisFailures: [],
+    claimCount: 9,
+  }),
+  reviewDueForVolatility: jest.fn(),
+}));
+
+jest.mock('../../server/services/curriculumSeedScheduler', () => ({
+  runCurriculumSeedBatch: jest.fn().mockResolvedValue({
+    candidatesCount: 2,
+    refreshedCount: 2,
+    skippedCount: 0,
+    errorCount: 0,
+    details: { topics: [] },
+  }),
+  loadGuardrailState: jest.fn().mockResolvedValue({
+    settings: { enabled: true, maxTopicsPerDay: 10, maxSynopsesPerDay: 30, maxEstimatedCostUsdPerDay: 1 },
+    usage: { topicsAttempted: 0, topicsSeeded: 0, topicsFailed: 0, synopsesGenerated: 0, estimatedCostUsd: 0 },
+    blockedReason: null,
+  }),
+  updateCurriculumSeedSchedulerSettings: jest.fn().mockResolvedValue({ enabled: false, maxTopicsPerDay: 10 }),
+  scheduleCurriculumSeed: jest.fn(),
+  stopCurriculumSeed: jest.fn(),
+}));
+
 describe('API Endpoints', () => {
   let app;
   let db;
@@ -243,6 +294,8 @@ describe('API Endpoints', () => {
     db.getQuizAttemptStats.mockResolvedValue([]);
     db.getEvidenceJudgementProfile.mockResolvedValue({ topic: null, totalTaggedAttempts: 0, tags: [], generatedAt: '2026-05-18T00:00:00.000Z' });
     db.listPracticeChangingTeachingObjects.mockResolvedValue([]);
+    db.saveSynthesisSnapshot.mockResolvedValue(undefined);
+    db.getLatestSynthesisSnapshots.mockResolvedValue([]);
     db.createStudyRun.mockResolvedValue({ id: 1, userId: 'u1', topic: 'ARDS', progress: {}, nodeCoverage: {} });
     db.getStudyRun.mockResolvedValue(null);
     db.getActiveStudyRun.mockResolvedValue(null);
@@ -267,6 +320,22 @@ describe('API Endpoints', () => {
       refreshCandidates: [],
       schedulerRuns: [],
     });
+    db.importCurriculumSeedTopics.mockResolvedValue({ importedCount: 0, topics: [] });
+    db.listCurriculumSeedTopics.mockResolvedValue([]);
+    db.listCurriculumSeedCandidates.mockResolvedValue([]);
+    db.getCurriculumSeedStatusCounts.mockResolvedValue([]);
+    db.listLearningSchedulerRuns.mockResolvedValue([]);
+    db.getAdminRuntimeSetting.mockResolvedValue(null);
+    db.setAdminRuntimeSetting.mockImplementation(async (_key, value) => value);
+    db.getCurriculumSeedUsageForDate.mockResolvedValue({
+      date: '2026-05-19',
+      topicsAttempted: 0,
+      topicsSeeded: 0,
+      topicsFailed: 0,
+      synopsesGenerated: 0,
+      estimatedCostUsd: 0,
+    });
+    db.incrementCurriculumSeedUsage.mockResolvedValue({});
     // Reset rate limit mock to allowed by default
     cache.checkRateLimit.mockResolvedValue({ allowed: true, remaining: 29, resetTime: Date.now() + 60000 });
     db.isVectorSearchAvailable.mockReturnValue(false);
@@ -1680,6 +1749,50 @@ describe('API Endpoints', () => {
       expect(response.body).toHaveProperty('articleCount', 2);
     });
 
+    test('POST /api/ai/synthesize/stream persists synthesis snapshot and audit metadata', async () => {
+      const synthesis = {
+        consensus: 'Streamed GRADE summary for tests [1].',
+        evidenceGrade: 'MODERATE',
+        keyFindings: ['Finding anchored to the streamed source [1].'],
+        clinicalBottomLine: 'Use the result as educational evidence only [1].',
+        limitations: 'Small evidence bundle [1].',
+        researchGaps: 'More trials are needed [1].',
+      };
+      const geminiSse = `data: ${JSON.stringify({
+        candidates: [{ content: { parts: [{ text: JSON.stringify(synthesis) }] } }],
+      })}\n\n`;
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        body: (async function* streamGemini() {
+          yield Buffer.from(geminiSse);
+        })(),
+      });
+
+      const response = await request(app)
+        .post('/api/ai/synthesize/stream')
+        .set('Cookie', `med_auth_token=${authToken({ role: 'pro' })}`)
+        .set('Content-Type', 'application/json')
+        .send({
+          articles: [
+            { uid: 'stream-1', title: 'Stream Article', abstract: 'Abstract one', pubtype: ['Randomized Controlled Trial'], _pdfIndexed: true },
+          ],
+          topic: 'streamed diabetes',
+          provider: 'gemini',
+        })
+        .expect(200);
+
+      expect(response.text).toContain('event: result');
+      expect(response.text).toContain('Streamed GRADE summary for tests');
+      expect(response.text).toContain('"fullTextCoverageRatio":1');
+      expect(db.saveSynthesisSnapshot).toHaveBeenCalledWith(
+        'streamed diabetes',
+        expect.objectContaining({ consensus: 'Streamed GRADE summary for tests [1].' }),
+        ['stream-1']
+      );
+    });
+
     test('POST /api/quiz/generate automatically anchors quizzes to weak and untested teaching claims', async () => {
       db.getUserClaimMastery.mockResolvedValueOnce([
         {
@@ -1699,7 +1812,22 @@ describe('API Endpoints', () => {
           accuracy: null,
         },
       ]);
-      db.listTeachingObjectClaimsForTopic.mockResolvedValueOnce([]);
+      db.listTeachingObjectClaimsForTopic.mockResolvedValueOnce([
+        {
+          claimKey: 'weakclaim1234567890abcdef',
+          claimText: 'Low tidal volume ventilation reduces mortality in suitable ARDS patients.',
+          articleUid: 'pmid-1',
+          sourcePath: 'synopsis.bottomLine',
+          verificationStatus: 'source_verified',
+        },
+        {
+          claimKey: 'untestedclaim1234567890ab',
+          claimText: 'Prone positioning is most relevant in severe ARDS with persistent hypoxaemia.',
+          articleUid: 'pmid-2',
+          sourcePath: 'synopsis.quizFocusPoints',
+          verificationStatus: 'source_verified',
+        },
+      ]);
       mockFetch.mockResolvedValueOnce({
         ok: true,
         status: 200,
@@ -1897,6 +2025,160 @@ describe('API Endpoints', () => {
       });
     });
 
+    describe('Curriculum seed topics', () => {
+      test('POST /api/admin/curriculum/import-core-topics imports bundled topic list', async () => {
+        db.importCurriculumSeedTopics.mockResolvedValueOnce({
+          importedCount: 103,
+          topics: [{ id: 1, block: 'Cardiovascular', displayName: 'Hypertension', seedStatus: 'not_seeded' }],
+        });
+
+        const response = await request(app)
+          .post('/api/admin/curriculum/import-core-topics')
+          .set('Cookie', `med_auth_token=${authToken({ id: 'curator-1', name: 'Curator', email: 'curator@test.com', role: 'curator' })}`)
+          .expect(200);
+
+        expect(response.body.importedCount).toBe(103);
+        expect(response.body.source).toBe('server/data/coreClinicalTopics.json');
+        expect(db.importCurriculumSeedTopics).toHaveBeenCalledWith(
+          expect.arrayContaining([expect.objectContaining({ displayName: 'Hypertension' })]),
+          expect.objectContaining({ curriculumSlug: 'core-clinical-topics' })
+        );
+      });
+
+      test('GET /api/admin/curriculum/seed-topics lists imported seed topics', async () => {
+        db.listCurriculumSeedTopics.mockResolvedValueOnce([
+          { id: 1, block: 'Cardiovascular', displayName: 'Hypertension', seedStatus: 'not_seeded' },
+        ]);
+
+        const response = await request(app)
+          .get('/api/admin/curriculum/seed-topics?limit=25&seedStatus=not_seeded')
+          .set('Cookie', `med_auth_token=${authToken({ id: 'curator-1', name: 'Curator', email: 'curator@test.com', role: 'curator' })}`)
+          .expect(200);
+
+        expect(response.body.count).toBe(1);
+        expect(response.body.topics[0].displayName).toBe('Hypertension');
+        expect(db.listCurriculumSeedTopics).toHaveBeenCalledWith({ seedStatus: 'not_seeded', limit: 25, offset: 0 });
+      });
+
+      test('POST /api/admin/curriculum/seed-topics/:topicId/seed seeds one topic', async () => {
+        const { seedCurriculumTopic } = require('../../server/services/curriculumSeedService');
+
+        const response = await request(app)
+          .post('/api/admin/curriculum/seed-topics/1/seed')
+          .send({ background: false, searchLimit: 24, synthesisArticles: 8, synopsisArticles: 3 })
+          .set('Cookie', `med_auth_token=${authToken({ id: 'curator-1', name: 'Curator', email: 'curator@test.com', role: 'curator' })}`)
+          .expect(200);
+
+        expect(response.body.topic.displayName).toBe('Hypertension');
+        expect(response.body.synopsisCount).toBe(3);
+        expect(seedCurriculumTopic).toHaveBeenCalledWith(expect.objectContaining({
+          db,
+          cache,
+          provider: 'auto',
+          topicId: '1',
+          limits: expect.objectContaining({
+            searchLimit: 24,
+            synthesisArticles: 8,
+            synopsisArticles: 3,
+          }),
+        }));
+      });
+
+      test('POST /api/admin/curriculum/seed-topics/:topicId/seed queues background seeding by default', async () => {
+        db.getCurriculumSeedTopic.mockResolvedValueOnce({ id: 2, displayName: 'COPD', seedStatus: 'not_seeded' });
+        db.updateCurriculumSeedStatus.mockResolvedValueOnce({ id: 2, displayName: 'COPD', seedStatus: 'queued' });
+
+        const response = await request(app)
+          .post('/api/admin/curriculum/seed-topics/2/seed')
+          .send({ searchLimit: 10 })
+          .set('Cookie', `med_auth_token=${authToken({ id: 'curator-1', name: 'Curator', email: 'curator@test.com', role: 'curator' })}`)
+          .expect(202);
+
+        expect(response.body.accepted).toBe(true);
+        expect(response.body.topic.seedStatus).toBe('queued');
+        expect(db.getCurriculumSeedTopic).toHaveBeenCalledWith('2');
+        expect(db.updateCurriculumSeedStatus).toHaveBeenCalledWith('2', { seedStatus: 'queued' });
+      });
+
+      test('POST /api/admin/curriculum/seed-batch runs a capped seed batch', async () => {
+        const { runCurriculumSeedBatch } = require('../../server/services/curriculumSeedScheduler');
+
+        const response = await request(app)
+          .post('/api/admin/curriculum/seed-batch')
+          .send({ batchSize: 2, searchLimit: 24, synthesisArticles: 8, synopsisArticles: 3 })
+          .set('Cookie', `med_auth_token=${authToken({ id: 'curator-1', name: 'Curator', email: 'curator@test.com', role: 'curator' })}`)
+          .expect(200);
+
+        expect(response.body.refreshedCount).toBe(2);
+        expect(runCurriculumSeedBatch).toHaveBeenCalledWith(expect.objectContaining({
+          db,
+          cache,
+          batchSize: 2,
+          limits: expect.objectContaining({
+            searchLimit: 24,
+            synthesisArticles: 8,
+            synopsisArticles: 3,
+          }),
+        }));
+      });
+
+      test('GET /api/admin/curriculum/scheduler returns seed scheduler observability', async () => {
+        db.listLearningSchedulerRuns.mockResolvedValueOnce([
+          { id: 9, runType: 'curriculum_seed', status: 'completed', refreshedCount: 2, errorCount: 0 },
+        ]);
+        db.listCurriculumSeedCandidates
+          .mockResolvedValueOnce([{ id: 1, displayName: 'Hypertension', seedStatus: 'not_seeded' }])
+          .mockResolvedValueOnce([{ id: 2, displayName: 'COPD', seedStatus: 'failed' }]);
+        db.getCurriculumSeedStatusCounts.mockResolvedValueOnce([
+          { seedStatus: 'seeded', count: 10, claimCount: 80 },
+        ]);
+
+        const response = await request(app)
+          .get('/api/admin/curriculum/scheduler?limit=6')
+          .set('Cookie', `med_auth_token=${authToken({ id: 'curator-1', name: 'Curator', email: 'curator@test.com', role: 'curator' })}`)
+          .expect(200);
+
+        expect(response.body.scheduler.runs[0].status).toBe('completed');
+        expect(response.body.scheduler.dueTopics[0].displayName).toBe('Hypertension');
+        expect(response.body.scheduler.failedTopics[0].seedStatus).toBe('failed');
+        expect(response.body.scheduler.guardrails.blockedReason).toBe(null);
+        expect(db.listLearningSchedulerRuns).toHaveBeenCalledWith({ runType: 'curriculum_seed', limit: 6 });
+        expect(db.listCurriculumSeedCandidates).toHaveBeenNthCalledWith(1, { limit: 10 });
+        expect(db.listCurriculumSeedCandidates).toHaveBeenNthCalledWith(2, {
+          limit: 10,
+          seedStatuses: ['failed', 'failed_low_recall', 'seeded_with_warnings'],
+        });
+      });
+
+      test('PATCH /api/admin/curriculum/scheduler/settings updates guardrails', async () => {
+        const { updateCurriculumSeedSchedulerSettings } = require('../../server/services/curriculumSeedScheduler');
+
+        const response = await request(app)
+          .patch('/api/admin/curriculum/scheduler/settings')
+          .send({ enabled: false, maxTopicsPerDay: 3 })
+          .set('Cookie', `med_auth_token=${authToken({ id: 'curator-1', name: 'Curator', email: 'curator@test.com', role: 'curator' })}`)
+          .expect(200);
+
+        expect(response.body.settings.enabled).toBe(false);
+        expect(updateCurriculumSeedSchedulerSettings).toHaveBeenCalledWith(db, { enabled: false, maxTopicsPerDay: 3 });
+      });
+
+      test('POST /api/admin/curriculum/retry-failed retries failed seed statuses only', async () => {
+        const { runCurriculumSeedBatch } = require('../../server/services/curriculumSeedScheduler');
+
+        await request(app)
+          .post('/api/admin/curriculum/retry-failed')
+          .send({ batchSize: 2 })
+          .set('Cookie', `med_auth_token=${authToken({ id: 'curator-1', name: 'Curator', email: 'curator@test.com', role: 'curator' })}`)
+          .expect(200);
+
+        expect(runCurriculumSeedBatch).toHaveBeenCalledWith(expect.objectContaining({
+          seedStatuses: ['failed', 'failed_low_recall', 'seeded_with_warnings'],
+          batchSize: 2,
+        }));
+      });
+    });
+
     describe('Teaching claim review queue', () => {
       test('GET /api/admin/teaching-claims/review returns curator claim queue', async () => {
         db.listTeachingClaimsForReview.mockResolvedValueOnce([
@@ -1953,7 +2235,7 @@ describe('API Endpoints', () => {
           claimText: 'Use low tidal volume ventilation in adults with ARDS.',
           topic: 'ARDS',
           normalizedTopic: 'ards',
-          verificationStatus: 'abstract_only',
+          verificationStatus: 'source_verified',
         });
         db.getGuidelinesByTopic.mockResolvedValueOnce([
           {
@@ -2409,6 +2691,37 @@ describe('API Endpoints', () => {
 
       expect(db.listPracticeChangingTeachingObjects).toHaveBeenCalledWith({ topic: 'COPD', limit: 10 });
       expect(response.body.alerts[0]).toHaveProperty('classification', 'practice_changing');
+    });
+
+    test('GET /api/learning/staleness detects claim-level synthesis drift', async () => {
+      db.getLatestSynthesisSnapshots.mockResolvedValueOnce([
+        {
+          evidence_grade: 'MODERATE',
+          key_finding_count: 2,
+          claim_fingerprint: 'new-fingerprint',
+          claim_texts_json: JSON.stringify(['New safety signal in renal impairment.', 'Benefit limited to subgroup A.']),
+          generated_at: '2026-05-19T00:00:00.000Z',
+        },
+        {
+          evidence_grade: 'MODERATE',
+          key_finding_count: 2,
+          claim_fingerprint: 'old-fingerprint',
+          claim_texts_json: JSON.stringify(['Older broad benefit claim.', 'Benefit limited to subgroup A.']),
+          generated_at: '2026-05-01T00:00:00.000Z',
+        },
+      ]);
+
+      const response = await request(app)
+        .get('/api/learning/staleness?topic=COPD')
+        .set('Cookie', `med_auth_token=${authToken()}`)
+        .expect(200);
+
+      expect(response.body.significantChange).toBe(true);
+      expect(response.body.changes).toEqual(expect.arrayContaining([
+        expect.stringContaining('Clinical teaching claims changed'),
+        expect.stringContaining('New/changed claim: New safety signal'),
+        expect.stringContaining('Prior claim no longer prominent: Older broad benefit claim'),
+      ]));
     });
 
     test('POST /api/learning/study-runs creates a run with outline coverage', async () => {

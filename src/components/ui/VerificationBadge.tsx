@@ -2,12 +2,15 @@ import React from 'react';
 
 // teaching_object_claims.verification_status values
 // ai_generation_claims.validation_status values (mapped below)
-const STATUS_MAP: Record<string, { label: string; cls: string }> = {
+// Export so other components can derive colours from the single source of truth.
+export const VERIFICATION_STATUS_STYLES: Record<string, { label: string; cls: string }> = {
   // teaching_object verification statuses
   source_verified:       { label: 'Source Verified',       cls: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' },
   guideline_supported:   { label: 'Guideline Supported',   cls: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' },
+  guideline_uncertain:   { label: 'Guideline Uncertain',   cls: 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-300' },
   human_reviewed:        { label: 'Human Reviewed',        cls: 'bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300' },
   abstract_only:         { label: 'Abstract Only',         cls: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300' },
+  full_text_available:   { label: 'Full Text Ready',       cls: 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300' },
   synthesis_inferred:    { label: 'Synthesis Inferred',    cls: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300' },
   agent_draft:           { label: 'Agent Draft',           cls: 'bg-slate-100 text-slate-500 dark:bg-slate-800/60 dark:text-slate-400' },
   guideline_conflict:    { label: 'Guideline Conflict',    cls: 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300' },
@@ -23,6 +26,8 @@ const STATUS_MAP: Record<string, { label: string; cls: string }> = {
 };
 
 const FALLBACK = { label: 'Unverified', cls: 'bg-slate-100 text-slate-400 dark:bg-slate-800/60 dark:text-slate-500' };
+
+const STATUS_MAP = VERIFICATION_STATUS_STYLES;
 
 interface VerificationBadgeProps {
   status?: string | null;

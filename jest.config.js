@@ -16,7 +16,8 @@ module.exports = {
     testPathIgnorePatterns: [
         '/node_modules/',
         '/tests/e2e/',
-        '/tests/load/'
+        '/tests/load/',
+        '<rootDir>/.claude/'
     ],
     
     // Coverage configuration
@@ -30,7 +31,8 @@ module.exports = {
         'scripts/**/*.{js,ts}',
         '!**/node_modules/**',
         '!**/tests/**',
-        '!**/*.test.js'
+        '!**/*.test.js',
+        '!**/.claude/**'
     ],
     coverageDirectory: 'coverage',
     coverageReporters: ['text', 'lcov', 'html'],

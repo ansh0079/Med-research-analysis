@@ -3,6 +3,7 @@ import { api } from '@services/api';
 import { useAuth } from '@contexts/AuthContext';
 import { useSearchContext } from '@contexts/SearchContext';
 import type { AgentGuidance, Article } from '@types';
+import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -314,6 +315,8 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
           {error && (
             <p className="text-[11px] text-red-500 font-semibold">{error}</p>
           )}
+
+          <ClinicalSafetyNotice status="agent_draft" className="px-1" />
 
           {/* Input */}
           {!isAuthenticated ? (

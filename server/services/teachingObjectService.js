@@ -28,32 +28,38 @@ function stableClaimKey(seed, text) {
 
 const CLAIM_VERIFICATION = {
     SOURCE_VERIFIED: 'source_verified',
+    FULL_TEXT_AVAILABLE: 'full_text_available',
     ABSTRACT_ONLY: 'abstract_only',
     SYNTHESIS_INFERRED: 'synthesis_inferred',
     AGENT_DRAFT: 'agent_draft',
     GUIDELINE_SUPPORTED: 'guideline_supported',
+    GUIDELINE_UNCERTAIN: 'guideline_uncertain',
     GUIDELINE_CONFLICT: 'guideline_conflict',
     STALE_NEEDS_REFRESH: 'stale_needs_refresh',
     HUMAN_REVIEWED: 'human_reviewed',
     UNVERIFIED: 'unverified',
 };
 
-function claimVerificationForPaper(article = {}, studyType = 'other') {
+function claimVerificationForPaper(article = {}, studyType = 'other', synopsisResult = {}) {
     if (studyType === 'guideline_or_statement') {
         return {
             verificationStatus: CLAIM_VERIFICATION.GUIDELINE_SUPPORTED,
             verificationReason: 'Claim is derived from a guideline or consensus document synopsis.',
         };
     }
-    if (article.pmcid || article.fullTextUrl || article.openAccessUrl || article.isFree || article.openAccess) {
+    const fullTextCoverageRatio = Number(synopsisResult?.audit?.fullTextCoverageRatio ?? 0);
+    if (Number.isFinite(fullTextCoverageRatio) && fullTextCoverageRatio > 0) {
         return {
             verificationStatus: CLAIM_VERIFICATION.SOURCE_VERIFIED,
-            verificationReason: 'Claim is linked to an open/free source article record.',
+            verificationReason: 'Claim is grounded in indexed full text used during synopsis generation.',
         };
     }
+    const isOpen = article.pmcid || article.fullTextUrl || article.openAccessUrl || article.isFree || article.openAccess;
     return {
         verificationStatus: CLAIM_VERIFICATION.ABSTRACT_ONLY,
-        verificationReason: 'Claim is grounded in available abstract/metadata rather than confirmed full text.',
+        verificationReason: isOpen
+            ? 'Article appears open/free, but indexed full text was not confirmed during synopsis generation.'
+            : 'Claim is grounded in available abstract/metadata rather than confirmed full text.',
     };
 }
 
@@ -115,7 +121,8 @@ function buildPaperTeachingObject({ article, synopsisResult, topic = '' }) {
     const confidence = synopsis.trustRating === 'HIGH' ? 0.85
         : synopsis.trustRating === 'MODERATE' ? 0.68
             : synopsis.trustRating === 'LOW' ? 0.45 : 0.3;
-    const verification = claimVerificationForPaper(article, studyType);
+    const verification = claimVerificationForPaper(article, studyType, synopsisResult);
+    const fullTextCoverageRatio = Number(synopsisResult?.audit?.fullTextCoverageRatio ?? 0);
     const claimAnchors = buildClaimAnchors(objectKey, [
         { claimText: synopsis.bottomLine || synopsis.clinicalMeaning || synopsis.practiceImplication, sourcePath: 'synopsis.bottomLine', conceptKey: 'clinical_bottom_line' },
         { claimText: synopsis.mainFindings, sourcePath: 'synopsis.mainFindings', conceptKey: 'main_findings' },
@@ -146,6 +153,7 @@ function buildPaperTeachingObject({ article, synopsisResult, topic = '' }) {
                 pubdate: article.pubdate || (article.year ? String(article.year) : null),
                 studyType,
                 isFree: Boolean(article.isFree || article.pmcid || article.openAccess || article.fullTextUrl || article.openAccessUrl),
+                fullTextUsed: Number.isFinite(fullTextCoverageRatio) && fullTextCoverageRatio > 0,
             },
             synopsis,
             pico: {

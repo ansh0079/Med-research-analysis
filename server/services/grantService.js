@@ -2,6 +2,7 @@
 // Grant / Protocol Writing Service
 // Generates structured literature review sections for research proposals
 // ==========================================
+const { PINNED_MODELS } = require('./aiService');
 
 /**
  * Build an AI prompt for grant-writing mode.
@@ -79,7 +80,7 @@ async function generateGrantSection(researchQuestion, articles, citationStyle, a
 
   let rawText;
   if (keys.gemini) {
-    rawText = await aiService.callGemini(prompt, 'gemini-2.0-flash');
+    rawText = await aiService.callGemini(prompt, PINNED_MODELS.geminiQuality);
   } else if (keys.mistral) {
     rawText = await aiService.callMistralAI(prompt, 'mistral-small-latest');
   } else {

@@ -21,6 +21,52 @@ function safeJsonParse(value, fallback = null) {
     }
 }
 
+function extractSynthesisSnapshotClaims(synthesis = {}) {
+    const candidates = [
+        synthesis.clinicalBottomLine,
+        synthesis.overallAnswer,
+        synthesis.consensus,
+        synthesis.limitations,
+        synthesis.researchGaps,
+        synthesis.clinicalImplications,
+        synthesis.practiceImpact?.mondayMorningLine,
+        synthesis.practiceImpact?.rationale,
+        synthesis.clinicalActionCard?.recommendation,
+        synthesis.clinicalActionCard?.caveat,
+        ...(Array.isArray(synthesis.keyFindings) ? synthesis.keyFindings : []),
+        ...(Array.isArray(synthesis.agreement) ? synthesis.agreement : []),
+        ...(Array.isArray(synthesis.uncertainties) ? synthesis.uncertainties : []),
+        ...(Array.isArray(synthesis.conflicts) ? synthesis.conflicts : []),
+    ];
+    const seen = new Set();
+    return candidates
+        .map((claim) => String(typeof claim === 'object' && claim !== null
+            ? claim.summary || claim.finding || claim.text || claim.claim || ''
+            : claim || '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .slice(0, 700))
+        .filter((claim) => {
+            if (claim.length < 12) return false;
+            const key = claim.toLowerCase();
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        })
+        .slice(0, 24);
+}
+
+function buildSynthesisSnapshotFingerprint(synthesis = {}) {
+    const claims = extractSynthesisSnapshotClaims(synthesis);
+    const normalized = claims
+        .map((claim) => claim.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim())
+        .sort();
+    return {
+        claims,
+        fingerprint: crypto.createHash('sha256').update(JSON.stringify(normalized)).digest('hex'),
+    };
+}
+
 /** Apply SQL migrations via scripts/sqlite-migrate.mjs (node:sqlite) before opening better-sqlite3 */
 function runExternalSqliteMigrations(absDbPath) {
     const migrateScript = path.join(__dirname, '..', 'scripts', 'sqlite-migrate.mjs');
@@ -424,565 +470,6 @@ class Database {
         );
     }
 
-    normalizeTopic(topic) {
-        return String(topic || '')
-            .toLowerCase()
-            .replace(/[^a-z0-9\s-]/g, ' ')
-            .replace(/\s+/g, ' ')
-            .trim()
-            .slice(0, 180);
-    }
-
-    /**
-     * Normalized strings for JSON `aliases_normalized` (synonyms + model keywords).
-     */
-    buildTopicKnowledgeAliasesJson(displayTopic, knowledge) {
-        const set = new Set();
-        const canon = resolveCanonicalNormalized(String(displayTopic || '').trim(), (s) => this.normalizeTopic(s));
-        if (canon) set.add(canon);
-        const primary = this.normalizeTopic(displayTopic);
-        if (primary) set.add(primary);
-        expandNormalizedTopicKeys(primary, (s) => this.normalizeTopic(s)).forEach((k) => set.add(k));
-        const kw = knowledge && typeof knowledge === 'object' ? knowledge.keywords : null;
-        if (Array.isArray(kw)) {
-            for (const item of kw) {
-                if (typeof item === 'string' && item.trim()) {
-                    const n = this.normalizeTopic(item.trim());
-                    if (n) set.add(n);
-                    expandNormalizedTopicKeys(n, (s) => this.normalizeTopic(s)).forEach((k) => set.add(k));
-                }
-            }
-        }
-        return JSON.stringify([...set].filter(Boolean).slice(0, 80));
-    }
-
-    mergeNormalizedAliasesJson(existingAliases = [], aliases = []) {
-        const set = new Set(Array.isArray(existingAliases) ? existingAliases.filter(Boolean) : []);
-        for (const alias of Array.isArray(aliases) ? aliases : []) {
-            const normalized = this.normalizeTopic(alias);
-            if (!normalized) continue;
-            set.add(normalized);
-            expandNormalizedTopicKeys(normalized, (s) => this.normalizeTopic(s)).forEach((k) => set.add(k));
-        }
-        return JSON.stringify([...set].filter(Boolean).slice(0, 120));
-    }
-
-    /**
-     * Preserves clinician-verified anchors: entries with `verifiedAt` from the existing row cannot be
-     * removed or replaced by AI difference analysis; new anchors may only be added with `verifiedAt`.
-     */
-    mergeVerifiedAnchorsIntoKnowledge(incomingKnowledge, existingKnowledgeObj) {
-        const incoming = incomingKnowledge && typeof incomingKnowledge === 'object' ? { ...incomingKnowledge } : {};
-        const existing = existingKnowledgeObj && typeof existingKnowledgeObj === 'object' ? existingKnowledgeObj : {};
-        const prev = Array.isArray(existing.verifiedAnchors)
-            ? existing.verifiedAnchors.filter((a) => a && typeof a === 'object' && a.verifiedAt)
-            : [];
-        const inc = Array.isArray(incoming.verifiedAnchors) ? incoming.verifiedAnchors : [];
-        const prevIds = new Set(prev.map((a) => String(a.id || '')).filter(Boolean));
-        const extra = inc.filter((a) => a && typeof a === 'object' && a.verifiedAt && a.id && !prevIds.has(String(a.id)));
-        incoming.verifiedAnchors = [...prev, ...extra];
-        return incoming;
-    }
-
-    /**
-     * @param {string} normalizedAlias
-     */
-    async _getTopicKnowledgeRowByAlias(normalizedAlias) {
-        if (!normalizedAlias) return null;
-        if (this.isPostgres) {
-            const sql = this.toPgQuery(
-                `SELECT * FROM topic_knowledge
-                 WHERE (
-                   CASE
-                     WHEN NULLIF(TRIM(aliases_normalized), '') IS NULL THEN '[]'::jsonb
-                     ELSE NULLIF(TRIM(aliases_normalized), '')::jsonb
-                   END
-                 ) @> json_build_array(?)::jsonb
-                 LIMIT 1`
-            );
-            const res = await this.pool.query(sql, [normalizedAlias]);
-            return res.rows?.[0] || null;
-        }
-        return this.get(
-            `SELECT * FROM topic_knowledge
-             WHERE EXISTS (
-               SELECT 1 FROM json_each(COALESCE(NULLIF(TRIM(aliases_normalized), ''), '[]'))
-               WHERE value = ?
-             )
-             LIMIT 1`,
-            [normalizedAlias]
-        );
-    }
-
-    async getTopicKnowledge(topic) {
-        if (!this.kysely) return null;
-        const normalizedInput = this.normalizeTopic(topic);
-        if (!normalizedInput) return null;
-
-        const canon = resolveCanonicalNormalized(String(topic || '').trim(), (s) => this.normalizeTopic(s));
-        if (canon) {
-            const byCanon = await this.kysely
-                .selectFrom('topic_knowledge')
-                .selectAll()
-                .where('canonical_normalized', '=', canon)
-                .executeTakeFirst();
-            if (byCanon) return this.mapTopicKnowledgeRow(byCanon);
-        }
-
-        const keys = [...new Set(expandNormalizedTopicKeys(normalizedInput, (s) => this.normalizeTopic(s)))].filter(Boolean);
-        if (!keys.length) return null;
-
-        const row = await this.kysely
-            .selectFrom('topic_knowledge')
-            .selectAll()
-            .where('normalized_topic', 'in', keys)
-            .executeTakeFirst();
-
-        if (row) return this.mapTopicKnowledgeRow(row);
-
-        for (const key of keys) {
-            const byAlias = await this._getTopicKnowledgeRowByAlias(key);
-            if (byAlias) return this.mapTopicKnowledgeRow(byAlias);
-        }
-        return null;
-    }
-
-    mapTopicKnowledgeRow(row) {
-        if (!row) return null;
-        return {
-            id: row.id,
-            topic: row.topic,
-            normalizedTopic: row.normalized_topic,
-            knowledge: safeJsonParse(row.knowledge, {}),
-            sourceArticles: safeJsonParse(row.source_articles, []),
-            aliasesNormalized: safeJsonParse(row.aliases_normalized || '[]', []),
-            canonicalNormalized: String(row.canonical_normalized || row.normalized_topic || ''),
-            status: row.status,
-            confidence: Number(row.confidence || 0),
-            createdAt: row.created_at,
-            updatedAt: row.updated_at,
-            lastRefreshedAt: row.last_refreshed_at,
-        };
-    }
-
-    isProtectedTopicKnowledgeStatus(status) {
-        return ['human_reviewed', 'locked', 'verified'].includes(String(status || '').toLowerCase());
-    }
-
-    mapTopicKnowledgeProposalRow(row) {
-        if (!row) return null;
-        return {
-            id: row.id,
-            topic: row.topic,
-            normalizedTopic: row.normalized_topic,
-            knowledge: safeJsonParse(row.knowledge, {}),
-            sourceArticles: safeJsonParse(row.source_articles, []),
-            proposedStatus: row.proposed_status,
-            confidence: Number(row.confidence || 0),
-            reason: row.reason || undefined,
-            createdBy: row.created_by || undefined,
-            status: row.status,
-            reviewedBy: row.reviewed_by || undefined,
-            reviewedAt: row.reviewed_at || undefined,
-            createdAt: row.created_at,
-            updatedAt: row.updated_at,
-        };
-    }
-
-    async listTopicKnowledge({ query = '', status = '', limit = 50, offset = 0 } = {}) {
-        const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 50, 1), 100);
-        const safeOffset = Math.max(parseInt(String(offset), 10) || 0, 0);
-        const q = String(query || '').trim().toLowerCase();
-        const statusFilter = String(status || '').trim();
-        const rows = await this.all(
-            `SELECT * FROM topic_knowledge
-             WHERE (? = '' OR lower(topic) LIKE ?)
-               AND (? = '' OR status = ?)
-             ORDER BY updated_at DESC
-             LIMIT ? OFFSET ?`,
-            [q, `%${q}%`, statusFilter, statusFilter, safeLimit, safeOffset]
-        );
-        const countRow = await this.get(
-            `SELECT COUNT(*) AS count FROM topic_knowledge
-             WHERE (? = '' OR lower(topic) LIKE ?)
-               AND (? = '' OR status = ?)`,
-            [q, `%${q}%`, statusFilter, statusFilter]
-        );
-        return {
-            topics: rows.map((row) => this.mapTopicKnowledgeRow(row)),
-            total: Number(countRow?.count || 0),
-            limit: safeLimit,
-            offset: safeOffset,
-        };
-    }
-
-    async isTopicKnowledgeStale(topic, maxAgeDays = 180) {
-        const row = await this.getTopicKnowledge(topic);
-        if (!row) return true;
-        const refreshed = new Date(row.lastRefreshedAt);
-        const cutoff = new Date(Date.now() - maxAgeDays * 24 * 60 * 60 * 1000);
-        return refreshed < cutoff;
-    }
-
-    async upsertTopicKnowledge(topic, knowledge, sourceArticles = [], status = 'ai_generated', confidence = 0.6) {
-        if (!this.kysely) return null;
-        const trimmed = String(topic || '').trim().slice(0, 240);
-        const normalized = this.normalizeTopic(trimmed);
-        if (!normalized) return null;
-        const canon = resolveCanonicalNormalized(trimmed, (s) => this.normalizeTopic(s));
-
-        const existingForGuard = await this.getTopicKnowledge(trimmed);
-        if (
-            existingForGuard &&
-            this.isProtectedTopicKnowledgeStatus(existingForGuard.status) &&
-            ['ai_generated', 'ai_refreshed', 'pending_review'].includes(String(status || '').toLowerCase())
-        ) {
-            const proposal = await this.createTopicKnowledgeProposal(trimmed, {
-                knowledge,
-                sourceArticles,
-                proposedStatus: status,
-                confidence,
-                reason: 'AI update proposed for protected topic knowledge',
-            });
-            return { ...existingForGuard, protected: true, proposalCreated: Boolean(proposal), proposalId: proposal?.id || null };
-        }
-
-        const now = new Date().toISOString();
-
-        const existingCanon = canon
-            ? await this.kysely.selectFrom('topic_knowledge').selectAll().where('canonical_normalized', '=', canon).executeTakeFirst()
-            : null;
-        const existingNorm = existingCanon
-            ? null
-            : await this.kysely.selectFrom('topic_knowledge').selectAll().where('normalized_topic', '=', normalized).executeTakeFirst();
-        const target = existingCanon || existingNorm;
-
-        const existingKnowledgeObj = target ? safeJsonParse(target.knowledge, {}) : {};
-        const mergedKnowledge = this.mergeVerifiedAnchorsIntoKnowledge(knowledge || {}, existingKnowledgeObj);
-        const aliasesJson = this.buildTopicKnowledgeAliasesJson(trimmed, mergedKnowledge);
-
-        const mergedTopic =
-            target && trimmed.length > String(target.topic || '').length ? trimmed : (target?.topic || trimmed);
-
-        if (target) {
-            await this.kysely
-                .updateTable('topic_knowledge')
-                .set({
-                    topic: String(mergedTopic || '').slice(0, 240),
-                    knowledge: JSON.stringify(mergedKnowledge || {}),
-                    source_articles: JSON.stringify(sourceArticles || []),
-                    aliases_normalized: aliasesJson,
-                    canonical_normalized: canon,
-                    status,
-                    confidence,
-                    updated_at: now,
-                    last_refreshed_at: now,
-                })
-                .where('id', '=', target.id)
-                .execute();
-            return this.getTopicKnowledge(trimmed);
-        }
-
-        await this.kysely
-            .insertInto('topic_knowledge')
-            .values({
-                topic: trimmed,
-                normalized_topic: normalized,
-                canonical_normalized: canon,
-                knowledge: JSON.stringify(mergedKnowledge || {}),
-                source_articles: JSON.stringify(sourceArticles || []),
-                aliases_normalized: aliasesJson,
-                status,
-                confidence,
-                created_at: now,
-                updated_at: now,
-                last_refreshed_at: now,
-            })
-            .execute();
-        return this.getTopicKnowledge(trimmed);
-    }
-
-    async createTopicKnowledgeProposal(topic, {
-        knowledge = {},
-        sourceArticles = [],
-        proposedStatus = 'ai_generated',
-        confidence = 0.5,
-        reason = '',
-        createdBy = null,
-    } = {}) {
-        if (!this.kysely) return null;
-        const normalized = this.normalizeTopic(topic);
-        if (!normalized) return null;
-        const now = new Date().toISOString();
-        const result = await this.kysely
-            .insertInto('topic_knowledge_proposals')
-            .values({
-                topic: String(topic || '').trim().slice(0, 240),
-                normalized_topic: normalized,
-                knowledge: JSON.stringify(knowledge || {}),
-                source_articles: JSON.stringify(Array.isArray(sourceArticles) ? sourceArticles : []),
-                proposed_status: proposedStatus || 'ai_generated',
-                confidence: Math.max(0, Math.min(1, Number(confidence) || 0.5)),
-                reason: reason || null,
-                created_by: createdBy || null,
-                status: 'pending_review',
-                created_at: now,
-                updated_at: now,
-            })
-            .executeTakeFirst();
-        const id = Number(result?.insertId || result?.numInsertedOrUpdatedRows || 0);
-        if (id) return this.getTopicKnowledgeProposal(id);
-        return this.listTopicKnowledgeProposals({ topic, status: 'pending_review', limit: 1 })
-            .then((rows) => rows.proposals[0] || null);
-    }
-
-    async getTopicKnowledgeProposal(id) {
-        if (!this.kysely) return null;
-        const row = await this.kysely
-            .selectFrom('topic_knowledge_proposals')
-            .selectAll()
-            .where('id', '=', Number(id))
-            .executeTakeFirst();
-        return this.mapTopicKnowledgeProposalRow(row);
-    }
-
-    async listTopicKnowledgeProposals({ topic = '', status = 'pending_review', limit = 50, offset = 0 } = {}) {
-        const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 50, 1), 100);
-        const safeOffset = Math.max(parseInt(String(offset), 10) || 0, 0);
-        const normalized = this.normalizeTopic(topic);
-        let query = this.kysely.selectFrom('topic_knowledge_proposals').selectAll();
-        let countQuery = this.kysely.selectFrom('topic_knowledge_proposals').select(({ fn }) => fn.count('id').as('count'));
-        if (normalized) {
-            query = query.where('normalized_topic', '=', normalized);
-            countQuery = countQuery.where('normalized_topic', '=', normalized);
-        }
-        if (status) {
-            query = query.where('status', '=', status);
-            countQuery = countQuery.where('status', '=', status);
-        }
-        const rows = await query
-            .orderBy('created_at', 'desc')
-            .limit(safeLimit)
-            .offset(safeOffset)
-            .execute();
-        const countRow = await countQuery.executeTakeFirst();
-        return {
-            proposals: rows.map((row) => this.mapTopicKnowledgeProposalRow(row)),
-            total: Number(countRow?.count || 0),
-            limit: safeLimit,
-            offset: safeOffset,
-        };
-    }
-
-    async listTopicKnowledgeProposalsForUser(userId, { topic = '', status = 'pending_review', limit = 20 } = {}) {
-        if (!this.kysely || !userId) return { proposals: [], total: 0 };
-        const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 20, 1), 100);
-        const normalized = this.normalizeTopic(topic);
-        let query = this.kysely.selectFrom('topic_knowledge_proposals').selectAll();
-        let countQuery = this.kysely.selectFrom('topic_knowledge_proposals').select(({ fn }) => fn.count('id').as('count'));
-        query = query.where('created_by', '=', userId);
-        countQuery = countQuery.where('created_by', '=', userId);
-        if (normalized) {
-            query = query.where('normalized_topic', '=', normalized);
-            countQuery = countQuery.where('normalized_topic', '=', normalized);
-        }
-        if (status) {
-            query = query.where('status', '=', status);
-            countQuery = countQuery.where('status', '=', status);
-        }
-        const rows = await query
-            .orderBy('created_at', 'desc')
-            .limit(safeLimit)
-            .execute();
-        const countRow = await countQuery.executeTakeFirst();
-        return {
-            proposals: rows.map((row) => this.mapTopicKnowledgeProposalRow(row)),
-            total: Number(countRow?.count || 0),
-        };
-    }
-
-    async approveTopicKnowledgeProposal(id, reviewerId = null) {
-        if (!this.kysely) return null;
-        const proposal = await this.getTopicKnowledgeProposal(id);
-        if (!proposal || proposal.status !== 'pending_review') return null;
-        const live = await this.getTopicKnowledge(proposal.topic);
-        const mergedKnowledge = this.mergeVerifiedAnchorsIntoKnowledge(
-            {
-                ...(proposal.knowledge || {}),
-                proposalApprovedFrom: proposal.id,
-            },
-            live?.knowledge || {}
-        );
-        let updated = await this.updateTopicKnowledge(proposal.topic, {
-            knowledge: mergedKnowledge,
-            sourceArticles: proposal.sourceArticles,
-            status: 'human_reviewed',
-            confidence: Math.max(Number(proposal.confidence || 0), 0.85),
-            editorId: reviewerId,
-        });
-        if (!updated) {
-            updated = await this.upsertTopicKnowledge(
-                proposal.topic,
-                {
-                    ...mergedKnowledge,
-                    reviewedBy: reviewerId || null,
-                    reviewedAt: new Date().toISOString(),
-                },
-                proposal.sourceArticles,
-                'human_reviewed',
-                Math.max(Number(proposal.confidence || 0), 0.85)
-            );
-        }
-        const now = new Date().toISOString();
-        await this.kysely
-            .updateTable('topic_knowledge_proposals')
-            .set({
-                status: 'approved',
-                reviewed_by: reviewerId || null,
-                reviewed_at: now,
-                updated_at: now,
-            })
-            .where('id', '=', Number(id))
-            .execute();
-        return { proposal: await this.getTopicKnowledgeProposal(id), topicKnowledge: updated };
-    }
-
-    async rejectTopicKnowledgeProposal(id, reviewerId = null) {
-        if (!this.kysely) return null;
-        const now = new Date().toISOString();
-        await this.kysely
-            .updateTable('topic_knowledge_proposals')
-            .set({
-                status: 'rejected',
-                reviewed_by: reviewerId || null,
-                reviewed_at: now,
-                updated_at: now,
-            })
-            .where('id', '=', Number(id))
-            .where('status', '=', 'pending_review')
-            .execute();
-        return this.getTopicKnowledgeProposal(id);
-    }
-
-    async updateTopicKnowledge(topic, { knowledge, sourceArticles, status = 'human_edited', confidence = 0.9, editorId = null } = {}) {
-        if (!this.kysely) return null;
-        const existing = await this.getTopicKnowledge(topic);
-        if (!existing) return null;
-        const now = new Date().toISOString();
-        const patch = knowledge && typeof knowledge === 'object' ? knowledge : existing.knowledge || {};
-        const nextKnowledge = {
-            ...this.mergeVerifiedAnchorsIntoKnowledge(patch, existing.knowledge || {}),
-            editedBy: editorId || existing.knowledge?.editedBy || null,
-            editedAt: now,
-        };
-        const aliasesJson = this.buildTopicKnowledgeAliasesJson(existing.topic, nextKnowledge);
-        const canon = resolveCanonicalNormalized(String(existing.topic || '').trim(), (s) => this.normalizeTopic(s));
-        await this.kysely
-            .updateTable('topic_knowledge')
-            .set({
-                knowledge: JSON.stringify(nextKnowledge),
-                source_articles: JSON.stringify(Array.isArray(sourceArticles) ? sourceArticles : existing.sourceArticles || []),
-                aliases_normalized: aliasesJson,
-                canonical_normalized: canon,
-                status,
-                confidence: Math.max(0, Math.min(1, Number(confidence) || 0.9)),
-                updated_at: now,
-            })
-            .where('id', '=', existing.id)
-            .execute();
-        return this.getTopicKnowledge(topic);
-    }
-
-    async appendTopicKnowledgeVerifiedAnchor(topic, { text, articleUid = null, userId = null } = {}) {
-        if (!this.kysely) return null;
-        const existing = await this.getTopicKnowledge(topic);
-        if (!existing) return null;
-        const claim = String(text || '').trim();
-        if (claim.length < 8) return null;
-        const k = { ...(existing.knowledge || {}) };
-        const anchors = Array.isArray(k.verifiedAnchors) ? [...k.verifiedAnchors] : [];
-        const id = `vanch_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
-        anchors.push({
-            id,
-            text: claim.slice(0, 2000),
-            articleUid: articleUid ? String(articleUid).trim().slice(0, 128) : null,
-            verifiedBy: userId ? String(userId) : null,
-            verifiedAt: new Date().toISOString(),
-        });
-        k.verifiedAnchors = anchors;
-        return this.updateTopicKnowledge(topic, {
-            knowledge: k,
-            sourceArticles: existing.sourceArticles,
-            status: existing.status,
-            confidence: existing.confidence,
-            editorId: userId,
-        });
-    }
-
-    async mergeTopicKnowledgeAliases(topic, aliases = [], { createIfMissing = true, reason = 'low_recall_mesh' } = {}) {
-        if (!this.kysely || !topic || !Array.isArray(aliases) || aliases.length === 0) return null;
-        const trimmed = String(topic || '').trim().slice(0, 240);
-        const normalized = this.normalizeTopic(trimmed);
-        if (!normalized) return null;
-
-        const existing = await this.getTopicKnowledge(trimmed);
-        const now = new Date().toISOString();
-        if (existing) {
-            const mergedAliasesJson = this.mergeNormalizedAliasesJson(existing.aliasesNormalized || [], aliases);
-            const nextKnowledge = {
-                ...(existing.knowledge || {}),
-                meshAliasUpdatedAt: now,
-                meshAliasReason: reason,
-            };
-            await this.kysely
-                .updateTable('topic_knowledge')
-                .set({
-                    knowledge: JSON.stringify(nextKnowledge),
-                    aliases_normalized: mergedAliasesJson,
-                    updated_at: now,
-                })
-                .where('id', '=', existing.id)
-                .execute();
-            return this.getTopicKnowledge(trimmed);
-        }
-
-        if (!createIfMissing) return null;
-        const knowledge = {
-            mentorMessage: `Low-recall search expansion placeholder for ${trimmed}. Evidence guide still needs extraction.`,
-            keywords: aliases.slice(0, 20),
-            meshAliasReason: reason,
-            meshAliasUpdatedAt: now,
-        };
-        return this.upsertTopicKnowledge(trimmed, knowledge, [], 'alias_seeded', 0.25);
-    }
-
-    async markTopicKnowledgeReviewed(topic, reviewerId = null) {
-        if (!this.kysely) return null;
-        const now = new Date().toISOString();
-        const existing = await this.getTopicKnowledge(topic);
-        if (!existing) return null;
-        const knowledge = {
-            ...(existing.knowledge || {}),
-            reviewedBy: reviewerId || existing.knowledge?.reviewedBy || null,
-            reviewedAt: now,
-        };
-        const aliasesJson = this.buildTopicKnowledgeAliasesJson(existing.topic, knowledge);
-        const canon = resolveCanonicalNormalized(String(existing.topic || '').trim(), (s) => this.normalizeTopic(s));
-        await this.kysely
-            .updateTable('topic_knowledge')
-            .set({
-                knowledge: JSON.stringify(knowledge),
-                aliases_normalized: aliasesJson,
-                canonical_normalized: canon,
-                status: 'human_reviewed',
-                confidence: Math.max(Number(existing.confidence || 0), 0.85),
-                updated_at: now,
-            })
-            .where('id', '=', existing.id)
-            .execute();
-        return this.getTopicKnowledge(topic);
-    }
-
     // ==========================================
     // Guideline Memory
     // ==========================================
@@ -1269,29 +756,32 @@ class Database {
         const reasoningTags = Array.isArray(attempt.reasoningTags)
             ? attempt.reasoningTags.map((tag) => String(tag || '').trim()).filter(Boolean).slice(0, 8)
             : [];
+        // Named field map — prevents ordering bugs with 18+ positional params
+        const fields = {
+            user_id:            attempt.userId,
+            topic:              attempt.topic,
+            normalized_topic:   normalizedTopic,
+            question_id:        attempt.questionId,
+            question_type:      attempt.questionType,
+            question_text:      attempt.questionText,
+            user_answer:        attempt.userAnswer,
+            correct_answer:     attempt.correctAnswer,
+            is_correct:         attempt.isCorrect ? 1 : 0,
+            time_ms:            attempt.timeMs || null,
+            confidence:         attempt.confidence || null,
+            source_article_uid: attempt.sourceArticleUid || null,
+            study_run_id:       attempt.studyRunId || null,
+            outline_node_id:    attempt.outlineNodeId || null,
+            concept_hash:       conceptHash,
+            claim_key:          attempt.claimKey || null,
+            reasoning_tags:     JSON.stringify(reasoningTags),
+            reasoning_note:     attempt.reasoningNote ? String(attempt.reasoningNote).slice(0, 500) : null,
+        };
+        const cols = Object.keys(fields).join(', ');
+        const placeholders = Object.keys(fields).map(() => '?').join(', ');
         const result = await this.run(
-            `INSERT INTO quiz_attempts (user_id, topic, normalized_topic, question_id, question_type, question_text, user_answer, correct_answer, is_correct, time_ms, confidence, source_article_uid, study_run_id, outline_node_id, concept_hash, claim_key, reasoning_tags, reasoning_note, created_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
-            [
-                attempt.userId,
-                attempt.topic,
-                normalizedTopic,
-                attempt.questionId,
-                attempt.questionType,
-                attempt.questionText,
-                attempt.userAnswer,
-                attempt.correctAnswer,
-                attempt.isCorrect ? 1 : 0,
-                attempt.timeMs || null,
-                attempt.confidence || null,
-                attempt.sourceArticleUid || null,
-                attempt.studyRunId || null,
-                attempt.outlineNodeId || null,
-                conceptHash,
-                attempt.claimKey || null,
-                JSON.stringify(reasoningTags),
-                attempt.reasoningNote ? String(attempt.reasoningNote).slice(0, 500) : null,
-            ]
+            `INSERT INTO quiz_attempts (${cols}, created_at) VALUES (${placeholders}, datetime('now'))`,
+            Object.values(fields)
         );
         return { id: result.id, conceptHash, ...attempt };
     }
@@ -3179,329 +2669,6 @@ class Database {
     }
 
     // ==========================================
-    // User Authentication Operations
-    // ==========================================
-
-    async createUser(user) {
-        if (!this.kysely) return;
-        return this.kysely
-            .insertInto('users')
-            .values(user)
-            .onConflict(oc => oc.column('email').doUpdateSet({ updated_at: new Date().toISOString() }))
-            .execute();
-    }
-
-    async getUserByEmail(email) {
-        if (!this.kysely) return null;
-        return this.kysely
-            .selectFrom('users')
-            .selectAll()
-            .where('email', '=', email)
-            .executeTakeFirst();
-    }
-
-    async getUserById(id) {
-        if (!this.kysely) return null;
-        return this.kysely
-            .selectFrom('users')
-            .selectAll()
-            .where('id', '=', id)
-            .executeTakeFirst();
-    }
-
-    async updateUser(id, updates) {
-        if (!this.kysely) return { changes: 0 };
-        const result = await this.kysely
-            .updateTable('users')
-            .set({ ...updates, updated_at: new Date().toISOString() })
-            .where('id', '=', id)
-            .executeTakeFirst();
-        return { changes: Number(result.numUpdatedRows) };
-    }
-
-    // ==========================================
-    // Saved Articles (User-based)
-    // ==========================================
-
-    async saveArticleToUser(userId, article) {
-        if (!this.kysely) return;
-        return this.kysely
-            .insertInto('user_saved_articles')
-            .values({
-                user_id: userId,
-                article_id: article.uid,
-                article_data: JSON.stringify(article),
-                created_at: new Date().toISOString()
-            })
-            .execute();
-    }
-
-    async getUserSavedArticles(userId) {
-        if (!this.kysely) return [];
-        const rows = await this.kysely
-            .selectFrom('user_saved_articles')
-            .selectAll()
-            .where('user_id', '=', userId)
-            .orderBy('created_at', 'desc')
-            .execute();
-
-        return rows.map(row => ({
-            ...safeJsonParse(row.article_data, {}),
-            _savedAt: row.created_at
-        }));
-    }
-
-    async unsaveArticleFromUser(userId, articleId) {
-        return this.run(
-            `DELETE FROM user_saved_articles 
-             WHERE user_id = ? AND article_id = ?`,
-            [userId, articleId]
-        );
-    }
-
-    // ==========================================
-    // Saved Articles (Team-based)
-    // ==========================================
-
-    async saveArticleToTeam(teamId, userId, article) {
-        const now = new Date().toISOString();
-        return this.run(
-            `INSERT INTO team_saved_articles
-             (team_id, article_id, article_data, saved_by, created_at, updated_at)
-             VALUES (?, ?, ?, ?, ?, ?)
-             ON CONFLICT(team_id, article_id) DO UPDATE SET
-                article_data = excluded.article_data,
-                saved_by = excluded.saved_by,
-                updated_at = excluded.updated_at`,
-            [teamId, article.uid, JSON.stringify(article), userId, now, now]
-        );
-    }
-
-    async getTeamSavedArticles(teamId) {
-        const rows = await this.all(
-            `SELECT * FROM team_saved_articles
-             WHERE team_id = ?
-             ORDER BY created_at DESC`,
-            [teamId]
-        );
-
-        return rows.map(row => ({
-            ...safeJsonParse(row.article_data, {}),
-            _savedAt: row.created_at,
-            _savedBy: row.saved_by,
-            _ownerType: 'team',
-            _teamId: row.team_id
-        }));
-    }
-
-    async unsaveArticleFromTeam(teamId, articleId) {
-        return this.run(
-            `DELETE FROM team_saved_articles
-             WHERE team_id = ? AND article_id = ?`,
-            [teamId, articleId]
-        );
-    }
-
-    // ==========================================
-    // Search Alerts
-    // ==========================================
-
-    async createSearchAlert(userId, alert) {
-        return this.run(
-            `INSERT INTO search_alerts
-             (user_id, query, frequency, sources, email, active, created_at)
-             VALUES (?, ?, ?, ?, ?, 1, datetime('now'))`,
-            [userId, alert.query, alert.frequency || 'weekly', alert.sources || JSON.stringify(['pubmed']), alert.email || null]
-        );
-    }
-
-    async getUserSearchAlerts(userId) {
-        return this.all(
-            `SELECT * FROM search_alerts
-             WHERE user_id = ? AND active = 1
-             ORDER BY created_at DESC`,
-            [userId]
-        );
-    }
-
-    async deactivateSearchAlert(userId, alertId) {
-        return this.run(
-            `UPDATE search_alerts 
-             SET active = 0 
-             WHERE user_id = ? AND id = ?`,
-            [userId, alertId]
-        );
-    }
-
-    // ==========================================
-    // Team Workspace
-    // ==========================================
-
-    async createTeam(team) {
-        return this.run(
-            `INSERT INTO teams (id, name, slug, owner_id, plan, member_limit, created_at, updated_at)
-             VALUES (?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))`,
-            [team.id, team.name, team.slug, team.ownerId, team.plan || 'free', team.memberLimit || 3]
-        );
-    }
-
-    async getTeamById(teamId) {
-        return this.get(`SELECT * FROM teams WHERE id = ?`, [teamId]);
-    }
-
-    async getUserTeams(userId) {
-        return this.all(
-            `SELECT t.*, COUNT(tm.id) as member_count
-             FROM teams t
-             LEFT JOIN team_members tm ON t.id = tm.team_id
-             WHERE t.owner_id = ? OR t.id IN (
-                 SELECT team_id FROM team_members WHERE user_id = ?
-             )
-             GROUP BY t.id
-             ORDER BY t.created_at DESC`,
-            [userId, userId]
-        );
-    }
-
-    async updateTeam(teamId, updates) {
-        const fields = [];
-        const values = [];
-        if (updates.name !== undefined) { fields.push('name = ?'); values.push(updates.name); }
-        if (updates.plan !== undefined) { fields.push('plan = ?'); values.push(updates.plan); }
-        if (updates.memberLimit !== undefined) { fields.push('member_limit = ?'); values.push(updates.memberLimit); }
-        if (fields.length === 0) return { changes: 0 };
-        fields.push('updated_at = ?'); values.push(new Date().toISOString());
-        values.push(teamId);
-        return this.run(`UPDATE teams SET ${fields.join(', ')} WHERE id = ?`, values);
-    }
-
-    async deleteTeam(teamId) {
-        return this.run(`DELETE FROM teams WHERE id = ?`, [teamId]);
-    }
-
-    async addTeamMember(teamId, userId, role = 'member') {
-        return this.run(
-            `INSERT INTO team_members (team_id, user_id, role, joined_at)
-             VALUES (?, ?, ?, datetime('now'))`,
-            [teamId, userId, role]
-        );
-    }
-
-    async getTeamMembers(teamId) {
-        return this.all(
-            `SELECT tm.*, u.name, u.email
-             FROM team_members tm
-             JOIN users u ON tm.user_id = u.id
-             WHERE tm.team_id = ?
-             ORDER BY tm.joined_at ASC`,
-            [teamId]
-        );
-    }
-
-    async getTeamRoleForUser(teamId, userId) {
-        const team = await this.getTeamById(teamId);
-        if (!team) return null;
-        if (team.owner_id === userId) return 'owner';
-
-        const member = await this.get(
-            `SELECT role FROM team_members WHERE team_id = ? AND user_id = ?`,
-            [teamId, userId]
-        );
-        return member?.role || null;
-    }
-
-    async updateTeamMemberRole(teamId, userId, role) {
-        return this.run(
-            `UPDATE team_members SET role = ? WHERE team_id = ? AND user_id = ?`,
-            [role, teamId, userId]
-        );
-    }
-
-    async removeTeamMember(teamId, userId) {
-        return this.run(
-            `DELETE FROM team_members WHERE team_id = ? AND user_id = ?`,
-            [teamId, userId]
-        );
-    }
-
-    async createTeamCollection(collection) {
-        return this.run(
-            `INSERT INTO team_collections (id, team_id, name, description, created_by, created_at, updated_at)
-             VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now'))`,
-            [collection.id, collection.teamId, collection.name, collection.description || null, collection.createdBy]
-        );
-    }
-
-    async getTeamCollections(teamId) {
-        return this.all(
-            `SELECT tc.*, COUNT(tca.id) as article_count
-             FROM team_collections tc
-             LEFT JOIN team_collection_articles tca ON tc.id = tca.collection_id
-             WHERE tc.team_id = ?
-             GROUP BY tc.id
-             ORDER BY tc.updated_at DESC`,
-            [teamId]
-        );
-    }
-
-    async getTeamCollection(collectionId) {
-        return this.get(`SELECT * FROM team_collections WHERE id = ?`, [collectionId]);
-    }
-
-    async deleteTeamCollection(collectionId) {
-        return this.run(`DELETE FROM team_collections WHERE id = ?`, [collectionId]);
-    }
-
-    async addArticleToTeamCollection(collectionId, article, addedBy) {
-        return this.run(
-            `INSERT INTO team_collection_articles (collection_id, article_id, article_data, added_by, added_at, notes)
-             VALUES (?, ?, ?, ?, datetime('now'), ?)`,
-            [collectionId, article.uid, JSON.stringify(article), addedBy, article.notes || null]
-        );
-    }
-
-    async getTeamCollectionArticles(collectionId) {
-        return this.all(
-            `SELECT * FROM team_collection_articles WHERE collection_id = ? ORDER BY added_at DESC`,
-            [collectionId]
-        );
-    }
-
-    async removeArticleFromTeamCollection(collectionId, articleId) {
-        return this.run(
-            `DELETE FROM team_collection_articles WHERE collection_id = ? AND article_id = ?`,
-            [collectionId, articleId]
-        );
-    }
-
-    async createTeamInvitation(invitation) {
-        return this.run(
-            `INSERT INTO team_invitations (id, team_id, email, role, token, status, expires_at, created_at)
-             VALUES (?, ?, ?, ?, ?, 'pending', ?, datetime('now'))`,
-            [invitation.id, invitation.teamId, invitation.email, invitation.role || 'member', invitation.token, invitation.expiresAt]
-        );
-    }
-
-    async getTeamInvitationByToken(token) {
-        return this.get(`SELECT * FROM team_invitations WHERE token = ? AND status = 'pending'`, [token]);
-    }
-
-    async acceptTeamInvitation(token, userId) {
-        const now = new Date().toISOString();
-        // Fetch invitation BEFORE updating so we have the details after status changes
-        const invitation = await this.getTeamInvitationByToken(token);
-        if (!invitation) return null;
-
-        const updateRes = await this.run(
-            `UPDATE team_invitations SET status = 'accepted', accepted_at = ? WHERE token = ? AND status = 'pending' AND expires_at > ?`,
-            [now, token, now]
-        );
-        if (!updateRes.changes) return null;
-        await this.addTeamMember(invitation.team_id, userId, invitation.role);
-        return invitation;
-    }
-
-    // ==========================================
     // Analytics Operations
     // ==========================================
 
@@ -3914,20 +3081,26 @@ class Database {
 
     async saveSynthesisSnapshot(topic, synthesis, articleUids = []) {
         const normalized = this.normalizeTopic(topic);
+        const uids = Array.isArray(articleUids) ? articleUids : [];
         const consensusText = String(synthesis?.consensus || synthesis?.overallAnswer || '').slice(0, 2000);
         const keyFindingCount = Array.isArray(synthesis?.keyFindings) ? synthesis.keyFindings.length : 0;
+        const generatedAt = new Date().toISOString();
+        const claimFingerprint = buildSynthesisSnapshotFingerprint(synthesis);
         await this.run(
             `INSERT INTO synthesis_snapshots
-               (normalized_topic, topic, consensus_text, evidence_grade, key_finding_count, article_count, article_uids, generated_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+               (normalized_topic, topic, consensus_text, evidence_grade, key_finding_count, article_count, article_uids, claim_fingerprint, claim_texts_json, generated_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 normalized,
                 String(topic).slice(0, 200),
                 consensusText,
                 String(synthesis?.evidenceGrade || 'MODERATE'),
                 keyFindingCount,
-                Array.isArray(articleUids) ? articleUids.length : 0,
-                JSON.stringify(Array.isArray(articleUids) ? articleUids.slice(0, 20) : []),
+                uids.length,
+                JSON.stringify(uids.slice(0, 20)),
+                claimFingerprint.fingerprint,
+                JSON.stringify(claimFingerprint.claims),
+                generatedAt,
             ]
         );
     }
@@ -4311,6 +3484,12 @@ class Database {
 // Methods live in mixins until monolith is fully composed via build-layer.
 const _m02Proto = require('./mixins/m02-guidelines-learning-quiz-adaptive')(class {}).prototype;
 const _m08Proto = require('./mixins/m08-review-audit-billing-cpd')(class {}).prototype;
+const _m09Proto = require('./mixins/m09-claim-lifecycle')(class {}).prototype;
+const _m10Proto = require('./mixins/m10-advanced-learning')(class {}).prototype;
+const _m11Proto = require('./mixins/m11-llm-usage')(class {}).prototype;
+const _m12Proto = require('./mixins/m12-topic-knowledge')(class {}).prototype;
+const _m13Proto = require('./mixins/m13-curriculum-seed')(class {}).prototype;
+const _m14Proto = require('./mixins/m14-users-teams')(class {}).prototype;
 const _dbMethodsFromMixins = [
     'getQuizAttemptsForClaimKey',
     'listPortfolioReflections',
@@ -4331,9 +3510,102 @@ const _dbMethodsFromMixins = [
     'getTeachingObjectStats',
     'getEvidenceJudgementProfile',
     'listPracticeChangingTeachingObjects',
+    'getAdminClaimObservability',
+    'getClinicalQualityQueueCounts',
+    'listClinicalQualityReviewClaims',
+    'logClaimStatusChange',
+    'enqueueClaimRegeneration',
+    'listPendingClaimRegenerations',
+    'updateClaimRegenerationStatus',
+    'getClaimStatusHistorySince',
+    'upsertUserTopicReview',
+    'getUserTopicReview',
+    'listClaimRegenerationForTopic',
+    'updateTeachingClaimCuratorMetadata',
+    'saveClaimContradictionSearch',
+    'createLearningRound',
+    'getLearningRound',
+    'completeLearningRound',
+    'insertGuidelineWatchEvent',
+    'listGuidelineWatchEvents',
+    'logLlmUsage',
+    'getAdminLlmCostDashboard',
+    // m12: topic knowledge
+    'normalizeTopic',
+    'buildTopicKnowledgeAliasesJson',
+    'mergeNormalizedAliasesJson',
+    'mergeVerifiedAnchorsIntoKnowledge',
+    '_getTopicKnowledgeRowByAlias',
+    '_getTopicKnowledgeRowByAliases',
+    'getTopicKnowledge',
+    'mapTopicKnowledgeRow',
+    'isProtectedTopicKnowledgeStatus',
+    'mapTopicKnowledgeProposalRow',
+    'listTopicKnowledge',
+    'isTopicKnowledgeStale',
+    'upsertTopicKnowledge',
+    'createTopicKnowledgeProposal',
+    'getTopicKnowledgeProposal',
+    'listTopicKnowledgeProposals',
+    'listTopicKnowledgeProposalsForUser',
+    'approveTopicKnowledgeProposal',
+    'rejectTopicKnowledgeProposal',
+    'updateTopicKnowledge',
+    'appendTopicKnowledgeVerifiedAnchor',
+    'mergeTopicKnowledgeAliases',
+    'markTopicKnowledgeReviewed',
+    // m13: curriculum seed
+    'mapCurriculumSeedTopicRow',
+    'ensureCurriculum',
+    'ensureCurriculumBlock',
+    'upsertCurriculumSeedTopic',
+    'importCurriculumSeedTopics',
+    'listCurriculumSeedTopics',
+    'listCurriculumSeedCandidates',
+    'getCurriculumSeedStatusCounts',
+    'getAdminRuntimeSetting',
+    'setAdminRuntimeSetting',
+    'getCurriculumSeedUsageForDate',
+    'incrementCurriculumSeedUsage',
+    'getCurriculumSeedTopic',
+    'updateCurriculumSeedStatus',
+    // m14: users, teams & sessions
+    'createUser',
+    'getUserByEmail',
+    'getUserById',
+    'updateUser',
+    'saveArticleToUser',
+    'getUserSavedArticles',
+    'unsaveArticleFromUser',
+    'saveArticleToTeam',
+    'getTeamSavedArticles',
+    'unsaveArticleFromTeam',
+    'createSearchAlert',
+    'getUserSearchAlerts',
+    'deactivateSearchAlert',
+    'createTeam',
+    'getTeamById',
+    'getUserTeams',
+    'updateTeam',
+    'deleteTeam',
+    'addTeamMember',
+    'getTeamMembers',
+    'getTeamRoleForUser',
+    'updateTeamMemberRole',
+    'removeTeamMember',
+    'createTeamCollection',
+    'getTeamCollections',
+    'getTeamCollection',
+    'deleteTeamCollection',
+    'addArticleToTeamCollection',
+    'getTeamCollectionArticles',
+    'removeArticleFromTeamCollection',
+    'createTeamInvitation',
+    'getTeamInvitationByToken',
+    'acceptTeamInvitation',
 ];
 for (const name of _dbMethodsFromMixins) {
-  const fn = _m08Proto[name] || _m02Proto[name];
+  const fn = _m12Proto[name] || _m13Proto[name] || _m14Proto[name] || _m11Proto[name] || _m10Proto[name] || _m09Proto[name] || _m08Proto[name] || _m02Proto[name];
   if (typeof fn === 'function' && typeof Database.prototype[name] !== 'function') {
     Database.prototype[name] = fn;
   }
@@ -4346,6 +3618,51 @@ function toPgVectorLiteral(embedding) {
     return `[${embedding.map((n) => Number(n).toFixed(6)).join(',')}]`;
 }
 
-const singleton = new Database();
+// ─── Topic Cross-links ────────────────────────────────────────────────────────
+
+Database.prototype.upsertTopicCrosslink = async function upsertTopicCrosslink({
+    topicA, normalizedTopicA, topicB, normalizedTopicB,
+    linkType, sharedEvidence, strength, aiRationale,
+}) {
+    // Ensure canonical alphabetical order so (A,B) and (B,A) map to the same row
+    let tA = topicA, ntA = normalizedTopicA, tB = topicB, ntB = normalizedTopicB;
+    if (ntA > ntB) {
+        [tA, ntA, tB, ntB] = [tB, ntB, tA, ntA];
+    }
+    await this.run(
+        `INSERT OR IGNORE INTO topic_crosslinks
+         (topic_a, normalized_topic_a, topic_b, normalized_topic_b, link_type, shared_evidence, strength, ai_rationale)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [tA, ntA, tB, ntB, linkType,
+         sharedEvidence != null ? String(sharedEvidence) : null,
+         strength != null ? Number(strength) : 0.5,
+         aiRationale != null ? String(aiRationale) : null]
+    );
+};
+
+Database.prototype.getTopicCrosslinks = async function getTopicCrosslinks(normalizedTopic, { limit = 10 } = {}) {
+    const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 10, 1), 50);
+    const rows = await this.all(
+        `SELECT * FROM topic_crosslinks
+         WHERE normalized_topic_a = ? OR normalized_topic_b = ?
+         ORDER BY strength DESC
+         LIMIT ?`,
+        [normalizedTopic, normalizedTopic, safeLimit]
+    );
+    return rows.map((row) => {
+        const isA = row.normalized_topic_a === normalizedTopic;
+        return {
+            topic: isA ? row.topic_b : row.topic_a,
+            normalizedTopic: isA ? row.normalized_topic_b : row.normalized_topic_a,
+            linkType: row.link_type,
+            sharedEvidence: row.shared_evidence ? (() => { try { return JSON.parse(row.shared_evidence); } catch { return row.shared_evidence; } })() : null,
+            strength: row.strength,
+            aiRationale: row.ai_rationale,
+            createdAt: row.created_at,
+        };
+    });
+};
+
+const singleton = new Database(process.env.DATABASE_PATH || './database/app.db');
 singleton.Database = Database;
 module.exports = singleton;

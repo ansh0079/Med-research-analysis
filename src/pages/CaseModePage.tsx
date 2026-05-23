@@ -6,6 +6,30 @@ import { useAuth } from '@contexts/AuthContext';
 import { api } from '@services/api';
 import { downloadText } from '@services/exportArticles';
 import type { Article, CaseModeResult, CaseLearningMode, QuizQuestion, QuestionType, TeachingVignetteResult } from '@types';
+import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
+import { VerificationBadge } from '@components/ui/VerificationBadge';
+
+type CaseEvidenceBrief = {
+  bestEvidence?: string;
+  applicabilityLimits?: string[];
+  guidelinePosition?: string;
+  practicalDecisionPoint?: string;
+  keyUncertainty?: string;
+  quizQuestion?: {
+    question?: string;
+    options?: string[];
+    correctAnswer?: string;
+    explanation?: string;
+  };
+};
+
+type CaseToEvidenceResult = {
+  topic: string;
+  clinicalQuestion: string;
+  articles: Article[];
+  brief: CaseEvidenceBrief;
+  relatedClaims?: Array<{ claimKey?: string; claimText?: string; verificationStatus?: string; guidelineAlignment?: string | null }>;
+};
 
 const REVIEW_PREFILL_KEY = 'med_review_prefill';
 const CASE_PREFILL_KEY = 'med_case_prefill';
@@ -244,8 +268,11 @@ export const CaseModePage: React.FC = () => {
     : ''
   );
   const [loading, setLoading] = React.useState(false);
+  const [evidenceLoading, setEvidenceLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [evidenceError, setEvidenceError] = React.useState<string | null>(null);
   const [result, setResult] = React.useState<CaseModeResult | null>(null);
+  const [evidenceResult, setEvidenceResult] = React.useState<CaseToEvidenceResult | null>(null);
   const [prefillTopic, setPrefillTopic] = React.useState<string | null>(initialUrlTopic);
   const [caseSeedArticles, setCaseSeedArticles] = React.useState<Partial<Article>[] | null>(null);
   const [autoGenerateTeachingCase, setAutoGenerateTeachingCase] = React.useState(false);
@@ -598,6 +625,7 @@ export const CaseModePage: React.FC = () => {
     const payload = buildPayload();
     if (!payload.trim() || isOverLimit) return;
     setLoading(true); setError(null); setResult(null);
+    setEvidenceResult(null);
     try {
       const response = await api.analyzeCase(payload, 'auto', {
         topic: prefillTopic || undefined,
@@ -612,6 +640,50 @@ export const CaseModePage: React.FC = () => {
       setLoading(false);
     }
   };
+
+  const runCaseToEvidence = async () => {
+    const payload = buildPayload();
+    if (!payload.trim() || isOverLimit) return;
+    setEvidenceLoading(true);
+    setEvidenceError(null);
+    setEvidenceResult(null);
+    setResult(null);
+    try {
+      const response = await api.getCaseToEvidence(
+        payload,
+        prefillTopic || '',
+        (caseSeedArticles || []) as Article[]
+      );
+      setEvidenceResult({
+        topic: response.topic || prefillTopic || 'Clinical case',
+        clinicalQuestion: payload,
+        articles: response.articles || [],
+        brief: (response.brief || {}) as CaseEvidenceBrief,
+        relatedClaims: (response.relatedClaims || []) as CaseToEvidenceResult['relatedClaims'],
+      });
+      recordCaseAttempt('analysis', payload);
+    } catch (err) {
+      setEvidenceError(err instanceof Error ? err.message : 'Case-to-evidence brief failed');
+    } finally {
+      setEvidenceLoading(false);
+    }
+  };
+
+  const evidenceQuizMcqs: QuizQuestion[] = React.useMemo(() => {
+    const q = evidenceResult?.brief?.quizQuestion;
+    if (!q?.question || !Array.isArray(q.options) || !q.options.length) return [];
+    const letter = String(q.correctAnswer || 'A').trim().charAt(0).toUpperCase();
+    return [{
+      id: 'case-evidence-quiz-1',
+      question: q.question,
+      options: q.options.map((opt, i) => `${String.fromCharCode(65 + i)}: ${opt}`),
+      correctAnswer: /^[A-D]$/i.test(letter) ? letter : 'A',
+      explanation: q.explanation || evidenceResult?.brief?.keyUncertainty || '',
+      difficulty: 'medium',
+      type: 'multiple_choice',
+      questionType: 'clinical_application',
+    }];
+  }, [evidenceResult]);
 
   return (
     <div className="min-h-screen aurora-bg">
@@ -931,15 +1003,20 @@ export const CaseModePage: React.FC = () => {
               {caseText && (
                 <button type="button" onClick={() => {
                   setStructuredCase({ age: '', sex: '', symptoms: '', labs: '', medications: '', comorbidities: '' });
-                  setCaseText(''); setResult(null); setError(null);
+                  setCaseText(''); setResult(null); setEvidenceResult(null); setError(null); setEvidenceError(null);
                 }} className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
                   Clear
                 </button>
               )}
+              <Button variant="secondary" size="sm" onClick={runCaseToEvidence}
+                disabled={!buildPayload().trim() || isOverLimit || loading} isLoading={evidenceLoading}
+                leftIcon={evidenceLoading ? undefined : <i className="fas fa-bolt text-[10px]" />}>
+                {evidenceLoading ? 'Building brief…' : 'Evidence brief'}
+              </Button>
               <Button variant="gradient" size="sm" onClick={runAnalysis}
-                disabled={!buildPayload().trim() || isOverLimit} isLoading={loading}
+                disabled={!buildPayload().trim() || isOverLimit || evidenceLoading} isLoading={loading}
                 leftIcon={loading ? undefined : <i className="fas fa-stethoscope text-[10px]" />}>
-                {loading ? 'Analysing…' : 'Analyse Case Evidence'}
+                {loading ? 'Analysing…' : 'Full case analysis'}
               </Button>
             </div>
           </div>
@@ -950,6 +1027,13 @@ export const CaseModePage: React.FC = () => {
               Research-assistant output only. Do not enter identifiable patient data. Verify all suggestions against local guidelines and specialist review.
             </p>
           </div>
+
+          {evidenceError && (
+            <div className="flex items-center gap-2 px-3 py-2.5 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/50 rounded-xl">
+              <i className="fas fa-exclamation-circle text-red-400 text-xs shrink-0" />
+              <p className="text-sm text-red-600 dark:text-red-300">{evidenceError}</p>
+            </div>
+          )}
 
           {error && (() => {
             if (error === 'AUTH_REQUIRED') {
@@ -979,6 +1063,93 @@ export const CaseModePage: React.FC = () => {
             );
           })()}
         </div>
+
+        {evidenceResult && (
+          <div className="neo-card rounded-2xl p-5 space-y-5 animate-fade-in">
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-slate-700/60">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-teal-600 dark:text-teal-400">Case-to-evidence brief</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{evidenceResult.topic}</p>
+              </div>
+              <ClinicalSafetyNotice status="synthesis_inferred" showDisclaimer={false} />
+            </div>
+
+            {evidenceResult.brief.bestEvidence && (
+              <div className="rounded-xl border border-indigo-100 bg-indigo-50/70 p-4 dark:border-indigo-900/40 dark:bg-indigo-950/20">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-indigo-500 mb-2">Best evidence</p>
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{evidenceResult.brief.bestEvidence}</p>
+              </div>
+            )}
+
+            {evidenceResult.brief.applicabilityLimits && evidenceResult.brief.applicabilityLimits.length > 0 && (
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 mb-2">Applicability limits</p>
+                <ul className="space-y-1.5">
+                  {evidenceResult.brief.applicabilityLimits.map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-300">
+                      <i className="fas fa-triangle-exclamation text-amber-500 mt-0.5 shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {evidenceResult.brief.guidelinePosition && (
+              <div className="rounded-xl border border-blue-100 bg-blue-50/60 p-4 dark:border-blue-900/40 dark:bg-blue-950/20">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2">Guideline position</p>
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{evidenceResult.brief.guidelinePosition}</p>
+              </div>
+            )}
+
+            {evidenceResult.brief.practicalDecisionPoint && (
+              <div className="rounded-xl border border-emerald-100 bg-emerald-50/60 p-4 dark:border-emerald-900/40 dark:bg-emerald-950/20">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-2">Practical decision point</p>
+                <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">{evidenceResult.brief.practicalDecisionPoint}</p>
+              </div>
+            )}
+
+            {evidenceResult.brief.keyUncertainty && (
+              <p className="text-xs text-slate-500 dark:text-slate-400 italic border-l-2 border-amber-400 pl-3">
+                Key uncertainty: {evidenceResult.brief.keyUncertainty}
+              </p>
+            )}
+
+            {evidenceResult.relatedClaims && evidenceResult.relatedClaims.length > 0 && (
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Related teaching claims</p>
+                <ul className="space-y-2">
+                  {evidenceResult.relatedClaims.slice(0, 4).map((c) => (
+                    <li key={c.claimKey} className="text-xs text-slate-600 dark:text-slate-300 flex flex-wrap items-start gap-2">
+                      <span className="flex-1">{c.claimText}</span>
+                      {c.verificationStatus && <VerificationBadge status={c.verificationStatus} />}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {evidenceQuizMcqs.length > 0 && (
+              <div className="pt-3 border-t border-slate-100 dark:border-slate-700/60">
+                <CaseMCQs mcqs={evidenceQuizMcqs} />
+              </div>
+            )}
+
+            {evidenceResult.articles.length > 0 && (
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Literature ({evidenceResult.articles.length})</p>
+                <ol className="space-y-1.5">
+                  {evidenceResult.articles.slice(0, 6).map((cite, i) => (
+                    <li key={cite.uid ?? i} className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                      <span className="font-mono text-indigo-500 mr-1">{i + 1}.</span>
+                      {cite.title}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Results */}
         {result && (

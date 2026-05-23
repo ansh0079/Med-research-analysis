@@ -267,10 +267,18 @@ CREATE TABLE IF NOT EXISTS curriculum_topics (
     block_id INTEGER NOT NULL REFERENCES curriculum_blocks(id) ON DELETE CASCADE,
     display_name TEXT NOT NULL,
     suggested_query TEXT NOT NULL,
-    sort_order INTEGER NOT NULL DEFAULT 0
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    priority TEXT NOT NULL DEFAULT 'medium',
+    volatility TEXT NOT NULL DEFAULT 'moderate',
+    seed_status TEXT NOT NULL DEFAULT 'not_seeded',
+    last_seeded_at TEXT,
+    last_synthesis_at TEXT,
+    claim_count INTEGER NOT NULL DEFAULT 0,
+    review_due_at TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_curriculum_topics_block ON curriculum_topics(block_id, sort_order);
+CREATE INDEX IF NOT EXISTS idx_curriculum_topics_seed_status ON curriculum_topics(seed_status, priority, volatility);
 
 CREATE TABLE IF NOT EXISTS user_curriculum_progress (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -373,6 +381,23 @@ CREATE TABLE IF NOT EXISTS ai_generation_jobs (
 
 CREATE INDEX IF NOT EXISTS idx_ai_generation_jobs_status ON ai_generation_jobs(status, updated_at);
 CREATE INDEX IF NOT EXISTS idx_ai_generation_jobs_type_topic ON ai_generation_jobs(job_type, topic);
+
+CREATE TABLE IF NOT EXISTS synthesis_snapshots (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    normalized_topic TEXT NOT NULL,
+    topic TEXT NOT NULL,
+    consensus_text TEXT NOT NULL,
+    evidence_grade TEXT NOT NULL DEFAULT 'MODERATE',
+    key_finding_count INTEGER NOT NULL DEFAULT 0,
+    article_count INTEGER NOT NULL DEFAULT 0,
+    article_uids TEXT NOT NULL DEFAULT '[]',
+    claim_fingerprint TEXT,
+    claim_texts_json TEXT NOT NULL DEFAULT '[]',
+    generated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_synthesis_snapshots_topic
+    ON synthesis_snapshots(normalized_topic, generated_at DESC);
 
 CREATE TABLE IF NOT EXISTS teaching_objects (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -686,3 +711,22 @@ CREATE INDEX IF NOT EXISTS idx_learning_scheduler_runs_started
     ON learning_scheduler_runs(run_type, started_at DESC);
 CREATE INDEX IF NOT EXISTS idx_learning_scheduler_runs_status
     ON learning_scheduler_runs(status, started_at DESC);
+
+CREATE TABLE IF NOT EXISTS admin_runtime_settings (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL DEFAULT '{}',
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS curriculum_seed_usage_daily (
+    date TEXT PRIMARY KEY,
+    topics_attempted INTEGER NOT NULL DEFAULT 0,
+    topics_seeded INTEGER NOT NULL DEFAULT 0,
+    topics_failed INTEGER NOT NULL DEFAULT 0,
+    synopses_generated INTEGER NOT NULL DEFAULT 0,
+    estimated_cost_usd REAL NOT NULL DEFAULT 0,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_curriculum_seed_usage_daily_updated
+    ON curriculum_seed_usage_daily(updated_at DESC);

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigatePage } from '@contexts/SearchContext';
 import { api } from '@services/api';
 import type { AgentGuidance, LearningHealthResponse, TeachingClaimReviewItem, TopicKnowledge } from '@types';
+import { ClaimTrustLadder, trustLadderFromVerificationStatus } from '@components/learning/ClaimTrustLadder';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -528,6 +529,8 @@ function LearningHealthPanel({ health, loading, error, onRefresh }: {
 function claimStatusStyle(status: string) {
   if (status === 'human_reviewed') return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300';
   if (status === 'guideline_supported') return 'bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300';
+  if (status === 'full_text_available') return 'bg-teal-100 text-teal-700 dark:bg-teal-950/40 dark:text-teal-300';
+  if (status === 'guideline_uncertain') return 'bg-sky-100 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300';
   if (status === 'guideline_conflict') return 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-300';
   if (status === 'stale_needs_refresh') return 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300';
   if (status === 'agent_draft') return 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
@@ -536,6 +539,7 @@ function claimStatusStyle(status: string) {
 }
 
 const FLAG_REASONS = [
+  { value: 'guideline_uncertain', label: 'Guideline overlap uncertain' },
   { value: 'guideline_conflict', label: 'Conflicts with guideline' },
   { value: 'stale_needs_refresh', label: 'Stale — needs refresh' },
   { value: 'unverified', label: 'Unverified / unsupported' },
@@ -546,12 +550,14 @@ function ClaimCard({
   claim,
   onUpdate,
   onGuidelineCheck,
+  onCuratorMeta,
 }: {
   claim: TeachingClaimReviewItem;
   onUpdate: (claim: TeachingClaimReviewItem, verificationStatus: string, opts?: { claimText?: string; verificationReason?: string }) => void;
   onGuidelineCheck: (claim: TeachingClaimReviewItem) => void;
+  onCuratorMeta?: (claim: TeachingClaimReviewItem, patch: Record<string, boolean | string>) => void;
 }) {
-  const [mode, setMode] = React.useState<'idle' | 'flag' | 'edit'>('idle');
+  const [mode, setMode] = React.useState<'idle' | 'flag' | 'edit' | 'expert'>('idle');
   const [editText, setEditText] = React.useState(claim.claimText);
   const [flagReason, setFlagReason] = React.useState(FLAG_REASONS[0].value);
   const [busy, setBusy] = React.useState(false);
@@ -584,6 +590,7 @@ function ClaimCard({
         <span className="text-[10px] text-slate-400">{claim.objectType || 'claim'} · {claim.topic || claim.normalizedTopic || 'no topic'}</span>
         {claim.quizAttempts ? <span className="text-[10px] text-slate-400">{claim.quizCorrect || 0}/{claim.quizAttempts} quiz correct</span> : null}
       </div>
+      <ClaimTrustLadder steps={trustLadderFromVerificationStatus(claim.verificationStatus)} compact />
 
       {/* Claim text — editable or read-only */}
       {mode === 'edit' ? (
@@ -665,6 +672,25 @@ function ClaimCard({
             className="rounded-lg border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-[11px] font-bold px-3 py-1.5 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors">
             <i className="fas fa-balance-scale mr-1" /> Guideline check
           </button>
+          {onCuratorMeta && (
+            <button type="button" onClick={() => setMode('expert')}
+              className="rounded-lg border border-violet-200 dark:border-violet-800 text-violet-700 dark:text-violet-300 text-[11px] font-bold px-3 py-1.5 hover:bg-violet-50 dark:hover:bg-violet-950/40 transition-colors">
+              <i className="fas fa-user-md mr-1" /> Expert
+            </button>
+          )}
+        </div>
+      )}
+
+      {mode === 'expert' && onCuratorMeta && (
+        <div className="flex flex-wrap gap-2 pt-1">
+          <button type="button" disabled={busy} onClick={() => { void onCuratorMeta(claim, { examRelevant: true }); setMode('idle'); }}
+            className="rounded-lg bg-slate-100 dark:bg-slate-800 text-[11px] font-bold px-2.5 py-1.5">Exam-relevant</button>
+          <button type="button" disabled={busy} onClick={() => { void onCuratorMeta(claim, { practiceChanging: true }); setMode('idle'); }}
+            className="rounded-lg bg-rose-50 dark:bg-rose-950/30 text-rose-700 text-[11px] font-bold px-2.5 py-1.5">Practice-changing</button>
+          <button type="button" disabled={busy} onClick={() => { void onCuratorMeta(claim, { overclaimed: true }); setMode('idle'); }}
+            className="rounded-lg bg-amber-50 text-amber-800 text-[11px] font-bold px-2.5 py-1.5">Mark overclaimed</button>
+          <button type="button" onClick={() => setMode('idle')}
+            className="rounded-lg border border-slate-200 text-[11px] font-bold px-2.5 py-1.5">Cancel</button>
         </div>
       )}
     </div>
@@ -678,6 +704,7 @@ function ClaimsReviewPanel({
   onRefresh,
   onUpdate,
   onGuidelineCheck,
+  onCuratorMeta,
 }: {
   claims: TeachingClaimReviewItem[];
   loading: boolean;
@@ -685,6 +712,7 @@ function ClaimsReviewPanel({
   onRefresh: () => void;
   onUpdate: (claim: TeachingClaimReviewItem, verificationStatus: string, opts?: { claimText?: string; verificationReason?: string }) => void;
   onGuidelineCheck: (claim: TeachingClaimReviewItem) => void;
+  onCuratorMeta: (claim: TeachingClaimReviewItem, patch: Record<string, boolean | string>) => void;
 }) {
   if (loading) return <p className="text-sm text-slate-400">Loading claim review queue...</p>;
   if (error) return <div className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-600 dark:bg-red-950/30">{error}</div>;
@@ -718,6 +746,7 @@ function ClaimsReviewPanel({
             claim={claim}
             onUpdate={onUpdate}
             onGuidelineCheck={onGuidelineCheck}
+            onCuratorMeta={onCuratorMeta}
           />
         ))}
       </div>
@@ -879,6 +908,16 @@ export const KnowledgeReviewPage: React.FC = () => {
       setNotice(`Guideline check: ${result.alignment.alignmentStatus.replace(/_/g, ' ')}.`);
     } catch (err) {
       setClaimsError(err instanceof Error ? err.message : 'Failed to check guideline alignment.');
+    }
+  };
+
+  const updateCuratorMeta = async (claim: TeachingClaimReviewItem, patch: Record<string, boolean | string>) => {
+    try {
+      const { claim: updated } = await api.updateTeachingClaimCuratorMetadata(claim.claimKey, patch);
+      setClaimQueue((prev) => prev.map((item) => (item.claimKey === claim.claimKey ? { ...item, ...(updated as TeachingClaimReviewItem) } : item)));
+      setNotice('Curator metadata updated.');
+    } catch (err) {
+      setClaimsError(err instanceof Error ? err.message : 'Failed to update curator metadata.');
     }
   };
 
@@ -1299,6 +1338,7 @@ export const KnowledgeReviewPage: React.FC = () => {
                       onRefresh={() => void loadClaimQueue()}
                       onUpdate={(claim, verificationStatus, opts) => void updateClaimVerification(claim, verificationStatus, opts)}
                       onGuidelineCheck={(claim) => void checkClaimGuideline(claim)}
+                      onCuratorMeta={(claim, patch) => void updateCuratorMeta(claim, patch)}
                     />
                   )}
 

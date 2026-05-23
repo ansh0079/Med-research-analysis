@@ -283,7 +283,7 @@ describe('Database Integration Tests (SQLite)', () => {
         const articleId = 'pico-art';
         const extraction = { population: 'Adults', intervention: 'Drug', outcomes: ['mortality'] };
         const provider = 'gemini';
-        const model = 'gemini-2.0-flash';
+        const model = 'gemini-2.5-flash-lite';
         const confidence = 0.8;
 
         await db.upsertPicoExtraction(articleId, extraction, provider, model, confidence);

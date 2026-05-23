@@ -29,7 +29,7 @@ const EXAMPLE_QUERIES: Record<Persona, { label: string; query: string }[]> = {
 };
 
 interface Props {
-  onDone: (query?: string, destination?: 'search' | 'learning') => void;
+  onDone: (query?: string, destination?: 'search' | 'learning' | 'quiz') => void;
 }
 
 export const OnboardingModal: React.FC<Props> = ({ onDone }) => {
@@ -37,7 +37,7 @@ export const OnboardingModal: React.FC<Props> = ({ onDone }) => {
   const [persona, setPersona] = useState<Persona | null>(null);
   const [selectedQuery, setSelectedQuery] = useState<string | null>(null);
 
-  const finish = async (query?: string) => {
+  const finish = async (query?: string, destination?: 'search' | 'learning' | 'quiz') => {
     completeOnboarding();
     if (persona) {
       try {
@@ -51,7 +51,7 @@ export const OnboardingModal: React.FC<Props> = ({ onDone }) => {
         // Silently fail — localStorage fallback is enough
       }
     }
-    onDone(query, persona === 'student' ? 'learning' : 'search');
+    onDone(query, destination ?? (persona === 'student' ? 'learning' : 'search'));
   };
 
   const handleQueryPick = (query: string) => {
@@ -65,6 +65,11 @@ export const OnboardingModal: React.FC<Props> = ({ onDone }) => {
 
   const handleLaunch = () => {
     finish(selectedQuery ?? undefined);
+  };
+
+  const handleQuizLaunch = () => {
+    if (!selectedQuery) return;
+    finish(selectedQuery, 'quiz');
   };
 
   const handleSkip = () => finish();
@@ -197,7 +202,7 @@ export const OnboardingModal: React.FC<Props> = ({ onDone }) => {
                 {[
                   { icon: 'fa-search', color: 'text-indigo-500', bg: 'bg-indigo-50 dark:bg-indigo-950/40', title: 'Multi-source search', body: 'PubMed, Semantic Scholar, and OpenAlex searched simultaneously and deduplicated.' },
                   { icon: 'fa-robot', color: 'text-violet-500', bg: 'bg-violet-50 dark:bg-violet-950/40', title: 'AI synthesis', body: 'Evidence synthesised by Gemini into a GRADE-aligned summary with certainty ratings.' },
-                  { icon: 'fa-stethoscope', color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-950/40', title: 'Case → Review pipeline', body: 'Describe a patient case, find evidence, then launch a full systematic review in one click.' },
+                  { icon: 'fa-clipboard-check', color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-950/40', title: 'Quiz and review loop', body: 'Turn seeded evidence into MCQs, track weak areas, and bring them back for spaced review.' },
                 ].map((f) => (
                   <div key={f.title} className={`flex items-start gap-3.5 p-3.5 rounded-xl ${f.bg}`}>
                     <div className={`w-8 h-8 rounded-lg bg-white dark:bg-slate-800 flex items-center justify-center shrink-0 shadow-sm`}>
@@ -210,13 +215,24 @@ export const OnboardingModal: React.FC<Props> = ({ onDone }) => {
                   </div>
                 ))}
               </div>
-              <button
-                type="button"
-                onClick={handleLaunch}
-                className="w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/25"
-              >
-                {selectedQuery ? 'Search now →' : 'Start searching →'}
-              </button>
+              <div className="flex flex-col sm:flex-row gap-2">
+                {selectedQuery && (
+                  <button
+                    type="button"
+                    onClick={handleQuizLaunch}
+                    className="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/25"
+                  >
+                    Try quiz →
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={handleLaunch}
+                  className="flex-1 py-3 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 text-sm font-bold rounded-xl transition-all"
+                >
+                  {selectedQuery ? 'Search evidence' : 'Start searching'}
+                </button>
+              </div>
             </div>
           )}
         </div>

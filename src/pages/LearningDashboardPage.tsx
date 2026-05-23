@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState, useCallback, Suspense, lazy } from 
 import { useNavigate } from 'react-router-dom';
 import { api } from '@services/api';
 import { useSearchContext } from '@contexts/SearchContext';
-import type { LearningDashboard as LearningDashboardType, LearningInsight, LearningProfile, MasteryCohortBenchmark, UserTopicMastery } from '@types';
+import type { LearningDashboard as LearningDashboardType, LearningInsight, LearningProfile, LearningRecommendation, MasteryCohortBenchmark, UserTopicMastery } from '@types';
 import { DueReviewBadge } from '@components/learning/DailyReviewQueue';
 import { SpacedRepMemoryPanel } from '@components/learning/SpacedRepMemoryPanel';
 import { PortfolioTab } from '@components/learning/PortfolioTab';
+import { PracticeAlertCard } from '@components/ui';
 
 const LearningDashboardCpdTab = lazy(() =>
   import('./LearningDashboardCpdTab').then((m) => ({ default: m.LearningDashboardCpdTab })),
@@ -73,6 +74,86 @@ function MasteryBar({ label, score, color }: { label: string; score: number; col
         <div className={`h-full rounded-full transition-all duration-500 ${color}`} style={{ width: `${Math.min(score, 100)}%` }} />
       </div>
       <span className="text-xs font-bold text-slate-700 dark:text-slate-300 w-8 text-right">{score}%</span>
+    </div>
+  );
+}
+
+const REC_TYPE_STYLES: Record<string, { bg: string; border: string; badge: string }> = {
+  review:     { bg: 'bg-rose-50/60 dark:bg-rose-950/20', border: 'border-rose-200 dark:border-rose-800/40', badge: 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300' },
+  strengthen: { bg: 'bg-amber-50/60 dark:bg-amber-950/20', border: 'border-amber-200 dark:border-amber-800/40', badge: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300' },
+  explore:    { bg: 'bg-blue-50/60 dark:bg-blue-950/20', border: 'border-blue-200 dark:border-blue-800/40', badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' },
+  discover:   { bg: 'bg-violet-50/60 dark:bg-violet-950/20', border: 'border-violet-200 dark:border-violet-800/40', badge: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300' },
+  refresh:    { bg: 'bg-slate-50/60 dark:bg-slate-800/30', border: 'border-slate-200 dark:border-slate-700', badge: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300' },
+  case:       { bg: 'bg-emerald-50/60 dark:bg-emerald-950/20', border: 'border-emerald-200 dark:border-emerald-800/40', badge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300' },
+  start:      { bg: 'bg-indigo-50/60 dark:bg-indigo-950/20', border: 'border-indigo-200 dark:border-indigo-800/40', badge: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300' },
+};
+
+const REC_TYPE_LABELS: Record<string, string> = {
+  review: 'Due for review',
+  strengthen: 'Weak area',
+  explore: 'Searched — not tested',
+  discover: 'Related topic',
+  refresh: 'Getting stale',
+  case: 'Try a case',
+  start: 'Get started',
+};
+
+function ForYouPanel({ onNavigate }: { onNavigate: (path: string) => void }) {
+  const [recs, setRecs] = React.useState<LearningRecommendation[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    api.getLearningRecommendations(8)
+      .then(r => setRecs(r.recommendations))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return null;
+  if (recs.length === 0) return null;
+
+  const handleClick = (rec: LearningRecommendation) => {
+    if (rec.action === 'quiz') {
+      sessionStorage.setItem('med_quiz_prefill', JSON.stringify({ topic: rec.topic }));
+      onNavigate('/quiz');
+    } else if (rec.action === 'case') {
+      sessionStorage.setItem('med_case_prefill', JSON.stringify({ topic: rec.topic }));
+      onNavigate('/case');
+    } else {
+      onNavigate(`/topic/${encodeURIComponent(rec.topic)}`);
+    }
+  };
+
+  return (
+    <div className="neo-card p-5">
+      <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center gap-2">
+        <i className="fas fa-magic text-indigo-500" /> For you
+      </h3>
+      <div className="space-y-2">
+        {recs.map((rec, i) => {
+          const style = REC_TYPE_STYLES[rec.type] || REC_TYPE_STYLES.start;
+          return (
+            <button
+              key={`${rec.normalizedTopic}-${i}`}
+              type="button"
+              onClick={() => handleClick(rec)}
+              className={`w-full text-left flex items-start gap-3 rounded-xl border ${style.border} ${style.bg} px-3 py-2.5 hover:shadow-sm transition-all group`}
+            >
+              <i className={`fas ${rec.icon} text-xs mt-0.5 shrink-0 text-slate-400 group-hover:text-indigo-500 transition-colors`} />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate">{rec.topic}</span>
+                  <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full shrink-0 ${style.badge}`}>
+                    {REC_TYPE_LABELS[rec.type] || rec.type}
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">{rec.reason}</p>
+              </div>
+              <i className="fas fa-chevron-right text-[10px] text-slate-300 dark:text-slate-600 mt-1 shrink-0 group-hover:text-indigo-400 transition-colors" />
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -364,13 +445,15 @@ export const LearningDashboardPage: React.FC = () => {
     objectKey: string; objectType: string; topic?: string | null;
     title: string; classification: string; rationale?: string | null;
   }>>([]);
-  const [judgementProfile, setJudgementProfile] = useState<Array<{
-    topic: string; attempts: number; correct: number; accuracy: number; lastAttemptAt?: string | null;
-  }>>([]);
-  const [judgementTags, setJudgementTags] = useState<Array<{
-    tag: string; count: number; wrongCount: number; lastSeenAt?: string | null;
-    examples?: Array<{ topic: string | null; questionText: string; isCorrect: boolean }>;
-  }>>([]);
+  const [judgement, setJudgement] = useState<{
+    profile: Array<{
+      topic: string; attempts: number; correct: number; accuracy: number; lastAttemptAt?: string | null;
+    }>;
+    tags: Array<{
+      tag: string; count: number; wrongCount: number; lastSeenAt?: string | null;
+      examples?: Array<{ topic: string | null; questionText: string; isCorrect: boolean }>;
+    }>;
+  }>({ profile: [], tags: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showAllTopics, setShowAllTopics] = useState(false);
@@ -414,8 +497,10 @@ export const LearningDashboardPage: React.FC = () => {
       if (cancelled) return;
       if (alertsRes.status === 'fulfilled') setPracticeAlerts(alertsRes.value.alerts);
       if (judgRes.status === 'fulfilled') {
-        setJudgementProfile(judgRes.value.profile.topics || []);
-        setJudgementTags(judgRes.value.profile.tags || []);
+        setJudgement({
+          profile: judgRes.value.profile.topics || [],
+          tags: judgRes.value.profile.tags || [],
+        });
       }
     })();
     return () => { cancelled = true; };
@@ -776,6 +861,7 @@ export const LearningDashboardPage: React.FC = () => {
         {/* OVERVIEW TAB */}
         {activeTab === 'overview' && hasData && (
           <div className="space-y-5">
+            <ForYouPanel onNavigate={navigate} />
             <SpacedRepMemoryPanel />
 
             {/* All insights */}
@@ -801,20 +887,14 @@ export const LearningDashboardPage: React.FC = () => {
                 </h3>
                 <div className="space-y-2">
                   {practiceAlerts.slice(0, 6).map((alert) => (
-                    <div key={alert.objectKey} className="flex items-start gap-3 rounded-xl border border-rose-100 dark:border-rose-900/30 bg-rose-50/60 dark:bg-rose-950/20 px-3 py-2.5">
-                      <i className="fas fa-stethoscope text-rose-400 text-xs mt-0.5 shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold text-slate-800 dark:text-slate-100 leading-snug">{alert.title}</p>
-                        {alert.topic && <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 capitalize">{alert.topic}</p>}
-                        {alert.rationale && <p className="text-[10px] text-rose-600 dark:text-rose-400 mt-0.5 leading-relaxed">{alert.rationale}</p>}
-                      </div>
-                      {alert.topic && (
-                        <button type="button" onClick={() => drillTopic(alert.topic!)}
-                          className="shrink-0 text-[10px] font-bold px-2 py-1 rounded-lg bg-rose-100 text-rose-700 hover:bg-rose-200 dark:bg-rose-900/40 dark:text-rose-300 transition-colors">
-                          Quiz
-                        </button>
-                      )}
-                    </div>
+                    <PracticeAlertCard
+                      key={alert.objectKey}
+                      objectKey={alert.objectKey}
+                      title={alert.title}
+                      topic={alert.topic}
+                      rationale={alert.rationale}
+                      onQuiz={alert.topic ? () => drillTopic(alert.topic!) : undefined}
+                    />
                   ))}
                 </div>
               </div>
@@ -954,14 +1034,14 @@ export const LearningDashboardPage: React.FC = () => {
             )}
 
             {/* Evidence judgement profile — reasoning patterns + accuracy per topic */}
-            {(judgementTags.length > 0 || judgementProfile.length > 0) && (
+            {(judgement.tags.length > 0 || judgement.profile.length > 0) && (
               <div className="neo-card p-5">
                 <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center gap-2">
                   <i className="fas fa-balance-scale text-sky-500" /> Evidence judgement profile
                 </h3>
-                {judgementTags.length > 0 && (
+                {judgement.tags.length > 0 && (
                   <div className="mb-4 space-y-2">
-                    {judgementTags.slice(0, 5).map((tag) => (
+                    {judgement.tags.slice(0, 5).map((tag) => (
                       <div key={tag.tag} className="rounded-xl border border-sky-100 dark:border-sky-900/30 bg-sky-50/50 dark:bg-sky-950/20 px-3 py-2">
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-bold text-slate-700 dark:text-slate-200 capitalize">{tag.tag.replace(/_/g, ' ')}</span>
@@ -974,14 +1054,17 @@ export const LearningDashboardPage: React.FC = () => {
                     ))}
                   </div>
                 )}
-                {judgementProfile.filter((t) => t.attempts === 0).length > 0 && (
-                  <p className="text-[11px] text-amber-600 dark:text-amber-400 mb-3 flex items-center gap-1.5">
-                    <i className="fas fa-question-circle" />
-                    {judgementProfile.filter((t) => t.attempts === 0).length} topic{judgementProfile.filter((t) => t.attempts === 0).length !== 1 ? 's' : ''} untested — quiz them to build your profile
-                  </p>
-                )}
+                {(() => {
+                  const untestedCount = judgement.profile.filter((t) => t.attempts === 0).length;
+                  return untestedCount > 0 ? (
+                    <p className="text-[11px] text-amber-600 dark:text-amber-400 mb-3 flex items-center gap-1.5">
+                      <i className="fas fa-question-circle" />
+                      {untestedCount} topic{untestedCount !== 1 ? 's' : ''} untested — quiz them to build your profile
+                    </p>
+                  ) : null;
+                })()}
                 <div className="space-y-2">
-                  {judgementProfile.filter((t) => t.attempts > 0).slice(0, 8).map((t) => (
+                  {judgement.profile.filter((t) => t.attempts > 0).slice(0, 8).map((t) => (
                     <div key={t.topic} className="flex items-center gap-3">
                       <span className="text-xs font-medium text-slate-500 dark:text-slate-400 w-28 shrink-0 truncate capitalize">{t.topic}</span>
                       <div className="flex-1 h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">

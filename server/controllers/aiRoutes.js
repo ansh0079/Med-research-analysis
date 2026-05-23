@@ -1,16 +1,26 @@
 const crypto = require('crypto');
 const logger = require('../config/logger');
 const { createAiService, PINNED_MODELS, TEMPERATURE, AI_DISCLAIMER } = require('../services/aiService');
-const { buildSynthesisPrompt, buildQuizPrompt, buildSeminalKnowledgeExtractionPrompt, buildAnalysisPrompt, buildPicoExtractionPrompt, buildJournalClubPrompt } = require('../prompts');
+const { buildQuizPrompt, buildSeminalKnowledgeExtractionPrompt, buildAnalysisPrompt, buildPicoExtractionPrompt, buildJournalClubPrompt } = require('../prompts');
 const { batchCheckRetractions } = require('../services/qualityService');
 const { validateMedicalOutputCitations, validateSourceIndices } = require('../services/citationValidator');
-const { runFullSynthesisGeneration } = require('../services/synthesisGenerationCore');
+const {
+    runFullSynthesisGeneration,
+    prepareSynthesisContext,
+    parseSynthesisText,
+    validateSynthesisCitations,
+    buildSynthesisResult,
+    persistSynthesisResult,
+    getSynthesisCacheKey,
+    selectTopSynthesisArticles,
+} = require('../services/synthesisGenerationCore');
 const { runPaperSynopsisGeneration } = require('../services/paperSynopsisCore');
 const { getOrEnqueueFullSynthesis, getOrEnqueuePaperSynopsis } = require('../services/aiGenerationJobService');
 const claimMapService = require('../services/claimMapService');
 const { teachingObjectsToQuizContext, persistPaperTeachingObject } = require('../services/teachingObjectService');
 const { limitBodySize } = require('../utils/validation');
 const { resolveProvider } = require('../utils/aiProvider');
+const { createLlmUsageLogger, buildUsageEntry } = require('../services/llmUsageService');
 
 /**
  * @param {import('express').Application} app
@@ -22,6 +32,7 @@ function registerAiRoutes(app, deps) {
         db,
         cache,
         rateLimit,
+        userRateLimit,
         requireJson,
         requireAuthJwt,
         requireRole,
@@ -31,7 +42,15 @@ function registerAiRoutes(app, deps) {
         fetch: fetchImpl,
     } = deps;
 
-    const ai = createAiService({ serverConfig, fetchImpl });
+    // Tighter per-user limits for endpoints that make expensive AI calls
+    const aiUserLimit = userRateLimit || rateLimit; // graceful fallback if not wired
+
+    const logLlm = createLlmUsageLogger(db);
+    const ai = createAiService({
+        serverConfig,
+        fetchImpl,
+        onLlmCall: async (meta) => logLlm(buildUsageEntry(meta)),
+    });
 
     function extractJsonArray(text) {
         const cleaned = String(text || '')
@@ -73,6 +92,53 @@ function registerAiRoutes(app, deps) {
         } catch (parseErr) {
             parseErr.status = 502;
             throw parseErr;
+        }
+    }
+
+    const mapColdStartMcq = (q, idx, prefix) => ({
+                    id: `${prefix}_${Date.now()}_${idx}`,
+                    type: q.type || 'multiple_choice',
+                    questionType: q.questionType || 'recall',
+                    question: q.question,
+                    options: q.options,
+                    correctAnswer: q.correctAnswer,
+                    explanation: q.explanation,
+                    explanationDeep: q.explanationDeep || null,
+                    whyOthersWrong: q.whyOthersWrong || null,
+                    distractorRationale: q.distractorRationale || null,
+                    difficulty: q.difficulty || 'medium',
+                    sourceArticle: q.sourceArticle || null,
+                    sourceReference: q.sourceReference || q.guidelineRef || null,
+                    sourceIndices: q.sourceIndices || [],
+                    outlineNodeId: q.outlineNodeId || null,
+                    claimKey: q.claimKey || null,
+                });
+
+    async function serveColdStartMCQs(database, topic, count) {
+        try {
+            const normalizedTopic = topic.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim();
+            const slug = normalizedTopic.replace(/\s+/g, '-');
+
+            const [coldObj, guidelineObj] = await Promise.all([
+                database.getTeachingObjectByKey(`cold-start-mcq:${slug}`),
+                database.getTeachingObjectByKey(`guideline-mcq:${slug}`),
+            ]);
+
+            const coldMcqs = (coldObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'cold_start'));
+            const guidelineMcqs = (guidelineObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'guideline'));
+
+            // Interleave: for every 2 cold-start MCQs include 1 guideline MCQ, to give variety
+            const merged = [];
+            let ci = 0, gi = 0;
+            while (merged.length < count && (ci < coldMcqs.length || gi < guidelineMcqs.length)) {
+                if (ci < coldMcqs.length) merged.push(coldMcqs[ci++]);
+                if (merged.length < count && ci < coldMcqs.length) merged.push(coldMcqs[ci++]);
+                if (merged.length < count && gi < guidelineMcqs.length) merged.push(guidelineMcqs[gi++]);
+            }
+
+            return merged.length > 0 ? merged : null;
+        } catch {
+            return null;
         }
     }
 
@@ -350,7 +416,7 @@ function registerAiRoutes(app, deps) {
         }
     }
 
-    app.post('/api/ai/analyze', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, rateLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
+    app.post('/api/ai/analyze', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, aiUserLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
         const { text, analysisType, provider = 'auto', model } = req.body;
 
         const validationErrors = validateAnalysisBody(req.body);
@@ -424,7 +490,7 @@ function registerAiRoutes(app, deps) {
         }
     });
 
-    app.post('/api/ai/explain', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, rateLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
+    app.post('/api/ai/explain', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, aiUserLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
         const { text, provider = 'auto', model } = req.body;
 
         if (!text || typeof text !== 'string') {
@@ -500,8 +566,8 @@ function registerAiRoutes(app, deps) {
                 id: 'gemini',
                 name: 'Google Gemini',
                 models: [
-                    { id: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash (Recommended)' },
-                    { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash (Latest)' },
+                    { id: PINNED_MODELS.gemini, name: 'Gemini 2.5 Flash-Lite (Recommended)' },
+                    { id: PINNED_MODELS.geminiQuality, name: 'Gemini 2.5 Flash (Higher quality)' },
                 ],
             });
         }
@@ -558,7 +624,7 @@ function registerAiRoutes(app, deps) {
         }
     });
 
-    app.post('/api/quiz/generate', requireJson, requireAuthJwt, rateLimit(10, 60), validateBody(schemas.quiz), async (req, res) => {
+    app.post('/api/quiz/generate', requireJson, requireAuthJwt, aiUserLimit(10, 60), validateBody(schemas.quiz), async (req, res) => {
         const {
             topic, articles = [], count = 5, difficulty = 'mixed', studyRunId, trainingStage, explanationDepth, explicitTargetNodeIds, mode, claimJobKey,
         } = req.body;
@@ -591,7 +657,9 @@ function registerAiRoutes(app, deps) {
             claimAnchorMode = 'job';
         }
 
-        const safeCount = Math.min(Math.max(parseInt(String(count), 10) || 5, 1), 10);
+        const userPlan = req.user?.subscription_plan || 'free';
+        const planLimit = userPlan === 'premium' ? 20 : userPlan === 'standard' ? 10 : 3;
+        const safeCount = Math.min(Math.max(parseInt(String(count), 10) || Math.min(5, planLimit), 1), planLimit);
         /*
         const articleContext = articles
             .slice(0, 3)
@@ -651,7 +719,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         let claimMastery = [];
         let teachingObjects = [];
         let teachingClaims = [];
-        if (!claimAnchors && selectedProvider) {
+        if (!claimAnchors && !resolvedClaimJobKey) {
             [claimMastery, teachingObjects, teachingClaims] = await Promise.all([
                 req.user?.id ? db.getUserClaimMastery(req.user.id, cleanTopic, { limit: 40 }).catch((err) => { logger.warn({ err }, 'all failed'); return []; }) : Promise.resolve([]),
                 db.listTeachingObjectsForTopic(cleanTopic, { limit: 8 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectsForTopic failed'); return []; }),
@@ -664,6 +732,28 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             });
             if (!claimAnchors.length) claimAnchors = null;
             else claimAnchorMode = 'adaptive_teaching_object';
+        }
+        if (!resolvedClaimJobKey && (!teachingClaims || teachingClaims.length === 0)) {
+            return res.status(409).json({
+                error: 'No teaching claims for this topic. Generate paper synopses or topic synthesis before quizzing.',
+                code: 'CLAIMS_REQUIRED',
+                topic: cleanTopic,
+            });
+        }
+        if (!claimAnchors && teachingClaims.length > 0) {
+            claimAnchors = selectAdaptiveClaimAnchors({
+                claimMastery,
+                groundedClaims: teachingClaims,
+                count: safeCount,
+            });
+            if (claimAnchors.length) claimAnchorMode = 'adaptive_teaching_object';
+        }
+        if (!claimAnchors) {
+            return res.status(409).json({
+                error: 'Could not anchor quiz to teaching claims. Add or refresh claims for this topic.',
+                code: 'CLAIMS_REQUIRED',
+                topic: cleanTopic,
+            });
         }
         if (teachingObjects.length === 0) {
             teachingObjects = await db.listTeachingObjectsForTopic(cleanTopic, { limit: 8 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectsForTopic failed'); return []; });
@@ -712,6 +802,25 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             userContext = { profile, mastery, topicMemory };
         }
 
+        // Collective topic memory: cold / warm / hot path selection
+        const collectiveMemory = effectiveTopicKnowledge?.knowledge?.collective_memory || null;
+        const uniqueUsers = collectiveMemory?.uniqueUsers || 0;
+        const topicPath = uniqueUsers >= 50 ? 'hot' : uniqueUsers >= 15 ? 'warm' : 'cold';
+
+        // HOT path: topic well-known across users — serve from pre-seeded pool, no LLM call
+        if (topicPath === 'hot' && !claimAnchors) {
+            const poolMcqs = await serveColdStartMCQs(db, cleanTopic, effectiveQuizCount);
+            if (poolMcqs) {
+                logger.info({ topic: cleanTopic, uniqueUsers, path: 'hot' }, 'Serving from collective memory pool');
+                return res.json({ questions: poolMcqs, provider: 'collective_memory', path: 'hot', uniqueUsers });
+            }
+        }
+
+        // WARM path: pass shared misconceptions so LLM targets real failure points
+        const knownMisconceptions = topicPath === 'warm' || topicPath === 'hot'
+            ? (collectiveMemory?.sharedMisconceptions || [])
+            : [];
+
         // Community signals: articles with high real-world engagement
         const communityTopPicks = await db.getGlobalEngagedArticles?.(db.normalizeTopic(cleanTopic), 3).catch((err) => { logger.warn({ err }, 'operation failed'); return []; }) || [];
         const teachingObjectContext = teachingObjectsToQuizContext(teachingObjects);
@@ -727,6 +836,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                 trainingStage,
                 explanationDepth,
                 communityTopPicks,
+                knownMisconceptions,
                 claimAnchors: claimAnchors || undefined,
                 teachingObjectContext,
             },
@@ -734,46 +844,14 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             userContext
         );
 
-        if (claimAnchors && !selectedProvider) {
-            return res.status(503).json({ error: 'Claim-anchored quiz requires GEMINI_API_KEY or MISTRAL_API_KEY.' });
+        if (!selectedProvider) {
+            return res.status(503).json({
+                error: 'Claim-anchored quiz requires GEMINI_API_KEY or MISTRAL_API_KEY.',
+                code: 'CLAIMS_REQUIRED',
+            });
         }
 
-        if (!selectedProvider) {
-            try {
-                const total = 182822;
-                const offset = crypto.randomInt(0, total - effectiveQuizCount);
-                const hfUrl = `https://datasets-server.huggingface.co/rows?dataset=openlifescienceai%2Fmedmcqa&config=default&split=train&offset=${offset}&length=${effectiveQuizCount}`;
-                const hfRes = await fetchImpl(hfUrl, { headers: { 'User-Agent': 'Medical-Research-App/1.0' } });
-                if (!hfRes.ok) throw new Error(`HuggingFace returned ${hfRes.status}`);
-                const hfData = await hfRes.json();
-                const LETTERS = ['A', 'B', 'C', 'D'];
-                const questions = (hfData.rows || []).map((r, idx) => {
-                    const d = r.row;
-                    const targetNode = targetNodes[idx % Math.max(1, targetNodes.length)] || null;
-                    return {
-                        id: `medmcqa_${Date.now()}_${idx}`,
-                        type: 'multiple_choice',
-                        questionType: targetNode?.kind === 'mcq_angle' ? 'clinical_application' : 'recall',
-                        question: String(d.question || ''),
-                        options: [`A: ${d.opa}`, `B: ${d.opb}`, `C: ${d.opc}`, `D: ${d.opd}`],
-                        correctAnswer: LETTERS[d.cop] ?? 'A',
-                        explanation: String(d.exp || 'See standard medical references for explanation.'),
-                        difficulty: difficulty !== 'mixed'
-                            ? difficulty
-                            : (d.question?.length || 0) > 150 ? 'hard' : (d.question?.length || 0) > 80 ? 'medium' : 'easy',
-                        sourceArticle: null,
-                        outlineNodeId: targetNode?.id || null,
-                        topic: d.subject_name || topic.trim(),
-                    };
-                });
-                return res.json({ questions, topic: cleanTopic, provider: 'medmcqa-dataset', fromDataset: true });
-            } catch (dsErr) {
-                req.log.warn({ err: dsErr }, 'Quiz dataset fallback failed');
-                return res
-                    .status(503)
-                    .json({ error: 'No AI key configured and dataset fallback failed. Add GEMINI_API_KEY or MISTRAL_API_KEY to .env' });
-            }
-        }
+        const quizUsage = { operation: 'quiz', topic: cleanTopic, userId: req.user?.id || null };
 
         try {
             let usedProvider = selectedProvider;
@@ -781,15 +859,41 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             let text;
             try {
                 text = usedProvider === 'gemini'
-                    ? await ai.callGemini(prompt, quizModel, { temperature: TEMPERATURE.quiz })
-                    : await ai.callMistralAI(prompt, quizModel, { temperature: TEMPERATURE.quiz });
+                    ? await ai.callGemini(prompt, quizModel, { temperature: TEMPERATURE.quiz, usage: quizUsage })
+                    : await ai.callMistralAI(prompt, quizModel, { temperature: TEMPERATURE.quiz, usage: quizUsage });
             } catch (providerErr) {
                 if (usedProvider === 'gemini' && serverConfig.keys.mistral) {
                     req.log.warn({ err: providerErr }, 'Gemini quiz generation failed; falling back to Mistral');
                     usedProvider = 'mistral';
                     quizModel = PINNED_MODELS.mistral;
-                    text = await ai.callMistralAI(prompt, quizModel, { temperature: TEMPERATURE.quiz });
+                    try {
+                        text = await ai.callMistralAI(prompt, quizModel, { temperature: TEMPERATURE.quiz, usage: quizUsage });
+                    } catch (mistralErr) {
+                        req.log.warn({ err: mistralErr }, 'Mistral quiz generation also failed; trying cold-start MCQs');
+                        const coldStart = await serveColdStartMCQs(db, cleanTopic, effectiveQuizCount);
+                        if (coldStart) {
+                            return res.json({
+                                questions: coldStart,
+                                topic: cleanTopic,
+                                provider: 'cold_start_cache',
+                                disclaimer: AI_DISCLAIMER,
+                                warning: 'Both AI providers unavailable; serving pre-generated questions.',
+                            });
+                        }
+                        throw mistralErr;
+                    }
                 } else {
+                    req.log.warn({ err: providerErr }, 'Primary provider failed; trying cold-start MCQs');
+                    const coldStart = await serveColdStartMCQs(db, cleanTopic, effectiveQuizCount);
+                    if (coldStart) {
+                        return res.json({
+                            questions: coldStart,
+                            topic: cleanTopic,
+                            provider: 'cold_start_cache',
+                            disclaimer: AI_DISCLAIMER,
+                            warning: 'AI provider unavailable; serving pre-generated questions.',
+                        });
+                    }
                     throw providerErr;
                 }
             }
@@ -958,13 +1062,14 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             userContext
         );
 
-        const { provider: selectedProvider, model: quizModel } = resolveProvider({}, serverConfig);
+        const { provider: selectedProvider, model: initialQuizModel } = resolveProvider({}, serverConfig);
         if (!selectedProvider) {
             return res.status(503).json({ error: 'No AI provider configured. Add GEMINI_API_KEY or MISTRAL_API_KEY to .env' });
         }
 
         try {
             let usedProvider = selectedProvider;
+            let quizModel = initialQuizModel;
             let text;
             try {
                 text = usedProvider === 'gemini'
@@ -1033,7 +1138,70 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         }
     });
 
-    app.post('/api/ai/synthesize', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireRole('pro', 'researcher', 'admin'), rateLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
+    // ── Practice Pool: serve pre-seeded MCQs across all topics ──────────────
+    app.get('/api/quiz/pool', requireAuthJwt, rateLimit(30, 60), async (req, res) => {
+        try {
+            const count = Math.min(Math.max(parseInt(String(req.query.count || '10'), 10) || 10, 1), 30);
+            const difficulty = req.query.difficulty || 'all';
+            const questionType = req.query.type || 'all';
+
+            // Fetch all pre-seeded teaching objects (cold-start + guideline)
+            const rows = await db.all(
+                `SELECT topic, object_type, object_payload FROM teaching_objects
+                 WHERE object_type IN ('cold_start_mcq', 'guideline_mcq')
+                 ORDER BY RANDOM()`
+            );
+
+            // Flatten all MCQs, attach topic + source type
+            const allMcqs = [];
+            for (const row of rows) {
+                let payload;
+                try { payload = JSON.parse(row.object_payload || '{}'); } catch { continue; }
+                const mcqs = payload.mcqs || [];
+                for (const q of mcqs) {
+                    if (!q.question || !q.options || !q.correctAnswer) continue;
+                    if (difficulty !== 'all' && q.difficulty !== difficulty) continue;
+                    if (questionType !== 'all' && q.questionType !== questionType) continue;
+                    const stableHash = crypto
+                        .createHash('sha1')
+                        .update(`${row.topic}|${row.object_type}|${q.question}|${q.correctAnswer}`)
+                        .digest('hex')
+                        .slice(0, 16);
+                    allMcqs.push({
+                        id: `pool_${stableHash}`,
+                        topic: row.topic,
+                        source: row.object_type === 'guideline_mcq' ? 'guideline' : 'evidence',
+                        type: q.type || 'multiple_choice',
+                        questionType: q.questionType || 'recall',
+                        question: q.question,
+                        options: q.options,
+                        correctAnswer: q.correctAnswer,
+                        explanation: q.explanation || null,
+                        guidelineRef: q.guidelineRef || null,
+                        difficulty: q.difficulty || 'medium',
+                        outlineNodeId: q.outlineNodeId || `pool:${stableHash}`,
+                        outlineLabel: q.outlineLabel || q.question.slice(0, 120),
+                        claimKey: q.claimKey || q.claim_key || null,
+                        sourceArticleUid: q.sourceArticleUid || q.articleUid || null,
+                        sourceArticleTitle: q.sourceArticleTitle || q.sourceArticle || null,
+                    });
+                }
+            }
+
+            // Shuffle and slice to requested count
+            for (let i = allMcqs.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [allMcqs[i], allMcqs[j]] = [allMcqs[j], allMcqs[i]];
+            }
+
+            res.json({ questions: allMcqs.slice(0, count), total: allMcqs.length });
+        } catch (err) {
+            req.log.error({ err }, 'Practice pool error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.post('/api/ai/synthesize', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireRole('pro', 'researcher', 'admin'), aiUserLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
         const { articles, topic, provider = 'auto', async: asyncJob } = req.body;
 
         if (!Array.isArray(articles) || articles.length === 0) {
@@ -1090,7 +1258,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         }
     });
 
-    app.post('/api/ai/journal-club', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireRole('pro', 'researcher', 'admin'), rateLimit(8, 60), validateBody(schemas.journalClub), async (req, res) => {
+    app.post('/api/ai/journal-club', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireRole('pro', 'researcher', 'admin'), aiUserLimit(8, 60), validateBody(schemas.journalClub), async (req, res) => {
         const { articles, topic, provider = 'auto' } = req.body;
         const topArticles = [...articles]
             .sort((a, b) => (b._impact?.score ?? 0) - (a._impact?.score ?? 0))
@@ -1154,7 +1322,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
 
     const { setupSSE, sendSSE } = require('../utils/sse');
 
-    app.post('/api/ai/analyze/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, rateLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
+    app.post('/api/ai/analyze/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, aiUserLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
         const { text, analysisType, provider = 'auto', model } = req.body;
 
         const validationErrors = validateAnalysisBody(req.body);
@@ -1246,7 +1414,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
 
     // Single-article PICO extraction — returns structured JSON
     app.post('/api/ai/pico', limitBodySize(512 * 1024), requireJson, requireAuthJwt, requireRole('pro', 'researcher', 'admin'), rateLimit(20, 60), async (req, res) => {
-        const { article, provider = 'auto' } = req.body;
+        const { article, provider = 'auto', model } = req.body;
         if (!article || typeof article !== 'object' || !article.title) {
             return res.status(400).json({ error: 'article with title is required' });
         }
@@ -1296,18 +1464,15 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         }
     });
 
-    app.post('/api/ai/synthesize/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireRole('pro', 'researcher', 'admin'), rateLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
+    app.post('/api/ai/synthesize/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireRole('pro', 'researcher', 'admin'), aiUserLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
         const { articles, topic, provider = 'auto' } = req.body;
 
         if (!Array.isArray(articles) || articles.length === 0) {
             return res.status(400).json({ error: 'At least one article is required for synthesis' });
         }
 
-        const topArticles = [...articles]
-            .sort((a, b) => (b._impact?.score ?? 0) - (a._impact?.score ?? 0))
-            .slice(0, 15);
-
-        const cacheKey = `synthesis:${Buffer.from(topic + topArticles.map(a => a.uid).join(',')).toString('base64').slice(0, 40)}`;
+        const topArticles = selectTopSynthesisArticles(articles);
+        const cacheKey = getSynthesisCacheKey(topic, topArticles);
         const cached = await cache.getAsync(cacheKey);
         if (cached) {
             setupSSE(res);
@@ -1319,23 +1484,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         }
 
         try {
-            const retractionResults = await batchCheckRetractions(topArticles).catch((err) => { logger.warn({ err }, 'batchCheckRetractions failed'); return {}; });
-            const retractedUids = Object.entries(retractionResults)
-                .filter(([, r]) => r.isRetracted)
-                .map(([uid]) => uid);
-
-            const guidelines = await db.getGuidelinesByTopic(topic || '', { limit: 5 }).catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; });
-            const prompt = buildSynthesisPrompt(topArticles, topic || 'General Medical Inquiry', guidelines);
-            const sourceMap = topArticles.map((a, idx) => ({
-                studyIndex: idx + 1,
-                uid: a.uid,
-                title: a.title,
-                doi: a.doi || null,
-                pmid: a.pmid || null,
-                source: a.source || a._source || null,
-                pubdate: a.pubdate || (a.year ? String(a.year) : null),
-                retracted: retractionResults[a.uid]?.isRetracted ?? false,
-            }));
+            const context = await prepareSynthesisContext({ articles: topArticles, topic, db, cache });
 
             setupSSE(res);
 
@@ -1347,94 +1496,52 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
 
             let rawText = '';
             if (selectedProvider === 'gemini') {
-                for await (const chunk of ai.callGeminiStream(prompt, selectedModel, { temperature: TEMPERATURE.synthesis })) {
+                for await (const chunk of ai.callGeminiStream(context.prompt, selectedModel, { temperature: TEMPERATURE.synthesis })) {
                     rawText += chunk;
                     sendSSE(res, 'chunk', { text: chunk });
                 }
             } else {
-                for await (const chunk of ai.callMistralStream(prompt, selectedModel, { temperature: TEMPERATURE.synthesis })) {
+                for await (const chunk of ai.callMistralStream(context.prompt, selectedModel, { temperature: TEMPERATURE.synthesis })) {
                     rawText += chunk;
                     sendSSE(res, 'chunk', { text: chunk });
                 }
             }
 
-            let synthesis;
-            try {
-                const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-                synthesis = JSON.parse(jsonMatch ? jsonMatch[0] : rawText);
-            } catch (err) {
-                req.log?.warn?.({ err }, 'Streaming synthesis JSON parse failed, falling back to raw text');
-                synthesis = {
-                    consensus: rawText,
-                    evidenceGrade: 'LOW',
-                    gradeRationale: 'Could not parse structured response.',
-                    keyFindings: [],
-                    conflicts: [],
-                    statistics: [],
-                    studyDesigns: {},
-                    clinicalBottomLine: '',
-                    limitations: '',
-                    researchGaps: '',
-                };
-            }
-
-            const citationValidation = validateMedicalOutputCitations(synthesis, {
-                sourceCount: topArticles.length,
-                guidelineCount: guidelines.length,
-                requiredPaths: [
-                    'overallAnswer',
-                    'consensus',
-                    'clinicalBottomLine',
-                    'clinicalImplications',
-                    'limitations',
-                    'researchGaps',
-                    'clinicalActionCard.recommendation',
-                    'clinicalActionCard.caveat',
-                    'practiceImpact.mondayMorningLine',
-                    'practiceImpact.rationale',
-                    'evidenceDisagreement.guidelineRecommendation',
-                    'evidenceDisagreement.strongestSupportingTrial.summary',
-                    'evidenceDisagreement.strongestContradictingTrial.summary',
-                    'evidenceDisagreement.populationsWhereFails',
-                    'evidenceDisagreement.whatWouldChangePractice',
-                ],
-                requiredListPaths: ['agreement', 'uncertainties'],
+            const synthesis = parseSynthesisText(rawText);
+            const citationValidation = validateSynthesisCitations(synthesis, {
+                sourceCount: context.topArticles.length,
+                guidelineCount: context.guidelines.length,
+            });
+            const result = buildSynthesisResult({
+                synthesis,
+                topic,
+                topArticles: context.topArticles,
+                sourceMap: context.sourceMap,
+                citationValidation,
+                retractedUids: context.retractedUids,
+                retractionResults: context.retractionResults,
+                prompt: context.prompt,
+                provider: selectedProvider,
+                model: selectedModel,
+                fullTextIndexedCount: context.fullTextIndexedCount,
             });
 
-            const promptHashDigest = crypto.createHash('md5').update(prompt).digest('hex');
-            const claimsJobKey = `syn:${promptHashDigest}`;
-
-            const result = {
-                synthesis,
-                articleCount: topArticles.length,
+            await persistSynthesisResult({
+                db,
+                cache,
+                cacheKey: context.cacheKey,
+                result,
                 topic,
-                timestamp: new Date().toISOString(),
-                sources: sourceMap,
-                citationValidation,
-                retractionWarning: retractedUids.length > 0
-                    ? `${retractedUids.length} article(s) in this synthesis have been retracted. Review sources carefully.`
-                    : null,
-                disclaimer: AI_DISCLAIMER,
-                audit: {
-                    provider: usedProvider,
-                    model: usedModel,
-                    promptVersion: 'synthesis-v2',
-                    promptHash: promptHashDigest,
-                    retrievedContext: sourceMap,
-                    citationValidation,
-                },
-                jobKey: claimsJobKey,
-            };
-
-            await cache.setAsync(cacheKey, result, 3600);
-            await db.cacheAnalysis(`synthesis:${promptHashDigest}`, 'synthesis', usedModel, result, 0, 0, 72);
-            await claimMapService.persistClaimsForJob(db, claimsJobKey, 'full_synthesis', result).catch((err) => { logger.warn({ err }, 'persistClaimsForJob failed'); });
+                synthesis,
+                topArticles: context.topArticles,
+                model: selectedModel,
+            });
             void maybeStoreTopicKnowledge({
                 topic,
                 synthesis,
-                articles: topArticles,
-                provider: usedProvider,
-                model: usedModel,
+                articles: context.topArticles,
+                provider: selectedProvider,
+                model: selectedModel,
                 log: req.log,
             });
             await db.logEvent('synthesize', req.sessionId, { topic, articleCount: topArticles.length });

@@ -2,6 +2,53 @@
 
 const { safeJsonParse, toPgVectorLiteral } = require('../lib/helpers');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
+const crypto = require('crypto');
+
+function extractSynthesisSnapshotClaims(synthesis = {}) {
+    const candidates = [
+        synthesis.clinicalBottomLine,
+        synthesis.overallAnswer,
+        synthesis.consensus,
+        synthesis.limitations,
+        synthesis.researchGaps,
+        synthesis.clinicalImplications,
+        synthesis.practiceImpact?.mondayMorningLine,
+        synthesis.practiceImpact?.rationale,
+        synthesis.clinicalActionCard?.recommendation,
+        synthesis.clinicalActionCard?.caveat,
+        ...(Array.isArray(synthesis.keyFindings) ? synthesis.keyFindings : []),
+        ...(Array.isArray(synthesis.agreement) ? synthesis.agreement : []),
+        ...(Array.isArray(synthesis.uncertainties) ? synthesis.uncertainties : []),
+        ...(Array.isArray(synthesis.conflicts) ? synthesis.conflicts : []),
+    ];
+    const seen = new Set();
+    return candidates
+        .map((claim) => String(typeof claim === 'object' && claim !== null
+            ? claim.summary || claim.finding || claim.text || claim.claim || ''
+            : claim || '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .slice(0, 700))
+        .filter((claim) => {
+            if (claim.length < 12) return false;
+            const key = claim.toLowerCase();
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        })
+        .slice(0, 24);
+}
+
+function buildSynthesisSnapshotFingerprint(synthesis = {}) {
+    const claims = extractSynthesisSnapshotClaims(synthesis);
+    const normalized = claims
+        .map((claim) => claim.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim())
+        .sort();
+    return {
+        claims,
+        fingerprint: crypto.createHash('sha256').update(JSON.stringify(normalized)).digest('hex'),
+    };
+}
 
 module.exports = (Sup) => class extends Sup {
 // Analytics Operations
@@ -415,21 +462,27 @@ async listAiGenerationClaimsByJobKey(jobKey) {
 // ── Synthesis snapshots (staleness detection) ─────────────────────────────
 
 async saveSynthesisSnapshot(topic, synthesis, articleUids = []) {
+    const normalizedUids = Array.isArray(articleUids) ? articleUids : [];
     const normalized = this.normalizeTopic(topic);
     const consensusText = String(synthesis?.consensus || synthesis?.overallAnswer || '').slice(0, 2000);
     const keyFindingCount = Array.isArray(synthesis?.keyFindings) ? synthesis.keyFindings.length : 0;
+    const generatedAt = new Date().toISOString();
+    const claimFingerprint = buildSynthesisSnapshotFingerprint(synthesis);
     await this.run(
         `INSERT INTO synthesis_snapshots
-           (normalized_topic, topic, consensus_text, evidence_grade, key_finding_count, article_count, article_uids, generated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+           (normalized_topic, topic, consensus_text, evidence_grade, key_finding_count, article_count, article_uids, claim_fingerprint, claim_texts_json, generated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
             normalized,
             String(topic).slice(0, 200),
             consensusText,
             String(synthesis?.evidenceGrade || 'MODERATE'),
             keyFindingCount,
-            Array.isArray(articleUids) ? articleUids.length : 0,
-            JSON.stringify(Array.isArray(articleUids) ? articleUids.slice(0, 20) : []),
+            normalizedUids.length,
+            JSON.stringify(normalizedUids.slice(0, 20)),
+            claimFingerprint.fingerprint,
+            JSON.stringify(claimFingerprint.claims),
+            generatedAt,
         ]
     );
 }

@@ -147,8 +147,8 @@ describe('Database Integration (real SQLite)', () => {
     // ==========================================
     test('db.cacheAnalysis and db.getCachedAnalysis work', async () => {
         const result = { summary: 'Test summary', findings: [] };
-        await db.cacheAnalysis('pmid-88888', 'quick', 'gemini-2.0-flash', result, 150, 0.002);
-        const cached = await db.getCachedAnalysis('pmid-88888', 'quick', 'gemini-2.0-flash');
+        await db.cacheAnalysis('pmid-88888', 'quick', 'gemini-2.5-flash-lite', result, 150, 0.002);
+        const cached = await db.getCachedAnalysis('pmid-88888', 'quick', 'gemini-2.5-flash-lite');
         expect(cached).toBeTruthy();
         expect(cached.summary).toBe('Test summary');
     });

@@ -27,7 +27,7 @@ import { api } from '@services/api';
 import { downloadText, toBibTeX, toCslJson, toRIS, toWordSummaryHtml } from '@services/exportArticles';
 import { selectTopEvidence } from '../utils/selectTopEvidence';
 import { extractClinicalScenario, scenarioToEvidenceQuery, type ClinicalScenarioExtract } from '../utils/extractClinicalScenario';
-import type { AgentGuidance, Article, CaseLearningMode, SynthesisResult } from '@types';
+import type { AgentGuidance, Article, CaseLearningMode, SynthesisResult, TopicEvidenceMemory } from '@types';
 
 const RECENT_ANALYSES_KEY = 'med_recent_analyses';
 const SAVED_SEARCH_COUNTS_KEY = 'med_saved_search_counts';
@@ -117,6 +117,7 @@ export const SearchPage: React.FC = () => {
   const [proposingKnowledge, setProposingKnowledge] = useState(false);
   const [proposedGuidance, setProposedGuidance] = useState<AgentGuidance | null>(null);
   const [proposeError, setProposeError] = useState<string | null>(null);
+  const [topicEvidenceMemory, setTopicEvidenceMemory] = useState<TopicEvidenceMemory | null>(null);
   const [topicGuideRefreshState, setTopicGuideRefreshState] = React.useState<'idle' | 'loading'>('idle');
   const [topicGuideRefreshError, setTopicGuideRefreshError] = React.useState<string | null>(null);
   const [currentQuery, setCurrentQuery] = useState(() => {
@@ -313,6 +314,26 @@ export const SearchPage: React.FC = () => {
     ),
     [agentGuidance, top5Articles.length, topicIntelligence]
   );
+
+  React.useEffect(() => {
+    let cancelled = false;
+    const topic = (agentGuidance?.topic || currentQuery || '').trim();
+
+    if (!isAuthenticated || topic.length < 2 || results.length === 0) {
+      setTopicEvidenceMemory(null);
+      return () => { cancelled = true; };
+    }
+
+    api.getTopicEvidenceMemory(topic)
+      .then((response) => {
+        if (!cancelled) setTopicEvidenceMemory(response.memory);
+      })
+      .catch(() => {
+        if (!cancelled) setTopicEvidenceMemory(null);
+      });
+
+    return () => { cancelled = true; };
+  }, [agentGuidance?.topic, currentQuery, isAuthenticated, results.length]);
 
   const handleSynthesize = React.useCallback(async () => {
     if (!results.length) return;
@@ -1136,6 +1157,7 @@ export const SearchPage: React.FC = () => {
             communityInsight={communityInsight}
             proactiveAlert={proactiveAlert}
             knowledgeDriftAlerts={knowledgeDriftAlerts}
+            evidenceMemory={topicEvidenceMemory}
             onDismissKnowledgeDrift={(id) => { void dismissKnowledgeDriftAlert(id); }}
           />
           <EvidenceMapPanel evidenceMap={topicIntelligence?.evidenceMap} onOpenTopic={handleSearch} />

@@ -5,8 +5,9 @@ const crypto = require('crypto');
 const { createAiService, PINNED_MODELS, TEMPERATURE, AI_DISCLAIMER } = require('./aiService');
 const { buildSynopsisPrompt } = require('../prompts');
 const { persistPaperTeachingObject } = require('./teachingObjectService');
-const { resolveProvider } = require('../utils/aiProvider');
-const { enrichWithCachedFullText } = require('./pdfPreindexService');
+const { getProviderCandidates } = require('../utils/aiProvider');
+const { enrichWithCachedFullText, enqueuePdfPreindex } = require('./pdfPreindexService');
+const { alignTopicClaimsWithGuidelines } = require('./claimGuidelineEngine');
 
 async function runPaperSynopsisGeneration({
     article,
@@ -24,15 +25,16 @@ async function runPaperSynopsisGeneration({
         throw new Error('article with title is required');
     }
 
-    const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider }, serverConfig);
-    if (!selectedProvider) {
+    const providerCandidates = getProviderCandidates({ provider }, serverConfig);
+    if (!providerCandidates.length) {
         throw new Error('No AI service configured. Add GEMINI_API_KEY or MISTRAL_API_KEY.');
     }
     const ai = createAiService({ serverConfig, fetchImpl });
 
     const articleId = article.uid || article.pmid || article.doi
         || crypto.createHash('md5').update(article.title).digest('hex').slice(0, 12);
-    const cacheKey = `synopsis:${articleId}:${selectedModel}`;
+    const selectedModelForCache = providerCandidates[0]?.model || 'unknown';
+    const cacheKey = `synopsis:${articleId}:${selectedModelForCache}`;
 
     if (cache?.getAsync) {
         const memCached = await cache.getAsync(cacheKey);
@@ -42,12 +44,24 @@ async function runPaperSynopsisGeneration({
     // Enrich with full-text sections when cached — improves numerical result extraction
     const [enriched] = await enrichWithCachedFullText([article], cache, db).catch(() => [article]);
     const prompt = buildSynopsisPrompt(enriched);
-    let rawText;
-    if (selectedProvider === 'gemini') {
-        rawText = await ai.callGemini(prompt, selectedModel, { temperature: TEMPERATURE.synopsis });
-    } else {
-        rawText = await ai.callMistralAI(prompt, selectedModel, { temperature: TEMPERATURE.synopsis });
+    let rawText = '';
+    let selectedProvider = null;
+    let selectedModel = null;
+    let lastProviderError = null;
+    for (const candidate of providerCandidates) {
+        try {
+            rawText = candidate.provider === 'gemini'
+                ? await ai.callGemini(prompt, candidate.model, { temperature: TEMPERATURE.synopsis, maxOutputTokens: 2200 })
+                : await ai.callMistralAI(prompt, candidate.model, { temperature: TEMPERATURE.synopsis, maxOutputTokens: 2200 });
+            selectedProvider = candidate.provider;
+            selectedModel = candidate.model;
+            break;
+        } catch (err) {
+            lastProviderError = err;
+            logger.warn({ err, provider: candidate.provider, model: candidate.model, articleId }, 'Synopsis provider failed; trying fallback if available');
+        }
     }
+    if (!selectedProvider) throw lastProviderError || new Error('No AI provider returned a synopsis response');
 
     const jsonStart = rawText.indexOf('{');
     const jsonEnd = rawText.lastIndexOf('}');
@@ -93,6 +107,15 @@ async function runPaperSynopsisGeneration({
     await persistPaperTeachingObject({ db, article, synopsisResult: result, topic }).catch((err) => {
         log?.warn?.({ err, articleId }, 'Paper teaching object persistence skipped');
     });
+
+    if (cache && fetchImpl) {
+        enqueuePdfPreindex(article, { cache, db, serverConfig, fetch: fetchImpl });
+    }
+    if (topic && db) {
+        void alignTopicClaimsWithGuidelines(db, topic, { limit: 12, apply: true }).catch((err) => {
+            logger.warn({ err, topic }, 'post-synopsis guideline align skipped');
+        });
+    }
 
     return result;
 }

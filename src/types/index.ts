@@ -550,6 +550,19 @@ export interface LearningHealthResponse {
   };
 }
 
+export interface TopicEvidenceMemory {
+  topic: string;
+  strongEvidenceMemory: boolean;
+  totalClaims: number;
+  trustedClaimCount?: number;
+  untestedClaimCount: number;
+  guidelineConflictCount: number;
+  refreshedAt?: string | null;
+  daysSinceRefresh: number | null;
+  lifecycleNeedsAttention?: number;
+  messages: Array<{ key: string; text: string; tone: 'positive' | 'neutral' | 'warning' }>;
+}
+
 export interface TeachingClaimReviewItem {
   id?: number | string;
   objectKey?: string | null;
@@ -569,6 +582,13 @@ export interface TeachingClaimReviewItem {
   objectTitle?: string | null;
   quizAttempts?: number;
   quizCorrect?: number;
+  curatorMetadata?: {
+    examRelevant?: boolean;
+    practiceChanging?: boolean;
+    overclaimed?: boolean;
+    paperSectionRef?: string | null;
+    curatorNotes?: string | null;
+  } | null;
   createdAt?: string | null;
   updatedAt?: string | null;
 }
@@ -1339,6 +1359,17 @@ export interface TopicCurriculumProgress {
   correctCount: number;
   lastScorePct: number | null;
   updatedAt: string;
+}
+
+export interface LearningRecommendation {
+  type: 'review' | 'strengthen' | 'explore' | 'discover' | 'refresh' | 'case' | 'start';
+  topic: string;
+  normalizedTopic: string;
+  reason: string;
+  action: 'quiz' | 'topic' | 'case';
+  priority: number;
+  icon: string;
+  sourceTopic?: string;
 }
 
 export interface LearningDashboard {

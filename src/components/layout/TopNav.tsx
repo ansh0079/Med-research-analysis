@@ -14,6 +14,7 @@ export const TopNav: React.FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
+  const isStaff = user?.role === 'admin' || user?.role === 'curator';
   const { theme, toggleTheme } = useTheme();
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -110,6 +111,13 @@ export const TopNav: React.FC = () => {
                   onClick={() => { navigate('/quiz'); setTeachMenuOpen(false); }}
                 >
                   <i className="fas fa-brain w-3.5 text-violet-500" /> Quiz
+                </button>
+                <button
+                  type="button"
+                  className="flex items-center gap-2 w-full px-3 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60"
+                  onClick={() => { navigate('/practice'); setTeachMenuOpen(false); }}
+                >
+                  <i className="fas fa-layer-group w-3.5 text-teal-500" /> Practice pool
                 </button>
                 <button
                   type="button"
@@ -235,6 +243,18 @@ export const TopNav: React.FC = () => {
                     className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
                     <i className="fas fa-credit-card w-3.5 text-indigo-400" /> Billing &amp; Plans
                   </button>
+                  {isStaff && (
+                    <>
+                      <button type="button" onClick={() => { navigate('/admin/quality'); setUserMenuOpen(false); }}
+                        className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
+                        <i className="fas fa-clipboard-check w-3.5 text-violet-400" /> Quality review
+                      </button>
+                      <button type="button" onClick={() => { navigate('/admin/observability'); setUserMenuOpen(false); }}
+                        className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
+                        <i className="fas fa-chart-pie w-3.5 text-rose-400" /> Admin observability
+                      </button>
+                    </>
+                  )}
                   <div className="my-1 border-t border-slate-100 dark:border-slate-700" />
                   <button type="button"
                     onClick={() => { logout(); setUserMenuOpen(false); }}
@@ -322,6 +342,12 @@ export const TopNav: React.FC = () => {
                 className={`nav-link w-full text-left ${pathname === '/knowledge' ? 'active' : ''}`}>
                 <i className="fas fa-book-medical text-[10px]" /> Knowledge
               </button>
+              {isStaff && (
+                <button type="button" onClick={() => { navigate('/admin/observability'); setMobileMenuOpen(false); }}
+                  className={`nav-link w-full text-left ${pathname === '/admin/observability' ? 'active' : ''}`}>
+                  <i className="fas fa-chart-pie text-[10px]" /> Claim observability
+                </button>
+              )}
               <div className="my-1 border-t border-slate-100 dark:border-slate-800" />
               <button type="button" onClick={() => { logout(); setMobileMenuOpen(false); }}
                 className="nav-link w-full text-left text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30">

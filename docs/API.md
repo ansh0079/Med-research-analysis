@@ -169,7 +169,7 @@ curl -X POST http://localhost:3002/api/ai/analyze \
 ```json
 {
   "result": "Based on the abstract, this study demonstrates...",
-  "model": "gemini-2.0-flash",
+  "model": "gemini-2.5-flash-lite",
   "provider": "gemini",
   "type": "quick",
   "timestamp": "2026-02-14T09:30:00.000Z"

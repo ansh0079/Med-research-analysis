@@ -1,6 +1,7 @@
 const logger = require('../config/logger');
 const { safeFetch } = require('../utils/fetch');
 const { createAiService, PINNED_MODELS, TEMPERATURE } = require('../services/aiService');
+const { resolveProvider } = require('../utils/aiProvider');
 const { topicRefreshPriority } = require('../services/topicKnowledgeFreshness');
 const { CLAIM_VERIFICATION, stableClaimKey } = require('../services/teachingObjectService');
 
@@ -51,6 +52,12 @@ ${groundedClaims.map(compactGroundedClaim).join('\n\n')}`);
         parts.push(`### User claim mastery gaps
 ${weakClaims.length ? `Previously weak claims:\n${weakClaims.map((c) => `- [CLAIM-${c.claimKey}] ${String(c.claimText || '').slice(0, 240)} (${c.accuracy ?? 0}% accuracy)`).join('\n')}` : ''}
 ${untestedClaims.length ? `Untested claims:\n${untestedClaims.map((c) => `- [CLAIM-${c.claimKey}] ${String(c.claimText || '').slice(0, 240)}`).join('\n')}` : ''}`);
+    }
+    const personalHooks = Array.isArray(retrieval.personalGraphHooks) ? retrieval.personalGraphHooks : [];
+    if (personalHooks.length) {
+        parts.push(`### Personal knowledge graph — prior mistakes to reference
+${personalHooks.map((h) => `- ${h.prompt}`).join('\n')}
+When a new paper tests the same boundary, explicitly connect it to the learner's prior mistake.`);
     }
     if (freshness) {
         parts.push(`### Freshness and volatility
@@ -297,7 +304,17 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                 distinctArticles: currentArticles.length,
                 hasKnowledge: Boolean(topicKnowledge),
             });
-            const retrieval = { teachingObjects, groundedClaims, claimMastery, freshness };
+            let personalGraphHooks = [];
+            if (req.user?.id) {
+                try {
+                    const { buildPersonalKnowledgeGraph } = require('../services/personalKnowledgeGraphService');
+                    const graph = await buildPersonalKnowledgeGraph(db, req.user.id, trimmedTopic);
+                    personalGraphHooks = graph.agentHooks || [];
+                } catch (err) {
+                    logger.warn({ err }, 'personal knowledge graph for agent skipped');
+                }
+            }
+            const retrieval = { teachingObjects, groundedClaims, claimMastery, freshness, personalGraphHooks };
 
             // Cross-topic bridge lookup: find seminal papers from related knowledge bases
             // that the current search didn't surface, using this topic's keywords as query seeds.
@@ -389,7 +406,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                     await db.logEvent?.('agent_chat', req.sessionId, {
                         topic: trimmedTopic,
                         messageLength: trimmedMessage.length,
-                        provider,
+                        provider: selectedProvider,
                         historyTurns: history.length,
                         groundedClaimCount: groundedClaims.length,
                         weakClaimCount: claimMastery.filter((c) => c.masteryState === 'weak').length,
@@ -414,8 +431,8 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                             topic: trimmedTopic,
                             title: `Agent answer: ${trimmedTopic}`,
                             confidence: 0.45,
-                            provider,
-                            model: provider === 'gemini' ? PINNED_MODELS.gemini : PINNED_MODELS.mistral,
+                            provider: selectedProvider,
+                            model: selectedProvider === 'gemini' ? PINNED_MODELS.gemini : PINNED_MODELS.mistral,
                             payload: {
                                 kind: 'agent_answer_teaching_object',
                                 prompt: trimmedMessage,

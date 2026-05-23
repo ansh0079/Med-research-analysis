@@ -3,6 +3,7 @@ import { api } from '@services/api';
 import { getArticleLinkInfo } from '@services/articleLinks';
 import { useCollaboration } from '@hooks/useCollaboration';
 import type { Article, AnalysisResult, AnalysisType, PicoExtraction } from '@types';
+import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
 
 interface Props {
   article: Article | null;
@@ -317,6 +318,10 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
             <i className="fas fa-times" />
           </button>
         </div>
+        <ClinicalSafetyNotice
+          className="px-6 pb-3 shrink-0 border-b border-gray-100 dark:border-slate-700"
+          status={pdfStatus?.indexed ? 'source_verified' : 'abstract_only'}
+        />
 
         <div className="flex border-b border-gray-100 dark:border-slate-700 shrink-0">
           <button

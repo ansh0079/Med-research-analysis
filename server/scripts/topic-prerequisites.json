@@ -1,0 +1,889 @@
+[
+  {
+    "topic": "peptic ulcer disease",
+    "requires": [
+      "H. pylori infection",
+      "dyspepsia"
+    ]
+  },
+  {
+    "topic": "upper GI bleeding",
+    "requires": [
+      "peptic ulcer disease"
+    ]
+  },
+  {
+    "topic": "variceal GI bleeding",
+    "requires": [
+      "liver cirrhosis",
+      "portal hypertension"
+    ]
+  },
+  {
+    "topic": "pancreatitis complications",
+    "requires": [
+      "acute pancreatitis"
+    ]
+  },
+  {
+    "topic": "ulcerative colitis",
+    "requires": [
+      "inflammatory bowel disease"
+    ]
+  },
+  {
+    "topic": "Crohn's disease",
+    "requires": [
+      "inflammatory bowel disease"
+    ]
+  },
+  {
+    "topic": "MASLD",
+    "requires": [
+      "non-alcoholic fatty liver disease"
+    ]
+  },
+  {
+    "topic": "NASH",
+    "requires": [
+      "MASLD"
+    ]
+  },
+  {
+    "topic": "portal hypertension",
+    "requires": [
+      "liver cirrhosis"
+    ]
+  },
+  {
+    "topic": "ascites",
+    "requires": [
+      "portal hypertension"
+    ]
+  },
+  {
+    "topic": "spontaneous bacterial peritonitis",
+    "requires": [
+      "ascites"
+    ]
+  },
+  {
+    "topic": "pre-renal acute kidney injury",
+    "requires": [
+      "acute kidney injury",
+      "postural hypotension"
+    ]
+  },
+  {
+    "topic": "intrinsic acute kidney injury",
+    "requires": [
+      "acute kidney injury"
+    ]
+  },
+  {
+    "topic": "post-renal acute kidney injury",
+    "requires": [
+      "acute kidney injury",
+      "obstructive uropathy"
+    ]
+  },
+  {
+    "topic": "CKD referral thresholds",
+    "requires": [
+      "chronic kidney disease"
+    ]
+  },
+  {
+    "topic": "hypernatraemia",
+    "requires": [
+      "electrolyte disturbances"
+    ]
+  },
+  {
+    "topic": "hyponatraemia",
+    "requires": [
+      "electrolyte disturbances"
+    ]
+  },
+  {
+    "topic": "hyperkalaemia",
+    "requires": [
+      "electrolyte disturbances",
+      "chronic kidney disease"
+    ]
+  },
+  {
+    "topic": "hypocalcaemia",
+    "requires": [
+      "electrolyte disturbances",
+      "chronic kidney disease"
+    ]
+  },
+  {
+    "topic": "pyelonephritis",
+    "requires": [
+      "urinary tract infection"
+    ]
+  },
+  {
+    "topic": "recurrent UTIs",
+    "requires": [
+      "urinary tract infection"
+    ]
+  },
+  {
+    "topic": "UTI prophylaxis",
+    "requires": [
+      "recurrent UTIs"
+    ]
+  },
+  {
+    "topic": "obstructive uropathy",
+    "requires": [
+      "renal colic"
+    ]
+  },
+  {
+    "topic": "lower urinary tract symptoms",
+    "requires": [
+      "benign prostatic hyperplasia"
+    ]
+  },
+  {
+    "topic": "type 1 diabetes management",
+    "requires": [
+      "diabetic ketoacidosis",
+      "hyperglycaemic hyperosmolar state",
+      "outpatient diabetes control"
+    ]
+  },
+  {
+    "topic": "type 2 diabetes management",
+    "requires": [
+      "outpatient diabetes control",
+      "dyslipidaemia",
+      "cardiovascular risk modification"
+    ]
+  },
+  {
+    "topic": "hyperthyroidism",
+    "requires": [
+      "thyroid disease"
+    ]
+  },
+  {
+    "topic": "hypothyroidism",
+    "requires": [
+      "thyroid disease"
+    ]
+  },
+  {
+    "topic": "adrenal insufficiency",
+    "requires": [
+      "electrolyte disturbances"
+    ]
+  },
+  {
+    "topic": "primary hyperparathyroidism",
+    "requires": [
+      "hypercalcaemia",
+      "electrolyte disturbances"
+    ]
+  },
+  {
+    "topic": "hypercalcaemia",
+    "requires": [
+      "electrolyte disturbances"
+    ]
+  },
+  {
+    "topic": "cardiovascular risk modification",
+    "requires": [
+      "hypertension",
+      "dyslipidaemia",
+      "obesity management"
+    ]
+  },
+  {
+    "topic": "bariatric surgery",
+    "requires": [
+      "obesity management"
+    ]
+  },
+  {
+    "topic": "ischaemic stroke",
+    "requires": [
+      "stroke",
+      "cardiovascular risk modification"
+    ]
+  },
+  {
+    "topic": "acute thrombolysis",
+    "requires": [
+      "ischaemic stroke"
+    ]
+  },
+  {
+    "topic": "thrombectomy criteria",
+    "requires": [
+      "ischaemic stroke"
+    ]
+  },
+  {
+    "topic": "secondary stroke prevention",
+    "requires": [
+      "ischaemic stroke",
+      "TIA"
+    ]
+  },
+  {
+    "topic": "epilepsy",
+    "requires": [
+      "seizures",
+      "first seizure work-up"
+    ]
+  },
+  {
+    "topic": "antiepileptic drug choice",
+    "requires": [
+      "epilepsy"
+    ]
+  },
+  {
+    "topic": "medication-overuse headache",
+    "requires": [
+      "migraine"
+    ]
+  },
+  {
+    "topic": "acute confusional states",
+    "requires": [
+      "delirium"
+    ]
+  },
+  {
+    "topic": "parkinsonism",
+    "requires": [
+      "Parkinson's disease"
+    ]
+  },
+  {
+    "topic": "radiculopathy",
+    "requires": [
+      "peripheral neuropathy",
+      "low back pain"
+    ]
+  },
+  {
+    "topic": "MS initial presentation",
+    "requires": [
+      "multiple sclerosis"
+    ]
+  },
+  {
+    "topic": "sciatica",
+    "requires": [
+      "low back pain",
+      "radiculopathy"
+    ]
+  },
+  {
+    "topic": "red flags back pain",
+    "requires": [
+      "low back pain"
+    ]
+  },
+  {
+    "topic": "osteoarthritis knee",
+    "requires": [
+      "osteoarthritis hip",
+      "osteoarthritis hand"
+    ]
+  },
+  {
+    "topic": "osteoarthritis hip",
+    "requires": [
+      "osteoarthritis hand"
+    ]
+  },
+  {
+    "topic": "rheumatoid arthritis",
+    "requires": [
+      "connective tissue disease-related ILD"
+    ]
+  },
+  {
+    "topic": "psoriatic arthritis",
+    "requires": [
+      "psoriasis"
+    ]
+  },
+  {
+    "topic": "ankylosing spondylitis",
+    "requires": [
+      "connective tissue disease-related ILD"
+    ]
+  },
+  {
+    "topic": "gout",
+    "requires": [
+      "hyperuricaemia"
+    ]
+  },
+  {
+    "topic": "osteoporosis",
+    "requires": [
+      "fracture risk assessment"
+    ]
+  },
+  {
+    "topic": "fracture risk assessment",
+    "requires": [
+      "osteoporosis"
+    ]
+  },
+  {
+    "topic": "polymyalgia rheumatica",
+    "requires": [
+      "temporal arteritis"
+    ]
+  },
+  {
+    "topic": "temporal arteritis",
+    "requires": [
+      "polymyalgia rheumatica"
+    ]
+  },
+  {
+    "topic": "tendinopathies",
+    "requires": [
+      "soft tissue injuries"
+    ]
+  },
+  {
+    "topic": "septic shock",
+    "requires": [
+      "sepsis"
+    ]
+  },
+  {
+    "topic": "sepsis bundle",
+    "requires": [
+      "sepsis",
+      "septic shock"
+    ]
+  },
+  {
+    "topic": "respiratory tract infections",
+    "requires": [
+      "community-acquired pneumonia"
+    ]
+  },
+  {
+    "topic": "cellulitis",
+    "requires": [
+      "erysipelas"
+    ]
+  },
+  {
+    "topic": "latent tuberculosis",
+    "requires": [
+      "tuberculosis"
+    ]
+  },
+  {
+    "topic": "active tuberculosis",
+    "requires": [
+      "latent tuberculosis"
+    ]
+  },
+  {
+    "topic": "TB screening",
+    "requires": [
+      "latent tuberculosis",
+      "active tuberculosis"
+    ]
+  },
+  {
+    "topic": "HIV initial work-up",
+    "requires": [
+      "HIV testing"
+    ]
+  },
+  {
+    "topic": "viral hepatitis B",
+    "requires": [
+      "liver cirrhosis"
+    ]
+  },
+  {
+    "topic": "viral hepatitis C",
+    "requires": [
+      "liver cirrhosis"
+    ]
+  },
+  {
+    "topic": "hepatitis management",
+    "requires": [
+      "viral hepatitis B",
+      "viral hepatitis C"
+    ]
+  },
+  {
+    "topic": "fever in returning traveller",
+    "requires": [
+      "malaria",
+      "dengue",
+      "typhoid"
+    ]
+  },
+  {
+    "topic": "malaria",
+    "requires": [
+      "fever in returning traveller"
+    ]
+  },
+  {
+    "topic": "dengue",
+    "requires": [
+      "fever in returning traveller"
+    ]
+  },
+  {
+    "topic": "typhoid",
+    "requires": [
+      "fever in returning traveller"
+    ]
+  },
+  {
+    "topic": "prosthetic infections",
+    "requires": [
+      "device-related infections"
+    ]
+  },
+  {
+    "topic": "device-related infections",
+    "requires": [
+      "neutropenic sepsis"
+    ]
+  },
+  {
+    "topic": "iron deficiency anaemia",
+    "requires": [
+      "anaemia of chronic disease"
+    ]
+  },
+  {
+    "topic": "vitamin B12 deficiency",
+    "requires": [
+      "folate deficiency"
+    ]
+  },
+  {
+    "topic": "folate deficiency",
+    "requires": [
+      "vitamin B12 deficiency"
+    ]
+  },
+  {
+    "topic": "anaemia of chronic disease",
+    "requires": [
+      "iron deficiency anaemia",
+      "folate deficiency",
+      "vitamin B12 deficiency"
+    ]
+  },
+  {
+    "topic": "thrombocytopenia",
+    "requires": [
+      "sepsis"
+    ]
+  },
+  {
+    "topic": "coagulation disorders",
+    "requires": [
+      "sepsis"
+    ]
+  },
+  {
+    "topic": "anticoagulation reversal",
+    "requires": [
+      "anticoagulation management"
+    ]
+  },
+  {
+    "topic": "peri-procedural anticoagulation",
+    "requires": [
+      "anticoagulation management"
+    ]
+  },
+  {
+    "topic": "neutropenic sepsis",
+    "requires": [
+      "sepsis",
+      "haematological malignancy"
+    ]
+  },
+  {
+    "topic": "lymphoma",
+    "requires": [
+      "haematological malignancy"
+    ]
+  },
+  {
+    "topic": "leukaemia",
+    "requires": [
+      "haematological malignancy"
+    ]
+  },
+  {
+    "topic": "cancer-associated thrombosis",
+    "requires": [
+      "venous thromboembolism",
+      "haematological malignancy"
+    ]
+  },
+  {
+    "topic": "primary care mental health",
+    "requires": [
+      "depression",
+      "anxiety disorder"
+    ]
+  },
+  {
+    "topic": "secondary care mental health",
+    "requires": [
+      "primary care mental health",
+      "psychosis"
+    ]
+  },
+  {
+    "topic": "suicide risk assessment",
+    "requires": [
+      "depression",
+      "anxiety disorder"
+    ]
+  },
+  {
+    "topic": "acute behavioural disturbance",
+    "requires": [
+      "psychosis",
+      "dementia"
+    ]
+  },
+  {
+    "topic": "withdrawal syndrome",
+    "requires": [
+      "alcohol use disorder",
+      "substance use disorder"
+    ]
+  },
+  {
+    "topic": "relapse prevention",
+    "requires": [
+      "alcohol use disorder",
+      "substance use disorder"
+    ]
+  },
+  {
+    "topic": "behavioural and psychological symptoms of dementia",
+    "requires": [
+      "dementia"
+    ]
+  },
+  {
+    "topic": "dementia vs delirium",
+    "requires": [
+      "delirium",
+      "dementia"
+    ]
+  },
+  {
+    "topic": "dermatitis",
+    "requires": [
+      "eczema"
+    ]
+  },
+  {
+    "topic": "angioedema",
+    "requires": [
+      "urticaria",
+      "anaphylaxis"
+    ]
+  },
+  {
+    "topic": "erysipelas",
+    "requires": [
+      "cellulitis"
+    ]
+  },
+  {
+    "topic": "drug rash",
+    "requires": [
+      "morbilliform rash"
+    ]
+  },
+  {
+    "topic": "DRESS syndrome",
+    "requires": [
+      "drug rash"
+    ]
+  },
+  {
+    "topic": "Stevens-Johnson syndrome",
+    "requires": [
+      "drug rash"
+    ]
+  },
+  {
+    "topic": "toxic epidermal necrolysis",
+    "requires": [
+      "drug rash"
+    ]
+  },
+  {
+    "topic": "venous leg ulcer",
+    "requires": [
+      "peripheral arterial disease"
+    ]
+  },
+  {
+    "topic": "arterial leg ulcer",
+    "requires": [
+      "peripheral arterial disease"
+    ]
+  },
+  {
+    "topic": "neuropathic leg ulcer",
+    "requires": [
+      "peripheral neuropathy",
+      "type 2 diabetes management"
+    ]
+  },
+  {
+    "topic": "ectopic pregnancy",
+    "requires": [
+      "early pregnancy bleeding",
+      "pelvic inflammatory disease"
+    ]
+  },
+  {
+    "topic": "hyperemesis gravidarum",
+    "requires": [
+      "early pregnancy bleeding"
+    ]
+  },
+  {
+    "topic": "hypertensive disorders of pregnancy",
+    "requires": [
+      "hypertension"
+    ]
+  },
+  {
+    "topic": "pre-eclampsia",
+    "requires": [
+      "hypertensive disorders of pregnancy"
+    ]
+  },
+  {
+    "topic": "gestational diabetes",
+    "requires": [
+      "type 2 diabetes management"
+    ]
+  },
+  {
+    "topic": "abnormal uterine bleeding",
+    "requires": [
+      "uterine fibroids"
+    ]
+  },
+  {
+    "topic": "uterine fibroids",
+    "requires": [
+      "abnormal uterine bleeding"
+    ]
+  },
+  {
+    "topic": "pelvic inflammatory disease",
+    "requires": [
+      "sexually transmitted infections"
+    ]
+  },
+  {
+    "topic": "hormone replacement therapy",
+    "requires": [
+      "menopause"
+    ]
+  },
+  {
+    "topic": "paediatric sepsis screening",
+    "requires": [
+      "sepsis"
+    ]
+  },
+  {
+    "topic": "bronchiolitis",
+    "requires": [
+      "viral wheeze"
+    ]
+  },
+  {
+    "topic": "viral wheeze",
+    "requires": [
+      "respiratory tract infections"
+    ]
+  },
+  {
+    "topic": "childhood asthma",
+    "requires": [
+      "wheeze phenotypes"
+    ]
+  },
+  {
+    "topic": "wheeze phenotypes",
+    "requires": [
+      "chronic asthma"
+    ]
+  },
+  {
+    "topic": "paediatric dehydration",
+    "requires": [
+      "gastroenteritis"
+    ]
+  },
+  {
+    "topic": "chest pain ED",
+    "requires": [
+      "acute coronary syndrome",
+      "pulmonary embolism"
+    ]
+  },
+  {
+    "topic": "shortness of breath",
+    "requires": [
+      "acute respiratory failure",
+      "acute heart failure decompensation"
+    ]
+  },
+  {
+    "topic": "acute respiratory failure",
+    "requires": [
+      "community-acquired pneumonia",
+      "acute asthma exacerbation"
+    ]
+  },
+  {
+    "topic": "appendicitis",
+    "requires": [
+      "acute abdomen"
+    ]
+  },
+  {
+    "topic": "acute cholecystitis",
+    "requires": [
+      "acute abdomen"
+    ]
+  },
+  {
+    "topic": "bowel obstruction",
+    "requires": [
+      "acute abdomen"
+    ]
+  },
+  {
+    "topic": "collapse",
+    "requires": [
+      "syncope",
+      "sepsis"
+    ]
+  },
+  {
+    "topic": "cardiac arrest",
+    "requires": [
+      "ischaemic heart disease",
+      "cardiac arrhythmias",
+      "acute heart failure decompensation"
+    ]
+  },
+  {
+    "topic": "ACLS algorithms",
+    "requires": [
+      "cardiac arrest",
+      "acute coronary syndrome",
+      "acute heart failure decompensation"
+    ]
+  },
+  {
+    "topic": "acute confusion",
+    "requires": [
+      "delirium",
+      "dementia vs delirium"
+    ]
+  },
+  {
+    "topic": "agitation",
+    "requires": [
+      "acute confusion",
+      "acute behavioural disturbance"
+    ]
+  },
+  {
+    "topic": "capacity assessment",
+    "requires": [
+      "acute confusion",
+      "dementia vs delirium"
+    ]
+  },
+  {
+    "topic": "perioperative risk assessment",
+    "requires": [
+      "ischaemic heart disease",
+      "heart failure with reduced ejection fraction",
+      "chronic kidney disease"
+    ]
+  },
+  {
+    "topic": "RCRI score",
+    "requires": [
+      "perioperative risk assessment",
+      "ischaemic heart disease"
+    ]
+  },
+  {
+    "topic": "cardiopulmonary exercise testing",
+    "requires": [
+      "heart failure with reduced ejection fraction",
+      "perioperative risk assessment"
+    ]
+  },
+  {
+    "topic": "new airway devices",
+    "requires": [
+      "difficult airway",
+      "airway management"
+    ]
+  },
+  {
+    "topic": "perioperative comorbidity management",
+    "requires": [
+      "hypertension",
+      "type 2 diabetes management",
+      "ischaemic heart disease"
+    ]
+  },
+  {
+    "topic": "procedural sedation",
+    "requires": [
+      "sedation safety",
+      "airway management"
+    ]
+  },
+  {
+    "topic": "ARDS",
+    "requires": [
+      "sepsis",
+      "community-acquired pneumonia",
+      "acute respiratory failure"
+    ]
+  }
+]

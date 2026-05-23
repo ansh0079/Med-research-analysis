@@ -6,24 +6,7 @@ const {
     validateCitationRefs,
 } = require('./citationValidator');
 const { getCachedPdf } = require('./pdfPreindexService');
-
-function parseJsonBlock(text) {
-    if (!text || typeof text !== 'string') return null;
-    const trimmed = text.trim();
-    const fenced = trimmed.match(/```json\s*([\s\S]*?)\s*```/) || trimmed.match(/```\s*([\s\S]*?)\s*```/);
-    const candidate = fenced ? fenced[1].trim() : trimmed;
-    try {
-        return JSON.parse(candidate);
-    } catch {
-        const match = candidate.match(/\{[\s\S]*\}/);
-        if (!match) return null;
-        try {
-            return JSON.parse(match[0]);
-        } catch {
-            return null;
-        }
-    }
-}
+const { parseJsonBlock } = require('../utils/parseJson');
 
 function isFreeEvidence(article) {
     return Boolean(article?.isFree || article?.pmcid || article?.fullTextUrl || article?.openAccess || article?.openAccessUrl);
@@ -130,7 +113,7 @@ function normalizeStringArray(value, max = 5) {
         : [];
 }
 
-function normalizeSynopsis(raw, topic, freeArticles, provider) {
+function normalizeSynopsis(raw, topic, freeArticles, provider, model = null) {
     const safe = raw && typeof raw === 'object' ? raw : {};
     const sourceCount = freeArticles.length;
     const normalized = {
@@ -139,6 +122,7 @@ function normalizeSynopsis(raw, topic, freeArticles, provider) {
         evidenceScope: 'free_open_access_only',
         generatedAt: new Date().toISOString(),
         provider,
+        model,
         freePaperCount: freeArticles.length,
         includedArticles: freeArticles.map((a, i) => ({
             sourceIndex: i + 1,
@@ -258,14 +242,15 @@ async function generateConsensusSynopsis({
 
     const ai = createAiService({ serverConfig, fetchImpl });
     const prompt = buildConsensusSynopsisPrompt(topic, freeArticles);
+    const model = provider === 'gemini' ? PINNED_MODELS.geminiQuality : PINNED_MODELS.mistral;
     const raw = provider === 'gemini'
-        ? await ai.callGemini(prompt, PINNED_MODELS.gemini, { temperature: TEMPERATURE.synopsis })
-        : await ai.callMistralAI(prompt, PINNED_MODELS.mistral, { temperature: TEMPERATURE.synopsis });
+        ? await ai.callGemini(prompt, model, { temperature: TEMPERATURE.synopsis })
+        : await ai.callMistralAI(prompt, model, { temperature: TEMPERATURE.synopsis });
     const parsed = parseJsonBlock(raw);
     if (!parsed) {
         throw new Error('AI returned unparseable consensus synopsis');
     }
-    return normalizeSynopsis(parsed, topic, freeArticles, provider);
+    return normalizeSynopsis(parsed, topic, freeArticles, provider, model);
 }
 
 async function generateConsensusSynopsisSafe(options, logger = console) {

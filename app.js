@@ -23,7 +23,7 @@ const logger = require('./server/config/logger');
 const db = require('./database');
 const cache = require('./cache');
 
-const { rateLimit } = require('./server/middleware/rateLimiter');
+const { rateLimit, userRateLimit } = require('./server/middleware/rateLimiter');
 const { optionalAuth, requireAuthJwt, requireRole, requirePaidFeature, registerAuthRoutes } = require('./server/middleware/auth');
 const { auditLog } = require('./server/middleware/audit');
 const { requireJson, validateAnalysisBody, validateBody, schemas } = require('./server/utils/validation');
@@ -37,6 +37,7 @@ const { registerCitationRoutes } = require('./server/routes/citations');
 const { registerQualityRoutes } = require('./server/routes/quality');
 const { registerAlertRoutes } = require('./server/routes/alerts');
 const { registerAdminRoutes } = require('./server/routes/admin');
+const { registerTeachingClaimRoutes } = require('./server/routes/teachingClaims');
 const { registerAnnotationRoutes } = require('./server/routes/annotations');
 const { registerAiExtraRoutes } = require('./server/routes/aiExtras');
 const { registerEmbeddingStatusRoute } = require('./server/routes/embeddings');
@@ -307,7 +308,7 @@ if (process.env.NODE_ENV === 'production') {
 const enqueuePdfPreindex = (article) => _enqueuePdfPreindex(article, { cache, db, serverConfig, fetch: safeFetch });
 
 const routeDeps = {
-    serverConfig, clientConfig, db, cache, rateLimit,
+    serverConfig, clientConfig, db, cache, rateLimit, userRateLimit,
     requireJson, requireAuthJwt, requireRole, requirePaidFeature,
     validateAnalysisBody, validateBody, schemas,
     metricsRegistry,
@@ -324,6 +325,7 @@ registerCitationRoutes(app, routeDeps);
 registerQualityRoutes(app, routeDeps);
 registerAlertRoutes(app, routeDeps);
 registerAdminRoutes(app, routeDeps);
+registerTeachingClaimRoutes(app, routeDeps);
 registerAnnotationRoutes(app, routeDeps);
 registerAiExtraRoutes(app, { ...routeDeps, requirePaidFeature });
 registerEmbeddingStatusRoute(app, { getWorkerStatus, requireAuthJwt });

@@ -9,6 +9,7 @@ import { useAuth } from '@contexts/AuthContext';
 import { StudyRunPanel } from '@components/learning/StudyRunPanel';
 import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
 import type { QuizQuestion, QuizState, QuestionType, StudyRun, StudyRunOutline, LearningProfile, UserTopicMemory } from '@types';
+import { VerificationBadge } from '@components/ui/VerificationBadge';
 
 const WORKFLOW_CONTEXT_KEY = 'med_shift_workflow';
 
@@ -234,6 +235,8 @@ export const QuizPage: React.FC = () => {
   const [generating, setGenerating] = useState(true);
   const [genError, setGenError] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
+  const [answerConfidence, setAnswerConfidence] = useState(3);
+  const [confidenceByQuestion, setConfidenceByQuestion] = useState<Record<string, number>>({});
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const { isAuthenticated } = useAuth();
   const [fromDataset, setFromDataset] = useState(false);
@@ -361,6 +364,7 @@ export const QuizPage: React.FC = () => {
   const handleAnswer = (answer: string) => {
     if (!currentQ || isAnswered) return;
     setSelected(answer);
+    setConfidenceByQuestion((prev) => ({ ...prev, [currentQ.id]: answerConfidence }));
     const correct = answer.toLowerCase() === currentQ.correctAnswer.toLowerCase();
     setQuiz((prev) => ({
       ...prev,
@@ -393,6 +397,7 @@ export const QuizPage: React.FC = () => {
     } else {
       setQuiz((prev) => ({ ...prev, currentIndex: nextIndex, showExplanation: false }));
       setSelected(null);
+      setAnswerConfidence(3);
     }
   };
 
@@ -414,6 +419,7 @@ export const QuizPage: React.FC = () => {
           outlineNodeId: q.outlineNodeId || (q.sourceIndices?.[0] ? `src-${q.sourceIndices[0]}` : null),
           outlineLabel: q.outlineLabel ?? undefined,
           claimKey: q.claimKey ?? undefined,
+          confidence: confidenceByQuestion[q.id] ?? answerConfidence,
         };
       });
       await api.submitQuizAttempt({
@@ -913,9 +919,30 @@ export const QuizPage: React.FC = () => {
                 )}
               </div>
 
-              <p className="text-base font-semibold text-slate-900 dark:text-white leading-relaxed mb-6">
+              <p className="text-base font-semibold text-slate-900 dark:text-white leading-relaxed mb-4">
                 {currentQ.question}
               </p>
+
+              {!isAnswered && (
+                <div className="mb-5 rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/40 px-4 py-3">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-2">
+                    Confidence before answering (1 = guessing, 5 = certain)
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="range"
+                      min={1}
+                      max={5}
+                      step={1}
+                      value={answerConfidence}
+                      onChange={(e) => setAnswerConfidence(Number(e.target.value))}
+                      className="flex-1 accent-indigo-600"
+                      aria-label="Answer confidence"
+                    />
+                    <span className="text-sm font-black text-indigo-600 dark:text-indigo-400 w-6 text-center">{answerConfidence}</span>
+                  </div>
+                </div>
+              )}
 
               {currentQ.type === 'multiple_choice' && currentQ.options ? (
                 <div className="space-y-3">
@@ -958,11 +985,12 @@ export const QuizPage: React.FC = () => {
                   ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800'
                   : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800'
               }`}>
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex flex-wrap items-center gap-2 mb-2">
                   <i className={`fas fa-${isCorrect ? 'check-circle text-emerald-600' : 'lightbulb text-amber-600'}`} />
                   <span className={`text-sm font-bold ${isCorrect ? 'text-emerald-800 dark:text-emerald-300' : 'text-amber-800 dark:text-amber-300'}`}>
                     {isCorrect ? 'Correct!' : `Correct answer: ${currentQ.correctAnswer}`}
                   </span>
+                  <VerificationBadge status={(currentQ as { verificationStatus?: string }).verificationStatus || 'synthesis_inferred'} />
                 </div>
 
                 {(() => {

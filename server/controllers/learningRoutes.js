@@ -7,9 +7,10 @@ const logger = require('../config/logger');
 const { limitBodySize, requireJson, validateBody, schemas } = require('../utils/validation');
 const spacedRep = require('../services/spacedRepService');
 const { resolveProvider } = require('../utils/aiProvider');
+const { getPersonalisedRecommendations } = require('../services/learningAgentService');
 
 function registerLearningRoutes(app, deps) {
-    const { db, requireAuthJwt, rateLimit } = deps;
+    const { db, requireAuthJwt, rateLimit, serverConfig, fetch: fetchImpl } = deps;
 
     // ==========================================
     // Mastery scoring utilities
@@ -184,6 +185,16 @@ function registerLearningRoutes(app, deps) {
         if (attempt.isCorrect && Number(attempt.confidence || 0) > 0 && Number(attempt.confidence || 0) <= 2) {
             tags.add('low_confidence_correct');
         }
+        const confidence = Number(attempt.confidence || 0);
+        if (!attempt.isCorrect && confidence >= 4) {
+            tags.add('high_confidence_wrong');
+        }
+        if (!attempt.isCorrect && confidence > 0 && confidence <= 2) {
+            tags.add('knowledge_gap');
+        }
+        if (attempt.isCorrect && confidence > 0 && confidence <= 2) {
+            tags.add('needs_consolidation');
+        }
         if (!attempt.isCorrect) {
             if (questionType === 'guideline' || textIncludes(combined, ['guideline', 'recommendation', 'nice', 'esc', 'aha', 'ats', 'idsa'])) {
                 tags.add('guideline_alignment_missed');
@@ -349,19 +360,28 @@ function registerLearningRoutes(app, deps) {
         try {
             const topic = String(req.query.topic || '').trim();
             if (topic.length < 2) return res.status(400).json({ error: 'topic is required' });
-            const snapshots = await db.getLatestSynthesisSnapshots(topic, 2);
+            const snapshots = await (db.getLatestSynthesisSnapshots?.(topic, 2) ?? Promise.resolve([]));
             if (snapshots.length < 2) {
                 return res.json({ hasPrior: snapshots.length > 0, significantChange: false, snapshots });
             }
             const [latest, prior] = snapshots;
-            // Detect meaningful change: grade shift, large finding-count delta, or consensus divergence
+            const latestClaims = (() => { try { return JSON.parse(latest.claim_texts_json || '[]'); } catch { return []; } })();
+            const priorClaims = (() => { try { return JSON.parse(prior.claim_texts_json || '[]'); } catch { return []; } })();
+            const latestClaimSet = new Set(latestClaims.map((c) => String(c).toLowerCase()));
+            const priorClaimSet = new Set(priorClaims.map((c) => String(c).toLowerCase()));
+            const addedClaims = latestClaims.filter((c) => !priorClaimSet.has(String(c).toLowerCase())).slice(0, 3);
+            const removedClaims = priorClaims.filter((c) => !latestClaimSet.has(String(c).toLowerCase())).slice(0, 3);
             const gradeDiffers = latest.evidence_grade !== prior.evidence_grade;
             const findingCountDelta = Math.abs(latest.key_finding_count - prior.key_finding_count);
-            const significantChange = gradeDiffers || findingCountDelta >= 2;
+            const claimFingerprintDiffers = latest.claim_fingerprint && prior.claim_fingerprint && latest.claim_fingerprint !== prior.claim_fingerprint;
+            const significantChange = gradeDiffers || findingCountDelta >= 2 || claimFingerprintDiffers;
             const changes = [];
             if (gradeDiffers) changes.push(`Evidence grade changed from ${prior.evidence_grade} to ${latest.evidence_grade}`);
             if (findingCountDelta >= 2) changes.push(`Key finding count shifted from ${prior.key_finding_count} to ${latest.key_finding_count}`);
-            res.json({ hasPrior: true, significantChange, changes, latest, prior });
+            if (claimFingerprintDiffers) changes.push('Clinical teaching claims changed since the previous synthesis');
+            for (const claim of addedClaims) changes.push(`New/changed claim: ${String(claim).slice(0, 180)}`);
+            for (const claim of removedClaims) changes.push(`Prior claim no longer prominent: ${String(claim).slice(0, 180)}`);
+            res.json({ hasPrior: true, significantChange, changes, latest, prior, addedClaims, removedClaims });
         } catch (error) {
             req.log.error({ err: error }, 'Staleness check error');
             res.status(500).json({ error: 'Internal Server Error' });
@@ -375,7 +395,7 @@ function registerLearningRoutes(app, deps) {
             const [activeRun, practiceAlerts, snapshots] = await Promise.all([
                 db.getActiveStudyRun(req.user.id, topic).catch(() => null),
                 db.listPracticeChangingTeachingObjects({ topic, limit: 6 }).catch(() => []),
-                db.getLatestSynthesisSnapshots(topic, 1).catch(() => []),
+                (db.getLatestSynthesisSnapshots?.(topic, 1) ?? Promise.resolve([])).catch(() => []),
             ]);
             res.json({
                 topic,
@@ -385,6 +405,145 @@ function registerLearningRoutes(app, deps) {
             });
         } catch (error) {
             req.log.error({ err: error }, 'Topic overview error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.get('/api/learning/topic-evidence-memory', requireAuthJwt, rateLimit(60, 60), async (req, res) => {
+        try {
+            const topic = String(req.query.topic || '').trim();
+            if (topic.length < 2) return res.status(400).json({ error: 'topic is required' });
+            const { buildTopicEvidenceMemory } = require('../services/topicEvidenceMemoryService');
+            const memory = await buildTopicEvidenceMemory(db, req.user.id, topic);
+            res.json({ memory });
+        } catch (error) {
+            req.log.error({ err: error }, 'Topic evidence memory error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.get('/api/learning/claim-lifecycle', requireAuthJwt, rateLimit(60, 60), async (req, res) => {
+        try {
+            const topic = String(req.query.topic || '').trim();
+            if (topic.length < 2) return res.status(400).json({ error: 'topic is required' });
+            const { describeClaimLifecycle, summarizeTopicLifecycle } = require('../services/claimLifecycleService');
+            const claims = await db.listTeachingObjectClaimsForTopic(topic, { limit: 80 });
+            const lifecycle = claims.map(describeClaimLifecycle);
+            const summary = summarizeTopicLifecycle(claims);
+            const regeneration = await (db.listClaimRegenerationForTopic?.(topic, { limit: 15 }) ?? Promise.resolve([]));
+            res.json({ topic, summary, claims: lifecycle, regeneration });
+        } catch (error) {
+            req.log.error({ err: error }, 'Claim lifecycle error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.get('/api/learning/evidence-delta', requireAuthJwt, rateLimit(60, 60), async (req, res) => {
+        try {
+            const topic = String(req.query.topic || '').trim();
+            if (topic.length < 2) return res.status(400).json({ error: 'topic is required' });
+            const { buildEvidenceDeltaBrief } = require('../services/evidenceDeltaBriefService');
+            const brief = await buildEvidenceDeltaBrief(db, req.user.id, topic);
+            res.json({ brief });
+        } catch (error) {
+            req.log.error({ err: error }, 'Evidence delta brief error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.get('/api/learning/knowledge-graph', requireAuthJwt, rateLimit(30, 60), async (req, res) => {
+        try {
+            const topic = String(req.query.topic || '').trim();
+            if (topic.length < 2) return res.status(400).json({ error: 'topic is required' });
+            const { buildPersonalKnowledgeGraph } = require('../services/personalKnowledgeGraphService');
+            const graph = await buildPersonalKnowledgeGraph(db, req.user.id, topic);
+            res.json({ graph });
+        } catch (error) {
+            req.log.error({ err: error }, 'Knowledge graph error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.get('/api/learning/confidence-calibration', requireAuthJwt, rateLimit(30, 60), async (req, res) => {
+        try {
+            const topic = String(req.query.topic || '').trim();
+            const { getConfidenceCalibrationProfile } = require('../services/confidenceCalibrationService');
+            const profile = await getConfidenceCalibrationProfile(db, req.user.id, topic);
+            res.json({ profile });
+        } catch (error) {
+            req.log.error({ err: error }, 'Confidence calibration error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.post('/api/learning/learning-rounds', requireAuthJwt, rateLimit(10, 60), async (req, res) => {
+        try {
+            const topic = String(req.body?.topic || '').trim();
+            if (topic.length < 2) return res.status(400).json({ error: 'topic is required' });
+            const { createLearningRound } = require('../services/learningRoundsService');
+            const result = await createLearningRound(db, req.user.id, topic);
+            res.status(201).json(result);
+        } catch (error) {
+            req.log.error({ err: error }, 'Create learning round error');
+            res.status(500).json({ error: error.message || 'Internal Server Error' });
+        }
+    });
+
+    app.get('/api/learning/learning-rounds/:id', requireAuthJwt, rateLimit(30, 60), async (req, res) => {
+        try {
+            const roundId = parseInt(String(req.params.id), 10);
+            if (!roundId) return res.status(400).json({ error: 'invalid round id' });
+            const round = await db.getLearningRound(roundId, req.user.id);
+            if (!round) return res.status(404).json({ error: 'Round not found' });
+            res.json({ round });
+        } catch (error) {
+            req.log.error({ err: error }, 'Get learning round error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.post('/api/learning/case-to-evidence', requireAuthJwt, rateLimit(8, 60), async (req, res) => {
+        try {
+            const clinicalQuestion = String(req.body?.clinicalQuestion || req.body?.caseText || '').trim();
+            const topic = String(req.body?.topic || '').trim();
+            if (clinicalQuestion.length < 12) {
+                return res.status(400).json({ error: 'clinicalQuestion is required (min 12 chars)' });
+            }
+            const { buildCaseToEvidenceBrief } = require('../services/caseToEvidenceService');
+            const result = await buildCaseToEvidenceBrief(db, {
+                clinicalQuestion,
+                topic,
+                serverConfig,
+                fetchImpl,
+                seedArticles: req.body?.seedArticles || [],
+            });
+            res.json(result);
+        } catch (error) {
+            req.log.error({ err: error }, 'Case-to-evidence error');
+            res.status(500).json({ error: error.message || 'Internal Server Error' });
+        }
+    });
+
+    app.get('/api/learning/guideline-watch', requireAuthJwt, rateLimit(30, 60), async (req, res) => {
+        try {
+            const topic = String(req.query.topic || '').trim();
+            if (topic.length < 2) return res.status(400).json({ error: 'topic is required' });
+            const events = await (db.listGuidelineWatchEvents?.(topic, { limit: 20 }) ?? Promise.resolve([]));
+            res.json({ events });
+        } catch (error) {
+            req.log.error({ err: error }, 'Guideline watch list error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.post('/api/learning/topic-review', requireAuthJwt, rateLimit(30, 60), async (req, res) => {
+        try {
+            const topic = String(req.body?.topic || req.query?.topic || '').trim();
+            if (topic.length < 2) return res.status(400).json({ error: 'topic is required' });
+            const review = await db.upsertUserTopicReview(req.user.id, topic);
+            res.json({ review });
+        } catch (error) {
+            req.log.error({ err: error }, 'Topic review record error');
             res.status(500).json({ error: 'Internal Server Error' });
         }
     });
@@ -417,7 +576,7 @@ function registerLearningRoutes(app, deps) {
     // Quiz Attempts
     // ==========================================
 
-    app.post('/api/learning/quiz-attempt', limitBodySize(256 * 1024), requireJson, requireAuthJwt, rateLimit(10, 60), validateBody(schemas.quizAttempt), async (req, res) => {
+    app.post('/api/learning/quiz-attempt', limitBodySize(256 * 1024), requireJson, requireAuthJwt, rateLimit(60, 60), validateBody(schemas.quizAttempt), async (req, res) => {
         try {
             const { topic, attempts, studyRunId, curriculumTopicId } = req.body;
             const userId = req.user.id;
@@ -837,7 +996,19 @@ function registerLearningRoutes(app, deps) {
 
     app.post('/api/learning/case-attempt', limitBodySize(512 * 1024), requireJson, requireAuthJwt, rateLimit(10, 60), async (req, res) => {
         try {
-            const attempt = await db.createCaseAttempt({ ...req.body, userId: req.user.id });
+            const { topic, caseText, userResponse, score, feedback, difficulty, timeMs } = req.body || {};
+            if (!String(topic || '').trim()) return res.status(400).json({ error: 'topic is required' });
+            if (!String(userResponse || '').trim()) return res.status(400).json({ error: 'userResponse is required' });
+            const attempt = await db.createCaseAttempt({
+                userId: req.user.id,
+                topic: String(topic).trim(),
+                caseText: String(caseText || '').slice(0, 20000),
+                userResponse: String(userResponse).slice(0, 20000),
+                score: score != null ? Number(score) : null,
+                feedback: String(feedback || '').slice(0, 5000),
+                difficulty: String(difficulty || 'medium'),
+                timeMs: timeMs != null ? Number(timeMs) : null,
+            });
             res.status(201).json({ attempt });
         } catch (error) {
             req.log.error({ err: error }, 'Create case attempt error');
@@ -1470,6 +1641,17 @@ Return ONLY valid JSON:
             res.json({ topics });
         } catch (error) {
             req.log.error({ err: error }, 'Spaced rep topics error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.get('/api/learning/recommendations', requireAuthJwt, rateLimit(30, 60), async (req, res) => {
+        try {
+            const limit = Math.min(Math.max(parseInt(String(req.query.limit || '8'), 10) || 8, 1), 20);
+            const recommendations = await getPersonalisedRecommendations(db, req.user.id, { limit });
+            res.json({ recommendations, generatedAt: new Date().toISOString() });
+        } catch (error) {
+            req.log.error({ err: error }, 'Learning recommendations error');
             res.status(500).json({ error: 'Internal Server Error' });
         }
     });

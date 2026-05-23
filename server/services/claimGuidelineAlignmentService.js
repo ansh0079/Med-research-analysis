@@ -54,8 +54,8 @@ function classifyClaimGuidelineAlignment(claim, guidelines = []) {
     const best = ranked[0];
     if (!best || best.score < 0.08) {
         return {
-            alignmentStatus: 'uncertain',
-            recommendedVerificationStatus: 'unverified',
+            alignmentStatus: 'guideline_uncertain',
+            recommendedVerificationStatus: 'guideline_uncertain',
             confidence: Math.round((best?.score || 0) * 100) / 100,
             reason: 'Stored guidelines exist, but no recommendation had enough concept overlap with the claim.',
             matchedGuideline: best?.guideline || null,
@@ -75,8 +75,18 @@ function classifyClaimGuidelineAlignment(claim, guidelines = []) {
         };
     }
 
+    if (best.score < 0.18) {
+        return {
+            alignmentStatus: 'guideline_uncertain',
+            recommendedVerificationStatus: 'guideline_uncertain',
+            confidence: Math.round(best.score * 100) / 100,
+            reason: 'Weak overlap with a stored guideline recommendation — manual review recommended.',
+            matchedGuideline: best.guideline,
+        };
+    }
+
     return {
-        alignmentStatus: best.score >= 0.18 ? 'supported' : 'possibly_supported',
+        alignmentStatus: 'guideline_supported',
         recommendedVerificationStatus: 'guideline_supported',
         confidence: Math.round(best.score * 100) / 100,
         reason: 'Claim overlaps with a stored guideline recommendation without an obvious contradiction signal.',

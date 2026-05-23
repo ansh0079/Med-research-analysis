@@ -127,6 +127,23 @@ CREATE TABLE IF NOT EXISTS ai_generation_jobs (
 CREATE INDEX IF NOT EXISTS idx_ai_generation_jobs_status ON ai_generation_jobs(status, updated_at);
 CREATE INDEX IF NOT EXISTS idx_ai_generation_jobs_type_topic ON ai_generation_jobs(job_type, topic);
 
+CREATE TABLE IF NOT EXISTS synthesis_snapshots (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    normalized_topic TEXT NOT NULL,
+    topic TEXT NOT NULL,
+    consensus_text TEXT NOT NULL,
+    evidence_grade TEXT NOT NULL DEFAULT 'MODERATE',
+    key_finding_count INTEGER NOT NULL DEFAULT 0,
+    article_count INTEGER NOT NULL DEFAULT 0,
+    article_uids JSONB NOT NULL DEFAULT '[]',
+    claim_fingerprint TEXT,
+    claim_texts_json JSONB NOT NULL DEFAULT '[]',
+    generated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_synthesis_snapshots_topic
+    ON synthesis_snapshots(normalized_topic, generated_at DESC);
+
 CREATE TABLE IF NOT EXISTS teaching_objects (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     object_key TEXT NOT NULL UNIQUE,
@@ -347,7 +364,14 @@ CREATE TABLE IF NOT EXISTS curriculum_topics (
     block_id UUID NOT NULL REFERENCES curriculum_blocks(id) ON DELETE CASCADE,
     display_name TEXT NOT NULL,
     suggested_query TEXT NOT NULL,
-    sort_order INTEGER NOT NULL DEFAULT 0
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    priority TEXT NOT NULL DEFAULT 'medium',
+    volatility TEXT NOT NULL DEFAULT 'moderate',
+    seed_status TEXT NOT NULL DEFAULT 'not_seeded',
+    last_seeded_at TIMESTAMP WITH TIME ZONE,
+    last_synthesis_at TIMESTAMP WITH TIME ZONE,
+    claim_count INTEGER NOT NULL DEFAULT 0,
+    review_due_at TIMESTAMP WITH TIME ZONE
 );
 
 CREATE TABLE IF NOT EXISTS user_curriculum_progress (
@@ -590,6 +614,22 @@ CREATE TABLE IF NOT EXISTS learning_scheduler_runs (
     error TEXT
 );
 
+CREATE TABLE IF NOT EXISTS admin_runtime_settings (
+    key TEXT PRIMARY KEY,
+    value JSONB NOT NULL DEFAULT '{}',
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS curriculum_seed_usage_daily (
+    date TEXT PRIMARY KEY,
+    topics_attempted INTEGER NOT NULL DEFAULT 0,
+    topics_seeded INTEGER NOT NULL DEFAULT 0,
+    topics_failed INTEGER NOT NULL DEFAULT 0,
+    synopses_generated INTEGER NOT NULL DEFAULT 0,
+    estimated_cost_usd NUMERIC(10, 6) NOT NULL DEFAULT 0,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- ==========================================
 -- Indexes for missing tables
 -- ==========================================
@@ -606,6 +646,8 @@ CREATE INDEX idx_topic_guidelines_updated ON topic_guidelines(updated_at);
 CREATE INDEX idx_curriculum_blocks_curriculum ON curriculum_blocks(curriculum_id, sort_order);
 
 CREATE INDEX idx_curriculum_topics_block ON curriculum_topics(block_id, sort_order);
+CREATE INDEX idx_curriculum_topics_seed_status ON curriculum_topics(seed_status, priority, volatility);
+CREATE INDEX idx_curriculum_seed_usage_daily_updated ON curriculum_seed_usage_daily(updated_at DESC);
 
 CREATE INDEX idx_ucp_user ON user_curriculum_progress(user_id);
 

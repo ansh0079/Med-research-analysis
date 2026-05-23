@@ -119,6 +119,12 @@ function enqueuePdfPreindex(article, { cache, serverConfig, fetch: fetchImpl, db
                 }
                 await cache.setAsync(cacheKey(article), payload, PDF_CACHE_TTL_SECONDS);
                 logger.info({ id, wordCount: payload.wordCount, sections: payload.orderedKeys }, '[pdfPreindex] PDF indexed');
+                if (db && Number(payload.wordCount || 0) >= 500) {
+                    const { upgradeClaimsAfterFullText } = require('./claimFullTextUpgradeService');
+                    await upgradeClaimsAfterFullText(db, id, { minWordCount: 500 }).catch((err) => {
+                        logger.warn({ err, id }, '[pdfPreindex] claim upgrade after full text failed');
+                    });
+                }
             } catch (err) {
                 logger.warn({ id, err: err.message }, '[pdfPreindex] job failed');
             } finally {
@@ -154,4 +160,23 @@ async function enrichWithCachedFullText(articles = [], cache, db = null) {
     }));
 }
 
-module.exports = { enqueuePdfPreindex, getCachedPdf, hasCachedPdf, cacheKey, enrichWithCachedFullText };
+/**
+ * Queue open-access full-text indexing for search/synopsis hits (deduped per article id).
+ */
+function enqueuePdfPreindexForArticles(articles = [], deps = {}) {
+    if (!Array.isArray(articles) || !articles.length) return;
+    const free = articles.filter((a) => a && (a.isFree || a.pmcid));
+    const candidates = (free.length ? free : articles).slice(0, 6);
+    for (const article of candidates) {
+        enqueuePdfPreindex(article, deps);
+    }
+}
+
+module.exports = {
+    enqueuePdfPreindex,
+    enqueuePdfPreindexForArticles,
+    getCachedPdf,
+    hasCachedPdf,
+    cacheKey,
+    enrichWithCachedFullText,
+};

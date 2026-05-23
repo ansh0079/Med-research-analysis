@@ -1,0 +1,723 @@
+[
+  {
+    "block": "Cardiovascular",
+    "displayName": "Hypertension",
+    "suggestedQuery": "hypertension resistant hypertension secondary hypertension diagnosis treatment guidelines cardiovascular risk",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Cardiovascular",
+    "displayName": "Ischaemic heart disease and acute coronary syndromes",
+    "suggestedQuery": "ischaemic heart disease acute coronary syndrome STEMI NSTEMI unstable angina antiplatelet revascularization guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Cardiovascular",
+    "displayName": "Heart failure",
+    "suggestedQuery": "heart failure HFrEF HFpEF acute decompensated heart failure SGLT2 ARNI beta blocker MRA diuretics guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Cardiovascular",
+    "displayName": "Atrial fibrillation and common arrhythmias",
+    "suggestedQuery": "atrial fibrillation supraventricular tachycardia bradyarrhythmia anticoagulation rate rhythm control guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Cardiovascular",
+    "displayName": "Venous thromboembolism and anticoagulation management",
+    "suggestedQuery": "venous thromboembolism DVT pulmonary embolism anticoagulation DOAC warfarin duration bleeding peri procedural management guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Cardiovascular",
+    "displayName": "Syncope and postural hypotension",
+    "suggestedQuery": "syncope postural hypotension orthostatic hypotension risk stratification ECG cardiac causes management guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Cardiovascular",
+    "displayName": "Peripheral arterial disease and claudication",
+    "suggestedQuery": "peripheral arterial disease claudication antiplatelet statin exercise therapy revascularization limb ischemia guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Cardiovascular",
+    "displayName": "Endocarditis and prophylaxis",
+    "suggestedQuery": "infective endocarditis diagnosis blood cultures echocardiography antibiotic treatment prophylaxis guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Respiratory",
+    "displayName": "Community- and hospital-acquired pneumonia",
+    "suggestedQuery": "community acquired pneumonia hospital acquired pneumonia severity CURB65 antibiotics corticosteroids guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Respiratory",
+    "displayName": "Acute asthma and COPD exacerbations",
+    "suggestedQuery": "acute asthma exacerbation COPD exacerbation steroids bronchodilators antibiotics NIV oxygen targets guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Respiratory",
+    "displayName": "Chronic asthma",
+    "suggestedQuery": "chronic asthma stepwise therapy inhaled corticosteroid LABA biologics severe asthma guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Respiratory",
+    "displayName": "COPD",
+    "suggestedQuery": "COPD GOLD strategy triple inhaler therapy LABA LAMA ICS exacerbation prevention pulmonary rehabilitation guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Respiratory",
+    "displayName": "Pulmonary embolism risk stratification",
+    "suggestedQuery": "pulmonary embolism risk stratification PESI sPESI right ventricular dysfunction thrombolysis anticoagulation guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Respiratory",
+    "displayName": "Interstitial lung disease",
+    "suggestedQuery": "interstitial lung disease idiopathic pulmonary fibrosis CTD ILD antifibrotic treatment diagnosis guidelines",
+    "priority": "medium",
+    "volatility": "high"
+  },
+  {
+    "block": "Respiratory",
+    "displayName": "Obstructive sleep apnoea and obesity hypoventilation",
+    "suggestedQuery": "obstructive sleep apnoea obesity hypoventilation CPAP NIV cardiovascular risk perioperative management guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Respiratory",
+    "displayName": "Bronchiectasis and recurrent chest infections",
+    "suggestedQuery": "bronchiectasis recurrent chest infections airway clearance macrolide prophylaxis Pseudomonas exacerbation guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Gastrointestinal / Hepatology",
+    "displayName": "Dyspepsia, H. pylori, and peptic ulcer disease",
+    "suggestedQuery": "dyspepsia Helicobacter pylori peptic ulcer disease eradication PPI endoscopy indications guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Gastrointestinal / Hepatology",
+    "displayName": "Upper and lower GI bleeding",
+    "suggestedQuery": "upper gastrointestinal bleeding lower gastrointestinal bleeding variceal non variceal resuscitation endoscopy transfusion guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Gastrointestinal / Hepatology",
+    "displayName": "Acute pancreatitis",
+    "suggestedQuery": "acute pancreatitis severity fluids antibiotics nutrition complications necrosis ERCP guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Gastrointestinal / Hepatology",
+    "displayName": "Inflammatory bowel disease",
+    "suggestedQuery": "ulcerative colitis Crohn disease inflammatory bowel disease biologics steroids flare maintenance guidelines",
+    "priority": "medium",
+    "volatility": "high"
+  },
+  {
+    "block": "Gastrointestinal / Hepatology",
+    "displayName": "Irritable bowel syndrome and chronic abdominal pain",
+    "suggestedQuery": "irritable bowel syndrome chronic abdominal pain diagnosis red flags diet antispasmodics psychological therapy guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Gastrointestinal / Hepatology",
+    "displayName": "MASLD and NASH",
+    "suggestedQuery": "MASLD NAFLD NASH fibrosis assessment FIB4 weight loss GLP1 resmetirom management guidelines",
+    "priority": "medium",
+    "volatility": "high"
+  },
+  {
+    "block": "Gastrointestinal / Hepatology",
+    "displayName": "Cirrhosis and portal hypertension",
+    "suggestedQuery": "cirrhosis portal hypertension ascites spontaneous bacterial peritonitis varices encephalopathy management guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Gastrointestinal / Hepatology",
+    "displayName": "Acute liver failure",
+    "suggestedQuery": "acute liver failure transplant referral criteria encephalopathy INR paracetamol N acetylcysteine guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Renal / Urology",
+    "displayName": "Acute kidney injury",
+    "suggestedQuery": "acute kidney injury pre renal intrinsic post renal diagnosis fluids nephrotoxins renal replacement therapy guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Renal / Urology",
+    "displayName": "Chronic kidney disease",
+    "suggestedQuery": "chronic kidney disease stages albuminuria referral thresholds SGLT2 ACE inhibitor cardiovascular risk guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Renal / Urology",
+    "displayName": "Electrolyte disturbances",
+    "suggestedQuery": "hyponatraemia hypernatraemia hyperkalaemia hypocalcaemia electrolyte disturbance emergency treatment guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Renal / Urology",
+    "displayName": "Urinary tract infections and pyelonephritis",
+    "suggestedQuery": "urinary tract infection pyelonephritis complicated UTI antibiotic treatment resistance guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Renal / Urology",
+    "displayName": "Recurrent UTIs",
+    "suggestedQuery": "recurrent urinary tract infection prophylaxis methenamine antibiotics vaginal estrogen investigation guidelines",
+    "priority": "medium",
+    "volatility": "high"
+  },
+  {
+    "block": "Renal / Urology",
+    "displayName": "Renal colic and obstructive uropathy",
+    "suggestedQuery": "renal colic ureteric stone obstructive uropathy CT KUB medical expulsive therapy infected obstruction guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Renal / Urology",
+    "displayName": "Benign prostatic hyperplasia and LUTS",
+    "suggestedQuery": "benign prostatic hyperplasia LUTS alpha blocker 5 alpha reductase inhibitor referral retention guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Endocrine / Metabolic",
+    "displayName": "Type 1 and type 2 diabetes",
+    "suggestedQuery": "type 1 diabetes type 2 diabetes outpatient control DKA HHS SGLT2 GLP1 insulin guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Endocrine / Metabolic",
+    "displayName": "Thyroid disease",
+    "suggestedQuery": "hyperthyroidism hypothyroidism thyroid nodules TSH levothyroxine antithyroid drugs ultrasound guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Endocrine / Metabolic",
+    "displayName": "Adrenal insufficiency and adrenal incidentaloma",
+    "suggestedQuery": "adrenal insufficiency adrenal crisis adrenal incidentaloma cortisol dexamethasone suppression imaging guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Endocrine / Metabolic",
+    "displayName": "Primary hyperparathyroidism and hypercalcaemia",
+    "suggestedQuery": "primary hyperparathyroidism hypercalcaemia PTH malignancy bisphosphonate parathyroidectomy guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Endocrine / Metabolic",
+    "displayName": "Dyslipidaemia and cardiovascular risk modification",
+    "suggestedQuery": "dyslipidaemia cardiovascular risk statin ezetimibe PCSK9 primary prevention secondary prevention guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Endocrine / Metabolic",
+    "displayName": "Obesity management",
+    "suggestedQuery": "obesity management pharmacotherapy GLP1 tirzepatide bariatric surgery lifestyle cardiovascular outcomes guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Neurology",
+    "displayName": "Stroke and TIA",
+    "suggestedQuery": "stroke TIA thrombolysis thrombectomy secondary prevention antiplatelet anticoagulation carotid guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Neurology",
+    "displayName": "Seizures and epilepsy",
+    "suggestedQuery": "first seizure epilepsy workup EEG MRI antiseizure medication driving pregnancy guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Neurology",
+    "displayName": "Headache disorders",
+    "suggestedQuery": "migraine cluster headache medication overuse headache red flags triptans CGRP prophylaxis guidelines",
+    "priority": "medium",
+    "volatility": "high"
+  },
+  {
+    "block": "Neurology",
+    "displayName": "Delirium and acute confusional states",
+    "suggestedQuery": "delirium acute confusion diagnosis prevention antipsychotics non pharmacological management guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Neurology",
+    "displayName": "Parkinson's disease and parkinsonism",
+    "suggestedQuery": "Parkinson disease parkinsonism levodopa dopamine agonist non motor symptoms diagnosis management guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Neurology",
+    "displayName": "Peripheral neuropathy and radiculopathy",
+    "suggestedQuery": "peripheral neuropathy radiculopathy diagnosis diabetes B12 nerve conduction neuropathic pain guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Neurology",
+    "displayName": "Multiple sclerosis presentation and red flags",
+    "suggestedQuery": "multiple sclerosis initial presentation optic neuritis transverse myelitis MRI disease modifying therapy red flags guidelines",
+    "priority": "medium",
+    "volatility": "high"
+  },
+  {
+    "block": "Rheumatology / Musculoskeletal",
+    "displayName": "Low back pain and sciatica",
+    "suggestedQuery": "low back pain sciatica red flags imaging physiotherapy NSAIDs cauda equina guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Rheumatology / Musculoskeletal",
+    "displayName": "Osteoarthritis",
+    "suggestedQuery": "osteoarthritis knee hip hand exercise weight loss NSAIDs injections joint replacement guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Rheumatology / Musculoskeletal",
+    "displayName": "Inflammatory arthritis",
+    "suggestedQuery": "rheumatoid arthritis psoriatic arthritis ankylosing spondylitis DMARD biologics referral guidelines",
+    "priority": "medium",
+    "volatility": "high"
+  },
+  {
+    "block": "Rheumatology / Musculoskeletal",
+    "displayName": "Gout and hyperuricaemia",
+    "suggestedQuery": "gout hyperuricaemia flare colchicine NSAID steroids urate lowering allopurinol febuxostat guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Rheumatology / Musculoskeletal",
+    "displayName": "Osteoporosis and fracture risk",
+    "suggestedQuery": "osteoporosis fracture risk FRAX bisphosphonate denosumab calcium vitamin D guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Rheumatology / Musculoskeletal",
+    "displayName": "Polymyalgia rheumatica and temporal arteritis",
+    "suggestedQuery": "polymyalgia rheumatica giant cell arteritis temporal arteritis steroids ultrasound biopsy tocilizumab guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Rheumatology / Musculoskeletal",
+    "displayName": "Soft tissue injuries and shoulder pathologies",
+    "suggestedQuery": "soft tissue injury tendinopathy rotator cuff shoulder pain frozen shoulder physiotherapy injection guidelines",
+    "priority": "low",
+    "volatility": "stable"
+  },
+  {
+    "block": "Infectious Diseases / Sepsis",
+    "displayName": "Sepsis and septic shock",
+    "suggestedQuery": "sepsis septic shock bundle antibiotics fluids vasopressors lactate corticosteroids source control guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Infectious Diseases / Sepsis",
+    "displayName": "Antibiotic stewardship for common infections",
+    "suggestedQuery": "antibiotic stewardship respiratory infection urinary infection cellulitis duration narrow spectrum resistance guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Infectious Diseases / Sepsis",
+    "displayName": "Tuberculosis",
+    "suggestedQuery": "tuberculosis latent active screening risk groups diagnosis treatment drug resistance guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Infectious Diseases / Sepsis",
+    "displayName": "HIV testing and initial work-up",
+    "suggestedQuery": "HIV testing initial workup viral load CD4 opportunistic infection antiretroviral therapy guidelines",
+    "priority": "medium",
+    "volatility": "high"
+  },
+  {
+    "block": "Infectious Diseases / Sepsis",
+    "displayName": "Viral hepatitis B and C",
+    "suggestedQuery": "hepatitis B hepatitis C diagnosis antiviral treatment cirrhosis screening guidelines",
+    "priority": "medium",
+    "volatility": "high"
+  },
+  {
+    "block": "Infectious Diseases / Sepsis",
+    "displayName": "Fever in the returning traveller",
+    "suggestedQuery": "fever returning traveller malaria dengue typhoid travel history diagnosis management guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Infectious Diseases / Sepsis",
+    "displayName": "Prosthetic and device-related infections",
+    "suggestedQuery": "prosthetic joint infection device related infection catheter infection biofilm antibiotics source control guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Haematology / Oncology",
+    "displayName": "Anaemia",
+    "suggestedQuery": "anaemia iron deficiency B12 folate anaemia chronic disease investigation transfusion guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Haematology / Oncology",
+    "displayName": "Thrombocytopenia and coagulation disorders",
+    "suggestedQuery": "thrombocytopenia coagulation disorder ITP TTP DIC bleeding investigation management guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Haematology / Oncology",
+    "displayName": "Anticoagulation reversal and peri-procedural management",
+    "suggestedQuery": "anticoagulation reversal DOAC warfarin peri procedural management bleeding PCC vitamin K idarucizumab andexanet guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Haematology / Oncology",
+    "displayName": "Neutropenic sepsis",
+    "suggestedQuery": "neutropenic sepsis fever neutropenia antibiotics risk stratification oncology guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Haematology / Oncology",
+    "displayName": "Suspected haematological malignancy",
+    "suggestedQuery": "suspected lymphoma leukaemia myeloma red flags blood film lymphadenopathy referral guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Haematology / Oncology",
+    "displayName": "Common solid tumour initial pathways",
+    "suggestedQuery": "lung cancer breast cancer bowel cancer prostate cancer suspected cancer referral diagnosis pathways guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Haematology / Oncology",
+    "displayName": "Cancer-associated thrombosis",
+    "suggestedQuery": "cancer associated thrombosis VTE anticoagulation DOAC LMWH bleeding recurrence guidelines",
+    "priority": "medium",
+    "volatility": "high"
+  },
+  {
+    "block": "Psychiatry / Mental Health",
+    "displayName": "Depression and anxiety disorders",
+    "suggestedQuery": "depression anxiety disorder primary care antidepressants CBT risk assessment guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Psychiatry / Mental Health",
+    "displayName": "Suicide risk assessment and self-harm",
+    "suggestedQuery": "suicide risk assessment self harm safety planning psychosocial assessment emergency management guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Psychiatry / Mental Health",
+    "displayName": "Psychosis and acute behavioural disturbance",
+    "suggestedQuery": "psychosis acute behavioural disturbance rapid tranquilisation antipsychotic de escalation capacity guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Psychiatry / Mental Health",
+    "displayName": "Alcohol and substance use disorders",
+    "suggestedQuery": "alcohol withdrawal substance use disorder benzodiazepine thiamine relapse prevention opioid substitution guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Psychiatry / Mental Health",
+    "displayName": "Dementia subtypes and BPSD",
+    "suggestedQuery": "dementia subtypes BPSD behavioural psychological symptoms antipsychotics cholinesterase inhibitors guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Psychiatry / Mental Health",
+    "displayName": "Delirium vs dementia differentiation",
+    "suggestedQuery": "delirium versus dementia differentiation acute confusion cognitive assessment reversible causes guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Dermatology",
+    "displayName": "Eczema and psoriasis",
+    "suggestedQuery": "eczema dermatitis psoriasis topical steroid biologics phototherapy severity management guidelines",
+    "priority": "medium",
+    "volatility": "high"
+  },
+  {
+    "block": "Dermatology",
+    "displayName": "Urticaria, angioedema, and anaphylaxis",
+    "suggestedQuery": "urticaria angioedema anaphylaxis antihistamines adrenaline C1 esterase inhibitor guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Dermatology",
+    "displayName": "Cellulitis, erysipelas, and mimics",
+    "suggestedQuery": "cellulitis erysipelas mimics venous eczema antibiotic treatment severity guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Dermatology",
+    "displayName": "Drug rashes and severe cutaneous adverse reactions",
+    "suggestedQuery": "drug rash morbilliform DRESS Stevens Johnson toxic epidermal necrolysis red flags management guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Dermatology",
+    "displayName": "Skin cancers",
+    "suggestedQuery": "basal cell carcinoma squamous cell carcinoma melanoma diagnosis referral excision staging guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Dermatology",
+    "displayName": "Leg ulcers",
+    "suggestedQuery": "leg ulcer venous arterial neuropathic compression ABPI wound care infection guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Obstetrics / Gynaecology",
+    "displayName": "Early pregnancy bleeding and ectopic pregnancy",
+    "suggestedQuery": "early pregnancy bleeding ectopic pregnancy ultrasound beta hCG methotrexate surgery guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Obstetrics / Gynaecology",
+    "displayName": "Hyperemesis gravidarum",
+    "suggestedQuery": "hyperemesis gravidarum antiemetics fluids thiamine ketonuria admission guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Obstetrics / Gynaecology",
+    "displayName": "Hypertensive disorders of pregnancy and pre-eclampsia",
+    "suggestedQuery": "pre eclampsia gestational hypertension magnesium sulfate labetalol delivery timing guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Obstetrics / Gynaecology",
+    "displayName": "Gestational diabetes",
+    "suggestedQuery": "gestational diabetes screening metformin insulin fetal monitoring delivery timing guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Obstetrics / Gynaecology",
+    "displayName": "Abnormal uterine bleeding and fibroids",
+    "suggestedQuery": "abnormal uterine bleeding fibroids tranexamic acid LNG IUS hysteroscopy referral guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Obstetrics / Gynaecology",
+    "displayName": "Pelvic inflammatory disease and STIs",
+    "suggestedQuery": "pelvic inflammatory disease sexually transmitted infections chlamydia gonorrhoea antibiotics partner notification guidelines",
+    "priority": "medium",
+    "volatility": "high"
+  },
+  {
+    "block": "Obstetrics / Gynaecology",
+    "displayName": "Menopause and HRT",
+    "suggestedQuery": "menopause hormone replacement therapy indications risks breast cancer VTE cardiovascular guidelines",
+    "priority": "medium",
+    "volatility": "high"
+  },
+  {
+    "block": "Paediatrics",
+    "displayName": "Fever in children and sepsis screening",
+    "suggestedQuery": "fever in children paediatric sepsis screening red flags antibiotics NICE guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Paediatrics",
+    "displayName": "Bronchiolitis and viral wheeze",
+    "suggestedQuery": "bronchiolitis viral wheeze oxygen feeding bronchodilators steroids admission guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Paediatrics",
+    "displayName": "Acute otitis media and tonsillitis",
+    "suggestedQuery": "acute otitis media tonsillitis antibiotics Centor FeverPAIN paediatric guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Paediatrics",
+    "displayName": "Childhood asthma and wheeze phenotypes",
+    "suggestedQuery": "childhood asthma wheeze phenotypes inhaled corticosteroid SABA MART biologics guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Paediatrics",
+    "displayName": "Dehydration due to gastroenteritis",
+    "suggestedQuery": "paediatric gastroenteritis dehydration oral rehydration IV fluids antiemetics guidelines",
+    "priority": "medium",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Paediatrics",
+    "displayName": "Failure to thrive and safeguarding red flags",
+    "suggestedQuery": "failure to thrive faltering growth safeguarding red flags assessment paediatrics guidelines",
+    "priority": "medium",
+    "volatility": "stable"
+  },
+  {
+    "block": "Emergency / Acute Care",
+    "displayName": "Chest pain assessment in the ED",
+    "suggestedQuery": "emergency department chest pain troponin ECG HEART score acute coronary syndrome guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Emergency / Acute Care",
+    "displayName": "Shortness of breath and acute respiratory failure",
+    "suggestedQuery": "acute shortness of breath respiratory failure oxygen NIV high flow differential diagnosis guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Emergency / Acute Care",
+    "displayName": "Acute abdomen and common surgical emergencies",
+    "suggestedQuery": "acute abdomen appendicitis cholecystitis bowel obstruction surgical emergency diagnosis guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Emergency / Acute Care",
+    "displayName": "Collapse, syncope, and cardiac arrest algorithms",
+    "suggestedQuery": "collapse syncope cardiac arrest ALS algorithm reversible causes post resuscitation care guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Emergency / Acute Care",
+    "displayName": "Trauma resuscitation and head injury",
+    "suggestedQuery": "trauma resuscitation major haemorrhage head injury CT criteria tranexamic acid guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Emergency / Acute Care",
+    "displayName": "Acute confusion, agitation, and capacity",
+    "suggestedQuery": "acute confusion agitation capacity assessment delirium sedation de escalation emergency guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Anaesthesia / Critical Care",
+    "displayName": "Perioperative risk assessment and optimisation",
+    "suggestedQuery": "perioperative risk assessment frailty RCRI CPET optimisation anaesthesia surgery guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Anaesthesia / Critical Care",
+    "displayName": "Difficult airway management",
+    "suggestedQuery": "difficult airway management videolaryngoscopy supraglottic airway front of neck access guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Anaesthesia / Critical Care",
+    "displayName": "Perioperative management of common comorbidities",
+    "suggestedQuery": "perioperative management ischaemic heart disease COPD obstructive sleep apnoea chronic kidney disease anaesthesia guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Anaesthesia / Critical Care",
+    "displayName": "Sedation outside theatres and procedural sedation safety",
+    "suggestedQuery": "procedural sedation safety sedation outside operating theatre monitoring airway complications guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  },
+  {
+    "block": "Anaesthesia / Critical Care",
+    "displayName": "Ventilation strategies in ARDS and post-op respiratory failure",
+    "suggestedQuery": "ARDS ventilation low tidal volume PEEP prone positioning postoperative respiratory failure NIV high flow guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Anaesthesia / Critical Care",
+    "displayName": "Vasopressors and inotropes in shock",
+    "suggestedQuery": "vasopressors inotropes septic shock cardiogenic shock norepinephrine vasopressin dobutamine guidelines",
+    "priority": "high",
+    "volatility": "high"
+  },
+  {
+    "block": "Anaesthesia / Critical Care",
+    "displayName": "Analgesia strategies",
+    "suggestedQuery": "analgesia regional anesthesia opioid sparing multimodal analgesia postoperative pain guidelines",
+    "priority": "high",
+    "volatility": "moderate"
+  }
+]

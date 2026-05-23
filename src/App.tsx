@@ -44,6 +44,9 @@ const TopicPage           = lazyDefault(() => import('./pages/TopicPage'), 'Topi
 const LegalTermsPage      = lazyDefault(() => import('./pages/LegalTermsPage'), 'LegalTermsPage');
 const LegalPrivacyPage    = lazyDefault(() => import('./pages/LegalPrivacyPage'), 'LegalPrivacyPage');
 const NotFoundPage        = lazyDefault(() => import('./pages/NotFoundPage'), 'NotFoundPage');
+const AdminObservabilityPage = lazyDefault(() => import('./pages/AdminObservabilityPage'), 'AdminObservabilityPage');
+const ClinicalQualityQueuePage = lazyDefault(() => import('./pages/ClinicalQualityQueuePage'), 'ClinicalQualityQueuePage');
+const PracticePoolPage = lazyDefault(() => import('./pages/PracticePoolPage'), 'PracticePoolPage');
 
 function PageFallback() {
   return (
@@ -74,11 +77,20 @@ const AppContent: React.FC = () => {
   const [onboardingDismissed, setOnboardingDismissed] = useState(false);
   const showOnboarding = !onboardingDismissed && !isLoading && isAuthenticated && !hasCompletedOnboarding();
 
-  const handleOnboardingDone = (query?: string, destination: 'search' | 'learning' = 'search') => {
+  const handleOnboardingDone = (query?: string, destination: 'search' | 'learning' | 'quiz' = 'search') => {
     setOnboardingDismissed(true);
     if (destination === 'learning') {
       if (query) sessionStorage.setItem('med_learning_start_topic', query);
       navigate('/learning');
+    } else if (destination === 'quiz') {
+      if (query) {
+        sessionStorage.setItem('med_quiz_prefill', JSON.stringify({
+          topic: query,
+          difficulty: 'mixed',
+          articles: [],
+        }));
+      }
+      navigate('/quiz');
     } else if (query) {
       sessionStorage.setItem('med_onboarding_query', query);
       navigate('/search');
@@ -96,6 +108,7 @@ const AppContent: React.FC = () => {
           <Route path="/"          element={<RootRoute />} />
           <Route path="/search"    element={<SearchPage />} />
           <Route path="/quiz"      element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
+          <Route path="/practice"  element={<ProtectedRoute><PracticePoolPage /></ProtectedRoute>} />
           <Route path="/history"   element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
           <Route path="/saved"     element={<ProtectedRoute><SavedArticlesPage /></ProtectedRoute>} />
           <Route path="/analytics" element={<ProtectedRoute><AnalyticsPage /></ProtectedRoute>} />
@@ -112,6 +125,8 @@ const AppContent: React.FC = () => {
           <Route path="/review"    element={<ProtectedRoute><ReviewAssistantPage /></ProtectedRoute>} />
           <Route path="/team"      element={<ProtectedRoute><TeamWorkspacePage /></ProtectedRoute>} />
           <Route path="/billing"   element={<ProtectedRoute><BillingPage /></ProtectedRoute>} />
+          <Route path="/admin/observability" element={<ProtectedRoute><AdminObservabilityPage /></ProtectedRoute>} />
+          <Route path="/admin/quality" element={<ProtectedRoute><ClinicalQualityQueuePage /></ProtectedRoute>} />
           <Route path="/legal/terms"   element={<LegalTermsPage />} />
           <Route path="/legal/privacy" element={<LegalPrivacyPage />} />
           <Route path="*"          element={<NotFoundPage />} />

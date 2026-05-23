@@ -9,6 +9,7 @@ import api from '@services/api';
 import type { Article, ArticleSynopsisFields } from '@types';
 import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
 import { VerificationBadge } from '@components/ui/VerificationBadge';
+import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
 
 interface ArticleCardProps {
   article: Article;
@@ -73,8 +74,11 @@ function SynopsisList({ label, items }: { label: string; items?: string[] }) {
   );
 }
 
-function InlineSynopsisPanel({ synopsis, isFree, onClose }: { synopsis: ArticleSynopsisFields; isFree?: boolean; onClose: () => void }) {
+type SynopsisSourceMode = 'full_text_used' | 'abstract_only';
+
+function InlineSynopsisPanel({ synopsis, sourceMode, onClose }: { synopsis: ArticleSynopsisFields; sourceMode?: SynopsisSourceMode; onClose: () => void }) {
   const trust = TRUST_BADGE[synopsis.trustRating] ?? TRUST_BADGE.MODERATE;
+  const sourceLabel = sourceMode === 'full_text_used' ? 'Full Text Used' : 'Abstract Only';
   return (
     <div className="mx-0 mt-3 mb-2 rounded-xl border border-violet-200/60 dark:border-violet-800/40 bg-violet-50/60 dark:bg-violet-950/20 overflow-hidden animate-fade-in">
       <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-violet-100 dark:border-violet-800/30">
@@ -84,9 +88,9 @@ function InlineSynopsisPanel({ synopsis, isFree, onClose }: { synopsis: ArticleS
           <span className={`text-[10px] font-bold rounded-full px-2 py-0.5 ${trust.cls}`}>
             Trust: {trust.label}
           </span>
-          {isFree !== undefined && (
-            <span className={`text-[9px] font-bold uppercase tracking-wider rounded-full px-1.5 py-0.5 ${isFree ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'}`}>
-              {isFree ? 'Full Text' : 'Abstract Only'}
+          {sourceMode && (
+            <span className={`text-[9px] font-bold uppercase tracking-wider rounded-full px-1.5 py-0.5 ${sourceMode === 'full_text_used' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'}`}>
+              {sourceLabel}
             </span>
           )}
         </div>
@@ -149,9 +153,9 @@ function InlineSynopsisPanel({ synopsis, isFree, onClose }: { synopsis: ArticleS
           </div>
         )}
 
-        <p className="text-[10px] text-slate-400 dark:text-slate-500 italic">
-          AI-generated synopsis · not a substitute for clinical judgement · always verify primary source
-        </p>
+        <ClinicalSafetyNotice
+          status={sourceMode === 'full_text_used' ? 'source_verified' : 'abstract_only'}
+        />
       </div>
     </div>
   );
@@ -217,6 +221,11 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
   const isOutdated = !isNaN(pubYear) && pubYear < (CURRENT_YEAR - 9);
   const isPracticeChanging = !isNaN(pubYear) && pubYear >= (CURRENT_YEAR - 3) && (citations ?? 0) >= 100;
   const lastSynced = article._retraction?.source || article._source;
+  const synopsisSourceMode: SynopsisSourceMode | undefined = typeof synopsisAudit?.fullTextCoverageRatio === 'number'
+    ? synopsisAudit.fullTextCoverageRatio > 0
+      ? 'full_text_used'
+      : 'abstract_only'
+    : undefined;
 
   const prefetchArticle = React.useCallback(() => {
     if (PREFETCHED_ARTICLES.has(article.uid)) return;
@@ -645,7 +654,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
         {/* Inline synopsis panel */}
         {synopsisExpanded && synopsis && (
           <div className="mt-2 space-y-2">
-            <InlineSynopsisPanel synopsis={synopsis} isFree={isFree} onClose={() => { setSynopsisExpanded(false); setSynopsisAudit(null); }} />
+            <InlineSynopsisPanel synopsis={synopsis} sourceMode={synopsisSourceMode} onClose={() => { setSynopsisExpanded(false); setSynopsisAudit(null); }} />
             {synopsisAudit && <EvidenceAuditPanel snapshot={synopsisAudit} />}
           </div>
         )}

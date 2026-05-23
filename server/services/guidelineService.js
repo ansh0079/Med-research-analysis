@@ -4,6 +4,7 @@
 // ==========================================
 
 const fetch = require('node-fetch');
+const { PINNED_MODELS } = require('./aiService');
 
 /**
  * Search PubMed for relevant clinical guidelines on a topic.
@@ -122,7 +123,7 @@ async function checkGuidelineAlignment(topic, synthesisConsensus, articles, keys
 
   let rawText;
   if (keys.gemini) {
-    rawText = await aiService.callGemini(prompt, 'gemini-2.0-flash');
+    rawText = await aiService.callGemini(prompt, PINNED_MODELS.geminiQuality);
   } else if (keys.mistral) {
     rawText = await aiService.callMistralAI(prompt, 'mistral-small-latest');
   } else {

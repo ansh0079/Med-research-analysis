@@ -7,7 +7,15 @@ interface Props {
 }
 
 export const GuestRoute: React.FC<Props> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="spinner" />
+      </div>
+    );
+  }
 
   if (isAuthenticated) {
     return <Navigate to="/" replace />;

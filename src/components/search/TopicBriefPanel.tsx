@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { AgentGuidance, ClinicalAnswer, CommunityInsight, EvidenceGrade, Article, ProactiveAlert, ProactiveEvidenceAlert, SynthesisResult, TopicIntelligence, SynapseGraphPayload } from '@types';
+import type { AgentGuidance, ClinicalAnswer, CommunityInsight, EvidenceGrade, Article, ProactiveAlert, ProactiveEvidenceAlert, SynthesisResult, TopicEvidenceMemory, TopicIntelligence, SynapseGraphPayload } from '@types';
 import { useAuth } from '@contexts/AuthContext';
 import { CompetencyRecord } from '@components/learning/CompetencyRecord';
 import { api } from '@services/api';
@@ -406,10 +406,11 @@ interface Props {
   proactiveAlert?: ProactiveAlert | null;
   knowledgeDriftAlerts?: ProactiveEvidenceAlert[];
   onDismissKnowledgeDrift?: (id: number) => void;
+  evidenceMemory?: TopicEvidenceMemory | null;
 }
 
 const TopicBriefPanelComponent: React.FC<Props> = ({
-  query, top5, allResults, topicIntelligence, synthesis, synthesisLoading, onSynthesize, onSummarizePaper, onQuiz, onCase, onOpenTopic, onGuidelineCompare, agentGuidance, liveClinicalAnswer, aiEnrichmentLoading, communityInsight, proactiveAlert, knowledgeDriftAlerts, onDismissKnowledgeDrift,
+  query, top5, allResults, topicIntelligence, synthesis, synthesisLoading, onSynthesize, onSummarizePaper, onQuiz, onCase, onOpenTopic, onGuidelineCompare, agentGuidance, liveClinicalAnswer, aiEnrichmentLoading, communityInsight, proactiveAlert, knowledgeDriftAlerts, onDismissKnowledgeDrift, evidenceMemory,
 }) => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -572,6 +573,33 @@ const TopicBriefPanelComponent: React.FC<Props> = ({
       )}
 
       {/* ── Stored knowledge context strip ─────────────────────────────── */}
+      {evidenceMemory && evidenceMemory.messages.length > 0 && (
+        <div className="px-5 py-3 bg-slate-50/80 dark:bg-slate-950/30 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="mr-1 text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">
+              Evidence memory
+            </span>
+            {evidenceMemory.messages.map((message) => (
+              <span
+                key={message.key}
+                className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${
+                  message.tone === 'positive'
+                    ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300'
+                    : message.tone === 'warning'
+                    ? 'bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300'
+                    : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
+                }`}
+              >
+                {message.text}
+              </span>
+            ))}
+            <span className="text-[11px] text-slate-500 dark:text-slate-400">
+              {evidenceMemory.trustedClaimCount ?? 0}/{evidenceMemory.totalClaims} trusted claims
+            </span>
+          </div>
+        </div>
+      )}
+
       {agentGuidance && (
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 px-5 py-2 bg-emerald-50/60 dark:bg-emerald-950/20 border-b border-emerald-100 dark:border-emerald-900/40 text-[11px]">
           <span className="flex items-center gap-1.5 font-bold text-emerald-700 dark:text-emerald-400 shrink-0">

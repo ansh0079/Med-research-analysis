@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '@services/api';
 import type { Article, GuidelineAlignment, TeachingClaimReviewItem } from '@types';
+import { VERIFICATION_STATUS_STYLES } from '@components/ui';
 
 export type AiJobClaimRow = {
   claimKey: string;
@@ -34,18 +35,8 @@ interface ClaimProvenanceModalProps {
   claim: AiJobClaimRow | null;
 }
 
-const VERIFICATION_COLORS: Record<string, string> = {
-  source_verified: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400',
-  guideline_supported: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400',
-  human_reviewed: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-400',
-  abstract_only: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400',
-  synthesis_inferred: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400',
-  guideline_conflict: 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-400',
-  stale_needs_refresh: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400',
-};
-
 function verificationColor(status: string): string {
-  return VERIFICATION_COLORS[status] ?? 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
+  return VERIFICATION_STATUS_STYLES[status]?.cls ?? 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
 }
 
 type View = 'main' | 'contradictions';

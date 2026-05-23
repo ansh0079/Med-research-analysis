@@ -537,6 +537,9 @@ mapTeachingObjectClaimRow(row) {
         verificationStatus: row.verification_status || 'unverified',
         verificationReason: row.verification_reason || null,
         verifiedAt: row.verified_at || null,
+        curatorMetadata: row.curator_metadata
+            ? (() => { try { return JSON.parse(row.curator_metadata); } catch { return null; } })()
+            : null,
         createdAt: row.created_at || null,
         updatedAt: row.updated_at || null,
     };
@@ -740,16 +743,18 @@ async listTeachingClaimsForReview({ topic = '', status = '', limit = 50, offset 
     }));
 }
 
-async updateTeachingClaimVerification(claimKey, { verificationStatus, verificationReason = '', claimText = null, reviewerId = null } = {}) {
+async updateTeachingClaimVerification(claimKey, { verificationStatus, verificationReason = '', claimText = null, reviewerId = null, forceTransition = false } = {}) {
     const key = String(claimKey || '').trim();
     const status = String(verificationStatus || '').trim();
     if (!key || !status) return null;
     const allowed = new Set([
         'source_verified',
+        'full_text_available',
         'abstract_only',
         'synthesis_inferred',
         'agent_draft',
         'guideline_supported',
+        'guideline_uncertain',
         'guideline_conflict',
         'stale_needs_refresh',
         'human_reviewed',
@@ -757,6 +762,12 @@ async updateTeachingClaimVerification(claimKey, { verificationStatus, verificati
     ]);
     if (!allowed.has(status)) {
         throw new Error('Invalid verification status');
+    }
+    const existing = await this.get(`SELECT verification_status, normalized_topic FROM teaching_object_claims WHERE claim_key = ?`, [key]);
+    const priorStatus = existing?.verification_status || null;
+    if (priorStatus !== status) {
+        const { assertTransitionAllowed } = require('../../server/services/claimLifecycleService');
+        assertTransitionAllowed(priorStatus, status, { force: Boolean(forceTransition) });
     }
     const now = new Date().toISOString();
     const fields = ['verification_status = ?', 'verification_reason = ?', 'verified_at = ?', 'updated_at = ?'];
@@ -775,6 +786,26 @@ async updateTeachingClaimVerification(claimKey, { verificationStatus, verificati
     }
     values.push(key);
     await this.run(`UPDATE teaching_object_claims SET ${fields.join(', ')} WHERE claim_key = ?`, values);
+    if (priorStatus !== status && typeof this.logClaimStatusChange === 'function') {
+        await this.logClaimStatusChange(key, {
+            fromStatus: priorStatus,
+            toStatus: status,
+            normalizedTopic: existing?.normalized_topic || null,
+            reason: verificationReason || null,
+        }).catch(() => {});
+    }
+    if (status === 'stale_needs_refresh' && typeof this.enqueueClaimRegeneration === 'function') {
+        const rowForRegen = await this.get(
+            `SELECT article_uid, normalized_topic FROM teaching_object_claims WHERE claim_key = ?`,
+            [key]
+        );
+        await this.enqueueClaimRegeneration({
+            claimKey: key,
+            articleUid: rowForRegen?.article_uid || null,
+            topic: rowForRegen?.normalized_topic || null,
+            triggerReason: 'stale_evidence',
+        }).catch(() => {});
+    }
     await this.logEvent?.('teaching_claim_verification_updated', null, {
         claimKey: key,
         verificationStatus: status,
@@ -906,6 +937,181 @@ async getEvidenceJudgementProfile(userId, { topic = '', limit = 8 } = {}) {
         topics,
         generatedAt: new Date().toISOString(),
     };
+}
+
+async getAdminClaimObservability({ limit = 25 } = {}) {
+    const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 25, 1), 80);
+    const [
+        byStatus,
+        staleTopics,
+        abstractOnly,
+        unverified,
+        failedJobs,
+        highDemand,
+    ] = await Promise.all([
+        this.all(
+            `SELECT verification_status AS status, COUNT(*) AS count
+             FROM teaching_object_claims
+             GROUP BY verification_status
+             ORDER BY count DESC`
+        ),
+        this.all(
+            `SELECT normalized_topic, normalized_topic AS topic,
+                    COUNT(*) AS claim_count,
+                    SUM(CASE WHEN verification_status = 'stale_needs_refresh' THEN 1 ELSE 0 END) AS stale_count,
+                    MAX(updated_at) AS last_updated_at
+             FROM teaching_object_claims
+             WHERE verification_status IN ('stale_needs_refresh', 'agent_draft', 'abstract_only')
+             GROUP BY normalized_topic
+             ORDER BY stale_count DESC, claim_count DESC
+             LIMIT ?`,
+            [safeLimit]
+        ),
+        this.all(
+            `SELECT claim_key, claim_text, normalized_topic, article_uid, verification_status, updated_at
+             FROM teaching_object_claims
+             WHERE verification_status = 'abstract_only'
+             ORDER BY updated_at DESC
+             LIMIT ?`,
+            [safeLimit]
+        ),
+        this.all(
+            `SELECT claim_key, claim_text, normalized_topic, article_uid, verification_status, updated_at
+             FROM teaching_object_claims
+             WHERE verification_status IN ('unverified', 'agent_draft', 'synthesis_inferred')
+             ORDER BY updated_at DESC
+             LIMIT ?`,
+            [safeLimit]
+        ),
+        this.all(
+            `SELECT job_key, job_type, status, error_message, updated_at
+             FROM ai_generation_jobs
+             WHERE status = 'failed'
+             ORDER BY updated_at DESC
+             LIMIT ?`,
+            [Math.min(safeLimit, 30)]
+        ).catch(() => []),
+        this.all(
+            `SELECT normalized_topic, normalized_topic AS topic,
+                    COUNT(*) AS claim_count,
+                    MAX(updated_at) AS last_updated_at
+             FROM teaching_object_claims
+             WHERE normalized_topic IS NOT NULL AND normalized_topic <> ''
+             GROUP BY normalized_topic
+             ORDER BY claim_count DESC
+             LIMIT ?`,
+            [safeLimit]
+        ),
+    ]);
+    return {
+        generatedAt: new Date().toISOString(),
+        countsByStatus: byStatus.map((r) => ({
+            status: r.status,
+            count: Number(r.count || 0),
+        })),
+        staleTopics: staleTopics.map((r) => ({
+            normalizedTopic: r.normalized_topic,
+            topic: r.topic,
+            claimCount: Number(r.claim_count || 0),
+            staleCount: Number(r.stale_count || 0),
+            lastUpdatedAt: r.last_updated_at || null,
+        })),
+        abstractOnlyClaims: abstractOnly.map((r) => this.mapTeachingObjectClaimRow(r)),
+        unverifiedClaims: unverified.map((r) => this.mapTeachingObjectClaimRow(r)),
+        failedGenerationJobs: failedJobs.map((r) => ({
+            jobKey: r.job_key,
+            jobType: r.job_type,
+            status: r.status,
+            errorMessage: r.error_message || null,
+            updatedAt: r.updated_at || null,
+        })),
+        highDemandTopics: highDemand.map((r) => ({
+            normalizedTopic: r.normalized_topic,
+            topic: r.topic,
+            claimCount: Number(r.claim_count || 0),
+            lastUpdatedAt: r.last_updated_at || null,
+        })),
+    };
+}
+
+async getClinicalQualityQueueCounts(topic = '') {
+    const normalized = topic ? this.normalizeTopic(topic) : '';
+    const row = await this.get(
+        `SELECT
+            SUM(CASE
+                WHEN json_extract(c.curator_metadata, '$.overclaimed') IN (1, 'true', '1')
+                    OR (c.verification_status = 'stale_needs_refresh' AND c.verification_reason LIKE '%overclaimed%')
+                THEN 1 ELSE 0 END) AS overclaimed,
+            SUM(CASE WHEN c.verification_status = 'guideline_conflict' THEN 1 ELSE 0 END) AS guideline_conflicts,
+            SUM(CASE WHEN c.verification_status = 'stale_needs_refresh' THEN 1 ELSE 0 END) AS stale,
+            SUM(CASE WHEN c.verification_status = 'abstract_only' THEN 1 ELSE 0 END) AS abstract_only,
+            SUM(CASE
+                WHEN (c.confidence IS NULL OR c.confidence < 0.55)
+                    AND c.verification_status IN ('agent_draft', 'synthesis_inferred', 'unverified', 'abstract_only')
+                THEN 1 ELSE 0 END) AS low_confidence
+         FROM teaching_object_claims c
+         WHERE (? = '' OR c.normalized_topic = ?)`,
+        [normalized, normalized]
+    );
+    return {
+        overclaimed: Number(row?.overclaimed || 0),
+        guideline_conflicts: Number(row?.guideline_conflicts || 0),
+        stale: Number(row?.stale || 0),
+        abstract_only: Number(row?.abstract_only || 0),
+        low_confidence: Number(row?.low_confidence || 0),
+    };
+}
+
+async listClinicalQualityReviewClaims({ queue = 'abstract_only', topic = '', limit = 40, offset = 0 } = {}) {
+    const normalized = topic ? this.normalizeTopic(topic) : '';
+    const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 40, 1), 100);
+    const safeOffset = Math.max(parseInt(String(offset), 10) || 0, 0);
+    const q = String(queue || 'abstract_only').trim();
+    let whereExtra = '';
+    if (q === 'overclaimed') {
+        whereExtra = `AND (
+            json_extract(c.curator_metadata, '$.overclaimed') IN (1, 'true', '1')
+            OR (c.verification_status = 'stale_needs_refresh' AND c.verification_reason LIKE '%overclaimed%')
+        )`;
+    } else if (q === 'guideline_conflicts') {
+        whereExtra = `AND c.verification_status = 'guideline_conflict'`;
+    } else if (q === 'stale') {
+        whereExtra = `AND c.verification_status = 'stale_needs_refresh'`;
+    } else if (q === 'abstract_only') {
+        whereExtra = `AND c.verification_status = 'abstract_only'`;
+    } else if (q === 'low_confidence') {
+        whereExtra = `AND (c.confidence IS NULL OR c.confidence < 0.55)
+            AND c.verification_status IN ('agent_draft', 'synthesis_inferred', 'unverified', 'abstract_only')`;
+    } else {
+        throw new Error('Invalid quality queue');
+    }
+    const rows = await this.all(
+        `SELECT
+            c.*,
+            o.object_type,
+            o.topic,
+            o.title AS object_title,
+            COUNT(qz.id) AS quiz_attempts,
+            SUM(CASE WHEN qz.is_correct = 1 THEN 1 ELSE 0 END) AS quiz_correct
+         FROM teaching_object_claims c
+         LEFT JOIN teaching_objects o ON o.object_key = c.object_key
+         LEFT JOIN quiz_attempts qz ON qz.claim_key = c.claim_key
+         WHERE (? = '' OR c.normalized_topic = ?)
+         ${whereExtra}
+         GROUP BY c.claim_key
+         ORDER BY c.updated_at DESC
+         LIMIT ? OFFSET ?`,
+        [normalized, normalized, safeLimit, safeOffset]
+    );
+    return rows.map((row) => ({
+        ...this.mapTeachingObjectClaimRow(row),
+        objectType: row.object_type || null,
+        topic: row.topic || row.normalized_topic || null,
+        objectTitle: row.object_title || null,
+        quizAttempts: Number(row.quiz_attempts || 0),
+        quizCorrect: Number(row.quiz_correct || 0),
+        qualityQueue: q,
+    }));
 }
 
 // Teaching object claims flagged as practice-changing or clinical bottom lines.

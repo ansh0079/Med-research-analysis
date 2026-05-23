@@ -23,6 +23,7 @@ import type {
   TopicKnowledgeProposal,
   TopicKnowledgeProposalListResponse,
   LearningHealthResponse,
+  LearningRecommendation,
 } from '@types';
 import * as Sentry from '@sentry/react';
 import type { Scope } from '@sentry/react';
@@ -422,6 +423,313 @@ class MedicalResearchAPI {
     return response.json();
   }
 
+  async getAdminLlmCostDashboard(options: { days?: number; limit?: number } = {}): Promise<{
+    dashboard: {
+      generatedAt: string;
+      windowDays: number;
+      totals: {
+        llmCalls: number;
+        successCalls: number;
+        failedCalls: number;
+        estimatedCostUsd: number;
+        estimatedTokens: number;
+        synopsesGenerated: number;
+      };
+      byOperation: Array<{ operation: string; callCount: number; estimatedCostUsd: number; failedCount: number }>;
+      failedLlmCalls: Array<{ operation: string; provider: string | null; model: string | null; normalizedTopic: string | null; errorMessage: string | null; createdAt: string }>;
+      failedGenerationJobs: Array<{ jobKey: string; jobType: string; errorMessage: string | null; updatedAt: string | null }>;
+      highCostTopics: Array<{ normalizedTopic: string; callCount: number; estimatedCostUsd: number }>;
+    };
+  }> {
+    const params = new URLSearchParams();
+    if (options.days) params.set('days', String(options.days));
+    if (options.limit) params.set('limit', String(options.limit));
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/llm-cost-dashboard?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getBackgroundAutomation(): Promise<{
+    automation: { paused: boolean; pausedAt: string | null; pausedBy: string | null; reason: string | null };
+    curriculumScheduler: { enabled: boolean };
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/automation`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async setBackgroundAutomationPaused(paused: boolean, reason?: string): Promise<{
+    automation: { paused: boolean; pausedAt: string | null };
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/automation`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ paused, reason }),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getClinicalQualityQueue(options: {
+    queue?: string;
+    topic?: string;
+    limit?: number;
+    offset?: number;
+  } = {}): Promise<{
+    queues: Array<{ id: string; label: string; description: string; tone: string }>;
+    counts: Record<string, number>;
+    claims: import('@types').TeachingClaimReviewItem[];
+  }> {
+    const params = new URLSearchParams();
+    if (options.queue) params.set('queue', options.queue);
+    if (options.topic) params.set('topic', options.topic);
+    if (options.limit) params.set('limit', String(options.limit));
+    if (options.offset) params.set('offset', String(options.offset));
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/clinical-quality-queue?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getAdminClaimObservability(options: { limit?: number } = {}): Promise<{
+    observability: {
+      generatedAt: string;
+      countsByStatus: Array<{ status: string; count: number }>;
+      staleTopics: Array<{ normalizedTopic: string; topic: string; claimCount: number; staleCount: number; lastUpdatedAt: string | null }>;
+      abstractOnlyClaims: import('@types').TeachingClaimReviewItem[];
+      unverifiedClaims: import('@types').TeachingClaimReviewItem[];
+      failedGenerationJobs: Array<{ jobKey: string; jobType: string; status: string; errorMessage: string | null; updatedAt: string | null }>;
+      highDemandTopics: Array<{ normalizedTopic: string; topic: string; claimCount: number; lastUpdatedAt: string | null }>;
+    };
+  }> {
+    const params = new URLSearchParams();
+    if (options.limit) params.set('limit', String(options.limit));
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/claim-observability?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async alignTopicGuidelines(topic: string, options: { limit?: number; apply?: boolean } = {}): Promise<{
+    topic: string;
+    processed: number;
+    results: Array<{ claimKey: string; alignmentStatus?: string; recommendedVerificationStatus?: string; applied?: boolean; skipped?: boolean; error?: string }>;
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/topics/${encodeURIComponent(topic)}/guideline-align`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ limit: options.limit ?? 40, apply: options.apply !== false }),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async importCoreClinicalTopics(): Promise<{
+    importedCount: number;
+    source: string;
+    topics: Array<{
+      id: number | string;
+      block: string;
+      displayName: string;
+      suggestedQuery: string;
+      priority: string;
+      volatility: string;
+      seedStatus: string;
+    }>;
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/curriculum/import-core-topics`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async listCurriculumSeedTopics(options: { limit?: number; offset?: number; seedStatus?: string } = {}): Promise<{
+    count: number;
+    topics: Array<{
+      id: number | string;
+      block: string;
+      displayName: string;
+      suggestedQuery: string;
+      priority: string;
+      volatility: string;
+      seedStatus: string;
+      lastSeededAt?: string | null;
+      claimCount: number;
+      reviewDueAt?: string | null;
+    }>;
+  }> {
+    const params = new URLSearchParams();
+    if (options.limit) params.set('limit', String(options.limit));
+    if (options.offset) params.set('offset', String(options.offset));
+    if (options.seedStatus) params.set('seedStatus', options.seedStatus);
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/curriculum/seed-topics?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async seedCurriculumTopic(topicId: number | string, options: {
+    provider?: string;
+    searchLimit?: number;
+    synthesisArticles?: number;
+    synopsisArticles?: number;
+    background?: boolean;
+  } = {}): Promise<{
+    accepted?: boolean;
+    topic: {
+      id: number | string;
+      block: string;
+      displayName: string;
+      seedStatus: string;
+      claimCount: number;
+      reviewDueAt?: string | null;
+    };
+    articleCount?: number;
+    selectedArticleCount?: number;
+    synthesisJobKey?: string;
+    synopsisCount?: number;
+    synopsisFailures?: Array<{ uid?: string; title?: string; error: string }>;
+    claimCount?: number;
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/curriculum/seed-topics/${encodeURIComponent(String(topicId))}/seed`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(options),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async runCurriculumSeedBatch(options: {
+    batchSize?: number;
+    searchLimit?: number;
+    synthesisArticles?: number;
+    synopsisArticles?: number;
+    seedStatuses?: string[];
+  } = {}): Promise<{
+    candidatesCount: number;
+    refreshedCount: number;
+    skippedCount: number;
+    errorCount: number;
+    details: { topics?: unknown[] };
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/curriculum/seed-batch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(options),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async retryFailedCurriculumSeeds(options: {
+    batchSize?: number;
+    searchLimit?: number;
+    synthesisArticles?: number;
+    synopsisArticles?: number;
+  } = {}): Promise<{
+    candidatesCount: number;
+    refreshedCount: number;
+    skippedCount: number;
+    errorCount: number;
+    details: { topics?: unknown[] };
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/curriculum/retry-failed`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(options),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getCurriculumSchedulerObservability(options: { limit?: number } = {}): Promise<{
+    scheduler: {
+      generatedAt: string;
+      runs: Array<{
+        id: number;
+        runType: string;
+        status: string;
+        startedAt: string;
+        finishedAt?: string | null;
+        candidatesCount: number;
+        refreshedCount: number;
+        skippedCount: number;
+        errorCount: number;
+        details?: { topics?: Array<Record<string, unknown>> };
+        error?: string | null;
+      }>;
+      dueTopics: Array<{
+        id: number | string;
+        block: string;
+        displayName: string;
+        priority: string;
+        volatility: string;
+        seedStatus: string;
+        claimCount: number;
+        reviewDueAt?: string | null;
+      }>;
+      failedTopics: Array<{
+        id: number | string;
+        block: string;
+        displayName: string;
+        priority: string;
+        volatility: string;
+        seedStatus: string;
+        claimCount: number;
+      }>;
+      statusCounts: Array<{ seedStatus: string; count: number; claimCount: number }>;
+      guardrails: {
+        settings: {
+          enabled: boolean;
+          maxTopicsPerDay: number;
+          maxSynopsesPerDay: number;
+          maxEstimatedCostUsdPerDay: number;
+          maxFailureRate: number;
+        };
+        usage: {
+          date: string;
+          topicsAttempted: number;
+          topicsSeeded: number;
+          topicsFailed: number;
+          synopsesGenerated: number;
+          estimatedCostUsd: number;
+        };
+        blockedReason: string | null;
+      };
+    };
+  }> {
+    const params = new URLSearchParams();
+    if (options.limit) params.set('limit', String(options.limit));
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/curriculum/scheduler?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async updateCurriculumSchedulerSettings(settings: {
+    enabled?: boolean;
+    maxTopicsPerDay?: number;
+    maxSynopsesPerDay?: number;
+    maxEstimatedCostUsdPerDay?: number;
+    maxFailureRate?: number;
+  }): Promise<{
+    settings: {
+      enabled: boolean;
+      maxTopicsPerDay: number;
+      maxSynopsesPerDay: number;
+      maxEstimatedCostUsdPerDay: number;
+      maxFailureRate: number;
+    };
+    guardrails: unknown;
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/curriculum/scheduler/settings`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(settings),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
   async checkTeachingClaimGuidelineAlignment(claimKey: string): Promise<{
     claim: import('@types').TeachingClaimReviewItem;
     alignment: {
@@ -555,6 +863,155 @@ class MedicalResearchAPI {
   }> {
     const params = new URLSearchParams({ topic });
     const response = await this.fetchWithSession(`${API_BASE}/api/learning/topic-overview?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getEvidenceDeltaBrief(topic: string): Promise<{
+    brief: {
+      topic: string;
+      hasPriorReview: boolean;
+      lastReviewedAt: string | null;
+      claimsChanged: number;
+      safetyCautions: number;
+      weakenedConclusions: number;
+      summary: string | null;
+      significantChange: boolean;
+      changes: Array<{
+        claimKey: string;
+        claimText: string | null;
+        fromLabel: string | null;
+        toLabel: string;
+        reason?: string | null;
+      }>;
+      pendingRegeneration: Array<{ claimKey: string; claimText: string | null; status: string; triggerReason: string }>;
+    };
+  }> {
+    const params = new URLSearchParams({ topic });
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/evidence-delta?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getTopicEvidenceMemory(topic: string): Promise<{ memory: import('@types').TopicEvidenceMemory }> {
+    const params = new URLSearchParams({ topic });
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/topic-evidence-memory?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getClaimLifecycle(topic: string): Promise<{
+    topic: string;
+    summary: { totalClaims: number; needsAttention: number; pipeline: Array<{ stage: string; label: string; count: number }> };
+    claims: Array<{
+      claimKey: string;
+      lifecycleStage: string;
+      lifecycleLabel: string;
+      recommendedAction: string;
+      trustTier?: string;
+      trustLadder?: Array<{ tier: string; label: string; reached: boolean; current: boolean; stale?: boolean }>;
+    }>;
+    regeneration: Array<{ claimKey: string; status: string; triggerReason: string }>;
+  }> {
+    const params = new URLSearchParams({ topic });
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/claim-lifecycle?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async recordTopicReview(topic: string): Promise<{ review: { lastReviewedAt: string } }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/topic-review`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic }),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getPersonalKnowledgeGraph(topic: string): Promise<{
+    graph: {
+      nodes: Array<{ id: string; type: string; label: string }>;
+      edges: Array<{ from: string; to: string; relation: string }>;
+      weakClaims: Array<{ claimKey: string; claimText: string; reasoningHint: string }>;
+      agentHooks: Array<{ claimKey: string; prompt: string }>;
+    };
+  }> {
+    const params = new URLSearchParams({ topic });
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/knowledge-graph?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getConfidenceCalibration(topic = ''): Promise<{
+    profile: {
+      buckets: { dangerousMisconception: number; knowledgeGap: number; needsConsolidation: number; wellCalibrated: number };
+      recent: Record<string, unknown[]>;
+    };
+  }> {
+    const params = new URLSearchParams(topic ? { topic } : {});
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/confidence-calibration?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async createLearningRound(topic: string): Promise<{ round: { id: number; items: unknown[] }; persisted: boolean }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/learning-rounds`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic }),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getLearningRound(roundId: number): Promise<{ round: { id: number; topic: string; items: unknown[] } }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/learning-rounds/${roundId}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getCaseToEvidence(clinicalQuestion: string, topic = '', seedArticles: import('@types').Article[] = []): Promise<{
+    topic?: string;
+    brief: Record<string, unknown>;
+    articles: Article[];
+    guidelines: unknown[];
+    relatedClaims: unknown[];
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/case-to-evidence`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clinicalQuestion, topic, seedArticles }),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getGuidelineWatchEvents(topic: string): Promise<{ events: Array<{ eventType: string; message: string; severity: string }> }> {
+    const params = new URLSearchParams({ topic });
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/guideline-watch?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async updateTeachingClaimCuratorMetadata(
+    claimKey: string,
+    metadata: {
+      examRelevant?: boolean;
+      practiceChanging?: boolean;
+      overclaimed?: boolean;
+      paperSectionRef?: string;
+      curatorNotes?: string;
+    }
+  ): Promise<{ claim: unknown }> {
+    const response = await this.fetchWithSession(
+      `${API_BASE}/api/admin/teaching-claims/${encodeURIComponent(claimKey)}/curator-metadata`,
+      {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(metadata),
+      }
+    );
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
@@ -1877,6 +2334,29 @@ class MedicalResearchAPI {
     return response.json();
   }
 
+  async runAggregateMemory(): Promise<{ topics: number; message: string }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/aggregate-memory`, { method: 'POST' });
+    if (!response.ok) throw new Error('Failed to run aggregate memory');
+    return response.json();
+  }
+
+  async getAggregateMemoryStats(): Promise<{ topicsWithAttempts: number; totalAttempts: number; topicsWithMemory: number; topTopics: { normalized_topic: string; attempts: number; users: number }[] }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/aggregate-memory/stats`);
+    if (!response.ok) throw new Error('Failed to get aggregate memory stats');
+    return response.json();
+  }
+
+  async fetchPracticePool(options: { count?: number; difficulty?: string; type?: string } = {}): Promise<{ questions: unknown[]; total: number }> {
+    const params = new URLSearchParams();
+    if (options.count) params.set('count', String(options.count));
+    if (options.difficulty) params.set('difficulty', options.difficulty);
+    if (options.type) params.set('type', options.type);
+    const response = await this.fetchWithSession(`${API_BASE}/api/quiz/pool?${params.toString()}`);
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to load practice pool');
+    return response.json();
+  }
+
   async listGuidelines(options: { query?: string; status?: string; sourceBody?: string; limit?: number; offset?: number } = {}): Promise<import('../types').GuidelineListResponse> {
     const params = new URLSearchParams();
     if (options.query) params.set('query', options.query);
@@ -2146,6 +2626,12 @@ class MedicalResearchAPI {
     return response.json();
   }
 
+  async getLearningRecommendations(limit = 8): Promise<{ recommendations: LearningRecommendation[]; generatedAt: string }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/recommendations?limit=${limit}`);
+    if (!response.ok) throw new Error('Failed to load recommendations');
+    return response.json();
+  }
+
   async getLearningDashboard(): Promise<import('../types').LearningDashboard> {
     const response = await this.fetchWithSession(`${API_BASE}/api/learning/dashboard`);
     if (!response.ok) throw new Error('Failed to load learning dashboard');
@@ -2304,6 +2790,24 @@ class MedicalResearchAPI {
 
   clearCache(): void {
     this.cache.clear();
+  }
+
+  async getTopicCrosslinks(topic: string): Promise<{
+    crosslinks: Array<{
+      topic: string;
+      normalizedTopic: string;
+      linkType: 'shared_paper' | 'ai_inferred';
+      sharedEvidence: { pmid?: string; title?: string } | null;
+      strength: number;
+      aiRationale: string | null;
+      createdAt: string;
+    }>;
+  }> {
+    const response = await this.fetchWithSession(
+      `${API_BASE}/api/topic/${encodeURIComponent(topic)}/crosslinks`
+    );
+    if (!response.ok) throw new Error('Failed to load topic cross-links');
+    return response.json();
   }
 
   private setCache<T>(key: string, value: T, ttlMs?: number): void {
