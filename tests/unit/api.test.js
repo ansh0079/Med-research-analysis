@@ -96,6 +96,7 @@ jest.mock('../../database', () => ({
   getPicoExtractionByArticle: jest.fn().mockResolvedValue(null),
   createTopicKnowledgeProposal: jest.fn().mockResolvedValue({ id: 1, topic: 'Test Topic', status: 'pending_review' }),
   recordUserInteraction: jest.fn().mockResolvedValue({ id: 1 }),
+  recordLearningEvent: jest.fn().mockResolvedValue({ id: 1 }),
   recordLowRecallSearch: jest.fn().mockResolvedValue({ id: 1 }),
   mergeTopicKnowledgeAliases: jest.fn().mockResolvedValue({ id: 1 }),
   getLearningObservability: jest.fn().mockResolvedValue({

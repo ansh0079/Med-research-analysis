@@ -62,7 +62,10 @@ async createLearningRound({ userId, topic, items = [] } = {}) {
          VALUES (?, ?, ?, 'active', ?, ?)`,
         [uid, topicLabel, normalized, items.length, now]
     );
-    const roundId = result?.lastID ?? result?.lastInsertRowid;
+    const roundId = result?.id ?? result?.lastID ?? result?.lastInsertRowid;
+    if (!roundId) {
+        throw new Error('Learning round insert did not return an id');
+    }
     for (let i = 0; i < items.length; i += 1) {
         const item = items[i];
         await this.run(
@@ -82,6 +85,83 @@ async createLearningRound({ userId, topic, items = [] } = {}) {
         );
     }
     return this.getLearningRound(roundId, uid);
+}
+
+async recordLearningEvent({
+    userId,
+    eventType,
+    topic = '',
+    claimKey = null,
+    sourceType = null,
+    sourceId = null,
+    payload = {},
+    occurredAt = null,
+} = {}) {
+    const uid = userId != null ? String(userId).trim() : null;
+    const type = String(eventType || '').trim();
+    if (!type) return null;
+    const topicLabel = String(topic || '').trim().slice(0, 240);
+    const normalized = topicLabel ? this.normalizeTopic(topicLabel) : null;
+    const now = occurredAt || new Date().toISOString();
+    const safePayload = payload && typeof payload === 'object' ? payload : { value: payload };
+    const result = await this.run(
+        `INSERT INTO learning_events (
+            user_id, event_type, topic, normalized_topic, claim_key,
+            source_type, source_id, payload_json, occurred_at, created_at
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            uid,
+            type.slice(0, 64),
+            topicLabel || null,
+            normalized,
+            claimKey ? String(claimKey).slice(0, 80) : null,
+            sourceType ? String(sourceType).slice(0, 80) : null,
+            sourceId != null ? String(sourceId).slice(0, 120) : null,
+            JSON.stringify(safePayload).slice(0, 8000),
+            now,
+            new Date().toISOString(),
+        ]
+    );
+    return { id: result?.id ?? result?.lastID ?? result?.lastInsertRowid ?? null };
+}
+
+async listLearningEvents({ userId = null, topic = '', eventType = '', limit = 100, offset = 0 } = {}) {
+    const clauses = [];
+    const params = [];
+    if (userId != null) {
+        clauses.push('user_id = ?');
+        params.push(String(userId));
+    }
+    if (topic) {
+        clauses.push('normalized_topic = ?');
+        params.push(this.normalizeTopic(topic));
+    }
+    if (eventType) {
+        clauses.push('event_type = ?');
+        params.push(String(eventType).slice(0, 64));
+    }
+    const where = clauses.length ? `WHERE ${clauses.join(' AND ')}` : '';
+    const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 100, 1), 500);
+    const safeOffset = Math.max(parseInt(String(offset), 10) || 0, 0);
+    const rows = await this.all(
+        `SELECT * FROM learning_events ${where}
+         ORDER BY occurred_at DESC, id DESC
+         LIMIT ? OFFSET ?`,
+        [...params, safeLimit, safeOffset]
+    );
+    return rows.map((row) => ({
+        id: row.id,
+        userId: row.user_id || null,
+        eventType: row.event_type,
+        topic: row.topic || null,
+        normalizedTopic: row.normalized_topic || null,
+        claimKey: row.claim_key || null,
+        sourceType: row.source_type || null,
+        sourceId: row.source_id || null,
+        payload: safeJsonParse(row.payload_json || '{}', {}),
+        occurredAt: row.occurred_at,
+        createdAt: row.created_at,
+    }));
 }
 
 async getLearningRound(roundId, userId) {

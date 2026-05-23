@@ -3526,6 +3526,8 @@ const _dbMethodsFromMixins = [
     'createLearningRound',
     'getLearningRound',
     'completeLearningRound',
+    'recordLearningEvent',
+    'listLearningEvents',
     'insertGuidelineWatchEvent',
     'listGuidelineWatchEvents',
     'logLlmUsage',

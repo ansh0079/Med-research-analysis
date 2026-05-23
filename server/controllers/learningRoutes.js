@@ -223,6 +223,24 @@ function registerLearningRoutes(app, deps) {
         };
     }
 
+    function normalizeAttemptClaimKey(attempt) {
+        const direct = String(attempt?.claimKey || '').trim();
+        if (direct) return direct;
+        const outline = String(attempt?.outlineNodeId || '').trim();
+        if (outline.startsWith('claim:')) return outline.slice('claim:'.length).trim();
+        const questionId = String(attempt?.questionId || '').trim();
+        if (questionId.startsWith('claim:')) return questionId.slice('claim:'.length).trim();
+        return null;
+    }
+
+    function recordLearningEventSafe(event) {
+        if (typeof db.recordLearningEvent !== 'function') return Promise.resolve(null);
+        return db.recordLearningEvent(event).catch((err) => {
+            logger.warn({ err, eventType: event?.eventType }, 'recordLearningEvent failed');
+            return null;
+        });
+    }
+
     // ==========================================
     // Learning Profile
     // ==========================================
@@ -482,6 +500,18 @@ function registerLearningRoutes(app, deps) {
             if (topic.length < 2) return res.status(400).json({ error: 'topic is required' });
             const { createLearningRound } = require('../services/learningRoundsService');
             const result = await createLearningRound(db, req.user.id, topic);
+            const items = result?.round?.items || result?.items || [];
+            for (const claimKey of items.map((item) => item.claimKey).filter(Boolean)) {
+                void recordLearningEventSafe({
+                    userId: req.user.id,
+                    eventType: 'claim_seen',
+                    topic,
+                    claimKey,
+                    sourceType: 'learning_round',
+                    sourceId: result?.round?.id || null,
+                    payload: { itemCount: items.length },
+                });
+            }
             res.status(201).json(result);
         } catch (error) {
             req.log.error({ err: error }, 'Create learning round error');
@@ -588,12 +618,32 @@ function registerLearningRoutes(app, deps) {
 
             // Insert all attempts and update SM-2 spaced rep cards
             const normalizedTopic = db.normalizeTopic(topic);
-            const attemptsWithJudgement = attempts.map((attempt) => ({
-                ...attempt,
-                ...inferEvidenceJudgement(attempt),
-            }));
+            const attemptsWithJudgement = attempts.map((attempt) => {
+                const claimKey = normalizeAttemptClaimKey(attempt);
+                return {
+                    ...attempt,
+                    claimKey,
+                    ...inferEvidenceJudgement({ ...attempt, claimKey }),
+                };
+            });
             for (const attempt of attemptsWithJudgement) {
-                await db.createQuizAttempt({ ...attempt, userId, topic, studyRunId: run?.id || null });
+                const savedAttempt = await db.createQuizAttempt({ ...attempt, userId, topic, studyRunId: run?.id || null });
+                void recordLearningEventSafe({
+                    userId,
+                    eventType: 'mcq_answered',
+                    topic,
+                    claimKey: attempt.claimKey || null,
+                    sourceType: 'quiz_attempt',
+                    sourceId: savedAttempt?.id,
+                    payload: {
+                        questionType: attempt.questionType,
+                        isCorrect: Boolean(attempt.isCorrect),
+                        confidence: attempt.confidence ?? null,
+                        reasoningTags: attempt.reasoningTags || [],
+                        studyRunId: run?.id || null,
+                        outlineNodeId: attempt.outlineNodeId || null,
+                    },
+                });
                 if (attempt.outlineNodeId) {
                     spacedRep.updateCard(db, {
                         userId,
@@ -606,6 +656,19 @@ function registerLearningRoutes(app, deps) {
                     }).catch((err) => { logger.warn({ err }, 'updateCard failed'); return null; });
                 }
                 if (attempt.claimKey) {
+                    void recordLearningEventSafe({
+                        userId,
+                        eventType: 'claim_recalled',
+                        topic,
+                        claimKey: attempt.claimKey,
+                        sourceType: 'quiz_attempt',
+                        sourceId: savedAttempt?.id,
+                        payload: {
+                            isCorrect: Boolean(attempt.isCorrect),
+                            confidence: attempt.confidence ?? null,
+                            questionType: attempt.questionType,
+                        },
+                    });
                     spacedRep.updateCard(db, {
                         userId,
                         topic,
@@ -996,19 +1059,48 @@ function registerLearningRoutes(app, deps) {
 
     app.post('/api/learning/case-attempt', limitBodySize(512 * 1024), requireJson, requireAuthJwt, rateLimit(10, 60), async (req, res) => {
         try {
-            const { topic, caseText, userResponse, score, feedback, difficulty, timeMs } = req.body || {};
+            const { topic, caseText, userResponse, score, feedback, difficulty, timeMs, caseType, learningMode, aiFeedback, seedArticleUids } = req.body || {};
             if (!String(topic || '').trim()) return res.status(400).json({ error: 'topic is required' });
-            if (!String(userResponse || '').trim()) return res.status(400).json({ error: 'userResponse is required' });
             const attempt = await db.createCaseAttempt({
                 userId: req.user.id,
                 topic: String(topic).trim(),
                 caseText: String(caseText || '').slice(0, 20000),
-                userResponse: String(userResponse).slice(0, 20000),
+                caseType: String(caseType || 'analysis').slice(0, 60),
+                learningMode: String(learningMode || difficulty || 'resident').slice(0, 60),
+                userResponse: userResponse && typeof userResponse === 'object'
+                    ? userResponse
+                    : (String(userResponse || '').trim() ? { text: String(userResponse).slice(0, 20000) } : null),
+                aiFeedback: aiFeedback && typeof aiFeedback === 'object'
+                    ? aiFeedback
+                    : (String(feedback || '').trim() ? { text: String(feedback).slice(0, 5000) } : null),
                 score: score != null ? Number(score) : null,
-                feedback: String(feedback || '').slice(0, 5000),
-                difficulty: String(difficulty || 'medium'),
-                timeMs: timeMs != null ? Number(timeMs) : null,
+                seedArticleUids: Array.isArray(seedArticleUids) ? seedArticleUids : [],
             });
+            void recordLearningEventSafe({
+                userId: req.user.id,
+                eventType: 'case_attempted',
+                topic: String(topic).trim(),
+                sourceType: 'case_attempt',
+                sourceId: attempt?.id,
+                payload: {
+                    caseType: caseType || 'analysis',
+                    learningMode: learningMode || difficulty || 'resident',
+                    hasUserResponse: Boolean(userResponse),
+                    score: score != null ? Number(score) : null,
+                    timeMs: timeMs != null ? Number(timeMs) : null,
+                    seedArticleCount: Array.isArray(seedArticleUids) ? seedArticleUids.length : 0,
+                },
+            });
+            if (caseType === 'teaching_vignette') {
+                void recordLearningEventSafe({
+                    userId: req.user.id,
+                    eventType: 'case_generated',
+                    topic: String(topic).trim(),
+                    sourceType: 'case_attempt',
+                    sourceId: attempt?.id,
+                    payload: { learningMode: learningMode || difficulty || 'resident' },
+                });
+            }
             res.status(201).json({ attempt });
         } catch (error) {
             req.log.error({ err: error }, 'Create case attempt error');
@@ -1592,6 +1684,14 @@ Return ONLY valid JSON:
                     await db.run('UPDATE topic_knowledge SET knowledge = ? WHERE id = ?', [JSON.stringify(knowledge), tkRow.id]);
                 }
             }
+            void recordLearningEventSafe({
+                userId: req.user.id,
+                eventType: feedbackType === 'confusing' ? 'feedback_confusing' : 'feedback_helpful',
+                topic,
+                sourceType: 'quiz_feedback',
+                sourceId: outlineNodeId,
+                payload: { outlineNodeId, feedbackType },
+            });
             res.status(204).send();
         } catch (error) {
             req.log.error({ err: error }, 'Quiz feedback error');

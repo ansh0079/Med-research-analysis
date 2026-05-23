@@ -411,6 +411,38 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                         groundedClaimCount: groundedClaims.length,
                         weakClaimCount: claimMastery.filter((c) => c.masteryState === 'weak').length,
                     });
+                    if (typeof db.recordLearningEvent === 'function') {
+                        await Promise.allSettled([
+                            db.recordLearningEvent({
+                                userId: req.user?.id || null,
+                                eventType: 'agent_message',
+                                topic: trimmedTopic,
+                                sourceType: 'agent_chat',
+                                sourceId: req.sessionId || null,
+                                payload: {
+                                    role: 'user',
+                                    messageLength: trimmedMessage.length,
+                                    intent: inferDemandIntent(trimmedMessage),
+                                    historyTurns: history.length,
+                                },
+                            }),
+                            db.recordLearningEvent({
+                                userId: req.user?.id || null,
+                                eventType: 'agent_message',
+                                topic: trimmedTopic,
+                                sourceType: 'agent_chat',
+                                sourceId: req.sessionId || null,
+                                payload: {
+                                    role: 'assistant',
+                                    messageLength: reply.length,
+                                    provider: selectedProvider,
+                                    model: selectedModel,
+                                    groundedClaimCount: groundedClaims.length,
+                                    weakClaimCount: claimMastery.filter((c) => c.masteryState === 'weak').length,
+                                },
+                            }),
+                        ]);
+                    }
                     await Promise.allSettled([
                         db.recordTopicDemandSignal(trimmedTopic, trimmedTopic, inferDemandIntent(trimmedMessage)),
                         previousQueries?.length

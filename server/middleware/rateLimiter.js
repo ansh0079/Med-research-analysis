@@ -1,4 +1,4 @@
-const { rateLimit: createExpressRateLimit } = require('express-rate-limit');
+const { rateLimit: createExpressRateLimit, ipKeyGenerator } = require('express-rate-limit');
 const logger = require('../config/logger');
 
 let rateLimitStore;
@@ -78,7 +78,7 @@ function userRateLimit(maxRequests, windowSeconds) {
         keyGenerator: (req) => {
             // Prefer user ID so different IPs from the same account share quota
             const uid = req.user?.id || req.user?.sub;
-            return uid ? `user:${uid}` : `ip:${req.ip}`;
+            return uid ? `user:${uid}` : `ip:${ipKeyGenerator(req.ip)}`;
         },
         skip: () => process.env.NODE_ENV === 'test',
         handler: (req, res) => {

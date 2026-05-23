@@ -1,5 +1,53 @@
 const logger = require('../config/logger');
 
+function safeJsonParse(raw, fallback = []) {
+    try {
+        return JSON.parse(raw || JSON.stringify(fallback));
+    } catch {
+        return fallback;
+    }
+}
+
+function normalizeCandidate(db, value) {
+    if (!value) return '';
+    if (typeof db.normalizeTopic === 'function') return db.normalizeTopic(value);
+    return String(value || '').toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, ' ').trim();
+}
+
+async function findTopicKnowledgeForCandidate(db, candidate) {
+    const normalized = normalizeCandidate(db, candidate);
+    if (!normalized || normalized.length < 2) return null;
+    const like = `%${normalized}%`;
+    return db.get(
+        `SELECT topic, normalized_topic, confidence, updated_at, last_refreshed_at, knowledge
+         FROM topic_knowledge
+         WHERE normalized_topic = ?
+            OR canonical_normalized = ?
+            OR aliases_normalized LIKE ?
+            OR LOWER(topic) = LOWER(?)
+         ORDER BY
+            CASE WHEN normalized_topic = ? THEN 0 ELSE 1 END,
+            confidence DESC
+         LIMIT 1`,
+        [normalized, normalized, like, candidate, normalized]
+    ).catch(() => null);
+}
+
+function daysSince(value, now = new Date()) {
+    if (!value) return null;
+    const t = new Date(value).getTime();
+    if (!Number.isFinite(t)) return null;
+    return Math.max(0, Math.floor((now.getTime() - t) / 86400000));
+}
+
+function freshnessHint(topicRow, now = new Date()) {
+    const ageDays = daysSince(topicRow?.last_refreshed_at || topicRow?.updated_at, now);
+    if (ageDays == null) return null;
+    if (ageDays >= 120) return { label: `Topic memory is ${ageDays} days old`, priorityBoost: 18 };
+    if (ageDays >= 45) return { label: `Topic memory is ${ageDays} days old`, priorityBoost: 8 };
+    return null;
+}
+
 async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
     const recommendations = [];
     const now = new Date();
@@ -25,7 +73,7 @@ async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
             [userId]
         ),
         db.all(
-            `SELECT topic, normalized_topic, is_correct, created_at
+            `SELECT topic, normalized_topic, question_type, is_correct, confidence, reasoning_tags, claim_key, created_at
              FROM quiz_attempts WHERE user_id = ?
              ORDER BY created_at DESC LIMIT 50`,
             [userId]
@@ -75,33 +123,77 @@ async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
     }
 
     // ── 3. Searched but never quizzed ────────────────────────────────────────
-    const searchedTopics = new Set();
+    const searchedTopics = new Map();
     for (const s of recentSearches) {
-        const normalized = (s.query || '').toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim();
+        const normalized = normalizeCandidate(db, s.query);
         if (normalized.length > 2 && !touchedTopics.has(normalized)) {
-            searchedTopics.add(normalized);
+            searchedTopics.set(normalized, s.query);
         }
     }
 
     if (searchedTopics.size > 0) {
-        const placeholders = [...searchedTopics].map(() => '?').join(',');
-        const topicRows = await db.all(
-            `SELECT topic, normalized_topic FROM topic_knowledge
-             WHERE normalized_topic IN (${placeholders}) LIMIT 3`,
-            [...searchedTopics]
-        );
+        const topicRows = [];
+        for (const [normalized, original] of searchedTopics) {
+            const row = await findTopicKnowledgeForCandidate(db, original || normalized);
+            if (row && !topicRows.some((t) => t.normalized_topic === row.normalized_topic)) {
+                topicRows.push(row);
+            }
+            if (topicRows.length >= 3) break;
+        }
         for (const row of topicRows) {
             if (touchedTopics.has(row.normalized_topic)) continue;
+            const stale = freshnessHint(row, now);
             recommendations.push({
                 type: 'explore',
                 topic: row.topic,
                 normalizedTopic: row.normalized_topic,
-                reason: 'You searched this topic recently but haven\'t tested your knowledge yet.',
+                reason: `You searched this topic recently but haven't tested your knowledge yet.${stale ? ` ${stale.label}; refresh as you learn.` : ''}`,
                 action: 'topic',
-                priority: 70,
+                priority: 70 + (stale?.priorityBoost || 0),
                 icon: 'fa-compass',
             });
         }
+    }
+
+    const quizGapByTopic = new Map();
+    for (const attempt of recentQuizzes) {
+        const normalizedTopic = attempt.normalized_topic || normalizeCandidate(db, attempt.topic);
+        if (!normalizedTopic) continue;
+        const tags = safeJsonParse(attempt.reasoning_tags || '[]', []);
+        const highConfidenceWrong = Number(attempt.confidence || 0) >= 4 && Number(attempt.is_correct || 0) === 0;
+        const isGap = highConfidenceWrong || tags.some((tag) => [
+            'high_confidence_wrong',
+            'knowledge_gap',
+            'guideline_alignment_missed',
+            'trial_design_weakness',
+            'misses_applicability',
+            'misses_outcome_hierarchy',
+            'overclaims_evidence',
+        ].includes(tag));
+        if (!isGap) continue;
+        const current = quizGapByTopic.get(normalizedTopic) || {
+            topic: attempt.topic,
+            normalizedTopic,
+            highConfidenceWrong: 0,
+            taggedGaps: 0,
+            tags: new Set(),
+        };
+        if (highConfidenceWrong) current.highConfidenceWrong += 1;
+        current.taggedGaps += tags.length ? 1 : 0;
+        tags.forEach((tag) => current.tags.add(tag));
+        quizGapByTopic.set(normalizedTopic, current);
+    }
+    for (const gap of [...quizGapByTopic.values()].slice(0, 4)) {
+        const tagText = [...gap.tags].slice(0, 2).map((tag) => tag.replace(/_/g, ' ')).join(', ');
+        recommendations.push({
+            type: 'calibrate',
+            topic: gap.topic,
+            normalizedTopic: gap.normalizedTopic,
+            reason: `${gap.highConfidenceWrong ? `${gap.highConfidenceWrong} high-confidence wrong answer${gap.highConfidenceWrong > 1 ? 's' : ''}` : 'Recent reasoning gap'}${tagText ? ` (${tagText})` : ''}. Re-test with explanation before moving on.`,
+            action: 'quiz',
+            priority: 82 + Math.min(gap.highConfidenceWrong * 4 + gap.taggedGaps, 14),
+            icon: 'fa-balance-scale',
+        });
     }
 
     // ── 4. Cross-linked topics (adjacent to strong areas) ────────────────────
@@ -171,17 +263,22 @@ async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
 
     // ── 7. Cold start — no mastery data yet ──────────────────────────────────
     if (mastery.length === 0) {
+        const randomExpr = db.isPostgres ? 'random()' : 'RANDOM()';
         const popularTopics = await db.all(
-            `SELECT topic, normalized_topic FROM topic_knowledge ORDER BY RANDOM() LIMIT 3`
+            `SELECT topic, normalized_topic, confidence, updated_at, last_refreshed_at
+             FROM topic_knowledge
+             ORDER BY confidence DESC, ${randomExpr}
+             LIMIT 6`
         );
-        for (const t of popularTopics) {
+        for (const t of popularTopics.slice(0, 3)) {
+            const stale = freshnessHint(t, now);
             recommendations.push({
                 type: 'start',
                 topic: t.topic,
                 normalizedTopic: t.normalized_topic,
-                reason: 'Get started with this clinical topic — read the synopsis and test yourself.',
+                reason: `Get started with this clinical topic: read the synopsis and test yourself.${stale ? ` ${stale.label}; verify current evidence.` : ''}`,
                 action: 'topic',
-                priority: 40,
+                priority: 40 + (stale ? 5 : 0),
                 icon: 'fa-play-circle',
             });
         }
@@ -205,4 +302,8 @@ function getWeakestType(mastery) {
     return types[0].score < 50 ? types[0].name : null;
 }
 
-module.exports = { getPersonalisedRecommendations };
+module.exports = {
+    getPersonalisedRecommendations,
+    normalizeCandidate,
+    freshnessHint,
+};
