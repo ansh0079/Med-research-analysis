@@ -23,7 +23,7 @@ describe('AuthContext', () => {
   });
 
   it('provides initial auth state (not authenticated, loading)', async () => {
-    mockedApi.getMe.mockResolvedValue({ user: null });
+    mockedApi.getMe.mockResolvedValue(null);
 
     const TestComponent = () => {
       const { user, isAuthenticated, isLoading } = useAuth();
@@ -132,7 +132,7 @@ describe('AuthContext', () => {
 
   it('logs in user with email and password', async () => {
     const mockUser = { id: '1', email: 'user@example.com', role: 'user' };
-    mockedApi.getMe.mockResolvedValue({ user: null });
+    mockedApi.getMe.mockResolvedValue(null);
     mockedApi.login.mockResolvedValue({ user: mockUser });
 
     const TestComponent = () => {
@@ -189,7 +189,7 @@ describe('AuthContext', () => {
 
   it('registers new user', async () => {
     const mockUser = { id: '2', email: 'newuser@example.com', role: 'user' };
-    mockedApi.getMe.mockResolvedValue({ user: null });
+    mockedApi.getMe.mockResolvedValue(null);
     mockedApi.register.mockResolvedValue({
       user: mockUser,
       message: 'Registration successful',
@@ -271,7 +271,7 @@ describe('AuthContext', () => {
   });
 
   it('handles forgot password', async () => {
-    mockedApi.getMe.mockResolvedValue({ user: null });
+    mockedApi.getMe.mockResolvedValue(null);
     mockedApi.forgotPassword.mockResolvedValue(undefined);
 
     const TestComponent = () => {
@@ -298,7 +298,7 @@ describe('AuthContext', () => {
   });
 
   it('resends verification email', async () => {
-    mockedApi.getMe.mockResolvedValue({ user: null });
+    mockedApi.getMe.mockResolvedValue(null);
     mockedApi.resendVerification.mockResolvedValue(undefined);
 
     const TestComponent = () => {
@@ -323,7 +323,7 @@ describe('AuthContext', () => {
   });
 
   it('allows manual user override with setUser', async () => {
-    mockedApi.getMe.mockResolvedValue({ user: null });
+    mockedApi.getMe.mockResolvedValue(null);
 
     const TestComponent = () => {
       const { user, setUser } = useAuth();

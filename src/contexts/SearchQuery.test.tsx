@@ -70,9 +70,10 @@ describe('SearchQueryContext', () => {
 
   it('updates results state', () => {
     const mockArticles = [
-      { id: '1', title: 'Article 1', abstract: 'Abstract 1' },
-      { id: '2', title: 'Article 2', abstract: 'Abstract 2' },
-    ];
+      { uid: '1', id: '1', title: 'Article 1', abstract: 'Abstract 1', _source: 'pubmed' },
+      { uid: '2', id: '2', title: 'Article 2', abstract: 'Abstract 2', _source: 'pubmed' },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ] as any[];
 
     const TestComponent = () => {
       const { results, setResults } = useSearchQuery();
@@ -140,7 +141,7 @@ describe('SearchQueryContext', () => {
       return (
         <button
           onClick={() =>
-            setFilters({ ...filters, specificity: 'high', useVectorSearch: false })
+            setFilters({ ...filters, specificity: 'strict', useVectorSearch: false })
           }
         >
           Update Filters
@@ -156,7 +157,7 @@ describe('SearchQueryContext', () => {
     const stored = localStorage.getItem('medsearch_filters');
     expect(stored).toBeTruthy();
     const parsed = JSON.parse(stored!);
-    expect(parsed.specificity).toBe('high');
+    expect(parsed.specificity).toBe('strict');
     expect(parsed.useVectorSearch).toBe(false);
   });
 
@@ -173,7 +174,7 @@ describe('SearchQueryContext', () => {
       return (
         <>
           <div>Specificity: {filters.specificity}</div>
-          <div>Sources: {filters.sources.join(',')}</div>
+          <div>Sources: {(filters.sources ?? []).join(',')}</div>
         </>
       );
     };
@@ -305,7 +306,7 @@ describe('SearchQueryContext', () => {
     const TestComponent = () => {
       const { filters, setFilters } = useSearchQuery();
       return (
-        <button onClick={() => setFilters({ ...filters, specificity: 'high' })}>
+        <button onClick={() => setFilters({ ...filters, specificity: 'strict' })}>
           Update
         </button>
       );

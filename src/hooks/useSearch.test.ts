@@ -44,9 +44,10 @@ const mockedAuthContext = authContext as jest.Mocked<typeof authContext>;
 
 // ── Shared mock data ──────────────────────────────────────────────────────────
 
-const mockArticles = [
-  { uid: 'a1', title: 'Article 1', abstract: 'Abstract 1', id: '1' },
-  { uid: 'a2', title: 'Article 2', abstract: 'Abstract 2', id: '2' },
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockArticles: any[] = [
+  { uid: 'a1', title: 'Article 1', abstract: 'Abstract 1', id: '1', _source: 'pubmed' },
+  { uid: 'a2', title: 'Article 2', abstract: 'Abstract 2', id: '2', _source: 'pubmed' },
 ];
 
 const mockSetResults = jest.fn();
@@ -109,11 +110,15 @@ function setupDefaultMocks() {
     setUser: jest.fn(),
   });
 
-  mockedApi.search.mockResolvedValue({ articles: mockArticles });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mockedApi.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'] } as any);
   mockedApi.getClientConfig.mockResolvedValue({ features: { vectorSearch: false } });
-  mockedApi.listEvidenceAlerts.mockResolvedValue({ alerts: [] });
-  mockedApi.getTopicKnowledge.mockResolvedValue({ found: false });
-  mockedApi.getAiEnrichment.mockResolvedValue({ status: 'ready' });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mockedApi.listEvidenceAlerts.mockResolvedValue({ alerts: [] } as any);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mockedApi.getTopicKnowledge.mockResolvedValue({ found: false, agentGuidance: null } as any);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mockedApi.getAiEnrichment.mockResolvedValue({ status: 'ready' } as any);
 }
 
 // ── Tests ─────────────────────────────────────────────────────────────────────
@@ -195,7 +200,8 @@ describe('useSearch', () => {
   });
 
   it('returns empty array when api.search returns no articles', async () => {
-    mockedApi.search.mockResolvedValue({ articles: [] });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mockedApi.search.mockResolvedValue({ articles: [], count: 0, sources: [] } as any);
     const { result } = renderHook(() => useSearch());
 
     let articles: any;
@@ -225,7 +231,8 @@ describe('useSearch', () => {
   // ── Search ID tracking ────────────────────────────────────────────────────
 
   it('stores searchId from api response as lastSearchId', async () => {
-    mockedApi.search.mockResolvedValue({ articles: mockArticles, searchId: 42 });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mockedApi.search.mockResolvedValue({ articles: mockArticles, searchId: 42, count: 2, sources: ['pubmed'] } as any);
     const { result } = renderHook(() => useSearch());
 
     await act(async () => {
@@ -237,8 +244,10 @@ describe('useSearch', () => {
 
   it('updates lastSearchId on consecutive searches', async () => {
     mockedApi.search
-      .mockResolvedValueOnce({ articles: mockArticles, searchId: 10 })
-      .mockResolvedValueOnce({ articles: mockArticles, searchId: 11 });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({ articles: mockArticles, searchId: 10, count: 2, sources: ['pubmed'] } as any)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({ articles: mockArticles, searchId: 11, count: 2, sources: ['pubmed'] } as any);
 
     const { result } = renderHook(() => useSearch());
 
@@ -255,9 +264,11 @@ describe('useSearch', () => {
 
   it('sets topicGuideStatus to ready when agentGuidance is returned', async () => {
     mockedApi.search.mockResolvedValue({
-      articles: mockArticles,
-      agentGuidance: { topic: 'diabetes', guidance: 'Use insulin' },
-    });
+      articles: mockArticles, count: 2, sources: ['pubmed'],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      agentGuidance: { topic: 'diabetes', mentorMessage: 'Use insulin' } as any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
     const { result } = renderHook(() => useSearch());
 
     await act(async () => {
@@ -271,10 +282,8 @@ describe('useSearch', () => {
   });
 
   it('sets topicGuideStatus to building when 2+ articles and no knowledge yet', async () => {
-    mockedApi.search.mockResolvedValue({
-      articles: mockArticles,
-      knowledgeAvailable: false,
-    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mockedApi.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'], knowledgeAvailable: false } as any);
     const { result } = renderHook(() => useSearch());
 
     await act(async () => {
@@ -285,7 +294,8 @@ describe('useSearch', () => {
   });
 
   it('sets topicGuideStatus to none when single result and no guidance', async () => {
-    mockedApi.search.mockResolvedValue({ articles: [mockArticles[0]] });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mockedApi.search.mockResolvedValue({ articles: [mockArticles[0]], count: 1, sources: ['pubmed'] } as any);
     const { result } = renderHook(() => useSearch());
 
     await act(async () => {
@@ -298,8 +308,10 @@ describe('useSearch', () => {
   // ── Proactive alert ───────────────────────────────────────────────────────
 
   it('stores proactiveAlert when returned from search', async () => {
-    const mockAlert = { type: 'high_relevance', topic: 'diabetes', message: 'Update available' };
-    mockedApi.search.mockResolvedValue({ articles: mockArticles, proactiveAlert: mockAlert });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mockAlert = { summary: 'Update available', changedPrinciples: [], newPapers: [], daysSinceUpdate: 3 } as any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mockedApi.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'], proactiveAlert: mockAlert } as any);
     const { result } = renderHook(() => useSearch());
 
     await act(async () => {
@@ -311,8 +323,10 @@ describe('useSearch', () => {
 
   it('clears proactiveAlert on next search', async () => {
     mockedApi.search
-      .mockResolvedValueOnce({ articles: mockArticles, proactiveAlert: { type: 'alert' } })
-      .mockResolvedValueOnce({ articles: mockArticles });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({ articles: mockArticles, count: 2, sources: ['pubmed'], proactiveAlert: { summary: 'alert', changedPrinciples: [], newPapers: [], daysSinceUpdate: 1 } } as any)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({ articles: mockArticles, count: 2, sources: ['pubmed'] } as any);
 
     const { result } = renderHook(() => useSearch());
 
@@ -326,12 +340,10 @@ describe('useSearch', () => {
   // ── AI enrichment polling ─────────────────────────────────────────────────
 
   it('starts aiEnrichmentLoading when enrichment is pending and polls for completion', async () => {
-    mockedApi.search.mockResolvedValue({
-      articles: mockArticles,
-      aiEnrichmentKey: 'key-123',
-      aiEnrichmentStatus: 'pending',
-    });
-    mockedApi.getAiEnrichment.mockResolvedValue({ status: 'ready' });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mockedApi.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'], aiEnrichmentKey: 'key-123', aiEnrichmentStatus: 'pending' } as any);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mockedApi.getAiEnrichment.mockResolvedValue({ status: 'ready' } as any);
 
     const { result } = renderHook(() => useSearch());
 
@@ -392,7 +404,8 @@ describe('useSearch', () => {
   // ── Unmount safety ────────────────────────────────────────────────────────
 
   it('does not throw when hook unmounts with pending poll timers', async () => {
-    mockedApi.search.mockResolvedValue({ articles: mockArticles, knowledgeAvailable: false });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mockedApi.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'], knowledgeAvailable: false } as any);
     const { result, unmount } = renderHook(() => useSearch());
 
     await act(async () => {
@@ -406,9 +419,10 @@ describe('useSearch', () => {
 
   it('fetches knowledgeDriftAlerts on mount when authenticated', async () => {
     const mockAlerts = [
-      { id: 1, type: 'new_evidence', message: 'New RCT published', topicSlug: 'diabetes' },
+      { id: 1, normalizedTopic: 'diabetes', title: 'New RCT published', alertKind: 'new_evidence' },
     ];
-    mockedApi.listEvidenceAlerts.mockResolvedValue({ alerts: mockAlerts });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mockedApi.listEvidenceAlerts.mockResolvedValue({ alerts: mockAlerts } as any);
 
     const { result } = renderHook(() => useSearch());
 
@@ -440,8 +454,12 @@ describe('useSearch', () => {
   });
 
   it('dismissKnowledgeDriftAlert removes alert from list', async () => {
-    const mockAlerts = [{ id: 1, message: 'Alert 1' }, { id: 2, message: 'Alert 2' }];
-    mockedApi.listEvidenceAlerts.mockResolvedValue({ alerts: mockAlerts });
+    const mockAlerts = [
+      { id: 1, normalizedTopic: 'topic', title: 'Alert 1' },
+      { id: 2, normalizedTopic: 'topic', title: 'Alert 2' },
+    ];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mockedApi.listEvidenceAlerts.mockResolvedValue({ alerts: mockAlerts } as any);
     (mockedApi as any).markEvidenceAlertRead = jest.fn().mockResolvedValue(undefined);
 
     const { result } = renderHook(() => useSearch());

@@ -3,6 +3,7 @@ import { useSearchContext } from '@contexts/SearchContext';
 import { useAuth } from '@contexts/AuthContext';
 import { api } from '@services/api';
 import { Button } from '@components/ui/Button';
+import { useToast } from '@components/ui';
 import type { GrantResult } from '@types';
 
 const CITATION_STYLES = ['APA', 'Vancouver', 'Harvard', 'MLA', 'Nature'] as const;
@@ -10,6 +11,7 @@ const CITATION_STYLES = ['APA', 'Vancouver', 'Harvard', 'MLA', 'Nature'] as cons
 export const GrantWritingPage: React.FC = () => {
   const { setCurrentPage, results, selectedArticles } = useSearchContext();
   const { isAuthenticated } = useAuth();
+  const { showToast } = useToast();
 
   const [researchQuestion, setResearchQuestion] = useState('');
   const [citationStyle, setCitationStyle] = useState<string>('APA');
@@ -29,8 +31,9 @@ export const GrantWritingPage: React.FC = () => {
       const data = await api.generateGrantSection(researchQuestion.trim(), sourceArticles, citationStyle);
       setResult(data);
     } catch (err: unknown) {
-      console.error('Grant Generation Error:', err);
-      setError(err instanceof Error ? err.message : 'Failed to generate section');
+      const message = err instanceof Error ? err.message : 'Failed to generate section';
+      showToast(message, 'error');
+      setError(message);
     } finally {
       setLoading(false);
     }

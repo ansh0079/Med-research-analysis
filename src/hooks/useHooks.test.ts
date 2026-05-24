@@ -2,12 +2,14 @@ import { renderHook, act } from '@testing-library/react';
 import { useSelectionBasket } from './useSelectionBasket';
 
 describe('useSelectionBasket', () => {
-  const mockArticle1 = { uid: 'a1', title: 'Article 1', id: '1' };
-  const mockArticle2 = { uid: 'a2', title: 'Article 2', id: '2' };
-  const mockArticle3 = { uid: 'a3', title: 'Article 3', id: '3' };
-  const mockArticle4 = { uid: 'a4', title: 'Article 4', id: '4' };
-  const mockArticle5 = { uid: 'a5', title: 'Article 5', id: '5' };
-  const mockArticle6 = { uid: 'a6', title: 'Article 6', id: '6' };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const a = (uid: string, n: number) => ({ uid, title: `Article ${n}`, id: String(n), _source: 'pubmed' }) as any;
+  const mockArticle1 = a('a1', 1);
+  const mockArticle2 = a('a2', 2);
+  const mockArticle3 = a('a3', 3);
+  const mockArticle4 = a('a4', 4);
+  const mockArticle5 = a('a5', 5);
+  const mockArticle6 = a('a6', 6);
 
   it('initializes with empty selection', () => {
     const { result } = renderHook(() => useSelectionBasket());

@@ -17,19 +17,10 @@ jest.mock('@services/api', () => ({
 
 const mockedApi = api as jest.Mocked<typeof api>;
 
-const mockArticle = {
-  uid: 'article-1',
-  title: 'Test Article',
-  abstract: 'Test abstract',
-  id: '1',
-};
-
-const mockArticle2 = {
-  uid: 'article-2',
-  title: 'Test Article 2',
-  abstract: 'Test abstract 2',
-  id: '2',
-};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockArticle = { uid: 'article-1', title: 'Test Article', abstract: 'Test abstract', id: '1', _source: 'pubmed' } as any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockArticle2 = { uid: 'article-2', title: 'Test Article 2', abstract: 'Test abstract 2', id: '2', _source: 'pubmed' } as any;
 
 describe('SearchSelectionContext', () => {
   beforeEach(() => {

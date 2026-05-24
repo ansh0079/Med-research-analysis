@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchContext } from '@contexts/SearchContext';
 import { useSearch } from '@hooks';
 import { Button } from '@components/ui/Button';
+import { useToast } from '@components/ui';
 import api from '@services/api';
 import type { SavedAlert, DataSource } from '@types';
 
@@ -38,11 +39,14 @@ export const HistoryPage: React.FC = () => {
   const [newQuery, setNewQuery] = useState('');
   const [newFrequency, setNewFrequency] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
   const [creating, setCreating] = useState(false);
+  const { showToast } = useToast();
 
   useEffect(() => {
     api.getSearchHistory()
       .then((data) => setHistory(data.history))
-      .catch((err) => console.error('History load failed', err))
+      .catch((err) => {
+        showToast(err instanceof Error ? err.message : 'History load failed', 'error');
+      })
       .finally(() => setHistoryLoading(false));
   }, []);
 
