@@ -33,17 +33,9 @@ export const CitationD3Graph: React.FC<CitationD3GraphProps> = ({
 }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const totalNodes = 1 + citations.length + references.length;
-  if (totalNodes > MAX_RENDERABLE_NODES) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-2 h-[360px] text-slate-500 dark:text-slate-400 text-sm text-center px-8">
-        <i className="fas fa-project-diagram text-2xl opacity-40" aria-hidden="true" />
-        <p>
-          This citation network has <strong>{totalNodes}</strong> nodes — too large to render interactively.
-        </p>
-        <p className="text-xs opacity-70">Showing networks up to {MAX_RENDERABLE_NODES} nodes. Filter by date or narrow your search to reduce the graph.</p>
-      </div>
-    );
-  }
+  const tooLarge = totalNodes > MAX_RENDERABLE_NODES;
+
+  // All hooks must run unconditionally — guard renders null/fallback below
   const graph = useMemo(() => {
     const target: D3Node = {
       id: article.uid,
@@ -139,13 +131,27 @@ export const CitationD3Graph: React.FC<CitationD3GraphProps> = ({
     };
   }, [graph, onSelect]);
 
+  if (tooLarge) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-2 h-[360px] text-slate-500 dark:text-slate-400 text-sm text-center px-8">
+        <i className="fas fa-project-diagram text-2xl opacity-40" aria-hidden="true" />
+        <p>
+          This citation network has <strong>{totalNodes}</strong> nodes — too large to render interactively.
+        </p>
+        <p className="text-xs opacity-70">
+          Showing networks up to {MAX_RENDERABLE_NODES} nodes. Filter by date or narrow your search to reduce the graph.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <svg
       ref={svgRef}
       viewBox="0 0 720 420"
       className="h-[360px] w-full bg-white dark:bg-slate-900"
       role="img"
-      aria-label="Large citation network graph"
+      aria-label="Citation network graph"
     />
   );
 };
