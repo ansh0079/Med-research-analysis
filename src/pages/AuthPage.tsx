@@ -104,6 +104,10 @@ export const AuthPage: React.FC = () => {
     }
   };
 
+  const startOAuth = (provider: 'google' | 'orcid') => {
+    window.location.href = `/api/auth/oauth/${provider}/start`;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-md">
@@ -239,9 +243,10 @@ export const AuthPage: React.FC = () => {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
                     tabIndex={-1}
                   >
-                    <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} text-sm`} />
+                    <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} text-sm`} aria-hidden="true" />
                   </button>
                 </div>
 
@@ -312,6 +317,34 @@ export const AuthPage: React.FC = () => {
                 : 'Send Reset Link'}
             </Button>
           </form>
+
+          {mode !== 'forgot' && (
+            <div className="mt-6 space-y-2">
+              <div className="relative text-center">
+                <span className="bg-white px-2 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:bg-slate-800">
+                  or
+                </span>
+              </div>
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={() => startOAuth('google')}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-600 transition-colors hover:border-indigo-300 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700 dark:text-slate-300 dark:hover:border-indigo-500"
+                  aria-label="Continue with Google"
+                >
+                  <i className="fab fa-google" /> Google
+                </button>
+                <button
+                  type="button"
+                  onClick={() => startOAuth('orcid')}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-600 transition-colors hover:border-emerald-300 hover:text-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-700 dark:text-slate-300 dark:hover:border-emerald-500"
+                  aria-label="Continue with ORCID"
+                >
+                  <i className="fab fa-orcid" /> ORCID
+                </button>
+              </div>
+            </div>
+          )}
 
           <div className="mt-6 pt-6 border-t border-gray-100 dark:border-slate-700 text-center">
             <button

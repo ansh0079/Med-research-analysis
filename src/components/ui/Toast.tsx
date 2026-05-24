@@ -38,8 +38,8 @@ const ToastItem: React.FC<{ toast: Toast; onRemove: (id: string) => void }> = ({
     <div className={`${COLORS[toast.type]} text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 animate-slide-up min-w-64 max-w-sm`}>
       <i className={`fas ${ICONS[toast.type]}`} />
       <span className="text-sm font-medium flex-1">{toast.message}</span>
-      <button onClick={() => onRemove(toast.id)} className="opacity-70 hover:opacity-100">
-        <i className="fas fa-times text-xs" />
+      <button onClick={() => onRemove(toast.id)} className="opacity-70 hover:opacity-100" aria-label="Dismiss notification">
+        <i className="fas fa-times text-xs" aria-hidden="true" />
       </button>
     </div>
   );
