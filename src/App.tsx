@@ -6,6 +6,7 @@ import { ToastContainer, useToast } from '@components/ui';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ProtectedRoute } from './components/router/ProtectedRoute';
 import { GuestRoute } from './components/router/GuestRoute';
+import { RoleRoute } from './components/router/RoleRoute';
 import { PhiDataNotice } from './components/compliance/PhiDataNotice';
 import { hasCompletedOnboarding } from './components/onboarding/onboardingState';
 const OnboardingModal = React.lazy(() => import('./components/onboarding/OnboardingModal').then(m => ({ default: m.OnboardingModal })));
@@ -112,8 +113,8 @@ const AppContent: React.FC = () => {
           <Route path="/history"   element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
           <Route path="/saved"     element={<ProtectedRoute><SavedArticlesPage /></ProtectedRoute>} />
           <Route path="/analytics" element={<ProtectedRoute><AnalyticsPage /></ProtectedRoute>} />
-          <Route path="/case"      element={<CaseModePage />} />
-          <Route path="/grant"     element={<GrantWritingPage />} />
+          <Route path="/case"      element={<ProtectedRoute><CaseModePage /></ProtectedRoute>} />
+          <Route path="/grant"     element={<ProtectedRoute><GrantWritingPage /></ProtectedRoute>} />
           <Route path="/knowledge" element={<ProtectedRoute><KnowledgeReviewPage /></ProtectedRoute>} />
           <Route path="/guideline-library" element={<ProtectedRoute><GuidelineBrowserPage /></ProtectedRoute>} />
           <Route path="/guidelines" element={<ProtectedRoute><GuidelineReviewPage /></ProtectedRoute>} />
@@ -125,8 +126,8 @@ const AppContent: React.FC = () => {
           <Route path="/review"    element={<ProtectedRoute><ReviewAssistantPage /></ProtectedRoute>} />
           <Route path="/team"      element={<ProtectedRoute><TeamWorkspacePage /></ProtectedRoute>} />
           <Route path="/billing"   element={<ProtectedRoute><BillingPage /></ProtectedRoute>} />
-          <Route path="/admin/observability" element={<ProtectedRoute><AdminObservabilityPage /></ProtectedRoute>} />
-          <Route path="/admin/quality" element={<ProtectedRoute><ClinicalQualityQueuePage /></ProtectedRoute>} />
+          <Route path="/admin/observability" element={<RoleRoute allowedRoles={['admin', 'curator']}><AdminObservabilityPage /></RoleRoute>} />
+          <Route path="/admin/quality" element={<RoleRoute allowedRoles={['admin', 'curator']}><ClinicalQualityQueuePage /></RoleRoute>} />
           <Route path="/legal/terms"   element={<LegalTermsPage />} />
           <Route path="/legal/privacy" element={<LegalPrivacyPage />} />
           <Route path="*"          element={<NotFoundPage />} />

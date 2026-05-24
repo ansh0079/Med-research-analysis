@@ -1,7 +1,7 @@
 # ==========================================
-# Production Docker Compose
-# Full-stack orchestration with Postgres
-# Usage: docker compose up -d
+# Development Docker Compose
+# Full-stack hot-reload environment
+# Usage: docker compose -f docker-compose.dev.yml up
 # ==========================================
 
 version: '3.8'
@@ -9,7 +9,7 @@ version: '3.8'
 services:
   postgres:
     image: pgvector/pgvector:pg16
-    container_name: medsearch-pg
+    container_name: medsearch-pg-dev
     environment:
       POSTGRES_USER: medsearch
       POSTGRES_PASSWORD: medsearch
@@ -17,7 +17,7 @@ services:
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - medsearch_pgdata:/var/lib/postgresql/data
+      - medsearch_pgdata_dev:/var/lib/postgresql/data
       - ./database/pgvector.schema.sql:/docker-entrypoint-initdb.d/10-pgvector.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U medsearch -d medsearch"]
@@ -26,35 +26,39 @@ services:
       retries: 10
     restart: unless-stopped
 
-  medresearch-app:
+  app:
     build:
       context: .
-      dockerfile: docker/Dockerfile
-    container_name: medresearch-prod
+      dockerfile: Dockerfile.dev
+    container_name: medsearch-dev
     ports:
       - "${NODE_PORT:-3002}:3002"
+      - "${VITE_PORT:-5173}:5173"
     depends_on:
       postgres:
         condition: service_healthy
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - PORT=3002
-      - DATABASE_PATH=/app/data/app.db
       - PG_VECTOR_URL=postgresql://medsearch:medsearch@postgres:5432/medsearch
+      - DATABASE_PATH=/app/data/app.db
       - ENABLE_COLLABORATION_API=${ENABLE_COLLABORATION_API:-false}
-      - JWT_SECRET=${JWT_SECRET}
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
-      - HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
-      - SEMANTIC_SCHOLAR_KEY=${SEMANTIC_SCHOLAR_KEY}
+      - JWT_SECRET=${JWT_SECRET:-dev-jwt-secret-change-me}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY:-}
+      - HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN:-}
+      - SEMANTIC_SCHOLAR_KEY=${SEMANTIC_SCHOLAR_KEY:-}
+      - NCBI_API_KEY=${NCBI_API_KEY:-}
+      - SENTRY_DSN=${SENTRY_DSN:-}
     volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/dist
       - ./data:/app/data
-    restart: always
-    healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3002/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    command: npm run dev
 
 volumes:
-  medsearch_pgdata:
+  medsearch_pgdata_dev:
