@@ -156,6 +156,21 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
           setConversations((prev) => [conversation, ...prev]);
         }
 
+        // Read session feedback from quiz results (if the learner just scored poorly)
+        let sessionFeedback: { topic: string; score: number; totalQuestions: number; weakAreas?: string[] } | null = null;
+        try {
+          const raw = sessionStorage.getItem('med_agent_session_feedback');
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            // Only use feedback that's recent (< 30 min) and relevant to this topic
+            const age = Date.now() - (parsed.timestamp || 0);
+            if (age < 30 * 60 * 1000) {
+              sessionFeedback = parsed;
+            }
+            sessionStorage.removeItem('med_agent_session_feedback');
+          }
+        } catch { /* ignore */ }
+
         await api.agentChatStream(
           topic, trimmed, history, articleSubset, searchHistory.slice(-5),
           {
@@ -168,7 +183,8 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
               setStreamingContent('');
             },
             onError: (msg) => setError(msg),
-          }
+          },
+          sessionFeedback,
         );
 
         if (isAuthenticated && convId && reply) {

@@ -228,7 +228,8 @@ PROACTIVE BRIDGE INSTRUCTION: If the user's question touches on a related area (
 Never fabricate references. If you cite a paper or guideline, it must appear in the lists above.`;
 }
 
-function inferDemandIntent(message) {
+// Fast regex fallback — always available, used when LLM classification is unavailable
+function inferDemandIntentRegex(message) {
     const text = String(message || '').toLowerCase();
     if (/quiz|mcq|test me|question/.test(text)) return 'quiz';
     if (/case|vignette|scenario/.test(text)) return 'case';
@@ -236,6 +237,29 @@ function inferDemandIntent(message) {
     if (/limit|bias|overclaim|critique|method|validity/.test(text)) return 'appraisal';
     if (/summary|summarise|synopsis|bottom line/.test(text)) return 'synopsis';
     return 'agent_chat';
+}
+
+const VALID_INTENTS = new Set(['quiz', 'case', 'guideline', 'appraisal', 'synopsis', 'agent_chat']);
+
+/**
+ * Classify user intent using a cheap LLM call with regex fallback.
+ * Fire-and-forget: used for analytics and demand signals, not blocking.
+ */
+async function inferDemandIntent(message, ai) {
+    const regexResult = inferDemandIntentRegex(message);
+    if (!ai) return regexResult;
+    try {
+        const raw = await ai.callGemini(
+            `Classify this medical learner message into exactly one category.\nCategories: quiz, case, guideline, appraisal, synopsis, agent_chat\n\nRules:\n- quiz: user wants MCQs, test questions, "quiz me", "test my knowledge"\n- case: user wants a clinical case, vignette, or scenario\n- guideline: user asks about clinical guidelines, recommendations from bodies (NICE, AHA, ESC, WHO)\n- appraisal: user wants to critique methodology, discuss bias, limitations, validity, study design\n- synopsis: user wants a summary, bottom line, or overview\n- agent_chat: general discussion, explanation request, anything else\n\nMessage: "${String(message || '').slice(0, 300)}"\n\nRespond with ONLY the category name, nothing else.`,
+            'gemini-2.5-flash-lite',
+            { temperature: 0.0, maxOutputTokens: 20, timeoutMs: 4000 }
+        );
+        const intent = String(raw || '').trim().toLowerCase().replace(/[^a-z_]/g, '');
+        return VALID_INTENTS.has(intent) ? intent : regexResult;
+    } catch (err) {
+        logger.debug({ err }, 'LLM intent classification failed, using regex fallback');
+        return regexResult;
+    }
 }
 
 function extractGroundedClaimsFromReply(reply, { topic, objectKey }) {
@@ -259,12 +283,86 @@ function extractGroundedClaimsFromReply(reply, { topic, objectKey }) {
         }));
 }
 
-function parseHistoryForProvider(conversationHistory, _provider) {
+/**
+ * Keep last N messages verbatim for immediate context.
+ */
+function formatRecentMessages(conversationHistory, count = 4) {
     if (!Array.isArray(conversationHistory)) return [];
-    return conversationHistory.slice(-12).map((msg) => ({
+    return conversationHistory.slice(-count).map((msg) => ({
         role: msg.role === 'assistant' ? 'assistant' : 'user',
         content: String(msg.content || '').slice(0, 2000),
     }));
+}
+
+/**
+ * Summarise older messages into a concise context block using a cheap LLM call.
+ * Falls back to simple truncation if no LLM is available or the call fails.
+ */
+async function summarizeOlderMessages(ai, conversationHistory, recentCount = 4) {
+    if (!Array.isArray(conversationHistory) || conversationHistory.length <= recentCount) {
+        return null;
+    }
+    const olderMessages = conversationHistory.slice(0, -recentCount);
+    if (olderMessages.length === 0) return null;
+
+    const olderText = olderMessages
+        .slice(-12)
+        .map((msg) => `${msg.role === 'assistant' ? 'Assistant' : 'User'}: ${String(msg.content || '').slice(0, 500)}`)
+        .join('\n');
+
+    if (olderText.length < 100) return null;
+
+    if (!ai) {
+        // No LLM available — return a simple truncated version
+        return olderMessages.slice(-4)
+            .map((msg) => `${msg.role === 'assistant' ? 'Assistant' : 'User'}: ${String(msg.content || '').slice(0, 200)}`)
+            .join('\n');
+    }
+
+    try {
+        const summary = await ai.callGemini(
+            `Summarise this medical education conversation into 3-5 bullet points. Focus on: topics discussed, key conclusions reached, questions still open, and areas the learner struggled with.\n\n${olderText}`,
+            'gemini-2.5-flash-lite',
+            { temperature: 0.0, maxOutputTokens: 300, timeoutMs: 6000 }
+        );
+        return String(summary || '').trim() || null;
+    } catch (err) {
+        logger.debug({ err }, 'Conversation summarization failed, using truncation fallback');
+        return olderMessages.slice(-4)
+            .map((msg) => `${msg.role === 'assistant' ? 'Assistant' : 'User'}: ${String(msg.content || '').slice(0, 200)}`)
+            .join('\n');
+    }
+}
+
+/**
+ * Build session feedback context from recent quiz performance.
+ * Injected into the system prompt when the learner scored poorly after
+ * the agent's previous explanation.
+ */
+function buildSessionFeedbackContext(sessionFeedback) {
+    if (!sessionFeedback) return '';
+    const { topic, score, totalQuestions, weakAreas, lastExplanationTopic } = sessionFeedback;
+    if (score == null || totalQuestions == null) return '';
+    const pct = Math.round((score / totalQuestions) * 100);
+    if (pct >= 60) return ''; // Only inject feedback for poor scores
+
+    const parts = [
+        `\n## Session feedback — previous explanation did not land`,
+        `The learner just scored ${score}/${totalQuestions} (${pct}%) on "${topic || lastExplanationTopic || 'this topic'}" immediately after your explanation.`,
+        `Your previous teaching approach was insufficient. Adapt your strategy:`,
+        `- Try a DIFFERENT angle: use analogies, clinical scenarios, or step-by-step reasoning instead of repeating the same points.`,
+        `- Start from fundamentals before building to complexity.`,
+        `- Ask the learner what confused them before launching into another explanation.`,
+    ];
+    if (Array.isArray(weakAreas) && weakAreas.length > 0) {
+        parts.push(`- Specific weak areas: ${weakAreas.join(', ')}. Focus here.`);
+    }
+    return parts.join('\n');
+}
+
+// Keep backward-compatible export name
+function parseHistoryForProvider(conversationHistory, _provider) {
+    return formatRecentMessages(conversationHistory, 12);
 }
 
 const { setupSSE, sendSSE } = require('../utils/sse');
@@ -273,7 +371,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
     const ai = createAiService({ serverConfig, fetchImpl: safeFetch });
 
     app.post('/api/agent/chat', requireJson, requireAuthJwt, rateLimit(20, 60), async (req, res) => {
-        const { topic, message, conversationHistory = [], currentArticles = [], previousQueries = [] } = req.body;
+        const { topic, message, conversationHistory = [], currentArticles = [], previousQueries = [], sessionFeedback = null } = req.body;
 
         if (!topic || typeof topic !== 'string' || topic.trim().length < 2) {
             return res.status(400).json({ error: 'topic is required' });
@@ -363,7 +461,13 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
             }
 
             const systemPrompt = buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines, userContext, crossTopicBridges, retrieval);
-            const history = parseHistoryForProvider(conversationHistory);
+
+            // Conversation context: summarise older messages, keep recent ones verbatim
+            const recentMessages = formatRecentMessages(conversationHistory, 4);
+            const conversationSummary = await summarizeOlderMessages(ai, conversationHistory, 4);
+
+            // Session feedback: inject adaptive teaching instructions when quiz scores were poor
+            const feedbackContext = buildSessionFeedbackContext(sessionFeedback);
 
             const { provider: selectedProvider, model: selectedModel } = resolveProvider({}, serverConfig);
             if (!selectedProvider) {
@@ -373,7 +477,12 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
             // Build a single user turn that includes system context so aiService
             // stream methods can carry it as a prefix (Gemini handles systemInstruction
             // natively; Mistral gets it as the system role via callMistralStream).
-            const fullPrompt = `${systemPrompt}\n\n---\n\n${trimmedMessage}`;
+            const conversationContext = [
+                conversationSummary ? `## Earlier conversation summary\n${conversationSummary}` : '',
+                recentMessages.length > 0 ? `## Recent conversation\n${recentMessages.map((m) => `**${m.role}**: ${m.content}`).join('\n\n')}` : '',
+            ].filter(Boolean).join('\n\n');
+
+            const fullPrompt = `${systemPrompt}${feedbackContext}\n\n${conversationContext ? conversationContext + '\n\n---\n\n' : '---\n\n'}${trimmedMessage}`;
 
             setupSSE(res);
 
@@ -403,48 +512,50 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
             // Post-response side effects — fire-and-forget, don't block the stream
             void (async () => {
                 try {
+                    const classifiedIntent = await inferDemandIntent(trimmedMessage, ai);
                     await db.logEvent?.('agent_chat', req.sessionId, {
                         topic: trimmedTopic,
                         messageLength: trimmedMessage.length,
                         provider: selectedProvider,
-                        historyTurns: history.length,
+                        historyTurns: recentMessages.length,
                         groundedClaimCount: groundedClaims.length,
                         weakClaimCount: claimMastery.filter((c) => c.masteryState === 'weak').length,
+                        intent: classifiedIntent,
+                        hasSessionFeedback: Boolean(sessionFeedback),
+                        hadConversationSummary: Boolean(conversationSummary),
                     });
-                    if (typeof db.recordLearningEvent === 'function') {
-                        await Promise.allSettled([
-                            db.recordLearningEvent({
-                                userId: req.user?.id || null,
-                                eventType: 'agent_message',
-                                topic: trimmedTopic,
-                                sourceType: 'agent_chat',
-                                sourceId: req.sessionId || null,
-                                payload: {
-                                    role: 'user',
-                                    messageLength: trimmedMessage.length,
-                                    intent: inferDemandIntent(trimmedMessage),
-                                    historyTurns: history.length,
-                                },
-                            }),
-                            db.recordLearningEvent({
-                                userId: req.user?.id || null,
-                                eventType: 'agent_message',
-                                topic: trimmedTopic,
-                                sourceType: 'agent_chat',
-                                sourceId: req.sessionId || null,
-                                payload: {
-                                    role: 'assistant',
-                                    messageLength: reply.length,
-                                    provider: selectedProvider,
-                                    model: selectedModel,
-                                    groundedClaimCount: groundedClaims.length,
-                                    weakClaimCount: claimMastery.filter((c) => c.masteryState === 'weak').length,
-                                },
-                            }),
-                        ]);
-                    }
                     await Promise.allSettled([
-                        db.recordTopicDemandSignal(trimmedTopic, trimmedTopic, inferDemandIntent(trimmedMessage)),
+                        db.recordLearningEvent({
+                            userId: req.user?.id || null,
+                            eventType: 'agent_message',
+                            topic: trimmedTopic,
+                            sourceType: 'agent_chat',
+                            sourceId: req.sessionId || null,
+                            payload: {
+                                role: 'user',
+                                messageLength: trimmedMessage.length,
+                                intent: classifiedIntent,
+                                historyTurns: recentMessages.length,
+                            },
+                        }),
+                        db.recordLearningEvent({
+                            userId: req.user?.id || null,
+                            eventType: 'agent_message',
+                            topic: trimmedTopic,
+                            sourceType: 'agent_chat',
+                            sourceId: req.sessionId || null,
+                            payload: {
+                                role: 'assistant',
+                                messageLength: reply.length,
+                                provider: selectedProvider,
+                                model: selectedModel,
+                                groundedClaimCount: groundedClaims.length,
+                                weakClaimCount: claimMastery.filter((c) => c.masteryState === 'weak').length,
+                            },
+                        }),
+                    ]);
+                    await Promise.allSettled([
+                        db.recordTopicDemandSignal(trimmedTopic, trimmedTopic, classifiedIntent),
                         previousQueries?.length
                             ? db.maybeRegisterTopicAlias(trimmedTopic, previousQueries[previousQueries.length - 1])
                             : Promise.resolve(),
@@ -488,4 +599,4 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
     });
 }
 
-module.exports = { registerAgentRoutes, buildAgentSystemPrompt, buildRetrievalContext, extractGroundedClaimsFromReply };
+module.exports = { registerAgentRoutes, buildAgentSystemPrompt, buildRetrievalContext, extractGroundedClaimsFromReply, inferDemandIntent, inferDemandIntentRegex, buildSessionFeedbackContext, summarizeOlderMessages, formatRecentMessages };

@@ -390,6 +390,20 @@ export const QuizPage: React.FC = () => {
     const nextIndex = quiz.currentIndex + 1;
     if (nextIndex >= quiz.questions.length) {
       setQuiz((prev) => ({ ...prev, complete: true }));
+      // Store session feedback for the agent chat — if the score is poor,
+      // the agent will adapt its teaching approach next time.
+      try {
+        const weakTypes = quiz.questions
+          .filter((q) => quiz.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase())
+          .map((q) => q.questionType || 'recall');
+        sessionStorage.setItem('med_agent_session_feedback', JSON.stringify({
+          topic: activeTopic,
+          score: quiz.score,
+          totalQuestions: quiz.questions.length,
+          weakAreas: [...new Set(weakTypes)],
+          timestamp: Date.now(),
+        }));
+      } catch { /* sessionStorage unavailable */ }
       // Auto-save quiz attempt for authenticated users
       if (isAuthenticated && activeTopic) {
         saveQuizAttempt(quiz.questions, quiz.answers);

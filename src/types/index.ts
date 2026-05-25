@@ -1362,7 +1362,7 @@ export interface TopicCurriculumProgress {
 }
 
 export interface LearningRecommendation {
-  type: 'review' | 'strengthen' | 'explore' | 'discover' | 'refresh' | 'case' | 'start';
+  type: 'review' | 'strengthen' | 'explore' | 'discover' | 'refresh' | 'case' | 'start' | 'calibrate';
   topic: string;
   normalizedTopic: string;
   reason: string;
