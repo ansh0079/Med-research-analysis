@@ -1,0 +1,10 @@
+{
+  "name": "Medical Research Intelligence",
+  "short_name": "MedResearch",
+  "description": "Search, save, and review medical evidence.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#4f46e5"
+}

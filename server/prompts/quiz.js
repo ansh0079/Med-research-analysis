@@ -3,6 +3,9 @@ const { formatStoredTopicKnowledgeForPrompt } = require('./_helpers');
 function buildQuizPrompt(topic, articles = [], options = {}, guidelines = [], userContext = null) {
     const safeCount = Math.min(Math.max(parseInt(String(options.count || 5), 10) || 5, 3), 10);
     let difficulty = ['easy', 'medium', 'hard', 'mixed'].includes(options.difficulty) ? options.difficulty : 'mixed';
+    const promptVariant = ['control', 'clinical_discriminator'].includes(options.promptVariant)
+        ? options.promptVariant
+        : 'control';
 
     const trainingStage = ['preclinical', 'early_clinical', 'finals', 'foundation_doctor'].includes(options.trainingStage)
         ? options.trainingStage
@@ -179,12 +182,22 @@ Recommendation: ${g.recommendation_text}${g.recommendation_strength ? ` | Streng
         }
     }
 
+    const variantInstruction = promptVariant === 'clinical_discriminator'
+        ? `\nPROMPT VARIANT: clinical_discriminator.
+- Make each stem test the highest-yield discriminator between the keyed answer and the most tempting distractor.
+- Prefer "next best step", "most likely explanation", or "safest action" framing when clinically appropriate.
+- Explanations should explicitly name why the keyed answer beats the closest wrong answer.\n`
+        : `\nPROMPT VARIANT: control.
+- Use the standard balanced teaching style from the rubrics above.\n`;
+
     return `You are a medical educator writing single-best-answer MCQs aligned to a specific TRAINING LEVEL (not one-size-fits-all).
 Generate ${questionCount} high-quality questions about "${String(topic || '').trim()}".
 
 ${TRAINING_RUBRIC[trainingStage] || TRAINING_RUBRIC.finals}
 
 ${EXPLAIN_RUBRIC[explanationDepth] || EXPLAIN_RUBRIC.exam_focus}
+
+${variantInstruction}
 
 ${topicBaseline ? `${topicBaseline}\n` : ''}${teachingObjectContext ? `REUSABLE PAPER TEACHING OBJECTS:\n${teachingObjectContext}\n\nINSTRUCTION: Treat these as the preferred quiz seed for bottom line, misconception traps, and paper-specific appraisal angles. Still ground source-specific claims in RESEARCH CONTEXT indices.\n\n` : ''}${outlineContext}${targetContext}${communityContext}${claimAnchorContext}${collectiveMisconceptionContext}${confusingNodeContext}RESEARCH CONTEXT:
 ${context || 'No article context supplied. Use standard evidence-based medical knowledge for the topic, and avoid unsupported claims.'}
@@ -212,6 +225,13 @@ Return ONLY a valid JSON array with no prose. Each object must match this schema
     "explanationDeep": "For mechanistic depth ONLY: non-empty mechanistic paragraph; otherwise use null or omit.",
     "whyOthersWrong": "One short paragraph summary of wrong options (legacy summary).",
     "distractorRationale": { "A": "why A is wrong", "B": "why B is wrong", "C": "...", "D": "..." },
+    "visualExplanation": {
+      "kind": "flowchart" | "comparison_table" | "mechanism",
+      "title": "short title",
+      "steps": ["Only for flowchart/mechanism: 3-5 concise causal or decision steps"],
+      "columns": ["Only for comparison_table: 2-4 column headings"],
+      "rows": [["Only for comparison_table: cells aligned to columns"]]
+    },
     "difficulty": "easy" | "medium" | "hard",
     "sourceArticle": "article title or null",
     "sourceReference": "Source 1 or Source 1, 3",
@@ -223,6 +243,7 @@ Return ONLY a valid JSON array with no prose. Each object must match this schema
 Rules:
 - Follow TRAINING LEVEL for vignette length, discriminant difficulty, and question-type mix.
 - distractorRationale MUST include an entry for every option letter A–D; for the CORRECT option, the value should be brief: "Correct — keyed answer." or similar.
+- visualExplanation is optional but SHOULD be present when it would clarify a mechanism, decision pathway, or close differential; keep it concise and factual.
 - Prefer case-vignette clinical_application when TRAINING LEVEL allows; use recall-heavy stems only when rubric demands it.
 - When a STORED TOPIC BASELINE is present, align several questions with its teaching points and MCQ angles while keeping every question answerable from RESEARCH CONTEXT (cite Source [n]) or GUIDELINE CONTEXT (cite Guideline [Gn]) — never cite baseline ordinals as if they were SOURCE numbers.
 - Questions must be answerable using the provided RESEARCH CONTEXT when article context exists.

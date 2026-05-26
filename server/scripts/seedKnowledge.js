@@ -83,7 +83,7 @@ async function seedTopic(topic, ai) {
         if (serverConfig.keys.gemini) {
             raw = await ai.callGemini(prompt, PINNED_MODELS.gemini, { temperature: 0.15 });
         } else if (serverConfig.keys.mistral) {
-            raw = await ai.callMistralAI(prompt, 'mistral-small-latest', { temperature: 0.15 });
+            raw = await ai.callMistralAI(prompt, PINNED_MODELS.mistral, { temperature: 0.15 });
         } else {
             console.warn(`  ⚠ No AI provider configured (set GEMINI_API_KEY or MISTRAL_API_KEY).`);
             return;

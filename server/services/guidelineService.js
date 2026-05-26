@@ -125,7 +125,7 @@ async function checkGuidelineAlignment(topic, synthesisConsensus, articles, keys
   if (keys.gemini) {
     rawText = await aiService.callGemini(prompt, PINNED_MODELS.geminiQuality);
   } else if (keys.mistral) {
-    rawText = await aiService.callMistralAI(prompt, 'mistral-small-latest');
+    rawText = await aiService.callMistralAI(prompt, PINNED_MODELS.mistral);
   } else {
     throw new Error('No AI provider configured for guideline alignment');
   }

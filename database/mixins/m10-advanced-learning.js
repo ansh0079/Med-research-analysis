@@ -57,34 +57,36 @@ async createLearningRound({ userId, topic, items = [] } = {}) {
     const normalized = this.normalizeTopic(topicLabel);
     if (!uid || !normalized) return null;
     const now = new Date().toISOString();
-    const result = await this.run(
-        `INSERT INTO learning_rounds (user_id, topic, normalized_topic, status, item_count, created_at)
-         VALUES (?, ?, ?, 'active', ?, ?)`,
-        [uid, topicLabel, normalized, items.length, now]
-    );
-    const roundId = result?.id ?? result?.lastID ?? result?.lastInsertRowid;
-    if (!roundId) {
-        throw new Error('Learning round insert did not return an id');
-    }
-    for (let i = 0; i < items.length; i += 1) {
-        const item = items[i];
-        await this.run(
-            `INSERT INTO learning_round_items (
-                round_id, item_type, claim_key, question_text, options_json, correct_answer, explanation, sort_order
-             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-            [
-                roundId,
-                String(item.itemType || 'claim_recall').slice(0, 40),
-                item.claimKey ? String(item.claimKey).slice(0, 80) : null,
-                String(item.questionText || '').slice(0, 1400),
-                JSON.stringify(item.options || []),
-                item.correctAnswer ? String(item.correctAnswer).slice(0, 400) : null,
-                item.explanation ? String(item.explanation).slice(0, 1400) : null,
-                Number(item.sortOrder ?? i),
-            ]
+    return this.withTransaction(async () => {
+        const result = await this.run(
+            `INSERT INTO learning_rounds (user_id, topic, normalized_topic, status, item_count, created_at)
+             VALUES (?, ?, ?, 'active', ?, ?)`,
+            [uid, topicLabel, normalized, items.length, now]
         );
-    }
-    return this.getLearningRound(roundId, uid);
+        const roundId = result?.id ?? result?.lastID ?? result?.lastInsertRowid;
+        if (!roundId) {
+            throw new Error('Learning round insert did not return an id');
+        }
+        for (let i = 0; i < items.length; i += 1) {
+            const item = items[i];
+            await this.run(
+                `INSERT INTO learning_round_items (
+                    round_id, item_type, claim_key, question_text, options_json, correct_answer, explanation, sort_order
+                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    roundId,
+                    String(item.itemType || 'claim_recall').slice(0, 40),
+                    item.claimKey ? String(item.claimKey).slice(0, 80) : null,
+                    String(item.questionText || '').slice(0, 1400),
+                    JSON.stringify(item.options || []),
+                    item.correctAnswer ? String(item.correctAnswer).slice(0, 400) : null,
+                    item.explanation ? String(item.explanation).slice(0, 1400) : null,
+                    Number(item.sortOrder ?? i),
+                ]
+            );
+        }
+        return this.getLearningRound(roundId, uid);
+    });
 }
 
 async recordLearningEvent({

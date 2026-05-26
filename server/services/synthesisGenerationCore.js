@@ -2,7 +2,7 @@
 
 const logger = require('../config/logger');
 const crypto = require('crypto');
-const { createAiService, TEMPERATURE, AI_DISCLAIMER } = require('./aiService');
+const { createAiService, TEMPERATURE, MAX_OUTPUT_TOKENS, AI_DISCLAIMER } = require('./aiService');
 const { buildSynthesisPrompt } = require('../prompts');
 const { batchCheckRetractions } = require('./qualityService');
 const { validateMedicalOutputCitations } = require('./citationValidator');
@@ -247,8 +247,8 @@ async function runFullSynthesisGeneration({
     for (const candidate of providerCandidates) {
         try {
             rawText = candidate.provider === 'gemini'
-                ? await ai.callGemini(context.prompt, candidate.model, { temperature: TEMPERATURE.synthesis, maxOutputTokens: 2800 })
-                : await ai.callMistralAI(context.prompt, candidate.model, { temperature: TEMPERATURE.synthesis, maxOutputTokens: 2800 });
+                ? await ai.callGemini(context.prompt, candidate.model, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis })
+                : await ai.callMistralAI(context.prompt, candidate.model, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis });
             selectedProvider = candidate.provider;
             selectedModel = candidate.model;
             break;

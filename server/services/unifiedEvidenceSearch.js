@@ -150,19 +150,21 @@ function dedupeKey(article) {
  * EBM contributes a fractional bonus (max 5% of a first-position score) so it
  * acts as a tiebreaker within RRF tiers without overriding cross-tier ordering.
  */
-function applyRRF(perSourceLists, k = 60) {
+function applyRRF(perSourceLists, k = 60, listWeights = []) {
     const scores = new Map(); // dedupeKey → { rrfScore, article }
     const MAX_FIRST_SCORE = 1 / (k + 1); // ≈ 0.0164
     const EBM_WEIGHT = MAX_FIRST_SCORE * 0.05; // max EBM bonus ≈ 5% of top-position score
 
     const TIER1_JOURNALS = ['nejm', 'lancet', 'jama', 'bmj', 'nature', 'science', 'annals of internal medicine'];
 
-    for (const list of perSourceLists) {
+    for (let i = 0; i < perSourceLists.length; i++) {
+        const list = perSourceLists[i];
+        const weight = listWeights[i] || 1;
         list.forEach((article, idx) => {
             const key = dedupeKey(article);
             if (!key) return;
             
-            let rrfContrib = 1 / (k + idx + 1);
+            let rrfContrib = weight / (k + idx + 1);
             const journal = (article.journal || article.source || '').toLowerCase();
             if (TIER1_JOURNALS.some(t => journal.includes(t))) {
                 rrfContrib *= 1.15; // 15% boost to the rank contribution for prestige
@@ -192,8 +194,8 @@ function applyRRF(perSourceLists, k = 60) {
  * Merge, deduplicate, and rank results from multiple per-source lists.
  * Accepts an optional vectorList for semantic fusion via RRF.
  */
-function mergeAndRank(perSourceLists) {
-    const ranked = applyRRF(perSourceLists);
+function mergeAndRank(perSourceLists, listWeights) {
+    const ranked = applyRRF(perSourceLists, 60, listWeights);
     return ranked.map((article) => ({
         ...article,
         _ebmScore: getEbmScore(article),
@@ -384,7 +386,11 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     }
 
     if (perSourceLists.length === 0) return [];
-    const ranked = mergeAndRank(perSourceLists);
+    // Give vector results a 1.25× weight so semantic signals aren't drowned out by multiple keyword sources
+    const listWeights = vectorList.length > 0
+        ? Array(perSourceLists.length - 1).fill(1).concat(1.25)
+        : undefined;
+    const ranked = mergeAndRank(perSourceLists, listWeights);
     return collapseNearDuplicateTitles(ranked);
 }
 

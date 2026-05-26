@@ -194,6 +194,7 @@ const schemas = {
             outlineNodeId: Joi.string().max(120).allow('', null).optional(),
             outlineLabel: Joi.string().max(300).allow('', null).optional(),
             claimKey: Joi.string().max(80).allow('', null).optional(),
+            promptVariant: Joi.string().max(80).allow('', null).optional(),
         })).min(1).required(),
     }),
     studyRunCreate: Joi.object({

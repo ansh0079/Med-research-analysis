@@ -6,7 +6,7 @@ function clampLimit(val, def = 20, min = 1, max = 100) {
 const logger = require('../config/logger');
 const { validateQuery, validatePagination, sanitizeArticleOutput } = require('../utils/articles');
 const { safeFetch } = require('../utils/fetch');
-const { articleFromOpenAlexWork, fetchUnifiedEvidence } = require('../services/unifiedEvidenceSearch');
+const { articleFromOpenAlexWork, fetchUnifiedEvidence, collapseNearDuplicateTitles } = require('../services/unifiedEvidenceSearch');
 const { buildEvidenceBouquet, isOffTopic } = require('../services/evidenceBouquetService');
 const crypto = require('crypto');
 const { createAiService, PINNED_MODELS, TEMPERATURE } = require('../services/aiService');
@@ -281,7 +281,9 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
         // Use Evidence Bouquet 2.0 for live evidence ranking
         const bouquet = buildEvidenceBouquet(live, query, { count: limit });
         bouquet.topPapers.forEach(push);
-        return { articles: out.slice(0, limit), ranking: bouquet.ranking, archetypesCovered: bouquet.archetypesCovered };
+        const merged = out.slice(0, limit);
+        const deduped = collapseNearDuplicateTitles(merged);
+        return { articles: deduped, ranking: bouquet.ranking, archetypesCovered: bouquet.archetypesCovered };
     }
 
     app.get('/api/pubmed/search', rateLimit(30, 60), async (req, res) => {
@@ -587,8 +589,8 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                     if (mem?.tier) {
                         learningContext = { memoryTier: mem.tier, personalized: true };
                     }
-                } catch (_) {
-                    /* keep defaults */
+                } catch (err) {
+                    logger.debug({ err, userId: req.user.id }, 'Search learning context lookup failed');
                 }
             }
 
@@ -655,7 +657,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                         if (serverConfig.keys.gemini) {
                             raw = await ai.callGemini(prompt, PINNED_MODELS.gemini, { temperature: 0.15 });
                         } else if (serverConfig.keys.mistral) {
-                            raw = await ai.callMistralAI(prompt, 'mistral-small-latest', { temperature: 0.15 });
+                            raw = await ai.callMistralAI(prompt, PINNED_MODELS.mistral, { temperature: 0.15 });
                         } else return;
 
                         const knowledge = parseJsonBlock(raw);

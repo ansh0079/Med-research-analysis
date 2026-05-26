@@ -16,6 +16,16 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const dbPath = process.env.SQLITE_PATH || path.join(root, 'database', 'app.db');
 const migrationsDir = path.join(root, 'database', 'migrations');
+const migrationAliases = {
+  '050_topic_crosslinks.sql': ['049_topic_crosslinks.sql'],
+  '051_claim_lifecycle.sql': ['050_claim_lifecycle.sql'],
+  '052_advanced_learning.sql': ['051_advanced_learning.sql'],
+  '053_curriculum_seed_metadata.sql': ['052_curriculum_seed_metadata.sql'],
+  '054_llm_usage_log.sql': ['052_llm_usage_log.sql'],
+  '056_curriculum_seed_guardrails.sql': ['053_curriculum_seed_guardrails.sql'],
+  '057_learning_event_ledger.sql': ['054_learning_event_ledger.sql'],
+};
+const sqliteBaselineMigration = '057_learning_event_ledger.sql';
 
 function splitStatements(sqlRaw) {
   const sqlWithoutComments = sqlRaw
@@ -112,7 +122,22 @@ const files = fs
   .filter((f) => f.endsWith('.sql'))
   .sort();
 
-const pending = files.filter((f) => !appliedNames.has(f));
+if (appliedNames.size === 0) {
+  const baselineFiles = files.filter((f) => f <= sqliteBaselineMigration);
+  const insert = db.prepare('INSERT OR IGNORE INTO _migrations (name) VALUES (?)');
+  for (const file of baselineFiles) {
+    insert.run(file);
+    appliedNames.add(file);
+  }
+  if (baselineFiles.length > 0) {
+    console.log(`SQLite baseline covers ${baselineFiles.length} migration(s) through ${sqliteBaselineMigration}`);
+  }
+}
+
+const pending = files.filter((f) => {
+  if (appliedNames.has(f)) return false;
+  return !(migrationAliases[f] || []).some((alias) => appliedNames.has(alias));
+});
 if (pending.length === 0) {
   console.log('Database is up to date');
   process.exit(0);

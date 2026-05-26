@@ -110,6 +110,38 @@ async getDailyStats(days = 30) {
 // PostgreSQL + pgvector (articles_cache)
 // ==========================================
 
+async getArticlesCacheEmbeddingDim() {
+    if (!this.pgVectorPool) {
+        throw new Error('Vector cache requires PG_VECTOR_URL (or VECTOR_DATABASE_URL)');
+    }
+    if (this._articlesCacheEmbeddingDim) return this._articlesCacheEmbeddingDim;
+    const { rows } = await this.pgVectorPool.query(`
+        SELECT atttypmod
+        FROM pg_attribute
+        WHERE attrelid = 'articles_cache'::regclass
+          AND attname = 'embedding'
+          AND NOT attisdropped
+        LIMIT 1
+    `);
+    const dim = Number(rows?.[0]?.atttypmod || 0) - 4;
+    this._articlesCacheEmbeddingDim = Number.isInteger(dim) && dim > 0 ? dim : 384;
+    return this._articlesCacheEmbeddingDim;
+}
+
+async assertArticlesCacheEmbeddingDim(embedding, operation) {
+    if (!Array.isArray(embedding) || embedding.length === 0) {
+        throw new Error(`Invalid embedding for ${operation}`);
+    }
+    const expectedDim = await this.getArticlesCacheEmbeddingDim();
+    if (embedding.length !== expectedDim) {
+        const err = new Error(`Embedding dimension mismatch for ${operation}: expected ${expectedDim}, got ${embedding.length}`);
+        err.code = 'EMBEDDING_DIM_MISMATCH';
+        err.expectedDim = expectedDim;
+        err.actualDim = embedding.length;
+        throw err;
+    }
+}
+
 isVectorSearchAvailable() {
     return !!this.pgVectorPool;
 }
@@ -125,6 +157,7 @@ async upsertArticleCacheVector(externalId, source, data, embedding, doi = null) 
     if (!this.pgVectorPool) {
         throw new Error('Vector cache requires PG_VECTOR_URL (or VECTOR_DATABASE_URL)');
     }
+    await this.assertArticlesCacheEmbeddingDim(embedding, 'articles_cache upsert');
     const vec = toPgVectorLiteral(embedding);
     const dataJson = JSON.stringify(data);
     const sql = `
@@ -150,6 +183,7 @@ async searchSimilarArticlesCache(queryEmbedding, limit = 10, minSimilarity = 0.4
     if (!this.pgVectorPool) {
         throw new Error('Vector search requires PG_VECTOR_URL (or VECTOR_DATABASE_URL)');
     }
+    await this.assertArticlesCacheEmbeddingDim(queryEmbedding, 'articles_cache search');
     const vec = toPgVectorLiteral(queryEmbedding);
     const maxDistance = 1 - minSimilarity;
     const sql = `
@@ -431,24 +465,26 @@ mapAiGenerationClaimRow(row) {
 }
 
 async replaceAiGenerationClaims(jobKey, claims = []) {
-    await this.run(`DELETE FROM ai_generation_claims WHERE job_key = ?`, [String(jobKey)]);
-    for (const c of claims) {
-        await this.run(
-            `INSERT INTO ai_generation_claims (job_key, claim_key, ordinal, claim_text, source_ids_json, evidence_quote, confidence, validation_status, concept_key, created_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
-            [
-                String(jobKey),
-                String(c.claimKey),
-                Number(c.ordinal) || 0,
-                String(c.claimText || '').slice(0, 4000),
-                JSON.stringify(c.sourceIds || []),
-                c.evidenceQuote ? String(c.evidenceQuote).slice(0, 3000) : null,
-                c.confidence != null && Number.isFinite(Number(c.confidence)) ? Number(c.confidence) : null,
-                String(c.validationStatus || 'unvalidated'),
-                c.conceptKey ? String(c.conceptKey) : null,
-            ]
-        );
-    }
+    return this.withTransaction(async () => {
+        await this.run(`DELETE FROM ai_generation_claims WHERE job_key = ?`, [String(jobKey)]);
+        for (const c of claims) {
+            await this.run(
+                `INSERT INTO ai_generation_claims (job_key, claim_key, ordinal, claim_text, source_ids_json, evidence_quote, confidence, validation_status, concept_key, created_at)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+                [
+                    String(jobKey),
+                    String(c.claimKey),
+                    Number(c.ordinal) || 0,
+                    String(c.claimText || '').slice(0, 4000),
+                    JSON.stringify(c.sourceIds || []),
+                    c.evidenceQuote ? String(c.evidenceQuote).slice(0, 3000) : null,
+                    c.confidence != null && Number.isFinite(Number(c.confidence)) ? Number(c.confidence) : null,
+                    String(c.validationStatus || 'unvalidated'),
+                    c.conceptKey ? String(c.conceptKey) : null,
+                ]
+            );
+        }
+    });
 }
 
 async listAiGenerationClaimsByJobKey(jobKey) {

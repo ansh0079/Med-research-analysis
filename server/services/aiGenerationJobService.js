@@ -16,13 +16,20 @@ const ENQUEUED_KEYS = new Set();
 
 async function completeJobAndClaims(db, jobKey, jobType, { resultPayload, provider = null, model = null, auditPayload = null } = {}) {
     const payload = { ...(resultPayload || {}), jobKey };
-    await db.completeAiGenerationJob(jobKey, {
-        resultPayload: payload,
-        provider,
-        model,
-        auditPayload,
-    });
-    await claimMapService.persistClaimsForJob(db, jobKey, jobType, payload);
+    const complete = async () => {
+        await db.completeAiGenerationJob(jobKey, {
+            resultPayload: payload,
+            provider,
+            model,
+            auditPayload,
+        });
+        await claimMapService.persistClaimsForJob(db, jobKey, jobType, payload);
+    };
+    if (typeof db.withTransaction === 'function') {
+        await db.withTransaction(complete);
+    } else {
+        await complete();
+    }
 }
 
 function stableHash(value) {
@@ -81,7 +88,7 @@ async function generateLiveClinicalAnswer({ topic, articles = [], guidelines = [
         rawText = await ai.callGemini(prompt, model, { temperature: 0.2 });
     } else if (serverConfig?.keys?.mistral) {
         provider = 'mistral';
-        model = 'mistral-small-latest';
+        model = PINNED_MODELS.mistral;
         rawText = await ai.callMistralAI(prompt, model, { temperature: 0.2 });
     } else {
         return { clinicalAnswer: null, synthesis: null, provider: null, model: null };

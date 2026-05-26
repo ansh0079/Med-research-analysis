@@ -289,9 +289,10 @@ async createQuizAttempt(attempt) {
     const reasoningTags = Array.isArray(attempt.reasoningTags)
         ? attempt.reasoningTags.map((tag) => String(tag || '').trim()).filter(Boolean).slice(0, 8)
         : [];
+    const promptVariant = String(attempt.promptVariant || '').trim().slice(0, 80) || null;
     const result = await this.run(
-        `INSERT INTO quiz_attempts (user_id, topic, normalized_topic, question_id, question_type, question_text, user_answer, correct_answer, is_correct, time_ms, confidence, source_article_uid, study_run_id, outline_node_id, concept_hash, claim_key, reasoning_tags, reasoning_note, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+        `INSERT INTO quiz_attempts (user_id, topic, normalized_topic, question_id, question_type, question_text, user_answer, correct_answer, is_correct, time_ms, confidence, source_article_uid, study_run_id, outline_node_id, concept_hash, claim_key, reasoning_tags, reasoning_note, prompt_variant, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
         [
             attempt.userId,
             attempt.topic,
@@ -311,6 +312,7 @@ async createQuizAttempt(attempt) {
             attempt.claimKey || null,
             JSON.stringify(reasoningTags),
             attempt.reasoningNote ? String(attempt.reasoningNote).slice(0, 500) : null,
+            promptVariant,
         ]
     );
     return { id: result.id, conceptHash, ...attempt };
@@ -337,6 +339,7 @@ mapQuizAttemptRow(r) {
         claimKey: r.claim_key || null,
         reasoningTags: safeJsonParse(r.reasoning_tags, []),
         reasoningNote: r.reasoning_note || null,
+        promptVariant: r.prompt_variant || null,
         createdAt: r.created_at,
     };
 }

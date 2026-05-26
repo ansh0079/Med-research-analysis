@@ -3,6 +3,7 @@
  * Requires pgvector, PG_VECTOR_URL, and embedding API credentials.
  */
 const { generateEmbedding, articleToEmbedText } = require('./embeddings');
+const logger = require('./config/logger');
 
 /**
  * @param {string} basePrompt
@@ -18,7 +19,8 @@ async function appendRagContext(basePrompt, { topic, sessionId, db, keys = {} })
     let saved;
     try {
         saved = await db.getSavedArticles(sessionId);
-    } catch {
+    } catch (err) {
+        logger.debug({ err, sessionId }, 'RAG saved-article lookup failed');
         return basePrompt;
     }
     if (!Array.isArray(saved) || saved.length === 0) {
@@ -33,8 +35,8 @@ async function appendRagContext(basePrompt, { topic, sessionId, db, keys = {} })
             if (!acc) acc = e.map(() => 0);
             for (let i = 0; i < e.length; i++) acc[i] += e[i];
             n += 1;
-        } catch {
-            /* continue */
+        } catch (err) {
+            logger.debug({ err, articleUid: a?.uid }, 'RAG embedding generation skipped for saved article');
         }
     }
     if (n === 0) return basePrompt;
@@ -45,8 +47,8 @@ async function appendRagContext(basePrompt, { topic, sessionId, db, keys = {} })
         for (const r of fromSaved) {
             if (r.data) blocks.push(r.data);
         }
-    } catch {
-        /* empty */
+    } catch (err) {
+        logger.debug({ err }, 'RAG saved-library vector search failed');
     }
     try {
         const topicEmb = await generateEmbedding(String(topic || 'medical research'), keys);
@@ -54,8 +56,8 @@ async function appendRagContext(basePrompt, { topic, sessionId, db, keys = {} })
         for (const r of fromTopic) {
             if (r.data) blocks.push(r.data);
         }
-    } catch {
-        /* empty */
+    } catch (err) {
+        logger.debug({ err, topic }, 'RAG topic vector search failed');
     }
     const seen = new Set();
     const textBits = [];

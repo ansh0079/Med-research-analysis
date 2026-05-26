@@ -7,6 +7,8 @@ const recommendationCache = new Map();
 const MAX_CACHE_SIZE = 5000;
 const articleCorpus = [];
 const { computeQualityScore } = require('./qualityService');
+const { generateEmbedding, articleToEmbedText } = require('../embeddings');
+const { getEmbeddingOptions } = require('./embeddingOptions');
 
 function tokenize(text) {
     if (!text) return [];
@@ -83,7 +85,7 @@ function createRecommendationService({ db, serverConfig, fetchImpl = fetch }) {
             return { recommendations: cached.data, cached: true };
         }
 
-        let userHistory = { articles: [] };
+        const userHistory = { articles: [] };
         if (userId && typeof db.getUserInteractions === 'function') {
             try {
                 const rows = await db.getUserInteractions(userId, { limit: 50, days: 30 });
@@ -94,15 +96,15 @@ function createRecommendationService({ db, serverConfig, fetchImpl = fetch }) {
                     saved: r.interaction_type === 'save',
                     clicked: r.interaction_type === 'click',
                 }));
-            } catch {
-                // fall through to empty history
+            } catch (err) {
+                logger.debug({ err, userId }, 'Recommendation history lookup failed');
             }
         }
         const savedArticles = await db.getSavedArticles(sessionId);
         const recentlyViewed = userHistory.articles.slice(-10);
 
         // Load impression signals for implicit negative feedback weighting
-        let impressionSignals = new Map();
+        const impressionSignals = new Map();
         try {
             if (typeof db.getRecentImpressions === 'function') {
                 const impressionRows = await db.getRecentImpressions(sessionId, { days: 30, limit: 200 });
@@ -119,8 +121,8 @@ function createRecommendationService({ db, serverConfig, fetchImpl = fetch }) {
                     impressionSignals.set(uid, existing);
                 }
             }
-        } catch {
-            // ignore impression read errors
+        } catch (err) {
+            logger.debug({ err, sessionId }, 'Recommendation impression lookup failed');
         }
 
         // Build a personalized query from recent search history; fall back to trending medicine
@@ -136,12 +138,30 @@ function createRecommendationService({ db, serverConfig, fetchImpl = fetch }) {
                 const titleWords = tokenize(savedArticles[0]?.title || '').slice(0, 5);
                 if (titleWords.length > 0) searchQuery = titleWords.join(' ');
             }
-        } catch {
-            // getSearchHistory may not be available in all DB configs — fall through
+        } catch (err) {
+            logger.debug({ err, sessionId }, 'Recommendation search history lookup failed');
         }
 
         const encodedQuery = encodeURIComponent(searchQuery);
         const ncbiEmail = encodeURIComponent(serverConfig.keys.ncbiEmail || 'recommendations@medsearch.app');
+        let vectorArticles = [];
+        if (db.isVectorSearchAvailable?.() && (savedArticles.length > 0 || searchQuery !== 'medical research latest')) {
+            try {
+                const profileText = [
+                    searchQuery,
+                    ...savedArticles.slice(0, 5).map((article) => articleToEmbedText(article)),
+                ].filter(Boolean).join('\n\n').slice(0, 8000);
+                const embedding = await generateEmbedding(profileText, getEmbeddingOptions(serverConfig));
+                const rows = await db.searchSimilarArticlesCache(embedding, Math.min(30, Math.max(10, Number(limit) * 3)), 0.32);
+                vectorArticles = rows.map((row) => ({
+                    ...row.data,
+                    _source: row.data?._source || row.data?.source || 'vector',
+                    _vectorScore: row.score,
+                }));
+            } catch (err) {
+                logger.debug({ err, userId }, 'Vector recommendations skipped');
+            }
+        }
 
         const [pubmedResponse, semanticResponse] = await Promise.allSettled([
             f(
@@ -153,6 +173,7 @@ function createRecommendationService({ db, serverConfig, fetchImpl = fetch }) {
         ]);
 
         const candidateArticles = [];
+        candidateArticles.push(...vectorArticles);
 
         if (pubmedResponse.status === 'fulfilled' && pubmedResponse.value.ok) {
             const pubmedData = await pubmedResponse.value.json();
@@ -192,6 +213,11 @@ function createRecommendationService({ db, serverConfig, fetchImpl = fetch }) {
         const scoredArticles = candidateArticles.map((article) => {
             let score = 0;
             const factors = [];
+
+            if (typeof article._vectorScore === 'number') {
+                score += Math.max(0, article._vectorScore) * 55;
+                factors.push('Similar to your saved library');
+            }
 
             let maxSimilarity = 0;
             for (const saved of savedArticles) {
@@ -297,6 +323,7 @@ function createRecommendationService({ db, serverConfig, fetchImpl = fetch }) {
 
             let reason = 'trending';
             if (factors.includes('Based on your saved articles')) reason = 'user-history';
+            else if (factors.includes('Similar to your saved library')) reason = 'vector-personalized';
             else if (factors.includes('Related to current article')) reason = 'content-similarity';
             else if (factors.includes('Highly cited')) reason = 'citation-boost';
 
@@ -465,3 +492,4 @@ function createRecommendationService({ db, serverConfig, fetchImpl = fetch }) {
 }
 
 module.exports = { createRecommendationService };
+

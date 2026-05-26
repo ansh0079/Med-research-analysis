@@ -242,7 +242,7 @@ async function seedTopicGuidelines(topic, ai) {
         if (serverConfig.keys.gemini) {
             rawText = await ai.callGemini(prompt, PINNED_MODELS.gemini, { temperature: 0.1 });
         } else if (serverConfig.keys.mistral) {
-            rawText = await ai.callMistralAI(prompt, 'mistral-small-latest', { temperature: 0.1 });
+            rawText = await ai.callMistralAI(prompt, PINNED_MODELS.mistral, { temperature: 0.1 });
         } else {
             console.warn(`  ⚠ No AI provider configured.`);
             return { status: 'no_provider' };

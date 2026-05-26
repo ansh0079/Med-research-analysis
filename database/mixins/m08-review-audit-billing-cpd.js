@@ -547,53 +547,55 @@ mapTeachingObjectClaimRow(row) {
 
 async replaceTeachingObjectClaims({ objectKey, articleUid = null, normalizedTopic = null, claims = [] } = {}) {
     if (!objectKey) return [];
-    await this.run(`DELETE FROM teaching_object_claims WHERE object_key = ?`, [objectKey]);
     const now = new Date().toISOString();
-    const inserted = [];
-    for (const claim of Array.isArray(claims) ? claims : []) {
-        const claimKey = String(claim.claimKey || '').trim().slice(0, 80);
-        const claimText = String(claim.claimText || '').trim().slice(0, 1400);
-        if (!claimKey || !claimText) continue;
-        await this.run(
-            `INSERT INTO teaching_object_claims (
-                object_key, claim_key, ordinal, claim_text, evidence_quote, source_path,
-                article_uid, normalized_topic, concept_key, confidence, verification_status,
-                verification_reason, verified_at, created_at, updated_at
-             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-             ON CONFLICT(claim_key) DO UPDATE SET
-                object_key = excluded.object_key,
-                ordinal = excluded.ordinal,
-                claim_text = excluded.claim_text,
-                evidence_quote = excluded.evidence_quote,
-                source_path = excluded.source_path,
-                article_uid = excluded.article_uid,
-                normalized_topic = excluded.normalized_topic,
-                concept_key = excluded.concept_key,
-                confidence = excluded.confidence,
-                verification_status = excluded.verification_status,
-                verification_reason = excluded.verification_reason,
-                verified_at = excluded.verified_at,
-                updated_at = excluded.updated_at`,
-            [
-                objectKey,
-                claimKey,
-                Number(claim.ordinal || inserted.length),
-                claimText,
-                claim.evidenceQuote ? String(claim.evidenceQuote).slice(0, 2000) : null,
-                claim.sourcePath ? String(claim.sourcePath).slice(0, 160) : null,
-                claim.articleUid || articleUid || null,
-                claim.topic ? this.normalizeTopic(claim.topic) : normalizedTopic,
-                claim.conceptKey ? String(claim.conceptKey).slice(0, 160) : null,
-                claim.confidence == null ? null : Math.max(0, Math.min(1, Number(claim.confidence))),
-                claim.verificationStatus ? String(claim.verificationStatus).slice(0, 80) : 'unverified',
-                claim.verificationReason ? String(claim.verificationReason).slice(0, 500) : null,
-                claim.verifiedAt ? String(claim.verifiedAt).slice(0, 40) : null,
-                now,
-                now,
-            ]
-        );
-        inserted.push(claimKey);
-    }
+    await this.withTransaction(async () => {
+        await this.run(`DELETE FROM teaching_object_claims WHERE object_key = ?`, [objectKey]);
+        let ordinal = 0;
+        for (const claim of Array.isArray(claims) ? claims : []) {
+            const claimKey = String(claim.claimKey || '').trim().slice(0, 80);
+            const claimText = String(claim.claimText || '').trim().slice(0, 1400);
+            if (!claimKey || !claimText) continue;
+            await this.run(
+                `INSERT INTO teaching_object_claims (
+                    object_key, claim_key, ordinal, claim_text, evidence_quote, source_path,
+                    article_uid, normalized_topic, concept_key, confidence, verification_status,
+                    verification_reason, verified_at, created_at, updated_at
+                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 ON CONFLICT(claim_key) DO UPDATE SET
+                    object_key = excluded.object_key,
+                    ordinal = excluded.ordinal,
+                    claim_text = excluded.claim_text,
+                    evidence_quote = excluded.evidence_quote,
+                    source_path = excluded.source_path,
+                    article_uid = excluded.article_uid,
+                    normalized_topic = excluded.normalized_topic,
+                    concept_key = excluded.concept_key,
+                    confidence = excluded.confidence,
+                    verification_status = excluded.verification_status,
+                    verification_reason = excluded.verification_reason,
+                    verified_at = excluded.verified_at,
+                    updated_at = excluded.updated_at`,
+                [
+                    objectKey,
+                    claimKey,
+                    Number(claim.ordinal ?? ordinal),
+                    claimText,
+                    claim.evidenceQuote ? String(claim.evidenceQuote).slice(0, 2000) : null,
+                    claim.sourcePath ? String(claim.sourcePath).slice(0, 160) : null,
+                    claim.articleUid || articleUid || null,
+                    claim.topic ? this.normalizeTopic(claim.topic) : normalizedTopic,
+                    claim.conceptKey ? String(claim.conceptKey).slice(0, 160) : null,
+                    claim.confidence == null ? null : Math.max(0, Math.min(1, Number(claim.confidence))),
+                    claim.verificationStatus ? String(claim.verificationStatus).slice(0, 80) : 'unverified',
+                    claim.verificationReason ? String(claim.verificationReason).slice(0, 500) : null,
+                    claim.verifiedAt ? String(claim.verifiedAt).slice(0, 40) : null,
+                    now,
+                    now,
+                ]
+            );
+            ordinal += 1;
+        }
+    });
     return this.listTeachingObjectClaimsByObjectKey(objectKey);
 }
 
@@ -785,15 +787,17 @@ async updateTeachingClaimVerification(claimKey, { verificationStatus, verificati
         }
     }
     values.push(key);
-    await this.run(`UPDATE teaching_object_claims SET ${fields.join(', ')} WHERE claim_key = ?`, values);
-    if (priorStatus !== status && typeof this.logClaimStatusChange === 'function') {
-        await this.logClaimStatusChange(key, {
-            fromStatus: priorStatus,
-            toStatus: status,
-            normalizedTopic: existing?.normalized_topic || null,
-            reason: verificationReason || null,
-        }).catch(() => {});
-    }
+    await this.withTransaction(async () => {
+        await this.run(`UPDATE teaching_object_claims SET ${fields.join(', ')} WHERE claim_key = ?`, values);
+        if (priorStatus !== status && typeof this.logClaimStatusChange === 'function') {
+            await this.logClaimStatusChange(key, {
+                fromStatus: priorStatus,
+                toStatus: status,
+                normalizedTopic: existing?.normalized_topic || null,
+                reason: verificationReason || null,
+            }).catch(() => {});
+        }
+    });
     if (status === 'stale_needs_refresh' && typeof this.enqueueClaimRegeneration === 'function') {
         const rowForRegen = await this.get(
             `SELECT article_uid, normalized_topic FROM teaching_object_claims WHERE claim_key = ?`,

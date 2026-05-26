@@ -5,6 +5,10 @@ const { createPdfService } = require('../services/pdfService');
 const { getCachedPdf } = require('../services/pdfPreindexService');
 const { pdfQueue } = require('../services/jobQueue');
 
+// Per-IP PDF extraction concurrency limit
+const pdfIpLocks = new Map();
+const MAX_PDF_PER_IP = 2;
+
 /**
  * @param {import('express').Application} app
  * @param {object} deps
@@ -89,6 +93,13 @@ function registerPdfRoutes(app, deps) {
         const { url } = req.body;
         if (!url) return res.status(400).json({ error: 'PDF URL is required' });
 
+        const clientIp = req.ip || req.connection?.remoteAddress || 'unknown';
+        const current = pdfIpLocks.get(clientIp) || 0;
+        if (current >= MAX_PDF_PER_IP) {
+            return res.status(429).json({ error: 'Too many concurrent PDF extractions' });
+        }
+        pdfIpLocks.set(clientIp, current + 1);
+
         try {
             const data = await pdfQueue.enqueue(
                 () => pdf.extractPdfText(url),
@@ -106,6 +117,10 @@ function registerPdfRoutes(app, deps) {
         } catch (error) {
             // error logged by global handler
             res.status(500).json({ error: 'Failed to extract text from PDF' });
+        } finally {
+            const next = (pdfIpLocks.get(clientIp) || 1) - 1;
+            if (next <= 0) pdfIpLocks.delete(clientIp);
+            else pdfIpLocks.set(clientIp, next);
         }
     });
 

@@ -68,7 +68,7 @@ async function callAI(ai, prompt, { temperature = TEMPERATURE.synthesis } = {}) 
     if (serverConfig.keys.gemini) {
         return ai.callGemini(prompt, PINNED_MODELS.gemini, { temperature });
     } else if (serverConfig.keys.mistral) {
-        return ai.callMistralAI(prompt, 'mistral-small-latest', { temperature });
+        return ai.callMistralAI(prompt, PINNED_MODELS.mistral, { temperature });
     }
     throw new Error('No AI provider configured');
 }
@@ -609,7 +609,7 @@ async function verifyAndExtendMCQs(ai) {
             if (start !== -1 && end !== -1) {
                 parsed = JSON.parse(cleaned.slice(start, end + 1));
             }
-        } catch { /* fall through */ }
+        } catch (parseErr) { void parseErr; }
 
         if (!parsed) {
             console.warn(`  ⚠ ${topic}: invalid JSON from Claude`);
@@ -788,7 +788,7 @@ async function refreshSynopsesWithGuidelines(ai) {
             const start = cleaned.indexOf('{');
             const end = cleaned.lastIndexOf('}');
             if (start !== -1 && end !== -1) parsed = JSON.parse(cleaned.slice(start, end + 1));
-        } catch { /* fall through */ }
+        } catch (parseErr) { void parseErr; }
 
         if (!parsed?.mentorMessage) {
             console.warn(`  ⚠ ${topic}: invalid response`);
@@ -924,7 +924,7 @@ async function aggregateTopicMemory() {
 
         if (existing) {
             let knowledge = {};
-            try { knowledge = JSON.parse(existing.knowledge || '{}'); } catch { /* keep empty */ }
+            try { knowledge = JSON.parse(existing.knowledge || '{}'); } catch (parseErr) { void parseErr; }
             knowledge.collective_memory = collective_memory;
 
             const path = collective_memory.uniqueUsers >= 50 ? 'hot'

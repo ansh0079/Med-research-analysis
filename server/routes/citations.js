@@ -6,9 +6,10 @@ function registerCitationRoutes(app, { serverConfig, cache, fetch: fetchImpl, re
 
     app.get('/api/citations/:paperId', requireAuthJwt, async (req, res) => {
         const { paperId } = req.params;
-        const cacheKey = `citations:${paperId}`;
+        const limit = Math.min(250, Math.max(20, parseInt(String(req.query.limit || '80'), 10) || 80));
+        const cacheKey = `citations:${paperId}:${limit}`;
         const cached = cache.get(cacheKey);
-        if (cached) return res.json(cached);
+        if (cached) return res.json({ ...cached, cached: true });
 
         try {
             const headers = serverConfig.keys.semantic
@@ -18,8 +19,8 @@ function registerCitationRoutes(app, { serverConfig, cache, fetch: fetchImpl, re
             const fields = `contexts,intents,isInfluential,${paperFields}`;
 
             const [citRes, refRes] = await Promise.all([
-                f(`https://api.semanticscholar.org/graph/v1/paper/${paperId}/citations?fields=${fields}&limit=50`, { headers, timeout: 15000 }),
-                f(`https://api.semanticscholar.org/graph/v1/paper/${paperId}/references?fields=${fields}&limit=50`, { headers, timeout: 15000 }),
+                f(`https://api.semanticscholar.org/graph/v1/paper/${paperId}/citations?fields=${fields}&limit=${limit}`, { headers, timeout: 15000 }),
+                f(`https://api.semanticscholar.org/graph/v1/paper/${paperId}/references?fields=${fields}&limit=${limit}`, { headers, timeout: 15000 }),
             ]);
 
             const mapPaper = (p) => ({
@@ -64,9 +65,11 @@ function registerCitationRoutes(app, { serverConfig, cache, fetch: fetchImpl, re
                     ...citationRows.map((row, idx) => relationFrom(row, 'cites-target', citations[idx])),
                     ...referenceRows.map((row, idx) => relationFrom(row, 'target-cites', references[idx])),
                 ].filter((relation) => relation.source && relation.target),
+                cached: false,
+                cacheTtlSeconds: 21600,
             };
 
-            cache.set(cacheKey, result, 3600);
+            cache.set(cacheKey, result, 21600);
             res.json(result);
         } catch (error) {
             req.log.error({ err: error, paperId }, 'Citation network error');

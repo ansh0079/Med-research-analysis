@@ -418,38 +418,40 @@ module.exports = (Sup) => class extends Sup {
             },
             live?.knowledge || {}
         );
-        let updated = await this.updateTopicKnowledge(proposal.topic, {
-            knowledge: mergedKnowledge,
-            sourceArticles: proposal.sourceArticles,
-            status: 'human_reviewed',
-            confidence: Math.max(Number(proposal.confidence || 0), 0.85),
-            editorId: reviewerId,
-        });
-        if (!updated) {
-            updated = await this.upsertTopicKnowledge(
-                proposal.topic,
-                {
-                    ...mergedKnowledge,
-                    reviewedBy: reviewerId || null,
-                    reviewedAt: new Date().toISOString(),
-                },
-                proposal.sourceArticles,
-                'human_reviewed',
-                Math.max(Number(proposal.confidence || 0), 0.85)
-            );
-        }
         const now = new Date().toISOString();
-        await this.kysely
-            .updateTable('topic_knowledge_proposals')
-            .set({
-                status: 'approved',
-                reviewed_by: reviewerId || null,
-                reviewed_at: now,
-                updated_at: now,
-            })
-            .where('id', '=', Number(id))
-            .execute();
-        return { proposal: await this.getTopicKnowledgeProposal(id), topicKnowledge: updated };
+        return this.withTransaction(async () => {
+            let updated = await this.updateTopicKnowledge(proposal.topic, {
+                knowledge: mergedKnowledge,
+                sourceArticles: proposal.sourceArticles,
+                status: 'human_reviewed',
+                confidence: Math.max(Number(proposal.confidence || 0), 0.85),
+                editorId: reviewerId,
+            });
+            if (!updated) {
+                updated = await this.upsertTopicKnowledge(
+                    proposal.topic,
+                    {
+                        ...mergedKnowledge,
+                        reviewedBy: reviewerId || null,
+                        reviewedAt: now,
+                    },
+                    proposal.sourceArticles,
+                    'human_reviewed',
+                    Math.max(Number(proposal.confidence || 0), 0.85)
+                );
+            }
+            await this.kysely
+                .updateTable('topic_knowledge_proposals')
+                .set({
+                    status: 'approved',
+                    reviewed_by: reviewerId || null,
+                    reviewed_at: now,
+                    updated_at: now,
+                })
+                .where('id', '=', Number(id))
+                .execute();
+            return { proposal: await this.getTopicKnowledgeProposal(id), topicKnowledge: updated };
+        });
     }
 
     async rejectTopicKnowledgeProposal(id, reviewerId = null) {

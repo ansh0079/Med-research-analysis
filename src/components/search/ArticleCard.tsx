@@ -4,7 +4,7 @@ import { Button } from '@components/ui/Button';
 import { CollectionsPanel } from '@components/collaboration/CollectionsPanel';
 import { AnnotationPanel } from '@components/collaboration/AnnotationPanel';
 import { CitationExplorer } from '@components/search/CitationExplorer';
-import { getArticleLinkInfo } from '@services/articleLinks';
+import { getArticleLinkInfo, getArticleSourceBadgeInfo } from '@services/articleLinks';
 import api from '@services/api';
 import type { Article, ArticleSynopsisFields } from '@types';
 import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
@@ -211,6 +211,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
   const authors = article.authors?.slice(0, 3).map((a) => a.name).join(', ');
   const hasMoreAuthors = (article.authors?.length ?? 0) > 3;
   const { primaryUrl, sourceLabel } = getArticleLinkInfo(article);
+  const sourceBadge = getArticleSourceBadgeInfo(article);
   const impactPct = Math.min(100, Math.round((impact?.score ?? 0) * 100));
   const citations = article.pmcrefcount ?? article.citationCount;
   const qualitySignals = quality?.signals?.slice(0, 2) ?? [];
@@ -342,7 +343,9 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
               </span>
             )}
 
-            <span className="badge badge-source">{article._source}</span>
+            <span className={`badge border ${sourceBadge.className}`} title={`Source: ${sourceBadge.label}`}>
+              {sourceBadge.label}
+            </span>
 
             {article._retraction?.isRetracted && (
               <span className="badge badge-retracted">⚠ Retracted</span>

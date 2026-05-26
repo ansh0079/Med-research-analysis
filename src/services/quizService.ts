@@ -37,6 +37,7 @@ export async function generateQuiz(
   sourceArticles?: QuizArticle[];
   evidenceAudit?: EvidenceAuditSnapshot;
   claimJobKey?: string;
+  promptVariant?: string;
 }> {
   let sessionId: string | null = null;
   try {
@@ -76,5 +77,6 @@ export async function generateQuiz(
     sourceArticles: articles,
     evidenceAudit: ea,
     claimJobKey: data.claimJobKey as string | undefined,
+    promptVariant: data.promptVariant as string | undefined,
   };
 }

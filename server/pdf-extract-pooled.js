@@ -1,5 +1,6 @@
 const { Worker } = require('worker_threads');
 const path = require('path');
+const logger = require('./config/logger');
 
 const WORKER = path.join(__dirname, 'pdf-thread-worker.js');
 
@@ -13,7 +14,9 @@ function extractPdfInWorker(buffer) {
         const t = setTimeout(() => {
             try {
                 worker.terminate();
-            } catch { /* empty */ }
+            } catch (err) {
+                logger.debug({ err }, 'Failed to terminate timed-out PDF worker');
+            }
             reject(new Error('PDF extraction timed out'));
         }, 120000);
 
@@ -21,7 +24,9 @@ function extractPdfInWorker(buffer) {
             clearTimeout(t);
             try {
                 worker.terminate();
-            } catch { /* empty */ }
+            } catch (err) {
+                logger.debug({ err }, 'Failed to terminate completed PDF worker');
+            }
             if (msg && msg.ok) {
                 resolve({ text: msg.text, numpages: msg.numpages, info: msg.info });
             } else {
@@ -32,7 +37,9 @@ function extractPdfInWorker(buffer) {
             clearTimeout(t);
             try {
                 worker.terminate();
-            } catch { /* empty */ }
+            } catch (terminateErr) {
+                logger.debug({ err: terminateErr }, 'Failed to terminate errored PDF worker');
+            }
             reject(err);
         });
         worker.on('exit', (code) => {

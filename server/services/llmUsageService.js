@@ -1,12 +1,13 @@
 'use strict';
 
+const logger = require('../config/logger');
+
 /** Rough USD per 1M tokens (input/output blended estimate for dashboards). */
 const MODEL_COST_PER_MTOK = {
     'gemini-2.0-flash': { in: 0.1, out: 0.4 },
     'gemini-2.5-flash-lite': { in: 0.1, out: 0.4 },
     'gemini-2.5-flash': { in: 0.3, out: 2.5 },
-    'mistral-small-latest': { in: 0.2, out: 0.6 },
-    'mistral-large-latest': { in: 2.0, out: 6.0 },
+    'mistral-small-2603': { in: 0.15, out: 0.6 },
     default: { in: 0.25, out: 0.75 },
 };
 
@@ -27,8 +28,9 @@ function createLlmUsageLogger(db) {
         if (!db?.logLlmUsage) return;
         try {
             await db.logLlmUsage(entry);
-        } catch {
+        } catch (err) {
             // observability must not break primary flows
+            logger.debug({ err, operation: entry?.operation }, 'Failed to log LLM usage');
         }
     };
 }

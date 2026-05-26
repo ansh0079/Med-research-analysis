@@ -167,7 +167,7 @@ async function checkRetractionStatus(doi, pmid) {
         }
       }
     } catch (err) {
-      // Silently fall through
+      logger.debug({ err, pmid }, 'PubMed retraction lookup failed');
     }
   }
 
@@ -187,7 +187,7 @@ async function checkRetractionStatus(doi, pmid) {
         }
       }
     } catch (err) {
-      // Silently fall through
+      logger.debug({ err, doi }, 'CrossRef retraction lookup failed');
     }
   }
 
@@ -263,8 +263,8 @@ async function attachRetractionData(articles, { db, fetchImpl, bouquetUids } = {
                     await db.setArticleRetractionData(String(cacheKey), result);
                     // Apply to the in-flight article too, in case it's still being processed
                     if (result.isRetracted) a._retraction = result;
-                } catch {
-                    // never block on retraction check failure
+                } catch (err) {
+                    logger.debug({ err, articleUid: a.uid || a.pmid || a.doi }, 'Retraction check failed');
                 }
             })).catch((err) => { logger.warn({ err }, 'batchCheckRetractions map failed'); });
         }

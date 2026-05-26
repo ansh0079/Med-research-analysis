@@ -1,4 +1,6 @@
-function registerAlertRoutes(app, { db, requireJson, requireAuthJwt, rateLimit }) {
+const { runAlertDigests } = require('../services/digestService');
+
+function registerAlertRoutes(app, { db, serverConfig, fetch: fetchImpl, requireJson, requireAuthJwt, requireRole, rateLimit }) {
     app.get('/api/alerts', requireAuthJwt, async (req, res) => {
         try {
             const rows = await db.getUserSearchAlerts(req.user.id);
@@ -40,6 +42,17 @@ function registerAlertRoutes(app, { db, requireJson, requireAuthJwt, rateLimit }
     });
 
     // Email-safe unsubscribe — no auth required, but rate-limited to prevent token scanning
+    app.post('/api/admin/alerts/digest/run', requireAuthJwt, requireRole('admin'), rateLimit(2, 300), async (req, res) => {
+        try {
+            const appUrl = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
+            const result = await runAlertDigests(db, appUrl, serverConfig, fetchImpl);
+            res.json({ success: true, ...result });
+        } catch (error) {
+            req.log.error({ err: error }, 'Manual digest run error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
     app.get('/api/alerts/unsubscribe', rateLimit(10, 60), async (req, res) => {
         try {
             const { token } = req.query;

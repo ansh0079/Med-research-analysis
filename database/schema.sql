@@ -552,7 +552,7 @@ CREATE TABLE IF NOT EXISTS quiz_attempts (
     study_run_id INTEGER,
     outline_node_id TEXT,
     created_at TEXT DEFAULT (datetime('now'))
-, concept_hash TEXT, claim_key TEXT, reasoning_tags TEXT DEFAULT '[]', reasoning_note TEXT);
+, concept_hash TEXT, claim_key TEXT, reasoning_tags TEXT DEFAULT '[]', reasoning_note TEXT, prompt_variant TEXT);
 
 CREATE TABLE IF NOT EXISTS review_articles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -1048,6 +1048,8 @@ CREATE INDEX IF NOT EXISTS idx_analysis_cache_expires ON analysis_cache(expires_
 CREATE INDEX IF NOT EXISTS idx_analytics_created ON analytics(created_at);
 
 CREATE INDEX IF NOT EXISTS idx_analytics_type ON analytics(event_type);
+
+CREATE INDEX IF NOT EXISTS idx_analytics_event_created ON analytics(event_type, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_article_cache_expires ON article_cache(expires_at);
 

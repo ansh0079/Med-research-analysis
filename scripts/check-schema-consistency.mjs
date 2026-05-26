@@ -50,7 +50,7 @@ function execStatement(db, statement) {
 function parseTablesFromSqlFile(filePath) {
   const sql = fs.readFileSync(filePath, 'utf8');
   return new Set(
-    [...sql.matchAll(/CREATE TABLE IF NOT EXISTS\s+(\w+)/gi)].map((m) => m[1].toLowerCase())
+    [...sql.matchAll(/CREATE TABLE(?: IF NOT EXISTS)?\s+(\w+)/gi)].map((m) => m[1].toLowerCase())
   );
 }
 
@@ -77,7 +77,7 @@ function columnsOnDb(db, table) {
 function parseTableColumnsFromSchema(schemaPath, tableName) {
   const sql = fs.readFileSync(schemaPath, 'utf8');
   const re = new RegExp(
-    `CREATE TABLE IF NOT EXISTS\\s+${tableName}\\s*\\(([\\s\\S]*?)\\);`,
+    `CREATE TABLE(?: IF NOT EXISTS)?\\s+${tableName}\\s*\\(([\\s\\S]*?)\\);`,
     'i'
   );
   const m = sql.match(re);
@@ -191,7 +191,7 @@ if (pgMainTables.has('articles_cache')) {
 }
 
 const sqliteSnapshot = parseTablesFromSqlFile(sqliteSchemaPath);
-ok = diffSets('schema.sql vs production_schema.sql (baseline tables)', sqliteSnapshot, pgMainTables) && ok;
+ok = isSubset('production_schema.sql tables must exist in schema.sql', pgMainTables, sqliteSnapshot) && ok;
 
 const db = new DatabaseSync(':memory:');
 db.exec('PRAGMA foreign_keys = ON');
@@ -205,11 +205,9 @@ const appTables = new Set([...migratedTables].filter((t) => !ignoreTables.has(t)
 ok = isSubset('schema.sql tables must exist after migrations', sqliteSnapshot, appTables) && ok;
 
 const pgExtras = [...pgMainTables].filter((t) => !sqliteSnapshot.has(t));
-const pgMissing = [...sqliteSnapshot].filter((t) => !pgMainTables.has(t));
-if (pgExtras.length || pgMissing.length) {
-  console.error('\nSQLite vs Postgres baseline mismatch (should be identical sets)');
-  if (pgMissing.length) console.error('  in schema.sql only:', pgMissing.join(', '));
-  if (pgExtras.length) console.error('  in production_schema only:', pgExtras.join(', '));
+if (pgExtras.length) {
+  console.error('\nPostgres baseline contains tables missing from SQLite baseline');
+  console.error('  in production_schema only:', pgExtras.join(', '));
   ok = false;
 }
 

@@ -1,75 +1,79 @@
 // Jest Configuration
-// Unit and Integration Tests Only
-// E2E tests use Playwright separately
+// Backend unit/integration tests use Node. Frontend component/hook tests use jsdom.
+
+const tsTransform = {
+    '^.+\\.(ts|tsx)$': 'ts-jest',
+};
+
+const moduleNameMapper = {
+    '^@services/api$': '<rootDir>/tests/mocks/apiMock.ts',
+    '^@types$': '<rootDir>/src/types/index.ts',
+    '^@types/(.*)$': '<rootDir>/src/types/$1',
+    '^@services/(.*)$': '<rootDir>/src/services/$1',
+    '^@components/(.*)$': '<rootDir>/src/components/$1',
+    '^@hooks$': '<rootDir>/src/hooks/index.ts',
+    '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
+    '^@contexts/(.*)$': '<rootDir>/src/contexts/$1',
+    '^@pages/(.*)$': '<rootDir>/src/pages/$1',
+    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
+    '\\.(css|less|scss|sass)$': '<rootDir>/tests/mocks/styleMock.js',
+};
 
 module.exports = {
-    // Test environment
-    testEnvironment: 'node',
-    
-    // Test file patterns - only unit and integration tests
-    testMatch: [
-        '**/tests/unit/**/*.test.js',
-        '**/tests/integration/**/*.test.js'
+    projects: [
+        {
+            displayName: 'backend',
+            testEnvironment: 'node',
+            testMatch: [
+                '<rootDir>/tests/unit/**/*.test.js',
+                '<rootDir>/tests/integration/**/*.test.js',
+            ],
+            testPathIgnorePatterns: [
+                '/node_modules/',
+                '/tests/e2e/',
+                '/tests/load/',
+                '<rootDir>/.claude/',
+            ],
+            modulePathIgnorePatterns: ['<rootDir>/.claude/'],
+            collectCoverageFrom: [
+                'app.js',
+                'server.js',
+                'server/**/*.js',
+                'database/**/*.js',
+                'cache/**/*.js',
+                'config.js',
+                'scripts/**/*.{js,ts}',
+                '!**/node_modules/**',
+                '!**/tests/**',
+                '!**/*.test.js',
+                '!**/.claude/**',
+            ],
+            moduleFileExtensions: ['js', 'ts', 'tsx', 'json'],
+            setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
+            moduleDirectories: ['node_modules'],
+            transform: tsTransform,
+            clearMocks: true,
+            restoreMocks: true,
+            testTimeout: 10000,
+            detectOpenHandles: true,
+        },
+        {
+            displayName: 'frontend',
+            testEnvironment: 'jsdom',
+            testMatch: ['<rootDir>/src/**/*.test.{ts,tsx}'],
+            testPathIgnorePatterns: ['/node_modules/', '<rootDir>/.claude/'],
+            modulePathIgnorePatterns: ['<rootDir>/.claude/'],
+            moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
+            setupFilesAfterEnv: ['<rootDir>/tests/setup.frontend.ts'],
+            moduleDirectories: ['node_modules'],
+            moduleNameMapper,
+            transform: tsTransform,
+            clearMocks: true,
+            restoreMocks: true,
+            testTimeout: 10000,
+        },
     ],
-    
-    // Exclude E2E tests (run separately with Playwright)
-    testPathIgnorePatterns: [
-        '/node_modules/',
-        '/tests/e2e/',
-        '/tests/load/',
-        '<rootDir>/.claude/'
-    ],
-    
-    // Coverage configuration
-    collectCoverageFrom: [
-        'app.js',
-        'server.js',
-        'server/**/*.js',
-        'database/**/*.js',
-        'cache/**/*.js',
-        'config.js',
-        'scripts/**/*.{js,ts}',
-        '!**/node_modules/**',
-        '!**/tests/**',
-        '!**/*.test.js',
-        '!**/.claude/**'
-    ],
+    verbose: true,
     coverageDirectory: 'coverage',
     coverageReporters: ['text', 'lcov', 'html'],
-    
-    // Module file extensions
-    moduleFileExtensions: ['js', 'ts', 'tsx', 'json'],
-    
-    // Setup files
-    setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
-    
-    // Module paths for easier imports
-    moduleDirectories: ['node_modules'],
-    
-    // Transform configuration
-    transform: {
-        '^.+\\.(ts|tsx)$': 'ts-jest',
-    },
-    
-    // Clear mocks between tests
-    clearMocks: true,
-    
-    // Restore mocks after each test
-    restoreMocks: true,
-    
-    // Test timeout
-    testTimeout: 10000,
-    
-    // Verbose output
-    verbose: true,
-    
-    // Fail on console errors/warnings during tests
-    // Uncomment if you want stricter test behavior
-    // errorOnDeprecated: true,
-    
-    // Detect open handles (useful for catching async issues)
-    detectOpenHandles: true,
-    
-    // Force exit after all tests complete
-    forceExit: true
 };

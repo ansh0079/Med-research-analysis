@@ -133,6 +133,60 @@ function QuestionTypeBadge({ type }: { type?: QuestionType }) {
   );
 }
 
+function VisualExplanation({ visual }: { visual: QuizQuestion['visualExplanation'] }) {
+  if (!visual) return null;
+  const title = visual.title || (visual.kind === 'comparison_table' ? 'Comparison' : 'Reasoning pathway');
+  if (visual.kind === 'comparison_table' && visual.columns?.length && visual.rows?.length) {
+    return (
+      <div className="mt-3 rounded-xl bg-white/75 dark:bg-slate-900/50 border border-slate-200/80 dark:border-slate-600 overflow-hidden">
+        <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-700 flex items-center gap-2">
+          <i className="fas fa-table text-indigo-500 text-[10px]" />
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">{title}</p>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead className="bg-slate-50 dark:bg-slate-800/70">
+              <tr>
+                {visual.columns.map((col) => (
+                  <th key={col} className="px-3 py-2 text-left font-bold text-slate-600 dark:text-slate-300">{col}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {visual.rows.map((row, rowIndex) => (
+                <tr key={`${rowIndex}-${row.join('|')}`} className="border-t border-slate-100 dark:border-slate-700">
+                  {visual.columns?.map((_, cellIndex) => (
+                    <td key={cellIndex} className="px-3 py-2 text-slate-600 dark:text-slate-400 align-top">{row[cellIndex] || ''}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  }
+  if (!visual.steps?.length) return null;
+  return (
+    <div className="mt-3 rounded-xl bg-white/75 dark:bg-slate-900/50 border border-slate-200/80 dark:border-slate-600 px-3 py-2">
+      <p className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 mb-2 flex items-center gap-1.5">
+        <i className={`fas ${visual.kind === 'mechanism' ? 'fa-gears' : 'fa-diagram-project'} text-[10px]`} />
+        {title}
+      </p>
+      <ol className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+        {visual.steps.map((step, index) => (
+          <li key={`${index}-${step}`} className="flex gap-2">
+            <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[9px] font-black text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+              {index + 1}
+            </span>
+            <span>{step}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
 function OptionButton({
   opt, letter: _letter, isAnswered, isCorrectLetter, isSelected, onClick,
 }: {
@@ -251,6 +305,7 @@ export const QuizPage: React.FC = () => {
   const [topicMemory, setTopicMemory] = useState<UserTopicMemory | null>(null);
   const [reflectionKind, setReflectionKind] = useState<'CBD' | 'mini-CEX' | 'DOPS'>('CBD');
   const [reflectionSaveStatus, setReflectionSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [adaptiveNotice, setAdaptiveNotice] = useState<string | null>(null);
 
   const effectiveExplanationDepth = useMemo(() => {
     if (explainParam === 'foundation' || explainParam === 'exam_focus' || explainParam === 'mechanistic') return explainParam;
@@ -292,6 +347,7 @@ export const QuizPage: React.FC = () => {
       setQuiz(INITIAL_STATE);
       setSelected(null);
       setQuizEvidenceAudit(null);
+      setAdaptiveNotice(null);
     }
     try {
       const {
@@ -409,7 +465,30 @@ export const QuizPage: React.FC = () => {
         saveQuizAttempt(quiz.questions, quiz.answers);
       }
     } else {
-      setQuiz((prev) => ({ ...prev, currentIndex: nextIndex, showExplanation: false }));
+      let nextAdaptiveNotice: string | null = null;
+      setQuiz((prev) => {
+        if (!currentQ) return { ...prev, currentIndex: nextIndex, showExplanation: false };
+        const recentAnswered = prev.questions
+          .slice(0, prev.currentIndex + 1)
+          .filter((q) => prev.answers[q.id] !== undefined);
+        const lastThree = recentAnswered.slice(-3);
+        const lastTwo = recentAnswered.slice(-2);
+        const easyCorrectStreak = lastThree.length === 3
+          && lastThree.every((q) => q.difficulty === 'easy' && prev.answers[q.id]?.toLowerCase() === q.correctAnswer.toLowerCase());
+        const hardWrongStreak = lastTwo.length === 2
+          && lastTwo.every((q) => q.difficulty === 'hard' && prev.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase());
+        const desired = easyCorrectStreak ? 'hard' : hardWrongStreak ? 'medium' : null;
+        if (!desired) return { ...prev, currentIndex: nextIndex, showExplanation: false };
+        const swapIndex = prev.questions.findIndex((q, index) => index >= nextIndex && q.difficulty === desired);
+        if (swapIndex <= nextIndex) return { ...prev, currentIndex: nextIndex, showExplanation: false };
+        const questions = [...prev.questions];
+        [questions[nextIndex], questions[swapIndex]] = [questions[swapIndex], questions[nextIndex]];
+        nextAdaptiveNotice = desired === 'hard'
+          ? 'Difficulty escalated after three easy correct answers.'
+          : 'Difficulty eased after two hard misses.';
+        return { ...prev, questions, currentIndex: nextIndex, showExplanation: false };
+      });
+      setAdaptiveNotice(nextAdaptiveNotice);
       setSelected(null);
       setAnswerConfidence(3);
     }
@@ -433,6 +512,7 @@ export const QuizPage: React.FC = () => {
           outlineNodeId: q.outlineNodeId || (q.sourceIndices?.[0] ? `src-${q.sourceIndices[0]}` : null),
           outlineLabel: q.outlineLabel ?? undefined,
           claimKey: q.claimKey ?? undefined,
+          promptVariant: q.promptVariant ?? undefined,
           confidence: confidenceByQuestion[q.id] ?? answerConfidence,
         };
       });
@@ -919,6 +999,13 @@ export const QuizPage: React.FC = () => {
               </div>
             </div>
 
+            {adaptiveNotice && (
+              <div className="mb-4 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-3 text-xs font-semibold text-indigo-700 dark:border-indigo-800/50 dark:bg-indigo-950/30 dark:text-indigo-300">
+                <i className="fas fa-sliders mr-2" />
+                {adaptiveNotice}
+              </div>
+            )}
+
             {/* Question card */}
             <div className="rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 p-6 shadow-sm mb-4">
               <div className="flex items-center gap-2 mb-4 flex-wrap">
@@ -1025,6 +1112,8 @@ export const QuizPage: React.FC = () => {
                     <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{currentQ.explanationDeep}</p>
                   </div>
                 )}
+
+                <VisualExplanation visual={currentQ.visualExplanation ?? null} />
 
                 {currentQ.distractorRationale && isAnswered && (
                   <div className="mt-3 pt-3 border-t border-current/10">

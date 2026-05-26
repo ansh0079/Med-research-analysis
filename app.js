@@ -14,6 +14,7 @@ const pinoHttp = require('pino-http');
 const client = require('prom-client');
 const path = require('path');
 const crypto = require('crypto');
+const { execSync } = require('child_process');
 
 // Config must load env first so all subsequent requires see populated process.env
 const { loadEnv, serverConfig, clientConfig } = require('./config');
@@ -53,6 +54,7 @@ const { registerBillingRoutes } = require('./server/controllers/billingRoutes');
 const { collaborationRoutes } = require('./server/collaboration-routes');
 const { teamRoutes } = require('./server/controllers/teamRoutes');
 const setupSocketHandlers = require('./server/socket-handler');
+const { extendAiTimeout, DEFAULT_AI_TIMEOUT_MS } = require('./server/middleware/aiTimeout');
 
 const { appendRagContext } = require('./server/synthesis-rag');
 const { enqueueArticleForEmbedding, getWorkerStatus } = require('./server/saved-embedding-worker');
@@ -92,6 +94,41 @@ if (process.env.NODE_ENV === 'production') {
     }
 }
 
+function resolveReleaseSha() {
+    const configuredRelease =
+        process.env.SENTRY_RELEASE ||
+        process.env.RELEASE ||
+        process.env.GITHUB_SHA ||
+        process.env.VITE_GIT_SHA;
+
+    if (configuredRelease && configuredRelease !== 'unknown') return configuredRelease;
+
+    try {
+        return execSync('git rev-parse HEAD', {
+            cwd: __dirname,
+            encoding: 'utf8',
+            stdio: ['ignore', 'pipe', 'ignore'],
+        }).trim();
+    } catch (_error) {
+        return 'dev';
+    }
+}
+
+function shouldTraceRequest(samplingContext) {
+    const requestTarget =
+        samplingContext?.request?.url ||
+        samplingContext?.request?.path ||
+        samplingContext?.name ||
+        '';
+    const requestPath = String(requestTarget);
+
+    try {
+        return new URL(requestPath, 'http://localhost').pathname.startsWith('/api/ai/');
+    } catch (_error) {
+        return requestPath.startsWith('/api/ai/');
+    }
+}
+
 // ==========================================
 // Sentry (optional)
 // ==========================================
@@ -102,8 +139,17 @@ if (process.env.SENTRY_DSN) {
         Sentry.init({
             dsn: process.env.SENTRY_DSN,
             environment: process.env.NODE_ENV || 'development',
-            release: process.env.RELEASE || process.env.VITE_GIT_SHA || 'dev',
-            tracesSampleRate: 0.1,
+            release: resolveReleaseSha(),
+            integrations: [
+                Sentry.httpIntegration(),
+                Sentry.expressIntegration(),
+            ],
+            tracesSampler: (samplingContext) => {
+                if (shouldTraceRequest(samplingContext)) {
+                    return Number(process.env.SENTRY_AI_TRACES_SAMPLE_RATE || 0.2);
+                }
+                return Number(process.env.SENTRY_TRACES_SAMPLE_RATE || 0);
+            },
             beforeSend(event) {
                 if (event.exception?.values?.[0]?.value?.includes('Rate limit')) return null;
                 return event;
@@ -115,6 +161,30 @@ if (process.env.SENTRY_DSN) {
     }
 } else {
     logger.info('Sentry not configured. Add SENTRY_DSN to .env to enable.');
+}
+
+function traceAiRequest(req, res, next) {
+    if (!Sentry) return next();
+
+    return Sentry.startSpanManual(
+        {
+            name: `${req.method} ${req.path}`,
+            op: 'http.server',
+            forceTransaction: true,
+            attributes: {
+                'http.request.method': req.method,
+                'url.path': req.path,
+                'sentry.source': 'route',
+            },
+        },
+        (span, finish) => {
+            res.on('finish', () => {
+                span.setAttribute('http.response.status_code', res.statusCode);
+                finish();
+            });
+            return next();
+        }
+    );
 }
 
 logger.info({
@@ -261,8 +331,8 @@ app.use(async (req, res, next) => {
     res.setHeader('X-Session-Id', sessionId);
     req.sessionId = sessionId;
 
-    const existingSession = cache.getSession(sessionId);
-    if (!existingSession) { // existingSession is now a Promise
+    const existingSession = await cache.getSession(sessionId);
+    if (!existingSession) {
         await cache.setSession(sessionId, { createdAt: new Date().toISOString() });
         if (typeof db.createSession === 'function') {
             try { await db.createSession(sessionId); } catch (e) {
@@ -279,7 +349,9 @@ app.use(async (req, res, next) => {
 
 // Socket.IO broadcaster
 const server = http.createServer(app);
-server.timeout = 30000;
+const defaultServerTimeoutMs = Math.max(Number(process.env.SERVER_TIMEOUT_MS || DEFAULT_AI_TIMEOUT_MS), DEFAULT_AI_TIMEOUT_MS);
+server.timeout = defaultServerTimeoutMs;
+server.headersTimeout = defaultServerTimeoutMs + 5000;
 const io = new SocketIOServer(server, {
     cors: { origin: allowedOrigins, methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'] },
 });
@@ -317,6 +389,12 @@ const routeDeps = {
     enqueuePdfPreindex,
 };
 
+// Long-running AI routes (LLM synthesis, streaming, quiz generation)
+app.use('/api/ai', traceAiRequest);
+app.use('/api/ai', extendAiTimeout());
+app.use('/api/quiz', extendAiTimeout());
+app.use('/api/agent', extendAiTimeout());
+
 registerHealthRoutes(app, routeDeps);
 registerSearchRoutes(app, routeDeps);
 registerUserRoutes(app, { ...routeDeps, enqueueArticleForEmbedding, enqueuePdfPreindex });
@@ -344,8 +422,8 @@ registerBillingRoutes(app, routeDeps);
 app.use('/api/teams', teamRoutes);
 
 // Queue status (admin only)
-app.get('/api/admin/queues', requireAuthJwt, requireRole('admin'), (req, res) => {
-    res.json(getQueueStatus());
+app.get('/api/admin/queues', requireAuthJwt, requireRole('admin'), async (req, res) => {
+    res.json(await getQueueStatus());
 });
 
 // Example: Admin route for clearing cache, protected by RBAC
@@ -364,37 +442,14 @@ app.use((req, res) => {
 // Global error handler
 // ==========================================
 
-const SENSITIVE_BODY_KEYS = new Set([
-    'password', 'token', 'secret', 'key', 'authorization',
-    'api_key', 'apikey', 'credit_card', 'ssn', 'access_token', 'refresh_token',
-]);
-
-function scrubBody(body) {
-    if (!body || typeof body !== 'object') return body;
-    const out = {};
-    for (const [k, v] of Object.entries(body)) {
-        out[k] = SENSITIVE_BODY_KEYS.has(k.toLowerCase()) ? '[REDACTED]' : v;
-    }
-    return out;
+if (Sentry) {
+    Sentry.setupExpressErrorHandler(app);
 }
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, _next) => {
     const log = req.log || logger;
     log.error({ err, path: req.path, method: req.method }, 'Unhandled error');
-
-    if (Sentry) {
-        Sentry.captureException(err, {
-            tags: { requestId: req.id },
-            extra: {
-                path: req.path,
-                method: req.method,
-                query: req.query,
-                body: scrubBody(req.body),
-                requestId: req.id,
-            },
-        });
-    }
 
     const isDev = process.env.NODE_ENV === 'development';
 

@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const logger = require('../config/logger');
-const { createAiService, PINNED_MODELS, TEMPERATURE, AI_DISCLAIMER } = require('../services/aiService');
+const { createAiService, PINNED_MODELS, TEMPERATURE, MAX_OUTPUT_TOKENS, AI_DISCLAIMER } = require('../services/aiService');
 const { buildQuizPrompt, buildSeminalKnowledgeExtractionPrompt, buildAnalysisPrompt, buildPicoExtractionPrompt, buildJournalClubPrompt } = require('../prompts');
 const { batchCheckRetractions } = require('../services/qualityService');
 const { validateMedicalOutputCitations, validateSourceIndices } = require('../services/citationValidator');
@@ -20,6 +20,7 @@ const claimMapService = require('../services/claimMapService');
 const { teachingObjectsToQuizContext, persistPaperTeachingObject } = require('../services/teachingObjectService');
 const { limitBodySize } = require('../utils/validation');
 const { resolveProvider } = require('../utils/aiProvider');
+const { parseJsonArrayStrict } = require('../utils/parseJson');
 const { createLlmUsageLogger, buildUsageEntry } = require('../services/llmUsageService');
 
 /**
@@ -52,47 +53,22 @@ function registerAiRoutes(app, deps) {
         onLlmCall: async (meta) => logLlm(buildUsageEntry(meta)),
     });
 
+    // Content negotiation: non-streaming AI endpoints automatically delegate to SSE
+    // handlers when the client sends Accept: text/event-stream. This prevents
+    // timeouts on long analysis / synthesis without requiring a separate URL.
+    app.use((req, res, next) => {
+        if (req.method === 'POST' && req.headers.accept?.includes('text/event-stream')) {
+            if (req.path === '/api/ai/analyze') {
+                req.url = '/api/ai/analyze/stream';
+            } else if (req.path === '/api/ai/synthesize') {
+                req.url = '/api/ai/synthesize/stream';
+            }
+        }
+        next();
+    });
+
     function extractJsonArray(text) {
-        const cleaned = String(text || '')
-            .replace(/```json/gi, '```')
-            .replace(/```/g, '')
-            .trim();
-        const objectStart = cleaned.indexOf('{');
-        const objectEnd = cleaned.lastIndexOf('}');
-        if (objectStart !== -1 && objectEnd > objectStart) {
-            try {
-                const objectCandidate = cleaned
-                    .slice(objectStart, objectEnd + 1)
-                    .replace(/,\s*([}\]])/g, '$1');
-                const parsedObject = JSON.parse(objectCandidate);
-                if (Array.isArray(parsedObject.questions)) return parsedObject.questions;
-                if (Array.isArray(parsedObject.mcqs)) return parsedObject.mcqs;
-            } catch {
-                // Fall through to direct array extraction.
-            }
-        }
-        const start = cleaned.indexOf('[');
-        const end = cleaned.lastIndexOf(']');
-        if (start === -1 || end === -1 || end <= start) {
-            const err = new Error('AI response did not contain a JSON array');
-            err.status = 502;
-            throw err;
-        }
-        const candidate = cleaned
-            .slice(start, end + 1)
-            .replace(/,\s*([}\]])/g, '$1');
-        try {
-            const parsed = JSON.parse(candidate);
-            if (!Array.isArray(parsed)) {
-                const err = new Error('AI response JSON was not an array');
-                err.status = 502;
-                throw err;
-            }
-            return parsed;
-        } catch (parseErr) {
-            parseErr.status = 502;
-            throw parseErr;
-        }
+        return parseJsonArrayStrict(String(text || ''));
     }
 
     const mapColdStartMcq = (q, idx, prefix) => ({
@@ -106,12 +82,14 @@ function registerAiRoutes(app, deps) {
                     explanationDeep: q.explanationDeep || null,
                     whyOthersWrong: q.whyOthersWrong || null,
                     distractorRationale: q.distractorRationale || null,
+                    visualExplanation: normalizeVisualExplanation(q.visualExplanation),
                     difficulty: q.difficulty || 'medium',
                     sourceArticle: q.sourceArticle || null,
                     sourceReference: q.sourceReference || q.guidelineRef || null,
                     sourceIndices: q.sourceIndices || [],
                     outlineNodeId: q.outlineNodeId || null,
                     claimKey: q.claimKey || null,
+                    promptVariant: q.promptVariant || null,
                 });
 
     async function serveColdStartMCQs(database, topic, count) {
@@ -140,85 +118,6 @@ function registerAiRoutes(app, deps) {
         } catch {
             return null;
         }
-    }
-
-    function buildFallbackQuizQuestions(topic, topicKnowledgeRow, articles, count, difficulty) {
-        const knowledge = topicKnowledgeRow?.knowledge || {};
-        const teachingPoints = Array.isArray(knowledge.teachingPoints)
-            ? knowledge.teachingPoints
-            : Array.isArray(knowledge.coreTeachingPoints) ? knowledge.coreTeachingPoints : [];
-        const hooks = Array.isArray(knowledge.caseGenerationHooks) ? knowledge.caseGenerationHooks : [];
-        const angles = Array.isArray(knowledge.mcqAngles) ? knowledge.mcqAngles : [];
-        const sourceTitle = (index) => articles?.[Math.max(0, Number(index || 1) - 1)]?.title || null;
-        const templates = [
-            {
-                questionType: 'clinical_application',
-                question: `A patient with suspected ${topic} has worsening hypoxemia and bilateral infiltrates after initial stabilization. Which next step best reflects the core evidence base for this topic?`,
-                options: [
-                    'A: Use evidence-grounded supportive management matched to syndrome severity',
-                    'B: Ignore severity classification and wait for spontaneous recovery',
-                    'C: Use a single unverified biomarker as the main treatment guide',
-                    'D: Treat the output as patient-specific medical advice without clinician review',
-                ],
-                correctAnswer: 'A',
-                explanation: 'The stored topic knowledge emphasizes syndrome recognition, severity-appropriate support, and verification against primary sources and guidelines.',
-                whyOthersWrong: 'B ignores severity-based management. C overstates unverified biomarkers. D violates the research-support-only safety framing.',
-            },
-            {
-                questionType: 'guideline',
-                question: `Which statement is most consistent with the stored guideline memory for ${topic}?`,
-                options: [
-                    'A: Apply recommendations only after matching population, severity, and cautions',
-                    'B: Use every guideline recommendation universally without context',
-                    'C: Prefer retracted or preprint evidence over guidelines',
-                    'D: Avoid checking the original source when a guideline is cited',
-                ],
-                correctAnswer: 'A',
-                explanation: 'Guideline recommendations need population matching and awareness of cautions, especially in critical care contexts.',
-                whyOthersWrong: 'B removes clinical context. C reverses evidence hierarchy. D undermines source provenance.',
-            },
-            {
-                questionType: 'pitfall',
-                question: `What is the most important pitfall when using an AI-generated ${topic} learning brief?`,
-                options: [
-                    'A: Assuming it replaces primary-source verification and clinician judgement',
-                    'B: Checking source indices before trusting a claim',
-                    'C: Comparing the case population with the study population',
-                    'D: Looking for uncertainty and limitations',
-                ],
-                correctAnswer: 'A',
-                explanation: 'The app is for research and education support; high-stakes clinical use requires qualified review and source verification.',
-                whyOthersWrong: 'B, C, and D are all desirable verification behaviours.',
-            },
-        ];
-        const generated = teachingPoints.slice(0, Math.max(0, count - templates.length)).map((point, idx) => {
-            const sourceIndices = Array.isArray(point.sourceIndices) ? point.sourceIndices : [];
-            return {
-                questionType: angles[idx] ? 'clinical_application' : 'recall',
-                question: `${hooks[idx] || `In a learner case about ${topic}`}, which principle is best supported by the stored evidence map?`,
-                options: [
-                    `A: ${String(point.claim || 'Use the source-grounded teaching point.').slice(0, 180)}`,
-                    'B: Disregard syndrome severity and source applicability',
-                    'C: Prefer unsupported intervention claims over cited evidence',
-                    'D: Apply the conclusion without checking the original sources',
-                ],
-                correctAnswer: 'A',
-                explanation: `This follows the stored teaching point for ${topic}${sourceIndices.length ? `, supported by source index ${sourceIndices.join(', ')}` : ''}.`,
-                whyOthersWrong: 'B, C, and D each remove the evidence-matching and source-verification steps required for safe learning.',
-                sourceIndices,
-                sourceArticle: sourceIndices.length ? sourceTitle(sourceIndices[0]) : null,
-            };
-        });
-        return [...generated, ...templates].slice(0, count).map((q, idx) => ({
-            id: `fallback_quiz_${Date.now()}_${idx}`,
-            type: 'multiple_choice',
-            difficulty: difficulty !== 'mixed' ? difficulty : 'medium',
-            topic,
-            sourceReference: null,
-            sourceIndices: [],
-            outlineNodeId: q.sourceIndices?.[0] ? `src-${q.sourceIndices[0]}` : (idx < teachingPoints.length ? `tp-${idx + 1}` : null),
-            ...q,
-        }));
     }
 
     function buildStudyRunOutline(topicKnowledge) {
@@ -309,6 +208,35 @@ function registerAiRoutes(app, deps) {
         if (explicit && validKeys.has(explicit)) return explicit;
         const fb = orderedClaims[index % Math.max(1, orderedClaims.length)];
         return fb?.claimKey || null;
+    }
+
+    function assignQuizPromptVariant(userId, topic) {
+        const seed = `${userId || 'anonymous'}|${String(topic || '').toLowerCase().trim()}|quiz_prompt_v1`;
+        const bucket = parseInt(crypto.createHash('sha1').update(seed).digest('hex').slice(0, 8), 16) % 2;
+        return bucket === 0 ? 'control' : 'clinical_discriminator';
+    }
+
+    function normalizeVisualExplanation(value) {
+        if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
+        const kind = String(value.kind || '').trim();
+        if (!['flowchart', 'comparison_table', 'mechanism'].includes(kind)) return null;
+        const title = String(value.title || '').trim().slice(0, 120);
+        const steps = Array.isArray(value.steps)
+            ? value.steps.map((step) => String(step || '').trim()).filter(Boolean).slice(0, 6)
+            : [];
+        const columns = Array.isArray(value.columns)
+            ? value.columns.map((col) => String(col || '').trim()).filter(Boolean).slice(0, 4)
+            : [];
+        const rows = Array.isArray(value.rows)
+            ? value.rows
+                .filter((row) => Array.isArray(row))
+                .map((row) => row.map((cell) => String(cell || '').trim()).slice(0, columns.length || 4))
+                .filter((row) => row.length > 0)
+                .slice(0, 6)
+            : [];
+        if (kind === 'comparison_table' && (!columns.length || !rows.length)) return null;
+        if (kind !== 'comparison_table' && !steps.length) return null;
+        return { kind, title: title || (kind === 'comparison_table' ? 'Comparison' : 'Reasoning pathway'), steps, columns, rows };
     }
 
     function selectAdaptiveClaimAnchors({ claimMastery = [], groundedClaims = [], count = 5 } = {}) {
@@ -571,10 +499,19 @@ function registerAiRoutes(app, deps) {
                 ],
             });
         }
+        if (serverConfig.keys.mistral) {
+            providers.push({
+                id: 'mistral',
+                name: 'Mistral AI',
+                models: [
+                    { id: PINNED_MODELS.mistral, name: 'Mistral Small 4' },
+                ],
+            });
+        }
 
         res.json({
             providers,
-            default: 'gemini',
+            default: serverConfig.keys.gemini ? 'gemini' : (serverConfig.keys.mistral ? 'mistral' : null),
         });
     });
 
@@ -824,6 +761,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         // Community signals: articles with high real-world engagement
         const communityTopPicks = await db.getGlobalEngagedArticles?.(db.normalizeTopic(cleanTopic), 3).catch((err) => { logger.warn({ err }, 'operation failed'); return []; }) || [];
         const teachingObjectContext = teachingObjectsToQuizContext(teachingObjects);
+        const promptVariant = assignQuizPromptVariant(req.user?.id, cleanTopic);
 
         const prompt = buildQuizPrompt(
             cleanTopic,
@@ -839,6 +777,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                 knownMisconceptions,
                 claimAnchors: claimAnchors || undefined,
                 teachingObjectContext,
+                promptVariant,
             },
             guidelines,
             userContext
@@ -876,6 +815,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                                 questions: coldStart,
                                 topic: cleanTopic,
                                 provider: 'cold_start_cache',
+                                model: null,
                                 disclaimer: AI_DISCLAIMER,
                                 warning: 'Both AI providers unavailable; serving pre-generated questions.',
                             });
@@ -890,6 +830,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                             questions: coldStart,
                             topic: cleanTopic,
                             provider: 'cold_start_cache',
+                            model: null,
                             disclaimer: AI_DISCLAIMER,
                             warning: 'AI provider unavailable; serving pre-generated questions.',
                         });
@@ -906,34 +847,12 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                 if (claimAnchors) {
                     return res.status(502).json({ error: 'AI returned malformed claim-anchored quiz data. Please retry.' });
                 }
-                if (effectiveTopicKnowledge) {
-                    const questions = buildFallbackQuizQuestions(cleanTopic, effectiveTopicKnowledge, articles, effectiveQuizCount, difficulty)
-                        .map((q, idx) => ({ ...q, outlineNodeId: normalizeOutlineNodeId(q.outlineNodeId, new Set(outlineNodes.map((n) => n.id)), targetNodes, q.sourceIndices, idx) }));
-                    return res.json({
-                        questions,
-                        topic: cleanTopic,
-                        provider: `${usedProvider}-fallback`,
-                        disclaimer: AI_DISCLAIMER,
-                        warning: 'AI returned malformed quiz data; generated source-grounded fallback questions from topic knowledge.',
-                    });
-                }
                 return res.status(502).json({ error: 'AI returned malformed quiz data. Please retry.' });
             }
 
             if (!Array.isArray(raw)) {
                 if (claimAnchors) {
                     return res.status(502).json({ error: 'AI returned non-array claim-anchored quiz data. Please retry.' });
-                }
-                if (effectiveTopicKnowledge) {
-                    const questions = buildFallbackQuizQuestions(cleanTopic, effectiveTopicKnowledge, articles, effectiveQuizCount, difficulty)
-                        .map((q, idx) => ({ ...q, outlineNodeId: normalizeOutlineNodeId(q.outlineNodeId, new Set(outlineNodes.map((n) => n.id)), targetNodes, q.sourceIndices, idx) }));
-                    return res.json({
-                        questions,
-                        topic: cleanTopic,
-                        provider: `${usedProvider}-fallback`,
-                        disclaimer: AI_DISCLAIMER,
-                        warning: 'AI returned non-array quiz data; generated source-grounded fallback questions from topic knowledge.',
-                    });
                 }
                 return res.status(502).json({ error: 'AI returned non-array quiz data. Please retry.' });
             }
@@ -967,6 +886,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                     explanationDeep: q.explanationDeep ? String(q.explanationDeep) : null,
                     whyOthersWrong: q.whyOthersWrong ? String(q.whyOthersWrong) : null,
                     distractorRationale,
+                    visualExplanation: normalizeVisualExplanation(q.visualExplanation),
                     difficulty: difficulty !== 'mixed' ? difficulty : (['easy', 'medium', 'hard'].includes(q.difficulty) ? q.difficulty : 'medium'),
                     sourceArticle: q.sourceArticle || null,
                     sourceReference: q.sourceReference || null,
@@ -974,6 +894,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                     outlineNodeId: normalizeOutlineNodeId(q.outlineNodeId, validOutlineNodeIds, targetNodes, sourceIndices, idx),
                     topic: cleanTopic,
                     claimKey: ck,
+                    promptVariant,
                     outlineLabel: cmeta ? String(cmeta.claimText || '').slice(0, 200) : null,
                 };
             });
@@ -985,10 +906,12 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                 questions,
                 topic: cleanTopic,
                 provider: usedProvider,
+                model: quizModel,
                 disclaimer: AI_DISCLAIMER,
                 studyRunId: studyRun?.id || null,
                 targetNodes,
                 claimJobKey: resolvedClaimJobKey || undefined,
+                promptVariant,
                 claimAnchorMode,
                 adaptiveClaimCount: claimAnchorMode === 'adaptive_teaching_object' ? claimAnchors.length : undefined,
                 evidenceAudit: claimSourceJob ? {
@@ -1053,11 +976,12 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         const communityTopPicks = await db.getGlobalEngagedArticles?.(db.normalizeTopic(topic.trim()), 3).catch((err) => { logger.warn({ err }, 'operation failed'); return []; }) || [];
         const teachingObjects = await db.listTeachingObjectsForTopic(topic.trim(), { limit: 8 }).catch((err) => { logger.warn({ err }, 'operation failed'); return []; });
         const teachingObjectContext = teachingObjectsToQuizContext(teachingObjects);
+        const promptVariant = assignQuizPromptVariant(req.user?.id, topic.trim());
 
         const prompt = buildQuizPrompt(
             topic.trim(),
             articles.slice(0, 5),
-            { count: safeCount, difficulty, communityTopPicks, teachingObjectContext },
+            { count: safeCount, difficulty, communityTopPicks, teachingObjectContext, promptVariant },
             guidelines,
             userContext
         );
@@ -1122,16 +1046,18 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                     explanationDeep: q.explanationDeep ? String(q.explanationDeep) : null,
                     whyOthersWrong: q.whyOthersWrong ? String(q.whyOthersWrong) : null,
                     distractorRationale,
+                    visualExplanation: normalizeVisualExplanation(q.visualExplanation),
                     difficulty: difficulty !== 'mixed' ? difficulty : (['easy', 'medium', 'hard'].includes(q.difficulty) ? q.difficulty : 'medium'),
                     sourceArticle: q.sourceArticle || null,
                     sourceReference: q.sourceReference || null,
                     sourceIndices,
                     outlineNodeId: null,
                     topic: topic.trim(),
+                    promptVariant,
                 };
             });
 
-            res.json({ questions, topic: topic.trim(), provider: usedProvider, disclaimer: AI_DISCLAIMER });
+            res.json({ questions, topic: topic.trim(), provider: usedProvider, model: quizModel, promptVariant, disclaimer: AI_DISCLAIMER });
         } catch (error) {
             req.log.error({ err: error }, 'Quiz-from-evidence error');
             res.status(500).json({ error: 'Internal Server Error' });
@@ -1212,7 +1138,9 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             .sort((a, b) => (b._impact?.score ?? 0) - (a._impact?.score ?? 0))
             .slice(0, 15);
 
-        if (asyncJob === true) {
+        // Default to async background job to avoid request timeouts on long synthesis.
+        // Clients can pass async: false to opt into the legacy inline (blocking) path.
+        if (asyncJob !== false) {
             try {
                 const out = await getOrEnqueueFullSynthesis({
                     db,
@@ -1287,7 +1215,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                 return res.status(503).json({ error: 'No AI provider configured' });
             }
             let rawText;
-            let used = selectedProvider;
+            const used = selectedProvider;
             if (selectedProvider === 'gemini') {
                 rawText = await ai.callGemini(prompt, selectedModel, { temperature: 0.25 });
             } else {
@@ -1434,9 +1362,9 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             const prompt = buildPicoExtractionPrompt(article);
             let rawText;
             if (selectedProvider === 'gemini') {
-                rawText = await ai.callGemini(prompt, selectedModel, { temperature: TEMPERATURE.synthesis });
+                rawText = await ai.callGemini(prompt, selectedModel, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis });
             } else {
-                rawText = await ai.callMistralAI(prompt, selectedModel, { temperature: TEMPERATURE.synthesis });
+                rawText = await ai.callMistralAI(prompt, selectedModel, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis });
             }
 
             let extraction;
@@ -1496,12 +1424,12 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
 
             let rawText = '';
             if (selectedProvider === 'gemini') {
-                for await (const chunk of ai.callGeminiStream(context.prompt, selectedModel, { temperature: TEMPERATURE.synthesis })) {
+                for await (const chunk of ai.callGeminiStream(context.prompt, selectedModel, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis })) {
                     rawText += chunk;
                     sendSSE(res, 'chunk', { text: chunk });
                 }
             } else {
-                for await (const chunk of ai.callMistralStream(context.prompt, selectedModel, { temperature: TEMPERATURE.synthesis })) {
+                for await (const chunk of ai.callMistralStream(context.prompt, selectedModel, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis })) {
                     rawText += chunk;
                     sendSSE(res, 'chunk', { text: chunk });
                 }

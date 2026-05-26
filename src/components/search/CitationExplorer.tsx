@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { Suspense, lazy, useState, useEffect, useMemo } from 'react';
 import api from '@services/api';
 import { Button } from '@components/ui/Button';
 import type { Article, CitationRelation } from '@types';
@@ -38,6 +38,10 @@ const paperUrl = (article: Article) =>
     ? `https://doi.org/${article.doi}`
     : article.fullTextUrl || `https://www.semanticscholar.org/paper/${article.uid}`;
 
+const LazyCitationD3Graph = lazy(() =>
+  import('./CitationD3Graph').then((mod) => ({ default: mod.CitationD3Graph }))
+);
+
 export const CitationExplorer: React.FC<CitationExplorerProps> = ({ article, onClose }) => {
   const [tab, setTab] = useState<Tab>('graph');
   const [citations, setCitations] = useState<Article[]>([]);
@@ -60,7 +64,7 @@ export const CitationExplorer: React.FC<CitationExplorerProps> = ({ article, onC
       try {
         setLoading(true);
         setError('');
-        const data = await api.getCitations(semanticId);
+        const data = await api.getCitations(semanticId, { limit: 250 });
         if (!cancelled) {
           setCitations(data.citations);
           setReferences(data.references);
@@ -78,6 +82,7 @@ export const CitationExplorer: React.FC<CitationExplorerProps> = ({ article, onC
   const graph = useMemo(() => {
     const width = 720;
     const height = 420;
+    const useLargeGraph = citations.length + references.length + 1 > 200;
     const center: GraphNode = {
       id: article.uid,
       article,
@@ -86,7 +91,10 @@ export const CitationExplorer: React.FC<CitationExplorerProps> = ({ article, onC
       y: height / 2,
     };
 
-    const refs = references.slice(0, 18).map((ref, index, arr): GraphNode => ({
+    const graphReferences = useLargeGraph ? references : references.slice(0, 18);
+    const graphCitations = useLargeGraph ? citations : citations.slice(0, 18);
+
+    const refs = graphReferences.map((ref, index, arr): GraphNode => ({
       id: ref.uid,
       article: ref,
       kind: 'reference',
@@ -94,7 +102,7 @@ export const CitationExplorer: React.FC<CitationExplorerProps> = ({ article, onC
       y: 50 + (index * (height - 100)) / Math.max(1, arr.length - 1),
     }));
 
-    const cits = citations.slice(0, 18).map((citation, index, arr): GraphNode => ({
+    const cits = graphCitations.map((citation, index, arr): GraphNode => ({
       id: citation.uid,
       article: citation,
       kind: 'citation',
@@ -174,7 +182,7 @@ export const CitationExplorer: React.FC<CitationExplorerProps> = ({ article, onC
                 try {
                   setLoading(true);
                   setError('');
-                  const data = await api.getCitations(semanticId);
+                  const data = await api.getCitations(semanticId, { limit: 250 });
                   if (!cancelled) {
                     setCitations(data.citations);
                     setReferences(data.references);
@@ -200,7 +208,18 @@ export const CitationExplorer: React.FC<CitationExplorerProps> = ({ article, onC
             </div>
 
             <div className="rounded-2xl border border-slate-100 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/40 overflow-hidden">
-              <svg viewBox={`0 0 ${graph.width} ${graph.height}`} className="h-[360px] w-full bg-white dark:bg-slate-900">
+              {graph.nodes.length > 200 ? (
+                <Suspense fallback={<div className="flex h-[360px] items-center justify-center text-sm text-slate-400">Loading large graph...</div>}>
+                  <LazyCitationD3Graph
+                    article={article}
+                    citations={citations}
+                    references={references}
+                    relations={relations}
+                    onSelect={setSelectedId}
+                  />
+                </Suspense>
+              ) : (
+              <svg viewBox={`0 0 ${graph.width} ${graph.height}`} className="h-[360px] w-full bg-white dark:bg-slate-900" role="img" aria-label="Citation network graph">
                 <defs>
                   <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
                     <path d="M0,0 L0,6 L7,3 z" fill="#94a3b8" />
@@ -246,6 +265,7 @@ export const CitationExplorer: React.FC<CitationExplorerProps> = ({ article, onC
                   );
                 })}
               </svg>
+              )}
             </div>
 
             <div className="rounded-2xl border border-slate-100 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">

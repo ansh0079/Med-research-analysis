@@ -871,7 +871,7 @@ export const KnowledgeReviewPage: React.FC = () => {
     } finally {
       setClaimsLoading(false);
     }
-  }, [selected?.topic]);
+  }, [selected]);
 
   React.useEffect(() => {
     if (activeTab === 'claims' && selected) {

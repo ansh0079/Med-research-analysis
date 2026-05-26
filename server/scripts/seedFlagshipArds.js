@@ -359,6 +359,6 @@ async function main() {
 
 main().catch(async (err) => {
     console.error('ARDS flagship seed failed:', err);
-    try { await db.close(); } catch { /* ignore */ }
+    try { await db.close(); } catch (closeErr) { void closeErr; }
     process.exit(1);
 });

@@ -335,8 +335,8 @@ export function initLogRocket() {
             if (body.password) body.password = '<sanitized>';
             if (body.email) body.email = '<sanitized>';
             request.body = JSON.stringify(body);
-          } catch {
-            // Not JSON, leave as-is
+          } catch (err) {
+            void err;
           }
         }
         return request;

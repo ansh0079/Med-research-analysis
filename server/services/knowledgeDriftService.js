@@ -41,8 +41,8 @@ function collectKnownUidSet({ userRow, topicKnowledge }) {
             for (const u of arr) {
                 if (u) out.add(String(u));
             }
-        } catch {
-            /* ignore */
+        } catch (err) {
+            logger.debug({ err }, 'knowledgeDrift: failed to parse known article UID list');
         }
     }
     for (const a of topicKnowledge?.sourceArticles || []) {
@@ -74,7 +74,8 @@ In ≤3 short sentences, explain why this may matter for practice and what a cli
                 : await ai.callMistralAI(prompt, PINNED_MODELS.mistral, { temperature: TEMPERATURE.synopsis });
         const t = String(raw || '').trim();
         return t.length > 40 ? t.slice(0, 2000) : null;
-    } catch {
+    } catch (err) {
+        logger?.debug?.({ err, displayTopic }, 'knowledgeDrift: AI summary generation failed');
         return null;
     }
 }

@@ -7,14 +7,23 @@ if (process.env.REDIS_URL) {
     try {
         const { RedisStore } = require('rate-limit-redis');
         const Redis = require('ioredis');
-        const redisClient = new Redis(process.env.REDIS_URL);
+        const redisClient = new Redis(process.env.REDIS_URL, {
+            maxRetriesPerRequest: 2,
+            enableReadyCheck: true,
+        });
+        redisClient.on('error', (err) => {
+            logger.warn({ err }, 'Redis rate-limit store error');
+        });
         rateLimitStore = new RedisStore({
+            prefix: 'medresearch:ratelimit:',
             sendCommand: (...args) => redisClient.call(...args),
         });
         logger.info('Redis-backed rate limiting enabled');
     } catch (error) {
         logger.warn({ err: error }, 'Redis rate-limit store unavailable, falling back to memory store');
     }
+} else if (process.env.NODE_ENV === 'production') {
+    logger.warn('REDIS_URL is not set; rate limits are per-process and will not be shared across instances');
 }
 
 /**
@@ -67,7 +76,9 @@ function rateLimit(maxRequests, windowSeconds) {
  * @param {number} windowSeconds - Window size in seconds
  */
 function userRateLimit(maxRequests, windowSeconds) {
-    const ipFallback = rateLimit(maxRequests, windowSeconds);
+    if (process.env.NODE_ENV === 'test') {
+        return rateLimit(maxRequests, windowSeconds);
+    }
 
     return createExpressRateLimit({
         windowMs: windowSeconds * 1000,
@@ -80,7 +91,6 @@ function userRateLimit(maxRequests, windowSeconds) {
             const uid = req.user?.id || req.user?.sub;
             return uid ? `user:${uid}` : `ip:${ipKeyGenerator(req.ip)}`;
         },
-        skip: () => process.env.NODE_ENV === 'test',
         handler: (req, res) => {
             res.status(429).json({
                 error: 'AI rate limit exceeded — please wait before making another request',

@@ -1,0 +1,41 @@
+name: PR Guardrails
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  guardrails:
+    name: Test, Typecheck, Lint, Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret
+          ADMIN_TOKEN: test-admin-token
+
+      - name: Run TypeScript
+        run: npx tsc --noEmit
+
+      - name: Run ESLint
+        run: npx eslint .
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high

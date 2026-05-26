@@ -784,6 +784,13 @@ export interface QuizQuestion {
   whyOthersWrong?: string;
   /** Per-option wrong-answer rationale (keys A–D). */
   distractorRationale?: Record<string, string> | null;
+  visualExplanation?: {
+    kind: 'flowchart' | 'comparison_table' | 'mechanism';
+    title: string;
+    steps?: string[];
+    columns?: string[];
+    rows?: string[][];
+  } | null;
   difficulty: 'easy' | 'medium' | 'hard';
   sourceArticle?: string;
   sourceReference?: string;
@@ -792,6 +799,7 @@ export interface QuizQuestion {
   /** Anchors quiz to a row from ai_generation_claims (provenance mode). */
   claimKey?: string | null;
   outlineLabel?: string | null;
+  promptVariant?: string | null;
   topic?: string;
 }
 
@@ -1135,6 +1143,7 @@ export interface QuizAttempt {
   studyRunId?: number;
   outlineNodeId?: string | null;
   claimKey?: string | null;
+  promptVariant?: string | null;
   createdAt: string;
 }
 
@@ -1156,6 +1165,7 @@ export interface QuizAttemptSubmission {
     outlineNodeId?: string | null;
     outlineLabel?: string | null;
     claimKey?: string | null;
+    promptVariant?: string | null;
   }>;
 }
 

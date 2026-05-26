@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const { sendVerificationEmail, sendPasswordResetEmail } = require('../services/emailService');
 const logger = require('../config/logger');
 const db = require('../../database');
+const authSecurityStore = require('../services/authSecurityStore');
 const { hasFeature, resolvePlan } = require('../config/entitlements');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'change-this-in-production';
@@ -11,6 +12,7 @@ if (process.env.NODE_ENV === 'production' && JWT_SECRET === 'change-this-in-prod
     throw new Error('FATAL: JWT_SECRET must be set in production');
 }
 const COOKIE_NAME = 'med_auth_token';
+const OAUTH_STATE_COOKIE = 'med_oauth_state';
 const COOKIE_OPTIONS = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -18,99 +20,72 @@ const COOKIE_OPTIONS = {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 };
 
-// In-memory token denylist with periodic cleanup
-const revokedTokens = new Map();
-const REVOCATION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+function setSessionCookie(res, user) {
+    const emailVerified = Boolean(user.email_verified ?? user.emailVerified);
+    const token = jwt.sign(
+        { id: user.id, name: user.name, email: user.email, role: user.role || 'user', emailVerified },
+        JWT_SECRET,
+        { expiresIn: '7d' }
+    );
+    res.cookie(COOKIE_NAME, token, COOKIE_OPTIONS);
+}
 
-// Per-email login brute-force tracking
-const loginAttempts = new Map(); // email -> { count, windowStart }
-const LOGIN_MAX_ATTEMPTS = 10;
-const LOGIN_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
-const LOGIN_LOCKOUT_MS = 15 * 60 * 1000;
+function getOAuthBaseUrl(req) {
+    return process.env.API_URL || `${req.protocol}://${req.get('host')}`;
+}
 
-// Per-email forgot-password rate limiting (separate, lower limit)
-const resetAttempts = new Map(); // email -> { count, windowStart }
-const RESET_MAX_ATTEMPTS = 5;
-const RESET_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+function getOAuthReturnUrl() {
+    return process.env.OAUTH_SUCCESS_REDIRECT || process.env.CLIENT_URL || process.env.APP_URL || '/';
+}
 
-function recordResetAttempt(email) {
-    const now = Date.now();
-    const key = email.toLowerCase();
-    const entry = resetAttempts.get(key) || { count: 0, windowStart: now };
-    if (now - entry.windowStart > RESET_WINDOW_MS) {
-        resetAttempts.set(key, { count: 1, windowStart: now });
-    } else {
-        resetAttempts.set(key, { count: entry.count + 1, windowStart: entry.windowStart });
+function oauthConfigured(provider) {
+    if (provider === 'google') return Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
+    if (provider === 'orcid') return Boolean(process.env.ORCID_CLIENT_ID && process.env.ORCID_CLIENT_SECRET);
+    return false;
+}
+
+async function upsertOAuthUser(database, profile) {
+    const email = String(profile.email || '').toLowerCase().trim();
+    if (!email) {
+        const err = new Error('OAuth provider did not return a verified email address');
+        err.status = 400;
+        throw err;
     }
-}
 
-function isResetLimited(email) {
-    const now = Date.now();
-    const key = email.toLowerCase();
-    const entry = resetAttempts.get(key);
-    if (!entry) return false;
-    if (now - entry.windowStart > RESET_WINDOW_MS) {
-        resetAttempts.delete(key);
-        return false;
+    const existing = await database.getUserByEmail(email);
+    if (existing) {
+        await database.updateUser(existing.id, {
+            name: existing.name || profile.name || email,
+            email_verified: profile.emailVerified ? 1 : existing.email_verified,
+            last_login: new Date().toISOString(),
+        });
+        return { ...existing, name: existing.name || profile.name || email, email_verified: profile.emailVerified ? 1 : existing.email_verified };
     }
-    return entry.count >= RESET_MAX_ATTEMPTS;
+
+    const hashedPassword = await bcrypt.hash(crypto.randomBytes(32).toString('hex'), 12);
+    const user = {
+        id: crypto.randomUUID(),
+        name: profile.name || email,
+        email,
+        password: hashedPassword,
+        role: 'user',
+        preferences: JSON.stringify({ oauthProvider: profile.provider, oauthSubject: profile.providerId || null }),
+        email_verified: profile.emailVerified ? 1 : 0,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        last_login: new Date().toISOString(),
+    };
+    await database.createUser(user);
+    return user;
 }
 
-function recordFailedLogin(email) {
-    const now = Date.now();
-    const key = email.toLowerCase();
-    const entry = loginAttempts.get(key) || { count: 0, windowStart: now };
-    if (now - entry.windowStart > LOGIN_WINDOW_MS) {
-        loginAttempts.set(key, { count: 1, windowStart: now });
-    } else {
-        loginAttempts.set(key, { count: entry.count + 1, windowStart: entry.windowStart });
-    }
-}
-
-function isLoginLocked(email) {
-    const now = Date.now();
-    const key = email.toLowerCase();
-    const entry = loginAttempts.get(key);
-    if (!entry) return false;
-    if (now - entry.windowStart > LOGIN_LOCKOUT_MS) {
-        loginAttempts.delete(key);
-        return false;
-    }
-    return entry.count >= LOGIN_MAX_ATTEMPTS;
-}
-
-function clearLoginAttempts(email) {
-    loginAttempts.delete(email.toLowerCase());
-}
-
-if (process.env.NODE_ENV !== 'test') {
-    setInterval(() => {
-        const now = Date.now();
-        for (const [token, revokedAt] of revokedTokens) {
-            if (now - revokedAt > REVOCATION_TTL_MS) {
-                revokedTokens.delete(token);
-            }
-        }
-        for (const [email, entry] of loginAttempts) {
-            if (now - entry.windowStart > LOGIN_LOCKOUT_MS * 2) {
-                loginAttempts.delete(email);
-            }
-        }
-        for (const [email, entry] of resetAttempts) {
-            if (now - entry.windowStart > RESET_WINDOW_MS * 2) {
-                resetAttempts.delete(email);
-            }
-        }
-    }, 60 * 60 * 1000); // Clean every hour
-}
-
-function isTokenRevoked(token) {
-    return revokedTokens.has(token);
-}
-
-function revokeToken(token) {
-    revokedTokens.set(token, Date.now());
-}
+const revokeToken = (token) => authSecurityStore.revokeToken(token);
+const isTokenRevoked = (token) => authSecurityStore.isTokenRevoked(token);
+const recordFailedLogin = (email) => authSecurityStore.recordFailedLogin(email);
+const isLoginLocked = (email) => authSecurityStore.isLoginLocked(email);
+const clearLoginAttempts = (email) => authSecurityStore.clearLoginAttempts(email);
+const recordResetAttempt = (email) => authSecurityStore.recordResetAttempt(email);
+const isResetLimited = (email) => authSecurityStore.isResetLimited(email);
 
 function extractToken(req) {
     if (req.cookies && req.cookies[COOKIE_NAME]) {
@@ -131,9 +106,9 @@ function verifyToken(token) {
  * Optional auth: populates req.user if a valid cookie is present,
  * but never blocks the request.
  */
-function optionalAuth(req, _res, next) {
+async function optionalAuth(req, _res, next) {
     const token = extractToken(req);
-    if (token && !isTokenRevoked(token)) {
+    if (token && !(await isTokenRevoked(token))) {
         const decoded = verifyToken(token);
         if (decoded) {
             req.user = { id: decoded.id, name: decoded.name, email: decoded.email, role: decoded.role || 'user', emailVerified: decoded.emailVerified || false };
@@ -147,14 +122,14 @@ function optionalAuth(req, _res, next) {
  * Strict auth: requires a valid httpOnly cookie.
  * Bearer header fallback is intentionally removed for cookie-only production auth.
  */
-function requireAuthJwt(req, res, next) {
+async function requireAuthJwt(req, res, next) {
     const token = extractToken(req);
 
     if (!token) {
         return res.status(401).json({ error: 'Authorization required' });
     }
 
-    if (isTokenRevoked(token)) {
+    if (await isTokenRevoked(token)) {
         return res.status(401).json({ error: 'Token has been revoked' });
     }
 
@@ -237,6 +212,89 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     const authRateLimit = rateLimit ? rateLimit(5, 60) : (req, res, next) => next();
     const appUrl = process.env.APP_URL || 'http://localhost:3002';
 
+    app.get('/api/auth/oauth/:provider/start', authRateLimit, (req, res) => {
+        const provider = String(req.params.provider || '').toLowerCase();
+        if (!['google', 'orcid'].includes(provider)) return res.status(404).json({ error: 'Unsupported OAuth provider' });
+        if (!oauthConfigured(provider)) return res.status(503).json({ error: `${provider} OAuth is not configured` });
+
+        const state = crypto.randomBytes(24).toString('hex');
+        res.cookie(OAUTH_STATE_COOKIE, state, {
+            ...COOKIE_OPTIONS,
+            sameSite: 'lax',
+            maxAge: 10 * 60 * 1000,
+        });
+
+        const redirectUri = `${getOAuthBaseUrl(req)}/api/auth/oauth/${provider}/callback`;
+        const params = new URLSearchParams({
+            response_type: 'code',
+            client_id: provider === 'google' ? process.env.GOOGLE_CLIENT_ID : process.env.ORCID_CLIENT_ID,
+            redirect_uri: redirectUri,
+            scope: provider === 'google' ? 'openid email profile' : 'openid email profile',
+            state,
+        });
+        const authorizeUrl = provider === 'google'
+            ? `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`
+            : `https://orcid.org/oauth/authorize?${params.toString()}`;
+        res.redirect(authorizeUrl);
+    });
+
+    app.get('/api/auth/oauth/:provider/callback', authRateLimit, async (req, res) => {
+        const provider = String(req.params.provider || '').toLowerCase();
+        const { code, state } = req.query;
+        const expectedState = req.cookies?.[OAUTH_STATE_COOKIE];
+        res.clearCookie(OAUTH_STATE_COOKIE, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+        });
+
+        if (!['google', 'orcid'].includes(provider) || !code || !state || state !== expectedState) {
+            return res.redirect(`${getOAuthReturnUrl()}?oauth=error`);
+        }
+
+        try {
+            const redirectUri = `${getOAuthBaseUrl(req)}/api/auth/oauth/${provider}/callback`;
+            const tokenUrl = provider === 'google'
+                ? 'https://oauth2.googleapis.com/token'
+                : 'https://orcid.org/oauth/token';
+            const body = new URLSearchParams({
+                grant_type: 'authorization_code',
+                code: String(code),
+                redirect_uri: redirectUri,
+                client_id: provider === 'google' ? process.env.GOOGLE_CLIENT_ID : process.env.ORCID_CLIENT_ID,
+                client_secret: provider === 'google' ? process.env.GOOGLE_CLIENT_SECRET : process.env.ORCID_CLIENT_SECRET,
+            });
+            const tokenRes = await fetch(tokenUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'application/json' },
+                body,
+            });
+            if (!tokenRes.ok) throw new Error(`OAuth token exchange failed: ${tokenRes.status}`);
+            const tokenData = await tokenRes.json();
+
+            const userInfoUrl = provider === 'google'
+                ? 'https://openidconnect.googleapis.com/v1/userinfo'
+                : 'https://orcid.org/oauth/userinfo';
+            const userInfoRes = await fetch(userInfoUrl, {
+                headers: { Authorization: `Bearer ${tokenData.access_token}`, Accept: 'application/json' },
+            });
+            if (!userInfoRes.ok) throw new Error(`OAuth profile fetch failed: ${userInfoRes.status}`);
+            const profileData = await userInfoRes.json();
+            const user = await upsertOAuthUser(db, {
+                provider,
+                providerId: profileData.sub || profileData.orcid || profileData.id,
+                email: profileData.email,
+                emailVerified: profileData.email_verified !== false,
+                name: profileData.name || [profileData.given_name, profileData.family_name].filter(Boolean).join(' '),
+            });
+            setSessionCookie(res, user);
+            res.redirect(getOAuthReturnUrl());
+        } catch (error) {
+            logger.error({ err: error, provider }, 'OAuth login error');
+            res.redirect(`${getOAuthReturnUrl()}?oauth=error`);
+        }
+    });
+
     // ==========================================
     // Register
     // ==========================================
@@ -299,24 +357,24 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             return res.status(400).json({ error: 'email and password are required' });
         }
 
-        if (isLoginLocked(email)) {
+        if (await isLoginLocked(email)) {
             return res.status(429).json({ error: 'Too many failed login attempts. Please wait 15 minutes before trying again.' });
         }
 
         try {
             const stored = await db.getUserByEmail(email);
             if (!stored) {
-                recordFailedLogin(email);
+                await recordFailedLogin(email);
                 return res.status(401).json({ error: 'Invalid credentials' });
             }
 
             const valid = await bcrypt.compare(password, stored.password);
             if (!valid) {
-                recordFailedLogin(email);
+                await recordFailedLogin(email);
                 return res.status(401).json({ error: 'Invalid credentials' });
             }
 
-            clearLoginAttempts(email);
+            await clearLoginAttempts(email);
             await db.updateUser(stored.id, { last_login: new Date().toISOString() });
             const emailVerified = Boolean(stored.email_verified);
             const token = jwt.sign(
@@ -344,9 +402,9 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // ==========================================
     // Logout
     // ==========================================
-    app.post('/api/auth/logout', requireAuthJwt, auditLog('auth.logout'), (req, res) => {
+    app.post('/api/auth/logout', requireAuthJwt, auditLog('auth.logout'), async (req, res) => {
         if (req.token) {
-            revokeToken(req.token);
+            await revokeToken(req.token);
         }
         res.clearCookie(COOKIE_NAME, {
             httpOnly: true,
@@ -434,23 +492,23 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
         const genericResponse = { message: 'If an account exists for that email, a reset link has been sent.' };
 
         // Per-email rate limit — silently return generic response to avoid enumeration
-        if (isResetLimited(email)) return res.json(genericResponse);
-        recordResetAttempt(email);
+        if (await isResetLimited(email)) return res.json(genericResponse);
+        await recordResetAttempt(email);
 
         try {
             const user = await db.getUserByEmail(email);
             if (!user) return res.json(genericResponse);
 
-            // Invalidate any existing tokens for this user
-            await db.run('DELETE FROM password_reset_tokens WHERE user_id = ?', [user.id]);
-
             const resetToken = crypto.randomBytes(32).toString('hex');
             const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
 
-            await db.run(
-                'INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES (?, ?, ?)',
-                [user.id, resetToken, expiresAt]
-            );
+            await db.withTransaction(async () => {
+                await db.run('DELETE FROM password_reset_tokens WHERE user_id = ?', [user.id]);
+                await db.run(
+                    'INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES (?, ?, ?)',
+                    [user.id, resetToken, expiresAt]
+                );
+            });
 
             sendPasswordResetEmail({ to: user.email, name: user.name, token: resetToken, appUrl }).catch((err) => {
                 logger.error({ err }, 'Failed to send password reset email');
@@ -485,9 +543,10 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
 
             const hashedPassword = await bcrypt.hash(password, 12);
 
-            // Update password and mark token as used atomically
-            await db.run('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, row.user_id]);
-            await db.run('UPDATE password_reset_tokens SET used = 1 WHERE token = ?', [token]);
+            await db.withTransaction(async () => {
+                await db.run('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, row.user_id]);
+                await db.run('UPDATE password_reset_tokens SET used = 1 WHERE token = ?', [token]);
+            });
 
             // Issue a fresh session
             const newJwt = jwt.sign(

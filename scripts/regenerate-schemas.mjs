@@ -73,9 +73,15 @@ if (dumpSqlite) {
        ORDER BY CASE type WHEN 'table' THEN 0 ELSE 1 END, name`
     )
     .all();
-  const body = rows.map((r) => `${r.sql};`).join('\n\n') + '\n';
+  const body = rows
+    .map((r) => String(r.sql)
+      .replace(/^CREATE TABLE\s+/i, 'CREATE TABLE IF NOT EXISTS ')
+      .replace(/^CREATE INDEX\s+/i, 'CREATE INDEX IF NOT EXISTS '))
+    .map((sql) => `${sql};`)
+    .join('\n\n') + '\n';
   const outPath = path.join(root, 'database', 'schema.sql');
   fs.writeFileSync(outPath, SQLITE_HEADER + body, 'utf8');
+  db.close();
   fs.unlinkSync(tmpDb);
   console.log(`Wrote ${outPath} from migrated database (${rows.length} objects)`);
 } else {

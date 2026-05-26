@@ -9,6 +9,17 @@ const fs = require('fs');
 const { buildPgPoolConfig, buildPgVectorPoolConfig } = require('../server/utils/pgPoolOptions');
 const { runExternalSqliteMigrations } = require('./lib/helpers');
 
+const MIGRATION_ALIASES = {
+    '050_topic_crosslinks.sql': ['049_topic_crosslinks.sql'],
+    '051_claim_lifecycle.sql': ['050_claim_lifecycle.sql'],
+    '052_advanced_learning.sql': ['051_advanced_learning.sql'],
+    '053_curriculum_seed_metadata.sql': ['052_curriculum_seed_metadata.sql'],
+    '054_llm_usage_log.sql': ['052_llm_usage_log.sql'],
+    '056_curriculum_seed_guardrails.sql': ['053_curriculum_seed_guardrails.sql'],
+    '057_learning_event_ledger.sql': ['054_learning_event_ledger.sql'],
+};
+const SQLITE_BASELINE_MIGRATION = '057_learning_event_ledger.sql';
+
 class Database {
 constructor(dbPath = './database/app.db') {
     this.dbPath = dbPath;
@@ -139,7 +150,20 @@ async runMigrations() {
 
     const applied = await this.all('SELECT name FROM _migrations ORDER BY id');
     const appliedNames = new Set(applied.map(m => m.name));
-    const pending = files.filter(f => !appliedNames.has(f));
+    if (!this.isPostgres && appliedNames.size === 0) {
+        const baselineFiles = files.filter(f => f <= SQLITE_BASELINE_MIGRATION);
+        for (const file of baselineFiles) {
+            await this.run('INSERT OR IGNORE INTO _migrations (name) VALUES (?)', [file]);
+            appliedNames.add(file);
+        }
+        if (baselineFiles.length > 0) {
+            console.log(`SQLite baseline covers ${baselineFiles.length} migration(s) through ${SQLITE_BASELINE_MIGRATION}`);
+        }
+    }
+    const pending = files.filter(f => {
+        if (appliedNames.has(f)) return false;
+        return !(MIGRATION_ALIASES[f] || []).some(alias => appliedNames.has(alias));
+    });
 
     if (pending.length === 0) {
         console.log('✅ Database is up to date');
@@ -242,6 +266,18 @@ run(sqlText, params = []) {
             reject(e);
         }
     });
+}
+
+async withTransaction(fn) {
+    await this.run('BEGIN');
+    try {
+        const result = await fn(this);
+        await this.run('COMMIT');
+        return result;
+    } catch (err) {
+        await this.run('ROLLBACK').catch(() => {});
+        throw err;
+    }
 }
 
 get(sqlText, params = []) {

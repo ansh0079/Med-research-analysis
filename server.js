@@ -18,6 +18,7 @@ const { scheduleClaimRegeneration, stopClaimRegeneration } = require('./server/s
 const { scheduleGuidelineWatchtower, stopGuidelineWatchtower } = require('./server/services/guidelineWatchtowerScheduler');
 const { scheduleCurriculumSeed, stopCurriculumSeed } = require('./server/services/curriculumSeedScheduler');
 const { scheduleCollectiveMemory, stopCollectiveMemory } = require('./server/services/collectiveMemoryScheduler');
+const authSecurityStore = require('./server/services/authSecurityStore');
 const { safeFetch } = require('./server/utils/fetch');
 
 const PORT = serverConfig.ports.node;
@@ -56,6 +57,7 @@ async function gracefulShutdown(signal) {
             await db.close();
             await db.closeVectorPool?.();
             if (cache && typeof cache.close === 'function') await cache.close();
+            await authSecurityStore.close();
             logger.info('Persistence and cache layers closed');
             process.exit(0);
         } catch (err) {
@@ -109,6 +111,7 @@ async function startServer() {
         }
 
         await cache.connect();
+        await authSecurityStore.init({ database: db, redisUrl: process.env.REDIS_URL });
 
         const cleaned = await db.cleanExpiredCache();
         logger.info({ cleaned }, 'Cleaned expired cache entries');

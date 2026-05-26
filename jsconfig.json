@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@server/*": ["server/*"],
+      "@database": ["database/index.js"],
+      "@database/*": ["database/*"],
+      "@config": ["config.js"],
+      "@cache": ["cache/index.js"],
+      "@cache/*": ["cache/*"]
+    }
+  },
+  "include": [
+    "app.js",
+    "server.js",
+    "config.js",
+    "server/**/*.js",
+    "database/**/*.js",
+    "cache/**/*.js",
+    "scripts/**/*.js",
+    "scripts/**/*.mjs"
+  ],
+  "exclude": ["node_modules", "dist", "coverage", ".claude"]
+}

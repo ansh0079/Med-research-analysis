@@ -217,6 +217,12 @@ function computeCompositeScore(article) {
         : 0;
     score += recencyScore;
 
+    // 4b. Recency × citations synergy → up to 5 points
+    const recencyCitationScore = (recencyScore > 0 && citations > 0)
+        ? Math.min(5, (Math.log10(citations + 1) * recencyScore) / 10)
+        : 0;
+    score += recencyCitationScore;
+
     // 5. Guideline bonus → up to 10 points
     if (isGuideline(article)) score += 10;
 

@@ -5,6 +5,17 @@
 
 const { PINNED_MODELS } = require('../services/aiService');
 
+const ALLOWED_MODELS = {
+    gemini: new Set([PINNED_MODELS.gemini, PINNED_MODELS.geminiQuality]),
+    mistral: new Set([PINNED_MODELS.mistral]),
+};
+
+function resolvePinnedModel(provider, requestedModel) {
+    const fallback = PINNED_MODELS[provider] || null;
+    if (!requestedModel) return fallback;
+    return ALLOWED_MODELS[provider]?.has(requestedModel) ? requestedModel : fallback;
+}
+
 /**
  * Resolve provider and model from request options + server config.
  * @param {Object} options
@@ -28,7 +39,7 @@ function resolveProvider(options = {}, serverConfig = {}) {
         return { provider: null, model: null };
     }
 
-    const selectedModel = options.model || PINNED_MODELS[selectedProvider] || null;
+    const selectedModel = resolvePinnedModel(selectedProvider, options.model);
     return { provider: selectedProvider, model: selectedModel };
 }
 
@@ -41,9 +52,9 @@ function getProviderCandidates(options = {}, serverConfig = {}) {
 
     const keys = serverConfig?.keys || {};
     return [
-        keys.gemini ? { provider: 'gemini', model: options.model || PINNED_MODELS.gemini } : null,
-        keys.mistral ? { provider: 'mistral', model: options.model || PINNED_MODELS.mistral } : null,
+        keys.gemini ? { provider: 'gemini', model: resolvePinnedModel('gemini', options.model) } : null,
+        keys.mistral ? { provider: 'mistral', model: resolvePinnedModel('mistral', options.model) } : null,
     ].filter(Boolean);
 }
 
-module.exports = { resolveProvider, getProviderCandidates, PINNED_MODELS };
+module.exports = { resolveProvider, getProviderCandidates, resolvePinnedModel, PINNED_MODELS };

@@ -1,3 +1,5 @@
+const logger = require('../config/logger');
+
 async function aggregateCollectiveMemory(db) {
     const topicRows = await db.all(
         `SELECT normalized_topic,
@@ -92,7 +94,9 @@ async function aggregateCollectiveMemory(db) {
 
         if (existing) {
             let knowledge = {};
-            try { knowledge = JSON.parse(existing.knowledge || '{}'); } catch { /* keep empty */ }
+            try { knowledge = JSON.parse(existing.knowledge || '{}'); } catch (err) {
+                logger.debug({ err, normalizedTopic }, 'Collective memory knowledge JSON parse failed');
+            }
             knowledge.collective_memory = collective_memory;
             await db.run(
                 `UPDATE topic_knowledge SET knowledge = ?, updated_at = ? WHERE normalized_topic = ?`,

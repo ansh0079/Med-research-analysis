@@ -234,7 +234,6 @@ function registerLearningRoutes(app, deps) {
     }
 
     function recordLearningEventSafe(event) {
-        if (typeof db.recordLearningEvent !== 'function') return Promise.resolve(null);
         return db.recordLearningEvent(event).catch((err) => {
             logger.warn({ err, eventType: event?.eventType }, 'recordLearningEvent failed');
             return null;
@@ -346,6 +345,37 @@ function registerLearningRoutes(app, deps) {
             res.json({ claimKey, count: attempts.length, attempts });
         } catch (error) {
             req.log.error({ err: error }, 'Claim quiz attempts fetch error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.get('/api/learning/prompt-variant-metrics', requireAuthJwt, rateLimit(30, 60), async (req, res) => {
+        try {
+            const days = Math.min(Math.max(parseInt(String(req.query.days || '14'), 10) || 14, 1), 90);
+            const rows = await db.all(
+                `SELECT COALESCE(prompt_variant, 'unknown') AS prompt_variant,
+                        COUNT(*) AS attempts,
+                        SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) AS correct,
+                        AVG(CASE WHEN is_correct = 1 THEN 1.0 ELSE 0.0 END) AS accuracy,
+                        AVG(confidence) AS avg_confidence
+                 FROM quiz_attempts
+                 WHERE user_id = ? AND created_at >= datetime('now', ?)
+                 GROUP BY COALESCE(prompt_variant, 'unknown')
+                 ORDER BY attempts DESC`,
+                [req.user.id, `-${days} days`]
+            );
+            res.json({
+                days,
+                variants: rows.map((row) => ({
+                    promptVariant: row.prompt_variant,
+                    attempts: Number(row.attempts || 0),
+                    correct: Number(row.correct || 0),
+                    accuracy: row.accuracy == null ? null : Math.round(Number(row.accuracy) * 1000) / 10,
+                    avgConfidence: row.avg_confidence == null ? null : Math.round(Number(row.avg_confidence) * 10) / 10,
+                })),
+            });
+        } catch (error) {
+            req.log.error({ err: error }, 'Prompt variant metrics fetch error');
             res.status(500).json({ error: 'Internal Server Error' });
         }
     });
@@ -640,6 +670,7 @@ function registerLearningRoutes(app, deps) {
                         isCorrect: Boolean(attempt.isCorrect),
                         confidence: attempt.confidence ?? null,
                         reasoningTags: attempt.reasoningTags || [],
+                        promptVariant: attempt.promptVariant || null,
                         studyRunId: run?.id || null,
                         outlineNodeId: attempt.outlineNodeId || null,
                     },
@@ -667,6 +698,7 @@ function registerLearningRoutes(app, deps) {
                             isCorrect: Boolean(attempt.isCorrect),
                             confidence: attempt.confidence ?? null,
                             questionType: attempt.questionType,
+                            promptVariant: attempt.promptVariant || null,
                         },
                     });
                     spacedRep.updateCard(db, {

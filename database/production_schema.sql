@@ -275,6 +275,7 @@ CREATE INDEX idx_analysis_cache_expires ON analysis_cache(expires_at);
 
 CREATE INDEX idx_analytics_type ON analytics(event_type);
 CREATE INDEX idx_analytics_created ON analytics(created_at);
+CREATE INDEX idx_analytics_event_created ON analytics(event_type, created_at);
 
 CREATE INDEX idx_audit_user ON audit_logs(user_id);
 CREATE INDEX idx_audit_action ON audit_logs(action);
@@ -453,6 +454,7 @@ CREATE TABLE IF NOT EXISTS quiz_attempts (
     concept_hash TEXT,
     reasoning_tags JSONB DEFAULT '[]',
     reasoning_note TEXT,
+    prompt_variant TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
