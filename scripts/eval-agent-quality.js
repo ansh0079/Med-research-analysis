@@ -1,0 +1,329 @@
+#!/usr/bin/env node
+/**
+ * Agent Quality Eval Script
+ *
+ * Measures whether agent conversations improve subsequent quiz performance
+ * (learning efficacy) by correlating learning_events (agent_message ↔ mcq_answered).
+ *
+ * Usage:
+ *   node scripts/eval-agent-quality.js [--days 30] [--format json|markdown|table]
+ *
+ * Outputs:
+ *   - Console table with aggregated metrics
+ *   - eval-results/agent-quality-{timestamp}.json (full cohort data)
+ *   - eval-results/agent-quality-report.md (when --format=markdown)
+ */
+
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+
+const args = process.argv.slice(2);
+const flag = (name, fallback) => {
+    const idx = args.indexOf(name);
+    return idx !== -1 ? args[idx + 1] : fallback;
+};
+
+const DAYS = Math.min(90, Math.max(1, parseInt(flag('--days', '30'), 10) || 30));
+const FORMAT = flag('--format', 'table');
+const OUT_DIR = path.join(process.cwd(), 'eval-results');
+
+// Ensure output directory exists
+if (!fs.existsSync(OUT_DIR)) {
+    fs.mkdirSync(OUT_DIR, { recursive: true });
+}
+
+// ============================================================
+// Database helpers
+// ============================================================
+
+async function withDb(fn) {
+    const db = require('../database');
+    await db.connect();
+    try {
+        return await fn(db);
+    } finally {
+        // SQLite singleton doesn't need explicit close for read-only eval
+    }
+}
+
+function parsePayload(payloadJson) {
+    try {
+        return JSON.parse(payloadJson || '{}');
+    } catch {
+        return {};
+    }
+}
+
+// ============================================================
+// Cohort extraction
+// ============================================================
+
+async function extractAgentCohort(db, days) {
+    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+
+    // Find all agent_message events with subsequent mcq_answered events
+    const rows = await db.all(
+        `WITH agent_events AS (
+            SELECT
+                user_id,
+                topic,
+                normalized_topic,
+                claim_key,
+                occurred_at,
+                payload_json
+            FROM learning_events
+            WHERE event_type = 'agent_message'
+              AND occurred_at >= ?
+              AND user_id IS NOT NULL
+         ),
+         pre_quiz AS (
+            SELECT
+                a.user_id,
+                a.normalized_topic,
+                a.claim_key,
+                a.occurred_at AS agent_at,
+                COUNT(*) AS pre_count,
+                AVG(CASE WHEN le.payload_json LIKE '%"isCorrect":true%' THEN 1.0 ELSE 0.0 END) AS pre_accuracy,
+                GROUP_CONCAT(le.id) AS pre_attempt_ids
+            FROM agent_events a
+            JOIN learning_events le ON le.user_id = a.user_id
+                AND le.normalized_topic = a.normalized_topic
+                AND le.event_type = 'mcq_answered'
+                AND le.occurred_at < a.occurred_at
+                AND le.occurred_at >= datetime(a.occurred_at, '-24 hours')
+            GROUP BY a.user_id, a.normalized_topic, a.claim_key, a.occurred_at
+         ),
+         post_quiz AS (
+            SELECT
+                a.user_id,
+                a.normalized_topic,
+                a.claim_key,
+                a.occurred_at AS agent_at,
+                COUNT(*) AS post_count,
+                AVG(CASE WHEN le.payload_json LIKE '%"isCorrect":true%' THEN 1.0 ELSE 0.0 END) AS post_accuracy,
+                GROUP_CONCAT(le.id) AS post_attempt_ids
+            FROM agent_events a
+            JOIN learning_events le ON le.user_id = a.user_id
+                AND le.normalized_topic = a.normalized_topic
+                AND le.event_type = 'mcq_answered'
+                AND le.occurred_at > a.occurred_at
+                AND le.occurred_at <= datetime(a.occurred_at, '+72 hours')
+            GROUP BY a.user_id, a.normalized_topic, a.claim_key, a.occurred_at
+         )
+         SELECT
+            pre.user_id,
+            pre.normalized_topic AS topic,
+            pre.claim_key,
+            pre.agent_at,
+            pre.pre_count,
+            pre.pre_accuracy,
+            post.post_count,
+            post.post_accuracy
+         FROM pre_quiz pre
+         JOIN post_quiz post ON pre.user_id = post.user_id
+            AND pre.normalized_topic = post.normalized_topic
+            AND pre.claim_key IS post.claim_key
+            AND pre.agent_at = post.agent_at
+         WHERE pre.pre_count >= 1 AND post.post_count >= 1
+         ORDER BY pre.agent_at DESC`,
+        [since]
+    );
+
+    return rows.map((r) => ({
+        userId: r.user_id,
+        topic: r.topic,
+        claimKey: r.claim_key,
+        agentAt: r.agent_at,
+        preCount: Number(r.pre_count),
+        preAccuracy: Number(r.pre_accuracy ?? 0),
+        postCount: Number(r.post_count),
+        postAccuracy: Number(r.post_accuracy ?? 0),
+        accuracyDelta: Number((r.post_accuracy ?? 0) - (r.pre_accuracy ?? 0)),
+    }));
+}
+
+async function extractControlCohort(db, days) {
+    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+
+    // Users who did quizzes pre→post in a 96h window but had NO agent_message between them
+    const rows = await db.all(
+        `WITH quiz_pairs AS (
+            SELECT
+                le1.user_id,
+                le1.normalized_topic,
+                le1.occurred_at AS pre_at,
+                le2.occurred_at AS post_at,
+                AVG(CASE WHEN le1.payload_json LIKE '%"isCorrect":true%' THEN 1.0 ELSE 0.0 END) AS pre_accuracy,
+                AVG(CASE WHEN le2.payload_json LIKE '%"isCorrect":true%' THEN 1.0 ELSE 0.0 END) AS post_accuracy
+            FROM learning_events le1
+            JOIN learning_events le2 ON le1.user_id = le2.user_id
+                AND le1.normalized_topic = le2.normalized_topic
+                AND le1.event_type = 'mcq_answered'
+                AND le2.event_type = 'mcq_answered'
+                AND le2.occurred_at > le1.occurred_at
+                AND le2.occurred_at <= datetime(le1.occurred_at, '+96 hours')
+            WHERE le1.occurred_at >= ?
+              AND le1.user_id IS NOT NULL
+              AND NOT EXISTS (
+                  SELECT 1 FROM learning_events lea
+                  WHERE lea.user_id = le1.user_id
+                    AND lea.normalized_topic = le1.normalized_topic
+                    AND lea.event_type = 'agent_message'
+                    AND lea.occurred_at > le1.occurred_at
+                    AND lea.occurred_at < le2.occurred_at
+              )
+            GROUP BY le1.user_id, le1.normalized_topic, le1.occurred_at
+         )
+         SELECT
+            user_id,
+            normalized_topic AS topic,
+            pre_accuracy,
+            post_accuracy
+         FROM quiz_pairs
+         WHERE pre_accuracy IS NOT NULL AND post_accuracy IS NOT NULL`,
+        [since]
+    );
+
+    return rows.map((r) => ({
+        userId: r.user_id,
+        topic: r.topic,
+        preAccuracy: Number(r.pre_accuracy ?? 0),
+        postAccuracy: Number(r.post_accuracy ?? 0),
+        accuracyDelta: Number((r.post_accuracy ?? 0) - (r.pre_accuracy ?? 0)),
+    }));
+}
+
+// ============================================================
+// Metrics
+// ============================================================
+
+function computeMetrics(cohort, label) {
+    if (cohort.length === 0) {
+        return { label, n: 0, meanDelta: 0, medianDelta: 0, p25: 0, p75: 0, significant: false };
+    }
+    const deltas = cohort.map((c) => c.accuracyDelta).sort((a, b) => a - b);
+    const mean = deltas.reduce((a, b) => a + b, 0) / deltas.length;
+    const median = deltas.length % 2 === 0
+        ? (deltas[deltas.length / 2 - 1] + deltas[deltas.length / 2]) / 2
+        : deltas[Math.floor(deltas.length / 2)];
+    const p25 = deltas[Math.floor(deltas.length * 0.25)] ?? deltas[0];
+    const p75 = deltas[Math.floor(deltas.length * 0.75)] ?? deltas[deltas.length - 1];
+
+    // Very rough significance: if mean delta > 0 and > 1 SD from 0
+    const variance = deltas.reduce((sum, d) => sum + (d - mean) ** 2, 0) / deltas.length;
+    const sd = Math.sqrt(variance);
+    const significant = mean > 0 && mean > sd / Math.sqrt(deltas.length);
+
+    return { label, n: cohort.length, meanDelta: mean, medianDelta: median, p25, p75, significant };
+}
+
+function breakdownByTopic(agentCohort) {
+    const byTopic = {};
+    for (const row of agentCohort) {
+        if (!byTopic[row.topic]) byTopic[row.topic] = [];
+        byTopic[row.topic].push(row);
+    }
+    return Object.entries(byTopic).map(([topic, rows]) => ({
+        topic,
+        ...computeMetrics(rows, topic),
+    })).sort((a, b) => b.meanDelta - a.meanDelta);
+}
+
+// ============================================================
+// Output formatters
+// ============================================================
+
+function printTable(metrics, controlMetrics) {
+    console.log('\n📊 Agent Quality Evaluation Results\n');
+    console.log(`Agent cohort:  n=${metrics.n}  meanΔ=${(metrics.meanDelta * 100).toFixed(1)}%  medianΔ=${(metrics.medianDelta * 100).toFixed(1)}%  p25=${(metrics.p25 * 100).toFixed(1)}%  p75=${(metrics.p75 * 100).toFixed(1)}%  significant=${metrics.significant}`);
+    console.log(`Control cohort: n=${controlMetrics.n}  meanΔ=${(controlMetrics.meanDelta * 100).toFixed(1)}%  medianΔ=${(controlMetrics.medianDelta * 100).toFixed(1)}%  p25=${(controlMetrics.p25 * 100).toFixed(1)}%  p75=${(controlMetrics.p75 * 100).toFixed(1)}%  significant=${controlMetrics.significant}`);
+    console.log();
+}
+
+function buildMarkdown(agentCohort, controlCohort, metrics, controlMetrics, topicBreakdown) {
+    const ts = new Date().toISOString();
+    return `# Agent Quality Evaluation Report
+
+**Generated:** ${ts}  
+**Evaluation window:** last ${DAYS} days
+
+## Summary
+
+| Cohort | n | Mean Δ | Median Δ | p25 | p75 | Significant? |
+|--------|---|--------|----------|-----|-----|--------------|
+| Agent (chat → quiz) | ${metrics.n} | ${(metrics.meanDelta * 100).toFixed(1)}% | ${(metrics.medianDelta * 100).toFixed(1)}% | ${(metrics.p25 * 100).toFixed(1)}% | ${(metrics.p75 * 100).toFixed(1)}% | ${metrics.significant ? '✅ Yes' : '❌ No'} |
+| Control (quiz only) | ${controlMetrics.n} | ${(controlMetrics.meanDelta * 100).toFixed(1)}% | ${(controlMetrics.medianDelta * 100).toFixed(1)}% | ${(controlMetrics.p25 * 100).toFixed(1)}% | ${(controlMetrics.p75 * 100).toFixed(1)}% | ${controlMetrics.significant ? '✅ Yes' : '❌ No'} |
+
+## Topic Breakdown
+
+| Topic | n | Mean Δ | Median Δ |
+|-------|---|--------|----------|
+${topicBreakdown.map((t) => `| ${t.topic} | ${t.n} | ${(t.meanDelta * 100).toFixed(1)}% | ${(t.medianDelta * 100).toFixed(1)}% |`).join('\n')}
+
+## Interpretation
+
+${metrics.meanDelta > controlMetrics.meanDelta
+        ? `- **Agent cohort outperformed control** by ${((metrics.meanDelta - controlMetrics.meanDelta) * 100).toFixed(1)} percentage points on average.`
+        : `- **Control cohort matched or outperformed agent** by ${((controlMetrics.meanDelta - metrics.meanDelta) * 100).toFixed(1)} percentage points on average.`}
+- ${metrics.significant ? 'The agent effect is statistically notable (mean > SEM).' : 'The agent effect is not statistically notable (mean ≤ SEM).'}
+
+---
+*Report generated by scripts/eval-agent-quality.js*
+`;
+}
+
+// ============================================================
+// Main
+// ============================================================
+
+async function main() {
+    console.log(`🔬 Running agent quality eval (last ${DAYS} days)...\n`);
+
+    const { agentCohort, controlCohort } = await withDb(async (db) => {
+        const agent = await extractAgentCohort(db, DAYS);
+        const control = await extractControlCohort(db, DAYS);
+        return { agentCohort: agent, controlCohort: control };
+    });
+
+    const metrics = computeMetrics(agentCohort, 'agent');
+    const controlMetrics = computeMetrics(controlCohort, 'control');
+    const topicBreakdown = breakdownByTopic(agentCohort);
+
+    printTable(metrics, controlMetrics);
+
+    // JSON output
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const jsonPath = path.join(OUT_DIR, `agent-quality-${timestamp}.json`);
+    fs.writeFileSync(jsonPath, JSON.stringify({
+        generatedAt: new Date().toISOString(),
+        days: DAYS,
+        metrics,
+        controlMetrics,
+        topicBreakdown,
+        cohort: agentCohort,
+        control: controlCohort,
+    }, null, 2));
+    console.log(`📁 Full data written to ${jsonPath}\n`);
+
+    // Markdown output
+    if (FORMAT === 'markdown') {
+        const mdPath = path.join(OUT_DIR, 'agent-quality-report.md');
+        const md = buildMarkdown(agentCohort, controlCohort, metrics, controlMetrics, topicBreakdown);
+        fs.writeFileSync(mdPath, md);
+        console.log(`📄 Markdown report written to ${mdPath}\n`);
+    }
+
+    // Exit non-zero if agent cohort underperforms control by >5pp (quality gate)
+    const underperformance = controlMetrics.meanDelta - metrics.meanDelta;
+    if (underperformance > 0.05) {
+        console.error(`🚨 QUALITY GATE FAILED: Agent underperforms control by ${(underperformance * 100).toFixed(1)}pp`);
+        process.exit(1);
+    }
+}
+
+main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+});

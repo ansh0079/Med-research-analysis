@@ -25,7 +25,7 @@ const db = require('./database');
 const cache = require('./cache');
 
 const { rateLimit, userRateLimit } = require('./server/middleware/rateLimiter');
-const { optionalAuth, requireAuthJwt, requireRole, requirePaidFeature, registerAuthRoutes } = require('./server/middleware/auth');
+const { optionalAuth, requireAuthJwt, requireVerifiedEmail, requireRole, requirePaidFeature, registerAuthRoutes } = require('./server/middleware/auth');
 const { auditLog } = require('./server/middleware/audit');
 const { requireJson, validateAnalysisBody, validateBody, schemas } = require('./server/utils/validation');
 const { safeFetch } = require('./server/utils/fetch');
@@ -381,7 +381,7 @@ const enqueuePdfPreindex = (article) => _enqueuePdfPreindex(article, { cache, db
 
 const routeDeps = {
     serverConfig, clientConfig, db, cache, rateLimit, userRateLimit,
-    requireJson, requireAuthJwt, requireRole, requirePaidFeature,
+    requireJson, requireAuthJwt, requireVerifiedEmail, requireRole, requirePaidFeature,
     validateAnalysisBody, validateBody, schemas,
     metricsRegistry,
     fetch: safeFetch,

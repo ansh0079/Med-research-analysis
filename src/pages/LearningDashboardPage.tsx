@@ -103,10 +103,26 @@ const REC_TYPE_LABELS: Record<string, string> = {
 function ForYouPanel({ onNavigate }: { onNavigate: (path: string) => void }) {
   const [recs, setRecs] = React.useState<LearningRecommendation[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const shownLogged = React.useRef(false);
 
   React.useEffect(() => {
     api.getLearningRecommendations(8)
-      .then(r => setRecs(r.recommendations))
+      .then(r => {
+        setRecs(r.recommendations);
+        // Fire-and-forget: log that recommendations were shown
+        if (!shownLogged.current && r.recommendations.length > 0) {
+          shownLogged.current = true;
+          void api.logLearningEvent({
+            eventType: 'recommendation_shown',
+            sourceType: 'for_you_panel',
+            payload: {
+              count: r.recommendations.length,
+              types: r.recommendations.map((rec) => rec.type),
+              topics: r.recommendations.map((rec) => rec.normalizedTopic),
+            },
+          }).catch(() => {});
+        }
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -115,6 +131,17 @@ function ForYouPanel({ onNavigate }: { onNavigate: (path: string) => void }) {
   if (recs.length === 0) return null;
 
   const handleClick = (rec: LearningRecommendation) => {
+    void api.logLearningEvent({
+      eventType: 'recommendation_clicked',
+      topic: rec.topic,
+      sourceType: 'for_you_panel',
+      payload: {
+        recommendationType: rec.type,
+        action: rec.action,
+        priority: rec.priority,
+      },
+    }).catch(() => {});
+
     if (rec.action === 'quiz') {
       sessionStorage.setItem('med_quiz_prefill', JSON.stringify({ topic: rec.topic }));
       onNavigate('/quiz');

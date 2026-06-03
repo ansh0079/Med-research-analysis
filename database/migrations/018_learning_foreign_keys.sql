@@ -28,7 +28,42 @@ CREATE TABLE user_learning_profiles (
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now'))
 );
-INSERT INTO user_learning_profiles SELECT * FROM _old_user_learning_profiles;
+INSERT INTO user_learning_profiles (
+    id,
+    user_id,
+    persona,
+    goals,
+    weak_topics,
+    strong_topics,
+    preferred_difficulty,
+    daily_goal_minutes,
+    current_streak,
+    longest_streak,
+    last_study_date,
+    training_stage,
+    default_explanation_depth,
+    active_curriculum_id,
+    created_at,
+    updated_at
+)
+SELECT
+    id,
+    user_id,
+    persona,
+    goals,
+    weak_topics,
+    strong_topics,
+    preferred_difficulty,
+    daily_goal_minutes,
+    current_streak,
+    longest_streak,
+    last_study_date,
+    training_stage,
+    default_explanation_depth,
+    active_curriculum_id,
+    created_at,
+    updated_at
+FROM _old_user_learning_profiles;
 DROP TABLE _old_user_learning_profiles;
 CREATE INDEX idx_learning_profiles_user ON user_learning_profiles(user_id);
 

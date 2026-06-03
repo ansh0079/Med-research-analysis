@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, type Location, type To } from 'react-router-dom';
 import { useAuth } from '@contexts/AuthContext';
 import { Button } from '@components/ui/Button';
@@ -42,8 +42,21 @@ export const AuthPage: React.FC = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const [oauthLoading, setOAuthLoading] = useState<'google' | 'orcid' | null>(null);
   const [emailTouched, setEmailTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
+
+  // Surface OAuth errors returned via query param (e.g. ?error=oauth_failed)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const oauthError = params.get('error');
+    if (oauthError) {
+      setError(decodeURIComponent(oauthError).replace(/_/g, ' '));
+      // Clean the URL so the error doesn't persist on refresh
+      navigate(location.pathname, { replace: true, state: location.state });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const strength = getPasswordStrength(password);
   const emailError = emailTouched && email && !isValidEmail(email) ? 'Enter a valid email address' : '';
@@ -105,6 +118,7 @@ export const AuthPage: React.FC = () => {
   };
 
   const startOAuth = (provider: 'google' | 'orcid') => {
+    setOAuthLoading(provider);
     window.location.href = `/api/auth/oauth/${provider}/start`;
   };
 
@@ -328,19 +342,31 @@ export const AuthPage: React.FC = () => {
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 <button
                   type="button"
+                  disabled={Boolean(oauthLoading)}
                   onClick={() => startOAuth('google')}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-600 transition-colors hover:border-indigo-300 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700 dark:text-slate-300 dark:hover:border-indigo-500"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-red-50 hover:border-red-200 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 disabled:opacity-60 disabled:cursor-not-allowed dark:border-slate-700 dark:text-slate-200 dark:hover:bg-red-950/20 dark:hover:border-red-800 dark:hover:text-red-300"
                   aria-label="Continue with Google"
                 >
-                  <i className="fab fa-google" /> Google
+                  {oauthLoading === 'google' ? (
+                    <span className="w-4 h-4 border-2 border-red-300 border-t-red-600 rounded-full animate-spin" />
+                  ) : (
+                    <i className="fab fa-google text-red-500" />
+                  )}
+                  Google
                 </button>
                 <button
                   type="button"
+                  disabled={Boolean(oauthLoading)}
                   onClick={() => startOAuth('orcid')}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-600 transition-colors hover:border-emerald-300 hover:text-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-700 dark:text-slate-300 dark:hover:border-emerald-500"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-400 disabled:opacity-60 disabled:cursor-not-allowed dark:border-slate-700 dark:text-slate-200 dark:hover:bg-emerald-950/20 dark:hover:border-emerald-800 dark:hover:text-emerald-300"
                   aria-label="Continue with ORCID"
                 >
-                  <i className="fab fa-orcid" /> ORCID
+                  {oauthLoading === 'orcid' ? (
+                    <span className="w-4 h-4 border-2 border-emerald-300 border-t-emerald-600 rounded-full animate-spin" />
+                  ) : (
+                    <i className="fab fa-orcid text-emerald-600" />
+                  )}
+                  ORCID
                 </button>
               </div>
             </div>

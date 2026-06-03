@@ -102,6 +102,35 @@ export class LearningApi extends BaseApiClient {
     return response.json();
   }
 
+  async getQuizEvalDataset(params: { limit?: number; topic?: string } = {}): Promise<{
+    generatedAt: string;
+    topic: string | null;
+    count: number;
+    byType: Record<string, number>;
+    dataset: Array<{
+      questionId: string;
+      topic: string;
+      normalizedTopic: string;
+      questionType: string;
+      questionText: string;
+      groundTruthAnswer: string;
+      confidence: number;
+      sourceArticleUid: string | null;
+      outlineNodeId: string | null;
+      claimKey: string | null;
+      conceptHash: string | null;
+      promptVariant: string | null;
+      createdAt: string;
+    }>;
+  }> {
+    const query = new URLSearchParams();
+    if (params.limit) query.set('limit', String(params.limit));
+    if (params.topic) query.set('topic', params.topic);
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/quiz-eval-dataset?${query.toString()}`);
+    if (!response.ok) throw new Error('Failed to load quiz eval dataset');
+    return response.json();
+  }
+
   async createStudyRun(
     topic: string,
     curriculumTopicId?: number
@@ -425,6 +454,23 @@ export class LearningApi extends BaseApiClient {
       body: JSON.stringify(data),
     });
     if (!response.ok) throw new Error('Failed to update portfolio reflection');
+    return response.json();
+  }
+
+  async logLearningEvent(data: {
+    eventType: string;
+    topic?: string;
+    claimKey?: string;
+    sourceType?: string;
+    sourceId?: string | number;
+    payload?: Record<string, unknown>;
+  }): Promise<{ ok: boolean }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/event`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error('Failed to log learning event');
     return response.json();
   }
 }

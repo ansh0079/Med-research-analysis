@@ -3,6 +3,8 @@
  * @param {import('../utils/fetch').safeFetch} fetch
  */
 
+const { buildProxyService } = require('./externalApiProxy');
+
 // EBM evidence hierarchy — higher score = stronger study design
 const EBM_SCORES = {
     'systematic review': 7,
@@ -50,6 +52,12 @@ function normalizeDoi(doi) {
     let d = String(doi).trim().toLowerCase();
     d = d.replace(/^https?:\/\/(dx\.)?doi\.org\//, '');
     return d || null;
+}
+
+function normalizePmid(pmid) {
+    if (!pmid) return null;
+    const match = String(pmid).match(/\d{4,12}/);
+    return match ? match[0] : null;
 }
 
 const TITLE_STOPWORDS = new Set([
@@ -127,19 +135,45 @@ function dedupeKey(article) {
     if (doiNorm) {
         return 'doi:' + doiNorm;
     }
-    if (article.uid) {
-        return 'uid:' + String(article.uid).toLowerCase().trim();
+    const uid = String(article.uid || '');
+    const pmidNorm = normalizePmid(article.pmid || (/^pmid[:\-_]/i.test(uid) ? uid : null));
+    if (pmidNorm) {
+        return 'pmid:' + pmidNorm;
     }
     if (article.title) {
         const norm = article.title
             .toLowerCase()
+            .replace(/\b(a|an|the)\b/g, ' ')
             .replace(/[^\w\s]/g, ' ')
             .replace(/\s+/g, ' ')
             .trim()
-            .slice(0, 80);
-        return norm ? 'title:' + norm : null;
+            .slice(0, 120);
+        const year = parseArticleYear(article);
+        if (norm && norm.length >= 20) return `title:${norm}|year:${year || 'unknown'}`;
+    }
+    if (article.uid) {
+        return 'uid:' + String(article.uid).toLowerCase().trim();
     }
     return null;
+}
+
+function mergeArticleMetadata(primary, incoming) {
+    if (!primary) return incoming;
+    if (!incoming) return primary;
+    const merged = { ...primary };
+    for (const field of ['doi', 'pmid', 'pmcid', 'abstract', 'journal', 'source', 'pubdate', 'year']) {
+        if (!merged[field] && incoming[field]) merged[field] = incoming[field];
+    }
+    const sources = new Set([
+        ...(Array.isArray(primary._sources) ? primary._sources : [primary._source || primary.source].filter(Boolean)),
+        ...(Array.isArray(incoming._sources) ? incoming._sources : [incoming._source || incoming.source].filter(Boolean)),
+    ]);
+    if (sources.size > 0) merged._sources = [...sources];
+    const primaryAuthors = Array.isArray(primary.authors) ? primary.authors : [];
+    const incomingAuthors = Array.isArray(incoming.authors) ? incoming.authors : [];
+    if (primaryAuthors.length === 0 && incomingAuthors.length > 0) merged.authors = incomingAuthors;
+    if ((incoming.pmcrefcount || 0) > (merged.pmcrefcount || 0)) merged.pmcrefcount = incoming.pmcrefcount;
+    return merged;
 }
 
 /**
@@ -173,6 +207,7 @@ function applyRRF(perSourceLists, k = 60, listWeights = []) {
             const entry = scores.get(key);
             if (entry) {
                 entry.rrfScore += rrfContrib;
+                entry.article = mergeArticleMetadata(entry.article, article);
             } else {
                 scores.set(key, { rrfScore: rrfContrib, article });
             }
@@ -256,22 +291,20 @@ function articleFromOpenAlexWork(w) {
  * @returns {Promise<object[]>}
  */
 async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig, fetch: f, vectorList = [], telemetry = null }) {
+    const proxy = buildProxyService({ serverConfig, fetchImpl: f });
+
     // Phase 1: MeSH canonical-term lookup (~100–300 ms).
     // Fires before source searches so PubMed can use the augmented query.
     // Only keeps terms that genuinely expand the query (not substring matches).
     let meshExpansions = [];
     if (sourceList.includes('pubmed')) {
         try {
-            const meshUrl = `https://id.nlm.nih.gov/mesh/lookup/term?label=${encodeURIComponent(query)}&match=contains&limit=4`;
-            const resp = await f(meshUrl, { timeout: 4000, headers: { Accept: 'application/json' } });
-            if (resp?.ok) {
-                const meshData = await resp.json();
-                const qLow = query.toLowerCase();
-                meshExpansions = (Array.isArray(meshData) ? meshData : [])
-                    .map((d) => String(d.label || '').trim())
-                    .filter((label) => label && label.toLowerCase() !== qLow)
-                    .slice(0, 2);
-            }
+            const suggestions = await proxy.meshSuggest(query, { limit: 4 });
+            const qLow = query.toLowerCase();
+            meshExpansions = suggestions
+                .map((d) => String(d.label || '').trim())
+                .filter((label) => label && label.toLowerCase() !== qLow)
+                .slice(0, 2);
         } catch (meshErr) {
             // Non-fatal — fall back to the original query
             console.warn('[unifiedEvidence] MeSH proactive lookup skipped:', meshErr.message);
@@ -288,39 +321,8 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     if (sourceList.includes('pubmed')) {
         sourceFetches.push((async () => {
             try {
-                const ncbiKey = serverConfig.keys.ncbi ? `&api_key=${serverConfig.keys.ncbi}` : '';
-                const esearchUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${encodeURIComponent(pubmedQuery)}&retmax=${safeLimit}&retmode=json${ncbiKey}`;
-                const pmids = (await (await f(esearchUrl, { timeout: 15000 })).json()).esearchresult?.idlist || [];
-
-                if (pmids.length > 0) {
-                    const esummaryUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${pmids.join(',')}&retmode=json${ncbiKey}`;
-                    const esummaryData = await (await f(esummaryUrl, { timeout: 15000 })).json();
-                    return pmids
-                        .map((pmid) => {
-                            const article = esummaryData.result?.[pmid];
-                            if (!article) return null;
-                            const pmcid = article.articleids?.find((id) => ['pmc', 'pmcid'].includes(String(id.idtype || '').toLowerCase()))?.value || null;
-                            return {
-                                uid: `pubmed-${pmid}`,
-                                title: article.title,
-                                authors: article.authors?.map((a) => ({ name: a.name })),
-                                pubdate: article.pubdate,
-                                source: article.source,
-                                pmid,
-                                pmcid,
-                                isFree: Boolean(pmcid),
-                                pmcrefcount: article.pmcrefcount || 0,
-                                abstract: article.abstract ?? article.abstracttext,
-                                pubtype: article.pubtype || [],
-                                doi: article.articleids?.find((id) => id.idtype === 'doi')?.value || null,
-                                _source: 'pubmed',
-                            };
-                        })
-                        .filter(Boolean);
-                }
-
-                // Zero PubMed results — record alias telemetry using the expansions already fetched.
-                if (telemetry && typeof telemetry === 'object') {
+                const articles = await proxy.pubmedSearch(pubmedQuery, { maxResults: safeLimit });
+                if (articles.length === 0 && telemetry && typeof telemetry === 'object') {
                     telemetry.lowRecallLearning = {
                         query,
                         resultCount: 0,
@@ -328,7 +330,7 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
                         expandedAliases: meshExpansions,
                     };
                 }
-                return [];
+                return articles;
             } catch (err) {
                 console.warn('[unifiedEvidence] PubMed failed', err.message);
                 return [];
@@ -339,23 +341,7 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     if (sourceList.includes('semantic') || sourceList.includes('semantic-scholar')) {
         sourceFetches.push((async () => {
             try {
-                const headers = serverConfig.keys.semantic ? { 'x-api-key': serverConfig.keys.semantic } : {};
-                const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(query)}&limit=${safeLimit}&fields=title,authors,year,citationCount,abstract,journal,openAccessPdf,publicationTypes,externalIds`;
-                const data = await (await f(url, { headers, timeout: 15000 })).json();
-                return (data.data || []).map((p) => ({
-                    uid: p.paperId,
-                    title: p.title,
-                    authors: p.authors?.map((a) => ({ name: a.name })),
-                    pubdate: p.year?.toString(),
-                    source: p.journal?.name || 'Semantic Scholar',
-                    pmcrefcount: p.citationCount,
-                    abstract: p.abstract,
-                    isFree: !!p.openAccessPdf,
-                    fullTextUrl: p.openAccessPdf?.url || null,
-                    pubtype: p.publicationTypes || [],
-                    doi: p.externalIds?.DOI || null,
-                    _source: 'semantic',
-                }));
+                return await proxy.semanticScholarSearch(query, { limit: safeLimit });
             } catch (err) {
                 console.warn('[unifiedEvidence] Semantic Scholar failed', err.message);
                 return [];
@@ -366,10 +352,8 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     if (sourceList.includes('openalex')) {
         sourceFetches.push((async () => {
             try {
-                const headers = serverConfig.keys.openalex ? { Authorization: `Bearer ${serverConfig.keys.openalex}` } : {};
-                const url = `https://api.openalex.org/works?search=${encodeURIComponent(query)}&per-page=${safeLimit}`;
-                const data = await (await f(url, { headers, timeout: 15000 })).json();
-                return (data.results || []).map(articleFromOpenAlexWork);
+                const works = await proxy.openAlexSearch(query, { limit: safeLimit });
+                return works.map(articleFromOpenAlexWork);
             } catch (err) {
                 console.warn('[unifiedEvidence] OpenAlex failed', err.message);
                 return [];
@@ -401,5 +385,6 @@ module.exports = {
     isPreprint,
     collapseNearDuplicateTitles,
     dedupeKey,
+    normalizePmid,
     normalizeDoi,
 };

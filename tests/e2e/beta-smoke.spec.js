@@ -42,7 +42,7 @@ test.describe('beta smoke', () => {
       });
     });
 
-    await page.route('**/api/search?**', async (route) => {
+    await page.route('**/api/search**', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -91,5 +91,54 @@ test.describe('beta smoke', () => {
     await page.getByLabel('Data use notice').getByRole('link', { name: /Privacy/i }).click();
     await expect(page).toHaveURL(/\/legal\/privacy$/);
     await expect(page.getByRole('heading', { name: /Privacy/i })).toBeVisible();
+  });
+
+  test('collects five-step learner onboarding preferences', async ({ page }) => {
+    await page.route('**/api/auth/me', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ user: { id: 'u-e2e', email: 'e2e@example.com', role: 'user' } }),
+      });
+    });
+
+    let savedProfile = null;
+    await page.route('**/api/learning/profile', async (route) => {
+      if (route.request().method() === 'POST') {
+        savedProfile = JSON.parse(route.request().postData() || '{}');
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ profile: { id: 1, userId: 'u-e2e', ...savedProfile } }),
+        });
+        return;
+      }
+      await route.fulfill({
+        status: 404,
+        contentType: 'application/json',
+        body: JSON.stringify({ error: 'Profile not found' }),
+      });
+    });
+
+    await page.goto('/');
+
+    await page.getByRole('button', { name: /Finals/i }).click();
+    await page.getByRole('button', { name: /^Next$/ }).click();
+    await page.getByRole('button', { name: /Cardiology/i }).click();
+    await page.getByRole('button', { name: /^Next$/ }).click();
+    await page.getByRole('button', { name: /Pass exams/i }).click();
+    await page.getByRole('button', { name: /^Next$/ }).click();
+    await page.getByRole('button', { name: /Mixed/i }).click();
+    await page.getByRole('button', { name: /^Next$/ }).click();
+    await page.getByRole('button', { name: /25 minutes per day/i }).click();
+    await page.locator('.fixed').getByRole('button', { name: /^Search$/ }).click();
+
+    await expect.poll(() => savedProfile).toMatchObject({
+      trainingStage: 'finals',
+      specialtyInterest: 'Cardiology',
+      studyGoal: 'Pass exams',
+      preferredDifficulty: 'mixed',
+      dailyGoalMinutes: 25,
+    });
   });
 });

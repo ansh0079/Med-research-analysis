@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from '@services/api';
 import { Button } from '@components/ui/Button';
+import { useAuth } from '@contexts/AuthContext';
+import { useToast } from '@components/ui/Toast';
 import type { Article, QuizQuestion } from '@types';
 
 interface Props {
@@ -11,6 +13,8 @@ interface Props {
 }
 
 export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete, autoExpand = false }) => {
+  const { isAuthenticated } = useAuth();
+  const { showToast } = useToast();
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,13 +24,21 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
   const [score, setScore] = useState(0);
   const [completed, setCompleted] = useState(false);
   const [expanded, setExpanded] = useState(autoExpand);
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+
+  // Track per-question timing and answers for optional backend submission
+  const questionStartRef = useRef<number>(0);
+  const answersRef = useRef<Array<{ questionId: string; userAnswer: string; isCorrect: boolean; timeMs: number }>>([]);
 
   const fetchQuestions = useCallback(async () => {
     setLoading(true);
     setError(null);
+    setSaveStatus('idle');
+    answersRef.current = [];
     try {
       const result = await api.generateQuizFromEvidence(topic, articles, 'mixed', 3);
       setQuestions(result.questions);
+      questionStartRef.current = Date.now();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load quiz');
     } finally {
@@ -47,22 +59,74 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
   const currentQuestion = questions[currentIndex];
 
   const handleSelect = (letter: string) => {
-    if (showExplanation) return;
+    if (showExplanation || !currentQuestion) return;
+    const timeMs = Date.now() - questionStartRef.current;
+    const isCorrect = letter === currentQuestion.correctAnswer;
     setSelectedAnswer(letter);
     setShowExplanation(true);
-    if (letter === currentQuestion.correctAnswer) {
+    if (isCorrect) {
       setScore((s) => s + 1);
     }
+    answersRef.current.push({
+      questionId: currentQuestion.id || `${topic}-${currentIndex}`,
+      userAnswer: letter,
+      isCorrect,
+      timeMs,
+    });
   };
+
+  const submitToBackend = useCallback(async (finalScore: number, total: number) => {
+    if (!isAuthenticated || answersRef.current.length === 0) return;
+    setSaveStatus('saving');
+    try {
+      const attempts = questions.map((q, idx) => {
+        const ans = answersRef.current[idx];
+        return {
+          questionId: q.id || `${topic}-${idx}`,
+          questionType: (q.questionType || 'clinical_application') as import('@types').QuizAttempt['questionType'],
+          questionText: q.question,
+          userAnswer: ans?.userAnswer || '',
+          correctAnswer: q.correctAnswer,
+          isCorrect: ans?.isCorrect ?? false,
+          timeMs: ans?.timeMs ?? 0,
+          confidence: undefined as number | undefined,
+          sourceArticleUid: q.sourceArticle || undefined,
+          sourceArticleTitle: getSourceTitle(q.sourceArticle, q.sourceIndices) || null,
+          outlineNodeId: null as string | null,
+          outlineLabel: null as string | null,
+          claimKey: null as string | null,
+          promptVariant: 'in_search_evidence_quiz',
+        };
+      });
+
+      await api.submitQuizAttempt({
+        topic,
+        attempts,
+      });
+      setSaveStatus('saved');
+      showToast('Quiz saved to your learning profile', 'success', 3000);
+    } catch (err) {
+      setSaveStatus('error');
+      if (err instanceof Error && err.message === 'VERIFICATION_REQUIRED') {
+        showToast('Verify your email to save quiz progress', 'warning', 5000);
+      } else {
+        // Non-blocking: user still sees their score. Silent failure is okay.
+        showToast('Could not save quiz progress', 'info', 3000);
+      }
+    }
+  }, [isAuthenticated, questions, topic, showToast]);
 
   const handleNext = () => {
     if (currentIndex + 1 >= questions.length) {
+      const finalScore = score + (selectedAnswer === currentQuestion?.correctAnswer ? 1 : 0);
       setCompleted(true);
-      onComplete?.(score + (selectedAnswer === currentQuestion?.correctAnswer ? 1 : 0), questions.length);
+      onComplete?.(finalScore, questions.length);
+      void submitToBackend(finalScore, questions.length);
     } else {
       setCurrentIndex((i) => i + 1);
       setSelectedAnswer(null);
       setShowExplanation(false);
+      questionStartRef.current = Date.now();
     }
   };
 
@@ -74,6 +138,8 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
     setScore(0);
     setCompleted(false);
     setError(null);
+    setSaveStatus('idle');
+    answersRef.current = [];
     fetchQuestions();
   };
 
@@ -103,6 +169,11 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
           {completed && (
             <span className={`text-xs font-bold rounded-full px-2 py-0.5 ${score === questions.length ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
               {score}/{questions.length} correct
+            </span>
+          )}
+          {saveStatus === 'saved' && (
+            <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+              <i className="fas fa-check" /> Saved
             </span>
           )}
         </div>
@@ -158,7 +229,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
                 </span>
               </div>
 
-              <p className="text-sm font-semibold text-slate800 dark:text-slate-100 leading-relaxed">
+              <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 leading-relaxed">
                 {currentQuestion.question}
               </p>
 

@@ -22,6 +22,7 @@ const { limitBodySize } = require('../utils/validation');
 const { resolveProvider } = require('../utils/aiProvider');
 const { parseJsonArrayStrict } = require('../utils/parseJson');
 const { createLlmUsageLogger, buildUsageEntry } = require('../services/llmUsageService');
+const { createMcqValidationService } = require('../services/mcqValidationService');
 
 /**
  * @param {import('express').Application} app
@@ -36,7 +37,9 @@ function registerAiRoutes(app, deps) {
         userRateLimit,
         requireJson,
         requireAuthJwt,
+        requireVerifiedEmail,
         requireRole,
+        requirePaidFeature,
         validateAnalysisBody,
         validateBody,
         schemas,
@@ -52,6 +55,7 @@ function registerAiRoutes(app, deps) {
         fetchImpl,
         onLlmCall: async (meta) => logLlm(buildUsageEntry(meta)),
     });
+    const mcqValidator = createMcqValidationService({ ai, db, logger, PINNED_MODELS });
 
     // Content negotiation: non-streaming AI endpoints automatically delegate to SSE
     // handlers when the client sends Accept: text/event-stream. This prevents
@@ -857,12 +861,59 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                 return res.status(502).json({ error: 'AI returned non-array quiz data. Please retry.' });
             }
 
+            let validationSummary = { reviewed: 0, rejected: 0, rejections: [], skipped: false };
+            let validatedRaw = raw;
+            const batchTs = Date.now();
+            try {
+                const validation = await mcqValidator.validateBatch({
+                    topic: cleanTopic,
+                    questions: raw,
+                    provider: usedProvider,
+                    model: quizModel,
+                    articles,
+                    guidelines,
+                });
+                if (validation) {
+                    for (let idx = 0; idx < raw.length; idx++) {
+                        const rejection = validation.rejections.find((r) => r.mcqIndex === idx + 1);
+                        void mcqValidator.recordValidationResult({
+                            questionId: `quiz_${batchTs}_${idx}`,
+                            topic: cleanTopic,
+                            normalizedTopic: db.normalizeTopic(cleanTopic),
+                            jobKey: resolvedClaimJobKey || null,
+                            promptVariant: promptVariant || null,
+                            status: rejection ? 'rejected' : 'passed',
+                            reasons: rejection ? rejection.issues : [],
+                            reviewerNotes: rejection ? rejection.reason : null,
+                            provider: usedProvider,
+                            model: quizModel,
+                        });
+                    }
+                    validatedRaw = raw.filter((_, idx) => validation.validIndices.has(idx + 1));
+                    validationSummary = {
+                        reviewed: validation.reviewed,
+                        rejected: validation.rejections.length,
+                        rejections: validation.rejections,
+                        skipped: false,
+                    };
+                    if (validatedRaw.length === 0) {
+                        return res.status(502).json({
+                            error: 'All generated MCQs failed clinical validation. Please retry.',
+                            validation: validationSummary,
+                        });
+                    }
+                }
+            } catch (validationErr) {
+                req.log.warn({ err: validationErr }, 'MCQ validation skipped after reviewer failure');
+                validationSummary = { reviewed: 0, rejected: 0, rejections: [], skipped: true };
+            }
+
             const VALID_QTYPES = ['recall', 'clinical_application', 'trial_interpretation', 'guideline', 'pitfall'];
             const LETTERS = ['A', 'B', 'C', 'D'];
             const validOutlineNodeIds = new Set(outlineNodes.map((node) => node.id));
             const validClaimKeys = claimAnchors ? new Set(claimAnchors.map((c) => c.claimKey)) : null;
             const claimByKey = claimAnchors ? new Map(claimAnchors.map((c) => [c.claimKey, c])) : null;
-            const questions = raw.map((q, idx) => {
+            const questions = validatedRaw.map((q, idx) => {
                 const sourceIndices = validateSourceIndices(q.sourceIndices, articles.length);
                 const ck = claimAnchors ? normalizeClaimKey(q.claimKey, validClaimKeys, claimAnchors, idx) : null;
                 const cmeta = ck && claimByKey ? claimByKey.get(ck) : null;
@@ -876,7 +927,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                     if (Object.keys(distractorRationale).length === 0) distractorRationale = null;
                 }
                 return {
-                    id: `quiz_${Date.now()}_${idx}`,
+                    id: `quiz_${batchTs}_${idx}`,
                     type: 'multiple_choice',
                     questionType: VALID_QTYPES.includes(q.questionType) ? q.questionType : 'clinical_application',
                     question: String(q.question || ''),
@@ -895,6 +946,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                     topic: cleanTopic,
                     claimKey: ck,
                     promptVariant,
+                    validationStatus: validationSummary.skipped ? 'validation_skipped' : 'llm_validated',
                     outlineLabel: cmeta ? String(cmeta.claimText || '').slice(0, 200) : null,
                 };
             });
@@ -912,6 +964,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                 targetNodes,
                 claimJobKey: resolvedClaimJobKey || undefined,
                 promptVariant,
+                validation: validationSummary,
                 claimAnchorMode,
                 adaptiveClaimCount: claimAnchorMode === 'adaptive_teaching_object' ? claimAnchors.length : undefined,
                 evidenceAudit: claimSourceJob ? {
@@ -1022,9 +1075,56 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                 return res.status(502).json({ error: 'AI returned non-array quiz data. Please retry.' });
             }
 
+            let validationSummary = { reviewed: 0, rejected: 0, rejections: [], skipped: false };
+            let validatedRaw = raw;
+            const batchTs = Date.now();
+            try {
+                const validation = await mcqValidator.validateBatch({
+                    topic: topic.trim(),
+                    questions: raw,
+                    provider: usedProvider,
+                    model: quizModel,
+                    articles,
+                    guidelines,
+                });
+                if (validation) {
+                    for (let idx = 0; idx < raw.length; idx++) {
+                        const rejection = validation.rejections.find((r) => r.mcqIndex === idx + 1);
+                        void mcqValidator.recordValidationResult({
+                            questionId: `quiz_${batchTs}_${idx}`,
+                            topic: topic.trim(),
+                            normalizedTopic: db.normalizeTopic(topic.trim()),
+                            jobKey: null,
+                            promptVariant: promptVariant || null,
+                            status: rejection ? 'rejected' : 'passed',
+                            reasons: rejection ? rejection.issues : [],
+                            reviewerNotes: rejection ? rejection.reason : null,
+                            provider: usedProvider,
+                            model: quizModel,
+                        });
+                    }
+                    validatedRaw = raw.filter((_, idx) => validation.validIndices.has(idx + 1));
+                    validationSummary = {
+                        reviewed: validation.reviewed,
+                        rejected: validation.rejections.length,
+                        rejections: validation.rejections,
+                        skipped: false,
+                    };
+                    if (validatedRaw.length === 0) {
+                        return res.status(502).json({
+                            error: 'All generated MCQs failed clinical validation. Please retry.',
+                            validation: validationSummary,
+                        });
+                    }
+                }
+            } catch (validationErr) {
+                req.log.warn({ err: validationErr }, 'MCQ validation skipped after reviewer failure');
+                validationSummary = { reviewed: 0, rejected: 0, rejections: [], skipped: true };
+            }
+
             const VALID_QTYPES = ['recall', 'clinical_application', 'trial_interpretation', 'guideline', 'pitfall'];
             const LETTERS = ['A', 'B', 'C', 'D'];
-            const questions = raw.map((q, idx) => {
+            const questions = validatedRaw.map((q, idx) => {
                 const sourceIndices = validateSourceIndices(q.sourceIndices, articles.length);
                 let distractorRationale = null;
                 if (q.distractorRationale && typeof q.distractorRationale === 'object' && !Array.isArray(q.distractorRationale)) {
@@ -1036,7 +1136,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                     if (Object.keys(distractorRationale).length === 0) distractorRationale = null;
                 }
                 return {
-                    id: `evq_${Date.now()}_${idx}`,
+                    id: `evq_${batchTs}_${idx}`,
                     type: 'multiple_choice',
                     questionType: VALID_QTYPES.includes(q.questionType) ? q.questionType : 'clinical_application',
                     question: String(q.question || ''),
@@ -1054,10 +1154,11 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                     outlineNodeId: null,
                     topic: topic.trim(),
                     promptVariant,
+                    validationStatus: validationSummary.skipped ? 'validation_skipped' : 'llm_validated',
                 };
             });
 
-            res.json({ questions, topic: topic.trim(), provider: usedProvider, model: quizModel, promptVariant, disclaimer: AI_DISCLAIMER });
+            res.json({ questions, topic: topic.trim(), provider: usedProvider, model: quizModel, promptVariant, validation: validationSummary, disclaimer: AI_DISCLAIMER });
         } catch (error) {
             req.log.error({ err: error }, 'Quiz-from-evidence error');
             res.status(500).json({ error: 'Internal Server Error' });
@@ -1127,7 +1228,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         }
     });
 
-    app.post('/api/ai/synthesize', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireRole('pro', 'researcher', 'admin'), aiUserLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
+    app.post('/api/ai/synthesize', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireVerifiedEmail, requirePaidFeature('aiSynthesis'), aiUserLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
         const { articles, topic, provider = 'auto', async: asyncJob } = req.body;
 
         if (!Array.isArray(articles) || articles.length === 0) {
@@ -1392,7 +1493,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         }
     });
 
-    app.post('/api/ai/synthesize/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireRole('pro', 'researcher', 'admin'), aiUserLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
+    app.post('/api/ai/synthesize/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireVerifiedEmail, requirePaidFeature('aiSynthesis'), aiUserLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
         const { articles, topic, provider = 'auto' } = req.body;
 
         if (!Array.isArray(articles) || articles.length === 0) {
@@ -1492,7 +1593,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
     // Single-article structured synopsis — returns the 13-field schema.
     // Cached 24 hours. Use body.async=true to queue a durable job (poll GET /api/ai/jobs/:jobKey).
     // ─────────────────────────────────────────────────────────────────
-    app.post('/api/ai/synopsis', limitBodySize(512 * 1024), requireJson, requireAuthJwt, requireRole('pro', 'researcher', 'admin'), rateLimit(20, 60), validateBody(schemas.synopsis), async (req, res) => {
+    app.post('/api/ai/synopsis', limitBodySize(512 * 1024), requireJson, requireAuthJwt, requirePaidFeature('aiSynthesis'), rateLimit(20, 60), validateBody(schemas.synopsis), async (req, res) => {
         const { article, provider = 'auto', async: asyncJob, topic = '' } = req.body;
         try {
             if (asyncJob === true) {
@@ -1528,7 +1629,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         }
     });
 
-    app.post('/api/teaching-objects/paper', limitBodySize(512 * 1024), requireJson, requireAuthJwt, requireRole('pro', 'researcher', 'admin'), rateLimit(20, 60), validateBody(schemas.synopsis), async (req, res) => {
+    app.post('/api/teaching-objects/paper', limitBodySize(512 * 1024), requireJson, requireAuthJwt, requirePaidFeature('aiSynthesis'), rateLimit(20, 60), validateBody(schemas.synopsis), async (req, res) => {
         const { article, provider = 'auto', topic = '' } = req.body;
         try {
             const synopsisResult = await runPaperSynopsisGeneration({

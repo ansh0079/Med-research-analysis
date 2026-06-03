@@ -59,6 +59,15 @@ export default defineConfig({
       name: 'Desktop Chrome HiDPI',
       use: { ...devices['Desktop Chrome HiDPI'] },
     },
+    // Authenticated project — reuses real login state from globalSetup
+    {
+      name: 'chromium-auth',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: './tests/e2e/.auth/user.json',
+      },
+      dependencies: [],
+    },
   ],
   webServer: {
     command: 'npm run build && npm run start:prod',

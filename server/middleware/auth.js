@@ -118,11 +118,18 @@ async function optionalAuth(req, _res, next) {
     next();
 }
 
+// When DEV_DISABLE_AUTH=true, requireAuthJwt and requireRole become no-ops.
+// Set this in your .env for local development; never set it in production.
+const DEV_DISABLE_AUTH = String(process.env.DEV_DISABLE_AUTH || '').toLowerCase() === 'true';
+
 /**
  * Strict auth: requires a valid httpOnly cookie.
  * Bearer header fallback is intentionally removed for cookie-only production auth.
+ * Bypassed entirely when DEV_DISABLE_AUTH=true.
  */
 async function requireAuthJwt(req, res, next) {
+    if (DEV_DISABLE_AUTH) return optionalAuth(req, res, next);
+
     const token = extractToken(req);
 
     if (!token) {
@@ -145,12 +152,31 @@ async function requireAuthJwt(req, res, next) {
 
 function requireRole(...allowedRoles) {
     return (req, res, next) => {
+        if (DEV_DISABLE_AUTH) return next();
         if (!req.user) return res.status(401).json({ error: 'Authorization required' });
         if (!allowedRoles.includes(req.user.role)) {
             return res.status(403).json({ error: 'Forbidden: insufficient privileges' });
         }
         next();
     };
+}
+
+/**
+ * Requires a verified email address for routes that handle sensitive learning data
+ * or premium features. Returns 403 with `verificationRequired: true` so the
+ * frontend can show a targeted nudge rather than a generic error.
+ */
+function requireVerifiedEmail(req, res, next) {
+    if (DEV_DISABLE_AUTH) return next();
+    if (!req.user) return res.status(401).json({ error: 'Authorization required' });
+    if (req.user.emailVerified !== true) {
+        return res.status(403).json({
+            error: 'Email verification required',
+            verificationRequired: true,
+            message: 'Please verify your email address to use this feature.',
+        });
+    }
+    next();
 }
 
 function requirePaidFeature(featureName = 'premium_feature') {
@@ -569,6 +595,7 @@ module.exports = {
     optionalAuth,
     requireAuthJwt,
     requireRole,
+    requireVerifiedEmail,
     requirePaidFeature,
     registerAuthRoutes,
     revokeToken,

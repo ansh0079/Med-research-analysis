@@ -2,9 +2,10 @@ import { useCallback, useRef, useEffect, useState } from 'react';
 import { api } from '@services/api';
 import { queryParser } from '@services/QueryParser';
 import { useSearchContext } from '@contexts/SearchContext';
-import type { Article, ProactiveAlert, ProactiveEvidenceAlert, SearchFilters } from '@types';
+import type { AgentGuidance, Article, ProactiveAlert, ProactiveEvidenceAlert, SearchFilters } from '@types';
 import { useAuth } from '@contexts/AuthContext';
 import { useAnalytics } from './useAnalytics';
+import { usePolling } from './usePolling';
 
 const POLL_DELAYS = [8000, 12000, 18000]; // 8 s, then 12 s, then 18 s — three attempts
 const ENRICHMENT_POLL_DELAYS = [2000, 3000, 4000, 5000, 6000, 8000, 10000]; // up to ~38 s total
@@ -54,99 +55,85 @@ export function useSearch() {
   const [proactiveAlert, setProactiveAlert] = useState<ProactiveAlert | null>(null);
   const [aiEnrichmentLoading, setAiEnrichmentLoading] = useState(false);
   const requestIdRef = useRef(0);
-  const pollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const enrichmentTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const schedulePollRef = useRef<(topic: string, forRequestId: number, attempt?: number) => void>();
-  const scheduleEnrichmentPollRef = useRef<(key: string, forRequestId: number, attempt?: number) => void>();
 
-  const cancelPoll = () => {
-    if (pollTimerRef.current !== null) {
-      clearTimeout(pollTimerRef.current);
-      pollTimerRef.current = null;
-    }
-    if (enrichmentTimerRef.current !== null) {
-      clearTimeout(enrichmentTimerRef.current);
-      enrichmentTimerRef.current = null;
-    }
-  };
+  // Topic-knowledge polling --------------------------------------------------
+  const [pollTopic, setPollTopic] = useState<string | null>(null);
+  const topicPollRequestIdRef = useRef(0);
 
-  const schedulePoll = useCallback(
-    (topic: string, forRequestId: number, attempt = 0) => {
-      if (attempt >= POLL_DELAYS.length) {
-        if (forRequestId === requestIdRef.current) {
-          setTopicGuideStatus('pending');
-          trackFeatureUsage('topic_guide_pending', { topic: topic.slice(0, 200) });
+  const topicPoll = usePolling({
+    delays: POLL_DELAYS,
+    fetcher: useCallback(async () => {
+      if (!pollTopic) throw new Error('no topic');
+      return api.getTopicKnowledge(pollTopic);
+    }, [pollTopic]),
+    isComplete: useCallback((result: Awaited<ReturnType<typeof api.getTopicKnowledge>>) => {
+      return Boolean(result.found && result.agentGuidance);
+    }, []),
+    onSuccess: useCallback((result: { found: boolean; agentGuidance: AgentGuidance | null }) => {
+      if (topicPollRequestIdRef.current !== requestIdRef.current) return;
+      setAgentGuidance(result.agentGuidance);
+      setTopicGuideStatus('ready');
+      trackFeatureUsage('topic_guide_ready', { source: 'poll', topic: (pollTopic || '').slice(0, 200) });
+    }, [setAgentGuidance, setTopicGuideStatus, trackFeatureUsage, pollTopic]),
+    onTimeout: useCallback(() => {
+      if (topicPollRequestIdRef.current !== requestIdRef.current) return;
+      setTopicGuideStatus('pending');
+      trackFeatureUsage('topic_guide_pending', { topic: (pollTopic || '').slice(0, 200) });
+    }, [setTopicGuideStatus, trackFeatureUsage, pollTopic]),
+  });
+
+  // AI-enrichment polling ----------------------------------------------------
+  const [enrichKey, setEnrichKey] = useState<string | null>(null);
+  const enrichPollRequestIdRef = useRef(0);
+
+  const enrichmentPoll = usePolling({
+    delays: ENRICHMENT_POLL_DELAYS,
+    fetcher: useCallback(async () => {
+      if (!enrichKey) throw new Error('no key');
+      return api.getAiEnrichment(enrichKey);
+    }, [enrichKey]),
+    isComplete: useCallback((enrichment: Awaited<ReturnType<typeof api.getAiEnrichment>>) => {
+      return enrichment.status === 'ready' || enrichment.status === 'failed';
+    }, []),
+    onSuccess: useCallback((enrichment: {
+      status: 'pending' | 'ready' | 'failed';
+      clinicalAnswer?: import('@types').ClinicalAnswer | null;
+      consensusSynopsis?: import('@types').TopicIntelligence['consensusSynopsis'] | null;
+    }) => {
+      if (enrichPollRequestIdRef.current !== requestIdRef.current) return;
+      if (enrichment.status === 'ready') {
+        if (enrichment.clinicalAnswer) setClinicalAnswer(enrichment.clinicalAnswer);
+        if (enrichment.consensusSynopsis) {
+          const cs = enrichment.consensusSynopsis;
+          setTopicIntelligence((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  consensusSynopsis: cs ?? undefined,
+                  actions: {
+                    ...prev.actions,
+                    canGenerateConsensusSynopsis: cs?.status === 'generated',
+                  },
+                }
+              : prev
+          );
         }
-        return;
       }
-      pollTimerRef.current = setTimeout(async () => {
-        if (forRequestId !== requestIdRef.current) return;
-        try {
-          const result = await api.getTopicKnowledge(topic);
-          if (forRequestId !== requestIdRef.current) return;
-          if (result.found && result.agentGuidance) {
-            setAgentGuidance(result.agentGuidance);
-            setTopicGuideStatus('ready');
-            trackFeatureUsage('topic_guide_ready', { source: 'poll', topic: topic.slice(0, 200) });
-            return;
-          }
-        } catch { /* ignore */ }
-        schedulePollRef.current?.(topic, forRequestId, attempt + 1);
-      }, POLL_DELAYS[attempt]);
-    },
-    [setAgentGuidance, setTopicGuideStatus, trackFeatureUsage]
-  );
-
-  const scheduleEnrichmentPoll = useCallback(
-    (key: string, forRequestId: number, attempt = 0) => {
-      if (attempt >= ENRICHMENT_POLL_DELAYS.length) {
-        // Give up — leave clinicalAnswer as null
-        if (forRequestId === requestIdRef.current) setAiEnrichmentLoading(false);
-        return;
-      }
-      enrichmentTimerRef.current = setTimeout(async () => {
-        if (forRequestId !== requestIdRef.current) return;
-        try {
-          const enrichment = await api.getAiEnrichment(key);
-          if (forRequestId !== requestIdRef.current) return;
-          if (enrichment.status === 'ready') {
-            if (enrichment.clinicalAnswer) setClinicalAnswer(enrichment.clinicalAnswer);
-            if (enrichment.consensusSynopsis) {
-              const cs = enrichment.consensusSynopsis;
-              setTopicIntelligence((prev) =>
-                prev
-                  ? {
-                      ...prev,
-                      consensusSynopsis: cs ?? undefined,
-                      actions: {
-                        ...prev.actions,
-                        canGenerateConsensusSynopsis: cs?.status === 'generated',
-                      },
-                    }
-                  : prev
-              );
-            }
-            setAiEnrichmentLoading(false);
-            return;
-          }
-          if (enrichment.status === 'failed') {
-            setAiEnrichmentLoading(false);
-            return;
-          }
-        } catch { /* ignore, retry */ }
-        scheduleEnrichmentPollRef.current?.(key, forRequestId, attempt + 1);
-      }, ENRICHMENT_POLL_DELAYS[attempt]);
-    },
-    [setClinicalAnswer, setTopicIntelligence]
-  );
-
-  useEffect(() => {
-    schedulePollRef.current = schedulePoll;
+      setAiEnrichmentLoading(false);
+    }, [setClinicalAnswer, setTopicIntelligence]),
+    onTimeout: useCallback(() => {
+      if (enrichPollRequestIdRef.current !== requestIdRef.current) return;
+      setAiEnrichmentLoading(false);
+    }, [setAiEnrichmentLoading]),
   });
 
-  useEffect(() => {
-    scheduleEnrichmentPollRef.current = scheduleEnrichmentPoll;
-  });
+  // Cancel all polling when a new search starts or on unmount
+  const cancelPoll = useCallback(() => {
+    topicPoll.stop();
+    enrichmentPoll.stop();
+    setPollTopic(null);
+    setEnrichKey(null);
+  }, [topicPoll, enrichmentPoll]);
 
   const search = useCallback(
     async (query: string, filters: SearchFilters = {}): Promise<Article[]> => {
@@ -224,13 +211,17 @@ export function useSearch() {
 
         // If no guidance yet, poll in background until extraction completes
         if (!agentGuidance && knowledgeAvailable === false && articles.length >= 2) {
-          schedulePoll(query.trim(), thisRequestId);
+          topicPollRequestIdRef.current = thisRequestId;
+          setPollTopic(query.trim());
+          topicPoll.start();
         }
 
         // Poll for AI enrichment (consensus synopsis + clinical answer) if still pending
         if (aiEnrichmentKey && aiEnrichmentStatus === 'pending') {
           setAiEnrichmentLoading(true);
-          scheduleEnrichmentPoll(aiEnrichmentKey, thisRequestId);
+          enrichPollRequestIdRef.current = thisRequestId;
+          setEnrichKey(aiEnrichmentKey);
+          enrichmentPoll.start();
         }
 
         return articles;
@@ -249,7 +240,7 @@ export function useSearch() {
         if (thisRequestId === requestIdRef.current) setLoading(false);
       }
     },
-    [setResults, setLoading, setError, setDetectedTopic, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, trackFeatureUsage, trackSearch, schedulePoll, scheduleEnrichmentPoll, addToSearchHistory, searchHistory, refreshKnowledgeDriftAlerts]
+    [setResults, setLoading, setError, setDetectedTopic, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, trackFeatureUsage, trackSearch, addToSearchHistory, searchHistory, refreshKnowledgeDriftAlerts, cancelPoll, topicPoll, enrichmentPoll]
   );
 
   const clearResults = useCallback(() => {
@@ -264,7 +255,7 @@ export function useSearch() {
     setTopicGuideStatus('idle');
     setLastSearchId(null);
     setAiEnrichmentLoading(false);
-  }, [setResults, setError, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus]);
+  }, [setResults, setError, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, cancelPoll]);
 
   return { search, loading, error, results, clearResults, lastSearchId, proactiveAlert, aiEnrichmentLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert };
 }

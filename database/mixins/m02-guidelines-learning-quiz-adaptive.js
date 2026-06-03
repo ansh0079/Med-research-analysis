@@ -220,6 +220,8 @@ async getLearningProfile(userId) {
         lastStudyDate: row.last_study_date,
         trainingStage: row.training_stage || undefined,
         defaultExplanationDepth: row.default_explanation_depth || undefined,
+        specialtyInterest: row.specialty_interest || undefined,
+        studyGoal: row.study_goal || undefined,
         activeCurriculumId: row.active_curriculum_id != null ? Number(row.active_curriculum_id) : undefined,
         createdAt: row.created_at,
         updatedAt: row.updated_at,
@@ -244,6 +246,8 @@ async upsertLearningProfile(userId, data) {
         add('last_study_date', data.lastStudyDate);
         add('training_stage', data.trainingStage);
         add('default_explanation_depth', data.defaultExplanationDepth);
+        add('specialty_interest', data.specialtyInterest !== undefined ? (data.specialtyInterest ? String(data.specialtyInterest).trim().slice(0, 120) : null) : undefined);
+        add('study_goal', data.studyGoal !== undefined ? (data.studyGoal ? String(data.studyGoal).trim().slice(0, 160) : null) : undefined);
         add('active_curriculum_id', data.activeCurriculumId);
         fields.push('updated_at = ?');
         values.push(now);
@@ -252,8 +256,8 @@ async upsertLearningProfile(userId, data) {
         return this.getLearningProfile(userId);
     }
     await this.run(
-        `INSERT INTO user_learning_profiles (user_id, persona, goals, weak_topics, strong_topics, preferred_difficulty, daily_goal_minutes, current_streak, longest_streak, last_study_date, training_stage, default_explanation_depth, active_curriculum_id, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO user_learning_profiles (user_id, persona, goals, weak_topics, strong_topics, preferred_difficulty, daily_goal_minutes, current_streak, longest_streak, last_study_date, training_stage, default_explanation_depth, specialty_interest, study_goal, active_curriculum_id, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
             userId,
             data.persona || null,
@@ -267,6 +271,8 @@ async upsertLearningProfile(userId, data) {
             data.lastStudyDate || null,
             data.trainingStage || 'finals',
             data.defaultExplanationDepth || 'exam_focus',
+            data.specialtyInterest ? String(data.specialtyInterest).trim().slice(0, 120) : null,
+            data.studyGoal ? String(data.studyGoal).trim().slice(0, 160) : null,
             data.activeCurriculumId != null ? data.activeCurriculumId : null,
             now,
             now,
@@ -394,6 +400,69 @@ async getQuizAttemptStats(userId, topic) {
         [userId, normalized]
     );
     return rows;
+}
+
+// ==========================================
+// Quiz Validation Results
+// ==========================================
+
+async recordQuizValidationResult(result) {
+    await this.run(
+        `INSERT INTO quiz_validation_results (
+            question_id, topic, normalized_topic, generation_job_key, prompt_variant,
+            status, rejection_reasons, reviewer_notes, source_provider, source_model
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            String(result.questionId || '').slice(0, 120),
+            String(result.topic || '').slice(0, 240),
+            this.normalizeTopic(result.topic || ''),
+            result.jobKey ? String(result.jobKey).slice(0, 160) : null,
+            result.promptVariant ? String(result.promptVariant).slice(0, 80) : null,
+            result.status,
+            JSON.stringify(Array.isArray(result.reasons) ? result.reasons.slice(0, 10) : []),
+            result.reviewerNotes ? String(result.reviewerNotes).slice(0, 500) : null,
+            result.provider ? String(result.provider).slice(0, 40) : null,
+            result.model ? String(result.model).slice(0, 80) : null,
+        ]
+    );
+}
+
+async getQuizValidationStats({ topic, provider, model, days = 30 } = {}) {
+    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+    let where = 'WHERE validated_at >= ?';
+    const params = [since];
+    if (topic) {
+        where += ' AND normalized_topic = ?';
+        params.push(this.normalizeTopic(topic));
+    }
+    if (provider) {
+        where += ' AND source_provider = ?';
+        params.push(String(provider));
+    }
+    if (model) {
+        where += ' AND source_model = ?';
+        params.push(String(model));
+    }
+    const rows = await this.all(
+        `SELECT
+            status,
+            COUNT(*) as count,
+            source_provider,
+            source_model,
+            prompt_variant
+         FROM quiz_validation_results
+         ${where}
+         GROUP BY status, source_provider, source_model, prompt_variant
+         ORDER BY count DESC`,
+        params
+    );
+    return rows.map((r) => ({
+        status: r.status,
+        count: Number(r.count),
+        provider: r.source_provider,
+        model: r.source_model,
+        promptVariant: r.prompt_variant,
+    }));
 }
 
 // ==========================================

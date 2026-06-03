@@ -115,6 +115,14 @@ module.exports = defineConfig({
         ...devices['Desktop Chrome HiDPI'],
       },
     },
+    // Authenticated project — reuses real login state from globalSetup
+    {
+      name: 'chromium-auth',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: './tests/e2e/.auth/user.json',
+      },
+    },
   ],
 
   // Run local dev server before starting tests

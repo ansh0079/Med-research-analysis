@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useSearchContext } from '@contexts/SearchContext';
-import { generateQuiz, type QuizArticle } from '@services/quizService';
+import { generateQuiz, generateQuizFromEvidence, QuizGenerationError, type QuizArticle } from '@services/quizService';
 import { selectTopEvidence } from '../utils/selectTopEvidence';
 import { api } from '@services/api';
 import { downloadText } from '@services/exportArticles';
@@ -105,6 +105,61 @@ function SourceBadge({ label }: { label: string }) {
 function getDifficultyFromParam(value: string | null): 'easy' | 'medium' | 'hard' | 'mixed' {
   if (value === 'easy' || value === 'medium' || value === 'hard' || value === 'mixed') return value;
   return 'mixed';
+}
+
+function mapRoundItemType(itemType: string): QuestionType {
+  if (itemType === 'clinical_application') return 'clinical_application';
+  if (itemType === 'evidence_appraisal') return 'trial_interpretation';
+  if (itemType === 'overclaim_trap') return 'pitfall';
+  return 'recall';
+}
+
+function learningRoundItemsToQuestions(
+  items: Array<{
+    id?: number;
+    itemType?: string;
+    claimKey?: string | null;
+    questionText?: string;
+    options?: string[];
+    correctAnswer?: string | null;
+    explanation?: string | null;
+  }>
+): QuizQuestion[] {
+  return items
+    .filter((item) => String(item.questionText || '').trim().length > 0)
+    .map((item, idx) => ({
+      id: `round-${item.id ?? idx}`,
+      type: 'multiple_choice' as const,
+      questionType: mapRoundItemType(String(item.itemType || 'claim_recall')),
+      question: String(item.questionText || ''),
+      options: Array.isArray(item.options) ? item.options : [],
+      correctAnswer: String(item.correctAnswer || item.options?.[0] || ''),
+      explanation: String(item.explanation || ''),
+      difficulty: 'medium' as const,
+      claimKey: item.claimKey || null,
+    }));
+}
+
+async function waitForClaimJob(jobKey: string, maxMs = 120000): Promise<void> {
+  const start = Date.now();
+  while (Date.now() - start < maxMs) {
+    const { job } = await api.getAiGenerationJob(jobKey);
+    if (job.status === 'completed') return;
+    if (job.status === 'failed') {
+      throw new QuizGenerationError(job.errorMessage || 'Claim generation failed', {
+        code: 'JOB_FAILED',
+        status: 409,
+        jobKey,
+        jobStatus: job.status,
+      });
+    }
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+  }
+  throw new QuizGenerationError('Timed out waiting for teaching claims', {
+    code: 'JOB_TIMEOUT',
+    status: 409,
+    jobKey,
+  });
 }
 
 const DIFFICULTY_COLORS: Record<string, string> = {
@@ -231,6 +286,8 @@ export const QuizPage: React.FC = () => {
     return raw.split(',').map((s) => s.trim()).filter(Boolean);
   }, [searchParams]);
   const urlClaimJobKey = searchParams.get('claimJob')?.trim() || undefined;
+  const urlRoundId = Number(searchParams.get('roundId') || 0) || undefined;
+  const urlCount = Math.min(Math.max(Number(searchParams.get('count') || 5) || 5, 1), 10);
 
   // Support legacy sessionStorage prefill as fallback
   const [quizPrefill] = useState(() => {
@@ -288,6 +345,7 @@ export const QuizPage: React.FC = () => {
   const [quiz, setQuiz] = useState<QuizState>(INITIAL_STATE);
   const [generating, setGenerating] = useState(true);
   const [genError, setGenError] = useState<string | null>(null);
+  const [genErrorCode, setGenErrorCode] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [answerConfidence, setAnswerConfidence] = useState(3);
   const [confidenceByQuestion, setConfidenceByQuestion] = useState<Record<string, number>>({});
@@ -337,6 +395,7 @@ export const QuizPage: React.FC = () => {
     if (!activeTopic || activeTopic.trim().length < 2) {
       if (!isStale()) {
         setGenError('No research topic detected. Search for a topic first, then open Test yourself.');
+        setGenErrorCode(null);
         setGenerating(false);
       }
       return;
@@ -344,22 +403,45 @@ export const QuizPage: React.FC = () => {
     if (!isStale()) {
       setGenerating(true);
       setGenError(null);
+      setGenErrorCode(null);
       setQuiz(INITIAL_STATE);
       setSelected(null);
       setQuizEvidenceAudit(null);
       setAdaptiveNotice(null);
     }
     try {
-      const {
-        questions,
-        fromDataset: fd,
-        disclaimer: aiDisclaimer,
-        sourceArticles,
-        evidenceAudit,
-      } = await generateQuiz(
+      if (urlRoundId && isAuthenticated) {
+        const { round } = await api.getLearningRound(urlRoundId);
+        if (isStale()) return;
+        const roundQuestions = learningRoundItemsToQuestions(
+          (round.items || []) as Array<{
+            id?: number;
+            itemType?: string;
+            claimKey?: string | null;
+            questionText?: string;
+            options?: string[];
+            correctAnswer?: string | null;
+            explanation?: string | null;
+          }>
+        );
+        if (roundQuestions.length > 0) {
+          setFromDataset(false);
+          setDisclaimer('Structured learning round from your teaching claims.');
+          setQuizSourceArticles(evidenceSnippets);
+          setQuiz((prev) => ({ ...prev, questions: roundQuestions }));
+          return;
+        }
+      }
+
+      if (urlClaimJobKey) {
+        await waitForClaimJob(urlClaimJobKey);
+        if (isStale()) return;
+      }
+
+      const runGenerate = () => generateQuiz(
         activeTopic,
         evidenceSnippets,
-        5,
+        urlCount,
         prefillDifficulty,
         activeStudyRunId,
         {
@@ -370,19 +452,63 @@ export const QuizPage: React.FC = () => {
           claimJobKey: urlClaimJobKey,
         }
       );
+
+      let result;
+      try {
+        result = await runGenerate();
+      } catch (err) {
+        const canFallback =
+          err instanceof QuizGenerationError
+          && err.code === 'CLAIMS_REQUIRED'
+          && evidenceSnippets.length > 0;
+        if (!canFallback) throw err;
+        result = await generateQuizFromEvidence(
+          activeTopic,
+          evidenceSnippets,
+          prefillDifficulty,
+          urlCount
+        );
+        if (!isStale()) {
+          setAdaptiveNotice(
+            'Teaching claims are not ready for this topic yet — using evidence-based questions from your search results. Run synthesis or paper synopses to unlock claim-anchored quizzes.'
+          );
+        }
+      }
+
       if (isStale()) return;
-      if (!questions.length) throw new Error('No questions were generated');
-      setFromDataset(fd);
-      setDisclaimer(aiDisclaimer || null);
-      setQuizEvidenceAudit(evidenceAudit ?? null);
-      setQuizSourceArticles(sourceArticles ?? evidenceSnippets);
-      setQuiz((prev) => ({ ...prev, questions }));
+      if (!result.questions.length) throw new Error('No questions were generated');
+      setFromDataset(result.fromDataset);
+      setDisclaimer(result.disclaimer || null);
+      setQuizEvidenceAudit('evidenceAudit' in result ? (result.evidenceAudit ?? null) : null);
+      setQuizSourceArticles(result.sourceArticles ?? evidenceSnippets);
+      setQuiz((prev) => ({ ...prev, questions: result.questions }));
     } catch (err) {
-      if (!isStale()) setGenError(err instanceof Error ? err.message : 'Failed to generate quiz');
+      if (!isStale()) {
+        if (err instanceof QuizGenerationError) {
+          setGenError(err.message);
+          setGenErrorCode(err.code);
+        } else {
+          setGenError(err instanceof Error ? err.message : 'Failed to generate quiz');
+          setGenErrorCode(null);
+        }
+      }
     } finally {
       if (!isStale()) setGenerating(false);
     }
-  }, [activeTopic, prefillDifficulty, evidenceSnippets, activeStudyRunId, trainingStage, effectiveExplanationDepth, urlTargetNodeIds, urlMode, urlClaimJobKey]);
+  }, [
+    activeTopic,
+    prefillDifficulty,
+    evidenceSnippets,
+    activeStudyRunId,
+    trainingStage,
+    effectiveExplanationDepth,
+    urlTargetNodeIds,
+    urlMode,
+    urlClaimJobKey,
+    urlRoundId,
+    urlCount,
+    isAuthenticated,
+  ]);
 
   const loadQuiz = useCallback(() => fetchQuiz(() => false), [fetchQuiz]);
 
@@ -751,6 +877,25 @@ export const QuizPage: React.FC = () => {
           <div className="rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-8 text-center">
             <i className="fas fa-exclamation-circle text-3xl text-red-500 mb-3 block" />
             <p className="text-red-700 dark:text-red-300 font-medium mb-4">{genError}</p>
+            {genErrorCode === 'CLAIMS_REQUIRED' && evidenceSnippets.length > 0 && (
+              <button
+                type="button"
+                onClick={loadQuiz}
+                className="mb-4 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm transition-colors"
+              >
+                Quiz from search evidence instead
+              </button>
+            )}
+            {genErrorCode === 'CLAIMS_REQUIRED' && (
+              <p className="text-xs text-red-600 dark:text-red-400 mb-4 max-w-md mx-auto">
+                Generate paper synopses or run evidence synthesis on this topic first to unlock claim-anchored questions.
+              </p>
+            )}
+            {(genErrorCode === 'JOB_TIMEOUT' || (urlClaimJobKey && genErrorCode !== 'CLAIMS_REQUIRED')) && (
+              <p className="text-xs text-red-600 dark:text-red-400 mb-4">
+                Teaching claims are still generating. Wait a moment, then try again.
+              </p>
+            )}
             {(!activeTopic || activeTopic.trim().length < 2) ? (
               <div className="mx-auto max-w-md">
                 <div className="flex flex-col gap-2 sm:flex-row">

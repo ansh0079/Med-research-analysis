@@ -378,7 +378,13 @@ export const SearchPage: React.FC = () => {
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Synthesis failed';
-      setSynthesisError(msg === 'AUTH_REQUIRED' ? 'Sign in to use Evidence Synthesis' : msg);
+      if (msg === 'AUTH_REQUIRED') {
+        setSynthesisError('Sign in to use Evidence Synthesis');
+      } else if (msg.startsWith('UPGRADE_REQUIRED:')) {
+        setSynthesisError('UPGRADE_REQUIRED:aiSynthesis');
+      } else {
+        setSynthesisError(msg);
+      }
     } finally {
       setSynthesisLoading(false);
     }
@@ -1224,10 +1230,21 @@ export const SearchPage: React.FC = () => {
         )}
 
         {synthesisError && (
-          <div aria-live="polite" className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-2xl text-sm flex items-center gap-2">
-            <i className="fas fa-exclamation-circle" />
-            {synthesisError}
-          </div>
+          synthesisError.startsWith('UPGRADE_REQUIRED:') ? (
+            <div aria-live="polite" className="mb-6 p-6 rounded-2xl bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800 text-center">
+              <i className="fas fa-star text-2xl text-violet-400 mb-2 block" />
+              <p className="text-sm font-semibold text-violet-800 dark:text-violet-200">Evidence synthesis is a Pro feature</p>
+              <p className="text-xs text-violet-600 dark:text-violet-400 mt-1 mb-3">Upgrade to synthesize papers into clinical bottom lines and teaching claims.</p>
+              <a href="/billing" className="inline-block text-xs font-bold px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors">
+                View plans →
+              </a>
+            </div>
+          ) : (
+            <div aria-live="polite" className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-2xl text-sm flex items-center gap-2">
+              <i className="fas fa-exclamation-circle" />
+              {synthesisError}
+            </div>
+          )
         )}
 
         {synthesisLoading && !synthesisLiveText && (

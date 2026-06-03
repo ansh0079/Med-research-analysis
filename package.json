@@ -55,7 +55,11 @@
     "db:merge-topic-dupes": "node server/scripts/mergeDuplicateTopicKnowledge.js",
     "seed:ards": "node server/scripts/seedFlagshipArds.js",
     "qa:ards": "node server/scripts/qaArdsLive.js",
-    "health": "curl http://localhost:3002/health"
+    "health": "curl http://localhost:3002/health",
+    "test:e2e:real-auth": "playwright test --project=chromium-auth tests/e2e/real-auth-flows.spec.js",
+    "test:e2e:real-llm": "playwright test --project=chromium-auth --grep \"@real-llm\" tests/e2e/real-auth-flows.spec.js",
+    "eval:agent-quality": "node scripts/eval-agent-quality.js",
+    "eval:agent-quality:report": "node scripts/eval-agent-quality.js --format=markdown"
   },
   "dependencies": {
     "@sentry/node": "^8.55.2",

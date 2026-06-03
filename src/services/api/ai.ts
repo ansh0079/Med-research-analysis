@@ -96,11 +96,10 @@ export class AiApi extends BaseApiClient {
         });
 
         if (!response.ok || !response.body) {
-          const err = await response.json().catch(() => ({ error: 'Streaming failed' }));
-          throw new Error(err.error || 'Streaming failed');
+          await this.parseErrorResponse(response);
         }
 
-        const reader = response.body.getReader();
+        const reader = response.body!.getReader();
         const decoder = new TextDecoder();
         let buffer = '';
 
@@ -207,11 +206,10 @@ export class AiApi extends BaseApiClient {
         });
 
         if (!response.ok || !response.body) {
-          const err = await response.json().catch(() => ({ error: 'Streaming failed' }));
-          throw new Error(err.error || 'Streaming failed');
+          await this.parseErrorResponse(response);
         }
 
-        const reader = response.body.getReader();
+        const reader = response.body!.getReader();
         const decoder = new TextDecoder();
         let buffer = '';
 

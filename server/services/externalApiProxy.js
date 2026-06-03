@@ -1,0 +1,282 @@
+/**
+ * Dedicated external API proxy service.
+ *
+ * Centralizes all server-to-server calls to third-party APIs (PubMed, Semantic Scholar,
+ * OpenAlex, Crossref, MeSH, Anthropic Claude, Mistral, Gemini) so that routes and
+ * business-logic services never call fetch directly against external hosts.
+ *
+ * Benefits:
+ * - Single place to attach timeouts, retries, circuit-breakers, and logging.
+ * - Easy to mock in unit tests (inject fetchImpl).
+ * - No CORS proxy dependency; the Node backend itself is the proxy.
+ */
+
+const logger = require('../config/logger');
+
+const DEFAULT_TIMEOUTS = {
+  pubmed: 15000,
+  semantic: 15000,
+  openalex: 15000,
+  crossref: 15000,
+  mesh: 8000,
+  claude: 45000,
+  mistral: 30000,
+  gemini: 45000,
+  huggingface: 30000,
+};
+
+function buildProxyService({ serverConfig, fetchImpl }) {
+  const f = fetchImpl;
+  const keys = serverConfig?.keys || {};
+
+  function buildPubMedUrl(path, params) {
+    const base = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
+    const q = new URLSearchParams(params);
+    q.set('retmode', 'json');
+    q.set('tool', 'medsearch_v3');
+    if (keys.ncbiEmail) q.set('email', keys.ncbiEmail);
+    const keyParam = keys.ncbi ? `&api_key=${keys.ncbi}` : '';
+    return `${base}${path}?${q.toString()}${keyParam}`;
+  }
+
+  async function pubmedEsearch(query, { retmax = 20, sort = 'relevance' } = {}) {
+    const url = buildPubMedUrl('/esearch.fcgi', {
+      db: 'pubmed',
+      term: query,
+      retmax: String(retmax),
+      sort,
+    });
+    const res = await f(url, { timeout: DEFAULT_TIMEOUTS.pubmed });
+    if (!res.ok) throw new Error(`PubMed esearch ${res.status}`);
+    const data = await res.json();
+    return data.esearchresult?.idlist || [];
+  }
+
+  async function pubmedEsummary(pmids) {
+    if (!pmids.length) return {};
+    const url = buildPubMedUrl('/esummary.fcgi', {
+      db: 'pubmed',
+      id: pmids.join(','),
+    });
+    const res = await f(url, { timeout: DEFAULT_TIMEOUTS.pubmed });
+    if (!res.ok) throw new Error(`PubMed esummary ${res.status}`);
+    return (await res.json()).result || {};
+  }
+
+  async function pubmedSearch(query, { maxResults = 20, sort = 'relevance' } = {}) {
+    const pmids = await pubmedEsearch(query, { retmax: maxResults, sort });
+    const summary = await pubmedEsummary(pmids);
+    return pmids
+      .map((pmid) => {
+        const article = summary[pmid];
+        if (!article) return null;
+        const pmcid =
+          article.articleids?.find((id) =>
+            ['pmc', 'pmcid'].includes(String(id.idtype || '').toLowerCase())
+          )?.value || null;
+        return {
+          uid: `pubmed-${pmid}`,
+          title: article.title,
+          authors: article.authors?.map((a) => ({ name: a.name })),
+          pubdate: article.pubdate,
+          source: article.source,
+          pmid,
+          pmcid,
+          isFree: Boolean(pmcid),
+          pmcrefcount: article.pmcrefcount || 0,
+          abstract: article.abstract ?? article.abstracttext,
+          pubtype: article.pubtype || [],
+          doi:
+            article.articleids?.find((id) => id.idtype === 'doi')?.value || null,
+          _source: 'pubmed',
+        };
+      })
+      .filter(Boolean);
+  }
+
+  async function semanticScholarSearch(query, { limit = 20 } = {}) {
+    const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(query)}&limit=${limit}&fields=title,authors,year,citationCount,abstract,journal,openAccessPdf,publicationTypes,externalIds`;
+    const headers = keys.semantic ? { 'x-api-key': keys.semantic } : {};
+    const res = await f(url, { headers, timeout: DEFAULT_TIMEOUTS.semantic });
+    if (!res.ok) throw new Error(`Semantic Scholar ${res.status}`);
+    const data = await res.json();
+    return (data.data || []).map((p) => ({
+      uid: p.paperId,
+      title: p.title,
+      authors: p.authors?.map((a) => ({ name: a.name })),
+      pubdate: p.year?.toString(),
+      source: p.journal?.name || 'Semantic Scholar',
+      pmcrefcount: p.citationCount,
+      abstract: p.abstract,
+      isFree: !!p.openAccessPdf,
+      fullTextUrl: p.openAccessPdf?.url || null,
+      pubtype: p.publicationTypes || [],
+      doi: p.externalIds?.DOI || null,
+      _source: 'semantic',
+    }));
+  }
+
+  async function openAlexSearch(query, { limit = 20 } = {}) {
+    const url = `https://api.openalex.org/works?search=${encodeURIComponent(query)}&per-page=${limit}`;
+    const headers = keys.openalex ? { Authorization: `Bearer ${keys.openalex}` } : {};
+    const res = await f(url, { headers, timeout: DEFAULT_TIMEOUTS.openalex });
+    if (!res.ok) throw new Error(`OpenAlex ${res.status}`);
+    const data = await res.json();
+    return data.results || [];
+  }
+
+  async function crossrefSearch(query, { limit = 20 } = {}) {
+    const url = `https://api.crossref.org/works?query=${encodeURIComponent(query)}&rows=${limit}`;
+    const res = await f(url, { timeout: DEFAULT_TIMEOUTS.crossref });
+    if (!res.ok) throw new Error(`Crossref ${res.status}`);
+    const data = await res.json();
+    return (data.message?.items || []).map((item) => ({
+      uid: item.DOI,
+      title: item.title?.[0],
+      authors: item.author?.map((a) => ({ name: `${a.given} ${a.family}` })),
+      pubdate: item.created?.['date-parts']?.[0]?.[0]?.toString(),
+      source: item['container-title']?.[0],
+      pmcrefcount: item['is-referenced-by-count'],
+      _source: 'crossref',
+    }));
+  }
+
+  async function meshSuggest(query, { limit = 6 } = {}) {
+    const url = `https://id.nlm.nih.gov/mesh/lookup/term?label=${encodeURIComponent(query.trim())}&match=contains&limit=${limit}`;
+    const res = await f(url, {
+      timeout: DEFAULT_TIMEOUTS.mesh,
+      headers: { Accept: 'application/json' },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (Array.isArray(data) ? data : [])
+      .map((item) => ({
+        label: item.label || item.name || '',
+        resource: item.resource || '',
+        note: item.note || '',
+      }))
+      .filter((s) => s.label);
+  }
+
+  async function claudeMessages(prompt, { model = 'claude-haiku-4-5-20251001', temperature = 0.7, maxOutputTokens = 2048, timeoutMs = DEFAULT_TIMEOUTS.claude } = {}) {
+    if (!keys.anthropic) throw new Error('Anthropic API key not configured');
+    const res = await f('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      signal: AbortSignal.timeout(timeoutMs),
+      headers: {
+        'x-api-key': keys.anthropic,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: maxOutputTokens,
+        temperature,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Anthropic ${res.status} — ${text.slice(0, 200)}`);
+    }
+    const data = await res.json();
+    return data.content?.[0]?.text || 'No response';
+  }
+
+  async function mistralChat(prompt, { model = 'mistral-small-2603', temperature = 0.7, maxOutputTokens } = {}) {
+    if (!keys.mistral) throw new Error('Mistral API key not configured');
+    const res = await f('https://api.mistral.ai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${keys.mistral}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: 'system', content: 'You are a medical research assistant. Provide accurate, evidence-based analysis.' },
+          { role: 'user', content: prompt },
+        ],
+        max_tokens: maxOutputTokens ?? (prompt.length > 5000 ? 1500 : 512),
+        temperature,
+      }),
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Mistral ${res.status} — ${text.slice(0, 200)}`);
+    }
+    const data = await res.json();
+    return data.choices?.[0]?.message?.content || 'No response';
+  }
+
+  async function geminiGenerate(prompt, { model = 'gemini-2.5-flash-lite', temperature = 0.7, maxOutputTokens, timeoutMs = DEFAULT_TIMEOUTS.gemini } = {}) {
+    if (!keys.gemini) throw new Error('Gemini API key not configured');
+    const modelName = model.includes('gemini') ? model : 'gemini-2.5-flash-lite';
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`;
+    const res = await f(url, {
+      method: 'POST',
+      signal: AbortSignal.timeout(timeoutMs),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': keys.gemini,
+      },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature,
+          maxOutputTokens: maxOutputTokens ?? (prompt.length > 5000 ? 2500 : 1024),
+          topP: 0.95,
+          topK: 40,
+        },
+      }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(`Gemini ${res.status} — ${data.error?.message || 'unknown'}`);
+    }
+    const data = await res.json();
+    if (data.promptFeedback?.blockReason) {
+      throw new Error(`Content blocked: ${data.promptFeedback.blockReason}`);
+    }
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response';
+  }
+
+  async function huggingFaceGenerate(prompt, { model = 'mistralai/Mistral-7B-Instruct-v0.2' } = {}) {
+    if (!keys.huggingface) throw new Error('HuggingFace API key not configured');
+    const res = await f(`https://api-inference.huggingface.co/models/${model}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${keys.huggingface}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        inputs: prompt,
+        parameters: { max_new_tokens: 512, temperature: 0.7, return_full_text: false },
+      }),
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`HF ${res.status} — ${text.slice(0, 200)}`);
+    }
+    const data = await res.json();
+    if (Array.isArray(data) && data[0]?.generated_text) return data[0].generated_text;
+    if (data?.generated_text) return data.generated_text;
+    return typeof data === 'string' ? data : 'No response';
+  }
+
+  return {
+    pubmedSearch,
+    pubmedEsearch,
+    pubmedEsummary,
+    semanticScholarSearch,
+    openAlexSearch,
+    crossrefSearch,
+    meshSuggest,
+    claudeMessages,
+    mistralChat,
+    geminiGenerate,
+    huggingFaceGenerate,
+  };
+}
+
+module.exports = { buildProxyService };

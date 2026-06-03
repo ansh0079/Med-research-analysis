@@ -6,12 +6,13 @@
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
 
-function authToken(payload = { id: 'u1', name: 'Test User', email: 't@test.com' }) {
-  return jwt.sign(payload, 'test-jwt-secret', { expiresIn: '1h' });
+function authToken(payload = {}) {
+  const defaults = { id: 'u1', name: 'Test User', email: 't@test.com', emailVerified: true };
+  return jwt.sign({ ...defaults, ...payload }, 'test-jwt-secret', { expiresIn: '1h' });
 }
 
 function adminToken(extra = {}) {
-  return authToken({ id: 'admin1', name: 'Admin User', email: 'admin@test.com', role: 'admin', ...extra });
+  return authToken({ id: 'admin1', name: 'Admin User', email: 'admin@test.com', role: 'admin', emailVerified: true, ...extra });
 }
 
 // Mock fetch before importing server

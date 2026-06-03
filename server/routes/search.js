@@ -18,6 +18,7 @@ const { buildEvidenceMap, persistConsensusTeachingObject } = require('../service
 const { enqueuePdfPreindexForArticles } = require('../services/pdfPreindexService');
 const { alignTopicClaimsWithGuidelines } = require('../services/claimGuidelineEngine');
 const { parseJsonBlock, parseJsonArrayBlock } = require('../utils/parseJson');
+const { buildProxyService } = require('../services/externalApiProxy');
 
 const CROSSREF_BASE = 'https://api.crossref.org';
 
@@ -35,6 +36,7 @@ function setNoStoreSearchHeaders(res) {
 
 function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, requireJson, requireAuthJwt, requireRole, fetch: fetchImpl, enqueuePdfPreindex }) {
     const f = fetchImpl || safeFetch;
+    const proxy = buildProxyService({ serverConfig, fetchImpl: f });
     const pdfDeps = { cache, db, serverConfig, fetch: f };
     const queueFullTextIndexing = (articleList) => {
         if (typeof enqueuePdfPreindex === 'function') {
@@ -307,26 +309,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 });
             }
 
-            const baseUrl = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
-            const apiKeyParam = serverConfig.keys.ncbi ? `&api_key=${serverConfig.keys.ncbi}` : '';
-
-            const emailParam = serverConfig.keys.ncbiEmail ? `&email=${encodeURIComponent(serverConfig.keys.ncbiEmail)}` : '';
-            const searchUrl = `${baseUrl}/esearch.fcgi?db=pubmed&retmode=json&tool=medsearch_v3${emailParam}&term=${encodeURIComponent(queryValidation.sanitized)}&retmax=${validatedMax}&sort=${sort}${apiKeyParam}`;
-            const searchData = await (await f(searchUrl, { timeout: 15000 })).json();
-            const ids = searchData.esearchresult?.idlist || [];
-
-            if (ids.length === 0) return res.json({ articles: [], count: 0 });
-
-            const detailsUrl = `${baseUrl}/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json${apiKeyParam}`;
-            const detailsData = await (await f(detailsUrl, { timeout: 15000 })).json();
-
-            const articles = ids
-                .map((id) => {
-                    const article = detailsData.result[id];
-                    if (article) { article.uid = id; article._source = 'pubmed'; }
-                    return article;
-                })
-                .filter(Boolean);
+            const articles = await proxy.pubmedSearch(queryValidation.sanitized, { maxResults: validatedMax, sort });
 
             await cache.setSearchResults(queryValidation.sanitized, ['pubmed'], 'moderate', articles);
             const executionTime = Date.now() - startTime;
@@ -360,25 +343,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 });
             }
 
-            const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(query)}&limit=${safeLimit}&fields=title,authors,year,citationCount,abstract,journal,openAccessPdf`;
-            const headers = serverConfig.keys.semantic ? { 'x-api-key': serverConfig.keys.semantic } : {};
-            const response = await f(url, { headers, timeout: 15000 });
-
-            if (!response.ok) throw new Error(`Semantic Scholar error: ${response.status}`);
-
-            const data = await response.json();
-            const articles = (data.data || []).map((p) => ({
-                uid: p.paperId,
-                title: p.title,
-                authors: p.authors?.map((a) => ({ name: a.name })),
-                pubdate: p.year?.toString(),
-                source: p.journal?.name || 'Semantic Scholar',
-                pmcrefcount: p.citationCount,
-                abstract: p.abstract,
-                isFree: !!p.openAccessPdf,
-                fullTextUrl: p.openAccessPdf?.url || null,
-                _source: 'semantic',
-            }));
+            const articles = await proxy.semanticScholarSearch(query, { limit: safeLimit });
 
             await cache.setSearchResults(query, ['semantic'], 'moderate', articles);
             await db.logEvent('search', req.sessionId, { source: 'semantic', query, results: articles.length });
@@ -409,16 +374,8 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 });
             }
 
-            const url = `https://api.openalex.org/works?search=${encodeURIComponent(query)}&per-page=${safeLimit}`;
-            const headers = serverConfig.keys.openalex
-                ? { Authorization: `Bearer ${serverConfig.keys.openalex}` }
-                : {};
-            const response = await f(url, { headers, timeout: 15000 });
-
-            if (!response.ok) throw new Error(`OpenAlex error: ${response.status}`);
-
-            const data = await response.json();
-            const articles = (data.results || []).map(articleFromOpenAlexWork);
+            const works = await proxy.openAlexSearch(query, { limit: safeLimit });
+            const articles = works.map(articleFromOpenAlexWork);
 
             await cache.setSearchResults(query, ['openalex'], 'moderate', articles);
             await db.logEvent('search', req.sessionId, { source: 'openalex', query, results: articles.length });
@@ -446,20 +403,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 });
             }
 
-            const url = `${CROSSREF_BASE}/works?query=${encodeURIComponent(query)}&rows=${safeLimit}`;
-            const response = await f(url);
-            if (!response.ok) throw new Error(`Crossref error: ${response.status}`);
-
-            const data = await response.json();
-            const articles = (data.message?.items || []).map((item) => ({
-                uid: item.DOI,
-                title: item.title?.[0],
-                authors: item.author?.map((a) => ({ name: `${a.given} ${a.family}` })),
-                pubdate: item.created?.['date-parts']?.[0]?.[0]?.toString(),
-                source: item['container-title']?.[0],
-                pmcrefcount: item['is-referenced-by-count'],
-                _source: 'crossref',
-            }));
+            const articles = await proxy.crossrefSearch(query, { limit: safeLimit });
 
             await cache.setSearchResults(query, ['crossref'], 'moderate', articles);
             await db.logEvent('search', req.sessionId, { source: 'crossref', query, results: articles.length });
@@ -478,15 +422,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
             return res.status(400).json({ error: 'q is required (min 2 chars)' });
         }
         try {
-            const url = `https://id.nlm.nih.gov/mesh/lookup/term?label=${encodeURIComponent(q.trim())}&match=contains&limit=6`;
-            const resp = await f(url, { timeout: 8000, headers: { Accept: 'application/json' } });
-            if (!resp.ok) return res.json({ suggestions: [] });
-            const data = await resp.json();
-            const suggestions = (Array.isArray(data) ? data : []).map((item) => ({
-                label: item.label || item.name || '',
-                resource: item.resource || '',
-                note: item.note || '',
-            })).filter((s) => s.label);
+            const suggestions = await proxy.meshSuggest(q.trim());
             return res.json({ suggestions });
         } catch {
             return res.json({ suggestions: [] });

@@ -122,7 +122,16 @@ export class BaseApiClient {
       const data = await response.json().catch(() => ({})) as { feature?: string };
       throw new Error(`UPGRADE_REQUIRED:${data.feature ?? 'premium'}`);
     }
-    const err = await response.json().catch(() => ({})) as { error?: string; message?: string };
+    const err = await response.json().catch(() => ({})) as { error?: string; message?: string; feature?: string };
+    if (response.status === 403) {
+      const msg = String(err.error || err.message || '').toLowerCase();
+      if ((err as { verificationRequired?: boolean }).verificationRequired) {
+        throw new Error('VERIFICATION_REQUIRED');
+      }
+      if (msg.includes('insufficient') || msg.includes('forbidden') || msg.includes('premium')) {
+        throw new Error(`UPGRADE_REQUIRED:${err.feature ?? 'aiSynthesis'}`);
+      }
+    }
     throw new Error(err.error || err.message || `Request failed (${response.status})`);
   }
 
@@ -141,7 +150,8 @@ export class BaseApiClient {
       if (error instanceof Error &&
         (error.message === 'AUTH_REQUIRED' ||
          error.message.startsWith('RATE_LIMITED:') ||
-         error.message.startsWith('UPGRADE_REQUIRED:'))) throw error;
+         error.message.startsWith('UPGRADE_REQUIRED:') ||
+         error.message === 'VERIFICATION_REQUIRED')) throw error;
       if (retries === 0) throw error;
       await new Promise(resolve => setTimeout(resolve, delay));
       return this.withRetry(fn, retries - 1, delay * 2);

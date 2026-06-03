@@ -401,6 +401,8 @@ CREATE TABLE IF NOT EXISTS user_learning_profiles (
     last_study_date TEXT,
     training_stage TEXT DEFAULT 'finals',
     default_explanation_depth TEXT DEFAULT 'exam_focus',
+    specialty_interest TEXT,
+    study_goal TEXT,
     active_curriculum_id UUID REFERENCES curricula(id) ON DELETE SET NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -433,6 +435,26 @@ CREATE TABLE IF NOT EXISTS study_runs (
     last_active_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     completed_at TIMESTAMP WITH TIME ZONE
 );
+
+CREATE TABLE IF NOT EXISTS quiz_validation_results (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    question_id TEXT NOT NULL,
+    topic TEXT NOT NULL,
+    normalized_topic TEXT NOT NULL,
+    generation_job_key TEXT,
+    prompt_variant TEXT,
+    validator_version INTEGER DEFAULT 1,
+    status TEXT NOT NULL CHECK (status IN ('passed', 'rejected', 'needs_review')),
+    rejection_reasons JSONB,
+    reviewer_notes TEXT,
+    source_provider TEXT,
+    source_model TEXT,
+    validated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_qvr_question ON quiz_validation_results(question_id);
+CREATE INDEX IF NOT EXISTS idx_qvr_topic ON quiz_validation_results(normalized_topic, status);
+CREATE INDEX IF NOT EXISTS idx_qvr_job ON quiz_validation_results(generation_job_key);
 
 CREATE TABLE IF NOT EXISTS quiz_attempts (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

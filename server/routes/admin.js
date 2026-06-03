@@ -506,6 +506,33 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.status(500).json({ error: error.message });
         }
     });
+
+    app.get('/api/admin/quiz-validation-stats', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const topic = req.query.topic ? String(req.query.topic) : null;
+            const provider = req.query.provider ? String(req.query.provider) : null;
+            const model = req.query.model ? String(req.query.model) : null;
+            const days = Math.min(90, Math.max(1, parseInt(String(req.query.days || '30'), 10) || 30));
+            const stats = await db.getQuizValidationStats({ topic, provider, model, days });
+            const total = stats.reduce((sum, s) => sum + s.count, 0);
+            const rejected = stats.filter((s) => s.status === 'rejected').reduce((sum, s) => sum + s.count, 0);
+            res.json({
+                stats,
+                summary: {
+                    total,
+                    rejected,
+                    rejectionRate: total > 0 ? Number((rejected / total).toFixed(4)) : 0,
+                    days,
+                    topic: topic || null,
+                    provider: provider || null,
+                    model: model || null,
+                },
+            });
+        } catch (error) {
+            req.log.error({ err: error }, 'Quiz validation stats error');
+            res.status(500).json({ error: error.message });
+        }
+    });
 }
 
 module.exports = { registerAdminRoutes };

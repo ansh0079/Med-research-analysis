@@ -10,7 +10,7 @@ const { resolveProvider } = require('../utils/aiProvider');
 const { getPersonalisedRecommendations } = require('../services/learningAgentService');
 
 function registerLearningRoutes(app, deps) {
-    const { db, requireAuthJwt, rateLimit, serverConfig, fetch: fetchImpl } = deps;
+    const { db, requireAuthJwt, requireVerifiedEmail, rateLimit, serverConfig, fetch: fetchImpl } = deps;
 
     // ==========================================
     // Mastery scoring utilities
@@ -380,6 +380,56 @@ function registerLearningRoutes(app, deps) {
         }
     });
 
+    app.get('/api/learning/quiz-eval-dataset', requireAuthJwt, rateLimit(20, 60), async (req, res) => {
+        try {
+            const limit = Math.min(Math.max(parseInt(String(req.query.limit || '100'), 10) || 100, 10), 250);
+            const topic = String(req.query.topic || '').trim();
+            const normalizedTopic = topic ? db.normalizeTopic(topic) : '';
+            const rows = await db.all(
+                `SELECT question_id, topic, normalized_topic, question_type, question_text,
+                        correct_answer, confidence, source_article_uid, outline_node_id,
+                        claim_key, concept_hash, prompt_variant, created_at
+                 FROM quiz_attempts
+                 WHERE user_id = ?
+                   AND is_correct = 1
+                   AND confidence >= 4
+                   AND (? = '' OR normalized_topic = ?)
+                 ORDER BY confidence DESC, created_at DESC
+                 LIMIT ?`,
+                [req.user.id, normalizedTopic, normalizedTopic, limit]
+            );
+            const byType = {};
+            for (const row of rows) {
+                const key = row.question_type || 'unknown';
+                byType[key] = (byType[key] || 0) + 1;
+            }
+            res.json({
+                generatedAt: new Date().toISOString(),
+                topic: topic || null,
+                count: rows.length,
+                byType,
+                dataset: rows.map((row) => ({
+                    questionId: row.question_id,
+                    topic: row.topic,
+                    normalizedTopic: row.normalized_topic,
+                    questionType: row.question_type,
+                    questionText: row.question_text,
+                    groundTruthAnswer: row.correct_answer,
+                    confidence: Number(row.confidence || 0),
+                    sourceArticleUid: row.source_article_uid || null,
+                    outlineNodeId: row.outline_node_id || null,
+                    claimKey: row.claim_key || null,
+                    conceptHash: row.concept_hash || null,
+                    promptVariant: row.prompt_variant || null,
+                    createdAt: row.created_at,
+                })),
+            });
+        } catch (error) {
+            req.log.error({ err: error }, 'Quiz eval dataset fetch error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
     app.get('/api/learning/evidence-judgement-profile', requireAuthJwt, rateLimit(60, 60), async (req, res) => {
         try {
             const topic = String(req.query.topic || '').trim();
@@ -636,7 +686,7 @@ function registerLearningRoutes(app, deps) {
     // Quiz Attempts
     // ==========================================
 
-    app.post('/api/learning/quiz-attempt', limitBodySize(256 * 1024), requireJson, requireAuthJwt, rateLimit(60, 60), validateBody(schemas.quizAttempt), async (req, res) => {
+    app.post('/api/learning/quiz-attempt', limitBodySize(256 * 1024), requireJson, requireAuthJwt, requireVerifiedEmail, rateLimit(60, 60), validateBody(schemas.quizAttempt), async (req, res) => {
         try {
             const { topic, attempts, studyRunId, curriculumTopicId } = req.body;
             const userId = req.user.id;
@@ -650,14 +700,38 @@ function registerLearningRoutes(app, deps) {
             const normalizedTopic = db.normalizeTopic(topic);
             const attemptsWithJudgement = attempts.map((attempt) => {
                 const claimKey = normalizeAttemptClaimKey(attempt);
+                const computedIsCorrect = String(attempt.userAnswer || '').trim().toLowerCase()
+                    === String(attempt.correctAnswer || '').trim().toLowerCase();
+                const clientReportedIsCorrect = attempt.isCorrect;
                 return {
                     ...attempt,
                     claimKey,
-                    ...inferEvidenceJudgement({ ...attempt, claimKey }),
+                    isCorrect: computedIsCorrect,
+                    clientReportedIsCorrect,
+                    ...inferEvidenceJudgement({ ...attempt, claimKey, isCorrect: computedIsCorrect }),
                 };
             });
             for (const attempt of attemptsWithJudgement) {
                 const savedAttempt = await db.createQuizAttempt({ ...attempt, userId, topic, studyRunId: run?.id || null });
+
+                if (attempt.clientReportedIsCorrect !== undefined && attempt.clientReportedIsCorrect !== attempt.isCorrect) {
+                    void recordLearningEventSafe({
+                        userId,
+                        eventType: 'validation_mismatch',
+                        topic,
+                        claimKey: attempt.claimKey || null,
+                        sourceType: 'quiz_attempt',
+                        sourceId: savedAttempt?.id,
+                        payload: {
+                            questionType: attempt.questionType,
+                            clientReported: Boolean(attempt.clientReportedIsCorrect),
+                            serverComputed: Boolean(attempt.isCorrect),
+                            userAnswer: attempt.userAnswer,
+                            correctAnswer: attempt.correctAnswer,
+                        },
+                    });
+                }
+
                 void recordLearningEventSafe({
                     userId,
                     eventType: 'mcq_answered',
@@ -779,7 +853,7 @@ function registerLearningRoutes(app, deps) {
 
             const ctId = curriculumTopicId != null ? Number(curriculumTopicId) : null;
             if (ctId && !Number.isNaN(ctId)) {
-                const batchCorrect = attempts.filter((a) => a.isCorrect).length;
+                const batchCorrect = attemptsWithJudgement.filter((a) => a.isCorrect).length;
                 await db.mergeCurriculumTopicAttemptBatch(userId, ctId, batchCorrect, attempts.length);
             }
 
@@ -1784,6 +1858,28 @@ Return ONLY valid JSON:
             res.json({ recommendations, generatedAt: new Date().toISOString() });
         } catch (error) {
             req.log.error({ err: error }, 'Learning recommendations error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.post('/api/learning/event', limitBodySize(32 * 1024), requireJson, requireAuthJwt, rateLimit(120, 60), async (req, res) => {
+        try {
+            const { eventType, topic, claimKey, sourceType, sourceId, payload } = req.body || {};
+            if (!eventType || typeof eventType !== 'string') {
+                return res.status(400).json({ error: 'eventType is required' });
+            }
+            void recordLearningEventSafe({
+                userId: req.user.id,
+                eventType,
+                topic: topic || null,
+                claimKey: claimKey || null,
+                sourceType: sourceType || null,
+                sourceId: sourceId || null,
+                payload: payload || null,
+            });
+            res.json({ ok: true });
+        } catch (error) {
+            req.log.error({ err: error }, 'Learning event log error');
             res.status(500).json({ error: 'Internal Server Error' });
         }
     });

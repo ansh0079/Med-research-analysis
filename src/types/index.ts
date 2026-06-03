@@ -800,6 +800,7 @@ export interface QuizQuestion {
   claimKey?: string | null;
   outlineLabel?: string | null;
   promptVariant?: string | null;
+  validationStatus?: 'llm_validated' | 'validation_skipped' | string;
   topic?: string;
 }
 
@@ -1085,6 +1086,8 @@ export interface LearningProfile {
   trainingStage?: 'preclinical' | 'early_clinical' | 'finals' | 'foundation_doctor';
   /** Default explanation style for quiz review panel. */
   defaultExplanationDepth?: 'foundation' | 'exam_focus' | 'mechanistic';
+  specialtyInterest?: string | null;
+  studyGoal?: string | null;
   activeCurriculumId?: number;
   createdAt: string;
   updatedAt: string;

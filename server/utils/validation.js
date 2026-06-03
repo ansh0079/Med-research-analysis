@@ -174,6 +174,8 @@ const schemas = {
         defaultExplanationDepth: Joi.string()
             .valid('foundation', 'exam_focus', 'mechanistic')
             .optional(),
+        specialtyInterest: Joi.string().max(120).allow('', null).optional(),
+        studyGoal: Joi.string().max(160).allow('', null).optional(),
         activeCurriculumId: Joi.number().integer().allow(null).optional(),
     }),
     quizAttempt: Joi.object({
@@ -186,7 +188,7 @@ const schemas = {
             questionText: Joi.string().max(5000).required(),
             userAnswer: Joi.string().max(500).required(),
             correctAnswer: Joi.string().max(500).required(),
-            isCorrect: Joi.boolean().required(),
+            isCorrect: Joi.boolean().optional(),
             timeMs: Joi.number().integer().optional(),
             confidence: Joi.number().integer().min(1).max(5).optional(),
             sourceArticleUid: Joi.string().optional(),
