@@ -3,7 +3,7 @@
 // Cross-references synthesized evidence against clinical guidelines
 // ==========================================
 
-const fetch = require('node-fetch');
+const { fetchWithTimeout: fetch } = require('../utils/fetch');
 const { PINNED_MODELS } = require('./aiService');
 
 /**

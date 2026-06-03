@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/react';
 import type { Scope } from '@sentry/react';
+import { buildUsageLimitError, type UsageLimitInfo } from '@utils/usageErrors';
 
 export const API_BASE = import.meta.env.VITE_API_URL || '';
 
@@ -9,6 +10,7 @@ export interface AuthUser {
   name?: string;
   role?: string;
   emailVerified?: boolean;
+  subscriptionPlan?: string;
 }
 
 if (import.meta.env.VITE_SENTRY_DSN) {
@@ -62,6 +64,7 @@ class SimpleLRUCache<T> {
 export class BaseApiClient {
   private cache = new SimpleLRUCache<unknown>(100, 5 * 60 * 1000);
   private sessionId: string | null = null;
+  private requestId: string | null = null;
   private clientConfig: { features?: { vectorSearch?: boolean } } | null = null;
   private clientConfigFetchedAt = 0;
   private readonly clientConfigTtlMs = 60_000;
@@ -69,9 +72,26 @@ export class BaseApiClient {
   constructor() {
     try {
       this.sessionId = localStorage.getItem('med_research_session');
+      this.requestId = localStorage.getItem('med_research_request_id');
     } catch {
       this.sessionId = null;
+      this.requestId = null;
     }
+    if (!this.requestId) {
+      this.requestId = crypto.randomUUID();
+      try {
+        localStorage.setItem('med_research_request_id', this.requestId);
+      } catch {
+        // ignore storage errors
+      }
+    }
+  }
+
+  private ensureRequestId(): string {
+    if (!this.requestId) {
+      this.requestId = crypto.randomUUID();
+    }
+    return this.requestId;
   }
 
   async getClientConfig(): Promise<{ features?: { vectorSearch?: boolean } }> {
@@ -93,10 +113,21 @@ export class BaseApiClient {
     if (this.sessionId) {
       headers.set('X-Session-Id', this.sessionId);
     }
+    headers.set('X-Request-Id', this.ensureRequestId());
     // Required by the server-side CSRF origin check on state-changing requests
     headers.set('X-Requested-With', 'XMLHttpRequest');
     const response = await fetch(url, { ...options, headers, credentials: 'include' });
     const clonedResponse = response.clone();
+
+    const serverRequestId = response.headers.get('X-Request-Id');
+    if (serverRequestId && serverRequestId !== this.requestId) {
+      this.requestId = serverRequestId;
+      try {
+        localStorage.setItem('med_research_request_id', serverRequestId);
+      } catch {
+        // ignore storage errors
+      }
+    }
     
     const serverSession = response.headers.get('X-Session-Id');
     if (serverSession && serverSession !== this.sessionId) {
@@ -114,13 +145,38 @@ export class BaseApiClient {
   protected async parseErrorResponse(response: Response): Promise<never> {
     if (response.status === 401) throw new Error('AUTH_REQUIRED');
     if (response.status === 429) {
-      const data = await response.json().catch(() => ({})) as { retryAfter?: number };
+      const data = await response.json().catch(() => ({})) as {
+        retryAfter?: number;
+        limitKey?: string;
+        feature?: string;
+        used?: number;
+        cap?: number;
+        plan?: string;
+        resetsAt?: string;
+        upgradeRequired?: boolean;
+        error?: string;
+      };
+      if (typeof data.limitKey === 'string' && typeof data.cap === 'number' && typeof data.used === 'number') {
+        const info: UsageLimitInfo = {
+          limitKey: data.limitKey,
+          feature: data.feature || data.limitKey,
+          used: data.used,
+          cap: data.cap,
+          plan: data.plan,
+          resetsAt: data.resetsAt,
+          upgradeRequired: data.upgradeRequired,
+        };
+        throw new Error(buildUsageLimitError(info));
+      }
       const secs = data.retryAfter ?? 60;
       throw new Error(`RATE_LIMITED:${secs}`);
     }
     if (response.status === 402) {
       const data = await response.json().catch(() => ({})) as { feature?: string };
       throw new Error(`UPGRADE_REQUIRED:${data.feature ?? 'premium'}`);
+    }
+    if (response.status === 503) {
+      throw new Error('AI_UNAVAILABLE');
     }
     const err = await response.json().catch(() => ({})) as { error?: string; message?: string; feature?: string };
     if (response.status === 403) {
@@ -150,6 +206,7 @@ export class BaseApiClient {
       if (error instanceof Error &&
         (error.message === 'AUTH_REQUIRED' ||
          error.message.startsWith('RATE_LIMITED:') ||
+         error.message.startsWith('USAGE_LIMITED:') ||
          error.message.startsWith('UPGRADE_REQUIRED:') ||
          error.message === 'VERIFICATION_REQUIRED')) throw error;
       if (retries === 0) throw error;

@@ -40,6 +40,7 @@ function registerAiRoutes(app, deps) {
         requireVerifiedEmail,
         requireRole,
         requirePaidFeature,
+        requireMonthlyLimit,
         validateAnalysisBody,
         validateBody,
         schemas,
@@ -348,7 +349,7 @@ function registerAiRoutes(app, deps) {
         }
     }
 
-    app.post('/api/ai/analyze', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, aiUserLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
+    app.post('/api/ai/analyze', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireMonthlyLimit('aiAnalysesPerMonth', 'ai_analysis'), aiUserLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
         const { text, analysisType, provider = 'auto', model } = req.body;
 
         const validationErrors = validateAnalysisBody(req.body);
@@ -1228,7 +1229,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         }
     });
 
-    app.post('/api/ai/synthesize', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireVerifiedEmail, requirePaidFeature('aiSynthesis'), aiUserLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
+    app.post('/api/ai/synthesize', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireVerifiedEmail, requirePaidFeature('aiSynthesis'), requireMonthlyLimit('synthesisPerMonth', 'ai_synthesis'), aiUserLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
         const { articles, topic, provider = 'auto', async: asyncJob } = req.body;
 
         if (!Array.isArray(articles) || articles.length === 0) {
@@ -1351,7 +1352,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
 
     const { setupSSE, sendSSE } = require('../utils/sse');
 
-    app.post('/api/ai/analyze/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, aiUserLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
+    app.post('/api/ai/analyze/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireMonthlyLimit('aiAnalysesPerMonth', 'ai_analysis'), aiUserLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
         const { text, analysisType, provider = 'auto', model } = req.body;
 
         const validationErrors = validateAnalysisBody(req.body);
@@ -1493,7 +1494,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         }
     });
 
-    app.post('/api/ai/synthesize/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireVerifiedEmail, requirePaidFeature('aiSynthesis'), aiUserLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
+    app.post('/api/ai/synthesize/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireVerifiedEmail, requirePaidFeature('aiSynthesis'), requireMonthlyLimit('synthesisPerMonth', 'ai_synthesis'), aiUserLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
         const { articles, topic, provider = 'auto' } = req.body;
 
         if (!Array.isArray(articles) || articles.length === 0) {

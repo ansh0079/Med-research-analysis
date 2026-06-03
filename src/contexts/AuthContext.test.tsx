@@ -12,6 +12,9 @@ jest.mock('@services/api', () => ({
     logout: jest.fn(),
     forgotPassword: jest.fn(),
     resendVerification: jest.fn(),
+      updateProfile: jest.fn(),
+      changePassword: jest.fn(),
+      deleteAccount: jest.fn(),
   },
 }));
 

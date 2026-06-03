@@ -216,10 +216,7 @@ function scheduleDigests(db, appUrl, serverConfig = {}, fetchImpl = fetch) {
   // Run daily at 09:00
   scheduledJob = cron.schedule('0 9 * * *', async () => {
     console.log('[Digest] Running scheduled digest job...');
-    digestQueue.enqueue(
-      () => runAlertDigests(db, appUrl, serverConfig, fetchImpl),
-      { label: 'scheduled-digest' }
-    ).catch((err) => {
+    digestQueue.enqueueNamed('run', {}, { label: 'scheduled-digest' }).catch((err) => {
       console.error('[Digest] Scheduled digest failed:', err.message);
     });
   }, {

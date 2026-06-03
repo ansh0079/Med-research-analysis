@@ -18,6 +18,9 @@ interface AuthContextType {
   logout: () => void;
   forgotPassword: (email: string) => Promise<void>;
   resendVerification: () => Promise<void>;
+  updateProfile: (data: { name?: string }) => Promise<void>;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+  deleteAccount: () => Promise<void>;
   setUser: (user: AuthUser | null) => void;
 }
 
@@ -70,6 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = useCallback(() => {
     api.logout();
     setUser(null);
+    window.location.href = '/';
   }, [setUser]);
 
   const forgotPassword = useCallback(async (email: string) => {
@@ -80,9 +84,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await api.resendVerification();
   }, []);
 
+  const updateProfile = useCallback(async (data: { name?: string }) => {
+    const result = await api.updateProfile(data);
+    setUser(result.user);
+  }, [setUser]);
+
+  const changePassword = useCallback(async (currentPassword: string, newPassword: string) => {
+    await api.changePassword(currentPassword, newPassword);
+  }, []);
+
+  const deleteAccount = useCallback(async () => {
+    await api.deleteAccount();
+    setUser(null);
+  }, [setUser]);
+
   const value = useMemo(
-    () => ({ user, isAuthenticated: !!user, isLoading, login, register, logout, forgotPassword, resendVerification, setUser }),
-    [user, isLoading, login, register, logout, forgotPassword, resendVerification, setUser]
+    () => ({ user, isAuthenticated: !!user, isLoading, login, register, logout, forgotPassword, resendVerification, updateProfile, changePassword, deleteAccount, setUser }),
+    [user, isLoading, login, register, logout, forgotPassword, resendVerification, updateProfile, changePassword, deleteAccount, setUser]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

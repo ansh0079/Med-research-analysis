@@ -4,6 +4,56 @@ const { createAiService, PINNED_MODELS, TEMPERATURE } = require('./aiService');
 const { resolveProvider } = require('../utils/aiProvider');
 const { gatherEvidenceArticlesForCase } = require('./caseEvidenceService');
 const { classifyClaimGuidelineAlignment } = require('./claimGuidelineAlignmentService');
+const { stripPii } = require('../utils/piiStripper');
+
+const MAX_QUESTION_LENGTH = 3000;
+const MAX_BRIEF_AGE_DAYS = 7;
+
+async function findRecentBrief(db, userId, clinicalQuestion) {
+    if (!db || !userId) return null;
+    const normalized = String(clinicalQuestion || '').trim().toLowerCase().replace(/\s+/g, ' ').slice(0, 300);
+    const row = await db.get(
+        `SELECT * FROM case_evidence_briefs
+         WHERE user_id = ? AND lower(clinical_question) = ?
+           AND created_at > datetime('now', '-${MAX_BRIEF_AGE_DAYS} days')
+         ORDER BY created_at DESC LIMIT 1`,
+        [userId, normalized]
+    );
+    if (!row) return null;
+    try {
+        return {
+            topic: row.topic,
+            clinicalQuestion: row.clinical_question,
+            brief: JSON.parse(row.brief_json || '{}'),
+            articles: JSON.parse(row.articles_json || '[]'),
+            relatedClaims: JSON.parse(row.related_claims_json || '[]'),
+            fromCache: true,
+        };
+    } catch {
+        return null;
+    }
+}
+
+async function persistBrief(db, userId, result) {
+    if (!db || !userId) return;
+    try {
+        await db.run(
+            `INSERT INTO case_evidence_briefs (user_id, topic, clinical_question, brief_json, articles_json, related_claims_json, created_at)
+             VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`,
+            [
+                userId,
+                result.topic || '',
+                String(result.clinicalQuestion || '').trim().toLowerCase().replace(/\s+/g, ' ').slice(0, 300),
+                JSON.stringify(result.brief || {}),
+                JSON.stringify(result.articles || []),
+                JSON.stringify(result.relatedClaims || []),
+            ]
+        );
+    } catch (err) {
+        // Non-blocking persistence failure
+        require('../config/logger').warn({ err }, 'Failed to persist case-evidence brief');
+    }
+}
 
 async function buildCaseToEvidenceBrief(db, {
     clinicalQuestion,
@@ -12,11 +62,22 @@ async function buildCaseToEvidenceBrief(db, {
     fetchImpl,
     seedArticles = [],
     limit = 12,
+    userId = null,
 } = {}) {
-    const question = String(clinicalQuestion || '').trim().slice(0, 1200);
-    if (question.length < 12) {
+    let rawQuestion = String(clinicalQuestion || '').trim();
+    if (rawQuestion.length < 12) {
         throw new Error('clinicalQuestion must be at least 12 characters');
     }
+    if (rawQuestion.length > MAX_QUESTION_LENGTH) {
+        throw new Error(`clinicalQuestion must be no more than ${MAX_QUESTION_LENGTH} characters`);
+    }
+
+    // Check for recent cached brief
+    const cached = userId ? await findRecentBrief(db, userId, rawQuestion) : null;
+    if (cached) return cached;
+
+    // Strip PII before sending to AI
+    const question = stripPii(rawQuestion).slice(0, 1200);
     const topicLabel = String(topic || '').trim() || question.split(/[,.]/)[0].trim().slice(0, 80);
     const searchQuery = question.replace(/\s+/g, ' ').slice(0, 380);
 
@@ -93,15 +154,18 @@ Return JSON only:
         try { structured = JSON.parse(raw.slice(start, end + 1)); } catch { structured = {}; }
     }
 
-    return {
+    const result = {
         topic: topicLabel,
-        clinicalQuestion: question,
+        clinicalQuestion: rawQuestion,
         articles: articles.slice(0, 10),
         guidelines: guidelines.slice(0, 6),
         relatedClaims: topClaims,
         brief: structured,
         teachingPoints: topicKnowledge?.knowledge?.teachingPoints?.slice(0, 5) || [],
     };
+
+    await persistBrief(db, userId, result);
+    return result;
 }
 
 module.exports = { buildCaseToEvidenceBrief };

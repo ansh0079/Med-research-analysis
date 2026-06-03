@@ -71,69 +71,14 @@ function enqueuePdfPreindex(article, { cache, serverConfig, fetch: fetchImpl, db
     if (!id || DEDUPE.has(id)) return;
     DEDUPE.add(id);
 
-    pdfQueue.enqueue(
-        async () => {
-            try {
-                // Skip if already in DB (persisted from a previous run)
-                if (db && typeof db.getPdfSections === 'function') {
-                    const existing = await db.getPdfSections(id).catch((err) => { logger.warn({ err }, 'getPdfSections failed'); return null; });
-                    if (existing && Number(existing.wordCount || 0) >= 200) {
-                        // Repopulate cache and return
-                        await cache.setAsync(cacheKey(article), existing, PDF_CACHE_TTL_SECONDS).catch((err) => { logger.warn({ err }, 'cache set failed'); });
-                        return;
-                    }
-                }
-
-                const { createPdfService } = require('./pdfService');
-                const pdf = createPdfService({ serverConfig, fetch: fetchImpl });
-
-                const { url, isFree, source: oaSource } = await pdf.findOpenAccessPdf(
-                    article.doi || null,
-                    { pmcid: article.pmcid || null }
-                );
-
-                if (!url || !isFree) {
-                    logger.debug({ id, oaSource }, '[pdfPreindex] No open-access PDF found');
-                    return;
-                }
-
-                logger.debug({ id, url: url.slice(0, 80), oaSource }, '[pdfPreindex] Extracting PDF');
-                const extracted = await pdf.extractPdfText(url);
-
-                const payload = {
-                    sections: extracted.sections || {},
-                    orderedKeys: extracted.orderedKeys || [],
-                    tables: extracted.tables || [],
-                    wordCount: extracted.wordCount || 0,
-                    url,
-                    source: oaSource || 'unknown',
-                    numpages: extracted.numpages || 0,
-                    indexedAt: new Date().toISOString(),
-                };
-
-                // Persist to DB (no expiry) and warm the cache
-                if (db && typeof db.savePdfSections === 'function') {
-                    await db.savePdfSections(id, payload).catch((err) => {
-                        logger.warn({ id, err: err.message }, '[pdfPreindex] DB persist failed');
-                    });
-                }
-                await cache.setAsync(cacheKey(article), payload, PDF_CACHE_TTL_SECONDS);
-                logger.info({ id, wordCount: payload.wordCount, sections: payload.orderedKeys }, '[pdfPreindex] PDF indexed');
-                if (db && Number(payload.wordCount || 0) >= 500) {
-                    const { upgradeClaimsAfterFullText } = require('./claimFullTextUpgradeService');
-                    await upgradeClaimsAfterFullText(db, id, { minWordCount: 500 }).catch((err) => {
-                        logger.warn({ err, id }, '[pdfPreindex] claim upgrade after full text failed');
-                    });
-                }
-            } catch (err) {
-                logger.warn({ id, err: err.message }, '[pdfPreindex] job failed');
-            } finally {
-                DEDUPE.delete(id);
-            }
-        },
-        { label: `pdf-preindex:${id?.slice(0, 40)}`, priority: -1 }  // lower priority than user-triggered extractions
+    pdfQueue.enqueueNamed(
+        'preindex',
+        { article },
+        { label: `pdf-preindex:${String(id).slice(0, 40)}`, priority: -1 }
     ).catch((err) => {
         logger.warn({ err }, 'pdf preindex enqueue failed');
+        DEDUPE.delete(id);
+    }).finally(() => {
         DEDUPE.delete(id);
     });
 }

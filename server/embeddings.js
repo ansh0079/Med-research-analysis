@@ -2,7 +2,7 @@
  * Embedding generation for articles_cache (384-dim for pgvector + MiniLM / OpenAI small).
  * Set EMBEDDING_PROVIDER=hf | openai (default: hf)
  */
-const fetch = require('node-fetch');
+const fetch = globalThis.fetch;
 
 const EMBEDDING_DIM = 384;
 

@@ -114,4 +114,51 @@ export class AuthApi extends BaseApiClient {
       // Best-effort server logout
     }
   }
+
+  async updateProfile(data: { name?: string }): Promise<{ user: AuthUser }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/auth/me`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Update failed');
+    }
+    return response.json();
+  }
+
+  async changePassword(currentPassword: string, newPassword: string): Promise<{ message: string }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/auth/change-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentPassword, newPassword }),
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Password change failed');
+    }
+    return response.json();
+  }
+
+  async startTrial(): Promise<{ message: string; trialEndsAt: string; status: string; plan: string }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/billing/start-trial`, {
+      method: 'POST',
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Failed to start trial');
+    }
+    return response.json();
+  }
+
+  async deleteAccount(): Promise<void> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/auth/me`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Failed to delete account');
+    }
+  }
 }

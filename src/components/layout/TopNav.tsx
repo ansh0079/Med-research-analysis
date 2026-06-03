@@ -32,7 +32,7 @@ export const TopNav: React.FC = () => {
 
   return (
     <nav className="top-nav">
-      <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 h-full flex items-center justify-between gap-2 sm:gap-4">
 
         {/* Logo */}
         <button
@@ -45,7 +45,7 @@ export const TopNav: React.FC = () => {
             <div className="absolute inset-0 rounded-lg ring-1 ring-white/20" />
             <i className="fas fa-dna text-white text-xs relative z-10" />
           </div>
-          <span className="text-[0.82rem] font-bold text-slate-900 dark:text-white tracking-tight">
+          <span className="hidden min-[360px]:inline text-[0.82rem] font-bold text-slate-900 dark:text-white tracking-tight">
             MedResearch<span className="text-indigo-500">·AI</span>
           </span>
         </button>
@@ -169,7 +169,7 @@ export const TopNav: React.FC = () => {
         </div>
 
         {/* Right controls */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1 sm:gap-1.5">
           {/* Theme toggle */}
           <button
             type="button"
@@ -239,6 +239,10 @@ export const TopNav: React.FC = () => {
                     className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
                     <i className="fas fa-file-alt w-3.5 text-amber-400" /> Grant writing
                   </button>
+                  <button type="button" onClick={() => { navigate('/settings'); setUserMenuOpen(false); }}
+                    className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
+                    <i className="fas fa-cog w-3.5 text-slate-400" /> Settings
+                  </button>
                   <button type="button" onClick={() => { navigate('/billing'); setUserMenuOpen(false); }}
                     className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
                     <i className="fas fa-credit-card w-3.5 text-indigo-400" /> Billing &amp; Plans
@@ -268,7 +272,7 @@ export const TopNav: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/auth')}
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors shadow-sm shadow-indigo-500/30"
+              className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors shadow-sm shadow-indigo-500/30"
             >
               Sign in
             </button>
@@ -287,7 +291,7 @@ export const TopNav: React.FC = () => {
 
       {/* Mobile nav drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 py-2 px-4 flex flex-col gap-1 animate-fade-in z-50">
+        <div className="md:hidden absolute top-full left-0 right-0 max-h-[calc(100vh-var(--nav-h))] overflow-y-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 py-2 px-3 sm:px-4 flex flex-col gap-1 animate-fade-in z-50">
           {isAuthenticated && (
             <button type="button" onClick={() => { navigate('/learning'); setMobileMenuOpen(false); }}
               className={`nav-link w-full text-left ${pathname.startsWith('/learning') ? 'active' : ''}`}>

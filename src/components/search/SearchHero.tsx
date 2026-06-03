@@ -60,16 +60,16 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
   openCaseFromWorkflow,
 }) => {
   return (
-    <header className={`w-full pb-24 px-4 relative overflow-hidden ${showVerifyBanner ? 'pt-28' : 'pt-20'}`}>
+    <header className={`w-full px-4 relative overflow-hidden ${showVerifyBanner ? 'pt-24 sm:pt-28' : 'pt-16 sm:pt-20'} pb-16 sm:pb-24`}>
       <div className="max-w-4xl mx-auto">
 
         {/* Hero heading */}
-        <div className="text-center mb-10">
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white mb-3 leading-[1.08]">
+        <div className="text-center mb-7 sm:mb-10">
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white mb-3 leading-[1.08]">
             Medical Evidence,<br />
             <span className="gradient-text">Synthesised by AI</span>
           </h1>
-          <p className="text-sm text-slate-400 dark:text-slate-500 font-mono tracking-wide">
+          <p className="text-xs sm:text-sm text-slate-400 dark:text-slate-500 font-mono tracking-wide break-words">
             PubMed · Semantic Scholar · OpenAlex · Gemini 2.5 Flash-Lite
           </p>
         </div>
@@ -96,10 +96,10 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
                 <button
                   type="button"
                   onClick={() => onSearch(q)}
-                  className="inline-flex items-center gap-1 rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-[11px] font-semibold text-slate-600 dark:text-slate-300 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-950/40 dark:hover:text-indigo-300 transition-colors"
+                  className="inline-flex max-w-full items-center gap-1 rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-[11px] font-semibold text-slate-600 dark:text-slate-300 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-950/40 dark:hover:text-indigo-300 transition-colors"
                   title={`Re-run: ${q}`}
                 >
-                  {q}
+                  <span className="truncate">{q}</span>
                 </button>
                 {i < searchHistory.length - 1 && (
                   <i className="fas fa-chevron-right text-[9px] text-slate-300 dark:text-slate-600" />
@@ -109,7 +109,7 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
           </div>
         )}
 
-        <div className="mt-5 max-w-3xl mx-auto rounded-2xl border border-cyan-200/80 dark:border-cyan-900/60 bg-cyan-50/70 dark:bg-cyan-950/20 p-4 text-left shadow-sm shadow-cyan-100/50 dark:shadow-none">
+        <div className="mt-5 max-w-3xl mx-auto rounded-2xl border border-cyan-200/80 dark:border-cyan-900/60 bg-cyan-50/70 dark:bg-cyan-950/20 p-3 sm:p-4 text-left shadow-sm shadow-cyan-100/50 dark:shadow-none">
           <div className="flex flex-col gap-3 md:flex-row md:items-start">
             <div className="min-w-0 flex-1">
               <label htmlFor="shift-presentation" className="text-[10px] font-bold uppercase tracking-widest text-cyan-700 dark:text-cyan-300">
@@ -175,7 +175,7 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
               type="button"
               disabled={shiftPresentation.trim().length < 10 || loading || shiftLaneLoading}
               onClick={() => void runShiftFastLane()}
-              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2 text-sm font-black text-white transition-colors hover:bg-cyan-500 disabled:pointer-events-none disabled:opacity-45 md:mt-6 md:w-44"
+              className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2 text-sm font-black text-white transition-colors hover:bg-cyan-500 disabled:pointer-events-none disabled:opacity-45 md:mt-6 md:w-44"
             >
               {shiftLaneLoading || loading ? (
                 <>
@@ -195,7 +195,7 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
         <div className="mt-8 max-w-3xl mx-auto space-y-3">
           <div className="rounded-2xl border border-slate-200/90 dark:border-slate-700/90 bg-white/70 dark:bg-slate-900/45 px-4 py-3 text-left shadow-sm shadow-slate-200/30 dark:shadow-none">
             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Junior doctor workflow</p>
-            <div className="mt-3 flex flex-wrap items-center gap-1.5">
+            <div className="mt-3 flex flex-wrap items-center gap-1.5 sm:gap-2">
               {[
                 { id: 'evidence', label: 'Evidence', icon: 'fa-layer-group', color: 'bg-indigo-600 text-white hover:bg-indigo-500', scrollTo: 'workflow-evidence' },
                 { id: 'guideline', label: 'Guideline check', icon: 'fa-book-medical', color: 'border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-950/40', action: openGuidelineFromWorkflow },
@@ -215,14 +215,14 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
                         document.getElementById(step.scrollTo)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                       }
                     }}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold disabled:opacity-40 disabled:pointer-events-none transition-colors ${step.color}`}
+                    className={`inline-flex min-h-9 flex-1 basis-[8.5rem] items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold disabled:opacity-40 disabled:pointer-events-none transition-colors sm:flex-none sm:basis-auto sm:px-3 ${step.color}`}
                   >
                     <span className="flex items-center justify-center w-4 h-4 rounded-full bg-white/20 text-[9px] font-black">{idx + 1}</span>
                     <i className={`fas ${step.icon} text-[10px]`} />
                     {step.label}
                   </button>
                   {idx < arr.length - 1 && (
-                    <i className="fas fa-chevron-right text-[10px] text-slate-300 dark:text-slate-600" />
+                    <i className="fas fa-chevron-right hidden sm:inline text-[10px] text-slate-300 dark:text-slate-600" />
                   )}
                 </React.Fragment>
               ))}

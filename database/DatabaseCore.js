@@ -246,6 +246,7 @@ toPgQuery(sql) {
         }
         result += ch;
     }
+    result = result.replace(/datetime\s*\(\s*'now'\s*\)/gi, 'CURRENT_TIMESTAMP');
     return result;
 }
 

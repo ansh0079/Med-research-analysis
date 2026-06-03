@@ -33,6 +33,9 @@ describe('AuthPage Integration', () => {
       logout: jest.fn(),
       forgotPassword: mockForgotPassword,
       resendVerification: jest.fn(),
+      updateProfile: jest.fn(),
+      changePassword: jest.fn(),
+      deleteAccount: jest.fn(),
       setUser: jest.fn(),
     });
 

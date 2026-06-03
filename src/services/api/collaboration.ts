@@ -27,9 +27,31 @@ import type {
 } from '@types';
 
 export class CollaborationApi extends BaseApiClient {
+  async getBillingUsage(): Promise<{
+    plan: string;
+    planLabel: string;
+    yearMonth: string;
+    meters: Record<string, {
+      limitKey: string;
+      label: string;
+      used: number;
+      cap: number | null;
+      unlimited: boolean;
+      percentUsed: number;
+      nearLimit: boolean;
+      atLimit: boolean;
+      resetsAt: string;
+    }>;
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/billing/usage`);
+    if (!response.ok) throw new Error('Failed to fetch usage');
+    return response.json();
+  }
+
   async getBillingStatus(): Promise<{
     status: string; plan: string; role: string;
     currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean;
+    trialStartedAt: string | null; trialEndsAt: string | null; hasUsedTrial: boolean;
     stripeConfigured: boolean;
     plans: Array<{ id: string; name: string; amount: number; currency: string; interval: string; features: string[]; available: boolean }>;
   }> {

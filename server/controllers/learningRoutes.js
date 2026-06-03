@@ -626,6 +626,7 @@ function registerLearningRoutes(app, deps) {
                 serverConfig,
                 fetchImpl,
                 seedArticles: req.body?.seedArticles || [],
+                userId: req.user.id,
             });
             res.json(result);
         } catch (error) {

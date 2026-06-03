@@ -92,6 +92,10 @@ if (process.env.NODE_ENV === 'production') {
         logger.fatal('STRIPE_WEBHOOK_SECRET must be set in production when STRIPE_SECRET_KEY is configured. Without it, anyone can forge webhook events and upgrade themselves for free.');
         process.exit(1);
     }
+    if (!process.env.REDIS_URL) {
+        logger.fatal('REDIS_URL must be set in production for cache, rate limits, sessions, and job queues.');
+        process.exit(1);
+    }
 }
 
 function resolveReleaseSha() {
@@ -311,6 +315,11 @@ app.use(
     })
 );
 
+const { runWithRequestContext } = require('./server/utils/requestContext');
+app.use((req, res, next) => {
+    runWithRequestContext({ requestId: req.id }, () => next());
+});
+
 // Prometheus metrics per request
 app.use((req, res, next) => {
     const start = process.hrtime.bigint();
@@ -362,26 +371,18 @@ app.use((req, res, next) => {
     next();
 });
 
-// Serve built frontend in production
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, 'dist')));
-    app.get('*', (req, res, next) => {
-        if (req.path.startsWith('/api') || req.path.startsWith('/health') || req.path.startsWith('/socket.io')) {
-            return next();
-        }
-        res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-    });
-}
-
 // ==========================================
 // Route registration
 // ==========================================
 
 const enqueuePdfPreindex = (article) => _enqueuePdfPreindex(article, { cache, db, serverConfig, fetch: safeFetch });
 
+const { requireMonthlyLimit, requireDailySearchLimit } = require('./server/middleware/usageLimit');
+
 const routeDeps = {
     serverConfig, clientConfig, db, cache, rateLimit, userRateLimit,
     requireJson, requireAuthJwt, requireVerifiedEmail, requireRole, requirePaidFeature,
+    requireMonthlyLimit, requireDailySearchLimit,
     validateAnalysisBody, validateBody, schemas,
     metricsRegistry,
     fetch: safeFetch,
@@ -433,18 +434,32 @@ app.post('/api/admin/cache/clear', requireAuthJwt, requireRole('admin'), async (
 });
 app.use('/api/collaboration', collaborationRoutes);
 
-// 404 — must be last
-app.use((req, res) => {
-    res.status(404).json({ error: 'Endpoint not found', path: req.path, method: req.method });
-});
+// Serve built frontend in production — placed after all API routes
+// so express.static never shadows an /api endpoint
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'dist')));
+    app.get('*', (req, res, next) => {
+        if (req.path.startsWith('/api') || req.path.startsWith('/health') || req.path.startsWith('/socket.io')) {
+            return next();
+        }
+        res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+    });
+}
 
 // ==========================================
 // Global error handler
 // ==========================================
 
+// Sentry error handler must be registered before our custom error handler
+// but after all routes, so it captures errors from any route.
 if (Sentry) {
     Sentry.setupExpressErrorHandler(app);
 }
+
+// 404 — must be after all routes and static serving
+app.use((req, res, next) => {
+    res.status(404).json({ error: 'Endpoint not found', path: req.path, method: req.method });
+});
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, _next) => {

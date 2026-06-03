@@ -101,9 +101,10 @@ function registerPdfRoutes(app, deps) {
         pdfIpLocks.set(clientIp, current + 1);
 
         try {
-            const data = await pdfQueue.enqueue(
-                () => pdf.extractPdfText(url),
-                { label: `pdf-extract:${url.slice(0, 60)}` }
+            const data = await pdfQueue.enqueueNamed(
+                'extract',
+                { url },
+                { label: `pdf-extract:${url.slice(0, 60)}`, wait: true }
             );
             res.json({
                 text: data.text,

@@ -37,6 +37,9 @@ const GrantWritingPage    = lazyDefault(() => import('./pages/GrantWritingPage')
 const KnowledgeReviewPage = lazyDefault(() => import('./pages/KnowledgeReviewPage'), 'KnowledgeReviewPage');
 const GuidelineReviewPage = lazyDefault(() => import('./pages/GuidelineReviewPage'), 'GuidelineReviewPage');
 const BillingPage         = lazyDefault(() => import('./pages/BillingPage'), 'BillingPage');
+const SettingsPage        = lazyDefault(() => import('./pages/SettingsPage'), 'SettingsPage');
+const ResetPasswordPage   = lazyDefault(() => import('./pages/ResetPasswordPage'), 'ResetPasswordPage');
+const VerifyEmailPage     = lazyDefault(() => import('./pages/VerifyEmailPage'), 'VerifyEmailPage');
 const LearningDashboardPage = lazyDefault(() => import('./pages/LearningDashboardPage'), 'LearningDashboardPage');
 const StudyRunPage        = lazyDefault(() => import('./pages/StudyRunPage'), 'StudyRunPage');
 const GuidelineBrowserPage = lazyDefault(() => import('./pages/GuidelineBrowserPage'), 'GuidelineBrowserPage');
@@ -68,7 +71,7 @@ const RootRoute: React.FC = () => {
 
 // Routes where the global TopNav should NOT appear (they have their own nav)
 // '/' is excluded only for guests — authenticated users see SearchPage which needs the nav
-const NO_TOP_NAV_ROUTES = ['/auth', '/legal/terms', '/legal/privacy'];
+const NO_TOP_NAV_ROUTES = ['/', '/auth', '/legal/terms', '/legal/privacy'];
 
 const AppContent: React.FC = () => {
   const { toasts, removeToast } = useToast();
@@ -109,7 +112,7 @@ const AppContent: React.FC = () => {
       <Suspense fallback={<PageFallback />}>
         <Routes>
           <Route path="/"          element={<RouteErrorBoundary><RootRoute /></RouteErrorBoundary>} />
-          <Route path="/search"    element={<RouteErrorBoundary><SearchPage /></RouteErrorBoundary>} />
+          <Route path="/search"    element={<RouteErrorBoundary><ProtectedRoute><SearchPage /></ProtectedRoute></RouteErrorBoundary>} />
           <Route path="/quiz"      element={<RouteErrorBoundary><ProtectedRoute><QuizPage /></ProtectedRoute></RouteErrorBoundary>} />
           <Route path="/practice"  element={<RouteErrorBoundary><ProtectedRoute><PracticePoolPage /></ProtectedRoute></RouteErrorBoundary>} />
           <Route path="/history"   element={<RouteErrorBoundary><ProtectedRoute><HistoryPage /></ProtectedRoute></RouteErrorBoundary>} />
@@ -126,6 +129,9 @@ const AppContent: React.FC = () => {
           <Route path="/topic/:topic"  element={<RouteErrorBoundary><ProtectedRoute><TopicPage /></ProtectedRoute></RouteErrorBoundary>} />
           <Route path="/study-paths" element={<RouteErrorBoundary><ProtectedRoute><StudyPathsPage /></ProtectedRoute></RouteErrorBoundary>} />
           <Route path="/auth"      element={<RouteErrorBoundary><GuestRoute><AuthPage /></GuestRoute></RouteErrorBoundary>} />
+          <Route path="/reset-password" element={<RouteErrorBoundary><ResetPasswordPage /></RouteErrorBoundary>} />
+          <Route path="/verify-email"   element={<RouteErrorBoundary><VerifyEmailPage /></RouteErrorBoundary>} />
+          <Route path="/settings"   element={<RouteErrorBoundary><ProtectedRoute><SettingsPage /></ProtectedRoute></RouteErrorBoundary>} />
           <Route path="/review"    element={<RouteErrorBoundary><ProtectedRoute><ReviewAssistantPage /></ProtectedRoute></RouteErrorBoundary>} />
           <Route path="/team"      element={<RouteErrorBoundary><ProtectedRoute><TeamWorkspacePage /></ProtectedRoute></RouteErrorBoundary>} />
           <Route path="/billing"   element={<RouteErrorBoundary><ProtectedRoute><BillingPage /></ProtectedRoute></RouteErrorBoundary>} />

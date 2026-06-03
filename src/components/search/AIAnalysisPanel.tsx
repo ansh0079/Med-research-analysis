@@ -4,6 +4,7 @@ import { getArticleLinkInfo } from '@services/articleLinks';
 import { useCollaboration } from '@hooks/useCollaboration';
 import type { Article, AnalysisResult, AnalysisType, PicoExtraction } from '@types';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
+import { parseUsageLimitError, formatUsageLimitMessage } from '@utils/usageErrors';
 
 interface Props {
   article: Article | null;
@@ -18,6 +19,15 @@ const ANALYSIS_TYPES: { value: AnalysisType; label: string; icon: string }[] = [
 ];
 
 function AnalysisErrorState({ error, onRetry }: { error: string; onRetry: () => void }) {
+  if (error === 'AI_UNAVAILABLE') {
+    return (
+      <div className="rounded-xl bg-slate-50 dark:bg-slate-900/20 border border-slate-200 dark:border-slate-800 p-6 text-center space-y-3">
+        <i className="fas fa-robot text-2xl text-slate-400 block" />
+        <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">AI analysis temporarily unavailable</p>
+        <p className="text-xs text-slate-600 dark:text-slate-400">The AI service is not configured. Search results are still available — browse the articles below for your research.</p>
+      </div>
+    );
+  }
   if (error === 'AUTH_REQUIRED') {
     return (
       <div className="rounded-xl bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 p-6 text-center space-y-3">
@@ -36,7 +46,22 @@ function AnalysisErrorState({ error, onRetry }: { error: string; onRetry: () => 
       <div className="rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-4 text-center space-y-2">
         <i className="fas fa-clock text-2xl text-amber-500 block" />
         <p className="text-sm font-semibold text-amber-800 dark:text-amber-200">Too many requests</p>
-        <p className="text-xs text-amber-600 dark:text-amber-400">You've hit the analysis limit. Try again in {secs}s.</p>
+        <p className="text-xs text-amber-600 dark:text-amber-400">You&apos;ve hit the short-term rate limit. Try again in {secs}s.</p>
+      </div>
+    );
+  }
+  const usageLimit = parseUsageLimitError(error);
+  if (usageLimit) {
+    return (
+      <div className="rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-6 text-center space-y-3">
+        <i className="fas fa-chart-line text-2xl text-amber-500 block" />
+        <p className="text-sm font-semibold text-amber-800 dark:text-amber-200">Monthly limit reached</p>
+        <p className="text-xs text-amber-700 dark:text-amber-300">{formatUsageLimitMessage(usageLimit)}</p>
+        {usageLimit.upgradeRequired && (
+          <a href="/billing" className="inline-block text-xs font-bold px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
+            View plans →
+          </a>
+        )}
       </div>
     );
   }
@@ -298,8 +323,8 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
       {/* Panel */}
       <div className="fixed right-0 top-0 h-full w-full max-w-lg bg-white dark:bg-slate-900 shadow-2xl z-50 flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="flex items-start gap-3 px-6 pt-6 pb-4 border-b border-gray-100 dark:border-slate-700 shrink-0">
-          <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shrink-0 mt-0.5">
+        <div className="flex items-start gap-3 px-4 sm:px-6 pt-4 sm:pt-6 pb-4 border-b border-gray-100 dark:border-slate-700 shrink-0">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 bg-indigo-600 rounded-xl flex items-center justify-center shrink-0 mt-0.5">
             <i className="fas fa-robot text-white" />
           </div>
           <div className="flex-1 min-w-0">
@@ -319,7 +344,7 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
           </button>
         </div>
         <ClinicalSafetyNotice
-          className="px-6 pb-3 shrink-0 border-b border-gray-100 dark:border-slate-700"
+          className="px-4 sm:px-6 pb-3 shrink-0 border-b border-gray-100 dark:border-slate-700"
           status={pdfStatus?.indexed ? 'source_verified' : 'abstract_only'}
         />
 
@@ -350,7 +375,7 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
 
         {activeTab === 'analysis' ? (
           <>
-            <div className="flex gap-1 px-4 py-3 border-b border-gray-100 dark:border-slate-700 shrink-0 overflow-x-auto">
+            <div className="flex gap-1 px-3 sm:px-4 py-3 border-b border-gray-100 dark:border-slate-700 shrink-0 overflow-x-auto">
               {ANALYSIS_TYPES.map((t) => (
                 <button
                   key={t.value}
@@ -423,7 +448,7 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
               </div>
             )}
 
-            <div className="flex-1 overflow-y-auto px-6 py-5 min-h-0">
+            <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-5 min-h-0">
               {/* Tables view */}
               {showTables && !loading && (
                 <div className="mb-6 space-y-4">
@@ -548,12 +573,12 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
               )}
             </div>
 
-            <div className="px-6 py-4 border-t border-gray-100 dark:border-slate-700 shrink-0 flex gap-3">
+            <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-gray-100 dark:border-slate-700 shrink-0 flex flex-col gap-2 sm:flex-row sm:gap-3">
               <a
                 href={primaryUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 border-gray-200 dark:border-slate-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 text-sm font-bold transition-colors"
+                className="flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl border-2 border-gray-200 py-2.5 text-sm font-bold text-gray-600 transition-colors hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700"
               >
                 <i className="fas fa-external-link-alt" />
                 {primaryLabel}
@@ -567,7 +592,7 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
                   }
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold transition-colors"
+                  className="flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-600 py-2.5 text-sm font-bold text-white transition-colors hover:bg-emerald-700"
                 >
                   <i className="fas fa-unlock" />
                   Read Free
@@ -582,7 +607,7 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
                 Team notes require a signed-in account. Use Register or Log in, then return here.
               </div>
             )}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
               {annotations.length === 0 && !needsAuth ? (
                 <div className="text-center py-10">
                   <i className="fas fa-comments text-gray-300 text-3xl mb-2" />

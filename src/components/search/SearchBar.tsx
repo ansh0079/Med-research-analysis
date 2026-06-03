@@ -94,47 +94,49 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         }`}>
           <div className="absolute inset-0 rounded-2xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl -z-0 border border-slate-200/80 dark:border-slate-700/60" />
 
-          <div className="relative flex items-center gap-3 px-5 py-4">
-            {loading ? (
-              <svg className="animate-spin h-4 w-4 text-indigo-500 shrink-0" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-              </svg>
-            ) : (
-              <svg className="h-4 w-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="8" strokeWidth="2" />
-                <path d="m21 21-4.35-4.35" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            )}
-
-            <input
-              ref={inputRef}
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
-              placeholder={placeholder}
-              className="flex-1 bg-transparent text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-base outline-none min-w-0"
-            />
-
-            {query && !loading && (
-              <button
-                type="button"
-                title="Clear search"
-                onClick={() => setQuery('')}
-                className="text-slate-300 dark:text-slate-600 hover:text-slate-500 dark:hover:text-slate-400 transition-colors shrink-0"
-              >
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          <div className="relative flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:px-5">
+            <div className="flex w-full min-w-0 flex-1 items-center gap-3">
+              {loading ? (
+                <svg className="animate-spin h-4 w-4 text-indigo-500 shrink-0" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
-              </button>
-            )}
+              ) : (
+                <svg className="h-4 w-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" strokeWidth="2" />
+                  <path d="m21 21-4.35-4.35" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              )}
+
+              <input
+                ref={inputRef}
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
+                placeholder={placeholder}
+                className="min-w-0 flex-1 bg-transparent text-base text-slate-900 outline-none placeholder-slate-400 dark:text-slate-100 dark:placeholder-slate-500"
+              />
+
+              {query && !loading && (
+                <button
+                  type="button"
+                  title="Clear search"
+                  onClick={() => setQuery('')}
+                  className="text-slate-300 dark:text-slate-600 hover:text-slate-500 dark:hover:text-slate-400 transition-colors shrink-0"
+                >
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
 
             <button
               type="submit"
               disabled={!query.trim() || loading}
-              className="shrink-0 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white px-5 py-2 rounded-xl text-sm font-semibold transition-all active:scale-95 shadow-sm shadow-indigo-500/25 hover:shadow-indigo-500/40"
+              className="w-full shrink-0 rounded-xl bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-500/25 transition-all hover:bg-indigo-500 hover:shadow-indigo-500/40 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
             >
               {loading ? 'Searching…' : 'Search'}
             </button>

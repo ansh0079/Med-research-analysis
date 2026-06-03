@@ -1,6 +1,8 @@
 const { getStripe, PLANS } = require('../services/stripeService');
 const logger = require('../config/logger');
 
+const { getUserUsageSummary } = require('../services/usageService');
+
 /**
  * @param {import('express').Application} app
  * @param {object} deps
@@ -8,19 +10,42 @@ const logger = require('../config/logger');
 function registerBillingRoutes(app, deps) {
     const { db, requireAuthJwt } = deps;
 
+    // ── GET /api/billing/usage ──────────────────────────────────────
+    app.get('/api/billing/usage', requireAuthJwt, async (req, res) => {
+        try {
+            const row = await db.get(
+                'SELECT subscription_plan, role FROM users WHERE id = ?',
+                [req.user.id]
+            );
+            const user = {
+                ...req.user,
+                subscription_plan: row?.subscription_plan,
+                role: row?.role || req.user.role,
+            };
+            const usage = await getUserUsageSummary(db, user);
+            res.json(usage);
+        } catch (err) {
+            logger.error({ err }, 'billing usage error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
     // ── GET /api/billing/status ─────────────────────────────────────
     app.get('/api/billing/status', requireAuthJwt, async (req, res) => {
         try {
             const row = await db.get(
-                'SELECT subscription_status, subscription_plan, subscription_current_period_end, subscription_cancel_at_period_end, role FROM users WHERE id = ?',
+                'SELECT subscription_status, subscription_plan, subscription_current_period_end, subscription_cancel_at_period_end, role, trial_started_at, trial_ends_at, has_used_trial FROM users WHERE id = ?',
                 [req.user.id]
             );
             res.json({
                 status: row?.subscription_status || 'free',
                 plan: row?.subscription_plan || 'free',
                 role: row?.role || 'user',
-                currentPeriodEnd: row?.subscription_current_period_end || null,
+                currentPeriodEnd: row?.subscription_current_period_end || row?.trial_ends_at || null,
                 cancelAtPeriodEnd: Boolean(row?.subscription_cancel_at_period_end),
+                trialStartedAt: row?.trial_started_at || null,
+                trialEndsAt: row?.trial_ends_at || null,
+                hasUsedTrial: Boolean(row?.has_used_trial),
                 plans: Object.entries(PLANS).map(([id, p]) => ({
                     id,
                     name: p.name,
@@ -34,6 +59,32 @@ function registerBillingRoutes(app, deps) {
             });
         } catch (err) {
             logger.error({ err }, 'billing status error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    // ── POST /api/billing/start-trial ───────────────────────────────
+    app.post('/api/billing/start-trial', requireAuthJwt, async (req, res) => {
+        try {
+            const { startProTrial } = require('../middleware/auth');
+            const user = await db.get('SELECT id, has_used_trial, subscription_status FROM users WHERE id = ?', [req.user.id]);
+            if (!user) return res.status(404).json({ error: 'User not found' });
+            if (user.has_used_trial) {
+                return res.status(409).json({ error: 'You have already used your free trial.' });
+            }
+            if (user.subscription_status === 'active' || user.subscription_status === 'trialing') {
+                return res.status(409).json({ error: 'You already have an active subscription or trial.' });
+            }
+            await startProTrial(db, req.user.id);
+            const fresh = await db.get('SELECT subscription_status, subscription_plan, trial_started_at, trial_ends_at FROM users WHERE id = ?', [req.user.id]);
+            res.json({
+                message: 'Your 14-day Pro trial has started. Enjoy full access — no credit card required.',
+                trialEndsAt: fresh.trial_ends_at,
+                status: fresh.subscription_status,
+                plan: fresh.subscription_plan,
+            });
+        } catch (err) {
+            logger.error({ err }, 'Start trial error');
             res.status(500).json({ error: 'Internal Server Error' });
         }
     });

@@ -23,11 +23,48 @@ const COOKIE_OPTIONS = {
 function setSessionCookie(res, user) {
     const emailVerified = Boolean(user.email_verified ?? user.emailVerified);
     const token = jwt.sign(
-        { id: user.id, name: user.name, email: user.email, role: user.role || 'user', emailVerified },
+        { id: user.id, name: user.name, email: user.email, role: user.role || 'user', emailVerified, subscriptionPlan: user.subscription_plan || 'free' },
         JWT_SECRET,
         { expiresIn: '7d' }
     );
     res.cookie(COOKIE_NAME, token, COOKIE_OPTIONS);
+}
+
+const TRIAL_DAYS = 14;
+
+async function startProTrial(database, userId) {
+    const now = new Date();
+    const endsAt = new Date(now.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1000);
+    await database.run(
+        `UPDATE users SET
+            trial_started_at = ?,
+            trial_ends_at = ?,
+            has_used_trial = 1,
+            subscription_status = 'trialing',
+            subscription_plan = 'pro'
+        WHERE id = ? AND (has_used_trial = 0 OR has_used_trial IS NULL)`,
+        [now.toISOString(), endsAt.toISOString(), userId]
+    );
+}
+
+async function maybeDowngradeExpiredTrial(database, userId) {
+    const user = await database.get(
+        'SELECT trial_ends_at, subscription_status, has_used_trial FROM users WHERE id = ?',
+        [userId]
+    );
+    if (!user || user.subscription_status !== 'trialing' || !user.trial_ends_at) return false;
+    if (new Date(user.trial_ends_at) < new Date()) {
+        await database.run(
+            `UPDATE users SET
+                subscription_status = 'free',
+                subscription_plan = 'free',
+                role = 'user'
+            WHERE id = ?`,
+            [userId]
+        );
+        return true;
+    }
+    return false;
 }
 
 function getOAuthBaseUrl(req) {
@@ -145,7 +182,10 @@ async function requireAuthJwt(req, res, next) {
         return res.status(401).json({ error: 'Invalid or expired token' });
     }
 
-    req.user = { id: decoded.id, name: decoded.name, email: decoded.email, role: decoded.role || 'user', emailVerified: decoded.emailVerified || false };
+    // Auto-downgrade expired trials on every authenticated request
+    await maybeDowngradeExpiredTrial(db, decoded.id);
+
+    req.user = { id: decoded.id, name: decoded.name, email: decoded.email, role: decoded.role || 'user', emailVerified: decoded.emailVerified || false, subscriptionPlan: decoded.subscriptionPlan || 'free' };
     req.token = token;
     next();
 }
@@ -353,20 +393,20 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             };
             await db.createUser(user);
 
+            // Start 14-day Pro trial automatically (no credit card)
+            await startProTrial(db, user.id);
+            user.subscription_plan = 'pro';
+            user.subscription_status = 'trialing';
+
             // Send verification email (non-blocking — don't fail registration if email fails)
             sendVerificationEmail({ to: email, name, token: verificationToken, appUrl }).catch((err) => {
                 logger.error({ err }, 'Failed to send verification email');
             });
 
-            const token = jwt.sign(
-                { id: user.id, name: user.name, email: user.email, role: user.role, emailVerified: false },
-                JWT_SECRET,
-                { expiresIn: '7d' }
-            );
-            res.cookie(COOKIE_NAME, token, COOKIE_OPTIONS);
+            setSessionCookie(res, user);
             res.status(201).json({
-                user: { id: user.id, name: user.name, email: user.email, role: user.role, emailVerified: false },
-                message: 'Account created. Please check your email to verify your address.',
+                user: { id: user.id, name: user.name, email: user.email, role: user.role, emailVerified: false, subscriptionPlan: 'pro' },
+                message: 'Account created. Your 14-day Pro trial has started — no credit card required.',
             });
         } catch (error) {
             req.log.error({ err: error }, 'Registration error');
@@ -403,14 +443,15 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             await clearLoginAttempts(email);
             await db.updateUser(stored.id, { last_login: new Date().toISOString() });
             const emailVerified = Boolean(stored.email_verified);
-            const token = jwt.sign(
-                { id: stored.id, name: stored.name, email: stored.email, role: stored.role || 'user', emailVerified },
-                JWT_SECRET,
-                { expiresIn: '7d' }
-            );
-            res.cookie(COOKIE_NAME, token, COOKIE_OPTIONS);
+            // Check and downgrade expired trial on login
+            await maybeDowngradeExpiredTrial(db, stored.id);
+            const freshUser = await db.get('SELECT id, name, email, role, email_verified, subscription_plan FROM users WHERE id = ?', [stored.id]);
+            const finalUser = freshUser || stored;
+            const finalEmailVerified = Boolean(finalUser.email_verified);
+
+            setSessionCookie(res, finalUser);
             res.json({
-                user: { id: stored.id, name: stored.name, email: stored.email, role: stored.role || 'user', emailVerified },
+                user: { id: finalUser.id, name: finalUser.name, email: finalUser.email, role: finalUser.role || 'user', emailVerified: finalEmailVerified, subscriptionPlan: finalUser.subscription_plan || 'free' },
             });
         } catch (error) {
             req.log.error({ err: error }, 'Login error');
@@ -421,8 +462,113 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // ==========================================
     // Me
     // ==========================================
-    app.get('/api/auth/me', requireAuthJwt, (req, res) => {
+    app.get('/api/auth/me', requireAuthJwt, async (req, res) => {
+        // Auto-downgrade expired trial on every auth check
+        const wasDowngraded = await maybeDowngradeExpiredTrial(db, req.user.id);
+        if (wasDowngraded) {
+            // Re-read user to return fresh state
+            const fresh = await db.get('SELECT id, name, email, role, email_verified, subscription_plan, subscription_status, trial_ends_at FROM users WHERE id = ?', [req.user.id]);
+            if (fresh) {
+                const updatedUser = { id: fresh.id, name: fresh.name, email: fresh.email, role: fresh.role || 'user', emailVerified: Boolean(fresh.email_verified), subscriptionPlan: fresh.subscription_plan || 'free' };
+                setSessionCookie(res, fresh);
+                return res.json({ user: updatedUser });
+            }
+        }
         res.json({ user: req.user });
+    });
+
+    // ==========================================
+    // Delete account
+    // ==========================================
+    app.delete('/api/auth/me', requireAuthJwt, async (req, res) => {
+        try {
+            const userId = req.user.id;
+            await db.withTransaction(async () => {
+                await db.run('DELETE FROM user_saved_articles WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM user_learning_profiles WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM user_topic_mastery WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM user_topic_memory WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM quiz_attempts WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM study_runs WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM portfolio_reflections WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM cpd_sessions WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM case_attempts WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM learning_rounds WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM search_alerts WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM collab_notifications WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM proactive_evidence_alerts WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM agent_conversations WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM case_evidence_briefs WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM billing_audit_log WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM ai_usage_monthly WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM search_usage_daily WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM annotations WHERE user_id = ?', [userId]);
+                await db.run('DELETE FROM users WHERE id = ?', [userId]);
+            });
+            res.clearCookie(COOKIE_NAME, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+            });
+            res.json({ message: 'Account deleted successfully' });
+        } catch (err) {
+            logger.error({ err }, 'Delete account error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    // ==========================================
+    // Update profile
+    // ==========================================
+    app.patch('/api/auth/me', requireAuthJwt, async (req, res) => {
+        const { name } = req.body;
+        if (name !== undefined && (typeof name !== 'string' || name.trim().length < 1 || name.trim().length > 100)) {
+            return res.status(400).json({ error: 'Name must be between 1 and 100 characters' });
+        }
+        try {
+            const updates = {};
+            if (name !== undefined) updates.name = name.trim();
+            if (Object.keys(updates).length === 0) {
+                return res.status(400).json({ error: 'No valid fields to update' });
+            }
+            await db.updateUser(req.user.id, updates);
+            const fresh = await db.getUserById(req.user.id);
+            setSessionCookie(res, fresh);
+            res.json({ user: { id: fresh.id, name: fresh.name, email: fresh.email, role: fresh.role || 'user', emailVerified: Boolean(fresh.email_verified), subscriptionPlan: fresh.subscription_plan || 'free' } });
+        } catch (err) {
+            logger.error({ err }, 'Update profile error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    // ==========================================
+    // Change password (authenticated)
+    // ==========================================
+    app.post('/api/auth/change-password', requireAuthJwt, authRateLimit, async (req, res) => {
+        const { currentPassword, newPassword } = req.body;
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ error: 'currentPassword and newPassword are required' });
+        }
+        if (newPassword.length < 8) {
+            return res.status(400).json({ error: 'New password must be at least 8 characters' });
+        }
+        try {
+            const user = await db.getUserById(req.user.id);
+            if (!user) return res.status(404).json({ error: 'User not found' });
+
+            const valid = await bcrypt.compare(currentPassword, user.password);
+            if (!valid) return res.status(401).json({ error: 'Current password is incorrect' });
+
+            const hashedPassword = await bcrypt.hash(newPassword, 12);
+            await db.updateUser(user.id, { password: hashedPassword });
+
+            // Issue fresh JWT
+            setSessionCookie(res, user);
+            res.json({ message: 'Password updated successfully' });
+        } catch (err) {
+            logger.error({ err }, 'Change password error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
     });
 
     // ==========================================
@@ -574,9 +720,10 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
                 await db.run('UPDATE password_reset_tokens SET used = 1 WHERE token = ?', [token]);
             });
 
-            // Issue a fresh session
+            // Issue a fresh session — preserve actual email_verified state from DB
+            const userRow = await db.get('SELECT email_verified FROM users WHERE id = ?', [row.user_id]);
             const newJwt = jwt.sign(
-                { id: row.user_id, name: row.name, email: row.email, role: row.role || 'user', emailVerified: true },
+                { id: row.user_id, name: row.name, email: row.email, role: row.role || 'user', emailVerified: Boolean(userRow?.email_verified) },
                 JWT_SECRET,
                 { expiresIn: '7d' }
             );
@@ -601,4 +748,7 @@ module.exports = {
     revokeToken,
     isTokenRevoked,
     verifyToken,
+    startProTrial,
+    maybeDowngradeExpiredTrial,
+    TRIAL_DAYS,
 };

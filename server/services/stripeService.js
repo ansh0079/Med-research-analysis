@@ -17,6 +17,20 @@ function getStripe() {
 }
 
 const PLANS = {
+    researcher: {
+        name: 'Researcher',
+        priceId: process.env.STRIPE_RESEARCHER_PRICE_ID,
+        amount: 1500,
+        currency: 'usd',
+        interval: 'month',
+        features: [
+            '75 searches per day',
+            '25 AI paper analyses per month',
+            'Multi-source literature search',
+            'Vector search & saved articles',
+            'Basic BibTeX export',
+        ],
+    },
     pro: {
         name: 'Pro',
         priceId: process.env.STRIPE_PRO_PRICE_ID,
@@ -53,7 +67,9 @@ const PLANS = {
 /** Map Stripe subscription status → app role */
 function subscriptionStatusToRole(status, plan) {
     if (status === 'active' || status === 'trialing') {
-        return plan === 'team' ? 'enterprise' : 'pro';
+        if (plan === 'team') return 'enterprise';
+        if (plan === 'researcher') return 'researcher';
+        return 'pro';
     }
     return 'user';
 }

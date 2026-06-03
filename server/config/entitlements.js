@@ -3,13 +3,14 @@
  *
  * Tiers (maps to users.subscription_plan):
  *   free        → default for new signups
+ *   researcher  → $15/month (search + AI analysis)
  *   pro         → $29/month individual
  *   team        → $99/month, up to 10 seats
  *   institution → custom pricing, SSO, BAA/DPA
  *
  * Role aliases that map to tiers:
  *   admin       → treated as institution (full access)
- *   researcher  → treated as pro
+ *   researcher  → paid Researcher tier (legacy role name preserved)
  *   enterprise  → treated as institution
  */
 
@@ -100,6 +101,50 @@ const PLANS = {
             teamActivity: false,
             collaboration: false,
             guidelineAlignment: true,
+            sso: false,
+            adminControls: false,
+            baa: false,
+            dedicatedDeployment: false,
+        },
+    },
+
+    researcher: {
+        label: 'Researcher',
+        monthlyPriceCents: 1500,
+        stripeProductKey: 'researcher',
+
+        limits: {
+            searchesPerDay: 75,
+            savedArticles: 150,
+            aiAnalysesPerMonth: 25,
+            synthesisPerMonth: 0,
+            exportFormats: ['bibtex'],
+            teamSeats: 0,
+        },
+
+        features: {
+            search: true,
+            save: true,
+            history: true,
+            alerts: false,
+            aiAnalysis: true,
+            aiSynthesis: false,
+            aiExplain: true,
+            journalClub: false,
+            caseMode: false,
+            grantWriting: false,
+            reviewAssistant: false,
+            picoExtraction: false,
+            screeningAssist: false,
+            csvExport: false,
+            bibtexExport: true,
+            pdfFullText: false,
+            vectorSearch: true,
+            teamWorkspace: false,
+            teamReviewAssignment: false,
+            teamActivity: false,
+            collaboration: false,
+            guidelineAlignment: false,
             sso: false,
             adminControls: false,
             baa: false,
@@ -204,7 +249,7 @@ const PLANS = {
 const ROLE_TO_PLAN = {
     admin: 'institution',
     enterprise: 'institution',
-    researcher: 'pro',
+    researcher: 'researcher',
     pro: 'pro',
     team: 'team',
     free: 'free',

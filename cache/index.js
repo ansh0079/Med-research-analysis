@@ -169,6 +169,19 @@ class CacheManager {
         }, ttlSeconds);
     }
     
+    async _scanRedisKeys(matchPattern) {
+        if (!this.redis) return [];
+        const keys = [];
+        let cursor = '0';
+        const fullPattern = this.redisPrefix + matchPattern;
+        do {
+            const [nextCursor, batch] = await this.redis.scan(cursor, 'MATCH', fullPattern, 'COUNT', 100);
+            cursor = nextCursor;
+            if (batch.length > 0) keys.push(...batch);
+        } while (cursor !== '0');
+        return keys;
+    }
+
     async invalidateSearch(query) { // Made async to support Redis del
         // Find and delete all cache entries matching this query pattern
         const keys = this.cache.keys();
@@ -177,8 +190,8 @@ class CacheManager {
             if (key.startsWith(pattern)) this.del(key); // Call async del
         });
         if (this.redis) {
-            const redisKeys = await this.redis.keys(this.redisPrefix + pattern + '*');
-            if (redisKeys.length > 0) await this.redis.del(redisKeys);
+            const redisKeys = await this._scanRedisKeys(pattern + '*');
+            if (redisKeys.length > 0) await this.redis.del(...redisKeys);
         }
     }
 

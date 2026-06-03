@@ -54,6 +54,8 @@ async function gracefulShutdown(signal) {
             stopGuidelineWatchtower();
             stopCurriculumSeed();
             stopCollectiveMemory();
+            const { stopWorkers } = require('./server/services/jobQueue');
+            await stopWorkers();
             await db.close();
             await db.closeVectorPool?.();
             if (cache && typeof cache.close === 'function') await cache.close();
@@ -100,12 +102,18 @@ process.on('unhandledRejection', (reason, promise) => {
 
 async function startServer() {
     try {
+        const appRole = process.env.APP_ROLE || (process.env.NODE_ENV === 'production' ? 'web' : 'all');
+        const runSchedulers = appRole === 'worker' || appRole === 'all';
+        const runHttp = appRole === 'web' || appRole === 'all';
+
         await db.connect();
         logger.info('Connected to database');
 
         const migrationResult = await db.runMigrations();
 
-        startSavedEmbeddingWorker(db, getEmbeddingOptions(serverConfig));
+        if (runHttp) {
+            startSavedEmbeddingWorker(db, getEmbeddingOptions(serverConfig));
+        }
         if (migrationResult.migrated > 0) {
             logger.info({ count: migrationResult.migrated }, 'Applied database migrations');
         }
@@ -113,20 +121,42 @@ async function startServer() {
         await cache.connect();
         await authSecurityStore.init({ database: db, redisUrl: process.env.REDIS_URL });
 
+        const jobDeps = {
+            db,
+            cache,
+            serverConfig,
+            fetchImpl: safeFetch,
+            embeddingKeys: getEmbeddingOptions(serverConfig),
+            logger,
+        };
+        const { registerAllJobHandlers } = require('./server/services/jobHandlers');
+        registerAllJobHandlers(jobDeps);
+
+        if ((appRole === 'worker' || appRole === 'all') && process.env.NODE_ENV !== 'test') {
+            const { startWorkers } = require('./server/services/jobQueue');
+            startWorkers(jobDeps);
+        }
+
         const cleaned = await db.cleanExpiredCache();
         logger.info({ cleaned }, 'Cleaned expired cache entries');
 
-        scheduleDigests(db, process.env.APP_URL || `http://localhost:${PORT}`, serverConfig, safeFetch);
-        scheduleTopicRefresh(db, serverConfig, safeFetch, logger);
-        scheduleKnowledgeDrift(db, serverConfig, safeFetch, logger);
-        scheduleClaimRegeneration(db, { serverConfig, fetchImpl: safeFetch, cache }, logger);
-        scheduleGuidelineWatchtower(db, logger);
-        scheduleCurriculumSeed(db, { serverConfig, fetchImpl: safeFetch, cache }, logger);
-        scheduleCollectiveMemory(db, logger);
+        if (runSchedulers) {
+            scheduleDigests(db, process.env.APP_URL || `http://localhost:${PORT}`, serverConfig, safeFetch);
+            scheduleTopicRefresh(db, serverConfig, safeFetch, logger);
+            scheduleKnowledgeDrift(db, serverConfig, safeFetch, logger);
+            scheduleClaimRegeneration(db, { serverConfig, fetchImpl: safeFetch, cache }, logger);
+            scheduleGuidelineWatchtower(db, logger);
+            scheduleCurriculumSeed(db, { serverConfig, fetchImpl: safeFetch, cache }, logger);
+            scheduleCollectiveMemory(db, logger);
+        }
 
-        server.listen(PORT, () => {
-            logger.info({ port: PORT, env: process.env.NODE_ENV || 'development' }, 'Medical Research API Server ready');
-        });
+        if (runHttp) {
+            server.listen(PORT, () => {
+                logger.info({ port: PORT, env: process.env.NODE_ENV || 'development', appRole }, 'Medical Research API Server ready');
+            });
+        } else {
+            logger.info({ appRole }, 'Process started without HTTP listener');
+        }
     } catch (error) {
         logger.fatal({ err: error }, 'Failed to start server');
         process.exit(1);

@@ -1,27 +1,52 @@
 module.exports = {
   apps: [
     {
-      name: 'medsearch-api',
+      name: 'medsearch-web',
       script: 'server.js',
-      instances: 1,
+      instances: process.env.WEB_INSTANCES || 2,
+      exec_mode: 'cluster',
       autorestart: true,
       watch: false,
       max_memory_restart: '512M',
       env_production: {
         NODE_ENV: 'production',
+        APP_ROLE: 'web',
         PORT: 3002,
       },
       env_development: {
         NODE_ENV: 'development',
+        APP_ROLE: 'all',
         PORT: 3002,
       },
-      error_file: 'logs/pm2-error.log',
-      out_file: 'logs/pm2-out.log',
+      error_file: 'logs/pm2-web-error.log',
+      out_file: 'logs/pm2-web-out.log',
       log_date_format: 'YYYY-MM-DD HH:mm:ss',
       merge_logs: true,
-      // Graceful shutdown: wait up to 5s for in-flight requests
       kill_timeout: 5000,
       listen_timeout: 10000,
+    },
+    {
+      name: 'medsearch-worker',
+      script: 'server/worker.js',
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: '768M',
+      env_production: {
+        NODE_ENV: 'production',
+        APP_ROLE: 'worker',
+        WORKER_HEALTH_PORT: 3003,
+      },
+      env_development: {
+        NODE_ENV: 'development',
+        APP_ROLE: 'worker',
+        WORKER_HEALTH_PORT: 3003,
+      },
+      error_file: 'logs/pm2-worker-error.log',
+      out_file: 'logs/pm2-worker-out.log',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss',
+      merge_logs: true,
+      kill_timeout: 10000,
     },
   ],
 };

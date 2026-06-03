@@ -281,6 +281,66 @@ function articleFromOpenAlexWork(w) {
 }
 
 /**
+ * LLM-based query reformulation: converts a natural language query into
+ * a structured PubMed Boolean query with MeSH terms and pub type filters.
+ * Uses the cheapest available model with a tight 8-second timeout.
+ */
+async function reformulateQueryForPubMed(query, specificity, serverConfig, fetchImpl) {
+    const { createAiService, PINNED_MODELS } = require('./aiService');
+    const keys = serverConfig?.keys || {};
+    if (!keys.gemini && !keys.mistral) return null;
+
+    const specificityGuide = specificity === 'strict'
+        ? 'Focus on exact MeSH terms and add publication type filters like "Randomized Controlled Trial"[pt] or "Systematic Review"[pt]. Prefer high-quality evidence.'
+        : specificity === 'broad'
+            ? 'Use broad MeSH terms with [MeSH Terms] tag and include related synonyms. Do NOT add publication type filters.'
+            : 'Use specific MeSH terms. Add publication type filters only if the query clearly asks about treatment efficacy or diagnosis.';
+
+    const prompt = `Convert this medical research question into an optimized PubMed search query using Boolean operators (AND, OR) and MeSH terms where appropriate.
+
+User query: "${query}"
+
+Search specificity: ${specificity}
+${specificityGuide}
+
+Rules:
+- Use MeSH terms tagged with [MeSH Terms] for key concepts
+- Use Boolean AND between different concepts, OR between synonyms
+- Keep the query under 300 characters
+- Return ONLY the PubMed query string, nothing else — no explanation, no markdown
+
+Example input: "does metformin help with weight loss in PCOS patients"
+Example output: ("Metformin"[MeSH Terms]) AND ("Polycystic Ovary Syndrome"[MeSH Terms]) AND ("Weight Loss"[MeSH Terms] OR "Body Weight"[MeSH Terms])`;
+
+    const ai = createAiService({ serverConfig, fetchImpl });
+    const timeoutMs = 8000;
+    const abortController = new AbortController();
+    const timer = setTimeout(() => abortController.abort(), timeoutMs);
+
+    try {
+        let raw;
+        if (keys.gemini) {
+            raw = await ai.callGemini(prompt, PINNED_MODELS.gemini, { temperature: 0.1, maxOutputTokens: 200, signal: abortController.signal });
+        } else {
+            raw = await ai.callMistralAI(prompt, PINNED_MODELS.mistral, { temperature: 0.1, maxOutputTokens: 200, signal: abortController.signal });
+        }
+        clearTimeout(timer);
+        const cleaned = String(raw || '').trim().replace(/^```[\s\S]*?\n/, '').replace(/\n```$/, '').trim();
+        if (cleaned.length < 5 || cleaned.length > 400) return null;
+        return cleaned;
+    } catch {
+        clearTimeout(timer);
+        return null;
+    }
+}
+
+const SPECIFICITY_PUB_TYPE_FILTERS = {
+    strict: ['Randomized Controlled Trial', 'Systematic Review', 'Meta-Analysis', 'Practice Guideline', 'Clinical Trial'],
+    moderate: [],
+    broad: [],
+};
+
+/**
  * @param {object} opts
  * @param {string} opts.query
  * @param {number} opts.safeLimit
@@ -288,10 +348,20 @@ function articleFromOpenAlexWork(w) {
  * @param {import('../../config').serverConfig} opts.serverConfig
  * @param {Function} opts.fetch
  * @param {object} [opts.telemetry] — optional; when PubMed returns zero hits, may set `lowRecallLearning`
+ * @param {string} [opts.specificity] — 'broad' | 'moderate' | 'strict'
  * @returns {Promise<object[]>}
  */
-async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig, fetch: f, vectorList = [], telemetry = null }) {
+async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig, fetch: f, vectorList = [], telemetry = null, specificity = 'moderate' }) {
     const proxy = buildProxyService({ serverConfig, fetchImpl: f });
+
+    // Phase 0: LLM query reformulation — converts natural language into a structured
+    // PubMed Boolean query with MeSH terms. Runs in parallel with MeSH lookup.
+    // Only fires for conversational queries (>4 words, contains question-like patterns).
+    const isNaturalLanguageQuery = query.split(/\s+/).length > 4 ||
+        /\b(does|how|what|why|which|can|is|are|should)\b/i.test(query);
+    const llmReformulationPromise = (isNaturalLanguageQuery && sourceList.includes('pubmed'))
+        ? reformulateQueryForPubMed(query, specificity, serverConfig, f).catch(() => null)
+        : Promise.resolve(null);
 
     // Phase 1: MeSH canonical-term lookup (~100–300 ms).
     // Fires before source searches so PubMed can use the augmented query.
@@ -306,14 +376,22 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
                 .filter((label) => label && label.toLowerCase() !== qLow)
                 .slice(0, 2);
         } catch (meshErr) {
-            // Non-fatal — fall back to the original query
             console.warn('[unifiedEvidence] MeSH proactive lookup skipped:', meshErr.message);
         }
     }
-    // Augment PubMed query with MeSH [MeSH Terms] qualifiers when expansions exist.
-    const pubmedQuery = meshExpansions.length > 0
-        ? `${query} OR ${meshExpansions.map((t) => `"${t}"[MeSH Terms]`).join(' OR ')}`
-        : query;
+
+    // Wait for LLM reformulation (runs in parallel with MeSH)
+    const reformulatedQuery = await llmReformulationPromise;
+
+    // Use LLM-reformulated query if available, otherwise fall back to MeSH-augmented query
+    let pubmedQuery;
+    if (reformulatedQuery) {
+        pubmedQuery = reformulatedQuery;
+    } else if (meshExpansions.length > 0) {
+        pubmedQuery = `${query} OR ${meshExpansions.map((t) => `"${t}"[MeSH Terms]`).join(' OR ')}`;
+    } else {
+        pubmedQuery = query;
+    }
 
     // Phase 2: Build per-source fetch promises and run them all in parallel.
     const sourceFetches = [];

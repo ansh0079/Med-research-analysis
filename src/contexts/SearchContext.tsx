@@ -81,7 +81,7 @@ export const SearchQueryProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [filters, setFiltersState] = useState<SearchFilters>(() => {
     const defaults: SearchFilters = {
-      sources: ['pubmed', 'openalex'],
+      sources: ['pubmed', 'openalex', 'semantic'],
       specificity: 'moderate',
       useVectorSearch: true,
     };

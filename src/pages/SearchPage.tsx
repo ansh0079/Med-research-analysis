@@ -791,22 +791,22 @@ export const SearchPage: React.FC = () => {
       />
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 -mt-16 pb-24">
+      <main className="max-w-7xl mx-auto px-3 sm:px-4 -mt-10 sm:-mt-16 pb-24">
         {results.length > 0 && (
-          <div className="mb-4 grid grid-cols-1 gap-3 md:grid-cols-4">
+          <div className="mb-4 grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4">
             {[
               { label: 'Evidence found', value: results.length, icon: 'fa-layer-group', tone: 'text-indigo-500' },
               { label: 'Open access', value: openAccessCount, icon: 'fa-unlock', tone: 'text-emerald-500' },
               { label: 'A/B quality', value: highQualityCount, icon: 'fa-shield-alt', tone: 'text-blue-500' },
               { label: 'Retracted flags', value: retractedCount, icon: 'fa-triangle-exclamation', tone: retractedCount ? 'text-red-500' : 'text-slate-400' },
             ].map((item) => (
-              <div key={item.label} className="neo-card p-4 flex items-center gap-3">
+              <div key={item.label} className="neo-card p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
                 <div className={`w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center ${item.tone}`}>
                   <i className={`fas ${item.icon} text-xs`} />
                 </div>
                 <div>
-                  <p className="font-mono text-lg font-black text-slate-900 dark:text-white">{item.value}</p>
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">{item.label}</p>
+                  <p className="font-mono text-base sm:text-lg font-black text-slate-900 dark:text-white">{item.value}</p>
+                  <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">{item.label}</p>
                 </div>
               </div>
             ))}
@@ -820,21 +820,21 @@ export const SearchPage: React.FC = () => {
                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Shift review</p>
                 <p className="truncate text-xs font-semibold text-slate-700 dark:text-slate-200">{currentQuery}</p>
               </div>
-              <div className="flex flex-wrap items-center gap-1.5">
+              <div className="grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap sm:items-center">
                 <button type="button" onClick={() => document.getElementById('workflow-evidence')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                  className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-indigo-600 px-3 text-xs font-bold text-white hover:bg-indigo-500">
+                  className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-2.5 sm:px-3 text-xs font-bold text-white hover:bg-indigo-500">
                   <i className="fas fa-layer-group text-[10px]" /> Evidence
                 </button>
                 <button type="button" onClick={openGuidelineFromWorkflow}
-                  className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-blue-200 px-3 text-xs font-bold text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-950/40">
+                  className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border border-blue-200 px-2.5 sm:px-3 text-xs font-bold text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-950/40">
                   <i className="fas fa-book-medical text-[10px]" /> Guideline
                 </button>
                 <button type="button" onClick={() => openCaseFromWorkflow('mixed')}
-                  className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-emerald-200 px-3 text-xs font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300 dark:hover:bg-emerald-950/40">
+                  className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border border-emerald-200 px-2.5 sm:px-3 text-xs font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300 dark:hover:bg-emerald-950/40">
                   <i className="fas fa-stethoscope text-[10px]" /> Case
                 </button>
                 <button type="button" onClick={() => setInPlaceQuizExpanded((v) => !v)}
-                  className={`inline-flex h-8 items-center gap-1.5 rounded-lg border px-3 text-xs font-bold transition-colors ${
+                  className={`inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border px-2.5 sm:px-3 text-xs font-bold transition-colors ${
                     inPlaceQuizExpanded
                       ? 'bg-violet-600 border-violet-600 text-white hover:bg-violet-500'
                       : 'border-violet-200 text-violet-700 hover:bg-violet-50 dark:border-violet-800 dark:text-violet-300 dark:hover:bg-violet-950/40'
@@ -842,7 +842,7 @@ export const SearchPage: React.FC = () => {
                   <i className="fas fa-brain text-[10px]" /> {inPlaceQuizExpanded ? 'Close quiz' : 'Quiz me on this'}
                 </button>
                 <button type="button" onClick={() => openCaseFromWorkflow('mixed')}
-                  className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-slate-200 px-3 text-xs font-bold text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800/40">
+                  className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border border-slate-200 px-2.5 sm:px-3 text-xs font-bold text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800/40">
                   <i className="fas fa-file-export text-[10px]" /> Reflection
                 </button>
               </div>
@@ -1210,7 +1210,7 @@ export const SearchPage: React.FC = () => {
             )}
             <Button onClick={() => setCurrentPage('history')} variant="ghost" size="sm"
               leftIcon={<i className="fas fa-history text-[10px]" />}>History</Button>
-            <div className="ml-auto flex gap-1.5 flex-wrap">
+            <div className="flex w-full flex-wrap gap-1.5 sm:ml-auto sm:w-auto">
               <Button variant="ghost" size="sm" onClick={() => exportResults('ris')}
                 leftIcon={<i className="fas fa-file-alt text-[10px]" />}>RIS</Button>
               <Button variant="ghost" size="sm" onClick={() => exportResults('bibtex')}

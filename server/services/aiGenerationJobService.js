@@ -365,41 +365,13 @@ function fullSynthesisPlaceholder({ topic, jobKey, status = 'queued', errorMessa
 function enqueueFullSynthesisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger }) {
     if (ENQUEUED_KEYS.has(jobKey)) return jobKey;
     ENQUEUED_KEYS.add(jobKey);
-    aiGenerationQueue.enqueue(async () => {
-        try {
-            const row = await db.getAiGenerationJobByKey(jobKey);
-            const input = row?.inputPayload || {};
-            const articles = input.articles || [];
-            const topic = input.topic || '';
-            const provider = input.provider || 'auto';
-            await db.markAiGenerationJobRunning(jobKey);
-            const result = await runFullSynthesisGeneration({
-                articles,
-                topic,
-                provider,
-                db,
-                cache,
-                serverConfig,
-                fetchImpl,
-                jobKey,
-            });
-            await completeJobAndClaims(db, jobKey, 'full_synthesis', {
-                resultPayload: { ...result, jobKey },
-                provider: result.audit?.provider || null,
-                model: result.audit?.model || null,
-                auditPayload: {
-                    ...result.audit,
-                    humanReviewStatus: 'none',
-                },
-            });
-        } catch (err) {
-            await db.failAiGenerationJob(jobKey, err.message).catch((err) => { logger.warn({ err }, 'failAiGenerationJob failed'); return null; });
-            throw err;
-        } finally {
-            ENQUEUED_KEYS.delete(jobKey);
-        }
-    }, { label: `ai-synth:${String(jobKey).slice(0, 24)}`, priority: 2 }).catch((err) => {
+    aiGenerationQueue.enqueueNamed('process', { jobKey }, {
+        label: `ai-synth:${String(jobKey).slice(0, 24)}`,
+        priority: 2,
+    }).catch((err) => {
         logger?.warn?.({ err, jobKey }, 'Full synthesis job failed');
+    }).finally(() => {
+        ENQUEUED_KEYS.delete(jobKey);
     });
     return jobKey;
 }
@@ -459,36 +431,13 @@ function paperSynopsisJobKey(article, selectedModel) {
 function enqueuePaperSynopsisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger }) {
     if (ENQUEUED_KEYS.has(jobKey)) return jobKey;
     ENQUEUED_KEYS.add(jobKey);
-    aiGenerationQueue.enqueue(async () => {
-        try {
-            const row = await db.getAiGenerationJobByKey(jobKey);
-            const input = row?.inputPayload || {};
-            await db.markAiGenerationJobRunning(jobKey);
-            const result = await runPaperSynopsisGeneration({
-                article: input.article,
-                provider: input.provider || 'auto',
-                serverConfig,
-                fetchImpl,
-                cache,
-                db,
-                sessionId: null,
-                log: logger,
-                jobKey,
-            });
-            await completeJobAndClaims(db, jobKey, 'paper_synopsis', {
-                resultPayload: { ...result, jobKey },
-                provider: result.provider || null,
-                model: result.model || null,
-                auditPayload: result.audit || null,
-            });
-        } catch (err) {
-            await db.failAiGenerationJob(jobKey, err.message).catch((err) => { logger.warn({ err }, 'failAiGenerationJob failed'); return null; });
-            throw err;
-        } finally {
-            ENQUEUED_KEYS.delete(jobKey);
-        }
-    }, { label: `ai-synop:${String(jobKey).slice(0, 24)}`, priority: 3 }).catch((err) => {
+    aiGenerationQueue.enqueueNamed('process', { jobKey }, {
+        label: `ai-synop:${String(jobKey).slice(0, 24)}`,
+        priority: 3,
+    }).catch((err) => {
         logger?.warn?.({ err, jobKey }, 'Paper synopsis job failed');
+    }).finally(() => {
+        ENQUEUED_KEYS.delete(jobKey);
     });
     return jobKey;
 }

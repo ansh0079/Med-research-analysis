@@ -57,11 +57,12 @@ function requireMonthlyLimit(limitKey, featureSlug) {
                 return res.status(429).json({
                     error: `Monthly limit reached for ${featureSlug} (${cap} on ${plan.label} plan)`,
                     limitKey,
+                    feature: featureSlug,
                     used: used - 1,
                     cap,
                     plan: plan.label,
                     upgradeRequired: plan.label !== 'Institution',
-                    resetsAt: `${ym}-01T00:00:00Z`, // approximate — first of next month
+                    resetsAt: (() => { const [y, m] = ym.split('-').map(Number); const next = m === 12 ? `${y + 1}-01` : `${y}-${String(m + 1).padStart(2, '0')}`; return `${next}-01T00:00:00Z`; })(),
                 });
             }
         } catch (err) {
@@ -115,6 +116,8 @@ function requireDailySearchLimit() {
                 const plan = resolvePlan(req.user);
                 return res.status(429).json({
                     error: `Daily search limit reached (${cap} on ${plan.label} plan)`,
+                    limitKey: 'searchesPerDay',
+                    feature: 'searchesPerDay',
                     used: used - 1,
                     cap,
                     plan: plan.label,

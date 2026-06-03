@@ -8,6 +8,7 @@ import { downloadText } from '@services/exportArticles';
 import type { Article, CaseModeResult, CaseLearningMode, QuizQuestion, QuestionType, TeachingVignetteResult } from '@types';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
 import { VerificationBadge } from '@components/ui/VerificationBadge';
+import { parseUsageLimitError, formatUsageLimitMessage } from '@utils/usageErrors';
 
 type CaseEvidenceBrief = {
   bestEvidence?: string;
@@ -594,6 +595,7 @@ export const CaseModePage: React.FC = () => {
   );
 
   const runTeachingVignette = async () => {
+    if (!guardAuth()) return;
     if (!prefillTopic || !caseSeedArticles || caseSeedArticles.length === 0) return;
     setTvLoading(true); setTvError(null); setTvResult(null);
     try {
@@ -601,7 +603,12 @@ export const CaseModePage: React.FC = () => {
       setTvResult(response);
       recordCaseAttempt('teaching_vignette', prefillTopic);
     } catch (err) {
-      setTvError(err instanceof Error ? err.message : 'Teaching vignette generation failed');
+      const msg = err instanceof Error ? err.message : 'Teaching vignette generation failed';
+      if (msg === 'AUTH_REQUIRED' && !isAuthenticated) {
+        navigate('/auth');
+      } else {
+        setTvError(msg);
+      }
     } finally {
       setTvLoading(false);
     }
@@ -621,7 +628,16 @@ export const CaseModePage: React.FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoGenerateTeachingCase, prefillTopic, caseSeedArticles]);
 
+  const guardAuth = () => {
+    if (!isAuthenticated) {
+      navigate('/auth');
+      return false;
+    }
+    return true;
+  };
+
   const runAnalysis = async () => {
+    if (!guardAuth()) return;
     const payload = buildPayload();
     if (!payload.trim() || isOverLimit) return;
     setLoading(true); setError(null); setResult(null);
@@ -635,13 +651,19 @@ export const CaseModePage: React.FC = () => {
       setResult(response);
       recordCaseAttempt('analysis', payload);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Case analysis failed');
+      const msg = err instanceof Error ? err.message : 'Case analysis failed';
+      if (msg === 'AUTH_REQUIRED' && !isAuthenticated) {
+        navigate('/auth');
+      } else {
+        setError(msg);
+      }
     } finally {
       setLoading(false);
     }
   };
 
   const runCaseToEvidence = async () => {
+    if (!guardAuth()) return;
     const payload = buildPayload();
     if (!payload.trim() || isOverLimit) return;
     setEvidenceLoading(true);
@@ -663,7 +685,12 @@ export const CaseModePage: React.FC = () => {
       });
       recordCaseAttempt('analysis', payload);
     } catch (err) {
-      setEvidenceError(err instanceof Error ? err.message : 'Case-to-evidence brief failed');
+      const msg = err instanceof Error ? err.message : 'Case-to-evidence brief failed';
+      if (msg === 'AUTH_REQUIRED' && !isAuthenticated) {
+        navigate('/auth');
+      } else {
+        setEvidenceError(msg);
+      }
     } finally {
       setEvidenceLoading(false);
     }
@@ -1028,12 +1055,44 @@ export const CaseModePage: React.FC = () => {
             </p>
           </div>
 
-          {evidenceError && (
-            <div className="flex items-center gap-2 px-3 py-2.5 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/50 rounded-xl">
-              <i className="fas fa-exclamation-circle text-red-400 text-xs shrink-0" />
-              <p className="text-sm text-red-600 dark:text-red-300">{evidenceError}</p>
-            </div>
-          )}
+          {evidenceError && (() => {
+            if (evidenceError === 'AUTH_REQUIRED') {
+              return (
+                <div className="flex items-center justify-between gap-3 px-4 py-3 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/60 rounded-xl">
+                  <p className="text-sm text-indigo-700 dark:text-indigo-300 flex items-center gap-2">
+                    <i className="fas fa-lock text-indigo-400 text-xs" /> Sign in to use Clinical Case Mode — it's free.
+                  </p>
+                  <a href="/auth" className="shrink-0 px-4 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition-colors">Sign in →</a>
+                </div>
+              );
+            }
+            if (evidenceError.startsWith('RATE_LIMITED:')) {
+              const secs = evidenceError.split(':')[1];
+              return (
+                <div className="flex items-center gap-2 px-3 py-2.5 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 rounded-xl">
+                  <i className="fas fa-clock text-amber-500 text-xs shrink-0" />
+                  <p className="text-sm text-amber-700 dark:text-amber-300">Too many requests — try again in {secs}s.</p>
+                </div>
+              );
+            }
+            if (evidenceError.startsWith('USAGE_LIMITED:') || evidenceError.startsWith('UPGRADE_REQUIRED:')) {
+              return (
+                <div className="flex items-center gap-2 px-3 py-2.5 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 rounded-xl">
+                  <i className="fas fa-chart-line text-amber-500 text-xs shrink-0" />
+                  <p className="text-sm text-amber-700 dark:text-amber-300">
+                    Usage limit reached.{' '}
+                    <a href="/billing" className="font-bold underline">View usage</a>
+                  </p>
+                </div>
+              );
+            }
+            return (
+              <div className="flex items-center gap-2 px-3 py-2.5 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/50 rounded-xl">
+                <i className="fas fa-exclamation-circle text-red-400 text-xs shrink-0" />
+                <p className="text-sm text-red-600 dark:text-red-300">{evidenceError}</p>
+              </div>
+            );
+          })()}
 
           {error && (() => {
             if (error === 'AUTH_REQUIRED') {
@@ -1052,6 +1111,18 @@ export const CaseModePage: React.FC = () => {
                 <div className="flex items-center gap-2 px-3 py-2.5 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 rounded-xl">
                   <i className="fas fa-clock text-amber-500 text-xs shrink-0" />
                   <p className="text-sm text-amber-700 dark:text-amber-300">Too many requests — try again in {secs}s.</p>
+                </div>
+              );
+            }
+            if (error.startsWith('USAGE_LIMITED:')) {
+              const info = parseUsageLimitError(error);
+              return (
+                <div className="flex items-center gap-2 px-3 py-2.5 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 rounded-xl">
+                  <i className="fas fa-chart-line text-amber-500 text-xs shrink-0" />
+                  <p className="text-sm text-amber-700 dark:text-amber-300">
+                    {info ? formatUsageLimitMessage(info) : 'Monthly limit reached.'}{' '}
+                    <a href="/billing" className="font-bold underline">View usage</a>
+                  </p>
                 </div>
               );
             }

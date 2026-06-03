@@ -2,8 +2,6 @@
  * Persistent HTTP/HTTPS agents with keep-alive enabled.
  * Reusing connections saves ~50-80ms per cold TCP handshake on repeated
  * calls to the same host (PubMed, Semantic Scholar, OpenAlex).
- * Only used when falling back to node-fetch; native Node fetch (v18+) handles
- * connection reuse automatically via undici.
  */
 let _httpAgent = null;
 let _httpsAgent = null;
@@ -17,38 +15,38 @@ function getKeepAliveAgents() {
     return { httpAgent: _httpAgent, httpsAgent: _httpsAgent };
 }
 
+const { getRequestId } = require('./requestContext');
+
 /**
- * Fetch with timeout and safe retries.
- * Uses global.fetch when available (e.g. test mocks or native Node fetch),
- * falling back to node-fetch with persistent keep-alive agents.
+ * Fetch with timeout and safe retries (Node 22 native fetch).
+ * Propagates X-Request-Id for distributed tracing.
  * Only retries on idempotent methods (GET, HEAD, OPTIONS).
  */
 async function fetchWithTimeout(url, options = {}) {
     const DEFAULT_TIMEOUT_MS = 30000;
     const { timeout = DEFAULT_TIMEOUT_MS, ...fetchOptions } = options;
 
-    // Use native fetch when available (Node 18+, test environments).
-    // Inject keep-alive agents only for node-fetch fallback.
-    const nativeFetch = typeof globalThis.fetch === 'function' ? globalThis.fetch : null;
-    const fetchImpl = nativeFetch || require('node-fetch');
-    if (!nativeFetch && !fetchOptions.agent) {
-        const { httpAgent, httpsAgent } = getKeepAliveAgents();
-        fetchOptions.agent = (parsedUrl) =>
-            parsedUrl.protocol === 'https:' ? httpsAgent : httpAgent;
+    const headers = new Headers(fetchOptions.headers || {});
+    const requestId = getRequestId();
+    if (requestId && !headers.has('X-Request-Id')) {
+        headers.set('X-Request-Id', requestId);
     }
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
 
     try {
-        const response = await fetchImpl(url, {
+        const response = await fetch(url, {
             ...fetchOptions,
+            headers,
             signal: controller.signal,
         });
         return response;
     } catch (error) {
         if (error.name === 'AbortError') {
-            throw new Error(`Request timeout after ${timeout}ms: ${url}`);
+            const err = new Error(`Request timed out after ${timeout}ms: ${url}`);
+            err.code = 'ETIMEDOUT';
+            throw err;
         }
         throw error;
     } finally {
@@ -56,25 +54,20 @@ async function fetchWithTimeout(url, options = {}) {
     }
 }
 
-async function safeFetch(url, options = {}) {
-    const { retries = 0, ...rest } = options;
-    const method = (rest.method || 'GET').toUpperCase();
-    const safeMethods = new Set(['GET', 'HEAD', 'OPTIONS']);
-    const maxRetries = safeMethods.has(method) ? Math.max(0, retries) : 0;
+/**
+ * Safe fetch wrapper with timeout and limited retries for transient failures.
+ */
+async function safeFetch(url, options = {}, retries = 2) {
+    const method = (options.method || 'GET').toUpperCase();
+    const idempotent = ['GET', 'HEAD', 'OPTIONS'].includes(method);
 
-    let lastError;
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-        try {
-            return await fetchWithTimeout(url, rest);
-        } catch (error) {
-            lastError = error;
-            if (attempt < maxRetries) {
-                const delay = rest.retryDelay || 500 * (attempt + 1);
-                await new Promise((resolve) => setTimeout(resolve, delay));
-            }
-        }
+    try {
+        return await fetchWithTimeout(url, options);
+    } catch (error) {
+        if (!idempotent || retries <= 0) throw error;
+        await new Promise((r) => setTimeout(r, 500));
+        return safeFetch(url, options, retries - 1);
     }
-    throw lastError;
 }
 
-module.exports = { fetchWithTimeout, safeFetch };
+module.exports = { fetchWithTimeout, safeFetch, getKeepAliveAgents };

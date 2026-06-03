@@ -36,6 +36,9 @@ describe('RoleRoute', () => {
       logout: jest.fn(),
       forgotPassword: jest.fn(),
       resendVerification: jest.fn(),
+      updateProfile: jest.fn(),
+      changePassword: jest.fn(),
+      deleteAccount: jest.fn(),
       setUser: jest.fn(),
     });
 
@@ -58,6 +61,9 @@ describe('RoleRoute', () => {
       logout: jest.fn(),
       forgotPassword: jest.fn(),
       resendVerification: jest.fn(),
+      updateProfile: jest.fn(),
+      changePassword: jest.fn(),
+      deleteAccount: jest.fn(),
       setUser: jest.fn(),
     });
 
@@ -80,6 +86,9 @@ describe('RoleRoute', () => {
       logout: jest.fn(),
       forgotPassword: jest.fn(),
       resendVerification: jest.fn(),
+      updateProfile: jest.fn(),
+      changePassword: jest.fn(),
+      deleteAccount: jest.fn(),
       setUser: jest.fn(),
     });
 
@@ -103,6 +112,9 @@ describe('RoleRoute', () => {
       logout: jest.fn(),
       forgotPassword: jest.fn(),
       resendVerification: jest.fn(),
+      updateProfile: jest.fn(),
+      changePassword: jest.fn(),
+      deleteAccount: jest.fn(),
       setUser: jest.fn(),
     });
 
@@ -126,6 +138,9 @@ describe('RoleRoute', () => {
       logout: jest.fn(),
       forgotPassword: jest.fn(),
       resendVerification: jest.fn(),
+      updateProfile: jest.fn(),
+      changePassword: jest.fn(),
+      deleteAccount: jest.fn(),
       setUser: jest.fn(),
     });
 
@@ -148,6 +163,9 @@ describe('RoleRoute', () => {
       logout: jest.fn(),
       forgotPassword: jest.fn(),
       resendVerification: jest.fn(),
+      updateProfile: jest.fn(),
+      changePassword: jest.fn(),
+      deleteAccount: jest.fn(),
       setUser: jest.fn(),
     });
 
@@ -171,6 +189,9 @@ describe('RoleRoute', () => {
       logout: jest.fn(),
       forgotPassword: jest.fn(),
       resendVerification: jest.fn(),
+      updateProfile: jest.fn(),
+      changePassword: jest.fn(),
+      deleteAccount: jest.fn(),
       setUser: jest.fn(),
     });
 

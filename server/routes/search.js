@@ -34,7 +34,8 @@ function setNoStoreSearchHeaders(res) {
     res.setHeader('Cache-Control', 'private, no-store');
 }
 
-function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, requireJson, requireAuthJwt, requireRole, fetch: fetchImpl, enqueuePdfPreindex }) {
+function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, requireJson, requireAuthJwt, requireRole, requireDailySearchLimit, fetch: fetchImpl, enqueuePdfPreindex }) {
+    const dailySearchLimit = requireDailySearchLimit || ((_req, _res, next) => next());
     const f = fetchImpl || safeFetch;
     const proxy = buildProxyService({ serverConfig, fetchImpl: f });
     const pdfDeps = { cache, db, serverConfig, fetch: f };
@@ -429,8 +430,8 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
         }
     });
 
-    app.get('/api/search', rateLimit(30, 60), async (req, res) => {
-        const { q, query: queryParam, sources = 'pubmed', limit = 20, vector } = req.query;
+    app.get('/api/search', rateLimit(30, 60), dailySearchLimit, async (req, res) => {
+        const { q, query: queryParam, sources = 'pubmed', limit = 20, vector, specificity = 'moderate' } = req.query;
         const safeLimit = clampLimit(limit);
         setNoStoreSearchHeaders(res);
         const startTime = Date.now();
@@ -440,6 +441,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
         const queryValidation = validateQuery(query);
         if (!queryValidation.valid) return res.status(400).json({ error: queryValidation.error });
 
+        const validSpecificity = ['broad', 'moderate', 'strict'].includes(specificity) ? specificity : 'moderate';
         const sourceList = String(sources).split(',').map((s) => s.trim()).filter(Boolean);
 
         try {
@@ -469,6 +471,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 fetch: f,
                 vectorList,
                 telemetry,
+                specificity: validSpecificity,
             });
 
             // Drop articles where query concepts don't appear in title or abstract,
@@ -477,12 +480,26 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
             const { getCitationCount, getYear, isPreclinical, isPredatoryJournal, MECHANISM_QUERY_PATTERNS } = require('../services/evidenceBouquetService');
             const currentYear = new Date().getFullYear();
             const queryWantsMechanisms = MECHANISM_QUERY_PATTERNS.test(queryValidation.sanitized);
+
+            // Strict specificity: only keep high-evidence study types
+            const STRICT_PUB_TYPES = new Set([
+                'systematic review', 'meta-analysis', 'meta analysis',
+                'randomized controlled trial', 'randomised controlled trial',
+                'clinical trial', 'practice guideline', 'guideline',
+            ]);
+            const isStrictMode = validSpecificity === 'strict';
+
             const relevant = raw.filter((a) => {
                 if (isOffTopic(a, queryValidation.sanitized)) return false;
                 const age = currentYear - getYear(a);
                 if (getCitationCount(a) === 0 && age > 2) return false;
                 if (!queryWantsMechanisms && isPreclinical(a)) return false;
                 if (isPredatoryJournal(a)) return false;
+                if (isStrictMode) {
+                    const types = (Array.isArray(a.pubtype) ? a.pubtype : []).map((t) => (t || '').toLowerCase());
+                    const ebm = a._ebmScore ?? 0;
+                    if (ebm < 5 && !types.some((t) => [...STRICT_PUB_TYPES].some((st) => t.includes(st)))) return false;
+                }
                 return true;
             });
             const { articles, teachingObjects: boostedObjects, claims: boostedClaims } = await applyTeachingObjectSearchBoost(

@@ -3,7 +3,7 @@
 // ==========================================
 
 const logger = require('../config/logger');
-const fetch = require('node-fetch');
+const { fetchWithTimeout } = require('../utils/fetch');
 
 // Study design patterns and their weights
 const STUDY_DESIGNS = [
