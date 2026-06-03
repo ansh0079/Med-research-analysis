@@ -148,6 +148,9 @@ describe('aiRoutes', () => {
         validateBody: () => (req, res, next) => next(),
         schemas: {},
         fetch: jest.fn(),
+        requireMonthlyLimit: () => (_req, _res, next) => next(),
+        requirePaidFeature: () => (_req, _res, next) => next(),
+        requireVerifiedEmail: (_req, _res, next) => next(),
     };
 
     beforeEach(() => {

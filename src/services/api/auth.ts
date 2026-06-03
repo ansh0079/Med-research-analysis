@@ -152,6 +152,19 @@ export class AuthApi extends BaseApiClient {
     return response.json();
   }
 
+  async changeEmail(data: { newEmail: string; password: string }): Promise<{ message: string }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/auth/change-email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({})) as { error?: string };
+      throw new Error(err.error || 'Failed to request email change');
+    }
+    return response.json();
+  }
+
   async deleteAccount(): Promise<void> {
     const response = await this.fetchWithSession(`${API_BASE}/api/auth/me`, {
       method: 'DELETE',

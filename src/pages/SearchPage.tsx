@@ -1364,7 +1364,7 @@ export const SearchPage: React.FC = () => {
             )}
           </ResearchWorkspace>
         ) : (
-          <SearchEmptyState />
+          <SearchEmptyState onExampleClick={handleSearch} />
         )}
       </main>
 

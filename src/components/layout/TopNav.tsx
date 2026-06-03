@@ -4,10 +4,31 @@ import { useAuth } from '@contexts/AuthContext';
 import { useTheme } from '@hooks';
 import api from '@services/api';
 
-const CORE_NAV = [
+// Primary nav — 4 items visible at all times
+const PRIMARY_NAV = [
   { to: '/search', label: 'Search', icon: 'fa-search' },
   { to: '/review', label: 'Review', icon: 'fa-clipboard-check' },
-  { to: '/grant', label: 'Grant', icon: 'fa-file-alt' },
+] as const;
+
+// Tools dropdown — secondary features grouped together
+const TOOLS_NAV = [
+  { to: '/case',         label: 'Case mode',      icon: 'fa-stethoscope',  color: 'text-emerald-500' },
+  { to: '/quiz',         label: 'Quiz',           icon: 'fa-brain',        color: 'text-violet-500'  },
+  { to: '/practice',    label: 'Practice pool',  icon: 'fa-layer-group',  color: 'text-teal-500'   },
+  { to: '/study-paths', label: 'Study paths',    icon: 'fa-route',        color: 'text-rose-500'   },
+  { to: '/grant',       label: 'Grant writing',  icon: 'fa-file-alt',     color: 'text-amber-500'  },
+  { to: '/saved',       label: 'Saved articles', icon: 'fa-bookmark',     color: 'text-indigo-500' },
+  { to: '/team',        label: 'Team workspace', icon: 'fa-users',        color: 'text-sky-500'    },
+  { to: '/guidelines',  label: 'Guidelines',     icon: 'fa-book-medical', color: 'text-slate-500'  },
+] as const;
+
+// User menu — account-level actions
+const ACCOUNT_NAV = [
+  { to: '/analytics',   label: 'Analytics',       icon: 'fa-chart-bar',   color: 'text-slate-400'  },
+  { to: '/history',     label: 'Search history',  icon: 'fa-history',     color: 'text-slate-400'  },
+  { to: '/knowledge',   label: 'Knowledge review',icon: 'fa-book-medical',color: 'text-emerald-400'},
+  { to: '/settings',    label: 'Settings',        icon: 'fa-cog',         color: 'text-slate-400'  },
+  { to: '/billing',     label: 'Billing & Plans', icon: 'fa-credit-card', color: 'text-indigo-400' },
 ] as const;
 
 export const TopNav: React.FC = () => {
@@ -18,7 +39,7 @@ export const TopNav: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-  const [teachMenuOpen, setTeachMenuOpen] = React.useState(false);
+  const [toolsMenuOpen, setToolsMenuOpen] = React.useState(false);
   const [dueCount, setDueCount] = React.useState(0);
 
   React.useEffect(() => {
@@ -29,6 +50,8 @@ export const TopNav: React.FC = () => {
     }, 60000);
     return () => clearInterval(id);
   }, [isAuthenticated]);
+
+  const isToolsActive = TOOLS_NAV.some((t) => pathname.startsWith(t.to));
 
   return (
     <nav className="top-nav">
@@ -50,8 +73,9 @@ export const TopNav: React.FC = () => {
           </span>
         </button>
 
-        {/* Centre nav — hidden on small screens */}
+        {/* Centre nav */}
         <div className="hidden md:flex items-center gap-0.5">
+          {/* Study — always first with due badge */}
           {isAuthenticated && (
             <button
               type="button"
@@ -67,7 +91,9 @@ export const TopNav: React.FC = () => {
               )}
             </button>
           )}
-          {CORE_NAV.map(({ to, label, icon }) => (
+
+          {/* Primary nav items */}
+          {PRIMARY_NAV.map(({ to, label, icon }) => (
             <button
               key={to}
               type="button"
@@ -78,93 +104,35 @@ export const TopNav: React.FC = () => {
               {label}
             </button>
           ))}
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setTeachMenuOpen((o) => !o)}
-              onBlur={() => setTimeout(() => setTeachMenuOpen(false), 180)}
-              className={`nav-link ${['/case', '/quiz', '/learning', '/study-paths', '/grant'].some((p) => pathname.startsWith(p)) ? 'active' : ''}`}
-            >
-              <i className="fas fa-graduation-cap text-[10px]" />
-              Teach
-              <i className="fas fa-chevron-down text-[8px] opacity-60" />
-            </button>
-            {teachMenuOpen && (
-              <div className="absolute left-0 top-full mt-1 w-48 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-xl py-1 z-50 animate-fade-in">
-                <button
-                  type="button"
-                  className="flex items-center gap-2 w-full px-3 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60"
-                  onClick={() => { navigate('/study-paths'); setTeachMenuOpen(false); }}
-                >
-                  <i className="fas fa-route w-3.5 text-rose-500" /> Study paths
-                </button>
-                <button
-                  type="button"
-                  className="flex items-center gap-2 w-full px-3 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60"
-                  onClick={() => { navigate('/case'); setTeachMenuOpen(false); }}
-                >
-                  <i className="fas fa-stethoscope w-3.5 text-emerald-500" /> Case mode
-                </button>
-                <button
-                  type="button"
-                  className="flex items-center gap-2 w-full px-3 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60"
-                  onClick={() => { navigate('/quiz'); setTeachMenuOpen(false); }}
-                >
-                  <i className="fas fa-brain w-3.5 text-violet-500" /> Quiz
-                </button>
-                <button
-                  type="button"
-                  className="flex items-center gap-2 w-full px-3 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60"
-                  onClick={() => { navigate('/practice'); setTeachMenuOpen(false); }}
-                >
-                  <i className="fas fa-layer-group w-3.5 text-teal-500" /> Practice pool
-                </button>
-                <button
-                  type="button"
-                  className="flex items-center gap-2 w-full px-3 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60"
-                  onClick={() => { navigate('/grant'); setTeachMenuOpen(false); }}
-                >
-                  <i className="fas fa-file-alt w-3.5 text-amber-500" /> Grant writing
-                </button>
-                {isAuthenticated && (
-                  <button
-                    type="button"
-                    className="flex items-center gap-2 w-full px-3 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60"
-                    onClick={() => { navigate('/learning'); setTeachMenuOpen(false); }}
-                  >
-                    <i className="fas fa-chart-line w-3.5 text-indigo-500" /> Topic review
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
+
+          {/* Tools dropdown */}
           {isAuthenticated && (
-            <>
+            <div className="relative">
               <button
                 type="button"
-                onClick={() => navigate('/saved')}
-                className={`nav-link ${pathname === '/saved' ? 'active' : ''}`}
+                onClick={() => setToolsMenuOpen((o) => !o)}
+                onBlur={() => setTimeout(() => setToolsMenuOpen(false), 180)}
+                className={`nav-link ${isToolsActive ? 'active' : ''}`}
               >
-                <i className="fas fa-bookmark text-[10px]" />
-                Saved
+                <i className="fas fa-th text-[10px]" />
+                Tools
+                <i className="fas fa-chevron-down text-[8px] opacity-60" />
               </button>
-              <button
-                type="button"
-                onClick={() => navigate('/team')}
-                className={`nav-link ${pathname === '/team' ? 'active' : ''}`}
-              >
-                <i className="fas fa-users text-[10px]" />
-                Team
-              </button>
-              <button
-                type="button"
-                onClick={() => navigate('/knowledge')}
-                className={`nav-link ${pathname === '/knowledge' ? 'active' : ''}`}
-              >
-                <i className="fas fa-book-medical text-[10px]" />
-                Knowledge
-              </button>
-            </>
+              {toolsMenuOpen && (
+                <div className="absolute left-0 top-full mt-1 w-52 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-xl py-1.5 z-50 animate-fade-in">
+                  {TOOLS_NAV.map(({ to, label, icon, color }) => (
+                    <button
+                      key={to}
+                      type="button"
+                      className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors"
+                      onClick={() => { navigate(to); setToolsMenuOpen(false); }}
+                    >
+                      <i className={`fas ${icon} w-3.5 ${color}`} /> {label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </div>
 
@@ -199,7 +167,6 @@ export const TopNav: React.FC = () => {
                 onBlur={() => setTimeout(() => setUserMenuOpen(false), 150)}
                 className="flex items-center gap-2 px-2.5 py-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               >
-                {/* Avatar */}
                 <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-[10px] font-bold shrink-0">
                   {(user?.name?.[0] || user?.email?.[0] || '?').toUpperCase()}
                 </div>
@@ -210,45 +177,17 @@ export const TopNav: React.FC = () => {
               </button>
 
               {userMenuOpen && (
-                <div className="absolute right-0 top-full mt-1.5 w-44 bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-slate-200/60 dark:shadow-slate-900/80 border border-slate-100 dark:border-slate-700 py-1 z-50 animate-fade-in">
-                  <button type="button" onClick={() => { navigate('/guideline-library'); setUserMenuOpen(false); }}
-                    className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
-                    <i className="fas fa-book-medical w-3.5 text-sky-400" /> Guideline library
-                  </button>
-                  <button type="button" onClick={() => { navigate('/history'); setUserMenuOpen(false); }}
-                    className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
-                    <i className="fas fa-history w-3.5 text-slate-400" /> Search history
-                  </button>
-                  <button type="button" onClick={() => { navigate('/analytics'); setUserMenuOpen(false); }}
-                    className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
-                    <i className="fas fa-chart-bar w-3.5 text-slate-400" /> Analytics
-                  </button>
-                  <button type="button" onClick={() => { navigate('/quiz'); setUserMenuOpen(false); }}
-                    className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
-                    <i className="fas fa-brain w-3.5 text-violet-400" /> Quiz mode
-                  </button>
-                  <button type="button" onClick={() => { navigate('/knowledge'); setUserMenuOpen(false); }}
-                    className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
-                    <i className="fas fa-book-medical w-3.5 text-emerald-400" /> Knowledge review
-                  </button>
-                  <button type="button" onClick={() => { navigate('/learning'); setUserMenuOpen(false); }}
-                    className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
-                    <i className="fas fa-graduation-cap w-3.5 text-indigo-400" /> Learning
-                  </button>
-                  <button type="button" onClick={() => { navigate('/grant'); setUserMenuOpen(false); }}
-                    className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
-                    <i className="fas fa-file-alt w-3.5 text-amber-400" /> Grant writing
-                  </button>
-                  <button type="button" onClick={() => { navigate('/settings'); setUserMenuOpen(false); }}
-                    className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
-                    <i className="fas fa-cog w-3.5 text-slate-400" /> Settings
-                  </button>
-                  <button type="button" onClick={() => { navigate('/billing'); setUserMenuOpen(false); }}
-                    className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
-                    <i className="fas fa-credit-card w-3.5 text-indigo-400" /> Billing &amp; Plans
-                  </button>
+                <div className="absolute right-0 top-full mt-1.5 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-slate-200/60 dark:shadow-slate-900/80 border border-slate-100 dark:border-slate-700 py-1.5 z-50 animate-fade-in">
+                  {ACCOUNT_NAV.map(({ to, label, icon, color }) => (
+                    <button key={to} type="button"
+                      onClick={() => { navigate(to); setUserMenuOpen(false); }}
+                      className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
+                      <i className={`fas ${icon} w-3.5 ${color}`} /> {label}
+                    </button>
+                  ))}
                   {isStaff && (
                     <>
+                      <div className="my-1 border-t border-slate-100 dark:border-slate-700" />
                       <button type="button" onClick={() => { navigate('/admin/quality'); setUserMenuOpen(false); }}
                         className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
                         <i className="fas fa-clipboard-check w-3.5 text-violet-400" /> Quality review
@@ -291,68 +230,42 @@ export const TopNav: React.FC = () => {
 
       {/* Mobile nav drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 max-h-[calc(100vh-var(--nav-h))] overflow-y-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 py-2 px-3 sm:px-4 flex flex-col gap-1 animate-fade-in z-50">
+        <div className="md:hidden absolute top-full left-0 right-0 max-h-[calc(100vh-var(--nav-h))] overflow-y-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 py-2 px-3 sm:px-4 flex flex-col gap-0.5 animate-fade-in z-50">
           {isAuthenticated && (
             <button type="button" onClick={() => { navigate('/learning'); setMobileMenuOpen(false); }}
               className={`nav-link w-full text-left ${pathname.startsWith('/learning') ? 'active' : ''}`}>
               <i className="fas fa-graduation-cap text-[10px]" /> Study
+              {dueCount > 0 && <span className="ml-auto text-[10px] font-bold text-rose-500">{dueCount} due</span>}
             </button>
           )}
-          {CORE_NAV.map(({ to, label, icon }) => (
-            <button
-              key={to}
-              type="button"
+          {PRIMARY_NAV.map(({ to, label, icon }) => (
+            <button key={to} type="button"
               onClick={() => { navigate(to); setMobileMenuOpen(false); }}
-              className={`nav-link w-full text-left ${pathname === to ? 'active' : ''}`}
-            >
-              <i className={`fas ${icon} text-[10px]`} />
-              {label}
+              className={`nav-link w-full text-left ${pathname === to ? 'active' : ''}`}>
+              <i className={`fas ${icon} text-[10px]`} /> {label}
             </button>
           ))}
-          <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 pt-2">Teach</div>
-          <button type="button" onClick={() => { navigate('/study-paths'); setMobileMenuOpen(false); }}
-            className={`nav-link w-full text-left ${pathname.startsWith('/study-paths') ? 'active' : ''}`}>
-            <i className="fas fa-route text-[10px]" /> Study paths
-          </button>
-          <button type="button" onClick={() => { navigate('/case'); setMobileMenuOpen(false); }}
-            className={`nav-link w-full text-left ${pathname.startsWith('/case') ? 'active' : ''}`}>
-            <i className="fas fa-stethoscope text-[10px]" /> Case mode
-          </button>
-          <button type="button" onClick={() => { navigate('/quiz'); setMobileMenuOpen(false); }}
-            className={`nav-link w-full text-left ${pathname.startsWith('/quiz') ? 'active' : ''}`}>
-            <i className="fas fa-brain text-[10px]" /> Quiz
-          </button>
-          <button type="button" onClick={() => { navigate('/grant'); setMobileMenuOpen(false); }}
-            className={`nav-link w-full text-left ${pathname.startsWith('/grant') ? 'active' : ''}`}>
-            <i className="fas fa-file-alt text-[10px]" /> Grant writing
-          </button>
-          {isAuthenticated && (
-            <button type="button" onClick={() => { navigate('/learning'); setMobileMenuOpen(false); }}
-              className={`nav-link w-full text-left ${pathname.startsWith('/learning') ? 'active' : ''}`}>
-              <i className="fas fa-graduation-cap text-[10px]" /> Topic review
-            </button>
-          )}
           {isAuthenticated && (
             <>
-              <button type="button" onClick={() => { navigate('/saved'); setMobileMenuOpen(false); }}
-                className={`nav-link w-full text-left ${pathname === '/saved' ? 'active' : ''}`}>
-                <i className="fas fa-bookmark text-[10px]" /> Saved
-              </button>
-              <button type="button" onClick={() => { navigate('/team'); setMobileMenuOpen(false); }}
-                className={`nav-link w-full text-left ${pathname === '/team' ? 'active' : ''}`}>
-                <i className="fas fa-users text-[10px]" /> Team
-              </button>
-              <button type="button" onClick={() => { navigate('/knowledge'); setMobileMenuOpen(false); }}
-                className={`nav-link w-full text-left ${pathname === '/knowledge' ? 'active' : ''}`}>
-                <i className="fas fa-book-medical text-[10px]" /> Knowledge
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 pt-2 pb-1">Tools</div>
+              {TOOLS_NAV.map(({ to, label, icon, color }) => (
+                <button key={to} type="button"
+                  onClick={() => { navigate(to); setMobileMenuOpen(false); }}
+                  className={`nav-link w-full text-left ${pathname.startsWith(to) ? 'active' : ''}`}>
+                  <i className={`fas ${icon} text-[10px] ${color}`} /> {label}
+                </button>
+              ))}
+              <div className="my-1 border-t border-slate-100 dark:border-slate-800" />
+              <button type="button" onClick={() => { navigate('/settings'); setMobileMenuOpen(false); }}
+                className="nav-link w-full text-left">
+                <i className="fas fa-cog text-[10px]" /> Settings
               </button>
               {isStaff && (
                 <button type="button" onClick={() => { navigate('/admin/observability'); setMobileMenuOpen(false); }}
-                  className={`nav-link w-full text-left ${pathname === '/admin/observability' ? 'active' : ''}`}>
-                  <i className="fas fa-chart-pie text-[10px]" /> Claim observability
+                  className="nav-link w-full text-left">
+                  <i className="fas fa-chart-pie text-[10px]" /> Admin
                 </button>
               )}
-              <div className="my-1 border-t border-slate-100 dark:border-slate-800" />
               <button type="button" onClick={() => { logout(); setMobileMenuOpen(false); }}
                 className="nav-link w-full text-left text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30">
                 <i className="fas fa-sign-out-alt text-[10px]" /> Sign out

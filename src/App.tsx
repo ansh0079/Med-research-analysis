@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-ro
 import { SearchProvider } from './contexts/SearchContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ToastContainer, useToast } from '@components/ui';
+import { USAGE_HEADER_EVENT, type UsageHeaderDetail } from '@services/api/core';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ProtectedRoute } from './components/router/ProtectedRoute';
 import { GuestRoute } from './components/router/GuestRoute';
@@ -74,7 +75,7 @@ const RootRoute: React.FC = () => {
 const NO_TOP_NAV_ROUTES = ['/', '/auth', '/legal/terms', '/legal/privacy'];
 
 const AppContent: React.FC = () => {
-  const { toasts, removeToast } = useToast();
+  const { toasts, showToast, removeToast } = useToast();
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -82,6 +83,45 @@ const AppContent: React.FC = () => {
   // Show onboarding modal to authenticated users who haven't seen it yet
   const [onboardingDismissed, setOnboardingDismissed] = useState(false);
   const showOnboarding = !onboardingDismissed && !isLoading && isAuthenticated && !hasCompletedOnboarding();
+
+  React.useEffect(() => {
+    const seenBuckets = new Set<string>();
+    const labels: Record<string, string> = {
+      ai_analysis: 'AI analyses',
+      ai_synthesis: 'evidence syntheses',
+      aiAnalysesPerMonth: 'AI analyses',
+      synthesisPerMonth: 'evidence syntheses',
+      searchesPerDay: 'daily searches',
+    };
+
+    const bucketFor = (ratio: number) => {
+      if (ratio >= 1) return '100';
+      if (ratio >= 0.9) return '90';
+      if (ratio >= 0.8) return '80';
+      return null;
+    };
+
+    const onUsageHeaders = (event: Event) => {
+      const detail = (event as CustomEvent<UsageHeaderDetail>).detail;
+      if (!detail || detail.cap <= 0) return;
+      const bucket = bucketFor(detail.used / detail.cap);
+      if (!bucket) return;
+
+      const key = `${detail.kind}:${detail.limitKey}:${bucket}`;
+      if (seenBuckets.has(key)) return;
+      seenBuckets.add(key);
+
+      const label = labels[detail.feature] || labels[detail.limitKey] || detail.feature;
+      const atLimit = detail.used >= detail.cap;
+      const message = atLimit
+        ? `You've reached ${detail.used}/${detail.cap} ${label}.`
+        : `You're nearing your ${label} limit: ${detail.used}/${detail.cap} used.`;
+      showToast(message, atLimit ? 'error' : 'warning', atLimit ? 8000 : 6000);
+    };
+
+    window.addEventListener(USAGE_HEADER_EVENT, onUsageHeaders);
+    return () => window.removeEventListener(USAGE_HEADER_EVENT, onUsageHeaders);
+  }, [showToast]);
 
   const handleOnboardingDone = (query?: string, destination: 'search' | 'learning' | 'quiz' = 'search') => {
     setOnboardingDismissed(true);

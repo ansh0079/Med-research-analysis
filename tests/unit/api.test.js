@@ -66,6 +66,8 @@ jest.mock('../../database', () => ({
   }),
   createAnnotation: jest.fn().mockResolvedValue({ id: 99, changes: 1 }),
   get: jest.fn(),
+  run: jest.fn().mockResolvedValue({ changes: 1 }),
+  all: jest.fn().mockResolvedValue([]),
   isVectorSearchAvailable: jest.fn().mockReturnValue(false),
   searchSimilarArticlesCache: jest.fn(),
   upsertArticleCacheVector: jest.fn(),

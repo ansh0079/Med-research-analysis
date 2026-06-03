@@ -3,6 +3,16 @@ import type { Scope } from '@sentry/react';
 import { buildUsageLimitError, type UsageLimitInfo } from '@utils/usageErrors';
 
 export const API_BASE = import.meta.env.VITE_API_URL || '';
+export const USAGE_HEADER_EVENT = 'medsearch:usage-headers';
+
+export interface UsageHeaderDetail {
+  kind: 'usage' | 'search';
+  limitKey: string;
+  feature: string;
+  used: number;
+  cap: number;
+  url: string;
+}
 
 export interface AuthUser {
   id: string;
@@ -139,7 +149,35 @@ export class BaseApiClient {
       }
     }
 
+    this.emitUsageHeaderEvent(clonedResponse, url);
+
     return clonedResponse;
+  }
+
+  private emitUsageHeaderEvent(response: Response, url: string): void {
+    if (typeof window === 'undefined') return;
+
+    const maybeEmit = (
+      kind: UsageHeaderDetail['kind'],
+      usedHeader: string,
+      limitHeader: string,
+      keyHeader: string,
+      featureHeader: string,
+      fallbackKey: string
+    ) => {
+      const used = Number(response.headers.get(usedHeader));
+      const cap = Number(response.headers.get(limitHeader));
+      if (!Number.isFinite(used) || !Number.isFinite(cap) || cap <= 0) return;
+
+      const limitKey = response.headers.get(keyHeader) || fallbackKey;
+      const feature = response.headers.get(featureHeader) || limitKey;
+      window.dispatchEvent(new CustomEvent<UsageHeaderDetail>(USAGE_HEADER_EVENT, {
+        detail: { kind, limitKey, feature, used, cap, url },
+      }));
+    };
+
+    maybeEmit('usage', 'X-Usage-Used', 'X-Usage-Limit', 'X-Usage-Key', 'X-Usage-Feature', 'aiAnalysesPerMonth');
+    maybeEmit('search', 'X-Search-Used', 'X-Search-Limit', 'X-Search-Key', 'X-Search-Feature', 'searchesPerDay');
   }
 
   protected async parseErrorResponse(response: Response): Promise<never> {

@@ -6,7 +6,7 @@ const { PLANS, resolvePlan, hasFeature, getLimit, ROLE_TO_PLAN } = require('../.
 // Plan completeness
 // ──────────────────────────────────────────────────────────────────────────────
 describe('PLANS definition', () => {
-    const tierNames = ['free', 'pro', 'team', 'institution'];
+    const tierNames = ['free', 'researcher', 'pro', 'team', 'institution'];
 
     test.each(tierNames)('%s plan exists and has required shape', (tier) => {
         const plan = PLANS[tier];
@@ -79,8 +79,8 @@ describe('resolvePlan()', () => {
         expect(resolvePlan({ role: 'admin' })).toBe(PLANS.institution);
     });
 
-    test('role:researcher resolves to pro plan', () => {
-        expect(resolvePlan({ role: 'researcher' })).toBe(PLANS.pro);
+    test('role:researcher resolves to researcher plan', () => {
+        expect(resolvePlan({ role: 'researcher' })).toBe(PLANS.researcher);
     });
 
     test('role:enterprise resolves to institution plan', () => {

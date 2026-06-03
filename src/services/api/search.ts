@@ -92,7 +92,7 @@ export class SearchApi extends BaseApiClient {
     }
 
     const response = await this.fetchWithSession(`${API_BASE}/api/search?${params}`);
-    if (!response.ok) throw new Error(`Search failed: ${response.statusText}`);
+    if (!response.ok) await this.parseErrorResponse(response);
     const data = await response.json() as SearchResponse;
     return data;
   }

@@ -51,6 +51,7 @@ const { registerAiRoutes } = require('./server/controllers/aiRoutes');
 const { registerReviewRoutes } = require('./server/controllers/reviewRoutes');
 const { registerRecommendationRoutes } = require('./server/controllers/recommendationRoutes');
 const { registerBillingRoutes } = require('./server/controllers/billingRoutes');
+const { registerDeveloperRoutes } = require('./server/controllers/developerRoutes');
 const { collaborationRoutes } = require('./server/collaboration-routes');
 const { teamRoutes } = require('./server/controllers/teamRoutes');
 const setupSocketHandlers = require('./server/socket-handler');
@@ -74,11 +75,16 @@ if (process.env.NODE_ENV === 'production') {
         process.exit(1);
     }
     if (String(process.env.REQUIRE_SMTP || '').toLowerCase() === 'true') {
-        const missingSmtp = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS', 'SMTP_FROM', 'APP_URL'].filter(
-            (k) => !process.env[k]
-        );
-        if (missingSmtp.length > 0) {
-            logger.fatal({ missing: missingSmtp }, 'SMTP readiness failed');
+        const hasManagedProvider = Boolean(process.env.RESEND_API_KEY || process.env.SENDGRID_API_KEY);
+        const hasSmtpProvider = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS'].every((k) => Boolean(process.env[k]));
+        const missingCommon = ['SMTP_FROM', 'APP_URL'].filter((k) => !process.env[k]);
+        if ((!hasManagedProvider && !hasSmtpProvider) || missingCommon.length > 0) {
+            logger.fatal({
+                missing: [
+                    ...missingCommon,
+                    ...(!hasManagedProvider && !hasSmtpProvider ? ['RESEND_API_KEY or SENDGRID_API_KEY or SMTP_HOST/SMTP_USER/SMTP_PASS'] : []),
+                ],
+            }, 'Email provider readiness failed');
             process.exit(1);
         }
     }
@@ -263,7 +269,25 @@ app.use(
     })
 );
 
-app.use(cors({ origin: allowedOrigins, methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'], allowedHeaders: ['Content-Type', 'Authorization', 'X-Session-Id', 'X-Requested-With'], credentials: true, maxAge: 86400 }));
+app.use(cors({
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Session-Id', 'X-Requested-With'],
+    exposedHeaders: [
+        'X-Request-Id',
+        'X-Session-Id',
+        'X-Usage-Used',
+        'X-Usage-Limit',
+        'X-Usage-Key',
+        'X-Usage-Feature',
+        'X-Search-Used',
+        'X-Search-Limit',
+        'X-Search-Key',
+        'X-Search-Feature',
+    ],
+    credentials: true,
+    maxAge: 86400,
+}));
 app.use(cookieParser());
 app.use(optionalAuth);
 // Stripe webhook needs the raw body for signature verification — must be before express.json()
@@ -364,7 +388,19 @@ server.headersTimeout = defaultServerTimeoutMs + 5000;
 const io = new SocketIOServer(server, {
     cors: { origin: allowedOrigins, methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'] },
 });
-const socketBroadcast = setupSocketHandlers(io);
+const { createReviewService } = require('./server/services/reviewService');
+const reviewServiceForSockets = createReviewService({ db });
+const socketBroadcast = setupSocketHandlers(io, {
+    canAccessReview: async (userId, reviewId) => {
+        if (!userId) return false;
+        const review = await reviewServiceForSockets.getProject(reviewId);
+        if (!review) return false;
+        if ((review.owner_type || 'session') === 'user') {
+            return review.owner_id === userId;
+        }
+        return false;
+    },
+});
 app.use((req, res, next) => {
     req.io = io;
     req.broadcast = socketBroadcast;
@@ -419,6 +455,7 @@ registerAiRoutes(app, { ...routeDeps, appendRagContext });
 registerReviewRoutes(app, routeDeps);
 registerRecommendationRoutes(app, routeDeps);
 registerBillingRoutes(app, routeDeps);
+registerDeveloperRoutes(app, routeDeps);
 
 app.use('/api/teams', teamRoutes);
 

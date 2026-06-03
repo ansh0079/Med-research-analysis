@@ -319,6 +319,14 @@ function registerReviewRoutes(app, deps) {
                     articleId: req.params.articleId,
                     decision: req.body.decision,
                 });
+                req.broadcast?.broadcastScreeningUpdate?.(req.params.id, {
+                    article: row,
+                    prisma,
+                    articleId: req.params.articleId,
+                    decision: req.body.decision,
+                    userId: req.user?.id,
+                    userName: req.user?.name,
+                });
                 res.json({ article: row, prisma });
             } catch (error) {
                 res.status(500).json({ error: error.message });

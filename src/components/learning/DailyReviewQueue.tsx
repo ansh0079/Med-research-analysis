@@ -21,6 +21,58 @@ interface QueueData {
   groups: ReviewGroup[];
 }
 
+interface HabitStatus {
+  currentStreak: number;
+  longestStreak: number;
+  studiedToday: boolean;
+  dueCount: number;
+  streakAtRisk: boolean;
+  nextMilestone: number;
+  daysToMilestone: number;
+  dailyGoalMet: boolean;
+}
+
+function StreakBanner({ habit }: { habit: HabitStatus }) {
+  const pct = habit.nextMilestone > 0
+    ? Math.min(100, Math.round((habit.currentStreak / habit.nextMilestone) * 100))
+    : 0;
+
+  return (
+    <div className={`rounded-xl border px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3 ${
+      habit.streakAtRisk
+        ? 'border-amber-300 dark:border-amber-700/50 bg-amber-50 dark:bg-amber-950/20'
+        : 'border-orange-200 dark:border-orange-800/40 bg-orange-50/80 dark:bg-orange-950/15'
+    }`}>
+      <div className="flex items-center gap-3 flex-1">
+        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-orange-500 text-white shrink-0">
+          <i className="fas fa-fire" />
+        </div>
+        <div>
+          <p className="text-sm font-black text-slate-900 dark:text-white">
+            {habit.currentStreak}-day streak
+            {habit.longestStreak > habit.currentStreak && (
+              <span className="text-xs font-semibold text-slate-400 ml-2">Best: {habit.longestStreak}</span>
+            )}
+          </p>
+          <p className="text-xs text-slate-600 dark:text-slate-400">
+            {habit.studiedToday
+              ? 'Daily goal met — great consistency.'
+              : habit.streakAtRisk
+                ? 'Reviews due today — complete one to keep your streak alive.'
+                : `${habit.daysToMilestone} day${habit.daysToMilestone === 1 ? '' : 's'} to ${habit.nextMilestone}-day milestone`}
+          </p>
+        </div>
+      </div>
+      <div className="sm:w-32">
+        <div className="h-1.5 rounded-full bg-orange-200/60 dark:bg-orange-900/40 overflow-hidden">
+          <div className="h-full bg-orange-500 rounded-full transition-all" style={{ width: `${pct}%` }} />
+        </div>
+        <p className="text-[10px] text-orange-700 dark:text-orange-300 mt-1 text-right">{habit.currentStreak}/{habit.nextMilestone}</p>
+      </div>
+    </div>
+  );
+}
+
 function intervalLabel(days: number): string {
   if (days <= 1) return 'New';
   if (days <= 7) return `${days}d interval`;
@@ -31,14 +83,19 @@ function intervalLabel(days: number): string {
 export function DailyReviewQueue() {
   const navigate = useNavigate();
   const [data, setData] = useState<QueueData | null>(null);
+  const [habit, setHabit] = useState<HabitStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const result = await api.getDueReviews();
+      const [result, habitStatus] = await Promise.all([
+        api.getDueReviews(),
+        api.getHabitStatus().catch(() => null),
+      ]);
       setData(result);
+      setHabit(habitStatus);
     } catch {
       setData(null);
     } finally {
@@ -70,18 +127,27 @@ export function DailyReviewQueue() {
 
   if (!data || data.total === 0) {
     return (
-      <div className="rounded-xl border border-emerald-200 dark:border-emerald-700/40 bg-emerald-50 dark:bg-emerald-950/20 px-5 py-4 flex items-start gap-3">
-        <i className="fas fa-circle-check text-emerald-500 mt-0.5 shrink-0" />
-        <div>
-          <p className="text-sm font-bold text-emerald-800 dark:text-emerald-200">All caught up!</p>
-          <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5">No reviews due. Keep quizzing to build your schedule.</p>
+      <div className="space-y-3">
+        {habit && habit.currentStreak > 0 && <StreakBanner habit={habit} />}
+        <div className="rounded-xl border border-emerald-200 dark:border-emerald-700/40 bg-emerald-50 dark:bg-emerald-950/20 px-5 py-4 flex items-start gap-3">
+          <i className="fas fa-circle-check text-emerald-500 mt-0.5 shrink-0" />
+          <div>
+            <p className="text-sm font-bold text-emerald-800 dark:text-emerald-200">All caught up!</p>
+            <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5">
+              {habit?.studiedToday
+                ? 'No reviews due — your streak is safe for today.'
+                : 'No reviews due. Complete a quiz to start or extend your streak.'}
+            </p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border border-violet-200 dark:border-violet-700/40 bg-white dark:bg-slate-900 overflow-hidden">
+    <div className="space-y-3">
+      {habit && <StreakBanner habit={habit} />}
+      <div className="rounded-xl border border-violet-200 dark:border-violet-700/40 bg-white dark:bg-slate-900 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-3 bg-violet-50 dark:bg-violet-950/20 border-b border-violet-100 dark:border-violet-800/40">
         <div className="flex items-center gap-2.5">
@@ -156,6 +222,7 @@ export function DailyReviewQueue() {
           ))}
         </div>
       )}
+    </div>
     </div>
   );
 }

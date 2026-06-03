@@ -61,6 +61,7 @@ const PLANS = {
             adminControls: false,
             baa: false,
             dedicatedDeployment: false,
+            apiAccess: false,
         },
     },
 
@@ -105,6 +106,7 @@ const PLANS = {
             adminControls: false,
             baa: false,
             dedicatedDeployment: false,
+            apiAccess: true,
         },
     },
 
@@ -149,6 +151,7 @@ const PLANS = {
             adminControls: false,
             baa: false,
             dedicatedDeployment: false,
+            apiAccess: false,
         },
     },
 
@@ -193,6 +196,7 @@ const PLANS = {
             adminControls: false,
             baa: false,
             dedicatedDeployment: false,
+            apiAccess: true,
         },
     },
 
@@ -237,6 +241,7 @@ const PLANS = {
             adminControls: true,
             baa: true,
             dedicatedDeployment: true,
+            apiAccess: true,
         },
     },
 };

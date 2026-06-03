@@ -19,6 +19,26 @@ const { enqueuePdfPreindexForArticles } = require('../services/pdfPreindexServic
 const { alignTopicClaimsWithGuidelines } = require('../services/claimGuidelineEngine');
 const { parseJsonBlock, parseJsonArrayBlock } = require('../utils/parseJson');
 const { buildProxyService } = require('../services/externalApiProxy');
+const { authenticateApiKey } = require('../services/apiKeyService');
+const { hasFeature } = require('../config/entitlements');
+
+async function attachApiKeyUser(req, res, next) {
+    const raw = req.headers['x-api-key'];
+    if (!raw || !String(raw).startsWith('mr_live_')) return next();
+    try {
+        const auth = await authenticateApiKey(String(raw).trim());
+        if (!auth) return res.status(401).json({ error: 'Invalid or revoked API key' });
+        if (!hasFeature(auth.user, 'apiAccess')) {
+            return res.status(402).json({ error: 'API access requires Pro plan or higher', feature: 'apiAccess' });
+        }
+        req.user = auth.user;
+        req.authVia = 'api_key';
+        return next();
+    } catch (err) {
+        logger.warn({ err }, 'API key attach failed');
+        return res.status(500).json({ error: 'Authentication error' });
+    }
+}
 
 const CROSSREF_BASE = 'https://api.crossref.org';
 
@@ -430,7 +450,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
         }
     });
 
-    app.get('/api/search', rateLimit(30, 60), dailySearchLimit, async (req, res) => {
+    app.get('/api/search', rateLimit(30, 60), attachApiKeyUser, dailySearchLimit, async (req, res) => {
         const { q, query: queryParam, sources = 'pubmed', limit = 20, vector, specificity = 'moderate' } = req.query;
         const safeLimit = clampLimit(limit);
         setNoStoreSearchHeaders(res);

@@ -45,6 +45,8 @@ function requireMonthlyLimit(limitKey, featureSlug) {
             const used = row?.count ?? 1;
             res.setHeader('X-Usage-Used', used);
             res.setHeader('X-Usage-Limit', cap);
+            res.setHeader('X-Usage-Key', limitKey);
+            res.setHeader('X-Usage-Feature', featureSlug);
 
             if (used > cap) {
                 // Roll back the increment we just applied so we don't over-count
@@ -107,6 +109,8 @@ function requireDailySearchLimit() {
             const used = row?.count ?? 1;
             res.setHeader('X-Search-Used', used);
             res.setHeader('X-Search-Limit', cap);
+            res.setHeader('X-Search-Key', 'searchesPerDay');
+            res.setHeader('X-Search-Feature', 'searchesPerDay');
 
             if (used > cap) {
                 await db.run(

@@ -4,6 +4,7 @@ import type { ReviewArticle } from '@types';
 
 interface Props {
   rows: ReviewArticle[];
+  activeUsers?: string[];
   onDecision: (
     articleId: string,
     decision: 'included' | 'excluded' | 'maybe',
@@ -11,7 +12,7 @@ interface Props {
   ) => Promise<void>;
 }
 
-export const ScreeningQueue: React.FC<Props> = ({ rows, onDecision }) => {
+export const ScreeningQueue: React.FC<Props> = ({ rows, activeUsers = [], onDecision }) => {
   const [drafts, setDrafts] = React.useState<Record<string, { exclusionReason: string; notes: string }>>({});
 
   const updateDraft = (articleId: string, field: 'exclusionReason' | 'notes', value: string) => {
@@ -35,7 +36,18 @@ export const ScreeningQueue: React.FC<Props> = ({ rows, onDecision }) => {
 
   return (
     <div className="neo-card rounded-2xl p-4">
-      <h3 className="text-lg font-black text-gray-900 dark:text-white mb-3">Screening Queue</h3>
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <h3 className="text-lg font-black text-gray-900 dark:text-white">Screening Queue</h3>
+        {activeUsers.length > 0 && (
+          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            {activeUsers.length} reviewer{activeUsers.length === 1 ? '' : 's'} online
+          </div>
+        )}
+      </div>
       <div className="space-y-3">
         {rows.map((row) => (
           <div key={row.article_id} className="rounded-xl border border-gray-100 dark:border-slate-700 p-3">

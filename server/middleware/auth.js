@@ -572,6 +572,97 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     });
 
     // ==========================================
+    // Change email (authenticated, requires password + email verification)
+    // ==========================================
+    app.post('/api/auth/change-email', requireAuthJwt, authRateLimit, async (req, res) => {
+        const { newEmail, password } = req.body;
+        if (!newEmail || typeof newEmail !== 'string') {
+            return res.status(400).json({ error: 'newEmail is required' });
+        }
+        if (!password) {
+            return res.status(400).json({ error: 'Current password is required to change email' });
+        }
+        const normalizedEmail = newEmail.trim().toLowerCase();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+            return res.status(400).json({ error: 'Invalid email address' });
+        }
+        try {
+            const user = await db.getUserById(req.user.id);
+            if (!user) return res.status(404).json({ error: 'User not found' });
+
+            // Verify password
+            const valid = await bcrypt.compare(password, user.password);
+            if (!valid) return res.status(401).json({ error: 'Current password is incorrect' });
+
+            // Check email not already in use
+            const existing = await db.getUserByEmail(normalizedEmail).catch(() => null);
+            if (existing && existing.id !== user.id) {
+                return res.status(409).json({ error: 'Email address is already in use' });
+            }
+
+            // Generate verification token for the new address
+            const token = crypto.randomBytes(32).toString('hex');
+            const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+
+            // Store pending email change (token, new email, expiry) on the user row
+            await db.run(
+                `UPDATE users SET pending_email = ?, pending_email_token = ?, pending_email_expires_at = ? WHERE id = ?`,
+                [normalizedEmail, token, expiresAt, user.id]
+            );
+
+            const appUrl = process.env.APP_URL || `http://localhost:${process.env.PORT || 3002}`;
+            await sendVerificationEmail({
+                to: normalizedEmail,
+                name: user.name,
+                token,
+                appUrl,
+                subject: 'Confirm your new email address',
+                linkPath: '/confirm-email-change',
+            });
+
+            logger.info({ userId: user.id, newEmail: normalizedEmail }, 'Email change requested');
+            res.json({ message: 'Verification email sent. Check your new inbox to confirm the change.' });
+        } catch (err) {
+            logger.error({ err }, 'Change email error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    // ==========================================
+    // Confirm email change (token from link)
+    // ==========================================
+    app.get('/api/auth/confirm-email-change', async (req, res) => {
+        const { token } = req.query;
+        if (!token || typeof token !== 'string') {
+            return res.status(400).json({ error: 'Invalid token' });
+        }
+        try {
+            const user = await db.get(
+                `SELECT * FROM users WHERE pending_email_token = ? AND pending_email IS NOT NULL`,
+                [token]
+            );
+            if (!user) return res.status(400).json({ error: 'Invalid or expired token' });
+            if (new Date(user.pending_email_expires_at) < new Date()) {
+                return res.status(400).json({ error: 'Token has expired. Please request a new email change.' });
+            }
+
+            await db.withTransaction(async () => {
+                await db.run(
+                    `UPDATE users SET email = ?, email_verified = 1, pending_email = NULL, pending_email_token = NULL, pending_email_expires_at = NULL WHERE id = ?`,
+                    [user.pending_email, user.id]
+                );
+            });
+
+            const fresh = await db.getUserById(user.id);
+            setSessionCookie(res, fresh);
+            res.json({ message: 'Email address updated successfully.', user: { email: fresh.email } });
+        } catch (err) {
+            logger.error({ err }, 'Confirm email change error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    // ==========================================
     // Logout
     // ==========================================
     app.post('/api/auth/logout', requireAuthJwt, auditLog('auth.logout'), async (req, res) => {

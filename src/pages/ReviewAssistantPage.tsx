@@ -7,11 +7,14 @@ import { PrismaFlow } from '@components/review/PrismaFlow';
 import { ScreeningQueue } from '@components/review/ScreeningQueue';
 import { DataExtractionTable } from '@components/review/DataExtractionTable';
 import { PicoCard } from '@components/review/PicoCard';
+import { useReviewCollaboration } from '@hooks/useReviewCollaboration';
+import { useAuth } from '@contexts/AuthContext';
 
 const EMPTY_PRISMA: PrismaCounts = { total: 0, pending: 0, included: 0, excluded: 0, maybe: 0 };
 
 export const ReviewAssistantPage: React.FC = () => {
   const { results, savedArticles } = useSearchContext();
+  const { user } = useAuth();
   const readPrefill = React.useCallback((): { question?: string; articles?: Article[]; criteria?: { inclusion?: string[]; exclusion?: string[] } } | null => {
     try {
       const raw = localStorage.getItem('med_review_prefill');
@@ -35,6 +38,21 @@ export const ReviewAssistantPage: React.FC = () => {
   const [picoById, setPicoById] = React.useState<Record<string, PicoExtraction>>({});
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [liveNote, setLiveNote] = React.useState<string | null>(null);
+
+  const { activeUsers, subscribeToScreening } = useReviewCollaboration(review?.id);
+
+  React.useEffect(() => {
+    if (!review?.id) return;
+    return subscribeToScreening(user?.id, (article, prisma, meta) => {
+      setRows((prev) => prev.map((row) => (row.article_id === article.article_id ? article : row)));
+      setPrisma(prisma);
+      if (meta?.userName) {
+        setLiveNote(`${meta.userName} updated a screening decision`);
+        window.setTimeout(() => setLiveNote(null), 4000);
+      }
+    });
+  }, [review?.id, subscribeToScreening, user?.id]);
 
   const createReview = async () => {
     setLoading(true);
@@ -254,6 +272,11 @@ export const ReviewAssistantPage: React.FC = () => {
             </Button>
           </div>
           {error && <p className="text-sm text-red-600 dark:text-red-300">{error}</p>}
+          {liveNote && (
+            <p className="text-sm text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
+              <i className="fas fa-users text-xs" /> {liveNote}
+            </p>
+          )}
         </div>
 
         {review && <PrismaFlow counts={prisma} />}
@@ -295,7 +318,7 @@ export const ReviewAssistantPage: React.FC = () => {
 
         {rows.length > 0 && (
           <div className="grid lg:grid-cols-2 gap-4">
-            <ScreeningQueue rows={rows} onDecision={onDecision} />
+            <ScreeningQueue rows={rows} activeUsers={activeUsers} onDecision={onDecision} />
             <div className="space-y-3">
               {rows.slice(0, 6).map((row) => (
                 <PicoCard key={row.article_id} articleId={row.article_id} extraction={picoById[row.article_id]} />

@@ -281,6 +281,45 @@ export class LearningApi extends BaseApiClient {
     return response.json();
   }
 
+  async getHabitStatus(): Promise<{
+    currentStreak: number;
+    longestStreak: number;
+    studiedToday: boolean;
+    dueCount: number;
+    streakAtRisk: boolean;
+    nextMilestone: number;
+    daysToMilestone: number;
+    dailyGoalMet: boolean;
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/habit-status`);
+    if (!response.ok) throw new Error('Failed to fetch habit status');
+    return response.json();
+  }
+
+  async listApiKeys(): Promise<{ keys: Array<{ id: string; name: string; prefix: string; scopes: string; lastUsedAt: string | null; createdAt: string }> }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/developer/keys`);
+    if (response.status === 402) await this.parseErrorResponse(response);
+    if (!response.ok) throw new Error('Failed to list API keys');
+    return response.json();
+  }
+
+  async createApiKey(name: string): Promise<{ key: string; id: string; prefix: string; name: string; message: string }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/developer/keys`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name }),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async revokeApiKey(id: string): Promise<void> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/developer/keys/${encodeURIComponent(id)}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) throw new Error('Failed to revoke API key');
+  }
+
   async getSpacedRepTopics(): Promise<{ topics: import('@types').SpacedRepTopicGroup[] }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/learning/spaced-rep/topics`);
     if (!response.ok) throw new Error('Failed to load spaced repetition topics');

@@ -6,6 +6,7 @@ const { verifyToken, COOKIE_NAME } = require('./middleware/auth');
 const logger = require('./config/logger');
 
 const MAX_ARTICLE_ID_LENGTH = 64;
+const MAX_REVIEW_ID_LENGTH = 64;
 const MAX_DISPLAY_NAME_LENGTH = 64;
 const DISPLAY_NAME_PATTERN = /^[\p{L}\p{N}\s._-]+$/u;
 
@@ -13,8 +14,15 @@ function sanitizeArticleId(raw) {
     if (typeof raw !== 'string') return null;
     const trimmed = raw.trim();
     if (!trimmed || trimmed.length > MAX_ARTICLE_ID_LENGTH) return null;
-    // Allow PubMed IDs, DOIs, UUIDs, and common identifier characters
     if (!/^[\w\-:.]+$/.test(trimmed)) return null;
+    return trimmed;
+}
+
+function sanitizeReviewId(raw) {
+    if (typeof raw !== 'string') return null;
+    const trimmed = raw.trim();
+    if (!trimmed || trimmed.length > MAX_REVIEW_ID_LENGTH) return null;
+    if (!/^[\w-]+$/.test(trimmed)) return null;
     return trimmed;
 }
 
@@ -26,13 +34,13 @@ function sanitizeDisplayName(raw) {
     return trimmed;
 }
 
-module.exports = function setupSocketHandlers(io) {
+module.exports = function setupSocketHandlers(io, options = {}) {
+    const { canAccessReview = null } = options;
     const roomUsers = new Map();
 
-    const emitPresence = (articleId) => {
-        const room = `article:${articleId}`;
-        const users = Array.from(roomUsers.get(room)?.values() || []);
-        io.to(room).emit('presence:update', users);
+    const emitPresence = (roomKey, eventName = 'presence:update') => {
+        const users = Array.from(roomUsers.get(roomKey)?.values() || []).map((u) => u.name);
+        io.to(roomKey).emit(eventName, users);
     };
 
     io.use((socket, next) => {
@@ -64,39 +72,74 @@ module.exports = function setupSocketHandlers(io) {
         logger.info({ socketId: socket.id, userId: socket.data.user?.id }, 'Socket user connected');
         socket.data.rooms = new Set();
 
+        const joinRoom = (roomKey, displayName, presenceEvent) => {
+            const name = sanitizeDisplayName(displayName) || userName;
+            socket.join(roomKey);
+            socket.data.rooms.add(roomKey);
+            if (!roomUsers.has(roomKey)) {
+                roomUsers.set(roomKey, new Map());
+            }
+            roomUsers.get(roomKey).set(socket.id, { name, userId: socket.data.user?.id });
+            emitPresence(roomKey, presenceEvent);
+        };
+
+        const leaveRoom = (roomKey, presenceEvent) => {
+            socket.leave(roomKey);
+            socket.data.rooms.delete(roomKey);
+            const users = roomUsers.get(roomKey);
+            if (users) {
+                users.delete(socket.id);
+                if (users.size === 0) {
+                    roomUsers.delete(roomKey);
+                }
+            }
+            emitPresence(roomKey, presenceEvent);
+        };
+
         socket.on('join-article', (articleId, displayName) => {
             const sanitizedId = sanitizeArticleId(articleId);
             if (!sanitizedId) {
                 socket.emit('error', { message: 'Invalid article ID' });
                 return;
             }
-            const name = sanitizeDisplayName(displayName) || userName;
-            const room = `article:${sanitizedId}`;
-            socket.join(room);
-            socket.data.rooms.add(room);
-            if (!roomUsers.has(room)) {
-                roomUsers.set(room, new Map());
-            }
-            roomUsers.get(room).set(socket.id, { name, userId: socket.data.user?.id });
+            joinRoom(`article:${sanitizedId}`, displayName, 'presence:update');
             logger.info({ userId: socket.data.user?.id, room: sanitizedId }, 'Socket user joined article room');
-            emitPresence(sanitizedId);
         });
 
         socket.on('leave-article', (articleId) => {
             const sanitizedId = sanitizeArticleId(articleId);
             if (!sanitizedId) return;
-            const room = `article:${sanitizedId}`;
-            socket.leave(room);
-            socket.data.rooms.delete(room);
-            const users = roomUsers.get(room);
-            if (users) {
-                users.delete(socket.id);
-                if (users.size === 0) {
-                    roomUsers.delete(room);
+            leaveRoom(`article:${sanitizedId}`, 'presence:update');
+            logger.info({ userId: socket.data.user?.id, room: sanitizedId }, 'Socket user left article room');
+        });
+
+        socket.on('join-review', async (reviewId, displayName) => {
+            const sanitizedId = sanitizeReviewId(reviewId);
+            if (!sanitizedId) {
+                socket.emit('error', { message: 'Invalid review ID' });
+                return;
+            }
+            if (canAccessReview) {
+                try {
+                    const allowed = await canAccessReview(socket.data.user?.id, sanitizedId);
+                    if (!allowed) {
+                        socket.emit('error', { message: 'Access denied' });
+                        return;
+                    }
+                } catch (err) {
+                    logger.warn({ err, reviewId: sanitizedId }, 'Review access check failed');
+                    socket.emit('error', { message: 'Access check failed' });
+                    return;
                 }
             }
-            logger.info({ userId: socket.data.user?.id, room: sanitizedId }, 'Socket user left article room');
-            emitPresence(sanitizedId);
+            joinRoom(`review:${sanitizedId}`, displayName, 'review:presence');
+            logger.info({ userId: socket.data.user?.id, reviewId: sanitizedId }, 'Socket user joined review room');
+        });
+
+        socket.on('leave-review', (reviewId) => {
+            const sanitizedId = sanitizeReviewId(reviewId);
+            if (!sanitizedId) return;
+            leaveRoom(`review:${sanitizedId}`, 'review:presence');
         });
 
         socket.on('typing:start', (articleId, displayName) => {
@@ -113,28 +156,31 @@ module.exports = function setupSocketHandlers(io) {
         });
 
         socket.on('disconnect', () => {
-            for (const room of socket.data.rooms || []) {
-                const users = roomUsers.get(room);
+            for (const roomKey of socket.data.rooms || []) {
+                const users = roomUsers.get(roomKey);
                 if (users) {
                     users.delete(socket.id);
                     if (users.size === 0) {
-                        roomUsers.delete(room);
+                        roomUsers.delete(roomKey);
                     }
-                    if (room.startsWith('article:')) {
-                        emitPresence(room.replace('article:', ''));
-                    }
+                    const event = roomKey.startsWith('review:') ? 'review:presence' : 'presence:update';
+                    emitPresence(roomKey, event);
                 }
             }
             logger.info({ socketId: socket.id, userId: socket.data.user?.id }, 'Socket user disconnected');
         });
     });
 
-    // Return a helper to broadcast from REST routes
     return {
         broadcastAnnotation: (articleId, annotation) => {
             const sanitizedId = sanitizeArticleId(articleId);
             if (!sanitizedId) return;
             io.to(`article:${sanitizedId}`).emit('annotation:new', annotation);
-        }
+        },
+        broadcastScreeningUpdate: (reviewId, payload) => {
+            const sanitizedId = sanitizeReviewId(reviewId);
+            if (!sanitizedId) return;
+            io.to(`review:${sanitizedId}`).emit('screening:update', payload);
+        },
     };
 };

@@ -1,4 +1,5 @@
 const pino = require('pino');
+const { getRequestId } = require('../utils/requestContext');
 
 const logger = pino({
     level:
@@ -8,6 +9,10 @@ const logger = pino({
             : process.env.NODE_ENV === 'production'
             ? 'info'
             : 'debug'),
+    mixin() {
+        const requestId = getRequestId();
+        return requestId ? { requestId } : {};
+    },
 });
 
 module.exports = logger;

@@ -1,10 +1,110 @@
 // ==========================================
 // Email Service — Digest + Transactional
+// Providers (in priority order):
+//   1. Resend (RESEND_API_KEY) — managed, recommended
+//   2. SMTP via nodemailer (SMTP_HOST + SMTP_USER + SMTP_PASS) — self-hosted
+//   3. Console log fallback — dev only
 // ==========================================
 
 const nodemailer = require('nodemailer');
 
 let transporter = null;
+const RESEND_API_URL = 'https://api.resend.com/emails';
+const SENDGRID_API_URL = 'https://api.sendgrid.com/v3/mail/send';
+
+function stripHtml(html = '') {
+  return String(html).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function normalizeRecipients(to) {
+  return (Array.isArray(to) ? to : [to])
+    .flatMap((value) => String(value || '').split(','))
+    .map((value) => value.trim())
+    .filter(Boolean);
+}
+
+function parseEmailAddress(value) {
+  const text = String(value || '').trim();
+  const match = text.match(/^(.*?)<([^>]+)>$/);
+  if (!match) return { email: text };
+  const name = match[1].trim().replace(/^"|"$/g, '');
+  return { email: match[2].trim(), ...(name ? { name } : {}) };
+}
+
+function getSuppressedEmails() {
+  return new Set(
+    String(process.env.EMAIL_SUPPRESSION_LIST || '')
+      .split(',')
+      .map((email) => email.trim().toLowerCase())
+      .filter(Boolean)
+  );
+}
+
+function filterSuppressedRecipients(to) {
+  const suppressed = getSuppressedEmails();
+  const recipients = normalizeRecipients(to);
+  const allowed = recipients.filter((email) => !suppressed.has(email.toLowerCase()));
+  return { allowed, suppressedCount: recipients.length - allowed.length };
+}
+
+/**
+ * Send via Resend managed email API.
+ * Returns true on success, throws on error.
+ */
+async function sendViaResend({ from, to, subject, html, text }) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const response = await fetch(RESEND_API_URL, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: from || process.env.SMTP_FROM || 'MedResearch AI <noreply@resend.dev>',
+      to: normalizeRecipients(to),
+      subject,
+      html,
+      text: text || stripHtml(html),
+    }),
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(`Resend error ${response.status}: ${err.message || JSON.stringify(err)}`);
+  }
+  const data = await response.json();
+  return { success: true, messageId: data.id };
+}
+
+/**
+ * Send via SendGrid managed email API.
+ * Returns true on success, throws on error.
+ */
+async function sendViaSendGrid({ from, to, subject, html, text }) {
+  const apiKey = process.env.SENDGRID_API_KEY;
+  const response = await fetch(SENDGRID_API_URL, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      personalizations: [{ to: normalizeRecipients(to).map((email) => ({ email })) }],
+      from: parseEmailAddress(from || process.env.SMTP_FROM || 'MedResearch AI <noreply@example.com>'),
+      subject,
+      content: [
+        { type: 'text/plain', value: text || stripHtml(html) },
+        { type: 'text/html', value: html },
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(`SendGrid error ${response.status}: ${err.errors?.[0]?.message || err.message || JSON.stringify(err)}`);
+  }
+
+  return { success: true, messageId: response.headers.get('x-message-id') || undefined };
+}
 
 function getTransporter() {
   if (transporter) return transporter;
@@ -15,7 +115,6 @@ function getTransporter() {
   const smtpPass = process.env.SMTP_PASS;
 
   if (!smtpHost || !smtpUser || !smtpPass) {
-    console.warn('⚠️  SMTP not configured. Emails will be logged to console only.');
     return null;
   }
 
@@ -30,6 +129,44 @@ function getTransporter() {
   });
 
   return transporter;
+}
+
+/**
+ * Unified send function — uses Resend if key is set, falls back to SMTP, then console.
+ */
+async function sendEmail({ from, to, subject, html, text }) {
+  const { allowed, suppressedCount } = filterSuppressedRecipients(to);
+  if (allowed.length === 0) {
+    return { success: true, suppressed: true, suppressedCount };
+  }
+
+  // 1. Resend (managed, reliable, no SMTP config needed)
+  if (process.env.RESEND_API_KEY) {
+    const result = await sendViaResend({ from, to: allowed, subject, html, text });
+    return { ...result, suppressedCount };
+  }
+
+  // 2. SendGrid (managed alternative)
+  if (process.env.SENDGRID_API_KEY) {
+    const result = await sendViaSendGrid({ from, to: allowed, subject, html, text });
+    return { ...result, suppressedCount };
+  }
+
+  // 2. SMTP via nodemailer
+  const t = getTransporter();
+  if (t) {
+    const fromAddr = from || process.env.SMTP_FROM || 'MedResearch AI <noreply@localhost>';
+    const info = await t.sendMail({
+      from: fromAddr, to: allowed, subject, html,
+      text: text || stripHtml(html),
+    });
+    return { success: true, messageId: info.messageId, suppressedCount };
+  }
+
+  // 3. Console fallback (development only)
+  console.warn('⚠️  No email provider configured (set RESEND_API_KEY or SMTP_HOST/USER/PASS). Email logged to console:');
+  console.log(`   To: ${allowed.join(', ')}\n   Subject: ${subject}`);
+  return { success: true, logged: true, suppressedCount };
 }
 
 /**
@@ -143,36 +280,17 @@ function buildDigestHtml({ userName, date, alertResults, appUrl, spacedRepData }
  * Send a digest email.
  */
 async function sendDigestEmail({ to, subject, html, text }) {
-  const t = getTransporter();
   const from = process.env.SMTP_FROM || 'Medical Research Digest <digest@localhost>';
-
-  if (!t) {
-    console.log('📧 [EMAIL LOG - SMTP not configured]');
-    console.log('   To:', to);
-    console.log('   Subject:', subject);
-    console.log('   ---');
-    return { success: true, logged: true };
-  }
-
-  const info = await t.sendMail({
-    from,
-    to,
-    subject,
-    html,
-    text: text || html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim(),
-  });
-
-  console.log(`📧 Digest sent to ${to}: ${info.messageId}`);
-  return { success: true, messageId: info.messageId };
+  return sendEmail({ from, to, subject, html, text });
 }
 
 /**
  * Send an email verification link to a newly registered user.
+ * Also handles email-change verification when subject/linkPath are provided.
  */
-async function sendVerificationEmail({ to, name, token, appUrl }) {
-  const t = getTransporter();
+async function sendVerificationEmail({ to, name, token, appUrl, subject: customSubject, linkPath = '/verify-email' }) {
   const from = process.env.SMTP_FROM || 'MedResearch AI <noreply@localhost>';
-  const link = `${appUrl}/verify-email?token=${token}`;
+  const link = `${appUrl}${linkPath}?token=${token}`;
 
   const html = `
 <!DOCTYPE html>
@@ -200,14 +318,7 @@ async function sendVerificationEmail({ to, name, token, appUrl }) {
 </body>
 </html>`.trim();
 
-  if (!t) {
-    console.log('📧 [EMAIL LOG] Verification email for:', to);
-    console.log('   Link:', link);
-    return { success: true, logged: true };
-  }
-
-  const info = await t.sendMail({ from, to, subject: 'Verify your MedResearch AI account', html });
-  return { success: true, messageId: info.messageId };
+  return sendEmail({ from, to, subject: customSubject || 'Verify your MedResearch AI account', html });
 }
 
 /**
@@ -244,18 +355,12 @@ async function sendPasswordResetEmail({ to, name, token, appUrl }) {
 </body>
 </html>`.trim();
 
-  if (!t) {
-    console.log('📧 [EMAIL LOG] Password reset email for:', to);
-    console.log('   Link:', link);
-    return { success: true, logged: true };
-  }
-
-  const info = await t.sendMail({ from, to, subject: 'Reset your MedResearch AI password', html });
-  return { success: true, messageId: info.messageId };
+  return sendEmail({ from, to, subject: 'Reset your MedResearch AI password', html });
 }
 
 module.exports = {
   getTransporter,
+  sendEmail,
   buildDigestHtml,
   sendDigestEmail,
   sendVerificationEmail,
