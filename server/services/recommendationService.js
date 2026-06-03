@@ -460,11 +460,28 @@ function createRecommendationService({ db, serverConfig, fetchImpl = fetch }) {
                 abstract: p.abstract,
                 _source: 'semantic',
             },
-            viewCount: 0, // TODO: populate from analytics when available
-            saveCount: 0, // TODO: populate from analytics when available
-            clickCount: 0, // TODO: populate from analytics when available
+            viewCount: 0,
+            saveCount: 0,
+            clickCount: 0,
             trendingScore: (p.citationCount || 0) * 0.1 + (p.influentialCitationCount || 0),
         }));
+
+        if (typeof db.getArticleInteractionCounts === 'function') {
+            const uids = articles.map((a) => a.article.uid);
+            try {
+                const countsMap = await db.getArticleInteractionCounts(uids);
+                for (const a of articles) {
+                    const counts = countsMap.get(a.article.uid);
+                    if (counts) {
+                        a.viewCount = counts.viewCount;
+                        a.saveCount = counts.saveCount;
+                        a.clickCount = counts.clickCount;
+                    }
+                }
+            } catch (err) {
+                logger.warn({ err }, 'Failed to load article interaction counts for trending');
+            }
+        }
 
         recommendationCache.set(cacheKey, {
             data: articles,

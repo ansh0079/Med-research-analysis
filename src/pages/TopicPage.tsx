@@ -183,7 +183,8 @@ export function TopicPage() {
       const result = await api.synthesizeEvidence(topic, articles.slice(0, 10));
       setSynthesis(result);
     } catch (err) {
-      setSynthesisError(err instanceof Error ? err.message : 'Synthesis failed');
+      const msg = err instanceof Error ? err.message : 'Synthesis failed';
+      setSynthesisError(msg.startsWith('UPGRADE_REQUIRED:') ? 'UPGRADE_REQUIRED:aiSynthesis' : msg);
     } finally {
       setSynthesisLoading(false);
     }
@@ -365,9 +366,20 @@ export function TopicPage() {
         {showSynthesis && (
           <>
             {synthesisError && (
-              <div className="rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/50 px-4 py-3 text-xs text-red-700 dark:text-red-300">
-                {synthesisError}
-              </div>
+              synthesisError.startsWith('UPGRADE_REQUIRED:') ? (
+                <div className="rounded-xl bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800 p-6 text-center">
+                  <i className="fas fa-star text-2xl text-violet-400 mb-2 block" />
+                  <p className="text-sm font-semibold text-violet-800 dark:text-violet-200">Evidence synthesis is a Pro feature</p>
+                  <p className="text-xs text-violet-600 dark:text-violet-400 mt-1 mb-3">Upgrade to synthesize papers into clinical bottom lines and teaching claims.</p>
+                  <a href="/billing" className="inline-block text-xs font-bold px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors">
+                    View plans →
+                  </a>
+                </div>
+              ) : (
+                <div className="rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/50 px-4 py-3 text-xs text-red-700 dark:text-red-300">
+                  {synthesisError}
+                </div>
+              )
             )}
             {synthesisLoading && !synthesis && (
               <div className="rounded-2xl border border-indigo-100 dark:border-indigo-900/40 bg-indigo-50/40 dark:bg-indigo-950/10 p-6 flex items-center gap-3">

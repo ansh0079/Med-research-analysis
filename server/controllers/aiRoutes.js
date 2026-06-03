@@ -1287,7 +1287,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         }
     });
 
-    app.post('/api/ai/journal-club', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireRole('pro', 'researcher', 'admin'), aiUserLimit(8, 60), validateBody(schemas.journalClub), async (req, res) => {
+    app.post('/api/ai/journal-club', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireVerifiedEmail, requirePaidFeature('journalClub'), aiUserLimit(8, 60), validateBody(schemas.journalClub), async (req, res) => {
         const { articles, topic, provider = 'auto' } = req.body;
         const topArticles = [...articles]
             .sort((a, b) => (b._impact?.score ?? 0) - (a._impact?.score ?? 0))
@@ -1442,7 +1442,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
     });
 
     // Single-article PICO extraction — returns structured JSON
-    app.post('/api/ai/pico', limitBodySize(512 * 1024), requireJson, requireAuthJwt, requireRole('pro', 'researcher', 'admin'), rateLimit(20, 60), async (req, res) => {
+    app.post('/api/ai/pico', limitBodySize(512 * 1024), requireJson, requireAuthJwt, requireVerifiedEmail, requirePaidFeature('picoExtraction'), rateLimit(20, 60), async (req, res) => {
         const { article, provider = 'auto', model } = req.body;
         if (!article || typeof article !== 'object' || !article.title) {
             return res.status(400).json({ error: 'article with title is required' });

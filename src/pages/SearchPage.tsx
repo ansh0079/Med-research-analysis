@@ -1173,6 +1173,9 @@ export const SearchPage: React.FC = () => {
                 topic={currentQuery}
                 articles={top5Articles.length > 0 ? top5Articles : results.slice(0, 5)}
                 autoExpand={inPlaceQuizExpanded}
+                onAuthSubmit={async (attempts) => {
+                  await api.submitQuizAttempt({ topic: currentQuery, attempts });
+                }}
               />
             </div>
           )}

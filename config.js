@@ -79,6 +79,13 @@ const clientConfig = {
     // API key availability flags
     get gemini() { return !!serverConfig.keys.gemini; },
     get mistral() { return !!serverConfig.keys.mistral; },
+    // OAuth provider availability
+    get oauth() {
+        return {
+            google: Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
+            orcid: Boolean(process.env.ORCID_CLIENT_ID && process.env.ORCID_CLIENT_SECRET),
+        };
+    },
     // Default to free tier - no API key needed
     defaultProvider: 'algorithm'
 };

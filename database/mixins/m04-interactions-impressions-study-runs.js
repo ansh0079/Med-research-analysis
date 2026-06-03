@@ -37,6 +37,38 @@ async getUserInteractions(userId, { limit = 50, days = 30 } = {}) {
         .execute();
 }
 
+/**
+ * Returns aggregate interaction counts (view, save, click) for a list of article IDs.
+ * Result shape: Map<articleId, { viewCount, saveCount, clickCount }>
+ */
+async getArticleInteractionCounts(articleIds) {
+    if (!this.kysely || !Array.isArray(articleIds) || articleIds.length === 0) {
+        return new Map();
+    }
+    const placeholders = articleIds.map(() => '?').join(',');
+    const rows = await this.all(
+        `SELECT article_id, interaction_type, COUNT(*) as count
+         FROM user_interactions
+         WHERE article_id IN (${placeholders})
+         GROUP BY article_id, interaction_type`,
+        articleIds
+    );
+    const map = new Map();
+    for (const row of rows) {
+        const id = row.article_id;
+        if (!map.has(id)) {
+            map.set(id, { viewCount: 0, saveCount: 0, clickCount: 0 });
+        }
+        const counts = map.get(id);
+        const type = String(row.interaction_type).toLowerCase();
+        const count = Number(row.count) || 0;
+        if (type === 'view') counts.viewCount = count;
+        else if (type === 'save') counts.saveCount = count;
+        else if (type === 'click') counts.clickCount = count;
+    }
+    return map;
+}
+
 // ==========================================
 // Search Result Feedback
 // ==========================================

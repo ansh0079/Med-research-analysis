@@ -3,6 +3,7 @@ import { useLocation, useNavigate, type Location, type To } from 'react-router-d
 import { useAuth } from '@contexts/AuthContext';
 import { Button } from '@components/ui/Button';
 import { useNavigatePage } from '@contexts/SearchContext';
+import { api } from '@services/api';
 
 type Mode = 'login' | 'register' | 'forgot';
 
@@ -43,8 +44,15 @@ export const AuthPage: React.FC = () => {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const [oauthLoading, setOAuthLoading] = useState<'google' | 'orcid' | null>(null);
+  const [oauthConfig, setOauthConfig] = useState<{ google?: boolean; orcid?: boolean }>({});
   const [emailTouched, setEmailTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
+
+  useEffect(() => {
+    api.getClientConfig().then((c) => {
+      setOauthConfig((c as { oauth?: { google?: boolean; orcid?: boolean } }).oauth || {});
+    }).catch(() => {});
+  }, []);
 
   // Surface OAuth errors returned via query param (e.g. ?error=oauth_failed)
   useEffect(() => {
@@ -332,42 +340,46 @@ export const AuthPage: React.FC = () => {
             </Button>
           </form>
 
-          {mode !== 'forgot' && (
+          {mode !== 'forgot' && (oauthConfig.google || oauthConfig.orcid) && (
             <div className="mt-6 space-y-2">
               <div className="relative text-center">
                 <span className="bg-white px-2 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:bg-slate-800">
                   or
                 </span>
               </div>
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                <button
-                  type="button"
-                  disabled={Boolean(oauthLoading)}
-                  onClick={() => startOAuth('google')}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-red-50 hover:border-red-200 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 disabled:opacity-60 disabled:cursor-not-allowed dark:border-slate-700 dark:text-slate-200 dark:hover:bg-red-950/20 dark:hover:border-red-800 dark:hover:text-red-300"
-                  aria-label="Continue with Google"
-                >
-                  {oauthLoading === 'google' ? (
-                    <span className="w-4 h-4 border-2 border-red-300 border-t-red-600 rounded-full animate-spin" />
-                  ) : (
-                    <i className="fab fa-google text-red-500" />
-                  )}
-                  Google
-                </button>
-                <button
-                  type="button"
-                  disabled={Boolean(oauthLoading)}
-                  onClick={() => startOAuth('orcid')}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-400 disabled:opacity-60 disabled:cursor-not-allowed dark:border-slate-700 dark:text-slate-200 dark:hover:bg-emerald-950/20 dark:hover:border-emerald-800 dark:hover:text-emerald-300"
-                  aria-label="Continue with ORCID"
-                >
-                  {oauthLoading === 'orcid' ? (
-                    <span className="w-4 h-4 border-2 border-emerald-300 border-t-emerald-600 rounded-full animate-spin" />
-                  ) : (
-                    <i className="fab fa-orcid text-emerald-600" />
-                  )}
-                  ORCID
-                </button>
+              <div className={`grid grid-cols-1 gap-2 ${oauthConfig.google && oauthConfig.orcid ? 'sm:grid-cols-2' : ''}`}>
+                {oauthConfig.google && (
+                  <button
+                    type="button"
+                    disabled={Boolean(oauthLoading)}
+                    onClick={() => startOAuth('google')}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-red-50 hover:border-red-200 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 disabled:opacity-60 disabled:cursor-not-allowed dark:border-slate-700 dark:text-slate-200 dark:hover:bg-red-950/20 dark:hover:border-red-800 dark:hover:text-red-300"
+                    aria-label="Continue with Google"
+                  >
+                    {oauthLoading === 'google' ? (
+                      <span className="w-4 h-4 border-2 border-red-300 border-t-red-600 rounded-full animate-spin" />
+                    ) : (
+                      <i className="fab fa-google text-red-500" />
+                    )}
+                    Google
+                  </button>
+                )}
+                {oauthConfig.orcid && (
+                  <button
+                    type="button"
+                    disabled={Boolean(oauthLoading)}
+                    onClick={() => startOAuth('orcid')}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-400 disabled:opacity-60 disabled:cursor-not-allowed dark:border-slate-700 dark:text-slate-200 dark:hover:bg-emerald-950/20 dark:hover:border-emerald-800 dark:hover:text-emerald-300"
+                    aria-label="Continue with ORCID"
+                  >
+                    {oauthLoading === 'orcid' ? (
+                      <span className="w-4 h-4 border-2 border-emerald-300 border-t-emerald-600 rounded-full animate-spin" />
+                    ) : (
+                      <i className="fab fa-orcid text-emerald-600" />
+                    )}
+                    ORCID
+                  </button>
+                )}
               </div>
             </div>
           )}

@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { api } from '@services/api';
 import { completeOnboarding } from './onboardingState';
+import { useToast } from '@components/ui/Toast';
 import type { LearningProfile } from '@types';
 
 type Destination = 'search' | 'learning' | 'quiz';
@@ -77,6 +78,8 @@ export const OnboardingModal: React.FC<Props> = ({ onDone }) => {
     return studyGoal === 'Journal club' ? `${specialtyInterest} randomized trial systematic review` : topic;
   }, [specialtyInterest, studyGoal]);
 
+  const { showToast } = useToast();
+
   const finish = async (destination: Destination = 'learning') => {
     completeOnboarding();
     try {
@@ -91,7 +94,7 @@ export const OnboardingModal: React.FC<Props> = ({ onDone }) => {
         defaultExplanationDepth: trainingStage === 'preclinical' ? 'foundation' : 'exam_focus',
       });
     } catch {
-      // Local onboarding completion is still useful if profile sync fails.
+      showToast('Profile saved locally, but sync failed. You can update it later in settings.', 'warning', 4000);
     }
     onDone(starterQuery, destination);
   };

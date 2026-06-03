@@ -51,6 +51,7 @@ function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metr
             },
             gemini: clientConfig.gemini,
             mistral: clientConfig.mistral,
+            oauth: clientConfig.oauth,
             defaultProvider: clientConfig.defaultProvider,
         });
     });

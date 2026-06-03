@@ -9,10 +9,11 @@ interface Props {
   topic: string;
   articles: Article[];
   onComplete?: (score: number, total: number) => void;
+  onAuthSubmit?: (attempts: Array<import('@types').QuizAttemptSubmission['attempts'][number]>) => Promise<void>;
   autoExpand?: boolean;
 }
 
-export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete, autoExpand = false }) => {
+export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete, onAuthSubmit, autoExpand = false }) => {
   const { isAuthenticated } = useAuth();
   const { showToast } = useToast();
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
@@ -99,10 +100,11 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
         };
       });
 
-      await api.submitQuizAttempt({
-        topic,
-        attempts,
-      });
+      if (onAuthSubmit) {
+        await onAuthSubmit(attempts);
+      } else {
+        await api.submitQuizAttempt({ topic, attempts });
+      }
       setSaveStatus('saved');
       showToast('Quiz saved to your learning profile', 'success', 3000);
     } catch (err) {
