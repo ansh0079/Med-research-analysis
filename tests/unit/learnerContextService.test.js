@@ -1,8 +1,11 @@
 const {
     buildLearnerContext,
+    enrichLearnerContextForQuiz,
     publicLearnerContextSummary,
     compactWeakTopics,
     profileWeakTopics,
+    buildMisconceptionLogFromAttempts,
+    formatLearnerPromptSupplement,
 } = require('../../server/services/learnerContextService');
 
 describe('learnerContextService', () => {
@@ -70,6 +73,44 @@ describe('learnerContextService', () => {
             weakClaimCount: 1,
             hasTrajectory: true,
         }));
+    });
+
+    test('formatLearnerPromptSupplement includes claim gaps and trajectory', () => {
+        const text = formatLearnerPromptSupplement({
+            previousQueries: ['sepsis', 'ARDS ventilation'],
+            profileWeakTopics: ['Shock'],
+            claimMastery: [{ claimKey: 'ck-1', claimText: 'Low tidal volume saves lives.', masteryState: 'weak' }],
+            learningTrajectory: 'Recent learning activity on this topic',
+        });
+        expect(text).toContain('SESSION TRAJECTORY');
+        expect(text).toContain('CLAIM GAPS');
+        expect(text).toContain('ck-1');
+    });
+
+    test('enrichLearnerContextForQuiz attaches misconception log', async () => {
+        const db = {
+            getLearningProfile: jest.fn().mockResolvedValue(null),
+            getUserTopicMastery: jest.fn().mockResolvedValue(null),
+            getUserTopicMemory: jest.fn().mockResolvedValue(null),
+            listUserTopicMastery: jest.fn().mockResolvedValue([]),
+            getUserClaimMastery: jest.fn().mockResolvedValue([]),
+            listLearningEvents: jest.fn().mockResolvedValue([]),
+            getQuizAttempts: jest.fn().mockResolvedValue([
+                { question_type: 'pitfall', is_correct: 0, outline_node_id: 'tp-1' },
+                { question_type: 'pitfall', is_correct: 0 },
+            ]),
+        };
+        const ctx = await enrichLearnerContextForQuiz(db, { userId: 'u1', topic: 'ARDS' });
+        expect(ctx.misconceptionLog.pitfall.count).toBe(2);
+        expect(ctx.misconceptionLog.pitfall.outlineNodes).toEqual(['tp-1']);
+    });
+
+    test('buildMisconceptionLogFromAttempts groups failures', () => {
+        const log = buildMisconceptionLogFromAttempts([
+            { questionType: 'recall', isCorrect: false, outlineNodeId: 'tp-2' },
+            { questionType: 'recall', is_correct: 0 },
+        ]);
+        expect(log.recall.count).toBe(2);
     });
 
     test('helper compacts weak topics and profile weak topics', () => {

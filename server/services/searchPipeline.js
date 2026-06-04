@@ -13,7 +13,7 @@ const {
     isPredatoryJournal,
     MECHANISM_QUERY_PATTERNS,
 } = require('./evidenceBouquetService');
-const { fetchUnifiedEvidence, collapseNearDuplicateTitles } = require('./unifiedEvidenceSearch');
+const { fetchUnifiedEvidence, collapseNearDuplicateTitles, decomposePico } = require('./unifiedEvidenceSearch');
 const { sanitizeArticleOutput } = require('../utils/articles');
 const {
     applySearchLearningBoost,
@@ -165,6 +165,9 @@ async function fetchAndRankSearchArticles({
     const telemetry = {};
     const timings = {};
     const started = Date.now();
+    // PICO decomposition runs in parallel with evidence fetching
+    const picoPromise = decomposePico(query, serverConfig, fetchImpl, cache).catch(() => null);
+
     const raw = await fetchUnifiedEvidence({
         query,
         safeLimit: Math.max(safeLimit, 20),
@@ -179,6 +182,7 @@ async function fetchAndRankSearchArticles({
         parsedYearFilters,
         processedQuery,
     });
+    const pico = await picoPromise;
     timings.fetchMs = Date.now() - started;
 
     const filterStarted = Date.now();
@@ -199,6 +203,7 @@ async function fetchAndRankSearchArticles({
         previousQueries,
         articleSignalBoosts: signalBoosts,
         specificity,
+        pico,
     });
 
     let articles = collapseNearDuplicateTitles(bouquet.topPapers.map(sanitizeArticleOutput));

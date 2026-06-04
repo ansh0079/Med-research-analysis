@@ -75,8 +75,9 @@ describe('consensusSynopsisService', () => {
 
         expect(synopsis.status).toBe('generated');
         expect(synopsis.freePaperCount).toBe(2);
-        expect(synopsis.includedArticles).toHaveLength(2);
-        expect(synopsis.evidenceScope).toBe('free_open_access_only');
+        expect(synopsis.abstractPaperCount).toBe(1);
+        expect(synopsis.includedArticles).toHaveLength(3);
+        expect(synopsis.evidenceScope).toBe('free_open_access_and_abstracts');
         expect(synopsis.statement).toContain('[1, 2]');
         expect(synopsis.evidenceStrength).toBe('MODERATE');
         expect(synopsis.citationValidation.ok).toBe(true);

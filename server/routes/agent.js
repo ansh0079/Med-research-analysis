@@ -103,7 +103,11 @@ function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = []
         const persona = profile?.persona || 'learner';
         const preferredDifficulty = profile?.preferredDifficulty || 'mixed';
         const dailyGoalMins = profile?.dailyGoalMinutes || 15;
-        const weakList = weakTopics?.length ? weakTopics.map((t) => t.topic).join(', ') : 'none identified yet';
+        const weakTopicLabels = [
+            ...(Array.isArray(weakTopics) ? weakTopics.map((t) => t.topic || t).filter(Boolean) : []),
+            ...(Array.isArray(userContext.profileWeakTopics) ? userContext.profileWeakTopics : []),
+        ];
+        const weakList = [...new Set(weakTopicLabels)].slice(0, 8).join(', ') || 'none identified yet';
 
         const masteryText = mastery
             ? `Mastery on this topic: ${mastery.overallScore}% overall. Breakdown — Recall: ${mastery.recallScore}%, Clinical Application: ${mastery.clinicalApplicationScore}%, Trial Interpretation: ${mastery.trialInterpretationScore}%, Guidelines: ${mastery.guidelineScore}%, Pitfalls: ${mastery.pitfallScore}%.`

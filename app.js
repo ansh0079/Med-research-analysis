@@ -13,6 +13,7 @@ const cookieParser = require('cookie-parser');
 const pinoHttp = require('pino-http');
 const client = require('prom-client');
 const path = require('path');
+const fs = require('fs');
 const crypto = require('crypto');
 const { execSync } = require('child_process');
 
@@ -473,13 +474,15 @@ app.use('/api/collaboration', collaborationRoutes);
 
 // Serve built frontend in production — placed after all API routes
 // so express.static never shadows an /api endpoint
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, 'dist')));
+const distDir = path.join(__dirname, 'dist');
+const distIndex = path.join(distDir, 'index.html');
+if (process.env.NODE_ENV !== 'test' && fs.existsSync(distIndex)) {
+    app.use(express.static(distDir));
     app.get('*', (req, res, next) => {
         if (req.path.startsWith('/api') || req.path.startsWith('/health') || req.path.startsWith('/socket.io')) {
             return next();
         }
-        res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+        res.sendFile(distIndex);
     });
 }
 

@@ -25,7 +25,7 @@ jobs:
         run: npm ci
 
       - name: Run search pipeline unit tests
-        run: npm test -- --testPathPatterns="searchPipeline.test|unifiedEvidenceSearch.test|searchEvidenceMergeService.test|searchPersonalizationEval.test|learnerStateService.test|learnerProfileRollupService.test|claimRemediationService.test|agentTurnMemoryService.test|agentPromptTrajectory.test" --no-coverage
+        run: npm test -- --testPathPatterns="searchPipeline.test|unifiedEvidenceSearch.test|searchEvidenceMergeService.test|searchPersonalizationEval.test|learnerContextService.test|learnerStateService.test|learnerProfileRollupService.test|claimRemediationService.test|agentTurnMemoryService.test|agentPromptTrajectory.test" --no-coverage
         env:
           NODE_ENV: test
           JWT_SECRET: test-jwt-secret

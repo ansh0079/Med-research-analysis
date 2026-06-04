@@ -102,7 +102,7 @@ export const SearchPage: React.FC = () => {
     }
   }, [resendVerification]);
 
-  const { search, loading, error, lastSearchId, proactiveAlert, aiEnrichmentLoading, intelligenceLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert } = useSearch();
+  const { search, loading, error, lastSearchId, proactiveAlert, learnerContext, aiEnrichmentLoading, intelligenceLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert } = useSearch();
   const {
     activePdf, isOpen, layout, openPdf, closePdf, toggleLayout,
   } = usePdfViewer();
@@ -824,6 +824,35 @@ export const SearchPage: React.FC = () => {
           />
         )}
 
+        {results.length > 0 && learnerContext?.hasPersonalization && (learnerContext.weakClaimCount > 0 || learnerContext.hasTrajectory || learnerContext.weakTopicCount > 0) && (
+          <div className="mb-4 rounded-xl border border-violet-200 bg-violet-50 p-4 dark:border-violet-900/50 dark:bg-violet-950/25">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-violet-600 dark:text-violet-300">Personalized remediation</p>
+                <p className="mt-1 text-sm font-semibold text-slate-800 dark:text-slate-100">
+                  {learnerContext.weakClaimCount > 0
+                    ? `${learnerContext.weakClaimCount} weak claim${learnerContext.weakClaimCount === 1 ? '' : 's'} from your learning history match this topic.`
+                    : learnerContext.hasTrajectory
+                      ? 'Your recent learning trajectory includes this topic.'
+                      : 'This search overlaps with prior weak topics.'}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button type="button" onClick={() => setInPlaceQuizExpanded(true)}
+                  className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-violet-600 px-3 text-xs font-bold text-white hover:bg-violet-500">
+                  <i className="fas fa-brain text-[10px]" /> Targeted quiz
+                </button>
+                {agentGuidance && (
+                  <button type="button" onClick={() => document.getElementById('agent-mentor-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-violet-300 px-3 text-xs font-bold text-violet-700 hover:bg-white dark:border-violet-800 dark:text-violet-200 dark:hover:bg-violet-900/40">
+                    <i className="fas fa-comments text-[10px]" /> Ask mentor
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         {results.length > 0 && (
           <div className="sticky top-[calc(var(--nav-h)+0.75rem)] z-20 mb-4 rounded-2xl border border-slate-200/80 bg-white/92 p-3 shadow-sm backdrop-blur dark:border-slate-700/80 dark:bg-slate-900/88">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -1005,7 +1034,7 @@ export const SearchPage: React.FC = () => {
           )}
 
           {agentGuidance && (
-            <div className="mb-4 neo-card overflow-hidden border border-emerald-100 dark:border-emerald-900/40">
+            <div id="agent-mentor-panel" className="mb-4 neo-card overflow-hidden border border-emerald-100 dark:border-emerald-900/40">
               <div className="bg-emerald-600 px-5 py-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-8 h-8 rounded-xl bg-white/15 flex items-center justify-center shrink-0">

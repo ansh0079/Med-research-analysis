@@ -2,7 +2,7 @@ import { useCallback, useRef, useEffect, useState } from 'react';
 import { api } from '@services/api';
 import { queryParser } from '@services/QueryParser';
 import { useSearchContext } from '@contexts/SearchContext';
-import type { AgentGuidance, Article, ProactiveAlert, ProactiveEvidenceAlert, SearchFilters } from '@types';
+import type { AgentGuidance, Article, LearnerContextSummary, ProactiveAlert, ProactiveEvidenceAlert, SearchFilters } from '@types';
 import { useAuth } from '@contexts/AuthContext';
 import { useAnalytics } from './useAnalytics';
 import { usePolling } from './usePolling';
@@ -53,6 +53,7 @@ export function useSearch() {
   }, []);
   const [lastSearchId, setLastSearchId] = useState<number | null>(null);
   const [proactiveAlert, setProactiveAlert] = useState<ProactiveAlert | null>(null);
+  const [learnerContext, setLearnerContext] = useState<LearnerContextSummary | null>(null);
   const [aiEnrichmentLoading, setAiEnrichmentLoading] = useState(false);
   const [intelligenceLoading, setIntelligenceLoading] = useState(false);
   const requestIdRef = useRef(0);
@@ -181,7 +182,7 @@ export function useSearch() {
         const {
           articles, agentGuidance, topicIntelligence, knowledgeAvailable,
           clinicalAnswer, searchId, communityInsight, proactiveAlert,
-          aiEnrichmentKey, aiEnrichmentStatus, intelligenceStatus,
+          aiEnrichmentKey, aiEnrichmentStatus, intelligenceStatus, learnerContext: nextLearnerContext,
         } = data;
 
         trackSearch(query, { filters, resultsCount: articles.length });
@@ -193,6 +194,7 @@ export function useSearch() {
         setClinicalAnswer(clinicalAnswer || null);
         setCommunityInsight(communityInsight || null);
         setProactiveAlert(proactiveAlert || null);
+        setLearnerContext(nextLearnerContext || null);
         addToSearchHistory(query.trim());
         refreshKnowledgeDriftAlerts();
 
@@ -211,6 +213,7 @@ export function useSearch() {
               if (thisRequestId !== requestIdRef.current) return;
               setAgentGuidance(intel.agentGuidance || null);
               setTopicIntelligence(intel.topicIntelligence || null);
+              if (intel.learnerContext) setLearnerContext(intel.learnerContext);
               if (intel.agentGuidance) {
                 setTopicGuideStatus('ready');
                 trackFeatureUsage('topic_guide_ready', { source: 'intelligence', query: query.slice(0, 200) });
@@ -271,6 +274,7 @@ export function useSearch() {
         setClinicalAnswer(null);
         setCommunityInsight(null);
         setTopicGuideStatus('idle');
+        setLearnerContext(null);
         return [];
       } finally {
         if (thisRequestId === requestIdRef.current) setLoading(false);
@@ -288,11 +292,12 @@ export function useSearch() {
     setClinicalAnswer(null);
     setCommunityInsight(null);
     setProactiveAlert(null);
+    setLearnerContext(null);
     setTopicGuideStatus('idle');
     setLastSearchId(null);
     setAiEnrichmentLoading(false);
     setIntelligenceLoading(false);
   }, [setResults, setError, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, cancelPoll]);
 
-  return { search, loading, error, results, clearResults, lastSearchId, proactiveAlert, aiEnrichmentLoading, intelligenceLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert };
+  return { search, loading, error, results, clearResults, lastSearchId, proactiveAlert, learnerContext, aiEnrichmentLoading, intelligenceLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert };
 }

@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { evaluateSearchResults, summarizeSearchEval } = require('../server/services/searchQualityEvalService');
 
 const args = process.argv.slice(2);
 const flag = (name, fallback) => {
@@ -26,6 +27,7 @@ const flag = (name, fallback) => {
 const BASE = flag('--base', 'http://localhost:3001');
 const SOURCES = flag('--sources', 'pubmed,semantic');
 const LIMIT = 10;
+const GOLD = flag('--gold', null);
 
 // ============================================================
 // 20 representative medical queries spanning different scenarios
@@ -151,10 +153,80 @@ async function fetchNew(query) {
     return Array.isArray(data.articles) ? data.articles : [];
 }
 
+async function runGoldEval(goldPath) {
+    const fullPath = path.resolve(process.cwd(), goldPath);
+    const fixture = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+    const queries = Array.isArray(fixture.queries) ? fixture.queries : [];
+    const k = Number(fixture.k || LIMIT);
+    if (queries.length === 0) {
+        throw new Error(`No labelled queries found in ${goldPath}`);
+    }
+
+    console.log(`\nLabelled Search Quality Eval`);
+    console.log(`Base: ${BASE}   Fixture: ${goldPath}   Queries: ${queries.length}   K: ${k}\n`);
+
+    const rows = [];
+    for (const spec of queries) {
+        const sources = spec.sources || SOURCES;
+        const url = `${BASE}/api/search?q=${encodeURIComponent(spec.query)}&sources=${encodeURIComponent(sources)}&limit=${k}&intelligence=async`;
+        process.stdout.write(`  ${spec.query.slice(0, 64).padEnd(64)} `);
+        try {
+            const data = await fetchJSON(url);
+            const articles = Array.isArray(data.articles) ? data.articles : [];
+            const metrics = evaluateSearchResults({ ...spec, k }, articles, { k });
+            rows.push(metrics);
+            console.log(`P@${k}=${metrics.precisionAtK.toFixed(2)} R@${k}=${metrics.recallAtK.toFixed(2)} off=${metrics.offTopicRateAtK.toFixed(2)} type=${metrics.requiredTypeCoverage.toFixed(2)}`);
+        } catch (err) {
+            rows.push({
+                query: spec.query,
+                k,
+                resultCount: 0,
+                relevantTotal: (spec.relevantUids || []).length,
+                relevantHits: 0,
+                offTopicHits: 0,
+                precisionAtK: 0,
+                recallAtK: 0,
+                offTopicRateAtK: 1,
+                requiredTypeCoverage: 0,
+                missingRelevantUids: spec.relevantUids || [],
+                hitUids: [],
+                error: err.message,
+            });
+            console.log(`ERROR ${err.message}`);
+        }
+        await new Promise((r) => setTimeout(r, 300));
+    }
+
+    const summary = summarizeSearchEval(rows);
+    console.log('\nSUMMARY');
+    console.log(`Queries: ${summary.queryCount}`);
+    console.log(`Precision@${k}: ${summary.precisionAtK.toFixed(2)}`);
+    console.log(`Recall@${k}: ${summary.recallAtK.toFixed(2)}`);
+    console.log(`Off-topic@${k}: ${summary.offTopicRateAtK.toFixed(2)}`);
+    console.log(`Type coverage: ${summary.requiredTypeCoverage.toFixed(2)}`);
+    if (summary.failingQueries.length) {
+        console.log('\nFailing queries:');
+        summary.failingQueries.forEach((q) => console.log(`  - ${q}`));
+    }
+
+    const outDir = path.join(process.cwd(), 'eval-results');
+    fs.mkdirSync(outDir, { recursive: true });
+    const outPath = path.join(outDir, `search-quality-gold-${Date.now()}.json`);
+    fs.writeFileSync(outPath, JSON.stringify({ meta: { base: BASE, fixture: goldPath, k, ran: new Date().toISOString() }, summary, results: rows }, null, 2));
+    console.log(`\nFull labelled results written to ${outPath}`);
+
+    const pass = summary.precisionAtK >= 0.6 && summary.recallAtK >= 0.5 && summary.offTopicRateAtK <= 0.2 && summary.requiredTypeCoverage >= 0.8;
+    process.exit(pass ? 0 : 1);
+}
+
 // ============================================================
 // Main
 // ============================================================
 async function main() {
+    if (GOLD) {
+        return runGoldEval(GOLD);
+    }
+
     console.log(`\nPhase 1 Search Quality Eval`);
     console.log(`Base: ${BASE}   Sources: ${SOURCES}   Limit: ${LIMIT}`);
     console.log(`Queries: ${QUERIES.length}\n`);

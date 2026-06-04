@@ -1,4 +1,5 @@
 const { formatStoredTopicKnowledgeForPrompt } = require('./_helpers');
+const { formatLearnerPromptSupplement } = require('../services/learnerContextService');
 
 function buildQuizPrompt(topic, articles = [], options = {}, guidelines = [], userContext = null) {
     const safeCount = Math.min(Math.max(parseInt(String(options.count || 5), 10) || 5, 3), 10);
@@ -66,15 +67,11 @@ function buildQuizPrompt(topic, articles = [], options = {}, guidelines = [], us
             const label = tier === 'strong' ? 'topic memory strong' : tier === 'building' ? 'topic memory building' : 'topic memory sparse';
             adaptiveInstruction += `\nADAPTIVE TOPIC MEMORY: "${label}" — repeated searches≈${Number(tm.searchCount || 0)}, tracked papers≈${Number(tm.topPaperCount || 0)}, saves≈${Number(tm.savedPaperCount || 0)}, weak outline nodes≈${Array.isArray(tm.weakOutlineNodeIds) ? tm.weakOutlineNodeIds.length : 0}. Prefer questions that address weak outline nodes and under-tested angles when OUTLINE NODES exist; align with TARGET GAPS when listed.`;
         }
-        if (userContext.misconceptionLog && Object.keys(userContext.misconceptionLog).length > 0) {
-            const lines = Object.entries(userContext.misconceptionLog)
-                .map(([qType, data]) => {
-                    const nodes = Array.isArray(data.outlineNodes) && data.outlineNodes.length > 0
-                        ? ` (nodes: ${data.outlineNodes.join(', ')})` : '';
-                    return `  - ${qType}: ${data.count} recent miss(es)${nodes}`;
-                })
-                .join('\n');
-            adaptiveInstruction += `\nLEARNER MISCONCEPTION LOG — recent incorrect attempt patterns:\n${lines}\nINSTRUCTION: Generate at least one question targeting the most frequent failure type above. Frame it as a 'pitfall' or 'clinical_application' question that addresses the specific gap.`;
+        const learnerSupplement = formatLearnerPromptSupplement(userContext, {
+            misconceptionLog: userContext.misconceptionLog || null,
+        });
+        if (learnerSupplement) {
+            adaptiveInstruction += `\n${learnerSupplement}`;
         }
     }
 

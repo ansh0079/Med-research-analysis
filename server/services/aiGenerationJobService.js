@@ -7,6 +7,7 @@ const {
     generateConsensusSynopsis,
     selectFreeEvidence,
     selectAbstractEvidence,
+    enrichWithCachedFullText,
 } = require('./consensusSynopsisService');
 const claimMapService = require('./claimMapService');
 const { runFullSynthesisGeneration } = require('./synthesisGenerationCore');
@@ -158,6 +159,9 @@ function enqueueConsensusJob({ db, topic, articles, serverConfig, fetchImpl, cac
     aiGenerationQueue.enqueue(async () => {
         try {
             await db.markAiGenerationJobRunning(jobKey);
+            // Pre-enrich to avoid double PDF cache hits between search and synopsis
+            const freeArticles = await enrichWithCachedFullText(selectFreeEvidence(articles, 8), cache, db);
+            const abstractArticles = selectAbstractEvidence(articles, 5);
             const result = await generateConsensusSynopsis({
                 topic,
                 articles,
@@ -167,6 +171,7 @@ function enqueueConsensusJob({ db, topic, articles, serverConfig, fetchImpl, cac
                 db,
                 limit: 8,
                 abstractLimit: 5,
+                preEnrichedArticles: { freeArticles, abstractArticles },
             });
             await completeJobAndClaims(db, jobKey, 'consensus_synopsis', {
                 resultPayload: { ...result, jobKey },
@@ -205,6 +210,8 @@ async function getOrEnqueueConsensusSynopsis({ db, topic, articles = [], serverC
 
     if (!hasDurableJobs) {
         try {
+            const freeArticles = await enrichWithCachedFullText(selectFreeEvidence(articles, 8), cache, db);
+            const abstractArticles = selectAbstractEvidence(articles, 5);
             const result = await generateConsensusSynopsis({
                 topic,
                 articles,
@@ -214,6 +221,7 @@ async function getOrEnqueueConsensusSynopsis({ db, topic, articles = [], serverC
                 db,
                 limit: 8,
                 abstractLimit: 5,
+                preEnrichedArticles: { freeArticles, abstractArticles },
             });
             return { ...result, jobKey };
         } catch (err) {

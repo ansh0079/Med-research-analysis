@@ -63,6 +63,7 @@
     "eval:agent-quality": "node scripts/eval-agent-quality.js",
     "eval:agent-quality:report": "node scripts/eval-agent-quality.js --format=markdown",
     "eval:search-quality": "node scripts/eval-search-quality.js",
+    "eval:search-quality:gold": "node scripts/eval-search-quality.js --base http://localhost:3002 --gold tests/fixtures/search-quality-gold.json",
     "eval:search-quality:report": "node scripts/eval-search-quality.js --base http://localhost:3002",
     "eval:search-personalization": "node scripts/eval-search-personalization.js"
   },

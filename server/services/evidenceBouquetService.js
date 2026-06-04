@@ -432,6 +432,21 @@ function mapStudyTypesToArchetypes(studyTypes = []) {
     return [...out];
 }
 
+function scorePicoRelevance(article, pico) {
+    if (!pico || pico.confidence < 0.3) return 0;
+    const text = `${String(article.title || '')} ${String(article.abstract || '')}`.toLowerCase();
+    const pop = String(pico.population || '').toLowerCase().trim();
+    const int = String(pico.intervention || '').toLowerCase().trim();
+    const out = String(pico.outcome || '').toLowerCase().trim();
+    let matches = 0;
+    if (pop && text.includes(pop)) matches += 1;
+    if (int && text.includes(int)) matches += 1;
+    if (out && text.includes(out)) matches += 1;
+    // Boost if both population and intervention match (the core P+I of PICO)
+    if (pop && int && text.includes(pop) && text.includes(int)) return 3;
+    return matches >= 2 ? 2 : matches * 0.5;
+}
+
 function buildEvidenceBouquet(articles, query, options = {}) {
     const count = Math.min(Math.max(parseInt(String(options.count || 5), 10) || 5, 1), 50);
     const previousQueries = Array.isArray(options.previousQueries) ? options.previousQueries : [];
@@ -477,6 +492,11 @@ function buildEvidenceBouquet(articles, query, options = {}) {
             const trajectoryBoost = (matchCount / trajectoryTerms.length) * 5; // up to +5 pts
             score += trajectoryBoost;
         }
+        // PICO relevance boost for population + intervention matches
+        if (options.pico) {
+            score += scorePicoRelevance(a, options.pico);
+        }
+
         // Signal boost from user impressions (dwell / save / click feedback)
         const uid = String(a.uid || '').trim().toLowerCase();
         const pmid = String(a.pmid || '').trim().toLowerCase();

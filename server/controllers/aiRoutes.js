@@ -23,6 +23,7 @@ const { resolveProvider } = require('../utils/aiProvider');
 const { parseJsonArrayStrict } = require('../utils/parseJson');
 const { createLlmUsageLogger, buildUsageEntry } = require('../services/llmUsageService');
 const { createMcqValidationService } = require('../services/mcqValidationService');
+const { enrichLearnerContextForQuiz } = require('../services/learnerContextService');
 
 /**
  * @param {import('express').Application} app
@@ -661,9 +662,24 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         let claimMastery = [];
         let teachingObjects = [];
         let teachingClaims = [];
+        let userContext = null;
+        if (req.user?.id) {
+            userContext = await enrichLearnerContextForQuiz(db, {
+                userId: req.user.id,
+                topic: cleanTopic,
+                claimLimit: 40,
+                weakTopicLimit: 10,
+                trajectoryLimit: 8,
+                trajectoryDays: 120,
+                recentAttemptLimit: 20,
+            });
+            if (userContext?.profile?.effectiveDifficulty) {
+                difficulty = userContext.profile.effectiveDifficulty;
+            }
+        }
         if (!claimAnchors && !resolvedClaimJobKey) {
-            [claimMastery, teachingObjects, teachingClaims] = await Promise.all([
-                req.user?.id ? db.getUserClaimMastery(req.user.id, cleanTopic, { limit: 40 }).catch((err) => { logger.warn({ err }, 'all failed'); return []; }) : Promise.resolve([]),
+            claimMastery = userContext?.claimMastery || [];
+            [teachingObjects, teachingClaims] = await Promise.all([
                 db.listTeachingObjectsForTopic(cleanTopic, { limit: 8 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectsForTopic failed'); return []; }),
                 db.listTeachingObjectClaimsForTopic(cleanTopic, { limit: 40 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectClaimsForTopic failed'); return []; }),
             ]);
@@ -697,9 +713,6 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                 topic: cleanTopic,
             });
         }
-        if (teachingObjects.length === 0) {
-            teachingObjects = await db.listTeachingObjectsForTopic(cleanTopic, { limit: 8 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectsForTopic failed'); return []; });
-        }
         const effectiveQuizCount = claimAnchors ? Math.min(safeCount, claimAnchors.length) : safeCount;
         let targetNodes = studyRun ? selectStudyRunTargets(studyRun, outlineNodes, effectiveQuizCount) : [];
 
@@ -715,10 +728,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             targetNodes = spacedRepTargets;
         }
 
-        let topicMemory = null;
-        if (req.user?.id) {
-            topicMemory = await db.getUserTopicMemory(req.user.id, cleanTopic).catch((err) => { logger.warn({ err }, 'getUserTopicMemory failed'); return null; });
-        }
+        const topicMemory = userContext?.topicMemory || null;
         const needAdaptive = Math.max(0, effectiveQuizCount - targetNodes.length);
         if (needAdaptive > 0 && topicMemory && effectiveTopicKnowledge && outlineNodes.length) {
             // Increase the "lookahead" for adaptive targets to find better matches for weak areas
@@ -731,20 +741,6 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                     targetNodes.push({ ...n, priority: 'remediate_weakness' });
                     seen.add(n.id);
                 }
-            }
-        }
-
-        // Fetch adaptive user context
-        let userContext = null;
-        if (req.user && req.user.id) {
-            const [profile, mastery] = await Promise.all([
-                db.getLearningProfile(req.user.id).catch((err) => { logger.warn({ err }, 'getLearningProfile failed'); return null; }),
-                db.getUserTopicMastery(req.user.id, cleanTopic).catch((err) => { logger.warn({ err }, 'getUserTopicMastery failed'); return null; }),
-            ]);
-            userContext = { profile, mastery, topicMemory };
-            // Auto-calibrated effective difficulty overrides request default
-            if (profile?.effectiveDifficulty) {
-                difficulty = profile.effectiveDifficulty;
             }
         }
 
@@ -1013,28 +1009,15 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         const safeCount = Math.min(Math.max(parseInt(String(count), 10) || 3, 1), 5);
         const guidelines = await db.getGuidelinesByTopic(topic.trim(), { limit: 3 }).catch((err) => { logger.warn({ err }, 'operation failed'); return []; });
 
-        // Build adaptive user context for evidence-to-quiz: topic memory + recent failure patterns
         let userContext = null;
         if (req.user?.id) {
-            const [topicMemory, mastery, recentAttempts] = await Promise.all([
-                db.getUserTopicMemory(req.user.id, topic.trim()).catch((err) => { logger.warn({ err }, 'getUserTopicMemory failed'); return null; }),
-                db.getUserTopicMastery(req.user.id, topic.trim()).catch((err) => { logger.warn({ err }, 'getUserTopicMastery failed'); return null; }),
-                db.getQuizAttempts({ userId: req.user.id, topic: topic.trim(), limit: 20 }).catch((err) => { logger.warn({ err }, 'operation failed'); return []; }),
-            ]);
-            // Build misconception log from recent incorrect attempts
-            const failedAttempts = (recentAttempts || []).filter((a) => !a.isCorrect);
-            const misconceptionLog = {};
-            for (const attempt of failedAttempts.slice(0, 10)) {
-                const qType = attempt.questionType || 'unknown';
-                if (!misconceptionLog[qType]) misconceptionLog[qType] = { count: 0, outlineNodes: new Set() };
-                misconceptionLog[qType].count += 1;
-                if (attempt.outlineNodeId) misconceptionLog[qType].outlineNodes.add(attempt.outlineNodeId);
-            }
-            // Convert Sets to arrays for serialization
-            for (const key of Object.keys(misconceptionLog)) {
-                misconceptionLog[key].outlineNodes = Array.from(misconceptionLog[key].outlineNodes);
-            }
-            userContext = { profile: null, mastery, topicMemory, misconceptionLog };
+            userContext = await enrichLearnerContextForQuiz(db, {
+                userId: req.user.id,
+                topic: topic.trim(),
+                claimLimit: 25,
+                trajectoryLimit: 6,
+                recentAttemptLimit: 20,
+            });
         }
 
         // Community signals for evidence-to-quiz

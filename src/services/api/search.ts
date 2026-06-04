@@ -109,7 +109,7 @@ export class SearchApi extends BaseApiClient {
     articles: Article[],
     filters: SearchFilters = {},
     opts: { previousQueries?: string[] } = {}
-  ): Promise<Pick<SearchResponse, 'agentGuidance' | 'knowledgeAvailable' | 'topicIntelligence' | 'learningContext'> & { queryIntent?: string }> {
+  ): Promise<Pick<SearchResponse, 'agentGuidance' | 'knowledgeAvailable' | 'topicIntelligence' | 'learningContext' | 'learnerContext'> & { queryIntent?: string }> {
     const sources = filters.sources || ['pubmed', 'openalex'];
     const response = await this.fetchWithSession(`${API_BASE}/api/search/intelligence`, {
       method: 'POST',

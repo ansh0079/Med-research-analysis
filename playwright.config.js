@@ -127,7 +127,10 @@ module.exports = defineConfig({
 
   // Run local dev server before starting tests
   webServer: {
-    command: 'npm run start',
+    // Serve built SPA from dist/ (API-only start returns 404 for /search)
+    command: process.platform === 'win32'
+      ? 'set NODE_ENV=production&& node server.js'
+      : 'NODE_ENV=production node server.js',
     url: 'http://localhost:3002',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,

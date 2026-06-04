@@ -223,9 +223,17 @@ async function generateConsensusSynopsis({
     db = null,
     limit = 8,
     abstractLimit = 5,
+    preEnrichedArticles = null,
 } = {}) {
-    const freeArticles = await enrichWithCachedFullText(selectFreeEvidence(articles, limit), cache, db);
-    const abstractArticles = selectAbstractEvidence(articles, abstractLimit);
+    let freeArticles;
+    let abstractArticles;
+    if (preEnrichedArticles && Array.isArray(preEnrichedArticles.freeArticles) && Array.isArray(preEnrichedArticles.abstractArticles)) {
+        freeArticles = preEnrichedArticles.freeArticles;
+        abstractArticles = preEnrichedArticles.abstractArticles;
+    } else {
+        freeArticles = await enrichWithCachedFullText(selectFreeEvidence(articles, limit), cache, db);
+        abstractArticles = selectAbstractEvidence(articles, abstractLimit);
+    }
 
     if (freeArticles.length < 2 && abstractArticles.length < 2) {
         return {
@@ -354,4 +362,5 @@ module.exports = {
     isFreeEvidence,
     selectFreeEvidence,
     selectAbstractEvidence,
+    enrichWithCachedFullText,
 };

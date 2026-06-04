@@ -53,7 +53,22 @@ const mockSearchResponse = {
   knowledgeAvailable: true,
 };
 
+const mockAgentGuidance = {
+  topic: 'sglt2 heart failure',
+  status: 'ai_generated',
+  confidence: 0.82,
+  mentorMessage: 'Start with outcome trials, then compare heart-failure subgroup effects.',
+  seminalPapers: [
+    { sourceIndex: 1, title: 'DAPA-HF', clinicalPrinciple: 'Reduced worsening heart failure and cardiovascular death.' },
+  ],
+  teachingPoints: [
+    { claim: 'SGLT2 inhibitors improve heart-failure outcomes beyond glucose lowering.', sourceIndices: [1], confidence: 'HIGH' },
+  ],
+};
+
 test.describe('search → results → interaction flow', () => {
+  test.use({ storageState: 'tests/e2e/.auth/user.json' });
+
   test.beforeEach(async ({ page }) => {
     await page.route('**/api/config', async (route) => {
       await route.fulfill({
@@ -67,7 +82,7 @@ test.describe('search → results → interaction flow', () => {
       });
     });
 
-    await page.route('**/api/search?**', async (route) => {
+    await page.route(/\/api\/search\?.*/, async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -80,6 +95,14 @@ test.describe('search → results → interaction flow', () => {
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({ suggestions: [] }),
+      });
+    });
+
+    await page.route('**/api/evidence-alerts**', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ alerts: [] }),
       });
     });
   });
@@ -125,6 +148,77 @@ test.describe('search → results → interaction flow', () => {
 
     await expect(page.getByText(/Empagliflozin/i)).toBeVisible();
     await expect(page.getByText(/SGLT2 inhibitors in heart failure/i)).not.toBeVisible();
+  });
+
+  test('deferred intelligence renders results first then mentor guidance', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('med_onboarding_done', '1');
+    });
+
+    await page.route('**/api/search?**', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          ...mockSearchResponse,
+          agentGuidance: null,
+          topicIntelligence: null,
+          intelligenceStatus: 'deferred',
+          learnerContext: {
+            hasPersonalization: true,
+            memoryTier: 'active',
+            searchCount: 4,
+            weakTopicCount: 0,
+            profileWeakTopicCount: 0,
+            claimMasteryCount: 3,
+            weakClaimCount: 1,
+            hasTrajectory: true,
+            hasConversationMemory: false,
+          },
+        }),
+      });
+    });
+
+    await page.route(/\/api\/search\/intelligence$/, async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          agentGuidance: mockAgentGuidance,
+          knowledgeAvailable: true,
+          topicIntelligence: null,
+          learningContext: { personalized: true, memoryTier: 'active', searchCount: 4, topPaperCount: 0, savedPaperCount: 0, weakOutlineNodeCount: 0 },
+          learnerContext: {
+            hasPersonalization: true,
+            memoryTier: 'active',
+            searchCount: 4,
+            weakTopicCount: 0,
+            profileWeakTopicCount: 0,
+            claimMasteryCount: 3,
+            weakClaimCount: 1,
+            hasTrajectory: true,
+            hasConversationMemory: false,
+          },
+        }),
+      });
+    });
+
+    await page.goto('/search');
+    const dismiss = page.getByRole('button', { name: /Dismiss/i });
+    if (await dismiss.isVisible().catch(() => false)) {
+      await dismiss.click();
+    }
+    await page.getByPlaceholder(/SGLT2 inhibitors/i).fill('sglt2 heart failure');
+    await page.getByRole('banner').getByRole('button', { name: /^Search$/ }).click();
+
+    await expect(page.getByRole('link', { name: /SGLT2 inhibitors in heart failure/i }).first()).toBeVisible();
+    await expect(page.getByText(/Personalizing topic intelligence/i).first()).toBeVisible();
+    await expect(page.getByText(/Personalized remediation/i)).toBeVisible();
+    await expect(page.getByText(/1 weak claim/i)).toBeVisible();
+    await expect(page.getByText(/Mentor Message/i)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/Start with outcome trials/i)).toBeVisible();
+    await expect(page.getByText(/Personalizing topic intelligence/i)).toHaveCount(0);
   });
 
   test('legal routes work', async ({ page }) => {

@@ -27,7 +27,7 @@ describe('searchQualityEvalService', () => {
         expect(metrics.recallAtK).toBeCloseTo(2 / 3);
         expect(metrics.offTopicRateAtK).toBe(0.25);
         expect(metrics.requiredTypeCoverage).toBe(1);
-        expect(metrics.missingRelevantUids).toEqual(['pmid-9']);
+        expect(metrics.missingRelevantUids).toEqual(['9']);
     });
 
     test('summarizes failing queries for launch review', () => {

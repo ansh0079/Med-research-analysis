@@ -334,19 +334,14 @@ Example input: "does metformin help with weight loss in PCOS patients"
 Example output: ("Metformin"[MeSH Terms]) AND ("Polycystic Ovary Syndrome"[MeSH Terms]) AND ("Weight Loss"[MeSH Terms] OR "Body Weight"[MeSH Terms])`;
 
     const ai = createAiService({ serverConfig, fetchImpl });
-    const timeoutMs = 8000;
-    const abortController = new AbortController();
-    const timer = setTimeout(() => abortController.abort(), timeoutMs);
-
     const started = Date.now();
     try {
         let raw;
         if (keys.gemini) {
-            raw = await ai.callGemini(prompt, PINNED_MODELS.gemini, { temperature: 0.1, maxOutputTokens: 200, signal: abortController.signal });
+            raw = await ai.callGemini(prompt, PINNED_MODELS.gemini, { temperature: 0.1, maxOutputTokens: 200, signal: AbortSignal.timeout(8000) });
         } else {
-            raw = await ai.callMistralAI(prompt, PINNED_MODELS.mistral, { temperature: 0.1, maxOutputTokens: 200, signal: abortController.signal });
+            raw = await ai.callMistralAI(prompt, PINNED_MODELS.mistral, { temperature: 0.1, maxOutputTokens: 200, signal: AbortSignal.timeout(8000) });
         }
-        clearTimeout(timer);
         const cleaned = String(raw || '').trim().replace(/^```[\s\S]*?\n/, '').replace(/\n```$/, '').trim();
         if (cleaned.length < 5 || cleaned.length > 400) return null;
         if (cache && typeof cache.set === 'function') {
@@ -357,7 +352,6 @@ Example output: ("Metformin"[MeSH Terms]) AND ("Polycystic Ovary Syndrome"[MeSH 
         }
         return cleaned;
     } catch {
-        clearTimeout(timer);
         if (telemetry && typeof telemetry === 'object') {
             telemetry.reformulation = { cached: false, failed: true, ms: Date.now() - started };
         }

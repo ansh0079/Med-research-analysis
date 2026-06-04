@@ -1,7 +1,11 @@
 'use strict';
 
 function normalizeUid(value) {
-    return String(value || '').trim().toLowerCase();
+    return String(value || '')
+        .trim()
+        .toLowerCase()
+        .replace(/^pubmed[:/-]/, '')
+        .replace(/^pmid[:/-]?/, '');
 }
 
 function normalizeType(value) {
