@@ -11,6 +11,7 @@ const { classifyQueryIntent } = require('../services/evidenceBouquetService');
 const { parseSearchRequestQuery, parsePreviousQueries, fetchAndRankSearchArticles, prefetchTeachingArtifacts } = require('../services/searchPipeline');
 const { mergeCuratedWithLiveEvidence } = require('../services/searchEvidenceMergeService');
 const { buildSearchLearningContext, applySearchLearningBoost, publicLearningContext } = require('../services/searchLearningService');
+const { buildLearnerContext, publicLearnerContextSummary } = require('../services/learnerContextService');
 const crypto = require('crypto');
 const { createAiService, PINNED_MODELS, TEMPERATURE } = require('../services/aiService');
 const { buildTopicKnowledgePrompt } = require('../prompts');
@@ -510,6 +511,18 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 teachingClaims: boostedClaims,
                 learningContext,
             } = ranked;
+            const learnerContext = req.user?.id
+                ? publicLearnerContextSummary(await buildLearnerContext(db, {
+                    userId: req.user.id,
+                    topic: queryValidation.sanitized,
+                    previousQueries,
+                    includeClaimMastery: true,
+                    includeTrajectory: true,
+                    claimLimit: 25,
+                    trajectoryLimit: 6,
+                    trajectoryDays: 60,
+                }))
+                : null;
 
             let topicKnowledge = null;
             let agentGuidance = null;
@@ -591,6 +604,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                     topicIntelligence,
                 }),
                 learningContext,
+                learnerContext,
                 vectorFusion,
                 aiEnrichmentKey: enrichKey,
                 aiEnrichmentStatus,
@@ -863,6 +877,18 @@ Start your response with [ and end with ]. No markdown.
             );
 
             const learningContext = publicLearningContext(learningContextFull);
+            const learnerContext = req.user?.id
+                ? publicLearnerContextSummary(await buildLearnerContext(db, {
+                    userId: req.user.id,
+                    topic: queryValidation.sanitized,
+                    previousQueries,
+                    includeClaimMastery: true,
+                    includeTrajectory: true,
+                    claimLimit: 25,
+                    trajectoryLimit: 6,
+                    trajectoryDays: 60,
+                }))
+                : null;
 
             res.json({
                 query: queryValidation.sanitized,
@@ -871,6 +897,7 @@ Start your response with [ and end with ]. No markdown.
                 knowledgeAvailable,
                 topicIntelligence,
                 learningContext,
+                learnerContext,
                 queryIntent: classifyQueryIntent(queryValidation.sanitized),
             });
         } catch (error) {

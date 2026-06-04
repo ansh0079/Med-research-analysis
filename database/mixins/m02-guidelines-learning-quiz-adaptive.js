@@ -214,6 +214,7 @@ async getLearningProfile(userId) {
         weakTopics: safeJsonParse(row.weak_topics, []),
         strongTopics: safeJsonParse(row.strong_topics, []),
         preferredDifficulty: row.preferred_difficulty,
+        effectiveDifficulty: row.effective_difficulty || row.preferred_difficulty || 'mixed',
         dailyGoalMinutes: row.daily_goal_minutes,
         currentStreak: row.current_streak,
         longestStreak: row.longest_streak,
@@ -249,6 +250,7 @@ async upsertLearningProfile(userId, data) {
         add('specialty_interest', data.specialtyInterest !== undefined ? (data.specialtyInterest ? String(data.specialtyInterest).trim().slice(0, 120) : null) : undefined);
         add('study_goal', data.studyGoal !== undefined ? (data.studyGoal ? String(data.studyGoal).trim().slice(0, 160) : null) : undefined);
         add('active_curriculum_id', data.activeCurriculumId);
+        add('effective_difficulty', data.effectiveDifficulty);
         fields.push('updated_at = ?');
         values.push(now);
         values.push(existing.id);
@@ -277,6 +279,61 @@ async upsertLearningProfile(userId, data) {
             now,
             now,
         ]
+    );
+    return this.getLearningProfile(userId);
+}
+
+// ==========================================
+// Misconception tracking
+// ==========================================
+
+async upsertUserClaimMisconception(userId, { claimKey, wrongOptionText, correctOptionText, topic }) {
+    const normalizedTopic = this.normalizeTopic(topic);
+    const existing = await this.get(
+        `SELECT id, count FROM user_claim_misconceptions WHERE user_id = ? AND claim_key = ? AND wrong_option_text = ?`,
+        [userId, claimKey, wrongOptionText]
+    );
+    const now = new Date().toISOString();
+    if (existing) {
+        await this.run(
+            `UPDATE user_claim_misconceptions SET count = count + 1, last_seen_at = ? WHERE id = ?`,
+            [now, existing.id]
+        );
+        return { id: existing.id, count: existing.count + 1 };
+    }
+    const result = await this.run(
+        `INSERT INTO user_claim_misconceptions (user_id, claim_key, wrong_option_text, correct_option_text, topic, normalized_topic, count, last_seen_at, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [userId, claimKey, wrongOptionText, correctOptionText || null, topic, normalizedTopic, 1, now, now]
+    );
+    return { id: result.lastID, count: 1 };
+}
+
+async getUserClaimMisconceptions(userId, topic, { limit = 3 } = {}) {
+    const normalizedTopic = this.normalizeTopic(topic);
+    const rows = await this.all(
+        `SELECT claim_key, wrong_option_text, correct_option_text, topic, count, last_seen_at
+         FROM user_claim_misconceptions
+         WHERE user_id = ? AND normalized_topic = ?
+         ORDER BY count DESC, last_seen_at DESC
+         LIMIT ?`,
+        [userId, normalizedTopic, Math.max(1, Math.min(limit, 20))]
+    );
+    return rows.map((r) => ({
+        claimKey: r.claim_key,
+        wrongOptionText: r.wrong_option_text,
+        correctOptionText: r.correct_option_text,
+        topic: r.topic,
+        count: r.count,
+        lastSeenAt: r.last_seen_at,
+    }));
+}
+
+async updateEffectiveDifficulty(userId, effectiveDifficulty) {
+    if (!['easy', 'medium', 'hard', 'mixed'].includes(effectiveDifficulty)) return null;
+    await this.run(
+        `UPDATE user_learning_profiles SET effective_difficulty = ?, updated_at = ? WHERE user_id = ?`,
+        [effectiveDifficulty, new Date().toISOString(), userId]
     );
     return this.getLearningProfile(userId);
 }

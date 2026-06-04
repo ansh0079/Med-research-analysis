@@ -278,6 +278,7 @@ export interface SearchResponse {
   clinicalAnswer?: ClinicalAnswer | null;
   searchId?: number;
   learningContext?: SearchLearningContext;
+  learnerContext?: LearnerContextSummary | null;
   lowRecallLearning?: LowRecallLearning | null;
   communityInsight?: CommunityInsight | null;
   proactiveAlert?: ProactiveAlert | null;
@@ -312,6 +313,18 @@ export interface SearchLearningContext {
   interactionCount?: number;
   impressionCount?: number;
   personalized: boolean;
+}
+
+export interface LearnerContextSummary {
+  hasPersonalization: boolean;
+  memoryTier: string;
+  searchCount: number;
+  weakTopicCount: number;
+  profileWeakTopicCount: number;
+  claimMasteryCount: number;
+  weakClaimCount: number;
+  hasTrajectory: boolean;
+  hasConversationMemory: boolean;
 }
 
 export interface LowRecallLearning {

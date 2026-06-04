@@ -742,6 +742,10 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                 db.getUserTopicMastery(req.user.id, cleanTopic).catch((err) => { logger.warn({ err }, 'getUserTopicMastery failed'); return null; }),
             ]);
             userContext = { profile, mastery, topicMemory };
+            // Auto-calibrated effective difficulty overrides request default
+            if (profile?.effectiveDifficulty) {
+                difficulty = profile.effectiveDifficulty;
+            }
         }
 
         // Collective topic memory: cold / warm / hot path selection
@@ -763,6 +767,12 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             ? (collectiveMemory?.sharedMisconceptions || [])
             : [];
 
+        // Personal misconceptions: this user's specific repeated wrong-answer patterns
+        let personalMisconceptions = [];
+        if (req.user?.id && db.getUserClaimMisconceptions) {
+            personalMisconceptions = await db.getUserClaimMisconceptions(req.user.id, cleanTopic, { limit: 3 }).catch((err) => { logger.warn({ err }, 'getUserClaimMisconceptions failed'); return []; });
+        }
+
         // Community signals: articles with high real-world engagement
         const communityTopPicks = await db.getGlobalEngagedArticles?.(db.normalizeTopic(cleanTopic), 3).catch((err) => { logger.warn({ err }, 'operation failed'); return []; }) || [];
         const teachingObjectContext = teachingObjectsToQuizContext(teachingObjects);
@@ -780,6 +790,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                 explanationDepth,
                 communityTopPicks,
                 knownMisconceptions,
+                personalMisconceptions,
                 claimAnchors: claimAnchors || undefined,
                 teachingObjectContext,
                 promptVariant,

@@ -168,6 +168,16 @@ Recommendation: ${g.recommendation_text}${g.recommendation_strength ? ` | Streng
         collectiveMisconceptionContext = `\nCOLLECTIVE MISCONCEPTIONS — across all learners on this topic, these wrong answers were consistently chosen:\n${lines}\nINSTRUCTION: Generate at least one question directly targeting the most common misconception above. Frame it so the wrong answer is a plausible distractor — explain clearly in the rationale why it is incorrect.\n`;
     }
 
+    // Personal misconceptions: THIS specific learner's repeated wrong-answer patterns
+    let personalMisconceptionContext = '';
+    const personalMisconceptions = Array.isArray(options.personalMisconceptions) ? options.personalMisconceptions : [];
+    if (personalMisconceptions.length > 0) {
+        const lines = personalMisconceptions.slice(0, 3).map((m, i) =>
+            `  ${i + 1}. Claim "${m.claimKey}" — this learner has picked "${m.wrongOptionText}" ${m.count} time${m.count === 1 ? '' : 's'} instead of "${m.correctOptionText || 'the correct answer'}".`
+        ).join('\n');
+        personalMisconceptionContext = `\nPERSONAL MISCONCEPTIONS — this learner has repeatedly chosen the wrong answer on these specific claims:\n${lines}\nINSTRUCTION: Generate at least one question that directly tests the same claim with a very similar distractor. In the explanation, explicitly contrast the wrong option with the correct one and clarify the distinguishing feature.\n`;
+    }
+
     // Build a hint for nodes learners previously flagged as confusing, so the AI writes
     // richer, more mechanistic explanations for those specific concepts.
     let confusingNodeContext = '';
@@ -199,7 +209,7 @@ ${EXPLAIN_RUBRIC[explanationDepth] || EXPLAIN_RUBRIC.exam_focus}
 
 ${variantInstruction}
 
-${topicBaseline ? `${topicBaseline}\n` : ''}${teachingObjectContext ? `REUSABLE PAPER TEACHING OBJECTS:\n${teachingObjectContext}\n\nINSTRUCTION: Treat these as the preferred quiz seed for bottom line, misconception traps, and paper-specific appraisal angles. Still ground source-specific claims in RESEARCH CONTEXT indices.\n\n` : ''}${outlineContext}${targetContext}${communityContext}${claimAnchorContext}${collectiveMisconceptionContext}${confusingNodeContext}RESEARCH CONTEXT:
+${topicBaseline ? `${topicBaseline}\n` : ''}${teachingObjectContext ? `REUSABLE PAPER TEACHING OBJECTS:\n${teachingObjectContext}\n\nINSTRUCTION: Treat these as the preferred quiz seed for bottom line, misconception traps, and paper-specific appraisal angles. Still ground source-specific claims in RESEARCH CONTEXT indices.\n\n` : ''}${outlineContext}${targetContext}${communityContext}${claimAnchorContext}${collectiveMisconceptionContext}${personalMisconceptionContext}${confusingNodeContext}RESEARCH CONTEXT:
 ${context || 'No article context supplied. Use standard evidence-based medical knowledge for the topic, and avoid unsupported claims.'}
 
 GUIDELINE CONTEXT:

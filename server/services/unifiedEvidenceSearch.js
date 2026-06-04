@@ -365,6 +365,61 @@ Example output: ("Metformin"[MeSH Terms]) AND ("Polycystic Ovary Syndrome"[MeSH 
     }
 }
 
+function picoCacheKey(query) {
+    const hash = crypto
+        .createHash('sha1')
+        .update(JSON.stringify({ query: String(query || '').trim().toLowerCase() }))
+        .digest('hex')
+        .slice(0, 24);
+    return `llm:pico-decomposition:${hash}`;
+}
+
+async function decomposePico(query, serverConfig, fetchImpl, cache = null) {
+    const { createAiService, PINNED_MODELS } = require('./aiService');
+    const keys = serverConfig?.keys || {};
+    if (!keys.gemini && !keys.mistral) return null;
+
+    const cacheKey = picoCacheKey(query);
+    if (cache && typeof cache.get === 'function') {
+        const cached = await Promise.resolve(cache.get(cacheKey)).catch(() => null);
+        if (cached) return cached;
+    }
+
+    const prompt = `Extract the PICO components from this medical query.
+
+Query: "${query}"
+
+Return ONLY valid JSON with this exact shape:
+{
+  "population": "extracted population terms",
+  "intervention": "extracted intervention or exposure",
+  "comparison": "extracted comparison or control",
+  "outcome": "extracted outcome",
+  "confidence": 0.0-1.0
+}
+
+If a component is unclear or absent, set it to an empty string. Do not include any explanation outside the JSON.`;
+
+    const ai = createAiService({ serverConfig, fetchImpl });
+    const model = keys.gemini ? PINNED_MODELS.gemini : PINNED_MODELS.mistral;
+    try {
+        const raw = keys.gemini
+            ? await ai.callGemini(prompt, model, { temperature: 0.0, maxOutputTokens: 300, signal: AbortSignal.timeout(4000) })
+            : await ai.callMistralAI(prompt, model, { temperature: 0.0, maxOutputTokens: 300, signal: AbortSignal.timeout(4000) });
+        const cleaned = String(raw || '').trim().replace(/^```[\s\S]*?\n/, '').replace(/\n```$/, '').trim();
+        const parsed = JSON.parse(cleaned);
+        if (parsed && typeof parsed === 'object' && parsed.confidence != null) {
+            if (cache && typeof cache.set === 'function') {
+                await Promise.resolve(cache.set(cacheKey, parsed, 86400)).catch(() => undefined);
+            }
+            return parsed;
+        }
+        return null;
+    } catch {
+        return null;
+    }
+}
+
 const SPECIFICITY_PUB_TYPE_FILTERS = {
     strict: ['Randomized Controlled Trial', 'Systematic Review', 'Meta-Analysis', 'Practice Guideline', 'Clinical Trial'],
     moderate: [],
@@ -456,9 +511,7 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
 
     // Use LLM-reformulated query if available, otherwise fall back to MeSH-augmented query
     let pubmedQuery;
-    if (processedQuery && specificity !== 'broad') {
-        pubmedQuery = processedQuery;
-    } else if (reformulatedQuery) {
+    if (reformulatedQuery) {
         pubmedQuery = reformulatedQuery;
     } else if (meshExpansions.length > 0) {
         pubmedQuery = `${query} OR ${meshExpansions.map((t) => `"${t}"[MeSH Terms]`).join(' OR ')}`;
@@ -471,7 +524,7 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     if (telemetry && typeof telemetry === 'object') {
         telemetry.meshExpansions = meshExpansions;
         telemetry.pubmedQuery = pubmedQuery;
-        telemetry.usedProcessedQuery = Boolean(processedQuery && specificity !== 'broad');
+        telemetry.usedReformulatedQuery = Boolean(reformulatedQuery);
     }
 
     // Phase 2: Build per-source fetch promises and run them all in parallel.
@@ -552,4 +605,5 @@ module.exports = {
     appendPubMedPublicationFilters,
     publicationTypeClause,
     SPECIFICITY_PUB_TYPE_FILTERS,
+    decomposePico,
 };

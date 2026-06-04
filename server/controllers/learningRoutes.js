@@ -786,6 +786,15 @@ function registerLearningRoutes(app, deps) {
                         timeMs: attempt.timeMs ?? null,
                     }).catch((err) => { logger.warn({ err }, 'updateCard failed'); return null; });
                 }
+                // Track personal misconceptions for wrong answers tied to claims
+                if (!attempt.isCorrect && attempt.claimKey && db.upsertUserClaimMisconception) {
+                    void db.upsertUserClaimMisconception(userId, {
+                        claimKey: attempt.claimKey,
+                        wrongOptionText: String(attempt.userAnswer || '').slice(0, 500),
+                        correctOptionText: String(attempt.correctAnswer || '').slice(0, 500),
+                        topic,
+                    }).catch((err) => { logger.warn({ err }, 'upsertUserClaimMisconception failed'); return null; });
+                }
             }
 
             await db.mergeUserTopicWeakOutlineNodes(userId, topic, attempts).catch((err) => { logger.warn({ err }, 'mergeUserTopicWeakOutlineNodes failed'); return null; });
@@ -850,6 +859,21 @@ function registerLearningRoutes(app, deps) {
             if (profile) {
                 const updated = updateStreak(profile);
                 await db.upsertLearningProfile(userId, updated);
+            }
+
+            // Auto-calibrate effective difficulty based on recent mastery
+            if (profile && db.updateEffectiveDifficulty) {
+                const currentEffective = profile.effectiveDifficulty || profile.preferredDifficulty || 'mixed';
+                let nextEffective = currentEffective;
+                if (mastery.overall >= 85 && currentEffective === 'easy') nextEffective = 'medium';
+                else if (mastery.overall >= 80 && currentEffective === 'medium') nextEffective = 'mixed';
+                else if (mastery.overall >= 75 && currentEffective === 'mixed') nextEffective = 'hard';
+                else if (mastery.overall < 50 && currentEffective === 'hard') nextEffective = 'mixed';
+                else if (mastery.overall < 45 && currentEffective === 'mixed') nextEffective = 'medium';
+                else if (mastery.overall < 40 && currentEffective === 'medium') nextEffective = 'easy';
+                if (nextEffective !== currentEffective) {
+                    void db.updateEffectiveDifficulty(userId, nextEffective).catch((err) => { logger.warn({ err }, 'updateEffectiveDifficulty failed'); return null; });
+                }
             }
 
             const ctId = curriculumTopicId != null ? Number(curriculumTopicId) : null;
