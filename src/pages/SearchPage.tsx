@@ -21,6 +21,7 @@ import { Button } from '@components/ui/Button';
 import { SkeletonCard } from '@components/search/SkeletonCard';
 import { ResearchWorkspace } from '@components/search/ResearchWorkspace';
 import { SearchHero } from '@components/search/SearchHero';
+import { TopicIntelligenceStatusBanner } from '@components/search/TopicIntelligenceStatusBanner';
 import { SearchEmptyState } from '@components/search/SearchEmptyState';
 import { usePdfViewer } from '@hooks/usePdfViewer';
 import { api } from '@services/api';
@@ -101,7 +102,7 @@ export const SearchPage: React.FC = () => {
     }
   }, [resendVerification]);
 
-  const { search, loading, error, lastSearchId, proactiveAlert, aiEnrichmentLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert } = useSearch();
+  const { search, loading, error, lastSearchId, proactiveAlert, aiEnrichmentLoading, intelligenceLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert } = useSearch();
   const {
     activePdf, isOpen, layout, openPdf, closePdf, toggleLayout,
   } = usePdfViewer();
@@ -777,6 +778,7 @@ export const SearchPage: React.FC = () => {
         runShiftFastLane={runShiftFastLane}
         currentQuery={currentQuery}
         topicGuideStatus={topicGuideStatus}
+        intelligenceLoading={intelligenceLoading}
         topicGuideRefreshState={topicGuideRefreshState}
         topicGuideRefreshError={topicGuideRefreshError}
         runTopicGuideRefresh={runTopicGuideRefresh}
@@ -811,6 +813,15 @@ export const SearchPage: React.FC = () => {
               </div>
             ))}
           </div>
+        )}
+
+        {results.length > 0 && (intelligenceLoading || (!agentGuidance && (topicGuideStatus === 'building' || topicGuideStatus === 'pending'))) && (
+          <TopicIntelligenceStatusBanner
+            intelligenceLoading={intelligenceLoading}
+            topicGuideStatus={agentGuidance ? 'idle' : topicGuideStatus}
+            variant="card"
+            className="mb-4"
+          />
         )}
 
         {results.length > 0 && (
@@ -907,13 +918,10 @@ export const SearchPage: React.FC = () => {
                 </div>
               </div>
               <div className="p-5 space-y-4">
-                {(topicGuideStatus === 'building' || topicGuideStatus === 'pending') && (
-                  <p className="text-xs font-semibold rounded-lg px-3 py-2 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-800 dark:text-indigo-200 border border-indigo-100 dark:border-indigo-900/50">
-                    {topicGuideStatus === 'building'
-                      ? 'A mentor topic guide is being generated server-side. You can still synthesize or open Quiz/Case below.'
-                      : 'The mentor guide did not arrive in time — try Run search again in the header or open Knowledge → review.'}
-                  </p>
-                )}
+                <TopicIntelligenceStatusBanner
+                  intelligenceLoading={intelligenceLoading}
+                  topicGuideStatus={topicGuideStatus}
+                />
                 <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
                   I&apos;m exploring this topic for the first time. I found <strong>{results.length} papers</strong> across multiple sources.
                   Would you like me to synthesise what I found and add it to memory so future searches get a mentor greeting?

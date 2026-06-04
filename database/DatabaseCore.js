@@ -29,8 +29,12 @@ constructor(dbPath = './database/app.db') {
     this.kysely = null;
     this.pool = null;
     this.pgVectorPool = null;
-    // Full app on Postgres only when explicitly migrating (not used by default)
-    this.isPostgres = process.env.USE_POSTGRES_MAIN === 'true' && Boolean(process.env.DATABASE_URL);
+    // Postgres mode is active when DATABASE_URL is a postgres:// or postgresql:// connection string.
+    // Auto-detected from the URL scheme — no need to set USE_POSTGRES_MAIN manually.
+    // USE_POSTGRES_MAIN=true is a legacy override but is ignored unless the URL is also a PG URL.
+    const dbUrl = process.env.DATABASE_URL || '';
+    const urlIsPostgres = dbUrl.startsWith('postgresql://') || dbUrl.startsWith('postgres://');
+    this.isPostgres = urlIsPostgres && Boolean(dbUrl);
 }
 
 async connect() {
@@ -153,7 +157,8 @@ async runMigrations() {
     if (!this.isPostgres && appliedNames.size === 0) {
         const baselineFiles = files.filter(f => f <= SQLITE_BASELINE_MIGRATION);
         for (const file of baselineFiles) {
-            await this.run('INSERT OR IGNORE INTO _migrations (name) VALUES (?)', [file]);
+            // ON CONFLICT DO NOTHING works on both SQLite (3.24+) and Postgres
+            await this.run('INSERT INTO _migrations (name) VALUES (?) ON CONFLICT (name) DO NOTHING', [file]);
             appliedNames.add(file);
         }
         if (baselineFiles.length > 0) {
@@ -203,7 +208,7 @@ async runMigrations() {
             }
         }
         
-        await this.run('INSERT INTO _migrations (name) VALUES (?)', [file]);
+        await this.run('INSERT INTO _migrations (name) VALUES (?) ON CONFLICT (name) DO NOTHING', [file]);
         console.log(`✅ Completed: ${file}`);
     }
 

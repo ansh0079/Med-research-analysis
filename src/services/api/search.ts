@@ -72,7 +72,7 @@ export class SearchApi extends BaseApiClient {
   async search(
     query: string,
     filters: SearchFilters = {},
-    opts: { vector?: boolean; previousQueries?: string[] } = {}
+    opts: { vector?: boolean; previousQueries?: string[]; intelligence?: 'sync' | 'async' } = {}
   ): Promise<SearchResponse> {
     const sources = filters.sources || ['pubmed', 'openalex'];
     const limit = filters.maxResults ?? 20;
@@ -87,14 +87,42 @@ export class SearchApi extends BaseApiClient {
     if (filters.parsedQuery?.studyTypes && filters.parsedQuery.studyTypes.length > 0) {
       params.set('parsedStudyTypes', JSON.stringify(filters.parsedQuery.studyTypes));
     }
+    if (filters.parsedQuery?.yearFilters && filters.parsedQuery.yearFilters.length > 0) {
+      params.set('parsedYearFilters', JSON.stringify(filters.parsedQuery.yearFilters));
+    }
+    if (filters.parsedQuery?.processedQuery) {
+      params.set('processedQuery', filters.parsedQuery.processedQuery);
+    }
     if (opts.previousQueries && opts.previousQueries.length > 0) {
       params.set('previousQueries', JSON.stringify(opts.previousQueries));
     }
+    params.set('intelligence', opts.intelligence === 'sync' ? 'sync' : 'async');
 
     const response = await this.fetchWithSession(`${API_BASE}/api/search?${params}`);
     if (!response.ok) await this.parseErrorResponse(response);
     const data = await response.json() as SearchResponse;
     return data;
+  }
+
+  async fetchSearchIntelligence(
+    query: string,
+    articles: Article[],
+    filters: SearchFilters = {},
+    opts: { previousQueries?: string[] } = {}
+  ): Promise<Pick<SearchResponse, 'agentGuidance' | 'knowledgeAvailable' | 'topicIntelligence' | 'learningContext'> & { queryIntent?: string }> {
+    const sources = filters.sources || ['pubmed', 'openalex'];
+    const response = await this.fetchWithSession(`${API_BASE}/api/search/intelligence`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        q: query,
+        articles,
+        sources: sources.join(','),
+        previousQueries: opts.previousQueries?.length ? opts.previousQueries.slice(-5) : undefined,
+      }),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
   }
 
   async getAiEnrichment(key: string): Promise<{

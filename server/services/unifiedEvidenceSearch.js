@@ -4,6 +4,7 @@
  */
 
 const { buildProxyService } = require('./externalApiProxy');
+const crypto = require('crypto');
 
 // EBM evidence hierarchy — higher score = stronger study design
 const EBM_SCORES = {
@@ -285,10 +286,30 @@ function articleFromOpenAlexWork(w) {
  * a structured PubMed Boolean query with MeSH terms and pub type filters.
  * Uses the cheapest available model with a tight 8-second timeout.
  */
-async function reformulateQueryForPubMed(query, specificity, serverConfig, fetchImpl) {
+function reformulationCacheKey(query, specificity) {
+    const hash = crypto
+        .createHash('sha1')
+        .update(JSON.stringify({ query: String(query || '').trim().toLowerCase(), specificity }))
+        .digest('hex')
+        .slice(0, 24);
+    return `llm:pubmed-reformulation:${hash}`;
+}
+
+async function reformulateQueryForPubMed(query, specificity, serverConfig, fetchImpl, cache = null, telemetry = null) {
     const { createAiService, PINNED_MODELS } = require('./aiService');
     const keys = serverConfig?.keys || {};
     if (!keys.gemini && !keys.mistral) return null;
+
+    const cacheKey = reformulationCacheKey(query, specificity);
+    if (cache && typeof cache.get === 'function') {
+        const cached = await Promise.resolve(cache.get(cacheKey)).catch(() => null);
+        if (cached) {
+            if (telemetry && typeof telemetry === 'object') {
+                telemetry.reformulation = { cached: true, ms: 0 };
+            }
+            return cached;
+        }
+    }
 
     const specificityGuide = specificity === 'strict'
         ? 'Focus on exact MeSH terms and add publication type filters like "Randomized Controlled Trial"[pt] or "Systematic Review"[pt]. Prefer high-quality evidence.'
@@ -317,6 +338,7 @@ Example output: ("Metformin"[MeSH Terms]) AND ("Polycystic Ovary Syndrome"[MeSH 
     const abortController = new AbortController();
     const timer = setTimeout(() => abortController.abort(), timeoutMs);
 
+    const started = Date.now();
     try {
         let raw;
         if (keys.gemini) {
@@ -327,9 +349,18 @@ Example output: ("Metformin"[MeSH Terms]) AND ("Polycystic Ovary Syndrome"[MeSH 
         clearTimeout(timer);
         const cleaned = String(raw || '').trim().replace(/^```[\s\S]*?\n/, '').replace(/\n```$/, '').trim();
         if (cleaned.length < 5 || cleaned.length > 400) return null;
+        if (cache && typeof cache.set === 'function') {
+            await Promise.resolve(cache.set(cacheKey, cleaned, 86400)).catch(() => undefined);
+        }
+        if (telemetry && typeof telemetry === 'object') {
+            telemetry.reformulation = { cached: false, ms: Date.now() - started };
+        }
         return cleaned;
     } catch {
         clearTimeout(timer);
+        if (telemetry && typeof telemetry === 'object') {
+            telemetry.reformulation = { cached: false, failed: true, ms: Date.now() - started };
+        }
         return null;
     }
 }
@@ -340,6 +371,36 @@ const SPECIFICITY_PUB_TYPE_FILTERS = {
     broad: [],
 };
 
+function publicationTypeClause(label) {
+    const text = String(label || '').trim();
+    if (!text) return null;
+    if (text.includes('[')) return text;
+    return `"${text}"[Publication Type]`;
+}
+
+function appendPubMedPublicationFilters(pubmedQuery, specificity, parsedStudyTypes = [], parsedYearFilters = []) {
+    const clauses = [String(pubmedQuery || '').trim()].filter(Boolean);
+    const typeFilters = [
+        ...(SPECIFICITY_PUB_TYPE_FILTERS[specificity] || []),
+        ...(Array.isArray(parsedStudyTypes) ? parsedStudyTypes : []),
+    ]
+        .map(publicationTypeClause)
+        .filter(Boolean);
+
+    if (typeFilters.length > 0) {
+        clauses.push(`(${typeFilters.join(' OR ')})`);
+    }
+    const yearFilters = (Array.isArray(parsedYearFilters) ? parsedYearFilters : [])
+        .map((filter) => String(filter || '').trim())
+        .filter((filter) => /^\d{4}:\d{4}\[PDAT\]$/i.test(filter));
+    clauses.push(...yearFilters);
+    if (specificity === 'strict') {
+        clauses.push('(english[lang])');
+        clauses.push('(humans[MeSH Terms])');
+    }
+    return clauses.join(' AND ');
+}
+
 /**
  * @param {object} opts
  * @param {string} opts.query
@@ -349,18 +410,24 @@ const SPECIFICITY_PUB_TYPE_FILTERS = {
  * @param {Function} opts.fetch
  * @param {object} [opts.telemetry] — optional; when PubMed returns zero hits, may set `lowRecallLearning`
  * @param {string} [opts.specificity] — 'broad' | 'moderate' | 'strict'
+ * @param {string[]} [opts.parsedStudyTypes] — optional PubMed publication-type clauses from client parser
+ * @param {string[]} [opts.parsedYearFilters] — optional PubMed year filters such as 2020:2024[PDAT]
+ * @param {string} [opts.processedQuery] — optional PubMed-shaped structured query from client parser
  * @returns {Promise<object[]>}
  */
-async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig, fetch: f, vectorList = [], telemetry = null, specificity = 'moderate' }) {
-    const proxy = buildProxyService({ serverConfig, fetchImpl: f });
+async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig, fetch: f, cache = null, vectorList = [], telemetry = null, specificity = 'moderate', parsedStudyTypes = [], parsedYearFilters = [], processedQuery = null }) {
+    const proxy = buildProxyService({ serverConfig, fetchImpl: f, cache, telemetry });
+    const overallStart = Date.now();
 
     // Phase 0: LLM query reformulation — converts natural language into a structured
     // PubMed Boolean query with MeSH terms. Runs in parallel with MeSH lookup.
     // Only fires for conversational queries (>4 words, contains question-like patterns).
-    const isNaturalLanguageQuery = query.split(/\s+/).length > 4 ||
-        /\b(does|how|what|why|which|can|is|are|should)\b/i.test(query);
+    const isNaturalLanguageQuery = process.env.NODE_ENV !== 'test' && (
+        query.split(/\s+/).length > 4 ||
+        /\b(does|how|what|why|which|can|is|are|should)\b/i.test(query)
+    );
     const llmReformulationPromise = (isNaturalLanguageQuery && sourceList.includes('pubmed'))
-        ? reformulateQueryForPubMed(query, specificity, serverConfig, f).catch(() => null)
+        ? reformulateQueryForPubMed(query, specificity, serverConfig, f, cache, telemetry).catch(() => null)
         : Promise.resolve(null);
 
     // Phase 1: MeSH canonical-term lookup (~100–300 ms).
@@ -369,7 +436,11 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     let meshExpansions = [];
     if (sourceList.includes('pubmed')) {
         try {
+            const meshStarted = Date.now();
             const suggestions = await proxy.meshSuggest(query, { limit: 4 });
+            if (telemetry && typeof telemetry === 'object') {
+                telemetry.meshLookupMs = Date.now() - meshStarted;
+            }
             const qLow = query.toLowerCase();
             meshExpansions = suggestions
                 .map((d) => String(d.label || '').trim())
@@ -385,12 +456,22 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
 
     // Use LLM-reformulated query if available, otherwise fall back to MeSH-augmented query
     let pubmedQuery;
-    if (reformulatedQuery) {
+    if (processedQuery && specificity !== 'broad') {
+        pubmedQuery = processedQuery;
+    } else if (reformulatedQuery) {
         pubmedQuery = reformulatedQuery;
     } else if (meshExpansions.length > 0) {
         pubmedQuery = `${query} OR ${meshExpansions.map((t) => `"${t}"[MeSH Terms]`).join(' OR ')}`;
     } else {
         pubmedQuery = query;
+    }
+
+    pubmedQuery = appendPubMedPublicationFilters(pubmedQuery, specificity, parsedStudyTypes, parsedYearFilters);
+
+    if (telemetry && typeof telemetry === 'object') {
+        telemetry.meshExpansions = meshExpansions;
+        telemetry.pubmedQuery = pubmedQuery;
+        telemetry.usedProcessedQuery = Boolean(processedQuery && specificity !== 'broad');
     }
 
     // Phase 2: Build per-source fetch promises and run them all in parallel.
@@ -440,6 +521,9 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     }
 
     const sourceResults = await Promise.all(sourceFetches);
+    if (telemetry && typeof telemetry === 'object') {
+        telemetry.unifiedFetchMs = Date.now() - overallStart;
+    }
     const perSourceLists = sourceResults.filter((list) => list.length > 0);
 
     // Optional vector fusion
@@ -465,4 +549,7 @@ module.exports = {
     dedupeKey,
     normalizePmid,
     normalizeDoi,
+    appendPubMedPublicationFilters,
+    publicationTypeClause,
+    SPECIFICITY_PUB_TYPE_FILTERS,
 };

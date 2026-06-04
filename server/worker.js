@@ -24,6 +24,7 @@ const { scheduleClaimRegeneration, stopClaimRegeneration } = require('./server/s
 const { scheduleGuidelineWatchtower, stopGuidelineWatchtower } = require('./server/services/guidelineWatchtowerScheduler');
 const { scheduleCurriculumSeed, stopCurriculumSeed } = require('./server/services/curriculumSeedScheduler');
 const { scheduleCollectiveMemory, stopCollectiveMemory } = require('./server/services/collectiveMemoryScheduler');
+const { scheduleLearnerProfileRollup, stopLearnerProfileRollup } = require('./server/services/learnerProfileRollupScheduler');
 
 const PORT = process.env.WORKER_HEALTH_PORT || 3003;
 let healthServer = null;
@@ -56,6 +57,7 @@ async function startWorker() {
     scheduleGuidelineWatchtower(db, logger);
     scheduleCurriculumSeed(db, { serverConfig, fetchImpl: safeFetch, cache }, logger);
     scheduleCollectiveMemory(db, logger);
+    scheduleLearnerProfileRollup(db, logger);
 
     const http = require('http');
     healthServer = http.createServer((req, res) => {
@@ -85,6 +87,7 @@ async function shutdown(signal) {
     stopGuidelineWatchtower();
     stopCurriculumSeed();
     stopCollectiveMemory();
+    stopLearnerProfileRollup();
     await stopWorkers();
     await db.close();
     await db.closeVectorPool?.();

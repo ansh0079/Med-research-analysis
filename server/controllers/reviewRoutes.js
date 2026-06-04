@@ -554,7 +554,7 @@ Return ONLY valid JSON:
                 ? String(topicKnowledgeRow.updatedAt).slice(0, 24)
                 : 'none';
             const cacheKey = `case:${learningMode}:${topic.toLowerCase()}:${literatureQuery.slice(0, 220).toLowerCase()}:s:${seedKey}:tk:${tkSig}`;
-            const cached = cache.get(cacheKey);
+            const cached = await Promise.resolve(cache.get(cacheKey)).catch(() => null);
             if (cached) return res.json({ ...cached, cached: true });
 
             const { articles: baseArticles, vectorUsed, sourcesTried } = await gatherEvidenceArticlesForCase({
@@ -611,7 +611,7 @@ Return ONLY valid JSON:
                 ),
                 citations: baseArticles,
             };
-            cache.set(cacheKey, result, 1800);
+            await Promise.resolve(cache.set(cacheKey, result, 1800)).catch(() => undefined);
             await db.logEvent('case:analyze', req.sessionId, {
                 query: literatureQuery,
                 topic,
@@ -655,7 +655,7 @@ Return ONLY valid JSON:
                     ? String(topicKnowledgeRow.updatedAt).slice(0, 24)
                     : 'none';
                 const cacheKey = `teaching:${learningMode}:${topic.toLowerCase().slice(0, 80)}:${seedKey}:tk:${tkSig}`;
-                const cached = cache.get(cacheKey);
+                const cached = await Promise.resolve(cache.get(cacheKey)).catch(() => null);
                 if (cached) return res.json({ ...cached, cached: true });
 
                 const guidelines = await db.getGuidelinesByTopic(topic || '', { limit: 5 }).catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; });
@@ -726,7 +726,7 @@ Return ONLY valid JSON:
                     disclaimer: String(parsed.disclaimer || 'FOR RESEARCH AND EDUCATION ONLY. This vignette is fictional. Management steps are derived from provided research abstracts and must not be used for direct patient care.'),
                 };
 
-                cache.set(cacheKey, result, 1800);
+                await Promise.resolve(cache.set(cacheKey, result, 1800)).catch(() => undefined);
                 await db.logEvent('case:teaching_vignette', req.sessionId, {
                     topic,
                     learningMode,

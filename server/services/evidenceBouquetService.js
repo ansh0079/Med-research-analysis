@@ -329,8 +329,40 @@ const STOPWORDS = new Set([
     'analysis', 'results', 'effect', 'effects', 'review',
 ]);
 
-function isOffTopic(article, query) {
+function meshRelevanceRatio(searchText, queryMeshTerms = []) {
+    const terms = (Array.isArray(queryMeshTerms) ? queryMeshTerms : [])
+        .map((t) => String(t || '').toLowerCase().trim())
+        .filter((t) => t.length > 2);
+    if (terms.length === 0) return 0;
+    const matchCount = terms.filter((term) => {
+        if (searchText.includes(term)) return true;
+        const stem = stemTerm(term);
+        return stem.length > 2 && searchText.includes(stem);
+    }).length;
+    return matchCount / terms.length;
+}
+
+function queryMatchScore(article, query) {
     const q = String(query || '').toLowerCase();
+    const title = String(article?.title || '').toLowerCase();
+    const abstract = String(article?.abstract || '').toLowerCase();
+    const searchText = `${title} ${abstract}`;
+    const queryTerms = q.split(/\s+/).filter((t) => t.length > 3 && !STOPWORDS.has(t));
+    if (queryTerms.length === 0) return 0;
+    const weighted = queryTerms.reduce((sum, term) => {
+        const stem = stemTerm(term);
+        const inTitle = title.includes(term) || (stem.length > 3 && title.includes(stem));
+        const inText = searchText.includes(term) || (stem.length > 3 && searchText.includes(stem));
+        if (inTitle) return sum + 1.5;
+        if (inText) return sum + 1;
+        return sum;
+    }, 0);
+    return Math.min(1, weighted / queryTerms.length);
+}
+
+function isOffTopic(article, query, options = {}) {
+    const q = String(query || '').toLowerCase();
+    const queryMeshTerms = Array.isArray(options.queryMeshTerms) ? options.queryMeshTerms : [];
 
     // Check title AND abstract — many relevant papers bury key terms in the abstract
     const title = String(article.title || '').toLowerCase();
@@ -347,6 +379,7 @@ function isOffTopic(article, query) {
     }).length;
 
     const matchRatio = matchCount / queryTerms.length;
+    const meshRatio = meshRelevanceRatio(searchText, queryMeshTerms);
 
     // Scale threshold by number of key terms:
     //   1–2 concepts → need 75 % (both must appear — rounding means 2/2 required for a 2-term query)
@@ -356,6 +389,12 @@ function isOffTopic(article, query) {
     if (queryTerms.length <= 2) threshold = 0.75;
     else if (queryTerms.length <= 5) threshold = 0.5;
     else threshold = 0.35;
+
+    if (queryMeshTerms.length > 0) {
+        const blended = (matchRatio * 0.6) + (meshRatio * 0.4);
+        if (meshRatio >= 0.34 && matchRatio >= 0.2) return false;
+        return blended < threshold;
+    }
 
     return matchRatio < threshold;
 }
@@ -428,6 +467,10 @@ function buildEvidenceBouquet(articles, query, options = {}) {
 
     const scored = filtered.map((a) => {
         let score = computeCompositeScore(a);
+        const matchScore = queryMatchScore(a, query);
+        const specificity = String(options.specificity || 'moderate');
+        const matchWeight = specificity === 'strict' ? 14 : specificity === 'broad' ? 3 : 8;
+        score += matchScore * matchWeight;
         if (trajectoryTerms.length > 0) {
             const text = `${String(a.title || '')} ${String(a.abstract || '')}`.toLowerCase();
             const matchCount = trajectoryTerms.filter((t) => text.includes(t)).length;
@@ -451,6 +494,7 @@ function buildEvidenceBouquet(articles, query, options = {}) {
         return {
             article: a,
             compositeScore: score,
+            queryMatchScore: matchScore,
             archetype: classifyArchetype(a),
             year: getYear(a),
             citations: getCitationCount(a),
@@ -534,6 +578,8 @@ function buildReasons(scored) {
     if (a._quality?.grade === 'A') reasons.push('Top quality (A)');
     if (a._openalexMetrics?.isTopCitationPercentile) reasons.push('Top citation percentile');
     if (a.isFree || a.pmcid) reasons.push('Open access');
+    if (scored.queryMatchScore >= 0.85) reasons.push('Strong query match');
+    else if (scored.queryMatchScore >= 0.55) reasons.push('Good query match');
 
     const journalBonus = getJournalBonus(a);
     if (journalBonus >= 18) reasons.push('Top-tier journal');
@@ -589,6 +635,8 @@ module.exports = {
     getCitationCount,
     getYear,
     isOffTopic,
+    meshRelevanceRatio,
+    queryMatchScore,
     isPreclinical,
     isGroundbreakingBasicScience,
     isPredatoryJournal,

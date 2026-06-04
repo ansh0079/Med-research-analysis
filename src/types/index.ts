@@ -141,7 +141,9 @@ export interface SearchFilters {
   sortBy?: 'relevance' | 'date' | 'citations';
   /** Parsed query metadata sent to backend to tune evidence bouquet archetypes */
   parsedQuery?: {
+    processedQuery?: string;
     studyTypes?: string[];
+    yearFilters?: string[];
     specificity?: SpecificityLevel;
   };
 }
@@ -281,6 +283,22 @@ export interface SearchResponse {
   proactiveAlert?: ProactiveAlert | null;
   aiEnrichmentKey?: string | null;
   aiEnrichmentStatus?: 'pending' | 'ready' | 'failed';
+  intelligenceStatus?: 'sync' | 'deferred';
+  queryIntent?: string;
+  searchTelemetry?: {
+    timings?: Record<string, number>;
+    sources?: Record<string, { ms?: number; cached?: boolean; shared?: boolean }>;
+    reformulation?: { cached?: boolean; failed?: boolean; ms?: number } | null;
+    meshLookupMs?: number | null;
+  };
+  ranking?: Array<{
+    uid?: string;
+    compositeScore?: number;
+    archetype?: string;
+    citations?: number;
+    year?: number;
+    reasons?: string[];
+  }>;
 }
 
 export interface SearchLearningContext {
@@ -1232,7 +1250,16 @@ export interface AgentConversation {
   messages: Array<{ role: 'user' | 'assistant'; content: string; timestamp?: string }>;
   messageCount: number;
   lastMessageAt?: string;
+  conversationSummary?: string | null;
+  learnerSnapshot?: {
+    focusAreas?: string[];
+    misconceptions?: string[];
+    masteredThisSession?: string[];
+    openQuestion?: string | null;
+    updatedAt?: string;
+  };
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface UserTopicMastery {

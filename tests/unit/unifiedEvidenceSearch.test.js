@@ -77,7 +77,7 @@ describe('unifiedEvidenceSearch helpers', () => {
     });
 
     test('getEbmScore falls back to studyDesign field', () => {
-        expect(getEbmScore({ studyDesign: 'systematic review' })).toBe(7);
+        expect(getEbmScore({ pubtype: [], studyDesign: 'systematic review' })).toBe(7);
         expect(getEbmScore({ pubtype: [], studyDesign: 'rct' })).toBe(6);
     });
 

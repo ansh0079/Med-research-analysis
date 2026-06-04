@@ -18,6 +18,7 @@ const { scheduleClaimRegeneration, stopClaimRegeneration } = require('./server/s
 const { scheduleGuidelineWatchtower, stopGuidelineWatchtower } = require('./server/services/guidelineWatchtowerScheduler');
 const { scheduleCurriculumSeed, stopCurriculumSeed } = require('./server/services/curriculumSeedScheduler');
 const { scheduleCollectiveMemory, stopCollectiveMemory } = require('./server/services/collectiveMemoryScheduler');
+const { scheduleLearnerProfileRollup, stopLearnerProfileRollup } = require('./server/services/learnerProfileRollupScheduler');
 const authSecurityStore = require('./server/services/authSecurityStore');
 const { safeFetch } = require('./server/utils/fetch');
 
@@ -54,6 +55,7 @@ async function gracefulShutdown(signal) {
             stopGuidelineWatchtower();
             stopCurriculumSeed();
             stopCollectiveMemory();
+            stopLearnerProfileRollup();
             const { stopWorkers } = require('./server/services/jobQueue');
             await stopWorkers();
             await db.close();
@@ -141,13 +143,26 @@ async function startServer() {
         logger.info({ cleaned }, 'Cleaned expired cache entries');
 
         if (runSchedulers) {
-            scheduleDigests(db, process.env.APP_URL || `http://localhost:${PORT}`, serverConfig, safeFetch);
-            scheduleTopicRefresh(db, serverConfig, safeFetch, logger);
-            scheduleKnowledgeDrift(db, serverConfig, safeFetch, logger);
-            scheduleClaimRegeneration(db, { serverConfig, fetchImpl: safeFetch, cache }, logger);
-            scheduleGuidelineWatchtower(db, logger);
-            scheduleCurriculumSeed(db, { serverConfig, fetchImpl: safeFetch, cache }, logger);
-            scheduleCollectiveMemory(db, logger);
+            // Each scheduler gets a child logger pre-bound with its task name.
+            // This means every log line emitted by that scheduler includes
+            // { task: '...' }, making background logs trivially filterable in
+            // any log aggregator (Datadog, Grafana, Loki, etc.).
+            scheduleDigests(db, process.env.APP_URL || `http://localhost:${PORT}`, serverConfig, safeFetch,
+                logger.child({ task: 'digest-scheduler' }));
+            scheduleTopicRefresh(db, serverConfig, safeFetch,
+                logger.child({ task: 'topic-refresh' }));
+            scheduleKnowledgeDrift(db, serverConfig, safeFetch,
+                logger.child({ task: 'knowledge-drift' }));
+            scheduleClaimRegeneration(db, { serverConfig, fetchImpl: safeFetch, cache },
+                logger.child({ task: 'claim-regeneration' }));
+            scheduleGuidelineWatchtower(db,
+                logger.child({ task: 'guideline-watchtower' }));
+            scheduleCurriculumSeed(db, { serverConfig, fetchImpl: safeFetch, cache },
+                logger.child({ task: 'curriculum-seed' }));
+            scheduleCollectiveMemory(db,
+                logger.child({ task: 'collective-memory' }));
+            scheduleLearnerProfileRollup(db,
+                logger.child({ task: 'learner-profile-rollup' }));
         }
 
         if (runHttp) {

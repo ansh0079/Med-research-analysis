@@ -50,6 +50,7 @@ const StudyPathsPage      = lazyDefault(() => import('./pages/StudyPathsPage'), 
 const TopicPage           = lazyDefault(() => import('./pages/TopicPage'), 'TopicPage');
 const LegalTermsPage      = lazyDefault(() => import('./pages/LegalTermsPage'), 'LegalTermsPage');
 const LegalPrivacyPage    = lazyDefault(() => import('./pages/LegalPrivacyPage'), 'LegalPrivacyPage');
+const CompliancePage      = lazyDefault(() => import('./pages/CompliancePage'), 'CompliancePage');
 const NotFoundPage        = lazyDefault(() => import('./pages/NotFoundPage'), 'NotFoundPage');
 const AdminObservabilityPage = lazyDefault(() => import('./pages/AdminObservabilityPage'), 'AdminObservabilityPage');
 const ClinicalQualityQueuePage = lazyDefault(() => import('./pages/ClinicalQualityQueuePage'), 'ClinicalQualityQueuePage');
@@ -72,7 +73,7 @@ const RootRoute: React.FC = () => {
 
 // Routes where the global TopNav should NOT appear (they have their own nav)
 // '/' is excluded only for guests — authenticated users see SearchPage which needs the nav
-const NO_TOP_NAV_ROUTES = ['/', '/auth', '/legal/terms', '/legal/privacy'];
+const NO_TOP_NAV_ROUTES = ['/', '/auth', '/legal/terms', '/legal/privacy', '/legal/compliance'];
 
 const AppContent: React.FC = () => {
   const { toasts, showToast, removeToast } = useToast();
@@ -177,8 +178,9 @@ const AppContent: React.FC = () => {
           <Route path="/billing"   element={<RouteErrorBoundary><ProtectedRoute><BillingPage /></ProtectedRoute></RouteErrorBoundary>} />
           <Route path="/admin/observability" element={<RouteErrorBoundary><RoleRoute allowedRoles={['admin', 'curator']}><AdminObservabilityPage /></RoleRoute></RouteErrorBoundary>} />
           <Route path="/admin/quality" element={<RouteErrorBoundary><RoleRoute allowedRoles={['admin', 'curator']}><ClinicalQualityQueuePage /></RoleRoute></RouteErrorBoundary>} />
-          <Route path="/legal/terms"   element={<RouteErrorBoundary><LegalTermsPage /></RouteErrorBoundary>} />
-          <Route path="/legal/privacy" element={<RouteErrorBoundary><LegalPrivacyPage /></RouteErrorBoundary>} />
+          <Route path="/legal/terms"      element={<RouteErrorBoundary><LegalTermsPage /></RouteErrorBoundary>} />
+          <Route path="/legal/privacy"    element={<RouteErrorBoundary><LegalPrivacyPage /></RouteErrorBoundary>} />
+          <Route path="/legal/compliance" element={<RouteErrorBoundary><CompliancePage /></RouteErrorBoundary>} />
           <Route path="*"          element={<RouteErrorBoundary><NotFoundPage /></RouteErrorBoundary>} />
         </Routes>
       </Suspense>

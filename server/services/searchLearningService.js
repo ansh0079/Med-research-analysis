@@ -1,4 +1,5 @@
 const logger = require('../config/logger');
+const { buildLearningTrajectorySection } = require('./learnerStateService');
 
 function normalizeUid(value) {
     return String(value || '').trim().toLowerCase();
@@ -92,7 +93,26 @@ function interactionWeight(row) {
     return 0.35 + dwellBoost;
 }
 
-async function buildSearchLearningContext({ db, userId, query, sessionId }) {
+function collectTrajectoryTerms(previousQueries = [], misconceptionPhrases = []) {
+    const terms = new Set();
+    for (const q of Array.isArray(previousQueries) ? previousQueries : []) {
+        for (const t of String(q).toLowerCase().split(/\s+/)) {
+            if (t.length > 3) terms.add(t);
+        }
+    }
+    for (const phrase of Array.isArray(misconceptionPhrases) ? misconceptionPhrases : []) {
+        for (const t of String(phrase).toLowerCase().split(/\s+/)) {
+            if (t.length > 4) terms.add(t);
+        }
+    }
+    return terms;
+}
+
+function articleTextBlob(article) {
+    return `${article?.title || ''} ${article?.abstract || ''}`.toLowerCase();
+}
+
+async function buildSearchLearningContext({ db, userId, query, sessionId, previousQueries = [] }) {
     if (!db || !query || typeof db.getUserTopicMemory !== 'function') {
         return learningContextFromMemory(null);
     }
@@ -172,6 +192,31 @@ async function buildSearchLearningContext({ db, userId, query, sessionId }) {
                 context.shouldPersonalize = true;
             }
         }
+
+        const misconceptionPhrases = [];
+        if (userId && typeof db.listLearningEvents === 'function') {
+            const events = await db.listLearningEvents({ userId, topic: query, limit: 20 }).catch(() => []);
+            for (const e of Array.isArray(events) ? events : []) {
+                const payload = e.payload && typeof e.payload === 'object' ? e.payload : {};
+                if (Array.isArray(payload.misconceptions)) {
+                    misconceptionPhrases.push(...payload.misconceptions.map(String).filter(Boolean));
+                }
+            }
+        }
+        context.trajectoryTerms = collectTrajectoryTerms(previousQueries, misconceptionPhrases);
+        context.profileWeakTopics = [];
+        if (userId && typeof db.getLearningProfile === 'function') {
+            const profile = await db.getLearningProfile(userId).catch(() => null);
+            context.profileWeakTopics = Array.isArray(profile?.weakTopics) ? profile.weakTopics.map(String).filter(Boolean) : [];
+            if (context.profileWeakTopics.length > 0) context.shouldPersonalize = true;
+        }
+        if (userId) {
+            context.trajectoryHint = await buildLearningTrajectorySection(db, userId, query, { limit: 6, days: 60 });
+            if (context.trajectoryHint) context.shouldPersonalize = true;
+        }
+        if (previousQueries.length > 0 || context.trajectoryTerms.size > 0) {
+            context.shouldPersonalize = true;
+        }
         return context;
     } catch {
         return learningContextFromMemory(null);
@@ -191,6 +236,9 @@ function publicLearningContext(context) {
         impressionCount: context?.impressionArticleUids?.size || 0,
         missedPaperCount: context?.missedPaperUids?.size || 0,
         weakArticleCount: context?.weakArticleUids?.size || 0,
+        trajectoryTermCount: context?.trajectoryTerms?.size || 0,
+        profileWeakTopicCount: context?.profileWeakTopics?.length || 0,
+        hasTrajectoryHints: Boolean(context?.trajectoryHint),
         personalized: Boolean(context?.shouldPersonalize),
     };
 }
@@ -216,6 +264,25 @@ function articleLearningBoost(article, context) {
         const missCount = context.missedPaperUids?.get(uid) || 0;
         if (missCount > 0) boost = Math.max(boost, Math.min(1.8, 0.6 + missCount * 0.3));
         if (context.weakArticleUids?.has(uid)) boost = Math.max(boost, Math.min(1.4, 0.5 + boost));
+    }
+
+    const blob = articleTextBlob(article);
+    if (blob && context.trajectoryTerms?.size) {
+        for (const term of context.trajectoryTerms) {
+            if (blob.includes(term)) {
+                boost = Math.max(boost, 0.35);
+                break;
+            }
+        }
+    }
+    if (blob && Array.isArray(context.profileWeakTopics)) {
+        for (const wt of context.profileWeakTopics) {
+            const needle = String(wt || '').toLowerCase().trim();
+            if (needle.length >= 4 && blob.includes(needle)) {
+                boost = Math.max(boost, 0.28);
+                break;
+            }
+        }
     }
     return boost;
 }
@@ -245,6 +312,7 @@ module.exports = {
     articleLearningBoost,
     articleUidCandidates,
     buildSearchLearningContext,
+    collectTrajectoryTerms,
     publicLearningContext,
     interactionWeight,
 };

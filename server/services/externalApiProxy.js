@@ -12,6 +12,7 @@
  */
 
 const logger = require('../config/logger');
+const crypto = require('crypto');
 
 const DEFAULT_TIMEOUTS = {
   pubmed: 15000,
@@ -25,9 +26,63 @@ const DEFAULT_TIMEOUTS = {
   huggingface: 30000,
 };
 
-function buildProxyService({ serverConfig, fetchImpl }) {
+const inFlight = new Map();
+
+function stableHash(value) {
+  return crypto.createHash('sha1').update(String(value || '')).digest('hex').slice(0, 24);
+}
+
+async function cachedSingleFlight(cache, key, ttlSeconds, loader) {
+  if (cache && typeof cache.get === 'function') {
+    const cached = await Promise.resolve(cache.get(key)).catch((err) => {
+      logger.warn({ err, key }, 'External source cache get failed');
+      return null;
+    });
+    if (cached !== undefined && cached !== null) return { value: cached, cached: true, shared: false };
+  }
+
+  if (inFlight.has(key)) {
+    const value = await inFlight.get(key);
+    return { value, cached: false, shared: true };
+  }
+
+  const promise = (async () => {
+    const value = await loader();
+    if (cache && typeof cache.set === 'function') {
+      await Promise.resolve(cache.set(key, value, ttlSeconds)).catch((err) => {
+        logger.warn({ err, key }, 'External source cache set failed');
+      });
+    }
+    return value;
+  })();
+
+  inFlight.set(key, promise);
+  try {
+    const value = await promise;
+    return { value, cached: false, shared: false };
+  } finally {
+    inFlight.delete(key);
+  }
+}
+
+function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = null }) {
   const f = fetchImpl;
   const keys = serverConfig?.keys || {};
+
+  async function withSourceCache(source, cacheParts, ttlSeconds, loader) {
+    const key = `external:${source}:${stableHash(JSON.stringify(cacheParts))}`;
+    const started = Date.now();
+    const { value, cached, shared } = await cachedSingleFlight(cache, key, ttlSeconds, loader);
+    if (telemetry && typeof telemetry === 'object') {
+      telemetry.sourceFetches = telemetry.sourceFetches || {};
+      telemetry.sourceFetches[source] = {
+        ms: Date.now() - started,
+        cached,
+        shared,
+      };
+    }
+    return value;
+  }
 
   function buildPubMedUrl(path, params) {
     const base = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
@@ -64,65 +119,71 @@ function buildProxyService({ serverConfig, fetchImpl }) {
   }
 
   async function pubmedSearch(query, { maxResults = 20, sort = 'relevance' } = {}) {
-    const pmids = await pubmedEsearch(query, { retmax: maxResults, sort });
-    const summary = await pubmedEsummary(pmids);
-    return pmids
-      .map((pmid) => {
-        const article = summary[pmid];
-        if (!article) return null;
-        const pmcid =
-          article.articleids?.find((id) =>
-            ['pmc', 'pmcid'].includes(String(id.idtype || '').toLowerCase())
-          )?.value || null;
-        return {
-          uid: `pubmed-${pmid}`,
-          title: article.title,
-          authors: article.authors?.map((a) => ({ name: a.name })),
-          pubdate: article.pubdate,
-          source: article.source,
-          pmid,
-          pmcid,
-          isFree: Boolean(pmcid),
-          pmcrefcount: article.pmcrefcount || 0,
-          abstract: article.abstract ?? article.abstracttext,
-          pubtype: article.pubtype || [],
-          doi:
-            article.articleids?.find((id) => id.idtype === 'doi')?.value || null,
-          _source: 'pubmed',
-        };
-      })
-      .filter(Boolean);
+    return withSourceCache('pubmed', { query, maxResults, sort }, 1800, async () => {
+      const pmids = await pubmedEsearch(query, { retmax: maxResults, sort });
+      const summary = await pubmedEsummary(pmids);
+      return pmids
+        .map((pmid) => {
+          const article = summary[pmid];
+          if (!article) return null;
+          const pmcid =
+            article.articleids?.find((id) =>
+              ['pmc', 'pmcid'].includes(String(id.idtype || '').toLowerCase())
+            )?.value || null;
+          return {
+            uid: `pubmed-${pmid}`,
+            title: article.title,
+            authors: article.authors?.map((a) => ({ name: a.name })),
+            pubdate: article.pubdate,
+            source: article.source,
+            pmid,
+            pmcid,
+            isFree: Boolean(pmcid),
+            pmcrefcount: article.pmcrefcount || 0,
+            abstract: article.abstract ?? article.abstracttext,
+            pubtype: article.pubtype || [],
+            doi:
+              article.articleids?.find((id) => id.idtype === 'doi')?.value || null,
+            _source: 'pubmed',
+          };
+        })
+        .filter(Boolean);
+    });
   }
 
   async function semanticScholarSearch(query, { limit = 20 } = {}) {
-    const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(query)}&limit=${limit}&fields=title,authors,year,citationCount,abstract,journal,openAccessPdf,publicationTypes,externalIds`;
-    const headers = keys.semantic ? { 'x-api-key': keys.semantic } : {};
-    const res = await f(url, { headers, timeout: DEFAULT_TIMEOUTS.semantic });
-    if (!res.ok) throw new Error(`Semantic Scholar ${res.status}`);
-    const data = await res.json();
-    return (data.data || []).map((p) => ({
-      uid: p.paperId,
-      title: p.title,
-      authors: p.authors?.map((a) => ({ name: a.name })),
-      pubdate: p.year?.toString(),
-      source: p.journal?.name || 'Semantic Scholar',
-      pmcrefcount: p.citationCount,
-      abstract: p.abstract,
-      isFree: !!p.openAccessPdf,
-      fullTextUrl: p.openAccessPdf?.url || null,
-      pubtype: p.publicationTypes || [],
-      doi: p.externalIds?.DOI || null,
-      _source: 'semantic',
-    }));
+    return withSourceCache('semantic', { query, limit }, 1800, async () => {
+      const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(query)}&limit=${limit}&fields=title,authors,year,citationCount,abstract,journal,openAccessPdf,publicationTypes,externalIds`;
+      const headers = keys.semantic ? { 'x-api-key': keys.semantic } : {};
+      const res = await f(url, { headers, timeout: DEFAULT_TIMEOUTS.semantic });
+      if (!res.ok) throw new Error(`Semantic Scholar ${res.status}`);
+      const data = await res.json();
+      return (data.data || []).map((p) => ({
+        uid: p.paperId,
+        title: p.title,
+        authors: p.authors?.map((a) => ({ name: a.name })),
+        pubdate: p.year?.toString(),
+        source: p.journal?.name || 'Semantic Scholar',
+        pmcrefcount: p.citationCount,
+        abstract: p.abstract,
+        isFree: !!p.openAccessPdf,
+        fullTextUrl: p.openAccessPdf?.url || null,
+        pubtype: p.publicationTypes || [],
+        doi: p.externalIds?.DOI || null,
+        _source: 'semantic',
+      }));
+    });
   }
 
   async function openAlexSearch(query, { limit = 20 } = {}) {
-    const url = `https://api.openalex.org/works?search=${encodeURIComponent(query)}&per-page=${limit}`;
-    const headers = keys.openalex ? { Authorization: `Bearer ${keys.openalex}` } : {};
-    const res = await f(url, { headers, timeout: DEFAULT_TIMEOUTS.openalex });
-    if (!res.ok) throw new Error(`OpenAlex ${res.status}`);
-    const data = await res.json();
-    return data.results || [];
+    return withSourceCache('openalex', { query, limit }, 1800, async () => {
+      const url = `https://api.openalex.org/works?search=${encodeURIComponent(query)}&per-page=${limit}`;
+      const headers = keys.openalex ? { Authorization: `Bearer ${keys.openalex}` } : {};
+      const res = await f(url, { headers, timeout: DEFAULT_TIMEOUTS.openalex });
+      if (!res.ok) throw new Error(`OpenAlex ${res.status}`);
+      const data = await res.json();
+      return data.results || [];
+    });
   }
 
   async function crossrefSearch(query, { limit = 20 } = {}) {
@@ -279,4 +340,4 @@ function buildProxyService({ serverConfig, fetchImpl }) {
   };
 }
 
-module.exports = { buildProxyService };
+module.exports = { buildProxyService, clearInFlightRequests: () => inFlight.clear() };

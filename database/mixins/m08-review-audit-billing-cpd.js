@@ -2,6 +2,7 @@
 
 const { safeJsonParse, toPgVectorLiteral } = require('../lib/helpers');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
+const { resolveClaimMasteryState } = require('../../server/services/claimRemediationService');
 
 module.exports = (Sup) => class extends Sup {
 // Review Assistant + PICO
@@ -651,20 +652,32 @@ async listTeachingObjectClaimsForTopic(topic, { limit = 50 } = {}) {
     return rows.map((row) => this.mapTeachingObjectClaimRow(row));
 }
 
-async getUserClaimMastery(userId, topic, { limit = 80 } = {}) {
+async getUserClaimMastery(userId, topic, { limit = 80, gapDays = 90 } = {}) {
     const normalized = this.normalizeTopic(topic);
     const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 80, 1), 200);
+    const gapCutoff = new Date(Date.now() - Math.min(Math.max(parseInt(String(gapDays), 10) || 90, 7), 365) * 24 * 60 * 60 * 1000).toISOString();
     const rows = await this.all(
         `SELECT
             c.*,
             COUNT(q.id) AS attempts,
             SUM(CASE WHEN q.is_correct = 1 THEN 1 ELSE 0 END) AS correct,
-            MAX(q.created_at) AS last_attempt_at
+            MAX(q.created_at) AS last_attempt_at,
+            COALESCE(MAX(gap.gap_signals), 0) AS gap_signals,
+            MAX(gap.last_gap_at) AS last_gap_at
          FROM teaching_object_claims c
          LEFT JOIN quiz_attempts q ON q.claim_key = c.claim_key AND q.user_id = ?
+         LEFT JOIN (
+            SELECT claim_key, COUNT(*) AS gap_signals, MAX(occurred_at) AS last_gap_at
+            FROM learning_events
+            WHERE user_id = ? AND event_type = 'claim_gap'
+              AND (? = '' OR normalized_topic = ?)
+              AND occurred_at >= ?
+            GROUP BY claim_key
+         ) gap ON gap.claim_key = c.claim_key
          WHERE (? = '' OR c.normalized_topic = ?)
          GROUP BY c.claim_key
          ORDER BY
+            CASE WHEN COALESCE(gap.gap_signals, 0) > 0 THEN 0 ELSE 1 END ASC,
             CASE WHEN COUNT(q.id) = 0 THEN 0 ELSE 1 END ASC,
             CASE c.verification_status
                 WHEN 'human_reviewed' THEN 0
@@ -678,18 +691,22 @@ async getUserClaimMastery(userId, topic, { limit = 80 } = {}) {
             (COUNT(q.id) - SUM(CASE WHEN q.is_correct = 1 THEN 1 ELSE 0 END)) DESC,
             c.updated_at DESC
          LIMIT ?`,
-        [userId, normalized, normalized, safeLimit]
+        [userId, userId, normalized, normalized, gapCutoff, normalized, normalized, safeLimit]
     );
     return rows.map((row) => {
         const attempts = Number(row.attempts || 0);
         const correct = Number(row.correct || 0);
+        const gapSignals = Number(row.gap_signals || 0);
+        const masteryState = resolveClaimMasteryState({ attempts, correct, gapSignals });
         return {
             ...this.mapTeachingObjectClaimRow(row),
             attempts,
             correct,
             accuracy: attempts > 0 ? Math.round((correct / attempts) * 100) : null,
             lastAttemptAt: row.last_attempt_at || null,
-            masteryState: attempts === 0 ? 'untested' : correct / Math.max(1, attempts) >= 0.8 ? 'mastered' : 'weak',
+            claimGapSignals: gapSignals,
+            lastClaimGapAt: row.last_gap_at || null,
+            masteryState,
         };
     });
 }

@@ -6,6 +6,7 @@ const { buildSynthesisPrompt } = require('../prompts');
 const {
     generateConsensusSynopsis,
     selectFreeEvidence,
+    selectAbstractEvidence,
 } = require('./consensusSynopsisService');
 const claimMapService = require('./claimMapService');
 const { runFullSynthesisGeneration } = require('./synthesisGenerationCore');
@@ -108,15 +109,17 @@ async function generateLiveClinicalAnswer({ topic, articles = [], guidelines = [
 }
 
 function consensusPlaceholder({ topic, articles = [], jobKey, status = 'queued', errorMessage = null }) {
-    const freeArticles = selectFreeEvidence(articles, 5);
+    const freeArticles = selectFreeEvidence(articles, 8);
+    const abstractArticles = selectAbstractEvidence(articles, 5);
     return {
         status,
         jobKey,
         topic,
-        evidenceScope: 'free_open_access_only',
+        evidenceScope: 'free_open_access_and_abstracts',
         generatedAt: new Date().toISOString(),
         freePaperCount: freeArticles.length,
-        includedArticles: freeArticles.map((a, i) => ({
+        abstractPaperCount: abstractArticles.length,
+        includedArticles: [...freeArticles, ...abstractArticles].map((a, i) => ({
             sourceIndex: i + 1,
             uid: a.uid,
             title: a.title,
@@ -129,6 +132,7 @@ function consensusPlaceholder({ topic, articles = [], jobKey, status = 'queued',
             fullTextIndexed: false,
             fullTextWordCount: null,
             fullTextSections: [],
+            isAbstractOnly: !selectFreeEvidence([a], 1).length,
         })),
         statement: status === 'failed'
             ? 'Consensus synopsis generation failed. Review the primary sources directly.'
@@ -161,7 +165,8 @@ function enqueueConsensusJob({ db, topic, articles, serverConfig, fetchImpl, cac
                 fetchImpl,
                 cache,
                 db,
-                limit: 5,
+                limit: 8,
+                abstractLimit: 5,
             });
             await completeJobAndClaims(db, jobKey, 'consensus_synopsis', {
                 resultPayload: { ...result, jobKey },
@@ -170,6 +175,7 @@ function enqueueConsensusJob({ db, topic, articles, serverConfig, fetchImpl, cac
                 auditPayload: {
                     citationValidation: result.citationValidation || null,
                     freePaperCount: result.freePaperCount,
+                    abstractPaperCount: result.abstractPaperCount,
                     fullTextUsed: (result.includedArticles || []).some((a) => a.fullTextIndexed),
                     humanReviewStatus: 'none',
                     generatedAt: new Date().toISOString(),
@@ -206,7 +212,8 @@ async function getOrEnqueueConsensusSynopsis({ db, topic, articles = [], serverC
                 fetchImpl,
                 cache,
                 db,
-                limit: 5,
+                limit: 8,
+                abstractLimit: 5,
             });
             return { ...result, jobKey };
         } catch (err) {

@@ -54,6 +54,7 @@ export function useSearch() {
   const [lastSearchId, setLastSearchId] = useState<number | null>(null);
   const [proactiveAlert, setProactiveAlert] = useState<ProactiveAlert | null>(null);
   const [aiEnrichmentLoading, setAiEnrichmentLoading] = useState(false);
+  const [intelligenceLoading, setIntelligenceLoading] = useState(false);
   const requestIdRef = useRef(0);
 
   // Topic-knowledge polling --------------------------------------------------
@@ -163,7 +164,9 @@ export function useSearch() {
         const enrichedFilters: SearchFilters = { ...filters, maxResults };
         if (parsed.studyTypes.length > 0 || parsed.specificity !== 'broad') {
           enrichedFilters.parsedQuery = {
+            processedQuery: parsed.processedQuery,
             studyTypes: parsed.studyTypes,
+            yearFilters: parsed.yearFilters,
             specificity: parsed.specificity,
           };
         }
@@ -172,13 +175,13 @@ export function useSearch() {
         const data = await api.search(
           query,
           enrichedFilters,
-          { vector: fuseVector, previousQueries }
+          { vector: fuseVector, previousQueries, intelligence: 'async' }
         );
 
         const {
           articles, agentGuidance, topicIntelligence, knowledgeAvailable,
           clinicalAnswer, searchId, communityInsight, proactiveAlert,
-          aiEnrichmentKey, aiEnrichmentStatus,
+          aiEnrichmentKey, aiEnrichmentStatus, intelligenceStatus,
         } = data;
 
         trackSearch(query, { filters, resultsCount: articles.length });
@@ -187,22 +190,55 @@ export function useSearch() {
         setResults(articles);
         setLastSearchId(searchId ?? null);
         setDetectedTopic(query.trim());
-        setAgentGuidance(agentGuidance || null);
-        setTopicIntelligence(topicIntelligence || null);
         setClinicalAnswer(clinicalAnswer || null);
         setCommunityInsight(communityInsight || null);
         setProactiveAlert(proactiveAlert || null);
         addToSearchHistory(query.trim());
         refreshKnowledgeDriftAlerts();
 
-        if (agentGuidance) {
-          setTopicGuideStatus('ready');
-          trackFeatureUsage('topic_guide_ready', { source: 'search', query: query.slice(0, 200) });
-        } else if (articles.length >= 2 && knowledgeAvailable === false) {
-          setTopicGuideStatus('building');
-          trackFeatureUsage('topic_guide_building', { query: query.slice(0, 200) });
+        if (intelligenceStatus === 'deferred') {
+          setAgentGuidance(null);
+          setTopicIntelligence(null);
+          if (articles.length >= 2) {
+            setTopicGuideStatus('building');
+            trackFeatureUsage('topic_guide_building', { query: query.slice(0, 200) });
+          } else {
+            setTopicGuideStatus('none');
+          }
+          setIntelligenceLoading(true);
+          void api.fetchSearchIntelligence(query, articles, enrichedFilters, { previousQueries })
+            .then((intel) => {
+              if (thisRequestId !== requestIdRef.current) return;
+              setAgentGuidance(intel.agentGuidance || null);
+              setTopicIntelligence(intel.topicIntelligence || null);
+              if (intel.agentGuidance) {
+                setTopicGuideStatus('ready');
+                trackFeatureUsage('topic_guide_ready', { source: 'intelligence', query: query.slice(0, 200) });
+              } else if (articles.length >= 2 && intel.knowledgeAvailable === false) {
+                setTopicGuideStatus('building');
+              } else {
+                setTopicGuideStatus('none');
+              }
+            })
+            .catch(() => {
+              if (thisRequestId !== requestIdRef.current) return;
+              setTopicGuideStatus('none');
+            })
+            .finally(() => {
+              if (thisRequestId === requestIdRef.current) setIntelligenceLoading(false);
+            });
         } else {
-          setTopicGuideStatus('none');
+          setAgentGuidance(agentGuidance || null);
+          setTopicIntelligence(topicIntelligence || null);
+          if (agentGuidance) {
+            setTopicGuideStatus('ready');
+            trackFeatureUsage('topic_guide_ready', { source: 'search', query: query.slice(0, 200) });
+          } else if (articles.length >= 2 && knowledgeAvailable === false) {
+            setTopicGuideStatus('building');
+            trackFeatureUsage('topic_guide_building', { query: query.slice(0, 200) });
+          } else {
+            setTopicGuideStatus('none');
+          }
         }
 
         if (canUseVector && articles.length > 0) {
@@ -255,7 +291,8 @@ export function useSearch() {
     setTopicGuideStatus('idle');
     setLastSearchId(null);
     setAiEnrichmentLoading(false);
+    setIntelligenceLoading(false);
   }, [setResults, setError, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, cancelPoll]);
 
-  return { search, loading, error, results, clearResults, lastSearchId, proactiveAlert, aiEnrichmentLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert };
+  return { search, loading, error, results, clearResults, lastSearchId, proactiveAlert, aiEnrichmentLoading, intelligenceLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert };
 }

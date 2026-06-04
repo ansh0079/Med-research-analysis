@@ -1,5 +1,6 @@
 import React from 'react';
 import { SearchBar } from '@components/search/SearchBar';
+import { TopicIntelligenceStatusBanner } from '@components/search/TopicIntelligenceStatusBanner';
 import type { Article, SearchFilters, TopicGuideStatus } from '@types';
 import type { BriefDifficulty } from './TopicBriefPanel';
 import type { ClinicalScenarioExtract } from '../../utils/extractClinicalScenario';
@@ -19,6 +20,7 @@ interface SearchHeroProps {
   runShiftFastLane: () => Promise<void>;
   currentQuery: string;
   topicGuideStatus: TopicGuideStatus;
+  intelligenceLoading?: boolean;
   topicGuideRefreshState: 'idle' | 'loading';
   topicGuideRefreshError: string | null;
   runTopicGuideRefresh: () => Promise<void>;
@@ -47,6 +49,7 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
   runShiftFastLane,
   currentQuery,
   topicGuideStatus,
+  intelligenceLoading = false,
   topicGuideRefreshState,
   topicGuideRefreshError,
   runTopicGuideRefresh,
@@ -228,7 +231,14 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
               ))}
             </div>
           </div>
-          {currentQuery && topicGuideStatus === 'building' && (
+          {currentQuery && (intelligenceLoading || topicGuideStatus === 'building' || topicGuideStatus === 'pending') && (
+            <TopicIntelligenceStatusBanner
+              intelligenceLoading={intelligenceLoading}
+              topicGuideStatus={topicGuideStatus}
+              className="px-1"
+            />
+          )}
+          {currentQuery && topicGuideStatus === 'building' && !intelligenceLoading && (
             <div className="text-xs text-amber-800 dark:text-amber-200 px-1 space-y-2">
               <p className="flex items-start gap-2">
                 <span className="mt-1 inline-block w-2 h-2 rounded-full bg-amber-500 shrink-0 animate-pulse" aria-hidden />
@@ -253,7 +263,7 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
               )}
             </div>
           )}
-          {currentQuery && topicGuideStatus === 'pending' && (
+          {currentQuery && topicGuideStatus === 'pending' && !intelligenceLoading && (
             <div className="text-xs text-slate-600 dark:text-slate-400 px-1 space-y-2">
               <p>
                 Topic guide did not appear yet.{' '}

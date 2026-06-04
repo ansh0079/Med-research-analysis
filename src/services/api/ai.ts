@@ -276,7 +276,7 @@ export class AiApi extends BaseApiClient {
     previousQueries: string[] = [],
     callbacks: {
       onChunk: (text: string) => void;
-      onDone: (topic: string) => void;
+      onDone: (topic: string, conversationId?: number | null) => void;
       onError: (msg: string) => void;
     },
     sessionFeedback?: {
@@ -286,11 +286,20 @@ export class AiApi extends BaseApiClient {
       weakAreas?: string[];
       lastExplanationTopic?: string;
     } | null,
+    conversationId?: number | null,
   ): Promise<void> {
     const response = await this.fetchWithSession(`${API_BASE}/api/agent/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic, message, conversationHistory, currentArticles, previousQueries, sessionFeedback: sessionFeedback ?? undefined }),
+      body: JSON.stringify({
+        topic,
+        message,
+        conversationHistory,
+        currentArticles,
+        previousQueries,
+        sessionFeedback: sessionFeedback ?? undefined,
+        conversationId: conversationId ?? undefined,
+      }),
     });
     if (!response.ok) {
       const err = await response.json().catch(() => ({ error: 'Agent request failed' }));
@@ -316,13 +325,36 @@ export class AiApi extends BaseApiClient {
           try {
             const data = JSON.parse(line.slice(6));
             if (event === 'chunk' && typeof data.text === 'string') callbacks.onChunk(data.text);
-            else if (event === 'done') callbacks.onDone(data.topic ?? topic);
+            else if (event === 'done') {
+              callbacks.onDone(
+                data.topic ?? topic,
+                data.conversationId != null ? Number(data.conversationId) : conversationId ?? null
+              );
+            }
             else if (event === 'error') callbacks.onError(data.message ?? 'Unknown error');
           } catch { /* malformed SSE line */ }
         }
       }
     } finally {
       reader.releaseLock();
+    }
+  }
+
+  async recordAgentFeedback(payload: {
+    topic: string;
+    feedbackType: 'helpful' | 'not_helpful' | 'too_basic' | 'too_complex' | 'missed_question';
+    conversationId?: number | null;
+    messageIndex?: number | null;
+    reason?: string | null;
+  }): Promise<void> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/agent/feedback`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({ error: 'Failed to record agent feedback' }));
+      throw new Error((err as { error?: string }).error ?? 'Failed to record agent feedback');
     }
   }
 

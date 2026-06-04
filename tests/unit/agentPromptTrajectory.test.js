@@ -1,4 +1,10 @@
-const { buildAgentSystemPrompt, buildRetrievalContext, extractGroundedClaimsFromReply } = require('../../server/routes/agent');
+const {
+    buildAgentSystemPrompt,
+    buildRetrievalContext,
+    extractGroundedClaimsFromReply,
+    inferDemandIntent,
+    inferDemandIntentRegex,
+} = require('../../server/routes/agent');
 
 describe('agent trajectory prompt', () => {
     test('labels current results and memory separately and includes weak trajectory context', () => {
@@ -18,7 +24,12 @@ describe('agent trajectory prompt', () => {
                 weakTopics: [{ topic: 'AKI' }],
                 topicMemory: { weakOutlineNodeIds: ['source-control', 'renal-hypoperfusion'] },
                 previousQueries: ['sepsis management', 'vasopressors in shock'],
-                synapseTopics: ['AKI'],
+                persistedConversationSummary: '- Discussed fluid resuscitation\n- Still weak on vasopressor choice',
+                learningTrajectory: 'Recent learning activity:\n- agent_message',
+                learnerSnapshot: {
+                    focusAreas: ['renal perfusion'],
+                    misconceptions: ['confuses preload with afterload'],
+                },
             },
             [],
             {
@@ -63,6 +74,11 @@ describe('agent trajectory prompt', () => {
         expect(prompt).toContain('[CLAIM-abc123def456]');
         expect(prompt).toContain('Untested claims');
         expect(prompt).toContain('topic memory is stale');
+        expect(prompt).toContain('Prior thread memory');
+        expect(prompt).toContain('fluid resuscitation');
+        expect(prompt).toContain('Learning trajectory');
+        expect(prompt).toContain('renal perfusion');
+        expect(prompt).toContain('confuses preload');
     });
 
     test('retrieval context is compact and names weak claims', () => {
@@ -86,5 +102,31 @@ describe('agent trajectory prompt', () => {
         expect(claims).toHaveLength(2);
         expect(claims[0].claimKey).toHaveLength(24);
         expect(claims[0].sourcePath).toBe('agent.answer');
+    });
+
+    test('agent demand intent uses regex by default without an LLM call', async () => {
+        const ai = { callGemini: jest.fn().mockResolvedValue('guideline') };
+
+        await expect(inferDemandIntent('quiz me on ARDS ventilation', ai)).resolves.toBe('quiz');
+
+        expect(ai.callGemini).not.toHaveBeenCalled();
+        expect(inferDemandIntentRegex('summarise the bottom line')).toBe('synopsis');
+    });
+
+    test('agent demand intent can opt into LLM classification', async () => {
+        const previous = process.env.AGENT_LLM_INTENT_CLASSIFIER;
+        process.env.AGENT_LLM_INTENT_CLASSIFIER = 'true';
+        const ai = { callGemini: jest.fn().mockResolvedValue('guideline') };
+
+        try {
+            await expect(inferDemandIntent('what do the latest statements say?', ai)).resolves.toBe('guideline');
+            expect(ai.callGemini).toHaveBeenCalledTimes(1);
+        } finally {
+            if (previous == null) {
+                delete process.env.AGENT_LLM_INTENT_CLASSIFIER;
+            } else {
+                process.env.AGENT_LLM_INTENT_CLASSIFIER = previous;
+            }
+        }
     });
 });

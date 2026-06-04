@@ -207,24 +207,30 @@ async function runAlertDigests(db, appUrl = '', serverConfig = {}, fetchImpl = f
 
 /**
  * Start the digest cron scheduler.
+ * @param {object} db
+ * @param {string} appUrl
+ * @param {object} serverConfig
+ * @param {Function} fetchImpl
+ * @param {import('pino').Logger} [logger] - optional pino logger; falls back to console
  */
-function scheduleDigests(db, appUrl, serverConfig = {}, fetchImpl = fetch) {
+function scheduleDigests(db, appUrl, serverConfig = {}, fetchImpl = fetch, logger = null) {
+  const log = logger || { info: console.log, error: console.error, warn: console.warn };
   if (scheduledJob) {
     scheduledJob.stop();
   }
 
   // Run daily at 09:00
   scheduledJob = cron.schedule('0 9 * * *', async () => {
-    console.log('[Digest] Running scheduled digest job...');
+    log.info('Running scheduled digest job');
     digestQueue.enqueueNamed('run', {}, { label: 'scheduled-digest' }).catch((err) => {
-      console.error('[Digest] Scheduled digest failed:', err.message);
+      log.error({ err }, 'Scheduled digest failed');
     });
   }, {
     scheduled: true,
     timezone: process.env.TZ || 'UTC',
   });
 
-  console.log('✅ Digest scheduler active (daily at 09:00 UTC)');
+  log.info('Digest scheduler active (daily at 09:00 UTC)');
 }
 
 /**

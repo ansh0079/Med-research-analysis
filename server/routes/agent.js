@@ -142,6 +142,25 @@ function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = []
             ? `Weak outline nodes for this topic: ${weakOutlineNodeIds.join(', ')}`
             : '';
 
+        const persistedSummary = userContext?.persistedConversationSummary
+            ? String(userContext.persistedConversationSummary).trim().slice(0, 2400)
+            : '';
+        const persistedSummaryBlock = persistedSummary
+            ? `\n## Prior thread memory (persisted)\n${persistedSummary}\nContinue from this state; do not re-teach basics already covered unless the learner asks.`
+            : '';
+
+        const trajectoryText = userContext?.learningTrajectory
+            ? String(userContext.learningTrajectory).trim().slice(0, 2000)
+            : '';
+        const trajectoryBlock = trajectoryText
+            ? `\n## Learning trajectory (recent platform activity)\n${trajectoryText}`
+            : '';
+
+        const snapshotText = formatLearnerSnapshot(userContext?.learnerSnapshot);
+        const snapshotBlock = snapshotText
+            ? `\n## Learner snapshot from past chats\n${snapshotText}`
+            : '';
+
         // Cross-topic synapses
         const synapseContext = synapseTopics.length > 0
             ? `Cross-topic synapses in current evidence: ${synapseTopics.join(', ')}`
@@ -175,6 +194,9 @@ function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = []
 ${trajectoryContext ? '\n' + trajectoryContext : ''}
 ${weakNodeContext ? '\n' + weakNodeContext : ''}
 ${synapseContext ? '\n' + synapseContext : ''}
+${persistedSummaryBlock}
+${trajectoryBlock}
+${snapshotBlock}
 
 CRITICAL INSTRUCTION: All responses MUST respect the SCAFFOLDING directive above.
 ACTIVE REMEDIATION: If the learner has low mastery in a specific area (see mastery breakdown), provide scaffolding first, then build up to current evidence.
@@ -241,13 +263,19 @@ function inferDemandIntentRegex(message) {
 
 const VALID_INTENTS = new Set(['quiz', 'case', 'guideline', 'appraisal', 'synopsis', 'agent_chat']);
 
+function isLlmIntentClassifierEnabled() {
+    return String(process.env.AGENT_LLM_INTENT_CLASSIFIER || '').toLowerCase() === 'true';
+}
+
 /**
- * Classify user intent using a cheap LLM call with regex fallback.
+ * Classify user intent for analytics and demand signals.
+ * Regex handles the common cases; the LLM classifier is opt-in because this
+ * runs after every agent turn and should not add default latency/cost.
  * Fire-and-forget: used for analytics and demand signals, not blocking.
  */
 async function inferDemandIntent(message, ai) {
     const regexResult = inferDemandIntentRegex(message);
-    if (!ai) return regexResult;
+    if (!ai || !isLlmIntentClassifierEnabled()) return regexResult;
     try {
         const raw = await ai.callGemini(
             `Classify this medical learner message into exactly one category.\nCategories: quiz, case, guideline, appraisal, synopsis, agent_chat\n\nRules:\n- quiz: user wants MCQs, test questions, "quiz me", "test my knowledge"\n- case: user wants a clinical case, vignette, or scenario\n- guideline: user asks about clinical guidelines, recommendations from bodies (NICE, AHA, ESC, WHO)\n- appraisal: user wants to critique methodology, discuss bias, limitations, validity, study design\n- synopsis: user wants a summary, bottom line, or overview\n- agent_chat: general discussion, explanation request, anything else\n\nMessage: "${String(message || '').slice(0, 300)}"\n\nRespond with ONLY the category name, nothing else.`,
@@ -365,13 +393,73 @@ function parseHistoryForProvider(conversationHistory, _provider) {
     return formatRecentMessages(conversationHistory, 12);
 }
 
+const { formatLearnerSnapshot } = require('../services/learnerStateService');
+const { buildLearnerContext } = require('../services/learnerContextService');
+const { persistAgentTurnMemory } = require('../services/agentTurnMemoryService');
 const { setupSSE, sendSSE } = require('../utils/sse');
 
 function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, requireAuthJwt }) {
     const ai = createAiService({ serverConfig, fetchImpl: safeFetch });
 
+    app.post('/api/agent/feedback', requireJson, requireAuthJwt, rateLimit(60, 60), async (req, res) => {
+        const {
+            topic,
+            feedbackType,
+            conversationId = null,
+            messageIndex = null,
+            reason = null,
+        } = req.body || {};
+        const trimmedTopic = String(topic || '').trim().slice(0, 200);
+        const type = String(feedbackType || '').trim();
+        const validFeedback = new Set(['helpful', 'not_helpful', 'too_basic', 'too_complex', 'missed_question']);
+
+        if (!trimmedTopic || !validFeedback.has(type)) {
+            return res.status(400).json({
+                error: 'topic and feedbackType are required',
+                allowed: Array.from(validFeedback),
+            });
+        }
+
+        try {
+            if (type === 'too_basic' || type === 'too_complex') {
+                const updates = type === 'too_basic'
+                    ? { preferredDifficulty: 'hard', defaultExplanationDepth: 'mechanistic' }
+                    : { preferredDifficulty: 'easy', defaultExplanationDepth: 'foundation' };
+                await db.upsertLearningProfile?.(req.user.id, updates).catch((err) => {
+                    logger.warn({ err }, 'agent feedback profile update failed');
+                });
+            }
+
+            await db.recordLearningEvent?.({
+                userId: req.user.id,
+                eventType: type === 'helpful' ? 'feedback_helpful' : 'feedback_confusing',
+                topic: trimmedTopic,
+                sourceType: 'agent_feedback',
+                sourceId: conversationId != null ? String(conversationId) : req.sessionId,
+                payload: {
+                    feedbackType: type,
+                    messageIndex: Number.isFinite(Number(messageIndex)) ? Number(messageIndex) : null,
+                    reason: reason ? String(reason).slice(0, 500) : null,
+                },
+            });
+
+            res.json({ ok: true, feedbackType: type });
+        } catch (error) {
+            req.log?.error?.({ err: error }, 'Agent feedback error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
     app.post('/api/agent/chat', requireJson, requireAuthJwt, rateLimit(20, 60), async (req, res) => {
-        const { topic, message, conversationHistory = [], currentArticles = [], previousQueries = [], sessionFeedback = null } = req.body;
+        const {
+            topic,
+            message,
+            conversationHistory = [],
+            currentArticles = [],
+            previousQueries = [],
+            sessionFeedback = null,
+            conversationId: rawConversationId = null,
+        } = req.body;
 
         if (!topic || typeof topic !== 'string' || topic.trim().length < 2) {
             return res.status(400).json({ error: 'topic is required' });
@@ -382,17 +470,38 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
 
         const trimmedTopic = topic.trim().slice(0, 200);
         const trimmedMessage = message.trim().slice(0, 1000);
+        const conversationId = rawConversationId != null ? parseInt(String(rawConversationId), 10) : null;
+        let persistedConversation = null;
 
         try {
+            if (conversationId && req.user?.id && typeof db.getAgentConversation === 'function') {
+                persistedConversation = await db.getAgentConversation(conversationId);
+                if (!persistedConversation || persistedConversation.userId !== req.user.id) {
+                    return res.status(403).json({ error: 'Invalid conversation' });
+                }
+            }
+
             const topicKnowledge = await db.getTopicKnowledge(trimmedTopic);
 
             const guidelines = await db.getGuidelinesByTopic(trimmedTopic, { limit: 5 }).catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; });
             const normalizedTopic = db.normalizeTopic(trimmedTopic);
-            const [teachingObjects, groundedClaims, claimMastery] = await Promise.all([
+            const [teachingObjects, groundedClaims, userContext] = await Promise.all([
                 db.listTeachingObjectsForTopic(trimmedTopic, { limit: 3 }).catch((err) => { logger.warn({ err }, 'all failed'); return []; }),
                 db.listTeachingObjectClaimsForTopic(trimmedTopic, { limit: 5 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectClaimsForTopic failed'); return []; }),
-                req.user?.id ? db.getUserClaimMastery(req.user.id, trimmedTopic, { limit: 25 }).catch((err) => { logger.warn({ err }, 'getUserClaimMastery failed'); return []; }) : Promise.resolve([]),
+                req.user?.id
+                    ? buildLearnerContext(db, {
+                        userId: req.user.id,
+                        topic: trimmedTopic,
+                        previousQueries,
+                        persistedConversation,
+                        claimLimit: 25,
+                        weakTopicLimit: 10,
+                        trajectoryLimit: 10,
+                        trajectoryDays: 120,
+                    })
+                    : Promise.resolve(null),
             ]);
+            const claimMastery = userContext?.claimMastery || [];
             const freshness = topicRefreshPriority({
                 confidence: Number(topicKnowledge?.confidence || 0),
                 refreshedAt: topicKnowledge?.lastRefreshedAt,
@@ -441,30 +550,17 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                 }
             }
 
-            // Fetch learner context if authenticated
-            let userContext = null;
-            if (req.user && req.user.id) {
-                const [profile, mastery] = await Promise.all([
-                    db.getLearningProfile(req.user.id).catch((err) => { logger.warn({ err }, 'getLearningProfile failed'); return null; }),
-                    db.getUserTopicMastery(req.user.id, trimmedTopic).catch((err) => { logger.warn({ err }, 'getUserTopicMastery failed'); return null; }),
-                ]);
-                const weakTopics = await db.listUserTopicMastery(req.user.id, { limit: 10, offset: 0 })
-                    .then((list) => list.filter((m) => m.overallScore < 60).sort((a, b) => a.overallScore - b.overallScore).slice(0, 5))
-                    .catch((err) => { logger.warn({ err }, 'operation failed'); return []; });
-                userContext = {
-                    profile,
-                    mastery,
-                    weakTopics,
-                    previousQueries: Array.isArray(previousQueries) ? previousQueries.slice(-5) : [],
-                    topicMemory: req.user?.id ? await db.getUserTopicMemory(req.user.id, trimmedTopic).catch((err) => { logger.warn({ err }, 'getUserTopicMemory failed'); return null; }) : null,
-                };
-            }
-
             const systemPrompt = buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines, userContext, crossTopicBridges, retrieval);
 
-            // Conversation context: summarise older messages, keep recent ones verbatim
+            // Conversation context: persisted summary + summarise older client history
             const recentMessages = formatRecentMessages(conversationHistory, 4);
-            const conversationSummary = await summarizeOlderMessages(ai, conversationHistory, 4);
+            const ephemeralSummary = await summarizeOlderMessages(ai, conversationHistory, 4);
+            const conversationSummary = [
+                persistedConversation?.conversationSummary
+                    ? `### Stored thread summary\n${persistedConversation.conversationSummary}`
+                    : '',
+                ephemeralSummary ? `### This session (older turns)\n${ephemeralSummary}` : '',
+            ].filter(Boolean).join('\n\n') || null;
 
             // Session feedback: inject adaptive teaching instructions when quiz scores were poor
             const feedbackContext = buildSessionFeedbackContext(sessionFeedback);
@@ -506,12 +602,41 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                 return res.end();
             }
 
-            sendSSE(res, 'done', { topic: trimmedTopic });
+            sendSSE(res, 'done', { topic: trimmedTopic, conversationId: conversationId || null });
             res.end();
 
             // Post-response side effects — fire-and-forget, don't block the stream
             void (async () => {
                 try {
+                    if (conversationId && req.user?.id) {
+                        await persistAgentTurnMemory({
+                            db,
+                            ai,
+                            conversationId,
+                            userId: req.user.id,
+                            topic: trimmedTopic,
+                            userMessage: trimmedMessage,
+                            assistantReply: reply,
+                            existingSummary: persistedConversation?.conversationSummary || null,
+                            existingSnapshot: persistedConversation?.learnerSnapshot || null,
+                        }).catch((err) => req.log?.warn?.({ err }, 'persistAgentTurnMemory failed'));
+                    }
+
+                    if (sessionFeedback && req.user?.id) {
+                        await db.recordLearningEvent({
+                            userId: req.user.id,
+                            eventType: 'quiz_session_feedback',
+                            topic: sessionFeedback.topic || trimmedTopic,
+                            sourceType: 'agent_chat',
+                            sourceId: conversationId ? String(conversationId) : req.sessionId,
+                            payload: {
+                                score: sessionFeedback.score,
+                                totalQuestions: sessionFeedback.totalQuestions,
+                                weakAreas: sessionFeedback.weakAreas || [],
+                            },
+                        }).catch((err) => logger.warn({ err }, 'quiz_session_feedback event failed'));
+                    }
+
                     const classifiedIntent = await inferDemandIntent(trimmedMessage, ai);
                     await db.logEvent?.('agent_chat', req.sessionId, {
                         topic: trimmedTopic,

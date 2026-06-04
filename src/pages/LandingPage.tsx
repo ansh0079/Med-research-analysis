@@ -223,13 +223,48 @@ export const LandingPage: React.FC = () => {
         </section>
       )}
 
-      {/* Social proof */}
-      {/* TODO: Replace placeholder testimonials and stats with real user quotes and metrics */}
+      {/* Beta programme */}
+      <section className="py-20 px-5 border-t border-white/5">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-4">Clinical beta programme</p>
+            <h2 className="text-2xl font-black text-white mb-3">Built with practising clinicians</h2>
+            <p className="text-sm text-slate-400 max-w-2xl mx-auto">
+              We are onboarding hospital teams and academic supervisors for structured beta testing.
+              Search ranking, topic synopses, and MCQ quality improve as more verified users interact with the platform.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-5">
+            {[
+              {
+                title: 'Evidence-first search',
+                body: 'Multi-source retrieval with clinical filtering, guideline snapshots, and transparent ranking signals.',
+              },
+              {
+                title: 'Teaching objects',
+                body: 'Topic synopses, grounded claims, and adaptive MCQs seeded from PubMed and guideline sources.',
+              },
+              {
+                title: 'Systematic review lane',
+                body: 'Screening queues, PRISMA counts, and export paths designed for trainee-led reviews.',
+              },
+            ].map((item) => (
+              <div key={item.title} className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex flex-col gap-3">
+                <p className="text-sm font-bold text-white">{item.title}</p>
+                <p className="text-sm text-slate-400 leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Legacy social proof block removed — replace with verified pilot quotes when available */}
+      {false && (
       <section className="py-20 px-5 border-t border-white/5">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <p className="text-xs font-mono text-slate-500 uppercase tracking-widest mb-4">Trusted by researchers at</p>
-            {/* TODO: Replace with actual institution logos or names from your pilot programmes */}
             <div className="flex flex-wrap items-center justify-center gap-6 mb-12">
               {['Research Institution', 'Academic Medical Center', 'University Hospital', 'Evidence Synthesis Lab'].map((name) => (
                 <div key={name} className="px-4 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-xs font-semibold text-slate-500">
@@ -239,7 +274,6 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Testimonials — replace with real quotes from users */}
           <div className="grid md:grid-cols-3 gap-5">
             {[
               {
@@ -280,6 +314,7 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* Bottom CTA */}
       <section className="py-24 px-5 border-t border-white/5 text-center">
@@ -307,6 +342,8 @@ export const LandingPage: React.FC = () => {
               className="hover:text-slate-400 transition-colors">Terms</button>
             <button type="button" onClick={() => navigate('/legal/privacy')}
               className="hover:text-slate-400 transition-colors">Privacy</button>
+            <button type="button" onClick={() => navigate('/legal/compliance')}
+              className="hover:text-slate-400 transition-colors">Security & Compliance</button>
           </div>
         </div>
       </footer>

@@ -22,6 +22,7 @@ jest.mock('./useAnalytics', () => ({
 jest.mock('@services/api', () => ({
   api: {
     search: jest.fn(),
+    fetchSearchIntelligence: jest.fn(),
     getClientConfig: jest.fn(),
     listEvidenceAlerts: jest.fn(),
     getTopicKnowledge: jest.fn(),
@@ -416,6 +417,83 @@ describe('useSearch', () => {
     });
 
     expect(() => unmount()).not.toThrow();
+  });
+
+  // ── Async search intelligence ─────────────────────────────────────────────
+
+  it('loads deferred intelligence and passes session previousQueries', async () => {
+    mockedSearchContext.useSearchContext.mockReturnValue({
+      query: '',
+      results: [],
+      loading: false,
+      error: null,
+      filters: { sources: ['pubmed'], specificity: 'moderate', useVectorSearch: true },
+      detectedTopic: '',
+      currentPage: 'search',
+      searchHistory: ['prior query'],
+      setQuery: jest.fn(),
+      setResults: mockSetResults,
+      setLoading: mockSetLoading,
+      setError: mockSetError,
+      setFilters: jest.fn(),
+      setDetectedTopic: mockSetDetectedTopic,
+      setCurrentPage: jest.fn(),
+      addToSearchHistory: mockAddToSearchHistory,
+      setAgentGuidance: mockSetAgentGuidance,
+      setTopicIntelligence: mockSetTopicIntelligence,
+      setClinicalAnswer: mockSetClinicalAnswer,
+      setCommunityInsight: mockSetCommunityInsight,
+      setTopicGuideStatus: mockSetTopicGuideStatus,
+    } as unknown as ReturnType<typeof searchContext.useSearchContext>);
+
+    mockedApi.search.mockResolvedValue({
+      articles: mockArticles,
+      count: 2,
+      sources: ['pubmed'],
+      intelligenceStatus: 'deferred',
+      knowledgeAvailable: false,
+    } as Awaited<ReturnType<typeof mockedApi.search>>);
+
+    let resolveIntel: (v: Awaited<ReturnType<typeof mockedApi.fetchSearchIntelligence>>) => void;
+    mockedApi.fetchSearchIntelligence.mockImplementation(
+      () => new Promise((resolve) => {
+        resolveIntel = resolve;
+      })
+    );
+
+    const { result } = renderHook(() => useSearch());
+
+    let searchPromise: Promise<unknown>;
+    await act(async () => {
+      searchPromise = result.current.search('diabetes');
+    });
+
+    expect(result.current.intelligenceLoading).toBe(true);
+
+    await act(async () => {
+      resolveIntel!({
+        agentGuidance: {
+          topic: 'diabetes',
+          status: 'ready',
+          confidence: 0.8,
+          mentorMessage: 'Hello',
+          seminalPapers: [],
+          teachingPoints: [],
+        },
+        topicIntelligence: null,
+        knowledgeAvailable: true,
+      });
+      await searchPromise!;
+    });
+
+    expect(mockedApi.fetchSearchIntelligence).toHaveBeenCalledWith(
+      'diabetes',
+      mockArticles,
+      expect.any(Object),
+      { previousQueries: ['prior query'] }
+    );
+    expect(result.current.intelligenceLoading).toBe(false);
+    expect(mockSetAgentGuidance).toHaveBeenCalledWith(expect.objectContaining({ topic: 'diabetes' }));
   });
 
   // ── Knowledge drift alerts ────────────────────────────────────────────────

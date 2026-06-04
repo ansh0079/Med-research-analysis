@@ -6,8 +6,11 @@ function clampLimit(val, def = 20, min = 1, max = 100) {
 const logger = require('../config/logger');
 const { validateQuery, validatePagination, sanitizeArticleOutput } = require('../utils/articles');
 const { safeFetch } = require('../utils/fetch');
-const { articleFromOpenAlexWork, fetchUnifiedEvidence, collapseNearDuplicateTitles } = require('../services/unifiedEvidenceSearch');
-const { buildEvidenceBouquet, isOffTopic } = require('../services/evidenceBouquetService');
+const { articleFromOpenAlexWork } = require('../services/unifiedEvidenceSearch');
+const { classifyQueryIntent } = require('../services/evidenceBouquetService');
+const { parseSearchRequestQuery, parsePreviousQueries, fetchAndRankSearchArticles, prefetchTeachingArtifacts } = require('../services/searchPipeline');
+const { mergeCuratedWithLiveEvidence } = require('../services/searchEvidenceMergeService');
+const { buildSearchLearningContext, applySearchLearningBoost, publicLearningContext } = require('../services/searchLearningService');
 const crypto = require('crypto');
 const { createAiService, PINNED_MODELS, TEMPERATURE } = require('../services/aiService');
 const { buildTopicKnowledgePrompt } = require('../prompts');
@@ -54,8 +57,17 @@ function setNoStoreSearchHeaders(res) {
     res.setHeader('Cache-Control', 'private, no-store');
 }
 
+function shouldAutoSeedFromSearch() {
+    const flag = String(process.env.AUTO_SEED_ON_SEARCH || '').toLowerCase();
+    if (flag === 'true' || flag === '1') return true;
+    if (flag === 'false' || flag === '0') return false;
+    return process.env.NODE_ENV !== 'production';
+}
+
 function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, requireJson, requireAuthJwt, requireRole, requireDailySearchLimit, fetch: fetchImpl, enqueuePdfPreindex }) {
-    const dailySearchLimit = requireDailySearchLimit || ((_req, _res, next) => next());
+    const dailySearchLimit = typeof requireDailySearchLimit === 'function'
+        ? requireDailySearchLimit()
+        : ((_req, _res, next) => next());
     const f = fetchImpl || safeFetch;
     const proxy = buildProxyService({ serverConfig, fetchImpl: f });
     const pdfDeps = { cache, db, serverConfig, fetch: f };
@@ -122,12 +134,24 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
         };
     }
 
-    async function buildTopicIntelligence(topic, articles, agentGuidance, { topicKnowledge = null, prefetchedObjects = null, prefetchedClaims = null } = {}) {
+    async function buildTopicIntelligence(topic, articles, agentGuidance, {
+        topicKnowledge = null,
+        prefetchedObjects = null,
+        prefetchedClaims = null,
+        previousQueries = [],
+        learningContext = null,
+    } = {}) {
         if (!topicKnowledge) {
             topicKnowledge = await db.getTopicKnowledge(topic).catch((err) => { logger.warn({ err }, 'getTopicKnowledge failed'); return null; });
         }
         const curatedArticles = buildCuratedEvidenceArticles(agentGuidance);
-        const { articles: evidenceBouquet, ranking, archetypesCovered } = mergeCuratedWithLiveEvidence(curatedArticles, articles, 5, topic);
+        const { articles: evidenceBouquet, ranking, archetypesCovered } = mergeCuratedWithLiveEvidence(
+            curatedArticles,
+            articles,
+            5,
+            topic,
+            { previousQueries, learningContext }
+        );
         const normalized = db.normalizeTopic(topic);
         const [guidelineSnapshot, teachingObjects, relatedTopics, clusterArticles, teachingClaims] = await Promise.all([
             db.getGuidelinesByTopic(topic, { limit: 5 }).catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; }),
@@ -237,15 +261,6 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
         });
     }
 
-    function evidenceKey(article) {
-        return String(article.doi || article.pmid || article.uid || article.title || '')
-            .toLowerCase()
-            .replace(/^https?:\/\/(dx\.)?doi\.org\//, '')
-            .replace(/[^\w\s./-]/g, ' ')
-            .replace(/\s+/g, ' ')
-            .trim();
-    }
-
     async function applyTeachingObjectSearchBoost(topic, articles, { prefetchedObjects = null, prefetchedClaims = null } = {}) {
         if (!Array.isArray(articles) || articles.length < 2) return { articles, teachingObjects: [], claims: [] };
         const [teachingObjects, claims] = await Promise.all([
@@ -288,25 +303,6 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
             .sort((a, b) => b.boost - a.boost || a.index - b.index)
             .map(({ article }) => article);
         return { articles: boostedArticles, teachingObjects, claims };
-    }
-
-    function mergeCuratedWithLiveEvidence(curated, live, limit, query) {
-        const out = [];
-        const seen = new Set();
-        const push = (article) => {
-            if (!article || !article.title) return;
-            const key = evidenceKey(article);
-            if (!key || seen.has(key)) return;
-            seen.add(key);
-            out.push(article);
-        };
-        curated.forEach(push);
-        // Use Evidence Bouquet 2.0 for live evidence ranking
-        const bouquet = buildEvidenceBouquet(live, query, { count: limit });
-        bouquet.topPapers.forEach(push);
-        const merged = out.slice(0, limit);
-        const deduped = collapseNearDuplicateTitles(merged);
-        return { articles: deduped, ranking: bouquet.ranking, archetypesCovered: bouquet.archetypesCovered };
     }
 
     app.get('/api/pubmed/search', rateLimit(30, 60), async (req, res) => {
@@ -452,6 +448,8 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
 
     app.get('/api/search', rateLimit(30, 60), attachApiKeyUser, dailySearchLimit, async (req, res) => {
         const { q, query: queryParam, sources = 'pubmed', limit = 20, vector, specificity = 'moderate' } = req.query;
+        const { previousQueries, parsedStudyTypes, parsedYearFilters, processedQuery, intelligenceMode } = parseSearchRequestQuery(req);
+        req.previousQueries = previousQueries;
         const safeLimit = clampLimit(limit);
         setNoStoreSearchHeaders(res);
         const startTime = Date.now();
@@ -463,8 +461,10 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
 
         const validSpecificity = ['broad', 'moderate', 'strict'].includes(specificity) ? specificity : 'moderate';
         const sourceList = String(sources).split(',').map((s) => s.trim()).filter(Boolean);
+        const deferIntelligence = intelligenceMode === 'async';
 
         try {
+            const routeTimings = {};
             const vectorParam = vector;
             const vectorOptOut = vectorParam === '0' || vectorParam === 'false';
             const vectorAvailable = db.isVectorSearchAvailable();
@@ -473,68 +473,64 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
             let vectorList = [];
             if (useVectorFusion) {
                 try {
+                    const vectorStarted = Date.now();
                     const { createVectorSearchService } = require('../services/vectorSearchService');
                     const vs = createVectorSearchService({ db, serverConfig });
-                    const vr = await vs.searchVector({ query: queryValidation.sanitized, limit: safeLimit, minScore: 0.35 });
+                    const vr = await vs.searchVector({ query: queryValidation.sanitized, limit: safeLimit, minScore: 0.4 });
                     vectorList = Array.isArray(vr.articles) ? vr.articles : [];
+                    routeTimings.vectorMs = Date.now() - vectorStarted;
                 } catch (e) {
+                    routeTimings.vectorMs = routeTimings.vectorMs ?? 0;
                     req.log.warn({ err: e }, 'Vector fusion skipped');
                 }
             }
 
-            const telemetry = {};
-            const raw = await fetchUnifiedEvidence({
+            const ranked = await fetchAndRankSearchArticles({
+                db,
+                cache,
+                serverConfig,
+                fetchImpl: f,
                 query: queryValidation.sanitized,
                 safeLimit,
                 sourceList,
-                serverConfig,
-                fetch: f,
-                vectorList,
-                telemetry,
                 specificity: validSpecificity,
+                parsedStudyTypes,
+                parsedYearFilters,
+                processedQuery,
+                previousQueries,
+                vectorList,
+                userId: req.user?.id ?? null,
+                sessionId: req.sessionId ?? null,
             });
 
-            // Drop articles where query concepts don't appear in title or abstract,
-            // drop uncited papers older than 2 years (no community validation),
-            // and drop preclinical/experimental papers unless the query asks for mechanisms
-            const { getCitationCount, getYear, isPreclinical, isPredatoryJournal, MECHANISM_QUERY_PATTERNS } = require('../services/evidenceBouquetService');
-            const currentYear = new Date().getFullYear();
-            const queryWantsMechanisms = MECHANISM_QUERY_PATTERNS.test(queryValidation.sanitized);
+            const {
+                articles,
+                telemetry,
+                teachingObjects: boostedObjects,
+                teachingClaims: boostedClaims,
+                learningContext,
+            } = ranked;
 
-            // Strict specificity: only keep high-evidence study types
-            const STRICT_PUB_TYPES = new Set([
-                'systematic review', 'meta-analysis', 'meta analysis',
-                'randomized controlled trial', 'randomised controlled trial',
-                'clinical trial', 'practice guideline', 'guideline',
-            ]);
-            const isStrictMode = validSpecificity === 'strict';
+            let topicKnowledge = null;
+            let agentGuidance = null;
+            let knowledgeAvailable = false;
+            let topicIntelligence = null;
 
-            const relevant = raw.filter((a) => {
-                if (isOffTopic(a, queryValidation.sanitized)) return false;
-                const age = currentYear - getYear(a);
-                if (getCitationCount(a) === 0 && age > 2) return false;
-                if (!queryWantsMechanisms && isPreclinical(a)) return false;
-                if (isPredatoryJournal(a)) return false;
-                if (isStrictMode) {
-                    const types = (Array.isArray(a.pubtype) ? a.pubtype : []).map((t) => (t || '').toLowerCase());
-                    const ebm = a._ebmScore ?? 0;
-                    if (ebm < 5 && !types.some((t) => [...STRICT_PUB_TYPES].some((st) => t.includes(st)))) return false;
-                }
-                return true;
-            });
-            const { articles, teachingObjects: boostedObjects, claims: boostedClaims } = await applyTeachingObjectSearchBoost(
-                queryValidation.sanitized,
-                relevant.map(sanitizeArticleOutput)
-            );
-            const topicKnowledge = await db.getTopicKnowledge(queryValidation.sanitized);
-            const agentGuidance = buildAgentGuidance(topicKnowledge);
-            const knowledgeAvailable = topicKnowledge !== null;
-            const topicIntelligence = await buildTopicIntelligence(queryValidation.sanitized, articles, agentGuidance, {
-                topicKnowledge,
-                prefetchedObjects: boostedObjects,
-                prefetchedClaims: boostedClaims,
-            });
+            if (!deferIntelligence) {
+                const intelligenceStarted = Date.now();
+                topicKnowledge = await db.getTopicKnowledge(queryValidation.sanitized);
+                agentGuidance = buildAgentGuidance(topicKnowledge);
+                knowledgeAvailable = topicKnowledge !== null;
+                topicIntelligence = await buildTopicIntelligence(queryValidation.sanitized, articles, agentGuidance, {
+                    topicKnowledge,
+                    prefetchedObjects: boostedObjects,
+                    prefetchedClaims: boostedClaims,
+                });
+                routeTimings.intelligenceMs = Date.now() - intelligenceStarted;
+            }
+
             const executionTime = Date.now() - startTime;
+            routeTimings.totalRouteMs = executionTime;
 
             let lowRecallLearning = null;
             if (telemetry.lowRecallLearning) {
@@ -543,7 +539,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                     resultCount: telemetry.lowRecallLearning.resultCount,
                     aliasCount: telemetry.lowRecallLearning.aliasCount,
                 };
-                const expandedAliases = telemetry.lowRecallLearning.expandedAliases || [];
+                const expandedAliases = telemetry.lowRecallLearning.expandedAliases || telemetry.meshExpansions || [];
                 db.recordLowRecallSearch({
                     query: queryValidation.sanitized,
                     resultCount: 0,
@@ -555,18 +551,6 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 }
             }
 
-            let learningContext = { memoryTier: 'none', personalized: false };
-            if (req.user?.id) {
-                try {
-                    const mem = await db.getUserTopicMemory(req.user.id, queryValidation.sanitized);
-                    if (mem?.tier) {
-                        learningContext = { memoryTier: mem.tier, personalized: true };
-                    }
-                } catch (err) {
-                    logger.debug({ err, userId: req.user.id }, 'Search learning context lookup failed');
-                }
-            }
-
             const vectorFusion = {
                 used: useVectorFusion && vectorList.length > 0,
                 available: vectorAvailable,
@@ -575,12 +559,12 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
 
             const logSessionMeta = {
                 sessionSequenceIndex: typeof req.sessionSequenceIndex === 'number' ? req.sessionSequenceIndex : 0,
-                previousQueries: Array.isArray(req.previousQueries) ? req.previousQueries : [],
+                previousQueries,
             };
 
             await Promise.allSettled([
-                db.logSearch(req.sessionId, queryValidation.sanitized, sourceList, { vector: useVectorFusion }, articles.length, executionTime, req.ip, logSessionMeta),
-                db.logEvent('search', req.sessionId, { query: queryValidation.sanitized, sources: sourceList, results: articles.length }),
+                db.logSearch(req.sessionId, queryValidation.sanitized, sourceList, { vector: useVectorFusion, intelligence: intelligenceMode }, articles.length, executionTime, req.ip, logSessionMeta),
+                db.logEvent('search', req.sessionId, { query: queryValidation.sanitized, sources: sourceList, results: articles.length, timings: { ...telemetry.timings, ...routeTimings } }),
             ]);
             if (req.user?.id) {
                 const uids = articles.slice(0, 14).map((a) => a.uid).filter(Boolean);
@@ -601,21 +585,35 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 articles,
                 count: articles.length,
                 sources: sourceList,
-                agentGuidance,
-                knowledgeAvailable,
-                topicIntelligence,
+                ...(deferIntelligence ? {} : {
+                    agentGuidance,
+                    knowledgeAvailable,
+                    topicIntelligence,
+                }),
                 learningContext,
                 vectorFusion,
                 aiEnrichmentKey: enrichKey,
                 aiEnrichmentStatus,
+                intelligenceStatus: deferIntelligence ? 'deferred' : 'sync',
+                queryIntent: ranked.queryIntent,
+                ranking: ranked.bouquetRanking,
+                searchTelemetry: {
+                    timings: { ...telemetry.timings, ...routeTimings },
+                    sources: telemetry.sourceFetches || {},
+                    reformulation: telemetry.reformulation || null,
+                    meshLookupMs: telemetry.meshLookupMs ?? null,
+                },
                 ...(existingEnrich?.status === 'ready' ? { clinicalAnswer: existingEnrich.clinicalAnswer ?? null } : {}),
                 ...(lowRecallLearning ? { lowRecallLearning } : {}),
             });
 
+            // Avoid background AI/PDF work during Jest API tests (prevents open handles and hung supertest).
+            if (process.env.NODE_ENV === 'test') return;
+
             queueFullTextIndexing(articles);
 
             // Auto-seed topic knowledge for any query that has enough papers but no existing synopsis
-            if (!topicKnowledge && articles.length >= 2) {
+            if (shouldAutoSeedFromSearch() && articles.length >= 2) {
                 const seedQuery = queryValidation.sanitized;
                 const seedArticles = articles.slice(0, 8);
                 void (async () => {
@@ -811,6 +809,72 @@ Start your response with [ and end with ]. No markdown.
 
         } catch (error) {
             req.log.error({ err: error }, 'Unified search error');
+            res.status(500).json({ error: isDev ? error.message : 'Internal Server Error' });
+        }
+    });
+
+    app.post('/api/search/intelligence', rateLimit(30, 60), attachApiKeyUser, requireJson, async (req, res) => {
+        setNoStoreSearchHeaders(res);
+        const { q, query: queryParam, articles: bodyArticles, sources = 'pubmed', previousQueries: rawPreviousQueries } = req.body || {};
+        const query = q || queryParam;
+        if (!query || typeof query !== 'string') {
+            return res.status(400).json({ error: 'Query is required' });
+        }
+
+        const queryValidation = validateQuery(query);
+        if (!queryValidation.valid) return res.status(400).json({ error: queryValidation.error });
+
+        const previousQueries = parsePreviousQueries(rawPreviousQueries);
+        let articles = Array.isArray(bodyArticles) ? bodyArticles.slice(0, 50).map(sanitizeArticleOutput) : [];
+        const sourceList = String(sources).split(',').map((s) => s.trim()).filter(Boolean);
+
+        try {
+            const topicKnowledge = await db.getTopicKnowledge(queryValidation.sanitized);
+            const agentGuidance = buildAgentGuidance(topicKnowledge);
+            const knowledgeAvailable = topicKnowledge !== null;
+
+            const learningContextFull = await buildSearchLearningContext({
+                db,
+                userId: req.user?.id ?? null,
+                query: queryValidation.sanitized,
+                sessionId: req.sessionId ?? null,
+                previousQueries,
+            });
+            articles = applySearchLearningBoost(articles, learningContextFull);
+
+            const { objects: boostedObjects, claims: boostedClaims } = await prefetchTeachingArtifacts(db, queryValidation.sanitized);
+            const { articles: teachingBoosted } = await applyTeachingObjectSearchBoost(
+                queryValidation.sanitized,
+                articles,
+                { prefetchedObjects: boostedObjects, prefetchedClaims: boostedClaims }
+            );
+
+            const topicIntelligence = await buildTopicIntelligence(
+                queryValidation.sanitized,
+                teachingBoosted,
+                agentGuidance,
+                {
+                    topicKnowledge,
+                    prefetchedObjects: boostedObjects,
+                    prefetchedClaims: boostedClaims,
+                    previousQueries,
+                    learningContext: learningContextFull,
+                }
+            );
+
+            const learningContext = publicLearningContext(learningContextFull);
+
+            res.json({
+                query: queryValidation.sanitized,
+                sources: sourceList,
+                agentGuidance,
+                knowledgeAvailable,
+                topicIntelligence,
+                learningContext,
+                queryIntent: classifyQueryIntent(queryValidation.sanitized),
+            });
+        } catch (error) {
+            req.log.error({ err: error }, 'Search intelligence error');
             res.status(500).json({ error: isDev ? error.message : 'Internal Server Error' });
         }
     });

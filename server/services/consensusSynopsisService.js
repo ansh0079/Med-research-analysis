@@ -35,12 +35,27 @@ function selectFreeEvidence(articles = [], limit = 5) {
     return out;
 }
 
+function selectAbstractEvidence(articles = [], limit = 5) {
+    const seen = new Set();
+    const out = [];
+    for (const article of articles) {
+        if (!article?.title || !article?.abstract) continue;
+        if (isFreeEvidence(article)) continue; // only non-free
+        const key = String(article.doi || article.pmid || article.uid || article.title).toLowerCase();
+        if (seen.has(key)) continue;
+        seen.add(key);
+        out.push(article);
+        if (out.length >= limit) break;
+    }
+    return out;
+}
+
 function buildFullTextExcerpt(article) {
     const sections = article?._fullTextSections || {};
     const ordered = ['abstract', 'methods', 'results', 'discussion', 'conclusion'];
     const parts = [];
     for (const key of ordered) {
-        const text = safeString(sections[key], key === 'results' ? 1600 : 900);
+        const text = safeString(sections[key], key === 'results' ? 3200 : 1800);
         if (text) parts.push(`${key.toUpperCase()}: ${text}`);
     }
     return parts.join('\n');
@@ -61,38 +76,60 @@ async function enrichWithCachedFullText(articles = [], cache, db = null) {
     }));
 }
 
-function buildConsensusSynopsisPrompt(topic, articles) {
-    const evidence = articles.map((a, i) => {
-        const year = safeString(a.pubdate || a.year || 'unknown', 20);
-        const journal = safeString(a.source || a.journal || 'unknown', 160);
-        const pubtype = Array.isArray(a.pubtype) ? a.pubtype.join(', ') : safeString(a.pubtype || 'unknown', 120);
-        const fullTextExcerpt = buildFullTextExcerpt(a);
-        return `[FREE PAPER ${i + 1}]
+function formatArticleForPrompt(a, index, labelPrefix) {
+    const year = safeString(a.pubdate || a.year || 'unknown', 20);
+    const journal = safeString(a.source || a.journal || 'unknown', 160);
+    const pubtype = Array.isArray(a.pubtype) ? a.pubtype.join(', ') : safeString(a.pubtype || 'unknown', 120);
+    const fullTextExcerpt = buildFullTextExcerpt(a);
+    const ebmScore = a._ebmScore != null ? String(a._ebmScore) : 'N/A';
+    return `[${labelPrefix} ${index}]
 Title: ${safeString(a.title, 260)}
 Journal/source: ${journal}
 Year: ${year}
 Study type: ${pubtype}
+EBM score: ${ebmScore}
 PMID: ${a.pmid || 'not provided'}
 PMCID/free URL: ${a.pmcid || freeTextUrl(a) || 'not provided'}
 DOI: ${a.doi || 'not provided'}
 Evidence text source: ${a._fullTextIndexed ? `cached full text (${a._fullTextWordCount || 'unknown'} words)` : 'abstract/snippet only'}
 Abstract/snippet: ${safeString(a.abstract || 'No abstract supplied.', 1200)}
 ${fullTextExcerpt ? `Cached full-text excerpts:\n${fullTextExcerpt}` : ''}`;
-    }).join('\n\n');
+}
+
+function buildConsensusSynopsisPrompt(topic, freeArticles, abstractArticles, guidelines, topicKnowledge) {
+    const freeEvidence = freeArticles.map((a, i) => formatArticleForPrompt(a, i + 1, 'FREE PAPER')).join('\n\n');
+    const abstractEvidence = abstractArticles.map((a, i) => formatArticleForPrompt(a, freeArticles.length + i + 1, 'ABSTRACT ONLY')).join('\n\n');
+
+    let guidelineSection = '';
+    if (guidelines && guidelines.length > 0) {
+        guidelineSection = `
+Relevant clinical guidelines:
+${guidelines.map((g, i) => `${i + 1}. ${safeString(g.sourceBody, 80)} ${g.sourceYear || ''} — ${safeString(g.recommendationText, 400)}${g.recommendationStrength ? ` (Strength: ${g.recommendationStrength})` : ''}${g.recommendationCertainty ? ` (Certainty: ${g.recommendationCertainty})` : ''}`).join('\n')}
+`;
+    }
+
+    let knowledgeSection = '';
+    if (topicKnowledge && topicKnowledge.knowledge) {
+        knowledgeSection = `
+Curated topic knowledge:
+${safeString(topicKnowledge.knowledge, 2000)}
+${Array.isArray(topicKnowledge.sourceArticles) && topicKnowledge.sourceArticles.length > 0 ? `Seminal papers: ${topicKnowledge.sourceArticles.join('; ')}` : ''}
+`;
+    }
 
     return `You are producing a conservative consensus synopsis for a medical doctor.
 
 Scope:
 - Topic: "${topic}"
-- Use ONLY the supplied free/open-access papers below.
-- If the papers do not support consensus, explicitly say "No clear consensus from the supplied free papers."
+- Use the supplied free/open-access papers and abstract-only papers below.
+- For [ABSTRACT ONLY] papers, you have only the abstract — do not infer detailed effect sizes, subgroup results, or precise confidence intervals from them.
+- If the papers do not support consensus, explicitly say "No clear consensus from the supplied papers."
 - Do not present this as a guideline unless a supplied paper is an official guideline or consensus statement.
 - Every clinical claim must cite paper indices like [1] or [1, 3].
 - Do not invent effect sizes, doses, contraindications, or guideline positions.
+- Weight papers by their EBM score (higher = stronger study design) when judging consensus strength.
 
-FREE/OPEN-ACCESS PAPERS:
-${evidence}
-
+${freeEvidence ? `FREE/OPEN-ACCESS PAPERS:\n${freeEvidence}\n` : ''}${abstractEvidence ? `ABSTRACT-ONLY PAPERS:\n${abstractEvidence}\n` : ''}${guidelineSection}${knowledgeSection}
 Return ONLY valid JSON with this exact shape:
 {
   "statement": "2-4 sentence consensus synopsis, using cautious language and inline paper citations",
@@ -113,18 +150,20 @@ function normalizeStringArray(value, max = 5) {
         : [];
 }
 
-function normalizeSynopsis(raw, topic, freeArticles, provider, model = null) {
+function normalizeSynopsis(raw, topic, freeArticles, abstractArticles, provider, model = null) {
     const safe = raw && typeof raw === 'object' ? raw : {};
-    const sourceCount = freeArticles.length;
+    const allArticles = [...freeArticles, ...abstractArticles];
+    const sourceCount = allArticles.length;
     const normalized = {
         status: 'generated',
         topic,
-        evidenceScope: 'free_open_access_only',
+        evidenceScope: 'free_open_access_and_abstracts',
         generatedAt: new Date().toISOString(),
         provider,
         model,
         freePaperCount: freeArticles.length,
-        includedArticles: freeArticles.map((a, i) => ({
+        abstractPaperCount: abstractArticles.length,
+        includedArticles: allArticles.map((a, i) => ({
             sourceIndex: i + 1,
             uid: a.uid,
             title: a.title,
@@ -137,8 +176,9 @@ function normalizeSynopsis(raw, topic, freeArticles, provider, model = null) {
             fullTextIndexed: Boolean(a._fullTextIndexed),
             fullTextWordCount: a._fullTextWordCount || null,
             fullTextSections: a._fullTextSectionKeys || [],
+            isAbstractOnly: !isFreeEvidence(a),
         })),
-        statement: safeString(safe.statement, 1400) || 'No clear consensus from the supplied free papers.',
+        statement: safeString(safe.statement, 1400) || 'No clear consensus from the supplied papers.',
         clinicalBottomLine: safeString(safe.clinicalBottomLine, 700),
         areasOfAgreement: filterCitedStringList(normalizeStringArray(safe.areasOfAgreement, 5), { sourceCount }),
         areasOfUncertainty: filterCitedStringList(normalizeStringArray(safe.areasOfUncertainty, 5), { sourceCount }),
@@ -154,7 +194,7 @@ function normalizeSynopsis(raw, topic, freeArticles, provider, model = null) {
 
     const statementValid = validateCitationRefs(normalized.statement, { sourceCount }).ok;
     if (!statementValid) {
-        normalized.statement = 'No defensible cited consensus statement could be generated from the supplied free papers.';
+        normalized.statement = 'No defensible cited consensus statement could be generated from the supplied papers.';
         normalized.evidenceStrength = 'VERY_LOW';
         normalized.areasOfUncertainty = [
             ...normalized.areasOfUncertainty,
@@ -181,17 +221,21 @@ async function generateConsensusSynopsis({
     fetchImpl,
     cache,
     db = null,
-    limit = 5,
+    limit = 8,
+    abstractLimit = 5,
 } = {}) {
     const freeArticles = await enrichWithCachedFullText(selectFreeEvidence(articles, limit), cache, db);
-    if (freeArticles.length < 2) {
+    const abstractArticles = selectAbstractEvidence(articles, abstractLimit);
+
+    if (freeArticles.length < 2 && abstractArticles.length < 2) {
         return {
             status: 'insufficient_free_evidence',
             topic,
-            evidenceScope: 'free_open_access_only',
+            evidenceScope: 'free_open_access_and_abstracts',
             generatedAt: new Date().toISOString(),
             freePaperCount: freeArticles.length,
-            includedArticles: freeArticles.map((a, i) => ({
+            abstractPaperCount: abstractArticles.length,
+            includedArticles: [...freeArticles, ...abstractArticles].map((a, i) => ({
                 sourceIndex: i + 1,
                 uid: a.uid,
                 title: a.title,
@@ -204,15 +248,16 @@ async function generateConsensusSynopsis({
                 fullTextIndexed: false,
                 fullTextWordCount: null,
                 fullTextSections: [],
+                isAbstractOnly: !isFreeEvidence(a),
             })),
-            statement: 'No consensus synopsis generated because fewer than two free/open-access papers were available in the evidence bouquet.',
+            statement: 'No consensus synopsis generated because fewer than two papers were available in the evidence bouquet.',
             clinicalBottomLine: '',
             areasOfAgreement: [],
-            areasOfUncertainty: ['Free/open-access evidence set too small for a defensible consensus synopsis.'],
+            areasOfUncertainty: ['Evidence set too small for a defensible consensus synopsis.'],
             conflictingSignals: [],
             evidenceStrength: 'VERY_LOW',
-            strengthRationale: 'Insufficient free/open-access evidence in the selected bouquet.',
-            whatNotToOverclaim: ['Do not infer consensus from a single free paper.'],
+            strengthRationale: 'Insufficient evidence in the selected bouquet.',
+            whatNotToOverclaim: ['Do not infer consensus from a single paper.'],
             quizFocusPoints: [],
             disclaimer: AI_DISCLAIMER,
         };
@@ -223,9 +268,10 @@ async function generateConsensusSynopsis({
         return {
             status: 'provider_unavailable',
             topic,
-            evidenceScope: 'free_open_access_only',
+            evidenceScope: 'free_open_access_and_abstracts',
             generatedAt: new Date().toISOString(),
             freePaperCount: freeArticles.length,
+            abstractPaperCount: abstractArticles.length,
             includedArticles: [],
             statement: 'Consensus synopsis unavailable because no built-in LLM provider is configured.',
             clinicalBottomLine: '',
@@ -240,8 +286,27 @@ async function generateConsensusSynopsis({
         };
     }
 
+    let guidelines = [];
+    let topicKnowledge = null;
+    if (db) {
+        try {
+            if (typeof db.getGuidelinesByTopic === 'function') {
+                guidelines = await db.getGuidelinesByTopic(topic, { limit: 3 });
+            }
+        } catch (err) {
+            logger.debug({ err, topic }, 'Failed to load guidelines for synopsis');
+        }
+        try {
+            if (typeof db.getTopicKnowledge === 'function') {
+                topicKnowledge = await db.getTopicKnowledge(topic);
+            }
+        } catch (err) {
+            logger.debug({ err, topic }, 'Failed to load topic knowledge for synopsis');
+        }
+    }
+
     const ai = createAiService({ serverConfig, fetchImpl });
-    const prompt = buildConsensusSynopsisPrompt(topic, freeArticles);
+    const prompt = buildConsensusSynopsisPrompt(topic, freeArticles, abstractArticles, guidelines, topicKnowledge);
     const model = provider === 'gemini' ? PINNED_MODELS.geminiQuality : PINNED_MODELS.mistral;
     const raw = provider === 'gemini'
         ? await ai.callGemini(prompt, model, { temperature: TEMPERATURE.synopsis })
@@ -250,7 +315,7 @@ async function generateConsensusSynopsis({
     if (!parsed) {
         throw new Error('AI returned unparseable consensus synopsis');
     }
-    return normalizeSynopsis(parsed, topic, freeArticles, provider, model);
+    return normalizeSynopsis(parsed, topic, freeArticles, abstractArticles, provider, model);
 }
 
 async function generateConsensusSynopsisSafe(options, logger = console) {
@@ -258,12 +323,15 @@ async function generateConsensusSynopsisSafe(options, logger = console) {
         return await generateConsensusSynopsis(options);
     } catch (error) {
         if (logger?.warn) logger.warn({ err: error }, 'Consensus synopsis generation failed');
+        const freeCount = selectFreeEvidence(options?.articles || [], options?.limit || 8).length;
+        const abstractCount = selectAbstractEvidence(options?.articles || [], options?.abstractLimit || 5).length;
         return {
             status: 'generation_failed',
             topic: options?.topic || '',
-            evidenceScope: 'free_open_access_only',
+            evidenceScope: 'free_open_access_and_abstracts',
             generatedAt: new Date().toISOString(),
-            freePaperCount: selectFreeEvidence(options?.articles || [], options?.limit || 5).length,
+            freePaperCount: freeCount,
+            abstractPaperCount: abstractCount,
             includedArticles: [],
             statement: 'Consensus synopsis could not be generated for this search.',
             clinicalBottomLine: '',
@@ -285,4 +353,5 @@ module.exports = {
     generateConsensusSynopsisSafe,
     isFreeEvidence,
     selectFreeEvidence,
+    selectAbstractEvidence,
 };

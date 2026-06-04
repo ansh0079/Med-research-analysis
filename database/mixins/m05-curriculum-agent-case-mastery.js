@@ -539,8 +539,30 @@ async getAgentConversation(id) {
         messages: safeJsonParse(row.messages, []),
         messageCount: row.message_count,
         lastMessageAt: row.last_message_at,
+        conversationSummary: row.conversation_summary || null,
+        learnerSnapshot: safeJsonParse(row.learner_snapshot_json, {}),
         createdAt: row.created_at,
+        updatedAt: row.updated_at || row.last_message_at || row.created_at,
     };
+}
+
+async updateAgentConversationMemory(conversationId, { conversationSummary = null, learnerSnapshot = null } = {}) {
+    const conv = await this.getAgentConversation(conversationId);
+    if (!conv) return null;
+    const now = new Date().toISOString();
+    const snapshotJson = learnerSnapshot != null
+        ? JSON.stringify(learnerSnapshot).slice(0, 12000)
+        : JSON.stringify(conv.learnerSnapshot || {}).slice(0, 12000);
+    const summary = conversationSummary != null
+        ? String(conversationSummary).slice(0, 8000)
+        : conv.conversationSummary;
+    await this.run(
+        `UPDATE agent_conversations
+         SET conversation_summary = ?, learner_snapshot_json = ?, updated_at = ?, last_message_at = ?
+         WHERE id = ?`,
+        [summary, snapshotJson, now, now, conversationId]
+    );
+    return this.getAgentConversation(conversationId);
 }
 
 async listAgentConversations(userId, { topic = '', limit = 20, offset = 0 } = {}) {

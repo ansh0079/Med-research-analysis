@@ -494,6 +494,61 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
         }
     });
 
+    // ── Audit log — paginated JSON view ──────────────────────────────────────
+    app.get('/api/admin/audit-log', requireAuthJwt, requireRole('admin'), async (req, res) => {
+        try {
+            const limit = Math.min(500, parseInt(String(req.query.limit || '100'), 10) || 100);
+            const offset = Math.max(0, parseInt(String(req.query.offset || '0'), 10) || 0);
+            const userId = req.query.userId ? String(req.query.userId) : undefined;
+            const action = req.query.action ? String(req.query.action) : undefined;
+            const rows = await db.getAuditLogs({ userId, action, limit, offset });
+            res.json({ items: rows, limit, offset });
+        } catch (error) {
+            req.log.error({ err: error }, 'Audit log list error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    // ── Audit log — CSV export with optional date range ──────────────────────
+    app.get('/api/admin/audit-log/export', requireAuthJwt, requireRole('admin'), async (req, res) => {
+        try {
+            const userId   = req.query.userId   ? String(req.query.userId)   : undefined;
+            const action   = req.query.action   ? String(req.query.action)   : undefined;
+            const dateFrom = req.query.dateFrom ? String(req.query.dateFrom) : undefined;
+            const dateTo   = req.query.dateTo   ? String(req.query.dateTo)   : undefined;
+
+            // Fetch up to 10 000 rows for export
+            let sql = `SELECT id, user_id, session_id, action, resource_type, resource_id, ip_address, created_at FROM audit_logs WHERE 1=1`;
+            const params = [];
+            if (userId)   { sql += ` AND user_id = ?`;      params.push(userId); }
+            if (action)   { sql += ` AND action = ?`;       params.push(action); }
+            if (dateFrom) { sql += ` AND created_at >= ?`;  params.push(dateFrom); }
+            if (dateTo)   { sql += ` AND created_at <= ?`;  params.push(dateTo + 'T23:59:59Z'); }
+            sql += ` ORDER BY created_at DESC LIMIT 10000`;
+
+            const rows = await db.all(sql, params);
+
+            const header = ['id', 'user_id', 'session_id', 'action', 'resource_type', 'resource_id', 'ip_address', 'created_at'];
+            const escape = (v) => {
+                if (v == null) return '';
+                const s = String(v);
+                return s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s;
+            };
+            const csv = [
+                header.join(','),
+                ...rows.map((r) => header.map((k) => escape(r[k])).join(',')),
+            ].join('\n');
+
+            const filename = `audit-log-${new Date().toISOString().slice(0, 10)}.csv`;
+            res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+            res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+            res.send(csv);
+        } catch (error) {
+            req.log.error({ err: error }, 'Audit log export error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
     app.get('/api/admin/billing-audit', requireAuthJwt, requireRole('admin'), async (req, res) => {
         try {
             const limit = Math.min(500, parseInt(String(req.query.limit || '100'), 10) || 100);

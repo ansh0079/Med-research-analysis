@@ -10,6 +10,8 @@ interface ChatMessage {
   content: string;
 }
 
+type AgentFeedbackType = 'helpful' | 'not_helpful' | 'too_basic' | 'too_complex' | 'missed_question';
+
 interface AgentChatPanelProps {
   topic: string;
   agentGuidance: AgentGuidance;
@@ -56,7 +58,17 @@ function StarterPrompts({
   );
 }
 
-function MessageBubble({ message }: { message: ChatMessage }) {
+function MessageBubble({
+  message,
+  index,
+  feedback,
+  onFeedback,
+}: {
+  message: ChatMessage;
+  index: number;
+  feedback?: AgentFeedbackType;
+  onFeedback?: (index: number, type: AgentFeedbackType) => void;
+}) {
   const isUser = message.role === 'user';
   return (
     <div className={`flex gap-2 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
@@ -77,6 +89,32 @@ function MessageBubble({ message }: { message: ChatMessage }) {
         }`}
       >
         {message.content}
+        {!isUser && onFeedback && (
+          <div className="mt-2 flex flex-wrap gap-1.5 border-t border-slate-200/70 pt-1.5 dark:border-slate-700/70">
+            {([
+              ['helpful', 'fa-thumbs-up', 'Helpful'],
+              ['not_helpful', 'fa-thumbs-down', 'Not helpful'],
+              ['too_basic', 'fa-arrow-trend-down', 'Too basic'],
+              ['too_complex', 'fa-arrow-trend-up', 'Too complex'],
+              ['missed_question', 'fa-bullseye', 'Missed question'],
+            ] as Array<[AgentFeedbackType, string, string]>).map(([type, icon, label]) => (
+              <button
+                key={type}
+                type="button"
+                onClick={() => onFeedback(index, type)}
+                title={label}
+                aria-label={label}
+                className={`h-6 w-6 rounded-md text-[10px] transition-colors ${
+                  feedback === type
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-white text-slate-500 hover:bg-slate-200 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-700'
+                }`}
+              >
+                <i className={`fas ${icon}`} />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -98,6 +136,7 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
   const [conversationId, setConversationId] = useState<number | null>(null);
   const [conversations, setConversations] = useState<Array<{ id: number; title?: string; topic: string; lastMessageAt?: string }>>([]);
   const [showThreads, setShowThreads] = useState(false);
+  const [feedbackByIndex, setFeedbackByIndex] = useState<Record<number, AgentFeedbackType>>({});
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { isAuthenticated } = useAuth();
@@ -120,6 +159,7 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
       const { conversation } = await api.getAgentSession(id);
       setMessages(conversation.messages as ChatMessage[]);
       setConversationId(conversation.id);
+      setFeedbackByIndex({});
     } catch {
       setError('Failed to load conversation');
     }
@@ -172,19 +212,27 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
         } catch { /* ignore */ }
 
         await api.agentChatStream(
-          topic, trimmed, history, articleSubset, searchHistory.slice(-5),
+          topic,
+          trimmed,
+          history,
+          articleSubset,
+          searchHistory.slice(-5),
           {
             onChunk: (chunk) => {
               reply += chunk;
               setStreamingContent((prev) => prev + chunk);
             },
-            onDone: () => {
+            onDone: (_doneTopic, doneConvId) => {
+              if (doneConvId != null) {
+                setConversationId(doneConvId);
+              }
               setMessages((prev) => [...prev, { role: 'assistant', content: reply }]);
               setStreamingContent('');
             },
             onError: (msg) => setError(msg),
           },
           sessionFeedback,
+          convId,
         );
 
         if (isAuthenticated && convId && reply) {
@@ -215,6 +263,23 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
     setInput(prompt);
     setTimeout(() => inputRef.current?.focus(), 50);
   };
+
+  const handleAgentFeedback = useCallback((messageIndex: number, feedbackType: AgentFeedbackType) => {
+    if (!isAuthenticated) return;
+    setFeedbackByIndex((prev) => ({ ...prev, [messageIndex]: feedbackType }));
+    api.recordAgentFeedback({
+      topic,
+      feedbackType,
+      conversationId,
+      messageIndex,
+    }).catch(() => {
+      setFeedbackByIndex((prev) => {
+        const next = { ...prev };
+        delete next[messageIndex];
+        return next;
+      });
+    });
+  }, [conversationId, isAuthenticated, topic]);
 
   return (
     <div className="neo-card overflow-hidden border border-emerald-100 dark:border-emerald-900/40">
@@ -304,7 +369,13 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
           {messages.length > 0 && (
             <div className="flex flex-col gap-3 max-h-80 overflow-y-auto pr-1">
               {messages.map((msg, i) => (
-                <MessageBubble key={i} message={msg} />
+                <MessageBubble
+                  key={i}
+                  message={msg}
+                  index={i}
+                  feedback={feedbackByIndex[i]}
+                  onFeedback={isAuthenticated ? handleAgentFeedback : undefined}
+                />
               ))}
               {loading && (
                 <div className="flex gap-2">

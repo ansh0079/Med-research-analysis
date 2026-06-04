@@ -24,6 +24,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run search pipeline unit tests
+        run: npm test -- --testPathPatterns="searchPipeline.test|unifiedEvidenceSearch.test|searchEvidenceMergeService.test|searchPersonalizationEval.test|learnerStateService.test|learnerProfileRollupService.test|claimRemediationService.test|agentTurnMemoryService.test|agentPromptTrajectory.test" --no-coverage
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret
+          ADMIN_TOKEN: test-admin-token
+
+      - name: Run search personalization eval
+        run: npm run eval:search-personalization
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret
+          ADMIN_TOKEN: test-admin-token
+
       - name: Run tests
         run: npm test
         env:

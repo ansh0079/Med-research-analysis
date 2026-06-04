@@ -19,7 +19,46 @@ function adminToken(extra = {}) {
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
 
+/** Route PubMed/MeSH/Gemini mocks by URL so MeSH always runs before esearch/esummary. */
+function mockUnifiedSearchFetch({
+  mesh = [],
+  pmids = [],
+  summary = {},
+  geminiText = null,
+} = {}) {
+  mockFetch.mockImplementation((url) => {
+    const target = String(url);
+    if (target.includes('id.nlm.nih.gov/mesh')) {
+      return Promise.resolve({ ok: true, json: async () => mesh });
+    }
+    if (target.includes('generativelanguage.googleapis.com') && geminiText != null) {
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({
+          candidates: [{ content: { parts: [{ text: geminiText }] } }],
+        }),
+      });
+    }
+    if (target.includes('esearch.fcgi')) {
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({ esearchresult: { idlist: pmids } }),
+      });
+    }
+    if (target.includes('esummary.fcgi')) {
+      return Promise.resolve({ ok: true, json: async () => ({ result: summary }) });
+    }
+    return Promise.resolve({ ok: false, status: 404, json: async () => ({}) });
+  });
+}
+
 // Mock the database and cache before importing server
+jest.mock('../../server/embeddings', () => ({
+  EMBEDDING_DIM: 384,
+  generateEmbedding: jest.fn().mockResolvedValue(Array.from({ length: 384 }, (_, i) => (i + 1) / 384)),
+  articleToEmbedText: jest.fn((article) => `${article?.title || ''} ${article?.abstract || ''}`.trim()),
+}));
+
 jest.mock('../../database', () => ({
   connect: jest.fn().mockResolvedValue(true),
   getSearchHistory: jest.fn(),
@@ -91,6 +130,7 @@ jest.mock('../../database', () => ({
   getAgentConversation: jest.fn().mockResolvedValue({ id: 1, userId: 'u1', topic: 'ARDS', messages: [] }),
   listAgentConversations: jest.fn().mockResolvedValue([]),
   appendAgentMessages: jest.fn().mockResolvedValue({ id: 1, messages: [] }),
+  updateAgentConversationMemory: jest.fn().mockResolvedValue({ id: 1, conversationSummary: 'summary', learnerSnapshot: {} }),
   deleteAgentConversation: jest.fn().mockResolvedValue({ deleted: true }),
   listUserTopicMastery: jest.fn().mockResolvedValue([]),
   upsertUserTopicMastery: jest.fn().mockResolvedValue({ id: 1 }),
@@ -286,7 +326,20 @@ describe('API Endpoints', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockFetch.mockReset();
+    mockFetch.mockImplementation((url) => {
+      const target = String(url);
+      if (target.includes('id.nlm.nih.gov/mesh')) {
+        return Promise.resolve({ ok: true, json: async () => [] });
+      }
+      return Promise.resolve({ ok: false, status: 404, json: async () => ({}) });
+    });
     global.fetch = mockFetch;
+    try {
+      const { clearInFlightRequests } = require('../../server/services/externalApiProxy');
+      clearInFlightRequests();
+    } catch {
+      // ignore if module unavailable in isolated tests
+    }
     db.getTopicKnowledge.mockResolvedValue(null);
     db.mapTopicKnowledgeRow.mockImplementation((row) => row);
     db.getGuidelinesByTopic.mockResolvedValue([]);
@@ -343,6 +396,11 @@ describe('API Endpoints', () => {
     // Reset rate limit mock to allowed by default
     cache.checkRateLimit.mockResolvedValue({ allowed: true, remaining: 29, resetTime: Date.now() + 60000 });
     db.isVectorSearchAvailable.mockReturnValue(false);
+    db.searchSimilarArticlesCache.mockResolvedValue([]);
+    db.listSearchResultFeedbackForUser = jest.fn().mockResolvedValue([]);
+    db.getUserInteractions = jest.fn().mockResolvedValue([]);
+    db.getRecentImpressions = jest.fn().mockResolvedValue([]);
+    cache.get.mockResolvedValue(null);
   });
 
   // ==========================================
@@ -581,32 +639,34 @@ describe('API Endpoints', () => {
     describe('GET /api/search flagship topic intelligence', () => {
       test('Should use vector fusion by default when vector search is available', async () => {
         db.isVectorSearchAvailable.mockReturnValueOnce(true);
-        mockFetch
-          .mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({ esearchresult: { idlist: ['111'] } }),
-          })
-          .mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({
-              result: {
-                '111': {
-                  title: 'Heart attack treatment outcomes',
-                  pubdate: '2024',
-                  source: 'JAMA',
-                  pmcrefcount: 10,
-                  pubtype: ['Journal Article'],
-                },
-              },
-            }),
-          })
-          .mockResolvedValueOnce({
-            ok: true,
-            json: async () => ([]),
-          });
+        db.searchSimilarArticlesCache.mockResolvedValueOnce([
+          {
+            data: {
+              uid: 'vec-heart-1',
+              title: 'Heart attack treatment outcomes',
+              abstract: 'Heart attack management in adults',
+              pubdate: '2024',
+              pmcrefcount: 10,
+              pubtype: ['Journal Article'],
+            },
+            score: 0.82,
+          },
+        ]);
+        mockUnifiedSearchFetch({
+          pmids: ['111'],
+          summary: {
+            '111': {
+              title: 'Heart attack treatment outcomes',
+              pubdate: '2024',
+              source: 'JAMA',
+              pmcrefcount: 10,
+              pubtype: ['Journal Article'],
+            },
+          },
+        });
 
         const response = await request(app)
-          .get('/api/search?q=heart%20attack&limit=5&sources=pubmed')
+          .get('/api/search?q=heart%20attack&limit=5&sources=pubmed&intelligence=async')
           .expect(200);
 
         expect(response.body.vectorFusion).toMatchObject({
@@ -628,32 +688,21 @@ describe('API Endpoints', () => {
 
       test('Should allow explicit vector=0 opt-out', async () => {
         db.isVectorSearchAvailable.mockReturnValueOnce(true);
-        mockFetch
-          .mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({ esearchresult: { idlist: ['222'] } }),
-          })
-          .mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({
-              result: {
-                '222': {
-                  title: 'Heart attack treatment outcomes',
-                  pubdate: '2024',
-                  source: 'JAMA',
-                  pmcrefcount: 10,
-                  pubtype: ['Journal Article'],
-                },
-              },
-            }),
-          })
-          .mockResolvedValueOnce({
-            ok: true,
-            json: async () => ([]),
-          });
+        mockUnifiedSearchFetch({
+          pmids: ['222'],
+          summary: {
+            '222': {
+              title: 'Heart attack treatment outcomes',
+              pubdate: '2024',
+              source: 'JAMA',
+              pmcrefcount: 10,
+              pubtype: ['Journal Article'],
+            },
+          },
+        });
 
         const response = await request(app)
-          .get('/api/search?q=heart%20attack&limit=5&sources=pubmed&vector=0')
+          .get('/api/search?q=heart%20attack&limit=5&sources=pubmed&vector=0&intelligence=async')
           .expect(200);
 
         expect(response.body.vectorFusion).toMatchObject({
@@ -674,19 +723,14 @@ describe('API Endpoints', () => {
       });
 
       test('Should capture low-recall searches and merge MeSH aliases', async () => {
-        // Phase 1: proactive MeSH lookup fires before PubMed esearch
-        mockFetch
-          .mockResolvedValueOnce({
-            ok: true,
-            json: async () => ([{ label: 'Rare Syndrome' }, { label: 'Rare Disease' }]),
-          })
-          .mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({ esearchresult: { idlist: [] } }),
-          });
+        mockUnifiedSearchFetch({
+          mesh: [{ label: 'Rare Syndrome' }, { label: 'Rare Disease' }],
+          pmids: [],
+          summary: {},
+        });
 
         const response = await request(app)
-          .get('/api/search?q=rare%20syndrome%20treatment&limit=5&sources=pubmed')
+          .get('/api/search?q=rare%20syndrome%20treatment&limit=5&sources=pubmed&intelligence=async')
           .expect(200);
 
         expect(response.body.articles).toHaveLength(0);
@@ -745,87 +789,63 @@ describe('API Endpoints', () => {
           },
         ]);
 
-        mockFetch
-          .mockImplementation((url) => {
-            if (String(url).includes('generativelanguage.googleapis.com')) {
-              return Promise.resolve({
-                ok: true,
-                json: async () => ({
-                  candidates: [{
-                    content: {
-                      parts: [{
-                        text: JSON.stringify({
-                          statement: 'The supplied free ARDS papers support Berlin criteria, lung-protective ventilation, and prone positioning in selected severe ARDS patients [1, 2, 3].',
-                          clinicalBottomLine: 'Use the free evidence as discussion support for ARDS recognition and evidence-based ventilatory strategies [1, 2, 3].',
-                          areasOfAgreement: ['ARDS care requires syndrome recognition and lung-protective ventilation [1, 2].'],
-                          areasOfUncertainty: ['Patient selection remains central when applying prone positioning evidence [3].'],
-                          conflictingSignals: [],
-                          evidenceStrength: 'HIGH',
-                          strengthRationale: 'The set includes landmark definition and randomized trial evidence.',
-                          whatNotToOverclaim: ['Do not present this synopsis as a complete guideline.'],
-                          quizFocusPoints: ['Berlin criteria', 'Tidal volume strategy', 'Prone positioning selection'],
-                        }),
-                      }],
-                    },
-                  }],
-                }),
-              });
-            }
-            return Promise.resolve(undefined);
-          })
-          .mockResolvedValueOnce({ ok: true, json: async () => [] }) // MeSH Phase 1
-          .mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({ esearchresult: { idlist: ['1', '2', '3', '4', '5'] } }),
-          })
-          .mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({
-              result: {
-                '1': {
-                  title: 'Acute respiratory distress syndrome: the Berlin Definition',
-                  pubdate: '2012',
-                  source: 'JAMA',
-                  pmcrefcount: 1200,
-                  pubtype: ['Journal Article'],
-                  articleids: [{ idtype: 'doi', value: '10.1001/jama.2012.5669' }, { idtype: 'pmc', value: 'PMC1' }],
-                  abstract: 'Berlin definition criteria for acute respiratory distress syndrome.',
-                },
-                '2': {
-                  title: 'Ventilation with lower tidal volumes for ARDS',
-                  pubdate: '2000',
-                  source: 'N Engl J Med',
-                  pmcrefcount: 5000,
-                  pubtype: ['Randomized Controlled Trial'],
-                  articleids: [{ idtype: 'doi', value: '10.1056/NEJM200005043421801' }, { idtype: 'pmc', value: 'PMC2' }],
-                  abstract: 'Lower tidal volume ventilation improved outcomes in acute lung injury and ARDS.',
-                },
-                '3': {
-                  title: 'Prone positioning in severe ARDS',
-                  pubdate: '2013',
-                  source: 'N Engl J Med',
-                  pmcrefcount: 3000,
-                  pubtype: ['Randomized Controlled Trial'],
-                  articleids: [{ idtype: 'doi', value: '10.1056/NEJMoa1214103' }, { idtype: 'pmc', value: 'PMC3' }],
-                  abstract: 'Prone positioning improved survival in selected severe ARDS patients.',
-                },
-                '4': {
-                  title: 'Conservative fluid strategy in acute lung injury',
-                  pubdate: '2006',
-                  source: 'N Engl J Med',
-                  pmcrefcount: 1800,
-                  pubtype: ['Randomized Controlled Trial'],
-                },
-                '5': {
-                  title: 'ECMO for severe ARDS',
-                  pubdate: '2018',
-                  source: 'N Engl J Med',
-                  pmcrefcount: 900,
-                  pubtype: ['Randomized Controlled Trial'],
-                },
-              },
-            }),
-          });
+        mockUnifiedSearchFetch({
+          pmids: ['1', '2', '3', '4', '5'],
+          summary: {
+            '1': {
+              title: 'Acute respiratory distress syndrome: the Berlin Definition',
+              pubdate: '2012',
+              source: 'JAMA',
+              pmcrefcount: 1200,
+              pubtype: ['Journal Article'],
+              articleids: [{ idtype: 'doi', value: '10.1001/jama.2012.5669' }, { idtype: 'pmc', value: 'PMC1' }],
+              abstract: 'Berlin definition criteria for acute respiratory distress syndrome.',
+            },
+            '2': {
+              title: 'Ventilation with lower tidal volumes for ARDS',
+              pubdate: '2000',
+              source: 'N Engl J Med',
+              pmcrefcount: 5000,
+              pubtype: ['Randomized Controlled Trial'],
+              articleids: [{ idtype: 'doi', value: '10.1056/NEJM200005043421801' }, { idtype: 'pmc', value: 'PMC2' }],
+              abstract: 'Lower tidal volume ventilation improved outcomes in acute lung injury and ARDS.',
+            },
+            '3': {
+              title: 'Prone positioning in severe ARDS',
+              pubdate: '2013',
+              source: 'N Engl J Med',
+              pmcrefcount: 3000,
+              pubtype: ['Randomized Controlled Trial'],
+              articleids: [{ idtype: 'doi', value: '10.1056/NEJMoa1214103' }, { idtype: 'pmc', value: 'PMC3' }],
+              abstract: 'Prone positioning improved survival in selected severe ARDS patients.',
+            },
+            '4': {
+              title: 'Conservative fluid strategy in acute lung injury',
+              pubdate: '2006',
+              source: 'N Engl J Med',
+              pmcrefcount: 1800,
+              pubtype: ['Randomized Controlled Trial'],
+            },
+            '5': {
+              title: 'ECMO for severe ARDS',
+              pubdate: '2018',
+              source: 'N Engl J Med',
+              pmcrefcount: 900,
+              pubtype: ['Randomized Controlled Trial'],
+            },
+          },
+          geminiText: JSON.stringify({
+            statement: 'The supplied free ARDS papers support Berlin criteria, lung-protective ventilation, and prone positioning in selected severe ARDS patients [1, 2, 3].',
+            clinicalBottomLine: 'Use the free evidence as discussion support for ARDS recognition and evidence-based ventilatory strategies [1, 2, 3].',
+            areasOfAgreement: ['ARDS care requires syndrome recognition and lung-protective ventilation [1, 2].'],
+            areasOfUncertainty: ['Patient selection remains central when applying prone positioning evidence [3].'],
+            conflictingSignals: [],
+            evidenceStrength: 'HIGH',
+            strengthRationale: 'The set includes landmark definition and randomized trial evidence.',
+            whatNotToOverclaim: ['Do not present this synopsis as a complete guideline.'],
+            quizFocusPoints: ['Berlin criteria', 'Tidal volume strategy', 'Prone positioning selection'],
+          }),
+        });
 
         const response = await request(app)
           .get('/api/search?q=ARDS&limit=5&sources=pubmed')
@@ -1928,7 +1948,9 @@ describe('API Endpoints', () => {
         position: null,
         created_at: '2026-04-26T12:00:00.000Z'
       };
-      db.get.mockResolvedValueOnce(row);
+      db.get
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce(row);
 
       const response = await request(app)
         .post('/api/articles/999/annotations')
@@ -2516,32 +2538,45 @@ describe('API Endpoints', () => {
       };
 
       mockFetch.mockReset();
-      // Order: geminiQuery → MeSH Phase 1 → [pubmed-esearch, semantic, openalex in parallel] → pubmed-esummary → geminiSynthesis
-      mockFetch
-        .mockResolvedValueOnce({ ok: true, json: async () => geminiQuery })
-        .mockResolvedValueOnce({ ok: true, json: async () => [] })
-        .mockResolvedValueOnce({
-          ok: true,
-          json: async () => ({ esearchresult: { idlist: ['555'] } }),
-        })
-        .mockResolvedValueOnce({ ok: true, json: async () => ({ data: [] }) })
-        .mockResolvedValueOnce({ ok: true, json: async () => ({ results: [] }) })
-        .mockResolvedValueOnce({
-          ok: true,
-          json: async () => ({
-            result: {
-              555: {
-                uid: '555',
-                title: 'Ventilation strategies in ARDS',
-                pubdate: '2021',
-                source: 'Intensive Care Med',
-                pmcrefcount: 40,
-                authors: [{ name: 'Jane Doe' }],
+      let geminiCalls = 0;
+      mockFetch.mockImplementation((url) => {
+        const target = String(url);
+        if (target.includes('generativelanguage.googleapis.com')) {
+          geminiCalls += 1;
+          return Promise.resolve({
+            ok: true,
+            json: async () => (geminiCalls >= 2 ? geminiSynthesis : geminiQuery),
+          });
+        }
+        if (target.includes('id.nlm.nih.gov/mesh')) {
+          return Promise.resolve({ ok: true, json: async () => [] });
+        }
+        if (target.includes('esearch.fcgi')) {
+          return Promise.resolve({ ok: true, json: async () => ({ esearchresult: { idlist: ['555'] } }) });
+        }
+        if (target.includes('esummary.fcgi')) {
+          return Promise.resolve({
+            ok: true,
+            json: async () => ({
+              result: {
+                555: {
+                  uid: '555',
+                  title: 'Ventilation strategies in ARDS',
+                  pubdate: '2021',
+                  source: 'Intensive Care Med',
+                  pmcrefcount: 40,
+                  authors: [{ name: 'Jane Doe' }],
+                },
               },
-            },
-          }),
-        })
-        .mockResolvedValueOnce({ ok: true, json: async () => geminiSynthesis });
+            }),
+          });
+        }
+        if (target.includes('semanticscholar') || target.includes('openalex')) {
+          return Promise.resolve({ ok: true, json: async () => ({ data: [], results: [] }) });
+        }
+        return Promise.resolve({ ok: false, status: 404, json: async () => ({}) });
+      });
+      cache.get.mockResolvedValueOnce(null);
 
       const response = await request(app)
         .post('/api/cases/analyze')
