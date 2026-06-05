@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS analysis_cache (
     tokens_used INTEGER,
     cost DECIMAL(10,6),
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    expires_at DATETIME,
+    expires_at TIMESTAMPTZ,
     UNIQUE(article_id, analysis_type, model)
 );
 
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS article_cache (
     journal TEXT,
     citation_count INTEGER DEFAULT 0,
     fetched_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    expires_at DATETIME 
+    expires_at TIMESTAMPTZ 
 , quality_data TEXT, retraction_data TEXT, quality_score INTEGER DEFAULT 0, is_retracted INTEGER DEFAULT 0);
 
 CREATE TABLE IF NOT EXISTS audit_logs (
@@ -141,8 +141,8 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 CREATE TABLE IF NOT EXISTS auth_rate_limits (
     limit_key TEXT PRIMARY KEY,
     attempt_count INTEGER NOT NULL DEFAULT 0,
-    window_start DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL
+    window_start TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS billing_audit_log (
@@ -317,7 +317,7 @@ CREATE TABLE IF NOT EXISTS collab_invitations (
     permission TEXT DEFAULT 'read',
     message TEXT,
     status TEXT DEFAULT 'pending',
-    expires_at DATETIME NOT NULL,
+    expires_at TIMESTAMPTZ NOT NULL,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (collection_id) REFERENCES collab_collections(id) ON DELETE CASCADE
 );
@@ -450,8 +450,8 @@ CREATE TABLE IF NOT EXISTS learning_scheduler_runs (
     id SERIAL PRIMARY KEY,
     run_type TEXT NOT NULL DEFAULT 'topic_refresh',
     status TEXT NOT NULL DEFAULT 'running',
-    started_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    finished_at DATETIME,
+    started_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    finished_at TIMESTAMPTZ,
     candidates_count INTEGER NOT NULL DEFAULT 0,
     refreshed_count INTEGER NOT NULL DEFAULT 0,
     skipped_count INTEGER NOT NULL DEFAULT 0,
@@ -495,7 +495,7 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
     id SERIAL PRIMARY KEY,
     user_id TEXT NOT NULL,
     token TEXT UNIQUE NOT NULL,
-    expires_at DATETIME NOT NULL,
+    expires_at TIMESTAMPTZ NOT NULL,
     used INTEGER DEFAULT 0,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -618,8 +618,8 @@ CREATE TABLE IF NOT EXISTS review_projects (
 
 CREATE TABLE IF NOT EXISTS revoked_tokens (
     token_hash TEXT PRIMARY KEY,
-    revoked_at DATETIME NOT NULL,
-    expires_at DATETIME NOT NULL
+    revoked_at TIMESTAMPTZ NOT NULL,
+    expires_at TIMESTAMPTZ NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS saved_articles (
@@ -642,7 +642,7 @@ CREATE TABLE IF NOT EXISTS search_alerts (
     sources TEXT, 
     email TEXT,
     active INTEGER DEFAULT 1,
-    last_sent DATETIME,
+    last_sent TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, unsubscribe_token TEXT, digest_enabled INTEGER DEFAULT 1,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -819,8 +819,8 @@ CREATE TABLE IF NOT EXISTS team_invitations (
     role TEXT DEFAULT 'member',
     token TEXT UNIQUE NOT NULL,
     status TEXT DEFAULT 'pending',
-    expires_at DATETIME NOT NULL,
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, accepted_at DATETIME,
+    expires_at TIMESTAMPTZ NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, accepted_at TIMESTAMPTZ,
     FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE
 );
 
@@ -916,7 +916,7 @@ CREATE TABLE IF NOT EXISTS topic_guidelines (
     cautions TEXT,
     status TEXT NOT NULL DEFAULT 'ai_extracted',
     reviewed_by TEXT,
-    reviewed_at DATETIME,
+    reviewed_at TIMESTAMPTZ,
     superseded_by_id INTEGER,
     last_checked_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
@@ -1087,8 +1087,8 @@ CREATE TABLE IF NOT EXISTS users (
     role TEXT DEFAULT 'user', 
     preferences TEXT, 
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    last_login DATETIME
-, email_verified INTEGER DEFAULT 0, email_verification_token TEXT, email_verification_expires DATETIME, updated_at DATETIME, stripe_customer_id TEXT, stripe_subscription_id TEXT, subscription_status TEXT DEFAULT 'free', subscription_plan TEXT DEFAULT 'free', subscription_current_period_end TEXT, subscription_cancel_at_period_end INTEGER DEFAULT 0, trial_started_at TEXT, trial_ends_at TEXT, has_used_trial INTEGER NOT NULL DEFAULT 0);
+    last_login TIMESTAMPTZ
+, email_verified INTEGER DEFAULT 0, email_verification_token TEXT, email_verification_expires TIMESTAMPTZ, updated_at TIMESTAMPTZ, stripe_customer_id TEXT, stripe_subscription_id TEXT, subscription_status TEXT DEFAULT 'free', subscription_plan TEXT DEFAULT 'free', subscription_current_period_end TEXT, subscription_cancel_at_period_end INTEGER DEFAULT 0, trial_started_at TEXT, trial_ends_at TEXT, has_used_trial INTEGER NOT NULL DEFAULT 0);
 
 CREATE INDEX IF NOT EXISTS idx_agent_conv_last_message ON agent_conversations(user_id, last_message_at);
 

@@ -109,8 +109,9 @@ async initialize() {
     } else if (this.isPostgres) {
         const schema = fs.readFileSync(schemaPath, 'utf8');
         const statements = schema.split(';').filter(s => s.trim());
-        for (const statement of statements) {
+        for (let statement of statements) {
             if (!statement.trim()) continue;
+            statement = convertSqliteDdlToPostgres(statement);
             try {
                 await this.run(statement);
             } catch (err) {

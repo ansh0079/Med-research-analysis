@@ -17,6 +17,8 @@ function convertSqliteDdlToPostgres(sql) {
 
     out = out.replace(/\bDATETIME\s+DEFAULT\s+CURRENT_TIMESTAMP/gi, 'TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP');
 
+    out = out.replace(/\bDATETIME\b/gi, 'TIMESTAMPTZ');
+
     return out;
 }
 
