@@ -107,27 +107,40 @@ async initialize() {
             );
         `);
     } else if (this.isPostgres) {
-        const schema = fs.readFileSync(schemaPath, 'utf8');
-        const statements = schema.split(';').filter(s => s.trim());
-        for (let statement of statements) {
-            if (!statement.trim()) continue;
-            statement = convertSqliteDdlToPostgres(statement);
-            try {
-                await this.run(statement);
-            } catch (err) {
-                const msg = String(err?.message || '');
-                const code = err?.code || '';
-                if (code === '42P07' || code === '42710' || msg.includes('already exists')) {
-                    continue;
+        const migrationsDdlPg = `CREATE TABLE IF NOT EXISTS _migrations (id SERIAL PRIMARY KEY, name TEXT UNIQUE NOT NULL, applied_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP)`;
+        await this.run(migrationsDdlPg);
+
+        const usersCheck = await this.pool.query(
+            `SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'users' LIMIT 1`
+        );
+        this.pgUsersIdType = await this.detectPgUsersIdType();
+
+        if (usersCheck.rows.length === 0) {
+            const schema = fs.readFileSync(schemaPath, 'utf8');
+            const statements = schema.split(';').filter(s => s.trim());
+            const pgOpts = { usersIdType: this.pgUsersIdType };
+            for (let statement of statements) {
+                if (!statement.trim()) continue;
+                statement = convertSqliteDdlToPostgres(statement, pgOpts);
+                try {
+                    await this.run(statement);
+                } catch (err) {
+                    const msg = String(err?.message || '');
+                    const code = err?.code || '';
+                    if (code === '42P07' || code === '42710' || msg.includes('already exists')) {
+                        continue;
+                    }
+                    throw err;
                 }
-                throw err;
             }
+        } else {
+            console.log('ℹ️ PostgreSQL already bootstrapped — skipping production_schema.sql');
         }
     }
     const migrationsDdl = this.isPostgres
-        ? `CREATE TABLE IF NOT EXISTS _migrations (id SERIAL PRIMARY KEY, name TEXT UNIQUE NOT NULL, applied_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP)`
+        ? null
         : `CREATE TABLE IF NOT EXISTS _migrations (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE NOT NULL, applied_at DATETIME DEFAULT CURRENT_TIMESTAMP)`;
-    await this.run(migrationsDdl);
+    if (migrationsDdl) await this.run(migrationsDdl);
 
     // Audit logs
     if (this._bs) {
@@ -222,7 +235,10 @@ async runMigrations() {
         for (let statement of statements) {
             if (statement.trim()) {
                 if (this.isPostgres) {
-                    statement = convertSqliteDdlToPostgres(statement);
+                    if (!this.pgUsersIdType) {
+                        this.pgUsersIdType = await this.detectPgUsersIdType();
+                    }
+                    statement = convertSqliteDdlToPostgres(statement, this.pgDdlOptions());
                 }
                 try {
                     await this.run(statement);
@@ -248,6 +264,23 @@ async runMigrations() {
     }
 
     return { migrated: pending.length };
+}
+
+async detectPgUsersIdType() {
+    if (!this.isPostgres || !this.pool) return 'text';
+    try {
+        const res = await this.pool.query(
+            `SELECT data_type FROM information_schema.columns
+             WHERE table_schema = 'public' AND table_name = 'users' AND column_name = 'id'`
+        );
+        return res.rows[0]?.data_type === 'uuid' ? 'uuid' : 'text';
+    } catch {
+        return 'text';
+    }
+}
+
+pgDdlOptions() {
+    return { usersIdType: this.pgUsersIdType || 'text' };
 }
 
 toPgQuery(sql) {
