@@ -1,0 +1,167 @@
+# ==========================================
+# Hetzner VPS production stack
+# Postgres + Redis + web + worker + Caddy (HTTPS)
+#
+# Usage on server:
+#   cp deploy/hetzner/env.example .env
+#   # edit .env (DOMAIN, secrets, API keys)
+#   docker compose -f docker-compose.hetzner.yml up -d --build
+# ==========================================
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: medsearch-pg
+    environment:
+      POSTGRES_USER: medsearch
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: medsearch
+    volumes:
+      - medsearch_pgdata:/var/lib/postgresql/data
+      - ./database/pgvector.schema.sql:/docker-entrypoint-initdb.d/10-pgvector.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medsearch -d medsearch"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    networks:
+      - internal
+
+  redis:
+    image: redis:7-alpine
+    container_name: medsearch-redis
+    volumes:
+      - medsearch_redis:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - internal
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: medsearch-web
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      APP_ROLE: web
+      PORT: 3002
+      DATABASE_URL: postgresql://medsearch:${POSTGRES_PASSWORD}@postgres:5432/medsearch
+      PG_VECTOR_URL: postgresql://medsearch:${POSTGRES_PASSWORD}@postgres:5432/medsearch
+      PGSSL: "false"
+      REDIS_URL: redis://redis:6379
+      DEV_DISABLE_AUTH: "false"
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
+      SESSION_SECRET: ${SESSION_SECRET:?set SESSION_SECRET in .env}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      NCBI_API_KEY: ${NCBI_API_KEY:-}
+      NCBI_EMAIL: ${NCBI_EMAIL:-}
+      MISTRAL_API_KEY: ${MISTRAL_API_KEY:-}
+      HUGGINGFACE_TOKEN: ${HUGGINGFACE_TOKEN:-}
+      SEMANTIC_SCHOLAR_KEY: ${SEMANTIC_SCHOLAR_KEY:-}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      APP_URL: https://${DOMAIN:?set DOMAIN in .env}
+      CORS_ORIGINS: https://${DOMAIN}
+      CLIENT_URL: https://${DOMAIN}
+      API_URL: https://${DOMAIN}
+      AUTO_SEED_ON_SEARCH: "false"
+      PAYWALL_ENABLED: ${PAYWALL_ENABLED:-false}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    volumes:
+      - medsearch_data:/app/data
+    restart: always
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3002/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - internal
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: medsearch-worker
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      APP_ROLE: worker
+      WORKER_HEALTH_PORT: 3003
+      DATABASE_URL: postgresql://medsearch:${POSTGRES_PASSWORD}@postgres:5432/medsearch
+      PG_VECTOR_URL: postgresql://medsearch:${POSTGRES_PASSWORD}@postgres:5432/medsearch
+      PGSSL: "false"
+      REDIS_URL: redis://redis:6379
+      DEV_DISABLE_AUTH: "false"
+      JWT_SECRET: ${JWT_SECRET}
+      SESSION_SECRET: ${SESSION_SECRET}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      NCBI_API_KEY: ${NCBI_API_KEY:-}
+      NCBI_EMAIL: ${NCBI_EMAIL:-}
+      MISTRAL_API_KEY: ${MISTRAL_API_KEY:-}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      APP_URL: https://${DOMAIN}
+      AUTO_SEED_ON_SEARCH: "false"
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    command: ["node", "server/worker.js"]
+    volumes:
+      - medsearch_data:/app/data
+    restart: always
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3003/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - internal
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: medsearch-caddy
+    depends_on:
+      web:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL:-}
+    volumes:
+      - ./deploy/hetzner/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  medsearch_pgdata:
+  medsearch_redis:
+  medsearch_data:
+  caddy_data:
+  caddy_config:

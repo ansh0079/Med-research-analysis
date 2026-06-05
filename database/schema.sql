@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS agent_conversations (
     message_count INTEGER DEFAULT 0,
     last_message_at TEXT,
     created_at TEXT DEFAULT (datetime('now'))
-);
+, conversation_summary TEXT, learner_snapshot_json TEXT NOT NULL DEFAULT '{}', updated_at TEXT DEFAULT (datetime('now')));
 
 CREATE TABLE IF NOT EXISTS ai_generation_claims (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -69,18 +69,6 @@ CREATE TABLE IF NOT EXISTS ai_usage_monthly (
     UNIQUE (user_id, year_month, feature)
 );
 
-CREATE TABLE IF NOT EXISTS api_keys (
-    id TEXT PRIMARY KEY,
-    user_id TEXT NOT NULL,
-    name TEXT NOT NULL,
-    key_prefix TEXT NOT NULL,
-    key_hash TEXT NOT NULL UNIQUE,
-    scopes TEXT NOT NULL DEFAULT 'read',
-    last_used_at TEXT,
-    created_at TEXT NOT NULL DEFAULT (datetime('now')),
-    revoked_at TEXT
-);
-
 CREATE TABLE IF NOT EXISTS analysis_cache (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     article_id TEXT NOT NULL,
@@ -110,6 +98,18 @@ CREATE TABLE IF NOT EXISTS annotations (
     text TEXT NOT NULL,
     position TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS api_keys (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    key_prefix TEXT NOT NULL,
+    key_hash TEXT NOT NULL UNIQUE,
+    scopes TEXT NOT NULL DEFAULT 'read',
+    last_used_at TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    revoked_at TEXT
 );
 
 CREATE TABLE IF NOT EXISTS article_cache (
@@ -170,6 +170,17 @@ CREATE TABLE IF NOT EXISTS case_attempts (
     ai_feedback TEXT,
     score INTEGER,
     seed_article_uids TEXT DEFAULT '[]',
+    created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS case_evidence_briefs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    topic TEXT NOT NULL DEFAULT '',
+    clinical_question TEXT NOT NULL,
+    brief_json TEXT NOT NULL DEFAULT '{}',
+    articles_json TEXT NOT NULL DEFAULT '[]',
+    related_claims_json TEXT NOT NULL DEFAULT '[]',
     created_at TEXT DEFAULT (datetime('now'))
 );
 
@@ -566,6 +577,22 @@ CREATE TABLE IF NOT EXISTS quiz_attempts (
     created_at TEXT DEFAULT (datetime('now'))
 , concept_hash TEXT, claim_key TEXT, reasoning_tags TEXT DEFAULT '[]', reasoning_note TEXT, prompt_variant TEXT);
 
+CREATE TABLE IF NOT EXISTS quiz_validation_results (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    question_id TEXT NOT NULL,
+    topic TEXT NOT NULL,
+    normalized_topic TEXT NOT NULL,
+    generation_job_key TEXT,
+    prompt_variant TEXT,
+    validator_version INTEGER DEFAULT 1,
+    status TEXT NOT NULL CHECK (status IN ('passed', 'rejected', 'needs_review')),
+    rejection_reasons TEXT,
+    reviewer_notes TEXT,
+    source_provider TEXT,
+    source_model TEXT,
+    validated_at TEXT DEFAULT (datetime('now'))
+);
+
 CREATE TABLE IF NOT EXISTS review_articles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     review_id TEXT NOT NULL,
@@ -929,6 +956,19 @@ CREATE TABLE IF NOT EXISTS topic_knowledge_proposals (
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS user_claim_misconceptions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT NOT NULL,
+    claim_key TEXT NOT NULL,
+    wrong_option_text TEXT NOT NULL,
+    correct_option_text TEXT,
+    topic TEXT NOT NULL,
+    normalized_topic TEXT,
+    count INTEGER NOT NULL DEFAULT 1,
+    last_seen_at TEXT DEFAULT (datetime('now')),
+    created_at TEXT DEFAULT (datetime('now'))
+, misconception_category TEXT);
+
 CREATE TABLE IF NOT EXISTS user_curriculum_progress (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -970,7 +1010,7 @@ CREATE TABLE IF NOT EXISTS user_learning_profiles (
     active_curriculum_id INTEGER REFERENCES curricula(id) ON DELETE SET NULL,
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now'))
-);
+, effective_difficulty TEXT DEFAULT 'mixed');
 
 CREATE TABLE IF NOT EXISTS user_saved_articles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -1002,6 +1042,17 @@ CREATE TABLE IF NOT EXISTS user_topic_mastery (
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now')),
     UNIQUE(user_id, normalized_topic)
+);
+
+CREATE TABLE IF NOT EXISTS user_topic_mastery_snapshots (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT NOT NULL,
+    topic TEXT NOT NULL,
+    normalized_topic TEXT,
+    overall_score INTEGER NOT NULL,
+    session_score INTEGER,
+    snapshot_reason TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
 );
 
 CREATE TABLE IF NOT EXISTS user_topic_memory (
@@ -1038,7 +1089,7 @@ CREATE TABLE IF NOT EXISTS users (
     preferences TEXT, 
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     last_login DATETIME
-, email_verified INTEGER DEFAULT 0, email_verification_token TEXT, email_verification_expires DATETIME, updated_at DATETIME, stripe_customer_id TEXT, stripe_subscription_id TEXT, subscription_status TEXT DEFAULT 'free', subscription_plan TEXT DEFAULT 'free', subscription_current_period_end TEXT, subscription_cancel_at_period_end INTEGER DEFAULT 0);
+, email_verified INTEGER DEFAULT 0, email_verification_token TEXT, email_verification_expires DATETIME, updated_at DATETIME, stripe_customer_id TEXT, stripe_subscription_id TEXT, subscription_status TEXT DEFAULT 'free', subscription_plan TEXT DEFAULT 'free', subscription_current_period_end TEXT, subscription_cancel_at_period_end INTEGER DEFAULT 0, trial_started_at TEXT, trial_ends_at TEXT, has_used_trial INTEGER NOT NULL DEFAULT 0);
 
 CREATE INDEX IF NOT EXISTS idx_agent_conv_last_message ON agent_conversations(user_id, last_message_at);
 
@@ -1055,19 +1106,19 @@ CREATE INDEX IF NOT EXISTS idx_ai_generation_jobs_type_topic ON ai_generation_jo
 CREATE INDEX IF NOT EXISTS idx_ai_usage_user_month
     ON ai_usage_monthly (user_id, year_month);
 
-CREATE INDEX IF NOT EXISTS idx_api_keys_user ON api_keys (user_id);
-
-CREATE INDEX IF NOT EXISTS idx_api_keys_hash ON api_keys (key_hash);
-
 CREATE INDEX IF NOT EXISTS idx_analysis_cache_article ON analysis_cache(article_id);
 
 CREATE INDEX IF NOT EXISTS idx_analysis_cache_expires ON analysis_cache(expires_at);
 
 CREATE INDEX IF NOT EXISTS idx_analytics_created ON analytics(created_at);
 
+CREATE INDEX IF NOT EXISTS idx_analytics_event_created ON analytics(event_type, created_at);
+
 CREATE INDEX IF NOT EXISTS idx_analytics_type ON analytics(event_type);
 
-CREATE INDEX IF NOT EXISTS idx_analytics_event_created ON analytics(event_type, created_at);
+CREATE INDEX IF NOT EXISTS idx_api_keys_hash ON api_keys (key_hash);
+
+CREATE INDEX IF NOT EXISTS idx_api_keys_user ON api_keys (user_id);
 
 CREATE INDEX IF NOT EXISTS idx_article_cache_expires ON article_cache(expires_at);
 
@@ -1102,6 +1153,8 @@ CREATE INDEX IF NOT EXISTS idx_case_attempts_topic ON case_attempts(normalized_t
 CREATE INDEX IF NOT EXISTS idx_case_attempts_user_created ON case_attempts(user_id, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_case_attempts_user_topic ON case_attempts(user_id, normalized_topic);
+
+CREATE INDEX IF NOT EXISTS idx_case_evidence_briefs_user ON case_evidence_briefs(user_id, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_claim_history_claim ON claim_status_history(claim_key, created_at DESC);
 
@@ -1195,6 +1248,9 @@ CREATE INDEX IF NOT EXISTS idx_low_recall_attempts ON low_recall_searches(attemp
 
 CREATE INDEX IF NOT EXISTS idx_low_recall_topic_seen ON low_recall_searches(normalized_topic, last_seen_at DESC);
 
+CREATE INDEX IF NOT EXISTS idx_mastery_snapshots_user_topic_time
+    ON user_topic_mastery_snapshots(user_id, normalized_topic, created_at DESC);
+
 CREATE INDEX IF NOT EXISTS idx_password_reset_token ON password_reset_tokens(token);
 
 CREATE INDEX IF NOT EXISTS idx_password_reset_user ON password_reset_tokens(user_id);
@@ -1217,6 +1273,9 @@ CREATE INDEX IF NOT EXISTS idx_quiz_attempts_concept_hash ON quiz_attempts(user_
 
 CREATE INDEX IF NOT EXISTS idx_quiz_attempts_outline_node ON quiz_attempts(user_id, outline_node_id);
 
+CREATE INDEX IF NOT EXISTS idx_quiz_attempts_prompt_variant
+ON quiz_attempts(prompt_variant, created_at);
+
 CREATE INDEX IF NOT EXISTS idx_quiz_attempts_study_run ON quiz_attempts(study_run_id);
 
 CREATE INDEX IF NOT EXISTS idx_quiz_attempts_topic ON quiz_attempts(normalized_topic);
@@ -1224,6 +1283,16 @@ CREATE INDEX IF NOT EXISTS idx_quiz_attempts_topic ON quiz_attempts(normalized_t
 CREATE INDEX IF NOT EXISTS idx_quiz_attempts_user_created ON quiz_attempts(user_id, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_quiz_attempts_user_topic ON quiz_attempts(user_id, normalized_topic);
+
+CREATE INDEX IF NOT EXISTS idx_qvr_job ON quiz_validation_results(generation_job_key);
+
+CREATE INDEX IF NOT EXISTS idx_qvr_prompt_variant ON quiz_validation_results(prompt_variant, status);
+
+CREATE INDEX IF NOT EXISTS idx_qvr_provider_model ON quiz_validation_results(source_provider, source_model, status);
+
+CREATE INDEX IF NOT EXISTS idx_qvr_question ON quiz_validation_results(question_id);
+
+CREATE INDEX IF NOT EXISTS idx_qvr_topic ON quiz_validation_results(normalized_topic, status);
 
 CREATE INDEX IF NOT EXISTS idx_review_articles_review ON review_articles(review_id);
 
@@ -1327,6 +1396,15 @@ CREATE INDEX IF NOT EXISTS idx_ucp_topic ON user_curriculum_progress(curriculum_
 
 CREATE INDEX IF NOT EXISTS idx_ucp_user ON user_curriculum_progress(user_id);
 
+CREATE UNIQUE INDEX idx_user_claim_misconception
+    ON user_claim_misconceptions(user_id, claim_key, wrong_option_text);
+
+CREATE INDEX IF NOT EXISTS idx_user_claim_misconceptions_claim
+    ON user_claim_misconceptions(claim_key, count DESC);
+
+CREATE INDEX IF NOT EXISTS idx_user_claim_misconceptions_user_topic
+    ON user_claim_misconceptions(user_id, normalized_topic, count DESC);
+
 CREATE INDEX IF NOT EXISTS idx_user_interactions_session ON user_interactions(session_id, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_user_interactions_user ON user_interactions(user_id, article_id, created_at);
@@ -1339,26 +1417,6 @@ CREATE INDEX IF NOT EXISTS idx_users_stripe_customer ON users(stripe_customer_id
 
 CREATE INDEX IF NOT EXISTS idx_users_subscription_status ON users(subscription_status);
 
+CREATE INDEX IF NOT EXISTS idx_users_trial_ends ON users(trial_ends_at) WHERE trial_ends_at IS NOT NULL;
+
 CREATE INDEX IF NOT EXISTS idx_users_verification_token ON users(email_verification_token);
-
-CREATE TABLE IF NOT EXISTS quiz_validation_results (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    question_id TEXT NOT NULL,
-    topic TEXT NOT NULL,
-    normalized_topic TEXT NOT NULL,
-    generation_job_key TEXT,
-    prompt_variant TEXT,
-    validator_version INTEGER DEFAULT 1,
-    status TEXT NOT NULL CHECK (status IN ('passed', 'rejected', 'needs_review')),
-    rejection_reasons TEXT,
-    reviewer_notes TEXT,
-    source_provider TEXT,
-    source_model TEXT,
-    validated_at TEXT DEFAULT (datetime('now'))
-);
-
-CREATE INDEX IF NOT EXISTS idx_qvr_question ON quiz_validation_results(question_id);
-CREATE INDEX IF NOT EXISTS idx_qvr_topic ON quiz_validation_results(normalized_topic, status);
-CREATE INDEX IF NOT EXISTS idx_qvr_job ON quiz_validation_results(generation_job_key);
-CREATE INDEX IF NOT EXISTS idx_qvr_prompt_variant ON quiz_validation_results(prompt_variant, status);
-CREATE INDEX IF NOT EXISTS idx_qvr_provider_model ON quiz_validation_results(source_provider, source_model, status);

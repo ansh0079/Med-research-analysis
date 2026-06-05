@@ -9,6 +9,7 @@ const { Queue, Worker, QueueEvents } = require('bullmq');
 const logger = require('../config/logger');
 const cache = require('../../cache');
 const { getRequestId } = require('../utils/requestContext');
+const { createRedisClient } = require('../config/redisClient');
 
 const handlers = new Map();
 const queues = new Map();
@@ -23,8 +24,7 @@ function useBullMQ() {
 function getConnection() {
     if (sharedConnection) return sharedConnection;
     if (!process.env.REDIS_URL) return null;
-    const Redis = require('ioredis');
-    sharedConnection = new Redis(process.env.REDIS_URL, {
+    sharedConnection = createRedisClient('bullmq-shared', {
         maxRetriesPerRequest: null,
         enableReadyCheck: false,
     });
@@ -51,10 +51,18 @@ class JobQueue {
 
         if (this.bullEnabled) {
             const conn = getConnection();
-            this.bullQueue = new Queue(`medsearch:${name}`, { connection: conn });
+            this.bullQueue = new Queue(`medsearch-${name}`, {
+                connection: conn,
+                defaultJobOptions: {
+                    removeOnComplete: { count: 100 },
+                    removeOnFail: { count: 200 },
+                    attempts: 3,
+                    backoff: { type: 'exponential', delay: 2000 },
+                },
+            });
             queues.set(name, this);
             if (!queueEvents.has(name)) {
-                queueEvents.set(name, new QueueEvents(`medsearch:${name}`, { connection: conn }));
+                queueEvents.set(name, new QueueEvents(`medsearch-${name}`, { connection: conn }));
             }
         }
     }
@@ -97,13 +105,7 @@ class JobQueue {
     async _enqueueNamed(jobType, data, { priority = 0, label = jobType, requestId = null, wait = false } = {}) {
         const rid = requestId || getRequestId();
         if (this.bullEnabled && this.bullQueue) {
-            const job = await this.bullQueue.add(jobType, { ...data, requestId: rid }, {
-                priority,
-                removeOnComplete: 100,
-                removeOnFail: 200,
-                attempts: 3,
-                backoff: { type: 'exponential', delay: 2000 },
-            });
+            const job = await this.bullQueue.add(jobType, { ...data, requestId: rid }, { priority });
             logger.debug({ queue: this.name, label, jobId: job.id, requestId: rid }, 'BullMQ job enqueued');
             if (wait) {
                 const events = queueEvents.get(this.name);
@@ -182,7 +184,7 @@ function startWorkers(deps = {}) {
 
     for (const q of allQueues) {
         const worker = new Worker(
-            `medsearch:${q.name}`,
+            `medsearch-${q.name}`,
             async (job) => {
                 const handler = handlers.get(handlerKey(q.name, job.name));
                 if (!handler) {
@@ -195,6 +197,9 @@ function startWorkers(deps = {}) {
             { connection: conn, concurrency: q.concurrency }
         );
 
+        worker.on('error', (err) => {
+            logger.warn({ queue: q.name, err }, 'BullMQ worker error');
+        });
         worker.on('failed', (job, err) => {
             logger.warn({ queue: q.name, jobId: job?.id, err: err.message }, 'BullMQ job failed');
         });

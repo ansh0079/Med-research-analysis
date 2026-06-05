@@ -8,8 +8,12 @@ const authSecurityStore = require('../services/authSecurityStore');
 const { hasFeature, resolvePlan } = require('../config/entitlements');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'change-this-in-production';
-if (process.env.NODE_ENV === 'production' && JWT_SECRET === 'change-this-in-production') {
-    throw new Error('FATAL: JWT_SECRET must be set in production');
+const JWT_SECRET_PLACEHOLDERS = new Set([
+    'change-this-in-production',
+    'your_jwt_secret_here_change_in_production',
+]);
+if (process.env.NODE_ENV === 'production' && (JWT_SECRET_PLACEHOLDERS.has(JWT_SECRET) || JWT_SECRET.length < 32)) {
+    throw new Error('FATAL: JWT_SECRET must be set to a strong unique value in production');
 }
 const COOKIE_NAME = 'med_auth_token';
 const OAUTH_STATE_COOKIE = 'med_oauth_state';
@@ -156,8 +160,14 @@ async function optionalAuth(req, _res, next) {
 }
 
 // When DEV_DISABLE_AUTH=true, requireAuthJwt and requireRole become no-ops.
-// Set this in your .env for local development; never set it in production.
-const DEV_DISABLE_AUTH = String(process.env.DEV_DISABLE_AUTH || '').toLowerCase() === 'true';
+// Set this in your .env for local development only.
+// SAFETY: Refuses to activate in production even if the env var is set.
+const DEV_DISABLE_AUTH = String(process.env.DEV_DISABLE_AUTH || '').toLowerCase() === 'true'
+    && process.env.NODE_ENV !== 'production';
+
+if (String(process.env.DEV_DISABLE_AUTH || '').toLowerCase() === 'true' && process.env.NODE_ENV === 'production') {
+    console.error('⚠️  WARNING: DEV_DISABLE_AUTH=true is ignored in production. Auth is enforced.');
+}
 
 /**
  * Strict auth: requires a valid httpOnly cookie.

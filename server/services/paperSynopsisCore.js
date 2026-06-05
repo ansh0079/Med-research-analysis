@@ -43,7 +43,25 @@ async function runPaperSynopsisGeneration({
 
     // Enrich with full-text sections when cached — improves numerical result extraction
     const [enriched] = await enrichWithCachedFullText([article], cache, db).catch(() => [article]);
-    const prompt = buildSynopsisPrompt(enriched);
+    let guidelines = [];
+    let topicKnowledge = null;
+    if (topic && db) {
+        try {
+            if (typeof db.getGuidelinesByTopic === 'function') {
+                guidelines = await db.getGuidelinesByTopic(topic, { limit: 4 });
+            }
+        } catch (err) {
+            logger.debug({ err, topic }, 'Failed to load guidelines for paper synopsis');
+        }
+        try {
+            if (typeof db.getTopicKnowledge === 'function') {
+                topicKnowledge = await db.getTopicKnowledge(topic);
+            }
+        } catch (err) {
+            logger.debug({ err, topic }, 'Failed to load topic knowledge for paper synopsis');
+        }
+    }
+    const prompt = buildSynopsisPrompt(enriched, { topic, guidelines, topicKnowledge });
     let rawText = '';
     let selectedProvider = null;
     let selectedModel = null;

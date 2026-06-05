@@ -1,0 +1,11 @@
+# Add this block to your EXISTING host Caddyfile (Retail Edge server).
+# SignalMD listens on localhost:3010 via docker-compose.shared-server.yml
+
+signalmd.co {
+	encode gzip zstd
+	reverse_proxy 127.0.0.1:3010
+}
+
+www.signalmd.co {
+	redir https://signalmd.co{uri} permanent
+}

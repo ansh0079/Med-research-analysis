@@ -9,6 +9,10 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { spawnSync } from 'child_process';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const { convertSqliteDdlToPostgres } = require('../database/lib/sqliteDdlToPg.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
@@ -35,6 +39,19 @@ function syncPgvectorDeploy() {
   const dest = path.join(root, 'database', 'init-pgvector.sql');
   fs.writeFileSync(dest, fs.readFileSync(src, 'utf8'), 'utf8');
   console.log('Synced init-pgvector.sql ← pgvector.schema.sql');
+}
+
+function writeProductionSchemaFromSqlite(sqliteBody) {
+  const pgPath = path.join(root, 'database', 'production_schema.sql');
+  const statements = sqliteBody
+    .split(';')
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+
+  const pgStatements = statements.map((stmt) => convertSqliteDdlToPostgres(stmt));
+  const pgBody = pgStatements.map((stmt) => `${stmt};`).join('\n\n') + '\n';
+  fs.writeFileSync(pgPath, PG_HEADER + pgBody, 'utf8');
+  console.log(`Wrote ${pgPath} from schema.sql (${pgStatements.length} statements)`);
 }
 
 function stampHeaders() {
@@ -84,6 +101,13 @@ if (dumpSqlite) {
   db.close();
   fs.unlinkSync(tmpDb);
   console.log(`Wrote ${outPath} from migrated database (${rows.length} objects)`);
+  writeProductionSchemaFromSqlite(body);
+  syncPgvectorDeploy();
+  const check = spawnSync(process.execPath, ['scripts/check-schema-consistency.mjs'], {
+    cwd: root,
+    stdio: 'inherit',
+  });
+  if (check.status !== 0) process.exit(check.status ?? 1);
 } else {
   syncPgvectorDeploy();
   stampHeaders();

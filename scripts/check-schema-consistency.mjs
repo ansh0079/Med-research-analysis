@@ -127,6 +127,8 @@ function ensureSqliteBaseline(db) {
   db.exec(`CREATE INDEX IF NOT EXISTS idx_audit_created ON audit_logs(created_at)`);
 }
 
+const sqliteBaselineMigration = '057_learning_event_ledger.sql';
+
 function applyMigrations(db) {
   const migrationsDir = path.join(root, 'database', 'migrations');
   db.exec(`CREATE TABLE IF NOT EXISTS _migrations (
@@ -135,7 +137,20 @@ function applyMigrations(db) {
     applied_at TEXT DEFAULT (datetime('now'))
   )`);
   const files = fs.readdirSync(migrationsDir).filter((f) => f.endsWith('.sql')).sort();
-  for (const file of files) {
+  const appliedRows = db.prepare('SELECT name FROM _migrations ORDER BY id').all();
+  const appliedNames = new Set(appliedRows.map((r) => r.name));
+
+  if (appliedNames.size === 0) {
+    const baselineFiles = files.filter((f) => f <= sqliteBaselineMigration);
+    const insert = db.prepare('INSERT OR IGNORE INTO _migrations (name) VALUES (?)');
+    for (const file of baselineFiles) {
+      insert.run(file);
+      appliedNames.add(file);
+    }
+  }
+
+  const pending = files.filter((f) => !appliedNames.has(f));
+  for (const file of pending) {
     const sql = fs.readFileSync(path.join(migrationsDir, file), 'utf8');
     for (const statement of splitStatements(sql)) {
       execStatement(db, statement);

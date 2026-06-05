@@ -28,9 +28,9 @@ function registerUserRoutes(app, { db, requireJson, requireAuthJwt, auditLog, en
         res.status(error.status || 500).json({ error: error.message });
     }
 
-    app.get('/api/user/history', async (req, res) => {
+    app.get('/api/user/history', requireAuthJwt, async (req, res) => {
         try {
-            const history = await db.getSearchHistory(req.sessionId, 50);
+            const history = await db.getSearchHistory(req.user.id, 50);
             res.json({ history });
         } catch (error) {
             req.log.error({ err: error }, 'Get search history error');

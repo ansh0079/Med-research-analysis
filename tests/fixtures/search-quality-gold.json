@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "k": 10,
+  "queries": [
+    {
+      "query": "SGLT2 inhibitors heart failure reduced ejection fraction randomized trial",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["34706189", "32865377"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"]
+    },
+    {
+      "query": "low tidal volume ventilation ARDS randomized controlled trial",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["10793162"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"]
+    },
+    {
+      "query": "sepsis surviving sepsis campaign guideline 2021",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["34599691"],
+      "offTopicUids": [],
+      "requiredTypes": ["guideline"]
+    }
+  ]
+}

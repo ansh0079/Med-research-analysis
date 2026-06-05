@@ -8,6 +8,7 @@ const path = require('path');
 const fs = require('fs');
 const { buildPgPoolConfig, buildPgVectorPoolConfig } = require('../server/utils/pgPoolOptions');
 const { runExternalSqliteMigrations } = require('./lib/helpers');
+const { convertSqliteDdlToPostgres } = require('./lib/sqliteDdlToPg');
 
 const MIGRATION_ALIASES = {
     '050_topic_crosslinks.sql': ['049_topic_crosslinks.sql'],
@@ -18,7 +19,10 @@ const MIGRATION_ALIASES = {
     '056_curriculum_seed_guardrails.sql': ['053_curriculum_seed_guardrails.sql'],
     '057_learning_event_ledger.sql': ['054_learning_event_ledger.sql'],
 };
-const SQLITE_BASELINE_MIGRATION = '057_learning_event_ledger.sql';
+/** Migrations through this file are baked into schema.sql / production_schema.sql on fresh install. */
+const BASELINE_MIGRATION = '057_learning_event_ledger.sql';
+const SQLITE_BASELINE_MIGRATION = BASELINE_MIGRATION;
+const POSTGRES_BASELINE_MIGRATION = BASELINE_MIGRATION;
 
 class Database {
 constructor(dbPath = './database/app.db') {
@@ -53,6 +57,7 @@ async connect() {
             dialect: new PostgresDialect({ pool })
         });
         console.log('✅ Connected to PostgreSQL (main app)');
+        await this.initialize();
         return true;
     }
 
@@ -105,7 +110,17 @@ async initialize() {
         const schema = fs.readFileSync(schemaPath, 'utf8');
         const statements = schema.split(';').filter(s => s.trim());
         for (const statement of statements) {
-            if (statement.trim()) await this.run(statement);
+            if (!statement.trim()) continue;
+            try {
+                await this.run(statement);
+            } catch (err) {
+                const msg = String(err?.message || '');
+                const code = err?.code || '';
+                if (code === '42P07' || code === '42710' || msg.includes('already exists')) {
+                    continue;
+                }
+                throw err;
+            }
         }
     }
     const migrationsDdl = this.isPostgres
@@ -154,6 +169,16 @@ async runMigrations() {
 
     const applied = await this.all('SELECT name FROM _migrations ORDER BY id');
     const appliedNames = new Set(applied.map(m => m.name));
+    if (this.isPostgres && appliedNames.size === 0) {
+        const baselineFiles = files.filter(f => f <= POSTGRES_BASELINE_MIGRATION);
+        for (const file of baselineFiles) {
+            await this.run('INSERT INTO _migrations (name) VALUES (?) ON CONFLICT (name) DO NOTHING', [file]);
+            appliedNames.add(file);
+        }
+        if (baselineFiles.length > 0) {
+            console.log(`PostgreSQL baseline: production_schema.sql covers ${baselineFiles.length} migration marker(s) through ${POSTGRES_BASELINE_MIGRATION}`);
+        }
+    }
     if (!this.isPostgres && appliedNames.size === 0) {
         const baselineFiles = files.filter(f => f <= SQLITE_BASELINE_MIGRATION);
         for (const file of baselineFiles) {
@@ -193,13 +218,22 @@ async runMigrations() {
             .map(s => s.trim())
             .filter(s => s.length > 0);
         
-        for (const statement of statements) {
+        for (let statement of statements) {
             if (statement.trim()) {
+                if (this.isPostgres) {
+                    statement = convertSqliteDdlToPostgres(statement);
+                }
                 try {
                     await this.run(statement);
                 } catch (err) {
-                    // Ignore "duplicate column name" errors so migrations stay idempotent
-                    if (err && err.message && err.message.includes('duplicate column name')) {
+                    const msg = String(err?.message || '');
+                    const code = err?.code || '';
+                    const duplicate =
+                        msg.includes('duplicate column name')
+                        || code === '42701'
+                        || (code === '42P07' && /relation .* already exists/i.test(msg))
+                        || (code === '42710' && /already exists/i.test(msg));
+                    if (duplicate) {
                         console.log(`   ⚠️  Skipped (already exists): ${statement.split(/\s+/).slice(0, 6).join(' ')}...`);
                     } else {
                         throw err;

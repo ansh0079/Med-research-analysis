@@ -459,12 +459,11 @@ function appendPubMedPublicationFilters(pubmedQuery, specificity, parsedStudyTyp
  * @param {Function} opts.fetch
  * @param {object} [opts.telemetry] — optional; when PubMed returns zero hits, may set `lowRecallLearning`
  * @param {string} [opts.specificity] — 'broad' | 'moderate' | 'strict'
- * @param {string[]} [opts.parsedStudyTypes] — optional PubMed publication-type clauses from client parser
+ * @param {string[]} [opts.parsedStudyTypes] — optional PubMed publication-type clauses inferred server-side
  * @param {string[]} [opts.parsedYearFilters] — optional PubMed year filters such as 2020:2024[PDAT]
- * @param {string} [opts.processedQuery] — optional PubMed-shaped structured query from client parser
  * @returns {Promise<object[]>}
  */
-async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig, fetch: f, cache = null, vectorList = [], telemetry = null, specificity = 'moderate', parsedStudyTypes = [], parsedYearFilters = [], processedQuery = null }) {
+async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig, fetch: f, cache = null, vectorList = [], telemetry = null, specificity = 'moderate', parsedStudyTypes = [], parsedYearFilters = [] }) {
     const proxy = buildProxyService({ serverConfig, fetchImpl: f, cache, telemetry });
     const overallStart = Date.now();
 

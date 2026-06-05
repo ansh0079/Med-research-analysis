@@ -139,13 +139,6 @@ export interface SearchFilters {
   studyTypes?: string[];
   maxResults?: number;
   sortBy?: 'relevance' | 'date' | 'citations';
-  /** Parsed query metadata sent to backend to tune evidence bouquet archetypes */
-  parsedQuery?: {
-    processedQuery?: string;
-    studyTypes?: string[];
-    yearFilters?: string[];
-    specificity?: SpecificityLevel;
-  };
 }
 
 export type EvidenceGrade =
@@ -622,22 +615,6 @@ export interface TeachingClaimReviewItem {
   } | null;
   createdAt?: string | null;
   updatedAt?: string | null;
-}
-
-export interface ParsedQuery {
-  original: string;
-  processedQuery: string;
-  topics: string[];
-  yearFilters: string[];
-  studyTypes: string[];
-  journals: string[];
-  meshTerms: string[];
-  smartSort: string;
-  isAdvanced: boolean;
-  specificity: SpecificityLevel;
-  phraseTerms: string[];
-  excludedTerms: string[];
-  requiredTerms: string[];
 }
 
 export type AnalysisType = 'quick' | 'comprehensive' | 'critical' | 'biomedical' | 'layperson' | 'methodology';

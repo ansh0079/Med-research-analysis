@@ -64,6 +64,8 @@ Commercial target:
 
 ## Production Environment
 
+**Self-hosted (Hetzner VPS):** see [docs/HETZNER_DEPLOY.md](docs/HETZNER_DEPLOY.md) — Docker Compose + Caddy + Postgres + Redis on a single CPX22+ server.
+
 Recommended production posture:
 
 ```env

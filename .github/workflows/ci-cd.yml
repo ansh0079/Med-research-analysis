@@ -103,12 +103,76 @@ jobs:
           retention-days: 7
 
 # ──────────────────────────────────────────────
-# Job 5: Docker build + push  (main branch only, all gates must pass)
+# Job 5: OpenAPI spec verification
+# ──────────────────────────────────────────────
+  openapi-verify:
+    name: OpenAPI Verify
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - name: Generate OpenAPI spec
+        run: npm run docs:openapi:generate
+      - name: Validate OpenAPI spec
+        run: npm run docs:openapi:validate
+      - name: Upload OpenAPI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-spec
+          path: docs/openapi.json
+          retention-days: 14
+
+# ──────────────────────────────────────────────
+# Job 6: Load test smoke (k6)
+# ──────────────────────────────────────────────
+  load-test-smoke:
+    name: Load Test Smoke
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - name: Install k6
+        run: |
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69 || true
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6 || true
+      - name: Start test server
+        run: |
+          NODE_ENV=test JWT_SECRET=ci-jwt-secret ADMIN_TOKEN=ci-admin-token npm start &
+          for i in {1..30}; do
+            curl -sf http://localhost:3002/health && break
+            sleep 1
+          done
+      - name: Run k6 smoke test
+        run: npm run test:load:smoke
+        env:
+          BASE_URL: http://localhost:3002
+      - name: Upload k6 report
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-smoke-report
+          path: tests/load/results/
+          retention-days: 7
+        if: always()
+
+# ──────────────────────────────────────────────
+# Job 7: Docker build + push  (main branch only, all gates must pass)
 # ──────────────────────────────────────────────
   release:
     name: Docker Release
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build, openapi-verify, load-test-smoke]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4

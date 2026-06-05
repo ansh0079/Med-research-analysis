@@ -437,10 +437,12 @@ function scorePicoRelevance(article, pico) {
     const text = `${String(article.title || '')} ${String(article.abstract || '')}`.toLowerCase();
     const pop = String(pico.population || '').toLowerCase().trim();
     const int = String(pico.intervention || '').toLowerCase().trim();
+    const comp = String(pico.comparison || pico.comparator || '').toLowerCase().trim();
     const out = String(pico.outcome || '').toLowerCase().trim();
     let matches = 0;
     if (pop && text.includes(pop)) matches += 1;
     if (int && text.includes(int)) matches += 1;
+    if (comp && text.includes(comp)) matches += 1;
     if (out && text.includes(out)) matches += 1;
     // Boost if both population and intervention match (the core P+I of PICO)
     if (pop && int && text.includes(pop) && text.includes(int)) return 3;

@@ -54,8 +54,9 @@ function buildFullTextExcerpt(article) {
     const sections = article?._fullTextSections || {};
     const ordered = ['abstract', 'methods', 'results', 'discussion', 'conclusion'];
     const parts = [];
+    const sectionLimits = { abstract: 2200, methods: 5000, results: 8000, discussion: 5000, conclusion: 3000 };
     for (const key of ordered) {
-        const text = safeString(sections[key], key === 'results' ? 3200 : 1800);
+        const text = safeString(sections[key], sectionLimits[key] || 4000);
         if (text) parts.push(`${key.toUpperCase()}: ${text}`);
     }
     return parts.join('\n');
@@ -222,7 +223,7 @@ async function generateConsensusSynopsis({
     cache,
     db = null,
     limit = 8,
-    abstractLimit = 5,
+    abstractLimit = 8,
     preEnrichedArticles = null,
 } = {}) {
     let freeArticles;

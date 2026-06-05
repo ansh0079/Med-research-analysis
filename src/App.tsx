@@ -153,7 +153,7 @@ const AppContent: React.FC = () => {
       <Suspense fallback={<PageFallback />}>
         <Routes>
           <Route path="/"          element={<RouteErrorBoundary><RootRoute /></RouteErrorBoundary>} />
-          <Route path="/search"    element={<RouteErrorBoundary><ProtectedRoute><SearchPage /></ProtectedRoute></RouteErrorBoundary>} />
+          <Route path="/search"    element={<RouteErrorBoundary><SearchPage /></RouteErrorBoundary>} />
           <Route path="/quiz"      element={<RouteErrorBoundary><ProtectedRoute><QuizPage /></ProtectedRoute></RouteErrorBoundary>} />
           <Route path="/practice"  element={<RouteErrorBoundary><ProtectedRoute><PracticePoolPage /></ProtectedRoute></RouteErrorBoundary>} />
           <Route path="/history"   element={<RouteErrorBoundary><ProtectedRoute><HistoryPage /></ProtectedRoute></RouteErrorBoundary>} />

@@ -54,6 +54,7 @@ coverage/
 playwright-report/
 test-results/
 playwright/.cache/
+tests/e2e/.auth/
 
 # Load test results
 tests/load/results/*.json

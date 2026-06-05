@@ -4,11 +4,42 @@
  * Temperature should be 0.15 — pure factual extraction, no invention.
  *
  * @param {{ title: string; abstract?: string; pubtype?: string[]; pubdate?: string; journal?: string; authors?: {name:string}[]; doi?: string }} article
+ * @param {{ topic?: string; guidelines?: object[]; topicKnowledge?: object|null }} [context]
  */
-function buildSynopsisPrompt(article) {
+function safeText(value, max = 1200) {
+    return String(value || '').replace(/\s+/g, ' ').trim().slice(0, max);
+}
+
+function formatGuideline(g, index) {
+    const source = g.sourceBody || g.source_body || g.source || 'Guideline source';
+    const year = g.sourceYear || g.source_year || '';
+    const recommendation = g.recommendationText || g.recommendation_text || g.summary || '';
+    const strength = g.recommendationStrength || g.recommendation_strength || '';
+    const certainty = g.recommendationCertainty || g.recommendation_certainty || '';
+    const population = g.population || '';
+    const cautions = g.cautions || '';
+    return `[G${index}] ${safeText(source, 100)}${year ? ` (${safeText(year, 20)})` : ''}
+Recommendation: ${safeText(recommendation, 500)}${strength ? `\nStrength: ${safeText(strength, 80)}` : ''}${certainty ? `\nCertainty: ${safeText(certainty, 80)}` : ''}${population ? `\nPopulation: ${safeText(population, 180)}` : ''}${cautions ? `\nCautions: ${safeText(cautions, 220)}` : ''}`;
+}
+
+function formatTopicKnowledge(topicKnowledge) {
+    if (!topicKnowledge) return '';
+    const knowledge = topicKnowledge.knowledge || topicKnowledge.mentorMessage || topicKnowledge.summary || '';
+    const sourceArticles = Array.isArray(topicKnowledge.sourceArticles)
+        ? topicKnowledge.sourceArticles.slice(0, 6).map((a) => safeText(a, 160)).filter(Boolean)
+        : [];
+    const lines = [];
+    if (knowledge) lines.push(safeText(knowledge, 2200));
+    if (sourceArticles.length > 0) lines.push(`Seminal/context papers: ${sourceArticles.join('; ')}`);
+    return lines.join('\n');
+}
+
+function buildSynopsisPrompt(article, context = {}) {
     const year = article.pubdate ? article.pubdate.slice(0, 4) : 'unknown';
     const authors = (article.authors || []).slice(0, 3).map((a) => a.name).join(', ');
     const pubtypes = (article.pubtype || []).join(', ') || 'Not specified';
+    const guidelines = Array.isArray(context.guidelines) ? context.guidelines.slice(0, 4) : [];
+    const topicKnowledgeText = formatTopicKnowledge(context.topicKnowledge);
 
     // Build full-text block when available (same section order as synthesis prompt)
     let fullTextBlock = '';
@@ -16,10 +47,11 @@ function buildSynopsisPrompt(article) {
         const sections = article._fullTextSections;
         const ordered = ['methods', 'results', 'discussion', 'conclusion'];
         const parts = [];
+        const sectionLimits = { methods: 5000, results: 8000, discussion: 5000, conclusion: 3000 };
         for (const key of ordered) {
             const text = sections[key];
             if (text && String(text).trim().length > 20) {
-                parts.push(`${key.toUpperCase()}: ${String(text).slice(0, 1400)}`);
+                parts.push(`${key.toUpperCase()}: ${String(text).slice(0, sectionLimits[key] || 4000)}`);
             }
         }
         if (parts.length > 0) {
@@ -47,6 +79,12 @@ DOI: ${article.doi || 'Not available'}
 
 Abstract:
 ${article.abstract || '[No abstract available — extract what you can from the title alone]'}${fullTextBlock}
+
+${guidelines.length > 0 ? `Guideline context for orientation (do not treat as this paper's findings; use it only to frame applicability and practice implications):
+${guidelines.map((g, i) => formatGuideline(g, i + 1)).join('\n\n')}` : ''}
+
+${topicKnowledgeText ? `Curated topic knowledge for orientation (do not cite as study evidence unless also supported by the article):
+${topicKnowledgeText}` : ''}
 
 Return a single JSON object with EXACTLY these fields:
 
@@ -82,6 +120,7 @@ Return a single JSON object with EXACTLY these fields:
 Rules:
 - Be especially careful not to turn a neutral result into a positive recommendation.
 - If the study is underpowered, stopped early, highly selected, open-label, industry-funded, or has safety concerns, mention that under weaknesses/safety/practice implication if stated.
+- If guideline or topic context is supplied, use it to explain clinicalMeaning/practiceImplication and conflicts with current practice, but keep all study results grounded in the article text.
 - The bottomLine should be clinically useful and conservative.
 - Return ONLY the JSON object. No markdown, no preamble.`;
 }

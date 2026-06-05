@@ -51,5 +51,19 @@ jobs:
       - name: Run ESLint
         run: npx eslint .
 
+      - name: Generate and validate OpenAPI
+        run: |
+          npm run docs:openapi:generate
+          npm run docs:openapi:validate
+
+      - name: Run fast E2E tests
+        run: |
+          NODE_ENV=test JWT_SECRET=test-jwt-secret ADMIN_TOKEN=test-admin-token npm start &
+          for i in {1..30}; do
+            curl -sf http://localhost:3002/health && break
+            sleep 1
+          done
+          npm run test:e2e:ci
+
       - name: Run npm audit
         run: npm audit --audit-level=high

@@ -1659,11 +1659,8 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
     });
 
     // Direct Feedback Loop: Refine AI output based on user preference signal
-    app.post('/api/ai/refine', requireJson, rateLimit(30, 60), async (req, res) => {
+    app.post('/api/ai/refine', requireJson, requireAuthJwt, rateLimit(30, 60), async (req, res) => {
         const { feedback, topic } = req.body || {};
-        if (!req.user?.id) {
-            return res.status(401).json({ error: 'Authentication required' });
-        }
         const VALID_FEEDBACK = ['too_basic', 'too_complex', 'focus_mechanisms', 'focus_exam'];
         if (!VALID_FEEDBACK.includes(feedback)) {
             return res.status(400).json({ error: `feedback must be one of: ${VALID_FEEDBACK.join(', ')}` });

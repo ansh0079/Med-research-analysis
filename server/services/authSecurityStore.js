@@ -2,6 +2,7 @@
 
 const crypto = require('crypto');
 const logger = require('../config/logger');
+const { createRedisClient } = require('../config/redisClient');
 
 const REDIS_PREFIX = 'medsearch:auth:';
 const REVOCATION_TTL_SEC = 7 * 24 * 60 * 60;
@@ -46,13 +47,9 @@ async function init({ database, redisUrl } = {}) {
     db = database || null;
     if (redisUrl) {
         try {
-            const Redis = require('ioredis');
-            redis = new Redis(redisUrl, {
-                retryStrategy: (times) => Math.min(times * 50, 2000),
+            redis = createRedisClient('auth-security', {
+                url: redisUrl,
                 maxRetriesPerRequest: 3,
-            });
-            redis.on('error', (err) => {
-                logger.warn({ err }, 'Auth security Redis error');
             });
             await redis.ping();
             logger.info('Auth security store: Redis enabled');

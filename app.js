@@ -25,7 +25,7 @@ const logger = require('./server/config/logger');
 const db = require('./database');
 const cache = require('./cache');
 
-const { rateLimit, userRateLimit } = require('./server/middleware/rateLimiter');
+const { rateLimit, userRateLimit, setMetricsRegistry, createSlowDown } = require('./server/middleware/rateLimiter');
 const { optionalAuth, requireAuthJwt, requireVerifiedEmail, requireRole, requirePaidFeature, registerAuthRoutes } = require('./server/middleware/auth');
 const { auditLog } = require('./server/middleware/audit');
 const { requireJson, validateAnalysisBody, validateBody, schemas } = require('./server/utils/validation');
@@ -209,6 +209,7 @@ logger.info({
 // ==========================================
 const metricsRegistry = new client.Registry();
 client.collectDefaultMetrics({ register: metricsRegistry });
+setMetricsRegistry(metricsRegistry);
 const httpRequestCounter = new client.Counter({
     name: 'medsearch_http_requests_total',
     help: 'Total HTTP requests',
@@ -433,6 +434,12 @@ app.use('/api/ai', extendAiTimeout());
 app.use('/api/quiz', extendAiTimeout());
 app.use('/api/agent', extendAiTimeout());
 
+// Progressive slowdown for AI-heavy routes to soften brute-force abuse
+const aiSlowDown = createSlowDown(60, 10, 500);
+app.use('/api/ai', aiSlowDown);
+app.use('/api/quiz', aiSlowDown);
+app.use('/api/agent', aiSlowDown);
+
 registerHealthRoutes(app, routeDeps);
 registerSearchRoutes(app, routeDeps);
 registerUserRoutes(app, { ...routeDeps, enqueueArticleForEmbedding, enqueuePdfPreindex });
@@ -471,6 +478,24 @@ app.post('/api/admin/cache/clear', requireAuthJwt, requireRole('admin'), async (
     res.json({ message: 'Cache cleared successfully' });
 });
 app.use('/api/collaboration', collaborationRoutes);
+
+// API documentation (dev / staging only)
+if (process.env.NODE_ENV !== 'production' || process.env.ENABLE_API_DOCS === 'true') {
+    try {
+        const swaggerUi = require('swagger-ui-express');
+        const openApiSpec = require('./docs/openapi.json');
+        app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(openApiSpec, {
+            explorer: true,
+            customSiteTitle: 'MedResearch API Docs',
+        }));
+        app.get('/api/docs.json', (req, res) => res.json(openApiSpec));
+    } catch (_err) {
+        logger.warn('Swagger UI not available; ensure docs/openapi.json exists');
+    }
+}
+
+// Global rate-limit fallback for any route not explicitly covered
+app.use(rateLimit(200, 60));
 
 // Serve built frontend in production — placed after all API routes
 // so express.static never shadows an /api endpoint

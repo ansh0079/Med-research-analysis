@@ -2,6 +2,10 @@
 # Production Dockerfile
 # Multi-stage build for the Medical Research
 # Intelligence Platform backend + frontend
+#
+# Serves both web and worker roles:
+#   Web (default): CMD ["node", "server.js"]
+#   Worker:        command: ["node", "server/worker.js"]  (set in docker-compose)
 # ==========================================
 
 # ---- Build stage ----
@@ -21,7 +25,7 @@ FROM node:22-alpine AS dependencies
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+RUN npm ci --omit=dev && npm cache clean --force
 
 # ---- Production stage ----
 FROM node:22-alpine AS app
@@ -51,26 +55,25 @@ COPY --from=builder /app/server ./server
 # Fix ownership
 RUN chown -R nodejs:nodejs /app
 
-# Create data directory with proper permissions
-RUN mkdir -p /app/data && chown -R nodejs:nodejs /app/data
+# Create data directory (fallback for SQLite or file uploads)
+RUN mkdir -p /app/data /app/logs && chown -R nodejs:nodejs /app/data /app/logs
 
 # Switch to non-root user
 USER nodejs
 
-# Environment
+# Environment defaults — overridden by docker-compose environment block
 ENV NODE_ENV=production
 ENV PORT=3002
-ENV DATABASE_PATH=/app/data/app.db
+ENV DEV_DISABLE_AUTH=false
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3002/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+# Health check (web role on :3002; worker overrides in compose)
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD node -e "const p=process.env.WORKER_HEALTH_PORT||process.env.PORT||3002;require('http').get('http://127.0.0.1:'+p+'/health',r=>{process.exit(r.statusCode===200?0:1)}).on('error',()=>process.exit(1))"
 
-# Expose port
 EXPOSE 3002
 
 # Use dumb-init for proper signal handling
 ENTRYPOINT ["dumb-init", "--"]
 
-# Start application
+# Default: web server (worker overrides CMD via docker-compose)
 CMD ["node", "server.js"]

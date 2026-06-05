@@ -6,6 +6,7 @@
 
 const NodeCache = require('node-cache');
 const logger = require('../server/config/logger');
+const { createRedisClient } = require('../server/config/redisClient');
 
 class CacheManager {
     constructor(options = {}) {
@@ -46,13 +47,8 @@ class CacheManager {
     async connect() {
         if (process.env.REDIS_URL) {
             try {
-                const Redis = require('ioredis');
-                this.redis = new Redis(process.env.REDIS_URL, {
-                    retryStrategy: (times) => Math.min(times * 50, 2000),
+                this.redis = createRedisClient('cache', {
                     maxRetriesPerRequest: 3,
-                });
-                this.redis.on('error', (err) => {
-                    logger.warn({ err }, 'Redis cache error');
                 });
                 await this.redis.ping();
                 logger.info('Redis L2 cache connected');

@@ -449,7 +449,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
 
     app.get('/api/search', rateLimit(30, 60), attachApiKeyUser, dailySearchLimit, async (req, res) => {
         const { q, query: queryParam, sources = 'pubmed', limit = 20, vector, specificity = 'moderate' } = req.query;
-        const { previousQueries, parsedStudyTypes, parsedYearFilters, processedQuery, intelligenceMode } = parseSearchRequestQuery(req);
+        const { previousQueries, parsedStudyTypes, parsedYearFilters, intelligenceMode } = parseSearchRequestQuery(req);
         req.previousQueries = previousQueries;
         const safeLimit = clampLimit(limit);
         setNoStoreSearchHeaders(res);
@@ -497,7 +497,6 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 specificity: validSpecificity,
                 parsedStudyTypes,
                 parsedYearFilters,
-                processedQuery,
                 previousQueries,
                 vectorList,
                 userId: req.user?.id ?? null,

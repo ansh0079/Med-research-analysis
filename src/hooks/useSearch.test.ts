@@ -31,11 +31,6 @@ jest.mock('@services/api', () => ({
     markEvidenceAlertRead: jest.fn(),
   },
 }));
-jest.mock('@services/QueryParser', () => ({
-  queryParser: {
-    parse: jest.fn().mockReturnValue({ studyTypes: [], specificity: 'moderate' }),
-  },
-}));
 jest.mock('@contexts/SearchContext');
 jest.mock('@contexts/AuthContext');
 

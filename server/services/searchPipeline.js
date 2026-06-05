@@ -59,21 +59,42 @@ function parseParsedYearFilters(raw) {
     }
 }
 
-function parseProcessedQuery(raw) {
-    const text = String(raw || '').trim();
-    if (!text || text.length > 700 || /[\r\n]/.test(text)) return null;
-    // Only accept query-parser output that contains recognised PubMed field tags.
-    if (!/\[(tiab|title|lang|mesh terms|publication type|pdat)\]/i.test(text)) return null;
-    return text;
+const QUERY_STUDY_TYPE_PATTERNS = [
+    [/randomi[sz]ed controlled trial|rct\b/i, '"Randomized Controlled Trial"[Publication Type]'],
+    [/systematic review/i, '"Systematic Review"[Publication Type]'],
+    [/meta[- ]analysis/i, '"Meta-Analysis"[Publication Type]'],
+    [/clinical trial/i, '"Clinical Trial"[Publication Type]'],
+    [/practice guideline|guideline/i, '"Practice Guideline"[Publication Type]'],
+    [/cohort/i, '"Cohort Studies"[MeSH Terms]'],
+    [/case[- ]control/i, '"Case-Control Studies"[MeSH Terms]'],
+    [/cross[- ]sectional/i, '"Cross-Sectional Studies"[MeSH Terms]'],
+];
+
+function inferServerQueryHints(query) {
+    const text = String(query || '');
+    const studyTypes = [];
+    for (const [pattern, clause] of QUERY_STUDY_TYPE_PATTERNS) {
+        if (pattern.test(text) && !studyTypes.includes(clause)) studyTypes.push(clause);
+    }
+    const yearFilters = [];
+    const yearRangeMatch = text.match(/\b((?:19|20)\d{2})\s*[-–]\s*((?:19|20)\d{2})\b/);
+    if (yearRangeMatch) yearFilters.push(`${yearRangeMatch[1]}:${yearRangeMatch[2]}[PDAT]`);
+    return { studyTypes, yearFilters };
 }
 
 function parseSearchRequestQuery(req) {
     const previousQueries = parsePreviousQueries(req.query?.previousQueries);
-    const parsedStudyTypes = parseParsedStudyTypes(req.query?.parsedStudyTypes);
-    const parsedYearFilters = parseParsedYearFilters(req.query?.parsedYearFilters);
-    const processedQuery = parseProcessedQuery(req.query?.processedQuery);
+    const serverHints = inferServerQueryHints(req.query?.q || req.query?.query || '');
+    const parsedStudyTypes = [
+        ...serverHints.studyTypes,
+        ...parseParsedStudyTypes(req.query?.parsedStudyTypes),
+    ].filter((value, index, arr) => arr.indexOf(value) === index);
+    const parsedYearFilters = [
+        ...serverHints.yearFilters,
+        ...parseParsedYearFilters(req.query?.parsedYearFilters),
+    ].filter((value, index, arr) => arr.indexOf(value) === index).slice(0, 2);
     const intelligenceMode = req.query?.intelligence === 'async' ? 'async' : 'sync';
-    return { previousQueries, parsedStudyTypes, parsedYearFilters, processedQuery, intelligenceMode };
+    return { previousQueries, parsedStudyTypes, parsedYearFilters, intelligenceMode };
 }
 
 function yearInFilters(article, yearFilters = []) {
@@ -89,7 +110,49 @@ function yearInFilters(article, yearFilters = []) {
     });
 }
 
-function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMeshTerms = [], parsedYearFilters = [] }) {
+const PICO_STOPWORDS = new Set([
+    'the', 'and', 'or', 'with', 'without', 'versus', 'vs', 'compared', 'comparison',
+    'control', 'placebo', 'standard', 'usual', 'care', 'therapy', 'treatment',
+    'intervention', 'patients', 'adults', 'children', 'outcome', 'outcomes',
+]);
+
+function normalizePicoTerms(value) {
+    return String(value || '')
+        .toLowerCase()
+        .replace(/[^\w\s/-]/g, ' ')
+        .split(/\s+(?:or|and|versus|vs|compared with|against)\s+|\s*[,;/]\s*/)
+        .flatMap((part) => {
+            const phrase = part.replace(/\s+/g, ' ').trim();
+            const tokens = phrase.split(/\s+/).filter((t) => t.length > 2 && !PICO_STOPWORDS.has(t));
+            return [
+                phrase.length >= 4 ? phrase : '',
+                ...tokens.filter((token) => token.length >= 4),
+            ];
+        })
+        .filter(Boolean)
+        .filter((term, index, arr) => arr.indexOf(term) === index)
+        .slice(0, 8);
+}
+
+function textMatchesPicoConcept(text, value) {
+    const terms = normalizePicoTerms(value);
+    if (terms.length === 0) return true;
+    const haystack = String(text || '').toLowerCase();
+    return terms.some((term) => haystack.includes(term));
+}
+
+function matchesPicoInterventionComparator(article, pico, query = '') {
+    if (!pico || Number(pico.confidence || 0) < 0.55) return true;
+    const text = `${String(article.title || '')} ${String(article.abstract || '')}`;
+    const intervention = String(pico.intervention || '').trim();
+    const comparison = String(pico.comparison || pico.comparator || '').trim();
+    if (intervention && !textMatchesPicoConcept(text, intervention)) return false;
+    const querySignalsComparator = /\b(vs|versus|compared with|compared to|against|than|non[- ]inferior|superior)\b/i.test(query);
+    if (comparison && querySignalsComparator && !textMatchesPicoConcept(text, comparison)) return false;
+    return true;
+}
+
+function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMeshTerms = [], parsedYearFilters = [], pico = null }) {
     const currentYear = new Date().getFullYear();
     const queryWantsMechanisms = MECHANISM_QUERY_PATTERNS.test(String(query || ''));
     const isStrictMode = specificity === 'strict';
@@ -98,6 +161,7 @@ function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMes
     return (Array.isArray(raw) ? raw : []).filter((article) => {
         if (isOffTopic(article, query, { queryMeshTerms: meshTerms })) return false;
         if (!yearInFilters(article, parsedYearFilters)) return false;
+        if (!matchesPicoInterventionComparator(article, pico, query)) return false;
         const age = currentYear - getYear(article);
         if (getCitationCount(article) === 0 && age > 2) return false;
         if (!queryWantsMechanisms && isPreclinical(article)) return false;
@@ -156,7 +220,6 @@ async function fetchAndRankSearchArticles({
     specificity = 'moderate',
     parsedStudyTypes = [],
     parsedYearFilters = [],
-    processedQuery = null,
     previousQueries = [],
     vectorList = [],
     userId = null,
@@ -180,14 +243,13 @@ async function fetchAndRankSearchArticles({
         specificity,
         parsedStudyTypes,
         parsedYearFilters,
-        processedQuery,
     });
     const pico = await picoPromise;
     timings.fetchMs = Date.now() - started;
 
     const filterStarted = Date.now();
     const queryMeshTerms = Array.isArray(telemetry.meshExpansions) ? telemetry.meshExpansions : [];
-    const relevant = filterRelevantArticles(raw, { query, specificity, queryMeshTerms, parsedYearFilters });
+    const relevant = filterRelevantArticles(raw, { query, specificity, queryMeshTerms, parsedYearFilters, pico });
     const sanitized = relevant.map(sanitizeArticleOutput);
     timings.filterMs = Date.now() - filterStarted;
 
@@ -239,9 +301,10 @@ module.exports = {
     parsePreviousQueries,
     parseParsedStudyTypes,
     parseParsedYearFilters,
-    parseProcessedQuery,
+    inferServerQueryHints,
     parseSearchRequestQuery,
     filterRelevantArticles,
+    matchesPicoInterventionComparator,
     yearInFilters,
     prefetchTeachingArtifacts,
     fetchAndRankSearchArticles,

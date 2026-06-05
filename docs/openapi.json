@@ -1,0 +1,2201 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Medical Research Intelligence API",
+    "version": "2.0.0",
+    "description": "Multi-source medical search with AI analysis, learning, and systematic review tools.",
+    "contact": {
+      "name": "API Support",
+      "url": "https://github.com/medresearch"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3002",
+      "description": "Local development"
+    },
+    {
+      "url": "https://api.medresearch.app",
+      "description": "Production"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT obtained from /api/auth/login"
+      },
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "token",
+        "description": "Session cookie"
+      }
+    },
+    "schemas": {
+      "search": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "max": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 20
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "relevance",
+              "date"
+            ],
+            "default": "relevance"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": false
+      },
+      "analyze": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 100000
+          },
+          "analysisType": {
+            "type": "string",
+            "enum": [
+              "quick",
+              "comprehensive",
+              "critical",
+              "layperson",
+              "methodology"
+            ],
+            "default": "comprehensive"
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "gemini",
+              "mistral"
+            ],
+            "default": "auto"
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "additionalProperties": false
+      },
+      "saveArticle": {
+        "type": "object",
+        "properties": {
+          "article": {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "abstract": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "uid"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "article"
+        ],
+        "additionalProperties": false
+      },
+      "alert": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "frequency": {
+            "type": "string",
+            "enum": [
+              "daily",
+              "weekly",
+              "monthly"
+            ],
+            "default": "weekly"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": false
+      },
+      "annotation": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 5000
+          },
+          "position": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "additionalProperties": false
+      },
+      "quiz": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "articles": {
+            "type": "array",
+            "items": {}
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+            "default": 5
+          },
+          "difficulty": {
+            "type": "string",
+            "enum": [
+              "easy",
+              "medium",
+              "hard",
+              "mixed"
+            ],
+            "default": "mixed"
+          },
+          "studyRunId": {
+            "type": "integer"
+          },
+          "trainingStage": {
+            "type": "string",
+            "enum": [
+              "preclinical",
+              "early_clinical",
+              "finals",
+              "foundation_doctor"
+            ]
+          },
+          "explanationDepth": {
+            "type": "string",
+            "enum": [
+              "foundation",
+              "exam_focus",
+              "mechanistic"
+            ]
+          },
+          "explicitTargetNodeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 120
+            },
+            "maxItems": 20
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "spaced_rep",
+              "standard"
+            ]
+          },
+          "claimJobKey": {
+            "type": "string",
+            "maxLength": 160,
+            "nullable": true
+          }
+        },
+        "required": [
+          "topic"
+        ],
+        "additionalProperties": false
+      },
+      "synopsis": {
+        "type": "object",
+        "properties": {
+          "article": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "title"
+            ]
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "gemini",
+              "mistral"
+            ],
+            "default": "auto"
+          },
+          "async": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "article"
+        ],
+        "additionalProperties": false
+      },
+      "synthesize": {
+        "type": "object",
+        "properties": {
+          "articles": {
+            "type": "array",
+            "items": {},
+            "minItems": 1
+          },
+          "topic": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "gemini",
+              "mistral"
+            ],
+            "default": "auto"
+          },
+          "async": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "articles"
+        ],
+        "additionalProperties": false
+      },
+      "journalClub": {
+        "type": "object",
+        "properties": {
+          "articles": {
+            "type": "array",
+            "items": {},
+            "minItems": 1,
+            "maxItems": 15
+          },
+          "topic": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "gemini",
+              "mistral"
+            ],
+            "default": "auto"
+          }
+        },
+        "required": [
+          "articles",
+          "topic"
+        ],
+        "additionalProperties": false
+      },
+      "reviewCreate": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "question": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "ownerType": {
+            "type": "string",
+            "enum": [
+              "user",
+              "session",
+              "team"
+            ]
+          },
+          "teamId": {
+            "type": "string",
+            "maxLength": 100,
+            "oneOf": [
+              {
+                "x-required": true
+              },
+              {}
+            ]
+          },
+          "criteria": {
+            "type": "object",
+            "properties": {
+              "inclusion": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "default": []
+              },
+              "exclusion": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "default": []
+              }
+            },
+            "additionalProperties": false,
+            "default": {
+              "inclusion": [],
+              "exclusion": []
+            }
+          }
+        },
+        "required": [
+          "question"
+        ],
+        "additionalProperties": false
+      },
+      "reviewArticles": {
+        "type": "object",
+        "properties": {
+          "articles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "uid": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "uid"
+              ]
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "articles"
+        ],
+        "additionalProperties": false
+      },
+      "reviewScreening": {
+        "type": "object",
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "included",
+              "excluded",
+              "maybe"
+            ]
+          },
+          "exclusionReason": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 2000,
+            "nullable": true
+          }
+        },
+        "required": [
+          "decision"
+        ],
+        "additionalProperties": false
+      },
+      "reviewPicoExtract": {
+        "type": "object",
+        "properties": {
+          "articles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "uid": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "uid"
+              ]
+            },
+            "minItems": 1
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "gemini",
+              "mistral"
+            ],
+            "default": "auto"
+          }
+        },
+        "required": [
+          "articles"
+        ],
+        "additionalProperties": false
+      },
+      "reviewScreenAssist": {
+        "type": "object",
+        "properties": {
+          "criteria": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          },
+          "article": {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "uid"
+            ]
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "gemini",
+              "mistral"
+            ],
+            "default": "auto"
+          }
+        },
+        "required": [
+          "criteria",
+          "article"
+        ],
+        "additionalProperties": false
+      },
+      "caseAnalyze": {
+        "type": "object",
+        "properties": {
+          "caseText": {
+            "type": "string",
+            "maxLength": 5000
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "gemini",
+              "mistral"
+            ],
+            "default": "auto"
+          },
+          "topic": {
+            "type": "string",
+            "maxLength": 240,
+            "nullable": true
+          },
+          "learningMode": {
+            "type": "string",
+            "enum": [
+              "student",
+              "resident",
+              "specialist",
+              "exam"
+            ],
+            "default": "student"
+          },
+          "seedArticles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {}
+            },
+            "maxItems": 8
+          }
+        },
+        "required": [
+          "caseText"
+        ],
+        "additionalProperties": false
+      },
+      "learningProfile": {
+        "type": "object",
+        "properties": {
+          "persona": {
+            "type": "string",
+            "enum": [
+              "clinician",
+              "researcher",
+              "student"
+            ]
+          },
+          "goals": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "maxItems": 10
+          },
+          "weakTopics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "maxItems": 20
+          },
+          "strongTopics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "maxItems": 20
+          },
+          "preferredDifficulty": {
+            "type": "string",
+            "enum": [
+              "easy",
+              "medium",
+              "hard",
+              "mixed"
+            ]
+          },
+          "dailyGoalMinutes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 240
+          },
+          "trainingStage": {
+            "type": "string",
+            "enum": [
+              "preclinical",
+              "early_clinical",
+              "finals",
+              "foundation_doctor"
+            ]
+          },
+          "defaultExplanationDepth": {
+            "type": "string",
+            "enum": [
+              "foundation",
+              "exam_focus",
+              "mechanistic"
+            ]
+          },
+          "specialtyInterest": {
+            "type": "string",
+            "maxLength": 120,
+            "nullable": true
+          },
+          "studyGoal": {
+            "type": "string",
+            "maxLength": 160,
+            "nullable": true
+          },
+          "activeCurriculumId": {
+            "type": "integer",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "quizAttempt": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "studyRunId": {
+            "type": "integer"
+          },
+          "curriculumTopicId": {
+            "type": "integer"
+          },
+          "attempts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "questionId": {
+                  "type": "string"
+                },
+                "questionType": {
+                  "type": "string",
+                  "enum": [
+                    "recall",
+                    "clinical_application",
+                    "trial_interpretation",
+                    "guideline",
+                    "pitfall"
+                  ]
+                },
+                "questionText": {
+                  "type": "string",
+                  "maxLength": 5000
+                },
+                "userAnswer": {
+                  "type": "string",
+                  "maxLength": 500
+                },
+                "correctAnswer": {
+                  "type": "string",
+                  "maxLength": 500
+                },
+                "isCorrect": {
+                  "type": "boolean"
+                },
+                "timeMs": {
+                  "type": "integer"
+                },
+                "confidence": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                "sourceArticleUid": {
+                  "type": "string"
+                },
+                "sourceArticleTitle": {
+                  "type": "string",
+                  "maxLength": 500,
+                  "nullable": true
+                },
+                "outlineNodeId": {
+                  "type": "string",
+                  "maxLength": 120,
+                  "nullable": true
+                },
+                "outlineLabel": {
+                  "type": "string",
+                  "maxLength": 300,
+                  "nullable": true
+                },
+                "claimKey": {
+                  "type": "string",
+                  "maxLength": 80,
+                  "nullable": true
+                },
+                "promptVariant": {
+                  "type": "string",
+                  "maxLength": 80,
+                  "nullable": true
+                }
+              },
+              "required": [
+                "questionId",
+                "questionType",
+                "questionText",
+                "userAnswer",
+                "correctAnswer"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "topic",
+          "attempts"
+        ],
+        "additionalProperties": false
+      },
+      "studyRunCreate": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "curriculumTopicId": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "topic"
+        ],
+        "additionalProperties": false
+      },
+      "studyRunUpdate": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "completed",
+              "paused"
+            ]
+          },
+          "progress": {
+            "type": "object",
+            "properties": {}
+          },
+          "nodeCoverage": {
+            "type": "object",
+            "properties": {}
+          }
+        },
+        "additionalProperties": false
+      },
+      "agentConversation": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "topic"
+        ],
+        "additionalProperties": false
+      },
+      "agentMessageAppend": {
+        "type": "object",
+        "properties": {
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "user",
+                    "assistant"
+                  ]
+                },
+                "content": {
+                  "type": "string",
+                  "maxLength": 20000
+                },
+                "timestamp": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "role",
+                "content"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "messages"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Validation error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Authentication required",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "RateLimited": {
+        "description": "Too many requests",
+        "headers": {
+          "Retry-After": {
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Seconds until retry"
+          },
+          "X-RateLimit-Limit": {
+            "schema": {
+              "type": "integer"
+            }
+          },
+          "X-RateLimit-Remaining": {
+            "schema": {
+              "type": "integer"
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                },
+                "retryAfter": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                },
+                "requestId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "description": "Health check",
+        "tags": [
+          "System"
+        ],
+        "operationId": "get__health",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/config": {
+      "get": {
+        "summary": "Client configuration",
+        "description": "Client configuration",
+        "tags": [
+          "System"
+        ],
+        "operationId": "get__api_config",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "summary": "Prometheus metrics (admin only)",
+        "description": "Prometheus metrics (admin only)",
+        "tags": [
+          "System"
+        ],
+        "operationId": "get__metrics",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden — admin role required"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/search": {
+      "get": {
+        "summary": "Unified search",
+        "description": "Unified search",
+        "tags": [
+          "Search"
+        ],
+        "operationId": "get__api_search",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/pubmed/search": {
+      "get": {
+        "summary": "PubMed search",
+        "description": "PubMed search",
+        "tags": [
+          "Search"
+        ],
+        "operationId": "get__api_pubmed_search",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/semantic/search": {
+      "get": {
+        "summary": "Semantic Scholar search",
+        "description": "Semantic Scholar search",
+        "tags": [
+          "Search"
+        ],
+        "operationId": "get__api_semantic_search",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/openalex/search": {
+      "get": {
+        "summary": "OpenAlex search",
+        "description": "OpenAlex search",
+        "tags": [
+          "Search"
+        ],
+        "operationId": "get__api_openalex_search",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/crossref/search": {
+      "get": {
+        "summary": "Crossref search",
+        "description": "Crossref search",
+        "tags": [
+          "Search"
+        ],
+        "operationId": "get__api_crossref_search",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/search/intelligence": {
+      "post": {
+        "summary": "Search intelligence",
+        "description": "Search intelligence",
+        "tags": [
+          "Search"
+        ],
+        "operationId": "post__api_search_intelligence",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/search"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/search/mesh-suggest": {
+      "get": {
+        "summary": "MeSH suggestions",
+        "description": "MeSH suggestions",
+        "tags": [
+          "Search"
+        ],
+        "operationId": "get__api_search_mesh_suggest",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/search/vector": {
+      "post": {
+        "summary": "Vector search",
+        "description": "Vector search",
+        "tags": [
+          "Search"
+        ],
+        "operationId": "post__api_search_vector",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/ai/synopsis": {
+      "post": {
+        "summary": "Generate article synopsis",
+        "description": "Generate article synopsis",
+        "tags": [
+          "AI"
+        ],
+        "operationId": "post__api_ai_synopsis",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/synopsis"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/ai/analyze": {
+      "post": {
+        "summary": "Analyze article text",
+        "description": "Analyze article text",
+        "tags": [
+          "AI"
+        ],
+        "operationId": "post__api_ai_analyze",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/analyze"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/ai/synthesize": {
+      "post": {
+        "summary": "Synthesize multiple articles",
+        "description": "Synthesize multiple articles",
+        "tags": [
+          "AI"
+        ],
+        "operationId": "post__api_ai_synthesize",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/synthesize"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/ai/journal-club": {
+      "post": {
+        "summary": "Generate journal club material",
+        "description": "Generate journal club material",
+        "tags": [
+          "AI"
+        ],
+        "operationId": "post__api_ai_journal_club",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/journalClub"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/quiz/generate": {
+      "post": {
+        "summary": "Generate quiz",
+        "description": "Generate quiz",
+        "tags": [
+          "Learning"
+        ],
+        "operationId": "post__api_quiz_generate",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/quiz"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/quiz/from-evidence": {
+      "post": {
+        "summary": "Generate quiz from evidence",
+        "description": "Generate quiz from evidence",
+        "tags": [
+          "Learning"
+        ],
+        "operationId": "post__api_quiz_from_evidence",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/quiz"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/learning/quiz-attempt": {
+      "post": {
+        "summary": "Submit quiz attempt",
+        "description": "Submit quiz attempt",
+        "tags": [
+          "Learning"
+        ],
+        "operationId": "post__api_learning_quiz_attempt",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/quizAttempt"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/learning/mastery": {
+      "get": {
+        "summary": "Get all mastery data",
+        "description": "Get all mastery data",
+        "tags": [
+          "Learning"
+        ],
+        "operationId": "get__api_learning_mastery",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/learning/mastery/{topic}": {
+      "get": {
+        "summary": "Get mastery for topic",
+        "description": "Get mastery for topic",
+        "tags": [
+          "Learning"
+        ],
+        "operationId": "get__api_learning_mastery__topic_",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/learning/study-run": {
+      "post": {
+        "summary": "Create study run",
+        "description": "Create study run",
+        "tags": [
+          "Learning"
+        ],
+        "operationId": "post__api_learning_study_run",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/studyRunCreate"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/learning/profile": {
+      "post": {
+        "summary": "Update learning profile",
+        "description": "Update learning profile",
+        "tags": [
+          "Learning"
+        ],
+        "operationId": "post__api_learning_profile",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/learningProfile"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/reviews": {
+      "post": {
+        "summary": "Create systematic review",
+        "description": "Create systematic review",
+        "tags": [
+          "Reviews"
+        ],
+        "operationId": "post__api_reviews",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/reviewCreate"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/reviews/{id}/articles": {
+      "post": {
+        "summary": "Add articles to review",
+        "description": "Add articles to review",
+        "tags": [
+          "Reviews"
+        ],
+        "operationId": "post__api_reviews__id__articles",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/reviewArticles"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/reviews/{id}/screening": {
+      "post": {
+        "summary": "Submit screening decision",
+        "description": "Submit screening decision",
+        "tags": [
+          "Reviews"
+        ],
+        "operationId": "post__api_reviews__id__screening",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/reviewScreening"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/user/history": {
+      "get": {
+        "summary": "Search history",
+        "description": "Search history",
+        "tags": [
+          "User"
+        ],
+        "operationId": "get__api_user_history",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/user/saved": {
+      "get": {
+        "summary": "Saved articles",
+        "description": "Saved articles",
+        "tags": [
+          "User"
+        ],
+        "operationId": "get__api_user_saved",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Save article",
+        "description": "Save article",
+        "tags": [
+          "User"
+        ],
+        "operationId": "post__api_user_saved",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/saveArticle"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/alerts": {
+      "post": {
+        "summary": "Create alert",
+        "description": "Create alert",
+        "tags": [
+          "Alerts"
+        ],
+        "operationId": "post__api_alerts",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/alert"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/annotations": {
+      "post": {
+        "summary": "Create annotation",
+        "description": "Create annotation",
+        "tags": [
+          "Annotations"
+        ],
+        "operationId": "post__api_annotations",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/annotation"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/agent/conversation": {
+      "post": {
+        "summary": "Start agent conversation",
+        "description": "Start agent conversation",
+        "tags": [
+          "Agent"
+        ],
+        "operationId": "post__api_agent_conversation",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/agentConversation"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/agent/conversation/{id}/messages": {
+      "post": {
+        "summary": "Append messages",
+        "description": "Append messages",
+        "tags": [
+          "Agent"
+        ],
+        "operationId": "post__api_agent_conversation__id__messages",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/agentMessageAppend"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "System",
+      "description": "Health, config, metrics"
+    },
+    {
+      "name": "Search",
+      "description": "Evidence search across sources"
+    },
+    {
+      "name": "AI",
+      "description": "LLM-powered analysis and synthesis"
+    },
+    {
+      "name": "Learning",
+      "description": "Quizzes, mastery, study runs"
+    },
+    {
+      "name": "Reviews",
+      "description": "Systematic review management"
+    },
+    {
+      "name": "User",
+      "description": "User data and saved items"
+    },
+    {
+      "name": "Alerts",
+      "description": "Search alerts and digests"
+    },
+    {
+      "name": "Annotations",
+      "description": "Article annotations"
+    },
+    {
+      "name": "Agent",
+      "description": "Conversational AI agent"
+    }
+  ]
+}

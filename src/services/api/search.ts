@@ -84,15 +84,6 @@ export class SearchApi extends BaseApiClient {
     if (opts.vector === true) params.set('vector', '1');
     if (opts.vector === false) params.set('vector', '0');
     if (filters.specificity) params.set('specificity', filters.specificity);
-    if (filters.parsedQuery?.studyTypes && filters.parsedQuery.studyTypes.length > 0) {
-      params.set('parsedStudyTypes', JSON.stringify(filters.parsedQuery.studyTypes));
-    }
-    if (filters.parsedQuery?.yearFilters && filters.parsedQuery.yearFilters.length > 0) {
-      params.set('parsedYearFilters', JSON.stringify(filters.parsedQuery.yearFilters));
-    }
-    if (filters.parsedQuery?.processedQuery) {
-      params.set('processedQuery', filters.parsedQuery.processedQuery);
-    }
     if (opts.previousQueries && opts.previousQueries.length > 0) {
       params.set('previousQueries', JSON.stringify(opts.previousQueries));
     }

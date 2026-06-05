@@ -1,0 +1,20 @@
+# Auto HTTPS via Let's Encrypt (ports 80/443 must reach this host).
+# Set DOMAIN and ACME_EMAIL in .env
+
+{
+	email {$ACME_EMAIL}
+}
+
+{$DOMAIN} {
+	encode gzip zstd
+
+	reverse_proxy web:3002 {
+		flush_interval -1
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+	}
+}

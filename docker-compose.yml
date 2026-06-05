@@ -1,10 +1,8 @@
 # ==========================================
 # Production Docker Compose
-# Full-stack orchestration with Postgres
+# Full-stack: Postgres + Redis + Web + Worker
 # Usage: docker compose up -d
 # ==========================================
-
-version: '3.8'
 
 services:
   postgres:
@@ -12,7 +10,7 @@ services:
     container_name: medsearch-pg
     environment:
       POSTGRES_USER: medsearch
-      POSTGRES_PASSWORD: medsearch
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-medsearch}
       POSTGRES_DB: medsearch
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
@@ -26,29 +24,63 @@ services:
       retries: 10
     restart: unless-stopped
 
-  medresearch-app:
+  redis:
+    image: redis:7-alpine
+    container_name: medsearch-redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - medsearch_redis:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  web:
     build:
       context: .
-      dockerfile: docker/Dockerfile
-    container_name: medresearch-prod
+      dockerfile: Dockerfile
+    container_name: medsearch-web
     ports:
       - "${NODE_PORT:-3002}:3002"
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       - NODE_ENV=production
+      - APP_ROLE=web
       - PORT=3002
-      - DATABASE_PATH=/app/data/app.db
-      - PG_VECTOR_URL=postgresql://medsearch:medsearch@postgres:5432/medsearch
-      - ENABLE_COLLABORATION_API=${ENABLE_COLLABORATION_API:-false}
+      # Postgres — auto-detected by DatabaseCore from the URL scheme
+      - DATABASE_URL=postgresql://medsearch:${POSTGRES_PASSWORD:-medsearch}@postgres:5432/medsearch
+      - PG_VECTOR_URL=postgresql://medsearch:${POSTGRES_PASSWORD:-medsearch}@postgres:5432/medsearch
+      - PGSSL=false
+      # Redis — enables BullMQ durable job queue + shared rate-limit store
+      - REDIS_URL=redis://redis:6379
+      # Auth — never disable in production
+      - DEV_DISABLE_AUTH=false
+      # Secrets (from host .env or CI secrets)
       - JWT_SECRET=${JWT_SECRET}
       - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
-      - HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
-      - SEMANTIC_SCHOLAR_KEY=${SEMANTIC_SCHOLAR_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - NCBI_API_KEY=${NCBI_API_KEY}
+      - NCBI_EMAIL=${NCBI_EMAIL}
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY:-}
+      - HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN:-}
+      - SEMANTIC_SCHOLAR_KEY=${SEMANTIC_SCHOLAR_KEY:-}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY:-}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET:-}
+      - RESEND_API_KEY=${RESEND_API_KEY:-}
+      - APP_URL=${APP_URL:-http://localhost:3002}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3002}
+      - AUTO_SEED_ON_SEARCH=false
+      - PAYWALL_ENABLED=${PAYWALL_ENABLED:-false}
     volumes:
-      - ./data:/app/data
+      - medsearch_data:/app/data
     restart: always
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3002/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
@@ -56,5 +88,45 @@ services:
       timeout: 10s
       retries: 3
 
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: medsearch-worker
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
+      - APP_ROLE=worker
+      - WORKER_HEALTH_PORT=3003
+      - DATABASE_URL=postgresql://medsearch:${POSTGRES_PASSWORD:-medsearch}@postgres:5432/medsearch
+      - PG_VECTOR_URL=postgresql://medsearch:${POSTGRES_PASSWORD:-medsearch}@postgres:5432/medsearch
+      - PGSSL=false
+      - REDIS_URL=redis://redis:6379
+      - DEV_DISABLE_AUTH=false
+      - JWT_SECRET=${JWT_SECRET}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - NCBI_API_KEY=${NCBI_API_KEY}
+      - NCBI_EMAIL=${NCBI_EMAIL}
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY:-}
+      - RESEND_API_KEY=${RESEND_API_KEY:-}
+      - APP_URL=${APP_URL:-http://localhost:3002}
+      - AUTO_SEED_ON_SEARCH=false
+    command: ["node", "server/worker.js"]
+    volumes:
+      - medsearch_data:/app/data
+    restart: always
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3003/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
 volumes:
   medsearch_pgdata:
+  medsearch_redis:
+  medsearch_data:

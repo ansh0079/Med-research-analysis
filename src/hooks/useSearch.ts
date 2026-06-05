@@ -1,6 +1,5 @@
 import { useCallback, useRef, useEffect, useState } from 'react';
 import { api } from '@services/api';
-import { queryParser } from '@services/QueryParser';
 import { useSearchContext } from '@contexts/SearchContext';
 import type { AgentGuidance, Article, LearnerContextSummary, ProactiveAlert, ProactiveEvidenceAlert, SearchFilters } from '@types';
 import { useAuth } from '@contexts/AuthContext';
@@ -160,17 +159,7 @@ export function useSearch() {
         const canUseVector = Boolean(config.features?.vectorSearch);
         const fuseVector = canUseVector && filters.useVectorSearch !== false;
 
-        // Run local query parser to extract study-type hints for backend bouquet tuning
-        const parsed = queryParser.parse(query, filters.specificity || 'moderate');
         const enrichedFilters: SearchFilters = { ...filters, maxResults };
-        if (parsed.studyTypes.length > 0 || parsed.specificity !== 'broad') {
-          enrichedFilters.parsedQuery = {
-            processedQuery: parsed.processedQuery,
-            studyTypes: parsed.studyTypes,
-            yearFilters: parsed.yearFilters,
-            specificity: parsed.specificity,
-          };
-        }
 
         const previousQueries = searchHistory.slice(-3);
         const data = await api.search(

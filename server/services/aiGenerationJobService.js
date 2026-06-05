@@ -111,7 +111,7 @@ async function generateLiveClinicalAnswer({ topic, articles = [], guidelines = [
 
 function consensusPlaceholder({ topic, articles = [], jobKey, status = 'queued', errorMessage = null }) {
     const freeArticles = selectFreeEvidence(articles, 8);
-    const abstractArticles = selectAbstractEvidence(articles, 5);
+    const abstractArticles = selectAbstractEvidence(articles, 8);
     return {
         status,
         jobKey,
@@ -161,7 +161,7 @@ function enqueueConsensusJob({ db, topic, articles, serverConfig, fetchImpl, cac
             await db.markAiGenerationJobRunning(jobKey);
             // Pre-enrich to avoid double PDF cache hits between search and synopsis
             const freeArticles = await enrichWithCachedFullText(selectFreeEvidence(articles, 8), cache, db);
-            const abstractArticles = selectAbstractEvidence(articles, 5);
+            const abstractArticles = selectAbstractEvidence(articles, 8);
             const result = await generateConsensusSynopsis({
                 topic,
                 articles,
@@ -170,7 +170,7 @@ function enqueueConsensusJob({ db, topic, articles, serverConfig, fetchImpl, cac
                 cache,
                 db,
                 limit: 8,
-                abstractLimit: 5,
+                abstractLimit: 8,
                 preEnrichedArticles: { freeArticles, abstractArticles },
             });
             await completeJobAndClaims(db, jobKey, 'consensus_synopsis', {
@@ -211,7 +211,7 @@ async function getOrEnqueueConsensusSynopsis({ db, topic, articles = [], serverC
     if (!hasDurableJobs) {
         try {
             const freeArticles = await enrichWithCachedFullText(selectFreeEvidence(articles, 8), cache, db);
-            const abstractArticles = selectAbstractEvidence(articles, 5);
+            const abstractArticles = selectAbstractEvidence(articles, 8);
             const result = await generateConsensusSynopsis({
                 topic,
                 articles,
@@ -220,7 +220,7 @@ async function getOrEnqueueConsensusSynopsis({ db, topic, articles = [], serverC
                 cache,
                 db,
                 limit: 8,
-                abstractLimit: 5,
+                abstractLimit: 8,
                 preEnrichedArticles: { freeArticles, abstractArticles },
             });
             return { ...result, jobKey };
