@@ -30,6 +30,38 @@ function safeJsonParse(raw, fallback = {}) {
     }
 }
 
+function normalizeBreakthroughMoment(entry) {
+    if (!entry) return null;
+    if (typeof entry === 'string') {
+        const moment = entry.trim();
+        return moment ? { moment, at: new Date().toISOString() } : null;
+    }
+    if (typeof entry === 'object') {
+        const moment = String(entry.moment || entry.text || '').trim();
+        if (!moment) return null;
+        return {
+            moment: moment.slice(0, 240),
+            at: entry.at || new Date().toISOString(),
+        };
+    }
+    return null;
+}
+
+function mergeBreakthroughMoments(existing = [], incoming = []) {
+    const merged = [];
+    const seen = new Set();
+    for (const raw of [...(Array.isArray(existing) ? existing : []), ...(Array.isArray(incoming) ? incoming : [])]) {
+        const normalized = normalizeBreakthroughMoment(raw);
+        if (!normalized) continue;
+        const key = normalized.moment.toLowerCase();
+        if (seen.has(key)) continue;
+        seen.add(key);
+        merged.push(normalized);
+        if (merged.length >= 8) break;
+    }
+    return merged;
+}
+
 function mergeSnapshots(existing, incoming) {
     const base = existing && typeof existing === 'object' ? existing : {};
     const add = incoming && typeof incoming === 'object' ? incoming : {};
@@ -38,6 +70,7 @@ function mergeSnapshots(existing, incoming) {
         focusAreas: uniq(base.focusAreas, add.focusAreas),
         misconceptions: uniq(base.misconceptions, add.misconceptions),
         masteredThisSession: uniq(base.masteredThisSession, add.masteredThisSession),
+        breakthroughMoments: mergeBreakthroughMoments(base.breakthroughMoments, add.breakthroughMoments),
         openQuestion: add.openQuestion || base.openQuestion || null,
         updatedAt: new Date().toISOString(),
     };
@@ -96,6 +129,7 @@ async function extractTurnLearnerSnapshot(ai, userMessage, assistantReply, topic
         focusAreas: [],
         misconceptions: [],
         masteredThisSession: [],
+        breakthroughMoments: [],
         openQuestion: null,
     };
     if (!ai) return fallback;
@@ -105,6 +139,7 @@ async function extractTurnLearnerSnapshot(ai, userMessage, assistantReply, topic
   "focusAreas": ["short phrases of topics to reinforce"],
   "misconceptions": ["likely misunderstandings if any"],
   "masteredThisSession": ["points the learner seems to have grasped"],
+  "breakthroughMoments": ["genuine aha moments, corrected misconceptions, or conceptual clicks — only if clearly present"],
   "openQuestion": "one open question or null"
 }
 
@@ -124,6 +159,7 @@ Assistant: ${String(assistantReply || '').slice(0, 700)}`;
             focusAreas: Array.isArray(parsed.focusAreas) ? parsed.focusAreas.map(String).filter(Boolean).slice(0, 5) : [],
             misconceptions: Array.isArray(parsed.misconceptions) ? parsed.misconceptions.map(String).filter(Boolean).slice(0, 5) : [],
             masteredThisSession: Array.isArray(parsed.masteredThisSession) ? parsed.masteredThisSession.map(String).filter(Boolean).slice(0, 5) : [],
+            breakthroughMoments: mergeBreakthroughMoments([], parsed.breakthroughMoments || []),
             openQuestion: parsed.openQuestion ? String(parsed.openQuestion).slice(0, 240) : null,
         };
     } catch (err) {
@@ -195,10 +231,25 @@ async function persistAgentTurnMemory({
             payload: {
                 focusAreas: learnerSnapshot.focusAreas,
                 misconceptions: learnerSnapshot.misconceptions,
+                breakthroughMoments: (learnerSnapshot.breakthroughMoments || []).map((b) => b.moment).slice(0, 4),
                 openQuestion: learnerSnapshot.openQuestion,
                 summaryChars: summary ? summary.length : 0,
             },
         }).catch((err) => logger.warn({ err }, 'agent_turn_memory event failed'));
+
+        for (const breakthrough of (turnSnapshot.breakthroughMoments || []).slice(0, 3)) {
+            await db.recordLearningEvent({
+                userId,
+                eventType: 'breakthrough_moment',
+                topic,
+                sourceType: 'agent_conversation',
+                sourceId: String(conversationId),
+                payload: {
+                    moment: breakthrough.moment,
+                    at: breakthrough.at,
+                },
+            }).catch((err) => logger.warn({ err }, 'breakthrough_moment event failed'));
+        }
 
         await recordClaimGapsFromMisconceptions({
             db,
@@ -220,5 +271,7 @@ module.exports = {
     isAgentMemoryEnabled,
     isTrivialAgentTurn,
     mergeSnapshots,
+    mergeBreakthroughMoments,
+    normalizeBreakthroughMoment,
     safeJsonParse,
 };

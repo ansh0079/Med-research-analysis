@@ -287,32 +287,48 @@ async upsertLearningProfile(userId, data) {
 // Misconception tracking
 // ==========================================
 
-async upsertUserClaimMisconception(userId, { claimKey, wrongOptionText, correctOptionText, topic }) {
+async upsertUserClaimMisconception(userId, {
+    claimKey,
+    wrongOptionText,
+    correctOptionText,
+    topic,
+    misconceptionCategory = null,
+}) {
     const normalizedTopic = this.normalizeTopic(topic);
     const existing = await this.get(
-        `SELECT id, count FROM user_claim_misconceptions WHERE user_id = ? AND claim_key = ? AND wrong_option_text = ?`,
+        `SELECT id, count, misconception_category FROM user_claim_misconceptions WHERE user_id = ? AND claim_key = ? AND wrong_option_text = ?`,
         [userId, claimKey, wrongOptionText]
     );
     const now = new Date().toISOString();
     if (existing) {
+        const categoryUpdate = (!existing.misconception_category && misconceptionCategory)
+            ? `, misconception_category = ?`
+            : '';
+        const params = categoryUpdate
+            ? [now, misconceptionCategory, existing.id]
+            : [now, existing.id];
         await this.run(
-            `UPDATE user_claim_misconceptions SET count = count + 1, last_seen_at = ? WHERE id = ?`,
-            [now, existing.id]
+            `UPDATE user_claim_misconceptions SET count = count + 1, last_seen_at = ?${categoryUpdate} WHERE id = ?`,
+            params
         );
-        return { id: existing.id, count: existing.count + 1 };
+        return {
+            id: existing.id,
+            count: existing.count + 1,
+            misconceptionCategory: existing.misconception_category || misconceptionCategory || null,
+        };
     }
     const result = await this.run(
-        `INSERT INTO user_claim_misconceptions (user_id, claim_key, wrong_option_text, correct_option_text, topic, normalized_topic, count, last_seen_at, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [userId, claimKey, wrongOptionText, correctOptionText || null, topic, normalizedTopic, 1, now, now]
+        `INSERT INTO user_claim_misconceptions (user_id, claim_key, wrong_option_text, correct_option_text, topic, normalized_topic, misconception_category, count, last_seen_at, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [userId, claimKey, wrongOptionText, correctOptionText || null, topic, normalizedTopic, misconceptionCategory || null, 1, now, now]
     );
-    return { id: result.lastID, count: 1 };
+    return { id: result.lastID, count: 1, misconceptionCategory: misconceptionCategory || null };
 }
 
 async getUserClaimMisconceptions(userId, topic, { limit = 3 } = {}) {
     const normalizedTopic = this.normalizeTopic(topic);
     const rows = await this.all(
-        `SELECT claim_key, wrong_option_text, correct_option_text, topic, count, last_seen_at
+        `SELECT claim_key, wrong_option_text, correct_option_text, topic, misconception_category, count, last_seen_at
          FROM user_claim_misconceptions
          WHERE user_id = ? AND normalized_topic = ?
          ORDER BY count DESC, last_seen_at DESC
@@ -324,8 +340,54 @@ async getUserClaimMisconceptions(userId, topic, { limit = 3 } = {}) {
         wrongOptionText: r.wrong_option_text,
         correctOptionText: r.correct_option_text,
         topic: r.topic,
+        misconceptionCategory: r.misconception_category || null,
         count: r.count,
         lastSeenAt: r.last_seen_at,
+    }));
+}
+
+async recordTopicMasterySnapshot(userId, {
+    topic,
+    overallScore,
+    sessionScore = null,
+    snapshotReason = 'quiz_session',
+} = {}) {
+    const normalizedTopic = this.normalizeTopic(topic);
+    const now = new Date().toISOString();
+    const result = await this.run(
+        `INSERT INTO user_topic_mastery_snapshots (user_id, topic, normalized_topic, overall_score, session_score, snapshot_reason, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [
+            userId,
+            topic,
+            normalizedTopic,
+            Math.max(0, Math.min(100, Number(overallScore) || 0)),
+            sessionScore == null ? null : Math.max(0, Math.min(100, Number(sessionScore))),
+            snapshotReason || 'quiz_session',
+            now,
+        ]
+    );
+    return { id: result.lastID, createdAt: now };
+}
+
+async listTopicMasterySnapshots(userId, topic, { limit = 30, days = 14 } = {}) {
+    const normalizedTopic = this.normalizeTopic(topic);
+    const safeLimit = Math.max(1, Math.min(Number(limit) || 30, 60));
+    const safeDays = Math.max(1, Math.min(Number(days) || 14, 365));
+    const cutoff = new Date(Date.now() - safeDays * 24 * 60 * 60 * 1000).toISOString();
+    const rows = await this.all(
+        `SELECT overall_score, session_score, snapshot_reason, created_at
+         FROM user_topic_mastery_snapshots
+         WHERE user_id = ? AND normalized_topic = ? AND created_at >= ?
+         ORDER BY created_at ASC
+         LIMIT ?`,
+        [userId, normalizedTopic, cutoff, safeLimit]
+    );
+    return rows.map((r) => ({
+        overallScore: r.overall_score,
+        sessionScore: r.session_score,
+        snapshotReason: r.snapshot_reason,
+        createdAt: r.created_at,
     }));
 }
 

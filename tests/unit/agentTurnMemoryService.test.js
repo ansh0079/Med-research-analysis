@@ -1,5 +1,6 @@
 const {
     mergeSnapshots,
+    mergeBreakthroughMoments,
     mergeConversationSummary,
     persistAgentTurnMemory,
     isTrivialAgentTurn,
@@ -14,6 +15,23 @@ describe('agentTurnMemoryService', () => {
         expect(merged.focusAreas).toEqual(expect.arrayContaining(['A', 'B']));
         expect(merged.misconceptions).toEqual(expect.arrayContaining(['old', 'new']));
         expect(merged.openQuestion).toBe('Why?');
+    });
+
+    test('mergeBreakthroughMoments dedupes and caps entries', () => {
+        const merged = mergeBreakthroughMoments(
+            [{ moment: 'Plateau pressure clicked', at: '2026-06-01T00:00:00.000Z' }],
+            ['Plateau pressure clicked', { moment: 'PEEP driving pressure distinction', at: '2026-06-02T00:00:00.000Z' }]
+        );
+        expect(merged).toHaveLength(2);
+        expect(merged[0].moment).toContain('Plateau pressure');
+    });
+
+    test('mergeSnapshots carries breakthrough moments forward', () => {
+        const merged = mergeSnapshots(
+            { breakthroughMoments: [{ moment: 'Old insight', at: '2026-06-01T00:00:00.000Z' }] },
+            { breakthroughMoments: [{ moment: 'New insight', at: '2026-06-02T00:00:00.000Z' }] }
+        );
+        expect(merged.breakthroughMoments).toHaveLength(2);
     });
 
     test('mergeConversationSummary works without AI', async () => {

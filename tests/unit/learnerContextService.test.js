@@ -81,10 +81,16 @@ describe('learnerContextService', () => {
             profileWeakTopics: ['Shock'],
             claimMastery: [{ claimKey: 'ck-1', claimText: 'Low tidal volume saves lives.', masteryState: 'weak' }],
             learningTrajectory: 'Recent learning activity on this topic',
+            uncoveredOutlineNodes: [{ id: 'tp-3', label: 'Driving pressure' }],
+            learningVelocity: { pointsPerDay: 1.2, fromScore: 40, toScore: 46, daysSpanned: 5, trend: 'improving' },
+            misconceptionCategories: [{ label: 'Clinical pitfall / trap', count: 2, examples: [] }],
         });
         expect(text).toContain('SESSION TRAJECTORY');
         expect(text).toContain('CLAIM GAPS');
         expect(text).toContain('ck-1');
+        expect(text).toContain('UNCOVERED OUTLINE NODES');
+        expect(text).toContain('LEARNING VELOCITY');
+        expect(text).toContain('MISCONCEPTION CATEGORIES');
     });
 
     test('enrichLearnerContextForQuiz attaches misconception log', async () => {

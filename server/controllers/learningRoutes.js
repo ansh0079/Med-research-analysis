@@ -8,6 +8,9 @@ const { limitBodySize, requireJson, validateBody, schemas } = require('../utils/
 const spacedRep = require('../services/spacedRepService');
 const { resolveProvider } = require('../utils/aiProvider');
 const { getPersonalisedRecommendations } = require('../services/learningAgentService');
+const { applyEffectiveDifficultyCalibration, sessionScorePct } = require('../services/learningDifficultyService');
+const { inferMisconceptionCategory } = require('../services/misconceptionCategoryService');
+const { recordMasterySnapshot, getLearningVelocity } = require('../services/learningVelocityService');
 
 function registerLearningRoutes(app, deps) {
     const { db, requireAuthJwt, requireVerifiedEmail, rateLimit, serverConfig, fetch: fetchImpl } = deps;
@@ -793,6 +796,11 @@ function registerLearningRoutes(app, deps) {
                         wrongOptionText: String(attempt.userAnswer || '').slice(0, 500),
                         correctOptionText: String(attempt.correctAnswer || '').slice(0, 500),
                         topic,
+                        misconceptionCategory: inferMisconceptionCategory({
+                            questionType: attempt.questionType,
+                            reasoningTags: attempt.reasoningTags || [],
+                            claimKey: attempt.claimKey,
+                        }),
                     }).catch((err) => { logger.warn({ err }, 'upsertUserClaimMisconception failed'); return null; });
                 }
             }
@@ -861,20 +869,24 @@ function registerLearningRoutes(app, deps) {
                 await db.upsertLearningProfile(userId, updated);
             }
 
-            // Auto-calibrate effective difficulty based on recent mastery
-            if (profile && db.updateEffectiveDifficulty) {
-                const currentEffective = profile.effectiveDifficulty || profile.preferredDifficulty || 'mixed';
-                let nextEffective = currentEffective;
-                if (mastery.overall >= 85 && currentEffective === 'easy') nextEffective = 'medium';
-                else if (mastery.overall >= 80 && currentEffective === 'medium') nextEffective = 'mixed';
-                else if (mastery.overall >= 75 && currentEffective === 'mixed') nextEffective = 'hard';
-                else if (mastery.overall < 50 && currentEffective === 'hard') nextEffective = 'mixed';
-                else if (mastery.overall < 45 && currentEffective === 'mixed') nextEffective = 'medium';
-                else if (mastery.overall < 40 && currentEffective === 'medium') nextEffective = 'easy';
-                if (nextEffective !== currentEffective) {
-                    void db.updateEffectiveDifficulty(userId, nextEffective).catch((err) => { logger.warn({ err }, 'updateEffectiveDifficulty failed'); return null; });
-                }
-            }
+            const sessionCorrect = attemptsWithJudgement.filter((attempt) => attempt.isCorrect).length;
+            const sessionScore = sessionScorePct(sessionCorrect, attempts.length);
+
+            await recordMasterySnapshot(db, userId, topic, {
+                overallScore: mastery.overall,
+                sessionScore,
+                reason: 'quiz_session',
+            }).catch((err) => { logger.warn({ err }, 'recordMasterySnapshot failed'); return null; });
+
+            const difficultyCalibration = await applyEffectiveDifficultyCalibration(db, userId, {
+                profile,
+                masteryOverall: mastery.overall,
+                sessionCorrect,
+                sessionTotal: attempts.length,
+            }).catch((err) => { logger.warn({ err }, 'applyEffectiveDifficultyCalibration failed'); return null; });
+
+            const learningVelocity = await getLearningVelocity(db, userId, topic, { days: 7 })
+                .catch((err) => { logger.warn({ err }, 'getLearningVelocity failed'); return null; });
 
             const ctId = curriculumTopicId != null ? Number(curriculumTopicId) : null;
             if (ctId && !Number.isNaN(ctId)) {
@@ -885,6 +897,9 @@ function registerLearningRoutes(app, deps) {
             res.json({
                 saved: attempts.length,
                 mastery,
+                sessionScore,
+                effectiveDifficulty: difficultyCalibration,
+                learningVelocity,
                 remediation: {
                     missedCount: missedAttempts.length,
                     targets: remediationTargets,
@@ -1470,6 +1485,17 @@ function registerLearningRoutes(app, deps) {
                 .sort((a, b) => a.overallScore - b.overallScore)
                 .slice(0, 5);
 
+            const velocityTopics = await Promise.all(
+                masteryList.slice(0, 8).map(async (row) => {
+                    const velocity = typeof db.listTopicMasterySnapshots === 'function'
+                        ? await getLearningVelocity(db, userId, row.topic, { days: 7 }).catch(() => null)
+                        : null;
+                    return velocity
+                        ? { topic: row.topic, overallScore: row.overallScore, learningVelocity: velocity }
+                        : null;
+                })
+            );
+
             const reviewQueue = masteryList
                 .filter((m) => m.nextReviewAt && new Date(m.nextReviewAt) <= new Date())
                 .sort((a, b) => new Date(a.nextReviewAt).getTime() - new Date(b.nextReviewAt).getTime())
@@ -1496,6 +1522,7 @@ function registerLearningRoutes(app, deps) {
                     topicsStudied: masteryList.length,
                 },
                 weakTopics,
+                learningVelocityByTopic: velocityTopics.filter(Boolean),
                 reviewQueue,
                 dueCardCount,
                 curriculaOverview,

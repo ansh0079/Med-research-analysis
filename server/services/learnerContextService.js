@@ -3,6 +3,12 @@
 const logger = require('../config/logger');
 const { buildLearningTrajectorySection, formatLearnerSnapshot } = require('./learnerStateService');
 const { applyClaimGapOverlay } = require('./claimRemediationService');
+const { computeOutlineGaps, formatUncoveredOutlinePrompt } = require('./outlineCoverageService');
+const { getLearningVelocity, formatLearningVelocity } = require('./learningVelocityService');
+const {
+    groupMisconceptionsByCategory,
+    formatCategoryMisconceptionSummary,
+} = require('./misconceptionCategoryService');
 
 async function safe(label, fn, fallback) {
     try {
@@ -99,26 +105,56 @@ function formatLearnerPromptSupplement(context, { misconceptionLog = null } = {}
         );
     }
 
+    const categorySummary = formatCategoryMisconceptionSummary(context.misconceptionCategories || []);
+    if (categorySummary) {
+        parts.push(categorySummary);
+    }
+
+    const uncoveredPrompt = formatUncoveredOutlinePrompt(context.uncoveredOutlineNodes);
+    if (uncoveredPrompt) {
+        parts.push(uncoveredPrompt);
+    }
+
+    const velocityText = formatLearningVelocity(context.learningVelocity);
+    if (velocityText) {
+        parts.push(velocityText);
+    }
+
     return parts.filter(Boolean).join('\n\n');
 }
 
 async function enrichLearnerContextForQuiz(db, params = {}) {
     const context = await buildLearnerContext(db, params);
-    if (!context || !params.userId || typeof db.getQuizAttempts !== 'function') {
+    if (!context || !params.userId) {
         return context;
     }
-    const attempts = await safe(
-        'getQuizAttempts',
-        () => db.getQuizAttempts({
-            userId: params.userId,
-            topic: params.topic,
-            limit: params.recentAttemptLimit || 20,
-        }),
-        []
-    );
+
+    const [attempts, personalMisconceptions] = await Promise.all([
+        typeof db.getQuizAttempts === 'function'
+            ? safe(
+                'getQuizAttempts',
+                () => db.getQuizAttempts({
+                    userId: params.userId,
+                    topic: params.topic,
+                    limit: params.recentAttemptLimit || 20,
+                }),
+                []
+            )
+            : Promise.resolve([]),
+        typeof db.getUserClaimMisconceptions === 'function'
+            ? safe(
+                'getUserClaimMisconceptions',
+                () => db.getUserClaimMisconceptions(params.userId, params.topic, { limit: 12 }),
+                []
+            )
+            : Promise.resolve([]),
+    ]);
+
     return {
         ...context,
         misconceptionLog: buildMisconceptionLogFromAttempts(attempts),
+        misconceptionCategories: groupMisconceptionsByCategory(personalMisconceptions),
+        personalMisconceptions,
     };
 }
 
@@ -134,6 +170,7 @@ async function buildLearnerContext(db, {
     trajectoryLimit = 10,
     trajectoryDays = 120,
     persistedConversation = null,
+    topicKnowledge = null,
 } = {}) {
     if (!db || !userId || !topic) {
         return null;
@@ -175,6 +212,28 @@ async function buildLearnerContext(db, {
     const weakTopics = compactWeakTopics(weakTopicRows, 5);
     const profileWeakTopicList = profileWeakTopics(profile);
 
+    const [outlineGaps, learningVelocity, personalMisconceptions] = await Promise.all([
+        topicKnowledge
+            ? safe(
+                'computeOutlineGaps',
+                () => computeOutlineGaps(db, userId, cleanTopic, topicKnowledge, topicMemory),
+                null
+            )
+            : Promise.resolve(null),
+        safe(
+            'getLearningVelocity',
+            () => getLearningVelocity(db, userId, cleanTopic, { days: 7 }),
+            null
+        ),
+        typeof db.getUserClaimMisconceptions === 'function'
+            ? safe(
+                'getUserClaimMisconceptions',
+                () => db.getUserClaimMisconceptions(userId, cleanTopic, { limit: 12 }),
+                []
+            )
+            : Promise.resolve([]),
+    ]);
+
     return {
         userId,
         topic: cleanTopic,
@@ -186,6 +245,11 @@ async function buildLearnerContext(db, {
         topicMemory,
         claimMastery,
         learningTrajectory,
+        learningVelocity,
+        uncoveredOutlineNodes: outlineGaps?.uncoveredNodes || [],
+        weakOutlineNodes: outlineGaps?.weakNodes || [],
+        misconceptionCategories: groupMisconceptionsByCategory(personalMisconceptions),
+        personalMisconceptions,
         persistedConversationSummary: persistedConversation?.conversationSummary || null,
         learnerSnapshot: persistedConversation?.learnerSnapshot || null,
         hasPersonalization: Boolean(
@@ -196,6 +260,8 @@ async function buildLearnerContext(db, {
             profileWeakTopicList.length ||
             claimMastery.length ||
             learningTrajectory ||
+            learningVelocity ||
+            (outlineGaps?.uncoveredNodes?.length > 0) ||
             persistedConversation?.conversationSummary
         ),
     };
@@ -214,6 +280,9 @@ function publicLearnerContextSummary(context) {
             : 0,
         hasTrajectory: Boolean(context?.learningTrajectory),
         hasConversationMemory: Boolean(context?.persistedConversationSummary || context?.learnerSnapshot),
+        uncoveredOutlineNodeCount: Array.isArray(context?.uncoveredOutlineNodes) ? context.uncoveredOutlineNodes.length : 0,
+        learningVelocity: context?.learningVelocity?.pointsPerDay ?? null,
+        learningTrend: context?.learningVelocity?.trend ?? null,
     };
 }
 

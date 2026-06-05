@@ -21,7 +21,12 @@ function formatEventLine(event) {
     const focus = Array.isArray(payload.focusAreas) && payload.focusAreas.length
         ? ` focus=${payload.focusAreas.slice(0, 2).join('; ')}`
         : '';
-    return `- [${when}] ${event.eventType}${role}${intent}${score}${weak}${areas}${focus}`.trim();
+    const breakthrough = payload.moment
+        ? ` breakthrough=${String(payload.moment).slice(0, 80)}`
+        : (Array.isArray(payload.breakthroughMoments) && payload.breakthroughMoments.length
+            ? ` breakthrough=${payload.breakthroughMoments.slice(0, 1).join('; ')}`
+            : '');
+    return `- [${when}] ${event.eventType}${role}${intent}${score}${weak}${areas}${focus}${breakthrough}`.trim();
 }
 
 /**
@@ -67,6 +72,15 @@ function formatLearnerSnapshot(snapshot) {
     }
     if (Array.isArray(snapshot.masteredThisSession) && snapshot.masteredThisSession.length) {
         parts.push(`Recently grasped: ${snapshot.masteredThisSession.slice(0, 3).join('; ')}`);
+    }
+    if (Array.isArray(snapshot.breakthroughMoments) && snapshot.breakthroughMoments.length) {
+        const moments = snapshot.breakthroughMoments
+            .map((entry) => (typeof entry === 'string' ? entry : entry?.moment))
+            .filter(Boolean)
+            .slice(0, 4);
+        if (moments.length) {
+            parts.push(`Breakthrough moments to build on: ${moments.join('; ')}`);
+        }
     }
     if (snapshot.openQuestion) {
         parts.push(`Open question: ${String(snapshot.openQuestion).slice(0, 240)}`);

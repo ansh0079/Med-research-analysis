@@ -1,0 +1,114 @@
+'use strict';
+
+const DIFFICULTY_LEVELS = ['easy', 'medium', 'hard', 'mixed'];
+
+function sessionScorePct(correct, total) {
+    const t = Number(total) || 0;
+    if (t <= 0) return null;
+    return Math.round((Number(correct) / t) * 100);
+}
+
+function blendScore(masteryOverall, sessionPct, sessionWeight = 0.55) {
+    const mastery = Number(masteryOverall) || 0;
+    const session = sessionPct == null ? mastery : Number(sessionPct);
+    const weight = Math.min(Math.max(Number(sessionWeight) || 0.55, 0), 1);
+    return Math.round(mastery * (1 - weight) + session * weight);
+}
+
+function demoteDifficulty(level) {
+    const map = { hard: 'mixed', mixed: 'medium', medium: 'easy', easy: 'easy' };
+    return map[level] || level;
+}
+
+function promoteDifficulty(level) {
+    const map = { easy: 'medium', medium: 'mixed', mixed: 'hard', hard: 'hard' };
+    return map[level] || level;
+}
+
+function nextDifficultyFromBlendedScore(score, currentEffective) {
+    const current = DIFFICULTY_LEVELS.includes(currentEffective) ? currentEffective : 'mixed';
+    if (score >= 88 && current === 'easy') return 'medium';
+    if (score >= 82 && current === 'medium') return 'mixed';
+    if (score >= 76 && current === 'mixed') return 'hard';
+    if (score < 42 && current === 'hard') return 'mixed';
+    if (score < 38 && current === 'mixed') return 'medium';
+    if (score < 35 && current === 'medium') return 'easy';
+    return current;
+}
+
+/**
+ * Session-aware calibration: blends lifetime mastery with this quiz batch score.
+ */
+function calibrateEffectiveDifficulty({
+    currentEffective = 'mixed',
+    masteryOverall = 0,
+    sessionCorrect = 0,
+    sessionTotal = 0,
+    sessionWeight = 0.55,
+} = {}) {
+    const previousEffective = DIFFICULTY_LEVELS.includes(currentEffective) ? currentEffective : 'mixed';
+    const sessionScore = sessionScorePct(sessionCorrect, sessionTotal);
+    const blendedScore = blendScore(masteryOverall, sessionScore, sessionWeight);
+    let nextEffective = nextDifficultyFromBlendedScore(blendedScore, previousEffective);
+    let reason = 'unchanged';
+
+    if (sessionTotal >= 3 && sessionScore != null && sessionScore < 40) {
+        const demoted = demoteDifficulty(nextEffective);
+        if (demoted !== nextEffective) {
+            nextEffective = demoted;
+            reason = 'session_underperformance';
+        }
+    } else if (sessionTotal >= 3 && sessionScore != null && sessionScore >= 90 && blendedScore >= 75) {
+        const promoted = promoteDifficulty(nextEffective);
+        if (promoted !== nextEffective) {
+            nextEffective = promoted;
+            reason = 'session_excellence';
+        }
+    }
+
+    if (nextEffective !== previousEffective && reason === 'unchanged') {
+        reason = blendedScore >= 70 ? 'mastery_progression' : 'mastery_regression';
+    }
+
+    return {
+        previousEffective,
+        nextEffective,
+        effectiveDifficulty: nextEffective,
+        changed: nextEffective !== previousEffective,
+        blendedScore,
+        sessionScore,
+        reason,
+    };
+}
+
+async function applyEffectiveDifficultyCalibration(db, userId, params = {}) {
+    if (!db || !userId || typeof db.updateEffectiveDifficulty !== 'function') {
+        return null;
+    }
+    const profile = params.profile
+        || (typeof db.getLearningProfile === 'function' ? await db.getLearningProfile(userId) : null);
+    if (!profile) return null;
+
+    const currentEffective = profile.effectiveDifficulty || profile.preferredDifficulty || 'mixed';
+    const result = calibrateEffectiveDifficulty({
+        currentEffective,
+        masteryOverall: params.masteryOverall,
+        sessionCorrect: params.sessionCorrect,
+        sessionTotal: params.sessionTotal,
+        sessionWeight: params.sessionWeight,
+    });
+
+    if (result.changed) {
+        await db.updateEffectiveDifficulty(userId, result.nextEffective);
+    }
+
+    return result;
+}
+
+module.exports = {
+    DIFFICULTY_LEVELS,
+    sessionScorePct,
+    blendScore,
+    calibrateEffectiveDifficulty,
+    applyEffectiveDifficultyCalibration,
+};

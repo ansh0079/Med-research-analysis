@@ -4,6 +4,9 @@ const { formatLearnerPromptSupplement } = require('../services/learnerContextSer
 function buildQuizPrompt(topic, articles = [], options = {}, guidelines = [], userContext = null) {
     const safeCount = Math.min(Math.max(parseInt(String(options.count || 5), 10) || 5, 3), 10);
     let difficulty = ['easy', 'medium', 'hard', 'mixed'].includes(options.difficulty) ? options.difficulty : 'mixed';
+    const profileEffectiveDifficulty = userContext?.profile?.effectiveDifficulty
+        || userContext?.profile?.preferredDifficulty
+        || null;
     const promptVariant = ['control', 'clinical_discriminator'].includes(options.promptVariant)
         ? options.promptVariant
         : 'control';
@@ -46,7 +49,10 @@ function buildQuizPrompt(topic, articles = [], options = {}, guidelines = [], us
     let adaptiveInstruction = '';
     if (userContext) {
         const { mastery, profile } = userContext;
-        if (mastery && mastery.overallScore !== undefined && difficulty === 'mixed') {
+        if (difficulty === 'mixed' && ['easy', 'medium', 'hard'].includes(profileEffectiveDifficulty)) {
+            difficulty = profileEffectiveDifficulty;
+            adaptiveInstruction = `\nADAPTIVE DIFFICULTY (auto-calibrated): effectiveDifficulty=${profileEffectiveDifficulty} from recent quiz performance.`;
+        } else if (mastery && mastery.overallScore !== undefined && difficulty === 'mixed') {
             if (mastery.overallScore < 40) difficulty = 'easy';
             else if (mastery.overallScore < 70) difficulty = 'medium';
             else difficulty = 'hard';
@@ -169,9 +175,10 @@ Recommendation: ${g.recommendation_text}${g.recommendation_strength ? ` | Streng
     let personalMisconceptionContext = '';
     const personalMisconceptions = Array.isArray(options.personalMisconceptions) ? options.personalMisconceptions : [];
     if (personalMisconceptions.length > 0) {
-        const lines = personalMisconceptions.slice(0, 3).map((m, i) =>
-            `  ${i + 1}. Claim "${m.claimKey}" — this learner has picked "${m.wrongOptionText}" ${m.count} time${m.count === 1 ? '' : 's'} instead of "${m.correctOptionText || 'the correct answer'}".`
-        ).join('\n');
+        const lines = personalMisconceptions.slice(0, 3).map((m, i) => {
+            const category = m.misconceptionCategory ? ` [${m.misconceptionCategory}]` : '';
+            return `  ${i + 1}. Claim "${m.claimKey}"${category} — this learner has picked "${m.wrongOptionText}" ${m.count} time${m.count === 1 ? '' : 's'} instead of "${m.correctOptionText || 'the correct answer'}".`;
+        }).join('\n');
         personalMisconceptionContext = `\nPERSONAL MISCONCEPTIONS — this learner has repeatedly chosen the wrong answer on these specific claims:\n${lines}\nINSTRUCTION: Generate at least one question that directly tests the same claim with a very similar distractor. In the explanation, explicitly contrast the wrong option with the correct one and clarify the distinguishing feature.\n`;
     }
 

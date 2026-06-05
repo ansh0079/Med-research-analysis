@@ -102,6 +102,7 @@ function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = []
         const { profile, mastery, weakTopics } = userContext;
         const persona = profile?.persona || 'learner';
         const preferredDifficulty = profile?.preferredDifficulty || 'mixed';
+        const effectiveDifficulty = profile?.effectiveDifficulty || preferredDifficulty;
         const dailyGoalMins = profile?.dailyGoalMinutes || 15;
         const weakTopicLabels = [
             ...(Array.isArray(weakTopics) ? weakTopics.map((t) => t.topic || t).filter(Boolean) : []),
@@ -109,8 +110,12 @@ function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = []
         ];
         const weakList = [...new Set(weakTopicLabels)].slice(0, 8).join(', ') || 'none identified yet';
 
+        const velocityLine = userContext?.learningVelocity
+            ? ` Learning velocity: ${userContext.learningVelocity.pointsPerDay > 0 ? '+' : ''}${userContext.learningVelocity.pointsPerDay} points/day (${userContext.learningVelocity.trend}).`
+            : '';
+
         const masteryText = mastery
-            ? `Mastery on this topic: ${mastery.overallScore}% overall. Breakdown — Recall: ${mastery.recallScore}%, Clinical Application: ${mastery.clinicalApplicationScore}%, Trial Interpretation: ${mastery.trialInterpretationScore}%, Guidelines: ${mastery.guidelineScore}%, Pitfalls: ${mastery.pitfallScore}%.`
+            ? `Mastery on this topic: ${mastery.overallScore}% overall. Breakdown — Recall: ${mastery.recallScore}%, Clinical Application: ${mastery.clinicalApplicationScore}%, Trial Interpretation: ${mastery.trialInterpretationScore}%, Guidelines: ${mastery.guidelineScore}%, Pitfalls: ${mastery.pitfallScore}%.${velocityLine}`
             : 'No mastery data for this topic yet.';
 
         // Identify the learner's weakest question types for this topic
@@ -132,7 +137,7 @@ function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = []
             hard: 'advanced nuance, trial critique, and controversial subgroup analysis',
             mixed: 'varied depth'
         };
-        const difficultyInstruction = `Preferred difficulty: ${preferredDifficulty} — aim for ${difficultyMap[preferredDifficulty] || 'varied depth'}.`;
+        const difficultyInstruction = `Calibrated difficulty: ${effectiveDifficulty} (preferred: ${preferredDifficulty}) — aim for ${difficultyMap[effectiveDifficulty] || difficultyMap[preferredDifficulty] || 'varied depth'}.`;
 
         // Session trajectory
         const previousQueries = userContext?.previousQueries || [];
@@ -140,10 +145,16 @@ function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = []
             ? `Session trajectory: ${previousQueries.join(' -> ')}\nKNOWLEDGE DELTA INSTRUCTION: The user has already explored the above topics in this session. Focus on NEW evidence, nuances, or contradictions NOT covered in previous steps. Avoid repeating basic points.`
             : '';
 
-        // Weak outline nodes
-        const weakOutlineNodeIds = userContext?.topicMemory?.weakOutlineNodeIds || [];
-        const weakNodeContext = weakOutlineNodeIds.length > 0
-            ? `Weak outline nodes for this topic: ${weakOutlineNodeIds.join(', ')}`
+        // Weak and uncovered outline nodes (with labels when available)
+        const weakOutlineNodes = userContext?.weakOutlineNodes || [];
+        const uncoveredOutlineNodes = userContext?.uncoveredOutlineNodes || [];
+        const weakNodeContext = weakOutlineNodes.length > 0
+            ? `Weak outline nodes for this topic:\n${weakOutlineNodes.map((node) => `- [${node.id}] ${node.label}`).join('\n')}`
+            : (userContext?.topicMemory?.weakOutlineNodeIds?.length
+                ? `Weak outline nodes for this topic: ${userContext.topicMemory.weakOutlineNodeIds.join(', ')}`
+                : '');
+        const uncoveredNodeContext = uncoveredOutlineNodes.length > 0
+            ? `Uncovered outline nodes (not yet quizzed for this learner):\n${uncoveredOutlineNodes.map((node) => `- [${node.id}] ${node.label}`).join('\n')}\nPROACTIVE INSTRUCTION: Surface at least one uncovered node when relevant — offer to teach or quiz it without waiting for the learner to ask.`
             : '';
 
         const persistedSummary = userContext?.persistedConversationSummary
@@ -197,6 +208,7 @@ function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = []
 - ${difficultyInstruction}
 ${trajectoryContext ? '\n' + trajectoryContext : ''}
 ${weakNodeContext ? '\n' + weakNodeContext : ''}
+${uncoveredNodeContext ? '\n' + uncoveredNodeContext : ''}
 ${synapseContext ? '\n' + synapseContext : ''}
 ${persistedSummaryBlock}
 ${trajectoryBlock}
@@ -205,6 +217,7 @@ ${snapshotBlock}
 CRITICAL INSTRUCTION: All responses MUST respect the SCAFFOLDING directive above.
 ACTIVE REMEDIATION: If the learner has low mastery in a specific area (see mastery breakdown), provide scaffolding first, then build up to current evidence.
 PROACTIVE LINKING: If the current query relates to one of the user's 'weak topics' or 'weak outline nodes', explicitly point out the connection and how this new evidence helps resolve that previous gap.
+BREAKTHROUGH CONTINUITY: If breakthrough moments are listed in the learner snapshot, reference them when building on prior understanding — do not re-explain from scratch what the learner already clicked on.
 BRIDGE BUILDING: If the user pivots topics (e.g. from Sepsis to AKI), identify 'Synapses'—points where the evidence for the old and new topics intersect.`;
     }
 
@@ -498,6 +511,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                         topic: trimmedTopic,
                         previousQueries,
                         persistedConversation,
+                        topicKnowledge,
                         claimLimit: 25,
                         weakTopicLimit: 10,
                         trajectoryLimit: 10,
