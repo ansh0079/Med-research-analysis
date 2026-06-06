@@ -26,9 +26,20 @@ import type {
   LearningRecommendation,
   ConsortResult,
   ArticleComparison,
+  ROBResult,
+  GRADETable,
 } from '@types';
 
 export class ReviewApi extends BaseApiClient {
+  async listReviews(options?: { limit?: number; offset?: number }): Promise<{ reviews: ReviewProject[]; limit: number; offset: number }> {
+    const params = new URLSearchParams();
+    if (options?.limit) params.set('limit', String(options.limit));
+    if (options?.offset) params.set('offset', String(options.offset));
+    const response = await this.fetchWithSession(`${API_BASE}/api/reviews?${params}`);
+    if (!response.ok) throw new Error('Failed to list reviews');
+    return response.json();
+  }
+
   async createReview(payload: {
     title?: string;
     question: string;
@@ -119,12 +130,7 @@ export class ReviewApi extends BaseApiClient {
     reviewId: string,
     articleId: string,
     provider: 'auto' | 'gemini' | 'mistral' = 'auto'
-  ): Promise<{
-    rob: Record<string, { judgement: 'low' | 'some_concerns' | 'high'; rationale: string }>;
-    provider: string;
-    model: string;
-    articleId: string;
-  }> {
+  ): Promise<{ rob: ROBResult; provider: string; model: string; articleId: string }> {
     const response = await this.fetchWithSession(
       `${API_BASE}/api/reviews/${encodeURIComponent(reviewId)}/articles/${encodeURIComponent(articleId)}/rob`,
       { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ provider }) }
@@ -166,26 +172,7 @@ export class ReviewApi extends BaseApiClient {
   async generateGradeTable(
     reviewId: string,
     provider: 'auto' | 'gemini' | 'mistral' = 'auto'
-  ): Promise<{
-    gradeTable: {
-      question: string;
-      outcomes: Array<{
-        name: string;
-        studyCount: number;
-        participantCount: number;
-        effect: string;
-        certainty: 'HIGH' | 'MODERATE' | 'LOW' | 'VERY_LOW';
-        certaintyDowngrade: string[];
-        certaintyUpgrade: string[];
-        comment: string;
-      }>;
-      overallCertainty: string;
-      limitations: string;
-    };
-    provider: string;
-    model: string;
-    includedCount: number;
-  }> {
+  ): Promise<{ gradeTable: GRADETable; provider: string; model: string; includedCount: number }> {
     const response = await this.fetchWithSession(
       `${API_BASE}/api/reviews/${encodeURIComponent(reviewId)}/grade-table`,
       { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ provider }) }
