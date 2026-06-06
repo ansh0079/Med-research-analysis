@@ -266,6 +266,22 @@ function registerReviewRoutes(app, deps) {
         };
     }
 
+    app.get('/api/reviews', requireAuthJwt, async (req, res) => {
+        try {
+            const limit = Math.min(Number(req.query.limit) || 50, 100);
+            const offset = Math.max(Number(req.query.offset) || 0, 0);
+            const projects = await reviews.listProjects({
+                ownerType: 'user',
+                ownerId: String(req.user.id),
+                limit,
+                offset,
+            });
+            res.json({ reviews: projects, limit, offset });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
     app.post('/api/reviews', requireJson, requireAuthJwt, auditLog('review.create'), validateBody(schemas.reviewCreate), async (req, res) => {
         try {
             const { question, title, criteria } = req.body;

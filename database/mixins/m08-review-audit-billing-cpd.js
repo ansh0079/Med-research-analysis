@@ -36,6 +36,20 @@ async getReviewProject(reviewId) {
     };
 }
 
+async listReviewProjects({ ownerType, ownerId, limit = 50, offset = 0 } = {}) {
+    const rows = await this.all(
+        `SELECT rp.*,
+            (SELECT COUNT(*) FROM review_articles ra WHERE ra.review_id = rp.id) AS total_articles,
+            (SELECT COUNT(*) FROM review_articles ra WHERE ra.review_id = rp.id AND ra.screening_status = 'included') AS included_count
+         FROM review_projects rp
+         WHERE rp.owner_type = ? AND rp.owner_id = ?
+         ORDER BY rp.updated_at DESC
+         LIMIT ? OFFSET ?`,
+        [ownerType, ownerId, limit, offset]
+    );
+    return rows.map((r) => ({ ...r, criteria: safeJsonParse(r.criteria, {}) }));
+}
+
 async addReviewArticles(reviewId, articles = []) {
     const now = new Date().toISOString();
     for (const article of articles) {

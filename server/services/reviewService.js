@@ -94,6 +94,10 @@ function createReviewService({ db }) {
         return db.getReviewProject(reviewId);
     }
 
+    async function listProjects({ ownerType, ownerId, limit, offset } = {}) {
+        return db.listReviewProjects({ ownerType, ownerId, limit, offset });
+    }
+
     function normalizeTitle(title) {
         return String(title || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
     }
@@ -165,6 +169,7 @@ function createReviewService({ db }) {
     return {
         createProject,
         getProject,
+        listProjects,
         addArticles,
         listArticles,
         updateScreening,
