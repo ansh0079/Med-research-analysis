@@ -2,6 +2,7 @@
 
 const { safeJsonParse, toPgVectorLiteral } = require('../lib/helpers');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
+const { assessGuidelineQuality } = require('../../server/services/guidelineQualityService');
 
 module.exports = (Sup) => class extends Sup {
 // Guideline Memory
@@ -32,6 +33,16 @@ mapGuidelineRow(row) {
         lastCheckedAt: row.last_checked_at,
         createdAt: row.created_at,
         updatedAt: row.updated_at,
+        qualityAssessment: assessGuidelineQuality({
+            sourceBody: row.source_body,
+            sourceYear: row.source_year,
+            sourceUrl: row.source_url,
+            recommendationStrength: row.recommendation_strength,
+            recommendationCertainty: row.recommendation_certainty,
+            status: row.status,
+            supersededById: row.superseded_by_id,
+            lastCheckedAt: row.last_checked_at,
+        }),
     };
 }
 
@@ -958,6 +969,60 @@ async markProactiveEvidenceAlertRead(alertId, userId) {
         userId,
     ]);
     return row ? this.mapProactiveEvidenceAlertRow(row) : null;
+}
+
+// ------------------------------------------
+// Inferred misconception tags (Phase 3)
+// ------------------------------------------
+
+async updateUserTopicMemoryMisconceptions(userId, topic, inferredMisconceptions) {
+    if (!this.kysely || !userId || !topic) return null;
+    const normalized = this.normalizeTopic(topic);
+    const json = Array.isArray(inferredMisconceptions)
+        ? JSON.stringify(inferredMisconceptions.slice(0, 20))
+        : '[]';
+    const now = new Date().toISOString();
+    await this.run(
+        `UPDATE user_topic_memory SET inferred_misconceptions = ?, updated_at = ? WHERE user_id = ? AND normalized_topic = ?`,
+        [json, now, userId, normalized]
+    );
+    return this.getUserTopicMemory(userId, topic);
+}
+
+async getUserTopicMemoryMisconceptions(userId, topic) {
+    if (!this.kysely || !userId || !topic) return [];
+    const normalized = this.normalizeTopic(topic);
+    const row = await this.get(
+        `SELECT inferred_misconceptions FROM user_topic_memory WHERE user_id = ? AND normalized_topic = ?`,
+        [userId, normalized]
+    );
+    if (!row || !row.inferred_misconceptions) return [];
+    try {
+        const parsed = JSON.parse(row.inferred_misconceptions);
+        return Array.isArray(parsed) ? parsed : [];
+    } catch {
+        return [];
+    }
+}
+
+async listUserTopicMemoryWithMisconceptions(userId, { limit = 20 } = {}) {
+    if (!this.kysely || !userId) return [];
+    const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 20, 1), 100);
+    const rows = await this.all(
+        `SELECT normalized_topic, display_topic, inferred_misconceptions, memory_tier, updated_at
+         FROM user_topic_memory
+         WHERE user_id = ? AND inferred_misconceptions IS NOT NULL AND inferred_misconceptions != '[]'
+         ORDER BY updated_at DESC
+         LIMIT ?`,
+        [userId, safeLimit]
+    );
+    return rows.map((r) => ({
+        normalizedTopic: r.normalized_topic,
+        displayTopic: r.display_topic || r.normalized_topic,
+        memoryTier: r.memory_tier || 'sparse',
+        misconceptions: safeJsonParse(r.inferred_misconceptions, []),
+        updatedAt: r.updated_at,
+    }));
 }
 
 // ==========================================

@@ -65,6 +65,7 @@ describe('vectorRoutes', () => {
 
         mockVector = {
             searchVector: jest.fn().mockResolvedValue({ articles: [{ title: 'Test' }], scores: [0.9] }),
+            semanticSearch: jest.fn().mockResolvedValue({ articles: [{ title: 'Test' }], scores: [0.9], semantic: { queryEmbeddingUsed: true } }),
             indexArticles: jest.fn().mockResolvedValue({ indexed: 1, attempted: 1, errors: [] }),
         };
         createVectorSearchService.mockReturnValue(mockVector);
@@ -114,7 +115,29 @@ describe('vectorRoutes', () => {
                 .send({ query: 'diabetes', limit: 5 });
             expect(res.status).toBe(200);
             expect(res.body.articles).toHaveLength(1);
-            expect(mockVector.searchVector).toHaveBeenCalledWith({ query: 'diabetes', limit: 5, minScore: 0.4 });
+            expect(mockVector.semanticSearch).toHaveBeenCalledWith({
+                query: 'diabetes',
+                limit: 5,
+                minScore: 0.4,
+                userEmbedding: null,
+                userProfileText: '',
+                queryWeight: 0.75,
+            });
+        });
+
+        test('accepts optional user embedding context for personalized semantic search', async () => {
+            const userEmbedding = Array.from({ length: 384 }, () => 0.01);
+            const res = await request(app)
+                .post('/api/search/vector')
+                .set('Authorization', `Bearer ${authToken()}`)
+                .send({ query: 'diabetes', limit: 5, userEmbedding, queryWeight: 0.8 });
+
+            expect(res.status).toBe(200);
+            expect(mockVector.semanticSearch).toHaveBeenCalledWith(expect.objectContaining({
+                query: 'diabetes',
+                userEmbedding,
+                queryWeight: 0.8,
+            }));
         });
     });
 

@@ -24,6 +24,8 @@ import type {
   TopicKnowledgeProposalListResponse,
   LearningHealthResponse,
   LearningRecommendation,
+  ConsortResult,
+  ArticleComparison,
 } from '@types';
 
 export class ReviewApi extends BaseApiClient {
@@ -131,6 +133,36 @@ export class ReviewApi extends BaseApiClient {
     return response.json();
   }
 
+  async compareArticles(
+    articleA: Article,
+    articleB: Article,
+    topic?: string,
+    provider: 'auto' | 'gemini' | 'mistral' = 'auto'
+  ): Promise<{ comparison: ArticleComparison; articleIdA: string; articleIdB: string; provider: string; model: string; cached?: boolean }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/ai/compare`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ articleA, articleB, topic, provider }),
+    });
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to compare articles');
+    return response.json();
+  }
+
+  async assessConsort(
+    article: Article,
+    provider: 'auto' | 'gemini' | 'mistral' = 'auto'
+  ): Promise<{ consort: ConsortResult; provider: string; model: string; articleId: string }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/ai/consort`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ article, provider }),
+    });
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to assess CONSORT adherence');
+    return response.json();
+  }
+
   async generateGradeTable(
     reviewId: string,
     provider: 'auto' | 'gemini' | 'mistral' = 'auto'
@@ -192,11 +224,16 @@ export class ReviewApi extends BaseApiClient {
     return response.json();
   }
 
-  async createAlert(query: string, sources: string[], frequency: 'daily' | 'weekly' | 'monthly'): Promise<{ alert: SavedAlert }> {
+  async createAlert(
+    query: string,
+    sources: string[],
+    frequency: 'daily' | 'weekly' | 'monthly',
+    options?: { author?: string; journal?: string }
+  ): Promise<{ alert: SavedAlert }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/alerts`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query, sources, frequency }),
+      body: JSON.stringify({ query, sources, frequency, author: options?.author, journal: options?.journal }),
     });
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));

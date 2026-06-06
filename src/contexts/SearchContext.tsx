@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useCallback, useMemo, useEf
 import { useNavigate, useLocation } from 'react-router-dom';
 import { api } from '@services/api';
 import type { AgentGuidance, Article, CommunityInsight, SearchFilters, TopicGuideStatus, TopicIntelligence } from '@types';
+import { readStoredSessionHistory, writeStoredSessionHistory } from '@utils/searchRecents';
 
 export type AppPage = 'search' | 'quiz' | 'history' | 'saved' | 'auth' | 'analytics' | 'team' | 'review' | 'case' | 'grant' | 'knowledge' | 'guidelines' | 'learning';
 
@@ -78,7 +79,7 @@ export const SearchQueryProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const [detectedTopic, setDetectedTopicState] = useState<string>(() => {
     try { return localStorage.getItem(TOPIC_STORAGE_KEY) || ''; } catch { return ''; }
   });
-  const [searchHistory, setSearchHistory] = useState<string[]>([]);
+  const [searchHistory, setSearchHistory] = useState<string[]>(() => readStoredSessionHistory());
   const [filters, setFiltersState] = useState<SearchFilters>(() => {
     const defaults: SearchFilters = {
       sources: ['pubmed', 'openalex', 'semantic'],
@@ -118,7 +119,9 @@ export const SearchQueryProvider: React.FC<{ children: React.ReactNode }> = ({ c
     setSearchHistory((prev) => {
       const trimmed = q.trim();
       if (!trimmed || prev.includes(trimmed)) return prev;
-      return [...prev, trimmed].slice(-5);
+      const next = [...prev, trimmed].slice(-8);
+      writeStoredSessionHistory(next);
+      return next;
     });
   }, []);
 

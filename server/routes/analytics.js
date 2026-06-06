@@ -1,4 +1,6 @@
-function registerAnalyticsRoutes(app, { db, rateLimit, requireAuthJwt, requireRole }) {
+const { collectQualityMetrics } = require('../services/qualityMetricsService');
+
+function registerAnalyticsRoutes(app, { db, rateLimit, requireAuthJwt, requireRole, requireJson }) {
     // Aggregate stats are admin-only — individual users should not see org-wide search volumes
     app.get('/api/analytics/summary', requireAuthJwt, requireRole('admin'), rateLimit(30, 60), async (req, res) => {
         try {
@@ -43,6 +45,66 @@ function registerAnalyticsRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
             res.json({ stats });
         } catch (error) {
             req.log.error({ err: error }, 'Daily stats error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.get('/api/analytics/quality-metrics', requireAuthJwt, requireRole('admin'), rateLimit(20, 60), async (req, res) => {
+        try {
+            const days = Math.min(90, Math.max(7, parseInt(req.query.days, 10) || 30));
+            const metrics = await collectQualityMetrics(db, days);
+            res.json(metrics);
+        } catch (error) {
+            req.log.error({ err: error }, 'Quality metrics error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    const parseJson = typeof requireJson === 'function' ? requireJson : (_req, _res, next) => next();
+
+    app.post('/api/analytics/quality-feedback', rateLimit(30, 60), parseJson, async (req, res) => {
+        const {
+            productType,
+            topic,
+            factualAccuracy,
+            completeness,
+            clinicalUsefulness,
+            timeSavedMinutes,
+            comment,
+            metadata = {},
+        } = req.body || {};
+        const type = String(productType || '').trim();
+        const allowed = new Set(['synthesis', 'case', 'agent', 'search']);
+        if (!allowed.has(type)) {
+            return res.status(400).json({ error: 'productType must be synthesis, case, agent, or search' });
+        }
+        const clampRating = (value) => {
+            const n = Number(value);
+            if (!Number.isFinite(n)) return null;
+            return Math.min(5, Math.max(1, Math.round(n)));
+        };
+        try {
+            await db.recordProductQualityFeedback({
+                userId: req.user?.id ?? null,
+                sessionId: req.sessionId,
+                productType: type,
+                topic: topic ? String(topic).slice(0, 240) : null,
+                factualAccuracy: clampRating(factualAccuracy),
+                completeness: clampRating(completeness),
+                clinicalUsefulness: clampRating(clinicalUsefulness),
+                timeSavedMinutes: timeSavedMinutes != null ? Math.max(0, Math.min(480, Number(timeSavedMinutes))) : null,
+                comment,
+                metadata,
+            });
+            await db.logEvent('quality_feedback', req.sessionId, {
+                productType: type,
+                topic: topic ? String(topic).slice(0, 120) : null,
+                clinicalUsefulness: clampRating(clinicalUsefulness),
+                timeSavedMinutes: timeSavedMinutes != null ? Number(timeSavedMinutes) : null,
+            }).catch(() => undefined);
+            res.json({ ok: true });
+        } catch (error) {
+            req.log.error({ err: error }, 'Quality feedback error');
             res.status(500).json({ error: error.message });
         }
     });

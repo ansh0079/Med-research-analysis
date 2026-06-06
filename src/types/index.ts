@@ -46,6 +46,18 @@ export interface Article {
   _ebmScore?: number;
   _ebmLabel?: { label: string; short: string };
   _isPreprint?: boolean;
+  /** Rank before personalization, based on evidence/relevance signals. */
+  _evidenceRank?: number;
+  /** Rank after learner personalization has been applied. */
+  _learningRank?: number;
+  _rankMovedByLearning?: boolean;
+  _rankReasons?: string[];
+  _ranking?: {
+    compositeScore?: number;
+    archetype?: string;
+    citations?: number;
+    year?: number;
+  };
 }
 
 export type DataSource = 'pubmed' | 'semantic' | 'crossref' | 'openalex';
@@ -407,6 +419,11 @@ export interface TopicIntelligence {
     conflictingSignals: string[];
     evidenceStrength: 'HIGH' | 'MODERATE' | 'LOW' | 'VERY_LOW' | string;
     strengthRationale: string;
+    guidelineAlignment?: {
+      status: 'aligned' | 'conflicting' | 'not_addressed' | 'guideline_stale' | 'no_guideline_supplied' | string;
+      summary: string;
+      guidelineRefs: number[];
+    };
     whatNotToOverclaim: string[];
     quizFocusPoints: string[];
     citationValidation?: {
@@ -701,6 +718,12 @@ export interface SynthesisResult {
       populationsWhereFails: string;
       whatWouldChangePractice: string;
     };
+    safetySignals?: Array<{
+      signal: string;
+      severity: 'serious' | 'moderate' | 'mild';
+      studyIndices: number[];
+      context: string;
+    }>;
     paperContributions?: Array<{
       studyIndex: number;
       mainContribution: string;
@@ -708,6 +731,7 @@ export interface SynthesisResult {
       practiceImpactClass?: PracticeImpactClassification;
       practiceImpactNote?: string;
     }>;
+    followUpQuestions?: FollowUpQuestion[];
   };
   articleCount: number;
   topic: string;
@@ -760,6 +784,14 @@ export interface SynthesisResult {
   jobKey?: string;
   status?: 'queued' | 'running' | 'completed' | 'failed';
   errorMessage?: string | null;
+  conflictMatrix?: ConflictItem[];
+  guidelineAlignment?: TrialGuidelineAlignmentSummary | null;
+}
+
+export interface FollowUpQuestion {
+  question: string;
+  rationale: string;
+  trigger: 'conflict' | 'uncertainty' | 'gap' | 'subgroup';
 }
 
 export interface Toast {
@@ -820,6 +852,22 @@ export interface SavedAlert {
   frequency: 'daily' | 'weekly' | 'monthly';
   is_active: number;
   created_at: string;
+  author_filter?: string | null;
+  journal_filter?: string | null;
+}
+
+export interface ArticleComparison {
+  overallVerdict: string;
+  studyDesign: { A: string; B: string; winner: 'A' | 'B' | 'tie'; rationale: string };
+  population: { A: string; B: string; comparability: 'comparable' | 'partially_comparable' | 'incomparable'; note: string };
+  intervention: { A: string; B: string; equivalence: 'same' | 'similar' | 'different' };
+  primaryOutcome: { A: string; B: string; outcomeCompatibility: 'same' | 'related' | 'different'; note: string };
+  riskOfBias: { A: 'HIGH' | 'MODERATE' | 'LOW'; B: 'HIGH' | 'MODERATE' | 'LOW'; A_concerns: string[]; B_concerns: string[] };
+  sampleSize: { A: string; B: string; powerNote: string };
+  keyConflicts: string[];
+  keyAgreements: string[];
+  clinicalBottomLine: string;
+  whichToTrust: { recommendation: 'A' | 'B' | 'both_equally' | 'neither'; rationale: string };
 }
 
 export interface CollectionSummary {
@@ -858,6 +906,55 @@ export interface TeamCollection {
   articleCount: number;
   createdAt: string;
   createdBy: string;
+}
+
+export type ConflictLevel = 'major' | 'minor' | 'nuanced';
+
+export type ConsortAdherence = 'adequate' | 'partial' | 'not_reported';
+
+export interface ConsortDomain {
+  adherence: ConsortAdherence;
+  rationale: string;
+}
+
+export interface ConsortResult {
+  isRct: boolean;
+  rctWarning: string | null;
+  overallAdherence: 'high' | 'moderate' | 'low';
+  overallSummary: string;
+  adequateCount: number;
+  totalDomains: number;
+  domains: {
+    title_abstract: ConsortDomain;
+    eligibility_criteria: ConsortDomain;
+    interventions: ConsortDomain;
+    outcomes: ConsortDomain;
+    sample_size: ConsortDomain;
+    randomisation: ConsortDomain;
+    blinding: ConsortDomain;
+    statistical_methods: ConsortDomain;
+    harms: ConsortDomain;
+    trial_registration: ConsortDomain;
+  };
+}
+
+export interface ConflictItem {
+  level: ConflictLevel;
+  trialIndex: number;
+  guidelineIndex: number;
+  trialClaim: string;
+  guidelineClaim: string;
+  populationGap: string;
+  clinicalNuance: string;
+  recommendation: string;
+}
+
+export interface TrialGuidelineAlignmentSummary {
+  alignedCount: number;
+  divergentCount: number;
+  majorCount?: number;
+  keyDivergence: ConflictItem | null;
+  summary?: string;
 }
 
 export interface GuidelineAlignment {
@@ -1007,6 +1104,9 @@ export interface CaseModeResult {
     howItApplies: string;
   }>;
   caseMCQs?: QuizQuestion[];
+  conflictMatrix?: ConflictItem[];
+  guidelineAlignment?: TrialGuidelineAlignmentSummary | null;
+  followUpQuestions?: FollowUpQuestion[];
 }
 
 export interface QuizState {
@@ -1051,6 +1151,13 @@ export interface GuidelineEntry {
   lastCheckedAt: string;
   createdAt: string;
   updatedAt: string;
+  qualityAssessment?: {
+    score: number;
+    level: 'high' | 'moderate' | 'low' | string;
+    checks: Record<string, boolean>;
+    flags: string[];
+    summary: string;
+  };
 }
 
 export interface GuidelineListResponse {

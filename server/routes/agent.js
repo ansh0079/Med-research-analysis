@@ -71,6 +71,36 @@ ${freshness.confidenceDecay > 0.25 ? '- Knowledge gap: this topic memory is stal
     return parts.join('\n\n') || 'No reusable teaching objects or grounded claim mastery available yet.';
 }
 
+function buildAgentEvidenceAnchors({ currentArticles = [], guidelines = [], groundedClaims = [] } = {}) {
+    return [
+        ...(Array.isArray(currentArticles) ? currentArticles.slice(0, 5).map((article) => ({
+            type: 'paper',
+            uid: article.uid || article.pmid || article.doi || null,
+            title: article.title,
+            source: article.source || article.journal || null,
+            confidence: article._quality?.score != null ? Number(article._quality.score) / 100 : null,
+        })) : []),
+        ...(Array.isArray(guidelines) ? guidelines.slice(0, 3).map((guideline) => ({
+            type: 'guideline',
+            uid: guideline.id || guideline.guidelineId || null,
+            title: guideline.recommendationText || guideline.title,
+            source: [guideline.sourceBody, guideline.sourceYear].filter(Boolean).join(' '),
+            confidence: guideline.confidence || null,
+            verificationStatus: guideline.reviewStatus || null,
+        })) : []),
+        ...(Array.isArray(groundedClaims) ? groundedClaims.slice(0, 6).map((claim) => ({
+            type: 'grounded_claim',
+            uid: claim.claimKey || null,
+            title: claim.claimText,
+            source: claim.sourcePath || null,
+            confidence: claim.confidence || null,
+            verificationStatus: claim.verificationStatus || null,
+        })) : []),
+    ];
+}
+
+const { formatMisconceptionPromptBlock } = require('../utils/misconceptionPromptBlock');
+
 function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = [], userContext = null, crossTopicBridges = [], retrieval = {}) {
     const k = topicKnowledge?.knowledge;
     const topic = topicKnowledge?.topic || 'this medical topic';
@@ -196,6 +226,12 @@ function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = []
 
         const scaffolding = stageSpecifics[normalisedStage] || stageSpecifics['finals'];
 
+        const misconceptionBlock = formatMisconceptionPromptBlock({
+            personalMisconceptions: userContext.personalMisconceptions,
+            inferredMisconceptions: userContext.inferredMisconceptions,
+            style: 'agent',
+        });
+
         learnerContext = `\n## Learner Profile
 - Role / Persona: ${persona}
 - Training Stage: ${normalisedStage || 'not specified'}
@@ -218,7 +254,7 @@ CRITICAL INSTRUCTION: All responses MUST respect the SCAFFOLDING directive above
 ACTIVE REMEDIATION: If the learner has low mastery in a specific area (see mastery breakdown), provide scaffolding first, then build up to current evidence.
 PROACTIVE LINKING: If the current query relates to one of the user's 'weak topics' or 'weak outline nodes', explicitly point out the connection and how this new evidence helps resolve that previous gap.
 BREAKTHROUGH CONTINUITY: If breakthrough moments are listed in the learner snapshot, reference them when building on prior understanding — do not re-explain from scratch what the learner already clicked on.
-BRIDGE BUILDING: If the user pivots topics (e.g. from Sepsis to AKI), identify 'Synapses'—points where the evidence for the old and new topics intersect.`;
+BRIDGE BUILDING: If the user pivots topics (e.g. from Sepsis to AKI), identify 'Synapses'—points where the evidence for the old and new topics intersect.${misconceptionBlock}`;
     }
 
     return `You are a clinical education mentor assistant specialising in evidence-based medicine.
@@ -412,7 +448,7 @@ function parseHistoryForProvider(conversationHistory, _provider) {
 
 const { formatLearnerSnapshot } = require('../services/learnerStateService');
 const { buildLearnerContext } = require('../services/learnerContextService');
-const { persistAgentTurnMemory } = require('../services/agentTurnMemoryService');
+const { persistAgentTurnMemory, reflectOnAgentSession, isSessionEndingTurn } = require('../services/agentTurnMemoryService');
 const { setupSSE, sendSSE } = require('../utils/sse');
 
 function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, requireAuthJwt }) {
@@ -475,6 +511,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
             currentArticles = [],
             previousQueries = [],
             sessionFeedback = null,
+            sessionEnd = false,
             conversationId: rawConversationId = null,
         } = req.body;
 
@@ -637,6 +674,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                             assistantReply: reply,
                             existingSummary: persistedConversation?.conversationSummary || null,
                             existingSnapshot: persistedConversation?.learnerSnapshot || null,
+                            evidenceAnchors: buildAgentEvidenceAnchors({ currentArticles, guidelines, groundedClaims }),
                         }).catch((err) => req.log?.warn?.({ err }, 'persistAgentTurnMemory failed'));
                     }
 
@@ -653,6 +691,28 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                                 weakAreas: sessionFeedback.weakAreas || [],
                             },
                         }).catch((err) => logger.warn({ err }, 'quiz_session_feedback event failed'));
+                    }
+
+                    const shouldReflect = conversationId && req.user?.id && isSessionEndingTurn(trimmedMessage, {
+                        sessionEnd: Boolean(sessionEnd),
+                        sessionFeedback,
+                    });
+                    if (shouldReflect) {
+                        await reflectOnAgentSession({
+                            db,
+                            ai,
+                            userId: req.user.id,
+                            topic: trimmedTopic,
+                            conversationId,
+                            conversationSummary: persistedConversation?.conversationSummary || conversationSummary || null,
+                            learnerSnapshot: persistedConversation?.learnerSnapshot || null,
+                            conversationHistory: [
+                                ...conversationHistory,
+                                { role: 'user', content: trimmedMessage },
+                                { role: 'assistant', content: reply },
+                            ],
+                            sessionFeedback,
+                        }).catch((err) => req.log?.warn?.({ err }, 'reflectOnAgentSession failed'));
                     }
 
                     const classifiedIntent = await inferDemandIntent(trimmedMessage, ai);
@@ -742,4 +802,4 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
     });
 }
 
-module.exports = { registerAgentRoutes, buildAgentSystemPrompt, buildRetrievalContext, extractGroundedClaimsFromReply, inferDemandIntent, inferDemandIntentRegex, buildSessionFeedbackContext, summarizeOlderMessages, formatRecentMessages };
+module.exports = { registerAgentRoutes, buildAgentSystemPrompt, buildRetrievalContext, buildAgentEvidenceAnchors, extractGroundedClaimsFromReply, inferDemandIntent, inferDemandIntentRegex, buildSessionFeedbackContext, summarizeOlderMessages, formatRecentMessages };

@@ -14,6 +14,39 @@ interface PopularSearch {
   count: number;
 }
 
+interface QualityMetricBlock {
+  sampleSize?: number;
+  mrr?: number | null;
+  ndcgAt10?: number | null;
+  ctrTop3?: number | null;
+  ctrTop10?: number | null;
+  timeToRelevantPaperMs?: number | null;
+  factualAccuracyScore?: number | null;
+  completenessScore?: number | null;
+  clinicalUsefulnessScore?: number | null;
+  avgTimeSavedMinutes?: number | null;
+  citationValidationPassRate?: number | null;
+  retentionImprovementRate?: number | null;
+  avgSearchRefinementDepth?: number | null;
+  avgKnowledgeMemoryScore?: number | null;
+  recommendationSatisfactionRate?: number | null;
+}
+
+function formatRate(value: number | null | undefined, digits = 2) {
+  if (value == null || Number.isNaN(value)) return '—';
+  return value.toFixed(digits);
+}
+
+function MetricTile({ label, value, hint }: { label: string; value: string; hint?: string }) {
+  return (
+    <div className="rounded-xl border border-slate-100 dark:border-slate-800 bg-white/70 dark:bg-slate-900/40 p-4">
+      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{label}</p>
+      <p className="text-2xl font-black text-gray-900 dark:text-white mt-1">{value}</p>
+      {hint && <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">{hint}</p>}
+    </div>
+  );
+}
+
 // Simple SVG bar chart — no external deps
 const BarChart: React.FC<{ data: DayStat[]; days: number }> = ({ data, days }) => {
   const recent = data.slice(-days);
@@ -70,6 +103,11 @@ export const AnalyticsPage: React.FC = () => {
   const [loading, setLoading] = useState(!!isAdmin);
   const [error, setError] = useState('');
   const [range, setRange] = useState<7 | 14 | 30>(30);
+  const [qualityMetrics, setQualityMetrics] = useState<{
+    search?: QualityMetricBlock;
+    synthesis?: QualityMetricBlock;
+    learningAgent?: QualityMetricBlock;
+  } | null>(null);
 
   useEffect(() => {
     if (!isAdmin) {
@@ -81,8 +119,18 @@ export const AnalyticsPage: React.FC = () => {
       try {
         setLoading(true);
         setError('');
-        const data = await api.getAnalyticsSummary();
-        if (!cancelled) setSummary(data);
+        const [data, quality] = await Promise.all([
+          api.getAnalyticsSummary(),
+          api.getQualityMetrics(range),
+        ]);
+        if (!cancelled) {
+          setSummary(data);
+          setQualityMetrics(quality as {
+            search?: QualityMetricBlock;
+            synthesis?: QualityMetricBlock;
+            learningAgent?: QualityMetricBlock;
+          });
+        }
       } catch {
         if (!cancelled) setError('Failed to load analytics. Make sure the server is running.');
       } finally {
@@ -90,7 +138,7 @@ export const AnalyticsPage: React.FC = () => {
       }
     })();
     return () => { cancelled = true; };
-  }, [isAdmin]);
+  }, [isAdmin, range]);
 
   const dailyStats = summary?.dailyStats ?? [];
   const popularSearches = summary?.popularSearches ?? [];
@@ -293,33 +341,75 @@ export const AnalyticsPage: React.FC = () => {
               )}
             </div>
 
+            <div className="space-y-4">
+              <h2 className="text-lg font-black text-gray-900 dark:text-white">Product quality metrics</h2>
+              <p className="text-xs text-gray-400 -mt-2">Search MRR/NDCG from impressions; synthesis and learning agent from user feedback and learning events.</p>
+
+              <div className="neo-card rounded-2xl p-6 space-y-4">
+                <h3 className="font-bold text-gray-900 dark:text-white">Search quality</h3>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                  <MetricTile label="MRR" value={formatRate(qualityMetrics?.search?.mrr)} hint={`n=${qualityMetrics?.search?.sampleSize ?? 0} searches`} />
+                  <MetricTile label="NDCG@10" value={formatRate(qualityMetrics?.search?.ndcgAt10)} />
+                  <MetricTile label="CTR top 3" value={formatRate(qualityMetrics?.search?.ctrTop3)} />
+                  <MetricTile label="Time to relevant" value={qualityMetrics?.search?.timeToRelevantPaperMs != null ? `${Math.round(qualityMetrics.search.timeToRelevantPaperMs / 1000)}s` : '—'} hint="avg click latency" />
+                </div>
+              </div>
+
+              <div className="neo-card rounded-2xl p-6 space-y-4">
+                <h3 className="font-bold text-gray-900 dark:text-white">Synthesis quality</h3>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                  <MetricTile label="Factual accuracy" value={formatRate(qualityMetrics?.synthesis?.factualAccuracyScore, 1)} hint={`n=${qualityMetrics?.synthesis?.sampleSize ?? 0}`} />
+                  <MetricTile label="Completeness" value={formatRate(qualityMetrics?.synthesis?.completenessScore, 1)} />
+                  <MetricTile label="Clinical usefulness" value={formatRate(qualityMetrics?.synthesis?.clinicalUsefulnessScore, 1)} />
+                  <MetricTile label="Time saved" value={qualityMetrics?.synthesis?.avgTimeSavedMinutes != null ? `${formatRate(qualityMetrics.synthesis.avgTimeSavedMinutes, 0)} min` : '—'} />
+                </div>
+              </div>
+
+              <div className="neo-card rounded-2xl p-6 space-y-4">
+                <h3 className="font-bold text-gray-900 dark:text-white">Learning agent</h3>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                  <MetricTile label="Retention" value={formatRate(qualityMetrics?.learningAgent?.retentionImprovementRate != null ? qualityMetrics.learningAgent.retentionImprovementRate * 100 : null, 0) + (qualityMetrics?.learningAgent?.retentionImprovementRate != null ? '%' : '')} />
+                  <MetricTile label="Query refinement" value={formatRate(qualityMetrics?.learningAgent?.avgSearchRefinementDepth, 1)} hint="avg session depth" />
+                  <MetricTile label="Knowledge score" value={formatRate(qualityMetrics?.learningAgent?.avgKnowledgeMemoryScore, 0)} />
+                  <MetricTile label="Satisfaction" value={formatRate(qualityMetrics?.learningAgent?.recommendationSatisfactionRate != null ? qualityMetrics.learningAgent.recommendationSatisfactionRate * 100 : null, 0) + (qualityMetrics?.learningAgent?.recommendationSatisfactionRate != null ? '%' : '')} />
+                </div>
+              </div>
+            </div>
+
             <div className="neo-card rounded-2xl p-6">
               <h2 className="font-bold text-gray-900 dark:text-white mb-5">Top searches (deployment)</h2>
               {popularSearches.length === 0 ? (
                 <p className="text-center text-gray-400 py-6 text-sm">No searches recorded yet.</p>
               ) : (
-                <div className="space-y-3">
-                  {popularSearches.slice(0, 20).map((item, i) => (
-                    <div key={item.query} className="flex items-center gap-3">
-                      <span className="w-6 text-xs font-bold text-gray-300 dark:text-slate-600 text-right shrink-0">
-                        {i + 1}
-                      </span>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2 mb-1">
-                          <span className="text-sm text-gray-800 dark:text-gray-200 truncate font-medium">
-                            {item.query}
-                          </span>
-                          <span className="text-xs text-gray-400 shrink-0">{item.count}×</span>
-                        </div>
-                        <div className="h-1.5 bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-indigo-500 rounded-full transition-all"
-                            style={{ width: `${(item.count / maxPopular) * 100}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[34rem] text-left">
+                    <caption className="sr-only">Top deployment searches ranked by query count</caption>
+                    <thead>
+                      <tr className="border-b border-slate-100 dark:border-slate-800">
+                        <th scope="col" className="w-14 px-2 py-2 text-xs font-bold uppercase text-slate-400">Rank</th>
+                        <th scope="col" className="px-2 py-2 text-xs font-bold uppercase text-slate-400">Query</th>
+                        <th scope="col" className="w-24 px-2 py-2 text-right text-xs font-bold uppercase text-slate-400">Count</th>
+                        <th scope="col" className="w-36 px-2 py-2 text-xs font-bold uppercase text-slate-400">Relative volume</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                      {popularSearches.slice(0, 20).map((item, i) => (
+                        <tr key={item.query}>
+                          <td className="px-2 py-3 text-right text-xs font-bold text-gray-300 dark:text-slate-600">{i + 1}</td>
+                          <th scope="row" className="px-2 py-3 text-left text-sm font-medium text-gray-800 dark:text-gray-200">{item.query}</th>
+                          <td className="px-2 py-3 text-right text-xs text-gray-400">{item.count}x</td>
+                          <td className="px-2 py-3">
+                            <div className="h-1.5 overflow-hidden rounded-full bg-gray-100 dark:bg-slate-700" aria-hidden="true">
+                              <div
+                                className="h-full rounded-full bg-indigo-500 transition-all"
+                                style={{ width: `${(item.count / maxPopular) * 100}%` }}
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               )}
             </div>

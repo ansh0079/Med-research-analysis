@@ -1,5 +1,5 @@
 import React, { Suspense, useState } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { SearchProvider } from './contexts/SearchContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ToastContainer, useToast } from '@components/ui';
@@ -41,11 +41,11 @@ const BillingPage         = lazyDefault(() => import('./pages/BillingPage'), 'Bi
 const SettingsPage        = lazyDefault(() => import('./pages/SettingsPage'), 'SettingsPage');
 const ResetPasswordPage   = lazyDefault(() => import('./pages/ResetPasswordPage'), 'ResetPasswordPage');
 const VerifyEmailPage     = lazyDefault(() => import('./pages/VerifyEmailPage'), 'VerifyEmailPage');
+const DashboardPage = lazyDefault(() => import('./pages/DashboardPage'), 'DashboardPage');
 const LearningDashboardPage = lazyDefault(() => import('./pages/LearningDashboardPage'), 'LearningDashboardPage');
 const StudyRunPage        = lazyDefault(() => import('./pages/StudyRunPage'), 'StudyRunPage');
 const GuidelineBrowserPage = lazyDefault(() => import('./pages/GuidelineBrowserPage'), 'GuidelineBrowserPage');
 
-const ForYouPage          = lazyDefault(() => import('./pages/ForYouPage'), 'ForYouPage');
 const StudyPathsPage      = lazyDefault(() => import('./pages/StudyPathsPage'), 'StudyPathsPage');
 const TopicPage           = lazyDefault(() => import('./pages/TopicPage'), 'TopicPage');
 const LegalTermsPage      = lazyDefault(() => import('./pages/LegalTermsPage'), 'LegalTermsPage');
@@ -149,41 +149,45 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[var(--c-bg)] transition-colors duration-300">
+      <a href="#main-content" className="skip-link">Skip to content</a>
       {showTopNav && <TopNav />}
-      <Suspense fallback={<PageFallback />}>
-        <Routes>
-          <Route path="/"          element={<RouteErrorBoundary><RootRoute /></RouteErrorBoundary>} />
-          <Route path="/search"    element={<RouteErrorBoundary><SearchPage /></RouteErrorBoundary>} />
-          <Route path="/quiz"      element={<RouteErrorBoundary><ProtectedRoute><QuizPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/practice"  element={<RouteErrorBoundary><ProtectedRoute><PracticePoolPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/history"   element={<RouteErrorBoundary><ProtectedRoute><HistoryPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/saved"     element={<RouteErrorBoundary><ProtectedRoute><SavedArticlesPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/analytics" element={<RouteErrorBoundary><ProtectedRoute><AnalyticsPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/case"      element={<RouteErrorBoundary><ProtectedRoute><CaseModePage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/grant"     element={<RouteErrorBoundary><ProtectedRoute><GrantWritingPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/knowledge" element={<RouteErrorBoundary><ProtectedRoute><KnowledgeReviewPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/guideline-library" element={<RouteErrorBoundary><ProtectedRoute><GuidelineBrowserPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/guidelines" element={<RouteErrorBoundary><ProtectedRoute><GuidelineReviewPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/for-you"  element={<RouteErrorBoundary><ProtectedRoute><ForYouPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/learning" element={<RouteErrorBoundary><ProtectedRoute><LearningDashboardPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/learning/:id" element={<RouteErrorBoundary><ProtectedRoute><StudyRunPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/topic/:topic"  element={<RouteErrorBoundary><ProtectedRoute><TopicPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/study-paths" element={<RouteErrorBoundary><ProtectedRoute><StudyPathsPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/auth"      element={<RouteErrorBoundary><GuestRoute><AuthPage /></GuestRoute></RouteErrorBoundary>} />
-          <Route path="/reset-password" element={<RouteErrorBoundary><ResetPasswordPage /></RouteErrorBoundary>} />
-          <Route path="/verify-email"   element={<RouteErrorBoundary><VerifyEmailPage /></RouteErrorBoundary>} />
-          <Route path="/settings"   element={<RouteErrorBoundary><ProtectedRoute><SettingsPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/review"    element={<RouteErrorBoundary><ProtectedRoute><ReviewAssistantPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/team"      element={<RouteErrorBoundary><ProtectedRoute><TeamWorkspacePage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/billing"   element={<RouteErrorBoundary><ProtectedRoute><BillingPage /></ProtectedRoute></RouteErrorBoundary>} />
-          <Route path="/admin/observability" element={<RouteErrorBoundary><RoleRoute allowedRoles={['admin', 'curator']}><AdminObservabilityPage /></RoleRoute></RouteErrorBoundary>} />
-          <Route path="/admin/quality" element={<RouteErrorBoundary><RoleRoute allowedRoles={['admin', 'curator']}><ClinicalQualityQueuePage /></RoleRoute></RouteErrorBoundary>} />
-          <Route path="/legal/terms"      element={<RouteErrorBoundary><LegalTermsPage /></RouteErrorBoundary>} />
-          <Route path="/legal/privacy"    element={<RouteErrorBoundary><LegalPrivacyPage /></RouteErrorBoundary>} />
-          <Route path="/legal/compliance" element={<RouteErrorBoundary><CompliancePage /></RouteErrorBoundary>} />
-          <Route path="*"          element={<RouteErrorBoundary><NotFoundPage /></RouteErrorBoundary>} />
-        </Routes>
-      </Suspense>
+      <div id="main-content" tabIndex={-1}>
+        <Suspense fallback={<PageFallback />}>
+          <Routes>
+            <Route path="/"          element={<RouteErrorBoundary><RootRoute /></RouteErrorBoundary>} />
+            <Route path="/search"    element={<RouteErrorBoundary><SearchPage /></RouteErrorBoundary>} />
+            <Route path="/quiz"      element={<RouteErrorBoundary><ProtectedRoute><QuizPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/practice"  element={<RouteErrorBoundary><ProtectedRoute><PracticePoolPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/history"   element={<RouteErrorBoundary><ProtectedRoute><HistoryPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/saved"     element={<RouteErrorBoundary><ProtectedRoute><SavedArticlesPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/analytics" element={<RouteErrorBoundary><ProtectedRoute><AnalyticsPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/case"      element={<RouteErrorBoundary><ProtectedRoute><CaseModePage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/grant"     element={<RouteErrorBoundary><ProtectedRoute><GrantWritingPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/knowledge" element={<RouteErrorBoundary><ProtectedRoute><KnowledgeReviewPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/guideline-library" element={<RouteErrorBoundary><ProtectedRoute><GuidelineBrowserPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/guidelines" element={<RouteErrorBoundary><ProtectedRoute><GuidelineReviewPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/dashboard" element={<RouteErrorBoundary><ProtectedRoute><DashboardPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/for-you"  element={<RouteErrorBoundary><Navigate to="/dashboard" replace /></RouteErrorBoundary>} />
+            <Route path="/learning" element={<RouteErrorBoundary><ProtectedRoute><LearningDashboardPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/learning/:id" element={<RouteErrorBoundary><ProtectedRoute><StudyRunPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/topic/:topic"  element={<RouteErrorBoundary><ProtectedRoute><TopicPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/study-paths" element={<RouteErrorBoundary><ProtectedRoute><StudyPathsPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/auth"      element={<RouteErrorBoundary><GuestRoute><AuthPage /></GuestRoute></RouteErrorBoundary>} />
+            <Route path="/reset-password" element={<RouteErrorBoundary><ResetPasswordPage /></RouteErrorBoundary>} />
+            <Route path="/verify-email"   element={<RouteErrorBoundary><VerifyEmailPage /></RouteErrorBoundary>} />
+            <Route path="/settings"   element={<RouteErrorBoundary><ProtectedRoute><SettingsPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/review"    element={<RouteErrorBoundary><ProtectedRoute><ReviewAssistantPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/team"      element={<RouteErrorBoundary><ProtectedRoute><TeamWorkspacePage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/billing"   element={<RouteErrorBoundary><ProtectedRoute><BillingPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/admin/observability" element={<RouteErrorBoundary><RoleRoute allowedRoles={['admin', 'curator']}><AdminObservabilityPage /></RoleRoute></RouteErrorBoundary>} />
+            <Route path="/admin/quality" element={<RouteErrorBoundary><RoleRoute allowedRoles={['admin', 'curator']}><ClinicalQualityQueuePage /></RoleRoute></RouteErrorBoundary>} />
+            <Route path="/legal/terms"      element={<RouteErrorBoundary><LegalTermsPage /></RouteErrorBoundary>} />
+            <Route path="/legal/privacy"    element={<RouteErrorBoundary><LegalPrivacyPage /></RouteErrorBoundary>} />
+            <Route path="/legal/compliance" element={<RouteErrorBoundary><CompliancePage /></RouteErrorBoundary>} />
+            <Route path="*"          element={<RouteErrorBoundary><NotFoundPage /></RouteErrorBoundary>} />
+          </Routes>
+        </Suspense>
+      </div>
 
       {showOnboarding && <OnboardingModal onDone={handleOnboardingDone} />}
 

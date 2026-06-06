@@ -8,9 +8,11 @@ const { limitBodySize, requireJson, validateBody, schemas } = require('../utils/
 const spacedRep = require('../services/spacedRepService');
 const { resolveProvider } = require('../utils/aiProvider');
 const { getPersonalisedRecommendations } = require('../services/learningAgentService');
-const { applyEffectiveDifficultyCalibration, sessionScorePct } = require('../services/learningDifficultyService');
+const { applyEffectiveDifficultyCalibration, sessionScorePct, detectPlateauAndSuggestLevelUp } = require('../services/learningDifficultyService');
 const { inferMisconceptionCategory } = require('../services/misconceptionCategoryService');
 const { recordMasterySnapshot, getLearningVelocity } = require('../services/learningVelocityService');
+const { updateInferredMisconceptionsForTopic } = require('../services/misconceptionInferenceService');
+const { analyzeQuizErrorPatterns } = require('../services/quizErrorPatternService');
 
 function registerLearningRoutes(app, deps) {
     const { db, requireAuthJwt, requireVerifiedEmail, rateLimit, serverConfig, fetch: fetchImpl } = deps;
@@ -888,10 +890,45 @@ function registerLearningRoutes(app, deps) {
             const learningVelocity = await getLearningVelocity(db, userId, topic, { days: 7 })
                 .catch((err) => { logger.warn({ err }, 'getLearningVelocity failed'); return null; });
 
+            // ── Phase 3: Infer misconception tags from repeated wrong answers ───
+            void updateInferredMisconceptionsForTopic(db, userId, topic, { lookbackLimit: 12 })
+                .catch((err) => { logger.warn({ err }, 'updateInferredMisconceptionsForTopic failed'); });
+
             const ctId = curriculumTopicId != null ? Number(curriculumTopicId) : null;
             if (ctId && !Number.isNaN(ctId)) {
                 const batchCorrect = attemptsWithJudgement.filter((a) => a.isCorrect).length;
                 await db.mergeCurriculumTopicAttemptBatch(userId, ctId, batchCorrect, attempts.length);
+            }
+
+            // ── Phase 3: Detect plateau and suggest level-up ────────────────────
+            const recentStats = stats.slice(-3);
+            const recentCorrect = recentStats.filter((s) => s.is_correct === 1).length;
+            const recentAccuracy = recentStats.length > 0 ? Math.round((recentCorrect / recentStats.length) * 100) : 0;
+            const plateauCheck = detectPlateauAndSuggestLevelUp({
+                sessionCount: stats.length,
+                recentAccuracy,
+                currentLearningMode: profile?.trainingStage || 'student',
+                difficultyRecentlyChanged: Boolean(difficultyCalibration?.changed),
+            });
+
+            const errorPatterns = analyzeQuizErrorPatterns(attemptsWithJudgement, { topic });
+            if (errorPatterns.hasPatterns && db.recordLearningEvent) {
+                void db.recordLearningEvent({
+                    userId,
+                    eventType: 'quiz_error_patterns',
+                    topic,
+                    sourceType: 'quiz_attempt',
+                    sourceId: studyRunId ? String(studyRunId) : null,
+                    payload: {
+                        sessionMissed: errorPatterns.sessionMissed,
+                        sessionTotal: errorPatterns.sessionTotal,
+                        missRate: errorPatterns.missRate,
+                        dominantReasoningTags: errorPatterns.dominantReasoningTags,
+                        recurringClaimKeys: errorPatterns.recurringClaimKeys,
+                        misconceptionCategories: errorPatterns.misconceptionCategories,
+                        recommendations: errorPatterns.recommendations,
+                    },
+                }).catch((err) => { logger.warn({ err }, 'quiz_error_patterns event failed'); });
             }
 
             res.json({
@@ -900,10 +937,13 @@ function registerLearningRoutes(app, deps) {
                 sessionScore,
                 effectiveDifficulty: difficultyCalibration,
                 learningVelocity,
+                plateauCheck,
+                errorPatterns,
                 remediation: {
                     missedCount: missedAttempts.length,
                     targets: remediationTargets,
                     nextReviewAt: nextReviewDate(mastery.overall),
+                    patternRecommendations: errorPatterns.recommendations,
                 },
             });
         } catch (error) {

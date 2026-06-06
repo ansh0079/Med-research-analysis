@@ -105,10 +105,59 @@ async function applyEffectiveDifficultyCalibration(db, userId, params = {}) {
     return result;
 }
 
+/**
+ * Detect when a user's mastery is plateauing and suggest a learning mode level-up.
+ *
+ * A plateau is defined as:
+ * - 3+ quiz sessions on the same topic
+ * - Accuracy consistently between 50–70% (not failing, not excelling)
+ * - Effective difficulty has not changed recently
+ *
+ * @param {object} params
+ * @param {number} params.sessionCount — total quiz sessions on this topic
+ * @param {number} params.recentAccuracy — accuracy % over last 2–3 sessions
+ * @param {string} params.currentLearningMode — student | resident | specialist
+ * @param {boolean} params.difficultyRecentlyChanged — whether effectiveDifficulty changed in last session
+ * @returns {{plateauDetected: boolean, suggestedMode: string|null, reason: string}}
+ */
+function detectPlateauAndSuggestLevelUp({
+    sessionCount = 0,
+    recentAccuracy = 0,
+    currentLearningMode = 'student',
+    difficultyRecentlyChanged = false,
+} = {}) {
+    const modeOrder = ['student', 'resident', 'specialist'];
+    const currentIndex = modeOrder.indexOf(currentLearningMode);
+
+    if (currentIndex === -1 || currentIndex >= modeOrder.length - 1) {
+        return { plateauDetected: false, suggestedMode: null, reason: 'already_at_max_level' };
+    }
+
+    if (sessionCount < 3) {
+        return { plateauDetected: false, suggestedMode: null, reason: 'insufficient_sessions' };
+    }
+
+    if (difficultyRecentlyChanged) {
+        return { plateauDetected: false, suggestedMode: null, reason: 'difficulty_recently_adjusted' };
+    }
+
+    const accuracy = Number(recentAccuracy) || 0;
+    if (accuracy >= 50 && accuracy <= 70) {
+        return {
+            plateauDetected: true,
+            suggestedMode: modeOrder[currentIndex + 1],
+            reason: `plateau_detected: ${accuracy}% accuracy over ${sessionCount} sessions — consider advancing to ${modeOrder[currentIndex + 1]} level`,
+        };
+    }
+
+    return { plateauDetected: false, suggestedMode: null, reason: 'accuracy_outside_plateau_range' };
+}
+
 module.exports = {
     DIFFICULTY_LEVELS,
     sessionScorePct,
     blendScore,
     calibrateEffectiveDifficulty,
     applyEffectiveDifficultyCalibration,
+    detectPlateauAndSuggestLevelUp,
 };

@@ -194,21 +194,88 @@ export const ReviewAssistantPage: React.FC = () => {
   };
 
   const exportPrismaSvg = () => {
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="760" height="420" viewBox="0 0 760 420">
-      <style>text{font-family:Arial,sans-serif}.box{fill:#eef2ff;stroke:#6366f1;stroke-width:2}.small{font-size:14px;fill:#334155}.big{font-size:24px;font-weight:700;fill:#111827}</style>
-      <rect class="box" x="260" y="24" width="240" height="70" rx="10"/><text x="380" y="53" text-anchor="middle" class="small">Records identified</text><text x="380" y="80" text-anchor="middle" class="big">${prisma.total}</text>
-      <line x1="380" y1="94" x2="380" y2="138" stroke="#94a3b8" stroke-width="2"/>
-      <rect class="box" x="260" y="138" width="240" height="70" rx="10"/><text x="380" y="167" text-anchor="middle" class="small">Screening pending</text><text x="380" y="194" text-anchor="middle" class="big">${prisma.pending}</text>
-      <line x1="380" y1="208" x2="380" y2="252" stroke="#94a3b8" stroke-width="2"/>
-      <rect class="box" x="80" y="252" width="190" height="70" rx="10"/><text x="175" y="281" text-anchor="middle" class="small">Excluded</text><text x="175" y="308" text-anchor="middle" class="big">${prisma.excluded}</text>
-      <rect class="box" x="285" y="252" width="190" height="70" rx="10"/><text x="380" y="281" text-anchor="middle" class="small">Maybe</text><text x="380" y="308" text-anchor="middle" class="big">${prisma.maybe}</text>
-      <rect class="box" x="490" y="252" width="190" height="70" rx="10"/><text x="585" y="281" text-anchor="middle" class="small">Included</text><text x="585" y="308" text-anchor="middle" class="big">${prisma.included}</text>
-    </svg>`;
+    const screened = prisma.total - prisma.pending;
+    const assessed = prisma.included + prisma.maybe;
+    const bw = 220; const bh = 64; const cx = 380;
+    const lx = cx - bw / 2; const rx = cx + bw / 2;
+    const excX = rx + 48; const excW = 170;
+    const svgW = excX + excW + 24; const svgH = 480;
+    const y0 = 20; const y1 = 148; const y2 = 276; const y3 = 404;
+    const mkBox = (x: number, y: number, label: string, value: number, accent: boolean) =>
+      `<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="8" fill="${accent ? '#eef2ff' : '#f8fafc'}" stroke="${accent ? '#6366f1' : '#94a3b8'}" stroke-width="${accent ? 2 : 1.5}"/>` +
+      `<text x="${x + bw / 2}" y="${y + 20}" text-anchor="middle" font-size="11" fill="#64748b" font-family="Arial,sans-serif">${label}</text>` +
+      `<text x="${x + bw / 2}" y="${y + 48}" text-anchor="middle" font-size="22" font-weight="700" fill="${accent ? '#4f46e5' : '#1e293b'}" font-family="Arial,sans-serif">n = ${value}</text>`;
+    const mkExc = (y: number, label: string, value: number) => {
+      const ey = y + (bh - 52) / 2;
+      return `<rect x="${excX}" y="${ey}" width="${excW}" height="52" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>` +
+        `<text x="${excX + excW / 2}" y="${ey + 18}" text-anchor="middle" font-size="11" fill="#92400e" font-family="Arial,sans-serif">${label}</text>` +
+        `<text x="${excX + excW / 2}" y="${ey + 42}" text-anchor="middle" font-size="18" font-weight="700" fill="#ea580c" font-family="Arial,sans-serif">n = ${value}</text>`;
+    };
+    const arrowDef = `<defs><marker id="a" markerWidth="8" markerHeight="8" refX="4" refY="2" orient="auto"><path d="M0,0 L0,4 L6,2 z" fill="#94a3b8"/></marker><marker id="ao" markerWidth="8" markerHeight="8" refX="4" refY="2" orient="auto"><path d="M0,0 L0,4 L6,2 z" fill="#f97316"/></marker></defs>`;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}">
+${arrowDef}
+<text x="8" y="${y0 + 22}" font-size="9" fill="#94a3b8" font-family="Arial,sans-serif" font-weight="600">IDENTIFICATION</text>
+<text x="8" y="${y1 + 22}" font-size="9" fill="#94a3b8" font-family="Arial,sans-serif" font-weight="600">SCREENING</text>
+<text x="8" y="${y2 + 22}" font-size="9" fill="#94a3b8" font-family="Arial,sans-serif" font-weight="600">ELIGIBILITY</text>
+<text x="8" y="${y3 + 22}" font-size="9" fill="#94a3b8" font-family="Arial,sans-serif" font-weight="600">INCLUDED</text>
+${mkBox(lx, y0, 'Records identified', prisma.total, true)}
+${mkBox(lx, y1, 'Records screened', screened, false)}
+${mkBox(lx, y2, 'Assessed for eligibility', assessed, false)}
+${mkBox(lx, y3, 'Studies included', prisma.included, true)}
+${mkExc(y1, 'Excluded at screening', prisma.excluded)}
+${mkExc(y2, 'Pending / under review', prisma.maybe)}
+<line x1="${cx}" y1="${y0 + bh}" x2="${cx}" y2="${y1}" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="${cx}" y1="${y1 + bh}" x2="${cx}" y2="${y2}" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="${cx}" y1="${y2 + bh}" x2="${cx}" y2="${y3}" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="${rx}" y1="${y1 + bh / 2}" x2="${excX}" y2="${y1 + bh / 2}" stroke="#f97316" stroke-width="1.5" marker-end="url(#ao)"/>
+<line x1="${rx}" y1="${y2 + bh / 2}" x2="${excX}" y2="${y2 + bh / 2}" stroke="#f97316" stroke-width="1.5" marker-end="url(#ao)"/>
+</svg>`;
     const blob = new Blob([svg], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
     link.download = 'prisma-flow.svg';
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const exportAnki = () => {
+    const included = rows.filter((r) => r.screening_status === 'included');
+    if (!included.length) return;
+    const lines: string[] = ['#separator:tab', '#html:false', '#tags column:3'];
+    for (const row of included) {
+      const a = row.article_data;
+      const pico = picoById[row.article_id];
+      const year = a.year || a.pubdate?.slice(0, 4) || '';
+      const tag = `review ${year ? `year_${year}` : ''} ${(a.pubtype ?? []).join(' ')}`.trim().replace(/\s+/g, ' ');
+      // Card 1: PICO summary
+      if (pico) {
+        const front = `${a.title}${year ? ` (${year})` : ''} — What is the PICO?`;
+        const back = [
+          pico.population ? `Population: ${pico.population}` : '',
+          pico.intervention ? `Intervention: ${pico.intervention}` : '',
+          pico.comparison ? `Comparator: ${pico.comparison}` : '',
+          pico.outcomes?.length ? `Outcomes: ${pico.outcomes.join('; ')}` : '',
+          pico.studyDesign ? `Design: ${pico.studyDesign}` : '',
+          pico.sampleSize ? `n = ${pico.sampleSize}` : '',
+        ].filter(Boolean).join('\n');
+        lines.push(`${front}\t${back}\t${tag}`);
+        // Card 2: study design + follow-up
+        if (pico.studyDesign && pico.followUp) {
+          lines.push(`${a.title}${year ? ` (${year})` : ''} — What was the study design and follow-up duration?\t${pico.studyDesign} over ${pico.followUp}\t${tag}`);
+        }
+      } else {
+        // Fallback: title + abstract snippet
+        const front = `${a.title}${year ? ` (${year})` : ''} — What is this study about?`;
+        const back = (a.abstract || '').slice(0, 400) || 'No abstract available.';
+        lines.push(`${front}\t${back}\t${tag}`);
+      }
+    }
+    const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'review-flashcards.txt';
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -269,6 +336,9 @@ export const ReviewAssistantPage: React.FC = () => {
             </Button>
             <Button variant="ghost" onClick={exportPrismaSvg} disabled={!review}>
               Export PRISMA SVG
+            </Button>
+            <Button variant="ghost" onClick={exportAnki} disabled={rows.filter((r) => r.screening_status === 'included').length === 0}>
+              Export Flashcards (Anki)
             </Button>
           </div>
           {error && <p className="text-sm text-red-600 dark:text-red-300">{error}</p>}

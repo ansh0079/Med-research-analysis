@@ -9,6 +9,7 @@ const {
     groupMisconceptionsByCategory,
     formatCategoryMisconceptionSummary,
 } = require('./misconceptionCategoryService');
+const { getInferredMisconceptionsForTopic } = require('./misconceptionInferenceService');
 
 async function safe(label, fn, fallback) {
     try {
@@ -212,7 +213,7 @@ async function buildLearnerContext(db, {
     const weakTopics = compactWeakTopics(weakTopicRows, 5);
     const profileWeakTopicList = profileWeakTopics(profile);
 
-    const [outlineGaps, learningVelocity, personalMisconceptions] = await Promise.all([
+    const [outlineGaps, learningVelocity, personalMisconceptions, inferredMisconceptions] = await Promise.all([
         topicKnowledge
             ? safe(
                 'computeOutlineGaps',
@@ -232,6 +233,11 @@ async function buildLearnerContext(db, {
                 []
             )
             : Promise.resolve([]),
+        safe(
+            'getInferredMisconceptionsForTopic',
+            () => getInferredMisconceptionsForTopic(db, userId, cleanTopic, { lookbackLimit: 12 }),
+            []
+        ),
     ]);
 
     return {
@@ -250,6 +256,7 @@ async function buildLearnerContext(db, {
         weakOutlineNodes: outlineGaps?.weakNodes || [],
         misconceptionCategories: groupMisconceptionsByCategory(personalMisconceptions),
         personalMisconceptions,
+        inferredMisconceptions,
         persistedConversationSummary: persistedConversation?.conversationSummary || null,
         learnerSnapshot: persistedConversation?.learnerSnapshot || null,
         hasPersonalization: Boolean(

@@ -9,8 +9,8 @@ module.exports = (Sup) => class extends Sup {
 // ==========================================
 
 async logSearch(sessionId, query, sources, filters, resultsCount, executionTime, ipAddress, { sessionSequenceIndex = 0, previousQueries = [] } = {}) {
-    if (!this.kysely) return;
-    return this.kysely
+    if (!this.kysely) return null;
+    const result = await this.kysely
         .insertInto('searches')
         .values({
             session_id: sessionId,
@@ -25,7 +25,9 @@ async logSearch(sessionId, query, sources, filters, resultsCount, executionTime,
             ip_address: ipAddress || null,
             created_at: new Date().toISOString()
         })
-        .execute();
+        .executeTakeFirst();
+    const id = Number(result?.insertId ?? result?.numInsertedOrUpdatedRows ?? 0);
+    return id > 0 ? { id } : null;
 }
 
 async getMaxSessionSequenceIndex(sessionId) {

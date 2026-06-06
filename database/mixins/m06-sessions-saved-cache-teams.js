@@ -292,9 +292,17 @@ async unsaveArticleFromTeam(teamId, articleId) {
 async createSearchAlert(userId, alert) {
     return this.run(
         `INSERT INTO search_alerts
-         (user_id, query, frequency, sources, email, active, created_at)
-         VALUES (?, ?, ?, ?, ?, 1, datetime('now'))`,
-        [userId, alert.query, alert.frequency || 'weekly', alert.sources || JSON.stringify(['pubmed']), alert.email || null]
+         (user_id, query, frequency, sources, email, active, created_at, author_filter, journal_filter)
+         VALUES (?, ?, ?, ?, ?, 1, datetime('now'), ?, ?)`,
+        [
+            userId,
+            alert.query,
+            alert.frequency || 'weekly',
+            alert.sources || JSON.stringify(['pubmed']),
+            alert.email || null,
+            alert.author_filter || null,
+            alert.journal_filter || null,
+        ]
     );
 }
 

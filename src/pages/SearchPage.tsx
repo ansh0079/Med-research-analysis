@@ -12,6 +12,7 @@ import { EvidenceProjectPanel } from '@components/search/EvidenceProjectPanel';
 import { TopicBriefPanel, type BriefDifficulty } from '@components/search/TopicBriefPanel';
 import { EvidenceQuizPanel } from '@components/search/EvidenceQuizPanel';
 import { EvidenceMapPanel } from '@components/search/EvidenceMapPanel';
+import { ArticleDetailDrawer } from '@components/search/ArticleDetailDrawer';
 
 import { GuidelineSnapshot } from '@components/search/GuidelineSnapshot';
 import { useSearchContext } from '@contexts/SearchContext';
@@ -21,8 +22,12 @@ import { Button } from '@components/ui/Button';
 import { SkeletonCard } from '@components/search/SkeletonCard';
 import { ResearchWorkspace } from '@components/search/ResearchWorkspace';
 import { SearchHero } from '@components/search/SearchHero';
+import { ErrorBanner } from '@components/common/ErrorBanner';
 import { TopicIntelligenceStatusBanner } from '@components/search/TopicIntelligenceStatusBanner';
 import { SearchEmptyState } from '@components/search/SearchEmptyState';
+import { LowRecallBanner } from '@components/search/LowRecallBanner';
+import { RelatedTopicsBar } from '@components/search/RelatedTopicsBar';
+import { useSearchRecents } from '@hooks/useSearchRecents';
 import { usePdfViewer } from '@hooks/usePdfViewer';
 import { api } from '@services/api';
 import { downloadText, toBibTeX, toCslJson, toRIS, toWordSummaryHtml } from '@services/exportArticles';
@@ -35,6 +40,7 @@ const SAVED_SEARCH_COUNTS_KEY = 'med_saved_search_counts';
 const CASE_PREFILL_KEY = 'med_case_prefill';
 const QUIZ_PREFILL_KEY = 'med_quiz_prefill';
 const WORKFLOW_CONTEXT_KEY = 'med_shift_workflow';
+type ResultLens = 'all' | 'open_access' | 'high_quality' | 'recent' | 'practice_changing';
 
 /** Minimal article payload for quiz/case prefill (matches server sanitize + dedupe). */
 function articleRowForTopicActions(a: Article) {
@@ -102,7 +108,12 @@ export const SearchPage: React.FC = () => {
     }
   }, [resendVerification]);
 
-  const { search, loading, error, lastSearchId, proactiveAlert, learnerContext, aiEnrichmentLoading, intelligenceLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert } = useSearch();
+  const {
+    search, loading, error, lastSearchId, searchCompletedAt, proactiveAlert, learnerContext,
+    aiEnrichmentLoading, intelligenceLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert,
+    lowRecallLearning,
+  } = useSearch();
+  const recentSearches = useSearchRecents(searchHistory, isAuthenticated);
   const {
     activePdf, isOpen, layout, openPdf, closePdf, toggleLayout,
   } = usePdfViewer();
@@ -131,6 +142,7 @@ export const SearchPage: React.FC = () => {
   const [shiftLaneLoading, setShiftLaneLoading] = useState(false);
   const [requestGuidelineAlignment, setRequestGuidelineAlignment] = useState(false);
   const [resultFilter, setResultFilter] = useState('');
+  const [resultLens, setResultLens] = useState<ResultLens>('all');
   const [anchorVerifyKey, setAnchorVerifyKey] = useState<string | null>(null);
   const canVerifyTeachingAnchor = ['admin', 'curator', 'specialist'].includes(String(user?.role || ''));
   const [visibleCount, setVisibleCount] = useState(30);
@@ -144,22 +156,44 @@ export const SearchPage: React.FC = () => {
     }
   });
   const [newPaperNotice, setNewPaperNotice] = useState<string | null>(null);
+  const [detailArticle, setDetailArticle] = useState<Article | null>(null);
   const openAccessCount = results.filter((article) => article.isFree || article.pmcid).length;
   const highQualityCount = results.filter((article) => article._quality?.grade === 'A' || article._quality?.grade === 'B').length;
   const retractedCount = results.filter((article) => article._retraction?.isRetracted).length;
+  const currentYear = new Date().getFullYear();
+  const recentCount = results.filter((article) => {
+    const year = parseInt((article.pubdate || '').slice(0, 4), 10);
+    return Number.isFinite(year) && year >= currentYear - 3;
+  }).length;
+  const practiceChangingCount = results.filter((article) => {
+    const year = parseInt((article.pubdate || '').slice(0, 4), 10);
+    const citations = article.pmcrefcount ?? article.citationCount ?? 0;
+    return Number.isFinite(year) && year >= currentYear - 3 && citations >= 100;
+  }).length;
   const visibleResults = React.useMemo(() => {
     const q = resultFilter.trim().toLowerCase();
-    if (!q) return results;
-    return results.filter((article) =>
-      [
+    return results.filter((article) => {
+      if (resultLens === 'open_access' && !(article.isFree || article.pmcid)) return false;
+      if (resultLens === 'high_quality' && !(article._quality?.grade === 'A' || article._quality?.grade === 'B')) return false;
+      if (resultLens === 'recent') {
+        const year = parseInt((article.pubdate || '').slice(0, 4), 10);
+        if (!Number.isFinite(year) || year < currentYear - 3) return false;
+      }
+      if (resultLens === 'practice_changing') {
+        const year = parseInt((article.pubdate || '').slice(0, 4), 10);
+        const citations = article.pmcrefcount ?? article.citationCount ?? 0;
+        if (!Number.isFinite(year) || year < currentYear - 3 || citations < 100) return false;
+      }
+      if (!q) return true;
+      return [
         article.title,
         article.abstract,
         article.journal,
         article.source,
         article.authors?.map((author) => author.name).join(' '),
-      ].filter(Boolean).join(' ').toLowerCase().includes(q)
-    );
-  }, [results, resultFilter]);
+      ].filter(Boolean).join(' ').toLowerCase().includes(q);
+    });
+  }, [currentYear, results, resultFilter, resultLens]);
   const renderedResults = React.useMemo(() => visibleResults.slice(0, visibleCount), [visibleCount, visibleResults]);
 
   React.useEffect(() => {
@@ -202,29 +236,64 @@ export const SearchPage: React.FC = () => {
 
   const handleSearch = React.useCallback(
     async (query: string) => {
+      const trimmed = query.trim();
+      if (!trimmed) return [];
       setSynthesis(null);
       setSynthesisError(null);
       setSynthesisLiveText('');
       setTopicGuideRefreshError(null);
-      setCurrentQuery(query);
+      setCurrentQuery(trimmed);
       setResultFilter('');
+      setResultLens('all');
       setVisibleCount(30);
-      const found = await search(query, filters);
+      const found = await search(trimmed, filters);
       try {
         const savedCounts = JSON.parse(localStorage.getItem(SAVED_SEARCH_COUNTS_KEY) || '{}') as Record<string, number>;
-        const previous = savedCounts[query.toLowerCase()];
+        const previous = savedCounts[trimmed.toLowerCase()];
         if (typeof previous === 'number' && found.length > previous) {
           setNewPaperNotice(`${found.length - previous} new paper${found.length - previous === 1 ? '' : 's'} since your last search for this query.`);
         } else {
           setNewPaperNotice(null);
         }
-        savedCounts[query.toLowerCase()] = found.length;
+        savedCounts[trimmed.toLowerCase()] = found.length;
         localStorage.setItem(SAVED_SEARCH_COUNTS_KEY, JSON.stringify(savedCounts));
       } catch {
         setNewPaperNotice(null);
       }
+      return found;
     },
     [filters, search]
+  );
+
+  const filterFingerprint = React.useMemo(
+    () => JSON.stringify({
+      sources: filters.sources,
+      specificity: filters.specificity,
+      useVectorSearch: filters.useVectorSearch,
+      studyTypes: filters.studyTypes,
+      yearRange: filters.yearRange,
+    }),
+    [filters]
+  );
+  const filterRerunSkipRef = React.useRef(true);
+  React.useEffect(() => {
+    if (filterRerunSkipRef.current) {
+      filterRerunSkipRef.current = false;
+      return;
+    }
+    const q = currentQuery.trim();
+    if (!q || loading) return;
+    const timer = window.setTimeout(() => {
+      void handleSearch(q);
+    }, 450);
+    return () => window.clearTimeout(timer);
+  }, [filterFingerprint, currentQuery, handleSearch, loading]);
+
+  const evidenceRelatedTopics = React.useMemo(
+    () => (topicIntelligence?.evidenceMap?.nodes?.relatedTopics || [])
+      .map((entry) => entry.displayTopic || entry.normalizedTopic)
+      .filter(Boolean),
+    [topicIntelligence?.evidenceMap?.nodes?.relatedTopics]
   );
 
   const openAnalysis = React.useCallback((article: Article) => {
@@ -336,11 +405,11 @@ export const SearchPage: React.FC = () => {
     return () => { cancelled = true; };
   }, [agentGuidance?.topic, currentQuery, isAuthenticated, results.length]);
 
-  const handleSynthesize = React.useCallback(async () => {
-    if (!results.length) return;
+  const handleSynthesize = React.useCallback(async (): Promise<SynthesisResult | null> => {
+    if (!results.length) return null;
     if (!isAuthenticated) {
       setSynthesisError('Sign in to use Evidence Synthesis');
-      return;
+      return null;
     }
     setSynthesisLoading(true);
     setSynthesisError(null);
@@ -376,7 +445,9 @@ export const SearchPage: React.FC = () => {
             }
           }).catch(() => undefined);
         }
+        return resolved;
       }
+      return null;
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Synthesis failed';
       if (msg === 'AUTH_REQUIRED') {
@@ -389,6 +460,7 @@ export const SearchPage: React.FC = () => {
     } finally {
       setSynthesisLoading(false);
     }
+    return null;
   }, [results, top5Articles, currentQuery, isAuthenticated]);
 
   const mapDifficultyToMode = React.useCallback((difficulty: BriefDifficulty) => {
@@ -505,7 +577,7 @@ export const SearchPage: React.FC = () => {
     handleCaseScenario(difficulty);
   }, [handleCaseScenario, isAuthenticated, results.length, trackFeatureUsage]);
 
-  const openGuidelineFromWorkflow = React.useCallback(() => {
+  const openGuidelineFromWorkflow = React.useCallback(async () => {
     saveWorkflowContext({
       topic: currentQuery,
       currentStep: 'guideline',
@@ -513,8 +585,21 @@ export const SearchPage: React.FC = () => {
       evidenceCount: results.length,
     });
     setRequestGuidelineAlignment(true);
-    document.getElementById('workflow-guideline')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, [currentQuery, results.length]);
+
+    const activeSynthesis = synthesis || (results.length > 0 && isAuthenticated ? await handleSynthesize() : null);
+
+    window.requestAnimationFrame(() => {
+      if (activeSynthesis?.conflictMatrix?.length) {
+        document.getElementById('synthesis-conflict-matrix')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+      if (activeSynthesis) {
+        document.querySelector('[data-synthesis-panel]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+      document.getElementById('workflow-guideline')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }, [currentQuery, handleSynthesize, isAuthenticated, results.length, synthesis]);
 
   const openArticleCase = React.useCallback((article: Article) => {
     const topic = (currentQuery || article.title || 'clinical evidence').trim();
@@ -766,6 +851,9 @@ export const SearchPage: React.FC = () => {
       <SearchHero
         showVerifyBanner={showVerifyBanner}
         onSearch={handleSearch}
+        searchQuery={currentQuery}
+        onSearchQueryChange={setCurrentQuery}
+        recentSearches={recentSearches}
         loading={loading}
         filters={filters}
         setFilters={setFilters}
@@ -794,6 +882,18 @@ export const SearchPage: React.FC = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-3 sm:px-4 -mt-10 sm:-mt-16 pb-24">
+        {currentQuery && (
+          <LowRecallBanner lowRecall={lowRecallLearning} onTryQuery={handleSearch} />
+        )}
+
+        {currentQuery && results.length > 0 && (
+          <RelatedTopicsBar
+            topic={currentQuery}
+            evidenceRelatedTopics={evidenceRelatedTopics}
+            onOpenTopic={handleSearch}
+          />
+        )}
+
         {results.length > 0 && (
           <div className="mb-4 grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4">
             {[
@@ -1222,6 +1322,45 @@ export const SearchPage: React.FC = () => {
 
         {results.length > 0 && (
           <div className="mb-4 neo-card p-3 flex flex-wrap gap-2 items-center">
+            <div className="flex w-full flex-wrap items-center gap-1.5 border-b border-slate-100 pb-2 dark:border-slate-800">
+              {[
+                { id: 'all' as ResultLens, label: 'All', count: results.length, icon: 'fa-list' },
+                { id: 'open_access' as ResultLens, label: 'Open access', count: openAccessCount, icon: 'fa-unlock' },
+                { id: 'high_quality' as ResultLens, label: 'High quality', count: highQualityCount, icon: 'fa-shield-halved' },
+                { id: 'recent' as ResultLens, label: 'Recent', count: recentCount, icon: 'fa-calendar-days' },
+                { id: 'practice_changing' as ResultLens, label: 'Practice-changing', count: practiceChangingCount, icon: 'fa-bolt' },
+              ].map((lens) => (
+                <button
+                  key={lens.id}
+                  type="button"
+                  disabled={lens.count === 0}
+                  onClick={() => {
+                    setResultLens(lens.id);
+                    setVisibleCount(30);
+                    trackFeatureUsage('result_lens_click', { lens: lens.id, count: lens.count });
+                  }}
+                  className={`inline-flex min-h-8 items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[11px] font-bold transition-colors disabled:pointer-events-none disabled:opacity-35 ${
+                    resultLens === lens.id
+                      ? 'border-indigo-300 bg-indigo-50 text-indigo-700 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300'
+                      : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  <i className={`fas ${lens.icon} text-[10px]`} />
+                  {lens.label}
+                  <span className="font-mono text-[10px] opacity-70">{lens.count}</span>
+                </button>
+              ))}
+              {(resultLens !== 'all' || resultFilter.trim()) && (
+                <button
+                  type="button"
+                  onClick={() => { setResultLens('all'); setResultFilter(''); setVisibleCount(30); }}
+                  className="ml-auto inline-flex min-h-8 items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-bold text-slate-400 transition-colors hover:bg-slate-50 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                >
+                  <i className="fas fa-xmark text-[10px]" />
+                  Clear lens
+                </button>
+              )}
+            </div>
             {selectedArticles.length >= 2 && (
               <Button onClick={() => setIsComparing(true)} variant="gradient" size="sm"
                 leftIcon={<i className="fas fa-balance-scale text-[10px]" />}>
@@ -1280,9 +1419,8 @@ export const SearchPage: React.FC = () => {
               </a>
             </div>
           ) : (
-            <div aria-live="polite" className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-2xl text-sm flex items-center gap-2">
-              <i className="fas fa-exclamation-circle" />
-              {synthesisError}
+            <div aria-live="polite" className="mb-6">
+              <ErrorBanner error={synthesisError} />
             </div>
           )
         )}
@@ -1316,12 +1454,13 @@ export const SearchPage: React.FC = () => {
         )}
 
         {synthesis && (
-          <div className="mb-8">
+          <div className="mb-8" data-synthesis-panel>
             <SynthesisPanel
               result={synthesis}
               articles={top5Articles}
               onClose={() => setSynthesis(null)}
               onGenerateCase={openSynthesisCase}
+              onSearch={handleSearch}
             />
           </div>
         )}
@@ -1387,7 +1526,9 @@ export const SearchPage: React.FC = () => {
                   onQuizPaper={openArticleQuiz}
                   onOpenTopic={handleSearch}
                   onOpenInWorkspace={openPdf}
+                  onViewDetails={setDetailArticle}
                   searchId={lastSearchId ?? undefined}
+                  searchCompletedAt={searchCompletedAt ?? undefined}
                 />
                 </div>
               ))}
@@ -1401,7 +1542,7 @@ export const SearchPage: React.FC = () => {
             )}
           </ResearchWorkspace>
         ) : (
-          <SearchEmptyState onExampleClick={handleSearch} />
+          <SearchEmptyState onExampleClick={handleSearch} isAuthenticated={isAuthenticated} />
         )}
       </main>
 
@@ -1409,10 +1550,19 @@ export const SearchPage: React.FC = () => {
         <AIAnalysisPanel key={activeArticle?.uid ?? 'none'} article={activeArticle} onClose={() => setActiveArticle(null)} />
       </React.Suspense>
 
+      {detailArticle && (
+        <ArticleDetailDrawer
+          article={detailArticle}
+          onClose={() => setDetailArticle(null)}
+          onOpenInWorkspace={openPdf}
+        />
+      )}
+
       {isComparing && selectedArticles.length >= 2 && (
-        <ComparisonView 
-          articles={[selectedArticles[0], selectedArticles[1]]} 
-          onClose={() => setIsComparing(false)} 
+        <ComparisonView
+          articles={[selectedArticles[0], selectedArticles[1]]}
+          topic={currentQuery || undefined}
+          onClose={() => setIsComparing(false)}
         />
       )}
 

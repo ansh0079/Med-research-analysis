@@ -45,6 +45,21 @@ function evaluateSearchResults(querySpec, articles, options = {}) {
         ? 1
         : requiredTypes.filter((type) => top.some((article) => articleMatchesType(article, type))).length / requiredTypes.length;
 
+    const relevanceFlags = topUids.map((uid) => relevant.has(uid));
+    const firstRelevantRank = relevanceFlags.findIndex(Boolean);
+    const mrr = firstRelevantRank >= 0 ? 1 / (firstRelevantRank + 1) : 0;
+    const gradedRelevance = topUids.map((uid) => (relevant.has(uid) ? 1 : 0));
+    let dcg = 0;
+    let idcg = 0;
+    for (let i = 0; i < gradedRelevance.length; i++) {
+        if (gradedRelevance[i] > 0) dcg += gradedRelevance[i] / Math.log2(i + 2);
+    }
+    const ideal = [...gradedRelevance].sort((a, b) => b - a);
+    for (let i = 0; i < ideal.length; i++) {
+        if (ideal[i] > 0) idcg += ideal[i] / Math.log2(i + 2);
+    }
+    const ndcgAtK = idcg > 0 ? dcg / idcg : 0;
+
     return {
         query: querySpec?.query || '',
         k,
@@ -55,6 +70,8 @@ function evaluateSearchResults(querySpec, articles, options = {}) {
         precisionAtK: top.length ? relevantHits.length / top.length : 0,
         recallAtK: relevant.size ? relevantHits.length / relevant.size : 0,
         offTopicRateAtK: top.length ? offTopicHits.length / top.length : 0,
+        mrr,
+        ndcgAtK,
         requiredTypeCoverage: typeCoverage,
         missingRelevantUids: [...relevant].filter((uid) => !topUids.includes(uid)),
         hitUids: relevantHits,
@@ -72,6 +89,8 @@ function summarizeSearchEval(rows) {
         precisionAtK: avg('precisionAtK'),
         recallAtK: avg('recallAtK'),
         offTopicRateAtK: avg('offTopicRateAtK'),
+        mrr: avg('mrr'),
+        ndcgAtK: avg('ndcgAtK'),
         requiredTypeCoverage: avg('requiredTypeCoverage'),
         failingQueries: items
             .filter((row) => row.precisionAtK < 0.5 || row.offTopicRateAtK > 0.2 || row.requiredTypeCoverage < 1)

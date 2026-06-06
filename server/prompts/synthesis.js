@@ -1,3 +1,5 @@
+const { formatMisconceptionPromptBlock } = require('../utils/misconceptionPromptBlock');
+
 const SYNTHESIS_STAGE_RUBRIC = {
     preclinical: `AUDIENCE: Pre-clinical student. Frame the clinical bottom line in terms of mechanisms, pathophysiology, and basic pharmacology class effects. Avoid advanced clinical decision nuances.`,
     early_clinical: `AUDIENCE: Early clinical student / clerk. Emphasise illness scripts, initial management priorities, and discriminating features. Moderate clinical depth.`,
@@ -73,7 +75,13 @@ Source: ${g.source_body}${g.source_region ? ` (${g.source_region})` : ''}${g.sou
 Recommendation: ${g.recommendation_text}${g.recommendation_strength ? `\nStrength: ${g.recommendation_strength}` : ''}${g.recommendation_certainty ? `\nCertainty: ${g.recommendation_certainty}` : ''}${g.population ? `\nPopulation: ${g.population}` : ''}${g.cautions ? `\nCautions: ${g.cautions}` : ''}`).join('\n\n')
         : 'No guideline context provided.';
 
-    return `${trajectoryContext}You are an expert medical research synthesiser with deep clinical knowledge. Analyse these ${articles.length} studies on the topic: "${topic}".${stageInstruction}
+    const misconceptionBlock = formatMisconceptionPromptBlock({
+        personalMisconceptions: options.personalMisconceptions,
+        inferredMisconceptions: options.inferredMisconceptions,
+        style: 'synthesis',
+    });
+
+    return `${trajectoryContext}You are an expert medical research synthesiser with deep clinical knowledge. Analyse these ${articles.length} studies on the topic: "${topic}".${stageInstruction}${misconceptionBlock}
 
 Critical provenance rule:
 - Every clinical claim in overallAnswer, consensus, clinicalActionCard, clinicalBottomLine, clinicalImplications, keyFindings, limitations, researchGaps, practiceImpact (all string fields), evidenceDisagreement (all string fields and trial summaries), and paperContributions.practiceImpactNote must include inline study-index citations such as [1] or [1, 4], and guideline tags [G1] when appropriate.
@@ -146,6 +154,14 @@ Return ONLY a valid JSON object matching this exact schema — no markdown, no e
   "limitations": "key limitations of this body of evidence in 1-2 sentences",
   "researchGaps": "what studies are still needed in 1 sentence",
   "uncertainties": ["What remains unknown or contested", "Second uncertainty"],
+  "safetySignals": [
+    {
+      "signal": "Adverse event or safety concern extracted from the evidence",
+      "severity": "serious" | "moderate" | "mild",
+      "studyIndices": [1],
+      "context": "Incidence rate, comparator risk, or relevant subgroup if reported"
+    }
+  ],
   "paperContributions": [
     {
       "studyIndex": 1,
@@ -173,7 +189,14 @@ Return ONLY a valid JSON object matching this exact schema — no markdown, no e
     },
     "populationsWhereFails": "Where the main recommendation may not apply (comorbidity, age, severity, care setting) — with citations",
     "whatWouldChangePractice": "Reflective prompt for the clinician: what further evidence OR patient-factor would shift management — 1-2 sentences with citations"
-  }
+  },
+  "followUpQuestions": [
+    {
+      "question": "Concise follow-up search question the user should explore next, derived from an unresolved conflict, uncertainty, or research gap in this evidence set",
+      "rationale": "One sentence explaining what this question would reveal that the current evidence does not answer",
+      "trigger": "conflict" | "uncertainty" | "gap" | "subgroup"
+    }
+  ]
 }
 
 Rules:
@@ -183,7 +206,9 @@ Rules:
 - practiceImpact.classification must be justified by the body of evidence (not by opinion)
 - evidenceDisagreement: if hasMaterialDisagreement is false, strongestContradictingTrial.studyIndex may be null and summary should explain alignment or limited tension
 - agreement and uncertainties should each have 2-4 bullet points
+- followUpQuestions: generate exactly 2-4 questions. Draw each from a different source: conflicts, uncertainties, research gaps, or unexplored subgroups. Do not repeat questions. Questions must be phrased as search-friendly queries a clinician would type, not rhetorical prompts.
 - Extract real statistics from abstracts; if none found leave statistics as []
+- safetySignals: extract explicit adverse events, harms, or safety concerns from the studies. Use [] if none reported. Prioritise full-text excerpts when available — abstracts routinely omit harms data.
 - If conflicts is empty use []
 - evidenceGrade: HIGH = consistent RCTs/meta-analyses; MODERATE = some RCTs or consistent observational; LOW = observational/inconsistent; VERY_LOW = case reports/expert opinion
 - Do not invent findings, effect sizes, guidelines, or citations. If a claim is not supported by one of the supplied studies, omit it.

@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { api } from '@services/api';
+import type { LearningRecommendation } from '@types';
 
 interface Props {
   onExampleClick?: (query: string) => void;
+  isAuthenticated?: boolean;
 }
 
 const EXAMPLE_QUERIES = [
@@ -31,11 +34,47 @@ const EXAMPLE_QUERIES = [
   },
 ];
 
-export const SearchEmptyState: React.FC<Props> = ({ onExampleClick }) => {
+const RECOMMENDATION_ICONS: Record<string, string> = {
+  review: 'fa-redo',
+  strengthen: 'fa-dumbbell',
+  explore: 'fa-compass',
+  discover: 'fa-lightbulb',
+  refresh: 'fa-sync',
+  case: 'fa-stethoscope',
+  start: 'fa-play',
+  calibrate: 'fa-sliders-h',
+};
+
+export const SearchEmptyState: React.FC<Props> = ({ onExampleClick, isAuthenticated = false }) => {
+  const [recommendations, setRecommendations] = useState<LearningRecommendation[]>([]);
+  const [recsLoading, setRecsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setRecommendations([]);
+      return;
+    }
+    let cancelled = false;
+    setRecsLoading(true);
+    void api.getLearningRecommendations(4)
+      .then((r) => {
+        if (!cancelled) setRecommendations(r.recommendations || []);
+      })
+      .catch(() => {
+        if (!cancelled) setRecommendations([]);
+      })
+      .finally(() => {
+        if (!cancelled) setRecsLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [isAuthenticated]);
+
+  const personalized = recommendations.filter((rec) => rec.topic?.trim());
+  const showPersonalized = isAuthenticated && (recsLoading || personalized.length > 0);
+
   return (
     <div className="text-center py-20 px-4">
       <div className="inline-flex flex-col items-center gap-6 max-w-xl mx-auto w-full">
-        {/* Animated concentric rings */}
         <div className="relative w-20 h-20 flex items-center justify-center">
           <div className="absolute inset-0 rounded-full border border-indigo-200/30 dark:border-indigo-800/30 ring-pulse-slow" />
           <div className="absolute inset-2 rounded-full border border-indigo-300/20 dark:border-indigo-700/20 ring-pulse-mid" />
@@ -61,11 +100,51 @@ export const SearchEmptyState: React.FC<Props> = ({ onExampleClick }) => {
           <span>Impact ranking</span>
         </div>
 
-        {/* Example queries */}
+        {onExampleClick && showPersonalized && (
+          <div className="w-full mt-2">
+            <p className="text-[11px] font-semibold text-violet-500 dark:text-violet-400 uppercase tracking-wider mb-3">
+              For you
+            </p>
+            {recsLoading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {[1, 2].map((i) => (
+                  <div key={i} className="h-16 rounded-xl bg-slate-100 dark:bg-slate-800/50 animate-pulse" />
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {personalized.map((rec) => (
+                  <button
+                    key={`${rec.type}-${rec.normalizedTopic}`}
+                    type="button"
+                    onClick={() => onExampleClick(rec.topic)}
+                    className="group flex items-start gap-3 p-3 rounded-xl border border-violet-200/60 dark:border-violet-800/50 bg-violet-50/40 dark:bg-violet-950/20 hover:border-violet-300 dark:hover:border-violet-600 hover:bg-violet-50/70 dark:hover:bg-violet-950/35 transition-all text-left"
+                  >
+                    <span className="shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-xs text-violet-600 bg-violet-100 dark:bg-violet-900/40 dark:text-violet-300">
+                      <i className={`fas ${RECOMMENDATION_ICONS[rec.type] || rec.icon || 'fa-compass'}`} />
+                    </span>
+                    <span className="flex flex-col gap-0.5 min-w-0">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-violet-500 dark:text-violet-400">
+                        {rec.type}
+                      </span>
+                      <span className="text-xs text-slate-700 dark:text-slate-200 leading-snug line-clamp-2 group-hover:text-violet-800 dark:group-hover:text-violet-200 transition-colors">
+                        {rec.topic}
+                      </span>
+                      {rec.reason && (
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-1">{rec.reason}</span>
+                      )}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
         {onExampleClick && (
           <div className="w-full mt-2">
             <p className="text-[11px] font-semibold text-slate-400 dark:text-slate-600 uppercase tracking-wider mb-3">
-              Try an example
+              {showPersonalized ? 'Or try an example' : 'Try an example'}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {EXAMPLE_QUERIES.map((ex) => (

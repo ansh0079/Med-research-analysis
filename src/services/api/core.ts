@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/react';
 import type { Scope } from '@sentry/react';
+import { AppError, parseApiErrorBody } from '@utils/appErrors';
 import { buildUsageLimitError, type UsageLimitInfo } from '@utils/usageErrors';
 
 export const API_BASE = import.meta.env.VITE_API_URL || '';
@@ -216,17 +217,28 @@ export class BaseApiClient {
     if (response.status === 503) {
       throw new Error('AI_UNAVAILABLE');
     }
-    const err = await response.json().catch(() => ({})) as { error?: string; message?: string; feature?: string };
+    const err = await response.json().catch(() => ({})) as {
+      error?: string;
+      message?: string;
+      feature?: string;
+      code?: string;
+      recovery?: string;
+      details?: unknown;
+      verificationRequired?: boolean;
+    };
     if (response.status === 403) {
       const msg = String(err.error || err.message || '').toLowerCase();
-      if ((err as { verificationRequired?: boolean }).verificationRequired) {
+      if (err.verificationRequired) {
         throw new Error('VERIFICATION_REQUIRED');
       }
       if (msg.includes('insufficient') || msg.includes('forbidden') || msg.includes('premium')) {
         throw new Error(`UPGRADE_REQUIRED:${err.feature ?? 'aiSynthesis'}`);
       }
     }
-    throw new Error(err.error || err.message || `Request failed (${response.status})`);
+    if (err.code || err.recovery) {
+      throw parseApiErrorBody(err, response.status);
+    }
+    throw new AppError(err.error || err.message || `Request failed (${response.status})`, 'INTERNAL_ERROR');
   }
 
   protected async withRetry<T>(fn: () => Promise<T>, retries = 2, delay = 1000): Promise<T> {

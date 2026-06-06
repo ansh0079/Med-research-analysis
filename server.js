@@ -111,6 +111,9 @@ async function startServer() {
         await db.connect();
         logger.info('Connected to database');
 
+        const { registerInteractionHandlers } = require('./server/services/userInteractionService');
+        registerInteractionHandlers({ db, logger });
+
         const migrationResult = await db.runMigrations();
 
         if (runHttp) {

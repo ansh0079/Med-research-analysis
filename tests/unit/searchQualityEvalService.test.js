@@ -26,6 +26,8 @@ describe('searchQualityEvalService', () => {
         expect(metrics.precisionAtK).toBe(0.5);
         expect(metrics.recallAtK).toBeCloseTo(2 / 3);
         expect(metrics.offTopicRateAtK).toBe(0.25);
+        expect(metrics.mrr).toBe(1);
+        expect(metrics.ndcgAtK).toBeGreaterThan(0);
         expect(metrics.requiredTypeCoverage).toBe(1);
         expect(metrics.missingRelevantUids).toEqual(['9']);
     });

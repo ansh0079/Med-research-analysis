@@ -140,6 +140,11 @@ Return ONLY valid JSON with this exact shape:
   "conflictingSignals": ["conflict or nuance with citations [1, 2]"],
   "evidenceStrength": "HIGH|MODERATE|LOW|VERY_LOW",
   "strengthRationale": "one sentence explaining certainty from study design, consistency, directness and precision",
+  "guidelineAlignment": {
+    "status": "aligned|conflicting|not_addressed|guideline_stale|no_guideline_supplied",
+    "summary": "one cautious sentence comparing supplied evidence with supplied guidelines, or saying no guideline was supplied",
+    "guidelineRefs": [1]
+  },
   "whatNotToOverclaim": ["unsupported overclaim to avoid"],
   "quizFocusPoints": ["concept a doctor should be quizzed on after reading this evidence"]
 }`;
@@ -151,7 +156,26 @@ function normalizeStringArray(value, max = 5) {
         : [];
 }
 
-function normalizeSynopsis(raw, topic, freeArticles, abstractArticles, provider, model = null) {
+function normalizeGuidelineAlignment(value, guidelines = []) {
+    const safe = value && typeof value === 'object' ? value : {};
+    const validStatuses = ['aligned', 'conflicting', 'not_addressed', 'guideline_stale', 'no_guideline_supplied'];
+    let status = validStatuses.includes(safe.status) ? safe.status : null;
+    if (!status) status = guidelines.length > 0 ? 'not_addressed' : 'no_guideline_supplied';
+    return {
+        status,
+        summary: safeString(safe.summary, 700) || (guidelines.length > 0
+            ? 'Guidelines were supplied, but no defensible guideline alignment statement was generated.'
+            : 'No guideline context was supplied for this synopsis.'),
+        guidelineRefs: Array.isArray(safe.guidelineRefs)
+            ? safe.guidelineRefs
+                .map((ref) => Number(ref))
+                .filter((ref) => Number.isInteger(ref) && ref >= 1 && ref <= guidelines.length)
+                .slice(0, 5)
+            : [],
+    };
+}
+
+function normalizeSynopsis(raw, topic, freeArticles, abstractArticles, provider, model = null, guidelines = []) {
     const safe = raw && typeof raw === 'object' ? raw : {};
     const allArticles = [...freeArticles, ...abstractArticles];
     const sourceCount = allArticles.length;
@@ -188,6 +212,7 @@ function normalizeSynopsis(raw, topic, freeArticles, abstractArticles, provider,
             ? safe.evidenceStrength
             : 'LOW',
         strengthRationale: safeString(safe.strengthRationale, 600),
+        guidelineAlignment: normalizeGuidelineAlignment(safe.guidelineAlignment, guidelines),
         whatNotToOverclaim: normalizeStringArray(safe.whatNotToOverclaim, 5),
         quizFocusPoints: normalizeStringArray(safe.quizFocusPoints, 6),
         disclaimer: AI_DISCLAIMER,
@@ -266,6 +291,7 @@ async function generateConsensusSynopsis({
             conflictingSignals: [],
             evidenceStrength: 'VERY_LOW',
             strengthRationale: 'Insufficient evidence in the selected bouquet.',
+            guidelineAlignment: normalizeGuidelineAlignment(null, []),
             whatNotToOverclaim: ['Do not infer consensus from a single paper.'],
             quizFocusPoints: [],
             disclaimer: AI_DISCLAIMER,
@@ -289,6 +315,7 @@ async function generateConsensusSynopsis({
             conflictingSignals: [],
             evidenceStrength: 'VERY_LOW',
             strengthRationale: 'No LLM provider configured.',
+            guidelineAlignment: normalizeGuidelineAlignment(null, []),
             whatNotToOverclaim: [],
             quizFocusPoints: [],
             disclaimer: AI_DISCLAIMER,
@@ -324,7 +351,7 @@ async function generateConsensusSynopsis({
     if (!parsed) {
         throw new Error('AI returned unparseable consensus synopsis');
     }
-    return normalizeSynopsis(parsed, topic, freeArticles, abstractArticles, provider, model);
+    return normalizeSynopsis(parsed, topic, freeArticles, abstractArticles, provider, model, guidelines);
 }
 
 async function generateConsensusSynopsisSafe(options, logger = console) {
@@ -349,6 +376,7 @@ async function generateConsensusSynopsisSafe(options, logger = console) {
             conflictingSignals: [],
             evidenceStrength: 'VERY_LOW',
             strengthRationale: 'Generation failed.',
+            guidelineAlignment: normalizeGuidelineAlignment(null, []),
             whatNotToOverclaim: ['Do not rely on a failed synopsis generation.'],
             quizFocusPoints: [],
             disclaimer: AI_DISCLAIMER,
@@ -364,4 +392,5 @@ module.exports = {
     selectFreeEvidence,
     selectAbstractEvidence,
     enrichWithCachedFullText,
+    normalizeGuidelineAlignment,
 };

@@ -20,6 +20,7 @@ async function runPaperSynopsisGeneration({
     log = null,
     jobKey = null,
     topic = '',
+    trainingStage = null,
 }) {
     if (!article || typeof article !== 'object' || !article.title) {
         throw new Error('article with title is required');
@@ -61,7 +62,7 @@ async function runPaperSynopsisGeneration({
             logger.debug({ err, topic }, 'Failed to load topic knowledge for paper synopsis');
         }
     }
-    const prompt = buildSynopsisPrompt(enriched, { topic, guidelines, topicKnowledge });
+    const prompt = buildSynopsisPrompt(enriched, { topic, guidelines, topicKnowledge, trainingStage });
     let rawText = '';
     let selectedProvider = null;
     let selectedModel = null;

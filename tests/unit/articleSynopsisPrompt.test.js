@@ -19,4 +19,38 @@ describe('article synopsis prompt', () => {
         expect(prompt).toContain('"quizFocusPoints"');
         expect(prompt).toContain('neutral result');
     });
+
+    test('includes guideline and topic knowledge context and larger full-text excerpts', () => {
+        const longResults = 'mortality benefit '.repeat(600);
+        const prompt = buildSynopsisPrompt({
+            title: 'Trial of intervention in COPD',
+            abstract: 'Trial abstract.',
+            pubdate: '2025',
+            pubtype: ['Randomized Controlled Trial'],
+            _fullTextIndexed: true,
+            _fullTextWordCount: 12000,
+            _fullTextSections: {
+                results: longResults,
+                methods: 'multicentre randomized methods '.repeat(200),
+            },
+        }, {
+            topic: 'COPD exacerbation',
+            guidelines: [{
+                sourceBody: 'GOLD',
+                sourceYear: 2025,
+                recommendationText: 'Use non-invasive ventilation when indicated.',
+                recommendationStrength: 'Strong',
+            }],
+            topicKnowledge: {
+                knowledge: 'NIV is a central context point for COPD exacerbation appraisal.',
+                sourceArticles: ['Seminal COPD trial'],
+            },
+        });
+
+        expect(prompt).toContain('Guideline context');
+        expect(prompt).toContain('GOLD');
+        expect(prompt).toContain('Curated topic knowledge');
+        expect(prompt).toContain('NIV is a central context point');
+        expect(prompt).toContain(longResults.slice(0, 7000));
+    });
 });

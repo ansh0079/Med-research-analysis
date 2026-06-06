@@ -9,6 +9,14 @@ const {
 } = require('../prompts');
 const { createReviewService } = require('../services/reviewService');
 const { gatherEvidenceArticlesForCase, heuristicSearchQuery } = require('../services/caseEvidenceService');
+const { extractTrialGuidelineConflicts } = require('../services/conflictExtractionService');
+const {
+    extractPicoProfile,
+    rerankArticlesByPico,
+    selectTopRerankedArticles,
+} = require('../services/articleReranker');
+const { getInferredMisconceptionsForTopic } = require('../services/misconceptionInferenceService');
+const { findRelatedTopicsWithMisconceptions, buildJitReminder } = require('../services/relatedTopicService');
 
 /**
  * @param {import('express').Application} app
@@ -439,6 +447,99 @@ Return ONLY valid JSON:
         }
     });
 
+    app.post('/api/reviews/:id/articles/:articleId/consort', requireJson, requireReviewAccess, requirePaidFeature('pico_extraction'), rateLimit(6, 60), async (req, res) => {
+        try {
+            const articles = await reviews.listArticles(req.params.id);
+            const article = articles.find((a) => a.article_id === req.params.articleId);
+            if (!article) return res.status(404).json({ error: 'Article not found in review' });
+
+            const ad = article.article_data || {};
+            const title = ad.title || req.params.articleId;
+            const abstract = ad.abstract || ad.snippet || '';
+            const studyDesign = (ad.pubtype || []).join(', ') || 'unknown';
+
+            const prompt = `You are a clinical trials methodologist. Assess this study's adherence to the CONSORT 2010 reporting checklist.
+
+Study: "${title}"
+Reported study design: ${studyDesign}
+Abstract: ${abstract.slice(0, 1500)}
+
+First determine if this is an RCT. Then for each of the 10 key CONSORT domains below, assess whether the item is adequately reported in the abstract/title (you can only judge from what is provided).
+
+Domains to assess:
+1. title_abstract: Clear identification as RCT in title; structured abstract with key elements
+2. eligibility_criteria: Participant eligibility criteria, settings, and locations
+3. interventions: Sufficient detail on interventions for replication
+4. outcomes: Pre-specified primary and secondary outcomes
+5. sample_size: How sample size was determined
+6. randomisation: Method of sequence generation and allocation concealment
+7. blinding: Who was blinded and how
+8. statistical_methods: Primary and secondary analysis methods
+9. harms: Important adverse events or side effects
+10. trial_registration: Trial registration number and registry name
+
+For each domain: "adequate" (clearly reported), "partial" (mentioned but incomplete), or "not_reported" (absent/cannot assess from abstract).
+
+Return ONLY valid JSON:
+{
+  "isRct": true | false,
+  "rctWarning": "null or a message if the design appears non-RCT",
+  "overallAdherence": "high" | "moderate" | "low",
+  "overallSummary": "1-2 sentence assessment of overall CONSORT adherence",
+  "domains": {
+    "title_abstract":       {"adherence": "adequate|partial|not_reported", "rationale": "..."},
+    "eligibility_criteria": {"adherence": "adequate|partial|not_reported", "rationale": "..."},
+    "interventions":        {"adherence": "adequate|partial|not_reported", "rationale": "..."},
+    "outcomes":             {"adherence": "adequate|partial|not_reported", "rationale": "..."},
+    "sample_size":          {"adherence": "adequate|partial|not_reported", "rationale": "..."},
+    "randomisation":        {"adherence": "adequate|partial|not_reported", "rationale": "..."},
+    "blinding":             {"adherence": "adequate|partial|not_reported", "rationale": "..."},
+    "statistical_methods":  {"adherence": "adequate|partial|not_reported", "rationale": "..."},
+    "harms":                {"adherence": "adequate|partial|not_reported", "rationale": "..."},
+    "trial_registration":   {"adherence": "adequate|partial|not_reported", "rationale": "..."}
+  }
+}`;
+
+            const { text, provider: usedProvider, model } = await callProvider(prompt, req.body.provider || 'auto');
+            const parsed = reviews.parseJsonBlock(text);
+            if (!parsed) return res.status(422).json({ error: 'AI returned non-JSON response for CONSORT assessment' });
+
+            const validAdherence = new Set(['adequate', 'partial', 'not_reported']);
+            const domainKeys = ['title_abstract', 'eligibility_criteria', 'interventions', 'outcomes', 'sample_size', 'randomisation', 'blinding', 'statistical_methods', 'harms', 'trial_registration'];
+            const domains = {};
+            for (const key of domainKeys) {
+                const d = parsed.domains?.[key] || {};
+                domains[key] = {
+                    adherence: validAdherence.has(d.adherence) ? d.adherence : 'not_reported',
+                    rationale: String(d.rationale || 'Insufficient information to assess from abstract').slice(0, 400),
+                };
+            }
+
+            const adequateCount = Object.values(domains).filter((d) => d.adherence === 'adequate').length;
+            const overallAdherence = ['high', 'moderate', 'low'].includes(parsed.overallAdherence)
+                ? parsed.overallAdherence
+                : adequateCount >= 7 ? 'high' : adequateCount >= 4 ? 'moderate' : 'low';
+
+            await db.logEvent('review:consort_assessment', req.sessionId, { reviewId: req.params.id, articleId: req.params.articleId });
+            res.json({
+                consort: {
+                    isRct: Boolean(parsed.isRct),
+                    rctWarning: typeof parsed.rctWarning === 'string' && parsed.rctWarning !== 'null' ? parsed.rctWarning : null,
+                    overallAdherence,
+                    overallSummary: String(parsed.overallSummary || '').slice(0, 600),
+                    domains,
+                    adequateCount,
+                    totalDomains: domainKeys.length,
+                },
+                provider: usedProvider,
+                model,
+                articleId: req.params.articleId,
+            });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
     app.post('/api/reviews/:id/grade-table', requireJson, requireReviewAccess, requirePaidFeature('pico_extraction'), rateLimit(4, 60), async (req, res) => {
         try {
             const articles = await reviews.listArticles(req.params.id);
@@ -553,13 +654,38 @@ Return ONLY valid JSON:
             const tkSig = topicKnowledgeRow?.updatedAt
                 ? String(topicKnowledgeRow.updatedAt).slice(0, 24)
                 : 'none';
-            const cacheKey = `case:${learningMode}:${topic.toLowerCase()}:${literatureQuery.slice(0, 220).toLowerCase()}:s:${seedKey}:tk:${tkSig}`;
+            let userContext = null;
+            if (req.user && req.user.id) {
+                const masteryTopic = (topic || knowledgeTopic || '').trim();
+                const [profile, mastery, personalMisconceptions, inferredMisconceptions, allTopicsWithMisconceptions] = await Promise.all([
+                    db.getLearningProfile(req.user.id).catch((err) => { logger.warn({ err }, 'getLearningProfile failed'); return null; }),
+                    db.getUserTopicMastery(req.user.id, masteryTopic).catch((err) => { logger.warn({ err }, 'getUserTopicMastery failed'); return null; }),
+                    db.getUserClaimMisconceptions(req.user.id, masteryTopic, { limit: 5 }).catch((err) => { logger.warn({ err }, 'getUserClaimMisconceptions failed'); return []; }),
+                    getInferredMisconceptionsForTopic(db, req.user.id, masteryTopic, { lookbackLimit: 12 }).catch((err) => { logger.warn({ err }, 'getInferredMisconceptionsForTopic failed'); return []; }),
+                    db.listUserTopicMemoryWithMisconceptions?.(req.user.id, { limit: 20 }).catch((err) => { logger.warn({ err }, 'listUserTopicMemoryWithMisconceptions failed'); return []; }) || [],
+                ]);
+
+                // Phase 3: Build Just-in-Time reminder from related topics
+                const relatedTopics = findRelatedTopicsWithMisconceptions(masteryTopic, allTopicsWithMisconceptions || [], { maxResults: 2 });
+                const jitReminder = buildJitReminder(masteryTopic, relatedTopics);
+
+                userContext = {
+                    profile,
+                    mastery,
+                    personalMisconceptions: personalMisconceptions || [],
+                    inferredMisconceptions: inferredMisconceptions || [],
+                    justInTimeReminder: jitReminder,
+                };
+            }
+
+            const userLevel = userContext?.mastery?.tier || userContext?.profile?.effectiveDifficulty || 'unknown';
+            const cacheKey = `case:${learningMode}:${userLevel}:${topic.toLowerCase()}:${literatureQuery.slice(0, 220).toLowerCase()}:s:${seedKey}:tk:${tkSig}`;
             const cached = await Promise.resolve(cache.get(cacheKey)).catch(() => null);
             if (cached) return res.json({ ...cached, cached: true });
 
             const { articles: baseArticles, vectorUsed, sourcesTried } = await gatherEvidenceArticlesForCase({
                 searchQuery: literatureQuery,
-                limit: 14,
+                limit: 30,
                 serverConfig,
                 db,
                 fetch: fetchImpl,
@@ -567,8 +693,22 @@ Return ONLY valid JSON:
                 seedArticles,
             });
 
+            // ── Hybrid Reranking: score articles against patient PICO ───────────
+            const picoProfile = await extractPicoProfile(caseText, {
+                ai,
+                cache,
+                serverConfig,
+                logWarn: req.log?.warn ? (...args) => req.log.warn(...args) : undefined,
+            });
+            const reranked = await rerankArticlesByPico(baseArticles, picoProfile, {
+                ai,
+                serverConfig,
+                logWarn: req.log?.warn ? (...args) => req.log.warn(...args) : undefined,
+            });
+            const topArticles = selectTopRerankedArticles(reranked, { topN: 10, strictPopulation: true });
+
             const evidenceRows = [];
-            for (const article of baseArticles) {
+            for (const article of topArticles) {
                 const picoKey = String(article.uid || article.pmid || '').trim();
                 const pico = picoKey ? (await reviews.getPico(picoKey))?.extraction || null : null;
                 evidenceRows.push({ article, pico });
@@ -576,20 +716,30 @@ Return ONLY valid JSON:
 
             const guidelines = await db.getGuidelinesByTopic((topic || knowledgeTopic || '').trim(), { limit: 5 }).catch((err) => { logger.warn({ err }, 'operation failed'); return []; });
 
-            let userContext = null;
-            if (req.user && req.user.id) {
-                const masteryTopic = (topic || knowledgeTopic || '').trim();
-                const [profile, mastery] = await Promise.all([
-                    db.getLearningProfile(req.user.id).catch((err) => { logger.warn({ err }, 'getLearningProfile failed'); return null; }),
-                    db.getUserTopicMastery(req.user.id, masteryTopic).catch((err) => { logger.warn({ err }, 'getUserTopicMastery failed'); return null; }),
-                ]);
-                userContext = { profile, mastery };
-            }
+            const conflictTopic = (topic || knowledgeTopic || '').trim();
+            const { conflictMatrix, guidelineAlignment } = await extractTrialGuidelineConflicts(
+                evidenceRows,
+                guidelines,
+                {
+                    topic: conflictTopic,
+                    serverConfig,
+                    fetchImpl,
+                    provider,
+                    logger: req.log,
+                }
+            );
 
-            const prompt = buildCaseEvidencePrompt(caseText, evidenceRows, { topic, learningMode, topicKnowledge: topicKnowledgeRow }, guidelines, userContext);
+            const prompt = buildCaseEvidencePrompt(
+                caseText,
+                evidenceRows,
+                { topic, learningMode, topicKnowledge: topicKnowledgeRow },
+                guidelines,
+                userContext,
+                conflictMatrix
+            );
             const { text, provider: usedProvider, model } = await callProvider(prompt, provider);
             const parsed = reviews.parseJsonBlock(text) || {};
-            const learning = fallbackLearningCase({ parsed, caseText, topic, learningMode, articles: baseArticles });
+            const learning = fallbackLearningCase({ parsed, caseText, topic, learningMode, articles: topArticles });
             const result = {
                 provider: usedProvider,
                 model,
@@ -601,6 +751,9 @@ Return ONLY valid JSON:
                 caseSummary: String(parsed.caseSummary || ''),
                 interventions: Array.isArray(parsed.interventions) ? parsed.interventions : [],
                 uncertainties: Array.isArray(parsed.uncertainties) ? parsed.uncertainties : [],
+                conflictMatrix,
+                guidelineAlignment,
+                followUpQuestions: Array.isArray(parsed.followUpQuestions) ? parsed.followUpQuestions.slice(0, 4) : [],
                 disclaimer: String(
                     parsed.disclaimer ||
                         'FOR RESEARCH SUPPORT ONLY. This summary is not a substitute for clinical judgement. Findings must be verified against primary sources and interpreted by a qualified healthcare professional before informing any patient care decision.'
@@ -609,7 +762,17 @@ Return ONLY valid JSON:
                     parsed.safetyNotes ||
                         'Research-assistant output only. Verify with full guidelines and local protocols before clinical use.'
                 ),
-                citations: baseArticles,
+                citations: topArticles,
+                justInTimeReminder: userContext?.justInTimeReminder || null,
+                rerankMeta: {
+                    totalFetched: baseArticles.length,
+                    picoProfile: picoProfile || {},
+                    topScores: topArticles.slice(0, 5).map((a) => ({
+                        title: a.title,
+                        overallScore: a._rerank?.overallScore ?? null,
+                        exclusionFlags: a._rerank?.exclusionFlags ?? [],
+                    })),
+                },
             };
             await Promise.resolve(cache.set(cacheKey, result, 1800)).catch(() => undefined);
             await db.logEvent('case:analyze', req.sessionId, {

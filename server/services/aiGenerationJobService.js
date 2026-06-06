@@ -144,6 +144,11 @@ function consensusPlaceholder({ topic, articles = [], jobKey, status = 'queued',
         conflictingSignals: [],
         evidenceStrength: 'VERY_LOW',
         strengthRationale: status === 'failed' ? 'Generation failed.' : 'Generation pending.',
+        guidelineAlignment: {
+            status: 'no_guideline_supplied',
+            summary: 'Guideline alignment will be available after consensus synopsis generation when guideline context is supplied.',
+            guidelineRefs: [],
+        },
         whatNotToOverclaim: ['Do not infer consensus until the generated synopsis is ready and citation-checked.'],
         quizFocusPoints: [],
         citationValidation: null,
@@ -392,7 +397,7 @@ function enqueueFullSynthesisJob({ db, jobKey, serverConfig, fetchImpl, cache, l
 }
 
 async function getOrEnqueueFullSynthesis({
-    db, topic, articles = [], provider = 'auto', serverConfig, fetchImpl, cache, logger,
+    db, topic, articles = [], provider = 'auto', serverConfig, fetchImpl, cache, logger, userId = null,
 }) {
     const topArticles = [...articles]
         .sort((a, b) => (b._impact?.score ?? 0) - (a._impact?.score ?? 0))
@@ -409,6 +414,7 @@ async function getOrEnqueueFullSynthesis({
                 serverConfig,
                 fetchImpl,
                 jobKey,
+                userId,
             });
             return { status: 'completed', jobKey, ...result };
         } catch (err) {
@@ -430,7 +436,8 @@ async function getOrEnqueueFullSynthesis({
         jobType: 'full_synthesis',
         topic,
         inputHash: stableHash({ topic, uids: topArticles.map((a) => a.uid).filter(Boolean) }),
-        inputPayload: { topic, provider, articles: topArticles },
+        inputPayload: { topic, provider, articles: topArticles, userId },
+        userId: userId || null,
         provider: serverConfig?.keys?.gemini ? 'gemini' : serverConfig?.keys?.mistral ? 'mistral' : null,
     }).catch((err) => { logger.warn({ err }, 'createAiGenerationJob failed'); return null; });
     enqueueFullSynthesisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger });

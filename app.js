@@ -526,12 +526,29 @@ app.use((req, res, next) => {
     res.status(404).json({ error: 'Endpoint not found', path: req.path, method: req.method });
 });
 
+const { isAppError, normalizeToAppError } = require('./server/errors/appErrors');
+
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, _next) => {
     const log = req.log || logger;
     log.error({ err, path: req.path, method: req.method }, 'Unhandled error');
 
     const isDev = process.env.NODE_ENV === 'development';
+
+    if (isAppError(err)) {
+        return res.status(err.status || 500).json({
+            ...err.toJSON(),
+            requestId: req.id,
+        });
+    }
+
+    const normalized = normalizeToAppError(err);
+    if (isAppError(normalized) && normalized.code !== 'INTERNAL_ERROR') {
+        return res.status(normalized.status || 500).json({
+            ...normalized.toJSON(),
+            requestId: req.id,
+        });
+    }
 
     if (err instanceof SyntaxError && 'body' in err) {
         return res.status(400).json({ error: 'Bad Request', message: 'Invalid JSON in request body' });

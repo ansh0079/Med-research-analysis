@@ -3,6 +3,7 @@ const {
     buildConsensusTeachingObject,
     teachingObjectsToQuizContext,
     buildEvidenceMap,
+    buildKnowledgeGraphRelationships,
 } = require('../../server/services/teachingObjectService');
 
 describe('teachingObjectService', () => {
@@ -48,6 +49,25 @@ describe('teachingObjectService', () => {
         });
         expect(object.payload.claimAnchors[0].claimKey).toHaveLength(24);
         expect(object.payload.paper.fullTextUsed).toBe(true);
+        expect(object.payload.knowledgeGraph.edgeCount).toBeGreaterThan(0);
+        expect(object.payload.knowledgeGraph.nodes.some((n) => n.type === 'claim')).toBe(true);
+    });
+
+    test('buildKnowledgeGraphRelationships links claims and papers', () => {
+        const graph = buildKnowledgeGraphRelationships({
+            objectKey: 'paper:pmid-1',
+            objectType: 'paper',
+            topic: 'COPD exacerbation',
+            articleUid: 'pmid-1',
+            claimAnchors: [
+                { claimKey: 'a1', claimText: 'Bottom line', conceptKey: 'clinical_bottom_line', articleUid: 'pmid-1' },
+                { claimKey: 'a2', claimText: 'Do not overclaim', conceptKey: 'misconception_trap', articleUid: 'pmid-1' },
+            ],
+        });
+
+        expect(graph.nodes.some((n) => n.id === 'paper:pmid-1')).toBe(true);
+        expect(graph.edges.some((e) => e.relation === 'grounds')).toBe(true);
+        expect(graph.edges.some((e) => e.relation === 'contrasts' || e.relation === 'relates_to')).toBe(true);
     });
 
     test('does not mark open access paper claims source-verified unless full text was used', () => {

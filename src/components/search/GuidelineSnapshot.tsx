@@ -47,6 +47,15 @@ function statusLabel(status: string) {
   return labels[status] || 'AI extracted - verify locally';
 }
 
+function qualityBadge(level?: string) {
+  const map: Record<string, string> = {
+    high: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
+    moderate: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
+    low: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300',
+  };
+  return map[level || ''] || 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300';
+}
+
 export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAlignment = false }) => {
   const [guidelines, setGuidelines] = React.useState<GuidelineEntry[]>([]);
   const [loading, setLoading] = React.useState(false);
@@ -256,6 +265,14 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
                 <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${statusBadge(g.status)}`}>
                   {statusLabel(g.status)}
                 </span>
+                {g.qualityAssessment && (
+                  <span
+                    className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${qualityBadge(g.qualityAssessment.level)}`}
+                    title={g.qualityAssessment.summary}
+                  >
+                    Trust {g.qualityAssessment.score}
+                  </span>
+                )}
               </div>
               {g.sourceUrl && (
                 <a
@@ -303,6 +320,13 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
                 {g.cautions}
               </div>
             )}
+
+            {g.qualityAssessment?.flags.length ? (
+              <div className="mt-2 text-[10px] text-slate-500 dark:text-slate-400">
+                <span className="font-semibold">Trust checks:</span>{' '}
+                {g.qualityAssessment.flags.slice(0, 3).map((flag) => flag.replace(/_/g, ' ')).join(', ')}
+              </div>
+            ) : null}
 
             <div className="mt-2 text-[10px] text-slate-400 dark:text-slate-500">
               Last checked: {new Date(g.lastCheckedAt).toLocaleDateString()}

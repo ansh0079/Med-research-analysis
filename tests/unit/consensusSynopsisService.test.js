@@ -2,6 +2,7 @@ const {
     generateConsensusSynopsis,
     generateConsensusSynopsisSafe,
     selectFreeEvidence,
+    selectAbstractEvidence,
 } = require('../../server/services/consensusSynopsisService');
 
 describe('consensusSynopsisService', () => {
@@ -42,6 +43,19 @@ describe('consensusSynopsisService', () => {
         expect(selected.map((a) => a.uid)).toEqual(['oa-1', 'oa-2']);
     });
 
+    test('selectAbstractEvidence includes paywalled abstracts up to expanded synopsis scope', () => {
+        const paywalled = Array.from({ length: 10 }, (_, i) => ({
+            uid: `pay-${i}`,
+            title: `Paywalled trial ${i}`,
+            abstract: 'Usable abstract.',
+        }));
+
+        const selected = selectAbstractEvidence(paywalled, 8);
+
+        expect(selected).toHaveLength(8);
+        expect(selected.every((a) => a.uid.startsWith('pay-'))).toBe(true);
+    });
+
     test('generates a structured consensus synopsis from built-in LLM output', async () => {
         const fetchImpl = jest.fn().mockResolvedValue({
             ok: true,
@@ -57,6 +71,11 @@ describe('consensusSynopsisService', () => {
                                 conflictingSignals: [],
                                 evidenceStrength: 'MODERATE',
                                 strengthRationale: 'The set mixes a trial and review evidence.',
+                                guidelineAlignment: {
+                                    status: 'aligned',
+                                    summary: 'The supplied evidence is directionally consistent with guideline context.',
+                                    guidelineRefs: [1],
+                                },
                                 whatNotToOverclaim: ['Do not claim patient-specific treatment recommendations from this synopsis alone.'],
                                 quizFocusPoints: ['Identify what outcome the bundle evidence supports.'],
                             }),
@@ -71,6 +90,11 @@ describe('consensusSynopsisService', () => {
             articles,
             serverConfig: { keys: { gemini: 'test-key' } },
             fetchImpl,
+            db: {
+                getGuidelinesByTopic: jest.fn().mockResolvedValue([
+                    { sourceBody: 'NICE', sourceYear: 2024, recommendationText: 'Use bundled sepsis assessment.' },
+                ]),
+            },
         });
 
         expect(synopsis.status).toBe('generated');
@@ -80,6 +104,10 @@ describe('consensusSynopsisService', () => {
         expect(synopsis.evidenceScope).toBe('free_open_access_and_abstracts');
         expect(synopsis.statement).toContain('[1, 2]');
         expect(synopsis.evidenceStrength).toBe('MODERATE');
+        expect(synopsis.guidelineAlignment).toMatchObject({
+            status: 'aligned',
+            guidelineRefs: [1],
+        });
         expect(synopsis.citationValidation.ok).toBe(true);
         expect(fetchImpl).toHaveBeenCalledTimes(1);
     });

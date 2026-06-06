@@ -12,7 +12,7 @@ function registerAlertRoutes(app, { db, serverConfig, fetch: fetchImpl, requireJ
     });
 
     app.post('/api/alerts', requireJson, requireAuthJwt, async (req, res) => {
-        const { query, sources, frequency = 'weekly' } = req.body;
+        const { query, sources, frequency = 'weekly', author, journal } = req.body;
         if (!query || !query.trim()) return res.status(400).json({ error: 'query is required' });
         if (!['daily', 'weekly', 'monthly'].includes(frequency)) {
             return res.status(400).json({ error: 'frequency must be daily, weekly, or monthly' });
@@ -22,6 +22,8 @@ function registerAlertRoutes(app, { db, serverConfig, fetch: fetchImpl, requireJ
                 query: query.trim(),
                 frequency,
                 sources: JSON.stringify(sources || ['pubmed']),
+                author_filter: author ? String(author).trim().slice(0, 200) : null,
+                journal_filter: journal ? String(journal).trim().slice(0, 200) : null,
             };
             const result = await db.createSearchAlert(req.user.id, alertData);
             res.status(201).json({ success: true, alertId: result.id });

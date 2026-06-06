@@ -154,19 +154,20 @@ export const HistoryPage: React.FC = () => {
           ) : history.length > 0 ? (
             <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
               <table className="w-full text-left border-collapse">
+                <caption className="sr-only">Search history with queries, result counts, sources, dates, and actions</caption>
                 <thead>
                   <tr className="bg-gray-50 dark:bg-slate-700/50 border-b border-gray-100 dark:border-slate-700">
-                    <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Query</th>
-                    <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Results</th>
-                    <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Sources</th>
-                    <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Date</th>
-                    <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase sr-only">Actions</th>
+                    <th scope="col" className="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Query</th>
+                    <th scope="col" className="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Results</th>
+                    <th scope="col" className="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Sources</th>
+                    <th scope="col" className="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Date</th>
+                    <th scope="col" className="px-6 py-4 text-xs font-bold text-gray-500 uppercase sr-only">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 dark:divide-slate-700">
                   {history.map((item) => (
                     <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-colors">
-                      <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">{item.query}</td>
+                      <th scope="row" className="px-6 py-4 text-left font-semibold text-gray-900 dark:text-white">{item.query}</th>
                       <td className="px-6 py-4 text-sm text-gray-500">{item.results_count}</td>
                       <td className="px-6 py-4">
                         <div className="flex gap-1 flex-wrap">
@@ -262,18 +263,19 @@ export const HistoryPage: React.FC = () => {
             ) : (
               <div className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 overflow-hidden shadow-sm">
                 <table className="w-full text-left border-collapse">
+                  <caption className="sr-only">Saved queries with frequency, saved date, and actions</caption>
                   <thead>
                     <tr className="bg-gray-50 dark:bg-slate-700/50 border-b border-gray-100 dark:border-slate-700">
-                      <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Query</th>
-                      <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Frequency</th>
-                      <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Saved</th>
-                      <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase sr-only">Actions</th>
+                      <th scope="col" className="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Query</th>
+                      <th scope="col" className="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Frequency</th>
+                      <th scope="col" className="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Saved</th>
+                      <th scope="col" className="px-6 py-4 text-xs font-bold text-gray-500 uppercase sr-only">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-slate-700">
                     {alerts.map((alert) => (
                       <tr key={alert.id} className="hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-colors">
-                        <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">{alert.query}</td>
+                        <th scope="row" className="px-6 py-4 text-left font-semibold text-gray-900 dark:text-white">{alert.query}</th>
                         <td className="px-6 py-4">
                           <span className="px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold uppercase rounded">
                             {alert.frequency}

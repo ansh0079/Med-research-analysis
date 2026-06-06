@@ -7,12 +7,16 @@ import { VerificationBadge } from '@components/ui/VerificationBadge';
 import { EVIDENCE_GRADE_CONFIG } from '@components/ui/evidenceGrade';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
 import { StudyEncounterPanel } from '@components/search/StudyEncounterPanel';
+import { ConflictMatrixPanel } from '@components/search/ConflictMatrixPanel';
+import { SynthesisQualityFeedback } from '@components/search/SynthesisQualityFeedback';
+import { FollowUpQuestionsPanel } from '@components/search/FollowUpQuestionsPanel';
 
 interface SynthesisPanelProps {
   result: SynthesisResult;
   articles: Article[];
   onClose: () => void;
   onGenerateCase?: () => void;
+  onSearch?: (query: string) => void;
 }
 
 const GRADE_CONFIG = EVIDENCE_GRADE_CONFIG;
@@ -82,7 +86,7 @@ function CitationWarning({ field, errors }: { field: string; errors: string[] })
   );
 }
 
-const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articles, onClose, onGenerateCase }) => {
+const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articles, onClose, onGenerateCase, onSearch }) => {
   const s = result.synthesis;
   const citationIssuePaths = new Set(
     (result.citationValidation?.issues ?? []).map((i: { path: string }) => i.path)
@@ -503,6 +507,14 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
           </div>
         )}
 
+        {(result.conflictMatrix?.length ?? 0) > 0 && (
+          <ConflictMatrixPanel
+            conflictMatrix={result.conflictMatrix!}
+            guidelineAlignment={result.guidelineAlignment}
+            articles={articles}
+          />
+        )}
+
         {/* Overall Answer — top hero */}
         {s.overallAnswer && (
           <div className={`rounded-2xl p-5 shadow-lg ${citationIssuePaths.has('overallAnswer') ? 'bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-300 dark:border-amber-700/60' : 'bg-gradient-to-br from-indigo-600 to-violet-600 shadow-indigo-500/20'}`}>
@@ -745,6 +757,14 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
           </div>
         )}
 
+        {/* Follow-up question suggestions */}
+        {s.followUpQuestions && s.followUpQuestions.length > 0 && onSearch && (
+          <FollowUpQuestionsPanel
+            questions={s.followUpQuestions}
+            onSearch={(q) => { onSearch(q); onClose(); }}
+          />
+        )}
+
         {/* Paper-by-paper contribution table */}
         {s.paperContributions && s.paperContributions.length > 0 && (
           <div>
@@ -934,6 +954,8 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
             })}
           </div>
         </div>
+
+        <SynthesisQualityFeedback topic={result.topic} />
 
       </div>
 

@@ -49,6 +49,7 @@ async function processAiGenerationJobByKey(jobKey, deps) {
                 serverConfig,
                 fetchImpl,
                 jobKey,
+                userId: input.userId || null,
             });
             await completeJobAndClaims(db, jobKey, 'full_synthesis', {
                 resultPayload: { ...result, jobKey },

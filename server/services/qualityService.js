@@ -43,9 +43,47 @@ const SAMPLE_SIZE_PATTERNS = [
 ];
 
 /**
+ * Derive score uncertainty margin from missing or weak evidence signals.
+ * @param {number} score
+ * @param {string[]} factors
+ * @param {string[]} signals
+ */
+function computeScoreConfidenceInterval(score, factors = [], signals = []) {
+  let margin = 6;
+  if (signals.includes('Study design not identified in abstract')) margin += 10;
+  if (signals.includes('Sample size not reported in abstract')) margin += 8;
+  if (!factors.some((f) => /confidence interval/i.test(f))) margin += 4;
+  if (!factors.some((f) => /effect size|odds ratio|hazard ratio|relative risk/i.test(f))) margin += 3;
+  if (signals.includes('Funding source not mentioned')) margin += 2;
+  if (signals.includes('P-values reported without confidence intervals or effect sizes')) margin += 4;
+  margin = Math.min(28, Math.max(4, margin));
+
+  const lower = Math.max(0, Math.round(score - margin));
+  const upper = Math.min(100, Math.round(score + margin));
+  const uncertainty = margin >= 18 ? 'high' : margin >= 10 ? 'moderate' : 'low';
+
+  return {
+    lower,
+    upper,
+    margin,
+    uncertainty,
+    gradeRange: scoreToGrade(lower) === scoreToGrade(upper)
+      ? scoreToGrade(score)
+      : `${scoreToGrade(lower)}-${scoreToGrade(upper)}`,
+  };
+}
+
+function scoreToGrade(score) {
+  if (score >= 75) return 'A';
+  if (score >= 55) return 'B';
+  if (score >= 35) return 'C';
+  return 'D';
+}
+
+/**
  * Compute a statistical quality score (0-100) for an article.
  * @param {object} article
- * @returns {{ score: number, grade: 'A'|'B'|'C'|'D', factors: string[], signals: string[] }}
+ * @returns {{ score: number, grade: 'A'|'B'|'C'|'D', factors: string[], signals: string[], confidenceInterval: object }}
  */
 function computeQualityScore(article) {
   let score = 0;
@@ -137,10 +175,11 @@ function computeQualityScore(article) {
 
   // Clamp score
   score = Math.max(0, Math.min(100, score));
+  const roundedScore = Math.round(score);
+  const grade = scoreToGrade(roundedScore);
+  const confidenceInterval = computeScoreConfidenceInterval(roundedScore, factors, signals);
 
-  const grade = score >= 75 ? 'A' : score >= 55 ? 'B' : score >= 35 ? 'C' : 'D';
-
-  return { score: Math.round(score), grade, factors, signals };
+  return { score: roundedScore, grade, factors, signals, confidenceInterval };
 }
 
 /**
@@ -273,6 +312,8 @@ async function attachRetractionData(articles, { db, fetchImpl, bouquetUids } = {
 
 module.exports = {
   computeQualityScore,
+  computeScoreConfidenceInterval,
+  scoreToGrade,
   checkRetractionStatus,
   batchCheckRetractions,
   attachRetractionData,

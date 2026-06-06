@@ -177,10 +177,15 @@ export class AiApi extends BaseApiClient {
     const response = await this.fetchWithSession(`${API_BASE}/api/ai/synthesize`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic, articles, async: opts?.async === true }),
+      body: JSON.stringify({ topic, articles, async: opts?.async !== false }),
     });
     if (!response.ok) await this.parseErrorResponse(response);
-    return response.json();
+    const data = await response.json() as SynthesisResult;
+    if (data.jobKey && (data.status === 'queued' || data.status === 'running')) {
+      const { registerPendingSynthesisJob } = await import('@utils/pendingSynthesisJobs');
+      registerPendingSynthesisJob({ jobKey: data.jobKey, topic: data.topic || topic, status: data.status });
+    }
+    return data;
   }
 
   synthesizeEvidenceStream(
@@ -376,6 +381,34 @@ export class AiApi extends BaseApiClient {
   async getAIProviders(): Promise<{ providers: Array<{ id: string; name: string; models: Array<{ id: string; name: string }> }> }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/ai/providers`);
     if (!response.ok) return { providers: [] };
+    return response.json();
+  }
+
+  async listAiGenerationJobs(options: {
+    status?: string;
+    jobType?: string;
+    limit?: number;
+  } = {}): Promise<{
+    jobs: Array<{
+      jobKey: string;
+      jobType: string;
+      status: string;
+      topic?: string | null;
+      errorMessage?: string | null;
+      attempts: number;
+      createdAt: string;
+      updatedAt: string;
+      startedAt?: string | null;
+      completedAt?: string | null;
+    }>;
+  }> {
+    const params = new URLSearchParams();
+    if (options.status) params.set('status', options.status);
+    if (options.jobType) params.set('jobType', options.jobType);
+    if (options.limit) params.set('limit', String(options.limit));
+    const suffix = params.toString() ? `?${params.toString()}` : '';
+    const response = await this.fetchWithSession(`${API_BASE}/api/ai/jobs${suffix}`);
+    if (!response.ok) throw new Error('Failed to load AI generation jobs');
     return response.json();
   }
 

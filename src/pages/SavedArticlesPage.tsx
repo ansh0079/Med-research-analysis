@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import { useSearchContext } from '@contexts/SearchContext';
 import { ArticleCard } from '@components/search/ArticleCard';
 import { AIAnalysisPanel } from '@components/search/AIAnalysisPanel';
+import { ArticleDetailDrawer } from '@components/search/ArticleDetailDrawer';
 import { Button } from '@components/ui/Button';
 import api from '@services/api';
+import { usePdfViewer } from '@hooks/usePdfViewer';
 import { downloadText, toCslJson, toRIS, toWordSummaryHtml } from '@services/exportArticles';
 import type { Article } from '@types';
 
 export const SavedArticlesPage: React.FC = () => {
   const { savedArticles, toggleSaveArticle, setCurrentPage, isSelected, toggleSelectArticle } = useSearchContext();
   const [activeArticle, setActiveArticle] = useState<Article | null>(null);
+  const [detailArticle, setDetailArticle] = useState<Article | null>(null);
   const [isExporting, setIsExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
+  const { activePdf, isOpen, layout, openPdf, closePdf, toggleLayout } = usePdfViewer();
 
   const handleExportBibTeX = async () => {
     if (savedArticles.length === 0) return;
@@ -50,7 +54,7 @@ export const SavedArticlesPage: React.FC = () => {
           >
             <i className="fas fa-arrow-left" /> Back to Search
           </button>
-          
+
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-200">
@@ -68,9 +72,9 @@ export const SavedArticlesPage: React.FC = () => {
                   <span className="text-xs text-red-600 dark:text-red-400">{exportError}</span>
                 </div>
               )}
-              <Button 
-                variant="secondary" 
-                size="sm" 
+              <Button
+                variant="secondary"
+                size="sm"
                 onClick={() => { setExportError(null); handleExportBibTeX(); }}
                 isLoading={isExporting}
                 leftIcon={<i className="fas fa-file-export" />}
@@ -86,9 +90,9 @@ export const SavedArticlesPage: React.FC = () => {
               <Button variant="secondary" size="sm" onClick={() => exportLocal('doc')} leftIcon={<i className="fas fa-file-word" />}>
                 Word
               </Button>
-              <Button 
-                variant="primary" 
-                size="sm" 
+              <Button
+                variant="primary"
+                size="sm"
                 onClick={() => setCurrentPage('search')}
                 leftIcon={<i className="fas fa-plus" />}
               >
@@ -111,6 +115,8 @@ export const SavedArticlesPage: React.FC = () => {
                 onSave={toggleSaveArticle}
                 onSelect={toggleSelectArticle}
                 onAnalyze={setActiveArticle}
+                onOpenInWorkspace={openPdf}
+                onViewDetails={setDetailArticle}
               />
             ))}
           </div>
@@ -130,7 +136,53 @@ export const SavedArticlesPage: React.FC = () => {
         )}
       </main>
 
+      {/* PDF split workspace */}
+      {isOpen && activePdf && (
+        <div className={`fixed inset-0 z-50 flex ${layout === 'split' ? 'flex-row' : 'flex-col'} bg-white dark:bg-slate-900`}>
+          <div className={layout === 'split' ? 'flex-1 overflow-y-auto' : 'h-1/2 overflow-y-auto'}>
+            <div className="p-4">
+              <Button variant="secondary" size="sm" onClick={closePdf} leftIcon={<i className="fas fa-times" />}>
+                Close Workspace
+              </Button>
+              <Button variant="secondary" size="sm" onClick={toggleLayout} leftIcon={<i className="fas fa-columns" />}>
+                {layout === 'split' ? 'Stack' : 'Side by side'}
+              </Button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
+              {savedArticles.map((article) => (
+                <ArticleCard
+                  key={article.uid}
+                  article={article}
+                  isSaved={true}
+                  isSelected={isSelected(article.uid)}
+                  onSave={toggleSaveArticle}
+                  onSelect={toggleSelectArticle}
+                  onAnalyze={setActiveArticle}
+                  onOpenInWorkspace={openPdf}
+                  onViewDetails={setDetailArticle}
+                />
+              ))}
+            </div>
+          </div>
+          <div className={`${layout === 'split' ? 'w-1/2' : 'h-1/2'} border-l border-gray-200 dark:border-slate-700 flex flex-col`}>
+            <iframe
+              src={activePdf}
+              title="Article PDF"
+              className="flex-1 w-full"
+            />
+          </div>
+        </div>
+      )}
+
       <AIAnalysisPanel article={activeArticle} onClose={() => setActiveArticle(null)} />
+
+      {detailArticle && (
+        <ArticleDetailDrawer
+          article={detailArticle}
+          onClose={() => setDetailArticle(null)}
+          onOpenInWorkspace={openPdf}
+        />
+      )}
     </div>
   );
 };

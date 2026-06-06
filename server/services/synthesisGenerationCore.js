@@ -4,11 +4,13 @@ const logger = require('../config/logger');
 const crypto = require('crypto');
 const { createAiService, TEMPERATURE, MAX_OUTPUT_TOKENS, AI_DISCLAIMER } = require('./aiService');
 const { buildSynthesisPrompt } = require('../prompts');
+const { buildLearnerContext } = require('./learnerContextService');
 const { batchCheckRetractions } = require('./qualityService');
 const { validateMedicalOutputCitations } = require('./citationValidator');
 const { enrichWithCachedFullText } = require('./pdfPreindexService');
 const claimMapService = require('./claimMapService');
 const { getProviderCandidates } = require('../utils/aiProvider');
+const { extractTrialGuidelineConflicts } = require('./conflictExtractionService');
 
 const CITATION_REQUIRED_PATHS = [
     'overallAnswer',
@@ -114,7 +116,7 @@ function validateSynthesisCitations(synthesis, { sourceCount, guidelineCount }) 
     });
 }
 
-async function prepareSynthesisContext({ articles, topic, db, cache }) {
+async function prepareSynthesisContext({ articles, topic, db, cache, userId = null }) {
     if (!Array.isArray(articles) || articles.length === 0) {
         throw new Error('At least one article is required for synthesis');
     }
@@ -127,7 +129,22 @@ async function prepareSynthesisContext({ articles, topic, db, cache }) {
         .map(([uid]) => uid);
     const enrichedArticles = await enrichWithCachedFullText(topArticles, cache, db).catch((err) => { logger.warn({ err }, 'enrichWithCachedFullText failed'); return topArticles; });
     const guidelines = await db.getGuidelinesByTopic(topic || '', { limit: 5 }).catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; });
-    const prompt = buildSynthesisPrompt(enrichedArticles, topic || 'General Medical Inquiry', guidelines);
+
+    let personalMisconceptions = [];
+    let inferredMisconceptions = [];
+    if (userId && db) {
+        const learnerCtx = await buildLearnerContext(db, { userId, topic: topic || '' })
+            .catch((err) => { logger.warn({ err, userId, topic }, 'buildLearnerContext for synthesis failed'); return null; });
+        if (learnerCtx) {
+            personalMisconceptions = learnerCtx.personalMisconceptions || [];
+            inferredMisconceptions = learnerCtx.inferredMisconceptions || [];
+        }
+    }
+
+    const prompt = buildSynthesisPrompt(enrichedArticles, topic || 'General Medical Inquiry', guidelines, {
+        personalMisconceptions,
+        inferredMisconceptions,
+    });
     const sourceMap = topArticles.map((a, idx) => ({
         studyIndex: idx + 1,
         uid: a.uid,
@@ -166,6 +183,8 @@ function buildSynthesisResult({
     model,
     fullTextIndexedCount = 0,
     jobKey = null,
+    conflictMatrix = [],
+    guidelineAlignment = null,
 }) {
     const promptHashDigest = crypto.createHash('md5').update(prompt).digest('hex');
     const claimsJobKey = jobKey || `syn:${promptHashDigest}`;
@@ -199,6 +218,8 @@ function buildSynthesisResult({
             claimFingerprintCount: claimFingerprint.claims.length,
         },
         jobKey: claimsJobKey,
+        conflictMatrix: Array.isArray(conflictMatrix) ? conflictMatrix : [],
+        guidelineAlignment: guidelineAlignment || null,
     };
 }
 
@@ -221,6 +242,7 @@ async function runFullSynthesisGeneration({
     serverConfig,
     fetchImpl,
     jobKey = null,
+    userId = null,
 }) {
     const topArticles = selectTopSynthesisArticles(articles);
     const cacheKey = getSynthesisCacheKey(topic, topArticles);
@@ -234,7 +256,7 @@ async function runFullSynthesisGeneration({
     }
 
     const ai = createAiService({ serverConfig, fetchImpl });
-    const context = await prepareSynthesisContext({ articles: topArticles, topic, db, cache });
+    const context = await prepareSynthesisContext({ articles: topArticles, topic, db, cache, userId });
     const providerCandidates = getProviderCandidates({ provider }, serverConfig);
     if (!providerCandidates.length) {
         throw new Error('No AI provider configured. Add GEMINI_API_KEY or MISTRAL_API_KEY to .env');
@@ -263,6 +285,21 @@ async function runFullSynthesisGeneration({
         sourceCount: context.topArticles.length,
         guidelineCount: context.guidelines.length,
     });
+    const evidenceRows = context.topArticles.map((article) => ({ article, pico: article._pico || null }));
+    const conflictExtraction = await extractTrialGuidelineConflicts(
+        evidenceRows,
+        context.guidelines,
+        {
+            topic,
+            serverConfig,
+            fetchImpl,
+            provider,
+            logger,
+        }
+    ).catch((err) => {
+        logger.warn({ err }, 'conflict extraction failed during synthesis');
+        return { conflictMatrix: [], guidelineAlignment: null };
+    });
     const result = buildSynthesisResult({
         synthesis,
         topic,
@@ -276,6 +313,8 @@ async function runFullSynthesisGeneration({
         model: selectedModel,
         fullTextIndexedCount: context.fullTextIndexedCount,
         jobKey,
+        conflictMatrix: conflictExtraction.conflictMatrix,
+        guidelineAlignment: conflictExtraction.guidelineAlignment,
     });
 
     await persistSynthesisResult({

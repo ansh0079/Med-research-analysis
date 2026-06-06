@@ -4,8 +4,15 @@
  * Temperature should be 0.15 — pure factual extraction, no invention.
  *
  * @param {{ title: string; abstract?: string; pubtype?: string[]; pubdate?: string; journal?: string; authors?: {name:string}[]; doi?: string }} article
- * @param {{ topic?: string; guidelines?: object[]; topicKnowledge?: object|null }} [context]
+ * @param {{ topic?: string; guidelines?: object[]; topicKnowledge?: object|null; trainingStage?: string }} [context]
  */
+
+const SYNOPSIS_STAGE_RUBRIC = {
+    preclinical: `AUDIENCE: Pre-clinical student. Emphasise mechanism and pathophysiology over clinical decision detail. Frame findings in terms of drug class effects and basic science concepts.`,
+    early_clinical: `AUDIENCE: Early clinical student / clerk. Prioritise illness scripts, diagnostic criteria, and first-line management. Moderate clinical depth — explain abbreviations.`,
+    finals: `AUDIENCE: Finals / exit exam candidate. Prioritise discriminators, guideline-aligned first-line answers, contraindications, and common exam pitfalls. Use precise numerical values.`,
+    foundation_doctor: `AUDIENCE: Foundation doctor / intern. Emphasis on safe prescribing, monitoring parameters, escalation thresholds, drug interactions, and acute ward management decisions.`,
+};
 function safeText(value, max = 1200) {
     return String(value || '').replace(/\s+/g, ' ').trim().slice(0, max);
 }
@@ -40,6 +47,9 @@ function buildSynopsisPrompt(article, context = {}) {
     const pubtypes = (article.pubtype || []).join(', ') || 'Not specified';
     const guidelines = Array.isArray(context.guidelines) ? context.guidelines.slice(0, 4) : [];
     const topicKnowledgeText = formatTopicKnowledge(context.topicKnowledge);
+    const validStages = ['preclinical', 'early_clinical', 'finals', 'foundation_doctor'];
+    const trainingStage = validStages.includes(context.trainingStage) ? context.trainingStage : null;
+    const stageInstruction = trainingStage ? `\n${SYNOPSIS_STAGE_RUBRIC[trainingStage]}\n` : '';
 
     // Build full-text block when available (same section order as synthesis prompt)
     let fullTextBlock = '';
@@ -65,7 +75,7 @@ function buildSynopsisPrompt(article, context = {}) {
 
     return `You are a medical research assistant producing a rapid critical-appraisal synopsis for a doctor.
 Style target: a concise "The Bottom Line"-style appraisal, not a generic abstract summary.
-
+${stageInstruction}
 ${sourceNote}
 If a field cannot be determined, use null or [].
 

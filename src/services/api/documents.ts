@@ -209,6 +209,29 @@ export class DocumentsApi extends BaseApiClient {
     return response.json();
   }
 
+  async getQualityMetrics(days = 30): Promise<Record<string, unknown>> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/analytics/quality-metrics?days=${days}`);
+    if (!response.ok) throw new Error('Failed to fetch quality metrics');
+    return response.json();
+  }
+
+  async submitQualityFeedback(payload: {
+    productType: 'synthesis' | 'case' | 'agent' | 'search';
+    topic?: string;
+    factualAccuracy?: number;
+    completeness?: number;
+    clinicalUsefulness?: number;
+    timeSavedMinutes?: number;
+    comment?: string;
+  }): Promise<void> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/analytics/quality-feedback`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) throw new Error('Failed to submit quality feedback');
+  }
+
   async logEvent(eventType: string, metadata: Record<string, unknown>): Promise<void> {
     try {
       await this.fetchWithSession(`${API_BASE}/api/analytics/event`, {

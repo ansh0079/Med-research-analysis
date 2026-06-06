@@ -1,4 +1,5 @@
 import { API_BASE, BaseApiClient } from './core';
+import { yearRangeToPubMedFilter } from '@utils/searchStudyFilters';
 import type {
   Article,
   SearchFilters,
@@ -84,6 +85,13 @@ export class SearchApi extends BaseApiClient {
     if (opts.vector === true) params.set('vector', '1');
     if (opts.vector === false) params.set('vector', '0');
     if (filters.specificity) params.set('specificity', filters.specificity);
+    if (filters.studyTypes && filters.studyTypes.length > 0) {
+      params.set('parsedStudyTypes', JSON.stringify(filters.studyTypes));
+    }
+    const yearFilters = yearRangeToPubMedFilter(filters.yearRange);
+    if (yearFilters.length > 0) {
+      params.set('parsedYearFilters', JSON.stringify(yearFilters));
+    }
     if (opts.previousQueries && opts.previousQueries.length > 0) {
       params.set('previousQueries', JSON.stringify(opts.previousQueries));
     }
@@ -150,8 +158,22 @@ export class SearchApi extends BaseApiClient {
 
   async vectorSearch(
     query: string,
-    options: { limit?: number; minScore?: number } = {}
-  ): Promise<{ articles: Article[]; scores: number[] }> {
+    options: {
+      limit?: number;
+      minScore?: number;
+      userEmbedding?: number[];
+      userProfileText?: string;
+      queryWeight?: number;
+    } = {}
+  ): Promise<{
+    articles: Article[];
+    scores: number[];
+    semantic?: {
+      queryEmbeddingUsed: boolean;
+      userEmbeddingUsed: boolean;
+      queryWeight: number;
+    };
+  }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/search/vector`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -213,13 +235,14 @@ export class SearchApi extends BaseApiClient {
     searchId: number,
     articleUid: string,
     interactionType: 'click' | 'save' | 'dwell',
-    dwellMs?: number
+    dwellMs?: number,
+    elapsedMs?: number
   ): Promise<void> {
     try {
       await this.fetchWithSession(`${API_BASE}/api/search/interaction`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ searchId, articleUid, interactionType, dwellMs }),
+        body: JSON.stringify({ searchId, articleUid, interactionType, dwellMs, elapsedMs }),
       });
     } catch (err) {
       if (import.meta.env.DEV) console.error('Failed to log interaction', err);

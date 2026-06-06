@@ -69,6 +69,118 @@ function evidenceQuoteFromArticle(article = {}, fallback = '') {
     return safeString(fallback, 900) || null;
 }
 
+const CONCEPT_RELATIONS = {
+    clinical_bottom_line: ['main_findings', 'quiz_focus'],
+    main_findings: ['limitations', 'clinical_bottom_line'],
+    limitations: ['misconception_trap', 'main_findings'],
+    misconception_trap: ['clinical_bottom_line', 'quiz_focus'],
+    quiz_focus: ['clinical_bottom_line', 'misconception_trap'],
+    consensus_statement: ['agreement', 'clinical_bottom_line'],
+    agreement: ['uncertainty', 'consensus_statement'],
+    uncertainty: ['misconception_trap', 'agreement'],
+};
+
+function buildKnowledgeGraphRelationships({
+    objectKey,
+    objectType,
+    topic = '',
+    articleUid = null,
+    includedArticleUids = [],
+    claimAnchors = [],
+} = {}) {
+    const normalizedTopic = String(topic || '').trim().toLowerCase().replace(/\s+/g, '-');
+    const topicNodeId = normalizedTopic ? `topic:${normalizedTopic}` : null;
+    const nodes = [];
+    const edges = [];
+    const seenNodes = new Set();
+
+    const addNode = (node) => {
+        if (!node?.id || seenNodes.has(node.id)) return;
+        seenNodes.add(node.id);
+        nodes.push(node);
+    };
+    const addEdge = (from, to, relation, meta = {}) => {
+        if (!from || !to) return;
+        edges.push({ from, to, relation, ...meta });
+    };
+
+    if (topicNodeId) {
+        addNode({ id: topicNodeId, type: 'topic', label: topic, objectKey });
+    }
+
+    const paperUids = [
+        ...(articleUid ? [articleUid] : []),
+        ...includedArticleUids,
+    ].filter(Boolean);
+    const uniquePaperUids = [...new Set(paperUids)].slice(0, 12);
+    for (const uid of uniquePaperUids) {
+        const paperId = `paper:${uid}`;
+        addNode({ id: paperId, type: 'paper', label: uid, articleUid: uid, objectKey });
+        if (topicNodeId) addEdge(paperId, topicNodeId, 'supports_topic', { objectType });
+    }
+
+    const anchorsByConcept = new Map();
+    for (const claim of claimAnchors) {
+        const claimNodeId = `claim:${claim.claimKey}`;
+        addNode({
+            id: claimNodeId,
+            type: 'claim',
+            label: safeString(claim.claimText, 120),
+            claimKey: claim.claimKey,
+            conceptKey: claim.conceptKey || null,
+            confidence: claim.confidence ?? null,
+            verificationStatus: claim.verificationStatus || null,
+            objectKey,
+        });
+        if (topicNodeId) addEdge(topicNodeId, claimNodeId, 'teaches', { conceptKey: claim.conceptKey || null });
+        if (claim.articleUid) addEdge(`paper:${claim.articleUid}`, claimNodeId, 'grounds', { objectKey });
+
+        const conceptKey = claim.conceptKey || 'teaching_object';
+        if (!anchorsByConcept.has(conceptKey)) anchorsByConcept.set(conceptKey, []);
+        anchorsByConcept.get(conceptKey).push(claim);
+    }
+
+    for (const [conceptKey, anchors] of anchorsByConcept.entries()) {
+        const relatedConcepts = CONCEPT_RELATIONS[conceptKey] || [];
+        for (const relatedConcept of relatedConcepts) {
+            const relatedAnchors = anchorsByConcept.get(relatedConcept) || [];
+            for (const source of anchors.slice(0, 2)) {
+                for (const target of relatedAnchors.slice(0, 2)) {
+                    if (source.claimKey === target.claimKey) continue;
+                    const relation = conceptKey === 'misconception_trap' || relatedConcept === 'misconception_trap'
+                        ? 'contrasts'
+                        : 'relates_to';
+                    addEdge(`claim:${source.claimKey}`, `claim:${target.claimKey}`, relation, {
+                        fromConcept: conceptKey,
+                        toConcept: relatedConcept,
+                    });
+                }
+            }
+        }
+    }
+
+    if (objectType === 'topic_consensus' && includedArticleUids.length > 1) {
+        for (let i = 0; i < Math.min(includedArticleUids.length - 1, 4); i++) {
+            addEdge(
+                `paper:${includedArticleUids[i]}`,
+                `paper:${includedArticleUids[i + 1]}`,
+                'co_cited',
+                { objectKey }
+            );
+        }
+    }
+
+    return {
+        objectKey,
+        objectType,
+        topic,
+        nodeCount: nodes.length,
+        edgeCount: edges.length,
+        nodes,
+        edges,
+    };
+}
+
 function buildClaimAnchors(seed, candidates, { article = {}, topic = '', confidence = 0.5, verification = {} } = {}) {
     const seen = new Set();
     const out = [];
@@ -130,6 +242,13 @@ function buildPaperTeachingObject({ article, synopsisResult, topic = '' }) {
         ...safeArray(synopsis.quizFocusPoints, 5).map((item) => ({ claimText: item, sourcePath: 'synopsis.quizFocusPoints', conceptKey: 'quiz_focus' })),
         ...safeArray(synopsis.whatNotToOverclaim, 5).map((item) => ({ claimText: item, sourcePath: 'synopsis.whatNotToOverclaim', conceptKey: 'misconception_trap' })),
     ], { article, topic, confidence, verification });
+    const knowledgeGraph = buildKnowledgeGraphRelationships({
+        objectKey,
+        objectType: 'paper',
+        topic,
+        articleUid,
+        claimAnchors,
+    });
     return {
         objectKey,
         objectType: 'paper',
@@ -177,6 +296,7 @@ function buildPaperTeachingObject({ article, synopsisResult, topic = '' }) {
                 whatNotToOverclaim: safeArray(synopsis.whatNotToOverclaim, 6),
             },
             claimAnchors,
+            knowledgeGraph,
             clinicalBottomLine: synopsis.bottomLine || synopsis.clinicalMeaning || synopsis.practiceImplication || null,
             quizSeed: {
                 focusPoints: safeArray(synopsis.quizFocusPoints, 8),
@@ -214,6 +334,14 @@ function buildConsensusTeachingObject({ topic, consensusSynopsis, articles = [] 
             verificationReason: 'Claim is inferred from a multi-paper consensus synopsis.',
         },
     });
+    const includedArticleUids = articles.map(stableArticleUid).filter(Boolean).slice(0, 12);
+    const knowledgeGraph = buildKnowledgeGraphRelationships({
+        objectKey,
+        objectType: 'topic_consensus',
+        topic: normalizedTopic,
+        includedArticleUids,
+        claimAnchors,
+    });
     return {
         objectKey,
         objectType: 'topic_consensus',
@@ -227,8 +355,9 @@ function buildConsensusTeachingObject({ topic, consensusSynopsis, articles = [] 
             generatedAt,
             topic: normalizedTopic,
             consensusSynopsis,
-            includedArticleUids: articles.map(stableArticleUid).filter(Boolean).slice(0, 12),
+            includedArticleUids,
             claimAnchors,
+            knowledgeGraph,
             quizSeed: {
                 focusPoints: safeArray(consensusSynopsis?.quizFocusPoints, 8),
                 agreement: safeArray(consensusSynopsis?.areasOfAgreement, 6),
@@ -273,6 +402,36 @@ function teachingObjectsToQuizContext(teachingObjects = []) {
     return lines.join('\n\n');
 }
 
+function mergeTeachingObjectGraphs(teachingObjects = []) {
+    const nodes = [];
+    const edges = [];
+    const seenNodeIds = new Set();
+    const seenEdgeKeys = new Set();
+
+    for (const object of teachingObjects.slice(0, 8)) {
+        const graph = object.payload?.knowledgeGraph;
+        if (!graph) continue;
+        for (const node of safeArray(graph.nodes, 40)) {
+            if (!node?.id || seenNodeIds.has(node.id)) continue;
+            seenNodeIds.add(node.id);
+            nodes.push(node);
+        }
+        for (const edge of safeArray(graph.edges, 60)) {
+            const key = `${edge.from}|${edge.to}|${edge.relation}`;
+            if (seenEdgeKeys.has(key)) continue;
+            seenEdgeKeys.add(key);
+            edges.push(edge);
+        }
+    }
+
+    return {
+        nodeCount: nodes.length,
+        edgeCount: edges.length,
+        nodes: nodes.slice(0, 80),
+        edges: edges.slice(0, 120),
+    };
+}
+
 function buildEvidenceMap({ topic, topicKnowledge = null, articles = [], teachingObjects = [], relatedTopics = [], clusterArticles = [], consensusSynopsis = null } = {}) {
     const knowledge = topicKnowledge?.knowledge || {};
     const freshness = topicRefreshPriority({
@@ -306,8 +465,10 @@ function buildEvidenceMap({ topic, topicKnowledge = null, articles = [], teachin
                 title: object.title,
                 confidence: object.confidence,
                 claimCount: safeArray(object.payload?.claimAnchors, 99).length,
+                graphEdgeCount: object.payload?.knowledgeGraph?.edgeCount ?? 0,
                 updatedAt: object.updatedAt,
             })),
+            knowledgeGraph: mergeTeachingObjectGraphs(teachingObjects),
             relatedTopics,
             clusterArticles,
         },
@@ -327,6 +488,8 @@ module.exports = {
     stableArticleUid,
     stableClaimKey,
     claimVerificationForPaper,
+    buildKnowledgeGraphRelationships,
+    mergeTeachingObjectGraphs,
     buildPaperTeachingObject,
     buildConsensusTeachingObject,
     persistPaperTeachingObject,

@@ -12,6 +12,7 @@ const PRIMARY_NAV = [
 
 // Tools dropdown — secondary features grouped together
 const TOOLS_NAV = [
+  { to: '/learning',     label: 'Topic review',   icon: 'fa-graduation-cap', color: 'text-indigo-500' },
   { to: '/case',         label: 'Case mode',      icon: 'fa-stethoscope',  color: 'text-emerald-500' },
   { to: '/quiz',         label: 'Quiz',           icon: 'fa-brain',        color: 'text-violet-500'  },
   { to: '/practice',    label: 'Practice pool',  icon: 'fa-layer-group',  color: 'text-teal-500'   },
@@ -41,6 +42,8 @@ export const TopNav: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [toolsMenuOpen, setToolsMenuOpen] = React.useState(false);
   const [dueCount, setDueCount] = React.useState(0);
+  const toolsMenuRef = React.useRef<HTMLDivElement | null>(null);
+  const userMenuRef = React.useRef<HTMLDivElement | null>(null);
 
   React.useEffect(() => {
     if (!isAuthenticated) return;
@@ -51,16 +54,29 @@ export const TopNav: React.FC = () => {
     return () => clearInterval(id);
   }, [isAuthenticated]);
 
-  const isToolsActive = TOOLS_NAV.some((t) => pathname.startsWith(t.to));
+  const isToolsActive = TOOLS_NAV.some((t) => pathname.startsWith(t.to) && t.to !== '/learning');
+  const closeMenuOnFocusLeave = (
+    event: React.FocusEvent<HTMLDivElement>,
+    close: React.Dispatch<React.SetStateAction<boolean>>,
+  ) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) close(false);
+  };
+  const closeMenusOnEscape = (event: React.KeyboardEvent) => {
+    if (event.key !== 'Escape') return;
+    setToolsMenuOpen(false);
+    setUserMenuOpen(false);
+    setMobileMenuOpen(false);
+  };
 
   return (
-    <nav className="top-nav">
+    <nav className="top-nav" aria-label="Primary navigation" onKeyDown={closeMenusOnEscape}>
       <div className="max-w-7xl mx-auto px-3 sm:px-4 h-full flex items-center justify-between gap-2 sm:gap-4">
 
         {/* Logo */}
         <button
           type="button"
           onClick={() => navigate('/search')}
+          aria-label="Go to search"
           className="flex items-center gap-2.5 shrink-0 group"
         >
           <div className="relative w-8 h-8 flex items-center justify-center">
@@ -79,11 +95,11 @@ export const TopNav: React.FC = () => {
           {isAuthenticated && (
             <button
               type="button"
-              onClick={() => navigate('/learning')}
-              className={`nav-link ${pathname.startsWith('/learning') ? 'active' : ''}`}
+              onClick={() => navigate('/dashboard')}
+              className={`nav-link ${pathname.startsWith('/dashboard') || pathname === '/for-you' ? 'active' : ''}`}
             >
-              <i className="fas fa-graduation-cap text-[10px]" />
-              Study
+              <i className="fas fa-gauge-high text-[10px]" />
+              Dashboard
               {dueCount > 0 && (
                 <span className="ml-1.5 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-bold">
                   {dueCount > 99 ? '99+' : dueCount}
@@ -107,11 +123,13 @@ export const TopNav: React.FC = () => {
 
           {/* Tools dropdown */}
           {isAuthenticated && (
-            <div className="relative">
+            <div className="relative" ref={toolsMenuRef} onBlur={(event) => closeMenuOnFocusLeave(event, setToolsMenuOpen)}>
               <button
                 type="button"
                 onClick={() => setToolsMenuOpen((o) => !o)}
-                onBlur={() => setTimeout(() => setToolsMenuOpen(false), 180)}
+                aria-haspopup="menu"
+                aria-expanded={toolsMenuOpen}
+                aria-controls="tools-menu"
                 className={`nav-link ${isToolsActive ? 'active' : ''}`}
               >
                 <i className="fas fa-th text-[10px]" />
@@ -119,11 +137,12 @@ export const TopNav: React.FC = () => {
                 <i className="fas fa-chevron-down text-[8px] opacity-60" />
               </button>
               {toolsMenuOpen && (
-                <div className="absolute left-0 top-full mt-1 w-52 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-xl py-1.5 z-50 animate-fade-in">
+                <div id="tools-menu" role="menu" className="absolute left-0 top-full mt-1 w-52 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-xl py-1.5 z-50 animate-fade-in">
                   {TOOLS_NAV.map(({ to, label, icon, color }) => (
                     <button
                       key={to}
                       type="button"
+                      role="menuitem"
                       className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors"
                       onClick={() => { navigate(to); setToolsMenuOpen(false); }}
                     >
@@ -143,6 +162,7 @@ export const TopNav: React.FC = () => {
             type="button"
             onClick={toggleTheme}
             title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >
             {theme === 'dark' ? (
@@ -160,11 +180,13 @@ export const TopNav: React.FC = () => {
           <div className="w-px h-4 bg-slate-200 dark:bg-slate-700" />
 
           {isAuthenticated ? (
-            <div className="relative">
+            <div className="relative" ref={userMenuRef} onBlur={(event) => closeMenuOnFocusLeave(event, setUserMenuOpen)}>
               <button
                 type="button"
                 onClick={() => setUserMenuOpen((o) => !o)}
-                onBlur={() => setTimeout(() => setUserMenuOpen(false), 150)}
+                aria-haspopup="menu"
+                aria-expanded={userMenuOpen}
+                aria-controls="account-menu"
                 className="flex items-center gap-2 px-2.5 py-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               >
                 <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-[10px] font-bold shrink-0">
@@ -177,9 +199,10 @@ export const TopNav: React.FC = () => {
               </button>
 
               {userMenuOpen && (
-                <div className="absolute right-0 top-full mt-1.5 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-slate-200/60 dark:shadow-slate-900/80 border border-slate-100 dark:border-slate-700 py-1.5 z-50 animate-fade-in">
+                <div id="account-menu" role="menu" className="absolute right-0 top-full mt-1.5 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-slate-200/60 dark:shadow-slate-900/80 border border-slate-100 dark:border-slate-700 py-1.5 z-50 animate-fade-in">
                   {ACCOUNT_NAV.map(({ to, label, icon, color }) => (
                     <button key={to} type="button"
+                      role="menuitem"
                       onClick={() => { navigate(to); setUserMenuOpen(false); }}
                       className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
                       <i className={`fas ${icon} w-3.5 ${color}`} /> {label}
@@ -188,18 +211,18 @@ export const TopNav: React.FC = () => {
                   {isStaff && (
                     <>
                       <div className="my-1 border-t border-slate-100 dark:border-slate-700" />
-                      <button type="button" onClick={() => { navigate('/admin/quality'); setUserMenuOpen(false); }}
+                      <button type="button" role="menuitem" onClick={() => { navigate('/admin/quality'); setUserMenuOpen(false); }}
                         className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
                         <i className="fas fa-clipboard-check w-3.5 text-violet-400" /> Quality review
                       </button>
-                      <button type="button" onClick={() => { navigate('/admin/observability'); setUserMenuOpen(false); }}
+                      <button type="button" role="menuitem" onClick={() => { navigate('/admin/observability'); setUserMenuOpen(false); }}
                         className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
                         <i className="fas fa-chart-pie w-3.5 text-rose-400" /> Admin observability
                       </button>
                     </>
                   )}
                   <div className="my-1 border-t border-slate-100 dark:border-slate-700" />
-                  <button type="button"
+                  <button type="button" role="menuitem"
                     onClick={() => { logout(); setUserMenuOpen(false); }}
                     className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors">
                     <i className="fas fa-sign-out-alt w-3.5" /> Sign out
@@ -221,6 +244,8 @@ export const TopNav: React.FC = () => {
           <button
             type="button"
             onClick={() => setMobileMenuOpen((o) => !o)}
+            aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={mobileMenuOpen}
             className="md:hidden w-8 h-8 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ml-1"
           >
             <i className="fas fa-bars text-sm" />
@@ -232,11 +257,17 @@ export const TopNav: React.FC = () => {
       {mobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 max-h-[calc(100vh-var(--nav-h))] overflow-y-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 py-2 px-3 sm:px-4 flex flex-col gap-0.5 animate-fade-in z-50">
           {isAuthenticated && (
-            <button type="button" onClick={() => { navigate('/learning'); setMobileMenuOpen(false); }}
-              className={`nav-link w-full text-left ${pathname.startsWith('/learning') ? 'active' : ''}`}>
-              <i className="fas fa-graduation-cap text-[10px]" /> Study
-              {dueCount > 0 && <span className="ml-auto text-[10px] font-bold text-rose-500">{dueCount} due</span>}
-            </button>
+            <>
+              <button type="button" onClick={() => { navigate('/dashboard'); setMobileMenuOpen(false); }}
+                className={`nav-link w-full text-left ${pathname.startsWith('/dashboard') || pathname === '/for-you' ? 'active' : ''}`}>
+                <i className="fas fa-gauge-high text-[10px]" /> Dashboard
+              </button>
+              <button type="button" onClick={() => { navigate('/learning'); setMobileMenuOpen(false); }}
+                className={`nav-link w-full text-left ${pathname.startsWith('/learning') ? 'active' : ''}`}>
+                <i className="fas fa-graduation-cap text-[10px]" /> Topic review
+                {dueCount > 0 && <span className="ml-auto text-[10px] font-bold text-rose-500">{dueCount} due</span>}
+              </button>
+            </>
           )}
           {PRIMARY_NAV.map(({ to, label, icon }) => (
             <button key={to} type="button"

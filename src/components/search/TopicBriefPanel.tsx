@@ -721,6 +721,14 @@ const TopicBriefPanelComponent: React.FC<Props> = ({
                   {consensusSynopsis.clinicalBottomLine}
                 </p>
               )}
+              {consensusSynopsis.guidelineAlignment?.summary && (
+                <p className="mt-2 rounded-lg bg-blue-50 px-3 py-2 text-[11px] font-semibold leading-relaxed text-blue-800 dark:bg-blue-950/20 dark:text-blue-200">
+                  <span className="font-black uppercase">
+                    {consensusSynopsis.guidelineAlignment.status.replace(/_/g, ' ')}
+                  </span>
+                  {' '}{consensusSynopsis.guidelineAlignment.summary}
+                </p>
+              )}
             </div>
             {consensusSynopsis.status !== 'generated' && (
               <span className="rounded-full bg-amber-100 px-2 py-1 text-[10px] font-black uppercase text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
@@ -944,8 +952,8 @@ const TopicBriefPanelComponent: React.FC<Props> = ({
         {onGuidelineCompare && (
           <button type="button" onClick={onGuidelineCompare}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-colors"
-            title="Compare top evidence with clinical guidelines">
-            <i className="fas fa-scale-balanced text-[10px]" />Guideline vs trial
+            title="Run synthesis and open the pre-computed trial vs guideline conflict matrix">
+            <i className="fas fa-scale-balanced text-[10px]" />Ask guideline vs trial?
           </button>
         )}
 

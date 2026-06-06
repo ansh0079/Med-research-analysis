@@ -152,6 +152,52 @@ function matchesPicoInterventionComparator(article, pico, query = '') {
     return true;
 }
 
+function articleRankKeyCandidates(article) {
+    return [
+        article?.uid,
+        article?.pmid,
+        article?.doi,
+        article?.doi ? String(article.doi).replace(/^https?:\/\/(dx\.)?doi\.org\//i, '') : null,
+    ].map((value) => String(value || '').trim().toLowerCase()).filter(Boolean);
+}
+
+function annotateSearchRankMetadata(articles, bouquetRanking = []) {
+    const rankingByKey = new Map();
+    for (let index = 0; index < bouquetRanking.length; index++) {
+        const row = bouquetRanking[index] || {};
+        const rank = index + 1;
+        for (const key of articleRankKeyCandidates(row)) {
+            if (!rankingByKey.has(key)) rankingByKey.set(key, { ...row, evidenceRank: rank });
+        }
+    }
+
+    return (Array.isArray(articles) ? articles : []).map((article, index) => {
+        const ranking = articleRankKeyCandidates(article)
+            .map((key) => rankingByKey.get(key))
+            .find(Boolean);
+        const evidenceRank = ranking?.evidenceRank ?? index + 1;
+        const learningRank = index + 1;
+        const learningBoost = Number(article?._learningBoost || 0);
+        const reasons = Array.isArray(ranking?.reasons) ? [...ranking.reasons] : [];
+        if (learningBoost > 0) reasons.push('Personalized for your learning gaps');
+        if (learningBoost < 0) reasons.push('Deprioritized by your feedback');
+
+        return {
+            ...article,
+            _evidenceRank: evidenceRank,
+            _learningRank: learningRank,
+            _rankMovedByLearning: evidenceRank !== learningRank,
+            _rankReasons: [...new Set(reasons)].slice(0, 8),
+            _ranking: ranking ? {
+                compositeScore: ranking.compositeScore,
+                archetype: ranking.archetype,
+                citations: ranking.citations,
+                year: ranking.year,
+            } : undefined,
+        };
+    });
+}
+
 function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMeshTerms = [], parsedYearFilters = [], pico = null }) {
     const currentYear = new Date().getFullYear();
     const queryWantsMechanisms = MECHANISM_QUERY_PATTERNS.test(String(query || ''));
@@ -280,6 +326,7 @@ async function fetchAndRankSearchArticles({
         previousQueries,
     });
     articles = applySearchLearningBoost(articles, learningContextFull);
+    articles = annotateSearchRankMetadata(articles, bouquet.ranking);
     timings.learningMs = Date.now() - learningStarted;
     timings.totalMs = Date.now() - started;
 
@@ -305,6 +352,8 @@ module.exports = {
     parseSearchRequestQuery,
     filterRelevantArticles,
     matchesPicoInterventionComparator,
+    annotateSearchRankMetadata,
+    articleRankKeyCandidates,
     yearInFilters,
     prefetchTeachingArtifacts,
     fetchAndRankSearchArticles,

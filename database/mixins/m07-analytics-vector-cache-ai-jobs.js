@@ -374,7 +374,63 @@ mapAiGenerationJobRow(row) {
         startedAt: row.started_at || null,
         completedAt: row.completed_at || null,
         expiresAt: row.expires_at || null,
+        userId: row.user_id || null,
     };
+}
+
+async listUserAiGenerationJobs(userId, {
+    statuses = ['queued', 'running'],
+    jobTypes = ['full_synthesis'],
+    limit = 12,
+} = {}) {
+    if (!userId) return [];
+    const safeLimit = Math.min(Math.max(Number(limit) || 12, 1), 30);
+    const statusList = (Array.isArray(statuses) ? statuses : String(statuses || '').split(','))
+        .map((s) => String(s || '').trim())
+        .filter(Boolean);
+    const typeList = (Array.isArray(jobTypes) ? jobTypes : String(jobTypes || '').split(','))
+        .map((s) => String(s || '').trim())
+        .filter(Boolean);
+    if (!statusList.length || !typeList.length) return [];
+
+    const statusPlaceholders = statusList.map(() => '?').join(', ');
+    const typePlaceholders = typeList.map(() => '?').join(', ');
+    const params = [String(userId), ...statusList, ...typeList, safeLimit * 4];
+
+    let rows = [];
+    try {
+        rows = await this.all(
+            `SELECT * FROM ai_generation_jobs
+             WHERE user_id = ?
+               AND status IN (${statusPlaceholders})
+               AND job_type IN (${typePlaceholders})
+             ORDER BY updated_at DESC
+             LIMIT ?`,
+            params
+        );
+    } catch {
+        rows = [];
+    }
+
+    if (!rows.length) {
+        const fallbackRows = await this.all(
+            `SELECT * FROM ai_generation_jobs
+             WHERE status IN (${statusPlaceholders})
+               AND job_type IN (${typePlaceholders})
+             ORDER BY updated_at DESC
+             LIMIT ?`,
+            [...statusList, ...typeList, safeLimit * 6]
+        ).catch(() => []);
+        rows = fallbackRows.filter((row) => {
+            const payload = safeJsonParse(row.input_payload, null);
+            return payload?.userId === userId;
+        });
+    }
+
+    return rows
+        .map((row) => this.mapAiGenerationJobRow(row))
+        .filter(Boolean)
+        .slice(0, safeLimit);
 }
 
 async getAiGenerationJobByKey(jobKey) {
@@ -383,26 +439,51 @@ async getAiGenerationJobByKey(jobKey) {
     return this.mapAiGenerationJobRow(row);
 }
 
-async createAiGenerationJob({ jobKey, jobType, topic = null, inputHash = null, inputPayload = null, provider = null, model = null, expiresAt = null } = {}) {
+async createAiGenerationJob({
+    jobKey, jobType, topic = null, inputHash = null, inputPayload = null,
+    provider = null, model = null, expiresAt = null, userId = null,
+} = {}) {
     if (!jobKey || !jobType) return null;
     const now = new Date().toISOString();
-    await this.run(
-        `INSERT INTO ai_generation_jobs (job_key, job_type, status, topic, input_hash, input_payload, provider, model, created_at, updated_at, expires_at)
-         VALUES (?, ?, 'queued', ?, ?, ?, ?, ?, ?, ?, ?)
-         ON CONFLICT(job_key) DO NOTHING`,
-        [
-            String(jobKey),
-            String(jobType),
-            topic || null,
-            inputHash || null,
-            inputPayload ? JSON.stringify(inputPayload) : null,
-            provider || null,
-            model || null,
-            now,
-            now,
-            expiresAt || null,
-        ]
-    );
+    const resolvedUserId = userId || inputPayload?.userId || null;
+    try {
+        await this.run(
+            `INSERT INTO ai_generation_jobs (job_key, job_type, status, topic, input_hash, input_payload, provider, model, user_id, created_at, updated_at, expires_at)
+             VALUES (?, ?, 'queued', ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             ON CONFLICT(job_key) DO NOTHING`,
+            [
+                String(jobKey),
+                String(jobType),
+                topic || null,
+                inputHash || null,
+                inputPayload ? JSON.stringify(inputPayload) : null,
+                provider || null,
+                model || null,
+                resolvedUserId || null,
+                now,
+                now,
+                expiresAt || null,
+            ]
+        );
+    } catch {
+        await this.run(
+            `INSERT INTO ai_generation_jobs (job_key, job_type, status, topic, input_hash, input_payload, provider, model, created_at, updated_at, expires_at)
+             VALUES (?, ?, 'queued', ?, ?, ?, ?, ?, ?, ?, ?)
+             ON CONFLICT(job_key) DO NOTHING`,
+            [
+                String(jobKey),
+                String(jobType),
+                topic || null,
+                inputHash || null,
+                inputPayload ? JSON.stringify(inputPayload) : null,
+                provider || null,
+                model || null,
+                now,
+                now,
+                expiresAt || null,
+            ]
+        );
+    }
     return this.getAiGenerationJobByKey(jobKey);
 }
 
@@ -530,6 +611,173 @@ async getLatestSynthesisSnapshots(topic, limit = 2) {
          ORDER BY generated_at DESC LIMIT ?`,
         [normalized, Math.min(limit, 10)]
     );
+}
+
+// ── Product quality metrics ───────────────────────────────────────────────
+
+async recordProductQualityFeedback({
+    userId = null,
+    sessionId = null,
+    productType,
+    topic = null,
+    factualAccuracy = null,
+    completeness = null,
+    clinicalUsefulness = null,
+    timeSavedMinutes = null,
+    comment = null,
+    metadata = {},
+} = {}) {
+    if (!this.kysely || !productType) return null;
+    const now = new Date().toISOString();
+    return this.kysely
+        .insertInto('product_quality_feedback')
+        .values({
+            user_id: userId || null,
+            session_id: sessionId || null,
+            product_type: String(productType).slice(0, 40),
+            topic: topic ? String(topic).slice(0, 240) : null,
+            factual_accuracy: factualAccuracy != null ? Number(factualAccuracy) : null,
+            completeness: completeness != null ? Number(completeness) : null,
+            clinical_usefulness: clinicalUsefulness != null ? Number(clinicalUsefulness) : null,
+            time_saved_minutes: timeSavedMinutes != null ? Number(timeSavedMinutes) : null,
+            comment: comment ? String(comment).slice(0, 1000) : null,
+            metadata_json: JSON.stringify(metadata || {}),
+            created_at: now,
+        })
+        .execute();
+}
+
+_metricsSinceIso(days) {
+    const safeDays = Math.min(90, Math.max(1, Number(days) || 30));
+    return new Date(Date.now() - safeDays * 24 * 60 * 60 * 1000).toISOString();
+}
+
+async getSearchImpressionMetricsWindow(days = 30) {
+    if (!this.kysely) return [];
+    const since = this._metricsSinceIso(days);
+    return this.all(
+        `SELECT search_id, position, was_clicked, was_saved, dwell_time_ms
+         FROM search_result_impressions
+         WHERE created_at >= ?
+         ORDER BY search_id ASC, position ASC`,
+        [since]
+    );
+}
+
+async getSearchClickLatencyEvents(days = 30) {
+    if (!this.kysely) return [];
+    const since = this._metricsSinceIso(days);
+    const rows = await this.all(
+        `SELECT metadata, created_at
+         FROM analytics
+         WHERE event_type = 'search_result_click'
+           AND created_at >= ?
+         ORDER BY created_at DESC
+         LIMIT 5000`,
+        [since]
+    );
+    return rows.map((row) => {
+        const meta = safeJsonParse(row.metadata, {});
+        return { elapsed_ms: Number(meta.elapsedMs ?? meta.dwellMs ?? 0) };
+    }).filter((row) => row.elapsed_ms > 0);
+}
+
+async getProductQualityFeedbackWindow(days = 30) {
+    if (!this.kysely) return [];
+    const since = this._metricsSinceIso(days);
+    return this.all(
+        `SELECT product_type, factual_accuracy, completeness, clinical_usefulness, time_saved_minutes
+         FROM product_quality_feedback
+         WHERE created_at >= ?`,
+        [since]
+    );
+}
+
+async getUserRetentionCohort(days = 30) {
+    if (!this.kysely) return [];
+    const safeDays = Math.min(90, Math.max(7, Number(days) || 30));
+    const halfMs = (safeDays / 2) * 24 * 60 * 60 * 1000;
+    const recentStart = new Date(Date.now() - halfMs).toISOString();
+    const priorStart = new Date(Date.now() - safeDays * 24 * 60 * 60 * 1000).toISOString();
+    return this.all(
+        `SELECT DISTINCT prior.user_id,
+                CASE WHEN recent.user_id IS NOT NULL THEN 1 ELSE 0 END AS returned
+         FROM (
+             SELECT DISTINCT user_id
+             FROM learning_events
+             WHERE user_id IS NOT NULL
+               AND occurred_at >= ?
+               AND occurred_at < ?
+         ) prior
+         LEFT JOIN (
+             SELECT DISTINCT user_id
+             FROM learning_events
+             WHERE user_id IS NOT NULL
+               AND occurred_at >= ?
+         ) recent ON recent.user_id = prior.user_id`,
+        [priorStart, recentStart, recentStart]
+    );
+}
+
+async getSearchRefinementStats(days = 30) {
+    if (!this.kysely) return [];
+    const since = this._metricsSinceIso(days);
+    return this.all(
+        `SELECT session_sequence_index
+         FROM searches
+         WHERE created_at >= ?
+           AND session_sequence_index > 0`,
+        [since]
+    );
+}
+
+async getKnowledgeProgressionSnapshot(days = 30) {
+    if (!this.kysely) return [];
+    const since = this._metricsSinceIso(days);
+    return this.all(
+        `SELECT memory_score, memory_tier, normalized_topic
+         FROM user_topic_memory
+         WHERE updated_at >= ?`,
+        [since]
+    );
+}
+
+async getRecommendationSatisfactionEvents(days = 30) {
+    if (!this.kysely) return [];
+    const since = this._metricsSinceIso(days);
+    return this.all(
+        `SELECT event_type
+         FROM learning_events
+         WHERE occurred_at >= ?
+           AND event_type IN ('feedback_helpful', 'feedback_confusing')`,
+        [since]
+    );
+}
+
+async getSynthesisCitationValidationStats(days = 30) {
+    if (!this.kysely) return { passRate: null, sampleSize: 0 };
+    const since = this._metricsSinceIso(days);
+    const rows = await this.all(
+        `SELECT metadata
+         FROM analytics
+         WHERE event_type = 'synthesize'
+           AND created_at >= ?
+         ORDER BY created_at DESC
+         LIMIT 2000`,
+        [since]
+    );
+    let pass = 0;
+    let total = 0;
+    for (const row of rows) {
+        const meta = safeJsonParse(row.metadata, {});
+        if (meta.citationOk === undefined && meta.citationValidationOk === undefined) continue;
+        total += 1;
+        if (meta.citationOk === true || meta.citationValidationOk === true) pass += 1;
+    }
+    return {
+        passRate: total ? pass / total : null,
+        sampleSize: total,
+    };
 }
 
 };

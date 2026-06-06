@@ -62,18 +62,74 @@ function mergeBreakthroughMoments(existing = [], incoming = []) {
     return merged;
 }
 
+function normalizeEvidenceAnchor(anchor) {
+    if (!anchor || typeof anchor !== 'object') return null;
+    const type = String(anchor.type || '').trim();
+    const title = String(anchor.title || anchor.claimText || anchor.recommendationText || '').replace(/\s+/g, ' ').trim();
+    if (!type || !title) return null;
+    return {
+        type: type.slice(0, 40),
+        title: title.slice(0, 220),
+        uid: anchor.uid ? String(anchor.uid).slice(0, 120) : null,
+        source: anchor.source ? String(anchor.source).slice(0, 120) : null,
+        confidence: Number.isFinite(Number(anchor.confidence)) ? Number(anchor.confidence) : null,
+        verificationStatus: anchor.verificationStatus ? String(anchor.verificationStatus).slice(0, 80) : null,
+    };
+}
+
+function mergeEvidenceAnchors(existing = [], incoming = []) {
+    const merged = [];
+    const seen = new Set();
+    for (const raw of [...(Array.isArray(existing) ? existing : []), ...(Array.isArray(incoming) ? incoming : [])]) {
+        const anchor = normalizeEvidenceAnchor(raw);
+        if (!anchor) continue;
+        const key = `${anchor.type}:${anchor.uid || anchor.title}`.toLowerCase();
+        if (seen.has(key)) continue;
+        seen.add(key);
+        merged.push(anchor);
+        if (merged.length >= 12) break;
+    }
+    return merged;
+}
+
+function uniqStrings(arr, extra = [], max = 6) {
+    return [...new Set([...(Array.isArray(arr) ? arr : []), ...(Array.isArray(extra) ? extra : [])])]
+        .filter(Boolean)
+        .slice(0, max);
+}
+
 function mergeSnapshots(existing, incoming) {
     const base = existing && typeof existing === 'object' ? existing : {};
     const add = incoming && typeof incoming === 'object' ? incoming : {};
-    const uniq = (arr, extra = []) => [...new Set([...(Array.isArray(arr) ? arr : []), ...(Array.isArray(extra) ? extra : [])])].filter(Boolean).slice(0, 6);
     return {
-        focusAreas: uniq(base.focusAreas, add.focusAreas),
-        misconceptions: uniq(base.misconceptions, add.misconceptions),
-        masteredThisSession: uniq(base.masteredThisSession, add.masteredThisSession),
+        focusAreas: uniqStrings(base.focusAreas, add.focusAreas),
+        misconceptions: uniqStrings(base.misconceptions, add.misconceptions),
+        masteredThisSession: uniqStrings(base.masteredThisSession, add.masteredThisSession),
         breakthroughMoments: mergeBreakthroughMoments(base.breakthroughMoments, add.breakthroughMoments),
+        evidenceAnchors: mergeEvidenceAnchors(base.evidenceAnchors, add.evidenceAnchors),
+        learningPatterns: uniqStrings(base.learningPatterns, add.learningPatterns, 8),
+        sessionReflection: add.sessionReflection || base.sessionReflection || null,
         openQuestion: add.openQuestion || base.openQuestion || null,
         updatedAt: new Date().toISOString(),
     };
+}
+
+function isSessionEndingTurn(userMessage, { sessionEnd = false, sessionFeedback = null } = {}) {
+    if (sessionEnd || sessionFeedback) return true;
+    const msg = String(userMessage || '').trim().toLowerCase();
+    if (!msg) return false;
+    if (/^(thanks|thank you|that's all|that is all|done for now|goodbye|bye|i'm done|im done|stop here|end session)\b/.test(msg)) {
+        return true;
+    }
+    return /\b(done studying|finished for today|no more questions|wrap up|end of session)\b/.test(msg);
+}
+
+function formatConversationForReflection(conversationHistory = [], maxTurns = 8) {
+    if (!Array.isArray(conversationHistory)) return '';
+    return conversationHistory
+        .slice(-maxTurns)
+        .map((msg) => `${String(msg.role || 'user').slice(0, 12)}: ${String(msg.content || '').slice(0, 400)}`)
+        .join('\n');
 }
 
 /**
@@ -181,6 +237,7 @@ async function persistAgentTurnMemory({
     assistantReply,
     existingSummary = null,
     existingSnapshot = null,
+    evidenceAnchors = [],
     metrics = null,
     minUserChars = Number(process.env.AGENT_TURN_MEMORY_MIN_USER_CHARS || 24),
     minAssistantChars = Number(process.env.AGENT_TURN_MEMORY_MIN_ASSISTANT_CHARS || 120),
@@ -213,7 +270,7 @@ async function persistAgentTurnMemory({
 
     const learnerSnapshot = mergeSnapshots(
         typeof existingSnapshot === 'object' ? existingSnapshot : safeJsonParse(existingSnapshot, {}),
-        turnSnapshot
+        { ...turnSnapshot, evidenceAnchors }
     );
 
     await db.updateAgentConversationMemory(conversationId, {
@@ -232,6 +289,7 @@ async function persistAgentTurnMemory({
                 focusAreas: learnerSnapshot.focusAreas,
                 misconceptions: learnerSnapshot.misconceptions,
                 breakthroughMoments: (learnerSnapshot.breakthroughMoments || []).map((b) => b.moment).slice(0, 4),
+                evidenceAnchors: (learnerSnapshot.evidenceAnchors || []).slice(0, 8),
                 openQuestion: learnerSnapshot.openQuestion,
                 summaryChars: summary ? summary.length : 0,
             },
@@ -264,14 +322,143 @@ async function persistAgentTurnMemory({
     return { conversationSummary: summary, learnerSnapshot, ms: Date.now() - started };
 }
 
+/**
+ * Post-session reflection: extract durable learning patterns from the full thread.
+ */
+async function reflectOnAgentSession({
+    db,
+    ai,
+    userId,
+    topic,
+    conversationId,
+    conversationSummary = null,
+    learnerSnapshot = null,
+    conversationHistory = [],
+    sessionFeedback = null,
+}) {
+    if (!db || !conversationId || !userId) return null;
+    if (typeof db.updateAgentConversationMemory !== 'function') return null;
+
+    const historyText = formatConversationForReflection(conversationHistory, 10);
+    const summary = String(conversationSummary || '').slice(0, 2200);
+    const fallback = {
+        reflectionSummary: summary
+            ? `Session on ${topic}: ${summary.split('\n').slice(0, 2).join(' ').slice(0, 240)}`
+            : `Session on ${topic} ended.`,
+        learningPatterns: [],
+        reinforcedTopics: [],
+        persistentGaps: [],
+        nextStudyFocus: null,
+    };
+
+    let reflection = fallback;
+    if (ai) {
+        const feedbackBlock = sessionFeedback
+            ? `Quiz feedback: ${sessionFeedback.score}/${sessionFeedback.totalQuestions}, weak areas: ${(sessionFeedback.weakAreas || []).join(', ')}`
+            : 'No quiz feedback attached.';
+        const prompt = `Reflect on this medical learner's tutoring session on "${topic}".
+Extract durable learning patterns — not trivia, but how this learner reasons and what to reinforce next.
+
+Conversation summary:
+${summary || 'No stored summary.'}
+
+Recent turns:
+${historyText || 'No recent turns.'}
+
+${feedbackBlock}
+
+Return ONLY valid JSON:
+{
+  "reflectionSummary": "2-3 sentences",
+  "learningPatterns": ["recurring reasoning habits or study patterns"],
+  "reinforcedTopics": ["concepts grasped this session"],
+  "persistentGaps": ["gaps that still need work"],
+  "nextStudyFocus": "one concrete next step or null"
+}`;
+
+        try {
+            const raw = await ai.callGemini(prompt, 'gemini-2.5-flash-lite', {
+                temperature: 0.1,
+                maxOutputTokens: 420,
+                timeoutMs: 9000,
+            });
+            const { parseJsonBlock } = require('../utils/parseJson');
+            const parsed = parseJsonBlock(String(raw || ''));
+            if (parsed && typeof parsed === 'object') {
+                reflection = {
+                    reflectionSummary: String(parsed.reflectionSummary || fallback.reflectionSummary).slice(0, 500),
+                    learningPatterns: Array.isArray(parsed.learningPatterns)
+                        ? parsed.learningPatterns.map(String).filter(Boolean).slice(0, 6)
+                        : [],
+                    reinforcedTopics: Array.isArray(parsed.reinforcedTopics)
+                        ? parsed.reinforcedTopics.map(String).filter(Boolean).slice(0, 6)
+                        : [],
+                    persistentGaps: Array.isArray(parsed.persistentGaps)
+                        ? parsed.persistentGaps.map(String).filter(Boolean).slice(0, 6)
+                        : [],
+                    nextStudyFocus: parsed.nextStudyFocus ? String(parsed.nextStudyFocus).slice(0, 240) : null,
+                };
+            }
+        } catch (err) {
+            logger.debug({ err }, 'reflectOnAgentSession LLM failed');
+        }
+    }
+
+    const baseSnapshot = typeof learnerSnapshot === 'object'
+        ? learnerSnapshot
+        : safeJsonParse(learnerSnapshot, {});
+    const mergedSnapshot = mergeSnapshots(baseSnapshot, {
+        learningPatterns: reflection.learningPatterns,
+        reinforcedTopics: reflection.reinforcedTopics,
+        persistentGaps: reflection.persistentGaps,
+        sessionReflection: {
+            summary: reflection.reflectionSummary,
+            nextStudyFocus: reflection.nextStudyFocus,
+            reflectedAt: new Date().toISOString(),
+            hadQuizFeedback: Boolean(sessionFeedback),
+        },
+        focusAreas: reflection.persistentGaps,
+        masteredThisSession: reflection.reinforcedTopics,
+    });
+
+    await db.updateAgentConversationMemory(conversationId, {
+        conversationSummary: summary || null,
+        learnerSnapshot: mergedSnapshot,
+    });
+
+    if (typeof db.recordLearningEvent === 'function') {
+        await db.recordLearningEvent({
+            userId,
+            eventType: 'agent_session_reflection',
+            topic,
+            sourceType: 'agent_conversation',
+            sourceId: String(conversationId),
+            payload: {
+                reflectionSummary: reflection.reflectionSummary,
+                learningPatterns: reflection.learningPatterns,
+                reinforcedTopics: reflection.reinforcedTopics,
+                persistentGaps: reflection.persistentGaps,
+                nextStudyFocus: reflection.nextStudyFocus,
+                hadQuizFeedback: Boolean(sessionFeedback),
+            },
+        }).catch((err) => logger.warn({ err }, 'agent_session_reflection event failed'));
+    }
+
+    return { reflection, learnerSnapshot: mergedSnapshot };
+}
+
 module.exports = {
     mergeConversationSummary,
     extractTurnLearnerSnapshot,
     persistAgentTurnMemory,
+    reflectOnAgentSession,
+    isSessionEndingTurn,
+    formatConversationForReflection,
     isAgentMemoryEnabled,
     isTrivialAgentTurn,
     mergeSnapshots,
     mergeBreakthroughMoments,
+    mergeEvidenceAnchors,
     normalizeBreakthroughMoment,
     safeJsonParse,
 };

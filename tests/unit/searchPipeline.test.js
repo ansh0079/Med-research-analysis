@@ -2,8 +2,10 @@ const {
     parsePreviousQueries,
     parseParsedStudyTypes,
     parseParsedYearFilters,
-    parseProcessedQuery,
+    inferServerQueryHints,
+    annotateSearchRankMetadata,
     filterRelevantArticles,
+    matchesPicoInterventionComparator,
     yearInFilters,
 } = require('../../server/services/searchPipeline');
 const { buildEvidenceBouquet, isOffTopic, meshRelevanceRatio, queryMatchScore } = require('../../server/services/evidenceBouquetService');
@@ -23,10 +25,10 @@ describe('searchPipeline helpers', () => {
         expect(parseParsedStudyTypes(JSON.stringify(types))).toEqual(types);
     });
 
-    test('parseProcessedQuery only accepts bounded PubMed-shaped queries', () => {
-        expect(parseProcessedQuery('(heart failure[tiab]) AND english[lang]')).toBe('(heart failure[tiab]) AND english[lang]');
-        expect(parseProcessedQuery('plain user text')).toBeNull();
-        expect(parseProcessedQuery('a'.repeat(701) + '[tiab]')).toBeNull();
+    test('inferServerQueryHints extracts lightweight study-type and date filters', () => {
+        const hints = inferServerQueryHints('2020-2024 systematic review of SGLT2 inhibitors');
+        expect(hints.studyTypes).toContain('"Systematic Review"[Publication Type]');
+        expect(hints.yearFilters).toEqual(['2020:2024[PDAT]']);
     });
 
     test('parseParsedYearFilters accepts safe PubMed date filters', () => {
@@ -37,6 +39,18 @@ describe('searchPipeline helpers', () => {
         expect(yearInFilters({ pubdate: '2021' }, ['2020:2024[PDAT]'])).toBe(true);
         expect(yearInFilters({ pubdate: '2018' }, ['2020:2024[PDAT]'])).toBe(false);
         expect(yearInFilters({ title: 'unknown year' }, ['2020:2024[PDAT]'])).toBe(true);
+    });
+
+    test('matchesPicoInterventionComparator filters clear intervention and comparator mismatches', () => {
+        const pico = { intervention: 'SGLT2 inhibitor', comparison: 'placebo', confidence: 0.8 };
+        expect(matchesPicoInterventionComparator({
+            title: 'SGLT2 inhibitor versus placebo in heart failure',
+            abstract: 'Adults were randomized to SGLT2 inhibitor or placebo.',
+        }, pico, 'SGLT2 inhibitor vs placebo')).toBe(true);
+        expect(matchesPicoInterventionComparator({
+            title: 'Beta blockers in heart failure',
+            abstract: 'Adults received beta blockers.',
+        }, pico, 'SGLT2 inhibitor vs placebo')).toBe(false);
     });
 
     test('filterRelevantArticles removes off-topic papers', () => {
@@ -79,6 +93,32 @@ describe('specificity-weighted ranking', () => {
         const bouquet = buildEvidenceBouquet(articles, 'SGLT2 inhibitors heart failure', { count: 2, specificity: 'strict' });
         expect(bouquet.topPapers[0].uid).toBe('specific');
         expect(bouquet.ranking[0].reasons).toContain('Strong query match');
+    });
+});
+
+describe('rank metadata annotation', () => {
+    test('attaches evidence rank, learning rank, and rank reasons to returned articles', () => {
+        const articles = [
+            { uid: 'b', title: 'Second article', _learningBoost: 1.2 },
+            { uid: 'a', title: 'First article' },
+        ];
+        const ranking = [
+            { uid: 'a', compositeScore: 91, archetype: 'guideline', citations: 500, year: 2024, reasons: ['Clinical guideline'] },
+            { uid: 'b', compositeScore: 88, archetype: 'rct', citations: 120, year: 2023, reasons: ['Well cited'] },
+        ];
+
+        const annotated = annotateSearchRankMetadata(articles, ranking);
+
+        expect(annotated[0]).toMatchObject({
+            uid: 'b',
+            _evidenceRank: 2,
+            _learningRank: 1,
+            _rankMovedByLearning: true,
+        });
+        expect(annotated[0]._rankReasons).toContain('Well cited');
+        expect(annotated[0]._rankReasons).toContain('Personalized for your learning gaps');
+        expect(annotated[1]._rankMovedByLearning).toBe(true);
+        expect(annotated[1]._ranking.archetype).toBe('guideline');
     });
 });
 

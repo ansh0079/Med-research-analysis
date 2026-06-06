@@ -1,4 +1,5 @@
 const { formatStoredTopicKnowledgeForPrompt } = require('./_helpers');
+const { formatConflictMatrixForPrompt } = require('../services/conflictExtractionService');
 
 function buildCaseSearchQueryPrompt(caseText) {
     return `You help build a single literature search string for medical research databases (PubMed, Semantic Scholar, OpenAlex).
@@ -15,7 +16,7 @@ Clinical vignette (research context only):
 ${caseText}`;
 }
 
-function buildCaseEvidencePrompt(caseText, evidenceRows, options = {}, guidelines = [], userContext = null) {
+function buildCaseEvidencePrompt(caseText, evidenceRows, options = {}, guidelines = [], userContext = null, conflictMatrix = null) {
     const topic = String(options.topic || '').trim();
     const learningMode = String(options.learningMode || 'student');
     const modeGuidance = {
@@ -42,6 +43,24 @@ function buildCaseEvidencePrompt(caseText, evidenceRows, options = {}, guideline
         }
         if (profile?.persona) {
             adaptiveInstruction += `\nLEARNER PERSONA: ${profile.persona}.`;
+        }
+
+        // Phase 3: inject inferred misconception tags
+        const misconceptions = userContext.misconceptions || userContext.personalMisconceptions || [];
+        const inferredTags = Array.isArray(userContext.inferredMisconceptions) ? userContext.inferredMisconceptions : [];
+        const allMisconceptions = [...misconceptions.slice(0, 5), ...inferredTags.slice(0, 3)];
+        if (allMisconceptions.length > 0) {
+            const lines = allMisconceptions.map((m) => {
+                const desc = m.description || m.wrongOptionText || m.claimText || String(m.claimKey || m.tag || '');
+                const count = m.count ? ` (missed ${m.count} times)` : '';
+                return `- ${desc}${count}`;
+            }).join('\n');
+            adaptiveInstruction += `\n\nPERSONAL LEARNING CONTEXT — inferred misconceptions from past quiz performance:\n${lines}\nWhen generating MCQs and teaching points, explicitly address these gaps. Do not assume mastery of the above concepts.`;
+        }
+
+        // Phase 3: JIT reminder from related topics
+        if (userContext.justInTimeReminder) {
+            adaptiveInstruction += `\n\nCROSS-TOPIC REMINDER: ${userContext.justInTimeReminder}`;
         }
     }
     const evidence = (evidenceRows || [])
@@ -81,8 +100,10 @@ ${evidence}
 
 Clinical Guidelines:
 ${guidelineContext}
+${formatConflictMatrixForPrompt(conflictMatrix || options.conflictMatrix)}
 
 When forming recommendations, clearly distinguish between evidence from the papers above and guidance from clinical guidelines. Label guideline-derived points with "Guideline [Gn]" and paper-derived points with "Evidence [n]".
+If CONFLICT ANALYSIS is present, weave those divergences into uncertainties and MCQs — do not invent additional trial–guideline conflicts beyond the pre-computed matrix.
 
 Return ONLY valid JSON:
 {
@@ -121,6 +142,13 @@ Return ONLY valid JSON:
     }
   ],
   "uncertainties": ["key uncertainty points"],
+  "followUpQuestions": [
+    {
+      "question": "Concise follow-up search question derived from an unresolved conflict, uncertainty, or evidence gap surfaced by this case",
+      "rationale": "One sentence explaining what exploring this question would add to the learner's understanding",
+      "trigger": "conflict" | "uncertainty" | "gap" | "subgroup"
+    }
+  ],
   "disclaimer": "FOR RESEARCH SUPPORT ONLY. This summary is not a substitute for clinical judgement. Findings must be verified against primary sources and interpreted by a qualified healthcare professional before informing any patient care decision.",
   "safetyNotes": "Specific limitations of this evidence set for this case; always verify retraction status of cited articles"
 }
@@ -130,6 +158,7 @@ Rules:
 - "citations" uses 1-based indices matching [EVIDENCE n] blocks above only. Do not invent PMIDs.
 - Generate exactly 3-5 MCQs. All MCQs must be grounded in the vignette and evidence set.
 - "paperApplications" should cover up to the top 5 most relevant evidence blocks.
+- "followUpQuestions": generate exactly 2-4 questions. Each must come from a different source: a trial–guideline conflict, an unresolved uncertainty, a research gap, or an unexplored patient subgroup. Phrase as concise search queries a clinician would type.
 - Use neutral research language; describe evidence themes rather than prescribing treatment.
 }`;
 }

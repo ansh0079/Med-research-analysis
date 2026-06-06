@@ -18,7 +18,14 @@ function registerVectorSearchRoutes(app, deps) {
     const vector = createVectorSearchService({ db, serverConfig });
 
     app.post('/api/search/vector', rateLimit(20, 60), requireJson, requireAuthJwt, async (req, res) => {
-        const { query, limit = 10, minScore = 0.4 } = req.body;
+        const {
+            query,
+            limit = 10,
+            minScore = 0.4,
+            userEmbedding = null,
+            userProfileText = '',
+            queryWeight = 0.75,
+        } = req.body;
 
         if (!query || typeof query !== 'string') {
             return res.status(400).json({ error: 'Query is required' });
@@ -31,7 +38,14 @@ function registerVectorSearchRoutes(app, deps) {
         }
 
         try {
-            const out = await vector.searchVector({ query, limit, minScore });
+            const out = await vector.semanticSearch({
+                query,
+                limit,
+                minScore,
+                userEmbedding,
+                userProfileText,
+                queryWeight,
+            });
             res.json(out);
         } catch (error) {
             if (error.code === 'UNAVAILABLE') {

@@ -6,7 +6,7 @@ import { AnnotationPanel } from '@components/collaboration/AnnotationPanel';
 import { CitationExplorer } from '@components/search/CitationExplorer';
 import { getArticleLinkInfo, getArticleSourceBadgeInfo } from '@services/articleLinks';
 import api from '@services/api';
-import type { Article, ArticleSynopsisFields } from '@types';
+import type { Article, ArticleSynopsisFields, ConsortResult } from '@types';
 import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
 import { VerificationBadge } from '@components/ui/VerificationBadge';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
@@ -22,8 +22,10 @@ interface ArticleCardProps {
   onQuizPaper?: (article: Article) => void;
   onOpenTopic?: (topic: string) => void;
   onOpenInWorkspace?: (url: string) => void;
+  onViewDetails?: (article: Article) => void;
   onFeedback?: (article: Article, type: 'helpful' | 'not_helpful') => void;
   searchId?: number;
+  searchCompletedAt?: number | null;
 }
 
 const GRADE_CLASS: Record<string, string> = {
@@ -94,7 +96,7 @@ function InlineSynopsisPanel({ synopsis, sourceMode, onClose }: { synopsis: Arti
             </span>
           )}
         </div>
-        <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors p-0.5">
+        <button type="button" onClick={onClose} aria-label="Close critical appraisal" className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors p-0.5">
           <i className="fas fa-times text-xs" />
         </button>
       </div>
@@ -160,6 +162,87 @@ function InlineSynopsisPanel({ synopsis, sourceMode, onClose }: { synopsis: Arti
     </div>
   );
 }
+const CONSORT_DOMAIN_LABELS: Record<string, string> = {
+  title_abstract: 'Title & Abstract',
+  eligibility_criteria: 'Eligibility Criteria',
+  interventions: 'Interventions',
+  outcomes: 'Outcomes',
+  sample_size: 'Sample Size',
+  randomisation: 'Randomisation',
+  blinding: 'Blinding',
+  statistical_methods: 'Statistical Methods',
+  harms: 'Harms Reporting',
+  trial_registration: 'Trial Registration',
+};
+
+const CONSORT_ADHERENCE_STYLE: Record<string, { dot: string; chip: string }> = {
+  adequate:     { dot: 'bg-emerald-500', chip: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' },
+  partial:      { dot: 'bg-amber-400',   chip: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300' },
+  not_reported: { dot: 'bg-red-400',     chip: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' },
+};
+
+const CONSORT_OVERALL: Record<string, { label: string; bar: string; text: string }> = {
+  high:     { label: 'High adherence',     bar: 'bg-emerald-500', text: 'text-emerald-700 dark:text-emerald-300' },
+  moderate: { label: 'Moderate adherence', bar: 'bg-amber-400',   text: 'text-amber-700 dark:text-amber-300' },
+  low:      { label: 'Low adherence',      bar: 'bg-red-500',     text: 'text-red-700 dark:text-red-300' },
+};
+
+function InlineConsortPanel({ consort, onClose }: { consort: ConsortResult; onClose: () => void }) {
+  const overall = CONSORT_OVERALL[consort.overallAdherence] ?? CONSORT_OVERALL.low;
+  const pct = Math.round((consort.adequateCount / consort.totalDomains) * 100);
+  return (
+    <div className="mx-0 mt-3 mb-2 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-blue-50/60 dark:bg-blue-950/20 overflow-hidden animate-fade-in">
+      <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-blue-100 dark:border-blue-800/30">
+        <div className="flex items-center gap-2">
+          <i className="fas fa-clipboard-check text-blue-500 text-[11px]" />
+          <span className="text-[11px] font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider">CONSORT 2010 Checklist</span>
+          <span className={`text-[10px] font-bold rounded-full px-2 py-0.5 ${overall.text} bg-white/60 dark:bg-slate-900/40`}>
+            {consort.adequateCount}/{consort.totalDomains} adequate
+          </span>
+          {!consort.isRct && (
+            <span className="text-[9px] font-bold rounded-full px-2 py-0.5 bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">
+              Non-RCT — applies partially
+            </span>
+          )}
+        </div>
+        <button type="button" onClick={onClose} title="Close CONSORT assessment" aria-label="Close CONSORT assessment" className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors p-0.5">
+          <i className="fas fa-times text-xs" />
+        </button>
+      </div>
+      <div className="px-4 py-3 space-y-3">
+        {consort.overallSummary && (
+          <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{consort.overallSummary}</p>
+        )}
+        <div className="flex items-center gap-3">
+          <div className="flex-1 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+            <div className={`impact-bar-fill ${overall.bar} h-full rounded-full transition-all duration-500`} data-pct={String(Math.round(pct / 10) * 10)} />
+          </div>
+          <span className={`text-xs font-bold ${overall.text}`}>{overall.label} ({pct}%)</span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+          {Object.entries(consort.domains).map(([key, domain]) => {
+            const style = CONSORT_ADHERENCE_STYLE[domain.adherence] ?? CONSORT_ADHERENCE_STYLE.not_reported;
+            return (
+              <div key={key} className="flex items-start gap-2 rounded-lg bg-white/60 dark:bg-slate-900/30 px-2.5 py-2 border border-slate-100 dark:border-slate-700/50" title={domain.rationale}>
+                <span className={`w-2 h-2 rounded-full shrink-0 mt-1 ${style.dot}`} />
+                <div className="min-w-0">
+                  <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">{CONSORT_DOMAIN_LABELS[key] ?? key}</p>
+                  <span className={`inline-block text-[9px] font-bold rounded-full px-1.5 py-0.5 mt-0.5 ${style.chip}`}>
+                    {domain.adherence.replace('_', ' ')}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <p className="text-[10px] text-slate-400 dark:text-slate-500 leading-relaxed italic">
+          Assessment based on abstract text only. Full CONSORT adherence requires access to the complete manuscript.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 const PREDATORY_JOURNAL_TERMS = [
   'omics international',
   'science publishing group',
@@ -178,8 +261,19 @@ function isPotentialPredatoryJournal(article: Article) {
   return PREDATORY_JOURNAL_TERMS.some((term) => journal.includes(term));
 }
 
+function quickSignalClass(tone: 'good' | 'info' | 'warn' | 'danger' | 'neutral') {
+  const map = {
+    good: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800/50 dark:bg-emerald-950/30 dark:text-emerald-300',
+    info: 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800/50 dark:bg-blue-950/30 dark:text-blue-300',
+    warn: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800/50 dark:bg-amber-950/30 dark:text-amber-300',
+    danger: 'border-red-200 bg-red-50 text-red-700 dark:border-red-800/50 dark:bg-red-950/30 dark:text-red-300',
+    neutral: 'border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-300',
+  };
+  return map[tone];
+}
+
 const ArticleCardComponent: React.FC<ArticleCardProps> = ({
-  article, isSaved = false, isSelected = false, onSave, onSelect, onAnalyze, onGenerateCase, onQuizPaper, onOpenTopic, onOpenInWorkspace, onFeedback, searchId,
+  article, isSaved = false, isSelected = false, onSave, onSelect, onAnalyze, onGenerateCase, onQuizPaper, onOpenTopic, onOpenInWorkspace, onViewDetails, onFeedback, searchId, searchCompletedAt,
 }) => {
   const navigate = useNavigate();
   const [showAbstract, setShowAbstract] = useState(false);
@@ -194,13 +288,33 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
   const [synopsis, setSynopsis] = useState<ArticleSynopsisFields | null>(null);
   const [synopsisExpanded, setSynopsisExpanded] = useState(false);
   const [synopsisAudit, setSynopsisAudit] = useState<EvidenceAuditSnapshot | null>(null);
+  const [consortState, setConsortState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
+  const [consort, setConsort] = useState<ConsortResult | null>(null);
+  const [consortExpanded, setConsortExpanded] = useState(false);
+  const [hoverPreview, setHoverPreview] = useState(false);
+  const hoverTimerRef = React.useRef<number | null>(null);
   const [userFeedback, setUserFeedback] = useState<'helpful' | 'not_helpful' | null>(null);
   const [feedbackPending, setFeedbackPending] = useState(false);
   const dwellTimerRef = React.useRef<number | null>(null);
   const dwellStartedAtRef = React.useRef<number | null>(null);
   const maxLoggedDwellMsRef = React.useRef(0);
 
+  const isRct = article._impact?.evidenceType === 'rct' || (article.pubtype ?? []).some((t) => /randomized|randomised|rct/i.test(t));
+
+  const showHoverPreview = React.useCallback(() => {
+    if (hoverTimerRef.current !== null) clearTimeout(hoverTimerRef.current);
+    hoverTimerRef.current = window.setTimeout(() => setHoverPreview(true), 350);
+  }, []);
+
+  const hideHoverPreview = React.useCallback(() => {
+    if (hoverTimerRef.current !== null) { clearTimeout(hoverTimerRef.current); hoverTimerRef.current = null; }
+    setHoverPreview(false);
+  }, []);
+
   const closeAllPanels = () => { setShowCollections(false); setShowAnnotations(false); setShowCitations(false); };
+  const closeMoreMenuOnFocusLeave = (event: React.FocusEvent<HTMLDivElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setShowMoreMenu(false);
+  };
 
   const impact = article._impact;
   const quality = article._quality;
@@ -227,6 +341,24 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
       ? 'full_text_used'
       : 'abstract_only'
     : undefined;
+  const quickSignals = [
+    impact?.evidenceType && {
+      label: EVIDENCE_TYPE_LABEL[impact.evidenceType] ?? impact.evidenceType,
+      icon: impact.evidenceType === 'rct' ? 'fa-flask' : impact.evidenceType === 'meta' ? 'fa-layer-group' : 'fa-file-lines',
+      tone: impact.evidenceType === 'rct' || impact.evidenceType === 'meta' ? 'good' : 'neutral',
+    },
+    quality?.grade && {
+      label: `Grade ${quality.grade}`,
+      icon: 'fa-shield-halved',
+      tone: quality.grade === 'A' || quality.grade === 'B' ? 'good' : 'warn',
+    },
+    isFree && { label: 'Open access', icon: 'fa-unlock', tone: 'good' },
+    isPracticeChanging && { label: 'Practice-changing', icon: 'fa-bolt', tone: 'info' },
+    isOutdated && { label: 'Older evidence', icon: 'fa-clock-rotate-left', tone: 'warn' },
+    isPreprint && { label: 'Preprint', icon: 'fa-vial-circle-check', tone: 'warn' },
+    article._retraction?.isRetracted && { label: 'Retracted', icon: 'fa-ban', tone: 'danger' },
+    predatoryFlag && { label: 'Journal check', icon: 'fa-triangle-exclamation', tone: 'danger' },
+  ].filter(Boolean) as Array<{ label: string; icon: string; tone: 'good' | 'info' | 'warn' | 'danger' | 'neutral' }>;
 
   const prefetchArticle = React.useCallback(() => {
     if (PREFETCHED_ARTICLES.has(article.uid)) return;
@@ -300,10 +432,10 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
 
   return (
     <article
-      onMouseEnter={startDwell}
-      onMouseLeave={flushDwell}
+      onMouseEnter={() => { startDwell(); showHoverPreview(); }}
+      onMouseLeave={() => { flushDwell(); hideHoverPreview(); }}
       onFocus={startDwell}
-      onBlur={flushDwell}
+      onBlur={() => { flushDwell(); hideHoverPreview(); }}
       className={`relative neo-card overflow-hidden animate-fade-up ${
         article._retraction?.isRetracted
           ? 'ring-2 ring-red-600 ring-offset-2 ring-offset-white dark:ring-offset-slate-900'
@@ -508,7 +640,8 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
             className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
             onClick={() => {
               if (searchId) {
-                api.logSearchInteraction(searchId, article.uid, 'click');
+                const elapsedMs = searchCompletedAt ? Math.max(0, Date.now() - searchCompletedAt) : undefined;
+                api.logSearchInteraction(searchId, article.uid, 'click', undefined, elapsedMs);
               }
               api.logEvent('article_click', { articleUid: article.uid, source: article._source });
             }}
@@ -540,6 +673,32 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
         <p className="-mt-2 mb-3 text-[10px] font-mono text-slate-400 dark:text-slate-500">
           Metadata synced via {lastSynced}
         </p>
+
+        {quickSignals.length > 0 && (
+          <div className="mb-3 flex flex-wrap gap-1.5">
+            {quickSignals.slice(0, 5).map((signal) => (
+              <span
+                key={`${signal.icon}-${signal.label}`}
+                className={`inline-flex min-h-6 items-center gap-1 rounded-md border px-2 py-0.5 text-[10px] font-bold ${quickSignalClass(signal.tone)}`}
+              >
+                <i className={`fas ${signal.icon} text-[9px]`} />
+                {signal.label}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Hover abstract preview — shown after 350ms of hover, hidden once synopsis is expanded */}
+        {hoverPreview && !showAbstract && !synopsisExpanded && article.abstract && (
+          <div className="mb-3 px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 animate-fade-in">
+            {synopsis?.takeaway && (
+              <p className="text-[10px] font-bold uppercase tracking-widest text-violet-500 mb-1">Key takeaway</p>
+            )}
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3">
+              {synopsis?.takeaway ?? article.abstract}
+            </p>
+          </div>
+        )}
 
         {/* Impact bar */}
         {impact && (
@@ -662,6 +821,13 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
           </div>
         )}
 
+        {/* Inline CONSORT panel */}
+        {consortExpanded && consort && (
+          <div className="mt-2">
+            <InlineConsortPanel consort={consort} onClose={() => setConsortExpanded(false)} />
+          </div>
+        )}
+
         {/* Action row */}
         <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
           <button
@@ -710,6 +876,39 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
                   : <><i className="fas fa-microscope text-[10px]" /> Critically Appraise</>
             }
           </button>
+          {isRct && (
+            <button
+              type="button"
+              onClick={async () => {
+                if (consort) { setConsortExpanded((v) => !v); return; }
+                setConsortState('loading');
+                try {
+                  const result = await api.assessConsort(article);
+                  setConsort(result.consort);
+                  setConsortState('done');
+                  setConsortExpanded(true);
+                } catch {
+                  setConsortState('error');
+                }
+              }}
+              disabled={consortState === 'loading'}
+              title="Assess CONSORT 2010 reporting checklist for this RCT"
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                consortExpanded
+                  ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                  : 'bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-950/30 dark:text-blue-400 dark:hover:bg-blue-900/40'
+              }`}
+            >
+              {consortState === 'loading'
+                ? <><div className="spinner w-3 h-3" /> CONSORT…</>
+                : consortState === 'error'
+                  ? <><i className="fas fa-exclamation-circle text-[10px]" /> Retry</>
+                  : consort
+                    ? <><i className={`fas fa-chevron-${consortExpanded ? 'up' : 'down'} text-[9px]`} /> CONSORT</>
+                    : <><i className="fas fa-clipboard-check text-[10px]" /> CONSORT</>
+              }
+            </button>
+          )}
           {onAnalyze && (
             <Button variant="gradient" size="sm" onClick={() => onAnalyze(article)}
               leftIcon={<i className="fas fa-robot text-[10px]" />}>
@@ -740,11 +939,19 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
             </Button>
           )}
 
+          {onViewDetails && (
+            <Button variant="secondary" size="sm" onClick={() => onViewDetails(article)}
+              leftIcon={<i className="fas fa-layer-group text-[10px]" />}>
+              Details
+            </Button>
+          )}
+
           {/* Feedback buttons */}
           <div className="flex items-center gap-0.5">
             <button
               type="button"
               disabled={feedbackPending}
+              aria-label="Mark this result as helpful"
               onClick={async () => {
                 if (userFeedback === 'helpful') return;
                 setFeedbackPending(true);
@@ -770,6 +977,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
             <button
               type="button"
               disabled={feedbackPending}
+              aria-label="Mark this result as not helpful"
               onClick={async () => {
                 if (userFeedback === 'not_helpful') return;
                 setFeedbackPending(true);
@@ -795,30 +1003,35 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
           </div>
 
           {/* More menu */}
-          <div className="relative ml-auto">
+          <div className="relative ml-auto" onBlur={closeMoreMenuOnFocusLeave}>
             <button
               type="button"
               onClick={() => setShowMoreMenu(!showMoreMenu)}
-              onBlur={() => setTimeout(() => setShowMoreMenu(false), 150)}
+              aria-haspopup="menu"
+              aria-expanded={showMoreMenu}
+              aria-label="Open article actions menu"
               className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               title="More actions"
             >
               <i className="fas fa-ellipsis-h" />
             </button>
             {showMoreMenu && (
-              <div className="absolute right-0 bottom-full mb-1.5 w-44 bg-white dark:bg-slate-800 rounded-xl shadow-lg shadow-slate-200/60 dark:shadow-slate-900/60 border border-slate-100 dark:border-slate-700 py-1 z-20 animate-fade-in">
+              <div role="menu" className="absolute right-0 bottom-full mb-1.5 w-44 bg-white dark:bg-slate-800 rounded-xl shadow-lg shadow-slate-200/60 dark:shadow-slate-900/60 border border-slate-100 dark:border-slate-700 py-1 z-20 animate-fade-in">
                 <button type="button"
+                  role="menuitem"
                   onClick={() => { closeAllPanels(); setShowCollections(true); setShowMoreMenu(false); }}
                   className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
                   <i className="fas fa-folder-plus w-3.5 text-indigo-400" /> Add to collection
                 </button>
                 <button type="button"
+                  role="menuitem"
                   onClick={() => { closeAllPanels(); setShowAnnotations(true); setShowMoreMenu(false); }}
                   className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
                   <i className="fas fa-highlighter w-3.5 text-amber-400" /> Add note
                 </button>
                 {(article._source === 'semantic' || article.doi) && (
                   <button type="button"
+                    role="menuitem"
                     onClick={() => { closeAllPanels(); setShowCitations(true); setShowMoreMenu(false); }}
                     className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
                     <i className="fas fa-project-diagram w-3.5 text-violet-400" /> Citation network

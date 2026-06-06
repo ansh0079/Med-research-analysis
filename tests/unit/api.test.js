@@ -786,6 +786,13 @@ describe('API Endpoints', () => {
             sourceYear: 2023,
             recommendationText: 'Use lung-protective ventilation.',
             status: 'ai_extracted',
+            qualityAssessment: {
+              score: 48,
+              level: 'low',
+              checks: {},
+              flags: ['not_human_reviewed'],
+              summary: 'Verify before use.',
+            },
           },
         ]);
 
@@ -860,6 +867,10 @@ describe('API Endpoints', () => {
         expect(response.body.agentGuidance.seminalPapers).toHaveLength(3);
         expect(response.body.topicIntelligence.evidenceBouquet.count).toBe(5);
         expect(response.body.topicIntelligence.guidelineSnapshot.count).toBe(1);
+        expect(response.body.topicIntelligence.guidelineSnapshot.guidelines[0].qualityAssessment).toMatchObject({
+          score: 48,
+          level: 'low',
+        });
         // consensusSynopsis is now populated via background enrichment polling, not in the sync response
         expect(response.body.topicIntelligence.consensusSynopsis).toBeNull();
         expect(response.body.aiEnrichmentKey).toBeDefined();
@@ -1502,7 +1513,7 @@ describe('API Endpoints', () => {
 
       const response = await request(app)
         .get('/api/user/history')
-        .set('X-Session-Id', 'test-session')
+        .set('Cookie', `med_auth_token=${authToken()}`)
         .expect(500);
 
       expect(response.body).toHaveProperty('error');
@@ -1536,7 +1547,7 @@ describe('API Endpoints', () => {
   // ==========================================
   describe('User Data Endpoints', () => {
     describe('GET /api/user/history', () => {
-      test('Should return search history for session', async () => {
+      test('Should return search history for authenticated user', async () => {
         const mockHistory = [
           { id: 1, query: 'diabetes', results_count: 50, created_at: new Date().toISOString() },
           { id: 2, query: 'cancer', results_count: 30, created_at: new Date().toISOString() }
@@ -1545,7 +1556,7 @@ describe('API Endpoints', () => {
 
         const response = await request(app)
           .get('/api/user/history')
-          .set('X-Session-Id', 'test-session')
+          .set('Cookie', `med_auth_token=${authToken({ id: 'test-user' })}`)
           .expect(200);
 
         expect(response.body).toHaveProperty('history');
@@ -1553,16 +1564,12 @@ describe('API Endpoints', () => {
         expect(response.body.history[0]).toHaveProperty('query', 'diabetes');
       });
 
-      test('Should create session if not exists', async () => {
-        cache.getSession.mockReturnValueOnce(null);
-        db.getSearchHistory.mockResolvedValueOnce([]);
-
+      test('Should require authentication', async () => {
         const response = await request(app)
           .get('/api/user/history')
-          .expect(200);
+          .expect(401);
 
-        expect(response.headers).toHaveProperty('x-session-id');
-        expect(db.createSession).toHaveBeenCalled();
+        expect(response.body).toHaveProperty('error');
       });
     });
 

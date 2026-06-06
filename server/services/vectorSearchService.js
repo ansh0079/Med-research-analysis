@@ -1,20 +1,43 @@
 const { generateEmbedding, articleToEmbedText } = require('../embeddings');
 const { getEmbeddingOptions: getKeys } = require('./embeddingOptions');
 
+const EMBEDDING_DIM = 384;
+
+function normalizeVector(vec) {
+    if (!Array.isArray(vec) || vec.length !== EMBEDDING_DIM) {
+        return null;
+    }
+    const numbers = vec.map(Number);
+    if (numbers.some((n) => !Number.isFinite(n))) return null;
+    const norm = Math.sqrt(numbers.reduce((sum, value) => sum + value * value, 0)) || 1;
+    return numbers.map((value) => value / norm);
+}
+
+function blendEmbeddings(queryEmbedding, userEmbedding = null, { queryWeight = 0.75 } = {}) {
+    const q = normalizeVector(queryEmbedding);
+    const u = normalizeVector(userEmbedding);
+    if (!q) {
+        throw new Error(`Invalid query embedding: expected ${EMBEDDING_DIM} dimensions`);
+    }
+    if (!u) return q;
+
+    const safeQueryWeight = Math.max(0.5, Math.min(1, Number(queryWeight) || 0.75));
+    const userWeight = 1 - safeQueryWeight;
+    return normalizeVector(q.map((value, index) => (value * safeQueryWeight) + (u[index] * userWeight)));
+}
+
 /**
  * @param {object} deps
  * @param {import('../../database')} deps.db
  * @param {import('../../config').serverConfig} deps.serverConfig
  */
 function createVectorSearchService({ db, serverConfig }) {
-    async function searchVector({ query, limit = 10, minScore = 0.4 }) {
+    async function findSimilarPapers(embedding, { limit = 10, minScore = 0.4 } = {}) {
         if (!db.isVectorSearchAvailable()) {
             const err = new Error('UNAVAILABLE');
             err.code = 'UNAVAILABLE';
             throw err;
         }
-        const keys = getKeys(serverConfig);
-        const embedding = await generateEmbedding(query, keys);
         const rows = await db.searchSimilarArticlesCache(
             embedding,
             Math.min(100, parseInt(limit, 10) || 10),
@@ -24,6 +47,38 @@ function createVectorSearchService({ db, serverConfig }) {
             articles: rows.map((r) => r.data),
             scores: rows.map((r) => r.score),
         };
+    }
+
+    async function semanticSearch({
+        query,
+        limit = 10,
+        minScore = 0.4,
+        userEmbedding = null,
+        userProfileText = '',
+        queryWeight = 0.75,
+    }) {
+        if (!query || typeof query !== 'string') {
+            throw new Error('query is required');
+        }
+        const keys = getKeys(serverConfig);
+        const queryEmbedding = await generateEmbedding(query, keys);
+        const profileEmbedding = userEmbedding || (userProfileText
+            ? await generateEmbedding(userProfileText, keys)
+            : null);
+        const blendedEmbedding = blendEmbeddings(queryEmbedding, profileEmbedding, { queryWeight });
+        const out = await findSimilarPapers(blendedEmbedding, { limit, minScore });
+        return {
+            ...out,
+            semantic: {
+                queryEmbeddingUsed: true,
+                userEmbeddingUsed: Boolean(profileEmbedding),
+                queryWeight: profileEmbedding ? Math.max(0.5, Math.min(1, Number(queryWeight) || 0.75)) : 1,
+            },
+        };
+    }
+
+    async function searchVector({ query, limit = 10, minScore = 0.4 }) {
+        return semanticSearch({ query, limit, minScore });
     }
 
     async function indexArticles(articles) {
@@ -58,7 +113,7 @@ function createVectorSearchService({ db, serverConfig }) {
         return { indexed, attempted: max, errors };
     }
 
-    return { searchVector, indexArticles, articleToEmbedText };
+    return { searchVector, semanticSearch, findSimilarPapers, indexArticles, articleToEmbedText };
 }
 
-module.exports = { createVectorSearchService };
+module.exports = { createVectorSearchService, blendEmbeddings, normalizeVector };

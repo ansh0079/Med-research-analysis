@@ -1,13 +1,18 @@
 import React from 'react';
 import { SearchBar } from '@components/search/SearchBar';
+import { ErrorBanner } from '@components/common/ErrorBanner';
 import { TopicIntelligenceStatusBanner } from '@components/search/TopicIntelligenceStatusBanner';
 import type { Article, SearchFilters, TopicGuideStatus } from '@types';
+import type { SearchRecentEntry } from '@utils/searchRecents';
 import type { BriefDifficulty } from './TopicBriefPanel';
 import type { ClinicalScenarioExtract } from '../../utils/extractClinicalScenario';
 
 interface SearchHeroProps {
   showVerifyBanner: boolean;
   onSearch: (query: string) => void;
+  searchQuery: string;
+  onSearchQueryChange: (query: string) => void;
+  recentSearches: SearchRecentEntry[];
   loading: boolean;
   filters: SearchFilters;
   setFilters: (filters: SearchFilters) => void;
@@ -37,6 +42,9 @@ interface SearchHeroProps {
 export const SearchHero: React.FC<SearchHeroProps> = ({
   showVerifyBanner,
   onSearch,
+  searchQuery,
+  onSearchQueryChange,
+  recentSearches,
   loading,
   filters,
   setFilters,
@@ -79,6 +87,9 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
 
         <SearchBar
           onSearch={onSearch}
+          value={searchQuery}
+          onChange={onSearchQueryChange}
+          recentSearches={recentSearches}
           loading={loading}
           specificity={filters.specificity}
           onSpecificityChange={(specificity) => setFilters({ specificity })}
@@ -87,6 +98,10 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
           vectorSearchEnabled={vectorSearchEnabled}
           useVectorSearch={Boolean(filters.useVectorSearch)}
           onVectorModeChange={(useVectorSearch) => setFilters({ useVectorSearch })}
+          studyTypes={filters.studyTypes}
+          onStudyTypesChange={(studyTypes) => setFilters({ studyTypes })}
+          yearRange={filters.yearRange}
+          onYearRangeChange={(yearRange) => setFilters({ yearRange })}
           placeholder="e.g. SGLT2 inhibitors in heart failure with preserved ejection fraction"
         />
 
@@ -295,11 +310,7 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
           )}
         </div>
 
-        {error && (
-          <div className="mt-4 px-4 py-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/60 text-red-700 dark:text-red-400 rounded-2xl text-sm flex items-center gap-2">
-            <i className="fas fa-exclamation-circle" /> {error.message}
-          </div>
-        )}
+        {error && <ErrorBanner error={error} className="mt-4" />}
       </div>
     </header>
   );

@@ -574,10 +574,11 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 previousQueries,
             };
 
-            await Promise.allSettled([
+            const [searchLogResult] = await Promise.allSettled([
                 db.logSearch(req.sessionId, queryValidation.sanitized, sourceList, { vector: useVectorFusion, intelligence: intelligenceMode }, articles.length, executionTime, req.ip, logSessionMeta),
                 db.logEvent('search', req.sessionId, { query: queryValidation.sanitized, sources: sourceList, results: articles.length, timings: { ...telemetry.timings, ...routeTimings } }),
             ]);
+            const searchId = searchLogResult.status === 'fulfilled' ? (searchLogResult.value?.id ?? null) : null;
             if (req.user?.id) {
                 const uids = articles.slice(0, 14).map((a) => a.uid).filter(Boolean);
                 db.recordUserTopicSearchSignal(req.user.id, queryValidation.sanitized, uids).catch((err) => { logger.warn({ err }, 'recordUserTopicSearchSignal failed'); });
@@ -596,6 +597,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
             res.json({
                 articles,
                 count: articles.length,
+                searchId,
                 sources: sourceList,
                 ...(deferIntelligence ? {} : {
                     agentGuidance,
@@ -1238,6 +1240,92 @@ Start your response with [ and end with ]. No markdown.
         } catch (err) {
             req.log?.error?.({ err, topic }, 'Topic crosslinks fetch failed');
             return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.post('/api/search/impressions', rateLimit(120, 60), requireJson, async (req, res) => {
+        const { searchId, impressions } = req.body || {};
+        const sid = Number(searchId);
+        if (!sid || !Array.isArray(impressions) || impressions.length === 0) {
+            return res.status(400).json({ error: 'searchId and impressions[] are required' });
+        }
+        try {
+            const normalized = impressions
+                .map((imp, index) => ({
+                    articleUid: String(imp.articleUid || imp.uid || '').trim(),
+                    position: Number(imp.position ?? index + 1),
+                }))
+                .filter((imp) => imp.articleUid && imp.position > 0)
+                .slice(0, 30);
+            if (!normalized.length) return res.status(400).json({ error: 'No valid impressions' });
+            await db.recordSearchImpressions(sid, req.sessionId, normalized, req.user?.id ?? null);
+            return res.json({ ok: true, recorded: normalized.length });
+        } catch (err) {
+            req.log?.error?.({ err }, 'Search impressions error');
+            return res.status(500).json({ error: 'Failed to record impressions' });
+        }
+    });
+
+    app.post('/api/search/interaction', rateLimit(180, 60), requireJson, async (req, res) => {
+        const { searchId, articleUid, interactionType, dwellMs, elapsedMs } = req.body || {};
+        const sid = Number(searchId);
+        const uid = String(articleUid || '').trim();
+        const type = String(interactionType || '').trim();
+        if (!sid || !uid || !['click', 'save', 'dwell'].includes(type)) {
+            return res.status(400).json({ error: 'searchId, articleUid, and interactionType (click|save|dwell) are required' });
+        }
+        try {
+            const updates = {};
+            if (type === 'click') updates.wasClicked = true;
+            if (type === 'save') updates.wasSaved = true;
+            if (type === 'dwell' && dwellMs != null) updates.dwellTimeMs = Number(dwellMs);
+            await db.updateSearchImpressionInteraction(sid, uid, updates);
+            const { trackUserInteraction } = require('../services/userInteractionService');
+            void trackUserInteraction(db, {
+                type: `paper_${type}`,
+                rawType: type,
+                userId: req.user?.id ?? null,
+                sessionId: req.sessionId,
+                paperId: uid,
+                searchId: sid,
+                duration: dwellMs != null ? Number(dwellMs) : (elapsedMs != null ? Number(elapsedMs) : null),
+                metadata: { elapsedMs: elapsedMs != null ? Number(elapsedMs) : null },
+            }, { logger: req.log });
+            if (type === 'click') {
+                db.logEvent('search_result_click', req.sessionId, {
+                    searchId: sid,
+                    articleUid: uid,
+                    dwellMs: dwellMs != null ? Number(dwellMs) : null,
+                    elapsedMs: elapsedMs != null ? Number(elapsedMs) : null,
+                }).catch(() => undefined);
+            }
+            return res.json({ ok: true });
+        } catch (err) {
+            req.log?.error?.({ err }, 'Search interaction error');
+            return res.status(500).json({ error: 'Failed to record interaction' });
+        }
+    });
+
+    app.post('/api/search/feedback', rateLimit(60, 60), requireJson, async (req, res) => {
+        const { articleUid, feedbackType, reason, searchId } = req.body || {};
+        const uid = String(articleUid || '').trim();
+        const type = String(feedbackType || '').trim();
+        if (!uid || !['helpful', 'not_helpful'].includes(type)) {
+            return res.status(400).json({ error: 'articleUid and feedbackType (helpful|not_helpful) are required' });
+        }
+        try {
+            await db.recordSearchResultFeedback({
+                userId: req.user?.id ?? null,
+                sessionId: req.sessionId,
+                searchId: searchId != null ? Number(searchId) : null,
+                articleUid: uid,
+                feedbackType: type,
+                reason: reason ? String(reason).slice(0, 500) : null,
+            });
+            return res.json({ ok: true });
+        } catch (err) {
+            req.log?.error?.({ err }, 'Search feedback error');
+            return res.status(500).json({ error: 'Failed to record feedback' });
         }
     });
 
