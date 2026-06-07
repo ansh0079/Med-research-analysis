@@ -113,8 +113,8 @@ CREATE INDEX IF NOT EXISTS idx_case_scenarios_user ON case_scenarios(user_id, cr
 CREATE INDEX IF NOT EXISTS idx_case_scenarios_topic ON case_scenarios(topic);
 CREATE INDEX IF NOT EXISTS idx_case_scenarios_completed ON case_scenarios(completed_at);
 
--- Case attempts for mastery tracking
-CREATE TABLE IF NOT EXISTS case_attempts (
+-- Interactive case scenario completions (distinct from case_attempts in 017_case_attempts.sql)
+CREATE TABLE IF NOT EXISTS case_scenario_attempts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     case_id TEXT NOT NULL,
@@ -130,8 +130,8 @@ CREATE TABLE IF NOT EXISTS case_attempts (
     FOREIGN KEY (case_id) REFERENCES case_scenarios(case_id) ON DELETE CASCADE
 );
 
-CREATE INDEX IF NOT EXISTS idx_case_attempts_user_topic ON case_attempts(user_id, normalized_topic);
-CREATE INDEX IF NOT EXISTS idx_case_attempts_score ON case_attempts(score_percentage DESC);
+CREATE INDEX IF NOT EXISTS idx_case_scenario_attempts_user_topic ON case_scenario_attempts(user_id, normalized_topic);
+CREATE INDEX IF NOT EXISTS idx_case_scenario_attempts_score ON case_scenario_attempts(score_percentage DESC);
 
 -- Component quality metrics (aggregated daily)
 CREATE TABLE IF NOT EXISTS component_quality_metrics (

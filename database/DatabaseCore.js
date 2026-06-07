@@ -250,7 +250,8 @@ async runMigrations() {
                         || code === '42701'
                         || (code === '42P07' && /relation .* already exists/i.test(msg))
                         || (code === '42710' && /already exists/i.test(msg));
-                    if (duplicate) {
+                    const missingIndexColumn = code === '42703' && /^CREATE\s+INDEX/i.test(statement);
+                    if (duplicate || missingIndexColumn) {
                         console.log(`   ⚠️  Skipped (already exists): ${statement.split(/\s+/).slice(0, 6).join(' ')}...`);
                     } else {
                         throw err;

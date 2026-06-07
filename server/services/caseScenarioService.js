@@ -243,7 +243,7 @@ async function recordCaseChoice(db, caseId, userId, nodeId, choiceId) {
         const scorePercentage = Math.round((appropriateChoices / totalChoices) * 100);
         
         await db.run(
-            `INSERT INTO case_attempts (
+            `INSERT INTO case_scenario_attempts (
                 user_id, case_id, topic, normalized_topic, difficulty,
                 score_percentage, appropriate_choices, total_choices,
                 outcome_type, completed_at
