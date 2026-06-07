@@ -314,25 +314,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             )}
           </div>
 
-          {onSpecificityChange && (
-            <div className="flex w-full overflow-hidden rounded-full border border-slate-200 bg-white/80 p-0.5 shadow-sm dark:border-slate-700 dark:bg-slate-900/70 sm:w-auto">
-              {SPECIFICITY_OPTIONS.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  title={option.title}
-                  onClick={() => onSpecificityChange(option.value)}
-                  className={`min-h-11 flex-1 rounded-full px-3 py-1 text-xs font-semibold transition-colors sm:min-h-0 sm:flex-none ${
-                    specificity === option.value
-                      ? 'bg-indigo-600 text-white'
-                      : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
-                  }`}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          )}
+          {/* Specificity tabs (Broad / Balanced / Strict) removed — always use moderate */}
         </div>
 
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
