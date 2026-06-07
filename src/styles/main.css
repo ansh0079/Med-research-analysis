@@ -48,7 +48,7 @@ body {
   background-size: 48px 48px;
 }
 
-/* Aurora radial glows */
+/* Aurora radial glows — static, no animation (prevents background flicker) */
 .aurora-bg {
   position: relative;
 }
@@ -62,15 +62,9 @@ body {
     radial-gradient(ellipse 70% 50% at 15% 10%,  var(--c-glow-1), transparent),
     radial-gradient(ellipse 55% 40% at 85% 5%,   var(--c-glow-2), transparent),
     radial-gradient(ellipse 60% 50% at 60% 90%,  var(--c-glow-3), transparent);
-  animation: auroraShift 18s ease-in-out infinite alternate;
+  opacity: 1;
 }
 .aurora-content { position: relative; z-index: 1; }
-
-@keyframes auroraShift {
-  0%   { opacity: 1;    transform: scale(1) translateY(0); }
-  50%  { opacity: 0.75; transform: scale(1.04) translateY(-12px); }
-  100% { opacity: 1;    transform: scale(1) translateY(0); }
-}
 
 /* ─── Glass Cards ───────────────────────────────────────────────── */
 .neo-card {
@@ -132,13 +126,6 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  background-size: 200% 200%;
-  animation: gradientShift 6s ease infinite;
-}
-@keyframes gradientShift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 .mono { font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace; }

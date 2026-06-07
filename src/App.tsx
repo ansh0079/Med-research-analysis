@@ -67,7 +67,9 @@ function PageFallback() {
 // Root route: landing page for guests, search for authenticated users
 const RootRoute: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
-  if (isLoading) return <PageFallback />;
+  // While auth hydrates, render LandingPage in place — it's a stable layout
+  // and avoids the blank-spinner-then-snap flicker on every hard refresh.
+  if (isLoading) return <LandingPage />;
   return isAuthenticated ? <SearchPage /> : <LandingPage />;
 };
 
@@ -144,11 +146,14 @@ const AppContent: React.FC = () => {
     }
   };
 
+  // Show TopNav as soon as we know we're not on a no-nav route.
+  // Don't gate on isAuthenticated — that causes the nav to pop in after auth hydrates.
+  // The nav itself handles authenticated vs guest state internally.
   const showTopNav = (!NO_TOP_NAV_ROUTES.includes(pathname) && !pathname.startsWith('/legal'))
-    || (pathname === '/' && isAuthenticated);
+    || (pathname === '/' && (isAuthenticated || isLoading));
 
   return (
-    <div className="min-h-screen bg-[var(--c-bg)] transition-colors duration-300">
+    <div className="min-h-screen bg-[var(--c-bg)]">
       <a href="#main-content" className="skip-link">Skip to content</a>
       {showTopNav && <TopNav />}
       <div id="main-content" tabIndex={-1}>
