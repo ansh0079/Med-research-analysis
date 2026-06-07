@@ -5,6 +5,10 @@
 	email {$ACME_EMAIL}
 }
 
+www.{$DOMAIN} {
+	redir https://{$DOMAIN}{uri} permanent
+}
+
 {$DOMAIN} {
 	encode gzip zstd
 
