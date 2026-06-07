@@ -755,7 +755,7 @@ Rules:
 Start your response with [ and end with ]. No markdown.
 [{"type":"multiple_choice","questionType":"guideline|clinical_application|pitfall","question":"...","options":["A: ...","B: ...","C: ...","D: ..."],"correctAnswer":"A","explanation":"2-3 sentences citing the guideline","guidelineRef":"source — recommendation","difficulty":"easy|medium|hard"}]`;
                                         try {
-                                            const glRaw = await ai.callClaude(glPrompt, 'claude-haiku-4-5-20251001', { temperature: 0.3, maxOutputTokens: 2500 });
+                                            const glRaw = await ai.callGemini(glPrompt, PINNED_MODELS.gemini, { temperature: 0.3, maxOutputTokens: 2500 });
                                             const glMcqsRaw = parseJsonArrayBlock(glRaw);
                                             const validatedGl = validateAiOutput('quiz_generation', glMcqsRaw, { allowDegrade: false });
                                             const glMcqs = validatedGl.ok
@@ -769,8 +769,8 @@ Start your response with [ and end with ]. No markdown.
                                                         topic: normalizedTopic,
                                                         title: `Guideline MCQs: ${seedQuery}`,
                                                         payload: { mcqs: glMcqs.slice(0, 5), guidelineCount: guidelines.length, generatedAt: new Date().toISOString() },
-                                                        provider: 'anthropic',
-                                                        model: 'claude-haiku-4-5-20251001',
+                                                        provider: 'gemini',
+                                                        model: PINNED_MODELS.gemini,
                                                         confidence: 0.85,
                                                     });
                                                     logger.info({ topic: seedQuery, count: glMcqs.length, guidelines: guidelines.length }, 'Auto-generated guideline MCQs');

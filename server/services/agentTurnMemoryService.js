@@ -164,7 +164,7 @@ Assistant: ${assistant}
 Return bullets only.`;
 
     try {
-        const raw = await ai.callGemini(prompt, 'gemini-2.5-flash-lite', {
+        const raw = await ai.callGemini(prompt, 'gemini-2.5-flash-lite' /* intentional: cheap model fine for conversational memory */, {
             temperature: 0.0,
             maxOutputTokens: 320,
             timeoutMs: 8000,
@@ -203,7 +203,7 @@ User: ${String(userMessage || '').slice(0, 500)}
 Assistant: ${String(assistantReply || '').slice(0, 700)}`;
 
     try {
-        const raw = await ai.callGemini(prompt, 'gemini-2.5-flash-lite', {
+        const raw = await ai.callGemini(prompt, 'gemini-2.5-flash-lite' /* intentional: cheap model fine for conversational memory */, {
             temperature: 0.0,
             maxOutputTokens: 280,
             timeoutMs: 6000,
@@ -377,7 +377,7 @@ Return ONLY valid JSON:
 }`;
 
         try {
-            const raw = await ai.callGemini(prompt, 'gemini-2.5-flash-lite', {
+            const raw = await ai.callGemini(prompt, 'gemini-2.5-flash-lite' /* intentional: cheap model fine for conversational memory */, {
                 temperature: 0.1,
                 maxOutputTokens: 420,
                 timeoutMs: 9000,

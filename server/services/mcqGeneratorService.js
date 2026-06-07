@@ -176,12 +176,13 @@ async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemi
                 maxOutputTokens: 4000,  // Increased for 10 MCQs
                 usage: { operation: 'cold_start_mcq', topic },
             });
-        } else if (ai.callClaude) {
-            const raw = await ai.callClaude(prompt, model || 'claude-haiku-4-5-20251001', { 
-                temperature: 0.4, 
-                maxOutputTokens: 4000 
+        } else if (ai.callGeminiStructured) {
+            // Fallback: Gemini structured (no provider key set for primary path)
+            parsed = await ai.callGeminiStructured(prompt, model || undefined, {
+                temperature: 0.4,
+                maxOutputTokens: 4000,
+                usage: { operation: 'cold_start_mcq_fallback', topic },
             });
-            parsed = parseStructuredQuizArray(JSON.parse(String(raw || '{}').match(/\{[\s\S]*\}/)?.[0] || '{}'));
         } else if (ai.callMistralStructured) {
             parsed = await ai.callMistralStructured(prompt, model || undefined, {
                 temperature: 0.4,

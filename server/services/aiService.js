@@ -16,8 +16,9 @@ const AI_PROVIDERS = {
 
 // Pinned model versions for reproducibility and deterministic outputs.
 const PINNED_MODELS = {
-    gemini: 'gemini-2.5-flash-lite',
-    geminiQuality: 'gemini-2.5-flash',
+    gemini: 'gemini-2.5-flash',           // Default: Flash for clinical reasoning quality
+    geminiLite: 'gemini-2.5-flash-lite',  // Lite: agent memory, cheap conversational tasks only
+    geminiQuality: 'gemini-2.5-flash',    // Quality tier (same as Flash; upgrade to Pro when needed)
     mistral: 'mistral-small-2603',
 };
 

@@ -17,7 +17,7 @@ function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metr
                     localAI: !!serverConfig.features.enableLocalAI,
                     cloudAI: !!(serverConfig.keys.gemini || serverConfig.keys.mistral),
                     semanticScholar: !!serverConfig.keys.semantic,
-                    openAlex: !!serverConfig.keys.openalex,
+                    openAlex: true, // Free open API — no key required; always available
                     database: true,
                     caching: true,
                 },
