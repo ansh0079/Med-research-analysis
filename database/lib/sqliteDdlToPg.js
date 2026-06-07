@@ -21,6 +21,7 @@ function convertSqliteDdlToPostgres(sql, options = {}) {
     out = out.replace(/\bDATETIME\b/gi, 'TIMESTAMPTZ');
 
     if (usersIdType === 'uuid') {
+        out = out.replace(/\buser_id\s+INTEGER\b/gi, 'user_id UUID');
         out = out.replace(
             /user_id\s+TEXT\s+NOT\s+NULL\s+REFERENCES\s+users\s*\(\s*id\s*\)/gi,
             'user_id UUID NOT NULL REFERENCES users(id)'
