@@ -67,10 +67,10 @@ function buildSpec() {
   const spec = {
     openapi: '3.0.3',
     info: {
-      title: 'Medical Research Intelligence API',
+      title: 'Signal MD API',
       version: '2.0.0',
       description: 'Multi-source medical search with AI analysis, learning, and systematic review tools.',
-      contact: { name: 'API Support', url: 'https://github.com/medresearch' },
+      contact: { name: 'API Support', url: 'https://signalmd.co' },
     },
     servers: [
       { url: 'http://localhost:3002', description: 'Local development' },

@@ -18,7 +18,7 @@ export const LegalTermsPage: React.FC = () => (
       <section className="prose prose-sm dark:prose-invert max-w-none space-y-4 text-[var(--c-text)]">
         <h2 className="text-lg font-semibold">1. Service</h2>
         <p>
-          MedResearch·AI provides tools to search scholarly literature, summarize evidence themes, and support research
+          Signal MD provides tools to search scholarly literature, summarize evidence themes, and support research
           workflows. It is <strong>not</strong> a medical device, diagnostic service, or substitute for professional
           clinical judgement.
         </p>

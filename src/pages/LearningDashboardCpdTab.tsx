@@ -132,7 +132,7 @@ export function LearningDashboardCpdTab() {
 <h2>Activity log (${sessions.length} entries)</h2>
 <table><thead><tr><th>Date</th><th>Type</th><th>Topic</th><th>Duration</th><th>Questions</th><th>Accuracy</th><th>Notes</th></tr></thead>
 <tbody>${rows}</tbody></table>
-<p class="footer">Generated ${new Date().toLocaleString()} · MedResearch Intelligence Platform</p>
+<p class="footer">Generated ${new Date().toLocaleString()} · Signal MD</p>
 </body></html>`;
     downloadHtml(`cpd-record-${year}.html`, html);
     setExporting(false);
@@ -204,7 +204,7 @@ export function LearningDashboardCpdTab() {
 <tbody>${activityRows || '<tr><td colspan="7">No CPD activities recorded.</td></tr>'}</tbody></table>
 <h2>Structured reflection drafts</h2>
 ${reflectionBlocks || '<p>No reflection drafts saved yet.</p>'}
-<p class="footer">Generated ${escapeHtml(new Date().toLocaleString())} | MedResearch Intelligence Platform</p>
+<p class="footer">Generated ${escapeHtml(new Date().toLocaleString())} | Signal MD</p>
 </body></html>`;
     downloadHtml(`arcp-evidence-bundle-${year}.html`, html);
     setExporting(false);

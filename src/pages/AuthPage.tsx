@@ -141,7 +141,7 @@ export const AuthPage: React.FC = () => {
           </div>
           <div>
             <h1 className="text-xl font-black tracking-tight text-gray-900 dark:text-white">
-              Medical Research Intelligence
+              Signal MD
             </h1>
           </div>
         </div>

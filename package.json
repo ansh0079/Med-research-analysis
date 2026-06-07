@@ -1,7 +1,7 @@
 {
-  "name": "medical-research-analysis",
+  "name": "signal-md",
   "version": "2.0.0",
-  "description": "Medical Research Intelligence Platform - Multi-source search with AI analysis",
+  "description": "Signal MD — Medical Evidence Intelligence Platform",
   "main": "server.js",
   "engines": {
     "node": ">=22.13.0"

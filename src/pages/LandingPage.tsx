@@ -70,7 +70,7 @@ export const LandingPage: React.FC = () => {
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
               <i className="fas fa-dna text-white text-xs" />
             </div>
-            <span className="text-sm font-black tracking-tight">MedResearch<span className="text-indigo-400">·AI</span></span>
+            <span className="text-sm font-black tracking-tight">Signal<span className="text-indigo-400"> MD</span></span>
           </div>
           <div className="flex items-center gap-3">
             <button type="button" onClick={() => navigate('/auth')}
@@ -213,7 +213,7 @@ export const LandingPage: React.FC = () => {
             <div className="relative rounded-2xl overflow-hidden bg-slate-900 border border-white/10 shadow-2xl shadow-indigo-500/10" style={{ paddingBottom: '56.25%' }}>
               <iframe
                 src="DEMO_VIDEO_EMBED_URL"
-                title="MedResearch AI demo"
+                title="Signal MD demo"
                 className="absolute inset-0 w-full h-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -335,7 +335,7 @@ export const LandingPage: React.FC = () => {
             <div className="w-5 h-5 rounded-md bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
               <i className="fas fa-dna text-white text-[8px]" />
             </div>
-            <span className="text-xs text-slate-500">MedResearch·AI — research acceleration, not clinical advice</span>
+            <span className="text-xs text-slate-500">Signal MD — research acceleration, not clinical advice</span>
           </div>
           <div className="flex items-center gap-4 text-xs text-slate-600">
             <button type="button" onClick={() => navigate('/legal/terms')}

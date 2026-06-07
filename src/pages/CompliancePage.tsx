@@ -104,7 +104,7 @@ export const CompliancePage: React.FC = () => {
             <div>
               <p className="text-sm font-bold text-amber-800 dark:text-amber-200">Not a clinical decision support tool</p>
               <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">
-                MedResearch AI is a research acceleration platform, not a clinical decision support system. AI-generated outputs must not be used as a substitute for clinical judgement. Do not enter patient-identifiable data (PHI) in the hosted service.
+                Signal MD is a research acceleration platform, not a clinical decision support system. AI-generated outputs must not be used as a substitute for clinical judgement. Do not enter patient-identifiable data (PHI) in the hosted service.
               </p>
             </div>
           </div>

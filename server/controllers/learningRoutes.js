@@ -1772,7 +1772,7 @@ function registerLearningRoutes(app, deps) {
 
             doc.moveDown(2);
             doc.fontSize(8).fillColor('#666').text(
-                `Generated ${new Date().toISOString().slice(0, 16).replace('T', ' ')} · MedResearch · For your professional portfolio or regulatory return; verify against your local college requirements.`,
+                `Generated ${new Date().toISOString().slice(0, 16).replace('T', ' ')} · Signal MD · For your professional portfolio or regulatory return; verify against your local college requirements.`,
                 { align: 'left' },
             );
             doc.end();

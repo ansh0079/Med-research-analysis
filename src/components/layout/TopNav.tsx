@@ -85,7 +85,7 @@ export const TopNav: React.FC = () => {
             <i className="fas fa-dna text-white text-xs relative z-10" />
           </div>
           <span className="hidden min-[360px]:inline text-[0.82rem] font-bold text-slate-900 dark:text-white tracking-tight">
-            MedResearch<span className="text-indigo-500">·AI</span>
+            Signal<span className="text-indigo-500"> MD</span>
           </span>
         </button>
 

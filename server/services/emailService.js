@@ -60,7 +60,7 @@ async function sendViaResend({ from, to, subject, html, text }) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: from || process.env.SMTP_FROM || 'MedResearch AI <noreply@resend.dev>',
+      from: from || process.env.SMTP_FROM || 'Signal MD <noreply@signalmd.co>',
       to: normalizeRecipients(to),
       subject,
       html,
@@ -89,7 +89,7 @@ async function sendViaSendGrid({ from, to, subject, html, text }) {
     },
     body: JSON.stringify({
       personalizations: [{ to: normalizeRecipients(to).map((email) => ({ email })) }],
-      from: parseEmailAddress(from || process.env.SMTP_FROM || 'MedResearch AI <noreply@example.com>'),
+      from: parseEmailAddress(from || process.env.SMTP_FROM || 'Signal MD <noreply@signalmd.co>'),
       subject,
       content: [
         { type: 'text/plain', value: text || stripHtml(html) },
@@ -155,7 +155,7 @@ async function sendEmail({ from, to, subject, html, text }) {
   // 2. SMTP via nodemailer
   const t = getTransporter();
   if (t) {
-    const fromAddr = from || process.env.SMTP_FROM || 'MedResearch AI <noreply@localhost>';
+    const fromAddr = from || process.env.SMTP_FROM || 'Signal MD <noreply@localhost>';
     const info = await t.sendMail({
       from: fromAddr, to: allowed, subject, html,
       text: text || stripHtml(html),
@@ -260,7 +260,7 @@ function buildDigestHtml({ userName, date, alertResults, appUrl, spacedRepData }
           <tr>
             <td style="padding:24px 32px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;">
               <p style="font-size:12px;color:#9ca3af;margin:0;">
-                You're receiving this because you have active search alerts on Medical Research Intelligence.
+                You're receiving this because you have active search alerts on Signal MD.
               </p>
               <p style="font-size:12px;color:#9ca3af;margin-top:8px;">
                 <a href="${appUrl}/history" style="color:#6b7280;text-decoration:underline;">Manage alerts</a>
@@ -280,7 +280,7 @@ function buildDigestHtml({ userName, date, alertResults, appUrl, spacedRepData }
  * Send a digest email.
  */
 async function sendDigestEmail({ to, subject, html, text }) {
-  const from = process.env.SMTP_FROM || 'Medical Research Digest <digest@localhost>';
+  const from = process.env.SMTP_FROM || 'Signal MD Digest <digest@signalmd.co>';
   return sendEmail({ from, to, subject, html, text });
 }
 
@@ -289,7 +289,7 @@ async function sendDigestEmail({ to, subject, html, text }) {
  * Also handles email-change verification when subject/linkPath are provided.
  */
 async function sendVerificationEmail({ to, name, token, appUrl, subject: customSubject, linkPath = '/verify-email' }) {
-  const from = process.env.SMTP_FROM || 'MedResearch AI <noreply@localhost>';
+  const from = process.env.SMTP_FROM || 'Signal MD <noreply@localhost>';
   const link = `${appUrl}${linkPath}?token=${token}`;
 
   const html = `
@@ -318,7 +318,7 @@ async function sendVerificationEmail({ to, name, token, appUrl, subject: customS
 </body>
 </html>`.trim();
 
-  return sendEmail({ from, to, subject: customSubject || 'Verify your MedResearch AI account', html });
+  return sendEmail({ from, to, subject: customSubject || 'Verify your Signal MD account', html });
 }
 
 /**
@@ -326,7 +326,7 @@ async function sendVerificationEmail({ to, name, token, appUrl, subject: customS
  */
 async function sendPasswordResetEmail({ to, name, token, appUrl }) {
   const t = getTransporter();
-  const from = process.env.SMTP_FROM || 'MedResearch AI <noreply@localhost>';
+  const from = process.env.SMTP_FROM || 'Signal MD <noreply@localhost>';
   const link = `${appUrl}/reset-password?token=${token}`;
 
   const html = `
@@ -355,7 +355,7 @@ async function sendPasswordResetEmail({ to, name, token, appUrl }) {
 </body>
 </html>`.trim();
 
-  return sendEmail({ from, to, subject: 'Reset your MedResearch AI password', html });
+  return sendEmail({ from, to, subject: 'Reset your Signal MD password', html });
 }
 
 module.exports = {

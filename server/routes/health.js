@@ -2,6 +2,7 @@ const { requireAuthJwt, requireRole } = require('../middleware/auth');
 const { checkDbContract } = require('../services/dbContract');
 const { getQueueStatus } = require('../services/jobQueue');
 const { updateQueueMetrics } = require('../services/observabilityMetrics');
+const { version: APP_VERSION } = require('../../package.json');
 
 function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metricsRegistry }) {
     app.get('/health', async (req, res) => {
@@ -10,7 +11,7 @@ function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metr
             const databaseContract = checkDbContract(db);
             res.json({
                 status: 'ok',
-                version: '2.0.0',
+                version: APP_VERSION,
                 timestamp: new Date().toISOString(),
                 features: {
                     localAI: !!serverConfig.features.enableLocalAI,
