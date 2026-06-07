@@ -60,6 +60,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        VITE_SENTRY_DSN: ${VITE_SENTRY_DSN:-}
+        VITE_SENTRY_ENV: production
+        VITE_SENTRY_ORG: ${VITE_SENTRY_ORG:-signal-md}
+        VITE_SENTRY_PROJECT: ${VITE_SENTRY_PROJECT:-signal-md-frontend}
+        VITE_APP_VERSION: ${VITE_APP_VERSION:-2.0.0}
     container_name: medsearch-web
     depends_on:
       postgres:
