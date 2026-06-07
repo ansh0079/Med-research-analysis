@@ -50,6 +50,7 @@ COPY --from=builder /app/server.js ./server.js
 COPY --from=builder /app/config.js ./config.js
 COPY --from=builder /app/database ./database
 COPY --from=builder /app/cache ./cache
+COPY --from=builder /app/shared ./shared
 COPY --from=builder /app/server ./server
 
 # Fix ownership
