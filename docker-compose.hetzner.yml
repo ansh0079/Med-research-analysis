@@ -101,7 +101,7 @@ services:
       CORS_ORIGINS: https://${DOMAIN}
       CLIENT_URL: https://${DOMAIN}
       API_URL: https://${DOMAIN}
-      AUTO_SEED_ON_SEARCH: "false"
+      AUTO_SEED_ON_SEARCH: ${AUTO_SEED_ON_SEARCH:-true}
       PAYWALL_ENABLED: ${PAYWALL_ENABLED:-false}
       GROBID_URL: http://grobid:8070
       LOG_LEVEL: ${LOG_LEVEL:-info}
@@ -145,7 +145,7 @@ services:
       MISTRAL_API_KEY: ${MISTRAL_API_KEY:-}
       RESEND_API_KEY: ${RESEND_API_KEY:-}
       APP_URL: https://${DOMAIN}
-      AUTO_SEED_ON_SEARCH: "false"
+      AUTO_SEED_ON_SEARCH: ${AUTO_SEED_ON_SEARCH:-true}
       GROBID_URL: http://grobid:8070
       LOG_LEVEL: ${LOG_LEVEL:-info}
     command: ["node", "server/worker.js"]
