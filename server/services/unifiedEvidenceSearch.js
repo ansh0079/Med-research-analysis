@@ -5,6 +5,7 @@
 
 const { buildProxyService } = require('./externalApiProxy');
 const crypto = require('crypto');
+const { getPromptVersion } = require('../prompts/promptVersions');
 
 // EBM evidence hierarchy — higher score = stronger study design
 const EBM_SCORES = {
@@ -188,7 +189,7 @@ function mergeArticleMetadata(primary, incoming) {
 function applyRRF(perSourceLists, k = 60, listWeights = []) {
     const scores = new Map(); // dedupeKey → { rrfScore, article }
     const MAX_FIRST_SCORE = 1 / (k + 1); // ≈ 0.0164
-    const EBM_WEIGHT = MAX_FIRST_SCORE * 0.05; // max EBM bonus ≈ 5% of top-position score
+    const EBM_WEIGHT = MAX_FIRST_SCORE * 0.25; // 25% weight allows EBM quality to overcome ~5 rank positions
 
     const TIER1_JOURNALS = ['nejm', 'lancet', 'jama', 'bmj', 'nature', 'science', 'annals of internal medicine'];
 
@@ -287,12 +288,13 @@ function articleFromOpenAlexWork(w) {
  * Uses the cheapest available model with a tight 8-second timeout.
  */
 function reformulationCacheKey(query, specificity) {
+    const pv = getPromptVersion('pubmed_reformulation');
     const hash = crypto
         .createHash('sha1')
         .update(JSON.stringify({ query: String(query || '').trim().toLowerCase(), specificity }))
         .digest('hex')
         .slice(0, 24);
-    return `llm:pubmed-reformulation:${hash}`;
+    return `llm:pubmed-reformulation:${hash}:pv:${pv}`;
 }
 
 async function reformulateQueryForPubMed(query, specificity, serverConfig, fetchImpl, cache = null, telemetry = null) {
@@ -360,12 +362,13 @@ Example output: ("Metformin"[MeSH Terms]) AND ("Polycystic Ovary Syndrome"[MeSH 
 }
 
 function picoCacheKey(query) {
+    const pv = getPromptVersion('pico_decomposition');
     const hash = crypto
         .createHash('sha1')
         .update(JSON.stringify({ query: String(query || '').trim().toLowerCase() }))
         .digest('hex')
         .slice(0, 24);
-    return `llm:pico-decomposition:${hash}`;
+    return `llm:pico-decomposition:${hash}:pv:${pv}`;
 }
 
 async function decomposePico(query, serverConfig, fetchImpl, cache = null) {
@@ -397,11 +400,9 @@ If a component is unclear or absent, set it to an empty string. Do not include a
     const ai = createAiService({ serverConfig, fetchImpl });
     const model = keys.gemini ? PINNED_MODELS.gemini : PINNED_MODELS.mistral;
     try {
-        const raw = keys.gemini
-            ? await ai.callGemini(prompt, model, { temperature: 0.0, maxOutputTokens: 300, signal: AbortSignal.timeout(4000) })
-            : await ai.callMistralAI(prompt, model, { temperature: 0.0, maxOutputTokens: 300, signal: AbortSignal.timeout(4000) });
-        const cleaned = String(raw || '').trim().replace(/^```[\s\S]*?\n/, '').replace(/\n```$/, '').trim();
-        const parsed = JSON.parse(cleaned);
+        const parsed = keys.gemini
+            ? await ai.callGeminiStructured(prompt, model, { temperature: 0.0, maxOutputTokens: 300, signal: AbortSignal.timeout(4000) })
+            : await ai.callMistralStructured(prompt, model, { temperature: 0.0, maxOutputTokens: 300, signal: AbortSignal.timeout(4000) });
         if (parsed && typeof parsed === 'object' && parsed.confidence != null) {
             if (cache && typeof cache.set === 'function') {
                 await Promise.resolve(cache.set(cacheKey, parsed, 86400)).catch(() => undefined);
@@ -470,7 +471,10 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     // Phase 0: LLM query reformulation — converts natural language into a structured
     // PubMed Boolean query with MeSH terms. Runs in parallel with MeSH lookup.
     // Only fires for conversational queries (>4 words, contains question-like patterns).
-    const isNaturalLanguageQuery = process.env.NODE_ENV !== 'test' && (
+    // Skip reformulation if query already contains medical terminology to preserve precision.
+    const hasMedicalTerms = /\b(syndrome|disease|treatment|therapy|diagnosis|cardiac|pulmonary|renal|diabetes|hypertension|infection|cancer|trial|study|efficacy|management|pathophysiology)\b/i.test(query);
+    const isNaturalLanguageQuery = !hasMedicalTerms && 
+        process.env.NODE_ENV !== 'test' && (
         query.split(/\s+/).length > 4 ||
         /\b(does|how|what|why|which|can|is|are|should)\b/i.test(query)
     );
@@ -492,7 +496,11 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
             const qLow = query.toLowerCase();
             meshExpansions = suggestions
                 .map((d) => String(d.label || '').trim())
-                .filter((label) => label && label.toLowerCase() !== qLow)
+                .filter((label) => {
+                    if (!label) return false;
+                    const labelLow = label.toLowerCase();
+                    return labelLow !== qLow;
+                })
                 .slice(0, 2);
         } catch (meshErr) {
             console.warn('[unifiedEvidence] MeSH proactive lookup skipped:', meshErr.message);

@@ -23,6 +23,7 @@
     "server/**/*.js",
     "database/**/*.js",
     "cache/**/*.js",
+    "shared/**/*.js",
     "scripts/**/*.js",
     "scripts/**/*.mjs"
   ],

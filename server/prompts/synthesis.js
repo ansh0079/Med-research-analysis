@@ -1,4 +1,8 @@
-const { formatMisconceptionPromptBlock } = require('../utils/misconceptionPromptBlock');
+const {
+    buildGuidelineContextBlock,
+    buildMisconceptionContextBlock,
+    buildSourceEvidenceBlock,
+} = require('./contextBuilders');
 
 const SYNTHESIS_STAGE_RUBRIC = {
     preclinical: `AUDIENCE: Pre-clinical student. Frame the clinical bottom line in terms of mechanisms, pathophysiology, and basic pharmacology class effects. Avoid advanced clinical decision nuances.`,
@@ -6,6 +10,23 @@ const SYNTHESIS_STAGE_RUBRIC = {
     finals: `AUDIENCE: Finals / exit exam candidate. Prioritise discriminators, first-line management, contraindications, guideline-anchored answers, and exam pitfalls.`,
     foundation_doctor: `AUDIENCE: Foundation doctor / intern. Emphasis on safe prescribing, escalation thresholds, referral criteria, drug interactions, and acute ward management decisions.`,
 };
+
+function buildQualityHintsBlock(hints) {
+    if (!hints || hints.sampleSize < 1) return '';
+    const parts = [];
+    if (hints.avgClinicalUsefulness != null && hints.avgClinicalUsefulness < 3.5) {
+        parts.push('Prior reviewers rated clinical usefulness below average — prioritize actionable Monday-morning guidance and explicit practice thresholds.');
+    }
+    if (Array.isArray(hints.lowRatedAspects) && hints.lowRatedAspects.length > 0) {
+        parts.push(`Address weak areas flagged by clinicians: ${hints.lowRatedAspects.join('; ')}.`);
+    }
+    if (hints.avgFactualAccuracy != null && hints.avgFactualAccuracy < 3.5) {
+        parts.push('Improve citation fidelity — tie every clinical claim to a supplied study or guideline index.');
+    }
+    return parts.length
+        ? `\n\nQUALITY IMPROVEMENT HINTS (from ${hints.sampleSize} prior synthesis rating${hints.sampleSize === 1 ? '' : 's'} on this topic):\n${parts.join('\n')}\n`
+        : '';
+}
 
 function buildSynthesisPrompt(articles, topic, guidelines = [], options = {}) {
     const validStages = ['preclinical', 'early_clinical', 'finals', 'foundation_doctor'];
@@ -39,49 +60,16 @@ Do not repeat basic definitions if the user is deep into a research dive. Bridge
 
 `
         : depthModeInstruction;
-    const context = articles
-        .map((a, i) => {
-            const citations = a.pmcrefcount ?? a.citationCount ?? 'unknown';
-            const year = a.pubdate?.split(' ')[0] || a.year || 'unknown';
-            const journal = a.source || a.journal || 'unknown';
-            const studyType = a.pubtype?.[0] || 'Study';
-            let fullTextBlock = '';
-            if (a._fullTextIndexed && a._fullTextSections) {
-                const sections = a._fullTextSections;
-                const ordered = ['methods', 'results', 'discussion', 'conclusion'];
-                const parts = [];
-                for (const key of ordered) {
-                    const text = sections[key];
-                    if (text && String(text).trim().length > 20) {
-                        parts.push(`${key.toUpperCase()}: ${String(text).slice(0, 1200)}`);
-                    }
-                }
-                if (parts.length > 0) {
-                    fullTextBlock = `\nFull-text excerpts (${a._fullTextWordCount || '?'} words total):\n${parts.join('\n')}`;
-                }
-            }
-            return `[STUDY ${i + 1}]
-Title: ${a.title}
-Journal: ${journal} (${year})
-Study type: ${studyType}
-Citations: ${citations}
-Abstract: ${a.abstract || 'No abstract provided.'}${fullTextBlock}`;
-        })
-        .join('\n\n');
-
-    const guidelineContext = guidelines.length > 0
-        ? guidelines.map((g, i) => `[GUIDELINE ${i + 1}]
-Source: ${g.source_body}${g.source_region ? ` (${g.source_region})` : ''}${g.source_year ? ` — ${g.source_year}` : ''}
-Recommendation: ${g.recommendation_text}${g.recommendation_strength ? `\nStrength: ${g.recommendation_strength}` : ''}${g.recommendation_certainty ? `\nCertainty: ${g.recommendation_certainty}` : ''}${g.population ? `\nPopulation: ${g.population}` : ''}${g.cautions ? `\nCautions: ${g.cautions}` : ''}`).join('\n\n')
-        : 'No guideline context provided.';
-
-    const misconceptionBlock = formatMisconceptionPromptBlock({
+    const context = buildSourceEvidenceBlock(articles, { variant: 'synthesis' });
+    const guidelineContext = buildGuidelineContextBlock(guidelines, { variant: 'synthesis' });
+    const misconceptionBlock = buildMisconceptionContextBlock({
         personalMisconceptions: options.personalMisconceptions,
         inferredMisconceptions: options.inferredMisconceptions,
         style: 'synthesis',
     });
+    const qualityHintsBlock = buildQualityHintsBlock(options.qualityHints);
 
-    return `${trajectoryContext}You are an expert medical research synthesiser with deep clinical knowledge. Analyse these ${articles.length} studies on the topic: "${topic}".${stageInstruction}${misconceptionBlock}
+    return `${trajectoryContext}You are an expert medical research synthesiser with deep clinical knowledge. Analyse these ${articles.length} studies on the topic: "${topic}".${stageInstruction}${misconceptionBlock}${qualityHintsBlock}
 
 Critical provenance rule:
 - Every clinical claim in overallAnswer, consensus, clinicalActionCard, clinicalBottomLine, clinicalImplications, keyFindings, limitations, researchGaps, practiceImpact (all string fields), evidenceDisagreement (all string fields and trial summaries), and paperContributions.practiceImpactNote must include inline study-index citations such as [1] or [1, 4], and guideline tags [G1] when appropriate.

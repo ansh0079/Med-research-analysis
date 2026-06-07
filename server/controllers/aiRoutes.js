@@ -14,16 +14,26 @@ const {
     getSynthesisCacheKey,
     selectTopSynthesisArticles,
 } = require('../services/synthesisGenerationCore');
-const { runPaperSynopsisGeneration } = require('../services/paperSynopsisCore');
+const {
+    runPaperSynopsisGeneration,
+    getPaperSynopsisArticleId,
+    invalidatePaperSynopsisCache,
+} = require('../services/paperSynopsisCore');
 const { getOrEnqueueFullSynthesis, getOrEnqueuePaperSynopsis } = require('../services/aiGenerationJobService');
 const claimMapService = require('../services/claimMapService');
 const { teachingObjectsToQuizContext, persistPaperTeachingObject } = require('../services/teachingObjectService');
 const { limitBodySize } = require('../utils/validation');
 const { resolveProvider } = require('../utils/aiProvider');
-const { parseJsonArrayStrict } = require('../utils/parseJson');
+const { parseJsonArrayStrict, parseStructuredQuizArray } = require('../utils/parseJson');
 const { createLlmUsageLogger, buildUsageEntry } = require('../services/llmUsageService');
 const { createMcqValidationService } = require('../services/mcqValidationService');
+const { createBudgetForAction, runWithLlmBudget } = require('../services/llmRequestBudget');
+const { getPromptVersion } = require('../prompts/promptVersions');
+const { validateAiOutput } = require('../services/aiOutputValidation');
 const { enrichLearnerContextForQuiz } = require('../services/learnerContextService');
+const { buildEvidenceDeltaBrief } = require('../services/evidenceDeltaBriefService');
+const { coldStartMcqKey, guidelineMcqKey } = require('../utils/teachingObjectKeys');
+const { generateCaseScenario, saveCaseScenario, getCaseScenario, recordCaseChoice } = require('../services/caseScenarioService');
 
 /**
  * @param {import('express').Application} app
@@ -38,6 +48,7 @@ function registerAiRoutes(app, deps) {
         userRateLimit,
         requireJson,
         requireAuthJwt,
+        requireAuthOrBeta,
         requireVerifiedEmail,
         requireRole,
         requirePaidFeature,
@@ -48,8 +59,15 @@ function registerAiRoutes(app, deps) {
         fetch: fetchImpl,
     } = deps;
 
+    const requireAiAuth = requireAuthOrBeta || requireAuthJwt;
+
     // Tighter per-user limits for endpoints that make expensive AI calls
     const aiUserLimit = userRateLimit || rateLimit; // graceful fallback if not wired
+    
+    // Stricter rate limits for resource-intensive operations
+    const strictAiLimit = (count, windowSec) => {
+        return userRateLimit ? userRateLimit(count, windowSec) : rateLimit(count, windowSec);
+    };
 
     const logLlm = createLlmUsageLogger(db);
     const ai = createAiService({
@@ -77,6 +95,34 @@ function registerAiRoutes(app, deps) {
         return parseJsonArrayStrict(String(text || ''));
     }
 
+    async function generateQuizQuestions(ai, { prompt, provider, model, usage }) {
+        const opts = { temperature: TEMPERATURE.quiz, jsonMode: true, usage };
+        let usedProvider = provider;
+        let quizModel = model;
+        const runStructured = async (p, m) => {
+            const parsed = p === 'gemini'
+                ? await ai.callGeminiStructured(prompt, m, opts)
+                : await ai.callMistralStructured(prompt, m, opts);
+            const validated = validateAiOutput('quiz_generation', parsed, { allowDegrade: false });
+            if (!validated.ok) {
+                throw new Error(validated.errors.join('; ') || 'Quiz output failed validation');
+            }
+            return parseStructuredQuizArray(validated.data);
+        };
+        try {
+            const questions = await runStructured(usedProvider, quizModel);
+            return { questions, usedProvider, quizModel };
+        } catch (providerErr) {
+            if (usedProvider === 'gemini' && serverConfig.keys.mistral) {
+                usedProvider = 'mistral';
+                quizModel = PINNED_MODELS.mistral;
+                const questions = await runStructured(usedProvider, quizModel);
+                return { questions, usedProvider, quizModel };
+            }
+            throw providerErr;
+        }
+    }
+
     const mapColdStartMcq = (q, idx, prefix) => ({
                     id: `${prefix}_${Date.now()}_${idx}`,
                     type: q.type || 'multiple_choice',
@@ -100,12 +146,9 @@ function registerAiRoutes(app, deps) {
 
     async function serveColdStartMCQs(database, topic, count) {
         try {
-            const normalizedTopic = topic.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim();
-            const slug = normalizedTopic.replace(/\s+/g, '-');
-
             const [coldObj, guidelineObj] = await Promise.all([
-                database.getTeachingObjectByKey(`cold-start-mcq:${slug}`),
-                database.getTeachingObjectByKey(`guideline-mcq:${slug}`),
+                database.getTeachingObjectByKey(coldStartMcqKey(database, topic)),
+                database.getTeachingObjectByKey(guidelineMcqKey(database, topic)),
             ]);
 
             const coldMcqs = (coldObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'cold_start'));
@@ -315,9 +358,31 @@ function registerAiRoutes(app, deps) {
             return null;
         }
         try {
-            // Fetch existing knowledge for difference analysis — only update when new
-            // evidence contradicts, nuances, or significantly strengthens current points.
+            // Fetch existing knowledge for delta analysis
             const existingKnowledge = await db.getTopicKnowledge(cleanTopic).catch((err) => { logger.warn({ err }, 'getTopicKnowledge failed'); return null; });
+
+            // INCREMENTAL UPDATE: Only extract NEW knowledge from articles published after last update
+            let articlesToAnalyze = articles.slice(0, 10);
+            let updateMode = 'full';
+            
+            if (existingKnowledge && existingKnowledge.lastRefreshedAt) {
+                const lastUpdate = new Date(existingKnowledge.lastRefreshedAt);
+                const recentArticles = articles.filter(a => {
+                    const publishDate = new Date(a.pubdate || a.year);
+                    return publishDate > lastUpdate;
+                });
+                
+                if (recentArticles.length > 0 && recentArticles.length < articles.length) {
+                    // We have NEW articles - do incremental update
+                    articlesToAnalyze = recentArticles.slice(0, 10);
+                    updateMode = 'incremental';
+                    log?.info?.({ 
+                        topic: cleanTopic, 
+                        newArticles: recentArticles.length,
+                        totalArticles: articles.length 
+                    }, 'Performing incremental knowledge update');
+                }
+            }
 
             // Align live extraction with background service by injecting engagement weights
             const storedCounts = existingKnowledge?.knowledge?.articleInteractionCounts || {};
@@ -329,11 +394,22 @@ function registerAiRoutes(app, deps) {
                 };
             }
 
-            const prompt = buildSeminalKnowledgeExtractionPrompt(cleanTopic, synthesis, articles.slice(0, 10), existingKnowledge, interactionStats);
+            const promptType = updateMode === 'incremental' ? 'delta' : 'full';
+            const prompt = promptType === 'delta'
+                ? buildDeltaKnowledgeExtractionPrompt(cleanTopic, synthesis, articlesToAnalyze, existingKnowledge, interactionStats)
+                : buildSeminalKnowledgeExtractionPrompt(cleanTopic, synthesis, articlesToAnalyze, existingKnowledge, interactionStats);
+            
             const raw = provider === 'mistral'
                 ? await ai.callMistralAI(prompt, model || PINNED_MODELS.mistral, { temperature: 0.15 })
                 : await ai.callGemini(prompt, model || PINNED_MODELS.gemini, { temperature: 0.15 });
             const knowledge = extractJsonObject(raw);
+            
+            // Merge incremental updates with existing knowledge
+            let finalKnowledge = knowledge;
+            if (updateMode === 'incremental' && existingKnowledge?.knowledge) {
+                finalKnowledge = mergeKnowledgeDeltas(existingKnowledge.knowledge, knowledge, articlesToAnalyze);
+            }
+            
             const sourceArticles = articles.slice(0, 10).map((article, index) => ({
                 sourceIndex: index + 1,
                 uid: article.uid,
@@ -343,14 +419,111 @@ function registerAiRoutes(app, deps) {
                 source: article.source || article._source || null,
                 pubdate: article.pubdate || (article.year ? String(article.year) : null),
             }));
-            return await db.upsertTopicKnowledge(cleanTopic, knowledge, sourceArticles, 'ai_generated', 0.65);
+            
+            return await db.upsertTopicKnowledge(cleanTopic, finalKnowledge, sourceArticles, 'ai_generated', 0.65);
         } catch (err) {
             log?.warn?.({ err, topic: cleanTopic }, 'Topic knowledge extraction skipped');
             return null;
         }
     }
 
-    app.post('/api/ai/analyze', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireMonthlyLimit('aiAnalysesPerMonth', 'ai_analysis'), aiUserLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
+    /**
+     * Builds a prompt for incremental knowledge extraction (delta updates only)
+     */
+    function buildDeltaKnowledgeExtractionPrompt(topic, synthesis, newArticles, existingKnowledge, interactionStats) {
+        const existingPoints = (existingKnowledge?.knowledge?.teachingPoints || [])
+            .map((tp, i) => `${i + 1}. ${typeof tp === 'string' ? tp : tp.claim || tp.text}`)
+            .join('\n');
+        
+        const newArticlesText = newArticles.map((a, i) => 
+            `[NEW-${i + 1}] ${a.title} (${a.pubdate || a.year})`
+        ).join('\n');
+        
+        return `You are updating medical knowledge about "${topic}" with NEW evidence.
+
+EXISTING TEACHING POINTS:
+${existingPoints || 'None yet'}
+
+NEW ARTICLES (published after last update):
+${newArticlesText}
+
+SYNTHESIS OF NEW ARTICLES:
+${JSON.stringify(synthesis, null, 2)}
+
+TASK: Extract ONLY the DELTA — what do these new articles:
+1. ADD (completely new insights not in existing teaching points)
+2. CONTRADICT (findings that disagree with existing points)
+3. STRENGTHEN (additional evidence supporting existing points)
+
+Return JSON:
+{
+  "newInsights": ["Insight 1", "Insight 2"],
+  "contradictions": [{"existingPoint": "Point X", "newFinding": "Contradictory finding", "evidence": "Article reference"}],
+  "strengtheningEvidence": [{"existingPoint": "Point Y", "newEvidence": "Supporting finding"}],
+  "updateRequired": true/false
+}`;
+    }
+    
+    /**
+     * Merges delta knowledge updates with existing knowledge base
+     */
+    function mergeKnowledgeDeltas(existingKnowledge, deltaKnowledge, newArticles) {
+        const merged = { ...existingKnowledge };
+        
+        // Add new insights to teaching points
+        if (Array.isArray(deltaKnowledge.newInsights) && deltaKnowledge.newInsights.length > 0) {
+            merged.teachingPoints = [
+                ...(merged.teachingPoints || []),
+                ...deltaKnowledge.newInsights.map(insight => ({
+                    claim: insight,
+                    addedFromDelta: true,
+                    sourceArticles: newArticles.map(a => a.uid).slice(0, 3)
+                }))
+            ].slice(0, 20);  // Cap at 20 teaching points
+        }
+        
+        // Flag contradictions for human review
+        if (Array.isArray(deltaKnowledge.contradictions) && deltaKnowledge.contradictions.length > 0) {
+            merged.contradictions = [
+                ...(merged.contradictions || []),
+                ...deltaKnowledge.contradictions
+            ];
+        }
+        
+        // Update confidence for strengthened points
+        if (Array.isArray(deltaKnowledge.strengtheningEvidence)) {
+            for (const evidence of deltaKnowledge.strengtheningEvidence) {
+                // Find matching teaching point and boost confidence
+                const matchIdx = (merged.teachingPoints || []).findIndex(tp => 
+                    String(tp.claim || tp.text || '').includes(evidence.existingPoint.slice(0, 50))
+                );
+                if (matchIdx >= 0 && merged.teachingPoints[matchIdx]) {
+                    merged.teachingPoints[matchIdx].confidence = 
+                        Math.min((merged.teachingPoints[matchIdx].confidence || 0.5) * 1.15, 0.95);
+                    merged.teachingPoints[matchIdx].strengtheningEvidence = 
+                        [...(merged.teachingPoints[matchIdx].strengtheningEvidence || []), evidence.newEvidence];
+                }
+            }
+        }
+        
+        return merged;
+    }
+
+    async function attachEvidenceDeltaIfAvailable(result, topic, userId) {
+        if (!result || !topic || !userId || !db?.normalizeTopic) return result;
+        const brief = await buildEvidenceDeltaBrief(db, userId, topic).catch((err) => {
+            logger.debug({ err, topic }, 'synopsis evidence delta unavailable');
+            return null;
+        });
+        if (!brief?.significantChange) return result;
+        return { ...result, evidenceDelta: brief };
+    }
+
+    // Enhanced rate limiting for expensive AI operations
+    const synthesisLimit = (rate, window) => strictAiLimit(rate, window);
+    const caseGenerationLimit = (rate, window) => strictAiLimit(rate, window);
+
+    app.post('/api/ai/analyze', limitBodySize(2 * 1024 * 1024), requireJson, requireAiAuth, requireMonthlyLimit('aiAnalysesPerMonth', 'ai_analysis'), aiUserLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
         const { text, analysisType, provider = 'auto', model } = req.body;
 
         const validationErrors = validateAnalysisBody(req.body);
@@ -424,7 +597,7 @@ function registerAiRoutes(app, deps) {
         }
     });
 
-    app.post('/api/ai/explain', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, aiUserLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
+    app.post('/api/ai/explain', limitBodySize(2 * 1024 * 1024), requireJson, requireAiAuth, aiUserLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
         const { text, provider = 'auto', model } = req.body;
 
         if (!text || typeof text !== 'string') {
@@ -597,7 +770,8 @@ function registerAiRoutes(app, deps) {
         }
     });
 
-    app.post('/api/quiz/generate', requireJson, requireAuthJwt, aiUserLimit(10, 60), validateBody(schemas.quiz), async (req, res) => {
+    app.post('/api/quiz/generate', requireJson, requireAiAuth, aiUserLimit(10, 60), validateBody(schemas.quiz), async (req, res) => {
+        return runWithLlmBudget(createBudgetForAction('quiz'), async () => {
         const {
             topic, articles = [], count = 5, difficulty = 'mixed', studyRunId, trainingStage, explanationDepth, explicitTargetNodeIds, mode, claimJobKey,
         } = req.body;
@@ -633,6 +807,30 @@ function registerAiRoutes(app, deps) {
         const userPlan = req.user?.subscription_plan || 'free';
         const planLimit = userPlan === 'premium' ? 20 : userPlan === 'standard' ? 10 : 3;
         const safeCount = Math.min(Math.max(parseInt(String(count), 10) || Math.min(5, planLimit), 1), planLimit);
+
+        const cleanTopic = topic.trim();
+        const topicKnowledgeRow = await db.getTopicKnowledge(cleanTopic).catch((err) => { logger.warn({ err }, 'getTopicKnowledge failed'); return null; });
+
+        // Collective memory hot path — serve pre-seeded pool before claim gate when topic is well-known
+        if (!resolvedClaimJobKey) {
+            const collectiveMemory = topicKnowledgeRow?.knowledge?.collective_memory || null;
+            const uniqueUsers = collectiveMemory?.uniqueUsers || 0;
+            const topicPath = uniqueUsers >= 50 ? 'hot' : uniqueUsers >= 15 ? 'warm' : 'cold';
+            if (topicPath === 'hot') {
+                const poolMcqs = await serveColdStartMCQs(db, cleanTopic, safeCount);
+                if (poolMcqs) {
+                    logger.info({ topic: cleanTopic, uniqueUsers, path: 'hot' }, 'Serving from collective memory pool');
+                    return res.json({
+                        questions: poolMcqs,
+                        topic: cleanTopic,
+                        provider: 'collective_memory',
+                        path: 'hot',
+                        uniqueUsers,
+                        disclaimer: AI_DISCLAIMER,
+                    });
+                }
+            }
+        }
         /*
         const articleContext = articles
             .slice(0, 3)
@@ -673,7 +871,6 @@ Question type definitions:
 Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Output JSON array only.`;
         */
         const { provider: selectedProvider } = resolveProvider({}, serverConfig);
-        const cleanTopic = topic.trim();
         const guidelines = await db.getGuidelinesByTopic(cleanTopic, { limit: 5 }).catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; });
 
         let studyRun = null;
@@ -683,12 +880,28 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             if (studyRun.userId !== req.user.id) return res.status(403).json({ error: 'Forbidden' });
         }
 
-        const topicKnowledgeRow = await db.getTopicKnowledge(cleanTopic).catch((err) => { logger.warn({ err }, 'getTopicKnowledge failed'); return null; });
+        const topicKnowledgeRowForRun = topicKnowledgeRow;
         const runTopicKnowledgeRow = studyRun?.outlineId
             ? await db.get(`SELECT * FROM topic_knowledge WHERE id = ?`, [studyRun.outlineId]).then((row) => db.mapTopicKnowledgeRow(row)).catch((err) => { logger.warn({ err }, 'get topic_knowledge by id failed'); return null; })
             : null;
-        const effectiveTopicKnowledge = runTopicKnowledgeRow || topicKnowledgeRow;
-        const outlineNodes = buildStudyRunOutline(effectiveTopicKnowledge);
+        const effectiveTopicKnowledge = runTopicKnowledgeRow || topicKnowledgeRowForRun;
+        const prefillTeachingPoints = Array.isArray(req.body.teachingPoints) ? req.body.teachingPoints : [];
+        const prefillMcqAngles = Array.isArray(req.body.mcqAngles)
+            ? req.body.mcqAngles.map((a) => String(a || '').trim()).filter(Boolean)
+            : [];
+        let mergedTopicKnowledge = effectiveTopicKnowledge;
+        if (prefillTeachingPoints.length > 0 || prefillMcqAngles.length > 0) {
+            const existingKnowledge = effectiveTopicKnowledge?.knowledge || {};
+            mergedTopicKnowledge = {
+                ...(effectiveTopicKnowledge || {}),
+                knowledge: {
+                    ...existingKnowledge,
+                    ...(prefillTeachingPoints.length ? { teachingPoints: prefillTeachingPoints } : {}),
+                    ...(prefillMcqAngles.length ? { mcqAngles: prefillMcqAngles } : {}),
+                },
+            };
+        }
+        const outlineNodes = buildStudyRunOutline(mergedTopicKnowledge);
         let claimMastery = [];
         let teachingObjects = [];
         let teachingClaims = [];
@@ -722,6 +935,16 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             else claimAnchorMode = 'adaptive_teaching_object';
         }
         if (!resolvedClaimJobKey && (!teachingClaims || teachingClaims.length === 0)) {
+            const poolMcqs = await serveColdStartMCQs(db, cleanTopic, safeCount);
+            if (poolMcqs) {
+                return res.json({
+                    questions: poolMcqs,
+                    topic: cleanTopic,
+                    provider: 'cold_start_cache',
+                    path: 'cold_start_fallback',
+                    disclaimer: AI_DISCLAIMER,
+                });
+            }
             return res.status(409).json({
                 error: 'No teaching claims for this topic. Generate paper synopses or topic synthesis before quizzing.',
                 code: 'CLAIMS_REQUIRED',
@@ -737,6 +960,16 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             if (claimAnchors.length) claimAnchorMode = 'adaptive_teaching_object';
         }
         if (!claimAnchors) {
+            const poolMcqs = await serveColdStartMCQs(db, cleanTopic, safeCount);
+            if (poolMcqs) {
+                return res.json({
+                    questions: poolMcqs,
+                    topic: cleanTopic,
+                    provider: 'cold_start_cache',
+                    path: 'cold_start_fallback',
+                    disclaimer: AI_DISCLAIMER,
+                });
+            }
             return res.status(409).json({
                 error: 'Could not anchor quiz to teaching claims. Add or refresh claims for this topic.',
                 code: 'CLAIMS_REQUIRED',
@@ -760,7 +993,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
 
         const topicMemory = userContext?.topicMemory || null;
         const needAdaptive = Math.max(0, effectiveQuizCount - targetNodes.length);
-        if (needAdaptive > 0 && topicMemory && effectiveTopicKnowledge && outlineNodes.length) {
+        if (needAdaptive > 0 && topicMemory && mergedTopicKnowledge && outlineNodes.length) {
             // Increase the "lookahead" for adaptive targets to find better matches for weak areas
             const extra = selectAdaptiveMemoryTargets(outlineNodes, topicMemory, needAdaptive + 8);
             const seen = new Set(targetNodes.map((t) => t.id));
@@ -775,18 +1008,9 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         }
 
         // Collective topic memory: cold / warm / hot path selection
-        const collectiveMemory = effectiveTopicKnowledge?.knowledge?.collective_memory || null;
+        const collectiveMemory = mergedTopicKnowledge?.knowledge?.collective_memory || null;
         const uniqueUsers = collectiveMemory?.uniqueUsers || 0;
         const topicPath = uniqueUsers >= 50 ? 'hot' : uniqueUsers >= 15 ? 'warm' : 'cold';
-
-        // HOT path: topic well-known across users — serve from pre-seeded pool, no LLM call
-        if (topicPath === 'hot' && !claimAnchors) {
-            const poolMcqs = await serveColdStartMCQs(db, cleanTopic, effectiveQuizCount);
-            if (poolMcqs) {
-                logger.info({ topic: cleanTopic, uniqueUsers, path: 'hot' }, 'Serving from collective memory pool');
-                return res.json({ questions: poolMcqs, provider: 'collective_memory', path: 'hot', uniqueUsers });
-            }
-        }
 
         // WARM path: pass shared misconceptions so LLM targets real failure points
         const knownMisconceptions = topicPath === 'warm' || topicPath === 'hot'
@@ -796,12 +1020,9 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         // Personal misconceptions: this user's specific repeated wrong-answer patterns
         let personalMisconceptions = [];
         if (req.user?.id && db.getUserClaimMisconceptions) {
-            personalMisconceptions = await db.getUserClaimMisconceptions(req.user.id, cleanTopic, { limit: 3 }).catch((err) => { logger.warn({ err }, 'getUserClaimMisconceptions failed'); return []; });
-            // Increase the lookback on personal failures to ensure the learning agent 
-            // focuses on long-term knowledge gaps rather than just the most recent quiz.
-            personalMisconceptions = await db.getUserClaimMisconceptions(req.user.id, cleanTopic, { 
+            personalMisconceptions = await db.getUserClaimMisconceptions(req.user.id, cleanTopic, {
                 limit: 5,
-                minOccurrences: 1 
+                minOccurrences: 1,
             }).catch((err) => { logger.warn({ err }, 'getUserClaimMisconceptions failed'); return []; });
         }
 
@@ -816,7 +1037,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             {
                 count: effectiveQuizCount,
                 difficulty,
-                topicKnowledge: effectiveTopicKnowledge,
+                topicKnowledge: mergedTopicKnowledge,
                 targetNodes,
                 trainingStage,
                 explanationDepth,
@@ -843,59 +1064,35 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         try {
             let usedProvider = selectedProvider;
             let quizModel = usedProvider === 'gemini' ? PINNED_MODELS.gemini : PINNED_MODELS.mistral;
-            let text;
+            let raw;
             try {
-                text = usedProvider === 'gemini'
-                    ? await ai.callGemini(prompt, quizModel, { temperature: TEMPERATURE.quiz, usage: quizUsage })
-                    : await ai.callMistralAI(prompt, quizModel, { temperature: TEMPERATURE.quiz, usage: quizUsage });
+                const generated = await generateQuizQuestions(ai, {
+                    prompt,
+                    provider: usedProvider,
+                    model: quizModel,
+                    usage: quizUsage,
+                });
+                raw = generated.questions;
+                usedProvider = generated.usedProvider;
+                quizModel = generated.quizModel;
             } catch (providerErr) {
                 if (usedProvider === 'gemini' && serverConfig.keys.mistral) {
                     req.log.warn({ err: providerErr }, 'Gemini quiz generation failed; falling back to Mistral');
-                    usedProvider = 'mistral';
-                    quizModel = PINNED_MODELS.mistral;
-                    try {
-                        text = await ai.callMistralAI(prompt, quizModel, { temperature: TEMPERATURE.quiz, usage: quizUsage });
-                    } catch (mistralErr) {
-                        req.log.warn({ err: mistralErr }, 'Mistral quiz generation also failed; trying cold-start MCQs');
-                        const coldStart = await serveColdStartMCQs(db, cleanTopic, effectiveQuizCount);
-                        if (coldStart) {
-                            return res.json({
-                                questions: coldStart,
-                                topic: cleanTopic,
-                                provider: 'cold_start_cache',
-                                model: null,
-                                disclaimer: AI_DISCLAIMER,
-                                warning: 'Both AI providers unavailable; serving pre-generated questions.',
-                            });
-                        }
-                        throw mistralErr;
-                    }
                 } else {
                     req.log.warn({ err: providerErr }, 'Primary provider failed; trying cold-start MCQs');
-                    const coldStart = await serveColdStartMCQs(db, cleanTopic, effectiveQuizCount);
-                    if (coldStart) {
-                        return res.json({
-                            questions: coldStart,
-                            topic: cleanTopic,
-                            provider: 'cold_start_cache',
-                            model: null,
-                            disclaimer: AI_DISCLAIMER,
-                            warning: 'AI provider unavailable; serving pre-generated questions.',
-                        });
-                    }
-                    throw providerErr;
                 }
-            }
-
-            let raw;
-            try {
-                raw = extractJsonArray(text);
-            } catch (parseErr) {
-                req.log.warn({ err: parseErr.message, responsePreview: text.slice(0, 200) }, 'Quiz JSON parse failed');
-                if (claimAnchors) {
-                    return res.status(502).json({ error: 'AI returned malformed claim-anchored quiz data. Please retry.' });
+                const coldStart = await serveColdStartMCQs(db, cleanTopic, effectiveQuizCount);
+                if (coldStart) {
+                    return res.json({
+                        questions: coldStart,
+                        topic: cleanTopic,
+                        provider: 'cold_start_cache',
+                        model: null,
+                        disclaimer: AI_DISCLAIMER,
+                        warning: 'AI provider unavailable; serving pre-generated questions.',
+                    });
                 }
-                return res.status(502).json({ error: 'AI returned malformed quiz data. Please retry.' });
+                throw providerErr;
             }
 
             if (!Array.isArray(raw)) {
@@ -964,6 +1161,9 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                 const sourceIndices = validateSourceIndices(q.sourceIndices, articles.length);
                 const ck = claimAnchors ? normalizeClaimKey(q.claimKey, validClaimKeys, claimAnchors, idx) : null;
                 const cmeta = ck && claimByKey ? claimByKey.get(ck) : null;
+                const resolvedSourceUid = cmeta?.articleUid
+                    || (sourceIndices?.[0] && articles[sourceIndices[0] - 1]?.uid)
+                    || null;
                 let distractorRationale = null;
                 if (q.distractorRationale && typeof q.distractorRationale === 'object' && !Array.isArray(q.distractorRationale)) {
                     distractorRationale = {};
@@ -988,6 +1188,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                     difficulty: difficulty !== 'mixed' ? difficulty : (['easy', 'medium', 'hard'].includes(q.difficulty) ? q.difficulty : 'medium'),
                     sourceArticle: q.sourceArticle || null,
                     sourceReference: q.sourceReference || null,
+                    sourceArticleUid: resolvedSourceUid,
                     sourceIndices,
                     outlineNodeId: normalizeOutlineNodeId(q.outlineNodeId, validOutlineNodeIds, targetNodes, sourceIndices, idx),
                     topic: cleanTopic,
@@ -1034,10 +1235,12 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             req.log.error({ err: error }, 'Quiz generation error');
             res.status(500).json({ error: 'Internal Server Error' });
         }
+        });
     });
 
     // ── Evidence-to-Quiz: generate questions strictly from provided articles ──
-    app.post('/api/quiz/from-evidence', requireJson, requireAuthJwt, rateLimit(10, 60), async (req, res) => {
+    app.post('/api/quiz/from-evidence', requireJson, requireAiAuth, rateLimit(10, 60), async (req, res) => {
+        return runWithLlmBudget(createBudgetForAction('quiz'), async () => {
         const { topic, articles = [], count = 3, difficulty = 'mixed' } = req.body;
         if (!topic || typeof topic !== 'string' || topic.trim().length < 2) {
             return res.status(400).json({ error: 'topic is required' });
@@ -1079,31 +1282,16 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         }
 
         try {
-            let usedProvider = selectedProvider;
-            let quizModel = initialQuizModel;
-            let text;
-            try {
-                text = usedProvider === 'gemini'
-                    ? await ai.callGemini(prompt, quizModel, { temperature: TEMPERATURE.quiz })
-                    : await ai.callMistralAI(prompt, quizModel, { temperature: TEMPERATURE.quiz });
-            } catch (providerErr) {
-                if (usedProvider === 'gemini' && serverConfig.keys.mistral) {
-                    req.log.warn({ err: providerErr }, 'Gemini quiz-from-evidence failed; falling back to Mistral');
-                    usedProvider = 'mistral';
-                    quizModel = PINNED_MODELS.mistral;
-                    text = await ai.callMistralAI(prompt, quizModel, { temperature: TEMPERATURE.quiz });
-                } else {
-                    throw providerErr;
-                }
-            }
-
-            let raw;
-            try {
-                raw = extractJsonArray(text);
-            } catch (parseErr) {
-                req.log.warn({ err: parseErr.message, responsePreview: text.slice(0, 200) }, 'Quiz-from-evidence JSON parse failed');
-                return res.status(502).json({ error: 'AI returned malformed quiz data. Please retry.' });
-            }
+            const quizUsage = { operation: 'quiz', topic: topic.trim(), userId: req.user?.id || null };
+            const generated = await generateQuizQuestions(ai, {
+                prompt,
+                provider: selectedProvider,
+                model: initialQuizModel,
+                usage: quizUsage,
+            });
+            const raw = generated.questions;
+            const usedProvider = generated.usedProvider;
+            const quizModel = generated.quizModel;
 
             if (!Array.isArray(raw)) {
                 return res.status(502).json({ error: 'AI returned non-array quiz data. Please retry.' });
@@ -1163,6 +1351,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             const LETTERS = ['A', 'B', 'C', 'D'];
             const questions = validatedRaw.map((q, idx) => {
                 const sourceIndices = validateSourceIndices(q.sourceIndices, articles.length);
+                const resolvedSourceUid = (sourceIndices?.[0] && articles[sourceIndices[0] - 1]?.uid) || null;
                 let distractorRationale = null;
                 if (q.distractorRationale && typeof q.distractorRationale === 'object' && !Array.isArray(q.distractorRationale)) {
                     distractorRationale = {};
@@ -1187,6 +1376,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                     difficulty: difficulty !== 'mixed' ? difficulty : (['easy', 'medium', 'hard'].includes(q.difficulty) ? q.difficulty : 'medium'),
                     sourceArticle: q.sourceArticle || null,
                     sourceReference: q.sourceReference || null,
+                    sourceArticleUid: resolvedSourceUid,
                     sourceIndices,
                     outlineNodeId: null,
                     topic: topic.trim(),
@@ -1200,6 +1390,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             req.log.error({ err: error }, 'Quiz-from-evidence error');
             res.status(500).json({ error: 'Internal Server Error' });
         }
+        });
     });
 
     // ── Practice Pool: serve pre-seeded MCQs across all topics ──────────────
@@ -1265,7 +1456,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         }
     });
 
-    app.post('/api/ai/synthesize', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireVerifiedEmail, requirePaidFeature('aiSynthesis'), requireMonthlyLimit('synthesisPerMonth', 'ai_synthesis'), aiUserLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
+    app.post('/api/ai/synthesize', limitBodySize(2 * 1024 * 1024), requireJson, requireAiAuth, requireVerifiedEmail, requirePaidFeature('aiSynthesis'), requireMonthlyLimit('synthesisPerMonth', 'ai_synthesis'), synthesisLimit(3, 3600), validateBody(schemas.synthesize), async (req, res) => {
         const { articles, topic, provider = 'auto', async: asyncJob } = req.body;
 
         if (!Array.isArray(articles) || articles.length === 0) {
@@ -1395,7 +1586,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
 
     const { setupSSE, sendSSE } = require('../utils/sse');
 
-    app.post('/api/ai/analyze/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireMonthlyLimit('aiAnalysesPerMonth', 'ai_analysis'), aiUserLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
+    app.post('/api/ai/analyze/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAiAuth, requireMonthlyLimit('aiAnalysesPerMonth', 'ai_analysis'), aiUserLimit(10, 60), validateBody(schemas.analyze), async (req, res) => {
         const { text, analysisType, provider = 'auto', model } = req.body;
 
         const validationErrors = validateAnalysisBody(req.body);
@@ -1498,33 +1689,35 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
         }
 
         const articleId = article.uid || article.pmid || article.doi || crypto.createHash('md5').update(article.title).digest('hex').slice(0, 12);
-        const cacheKey = `pico:${articleId}:${selectedModel}`;
+        const picoPromptVersion = getPromptVersion('pico_extraction');
+        const cacheKey = `pico:${articleId}:${selectedModel}:pv:${picoPromptVersion}`;
 
         try {
             const memCached = await cache.getAsync(cacheKey);
             if (memCached) return res.json({ ...memCached, cached: true });
 
             const prompt = buildPicoExtractionPrompt(article);
-            let rawText;
-            if (selectedProvider === 'gemini') {
-                rawText = await ai.callGemini(prompt, selectedModel, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis });
-            } else {
-                rawText = await ai.callMistralAI(prompt, selectedModel, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis });
-            }
-
             let extraction;
-            try {
-                const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-                extraction = JSON.parse(jsonMatch ? jsonMatch[0] : rawText);
-            } catch {
+            if (selectedProvider === 'gemini') {
+                extraction = await ai.callGeminiStructured(prompt, selectedModel, {
+                    temperature: TEMPERATURE.synthesis,
+                    maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis,
+                });
+            } else {
+                extraction = await ai.callMistralStructured(prompt, selectedModel, {
+                    temperature: TEMPERATURE.synthesis,
+                    maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis,
+                });
+            }
+            if (!extraction || typeof extraction !== 'object') {
                 return res.status(502).json({ error: 'AI returned malformed PICO data. Please retry.' });
             }
 
-            // Normalise
-            extraction.outcomes = Array.isArray(extraction.outcomes) ? extraction.outcomes.map(String) : [];
-            extraction.missingFields = Array.isArray(extraction.missingFields) ? extraction.missingFields.map(String) : [];
-            extraction.sampleSize = Number.isFinite(Number(extraction.sampleSize)) ? Number(extraction.sampleSize) : 0;
-            extraction.confidence = Math.max(0, Math.min(1, Number(extraction.confidence) || 0));
+            const validated = validateAiOutput('pico_extraction', extraction, { allowDegrade: true });
+            if (!validated.ok && !validated.degraded) {
+                return res.status(502).json({ error: 'PICO validation failed', details: validated.errors });
+            }
+            extraction = validated.data || validated.degraded;
 
             const result = { extraction, articleId, cached: false };
             await cache.setAsync(cacheKey, result, 7200); // 2-hour cache
@@ -1762,7 +1955,7 @@ Return ONLY valid JSON:
         }
     });
 
-    app.post('/api/ai/synthesize/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAuthJwt, requireVerifiedEmail, requirePaidFeature('aiSynthesis'), requireMonthlyLimit('synthesisPerMonth', 'ai_synthesis'), aiUserLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
+    app.post('/api/ai/synthesize/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAiAuth, requireVerifiedEmail, requirePaidFeature('aiSynthesis'), requireMonthlyLimit('synthesisPerMonth', 'ai_synthesis'), aiUserLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
         const { articles, topic, provider = 'auto' } = req.body;
 
         if (!Array.isArray(articles) || articles.length === 0) {
@@ -1822,6 +2015,7 @@ Return ONLY valid JSON:
                 provider: selectedProvider,
                 model: selectedModel,
                 fullTextIndexedCount: context.fullTextIndexedCount,
+                fullTextCoverageRatio: context.fullTextCoverageRatio,
             });
 
             await persistSynthesisResult({
@@ -1833,6 +2027,9 @@ Return ONLY valid JSON:
                 synthesis,
                 topArticles: context.topArticles,
                 model: selectedModel,
+                serverConfig,
+                userId: req.user?.id || null,
+                provider: selectedProvider,
             });
             void maybeStoreTopicKnowledge({
                 topic,
@@ -1867,9 +2064,17 @@ Return ONLY valid JSON:
     // Single-article structured synopsis — returns the 13-field schema.
     // Cached 24 hours. Use body.async=true to queue a durable job (poll GET /api/ai/jobs/:jobKey).
     // ─────────────────────────────────────────────────────────────────
-    app.post('/api/ai/synopsis', limitBodySize(512 * 1024), requireJson, requireAuthJwt, requirePaidFeature('aiSynthesis'), rateLimit(20, 60), validateBody(schemas.synopsis), async (req, res) => {
-        const { article, provider = 'auto', async: asyncJob, topic = '' } = req.body;
+    app.post('/api/ai/synopsis', limitBodySize(512 * 1024), requireJson, requireAiAuth, requirePaidFeature('aiSynthesis'), rateLimit(20, 60), validateBody(schemas.synopsis), async (req, res) => {
+        const { article, provider = 'auto', async: asyncJob, topic = '', trainingStage: requestedTrainingStage = null } = req.body;
         try {
+            let trainingStage = requestedTrainingStage;
+            if (!trainingStage && req.user?.id && db?.getLearningProfile) {
+                const profile = await db.getLearningProfile(req.user.id).catch((err) => {
+                    logger.warn({ err }, 'getLearningProfile for synopsis failed');
+                    return null;
+                });
+                trainingStage = profile?.trainingStage || profile?.training_stage || null;
+            }
             if (asyncJob === true) {
                 const out = await getOrEnqueuePaperSynopsis({
                     db,
@@ -1879,10 +2084,16 @@ Return ONLY valid JSON:
                     fetchImpl,
                     cache,
                     logger: req.log,
+                    topic,
+                    trainingStage,
+                    userId: req.user?.id || null,
                 });
                 const code = out.status === 'queued' || out.status === 'running' ? 202
                     : out.status === 'failed' ? 503 : 200;
-                return res.status(code).json(out);
+                const withDelta = code === 200
+                    ? await attachEvidenceDeltaIfAvailable(out, topic, req.user?.id || null)
+                    : out;
+                return res.status(code).json(withDelta);
             }
             const result = await runPaperSynopsisGeneration({
                 article,
@@ -1894,8 +2105,10 @@ Return ONLY valid JSON:
                 sessionId: req.sessionId,
                 log: req.log,
                 topic,
+                trainingStage,
+                userId: req.user?.id || null,
             });
-            return res.json(result);
+            return res.json(await attachEvidenceDeltaIfAvailable(result, topic, req.user?.id || null));
         } catch (error) {
             req.log.error({ err: error }, 'Synopsis generation error');
             const status = /No AI service|No AI provider/.test(error.message) ? 503 : 500;
@@ -1903,7 +2116,59 @@ Return ONLY valid JSON:
         }
     });
 
-    app.post('/api/teaching-objects/paper', limitBodySize(512 * 1024), requireJson, requireAuthJwt, requirePaidFeature('aiSynthesis'), rateLimit(20, 60), validateBody(schemas.synopsis), async (req, res) => {
+    app.post('/api/ai/synopsis/feedback', limitBodySize(128 * 1024), requireJson, requireAiAuth, rateLimit(60, 60), async (req, res) => {
+        const {
+            article,
+            articleUid,
+            topic = null,
+            trainingStage = null,
+            provider = null,
+            model = null,
+            feedbackType,
+            reason = null,
+            cached = null,
+        } = req.body || {};
+        const type = String(feedbackType || '').trim();
+        const uid = articleUid || (article ? getPaperSynopsisArticleId(article) : null);
+        if (!uid || !['helpful', 'not_helpful'].includes(type)) {
+            return res.status(400).json({ error: 'articleUid/article and feedbackType (helpful|not_helpful) are required' });
+        }
+        try {
+            if (db?.recordSynopsisFeedback) {
+                await db.recordSynopsisFeedback({
+                    userId: req.user?.id || null,
+                    sessionId: req.sessionId,
+                    articleUid: uid,
+                    topic,
+                    trainingStage,
+                    provider,
+                    model,
+                    feedbackType: type,
+                    reason,
+                    metadata: { cached },
+                });
+            }
+            if (type === 'not_helpful' && article) {
+                await invalidatePaperSynopsisCache({ cache, article, selectedModel: model, trainingStage }).catch((err) => {
+                    logger.warn({ err, articleUid: uid }, 'synopsis cache invalidation failed');
+                    return false;
+                });
+            }
+            if (db?.logEvent) {
+                await db.logEvent(type === 'helpful' ? 'synopsis_feedback_helpful' : 'synopsis_feedback_not_helpful', req.sessionId, {
+                    articleUid: uid,
+                    topic,
+                    trainingStage,
+                }).catch((err) => { logger.warn({ err }, 'synopsis feedback logEvent failed'); return null; });
+            }
+            return res.json({ ok: true, feedbackType: type, cacheInvalidated: type === 'not_helpful' && Boolean(article) });
+        } catch (error) {
+            req.log.error({ err: error }, 'Synopsis feedback error');
+            return res.status(500).json({ error: 'Failed to record synopsis feedback' });
+        }
+    });
+
+    app.post('/api/teaching-objects/paper', limitBodySize(512 * 1024), requireJson, requireAiAuth, requirePaidFeature('aiSynthesis'), rateLimit(20, 60), validateBody(schemas.synopsis), async (req, res) => {
         const { article, provider = 'auto', topic = '' } = req.body;
         try {
             const synopsisResult = await runPaperSynopsisGeneration({
@@ -1916,6 +2181,7 @@ Return ONLY valid JSON:
                 sessionId: req.sessionId,
                 log: req.log,
                 topic,
+                userId: req.user?.id || null,
             });
             const teachingObject = await persistPaperTeachingObject({ db, article, synopsisResult, topic });
             res.json({ synopsis: synopsisResult.synopsis, articleId: synopsisResult.articleId, teachingObject });
@@ -1995,6 +2261,216 @@ Return ONLY valid JSON:
             timestamp: new Date().toISOString(),
         });
     });
+    // ==========================================
+    // CASE SCENARIO GENERATION (Interactive Clinical Cases)
+    // ==========================================
+    
+    app.post('/api/ai/generate-case',
+        limitBodySize(64 * 1024),
+        requireJson,
+        requireAuthJwt,
+        requireVerifiedEmail,
+        strictAiLimit(3, 3600),  // Only 3 case generations per hour
+        requirePaidFeature('case_scenarios'),  // Paywall for advanced feature
+        async (req, res) => {
+            try {
+                const { topic, difficulty = 'medium', provider = 'auto', model } = req.body;
+                
+                if (!topic || typeof topic !== 'string' || topic.length < 3) {
+                    return res.status(400).json({ error: 'Topic is required and must be at least 3 characters' });
+                }
+                
+                if (!['easy', 'medium', 'hard'].includes(difficulty)) {
+                    return res.status(400).json({ error: 'Difficulty must be easy, medium, or hard' });
+                }
+                
+                // Get user profile for personalization
+                const userProfile = await db.getLearningProfile(req.user.id).catch(() => null);
+                
+                const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider, model }, serverConfig);
+                if (!selectedProvider) {
+                    return res.status(503).json({ error: 'No AI service configured' });
+                }
+                
+                // Generate case scenario
+                const caseScenario = await generateCaseScenario(ai, {
+                    topic,
+                    difficulty,
+                    userProfile,
+                    provider: selectedProvider,
+                    model: selectedModel
+                });
+                
+                // Save to database
+                const savedCase = await saveCaseScenario(db, req.user.id, caseScenario);
+                
+                // Log event
+                await db.logEvent('case_generated', req.sessionId, {
+                    topic,
+                    difficulty,
+                    caseId: savedCase.caseId,
+                    provider: selectedProvider,
+                    model: selectedModel
+                });
+                
+                res.json({
+                    caseId: savedCase.caseId,
+                    vignette: savedCase.vignette,
+                    initialScenario: savedCase.decisionTree.initial,
+                    disclaimer: AI_DISCLAIMER
+                });
+            } catch (error) {
+                req.log.error({ err: error }, 'Case generation error');
+                res.status(500).json({ error: 'Internal Server Error' });
+            }
+        }
+    );
+    
+    app.get('/api/ai/case/:caseId',
+        requireAuthJwt,
+        rateLimit(60, 60),
+        async (req, res) => {
+            try {
+                const { caseId } = req.params;
+                const caseScenario = await getCaseScenario(db, caseId, req.user.id);
+                
+                if (!caseScenario) {
+                    return res.status(404).json({ error: 'Case scenario not found' });
+                }
+                
+                res.json({ case: caseScenario });
+            } catch (error) {
+                req.log.error({ err: error }, 'Case retrieval error');
+                res.status(500).json({ error: 'Internal Server Error' });
+            }
+        }
+    );
+    
+    app.post('/api/ai/case/:caseId/respond',
+        limitBodySize(16 * 1024),
+        requireJson,
+        requireAuthJwt,
+        rateLimit(30, 60),
+        async (req, res) => {
+            try {
+                const { caseId } = req.params;
+                const { nodeId, choiceId } = req.body;
+                
+                if (!nodeId || !choiceId) {
+                    return res.status(400).json({ error: 'nodeId and choiceId are required' });
+                }
+                
+                const result = await recordCaseChoice(db, caseId, req.user.id, nodeId, choiceId);
+                
+                // Log event
+                await db.logEvent('case_choice', req.sessionId, {
+                    caseId,
+                    nodeId,
+                    choiceId,
+                    isAppropriate: result.feedback?.isAppropriate,
+                    isTerminal: result.isTerminal
+                });
+                
+                res.json(result);
+            } catch (error) {
+                req.log.error({ err: error, caseId: req.params.caseId }, 'Case response error');
+                res.status(500).json({ error: error.message || 'Internal Server Error' });
+            }
+        }
+    );
+
+    // ==========================================
+    // Case Scenario Generation (Interactive Learning)
+    // ==========================================
+
+    app.post('/api/ai/generate-case', 
+        limitBodySize(64 * 1024), 
+        requireJson, 
+        requireAuthJwt, 
+        requireVerifiedEmail,
+        requirePaidFeature('case_scenarios'),
+        caseGenerationLimit(3, 3600),  // Max 3 cases per hour - expensive operation
+        validateBody(schemas.caseGeneration),
+        async (req, res) => {
+            try {
+                const { topic, difficulty = 'medium', userProfile } = req.body;
+                
+                const { provider, model } = resolveProvider({ provider: req.body.provider || 'auto' }, serverConfig);
+                if (!provider) {
+                    return res.status(503).json({ error: 'No AI service configured' });
+                }
+                
+                // Generate case scenario
+                const caseScenario = await generateCaseScenario(ai, {
+                    topic,
+                    difficulty,
+                    userProfile: {
+                        trainingStage: userProfile?.trainingStage || req.user.trainingStage || 'finals',
+                        ...userProfile
+                    },
+                    provider,
+                    model
+                });
+                
+                // Save to database
+                const saved = await saveCaseScenario(db, req.user.id, caseScenario);
+                
+                await db.logEvent('case_generated', req.sessionId, { topic, difficulty, provider, model });
+                
+                res.json({
+                    caseId: saved.caseId,
+                    topic: saved.topic,
+                    difficulty: saved.difficulty,
+                    vignette: saved.vignette,
+                    initialNode: saved.decisionTree.initial,
+                    generatedAt: saved.generatedAt
+                });
+            } catch (error) {
+                req.log.error({ err: error }, 'Case generation error');
+                res.status(500).json({ error: 'Internal Server Error' });
+            }
+        }
+    );
+
+    app.get('/api/ai/case/:caseId',
+        requireAuthJwt,
+        rateLimit(60, 60),
+        async (req, res) => {
+            try {
+                const caseScenario = await getCaseScenario(db, req.params.caseId, req.user.id);
+                if (!caseScenario) {
+                    return res.status(404).json({ error: 'Case scenario not found' });
+                }
+                res.json({ caseScenario });
+            } catch (error) {
+                req.log.error({ err: error }, 'Get case scenario error');
+                res.status(500).json({ error: 'Internal Server Error' });
+            }
+        }
+    );
+
+    app.post('/api/ai/case/:caseId/respond',
+        limitBodySize(16 * 1024),
+        requireJson,
+        requireAuthJwt,
+        rateLimit(30, 60),
+        async (req, res) => {
+            try {
+                const { nodeId, choiceId } = req.body;
+                
+                if (!nodeId || !choiceId) {
+                    return res.status(400).json({ error: 'nodeId and choiceId are required' });
+                }
+                
+                const result = await recordCaseChoice(db, req.params.caseId, req.user.id, nodeId, choiceId);
+                
+                res.json(result);
+            } catch (error) {
+                req.log.error({ err: error }, 'Case response error');
+                res.status(500).json({ error: error.message || 'Internal Server Error' });
+            }
+        }
+    );
 }
 
 module.exports = { registerAiRoutes };

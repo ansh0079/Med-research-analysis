@@ -1,4 +1,5 @@
 const { collectQualityMetrics } = require('../services/qualityMetricsService');
+const { getSloStatus } = require('../services/observabilityMetrics');
 
 function registerAnalyticsRoutes(app, { db, rateLimit, requireAuthJwt, requireRole, requireJson }) {
     // Aggregate stats are admin-only — individual users should not see org-wide search volumes
@@ -53,7 +54,7 @@ function registerAnalyticsRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
         try {
             const days = Math.min(90, Math.max(7, parseInt(req.query.days, 10) || 30));
             const metrics = await collectQualityMetrics(db, days);
-            res.json(metrics);
+            res.json({ ...metrics, slo: getSloStatus() });
         } catch (error) {
             req.log.error({ err: error }, 'Quality metrics error');
             res.status(500).json({ error: error.message });

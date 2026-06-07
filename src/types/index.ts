@@ -58,6 +58,12 @@ export interface Article {
     citations?: number;
     year?: number;
   };
+  /** Auditable ranking decomposition (search pipeline). */
+  _rankingTrace?: import('../contracts').SearchResultRanking;
+  _learningBoost?: number;
+  _banditArmId?: string | null;
+  _decisionId?: number | null;
+  _missedQuizCount?: number;
 }
 
 export type DataSource = 'pubmed' | 'semantic' | 'crossref' | 'openalex';
@@ -139,6 +145,14 @@ export interface ArticleSynopsisResult {
   jobKey?: string | null;
   errorMessage?: string | null;
   audit?: Record<string, unknown>;
+  evidenceDelta?: {
+    significantChange: boolean;
+    summary: string | null;
+    claimsChanged: number;
+    safetyCautions: number;
+    weakenedConclusions: number;
+    pendingRegeneration?: Array<{ claimKey?: string; claimText?: string | null; status?: string; triggerReason?: string }>;
+  };
 }
 
 export type SpecificityLevel = 'experimental' | 'broad' | 'moderate' | 'strict';
@@ -304,6 +318,11 @@ export interface SearchResponse {
     citations?: number;
     year?: number;
     reasons?: string[];
+  }>;
+  rankingAttribution?: Array<{
+    articleUid: string;
+    decisionId?: number | null;
+    banditArmId?: string | null;
   }>;
 }
 
@@ -833,6 +852,7 @@ export interface QuizQuestion {
   } | null;
   difficulty: 'easy' | 'medium' | 'hard';
   sourceArticle?: string;
+  sourceArticleUid?: string;
   sourceReference?: string;
   sourceIndices?: number[];
   outlineNodeId?: string | null;
@@ -1326,6 +1346,9 @@ export interface QuizAttemptSubmission {
     confidence?: number;
     sourceArticleUid?: string;
     sourceArticleTitle?: string | null;
+    decisionId?: number;
+    banditArmId?: string | null;
+    searchId?: number;
     outlineNodeId?: string | null;
     outlineLabel?: string | null;
     claimKey?: string | null;

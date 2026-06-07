@@ -46,7 +46,8 @@ const serverConfig = {
         get openai() { return process.env.OPENAI_KEY || process.env.OPENAI_API_KEY; },
         get ncbi() { return process.env.NCBI_API_KEY || process.env.PUBMED_API_KEY; },
         get ncbiEmail() { return process.env.NCBI_EMAIL || 'anonymous@localhost'; },
-        get anthropic() { return process.env.ANTHROPIC_API_KEY; }
+        get anthropic() { return process.env.ANTHROPIC_API_KEY; },
+        get grobidUrl() { return process.env.GROBID_URL || 'http://localhost:8070'; }
     },
     features: {
         get enableLocalAI() {
@@ -55,7 +56,11 @@ const serverConfig = {
             );
         },
         get enableCloudAI() { return process.env.ENABLE_CLOUD_AI === 'true'; },
-        get enableSemanticRanking() { return process.env.ENABLE_SEMANTIC_RANKING === 'true'; }
+        get enableSemanticRanking() { return process.env.ENABLE_SEMANTIC_RANKING === 'true'; },
+        get enableGrobid() {
+            const url = process.env.GROBID_URL;
+            return url !== 'false' && url !== '0' && url !== '';
+        }
     }
 };
 
@@ -73,8 +78,12 @@ const clientConfig = {
         return {
             enableLocalAI: serverConfig.features.enableLocalAI,
             enableCloudAI: serverConfig.features.enableCloudAI,
-            enableSemanticRanking: serverConfig.features.enableSemanticRanking
+            enableSemanticRanking: serverConfig.features.enableSemanticRanking,
+            betaMode: String(process.env.BETA_MODE || '').toLowerCase() === 'true',
         };
+    },
+    get betaMode() {
+        return String(process.env.BETA_MODE || '').toLowerCase() === 'true';
     },
     // API key availability flags
     get gemini() { return !!serverConfig.keys.gemini; },

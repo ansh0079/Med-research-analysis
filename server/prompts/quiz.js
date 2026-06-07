@@ -227,8 +227,8 @@ Place the label at the very end of the explanation string, e.g. "...therefore fi
 
 Difficulty instruction: ${difficultyInstruction}${adaptiveInstruction}
 
-Return ONLY a valid JSON array with no prose. Each object must match this schema:
-[
+Return ONLY valid JSON with no prose. Use this exact shape:
+{"questions":[
   {
     "type": "multiple_choice",
     "questionType": "recall" | "clinical_application" | "trial_interpretation" | "guideline" | "pitfall",
@@ -252,7 +252,7 @@ Return ONLY a valid JSON array with no prose. Each object must match this schema
     "sourceIndices": [1],
     "outlineNodeId": "tp-2 | mcq-1 | null"${claimAnchors.length > 0 ? ',\n    "claimKey": "<exact claimKey from STORED CLAIMS list>"' : ''}
   }
-]
+]}
 
 Rules:
 - Follow TRAINING LEVEL for vignette length, discriminant difficulty, and question-type mix.

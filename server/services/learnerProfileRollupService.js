@@ -6,6 +6,7 @@ const logger = require('../config/logger');
 
 const ROLLUP_EVENT_TYPES = new Set([
     'agent_turn_memory',
+    'agent_session_reflection',
     'quiz_session_feedback',
     'claim_gap',
 ]);
@@ -37,6 +38,14 @@ function collectWeakTopicLabels(events = [], { days = 30 } = {}) {
             for (const f of Array.isArray(payload.focusAreas) ? payload.focusAreas : []) {
                 const label = String(f || '').trim();
                 if (label.length >= 4 && topicLabel) topics.add(topicLabel.slice(0, 120));
+            }
+        }
+        if (event.eventType === 'agent_session_reflection') {
+            const focus = String(payload.nextStudyFocus || '').trim();
+            if (focus.length >= 4) topics.add((topicLabel || focus).slice(0, 120));
+            for (const gap of Array.isArray(payload.persistentGaps) ? payload.persistentGaps : []) {
+                const label = String(gap || '').trim();
+                if (label.length >= 4) topics.add((topicLabel || label).slice(0, 120));
             }
         }
     }

@@ -140,6 +140,18 @@ class CacheManager {
         }
     }
 
+    async getAsync(key) {
+        return this.get(key);
+    }
+
+    async setAsync(key, value, ttlSeconds = null) {
+        return this.set(key, value, ttlSeconds);
+    }
+
+    async delAsync(key) {
+        return this.del(key);
+    }
+
     // has() remains sync as it only checks L1
     has(key) {
         return this.cache.has(key);

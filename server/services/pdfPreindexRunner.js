@@ -58,6 +58,8 @@ async function runPdfPreindex(article, deps) {
         source: oaSource || 'unknown',
         numpages: extracted.numpages || 0,
         indexedAt: new Date().toISOString(),
+        extractionBackend: extracted.backend || 'legacy',
+        grobidVersion: extracted.backend === 'grobid' ? '0.8.0' : null,
     };
 
     if (db && typeof db.savePdfSections === 'function') {

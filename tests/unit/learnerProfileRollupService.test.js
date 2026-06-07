@@ -20,8 +20,14 @@ describe('learnerProfileRollupService', () => {
                 occurredAt: now,
                 payload: { weakAreas: ['insulin dosing'] },
             },
+            {
+                eventType: 'agent_session_reflection',
+                topic: 'Sepsis',
+                occurredAt: now,
+                payload: { nextStudyFocus: 'Early antibiotics', persistentGaps: ['lactate interpretation'] },
+            },
         ], { days: 30 });
-        expect(topics).toEqual(expect.arrayContaining(['Heart failure', 'Diabetes']));
+        expect(topics).toEqual(expect.arrayContaining(['Heart failure', 'Diabetes', 'Sepsis']));
     });
 
     test('mergeWeakTopics dedupes and caps', () => {

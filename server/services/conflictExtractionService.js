@@ -1,8 +1,9 @@
 'use strict';
 
-const { parseJsonBlock } = require('../utils/parseJson');
 const { createAiService, PINNED_MODELS, TEMPERATURE } = require('./aiService');
 const { classifyClaimGuidelineAlignment } = require('./claimGuidelineAlignmentService');
+const { validateAiOutput } = require('./aiOutputValidation');
+const { LlmBudgetExceededError } = require('./llmRequestBudget');
 
 const LEVELS = new Set(['major', 'minor', 'nuanced']);
 
@@ -214,12 +215,21 @@ async function extractTrialGuidelineConflicts(evidenceRows, guidelines, options 
             const prompt = buildConflictExtractionPrompt(rows, guides, topic);
             const provider = options.provider === 'mistral' && serverConfig.keys?.mistral ? 'mistral' : 'gemini';
             const model = provider === 'gemini' ? PINNED_MODELS.gemini : PINNED_MODELS.mistral;
-            const rawText = provider === 'gemini'
-                ? await ai.callGemini(prompt, model, { temperature: TEMPERATURE.analysis ?? 0.2, maxOutputTokens: 2048 })
-                : await ai.callMistralAI(prompt, model, { temperature: TEMPERATURE.analysis ?? 0.2, maxOutputTokens: 2048 });
-            const parsed = parseJsonBlock(rawText) || {};
-            conflictMatrix = normalizeConflictMatrix(parsed.conflictMatrix, rows, guides);
+            const parsed = await ai.callStructured(prompt, provider, model, {
+                temperature: TEMPERATURE.analysis ?? 0.2,
+                maxOutputTokens: 2048,
+                allowBudgetSkip: options.allowBudgetSkip,
+                usage: { operation: 'conflict_extraction', topic },
+            });
+            if (parsed === null) {
+                options.logger?.info?.('Conflict extraction skipped — LLM budget exhausted');
+            } else {
+                const validated = validateAiOutput('conflict_extraction', parsed, { allowDegrade: true });
+                const payload = validated.ok ? validated.data : validated.degraded;
+                conflictMatrix = normalizeConflictMatrix(payload?.conflictMatrix, rows, guides);
+            }
         } catch (err) {
+            if (err instanceof LlmBudgetExceededError) throw err;
             options.logger?.warn?.({ err }, 'LLM conflict extraction failed; using heuristic fallback');
         }
     }

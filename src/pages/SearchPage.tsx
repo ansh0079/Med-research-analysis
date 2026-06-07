@@ -9,13 +9,13 @@ import { TopicActionBanner } from '@components/quiz/TopicActionBanner';
 import { SelectionBasket } from '@components/search/SelectionBasket';
 import { ComparisonView } from '@components/search/ComparisonView';
 import { EvidenceProjectPanel } from '@components/search/EvidenceProjectPanel';
-import { TopicBriefPanel, type BriefDifficulty } from '@components/search/TopicBriefPanel';
+import { TopicBriefPanel } from '@components/search/TopicBriefPanel';
 import { EvidenceQuizPanel } from '@components/search/EvidenceQuizPanel';
 import { EvidenceMapPanel } from '@components/search/EvidenceMapPanel';
 import { ArticleDetailDrawer } from '@components/search/ArticleDetailDrawer';
 
 import { GuidelineSnapshot } from '@components/search/GuidelineSnapshot';
-import { useSearchContext } from '@contexts/SearchContext';
+import { useSearchMeta, useSearchQuery, useSearchSelection } from '@contexts/SearchContext';
 import { useAuth } from '@contexts/AuthContext';
 import { useAnalytics, useSearch } from '@hooks';
 import { Button } from '@components/ui/Button';
@@ -29,71 +29,49 @@ import { LowRecallBanner } from '@components/search/LowRecallBanner';
 import { RelatedTopicsBar } from '@components/search/RelatedTopicsBar';
 import { useSearchRecents } from '@hooks/useSearchRecents';
 import { usePdfViewer } from '@hooks/usePdfViewer';
+import { useResultsFilter, type ResultLens } from '@hooks/useResultsFilter';
+import { useExportResults } from '@hooks/useExportResults';
+import { useWorkflowContext } from '@hooks/useWorkflowContext';
+import { useClientFeatures } from '@hooks/useClientFeatures';
 import { api } from '@services/api';
-import { downloadText, toBibTeX, toCslJson, toRIS, toWordSummaryHtml } from '@services/exportArticles';
 import { selectTopEvidence } from '../utils/selectTopEvidence';
-import { extractClinicalScenario, scenarioToEvidenceQuery, type ClinicalScenarioExtract } from '../utils/extractClinicalScenario';
-import type { AgentGuidance, Article, CaseLearningMode, SynthesisResult, TopicEvidenceMemory } from '@types';
+import type { AgentGuidance, Article, SynthesisResult, TopicEvidenceMemory } from '@types';
 
 const RECENT_ANALYSES_KEY = 'med_recent_analyses';
 const SAVED_SEARCH_COUNTS_KEY = 'med_saved_search_counts';
-const CASE_PREFILL_KEY = 'med_case_prefill';
-const QUIZ_PREFILL_KEY = 'med_quiz_prefill';
-const WORKFLOW_CONTEXT_KEY = 'med_shift_workflow';
-type ResultLens = 'all' | 'open_access' | 'high_quality' | 'recent' | 'practice_changing';
-
-/** Minimal article payload for quiz/case prefill (matches server sanitize + dedupe). */
-function articleRowForTopicActions(a: Article) {
-  return {
-    uid: a.uid,
-    title: a.title,
-    abstract: a.abstract,
-    doi: a.doi,
-    pmid: a.pmid,
-    pubdate: a.pubdate,
-    source: a.source ?? a.journal,
-    pmcrefcount: a.pmcrefcount,
-    pubtype: a.pubtype,
-    _source: a._source,
-    _ebmScore: a._ebmScore,
-    _isPreprint: a._isPreprint,
-  };
-}
-
-
-
-function getWorkflowContext() {
-  try {
-    return JSON.parse(sessionStorage.getItem(WORKFLOW_CONTEXT_KEY) || '{}') as Record<string, unknown>;
-  } catch {
-    return {};
-  }
-}
-
-function saveWorkflowContext(update: Record<string, unknown>) {
-  try {
-    sessionStorage.setItem(WORKFLOW_CONTEXT_KEY, JSON.stringify({
-      ...getWorkflowContext(),
-      ...update,
-      updatedAt: new Date().toISOString(),
-    }));
-  } catch {
-    // Ignore storage failures; URL navigation still carries the topic.
-  }
-}
 
 export const SearchPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { trackFeatureUsage } = useAnalytics();
   const {
-    results, savedArticles, selectedArticles, filters,
-    setFilters, toggleSaveArticle, toggleSelectArticle,
-    clearSelection, isSaved, isSelected, setCurrentPage, agentGuidance, setAgentGuidance, topicIntelligence, topicGuideStatus,
-    setTopicGuideStatus, clinicalAnswer, communityInsight, searchHistory,
-  } = useSearchContext();
+    results,
+    filters,
+    setFilters,
+    setCurrentPage,
+    searchHistory,
+  } = useSearchQuery();
+  const {
+    savedArticles,
+    selectedArticles,
+    toggleSaveArticle,
+    toggleSelectArticle,
+    clearSelection,
+    isSaved,
+    isSelected,
+  } = useSearchSelection();
+  const {
+    agentGuidance,
+    setAgentGuidance,
+    topicIntelligence,
+    topicGuideStatus,
+    setTopicGuideStatus,
+    clinicalAnswer,
+    communityInsight,
+  } = useSearchMeta();
 
   const { user, isAuthenticated, resendVerification } = useAuth();
+  const { betaOpenAccess } = useClientFeatures();
   const [verifyBannerDismissed, setVerifyBannerDismissed] = React.useState(false);
   const [resendStatus, setResendStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
   const showVerifyBanner = isAuthenticated && user?.emailVerified === false && !verifyBannerDismissed;
@@ -136,17 +114,9 @@ export const SearchPage: React.FC = () => {
     const q = sessionStorage.getItem('med_onboarding_query');
     return q || '';
   });
-  const [shiftPresentation, setShiftPresentation] = useState('');
-  const [scenarioExtract, setScenarioExtract] = useState<ClinicalScenarioExtract | null>(null);
-  const shiftExtractDebounceRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [shiftLaneLoading, setShiftLaneLoading] = useState(false);
   const [requestGuidelineAlignment, setRequestGuidelineAlignment] = useState(false);
-  const [resultFilter, setResultFilter] = useState('');
-  const [resultLens, setResultLens] = useState<ResultLens>('all');
   const [anchorVerifyKey, setAnchorVerifyKey] = useState<string | null>(null);
   const canVerifyTeachingAnchor = ['admin', 'curator', 'specialist'].includes(String(user?.role || ''));
-  const [visibleCount, setVisibleCount] = useState(30);
-  const [activeResultIndex, setActiveResultIndex] = useState(0);
   const [inPlaceQuizExpanded, setInPlaceQuizExpanded] = useState(false);
   const [recentAnalyses, setRecentAnalyses] = useState<Article[]>(() => {
     try {
@@ -157,44 +127,6 @@ export const SearchPage: React.FC = () => {
   });
   const [newPaperNotice, setNewPaperNotice] = useState<string | null>(null);
   const [detailArticle, setDetailArticle] = useState<Article | null>(null);
-  const openAccessCount = results.filter((article) => article.isFree || article.pmcid).length;
-  const highQualityCount = results.filter((article) => article._quality?.grade === 'A' || article._quality?.grade === 'B').length;
-  const retractedCount = results.filter((article) => article._retraction?.isRetracted).length;
-  const currentYear = new Date().getFullYear();
-  const recentCount = results.filter((article) => {
-    const year = parseInt((article.pubdate || '').slice(0, 4), 10);
-    return Number.isFinite(year) && year >= currentYear - 3;
-  }).length;
-  const practiceChangingCount = results.filter((article) => {
-    const year = parseInt((article.pubdate || '').slice(0, 4), 10);
-    const citations = article.pmcrefcount ?? article.citationCount ?? 0;
-    return Number.isFinite(year) && year >= currentYear - 3 && citations >= 100;
-  }).length;
-  const visibleResults = React.useMemo(() => {
-    const q = resultFilter.trim().toLowerCase();
-    return results.filter((article) => {
-      if (resultLens === 'open_access' && !(article.isFree || article.pmcid)) return false;
-      if (resultLens === 'high_quality' && !(article._quality?.grade === 'A' || article._quality?.grade === 'B')) return false;
-      if (resultLens === 'recent') {
-        const year = parseInt((article.pubdate || '').slice(0, 4), 10);
-        if (!Number.isFinite(year) || year < currentYear - 3) return false;
-      }
-      if (resultLens === 'practice_changing') {
-        const year = parseInt((article.pubdate || '').slice(0, 4), 10);
-        const citations = article.pmcrefcount ?? article.citationCount ?? 0;
-        if (!Number.isFinite(year) || year < currentYear - 3 || citations < 100) return false;
-      }
-      if (!q) return true;
-      return [
-        article.title,
-        article.abstract,
-        article.journal,
-        article.source,
-        article.authors?.map((author) => author.name).join(' '),
-      ].filter(Boolean).join(' ').toLowerCase().includes(q);
-    });
-  }, [currentYear, results, resultFilter, resultLens]);
-  const renderedResults = React.useMemo(() => visibleResults.slice(0, visibleCount), [visibleCount, visibleResults]);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -217,22 +149,15 @@ export const SearchPage: React.FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Debounced PICO + decision-point extraction from shift presentation
-  React.useEffect(() => {
-    if (shiftExtractDebounceRef.current) clearTimeout(shiftExtractDebounceRef.current);
-    const trimmed = shiftPresentation.trim();
-    if (trimmed.length < 15) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setScenarioExtract(null);
-      return;
-    }
-    shiftExtractDebounceRef.current = setTimeout(() => {
-      setScenarioExtract(extractClinicalScenario(trimmed));
-    }, 400);
-    return () => {
-      if (shiftExtractDebounceRef.current) clearTimeout(shiftExtractDebounceRef.current);
-    };
-  }, [shiftPresentation]);
+  const {
+    resultFilter, setResultFilter,
+    resultLens, setResultLens,
+    visibleResults, renderedResults,
+    visibleCount, setVisibleCount,
+    activeResultIndex, setActiveResultIndex,
+    openAccessCount, highQualityCount, recentCount, practiceChangingCount, retractedCount,
+    resetForNewSearch,
+  } = useResultsFilter(results);
 
   const handleSearch = React.useCallback(
     async (query: string) => {
@@ -243,9 +168,7 @@ export const SearchPage: React.FC = () => {
       setSynthesisLiveText('');
       setTopicGuideRefreshError(null);
       setCurrentQuery(trimmed);
-      setResultFilter('');
-      setResultLens('all');
-      setVisibleCount(30);
+      resetForNewSearch();
       const found = await search(trimmed, filters);
       try {
         const savedCounts = JSON.parse(localStorage.getItem(SAVED_SEARCH_COUNTS_KEY) || '{}') as Record<string, number>;
@@ -309,34 +232,7 @@ export const SearchPage: React.FC = () => {
     });
   }, []);
 
-  const [prevResultFilter, setPrevResultFilter] = React.useState(resultFilter);
-  const [prevResultsLength, setPrevResultsLength] = React.useState(results.length);
-  if (prevResultFilter !== resultFilter || prevResultsLength !== results.length) {
-    setPrevResultFilter(resultFilter);
-    setPrevResultsLength(results.length);
-    setActiveResultIndex(0);
-    setVisibleCount(30);
-  }
-
-  React.useEffect(() => {
-    if (visibleCount >= visibleResults.length) return;
-    const onScroll = () => {
-      const remaining = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
-      if (remaining < 900) setVisibleCount((count) => Math.min(visibleResults.length, count + 20));
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [visibleCount, visibleResults.length]);
-
-  const exportResults = React.useCallback((format: 'bibtex' | 'ris' | 'csl' | 'doc') => {
-    const articles = selectedArticles.length ? selectedArticles : visibleResults;
-    const stamp = new Date().toISOString().split('T')[0];
-    const base = `search_results_${stamp}`;
-    if (format === 'bibtex') downloadText(`${base}.bib`, toBibTeX(articles));
-    if (format === 'ris') downloadText(`${base}.ris`, toRIS(articles));
-    if (format === 'csl') downloadText(`${base}.json`, toCslJson(articles), 'application/json');
-    if (format === 'doc') downloadText(`${base}.doc`, toWordSummaryHtml(articles, currentQuery || 'Search Results'), 'application/msword');
-  }, [currentQuery, selectedArticles, visibleResults]);
+  const { exportResults } = useExportResults({ currentQuery, selectedArticles, visibleResults });
 
   React.useEffect(() => {
     const handleKey = (event: KeyboardEvent) => {
@@ -407,7 +303,7 @@ export const SearchPage: React.FC = () => {
 
   const handleSynthesize = React.useCallback(async (): Promise<SynthesisResult | null> => {
     if (!results.length) return null;
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !betaOpenAccess) {
       setSynthesisError('Sign in to use Evidence Synthesis');
       return null;
     }
@@ -461,121 +357,30 @@ export const SearchPage: React.FC = () => {
       setSynthesisLoading(false);
     }
     return null;
-  }, [results, top5Articles, currentQuery, isAuthenticated]);
+  }, [results, top5Articles, currentQuery, isAuthenticated, betaOpenAccess]);
 
-  const mapDifficultyToMode = React.useCallback((difficulty: BriefDifficulty) => {
-    if (difficulty === 'easy') return 'student';
-    if (difficulty === 'hard') return 'specialist';
-    return 'resident';
-  }, []);
-
-  const handleQuizScenario = React.useCallback((difficulty: BriefDifficulty = 'mixed') => {
-    const params = new URLSearchParams();
-    params.set('topic', currentQuery);
-    params.set('difficulty', difficulty);
-    saveWorkflowContext({
-      topic: currentQuery,
-      currentStep: 'quiz',
-      source: 'search',
-      evidenceCount: top5Articles.length,
-    });
-    try {
-      sessionStorage.setItem(QUIZ_PREFILL_KEY, JSON.stringify({
-        topic: currentQuery,
-        difficulty,
-        articles: top5Articles.map(articleRowForTopicActions),
-        teachingPoints: agentGuidance?.teachingPoints || [],
-        mcqAngles: agentGuidance?.mcqAngles || [],
-        workflow: getWorkflowContext(),
-      }));
-    } catch {
-      // Navigation still works with URL params if storage is unavailable.
-    }
-    navigate(`/quiz?${params.toString()}`);
-  }, [agentGuidance, currentQuery, navigate, top5Articles]);
-
-  const openQuizFromWorkflow = React.useCallback((difficulty: BriefDifficulty = 'mixed') => {
-    trackFeatureUsage('workflow_quiz_click', {
-      authenticated: isAuthenticated,
-      resultsCount: results.length,
-      difficulty,
-    });
-    if (!isAuthenticated) {
-      const params = new URLSearchParams();
-      params.set('topic', currentQuery);
-      params.set('difficulty', difficulty);
-      try {
-        sessionStorage.setItem(QUIZ_PREFILL_KEY, JSON.stringify({
-          topic: currentQuery,
-          difficulty,
-          articles: top5Articles.map(articleRowForTopicActions),
-          teachingPoints: agentGuidance?.teachingPoints || [],
-          mcqAngles: agentGuidance?.mcqAngles || [],
-        }));
-      } catch {
-        /* ignore */
-      }
-      navigate('/auth', {
-        state: {
-          from: { pathname: '/quiz', search: `?${params.toString()}`, hash: '' },
-        },
-      });
-      return;
-    }
-    handleQuizScenario(difficulty);
-  }, [
-    agentGuidance,
+  const {
+    shiftPresentation, setShiftPresentation,
+    scenarioExtract,
+    shiftLaneLoading,
+    openQuizFromWorkflow,
+    openCaseFromWorkflow,
+    openArticleCase,
+    openArticleQuiz,
+    openSynthesisCase,
+    runShiftFastLane,
+    saveWorkflowContext,
+  } = useWorkflowContext({
     currentQuery,
-    handleQuizScenario,
-    isAuthenticated,
-    navigate,
-    results.length,
     top5Articles,
+    agentGuidance,
+    synthesis,
+    isAuthenticated,
+    betaOpenAccess,
+    results,
+    handleSearch,
     trackFeatureUsage,
-  ]);
-
-  const handleCaseScenario = React.useCallback((difficulty: BriefDifficulty = 'mixed') => {
-    const params = new URLSearchParams();
-    params.set('topic', currentQuery);
-    params.set('mode', mapDifficultyToMode(difficulty));
-    const fastLaneCaseText = shiftPresentation.trim().length >= 10
-      ? [
-        'Clinical presentation from shift:',
-        shiftPresentation.trim(),
-        '',
-        'Decision point: identify the management question, appraise the key evidence, and generate practice questions.',
-      ].join('\n')
-      : undefined;
-    try {
-      saveWorkflowContext({
-        topic: currentQuery,
-        currentStep: 'case',
-        source: shiftPresentation.trim().length >= 10 ? 'shift_presentation' : 'search',
-        evidenceCount: top5Articles.length,
-      });
-      sessionStorage.setItem(CASE_PREFILL_KEY, JSON.stringify({
-        topic: currentQuery,
-        learningMode: mapDifficultyToMode(difficulty),
-        articles: top5Articles.map(articleRowForTopicActions),
-        caseHooks: agentGuidance?.caseGenerationHooks || [],
-        caseText: fastLaneCaseText,
-        autoGenerate: true,
-        workflow: getWorkflowContext(),
-      }));
-    } catch {
-      // Navigation still works with URL params if storage is unavailable.
-    }
-    navigate(`/case?${params.toString()}`);
-  }, [agentGuidance, currentQuery, navigate, mapDifficultyToMode, shiftPresentation, top5Articles]);
-
-  const openCaseFromWorkflow = React.useCallback((difficulty: BriefDifficulty = 'mixed') => {
-    trackFeatureUsage('workflow_case_click', {
-      authenticated: isAuthenticated,
-      resultsCount: results.length,
-      difficulty,
-    });
-    handleCaseScenario(difficulty);
-  }, [handleCaseScenario, isAuthenticated, results.length, trackFeatureUsage]);
+  });
 
   const openGuidelineFromWorkflow = React.useCallback(async () => {
     saveWorkflowContext({
@@ -599,147 +404,7 @@ export const SearchPage: React.FC = () => {
       }
       document.getElementById('workflow-guideline')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
-  }, [currentQuery, handleSynthesize, isAuthenticated, results.length, synthesis]);
-
-  const openArticleCase = React.useCallback((article: Article) => {
-    const topic = (currentQuery || article.title || 'clinical evidence').trim();
-    const mode: CaseLearningMode = 'resident';
-    const params = new URLSearchParams();
-    params.set('topic', topic);
-    params.set('mode', mode);
-    try {
-      saveWorkflowContext({
-        topic,
-        currentStep: 'case',
-        source: 'article',
-        sourceArticleTitle: article.title,
-        sourceArticleUid: article.uid,
-        originalPresentation: shiftPresentation.trim() || getWorkflowContext().originalPresentation,
-        evidenceCount: 1,
-      });
-      sessionStorage.setItem(CASE_PREFILL_KEY, JSON.stringify({
-        topic,
-        learningMode: mode,
-        articles: [articleRowForTopicActions(article)],
-        caseHooks: [
-          `Create a fictional patient case around the clinical decision tested by this paper: ${article.title}`,
-        ],
-        autoGenerate: true,
-        workflow: getWorkflowContext(),
-      }));
-    } catch {
-      // Navigation still works with URL params if storage is unavailable.
-    }
-    trackFeatureUsage('article_case_click', {
-      authenticated: isAuthenticated,
-      source: article._source,
-      hasAbstract: Boolean(article.abstract),
-    });
-    navigate(`/case?${params.toString()}`);
-  }, [currentQuery, isAuthenticated, navigate, shiftPresentation, trackFeatureUsage]);
-
-  const openArticleQuiz = React.useCallback((article: Article) => {
-    const topic = (currentQuery || article.title || 'clinical evidence').trim();
-    try {
-      sessionStorage.setItem(QUIZ_PREFILL_KEY, JSON.stringify({
-        topic,
-        difficulty: 'mixed',
-        articles: [articleRowForTopicActions(article)],
-        singlePaperMode: true,
-      }));
-    } catch {
-      // Navigation still works with URL params if storage is unavailable.
-    }
-    trackFeatureUsage('article_quiz_click', {
-      authenticated: isAuthenticated,
-      source: article._source,
-      hasAbstract: Boolean(article.abstract),
-    });
-    navigate(`/quiz?topic=${encodeURIComponent(topic)}&difficulty=mixed&count=3`);
-  }, [currentQuery, isAuthenticated, navigate, trackFeatureUsage]);
-
-  const openSynthesisCase = React.useCallback(() => {
-    if (!synthesis) {
-      openCaseFromWorkflow('mixed');
-      return;
-    }
-    const recommendation = synthesis.synthesis.clinicalActionCard?.recommendation || synthesis.synthesis.clinicalBottomLine || synthesis.synthesis.consensus;
-    const topic = synthesis.topic || currentQuery || 'clinical evidence';
-    const mode: CaseLearningMode = 'resident';
-    const params = new URLSearchParams({ topic, mode });
-    const caseText = [
-      shiftPresentation.trim() ? 'Clinical presentation from shift:' : '',
-      shiftPresentation.trim(),
-      shiftPresentation.trim() ? '' : '',
-      'Evidence synthesis decision point:',
-      recommendation,
-      '',
-      'Create a clinical case that tests how to apply this evidence and guideline uncertainty at the bedside.',
-    ].filter(Boolean).join('\n');
-    saveWorkflowContext({
-      topic,
-      currentStep: 'case',
-      source: 'synthesis',
-      originalPresentation: shiftPresentation.trim() || getWorkflowContext().originalPresentation,
-      synthesisBottomLine: recommendation,
-      evidenceCount: top5Articles.length,
-    });
-    try {
-      sessionStorage.setItem(CASE_PREFILL_KEY, JSON.stringify({
-        topic,
-        learningMode: mode,
-        articles: top5Articles.map(articleRowForTopicActions),
-        caseText,
-        autoGenerate: true,
-        workflow: getWorkflowContext(),
-      }));
-    } catch {
-      // Navigation still works with URL params if storage is unavailable.
-    }
-    trackFeatureUsage('synthesis_case_click', {
-      authenticated: isAuthenticated,
-      resultsCount: results.length,
-    });
-    navigate(`/case?${params.toString()}`);
-  }, [currentQuery, isAuthenticated, navigate, openCaseFromWorkflow, results.length, shiftPresentation, synthesis, top5Articles, trackFeatureUsage]);
-
-  const runShiftFastLane = React.useCallback(async () => {
-    const presentation = shiftPresentation.trim();
-    if (presentation.length < 10) return;
-    const query = scenarioToEvidenceQuery(presentation, scenarioExtract);
-    setShiftLaneLoading(true);
-    try {
-      saveWorkflowContext({
-        originalPresentation: presentation,
-        topic: query,
-        currentStep: 'evidence',
-        source: 'shift_presentation',
-      });
-      sessionStorage.setItem(CASE_PREFILL_KEY, JSON.stringify({
-        topic: query,
-        learningMode: 'resident',
-        caseText: [
-          'Clinical presentation from shift:',
-          presentation,
-          '',
-          'Decision point: identify the management question, appraise the key evidence, and generate practice questions.',
-        ].join('\n'),
-        autoGenerate: false,
-        workflow: getWorkflowContext(),
-      }));
-    } catch {
-      // The search itself still works if storage is unavailable.
-    }
-    trackFeatureUsage('shift_fast_lane_search', {
-      authenticated: isAuthenticated,
-      length: presentation.length,
-    });
-    try {
-      await handleSearch(query);
-    } finally {
-      setShiftLaneLoading(false);
-    }
-  }, [handleSearch, isAuthenticated, shiftPresentation, scenarioExtract, trackFeatureUsage]);
+  }, [currentQuery, handleSynthesize, isAuthenticated, results.length, saveWorkflowContext, synthesis]);
 
   const runTopicGuideRefresh = React.useCallback(async () => {
     const topic = currentQuery.trim();

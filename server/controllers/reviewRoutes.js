@@ -17,6 +17,8 @@ const {
 } = require('../services/articleReranker');
 const { getInferredMisconceptionsForTopic } = require('../services/misconceptionInferenceService');
 const { findRelatedTopicsWithMisconceptions, buildJitReminder } = require('../services/relatedTopicService');
+const { normalizeCaseMcqList } = require('../utils/normalizeCaseMcqs');
+const { createMcqValidationService } = require('../services/mcqValidationService');
 
 /**
  * @param {import('express').Application} app
@@ -30,6 +32,7 @@ function registerReviewRoutes(app, deps) {
         rateLimit,
         requireJson,
         requireAuthJwt,
+        requireAuthOrBeta,
         requirePaidFeature,
         validateBody,
         schemas,
@@ -37,8 +40,32 @@ function registerReviewRoutes(app, deps) {
         fetch: fetchImpl,
     } = deps;
 
+    const requireCaseAuth = requireAuthOrBeta || requireAuthJwt;
+
     const ai = createAiService({ serverConfig, fetchImpl });
     const reviews = createReviewService({ db });
+    const mcqValidator = createMcqValidationService({ ai, db, logger, PINNED_MODELS });
+
+    async function validateCaseMcqs(topic, mcqs, articles = []) {
+        const normalized = normalizeCaseMcqList(mcqs, { prefix: 'case' });
+        if (!normalized.length) return normalized;
+        try {
+            const validation = await mcqValidator.validateBatch({
+                topic,
+                questions: normalized,
+                provider: 'gemini',
+                model: PINNED_MODELS.gemini,
+                articles,
+                guidelines: [],
+            });
+            if (validation?.validIndices?.size) {
+                return normalized.filter((_, idx) => validation.validIndices.has(idx + 1));
+            }
+        } catch (err) {
+            logger.warn({ err }, 'case MCQ validation skipped');
+        }
+        return normalized;
+    }
 
     async function assertTeamMember(teamId, userId) {
         const role = await db.getTeamRoleForUser(String(teamId), userId);
@@ -130,14 +157,14 @@ function registerReviewRoutes(app, deps) {
         const difficulty = learningMode === 'student' ? 'easy' : learningMode === 'specialist' ? 'hard' : 'medium';
 
         const caseMCQs = Array.isArray(parsed.caseMCQs) && parsed.caseMCQs.length
-            ? parsed.caseMCQs.slice(0, 5)
-            : [
+            ? normalizeCaseMcqList(parsed.caseMCQs.slice(0, 5), { prefix: 'case', difficulty })
+            : normalizeCaseMcqList([
                 {
                     id: 'case-1',
                     type: 'multiple_choice',
                     question: `Which feature should most strongly guide the next evidence review step for ${focus}?`,
-                    options: ['Patient phenotype and severity', 'Journal title alone', 'Publication date alone', 'Author institution'],
-                    correctAnswer: 'Patient phenotype and severity',
+                    options: ['A: Patient phenotype and severity', 'B: Journal title alone', 'C: Publication date alone', 'D: Author institution'],
+                    correctAnswer: 'A',
                     explanation: 'Evidence applies best when the population, severity, setting, and outcomes match the case, not when judged by metadata alone.',
                     difficulty,
                     sourceReference: 'Evidence 1',
@@ -146,8 +173,8 @@ function registerReviewRoutes(app, deps) {
                     id: 'case-2',
                     type: 'multiple_choice',
                     question: `What is the main limitation when applying ${firstTitle} to this case?`,
-                    options: ['Population and setting may differ', 'The title is too long', 'It has a citation number', 'It appears in the evidence list'],
-                    correctAnswer: 'Population and setting may differ',
+                    options: ['A: Population and setting may differ', 'B: The title is too long', 'C: It has a citation number', 'D: It appears in the evidence list'],
+                    correctAnswer: 'A',
                     explanation: 'Applicability depends on whether the study population, intervention, comparator, and outcomes match the clinical scenario.',
                     difficulty,
                     sourceReference: 'Evidence 1',
@@ -156,13 +183,13 @@ function registerReviewRoutes(app, deps) {
                     id: 'case-3',
                     type: 'multiple_choice',
                     question: 'Which statement best describes the role of this generated case?',
-                    options: ['Learning and evidence appraisal support', 'A final diagnosis', 'A treatment order', 'A replacement for guidelines'],
-                    correctAnswer: 'Learning and evidence appraisal support',
+                    options: ['A: Learning and evidence appraisal support', 'B: A final diagnosis', 'C: A treatment order', 'D: A replacement for guidelines'],
+                    correctAnswer: 'A',
                     explanation: 'The case mode supports learning and literature interpretation only; clinical decisions require qualified review and local guidance.',
                     difficulty,
                     sourceReference: 'Safety note',
                 },
-            ];
+            ], { prefix: 'case', difficulty });
 
         const paperApplications = Array.isArray(parsed.paperApplications) && parsed.paperApplications.length
             ? parsed.paperApplications.slice(0, 5)
@@ -631,7 +658,7 @@ Return ONLY valid JSON:
     app.post(
         '/api/cases/analyze',
         requireJson,
-        requireAuthJwt,
+        requireCaseAuth,
         validateBody(schemas.caseAnalyze),
         rateLimit(8, 60),
         async (req, res) => {
@@ -676,7 +703,7 @@ Return ONLY valid JSON:
                 const [profile, mastery, personalMisconceptions, inferredMisconceptions, allTopicsWithMisconceptions] = await Promise.all([
                     db.getLearningProfile(req.user.id).catch((err) => { logger.warn({ err }, 'getLearningProfile failed'); return null; }),
                     db.getUserTopicMastery(req.user.id, masteryTopic).catch((err) => { logger.warn({ err }, 'getUserTopicMastery failed'); return null; }),
-                    db.getUserClaimMisconceptions(req.user.id, masteryTopic, { limit: 5 }).catch((err) => { logger.warn({ err }, 'getUserClaimMisconceptions failed'); return []; }),
+                    db.getUserClaimMisconceptions?.(req.user.id, masteryTopic, { limit: 5 }).catch((err) => { logger.warn({ err }, 'getUserClaimMisconceptions failed'); return []; }) || [],
                     getInferredMisconceptionsForTopic(db, req.user.id, masteryTopic, { lookbackLimit: 12 }).catch((err) => { logger.warn({ err }, 'getInferredMisconceptionsForTopic failed'); return []; }),
                     db.listUserTopicMemoryWithMisconceptions?.(req.user.id, { limit: 20 }).catch((err) => { logger.warn({ err }, 'listUserTopicMemoryWithMisconceptions failed'); return []; }) || [],
                 ]);
@@ -756,6 +783,7 @@ Return ONLY valid JSON:
             const { text, provider: usedProvider, model } = await callProvider(prompt, provider);
             const parsed = reviews.parseJsonBlock(text) || {};
             const learning = fallbackLearningCase({ parsed, caseText, topic, learningMode, articles: topArticles });
+            learning.caseMCQs = await validateCaseMcqs(knowledgeTopic || topic, learning.caseMCQs, topArticles);
             const result = {
                 provider: usedProvider,
                 model,
@@ -812,7 +840,7 @@ Return ONLY valid JSON:
     app.post(
         '/api/cases/teaching-vignette',
         requireJson,
-        requireAuthJwt,
+        requireCaseAuth,
         rateLimit(8, 60),
         async (req, res) => {
             try {
@@ -885,20 +913,7 @@ Return ONLY valid JSON:
                     teachingPoints: useArray(parsed.teachingPoints, fallback.teachingPoints),
                     evidenceLinks: useArray(parsed.evidenceLinks, fallback.evidenceLinks),
                     uncertaintyFlags: useArray(parsed.uncertaintyFlags, fallback.uncertaintyFlags),
-                    caseMCQs: useArray(parsed.caseMCQs, fallback.caseMCQs)
-                        .slice(0, 5).map((q, i) => ({
-                            id: `tv-${i + 1}`,
-                            type: 'multiple_choice',
-                            questionType: ['clinical_application', 'recall', 'trial_interpretation', 'guideline', 'pitfall'].includes(q.questionType)
-                                ? q.questionType : 'clinical_application',
-                            question: String(q.question || ''),
-                            options: Array.isArray(q.options) ? q.options : [],
-                            correctAnswer: String(q.correctAnswer || 'A'),
-                            explanation: String(q.explanation || ''),
-                            whyOthersWrong: q.whyOthersWrong ? String(q.whyOthersWrong) : undefined,
-                            difficulty: ['easy', 'medium', 'hard'].includes(q.difficulty) ? q.difficulty : 'medium',
-                            sourceReference: q.sourceReference ? String(q.sourceReference) : undefined,
-                        })),
+                    caseMCQs: await validateCaseMcqs(topic, useArray(parsed.caseMCQs, fallback.caseMCQs), seedArticles),
                     postCheckFlags: flaggedDrugs.length > 0
                         ? { unsupportedDrugReferences: [...new Set(flaggedDrugs)], note: 'These drug names appear in management text but were not found in any seed abstract. Verify before use.' }
                         : null,

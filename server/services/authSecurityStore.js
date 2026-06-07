@@ -5,11 +5,18 @@ const logger = require('../config/logger');
 const { createRedisClient } = require('../config/redisClient');
 
 const REDIS_PREFIX = 'medsearch:auth:';
-const REVOCATION_TTL_SEC = 7 * 24 * 60 * 60;
+const ACCESS_TOKEN_TTL_SEC = Number(process.env.ACCESS_TOKEN_TTL_SEC || 15 * 60);
+const REVOCATION_TTL_SEC = ACCESS_TOKEN_TTL_SEC + 120;
 
 const LOGIN_MAX_ATTEMPTS = 10;
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
 const LOGIN_LOCKOUT_MS = 15 * 60 * 1000;
+
+const PROGRESSIVE_DELAYS_MS = [
+    { minAttempts: 2, delayMs: 1000 },
+    { minAttempts: 4, delayMs: 5000 },
+    { minAttempts: 7, delayMs: 30000 },
+];
 
 const RESET_MAX_ATTEMPTS = 5;
 const RESET_WINDOW_MS = 15 * 60 * 1000;
@@ -37,6 +44,13 @@ async function ensureReady() {
 
 function tokenHash(token) {
     return crypto.createHash('sha256').update(String(token)).digest('hex');
+}
+
+function timingSafeEqualStrings(a, b) {
+    const left = Buffer.from(String(a || ''));
+    const right = Buffer.from(String(b || ''));
+    if (left.length !== right.length) return false;
+    return crypto.timingSafeEqual(left, right);
 }
 
 function nowIso() {
@@ -121,6 +135,7 @@ async function incrementRateLimit(kind, email, { windowMs }) {
         if (count === 1) {
             await redis.expire(redisKey, windowSec);
         }
+        await redis.set(`${REDIS_PREFIX}rl:last:${key}`, String(Date.now()), 'EX', windowSec);
         return count;
     }
     if (db) {
@@ -152,6 +167,38 @@ async function incrementRateLimit(kind, email, { windowMs }) {
     return 1;
 }
 
+function progressiveDelayMs(attemptCount) {
+    const count = Number(attemptCount) || 0;
+    let delay = 0;
+    for (const tier of PROGRESSIVE_DELAYS_MS) {
+        if (count >= tier.minAttempts) delay = tier.delayMs;
+    }
+    return delay;
+}
+
+async function getRateLimitRow(kind, email) {
+    await ensureReady();
+    const key = `${kind}:${String(email || '').toLowerCase()}`;
+
+    if (redis) {
+        const redisKey = `${REDIS_PREFIX}rl:${key}`;
+        const raw = await redis.get(redisKey);
+        if (!raw) return null;
+        const lastRaw = await redis.get(`${REDIS_PREFIX}rl:last:${key}`);
+        const ttl = await redis.ttl(redisKey);
+        const windowStart = new Date(Date.now() - Math.max(0, (LOGIN_WINDOW_MS / 1000 - ttl) * 1000)).toISOString();
+        const updatedAt = lastRaw ? new Date(Number(lastRaw)).toISOString() : new Date().toISOString();
+        return { attempt_count: Number(raw), window_start: windowStart, updated_at: updatedAt };
+    }
+    if (db) {
+        return db.get(
+            `SELECT attempt_count, window_start, updated_at FROM auth_rate_limits WHERE limit_key = ?`,
+            [key]
+        );
+    }
+    return null;
+}
+
 async function getRateLimitCount(kind, email, { windowMs }) {
     await ensureReady();
     const key = `${kind}:${String(email || '').toLowerCase()}`;
@@ -181,7 +228,7 @@ async function clearRateLimit(kind, email) {
     await ensureReady();
     const key = `${kind}:${String(email || '').toLowerCase()}`;
     if (redis) {
-        await redis.del(`${REDIS_PREFIX}rl:${key}`);
+        await redis.del(`${REDIS_PREFIX}rl:${key}`, `${REDIS_PREFIX}rl:last:${key}`);
         return;
     }
     if (db) {
@@ -196,6 +243,40 @@ async function recordFailedLogin(email) {
 async function isLoginLocked(email) {
     const count = await getRateLimitCount('login', email, { windowMs: LOGIN_LOCKOUT_MS });
     return count >= LOGIN_MAX_ATTEMPTS;
+}
+
+/**
+ * Progressive throttle: 1s → 5s → 30s between attempts; lockout after 10 failures.
+ */
+async function getLoginThrottleState(email) {
+    const count = await getRateLimitCount('login', email, { windowMs: LOGIN_LOCKOUT_MS });
+    if (count >= LOGIN_MAX_ATTEMPTS) {
+        const row = await getRateLimitRow('login', email);
+        const windowStartMs = row?.window_start ? Date.parse(row.window_start) : Date.now();
+        const retryAfterSec = Math.max(
+            1,
+            Math.ceil((windowStartMs + LOGIN_LOCKOUT_MS - Date.now()) / 1000)
+        );
+        return { locked: true, attemptCount: count, retryAfterSec };
+    }
+
+    const requiredDelayMs = progressiveDelayMs(count);
+    if (requiredDelayMs > 0 && count > 0) {
+        const row = await getRateLimitRow('login', email);
+        const lastMs = row?.updated_at ? Date.parse(row.updated_at) : 0;
+        const elapsed = Date.now() - lastMs;
+        if (elapsed < requiredDelayMs) {
+            return {
+                locked: false,
+                throttled: true,
+                attemptCount: count,
+                retryAfterSec: Math.max(1, Math.ceil((requiredDelayMs - elapsed) / 1000)),
+                requiredDelayMs,
+            };
+        }
+    }
+
+    return { locked: false, throttled: false, attemptCount: count, retryAfterSec: 0 };
 }
 
 async function clearLoginAttempts(email) {
@@ -232,12 +313,17 @@ module.exports = {
     isTokenRevoked,
     recordFailedLogin,
     isLoginLocked,
+    getLoginThrottleState,
+    progressiveDelayMs,
     clearLoginAttempts,
     recordResetAttempt,
     isResetLimited,
     pruneExpiredRevokedTokens,
+    timingSafeEqualStrings,
+    ACCESS_TOKEN_TTL_SEC,
     LOGIN_MAX_ATTEMPTS,
     LOGIN_LOCKOUT_MS,
     RESET_MAX_ATTEMPTS,
     RESET_WINDOW_MS,
+    PROGRESSIVE_DELAYS_MS,
 };

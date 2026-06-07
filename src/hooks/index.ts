@@ -5,3 +5,6 @@ export { useCollaboration } from './useCollaboration';
 export { useSelectionBasket } from './useSelectionBasket';
 export { usePdfViewer } from './usePdfViewer';
 export { useTheme } from './useTheme';
+export { useResultsFilter, type ResultLens } from './useResultsFilter';
+export { useExportResults } from './useExportResults';
+export { useWorkflowContext } from './useWorkflowContext';

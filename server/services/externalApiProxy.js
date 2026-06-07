@@ -244,23 +244,29 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     return data.content?.[0]?.text || 'No response';
   }
 
-  async function mistralChat(prompt, { model = 'mistral-small-2603', temperature = 0.7, maxOutputTokens } = {}) {
+  async function mistralChat(prompt, { model = 'mistral-small-2603', temperature = 0.7, maxOutputTokens, jsonMode = false } = {}) {
     if (!keys.mistral) throw new Error('Mistral API key not configured');
+    const body = {
+        model,
+        messages: [
+            { role: 'system', content: jsonMode
+                ? 'You are a medical research assistant. Respond with valid JSON only — no markdown fences or prose.'
+                : 'You are a medical research assistant. Provide accurate, evidence-based analysis.' },
+            { role: 'user', content: prompt },
+        ],
+        max_tokens: maxOutputTokens ?? (prompt.length > 5000 ? 1500 : 512),
+        temperature,
+    };
+    if (jsonMode) {
+        body.response_format = { type: 'json_object' };
+    }
     const res = await f('https://api.mistral.ai/v1/chat/completions', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${keys.mistral}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model,
-        messages: [
-          { role: 'system', content: 'You are a medical research assistant. Provide accurate, evidence-based analysis.' },
-          { role: 'user', content: prompt },
-        ],
-        max_tokens: maxOutputTokens ?? (prompt.length > 5000 ? 1500 : 512),
-        temperature,
-      }),
+      body: JSON.stringify(body),
     });
     if (!res.ok) {
       const text = await res.text();
@@ -270,10 +276,19 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     return data.choices?.[0]?.message?.content || 'No response';
   }
 
-  async function geminiGenerate(prompt, { model = 'gemini-2.5-flash-lite', temperature = 0.7, maxOutputTokens, timeoutMs = DEFAULT_TIMEOUTS.gemini } = {}) {
+  async function geminiGenerate(prompt, { model = 'gemini-2.5-flash-lite', temperature = 0.7, maxOutputTokens, timeoutMs = DEFAULT_TIMEOUTS.gemini, jsonMode = false } = {}) {
     if (!keys.gemini) throw new Error('Gemini API key not configured');
     const modelName = model.includes('gemini') ? model : 'gemini-2.5-flash-lite';
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`;
+    const generationConfig = {
+      temperature,
+      maxOutputTokens: maxOutputTokens ?? (prompt.length > 5000 ? 2500 : 1024),
+      topP: 0.95,
+      topK: 40,
+    };
+    if (jsonMode) {
+      generationConfig.responseMimeType = 'application/json';
+    }
     const res = await f(url, {
       method: 'POST',
       signal: AbortSignal.timeout(timeoutMs),
@@ -283,12 +298,7 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
       },
       body: JSON.stringify({
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature,
-          maxOutputTokens: maxOutputTokens ?? (prompt.length > 5000 ? 2500 : 1024),
-          topP: 0.95,
-          topK: 40,
-        },
+        generationConfig,
       }),
     });
     if (!res.ok) {

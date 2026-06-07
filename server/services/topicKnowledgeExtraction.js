@@ -1,5 +1,6 @@
 const logger = require('../config/logger');
 const { validateQuery } = require('../utils/articles');
+const { validateAiOutput } = require('./aiOutputValidation');
 const { fetchUnifiedEvidence } = require('./unifiedEvidenceSearch');
 const { selectTopEvidence } = require('../utils/selectTopEvidence');
 const { createAiService, intentHintFromDistribution } = require('./aiService');
@@ -119,6 +120,11 @@ async function extractAndUpsertTopicKnowledge({
         err.cause = e;
         throw err;
     }
+    const validated = validateAiOutput('topic_knowledge', knowledge, { allowDegrade: false });
+    if (!validated.ok) {
+        throw new Error(validated.errors.join('; ') || 'Topic knowledge validation failed');
+    }
+    knowledge = validated.data;
     validateTopicKnowledgeShape(knowledge);
 
     const sourceArticles = evidenceArticles.map((a, i) => ({

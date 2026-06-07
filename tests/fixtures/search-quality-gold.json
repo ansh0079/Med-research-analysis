@@ -1,27 +1,87 @@
 {
-  "version": 1,
+  "version": 2,
   "k": 10,
+  "description": "Curated gold-standard relevance set for offline search quality evaluation. relevantUids are PubMed IDs (no prefix). offTopicUids should be populated from live search results that the team agrees are irrelevant.",
   "queries": [
     {
       "query": "SGLT2 inhibitors heart failure reduced ejection fraction randomized trial",
       "sources": "pubmed,openalex",
-      "relevantUids": ["34706189", "32865377"],
+      "relevantUids": ["34706189", "32865377", "31535829"],
       "offTopicUids": [],
-      "requiredTypes": ["randomized controlled trial"]
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "EMPEROR-Reduced (34706189), DAPA-HF (31535829). 32865377 = subgroup analysis — verify in DB."
     },
     {
-      "query": "low tidal volume ventilation ARDS randomized controlled trial",
+      "query": "low tidal volume ventilation ARDS lung protective",
       "sources": "pubmed,openalex",
-      "relevantUids": ["10793162"],
+      "relevantUids": ["10793162", "23688302"],
       "offTopicUids": [],
-      "requiredTypes": ["randomized controlled trial"]
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "ARDSNet ARMA trial (10793162), PROSEVA prone positioning (23688302)."
     },
     {
-      "query": "sepsis surviving sepsis campaign guideline 2021",
+      "query": "sepsis surviving sepsis campaign management bundle",
       "sources": "pubmed,openalex",
       "relevantUids": ["34599691"],
       "offTopicUids": [],
-      "requiredTypes": ["guideline"]
+      "requiredTypes": ["guideline"],
+      "notes": "Surviving Sepsis Campaign 2021 guidelines (34599691)."
+    },
+    {
+      "query": "dexamethasone COVID-19 critically ill mechanical ventilation mortality",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["32678530"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "RECOVERY trial dexamethasone arm (32678530)."
+    },
+    {
+      "query": "sacubitril valsartan heart failure reduced ejection fraction mortality",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["25176015"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "PARADIGM-HF trial (25176015)."
+    },
+    {
+      "query": "intensive blood pressure control cardiovascular outcomes systolic",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["26551272"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "SPRINT trial (26551272). k=10 should surface this in top 5."
+    },
+    {
+      "query": "empagliflozin cardiovascular outcomes type 2 diabetes EMPA-REG",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["26378978"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "EMPA-REG OUTCOME trial (26378978)."
+    },
+    {
+      "query": "atrial fibrillation anticoagulation stroke prevention guideline",
+      "sources": "pubmed,openalex",
+      "relevantUids": [],
+      "offTopicUids": [],
+      "requiredTypes": ["guideline", "meta-analysis"],
+      "notes": "TODO: populate relevantUids from DB query. Verify AHA/ACC AF guidelines PMID."
+    },
+    {
+      "query": "statin therapy primary prevention cardiovascular risk meta-analysis",
+      "sources": "pubmed,openalex",
+      "relevantUids": [],
+      "offTopicUids": [],
+      "requiredTypes": ["meta-analysis"],
+      "notes": "TODO: populate from DB. Cholesterol Treatment Trialists meta-analysis is the canonical result."
+    },
+    {
+      "query": "acute myocardial infarction PCI versus thrombolysis STEMI",
+      "sources": "pubmed,openalex",
+      "relevantUids": [],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial", "meta-analysis"],
+      "notes": "TODO: populate from DB. Primary PCI vs fibrinolysis RCTs and Keeley 2003 Lancet meta-analysis."
     }
   ]
 }

@@ -1,4 +1,5 @@
 const logger = require('../config/logger');
+const { applyRecommendationBandit } = require('./personalizationBanditService');
 
 function safeJsonParse(raw, fallback = []) {
     try {
@@ -261,6 +262,49 @@ async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
         }
     }
 
+    // ── Agent session reflection (tutor-identified gaps) ───────────────────
+    if (typeof db.listLearningEvents === 'function') {
+        const reflectionEvents = await db.listLearningEvents({
+            userId,
+            eventType: 'agent_session_reflection',
+            limit: 3,
+        }).catch((err) => {
+            logger.warn({ err, userId }, 'listLearningEvents agent_session_reflection failed');
+            return [];
+        });
+        for (const event of reflectionEvents.slice(0, 2)) {
+            const payload = event.payload && typeof event.payload === 'object' ? event.payload : {};
+            const focus = String(payload.nextStudyFocus || '').trim();
+            const gaps = Array.isArray(payload.persistentGaps) ? payload.persistentGaps : [];
+            const topicLabel = String(event.topic || focus || '').trim();
+            const normalizedTopic = normalizeCandidate(db, topicLabel);
+            if (focus && normalizedTopic) {
+                recommendations.push({
+                    type: 'strengthen',
+                    topic: topicLabel.slice(0, 120) || focus.slice(0, 120),
+                    normalizedTopic,
+                    reason: `From your tutor session: ${focus.slice(0, 160)}`,
+                    action: 'quiz',
+                    priority: 92,
+                    icon: 'fa-user-md',
+                });
+            }
+            for (const gap of gaps.slice(0, 2)) {
+                const gapText = String(gap || '').trim();
+                if (gapText.length < 8) continue;
+                recommendations.push({
+                    type: 'strengthen',
+                    topic: gapText.slice(0, 120),
+                    normalizedTopic: normalizeCandidate(db, `${topicLabel} ${gapText}`) || normalizedTopic,
+                    reason: `Persistent gap from tutor: ${gapText.slice(0, 140)}`,
+                    action: 'quiz',
+                    priority: 90,
+                    icon: 'fa-lightbulb',
+                });
+            }
+        }
+    }
+
     // ── 7. Cold start — no mastery data yet ──────────────────────────────────
     if (mastery.length === 0) {
         const randomExpr = db.isPostgres ? 'random()' : 'RANDOM()';
@@ -284,9 +328,8 @@ async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
         }
     }
 
-    // Sort by priority descending, take top N
-    recommendations.sort((a, b) => b.priority - a.priority);
-    return recommendations.slice(0, limit);
+    const banditRanked = await applyRecommendationBandit(db, userId, recommendations);
+    return banditRanked.slice(0, limit);
 }
 
 function getWeakestType(mastery) {

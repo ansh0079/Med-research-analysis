@@ -53,4 +53,23 @@ describe('article synopsis prompt', () => {
         expect(prompt).toContain('NIV is a central context point');
         expect(prompt).toContain(longResults.slice(0, 7000));
     });
+
+    test('includes learner explanation preferences when provided', () => {
+        const prompt = buildSynopsisPrompt({
+            title: 'Sepsis bundle trial',
+            abstract: 'Cluster RCT of early antibiotics.',
+            pubdate: '2024',
+            pubtype: ['Randomized Controlled Trial'],
+        }, {
+            explanationPreferences: {
+                vocabulary: 'layperson',
+                prefersAnalogies: true,
+                preferredExplanationLength: 'brief',
+            },
+        });
+
+        expect(prompt).toContain('LEARNER EXPLANATION PREFERENCES');
+        expect(prompt).toContain('plain language');
+        expect(prompt).toContain('analogy');
+    });
 });

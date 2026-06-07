@@ -11,12 +11,14 @@ const { classifyQueryIntent } = require('../services/evidenceBouquetService');
 const { parseSearchRequestQuery, parsePreviousQueries, fetchAndRankSearchArticles, prefetchTeachingArtifacts } = require('../services/searchPipeline');
 const { mergeCuratedWithLiveEvidence } = require('../services/searchEvidenceMergeService');
 const { buildSearchLearningContext, applySearchLearningBoost, publicLearningContext } = require('../services/searchLearningService');
+const { recordSearchRankingDecisions } = require('../services/personalizationBanditService');
 const { buildLearnerContext, publicLearnerContextSummary } = require('../services/learnerContextService');
 const crypto = require('crypto');
 const { createAiService, PINNED_MODELS, TEMPERATURE } = require('../services/aiService');
 const { buildTopicKnowledgePrompt } = require('../prompts');
 const { resolveProvider } = require('../utils/aiProvider');
 const { generateAndStoreMCQs } = require('../services/mcqGeneratorService');
+const { guidelineMcqKey } = require('../utils/teachingObjectKeys');
 const { searchGuidelines } = require('../services/guidelineService');
 const { buildEvidenceMap, persistConsensusTeachingObject } = require('../services/teachingObjectService');
 const { enqueuePdfPreindexForArticles } = require('../services/pdfPreindexService');
@@ -25,6 +27,11 @@ const { parseJsonBlock, parseJsonArrayBlock } = require('../utils/parseJson');
 const { buildProxyService } = require('../services/externalApiProxy');
 const { authenticateApiKey } = require('../services/apiKeyService');
 const { hasFeature } = require('../config/entitlements');
+const { createBudgetForAction, runWithLlmBudget } = require('../services/llmRequestBudget');
+const { validateAiOutput } = require('../services/aiOutputValidation');
+const { publicRankingTraces } = require('../services/searchRankingTrace');
+const { explainInteractionReward } = require('../services/rewardAttributionService');
+const { attributeSearchInteractionReward } = require('../services/searchLearningOutcomeService');
 
 async function attachApiKeyUser(req, res, next) {
     const raw = req.headers['x-api-key'];
@@ -503,12 +510,13 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 sessionId: req.sessionId ?? null,
             });
 
-            const {
+            let {
                 articles,
                 telemetry,
                 teachingObjects: boostedObjects,
                 teachingClaims: boostedClaims,
                 learningContext,
+                banditMeta,
             } = ranked;
             const learnerContext = req.user?.id
                 ? publicLearnerContextSummary(await buildLearnerContext(db, {
@@ -583,6 +591,35 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 const uids = articles.slice(0, 14).map((a) => a.uid).filter(Boolean);
                 db.recordUserTopicSearchSignal(req.user.id, queryValidation.sanitized, uids).catch((err) => { logger.warn({ err }, 'recordUserTopicSearchSignal failed'); });
             }
+            let rankingAttribution = [];
+            if (searchId && banditMeta?.armId) {
+                try {
+                    const logged = await recordSearchRankingDecisions(db, {
+                        userId: req.user?.id ?? null,
+                        searchId,
+                        topic: queryValidation.sanitized,
+                        normalizedTopic: typeof db.normalizeTopic === 'function' ? db.normalizeTopic(queryValidation.sanitized) : null,
+                        articles,
+                        banditMeta: { ...banditMeta, forceLog: true },
+                    });
+                    rankingAttribution = logged?.decisions || [];
+                } catch (err) {
+                    logger.warn({ err }, 'recordSearchRankingDecisions failed');
+                }
+            }
+            if (rankingAttribution.length > 0) {
+                const byUid = new Map(rankingAttribution.map((row) => [String(row.articleUid).toLowerCase(), row]));
+                articles = articles.map((article) => {
+                    const key = String(article.uid || '').toLowerCase();
+                    const att = byUid.get(key);
+                    if (!att) return article;
+                    return {
+                        ...article,
+                        _decisionId: att.decisionId,
+                        _banditArmId: att.banditArmId || article._banditArmId || null,
+                    };
+                });
+            }
 
             // Stable key so repeated identical searches reuse cached AI output.
             const enrichKey = crypto
@@ -620,6 +657,11 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 },
                 ...(existingEnrich?.status === 'ready' ? { clinicalAnswer: existingEnrich.clinicalAnswer ?? null } : {}),
                 ...(lowRecallLearning ? { lowRecallLearning } : {}),
+                personalizationAudit: {
+                    banditMeta: banditMeta || null,
+                    rankingTraces: publicRankingTraces(articles),
+                },
+                rankingAttribution,
             });
 
             // Avoid background AI/PDF work during Jest API tests (prevents open handles and hung supertest).
@@ -646,7 +688,10 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                             raw = await ai.callMistralAI(prompt, PINNED_MODELS.mistral, { temperature: 0.15 });
                         } else return;
 
-                        const knowledge = parseJsonBlock(raw);
+                        const knowledgeRaw = parseJsonBlock(raw);
+                        const validated = validateAiOutput('topic_knowledge', knowledgeRaw, { allowDegrade: false });
+                        if (!validated.ok) return;
+                        const knowledge = validated.data;
                         if (!knowledge?.mentorMessage) return;
 
                         const sourceArticles = seedArticles.map((a, i) => ({
@@ -689,8 +734,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
 
                                 // Generate guideline-anchored MCQs via Claude if available
                                 if (serverConfig.keys.anthropic) {
-                                    const normalizedTopic = seedQuery.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim();
-                                    const guidelineKey = `guideline-mcq:${normalizedTopic.replace(/\s+/g, '-')}`;
+                                    const guidelineKey = guidelineMcqKey(db, seedQuery);
                                     const existingGl = await db.getTeachingObjectByKey(guidelineKey).catch(() => null);
                                     if (!existingGl) {
                                         const glBlock = guidelines.slice(0, 5).map((g, i) =>
@@ -712,7 +756,11 @@ Start your response with [ and end with ]. No markdown.
 [{"type":"multiple_choice","questionType":"guideline|clinical_application|pitfall","question":"...","options":["A: ...","B: ...","C: ...","D: ..."],"correctAnswer":"A","explanation":"2-3 sentences citing the guideline","guidelineRef":"source — recommendation","difficulty":"easy|medium|hard"}]`;
                                         try {
                                             const glRaw = await ai.callClaude(glPrompt, 'claude-haiku-4-5-20251001', { temperature: 0.3, maxOutputTokens: 2500 });
-                                            const glMcqs = parseJsonArrayBlock(glRaw);
+                                            const glMcqsRaw = parseJsonArrayBlock(glRaw);
+                                            const validatedGl = validateAiOutput('quiz_generation', glMcqsRaw, { allowDegrade: false });
+                                            const glMcqs = validatedGl.ok
+                                                ? (Array.isArray(validatedGl.data?.questions) ? validatedGl.data.questions : glMcqsRaw)
+                                                : null;
                                             if (Array.isArray(glMcqs) && glMcqs.length > 0) {
                                                 {
                                                     await db.upsertTeachingObject({
@@ -765,7 +813,7 @@ Start your response with [ and end with ]. No markdown.
             const enrichUserId = req.user?.id ?? null;
             const enrichPreviousQueries = Array.isArray(req.previousQueries) ? req.previousQueries : [];
 
-            void (async () => {
+            void runWithLlmBudget(createBudgetForAction('search_enrichment'), async () => {
                 try {
                     let trainingStage = null;
                     if (enrichUserId) {
@@ -820,7 +868,7 @@ Start your response with [ and end with ]. No markdown.
                     console.warn('[enrichment] background job failed:', err?.message);
                     await Promise.resolve(cache.set(enrichCacheKey, { status: 'failed' }, 300)).catch((err) => { logger.warn({ err }, 'cache set failed'); });
                 }
-            })();
+            });
 
         } catch (error) {
             req.log.error({ err: error }, 'Unified search error');
@@ -830,7 +878,7 @@ Start your response with [ and end with ]. No markdown.
 
     app.post('/api/search/intelligence', rateLimit(30, 60), attachApiKeyUser, requireJson, async (req, res) => {
         setNoStoreSearchHeaders(res);
-        const { q, query: queryParam, articles: bodyArticles, sources = 'pubmed', previousQueries: rawPreviousQueries } = req.body || {};
+        const { q, query: queryParam, articles: bodyArticles, sources = 'pubmed', previousQueries: rawPreviousQueries, ranking: bodyRanking = [] } = req.body || {};
         const query = q || queryParam;
         if (!query || typeof query !== 'string') {
             return res.status(400).json({ error: 'Query is required' });
@@ -855,7 +903,8 @@ Start your response with [ and end with ]. No markdown.
                 sessionId: req.sessionId ?? null,
                 previousQueries,
             });
-            articles = applySearchLearningBoost(articles, learningContextFull);
+            const bouquetRanking = Array.isArray(bodyRanking) ? bodyRanking.slice(0, 100) : [];
+            articles = applySearchLearningBoost(articles, learningContextFull, bouquetRanking);
 
             const { objects: boostedObjects, claims: boostedClaims } = await prefetchTeachingArtifacts(db, queryValidation.sanitized);
             const { articles: teachingBoosted } = await applyTeachingObjectSearchBoost(
@@ -900,6 +949,7 @@ Start your response with [ and end with ]. No markdown.
                 learningContext,
                 learnerContext,
                 queryIntent: classifyQueryIntent(queryValidation.sanitized),
+                ranking: bouquetRanking,
             });
         } catch (error) {
             req.log.error({ err: error }, 'Search intelligence error');
@@ -1267,7 +1317,7 @@ Start your response with [ and end with ]. No markdown.
     });
 
     app.post('/api/search/interaction', rateLimit(180, 60), requireJson, async (req, res) => {
-        const { searchId, articleUid, interactionType, dwellMs, elapsedMs } = req.body || {};
+        const { searchId, articleUid, interactionType, dwellMs, elapsedMs, decisionId } = req.body || {};
         const sid = Number(searchId);
         const uid = String(articleUid || '').trim();
         const type = String(interactionType || '').trim();
@@ -1299,15 +1349,63 @@ Start your response with [ and end with ]. No markdown.
                     elapsedMs: elapsedMs != null ? Number(elapsedMs) : null,
                 }).catch(() => undefined);
             }
-            return res.json({ ok: true });
+            const rewardExplain = explainInteractionReward({
+                interactionType: type,
+                impression: {
+                    was_clicked: type === 'click',
+                    was_saved: type === 'save',
+                    dwell_time_ms: dwellMs != null ? Number(dwellMs) : 0,
+                },
+            });
+            let banditReward = null;
+            const banditUserId = req.user?.id ?? null;
+            const canAttributeBandit = Boolean(banditUserId || decisionId != null);
+            if (canAttributeBandit) {
+                banditReward = await attributeSearchInteractionReward(db, banditUserId, {
+                    searchId: sid,
+                    articleUid: uid,
+                    decisionId: decisionId != null ? Number(decisionId) : null,
+                    interactionType: type,
+                    dwellMs: dwellMs != null ? Number(dwellMs) : null,
+                    wasClicked: type === 'click',
+                    wasSaved: type === 'save',
+                }).catch((err) => {
+                    req.log?.warn?.({ err }, 'attributeSearchInteractionReward failed');
+                    return null;
+                });
+            }
+            return res.json({ ok: true, rewardExplain, banditReward });
         } catch (err) {
             req.log?.error?.({ err }, 'Search interaction error');
             return res.status(500).json({ error: 'Failed to record interaction' });
         }
     });
 
+    app.get('/api/search/reward-explain', rateLimit(120, 60), async (req, res) => {
+        const interactionType = String(req.query.interactionType || '').trim() || null;
+        const feedbackType = String(req.query.feedbackType || '').trim() || null;
+        const dwellMs = req.query.dwellMs != null ? Number(req.query.dwellMs) : null;
+        const wasClicked = req.query.wasClicked === '1' || req.query.wasClicked === 'true';
+        const wasSaved = req.query.wasSaved === '1' || req.query.wasSaved === 'true';
+        const isCorrect = req.query.isCorrect === '1' || req.query.isCorrect === 'true';
+        const isFirstAttempt = req.query.isFirstAttempt !== '0' && req.query.isFirstAttempt !== 'false';
+
+        const rewardExplain = explainInteractionReward({
+            interactionType,
+            feedbackType: ['helpful', 'not_helpful'].includes(feedbackType || '') ? feedbackType : null,
+            impression: (wasClicked || wasSaved || dwellMs != null) ? {
+                was_clicked: wasClicked,
+                was_saved: wasSaved,
+                dwell_time_ms: dwellMs ?? 0,
+            } : null,
+            quizAttempt: req.query.isCorrect != null ? { isCorrect, isFirstAttempt } : null,
+            recommendationEventType: String(req.query.recommendationEventType || '').trim() || null,
+        });
+        return res.json(rewardExplain);
+    });
+
     app.post('/api/search/feedback', rateLimit(60, 60), requireJson, async (req, res) => {
-        const { articleUid, feedbackType, reason, searchId } = req.body || {};
+        const { articleUid, feedbackType, reason, searchId, decisionId } = req.body || {};
         const uid = String(articleUid || '').trim();
         const type = String(feedbackType || '').trim();
         if (!uid || !['helpful', 'not_helpful'].includes(type)) {
@@ -1322,7 +1420,25 @@ Start your response with [ and end with ]. No markdown.
                 feedbackType: type,
                 reason: reason ? String(reason).slice(0, 500) : null,
             });
-            return res.json({ ok: true });
+            const rewardExplain = explainInteractionReward({
+                interactionType: 'feedback',
+                feedbackType: type,
+            });
+            let banditReward = null;
+            const banditUserId = req.user?.id ?? null;
+            const canAttributeBandit = Boolean(banditUserId || decisionId != null);
+            if (canAttributeBandit) {
+                banditReward = await attributeSearchInteractionReward(db, banditUserId, {
+                    searchId: searchId != null ? Number(searchId) : null,
+                    articleUid: uid,
+                    decisionId: decisionId != null ? Number(decisionId) : null,
+                    feedbackType: type,
+                }).catch((err) => {
+                    req.log?.warn?.({ err }, 'attributeSearchInteractionReward failed');
+                    return null;
+                });
+            }
+            return res.json({ ok: true, rewardExplain, banditReward });
         } catch (err) {
             req.log?.error?.({ err }, 'Search feedback error');
             return res.status(500).json({ error: 'Failed to record feedback' });

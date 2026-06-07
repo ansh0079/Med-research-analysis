@@ -39,4 +39,26 @@ describe('authSecurityStore', () => {
         });
         expect(await authSecurityStore.isLoginLocked(email)).toBe(true);
     });
+
+    test('progressive delay escalates with failed attempts', () => {
+        expect(authSecurityStore.progressiveDelayMs(1)).toBe(0);
+        expect(authSecurityStore.progressiveDelayMs(2)).toBe(1000);
+        expect(authSecurityStore.progressiveDelayMs(5)).toBe(5000);
+        expect(authSecurityStore.progressiveDelayMs(8)).toBe(30000);
+    });
+
+    test('getLoginThrottleState returns throttled before lockout', async () => {
+        const email = 'slow@example.com';
+        mockDb.get
+            .mockResolvedValueOnce({ attempt_count: 4, window_start: new Date().toISOString(), updated_at: new Date().toISOString() })
+            .mockResolvedValueOnce({ attempt_count: 4, window_start: new Date().toISOString(), updated_at: new Date().toISOString() });
+        const state = await authSecurityStore.getLoginThrottleState(email);
+        expect(state.throttled).toBe(true);
+        expect(state.retryAfterSec).toBeGreaterThan(0);
+    });
+
+    test('timingSafeEqualStrings rejects mismatched oauth state', () => {
+        expect(authSecurityStore.timingSafeEqualStrings('abc123', 'abc123')).toBe(true);
+        expect(authSecurityStore.timingSafeEqualStrings('abc123', 'abc124')).toBe(false);
+    });
 });

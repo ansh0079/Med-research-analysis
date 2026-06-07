@@ -107,6 +107,19 @@ export class AuthApi extends BaseApiClient {
     }
   }
 
+  async refreshSession(): Promise<{ user: AuthUser } | null> {
+    try {
+      const response = await this.fetchWithSession(`${API_BASE}/api/auth/refresh`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (!response.ok) return null;
+      return response.json();
+    } catch {
+      return null;
+    }
+  }
+
   async logout() {
     try {
       await this.fetchWithSession(`${API_BASE}/api/auth/logout`, { method: 'POST' });

@@ -123,4 +123,49 @@ function parseJsonArrayStrict(text) {
     return parsed;
 }
 
-module.exports = { parseJsonBlock, parseJsonArrayBlock, parseJsonArrayStrict, repairJsonCandidate };
+/**
+ * Extract quiz question array from structured JSON-mode output.
+ * Accepts a raw array or object wrappers ({ questions }, { mcqs }).
+ */
+function parseStructuredQuizArray(parsed) {
+    if (Array.isArray(parsed)) return parsed;
+    if (parsed && typeof parsed === 'object') {
+        if (Array.isArray(parsed.questions)) return parsed.questions;
+        if (Array.isArray(parsed.mcqs)) return parsed.mcqs;
+    }
+    const err = new Error('AI response did not contain a quiz questions array');
+    err.status = 502;
+    throw err;
+}
+
+/**
+ * Parse provider JSON-mode output. Expects valid JSON; falls back to parseJsonBlock
+ * for backward compatibility during rollout.
+ */
+function parseStructuredOutput(text) {
+    if (!text || typeof text !== 'string') {
+        const err = new Error('AI response was empty');
+        err.status = 502;
+        throw err;
+    }
+    const trimmed = text.trim();
+    try {
+        return JSON.parse(trimmed);
+    } catch {
+        const parsed = parseJsonBlock(trimmed);
+        if (parsed != null) return parsed;
+        const err = new Error('AI did not return valid JSON');
+        err.status = 502;
+        throw err;
+    }
+}
+
+module.exports = {
+    parseJsonBlock,
+    parseJsonArrayBlock,
+    parseJsonArrayStrict,
+    repairJsonCandidate,
+    parseStructuredOutput,
+    parseStructuredQuizArray,
+    extractJsonObject: parseJsonBlock,
+};

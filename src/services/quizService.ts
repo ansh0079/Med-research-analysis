@@ -113,6 +113,8 @@ export async function generateQuiz(
     targetNodeIds?: string[];
     mode?: 'spaced_rep' | 'standard';
     claimJobKey?: string;
+    teachingPoints?: unknown[];
+    mcqAngles?: string[];
   }
 ): Promise<{
   questions: QuizQuestion[];
@@ -129,6 +131,8 @@ export async function generateQuiz(
   if (opts?.targetNodeIds?.length) body.explicitTargetNodeIds = opts.targetNodeIds;
   if (opts?.mode) body.mode = opts.mode;
   if (opts?.claimJobKey) body.claimJobKey = opts.claimJobKey;
+  if (opts?.teachingPoints?.length) body.teachingPoints = opts.teachingPoints;
+  if (opts?.mcqAngles?.length) body.mcqAngles = opts.mcqAngles;
 
   const res = await fetch(`${API_BASE}/api/quiz/generate`, {
     method: 'POST',

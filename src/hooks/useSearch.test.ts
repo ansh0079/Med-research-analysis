@@ -58,7 +58,7 @@ const mockSetTopicGuideStatus = jest.fn();
 const mockAddToSearchHistory = jest.fn();
 
 function setupDefaultMocks() {
-  mockedSearchContext.useSearchContext.mockReturnValue({
+  mockedSearchContext.useSearchQuery.mockReturnValue({
     query: '',
     results: [],
     loading: false,
@@ -75,6 +75,9 @@ function setupDefaultMocks() {
     setDetectedTopic: mockSetDetectedTopic,
     setCurrentPage: jest.fn(),
     addToSearchHistory: mockAddToSearchHistory,
+  } as any);
+
+  mockedSearchContext.useSearchMeta.mockReturnValue({
     setAgentGuidance: mockSetAgentGuidance,
     setTopicIntelligence: mockSetTopicIntelligence,
     setClinicalAnswer: mockSetClinicalAnswer,
@@ -85,13 +88,6 @@ function setupDefaultMocks() {
     clinicalAnswer: null,
     communityInsight: null,
     topicGuideStatus: 'idle',
-    savedArticles: [],
-    selectedArticles: [],
-    toggleSaveArticle: jest.fn(),
-    toggleSelectArticle: jest.fn(),
-    clearSelection: jest.fn(),
-    isSaved: jest.fn().mockReturnValue(false),
-    isSelected: jest.fn().mockReturnValue(false),
   } as any);
 
   mockedAuthContext.useAuth.mockReturnValue({
@@ -417,7 +413,7 @@ describe('useSearch', () => {
   // ── Async search intelligence ─────────────────────────────────────────────
 
   it('loads deferred intelligence and passes session previousQueries', async () => {
-    mockedSearchContext.useSearchContext.mockReturnValue({
+    mockedSearchContext.useSearchQuery.mockReturnValue({
       query: '',
       results: [],
       loading: false,
@@ -434,12 +430,20 @@ describe('useSearch', () => {
       setDetectedTopic: mockSetDetectedTopic,
       setCurrentPage: jest.fn(),
       addToSearchHistory: mockAddToSearchHistory,
+    } as any);
+
+    mockedSearchContext.useSearchMeta.mockReturnValue({
       setAgentGuidance: mockSetAgentGuidance,
       setTopicIntelligence: mockSetTopicIntelligence,
       setClinicalAnswer: mockSetClinicalAnswer,
       setCommunityInsight: mockSetCommunityInsight,
       setTopicGuideStatus: mockSetTopicGuideStatus,
-    } as unknown as ReturnType<typeof searchContext.useSearchContext>);
+      agentGuidance: null,
+      topicIntelligence: null,
+      clinicalAnswer: null,
+      communityInsight: null,
+      topicGuideStatus: 'idle',
+    } as unknown as ReturnType<typeof searchContext.useSearchMeta>);
 
     mockedApi.search.mockResolvedValue({
       articles: mockArticles,

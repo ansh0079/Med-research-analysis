@@ -11,6 +11,79 @@ const { enrichWithCachedFullText } = require('./pdfPreindexService');
 const claimMapService = require('./claimMapService');
 const { getProviderCandidates } = require('../utils/aiProvider');
 const { extractTrialGuidelineConflicts } = require('./conflictExtractionService');
+const { getPromptVersion } = require('../prompts/promptVersions');
+const { parseStructuredOutput } = require('../utils/parseJson');
+const { validateAiOutput } = require('./aiOutputValidation');
+const { createBudgetForAction, runWithLlmBudget, LlmBudgetExceededError, getActiveLlmBudget } = require('./llmRequestBudget');
+
+/**
+ * Validates that a cited source is semantically relevant to the claim.
+ * Uses keyword overlap as a fast heuristic for citation relevance.
+ */
+function validateCitationRelevance(claimText, sourceIndex, articles) {
+    const article = articles[sourceIndex - 1];
+    if (!article) {
+        return { 
+            valid: false, 
+            relevanceScore: 0, 
+            reason: 'Source index out of bounds' 
+        };
+    }
+    
+    const titleAndAbstract = `${article.title || ''} ${article.abstract || ''}`.toLowerCase();
+    if (titleAndAbstract.length < 20) {
+        return {
+            valid: true,  // Benefit of doubt if abstract unavailable
+            relevanceScore: 0.5,
+            reason: 'Abstract not available for validation'
+        };
+    }
+    
+    // Extract meaningful words from claim (filter stopwords, keep medical terms)
+    const claimWords = String(claimText || '')
+        .toLowerCase()
+        .split(/\s+/)
+        .filter(w => w.length > 4 && !/^(the|and|that|this|with|from|have|been|were|was)$/.test(w))
+        .slice(0, 30);  // Cap to avoid noise
+    
+    if (claimWords.length === 0) {
+        return { valid: false, relevanceScore: 0, reason: 'Claim too short for validation' };
+    }
+    
+    // Calculate overlap: how many claim words appear in article?
+    const overlap = claimWords.filter(word => titleAndAbstract.includes(word)).length;
+    const relevanceScore = overlap / claimWords.length;
+    
+    return {
+        valid: relevanceScore > 0.25,  // At least 25% keyword overlap required
+        relevanceScore: Math.round(relevanceScore * 100) / 100,
+        reason: relevanceScore <= 0.25 
+            ? `Low semantic overlap (${Math.round(relevanceScore * 100)}%) between claim and cited source`
+            : 'Acceptable relevance'
+    };
+}
+
+/**
+ * Extracts all citations from a text field and validates them.
+ */
+function extractAndValidateCitations(text, articles) {
+    const citationPattern = /\[(\d+)\]/g;
+    const citations = [];
+    let match;
+    
+    while ((match = citationPattern.exec(text)) !== null) {
+        const sourceIndex = parseInt(match[1], 10);
+        if (sourceIndex > 0 && sourceIndex <= articles.length) {
+            const validation = validateCitationRelevance(text, sourceIndex, articles);
+            citations.push({
+                sourceIndex,
+                ...validation
+            });
+        }
+    }
+    
+    return citations;
+}
 
 const CITATION_REQUIRED_PATHS = [
     'overallAnswer',
@@ -36,8 +109,10 @@ function selectTopSynthesisArticles(articles = []) {
         .slice(0, 15);
 }
 
-function getSynthesisCacheKey(topic, articles = []) {
-    return `synthesis:${Buffer.from(String(topic || '') + articles.map((a) => a.uid).join(',')).toString('base64').slice(0, 40)}`;
+function getSynthesisCacheKey(topic, articles = [], promptVersion = null) {
+    const pv = promptVersion || getPromptVersion('synthesis');
+    const base = Buffer.from(String(topic || '') + articles.map((a) => a.uid).join(',')).toString('base64').slice(0, 40);
+    return `synthesis:${base}:pv:${pv}`;
 }
 
 function extractSynthesisClaims(synthesis = {}) {
@@ -87,10 +162,9 @@ function buildSynthesisClaimFingerprint(synthesis = {}) {
 }
 
 function parseSynthesisText(rawText) {
+    if (rawText && typeof rawText === 'object') return rawText;
     try {
-        const cleaned = String(rawText || '').replace(/^```(?:json)?/i, '').replace(/```$/i, '').trim();
-        const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
-        return JSON.parse(jsonMatch ? jsonMatch[0] : cleaned);
+        return parseStructuredOutput(String(rawText || ''));
     } catch {
         return {
             consensus: String(rawText || ''),
@@ -108,12 +182,56 @@ function parseSynthesisText(rawText) {
 }
 
 function validateSynthesisCitations(synthesis, { sourceCount, guidelineCount }) {
-    return validateMedicalOutputCitations(synthesis, {
+    const validation = validateMedicalOutputCitations(synthesis, {
         sourceCount,
         guidelineCount,
         requiredPaths: CITATION_REQUIRED_PATHS,
         requiredListPaths: ['agreement', 'uncertainties'],
     });
+    
+    // Add semantic relevance check for key claims
+    const relevanceIssues = [];
+    const articles = synthesis._contextArticles || [];
+    
+    if (articles.length > 0) {
+        // Validate clinical bottom line citation
+        if (synthesis.clinicalBottomLine) {
+            const citations = extractAndValidateCitations(synthesis.clinicalBottomLine, articles);
+            const irrelevant = citations.filter(c => !c.valid);
+            if (irrelevant.length > 0) {
+                relevanceIssues.push({
+                    field: 'clinicalBottomLine',
+                    citations: irrelevant,
+                    text: synthesis.clinicalBottomLine.slice(0, 200)
+                });
+            }
+        }
+        
+        // Validate key findings
+        if (Array.isArray(synthesis.keyFindings)) {
+            synthesis.keyFindings.slice(0, 5).forEach((finding, idx) => {
+                const findingText = typeof finding === 'string' ? finding : finding.text || finding.finding || '';
+                const citations = extractAndValidateCitations(findingText, articles);
+                const irrelevant = citations.filter(c => !c.valid);
+                if (irrelevant.length > 0) {
+                    relevanceIssues.push({
+                        field: `keyFindings[${idx}]`,
+                        citations: irrelevant,
+                        text: findingText.slice(0, 200)
+                    });
+                }
+            });
+        }
+    }
+    
+    return {
+        ...validation,
+        citationRelevance: {
+            checked: articles.length > 0,
+            issues: relevanceIssues,
+            hasIrrelevantCitations: relevanceIssues.length > 0
+        }
+    };
 }
 
 async function prepareSynthesisContext({ articles, topic, db, cache, userId = null }) {
@@ -132,6 +250,7 @@ async function prepareSynthesisContext({ articles, topic, db, cache, userId = nu
 
     let personalMisconceptions = [];
     let inferredMisconceptions = [];
+    let qualityHints = null;
     if (userId && db) {
         const learnerCtx = await buildLearnerContext(db, { userId, topic: topic || '' })
             .catch((err) => { logger.warn({ err, userId, topic }, 'buildLearnerContext for synthesis failed'); return null; });
@@ -140,10 +259,15 @@ async function prepareSynthesisContext({ articles, topic, db, cache, userId = nu
             inferredMisconceptions = learnerCtx.inferredMisconceptions || [];
         }
     }
+    if (db && topic && typeof db.getSynthesisQualityHintsForTopic === 'function') {
+        qualityHints = await db.getSynthesisQualityHintsForTopic(topic, { days: 90, limit: 15 })
+            .catch((err) => { logger.warn({ err, topic }, 'getSynthesisQualityHintsForTopic failed'); return null; });
+    }
 
     const prompt = buildSynthesisPrompt(enrichedArticles, topic || 'General Medical Inquiry', guidelines, {
         personalMisconceptions,
         inferredMisconceptions,
+        qualityHints,
     });
     const sourceMap = topArticles.map((a, idx) => ({
         studyIndex: idx + 1,
@@ -156,6 +280,7 @@ async function prepareSynthesisContext({ articles, topic, db, cache, userId = nu
         retracted: retractionResults[a.uid]?.isRetracted ?? false,
     }));
     const fullTextIndexedCount = enrichedArticles.filter((a) => a._fullTextIndexed || a._pdfIndexed || a.pdfIndexed).length;
+    const fullTextCoverageRatio = topArticles.length > 0 ? fullTextIndexedCount / topArticles.length : 0;
 
     return {
         topArticles,
@@ -167,6 +292,7 @@ async function prepareSynthesisContext({ articles, topic, db, cache, userId = nu
         prompt,
         sourceMap,
         fullTextIndexedCount,
+        fullTextCoverageRatio,
     };
 }
 
@@ -182,6 +308,7 @@ function buildSynthesisResult({
     provider,
     model,
     fullTextIndexedCount = 0,
+    fullTextCoverageRatio = 0,
     jobKey = null,
     conflictMatrix = [],
     guidelineAlignment = null,
@@ -189,6 +316,31 @@ function buildSynthesisResult({
     const promptHashDigest = crypto.createHash('md5').update(prompt).digest('hex');
     const claimsJobKey = jobKey || `syn:${promptHashDigest}`;
     const claimFingerprint = buildSynthesisClaimFingerprint(synthesis);
+    
+    // Generate warnings for quality issues
+    const warnings = [];
+    
+    // Warning for low full-text coverage
+    if (fullTextCoverageRatio < 0.3 && topArticles.length > 0) {
+        warnings.push({
+            severity: 'HIGH',
+            code: 'LOW_FULLTEXT_COVERAGE',
+            message: `Only ${Math.round(fullTextCoverageRatio * 100)}% of sources had full text available. Synopsis may miss critical methodology details, nuanced findings, and limitations that are typically only in full text.`,
+            affectedFields: ['clinicalBottomLine', 'limitations', 'methodologicalQuality']
+        });
+    }
+    
+    // Warning for irrelevant citations
+    if (citationValidation?.citationRelevance?.hasIrrelevantCitations) {
+        const issueCount = citationValidation.citationRelevance.issues.length;
+        warnings.push({
+            severity: 'MEDIUM',
+            code: 'CITATION_RELEVANCE_ISSUE',
+            message: `${issueCount} citation${issueCount > 1 ? 's' : ''} may not be relevant to the associated claim. Review cited sources for accuracy.`,
+            details: citationValidation.citationRelevance.issues.slice(0, 3)
+        });
+    }
+    
     return {
         synthesis,
         articleCount: topArticles.length,
@@ -196,6 +348,7 @@ function buildSynthesisResult({
         timestamp: new Date().toISOString(),
         sources: sourceMap,
         citationValidation,
+        warnings: warnings.length > 0 ? warnings : null,
         retractionWarning: retractedUids.length > 0
             ? `${retractedUids.length} article(s) in this synthesis have been retracted. Review sources carefully.`
             : null,
@@ -203,12 +356,12 @@ function buildSynthesisResult({
         audit: {
             provider,
             model,
-            promptVersion: 'synthesis-v2',
+            promptVersion: getPromptVersion('synthesis'),
             promptHash: promptHashDigest,
             retrievedContext: sourceMap,
             citationValidation,
             sourceCount: topArticles.length,
-            fullTextCoverageRatio: topArticles.length ? fullTextIndexedCount / topArticles.length : 0,
+            fullTextCoverageRatio,
             fullTextIndexedCount,
             retractionCheckedCount: Object.keys(retractionResults).length,
             retractedInBundleCount: retractedUids.length,
@@ -216,6 +369,7 @@ function buildSynthesisResult({
             generatedAt: new Date().toISOString(),
             claimFingerprint: claimFingerprint.fingerprint,
             claimFingerprintCount: claimFingerprint.claims.length,
+            llmBudget: getActiveLlmBudget()?.snapshot() || null,
         },
         jobKey: claimsJobKey,
         conflictMatrix: Array.isArray(conflictMatrix) ? conflictMatrix : [],
@@ -223,7 +377,7 @@ function buildSynthesisResult({
     };
 }
 
-async function persistSynthesisResult({ db, cache, cacheKey, result, topic, synthesis, topArticles, model }) {
+async function persistSynthesisResult({ db, cache, cacheKey, result, topic, synthesis, topArticles, model, serverConfig = null, userId = null, provider = 'auto' }) {
     if (cache?.setAsync) {
         await cache.setAsync(cacheKey, result, 3600);
     }
@@ -231,9 +385,45 @@ async function persistSynthesisResult({ db, cache, cacheKey, result, topic, synt
     await claimMapService.persistClaimsForJob(db, result.jobKey, 'full_synthesis', result).catch((err) => { logger.warn({ err }, 'persistClaimsForJob failed'); });
     await (db.saveSynthesisSnapshot?.(topic, synthesis, topArticles.map((a) => a.uid)) ?? Promise.resolve())
         .catch((err) => { logger.warn({ err }, 'saveSynthesisSnapshot failed'); });
+    if (serverConfig) {
+        const { maybeEnqueueQuizPrefetch } = require('./aiGenerationJobService');
+        await maybeEnqueueQuizPrefetch({
+            db,
+            topic,
+            sourceJobKey: result.jobKey,
+            userId,
+            provider,
+            serverConfig,
+            logger,
+        }).catch((err) => { logger.warn({ err, topic }, 'quiz prefetch enqueue failed'); });
+    }
 }
 
 async function runFullSynthesisGeneration({
+    articles,
+    topic,
+    provider = 'auto',
+    db,
+    cache,
+    serverConfig,
+    fetchImpl,
+    jobKey = null,
+    userId = null,
+}) {
+    return runWithLlmBudget(createBudgetForAction('synthesis'), () => runFullSynthesisGenerationInner({
+        articles,
+        topic,
+        provider,
+        db,
+        cache,
+        serverConfig,
+        fetchImpl,
+        jobKey,
+        userId,
+    }));
+}
+
+async function runFullSynthesisGenerationInner({
     articles,
     topic,
     provider = 'auto',
@@ -262,15 +452,22 @@ async function runFullSynthesisGeneration({
         throw new Error('No AI provider configured. Add GEMINI_API_KEY or MISTRAL_API_KEY to .env');
     }
 
-    let rawText = '';
+    let synthesisPayload = null;
     let selectedProvider = null;
     let selectedModel = null;
     let lastProviderError = null;
     for (const candidate of providerCandidates) {
         try {
-            rawText = candidate.provider === 'gemini'
-                ? await ai.callGemini(context.prompt, candidate.model, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis })
-                : await ai.callMistralAI(context.prompt, candidate.model, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis });
+            const callOptions = {
+                temperature: TEMPERATURE.synthesis,
+                maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis,
+                usage: { operation: 'synthesis', topic, userId },
+                jsonMode: true,
+            };
+            synthesisPayload = await (candidate.provider === 'gemini'
+                ? ai.callGemini(context.prompt, candidate.model, callOptions)
+                : ai.callMistralAI(context.prompt, candidate.model, callOptions));
+            if (synthesisPayload === null) break;
             selectedProvider = candidate.provider;
             selectedModel = candidate.model;
             break;
@@ -279,8 +476,19 @@ async function runFullSynthesisGeneration({
             logger.warn({ err, provider: candidate.provider, model: candidate.model }, 'Synthesis provider failed; trying fallback if available');
         }
     }
-    if (!selectedProvider) throw lastProviderError || new Error('No AI provider returned a synthesis response');
-    const synthesis = parseSynthesisText(rawText);
+    if (!selectedProvider || !synthesisPayload) throw lastProviderError || new Error('No AI provider returned a synthesis response');
+    let synthesis = parseSynthesisText(synthesisPayload);
+    const validated = validateAiOutput('full_synthesis', synthesis, { allowDegrade: true });
+    if (validated.ok) {
+        synthesis = validated.data;
+    } else if (validated.degraded) {
+        synthesis = { ...synthesis, ...validated.degraded };
+        logger.warn({ errors: validated.errors, topic }, 'Synthesis output degraded after validation');
+    }
+    
+    // Attach articles for citation validation
+    synthesis._contextArticles = context.topArticles;
+    
     const citationValidation = validateSynthesisCitations(synthesis, {
         sourceCount: context.topArticles.length,
         guidelineCount: context.guidelines.length,
@@ -295,8 +503,13 @@ async function runFullSynthesisGeneration({
             fetchImpl,
             provider,
             logger,
+            allowBudgetSkip: true,
         }
     ).catch((err) => {
+        if (err instanceof LlmBudgetExceededError) {
+            logger.info({ budget: err.snapshot }, 'Skipping conflict extraction — LLM budget exhausted');
+            return { conflictMatrix: [], guidelineAlignment: null, budgetSkipped: true };
+        }
         logger.warn({ err }, 'conflict extraction failed during synthesis');
         return { conflictMatrix: [], guidelineAlignment: null };
     });
@@ -312,6 +525,7 @@ async function runFullSynthesisGeneration({
         provider: selectedProvider,
         model: selectedModel,
         fullTextIndexedCount: context.fullTextIndexedCount,
+        fullTextCoverageRatio: context.fullTextCoverageRatio,
         jobKey,
         conflictMatrix: conflictExtraction.conflictMatrix,
         guidelineAlignment: conflictExtraction.guidelineAlignment,
@@ -326,6 +540,9 @@ async function runFullSynthesisGeneration({
         synthesis,
         topArticles: context.topArticles,
         model: selectedModel,
+        serverConfig,
+        userId,
+        provider: selectedProvider,
     });
 
     return result;
@@ -336,6 +553,8 @@ module.exports = {
     prepareSynthesisContext,
     parseSynthesisText,
     validateSynthesisCitations,
+    validateCitationRelevance,
+    extractAndValidateCitations,
     buildSynthesisResult,
     persistSynthesisResult,
     buildSynthesisClaimFingerprint,

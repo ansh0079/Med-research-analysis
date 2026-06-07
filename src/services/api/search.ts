@@ -107,7 +107,7 @@ export class SearchApi extends BaseApiClient {
     query: string,
     articles: Article[],
     filters: SearchFilters = {},
-    opts: { previousQueries?: string[] } = {}
+    opts: { previousQueries?: string[]; ranking?: SearchResponse['ranking'] } = {}
   ): Promise<Pick<SearchResponse, 'agentGuidance' | 'knowledgeAvailable' | 'topicIntelligence' | 'learningContext' | 'learnerContext'> & { queryIntent?: string }> {
     const sources = filters.sources || ['pubmed', 'openalex'];
     const response = await this.fetchWithSession(`${API_BASE}/api/search/intelligence`, {
@@ -118,6 +118,7 @@ export class SearchApi extends BaseApiClient {
         articles,
         sources: sources.join(','),
         previousQueries: opts.previousQueries?.length ? opts.previousQueries.slice(-5) : undefined,
+        ranking: opts.ranking?.length ? opts.ranking.slice(0, 100) : undefined,
       }),
     });
     if (!response.ok) await this.parseErrorResponse(response);
@@ -206,12 +207,14 @@ export class SearchApi extends BaseApiClient {
   async recordSearchFeedback(
     articleUid: string,
     feedbackType: 'helpful' | 'not_helpful',
-    reason?: string
+    reason?: string,
+    searchId?: number,
+    decisionId?: number
   ): Promise<void> {
     const response = await this.fetchWithSession(`${API_BASE}/api/search/feedback`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ articleUid, feedbackType, reason }),
+      body: JSON.stringify({ articleUid, feedbackType, reason, searchId, decisionId }),
     });
     if (!response.ok) throw new Error('Failed to record feedback');
   }
@@ -236,13 +239,14 @@ export class SearchApi extends BaseApiClient {
     articleUid: string,
     interactionType: 'click' | 'save' | 'dwell',
     dwellMs?: number,
-    elapsedMs?: number
+    elapsedMs?: number,
+    decisionId?: number
   ): Promise<void> {
     try {
       await this.fetchWithSession(`${API_BASE}/api/search/interaction`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ searchId, articleUid, interactionType, dwellMs, elapsedMs }),
+        body: JSON.stringify({ searchId, articleUid, interactionType, dwellMs, elapsedMs, decisionId }),
       });
     } catch (err) {
       if (import.meta.env.DEV) console.error('Failed to log interaction', err);

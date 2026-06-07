@@ -6,6 +6,8 @@ const {
     annotateSearchRankMetadata,
     filterRelevantArticles,
     matchesPicoInterventionComparator,
+    mergeRerankedWithRemainder,
+    normalizePicoProfileForReranker,
     yearInFilters,
 } = require('../../server/services/searchPipeline');
 const { buildEvidenceBouquet, isOffTopic, meshRelevanceRatio, queryMatchScore } = require('../../server/services/evidenceBouquetService');
@@ -51,6 +53,30 @@ describe('searchPipeline helpers', () => {
             title: 'Beta blockers in heart failure',
             abstract: 'Adults received beta blockers.',
         }, pico, 'SGLT2 inhibitor vs placebo')).toBe(false);
+    });
+
+    test('normalizePicoProfileForReranker fills query fallback and intent', () => {
+        const profile = normalizePicoProfileForReranker(
+            { population: 'adults', intervention: 'steroids', confidence: 0.8 },
+            'steroids ARDS mortality',
+            'management'
+        );
+        expect(profile.population).toBe('adults');
+        expect(profile.intervention).toBe('steroids');
+        expect(profile.outcome).toBe('steroids ARDS mortality');
+        expect(profile.queryIntent).toBe('management');
+    });
+
+    test('mergeRerankedWithRemainder preserves rerank order and appends unscored papers', () => {
+        const original = [
+            { uid: 'a', title: 'A' },
+            { uid: 'b', title: 'B' },
+            { uid: 'c', title: 'C' },
+        ];
+        const reranked = [
+            { uid: 'b', title: 'B', _rerank: { overallScore: 0.9 } },
+        ];
+        expect(mergeRerankedWithRemainder(reranked, original, 3).map((a) => a.uid)).toEqual(['b', 'a', 'c']);
     });
 
     test('filterRelevantArticles removes off-topic papers', () => {

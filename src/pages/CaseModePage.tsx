@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@components/ui/Button';
 import { useNavigatePage, useSearchContext } from '@contexts/SearchContext';
@@ -12,6 +12,7 @@ import { VerificationBadge } from '@components/ui/VerificationBadge';
 import { parseUsageLimitError, formatUsageLimitMessage } from '@utils/usageErrors';
 import { getRecoveryHint } from '@utils/appErrors';
 import { FollowUpQuestionsPanel } from '@components/search/FollowUpQuestionsPanel';
+import { useClientFeatures } from '@hooks/useClientFeatures';
 
 type CaseEvidenceBrief = {
   bestEvidence?: string;
@@ -132,7 +133,10 @@ function writeWorkflowContext(update: Record<string, unknown>) {
   }
 }
 
-function CaseMCQs({ mcqs }: { mcqs: QuizQuestion[] }) {
+function CaseMCQs({ mcqs, topic }: { mcqs: QuizQuestion[]; topic: string }) {
+  const { isAuthenticated } = useAuth();
+  const { betaOpenAccess } = useClientFeatures();
+  const submittedRef = useRef(new Set<string>());
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [collapsed, setCollapsed] = useState(false);
@@ -142,9 +146,31 @@ function CaseMCQs({ mcqs }: { mcqs: QuizQuestion[] }) {
   const isAnswered = answers[q.id] !== undefined;
   const isCorrect = isAnswered && answers[q.id]?.toLowerCase() === q.correctAnswer.toLowerCase();
 
+  const persistAttempt = async (question: QuizQuestion, letter: string) => {
+    if ((!isAuthenticated && !betaOpenAccess) || !topic || submittedRef.current.has(question.id)) return;
+    submittedRef.current.add(question.id);
+    try {
+      await api.submitQuizAttempt({
+        topic,
+        attempts: [{
+          questionId: question.id,
+          questionType: (question.questionType as QuestionType) || 'clinical_application',
+          questionText: question.question,
+          userAnswer: letter,
+          correctAnswer: question.correctAnswer,
+          isCorrect: letter.toLowerCase() === question.correctAnswer.toLowerCase(),
+          promptVariant: 'case_embedded',
+        }],
+      });
+    } catch {
+      submittedRef.current.delete(question.id);
+    }
+  };
+
   const handleAnswer = (letter: string) => {
     if (isAnswered) return;
     setAnswers((prev) => ({ ...prev, [q.id]: letter }));
+    void persistAttempt(q, letter);
   };
 
   return (
@@ -257,6 +283,7 @@ export const CaseModePage: React.FC = () => {
   const setCurrentPage = useNavigatePage();
   const { setQuery } = useSearchContext();
   const { isAuthenticated } = useAuth();
+  const { betaOpenAccess } = useClientFeatures();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const initialUrlTopic = searchParams.get('topic');
@@ -633,7 +660,7 @@ export const CaseModePage: React.FC = () => {
   }, [autoGenerateTeachingCase, prefillTopic, caseSeedArticles]);
 
   const guardAuth = () => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !betaOpenAccess) {
       navigate('/auth');
       return false;
     }
@@ -976,7 +1003,7 @@ export const CaseModePage: React.FC = () => {
                 {/* Inline MCQs */}
                 {tvResult.caseMCQs.length > 0 && (
                   <div className="pt-4 border-t border-slate-100 dark:border-slate-700/60">
-                    <CaseMCQs mcqs={tvResult.caseMCQs} />
+                    <CaseMCQs mcqs={tvResult.caseMCQs} topic={tvResult.topic || prefillTopic || 'Clinical case'} />
                   </div>
                 )}
 
@@ -1212,7 +1239,7 @@ export const CaseModePage: React.FC = () => {
 
             {evidenceQuizMcqs.length > 0 && (
               <div className="pt-3 border-t border-slate-100 dark:border-slate-700/60">
-                <CaseMCQs mcqs={evidenceQuizMcqs} />
+                <CaseMCQs mcqs={evidenceQuizMcqs} topic={evidenceResult.topic || prefillTopic || 'Clinical case'} />
               </div>
             )}
 
@@ -1390,7 +1417,7 @@ export const CaseModePage: React.FC = () => {
             {/* Inline case MCQs */}
             {result.caseMCQs && result.caseMCQs.length > 0 && (
               <div className="pt-4 border-t border-slate-100 dark:border-slate-700/60">
-                <CaseMCQs mcqs={result.caseMCQs} />
+                <CaseMCQs mcqs={result.caseMCQs} topic={result.query || result.keyDecisionPoint || prefillTopic || 'Clinical case'} />
               </div>
             )}
 

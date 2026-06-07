@@ -6,7 +6,7 @@ const {
     validateCitationRefs,
 } = require('./citationValidator');
 const { getCachedPdf } = require('./pdfPreindexService');
-const { parseJsonBlock } = require('../utils/parseJson');
+const { validateAiOutput } = require('./aiOutputValidation');
 
 function isFreeEvidence(article) {
     return Boolean(article?.isFree || article?.pmcid || article?.fullTextUrl || article?.openAccess || article?.openAccessUrl);
@@ -344,14 +344,21 @@ async function generateConsensusSynopsis({
     const ai = createAiService({ serverConfig, fetchImpl });
     const prompt = buildConsensusSynopsisPrompt(topic, freeArticles, abstractArticles, guidelines, topicKnowledge);
     const model = provider === 'gemini' ? PINNED_MODELS.geminiQuality : PINNED_MODELS.mistral;
-    const raw = provider === 'gemini'
-        ? await ai.callGemini(prompt, model, { temperature: TEMPERATURE.synopsis })
-        : await ai.callMistralAI(prompt, model, { temperature: TEMPERATURE.synopsis });
-    const parsed = parseJsonBlock(raw);
+    const parsed = await ai.callStructured(prompt, provider, model, {
+        temperature: TEMPERATURE.synopsis,
+        maxOutputTokens: 2200,
+        usage: { operation: 'consensus_synopsis', topic },
+        allowBudgetSkip: true,
+    });
     if (!parsed) {
-        throw new Error('AI returned unparseable consensus synopsis');
+        throw new Error('Consensus synopsis skipped — LLM budget exhausted');
     }
-    return normalizeSynopsis(parsed, topic, freeArticles, abstractArticles, provider, model, guidelines);
+    const validated = validateAiOutput('consensus_synopsis', parsed, { allowDegrade: true });
+    const synopsisPayload = validated.ok ? validated.data : validated.degraded;
+    if (!validated.ok && !synopsisPayload) {
+        throw new Error(`Consensus synopsis validation failed: ${(validated.errors || []).join('; ')}`);
+    }
+    return normalizeSynopsis(synopsisPayload, topic, freeArticles, abstractArticles, provider, model, guidelines);
 }
 
 async function generateConsensusSynopsisSafe(options, logger = console) {

@@ -4,6 +4,7 @@
 
 const { loadEnv, serverConfig } = require('./config');
 loadEnv();
+require('./server/config/otel').startOpenTelemetry();
 
 const logger = require('./server/config/logger');
 const db = require('./database');
@@ -18,7 +19,9 @@ const { scheduleClaimRegeneration, stopClaimRegeneration } = require('./server/s
 const { scheduleGuidelineWatchtower, stopGuidelineWatchtower } = require('./server/services/guidelineWatchtowerScheduler');
 const { scheduleCurriculumSeed, stopCurriculumSeed } = require('./server/services/curriculumSeedScheduler');
 const { scheduleCollectiveMemory, stopCollectiveMemory } = require('./server/services/collectiveMemoryScheduler');
+const { schedulePersonalizationBandit, stopPersonalizationBandit } = require('./server/services/personalizationBanditScheduler');
 const { scheduleLearnerProfileRollup, stopLearnerProfileRollup } = require('./server/services/learnerProfileRollupScheduler');
+const { scheduleQueueFailureDigest, stopQueueFailureDigest } = require('./server/services/queueFailureDigestService');
 const authSecurityStore = require('./server/services/authSecurityStore');
 const { safeFetch } = require('./server/utils/fetch');
 
@@ -56,6 +59,8 @@ async function gracefulShutdown(signal) {
             stopCurriculumSeed();
             stopCollectiveMemory();
             stopLearnerProfileRollup();
+            stopPersonalizationBandit();
+            stopQueueFailureDigest();
             const { stopWorkers } = require('./server/services/jobQueue');
             await stopWorkers();
             await db.close();
@@ -166,6 +171,9 @@ async function startServer() {
                 logger.child({ task: 'collective-memory' }));
             scheduleLearnerProfileRollup(db,
                 logger.child({ task: 'learner-profile-rollup' }));
+            schedulePersonalizationBandit(db,
+                logger.child({ task: 'personalization-bandit' }));
+            scheduleQueueFailureDigest(logger.child({ task: 'queue-failure-digest' }));
         }
 
         if (runHttp) {

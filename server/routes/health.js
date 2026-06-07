@@ -1,5 +1,7 @@
 const { requireAuthJwt, requireRole } = require('../middleware/auth');
 const { checkDbContract } = require('../services/dbContract');
+const { getQueueStatus } = require('../services/jobQueue');
+const { updateQueueMetrics } = require('../services/observabilityMetrics');
 
 function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metricsRegistry }) {
     app.get('/health', async (req, res) => {
@@ -53,11 +55,15 @@ function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metr
             mistral: clientConfig.mistral,
             oauth: clientConfig.oauth,
             defaultProvider: clientConfig.defaultProvider,
+            betaMode: clientConfig.betaMode,
+            betaOpenAccess: clientConfig.betaMode,
         });
     });
 
     app.get('/metrics', requireAuthJwt, requireRole('admin'), async (req, res) => {
         try {
+            const queueStatus = await getQueueStatus().catch(() => null);
+            if (queueStatus) updateQueueMetrics(queueStatus);
             res.set('Content-Type', metricsRegistry.contentType);
             res.end(await metricsRegistry.metrics());
         } catch (error) {

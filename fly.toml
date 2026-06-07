@@ -14,6 +14,7 @@ kill_timeout = 10
   APP_ROLE = "web"
   PORT = "3002"
   DEV_DISABLE_AUTH = "false"
+  BETA_MODE = "true"
   PGSSL = "true"
   AUTO_SEED_ON_SEARCH = "false"
 

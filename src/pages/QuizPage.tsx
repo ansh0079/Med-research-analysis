@@ -4,6 +4,7 @@ import { useSearchContext } from '@contexts/SearchContext';
 import { generateQuiz, generateQuizFromEvidence, QuizGenerationError, type QuizArticle } from '@services/quizService';
 import { selectTopEvidence } from '../utils/selectTopEvidence';
 import { api } from '@services/api';
+import { lookupArticleAttribution } from '@utils/searchAttribution';
 import { downloadText } from '@services/exportArticles';
 import { useAuth } from '@contexts/AuthContext';
 import { StudyRunPanel } from '@components/learning/StudyRunPanel';
@@ -450,6 +451,8 @@ export const QuizPage: React.FC = () => {
           targetNodeIds: urlTargetNodeIds,
           mode: urlMode ?? undefined,
           claimJobKey: urlClaimJobKey,
+          teachingPoints: Array.isArray(quizPrefill?.teachingPoints) ? quizPrefill.teachingPoints : undefined,
+          mcqAngles: Array.isArray(quizPrefill?.mcqAngles) ? quizPrefill.mcqAngles : undefined,
         }
       );
 
@@ -625,6 +628,8 @@ export const QuizPage: React.FC = () => {
     try {
       const attempts = questions.map((q) => {
         const resolvedSrc = resolveSourceArticle(q);
+        const uid = resolvedSrc?.uid || q.sourceArticle || undefined;
+        const attribution = uid ? lookupArticleAttribution(uid) : null;
         return {
           questionId: q.id,
           questionType: q.questionType || 'recall',
@@ -632,9 +637,11 @@ export const QuizPage: React.FC = () => {
           userAnswer: answers[q.id] || '',
           correctAnswer: q.correctAnswer,
           isCorrect: (answers[q.id] || '').toLowerCase() === q.correctAnswer.toLowerCase(),
-          // Prefer the resolved uid from the actual article; fall back to title string
-          sourceArticleUid: resolvedSrc?.uid || q.sourceArticle || undefined,
+          sourceArticleUid: uid,
           sourceArticleTitle: resolvedSrc?.title || q.sourceArticle || undefined,
+          decisionId: attribution?.decisionId,
+          banditArmId: attribution?.banditArmId || undefined,
+          searchId: attribution?.searchId,
           outlineNodeId: q.outlineNodeId || (q.sourceIndices?.[0] ? `src-${q.sourceIndices[0]}` : null),
           outlineLabel: q.outlineLabel ?? undefined,
           claimKey: q.claimKey ?? undefined,

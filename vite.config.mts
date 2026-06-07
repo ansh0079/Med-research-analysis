@@ -19,6 +19,7 @@ export default defineConfig(({ mode }) => {
         '@contexts':   path.resolve(__dirname, 'src/contexts'),
         '@pages':      path.resolve(__dirname, 'src/pages'),
         '@utils':      path.resolve(__dirname, 'src/utils'),
+        '@contracts':  path.resolve(__dirname, 'shared/contracts'),
       },
     },
     server: {

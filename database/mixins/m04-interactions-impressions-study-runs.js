@@ -115,6 +115,19 @@ async listSearchResultFeedbackForUser(userId, { limit = 200, days = 90 } = {}) {
         .execute();
 }
 
+async listSynopsisFeedbackForUser(userId, { limit = 250, days = 120 } = {}) {
+    if (!this.kysely || !userId) return [];
+    const since = new Date(Date.now() - Number(days || 120) * 24 * 60 * 60 * 1000).toISOString();
+    return this.kysely
+        .selectFrom('synopsis_feedback')
+        .selectAll()
+        .where('user_id', '=', userId)
+        .where('created_at', '>=', since)
+        .orderBy('created_at', 'desc')
+        .limit(Math.min(Math.max(Number(limit) || 250, 1), 500))
+        .execute();
+}
+
 // ==========================================
 // Search Result Impressions (Implicit Negative Feedback)
 // ==========================================
@@ -196,6 +209,71 @@ async getSearchResultFeedbackStats(articleUid, { days = 90 } = {}) {
         if (row.feedback_type === 'helpful') stats.helpful = Number(row.count);
         if (row.feedback_type === 'not_helpful') stats.notHelpful = Number(row.count);
     }
+    return stats;
+}
+
+// ==========================================
+// Synopsis Feedback
+// ==========================================
+
+async recordSynopsisFeedback({
+    userId,
+    sessionId,
+    articleUid,
+    topic = null,
+    trainingStage = null,
+    provider = null,
+    model = null,
+    feedbackType,
+    reason = null,
+    metadata = {},
+}) {
+    if (!this.kysely || (!userId && !sessionId) || !articleUid || !feedbackType) return null;
+    const now = new Date().toISOString();
+    return this.kysely
+        .insertInto('synopsis_feedback')
+        .values({
+            user_id: userId || null,
+            session_id: sessionId || null,
+            article_uid: String(articleUid),
+            topic: topic ? String(topic).slice(0, 240) : null,
+            training_stage: trainingStage ? String(trainingStage).slice(0, 60) : null,
+            provider: provider ? String(provider).slice(0, 80) : null,
+            model: model ? String(model).slice(0, 120) : null,
+            feedback_type: String(feedbackType),
+            reason: reason ? String(reason).slice(0, 500) : null,
+            metadata_json: JSON.stringify(metadata || {}),
+            created_at: now,
+        })
+        .execute();
+}
+
+async getSynopsisFeedbackStats(articleUid, { days = 90 } = {}) {
+    if (!this.kysely || !articleUid) return { helpful: 0, notHelpful: 0, recentReasons: [] };
+    const since = new Date(Date.now() - Number(days || 90) * 24 * 60 * 60 * 1000).toISOString();
+    const rows = await this.kysely
+        .selectFrom('synopsis_feedback')
+        .select(({ fn }) => ['feedback_type', fn.count('id').as('count')])
+        .where('article_uid', '=', String(articleUid))
+        .where('created_at', '>=', since)
+        .groupBy('feedback_type')
+        .execute();
+    const reasonRows = await this.kysely
+        .selectFrom('synopsis_feedback')
+        .select(['reason'])
+        .where('article_uid', '=', String(articleUid))
+        .where('feedback_type', '=', 'not_helpful')
+        .where('reason', 'is not', null)
+        .where('created_at', '>=', since)
+        .orderBy('created_at', 'desc')
+        .limit(5)
+        .execute();
+    const stats = { helpful: 0, notHelpful: 0, recentReasons: [] };
+    for (const row of rows) {
+        if (row.feedback_type === 'helpful') stats.helpful = Number(row.count);
+        if (row.feedback_type === 'not_helpful') stats.notHelpful = Number(row.count);
+    }
+    stats.recentReasons = reasonRows.map((row) => row.reason).filter(Boolean);
     return stats;
 }
 

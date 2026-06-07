@@ -28,7 +28,16 @@ function extractPdfInWorker(buffer) {
                 logger.debug({ err }, 'Failed to terminate completed PDF worker');
             }
             if (msg && msg.ok) {
-                resolve({ text: msg.text, numpages: msg.numpages, info: msg.info });
+                resolve({
+                    text: msg.text,
+                    numpages: msg.numpages,
+                    info: msg.info,
+                    sections: msg.sections,
+                    orderedKeys: msg.orderedKeys,
+                    tables: msg.tables,
+                    wordCount: msg.wordCount,
+                    backend: msg.backend,
+                });
             } else {
                 reject(new Error((msg && msg.error) || 'PDF worker failed'));
             }

@@ -54,6 +54,8 @@ jest.mock('../../server/services/synthesisGenerationCore', () => ({
 
 jest.mock('../../server/services/paperSynopsisCore', () => ({
     runPaperSynopsisGeneration: jest.fn().mockResolvedValue({ synopsis: {} }),
+    getPaperSynopsisArticleId: jest.fn((article) => article.uid || article.pmid || article.doi || 'hashed'),
+    invalidatePaperSynopsisCache: jest.fn().mockResolvedValue(true),
 }));
 
 jest.mock('../../server/services/aiGenerationJobService', () => ({
@@ -119,6 +121,8 @@ describe('aiRoutes', () => {
         getGuidelinesByTopic: jest.fn().mockResolvedValue([]),
         getAnnotationsByArticle: jest.fn().mockResolvedValue([]),
         createAnnotation: jest.fn().mockResolvedValue({ id: 1 }),
+        getLearningProfile: jest.fn().mockResolvedValue({ trainingStage: 'foundation_doctor' }),
+        recordSynopsisFeedback: jest.fn().mockResolvedValue({ id: 1 }),
     };
 
     const mockCache = {
@@ -126,6 +130,7 @@ describe('aiRoutes', () => {
         setAnalysisAsync: jest.fn().mockResolvedValue(true),
         getAsync: jest.fn().mockResolvedValue(null),
         setAsync: jest.fn().mockResolvedValue(true),
+        delAsync: jest.fn().mockResolvedValue(true),
     };
 
     const deps = {
@@ -210,6 +215,47 @@ describe('aiRoutes', () => {
                 .send({ articles: [{ title: 'A', _impact: { score: 1 } }], topic: 'Test', async: false });
             expect(res.status).toBe(200);
             expect(runFullSynthesisGeneration).toHaveBeenCalled();
+        });
+    });
+
+    describe('POST /api/ai/synopsis', () => {
+        test('passes learner training stage into inline synopsis generation', async () => {
+            const { runPaperSynopsisGeneration } = require('../../server/services/paperSynopsisCore');
+            const res = await request(app)
+                .post('/api/ai/synopsis')
+                .set('Authorization', `Bearer ${authToken()}`)
+                .send({ article: { uid: 'a1', title: 'A' }, topic: 'Sepsis', async: false });
+            expect(res.status).toBe(200);
+            expect(runPaperSynopsisGeneration).toHaveBeenCalledWith(expect.objectContaining({
+                topic: 'Sepsis',
+                trainingStage: 'foundation_doctor',
+            }));
+        });
+
+        test('records not-helpful synopsis feedback and invalidates cache', async () => {
+            const { invalidatePaperSynopsisCache } = require('../../server/services/paperSynopsisCore');
+            const res = await request(app)
+                .post('/api/ai/synopsis/feedback')
+                .set('Authorization', `Bearer ${authToken()}`)
+                .send({
+                    article: { uid: 'a1', title: 'A' },
+                    articleUid: 'a1',
+                    feedbackType: 'not_helpful',
+                    reason: 'too vague',
+                    model: 'gemini-model',
+                    trainingStage: 'finals',
+                });
+            expect(res.status).toBe(200);
+            expect(mockDb.recordSynopsisFeedback).toHaveBeenCalledWith(expect.objectContaining({
+                articleUid: 'a1',
+                feedbackType: 'not_helpful',
+                reason: 'too vague',
+            }));
+            expect(invalidatePaperSynopsisCache).toHaveBeenCalledWith(expect.objectContaining({
+                article: expect.objectContaining({ uid: 'a1' }),
+                selectedModel: 'gemini-model',
+                trainingStage: 'finals',
+            }));
         });
     });
 

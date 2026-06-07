@@ -26,19 +26,18 @@ function alternateModel(provider, PINNED_MODELS) {
  * @param {object} deps.PINNED_MODELS - Model map { gemini, mistral }
  */
 function createMcqValidationService({ ai, db, logger, PINNED_MODELS }) {
-    async function callModel(prompt, provider, model, topic, operation) {
-        if (provider === 'gemini') {
-            return ai.callGemini(prompt, model || PINNED_MODELS.gemini, {
-                temperature: 0.05,
-                maxOutputTokens: 1600,
-                usage: { operation, topic },
-            });
-        }
-        return ai.callMistralAI(prompt, model || PINNED_MODELS.mistral, {
+    async function callModelStructured(prompt, provider, model, topic, operation, { allowBudgetSkip = false } = {}) {
+        const opts = {
             temperature: 0.05,
             maxOutputTokens: 1600,
             usage: { operation, topic },
-        });
+            jsonMode: true,
+            allowBudgetSkip,
+        };
+        if (provider === 'gemini') {
+            return ai.callGeminiStructured(prompt, model || PINNED_MODELS.gemini, opts);
+        }
+        return ai.callMistralStructured(prompt, model || PINNED_MODELS.mistral, opts);
     }
 
     function buildReviewPrompt(topic, compact, sourceContext, guidelineContext) {
@@ -84,9 +83,11 @@ MCQS:
 ${JSON.stringify(compact)}`;
     }
 
-    function parseReviewResults(text, questionCount) {
-        const parsed = extractJsonObject(text);
-        const results = Array.isArray(parsed.results) ? parsed.results : [];
+    function parseReviewResults(parsedOrText, questionCount) {
+        const parsed = typeof parsedOrText === 'object' && parsedOrText !== null
+            ? parsedOrText
+            : extractJsonObject(String(parsedOrText || ''));
+        const results = Array.isArray(parsed?.results) ? parsed.results : [];
         const resultByIndex = new Map(results.map((r) => [Number(r.mcqIndex), r]));
         const validIndices = new Set();
         const rejections = [];
@@ -105,9 +106,11 @@ ${JSON.stringify(compact)}`;
         return { validIndices, rejections, reviewed: results.length };
     }
 
-    function parseSafetyResults(text, questionCount) {
-        const parsed = extractJsonObject(text);
-        const results = Array.isArray(parsed.results) ? parsed.results : [];
+    function parseSafetyResults(parsedOrText, questionCount) {
+        const parsed = typeof parsedOrText === 'object' && parsedOrText !== null
+            ? parsedOrText
+            : extractJsonObject(String(parsedOrText || ''));
+        const results = Array.isArray(parsed?.results) ? parsed.results : [];
         const resultByIndex = new Map(results.map((r) => [Number(r.mcqIndex), r]));
         const flags = [];
         const unsafeIndices = new Set();
@@ -185,18 +188,20 @@ ${JSON.stringify(compact)}`;
         };
     }
 
-    async function runPrimaryReview({ topic, compact, sourceContext, guidelineContext, provider, model }) {
+    async function runPrimaryReview({ topic, compact, sourceContext, guidelineContext, provider, model, allowBudgetSkip = false }) {
         const prompt = buildReviewPrompt(topic, compact, sourceContext, guidelineContext);
-        const text = await callModel(prompt, provider, model, topic, 'quiz_validation');
-        const parsed = parseReviewResults(text, compact.length);
-        return { ...parsed, provider };
+        const parsed = await callModelStructured(prompt, provider, model, topic, 'quiz_validation', { allowBudgetSkip });
+        if (parsed === null) return null;
+        const review = parseReviewResults(parsed, compact.length);
+        return { ...review, provider };
     }
 
-    async function runSafetyReview({ topic, compact, provider, model }) {
+    async function runSafetyReview({ topic, compact, provider, model, allowBudgetSkip = false }) {
         const prompt = buildSafetyPrompt(topic, compact);
-        const text = await callModel(prompt, provider, model, topic, 'quiz_safety_classifier');
-        const parsed = parseSafetyResults(text, compact.length);
-        return { ...parsed, provider };
+        const parsed = await callModelStructured(prompt, provider, model, topic, 'quiz_safety_classifier', { allowBudgetSkip });
+        if (parsed === null) return null;
+        const safety = parseSafetyResults(parsed, compact.length);
+        return { ...safety, provider };
     }
 
     async function validateBatch({ topic, questions, provider, model, articles = [], guidelines = [] }) {
@@ -247,6 +252,7 @@ ${JSON.stringify(compact)}`;
                     guidelineContext,
                     provider: crossProvider,
                     model: alternateModel(crossProvider, PINNED_MODELS),
+                    allowBudgetSkip: true,
                 });
             } catch (err) {
                 logger.warn({ err, topic, crossProvider }, 'MCQ cross-check validation failed');
@@ -261,6 +267,7 @@ ${JSON.stringify(compact)}`;
                     compact,
                     provider: 'gemini',
                     model: PINNED_MODELS.gemini,
+                    allowBudgetSkip: true,
                 });
             } catch (err) {
                 logger.warn({ err, topic }, 'MCQ safety classifier failed');

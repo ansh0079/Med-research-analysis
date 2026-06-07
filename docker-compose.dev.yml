@@ -26,6 +26,15 @@ services:
       retries: 10
     restart: unless-stopped
 
+  grobid:
+    image: grobid/grobid:0.8.0
+    container_name: medsearch-grobid-dev
+    ports:
+      - "8070:8070"
+    environment:
+      - GROBID_OPTS=-Xmx2g
+    restart: unless-stopped
+
   app:
     build:
       context: .
@@ -37,6 +46,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      grobid:
+        condition: service_started
     environment:
       - NODE_ENV=development
       - PORT=3002
@@ -50,6 +61,7 @@ services:
       - SEMANTIC_SCHOLAR_KEY=${SEMANTIC_SCHOLAR_KEY:-}
       - NCBI_API_KEY=${NCBI_API_KEY:-}
       - SENTRY_DSN=${SENTRY_DSN:-}
+      - GROBID_URL=http://grobid:8070
     volumes:
       - .:/app
       - /app/node_modules

@@ -1,10 +1,11 @@
 import { useCallback, useRef, useEffect, useState } from 'react';
 import { api } from '@services/api';
-import { useSearchContext } from '@contexts/SearchContext';
+import { useSearchMeta, useSearchQuery } from '@contexts/SearchContext';
 import type { AgentGuidance, Article, LearnerContextSummary, LowRecallLearning, ProactiveAlert, ProactiveEvidenceAlert, SearchFilters } from '@types';
 import { useAuth } from '@contexts/AuthContext';
 import { useAnalytics } from './useAnalytics';
 import { usePolling } from './usePolling';
+import { storeSearchAttributionFromArticles } from '@utils/searchAttribution';
 
 const POLL_DELAYS = [8000, 12000, 18000]; // 8 s, then 12 s, then 18 s — three attempts
 const ENRICHMENT_POLL_DELAYS = [2000, 3000, 4000, 5000, 6000, 8000, 10000]; // up to ~38 s total
@@ -15,17 +16,19 @@ export function useSearch() {
     setLoading,
     setError,
     setDetectedTopic,
-    setAgentGuidance,
-    setTopicIntelligence,
-    setClinicalAnswer,
-    setCommunityInsight,
-    setTopicGuideStatus,
     addToSearchHistory,
     searchHistory,
     loading,
     error,
     results,
-  } = useSearchContext();
+  } = useSearchQuery();
+  const {
+    setAgentGuidance,
+    setTopicIntelligence,
+    setClinicalAnswer,
+    setCommunityInsight,
+    setTopicGuideStatus,
+  } = useSearchMeta();
   const { trackSearch, trackFeatureUsage } = useAnalytics();
 
   const [knowledgeDriftAlerts, setKnowledgeDriftAlerts] = useState<ProactiveEvidenceAlert[]>([]);
@@ -175,6 +178,8 @@ export function useSearch() {
           clinicalAnswer, searchId, communityInsight, proactiveAlert,
           aiEnrichmentKey, aiEnrichmentStatus, intelligenceStatus, learnerContext: nextLearnerContext,
           lowRecallLearning: nextLowRecallLearning,
+          ranking,
+          rankingAttribution,
         } = data;
 
         trackSearch(query, { filters, resultsCount: articles.length });
@@ -191,6 +196,11 @@ export function useSearch() {
               position: index + 1,
             }))
           );
+          storeSearchAttributionFromArticles(searchId, articles);
+          if (rankingAttribution?.length) {
+            const { storeSearchAttribution } = await import('@utils/searchAttribution');
+            storeSearchAttribution(searchId, rankingAttribution);
+          }
         }
         setDetectedTopic(query.trim());
         setClinicalAnswer(clinicalAnswer || null);
@@ -211,7 +221,7 @@ export function useSearch() {
             setTopicGuideStatus('none');
           }
           setIntelligenceLoading(true);
-          void api.fetchSearchIntelligence(query, articles, enrichedFilters, { previousQueries })
+          void api.fetchSearchIntelligence(query, articles, enrichedFilters, { previousQueries, ranking })
             .then((intel) => {
               if (thisRequestId !== requestIdRef.current) return;
               setAgentGuidance(intel.agentGuidance || null);

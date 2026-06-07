@@ -39,6 +39,21 @@ services:
       retries: 5
     restart: unless-stopped
 
+  grobid:
+    image: grobid/grobid:0.8.0
+    container_name: medsearch-grobid
+    ports:
+      - "8070:8070"
+    environment:
+      - GROBID_OPTS=-Xmx4g
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8070/api/isalive"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
   web:
     build:
       context: .
@@ -51,6 +66,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      grobid:
+        condition: service_started
     environment:
       - NODE_ENV=production
       - APP_ROLE=web
@@ -79,6 +96,7 @@ services:
       - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3002}
       - AUTO_SEED_ON_SEARCH=false
       - PAYWALL_ENABLED=${PAYWALL_ENABLED:-false}
+      - GROBID_URL=http://grobid:8070
     volumes:
       - medsearch_data:/app/data
     restart: always
@@ -98,6 +116,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      grobid:
+        condition: service_started
     environment:
       - NODE_ENV=production
       - APP_ROLE=worker
@@ -116,6 +136,7 @@ services:
       - RESEND_API_KEY=${RESEND_API_KEY:-}
       - APP_URL=${APP_URL:-http://localhost:3002}
       - AUTO_SEED_ON_SEARCH=false
+      - GROBID_URL=http://grobid:8070
     command: ["node", "server/worker.js"]
     volumes:
       - medsearch_data:/app/data

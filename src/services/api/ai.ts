@@ -141,13 +141,13 @@ export class AiApi extends BaseApiClient {
 
   async getSynopsis(
     article: Article,
-    options?: { async?: boolean; pollIntervalMs?: number; maxAttempts?: number; topic?: string }
+    options?: { async?: boolean; pollIntervalMs?: number; maxAttempts?: number; topic?: string; trainingStage?: string }
   ): Promise<ArticleSynopsisResult> {
     const useAsync = options?.async ?? false;
     const response = await this.fetchWithSession(`${API_BASE}/api/ai/synopsis`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ article, async: useAsync, topic: options?.topic }),
+      body: JSON.stringify({ article, async: useAsync, topic: options?.topic, trainingStage: options?.trainingStage }),
     });
     if (!response.ok) await this.parseErrorResponse(response);
     const initial = (await response.json()) as ArticleSynopsisResult;
@@ -169,23 +169,56 @@ export class AiApi extends BaseApiClient {
     throw new Error('Synopsis generation timed out');
   }
 
+  async recordSynopsisFeedback(payload: {
+    article: Article;
+    articleUid?: string;
+    topic?: string | null;
+    trainingStage?: string | null;
+    provider?: string | null;
+    model?: string | null;
+    cached?: boolean | null;
+    feedbackType: 'helpful' | 'not_helpful';
+    reason?: string | null;
+  }): Promise<{ ok: boolean; feedbackType: 'helpful' | 'not_helpful'; cacheInvalidated?: boolean }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/ai/synopsis/feedback`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
   async synthesizeEvidence(
     topic: string,
     articles: Article[],
-    opts?: { async?: boolean }
+    opts?: { async?: boolean; pollIntervalMs?: number; maxAttempts?: number }
   ): Promise<SynthesisResult> {
+    const useAsync = opts?.async !== false;
     const response = await this.fetchWithSession(`${API_BASE}/api/ai/synthesize`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic, articles, async: opts?.async !== false }),
+      body: JSON.stringify({ topic, articles, async: useAsync }),
     });
     if (!response.ok) await this.parseErrorResponse(response);
     const data = await response.json() as SynthesisResult;
-    if (data.jobKey && (data.status === 'queued' || data.status === 'running')) {
-      const { registerPendingSynthesisJob } = await import('@utils/pendingSynthesisJobs');
-      registerPendingSynthesisJob({ jobKey: data.jobKey, topic: data.topic || topic, status: data.status });
+    if (data.synthesis && typeof data.synthesis === 'object') return data;
+    if (!useAsync || response.status === 200) return data;
+    const jobKey = data.jobKey;
+    if (!jobKey) return data;
+    const interval = opts?.pollIntervalMs ?? 1500;
+    const maxAttempts = opts?.maxAttempts ?? 120;
+    for (let i = 0; i < maxAttempts; i++) {
+      await new Promise((r) => setTimeout(r, interval));
+      const { job } = await this.getAiGenerationJob(jobKey);
+      if (job.status === 'failed') {
+        throw new Error(job.errorMessage || 'Synthesis job failed');
+      }
+      if (job.status === 'completed' && job.result && typeof job.result === 'object') {
+        return { ...(job.result as SynthesisResult), jobKey, status: 'completed' };
+      }
     }
-    return data;
+    throw new Error('Synthesis generation timed out');
   }
 
   synthesizeEvidenceStream(

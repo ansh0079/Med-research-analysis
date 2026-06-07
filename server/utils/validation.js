@@ -99,11 +99,17 @@ const schemas = {
         mode: Joi.string().valid('spaced_rep', 'standard').optional(),
         /** When set, each question must target one row from ai_generation_claims for this job. */
         claimJobKey: Joi.string().max(160).allow('', null).optional(),
+        teachingPoints: Joi.array().items(Joi.object().unknown(true)).max(20).optional(),
+        mcqAngles: Joi.array().items(Joi.string().max(500)).max(15).optional(),
     }),
     synopsis: Joi.object({
         article: Joi.object({ title: Joi.string().required() }).unknown(true).required(),
         provider: Joi.string().valid('auto', 'gemini', 'mistral').default('auto'),
         async: Joi.boolean().optional(),
+        topic: Joi.string().max(500).allow('', null).optional(),
+        trainingStage: Joi.string()
+            .valid('preclinical', 'early_clinical', 'finals', 'foundation_doctor')
+            .optional(),
     }),
     synthesize: Joi.object({
         articles: Joi.array().min(1).required(),
@@ -193,6 +199,9 @@ const schemas = {
             confidence: Joi.number().integer().min(1).max(5).optional(),
             sourceArticleUid: Joi.string().optional(),
             sourceArticleTitle: Joi.string().max(500).allow('', null).optional(),
+            decisionId: Joi.number().integer().optional(),
+            banditArmId: Joi.string().max(80).allow('', null).optional(),
+            searchId: Joi.number().integer().optional(),
             outlineNodeId: Joi.string().max(120).allow('', null).optional(),
             outlineLabel: Joi.string().max(300).allow('', null).optional(),
             claimKey: Joi.string().max(80).allow('', null).optional(),

@@ -1771,7 +1771,8 @@ describe('API Endpoints', () => {
             { title: 'B', abstract: 'Abstract two' }
           ],
           topic: 'diabetes',
-          provider: 'gemini'
+          provider: 'gemini',
+          async: false
         })
         .expect(200);
 

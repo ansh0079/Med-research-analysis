@@ -8,8 +8,9 @@
 const { Queue, Worker, QueueEvents } = require('bullmq');
 const logger = require('../config/logger');
 const cache = require('../../cache');
-const { getRequestId } = require('../utils/requestContext');
+const { getRequestId, runWithRequestContext } = require('../utils/requestContext');
 const { createRedisClient } = require('../config/redisClient');
+const { context, contextFromCarrier, injectTraceContext, withSpan } = require('../utils/tracing');
 
 const handlers = new Map();
 const queues = new Map();
@@ -104,8 +105,9 @@ class JobQueue {
 
     async _enqueueNamed(jobType, data, { priority = 0, label = jobType, requestId = null, wait = false } = {}) {
         const rid = requestId || getRequestId();
+        const traceCarrier = injectTraceContext({});
         if (this.bullEnabled && this.bullQueue) {
-            const job = await this.bullQueue.add(jobType, { ...data, requestId: rid }, { priority });
+            const job = await this.bullQueue.add(jobType, { ...data, requestId: rid, traceCarrier }, { priority });
             logger.debug({ queue: this.name, label, jobId: job.id, requestId: rid }, 'BullMQ job enqueued');
             if (wait) {
                 const events = queueEvents.get(this.name);
@@ -118,7 +120,7 @@ class JobQueue {
         if (!handler) {
             return Promise.reject(new Error(`No handler registered for ${this.name}:${jobType}`));
         }
-        return this._enqueueMemory(() => handler(data, { requestId: rid }), { priority, label, requestId: rid });
+        return this._enqueueMemory(() => context.with(contextFromCarrier(traceCarrier), () => handler(data, { requestId: rid })), { priority, label, requestId: rid });
     }
 
     _enqueueMemory(jobFn, { priority = 0, label = 'job', requestId = null } = {}) {
@@ -139,7 +141,11 @@ class JobQueue {
         const waitMs = Date.now() - enqueuedAt;
 
         Promise.resolve()
-            .then(() => jobFn())
+            .then(() => runWithRequestContext({ requestId }, () => withSpan('job.memory.process', {
+                'job.queue': this.name,
+                'job.label': label,
+                'job.wait_ms': waitMs,
+            }, () => jobFn())))
             .then((result) => {
                 this.stats.processed++;
                 logger.debug({ queue: this.name, label, waitMs, requestId }, 'Job completed');
@@ -192,7 +198,14 @@ function startWorkers(deps = {}) {
                 }
                 const log = logger.child({ queue: q.name, jobId: job.id, requestId: job.data?.requestId });
                 log.debug({ jobName: job.name }, 'Processing BullMQ job');
-                return handler(job.data, { logger: log, ...deps });
+                return runWithRequestContext({ requestId: job.data?.requestId }, () => (
+                    context.with(contextFromCarrier(job.data?.traceCarrier || {}), () => withSpan('job.bullmq.process', {
+                        'job.queue': q.name,
+                        'job.id': String(job.id),
+                        'job.name': job.name,
+                        'job.attempts_made': job.attemptsMade,
+                    }, () => handler(job.data, { logger: log, ...deps })))
+                ));
             },
             { connection: conn, concurrency: q.concurrency }
         );
@@ -258,6 +271,40 @@ async function getQueueStatus() {
     return result;
 }
 
+async function getRecurringFailedJobs({ limitPerQueue = 50, minCount = 2 } = {}) {
+    const all = [pdfQueue, embeddingQueue, digestQueue, aiGenerationQueue];
+    const grouped = new Map();
+    for (const q of all) {
+        if (!q.bullEnabled || !q.bullQueue) continue;
+        const failed = await q.bullQueue.getFailed(0, Math.max(1, Number(limitPerQueue || 50)) - 1).catch((err) => {
+            logger.debug({ err, queue: q.name }, 'Failed to read failed BullMQ jobs');
+            return [];
+        });
+        for (const job of failed) {
+            const key = `${q.name}:${job.name}:${String(job.failedReason || '').slice(0, 180)}`;
+            const prev = grouped.get(key) || {
+                queue: q.name,
+                jobName: job.name,
+                failedReason: job.failedReason || null,
+                count: 0,
+                latestFailedAt: null,
+                sampleJobIds: [],
+            };
+            prev.count += 1;
+            prev.latestFailedAt = Math.max(Number(prev.latestFailedAt || 0), Number(job.finishedOn || 0));
+            if (prev.sampleJobIds.length < 5) prev.sampleJobIds.push(String(job.id));
+            grouped.set(key, prev);
+        }
+    }
+    return [...grouped.values()]
+        .filter((item) => item.count >= Math.max(1, Number(minCount || 2)))
+        .sort((a, b) => b.count - a.count || b.latestFailedAt - a.latestFailedAt)
+        .map((item) => ({
+            ...item,
+            latestFailedAt: item.latestFailedAt ? new Date(item.latestFailedAt).toISOString() : null,
+        }));
+}
+
 module.exports = {
     JobQueue,
     pdfQueue,
@@ -268,5 +315,6 @@ module.exports = {
     startWorkers,
     stopWorkers,
     getQueueStatus,
+    getRecurringFailedJobs,
     useBullMQ,
 };

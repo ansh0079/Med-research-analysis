@@ -20,13 +20,14 @@ const { execSync } = require('child_process');
 // Config must load env first so all subsequent requires see populated process.env
 const { loadEnv, serverConfig, clientConfig } = require('./config');
 loadEnv();
+require('./server/config/otel').startOpenTelemetry();
 
 const logger = require('./server/config/logger');
 const db = require('./database');
 const cache = require('./cache');
 
 const { rateLimit, userRateLimit, setMetricsRegistry, createSlowDown } = require('./server/middleware/rateLimiter');
-const { optionalAuth, requireAuthJwt, requireVerifiedEmail, requireRole, requirePaidFeature, registerAuthRoutes } = require('./server/middleware/auth');
+const { optionalAuth, requireAuthJwt, requireAuthOrBeta, requireVerifiedEmail, requireRole, requirePaidFeature, registerAuthRoutes } = require('./server/middleware/auth');
 const { auditLog } = require('./server/middleware/audit');
 const { requireJson, validateAnalysisBody, validateBody, schemas } = require('./server/utils/validation');
 const { safeFetch } = require('./server/utils/fetch');
@@ -61,6 +62,14 @@ const { extendAiTimeout, DEFAULT_AI_TIMEOUT_MS } = require('./server/middleware/
 const { appendRagContext } = require('./server/synthesis-rag');
 const { enqueueArticleForEmbedding, getWorkerStatus } = require('./server/saved-embedding-worker');
 const { getQueueStatus } = require('./server/services/jobQueue');
+const {
+    getSloStatus,
+    recordSloEvent,
+    registerObservabilityMetrics,
+    updateQueueMetrics,
+} = require('./server/services/observabilityMetrics');
+const { runQueueFailureDigest } = require('./server/services/queueFailureDigestService');
+const { annotateActiveSpan } = require('./server/utils/tracing');
 const { enqueuePdfPreindex: _enqueuePdfPreindex } = require('./server/services/pdfPreindexService');
 
 // ==========================================
@@ -210,6 +219,7 @@ logger.info({
 const metricsRegistry = new client.Registry();
 client.collectDefaultMetrics({ register: metricsRegistry });
 setMetricsRegistry(metricsRegistry);
+registerObservabilityMetrics(metricsRegistry, client);
 const httpRequestCounter = new client.Counter({
     name: 'medsearch_http_requests_total',
     help: 'Total HTTP requests',
@@ -274,7 +284,7 @@ app.use(
 app.use(cors({
     origin: allowedOrigins,
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Session-Id', 'X-Requested-With'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Session-Id', 'X-Requested-With', 'traceparent', 'baggage'],
     exposedHeaders: [
         'X-Request-Id',
         'X-Session-Id',
@@ -346,6 +356,13 @@ app.use((req, res, next) => {
     runWithRequestContext({ requestId: req.id }, () => next());
 });
 
+app.use((req, _res, next) => {
+    annotateActiveSpan({
+        'request.id': req.id,
+    });
+    next();
+});
+
 // Prometheus metrics per request
 app.use((req, res, next) => {
     const start = process.hrtime.bigint();
@@ -355,6 +372,9 @@ app.use((req, res, next) => {
         const labels = { method: req.method, route: String(route), status_code: String(res.statusCode) };
         httpRequestCounter.inc(labels);
         httpRequestDuration.observe(labels, durationSec);
+        if (req.method === 'GET' && req.path === '/api/search') {
+            recordSloEvent('search_latency_p95', durationSec <= 3, durationSec);
+        }
     });
     next();
 });
@@ -365,6 +385,7 @@ app.use(async (req, res, next) => {
     if (!sessionId) sessionId = crypto.randomUUID();
     res.setHeader('X-Session-Id', sessionId);
     req.sessionId = sessionId;
+    annotateActiveSpan({ 'session.id': sessionId });
 
     const existingSession = await cache.getSession(sessionId);
     if (!existingSession) {
@@ -419,7 +440,7 @@ const { requireMonthlyLimit, requireDailySearchLimit } = require('./server/middl
 
 const routeDeps = {
     serverConfig, clientConfig, db, cache, rateLimit, userRateLimit,
-    requireJson, requireAuthJwt, requireVerifiedEmail, requireRole, requirePaidFeature,
+    requireJson, requireAuthJwt, requireAuthOrBeta, requireVerifiedEmail, requireRole, requirePaidFeature,
     requireMonthlyLimit, requireDailySearchLimit,
     validateAnalysisBody, validateBody, schemas,
     metricsRegistry,
@@ -469,7 +490,17 @@ app.use('/api/teams', teamRoutes);
 
 // Queue status (admin only)
 app.get('/api/admin/queues', requireAuthJwt, requireRole('admin'), async (req, res) => {
-    res.json(await getQueueStatus());
+    const status = await getQueueStatus();
+    updateQueueMetrics(status);
+    res.json(status);
+});
+
+app.get('/api/admin/queues/failures', requireAuthJwt, requireRole('admin'), async (req, res) => {
+    res.json(await runQueueFailureDigest({ log: req.log || logger }));
+});
+
+app.get('/api/admin/slo-status', requireAuthJwt, requireRole('admin'), async (req, res) => {
+    res.json(getSloStatus());
 });
 
 // Example: Admin route for clearing cache, protected by RBAC

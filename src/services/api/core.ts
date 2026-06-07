@@ -76,9 +76,14 @@ export class BaseApiClient {
   private cache = new SimpleLRUCache<unknown>(100, 5 * 60 * 1000);
   private sessionId: string | null = null;
   private requestId: string | null = null;
-  private clientConfig: { features?: { vectorSearch?: boolean } } | null = null;
+  private clientConfig: {
+    features?: { vectorSearch?: boolean; betaMode?: boolean };
+    betaMode?: boolean;
+    betaOpenAccess?: boolean;
+  } | null = null;
   private clientConfigFetchedAt = 0;
   private readonly clientConfigTtlMs = 60_000;
+  private refreshInFlight: Promise<boolean> | null = null;
 
   constructor() {
     try {
@@ -105,7 +110,11 @@ export class BaseApiClient {
     return this.requestId;
   }
 
-  async getClientConfig(): Promise<{ features?: { vectorSearch?: boolean } }> {
+  async getClientConfig(): Promise<{
+    features?: { vectorSearch?: boolean; betaMode?: boolean };
+    betaMode?: boolean;
+    betaOpenAccess?: boolean;
+  }> {
     if (this.clientConfig && Date.now() - this.clientConfigFetchedAt < this.clientConfigTtlMs) {
       return this.clientConfig;
     }
@@ -119,6 +128,40 @@ export class BaseApiClient {
     return data;
   }
 
+  private shouldAttemptRefresh(url: string, response: Response): boolean {
+    if (response.status !== 401) return false;
+    if (url.includes('/api/auth/login')
+      || url.includes('/api/auth/register')
+      || url.includes('/api/auth/refresh')
+      || url.includes('/api/auth/logout')) {
+      return false;
+    }
+    return true;
+  }
+
+  private async refreshAccessToken(): Promise<boolean> {
+    if (this.refreshInFlight) return this.refreshInFlight;
+    this.refreshInFlight = (async () => {
+      try {
+        const response = await fetch(`${API_BASE}/api/auth/refresh`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Request-Id': this.ensureRequestId(),
+          },
+          credentials: 'include',
+        });
+        return response.ok;
+      } catch {
+        return false;
+      } finally {
+        this.refreshInFlight = null;
+      }
+    })();
+    return this.refreshInFlight;
+  }
+
   protected async fetchWithSession(url: string, options: RequestInit = {}): Promise<Response> {
     const headers = new Headers(options.headers);
     if (this.sessionId) {
@@ -127,7 +170,14 @@ export class BaseApiClient {
     headers.set('X-Request-Id', this.ensureRequestId());
     // Required by the server-side CSRF origin check on state-changing requests
     headers.set('X-Requested-With', 'XMLHttpRequest');
-    const response = await fetch(url, { ...options, headers, credentials: 'include' });
+    let response = await fetch(url, { ...options, headers, credentials: 'include' });
+
+    if (this.shouldAttemptRefresh(url, response)) {
+      const refreshed = await this.refreshAccessToken();
+      if (refreshed) {
+        response = await fetch(url, { ...options, headers, credentials: 'include' });
+      }
+    }
     const clonedResponse = response.clone();
 
     const serverRequestId = response.headers.get('X-Request-Id');

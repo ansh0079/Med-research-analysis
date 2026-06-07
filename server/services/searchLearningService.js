@@ -1,5 +1,7 @@
 const logger = require('../config/logger');
 const { buildLearningTrajectorySection } = require('./learnerStateService');
+const { selectSearchRankingArm, SEARCH_RANKING_ARMS } = require('./personalizationBanditService');
+const { loadMisconceptionBoostContext, misconceptionArticleBoost } = require('./misconceptionSearchBoostService');
 
 function normalizeUid(value) {
     return String(value || '').trim().toLowerCase();
@@ -141,6 +143,22 @@ async function buildSearchLearningContext({ db, userId, query, sessionId, previo
                 context.shouldPersonalize = true;
             }
         }
+        if (userId && typeof db.listSynopsisFeedbackForUser === 'function') {
+            const synopsisRows = await db.listSynopsisFeedbackForUser(userId, { limit: 250, days: 120 });
+            for (const row of Array.isArray(synopsisRows) ? synopsisRows : []) {
+                const uid = normalizeUid(row.article_uid || row.articleUid);
+                if (!uid) continue;
+                if (row.feedback_type === 'helpful' || row.feedbackType === 'helpful') {
+                    context.helpfulArticleUids.set(uid, (context.helpfulArticleUids.get(uid) || 0) + 1);
+                }
+                if (row.feedback_type === 'not_helpful' || row.feedbackType === 'not_helpful') {
+                    context.notHelpfulArticleUids.set(uid, (context.notHelpfulArticleUids.get(uid) || 0) + 1);
+                }
+            }
+            if (context.helpfulArticleUids.size > 0 || context.notHelpfulArticleUids.size > 0) {
+                context.shouldPersonalize = true;
+            }
+        }
         if (userId && typeof db.getUserInteractions === 'function') {
             const rows = await db.getUserInteractions(userId, { limit: 250, days: 60 });
             for (const row of Array.isArray(rows) ? rows : []) {
@@ -157,6 +175,7 @@ async function buildSearchLearningContext({ db, userId, query, sessionId, previo
                 const missRows = await db.getQuizAttempts({ userId, topic: query, limit: 300, offset: 0 });
                 const missedPaperUids = new Map();
                 const cutoff = Date.now() - 90 * 24 * 60 * 60 * 1000;
+                let hasDangerousMisconception = false;
                 for (const row of Array.isArray(missRows) ? missRows : []) {
                     const uid = normalizeUid(row.source_article_uid || row.sourceArticleUid);
                     if (!uid) continue;
@@ -164,15 +183,21 @@ async function buildSearchLearningContext({ db, userId, query, sessionId, previo
                     if (ts < cutoff) continue;
                     if (row.is_correct === 0 || row.is_correct === false || row.isCorrect === false) {
                         missedPaperUids.set(uid, (missedPaperUids.get(uid) || 0) + 1);
+                        // Confidence >= 4 on a wrong answer = dangerous misconception:
+                        // user is confidently incorrect, highest-risk calibration state.
+                        if (Number(row.confidence || 0) >= 4) hasDangerousMisconception = true;
                     }
                 }
                 context.missedPaperUids = missedPaperUids;
+                context.hasDangerousMisconception = hasDangerousMisconception;
                 if (missedPaperUids.size > 0) context.shouldPersonalize = true;
             } catch {
                 context.missedPaperUids = new Map();
+                context.hasDangerousMisconception = false;
             }
         } else {
             context.missedPaperUids = new Map();
+            context.hasDangerousMisconception = false;
         }
 
         if (sessionId && typeof db.getRecentImpressions === 'function') {
@@ -217,6 +242,30 @@ async function buildSearchLearningContext({ db, userId, query, sessionId, previo
         if (previousQueries.length > 0 || context.trajectoryTerms.size > 0) {
             context.shouldPersonalize = true;
         }
+
+        if (userId) {
+            context.misconceptionBoost = await loadMisconceptionBoostContext(db, userId, query);
+            if (context.misconceptionBoost?.correctiveArticleUids?.size > 0
+                || context.misconceptionBoost?.misconceptionPhrases?.length > 0) {
+                context.shouldPersonalize = true;
+            }
+            context.banditSelection = await selectSearchRankingArm(db, userId).catch((err) => {
+                logger.debug({ err }, 'selectSearchRankingArm failed');
+                return { armId: 'heuristic_default', weights: SEARCH_RANKING_ARMS.heuristic_default };
+            });
+            // Safety override: dangerous misconception = user is confidently wrong on this topic.
+            // Bypass the bandit and force misconception_heavy arm to surface contradicting evidence first.
+            if (context.hasDangerousMisconception) {
+                context.banditSelection = {
+                    ...context.banditSelection,
+                    armId: 'misconception_heavy',
+                    weights: SEARCH_RANKING_ARMS.misconception_heavy,
+                    calibrationOverride: 'dangerous_misconception',
+                };
+            }
+        } else {
+            context.banditSelection = { armId: 'heuristic_default', weights: SEARCH_RANKING_ARMS.heuristic_default };
+        }
         return context;
     } catch {
         return learningContextFromMemory(null);
@@ -240,12 +289,17 @@ function publicLearningContext(context) {
         profileWeakTopicCount: context?.profileWeakTopics?.length || 0,
         hasTrajectoryHints: Boolean(context?.trajectoryHint),
         personalized: Boolean(context?.shouldPersonalize),
+        banditArmId: context?.banditSelection?.armId || null,
+        misconceptionTargets: context?.misconceptionBoost?.correctiveArticleUids?.size || 0,
+        calibrationOverride: context?.banditSelection?.calibrationOverride || null,
+        hasDangerousMisconception: Boolean(context?.hasDangerousMisconception),
     };
 }
 
 function articleLearningBoost(article, context) {
     if (!context?.shouldPersonalize) return 0;
 
+    const weights = context.banditSelection?.weights || SEARCH_RANKING_ARMS.heuristic_default;
     let boost = 0;
     for (const uid of articleUidCandidates(article)) {
         const preferredWeight = context.preferredArticleUids?.get(uid) || 0;
@@ -255,22 +309,25 @@ function articleLearningBoost(article, context) {
         const interactionScore = context.interactionArticleUids?.get(uid) || 0;
         const impressionWeight = context.impressionArticleUids?.get(uid) || 0;
         if (preferredWeight > 0) boost = Math.max(boost, Math.min(1.5, 0.75 + preferredWeight * 0.15));
-        if (savedWeight > 0) boost = Math.max(boost, Math.min(2.5, 1.25 + savedWeight * 0.2));
-        if (helpfulWeight > 0) boost = Math.max(boost, Math.min(2, 1 + helpfulWeight * 0.25));
+        if (savedWeight > 0) boost = Math.max(boost, Math.min(2.5, (1.25 + savedWeight * 0.2) * weights.saved));
+        if (helpfulWeight > 0) boost = Math.max(boost, Math.min(2, (1 + helpfulWeight * 0.25) * weights.helpful));
         if (interactionScore > 0) boost = Math.max(boost, Math.min(1.4, 0.4 + interactionScore * 0.18));
         if (notHelpfulWeight > 0) boost = Math.min(boost, -Math.min(3, 1.5 + notHelpfulWeight * 0.35));
-        if (impressionWeight > 0) boost = Math.max(boost, Math.min(1.2, 0.3 + impressionWeight * 0.4));
+        if (impressionWeight > 0) boost = Math.max(boost, Math.min(1.2, (0.3 + impressionWeight * 0.4) * weights.impression));
         if (impressionWeight < 0) boost = Math.min(boost, Math.max(-2, impressionWeight * 0.8));
         const missCount = context.missedPaperUids?.get(uid) || 0;
-        if (missCount > 0) boost = Math.max(boost, Math.min(1.8, 0.6 + missCount * 0.3));
-        if (context.weakArticleUids?.has(uid)) boost = Math.max(boost, Math.min(1.4, 0.5 + boost));
+        if (missCount > 0) boost = Math.max(boost, Math.min(1.8, (0.6 + missCount * 0.3) * weights.missed));
+        if (context.weakArticleUids?.has(uid)) boost = Math.max(boost, Math.min(1.4, (0.5 + boost) * weights.weak));
     }
+
+    const misconceptionBoost = misconceptionArticleBoost(article, context.misconceptionBoost, weights);
+    if (misconceptionBoost > 0) boost = Math.max(boost, misconceptionBoost);
 
     const blob = articleTextBlob(article);
     if (blob && context.trajectoryTerms?.size) {
         for (const term of context.trajectoryTerms) {
             if (blob.includes(term)) {
-                boost = Math.max(boost, 0.35);
+                boost = Math.max(boost, 0.35 * weights.trajectory);
                 break;
             }
         }
@@ -279,7 +336,7 @@ function articleLearningBoost(article, context) {
         for (const wt of context.profileWeakTopics) {
             const needle = String(wt || '').toLowerCase().trim();
             if (needle.length >= 4 && blob.includes(needle)) {
-                boost = Math.max(boost, 0.28);
+                boost = Math.max(boost, 0.28 * weights.weak);
                 break;
             }
         }
@@ -287,32 +344,84 @@ function articleLearningBoost(article, context) {
     return boost;
 }
 
-function applySearchLearningBoost(articles, context) {
+// How many compositeScore points one unit of boost is worth.
+// With max boost ~2.5 and typical compositeScore range ~20–150, a scale of 20
+// lets a maximally-boosted article overtake the top evidence result when warranted.
+const BOOST_SCORE_SCALE = 20;
+
+function buildCompositeScoreMap(bouquetRanking) {
+    const map = new Map();
+    for (const row of Array.isArray(bouquetRanking) ? bouquetRanking : []) {
+        const score = Number(row?.compositeScore || 0);
+        if (!score) continue;
+        for (const key of articleUidCandidates(row)) {
+            if (!map.has(key)) map.set(key, score);
+        }
+    }
+    return map;
+}
+
+function applySearchLearningBoost(articles, context, bouquetRanking = []) {
     if (!Array.isArray(articles) || articles.length < 2 || !context?.shouldPersonalize) {
         return articles;
     }
 
-    return articles
-        .map((article, index) => ({
-            article,
-            index,
-            boost: articleLearningBoost(article, context),
-        }))
-        .sort((a, b) => {
-            const rankA = a.index - a.boost;
-            const rankB = b.index - b.boost;
-            if (rankA !== rankB) return rankA - rankB;
-            return a.index - b.index;
+    const compositeScores = buildCompositeScoreMap(bouquetRanking);
+    const N = articles.length;
+
+    const ranked = articles
+        .map((article, index) => {
+            const boost = articleLearningBoost(article, context);
+            let baseScore = null;
+            let missCount = 0;
+            for (const key of articleUidCandidates(article)) {
+                const s = compositeScores.get(key);
+                if (s != null && baseScore === null) baseScore = s;
+                const mc = context.missedPaperUids?.get(key) || 0;
+                if (mc > missCount) missCount = mc;
+            }
+            // When compositeScore is available use it so boosts can create large rank jumps.
+            // Fall back to (N - index) when there is no bouquet ranking (e.g. in unit tests).
+            const score = baseScore !== null
+                ? baseScore + boost * BOOST_SCORE_SCALE
+                : (N - index) + boost;
+            return { article, index, boost, score, missCount };
         })
-        .map(({ article, boost }) => (boost !== 0 ? { ...article, _learningBoost: Number(boost.toFixed(3)) } : article));
+        .sort((a, b) => {
+            if (b.score !== a.score) return b.score - a.score;
+            return a.index - b.index; // stable tiebreak: preserve evidence order
+        });
+
+    const result = ranked.map(({ article, boost, missCount }) => (
+        boost !== 0
+            ? {
+                ...article,
+                _learningBoost: Number(boost.toFixed(3)),
+                _banditArmId: context.banditSelection?.armId || null,
+                ...(missCount > 0 ? { _missedQuizCount: missCount } : {}),
+            }
+            : article
+    ));
+
+    context._banditMeta = {
+        armId: context.banditSelection?.armId || 'heuristic_default',
+        scopeKey: context.banditSelection?.scopeKey || 'global',
+        memoryTier: context.memoryTier || 'none',
+        sampled: context.banditSelection?.sampled ?? null,
+        misconceptionBoostCount: context.misconceptionBoost?.correctiveArticleUids?.size || 0,
+    };
+
+    return result;
 }
 
 module.exports = {
     applySearchLearningBoost,
     articleLearningBoost,
     articleUidCandidates,
+    buildCompositeScoreMap,
     buildSearchLearningContext,
     collectTrajectoryTerms,
     publicLearningContext,
     interactionWeight,
+    BOOST_SCORE_SCALE,
 };

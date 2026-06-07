@@ -13,9 +13,11 @@ const { inferMisconceptionCategory } = require('../services/misconceptionCategor
 const { recordMasterySnapshot, getLearningVelocity } = require('../services/learningVelocityService');
 const { updateInferredMisconceptionsForTopic } = require('../services/misconceptionInferenceService');
 const { analyzeQuizErrorPatterns } = require('../services/quizErrorPatternService');
+const { attributeQuizAttemptRewards, attributeRecommendationFollowThrough, getQuizAttributionCoverage } = require('../services/searchLearningOutcomeService');
 
 function registerLearningRoutes(app, deps) {
-    const { db, requireAuthJwt, requireVerifiedEmail, rateLimit, serverConfig, fetch: fetchImpl } = deps;
+    const { db, requireAuthJwt, requireAuthOrBeta, requireVerifiedEmail, rateLimit, serverConfig, fetch: fetchImpl } = deps;
+    const requireQuizAuth = requireAuthOrBeta || requireAuthJwt;
 
     // ==========================================
     // Mastery scoring utilities
@@ -350,6 +352,25 @@ function registerLearningRoutes(app, deps) {
             res.json({ claimKey, count: attempts.length, attempts });
         } catch (error) {
             req.log.error({ err: error }, 'Claim quiz attempts fetch error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    app.get('/api/learning/quiz-attribution-coverage', requireAuthJwt, rateLimit(30, 60), async (req, res) => {
+        try {
+            const days = Math.min(Math.max(parseInt(String(req.query.days || '7'), 10) || 7, 1), 60);
+            const scopeUserId = req.query.scope === 'global' ? null : req.user.id;
+            const coverage = await getQuizAttributionCoverage(db, { days, userId: scopeUserId });
+            res.json(coverage || {
+                days,
+                totalAttempts: 0,
+                attemptsWithSource: 0,
+                attributedAttempts: 0,
+                sourceCoverageRate: null,
+                attributionRate: null,
+            });
+        } catch (error) {
+            req.log.error({ err: error }, 'Quiz attribution coverage error');
             res.status(500).json({ error: 'Internal Server Error' });
         }
     });
@@ -692,9 +713,56 @@ function registerLearningRoutes(app, deps) {
     // Quiz Attempts
     // ==========================================
 
-    app.post('/api/learning/quiz-attempt', limitBodySize(256 * 1024), requireJson, requireAuthJwt, requireVerifiedEmail, rateLimit(60, 60), validateBody(schemas.quizAttempt), async (req, res) => {
+    app.post('/api/learning/quiz-attempt', limitBodySize(256 * 1024), requireJson, requireQuizAuth, requireVerifiedEmail, rateLimit(60, 60), validateBody(schemas.quizAttempt), async (req, res) => {
         try {
             const { topic, attempts, studyRunId, curriculumTopicId } = req.body;
+
+            if (req.betaAnonymous) {
+                const normalizedTopic = db.normalizeTopic(topic);
+                const attemptsWithJudgement = attempts.map((attempt) => {
+                    const claimKey = normalizeAttemptClaimKey(attempt);
+                    const computedIsCorrect = String(attempt.userAnswer || '').trim().toLowerCase()
+                        === String(attempt.correctAnswer || '').trim().toLowerCase();
+                    return {
+                        ...attempt,
+                        claimKey,
+                        isCorrect: computedIsCorrect,
+                        clientReportedIsCorrect: attempt.isCorrect,
+                        ...inferEvidenceJudgement({ ...attempt, claimKey, isCorrect: computedIsCorrect }),
+                    };
+                });
+                for (const attempt of attemptsWithJudgement) {
+                    void recordLearningEventSafe({
+                        userId: null,
+                        eventType: 'mcq_answered',
+                        topic,
+                        claimKey: attempt.claimKey || null,
+                        sourceType: 'quiz_attempt',
+                        sourceId: null,
+                        payload: {
+                            questionType: attempt.questionType,
+                            isCorrect: Boolean(attempt.isCorrect),
+                            confidence: attempt.confidence ?? null,
+                            reasoningTags: attempt.reasoningTags || [],
+                            promptVariant: attempt.promptVariant || null,
+                            sessionId: req.sessionId,
+                            betaAnonymous: true,
+                        },
+                    });
+                }
+                void attributeQuizAttemptRewards(db, null, attemptsWithJudgement, topic, { sessionId: req.sessionId })
+                    .catch((err) => { logger.warn({ err }, 'attributeQuizAttemptRewards (beta) failed'); });
+                return res.json({
+                    saved: attempts.length,
+                    mastery: { overall: 0, byType: {} },
+                    betaAnonymous: true,
+                });
+            }
+
+            if (!req.user?.id) {
+                return res.status(401).json({ error: 'Authorization required' });
+            }
+
             const userId = req.user.id;
             let run = null;
             if (studyRunId) {
@@ -719,6 +787,7 @@ function registerLearningRoutes(app, deps) {
             });
             for (const attempt of attemptsWithJudgement) {
                 const savedAttempt = await db.createQuizAttempt({ ...attempt, userId, topic, studyRunId: run?.id || null });
+                attempt.id = savedAttempt?.id || null;
 
                 if (attempt.clientReportedIsCorrect !== undefined && attempt.clientReportedIsCorrect !== attempt.isCorrect) {
                     void recordLearningEventSafe({
@@ -910,6 +979,15 @@ function registerLearningRoutes(app, deps) {
                 currentLearningMode: profile?.trainingStage || 'student',
                 difficultyRecentlyChanged: Boolean(difficultyCalibration?.changed),
             });
+
+            void attributeQuizAttemptRewards(db, userId, attemptsWithJudgement, topic)
+                .catch((err) => { logger.warn({ err }, 'attributeQuizAttemptRewards failed'); });
+
+            void attributeRecommendationFollowThrough(db, userId, {
+                topic,
+                normalizedTopic,
+                eventType: 'quiz_session',
+            }).catch((err) => { logger.warn({ err }, 'attributeRecommendationFollowThrough failed'); });
 
             const errorPatterns = analyzeQuizErrorPatterns(attemptsWithJudgement, { topic });
             if (errorPatterns.hasPatterns && db.recordLearningEvent) {
@@ -2000,6 +2078,26 @@ Return ONLY valid JSON:
                 sourceId: sourceId || null,
                 payload: payload || null,
             });
+
+            const followThroughType = (() => {
+                if (eventType === 'recommendation_clicked') {
+                    const action = payload?.action;
+                    if (action === 'case') return 'case_open';
+                    if (action === 'quiz') return 'recommendation_clicked';
+                    return 'topic_open';
+                }
+                if (eventType === 'topic_open') return 'topic_open';
+                if (eventType === 'case_open') return 'case_open';
+                return null;
+            })();
+            if (followThroughType && topic) {
+                void attributeRecommendationFollowThrough(db, req.user.id, {
+                    topic,
+                    normalizedTopic: typeof db.normalizeTopic === 'function' ? db.normalizeTopic(topic) : topic,
+                    eventType: followThroughType,
+                }).catch((err) => { logger.warn({ err }, 'attributeRecommendationFollowThrough failed'); });
+            }
+
             res.json({ ok: true });
         } catch (error) {
             req.log.error({ err: error }, 'Learning event log error');

@@ -16,6 +16,9 @@ const logger = require('../config/logger');
 const { pdfQueue } = require('./jobQueue');
 
 const PDF_CACHE_TTL_SECONDS = 24 * 60 * 60;  // 24 hours
+
+// In-process guard for environments without Redis (local dev / unit tests).
+// Production uses Redis SET NX below for cross-process dedup across PM2 cluster workers.
 const DEDUPE = new Set();
 
 /** Build a stable cache key for a given article. */
@@ -64,12 +67,29 @@ async function getCachedPdf(article, cache, db = null) {
 /**
  * Enqueue a background PDF pre-index job for an article.
  * Safe to call multiple times — deduplicates by article ID.
+ * When Redis is available (production), uses SET NX with a 5-minute TTL so that
+ * all PM2 cluster workers share the dedup guard. Falls back to an in-process Set
+ * for local dev / non-Redis environments.
  */
-function enqueuePdfPreindex(article, { cache, serverConfig, fetch: fetchImpl, db = null } = {}) {
+async function enqueuePdfPreindex(article, { cache, serverConfig, fetch: fetchImpl, db = null } = {}) {
     if (!article || (!article.doi && !article.pmid && !article.pmcid)) return;
     const id = article.doi || article.pmid || article.uid;
-    if (!id || DEDUPE.has(id)) return;
-    DEDUPE.add(id);
+    if (!id) return;
+
+    const redis = cache?.redis;
+    if (redis) {
+        try {
+            // Atomic cross-process dedup: only the first worker to SET NX proceeds.
+            // 5-minute TTL allows re-enqueueing after transient failures.
+            const acquired = await redis.set(`pdf:dedup:${id}`, '1', 'EX', 300, 'NX');
+            if (!acquired) return;
+        } catch {
+            // Redis unavailable — fall through without cross-process dedup
+        }
+    } else {
+        if (DEDUPE.has(id)) return;
+        DEDUPE.add(id);
+    }
 
     pdfQueue.enqueueNamed(
         'preindex',
@@ -77,9 +97,9 @@ function enqueuePdfPreindex(article, { cache, serverConfig, fetch: fetchImpl, db
         { label: `pdf-preindex:${String(id).slice(0, 40)}`, priority: -1 }
     ).catch((err) => {
         logger.warn({ err }, 'pdf preindex enqueue failed');
-        DEDUPE.delete(id);
+        if (!redis) DEDUPE.delete(id);
     }).finally(() => {
-        DEDUPE.delete(id);
+        if (!redis) DEDUPE.delete(id);
     });
 }
 
@@ -108,13 +128,23 @@ async function enrichWithCachedFullText(articles = [], cache, db = null) {
 /**
  * Queue open-access full-text indexing for search/synopsis hits (deduped per article id).
  */
-function enqueuePdfPreindexForArticles(articles = [], deps = {}) {
+async function enqueuePdfPreindexForArticles(articles = [], deps = {}) {
     if (!Array.isArray(articles) || !articles.length) return;
-    const free = articles.filter((a) => a && (a.isFree || a.pmcid));
-    const candidates = (free.length ? free : articles).slice(0, 6);
-    for (const article of candidates) {
-        enqueuePdfPreindex(article, deps);
-    }
+    const free = articles.filter((a) => a && (a.isFree || a.pmcid || a.openAccess || a.openAccessUrl || a.fullTextUrl));
+    const seen = new Set();
+    const candidates = [...free, ...articles]
+        .filter((article) => {
+            const key = String(article?.doi || article?.pmid || article?.pmcid || article?.uid || '').toLowerCase();
+            if (!key || seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        })
+        .slice(0, 6);
+    await Promise.all(
+        candidates.map((article) => enqueuePdfPreindex(article, deps).catch((err) => {
+            logger.warn({ err }, 'enqueuePdfPreindexForArticles: enqueue failed');
+        }))
+    );
 }
 
 module.exports = {

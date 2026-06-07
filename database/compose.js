@@ -18,6 +18,7 @@ const MIXIN_LAYERS = [
     ['m13-curriculum-seed', require('./mixins/m13-curriculum-seed')],
     ['m14-users-teams', require('./mixins/m14-users-teams')],
     ['m15-topic-crosslinks', require('./mixins/m15-topic-crosslinks')],
+    ['m16-personalization-bandit', require('./mixins/m16-personalization-bandit')],
 ];
 
 const ALLOWED_REPLACEMENTS = {

@@ -81,22 +81,31 @@ async function generateLiveClinicalAnswer({ topic, articles = [], guidelines = [
     if (topArticles.length === 0) return null;
     const ai = createAiService({ serverConfig, fetchImpl });
     const prompt = buildSynthesisPrompt(topArticles, topic, guidelines, { previousQueries, trainingStage, sessionDepth });
-    let rawText;
+    let synthesis;
     let provider;
     let model;
     if (serverConfig?.keys?.gemini) {
         provider = 'gemini';
         model = PINNED_MODELS.geminiQuality;
-        rawText = await ai.callGemini(prompt, model, { temperature: 0.2 });
+        synthesis = await ai.callGeminiStructured(prompt, model, {
+            temperature: 0.2,
+            allowBudgetSkip: true,
+            usage: { operation: 'live_clinical_answer', topic },
+        });
     } else if (serverConfig?.keys?.mistral) {
         provider = 'mistral';
         model = PINNED_MODELS.mistral;
-        rawText = await ai.callMistralAI(prompt, model, { temperature: 0.2 });
+        synthesis = await ai.callMistralStructured(prompt, model, {
+            temperature: 0.2,
+            allowBudgetSkip: true,
+            usage: { operation: 'live_clinical_answer', topic },
+        });
     } else {
         return { clinicalAnswer: null, synthesis: null, provider: null, model: null };
     }
-    const jsonMatch = String(rawText || '').match(/\{[\s\S]*\}/);
-    const synthesis = JSON.parse(jsonMatch ? jsonMatch[0] : rawText);
+    if (!synthesis) {
+        return { clinicalAnswer: null, synthesis: null, provider, model, budgetSkipped: true };
+    }
     return {
         clinicalAnswer: synthesisToClinicalAnswer(synthesis),
         synthesis,
@@ -107,6 +116,26 @@ async function generateLiveClinicalAnswer({ topic, articles = [], guidelines = [
             sourceCount: topArticles.length,
         },
     };
+}
+
+function slimArticlesForConsensusJob(articles = []) {
+    return articles.slice(0, 10).map((a) => ({
+        uid: a.uid,
+        title: a.title,
+        abstract: a.abstract,
+        doi: a.doi,
+        pmid: a.pmid,
+        pmcid: a.pmcid,
+        pubdate: a.pubdate,
+        year: a.year,
+        source: a.source || a.journal,
+        journal: a.journal,
+        isFree: a.isFree,
+        openAccess: a.openAccess,
+        fullTextUrl: a.fullTextUrl,
+        openAccessUrl: a.openAccessUrl,
+        _impact: a._impact,
+    }));
 }
 
 function consensusPlaceholder({ topic, articles = [], jobKey, status = 'queued', errorMessage = null }) {
@@ -156,50 +185,17 @@ function consensusPlaceholder({ topic, articles = [], jobKey, status = 'queued',
     };
 }
 
-function enqueueConsensusJob({ db, topic, articles, serverConfig, fetchImpl, cache, logger }) {
-    const jobKey = consensusJobKey(topic, articles);
+function enqueueConsensusJob({ db, jobKey, serverConfig, fetchImpl, cache, logger }) {
     if (ENQUEUED_KEYS.has(jobKey)) return jobKey;
     ENQUEUED_KEYS.add(jobKey);
 
-    aiGenerationQueue.enqueue(async () => {
-        try {
-            await db.markAiGenerationJobRunning(jobKey);
-            // Pre-enrich to avoid double PDF cache hits between search and synopsis
-            const freeArticles = await enrichWithCachedFullText(selectFreeEvidence(articles, 8), cache, db);
-            const abstractArticles = selectAbstractEvidence(articles, 8);
-            const result = await generateConsensusSynopsis({
-                topic,
-                articles,
-                serverConfig,
-                fetchImpl,
-                cache,
-                db,
-                limit: 8,
-                abstractLimit: 8,
-                preEnrichedArticles: { freeArticles, abstractArticles },
-            });
-            await completeJobAndClaims(db, jobKey, 'consensus_synopsis', {
-                resultPayload: { ...result, jobKey },
-                provider: result.provider || null,
-                model: result.model || (result.provider === 'gemini' ? PINNED_MODELS.geminiQuality : result.provider === 'mistral' ? PINNED_MODELS.mistral : null),
-                auditPayload: {
-                    citationValidation: result.citationValidation || null,
-                    freePaperCount: result.freePaperCount,
-                    abstractPaperCount: result.abstractPaperCount,
-                    fullTextUsed: (result.includedArticles || []).some((a) => a.fullTextIndexed),
-                    humanReviewStatus: 'none',
-                    generatedAt: new Date().toISOString(),
-                },
-            });
-            return result;
-        } catch (err) {
-            await db.failAiGenerationJob(jobKey, err.message).catch((err) => { logger.warn({ err }, 'failAiGenerationJob failed'); return null; });
-            throw err;
-        } finally {
-            ENQUEUED_KEYS.delete(jobKey);
-        }
-    }, { label: `ai-consensus:${String(topic || '').slice(0, 40)}`, priority: 0 }).catch((err) => {
-        logger?.warn?.({ err, topic }, 'Consensus AI generation job failed');
+    aiGenerationQueue.enqueueNamed('process', { jobKey }, {
+        label: `ai-consensus:${String(jobKey).slice(0, 24)}`,
+        priority: 1,
+    }).catch((err) => {
+        logger?.warn?.({ err, jobKey }, 'Consensus AI generation job failed');
+    }).finally(() => {
+        ENQUEUED_KEYS.delete(jobKey);
     });
 
     return jobKey;
@@ -255,10 +251,16 @@ async function getOrEnqueueConsensusSynopsis({ db, topic, articles = [], serverC
             jobType: 'consensus_synopsis',
             topic,
             inputHash: stableHash({ topic, articleUids: articles.map((a) => a.uid || a.pmid || a.doi).filter(Boolean) }),
-            inputPayload: { topic, articleUids: articles.map((a) => a.uid || a.pmid || a.doi).filter(Boolean).slice(0, 10) },
+            inputPayload: {
+                topic,
+                articles: slimArticlesForConsensusJob(articles),
+                articleUids: articles.map((a) => a.uid || a.pmid || a.doi).filter(Boolean).slice(0, 10),
+                limit: 8,
+                abstractLimit: 8,
+            },
             provider: serverConfig?.keys?.gemini ? 'gemini' : serverConfig?.keys?.mistral ? 'mistral' : null,
         }).catch((err) => { logger.warn({ err }, 'createAiGenerationJob failed'); return null; });
-        enqueueConsensusJob({ db, topic, articles, serverConfig, fetchImpl, cache, logger });
+        enqueueConsensusJob({ db, jobKey, serverConfig, fetchImpl, cache, logger });
     }
 
     return consensusPlaceholder({ topic, articles, jobKey, status: 'queued' });
@@ -444,10 +446,81 @@ async function getOrEnqueueFullSynthesis({
     return fullSynthesisPlaceholder({ topic, jobKey, status: 'queued' });
 }
 
-function paperSynopsisJobKey(article, selectedModel) {
+function paperSynopsisJobKey(article, selectedModel, trainingStage = null) {
     const articleId = article?.uid || article?.pmid || article?.doi
         || crypto.createHash('md5').update(String(article?.title || '')).digest('hex').slice(0, 12);
-    return `synop:${stableHash({ articleId, selectedModel }).slice(0, 40)}`;
+    return `synop:${stableHash({ articleId, selectedModel, trainingStage: trainingStage || 'default' }).slice(0, 40)}`;
+}
+
+function quizPrefetchJobKey(topic, { sourceJobKey = null } = {}) {
+    return `quiz-prefetch:${stableHash({
+        topic: String(topic || '').trim().toLowerCase(),
+        sourceJobKey: sourceJobKey || null,
+    }).slice(0, 40)}`;
+}
+
+function enqueueQuizPrefetchJob({ jobKey, logger }) {
+    if (ENQUEUED_KEYS.has(jobKey)) return jobKey;
+    ENQUEUED_KEYS.add(jobKey);
+    aiGenerationQueue.enqueueNamed('process', { jobKey }, {
+        label: `ai-quiz-prefetch:${String(jobKey).slice(0, 24)}`,
+        priority: -1,
+    }).catch((err) => {
+        logger?.warn?.({ err, jobKey }, 'Quiz prefetch job failed');
+    }).finally(() => {
+        ENQUEUED_KEYS.delete(jobKey);
+    });
+    return jobKey;
+}
+
+async function maybeEnqueueQuizPrefetch({
+    db,
+    topic,
+    sourceJobKey = null,
+    userId = null,
+    provider = 'auto',
+    serverConfig,
+    logger,
+} = {}) {
+    const cleanTopic = String(topic || '').trim();
+    if (cleanTopic.length < 2) return { skipped: true, reason: 'missing_topic' };
+    if (!hasDurableJobStore(db)) return { skipped: true, reason: 'no_durable_job_store' };
+    if (!db?.getTopicKnowledge || !db?.getTeachingObjectByKey || !db?.upsertTeachingObject) {
+        return { skipped: true, reason: 'missing_teaching_object_store' };
+    }
+    if (!serverConfig?.keys?.gemini && !serverConfig?.keys?.mistral && !serverConfig?.keys?.anthropic) {
+        return { skipped: true, reason: 'no_ai_provider' };
+    }
+
+    const jobKey = quizPrefetchJobKey(cleanTopic, { sourceJobKey });
+    const existing = await db.getAiGenerationJobByKey(jobKey).catch((err) => {
+        logger?.warn?.({ err, jobKey }, 'getAiGenerationJobByKey failed for quiz prefetch');
+        return null;
+    });
+    if (existing?.status === 'completed' || existing?.status === 'running' || existing?.status === 'queued') {
+        return { skipped: true, reason: `already_${existing.status}`, jobKey };
+    }
+
+    await db.createAiGenerationJob({
+        jobKey,
+        jobType: 'quiz_prefetch',
+        topic: cleanTopic,
+        inputHash: stableHash({ topic: cleanTopic, sourceJobKey }),
+        inputPayload: {
+            topic: cleanTopic,
+            sourceJobKey,
+            userId,
+            provider,
+        },
+        userId: userId || null,
+        provider: serverConfig?.keys?.gemini ? 'gemini' : serverConfig?.keys?.mistral ? 'mistral' : serverConfig?.keys?.anthropic ? 'anthropic' : null,
+    }).catch((err) => {
+        logger?.warn?.({ err, jobKey }, 'createAiGenerationJob failed for quiz prefetch');
+        return null;
+    });
+
+    enqueueQuizPrefetchJob({ jobKey, logger });
+    return { status: 'queued', jobKey };
 }
 
 function enqueuePaperSynopsisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger }) {
@@ -465,13 +538,13 @@ function enqueuePaperSynopsisJob({ db, jobKey, serverConfig, fetchImpl, cache, l
 }
 
 async function getOrEnqueuePaperSynopsis({
-    db, article, provider = 'auto', serverConfig, fetchImpl, cache, logger,
+    db, article, provider = 'auto', serverConfig, fetchImpl, cache, logger, topic = '', trainingStage = null, userId = null,
 }) {
     const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider }, serverConfig);
     if (!selectedProvider) {
         return { status: 'failed', jobKey: null, errorMessage: 'No AI provider configured' };
     }
-    const jobKey = paperSynopsisJobKey(article, selectedModel);
+    const jobKey = paperSynopsisJobKey(article, selectedModel, trainingStage);
     if (!hasDurableJobStore(db)) {
         try {
             const result = await runPaperSynopsisGeneration({
@@ -482,6 +555,9 @@ async function getOrEnqueuePaperSynopsis({
                 cache,
                 db,
                 jobKey,
+                topic,
+                trainingStage,
+                userId,
             });
             return { status: 'completed', jobKey, ...result };
         } catch (err) {
@@ -501,9 +577,10 @@ async function getOrEnqueuePaperSynopsis({
     await db.createAiGenerationJob({
         jobKey,
         jobType: 'paper_synopsis',
-        topic: null,
-        inputHash: stableHash({ jobKey, title: article?.title }),
-        inputPayload: { article, provider },
+        topic: topic || null,
+        inputHash: stableHash({ jobKey, title: article?.title, trainingStage }),
+        inputPayload: { article, provider, topic, trainingStage, userId },
+        userId: userId || null,
         provider: selectedProvider,
         model: selectedModel,
     }).catch((err) => { logger.warn({ err }, 'createAiGenerationJob failed'); return null; });
@@ -522,4 +599,6 @@ module.exports = {
     getOrEnqueueFullSynthesis,
     paperSynopsisJobKey,
     getOrEnqueuePaperSynopsis,
+    quizPrefetchJobKey,
+    maybeEnqueueQuizPrefetch,
 };

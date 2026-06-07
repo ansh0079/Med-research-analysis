@@ -7,6 +7,7 @@ import { CitationExplorer } from '@components/search/CitationExplorer';
 import { getArticleLinkInfo, getArticleSourceBadgeInfo } from '@services/articleLinks';
 import api from '@services/api';
 import type { Article, ArticleSynopsisFields, ConsortResult } from '@types';
+import { RankingTraceBadge } from '@components/search/RankingTraceBadge';
 import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
 import { VerificationBadge } from '@components/ui/VerificationBadge';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
@@ -388,7 +389,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
 
     maxLoggedDwellMsRef.current = dwellMs;
     if (searchId) {
-      void api.logSearchInteraction(searchId, article.uid, 'dwell', dwellMs);
+      void api.logSearchInteraction(searchId, article.uid, 'dwell', dwellMs, undefined, article._decisionId ?? undefined);
     }
     void api.logEvent('article_dwell', { articleUid: article.uid, dwellMs, source: article._source });
   }, [article._source, article.uid, searchId]);
@@ -404,7 +405,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
       if (dwellMs >= 3000 && dwellMs > maxLoggedDwellMsRef.current + 1000) {
         maxLoggedDwellMsRef.current = dwellMs;
         if (searchId) {
-          void api.logSearchInteraction(searchId, article.uid, 'dwell', dwellMs);
+          void api.logSearchInteraction(searchId, article.uid, 'dwell', dwellMs, undefined, article._decisionId ?? undefined);
         }
         void api.logEvent('article_dwell', { articleUid: article.uid, dwellMs, source: article._source });
       }
@@ -556,6 +557,14 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
               </span>
             )}
 
+            {article._rankingTrace && (
+              <RankingTraceBadge
+                trace={article._rankingTrace}
+                movedByLearning={article._rankMovedByLearning}
+                compactReasons={article._rankReasons}
+              />
+            )}
+
             {article._synapseTopics && article._synapseTopics.length > 0 && (
               <div className="flex flex-wrap gap-1">
                 {article._synapseTopics.map((synTopic) => (
@@ -641,7 +650,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
             onClick={() => {
               if (searchId) {
                 const elapsedMs = searchCompletedAt ? Math.max(0, Date.now() - searchCompletedAt) : undefined;
-                api.logSearchInteraction(searchId, article.uid, 'click', undefined, elapsedMs);
+                api.logSearchInteraction(searchId, article.uid, 'click', undefined, elapsedMs, article._decisionId ?? undefined);
               }
               api.logEvent('article_click', { articleUid: article.uid, source: article._source });
             }}
@@ -930,7 +939,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
           {onSave && (
             <Button variant={isSaved ? 'primary' : 'secondary'} size="sm" onClick={() => {
               if (searchId) {
-                api.logSearchInteraction(searchId, article.uid, 'save');
+                api.logSearchInteraction(searchId, article.uid, 'save', undefined, undefined, article._decisionId ?? undefined);
               }
               onSave(article);
             }}
@@ -954,13 +963,14 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
               aria-label="Mark this result as helpful"
               onClick={async () => {
                 if (userFeedback === 'helpful') return;
+                const previousFeedback = userFeedback;
+                setUserFeedback('helpful');
+                onFeedback?.(article, 'helpful');
                 setFeedbackPending(true);
                 try {
-                  await api.recordSearchFeedback(article.uid, 'helpful');
-                  setUserFeedback('helpful');
-                  onFeedback?.(article, 'helpful');
+                  await api.recordSearchFeedback(article.uid, 'helpful', undefined, searchId, article._decisionId ?? undefined);
                 } catch {
-                  // silent fail
+                  setUserFeedback(previousFeedback);
                 } finally {
                   setFeedbackPending(false);
                 }
@@ -980,13 +990,14 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
               aria-label="Mark this result as not helpful"
               onClick={async () => {
                 if (userFeedback === 'not_helpful') return;
+                const previousFeedback = userFeedback;
+                setUserFeedback('not_helpful');
+                onFeedback?.(article, 'not_helpful');
                 setFeedbackPending(true);
                 try {
-                  await api.recordSearchFeedback(article.uid, 'not_helpful');
-                  setUserFeedback('not_helpful');
-                  onFeedback?.(article, 'not_helpful');
+                  await api.recordSearchFeedback(article.uid, 'not_helpful', undefined, searchId, article._decisionId ?? undefined);
                 } catch {
-                  // silent fail
+                  setUserFeedback(previousFeedback);
                 } finally {
                   setFeedbackPending(false);
                 }

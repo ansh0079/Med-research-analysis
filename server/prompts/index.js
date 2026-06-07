@@ -21,4 +21,5 @@ module.exports = {
     buildSynopsisPrompt,
     buildJournalClubPrompt,
     formatStoredTopicKnowledgeForPrompt,
+    ...require('./contextBuilders'),
 };

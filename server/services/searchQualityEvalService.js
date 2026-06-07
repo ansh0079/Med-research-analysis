@@ -1,5 +1,7 @@
 'use strict';
 
+const { recordSearchQuality } = require('./observabilityMetrics');
+
 function normalizeUid(value) {
     return String(value || '')
         .trim()
@@ -60,7 +62,7 @@ function evaluateSearchResults(querySpec, articles, options = {}) {
     }
     const ndcgAtK = idcg > 0 ? dcg / idcg : 0;
 
-    return {
+    const result = {
         query: querySpec?.query || '',
         k,
         resultCount: top.length,
@@ -76,6 +78,8 @@ function evaluateSearchResults(querySpec, articles, options = {}) {
         missingRelevantUids: [...relevant].filter((uid) => !topUids.includes(uid)),
         hitUids: relevantHits,
     };
+    recordSearchQuality({ offTopicRateAt10: result.offTopicRateAtK });
+    return result;
 }
 
 function summarizeSearchEval(rows) {

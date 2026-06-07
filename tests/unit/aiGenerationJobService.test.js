@@ -3,6 +3,8 @@ const {
     getOrEnqueueConsensusSynopsis,
     getOrEnqueueLiveClinicalAnswer,
     liveClinicalAnswerJobKey,
+    maybeEnqueueQuizPrefetch,
+    quizPrefetchJobKey,
 } = require('../../server/services/aiGenerationJobService');
 
 describe('aiGenerationJobService', () => {
@@ -111,5 +113,56 @@ describe('aiGenerationJobService', () => {
             jobType: 'live_clinical_answer',
             topic: 'sepsis',
         }));
+    });
+
+    test('queues quiz prefetch jobs only when durable teaching stores exist', async () => {
+        const jobs = new Map();
+        const db = {
+            getAiGenerationJobByKey: jest.fn(async (key) => jobs.get(key) || null),
+            createAiGenerationJob: jest.fn(async (job) => {
+                jobs.set(job.jobKey, { status: 'queued', ...job });
+                return jobs.get(job.jobKey);
+            }),
+            markAiGenerationJobRunning: jest.fn(),
+            completeAiGenerationJob: jest.fn(),
+            failAiGenerationJob: jest.fn(),
+            getTopicKnowledge: jest.fn(),
+            getTeachingObjectByKey: jest.fn(),
+            upsertTeachingObject: jest.fn(),
+        };
+
+        const result = await maybeEnqueueQuizPrefetch({
+            db,
+            topic: 'ARDS',
+            sourceJobKey: 'synth:abc',
+            userId: 'u1',
+            serverConfig: { keys: { gemini: 'test' } },
+        });
+
+        expect(result).toMatchObject({
+            status: 'queued',
+            jobKey: quizPrefetchJobKey('ARDS', { sourceJobKey: 'synth:abc' }),
+        });
+        expect(db.createAiGenerationJob).toHaveBeenCalledWith(expect.objectContaining({
+            jobType: 'quiz_prefetch',
+            topic: 'ARDS',
+            userId: 'u1',
+        }));
+    });
+
+    test('skips quiz prefetch when topic knowledge store is unavailable', async () => {
+        const result = await maybeEnqueueQuizPrefetch({
+            db: {
+                getAiGenerationJobByKey: jest.fn(),
+                createAiGenerationJob: jest.fn(),
+                markAiGenerationJobRunning: jest.fn(),
+                completeAiGenerationJob: jest.fn(),
+                failAiGenerationJob: jest.fn(),
+            },
+            topic: 'ARDS',
+            serverConfig: { keys: { gemini: 'test' } },
+        });
+
+        expect(result).toMatchObject({ skipped: true, reason: 'missing_teaching_object_store' });
     });
 });

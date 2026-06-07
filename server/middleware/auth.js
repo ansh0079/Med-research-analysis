@@ -5,6 +5,14 @@ const { sendVerificationEmail, sendPasswordResetEmail } = require('../services/e
 const logger = require('../config/logger');
 const db = require('../../database');
 const authSecurityStore = require('../services/authSecurityStore');
+const {
+    issueRefreshToken,
+    rotateRefreshToken,
+    revokeRefreshTokenRaw,
+    revokeAllUserRefreshTokens,
+    REFRESH_COOKIE_NAME,
+    REFRESH_TOKEN_TTL_MS,
+} = require('../services/refreshTokenService');
 const { hasFeature, resolvePlan } = require('../config/entitlements');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'change-this-in-production';
@@ -17,21 +25,63 @@ if (process.env.NODE_ENV === 'production' && (JWT_SECRET_PLACEHOLDERS.has(JWT_SE
 }
 const COOKIE_NAME = 'med_auth_token';
 const OAUTH_STATE_COOKIE = 'med_oauth_state';
-const COOKIE_OPTIONS = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+const ACCESS_TOKEN_TTL_SEC = authSecurityStore.ACCESS_TOKEN_TTL_SEC || 15 * 60;
+
+function cookieBaseOptions() {
+    return {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+    };
+}
+
+const ACCESS_COOKIE_OPTIONS = {
+    ...cookieBaseOptions(),
+    maxAge: ACCESS_TOKEN_TTL_SEC * 1000,
 };
 
-function setSessionCookie(res, user) {
+const REFRESH_COOKIE_OPTIONS = {
+    ...cookieBaseOptions(),
+    maxAge: REFRESH_TOKEN_TTL_MS,
+    path: '/api/auth',
+};
+
+function buildAccessToken(user) {
     const emailVerified = Boolean(user.email_verified ?? user.emailVerified);
-    const token = jwt.sign(
-        { id: user.id, name: user.name, email: user.email, role: user.role || 'user', emailVerified, subscriptionPlan: user.subscription_plan || 'free' },
+    return jwt.sign(
+        {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role || 'user',
+            emailVerified,
+            subscriptionPlan: user.subscription_plan || user.subscriptionPlan || 'free',
+        },
         JWT_SECRET,
-        { expiresIn: '7d' }
+        { expiresIn: ACCESS_TOKEN_TTL_SEC }
     );
-    res.cookie(COOKIE_NAME, token, COOKIE_OPTIONS);
+}
+
+async function issueSession(res, user) {
+    const token = buildAccessToken(user);
+    res.cookie(COOKIE_NAME, token, ACCESS_COOKIE_OPTIONS);
+    try {
+        const refresh = await issueRefreshToken(db, user.id);
+        res.cookie(REFRESH_COOKIE_NAME, refresh.raw, REFRESH_COOKIE_OPTIONS);
+    } catch (err) {
+        logger.warn({ err, userId: user.id }, 'Failed to issue refresh token');
+    }
+}
+
+function setSessionCookie(res, user) {
+    const token = buildAccessToken(user);
+    res.cookie(COOKIE_NAME, token, ACCESS_COOKIE_OPTIONS);
+}
+
+function clearAuthCookies(res) {
+    const clearOpts = cookieBaseOptions();
+    res.clearCookie(COOKIE_NAME, clearOpts);
+    res.clearCookie(REFRESH_COOKIE_NAME, { ...clearOpts, path: '/api/auth' });
 }
 
 const TRIAL_DAYS = 14;
@@ -124,7 +174,9 @@ const revokeToken = (token) => authSecurityStore.revokeToken(token);
 const isTokenRevoked = (token) => authSecurityStore.isTokenRevoked(token);
 const recordFailedLogin = (email) => authSecurityStore.recordFailedLogin(email);
 const isLoginLocked = (email) => authSecurityStore.isLoginLocked(email);
+const getLoginThrottleState = (email) => authSecurityStore.getLoginThrottleState(email);
 const clearLoginAttempts = (email) => authSecurityStore.clearLoginAttempts(email);
+const timingSafeEqualStrings = (a, b) => authSecurityStore.timingSafeEqualStrings(a, b);
 const recordResetAttempt = (email) => authSecurityStore.recordResetAttempt(email);
 const isResetLimited = (email) => authSecurityStore.isResetLimited(email);
 
@@ -169,6 +221,23 @@ if (String(process.env.DEV_DISABLE_AUTH || '').toLowerCase() === 'true' && proce
     console.error('⚠️  WARNING: DEV_DISABLE_AUTH=true is ignored in production. Auth is enforced.');
 }
 
+/** Beta programme: anonymous session-based access to AI/quiz flows for learning signal collection. */
+const BETA_MODE = String(process.env.BETA_MODE || '').toLowerCase() === 'true';
+
+function isBetaMode() {
+    return BETA_MODE;
+}
+
+/**
+ * Learning actor for bandit / quiz attribution when signed-in or beta-anonymous.
+ * @returns {string|null}
+ */
+function resolveLearningActorId(req) {
+    if (req.user?.id) return req.user.id;
+    if (BETA_MODE && req.sessionId) return `session:${req.sessionId}`;
+    return null;
+}
+
 /**
  * Strict auth: requires a valid httpOnly cookie.
  * Bearer header fallback is intentionally removed for cookie-only production auth.
@@ -189,7 +258,10 @@ async function requireAuthJwt(req, res, next) {
 
     const decoded = verifyToken(token);
     if (!decoded) {
-        return res.status(401).json({ error: 'Invalid or expired token' });
+        return res.status(401).json({
+            error: 'Invalid or expired token',
+            tokenExpired: true,
+        });
     }
 
     // Auto-downgrade expired trials on every authenticated request
@@ -198,6 +270,39 @@ async function requireAuthJwt(req, res, next) {
     req.user = { id: decoded.id, name: decoded.name, email: decoded.email, role: decoded.role || 'user', emailVerified: decoded.emailVerified || false, subscriptionPlan: decoded.subscriptionPlan || 'free' };
     req.token = token;
     next();
+}
+
+/**
+ * Beta-friendly auth: valid JWT when present, otherwise anonymous session when BETA_MODE=true.
+ * Sets req.betaAnonymous=true for session-only callers.
+ */
+async function requireAuthOrBeta(req, res, next) {
+    if (DEV_DISABLE_AUTH) return optionalAuth(req, res, next);
+
+    const token = extractToken(req);
+    if (token && !(await isTokenRevoked(token))) {
+        const decoded = verifyToken(token);
+        if (decoded) {
+            await maybeDowngradeExpiredTrial(db, decoded.id);
+            req.user = {
+                id: decoded.id,
+                name: decoded.name,
+                email: decoded.email,
+                role: decoded.role || 'user',
+                emailVerified: decoded.emailVerified || false,
+                subscriptionPlan: decoded.subscriptionPlan || 'free',
+            };
+            req.token = token;
+            return next();
+        }
+    }
+
+    if (BETA_MODE && req.sessionId) {
+        req.betaAnonymous = true;
+        return next();
+    }
+
+    return res.status(401).json({ error: 'Authorization required' });
 }
 
 function requireRole(...allowedRoles) {
@@ -218,6 +323,7 @@ function requireRole(...allowedRoles) {
  */
 function requireVerifiedEmail(req, res, next) {
     if (DEV_DISABLE_AUTH) return next();
+    if (req.betaAnonymous) return next();
     if (!req.user) return res.status(401).json({ error: 'Authorization required' });
     if (req.user.emailVerified !== true) {
         return res.status(403).json({
@@ -237,6 +343,7 @@ function requirePaidFeature(featureName = 'premium_feature') {
     return async (req, res, next) => {
         if (!enabled) return next();
         if (allowInDev && nodeEnv !== 'production') return next();
+        if (BETA_MODE) return next();
         if (!req.user) {
             return res.status(401).json({ error: 'Authentication required for premium feature' });
         }
@@ -295,7 +402,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
 
         const state = crypto.randomBytes(24).toString('hex');
         res.cookie(OAUTH_STATE_COOKIE, state, {
-            ...COOKIE_OPTIONS,
+            ...cookieBaseOptions(),
             sameSite: 'lax',
             maxAge: 10 * 60 * 1000,
         });
@@ -318,13 +425,15 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
         const provider = String(req.params.provider || '').toLowerCase();
         const { code, state } = req.query;
         const expectedState = req.cookies?.[OAUTH_STATE_COOKIE];
-        res.clearCookie(OAUTH_STATE_COOKIE, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-        });
+        res.clearCookie(OAUTH_STATE_COOKIE, cookieBaseOptions());
 
-        if (!['google', 'orcid'].includes(provider) || !code || !state || state !== expectedState) {
+        const stateValid = Boolean(code)
+            && Boolean(state)
+            && Boolean(expectedState)
+            && timingSafeEqualStrings(String(state), String(expectedState));
+
+        if (!['google', 'orcid'].includes(provider) || !stateValid) {
+            logger.warn({ provider, hasState: Boolean(state), hasExpected: Boolean(expectedState) }, 'OAuth state validation failed');
             return res.redirect(`${getOAuthReturnUrl()}?oauth=error`);
         }
 
@@ -363,7 +472,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
                 emailVerified: profileData.email_verified !== false,
                 name: profileData.name || [profileData.given_name, profileData.family_name].filter(Boolean).join(' '),
             });
-            setSessionCookie(res, user);
+            await issueSession(res, user);
             res.redirect(getOAuthReturnUrl());
         } catch (error) {
             logger.error({ err: error, provider }, 'OAuth login error');
@@ -413,7 +522,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
                 logger.error({ err }, 'Failed to send verification email');
             });
 
-            setSessionCookie(res, user);
+            await issueSession(res, user);
             res.status(201).json({
                 user: { id: user.id, name: user.name, email: user.email, role: user.role, emailVerified: false, subscriptionPlan: 'pro' },
                 message: 'Account created. Your 14-day Pro trial has started — no credit card required.',
@@ -433,8 +542,21 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             return res.status(400).json({ error: 'email and password are required' });
         }
 
-        if (await isLoginLocked(email)) {
-            return res.status(429).json({ error: 'Too many failed login attempts. Please wait 15 minutes before trying again.' });
+        const throttle = await getLoginThrottleState(email);
+        if (throttle.locked) {
+            res.set('Retry-After', String(throttle.retryAfterSec || 900));
+            return res.status(429).json({
+                error: 'Too many failed login attempts. Please wait before trying again.',
+                retryAfterSec: throttle.retryAfterSec,
+            });
+        }
+        if (throttle.throttled) {
+            res.set('Retry-After', String(throttle.retryAfterSec || 1));
+            return res.status(429).json({
+                error: 'Please wait before trying again.',
+                retryAfterSec: throttle.retryAfterSec,
+                attemptCount: throttle.attemptCount,
+            });
         }
 
         try {
@@ -459,12 +581,66 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             const finalUser = freshUser || stored;
             const finalEmailVerified = Boolean(finalUser.email_verified);
 
-            setSessionCookie(res, finalUser);
+            await issueSession(res, finalUser);
             res.json({
                 user: { id: finalUser.id, name: finalUser.name, email: finalUser.email, role: finalUser.role || 'user', emailVerified: finalEmailVerified, subscriptionPlan: finalUser.subscription_plan || 'free' },
             });
         } catch (error) {
             req.log.error({ err: error }, 'Login error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    // ==========================================
+    // Refresh session (rotating refresh token)
+    // ==========================================
+    app.post('/api/auth/refresh', authRateLimit, async (req, res) => {
+        const rawRefresh = req.cookies?.[REFRESH_COOKIE_NAME];
+        if (!rawRefresh) {
+            return res.status(401).json({ error: 'Refresh token required', tokenExpired: true });
+        }
+
+        try {
+            const rotated = await rotateRefreshToken(db, rawRefresh);
+            if (rotated.error) {
+                clearAuthCookies(res);
+                return res.status(401).json({
+                    error: 'Session expired. Please sign in again.',
+                    tokenExpired: true,
+                    reason: rotated.error,
+                });
+            }
+
+            const user = await db.get(
+                'SELECT id, name, email, role, email_verified, subscription_plan FROM users WHERE id = ?',
+                [rotated.userId]
+            );
+            if (!user) {
+                clearAuthCookies(res);
+                return res.status(401).json({ error: 'User not found', tokenExpired: true });
+            }
+
+            await maybeDowngradeExpiredTrial(db, user.id);
+            const freshUser = await db.get(
+                'SELECT id, name, email, role, email_verified, subscription_plan FROM users WHERE id = ?',
+                [user.id]
+            ) || user;
+
+            res.cookie(COOKIE_NAME, buildAccessToken(freshUser), ACCESS_COOKIE_OPTIONS);
+            res.cookie(REFRESH_COOKIE_NAME, rotated.raw, REFRESH_COOKIE_OPTIONS);
+
+            res.json({
+                user: {
+                    id: freshUser.id,
+                    name: freshUser.name,
+                    email: freshUser.email,
+                    role: freshUser.role || 'user',
+                    emailVerified: Boolean(freshUser.email_verified),
+                    subscriptionPlan: freshUser.subscription_plan || 'free',
+                },
+            });
+        } catch (err) {
+            logger.error({ err }, 'Refresh token rotation failed');
             res.status(500).json({ error: 'Internal Server Error' });
         }
     });
@@ -480,7 +656,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             const fresh = await db.get('SELECT id, name, email, role, email_verified, subscription_plan, subscription_status, trial_ends_at FROM users WHERE id = ?', [req.user.id]);
             if (fresh) {
                 const updatedUser = { id: fresh.id, name: fresh.name, email: fresh.email, role: fresh.role || 'user', emailVerified: Boolean(fresh.email_verified), subscriptionPlan: fresh.subscription_plan || 'free' };
-                setSessionCookie(res, fresh);
+                await issueSession(res, fresh);
                 return res.json({ user: updatedUser });
             }
         }
@@ -515,11 +691,8 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
                 await db.run('DELETE FROM annotations WHERE user_id = ?', [userId]);
                 await db.run('DELETE FROM users WHERE id = ?', [userId]);
             });
-            res.clearCookie(COOKIE_NAME, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-            });
+            await revokeAllUserRefreshTokens(db, userId);
+            clearAuthCookies(res);
             res.json({ message: 'Account deleted successfully' });
         } catch (err) {
             logger.error({ err }, 'Delete account error');
@@ -543,7 +716,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             }
             await db.updateUser(req.user.id, updates);
             const fresh = await db.getUserById(req.user.id);
-            setSessionCookie(res, fresh);
+            await issueSession(res, fresh);
             res.json({ user: { id: fresh.id, name: fresh.name, email: fresh.email, role: fresh.role || 'user', emailVerified: Boolean(fresh.email_verified), subscriptionPlan: fresh.subscription_plan || 'free' } });
         } catch (err) {
             logger.error({ err }, 'Update profile error');
@@ -572,8 +745,8 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             const hashedPassword = await bcrypt.hash(newPassword, 12);
             await db.updateUser(user.id, { password: hashedPassword });
 
-            // Issue fresh JWT
-            setSessionCookie(res, user);
+            await revokeAllUserRefreshTokens(db, user.id);
+            await issueSession(res, user);
             res.json({ message: 'Password updated successfully' });
         } catch (err) {
             logger.error({ err }, 'Change password error');
@@ -664,7 +837,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             });
 
             const fresh = await db.getUserById(user.id);
-            setSessionCookie(res, fresh);
+            await issueSession(res, fresh);
             res.json({ message: 'Email address updated successfully.', user: { email: fresh.email } });
         } catch (err) {
             logger.error({ err }, 'Confirm email change error');
@@ -675,15 +848,15 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // ==========================================
     // Logout
     // ==========================================
-    app.post('/api/auth/logout', requireAuthJwt, auditLog('auth.logout'), async (req, res) => {
+    app.post('/api/auth/logout', optionalAuth, auditLog('auth.logout'), async (req, res) => {
         if (req.token) {
             await revokeToken(req.token);
         }
-        res.clearCookie(COOKIE_NAME, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-        });
+        const rawRefresh = req.cookies?.[REFRESH_COOKIE_NAME];
+        if (rawRefresh) {
+            await revokeRefreshTokenRaw(db, rawRefresh);
+        }
+        clearAuthCookies(res);
         res.json({ success: true, message: 'Logged out successfully' });
     });
 
@@ -711,13 +884,8 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
                 [user.id]
             );
 
-            // Issue a fresh token with emailVerified: true
-            const newJwt = jwt.sign(
-                { id: user.id, name: user.name, email: user.email, role: user.role || 'user', emailVerified: true },
-                JWT_SECRET,
-                { expiresIn: '7d' }
-            );
-            res.cookie(COOKIE_NAME, newJwt, COOKIE_OPTIONS);
+            const verifiedUser = { ...user, email_verified: 1 };
+            await issueSession(res, verifiedUser);
             res.json({ message: 'Email verified successfully', user: { id: user.id, name: user.name, email: user.email, role: user.role, emailVerified: true } });
         } catch (err) {
             logger.error({ err }, 'Verify email error');
@@ -821,14 +989,12 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
                 await db.run('UPDATE password_reset_tokens SET used = 1 WHERE token = ?', [token]);
             });
 
-            // Issue a fresh session — preserve actual email_verified state from DB
-            const userRow = await db.get('SELECT email_verified FROM users WHERE id = ?', [row.user_id]);
-            const newJwt = jwt.sign(
-                { id: row.user_id, name: row.name, email: row.email, role: row.role || 'user', emailVerified: Boolean(userRow?.email_verified) },
-                JWT_SECRET,
-                { expiresIn: '7d' }
+            await revokeAllUserRefreshTokens(db, row.user_id);
+            const userRow = await db.get(
+                'SELECT id, name, email, role, email_verified, subscription_plan FROM users WHERE id = ?',
+                [row.user_id]
             );
-            res.cookie(COOKIE_NAME, newJwt, COOKIE_OPTIONS);
+            if (userRow) await issueSession(res, userRow);
             res.json({ message: 'Password updated successfully', user: { id: row.user_id, name: row.name, email: row.email, role: row.role } });
         } catch (err) {
             logger.error({ err }, 'Reset password error');
@@ -840,8 +1006,13 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
 module.exports = {
     JWT_SECRET,
     COOKIE_NAME,
+    REFRESH_COOKIE_NAME,
+    ACCESS_TOKEN_TTL_SEC,
     optionalAuth,
     requireAuthJwt,
+    requireAuthOrBeta,
+    isBetaMode,
+    resolveLearningActorId,
     requireRole,
     requireVerifiedEmail,
     requirePaidFeature,

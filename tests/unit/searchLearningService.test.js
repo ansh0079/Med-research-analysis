@@ -23,7 +23,14 @@ describe('searchLearningService', () => {
             impressionCount: 0,
             missedPaperCount: 0,
             weakArticleCount: 0,
+            trajectoryTermCount: 0,
+            profileWeakTopicCount: 0,
+            hasTrajectoryHints: false,
             personalized: false,
+            banditArmId: null,
+            misconceptionTargets: 0,
+            calibrationOverride: null,
+            hasDangerousMisconception: false,
         });
     });
 
@@ -220,5 +227,69 @@ describe('searchLearningService', () => {
         expect(context.memoryTier).toBe('sparse');
         expect(context.shouldPersonalize).toBe(true);
         expect(context.notHelpfulArticleUids.get('pubmed-9')).toBe(1);
+    });
+
+    test('buildSearchLearningContext overrides bandit to misconception_heavy when user has dangerous misconception on topic', async () => {
+        const db = {
+            getUserTopicMemory: jest.fn().mockResolvedValue({ memoryTier: 'building', searchCount: 5 }),
+            listSearchResultFeedbackForUser: jest.fn().mockResolvedValue([]),
+            getUserInteractions: jest.fn().mockResolvedValue([]),
+            getQuizAttempts: jest.fn().mockResolvedValue([
+                // Wrong answer with high confidence (dangerous misconception)
+                { source_article_uid: 'pmid-a', is_correct: 0, confidence: 5, created_at: new Date().toISOString() },
+            ]),
+        };
+
+        const context = await buildSearchLearningContext({ db, userId: 'u1', query: 'SGLT2 heart failure' });
+
+        expect(context.hasDangerousMisconception).toBe(true);
+        expect(context.banditSelection.armId).toBe('misconception_heavy');
+        expect(context.banditSelection.calibrationOverride).toBe('dangerous_misconception');
+        expect(publicLearningContext(context).calibrationOverride).toBe('dangerous_misconception');
+        expect(publicLearningContext(context).hasDangerousMisconception).toBe(true);
+    });
+
+    test('buildSearchLearningContext does NOT override bandit when user is wrong with LOW confidence (knowledge gap, not misconception)', async () => {
+        const db = {
+            getUserTopicMemory: jest.fn().mockResolvedValue({ memoryTier: 'building', searchCount: 5 }),
+            listSearchResultFeedbackForUser: jest.fn().mockResolvedValue([]),
+            getUserInteractions: jest.fn().mockResolvedValue([]),
+            getQuizAttempts: jest.fn().mockResolvedValue([
+                // Wrong answer with LOW confidence — knowledge gap, not dangerous
+                { source_article_uid: 'pmid-b', is_correct: 0, confidence: 2, created_at: new Date().toISOString() },
+            ]),
+        };
+
+        const context = await buildSearchLearningContext({ db, userId: 'u1', query: 'SGLT2 heart failure' });
+
+        expect(context.hasDangerousMisconception).toBe(false);
+        expect(context.banditSelection?.calibrationOverride).toBeUndefined();
+    });
+
+    test('applySearchLearningBoost attaches _missedQuizCount to articles promoted by missed quiz signal', () => {
+        const context = {
+            shouldPersonalize: true,
+            preferredArticleUids: new Map(),
+            savedArticleUids: new Map(),
+            helpfulArticleUids: new Map(),
+            notHelpfulArticleUids: new Map(),
+            interactionArticleUids: new Map(),
+            impressionArticleUids: new Map(),
+            missedPaperUids: new Map([['pmid-missed', 3]]),
+            weakArticleUids: new Set(),
+            trajectoryTerms: new Set(),
+            profileWeakTopics: [],
+        };
+        const articles = [
+            { uid: 'pmid-1', title: 'First' },
+            { uid: 'pmid-2', title: 'Second' },
+            { uid: 'pmid-missed', title: 'Missed quiz paper' },
+        ];
+
+        const result = applySearchLearningBoost(articles, context);
+        const missed = result.find((a) => a.uid === 'pmid-missed');
+
+        expect(missed._missedQuizCount).toBe(3);
+        expect(missed._learningBoost).toBeGreaterThan(0);
     });
 });

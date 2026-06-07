@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { api } from '@services/api';
 import { getArticleLinkInfo } from '@services/articleLinks';
-import type { Article, ArticleSynopsisFields, ConsortResult, GuidelineEntry } from '@types';
+import type { Article, ArticleSynopsisFields, ArticleSynopsisResult, ConsortResult, GuidelineEntry } from '@types';
 import { QualityBadge } from './QualityBadge';
 import { RetractionBadge } from './RetractionBadge';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
@@ -65,7 +65,10 @@ function FieldList({ label, items }: { label: string; items?: string[] }) {
 export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenInWorkspace }) => {
   const [tab, setTab] = useState<Tab>('overview');
   const [synopsis, setSynopsis] = useState<ArticleSynopsisFields | null>(null);
+  const [synopsisResult, setSynopsisResult] = useState<ArticleSynopsisResult | null>(null);
   const [synopsisState, setSynopsisState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
+  const [synopsisFeedback, setSynopsisFeedback] = useState<'helpful' | 'not_helpful' | null>(null);
+  const [synopsisFeedbackPending, setSynopsisFeedbackPending] = useState(false);
   const [consort, setConsort] = useState<ConsortResult | null>(null);
   const [consortState, setConsortState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [guidelines, setGuidelines] = useState<GuidelineEntry[]>([]);
@@ -74,7 +77,10 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
   // Reset state when article changes
   useEffect(() => {
     setSynopsis(null);
+    setSynopsisResult(null);
     setSynopsisState('idle');
+    setSynopsisFeedback(null);
+    setSynopsisFeedbackPending(false);
     setConsort(null);
     setConsortState('idle');
     setGuidelines([]);
@@ -89,6 +95,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
       const result = await api.getSynopsis(article, { async: true });
       if (!result.synopsis) throw new Error('unavailable');
       setSynopsis(result.synopsis);
+      setSynopsisResult(result);
       setSynopsisState('done');
     } catch {
       setSynopsisState('error');
@@ -131,6 +138,29 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
     if (tab === 'consort' && consortState === 'idle') loadConsort();
     if (tab === 'guidelines' && guidelineState === 'idle') loadGuidelines();
   }, [tab, synopsisState, consortState, guidelineState, loadSynopsis, loadConsort, loadGuidelines]);
+
+  const handleSynopsisFeedback = useCallback(async (feedbackType: 'helpful' | 'not_helpful') => {
+    if (!article || synopsisFeedback === feedbackType || synopsisFeedbackPending) return;
+    setSynopsisFeedbackPending(true);
+    try {
+      await api.recordSynopsisFeedback({
+        article,
+        articleUid: synopsisResult?.articleId || article.uid,
+        provider: synopsisResult?.provider ?? null,
+        model: synopsisResult?.model ?? null,
+        cached: Boolean(synopsisResult?.cached),
+        feedbackType,
+      });
+      setSynopsisFeedback(feedbackType);
+      if (feedbackType === 'not_helpful') {
+        setSynopsis(null);
+        setSynopsisResult(null);
+        setSynopsisState('idle');
+      }
+    } finally {
+      setSynopsisFeedbackPending(false);
+    }
+  }, [article, synopsisFeedback, synopsisFeedbackPending, synopsisResult]);
 
   if (!article) return null;
 
@@ -388,6 +418,34 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
                     <p className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">{synopsis.trustRationale}</p>
                   </div>
                 )}
+
+                <div className="flex items-center justify-between gap-3 rounded-lg bg-slate-50 dark:bg-slate-800/40 px-3 py-2">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">Appraisal helpful?</span>
+                  <div className="flex items-center gap-1.5">
+                    <button type="button" disabled={synopsisFeedbackPending}
+                      onClick={() => handleSynopsisFeedback('helpful')}
+                      aria-label="Mark this appraisal as helpful"
+                      title="Helpful"
+                      className={`h-7 w-7 rounded-md text-xs transition-colors ${
+                        synopsisFeedback === 'helpful'
+                          ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'
+                          : 'text-slate-400 hover:bg-white dark:hover:bg-slate-700'
+                      }`}>
+                      <i className={`${synopsisFeedback === 'helpful' ? 'fas' : 'far'} fa-thumbs-up`} />
+                    </button>
+                    <button type="button" disabled={synopsisFeedbackPending}
+                      onClick={() => handleSynopsisFeedback('not_helpful')}
+                      aria-label="Mark this appraisal as not helpful"
+                      title="Not helpful"
+                      className={`h-7 w-7 rounded-md text-xs transition-colors ${
+                        synopsisFeedback === 'not_helpful'
+                          ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
+                          : 'text-slate-400 hover:bg-white dark:hover:bg-slate-700'
+                      }`}>
+                      <i className={`${synopsisFeedback === 'not_helpful' ? 'fas' : 'far'} fa-thumbs-down`} />
+                    </button>
+                  </div>
+                </div>
 
                 <ClinicalSafetyNotice status="abstract_only" />
               </>

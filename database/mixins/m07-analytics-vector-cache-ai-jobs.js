@@ -305,8 +305,8 @@ async cacheAnalysis(articleId, analysisType, model, result, tokensUsed, cost, tt
 async savePdfSections(articleUid, payload) {
     if (!articleUid || !payload?.sections) return;
     await this.run(
-        `INSERT INTO pdf_sections (article_uid, sections, ordered_keys, tables, word_count, url, source, numpages, indexed_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+        `INSERT INTO pdf_sections (article_uid, sections, ordered_keys, tables, word_count, url, source, numpages, indexed_at, extraction_backend, grobid_version)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), ?, ?)
          ON CONFLICT(article_uid) DO UPDATE SET
            sections = excluded.sections,
            ordered_keys = excluded.ordered_keys,
@@ -315,7 +315,9 @@ async savePdfSections(articleUid, payload) {
            url = excluded.url,
            source = excluded.source,
            numpages = excluded.numpages,
-           indexed_at = excluded.indexed_at`,
+           indexed_at = excluded.indexed_at,
+           extraction_backend = excluded.extraction_backend,
+           grobid_version = excluded.grobid_version`,
         [
             String(articleUid),
             JSON.stringify(payload.sections || {}),
@@ -325,6 +327,8 @@ async savePdfSections(articleUid, payload) {
             payload.url || null,
             payload.source || null,
             payload.numpages || 0,
+            payload.extractionBackend || 'legacy',
+            payload.grobidVersion || null,
         ]
     );
 }
@@ -343,6 +347,8 @@ async getPdfSections(articleUid) {
             source: row.source || null,
             numpages: row.numpages || 0,
             indexedAt: row.indexed_at,
+            extractionBackend: row.extraction_backend || 'legacy',
+            grobidVersion: row.grobid_version || null,
         };
     } catch {
         return null;
@@ -691,6 +697,44 @@ async getProductQualityFeedbackWindow(days = 30) {
          WHERE created_at >= ?`,
         [since]
     );
+}
+
+async getSynthesisQualityHintsForTopic(topic, { days = 90, limit = 20 } = {}) {
+    if (!this.kysely || !topic) return null;
+    const safeLimit = Math.min(Math.max(Number(limit) || 20, 1), 50);
+    const since = new Date(Date.now() - Number(days || 90) * 24 * 60 * 60 * 1000).toISOString();
+    const rows = await this.all(
+        `SELECT clinical_usefulness, factual_accuracy, completeness, metadata_json, time_saved_minutes
+         FROM product_quality_feedback
+         WHERE product_type = 'synthesis'
+           AND topic IS NOT NULL
+           AND LOWER(TRIM(topic)) = LOWER(TRIM(?))
+           AND created_at >= ?
+         ORDER BY created_at DESC
+         LIMIT ?`,
+        [String(topic), since, safeLimit]
+    ).catch(() => []);
+    if (!Array.isArray(rows) || rows.length === 0) return null;
+
+    const usefulness = rows.map((r) => Number(r.clinical_usefulness)).filter((n) => n >= 1 && n <= 5);
+    const factual = rows.map((r) => Number(r.factual_accuracy)).filter((n) => n >= 1 && n <= 5);
+    const completeness = rows.map((r) => Number(r.completeness)).filter((n) => n >= 1 && n <= 5);
+    const avg = (values) => (values.length ? values.reduce((a, b) => a + b, 0) / values.length : null);
+    const avgClinicalUsefulness = avg(usefulness);
+    const avgFactualAccuracy = avg(factual);
+    const avgCompleteness = avg(completeness);
+    const lowRatedAspects = [];
+    if (avgFactualAccuracy != null && avgFactualAccuracy < 3.5) lowRatedAspects.push('factual accuracy');
+    if (avgCompleteness != null && avgCompleteness < 3.5) lowRatedAspects.push('completeness');
+    if (avgClinicalUsefulness != null && avgClinicalUsefulness < 3.5) lowRatedAspects.push('clinical usefulness');
+
+    return {
+        sampleSize: rows.length,
+        avgClinicalUsefulness,
+        avgFactualAccuracy,
+        avgCompleteness,
+        lowRatedAspects,
+    };
 }
 
 async getUserRetentionCohort(days = 30) {

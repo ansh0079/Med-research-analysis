@@ -1,5 +1,6 @@
 const pino = require('pino');
 const { getRequestId } = require('../utils/requestContext');
+const { activeTraceContext } = require('../utils/tracing');
 
 const logger = pino({
     level:
@@ -11,7 +12,10 @@ const logger = pino({
             : 'debug'),
     mixin() {
         const requestId = getRequestId();
-        return requestId ? { requestId } : {};
+        return {
+            ...(requestId ? { requestId } : {}),
+            ...activeTraceContext(),
+        };
     },
 });
 
