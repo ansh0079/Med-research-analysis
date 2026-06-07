@@ -26,7 +26,7 @@ const PLANS = {
         stripeProductKey: null,
 
         limits: {
-            searchesPerDay: 10,
+            searchesPerDay: 50,
             savedArticles: 25,
             aiAnalysesPerMonth: 5,
             synthesisPerMonth: 0,
@@ -71,7 +71,7 @@ const PLANS = {
         stripeProductKey: 'pro',
 
         limits: {
-            searchesPerDay: 200,
+            searchesPerDay: 50,
             savedArticles: 500,
             aiAnalysesPerMonth: 150,
             synthesisPerMonth: 30,
