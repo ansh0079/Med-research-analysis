@@ -28,6 +28,10 @@ function getConnection() {
     sharedConnection = createRedisClient('bullmq-shared', {
         maxRetriesPerRequest: null,
         enableReadyCheck: false,
+        // BullMQ uses blocking commands (BZPOPMIN etc.) that wait for jobs.
+        // Setting commandTimeout:0 disables the per-command timeout so these
+        // long-lived blocking calls don't flood logs with "Command timed out".
+        commandTimeout: 0,
     });
     return sharedConnection;
 }
