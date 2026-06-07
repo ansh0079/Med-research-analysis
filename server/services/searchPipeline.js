@@ -114,6 +114,90 @@ function yearInFilters(article, yearFilters = []) {
     });
 }
 
+/**
+ * Post-retrieval study-type filter for non-PubMed sources.
+ *
+ * PubMed results are already query-filtered (e.g. "Practice Guideline"[Publication Type]).
+ * Semantic Scholar and OpenAlex return all publication types, so we drop articles that
+ * clearly don't match the requested type to avoid polluting guideline / RCT searches.
+ *
+ * The match is intentionally lenient (title/abstract keyword OR pubtype tag) so that
+ * well-known articles without clean metadata are not accidentally dropped.
+ */
+const STUDY_TYPE_MATCH_RULES = {
+    'practice guideline': {
+        ssTypes: [],
+        keywords: ['guideline', 'guidance', 'recommendation', 'consensus statement', 'clinical practice guideline'],
+    },
+    'randomized controlled trial': {
+        ssTypes: ['clinicaltrial'],
+        keywords: ['randomized', 'randomised', 'rct'],
+    },
+    'systematic review': {
+        ssTypes: [],
+        ssTypesWithKeyword: ['review'], // pubtype "Review" + "systematic" in title
+        keywords: ['systematic review', 'systematic literature review'],
+    },
+    'meta-analysis': {
+        ssTypes: ['metaanalysis'],
+        keywords: ['meta-analysis', 'meta analysis', 'metaanalysis'],
+    },
+    'clinical trial': {
+        ssTypes: ['clinicaltrial', 'studyregistration'],
+        keywords: ['clinical trial'],
+    },
+};
+
+function extractClauseKey(clause) {
+    // '"Practice Guideline"[Publication Type]' → 'practice guideline'
+    const m = String(clause).match(/^"?([^"[]+)"?\[/);
+    return m ? m[1].toLowerCase().trim() : null;
+}
+
+function articleMatchesStudyTypeKey(article, key) {
+    const rules = STUDY_TYPE_MATCH_RULES[key];
+    if (!rules) return true; // unknown key — don't filter
+
+    const pubtypesRaw = Array.isArray(article.pubtype) ? article.pubtype : [];
+    const pubtypes = pubtypesRaw.map((t) => String(t).toLowerCase().replace(/[\s-]/g, ''));
+    const title = String(article.title || '').toLowerCase();
+    const abst = String(article.abstract || '').toLowerCase();
+    const text = `${title} ${abst}`;
+
+    // Check direct SS pubtype match
+    if ((rules.ssTypes || []).some((st) => pubtypes.includes(st.toLowerCase().replace(/[\s-]/g, '')))) {
+        return true;
+    }
+
+    // Systematic review: SS "Review" pubtype + "systematic" in title/abstract
+    if (rules.ssTypesWithKeyword) {
+        const hasBaseType = rules.ssTypesWithKeyword.some((st) =>
+            pubtypes.includes(st.toLowerCase().replace(/[\s-]/g, ''))
+        );
+        if (hasBaseType && text.includes('systematic')) return true;
+    }
+
+    // Keyword match in title or abstract
+    return (rules.keywords || []).some((kw) => text.includes(kw));
+}
+
+function filterByStudyType(articles, parsedStudyTypes) {
+    if (!Array.isArray(parsedStudyTypes) || parsedStudyTypes.length === 0) return articles;
+
+    const clauseKeys = parsedStudyTypes
+        .map(extractClauseKey)
+        .filter(Boolean);
+
+    if (clauseKeys.length === 0) return articles;
+
+    return articles.filter((article) => {
+        // PubMed articles are already pre-filtered at the query level — always keep
+        if (article._source === 'pubmed') return true;
+        // For all other sources, keep if the article matches any of the requested types
+        return clauseKeys.some((key) => articleMatchesStudyTypeKey(article, key));
+    });
+}
+
 const PICO_STOPWORDS = new Set([
     'the', 'and', 'or', 'with', 'without', 'versus', 'vs', 'compared', 'comparison',
     'control', 'placebo', 'standard', 'usual', 'care', 'therapy', 'treatment',
@@ -400,12 +484,16 @@ async function fetchAndRankSearchArticles({
         const pico = await picoPromise;
         timings.fetchMs = Date.now() - started;
 
+        // Post-retrieval study-type filter: PubMed is already filtered at the query level;
+        // Semantic Scholar and OpenAlex are not, so we drop non-matching articles here.
+        const studyFiltered = filterByStudyType(raw, parsedStudyTypes);
+
         const filterStarted = Date.now();
         const queryMeshTerms = Array.isArray(telemetry.meshExpansions) ? telemetry.meshExpansions : [];
         const relevant = await withSpan('search.filter_relevance', {
-            'search.raw_count': Array.isArray(raw) ? raw.length : 0,
+            'search.raw_count': Array.isArray(studyFiltered) ? studyFiltered.length : 0,
         }, async (span) => {
-            const rows = filterRelevantArticles(raw, { query, specificity, queryMeshTerms, parsedYearFilters, pico });
+            const rows = filterRelevantArticles(studyFiltered, { query, specificity, queryMeshTerms, parsedYearFilters, pico });
             span.setAttribute('search.relevant_count', rows.length);
             return rows;
         });
@@ -506,6 +594,7 @@ module.exports = {
     mergeRerankedWithRemainder,
     applyPicoRerankStage,
     yearInFilters,
+    filterByStudyType,
     prefetchTeachingArtifacts,
     fetchAndRankSearchArticles,
 };
