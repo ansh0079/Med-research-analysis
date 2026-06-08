@@ -28,6 +28,7 @@ const { buildProxyService } = require('../services/externalApiProxy');
 const { authenticateApiKey } = require('../services/apiKeyService');
 const { hasFeature } = require('../config/entitlements');
 const { createBudgetForAction, runWithLlmBudget } = require('../services/llmRequestBudget');
+const { persistSearchedArticles } = require('../services/articlePersistenceService');
 const { validateAiOutput } = require('../services/aiOutputValidation');
 const { publicRankingTraces } = require('../services/searchRankingTrace');
 const { explainInteractionReward } = require('../services/rewardAttributionService');
@@ -668,6 +669,11 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
             if (process.env.NODE_ENV === 'test') return;
 
             queueFullTextIndexing(articles);
+
+            // Persist search-accessed articles as permanent system resources (fire-and-forget)
+            void persistSearchedArticles(db, articles, queryValidation.sanitized).catch((err) => {
+                logger.warn({ err }, 'persistSearchedArticles failed');
+            });
 
             // Auto-seed topic knowledge for any query that has enough papers but no existing synopsis
             if (shouldAutoSeedFromSearch() && articles.length >= 2) {
