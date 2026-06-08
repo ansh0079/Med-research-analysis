@@ -7,7 +7,7 @@ function registerAlertRoutes(app, { db, serverConfig, fetch: fetchImpl, requireJ
             res.json({ alerts: rows });
         } catch (error) {
             req.log.error({ err: error }, 'Get alerts error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -29,7 +29,7 @@ function registerAlertRoutes(app, { db, serverConfig, fetch: fetchImpl, requireJ
             res.status(201).json({ success: true, alertId: result.id });
         } catch (error) {
             req.log.error({ err: error }, 'Create alert error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -39,7 +39,7 @@ function registerAlertRoutes(app, { db, serverConfig, fetch: fetchImpl, requireJ
             res.json({ success: true });
         } catch (error) {
             req.log.error({ err: error }, 'Delete alert error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -51,7 +51,7 @@ function registerAlertRoutes(app, { db, serverConfig, fetch: fetchImpl, requireJ
             res.json({ success: true, ...result });
         } catch (error) {
             req.log.error({ err: error }, 'Manual digest run error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -72,7 +72,7 @@ function registerAlertRoutes(app, { db, serverConfig, fetch: fetchImpl, requireJ
             res.json({ success: true, message: 'You have been unsubscribed from this alert.' });
         } catch (error) {
             req.log.error({ err: error }, 'Unsubscribe error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 }

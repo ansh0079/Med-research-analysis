@@ -43,7 +43,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             });
         } catch (error) {
             req.log.error({ err: error }, 'Admin stats error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -54,7 +54,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ message: 'Cache cleared', dbCleaned: cleaned });
         } catch (error) {
             req.log.error({ err: error }, 'Cache clear error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -108,7 +108,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ health });
         } catch (error) {
             req.log.error({ err: error }, 'Learning health error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -121,7 +121,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ automation, curriculumScheduler, generatedAt: new Date().toISOString() });
         } catch (error) {
             req.log.error({ err: error }, 'Automation status error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -138,7 +138,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ automation });
         } catch (error) {
             req.log.error({ err: error }, 'Automation pause update error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -156,7 +156,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
         } catch (error) {
             const status = /Invalid quality queue/.test(error.message) ? 400 : 500;
             req.log.error({ err: error }, 'Clinical quality queue error');
-            res.status(status).json({ error: error.message });
+            res.status(status).json({ error: status < 500 ? error.message : 'Internal server error' });
         }
     });
 
@@ -170,7 +170,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ claims, limit, offset, status, topic });
         } catch (error) {
             req.log.error({ err: error }, 'Teaching claim review list error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -203,7 +203,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ claim });
         } catch (error) {
             req.log.error({ err: error }, 'Curator metadata update error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -215,7 +215,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json(result);
         } catch (error) {
             req.log.error({ err: error }, 'Guideline watch scan error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -235,7 +235,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
         } catch (error) {
             const status = /Invalid verification status/.test(error.message) ? 400 : 500;
             req.log.error({ err: error }, 'Teaching claim verification update error');
-            res.status(status).json({ error: error.message });
+            res.status(status).json({ error: status < 500 ? error.message : 'Internal server error' });
         }
     });
 
@@ -252,7 +252,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ claim: updatedClaim, alignment, guidelineCount });
         } catch (error) {
             req.log.error({ err: error }, 'Teaching claim guideline check error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -263,7 +263,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ observability });
         } catch (error) {
             req.log.error({ err: error }, 'Claim observability error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -275,7 +275,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ dashboard });
         } catch (error) {
             req.log.error({ err: error }, 'LLM cost dashboard error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -298,7 +298,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             });
         } catch (error) {
             req.log.error({ err: error }, 'Core curriculum topic import error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -311,7 +311,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ topics, count: topics.length });
         } catch (error) {
             req.log.error({ err: error }, 'Curriculum seed topic list error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -340,7 +340,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             });
         } catch (error) {
             req.log.error({ err: error }, 'Curriculum scheduler observability error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -351,7 +351,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ settings, guardrails });
         } catch (error) {
             req.log.error({ err: error }, 'Curriculum scheduler settings update error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -391,7 +391,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
         } catch (error) {
             req.log.error({ err: error }, 'Curriculum seed topic error');
             const status = /not found/i.test(error.message) ? 404 : 500;
-            res.status(status).json({ error: error.message });
+            res.status(status).json({ error: status < 500 ? error.message : 'Internal server error' });
         }
     });
 
@@ -416,7 +416,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json(result);
         } catch (error) {
             req.log.error({ err: error }, 'Curriculum seed batch error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -441,7 +441,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json(result);
         } catch (error) {
             req.log.error({ err: error }, 'Curriculum failed seed retry error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -458,7 +458,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json(result);
         } catch (error) {
             req.log.error({ err: error }, 'Topic guideline align error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -467,7 +467,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json(await aggregateCollectiveMemory(db));
         } catch (error) {
             req.log.error({ err: error }, 'Aggregate memory error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -490,7 +490,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             });
         } catch (error) {
             req.log.error({ err: error }, 'Aggregate memory stats error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -505,7 +505,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ items: rows, limit, offset });
         } catch (error) {
             req.log.error({ err: error }, 'Audit log list error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -545,7 +545,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.send(csv);
         } catch (error) {
             req.log.error({ err: error }, 'Audit log export error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -558,7 +558,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ items: rows, limit, offset });
         } catch (error) {
             req.log.error({ err: error }, 'Billing audit list error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -585,7 +585,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             });
         } catch (error) {
             req.log.error({ err: error }, 'Quiz validation stats error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 }

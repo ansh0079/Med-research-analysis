@@ -21,7 +21,7 @@ function registerGuidelineRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
             res.json(result);
         } catch (error) {
             req.log.error({ err: error }, 'Browse guidelines error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -39,7 +39,7 @@ function registerGuidelineRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
             res.json({ topic, guidelines });
         } catch (error) {
             req.log.error({ err: error }, 'Get guidelines by topic error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -51,7 +51,7 @@ function registerGuidelineRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
             res.json({ guideline });
         } catch (error) {
             req.log.error({ err: error }, 'Get guideline error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -69,7 +69,7 @@ function registerGuidelineRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
             res.json(result);
         } catch (error) {
             req.log.error({ err: error }, 'List guidelines error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -84,7 +84,7 @@ function registerGuidelineRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
             res.status(201).json({ guideline });
         } catch (error) {
             req.log.error({ err: error }, 'Create guideline error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -96,7 +96,7 @@ function registerGuidelineRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
             res.json({ guideline });
         } catch (error) {
             req.log.error({ err: error }, 'Update guideline error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -108,7 +108,7 @@ function registerGuidelineRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
             res.json({ guideline });
         } catch (error) {
             req.log.error({ err: error }, 'Review guideline error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -120,7 +120,7 @@ function registerGuidelineRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
             res.json({ guideline });
         } catch (error) {
             req.log.error({ err: error }, 'Mark guideline stale error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -134,7 +134,7 @@ function registerGuidelineRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
             res.json({ guideline });
         } catch (error) {
             req.log.error({ err: error }, 'Supersede guideline error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
@@ -145,7 +145,7 @@ function registerGuidelineRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
             res.json({ success: true });
         } catch (error) {
             req.log.error({ err: error }, 'Delete guideline error');
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: 'Internal server error' });
         }
     });
 
