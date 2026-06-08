@@ -146,7 +146,7 @@ async function persistSearchedArticles(db, articles, query) {
         .filter((a) => a?.uid)
         .slice(0, MAX_PERSIST);
 
-    // Run concurrently — all are independent upserts
+    // 1. Cache articles + store as topic-linked teaching objects (concurrent)
     await Promise.allSettled(
         toStore.flatMap((article) => [
             cacheArticle(db, article),
@@ -154,9 +154,19 @@ async function persistSearchedArticles(db, articles, query) {
         ])
     );
 
+    // 2. Record bouquet signals — tells the hourly refresh scheduler which topics
+    //    are actively searched and which articles consistently rank for them.
+    //    Without this, getStaleTopicsForRefresh() always returns 0 candidates
+    //    and topic knowledge never self-updates.
+    if (typeof db.recordBouquetSignals === 'function') {
+        await db.recordBouquetSignals(rawTopic, toStore).catch((err) => {
+            logger.debug({ err }, 'articlePersistence: recordBouquetSignals failed');
+        });
+    }
+
     logger.debug(
         { topic: normalizedTopic, count: toStore.length },
-        'articlePersistence: persisted search-accessed articles'
+        'articlePersistence: persisted search-accessed articles + bouquet signals'
     );
 }
 
