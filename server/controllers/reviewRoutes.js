@@ -7,6 +7,7 @@ const {
     buildCaseSearchQueryPrompt,
     buildTeachingVignettePrompt,
 } = require('../prompts');
+const { buildAdaptiveCasePrompt } = require('../prompts/adaptiveCase');
 const { createReviewService } = require('../services/reviewService');
 const { gatherEvidenceArticlesForCase, heuristicSearchQuery } = require('../services/caseEvidenceService');
 const { extractTrialGuidelineConflicts } = require('../services/conflictExtractionService');
@@ -933,6 +934,123 @@ Return ONLY valid JSON:
             }
         }
     );
+
+    // ── Adaptive Case: Recommend topics ─────────────────────────────────────
+    app.get('/api/cases/recommend', requireAuthJwt, rateLimit(20, 60), async (req, res) => {
+        try {
+            const weakTopics = await db.getWeakTopicsForCases(req.user.id, { limit: 8 });
+            const recentTopics = await db.getRecentCaseTopics(req.user.id, { days: 7 }).catch(() => []);
+            const recentSet = new Set(recentTopics);
+            const fresh = weakTopics.filter(t => !recentSet.has(t.normalizedTopic));
+            const repeated = weakTopics.filter(t => recentSet.has(t.normalizedTopic));
+            res.json({ recommendations: [...fresh, ...repeated].slice(0, 5), recentTopics });
+        } catch (error) {
+            req.log?.error?.({ err: error }, 'Case recommend error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    // ── Adaptive Case: Generate branching case ──────────────────────────────
+    app.post('/api/cases/adaptive-vignette', requireJson, requireAuthJwt, rateLimit(6, 60), async (req, res) => {
+        try {
+            const topic = String(req.body.topic || '').trim();
+            if (!topic) return res.status(400).json({ error: 'topic is required' });
+            const learningMode = normalizeLearningMode(req.body.learningMode);
+            const difficulty = ['easy', 'medium', 'hard'].includes(req.body.difficulty) ? req.body.difficulty : 'medium';
+
+            const [guidelines, topicKnowledge, mastery] = await Promise.all([
+                db.getGuidelinesByTopic(topic, { limit: 8 }).catch(() => []),
+                db.getTopicKnowledge(topic).catch(() => null),
+                db.getUserTopicMastery(req.user.id, topic).catch(() => null),
+            ]);
+
+            const weaknesses = [];
+            if (mastery) {
+                if (mastery.recallScore < 60) weaknesses.push({ type: 'recall', score: mastery.recallScore });
+                if (mastery.clinicalApplicationScore < 60) weaknesses.push({ type: 'clinical_application', score: mastery.clinicalApplicationScore });
+                if (mastery.trialInterpretationScore < 60) weaknesses.push({ type: 'trial_interpretation', score: mastery.trialInterpretationScore });
+                if (mastery.guidelineScore < 60) weaknesses.push({ type: 'guideline', score: mastery.guidelineScore });
+                if (mastery.pitfallScore < 60) weaknesses.push({ type: 'pitfall', score: mastery.pitfallScore });
+            }
+
+            const prompt = buildAdaptiveCasePrompt(topic, guidelines, topicKnowledge, weaknesses, { learningMode, difficulty });
+            const { text } = await callProvider(prompt, 'auto');
+            const parsed = reviews.parseJsonBlock(text);
+            if (!parsed || !Array.isArray(parsed.steps) || parsed.steps.length < 3) {
+                return res.status(502).json({ error: 'Failed to generate valid case structure' });
+            }
+
+            const session = await db.createCaseSession({
+                userId: req.user.id,
+                topic,
+                learningMode,
+                difficulty,
+                caseData: parsed,
+                targetedWeaknesses: weaknesses,
+            });
+
+            await db.logEvent('case:adaptive_vignette', req.sessionId, { topic, learningMode, difficulty, steps: parsed.steps.length });
+            res.json({ session });
+        } catch (error) {
+            req.log?.error?.({ err: error }, 'Adaptive vignette error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    // ── Adaptive Case: Get session ──────────────────────────────────────────
+    app.get('/api/cases/sessions/:id', requireAuthJwt, rateLimit(30, 60), async (req, res) => {
+        try {
+            const session = await db.getCaseSession(req.params.id);
+            if (!session || session.userId !== req.user.id) return res.status(404).json({ error: 'Session not found' });
+            res.json({ session });
+        } catch (error) {
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    // ── Adaptive Case: List sessions ────────────────────────────────────────
+    app.get('/api/cases/sessions', requireAuthJwt, rateLimit(20, 60), async (req, res) => {
+        try {
+            const status = req.query.status || '';
+            const sessions = await db.getCaseSessionsForUser(req.user.id, { status, limit: 20 });
+            res.json({ sessions });
+        } catch (error) {
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    // ── Adaptive Case: Submit step response ─────────────────────────────────
+    app.post('/api/cases/sessions/:id/respond', requireJson, requireAuthJwt, rateLimit(30, 60), async (req, res) => {
+        try {
+            const session = await db.getCaseSession(req.params.id);
+            if (!session || session.userId !== req.user.id) return res.status(404).json({ error: 'Session not found' });
+            if (session.status === 'completed') return res.status(400).json({ error: 'Session already completed' });
+
+            const { stepIndex, selectedAnswer, timeMs } = req.body;
+            if (stepIndex == null || !selectedAnswer) return res.status(400).json({ error: 'stepIndex and selectedAnswer required' });
+
+            const step = session.caseData?.steps?.[stepIndex];
+            if (!step) return res.status(400).json({ error: 'Invalid step index' });
+
+            const isCorrect = selectedAnswer === step.correctAnswer;
+            const response = { selectedAnswer, isCorrect, timeMs: timeMs || 0, answeredAt: new Date().toISOString() };
+            const updated = await db.submitCaseStepResponse(session.id, stepIndex, response);
+
+            if (updated.status === 'completed') {
+                const responses = updated.responses || [];
+                const correctCount = responses.filter(r => r?.isCorrect).length;
+                const totalScore = Math.round((correctCount / responses.length) * 100);
+                await db.scoreCaseSession(session.id, totalScore);
+                const final = await db.getCaseSession(session.id);
+                return res.json({ session: final, stepFeedback: { isCorrect, explanation: step.explanation, whyOthersWrong: step.whyOthersWrong, teachingPoint: step.teachingPoint } });
+            }
+
+            res.json({ session: updated, stepFeedback: { isCorrect, explanation: step.explanation, whyOthersWrong: step.whyOthersWrong, teachingPoint: step.teachingPoint } });
+        } catch (error) {
+            req.log?.error?.({ err: error }, 'Case step respond error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
 }
 
 module.exports = { registerReviewRoutes };

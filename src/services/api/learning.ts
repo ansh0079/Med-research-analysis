@@ -512,4 +512,46 @@ export class LearningApi extends BaseApiClient {
     if (!response.ok) throw new Error('Failed to log learning event');
     return response.json();
   }
+
+  async getCaseRecommendations(): Promise<{ recommendations: import('@types').CaseRecommendation[]; recentTopics: string[] }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/cases/recommend`);
+    if (!response.ok) throw new Error('Failed to get case recommendations');
+    return response.json();
+  }
+
+  async generateAdaptiveCase(data: { topic: string; learningMode?: string; difficulty?: string }): Promise<{ session: import('@types').CaseSession }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/cases/adaptive-vignette`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({ error: 'Failed to generate case' }));
+      throw new Error(err.error || 'Failed to generate case');
+    }
+    return response.json();
+  }
+
+  async getCaseSession(id: string): Promise<{ session: import('@types').CaseSession }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/cases/sessions/${id}`);
+    if (!response.ok) throw new Error('Failed to load case session');
+    return response.json();
+  }
+
+  async listCaseSessions(status?: string): Promise<{ sessions: import('@types').CaseSession[] }> {
+    const params = status ? `?status=${encodeURIComponent(status)}` : '';
+    const response = await this.fetchWithSession(`${API_BASE}/api/cases/sessions${params}`);
+    if (!response.ok) throw new Error('Failed to list case sessions');
+    return response.json();
+  }
+
+  async submitCaseStepResponse(sessionId: string, data: { stepIndex: number; selectedAnswer: string; timeMs?: number }): Promise<{ session: import('@types').CaseSession; stepFeedback: import('@types').CaseStepFeedback }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/cases/sessions/${sessionId}/respond`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error('Failed to submit step response');
+    return response.json();
+  }
 }

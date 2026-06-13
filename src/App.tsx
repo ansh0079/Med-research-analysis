@@ -55,6 +55,7 @@ const NotFoundPage        = lazyDefault(() => import('./pages/NotFoundPage'), 'N
 const AdminObservabilityPage = lazyDefault(() => import('./pages/AdminObservabilityPage'), 'AdminObservabilityPage');
 const ClinicalQualityQueuePage = lazyDefault(() => import('./pages/ClinicalQualityQueuePage'), 'ClinicalQualityQueuePage');
 const PracticePoolPage = lazyDefault(() => import('./pages/PracticePoolPage'), 'PracticePoolPage');
+const AdaptiveCasePage = lazyDefault(() => import('./pages/AdaptiveCasePage'), 'AdaptiveCasePage');
 
 function PageFallback() {
   return (
@@ -167,6 +168,7 @@ const AppContent: React.FC = () => {
             <Route path="/saved"     element={<RouteErrorBoundary><ProtectedRoute><SavedArticlesPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/analytics" element={<RouteErrorBoundary><ProtectedRoute><AnalyticsPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/case"      element={<RouteErrorBoundary><ProtectedRoute><CaseModePage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/cases"    element={<RouteErrorBoundary><ProtectedRoute><AdaptiveCasePage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/grant"     element={<RouteErrorBoundary><ProtectedRoute><GrantWritingPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/knowledge" element={<RouteErrorBoundary><ProtectedRoute><KnowledgeReviewPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/guideline-library" element={<RouteErrorBoundary><ProtectedRoute><GuidelineBrowserPage /></ProtectedRoute></RouteErrorBoundary>} />

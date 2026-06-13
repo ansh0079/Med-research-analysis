@@ -1269,6 +1269,75 @@ export interface GuidelineContradictionResponse {
 }
 
 // ==========================================
+// Adaptive Case Sessions
+// ==========================================
+
+export interface CaseStep {
+  type: 'presentation' | 'investigation' | 'management' | 'complication' | 'resolution';
+  narrative: string;
+  question: string;
+  questionType: QuestionType;
+  options: string[];
+  correctAnswer: string;
+  explanation: string;
+  whyOthersWrong: string;
+  teachingPoint: string;
+}
+
+export interface CaseSessionData {
+  title: string;
+  setting: string;
+  steps: CaseStep[];
+  caseSummary: string;
+  keyLearningPoints: string[];
+  guidelinesApplied?: string[];
+}
+
+export interface CaseStepResponse {
+  selectedAnswer: string;
+  isCorrect: boolean;
+  timeMs: number;
+  answeredAt: string;
+}
+
+export interface CaseSession {
+  id: string;
+  userId: string;
+  topic: string;
+  normalizedTopic: string;
+  learningMode: string;
+  difficulty: string;
+  caseData: CaseSessionData;
+  targetedWeaknesses: Array<{ type: string; score: number }>;
+  status: 'in_progress' | 'completed' | 'abandoned';
+  currentStep: number;
+  responses: CaseStepResponse[];
+  totalScore: number | null;
+  createdAt: string;
+  completedAt: string | null;
+}
+
+export interface CaseRecommendation {
+  topic: string;
+  normalizedTopic: string;
+  overallScore: number;
+  recallScore: number;
+  clinicalApplicationScore: number;
+  guidelineScore: number;
+  pitfallScore: number;
+  attemptsCount: number;
+  displayName?: string;
+  specialty?: string;
+}
+
+export interface CaseStepFeedback {
+  isCorrect: boolean;
+  explanation: string;
+  whyOthersWrong: string;
+  teachingPoint: string;
+}
+
+// ==========================================
 // Learning Agent Types
 // ==========================================
 

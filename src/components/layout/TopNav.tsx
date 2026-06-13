@@ -13,7 +13,8 @@ const PRIMARY_NAV = [
 // Tools dropdown — secondary features grouped together
 const TOOLS_NAV = [
   { to: '/learning',     label: 'Topic review',   icon: 'fa-graduation-cap', color: 'text-indigo-500' },
-  { to: '/case',         label: 'Case mode',      icon: 'fa-stethoscope',  color: 'text-emerald-500' },
+  { to: '/cases',        label: 'Clinical cases', icon: 'fa-heartbeat',    color: 'text-rose-500'    },
+  { to: '/case',         label: 'Case analysis',  icon: 'fa-stethoscope',  color: 'text-emerald-500' },
   { to: '/quiz',         label: 'Quiz',           icon: 'fa-brain',        color: 'text-violet-500'  },
   { to: '/practice',    label: 'Practice pool',  icon: 'fa-layer-group',  color: 'text-teal-500'   },
   { to: '/study-paths', label: 'Study paths',    icon: 'fa-route',        color: 'text-rose-500'   },

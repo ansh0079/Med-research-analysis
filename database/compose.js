@@ -20,6 +20,7 @@ const MIXIN_LAYERS = [
     ['m15-topic-crosslinks', require('./mixins/m15-topic-crosslinks')],
     ['m16-personalization-bandit', require('./mixins/m16-personalization-bandit')],
     ['m17-guideline-contradictions', require('./mixins/m17-guideline-contradictions')],
+    ['m18-case-sessions', require('./mixins/m18-case-sessions')],
 ];
 
 const ALLOWED_REPLACEMENTS = {
