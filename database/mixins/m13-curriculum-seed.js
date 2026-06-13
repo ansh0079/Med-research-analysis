@@ -134,7 +134,7 @@ module.exports = (Sup) => class extends Sup {
             where += ` AND t.seed_status = ?`;
             params.push(seedStatus);
         }
-        params.push(Math.min(Math.max(Number(limit) || 200, 1), 500), Math.max(Number(offset) || 0, 0));
+        params.push(Math.min(Math.max(Number(limit) || 200, 1), 2000), Math.max(Number(offset) || 0, 0));
         const rows = await this.all(
             `SELECT t.*, b.name AS block_name, c.slug AS curriculum_slug, c.id AS curriculum_id
              FROM curriculum_topics t
