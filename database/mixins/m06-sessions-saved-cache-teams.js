@@ -133,8 +133,9 @@ async setArticleRetractionData(articleId, data) {
     );
     // If no row existed yet, insert a minimal stub so the data isn't lost
     await this.run(
-        `INSERT OR IGNORE INTO article_cache (id, source, data, retraction_data, is_retracted, created_at)
-         VALUES (?, 'retraction_check', '{}', ?, ?, ?)`,
+        `INSERT INTO article_cache (id, source, data, retraction_data, is_retracted, created_at)
+         VALUES (?, 'retraction_check', '{}', ?, ?, ?)
+         ON CONFLICT (id) DO NOTHING`,
         [String(articleId), JSON.stringify({ ...data, checkedAt: now }), data.isRetracted ? 1 : 0, now]
     );
 }

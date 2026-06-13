@@ -6,6 +6,26 @@ function registerGuidelineRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
         res.json({ sources: TRUSTED_GUIDELINE_SOURCES });
     });
 
+    // Guideline contradictions for a topic (public read, rate-limited)
+    app.get('/api/guidelines/contradictions', rateLimit(60, 60), async (req, res) => {
+        try {
+            const { topic } = req.query;
+            if (!topic || typeof topic !== 'string') {
+                return res.status(400).json({ error: 'topic query parameter is required' });
+            }
+            const normalized = db.normalizeTopic(topic);
+            const contradictions = await db.getContradictionsForTopic(normalized);
+            const count = { total: contradictions.length, major: 0, minor: 0, nuanced: 0 };
+            for (const c of contradictions) {
+                if (count[c.severity] !== undefined) count[c.severity]++;
+            }
+            res.json({ topic, contradictions, count });
+        } catch (error) {
+            req.log.error({ err: error }, 'Get guideline contradictions error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
     // Browse/search all stored guideline snippets (public read, rate-limited). Omits superseded rows.
     app.get('/api/guidelines/browse', rateLimit(40, 60), async (req, res) => {
         try {

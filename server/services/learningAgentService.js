@@ -198,7 +198,7 @@ async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
     }
 
     // ── 4. Cross-linked topics (adjacent to strong areas) ────────────────────
-    const strongTopics = mastery.filter(m => m.overall_score >= 70).slice(0, 5);
+    const strongTopics = mastery.filter(m => m.attempts_count >= 1).slice(0, 8);
     const crosslinkSuggestions = [];
 
     for (const strong of strongTopics) {
@@ -222,7 +222,7 @@ async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
             logger.warn({ err, topic: strong.topic }, 'Cross-link lookup failed');
         }
     }
-    recommendations.push(...crosslinkSuggestions.slice(0, 3));
+    recommendations.push(...crosslinkSuggestions.slice(0, 5));
 
     // ── 5. Stale topics (studied but not reviewed in 14+ days) ───────────────
     for (const m of mastery) {

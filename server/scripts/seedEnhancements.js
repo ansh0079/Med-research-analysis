@@ -1016,11 +1016,18 @@ async function buildCrosslinks(ai) {
     // ── Step B: AI-inferred links (one Gemini call per topic) ─────────────────
     console.log('\n  Step B: Building AI-inferred cross-links…');
 
+    // Use DB topics (all curriculum_topics) instead of static topics.json
+    const dbTopicRows = await db.all(
+        `SELECT display_name FROM curriculum_topics ORDER BY sort_order ASC`
+    );
+    const DB_TOPICS = dbTopicRows.map(r => r.display_name);
+    console.log(`  Using ${DB_TOPICS.length} topics from database (${ALL_TOPICS.length} in static file)`);
+
     let aiLinksCreated = 0;
     let aiSkipped = 0;
     let aiFailed = 0;
 
-    for (const topic of ALL_TOPICS) {
+    for (const topic of DB_TOPICS) {
         // Skip if already has ≥3 ai_inferred links (unless --force)
         if (!force) {
             const existing = await db.getTopicCrosslinks(db.normalizeTopic(topic), { limit: 50 });
@@ -1034,7 +1041,7 @@ async function buildCrosslinks(ai) {
         const prompt = `Given the topic "${topic}", identify up to 5 other topics from the list below that share key evidence, drug class, mechanism, or clinical overlap.
 
 FULL TOPIC LIST:
-${ALL_TOPICS.join(', ')}
+${DB_TOPICS.join(', ')}
 
 Return ONLY valid JSON array:
 [{"relatedTopic": "exact topic name from list", "rationale": "one sentence — what they share", "strength": 0.5-1.0}]
@@ -1068,7 +1075,7 @@ Rules:
             continue;
         }
 
-        const topicSet = new Set(ALL_TOPICS);
+        const topicSet = new Set(DB_TOPICS);
         let topicLinksCreated = 0;
         for (const link of links) {
             const relatedTopic = String(link.relatedTopic || '').trim();

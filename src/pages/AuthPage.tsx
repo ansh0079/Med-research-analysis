@@ -43,6 +43,7 @@ export const AuthPage: React.FC = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const [inviteCode, setInviteCode] = useState('');
   const [oauthLoading, setOAuthLoading] = useState<'google' | 'orcid' | null>(null);
   const [oauthConfig, setOauthConfig] = useState<{ google?: boolean; orcid?: boolean }>({});
   const [emailTouched, setEmailTouched] = useState(false);
@@ -78,6 +79,7 @@ export const AuthPage: React.FC = () => {
     setSuccess('');
     setEmailTouched(false);
     setPasswordTouched(false);
+    setInviteCode('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -111,7 +113,7 @@ export const AuthPage: React.FC = () => {
         await login(email, password);
         navigate(returnTo, { replace: true });
       } else {
-        const result = await register(email, password, name || undefined);
+        const result = await register(email, password, name || undefined, inviteCode.trim() || undefined);
         if (result?.message) {
           setSuccess(result.message);
         } else {
@@ -205,6 +207,26 @@ export const AuthPage: React.FC = () => {
                   placeholder="Dr. Jane Smith"
                   className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm transition-all"
                 />
+              </div>
+            )}
+
+            {/* Invite code (register only — beta gate) */}
+            {mode === 'register' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                  Invite Code <span className="text-red-400 font-normal">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={inviteCode}
+                  onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
+                  placeholder="XXXXXX-XXXXXX"
+                  autoComplete="off"
+                  spellCheck={false}
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm font-mono tracking-widest transition-all"
+                />
+                <p className="mt-1.5 text-xs text-slate-400">Signal MD is currently invite-only. Check your invite email.</p>
               </div>
             )}
 

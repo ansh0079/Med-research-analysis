@@ -1396,7 +1396,7 @@ CREATE INDEX IF NOT EXISTS idx_ucp_topic ON user_curriculum_progress(curriculum_
 
 CREATE INDEX IF NOT EXISTS idx_ucp_user ON user_curriculum_progress(user_id);
 
-CREATE UNIQUE INDEX idx_user_claim_misconception
+CREATE UNIQUE INDEX IF NOT EXISTS idx_user_claim_misconception
     ON user_claim_misconceptions(user_id, claim_key, wrong_option_text);
 
 CREATE INDEX IF NOT EXISTS idx_user_claim_misconceptions_claim

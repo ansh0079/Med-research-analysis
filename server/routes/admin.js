@@ -1,4 +1,5 @@
 const logger = require('../config/logger');
+const crypto = require('crypto');
 const { classifyClaimGuidelineAlignment } = require('../services/claimGuidelineAlignmentService');
 const { alignClaimWithGuidelines, alignTopicClaimsWithGuidelines } = require('../services/claimGuidelineEngine');
 const { seedCurriculumTopic } = require('../services/curriculumSeedService');
@@ -585,6 +586,62 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             });
         } catch (error) {
             req.log.error({ err: error }, 'Quiz validation stats error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    // ==========================================
+    // Beta Invite Codes
+    // ==========================================
+
+    // List all invite codes
+    app.get('/api/admin/invite-codes', requireAuthJwt, requireRole('admin'), async (req, res) => {
+        try {
+            const rows = await db.all(
+                `SELECT id, code, label, specialty, max_uses, use_count, created_by, created_at, expires_at
+                 FROM beta_invites ORDER BY created_at DESC`
+            );
+            res.json({ invites: rows });
+        } catch (error) {
+            req.log.error({ err: error }, 'List invite codes error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    // Create one or more invite codes
+    // Body: { count?: number, label?: string, specialty?: string, maxUses?: number, expiresAt?: string }
+    app.post('/api/admin/invite-codes', requireAuthJwt, requireRole('admin'), async (req, res) => {
+        try {
+            const { count = 1, label, specialty, maxUses = 1, expiresAt } = req.body;
+            const n = Math.min(Math.max(parseInt(count) || 1, 1), 200);
+            const created = [];
+            for (let i = 0; i < n; i++) {
+                const code = [
+                    crypto.randomBytes(3).toString('hex').toUpperCase(),
+                    crypto.randomBytes(3).toString('hex').toUpperCase(),
+                ].join('-');
+                const id = crypto.randomUUID();
+                await db.run(
+                    `INSERT INTO beta_invites (id, code, label, specialty, max_uses, use_count, created_by, expires_at)
+                     VALUES (?, ?, ?, ?, ?, 0, ?, ?)`,
+                    [id, code, label || null, specialty || null, maxUses, req.user.id, expiresAt || null]
+                );
+                created.push({ id, code, label, specialty, maxUses, expiresAt });
+            }
+            res.status(201).json({ created });
+        } catch (error) {
+            req.log.error({ err: error }, 'Create invite codes error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    // Delete (revoke) an invite code
+    app.delete('/api/admin/invite-codes/:id', requireAuthJwt, requireRole('admin'), async (req, res) => {
+        try {
+            await db.run(`DELETE FROM beta_invites WHERE id = ?`, [req.params.id]);
+            res.json({ message: 'Invite code revoked.' });
+        } catch (error) {
+            req.log.error({ err: error }, 'Delete invite code error');
             res.status(500).json({ error: 'Internal server error' });
         }
     });

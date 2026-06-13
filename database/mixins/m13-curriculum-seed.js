@@ -22,6 +22,7 @@ module.exports = (Sup) => class extends Sup {
             lastSynthesisAt: row.last_synthesis_at || null,
             claimCount: Number(row.claim_count || 0),
             reviewDueAt: row.review_due_at || null,
+            specialty: row.specialty || null,
         };
     }
 

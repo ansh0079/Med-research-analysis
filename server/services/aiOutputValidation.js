@@ -46,6 +46,17 @@ const OUTPUT_PROFILES = {
             if (!data.trustRating || !['HIGH', 'MODERATE', 'LOW', 'VERY_LOW'].includes(data.trustRating)) {
                 data.trustRating = 'MODERATE';
             }
+            // AI occasionally returns array for string fields — coerce to joined string
+            const STRING_FIELDS = [
+                'takeaway', 'clinicalQuestion', 'studyDesign', 'population', 'intervention',
+                'comparator', 'mainFindings', 'clinicalMeaning', 'limitations', 'bottomLine',
+                'trustRationale', 'whatNotToOverclaim',
+            ];
+            for (const field of STRING_FIELDS) {
+                if (Array.isArray(data[field])) {
+                    data[field] = data[field].filter(Boolean).join('. ');
+                }
+            }
             return data;
         },
         degrade: () => ({

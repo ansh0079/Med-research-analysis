@@ -10,9 +10,10 @@ module.exports = (Sup) => class extends Sup {
             [tA, ntA, tB, ntB] = [tB, ntB, tA, ntA];
         }
         await this.run(
-            `INSERT OR IGNORE INTO topic_crosslinks
+            `INSERT INTO topic_crosslinks
              (topic_a, normalized_topic_a, topic_b, normalized_topic_b, link_type, shared_evidence, strength, ai_rationale)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+             ON CONFLICT (normalized_topic_a, normalized_topic_b, link_type) DO NOTHING`,
             [tA, ntA, tB, ntB, linkType,
              sharedEvidence != null ? String(sharedEvidence) : null,
              strength != null ? Number(strength) : 0.5,

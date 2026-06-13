@@ -484,13 +484,32 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // Register
     // ==========================================
     app.post('/api/auth/register', authRateLimit, auditLog('auth.register'), async (req, res) => {
-        const { name, email, password } = req.body;
-        if (!name || !email || !password) {
-            return res.status(400).json({ error: 'name, email, and password are required' });
+        const { name, email, password, inviteCode } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ error: 'email and password are required' });
         }
         if (password.length < 8) {
             return res.status(400).json({ error: 'Password must be at least 8 characters' });
         }
+
+        // Beta: require a valid invite code
+        if (!inviteCode) {
+            return res.status(403).json({ error: 'An invite code is required to create an account during the beta.' });
+        }
+        const invite = await db.get(
+            `SELECT id, use_count, max_uses, specialty, expires_at FROM beta_invites WHERE code = ?`,
+            [inviteCode.trim().toUpperCase()]
+        );
+        if (!invite) {
+            return res.status(403).json({ error: 'Invalid invite code.' });
+        }
+        if (invite.use_count >= invite.max_uses) {
+            return res.status(403).json({ error: 'This invite code has already been used the maximum number of times.' });
+        }
+        if (invite.expires_at && new Date(invite.expires_at) < new Date()) {
+            return res.status(403).json({ error: 'This invite code has expired.' });
+        }
+
         try {
             const existing = await db.getUserByEmail(email);
             if (existing) return res.status(409).json({ error: 'User already exists' });
@@ -501,7 +520,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
 
             const user = {
                 id: crypto.randomUUID(),
-                name,
+                name: name || '',
                 email,
                 password: hashedPassword,
                 role: 'user',
@@ -512,13 +531,19 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             };
             await db.createUser(user);
 
+            // Consume the invite slot
+            await db.run(
+                `UPDATE beta_invites SET use_count = use_count + 1 WHERE id = ?`,
+                [invite.id]
+            );
+
             // Start 14-day Pro trial automatically (no credit card)
             await startProTrial(db, user.id);
             user.subscription_plan = 'pro';
             user.subscription_status = 'trialing';
 
             // Send verification email (non-blocking — don't fail registration if email fails)
-            sendVerificationEmail({ to: email, name, token: verificationToken, appUrl }).catch((err) => {
+            sendVerificationEmail({ to: email, name: name || email, token: verificationToken, appUrl }).catch((err) => {
                 logger.error({ err }, 'Failed to send verification email');
             });
 

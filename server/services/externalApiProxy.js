@@ -14,6 +14,31 @@
 const logger = require('../config/logger');
 const crypto = require('crypto');
 
+// Lazily-loaded GoogleAuth instance for Vertex AI OAuth2 token caching.
+// Only initialised when GOOGLE_APPLICATION_CREDENTIALS is set.
+// Falls back gracefully if google-auth-library is not installed.
+let _googleAuth = null;
+function getGoogleAuth() {
+  if (!_googleAuth) {
+    try {
+      const { GoogleAuth } = require('google-auth-library');
+      _googleAuth = new GoogleAuth({
+        scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+      });
+    } catch (e) {
+      throw new Error('google-auth-library not installed — run: npm install google-auth-library');
+    }
+  }
+  return _googleAuth;
+}
+
+async function getVertexAccessToken() {
+  const auth = getGoogleAuth();
+  const client = await auth.getClient();
+  const tokenResponse = await client.getAccessToken();
+  return tokenResponse.token;
+}
+
 const DEFAULT_TIMEOUTS = {
   pubmed: 15000,
   semantic: 15000,
@@ -276,10 +301,36 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     return data.choices?.[0]?.message?.content || 'No response';
   }
 
-  async function geminiGenerate(prompt, { model = 'gemini-2.5-flash-lite', temperature = 0.7, maxOutputTokens, timeoutMs = DEFAULT_TIMEOUTS.gemini, jsonMode = false } = {}) {
+  async function geminiGenerate(prompt, { model = 'gemini-2.5-flash-lite', temperature = 0.7, maxOutputTokens, timeoutMs = DEFAULT_TIMEOUTS.gemini, jsonMode = false, useAiStudio = false } = {}) {
     if (!keys.gemini) throw new Error('Gemini API key not configured');
     const modelName = model.includes('gemini') ? model : 'gemini-2.5-flash-lite';
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`;
+
+    // Routing strategy:
+    //   Vertex AI  — bulk enrichment/MCQ generation (covered by £755 GenAI App Builder credit)
+    //   AI Studio  — schema-sensitive calls (synopsis generation, strict Zod-validated JSON)
+    //                pass useAiStudio: true to force AI Studio regardless of Vertex config
+    const gcpProject = keys.gcpProject || process.env.GCP_PROJECT_ID;
+    const gcpLocation = keys.gcpLocation || process.env.GCP_LOCATION || 'us-central1';
+    const useVertexAI = !useAiStudio && !!(process.env.GOOGLE_APPLICATION_CREDENTIALS && gcpProject);
+
+    let url, headers;
+    if (useVertexAI) {
+      // Vertex AI endpoint — requires OAuth2 bearer token from service account
+      url = `https://${gcpLocation}-aiplatform.googleapis.com/v1/projects/${gcpProject}/locations/${gcpLocation}/publishers/google/models/${modelName}:generateContent`;
+      const accessToken = await getVertexAccessToken();
+      headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      };
+    } else {
+      // Google AI Studio endpoint — billed as "Generative Language API" SKU (not covered by credit)
+      url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`;
+      headers = {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': keys.gemini,
+      };
+    }
+
     const generationConfig = {
       temperature,
       maxOutputTokens: maxOutputTokens ?? (prompt.length > 5000 ? 2500 : 1024),
@@ -289,17 +340,21 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     if (jsonMode) {
       generationConfig.responseMimeType = 'application/json';
     }
+    // Disable thinking for Vertex AI calls — Gemini 2.5 thinking tokens appear in parts[0]
+    // with thought:true, which breaks JSON mode parsing. Thinking adds latency and cost with
+    // no benefit for our structured extraction tasks.
+    const requestBody = {
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig,
+    };
+    if (useVertexAI) {
+      requestBody.generationConfig.thinkingConfig = { thinkingBudget: 0 };
+    }
     const res = await f(url, {
       method: 'POST',
       signal: AbortSignal.timeout(timeoutMs),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': keys.gemini,
-      },
-      body: JSON.stringify({
-        contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig,
-      }),
+      headers,
+      body: JSON.stringify(requestBody),
     });
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
@@ -309,7 +364,11 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     if (data.promptFeedback?.blockReason) {
       throw new Error(`Content blocked: ${data.promptFeedback.blockReason}`);
     }
-    return data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response';
+    // Gemini 2.5 models return "thinking" parts (thought: true) before the actual response.
+    // Filter them out so we only return the actual answer text.
+    const parts = data.candidates?.[0]?.content?.parts || [];
+    const text = parts.filter(p => !p.thought).map(p => p.text || '').join('');
+    return text || 'No response';
   }
 
   async function huggingFaceGenerate(prompt, { model = 'mistralai/Mistral-7B-Instruct-v0.2' } = {}) {

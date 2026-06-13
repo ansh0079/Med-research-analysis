@@ -263,6 +263,12 @@ export class CollaborationApi extends BaseApiClient {
     return response.json();
   }
 
+  async getGuidelineContradictions(topic: string): Promise<import('@types').GuidelineContradictionResponse> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/guidelines/contradictions?topic=${encodeURIComponent(topic)}`);
+    if (!response.ok) throw new Error('Failed to fetch guideline contradictions');
+    return response.json();
+  }
+
   async browseGuidelines(options: { query?: string; status?: string; sourceBody?: string; limit?: number; offset?: number } = {}): Promise<import('@types').GuidelineListResponse> {
     const params = new URLSearchParams();
     if (options.query) params.set('query', options.query);
