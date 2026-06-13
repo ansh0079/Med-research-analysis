@@ -1,6 +1,6 @@
 'use strict';
 
-function buildAdaptiveCasePrompt(topic, guidelines, topicKnowledge, weaknesses, options = {}) {
+function buildAdaptiveCasePrompt(topic, guidelines, topicKnowledge, weaknesses, options = {}, synopsis = null) {
     const learningMode = options.learningMode || 'student';
     const difficulty = options.difficulty || 'medium';
 
@@ -20,27 +20,84 @@ function buildAdaptiveCasePrompt(topic, guidelines, topicKnowledge, weaknesses, 
     let weaknessInstruction = '';
     if (weaknesses && weaknesses.length > 0) {
         const lines = weaknesses.map(w => `- ${w.type}: score ${w.score}%${w.detail ? ` (${w.detail})` : ''}`).join('\n');
-        weaknessInstruction = `\nTARGETED WEAKNESSES — this learner struggles with:\n${lines}\nDesign steps 2-5 to specifically probe these weak areas. If the learner is weak on guidelines, include a step requiring guideline-based decision making. If weak on clinical application, include a management decision step.`;
+        weaknessInstruction = `\nTARGETED WEAKNESSES — this learner struggles with:\n${lines}\nDesign steps 2-5 to specifically probe these weak areas.`;
     }
 
-    const guidelineContext = (guidelines || []).length > 0
-        ? guidelines.map((g, i) => `[G${i + 1}] ${g.source_body}${g.source_year ? ` ${g.source_year}` : ''}: ${g.recommendation_text}${g.recommendation_strength ? ` (${g.recommendation_strength})` : ''}`).join('\n')
+    // Build evidence base from guidelines
+    const guidelineBlock = (guidelines || []).length > 0
+        ? `\nCLINICAL GUIDELINES (your primary source — all management decisions MUST reference these):\n${guidelines.map((g, i) => {
+            let line = `[G${i + 1}] ${g.source_body}`;
+            if (g.source_year) line += ` (${g.source_year})`;
+            line += `: ${g.recommendation_text}`;
+            if (g.recommendation_strength) line += `\n     Strength: ${g.recommendation_strength}`;
+            if (g.certainty_of_evidence) line += ` | Certainty: ${g.certainty_of_evidence}`;
+            if (g.population) line += `\n     Population: ${g.population}`;
+            if (g.cautions) line += `\n     Cautions: ${g.cautions}`;
+            return line;
+        }).join('\n\n')}`
         : '';
 
-    const knowledgeContext = topicKnowledge?.knowledge?.coreTeachingPoints
-        ? `\nCORE TEACHING POINTS:\n${topicKnowledge.knowledge.coreTeachingPoints.map((p, i) => `${i + 1}. ${p.text || p.claim || p}`).join('\n')}`
-        : '';
+    // Build evidence base from topic knowledge (teaching points from actual papers)
+    let teachingBlock = '';
+    const tk = topicKnowledge?.knowledge;
+    if (tk) {
+        const points = [];
+        if (tk.coreTeachingPoints && tk.coreTeachingPoints.length > 0) {
+            points.push(...tk.coreTeachingPoints.map((p, i) => {
+                const text = p.text || p.claim || (typeof p === 'string' ? p : '');
+                const src = p.sourceIndices ? ` [from papers ${p.sourceIndices.join(', ')}]` : '';
+                return `  TP${i + 1}. ${text}${src}`;
+            }));
+        }
+        if (tk.teachingPoints && tk.teachingPoints.length > 0 && (!tk.coreTeachingPoints || tk.coreTeachingPoints.length === 0)) {
+            points.push(...tk.teachingPoints.slice(0, 15).map((p, i) => {
+                const text = p.text || p.claim || (typeof p === 'string' ? p : '');
+                return `  TP${i + 1}. ${text}`;
+            }));
+        }
+        if (points.length > 0) {
+            teachingBlock = `\nEVIDENCE-BASED TEACHING POINTS (extracted from seeded research papers):\n${points.join('\n')}`;
+        }
 
-    return `You are a clinical education expert creating a multi-step branching clinical case for medical learners.
+        if (tk.mcqAngles && tk.mcqAngles.length > 0) {
+            teachingBlock += `\n\nVALIDATED MCQ ANGLES (known high-yield testing angles for this topic):\n${tk.mcqAngles.slice(0, 8).map((a, i) => `  MA${i + 1}. ${a}`).join('\n')}`;
+        }
+
+        if (tk.sourceArticles && tk.sourceArticles.length > 0) {
+            teachingBlock += `\n\nSOURCE PAPERS:\n${tk.sourceArticles.slice(0, 10).map((a, i) => `  [${i + 1}] ${a.title}`).join('\n')}`;
+        }
+    }
+
+    // Synopsis context
+    let synopsisBlock = '';
+    if (synopsis) {
+        const synText = typeof synopsis === 'string' ? synopsis : synopsis.text || synopsis.synopsis || '';
+        if (synText.length > 50) {
+            synopsisBlock = `\nTOPIC SYNOPSIS (evidence-based summary from seeded papers):\n${synText.slice(0, 2000)}`;
+        }
+    }
+
+    const hasEvidence = guidelineBlock || teachingBlock;
+
+    return `You are a clinical education case assembler. You construct clinical cases STRICTLY from the evidence base provided below. You do NOT invent clinical facts, drug doses, investigation thresholds, or management protocols from general knowledge.
 
 TOPIC: ${topic}
 LEARNING MODE: ${learningMode} — ${modeGuidance}
 DIFFICULTY: ${difficulty} — ${difficultyGuidance}
 ${weaknessInstruction}
-${guidelineContext ? `\nCLINICAL GUIDELINES:\n${guidelineContext}` : ''}
-${knowledgeContext}
+${guidelineBlock}
+${teachingBlock}
+${synopsisBlock}
 
-Generate a realistic clinical case with EXACTLY 5 sequential steps. The case must be a single coherent patient journey where each step reveals new information based on the previous step.
+STRICT EVIDENCE GROUNDING RULES:
+${hasEvidence ? `- Every correct answer MUST be traceable to a guideline [Gn] or teaching point [TPn] listed above.
+- Drug names, doses, thresholds, and investigation cut-offs must come from the provided guidelines or teaching points. If a specific value is not in the evidence base, use the guideline recommendation without inventing a number.
+- In the explanation for each step, cite which guideline or teaching point supports the answer (e.g. "Per G2, AHA 2023 recommends..." or "As per TP4...").
+- Do NOT introduce management approaches, drug interactions, or clinical facts not present in the evidence base above.` : `- No guidelines or teaching points were found for this topic. Generate a case using well-established clinical knowledge only. Flag in the caseSummary that this case lacks specific evidence grounding.`}
+- Lab values and vital signs in the narrative should be realistic for the condition.
+- Patient demographics should be epidemiologically appropriate for the topic.
+
+Generate a realistic clinical case with EXACTLY 5 sequential steps. The case must be a single coherent patient journey.
 
 Return ONLY valid JSON:
 {
@@ -49,74 +106,53 @@ Return ONLY valid JSON:
   "steps": [
     {
       "type": "presentation",
-      "narrative": "Initial patient presentation with history, examination findings, and vitals. Include salient positives AND negatives. 3-5 sentences, realistic and specific.",
+      "narrative": "Initial patient presentation with history, examination findings, and vitals. 3-5 sentences.",
       "question": "Single best answer question about the NEXT clinical step",
       "questionType": "clinical_application",
       "options": ["A: ...", "B: ...", "C: ...", "D: ..."],
       "correctAnswer": "B",
-      "explanation": "Why this is correct, referencing the clinical findings. 2-3 sentences.",
+      "explanation": "Why correct — cite guideline [Gn] or teaching point [TPn]. 2-3 sentences.",
       "whyOthersWrong": "Brief reason each wrong option is incorrect",
-      "teachingPoint": "One key learning point from this step"
+      "teachingPoint": "Key learning point from this step",
+      "evidenceSource": "G2" or "TP4" or "G1, TP2"
     },
     {
       "type": "investigation",
-      "narrative": "Investigation results (bloods, imaging, ECG, etc.) revealed by the previous step's correct action. Be specific with values.",
-      "question": "...",
-      "questionType": "recall" | "clinical_application" | "trial_interpretation" | "guideline" | "pitfall",
-      "options": ["A: ...", "B: ...", "C: ...", "D: ..."],
-      "correctAnswer": "...",
-      "explanation": "...",
-      "whyOthersWrong": "...",
-      "teachingPoint": "..."
+      "narrative": "Investigation results revealed by the previous step's correct action. Specific values.",
+      "question": "...", "questionType": "...", "options": [...], "correctAnswer": "...",
+      "explanation": "...", "whyOthersWrong": "...", "teachingPoint": "...", "evidenceSource": "..."
     },
     {
       "type": "management",
-      "narrative": "The clinical picture evolves based on investigation results. New information or a complication emerges.",
-      "question": "...",
-      "questionType": "...",
-      "options": [...],
-      "correctAnswer": "...",
-      "explanation": "...",
-      "whyOthersWrong": "...",
-      "teachingPoint": "..."
+      "narrative": "Clinical picture evolves. New information or decision point.",
+      "question": "...", "questionType": "...", "options": [...], "correctAnswer": "...",
+      "explanation": "...", "whyOthersWrong": "...", "teachingPoint": "...", "evidenceSource": "..."
     },
     {
       "type": "complication",
-      "narrative": "A complication, unexpected finding, or management decision point. Tests the learner's ability to adapt.",
-      "question": "...",
-      "questionType": "...",
-      "options": [...],
-      "correctAnswer": "...",
-      "explanation": "...",
-      "whyOthersWrong": "...",
-      "teachingPoint": "..."
+      "narrative": "Complication or unexpected finding. Tests adaptability.",
+      "question": "...", "questionType": "...", "options": [...], "correctAnswer": "...",
+      "explanation": "...", "whyOthersWrong": "...", "teachingPoint": "...", "evidenceSource": "..."
     },
     {
       "type": "resolution",
-      "narrative": "Case resolution with outcome. Final teaching moment.",
-      "question": "...",
-      "questionType": "...",
-      "options": [...],
-      "correctAnswer": "...",
-      "explanation": "...",
-      "whyOthersWrong": "...",
-      "teachingPoint": "..."
+      "narrative": "Case resolution with outcome.",
+      "question": "...", "questionType": "...", "options": [...], "correctAnswer": "...",
+      "explanation": "...", "whyOthersWrong": "...", "teachingPoint": "...", "evidenceSource": "..."
     }
   ],
-  "caseSummary": "2-3 sentence summary of the full case for review after completion",
-  "keyLearningPoints": ["3-5 high-yield learning points from this case"],
-  "guidelinesApplied": ["Which guidelines were relevant and how — reference G1, G2 etc if guidelines provided"]
+  "caseSummary": "2-3 sentence summary of the full case",
+  "keyLearningPoints": ["3-5 learning points — each citing its evidence source"],
+  "guidelinesApplied": ["Which guidelines [Gn] were tested and how"],
+  "evidenceGaps": ["Any areas where the provided evidence was insufficient and general knowledge was used"]
 }
 
 RULES:
-- The narrative for each step MUST build on the previous step. Step 2 should reference the action taken in step 1.
-- Use realistic lab values, vital signs, and imaging findings — not generic placeholders.
-- Each step's question must be answerable from the information given up to that point.
-- Question types should vary across steps (don't use clinical_application for all 5).
-- At least one step should test guideline knowledge if guidelines are provided.
-- At least one step should include a common pitfall or trap.
-- All drug doses, investigation values, and clinical details must be medically accurate.
-- Patient demographics and presentation must be realistic for the topic.
+- Each step's narrative MUST build on the previous step.
+- Question types should vary across the 5 steps.
+- At least one step must test guideline knowledge (questionType: "guideline").
+- At least one step must include a common pitfall (questionType: "pitfall").
+- Every explanation must cite its source from the evidence base.
 - Do NOT include patient-identifying information.`;
 }
 

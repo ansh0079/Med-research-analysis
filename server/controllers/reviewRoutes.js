@@ -973,7 +973,8 @@ Return ONLY valid JSON:
                 if (mastery.pitfallScore < 60) weaknesses.push({ type: 'pitfall', score: mastery.pitfallScore });
             }
 
-            const prompt = buildAdaptiveCasePrompt(topic, guidelines, topicKnowledge, weaknesses, { learningMode, difficulty });
+            const synopsis = topicKnowledge?.knowledge?.fullTextSynopsis || topicKnowledge?.knowledge?.synopsis || null;
+            const prompt = buildAdaptiveCasePrompt(topic, guidelines, topicKnowledge, weaknesses, { learningMode, difficulty }, synopsis);
             const { text } = await callProvider(prompt, 'auto');
             const parsed = reviews.parseJsonBlock(text);
             if (!parsed || !Array.isArray(parsed.steps) || parsed.steps.length < 3) {
@@ -1042,10 +1043,10 @@ Return ONLY valid JSON:
                 const totalScore = Math.round((correctCount / responses.length) * 100);
                 await db.scoreCaseSession(session.id, totalScore);
                 const final = await db.getCaseSession(session.id);
-                return res.json({ session: final, stepFeedback: { isCorrect, explanation: step.explanation, whyOthersWrong: step.whyOthersWrong, teachingPoint: step.teachingPoint } });
+                return res.json({ session: final, stepFeedback: { isCorrect, explanation: step.explanation, whyOthersWrong: step.whyOthersWrong, teachingPoint: step.teachingPoint, evidenceSource: step.evidenceSource || null } });
             }
 
-            res.json({ session: updated, stepFeedback: { isCorrect, explanation: step.explanation, whyOthersWrong: step.whyOthersWrong, teachingPoint: step.teachingPoint } });
+            res.json({ session: updated, stepFeedback: { isCorrect, explanation: step.explanation, whyOthersWrong: step.whyOthersWrong, teachingPoint: step.teachingPoint, evidenceSource: step.evidenceSource || null } });
         } catch (error) {
             req.log?.error?.({ err: error }, 'Case step respond error');
             res.status(500).json({ error: 'Internal server error' });

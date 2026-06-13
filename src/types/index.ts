@@ -1282,6 +1282,7 @@ export interface CaseStep {
   explanation: string;
   whyOthersWrong: string;
   teachingPoint: string;
+  evidenceSource: string | null;
 }
 
 export interface CaseSessionData {
@@ -1291,6 +1292,7 @@ export interface CaseSessionData {
   caseSummary: string;
   keyLearningPoints: string[];
   guidelinesApplied?: string[];
+  evidenceGaps?: string[];
 }
 
 export interface CaseStepResponse {
@@ -1335,6 +1337,7 @@ export interface CaseStepFeedback {
   explanation: string;
   whyOthersWrong: string;
   teachingPoint: string;
+  evidenceSource: string | null;
 }
 
 // ==========================================

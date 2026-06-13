@@ -156,6 +156,12 @@ function CaseStepView({ step, stepIndex, onSubmit, feedback, response }: {
             <i className="fas fa-lightbulb text-amber-500 mt-0.5 text-xs" />
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{feedback.teachingPoint}</p>
           </div>
+          {feedback.evidenceSource && (
+            <div className="flex items-center gap-1.5 pt-1">
+              <i className="fas fa-bookmark text-blue-400 text-[10px]" />
+              <span className="text-[10px] font-medium text-blue-600 dark:text-blue-400">Source: {feedback.evidenceSource}</span>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -225,10 +231,45 @@ function CaseSummaryView({ session }: { session: CaseSession }) {
                     <p className="text-xs text-red-500">Your answer: {resp.selectedAnswer}</p>
                   )}
                   <p className="text-xs text-slate-500 dark:text-slate-400 italic">{step.teachingPoint}</p>
+                  {step.evidenceSource && (
+                    <p className="text-[10px] font-medium text-blue-500 dark:text-blue-400"><i className="fas fa-bookmark mr-1" />Source: {step.evidenceSource}</p>
+                  )}
                 </div>
               </details>
             );
           })}
+        </div>
+      )}
+
+      {caseData.guidelinesApplied && caseData.guidelinesApplied.length > 0 && (
+        <div className="rounded-xl bg-emerald-50 dark:bg-emerald-900/20 p-4 border border-emerald-200 dark:border-emerald-800">
+          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-2">
+            <i className="fas fa-book-medical mr-1" />Guidelines Applied
+          </p>
+          <ul className="space-y-1">
+            {caseData.guidelinesApplied.map((g, i) => (
+              <li key={i} className="text-xs text-slate-600 dark:text-slate-400 flex items-start gap-2">
+                <i className="fas fa-check text-emerald-400 mt-0.5 text-[9px]" />
+                <span>{g}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {caseData.evidenceGaps && caseData.evidenceGaps.length > 0 && (
+        <div className="rounded-xl bg-amber-50 dark:bg-amber-900/20 p-4 border border-amber-200 dark:border-amber-800">
+          <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-2">
+            <i className="fas fa-exclamation-triangle mr-1" />Evidence Gaps
+          </p>
+          <ul className="space-y-1">
+            {caseData.evidenceGaps.map((g, i) => (
+              <li key={i} className="text-xs text-slate-600 dark:text-slate-400 flex items-start gap-2">
+                <i className="fas fa-info-circle text-amber-400 mt-0.5 text-[9px]" />
+                <span>{g}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
