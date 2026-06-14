@@ -1043,7 +1043,67 @@ Return ONLY valid JSON:
                 const totalScore = Math.round((correctCount / responses.length) * 100);
                 await db.scoreCaseSession(session.id, totalScore);
                 const final = await db.getCaseSession(session.id);
-                return res.json({ session: final, stepFeedback: { isCorrect, explanation: step.explanation, whyOthersWrong: step.whyOthersWrong, teachingPoint: step.teachingPoint, evidenceSource: step.evidenceSource || null } });
+
+                // Cross-learning: find related topics and suggest a case
+                let crossLearningRecommendation = null;
+                try {
+                    const normalizedTopic = db.normalizeTopic(session.topic);
+                    const [crosslinks, masteryList] = await Promise.all([
+                        db.getTopicCrosslinks(normalizedTopic, { limit: 8 }).catch(() => []),
+                        db.listUserTopicMastery(req.user.id, { limit: 50 }).catch(() => []),
+                    ]);
+                    const masteryMap = new Map((masteryList || []).map(m => [m.normalizedTopic || db.normalizeTopic(m.topic), m]));
+
+                    const candidates = (crosslinks || [])
+                        .map(cl => {
+                            const m = masteryMap.get(cl.normalizedTopic);
+                            return {
+                                topic: cl.topic,
+                                normalizedTopic: cl.normalizedTopic,
+                                linkType: cl.linkType,
+                                linkStrength: cl.strength,
+                                aiRationale: cl.aiRationale,
+                                overallScore: m?.overallScore ?? null,
+                                attemptsCount: m?.attemptsCount ?? 0,
+                            };
+                        })
+                        .sort((a, b) => {
+                            // Prioritize: weak topics first, then untested, then by link strength
+                            const aScore = a.overallScore ?? 100;
+                            const bScore = b.overallScore ?? 100;
+                            if (aScore < 70 && bScore >= 70) return -1;
+                            if (bScore < 70 && aScore >= 70) return 1;
+                            if (a.attemptsCount === 0 && b.attemptsCount > 0) return -1;
+                            if (b.attemptsCount === 0 && a.attemptsCount > 0) return 1;
+                            return (b.linkStrength || 0) - (a.linkStrength || 0);
+                        });
+
+                    if (candidates.length > 0) {
+                        const pick = candidates[0];
+                        let reason = '';
+                        if (pick.overallScore != null && pick.overallScore < 70) {
+                            reason = `You scored ${pick.overallScore}% on this related topic — a case would help reinforce it.`;
+                        } else if (pick.attemptsCount === 0) {
+                            reason = `You haven't been tested on this related topic yet.`;
+                        } else {
+                            reason = `This topic is clinically related and would strengthen your understanding of ${session.topic}.`;
+                        }
+                        crossLearningRecommendation = {
+                            topic: pick.topic,
+                            normalizedTopic: pick.normalizedTopic,
+                            linkType: pick.linkType,
+                            rationale: pick.aiRationale || reason,
+                            reason,
+                            overallScore: pick.overallScore,
+                        };
+                    }
+                } catch (_) { /* non-critical */ }
+
+                return res.json({
+                    session: final,
+                    stepFeedback: { isCorrect, explanation: step.explanation, whyOthersWrong: step.whyOthersWrong, teachingPoint: step.teachingPoint, evidenceSource: step.evidenceSource || null },
+                    crossLearningRecommendation,
+                });
             }
 
             res.json({ session: updated, stepFeedback: { isCorrect, explanation: step.explanation, whyOthersWrong: step.whyOthersWrong, teachingPoint: step.teachingPoint, evidenceSource: step.evidenceSource || null } });

@@ -1340,6 +1340,15 @@ export interface CaseStepFeedback {
   evidenceSource: string | null;
 }
 
+export interface CrossLearningRecommendation {
+  topic: string;
+  normalizedTopic: string;
+  linkType: string;
+  rationale: string;
+  reason: string;
+  overallScore: number | null;
+}
+
 // ==========================================
 // Learning Agent Types
 // ==========================================

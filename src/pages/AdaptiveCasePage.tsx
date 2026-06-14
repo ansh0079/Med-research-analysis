@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { api } from '@services/api';
-import type { CaseSession, CaseStep, CaseStepFeedback, CaseStepResponse, CaseRecommendation } from '@types';
+import type { CaseSession, CaseStep, CaseStepFeedback, CaseStepResponse, CaseRecommendation, CrossLearningRecommendation } from '@types';
 
 const STEP_TYPE_LABELS: Record<string, { icon: string; label: string; color: string }> = {
   presentation: { icon: 'fa-user-injured', label: 'Presentation', color: 'text-blue-500' },
@@ -168,7 +168,43 @@ function CaseStepView({ step, stepIndex, onSubmit, feedback, response }: {
   );
 }
 
-function CaseSummaryView({ session }: { session: CaseSession }) {
+function CrossLearningCard({ rec, onStart }: { rec: CrossLearningRecommendation; onStart: (topic: string) => void }) {
+  return (
+    <div className="rounded-xl bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-900/20 dark:to-violet-900/20 border border-indigo-200 dark:border-indigo-800 p-4 space-y-2">
+      <div className="flex items-center gap-2">
+        <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center">
+          <i className="fas fa-project-diagram text-indigo-500 text-sm" />
+        </div>
+        <div className="flex-1">
+          <p className="text-xs font-bold uppercase tracking-widest text-indigo-500">Cross-learning Suggestion</p>
+          <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">{rec.topic}</p>
+        </div>
+        {rec.linkType && (
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 font-medium">{rec.linkType}</span>
+        )}
+      </div>
+      <p className="text-xs text-slate-600 dark:text-slate-400">{rec.rationale}</p>
+      <p className="text-xs text-slate-500 dark:text-slate-500">{rec.reason}</p>
+      {rec.overallScore != null && (
+        <div className="flex items-center gap-2">
+          <div className="flex-1 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+            <div className={`h-full rounded-full ${rec.overallScore >= 70 ? 'bg-emerald-500' : rec.overallScore >= 50 ? 'bg-amber-500' : 'bg-red-400'}`} style={{ width: `${rec.overallScore}%` }} />
+          </div>
+          <span className="text-[10px] font-medium text-slate-500">{rec.overallScore}%</span>
+        </div>
+      )}
+      <button
+        onClick={() => onStart(rec.topic)}
+        className="w-full mt-1 px-3 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium transition-colors flex items-center justify-center gap-2"
+      >
+        <i className="fas fa-play text-[10px]" />
+        Start Case on {rec.topic}
+      </button>
+    </div>
+  );
+}
+
+function CaseSummaryView({ session, crossRec, onStartCrossCase }: { session: CaseSession; crossRec?: CrossLearningRecommendation | null; onStartCrossCase?: (topic: string) => void }) {
   const responses = session.responses || [];
   const correct = responses.filter(r => r?.isCorrect).length;
   const total = responses.length;
@@ -272,6 +308,10 @@ function CaseSummaryView({ session }: { session: CaseSession }) {
           </ul>
         </div>
       )}
+
+      {crossRec && onStartCrossCase && (
+        <CrossLearningCard rec={crossRec} onStart={onStartCrossCase} />
+      )}
     </div>
   );
 }
@@ -329,6 +369,7 @@ export const AdaptiveCasePage: React.FC = () => {
   const [recsLoading, setRecsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<CaseSession[]>([]);
+  const [crossRec, setCrossRec] = useState<CrossLearningRecommendation | null>(null);
 
   useEffect(() => {
     if (phase !== 'setup') return;
@@ -368,13 +409,16 @@ export const AdaptiveCasePage: React.FC = () => {
     if (!session) return;
     const stepIndex = session.currentStep;
     const startTime = Date.now();
-    const { session: updated, stepFeedback } = await api.submitCaseStepResponse(session.id, {
+    const result = await api.submitCaseStepResponse(session.id, {
       stepIndex, selectedAnswer: answer, timeMs: Date.now() - startTime,
     });
-    setFeedback(stepFeedback);
+    setFeedback(result.stepFeedback);
     setShowingFeedback(true);
-    setSession(updated);
-    if (updated.status === 'completed') {
+    setSession(result.session);
+    if (result.crossLearningRecommendation) {
+      setCrossRec(result.crossLearningRecommendation);
+    }
+    if (result.session.status === 'completed') {
       setTimeout(() => setPhase('summary'), 2500);
     }
   }, [session]);
@@ -389,6 +433,7 @@ export const AdaptiveCasePage: React.FC = () => {
     setSession(null);
     setFeedback(null);
     setShowingFeedback(false);
+    setCrossRec(null);
     setError(null);
   }, []);
 
@@ -566,7 +611,7 @@ export const AdaptiveCasePage: React.FC = () => {
               <i className="fas fa-plus mr-1" />New Case
             </button>
           </div>
-          <CaseSummaryView session={session} />
+          <CaseSummaryView session={session} crossRec={crossRec} onStartCrossCase={(t) => { setTopic(t); setCrossRec(null); setPhase('setup'); }} />
         </div>
       )}
 

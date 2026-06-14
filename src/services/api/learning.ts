@@ -545,7 +545,7 @@ export class LearningApi extends BaseApiClient {
     return response.json();
   }
 
-  async submitCaseStepResponse(sessionId: string, data: { stepIndex: number; selectedAnswer: string; timeMs?: number }): Promise<{ session: import('@types').CaseSession; stepFeedback: import('@types').CaseStepFeedback }> {
+  async submitCaseStepResponse(sessionId: string, data: { stepIndex: number; selectedAnswer: string; timeMs?: number }): Promise<{ session: import('@types').CaseSession; stepFeedback: import('@types').CaseStepFeedback; crossLearningRecommendation?: import('@types').CrossLearningRecommendation }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/cases/sessions/${sessionId}/respond`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
