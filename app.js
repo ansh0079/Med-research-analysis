@@ -503,11 +503,6 @@ app.get('/api/admin/slo-status', requireAuthJwt, requireRole('admin'), async (re
     res.json(getSloStatus());
 });
 
-// Example: Admin route for clearing cache, protected by RBAC
-app.post('/api/admin/cache/clear', requireAuthJwt, requireRole('admin'), async (req, res) => {
-    await cache.flush();
-    res.json({ message: 'Cache cleared successfully' });
-});
 app.use('/api/collaboration', collaborationRoutes);
 
 // API documentation (dev / staging only)

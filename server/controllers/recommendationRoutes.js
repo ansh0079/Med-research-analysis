@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const { createRecommendationService } = require('../services/recommendationService');
 
 /**
@@ -30,7 +31,7 @@ function registerRecommendationRoutes(app, deps) {
             });
             res.json({ recommendations: out.recommendations, cached: out.cached || false });
         } catch (error) {
-            console.error('Recommendations error:', error);
+            logger.error({ err: error }, 'Recommendations error');
             res.status(500).json({ error: 'Internal Server Error' });
         }
     });
@@ -43,7 +44,7 @@ function registerRecommendationRoutes(app, deps) {
             const out = await rec.getRelatedForArticle({ id, limit });
             res.json({ articles: out.articles, cached: out.cached || false });
         } catch (error) {
-            console.error('Related articles error:', error);
+            logger.error({ err: error }, 'Related articles error');
             res.status(500).json({ error: 'Internal Server Error' });
         }
     });
@@ -55,7 +56,7 @@ function registerRecommendationRoutes(app, deps) {
             const out = await rec.getTrending({ limit });
             res.json({ articles: out.articles, cached: out.cached || false });
         } catch (error) {
-            console.error('Trending articles error:', error);
+            logger.error({ err: error }, 'Trending articles error');
             res.status(500).json({ error: 'Internal Server Error' });
         }
     });

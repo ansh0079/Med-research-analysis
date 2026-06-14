@@ -162,7 +162,7 @@ export class BaseApiClient {
     return this.refreshInFlight;
   }
 
-  protected async fetchWithSession(url: string, options: RequestInit = {}): Promise<Response> {
+  protected async fetchWithSession(url: string, options: RequestInit = {}, signal?: AbortSignal): Promise<Response> {
     const headers = new Headers(options.headers);
     if (this.sessionId) {
       headers.set('X-Session-Id', this.sessionId);
@@ -170,12 +170,13 @@ export class BaseApiClient {
     headers.set('X-Request-Id', this.ensureRequestId());
     // Required by the server-side CSRF origin check on state-changing requests
     headers.set('X-Requested-With', 'XMLHttpRequest');
-    let response = await fetch(url, { ...options, headers, credentials: 'include' });
+    const fetchOpts = { ...options, headers, credentials: 'include' as const, ...(signal ? { signal } : {}) };
+    let response = await fetch(url, fetchOpts);
 
     if (this.shouldAttemptRefresh(url, response)) {
       const refreshed = await this.refreshAccessToken();
       if (refreshed) {
-        response = await fetch(url, { ...options, headers, credentials: 'include' });
+        response = await fetch(url, fetchOpts);
       }
     }
     const clonedResponse = response.clone();

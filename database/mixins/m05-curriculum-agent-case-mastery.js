@@ -586,15 +586,22 @@ async listAgentConversations(userId, { topic = '', limit = 20, offset = 0 } = {}
 }
 
 async appendAgentMessages(conversationId, newMessages) {
-    const conv = await this.getAgentConversation(conversationId);
-    if (!conv) return null;
-    const messages = [...conv.messages, ...newMessages];
-    const now = new Date().toISOString();
-    await this.run(
-        `UPDATE agent_conversations SET messages = ?, message_count = ?, last_message_at = ?, updated_at = ? WHERE id = ?`,
-        [JSON.stringify(messages), messages.length, now, now, conversationId]
-    );
-    return this.getAgentConversation(conversationId);
+    return this.withTransaction(async () => {
+        const conv = await this.getAgentConversation(conversationId);
+        if (!conv) return null;
+        const MAX_MESSAGES = 200;
+        let messages = [...conv.messages, ...newMessages];
+        if (messages.length > MAX_MESSAGES) {
+            // Keep the first message (system/context) and the most recent ones
+            messages = [messages[0], ...messages.slice(-(MAX_MESSAGES - 1))];
+        }
+        const now = new Date().toISOString();
+        await this.run(
+            `UPDATE agent_conversations SET messages = ?, message_count = ?, last_message_at = ?, updated_at = ? WHERE id = ?`,
+            [JSON.stringify(messages), messages.length, now, now, conversationId]
+        );
+        return this.getAgentConversation(conversationId);
+    });
 }
 
 async deleteAgentConversation(id) {
