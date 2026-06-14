@@ -1688,6 +1688,38 @@ export interface TopicCurriculumProgress {
   updatedAt: string;
 }
 
+export interface TopicProgressTopic {
+  id: number;
+  displayName: string;
+  normalizedTopic: string;
+  status: 'not_started' | 'in_progress' | 'confident';
+  quizAttempts: number;
+  correctCount: number;
+  lastScorePct: number | null;
+  overallScore: number | null;
+  recallScore: number | null;
+  clinicalApplicationScore: number | null;
+  guidelineScore: number | null;
+  nextReviewAt: string | null;
+}
+
+export interface TopicProgressBlock {
+  id: number;
+  name: string;
+  sortOrder: number;
+  topicCount: number;
+  started: number;
+  confident: number;
+  avgScore: number | null;
+  topics: TopicProgressTopic[];
+}
+
+export interface TopicProgressResponse {
+  curriculum: { id: number; slug: string; name: string };
+  examSummary: CurriculumExamSummary | null;
+  blocks: TopicProgressBlock[];
+}
+
 export interface LearningRecommendation {
   type: 'review' | 'strengthen' | 'explore' | 'discover' | 'refresh' | 'case' | 'start' | 'calibrate';
   topic: string;

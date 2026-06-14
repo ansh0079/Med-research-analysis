@@ -125,7 +125,7 @@ async ensureCurriculumBlock(curriculumId, name, sortOrder = 0) {
 
 async upsertCurriculumSeedTopic(topic, options = {}) {
     const curriculum = await this.ensureCurriculum(
-        options.curriculumSlug || 'core-clinical-topics',
+        options.curriculumSlug || 'specialty-clinical-topics',
         options.curriculumName || 'Core Clinical Topics',
         {
             examStageLabel: options.examStageLabel || 'Core clinical practice',
@@ -199,7 +199,7 @@ async importCurriculumSeedTopics(topics = [], options = {}) {
     return { importedCount: imported.length, topics: imported };
 }
 
-async listCurriculumSeedTopics({ curriculumSlug = 'core-clinical-topics', seedStatus = '', limit = 200, offset = 0 } = {}) {
+async listCurriculumSeedTopics({ curriculumSlug = 'specialty-clinical-topics', seedStatus = '', limit = 200, offset = 0 } = {}) {
     const params = [curriculumSlug];
     let where = `c.slug = ?`;
     if (seedStatus) {
@@ -220,7 +220,7 @@ async listCurriculumSeedTopics({ curriculumSlug = 'core-clinical-topics', seedSt
     return rows.map((row) => this.mapCurriculumSeedTopicRow(row));
 }
 
-async listCurriculumSeedCandidates({ curriculumSlug = 'core-clinical-topics', limit = 5, now = new Date().toISOString(), seedStatuses = [] } = {}) {
+async listCurriculumSeedCandidates({ curriculumSlug = 'specialty-clinical-topics', limit = 5, now = new Date().toISOString(), seedStatuses = [] } = {}) {
     const safeLimit = Math.min(Math.max(Number(limit) || 5, 1), 20);
     const statuses = (Array.isArray(seedStatuses) ? seedStatuses : [seedStatuses])
         .map((s) => String(s || '').trim())
@@ -260,7 +260,7 @@ async listCurriculumSeedCandidates({ curriculumSlug = 'core-clinical-topics', li
     return rows.map((row) => this.mapCurriculumSeedTopicRow(row));
 }
 
-async getCurriculumSeedStatusCounts({ curriculumSlug = 'core-clinical-topics' } = {}) {
+async getCurriculumSeedStatusCounts({ curriculumSlug = 'specialty-clinical-topics' } = {}) {
     const rows = await this.all(
         `SELECT t.seed_status, COUNT(*) AS count, COALESCE(SUM(t.claim_count), 0) AS claim_count
          FROM curriculum_topics t

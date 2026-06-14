@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState, useCallback, Suspense, lazy } from 
 import { useNavigate } from 'react-router-dom';
 import { api } from '@services/api';
 import { useSearchContext } from '@contexts/SearchContext';
-import type { LearningDashboard as LearningDashboardType, LearningInsight, LearningProfile, LearningRecommendation, MasteryCohortBenchmark, UserTopicMastery } from '@types';
+import type { LearningDashboard as LearningDashboardType, LearningInsight, LearningProfile, LearningRecommendation, UserTopicMastery } from '@types';
 import { DueReviewBadge } from '@components/learning/DailyReviewQueue';
 import { SpacedRepMemoryPanel } from '@components/learning/SpacedRepMemoryPanel';
 import { PortfolioTab } from '@components/learning/PortfolioTab';
 import { PracticeAlertCard } from '@components/ui';
+import { TopicProgressGrid } from '@components/learning/TopicProgressGrid';
 
 const LearningDashboardCpdTab = lazy(() =>
   import('./LearningDashboardCpdTab').then((m) => ({ default: m.LearningDashboardCpdTab })),
@@ -45,13 +46,6 @@ const QTYPE_BARS: Array<{ key: keyof UserTopicMastery; label: string; color: str
   { key: 'pitfallScore',              label: 'Pitfall',         color: 'bg-red-500' },
 ];
 
-const PEER_STAGE_LABELS: Record<string, string> = {
-  preclinical: 'Preclinical peers',
-  early_clinical: 'Early clinical peers',
-  finals: 'Exam-stage peers',
-  foundation_doctor: 'Foundation doctor peers',
-};
-
 const INSIGHT_COLORS: Record<string, { bg: string; border: string; icon: string; badge: string }> = {
   red:    { bg: 'bg-red-50 dark:bg-red-950/30',     border: 'border-red-200 dark:border-red-800/50',    icon: 'text-red-500',    badge: 'bg-red-100 text-red-700' },
   amber:  { bg: 'bg-amber-50 dark:bg-amber-950/30', border: 'border-amber-200 dark:border-amber-800/50', icon: 'text-amber-500',  badge: 'bg-amber-100 text-amber-700' },
@@ -59,12 +53,6 @@ const INSIGHT_COLORS: Record<string, { bg: string; border: string; icon: string;
   orange: { bg: 'bg-orange-50 dark:bg-orange-950/30', border: 'border-orange-200 dark:border-orange-800/50', icon: 'text-orange-500', badge: 'bg-orange-100 text-orange-700' },
   indigo: { bg: 'bg-indigo-50 dark:bg-indigo-950/30', border: 'border-indigo-200 dark:border-indigo-800/50', icon: 'text-indigo-500', badge: 'bg-indigo-100 text-indigo-700' },
 };
-
-function gradeColor(score: number) {
-  if (score >= 80) return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400';
-  if (score >= 60) return 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400';
-  return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
-}
 
 function MasteryBar({ label, score, color }: { label: string; score: number; color: string }) {
   return (
@@ -204,114 +192,6 @@ function InsightCard({ insight, onAction }: { insight: LearningInsight; onAction
         >
           {insight.action}
         </button>
-      )}
-    </div>
-  );
-}
-
-function TopicRow({
-  mastery,
-  onDrill,
-  onCase,
-}: {
-  mastery: UserTopicMastery;
-  onDrill: () => void;
-  onCase: () => void;
-}) {
-  const [expanded, setExpanded] = useState(false);
-  const [cohort, setCohort] = useState<MasteryCohortBenchmark | null | undefined>(undefined);
-  const weakTypes = QTYPE_BARS.filter((b) => (mastery[b.key] as number) < 60).map((b) => b.label);
-
-  useEffect(() => {
-    if (!expanded) return;
-    let cancelled = false;
-    (async () => {
-      try {
-        const { cohort: c } = await api.getMasteryCohortBenchmark(mastery.topic);
-        if (!cancelled) setCohort(c);
-      } catch {
-        if (!cancelled) setCohort(null);
-      }
-    })();
-    return () => { cancelled = true; };
-  }, [expanded, mastery.topic]);
-
-  return (
-    <div className="rounded-xl border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 overflow-hidden">
-      <button
-        type="button"
-        onClick={() => setExpanded((v) => !v)}
-        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
-      >
-        <div className="flex-1 min-w-0 text-left">
-          <p className="text-sm font-bold text-slate-800 dark:text-slate-100 truncate capitalize">{mastery.topic}</p>
-          {weakTypes.length > 0 && (
-            <p className="text-[10px] text-red-500 mt-0.5">Weak: {weakTypes.join(', ')}</p>
-          )}
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
-          <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${gradeColor(mastery.overallScore)}`}>
-            {mastery.overallScore}%
-          </span>
-          <span className="text-[10px] text-slate-400">{mastery.attemptsCount}q</span>
-          <i className={`fas fa-chevron-${expanded ? 'up' : 'down'} text-slate-300 text-[10px]`} />
-        </div>
-      </button>
-
-      {expanded && (
-        <div className="border-t border-slate-100 dark:border-slate-700 px-4 py-3 space-y-3">
-          <div className="space-y-2">
-            {QTYPE_BARS.map((b) => (
-              <MasteryBar key={b.key} label={b.label} score={mastery[b.key] as number} color={b.color} />
-            ))}
-          </div>
-          <div className="flex gap-2 pt-1">
-            <button type="button" onClick={onDrill}
-              className="flex-1 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold transition-colors">
-              <i className="fas fa-brain mr-1" /> Quiz this topic
-            </button>
-            <button type="button" onClick={onCase}
-              className="flex-1 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold transition-colors">
-              <i className="fas fa-stethoscope mr-1" /> Generate case
-            </button>
-          </div>
-          {cohort === undefined && (
-            <p className="text-[10px] text-slate-400"><i className="fas fa-circle-notch fa-spin mr-1" /> Loading benchmark…</p>
-          )}
-          {cohort && (
-            <div className="rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 px-3 py-2 text-[10px] text-slate-600 dark:text-slate-300">
-              <p className="font-bold text-slate-800 dark:text-slate-100 mb-1">
-                <i className="fas fa-users text-indigo-500 mr-1" /> Cohort context
-              </p>
-              <p>
-                Your score <span className="font-black text-indigo-600 dark:text-indigo-400">{cohort.myScore}%</span>
-                {cohort.peerAvg != null && cohort.peerSampleSize >= 2 && (
-                  <> · {PEER_STAGE_LABELS[cohort.peerStage] || 'Peers'} avg <span className="font-bold">{cohort.peerAvg}%</span> (n={cohort.peerSampleSize})</>
-                )}
-              </p>
-              {cohort.foundationDoctorAvg != null && cohort.foundationDoctorSampleSize >= 2 && (
-                <p className="mt-0.5">
-                  Foundation doctors (reference) avg <span className="font-bold">{cohort.foundationDoctorAvg}%</span> (n={cohort.foundationDoctorSampleSize})
-                </p>
-              )}
-              {cohort.percentileAmongPeers != null && cohort.peerSampleSize >= 3 && (
-                <p className="mt-0.5 text-emerald-700 dark:text-emerald-400 font-semibold">
-                  You score above {cohort.percentileAmongPeers}% of peers on this topic (same training stage).
-                </p>
-              )}
-              {cohort.globalAvg != null && cohort.globalSampleSize >= 3 && (
-                <p className="mt-0.5 text-slate-500">
-                  All learners on this topic (avg {cohort.globalAvg}%, n={cohort.globalSampleSize}).
-                </p>
-              )}
-            </div>
-          )}
-          {mastery.nextReviewAt && (
-            <p className="text-[10px] text-slate-400 text-right">
-              Next review: {new Date(mastery.nextReviewAt).toLocaleDateString()}
-            </p>
-          )}
-        </div>
       )}
     </div>
   );
@@ -485,7 +365,6 @@ export const LearningDashboardPage: React.FC = () => {
   }>({ profile: [], tags: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [showAllTopics, setShowAllTopics] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'topics' | 'cpd' | 'portfolio' | 'settings'>('overview');
   const [startTopic, setStartTopic] = useState('');
   const [pendingStartTopic, setPendingStartTopic] = useState<string | null>(null);
@@ -618,10 +497,6 @@ export const LearningDashboardPage: React.FC = () => {
   const activeRuns = dashboard?.activeRuns ?? [];
   const dueCount = dashboard?.reviewQueue?.length ?? 0;
   const highInsights = insights.filter((i) => i.severity === 'high');
-
-  const allTopicsToShow = showAllTopics
-    ? (dashboard?.mastery ?? [])
-    : (dashboard?.mastery ?? []).slice(0, 5);
 
   return (
     <div className="min-h-screen aurora-bg">
@@ -1171,26 +1046,8 @@ export const LearningDashboardPage: React.FC = () => {
         )}
 
         {/* TOPICS TAB */}
-        {activeTab === 'topics' && hasData && (dashboard?.mastery?.length ?? 0) > 0 && (
-          <div className="neo-card p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                <i className="fas fa-layer-group text-slate-400" /> All topics ({dashboard!.mastery.length})
-              </h3>
-              <span className="text-[10px] text-slate-400">Click to expand per-type breakdown</span>
-            </div>
-            <div className="space-y-2">
-              {allTopicsToShow.map((m) => (
-                <TopicRow key={m.normalizedTopic} mastery={m} onDrill={() => drillTopic(m.topic)} onCase={() => caseOnTopic(m.topic)} />
-              ))}
-            </div>
-            {(dashboard?.mastery?.length ?? 0) > 5 && (
-              <button type="button" onClick={() => setShowAllTopics((v) => !v)}
-                className="mt-3 w-full py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
-                {showAllTopics ? 'Show less' : `Show all ${dashboard!.mastery.length} topics`}
-              </button>
-            )}
-          </div>
+        {activeTab === 'topics' && (
+          <TopicProgressGrid onQuiz={drillTopic} onCase={caseOnTopic} />
         )}
 
         {/* CPD TAB */}

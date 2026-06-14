@@ -2075,7 +2075,7 @@ describe('API Endpoints', () => {
         expect(response.body.source).toBe('server/data/coreClinicalTopics.json');
         expect(db.importCurriculumSeedTopics).toHaveBeenCalledWith(
           expect.arrayContaining([expect.objectContaining({ displayName: 'Hypertension' })]),
-          expect.objectContaining({ curriculumSlug: 'core-clinical-topics' })
+          expect.objectContaining({ curriculumSlug: 'specialty-clinical-topics' })
         );
       });
 

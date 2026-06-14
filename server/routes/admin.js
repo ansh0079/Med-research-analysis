@@ -286,7 +286,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             const raw = await fs.readFile(seedPath, 'utf8');
             const topics = JSON.parse(raw);
             const result = await db.importCurriculumSeedTopics(topics, {
-                curriculumSlug: 'core-clinical-topics',
+                curriculumSlug: 'specialty-clinical-topics',
                 curriculumName: 'Core Clinical Topics',
                 examStageLabel: 'Core clinical practice',
                 description: 'Curated high-yield clinical topics for evidence synthesis, claim extraction, and adaptive review.',

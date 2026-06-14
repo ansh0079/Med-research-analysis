@@ -306,6 +306,73 @@ function registerLearningRoutes(app, deps) {
         }
     });
 
+    app.get('/api/learning/topic-progress', requireAuthJwt, rateLimit(20, 60), async (req, res) => {
+        try {
+            const slug = String(req.query.slug || 'specialty-clinical-topics').trim();
+            const detail = await db.getCurriculumDetailBySlug(slug);
+            if (!detail) return res.status(404).json({ error: 'Curriculum not found' });
+
+            const [progressMap, examSummary, masteryList] = await Promise.all([
+                db.getUserCurriculumProgressMap(req.user.id, detail.id),
+                db.getCurriculumExamSummaryForUser(req.user.id, detail.id),
+                db.listUserTopicMastery(req.user.id),
+            ]);
+
+            const masteryByNorm = {};
+            for (const m of masteryList) {
+                masteryByNorm[m.normalizedTopic] = m;
+            }
+
+            const normalizeTopic = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, ' ').trim();
+
+            const blocks = detail.blocks.map((block) => {
+                const topics = (block.topics || []).map((topic) => {
+                    const norm = normalizeTopic(topic.displayName);
+                    const progress = progressMap[topic.id] || null;
+                    const mastery = masteryByNorm[norm] || null;
+                    return {
+                        id: topic.id,
+                        displayName: topic.displayName,
+                        normalizedTopic: norm,
+                        status: progress?.status || 'not_started',
+                        quizAttempts: progress?.quizAttempts || 0,
+                        correctCount: progress?.correctCount || 0,
+                        lastScorePct: progress?.lastScorePct ?? null,
+                        overallScore: mastery?.overallScore ?? null,
+                        recallScore: mastery?.recallScore ?? null,
+                        clinicalApplicationScore: mastery?.clinicalApplicationScore ?? null,
+                        guidelineScore: mastery?.guidelineScore ?? null,
+                        nextReviewAt: mastery?.nextReviewAt ?? null,
+                    };
+                });
+                const started = topics.filter((t) => t.status !== 'not_started').length;
+                const confident = topics.filter((t) => t.status === 'confident').length;
+                const avgScore = topics.filter((t) => t.overallScore != null).length > 0
+                    ? Math.round(topics.filter((t) => t.overallScore != null).reduce((s, t) => s + t.overallScore, 0) / topics.filter((t) => t.overallScore != null).length)
+                    : null;
+                return {
+                    id: block.id,
+                    name: block.name,
+                    sortOrder: block.sortOrder,
+                    topicCount: topics.length,
+                    started,
+                    confident,
+                    avgScore,
+                    topics,
+                };
+            });
+
+            res.json({
+                curriculum: { id: detail.id, slug: detail.slug, name: detail.name },
+                examSummary,
+                blocks,
+            });
+        } catch (error) {
+            req.log.error({ err: error }, 'Topic progress error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
     // ==========================================
     // Adaptive topic memory
     // ==========================================

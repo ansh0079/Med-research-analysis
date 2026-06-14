@@ -160,6 +160,12 @@ export class LearningApi extends BaseApiClient {
     return response.json();
   }
 
+  async getTopicProgress(slug = 'specialty-clinical-topics'): Promise<import('@types').TopicProgressResponse> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/topic-progress?slug=${encodeURIComponent(slug)}`);
+    if (!response.ok) throw new Error('Failed to load topic progress');
+    return response.json();
+  }
+
   async getStudyRuns(status = 'active'): Promise<{ runs: import('@types').StudyRun[] }> {
     const params = new URLSearchParams({ status });
     const response = await this.fetchWithSession(`${API_BASE}/api/learning/study-runs?${params.toString()}`);
