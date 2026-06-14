@@ -323,6 +323,22 @@ function CaseSummaryView({ session, crossRec, onStartCrossCase }: { session: Cas
         </div>
       )}
 
+      {caseData.sourcesUsed && caseData.sourcesUsed.length > 0 && (
+        <div className="rounded-xl bg-slate-50 dark:bg-slate-800/60 p-4 border border-slate-200 dark:border-slate-700">
+          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">
+            <i className="fas fa-book mr-1" />Answers based on these guidelines
+          </p>
+          <ul className="space-y-1">
+            {caseData.sourcesUsed.map((s, i) => (
+              <li key={i} className="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                <span className="text-[10px] font-mono font-bold text-slate-400">G{i + 1}</span>
+                <span>{s}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {crossRec && onStartCrossCase && (
         <CrossLearningCard rec={crossRec} onStart={onStartCrossCase} />
       )}

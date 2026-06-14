@@ -1295,6 +1295,7 @@ export interface CaseSessionData {
   keyLearningPoints: string[];
   guidelinesApplied?: string[];
   evidenceGaps?: string[];
+  sourcesUsed?: string[];
 }
 
 export interface CaseStepResponse {

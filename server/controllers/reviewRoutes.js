@@ -983,11 +983,18 @@ Return ONLY valid JSON:
                 return res.status(502).json({ error: 'Failed to generate initial case step' });
             }
 
+            const sourcesUsed = (guidelines || []).map(g => {
+                let label = g.source_body;
+                if (g.source_year) label += ` (${g.source_year})`;
+                return label;
+            });
+
             const caseData = {
                 title: parsed.title || `Case: ${topic}`,
                 setting: parsed.setting || 'ED',
                 patientProfile: parsed.patientProfile || '',
                 steps: [parsed.step],
+                sourcesUsed,
             };
 
             const evidenceContext = {
