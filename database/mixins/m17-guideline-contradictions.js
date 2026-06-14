@@ -52,14 +52,14 @@ module.exports = (Sup) => class extends Sup {
               clinical_implication, ai_confidence, status, detected_at, created_at, updated_at)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'ai_detected', ?, ?, ?)
              ON CONFLICT (guideline_a_id, guideline_b_id) DO UPDATE SET
-              severity = EXCLUDED.severity,
-              contradiction_summary = EXCLUDED.contradiction_summary,
-              body_a_position = EXCLUDED.body_a_position,
-              body_b_position = EXCLUDED.body_b_position,
-              clinical_implication = EXCLUDED.clinical_implication,
-              ai_confidence = EXCLUDED.ai_confidence,
-              detected_at = EXCLUDED.detected_at,
-              updated_at = EXCLUDED.updated_at`,
+              severity = excluded.severity,
+              contradiction_summary = excluded.contradiction_summary,
+              body_a_position = excluded.body_a_position,
+              body_b_position = excluded.body_b_position,
+              clinical_implication = excluded.clinical_implication,
+              ai_confidence = excluded.ai_confidence,
+              detected_at = excluded.detected_at,
+              updated_at = excluded.updated_at`,
             [safeA, safeB, normalizedTopic, severity || 'nuanced',
              contradictionSummary, bodyAPosition, bodyBPosition,
              clinicalImplication || null, Number(aiConfidence || 0),

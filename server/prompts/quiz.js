@@ -11,9 +11,10 @@ function buildQuizPrompt(topic, articles = [], options = {}, guidelines = [], us
         ? options.promptVariant
         : 'control';
 
-    const trainingStage = ['preclinical', 'early_clinical', 'finals', 'foundation_doctor'].includes(options.trainingStage)
+    const VALID_STAGES = ['preclinical', 'early_clinical', 'finals', 'foundation_doctor', 'clinician', 'specialist'];
+    const trainingStage = VALID_STAGES.includes(options.trainingStage)
         ? options.trainingStage
-        : (userContext?.profile?.trainingStage && ['preclinical', 'early_clinical', 'finals', 'foundation_doctor'].includes(userContext.profile.trainingStage)
+        : (userContext?.profile?.trainingStage && VALID_STAGES.includes(userContext.profile.trainingStage)
             ? userContext.profile.trainingStage
             : 'finals');
 
@@ -44,6 +45,16 @@ function buildQuizPrompt(topic, articles = [], options = {}, guidelines = [], us
 - Vignettes: reflect on-call decisions, drug interactions, acute deterioration, and referral thresholds.
 - Discriminators: plausible "real ward" wrong answers.
 - Question mix: heavy clinical_application and guideline; include pitfall.`,
+        clinician: `TRAINING LEVEL: practising clinician (post-training, general or specialist practice).
+- Focus on guideline updates, evidence-based controversies, nuanced phenotyping, and rare presentations.
+- Vignettes: complex multi-system with competing priorities; include pharmacovigilance and comorbidity management.
+- Discriminators: subtle; assume solid foundational knowledge.
+- Question mix: guideline, pitfall, trial_interpretation; minimal pure recall.`,
+        specialist: `TRAINING LEVEL: specialist / subspecialty trainee or consultant.
+- Target advanced management decisions, guideline conflicts between societies, emerging evidence, and edge cases.
+- Vignettes: complex atypical presentations with conflicting data; test higher-order synthesis.
+- Discriminators: expert-level — fine distinctions between similar regimens or diagnostic criteria.
+- Question mix: predominantly guideline, trial_interpretation, pitfall; avoid recall entirely.`,
     };
 
     let adaptiveInstruction = '';

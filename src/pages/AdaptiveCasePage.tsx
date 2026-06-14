@@ -11,10 +11,10 @@ const STEP_TYPE_LABELS: Record<string, { icon: string; label: string; color: str
   resolution: { icon: 'fa-check-circle', label: 'Resolution', color: 'text-teal-500' },
 };
 
-const STEP_SEQUENCE_META = [
+const STEP_SEQUENCE_META: Array<{ type: string }> = [
   { type: 'presentation' }, { type: 'investigation' }, { type: 'management' },
   { type: 'complication' }, { type: 'resolution' },
-] as CaseStep[];
+];
 
 const QUESTION_TYPE_STYLES: Record<string, string> = {
   recall: 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-300',
@@ -30,7 +30,7 @@ const DIFFICULTY_OPTIONS = [
   { value: 'hard', label: 'Advanced', desc: 'Atypical, multi-system' },
 ];
 
-function StepProgressBar({ steps, currentStep, responses }: { steps: CaseStep[]; currentStep: number; responses: CaseStepResponse[] }) {
+function StepProgressBar({ steps, currentStep, responses }: { steps: Array<{ type: string }>; currentStep: number; responses: CaseStepResponse[] }) {
   return (
     <div className="flex items-center gap-1 w-full">
       {steps.map((step, i) => {

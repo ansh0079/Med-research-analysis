@@ -262,11 +262,12 @@ export class LearningApi extends BaseApiClient {
   }
 
   async postQuizFeedback(payload: { topic: string; outlineNodeId: string; feedbackType: 'confusing' | 'clear' }): Promise<void> {
-    await this.fetchWithSession(`${API_BASE}/api/learning/quiz-feedback`, {
+    const response = await this.fetchWithSession(`${API_BASE}/api/learning/quiz-feedback`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
+    if (!response.ok) throw new Error('Failed to submit quiz feedback');
   }
 
   async getDueReviews(): Promise<{ total: number; groups: Array<{ topic: string; normalizedTopic: string; cards: Array<{ outlineNodeId: string; outlineLabel: string | null; intervalDays: number; repetitions: number; dueAt: string }> }> }> {
@@ -276,9 +277,13 @@ export class LearningApi extends BaseApiClient {
   }
 
   async getDueReviewCount(): Promise<{ count: number }> {
-    const response = await this.fetchWithSession(`${API_BASE}/api/learning/due-reviews/count`);
-    if (!response.ok) return { count: 0 };
-    return response.json();
+    try {
+      const response = await this.fetchWithSession(`${API_BASE}/api/learning/due-reviews/count`);
+      if (!response.ok) return { count: 0 };
+      return response.json();
+    } catch {
+      return { count: 0 };
+    }
   }
 
   async getHabitStatus(): Promise<{
