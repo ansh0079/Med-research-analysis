@@ -704,26 +704,24 @@ async listUserTopicMastery(userId, { limit = 50, offset = 0 } = {}) {
 async upsertUserTopicMastery(userId, topic, scores) {
     const now = new Date().toISOString();
     const normalized = this.normalizeTopic(topic);
-    const existing = await this.get(`SELECT id FROM user_topic_mastery WHERE user_id = ? AND normalized_topic = ?`, [userId, normalized]);
-    if (existing) {
-        await this.run(
-            `UPDATE user_topic_mastery SET
-                overall_score = ?, recall_score = ?, clinical_application_score = ?, trial_interpretation_score = ?,
-                guideline_score = ?, pitfall_score = ?, attempts_count = ?, correct_count = ?,
-                last_attempt_at = ?, next_review_at = ?, updated_at = ?
-             WHERE id = ?`,
-            [
-                scores.overallScore ?? 0, scores.recallScore ?? 0, scores.clinicalApplicationScore ?? 0,
-                scores.trialInterpretationScore ?? 0, scores.guidelineScore ?? 0, scores.pitfallScore ?? 0,
-                scores.attemptsCount ?? 0, scores.correctCount ?? 0,
-                scores.lastAttemptAt || now, scores.nextReviewAt || now, now, existing.id,
-            ]
-        );
-        return this.getUserTopicMastery(userId, topic);
-    }
     await this.run(
-        `INSERT INTO user_topic_mastery (user_id, topic, normalized_topic, overall_score, recall_score, clinical_application_score, trial_interpretation_score, guideline_score, pitfall_score, attempts_count, correct_count, last_attempt_at, next_review_at, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO user_topic_mastery
+            (user_id, topic, normalized_topic, overall_score, recall_score, clinical_application_score,
+             trial_interpretation_score, guideline_score, pitfall_score, attempts_count, correct_count,
+             last_attempt_at, next_review_at, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         ON CONFLICT (user_id, normalized_topic) DO UPDATE SET
+            overall_score = excluded.overall_score,
+            recall_score = excluded.recall_score,
+            clinical_application_score = excluded.clinical_application_score,
+            trial_interpretation_score = excluded.trial_interpretation_score,
+            guideline_score = excluded.guideline_score,
+            pitfall_score = excluded.pitfall_score,
+            attempts_count = excluded.attempts_count,
+            correct_count = excluded.correct_count,
+            last_attempt_at = excluded.last_attempt_at,
+            next_review_at = excluded.next_review_at,
+            updated_at = excluded.updated_at`,
         [
             userId, topic, normalized,
             scores.overallScore ?? 0, scores.recallScore ?? 0, scores.clinicalApplicationScore ?? 0,

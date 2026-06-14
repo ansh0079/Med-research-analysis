@@ -79,7 +79,7 @@ function OptionButton({ label, selected, correct, showResult, onClick }: {
 
 function CaseStepView({ step, stepIndex, onSubmit, feedback, response }: {
   step: CaseStep; stepIndex: number;
-  onSubmit: (answer: string) => void;
+  onSubmit: (answer: string, timeMs: number) => void;
   feedback: CaseStepFeedback | null;
   response: CaseStepResponse | null;
 }) {
@@ -93,9 +93,9 @@ function CaseStepView({ step, stepIndex, onSubmit, feedback, response }: {
   const handleSubmit = useCallback(async () => {
     if (!selected || showResult) return;
     setSubmitting(true);
-    await onSubmit(selected);
+    await onSubmit(selected, Date.now() - startTime);
     setSubmitting(false);
-  }, [selected, showResult, onSubmit]);
+  }, [selected, showResult, onSubmit, startTime]);
 
   return (
     <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
@@ -459,14 +459,13 @@ export const AdaptiveCasePage: React.FC = () => {
     }
   }, [topic, learningMode, difficulty]);
 
-  const handleStepSubmit = useCallback(async (answer: string) => {
+  const handleStepSubmit = useCallback(async (answer: string, timeMs: number) => {
     if (!session) return;
     const stepIndex = session.currentStep;
-    const startTime = Date.now();
     setGeneratingStep(true);
     try {
       const result = await api.submitCaseStepResponse(session.id, {
-        stepIndex, selectedAnswer: answer, timeMs: Date.now() - startTime,
+        stepIndex, selectedAnswer: answer, timeMs,
       });
       setFeedback(result.stepFeedback);
       setShowingFeedback(true);

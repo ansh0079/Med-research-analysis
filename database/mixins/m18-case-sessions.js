@@ -65,17 +65,19 @@ async getCaseSessionsForUser(userId, { status = '', limit = 20, offset = 0 } = {
 }
 
 async appendCaseStep(sessionId, step) {
-    const session = await this.getCaseSession(sessionId);
-    if (!session) return null;
-    const caseData = session.caseData || {};
-    const steps = caseData.steps || [];
-    steps.push(step);
-    caseData.steps = steps;
-    await this.run(
-        `UPDATE case_sessions SET case_data = ? WHERE id = ?`,
-        [JSON.stringify(caseData), sessionId]
-    );
-    return this.getCaseSession(sessionId);
+    return this.withTransaction(async () => {
+        const session = await this.getCaseSession(sessionId);
+        if (!session) return null;
+        const caseData = session.caseData || {};
+        const steps = caseData.steps || [];
+        steps.push(step);
+        caseData.steps = steps;
+        await this.run(
+            `UPDATE case_sessions SET case_data = ? WHERE id = ?`,
+            [JSON.stringify(caseData), sessionId]
+        );
+        return this.getCaseSession(sessionId);
+    });
 }
 
 async finalizeCaseData(sessionId, { caseSummary, keyLearningPoints, guidelinesApplied, evidenceGaps }) {
@@ -94,20 +96,22 @@ async finalizeCaseData(sessionId, { caseSummary, keyLearningPoints, guidelinesAp
 }
 
 async submitCaseStepResponse(sessionId, stepIndex, response) {
-    const session = await this.getCaseSession(sessionId);
-    if (!session) return null;
-    const responses = session.responses || [];
-    responses[stepIndex] = response;
-    const nextStep = stepIndex + 1;
-    const totalSteps = session.caseData?.steps?.length || 0;
-    const isBranching = session.generationMode === 'branching';
-    const isComplete = !isBranching && nextStep >= totalSteps;
-    await this.run(
-        `UPDATE case_sessions SET responses = ?, current_step = ?, status = ?, completed_at = ? WHERE id = ?`,
-        [JSON.stringify(responses), nextStep, isComplete ? 'completed' : 'in_progress',
-         isComplete ? new Date().toISOString() : null, sessionId]
-    );
-    return this.getCaseSession(sessionId);
+    return this.withTransaction(async () => {
+        const session = await this.getCaseSession(sessionId);
+        if (!session) return null;
+        const responses = session.responses || [];
+        responses[stepIndex] = response;
+        const nextStep = stepIndex + 1;
+        const totalSteps = session.caseData?.steps?.length || 0;
+        const isBranching = session.generationMode === 'branching';
+        const isComplete = !isBranching && nextStep >= totalSteps;
+        await this.run(
+            `UPDATE case_sessions SET responses = ?, current_step = ?, status = ?, completed_at = ? WHERE id = ?`,
+            [JSON.stringify(responses), nextStep, isComplete ? 'completed' : 'in_progress',
+             isComplete ? new Date().toISOString() : null, sessionId]
+        );
+        return this.getCaseSession(sessionId);
+    });
 }
 
 async completeCaseSession(sessionId, totalScore) {
@@ -151,12 +155,14 @@ async getWeakTopicsForCases(userId, { limit = 5 } = {}) {
 }
 
 async getRecentCaseTopics(userId, { days = 7, limit = 10 } = {}) {
+    const safeDays = Math.max(1, Math.min(365, Number(days) || 7));
+    const cutoff = new Date(Date.now() - safeDays * 24 * 60 * 60 * 1000).toISOString();
     const rows = await this.all(
         `SELECT normalized_topic, MAX(created_at) as latest FROM case_sessions
-         WHERE user_id = ? AND created_at > CURRENT_TIMESTAMP - INTERVAL '${days} days'
+         WHERE user_id = ? AND created_at > ?
          GROUP BY normalized_topic
          ORDER BY latest DESC LIMIT ?`,
-        [userId, limit]
+        [userId, cutoff, limit]
     );
     return rows.map(r => r.normalized_topic);
 }
