@@ -11,6 +11,11 @@ const STEP_TYPE_LABELS: Record<string, { icon: string; label: string; color: str
   resolution: { icon: 'fa-check-circle', label: 'Resolution', color: 'text-teal-500' },
 };
 
+const STEP_SEQUENCE_META = [
+  { type: 'presentation' }, { type: 'investigation' }, { type: 'management' },
+  { type: 'complication' }, { type: 'resolution' },
+] as CaseStep[];
+
 const QUESTION_TYPE_STYLES: Record<string, string> = {
   recall: 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-300',
   clinical_application: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
@@ -162,6 +167,12 @@ function CaseStepView({ step, stepIndex, onSubmit, feedback, response }: {
               <span className="text-[10px] font-medium text-blue-600 dark:text-blue-400">Source: {feedback.evidenceSource}</span>
             </div>
           )}
+          {feedback.branchingNote && (
+            <div className="flex items-start gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-800">
+              <i className="fas fa-code-branch text-violet-400 mt-0.5 text-[10px]" />
+              <span className="text-[10px] text-violet-600 dark:text-violet-400 italic">{feedback.branchingNote}</span>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -270,6 +281,9 @@ function CaseSummaryView({ session, crossRec, onStartCrossCase }: { session: Cas
                   {step.evidenceSource && (
                     <p className="text-[10px] font-medium text-blue-500 dark:text-blue-400"><i className="fas fa-bookmark mr-1" />Source: {step.evidenceSource}</p>
                   )}
+                  {step.branchingNote && (
+                    <p className="text-[10px] text-violet-500 dark:text-violet-400 italic"><i className="fas fa-code-branch mr-1" />{step.branchingNote}</p>
+                  )}
                 </div>
               </details>
             );
@@ -370,6 +384,7 @@ export const AdaptiveCasePage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<CaseSession[]>([]);
   const [crossRec, setCrossRec] = useState<CrossLearningRecommendation | null>(null);
+  const [generatingStep, setGeneratingStep] = useState(false);
 
   useEffect(() => {
     if (phase !== 'setup') return;
@@ -409,17 +424,22 @@ export const AdaptiveCasePage: React.FC = () => {
     if (!session) return;
     const stepIndex = session.currentStep;
     const startTime = Date.now();
-    const result = await api.submitCaseStepResponse(session.id, {
-      stepIndex, selectedAnswer: answer, timeMs: Date.now() - startTime,
-    });
-    setFeedback(result.stepFeedback);
-    setShowingFeedback(true);
-    setSession(result.session);
-    if (result.crossLearningRecommendation) {
-      setCrossRec(result.crossLearningRecommendation);
-    }
-    if (result.session.status === 'completed') {
-      setTimeout(() => setPhase('summary'), 2500);
+    setGeneratingStep(true);
+    try {
+      const result = await api.submitCaseStepResponse(session.id, {
+        stepIndex, selectedAnswer: answer, timeMs: Date.now() - startTime,
+      });
+      setFeedback(result.stepFeedback);
+      setShowingFeedback(true);
+      setSession(result.session);
+      if (result.crossLearningRecommendation) {
+        setCrossRec(result.crossLearningRecommendation);
+      }
+      if (result.session.status === 'completed') {
+        setTimeout(() => setPhase('summary'), 2500);
+      }
+    } finally {
+      setGeneratingStep(false);
     }
   }, [session]);
 
@@ -434,6 +454,7 @@ export const AdaptiveCasePage: React.FC = () => {
     setFeedback(null);
     setShowingFeedback(false);
     setCrossRec(null);
+    setGeneratingStep(false);
     setError(null);
   }, []);
 
@@ -580,24 +601,34 @@ export const AdaptiveCasePage: React.FC = () => {
             </button>
           </div>
 
-          <StepProgressBar steps={session.caseData.steps} currentStep={session.currentStep} responses={session.responses} />
+          <StepProgressBar steps={STEP_SEQUENCE_META} currentStep={session.currentStep} responses={session.responses} />
 
-          <CaseStepView
-            key={session.currentStep}
-            step={currentStep}
-            stepIndex={session.currentStep}
-            onSubmit={handleStepSubmit}
-            feedback={showingFeedback ? feedback : null}
-            response={session.responses[session.currentStep] || null}
-          />
+          {generatingStep && !showingFeedback && (
+            <div className="flex items-center justify-center gap-3 py-8">
+              <div className="spinner" />
+              <p className="text-sm text-slate-500 dark:text-slate-400 animate-pulse">Generating next step based on your answer...</p>
+            </div>
+          )}
+
+          {currentStep && (
+            <CaseStepView
+              key={session.currentStep}
+              step={currentStep}
+              stepIndex={session.currentStep}
+              onSubmit={handleStepSubmit}
+              feedback={showingFeedback ? feedback : null}
+              response={session.responses[session.currentStep] || null}
+            />
+          )}
 
           {showingFeedback && session.status !== 'completed' && (
             <button
               type="button"
               onClick={advanceStep}
-              className="w-full py-2.5 rounded-xl font-semibold text-sm bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-800 hover:bg-slate-700 dark:hover:bg-slate-300 transition-colors"
+              disabled={generatingStep}
+              className="w-full py-2.5 rounded-xl font-semibold text-sm bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-800 hover:bg-slate-700 dark:hover:bg-slate-300 transition-colors disabled:opacity-50"
             >
-              Next Step <i className="fas fa-arrow-right ml-2" />
+              {generatingStep ? <><div className="spinner spinner-sm inline-block mr-2" />Preparing next step...</> : <>Next Step <i className="fas fa-arrow-right ml-2" /></>}
             </button>
           )}
         </div>

@@ -7,7 +7,7 @@ const {
     buildCaseSearchQueryPrompt,
     buildTeachingVignettePrompt,
 } = require('../prompts');
-const { buildAdaptiveCasePrompt } = require('../prompts/adaptiveCase');
+const { buildAdaptiveCasePrompt, buildCaseInitPrompt, buildCaseStepPrompt, STEP_SEQUENCE } = require('../prompts/adaptiveCase');
 const { createReviewService } = require('../services/reviewService');
 const { gatherEvidenceArticlesForCase, heuristicSearchQuery } = require('../services/caseEvidenceService');
 const { extractTrialGuidelineConflicts } = require('../services/conflictExtractionService');
@@ -974,23 +974,46 @@ Return ONLY valid JSON:
             }
 
             const synopsis = topicKnowledge?.knowledge?.fullTextSynopsis || topicKnowledge?.knowledge?.synopsis || null;
-            const prompt = buildAdaptiveCasePrompt(topic, guidelines, topicKnowledge, weaknesses, { learningMode, difficulty }, synopsis);
+
+            // Branching mode: generate only step 1 and store evidence context for later steps
+            const prompt = buildCaseInitPrompt(topic, guidelines, topicKnowledge, weaknesses, { learningMode, difficulty }, synopsis);
             const { text } = await callProvider(prompt, 'auto');
             const parsed = reviews.parseJsonBlock(text);
-            if (!parsed || !Array.isArray(parsed.steps) || parsed.steps.length < 3) {
-                return res.status(502).json({ error: 'Failed to generate valid case structure' });
+            if (!parsed || !parsed.step) {
+                return res.status(502).json({ error: 'Failed to generate initial case step' });
             }
+
+            const caseData = {
+                title: parsed.title || `Case: ${topic}`,
+                setting: parsed.setting || 'ED',
+                patientProfile: parsed.patientProfile || '',
+                steps: [parsed.step],
+            };
+
+            const evidenceContext = {
+                guidelines: (guidelines || []).map(g => ({
+                    source_body: g.source_body, source_year: g.source_year,
+                    recommendation_text: g.recommendation_text,
+                    recommendation_strength: g.recommendation_strength,
+                    certainty_of_evidence: g.certainty_of_evidence,
+                    population: g.population, cautions: g.cautions,
+                })),
+                topicKnowledge: topicKnowledge?.knowledge || null,
+                synopsis,
+            };
 
             const session = await db.createCaseSession({
                 userId: req.user.id,
                 topic,
                 learningMode,
                 difficulty,
-                caseData: parsed,
+                caseData,
                 targetedWeaknesses: weaknesses,
+                evidenceContext,
+                generationMode: 'branching',
             });
 
-            await db.logEvent('case:adaptive_vignette', req.sessionId, { topic, learningMode, difficulty, steps: parsed.steps.length });
+            await db.logEvent('case:adaptive_vignette', req.sessionId, { topic, learningMode, difficulty, mode: 'branching' });
             res.json({ session });
         } catch (error) {
             req.log?.error?.({ err: error }, 'Adaptive vignette error');
@@ -1020,10 +1043,10 @@ Return ONLY valid JSON:
         }
     });
 
-    // ── Adaptive Case: Submit step response ─────────────────────────────────
+    // ── Adaptive Case: Submit step response (branching) ──────────────────────
     app.post('/api/cases/sessions/:id/respond', requireJson, requireAuthJwt, rateLimit(30, 60), async (req, res) => {
         try {
-            const session = await db.getCaseSession(req.params.id);
+            const session = await db.getCaseSessionWithEvidence(req.params.id);
             if (!session || session.userId !== req.user.id) return res.status(404).json({ error: 'Session not found' });
             if (session.status === 'completed') return res.status(400).json({ error: 'Session already completed' });
 
@@ -1035,16 +1058,97 @@ Return ONLY valid JSON:
 
             const isCorrect = selectedAnswer === step.correctAnswer;
             const response = { selectedAnswer, isCorrect, timeMs: timeMs || 0, answeredAt: new Date().toISOString() };
-            const updated = await db.submitCaseStepResponse(session.id, stepIndex, response);
+            await db.submitCaseStepResponse(session.id, stepIndex, response);
 
-            if (updated.status === 'completed') {
-                const responses = updated.responses || [];
+            const stepFeedback = {
+                isCorrect,
+                explanation: step.explanation,
+                whyOthersWrong: step.whyOthersWrong,
+                teachingPoint: step.teachingPoint,
+                evidenceSource: step.evidenceSource || null,
+                branchingNote: null,
+            };
+
+            const nextStepIndex = stepIndex + 1;
+            const isFinalStep = nextStepIndex >= 5;
+
+            // For branching mode, generate the next step based on the user's answer
+            if (session.generationMode === 'branching' && !isFinalStep) {
+                const caseHistory = (session.caseData?.steps || []).map((s, i) => ({
+                    narrative: s.narrative,
+                    question: s.question,
+                    questionType: s.questionType,
+                    correctAnswer: s.correctAnswer,
+                    patientProfile: session.caseData?.patientProfile,
+                    userAnswer: i === stepIndex ? selectedAnswer : (session.responses[i]?.selectedAnswer || s.correctAnswer),
+                    wasCorrect: i === stepIndex ? isCorrect : (session.responses[i]?.isCorrect ?? true),
+                }));
+
+                const nextStepType = STEP_SEQUENCE[nextStepIndex] || 'resolution';
+                const stepPrompt = buildCaseStepPrompt({
+                    topic: session.topic,
+                    stepIndex: nextStepIndex,
+                    stepType: nextStepType,
+                    caseHistory,
+                    userAnswer: selectedAnswer,
+                    wasCorrect: isCorrect,
+                    evidenceContext: session.evidenceContext,
+                    options: { learningMode: session.learningMode, difficulty: session.difficulty },
+                });
+
+                const { text: stepText } = await callProvider(stepPrompt, 'auto');
+                const stepParsed = reviews.parseJsonBlock(stepText);
+
+                if (stepParsed?.step) {
+                    await db.appendCaseStep(session.id, stepParsed.step);
+                    stepFeedback.branchingNote = stepParsed.step.branchingNote || null;
+                }
+            }
+
+            // If this was the last step (step 5 answered), finalize
+            if (isFinalStep || (session.generationMode !== 'branching' && nextStepIndex >= (session.caseData?.steps?.length || 5))) {
+                // For branching mode, generate the summary on the final step
+                if (session.generationMode === 'branching') {
+                    const finalSession = await db.getCaseSessionWithEvidence(session.id);
+                    const allHistory = (finalSession.caseData?.steps || []).map((s, i) => ({
+                        narrative: s.narrative, question: s.question, questionType: s.questionType,
+                        correctAnswer: s.correctAnswer,
+                        patientProfile: finalSession.caseData?.patientProfile,
+                        userAnswer: i === stepIndex ? selectedAnswer : (finalSession.responses[i]?.selectedAnswer || s.correctAnswer),
+                        wasCorrect: i === stepIndex ? isCorrect : (finalSession.responses[i]?.isCorrect ?? true),
+                    }));
+                    const summaryPrompt = buildCaseStepPrompt({
+                        topic: session.topic,
+                        stepIndex: 4,
+                        stepType: 'resolution',
+                        caseHistory: allHistory,
+                        userAnswer: selectedAnswer,
+                        wasCorrect: isCorrect,
+                        evidenceContext: finalSession.evidenceContext,
+                        options: { learningMode: session.learningMode, difficulty: session.difficulty },
+                    });
+                    // Parse the last step response for case-level summary data
+                    const lastParsed = reviews.parseJsonBlock(
+                        (await callProvider(summaryPrompt, 'auto').catch(() => ({ text: '{}' }))).text
+                    );
+                    if (lastParsed) {
+                        await db.finalizeCaseData(session.id, {
+                            caseSummary: lastParsed.caseSummary,
+                            keyLearningPoints: lastParsed.keyLearningPoints,
+                            guidelinesApplied: lastParsed.guidelinesApplied,
+                            evidenceGaps: lastParsed.evidenceGaps,
+                        });
+                    }
+                }
+
+                const updatedSession = await db.getCaseSession(session.id);
+                const responses = updatedSession.responses || [];
                 const correctCount = responses.filter(r => r?.isCorrect).length;
-                const totalScore = Math.round((correctCount / responses.length) * 100);
-                await db.scoreCaseSession(session.id, totalScore);
+                const totalScore = Math.round((correctCount / Math.max(responses.length, 1)) * 100);
+                await db.completeCaseSession(session.id, totalScore);
                 const final = await db.getCaseSession(session.id);
 
-                // Cross-learning: find related topics and suggest a case
+                // Cross-learning recommendation
                 let crossLearningRecommendation = null;
                 try {
                     const normalizedTopic = db.normalizeTopic(session.topic);
@@ -1053,22 +1157,17 @@ Return ONLY valid JSON:
                         db.listUserTopicMastery(req.user.id, { limit: 50 }).catch(() => []),
                     ]);
                     const masteryMap = new Map((masteryList || []).map(m => [m.normalizedTopic || db.normalizeTopic(m.topic), m]));
-
                     const candidates = (crosslinks || [])
                         .map(cl => {
                             const m = masteryMap.get(cl.normalizedTopic);
                             return {
-                                topic: cl.topic,
-                                normalizedTopic: cl.normalizedTopic,
-                                linkType: cl.linkType,
-                                linkStrength: cl.strength,
+                                topic: cl.topic, normalizedTopic: cl.normalizedTopic,
+                                linkType: cl.linkType, linkStrength: cl.strength,
                                 aiRationale: cl.aiRationale,
-                                overallScore: m?.overallScore ?? null,
-                                attemptsCount: m?.attemptsCount ?? 0,
+                                overallScore: m?.overallScore ?? null, attemptsCount: m?.attemptsCount ?? 0,
                             };
                         })
                         .sort((a, b) => {
-                            // Prioritize: weak topics first, then untested, then by link strength
                             const aScore = a.overallScore ?? 100;
                             const bScore = b.overallScore ?? 100;
                             if (aScore < 70 && bScore >= 70) return -1;
@@ -1077,36 +1176,25 @@ Return ONLY valid JSON:
                             if (b.attemptsCount === 0 && a.attemptsCount > 0) return 1;
                             return (b.linkStrength || 0) - (a.linkStrength || 0);
                         });
-
                     if (candidates.length > 0) {
                         const pick = candidates[0];
                         let reason = '';
-                        if (pick.overallScore != null && pick.overallScore < 70) {
-                            reason = `You scored ${pick.overallScore}% on this related topic — a case would help reinforce it.`;
-                        } else if (pick.attemptsCount === 0) {
-                            reason = `You haven't been tested on this related topic yet.`;
-                        } else {
-                            reason = `This topic is clinically related and would strengthen your understanding of ${session.topic}.`;
-                        }
+                        if (pick.overallScore != null && pick.overallScore < 70) reason = `You scored ${pick.overallScore}% on this related topic — a case would help reinforce it.`;
+                        else if (pick.attemptsCount === 0) reason = `You haven't been tested on this related topic yet.`;
+                        else reason = `This topic is clinically related and would strengthen your understanding of ${session.topic}.`;
                         crossLearningRecommendation = {
-                            topic: pick.topic,
-                            normalizedTopic: pick.normalizedTopic,
-                            linkType: pick.linkType,
-                            rationale: pick.aiRationale || reason,
-                            reason,
-                            overallScore: pick.overallScore,
+                            topic: pick.topic, normalizedTopic: pick.normalizedTopic,
+                            linkType: pick.linkType, rationale: pick.aiRationale || reason,
+                            reason, overallScore: pick.overallScore,
                         };
                     }
                 } catch (_) { /* non-critical */ }
 
-                return res.json({
-                    session: final,
-                    stepFeedback: { isCorrect, explanation: step.explanation, whyOthersWrong: step.whyOthersWrong, teachingPoint: step.teachingPoint, evidenceSource: step.evidenceSource || null },
-                    crossLearningRecommendation,
-                });
+                return res.json({ session: final, stepFeedback, crossLearningRecommendation });
             }
 
-            res.json({ session: updated, stepFeedback: { isCorrect, explanation: step.explanation, whyOthersWrong: step.whyOthersWrong, teachingPoint: step.teachingPoint, evidenceSource: step.evidenceSource || null } });
+            const updated = await db.getCaseSession(session.id);
+            res.json({ session: updated, stepFeedback, generatingNextStep: session.generationMode === 'branching' });
         } catch (error) {
             req.log?.error?.({ err: error }, 'Case step respond error');
             res.status(500).json({ error: 'Internal server error' });

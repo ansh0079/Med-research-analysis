@@ -1283,11 +1283,13 @@ export interface CaseStep {
   whyOthersWrong: string;
   teachingPoint: string;
   evidenceSource: string | null;
+  branchingNote?: string | null;
 }
 
 export interface CaseSessionData {
   title: string;
   setting: string;
+  patientProfile?: string;
   steps: CaseStep[];
   caseSummary: string;
   keyLearningPoints: string[];
@@ -1315,6 +1317,7 @@ export interface CaseSession {
   currentStep: number;
   responses: CaseStepResponse[];
   totalScore: number | null;
+  generationMode: 'branching' | 'legacy';
   createdAt: string;
   completedAt: string | null;
 }
@@ -1338,6 +1341,7 @@ export interface CaseStepFeedback {
   whyOthersWrong: string;
   teachingPoint: string;
   evidenceSource: string | null;
+  branchingNote?: string | null;
 }
 
 export interface CrossLearningRecommendation {
