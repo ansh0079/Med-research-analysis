@@ -519,7 +519,7 @@ export class LearningApi extends BaseApiClient {
     return response.json();
   }
 
-  async generateAdaptiveCase(data: { topic: string; learningMode?: string; difficulty?: string }): Promise<{ session: import('@types').CaseSession }> {
+  async generateAdaptiveCase(data: { topic: string; learningMode?: string; difficulty?: string }): Promise<{ session: import('@types').CaseSession; evidenceWarning?: string | null }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/cases/adaptive-vignette`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -545,7 +545,7 @@ export class LearningApi extends BaseApiClient {
     return response.json();
   }
 
-  async submitCaseStepResponse(sessionId: string, data: { stepIndex: number; selectedAnswer: string; timeMs?: number }): Promise<{ session: import('@types').CaseSession; stepFeedback: import('@types').CaseStepFeedback; crossLearningRecommendation?: import('@types').CrossLearningRecommendation }> {
+  async submitCaseStepResponse(sessionId: string, data: { stepIndex: number; selectedAnswer: string; timeMs?: number }): Promise<{ session: import('@types').CaseSession; stepFeedback: import('@types').CaseStepFeedback; crossLearningRecommendation?: import('@types').CrossLearningRecommendation; suggestedDifficulty?: 'easy' | 'medium' | 'hard' | null }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/cases/sessions/${sessionId}/respond`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

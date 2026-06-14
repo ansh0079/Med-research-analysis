@@ -975,6 +975,20 @@ Return ONLY valid JSON:
 
             const synopsis = topicKnowledge?.knowledge?.fullTextSynopsis || topicKnowledge?.knowledge?.synopsis || null;
 
+            // Evidence density check
+            const guidelineCount = (guidelines || []).length;
+            const tk = topicKnowledge?.knowledge || topicKnowledge;
+            const teachingPointCount = (tk?.coreTeachingPoints?.length || 0) + (tk?.teachingPoints?.length || 0);
+            const evidenceDensity = guidelineCount + teachingPointCount;
+            let evidenceWarning = null;
+            if (evidenceDensity === 0) {
+                evidenceWarning = 'No guidelines or teaching points found for this topic. The case will rely on general clinical knowledge and may be less evidence-grounded.';
+            } else if (guidelineCount === 0 && teachingPointCount < 3) {
+                evidenceWarning = 'Limited evidence base: no guidelines found and only a few teaching points. Case quality may be reduced.';
+            } else if (evidenceDensity < 3) {
+                evidenceWarning = 'Thin evidence base for this topic. The case may not cover all clinical angles.';
+            }
+
             // Branching mode: generate only step 1 and store evidence context for later steps
             const prompt = buildCaseInitPrompt(topic, guidelines, topicKnowledge, weaknesses, { learningMode, difficulty }, synopsis);
             const { text } = await callProvider(prompt, 'auto');
@@ -1020,8 +1034,8 @@ Return ONLY valid JSON:
                 generationMode: 'branching',
             });
 
-            await db.logEvent('case:adaptive_vignette', req.sessionId, { topic, learningMode, difficulty, mode: 'branching' });
-            res.json({ session });
+            await db.logEvent('case:adaptive_vignette', req.sessionId, { topic, learningMode, difficulty, mode: 'branching', evidenceDensity });
+            res.json({ session, evidenceWarning });
         } catch (error) {
             req.log?.error?.({ err: error }, 'Adaptive vignette error');
             res.status(500).json({ error: error.message });
@@ -1103,8 +1117,28 @@ Return ONLY valid JSON:
                     options: { learningMode: session.learningMode, difficulty: session.difficulty },
                 });
 
-                const { text: stepText } = await callProvider(stepPrompt, 'auto');
-                const stepParsed = reviews.parseJsonBlock(stepText);
+                let stepParsed = null;
+                try {
+                    const { text: stepText } = await callProvider(stepPrompt, 'auto');
+                    stepParsed = reviews.parseJsonBlock(stepText);
+                } catch (genErr) {
+                    req.log?.warn?.({ err: genErr }, 'Step generation failed, using fallback');
+                    stepParsed = {
+                        step: {
+                            type: nextStepType,
+                            narrative: `The clinical team continues managing the patient. Based on the previous findings, the case progresses to the ${nextStepType} phase.`,
+                            question: `What is the most appropriate next step in ${nextStepType}?`,
+                            questionType: 'clinical_application',
+                            options: ['A: Continue current management', 'B: Reassess and modify approach', 'C: Escalate to senior review', 'D: Discharge with follow-up'],
+                            correctAnswer: 'B',
+                            explanation: 'Reassessing based on evolving clinical data is the safest approach when the clinical picture is uncertain.',
+                            whyOthersWrong: 'Continuing without reassessment risks missing changes; escalation may be premature; discharge requires stability.',
+                            teachingPoint: 'Always reassess clinical decisions as new information becomes available.',
+                            evidenceSource: null,
+                            branchingNote: 'This step was generated as a fallback due to a technical issue.',
+                        },
+                    };
+                }
 
                 if (stepParsed?.step) {
                     await db.appendCaseStep(session.id, stepParsed.step);
@@ -1155,6 +1189,47 @@ Return ONLY valid JSON:
                 await db.completeCaseSession(session.id, totalScore);
                 const final = await db.getCaseSession(session.id);
 
+                // Update user topic mastery based on case performance
+                try {
+                    const allSteps = final.caseData?.steps || [];
+                    const allResponses = final.responses || [];
+                    const typeScores = {};
+                    for (let i = 0; i < allSteps.length; i++) {
+                        const qType = allSteps[i]?.questionType || 'clinical_application';
+                        const resp = allResponses[i];
+                        if (!typeScores[qType]) typeScores[qType] = { correct: 0, total: 0 };
+                        typeScores[qType].total++;
+                        if (resp?.isCorrect) typeScores[qType].correct++;
+                    }
+                    const pct = (type) => typeScores[type] ? Math.round((typeScores[type].correct / typeScores[type].total) * 100) : null;
+                    const existing = await db.getUserTopicMastery(req.user.id, session.topic).catch(() => null);
+                    const blend = (newVal, oldVal, weight = 0.4) => {
+                        if (newVal == null) return oldVal ?? null;
+                        if (oldVal == null) return newVal;
+                        return Math.round(oldVal * (1 - weight) + newVal * weight);
+                    };
+                    const scores = {
+                        overallScore: blend(totalScore, existing?.overallScore),
+                        recallScore: blend(pct('recall'), existing?.recallScore),
+                        clinicalApplicationScore: blend(pct('clinical_application'), existing?.clinicalApplicationScore),
+                        trialInterpretationScore: blend(pct('trial_interpretation'), existing?.trialInterpretationScore),
+                        guidelineScore: blend(pct('guideline'), existing?.guidelineScore),
+                        pitfallScore: blend(pct('pitfall'), existing?.pitfallScore),
+                        attemptsCount: (existing?.attemptsCount || 0) + 1,
+                        correctCount: (existing?.correctCount || 0) + (allResponses.filter(r => r?.isCorrect).length),
+                        lastAttemptAt: new Date().toISOString(),
+                    };
+                    await db.upsertUserTopicMastery(req.user.id, session.topic, scores);
+                } catch (_) { /* mastery update is non-critical */ }
+
+                // Difficulty auto-calibration
+                let suggestedDifficulty = null;
+                if (totalScore >= 90 && session.difficulty !== 'hard') {
+                    suggestedDifficulty = session.difficulty === 'easy' ? 'medium' : 'hard';
+                } else if (totalScore <= 40 && session.difficulty !== 'easy') {
+                    suggestedDifficulty = session.difficulty === 'hard' ? 'medium' : 'easy';
+                }
+
                 // Cross-learning recommendation
                 let crossLearningRecommendation = null;
                 try {
@@ -1197,7 +1272,7 @@ Return ONLY valid JSON:
                     }
                 } catch (_) { /* non-critical */ }
 
-                return res.json({ session: final, stepFeedback, crossLearningRecommendation });
+                return res.json({ session: final, stepFeedback, crossLearningRecommendation, suggestedDifficulty });
             }
 
             const updated = await db.getCaseSession(session.id);

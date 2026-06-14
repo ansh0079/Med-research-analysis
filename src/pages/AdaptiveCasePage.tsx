@@ -215,7 +215,7 @@ function CrossLearningCard({ rec, onStart }: { rec: CrossLearningRecommendation;
   );
 }
 
-function CaseSummaryView({ session, crossRec, onStartCrossCase }: { session: CaseSession; crossRec?: CrossLearningRecommendation | null; onStartCrossCase?: (topic: string) => void }) {
+function CaseSummaryView({ session, crossRec, onStartCrossCase, suggestedDifficulty, onAcceptDifficulty }: { session: CaseSession; crossRec?: CrossLearningRecommendation | null; onStartCrossCase?: (topic: string) => void; suggestedDifficulty?: string | null; onAcceptDifficulty?: (d: string) => void }) {
   const responses = session.responses || [];
   const correct = responses.filter(r => r?.isCorrect).length;
   const total = responses.length;
@@ -339,6 +339,26 @@ function CaseSummaryView({ session, crossRec, onStartCrossCase }: { session: Cas
         </div>
       )}
 
+      {suggestedDifficulty && onAcceptDifficulty && (
+        <div className="rounded-xl bg-indigo-50 dark:bg-indigo-900/20 p-4 border border-indigo-200 dark:border-indigo-800 space-y-2">
+          <p className="text-xs font-bold uppercase tracking-widest text-indigo-500">
+            <i className="fas fa-chart-line mr-1" />Difficulty Suggestion
+          </p>
+          <p className="text-sm text-slate-700 dark:text-slate-300">
+            {pct >= 90
+              ? `Great score! Try a harder case next time.`
+              : `This was tough. Consider a lower difficulty to build confidence.`}
+          </p>
+          <button
+            type="button"
+            onClick={() => onAcceptDifficulty(suggestedDifficulty)}
+            className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+          >
+            <i className="fas fa-arrow-right mr-1" />Try {suggestedDifficulty} next
+          </button>
+        </div>
+      )}
+
       {crossRec && onStartCrossCase && (
         <CrossLearningCard rec={crossRec} onStart={onStartCrossCase} />
       )}
@@ -401,6 +421,8 @@ export const AdaptiveCasePage: React.FC = () => {
   const [history, setHistory] = useState<CaseSession[]>([]);
   const [crossRec, setCrossRec] = useState<CrossLearningRecommendation | null>(null);
   const [generatingStep, setGeneratingStep] = useState(false);
+  const [evidenceWarning, setEvidenceWarning] = useState<string | null>(null);
+  const [suggestedDifficulty, setSuggestedDifficulty] = useState<string | null>(null);
 
   useEffect(() => {
     if (phase !== 'setup') return;
@@ -425,8 +447,9 @@ export const AdaptiveCasePage: React.FC = () => {
     setPhase('loading');
     setError(null);
     try {
-      const { session: s } = await api.generateAdaptiveCase({ topic: topic.trim(), learningMode, difficulty });
-      setSession(s);
+      const result = await api.generateAdaptiveCase({ topic: topic.trim(), learningMode, difficulty });
+      setSession(result.session);
+      setEvidenceWarning(result.evidenceWarning || null);
       setFeedback(null);
       setShowingFeedback(false);
       setPhase('playing');
@@ -451,6 +474,9 @@ export const AdaptiveCasePage: React.FC = () => {
       if (result.crossLearningRecommendation) {
         setCrossRec(result.crossLearningRecommendation);
       }
+      if (result.suggestedDifficulty) {
+        setSuggestedDifficulty(result.suggestedDifficulty);
+      }
       if (result.session.status === 'completed') {
         setTimeout(() => setPhase('summary'), 2500);
       }
@@ -471,6 +497,8 @@ export const AdaptiveCasePage: React.FC = () => {
     setShowingFeedback(false);
     setCrossRec(null);
     setGeneratingStep(false);
+    setEvidenceWarning(null);
+    setSuggestedDifficulty(null);
     setError(null);
   }, []);
 
@@ -619,6 +647,12 @@ export const AdaptiveCasePage: React.FC = () => {
 
           <StepProgressBar steps={STEP_SEQUENCE_META} currentStep={session.currentStep} responses={session.responses} />
 
+          {evidenceWarning && (
+            <div className="rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 px-3 py-2 text-xs text-amber-700 dark:text-amber-300">
+              <i className="fas fa-exclamation-triangle mr-1.5" />{evidenceWarning}
+            </div>
+          )}
+
           {generatingStep && !showingFeedback && (
             <div className="flex items-center justify-center gap-3 py-8">
               <div className="spinner" />
@@ -658,7 +692,7 @@ export const AdaptiveCasePage: React.FC = () => {
               <i className="fas fa-plus mr-1" />New Case
             </button>
           </div>
-          <CaseSummaryView session={session} crossRec={crossRec} onStartCrossCase={(t) => { setTopic(t); setCrossRec(null); setPhase('setup'); }} />
+          <CaseSummaryView session={session} crossRec={crossRec} onStartCrossCase={(t) => { setTopic(t); setCrossRec(null); setPhase('setup'); }} suggestedDifficulty={suggestedDifficulty} onAcceptDifficulty={(d) => { setDifficulty(d); setSuggestedDifficulty(null); resetToSetup(); }} />
         </div>
       )}
 
