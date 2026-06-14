@@ -345,6 +345,16 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
         }
     });
 
+    app.get('/api/admin/curriculum/seed-health', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const report = await db.getSeedHealthReport();
+            res.json({ health: report, generatedAt: new Date().toISOString() });
+        } catch (error) {
+            req.log.error({ err: error }, 'Curriculum seed health report error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
     app.patch('/api/admin/curriculum/scheduler/settings', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
         try {
             const settings = await updateCurriculumSeedSchedulerSettings(db, req.body || {});

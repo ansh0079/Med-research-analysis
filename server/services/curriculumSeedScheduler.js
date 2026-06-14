@@ -194,20 +194,23 @@ async function runCurriculumSeedBatch({
                     limits,
                     log,
                 });
-                topicDetail.status = result.warning ? 'skipped_low_recall' : 'seeded';
+                const finalStatus = result.topic?.seedStatus || (result.warning ? 'skipped_low_recall' : 'seeded');
+                topicDetail.status = finalStatus;
                 topicDetail.articleCount = result.articleCount;
                 topicDetail.selectedArticleCount = result.selectedArticleCount;
                 topicDetail.synopsisCount = result.synopsisCount;
                 topicDetail.claimCount = result.claimCount ?? result.topic?.claimCount ?? 0;
                 topicDetail.synopsisFailures = result.synopsisFailures?.length || 0;
+                topicDetail.contentCounts = result.contentCounts || null;
                 topicDetail.estimatedCostUsd = estimateTopicCost(guardrails.settings, result.synopsisCount || 0);
                 await db.incrementCurriculumSeedUsage(getToday(), {
-                    topicsSeeded: result.warning ? 0 : 1,
+                    topicsSeeded: finalStatus === 'seeded' ? 1 : 0,
+                    topicsFailed: finalStatus === 'failed' ? 1 : 0,
                     synopsesGenerated: result.synopsisCount || 0,
                     estimatedCostUsd: topicDetail.estimatedCostUsd,
                 });
-                if (result.warning) skippedCount += 1;
-                else refreshedCount += 1;
+                if (finalStatus === 'seeded') refreshedCount += 1;
+                else { skippedCount += 1; }
             } catch (err) {
                 errorCount += 1;
                 await db.incrementCurriculumSeedUsage(getToday(), { topicsFailed: 1 }).catch(() => null);
@@ -216,6 +219,18 @@ async function runCurriculumSeedBatch({
                 log.warn({ err, topicId: topic.id, topic: topic.displayName }, 'curriculum seed scheduler: topic seed failed');
             }
             details.topics.push(topicDetail);
+        }
+
+        const failedOrWarning = details.topics.filter(t => t.status === 'failed' || t.status === 'seeded_with_warnings');
+        if (failedOrWarning.length > 0) {
+            log.error({
+                failedTopics: failedOrWarning.map(t => ({
+                    name: t.displayName,
+                    status: t.status,
+                    contentCounts: t.contentCounts,
+                })),
+                batchFailRate: `${failedOrWarning.length}/${candidates.length}`,
+            }, 'curriculum seed batch: topics completed with content gaps — will auto-retry');
         }
 
         const status = errorCount > 0 ? 'completed_with_errors' : 'completed';

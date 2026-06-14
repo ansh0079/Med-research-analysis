@@ -6,6 +6,7 @@ const { selectTopEvidence } = require('../utils/selectTopEvidence');
 const { runFullSynthesisGeneration } = require('./synthesisGenerationCore');
 const { runPaperSynopsisGeneration } = require('./paperSynopsisCore');
 const { alignTopicClaimsWithGuidelines } = require('./claimGuidelineEngine');
+const { runGuidelineEnrichmentForTopic } = require('./guidelineSeedService');
 
 function addDays(date, days) {
     const next = new Date(date);
@@ -18,6 +19,14 @@ function reviewDueForVolatility(volatility, now = new Date()) {
     if (value === 'high') return addDays(now, 30);
     if (value === 'stable' || value === 'low') return addDays(now, 180);
     return addDays(now, 90);
+}
+
+function determineSeedStatus({ synopsisFailures, contentCounts, claimCount }) {
+    const hasNoPapers = (contentCounts?.papers || 0) === 0;
+    const hasNoClaims = (claimCount || 0) === 0 && (contentCounts?.claims || 0) === 0;
+    if (hasNoPapers && hasNoClaims) return 'failed';
+    if (synopsisFailures.length > 0 || hasNoPapers || hasNoClaims) return 'seeded_with_warnings';
+    return 'seeded';
 }
 
 function clampLimit(value, fallback, min, max) {
@@ -120,17 +129,48 @@ async function seedCurriculumTopic({
             log.warn({ err, topic: topic.displayName }, 'curriculum seed guideline alignment failed');
             return { processed: 0, results: [], error: err.message };
         });
+
+        const guidelineEnrichment = await runGuidelineEnrichmentForTopic({
+            db,
+            topicName: topic.displayName,
+            serverConfig,
+            fetchImpl,
+            log,
+        }).catch((err) => {
+            log.warn({ err, topic: topic.displayName }, 'curriculum seed guideline enrichment failed');
+            return { guidelineSummary: null, guidelineMcqs: { status: 'error', mcqCount: 0 } };
+        });
+
         const claims = await db.listTeachingObjectClaimsForTopic(topic.displayName, { limit: 500 }).catch((err) => {
             log.warn({ err, topic: topic.displayName }, 'curriculum seed claim count failed');
             return [];
         });
 
+        const contentCounts = await db.getTopicContentCounts(
+            db.normalizeTopic(topic.displayName)
+        );
+        const seedStatus = determineSeedStatus({
+            synopsisFailures,
+            contentCounts,
+            claimCount: claims.length,
+        });
+        if (seedStatus !== 'seeded') {
+            log.warn({
+                topic: topic.displayName,
+                seedStatus,
+                contentCounts,
+                synopsisFailures: synopsisFailures.length,
+            }, 'curriculum seed completed with content gaps');
+        }
+
         const updatedTopic = await db.updateCurriculumSeedStatus(topic.id, {
-            seedStatus: synopsisFailures.length > 0 ? 'seeded_with_warnings' : 'seeded',
+            seedStatus,
             lastSeededAt: new Date().toISOString(),
             lastSynthesisAt: synthesis.timestamp || new Date().toISOString(),
             claimCount: claims.length,
-            reviewDueAt: reviewDueForVolatility(topic.volatility, new Date()),
+            reviewDueAt: seedStatus === 'seeded'
+                ? reviewDueForVolatility(topic.volatility, new Date())
+                : addDays(new Date(), 1),
         });
 
         return {
@@ -142,6 +182,8 @@ async function seedCurriculumTopic({
             synopsisFailures,
             claimCount: claims.length,
             guidelineAlignment,
+            guidelineEnrichment,
+            contentCounts,
         };
     } catch (err) {
         await db.updateCurriculumSeedStatus(topic.id, {
@@ -156,4 +198,5 @@ async function seedCurriculumTopic({
 module.exports = {
     seedCurriculumTopic,
     reviewDueForVolatility,
+    determineSeedStatus,
 };

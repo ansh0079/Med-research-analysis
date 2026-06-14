@@ -255,7 +255,7 @@ async function runPaperSynopsisGenerationInner({
 
     if (cache?.setAsync) {
         const cacheKey = getPaperSynopsisCacheKey(article, selectedModel || selectedModelForCache, effectiveTrainingStage);
-        await withSpan('synopsis.cache_set', { 'cache.key': cacheKey }, () => cache.setAsync(cacheKey, result, 86400));
+        await withSpan('synopsis.cache_set', { 'cache.key': cacheKey }, () => cache.setAsync(cacheKey, result, 7 * 86400));
     }
     if (sessionId && db?.logEvent) {
         await db.logEvent('synopsis', sessionId, { articleId }).catch((err) => { logger.warn({ err }, 'logEvent failed'); return null; });

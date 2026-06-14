@@ -189,6 +189,73 @@ module.exports = (Sup) => class extends Sup {
         return rows.map((row) => this.mapCurriculumSeedTopicRow(row));
     }
 
+    async getTopicContentCounts(normalizedTopic) {
+        const norm = String(normalizedTopic || '').toLowerCase().trim();
+        if (!norm) return { papers: 0, claims: 0, guidelines: 0, guidelineMcqs: 0, guidelineSummary: 0 };
+        const [papers, claims, guidelines, guidelineMcqs, guidelineSummary] = await Promise.all([
+            this.get(`SELECT COUNT(*) AS cnt FROM teaching_objects WHERE normalized_topic = ? AND object_type = 'paper'`, [norm]),
+            this.get(`SELECT COUNT(*) AS cnt FROM teaching_object_claims WHERE normalized_topic = ?`, [norm]),
+            this.get(`SELECT COUNT(*) AS cnt FROM topic_guidelines WHERE normalized_topic = ? AND status != 'stale' AND superseded_by_id IS NULL`, [norm]),
+            this.get(`SELECT COUNT(*) AS cnt FROM teaching_objects WHERE normalized_topic = ? AND object_type = 'guideline_mcq'`, [norm]),
+            this.get(`SELECT COUNT(*) AS cnt FROM teaching_objects WHERE normalized_topic = ? AND object_type = 'guideline_summary'`, [norm]),
+        ]);
+        return {
+            papers: Number(papers?.cnt || 0),
+            claims: Number(claims?.cnt || 0),
+            guidelines: Number(guidelines?.cnt || 0),
+            guidelineMcqs: Number(guidelineMcqs?.cnt || 0),
+            guidelineSummary: Number(guidelineSummary?.cnt || 0),
+        };
+    }
+
+    async getSeedHealthReport({ curriculumSlug = 'core-clinical-topics' } = {}) {
+        const topics = await this.all(
+            `SELECT t.id, t.display_name, t.seed_status, t.specialty, t.claim_count,
+                    t.last_seeded_at
+             FROM curriculum_topics t
+             JOIN curriculum_blocks b ON b.id = t.block_id
+             JOIN curricula c ON c.id = b.curriculum_id
+             WHERE c.slug = ?
+               AND t.seed_status IN ('seeded', 'seeded_with_warnings')
+             ORDER BY t.seed_status, t.specialty, t.display_name`,
+            [curriculumSlug]
+        );
+        const results = [];
+        for (const t of topics) {
+            const norm = this.normalizeTopic(t.display_name);
+            const counts = await this.getTopicContentCounts(norm);
+            const missing = [];
+            if (counts.papers === 0) missing.push('papers');
+            if (counts.claims === 0) missing.push('claims');
+            if (counts.guidelines === 0) missing.push('guidelines');
+            if (missing.length > 0) {
+                results.push({
+                    id: t.id,
+                    displayName: t.display_name,
+                    specialty: t.specialty,
+                    seedStatus: t.seed_status,
+                    lastSeededAt: t.last_seeded_at,
+                    contentCounts: counts,
+                    missing,
+                });
+            }
+        }
+        const bySpecialty = {};
+        for (const r of results) {
+            const s = r.specialty || 'Unknown';
+            if (!bySpecialty[s]) bySpecialty[s] = { total: 0, noPapers: 0, noClaims: 0, noGuidelines: 0 };
+            bySpecialty[s].total += 1;
+            if (r.contentCounts.papers === 0) bySpecialty[s].noPapers += 1;
+            if (r.contentCounts.claims === 0) bySpecialty[s].noClaims += 1;
+            if (r.contentCounts.guidelines === 0) bySpecialty[s].noGuidelines += 1;
+        }
+        return {
+            totalWithGaps: results.length,
+            bySpecialty,
+            topics: results,
+        };
+    }
+
     async getCurriculumSeedStatusCounts({ curriculumSlug = 'core-clinical-topics' } = {}) {
         const rows = await this.all(
             `SELECT t.seed_status, COUNT(*) AS count, COALESCE(SUM(t.claim_count), 0) AS claim_count
