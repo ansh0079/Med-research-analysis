@@ -1,6 +1,7 @@
 'use strict';
 
 const logger = require('../config/logger');
+const { safeFetch } = require('../utils/fetch');
 const { fetchUnifiedEvidence } = require('./unifiedEvidenceSearch');
 const { selectTopEvidence } = require('../utils/selectTopEvidence');
 const { runFullSynthesisGeneration } = require('./synthesisGenerationCore');
@@ -46,6 +47,7 @@ async function seedCurriculumTopic({
     log = logger,
 }) {
     if (!db) throw new Error('db is required');
+    if (!fetchImpl) fetchImpl = safeFetch;
     const topic = await db.getCurriculumSeedTopic(topicId);
     if (!topic) throw new Error('Curriculum topic not found');
 
