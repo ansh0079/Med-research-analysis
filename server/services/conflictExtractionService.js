@@ -1,6 +1,10 @@
 'use strict';
 
-const { createAiService, PINNED_MODELS, TEMPERATURE } = require('./aiService');
+let _aiService;
+function getAiService() {
+    if (!_aiService) _aiService = require('./aiService');
+    return _aiService;
+}
 const { classifyClaimGuidelineAlignment } = require('./claimGuidelineAlignmentService');
 const { validateAiOutput } = require('./aiOutputValidation');
 const { LlmBudgetExceededError } = require('./llmRequestBudget');
@@ -211,12 +215,13 @@ async function extractTrialGuidelineConflicts(evidenceRows, guidelines, options 
 
     if (serverConfig && (serverConfig.keys?.gemini || serverConfig.keys?.mistral)) {
         try {
+            const { createAiService, PINNED_MODELS, TEMPERATURE: T } = getAiService();
             const ai = createAiService({ serverConfig, fetchImpl });
             const prompt = buildConflictExtractionPrompt(rows, guides, topic);
             const provider = options.provider === 'mistral' && serverConfig.keys?.mistral ? 'mistral' : 'gemini';
             const model = provider === 'gemini' ? PINNED_MODELS.gemini : PINNED_MODELS.mistral;
             const parsed = await ai.callStructured(prompt, provider, model, {
-                temperature: TEMPERATURE.analysis ?? 0.2,
+                temperature: T.analysis ?? 0.2,
                 maxOutputTokens: 2048,
                 allowBudgetSkip: options.allowBudgetSkip,
                 usage: { operation: 'conflict_extraction', topic },
