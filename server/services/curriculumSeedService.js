@@ -44,6 +44,7 @@ async function seedCurriculumTopic({
     cache,
     provider = 'auto',
     limits = {},
+    sourceList = ['pubmed', 'openalex', 'semantic'],
     log = logger,
 }) {
     if (!db) throw new Error('db is required');
@@ -65,7 +66,7 @@ async function seedCurriculumTopic({
         const rawArticles = await fetchUnifiedEvidence({
             query: topic.suggestedQuery || topic.displayName,
             safeLimit: searchLimit,
-            sourceList: ['pubmed', 'openalex', 'semantic'],
+            sourceList,
             serverConfig,
             fetch: fetchImpl,
             vectorList: [],
