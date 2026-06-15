@@ -6,6 +6,7 @@
 const { PINNED_MODELS } = require('../services/aiService');
 
 const ALLOWED_MODELS = {
+    claude: new Set([PINNED_MODELS.claude]),
     gemini: new Set([PINNED_MODELS.gemini, PINNED_MODELS.geminiQuality]),
     mistral: new Set([PINNED_MODELS.mistral]),
 };
@@ -30,7 +31,8 @@ function resolveProvider(options = {}, serverConfig = {}) {
 
     let selectedProvider = requestedProvider;
     if (requestedProvider === 'auto') {
-        if (keys.gemini) selectedProvider = 'gemini';
+        if (keys.anthropic) selectedProvider = 'claude';
+        else if (keys.gemini) selectedProvider = 'gemini';
         else if (keys.mistral) selectedProvider = 'mistral';
         else selectedProvider = null;
     }
@@ -52,6 +54,7 @@ function getProviderCandidates(options = {}, serverConfig = {}) {
 
     const keys = serverConfig?.keys || {};
     return [
+        keys.anthropic ? { provider: 'claude', model: resolvePinnedModel('claude', options.model) } : null,
         keys.gemini ? { provider: 'gemini', model: resolvePinnedModel('gemini', options.model) } : null,
         keys.mistral ? { provider: 'mistral', model: resolvePinnedModel('mistral', options.model) } : null,
     ].filter(Boolean);

@@ -16,7 +16,8 @@ const AI_PROVIDERS = {
 
 // Pinned model versions for reproducibility and deterministic outputs.
 const PINNED_MODELS = {
-    gemini: 'gemini-2.5-flash',           // Default: Flash for clinical reasoning quality
+    claude: 'claude-haiku-4-5-20251001',  // Primary: reliable structured JSON, medical synthesis
+    gemini: 'gemini-2.5-flash',           // Fallback: Flash for clinical reasoning quality
     geminiLite: 'gemini-2.5-flash-lite',  // Lite: agent memory, cheap conversational tasks only
     geminiQuality: 'gemini-2.5-flash',    // Quality tier (same as Flash; upgrade to Pro when needed)
     mistral: 'mistral-small-2603',
@@ -286,8 +287,27 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
     }
 
     // Public API: circuit-breaker-wrapped versions for non-streaming calls
-    async function callClaudeRaw(prompt, model = 'claude-haiku-4-5-20251001', { temperature = TEMPERATURE.analysis, maxOutputTokens = 2048, timeoutMs = 45000 } = {}) {
+    async function callClaudeRaw(prompt, model = PINNED_MODELS.claude, { temperature = TEMPERATURE.analysis, maxOutputTokens = 2048, timeoutMs = 45000 } = {}) {
         return proxy.claudeMessages(prompt, { model, temperature, maxOutputTokens, timeoutMs });
+    }
+
+    async function callClaude(prompt, model, options = {}) {
+        const { usage, budget, allowBudgetSkip, ...rest } = options;
+        return executeProviderCall({
+            provider: 'claude',
+            model,
+            prompt,
+            usage,
+            budget,
+            allowBudgetSkip,
+            fn: () => callClaudeRaw(prompt, model, rest),
+        });
+    }
+
+    async function callClaudeStructured(prompt, model, options = {}) {
+        const text = await callClaude(prompt, model, { ...options });
+        if (text === null) return null;
+        return parseStructuredOutput(text);
     }
 
     async function callMistralAI(prompt, model, options = {}) {
@@ -328,19 +348,20 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
     }
 
     async function callStructured(prompt, provider, model, options = {}) {
-        return provider === 'gemini'
-            ? callGeminiStructured(prompt, model, options)
-            : callMistralStructured(prompt, model, options);
+        if (provider === 'claude') return callClaudeStructured(prompt, model, options);
+        if (provider === 'gemini') return callGeminiStructured(prompt, model, options);
+        return callMistralStructured(prompt, model, options);
     }
 
     return {
         callMistralAI,
         callHuggingFace,
         callGemini,
+        callClaude,
         callGeminiStructured,
+        callClaudeStructured,
         callMistralStructured,
         callStructured,
-        callClaude: callClaudeRaw,
         callGeminiStream: callGeminiStreamRaw,
         callMistralStream: callMistralStreamRaw,
         AI_PROVIDERS,

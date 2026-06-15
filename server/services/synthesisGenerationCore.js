@@ -449,7 +449,7 @@ async function runFullSynthesisGenerationInner({
     const context = await prepareSynthesisContext({ articles: topArticles, topic, db, cache, userId });
     const providerCandidates = getProviderCandidates({ provider }, serverConfig);
     if (!providerCandidates.length) {
-        throw new Error('No AI provider configured. Add GEMINI_API_KEY or MISTRAL_API_KEY to .env');
+        throw new Error('No AI provider configured. Add ANTHROPIC_API_KEY, GEMINI_API_KEY, or MISTRAL_API_KEY to .env');
     }
 
     let synthesisPayload = null;
@@ -464,7 +464,9 @@ async function runFullSynthesisGenerationInner({
                 usage: { operation: 'synthesis', topic, userId },
                 jsonMode: true,
             };
-            synthesisPayload = await (candidate.provider === 'gemini'
+            synthesisPayload = await (candidate.provider === 'claude'
+                ? ai.callClaude(context.prompt, candidate.model, callOptions)
+                : candidate.provider === 'gemini'
                 ? ai.callGemini(context.prompt, candidate.model, callOptions)
                 : ai.callMistralAI(context.prompt, candidate.model, callOptions));
             if (synthesisPayload === null) break;

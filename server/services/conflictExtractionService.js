@@ -213,13 +213,15 @@ async function extractTrialGuidelineConflicts(evidenceRows, guidelines, options 
     const fetchImpl = options.fetchImpl;
     let conflictMatrix = [];
 
-    if (serverConfig && (serverConfig.keys?.gemini || serverConfig.keys?.mistral)) {
+    if (serverConfig && (serverConfig.keys?.anthropic || serverConfig.keys?.gemini || serverConfig.keys?.mistral)) {
         try {
             const { createAiService, PINNED_MODELS, TEMPERATURE: T } = getAiService();
             const ai = createAiService({ serverConfig, fetchImpl });
             const prompt = buildConflictExtractionPrompt(rows, guides, topic);
-            const provider = options.provider === 'mistral' && serverConfig.keys?.mistral ? 'mistral' : 'gemini';
-            const model = provider === 'gemini' ? PINNED_MODELS.gemini : PINNED_MODELS.mistral;
+            const provider = serverConfig.keys?.anthropic ? 'claude'
+                : serverConfig.keys?.gemini ? 'gemini' : 'mistral';
+            const model = provider === 'claude' ? PINNED_MODELS.claude
+                : provider === 'gemini' ? PINNED_MODELS.gemini : PINNED_MODELS.mistral;
             const parsed = await ai.callStructured(prompt, provider, model, {
                 temperature: T.analysis ?? 0.2,
                 maxOutputTokens: 2048,

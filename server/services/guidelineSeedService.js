@@ -162,10 +162,14 @@ async function generateGuidelineMcqs({ db, topicName, serverConfig, fetchImpl, l
     const ai = createAiService({ serverConfig, fetchImpl });
     const prompt = buildMcqPrompt(topicName, guidelines);
 
+    const candidate = providerCandidates[0];
+    const callFn = candidate.provider === 'claude' ? ai.callClaude
+        : candidate.provider === 'gemini' ? ai.callGemini : ai.callMistralAI;
+
     let mcqs = [];
     for (let attempt = 1; attempt <= 2; attempt++) {
         try {
-            const raw = await ai.callGemini(prompt, undefined, {
+            const raw = await callFn(prompt, candidate.model, {
                 temperature: attempt === 1 ? 0.4 : 0.2,
                 jsonMode: attempt === 2,
                 maxOutputTokens: 5000,
@@ -189,8 +193,8 @@ async function generateGuidelineMcqs({ db, topicName, serverConfig, fetchImpl, l
         topic: topicName,
         normalizedTopic: normalized,
         title: `Evidence MCQs: ${topicName}`,
-        provider: 'gemini',
-        model: 'gemini-2.5-flash',
+        provider: candidate.provider,
+        model: candidate.model,
         confidence: 0.80,
         payload: {
             mcqs,
