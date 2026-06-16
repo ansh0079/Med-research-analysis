@@ -10,6 +10,7 @@ import { GuestRoute } from './components/router/GuestRoute';
 import { RoleRoute } from './components/router/RoleRoute';
 import { RouteErrorBoundary } from './components/router/RouteErrorBoundary';
 import { PhiDataNotice } from './components/compliance/PhiDataNotice';
+import { CookieConsentBanner } from './components/compliance/CookieConsentBanner';
 import { hasCompletedOnboarding } from './components/onboarding/onboardingState';
 const OnboardingModal = React.lazy(() => import('./components/onboarding/OnboardingModal').then(m => ({ default: m.OnboardingModal })));
 import './styles/main.css';
@@ -199,6 +200,7 @@ const AppContent: React.FC = () => {
       {showOnboarding && <OnboardingModal onDone={handleOnboardingDone} />}
 
       <PhiDataNotice />
+      <CookieConsentBanner />
       <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   );

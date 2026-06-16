@@ -1,6 +1,10 @@
 const { TRUSTED_GUIDELINE_SOURCES } = require('../config/trustedGuidelineSources');
+const { discoverGuidelinesForTopic, isDiscoveryInFlight, wasDiscoveryAttempted } = require('../services/guidelineService');
+const { createAiService } = require('../services/aiService');
+const { safeFetch } = require('../utils/fetch');
 
-function registerGuidelineRoutes(app, { db, rateLimit, requireAuthJwt, requireRole, requireJson }) {
+function registerGuidelineRoutes(app, { db, serverConfig, rateLimit, requireAuthJwt, requireRole, requireJson }) {
+    const aiService = createAiService({ serverConfig, fetchImpl: safeFetch });
     // Trusted sources registry (public). Keep before /api/guidelines/:id.
     app.get('/api/guidelines/sources', rateLimit(60, 60), (req, res) => {
         res.json({ sources: TRUSTED_GUIDELINE_SOURCES });
@@ -45,7 +49,8 @@ function registerGuidelineRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
         }
     });
 
-    // List guidelines for a topic (public, rate-limited)
+    // List guidelines for a topic (public, rate-limited).
+    // When no seeded guidelines exist, triggers live discovery from PubMed in the background.
     app.get('/api/guidelines', rateLimit(60, 60), async (req, res) => {
         try {
             const { topic, status, limit } = req.query;
@@ -56,7 +61,17 @@ function registerGuidelineRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
                 status: String(status || ''),
                 limit: parseInt(String(limit), 10) || 20,
             });
-            res.json({ topic, guidelines });
+            if (guidelines.length > 0) {
+                return res.json({ topic, guidelines, discoveryStatus: 'complete' });
+            }
+            if (isDiscoveryInFlight(topic, db)) {
+                return res.json({ topic, guidelines: [], discoveryStatus: 'pending' });
+            }
+            if (wasDiscoveryAttempted(topic, db)) {
+                return res.json({ topic, guidelines: [], discoveryStatus: 'complete' });
+            }
+            discoverGuidelinesForTopic(topic, { db, serverConfig, aiService }).catch(() => {});
+            res.json({ topic, guidelines: [], discoveryStatus: 'pending' });
         } catch (error) {
             req.log.error({ err: error }, 'Get guidelines by topic error');
             res.status(500).json({ error: 'Internal server error' });
