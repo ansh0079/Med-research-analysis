@@ -1,6 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 const logger = require('../config/logger');
 const { createRedisClient } = require('../config/redisClient');
 
@@ -46,6 +47,15 @@ function tokenHash(token) {
     return crypto.createHash('sha256').update(String(token)).digest('hex');
 }
 
+function tokenJti(token) {
+    try {
+        const decoded = jwt.decode(String(token));
+        return typeof decoded?.jti === 'string' && decoded.jti ? decoded.jti : null;
+    } catch {
+        return null;
+    }
+}
+
 function timingSafeEqualStrings(a, b) {
     const left = Buffer.from(String(a || ''));
     const right = Buffer.from(String(b || ''));
@@ -87,20 +97,25 @@ async function revokeToken(token) {
     await ensureReady();
     if (!token) return;
     const hash = tokenHash(token);
+    const jti = tokenJti(token);
     const expiresAt = new Date(Date.now() + REVOCATION_TTL_SEC * 1000).toISOString();
 
     if (redis) {
         await redis.setex(`${REDIS_PREFIX}revoked:${hash}`, REVOCATION_TTL_SEC, '1');
+        if (jti) {
+            await redis.setex(`${REDIS_PREFIX}revoked:jti:${jti}`, REVOCATION_TTL_SEC, '1');
+        }
         return;
     }
     if (db) {
         await db.run(
-            `INSERT INTO revoked_tokens (token_hash, revoked_at, expires_at)
-             VALUES (?, ?, ?)
+            `INSERT INTO revoked_tokens (token_hash, token_jti, revoked_at, expires_at)
+             VALUES (?, ?, ?, ?)
              ON CONFLICT(token_hash) DO UPDATE SET
+               token_jti = excluded.token_jti,
                revoked_at = excluded.revoked_at,
                expires_at = excluded.expires_at`,
-            [hash, nowIso(), expiresAt]
+            [hash, jti, nowIso(), expiresAt]
         );
     }
 }
@@ -109,16 +124,30 @@ async function isTokenRevoked(token) {
     await ensureReady();
     if (!token) return false;
     const hash = tokenHash(token);
+    const jti = tokenJti(token);
 
     if (redis) {
         const value = await redis.get(`${REDIS_PREFIX}revoked:${hash}`);
-        return value === '1';
+        if (value === '1') return true;
+        if (jti) {
+            const jtiValue = await redis.get(`${REDIS_PREFIX}revoked:jti:${jti}`);
+            return jtiValue === '1';
+        }
+        return false;
     }
     if (db) {
-        const row = await db.get(
-            `SELECT 1 AS hit FROM revoked_tokens WHERE token_hash = ? AND expires_at > ?`,
-            [hash, nowIso()]
-        );
+        const row = jti
+            ? await db.get(
+                `SELECT 1 AS hit
+                 FROM revoked_tokens
+                 WHERE expires_at > ? AND (token_hash = ? OR token_jti = ?)
+                 LIMIT 1`,
+                [nowIso(), hash, jti]
+            )
+            : await db.get(
+                `SELECT 1 AS hit FROM revoked_tokens WHERE token_hash = ? AND expires_at > ?`,
+                [hash, nowIso()]
+            );
         return Boolean(row?.hit);
     }
     return false;
@@ -320,6 +349,7 @@ module.exports = {
     isResetLimited,
     pruneExpiredRevokedTokens,
     timingSafeEqualStrings,
+    tokenJti,
     ACCESS_TOKEN_TTL_SEC,
     LOGIN_MAX_ATTEMPTS,
     LOGIN_LOCKOUT_MS,

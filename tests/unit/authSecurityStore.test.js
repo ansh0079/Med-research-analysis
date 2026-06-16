@@ -1,5 +1,7 @@
 'use strict';
 
+const jwt = require('jsonwebtoken');
+
 describe('authSecurityStore', () => {
     let authSecurityStore;
     let mockDb;
@@ -24,6 +26,18 @@ describe('authSecurityStore', () => {
             expect.stringContaining('INSERT INTO revoked_tokens'),
             expect.arrayContaining([expect.any(String), expect.any(String), expect.any(String)])
         );
+    });
+
+    test('stores revoked JWT id in database when present', async () => {
+        const token = jwt.sign({ sub: 'u1' }, 'secret', { jwtid: 'access-jti-1' });
+
+        await authSecurityStore.revokeToken(token);
+
+        expect(mockDb.run).toHaveBeenCalledWith(
+            expect.stringContaining('token_jti'),
+            expect.arrayContaining(['access-jti-1'])
+        );
+        expect(authSecurityStore.tokenJti(token)).toBe('access-jti-1');
     });
 
     test('detects revoked token from database row', async () => {

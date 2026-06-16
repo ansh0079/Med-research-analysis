@@ -27,6 +27,15 @@ const COOKIE_NAME = 'med_auth_token';
 const OAUTH_STATE_COOKIE = 'med_oauth_state';
 const ACCESS_TOKEN_TTL_SEC = authSecurityStore.ACCESS_TOKEN_TTL_SEC || 15 * 60;
 
+function normalizeAccessTokenVersion(value) {
+    const parsed = Number(value);
+    return Number.isInteger(parsed) && parsed >= 0 ? parsed : 0;
+}
+
+function getUserAccessTokenVersion(user) {
+    return normalizeAccessTokenVersion(user?.access_token_version ?? user?.accessTokenVersion);
+}
+
 function cookieBaseOptions() {
     return {
         httpOnly: true,
@@ -56,9 +65,10 @@ function buildAccessToken(user) {
             role: user.role || 'user',
             emailVerified,
             subscriptionPlan: user.subscription_plan || user.subscriptionPlan || 'free',
+            tokenVersion: getUserAccessTokenVersion(user),
         },
         JWT_SECRET,
-        { expiresIn: ACCESS_TOKEN_TTL_SEC }
+        { expiresIn: ACCESS_TOKEN_TTL_SEC, jwtid: crypto.randomUUID() }
     );
 }
 
@@ -195,6 +205,31 @@ function verifyToken(token) {
     }
 }
 
+async function isAccessTokenVersionCurrent(decoded) {
+    if (!decoded?.id) return false;
+
+    // Tokens minted before access-token versioning stay valid until their short
+    // expiry. New tokens carry tokenVersion and are checked against the DB.
+    if (decoded.tokenVersion === undefined || decoded.tokenVersion === null) {
+        return true;
+    }
+
+    const row = await db.get('SELECT access_token_version FROM users WHERE id = ?', [decoded.id]);
+    if (!row) return false;
+    return normalizeAccessTokenVersion(row.access_token_version) === normalizeAccessTokenVersion(decoded.tokenVersion);
+}
+
+async function revokeUserAccessTokens(database, userId) {
+    if (!database?.run || !userId) return { changes: 0 };
+    return database.run(
+        `UPDATE users
+         SET access_token_version = COALESCE(access_token_version, 0) + 1,
+             updated_at = ?
+         WHERE id = ?`,
+        [new Date().toISOString(), userId]
+    );
+}
+
 /**
  * Optional auth: populates req.user if a valid cookie is present,
  * but never blocks the request.
@@ -203,7 +238,7 @@ async function optionalAuth(req, _res, next) {
     const token = extractToken(req);
     if (token && !(await isTokenRevoked(token))) {
         const decoded = verifyToken(token);
-        if (decoded) {
+        if (decoded && await isAccessTokenVersionCurrent(decoded)) {
             req.user = { id: decoded.id, name: decoded.name, email: decoded.email, role: decoded.role || 'user', emailVerified: decoded.emailVerified || false };
             req.token = token;
         }
@@ -263,6 +298,12 @@ async function requireAuthJwt(req, res, next) {
             tokenExpired: true,
         });
     }
+    if (!(await isAccessTokenVersionCurrent(decoded))) {
+        return res.status(401).json({
+            error: 'Invalid or expired token',
+            tokenExpired: true,
+        });
+    }
 
     // Auto-downgrade expired trials on every authenticated request
     await maybeDowngradeExpiredTrial(db, decoded.id);
@@ -282,7 +323,7 @@ async function requireAuthOrBeta(req, res, next) {
     const token = extractToken(req);
     if (token && !(await isTokenRevoked(token))) {
         const decoded = verifyToken(token);
-        if (decoded) {
+        if (decoded && await isAccessTokenVersionCurrent(decoded)) {
             await maybeDowngradeExpiredTrial(db, decoded.id);
             req.user = {
                 id: decoded.id,
@@ -602,7 +643,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             const emailVerified = Boolean(stored.email_verified);
             // Check and downgrade expired trial on login
             await maybeDowngradeExpiredTrial(db, stored.id);
-            const freshUser = await db.get('SELECT id, name, email, role, email_verified, subscription_plan FROM users WHERE id = ?', [stored.id]);
+            const freshUser = await db.get('SELECT id, name, email, role, email_verified, subscription_plan, access_token_version FROM users WHERE id = ?', [stored.id]);
             const finalUser = freshUser || stored;
             const finalEmailVerified = Boolean(finalUser.email_verified);
 
@@ -637,7 +678,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             }
 
             const user = await db.get(
-                'SELECT id, name, email, role, email_verified, subscription_plan FROM users WHERE id = ?',
+                'SELECT id, name, email, role, email_verified, subscription_plan, access_token_version FROM users WHERE id = ?',
                 [rotated.userId]
             );
             if (!user) {
@@ -647,7 +688,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
 
             await maybeDowngradeExpiredTrial(db, user.id);
             const freshUser = await db.get(
-                'SELECT id, name, email, role, email_verified, subscription_plan FROM users WHERE id = ?',
+                'SELECT id, name, email, role, email_verified, subscription_plan, access_token_version FROM users WHERE id = ?',
                 [user.id]
             ) || user;
 
@@ -678,7 +719,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
         const wasDowngraded = await maybeDowngradeExpiredTrial(db, req.user.id);
         if (wasDowngraded) {
             // Re-read user to return fresh state
-            const fresh = await db.get('SELECT id, name, email, role, email_verified, subscription_plan, subscription_status, trial_ends_at FROM users WHERE id = ?', [req.user.id]);
+            const fresh = await db.get('SELECT id, name, email, role, email_verified, subscription_plan, subscription_status, trial_ends_at, access_token_version FROM users WHERE id = ?', [req.user.id]);
             if (fresh) {
                 const updatedUser = { id: fresh.id, name: fresh.name, email: fresh.email, role: fresh.role || 'user', emailVerified: Boolean(fresh.email_verified), subscriptionPlan: fresh.subscription_plan || 'free' };
                 await issueSession(res, fresh);
@@ -770,8 +811,10 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             const hashedPassword = await bcrypt.hash(newPassword, 12);
             await db.updateUser(user.id, { password: hashedPassword });
 
+            await revokeUserAccessTokens(db, user.id);
             await revokeAllUserRefreshTokens(db, user.id);
-            await issueSession(res, user);
+            const fresh = await db.getUserById(user.id);
+            await issueSession(res, fresh || user);
             res.json({ message: 'Password updated successfully' });
         } catch (err) {
             logger.error({ err }, 'Change password error');
@@ -1014,9 +1057,10 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
                 await db.run('UPDATE password_reset_tokens SET used = 1 WHERE token = ?', [token]);
             });
 
+            await revokeUserAccessTokens(db, row.user_id);
             await revokeAllUserRefreshTokens(db, row.user_id);
             const userRow = await db.get(
-                'SELECT id, name, email, role, email_verified, subscription_plan FROM users WHERE id = ?',
+                'SELECT id, name, email, role, email_verified, subscription_plan, access_token_version FROM users WHERE id = ?',
                 [row.user_id]
             );
             if (userRow) await issueSession(res, userRow);
@@ -1045,6 +1089,7 @@ module.exports = {
     revokeToken,
     isTokenRevoked,
     verifyToken,
+    revokeUserAccessTokens,
     startProTrial,
     maybeDowngradeExpiredTrial,
     TRIAL_DAYS,
