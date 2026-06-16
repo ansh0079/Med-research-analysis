@@ -5,6 +5,7 @@
 
 const express = require('express');
 const { requireAuthJwt } = require('./middleware/auth');
+const { sanitizeUserInput, sanitizeTopicName } = require('./utils/sanitization');
 const db = require('../database');
 
 const router = express.Router();
@@ -505,11 +506,22 @@ router.post('/annotations', requireAuth, async (req, res, next) => {
 
     const id = randomUUID();
     const now = new Date().toISOString();
+    const sanitizedText = sanitizeUserInput(text, { maxLength: 5000, escapeHtml: true, normalizeWhitespace: false });
+    if (!sanitizedText) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+    const sanitizedUserName = sanitizeUserInput(req.user.name || 'Researcher', { maxLength: 100, escapeHtml: true }) || 'Researcher';
+    const sanitizedNote = note !== undefined
+      ? sanitizeUserInput(note, { maxLength: 5000, escapeHtml: true, normalizeWhitespace: false }) || null
+      : null;
+    const sanitizedTags = Array.isArray(tags)
+      ? tags.slice(0, 20).map((tag) => sanitizeTopicName(tag)).filter(Boolean)
+      : [];
 
     await db.run(
       `INSERT INTO collab_annotations (id, article_id, collection_id, user_id, user_name, type, range_data, text, note, color, is_private, tags, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [id, articleId, collectionId || null, req.user.id, req.user.name, type, JSON.stringify(range), text, note?.trim() || null, color || null, isPrivate ? 1 : 0, JSON.stringify(tags), now, now]
+      [id, articleId, collectionId || null, req.user.id, sanitizedUserName, type, JSON.stringify(range), sanitizedText, sanitizedNote, color || null, isPrivate ? 1 : 0, JSON.stringify(sanitizedTags), now, now]
     );
 
     await logActivity({ type: 'annotation_created', userId: req.user.id, userName: req.user.name, collectionId, articleId });
@@ -534,10 +546,19 @@ router.patch('/annotations/:annotationId', requireAuth, async (req, res, next) =
     const fields = ['updated_at = ?'];
     const params = [now];
 
-    if (note !== undefined) { fields.push('note = ?'); params.push(note?.trim() || null); }
+    if (note !== undefined) {
+      fields.push('note = ?');
+      params.push(sanitizeUserInput(note, { maxLength: 5000, escapeHtml: true, normalizeWhitespace: false }) || null);
+    }
     if (color !== undefined) { fields.push('color = ?'); params.push(color); }
     if (isPrivate !== undefined) { fields.push('is_private = ?'); params.push(isPrivate ? 1 : 0); }
-    if (tags !== undefined) { fields.push('tags = ?'); params.push(JSON.stringify(tags)); }
+    if (tags !== undefined) {
+      const sanitizedTags = Array.isArray(tags)
+        ? tags.slice(0, 20).map((tag) => sanitizeTopicName(tag)).filter(Boolean)
+        : [];
+      fields.push('tags = ?');
+      params.push(JSON.stringify(sanitizedTags));
+    }
 
     params.push(annotationId);
     await db.run(`UPDATE collab_annotations SET ${fields.join(', ')} WHERE id = ?`, params);

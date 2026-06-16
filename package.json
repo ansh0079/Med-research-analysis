@@ -54,6 +54,7 @@
     "db:reset": "node -e \"require('fs').existsSync('./database/app.db') && require('fs').unlinkSync('./database/app.db'); console.log('Database reset.')\"",
     "db:migrate": "node scripts/sqlite-migrate.mjs",
     "db:migrate:postgres": "cross-env USE_POSTGRES_MAIN=true node -e \"const db=require('./database');db.connect().then(()=>db.runMigrations()).then(r=>console.log(r)).finally(()=>db.close())\"",
+    "db:rollback": "node scripts/db-rollback.mjs",
     "db:schema:check": "node scripts/check-schema-consistency.mjs",
     "db:schema:regen": "node scripts/regenerate-schemas.mjs",
     "db:migrate:builtin": "node scripts/sqlite-migrate.mjs",

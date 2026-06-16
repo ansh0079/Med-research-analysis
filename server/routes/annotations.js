@@ -1,4 +1,5 @@
 const { sanitizeArticleIdParam } = require('../utils/articles');
+const { sanitizeUserInput } = require('../utils/sanitization');
 
 function registerAnnotationRoutes(app, { db, requireJson, requireAuthJwt, rateLimit }) {
     app.get('/api/articles/:articleId/annotations', requireAuthJwt, async (req, res) => {
@@ -25,14 +26,21 @@ function registerAnnotationRoutes(app, { db, requireJson, requireAuthJwt, rateLi
             if (!text || typeof text !== 'string' || !text.trim()) {
                 return res.status(400).json({ error: 'text is required' });
             }
+            const sanitizedText = sanitizeUserInput(text, { maxLength: 5000, escapeHtml: true, normalizeWhitespace: false });
+            if (!sanitizedText) {
+                return res.status(400).json({ error: 'text is required' });
+            }
             try {
                 const userId = req.user.id;
-                const userName = (req.user.name && String(req.user.name).trim()) || 'Researcher';
+                const userName = sanitizeUserInput(
+                    (req.user.name && String(req.user.name).trim()) || 'Researcher',
+                    { maxLength: 100, escapeHtml: true }
+                ) || 'Researcher';
                 const ins = await db.createAnnotation(
                     articleId,
                     userId,
                     userName,
-                    text.trim(),
+                    sanitizedText,
                     position ?? null
                 );
                 const row = await db.get('SELECT * FROM annotations WHERE id = ?', [ins.id]);

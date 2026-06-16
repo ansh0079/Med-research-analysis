@@ -6,49 +6,80 @@
  * Protects against XSS, injection attacks, and malicious content in user inputs.
  */
 
-/**
- * Sanitizes user text input by removing HTML tags and limiting length
- */
-function sanitizeUserInput(text, maxLength = 2000) {
-    if (!text) return '';
-    
-    let sanitized = String(text);
-    
-    // Remove HTML tags
-    sanitized = sanitized.replace(/<[^>]*>/g, '');
-    
-    // Remove script-like patterns
-    sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-    sanitized = sanitized.replace(/javascript:/gi, '');
-    sanitized = sanitized.replace(/on\w+\s*=/gi, '');
-    
-    // Remove null bytes
-    sanitized = sanitized.replace(/\0/g, '');
-    
-    // Normalize whitespace
-    sanitized = sanitized.replace(/\s+/g, ' ').trim();
-    
-    // Limit length
-    return sanitized.slice(0, maxLength);
+function resolveOptions(maxLengthOrOptions, defaults = {}) {
+    if (typeof maxLengthOrOptions === 'object' && maxLengthOrOptions !== null) {
+        return {
+            ...defaults,
+            ...maxLengthOrOptions,
+        };
+    }
+    return {
+        ...defaults,
+        maxLength: Number.isFinite(maxLengthOrOptions) ? maxLengthOrOptions : defaults.maxLength,
+    };
+}
+
+function escapeHtml(text) {
+    if (typeof text !== 'string') return '';
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function stripControlChars(text) {
+    return String(text)
+        .replace(/\0/g, '')
+        .replace(/[\u0001-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '');
+}
+
+function neutralizeDangerousProtocols(text) {
+    return String(text).replace(
+        /\b(?:j[\s\u0000-\u001F]*a[\s\u0000-\u001F]*v[\s\u0000-\u001F]*a[\s\u0000-\u001F]*s[\s\u0000-\u001F]*c[\s\u0000-\u001F]*r[\s\u0000-\u001F]*i[\s\u0000-\u001F]*p[\s\u0000-\u001F]*t|v[\s\u0000-\u001F]*b[\s\u0000-\u001F]*s[\s\u0000-\u001F]*c[\s\u0000-\u001F]*r[\s\u0000-\u001F]*i[\s\u0000-\u001F]*p[\s\u0000-\u001F]*t|d[\s\u0000-\u001F]*a[\s\u0000-\u001F]*t[\s\u0000-\u001F]*a)\s*:/gi,
+        'blocked:'
+    );
 }
 
 /**
- * Sanitizes markdown content (allows safe markdown, removes dangerous HTML)
+ * Sanitizes user text input by converting dangerous markup into inert text.
+ */
+function sanitizeUserInput(text, maxLength = 2000) {
+    if (!text) return '';
+    const options = resolveOptions(maxLength, { maxLength: 2000, escapeHtml: true, normalizeWhitespace: true });
+    
+    let sanitized = stripControlChars(text);
+    sanitized = neutralizeDangerousProtocols(sanitized);
+
+    if (options.escapeHtml) {
+        sanitized = escapeHtml(sanitized);
+    }
+
+    if (options.normalizeWhitespace) {
+        sanitized = sanitized.replace(/\s+/g, ' ').trim();
+    } else {
+        sanitized = sanitized.trim();
+    }
+    
+    return sanitized.slice(0, options.maxLength);
+}
+
+/**
+ * Sanitizes markdown content by keeping markdown syntax and escaping raw HTML.
  */
 function sanitizeMarkdown(markdown, maxLength = 10000) {
     if (!markdown) return '';
+    const options = resolveOptions(maxLength, { maxLength: 10000, escapeHtml: true });
     
-    let sanitized = String(markdown).slice(0, maxLength);
+    let sanitized = stripControlChars(markdown);
+    sanitized = neutralizeDangerousProtocols(sanitized);
+
+    if (options.escapeHtml) {
+        sanitized = escapeHtml(sanitized);
+    }
     
-    // Remove dangerous HTML tags but allow safe markdown
-    sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-    sanitized = sanitized.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
-    sanitized = sanitized.replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '');
-    sanitized = sanitized.replace(/<embed\b[^>]*>/gi, '');
-    sanitized = sanitized.replace(/javascript:/gi, '');
-    sanitized = sanitized.replace(/on\w+\s*=/gi, '');
-    
-    return sanitized;
+    return sanitized.slice(0, options.maxLength);
 }
 
 /**
@@ -69,15 +100,15 @@ function sanitizeTopicName(topic) {
 function sanitizeMedicalQuery(query) {
     if (!query) return '';
     
-    let sanitized = String(query);
+    let sanitized = stripControlChars(query);
     
     // Remove SQL injection patterns
     sanitized = sanitized.replace(/;\s*(DROP|DELETE|UPDATE|INSERT|ALTER|CREATE)\s/gi, '');
     sanitized = sanitized.replace(/--/g, '');
     sanitized = sanitized.replace(/\/\*/g, '');
     
-    // Remove script patterns
-    sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+    sanitized = neutralizeDangerousProtocols(sanitized);
+    sanitized = escapeHtml(sanitized);
     
     // Normalize whitespace
     sanitized = sanitized.replace(/\s+/g, ' ').trim();
@@ -145,7 +176,7 @@ function sanitizeFilePath(filePath) {
     
     // Remove directory traversal attempts
     sanitized = sanitized.replace(/\.\./g, '');
-    sanitized = sanitized.replace(/[\/\\]{2,}/g, '/');
+    sanitized = sanitized.replace(/[/\\]{2,}/g, '/');
     
     // Remove dangerous characters
     sanitized = sanitized.replace(/[<>:"|?*]/g, '');
@@ -185,6 +216,7 @@ function generateRateLimitKey(userId, action, window = '1h') {
 module.exports = {
     sanitizeUserInput,
     sanitizeMarkdown,
+    escapeHtml,
     sanitizeTopicName,
     sanitizeMedicalQuery,
     sanitizeJsonInput,

@@ -76,16 +76,44 @@ This command:
 ## Adding New Migrations
 
 1. Create `database/migrations/NNN_description.sql`
-2. Write SQL statements (each terminated with `;`)
-3. Run migrations locally:
+2. Create the matching rollback at `database/rollbacks/NNN_description.down.sql`
+3. Write SQL statements (each terminated with `;`)
+4. Run migrations locally:
    ```bash
    npm run db:migrate:builtin
    ```
-4. Test fresh database initialization:
+5. Test fresh database initialization:
    ```bash
    rm database/app.db
    npm run db:migrate:builtin
    ```
+6. Dry-run the rollback before merging:
+   ```bash
+   npm run db:rollback -- --dry-run
+   ```
+
+## Rolling Back a Migration
+
+Rollback files live in `database/rollbacks` and use the same migration basename with a `.down.sql` suffix:
+
+```text
+database/migrations/074_performance_indices.sql
+database/rollbacks/074_performance_indices.down.sql
+```
+
+Roll back the newest applied migration:
+
+```bash
+npm run db:rollback
+```
+
+Roll back multiple newest migrations:
+
+```bash
+npm run db:rollback -- --steps=2
+```
+
+The rollback runner refuses to change the database if any required `.down.sql` file is missing. Rollback SQL and the `_migrations` marker removal run inside one transaction.
 
 ## Schema Consistency
 

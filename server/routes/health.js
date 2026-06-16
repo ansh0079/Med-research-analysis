@@ -4,13 +4,42 @@ const { getQueueStatus } = require('../services/jobQueue');
 const { updateQueueMetrics } = require('../services/observabilityMetrics');
 const { version: APP_VERSION } = require('../../package.json');
 
+async function checkDatabaseHealth(db) {
+    const start = Date.now();
+    if (!db || typeof db.get !== 'function') {
+        return {
+            ok: false,
+            latencyMs: null,
+            error: 'Database query interface unavailable',
+        };
+    }
+
+    try {
+        await db.get('SELECT 1 AS health_check');
+        return {
+            ok: true,
+            latencyMs: Date.now() - start,
+            error: null,
+        };
+    } catch (err) {
+        return {
+            ok: false,
+            latencyMs: Date.now() - start,
+            error: err?.message || 'Database health query failed',
+        };
+    }
+}
+
 function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metricsRegistry }) {
     app.get('/health', async (req, res) => {
         try {
             const cacheStats = cache.getStats();
             const databaseContract = checkDbContract(db);
-            res.json({
-                status: 'ok',
+            const database = await checkDatabaseHealth(db);
+            const healthy = database.ok;
+            const statusCode = healthy ? 200 : 503;
+            res.status(statusCode).json({
+                status: healthy ? 'ok' : 'degraded',
                 version: APP_VERSION,
                 timestamp: new Date().toISOString(),
                 features: {
@@ -29,6 +58,11 @@ function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metr
                     ok: databaseContract.ok,
                     requiredMethodCount: databaseContract.requiredMethodCount,
                     missing: databaseContract.missing,
+                },
+                database: {
+                    ok: database.ok,
+                    latencyMs: database.latencyMs,
+                    error: database.error,
                 },
             });
         } catch (error) {
@@ -74,4 +108,4 @@ function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metr
     });
 }
 
-module.exports = { registerHealthRoutes };
+module.exports = { registerHealthRoutes, checkDatabaseHealth };

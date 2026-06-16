@@ -1,22 +1,9 @@
 const Joi = require('joi');
+const { sanitizeUserInput, escapeHtml } = require('./sanitization');
 
 function sanitizeInput(input) {
     if (typeof input !== 'string') return '';
-    return input
-        .replace(/[<>]/g, '')
-        .replace(/javascript:/gi, '')
-        .replace(/on\w+=/gi, '')
-        .trim();
-}
-
-function escapeHtml(text) {
-    if (typeof text !== 'string') return '';
-    return text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+    return sanitizeUserInput(input, { maxLength: 5000, escapeHtml: true });
 }
 
 function requireJson(req, res, next) {
