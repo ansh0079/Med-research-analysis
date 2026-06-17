@@ -76,6 +76,12 @@ const { enqueuePdfPreindex: _enqueuePdfPreindex } = require('./server/services/p
 // Production safety checks
 // ==========================================
 if (process.env.NODE_ENV === 'production') {
+    const databaseUrl = String(process.env.DATABASE_URL || '').trim();
+    const databaseIsPostgres = databaseUrl.startsWith('postgresql://') || databaseUrl.startsWith('postgres://');
+    if (!databaseIsPostgres) {
+        logger.fatal('DATABASE_URL must be set to a PostgreSQL connection string in production. SQLite is not allowed for beta/commercial deployments.');
+        process.exit(1);
+    }
     if (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'change-this-in-production') {
         logger.fatal('JWT_SECRET must be set to a secure value in production.');
         process.exit(1);

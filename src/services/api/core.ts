@@ -24,14 +24,19 @@ export interface AuthUser {
   subscriptionPlan?: string;
 }
 
-if (import.meta.env.VITE_SENTRY_DSN) {
-  const tracesSampleRate = Number(import.meta.env.VITE_SENTRY_TRACES_SAMPLE_RATE ?? 0.1);
-  Sentry.init({
-    dsn: import.meta.env.VITE_SENTRY_DSN,
-    environment: import.meta.env.MODE,
-    tracesSampleRate: Number.isFinite(tracesSampleRate) ? tracesSampleRate : 0.1,
-  });
-}
+import { registerAnalyticsInitializer } from '../consent';
+
+// Error tracking — only enabled once the user accepts the cookie consent banner.
+registerAnalyticsInitializer(() => {
+  if (import.meta.env.VITE_SENTRY_DSN) {
+    const tracesSampleRate = Number(import.meta.env.VITE_SENTRY_TRACES_SAMPLE_RATE ?? 0.1);
+    Sentry.init({
+      dsn: import.meta.env.VITE_SENTRY_DSN,
+      environment: import.meta.env.MODE,
+      tracesSampleRate: Number.isFinite(tracesSampleRate) ? tracesSampleRate : 0.1,
+    });
+  }
+});
 
 class SimpleLRUCache<T> {
   private cache = new Map<string, { value: T; expiry: number }>();

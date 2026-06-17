@@ -42,6 +42,7 @@
     "lint:fix": "eslint . --fix",
     "secrets:generate": "node scripts/generate-secrets.mjs",
     "verify:production-env": "node scripts/verify-production-env.mjs",
+    "beta:safety": "node scripts/verify-beta-safety.mjs",
     "audit:auth-routes": "node scripts/audit-auth-routes.mjs",
     "audit:mega-files": "node scripts/audit-mega-files.mjs",
     "compose:hetzner:config": "docker compose -f docker-compose.hetzner.yml config",

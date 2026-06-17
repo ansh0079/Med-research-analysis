@@ -38,18 +38,29 @@ export function initLogRocket(): void {
           try {
             const body = JSON.parse(request.body);
             const sensitiveKeys = [
-              'password', 'token', 'email', 'phone',
-              'address', 'ssn', 'birthdate', 'patient_id',
-              'search_query' // Protect proprietary research queries
+              'password', 'token', 'accessToken', 'refreshToken',
+              'email', 'name', 'phone', 'address', 'ssn', 'birthdate',
+              'patient_id', 'patientId', 'mrn', 'nhsNumber',
+              'search_query', 'query', 'topic', 'text', 'caseText',
+              'clinicalQuestion', 'prompt', 'messages', 'article',
+              'articles', 'abstract', 'fullText', 'note', 'annotation',
+              'userResponse', 'feedback',
             ];
 
-            sensitiveKeys.forEach(key => {
-              if (body[key]) body[key] = '<sanitized>';
-            });
+            const sanitizeObject = (value: unknown): unknown => {
+              if (Array.isArray(value)) return value.map(sanitizeObject);
+              if (!value || typeof value !== 'object') return value;
 
-            request.body = JSON.stringify(body);
+              const copy: Record<string, unknown> = {};
+              for (const [key, nestedValue] of Object.entries(value as Record<string, unknown>)) {
+                copy[key] = sensitiveKeys.includes(key) ? '<sanitized>' : sanitizeObject(nestedValue);
+              }
+              return copy;
+            };
+
+            request.body = JSON.stringify(sanitizeObject(body));
           } catch {
-            // Not JSON, leave as-is
+            request.body = '<sanitized>';
           }
         }
         return request;
@@ -59,16 +70,13 @@ export function initLogRocket(): void {
         if (response.body && typeof response.body === 'string') {
           try {
             const body = JSON.parse(response.body);
-            // Example: mask specific abstract content or patient data if returned
-            if (body.results) {
-              body.results = body.results.map((item: Record<string, unknown>) => ({
-                ...item,
-                // Retain metadata but consider masking high-sensitivity fields
-              }));
+            if (body.results || body.articles || body.synthesis || body.questions || body.claims) {
+              response.body = '<sanitized>';
+            } else {
+              response.body = JSON.stringify(body);
             }
-            response.body = JSON.stringify(body);
           } catch {
-            // Not JSON
+            response.body = '<sanitized>';
           }
         }
         return response;
