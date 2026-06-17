@@ -21,6 +21,7 @@ const MIXIN_LAYERS = [
     ['m16-personalization-bandit', require('./mixins/m16-personalization-bandit')],
     ['m17-guideline-contradictions', require('./mixins/m17-guideline-contradictions')],
     ['m18-case-sessions', require('./mixins/m18-case-sessions')],
+    ['m19-account-privacy', require('./mixins/m19-account-privacy')],
 ];
 
 const ALLOWED_REPLACEMENTS = {

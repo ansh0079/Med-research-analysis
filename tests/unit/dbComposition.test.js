@@ -34,6 +34,8 @@ describe('database composition', () => {
             'createUser',
             'upsertTopicCrosslink',
             'getTopicCrosslinks',
+            'exportUserData',
+            'deleteUserAccount',
         ]));
         expect(typeof db.withTransaction).toBe('function');
         expect(typeof db.getTopicCrosslinks).toBe('function');

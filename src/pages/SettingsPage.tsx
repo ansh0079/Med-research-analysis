@@ -149,7 +149,11 @@ export const SettingsPage: React.FC = () => {
   const [passwordMessage, setPasswordMessage] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [deleteConfirm, setDeleteConfirm] = useState('');
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
+  const [exportLoading, setExportLoading] = useState(false);
+  const [exportError, setExportError] = useState('');
 
   // Email change state
   const [newEmail, setNewEmail] = useState('');
@@ -242,13 +246,35 @@ export const SettingsPage: React.FC = () => {
     setPrefs((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const handleDownloadData = async () => {
+    setExportLoading(true);
+    setExportError('');
+    try {
+      const blob = await api.downloadAccountData();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `signalmd-data-export-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setExportError(err instanceof Error ? err.message : 'Data export failed');
+    } finally {
+      setExportLoading(false);
+    }
+  };
+
   const handleDeleteAccount = async () => {
     if (deleteConfirm !== 'delete my account') return;
     setDeleteLoading(true);
+    setDeleteError('');
     try {
       await deleteAccount();
       logout();
-    } catch {
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : 'Account deletion failed');
       setDeleteLoading(false);
     }
   };
@@ -393,36 +419,106 @@ export const SettingsPage: React.FC = () => {
         {/* API access */}
         <ApiKeysSection />
 
+        {/* Privacy */}
+        <div className="neo-card rounded-2xl p-6 space-y-4">
+          <div>
+            <h2 className="text-lg font-black text-slate-900 dark:text-white">Data export</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              Download account, saved research, learning, review, annotation, and collaboration data as JSON.
+            </p>
+          </div>
+          {exportError && <p className="text-xs text-red-600 dark:text-red-400">{exportError}</p>}
+          <div className="flex justify-end">
+            <Button
+              type="button"
+              size="sm"
+              variant="secondary"
+              isLoading={exportLoading}
+              leftIcon={<i className="fas fa-download" aria-hidden="true" />}
+              onClick={handleDownloadData}
+            >
+              Download my data
+            </Button>
+          </div>
+        </div>
+
         {/* Danger zone */}
         <div className="neo-card rounded-2xl p-6 space-y-4 border-red-200 dark:border-red-900/40">
           <h2 className="text-lg font-black text-red-700 dark:text-red-400">Danger Zone</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">
             Deleting your account will remove all personal data, saved articles, and history. This cannot be undone.
           </p>
-          <div>
-            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">
-              Type <span className="font-mono text-red-600 dark:text-red-400">delete my account</span> to confirm
-            </label>
-            <input
-              type="text"
-              value={deleteConfirm}
-              onChange={(e) => setDeleteConfirm(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-500 transition-all"
-            />
-          </div>
           <div className="flex justify-end">
             <Button
               variant="danger"
               size="sm"
-              disabled={deleteConfirm !== 'delete my account'}
-              isLoading={deleteLoading}
-              onClick={handleDeleteAccount}
+              leftIcon={<i className="fas fa-trash" aria-hidden="true" />}
+              onClick={() => {
+                setDeleteConfirm('');
+                setDeleteError('');
+                setDeleteModalOpen(true);
+              }}
             >
-              Delete account
+              Delete my account
             </Button>
           </div>
         </div>
       </div>
+      {deleteModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 px-4 py-6">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-account-title"
+            className="w-full max-w-md rounded-2xl border border-red-200 dark:border-red-900/60 bg-white dark:bg-slate-950 p-6 shadow-2xl"
+          >
+            <div className="space-y-4">
+              <div>
+                <h2 id="delete-account-title" className="text-lg font-black text-red-700 dark:text-red-400">
+                  Delete account
+                </h2>
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                  This permanently deletes your account and invalidates active sign-in tokens.
+                </p>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">
+                  Type <span className="font-mono text-red-600 dark:text-red-400">delete my account</span> to confirm
+                </label>
+                <input
+                  type="text"
+                  value={deleteConfirm}
+                  autoFocus
+                  onChange={(e) => setDeleteConfirm(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-500 transition-all"
+                />
+              </div>
+              {deleteError && <p className="text-xs text-red-600 dark:text-red-400">{deleteError}</p>}
+              <div className="flex justify-end gap-2">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  disabled={deleteLoading}
+                  onClick={() => setDeleteModalOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="button"
+                  variant="danger"
+                  size="sm"
+                  disabled={deleteConfirm !== 'delete my account'}
+                  isLoading={deleteLoading}
+                  onClick={handleDeleteAccount}
+                >
+                  Delete account
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -179,12 +179,21 @@ export class AuthApi extends BaseApiClient {
   }
 
   async deleteAccount(): Promise<void> {
-    const response = await this.fetchWithSession(`${API_BASE}/api/auth/me`, {
+    const response = await this.fetchWithSession(`${API_BASE}/api/account`, {
       method: 'DELETE',
     });
     if (!response.ok) {
       const err = await response.json();
       throw new Error(err.error || 'Failed to delete account');
     }
+  }
+
+  async downloadAccountData(): Promise<Blob> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/account/data-export`);
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({})) as { error?: string };
+      throw new Error(err.error || 'Failed to export account data');
+    }
+    return response.blob();
   }
 }

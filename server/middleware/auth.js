@@ -735,29 +735,8 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     app.delete('/api/auth/me', requireAuthJwt, async (req, res) => {
         try {
             const userId = req.user.id;
-            await db.withTransaction(async () => {
-                await db.run('DELETE FROM user_saved_articles WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM user_learning_profiles WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM user_topic_mastery WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM user_topic_memory WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM quiz_attempts WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM study_runs WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM portfolio_reflections WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM cpd_sessions WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM case_attempts WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM learning_rounds WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM search_alerts WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM collab_notifications WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM proactive_evidence_alerts WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM agent_conversations WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM case_evidence_briefs WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM billing_audit_log WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM ai_usage_monthly WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM search_usage_daily WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM annotations WHERE user_id = ?', [userId]);
-                await db.run('DELETE FROM users WHERE id = ?', [userId]);
-            });
-            await revokeAllUserRefreshTokens(db, userId);
+            await db.deleteUserAccount(userId);
+            if (req.token) await revokeToken(req.token);
             clearAuthCookies(res);
             res.json({ message: 'Account deleted successfully' });
         } catch (err) {
