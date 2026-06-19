@@ -27,7 +27,9 @@ ENV VITE_SENTRY_PROJECT=$VITE_SENTRY_PROJECT
 ENV VITE_APP_VERSION=$VITE_APP_VERSION
 
 COPY package*.json ./
-RUN npm ci --omit=optional
+# npm install (not ci) because Vite 8 pulls platform-specific native Rolldown
+# bindings (@emnapi) that differ between Windows dev machines and Linux Docker.
+RUN npm install --prefer-offline --no-audit --no-fund
 
 COPY . .
 RUN npm run build
