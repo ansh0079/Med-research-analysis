@@ -528,7 +528,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
         let persistedConversation = null;
 
         try {
-            if (conversationId && req.user?.id && typeof db.getAgentConversation === 'function') {
+            if (conversationId && req.user?.id) {
                 persistedConversation = await db.getAgentConversation(conversationId);
                 if (!persistedConversation || persistedConversation.userId !== req.user.id) {
                     return res.status(403).json({ error: 'Invalid conversation' });

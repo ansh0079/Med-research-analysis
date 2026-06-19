@@ -39,19 +39,19 @@ async function analyzeConversationQuality(db, threadId) {
         idx > 0 &&  // Must have previous agent message
         correctionSignals.some(pattern => pattern.test(m.content))
     );
+    const mistakes = [];
     
     if (corrections.length > 0) {
         logger.info({ threadId, corrections: corrections.length }, 'User corrections detected in thread');
         
         // Extract what the agent got wrong
-        const mistakes = [];
         for (let i = 0; i < corrections.length; i++) {
             const correctionIdx = messages.indexOf(corrections[i]);
             const agentMsg = messages.slice(0, correctionIdx).reverse().find(m => m.role === 'assistant');
             
             if (agentMsg) {
                 mistakes.push({
-                    agentClaim: sanitizeMedicalContent(agentMsg.content.slice(0, 500)),
+                    agentClaim: sanitizeUserInput(agentMsg.content.slice(0, 500), 500),
                     userCorrection: sanitizeUserInput(corrections[i].content.slice(0, 500)),
                     topic,
                     timestamp: corrections[i].timestamp || new Date().toISOString()
@@ -129,7 +129,7 @@ async function analyzeConversationQuality(db, threadId) {
         corrections: corrections.length,
         helpfulnessRating: userFeedback?.rating,
         clarificationRequests: clarificationRequests.length,
-        learnedMistakes: mistakes?.length || 0
+        learnedMistakes: mistakes.length
     };
 }
 

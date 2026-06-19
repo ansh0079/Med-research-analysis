@@ -258,7 +258,7 @@ async function runPaperSynopsisGenerationInner({
         await withSpan('synopsis.cache_set', { 'cache.key': cacheKey }, () => cache.setAsync(cacheKey, result, 7 * 86400));
     }
     if (sessionId && db?.logEvent) {
-        await db.logEvent('synopsis', sessionId, { articleId }).catch((err) => { logger.warn({ err }, 'logEvent failed'); return null; });
+        await db.logEvent('synopsis', sessionId, { articleId, userId: userId || undefined }).catch((err) => { logger.warn({ err }, 'logEvent failed'); return null; });
     }
     await withSpan('synopsis.persist_teaching_object', { 'article.id': articleId, 'synopsis.topic': topic }, () => (
         persistPaperTeachingObject({ db, article, synopsisResult: result, topic }).catch((err) => {

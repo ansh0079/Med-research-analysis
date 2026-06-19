@@ -87,6 +87,7 @@ function registerVectorSearchRoutes(app, deps) {
 function registerPdfRoutes(app, deps) {
     const { serverConfig, cache, rateLimit, requireAuthJwt, fetch: fetchImpl } = deps;
     const pdf = createPdfService({ serverConfig, fetch: fetchImpl });
+    const queue = deps.pdfQueue || pdfQueue;
 
     // Find open-access PDF URL — now uses a full cascade
     app.get('/api/pdf/find', rateLimit(60, 60), async (req, res) => {
@@ -115,11 +116,17 @@ function registerPdfRoutes(app, deps) {
         pdfIpLocks.set(clientIp, current + 1);
 
         try {
-            const data = await pdfQueue.enqueueNamed(
-                'extract',
-                { url },
-                { label: `pdf-extract:${url.slice(0, 60)}`, wait: true }
-            );
+            let data;
+            try {
+                data = await queue.enqueueNamed(
+                    'extract',
+                    { url },
+                    { label: `pdf-extract:${url.slice(0, 60)}`, wait: true }
+                );
+            } catch (queueError) {
+                if (!String(queueError?.message || '').includes('No handler registered')) throw queueError;
+                data = await pdf.extractPdfText(url);
+            }
             res.json({
                 text: data.text,
                 pages: data.numpages,

@@ -102,6 +102,30 @@ function calculateCaseConfidence(caseScenario) {
     };
 }
 
+function classifyCalibrationAttempt({ isCorrect, confidence }) {
+    const value = Number(confidence);
+    const normalizedConfidence = Number.isFinite(value) ? value : 0;
+    if (!isCorrect && normalizedConfidence >= 4) {
+        return {
+            bucket: 'dangerous_misconception',
+            severity: 'high',
+            label: 'High confidence incorrect answer',
+        };
+    }
+    if (isCorrect && normalizedConfidence <= 2) {
+        return {
+            bucket: 'needs_consolidation',
+            severity: 'medium',
+            label: 'Correct but low confidence',
+        };
+    }
+    return {
+        bucket: isCorrect ? 'calibrated_correct' : 'low_confidence_incorrect',
+        severity: 'low',
+        label: isCorrect ? 'Calibrated correct answer' : 'Low confidence incorrect answer',
+    };
+}
+
 // Helper functions
 
 function getEvidenceGradeWeight(grade) {
@@ -203,5 +227,6 @@ function formatFactorName(name) {
 module.exports = {
     calculateSynthesisConfidence,
     calculateMCQConfidence,
-    calculateCaseConfidence
+    calculateCaseConfidence,
+    classifyCalibrationAttempt
 };

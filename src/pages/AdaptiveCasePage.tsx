@@ -85,7 +85,7 @@ function CaseStepView({ step, stepIndex, onSubmit, feedback, response }: {
 }) {
   const [selected, setSelected] = useState<string | null>(response?.selectedAnswer || null);
   const [submitting, setSubmitting] = useState(false);
-  const [startTime] = useState(Date.now());
+  const [startTime] = useState(() => Date.now());
   const showResult = !!feedback;
   const meta = STEP_TYPE_LABELS[step.type] || STEP_TYPE_LABELS.presentation;
   const qStyle = QUESTION_TYPE_STYLES[step.questionType] || QUESTION_TYPE_STYLES.recall;

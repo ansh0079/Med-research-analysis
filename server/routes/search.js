@@ -599,7 +599,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                         userId: req.user?.id ?? null,
                         searchId,
                         topic: queryValidation.sanitized,
-                        normalizedTopic: typeof db.normalizeTopic === 'function' ? db.normalizeTopic(queryValidation.sanitized) : null,
+                        normalizedTopic: db.normalizeTopic(queryValidation.sanitized),
                         articles,
                         banditMeta: { ...banditMeta, forceLog: true },
                     });
@@ -772,7 +772,7 @@ Start your response with [ and end with ]. No markdown.
                                                     await db.upsertTeachingObject({
                                                         objectKey: guidelineKey,
                                                         objectType: 'guideline_mcq',
-                                                        topic: normalizedTopic,
+                                                        topic: db.normalizeTopic(seedQuery),
                                                         title: `Guideline MCQs: ${seedQuery}`,
                                                         payload: { mcqs: glMcqs.slice(0, 5), guidelineCount: guidelines.length, generatedAt: new Date().toISOString() },
                                                         provider: 'gemini',

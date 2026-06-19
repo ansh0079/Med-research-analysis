@@ -12,6 +12,10 @@ import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/sear
 import type { QuizQuestion, QuizState, QuestionType, StudyRun, StudyRunOutline, LearningProfile, UserTopicMemory } from '@types';
 import { VerificationBadge } from '@components/ui/VerificationBadge';
 
+function currentTimeMs(): number {
+  return Date.now();
+}
+
 const WORKFLOW_CONTEXT_KEY = 'med_shift_workflow';
 
 function readWorkflowContext() {
@@ -586,7 +590,7 @@ export const QuizPage: React.FC = () => {
           score: quiz.score,
           totalQuestions: quiz.questions.length,
           weakAreas: [...new Set(weakTypes)],
-          timestamp: Date.now(),
+          timestamp: currentTimeMs(),
         }));
       } catch { /* sessionStorage unavailable */ }
       // Auto-save quiz attempt for authenticated users

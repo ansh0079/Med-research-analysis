@@ -173,6 +173,25 @@ CREATE TABLE IF NOT EXISTS case_attempts (
     created_at TEXT DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS case_sessions (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    topic TEXT NOT NULL,
+    normalized_topic TEXT NOT NULL,
+    learning_mode TEXT NOT NULL DEFAULT 'student',
+    difficulty TEXT NOT NULL DEFAULT 'medium',
+    case_data TEXT NOT NULL,
+    targeted_weaknesses TEXT DEFAULT '[]',
+    evidence_context TEXT,
+    generation_mode TEXT NOT NULL DEFAULT 'branching',
+    status TEXT NOT NULL DEFAULT 'in_progress',
+    current_step INTEGER NOT NULL DEFAULT 0,
+    responses TEXT DEFAULT '[]',
+    total_score INTEGER,
+    created_at TEXT DEFAULT (datetime('now')),
+    completed_at TEXT
+);
+
 CREATE TABLE IF NOT EXISTS case_evidence_briefs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,

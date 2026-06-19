@@ -50,7 +50,8 @@ export const AuthPage: React.FC = () => {
   const [passwordTouched, setPasswordTouched] = useState(false);
 
   useEffect(() => {
-    api.getClientConfig().then((c) => {
+    const configPromise = api.getClientConfig?.();
+    configPromise?.then((c) => {
       setOauthConfig((c as { oauth?: { google?: boolean; orcid?: boolean } }).oauth || {});
     }).catch(() => {});
   }, []);
@@ -113,7 +114,10 @@ export const AuthPage: React.FC = () => {
         await login(email, password);
         navigate(returnTo, { replace: true });
       } else {
-        const result = await register(email, password, name || undefined, inviteCode.trim() || undefined);
+        const trimmedInviteCode = inviteCode.trim();
+        const result = trimmedInviteCode
+          ? await register(email, password, name || undefined, trimmedInviteCode)
+          : await register(email, password, name || undefined);
         if (result?.message) {
           setSuccess(result.message);
         } else {

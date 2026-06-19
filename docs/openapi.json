@@ -1,12 +1,12 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Medical Research Intelligence API",
+    "title": "Signal MD API",
     "version": "2.0.0",
     "description": "Multi-source medical search with AI analysis, learning, and systematic review tools.",
     "contact": {
       "name": "API Support",
-      "url": "https://github.com/medresearch"
+      "url": "https://signalmd.co"
     }
   },
   "servers": [
@@ -238,6 +238,22 @@
             "type": "string",
             "maxLength": 160,
             "nullable": true
+          },
+          "teachingPoints": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {}
+            },
+            "maxItems": 20
+          },
+          "mcqAngles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 500
+            },
+            "maxItems": 15
           }
         },
         "required": [
@@ -270,6 +286,20 @@
           },
           "async": {
             "type": "boolean"
+          },
+          "topic": {
+            "type": "string",
+            "maxLength": 500,
+            "nullable": true
+          },
+          "trainingStage": {
+            "type": "string",
+            "enum": [
+              "preclinical",
+              "early_clinical",
+              "finals",
+              "foundation_doctor"
+            ]
           }
         },
         "required": [
@@ -704,6 +734,17 @@
                   "type": "string",
                   "maxLength": 500,
                   "nullable": true
+                },
+                "decisionId": {
+                  "type": "integer"
+                },
+                "banditArmId": {
+                  "type": "string",
+                  "maxLength": 80,
+                  "nullable": true
+                },
+                "searchId": {
+                  "type": "integer"
                 },
                 "outlineNodeId": {
                   "type": "string",

@@ -67,6 +67,22 @@ async logEvent(eventType, sessionId, metadata = {}) {
         .execute();
 }
 
+async getRecentSynopsisViews(userId, { days = 60, limit = 200 } = {}) {
+    if (!userId) return [];
+    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+    const safeLimit = Math.min(Number(limit) || 200, 500);
+    return this.all(
+        `SELECT json_extract(metadata, '$.articleId') AS article_id, created_at
+         FROM analytics
+         WHERE event_type = 'synopsis'
+           AND json_extract(metadata, '$.userId') = ?
+           AND created_at >= ?
+         ORDER BY created_at DESC
+         LIMIT ?`,
+        [userId, since, safeLimit]
+    );
+}
+
 async getAnalytics(startDate, endDate) {
     return this.all(
         `SELECT event_type, COUNT(*) as count, date(created_at) as date

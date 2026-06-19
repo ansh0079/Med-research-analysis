@@ -95,6 +95,7 @@ export const BillingPage: React.FC = () => {
   const [portalLoading, setPortalLoading] = React.useState(false);
   const [trialLoading, setTrialLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [nowMs] = React.useState(() => Date.now());
 
   const defaultBilling: BillingStatus = {
     status: 'free', plan: 'free', role: 'user',
@@ -159,7 +160,7 @@ export const BillingPage: React.FC = () => {
   const isActive = billing?.status === 'active' || billing?.status === 'trialing';
   const badge = STATUS_BADGE[billing?.status ?? 'free'] ?? STATUS_BADGE.free;
   const trialDaysLeft = billing?.trialEndsAt
-    ? Math.max(0, Math.ceil((new Date(billing.trialEndsAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+    ? Math.max(0, Math.ceil((new Date(billing.trialEndsAt).getTime() - nowMs) / (1000 * 60 * 60 * 24)))
     : 0;
 
   return (

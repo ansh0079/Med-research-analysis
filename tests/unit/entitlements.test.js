@@ -158,8 +158,8 @@ describe('getLimit()', () => {
         expect(getLimit({ subscription_plan: 'pro' }, 'nonExistentLimit')).toBe(0);
     });
 
-    test('free user daily search limit is 10', () => {
-        expect(getLimit({}, 'searchesPerDay')).toBe(10);
+    test('free user daily search limit is 50', () => {
+        expect(getLimit({}, 'searchesPerDay')).toBe(50);
     });
 
     test('team user has 10 seats', () => {

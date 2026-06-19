@@ -13,6 +13,10 @@ interface Props {
   autoExpand?: boolean;
 }
 
+function currentTimeMs(): number {
+  return Date.now();
+}
+
 export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete, onAuthSubmit, autoExpand = false }) => {
   const { isAuthenticated } = useAuth();
   const { showToast } = useToast();
@@ -39,7 +43,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
     try {
       const result = await api.generateQuizFromEvidence(topic, articles, 'mixed', 3);
       setQuestions(result.questions);
-      questionStartRef.current = Date.now();
+      questionStartRef.current = currentTimeMs();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load quiz');
     } finally {
@@ -61,7 +65,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
 
   const handleSelect = (letter: string) => {
     if (showExplanation || !currentQuestion) return;
-    const timeMs = Date.now() - questionStartRef.current;
+    const timeMs = currentTimeMs() - questionStartRef.current;
     const isCorrect = letter === currentQuestion.correctAnswer;
     setSelectedAnswer(letter);
     setShowExplanation(true);

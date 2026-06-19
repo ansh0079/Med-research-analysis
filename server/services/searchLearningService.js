@@ -170,6 +170,17 @@ async function buildSearchLearningContext({ db, userId, query, sessionId, previo
                 context.shouldPersonalize = true;
             }
         }
+        if (userId && typeof db.getRecentSynopsisViews === 'function') {
+            const synopsisViews = await db.getRecentSynopsisViews(userId, { days: 60, limit: 200 });
+            for (const row of Array.isArray(synopsisViews) ? synopsisViews : []) {
+                const uid = normalizeUid(row.article_id);
+                if (!uid) continue;
+                context.interactionArticleUids.set(uid, (context.interactionArticleUids.get(uid) || 0) + 0.4);
+            }
+            if (synopsisViews.length > 0) {
+                context.shouldPersonalize = true;
+            }
+        }
         if (userId && typeof db.getQuizAttempts === 'function') {
             try {
                 const missRows = await db.getQuizAttempts({ userId, topic: query, limit: 300, offset: 0 });

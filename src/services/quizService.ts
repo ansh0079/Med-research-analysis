@@ -44,7 +44,10 @@ export class QuizGenerationError extends Error {
 }
 
 function sessionHeaders(): Record<string, string> {
-  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest',
+  };
   try {
     const sessionId = localStorage.getItem('med_research_session');
     if (sessionId) headers['X-Session-Id'] = sessionId;
