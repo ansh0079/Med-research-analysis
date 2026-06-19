@@ -24,11 +24,18 @@ function startOpenTelemetry() {
             ? otelResources.resourceFromAttributes(resourceAttrs)
             : new otelResources.Resource(resourceAttrs);
 
+        // Parse "key=val,key2=val2" header string into object; SDK also reads the env var
+        // automatically, but explicit parsing ensures it works across all SDK versions.
+        const rawHeaders = process.env.OTEL_EXPORTER_OTLP_HEADERS || '';
+        const parsedHeaders = rawHeaders
+            ? Object.fromEntries(rawHeaders.split(',').map((h) => h.split('=').map((s) => s.trim())))
+            : undefined;
+
         sdk = new NodeSDK({
             resource,
             traceExporter: new OTLPTraceExporter({
                 url: process.env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT,
-                headers: process.env.OTEL_EXPORTER_OTLP_HEADERS,
+                headers: parsedHeaders,
             }),
             instrumentations: [
                 getNodeAutoInstrumentations({

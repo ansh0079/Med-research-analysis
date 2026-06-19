@@ -27,7 +27,7 @@ ENV VITE_SENTRY_PROJECT=$VITE_SENTRY_PROJECT
 ENV VITE_APP_VERSION=$VITE_APP_VERSION
 
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --omit=optional
 
 COPY . .
 RUN npm run build
