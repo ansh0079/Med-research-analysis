@@ -1206,9 +1206,9 @@ export const SearchPage: React.FC = () => {
               </div>
             )}
           </ResearchWorkspace>
-        ) : (
+        ) : !loading ? (
           <SearchEmptyState onExampleClick={handleSearch} isAuthenticated={isAuthenticated} />
-        )}
+        ) : null}
       </main>
 
       <React.Suspense fallback={null}>
