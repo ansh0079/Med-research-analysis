@@ -17,6 +17,7 @@ jest.mock('../../server/services/aiService', () => ({
     createAiService: jest.fn().mockReturnValue({
         callGemini: jest.fn().mockResolvedValue('gemini result'),
         callMistralAI: jest.fn().mockResolvedValue('mistral result'),
+        callText: jest.fn().mockResolvedValue('gemini result'),
         callGeminiStream: jest.fn().mockImplementation(async function* () { yield 'chunk1'; yield 'chunk2'; }),
         callMistralStream: jest.fn().mockImplementation(async function* () { yield 'chunk1'; yield 'chunk2'; }),
     }),

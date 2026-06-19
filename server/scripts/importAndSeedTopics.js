@@ -31,7 +31,7 @@ const { seedCurriculumTopic } = require('../services/curriculumSeedService');
 
 const DEFAULTS = {
     file: path.join(__dirname, '..', '..', 'topics_first100.json'),
-    limit: 100,
+    limit: 2000,
     concurrency: 2,
     dryRun: false,
     skipImport: false,
@@ -85,14 +85,31 @@ async function importTopics(opts) {
 async function seedTopics(opts) {
     const limit = opts.limit;
 
-    // Fetch topics that need seeding
-    const statusFilter = opts.force ? '' : 'not_seeded';
-    const allTopics = await db.listCurriculumSeedTopics({
-        curriculumSlug: 'specialty-clinical-topics',
-        seedStatus: statusFilter,
-        limit,
-        offset: 0,
-    });
+    // Fetch topics that need seeding.
+    // --force: all topics (re-seed everything)
+    // default: not_seeded + failed + failed_low_recall + seeding (stuck)
+    let allTopics;
+    if (opts.force) {
+        allTopics = await db.listCurriculumSeedTopics({
+            curriculumSlug: 'specialty-clinical-topics',
+            seedStatus: '',
+            limit,
+            offset: 0,
+        });
+    } else {
+        // Collect all statuses that need work in a single query
+        const needWork = await Promise.all(
+            ['not_seeded', 'failed', 'failed_low_recall', 'seeding'].map((s) =>
+                db.listCurriculumSeedTopics({ curriculumSlug: 'specialty-clinical-topics', seedStatus: s, limit, offset: 0 })
+            )
+        );
+        const seen = new Set();
+        allTopics = needWork.flat().filter((t) => {
+            if (seen.has(t.id)) return false;
+            seen.add(t.id);
+            return true;
+        });
+    }
 
     if (!allTopics.length) {
         console.log('\n✅  No topics need seeding (all already seeded, use --force to re-seed).');

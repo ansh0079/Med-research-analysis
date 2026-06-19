@@ -6,7 +6,10 @@ const { getProviderCandidates } = require('../utils/aiProvider');
 let _parseJsonArrayBlock, _repairJsonCandidate;
 try {
     ({ parseJsonArrayBlock: _parseJsonArrayBlock, repairJsonCandidate: _repairJsonCandidate } = require('../utils/parseJson'));
-} catch { _parseJsonArrayBlock = null; _repairJsonCandidate = null; }
+    } catch {
+        _parseJsonArrayBlock = null;
+        _repairJsonCandidate = null;
+    }
 
 function parseJsonArray(raw) {
     if (!raw) return null;
@@ -20,13 +23,17 @@ function parseJsonArray(raw) {
                 if (Array.isArray(v) && v.length > 0) return v;
             }
         }
-    } catch {}
+    } catch {
+        // Try less strict extraction below.
+    }
     const match = text.match(/\[[\s\S]*\]/);
     if (match) {
         try {
             const r = JSON.parse(match[0]);
             if (Array.isArray(r)) return r;
-        } catch {}
+        } catch {
+            // Fall back to shared JSON repair helpers.
+        }
     }
     if (_parseJsonArrayBlock) {
         const block = _parseJsonArrayBlock(text);
@@ -39,7 +46,9 @@ function parseJsonArray(raw) {
                 const r = JSON.parse(repaired);
                 if (Array.isArray(r)) return r;
             }
-        } catch {}
+        } catch {
+            // Unrepairable model output.
+        }
     }
     return null;
 }

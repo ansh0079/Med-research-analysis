@@ -201,28 +201,6 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Demo video section */}
-      {/* TODO: Replace DEMO_VIDEO_EMBED_URL with your YouTube/Vimeo embed URL, e.g. https://www.youtube.com/embed/your-video-id */}
-      {false && (
-        <section className="py-20 px-5 border-t border-white/5">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl font-black">See it in 60 seconds</h2>
-              <p className="text-slate-400 mt-2 text-sm">Patient case → evidence synthesis → systematic review. One tool, one workflow.</p>
-            </div>
-            <div className="relative rounded-2xl overflow-hidden bg-slate-900 border border-white/10 shadow-2xl shadow-indigo-500/10" style={{ paddingBottom: '56.25%' }}>
-              <iframe
-                src="DEMO_VIDEO_EMBED_URL"
-                title="Signal MD demo"
-                className="absolute inset-0 w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Beta programme */}
       <section className="py-20 px-5 border-t border-white/5">
         <div className="max-w-5xl mx-auto">
@@ -258,63 +236,6 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Legacy social proof block removed — replace with verified pilot quotes when available */}
-      {false && (
-      <section className="py-20 px-5 border-t border-white/5">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <p className="text-xs font-mono text-slate-500 uppercase tracking-widest mb-4">Trusted by researchers at</p>
-            <div className="flex flex-wrap items-center justify-center gap-6 mb-12">
-              {['Research Institution', 'Academic Medical Center', 'University Hospital', 'Evidence Synthesis Lab'].map((name) => (
-                <div key={name} className="px-4 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-xs font-semibold text-slate-500">
-                  {name}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-5">
-            {[
-              {
-                quote: '"Cut our literature review time from two weeks to an afternoon. The GRADE synthesis is accurate enough to trust."',
-                name: 'Senior Registrar',
-                role: 'Emergency Medicine',
-                initials: 'SR',
-                color: 'from-emerald-500 to-teal-600',
-              },
-              {
-                quote: '"The case-to-review flow is the first tool I\'ve seen that actually matches how clinician-researchers think."',
-                name: 'Academic Clinician',
-                role: 'Cardiology · Research Lead',
-                initials: 'AC',
-                color: 'from-indigo-500 to-violet-600',
-              },
-              {
-                quote: '"I used it for my final year dissertation. The spaced repetition on top of real evidence is genuinely different."',
-                name: 'Final Year Medical Student',
-                role: 'University of [City]',
-                initials: 'MS',
-                color: 'from-violet-500 to-fuchsia-600',
-              },
-            ].map((t) => (
-              <div key={t.name} className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex flex-col gap-4">
-                <p className="text-sm text-slate-300 leading-relaxed italic">{t.quote}</p>
-                <div className="flex items-center gap-3 mt-auto">
-                  <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center text-white text-xs font-bold shrink-0`}>
-                    {t.initials}
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-white">{t.name}</p>
-                    <p className="text-[10px] text-slate-500">{t.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      )}
 
       {/* Bottom CTA */}
       <section className="py-24 px-5 border-t border-white/5 text-center">

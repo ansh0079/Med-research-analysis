@@ -1,5 +1,5 @@
 import React, { Suspense, useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { SearchProvider } from './contexts/SearchContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ToastContainer, useToast } from '@components/ui';
@@ -175,7 +175,6 @@ const AppContent: React.FC = () => {
             <Route path="/guideline-library" element={<RouteErrorBoundary><ProtectedRoute><GuidelineBrowserPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/guidelines" element={<RouteErrorBoundary><ProtectedRoute><GuidelineReviewPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/dashboard" element={<RouteErrorBoundary><ProtectedRoute><DashboardPage /></ProtectedRoute></RouteErrorBoundary>} />
-            <Route path="/for-you"  element={<RouteErrorBoundary><Navigate to="/dashboard" replace /></RouteErrorBoundary>} />
             <Route path="/learning" element={<RouteErrorBoundary><ProtectedRoute><LearningDashboardPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/learning/:id" element={<RouteErrorBoundary><ProtectedRoute><StudyRunPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/topic/:topic"  element={<RouteErrorBoundary><ProtectedRoute><TopicPage /></ProtectedRoute></RouteErrorBoundary>} />

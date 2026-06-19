@@ -353,6 +353,12 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         return callMistralStructured(prompt, model, options);
     }
 
+    async function callText(prompt, provider, model, options = {}) {
+        if (provider === 'claude') return callClaude(prompt, model, options);
+        if (provider === 'gemini') return callGemini(prompt, model, options);
+        return callMistralAI(prompt, model, options);
+    }
+
     return {
         callMistralAI,
         callHuggingFace,
@@ -362,6 +368,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         callClaudeStructured,
         callMistralStructured,
         callStructured,
+        callText,
         callGeminiStream: callGeminiStreamRaw,
         callMistralStream: callMistralStreamRaw,
         AI_PROVIDERS,

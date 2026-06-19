@@ -36,6 +36,16 @@ function clampLimit(value, fallback, min, max) {
     return Math.min(Math.max(Math.floor(n), min), max);
 }
 
+function normalizeTopicValue(db, topic) {
+    if (db && typeof db.normalizeTopic === 'function') return db.normalizeTopic(topic);
+    return String(topic || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 180);
+}
+
 async function seedCurriculumTopic({
     db,
     topicId,
@@ -149,9 +159,9 @@ async function seedCurriculumTopic({
             return [];
         });
 
-        const contentCounts = await db.getTopicContentCounts(
-            db.normalizeTopic(topic.displayName)
-        );
+        const contentCounts = typeof db.getTopicContentCounts === 'function'
+            ? await db.getTopicContentCounts(normalizeTopicValue(db, topic.displayName))
+            : { papers: selectedArticles.length, claims: claims.length };
         const seedStatus = determineSeedStatus({
             synopsisFailures,
             contentCounts,

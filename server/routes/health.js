@@ -6,7 +6,7 @@ const { version: APP_VERSION } = require('../../package.json');
 
 async function checkDatabaseHealth(db) {
     const start = Date.now();
-    if (!db || typeof db.get !== 'function') {
+    if (!db?.get) {
         return {
             ok: false,
             latencyMs: null,

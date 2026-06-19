@@ -128,7 +128,7 @@ module.exports = (Sup) => class extends Sup {
         return { importedCount: imported.length, topics: imported };
     }
 
-    async listCurriculumSeedTopics({ curriculumSlug = 'specialty-clinical-topics', seedStatus = '', limit = 200, offset = 0 } = {}) {
+    async listCurriculumSeedTopics({ curriculumSlug = 'specialty-clinical-topics', seedStatus = '', limit = 2000, offset = 0 } = {}) {
         const params = [curriculumSlug];
         let where = `c.slug = ?`;
         if (seedStatus) {

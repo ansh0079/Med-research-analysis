@@ -553,20 +553,7 @@ Return JSON:
 
             const prompt = buildAnalysisPrompt(text, analysisType);
 
-            let generatedText;
-            if (selectedProvider === 'gemini') {
-                if (!serverConfig.keys.gemini) {
-                    return res.status(503).json({ error: 'Gemini API key not configured' });
-                }
-                generatedText = await ai.callGemini(prompt, selectedModel, { temperature });
-            } else if (selectedProvider === 'mistral') {
-                if (!serverConfig.keys.mistral) {
-                    return res.status(503).json({ error: 'Mistral API key not configured' });
-                }
-                generatedText = await ai.callMistralAI(prompt, selectedModel, { temperature });
-            } else {
-                return res.status(400).json({ error: 'Invalid provider. Use "gemini" or "mistral"' });
-            }
+            const generatedText = await ai.callText(prompt, selectedProvider, selectedModel, { temperature });
 
             const result = {
                 result: generatedText,
@@ -623,27 +610,14 @@ Return JSON:
                 return res.json({ ...cached, cached: true, provider: selectedProvider });
             }
 
-            const memCached = cache.getAnalysis(textHash, analysisType, selectedModel);
+            const memCached = await cache.getAnalysisAsync(textHash, analysisType, selectedModel);
             if (memCached) {
                 return res.json({ result: memCached.result, cached: true, provider: selectedProvider });
             }
 
             const prompt = `Explain this medical research in simple terms that a patient could understand:\n\n${text}`;
 
-            let generatedText;
-            if (selectedProvider === 'gemini') {
-                if (!serverConfig.keys.gemini) {
-                    return res.status(503).json({ error: 'Gemini API key not configured' });
-                }
-                generatedText = await ai.callGemini(prompt, selectedModel, { temperature });
-            } else if (selectedProvider === 'mistral') {
-                if (!serverConfig.keys.mistral) {
-                    return res.status(503).json({ error: 'Mistral API key not configured' });
-                }
-                generatedText = await ai.callMistralAI(prompt, selectedModel, { temperature });
-            } else {
-                return res.status(400).json({ error: 'Invalid provider. Use "gemini" or "mistral"' });
-            }
+            const generatedText = await ai.callText(prompt, selectedProvider, selectedModel, { temperature });
 
             const result = {
                 result: generatedText,
@@ -654,7 +628,7 @@ Return JSON:
                 disclaimer: AI_DISCLAIMER,
             };
 
-            cache.setAnalysis(textHash, analysisType, selectedModel, result);
+            await cache.setAnalysisAsync(textHash, analysisType, selectedModel, result);
             await db.cacheAnalysis(textHash, analysisType, selectedModel, result, 0, 0);
             await db.logEvent('explain', req.sessionId, { provider: selectedProvider, model: selectedModel });
 
@@ -701,9 +675,7 @@ Return JSON:
             const limit = Math.min(Math.max(parseInt(req.query?.limit, 10) || 12, 1), 30);
             const statuses = statusRaw.split(',').map((s) => s.trim()).filter(Boolean);
             const jobTypes = jobTypeRaw.split(',').map((s) => s.trim()).filter(Boolean);
-            const jobs = typeof db.listUserAiGenerationJobs === 'function'
-                ? await db.listUserAiGenerationJobs(req.user.id, { statuses, jobTypes, limit })
-                : [];
+            const jobs = await db.listUserAiGenerationJobs(req.user.id, { statuses, jobTypes, limit });
             res.json({
                 jobs: jobs.map((job) => ({
                     jobKey: job.jobKey,
@@ -809,6 +781,7 @@ Return JSON:
         const safeCount = Math.min(Math.max(parseInt(String(count), 10) || Math.min(5, planLimit), 1), planLimit);
 
         const cleanTopic = topic.trim();
+        let effectiveDifficulty = difficulty;
         const topicKnowledgeRow = await db.getTopicKnowledge(cleanTopic).catch((err) => { logger.warn({ err }, 'getTopicKnowledge failed'); return null; });
 
         // Collective memory hot path — serve pre-seeded pool before claim gate when topic is well-known
@@ -917,7 +890,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                 recentAttemptLimit: 20,
             });
             if (userContext?.profile?.effectiveDifficulty) {
-                difficulty = userContext.profile.effectiveDifficulty;
+                effectiveDifficulty = userContext.profile.effectiveDifficulty;
             }
         }
         if (!claimAnchors && !resolvedClaimJobKey) {
@@ -1036,7 +1009,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             articles,
             {
                 count: effectiveQuizCount,
-                difficulty,
+                difficulty: effectiveDifficulty,
                 topicKnowledge: mergedTopicKnowledge,
                 targetNodes,
                 trainingStage,
@@ -1185,7 +1158,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                     whyOthersWrong: q.whyOthersWrong ? String(q.whyOthersWrong) : null,
                     distractorRationale,
                     visualExplanation: normalizeVisualExplanation(q.visualExplanation),
-                    difficulty: difficulty !== 'mixed' ? difficulty : (['easy', 'medium', 'hard'].includes(q.difficulty) ? q.difficulty : 'medium'),
+                    difficulty: effectiveDifficulty !== 'mixed' ? effectiveDifficulty : (['easy', 'medium', 'hard'].includes(q.difficulty) ? q.difficulty : 'medium'),
                     sourceArticle: q.sourceArticle || null,
                     sourceReference: q.sourceReference || null,
                     sourceArticleUid: resolvedSourceUid,
@@ -2379,98 +2352,6 @@ Return ONLY valid JSON:
         }
     );
 
-    // ==========================================
-    // Case Scenario Generation (Interactive Learning)
-    // ==========================================
-
-    app.post('/api/ai/generate-case', 
-        limitBodySize(64 * 1024), 
-        requireJson, 
-        requireAuthJwt, 
-        requireVerifiedEmail,
-        requirePaidFeature('case_scenarios'),
-        caseGenerationLimit(3, 3600),  // Max 3 cases per hour - expensive operation
-        validateBody(schemas.caseGeneration),
-        async (req, res) => {
-            try {
-                const { topic, difficulty = 'medium', userProfile } = req.body;
-                
-                const { provider, model } = resolveProvider({ provider: req.body.provider || 'auto' }, serverConfig);
-                if (!provider) {
-                    return res.status(503).json({ error: 'No AI service configured' });
-                }
-                
-                // Generate case scenario
-                const caseScenario = await generateCaseScenario(ai, {
-                    topic,
-                    difficulty,
-                    userProfile: {
-                        trainingStage: userProfile?.trainingStage || req.user.trainingStage || 'finals',
-                        ...userProfile
-                    },
-                    provider,
-                    model
-                });
-                
-                // Save to database
-                const saved = await saveCaseScenario(db, req.user.id, caseScenario);
-                
-                await db.logEvent('case_generated', req.sessionId, { topic, difficulty, provider, model });
-                
-                res.json({
-                    caseId: saved.caseId,
-                    topic: saved.topic,
-                    difficulty: saved.difficulty,
-                    vignette: saved.vignette,
-                    initialNode: saved.decisionTree.initial,
-                    generatedAt: saved.generatedAt
-                });
-            } catch (error) {
-                req.log.error({ err: error }, 'Case generation error');
-                res.status(500).json({ error: 'Internal Server Error' });
-            }
-        }
-    );
-
-    app.get('/api/ai/case/:caseId',
-        requireAuthJwt,
-        rateLimit(60, 60),
-        async (req, res) => {
-            try {
-                const caseScenario = await getCaseScenario(db, req.params.caseId, req.user.id);
-                if (!caseScenario) {
-                    return res.status(404).json({ error: 'Case scenario not found' });
-                }
-                res.json({ caseScenario });
-            } catch (error) {
-                req.log.error({ err: error }, 'Get case scenario error');
-                res.status(500).json({ error: 'Internal Server Error' });
-            }
-        }
-    );
-
-    app.post('/api/ai/case/:caseId/respond',
-        limitBodySize(16 * 1024),
-        requireJson,
-        requireAuthJwt,
-        rateLimit(30, 60),
-        async (req, res) => {
-            try {
-                const { nodeId, choiceId } = req.body;
-                
-                if (!nodeId || !choiceId) {
-                    return res.status(400).json({ error: 'nodeId and choiceId are required' });
-                }
-                
-                const result = await recordCaseChoice(db, req.params.caseId, req.user.id, nodeId, choiceId);
-                
-                res.json(result);
-            } catch (error) {
-                req.log.error({ err: error }, 'Case response error');
-                res.status(500).json({ error: error.message || 'Internal Server Error' });
-            }
-        }
-    );
 }
 
 module.exports = { registerAiRoutes };
