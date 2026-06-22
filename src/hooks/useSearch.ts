@@ -61,6 +61,7 @@ export function useSearch() {
   const [intelligenceLoading, setIntelligenceLoading] = useState(false);
   const [lowRecallLearning, setLowRecallLearning] = useState<LowRecallLearning | null>(null);
   const requestIdRef = useRef(0);
+  const lastSearchRef = useRef<{ query: string; time: number } | null>(null);
 
   // Topic-knowledge polling --------------------------------------------------
   const [pollTopic, setPollTopic] = useState<string | null>(null);
@@ -141,10 +142,19 @@ export function useSearch() {
     setEnrichKey(null);
   }, [topicPoll, enrichmentPoll]);
 
+  const cancelPollRef = useRef(cancelPoll);
+  cancelPollRef.current = cancelPoll;
+  const searchHistoryRef = useRef(searchHistory);
+  searchHistoryRef.current = searchHistory;
+  const topicPollRef = useRef(topicPoll);
+  topicPollRef.current = topicPoll;
+  const enrichmentPollRef = useRef(enrichmentPoll);
+  enrichmentPollRef.current = enrichmentPoll;
+
   const search = useCallback(
     async (query: string, filters: SearchFilters = {}): Promise<Article[]> => {
       const thisRequestId = ++requestIdRef.current;
-      cancelPoll();
+      cancelPollRef.current();
       setAiEnrichmentLoading(false);
 
       if (!query.trim()) {
@@ -154,6 +164,13 @@ export function useSearch() {
         setTopicGuideStatus('idle');
         return [];
       }
+
+      const now = Date.now();
+      const last = lastSearchRef.current;
+      if (last && last.query === query.trim() && now - last.time < 5000) {
+        return results;
+      }
+      lastSearchRef.current = { query: query.trim(), time: now };
 
       setLoading(true);
       setError(null);
@@ -166,7 +183,7 @@ export function useSearch() {
 
         const enrichedFilters: SearchFilters = { ...filters, maxResults };
 
-        const previousQueries = searchHistory.slice(-3);
+        const previousQueries = searchHistoryRef.current.slice(-3);
         const data = await api.search(
           query,
           enrichedFilters,
@@ -265,7 +282,7 @@ export function useSearch() {
         if (!agentGuidance && knowledgeAvailable === false && articles.length >= 2) {
           topicPollRequestIdRef.current = thisRequestId;
           setPollTopic(query.trim());
-          topicPoll.start();
+          topicPollRef.current.start();
         }
 
         // Poll for AI enrichment (consensus synopsis + clinical answer) if still pending
@@ -273,7 +290,7 @@ export function useSearch() {
           setAiEnrichmentLoading(true);
           enrichPollRequestIdRef.current = thisRequestId;
           setEnrichKey(aiEnrichmentKey);
-          enrichmentPoll.start();
+          enrichmentPollRef.current.start();
         }
 
         return articles;
@@ -294,7 +311,8 @@ export function useSearch() {
         if (thisRequestId === requestIdRef.current) setLoading(false);
       }
     },
-    [setResults, setLoading, setError, setDetectedTopic, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, trackFeatureUsage, trackSearch, addToSearchHistory, searchHistory, refreshKnowledgeDriftAlerts, cancelPoll, topicPoll, enrichmentPoll]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setResults, setLoading, setError, setDetectedTopic, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, trackFeatureUsage, trackSearch, addToSearchHistory, refreshKnowledgeDriftAlerts]
   );
 
   const clearResults = useCallback(() => {

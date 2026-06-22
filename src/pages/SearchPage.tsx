@@ -199,18 +199,23 @@ export const SearchPage: React.FC = () => {
     [filters]
   );
   const filterRerunSkipRef = React.useRef(true);
+  const handleSearchRef = React.useRef(handleSearch);
+  handleSearchRef.current = handleSearch;
+  const loadingRef = React.useRef(loading);
+  loadingRef.current = loading;
   React.useEffect(() => {
     if (filterRerunSkipRef.current) {
       filterRerunSkipRef.current = false;
       return;
     }
     const q = currentQuery.trim();
-    if (!q || loading) return;
+    if (!q || loadingRef.current) return;
     const timer = window.setTimeout(() => {
-      void handleSearch(q);
+      void handleSearchRef.current(q);
     }, 450);
     return () => window.clearTimeout(timer);
-  }, [filterFingerprint, currentQuery, handleSearch, loading]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterFingerprint, currentQuery]);
 
   const evidenceRelatedTopics = React.useMemo(
     () => (topicIntelligence?.evidenceMap?.nodes?.relatedTopics || [])
