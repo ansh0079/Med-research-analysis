@@ -198,25 +198,22 @@ export const SearchPage: React.FC = () => {
     }),
     [filters]
   );
-  const filterRerunSkipRef = React.useRef(true);
   const handleSearchRef = React.useRef(handleSearch);
   handleSearchRef.current = handleSearch;
   const loadingRef = React.useRef(loading);
   loadingRef.current = loading;
   const currentQueryRef = React.useRef(currentQuery);
   currentQueryRef.current = currentQuery;
+  const prevFilterFingerprintRef = React.useRef(filterFingerprint);
   React.useEffect(() => {
-    if (filterRerunSkipRef.current) {
-      filterRerunSkipRef.current = false;
-      return;
-    }
+    if (prevFilterFingerprintRef.current === filterFingerprint) return;
+    prevFilterFingerprintRef.current = filterFingerprint;
     const q = currentQueryRef.current.trim();
     if (!q || loadingRef.current) return;
     const timer = window.setTimeout(() => {
       void handleSearchRef.current(currentQueryRef.current.trim());
     }, 450);
     return () => window.clearTimeout(timer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterFingerprint]);
 
   const evidenceRelatedTopics = React.useMemo(

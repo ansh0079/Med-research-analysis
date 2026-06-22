@@ -172,8 +172,6 @@ export function useSearch() {
       }
       lastSearchRef.current = { query: query.trim(), time: now };
 
-      // eslint-disable-next-line no-console
-      console.error('[search-debug] search triggered', new Error('search-caller').stack);
       setLoading(true);
       setError(null);
 
