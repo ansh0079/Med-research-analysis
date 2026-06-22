@@ -32,11 +32,13 @@ function escapeHtml(text) {
 function stripControlChars(text) {
     return String(text)
         .replace(/\0/g, '')
+        // eslint-disable-next-line no-control-regex
         .replace(/[\u0001-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '');
 }
 
 function neutralizeDangerousProtocols(text) {
     return String(text).replace(
+        // eslint-disable-next-line no-control-regex
         /\b(?:j[\s\u0000-\u001F]*a[\s\u0000-\u001F]*v[\s\u0000-\u001F]*a[\s\u0000-\u001F]*s[\s\u0000-\u001F]*c[\s\u0000-\u001F]*r[\s\u0000-\u001F]*i[\s\u0000-\u001F]*p[\s\u0000-\u001F]*t|v[\s\u0000-\u001F]*b[\s\u0000-\u001F]*s[\s\u0000-\u001F]*c[\s\u0000-\u001F]*r[\s\u0000-\u001F]*i[\s\u0000-\u001F]*p[\s\u0000-\u001F]*t|d[\s\u0000-\u001F]*a[\s\u0000-\u001F]*t[\s\u0000-\u001F]*a)\s*:/gi,
         'blocked:'
     );

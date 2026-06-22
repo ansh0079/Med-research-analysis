@@ -3,6 +3,7 @@ const spacedRep = require('../../services/spacedRepService');
 const { resolveProvider } = require('../../utils/aiProvider');
 const { getPersonalisedRecommendations } = require('../../services/learningAgentService');
 const { getLearningVelocity } = require('../../services/learningVelocityService');
+const { attributeRecommendationFollowThrough } = require('../../services/searchLearningOutcomeService');
 const { calculateMastery, nextReviewDate, normalizeAttemptClaimKey, inferEvidenceJudgement, textIncludes, buildOutline, summarizeRunGaps } = require('../../utils/learningUtils');
 function registerActivityRoutes(app, deps) {
     const { db, requireAuthJwt, requireAuthOrBeta, requireVerifiedEmail, rateLimit, serverConfig, fetch: fetchImpl } = deps;
