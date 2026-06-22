@@ -183,6 +183,7 @@ async getImpressionsForSearch(searchId, { limit = 20 } = {}) {
 
 async getRecentImpressions(sessionId, { days = 30, limit = 200 } = {}) {
     if (!this.kysely || !sessionId) return [];
+    if (days <= 0) return [];
     const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
     return this.kysely
         .selectFrom('search_result_impressions')
