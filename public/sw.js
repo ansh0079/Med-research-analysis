@@ -1,5 +1,5 @@
-const CACHE_NAME = 'medresearch-shell-v1';
-const RUNTIME_CACHE = 'medresearch-runtime-v1';
+const CACHE_NAME = 'medresearch-shell-v2';
+const RUNTIME_CACHE = 'medresearch-runtime-v2';
 const SHELL_ASSETS = ['/', '/index.html', '/manifest.webmanifest'];
 
 self.addEventListener('install', (event) => {

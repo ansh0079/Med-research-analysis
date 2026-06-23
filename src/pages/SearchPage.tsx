@@ -159,21 +159,6 @@ export const SearchPage: React.FC = () => {
     resetForNewSearch,
   } = useResultsFilter(results);
 
-  const filterFingerprint = React.useMemo(
-    () => JSON.stringify({
-      sources: filters.sources,
-      specificity: filters.specificity,
-      useVectorSearch: filters.useVectorSearch,
-      studyTypes: filters.studyTypes,
-      yearRange: filters.yearRange,
-    }),
-    [filters]
-  );
-  const handleSearchRef = React.useRef<(q: string) => Promise<Article[]>>(null!);
-  const loadingRef = React.useRef(loading);
-  loadingRef.current = loading;
-  const currentQueryRef = React.useRef(currentQuery);
-  currentQueryRef.current = currentQuery;
   const filtersRef = React.useRef(filters);
   filtersRef.current = filters;
   const searchRef = React.useRef(search);
@@ -207,19 +192,6 @@ export const SearchPage: React.FC = () => {
     },
     [resetForNewSearch]
   );
-  handleSearchRef.current = handleSearch;
-
-  const prevFilterFingerprintRef = React.useRef(filterFingerprint);
-  React.useEffect(() => {
-    if (prevFilterFingerprintRef.current === filterFingerprint) return;
-    prevFilterFingerprintRef.current = filterFingerprint;
-    const q = currentQueryRef.current.trim();
-    if (!q || loadingRef.current) return;
-    const timer = window.setTimeout(() => {
-      void handleSearchRef.current(currentQueryRef.current.trim());
-    }, 450);
-    return () => window.clearTimeout(timer);
-  }, [filterFingerprint]);
 
   const evidenceRelatedTopics = React.useMemo(
     () => (topicIntelligence?.evidenceMap?.nodes?.relatedTopics || [])
