@@ -169,25 +169,27 @@ export const SearchPage: React.FC = () => {
     }),
     [filters]
   );
-  const lastHandledSearchRef = React.useRef<{ key: string; articles: Article[] } | null>(null);
+  const handleSearchRef = React.useRef<(q: string) => Promise<Article[]>>(null!);
+  const loadingRef = React.useRef(loading);
+  loadingRef.current = loading;
+  const currentQueryRef = React.useRef(currentQuery);
+  currentQueryRef.current = currentQuery;
+  const filtersRef = React.useRef(filters);
+  filtersRef.current = filters;
+  const searchRef = React.useRef(search);
+  searchRef.current = search;
 
   const handleSearch = React.useCallback(
     async (query: string) => {
       const trimmed = query.trim();
       if (!trimmed) return [];
-      const searchKey = `${trimmed.toLowerCase()}::${filterFingerprint}`;
-      const lastHandled = lastHandledSearchRef.current;
-      if (!loading && lastHandled?.key === searchKey) {
-        return lastHandled.articles;
-      }
       setSynthesis(null);
       setSynthesisError(null);
       setSynthesisLiveText('');
       setTopicGuideRefreshError(null);
       setCurrentQuery(trimmed);
       resetForNewSearch();
-      const found = await search(trimmed, filters);
-      lastHandledSearchRef.current = { key: searchKey, articles: found };
+      const found = await searchRef.current(trimmed, filtersRef.current);
       try {
         const savedCounts = JSON.parse(localStorage.getItem(SAVED_SEARCH_COUNTS_KEY) || '{}') as Record<string, number>;
         const previous = savedCounts[trimmed.toLowerCase()];
@@ -203,14 +205,10 @@ export const SearchPage: React.FC = () => {
       }
       return found;
     },
-    [filterFingerprint, filters, loading, resetForNewSearch, search]
+    [resetForNewSearch]
   );
-  const handleSearchRef = React.useRef(handleSearch);
   handleSearchRef.current = handleSearch;
-  const loadingRef = React.useRef(loading);
-  loadingRef.current = loading;
-  const currentQueryRef = React.useRef(currentQuery);
-  currentQueryRef.current = currentQuery;
+
   const prevFilterFingerprintRef = React.useRef(filterFingerprint);
   React.useEffect(() => {
     if (prevFilterFingerprintRef.current === filterFingerprint) return;
