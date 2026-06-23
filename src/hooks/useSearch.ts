@@ -10,6 +10,18 @@ import { storeSearchAttributionFromArticles } from '@utils/searchAttribution';
 const POLL_DELAYS = [8000, 12000, 18000]; // 8 s, then 12 s, then 18 s — three attempts
 const ENRICHMENT_POLL_DELAYS = [2000, 3000, 4000, 5000, 6000, 8000, 10000]; // up to ~38 s total
 
+function searchRequestKey(query: string, filters: SearchFilters): string {
+  return JSON.stringify({
+    query: query.trim().toLowerCase(),
+    sources: filters.sources || ['pubmed', 'openalex'],
+    maxResults: filters.maxResults ?? 20,
+    specificity: filters.specificity || null,
+    studyTypes: filters.studyTypes || [],
+    yearRange: filters.yearRange || null,
+    useVectorSearch: filters.useVectorSearch !== false,
+  });
+}
+
 export function useSearch() {
   const {
     setResults,
@@ -32,7 +44,7 @@ export function useSearch() {
   const { trackSearch, trackFeatureUsage } = useAnalytics();
 
   const [knowledgeDriftAlerts, setKnowledgeDriftAlerts] = useState<ProactiveEvidenceAlert[]>([]);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const refreshKnowledgeDriftAlerts = useCallback(() => {
     if (!isAuthenticated) {
@@ -61,7 +73,8 @@ export function useSearch() {
   const [intelligenceLoading, setIntelligenceLoading] = useState(false);
   const [lowRecallLearning, setLowRecallLearning] = useState<LowRecallLearning | null>(null);
   const requestIdRef = useRef(0);
-  const lastSearchRef = useRef<{ query: string; time: number } | null>(null);
+  const lastSearchRef = useRef<{ key: string; query: string; time: number } | null>(null);
+  const lastSuccessfulSearchRef = useRef<{ key: string; articles: Article[] } | null>(null);
 
   // Topic-knowledge polling --------------------------------------------------
   const [pollTopic, setPollTopic] = useState<string | null>(null);
@@ -166,11 +179,16 @@ export function useSearch() {
       }
 
       const now = Date.now();
+      const requestKey = searchRequestKey(query, filters);
+      const lastSuccessful = lastSuccessfulSearchRef.current;
+      if (lastSuccessful?.key === requestKey) {
+        return lastSuccessful.articles;
+      }
       const last = lastSearchRef.current;
-      if (last && last.query === query.trim() && now - last.time < 5000) {
+      if (last && last.key === requestKey && now - last.time < 5000) {
         return results;
       }
-      lastSearchRef.current = { query: query.trim(), time: now };
+      lastSearchRef.current = { key: requestKey, query: query.trim(), time: now };
 
       setLoading(true);
       setError(null);
@@ -202,6 +220,7 @@ export function useSearch() {
         trackSearch(query, { filters, resultsCount: articles.length });
 
         if (thisRequestId !== requestIdRef.current) return articles;
+        lastSuccessfulSearchRef.current = { key: requestKey, articles };
         setResults(articles);
         setLastSearchId(searchId ?? null);
         setSearchCompletedAt(Date.now());
@@ -274,7 +293,7 @@ export function useSearch() {
           }
         }
 
-        if (canUseVector && articles.length > 0) {
+        if (canUseVector && user?.role === 'admin' && articles.length > 0) {
           void api.indexArticlesForVector(articles).catch(() => undefined);
         }
 
@@ -312,11 +331,13 @@ export function useSearch() {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [setResults, setLoading, setError, setDetectedTopic, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, trackFeatureUsage, trackSearch, addToSearchHistory, refreshKnowledgeDriftAlerts]
+    [setResults, setLoading, setError, setDetectedTopic, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, trackFeatureUsage, trackSearch, addToSearchHistory, refreshKnowledgeDriftAlerts, user?.role]
   );
 
   const clearResults = useCallback(() => {
     cancelPoll();
+    lastSearchRef.current = null;
+    lastSuccessfulSearchRef.current = null;
     setResults([]);
     setError(null);
     setAgentGuidance(null);

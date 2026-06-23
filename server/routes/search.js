@@ -112,13 +112,27 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
         };
     }
 
+    function safeNormalizeTopic(topic) {
+        return typeof db?.normalizeTopic === 'function'
+            ? db.normalizeTopic(topic)
+            : String(topic || '').toLowerCase().replace(/[^\w\s-]/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+
+    function safeDbList(methodName, args, logLabel) {
+        if (typeof db?.[methodName] !== 'function') return Promise.resolve([]);
+        return db[methodName](...args).catch((err) => {
+            logger.warn({ err }, logLabel);
+            return [];
+        });
+    }
+
     async function buildSynapseGraphForTopic(displayTopic) {
         const tk = await db.getTopicKnowledge(displayTopic).catch((err) => { logger.warn({ err }, 'getTopicKnowledge failed'); return null; });
         if (!tk) {
-            const n = db.normalizeTopic(displayTopic);
+            const n = safeNormalizeTopic(displayTopic);
             return { centerTopic: displayTopic, normalizedCenter: n, nodes: [], edges: [], topicKnowledgeFound: false };
         }
-        const exclude = db.normalizeTopic(tk.topic || displayTopic);
+        const exclude = safeNormalizeTopic(tk.topic || displayTopic);
         const uids = (tk.sourceArticles || []).map((a) => a.uid).filter(Boolean).slice(0, 14);
         const synapses = await db.findSynapseTopicsForArticleUids(uids, exclude);
         const centerLabel = tk.topic || displayTopic;
@@ -161,14 +175,14 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
             topic,
             { previousQueries, learningContext }
         );
-        const normalized = db.normalizeTopic(topic);
+        const normalized = safeNormalizeTopic(topic);
         const [guidelineSnapshot, teachingObjects, relatedTopics, clusterArticles, teachingClaims] = await Promise.all([
-            db.getGuidelinesByTopic(topic, { limit: 5 }).catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; }),
+            safeDbList('getGuidelinesByTopic', [topic, { limit: 5 }], 'getGuidelinesByTopic failed'),
             // Reuse objects fetched during boost step — avoids a second DB round-trip for the same data
-            prefetchedObjects ?? db.listTeachingObjectsForTopic(topic, { limit: 12 }).catch((err) => { logger.warn({ err }, 'all failed'); return []; }),
-            db.getRelatedBouquetTopicsForTopic(normalized, { limit: 5, minSharedArticles: 1 }).catch((err) => { logger.warn({ err }, 'getRelatedBouquetTopicsForTopic failed'); return []; }),
-            db.getClusterBouquetArticlesForTopic(normalized, { topicLimit: 5, articleLimit: 10, minSharedArticles: 1 }).catch((err) => { logger.warn({ err }, 'getClusterBouquetArticlesForTopic failed'); return []; }),
-            prefetchedClaims ?? db.listTeachingObjectClaimsForTopic(topic, { limit: 20 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectClaimsForTopic failed'); return []; }),
+            prefetchedObjects ?? safeDbList('listTeachingObjectsForTopic', [topic, { limit: 12 }], 'listTeachingObjectsForTopic failed'),
+            safeDbList('getRelatedBouquetTopicsForTopic', [normalized, { limit: 5, minSharedArticles: 1 }], 'getRelatedBouquetTopicsForTopic failed'),
+            safeDbList('getClusterBouquetArticlesForTopic', [normalized, { topicLimit: 5, articleLimit: 10, minSharedArticles: 1 }], 'getClusterBouquetArticlesForTopic failed'),
+            prefetchedClaims ?? safeDbList('listTeachingObjectClaimsForTopic', [topic, { limit: 20 }], 'listTeachingObjectClaimsForTopic failed'),
         ]);
         const evidenceMap = buildEvidenceMap({
             topic,
@@ -273,8 +287,8 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
     async function applyTeachingObjectSearchBoost(topic, articles, { prefetchedObjects = null, prefetchedClaims = null } = {}) {
         if (!Array.isArray(articles) || articles.length < 2) return { articles, teachingObjects: [], claims: [] };
         const [teachingObjects, claims] = await Promise.all([
-            prefetchedObjects ?? db.listTeachingObjectsForTopic(topic, { limit: 50 }).catch((err) => { logger.warn({ err }, 'all failed'); return []; }),
-            prefetchedClaims ?? db.listTeachingObjectClaimsForTopic(topic, { limit: 100 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectClaimsForTopic failed'); return []; }),
+            prefetchedObjects ?? safeDbList('listTeachingObjectsForTopic', [topic, { limit: 50 }], 'listTeachingObjectsForTopic failed'),
+            prefetchedClaims ?? safeDbList('listTeachingObjectClaimsForTopic', [topic, { limit: 100 }], 'listTeachingObjectClaimsForTopic failed'),
         ]);
         if (!teachingObjects.length && !claims.length) return { articles, teachingObjects, claims };
         const weights = new Map();

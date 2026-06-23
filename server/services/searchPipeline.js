@@ -400,13 +400,17 @@ function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMes
 }
 
 async function prefetchTeachingArtifacts(db, topic) {
-    if (!db || !topic || typeof db.listTeachingObjectsForTopic !== 'function') {
+    if (!db || !topic) {
         return { objects: [], claims: [], signalBoosts: new Map() };
     }
 
     const [teachingObjects, claims] = await Promise.all([
-        db.listTeachingObjectsForTopic(topic, { limit: 50 }).catch(() => []),
-        db.listTeachingObjectClaimsForTopic(topic, { limit: 100 }).catch(() => []),
+        typeof db.listTeachingObjectsForTopic === 'function'
+            ? db.listTeachingObjectsForTopic(topic, { limit: 50 }).catch(() => [])
+            : [],
+        typeof db.listTeachingObjectClaimsForTopic === 'function'
+            ? db.listTeachingObjectClaimsForTopic(topic, { limit: 100 }).catch(() => [])
+            : [],
     ]);
 
     const signalBoosts = new Map();

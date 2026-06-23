@@ -159,10 +159,27 @@ export const SearchPage: React.FC = () => {
     resetForNewSearch,
   } = useResultsFilter(results);
 
+  const filterFingerprint = React.useMemo(
+    () => JSON.stringify({
+      sources: filters.sources,
+      specificity: filters.specificity,
+      useVectorSearch: filters.useVectorSearch,
+      studyTypes: filters.studyTypes,
+      yearRange: filters.yearRange,
+    }),
+    [filters]
+  );
+  const lastHandledSearchRef = React.useRef<{ key: string; articles: Article[] } | null>(null);
+
   const handleSearch = React.useCallback(
     async (query: string) => {
       const trimmed = query.trim();
       if (!trimmed) return [];
+      const searchKey = `${trimmed.toLowerCase()}::${filterFingerprint}`;
+      const lastHandled = lastHandledSearchRef.current;
+      if (!loading && lastHandled?.key === searchKey) {
+        return lastHandled.articles;
+      }
       setSynthesis(null);
       setSynthesisError(null);
       setSynthesisLiveText('');
@@ -170,6 +187,7 @@ export const SearchPage: React.FC = () => {
       setCurrentQuery(trimmed);
       resetForNewSearch();
       const found = await search(trimmed, filters);
+      lastHandledSearchRef.current = { key: searchKey, articles: found };
       try {
         const savedCounts = JSON.parse(localStorage.getItem(SAVED_SEARCH_COUNTS_KEY) || '{}') as Record<string, number>;
         const previous = savedCounts[trimmed.toLowerCase()];
@@ -185,18 +203,7 @@ export const SearchPage: React.FC = () => {
       }
       return found;
     },
-    [filters, search]
-  );
-
-  const filterFingerprint = React.useMemo(
-    () => JSON.stringify({
-      sources: filters.sources,
-      specificity: filters.specificity,
-      useVectorSearch: filters.useVectorSearch,
-      studyTypes: filters.studyTypes,
-      yearRange: filters.yearRange,
-    }),
-    [filters]
+    [filterFingerprint, filters, loading, resetForNewSearch, search]
   );
   const handleSearchRef = React.useRef(handleSearch);
   handleSearchRef.current = handleSearch;

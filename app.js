@@ -271,13 +271,13 @@ app.use(
                 styleSrc: isProd
                     // Keep production inline styles until the bundle audit can replace
                     // React/library injected styles with CSP nonces or hashes.
-                    ? ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com']
+                    ? ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdnjs.cloudflare.com']
                     : ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdnjs.cloudflare.com'],
                 scriptSrc: isProd
                     ? ["'self'"]
                     : ["'self'", "'unsafe-inline'", 'https://unpkg.com', 'https://cdn.tailwindcss.com', 'https://cdn.jsdelivr.net'],
                 fontSrc: isProd
-                    ? ["'self'", 'https://fonts.gstatic.com']
+                    ? ["'self'", 'https://fonts.gstatic.com', 'https://cdnjs.cloudflare.com']
                     : ["'self'", 'https://fonts.gstatic.com', 'https://cdnjs.cloudflare.com'],
                 imgSrc: ["'self'", 'data:', 'https:'],
                 connectSrc: isProd

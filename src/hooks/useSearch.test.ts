@@ -28,6 +28,7 @@ jest.mock('@services/api', () => ({
     getTopicKnowledge: jest.fn(),
     getAiEnrichment: jest.fn(),
     indexArticlesForVector: jest.fn(),
+    logSearchImpressions: jest.fn(),
     markEvidenceAlertRead: jest.fn(),
   },
 }));
@@ -182,6 +183,21 @@ describe('useSearch', () => {
     expect(mockSetResults).toHaveBeenCalledWith(mockArticles);
   });
 
+  it('does not re-fetch the same query and filters after the duplicate window', async () => {
+    const { result } = renderHook(() => useSearch());
+
+    await act(async () => {
+      await result.current.search('diabetes');
+    });
+
+    await act(async () => {
+      jest.advanceTimersByTime(5001);
+      await result.current.search('diabetes');
+    });
+
+    expect(mockedApi.search).toHaveBeenCalledTimes(1);
+  });
+
   it('returns empty array and skips api call when query is whitespace only', async () => {
     const { result } = renderHook(() => useSearch());
 
@@ -208,6 +224,47 @@ describe('useSearch', () => {
   });
 
   // ── Error handling ────────────────────────────────────────────────────────
+
+  it('does not index vector results for non-admin users', async () => {
+    mockedApi.getClientConfig.mockResolvedValue({ features: { vectorSearch: true } });
+    const { result } = renderHook(() => useSearch());
+
+    await act(async () => {
+      await result.current.search('diabetes');
+    });
+
+    expect(mockedApi.search).toHaveBeenCalledWith(
+      'diabetes',
+      expect.any(Object),
+      expect.objectContaining({ vector: true })
+    );
+    expect(mockedApi.indexArticlesForVector).not.toHaveBeenCalled();
+  });
+
+  it('indexes vector results for admin users', async () => {
+    mockedApi.getClientConfig.mockResolvedValue({ features: { vectorSearch: true } });
+    mockedAuthContext.useAuth.mockReturnValue({
+      user: { id: 'admin-1', email: 'admin@example.com', role: 'admin' },
+      isAuthenticated: true,
+      isLoading: false,
+      login: jest.fn(),
+      register: jest.fn(),
+      logout: jest.fn(),
+      forgotPassword: jest.fn(),
+      resendVerification: jest.fn(),
+      updateProfile: jest.fn(),
+      changePassword: jest.fn(),
+      deleteAccount: jest.fn(),
+      setUser: jest.fn(),
+    });
+    const { result } = renderHook(() => useSearch());
+
+    await act(async () => {
+      await result.current.search('diabetes');
+    });
+
+    expect(mockedApi.indexArticlesForVector).toHaveBeenCalledWith(mockArticles);
+  });
 
   it('calls setError and returns empty array when api.search throws', async () => {
     mockedApi.search.mockRejectedValue(new Error('Network error'));
@@ -489,7 +546,7 @@ describe('useSearch', () => {
       'diabetes',
       mockArticles,
       expect.any(Object),
-      { previousQueries: ['prior query'] }
+      { previousQueries: ['prior query'], ranking: undefined }
     );
     expect(result.current.intelligenceLoading).toBe(false);
     expect(mockSetAgentGuidance).toHaveBeenCalledWith(expect.objectContaining({ topic: 'diabetes' }));
