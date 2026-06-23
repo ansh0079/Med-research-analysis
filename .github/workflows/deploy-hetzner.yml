@@ -1,0 +1,28 @@
+name: Deploy to Hetzner
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 178.105.155.246
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          script_stop: true
+          command_timeout: 8m
+          script: |
+            cd /opt/medsearch
+            git fetch origin main
+            git reset --hard origin/main
+            docker compose -f docker-compose.hetzner.yml up -d --build --remove-orphans
+            sleep 8
+            curl -fsS http://127.0.0.1:3002/health | head -c 400
+            echo ""
+            echo "Deploy OK"
