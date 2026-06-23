@@ -225,7 +225,7 @@ describe('useSearch', () => {
 
   // ── Error handling ────────────────────────────────────────────────────────
 
-  it('does not index vector results for non-admin users', async () => {
+  it('does not index vector results from the client', async () => {
     mockedApi.getClientConfig.mockResolvedValue({ features: { vectorSearch: true } });
     const { result } = renderHook(() => useSearch());
 
@@ -239,31 +239,6 @@ describe('useSearch', () => {
       expect.objectContaining({ vector: true })
     );
     expect(mockedApi.indexArticlesForVector).not.toHaveBeenCalled();
-  });
-
-  it('indexes vector results for admin users', async () => {
-    mockedApi.getClientConfig.mockResolvedValue({ features: { vectorSearch: true } });
-    mockedAuthContext.useAuth.mockReturnValue({
-      user: { id: 'admin-1', email: 'admin@example.com', role: 'admin' },
-      isAuthenticated: true,
-      isLoading: false,
-      login: jest.fn(),
-      register: jest.fn(),
-      logout: jest.fn(),
-      forgotPassword: jest.fn(),
-      resendVerification: jest.fn(),
-      updateProfile: jest.fn(),
-      changePassword: jest.fn(),
-      deleteAccount: jest.fn(),
-      setUser: jest.fn(),
-    });
-    const { result } = renderHook(() => useSearch());
-
-    await act(async () => {
-      await result.current.search('diabetes');
-    });
-
-    expect(mockedApi.indexArticlesForVector).toHaveBeenCalledWith(mockArticles);
   });
 
   it('calls setError and returns empty array when api.search throws', async () => {

@@ -44,7 +44,7 @@ export function useSearch() {
   const { trackSearch, trackFeatureUsage } = useAnalytics();
 
   const [knowledgeDriftAlerts, setKnowledgeDriftAlerts] = useState<ProactiveEvidenceAlert[]>([]);
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   const refreshKnowledgeDriftAlerts = useCallback(() => {
     if (!isAuthenticated) {
@@ -293,10 +293,6 @@ export function useSearch() {
           }
         }
 
-        if (canUseVector && user?.role === 'admin' && articles.length > 0) {
-          void api.indexArticlesForVector(articles).catch(() => undefined);
-        }
-
         // If no guidance yet, poll in background until extraction completes
         if (!agentGuidance && knowledgeAvailable === false && articles.length >= 2) {
           topicPollRequestIdRef.current = thisRequestId;
@@ -331,7 +327,7 @@ export function useSearch() {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [setResults, setLoading, setError, setDetectedTopic, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, trackFeatureUsage, trackSearch, addToSearchHistory, refreshKnowledgeDriftAlerts, user?.role]
+    [setResults, setLoading, setError, setDetectedTopic, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, trackFeatureUsage, trackSearch, addToSearchHistory, refreshKnowledgeDriftAlerts]
   );
 
   const clearResults = useCallback(() => {
