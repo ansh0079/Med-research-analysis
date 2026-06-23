@@ -18,6 +18,25 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Force-clear stale service worker caches (v3 = current version)
+      (function(){
+        var V='sw-cache-v3';
+        if(localStorage.getItem(V))return;
+        if('serviceWorker' in navigator){
+          navigator.serviceWorker.getRegistrations().then(function(regs){
+            regs.forEach(function(r){r.unregister()});
+          });
+        }
+        if('caches' in window){
+          caches.keys().then(function(keys){
+            keys.forEach(function(k){caches.delete(k)});
+          });
+        }
+        localStorage.setItem(V,'1');
+        setTimeout(function(){location.reload()},200);
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

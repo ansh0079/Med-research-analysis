@@ -1,5 +1,5 @@
-const CACHE_NAME = 'medresearch-shell-v2';
-const RUNTIME_CACHE = 'medresearch-runtime-v2';
+const CACHE_NAME = 'medresearch-shell-v3';
+const RUNTIME_CACHE = 'medresearch-runtime-v3';
 const SHELL_ASSETS = ['/', '/index.html', '/manifest.webmanifest'];
 
 self.addEventListener('install', (event) => {
@@ -28,30 +28,21 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
+  // All same-origin requests: network-first, cache fallback for offline
   if (request.mode === 'navigate') {
     event.respondWith(fetch(request).catch(() => caches.match('/index.html')));
     return;
   }
 
-  if (url.pathname.startsWith('/api/user/saved') || url.pathname.startsWith('/api/articles/saved')) {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
+  event.respondWith(
+    fetch(request)
+      .then((response) => {
+        if (response.ok) {
           const copy = response.clone();
           caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, copy));
-          return response;
-        })
-        .catch(() => caches.match(request))
-    );
-    return;
-  }
-
-  event.respondWith(
-    caches.match(request).then((cached) => cached || fetch(request).then((response) => {
-      if (!response.ok) return response;
-      const copy = response.clone();
-      caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, copy));
-      return response;
-    }))
+        }
+        return response;
+      })
+      .catch(() => caches.match(request))
   );
 });
