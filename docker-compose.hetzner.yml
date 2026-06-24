@@ -33,9 +33,9 @@ services:
     container_name: medsearch-redis
     volumes:
       - medsearch_redis:/data
-    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy noeviction
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy noeviction --requirepass ${REDIS_PASSWORD:-changeme}
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-changeme}", "ping"]
       interval: 5s
       timeout: 3s
       retries: 5
@@ -82,7 +82,7 @@ services:
       DATABASE_URL: postgresql://medsearch:${POSTGRES_PASSWORD}@postgres:5432/medsearch
       PG_VECTOR_URL: postgresql://medsearch:${POSTGRES_PASSWORD}@postgres:5432/medsearch
       PGSSL: "false"
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://:${REDIS_PASSWORD:-changeme}@redis:6379
       DEV_DISABLE_AUTH: "false"
       BETA_MODE: ${BETA_MODE:-true}
       JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
@@ -139,7 +139,7 @@ services:
       DATABASE_URL: postgresql://medsearch:${POSTGRES_PASSWORD}@postgres:5432/medsearch
       PG_VECTOR_URL: postgresql://medsearch:${POSTGRES_PASSWORD}@postgres:5432/medsearch
       PGSSL: "false"
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://:${REDIS_PASSWORD:-changeme}@redis:6379
       DEV_DISABLE_AUTH: "false"
       BETA_MODE: ${BETA_MODE:-true}
       JWT_SECRET: ${JWT_SECRET}
