@@ -190,9 +190,6 @@ export function useSearch() {
       }
       lastSearchRef.current = { key: requestKey, query: query.trim(), time: now };
 
-      // Temporary: trace what triggers each search
-      console.warn('[search-trigger]', query.trim(), new Error().stack?.split('\n').slice(1, 6).join(' <- '));
-
       setLoading(true);
       setError(null);
 
