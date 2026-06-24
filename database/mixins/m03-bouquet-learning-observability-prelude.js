@@ -73,7 +73,7 @@ async getRelatedBouquetTopicsForTopic(normalizedTopic, { limit = 5, minSharedArt
          WHERE a.normalized_topic = ?
            AND b.normalized_topic <> a.normalized_topic
          GROUP BY b.normalized_topic
-         HAVING shared_articles >= ?
+         HAVING COUNT(DISTINCT b.article_uid) >= ?
          ORDER BY shared_articles DESC, shared_signal_strength DESC, avg_composite_score DESC
          LIMIT ?`,
         [normalizedTopic, safeMinShared, safeLimit]
