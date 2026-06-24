@@ -101,7 +101,7 @@ async function generateEmbedding(text, keys = {}) {
         return embedOpenAI(text, key);
     }
     // default: hf
-    const hfKey = keys.huggingfaceKey || process.env.HUGGINGFACE_API_KEY || process.env.HF_API_TOKEN;
+    const hfKey = keys.huggingfaceKey || process.env.HUGGINGFACE_API_KEY || process.env.HF_API_TOKEN || process.env.HUGGINGFACE_TOKEN;
     return embedHuggingFace(text, hfKey);
 }
 
