@@ -320,7 +320,7 @@ toPgQuery(sql) {
         }
         result += ch;
     }
-    result = result.replace(/datetime\s*\(\s*'now'\s*\)/gi, "CURRENT_TIMESTAMP::text");
+    result = result.replace(/datetime\s*\(\s*'now'\s*\)/gi, "to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')");
     return result;
 }
 

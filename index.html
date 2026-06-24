@@ -19,22 +19,24 @@
   <body>
     <div id="root"></div>
     <script>
-      // Force-clear stale service worker caches (v3 = current version)
       (function(){
-        var V='sw-cache-v3';
-        if(localStorage.getItem(V))return;
+        try {
+          var V='sw-cache-v3';
+          if(localStorage.getItem(V))return;
+          localStorage.setItem(V,'1');
+        } catch(e){ return; }
+        var dirty=false;
         if('serviceWorker' in navigator){
           navigator.serviceWorker.getRegistrations().then(function(regs){
-            regs.forEach(function(r){r.unregister()});
+            if(regs.length){ dirty=true; regs.forEach(function(r){r.unregister()}); }
           });
         }
         if('caches' in window){
           caches.keys().then(function(keys){
-            keys.forEach(function(k){caches.delete(k)});
+            if(keys.length){ dirty=true; keys.forEach(function(k){caches.delete(k)}); }
           });
         }
-        localStorage.setItem(V,'1');
-        setTimeout(function(){location.reload()},200);
+        setTimeout(function(){ if(dirty) location.reload(); },300);
       })();
     </script>
     <script type="module" src="/src/main.tsx"></script>

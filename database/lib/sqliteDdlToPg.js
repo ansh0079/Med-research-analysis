@@ -14,7 +14,7 @@ function convertSqliteDdlToPostgres(sql, options = {}) {
 
     out = out.replace(/INTEGER\s+PRIMARY\s+KEY\s+AUTOINCREMENT/gi, 'SERIAL PRIMARY KEY');
 
-    out = out.replace(/datetime\s*\(\s*'now'\s*\)/gi, 'CURRENT_TIMESTAMP');
+    out = out.replace(/datetime\s*\(\s*'now'\s*\)/gi, "to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')");
 
     out = out.replace(/\bDATETIME\s+DEFAULT\s+CURRENT_TIMESTAMP/gi, 'TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP');
 

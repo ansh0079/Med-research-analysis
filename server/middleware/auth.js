@@ -20,8 +20,11 @@ const JWT_SECRET_PLACEHOLDERS = new Set([
     'change-this-in-production',
     'your_jwt_secret_here_change_in_production',
 ]);
-if (process.env.NODE_ENV === 'production' && (JWT_SECRET_PLACEHOLDERS.has(JWT_SECRET) || JWT_SECRET.length < 32)) {
-    throw new Error('FATAL: JWT_SECRET must be set to a strong unique value in production');
+if (JWT_SECRET_PLACEHOLDERS.has(JWT_SECRET) || JWT_SECRET.length < 32) {
+    if (process.env.NODE_ENV === 'production') {
+        throw new Error('FATAL: JWT_SECRET must be set to a strong unique value in production');
+    }
+    console.warn('WARNING: JWT_SECRET is weak or using a placeholder — set a strong secret via JWT_SECRET env var');
 }
 const COOKIE_NAME = 'med_auth_token';
 const OAUTH_STATE_COOKIE = 'med_oauth_state';

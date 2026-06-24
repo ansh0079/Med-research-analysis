@@ -66,7 +66,7 @@ async function embedOpenAI(text, openaiKey) {
  */
 async function embedHuggingFace(text, hfKey) {
     if (!hfKey) {
-        throw new Error('HUGGINGFACE_API_KEY or HF_API_TOKEN is required for HuggingFace embeddings');
+        throw new Error('HUGGINGFACE_TOKEN (or HUGGINGFACE_API_KEY / HF_API_TOKEN) is required for HuggingFace embeddings');
     }
     const model = process.env.HF_EMBEDDING_MODEL || 'sentence-transformers/all-MiniLM-L6-v2';
     const res = await fetch(`https://api-inference.huggingface.co/pipeline/feature-extraction/${model}`, {
