@@ -22,13 +22,11 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             docker compose -f docker-compose.hetzner.yml up -d --build --remove-orphans
+            set +e
             for i in 1 2 3 4 5 6 7 8 9 10; do
-              if curl -fsS http://127.0.0.1:3002/health > /dev/null 2>&1; then
-                echo "Health check passed on attempt $i"
-                exit 0
-              fi
-              echo "Waiting for server (attempt $i)..."
               sleep 5
+              curl -fsS http://127.0.0.1:3002/health > /dev/null 2>&1 && echo "Health check passed on attempt $i" && exit 0
+              echo "Waiting for server (attempt $i)..."
             done
             echo "Health check failed after 10 attempts"
             exit 1
