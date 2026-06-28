@@ -73,12 +73,7 @@ module.exports = (Sup) => class extends Sup {
         if (this.isPostgres) {
             const sql = this.toPgQuery(
                 `SELECT * FROM topic_knowledge
-                 WHERE (
-                   CASE
-                     WHEN NULLIF(TRIM(aliases_normalized), '') IS NULL THEN '[]'::jsonb
-                     ELSE NULLIF(TRIM(aliases_normalized), '')::jsonb
-                   END
-                 ) @> json_build_array(?)::jsonb
+                 WHERE COALESCE(aliases_normalized, '[]'::jsonb) @> json_build_array(?)::jsonb
                  LIMIT 1`
             );
             const res = await this.pool.query(sql, [normalizedAlias]);
@@ -100,10 +95,8 @@ module.exports = (Sup) => class extends Sup {
         if (this.isPostgres) {
             // Build: aliases_normalized @> ANY(ARRAY[...])
             const placeholders = keys.map((_, i) => `json_build_array($${i + 1})::jsonb`).join(', ');
-            const sql = `SELECT * FROM topic_knowledge WHERE (
-                CASE WHEN NULLIF(TRIM(aliases_normalized), '') IS NULL THEN '[]'::jsonb
-                     ELSE NULLIF(TRIM(aliases_normalized), '')::jsonb END
-            ) @> ANY(ARRAY[${placeholders}]) LIMIT 1`;
+            const sql = `SELECT * FROM topic_knowledge
+                WHERE COALESCE(aliases_normalized, '[]'::jsonb) @> ANY(ARRAY[${placeholders}]) LIMIT 1`;
             const res = await this.pool.query(sql, keys);
             return res.rows?.[0] || null;
         }
