@@ -1246,7 +1246,9 @@ Start your response with [ and end with ]. No markdown.
             }
 
             let raw = '';
-            if (selectedProvider === 'gemini') {
+            if (selectedProvider === 'claude') {
+                raw = await ai.callClaude(prompt, selectedModel, { temperature: 0.3 });
+            } else if (selectedProvider === 'gemini') {
                 raw = await ai.callGemini(prompt, selectedModel, { temperature: 0.3 });
             } else {
                 raw = await ai.callMistralAI(prompt, selectedModel, { temperature: 0.3 });
