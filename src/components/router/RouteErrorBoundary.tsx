@@ -22,12 +22,23 @@ class RouteErrorBoundaryInner extends React.Component<Props & { pathname: string
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    if (this.isChunkLoadError(error)) {
+      window.location.reload();
+      return;
+    }
     Sentry.captureException(error, {
       extra: {
         componentStack: errorInfo.componentStack,
         pathname: this.props.pathname,
       },
     });
+  }
+
+  private isChunkLoadError(error: Error): boolean {
+    const msg = error.message || '';
+    return msg.includes('Failed to fetch dynamically imported module')
+      || msg.includes('Loading chunk')
+      || msg.includes('Loading CSS chunk');
   }
 
   render() {
@@ -50,7 +61,7 @@ class RouteErrorBoundaryInner extends React.Component<Props & { pathname: string
             </p>
             <div className="flex gap-3 justify-center flex-wrap">
               <button
-                onClick={() => this.setState({ hasError: false, error: undefined })}
+                onClick={() => window.location.reload()}
                 className="px-4 py-2 bg-red-600 text-white rounded-xl font-medium hover:bg-red-700 transition-colors"
               >
                 Try again
