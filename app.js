@@ -281,7 +281,7 @@ app.use(
                     : ["'self'", 'https://fonts.gstatic.com', 'https://cdnjs.cloudflare.com'],
                 imgSrc: ["'self'", 'data:', 'https:'],
                 connectSrc: isProd
-                    ? ["'self'"]
+                    ? ["'self'", 'https://*.ingest.de.sentry.io', 'https://*.ingest.sentry.io']
                     : ["'self'", 'https://api.semanticscholar.org', 'https://eutils.ncbi.nlm.nih.gov', 'https://api.openalex.org'],
             },
         },
