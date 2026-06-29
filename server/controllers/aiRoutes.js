@@ -100,9 +100,7 @@ function registerAiRoutes(app, deps) {
         let usedProvider = provider;
         let quizModel = model;
         const runStructured = async (p, m) => {
-            const parsed = p === 'gemini'
-                ? await ai.callGeminiStructured(prompt, m, opts)
-                : await ai.callMistralStructured(prompt, m, opts);
+            const parsed = await ai.callStructured(prompt, p, m, opts);
             const validated = validateAiOutput('quiz_generation', parsed, { allowDegrade: false });
             if (!validated.ok) {
                 throw new Error(validated.errors.join('; ') || 'Quiz output failed validation');
