@@ -1034,7 +1034,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
 
         try {
             let usedProvider = selectedProvider;
-            let quizModel = usedProvider === 'gemini' ? PINNED_MODELS.gemini : PINNED_MODELS.mistral;
+            let quizModel = PINNED_MODELS[usedProvider] || PINNED_MODELS.claude;
             let raw;
             try {
                 const generated = await generateQuizQuestions(ai, {
