@@ -116,7 +116,6 @@
     "joi-to-swagger": "^6.2.0",
     "jsonwebtoken": "^9.0.3",
     "kysely": "^0.28.16",
-    "logrocket": "^12.1.0",
     "node-cache": "^5.1.2",
     "node-cron": "^4.2.1",
     "nodemailer": "^9.0.1",
