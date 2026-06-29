@@ -274,7 +274,7 @@ app.use(
                     ? ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdnjs.cloudflare.com']
                     : ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdnjs.cloudflare.com'],
                 scriptSrc: isProd
-                    ? ["'self'"]
+                    ? ["'self'", "'sha256-JwytWRjcOvtgeB4XPuaGzUboHydHDtL57NYG5dDpyhQ='"]
                     : ["'self'", "'unsafe-inline'", 'https://unpkg.com', 'https://cdn.tailwindcss.com', 'https://cdn.jsdelivr.net'],
                 fontSrc: isProd
                     ? ["'self'", 'https://fonts.gstatic.com', 'https://cdnjs.cloudflare.com']
