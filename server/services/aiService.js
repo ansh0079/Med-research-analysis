@@ -287,8 +287,8 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
     }
 
     // Public API: circuit-breaker-wrapped versions for non-streaming calls
-    async function callClaudeRaw(prompt, model = PINNED_MODELS.claude, { temperature = TEMPERATURE.analysis, maxOutputTokens = 2048, timeoutMs = 45000 } = {}) {
-        return proxy.claudeMessages(prompt, { model, temperature, maxOutputTokens, timeoutMs });
+    async function callClaudeRaw(prompt, model = PINNED_MODELS.claude, { temperature = TEMPERATURE.analysis, maxOutputTokens = 2048, timeoutMs = 45000, jsonMode = false } = {}) {
+        return proxy.claudeMessages(prompt, { model, temperature, maxOutputTokens, timeoutMs, jsonMode });
     }
 
     async function callClaude(prompt, model, options = {}) {
@@ -305,7 +305,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
     }
 
     async function callClaudeStructured(prompt, model, options = {}) {
-        const text = await callClaude(prompt, model, { ...options });
+        const text = await callClaude(prompt, model, { ...options, jsonMode: true });
         if (text === null) return null;
         return parseStructuredOutput(text);
     }

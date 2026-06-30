@@ -96,7 +96,7 @@ function registerAiRoutes(app, deps) {
     }
 
     async function generateQuizQuestions(ai, { prompt, provider, model, usage }) {
-        const opts = { temperature: TEMPERATURE.quiz, jsonMode: true, usage };
+        const opts = { temperature: TEMPERATURE.quiz, jsonMode: true, maxOutputTokens: 4096, usage };
         let usedProvider = provider;
         let quizModel = model;
         const runStructured = async (p, m) => {

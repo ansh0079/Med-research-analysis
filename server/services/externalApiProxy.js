@@ -244,8 +244,14 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
       .filter((s) => s.label);
   }
 
-  async function claudeMessages(prompt, { model = 'claude-haiku-4-5-20251001', temperature = 0.7, maxOutputTokens = 2048, timeoutMs = DEFAULT_TIMEOUTS.claude } = {}) {
+  async function claudeMessages(prompt, { model = 'claude-haiku-4-5-20251001', temperature = 0.7, maxOutputTokens = 2048, timeoutMs = DEFAULT_TIMEOUTS.claude, jsonMode = false } = {}) {
     if (!keys.anthropic) throw new Error('Anthropic API key not configured');
+    const messages = [{ role: 'user', content: prompt }];
+    const body = { model, max_tokens: maxOutputTokens, temperature, messages };
+    if (jsonMode) {
+      body.system = 'You are a JSON-only API. Respond with a single valid JSON object or array. No markdown fences, no prose, no explanation — only raw JSON.';
+      messages.push({ role: 'assistant', content: '{' });
+    }
     const res = await f('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       signal: AbortSignal.timeout(timeoutMs),
@@ -254,19 +260,15 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
         'anthropic-version': '2023-06-01',
         'content-type': 'application/json',
       },
-      body: JSON.stringify({
-        model,
-        max_tokens: maxOutputTokens,
-        temperature,
-        messages: [{ role: 'user', content: prompt }],
-      }),
+      body: JSON.stringify(body),
     });
     if (!res.ok) {
       const text = await res.text();
       throw new Error(`Anthropic ${res.status} — ${text.slice(0, 200)}`);
     }
     const data = await res.json();
-    return data.content?.[0]?.text || 'No response';
+    const text = data.content?.[0]?.text || '';
+    return jsonMode ? '{' + text : (text || 'No response');
   }
 
   async function mistralChat(prompt, { model = 'mistral-small-2603', temperature = 0.7, maxOutputTokens, jsonMode = false } = {}) {
