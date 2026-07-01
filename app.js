@@ -536,11 +536,16 @@ app.use(rateLimit(200, 60));
 const distDir = path.join(__dirname, 'dist');
 const distIndex = path.join(distDir, 'index.html');
 if (process.env.NODE_ENV !== 'test' && fs.existsSync(distIndex)) {
-    app.use(express.static(distDir));
+    app.use('/assets', express.static(path.join(distDir, 'assets'), {
+        maxAge: '1y',
+        immutable: true,
+    }));
+    app.use(express.static(distDir, { maxAge: 0 }));
     app.get('*', (req, res, next) => {
         if (req.path.startsWith('/api') || req.path.startsWith('/health') || req.path.startsWith('/socket.io')) {
             return next();
         }
+        res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.sendFile(distIndex);
     });
 }
