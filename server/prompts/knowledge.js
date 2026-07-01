@@ -113,7 +113,7 @@ Year: ${year} | Journal: ${a.journal || a.source || 'Unknown'} | Design: ${desig
 Abstract: ${(a.abstract || 'No abstract').slice(0, 700)}`;
     }).join('\n\n');
 
-    const sourceArticles = (articles || []).slice(0, 8).map((a, i) => ({
+    const sourceArticles = (articles || []).slice(0, 20).map((a, i) => ({
         sourceIndex: i + 1,
         uid: a.uid || null,
         title: a.title || 'Unknown',

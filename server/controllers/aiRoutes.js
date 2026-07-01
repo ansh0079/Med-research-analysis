@@ -32,7 +32,7 @@ const { getPromptVersion } = require('../prompts/promptVersions');
 const { validateAiOutput } = require('../services/aiOutputValidation');
 const { enrichLearnerContextForQuiz } = require('../services/learnerContextService');
 const { buildEvidenceDeltaBrief } = require('../services/evidenceDeltaBriefService');
-const { coldStartMcqKey, guidelineMcqKey } = require('../utils/teachingObjectKeys');
+const { coldStartMcqKey, guidelineMcqKey, liveQuizMcqKey } = require('../utils/teachingObjectKeys');
 const { generateCaseScenario, saveCaseScenario, getCaseScenario, recordCaseChoice } = require('../services/caseScenarioService');
 
 /**
@@ -144,16 +144,19 @@ function registerAiRoutes(app, deps) {
 
     async function serveColdStartMCQs(database, topic, count) {
         try {
-            const [coldObj, guidelineObj] = await Promise.all([
+            const [coldObj, guidelineObj, liveObj] = await Promise.all([
                 database.getTeachingObjectByKey(coldStartMcqKey(database, topic)),
                 database.getTeachingObjectByKey(guidelineMcqKey(database, topic)),
+                database.getTeachingObjectByKey(liveQuizMcqKey(database, topic)),
             ]);
+
+            const liveMcqs = (liveObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'live_cache'));
+            if (liveMcqs.length >= count) return liveMcqs.slice(0, count);
 
             const coldMcqs = (coldObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'cold_start'));
             const guidelineMcqs = (guidelineObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'guideline'));
 
-            // Interleave: for every 2 cold-start MCQs include 1 guideline MCQ, to give variety
-            const merged = [];
+            const merged = [...liveMcqs];
             let ci = 0, gi = 0;
             while (merged.length < count && (ci < coldMcqs.length || gi < guidelineMcqs.length)) {
                 if (ci < coldMcqs.length) merged.push(coldMcqs[ci++]);
@@ -1169,6 +1172,18 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                     outlineLabel: cmeta ? String(cmeta.claimText || '').slice(0, 200) : null,
                 };
             });
+
+            db.upsertTeachingObject({
+                objectKey: liveQuizMcqKey(db, cleanTopic),
+                objectType: 'live_quiz_mcq',
+                normalizedTopic: db.normalizeTopic(cleanTopic),
+                topic: cleanTopic,
+                title: `Live quiz MCQs: ${cleanTopic}`,
+                payload: { mcqs: questions, generatedAt: new Date().toISOString() },
+                provider: usedProvider,
+                model: quizModel,
+                confidence: validationSummary.skipped ? 0.5 : 0.8,
+            }).catch((err) => req.log.warn({ err }, 'Failed to cache live quiz MCQs'));
 
             const auditPayload = claimSourceJob?.auditPayload && typeof claimSourceJob.auditPayload === 'object'
                 ? claimSourceJob.auditPayload

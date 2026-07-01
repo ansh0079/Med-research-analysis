@@ -15,8 +15,13 @@ function guidelineMcqKey(db, topic) {
     return `guideline-mcq:${teachingObjectTopicSlug(db, topic)}`;
 }
 
+function liveQuizMcqKey(db, topic) {
+    return `live-quiz-mcq:${teachingObjectTopicSlug(db, topic)}`;
+}
+
 module.exports = {
     teachingObjectTopicSlug,
     coldStartMcqKey,
     guidelineMcqKey,
+    liveQuizMcqKey,
 };
