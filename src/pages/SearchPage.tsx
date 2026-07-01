@@ -248,7 +248,7 @@ export const SearchPage: React.FC = () => {
   const top5Articles = React.useMemo(
     () => topicIntelligence?.evidenceBouquet.topPapers?.length
       ? topicIntelligence.evidenceBouquet.topPapers
-      : selectTopEvidence(results, 5),
+      : selectTopEvidence(results, results.length),
     [results, topicIntelligence]
   );
   const isFlagshipTopic = React.useMemo(

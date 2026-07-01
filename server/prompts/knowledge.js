@@ -94,7 +94,7 @@ VERIFIED CLINICIAN ANCHORS (immutable — copy the "verifiedAnchors" array into 
 ${JSON.stringify(anchors, null, 2)}
 `;
     })();
-    const context = (articles || []).slice(0, 8).map((a, i) => {
+    const context = (articles || []).slice(0, 20).map((a, i) => {
         const year = (a.pubdate || '').slice(0, 4) || 'unknown';
         const design = (a.pubtype || []).join(', ') || 'Study';
         const cites = a.pmcrefcount ?? a.citationCount ?? 'unknown';
