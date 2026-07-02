@@ -468,6 +468,9 @@ async function fetchAndRankSearchArticles({
         const telemetry = {};
         const timings = {};
         const started = Date.now();
+        const _trace = process.env.SEARCH_TRACE
+            ? (label, arr) => { const t = process.env.SEARCH_TRACE.toLowerCase(); console.log(`[SEARCH_TRACE] ${label}: ${arr.length}` + (t ? ` | hit=${arr.some(a => String(a.uid||a.pmid||'').toLowerCase().includes(t))}` : '')); }
+            : () => {};
         // PICO decomposition runs in parallel with evidence fetching
         const picoPromise = withSpan('search.pico_decomposition', { 'search.query': query }, () => (
             decomposePico(query, serverConfig, fetchImpl, cache).catch(() => null)
@@ -492,10 +495,12 @@ async function fetchAndRankSearchArticles({
         }));
         const pico = await picoPromise;
         timings.fetchMs = Date.now() - started;
+        _trace('raw', raw);
 
         // Post-retrieval study-type filter: PubMed is already filtered at the query level;
         // Semantic Scholar and OpenAlex are not, so we drop non-matching articles here.
         const studyFiltered = filterByStudyType(raw, parsedStudyTypes);
+        _trace('studyFiltered', studyFiltered);
 
         const filterStarted = Date.now();
         const queryMeshTerms = Array.isArray(telemetry.meshExpansions) ? telemetry.meshExpansions : [];
@@ -508,6 +513,7 @@ async function fetchAndRankSearchArticles({
         });
         const sanitized = relevant.map(sanitizeArticleOutput);
         timings.filterMs = Date.now() - filterStarted;
+        _trace('relevant', relevant);
 
         const teachingStarted = Date.now();
         const { objects: teachingObjects, claims: teachingClaims, signalBoosts } = await withSpan('search.prefetch_teaching_artifacts', {
@@ -533,7 +539,9 @@ async function fetchAndRankSearchArticles({
             return ranked;
         });
 
+        _trace('bouquet.topPapers', bouquet.topPapers);
         let articles = collapseNearDuplicateTitles(bouquet.topPapers.map(sanitizeArticleOutput));
+        _trace('afterCollapse', articles);
         articles = await withSpan('search.pico_rerank', {
             'search.result_count': articles.length,
             'search.intent': queryIntent,
@@ -548,6 +556,7 @@ async function fetchAndRankSearchArticles({
             telemetry,
         }));
         timings.rankMs = Date.now() - rankStarted;
+        _trace('afterRerank', articles);
 
         const learningStarted = Date.now();
         const learningContextFull = await withSpan('search.personalization', {

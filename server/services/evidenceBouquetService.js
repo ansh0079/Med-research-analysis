@@ -166,8 +166,11 @@ function getCitationCount(article) {
 // provides one (OpenAlex, Semantic Scholar). PubMed results have none, so a
 // missing value means "unknown", not "zero" — callers must not treat a 0 from
 // getCitationCount as evidence the paper is uncited.
+// Only the raw source fields count: _impact.citations is DERIVED (computeImpactScore
+// coerces missing counts to 0), so trusting it would re-fabricate a fake "0 citations"
+// for PubMed articles after sanitization.
 function hasCitationData(article) {
-    return [article?.citationCount, article?.pmcrefcount, article?._impact?.citations]
+    return [article?.citationCount, article?.pmcrefcount]
         .some((v) => typeof v === 'number' && Number.isFinite(v));
 }
 
