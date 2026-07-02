@@ -62,8 +62,8 @@ test.describe('beta smoke', () => {
   test('serves the current app shell', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page).toHaveTitle(/MedResearch.*Medical Evidence Intelligence/i);
-    await expect(page.getByRole('button', { name: /MedResearch/i })).toBeVisible();
+    await expect(page).toHaveTitle(/Signal MD.*Medical Evidence Intelligence/i);
+    await expect(page.getByRole('button', { name: /Signal MD/i })).toBeVisible();
     await expect(page.getByRole('button', { name: /Sign in/i }).first()).toBeVisible();
     await expect(page.getByText(/Search 100 M\+ papers/i)).toBeVisible();
   });

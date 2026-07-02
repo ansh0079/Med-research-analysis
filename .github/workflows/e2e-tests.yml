@@ -29,14 +29,16 @@ jobs:
 
       - run: npm install
 
+      - name: Build frontend
+        run: npm run build
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Start server
-        run: npm run start &
+        run: npm run start:prod &
         env:
           PORT: 3002
-          NODE_ENV: test
           JWT_SECRET: test-jwt-secret-e2e
           ADMIN_TOKEN: test-admin-token-e2e
 
@@ -75,14 +77,16 @@ jobs:
 
       - run: npm install
 
+      - name: Build frontend
+        run: npm run build
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
       - name: Start server
-        run: npm run start &
+        run: npm run start:prod &
         env:
           PORT: 3002
-          NODE_ENV: test
           JWT_SECRET: test-jwt-secret-e2e
           ADMIN_TOKEN: test-admin-token-e2e
 
@@ -121,14 +125,16 @@ jobs:
 
       - run: npm install
 
+      - name: Build frontend
+        run: npm run build
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
       - name: Start server
-        run: npm run start &
+        run: npm run start:prod &
         env:
           PORT: 3002
-          NODE_ENV: test
           JWT_SECRET: test-jwt-secret-e2e
           ADMIN_TOKEN: test-admin-token-e2e
 
