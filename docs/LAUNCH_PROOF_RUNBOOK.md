@@ -46,6 +46,28 @@ Ownership note: 1–3 are one-time gates you run yourself. 4 is a standing proce
 
 **Record:** commit the summary numbers (not the raw dump) into the readiness tracker so there is a dated baseline.
 
+**Current measured baseline (2026-07-02, live `/api/search`):**
+
+| Metric | Before citation-cascade fix | After citation-cascade fix |
+| --- | ---: | ---: |
+| Recall@10 | 0.22 | 0.59 |
+| MRR | 0.15 | 0.37 |
+| nDCG@10 | 0.17 | 0.42 |
+| Required-type coverage | 0.80 | 0.95 |
+| Landmark hits | 9/41 | 24/41 |
+
+Root cause: citation-less PubMed articles were being sanitized with derived
+`_impact.citations = 0`, then later treated as if a real source had reported
+zero citations. The bouquet age+citation filter therefore deleted old landmark
+trials after relevance filtering. Keep this invariant intact: only raw source
+fields such as `citationCount` and `pmcrefcount` prove that citation data is
+known; derived `_impact.citations` must not be used by citation-data guards.
+
+For live-stage debugging, set `SEARCH_TRACE` to a PMID or UID fragment and run
+the query through `/api/search`. The trace prints stage counts from raw fetch
+through bouquet/rerank/collapse, which distinguishes hard drops from ranking
+misses.
+
 ---
 
 ## 2. Stripe payment — move one real (test-mode) dollar
