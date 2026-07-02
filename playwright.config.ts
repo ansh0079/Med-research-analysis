@@ -72,7 +72,7 @@ export default defineConfig({
   webServer: {
     command: 'npm run build && npm run start:prod',
     url: 'http://localhost:3002/health',
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
     timeout: 180 * 1000,
     env: {
       NODE_ENV: 'production',
