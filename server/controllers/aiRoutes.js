@@ -156,13 +156,11 @@ function registerAiRoutes(app, deps) {
             const coldMcqs = (coldObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'cold_start'));
             const guidelineMcqs = (guidelineObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'guideline'));
 
-            const merged = [...liveMcqs];
-            let ci = 0, gi = 0;
-            while (merged.length < count && (ci < coldMcqs.length || gi < guidelineMcqs.length)) {
-                if (ci < coldMcqs.length) merged.push(coldMcqs[ci++]);
-                if (merged.length < count && ci < coldMcqs.length) merged.push(coldMcqs[ci++]);
-                if (merged.length < count && gi < guidelineMcqs.length) merged.push(guidelineMcqs[gi++]);
-            }
+            // Assessment content is normative ("what is the correct thing to do?"), so it
+            // must rest on a defensible, citable answer. Guideline-grounded MCQs are that;
+            // paper-synthesis (cold-start) MCQs are the fallback when no guideline exists.
+            // Order: live cache (freshest) → guideline → cold-start.
+            const merged = [...liveMcqs, ...guidelineMcqs, ...coldMcqs].slice(0, count);
 
             return merged.length > 0 ? merged : null;
         } catch {
