@@ -116,7 +116,7 @@ function enforceMCQDiversity(questions, targetDistribution) {
     };
 }
 
-function buildMcqPrompt(topic, knowledge, { includeExemplars = true } = {}) {
+function buildMcqPrompt(topic, knowledge, { includeExemplars = true, sourceArticles = [] } = {}) {
     const k = knowledge || {};
     const teachingPoints = (k.teachingPoints || []).map((tp, i) =>
         `${i + 1}. ${tp.claim || tp.text || ''}`
@@ -125,19 +125,26 @@ function buildMcqPrompt(topic, knowledge, { includeExemplars = true } = {}) {
 
     const exemplarBlock = includeExemplars ? `\n\nQUALITY STANDARDS:\n${EXEMPLAR_MCQS.good}\n\n${EXEMPLAR_MCQS.bad}\n` : '';
 
+    const sourceBlock = Array.isArray(sourceArticles) && sourceArticles.length
+        ? `\nSOURCE PAPERS (ground questions in these; prioritise the landmark / practice-defining trials among them):\n${sourceArticles.slice(0, 10).map((a, i) => `${i + 1}. ${a.title || ''}${a.pubdate ? ` (${String(a.pubdate).slice(0, 4)})` : ''}`).join('\n')}\n`
+        : '';
+
     return `Generate 10 high-quality MCQs about "${topic}" for final-year medical students.
 
 TOPIC KNOWLEDGE: ${k.mentorMessage || ''}
 KEY TEACHING POINTS:
 ${teachingPoints || 'General knowledge'}
 MCQ ANGLES: ${mcqAngles || 'Mixed'}
-${exemplarBlock}
+${sourceBlock}${exemplarBlock}
 STRICT REQUIREMENTS:
 - Question types: Generate AT LEAST 2 clinical_application, 2 recall, 1 guideline, 1 pitfall, and fill remaining with mixed types
 - Difficulty: Generate AT LEAST 3 easy, 4 medium, 3 hard
 - Clinical vignettes MUST include: age, sex, presenting complaint, relevant comorbidities
 - 4 options (A-D), exactly one correct
 - Distractors must be plausible but clearly incorrect to an expert
+- EVIDENCE PRIORITY: base correct answers on landmark, practice-defining trials and
+  seminal studies for this topic (the pivotal RCTs), not isolated or recent
+  low-impact papers. Name the specific trial in the explanation where relevant.
 - Explanations must cite evidence or guidelines (if available in teaching points)
 - Do NOT invent drug doses, guidelines, or trial results not in the teaching points
 
@@ -145,7 +152,7 @@ Return ONLY valid JSON with this shape (no markdown, no prose outside JSON):
 {"questions":[{"type":"multiple_choice","questionType":"recall|clinical_application|guideline|pitfall","question":"...","options":["A: ...","B: ...","C: ...","D: ..."],"correctAnswer":"A","explanation":"2-3 sentences with evidence","difficulty":"easy|medium|hard","sourceReference":null}]}`;
 }
 
-async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemini', model = null } = {}) {
+async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemini', model = null, sourceArticles = [] } = {}) {
     return runWithLlmBudget(createBudgetForAction('quiz'), async () => {
         const normalizedTopic = db.normalizeTopic(topic);
         const objectKey = coldStartMcqKey(db, topic);
@@ -167,7 +174,7 @@ async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemi
             }
         }
 
-        const prompt = buildMcqPrompt(topic, knowledge, { includeExemplars: true });
+        const prompt = buildMcqPrompt(topic, knowledge, { includeExemplars: true, sourceArticles });
         let parsed;
 
         if (provider === 'gemini' && ai.callGeminiStructured) {

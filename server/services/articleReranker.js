@@ -121,11 +121,9 @@ async function extractPicoProfile(caseText, { ai, cache, serverConfig, logWarn }
     let rawText;
     const started = Date.now();
     try {
-        if (provider === 'gemini') {
-            rawText = await ai.callGemini(prompt, model, { temperature: RERANK_TEMPERATURE, maxOutputTokens: 512 });
-        } else {
-            rawText = await ai.callMistralAI(prompt, model, { temperature: RERANK_TEMPERATURE, maxOutputTokens: 512 });
-        }
+        // callText routes to the resolved provider (claude/gemini/mistral). A bare
+        // gemini/else split previously sent claude models to the Mistral endpoint.
+        rawText = await ai.callText(prompt, provider, model, { temperature: RERANK_TEMPERATURE, maxOutputTokens: 512 });
     } catch (err) {
         logWarn?.({ err, provider, model, durationMs: Date.now() - started }, 'PICO extraction LLM call failed');
         return {};
@@ -317,12 +315,9 @@ async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, l
     let scores = null;
     const started = Date.now();
     try {
-        let rawText;
-        if (provider === 'gemini') {
-            rawText = await ai.callGemini(prompt, model, { temperature: RERANK_TEMPERATURE, maxOutputTokens: 2048 });
-        } else {
-            rawText = await ai.callMistralAI(prompt, model, { temperature: RERANK_TEMPERATURE, maxOutputTokens: 2048 });
-        }
+        // callText routes to the resolved provider (claude/gemini/mistral). A bare
+        // gemini/else split previously sent claude models to the Mistral endpoint.
+        const rawText = await ai.callText(prompt, provider, model, { temperature: RERANK_TEMPERATURE, maxOutputTokens: 2048 });
         scores = parseBatchScores(rawText, safeArticles.length);
         if (!scores || scores.length === 0) {
             logWarn?.({ rawPreview: String(rawText).slice(0, 200) }, 'Reranker returned no parseable scores');

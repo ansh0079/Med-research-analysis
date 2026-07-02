@@ -4,6 +4,8 @@ import * as Sentry from '@sentry/react';
 
 interface Props {
   children: React.ReactNode;
+  /** Overridable in tests — jsdom cannot mock the unforgeable window.location. */
+  reload?: () => void;
 }
 
 interface State {
@@ -21,9 +23,14 @@ class RouteErrorBoundaryInner extends React.Component<Props & { pathname: string
     return { hasError: true, error };
   }
 
+  private reload = () => {
+    if (this.props.reload) this.props.reload();
+    else window.location.reload();
+  };
+
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     if (this.isChunkLoadError(error)) {
-      window.location.reload();
+      this.reload();
       return;
     }
     Sentry.captureException(error, {
@@ -61,7 +68,7 @@ class RouteErrorBoundaryInner extends React.Component<Props & { pathname: string
             </p>
             <div className="flex gap-3 justify-center flex-wrap">
               <button
-                onClick={() => window.location.reload()}
+                onClick={this.reload}
                 className="px-4 py-2 bg-red-600 text-white rounded-xl font-medium hover:bg-red-700 transition-colors"
               >
                 Try again
@@ -82,10 +89,10 @@ class RouteErrorBoundaryInner extends React.Component<Props & { pathname: string
   }
 }
 
-export const RouteErrorBoundary: React.FC<Props> = ({ children }) => {
+export const RouteErrorBoundary: React.FC<Props> = ({ children, reload }) => {
   const { pathname } = useLocation();
   return (
-    <RouteErrorBoundaryInner pathname={pathname}>
+    <RouteErrorBoundaryInner pathname={pathname} reload={reload}>
       {children}
     </RouteErrorBoundaryInner>
   );

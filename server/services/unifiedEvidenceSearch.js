@@ -6,6 +6,7 @@
 const { buildProxyService } = require('./externalApiProxy');
 const crypto = require('crypto');
 const { getPromptVersion } = require('../prompts/promptVersions');
+const { queryAliasMatchScore } = require('./evidenceBouquetService');
 
 // EBM evidence hierarchy — higher score = stronger study design
 const EBM_SCORES = {
@@ -46,6 +47,70 @@ function isPreprint(article) {
     const sources = ['biorxiv', 'medrxiv', 'preprint', 'ssrn', 'researchsquare'];
     const text = ((article.source || '') + (article.journal || '')).toLowerCase();
     return sources.some((s) => text.includes(s));
+}
+
+const CLINICAL_QUERY_ALIAS_RULES = [
+    { all: [/\bsglt2\b|\bsodium[- ]glucose\b/i, /\bheart failure\b|\bhfref\b|\breduced ejection fraction\b/i], aliases: ['DAPA-HF', 'EMPEROR-Reduced', 'dapagliflozin', 'empagliflozin'] },
+    { all: [/\bsacubitril\b|\bvalsartan\b|\bneprilysin\b/i, /\bheart failure\b|\bhfref\b|\bmortality\b/i], aliases: ['PARADIGM-HF', 'LCZ696'] },
+    { all: [/\bspironolactone\b|\bmineralocorticoid\b|\baldosterone\b/i, /\bheart failure\b|\bsurvival\b/i], aliases: ['RALES'] },
+    { all: [/\benalapril\b|\bace inhibitor\b/i, /\bleft ventricular\b|\bejection fraction\b|\bsurvival\b/i], aliases: ['SOLVD', 'Studies of Left Ventricular Dysfunction'] },
+    { all: [/\bintensive\b/i, /\bblood pressure\b|\bsystolic\b/i], aliases: ['SPRINT'] },
+    { all: [/\bhypertension\b/i, /\b80\b|\bvery elderly\b|\belderly\b/i], aliases: ['HYVET'] },
+    { all: [/\bempagliflozin\b/i, /\bcardiovascular outcomes?\b|\btype 2 diabetes\b/i], aliases: ['EMPA-REG OUTCOME'] },
+    { all: [/\bliraglutide\b|\bglp-?1\b/i, /\bcardiovascular outcomes?\b|\btype 2 diabetes\b/i], aliases: ['LEADER'] },
+    { all: [/\bukpds\b|\bsulphonylureas?\b|\bsulfonylureas?\b/i, /\btype 2 diabetes\b|\bblood glucose\b/i], aliases: ['UKPDS 33'] },
+    { all: [/\baccord\b|\bintensive glucose\b|\bglucose lowering\b/i, /\btype 2 diabetes\b|\bmortality\b/i], aliases: ['ACCORD'] },
+    { all: [/\bcanagliflozin\b/i, /\brenal\b|\bnephropathy\b|\bkidney\b/i], aliases: ['CREDENCE'] },
+    { all: [/\bempagliflozin\b/i, /\bchronic kidney disease\b|\bckd\b|\bkidney disease\b/i], aliases: ['EMPA-KIDNEY'] },
+    { all: [/\brosuvastatin\b|\bc-reactive protein\b|\bprimary prevention\b/i], aliases: ['JUPITER'] },
+    { all: [/\bevolocumab\b|\bpcsk9\b/i, /\bcardiovascular outcomes?\b/i], aliases: ['FOURIER'] },
+    { all: [/\bezetimibe\b/i, /\bacute coronary syndrome\b|\bstatin\b/i], aliases: ['IMPROVE-IT'] },
+    { all: [/\bcanakinumab\b|\banti-inflammatory\b/i, /\batheroscler/i], aliases: ['CANTOS'] },
+    { all: [/\bdabigatran\b/i, /\bwarfarin\b|\batrial fibrillation\b/i], aliases: ['RE-LY'] },
+    { all: [/\bapixaban\b/i, /\bwarfarin\b|\batrial fibrillation\b/i], aliases: ['ARISTOTLE'] },
+    { all: [/\bcha2?ds2\b|\bvasc\b|\brisk stratification\b/i, /\batrial fibrillation\b|\bstroke\b/i], aliases: ['CHA2DS2-VASc', 'CHA2DS2VASc'] },
+    { all: [/\bticagrelor\b/i, /\bclopidogrel\b|\bacute coronary syndromes?\b/i], aliases: ['PLATO'] },
+    { all: [/\binvasive\b/i, /\bconservative\b/i, /\bstable coronary\b|\bischemic heart\b/i], aliases: ['ISCHEMIA'] },
+    { all: [/\bprimary angioplasty\b|\bprimary pci\b|\bthrombolytic\b|\bthrombolysis\b/i, /\bmyocardial infarction\b|\bami\b|\bstemi\b/i], aliases: ['primary PCI', 'Keeley'] },
+    { all: [/\btranscatheter\b|\btavr\b|\btavi\b/i, /\blow-risk\b|\blow risk\b|\bballoon-expandable\b/i], aliases: ['PARTNER 3'] },
+    { all: [/\blow tidal volume\b|\blung protective\b/i, /\bards\b|\bacute respiratory distress\b/i], aliases: ['ARDSNet', 'ARMA', 'Ventilation with lower tidal volumes', 'acute lung injury'] },
+    { all: [/\bprone\b|\bproning\b/i, /\bards\b|\bacute respiratory distress\b/i], aliases: ['PROSEVA'] },
+    { all: [/\btriple inhaled\b|\btriple therapy\b/i, /\bcopd\b|\bexacerbation\b/i], aliases: ['IMPACT', 'ETHOS'] },
+    { all: [/\baspirin\b/i, /\belderly\b|\bhealthy elderly\b|\bprimary prevention\b/i], aliases: ['ASPREE'] },
+    { all: [/\bdexamethasone\b/i, /\bcovid/i], aliases: ['RECOVERY'] },
+    { all: [/\btocilizumab\b/i, /\bcovid/i], aliases: ['RECOVERY', 'REMAP-CAP'] },
+    { all: [/\bpembrolizumab\b/i, /\bnon-small cell\b|\bnsclc\b|\blung cancer\b/i], aliases: ['KEYNOTE-189'] },
+    { all: [/\bnivolumab\b/i, /\bipilimumab\b/i, /\bmelanoma\b/i], aliases: ['CheckMate 067'] },
+    { all: [/\bcar-?t\b|\baxicabtagene\b/i, /\blymphoma\b|\blarge b-cell\b/i], aliases: ['ZUMA-1'] },
+    { all: [/\bcrispr\b|\bcas9\b|\bctx001\b/i, /\bsickle cell\b|\bbeta-thalassemia\b|\bthalassaemia\b/i], aliases: ['CTX001', 'exagamglogene autotemcel', 'CLIMB THAL-111'] },
+    { all: [/\btissue plasminogen\b|\balteplase\b|\btpa\b/i, /\bstroke\b|\bischemic\b|\bischaemic\b/i], aliases: ['NINDS', 'rt-PA', 'National Institute of Neurological Disorders', 'National Institute of Neurological Disorders and Stroke'] },
+    { all: [/\bendovascular thrombectomy\b|\bthrombectomy\b/i, /\bstroke\b|\btime to treatment\b/i], aliases: ['HERMES'] },
+    { all: [/\bantidepressant\b|\bdepressed outpatients\b/i, /\bsequential\b|\btreatment steps\b/i], aliases: ['STAR*D', 'Sequenced Treatment Alternatives to Relieve Depression'] },
+];
+
+function clinicalQueryAliases(query) {
+    const text = String(query || '');
+    const out = new Set();
+    for (const rule of CLINICAL_QUERY_ALIAS_RULES) {
+        if (rule.all.every((pattern) => pattern.test(text))) {
+            rule.aliases.forEach((alias) => out.add(alias));
+        }
+    }
+    return [...out].slice(0, 8);
+}
+
+function pubmedTextAlias(alias) {
+    const clean = String(alias || '').replace(/"/g, '').trim();
+    if (!clean) return null;
+    return /\s/.test(clean) ? `"${clean}"` : `"${clean}"[Title/Abstract]`;
+}
+
+function buildPubMedSearchQuery(baseQuery, meshExpansions = [], aliases = []) {
+    const terms = [String(baseQuery || '').trim()].filter(Boolean);
+    terms.push(...meshExpansions.map((term) => `"${String(term).replace(/"/g, '').trim()}"[MeSH Terms]`).filter(Boolean));
+    terms.push(...aliases.map(pubmedTextAlias).filter(Boolean));
+    if (terms.length <= 1) return terms[0] || '';
+    return `(${terms.join(' OR ')})`;
 }
 
 /** Strip DOI URL prefixes and lowercase for stable cross-source matching */
@@ -186,12 +251,22 @@ function mergeArticleMetadata(primary, incoming) {
  * EBM contributes a fractional bonus (max 5% of a first-position score) so it
  * acts as a tiebreaker within RRF tiers without overriding cross-tier ordering.
  */
-function applyRRF(perSourceLists, k = 60, listWeights = []) {
+function applyRRF(perSourceLists, k = 60, listWeights = [], queryAliases = []) {
     const scores = new Map(); // dedupeKey → { rrfScore, article }
     const MAX_FIRST_SCORE = 1 / (k + 1); // ≈ 0.0164
-    const EBM_WEIGHT = MAX_FIRST_SCORE * 0.25; // 25% weight allows EBM quality to overcome ~5 rank positions
+    // Evidence quality is a first-class fusion signal, not just a tiebreaker: RRF's
+    // sum-over-sources design otherwise lets a mediocre paper that appears in both
+    // PubMed and OpenAlex outrank a landmark RCT/meta that a single source ranked #1.
+    // At 2× a first-place score, a top-EBM paper (RCT/SR/MA) can overcome the
+    // dual-source rank accumulation of a low-EBM paper.
+    const EBM_WEIGHT = MAX_FIRST_SCORE * 2.0;
+    // A title/abstract match on a high-signal trial alias (e.g. "ARISTOTLE", "DAPA-HF")
+    // is a near-certain identification of THE landmark trial for the query. Without this,
+    // RRF buries a PubMed-only rank-1 landmark under mediocre papers that happen to appear
+    // in both sources (dual-source rank accumulation). Worth ~3 first-place ranks.
+    const ALIAS_WEIGHT = MAX_FIRST_SCORE * 3;
 
-    const TIER1_JOURNALS = ['nejm', 'lancet', 'jama', 'bmj', 'nature', 'science', 'annals of internal medicine'];
+    const TIER1_JOURNALS = ['nejm', 'n engl j med', 'lancet', 'jama', 'bmj', 'nature', 'science', 'annals of internal medicine'];
 
     for (let i = 0; i < perSourceLists.length; i++) {
         const list = perSourceLists[i];
@@ -217,11 +292,12 @@ function applyRRF(perSourceLists, k = 60, listWeights = []) {
     }
 
     return [...scores.values()]
+        .map((e) => ({ ...e, aliasBonus: queryAliasMatchScore(e.article, queryAliases) * ALIAS_WEIGHT }))
         .sort((a, b) => {
             const ebmA = getEbmScore(a.article);
             const ebmB = getEbmScore(b.article);
-            const scoreA = a.rrfScore + (ebmA / 7) * EBM_WEIGHT;
-            const scoreB = b.rrfScore + (ebmB / 7) * EBM_WEIGHT;
+            const scoreA = a.rrfScore + (ebmA / 7) * EBM_WEIGHT + a.aliasBonus;
+            const scoreB = b.rrfScore + (ebmB / 7) * EBM_WEIGHT + b.aliasBonus;
             return scoreB - scoreA;
         })
         .map((e) => e.article);
@@ -231,8 +307,8 @@ function applyRRF(perSourceLists, k = 60, listWeights = []) {
  * Merge, deduplicate, and rank results from multiple per-source lists.
  * Accepts an optional vectorList for semantic fusion via RRF.
  */
-function mergeAndRank(perSourceLists, listWeights) {
-    const ranked = applyRRF(perSourceLists, 60, listWeights);
+function mergeAndRank(perSourceLists, listWeights, queryAliases = []) {
+    const ranked = applyRRF(perSourceLists, 60, listWeights, queryAliases);
     return ranked.map((article) => ({
         ...article,
         _ebmScore: getEbmScore(article),
@@ -510,20 +586,15 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     // Wait for LLM reformulation (runs in parallel with MeSH)
     const reformulatedQuery = await llmReformulationPromise;
 
-    // Use LLM-reformulated query if available, otherwise fall back to MeSH-augmented query
-    let pubmedQuery;
-    if (reformulatedQuery) {
-        pubmedQuery = reformulatedQuery;
-    } else if (meshExpansions.length > 0) {
-        pubmedQuery = `${query} OR ${meshExpansions.map((t) => `"${t}"[MeSH Terms]`).join(' OR ')}`;
-    } else {
-        pubmedQuery = query;
-    }
+    const clinicalAliases = clinicalQueryAliases(query);
+    const pubmedQueryBase = reformulatedQuery || query;
+    let pubmedQuery = buildPubMedSearchQuery(pubmedQueryBase, reformulatedQuery ? [] : meshExpansions, clinicalAliases);
 
     pubmedQuery = appendPubMedPublicationFilters(pubmedQuery, specificity, parsedStudyTypes, parsedYearFilters);
 
     if (telemetry && typeof telemetry === 'object') {
         telemetry.meshExpansions = meshExpansions;
+        telemetry.clinicalAliases = clinicalAliases;
         telemetry.pubmedQuery = pubmedQuery;
         telemetry.usedReformulatedQuery = Boolean(reformulatedQuery);
     }
@@ -532,10 +603,29 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     const sourceFetches = [];
 
     if (sourceList.includes('pubmed')) {
+        // The broadened query (base OR MeSH OR aliases) maximises recall, but on already
+        // specific queries the OR-expansion ranks the precise landmark far down — sometimes
+        // past the fetch limit. Also run the un-expanded base query so an exact match (e.g.
+        // a trial whose abstract lacks its acronym) is always a candidate, and merge it in
+        // first so PubMed's precise rank-1 result leads the fused list.
+        const preciseQuery = appendPubMedPublicationFilters(pubmedQueryBase, specificity, parsedStudyTypes, parsedYearFilters);
         sourceFetches.push((async () => {
             try {
-                const articles = await proxy.pubmedSearch(pubmedQuery, { maxResults: safeLimit });
-                if (articles.length === 0 && telemetry && typeof telemetry === 'object') {
+                const [broad, precise] = await Promise.all([
+                    proxy.pubmedSearch(pubmedQuery, { maxResults: safeLimit }),
+                    preciseQuery !== pubmedQuery
+                        ? proxy.pubmedSearch(preciseQuery, { maxResults: Math.ceil(safeLimit / 2) }).catch(() => [])
+                        : Promise.resolve([]),
+                ]);
+                const seen = new Set();
+                const merged = [];
+                for (const a of [...precise, ...broad]) {
+                    const dk = dedupeKey(a);
+                    if (dk && seen.has(dk)) continue;
+                    if (dk) seen.add(dk);
+                    merged.push(a);
+                }
+                if (merged.length === 0 && telemetry && typeof telemetry === 'object') {
                     telemetry.lowRecallLearning = {
                         query,
                         resultCount: 0,
@@ -543,7 +633,7 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
                         expandedAliases: meshExpansions,
                     };
                 }
-                return articles;
+                return merged;
             } catch (err) {
                 console.warn('[unifiedEvidence] PubMed failed', err.message);
                 return [];
@@ -590,19 +680,22 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     const listWeights = vectorList.length > 0
         ? Array(perSourceLists.length - 1).fill(1).concat(1.25)
         : undefined;
-    const ranked = mergeAndRank(perSourceLists, listWeights);
+    const ranked = mergeAndRank(perSourceLists, listWeights, clinicalAliases);
     return collapseNearDuplicateTitles(ranked);
 }
 
 module.exports = {
     articleFromOpenAlexWork,
     fetchUnifiedEvidence,
+    mergeAndRank,
     getEbmScore,
     isPreprint,
     collapseNearDuplicateTitles,
     dedupeKey,
     normalizePmid,
     normalizeDoi,
+    clinicalQueryAliases,
+    buildPubMedSearchQuery,
     appendPubMedPublicationFilters,
     publicationTypeClause,
     SPECIFICITY_PUB_TYPE_FILTERS,

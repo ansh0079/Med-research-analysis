@@ -8,10 +8,12 @@ const {
     intentToPreferredArchetypes,
     isOffTopic,
     getCitationCount,
+    hasCitationData,
     getYear,
     isPreclinical,
     isPredatoryJournal,
     MECHANISM_QUERY_PATTERNS,
+    queryAliasMatchScore,
 } = require('./evidenceBouquetService');
 const { fetchUnifiedEvidence, collapseNearDuplicateTitles, decomposePico } = require('./unifiedEvidenceSearch');
 const { sanitizeArticleOutput } = require('../utils/articles');
@@ -30,6 +32,12 @@ const STRICT_PUB_TYPES = new Set([
     'randomized controlled trial', 'randomised controlled trial',
     'clinical trial', 'practice guideline', 'guideline',
 ]);
+
+function candidateFetchLimit(returnLimit) {
+    const n = Number.parseInt(String(returnLimit), 10);
+    const safe = Number.isFinite(n) && n > 0 ? n : 20;
+    return Math.max(safe, Math.min(50, Math.max(20, safe * 5)));
+}
 
 function parsePreviousQueries(raw) {
     if (!raw) return [];
@@ -298,7 +306,7 @@ async function applyPicoRerankStage({
 
     const started = Date.now();
     const keys = serverConfig?.keys || {};
-    const ai = (keys.gemini || keys.mistral) ? createAiService({ serverConfig, fetchImpl }) : null;
+    const ai = (keys.anthropic || keys.gemini || keys.mistral) ? createAiService({ serverConfig, fetchImpl }) : null;
     const picoProfile = normalizePicoProfileForReranker(pico, query, queryIntent);
 
     try {
@@ -376,18 +384,23 @@ function annotateSearchRankMetadata(articles, bouquetRanking = []) {
     });
 }
 
-function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMeshTerms = [], parsedYearFilters = [], pico = null }) {
+function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMeshTerms = [], parsedYearFilters = [], pico = null, queryAliases = [] }) {
     const currentYear = new Date().getFullYear();
     const queryWantsMechanisms = MECHANISM_QUERY_PATTERNS.test(String(query || ''));
     const isStrictMode = specificity === 'strict';
     const meshTerms = Array.isArray(queryMeshTerms) ? queryMeshTerms : [];
 
     return (Array.isArray(raw) ? raw : []).filter((article) => {
-        if (isOffTopic(article, query, { queryMeshTerms: meshTerms })) return false;
+        const aliasMatched = queryAliasMatchScore(article, queryAliases) > 0;
+        if (!aliasMatched && isOffTopic(article, query, { queryMeshTerms: meshTerms })) return false;
         if (!yearInFilters(article, parsedYearFilters)) return false;
         if (!matchesPicoInterventionComparator(article, pico, query)) return false;
         const age = currentYear - getYear(article);
-        if (getCitationCount(article) === 0 && age > 2) return false;
+        // Only drop old papers we KNOW are uncited. Missing citation data must not be
+        // treated as zero: PubMed results carry no citation counts, so coercing missing
+        // → 0 here silently dropped every PubMed article older than 2 years — including
+        // decades-old landmark trials (RALES, SOLVD, ARDSNet, etc.).
+        if (hasCitationData(article) && getCitationCount(article) === 0 && age > 2) return false;
         if (!queryWantsMechanisms && isPreclinical(article)) return false;
         if (isPredatoryJournal(article)) return false;
         if (isStrictMode) {
@@ -463,18 +476,23 @@ async function fetchAndRankSearchArticles({
         const telemetry = {};
         const timings = {};
         const started = Date.now();
+        const _trace = process.env.SEARCH_TRACE
+            ? (label, arr) => { const t = process.env.SEARCH_TRACE.toLowerCase(); console.log(`[SEARCH_TRACE] ${label}: ${arr.length}` + (t ? ` | hit=${arr.some(a => String(a.uid||a.pmid||'').toLowerCase().includes(t))}` : '')); }
+            : () => {};
         // PICO decomposition runs in parallel with evidence fetching
         const picoPromise = withSpan('search.pico_decomposition', { 'search.query': query }, () => (
             decomposePico(query, serverConfig, fetchImpl, cache).catch(() => null)
         ));
 
+        const fetchLimit = candidateFetchLimit(safeLimit);
         const raw = await withSpan('search.fetch_unified_evidence', {
             'search.query': query,
             'search.sources': sourceList,
-            'search.limit': Math.max(safeLimit, 20),
+            'search.limit': fetchLimit,
+            'search.return_limit': safeLimit,
         }, () => fetchUnifiedEvidence({
             query,
-            safeLimit: Math.max(safeLimit, 20),
+            safeLimit: fetchLimit,
             sourceList,
             serverConfig,
             fetch: fetchImpl,
@@ -487,22 +505,32 @@ async function fetchAndRankSearchArticles({
         }));
         const pico = await picoPromise;
         timings.fetchMs = Date.now() - started;
+        _trace('raw', raw);
 
         // Post-retrieval study-type filter: PubMed is already filtered at the query level;
         // Semantic Scholar and OpenAlex are not, so we drop non-matching articles here.
         const studyFiltered = filterByStudyType(raw, parsedStudyTypes);
+        _trace('studyFiltered', studyFiltered);
 
         const filterStarted = Date.now();
         const queryMeshTerms = Array.isArray(telemetry.meshExpansions) ? telemetry.meshExpansions : [];
         const relevant = await withSpan('search.filter_relevance', {
             'search.raw_count': Array.isArray(studyFiltered) ? studyFiltered.length : 0,
         }, async (span) => {
-            const rows = filterRelevantArticles(studyFiltered, { query, specificity, queryMeshTerms, parsedYearFilters, pico });
+            const rows = filterRelevantArticles(studyFiltered, {
+                query,
+                specificity,
+                queryMeshTerms,
+                parsedYearFilters,
+                pico,
+                queryAliases: telemetry.clinicalAliases,
+            });
             span.setAttribute('search.relevant_count', rows.length);
             return rows;
         });
         const sanitized = relevant.map(sanitizeArticleOutput);
         timings.filterMs = Date.now() - filterStarted;
+        _trace('relevant', relevant);
 
         const teachingStarted = Date.now();
         const { objects: teachingObjects, claims: teachingClaims, signalBoosts } = await withSpan('search.prefetch_teaching_artifacts', {
@@ -523,12 +551,15 @@ async function fetchAndRankSearchArticles({
                 articleSignalBoosts: signalBoosts,
                 specificity,
                 pico,
+                queryAliases: telemetry.clinicalAliases,
             });
             span.setAttribute('search.top_count', ranked.topPapers.length);
             return ranked;
         });
 
+        _trace('bouquet.topPapers', bouquet.topPapers);
         let articles = collapseNearDuplicateTitles(bouquet.topPapers.map(sanitizeArticleOutput));
+        _trace('afterCollapse', articles);
         articles = await withSpan('search.pico_rerank', {
             'search.result_count': articles.length,
             'search.intent': queryIntent,
@@ -543,6 +574,7 @@ async function fetchAndRankSearchArticles({
             telemetry,
         }));
         timings.rankMs = Date.now() - rankStarted;
+        _trace('afterRerank', articles);
 
         const learningStarted = Date.now();
         const learningContextFull = await withSpan('search.personalization', {
@@ -590,6 +622,7 @@ module.exports = {
     parseParsedYearFilters,
     inferServerQueryHints,
     parseSearchRequestQuery,
+    candidateFetchLimit,
     filterRelevantArticles,
     matchesPicoInterventionComparator,
     annotateSearchRankMetadata,

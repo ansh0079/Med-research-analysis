@@ -1,39 +1,15 @@
 {
-  "version": 2,
+  "version": 3,
   "k": 10,
-  "description": "Curated gold-standard relevance set for offline search quality evaluation. relevantUids are PubMed IDs (no prefix). offTopicUids should be populated from live search results that the team agrees are irrelevant.",
+  "description": "Curated gold-standard relevance set for offline search-quality evaluation. relevantUids are PubMed IDs (no prefix), each verified against the live NCBI esummary API on 2026-07-02 to confirm the PMID resolves to the intended landmark trial/guideline/meta-analysis. requiredTypes use lowercase substrings matched against article pubtype/studyDesign. offTopicUids are intentionally empty; populate them from live search results the team agrees are irrelevant (an empty set scores off-topic-rate 0, which is safe for the pass gate). Run with: npm run eval:search-quality:gold",
   "queries": [
     {
       "query": "SGLT2 inhibitors heart failure reduced ejection fraction randomized trial",
       "sources": "pubmed,openalex",
-      "relevantUids": ["34706189", "32865377", "31535829"],
+      "relevantUids": ["31535829", "32865377"],
       "offTopicUids": [],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "EMPEROR-Reduced (34706189), DAPA-HF (31535829). 32865377 = subgroup analysis — verify in DB."
-    },
-    {
-      "query": "low tidal volume ventilation ARDS lung protective",
-      "sources": "pubmed,openalex",
-      "relevantUids": ["10793162", "23688302"],
-      "offTopicUids": [],
-      "requiredTypes": ["randomized controlled trial"],
-      "notes": "ARDSNet ARMA trial (10793162), PROSEVA prone positioning (23688302)."
-    },
-    {
-      "query": "sepsis surviving sepsis campaign management bundle",
-      "sources": "pubmed,openalex",
-      "relevantUids": ["34599691"],
-      "offTopicUids": [],
-      "requiredTypes": ["guideline"],
-      "notes": "Surviving Sepsis Campaign 2021 guidelines (34599691)."
-    },
-    {
-      "query": "dexamethasone COVID-19 critically ill mechanical ventilation mortality",
-      "sources": "pubmed,openalex",
-      "relevantUids": ["32678530"],
-      "offTopicUids": [],
-      "requiredTypes": ["randomized controlled trial"],
-      "notes": "RECOVERY trial dexamethasone arm (32678530)."
+      "notes": "DAPA-HF (31535829), EMPEROR-Reduced (32865377). Prior fixture PMID 34706189 was WRONG (a sotrovimab COVID trial) — corrected 2026-07-02."
     },
     {
       "query": "sacubitril valsartan heart failure reduced ejection fraction mortality",
@@ -41,7 +17,23 @@
       "relevantUids": ["25176015"],
       "offTopicUids": [],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "PARADIGM-HF trial (25176015)."
+      "notes": "PARADIGM-HF (25176015)."
+    },
+    {
+      "query": "spironolactone mineralocorticoid antagonist severe heart failure survival",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["10471456"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "RALES (10471456)."
+    },
+    {
+      "query": "enalapril ACE inhibitor survival reduced left ventricular ejection fraction",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["2057034"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "SOLVD (2057034)."
     },
     {
       "query": "intensive blood pressure control cardiovascular outcomes systolic",
@@ -49,7 +41,15 @@
       "relevantUids": ["26551272"],
       "offTopicUids": [],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "SPRINT trial (26551272). k=10 should surface this in top 5."
+      "notes": "SPRINT (26551272)."
+    },
+    {
+      "query": "hypertension treatment patients 80 years or older very elderly",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["18378519"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "HYVET (18378519)."
     },
     {
       "query": "empagliflozin cardiovascular outcomes type 2 diabetes EMPA-REG",
@@ -57,31 +57,271 @@
       "relevantUids": ["26378978"],
       "offTopicUids": [],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "EMPA-REG OUTCOME trial (26378978)."
+      "notes": "EMPA-REG OUTCOME (26378978)."
     },
     {
-      "query": "atrial fibrillation anticoagulation stroke prevention guideline",
+      "query": "GLP-1 receptor agonist liraglutide cardiovascular outcomes type 2 diabetes",
       "sources": "pubmed,openalex",
-      "relevantUids": [],
+      "relevantUids": ["27295427"],
       "offTopicUids": [],
-      "requiredTypes": ["guideline", "meta-analysis"],
-      "notes": "TODO: populate relevantUids from DB query. Verify AHA/ACC AF guidelines PMID."
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "LEADER (27295427)."
     },
     {
-      "query": "statin therapy primary prevention cardiovascular risk meta-analysis",
+      "query": "intensive blood glucose control sulphonylureas insulin type 2 diabetes UKPDS",
       "sources": "pubmed,openalex",
-      "relevantUids": [],
+      "relevantUids": ["9742976"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "UKPDS 33 (9742976)."
+    },
+    {
+      "query": "intensive glucose lowering type 2 diabetes",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["18539917"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "ACCORD glucose outcomes (18539917)."
+    },
+    {
+      "query": "canagliflozin renal outcomes type 2 diabetes nephropathy",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["30990260"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "CREDENCE (30990260)."
+    },
+    {
+      "query": "empagliflozin chronic kidney disease progression",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["36331190"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "EMPA-KIDNEY (36331190)."
+    },
+    {
+      "query": "rosuvastatin primary prevention elevated C-reactive protein",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["18997196"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "JUPITER (18997196)."
+    },
+    {
+      "query": "PCSK9 inhibitor evolocumab cardiovascular outcomes",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["28304224"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "FOURIER (28304224)."
+    },
+    {
+      "query": "intensive LDL cholesterol lowering statin meta-analysis",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["21067804"],
       "offTopicUids": [],
       "requiredTypes": ["meta-analysis"],
-      "notes": "TODO: populate from DB. Cholesterol Treatment Trialists meta-analysis is the canonical result."
+      "notes": "Cholesterol Treatment Trialists (CTT) 2010 meta-analysis (21067804)."
     },
     {
-      "query": "acute myocardial infarction PCI versus thrombolysis STEMI",
+      "query": "ezetimibe added to statin therapy acute coronary syndrome",
       "sources": "pubmed,openalex",
-      "relevantUids": [],
+      "relevantUids": ["26039521"],
       "offTopicUids": [],
-      "requiredTypes": ["randomized controlled trial", "meta-analysis"],
-      "notes": "TODO: populate from DB. Primary PCI vs fibrinolysis RCTs and Keeley 2003 Lancet meta-analysis."
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "IMPROVE-IT (26039521)."
+    },
+    {
+      "query": "canakinumab anti-inflammatory therapy atherosclerotic disease",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["28845751"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "CANTOS (28845751)."
+    },
+    {
+      "query": "dabigatran versus warfarin atrial fibrillation stroke prevention",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["19717844"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "RE-LY (19717844)."
+    },
+    {
+      "query": "apixaban versus warfarin atrial fibrillation",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["21870978"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "ARISTOTLE (21870978)."
+    },
+    {
+      "query": "atrial fibrillation diagnosis and management guideline",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["38033089"],
+      "offTopicUids": [],
+      "requiredTypes": ["guideline"],
+      "notes": "2023 ACC/AHA/ACCP/HRS AF guideline (38033089, pubtype Practice Guideline)."
+    },
+    {
+      "query": "ticagrelor versus clopidogrel acute coronary syndromes",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["19717846"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "PLATO (19717846)."
+    },
+    {
+      "query": "initial invasive or conservative strategy stable coronary disease",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["32227755"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "ISCHEMIA (32227755)."
+    },
+    {
+      "query": "primary angioplasty versus thrombolytic therapy acute myocardial infarction",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["12517460"],
+      "offTopicUids": [],
+      "requiredTypes": [],
+      "notes": "Keeley 2003 Lancet quantitative review (12517460). PubMed tags it 'Review' not 'Meta-Analysis', so no strict requiredTypes."
+    },
+    {
+      "query": "transcatheter aortic valve replacement balloon-expandable low-risk patients",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["30883058"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "PARTNER 3 (30883058)."
+    },
+    {
+      "query": "low tidal volume ventilation ARDS lung protective",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["10793162"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "ARDSNet ARMA (10793162)."
+    },
+    {
+      "query": "prone positioning severe acute respiratory distress syndrome",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["23688302"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "PROSEVA (23688302)."
+    },
+    {
+      "query": "surviving sepsis campaign guidelines management sepsis septic shock",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["34599691"],
+      "offTopicUids": [],
+      "requiredTypes": [],
+      "notes": "Surviving Sepsis Campaign 2021 (34599691). PubMed does not tag it Practice Guideline, so requiredTypes left empty to avoid an unfair type-coverage miss."
+    },
+    {
+      "query": "triple inhaled therapy COPD moderate to severe exacerbation",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["32579807"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "ETHOS (32579807)."
+    },
+    {
+      "query": "aspirin cardiovascular events bleeding healthy elderly primary prevention",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["30221597"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "ASPREE (30221597)."
+    },
+    {
+      "query": "dexamethasone COVID-19 hospitalized mechanical ventilation mortality",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["32678530"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "RECOVERY dexamethasone (32678530)."
+    },
+    {
+      "query": "tocilizumab COVID-19 hospitalized patients",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["33933206"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "RECOVERY tocilizumab (33933206). Relevance search alone returns the baricitinib arm, so this PMID was pinned explicitly."
+    },
+    {
+      "query": "pembrolizumab plus chemotherapy metastatic non-small cell lung cancer",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["29658856"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "KEYNOTE-189 (29658856)."
+    },
+    {
+      "query": "nivolumab ipilimumab advanced melanoma overall survival",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["31562797"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "CheckMate 067 5-year survival (31562797)."
+    },
+    {
+      "query": "CAR-T cell therapy refractory large B-cell lymphoma axicabtagene",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["29226797"],
+      "offTopicUids": [],
+      "requiredTypes": ["clinical trial"],
+      "notes": "ZUMA-1 (29226797, phase II)."
+    },
+    {
+      "query": "CRISPR-Cas9 gene editing sickle cell disease beta-thalassemia",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["33283989"],
+      "offTopicUids": [],
+      "requiredTypes": ["clinical trial"],
+      "notes": "CTX001 / exa-cel (33283989)."
+    },
+    {
+      "query": "tissue plasminogen activator acute ischemic stroke",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["7477192"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "NINDS rt-PA 1995 (7477192)."
+    },
+    {
+      "query": "endovascular thrombectomy time to treatment ischemic stroke meta-analysis",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["27673305"],
+      "offTopicUids": [],
+      "requiredTypes": ["meta-analysis"],
+      "notes": "HERMES pooled analysis (27673305)."
+    },
+    {
+      "query": "global burden bacterial antimicrobial resistance",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["35065702"],
+      "offTopicUids": [],
+      "requiredTypes": ["systematic review"],
+      "notes": "GRAM AMR burden 2019 (35065702)."
+    },
+    {
+      "query": "global prevalence depression anxiety disorders COVID-19 pandemic",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["34634250"],
+      "offTopicUids": [],
+      "requiredTypes": ["systematic review"],
+      "notes": "GBD 2020 depression/anxiety during pandemic (34634250)."
+    },
+    {
+      "query": "antidepressant sequential treatment steps depressed outpatients outcomes",
+      "sources": "pubmed,openalex",
+      "relevantUids": ["17074942"],
+      "offTopicUids": [],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "STAR*D (17074942)."
     }
   ]
 }

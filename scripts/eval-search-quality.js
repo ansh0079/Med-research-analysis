@@ -202,6 +202,8 @@ async function runGoldEval(goldPath) {
     console.log(`Queries: ${summary.queryCount}`);
     console.log(`Precision@${k}: ${summary.precisionAtK.toFixed(2)}`);
     console.log(`Recall@${k}: ${summary.recallAtK.toFixed(2)}`);
+    console.log(`MRR: ${summary.mrr.toFixed(2)}`);
+    console.log(`nDCG@${k}: ${summary.ndcgAtK.toFixed(2)}`);
     console.log(`Off-topic@${k}: ${summary.offTopicRateAtK.toFixed(2)}`);
     console.log(`Type coverage: ${summary.requiredTypeCoverage.toFixed(2)}`);
     if (summary.failingQueries.length) {
@@ -215,7 +217,17 @@ async function runGoldEval(goldPath) {
     fs.writeFileSync(outPath, JSON.stringify({ meta: { base: BASE, fixture: goldPath, k, ran: new Date().toISOString() }, summary, results: rows }, null, 2));
     console.log(`\nFull labelled results written to ${outPath}`);
 
-    const pass = summary.precisionAtK >= 0.6 && summary.recallAtK >= 0.5 && summary.offTopicRateAtK <= 0.2 && summary.requiredTypeCoverage >= 0.8;
+    // This gold set is a known-item benchmark: most queries have a single
+    // correct paper, so Precision@k is capped at 1/k (~0.10 at k=10) and is
+    // NOT a meaningful gate. The signals that matter for "did we surface the
+    // landmark paper" are Recall@k, MRR (how high it ranked), and required
+    // study-type coverage. Precision is reported above for transparency only.
+    const thresholds = { recallAtK: 0.70, mrr: 0.50, offTopicRateAtK: 0.20, requiredTypeCoverage: 0.80 };
+    const pass = summary.recallAtK >= thresholds.recallAtK
+        && summary.mrr >= thresholds.mrr
+        && summary.offTopicRateAtK <= thresholds.offTopicRateAtK
+        && summary.requiredTypeCoverage >= thresholds.requiredTypeCoverage;
+    console.log(`\nGate (known-item): recall@${k}>=${thresholds.recallAtK} mrr>=${thresholds.mrr} off-topic<=${thresholds.offTopicRateAtK} type-cov>=${thresholds.requiredTypeCoverage} => ${pass ? 'PASS' : 'FAIL'}`);
     process.exit(pass ? 0 : 1);
 }
 

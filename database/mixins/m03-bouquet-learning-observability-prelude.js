@@ -66,7 +66,7 @@ async getRelatedBouquetTopicsForTopic(normalizedTopic, { limit = 5, minSharedArt
             b.normalized_topic,
             COALESCE(MAX(b.display_topic), b.normalized_topic) AS display_topic,
             COUNT(DISTINCT b.article_uid) AS shared_articles,
-            SUM(LEAST(a.signal_count, b.signal_count)) AS shared_signal_strength,
+            SUM(CASE WHEN a.signal_count < b.signal_count THEN a.signal_count ELSE b.signal_count END) AS shared_signal_strength,
             AVG((a.composite_score + b.composite_score) / 2.0) AS avg_composite_score
          FROM topic_bouquet_signals a
          JOIN topic_bouquet_signals b ON b.article_uid = a.article_uid

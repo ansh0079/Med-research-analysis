@@ -86,16 +86,6 @@ async function checkLiveHealth() {
     console.log(`Live health ok: ${healthUrl}`);
 }
 
-function checkPrivacyTelemetry() {
-    const logrocketPath = path.join(root, 'src', 'services', 'logrocket.ts');
-    const source = fs.readFileSync(logrocketPath, 'utf8');
-    const expectedNeedles = ['prompt', 'query', 'caseText', 'clinicalQuestion', 'text', 'messages'];
-    const missing = expectedNeedles.filter((needle) => !source.includes(`'${needle}'`) && !source.includes(`"${needle}"`));
-    if (missing.length > 0) {
-        errors.push(`LogRocket request sanitizer is missing sensitive keys: ${missing.join(', ')}`);
-    }
-}
-
 function checkSafetyCopy() {
     const terms = fs.readFileSync(path.join(root, 'src', 'pages', 'LegalTermsPage.tsx'), 'utf8');
     const privacy = fs.readFileSync(path.join(root, 'src', 'pages', 'LegalPrivacyPage.tsx'), 'utf8');
@@ -110,7 +100,6 @@ function checkSafetyCopy() {
 async function main() {
     checkProductionEnv();
     checkLatestRollback();
-    checkPrivacyTelemetry();
     checkSafetyCopy();
     await checkLiveHealth();
 

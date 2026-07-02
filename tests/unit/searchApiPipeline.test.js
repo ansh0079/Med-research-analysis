@@ -1,4 +1,4 @@
-const { fetchAndRankSearchArticles } = require('../../server/services/searchPipeline');
+const { fetchAndRankSearchArticles, candidateFetchLimit } = require('../../server/services/searchPipeline');
 const { clearInFlightRequests } = require('../../server/services/externalApiProxy');
 
 const mockFetch = jest.fn();
@@ -109,5 +109,16 @@ describe('fetchAndRankSearchArticles (no Express)', () => {
     });
     expect(Date.now() - started).toBeLessThan(2000);
     expect(result.articles.length).toBeGreaterThanOrEqual(1);
+    const esearchUrl = mockFetch.mock.calls.map(([url]) => String(url)).find((url) => url.includes('esearch.fcgi'));
+    expect(esearchUrl).toContain('retmax=20');
+  });
+});
+
+describe('candidateFetchLimit', () => {
+  test('fetches a deeper candidate pool for top-k ranking without shrinking large requests', () => {
+    expect(candidateFetchLimit(2)).toBe(20);
+    expect(candidateFetchLimit(10)).toBe(50);
+    expect(candidateFetchLimit(20)).toBe(50);
+    expect(candidateFetchLimit(75)).toBe(75);
   });
 });

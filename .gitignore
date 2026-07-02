@@ -64,6 +64,10 @@ tests/load/results/*.json
 tests/load/results/*.html
 tests/load/.env
 
+# Search-quality eval output
+eval-results/
+eval-results.json
+
 # Production builds
 dist/
 build/

@@ -3,6 +3,9 @@ const {
     dedupeKey,
     normalizeDoi,
     normalizePmid,
+    clinicalQueryAliases,
+    buildPubMedSearchQuery,
+    mergeAndRank,
     getEbmScore,
     isPreprint,
 } = require('../../server/services/unifiedEvidenceSearch');
@@ -91,5 +94,61 @@ describe('unifiedEvidenceSearch helpers', () => {
         expect(isPreprint({ source: 'Nature', journal: 'Nature Medicine' })).toBe(false);
         expect(isPreprint({ source: 'medRxiv Preprint Server' })).toBe(true);
         expect(isPreprint({ source: '', journal: 'SSRN' })).toBe(true);
+    });
+
+    test('clinicalQueryAliases expands landmark trial names for verbose clinical queries', () => {
+        expect(clinicalQueryAliases('sacubitril valsartan heart failure reduced ejection fraction mortality')).toEqual(
+            expect.arrayContaining(['PARADIGM-HF'])
+        );
+        expect(clinicalQueryAliases('low tidal volume ventilation ARDS lung protective')).toEqual(
+            expect.arrayContaining(['ARDSNet', 'ARMA'])
+        );
+        expect(clinicalQueryAliases('pembrolizumab plus chemotherapy metastatic non-small cell lung cancer')).toEqual(
+            expect.arrayContaining(['KEYNOTE-189'])
+        );
+    });
+
+    test('RRF alias boost keeps a single-source landmark trial above dual-source fillers', () => {
+        // The ARISTOTLE trial appears only in PubMed (rank 1); three filler papers appear
+        // in BOTH PubMed and OpenAlex, so RRF accumulates dual-source rank for them.
+        const landmark = {
+            uid: 'pubmed-21870978', pmid: '21870978', doi: '10.1056/nejmoa1107039',
+            title: 'Apixaban versus warfarin in patients with atrial fibrillation',
+            abstract: 'The ARISTOTLE trial randomized patients with atrial fibrillation to apixaban or warfarin.',
+            pubtype: ['Randomized Controlled Trial'], journal: 'N Engl J Med',
+        };
+        // Fillers share the landmark's evidence tier (RCT) so the EBM signal does not
+        // differentiate them — isolating the alias boost as the deciding factor.
+        const filler = (n) => ({
+            uid: `pubmed-f${n}`, pmid: `f${n}`, doi: `10.1/filler${n}`,
+            title: `Recent anticoagulation trial number ${n}`, abstract: 'A recent randomized trial.',
+            pubtype: ['Randomized Controlled Trial'], journal: 'Some Journal',
+        });
+        const pubmedList = [landmark, filler(1), filler(2), filler(3)];
+        const openalexList = [
+            { ...filler(1), uid: 'openalex-f1' },
+            { ...filler(2), uid: 'openalex-f2' },
+            { ...filler(3), uid: 'openalex-f3' },
+        ];
+        const aliases = clinicalQueryAliases('apixaban versus warfarin atrial fibrillation');
+        expect(aliases).toEqual(expect.arrayContaining(['ARISTOTLE']));
+
+        // Without alias awareness, the dual-source fillers bury the landmark.
+        const withoutAlias = mergeAndRank([pubmedList, openalexList], undefined, []);
+        expect(withoutAlias[0].pmid).not.toBe('21870978');
+
+        // With the query aliases, the alias-matched landmark is restored to the top.
+        const withAlias = mergeAndRank([pubmedList, openalexList], undefined, aliases);
+        expect(withAlias[0].pmid).toBe('21870978');
+    });
+
+    test('buildPubMedSearchQuery parenthesizes base query, MeSH terms, and clinical aliases', () => {
+        const query = buildPubMedSearchQuery('low tidal volume ventilation ARDS', ['Respiratory Distress Syndrome'], ['ARDSNet', 'acute lung injury']);
+        expect(query).toBe('(' +
+            'low tidal volume ventilation ARDS OR ' +
+            '"Respiratory Distress Syndrome"[MeSH Terms] OR ' +
+            '"ARDSNet"[Title/Abstract] OR ' +
+            '"acute lung injury"' +
+            ')');
     });
 });

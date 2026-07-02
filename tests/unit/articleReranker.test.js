@@ -14,6 +14,8 @@ describe('articleReranker', () => {
     // -------------------------------------------------------------------------
     function makeMockAi(responseText) {
         return {
+            // Reranker/PICO extraction route through callText(prompt, provider, model, options).
+            callText: jest.fn().mockResolvedValue(responseText),
             callGemini: jest.fn().mockResolvedValue(responseText),
             callMistralAI: jest.fn().mockResolvedValue(responseText),
         };
@@ -102,7 +104,7 @@ describe('articleReranker', () => {
         const ai = makeMockAi('{}');
         const result = await extractPicoProfile('some case', { ai, cache, serverConfig: { keys: {} } });
         expect(result).toEqual(cachedProfile);
-        expect(ai.callGemini).not.toHaveBeenCalled();
+        expect(ai.callText).not.toHaveBeenCalled();
     });
 
     test('extractPicoProfile calls AI and parses JSON on cache miss', async () => {
@@ -183,6 +185,7 @@ describe('articleReranker', () => {
             makeArticle({ title: 'Case report', pubtype: ['Case Report'] }),
         ];
         const ai = {
+            callText: jest.fn().mockRejectedValue(new Error('LLM down')),
             callGemini: jest.fn().mockRejectedValue(new Error('Gemini down')),
             callMistralAI: jest.fn().mockRejectedValue(new Error('Mistral down')),
         };
@@ -299,7 +302,7 @@ describe('articleReranker', () => {
 
         const ai = makeMockAi(picoResponse);
         // First call is PICO extraction; subsequent calls use same mock but different prompts
-        ai.callGemini.mockImplementation(async (prompt) => {
+        ai.callText.mockImplementation(async (prompt) => {
             if (prompt.includes('PATIENT CASE PROFILE')) {
                 return JSON.stringify(scores);
             }

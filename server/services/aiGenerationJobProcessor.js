@@ -167,7 +167,8 @@ async function processAiGenerationJobByKey(jobKey, deps) {
             const provider = serverConfig?.keys?.gemini ? 'gemini'
                 : serverConfig?.keys?.mistral ? 'mistral'
                     : input.provider || 'gemini';
-            const result = await generateAndStoreMCQs(db, ai, topic, knowledge, { provider });
+            const sourceArticles = Array.isArray(topicKnowledgeRow?.sourceArticles) ? topicKnowledgeRow.sourceArticles : [];
+            const result = await generateAndStoreMCQs(db, ai, topic, knowledge, { provider, sourceArticles });
             await db.completeAiGenerationJob(jobKey, {
                 resultPayload: { status: result?.skipped ? 'skipped' : 'completed', jobKey, ...(result || {}) },
                 provider,
