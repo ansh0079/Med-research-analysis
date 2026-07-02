@@ -122,6 +122,10 @@ function registerBillingRoutes(app, deps) {
                 line_items: [{ price: planConfig.priceId, quantity: 1 }],
                 success_url: `${appUrl}/billing?session_id={CHECKOUT_SESSION_ID}&success=1`,
                 cancel_url: `${appUrl}/billing?cancelled=1`,
+                // Session-level metadata is what checkout.session.completed sees;
+                // subscription_data.metadata propagates to the Subscription object
+                // for customer.subscription.* events. Both are required.
+                metadata: { userId: String(user.id), plan },
                 subscription_data: { metadata: { userId: String(user.id), plan } },
                 allow_promotion_codes: true,
             });
@@ -202,12 +206,20 @@ async function handleWebhookEvent(event, db) {
         case 'checkout.session.completed': {
             const session = event.data.object;
             if (session.mode !== 'subscription') break;
-            const userId = session.subscription_data?.metadata?.userId || session.metadata?.userId;
-            const plan = session.subscription_data?.metadata?.plan || 'pro';
-            if (!userId) break;
 
+            // The webhook Session object carries session-level metadata only;
+            // subscription_data is a creation parameter and never appears here.
+            // Fall back to the Subscription's metadata for sessions created
+            // before session-level metadata was set.
             const sub = await require('../services/stripeService').getStripe()
                 .subscriptions.retrieve(session.subscription);
+            const userId = session.metadata?.userId || sub.metadata?.userId;
+            const plan = session.metadata?.plan || sub.metadata?.plan || 'pro';
+            if (!userId) {
+                logger.error({ sessionId: session.id, subscriptionId: sub.id }, 'checkout.session.completed missing userId metadata — subscription not linked to a user');
+                break;
+            }
+
             const role = subscriptionStatusToRole(sub.status, plan);
             const periodEnd = new Date(sub.current_period_end * 1000).toISOString();
 
@@ -226,6 +238,7 @@ async function handleWebhookEvent(event, db) {
             break;
         }
 
+        case 'customer.subscription.created':
         case 'customer.subscription.updated':
         case 'customer.subscription.deleted': {
             const sub = event.data.object;
@@ -240,13 +253,14 @@ async function handleWebhookEvent(event, db) {
 
             await db.run(
                 `UPDATE users SET
+                    stripe_subscription_id = ?,
                     subscription_status = ?,
                     subscription_plan = ?,
                     subscription_current_period_end = ?,
                     subscription_cancel_at_period_end = ?,
                     role = ?
                 WHERE id = ?`,
-                [sub.status, plan, periodEnd, sub.cancel_at_period_end ? 1 : 0, role, userId]
+                [sub.id, sub.status, plan, periodEnd, sub.cancel_at_period_end ? 1 : 0, role, userId]
             );
             logger.info({ userId, plan, status: sub.status }, 'Subscription updated');
             break;

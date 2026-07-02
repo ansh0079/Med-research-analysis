@@ -81,28 +81,23 @@ describe('RouteErrorBoundary', () => {
     expect(screen.getByRole('button', { name: /go home/i })).toBeInTheDocument();
   });
 
-  it('recovers from error when "Try again" is clicked', () => {
-    const { rerender } = renderWithRouter(
-      <RouteErrorBoundary>
+  it('reloads the page when "Try again" is clicked', () => {
+    // "Try again" intentionally does a full reload rather than resetting
+    // boundary state, so a fresh bundle is fetched after bad deploys.
+    const reload = jest.fn();
+
+    renderWithRouter(
+      <RouteErrorBoundary reload={reload}>
         <ThrowingComponent />
       </RouteErrorBoundary>
     );
 
     expect(screen.getByText(/this page failed to load/i)).toBeInTheDocument();
 
-    // Rerender with safe component
-    rerender(
-      <MemoryRouter initialEntries={['/test']} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <Routes>
-          <Route path="/test" element={<RouteErrorBoundary><SafeComponent /></RouteErrorBoundary>} />
-        </Routes>
-      </MemoryRouter>
-    );
-
     const tryAgainBtn = screen.getByRole('button', { name: /try again/i });
     fireEvent.click(tryAgainBtn);
 
-    expect(screen.getByText('Safe route content')).toBeInTheDocument();
+    expect(reload).toHaveBeenCalled();
   });
 
   it('navigates home when "Go home" is clicked', () => {

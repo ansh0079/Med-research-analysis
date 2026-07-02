@@ -83,7 +83,9 @@ module.exports = (Sup) => class extends Sup {
                AND gc.status != 'dismissed'
              ORDER BY
                CASE gc.severity WHEN 'major' THEN 1 WHEN 'minor' THEN 2 ELSE 3 END,
-               GREATEST(COALESCE(ga.source_year, 0), COALESCE(gb.source_year, 0)) DESC`,
+               CASE WHEN COALESCE(ga.source_year, 0) > COALESCE(gb.source_year, 0)
+                    THEN COALESCE(ga.source_year, 0)
+                    ELSE COALESCE(gb.source_year, 0) END DESC`,
             [normalizedTopic]
         );
         return rows.map(r => this.mapContradictionRow(r));
