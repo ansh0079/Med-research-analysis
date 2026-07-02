@@ -254,7 +254,12 @@ function mergeArticleMetadata(primary, incoming) {
 function applyRRF(perSourceLists, k = 60, listWeights = [], queryAliases = []) {
     const scores = new Map(); // dedupeKey → { rrfScore, article }
     const MAX_FIRST_SCORE = 1 / (k + 1); // ≈ 0.0164
-    const EBM_WEIGHT = MAX_FIRST_SCORE * 0.25; // 25% weight allows EBM quality to overcome ~5 rank positions
+    // Evidence quality is a first-class fusion signal, not just a tiebreaker: RRF's
+    // sum-over-sources design otherwise lets a mediocre paper that appears in both
+    // PubMed and OpenAlex outrank a landmark RCT/meta that a single source ranked #1.
+    // At 2× a first-place score, a top-EBM paper (RCT/SR/MA) can overcome the
+    // dual-source rank accumulation of a low-EBM paper.
+    const EBM_WEIGHT = MAX_FIRST_SCORE * 2.0;
     // A title/abstract match on a high-signal trial alias (e.g. "ARISTOTLE", "DAPA-HF")
     // is a near-certain identification of THE landmark trial for the query. Without this,
     // RRF buries a PubMed-only rank-1 landmark under mediocre papers that happen to appear

@@ -117,10 +117,12 @@ describe('unifiedEvidenceSearch helpers', () => {
             abstract: 'The ARISTOTLE trial randomized patients with atrial fibrillation to apixaban or warfarin.',
             pubtype: ['Randomized Controlled Trial'], journal: 'N Engl J Med',
         };
+        // Fillers share the landmark's evidence tier (RCT) so the EBM signal does not
+        // differentiate them — isolating the alias boost as the deciding factor.
         const filler = (n) => ({
             uid: `pubmed-f${n}`, pmid: `f${n}`, doi: `10.1/filler${n}`,
-            title: `Recent anticoagulation review number ${n}`, abstract: 'A recent narrative review.',
-            pubtype: ['Journal Article'], journal: 'Some Journal',
+            title: `Recent anticoagulation trial number ${n}`, abstract: 'A recent randomized trial.',
+            pubtype: ['Randomized Controlled Trial'], journal: 'Some Journal',
         });
         const pubmedList = [landmark, filler(1), filler(2), filler(3)];
         const openalexList = [

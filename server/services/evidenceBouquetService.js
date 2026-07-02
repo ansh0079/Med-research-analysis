@@ -241,8 +241,14 @@ function computeCompositeScore(article) {
     // 6. Open access → 5 points
     if (article.isFree || article.pmcid) score += 5;
 
-    // 7. Landmark bonus → up to 10 points
-    if (citations >= LANDMARK_CITATION_THRESHOLD) score += 10;
+    // 7. Landmark bonus → up to 15 points.
+    //    Citation data is frequently missing for PubMed results, so a citation-gated
+    //    bonus silently denies real landmark trials (which have huge real citation
+    //    counts PubMed just doesn't report) the recognition it gives mediocre recent
+    //    papers that happen to carry an OpenAlex citation count. Also treat a top-tier
+    //    evidence study (RCT/SR/MA) in a flagship journal as a landmark candidate.
+    const flagshipEvidence = (article._ebmScore ?? 0) >= 6 && getJournalBonus(article) >= 12;
+    if (citations >= LANDMARK_CITATION_THRESHOLD || flagshipEvidence) score += 15;
 
     // 8. Journal prestige bonus (tiered whitelist: +6 / +12 / +18)
     score += getJournalBonus(article);

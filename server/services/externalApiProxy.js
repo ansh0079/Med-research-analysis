@@ -206,12 +206,32 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
 
   async function openAlexSearch(query, { limit = 20 } = {}) {
     return withSourceCache('openalex', { query, limit }, 1800, async () => {
-      const url = `https://api.openalex.org/works?search=${encodeURIComponent(query)}&per-page=${limit}`;
+      // mailto puts us in OpenAlex's "polite pool", which has far higher and more
+      // reliable rate limits than the anonymous common pool. Without it, bursty
+      // multi-query load intermittently 503s, which silently drops the source and
+      // reshuffles fused ranking run-to-run (a major source of recall variance).
+      const email = keys.ncbiEmail && /@[^@]+\.[^@]+$/.test(keys.ncbiEmail) ? keys.ncbiEmail : null;
+      const mailtoParam = email ? `&mailto=${encodeURIComponent(email)}` : '';
+      const url = `https://api.openalex.org/works?search=${encodeURIComponent(query)}&per-page=${limit}${mailtoParam}`;
+      // OpenAlex free API is not authenticated with a Bearer token (that 401s); only
+      // send auth if an explicit key is configured for a future authenticated tier.
       const headers = keys.openalex ? { Authorization: `Bearer ${keys.openalex}` } : {};
-      const res = await f(url, { headers, timeout: DEFAULT_TIMEOUTS.openalex });
-      if (!res.ok) throw new Error(`OpenAlex ${res.status}`);
-      const data = await res.json();
-      return data.results || [];
+      // Retry transient rate-limit/unavailability so a single burst hiccup doesn't
+      // drop OpenAlex entirely.
+      let lastErr;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        if (attempt > 0) await new Promise((r) => setTimeout(r, 400 * attempt));
+        try {
+          const res = await f(url, { headers, timeout: DEFAULT_TIMEOUTS.openalex });
+          if (res.status === 503 || res.status === 429) { lastErr = new Error(`OpenAlex ${res.status}`); continue; }
+          if (!res.ok) throw new Error(`OpenAlex ${res.status}`);
+          const data = await res.json();
+          return data.results || [];
+        } catch (err) {
+          lastErr = err;
+        }
+      }
+      throw lastErr || new Error('OpenAlex request failed');
     });
   }
 
