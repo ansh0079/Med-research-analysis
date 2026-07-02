@@ -6,6 +6,7 @@
 const { buildProxyService } = require('./externalApiProxy');
 const crypto = require('crypto');
 const { getPromptVersion } = require('../prompts/promptVersions');
+const { queryAliasMatchScore } = require('./evidenceBouquetService');
 
 // EBM evidence hierarchy — higher score = stronger study design
 const EBM_SCORES = {
@@ -250,10 +251,15 @@ function mergeArticleMetadata(primary, incoming) {
  * EBM contributes a fractional bonus (max 5% of a first-position score) so it
  * acts as a tiebreaker within RRF tiers without overriding cross-tier ordering.
  */
-function applyRRF(perSourceLists, k = 60, listWeights = []) {
+function applyRRF(perSourceLists, k = 60, listWeights = [], queryAliases = []) {
     const scores = new Map(); // dedupeKey → { rrfScore, article }
     const MAX_FIRST_SCORE = 1 / (k + 1); // ≈ 0.0164
     const EBM_WEIGHT = MAX_FIRST_SCORE * 0.25; // 25% weight allows EBM quality to overcome ~5 rank positions
+    // A title/abstract match on a high-signal trial alias (e.g. "ARISTOTLE", "DAPA-HF")
+    // is a near-certain identification of THE landmark trial for the query. Without this,
+    // RRF buries a PubMed-only rank-1 landmark under mediocre papers that happen to appear
+    // in both sources (dual-source rank accumulation). Worth ~3 first-place ranks.
+    const ALIAS_WEIGHT = MAX_FIRST_SCORE * 3;
 
     const TIER1_JOURNALS = ['nejm', 'n engl j med', 'lancet', 'jama', 'bmj', 'nature', 'science', 'annals of internal medicine'];
 
@@ -281,11 +287,12 @@ function applyRRF(perSourceLists, k = 60, listWeights = []) {
     }
 
     return [...scores.values()]
+        .map((e) => ({ ...e, aliasBonus: queryAliasMatchScore(e.article, queryAliases) * ALIAS_WEIGHT }))
         .sort((a, b) => {
             const ebmA = getEbmScore(a.article);
             const ebmB = getEbmScore(b.article);
-            const scoreA = a.rrfScore + (ebmA / 7) * EBM_WEIGHT;
-            const scoreB = b.rrfScore + (ebmB / 7) * EBM_WEIGHT;
+            const scoreA = a.rrfScore + (ebmA / 7) * EBM_WEIGHT + a.aliasBonus;
+            const scoreB = b.rrfScore + (ebmB / 7) * EBM_WEIGHT + b.aliasBonus;
             return scoreB - scoreA;
         })
         .map((e) => e.article);
@@ -295,8 +302,8 @@ function applyRRF(perSourceLists, k = 60, listWeights = []) {
  * Merge, deduplicate, and rank results from multiple per-source lists.
  * Accepts an optional vectorList for semantic fusion via RRF.
  */
-function mergeAndRank(perSourceLists, listWeights) {
-    const ranked = applyRRF(perSourceLists, 60, listWeights);
+function mergeAndRank(perSourceLists, listWeights, queryAliases = []) {
+    const ranked = applyRRF(perSourceLists, 60, listWeights, queryAliases);
     return ranked.map((article) => ({
         ...article,
         _ebmScore: getEbmScore(article),
@@ -649,13 +656,14 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     const listWeights = vectorList.length > 0
         ? Array(perSourceLists.length - 1).fill(1).concat(1.25)
         : undefined;
-    const ranked = mergeAndRank(perSourceLists, listWeights);
+    const ranked = mergeAndRank(perSourceLists, listWeights, clinicalAliases);
     return collapseNearDuplicateTitles(ranked);
 }
 
 module.exports = {
     articleFromOpenAlexWork,
     fetchUnifiedEvidence,
+    mergeAndRank,
     getEbmScore,
     isPreprint,
     collapseNearDuplicateTitles,
