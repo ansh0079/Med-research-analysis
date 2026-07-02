@@ -298,7 +298,7 @@ async function applyPicoRerankStage({
 
     const started = Date.now();
     const keys = serverConfig?.keys || {};
-    const ai = (keys.gemini || keys.mistral) ? createAiService({ serverConfig, fetchImpl }) : null;
+    const ai = (keys.anthropic || keys.gemini || keys.mistral) ? createAiService({ serverConfig, fetchImpl }) : null;
     const picoProfile = normalizePicoProfileForReranker(pico, query, queryIntent);
 
     try {
