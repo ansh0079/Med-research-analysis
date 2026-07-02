@@ -39,7 +39,8 @@ jobs:
         run: node server.js &
         env:
           PORT: 3002
-          NODE_ENV: test
+          NODE_ENV: e2e
+          APP_ROLE: web
           JWT_SECRET: test-jwt-secret-e2e
           ADMIN_TOKEN: test-admin-token-e2e
 
@@ -88,7 +89,8 @@ jobs:
         run: node server.js &
         env:
           PORT: 3002
-          NODE_ENV: test
+          NODE_ENV: e2e
+          APP_ROLE: web
           JWT_SECRET: test-jwt-secret-e2e
           ADMIN_TOKEN: test-admin-token-e2e
 
@@ -137,7 +139,8 @@ jobs:
         run: node server.js &
         env:
           PORT: 3002
-          NODE_ENV: test
+          NODE_ENV: e2e
+          APP_ROLE: web
           JWT_SECRET: test-jwt-secret-e2e
           ADMIN_TOKEN: test-admin-token-e2e
 
