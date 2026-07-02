@@ -164,7 +164,11 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
             pmid,
             pmcid,
             isFree: Boolean(pmcid),
-            pmcrefcount: article.pmcrefcount || 0,
+            // PubMed's pmcrefcount is a partial PMC-only count that is usually absent;
+            // leave it undefined (not 0) when unavailable so downstream filters treat it
+            // as "unknown citations" rather than "zero citations" and don't drop old
+            // landmark trials that PubMed itself ranks highly.
+            pmcrefcount: Number(article.pmcrefcount) > 0 ? Number(article.pmcrefcount) : undefined,
             abstract: article.abstract ?? article.abstracttext,
             pubtype: article.pubtype || [],
             doi:

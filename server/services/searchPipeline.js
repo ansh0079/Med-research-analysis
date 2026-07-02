@@ -8,6 +8,7 @@ const {
     intentToPreferredArchetypes,
     isOffTopic,
     getCitationCount,
+    hasCitationData,
     getYear,
     isPreclinical,
     isPredatoryJournal,
@@ -387,7 +388,11 @@ function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMes
         if (!yearInFilters(article, parsedYearFilters)) return false;
         if (!matchesPicoInterventionComparator(article, pico, query)) return false;
         const age = currentYear - getYear(article);
-        if (getCitationCount(article) === 0 && age > 2) return false;
+        // Only drop old papers we KNOW are uncited. Missing citation data must not be
+        // treated as zero: PubMed results carry no citation counts, so coercing missing
+        // → 0 here silently dropped every PubMed article older than 2 years — including
+        // decades-old landmark trials (RALES, SOLVD, ARDSNet, etc.).
+        if (hasCitationData(article) && getCitationCount(article) === 0 && age > 2) return false;
         if (!queryWantsMechanisms && isPreclinical(article)) return false;
         if (isPredatoryJournal(article)) return false;
         if (isStrictMode) {

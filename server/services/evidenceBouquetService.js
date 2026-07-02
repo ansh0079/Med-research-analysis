@@ -162,6 +162,15 @@ function getCitationCount(article) {
     return article.citationCount ?? article.pmcrefcount ?? article._impact?.citations ?? 0;
 }
 
+// True only when the article carries a real citation count from a source that
+// provides one (OpenAlex, Semantic Scholar). PubMed results have none, so a
+// missing value means "unknown", not "zero" — callers must not treat a 0 from
+// getCitationCount as evidence the paper is uncited.
+function hasCitationData(article) {
+    return [article?.citationCount, article?.pmcrefcount, article?._impact?.citations]
+        .some((v) => typeof v === 'number' && Number.isFinite(v));
+}
+
 function getYear(article) {
     return article.year ?? (article.pubdate ? parseInt(article.pubdate.slice(0, 4), 10) : null) ?? 0;
 }
@@ -464,9 +473,11 @@ function buildEvidenceBouquet(articles, query, options = {}) {
         if (a._retraction?.isRetracted) return false;
         if (!matchesPopulationFilter(a, query)) return false;
         if (isOffTopic(a, query)) return false;
-        // Require at least 1 citation unless the paper is very recent (≤2 years old)
+        // Drop old papers only when we KNOW they are uncited. Missing citation data
+        // (e.g. PubMed results, which carry no counts) must not be treated as zero —
+        // that silently dropped decades-old landmark trials that retrieval ranked highly.
         const age = CURRENT_YEAR - getYear(a);
-        if (getCitationCount(a) === 0 && age > 2) return false;
+        if (hasCitationData(a) && getCitationCount(a) === 0 && age > 2) return false;
         // Drop preclinical/experimental papers unless the query is specifically mechanistic,
         // OR the paper is groundbreaking basic science (landmark-cited, top-tier journal, clinical translation)
         if (!queryWantsMechanisms && isPreclinical(a) && !isGroundbreakingBasicScience(a)) return false;
@@ -655,6 +666,7 @@ module.exports = {
     computeCompositeScore,
     classifyArchetype,
     getCitationCount,
+    hasCitationData,
     getYear,
     isOffTopic,
     meshRelevanceRatio,
