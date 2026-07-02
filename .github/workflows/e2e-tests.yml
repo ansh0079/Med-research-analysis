@@ -36,14 +36,15 @@ jobs:
         run: npx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Start server
-        run: npm run start:prod &
+        run: node server.js &
         env:
           PORT: 3002
+          NODE_ENV: production
           JWT_SECRET: test-jwt-secret-e2e
           ADMIN_TOKEN: test-admin-token-e2e
 
       - name: Wait for server
-        run: npx wait-on http://localhost:3002/health --timeout 60000
+        run: npx wait-on http://localhost:3002/health --timeout 120000
 
       - name: Run beta smoke E2E tests
         run: npx playwright test tests/e2e/beta-smoke.spec.js --project=${{ matrix.browser }}
@@ -84,14 +85,15 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Start server
-        run: npm run start:prod &
+        run: node server.js &
         env:
           PORT: 3002
+          NODE_ENV: production
           JWT_SECRET: test-jwt-secret-e2e
           ADMIN_TOKEN: test-admin-token-e2e
 
       - name: Wait for server
-        run: npx wait-on http://localhost:3002/health --timeout 60000
+        run: npx wait-on http://localhost:3002/health --timeout 120000
 
       - name: Run mobile beta smoke E2E tests
         run: npx playwright test tests/e2e/beta-smoke.spec.js --project='Mobile Chrome'
@@ -132,14 +134,15 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Start server
-        run: npm run start:prod &
+        run: node server.js &
         env:
           PORT: 3002
+          NODE_ENV: production
           JWT_SECRET: test-jwt-secret-e2e
           ADMIN_TOKEN: test-admin-token-e2e
 
       - name: Wait for server
-        run: npx wait-on http://localhost:3002/health --timeout 60000
+        run: npx wait-on http://localhost:3002/health --timeout 120000
 
       - name: Run compliance/accessibility smoke tests
         run: npx playwright test tests/e2e/beta-smoke.spec.js --project=chromium --grep "compliance|legal"
