@@ -10,7 +10,14 @@ const {
     normalizePicoProfileForReranker,
     yearInFilters,
 } = require('../../server/services/searchPipeline');
-const { buildEvidenceBouquet, isOffTopic, meshRelevanceRatio, queryMatchScore } = require('../../server/services/evidenceBouquetService');
+const {
+    buildEvidenceBouquet,
+    classifyArchetype,
+    isOffTopic,
+    meshRelevanceRatio,
+    queryAliasMatchScore,
+    queryMatchScore,
+} = require('../../server/services/evidenceBouquetService');
 const {
     appendPubMedPublicationFilters,
     publicationTypeClause,
@@ -93,6 +100,23 @@ describe('searchPipeline helpers', () => {
         expect(filtered).toHaveLength(1);
         expect(filtered[0].title).toMatch(/SGLT2/i);
     });
+
+    test('filterRelevantArticles keeps trial-alias hits with historic title wording', () => {
+        const articles = [
+            {
+                title: 'Angiotensin-neprilysin inhibition versus enalapril in heart failure',
+                abstract: '',
+                authors: [{ name: 'PARADIGM-HF Investigators' }],
+                pubdate: '2014',
+                pubtype: ['Randomized Controlled Trial'],
+            },
+        ];
+        const filtered = filterRelevantArticles(articles, {
+            query: 'sacubitril valsartan heart failure reduced ejection fraction mortality',
+            queryAliases: ['PARADIGM-HF'],
+        });
+        expect(filtered).toHaveLength(1);
+    });
 });
 
 describe('specificity-weighted ranking', () => {
@@ -119,6 +143,71 @@ describe('specificity-weighted ranking', () => {
         const bouquet = buildEvidenceBouquet(articles, 'SGLT2 inhibitors heart failure', { count: 2, specificity: 'strict' });
         expect(bouquet.topPapers[0].uid).toBe('specific');
         expect(bouquet.ranking[0].reasons).toContain('Strong query match');
+    });
+
+    test('RCT EBM score classifies as a trial rather than a review', () => {
+        expect(classifyArchetype({
+            title: 'Treatment effect in a randomized trial',
+            abstract: 'Patients received therapy and outcomes were measured.',
+            pubdate: '2020',
+            pubtype: ['Randomized Controlled Trial'],
+            _ebmScore: 6,
+        })).toBe('management_trial');
+    });
+
+    test('high-signal trial aliases boost landmark trial ranking', () => {
+        const landmark = {
+            uid: 'landmark',
+            title: 'Dapagliflozin in patients with heart failure and reduced ejection fraction',
+            abstract: 'Patients were enrolled with heart failure and reduced ejection fraction.',
+            authors: [{ name: 'DAPA-HF Trial Committees and Investigators' }],
+            pubdate: '2019',
+            journal: 'N Engl J Med',
+            pubtype: ['Randomized Controlled Trial'],
+            _ebmScore: 6,
+        };
+        const secondary = {
+            uid: 'secondary',
+            title: 'Dapagliflozin and kidney outcomes in patients with heart failure',
+            abstract: 'A recent secondary analysis of a randomized trial in patients with heart failure.',
+            pubdate: '2024',
+            journal: 'JAMA',
+            pmcrefcount: 40,
+            pubtype: ['Randomized Controlled Trial'],
+            _ebmScore: 6,
+        };
+
+        expect(queryAliasMatchScore(landmark, ['DAPA-HF', 'dapagliflozin'])).toBeGreaterThan(0);
+        expect(queryAliasMatchScore(secondary, ['DAPA-HF', 'dapagliflozin'])).toBe(0);
+
+        const bouquet = buildEvidenceBouquet(
+            [secondary, landmark],
+            'SGLT2 inhibitors heart failure reduced ejection fraction randomized trial',
+            { count: 2, specificity: 'moderate', queryAliases: ['DAPA-HF', 'dapagliflozin'] }
+        );
+
+        expect(bouquet.topPapers[0].uid).toBe('landmark');
+        expect(bouquet.ranking[0].reasons).toContain('Trial alias match');
+        expect(bouquet.ranking[0].reasons).toContain('Top-tier journal');
+    });
+
+    test('bouquet keeps alias-matched landmark titles that differ from modern drug names', () => {
+        const bouquet = buildEvidenceBouquet([
+            {
+                uid: 'paradigm',
+                title: 'Angiotensin-neprilysin inhibition versus enalapril in heart failure',
+                authors: [{ name: 'PARADIGM-HF Investigators and Committees' }],
+                pubdate: '2014',
+                journal: 'N Engl J Med',
+                pubtype: ['Randomized Controlled Trial'],
+                _ebmScore: 6,
+            },
+        ], 'sacubitril valsartan heart failure reduced ejection fraction mortality', {
+            count: 1,
+            queryAliases: ['PARADIGM-HF'],
+        });
+
+        expect(bouquet.topPapers.map((a) => a.uid)).toEqual(['paradigm']);
     });
 });
 

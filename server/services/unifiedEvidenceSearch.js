@@ -48,6 +48,70 @@ function isPreprint(article) {
     return sources.some((s) => text.includes(s));
 }
 
+const CLINICAL_QUERY_ALIAS_RULES = [
+    { all: [/\bsglt2\b|\bsodium[- ]glucose\b/i, /\bheart failure\b|\bhfref\b|\breduced ejection fraction\b/i], aliases: ['DAPA-HF', 'EMPEROR-Reduced', 'dapagliflozin', 'empagliflozin'] },
+    { all: [/\bsacubitril\b|\bvalsartan\b|\bneprilysin\b/i, /\bheart failure\b|\bhfref\b|\bmortality\b/i], aliases: ['PARADIGM-HF', 'LCZ696'] },
+    { all: [/\bspironolactone\b|\bmineralocorticoid\b|\baldosterone\b/i, /\bheart failure\b|\bsurvival\b/i], aliases: ['RALES'] },
+    { all: [/\benalapril\b|\bace inhibitor\b/i, /\bleft ventricular\b|\bejection fraction\b|\bsurvival\b/i], aliases: ['SOLVD', 'Studies of Left Ventricular Dysfunction'] },
+    { all: [/\bintensive\b/i, /\bblood pressure\b|\bsystolic\b/i], aliases: ['SPRINT'] },
+    { all: [/\bhypertension\b/i, /\b80\b|\bvery elderly\b|\belderly\b/i], aliases: ['HYVET'] },
+    { all: [/\bempagliflozin\b/i, /\bcardiovascular outcomes?\b|\btype 2 diabetes\b/i], aliases: ['EMPA-REG OUTCOME'] },
+    { all: [/\bliraglutide\b|\bglp-?1\b/i, /\bcardiovascular outcomes?\b|\btype 2 diabetes\b/i], aliases: ['LEADER'] },
+    { all: [/\bukpds\b|\bsulphonylureas?\b|\bsulfonylureas?\b/i, /\btype 2 diabetes\b|\bblood glucose\b/i], aliases: ['UKPDS 33'] },
+    { all: [/\baccord\b|\bintensive glucose\b|\bglucose lowering\b/i, /\btype 2 diabetes\b|\bmortality\b/i], aliases: ['ACCORD'] },
+    { all: [/\bcanagliflozin\b/i, /\brenal\b|\bnephropathy\b|\bkidney\b/i], aliases: ['CREDENCE'] },
+    { all: [/\bempagliflozin\b/i, /\bchronic kidney disease\b|\bckd\b|\bkidney disease\b/i], aliases: ['EMPA-KIDNEY'] },
+    { all: [/\brosuvastatin\b|\bc-reactive protein\b|\bprimary prevention\b/i], aliases: ['JUPITER'] },
+    { all: [/\bevolocumab\b|\bpcsk9\b/i, /\bcardiovascular outcomes?\b/i], aliases: ['FOURIER'] },
+    { all: [/\bezetimibe\b/i, /\bacute coronary syndrome\b|\bstatin\b/i], aliases: ['IMPROVE-IT'] },
+    { all: [/\bcanakinumab\b|\banti-inflammatory\b/i, /\batheroscler/i], aliases: ['CANTOS'] },
+    { all: [/\bdabigatran\b/i, /\bwarfarin\b|\batrial fibrillation\b/i], aliases: ['RE-LY'] },
+    { all: [/\bapixaban\b/i, /\bwarfarin\b|\batrial fibrillation\b/i], aliases: ['ARISTOTLE'] },
+    { all: [/\bcha2?ds2\b|\bvasc\b|\brisk stratification\b/i, /\batrial fibrillation\b|\bstroke\b/i], aliases: ['CHA2DS2-VASc', 'CHA2DS2VASc'] },
+    { all: [/\bticagrelor\b/i, /\bclopidogrel\b|\bacute coronary syndromes?\b/i], aliases: ['PLATO'] },
+    { all: [/\binvasive\b/i, /\bconservative\b/i, /\bstable coronary\b|\bischemic heart\b/i], aliases: ['ISCHEMIA'] },
+    { all: [/\bprimary angioplasty\b|\bprimary pci\b|\bthrombolytic\b|\bthrombolysis\b/i, /\bmyocardial infarction\b|\bami\b|\bstemi\b/i], aliases: ['primary PCI', 'Keeley'] },
+    { all: [/\btranscatheter\b|\btavr\b|\btavi\b/i, /\blow-risk\b|\blow risk\b|\bballoon-expandable\b/i], aliases: ['PARTNER 3'] },
+    { all: [/\blow tidal volume\b|\blung protective\b/i, /\bards\b|\bacute respiratory distress\b/i], aliases: ['ARDSNet', 'ARMA', 'Ventilation with lower tidal volumes', 'acute lung injury'] },
+    { all: [/\bprone\b|\bproning\b/i, /\bards\b|\bacute respiratory distress\b/i], aliases: ['PROSEVA'] },
+    { all: [/\btriple inhaled\b|\btriple therapy\b/i, /\bcopd\b|\bexacerbation\b/i], aliases: ['IMPACT', 'ETHOS'] },
+    { all: [/\baspirin\b/i, /\belderly\b|\bhealthy elderly\b|\bprimary prevention\b/i], aliases: ['ASPREE'] },
+    { all: [/\bdexamethasone\b/i, /\bcovid/i], aliases: ['RECOVERY'] },
+    { all: [/\btocilizumab\b/i, /\bcovid/i], aliases: ['RECOVERY', 'REMAP-CAP'] },
+    { all: [/\bpembrolizumab\b/i, /\bnon-small cell\b|\bnsclc\b|\blung cancer\b/i], aliases: ['KEYNOTE-189'] },
+    { all: [/\bnivolumab\b/i, /\bipilimumab\b/i, /\bmelanoma\b/i], aliases: ['CheckMate 067'] },
+    { all: [/\bcar-?t\b|\baxicabtagene\b/i, /\blymphoma\b|\blarge b-cell\b/i], aliases: ['ZUMA-1'] },
+    { all: [/\bcrispr\b|\bcas9\b|\bctx001\b/i, /\bsickle cell\b|\bbeta-thalassemia\b|\bthalassaemia\b/i], aliases: ['CTX001', 'exagamglogene autotemcel', 'CLIMB THAL-111'] },
+    { all: [/\btissue plasminogen\b|\balteplase\b|\btpa\b/i, /\bstroke\b|\bischemic\b|\bischaemic\b/i], aliases: ['NINDS', 'rt-PA', 'National Institute of Neurological Disorders', 'National Institute of Neurological Disorders and Stroke'] },
+    { all: [/\bendovascular thrombectomy\b|\bthrombectomy\b/i, /\bstroke\b|\btime to treatment\b/i], aliases: ['HERMES'] },
+    { all: [/\bantidepressant\b|\bdepressed outpatients\b/i, /\bsequential\b|\btreatment steps\b/i], aliases: ['STAR*D', 'Sequenced Treatment Alternatives to Relieve Depression'] },
+];
+
+function clinicalQueryAliases(query) {
+    const text = String(query || '');
+    const out = new Set();
+    for (const rule of CLINICAL_QUERY_ALIAS_RULES) {
+        if (rule.all.every((pattern) => pattern.test(text))) {
+            rule.aliases.forEach((alias) => out.add(alias));
+        }
+    }
+    return [...out].slice(0, 8);
+}
+
+function pubmedTextAlias(alias) {
+    const clean = String(alias || '').replace(/"/g, '').trim();
+    if (!clean) return null;
+    return /\s/.test(clean) ? `"${clean}"` : `"${clean}"[Title/Abstract]`;
+}
+
+function buildPubMedSearchQuery(baseQuery, meshExpansions = [], aliases = []) {
+    const terms = [String(baseQuery || '').trim()].filter(Boolean);
+    terms.push(...meshExpansions.map((term) => `"${String(term).replace(/"/g, '').trim()}"[MeSH Terms]`).filter(Boolean));
+    terms.push(...aliases.map(pubmedTextAlias).filter(Boolean));
+    if (terms.length <= 1) return terms[0] || '';
+    return `(${terms.join(' OR ')})`;
+}
+
 /** Strip DOI URL prefixes and lowercase for stable cross-source matching */
 function normalizeDoi(doi) {
     if (!doi) return null;
@@ -191,7 +255,7 @@ function applyRRF(perSourceLists, k = 60, listWeights = []) {
     const MAX_FIRST_SCORE = 1 / (k + 1); // ≈ 0.0164
     const EBM_WEIGHT = MAX_FIRST_SCORE * 0.25; // 25% weight allows EBM quality to overcome ~5 rank positions
 
-    const TIER1_JOURNALS = ['nejm', 'lancet', 'jama', 'bmj', 'nature', 'science', 'annals of internal medicine'];
+    const TIER1_JOURNALS = ['nejm', 'n engl j med', 'lancet', 'jama', 'bmj', 'nature', 'science', 'annals of internal medicine'];
 
     for (let i = 0; i < perSourceLists.length; i++) {
         const list = perSourceLists[i];
@@ -510,20 +574,15 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     // Wait for LLM reformulation (runs in parallel with MeSH)
     const reformulatedQuery = await llmReformulationPromise;
 
-    // Use LLM-reformulated query if available, otherwise fall back to MeSH-augmented query
-    let pubmedQuery;
-    if (reformulatedQuery) {
-        pubmedQuery = reformulatedQuery;
-    } else if (meshExpansions.length > 0) {
-        pubmedQuery = `${query} OR ${meshExpansions.map((t) => `"${t}"[MeSH Terms]`).join(' OR ')}`;
-    } else {
-        pubmedQuery = query;
-    }
+    const clinicalAliases = clinicalQueryAliases(query);
+    const pubmedQueryBase = reformulatedQuery || query;
+    let pubmedQuery = buildPubMedSearchQuery(pubmedQueryBase, reformulatedQuery ? [] : meshExpansions, clinicalAliases);
 
     pubmedQuery = appendPubMedPublicationFilters(pubmedQuery, specificity, parsedStudyTypes, parsedYearFilters);
 
     if (telemetry && typeof telemetry === 'object') {
         telemetry.meshExpansions = meshExpansions;
+        telemetry.clinicalAliases = clinicalAliases;
         telemetry.pubmedQuery = pubmedQuery;
         telemetry.usedReformulatedQuery = Boolean(reformulatedQuery);
     }
@@ -603,6 +662,8 @@ module.exports = {
     dedupeKey,
     normalizePmid,
     normalizeDoi,
+    clinicalQueryAliases,
+    buildPubMedSearchQuery,
     appendPubMedPublicationFilters,
     publicationTypeClause,
     SPECIFICITY_PUB_TYPE_FILTERS,

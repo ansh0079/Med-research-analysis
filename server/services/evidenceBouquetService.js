@@ -29,7 +29,7 @@ const CLINICAL_TRANSLATION_PATTERNS = /\b(clinical(ly)?( relevant| significance|
 
 // Tier 1 — flagship general medical journals (+18 pts)
 const TIER1_JOURNALS = new Set([
-    'new england journal of medicine', 'nejm',
+    'new england journal of medicine', 'nejm', 'n engl j med',
     'the lancet', 'lancet',
     'jama', 'journal of the american medical association',
     'bmj', 'british medical journal',
@@ -141,7 +141,7 @@ function isReview(article) {
     const pubtypes = (article.pubtype || []).map((p) => String(p).toLowerCase());
     if (pubtypes.some((p) => p.includes('review') || p.includes('meta-analysis') || p.includes('systematic review'))) return true;
     const ebm = article._ebmScore ?? 0;
-    return ebm >= 6; // systematic review / meta-analysis threshold
+    return ebm >= 7; // systematic review / meta-analysis threshold
 }
 
 function isRCT(article) {
@@ -372,6 +372,38 @@ function queryMatchScore(article, query) {
     return Math.min(1, weighted / queryTerms.length);
 }
 
+function normalizeAliasText(value) {
+    return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function isHighSignalAlias(alias) {
+    const raw = String(alias || '').trim();
+    if (!raw) return false;
+    return /[0-9*]/.test(raw) || /-/.test(raw) || /^[A-Z]{3,}$/.test(raw.replace(/[^A-Z]/g, ''));
+}
+
+function queryAliasMatchScore(article, aliases = []) {
+    const highSignalAliases = (Array.isArray(aliases) ? aliases : []).filter(isHighSignalAlias);
+    if (highSignalAliases.length === 0) return 0;
+    const authors = Array.isArray(article?.authors)
+        ? article.authors.map((a) => typeof a === 'string' ? a : a?.name).filter(Boolean).join(' ')
+        : '';
+    const title = String(article?.title || '').toLowerCase();
+    const abstract = String(article?.abstract || '').toLowerCase();
+    const authorText = authors.toLowerCase();
+    const normalizedTitle = normalizeAliasText(article?.title);
+    const normalizedText = normalizeAliasText(`${article?.title || ''} ${article?.abstract || ''} ${authors}`);
+    let best = 0;
+    for (const alias of highSignalAliases) {
+        const raw = String(alias || '').toLowerCase();
+        const norm = normalizeAliasText(alias);
+        if (!norm) continue;
+        if (title.includes(raw) || normalizedTitle.includes(norm)) best = Math.max(best, 1);
+        else if (abstract.includes(raw) || authorText.includes(raw) || normalizedText.includes(norm)) best = Math.max(best, 0.8);
+    }
+    return best;
+}
+
 function isOffTopic(article, query, options = {}) {
     const q = String(query || '').toLowerCase();
     const queryMeshTerms = Array.isArray(options.queryMeshTerms) ? options.queryMeshTerms : [];
@@ -475,7 +507,8 @@ function buildEvidenceBouquet(articles, query, options = {}) {
     const filtered = articles.filter((a) => {
         if (a._retraction?.isRetracted) return false;
         if (!matchesPopulationFilter(a, query)) return false;
-        if (isOffTopic(a, query)) return false;
+        const aliasMatched = queryAliasMatchScore(a, options.queryAliases) > 0;
+        if (!aliasMatched && isOffTopic(a, query)) return false;
         // Drop old papers only when we KNOW they are uncited. Missing citation data
         // (e.g. PubMed results, which carry no counts) must not be treated as zero —
         // that silently dropped decades-old landmark trials that retrieval ranked highly.
@@ -499,9 +532,11 @@ function buildEvidenceBouquet(articles, query, options = {}) {
     const scored = filtered.map((a) => {
         let score = computeCompositeScore(a);
         const matchScore = queryMatchScore(a, query);
+        const aliasMatchScore = queryAliasMatchScore(a, options.queryAliases);
         const specificity = String(options.specificity || 'moderate');
         const matchWeight = specificity === 'strict' ? 14 : specificity === 'broad' ? 3 : 8;
         score += matchScore * matchWeight;
+        score += aliasMatchScore * 24;
         if (trajectoryTerms.length > 0) {
             const text = `${String(a.title || '')} ${String(a.abstract || '')}`.toLowerCase();
             const matchCount = trajectoryTerms.filter((t) => text.includes(t)).length;
@@ -531,6 +566,7 @@ function buildEvidenceBouquet(articles, query, options = {}) {
             article: a,
             compositeScore: score,
             queryMatchScore: matchScore,
+            queryAliasMatchScore: aliasMatchScore,
             archetype: classifyArchetype(a),
             year: getYear(a),
             citations: getCitationCount(a),
@@ -614,6 +650,7 @@ function buildReasons(scored) {
     if (a._quality?.grade === 'A') reasons.push('Top quality (A)');
     if (a._openalexMetrics?.isTopCitationPercentile) reasons.push('Top citation percentile');
     if (a.isFree || a.pmcid) reasons.push('Open access');
+    if (scored.queryAliasMatchScore > 0) reasons.push('Trial alias match');
     if (scored.queryMatchScore >= 0.85) reasons.push('Strong query match');
     else if (scored.queryMatchScore >= 0.55) reasons.push('Good query match');
 
@@ -674,6 +711,7 @@ module.exports = {
     isOffTopic,
     meshRelevanceRatio,
     queryMatchScore,
+    queryAliasMatchScore,
     isPreclinical,
     isGroundbreakingBasicScience,
     isPredatoryJournal,

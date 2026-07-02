@@ -13,6 +13,7 @@ const {
     isPreclinical,
     isPredatoryJournal,
     MECHANISM_QUERY_PATTERNS,
+    queryAliasMatchScore,
 } = require('./evidenceBouquetService');
 const { fetchUnifiedEvidence, collapseNearDuplicateTitles, decomposePico } = require('./unifiedEvidenceSearch');
 const { sanitizeArticleOutput } = require('../utils/articles');
@@ -31,6 +32,12 @@ const STRICT_PUB_TYPES = new Set([
     'randomized controlled trial', 'randomised controlled trial',
     'clinical trial', 'practice guideline', 'guideline',
 ]);
+
+function candidateFetchLimit(returnLimit) {
+    const n = Number.parseInt(String(returnLimit), 10);
+    const safe = Number.isFinite(n) && n > 0 ? n : 20;
+    return Math.max(safe, Math.min(50, Math.max(20, safe * 5)));
+}
 
 function parsePreviousQueries(raw) {
     if (!raw) return [];
@@ -377,14 +384,15 @@ function annotateSearchRankMetadata(articles, bouquetRanking = []) {
     });
 }
 
-function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMeshTerms = [], parsedYearFilters = [], pico = null }) {
+function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMeshTerms = [], parsedYearFilters = [], pico = null, queryAliases = [] }) {
     const currentYear = new Date().getFullYear();
     const queryWantsMechanisms = MECHANISM_QUERY_PATTERNS.test(String(query || ''));
     const isStrictMode = specificity === 'strict';
     const meshTerms = Array.isArray(queryMeshTerms) ? queryMeshTerms : [];
 
     return (Array.isArray(raw) ? raw : []).filter((article) => {
-        if (isOffTopic(article, query, { queryMeshTerms: meshTerms })) return false;
+        const aliasMatched = queryAliasMatchScore(article, queryAliases) > 0;
+        if (!aliasMatched && isOffTopic(article, query, { queryMeshTerms: meshTerms })) return false;
         if (!yearInFilters(article, parsedYearFilters)) return false;
         if (!matchesPicoInterventionComparator(article, pico, query)) return false;
         const age = currentYear - getYear(article);
@@ -476,13 +484,15 @@ async function fetchAndRankSearchArticles({
             decomposePico(query, serverConfig, fetchImpl, cache).catch(() => null)
         ));
 
+        const fetchLimit = candidateFetchLimit(safeLimit);
         const raw = await withSpan('search.fetch_unified_evidence', {
             'search.query': query,
             'search.sources': sourceList,
-            'search.limit': Math.max(safeLimit, 20),
+            'search.limit': fetchLimit,
+            'search.return_limit': safeLimit,
         }, () => fetchUnifiedEvidence({
             query,
-            safeLimit: Math.max(safeLimit, 20),
+            safeLimit: fetchLimit,
             sourceList,
             serverConfig,
             fetch: fetchImpl,
@@ -507,7 +517,14 @@ async function fetchAndRankSearchArticles({
         const relevant = await withSpan('search.filter_relevance', {
             'search.raw_count': Array.isArray(studyFiltered) ? studyFiltered.length : 0,
         }, async (span) => {
-            const rows = filterRelevantArticles(studyFiltered, { query, specificity, queryMeshTerms, parsedYearFilters, pico });
+            const rows = filterRelevantArticles(studyFiltered, {
+                query,
+                specificity,
+                queryMeshTerms,
+                parsedYearFilters,
+                pico,
+                queryAliases: telemetry.clinicalAliases,
+            });
             span.setAttribute('search.relevant_count', rows.length);
             return rows;
         });
@@ -534,6 +551,7 @@ async function fetchAndRankSearchArticles({
                 articleSignalBoosts: signalBoosts,
                 specificity,
                 pico,
+                queryAliases: telemetry.clinicalAliases,
             });
             span.setAttribute('search.top_count', ranked.topPapers.length);
             return ranked;
@@ -604,6 +622,7 @@ module.exports = {
     parseParsedYearFilters,
     inferServerQueryHints,
     parseSearchRequestQuery,
+    candidateFetchLimit,
     filterRelevantArticles,
     matchesPicoInterventionComparator,
     annotateSearchRankMetadata,

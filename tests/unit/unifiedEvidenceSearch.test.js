@@ -3,6 +3,8 @@ const {
     dedupeKey,
     normalizeDoi,
     normalizePmid,
+    clinicalQueryAliases,
+    buildPubMedSearchQuery,
     getEbmScore,
     isPreprint,
 } = require('../../server/services/unifiedEvidenceSearch');
@@ -91,5 +93,27 @@ describe('unifiedEvidenceSearch helpers', () => {
         expect(isPreprint({ source: 'Nature', journal: 'Nature Medicine' })).toBe(false);
         expect(isPreprint({ source: 'medRxiv Preprint Server' })).toBe(true);
         expect(isPreprint({ source: '', journal: 'SSRN' })).toBe(true);
+    });
+
+    test('clinicalQueryAliases expands landmark trial names for verbose clinical queries', () => {
+        expect(clinicalQueryAliases('sacubitril valsartan heart failure reduced ejection fraction mortality')).toEqual(
+            expect.arrayContaining(['PARADIGM-HF'])
+        );
+        expect(clinicalQueryAliases('low tidal volume ventilation ARDS lung protective')).toEqual(
+            expect.arrayContaining(['ARDSNet', 'ARMA'])
+        );
+        expect(clinicalQueryAliases('pembrolizumab plus chemotherapy metastatic non-small cell lung cancer')).toEqual(
+            expect.arrayContaining(['KEYNOTE-189'])
+        );
+    });
+
+    test('buildPubMedSearchQuery parenthesizes base query, MeSH terms, and clinical aliases', () => {
+        const query = buildPubMedSearchQuery('low tidal volume ventilation ARDS', ['Respiratory Distress Syndrome'], ['ARDSNet', 'acute lung injury']);
+        expect(query).toBe('(' +
+            'low tidal volume ventilation ARDS OR ' +
+            '"Respiratory Distress Syndrome"[MeSH Terms] OR ' +
+            '"ARDSNet"[Title/Abstract] OR ' +
+            '"acute lung injury"' +
+            ')');
     });
 });
