@@ -132,7 +132,7 @@ module.exports = defineConfig({
       ? 'set NODE_ENV=production&& node server.js'
       : 'NODE_ENV=production node server.js',
     url: 'http://localhost:3002',
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
     timeout: 120 * 1000,
   },
 
