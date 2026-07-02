@@ -27,7 +27,7 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
-      - run: npm ci
+      - run: npm install
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps ${{ matrix.browser }}
@@ -73,7 +73,7 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
-      - run: npm ci
+      - run: npm install
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
@@ -119,7 +119,7 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
-      - run: npm ci
+      - run: npm install
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
