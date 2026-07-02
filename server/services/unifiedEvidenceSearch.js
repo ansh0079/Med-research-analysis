@@ -603,10 +603,29 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     const sourceFetches = [];
 
     if (sourceList.includes('pubmed')) {
+        // The broadened query (base OR MeSH OR aliases) maximises recall, but on already
+        // specific queries the OR-expansion ranks the precise landmark far down — sometimes
+        // past the fetch limit. Also run the un-expanded base query so an exact match (e.g.
+        // a trial whose abstract lacks its acronym) is always a candidate, and merge it in
+        // first so PubMed's precise rank-1 result leads the fused list.
+        const preciseQuery = appendPubMedPublicationFilters(pubmedQueryBase, specificity, parsedStudyTypes, parsedYearFilters);
         sourceFetches.push((async () => {
             try {
-                const articles = await proxy.pubmedSearch(pubmedQuery, { maxResults: safeLimit });
-                if (articles.length === 0 && telemetry && typeof telemetry === 'object') {
+                const [broad, precise] = await Promise.all([
+                    proxy.pubmedSearch(pubmedQuery, { maxResults: safeLimit }),
+                    preciseQuery !== pubmedQuery
+                        ? proxy.pubmedSearch(preciseQuery, { maxResults: Math.ceil(safeLimit / 2) }).catch(() => [])
+                        : Promise.resolve([]),
+                ]);
+                const seen = new Set();
+                const merged = [];
+                for (const a of [...precise, ...broad]) {
+                    const dk = dedupeKey(a);
+                    if (dk && seen.has(dk)) continue;
+                    if (dk) seen.add(dk);
+                    merged.push(a);
+                }
+                if (merged.length === 0 && telemetry && typeof telemetry === 'object') {
                     telemetry.lowRecallLearning = {
                         query,
                         resultCount: 0,
@@ -614,7 +633,7 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
                         expandedAliases: meshExpansions,
                     };
                 }
-                return articles;
+                return merged;
             } catch (err) {
                 console.warn('[unifiedEvidence] PubMed failed', err.message);
                 return [];

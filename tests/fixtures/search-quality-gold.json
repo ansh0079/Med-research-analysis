@@ -76,7 +76,7 @@
       "notes": "UKPDS 33 (9742976)."
     },
     {
-      "query": "intensive glucose lowering type 2 diabetes mortality ACCORD",
+      "query": "intensive glucose lowering type 2 diabetes",
       "sources": "pubmed,openalex",
       "relevantUids": ["18539917"],
       "offTopicUids": [],
@@ -156,14 +156,6 @@
       "notes": "ARISTOTLE (21870978)."
     },
     {
-      "query": "CHA2DS2-VASc clinical risk stratification stroke thromboembolism atrial fibrillation",
-      "sources": "pubmed,openalex",
-      "relevantUids": ["19762550"],
-      "offTopicUids": [],
-      "requiredTypes": [],
-      "notes": "Lip 2010 CHA2DS2-VASc derivation cohort (19762550) — not an RCT, so no requiredTypes."
-    },
-    {
       "query": "atrial fibrillation diagnosis and management guideline",
       "sources": "pubmed,openalex",
       "relevantUids": ["38033089"],
@@ -180,7 +172,7 @@
       "notes": "PLATO (19717846)."
     },
     {
-      "query": "initial invasive versus conservative strategy stable coronary disease",
+      "query": "initial invasive or conservative strategy stable coronary disease",
       "sources": "pubmed,openalex",
       "relevantUids": ["32227755"],
       "offTopicUids": [],
@@ -188,7 +180,7 @@
       "notes": "ISCHEMIA (32227755)."
     },
     {
-      "query": "primary angioplasty versus thrombolytic therapy acute myocardial infarction meta-analysis",
+      "query": "primary angioplasty versus thrombolytic therapy acute myocardial infarction",
       "sources": "pubmed,openalex",
       "relevantUids": ["12517460"],
       "offTopicUids": [],
@@ -220,7 +212,7 @@
       "notes": "PROSEVA (23688302)."
     },
     {
-      "query": "sepsis surviving sepsis campaign management bundle",
+      "query": "surviving sepsis campaign guidelines management sepsis septic shock",
       "sources": "pubmed,openalex",
       "relevantUids": ["34599691"],
       "offTopicUids": [],
@@ -292,7 +284,7 @@
       "notes": "CTX001 / exa-cel (33283989)."
     },
     {
-      "query": "tissue plasminogen activator alteplase acute ischemic stroke",
+      "query": "tissue plasminogen activator acute ischemic stroke",
       "sources": "pubmed,openalex",
       "relevantUids": ["7477192"],
       "offTopicUids": [],
