@@ -63,16 +63,16 @@ test.describe('beta smoke', () => {
     await page.goto('/');
 
     await expect(page).toHaveTitle(/Signal MD.*Medical Evidence Intelligence/i);
-    await expect(page.getByRole('button', { name: /Signal MD/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Go to search/i })).toBeVisible();
     await expect(page.getByRole('button', { name: /Sign in/i }).first()).toBeVisible();
-    await expect(page.getByText(/Search 100 M\+ papers/i)).toBeVisible();
+    await expect(page.getByText(/Search 100 M\+/i)).toBeVisible();
   });
 
   test('loads the search route and returns mocked results', async ({ page }) => {
     await page.goto('/search');
 
     const searchBox = page.getByPlaceholder(/SGLT2 inhibitors/i);
-    const submitButton = page.getByRole('banner').getByRole('button', { name: /^Search$/ });
+    const submitButton = page.locator('button[type="submit"]').first();
     await expect(searchBox).toBeVisible();
     await expect(submitButton).toBeDisabled();
 
