@@ -2,6 +2,8 @@ import React, { Suspense, useState } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { SearchProvider } from './contexts/SearchContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { CollectionDrawerProvider, useCollectionDrawer } from './contexts/CollectionDrawerContext';
+import { CollectionDetailDrawer } from './components/collaboration/CollectionDetailDrawer';
 import { ToastContainer, useToast } from '@components/ui';
 import { USAGE_HEADER_EVENT, type UsageHeaderDetail } from '@services/api/core';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -201,8 +203,16 @@ const AppContent: React.FC = () => {
       <PhiDataNotice />
       <CookieConsentBanner />
       <ToastContainer toasts={toasts} onRemove={removeToast} />
+      <CollectionDetailDrawerHost />
     </div>
   );
+};
+
+// Reads the global collection-drawer state so the notification bell (in TopNav) can
+// open a collection's detail view regardless of which page is currently active.
+const CollectionDetailDrawerHost: React.FC = () => {
+  const { openCollectionId, closeCollection } = useCollectionDrawer();
+  return <CollectionDetailDrawer collectionId={openCollectionId} onClose={closeCollection} />;
 };
 
 const App: React.FC = () => (
@@ -217,7 +227,9 @@ const App: React.FC = () => (
     <BrowserRouter>
       <AuthProvider>
         <SearchProvider>
-          <AppContent />
+          <CollectionDrawerProvider>
+            <AppContent />
+          </CollectionDrawerProvider>
         </SearchProvider>
       </AuthProvider>
     </BrowserRouter>

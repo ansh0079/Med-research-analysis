@@ -1,0 +1,251 @@
+{
+  "description": "Deterministic offline quality gate for learning engine, MCQ, and case generation outputs. Good examples should pass; bad examples should fail for the intended reasons.",
+  "mcqSets": [
+    {
+      "id": "ards_guideline_good",
+      "expectPass": true,
+      "options": { "requireSourceLabel": true, "minCount": 3 },
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "questionType": "clinical_application",
+          "question": "A 64-year-old man with pneumonia is intubated for severe hypoxaemia. His PaO2/FiO2 ratio is 90 despite high FiO2, and chest imaging shows bilateral opacities. Which ventilator strategy is most appropriate first?",
+          "options": [
+            "A: Use low tidal volume ventilation with plateau pressure limitation",
+            "B: Use high tidal volumes to recruit atelectatic lung units",
+            "C: Delay lung-protective ventilation until vasopressors are stopped",
+            "D: Avoid PEEP because it worsens oxygenation in ARDS"
+          ],
+          "correctAnswer": "A",
+          "explanation": "Low tidal volume ventilation is the practice-defining mortality-reducing strategy in ARDS and should be applied early while monitoring plateau pressure. High tidal volumes worsen ventilator-induced lung injury. [Trial]",
+          "difficulty": "medium",
+          "distractorRationale": {
+            "B": "High tidal volumes increase volutrauma and are the opposite of lung-protective ventilation.",
+            "C": "Shock does not justify delaying lung-protective ventilation; haemodynamics and ventilation are managed together.",
+            "D": "PEEP is often required in ARDS oxygenation strategies; the unsafe claim is that it should be avoided."
+          },
+          "claimKey": "ards-low-tidal-volume"
+        },
+        {
+          "type": "multiple_choice",
+          "questionType": "guideline",
+          "question": "A 52-year-old woman with severe ARDS remains hypoxaemic after lung-protective ventilation and appropriate PEEP. Which escalation is most consistent with guideline-based care?",
+          "options": [
+            "A: Prone positioning when severe hypoxaemia persists",
+            "B: Routine high-frequency oscillation for all ARDS patients",
+            "C: Immediate extubation to avoid ventilator-associated pneumonia",
+            "D: Reduce oxygen targets to avoid any supplemental oxygen exposure"
+          ],
+          "correctAnswer": "A",
+          "explanation": "Prone positioning is recommended for selected severe ARDS patients with persistent hypoxaemia after lung-protective ventilation. The other options either overgeneralise older interventions or create avoidable risk. [Guideline]",
+          "difficulty": "hard",
+          "distractorRationale": {
+            "B": "High-frequency oscillation is not routine guideline-based escalation for all ARDS patients.",
+            "C": "Extubation is unsafe when severe hypoxaemia persists and ventilatory support is still required.",
+            "D": "Avoiding all supplemental oxygen is not a safe ARDS strategy; targets must balance hypoxaemia and oxygen toxicity."
+          },
+          "claimKey": "ards-prone-positioning"
+        },
+        {
+          "type": "multiple_choice",
+          "questionType": "pitfall",
+          "question": "A 70-year-old male patient with ARDS improves after 24 hours of low tidal volume ventilation. A colleague suggests increasing tidal volume because the latest blood gas shows mild hypercapnia. What is the key pitfall?",
+          "options": [
+            "A: Treating mild permissive hypercapnia as a reason to abandon lung-protective ventilation",
+            "B: Assuming low tidal volume ventilation is only for patients with COPD",
+            "C: Stopping all sedation before checking oxygenation",
+            "D: Using plateau pressure monitoring to guide ventilator safety"
+          ],
+          "correctAnswer": "A",
+          "explanation": "Permissive hypercapnia can be acceptable when pursuing lung-protective ventilation, provided pH and clinical context are monitored. Abandoning the mortality-reducing strategy for mild hypercapnia is the trap. [Topic memory]",
+          "difficulty": "medium",
+          "distractorRationale": {
+            "B": "This is false, but it is not the specific pitfall raised by the blood gas decision.",
+            "C": "Sedation strategy matters, but stopping all sedation is not the key ventilator-volume discriminator here.",
+            "D": "Plateau pressure monitoring is helpful rather than a pitfall."
+          },
+          "claimKey": "ards-permissive-hypercapnia"
+        }
+      ]
+    },
+    {
+      "id": "unsafe_thin_bad",
+      "expectPass": false,
+      "options": { "requireSourceLabel": true, "minCount": 3 },
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "questionType": "clinical_application",
+          "question": "What is ARDS?",
+          "options": ["A: Lung problem", "B: Lung problem", "C: Heart problem", "D: None of the above"],
+          "correctAnswer": "A",
+          "explanation": "ARDS is a lung problem.",
+          "difficulty": "medium",
+          "distractorRationale": { "B": "", "C": "", "D": "" }
+        },
+        {
+          "type": "multiple_choice",
+          "questionType": "guideline",
+          "question": "A patient is unwell. What should happen?",
+          "options": ["A: Always start antibiotics immediately without assessment", "B: Observe", "C: Ignore", "D: Discharge"],
+          "correctAnswer": "A",
+          "explanation": "Always start antibiotics immediately without assessment because it is completely safe.",
+          "difficulty": "medium",
+          "distractorRationale": { "B": "No.", "C": "No.", "D": "No." }
+        }
+      ]
+    }
+  ],
+  "caseOutputs": [
+    {
+      "id": "ards_case_good",
+      "expectPass": true,
+      "options": { "evidenceCount": 3 },
+      "case": {
+        "caseSummary": "De-identified fictional severe ARDS case focused on ventilator strategy.",
+        "vignette": "A 58-year-old woman develops hypoxaemic respiratory failure after pneumonia and requires invasive ventilation.",
+        "patientPresentation": "Fever, bilateral infiltrates, PaO2/FiO2 85, no clear cardiogenic oedema.",
+        "keyDecisionPoint": "Choosing an evidence-grounded ventilation and escalation strategy.",
+        "differentialReasoning": "ARDS is most likely given timing, hypoxaemia, bilateral infiltrates, and the pneumonia trigger; cardiogenic oedema remains a competing consideration to assess.",
+        "evidenceExplanation": "The evidence supports low tidal volume ventilation as foundational and prone positioning for persistent severe hypoxaemia, with attention to applicability and monitoring.",
+        "interventions": [
+          {
+            "name": "Low tidal volume ventilation",
+            "evidenceStrength": "HIGH",
+            "rationale": "Practice-defining RCT evidence supports mortality benefit in ARDS.",
+            "citations": [1]
+          }
+        ],
+        "caseMCQs": [
+          {
+            "type": "multiple_choice",
+            "questionType": "clinical_application",
+            "question": "A 58-year-old woman with pneumonia-associated ARDS is ventilated with high pressures and worsening oxygenation. What is the safest evidence-based ventilator adjustment?",
+            "options": ["A: Lower tidal volume and monitor plateau pressure", "B: Increase tidal volume to normalise carbon dioxide", "C: Stop PEEP immediately", "D: Extubate despite severe hypoxaemia"],
+            "correctAnswer": "A",
+            "explanation": "Low tidal volume ventilation reduces ventilator-induced lung injury and is foundational in ARDS management.",
+            "whyOthersWrong": "B worsens volutrauma; C overstates PEEP harm; D is unsafe with persistent severe hypoxaemia.",
+            "distractorRationale": {
+              "B": "Normalising carbon dioxide should not override lung-protective ventilation.",
+              "C": "PEEP is commonly used to support oxygenation and should not be reflexively stopped.",
+              "D": "Extubation is unsafe when severe hypoxaemia persists."
+            },
+            "difficulty": "medium",
+            "sourceReference": "ARDSNet trial"
+          },
+          {
+            "type": "multiple_choice",
+            "questionType": "guideline",
+            "question": "A 58-year-old female patient remains severely hypoxaemic after lung-protective ventilation. Which escalation best fits guideline-aligned care?",
+            "options": ["A: Prone positioning", "B: High-frequency oscillation for all patients", "C: No further escalation", "D: Routine antibiotics for all causes"],
+            "correctAnswer": "A",
+            "explanation": "Prone positioning is a recognised escalation for severe ARDS with persistent hypoxaemia.",
+            "whyOthersWrong": "B is not routine for all; C ignores severity; D is not a ventilatory escalation.",
+            "distractorRationale": {
+              "B": "This overgeneralises a non-routine intervention.",
+              "C": "Persistent severe hypoxaemia requires reassessment and escalation.",
+              "D": "Antibiotics depend on infection context and are not the ventilatory decision."
+            },
+            "difficulty": "hard",
+            "sourceReference": "ARDS guideline"
+          },
+          {
+            "type": "multiple_choice",
+            "questionType": "pitfall",
+            "question": "A 58-year-old woman with ARDS has mild hypercapnia on lung-protective settings. What is the common pitfall?",
+            "options": ["A: Abandoning lung-protective ventilation solely to normalise PaCO2", "B: Monitoring plateau pressure", "C: Treating the underlying pneumonia", "D: Checking volume status"],
+            "correctAnswer": "A",
+            "explanation": "Mild permissive hypercapnia can be acceptable when lung-protective ventilation is otherwise appropriate.",
+            "whyOthersWrong": "B, C, and D are reasonable supportive actions.",
+            "distractorRationale": {
+              "B": "Plateau pressure monitoring supports ventilator safety.",
+              "C": "Treating the trigger is appropriate when infection is present.",
+              "D": "Volume status assessment is relevant in hypoxaemic respiratory failure."
+            },
+            "difficulty": "medium",
+            "sourceReference": "Topic memory"
+          }
+        ],
+        "paperApplications": [
+          {
+            "studyIndex": 1,
+            "title": "ARDSNet low tidal volume trial",
+            "howItApplies": "Supports the ventilator strategy but does not replace bedside assessment."
+          }
+        ],
+        "uncertainties": ["Optimal PEEP strategy depends on patient response."],
+        "followUpQuestions": [
+          {
+            "question": "severe ARDS prone positioning guideline threshold",
+            "rationale": "Clarifies escalation criteria.",
+            "trigger": "uncertainty"
+          }
+        ],
+        "disclaimer": "FOR RESEARCH SUPPORT ONLY. This summary is not a substitute for clinical judgement. Findings must be verified against primary sources before informing patient care.",
+        "safetyNotes": "Assess haemodynamics, contraindications to proning, and retraction status of cited evidence."
+      }
+    },
+    {
+      "id": "case_bad_no_grounding",
+      "expectPass": false,
+      "options": { "evidenceCount": 2 },
+      "case": {
+        "caseSummary": "ARDS.",
+        "vignette": "Sick patient.",
+        "patientPresentation": "",
+        "keyDecisionPoint": "",
+        "differentialReasoning": "",
+        "evidenceExplanation": "Start treatment immediately without checking context.",
+        "interventions": [{ "name": "Treatment", "evidenceStrength": "HIGH", "rationale": "Works always.", "citations": [9] }],
+        "caseMCQs": [],
+        "paperApplications": [{ "studyIndex": 9, "title": "Invented", "howItApplies": "Everything." }],
+        "disclaimer": "Use clinically.",
+        "safetyNotes": ""
+      }
+    }
+  ],
+  "learningPlans": [
+    {
+      "id": "targets_weak_claim_good",
+      "expectPass": true,
+      "options": {
+        "weakClaimKeys": ["ards-low-tidal-volume"],
+        "misconceptionClaimKeys": ["ards-prone-positioning"],
+        "dueOutlineNodeIds": ["tp-2"],
+        "expectedDifficulty": "medium",
+        "expectedQuestionType": "pitfall"
+      },
+      "plan": {
+        "selectedClaimKeys": ["ards-prone-positioning", "ards-low-tidal-volume"],
+        "selectedOutlineNodeIds": ["tp-2"],
+        "difficulty": "medium",
+        "questionTypes": ["clinical_application", "pitfall"]
+      }
+    },
+    {
+      "id": "ignores_learner_state_bad",
+      "expectPass": false,
+      "options": {
+        "weakClaimKeys": ["ards-low-tidal-volume"],
+        "misconceptionClaimKeys": ["ards-prone-positioning"],
+        "dueOutlineNodeIds": ["tp-2"],
+        "expectedDifficulty": "easy",
+        "expectedQuestionType": "pitfall"
+      },
+      "plan": {
+        "selectedClaimKeys": ["unrelated-claim"],
+        "selectedOutlineNodeIds": ["tp-9"],
+        "difficulty": "hard",
+        "questionTypes": ["recall"]
+      }
+    }
+  ],
+  "thresholds": {
+    "mcqPassRate": 0.5,
+    "casePassRate": 0.5,
+    "learningPassRate": 0.5,
+    "minMcqAvg": 55,
+    "minCaseAvg": 50,
+    "minLearningAvg": 50
+  }
+}

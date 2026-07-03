@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@contexts/AuthContext';
 import { useTheme } from '@hooks';
 import api from '@services/api';
+import { NotificationBell } from '@components/collaboration/NotificationBell';
 
 // Primary nav — 4 items visible at all times
 const PRIMARY_NAV = [
@@ -177,6 +178,8 @@ export const TopNav: React.FC = () => {
               </svg>
             )}
           </button>
+
+          {isAuthenticated && <NotificationBell />}
 
           <div className="w-px h-4 bg-slate-200 dark:bg-slate-700" />
 

@@ -72,6 +72,7 @@
     "eval:search-quality": "node scripts/eval-search-quality.js",
     "eval:search-quality:gold": "node scripts/eval-search-quality.js --base http://localhost:3002 --gold tests/fixtures/search-quality-gold.json",
     "eval:search-quality:report": "node scripts/eval-search-quality.js --base http://localhost:3002",
+    "eval:learning-quality": "node scripts/eval-learning-quality.js",
     "eval:quality-metrics": "node scripts/eval-quality-metrics.js",
     "eval:search-personalization": "node scripts/eval-search-personalization.js",
     "test:load:smoke": "k6 run tests/load/search-load.js -e TEST_TYPE=smoke",
