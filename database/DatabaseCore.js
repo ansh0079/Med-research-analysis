@@ -110,31 +110,31 @@ async initialize() {
         const migrationsDdlPg = `CREATE TABLE IF NOT EXISTS _migrations (id SERIAL PRIMARY KEY, name TEXT UNIQUE NOT NULL, applied_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP)`;
         await this.run(migrationsDdlPg);
 
-        const usersCheck = await this.pool.query(
-            `SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'users' LIMIT 1`
-        );
         this.pgUsersIdType = await this.detectPgUsersIdType();
 
-        if (usersCheck.rows.length === 0) {
-            const schema = fs.readFileSync(schemaPath, 'utf8');
-            const statements = schema.split(';').filter(s => s.trim());
-            const pgOpts = { usersIdType: this.pgUsersIdType };
-            for (let statement of statements) {
-                if (!statement.trim()) continue;
-                statement = convertSqliteDdlToPostgres(statement, pgOpts);
-                try {
-                    await this.run(statement);
-                } catch (err) {
-                    const msg = String(err?.message || '');
-                    const code = err?.code || '';
-                    if (code === '42P07' || code === '42710' || msg.includes('already exists')) {
-                        continue;
-                    }
-                    throw err;
+        // Always run production_schema.sql, not just on first boot. Every statement in
+        // that file is CREATE TABLE/INDEX IF NOT EXISTS, so this is a safe no-op against
+        // an already-bootstrapped database. Previously this was gated on "users table
+        // doesn't exist yet", which meant any table added to production_schema.sql AFTER
+        // a database's initial bootstrap (e.g. the teams/collaboration/review-assistant
+        // tables) would silently never get created — the migration runner's baseline-skip
+        // logic also assumes this file already covers them, compounding the gap.
+        const schema = fs.readFileSync(schemaPath, 'utf8');
+        const statements = schema.split(';').filter(s => s.trim());
+        const pgOpts = { usersIdType: this.pgUsersIdType };
+        for (let statement of statements) {
+            if (!statement.trim()) continue;
+            statement = convertSqliteDdlToPostgres(statement, pgOpts);
+            try {
+                await this.run(statement);
+            } catch (err) {
+                const msg = String(err?.message || '');
+                const code = err?.code || '';
+                if (code === '42P07' || code === '42710' || msg.includes('already exists')) {
+                    continue;
                 }
+                throw err;
             }
-        } else {
-            console.log('ℹ️ PostgreSQL already bootstrapped — skipping production_schema.sql');
         }
     }
     const migrationsDdl = this.isPostgres

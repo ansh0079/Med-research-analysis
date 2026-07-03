@@ -30,6 +30,23 @@ function convertSqliteDdlToPostgres(sql, options = {}) {
             /user_id\s+TEXT\s+REFERENCES\s+users\s*\(\s*id\s*\)/gi,
             'user_id UUID REFERENCES users(id)'
         );
+
+        // Any other column referencing users(id) — e.g. owner_id, created_by, added_by,
+        // saved_by — must also become UUID, or Postgres rejects the FK with "incompatible
+        // types: text and uuid". This covers both declaration styles seen in schema.sql:
+        // inline (`col TEXT REFERENCES users(id)`) and table-level
+        // (`FOREIGN KEY (col) REFERENCES users(id)`, with `col TEXT` declared separately
+        // earlier in the same CREATE TABLE statement).
+        const fkColumns = new Set();
+        const inlineRe = /\b([a-zA-Z_][a-zA-Z0-9_]*)\s+TEXT\b(?:\s+NOT\s+NULL)?\s+REFERENCES\s+users\s*\(\s*id\s*\)/gi;
+        const tableLevelRe = /FOREIGN\s+KEY\s*\(\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*\)\s*REFERENCES\s+users\s*\(\s*id\s*\)/gi;
+        for (const re of [inlineRe, tableLevelRe]) {
+            let m;
+            while ((m = re.exec(out)) !== null) fkColumns.add(m[1]);
+        }
+        for (const col of fkColumns) {
+            out = out.replace(new RegExp(`\\b${col}\\s+TEXT\\b`, 'gi'), `${col} UUID`);
+        }
     }
 
     return out;
