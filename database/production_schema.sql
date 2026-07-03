@@ -329,6 +329,7 @@ CREATE TABLE IF NOT EXISTS collab_notifications (
     title TEXT,
     body TEXT,
     is_read INTEGER DEFAULT 0,
+    related_collection_id TEXT,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 

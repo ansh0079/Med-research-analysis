@@ -28,37 +28,50 @@ const safeJsonParse = (str, fallback = null) => {
 // validation logic stays in one place and picks up any future changes.
 const requireAuth = requireAuthJwt;
 
+const PERMISSION_LEVELS = { read: 1, write: 2, admin: 3 };
+
+// Shared access check, usable both as Express middleware (checkCollectionPermission)
+// and inline in routes that take collectionId from the query/body rather than
+// req.params (e.g. /comments, which is collection-scoped only when a collectionId
+// is supplied).
+async function resolveCollectionAccess(userId, collectionId, permissionLevel = 'read') {
+  const row = await db.get('SELECT * FROM collab_collections WHERE id = ?', [collectionId]);
+  if (!row) return { allowed: false, status: 404, error: 'Collection not found' };
+
+  if (row.owner_id === userId) {
+    return { allowed: true, row, collaborator: null };
+  }
+
+  const collaborator = await db.get(
+    'SELECT * FROM collab_collection_collaborators WHERE collection_id = ? AND user_id = ?',
+    [collectionId, userId]
+  );
+  if (!collaborator) return { allowed: false, status: 403, error: 'Access denied' };
+
+  if (PERMISSION_LEVELS[collaborator.permission] < PERMISSION_LEVELS[permissionLevel]) {
+    return { allowed: false, status: 403, error: 'Insufficient permissions' };
+  }
+
+  return { allowed: true, row, collaborator };
+}
+
+async function userHasCollectionAccess(userId, collectionId, permissionLevel = 'read') {
+  const result = await resolveCollectionAccess(userId, collectionId, permissionLevel);
+  return result.allowed;
+}
+
 const checkCollectionPermission = (permissionLevel = 'read') => {
   return async (req, res, next) => {
     try {
       const { collectionId } = req.params;
-      const row = await db.get('SELECT * FROM collab_collections WHERE id = ?', [collectionId]);
+      const result = await resolveCollectionAccess(req.user.id, collectionId, permissionLevel);
 
-      if (!row) {
-        return res.status(404).json({ error: 'Collection not found' });
+      if (!result.allowed) {
+        return res.status(result.status).json({ error: result.error });
       }
 
-      if (row.owner_id === req.user.id) {
-        req.collection = await enrichCollection(row);
-        return next();
-      }
-
-      const collaborator = await db.get(
-        'SELECT * FROM collab_collection_collaborators WHERE collection_id = ? AND user_id = ?',
-        [collectionId, req.user.id]
-      );
-
-      if (!collaborator) {
-        return res.status(403).json({ error: 'Access denied' });
-      }
-
-      const levels = { read: 1, write: 2, admin: 3 };
-      if (levels[collaborator.permission] < levels[permissionLevel]) {
-        return res.status(403).json({ error: 'Insufficient permissions' });
-      }
-
-      req.collection = await enrichCollection(row);
-      req.collaborator = collaborator;
+      req.collection = await enrichCollection(result.row);
+      req.collaborator = result.collaborator;
       next();
     } catch (err) {
       next(err);
@@ -184,6 +197,21 @@ async function logActivity(activity) {
       activity.commentId || null,
       JSON.stringify(activity.metadata || {}),
     ]
+  );
+  return id;
+}
+
+// ==========================================
+// Notifications
+// ==========================================
+
+async function createNotification(userId, type, title, body, relatedCollectionId = null) {
+  if (!userId) return;
+  const id = randomUUID();
+  await db.run(
+    `INSERT INTO collab_notifications (id, user_id, type, title, body, is_read, related_collection_id, created_at)
+     VALUES (?, ?, ?, ?, ?, 0, ?, ?)`,
+    [id, userId, type, title, body, relatedCollectionId, new Date().toISOString()]
   );
   return id;
 }
@@ -415,6 +443,20 @@ router.post('/collections/:collectionId/share', requireAuth, checkCollectionPerm
       metadata: { invitee: userEmail.trim(), permission },
     });
 
+    // If the invitee already has an account, notify them directly. If not, they'll
+    // still see the pending invitation via GET /invitations (keyed by email) once
+    // they sign up or log in.
+    const invitedUser = await db.get('SELECT id FROM users WHERE email = ?', [userEmail.trim()]);
+    if (invitedUser) {
+      await createNotification(
+        invitedUser.id,
+        'invitation_received',
+        'New collection invitation',
+        `${req.user.name || 'Someone'} invited you to "${req.collection.name}"`,
+        collectionId
+      );
+    }
+
     const invitation = await db.get('SELECT * FROM collab_invitations WHERE id = ?', [id]);
     res.status(201).json(invitation);
   } catch (err) {
@@ -597,6 +639,14 @@ router.get('/comments', requireAuth, async (req, res, next) => {
   try {
     const { articleId, collectionId } = req.query;
 
+    // Article-only-scoped comments (no collectionId) stay open to any authenticated
+    // user, matching the existing Team Notes precedent. Collection-scoped comments
+    // require at least read access to that collection.
+    if (collectionId) {
+      const allowed = await userHasCollectionAccess(req.user.id, collectionId, 'read');
+      if (!allowed) return res.status(403).json({ error: 'Access denied' });
+    }
+
     let sql = 'SELECT * FROM collab_comments WHERE parent_id IS NULL';
     const params = [];
 
@@ -625,17 +675,32 @@ router.post('/comments', requireAuth, async (req, res, next) => {
   try {
     const { articleId, collectionId, annotationId, content, parentId } = req.body;
 
-    if (!articleId || !content?.trim()) {
+    if ((!articleId && !collectionId)) {
       return res.status(400).json({ error: 'Missing required fields' });
+    }
+    const sanitizedContent = sanitizeUserInput(content, { maxLength: 5000, escapeHtml: true, normalizeWhitespace: false });
+    if (!sanitizedContent) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    if (collectionId) {
+      const allowed = await userHasCollectionAccess(req.user.id, collectionId, 'write');
+      if (!allowed) return res.status(403).json({ error: 'Access denied' });
     }
 
     const id = randomUUID();
     const now = new Date().toISOString();
+    // article_id is NOT NULL. Collection-level discussion threads (no single article)
+    // use a synthetic, non-null placeholder — chosen over a schema migration since it
+    // requires no table rebuild and collab_comments has no unique/FK dependency on
+    // article_id's actual content. GET /comments filters by collection_id when querying
+    // a collection thread, so this placeholder never needs to be matched against.
+    const effectiveArticleId = articleId || `collection:${collectionId}`;
 
     await db.run(
       `INSERT INTO collab_comments (id, article_id, collection_id, annotation_id, user_id, user_name, content, parent_id, is_resolved, reply_count, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?, ?)`,
-      [id, articleId, collectionId || null, annotationId || null, req.user.id, req.user.name, content.trim(), parentId || null, now, now]
+      [id, effectiveArticleId, collectionId || null, annotationId || null, req.user.id, req.user.name, sanitizedContent, parentId || null, now, now]
     );
 
     if (parentId) {
@@ -643,6 +708,16 @@ router.post('/comments', requireAuth, async (req, res, next) => {
         'UPDATE collab_comments SET reply_count = reply_count + 1 WHERE id = ?',
         [parentId]
       );
+      const parent = await db.get('SELECT user_id FROM collab_comments WHERE id = ?', [parentId]);
+      if (parent && parent.user_id !== req.user.id) {
+        await createNotification(
+          parent.user_id,
+          'comment_reply',
+          'New reply to your comment',
+          `${req.user.name || 'Someone'} replied to your comment`,
+          collectionId || null
+        );
+      }
     }
 
     await logActivity({
@@ -674,7 +749,10 @@ router.patch('/comments/:commentId', requireAuth, async (req, res, next) => {
     const fields = ['updated_at = ?'];
     const params = [now];
 
-    if (content !== undefined) { fields.push('content = ?'); params.push(content.trim()); }
+    if (content !== undefined) {
+      fields.push('content = ?');
+      params.push(sanitizeUserInput(content, { maxLength: 5000, escapeHtml: true, normalizeWhitespace: false }) || '');
+    }
     if (isResolved !== undefined) { fields.push('is_resolved = ?'); params.push(isResolved ? 1 : 0); }
 
     params.push(commentId);
@@ -719,13 +797,29 @@ router.post('/comments/:commentId/reactions', requireAuth, async (req, res, next
     const { commentId } = req.params;
     const { emoji } = req.body;
 
-    const row = await db.get('SELECT id FROM collab_comments WHERE id = ?', [commentId]);
+    const row = await db.get('SELECT * FROM collab_comments WHERE id = ?', [commentId]);
     if (!row) return res.status(404).json({ error: 'Comment not found' });
 
-    await db.run(
-      'INSERT OR IGNORE INTO collab_comment_reactions (comment_id, emoji, user_id) VALUES (?, ?, ?)',
+    const existing = await db.get(
+      'SELECT 1 FROM collab_comment_reactions WHERE comment_id = ? AND emoji = ? AND user_id = ?',
       [commentId, emoji, req.user.id]
     );
+
+    await db.run(
+      `INSERT INTO collab_comment_reactions (comment_id, emoji, user_id) VALUES (?, ?, ?)
+       ON CONFLICT (comment_id, emoji, user_id) DO NOTHING`,
+      [commentId, emoji, req.user.id]
+    );
+
+    if (!existing && row.user_id !== req.user.id) {
+      await createNotification(
+        row.user_id,
+        'comment_reaction',
+        'New reaction on your comment',
+        `${req.user.name || 'Someone'} reacted ${emoji} to your comment`,
+        row.collection_id || null
+      );
+    }
 
     const comment = await db.get('SELECT * FROM collab_comments WHERE id = ?', [commentId]);
     res.json(await enrichComment(comment));
@@ -851,14 +945,23 @@ router.post('/invitations/:invitationId/accept', requireAuth, async (req, res, n
     }
 
     await db.run(
-      `INSERT OR IGNORE INTO collab_collection_collaborators (collection_id, user_id, user_name, email, permission, added_at, added_by)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO collab_collection_collaborators (collection_id, user_id, user_name, email, permission, added_at, added_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT (collection_id, user_id) DO NOTHING`,
       [invitation.collection_id, req.user.id, req.user.name, req.user.email, invitation.permission, new Date().toISOString(), invitation.invited_by]
     );
     await db.run('UPDATE collab_invitations SET status = ? WHERE id = ?', ['accepted', invitationId]);
     await db.run('UPDATE collab_collections SET updated_at = ? WHERE id = ?', [new Date().toISOString(), invitation.collection_id]);
 
     await logActivity({ type: 'member_joined', userId: req.user.id, userName: req.user.name, collectionId: invitation.collection_id });
+
+    await createNotification(
+      invitation.invited_by,
+      'invitation_accepted',
+      'Invitation accepted',
+      `${req.user.name || 'Someone'} joined "${invitation.collection_name || 'your collection'}"`,
+      invitation.collection_id
+    );
 
     res.json({ success: true });
   } catch (err) {
@@ -898,6 +1001,7 @@ router.get('/notifications', requireAuth, async (req, res, next) => {
       title: r.title,
       body: r.body,
       isRead: Boolean(r.is_read),
+      relatedCollectionId: r.related_collection_id || null,
       createdAt: r.created_at,
     })));
   } catch (err) {

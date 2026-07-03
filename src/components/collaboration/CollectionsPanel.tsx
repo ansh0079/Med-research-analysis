@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '@services/api';
 import { useAuth } from '@contexts/AuthContext';
 import { useNavigatePage } from '@contexts/SearchContext';
+import { useCollectionDrawer } from '@contexts/CollectionDrawerContext';
 import { Button } from '@components/ui/Button';
 import type { CollectionSummary, Article } from '@types';
 
@@ -13,6 +14,7 @@ interface CollectionsPanelProps {
 export const CollectionsPanel: React.FC<CollectionsPanelProps> = ({ articleToAdd, onClose }) => {
   const { isAuthenticated, user } = useAuth();
   const setCurrentPage = useNavigatePage();
+  const { openCollection } = useCollectionDrawer();
   const [collections, setCollections] = useState<CollectionSummary[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -197,6 +199,14 @@ export const CollectionsPanel: React.FC<CollectionsPanelProps> = ({ articleToAdd
                   </p>
                 </div>
                 <div className="flex gap-1 shrink-0">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => openCollection(col.id)}
+                    title="View collection"
+                  >
+                    <i className="fas fa-eye" />
+                  </Button>
                   {articleToAdd && (
                     <Button
                       variant="primary"

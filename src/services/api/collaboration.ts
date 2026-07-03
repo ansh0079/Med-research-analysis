@@ -24,6 +24,11 @@ import type {
   TopicKnowledgeProposalListResponse,
   LearningHealthResponse,
   LearningRecommendation,
+  CollectionDetail,
+  CollabComment,
+  CollabActivity,
+  CollabInvitation,
+  CollabNotification,
 } from '@types';
 
 export class CollaborationApi extends BaseApiClient {
@@ -116,6 +121,167 @@ export class CollaborationApi extends BaseApiClient {
     );
     if (response.status === 401) throw new Error('AUTH_REQUIRED');
     if (!response.ok) throw new Error('Failed to delete collection');
+  }
+
+  async getCollection(collectionId: string): Promise<CollectionDetail> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/collaboration/collections/${collectionId}`);
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to fetch collection');
+    return response.json();
+  }
+
+  async updateCollection(
+    collectionId: string,
+    updates: Partial<Pick<CollectionDetail, 'name' | 'description' | 'isPublic' | 'tags'>>
+  ): Promise<CollectionDetail> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/collaboration/collections/${collectionId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    });
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to update collection');
+    return response.json();
+  }
+
+  async shareCollection(
+    collectionId: string,
+    userEmail: string,
+    permission: 'read' | 'write' | 'admin' = 'read',
+    message?: string
+  ): Promise<CollabInvitation> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/collaboration/collections/${collectionId}/share`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userEmail, permission, message }),
+    });
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async updateCollectionMemberPermission(
+    collectionId: string,
+    userId: string,
+    permission: 'read' | 'write' | 'admin'
+  ): Promise<void> {
+    const response = await this.fetchWithSession(
+      `${API_BASE}/api/collaboration/collections/${collectionId}/members/${encodeURIComponent(userId)}`,
+      {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ permission }),
+      }
+    );
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to update member permission');
+  }
+
+  async removeCollectionMember(collectionId: string, userId: string): Promise<void> {
+    const response = await this.fetchWithSession(
+      `${API_BASE}/api/collaboration/collections/${collectionId}/members/${encodeURIComponent(userId)}`,
+      { method: 'DELETE' }
+    );
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to remove member');
+  }
+
+  async getComments(params: { collectionId?: string; articleId?: string }): Promise<CollabComment[]> {
+    const query = new URLSearchParams();
+    if (params.collectionId) query.set('collectionId', params.collectionId);
+    if (params.articleId) query.set('articleId', params.articleId);
+    const response = await this.fetchWithSession(`${API_BASE}/api/collaboration/comments?${query.toString()}`);
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to fetch comments');
+    return response.json();
+  }
+
+  async postComment(payload: {
+    articleId?: string;
+    collectionId?: string;
+    content: string;
+    parentId?: string;
+  }): Promise<CollabComment> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/collaboration/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async addCommentReaction(commentId: string, emoji: string): Promise<CollabComment> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/collaboration/comments/${commentId}/reactions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ emoji }),
+    });
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to add reaction');
+    return response.json();
+  }
+
+  async removeCommentReaction(commentId: string, emoji: string): Promise<CollabComment> {
+    const response = await this.fetchWithSession(
+      `${API_BASE}/api/collaboration/comments/${commentId}/reactions/${encodeURIComponent(emoji)}`,
+      { method: 'DELETE' }
+    );
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to remove reaction');
+    return response.json();
+  }
+
+  async getActivity(params: { collectionId?: string; articleId?: string; limit?: number }): Promise<CollabActivity[]> {
+    const query = new URLSearchParams();
+    if (params.collectionId) query.set('collectionId', params.collectionId);
+    if (params.articleId) query.set('articleId', params.articleId);
+    if (params.limit) query.set('limit', String(params.limit));
+    const response = await this.fetchWithSession(`${API_BASE}/api/collaboration/activity?${query.toString()}`);
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to fetch activity');
+    return response.json();
+  }
+
+  async getInvitations(): Promise<CollabInvitation[]> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/collaboration/invitations`);
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to fetch invitations');
+    return response.json();
+  }
+
+  // Named distinctly from acceptInvitation(token) above, which is for team invitations
+  // (different endpoint, different identifier shape).
+  async acceptCollabInvitation(invitationId: string): Promise<void> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/collaboration/invitations/${invitationId}/accept`, {
+      method: 'POST',
+    });
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to accept invitation');
+  }
+
+  async declineCollabInvitation(invitationId: string): Promise<void> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/collaboration/invitations/${invitationId}/decline`, {
+      method: 'POST',
+    });
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to decline invitation');
+  }
+
+  async getNotifications(): Promise<CollabNotification[]> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/collaboration/notifications`);
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to fetch notifications');
+    return response.json();
+  }
+
+  async markNotificationRead(notificationId: string): Promise<void> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/collaboration/notifications/${notificationId}/read`, {
+      method: 'POST',
+    });
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to mark notification read');
   }
 
   async getTeams(): Promise<{ teams: import('@types').Team[] }> {
