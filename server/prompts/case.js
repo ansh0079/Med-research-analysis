@@ -95,12 +95,13 @@ ${topic || 'Infer from the case text'}
 Learner mode:
 ${learningMode} - ${modeGuidance}${adaptiveInstruction}
 
-${formatStoredTopicKnowledgeForPrompt(options.topicKnowledge || null) || ''}Evidence:
-${evidence}
+${formatStoredTopicKnowledgeForPrompt(options.topicKnowledge || null) || ''}EVIDENCE PRIORITY: Ground answers first in Clinical Guidelines below, then in landmark/practice-defining trials, then in supporting research evidence.
 
-Clinical Guidelines:
+Clinical Guidelines (primary authority):
 ${guidelineContext}
 ${formatConflictMatrixForPrompt(conflictMatrix || options.conflictMatrix)}
+Supporting Evidence:
+${evidence}
 
 When forming recommendations, clearly distinguish between evidence from the papers above and guidance from clinical guidelines. Label guideline-derived points with "Guideline [Gn]" and paper-derived points with "Evidence [n]".
 If CONFLICT ANALYSIS is present, weave those divergences into uncertainties and MCQs — do not invent additional trial–guideline conflicts beyond the pre-computed matrix.

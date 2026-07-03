@@ -28,10 +28,12 @@ function getConnection() {
     sharedConnection = createRedisClient('bullmq-shared', {
         maxRetriesPerRequest: null,
         enableReadyCheck: false,
-        // BullMQ uses blocking commands (BZPOPMIN etc.) that wait for jobs.
-        // Setting commandTimeout:0 disables the per-command timeout so these
-        // long-lived blocking calls don't flood logs with "Command timed out".
-        commandTimeout: 0,
+        // BullMQ uses blocking commands (BZPOPMIN etc.) that wait for jobs. ioredis checks
+        // `typeof commandTimeout === "number"` to decide whether to arm a per-command timer —
+        // 0 IS a number, so commandTimeout:0 arms a 0ms timer that fires almost immediately,
+        // rejecting every command (including normal blocking polls) as "Command timed out".
+        // Must be `undefined` (key omitted from the effective options) to actually disable it.
+        commandTimeout: undefined,
     });
     return sharedConnection;
 }

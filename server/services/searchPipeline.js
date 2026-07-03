@@ -300,7 +300,7 @@ async function applyPicoRerankStage({
     fetchImpl,
     telemetry,
 }) {
-    if (!shouldUsePicoReranker() || !Array.isArray(articles) || articles.length < 2) {
+    if (!shouldUsePicoReranker() || !pico || !Array.isArray(articles) || articles.length < 2) {
         return articles;
     }
 

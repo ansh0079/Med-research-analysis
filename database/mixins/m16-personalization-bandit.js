@@ -30,7 +30,7 @@ module.exports = (Sup) => class extends Sup {
     async recordPersonalizationArmPull(policyType, armId, reward, scopeKey = 'global') {
         if (!this.kysely || !policyType || !armId) return null;
         const now = new Date().toISOString();
-        const success = Number(reward) > 0.35;
+        const success = Number(reward) > 0.03;
         await this.ensurePersonalizationArms(policyType, [armId], scopeKey);
         await this.run(
             `UPDATE personalization_arm_state

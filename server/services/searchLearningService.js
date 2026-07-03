@@ -7,6 +7,14 @@ function normalizeUid(value) {
     return String(value || '').trim().toLowerCase();
 }
 
+// Exponential decay: weight halves every `halfLifeDays` days.
+// Returns 1.0 for brand-new signals, approaches 0 for very old ones.
+function timeDecay(createdAt, halfLifeDays) {
+    if (!createdAt) return 1;
+    const ageDays = (Date.now() - new Date(createdAt).getTime()) / 86400000;
+    return Math.exp(-ageDays * Math.LN2 / halfLifeDays);
+}
+
 function weightedUidSet(items = []) {
     const out = new Map();
     for (const item of Array.isArray(items) ? items : []) {
@@ -132,11 +140,13 @@ async function buildSearchLearningContext({ db, userId, query, sessionId, previo
             for (const row of Array.isArray(rows) ? rows : []) {
                 const uid = normalizeUid(row.article_uid || row.articleUid);
                 if (!uid) continue;
+                // Deliberate feedback decays slowly (90-day half-life).
+                const decay = timeDecay(row.created_at, 90);
                 if (row.feedback_type === 'helpful' || row.feedbackType === 'helpful') {
-                    context.helpfulArticleUids.set(uid, (context.helpfulArticleUids.get(uid) || 0) + 1);
+                    context.helpfulArticleUids.set(uid, (context.helpfulArticleUids.get(uid) || 0) + decay);
                 }
                 if (row.feedback_type === 'not_helpful' || row.feedbackType === 'not_helpful') {
-                    context.notHelpfulArticleUids.set(uid, (context.notHelpfulArticleUids.get(uid) || 0) + 1);
+                    context.notHelpfulArticleUids.set(uid, (context.notHelpfulArticleUids.get(uid) || 0) + decay);
                 }
             }
             if (context.helpfulArticleUids.size > 0 || context.notHelpfulArticleUids.size > 0) {
@@ -148,11 +158,12 @@ async function buildSearchLearningContext({ db, userId, query, sessionId, previo
             for (const row of Array.isArray(synopsisRows) ? synopsisRows : []) {
                 const uid = normalizeUid(row.article_uid || row.articleUid);
                 if (!uid) continue;
+                const decay = timeDecay(row.created_at, 90);
                 if (row.feedback_type === 'helpful' || row.feedbackType === 'helpful') {
-                    context.helpfulArticleUids.set(uid, (context.helpfulArticleUids.get(uid) || 0) + 1);
+                    context.helpfulArticleUids.set(uid, (context.helpfulArticleUids.get(uid) || 0) + decay);
                 }
                 if (row.feedback_type === 'not_helpful' || row.feedbackType === 'not_helpful') {
-                    context.notHelpfulArticleUids.set(uid, (context.notHelpfulArticleUids.get(uid) || 0) + 1);
+                    context.notHelpfulArticleUids.set(uid, (context.notHelpfulArticleUids.get(uid) || 0) + decay);
                 }
             }
             if (context.helpfulArticleUids.size > 0 || context.notHelpfulArticleUids.size > 0) {
@@ -164,7 +175,9 @@ async function buildSearchLearningContext({ db, userId, query, sessionId, previo
             for (const row of Array.isArray(rows) ? rows : []) {
                 const uid = normalizeUid(row.article_id || row.articleId);
                 if (!uid) continue;
-                context.interactionArticleUids.set(uid, (context.interactionArticleUids.get(uid) || 0) + interactionWeight(row));
+                // Behavioural interactions decay at 30-day half-life.
+                const decay = timeDecay(row.created_at, 30);
+                context.interactionArticleUids.set(uid, (context.interactionArticleUids.get(uid) || 0) + interactionWeight(row) * decay);
             }
             if (context.interactionArticleUids.size > 0) {
                 context.shouldPersonalize = true;
@@ -175,7 +188,8 @@ async function buildSearchLearningContext({ db, userId, query, sessionId, previo
             for (const row of Array.isArray(synopsisViews) ? synopsisViews : []) {
                 const uid = normalizeUid(row.article_id);
                 if (!uid) continue;
-                context.interactionArticleUids.set(uid, (context.interactionArticleUids.get(uid) || 0) + 0.4);
+                const decay = timeDecay(row.created_at, 30);
+                context.interactionArticleUids.set(uid, (context.interactionArticleUids.get(uid) || 0) + 0.4 * decay);
             }
             if (synopsisViews.length > 0) {
                 context.shouldPersonalize = true;
@@ -222,7 +236,9 @@ async function buildSearchLearningContext({ db, userId, query, sessionId, previo
                 else if ((row.dwell_time_ms || 0) > 30000) delta += 0.5;
                 else if ((row.was_clicked === 0 || row.was_clicked === false) && (row.was_saved === 0 || row.was_saved === false)) delta -= 0.3;
                 if ((row.dwell_time_ms || 0) > 0 && (row.dwell_time_ms || 0) <= 3000) delta -= 0.1;
-                context.impressionArticleUids.set(uid, (context.impressionArticleUids.get(uid) || 0) + delta);
+                // Impressions are session-level; decay sharply after 14 days.
+                const decay = timeDecay(row.created_at, 14);
+                context.impressionArticleUids.set(uid, (context.impressionArticleUids.get(uid) || 0) + delta * decay);
             }
             if (context.impressionArticleUids.size > 0) {
                 context.shouldPersonalize = true;

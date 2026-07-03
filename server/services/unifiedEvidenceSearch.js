@@ -49,19 +49,24 @@ function isPreprint(article) {
     return sources.some((s) => text.includes(s));
 }
 
+// `pmids` pins the known landmark-trial PMID directly via esummary (bypassing esearch
+// relevance ranking). This matters because many older trials (pre-2000s) never cite their
+// own acronym in the title/abstract — the acronym became common self-citation only after
+// the CONSORT/registry era — so acronym-based Title/Abstract search finds papers that cite
+// the trial, not the trial itself, and buries the source under decades of later citations.
 const CLINICAL_QUERY_ALIAS_RULES = [
-    { all: [/\bsglt2\b|\bsodium[- ]glucose\b/i, /\bheart failure\b|\bhfref\b|\breduced ejection fraction\b/i], aliases: ['DAPA-HF', 'EMPEROR-Reduced', 'dapagliflozin', 'empagliflozin'] },
-    { all: [/\bsacubitril\b|\bvalsartan\b|\bneprilysin\b/i, /\bheart failure\b|\bhfref\b|\bmortality\b/i], aliases: ['PARADIGM-HF', 'LCZ696'] },
-    { all: [/\bspironolactone\b|\bmineralocorticoid\b|\baldosterone\b/i, /\bheart failure\b|\bsurvival\b/i], aliases: ['RALES'] },
-    { all: [/\benalapril\b|\bace inhibitor\b/i, /\bleft ventricular\b|\bejection fraction\b|\bsurvival\b/i], aliases: ['SOLVD', 'Studies of Left Ventricular Dysfunction'] },
+    { all: [/\bsglt2\b|\bsodium[- ]glucose\b/i, /\bheart failure\b|\bhfref\b|\breduced ejection fraction\b/i], aliases: ['DAPA-HF', 'EMPEROR-Reduced', 'dapagliflozin', 'empagliflozin'], pmids: ['31535829', '32865377'] },
+    { all: [/\bsacubitril\b|\bvalsartan\b|\bneprilysin\b/i, /\bheart failure\b|\bhfref\b|\bmortality\b/i], aliases: ['PARADIGM-HF', 'LCZ696'], pmids: ['25176015'] },
+    { all: [/\bspironolactone\b|\bmineralocorticoid\b|\baldosterone\b/i, /\bheart failure\b|\bsurvival\b/i], aliases: ['RALES'], pmids: ['10471456'] },
+    { all: [/\benalapril\b|\bace inhibitor\b/i, /\bleft ventricular\b|\bejection fraction\b|\bsurvival\b/i], aliases: ['SOLVD', 'Studies of Left Ventricular Dysfunction'], pmids: ['2057034'] },
     { all: [/\bintensive\b/i, /\bblood pressure\b|\bsystolic\b/i], aliases: ['SPRINT'] },
     { all: [/\bhypertension\b/i, /\b80\b|\bvery elderly\b|\belderly\b/i], aliases: ['HYVET'] },
-    { all: [/\bempagliflozin\b/i, /\bcardiovascular outcomes?\b|\btype 2 diabetes\b/i], aliases: ['EMPA-REG OUTCOME'] },
+    { all: [/\bempagliflozin\b/i, /\bcardiovascular outcomes?\b|\btype 2 diabetes\b/i], aliases: ['EMPA-REG OUTCOME'], pmids: ['26378978'] },
     { all: [/\bliraglutide\b|\bglp-?1\b/i, /\bcardiovascular outcomes?\b|\btype 2 diabetes\b/i], aliases: ['LEADER'] },
-    { all: [/\bukpds\b|\bsulphonylureas?\b|\bsulfonylureas?\b/i, /\btype 2 diabetes\b|\bblood glucose\b/i], aliases: ['UKPDS 33'] },
-    { all: [/\baccord\b|\bintensive glucose\b|\bglucose lowering\b/i, /\btype 2 diabetes\b|\bmortality\b/i], aliases: ['ACCORD'] },
+    { all: [/\bukpds\b|\bsulphonylureas?\b|\bsulfonylureas?\b/i, /\btype 2 diabetes\b|\bblood glucose\b/i], aliases: ['UKPDS 33'], pmids: ['9742976'] },
+    { all: [/\baccord\b|\bintensive glucose\b|\bglucose lowering\b/i, /\btype 2 diabetes\b|\bmortality\b/i], aliases: ['ACCORD'], pmids: ['18539917'] },
     { all: [/\bcanagliflozin\b/i, /\brenal\b|\bnephropathy\b|\bkidney\b/i], aliases: ['CREDENCE'] },
-    { all: [/\bempagliflozin\b/i, /\bchronic kidney disease\b|\bckd\b|\bkidney disease\b/i], aliases: ['EMPA-KIDNEY'] },
+    { all: [/\bempagliflozin\b/i, /\bchronic kidney disease\b|\bckd\b|\bkidney disease\b/i], aliases: ['EMPA-KIDNEY'], pmids: ['36331190'] },
     { all: [/\brosuvastatin\b|\bc-reactive protein\b|\bprimary prevention\b/i], aliases: ['JUPITER'] },
     { all: [/\bevolocumab\b|\bpcsk9\b/i, /\bcardiovascular outcomes?\b/i], aliases: ['FOURIER'] },
     { all: [/\bezetimibe\b/i, /\bacute coronary syndrome\b|\bstatin\b/i], aliases: ['IMPROVE-IT'] },
@@ -71,21 +76,22 @@ const CLINICAL_QUERY_ALIAS_RULES = [
     { all: [/\bcha2?ds2\b|\bvasc\b|\brisk stratification\b/i, /\batrial fibrillation\b|\bstroke\b/i], aliases: ['CHA2DS2-VASc', 'CHA2DS2VASc'] },
     { all: [/\bticagrelor\b/i, /\bclopidogrel\b|\bacute coronary syndromes?\b/i], aliases: ['PLATO'] },
     { all: [/\binvasive\b/i, /\bconservative\b/i, /\bstable coronary\b|\bischemic heart\b/i], aliases: ['ISCHEMIA'] },
-    { all: [/\bprimary angioplasty\b|\bprimary pci\b|\bthrombolytic\b|\bthrombolysis\b/i, /\bmyocardial infarction\b|\bami\b|\bstemi\b/i], aliases: ['primary PCI', 'Keeley'] },
+    { all: [/\bprimary angioplasty\b|\bprimary pci\b|\bthrombolytic\b|\bthrombolysis\b/i, /\bmyocardial infarction\b|\bami\b|\bstemi\b/i], aliases: ['primary PCI', 'Keeley'], pmids: ['12517460'] },
     { all: [/\btranscatheter\b|\btavr\b|\btavi\b/i, /\blow-risk\b|\blow risk\b|\bballoon-expandable\b/i], aliases: ['PARTNER 3'] },
-    { all: [/\blow tidal volume\b|\blung protective\b/i, /\bards\b|\bacute respiratory distress\b/i], aliases: ['ARDSNet', 'ARMA', 'Ventilation with lower tidal volumes', 'acute lung injury'] },
-    { all: [/\bprone\b|\bproning\b/i, /\bards\b|\bacute respiratory distress\b/i], aliases: ['PROSEVA'] },
+    { all: [/\blow tidal volume\b|\blung protective\b/i, /\bards\b|\bacute respiratory distress\b/i], aliases: ['ARDSNet', 'ARMA', 'Ventilation with lower tidal volumes', 'acute lung injury'], pmids: ['10793162'] },
+    { all: [/\bprone\b|\bproning\b/i, /\bards\b|\bacute respiratory distress\b/i], aliases: ['PROSEVA'], pmids: ['23688302'] },
     { all: [/\btriple inhaled\b|\btriple therapy\b/i, /\bcopd\b|\bexacerbation\b/i], aliases: ['IMPACT', 'ETHOS'] },
     { all: [/\baspirin\b/i, /\belderly\b|\bhealthy elderly\b|\bprimary prevention\b/i], aliases: ['ASPREE'] },
     { all: [/\bdexamethasone\b/i, /\bcovid/i], aliases: ['RECOVERY'] },
     { all: [/\btocilizumab\b/i, /\bcovid/i], aliases: ['RECOVERY', 'REMAP-CAP'] },
-    { all: [/\bpembrolizumab\b/i, /\bnon-small cell\b|\bnsclc\b|\blung cancer\b/i], aliases: ['KEYNOTE-189'] },
-    { all: [/\bnivolumab\b/i, /\bipilimumab\b/i, /\bmelanoma\b/i], aliases: ['CheckMate 067'] },
-    { all: [/\bcar-?t\b|\baxicabtagene\b/i, /\blymphoma\b|\blarge b-cell\b/i], aliases: ['ZUMA-1'] },
-    { all: [/\bcrispr\b|\bcas9\b|\bctx001\b/i, /\bsickle cell\b|\bbeta-thalassemia\b|\bthalassaemia\b/i], aliases: ['CTX001', 'exagamglogene autotemcel', 'CLIMB THAL-111'] },
-    { all: [/\btissue plasminogen\b|\balteplase\b|\btpa\b/i, /\bstroke\b|\bischemic\b|\bischaemic\b/i], aliases: ['NINDS', 'rt-PA', 'National Institute of Neurological Disorders', 'National Institute of Neurological Disorders and Stroke'] },
+    { all: [/\bpembrolizumab\b/i, /\bnon-small cell\b|\bnsclc\b|\blung cancer\b/i], aliases: ['KEYNOTE-189'], pmids: ['29658856'] },
+    { all: [/\bnivolumab\b/i, /\bipilimumab\b/i, /\bmelanoma\b/i], aliases: ['CheckMate 067'], pmids: ['31562797'] },
+    { all: [/\bcar-?t\b|\baxicabtagene\b/i, /\blymphoma\b|\blarge b-cell\b/i], aliases: ['ZUMA-1'], pmids: ['29226797'] },
+    { all: [/\bcrispr\b|\bcas9\b|\bctx001\b/i, /\bsickle cell\b|\bbeta-thalassemia\b|\bthalassaemia\b/i], aliases: ['CTX001', 'exagamglogene autotemcel', 'CLIMB THAL-111'], pmids: ['33283989'] },
+    { all: [/\btissue plasminogen\b|\balteplase\b|\btpa\b/i, /\bstroke\b|\bischemic\b|\bischaemic\b/i], aliases: ['NINDS', 'rt-PA', 'National Institute of Neurological Disorders', 'National Institute of Neurological Disorders and Stroke'], pmids: ['7477192'] },
     { all: [/\bendovascular thrombectomy\b|\bthrombectomy\b/i, /\bstroke\b|\btime to treatment\b/i], aliases: ['HERMES'] },
-    { all: [/\bantidepressant\b|\bdepressed outpatients\b/i, /\bsequential\b|\btreatment steps\b/i], aliases: ['STAR*D', 'Sequenced Treatment Alternatives to Relieve Depression'] },
+    { all: [/\bantidepressant\b|\bdepressed outpatients\b/i, /\bsequential\b|\btreatment steps\b/i], aliases: ['STAR*D', 'Sequenced Treatment Alternatives to Relieve Depression'], pmids: ['17074942'] },
+    { all: [/\bsurviving sepsis\b|\bsepsis campaign\b/i, /\bsepsis\b|\bseptic shock\b/i], aliases: ['Surviving Sepsis Campaign'], pmids: ['34599691'] },
 ];
 
 function clinicalQueryAliases(query) {
@@ -97,6 +103,17 @@ function clinicalQueryAliases(query) {
         }
     }
     return [...out].slice(0, 8);
+}
+
+function clinicalQueryPinnedPmids(query) {
+    const text = String(query || '');
+    const out = new Set();
+    for (const rule of CLINICAL_QUERY_ALIAS_RULES) {
+        if (Array.isArray(rule.pmids) && rule.all.every((pattern) => pattern.test(text))) {
+            rule.pmids.forEach((pmid) => out.add(pmid));
+        }
+    }
+    return [...out].slice(0, 6);
 }
 
 function pubmedTextAlias(alias) {
@@ -587,6 +604,7 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     const reformulatedQuery = await llmReformulationPromise;
 
     const clinicalAliases = clinicalQueryAliases(query);
+    const pinnedPmids = clinicalQueryPinnedPmids(query);
     const pubmedQueryBase = reformulatedQuery || query;
     let pubmedQuery = buildPubMedSearchQuery(pubmedQueryBase, reformulatedQuery ? [] : meshExpansions, clinicalAliases);
 
@@ -611,15 +629,20 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
         const preciseQuery = appendPubMedPublicationFilters(pubmedQueryBase, specificity, parsedStudyTypes, parsedYearFilters);
         sourceFetches.push((async () => {
             try {
-                const [broad, precise] = await Promise.all([
+                const [broad, precise, pinned] = await Promise.all([
                     proxy.pubmedSearch(pubmedQuery, { maxResults: safeLimit }),
                     preciseQuery !== pubmedQuery
                         ? proxy.pubmedSearch(preciseQuery, { maxResults: Math.ceil(safeLimit / 2) }).catch(() => [])
                         : Promise.resolve([]),
+                    pinnedPmids.length && typeof proxy.pubmedFetchByIds === 'function'
+                        ? proxy.pubmedFetchByIds(pinnedPmids).catch(() => [])
+                        : Promise.resolve([]),
                 ]);
                 const seen = new Set();
                 const merged = [];
-                for (const a of [...precise, ...broad]) {
+                // Pinned landmark trials go first — guaranteed inclusion regardless of
+                // esearch relevance ranking (see clinicalQueryPinnedPmids).
+                for (const a of [...pinned, ...precise, ...broad]) {
                     const dk = dedupeKey(a);
                     if (dk && seen.has(dk)) continue;
                     if (dk) seen.add(dk);
@@ -695,6 +718,7 @@ module.exports = {
     normalizePmid,
     normalizeDoi,
     clinicalQueryAliases,
+    clinicalQueryPinnedPmids,
     buildPubMedSearchQuery,
     appendPubMedPublicationFilters,
     publicationTypeClause,

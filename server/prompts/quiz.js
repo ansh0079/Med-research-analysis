@@ -224,11 +224,13 @@ ${EXPLAIN_RUBRIC[explanationDepth] || EXPLAIN_RUBRIC.exam_focus}
 
 ${variantInstruction}
 
-${topicBaseline ? `${topicBaseline}\n` : ''}${teachingObjectContext ? `REUSABLE PAPER TEACHING OBJECTS:\n${teachingObjectContext}\n\nINSTRUCTION: Treat these as the preferred quiz seed for bottom line, misconception traps, and paper-specific appraisal angles. Still ground source-specific claims in RESEARCH CONTEXT indices.\n\n` : ''}${outlineContext}${targetContext}${communityContext}${claimAnchorContext}${collectiveMisconceptionContext}${personalMisconceptionContext}${confusingNodeContext}RESEARCH CONTEXT:
-${context || 'No article context supplied. Use standard evidence-based medical knowledge for the topic, and avoid unsupported claims.'}
+${topicBaseline ? `${topicBaseline}\n` : ''}${teachingObjectContext ? `REUSABLE PAPER TEACHING OBJECTS:\n${teachingObjectContext}\n\nINSTRUCTION: Treat these as the preferred quiz seed for bottom line, misconception traps, and paper-specific appraisal angles. Still ground source-specific claims in RESEARCH CONTEXT indices.\n\n` : ''}${outlineContext}${targetContext}${communityContext}${claimAnchorContext}${collectiveMisconceptionContext}${personalMisconceptionContext}${confusingNodeContext}EVIDENCE PRIORITY: When grounding questions, prefer (1) Clinical Guidelines — use for "guideline" questionType; then (2) landmark/practice-defining trials in the research context — use for "trial_interpretation"; then (3) supporting evidence for clinical_application and recall.
 
-GUIDELINE CONTEXT:
+GUIDELINE CONTEXT (primary authority):
 ${guidelineContext}
+
+RESEARCH CONTEXT:
+${context || 'No article context supplied. Use standard evidence-based medical knowledge for the topic, and avoid unsupported claims.'}
 
 When explaining answers, append a source label in square brackets at the end of each explanation:
 - Use [Trial] when the rationale comes from a randomised trial or study in the RESEARCH CONTEXT.

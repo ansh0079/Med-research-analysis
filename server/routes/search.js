@@ -499,7 +499,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                     const vectorStarted = Date.now();
                     const { createVectorSearchService } = require('../services/vectorSearchService');
                     const vs = createVectorSearchService({ db, serverConfig });
-                    const vr = await vs.searchVector({ query: queryValidation.sanitized, limit: safeLimit, minScore: 0.4 });
+                    const vr = await vs.searchVector({ query: queryValidation.sanitized, limit: safeLimit, minScore: 0.25 });
                     vectorList = Array.isArray(vr.articles) ? vr.articles : [];
                     routeTimings.vectorMs = Date.now() - vectorStarted;
                 } catch (e) {

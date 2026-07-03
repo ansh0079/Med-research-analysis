@@ -143,38 +143,59 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     return (await res.json()).result || {};
   }
 
+  function mapPubmedSummaryToArticle(pmid, article) {
+    if (!article) return null;
+    const pmcid =
+      article.articleids?.find((id) =>
+        ['pmc', 'pmcid'].includes(String(id.idtype || '').toLowerCase())
+      )?.value || null;
+    return {
+      uid: `pubmed-${pmid}`,
+      title: article.title,
+      authors: article.authors?.map((a) => ({ name: a.name })),
+      pubdate: article.pubdate,
+      source: article.source,
+      pmid,
+      pmcid,
+      isFree: Boolean(pmcid),
+      // PubMed's pmcrefcount is a partial PMC-only count that is usually absent;
+      // leave it undefined (not 0) when unavailable so downstream filters treat it
+      // as "unknown citations" rather than "zero citations" and don't drop old
+      // landmark trials that PubMed itself ranks highly.
+      pmcrefcount: Number(article.pmcrefcount) > 0 ? Number(article.pmcrefcount) : undefined,
+      abstract: article.abstract ?? article.abstracttext,
+      pubtype: article.pubtype || [],
+      doi:
+        article.articleids?.find((id) => id.idtype === 'doi')?.value || null,
+      _source: 'pubmed',
+    };
+  }
+
   async function pubmedSearch(query, { maxResults = 20, sort = 'relevance' } = {}) {
     return withSourceCache('pubmed', { query, maxResults, sort }, 1800, async () => {
       const pmids = await pubmedEsearch(query, { retmax: maxResults, sort });
       const summary = await pubmedEsummary(pmids);
       return pmids
+        .map((pmid) => mapPubmedSummaryToArticle(pmid, summary[pmid]))
+        .filter(Boolean);
+    });
+  }
+
+  // Fetches specific PMIDs directly via esummary, bypassing esearch relevance ranking
+  // entirely. Used to pin known landmark trials that esearch buries under decades of
+  // later citing papers (older trials rarely self-cite their acronym in the abstract).
+  async function pubmedFetchByIds(pmids) {
+    const ids = [...new Set((pmids || []).filter(Boolean))];
+    if (!ids.length) return [];
+    return withSourceCache('pubmed-pinned', { ids }, 86400, async () => {
+      const summary = await pubmedEsummary(ids);
+      return ids
         .map((pmid) => {
-          const article = summary[pmid];
-          if (!article) return null;
-          const pmcid =
-            article.articleids?.find((id) =>
-              ['pmc', 'pmcid'].includes(String(id.idtype || '').toLowerCase())
-            )?.value || null;
-          return {
-            uid: `pubmed-${pmid}`,
-            title: article.title,
-            authors: article.authors?.map((a) => ({ name: a.name })),
-            pubdate: article.pubdate,
-            source: article.source,
-            pmid,
-            pmcid,
-            isFree: Boolean(pmcid),
-            // PubMed's pmcrefcount is a partial PMC-only count that is usually absent;
-            // leave it undefined (not 0) when unavailable so downstream filters treat it
-            // as "unknown citations" rather than "zero citations" and don't drop old
-            // landmark trials that PubMed itself ranks highly.
-            pmcrefcount: Number(article.pmcrefcount) > 0 ? Number(article.pmcrefcount) : undefined,
-            abstract: article.abstract ?? article.abstracttext,
-            pubtype: article.pubtype || [],
-            doi:
-              article.articleids?.find((id) => id.idtype === 'doi')?.value || null,
-            _source: 'pubmed',
-          };
+          const article = mapPubmedSummaryToArticle(pmid, summary[pmid]);
+          // Flag so the bouquet ranker can guarantee placement — these are curated,
+          // exact-PMID matches, not fuzzy alias/keyword hits that need to earn their rank.
+          if (article) article._pinnedLandmark = true;
+          return article;
         })
         .filter(Boolean);
     });
@@ -422,6 +443,7 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
 
   return {
     pubmedSearch,
+    pubmedFetchByIds,
     pubmedEsearch,
     pubmedEsummary,
     semanticScholarSearch,

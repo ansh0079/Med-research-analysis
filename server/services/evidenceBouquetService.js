@@ -543,6 +543,10 @@ function buildEvidenceBouquet(articles, query, options = {}) {
         const matchWeight = specificity === 'strict' ? 14 : specificity === 'broad' ? 3 : 8;
         score += matchScore * matchWeight;
         score += aliasMatchScore * 24;
+        // Curated exact-PMID pins (see clinicalQueryPinnedPmids) are a stronger signal
+        // than a fuzzy alias/keyword match — they're a verified answer to this exact
+        // query pattern, not text overlap. Boost enough to clear typical top-10 cutoffs.
+        if (a._pinnedLandmark) score += 30;
         if (trajectoryTerms.length > 0) {
             const text = `${String(a.title || '')} ${String(a.abstract || '')}`.toLowerCase();
             const matchCount = trajectoryTerms.filter((t) => text.includes(t)).length;
