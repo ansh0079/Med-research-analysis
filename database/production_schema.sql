@@ -1121,6 +1121,15 @@ CREATE INDEX IF NOT EXISTS idx_api_keys_user ON api_keys (user_id);
 
 CREATE INDEX IF NOT EXISTS idx_article_cache_expires ON article_cache(expires_at);
 
+-- Idempotent ADD COLUMN: article_cache's own CREATE TABLE above already declares these,
+-- but that statement is a no-op against a database where article_cache was created before
+-- these columns existed (see migration 002_quality_retraction.sql). Without this, the
+-- indexes below fail with "column does not exist" on every boot on such a database.
+ALTER TABLE article_cache ADD COLUMN IF NOT EXISTS quality_data TEXT;
+ALTER TABLE article_cache ADD COLUMN IF NOT EXISTS retraction_data TEXT;
+ALTER TABLE article_cache ADD COLUMN IF NOT EXISTS quality_score INTEGER DEFAULT 0;
+ALTER TABLE article_cache ADD COLUMN IF NOT EXISTS is_retracted INTEGER DEFAULT 0;
+
 CREATE INDEX IF NOT EXISTS idx_article_cache_quality ON article_cache(quality_score);
 
 CREATE INDEX IF NOT EXISTS idx_article_cache_retracted ON article_cache(is_retracted) WHERE is_retracted = 1;
@@ -1315,6 +1324,10 @@ CREATE INDEX IF NOT EXISTS idx_search_usage_user_date
     ON search_usage_daily (user_id, date);
 
 CREATE INDEX IF NOT EXISTS idx_searches_created ON searches(created_at);
+
+-- Idempotent ADD COLUMN: see migration 031_search_normalized_topic.sql — same
+-- already-existing-table gap as article_cache above.
+ALTER TABLE searches ADD COLUMN IF NOT EXISTS normalized_topic TEXT;
 
 CREATE INDEX IF NOT EXISTS idx_searches_normalized_topic ON searches(normalized_topic, created_at);
 
