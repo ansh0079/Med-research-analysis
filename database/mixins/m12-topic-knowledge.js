@@ -94,7 +94,10 @@ module.exports = (Sup) => class extends Sup {
         if (!keys || keys.length === 0) return null;
         if (this.isPostgres) {
             // Build: aliases_normalized @> ANY(ARRAY[...])
-            const placeholders = keys.map((_, i) => `json_build_array($${i + 1})::jsonb`).join(', ');
+            // Explicit ::text cast is required — json_build_array is polymorphic, so Postgres
+            // can't infer a bind parameter's type from that context alone and throws
+            // "could not determine data type of parameter" without it.
+            const placeholders = keys.map((_, i) => `json_build_array($${i + 1}::text)::jsonb`).join(', ');
             const sql = `SELECT * FROM topic_knowledge
                 WHERE COALESCE(aliases_normalized, '[]'::jsonb) @> ANY(ARRAY[${placeholders}]) LIMIT 1`;
             const res = await this.pool.query(sql, keys);

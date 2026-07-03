@@ -320,7 +320,13 @@ toPgQuery(sql) {
         }
         result += ch;
     }
-    result = result.replace(/datetime\s*\(\s*'now'\s*\)/gi, "to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')");
+    // NOW() produces a native timestamptz — required because virtually every timestamp
+    // column in the live Postgres schema is TIMESTAMPTZ (created via CURRENT_TIMESTAMP
+    // defaults), not TEXT. An earlier version of this translator used
+    // to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'), which produces a TEXT string and fails
+    // with "column is of type timestamp with time zone but expression is of type text"
+    // on every raw-SQL insert/update that writes datetime('now') into one of those columns.
+    result = result.replace(/datetime\s*\(\s*'now'\s*\)/gi, 'NOW()');
     return result;
 }
 
