@@ -127,50 +127,69 @@ async getStaleTopicsForRefresh({ minSignalCount = 3, maxAgeDays = 90, minPriorit
     const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 10, 1), 50);
     const recentCutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     const oldCutoff = new Date(Date.now() - maxAgeDays * 24 * 60 * 60 * 1000).toISOString();
-    const rows = await this.all(
+    // Aggregate signals only — deliberately no JOIN here. topic_knowledge.knowledge is
+    // jsonb on Postgres, which has no default MAX()/MIN() aggregate, and repeating
+    // non-jsonb tk.* columns in GROUP BY risks splitting groups if a signal row's
+    // display_topic ever drifts from another row's for the same normalized_topic.
+    // Looking up topic_knowledge separately for just the candidate topics sidesteps both.
+    const signalRows = await this.all(
         `SELECT
             s.normalized_topic,
             s.display_topic,
             SUM(s.signal_count) AS total_signals,
-            COUNT(DISTINCT s.article_uid) AS distinct_articles,
-            tk.id AS topic_knowledge_id,
-            tk.topic,
-            tk.knowledge,
-            tk.confidence,
-            tk.last_refreshed_at,
-            tk.status
+            COUNT(DISTINCT s.article_uid) AS distinct_articles
          FROM topic_bouquet_signals s
-         LEFT JOIN topic_knowledge tk ON tk.normalized_topic = s.normalized_topic
          WHERE s.last_seen_at > ?
-         GROUP BY s.normalized_topic
-         HAVING total_signals >= ?
-           AND (tk.id IS NULL OR tk.last_refreshed_at IS NULL OR tk.last_refreshed_at < ?)
-           AND (tk.status IS NULL OR tk.status NOT IN ('locked', 'human_reviewed', 'verified'))
+         GROUP BY s.normalized_topic, s.display_topic
+         HAVING SUM(s.signal_count) >= ?
          ORDER BY total_signals DESC
          LIMIT ?`,
-        [recentCutoff, minSignalCount, oldCutoff, Math.max(safeLimit * 4, safeLimit)]
+        [recentCutoff, minSignalCount, Math.max(safeLimit * 4, safeLimit)]
     );
-    return rows
+    if (!signalRows.length) return [];
+
+    const normalizedTopics = signalRows.map((r) => r.normalized_topic);
+    const placeholders = normalizedTopics.map(() => '?').join(',');
+    const knowledgeRows = await this.all(
+        `SELECT id, normalized_topic, topic, knowledge, confidence, last_refreshed_at, status
+         FROM topic_knowledge
+         WHERE normalized_topic IN (${placeholders})`,
+        normalizedTopics
+    );
+    const knowledgeByTopic = new Map(knowledgeRows.map((k) => [k.normalized_topic, k]));
+
+    return signalRows
+        .filter((s) => {
+            const tk = knowledgeByTopic.get(s.normalized_topic);
+            if (!tk) return true;
+            // pg returns TIMESTAMPTZ columns as Date objects (not strings), so compare via
+            // getTime() rather than raw `<` — a Date-vs-ISO-string `<` compares via
+            // Date.toString(), which doesn't match ISO format and silently misorders.
+            const staleEnough = !tk.last_refreshed_at || new Date(tk.last_refreshed_at).getTime() < new Date(oldCutoff).getTime();
+            const notLocked = !tk.status || !['locked', 'human_reviewed', 'verified'].includes(tk.status);
+            return staleEnough && notLocked;
+        })
         .map((r) => {
+            const tk = knowledgeByTopic.get(r.normalized_topic) || null;
             const totalSignals = Number(r.total_signals || 0);
             const distinctArticles = Number(r.distinct_articles || 0);
             const freshness = topicRefreshPriority({
-                confidence: Number(r.confidence || 0),
-                refreshedAt: r.last_refreshed_at,
-                topic: r.topic || r.display_topic || r.normalized_topic,
-                knowledge: safeJsonParse(r.knowledge, {}),
+                confidence: Number(tk?.confidence || 0),
+                refreshedAt: tk?.last_refreshed_at || null,
+                topic: tk?.topic || r.display_topic || r.normalized_topic,
+                knowledge: safeJsonParse(tk?.knowledge, {}),
                 totalSignals,
                 distinctArticles,
-                hasKnowledge: Boolean(r.topic_knowledge_id),
+                hasKnowledge: Boolean(tk?.id),
             });
             return {
                 normalizedTopic: r.normalized_topic,
-                displayTopic: r.display_topic || r.topic || r.normalized_topic,
+                displayTopic: r.display_topic || tk?.topic || r.normalized_topic,
                 totalSignals,
                 distinctArticles,
-                lastRefreshedAt: r.last_refreshed_at || null,
-                status: r.status || null,
-                confidence: Number(r.confidence || 0),
+                lastRefreshedAt: tk?.last_refreshed_at || null,
+                status: tk?.status || null,
+                confidence: Number(tk?.confidence || 0),
                 effectiveConfidence: freshness.effectiveConfidence,
                 confidenceDecay: freshness.confidenceDecay,
                 volatility: freshness.volatility,
@@ -220,8 +239,8 @@ async getStrongMemoryTopicsForRefresh({ minEngagementScore = 5, minRefreshAgeDay
            AND s.created_at > ?
            AND (tk.last_refreshed_at IS NULL OR tk.last_refreshed_at < ?)
            AND (tk.status IS NULL OR tk.status NOT IN ('locked'))
-         GROUP BY tk.normalized_topic
-         HAVING community_engagement_score >= ?
+         GROUP BY tk.normalized_topic, tk.topic, tk.knowledge, tk.confidence, tk.status, tk.last_refreshed_at
+         HAVING SUM(${weightExpr}) >= ?
          ORDER BY community_engagement_score DESC, total_dwell_ms DESC
          LIMIT ?`,
         [engagementCutoff, refreshCutoff, minEngagementScore, safeLimit]
