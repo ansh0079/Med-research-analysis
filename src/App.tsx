@@ -198,7 +198,11 @@ const AppContent: React.FC = () => {
         </Suspense>
       </div>
 
-      {showOnboarding && <OnboardingModal onDone={handleOnboardingDone} />}
+      {showOnboarding && (
+        <Suspense fallback={null}>
+          <OnboardingModal onDone={handleOnboardingDone} />
+        </Suspense>
+      )}
 
       <PhiDataNotice />
       <CookieConsentBanner />

@@ -536,22 +536,26 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             return res.status(400).json({ error: 'Password must be at least 8 characters' });
         }
 
-        // Beta: require a valid invite code
-        if (!inviteCode) {
-            return res.status(403).json({ error: 'An invite code is required to create an account during the beta.' });
-        }
-        const invite = await db.get(
-            `SELECT id, use_count, max_uses, specialty, expires_at FROM beta_invites WHERE code = ?`,
-            [inviteCode.trim().toUpperCase()]
-        );
-        if (!invite) {
-            return res.status(403).json({ error: 'Invalid invite code.' });
-        }
-        if (invite.use_count >= invite.max_uses) {
-            return res.status(403).json({ error: 'This invite code has already been used the maximum number of times.' });
-        }
-        if (invite.expires_at && new Date(invite.expires_at) < new Date()) {
-            return res.status(403).json({ error: 'This invite code has expired.' });
+        // Beta: require a valid invite code (skipped in test/e2e runs — see tests/e2e/global-setup.js)
+        const skipInviteGate = ['test', 'e2e'].includes(process.env.NODE_ENV);
+        let invite = null;
+        if (!skipInviteGate) {
+            if (!inviteCode) {
+                return res.status(403).json({ error: 'An invite code is required to create an account during the beta.' });
+            }
+            invite = await db.get(
+                `SELECT id, use_count, max_uses, specialty, expires_at FROM beta_invites WHERE code = ?`,
+                [inviteCode.trim().toUpperCase()]
+            );
+            if (!invite) {
+                return res.status(403).json({ error: 'Invalid invite code.' });
+            }
+            if (invite.use_count >= invite.max_uses) {
+                return res.status(403).json({ error: 'This invite code has already been used the maximum number of times.' });
+            }
+            if (invite.expires_at && new Date(invite.expires_at) < new Date()) {
+                return res.status(403).json({ error: 'This invite code has expired.' });
+            }
         }
 
         try {
@@ -576,10 +580,12 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             await db.createUser(user);
 
             // Consume the invite slot
-            await db.run(
-                `UPDATE beta_invites SET use_count = use_count + 1 WHERE id = ?`,
-                [invite.id]
-            );
+            if (invite) {
+                await db.run(
+                    `UPDATE beta_invites SET use_count = use_count + 1 WHERE id = ?`,
+                    [invite.id]
+                );
+            }
 
             // Start 14-day Pro trial automatically (no credit card)
             await startProTrial(db, user.id);

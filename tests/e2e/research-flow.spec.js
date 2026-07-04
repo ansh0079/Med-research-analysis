@@ -70,6 +70,13 @@ test.describe('search → results → interaction flow', () => {
   test.use({ storageState: 'tests/e2e/.auth/user.json' });
 
   test.beforeEach(async ({ page }) => {
+    // Skip the cookie-consent banner and post-login onboarding modal — both were
+    // added after this suite was written and otherwise intercept every click.
+    await page.addInitScript(() => {
+      localStorage.setItem('med_cookie_consent_v1', 'accepted');
+      localStorage.setItem('med_onboarding_done', '1');
+    });
+
     await page.route('**/api/config', async (route) => {
       await route.fulfill({
         status: 200,
@@ -109,8 +116,8 @@ test.describe('search → results → interaction flow', () => {
 
   test('homepage loads with correct branding', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/MedResearch.*Medical Evidence Intelligence/i);
-    await expect(page.getByRole('button', { name: /MedResearch/i })).toBeVisible();
+    await expect(page).toHaveTitle(/Signal MD.*Medical Evidence Intelligence/i);
+    await expect(page.getByRole('button', { name: /Go to search/i })).toBeVisible();
   });
 
   test('search returns results and renders article cards', async ({ page }) => {

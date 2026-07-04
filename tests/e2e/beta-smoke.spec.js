@@ -30,6 +30,13 @@ const mockSearchResponse = {
 
 test.describe('beta smoke', () => {
   test.beforeEach(async ({ page }) => {
+    // Skip the cookie-consent banner — added after this suite was written and
+    // otherwise intercepts clicks. Onboarding is left untouched: one test below
+    // exercises it directly, and it never renders for anonymous visitors anyway.
+    await page.addInitScript(() => {
+      localStorage.setItem('med_cookie_consent_v1', 'accepted');
+    });
+
     await page.route('**/api/config', async (route) => {
       await route.fulfill({
         status: 200,
@@ -63,11 +70,18 @@ test.describe('beta smoke', () => {
     await page.goto('/');
 
     await expect(page).toHaveTitle(/Signal MD.*Medical Evidence Intelligence/i);
-    await expect(page.getByRole('button', { name: /Go to search/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Get started free/i }).first()).toBeVisible();
     await expect(page.getByRole('button', { name: /Sign in/i }).first()).toBeVisible();
     await expect(page.getByText(/Search 100 M\+/i)).toBeVisible();
   });
 
+  // KNOWN FAILING (2026-07-04): traced this end-to-end — search() and api.search()
+  // both execute correctly and the mocked /api/search request resolves with a real
+  // 200, but the app never renders the result. Root cause not yet confirmed; the
+  // most likely culprit is something in fetchWithSession's post-fetch handling
+  // (core.ts, the response.clone() body-read path) not playing well with
+  // Playwright's route.fulfill() response objects specifically. Needs a dedicated
+  // follow-up session — do not delete/skip, this documents where tracing stopped.
   test('loads the search route and returns mocked results', async ({ page }) => {
     await page.goto('/search');
 
@@ -122,16 +136,24 @@ test.describe('beta smoke', () => {
 
     await page.goto('/');
 
+    // Step 1: persona — selecting "student" unlocks the training-stage step
+    await page.getByRole('button', { name: /Medical Student \/ Trainee/i }).click();
+    await page.getByRole('button', { name: /^Next$/ }).click();
+    // Step 2: training stage
     await page.getByRole('button', { name: /Finals/i }).click();
     await page.getByRole('button', { name: /^Next$/ }).click();
+    // Step 3: specialty
     await page.getByRole('button', { name: /Cardiology/i }).click();
     await page.getByRole('button', { name: /^Next$/ }).click();
+    // Step 4: goal
     await page.getByRole('button', { name: /Pass exams/i }).click();
     await page.getByRole('button', { name: /^Next$/ }).click();
-    await page.getByRole('button', { name: /Mixed/i }).click();
+    // Step 5: difficulty
+    await page.getByRole('button', { name: /^Mixed$/ }).click();
     await page.getByRole('button', { name: /^Next$/ }).click();
+    // Step 6: daily time budget — final step, submits the profile
     await page.getByRole('button', { name: /25 minutes per day/i }).click();
-    await page.locator('.fixed').getByRole('button', { name: /^Search$/ }).click();
+    await page.getByRole('button', { name: /Search instead/i }).click();
 
     await expect.poll(() => savedProfile).toMatchObject({
       trainingStage: 'finals',
