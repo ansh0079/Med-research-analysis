@@ -4,6 +4,7 @@ const {
     normalizeDoi,
     normalizePmid,
     clinicalQueryAliases,
+    clinicalQueryPinnedPmids,
     buildPubMedSearchQuery,
     mergeAndRank,
     getEbmScore,
@@ -140,6 +141,42 @@ describe('unifiedEvidenceSearch helpers', () => {
         // With the query aliases, the alias-matched landmark is restored to the top.
         const withAlias = mergeAndRank([pubmedList, openalexList], undefined, aliases);
         expect(withAlias[0].pmid).toBe('21870978');
+    });
+
+    test('_pinnedLandmark bonus keeps pinned landmark above dual-source fillers even without alias match', () => {
+        // Simulates a gold query where the trial has no matching alias but was pinned by PMID.
+        // Dual-source fillers accumulate 2×RRF that otherwise beats the single-source landmark.
+        const pinnedLandmark = {
+            uid: 'pubmed-26551272', pmid: '26551272', doi: '10.1056/nejmoa1511939',
+            title: 'A randomized trial of intensive versus standard blood-pressure control',
+            pubtype: ['Randomized Controlled Trial'], journal: 'N Engl J Med',
+            _pinnedLandmark: true,
+        };
+        const filler = (n) => ({
+            uid: `pubmed-f${n}`, pmid: `f${n}`, doi: `10.1/filler${n}`,
+            title: `Blood pressure management study number ${n}`,
+            pubtype: ['Randomized Controlled Trial'], journal: 'Some Journal',
+        });
+        const pubmedList = [pinnedLandmark, filler(1), filler(2), filler(3)];
+        const openalexList = [
+            { ...filler(1), uid: 'openalex-f1' },
+            { ...filler(2), uid: 'openalex-f2' },
+            { ...filler(3), uid: 'openalex-f3' },
+        ];
+        // No aliases — landmark wins only because of _pinnedLandmark bonus.
+        const ranked = mergeAndRank([pubmedList, openalexList], undefined, []);
+        expect(ranked[0].pmid).toBe('26551272');
+    });
+
+    test('clinicalQueryPinnedPmids now returns pmids for rules that previously had none', () => {
+        expect(clinicalQueryPinnedPmids('intensive blood pressure control cardiovascular outcomes systolic'))
+            .toContain('26551272');
+        expect(clinicalQueryPinnedPmids('dabigatran versus warfarin atrial fibrillation stroke prevention'))
+            .toContain('19717844');
+        expect(clinicalQueryPinnedPmids('atrial fibrillation diagnosis and management guideline'))
+            .toContain('38033089');
+        expect(clinicalQueryPinnedPmids('global burden bacterial antimicrobial resistance'))
+            .toContain('35065702');
     });
 
     test('buildPubMedSearchQuery parenthesizes base query, MeSH terms, and clinical aliases', () => {
