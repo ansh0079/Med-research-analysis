@@ -59,37 +59,41 @@ const CLINICAL_QUERY_ALIAS_RULES = [
     { all: [/\bsacubitril\b|\bvalsartan\b|\bneprilysin\b/i, /\bheart failure\b|\bhfref\b|\bmortality\b/i], aliases: ['PARADIGM-HF', 'LCZ696'], pmids: ['25176015'] },
     { all: [/\bspironolactone\b|\bmineralocorticoid\b|\baldosterone\b/i, /\bheart failure\b|\bsurvival\b/i], aliases: ['RALES'], pmids: ['10471456'] },
     { all: [/\benalapril\b|\bace inhibitor\b/i, /\bleft ventricular\b|\bejection fraction\b|\bsurvival\b/i], aliases: ['SOLVD', 'Studies of Left Ventricular Dysfunction'], pmids: ['2057034'] },
-    { all: [/\bintensive\b/i, /\bblood pressure\b|\bsystolic\b/i], aliases: ['SPRINT'] },
-    { all: [/\bhypertension\b/i, /\b80\b|\bvery elderly\b|\belderly\b/i], aliases: ['HYVET'] },
+    { all: [/\bintensive\b/i, /\bblood pressure\b|\bsystolic\b/i], aliases: ['SPRINT'], pmids: ['26551272'] },
+    { all: [/\bhypertension\b/i, /\b80\b|\bvery elderly\b|\belderly\b/i], aliases: ['HYVET'], pmids: ['18378519'] },
     { all: [/\bempagliflozin\b/i, /\bcardiovascular outcomes?\b|\btype 2 diabetes\b/i], aliases: ['EMPA-REG OUTCOME'], pmids: ['26378978'] },
-    { all: [/\bliraglutide\b|\bglp-?1\b/i, /\bcardiovascular outcomes?\b|\btype 2 diabetes\b/i], aliases: ['LEADER'] },
+    { all: [/\bliraglutide\b|\bglp-?1\b/i, /\bcardiovascular outcomes?\b|\btype 2 diabetes\b/i], aliases: ['LEADER'], pmids: ['27295427'] },
     { all: [/\bukpds\b|\bsulphonylureas?\b|\bsulfonylureas?\b/i, /\btype 2 diabetes\b|\bblood glucose\b/i], aliases: ['UKPDS 33'], pmids: ['9742976'] },
     { all: [/\baccord\b|\bintensive glucose\b|\bglucose lowering\b/i, /\btype 2 diabetes\b|\bmortality\b/i], aliases: ['ACCORD'], pmids: ['18539917'] },
-    { all: [/\bcanagliflozin\b/i, /\brenal\b|\bnephropathy\b|\bkidney\b/i], aliases: ['CREDENCE'] },
+    { all: [/\bcanagliflozin\b/i, /\brenal\b|\bnephropathy\b|\bkidney\b/i], aliases: ['CREDENCE'], pmids: ['30990260'] },
     { all: [/\bempagliflozin\b/i, /\bchronic kidney disease\b|\bckd\b|\bkidney disease\b/i], aliases: ['EMPA-KIDNEY'], pmids: ['36331190'] },
-    { all: [/\brosuvastatin\b|\bc-reactive protein\b|\bprimary prevention\b/i], aliases: ['JUPITER'] },
-    { all: [/\bevolocumab\b|\bpcsk9\b/i, /\bcardiovascular outcomes?\b/i], aliases: ['FOURIER'] },
-    { all: [/\bezetimibe\b/i, /\bacute coronary syndrome\b|\bstatin\b/i], aliases: ['IMPROVE-IT'] },
-    { all: [/\bcanakinumab\b|\banti-inflammatory\b/i, /\batheroscler/i], aliases: ['CANTOS'] },
-    { all: [/\bdabigatran\b/i, /\bwarfarin\b|\batrial fibrillation\b/i], aliases: ['RE-LY'] },
-    { all: [/\bapixaban\b/i, /\bwarfarin\b|\batrial fibrillation\b/i], aliases: ['ARISTOTLE'] },
+    { all: [/\brosuvastatin\b|\bc-reactive protein\b|\bprimary prevention\b/i], aliases: ['JUPITER'], pmids: ['18997196'] },
+    { all: [/\bevolocumab\b|\bpcsk9\b/i, /\bcardiovascular outcomes?\b/i], aliases: ['FOURIER'], pmids: ['28304224'] },
+    { all: [/\bldl\b|\bcholesterol lowering\b/i, /\bstatin\b/i, /\bmeta.?analysis\b|\bsystematic review\b/i], aliases: ['Cholesterol Treatment Trialists', 'CTT collaboration'], pmids: ['21067804'] },
+    { all: [/\bezetimibe\b/i, /\bacute coronary syndrome\b|\bstatin\b/i], aliases: ['IMPROVE-IT'], pmids: ['26039521'] },
+    { all: [/\bcanakinumab\b|\banti-inflammatory\b/i, /\batheroscler/i], aliases: ['CANTOS'], pmids: ['28845751'] },
+    { all: [/\bdabigatran\b/i, /\bwarfarin\b|\batrial fibrillation\b/i], aliases: ['RE-LY'], pmids: ['19717844'] },
+    { all: [/\bapixaban\b/i, /\bwarfarin\b|\batrial fibrillation\b/i], aliases: ['ARISTOTLE'], pmids: ['21870978'] },
     { all: [/\bcha2?ds2\b|\bvasc\b|\brisk stratification\b/i, /\batrial fibrillation\b|\bstroke\b/i], aliases: ['CHA2DS2-VASc', 'CHA2DS2VASc'] },
-    { all: [/\bticagrelor\b/i, /\bclopidogrel\b|\bacute coronary syndromes?\b/i], aliases: ['PLATO'] },
-    { all: [/\binvasive\b/i, /\bconservative\b/i, /\bstable coronary\b|\bischemic heart\b/i], aliases: ['ISCHEMIA'] },
+    { all: [/\batrial fibrillation\b/i, /\bguideline\b/i], aliases: ['ACC/AHA atrial fibrillation guideline', 'HRS AF guideline'], pmids: ['38033089'] },
+    { all: [/\bticagrelor\b/i, /\bclopidogrel\b|\bacute coronary syndromes?\b/i], aliases: ['PLATO'], pmids: ['19717846'] },
+    { all: [/\binvasive\b/i, /\bconservative\b/i, /\bstable coronary\b|\bischemic heart\b/i], aliases: ['ISCHEMIA'], pmids: ['32227755'] },
     { all: [/\bprimary angioplasty\b|\bprimary pci\b|\bthrombolytic\b|\bthrombolysis\b/i, /\bmyocardial infarction\b|\bami\b|\bstemi\b/i], aliases: ['primary PCI', 'Keeley'], pmids: ['12517460'] },
-    { all: [/\btranscatheter\b|\btavr\b|\btavi\b/i, /\blow-risk\b|\blow risk\b|\bballoon-expandable\b/i], aliases: ['PARTNER 3'] },
+    { all: [/\btranscatheter\b|\btavr\b|\btavi\b/i, /\blow-risk\b|\blow risk\b|\bballoon-expandable\b/i], aliases: ['PARTNER 3'], pmids: ['30883058'] },
     { all: [/\blow tidal volume\b|\blung protective\b/i, /\bards\b|\bacute respiratory distress\b/i], aliases: ['ARDSNet', 'ARMA', 'Ventilation with lower tidal volumes', 'acute lung injury'], pmids: ['10793162'] },
     { all: [/\bprone\b|\bproning\b/i, /\bards\b|\bacute respiratory distress\b/i], aliases: ['PROSEVA'], pmids: ['23688302'] },
-    { all: [/\btriple inhaled\b|\btriple therapy\b/i, /\bcopd\b|\bexacerbation\b/i], aliases: ['IMPACT', 'ETHOS'] },
-    { all: [/\baspirin\b/i, /\belderly\b|\bhealthy elderly\b|\bprimary prevention\b/i], aliases: ['ASPREE'] },
-    { all: [/\bdexamethasone\b/i, /\bcovid/i], aliases: ['RECOVERY'] },
-    { all: [/\btocilizumab\b/i, /\bcovid/i], aliases: ['RECOVERY', 'REMAP-CAP'] },
+    { all: [/\btriple inhaled\b|\btriple therapy\b/i, /\bcopd\b|\bexacerbation\b/i], aliases: ['IMPACT', 'ETHOS'], pmids: ['32579807'] },
+    { all: [/\baspirin\b/i, /\belderly\b|\bhealthy elderly\b|\bprimary prevention\b/i], aliases: ['ASPREE'], pmids: ['30221597'] },
+    { all: [/\bdexamethasone\b/i, /\bcovid/i], aliases: ['RECOVERY'], pmids: ['32678530'] },
+    { all: [/\btocilizumab\b/i, /\bcovid/i], aliases: ['RECOVERY', 'REMAP-CAP'], pmids: ['33933206'] },
     { all: [/\bpembrolizumab\b/i, /\bnon-small cell\b|\bnsclc\b|\blung cancer\b/i], aliases: ['KEYNOTE-189'], pmids: ['29658856'] },
     { all: [/\bnivolumab\b/i, /\bipilimumab\b/i, /\bmelanoma\b/i], aliases: ['CheckMate 067'], pmids: ['31562797'] },
     { all: [/\bcar-?t\b|\baxicabtagene\b/i, /\blymphoma\b|\blarge b-cell\b/i], aliases: ['ZUMA-1'], pmids: ['29226797'] },
     { all: [/\bcrispr\b|\bcas9\b|\bctx001\b/i, /\bsickle cell\b|\bbeta-thalassemia\b|\bthalassaemia\b/i], aliases: ['CTX001', 'exagamglogene autotemcel', 'CLIMB THAL-111'], pmids: ['33283989'] },
     { all: [/\btissue plasminogen\b|\balteplase\b|\btpa\b/i, /\bstroke\b|\bischemic\b|\bischaemic\b/i], aliases: ['NINDS', 'rt-PA', 'National Institute of Neurological Disorders', 'National Institute of Neurological Disorders and Stroke'], pmids: ['7477192'] },
-    { all: [/\bendovascular thrombectomy\b|\bthrombectomy\b/i, /\bstroke\b|\btime to treatment\b/i], aliases: ['HERMES'] },
+    { all: [/\bendovascular thrombectomy\b|\bthrombectomy\b/i, /\bstroke\b|\btime to treatment\b/i], aliases: ['HERMES'], pmids: ['27673305'] },
+    { all: [/\bantimicrobial resistance\b|\bamr\b/i, /\bglobal burden\b|\bglobal prevalence\b|\bgram\b/i], aliases: ['GRAM', 'Global Antimicrobial Resistance and Research Programme'], pmids: ['35065702'] },
+    { all: [/\bdepression\b|\banxiety\b/i, /\bcovid/i, /\bglobal\b|\bpandemic\b|\bprevalence\b/i], aliases: ['GBD COVID mental health', 'global burden disease mental health'], pmids: ['34634250'] },
     { all: [/\bantidepressant\b|\bdepressed outpatients\b/i, /\bsequential\b|\btreatment steps\b/i], aliases: ['STAR*D', 'Sequenced Treatment Alternatives to Relieve Depression'], pmids: ['17074942'] },
     { all: [/\bsurviving sepsis\b|\bsepsis campaign\b/i, /\bsepsis\b|\bseptic shock\b/i], aliases: ['Surviving Sepsis Campaign'], pmids: ['34599691'] },
 ];
@@ -308,13 +312,23 @@ function applyRRF(perSourceLists, k = 60, listWeights = [], queryAliases = []) {
         });
     }
 
+    // A pinned landmark (fetched directly by PMID via clinicalQueryPinnedPmids) must not
+    // get buried by dual-source RRF accumulation. Without this, a paper appearing in both
+    // PubMed rank-3 and OpenAlex rank-3 accumulates 2×1/(60+3)≈0.032, beating the pinned
+    // paper's single-source 1/(60+1)≈0.016 even after EBM bonus. The landmark bonus raises
+    // the pinned paper's effective score by ~5 first-place equivalents, guaranteeing top-5
+    // placement in any realistic result set.
+    const LANDMARK_BONUS = MAX_FIRST_SCORE * 5;
+
     return [...scores.values()]
         .map((e) => ({ ...e, aliasBonus: queryAliasMatchScore(e.article, queryAliases) * ALIAS_WEIGHT }))
         .sort((a, b) => {
             const ebmA = getEbmScore(a.article);
             const ebmB = getEbmScore(b.article);
-            const scoreA = a.rrfScore + (ebmA / 7) * EBM_WEIGHT + a.aliasBonus;
-            const scoreB = b.rrfScore + (ebmB / 7) * EBM_WEIGHT + b.aliasBonus;
+            const landmarkA = a.article._pinnedLandmark ? LANDMARK_BONUS : 0;
+            const landmarkB = b.article._pinnedLandmark ? LANDMARK_BONUS : 0;
+            const scoreA = a.rrfScore + (ebmA / 7) * EBM_WEIGHT + a.aliasBonus + landmarkA;
+            const scoreB = b.rrfScore + (ebmB / 7) * EBM_WEIGHT + b.aliasBonus + landmarkB;
             return scoreB - scoreA;
         })
         .map((e) => e.article);
@@ -391,9 +405,10 @@ function reformulationCacheKey(query, specificity) {
 }
 
 async function reformulateQueryForPubMed(query, specificity, serverConfig, fetchImpl, cache = null, telemetry = null) {
-    const { createAiService, PINNED_MODELS } = require('./aiService');
-    const keys = serverConfig?.keys || {};
-    if (!keys.gemini && !keys.mistral) return null;
+    const { createAiService } = require('./aiService');
+    const { resolveProvider } = require('../utils/aiProvider');
+    const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
+    if (!provider) return null;
 
     const cacheKey = reformulationCacheKey(query, specificity);
     if (cache && typeof cache.get === 'function') {
@@ -431,12 +446,7 @@ Example output: ("Metformin"[MeSH Terms]) AND ("Polycystic Ovary Syndrome"[MeSH 
     const ai = createAiService({ serverConfig, fetchImpl });
     const started = Date.now();
     try {
-        let raw;
-        if (keys.gemini) {
-            raw = await ai.callGemini(prompt, PINNED_MODELS.gemini, { temperature: 0.1, maxOutputTokens: 200, signal: AbortSignal.timeout(8000) });
-        } else {
-            raw = await ai.callMistralAI(prompt, PINNED_MODELS.mistral, { temperature: 0.1, maxOutputTokens: 200, signal: AbortSignal.timeout(8000) });
-        }
+        const raw = await ai.callText(prompt, provider, model, { temperature: 0.1, maxOutputTokens: 200, timeoutMs: 8000 });
         const cleaned = String(raw || '').trim().replace(/^```[\s\S]*?\n/, '').replace(/\n```$/, '').trim();
         if (cleaned.length < 5 || cleaned.length > 400) return null;
         if (cache && typeof cache.set === 'function') {
@@ -465,9 +475,10 @@ function picoCacheKey(query) {
 }
 
 async function decomposePico(query, serverConfig, fetchImpl, cache = null) {
-    const { createAiService, PINNED_MODELS } = require('./aiService');
-    const keys = serverConfig?.keys || {};
-    if (!keys.gemini && !keys.mistral) return null;
+    const { createAiService } = require('./aiService');
+    const { resolveProvider } = require('../utils/aiProvider');
+    const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
+    if (!provider) return null;
 
     const cacheKey = picoCacheKey(query);
     if (cache && typeof cache.get === 'function') {
@@ -491,11 +502,8 @@ Return ONLY valid JSON with this exact shape:
 If a component is unclear or absent, set it to an empty string. Do not include any explanation outside the JSON.`;
 
     const ai = createAiService({ serverConfig, fetchImpl });
-    const model = keys.gemini ? PINNED_MODELS.gemini : PINNED_MODELS.mistral;
     try {
-        const parsed = keys.gemini
-            ? await ai.callGeminiStructured(prompt, model, { temperature: 0.0, maxOutputTokens: 300, signal: AbortSignal.timeout(4000) })
-            : await ai.callMistralStructured(prompt, model, { temperature: 0.0, maxOutputTokens: 300, signal: AbortSignal.timeout(4000) });
+        const parsed = await ai.callStructured(prompt, provider, model, { temperature: 0.0, maxOutputTokens: 300, timeoutMs: 4000 });
         if (parsed && typeof parsed === 'object' && parsed.confidence != null) {
             if (cache && typeof cache.set === 'function') {
                 await Promise.resolve(cache.set(cacheKey, parsed, 86400)).catch(() => undefined);
