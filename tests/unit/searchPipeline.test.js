@@ -40,6 +40,37 @@ describe('searchPipeline helpers', () => {
         expect(hints.yearFilters).toEqual(['2020:2024[PDAT]']);
     });
 
+    test('curated pinned landmarks bypass brittle PICO intervention wording filters', () => {
+        const pico = {
+            confidence: 0.9,
+            intervention: 'SGLT2 inhibitors',
+            comparison: '',
+        };
+        const pinnedLandmark = {
+            uid: 'pubmed-31535829',
+            pmid: '31535829',
+            _pinnedLandmark: true,
+            title: 'Dapagliflozin in Patients with Heart Failure and Reduced Ejection Fraction.',
+            abstract: '',
+        };
+        const unpinnedTitleSynonym = {
+            uid: 'candidate-analysis',
+            title: 'Dapagliflozin in Patients with Heart Failure and Reduced Ejection Fraction.',
+            abstract: '',
+        };
+
+        expect(matchesPicoInterventionComparator(
+            pinnedLandmark,
+            pico,
+            'SGLT2 inhibitors heart failure reduced ejection fraction randomized trial'
+        )).toBe(true);
+        expect(matchesPicoInterventionComparator(
+            unpinnedTitleSynonym,
+            pico,
+            'SGLT2 inhibitors heart failure reduced ejection fraction randomized trial'
+        )).toBe(false);
+    });
+
     test('parseParsedYearFilters accepts safe PubMed date filters', () => {
         expect(parseParsedYearFilters('["2020:2024[PDAT]","bad"]')).toEqual(['2020:2024[PDAT]']);
     });

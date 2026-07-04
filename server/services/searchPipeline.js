@@ -239,6 +239,7 @@ function textMatchesPicoConcept(text, value) {
 
 function matchesPicoInterventionComparator(article, pico, query = '') {
     if (!pico || Number(pico.confidence || 0) < 0.55) return true;
+    if (article?._pinnedLandmark) return true;
     const text = `${String(article.title || '')} ${String(article.abstract || '')}`;
     const intervention = String(pico.intervention || '').trim();
     const comparison = String(pico.comparison || pico.comparator || '').trim();
