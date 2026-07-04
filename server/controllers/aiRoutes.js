@@ -2275,14 +2275,18 @@ Return ONLY valid JSON:
                 if (!selectedProvider) {
                     return res.status(503).json({ error: 'No AI service configured' });
                 }
-                
+
+                const guidelines = await db.getGuidelinesByTopic(topic.trim(), { limit: 5 })
+                    .catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; });
+
                 // Generate case scenario
                 const caseScenario = await generateCaseScenario(ai, {
                     topic,
                     difficulty,
                     userProfile,
                     provider: selectedProvider,
-                    model: selectedModel
+                    model: selectedModel,
+                    guidelines
                 });
                 
                 // Save to database

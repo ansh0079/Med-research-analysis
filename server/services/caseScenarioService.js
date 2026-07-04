@@ -9,13 +9,13 @@ const { parseStructuredOutput } = require('../utils/parseJson');
  * Cases progress through: initial presentation → investigations → management → outcome
  */
 
-function buildCaseScenarioPrompt(topic, difficulty, userProfile = {}) {
+function buildCaseScenarioPrompt(topic, difficulty, userProfile = {}, guidelines = []) {
     const difficultyMap = {
         easy: 'Common presentation, straightforward diagnosis, standard management',
         medium: 'Atypical presentation or comorbidity, requires clinical reasoning',
         hard: 'Complex multisystem case, diagnostic uncertainty, management dilemmas'
     };
-    
+
     const trainingStage = userProfile.trainingStage || 'finals';
     const stageGuidance = {
         preclinical: 'Focus on pathophysiology and basic clinical features',
@@ -25,10 +25,21 @@ function buildCaseScenarioPrompt(topic, difficulty, userProfile = {}) {
         clinician: 'Include management nuances, guideline application, and risk stratification'
     };
 
+    const guidelineContext = guidelines.length > 0
+        ? guidelines.map((g, i) => `[GUIDELINE ${i + 1}]
+Source: ${g.source_body}${g.source_year ? ` (${g.source_year})` : ''}
+Recommendation: ${g.recommendation_text}${g.recommendation_strength ? ` | Strength: ${g.recommendation_strength}` : ''}${g.recommendation_certainty ? ` | Certainty: ${g.recommendation_certainty}` : ''}`).join('\n\n')
+        : 'No guideline context provided.';
+
     return `Generate a branching clinical case scenario about "${topic}" for a ${trainingStage} learner.
 
 DIFFICULTY: ${difficulty} — ${difficultyMap[difficulty]}
 LEARNER GUIDANCE: ${stageGuidance[trainingStage] || stageGuidance.finals}
+
+EVIDENCE PRIORITY: Ground diagnosis and management decisions first in the Clinical Guidelines below when available, falling back to standard evidence-based medical knowledge otherwise.
+
+CLINICAL GUIDELINES (primary authority):
+${guidelineContext}
 
 The case should have 4 decision points:
 1. INITIAL PRESENTATION: Patient demographics, presenting complaint, brief history
@@ -111,9 +122,9 @@ Return ONLY valid JSON:
 }`;
 }
 
-async function generateCaseScenario(ai, { topic, difficulty, userProfile, provider = 'gemini', model }) {
+async function generateCaseScenario(ai, { topic, difficulty, userProfile, provider = 'gemini', model, guidelines = [] }) {
     return runWithLlmBudget(createBudgetForAction('case_generation'), async () => {
-        const prompt = buildCaseScenarioPrompt(topic, difficulty, userProfile);
+        const prompt = buildCaseScenarioPrompt(topic, difficulty, userProfile, guidelines);
         
         let parsed;
         if (provider === 'gemini' && ai.callGeminiStructured) {

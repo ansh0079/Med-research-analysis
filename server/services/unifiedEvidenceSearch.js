@@ -465,9 +465,10 @@ function picoCacheKey(query) {
 }
 
 async function decomposePico(query, serverConfig, fetchImpl, cache = null) {
-    const { createAiService, PINNED_MODELS } = require('./aiService');
-    const keys = serverConfig?.keys || {};
-    if (!keys.gemini && !keys.mistral) return null;
+    const { createAiService } = require('./aiService');
+    const { resolveProvider } = require('../utils/aiProvider');
+    const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
+    if (!provider) return null;
 
     const cacheKey = picoCacheKey(query);
     if (cache && typeof cache.get === 'function') {
@@ -491,11 +492,8 @@ Return ONLY valid JSON with this exact shape:
 If a component is unclear or absent, set it to an empty string. Do not include any explanation outside the JSON.`;
 
     const ai = createAiService({ serverConfig, fetchImpl });
-    const model = keys.gemini ? PINNED_MODELS.gemini : PINNED_MODELS.mistral;
     try {
-        const parsed = keys.gemini
-            ? await ai.callGeminiStructured(prompt, model, { temperature: 0.0, maxOutputTokens: 300, signal: AbortSignal.timeout(4000) })
-            : await ai.callMistralStructured(prompt, model, { temperature: 0.0, maxOutputTokens: 300, signal: AbortSignal.timeout(4000) });
+        const parsed = await ai.callStructured(prompt, provider, model, { temperature: 0.0, maxOutputTokens: 300, timeoutMs: 4000 });
         if (parsed && typeof parsed === 'object' && parsed.confidence != null) {
             if (cache && typeof cache.set === 'function') {
                 await Promise.resolve(cache.set(cacheKey, parsed, 86400)).catch(() => undefined);
