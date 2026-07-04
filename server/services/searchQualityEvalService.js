@@ -97,7 +97,7 @@ function summarizeSearchEval(rows) {
         ndcgAtK: avg('ndcgAtK'),
         requiredTypeCoverage: avg('requiredTypeCoverage'),
         failingQueries: items
-            .filter((row) => row.precisionAtK < 0.5 || row.offTopicRateAtK > 0.2 || row.requiredTypeCoverage < 1)
+            .filter((row) => row.recallAtK < 1 || row.offTopicRateAtK > 0.2 || row.requiredTypeCoverage < 1)
             .map((row) => row.query),
     };
 }

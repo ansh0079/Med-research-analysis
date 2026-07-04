@@ -304,7 +304,7 @@ function testHealth() {
 function testSearch() {
   group('Search Endpoint', () => {
     const query = getRandomQuery();
-    const response = makeRequest('GET', `${BASE_URL}/api/pubmed/search?q=${encodeURIComponent(query)}`);
+    const response = makeRequest('GET', `${BASE_URL}/api/pubmed/search?query=${encodeURIComponent(query)}`);
     
     const success = check(response, {
       'search status is 200 or 404': (r) => r.status === 200 || r.status === 404,
@@ -342,11 +342,11 @@ function testConfig() {
 function testAnalytics() {
   group('Analytics Endpoint', () => {
     const eventData = {
-      event: 'search',
-      query: getRandomQuery(),
-      timestamp: new Date().toISOString(),
-      sessionId: `session-${randomIntBetween(1, 10000)}`,
+      eventType: 'search',
       metadata: {
+        query: getRandomQuery(),
+        timestamp: new Date().toISOString(),
+        sessionId: `session-${randomIntBetween(1, 10000)}`,
         source: 'load_test',
         testType: TEST_TYPE,
       },

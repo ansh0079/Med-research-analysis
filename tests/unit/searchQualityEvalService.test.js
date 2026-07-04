@@ -86,7 +86,7 @@ describe('searchQualityEvalService — original tests', () => {
 
     test('summarizes failing queries for launch review', () => {
         const rows = [
-            { query: 'good', precisionAtK: 0.8, recallAtK: 0.6, offTopicRateAtK: 0, requiredTypeCoverage: 1 },
+            { query: 'good', precisionAtK: 0.1, recallAtK: 1, offTopicRateAtK: 0, requiredTypeCoverage: 1 },
             { query: 'too broad', precisionAtK: 0.3, recallAtK: 0.2, offTopicRateAtK: 0.4, requiredTypeCoverage: 0.5 },
         ];
 
@@ -268,14 +268,14 @@ describe('summarizeSearchEval', () => {
 
     test('identifies all failing query types', () => {
         const rows = [
-            { precisionAtK: 0.8, recallAtK: 0.8, offTopicRateAtK: 0.05, mrr: 1, ndcgAtK: 0.9, requiredTypeCoverage: 1, query: 'good' },
-            { precisionAtK: 0.3, recallAtK: 0.3, offTopicRateAtK: 0.05, mrr: 0.5, ndcgAtK: 0.5, requiredTypeCoverage: 1, query: 'low-precision' },
-            { precisionAtK: 0.8, recallAtK: 0.8, offTopicRateAtK: 0.25, mrr: 1, ndcgAtK: 0.9, requiredTypeCoverage: 1, query: 'high-off-topic' },
-            { precisionAtK: 0.8, recallAtK: 0.8, offTopicRateAtK: 0.05, mrr: 1, ndcgAtK: 0.9, requiredTypeCoverage: 0.5, query: 'missing-type' },
+            { precisionAtK: 0.1, recallAtK: 1, offTopicRateAtK: 0.05, mrr: 1, ndcgAtK: 0.9, requiredTypeCoverage: 1, query: 'good' },
+            { precisionAtK: 0.1, recallAtK: 0.3, offTopicRateAtK: 0.05, mrr: 0.5, ndcgAtK: 0.5, requiredTypeCoverage: 1, query: 'low-recall' },
+            { precisionAtK: 0.1, recallAtK: 1, offTopicRateAtK: 0.25, mrr: 1, ndcgAtK: 0.9, requiredTypeCoverage: 1, query: 'high-off-topic' },
+            { precisionAtK: 0.1, recallAtK: 1, offTopicRateAtK: 0.05, mrr: 1, ndcgAtK: 0.9, requiredTypeCoverage: 0.5, query: 'missing-type' },
         ];
         const summary = summarizeSearchEval(rows);
 
-        expect(summary.failingQueries).toContain('low-precision');
+        expect(summary.failingQueries).toContain('low-recall');
         expect(summary.failingQueries).toContain('high-off-topic');
         expect(summary.failingQueries).toContain('missing-type');
         expect(summary.failingQueries).not.toContain('good');
