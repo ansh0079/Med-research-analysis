@@ -118,13 +118,16 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         return fn();
     }
 
-    // Circuit breakers protect against cascading failures when LLM APIs degrade
+    // Circuit breakers protect against cascading failures when LLM APIs degrade.
+    // All three primary text providers (Mistral, Gemini, Claude) are wrapped so a
+    // degraded upstream trips the breaker instead of every request paying the full
+    // timeout cost. Streaming calls are intentionally NOT wrapped here — the
+    // initial HTTP fetch is the critical failure point and stream errors are
+    // handled per-chunk; fetch timeouts in safeFetch already protect against
+    // hanging connections.
     const mistralBreaker = new CircuitBreaker(callMistralAIRaw, { failureThreshold: 5, resetTimeoutMs: 30000 });
     const geminiBreaker = new CircuitBreaker(callGeminiRaw, { failureThreshold: 5, resetTimeoutMs: 30000 });
-    // Note: streaming functions are not circuit-broken at the generator level
-    // because the initial HTTP request is the critical failure point and stream
-    // errors are handled per-chunk. The fetch timeouts in safeFetch already protect
-    // against hanging connections.
+    const claudeBreaker = new CircuitBreaker(callClaudeRaw, { failureThreshold: 5, resetTimeoutMs: 30000 });
 
     async function callMistralAIRaw(prompt, model = PINNED_MODELS.mistral, { temperature = TEMPERATURE.analysis, maxOutputTokens, jsonMode = false } = {}) {
         return proxy.mistralChat(prompt, { model, temperature, maxOutputTokens, jsonMode });
@@ -363,7 +366,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
             usage,
             budget,
             allowBudgetSkip,
-            fn: () => callClaudeRaw(prompt, model, rest),
+            fn: () => claudeBreaker.fire(prompt, model, rest),
         });
     }
 
@@ -450,15 +453,44 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         callTextStream,
         AI_PROVIDERS,
         // Expose breaker health for monitoring endpoints
-        _breakers: { mistral: mistralBreaker, gemini: geminiBreaker },
+        _breakers: { mistral: mistralBreaker, gemini: geminiBreaker, claude: claudeBreaker },
     };
 }
 
 
 const prompts = require('../prompts');
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Process-wide memoised AI service
+// ─────────────────────────────────────────────────────────────────────────────
+// Most call sites pass the same { serverConfig, fetchImpl } pair, so creating a
+// fresh AI service per request just churns garbage and — more importantly —
+// gives each request its own circuit breaker, so a degraded provider never
+// trips a shared breaker. `getSharedAiService` returns one instance per
+// process, keyed by the serverConfig object identity, so all callers sharing
+// the same serverConfig share the same breakers and budget state.
+//
+// In production, `serverConfig` is a single stable object from `config.js`, so
+// every caller gets the same memoised instance. In tests, each test typically
+// passes a fresh `serverConfig` literal, so the cache misses and each test
+// gets a fresh instance with its own `fetchImpl` mock — preserving test
+// isolation. Callers that need a bespoke instance (e.g. with an `onLlmCall`
+// hook for usage logging) should still call `createAiService` directly.
+let _sharedAiService = null;
+let _sharedAiServiceConfig = null;
+
+function getSharedAiService({ serverConfig, fetchImpl }) {
+    if (_sharedAiService && _sharedAiServiceConfig === serverConfig) {
+        return _sharedAiService;
+    }
+    _sharedAiService = createAiService({ serverConfig, fetchImpl });
+    _sharedAiServiceConfig = serverConfig;
+    return _sharedAiService;
+}
+
 module.exports = {
     createAiService,
+    getSharedAiService,
     ...prompts,
     AI_PROVIDERS,
     PINNED_MODELS,

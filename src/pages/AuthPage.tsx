@@ -50,7 +50,7 @@ export const AuthPage: React.FC = () => {
   const [passwordTouched, setPasswordTouched] = useState(false);
 
   useEffect(() => {
-    const configPromise = api.getClientConfig?.();
+    const configPromise = api.search.getClientConfig?.();
     configPromise?.then((c) => {
       setOauthConfig((c as { oauth?: { google?: boolean; orcid?: boolean } }).oauth || {});
     }).catch(() => {});

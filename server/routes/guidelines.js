@@ -1,10 +1,10 @@
 const { TRUSTED_GUIDELINE_SOURCES } = require('../config/trustedGuidelineSources');
 const { discoverGuidelinesForTopic, isDiscoveryInFlight, wasDiscoveryAttempted } = require('../services/guidelineService');
-const { createAiService } = require('../services/aiService');
+const { getSharedAiService } = require('../services/aiService');
 const { safeFetch } = require('../utils/fetch');
 
 function registerGuidelineRoutes(app, { db, serverConfig, rateLimit, requireAuthJwt, requireRole, requireJson }) {
-    const aiService = createAiService({ serverConfig, fetchImpl: safeFetch });
+    const aiService = getSharedAiService({ serverConfig, fetchImpl: safeFetch });
     // Trusted sources registry (public). Keep before /api/guidelines/:id.
     app.get('/api/guidelines/sources', rateLimit(60, 60), (req, res) => {
         res.json({ sources: TRUSTED_GUIDELINE_SOURCES });

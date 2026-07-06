@@ -6,6 +6,7 @@ import { CollectionDrawerProvider, useCollectionDrawer } from './contexts/Collec
 import { CollectionDetailDrawer } from './components/collaboration/CollectionDetailDrawer';
 import { ToastContainer, useToast } from '@components/ui';
 import { USAGE_HEADER_EVENT, type UsageHeaderDetail } from '@services/api/core';
+import { ASYNC_ERROR_EVENT, type AsyncErrorDetail } from '@utils/handleAsyncError';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ProtectedRoute } from './components/router/ProtectedRoute';
 import { GuestRoute } from './components/router/GuestRoute';
@@ -127,7 +128,23 @@ const AppContent: React.FC = () => {
     };
 
     window.addEventListener(USAGE_HEADER_EVENT, onUsageHeaders);
-    return () => window.removeEventListener(USAGE_HEADER_EVENT, onUsageHeaders);
+
+    const onAsyncError = (event: Event) => {
+      const detail = (event as CustomEvent<AsyncErrorDetail>).detail;
+      if (!detail) return;
+      const message = detail.error instanceof Error
+        ? detail.error.message
+        : typeof detail.error === 'string'
+          ? detail.error
+          : 'Something went wrong. Please try again.';
+      showToast(message, 'error', 6000);
+    };
+    window.addEventListener(ASYNC_ERROR_EVENT, onAsyncError);
+
+    return () => {
+      window.removeEventListener(USAGE_HEADER_EVENT, onUsageHeaders);
+      window.removeEventListener(ASYNC_ERROR_EVENT, onAsyncError);
+    };
   }, [showToast]);
 
   const handleOnboardingDone = (query?: string, destination: 'search' | 'learning' | 'quiz' = 'search') => {

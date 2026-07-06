@@ -113,7 +113,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     const trimmed = debouncedQuery.trim();
     if (trimmed.length < 3) return;
     let cancelled = false;
-    api.meshSuggest(trimmed).then((data) => {
+    api.review.meshSuggest(trimmed).then((data) => {
       if (!cancelled) setMeshSuggestions(data.suggestions.slice(0, 5));
     }).catch(() => {});
     return () => { cancelled = true; };

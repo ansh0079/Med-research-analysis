@@ -9,9 +9,8 @@ const {
     selectAbstractEvidence,
     enrichWithCachedFullText,
 } = require('./consensusSynopsisService');
-const { PINNED_MODELS } = require('./aiService');
+const { PINNED_MODELS, getSharedAiService } = require('./aiService');
 const claimMapService = require('./claimMapService');
-const { createAiService } = require('./aiService');
 const { generateAndStoreMCQs } = require('./mcqGeneratorService');
 const { resolveProvider } = require('../utils/aiProvider');
 
@@ -164,7 +163,7 @@ async function processAiGenerationJobByKey(jobKey, deps) {
                 return result;
             }
 
-            const ai = createAiService({ serverConfig, fetchImpl });
+            const ai = getSharedAiService({ serverConfig, fetchImpl });
             const { provider, model: mcqModel } = resolveProvider({ provider: input.provider || 'auto' }, serverConfig);
             const sourceArticles = Array.isArray(topicKnowledgeRow?.sourceArticles) ? topicKnowledgeRow.sourceArticles : [];
             const result = await generateAndStoreMCQs(db, ai, topic, knowledge, { provider, model: mcqModel, sourceArticles });

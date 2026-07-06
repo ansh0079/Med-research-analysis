@@ -79,7 +79,7 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
       try {
         setLoading(true);
         setError('');
-        const res = await api.getGuidelinesForTopic(query);
+        const res = await api.collaboration.getGuidelinesForTopic(query);
         if (!cancelled) setGuidelines(res.guidelines);
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load guidelines');
@@ -104,7 +104,7 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
           return `${index + 1}. ${study.slice(0, 900)}`;
         }),
       ].join('\n');
-      const data = await api.checkGuidelineAlignment(query, consensus, evidenceForAlignment);
+      const data = await api.ai.checkGuidelineAlignment(query, consensus, evidenceForAlignment);
       setAlignment(data);
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Guideline comparison failed';

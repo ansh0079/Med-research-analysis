@@ -51,7 +51,7 @@ export const RobPanel: React.FC<Props> = ({ reviewId, row, cachedRob, onResult }
     setState('loading');
     setError('');
     try {
-      const result = await api.assessRiskOfBias(reviewId, row.article_id);
+      const result = await api.review.assessRiskOfBias(reviewId, row.article_id);
       const raw = result.rob as unknown as Record<string, { judgement: string; rationale: string; signals?: string[] }>;
       // Normalise judgement casing from backend
       const normalized: ROBResult = {

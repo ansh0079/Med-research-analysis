@@ -3,28 +3,7 @@ import { yearRangeToPubMedFilter } from '@utils/searchStudyFilters';
 import type {
   Article,
   SearchFilters,
-  AnalysisType,
-  AnalysisResult,
-  CollectionSummary,
-  SavedAlert,
-  Annotation,
-  SynthesisResult,
-  ReviewProject,
-  ReviewArticle,
-  ReviewCriteria,
-  PrismaCounts,
-  PicoExtraction,
-  CaseModeResult,
-  CaseLearningMode,
-  ArticleSynopsisResult,
   SearchResponse,
-  AgentGuidance,
-  TopicKnowledge,
-  TopicKnowledgeListResponse,
-  TopicKnowledgeProposal,
-  TopicKnowledgeProposalListResponse,
-  LearningHealthResponse,
-  LearningRecommendation,
 } from '@types';
 
 export class SearchApi extends BaseApiClient {
@@ -40,7 +19,7 @@ export class SearchApi extends BaseApiClient {
     const response = await this.fetchWithSession(
       `${API_BASE}/api/pubmed/search?query=${encodeURIComponent(query)}&max=${max}&sort=${sort}`
     );
-    if (!response.ok) throw new Error(`PubMed search failed: ${response.statusText}`);
+    if (!response.ok) await this.parseErrorResponse(response);
     const data = await response.json();
     this.setCache(cacheKey, data);
     return data;
@@ -54,7 +33,7 @@ export class SearchApi extends BaseApiClient {
     const response = await this.fetchWithSession(
       `${API_BASE}/api/semantic/search?query=${encodeURIComponent(query)}&limit=${limit}`
     );
-    if (!response.ok) throw new Error(`Semantic Scholar search failed: ${response.statusText}`);
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
 
@@ -66,7 +45,7 @@ export class SearchApi extends BaseApiClient {
     const response = await this.fetchWithSession(
       `${API_BASE}/api/openalex/search?query=${encodeURIComponent(query)}&perPage=${perPage}`
     );
-    if (!response.ok) throw new Error(`OpenAlex search failed: ${response.statusText}`);
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
 
@@ -153,7 +132,7 @@ export class SearchApi extends BaseApiClient {
     const response = await this.fetchWithSession(
       `${API_BASE}/api/citations/${encodeURIComponent(semanticId)}${suffix}`
     );
-    if (!response.ok) throw new Error('Failed to fetch citations');
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
 
@@ -180,7 +159,7 @@ export class SearchApi extends BaseApiClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query, ...options }),
     });
-    if (!response.ok) throw new Error('Vector search failed');
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
 
@@ -194,13 +173,7 @@ export class SearchApi extends BaseApiClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ articles }),
     });
-    if (!response.ok) {
-      const errBody: unknown = await response.json().catch(() => ({}));
-      const message = (errBody && typeof errBody === 'object' && 'error' in errBody) 
-        ? String((errBody as { error: unknown }).error) 
-        : 'Vector index failed';
-      throw new Error(message);
-    }
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
 
@@ -216,7 +189,7 @@ export class SearchApi extends BaseApiClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ articleUid, feedbackType, reason, searchId, decisionId }),
     });
-    if (!response.ok) throw new Error('Failed to record feedback');
+    if (!response.ok) await this.parseErrorResponse(response);
   }
 
   async logSearchImpressions(
@@ -267,7 +240,7 @@ export class SearchApi extends BaseApiClient {
     const response = await this.fetchWithSession(
       `${API_BASE}/api/topic/${encodeURIComponent(topic)}/crosslinks`
     );
-    if (!response.ok) throw new Error('Failed to load topic cross-links');
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
 }

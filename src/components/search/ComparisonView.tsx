@@ -41,9 +41,9 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({ articles, topic,
     }
     setLoading(prev => { const n = [...prev] as [boolean, boolean]; n[index] = true; return n; });
     try {
-      const { url, isFree } = await api.findFullText(article.doi);
+      const { url, isFree } = await api.documents.findFullText(article.doi);
       if (!url || !isFree) throw new Error('Open-access full text not found.');
-      const { text } = await api.extractPdfText(url);
+      const { text } = await api.documents.extractPdfText(url);
       setTexts(prev => { const n = [...prev] as [string, string]; n[index] = text; return n; });
     } catch (err) {
       setErrors(prev => { const n = [...prev] as [string | null, string | null]; n[index] = err instanceof Error ? err.message : 'Failed to extract text.'; return n; });
@@ -70,7 +70,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({ articles, topic,
     setAiState('loading');
     setAiError(null);
     try {
-      const result = await api.compareArticles(articles[0], articles[1], topic);
+      const result = await api.review.compareArticles(articles[0], articles[1], topic);
       setComparison(result.comparison);
       setAiState('done');
     } catch (err) {

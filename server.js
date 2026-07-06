@@ -12,17 +12,7 @@ const cache = require('./cache');
 const { app, server, io } = require('./app');
 const { startSavedEmbeddingWorker, stopSavedEmbeddingWorker } = require('./server/saved-embedding-worker');
 const { getEmbeddingOptions } = require('./server/services/embeddingOptions');
-const { scheduleDigests, stopDigests } = require('./server/services/digestService');
-const { scheduleTopicRefresh, stopTopicRefresh } = require('./server/services/topicRefreshScheduler');
-const { scheduleKnowledgeDrift, stopKnowledgeDrift } = require('./server/services/knowledgeDriftService');
-const { scheduleClaimRegeneration, stopClaimRegeneration } = require('./server/services/claimRegenerationScheduler');
-const { scheduleGuidelineWatchtower, stopGuidelineWatchtower } = require('./server/services/guidelineWatchtowerScheduler');
-const { scheduleCurriculumSeed, stopCurriculumSeed } = require('./server/services/curriculumSeedScheduler');
-const { scheduleCollectiveMemory, stopCollectiveMemory } = require('./server/services/collectiveMemoryScheduler');
-const { schedulePersonalizationBandit, stopPersonalizationBandit } = require('./server/services/personalizationBanditScheduler');
-const { scheduleLearnerProfileRollup, stopLearnerProfileRollup } = require('./server/services/learnerProfileRollupScheduler');
-const { scheduleQueueFailureDigest, stopQueueFailureDigest } = require('./server/services/queueFailureDigestService');
-const { scheduleLearningQualityEval, stopLearningQualityEval } = require('./server/services/learningQualityEvalScheduler');
+const { buildSchedulerRegistry, startAllSchedulers, stopAllSchedulers } = require('./server/services/schedulerRegistry');
 const authSecurityStore = require('./server/services/authSecurityStore');
 const { safeFetch } = require('./server/utils/fetch');
 
@@ -33,6 +23,7 @@ const PORT = serverConfig.ports.node;
 // ==========================================
 
 let isShuttingDown = false;
+let schedulerRegistryRef = null;
 
 async function gracefulShutdown(signal) {
     if (isShuttingDown) return;
@@ -52,17 +43,7 @@ async function gracefulShutdown(signal) {
         logger.info('HTTP server closed');
         try {
             stopSavedEmbeddingWorker();
-            stopDigests();
-            stopTopicRefresh();
-            stopKnowledgeDrift();
-            stopClaimRegeneration();
-            stopGuidelineWatchtower();
-            stopCurriculumSeed();
-            stopCollectiveMemory();
-            stopLearnerProfileRollup();
-            stopPersonalizationBandit();
-            stopQueueFailureDigest();
-            stopLearningQualityEval();
+            stopAllSchedulers(schedulerRegistryRef || []);
             const { stopWorkers } = require('./server/services/jobQueue');
             await stopWorkers();
             await db.close();
@@ -123,7 +104,7 @@ async function startServer() {
 
         const migrationResult = await db.runMigrations();
 
-        if (runHttp) {
+        if (runSchedulers) {
             startSavedEmbeddingWorker(db, getEmbeddingOptions(serverConfig));
         }
         if (migrationResult.migrated > 0) {
@@ -153,30 +134,16 @@ async function startServer() {
         logger.info({ cleaned }, 'Cleaned expired cache entries');
 
         if (runSchedulers) {
-            // Each scheduler gets a child logger pre-bound with its task name.
-            // This means every log line emitted by that scheduler includes
-            // { task: '...' }, making background logs trivially filterable in
-            // any log aggregator (Datadog, Grafana, Loki, etc.).
-            scheduleDigests(db, process.env.APP_URL || `http://localhost:${PORT}`, serverConfig, safeFetch,
-                logger.child({ task: 'digest-scheduler' }));
-            scheduleTopicRefresh(db, serverConfig, safeFetch,
-                logger.child({ task: 'topic-refresh' }));
-            scheduleKnowledgeDrift(db, serverConfig, safeFetch,
-                logger.child({ task: 'knowledge-drift' }));
-            scheduleClaimRegeneration(db, { serverConfig, fetchImpl: safeFetch, cache },
-                logger.child({ task: 'claim-regeneration' }));
-            scheduleGuidelineWatchtower(db,
-                logger.child({ task: 'guideline-watchtower' }));
-            scheduleCurriculumSeed(db, { serverConfig, fetchImpl: safeFetch, cache },
-                logger.child({ task: 'curriculum-seed' }));
-            scheduleCollectiveMemory(db,
-                logger.child({ task: 'collective-memory' }));
-            scheduleLearnerProfileRollup(db,
-                logger.child({ task: 'learner-profile-rollup' }));
-            schedulePersonalizationBandit(db,
-                logger.child({ task: 'personalization-bandit' }));
-            scheduleQueueFailureDigest(logger.child({ task: 'queue-failure-digest' }));
-            scheduleLearningQualityEval(logger.child({ task: 'learning-quality-eval' }));
+            const registry = buildSchedulerRegistry({
+                db,
+                serverConfig,
+                fetchImpl: safeFetch,
+                cache,
+                appUrl: process.env.APP_URL || `http://localhost:${PORT}`,
+            });
+            startAllSchedulers(registry);
+            // Stash for graceful shutdown — see gracefulShutdown below.
+            schedulerRegistryRef = registry;
         }
 
         if (runHttp) {

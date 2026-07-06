@@ -7,6 +7,7 @@ const { buildProxyService } = require('./externalApiProxy');
 const crypto = require('crypto');
 const { getPromptVersion } = require('../prompts/promptVersions');
 const { queryAliasMatchScore } = require('./evidenceBouquetService');
+const { isTier1Journal: isCanonicalTier1Journal } = require('./searchRankingConstants');
 
 // EBM evidence hierarchy — higher score = stronger study design
 const EBM_SCORES = {
@@ -287,18 +288,16 @@ function applyRRF(perSourceLists, k = 60, listWeights = [], queryAliases = []) {
     // in both sources (dual-source rank accumulation). Worth ~3 first-place ranks.
     const ALIAS_WEIGHT = MAX_FIRST_SCORE * 3;
 
-    const TIER1_JOURNALS = ['nejm', 'n engl j med', 'lancet', 'jama', 'bmj', 'nature', 'science', 'annals of internal medicine'];
-
     for (let i = 0; i < perSourceLists.length; i++) {
         const list = perSourceLists[i];
         const weight = listWeights[i] || 1;
         list.forEach((article, idx) => {
             const key = dedupeKey(article);
             if (!key) return;
-            
+
             let rrfContrib = weight / (k + idx + 1);
             const journal = (article.journal || article.source || '').toLowerCase();
-            if (TIER1_JOURNALS.some(t => journal.includes(t))) {
+            if (isCanonicalTier1Journal(journal)) {
                 rrfContrib *= 1.15; // 15% boost to the rank contribution for prestige
             }
 
@@ -405,7 +404,7 @@ function reformulationCacheKey(query, specificity) {
 }
 
 async function reformulateQueryForPubMed(query, specificity, serverConfig, fetchImpl, cache = null, telemetry = null) {
-    const { createAiService } = require('./aiService');
+    const { getSharedAiService } = require('./aiService');
     const { resolveProvider } = require('../utils/aiProvider');
     const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
     if (!provider) return null;
@@ -443,7 +442,7 @@ Rules:
 Example input: "does metformin help with weight loss in PCOS patients"
 Example output: ("Metformin"[MeSH Terms]) AND ("Polycystic Ovary Syndrome"[MeSH Terms]) AND ("Weight Loss"[MeSH Terms] OR "Body Weight"[MeSH Terms])`;
 
-    const ai = createAiService({ serverConfig, fetchImpl });
+    const ai = getSharedAiService({ serverConfig, fetchImpl });
     const started = Date.now();
     try {
         const raw = await ai.callText(prompt, provider, model, { temperature: 0.1, maxOutputTokens: 200, timeoutMs: 8000 });
@@ -475,7 +474,7 @@ function picoCacheKey(query) {
 }
 
 async function decomposePico(query, serverConfig, fetchImpl, cache = null) {
-    const { createAiService } = require('./aiService');
+    const { getSharedAiService } = require('./aiService');
     const { resolveProvider } = require('../utils/aiProvider');
     const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
     if (!provider) return null;
@@ -501,7 +500,7 @@ Return ONLY valid JSON with this exact shape:
 
 If a component is unclear or absent, set it to an empty string. Do not include any explanation outside the JSON.`;
 
-    const ai = createAiService({ serverConfig, fetchImpl });
+    const ai = getSharedAiService({ serverConfig, fetchImpl });
     try {
         const parsed = await ai.callStructured(prompt, provider, model, { temperature: 0.0, maxOutputTokens: 300, timeoutMs: 4000 });
         if (parsed && typeof parsed === 'object' && parsed.confidence != null) {

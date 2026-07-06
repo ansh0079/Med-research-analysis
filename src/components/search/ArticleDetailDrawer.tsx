@@ -92,7 +92,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
     if (!article || synopsis || synopsisState === 'loading') return;
     setSynopsisState('loading');
     try {
-      const result = await api.getSynopsis(article, { async: true });
+      const result = await api.ai.getSynopsis(article, { async: true });
       if (!result.synopsis) throw new Error('unavailable');
       setSynopsis(result.synopsis);
       setSynopsisResult(result);
@@ -106,7 +106,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
     if (!article || consort || consortState === 'loading') return;
     setConsortState('loading');
     try {
-      const result = await api.assessConsort(article);
+      const result = await api.review.assessConsort(article);
       setConsort(result.consort);
       setConsortState('done');
     } catch {
@@ -143,7 +143,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
     if (!article || synopsisFeedback === feedbackType || synopsisFeedbackPending) return;
     setSynopsisFeedbackPending(true);
     try {
-      await api.recordSynopsisFeedback({
+      await api.ai.recordSynopsisFeedback({
         article,
         articleUid: synopsisResult?.articleId || article.uid,
         provider: synopsisResult?.provider ?? null,

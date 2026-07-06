@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const logger = require('../config/logger');
 const { aiGenerationQueue } = require('./jobQueue');
-const { createAiService, PINNED_MODELS } = require('./aiService');
+const { createAiService, getSharedAiService, PINNED_MODELS } = require('./aiService');
 const { buildSynthesisPrompt } = require('../prompts');
 const {
     generateConsensusSynopsis,
@@ -79,7 +79,7 @@ function synthesisToClinicalAnswer(synthesis) {
 async function generateLiveClinicalAnswer({ topic, articles = [], guidelines = [], previousQueries = [], trainingStage = null, sessionDepth = 0, serverConfig, fetchImpl }) {
     const topArticles = (articles || []).slice(0, 5);
     if (topArticles.length === 0) return null;
-    const ai = createAiService({ serverConfig, fetchImpl });
+    const ai = getSharedAiService({ serverConfig, fetchImpl });
     const prompt = buildSynthesisPrompt(topArticles, topic, guidelines, { previousQueries, trainingStage, sessionDepth });
     const { provider, model } = resolveProvider({ provider: 'auto', model: PINNED_MODELS.geminiQuality }, serverConfig);
     if (!provider) {

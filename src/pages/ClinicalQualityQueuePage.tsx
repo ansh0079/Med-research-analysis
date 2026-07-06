@@ -34,7 +34,7 @@ export function ClinicalQualityQueuePage() {
     setLoading(true);
     setError(null);
     try {
-      const data = await api.getClinicalQualityQueue({
+      const data = await api.knowledge.getClinicalQualityQueue({
         queue: activeQueue,
         topic: topicFilter.trim() || undefined,
         limit: 50,
@@ -59,7 +59,7 @@ export function ClinicalQualityQueuePage() {
 
   const updateClaim = async (claim: TeachingClaimReviewItem, status: string) => {
     try {
-      const { claim: updated } = await api.updateTeachingClaimVerification(claim.claimKey, {
+      const { claim: updated } = await api.knowledge.updateTeachingClaimVerification(claim.claimKey, {
         verificationStatus: status,
         verificationReason: `Clinical quality review (${activeQueue}).`,
       });
@@ -73,7 +73,7 @@ export function ClinicalQualityQueuePage() {
 
   const markOverclaimed = async (claim: TeachingClaimReviewItem) => {
     try {
-      await api.updateTeachingClaimCuratorMetadata(claim.claimKey, { overclaimed: true });
+      await api.knowledge.updateTeachingClaimCuratorMetadata(claim.claimKey, { overclaimed: true });
       setNotice('Marked overclaimed — claim queued for refresh.');
       void load();
     } catch (e) {

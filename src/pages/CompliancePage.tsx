@@ -32,23 +32,26 @@ const STATUS_ICON: Record<string, { icon: string; color: string; label: string }
 
 function AuditLogExport() {
   const [exporting, setExporting] = useState(false);
+  const [error, setError] = useState('');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
 
   const handleExport = async () => {
     setExporting(true);
+    setError('');
     try {
-      const params = new URLSearchParams();
-      if (dateFrom) params.set('dateFrom', dateFrom);
-      if (dateTo) params.set('dateTo', dateTo);
-      // Direct download — navigate to the endpoint
-      const url = `/api/admin/audit-log/export${params.toString() ? '?' + params.toString() : ''}`;
+      const blob = await api.knowledge.exportAuditLog({ dateFrom, dateTo });
+      const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = `audit-log-${new Date().toISOString().slice(0, 10)}.csv`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+      // Revoke on next tick so the click has time to resolve.
+      setTimeout(() => URL.revokeObjectURL(url), 0);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Export failed');
     } finally {
       setExporting(false);
     }
@@ -68,6 +71,9 @@ function AuditLogExport() {
             className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition-all" />
         </div>
       </div>
+      {error && (
+        <p className="text-xs text-red-600 dark:text-red-400">{error}</p>
+      )}
       <Button type="button" size="sm" isLoading={exporting} onClick={handleExport}>
         <i className="fas fa-download mr-1.5" /> Export audit log (CSV)
       </Button>

@@ -3,7 +3,7 @@ const { validateQuery } = require('../utils/articles');
 const { validateAiOutput } = require('./aiOutputValidation');
 const { fetchUnifiedEvidence } = require('./unifiedEvidenceSearch');
 const { selectTopEvidence } = require('../utils/selectTopEvidence');
-const { createAiService, intentHintFromDistribution } = require('./aiService');
+const { createAiService, getSharedAiService, intentHintFromDistribution } = require('./aiService');
 const { buildTopicKnowledgePrompt } = require('../prompts');
 const { resolveProvider } = require('../utils/aiProvider');
 
@@ -101,7 +101,7 @@ async function extractAndUpsertTopicKnowledge({
         };
     }
 
-    const ai = createAiService({ serverConfig, fetchImpl });
+    const ai = getSharedAiService({ serverConfig, fetchImpl });
     const prompt = buildTopicKnowledgePrompt(queryValidation.sanitized, evidenceArticles, interactionStats, existingKnowledge?.knowledge || null);
     const rawAi = await ai.callText(prompt, selectedProvider, selectedModel, { temperature: 0.15 });
 

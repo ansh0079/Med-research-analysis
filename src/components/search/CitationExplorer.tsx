@@ -64,7 +64,7 @@ export const CitationExplorer: React.FC<CitationExplorerProps> = ({ article, onC
       try {
         setLoading(true);
         setError('');
-        const data = await api.getCitations(semanticId, { limit: 250 });
+        const data = await api.search.getCitations(semanticId, { limit: 250 });
         if (!cancelled) {
           setCitations(data.citations);
           setReferences(data.references);
@@ -182,7 +182,7 @@ export const CitationExplorer: React.FC<CitationExplorerProps> = ({ article, onC
                 try {
                   setLoading(true);
                   setError('');
-                  const data = await api.getCitations(semanticId, { limit: 250 });
+                  const data = await api.search.getCitations(semanticId, { limit: 250 });
                   if (!cancelled) {
                     setCitations(data.citations);
                     setReferences(data.references);

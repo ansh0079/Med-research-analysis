@@ -41,7 +41,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
     setSaveStatus('idle');
     answersRef.current = [];
     try {
-      const result = await api.generateQuizFromEvidence(topic, articles, 'mixed', 3);
+      const result = await api.ai.generateQuizFromEvidence(topic, articles, 'mixed', 3);
       setQuestions(result.questions);
       questionStartRef.current = currentTimeMs();
     } catch (err) {
@@ -107,7 +107,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
       if (onAuthSubmit) {
         await onAuthSubmit(attempts);
       } else {
-        await api.submitQuizAttempt({ topic, attempts });
+        await api.learning.submitQuizAttempt({ topic, attempts });
       }
       setSaveStatus('saved');
       showToast('Quiz saved to your learning profile', 'success', 3000);

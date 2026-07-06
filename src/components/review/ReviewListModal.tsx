@@ -22,7 +22,7 @@ export const ReviewListModal: React.FC<Props> = ({ onSelect, onClose }) => {
   const [state, setState] = useState<'loading' | 'done' | 'error'>('loading');
 
   useEffect(() => {
-    api.listReviews({ limit: 30 })
+    api.review.listReviews({ limit: 30 })
       .then((data) => { setReviews(data.reviews); setState('done'); })
       .catch(() => setState('error'));
   }, []);

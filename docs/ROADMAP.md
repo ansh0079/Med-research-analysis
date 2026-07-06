@@ -30,7 +30,7 @@ A large fraction of the previous P0/P1 list has shipped. Concrete wins:
 - **Helmet + CSP** registered in `server-enhanced.js:248–264` with strict directive set; HSTS, referrer-policy, etc. on.
 - **JWT secret fail-fast**: `server-enhanced.js:28–37` aborts boot in production when `JWT_SECRET` is missing or set to the placeholder, and `CORS_ORIGINS` is required.
 - **Joi validation** on all major write endpoints — schemas defined in `server-enhanced.js:296–334` and applied via `validateBody(schemas.X)`.
-- **Auth gating** on `/api/ai/analyze`, `/api/ai/explain`, `/api/quiz/generate`, `/api/ai/synthesize`, `/api/articles/:id/annotations`, `/api/alerts*` (verified in `server/controllers/aiRoutes.js:26, 120, 222, 321` and `server-enhanced.js:981, 990, 1008, 1170, 1181`).
+- **Auth gating** on `/api/ai/analyze`, `/api/ai/explain`, `/api/quiz/generate`, `/api/ai/synthesize`, `/api/articles/:id/annotations`, `/api/alerts*` (verified in `server/routes/ai.js:26, 120, 222, 321` and `server-enhanced.js:981, 990, 1008, 1170, 1181`).
 - **`@sentry/node`** initialised when `SENTRY_DSN` is set (`server-enhanced.js:52–74`); error handler captures exceptions with route metadata (`:1322–1342`).
 
 ### Data layer
@@ -241,7 +241,7 @@ Legacy bundle retirement completed in Phase 4. Legacy HTML entry points and `scr
 ## 10. Quick Reference
 
 - Server entry: `server-enhanced.js`
-- Controllers: `server/controllers/{aiRoutes,vectorRoutes,recommendationRoutes}.js`
+- Controllers: `server/routes/{ai.js,vector.js,recommendation.js}`
 - Services: `server/services/{aiService,vectorSearchService,pdfService,recommendationService,embeddingOptions}.js`
 - DB: `database/index.js`, `database/schema.sql`, `database/init-pgvector.sql`, `database/production_schema.sql`, `database/migrations/`
 - Embeddings + RAG: `server/embeddings.js`, `server/synthesis-rag.js`, `server/saved-embedding-worker.js`

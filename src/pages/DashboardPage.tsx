@@ -33,7 +33,7 @@ export const DashboardPage: React.FC = () => {
   const [recommendations, setRecommendations] = useState<LearningRecommendation[]>([]);
   const [searchHistory, setSearchHistory] = useState<Array<{ query: string; timestamp: string; results_count: number }>>([]);
   const [driftAlerts, setDriftAlerts] = useState<ProactiveEvidenceAlert[]>([]);
-  const [practiceAlerts, setPracticeAlerts] = useState<Awaited<ReturnType<typeof api.getPracticeAlerts>>['alerts']>([]);
+  const [practiceAlerts, setPracticeAlerts] = useState<Awaited<ReturnType<typeof api.knowledge.getPracticeAlerts>>['alerts']>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,11 +41,11 @@ export const DashboardPage: React.FC = () => {
     let cancelled = false;
     setLoading(true);
     void Promise.allSettled([
-      api.getLearningDashboard(),
-      api.getLearningRecommendations(6),
-      api.getSearchHistory(),
-      api.listEvidenceAlerts({ limit: 8, unreadOnly: true }),
-      api.getPracticeAlerts('', 6),
+      api.learning.getLearningDashboard(),
+      api.learning.getLearningRecommendations(6),
+      api.documents.getSearchHistory(),
+      api.knowledge.listEvidenceAlerts({ limit: 8, unreadOnly: true }),
+      api.knowledge.getPracticeAlerts('', 6),
     ])
       .then(([dashRes, recRes, histRes, driftRes, practiceRes]) => {
         if (cancelled) return;
@@ -80,7 +80,7 @@ export const DashboardPage: React.FC = () => {
 
   const openPendingJob = useCallback(async (jobKey: string, topic: string) => {
     try {
-      const { job } = await api.getAiGenerationJob(jobKey);
+      const { job } = await api.ai.getAiGenerationJob(jobKey);
       if (job.status === 'completed') {
         openSearchTopic(navigate, topic);
         return;
@@ -93,7 +93,7 @@ export const DashboardPage: React.FC = () => {
   }, [navigate, refreshPending]);
 
   const dismissDriftAlert = useCallback(async (id: number) => {
-    await api.markEvidenceAlertRead(id);
+    await api.knowledge.markEvidenceAlertRead(id);
     setDriftAlerts((prev) => prev.filter((a) => a.id !== id));
   }, []);
 

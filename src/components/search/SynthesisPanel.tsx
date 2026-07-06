@@ -124,7 +124,7 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
   useEffect(() => {
     if (cpdLoggedRef.current || result.cached) return;
     cpdLoggedRef.current = true;
-    api.logCpdSession({
+    api.learning.logCpdSession({
       activityType: 'synthesis',
       topic: result.topic,
       durationMinutes: 3,
@@ -154,7 +154,7 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
     setAlignmentLoading(true);
     setAlignmentError(null);
     try {
-      const data = await api.checkGuidelineAlignment(result.topic, s.consensus, articles.slice(0, 15));
+      const data = await api.ai.checkGuidelineAlignment(result.topic, s.consensus, articles.slice(0, 15));
       setAlignment(data);
     } catch (err: unknown) {
       setAlignmentError(err instanceof Error ? err.message : 'Failed to check guidelines');
@@ -170,7 +170,7 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
       return;
     }
     setClaimsLoading(true);
-    api.getAiJobClaims(jobKey)
+    api.ai.getAiJobClaims(jobKey)
       .then((r) => setJobClaims(r.claims as AiJobClaimRow[]))
       .catch(() => setJobClaims([]))
       .finally(() => setClaimsLoading(false));
@@ -205,8 +205,7 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
   const runJournalClub = useCallback(() => {
     setJournalErr(null);
     setJournalLoading(true);
-    api
-      .generateJournalClub(result.topic, articles, 'auto')
+    api.ai.generateJournalClub(result.topic, articles, 'auto')
       .then((r) => setJournalPack(r.pack))
       .catch((e: unknown) => setJournalErr(e instanceof Error ? e.message : 'Journal club failed'))
       .finally(() => setJournalLoading(false));

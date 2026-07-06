@@ -5,7 +5,9 @@ const getClaimMastery = jest.fn();
 
 jest.mock('@services/api', () => ({
   api: {
-    getClaimMastery: (...args: unknown[]) => getClaimMastery(...args),
+    knowledge: {
+      getClaimMastery: (...args: unknown[]) => getClaimMastery(...args),
+    },
   },
 }));
 

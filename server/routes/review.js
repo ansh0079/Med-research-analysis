@@ -1,5 +1,5 @@
 const logger = require('../config/logger');
-const { createAiService, PINNED_MODELS } = require('../services/aiService');
+const { createAiService, getSharedAiService, PINNED_MODELS } = require('../services/aiService');
 const {
     buildPicoExtractionPrompt,
     buildScreeningAssistPrompt,
@@ -43,7 +43,7 @@ function registerReviewRoutes(app, deps) {
 
     const requireCaseAuth = requireAuthOrBeta || requireAuthJwt;
 
-    const ai = createAiService({ serverConfig, fetchImpl });
+    const ai = getSharedAiService({ serverConfig, fetchImpl });
     const reviews = createReviewService({ db });
     const mcqValidator = createMcqValidationService({ ai, db, logger, PINNED_MODELS, serverConfig });
 

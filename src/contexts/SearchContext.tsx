@@ -174,7 +174,7 @@ export const SearchSelectionProvider: React.FC<{ children: React.ReactNode }> = 
   // Hydrate saved articles from backend on mount
   useEffect(() => {
     let cancelled = false;
-    api.getSavedArticles()
+    api.documents.getSavedArticles()
       .then(({ articles }) => {
         if (cancelled) return;
         if (articles && articles.length > 0) {
@@ -204,9 +204,9 @@ export const SearchSelectionProvider: React.FC<{ children: React.ReactNode }> = 
     // Sync with backend
     try {
       if (isCurrentlySaved) {
-        await api.unsaveArticle(article.uid);
+        await api.documents.unsaveArticle(article.uid);
       } else {
-        await api.saveArticle(article, { topic: detectedTopicRef.current || undefined });
+        await api.documents.saveArticle(article, { topic: detectedTopicRef.current || undefined });
       }
     } catch {
       // Revert optimistic update on failure

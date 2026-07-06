@@ -789,7 +789,7 @@ export const KnowledgeReviewPage: React.FC = () => {
     setLoading(true);
     setError('');
     try {
-      const data = await api.listTopicKnowledge({ query, status: statusFilter, limit: 100 });
+      const data = await api.knowledge.listTopicKnowledge({ query, status: statusFilter, limit: 100 });
       setTopics(data.topics);
       setSelected((current) => {
         if (!current) return data.topics[0] ?? null;
@@ -821,7 +821,7 @@ export const KnowledgeReviewPage: React.FC = () => {
       setError('');
       setActiveTab('edit');
       // Fetch pending proposals for this topic
-      api.getTopicProposals(selected.topic)
+      api.learning.getTopicProposals(selected.topic)
         .then((data) => setProposals(data.proposals))
         .catch(() => setProposals([]));
       setClaimQueue([]);
@@ -842,7 +842,7 @@ export const KnowledgeReviewPage: React.FC = () => {
     setHealthLoading(true);
     setHealthError('');
     try {
-      const data = await api.getLearningHealth({ limit: 10, days: 7 });
+      const data = await api.knowledge.getLearningHealth({ limit: 10, days: 7 });
       setLearningHealth(data.health);
     } catch (err) {
       setHealthError(err instanceof Error ? err.message : 'Failed to load learning health.');
@@ -861,7 +861,7 @@ export const KnowledgeReviewPage: React.FC = () => {
     setClaimsLoading(true);
     setClaimsError('');
     try {
-      const data = await api.getTeachingClaimReviewQueue({
+      const data = await api.knowledge.getTeachingClaimReviewQueue({
         topic: selected?.topic,
         limit: 40,
       });
@@ -889,7 +889,7 @@ export const KnowledgeReviewPage: React.FC = () => {
         ? 'Curator reviewed from claim queue.'
         : `Curator marked as ${verificationStatus.replace(/_/g, ' ')}.`);
     try {
-      const result = await api.updateTeachingClaimVerification(claim.claimKey, {
+      const result = await api.knowledge.updateTeachingClaimVerification(claim.claimKey, {
         verificationStatus,
         verificationReason,
         claimText: opts?.claimText,
@@ -903,7 +903,7 @@ export const KnowledgeReviewPage: React.FC = () => {
 
   const checkClaimGuideline = async (claim: TeachingClaimReviewItem) => {
     try {
-      const result = await api.checkTeachingClaimGuidelineAlignment(claim.claimKey);
+      const result = await api.knowledge.checkTeachingClaimGuidelineAlignment(claim.claimKey);
       setClaimQueue((prev) => prev.map((item) => (item.claimKey === claim.claimKey ? { ...item, ...result.claim } : item)));
       setNotice(`Guideline check: ${result.alignment.alignmentStatus.replace(/_/g, ' ')}.`);
     } catch (err) {
@@ -913,7 +913,7 @@ export const KnowledgeReviewPage: React.FC = () => {
 
   const updateCuratorMeta = async (claim: TeachingClaimReviewItem, patch: Record<string, boolean | string>) => {
     try {
-      const { claim: updated } = await api.updateTeachingClaimCuratorMetadata(claim.claimKey, patch);
+      const { claim: updated } = await api.knowledge.updateTeachingClaimCuratorMetadata(claim.claimKey, patch);
       setClaimQueue((prev) => prev.map((item) => (item.claimKey === claim.claimKey ? { ...item, ...(updated as TeachingClaimReviewItem) } : item)));
       setNotice('Curator metadata updated.');
     } catch (err) {
@@ -943,7 +943,7 @@ export const KnowledgeReviewPage: React.FC = () => {
     setError('');
     setNotice('');
     try {
-      const updated = await api.updateTopicKnowledge(selected.topic, {
+      const updated = await api.knowledge.updateTopicKnowledge(selected.topic, {
         knowledge: buildKnowledge(),
         sourceArticles: selected.sourceArticles,
         status: 'human_edited',
@@ -966,7 +966,7 @@ export const KnowledgeReviewPage: React.FC = () => {
     setError('');
     setNotice('');
     try {
-      const result = await api.reviewTopicKnowledge(selected.topic);
+      const result = await api.knowledge.reviewTopicKnowledge(selected.topic);
       if (result.agentGuidance) {
         await loadTopics();
         setNotice('Marked as clinician reviewed — this knowledge is now trusted.');

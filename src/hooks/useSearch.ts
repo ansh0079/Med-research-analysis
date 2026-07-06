@@ -1,5 +1,6 @@
 import { useCallback, useRef, useEffect, useState } from 'react';
 import { api } from '@services/api';
+import { handleAsyncError } from '@utils/handleAsyncError';
 import { useSearchMeta, useSearchQuery } from '@contexts/SearchContext';
 import type { AgentGuidance, Article, LearnerContextSummary, LowRecallLearning, ProactiveAlert, ProactiveEvidenceAlert, SearchFilters } from '@types';
 import { useAuth } from '@contexts/AuthContext';
@@ -51,10 +52,9 @@ export function useSearch() {
       setKnowledgeDriftAlerts([]);
       return;
     }
-    void api
-      .listEvidenceAlerts({ limit: 30, unreadOnly: true })
+    void api.knowledge.listEvidenceAlerts({ limit: 30, unreadOnly: true })
       .then((r) => setKnowledgeDriftAlerts(r.alerts || []))
-      .catch(() => undefined);
+      .catch((err) => handleAsyncError(err, 'useSearch/listEvidenceAlerts'));
   }, [isAuthenticated]);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export function useSearch() {
   }, [refreshKnowledgeDriftAlerts]);
 
   const dismissKnowledgeDriftAlert = useCallback(async (id: number) => {
-    await api.markEvidenceAlertRead(id);
+    await api.knowledge.markEvidenceAlertRead(id);
     setKnowledgeDriftAlerts((prev) => prev.filter((a) => a.id !== id));
   }, []);
   const [lastSearchId, setLastSearchId] = useState<number | null>(null);
@@ -84,9 +84,9 @@ export function useSearch() {
     delays: POLL_DELAYS,
     fetcher: useCallback(async () => {
       if (!pollTopic) throw new Error('no topic');
-      return api.getTopicKnowledge(pollTopic);
+      return api.knowledge.getTopicKnowledge(pollTopic);
     }, [pollTopic]),
-    isComplete: useCallback((result: Awaited<ReturnType<typeof api.getTopicKnowledge>>) => {
+    isComplete: useCallback((result: Awaited<ReturnType<typeof api.knowledge.getTopicKnowledge>>) => {
       return Boolean(result.found && result.agentGuidance);
     }, []),
     onSuccess: useCallback((result: { found: boolean; agentGuidance: AgentGuidance | null }) => {
@@ -110,9 +110,9 @@ export function useSearch() {
     delays: ENRICHMENT_POLL_DELAYS,
     fetcher: useCallback(async () => {
       if (!enrichKey) throw new Error('no key');
-      return api.getAiEnrichment(enrichKey);
+      return api.search.getAiEnrichment(enrichKey);
     }, [enrichKey]),
-    isComplete: useCallback((enrichment: Awaited<ReturnType<typeof api.getAiEnrichment>>) => {
+    isComplete: useCallback((enrichment: Awaited<ReturnType<typeof api.search.getAiEnrichment>>) => {
       return enrichment.status === 'ready' || enrichment.status === 'failed';
     }, []),
     onSuccess: useCallback((enrichment: {
@@ -164,6 +164,15 @@ export function useSearch() {
   const enrichmentPollRef = useRef(enrichmentPoll);
   enrichmentPollRef.current = enrichmentPoll;
 
+  // Cancel any in-flight polling when the consumer unmounts so background
+  // network requests don't keep firing and setState doesn't fire on a
+  // detached component.
+  useEffect(() => {
+    return () => {
+      cancelPollRef.current();
+    };
+  }, []);
+
   const search = useCallback(
     async (query: string, filters: SearchFilters = {}): Promise<Article[]> => {
       const thisRequestId = ++requestIdRef.current;
@@ -194,15 +203,15 @@ export function useSearch() {
       setError(null);
 
       try {
-        const maxResults = filters.maxResults || 20;
-        const config = await api.getClientConfig();
+        const maxResults = filters.maxResults ?? 20;
+        const config = await api.search.getClientConfig();
         const canUseVector = Boolean(config.features?.vectorSearch);
         const fuseVector = canUseVector && filters.useVectorSearch !== false;
 
         const enrichedFilters: SearchFilters = { ...filters, maxResults };
 
         const previousQueries = searchHistoryRef.current.slice(-3);
-        const data = await api.search(
+        const data = await api.search.search(
           query,
           enrichedFilters,
           { vector: fuseVector, previousQueries, intelligence: 'async' }
@@ -217,15 +226,14 @@ export function useSearch() {
           rankingAttribution,
         } = data;
 
-        trackSearch(query, { filters, resultsCount: articles.length });
-
         if (thisRequestId !== requestIdRef.current) return articles;
+        trackSearch(query, { filters, resultsCount: articles.length });
         lastSuccessfulSearchRef.current = { key: requestKey, articles };
         setResults(articles);
         setLastSearchId(searchId ?? null);
         setSearchCompletedAt(Date.now());
         if (searchId && articles.length > 0) {
-          void api.logSearchImpressions(
+          void api.search.logSearchImpressions(
             searchId,
             articles.slice(0, 20).map((article, index) => ({
               articleUid: article.uid,
@@ -257,7 +265,7 @@ export function useSearch() {
             setTopicGuideStatus('none');
           }
           setIntelligenceLoading(true);
-          void api.fetchSearchIntelligence(query, articles, enrichedFilters, { previousQueries, ranking })
+          void api.search.fetchSearchIntelligence(query, articles, enrichedFilters, { previousQueries, ranking })
             .then((intel) => {
               if (thisRequestId !== requestIdRef.current) return;
               setAgentGuidance(intel.agentGuidance || null);

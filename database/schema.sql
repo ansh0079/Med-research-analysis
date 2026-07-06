@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS ai_generation_jobs (
     started_at TEXT,
     completed_at TEXT,
     expires_at TEXT
-);
+, user_id TEXT);
 
 CREATE TABLE IF NOT EXISTS ai_usage_monthly (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -173,6 +173,17 @@ CREATE TABLE IF NOT EXISTS case_attempts (
     created_at TEXT DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS case_evidence_briefs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    topic TEXT NOT NULL DEFAULT '',
+    clinical_question TEXT NOT NULL,
+    brief_json TEXT NOT NULL DEFAULT '{}',
+    articles_json TEXT NOT NULL DEFAULT '[]',
+    related_claims_json TEXT NOT NULL DEFAULT '[]',
+    created_at TEXT DEFAULT (datetime('now'))
+);
+
 CREATE TABLE IF NOT EXISTS case_sessions (
     id TEXT PRIMARY KEY,
     user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -190,17 +201,6 @@ CREATE TABLE IF NOT EXISTS case_sessions (
     total_score INTEGER,
     created_at TEXT DEFAULT (datetime('now')),
     completed_at TEXT
-);
-
-CREATE TABLE IF NOT EXISTS case_evidence_briefs (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    topic TEXT NOT NULL DEFAULT '',
-    clinical_question TEXT NOT NULL,
-    brief_json TEXT NOT NULL DEFAULT '{}',
-    articles_json TEXT NOT NULL DEFAULT '[]',
-    related_claims_json TEXT NOT NULL DEFAULT '[]',
-    created_at TEXT DEFAULT (datetime('now'))
 );
 
 CREATE TABLE IF NOT EXISTS claim_contradiction_searches (
@@ -533,6 +533,36 @@ CREATE TABLE IF NOT EXISTS pdf_sections (
     source TEXT,
     numpages INTEGER DEFAULT 0,
     indexed_at TEXT DEFAULT (datetime('now'))
+, extraction_backend TEXT DEFAULT 'legacy', grobid_version TEXT);
+
+CREATE TABLE IF NOT EXISTS personalization_arm_state (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    policy_type TEXT NOT NULL,
+    arm_id TEXT NOT NULL,
+    scope_key TEXT NOT NULL DEFAULT 'global',
+    alpha REAL NOT NULL DEFAULT 1.0,
+    beta REAL NOT NULL DEFAULT 1.0,
+    pulls INTEGER NOT NULL DEFAULT 0,
+    total_reward REAL NOT NULL DEFAULT 0,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(policy_type, arm_id, scope_key)
+);
+
+CREATE TABLE IF NOT EXISTS personalization_decisions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT,
+    policy_type TEXT NOT NULL,
+    arm_id TEXT NOT NULL,
+    search_id INTEGER,
+    topic TEXT,
+    normalized_topic TEXT,
+    article_uid TEXT,
+    context_json TEXT,
+    immediate_reward REAL,
+    delayed_reward REAL,
+    total_reward REAL,
+    reward_computed_at DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS pico_extractions (
@@ -578,6 +608,21 @@ CREATE TABLE IF NOT EXISTS proactive_evidence_alerts (
     created_at TEXT DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS product_quality_feedback (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+    session_id TEXT,
+    product_type TEXT NOT NULL,
+    topic TEXT,
+    factual_accuracy INTEGER,
+    completeness INTEGER,
+    clinical_usefulness INTEGER,
+    time_saved_minutes INTEGER,
+    comment TEXT,
+    metadata_json TEXT DEFAULT '{}',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS quiz_attempts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -613,6 +658,17 @@ CREATE TABLE IF NOT EXISTS quiz_validation_results (
     validated_at TEXT DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS refresh_tokens (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    token_hash TEXT NOT NULL UNIQUE,
+    family_id TEXT NOT NULL,
+    expires_at DATETIME NOT NULL,
+    revoked_at DATETIME,
+    replaced_by TEXT,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS review_articles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     review_id TEXT NOT NULL,
@@ -641,7 +697,7 @@ CREATE TABLE IF NOT EXISTS revoked_tokens (
     token_hash TEXT PRIMARY KEY,
     revoked_at DATETIME NOT NULL,
     expires_at DATETIME NOT NULL
-);
+, token_jti TEXT);
 
 CREATE TABLE IF NOT EXISTS saved_articles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -664,8 +720,25 @@ CREATE TABLE IF NOT EXISTS search_alerts (
     email TEXT,
     active INTEGER DEFAULT 1,
     last_sent DATETIME,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP, unsubscribe_token TEXT, digest_enabled INTEGER DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP, unsubscribe_token TEXT, digest_enabled INTEGER DEFAULT 1, author_filter TEXT DEFAULT NULL, journal_filter TEXT DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS search_learning_outcomes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT NOT NULL,
+    search_id INTEGER,
+    impression_id INTEGER,
+    article_uid TEXT NOT NULL,
+    claim_key TEXT,
+    topic TEXT,
+    normalized_topic TEXT,
+    quiz_attempt_id INTEGER,
+    first_attempt_correct INTEGER NOT NULL DEFAULT 0,
+    reward REAL NOT NULL,
+    bandit_arm_id TEXT,
+    attributed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS search_result_feedback (
@@ -760,6 +833,21 @@ CREATE TABLE IF NOT EXISTS study_runs (
     last_active_at TEXT DEFAULT (datetime('now')),
     completed_at TEXT,
     FOREIGN KEY (outline_id) REFERENCES topic_knowledge(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS synopsis_feedback (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+    session_id TEXT,
+    article_uid TEXT NOT NULL,
+    topic TEXT,
+    training_stage TEXT,
+    provider TEXT,
+    model TEXT,
+    feedback_type TEXT NOT NULL,
+    reason TEXT,
+    metadata_json TEXT DEFAULT '{}',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS synthesis_snapshots (
@@ -1093,7 +1181,7 @@ CREATE TABLE IF NOT EXISTS user_topic_memory (
     memory_tier TEXT NOT NULL DEFAULT 'sparse',
     promoted_proposal_at TEXT,
     created_at TEXT DEFAULT (datetime('now')),
-    updated_at TEXT DEFAULT (datetime('now')),
+    updated_at TEXT DEFAULT (datetime('now')), inferred_misconceptions TEXT,
     UNIQUE(user_id, normalized_topic)
 );
 
@@ -1113,7 +1201,7 @@ CREATE TABLE IF NOT EXISTS users (
     preferences TEXT, 
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     last_login DATETIME
-, email_verified INTEGER DEFAULT 0, email_verification_token TEXT, email_verification_expires DATETIME, updated_at DATETIME, stripe_customer_id TEXT, stripe_subscription_id TEXT, subscription_status TEXT DEFAULT 'free', subscription_plan TEXT DEFAULT 'free', subscription_current_period_end TEXT, subscription_cancel_at_period_end INTEGER DEFAULT 0, trial_started_at TEXT, trial_ends_at TEXT, has_used_trial INTEGER NOT NULL DEFAULT 0);
+, email_verified INTEGER DEFAULT 0, email_verification_token TEXT, email_verification_expires DATETIME, updated_at DATETIME, stripe_customer_id TEXT, stripe_subscription_id TEXT, subscription_status TEXT DEFAULT 'free', subscription_plan TEXT DEFAULT 'free', subscription_current_period_end TEXT, subscription_cancel_at_period_end INTEGER DEFAULT 0, trial_started_at TEXT, trial_ends_at TEXT, has_used_trial INTEGER NOT NULL DEFAULT 0, access_token_version INTEGER NOT NULL DEFAULT 0);
 
 CREATE INDEX IF NOT EXISTS idx_agent_conv_last_message ON agent_conversations(user_id, last_message_at);
 
@@ -1121,11 +1209,16 @@ CREATE INDEX IF NOT EXISTS idx_agent_conv_topic ON agent_conversations(normalize
 
 CREATE INDEX IF NOT EXISTS idx_agent_conv_user ON agent_conversations(user_id);
 
+CREATE INDEX IF NOT EXISTS idx_agent_conversations_user_topic ON agent_conversations(user_id, normalized_topic);
+
 CREATE INDEX IF NOT EXISTS idx_ai_gen_claims_job ON ai_generation_claims(job_key, ordinal);
 
 CREATE INDEX IF NOT EXISTS idx_ai_generation_jobs_status ON ai_generation_jobs(status, updated_at);
 
 CREATE INDEX IF NOT EXISTS idx_ai_generation_jobs_type_topic ON ai_generation_jobs(job_type, topic);
+
+CREATE INDEX IF NOT EXISTS idx_ai_generation_jobs_user_status
+    ON ai_generation_jobs(user_id, status, updated_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_ai_usage_user_month
     ON ai_usage_monthly (user_id, year_month);
@@ -1179,6 +1272,10 @@ CREATE INDEX IF NOT EXISTS idx_case_attempts_user_created ON case_attempts(user_
 CREATE INDEX IF NOT EXISTS idx_case_attempts_user_topic ON case_attempts(user_id, normalized_topic);
 
 CREATE INDEX IF NOT EXISTS idx_case_evidence_briefs_user ON case_evidence_briefs(user_id, created_at);
+
+CREATE INDEX IF NOT EXISTS idx_case_sessions_user_created ON case_sessions(user_id, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_case_sessions_user_status ON case_sessions(user_id, status);
 
 CREATE INDEX IF NOT EXISTS idx_claim_history_claim ON claim_status_history(claim_key, created_at DESC);
 
@@ -1279,7 +1376,18 @@ CREATE INDEX IF NOT EXISTS idx_password_reset_token ON password_reset_tokens(tok
 
 CREATE INDEX IF NOT EXISTS idx_password_reset_user ON password_reset_tokens(user_id);
 
+CREATE INDEX IF NOT EXISTS idx_pdf_sections_backend ON pdf_sections(extraction_backend);
+
 CREATE INDEX IF NOT EXISTS idx_pdf_sections_uid ON pdf_sections(article_uid);
+
+CREATE INDEX IF NOT EXISTS idx_personalization_arm_policy
+    ON personalization_arm_state(policy_type, scope_key);
+
+CREATE INDEX IF NOT EXISTS idx_personalization_decisions_search
+    ON personalization_decisions(search_id, article_uid);
+
+CREATE INDEX IF NOT EXISTS idx_personalization_decisions_user
+    ON personalization_decisions(user_id, policy_type, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_pico_extractions_article ON pico_extractions(article_id);
 
@@ -1292,6 +1400,12 @@ CREATE INDEX IF NOT EXISTS idx_proactive_evidence_alerts_user_created
 
 CREATE INDEX IF NOT EXISTS idx_proactive_evidence_alerts_user_topic
     ON proactive_evidence_alerts(user_id, normalized_topic);
+
+CREATE INDEX IF NOT EXISTS idx_product_quality_feedback_type_time
+    ON product_quality_feedback(product_type, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_product_quality_feedback_user
+    ON product_quality_feedback(user_id, created_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_quiz_attempts_concept_hash ON quiz_attempts(user_id, concept_hash);
 
@@ -1318,6 +1432,12 @@ CREATE INDEX IF NOT EXISTS idx_qvr_question ON quiz_validation_results(question_
 
 CREATE INDEX IF NOT EXISTS idx_qvr_topic ON quiz_validation_results(normalized_topic, status);
 
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_family ON refresh_tokens(family_id);
+
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_hash ON refresh_tokens(token_hash);
+
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user ON refresh_tokens(user_id, expires_at);
+
 CREATE INDEX IF NOT EXISTS idx_review_articles_review ON review_articles(review_id);
 
 CREATE INDEX IF NOT EXISTS idx_review_articles_status ON review_articles(screening_status);
@@ -1325,6 +1445,8 @@ CREATE INDEX IF NOT EXISTS idx_review_articles_status ON review_articles(screeni
 CREATE INDEX IF NOT EXISTS idx_review_projects_owner ON review_projects(owner_type, owner_id);
 
 CREATE INDEX IF NOT EXISTS idx_revoked_tokens_expires ON revoked_tokens(expires_at);
+
+CREATE INDEX IF NOT EXISTS idx_revoked_tokens_jti ON revoked_tokens(token_jti);
 
 CREATE INDEX IF NOT EXISTS idx_saved_articles_session ON saved_articles(session_id);
 
@@ -1335,6 +1457,12 @@ CREATE INDEX IF NOT EXISTS idx_search_feedback_search ON search_result_feedback(
 CREATE INDEX IF NOT EXISTS idx_search_feedback_session ON search_result_feedback(session_id, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_search_feedback_user_article ON search_result_feedback(user_id, article_uid);
+
+CREATE INDEX IF NOT EXISTS idx_search_learning_outcomes_article
+    ON search_learning_outcomes(article_uid, claim_key);
+
+CREATE INDEX IF NOT EXISTS idx_search_learning_outcomes_user
+    ON search_learning_outcomes(user_id, normalized_topic, attributed_at);
 
 CREATE INDEX IF NOT EXISTS idx_search_usage_user_date
     ON search_usage_daily (user_id, date);
@@ -1360,6 +1488,15 @@ CREATE INDEX IF NOT EXISTS idx_study_runs_outline ON study_runs(outline_id);
 CREATE INDEX IF NOT EXISTS idx_study_runs_user_status ON study_runs(user_id, status, last_active_at);
 
 CREATE INDEX IF NOT EXISTS idx_study_runs_user_topic ON study_runs(user_id, normalized_topic, last_active_at);
+
+CREATE INDEX IF NOT EXISTS idx_synopsis_feedback_article
+    ON synopsis_feedback(article_uid, created_at);
+
+CREATE INDEX IF NOT EXISTS idx_synopsis_feedback_type_time
+    ON synopsis_feedback(feedback_type, created_at);
+
+CREATE INDEX IF NOT EXISTS idx_synopsis_feedback_user_article
+    ON synopsis_feedback(user_id, article_uid, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_synthesis_snapshots_topic
     ON synthesis_snapshots(normalized_topic, generated_at DESC);
@@ -1393,6 +1530,8 @@ CREATE INDEX IF NOT EXISTS idx_team_saved_articles_team_id
 CREATE INDEX IF NOT EXISTS idx_teams_owner ON teams(owner_id);
 
 CREATE INDEX IF NOT EXISTS idx_topic_guidelines_checked ON topic_guidelines(last_checked_at);
+
+CREATE INDEX IF NOT EXISTS idx_topic_guidelines_normalized ON topic_guidelines(normalized_topic);
 
 CREATE INDEX IF NOT EXISTS idx_topic_guidelines_source ON topic_guidelines(source_body);
 
@@ -1433,9 +1572,14 @@ CREATE INDEX IF NOT EXISTS idx_user_interactions_session ON user_interactions(se
 
 CREATE INDEX IF NOT EXISTS idx_user_interactions_user ON user_interactions(user_id, article_id, created_at);
 
+CREATE INDEX IF NOT EXISTS idx_user_topic_mastery_user_topic ON user_topic_mastery(user_id, normalized_topic);
+
 CREATE INDEX IF NOT EXISTS idx_user_topic_memory_norm ON user_topic_memory(normalized_topic);
 
 CREATE INDEX IF NOT EXISTS idx_user_topic_memory_user ON user_topic_memory(user_id, updated_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_user_topic_memory_user_id
+    ON user_topic_memory(user_id);
 
 CREATE INDEX IF NOT EXISTS idx_users_stripe_customer ON users(stripe_customer_id);
 

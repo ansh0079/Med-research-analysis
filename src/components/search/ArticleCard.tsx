@@ -365,10 +365,10 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
     if (PREFETCHED_ARTICLES.has(article.uid)) return;
     PREFETCHED_ARTICLES.add(article.uid);
     if (article.doi) {
-      void api.findFullText(article.doi).catch(() => undefined);
+      void api.documents.findFullText(article.doi).catch(() => undefined);
     }
-    void api.checkRetraction(article.uid, article.doi, article.pmid).catch(() => undefined);
-    void api.getPdfStatus({ uid: article.uid, doi: article.doi, pmcid: article.pmcid })
+    void api.ai.checkRetraction(article.uid, article.doi, article.pmid).catch(() => undefined);
+    void api.documents.getPdfStatus({ uid: article.uid, doi: article.doi, pmcid: article.pmcid })
       .then((s) => { if (s.indexed) setPdfIndexed(true); })
       .catch(() => undefined);
   }, [article.doi, article.pmid, article.uid, article.pmcid]);
@@ -389,9 +389,9 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
 
     maxLoggedDwellMsRef.current = dwellMs;
     if (searchId) {
-      void api.logSearchInteraction(searchId, article.uid, 'dwell', dwellMs, undefined, article._decisionId ?? undefined);
+      void api.search.logSearchInteraction(searchId, article.uid, 'dwell', dwellMs, undefined, article._decisionId ?? undefined);
     }
-    void api.logEvent('article_dwell', { articleUid: article.uid, dwellMs, source: article._source });
+    void api.documents.logEvent('article_dwell', { articleUid: article.uid, dwellMs, source: article._source });
   }, [article._source, article.uid, searchId]);
 
   const startDwell = React.useCallback(() => {
@@ -405,9 +405,9 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
       if (dwellMs >= 3000 && dwellMs > maxLoggedDwellMsRef.current + 1000) {
         maxLoggedDwellMsRef.current = dwellMs;
         if (searchId) {
-          void api.logSearchInteraction(searchId, article.uid, 'dwell', dwellMs, undefined, article._decisionId ?? undefined);
+          void api.search.logSearchInteraction(searchId, article.uid, 'dwell', dwellMs, undefined, article._decisionId ?? undefined);
         }
-        void api.logEvent('article_dwell', { articleUid: article.uid, dwellMs, source: article._source });
+        void api.documents.logEvent('article_dwell', { articleUid: article.uid, dwellMs, source: article._source });
       }
     }, 3000);
   }, [article._source, article.uid, prefetchArticle, searchId]);
@@ -650,9 +650,9 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
             onClick={() => {
               if (searchId) {
                 const elapsedMs = searchCompletedAt ? Math.max(0, Date.now() - searchCompletedAt) : undefined;
-                api.logSearchInteraction(searchId, article.uid, 'click', undefined, elapsedMs, article._decisionId ?? undefined);
+                api.search.logSearchInteraction(searchId, article.uid, 'click', undefined, elapsedMs, article._decisionId ?? undefined);
               }
-              api.logEvent('article_click', { articleUid: article.uid, source: article._source });
+              api.documents.logEvent('article_click', { articleUid: article.uid, source: article._source });
             }}
           >
             {article.title}
@@ -794,7 +794,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
                   onClick={async () => {
                     setPdfLookup('loading');
                     try {
-                      const result = await api.findFullText(article.doi!);
+                      const result = await api.documents.findFullText(article.doi!);
                       if (result.isFree && result.url) { setPdfUrl(result.url); setPdfLookup('found'); }
                       else setPdfLookup('not-found');
                     } catch { setPdfLookup('not-found'); }
@@ -846,7 +846,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
               setSynopsisState('loading');
               setSynopsisAudit(null);
               try {
-                const result = await api.getSynopsis(article, { async: true });
+                const result = await api.ai.getSynopsis(article, { async: true });
                 if (!result.synopsis) throw new Error('Synopsis unavailable');
                 const au = result.audit as Record<string, unknown> | undefined;
                 setSynopsisAudit({
@@ -892,7 +892,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
                 if (consort) { setConsortExpanded((v) => !v); return; }
                 setConsortState('loading');
                 try {
-                  const result = await api.assessConsort(article);
+                  const result = await api.review.assessConsort(article);
                   setConsort(result.consort);
                   setConsortState('done');
                   setConsortExpanded(true);
@@ -939,7 +939,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
           {onSave && (
             <Button variant={isSaved ? 'primary' : 'secondary'} size="sm" onClick={() => {
               if (searchId) {
-                api.logSearchInteraction(searchId, article.uid, 'save', undefined, undefined, article._decisionId ?? undefined);
+                api.search.logSearchInteraction(searchId, article.uid, 'save', undefined, undefined, article._decisionId ?? undefined);
               }
               onSave(article);
             }}
@@ -968,7 +968,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
                 onFeedback?.(article, 'helpful');
                 setFeedbackPending(true);
                 try {
-                  await api.recordSearchFeedback(article.uid, 'helpful', undefined, searchId, article._decisionId ?? undefined);
+                  await api.search.recordSearchFeedback(article.uid, 'helpful', undefined, searchId, article._decisionId ?? undefined);
                 } catch {
                   setUserFeedback(previousFeedback);
                 } finally {
@@ -995,7 +995,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
                 onFeedback?.(article, 'not_helpful');
                 setFeedbackPending(true);
                 try {
-                  await api.recordSearchFeedback(article.uid, 'not_helpful', undefined, searchId, article._decisionId ?? undefined);
+                  await api.search.recordSearchFeedback(article.uid, 'not_helpful', undefined, searchId, article._decisionId ?? undefined);
                 } catch {
                   setUserFeedback(previousFeedback);
                 } finally {

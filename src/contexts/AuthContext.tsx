@@ -41,7 +41,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     let cancelled = false;
     async function hydrate() {
       try {
-        const me = await api.getMe();
+        const me = await api.auth.getMe();
         if (!cancelled) {
           if (me?.user) {
             setUser(me.user);
@@ -60,41 +60,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [setUser]);
 
   const login = useCallback(async (email: string, password: string) => {
-    const result = await api.login({ email, password });
+    const result = await api.auth.login({ email, password });
     setUser(result.user);
   }, [setUser]);
 
   const register = useCallback(async (email: string, password: string, name?: string, inviteCode?: string) => {
-    const result = await api.register({ email, password, name, inviteCode });
+    const result = await api.auth.register({ email, password, name, inviteCode });
     setUser(result.user);
     return { message: result.message };
   }, [setUser]);
 
   const logout = useCallback(() => {
-    api.logout();
+    api.auth.logout();
     setUser(null);
     window.location.href = '/';
   }, [setUser]);
 
   const forgotPassword = useCallback(async (email: string) => {
-    await api.forgotPassword(email);
+    await api.auth.forgotPassword(email);
   }, []);
 
   const resendVerification = useCallback(async () => {
-    await api.resendVerification();
+    await api.auth.resendVerification();
   }, []);
 
   const updateProfile = useCallback(async (data: { name?: string }) => {
-    const result = await api.updateProfile(data);
+    const result = await api.auth.updateProfile(data);
     setUser(result.user);
   }, [setUser]);
 
   const changePassword = useCallback(async (currentPassword: string, newPassword: string) => {
-    await api.changePassword(currentPassword, newPassword);
+    await api.auth.changePassword(currentPassword, newPassword);
   }, []);
 
   const deleteAccount = useCallback(async () => {
-    await api.deleteAccount();
+    await api.auth.deleteAccount();
     setUser(null);
   }, [setUser]);
 

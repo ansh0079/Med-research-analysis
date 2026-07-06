@@ -40,7 +40,7 @@ function ApiKeysSection() {
     setLoading(true);
     setError(null);
     try {
-      const data = await api.listApiKeys();
+      const data = await api.learning.listApiKeys();
       setKeys(data.keys);
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Failed to load API keys';
@@ -62,7 +62,7 @@ function ApiKeysSection() {
     setError(null);
     setCreatedKey(null);
     try {
-      const result = await api.createApiKey(newKeyName.trim() || 'My integration');
+      const result = await api.learning.createApiKey(newKeyName.trim() || 'My integration');
       setCreatedKey(result.key);
       await loadKeys();
     } catch (err) {
@@ -74,7 +74,7 @@ function ApiKeysSection() {
 
   const handleRevoke = async (id: string) => {
     try {
-      await api.revokeApiKey(id);
+      await api.learning.revokeApiKey(id);
       await loadKeys();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to revoke key');
@@ -221,7 +221,7 @@ export const SettingsPage: React.FC = () => {
     }
     setEmailLoading(true);
     try {
-      await api.changeEmail({ newEmail: newEmail.trim(), password: emailPassword });
+      await api.auth.changeEmail({ newEmail: newEmail.trim(), password: emailPassword });
       setEmailMessage('Verification email sent to your new address. Check your inbox to confirm the change.');
       setNewEmail('');
       setEmailPassword('');
@@ -250,7 +250,7 @@ export const SettingsPage: React.FC = () => {
     setExportLoading(true);
     setExportError('');
     try {
-      const blob = await api.downloadAccountData();
+      const blob = await api.auth.downloadAccountData();
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;

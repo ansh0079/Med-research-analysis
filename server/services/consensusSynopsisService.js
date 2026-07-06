@@ -1,5 +1,5 @@
 const logger = require('../config/logger');
-const { createAiService, PINNED_MODELS, TEMPERATURE, AI_DISCLAIMER } = require('./aiService');
+const { createAiService, getSharedAiService, PINNED_MODELS, TEMPERATURE, AI_DISCLAIMER } = require('./aiService');
 const { resolveProvider } = require('../utils/aiProvider');
 const {
     filterCitedStringList,
@@ -176,6 +176,86 @@ function normalizeGuidelineAlignment(value, guidelines = []) {
     };
 }
 
+/**
+ * Map a single article to the `includedArticles[]` shape used in every
+ * synopsis payload (generated + fallback). Previously this mapping was
+ * duplicated between `normalizeSynopsis` and the two fallback returns, so
+ * adding a field required editing three places.
+ * @param {object} article
+ * @param {number} index - 0-based, will be converted to 1-based sourceIndex
+ * @param {boolean} [includeFullText] - when true, copy enrichment fields from
+ *   the article (used by the generated path); when false, emit the un-enriched
+ *   defaults used by fallback paths.
+ */
+function includedArticleFrom(article, index, includeFullText = true) {
+    return {
+        sourceIndex: index + 1,
+        uid: article.uid,
+        title: article.title,
+        pmid: article.pmid || null,
+        pmcid: article.pmcid || null,
+        doi: article.doi || null,
+        journal: article.source || article.journal || null,
+        pubdate: article.pubdate || String(article.year || '') || null,
+        freeFullTextUrl: freeTextUrl(article),
+        fullTextIndexed: includeFullText ? Boolean(article._fullTextIndexed) : false,
+        fullTextWordCount: includeFullText ? (article._fullTextWordCount || null) : null,
+        fullTextSections: includeFullText ? (article._fullTextSectionKeys || []) : [],
+        isAbstractOnly: !isFreeEvidence(article),
+    };
+}
+
+/**
+ * Build a fallback synopsis payload for the "insufficient evidence" and
+ * "provider unavailable" paths. Previously both fallbacks re-declared the
+ * full synopsis shape by hand, which drifted from `normalizeSynopsis` when
+ * fields were added.
+ * @param {object} params
+ * @param {string} params.status
+ * @param {string} params.topic
+ * @param {Array} params.freeArticles
+ * @param {Array} params.abstractArticles
+ * @param {string} params.statement
+ * @param {string} [params.strengthRationale]
+ * @param {string[]} [params.areasOfUncertainty]
+ * @param {string[]} [params.whatNotToOverclaim]
+ * @returns {object}
+ */
+function synopsisFallback({
+    status,
+    topic,
+    freeArticles,
+    abstractArticles,
+    statement,
+    strengthRationale = '',
+    areasOfUncertainty = [],
+    whatNotToOverclaim = [],
+}) {
+    const allArticles = [...freeArticles, ...abstractArticles];
+    return {
+        status,
+        topic,
+        evidenceScope: 'free_open_access_and_abstracts',
+        generatedAt: new Date().toISOString(),
+        provider: null,
+        model: null,
+        freePaperCount: freeArticles.length,
+        abstractPaperCount: abstractArticles.length,
+        includedArticles: allArticles.map((a, i) => includedArticleFrom(a, i, false)),
+        statement,
+        clinicalBottomLine: '',
+        areasOfAgreement: [],
+        areasOfUncertainty,
+        conflictingSignals: [],
+        evidenceStrength: 'VERY_LOW',
+        strengthRationale,
+        guidelineAlignment: normalizeGuidelineAlignment(null, []),
+        whatNotToOverclaim,
+        quizFocusPoints: [],
+        disclaimer: AI_DISCLAIMER,
+    };
+}
+
 function normalizeSynopsis(raw, topic, freeArticles, abstractArticles, provider, model = null, guidelines = []) {
     const safe = raw && typeof raw === 'object' ? raw : {};
     const allArticles = [...freeArticles, ...abstractArticles];
@@ -189,21 +269,7 @@ function normalizeSynopsis(raw, topic, freeArticles, abstractArticles, provider,
         model,
         freePaperCount: freeArticles.length,
         abstractPaperCount: abstractArticles.length,
-        includedArticles: allArticles.map((a, i) => ({
-            sourceIndex: i + 1,
-            uid: a.uid,
-            title: a.title,
-            pmid: a.pmid || null,
-            pmcid: a.pmcid || null,
-            doi: a.doi || null,
-            journal: a.source || a.journal || null,
-            pubdate: a.pubdate || String(a.year || '') || null,
-            freeFullTextUrl: freeTextUrl(a),
-            fullTextIndexed: Boolean(a._fullTextIndexed),
-            fullTextWordCount: a._fullTextWordCount || null,
-            fullTextSections: a._fullTextSectionKeys || [],
-            isAbstractOnly: !isFreeEvidence(a),
-        })),
+        includedArticles: allArticles.map((a, i) => includedArticleFrom(a, i, true)),
         statement: safeString(safe.statement, 1400) || 'No clear consensus from the supplied papers.',
         clinicalBottomLine: safeString(safe.clinicalBottomLine, 700),
         areasOfAgreement: filterCitedStringList(normalizeStringArray(safe.areasOfAgreement, 5), { sourceCount }),
@@ -263,64 +329,28 @@ async function generateConsensusSynopsis({
     }
 
     if (freeArticles.length < 2 && abstractArticles.length < 2) {
-        return {
+        return synopsisFallback({
             status: 'insufficient_free_evidence',
             topic,
-            evidenceScope: 'free_open_access_and_abstracts',
-            generatedAt: new Date().toISOString(),
-            freePaperCount: freeArticles.length,
-            abstractPaperCount: abstractArticles.length,
-            includedArticles: [...freeArticles, ...abstractArticles].map((a, i) => ({
-                sourceIndex: i + 1,
-                uid: a.uid,
-                title: a.title,
-                pmid: a.pmid || null,
-                pmcid: a.pmcid || null,
-                doi: a.doi || null,
-                journal: a.source || a.journal || null,
-                pubdate: a.pubdate || String(a.year || '') || null,
-                freeFullTextUrl: freeTextUrl(a),
-                fullTextIndexed: false,
-                fullTextWordCount: null,
-                fullTextSections: [],
-                isAbstractOnly: !isFreeEvidence(a),
-            })),
+            freeArticles,
+            abstractArticles,
             statement: 'No consensus synopsis generated because fewer than two papers were available in the evidence bouquet.',
-            clinicalBottomLine: '',
-            areasOfAgreement: [],
-            areasOfUncertainty: ['Evidence set too small for a defensible consensus synopsis.'],
-            conflictingSignals: [],
-            evidenceStrength: 'VERY_LOW',
             strengthRationale: 'Insufficient evidence in the selected bouquet.',
-            guidelineAlignment: normalizeGuidelineAlignment(null, []),
+            areasOfUncertainty: ['Evidence set too small for a defensible consensus synopsis.'],
             whatNotToOverclaim: ['Do not infer consensus from a single paper.'],
-            quizFocusPoints: [],
-            disclaimer: AI_DISCLAIMER,
-        };
+        });
     }
 
     const { provider, model: resolvedModel } = resolveProvider({ provider: 'auto', model: PINNED_MODELS.geminiQuality }, serverConfig);
     if (!provider) {
-        return {
+        return synopsisFallback({
             status: 'provider_unavailable',
             topic,
-            evidenceScope: 'free_open_access_and_abstracts',
-            generatedAt: new Date().toISOString(),
-            freePaperCount: freeArticles.length,
-            abstractPaperCount: abstractArticles.length,
-            includedArticles: [],
+            freeArticles,
+            abstractArticles,
             statement: 'Consensus synopsis unavailable because no built-in LLM provider is configured.',
-            clinicalBottomLine: '',
-            areasOfAgreement: [],
-            areasOfUncertainty: [],
-            conflictingSignals: [],
-            evidenceStrength: 'VERY_LOW',
             strengthRationale: 'No LLM provider configured.',
-            guidelineAlignment: normalizeGuidelineAlignment(null, []),
-            whatNotToOverclaim: [],
-            quizFocusPoints: [],
-            disclaimer: AI_DISCLAIMER,
-        };
+        });
     }
 
     let guidelines = [];
@@ -342,7 +372,7 @@ async function generateConsensusSynopsis({
         }
     }
 
-    const ai = createAiService({ serverConfig, fetchImpl });
+    const ai = getSharedAiService({ serverConfig, fetchImpl });
     const prompt = buildConsensusSynopsisPrompt(topic, freeArticles, abstractArticles, guidelines, topicKnowledge);
     const model = resolvedModel;
     const parsed = await ai.callStructured(prompt, provider, model, {

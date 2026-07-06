@@ -17,7 +17,7 @@ export const VerifyEmailPage: React.FC = () => {
       setLoading(false);
       return;
     }
-    api.verifyEmail(token)
+    api.auth.verifyEmail(token)
       .then(() => {
         setSuccess(true);
         setTimeout(() => navigate('/search'), 2000);

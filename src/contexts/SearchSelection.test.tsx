@@ -8,14 +8,18 @@ import { api } from '@services/api';
 // Mock the API service
 jest.mock('@services/api', () => ({
   api: {
-    getSavedArticles: jest.fn(),
-    saveArticle: jest.fn(),
-    unsaveArticle: jest.fn(),
-    getMe: jest.fn().mockResolvedValue({ user: null }),
+    documents: {
+      getSavedArticles: jest.fn(),
+      saveArticle: jest.fn(),
+      unsaveArticle: jest.fn(),
+    },
+    auth: {
+      getMe: jest.fn().mockResolvedValue({ user: null }),
+    },
   },
 }));
 
-const mockedApi = api as jest.Mocked<typeof api>;
+const mockedApi = api as unknown as { [K in keyof typeof api]: jest.Mocked<(typeof api)[K]> };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockArticle = { uid: 'article-1', title: 'Test Article', abstract: 'Test abstract', id: '1', _source: 'pubmed' } as any;
@@ -26,7 +30,7 @@ describe('SearchSelectionContext', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     localStorage.clear();
-    mockedApi.getSavedArticles.mockResolvedValue({ articles: [] });
+    mockedApi.documents.getSavedArticles.mockResolvedValue({ articles: [] });
   });
 
   const renderWithContext = (element: React.ReactNode) => {
@@ -40,7 +44,7 @@ describe('SearchSelectionContext', () => {
   };
 
   it('provides initial selection state', async () => {
-    mockedApi.getSavedArticles.mockResolvedValue({ articles: [] });
+    mockedApi.documents.getSavedArticles.mockResolvedValue({ articles: [] });
 
     const TestComponent = () => {
       const { savedArticles, selectedArticles } = useSearchSelection();
@@ -62,7 +66,7 @@ describe('SearchSelectionContext', () => {
 
   it('hydrates saved articles from API on mount', async () => {
     const mockArticles = [mockArticle, mockArticle2];
-    mockedApi.getSavedArticles.mockResolvedValue({ articles: mockArticles });
+    mockedApi.documents.getSavedArticles.mockResolvedValue({ articles: mockArticles });
 
     const TestComponent = () => {
       const { savedArticles } = useSearchSelection();
@@ -81,11 +85,11 @@ describe('SearchSelectionContext', () => {
       expect(screen.getByText('Test Article')).toBeInTheDocument();
     });
     expect(screen.getByText('Test Article 2')).toBeInTheDocument();
-    expect(mockedApi.getSavedArticles).toHaveBeenCalledTimes(1);
+    expect(mockedApi.documents.getSavedArticles).toHaveBeenCalledTimes(1);
   });
 
   it('persists saved articles to localStorage after hydration', async () => {
-    mockedApi.getSavedArticles.mockResolvedValue({
+    mockedApi.documents.getSavedArticles.mockResolvedValue({
       articles: [mockArticle],
     });
 
@@ -100,7 +104,7 @@ describe('SearchSelectionContext', () => {
   });
 
   it('falls back to localStorage if API fails', async () => {
-    mockedApi.getSavedArticles.mockRejectedValue(new Error('Network error'));
+    mockedApi.documents.getSavedArticles.mockRejectedValue(new Error('Network error'));
     localStorage.setItem(
       'medsearch_saved',
       JSON.stringify([mockArticle])
@@ -185,7 +189,7 @@ describe('SearchSelectionContext', () => {
   });
 
   it('checks if article is saved', async () => {
-    mockedApi.getSavedArticles.mockResolvedValue({
+    mockedApi.documents.getSavedArticles.mockResolvedValue({
       articles: [mockArticle],
     });
 
@@ -254,8 +258,8 @@ describe('SearchSelectionContext', () => {
   });
 
   it('saves article with optimistic update and API call', async () => {
-    mockedApi.getSavedArticles.mockResolvedValue({ articles: [] });
-    mockedApi.saveArticle.mockResolvedValue(undefined);
+    mockedApi.documents.getSavedArticles.mockResolvedValue({ articles: [] });
+    mockedApi.documents.saveArticle.mockResolvedValue(undefined);
 
     const TestComponent = () => {
       const { savedArticles, toggleSaveArticle } = useSearchSelection();
@@ -285,7 +289,7 @@ describe('SearchSelectionContext', () => {
 
     // Wait for API call to complete
     await waitFor(() => {
-      expect(mockedApi.saveArticle).toHaveBeenCalledWith(
+      expect(mockedApi.documents.saveArticle).toHaveBeenCalledWith(
         mockArticle,
         expect.any(Object)
       );
@@ -293,8 +297,8 @@ describe('SearchSelectionContext', () => {
   });
 
   it('unsaves article with optimistic update and API call', async () => {
-    mockedApi.getSavedArticles.mockResolvedValue({ articles: [mockArticle] });
-    mockedApi.unsaveArticle.mockResolvedValue(undefined);
+    mockedApi.documents.getSavedArticles.mockResolvedValue({ articles: [mockArticle] });
+    mockedApi.documents.unsaveArticle.mockResolvedValue(undefined);
 
     const TestComponent = () => {
       const { savedArticles, toggleSaveArticle } = useSearchSelection();
@@ -322,13 +326,13 @@ describe('SearchSelectionContext', () => {
 
     // Wait for API call
     await waitFor(() => {
-      expect(mockedApi.unsaveArticle).toHaveBeenCalledWith('article-1');
+      expect(mockedApi.documents.unsaveArticle).toHaveBeenCalledWith('article-1');
     });
   });
 
   it('rolls back optimistic save on API failure', async () => {
-    mockedApi.getSavedArticles.mockResolvedValue({ articles: [] });
-    mockedApi.saveArticle.mockRejectedValue(new Error('Network error'));
+    mockedApi.documents.getSavedArticles.mockResolvedValue({ articles: [] });
+    mockedApi.documents.saveArticle.mockRejectedValue(new Error('Network error'));
 
     const TestComponent = () => {
       const { savedArticles, toggleSaveArticle } = useSearchSelection();
@@ -358,8 +362,8 @@ describe('SearchSelectionContext', () => {
   });
 
   it('rolls back optimistic unsave on API failure', async () => {
-    mockedApi.getSavedArticles.mockResolvedValue({ articles: [mockArticle] });
-    mockedApi.unsaveArticle.mockRejectedValue(new Error('Network error'));
+    mockedApi.documents.getSavedArticles.mockResolvedValue({ articles: [mockArticle] });
+    mockedApi.documents.unsaveArticle.mockRejectedValue(new Error('Network error'));
 
     const TestComponent = () => {
       const { savedArticles, toggleSaveArticle } = useSearchSelection();
@@ -389,8 +393,8 @@ describe('SearchSelectionContext', () => {
   });
 
   it('updates localStorage after save/unsave', async () => {
-    mockedApi.getSavedArticles.mockResolvedValue({ articles: [] });
-    mockedApi.saveArticle.mockResolvedValue(undefined);
+    mockedApi.documents.getSavedArticles.mockResolvedValue({ articles: [] });
+    mockedApi.documents.saveArticle.mockResolvedValue(undefined);
 
     const TestComponent = () => {
       const { savedArticles, toggleSaveArticle } = useSearchSelection();
@@ -437,7 +441,7 @@ describe('SearchSelectionContext', () => {
 
   it('handles hydration cancellation on unmount', async () => {
     let resolveGetSaved: any;
-    mockedApi.getSavedArticles.mockImplementation(
+    mockedApi.documents.getSavedArticles.mockImplementation(
       () =>
         new Promise((resolve) => {
           resolveGetSaved = resolve;
@@ -464,8 +468,8 @@ describe('SearchSelectionContext', () => {
   });
 
   it('does not add duplicate saved articles', async () => {
-    mockedApi.getSavedArticles.mockResolvedValue({ articles: [mockArticle] });
-    mockedApi.saveArticle.mockResolvedValue(undefined);
+    mockedApi.documents.getSavedArticles.mockResolvedValue({ articles: [mockArticle] });
+    mockedApi.documents.saveArticle.mockResolvedValue(undefined);
 
     const TestComponent = () => {
       const { savedArticles, toggleSaveArticle } = useSearchSelection();
@@ -486,8 +490,8 @@ describe('SearchSelectionContext', () => {
   });
 
   it('handles save of article with minimal fields', async () => {
-    mockedApi.getSavedArticles.mockResolvedValue({ articles: [] });
-    mockedApi.saveArticle.mockResolvedValue(undefined);
+    mockedApi.documents.getSavedArticles.mockResolvedValue({ articles: [] });
+    mockedApi.documents.saveArticle.mockResolvedValue(undefined);
 
     const minimalArticle = { uid: 'min-1', title: 'Minimal', _source: 'pubmed' as const };
 
@@ -506,11 +510,11 @@ describe('SearchSelectionContext', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /save/i }));
     await waitFor(() => expect(screen.getByText('Count: 1')).toBeInTheDocument());
-    expect(mockedApi.saveArticle).toHaveBeenCalledWith(minimalArticle, expect.any(Object));
+    expect(mockedApi.documents.saveArticle).toHaveBeenCalledWith(minimalArticle, expect.any(Object));
   });
 
   it('falls back to localStorage when API getSavedArticles fails', async () => {
-    mockedApi.getSavedArticles.mockRejectedValue(new Error('Offline'));
+    mockedApi.documents.getSavedArticles.mockRejectedValue(new Error('Offline'));
     localStorage.setItem('medsearch_saved', JSON.stringify([mockArticle2]));
 
     const TestComponent = () => {

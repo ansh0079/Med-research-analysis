@@ -25,7 +25,7 @@ export function usePendingSynthesisJobs(enabled: boolean, pollMs = 8000) {
       return;
     }
     try {
-      const { jobs: serverJobs } = await api.listAiGenerationJobs({
+      const { jobs: serverJobs } = await api.ai.listAiGenerationJobs({
         status: 'queued,running',
         jobType: 'full_synthesis',
         limit: 12,

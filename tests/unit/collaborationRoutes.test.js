@@ -19,12 +19,12 @@ const mockDb = {
 };
 jest.mock('../../database', () => mockDb);
 
-const { collaborationRoutes } = require('../../server/collaboration-routes');
+const { registerCollaborationRoutes } = require('../../server/routes/collaboration');
 
 function buildApp() {
     const app = express();
     app.use(express.json());
-    app.use('/api/collaboration', collaborationRoutes);
+    registerCollaborationRoutes(app);
     // eslint-disable-next-line no-unused-vars
     app.use((err, req, res, next) => res.status(500).json({ error: err.message }));
     return app;

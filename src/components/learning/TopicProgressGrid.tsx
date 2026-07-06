@@ -185,7 +185,7 @@ export function TopicProgressGrid({
     let cancelled = false;
     (async () => {
       try {
-        const data = await api.getTopicProgress();
+        const data = await api.learning.getTopicProgress();
         if (!cancelled) {
           setBlocks(data.blocks);
           setExamSummary(data.examSummary);

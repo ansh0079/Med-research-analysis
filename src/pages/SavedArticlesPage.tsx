@@ -21,7 +21,7 @@ export const SavedArticlesPage: React.FC = () => {
     if (savedArticles.length === 0) return;
     setIsExporting(true);
     try {
-      const bibtex = await api.exportBibTeX(savedArticles);
+      const bibtex = await api.documents.exportBibTeX(savedArticles);
       const blob = new Blob([bibtex], { type: 'text/plain' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');

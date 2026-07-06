@@ -40,7 +40,7 @@ export function TopicCrosslinks({ topic }: TopicCrosslinksProps) {
   useEffect(() => {
     if (!topic) { setLoading(false); return; }
     setLoading(true);
-    api.getTopicCrosslinks(topic)
+    api.search.getTopicCrosslinks(topic)
       .then((r) => setCrosslinks(r.crosslinks || []))
       .catch(() => setCrosslinks([]))
       .finally(() => setLoading(false));

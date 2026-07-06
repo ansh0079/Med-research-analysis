@@ -13,19 +13,23 @@ jest.mock('../../server/config/logger', () => ({
     error: jest.fn(),
 }));
 
-jest.mock('../../server/services/aiService', () => ({
-    createAiService: jest.fn().mockReturnValue({
+jest.mock('../../server/services/aiService', () => {
+    const shared = {
         callGemini: jest.fn().mockResolvedValue('gemini result'),
         callMistralAI: jest.fn().mockResolvedValue('mistral result'),
         callText: jest.fn().mockResolvedValue('gemini result'),
         callGeminiStream: jest.fn().mockImplementation(async function* () { yield 'chunk1'; yield 'chunk2'; }),
         callMistralStream: jest.fn().mockImplementation(async function* () { yield 'chunk1'; yield 'chunk2'; }),
         callTextStream: jest.fn().mockImplementation(async function* () { yield 'chunk1'; yield 'chunk2'; }),
-    }),
-    PINNED_MODELS: { gemini: 'gemini-model', mistral: 'mistral-model' },
-    TEMPERATURE: { analysis: 0.3, synthesis: 0.4, explain: 0.5 },
-    AI_DISCLAIMER: 'AI-generated content.',
-}));
+    };
+    return {
+        createAiService: jest.fn().mockReturnValue(shared),
+        getSharedAiService: jest.fn().mockReturnValue(shared),
+        PINNED_MODELS: { gemini: 'gemini-model', mistral: 'mistral-model' },
+        TEMPERATURE: { analysis: 0.3, synthesis: 0.4, explain: 0.5 },
+        AI_DISCLAIMER: 'AI-generated content.',
+    };
+});
 
 jest.mock('../../server/prompts', () => ({
     buildAnalysisPrompt: jest.fn().mockReturnValue('analysis prompt'),
@@ -100,7 +104,7 @@ jest.mock('../../server/services/llmUsageService', () => ({
     buildUsageEntry: jest.fn().mockReturnValue({}),
 }));
 
-const { registerAiRoutes } = require('../../server/controllers/aiRoutes');
+const { registerAiRoutes } = require('../../server/routes/ai');
 
 function authToken(payload = { id: 'u1', name: 'Test User', email: 't@test.com', role: 'researcher' }) {
     return jwt.sign(payload, 'test-jwt-secret', { expiresIn: '1h' });

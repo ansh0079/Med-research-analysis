@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 
 jest.mock('../../server/services/recommendationService');
 
-const { registerRecommendationRoutes } = require('../../server/controllers/recommendationRoutes');
+const { registerRecommendationRoutes } = require('../../server/routes/recommendation');
 const { createRecommendationService } = require('../../server/services/recommendationService');
 
 function authToken(payload = { id: 'u1', name: 'Test User', email: 't@test.com', role: 'researcher' }) {

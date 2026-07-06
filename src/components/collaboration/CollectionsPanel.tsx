@@ -32,7 +32,7 @@ export const CollectionsPanel: React.FC<CollectionsPanelProps> = ({ articleToAdd
       try {
         setLoading(true);
         setError('');
-        const result = await api.getCollections();
+        const result = await api.collaboration.getCollections();
         if (!cancelled) setCollections(result.collections || []);
       } catch (err) {
         if (cancelled) return;
@@ -53,7 +53,7 @@ export const CollectionsPanel: React.FC<CollectionsPanelProps> = ({ articleToAdd
     if (!newName.trim()) return;
     setCreating(true);
     try {
-      const result = await api.createCollection(newName.trim(), newDesc.trim() || undefined);
+      const result = await api.collaboration.createCollection(newName.trim(), newDesc.trim() || undefined);
       setCollections((prev) => [result.collection, ...prev]);
       setNewName('');
       setNewDesc('');
@@ -68,7 +68,7 @@ export const CollectionsPanel: React.FC<CollectionsPanelProps> = ({ articleToAdd
     if (!articleToAdd) return;
     setAddingTo(collectionId);
     try {
-      await api.addArticleToCollection(collectionId, articleToAdd);
+      await api.collaboration.addArticleToCollection(collectionId, articleToAdd);
       setSuccessMsg('Article added to collection!');
       setTimeout(() => setSuccessMsg(''), 3000);
     } catch {
@@ -82,7 +82,7 @@ export const CollectionsPanel: React.FC<CollectionsPanelProps> = ({ articleToAdd
     if (confirmingDelete === collectionId) {
       // Confirmed — execute deletion
       setConfirmingDelete(null);
-      api.deleteCollection(collectionId)
+      api.collaboration.deleteCollection(collectionId)
         .then(() => {
           setCollections((prev) => prev.filter((c) => c.id !== collectionId));
         })

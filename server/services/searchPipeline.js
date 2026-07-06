@@ -17,7 +17,7 @@ const {
 } = require('./evidenceBouquetService');
 const { fetchUnifiedEvidence, collapseNearDuplicateTitles, decomposePico } = require('./unifiedEvidenceSearch');
 const { sanitizeArticleOutput } = require('../utils/articles');
-const { createAiService } = require('./aiService');
+const { createAiService, getSharedAiService } = require('./aiService');
 const { rerankArticlesByPico } = require('./articleReranker');
 const {
     applySearchLearningBoost,
@@ -26,6 +26,7 @@ const {
 } = require('./searchLearningService');
 const { annotateArticlesWithRankingTraces } = require('./searchRankingTrace');
 const { withSpan, annotateActiveSpan } = require('../utils/tracing');
+const { buildTeachingSignalBoosts } = require('./searchRankingConstants');
 
 const STRICT_PUB_TYPES = new Set([
     'systematic review', 'meta-analysis', 'meta analysis',
@@ -307,7 +308,7 @@ async function applyPicoRerankStage({
 
     const started = Date.now();
     const keys = serverConfig?.keys || {};
-    const ai = (keys.anthropic || keys.gemini || keys.mistral) ? createAiService({ serverConfig, fetchImpl }) : null;
+    const ai = (keys.anthropic || keys.gemini || keys.mistral) ? getSharedAiService({ serverConfig, fetchImpl }) : null;
     const picoProfile = normalizePicoProfileForReranker(pico, query, queryIntent);
 
     try {
@@ -427,23 +428,7 @@ async function prefetchTeachingArtifacts(db, topic) {
             : [],
     ]);
 
-    const signalBoosts = new Map();
-    const add = (uid, weight) => {
-        const key = String(uid || '').toLowerCase().trim();
-        if (!key) return;
-        signalBoosts.set(key, Math.max(signalBoosts.get(key) || 0, weight));
-    };
-
-    for (const object of teachingObjects) {
-        add(object.articleUid, object.objectType === 'paper' ? 0.18 + Math.min(0.12, Number(object.confidence || 0) * 0.12) : 0.08);
-    }
-    for (const claim of claims) {
-        if (claim.verificationStatus === 'agent_draft') continue;
-        const trustBoost = claim.verificationStatus === 'human_reviewed' ? 0.06
-            : claim.verificationStatus === 'source_verified' || claim.verificationStatus === 'guideline_supported' ? 0.04
-                : claim.verificationStatus === 'abstract_only' ? 0.02 : 0;
-        add(claim.articleUid, 0.1 + trustBoost + Math.min(0.06, Number(claim.confidence || 0) * 0.06));
-    }
+    const signalBoosts = buildTeachingSignalBoosts(teachingObjects, claims);
 
     return { objects: teachingObjects, claims, signalBoosts };
 }

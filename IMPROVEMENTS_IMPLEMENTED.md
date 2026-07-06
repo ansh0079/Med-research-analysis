@@ -130,7 +130,7 @@ This document summarizes the 8 critical fixes applied to improve accuracy, intel
 
 ## 7. Implemented Incremental Knowledge Updates ✅
 
-**Files Modified:** `./server/controllers/aiRoutes.js`
+**Files Modified:** `./server/routes/ai.js`
 
 **New Functions:**
 - `buildDeltaKnowledgeExtractionPrompt()` - Extracts only NEW insights
@@ -188,7 +188,7 @@ sqlite3 database/app.db < database/migrations/010_quality_monitoring.sql
 ```
 
 ### Phase 2: Integration (Next Sprint)
-1. Add case scenario routes to `./server/controllers/aiRoutes.js`
+1. Add case scenario routes to `./server/routes/ai.js`
 2. Wire agent self-improvement into chat endpoints
 3. Integrate hierarchical cache into synthesis routes
 4. Build quality dashboard UI

@@ -14,7 +14,7 @@ export const SynthesisQualityFeedback: React.FC<SynthesisQualityFeedbackProps> =
     if (clinicalUsefulness < 1) return;
     setStatus('saving');
     try {
-      await api.submitQualityFeedback({
+      await api.documents.submitQualityFeedback({
         productType: 'synthesis',
         topic,
         clinicalUsefulness,

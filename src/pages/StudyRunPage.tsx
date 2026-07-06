@@ -96,7 +96,7 @@ export const StudyRunPage: React.FC = () => {
     }
     try {
       setLoading(true);
-      const data = await api.getStudyRun(runId);
+      const data = await api.learning.getStudyRun(runId);
       setRun(data.run);
       setOutline(data.outline);
       setDetectedTopic(data.run.topic);
@@ -144,7 +144,7 @@ export const StudyRunPage: React.FC = () => {
     if (!run) return;
     setSaving(true);
     try {
-      const { run: updated } = await api.updateStudyRun(run.id, { status: 'completed' });
+      const { run: updated } = await api.learning.updateStudyRun(run.id, { status: 'completed' });
       setRun(updated);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to complete run');

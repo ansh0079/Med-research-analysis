@@ -76,7 +76,7 @@ export const ClaimProvenanceModal: React.FC<ClaimProvenanceModalProps> = ({
       return;
     }
     setRichLoading(true);
-    api.getTeachingClaim(claim.claimKey)
+    api.ai.getTeachingClaim(claim.claimKey)
       .then(setRichClaim)
       .catch(() => setRichClaim(null))
       .finally(() => setRichLoading(false));
@@ -88,7 +88,7 @@ export const ClaimProvenanceModal: React.FC<ClaimProvenanceModalProps> = ({
       return;
     }
     setAttemptsLoading(true);
-    api.getQuizAttemptsForClaim(claim.claimKey, 40)
+    api.ai.getQuizAttemptsForClaim(claim.claimKey, 40)
       .then((r) => setAttempts(
         (r.attempts || []).map((a: { id: number; isCorrect: boolean; createdAt: string; questionText: string }) => ({
           id: a.id, isCorrect: a.isCorrect, createdAt: a.createdAt, questionText: a.questionText,
@@ -121,7 +121,7 @@ export const ClaimProvenanceModal: React.FC<ClaimProvenanceModalProps> = ({
   const runGuidelineCheck = () => {
     setGuidelineLoading(true);
     setGuidelineError(null);
-    api.checkGuidelineAlignment(topic, claim.claimText, articles.slice(0, 12))
+    api.ai.checkGuidelineAlignment(topic, claim.claimText, articles.slice(0, 12))
       .then(setGuideline)
       .catch((e: unknown) => setGuidelineError(e instanceof Error ? e.message : 'Guideline check failed'))
       .finally(() => setGuidelineLoading(false));
@@ -131,7 +131,7 @@ export const ClaimProvenanceModal: React.FC<ClaimProvenanceModalProps> = ({
     setView('contradictions');
     setContradictionsLoading(true);
     setContradictionsError(null);
-    api.findClaimContradictions(claim.claimKey, topic, claim.claimText)
+    api.ai.findClaimContradictions(claim.claimKey, topic, claim.claimText)
       .then((r) => setContradictions(r.articles || []))
       .catch((e: unknown) => setContradictionsError(e instanceof Error ? e.message : 'Search failed'))
       .finally(() => setContradictionsLoading(false));

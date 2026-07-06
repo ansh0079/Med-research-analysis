@@ -48,7 +48,7 @@ function ArticleScreenCard({
     if (!row.article_data || !hasCriteria) return;
     setAssistState('loading');
     try {
-      const result = await api.screeningAssist({ criteria: criteria!, article: row.article_data });
+      const result = await api.review.screeningAssist({ criteria: criteria!, article: row.article_data });
       setAssist(result);
       setAssistState('done');
       setAssistShown(true);

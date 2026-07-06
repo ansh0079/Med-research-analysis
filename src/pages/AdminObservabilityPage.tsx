@@ -17,7 +17,7 @@ function CollectiveMemoryPanel() {
 
   const loadStats = useCallback(async () => {
     try {
-      setStats(await api.getAggregateMemoryStats());
+      setStats(await api.collaboration.getAggregateMemoryStats());
     } catch { /* no quiz data yet */ }
   }, []);
 
@@ -28,7 +28,7 @@ function CollectiveMemoryPanel() {
     setResult(null);
     setErr(null);
     try {
-      setResult(await api.runAggregateMemory());
+      setResult(await api.collaboration.runAggregateMemory());
       await loadStats();
     } catch (e) {
       setErr(e instanceof Error ? e.message : 'Aggregation failed');
@@ -196,16 +196,16 @@ export function AdminObservabilityPage() {
     setError(null);
     try {
       const [res, costRes, automationRes] = await Promise.all([
-        api.getAdminClaimObservability({ limit: 30 }),
-        api.getAdminLlmCostDashboard({ days: 30, limit: 12 }).catch(() => null),
-        api.getBackgroundAutomation().catch(() => null),
+        api.knowledge.getAdminClaimObservability({ limit: 30 }),
+        api.knowledge.getAdminLlmCostDashboard({ days: 30, limit: 12 }).catch(() => null),
+        api.knowledge.getBackgroundAutomation().catch(() => null),
       ]);
       setAutomation(automationRes?.automation ?? null);
       setData(res.observability);
       setCostDashboard(costRes?.dashboard ?? null);
-      const seedRes = await api.listCurriculumSeedTopics({ limit: 120 });
+      const seedRes = await api.knowledge.listCurriculumSeedTopics({ limit: 120 });
       setSeedTopics(seedRes.topics);
-      const schedulerRes = await api.getCurriculumSchedulerObservability({ limit: 8 });
+      const schedulerRes = await api.knowledge.getCurriculumSchedulerObservability({ limit: 8 });
       setScheduler(schedulerRes.scheduler);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to load observability');
@@ -225,7 +225,7 @@ export function AdminObservabilityPage() {
   const runGuidelineAlign = async (topic: string) => {
     setAligningTopic(topic);
     try {
-      await api.alignTopicGuidelines(topic, { limit: 40, apply: true });
+      await api.knowledge.alignTopicGuidelines(topic, { limit: 40, apply: true });
       await load();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Guideline align failed');
@@ -238,7 +238,7 @@ export function AdminObservabilityPage() {
     setImportingTopics(true);
     setError(null);
     try {
-      await api.importCoreClinicalTopics();
+      await api.knowledge.importCoreClinicalTopics();
       await load();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Core topic import failed');
@@ -251,7 +251,7 @@ export function AdminObservabilityPage() {
     setSeedingTopicId(topicId);
     setError(null);
     try {
-      await api.seedCurriculumTopic(topicId, {
+      await api.knowledge.seedCurriculumTopic(topicId, {
         searchLimit: 24,
         synthesisArticles: 8,
         synopsisArticles: 3,
@@ -268,7 +268,7 @@ export function AdminObservabilityPage() {
     setRunningSeedBatch(true);
     setError(null);
     try {
-      await api.runCurriculumSeedBatch({
+      await api.knowledge.runCurriculumSeedBatch({
         batchSize: 2,
         searchLimit: 24,
         synthesisArticles: 8,
@@ -286,7 +286,7 @@ export function AdminObservabilityPage() {
     setRetryingFailed(true);
     setError(null);
     try {
-      await api.retryFailedCurriculumSeeds({
+      await api.knowledge.retryFailedCurriculumSeeds({
         batchSize: 2,
         searchLimit: 24,
         synthesisArticles: 8,
@@ -305,7 +305,7 @@ export function AdminObservabilityPage() {
     setTogglingAutomation(true);
     setError(null);
     try {
-      await api.setBackgroundAutomationPaused(!automation.paused);
+      await api.knowledge.setBackgroundAutomationPaused(!automation.paused);
       await load();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to update background automation');
@@ -319,7 +319,7 @@ export function AdminObservabilityPage() {
     setUpdatingScheduler(true);
     setError(null);
     try {
-      await api.updateCurriculumSchedulerSettings({ enabled: !scheduler.guardrails.settings.enabled });
+      await api.knowledge.updateCurriculumSchedulerSettings({ enabled: !scheduler.guardrails.settings.enabled });
       await load();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Scheduler settings update failed');

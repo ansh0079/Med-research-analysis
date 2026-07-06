@@ -120,8 +120,8 @@ export const AnalyticsPage: React.FC = () => {
         setLoading(true);
         setError('');
         const [data, quality] = await Promise.all([
-          api.getAnalyticsSummary(),
-          api.getQualityMetrics(range),
+          api.documents.getAnalyticsSummary(),
+          api.documents.getQualityMetrics(range),
         ]);
         if (!cancelled) {
           setSummary(data);

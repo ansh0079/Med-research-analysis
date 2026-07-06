@@ -48,7 +48,7 @@ This plan addresses three tracks from the product roadmap. Each track is broken 
 **Files:**
 - `src/pages/KnowledgeReviewPage.tsx` — query the backend for pending proposals for the current topic and show a banner:
   - "Your repeated study of {topic} triggered an AI knowledge proposal. Review or edit it here."
-- `server/controllers/learningRoutes.js` — add `GET /api/learning/topic-proposals/:topic` that returns any pending `topic_knowledge` proposals for the user’s strong-memory topics.
+- `server/routes/learning/index.js` — add `GET /api/learning/topic-proposals/:topic` that returns any pending `topic_knowledge` proposals for the user’s strong-memory topics.
 - `database/index.js` — add `getTopicKnowledgeProposalsForUser(userId, topic)`.
 
 **Acceptance:** A user with strong memory on a topic sees a proposal CTA in Knowledge Review.
@@ -129,7 +129,7 @@ This plan addresses three tracks from the product roadmap. Each track is broken 
 ### 3.4 Require source labels in quiz explanations
 **Problem:** Quiz explanations don’t cite whether the rationale came from a trial, guideline, or topic memory.  
 **Files:**
-- `server/controllers/aiRoutes.js` — in the quiz generation prompt (`buildQuizPrompt`), explicitly instruct the AI:
+- `server/routes/ai.js` — in the quiz generation prompt (`buildQuizPrompt`), explicitly instruct the AI:
   - "For each explanation, append a source label in brackets: [Trial], [Guideline], or [Topic memory]."
 - `src/pages/QuizPage.tsx` — parse the source label from the explanation text and render it as a small badge:
   - [Trial] → violet badge
@@ -180,8 +180,8 @@ Phase C — Track 3 (Clinical Trust)
 
 **Backend:**
 - `server/routes/user.js` — already supports topic; no change needed
-- `server/controllers/learningRoutes.js` — add proposal endpoint
-- `server/controllers/aiRoutes.js` — quiz prompt source-label instruction
+- `server/routes/learning/index.js` — add proposal endpoint
+- `server/routes/ai.js` — quiz prompt source-label instruction
 - `server/services/guidelineService.js` — stale auto-flagging
 - `database/index.js` — add `getTopicKnowledgeProposalsForUser`
 

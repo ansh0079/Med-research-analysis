@@ -107,7 +107,7 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
     setPhase('generating');
     setGenError('');
     try {
-      const { questions: qs } = await api.generateQuizFromEvidence(topic, articles, 'mixed', 3);
+      const { questions: qs } = await api.ai.generateQuizFromEvidence(topic, articles, 'mixed', 3);
       setQuestions(qs);
       setQIndex(0);
       setSelected(null);
@@ -151,11 +151,11 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
       setSubmitting(true);
       const allAttempts = [...attempts]; // already includes current answer
       try {
-        await api.submitQuizAttempt({
+        await api.learning.submitQuizAttempt({
           topic,
           attempts: allAttempts.map((a) => ({
             questionId: a.questionId,
-            questionType: (a.questionType ?? 'recall') as Parameters<typeof api.submitQuizAttempt>[0]['attempts'][0]['questionType'],
+            questionType: (a.questionType ?? 'recall') as Parameters<typeof api.learning.submitQuizAttempt>[0]['attempts'][0]['questionType'],
             questionText: a.questionText,
             userAnswer: a.userAnswer,
             correctAnswer: a.correctAnswer,
@@ -177,7 +177,7 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
     if (scheduleState !== 'idle') return;
     setScheduleState('busy');
     try {
-      const { run } = await api.createStudyRun(topic);
+      const { run } = await api.learning.createStudyRun(topic);
       setRunId(run.id);
       setScheduleState('done');
     } catch {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '@services/api';
+import { handleAsyncError } from '@utils/handleAsyncError';
 
 interface ClaimMasteryRow {
   claimKey: string;
@@ -26,13 +27,13 @@ export const ClaimMasteryPanel: React.FC<{ topic: string }> = ({ topic }) => {
     }
     let cancelled = false;
     setLoading(true);
-    api.getClaimMastery(topic, 40)
+    api.knowledge.getClaimMastery(topic, 40)
       .then((data) => {
         if (cancelled) return;
         setClaims(data.claims || []);
         setSummary(data.summary || null);
       })
-      .catch(() => { if (!cancelled) { setClaims([]); setSummary(null); } })
+      .catch((err) => { if (!cancelled) { handleAsyncError(err, 'ClaimMasteryPanel/getClaimMastery'); setClaims([]); setSummary(null); } })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, [topic]);
@@ -67,7 +68,7 @@ export const ClaimMasteryPanel: React.FC<{ topic: string }> = ({ topic }) => {
               </p>
               <div className="w-20 shrink-0 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
                 <div className={`h-full ${barColor} rounded-full transition-all`} data-pct={pct ?? 0}
-                  ref={(el) => { if (el) el.style.width = `${pct ?? 0}%`; }} />
+                  style={{ width: `${pct ?? 0}%` }} />
               </div>
               <span className="w-9 shrink-0 text-right text-[10px] font-bold text-slate-500 dark:text-slate-400">
                 {pct != null ? `${pct}%` : '—'}

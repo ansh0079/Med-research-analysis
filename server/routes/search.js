@@ -9,13 +9,14 @@ const { safeFetch } = require('../utils/fetch');
 const { articleFromOpenAlexWork } = require('../services/unifiedEvidenceSearch');
 const { classifyQueryIntent } = require('../services/evidenceBouquetService');
 const { parseSearchRequestQuery, parsePreviousQueries, fetchAndRankSearchArticles, prefetchTeachingArtifacts } = require('../services/searchPipeline');
+const { buildTeachingSignalBoosts } = require('../services/searchRankingConstants');
 const { mergeCuratedWithLiveEvidence } = require('../services/searchEvidenceMergeService');
 const { buildSearchLearningContext, applySearchLearningBoost, publicLearningContext } = require('../services/searchLearningService');
 const { recordSearchRankingDecisions } = require('../services/personalizationBanditService');
 const { buildLearnerContext, publicLearnerContextSummary } = require('../services/learnerContextService');
 const crypto = require('crypto');
-const { createAiService, PINNED_MODELS, TEMPERATURE } = require('../services/aiService');
-const { buildTopicKnowledgePrompt } = require('../prompts');
+const { createAiService, getSharedAiService, PINNED_MODELS, TEMPERATURE } = require('../services/aiService');
+const { buildTopicKnowledgePrompt, buildGuidelineQuizPrompt } = require('../prompts');
 const { resolveProvider } = require('../utils/aiProvider');
 const { generateAndStoreMCQs } = require('../services/mcqGeneratorService');
 const { guidelineMcqKey } = require('../utils/teachingObjectKeys');
@@ -291,22 +292,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
             prefetchedClaims ?? safeDbList('listTeachingObjectClaimsForTopic', [topic, { limit: 100 }], 'listTeachingObjectClaimsForTopic failed'),
         ]);
         if (!teachingObjects.length && !claims.length) return { articles, teachingObjects, claims };
-        const weights = new Map();
-        const add = (uid, weight) => {
-            const key = String(uid || '').toLowerCase().trim();
-            if (!key) return;
-            weights.set(key, Math.max(weights.get(key) || 0, weight));
-        };
-        for (const object of teachingObjects) {
-            add(object.articleUid, object.objectType === 'paper' ? 0.18 + Math.min(0.12, Number(object.confidence || 0) * 0.12) : 0.08);
-        }
-        for (const claim of claims) {
-            if (claim.verificationStatus === 'agent_draft') continue;
-            const trustBoost = claim.verificationStatus === 'human_reviewed' ? 0.06
-                : claim.verificationStatus === 'source_verified' || claim.verificationStatus === 'guideline_supported' ? 0.04
-                    : claim.verificationStatus === 'abstract_only' ? 0.02 : 0;
-            add(claim.articleUid, 0.1 + trustBoost + Math.min(0.06, Number(claim.confidence || 0) * 0.06));
-        }
+        const weights = buildTeachingSignalBoosts(teachingObjects, claims);
         if (weights.size === 0) return { articles, teachingObjects, claims };
         const candidatesFor = (article) => [
             article.uid,
@@ -699,7 +685,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                         const alreadySeeded = await db.getTopicKnowledge(seedQuery);
                         if (alreadySeeded) return;
 
-                        const ai = createAiService({ serverConfig, fetchImpl: f });
+                        const ai = getSharedAiService({ serverConfig, fetchImpl: f });
                         const prompt = buildTopicKnowledgePrompt(seedQuery, seedArticles);
                         const { provider: seedProvider, model: seedModel } = resolveProvider({}, serverConfig);
                         if (!seedProvider) return;
@@ -754,23 +740,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                                     const guidelineKey = guidelineMcqKey(db, seedQuery);
                                     const existingGl = await db.getTeachingObjectByKey(guidelineKey).catch(() => null);
                                     if (!existingGl) {
-                                        const glBlock = guidelines.slice(0, 5).map((g, i) =>
-                                            `[G${i + 1}] ${g.source || ''}: ${g.title}`
-                                        ).join('\n');
-                                        const glPrompt = `Generate 5 guideline-anchored MCQs about "${seedQuery}" for final-year medical students.
-
-GUIDELINES:
-${glBlock}
-
-Rules:
-- Each MCQ must reference a specific guideline recommendation
-- Use clinical vignettes with age, sex, presenting complaint
-- 4 options (A-D), exactly one correct
-- Mix difficulty: 2 medium, 2 hard, 1 easy
-- Mix types: guideline, clinical_application, pitfall
-
-Start your response with [ and end with ]. No markdown.
-[{"type":"multiple_choice","questionType":"guideline|clinical_application|pitfall","question":"...","options":["A: ...","B: ...","C: ...","D: ..."],"correctAnswer":"A","explanation":"2-3 sentences citing the guideline","guidelineRef":"source — recommendation","difficulty":"easy|medium|hard"}]`;
+                                        const glPrompt = buildGuidelineQuizPrompt(seedQuery, guidelines);
                                         try {
                                             const glRaw = await ai.callText(glPrompt, seedProvider, seedModel, { temperature: 0.3, maxOutputTokens: 2500 });
                                             const glMcqsRaw = parseJsonArrayBlock(glRaw);
@@ -1235,7 +1205,7 @@ Start your response with [ and end with ]. No markdown.
         }
 
         try {
-            const ai = createAiService({ serverConfig, fetchImpl: f });
+            const ai = getSharedAiService({ serverConfig, fetchImpl: f });
             const prompt = buildTopicKnowledgePrompt(topic, articles);
             const { provider: selectedProvider, model: selectedModel } = resolveProvider({}, serverConfig);
             if (!selectedProvider) {

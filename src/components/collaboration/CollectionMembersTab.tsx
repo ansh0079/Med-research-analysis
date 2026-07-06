@@ -25,7 +25,7 @@ export const CollectionMembersTab: React.FC<Props> = ({ collection, currentUserI
     setInviting(true);
     setError('');
     try {
-      await api.shareCollection(collection.id, inviteEmail.trim(), invitePermission);
+      await api.collaboration.shareCollection(collection.id, inviteEmail.trim(), invitePermission);
       setSuccessMsg(`Invitation sent to ${inviteEmail.trim()}`);
       setInviteEmail('');
       setTimeout(() => setSuccessMsg(''), 4000);
@@ -38,7 +38,7 @@ export const CollectionMembersTab: React.FC<Props> = ({ collection, currentUserI
 
   const handlePermissionChange = async (userId: string, permission: 'read' | 'write' | 'admin') => {
     try {
-      await api.updateCollectionMemberPermission(collection.id, userId, permission);
+      await api.collaboration.updateCollectionMemberPermission(collection.id, userId, permission);
       onChanged();
     } catch {
       setError('Failed to update permission.');
@@ -47,7 +47,7 @@ export const CollectionMembersTab: React.FC<Props> = ({ collection, currentUserI
 
   const handleRemove = async (userId: string) => {
     try {
-      await api.removeCollectionMember(collection.id, userId);
+      await api.collaboration.removeCollectionMember(collection.id, userId);
       onChanged();
     } catch {
       setError('Failed to remove member.');

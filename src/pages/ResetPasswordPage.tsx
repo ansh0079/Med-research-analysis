@@ -30,7 +30,7 @@ export const ResetPasswordPage: React.FC = () => {
     }
     setLoading(true);
     try {
-      await api.resetPassword(token, password);
+      await api.auth.resetPassword(token, password);
       setSuccess(true);
       setTimeout(() => navigate('/auth'), 2000);
     } catch (err) {

@@ -28,7 +28,7 @@ export const StudyPathsPage: React.FC = () => {
       setListLoading(true);
       setListError('');
       try {
-        const { curricula: raw } = await api.listCurricula();
+        const { curricula: raw } = await api.learning.listCurricula();
         if (cancelled) return;
         const sorted = [...raw].sort((a, b) => (a.sortOrder - b.sortOrder) || a.name.localeCompare(b.name));
         setCurricula(sorted);
@@ -61,7 +61,7 @@ export const StudyPathsPage: React.FC = () => {
     setLoading(true);
     setError('');
     try {
-      const data = await api.getCurriculum(slug);
+      const data = await api.learning.getCurriculum(slug);
       setCurriculum(data.curriculum);
       setProgress(data.progress || {});
       setExamSummary(data.examSummary);
@@ -82,7 +82,7 @@ export const StudyPathsPage: React.FC = () => {
   const startTopic = async (suggestedQuery: string, curriculumTopicId: number) => {
     setStartingId(curriculumTopicId);
     try {
-      const { run } = await api.createStudyRun(suggestedQuery, curriculumTopicId);
+      const { run } = await api.learning.createStudyRun(suggestedQuery, curriculumTopicId);
       const params = new URLSearchParams({
         topic: suggestedQuery,
         studyRunId: String(run.id),

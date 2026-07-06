@@ -123,7 +123,7 @@ export const CollectionCommentsTab: React.FC<Props> = ({ collectionId, currentUs
 
   const load = useCallback(() => {
     setLoading(true);
-    api.getComments({ collectionId })
+    api.collaboration.getComments({ collectionId })
       .then(setComments)
       .catch(() => setError('Failed to load comments.'))
       .finally(() => setLoading(false));
@@ -137,7 +137,7 @@ export const CollectionCommentsTab: React.FC<Props> = ({ collectionId, currentUs
     setPosting(true);
     setError('');
     try {
-      await api.postComment({ collectionId, content: newComment.trim(), parentId: replyingTo || undefined });
+      await api.collaboration.postComment({ collectionId, content: newComment.trim(), parentId: replyingTo || undefined });
       setNewComment('');
       setReplyingTo(null);
       load();
@@ -151,9 +151,9 @@ export const CollectionCommentsTab: React.FC<Props> = ({ collectionId, currentUs
   const handleReact = async (commentId: string, emoji: string, alreadyReacted: boolean) => {
     try {
       if (alreadyReacted) {
-        await api.removeCommentReaction(commentId, emoji);
+        await api.collaboration.removeCommentReaction(commentId, emoji);
       } else {
-        await api.addCommentReaction(commentId, emoji);
+        await api.collaboration.addCommentReaction(commentId, emoji);
       }
       load();
     } catch {

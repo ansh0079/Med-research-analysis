@@ -150,7 +150,7 @@ function CaseMCQs({ mcqs, topic }: { mcqs: QuizQuestion[]; topic: string }) {
     if ((!isAuthenticated && !betaOpenAccess) || !topic || submittedRef.current.has(question.id)) return;
     submittedRef.current.add(question.id);
     try {
-      await api.submitQuizAttempt({
+      await api.learning.submitQuizAttempt({
         topic,
         attempts: [{
           questionId: question.id,
@@ -390,7 +390,7 @@ export const CaseModePage: React.FC = () => {
 
   const recordCaseAttempt = (caseType: 'analysis' | 'teaching_vignette', text: string) => {
     if (!isAuthenticated) return;
-    api.submitCaseAttempt({
+    api.learning.submitCaseAttempt({
       topic: prefillTopic || 'general',
       caseText: text,
       caseType,
@@ -489,7 +489,7 @@ export const CaseModePage: React.FC = () => {
     const pick = (title: string) => sections.find(([key]) => key === title)?.[1] || '';
     setReflectionSaveStatus('saving');
     try {
-      await api.createPortfolioReflection({
+      await api.learning.createPortfolioReflection({
         reflectionType: reflectionKind,
         sourceType: 'case',
         topic: pick('Topic') || prefillTopic || 'Clinical case reflection',
@@ -630,7 +630,7 @@ export const CaseModePage: React.FC = () => {
     if (!prefillTopic || !caseSeedArticles || caseSeedArticles.length === 0) return;
     setTvLoading(true); setTvError(null); setTvResult(null);
     try {
-      const response = await api.generateTeachingVignette(prefillTopic, caseSeedArticles, mode);
+      const response = await api.ai.generateTeachingVignette(prefillTopic, caseSeedArticles, mode);
       setTvResult(response);
       recordCaseAttempt('teaching_vignette', prefillTopic);
     } catch (err) {
@@ -674,7 +674,7 @@ export const CaseModePage: React.FC = () => {
     setLoading(true); setError(null); setResult(null);
     setEvidenceResult(null);
     try {
-      const response = await api.analyzeCase(payload, 'auto', {
+      const response = await api.ai.analyzeCase(payload, 'auto', {
         topic: prefillTopic || undefined,
         learningMode: mode,
         seedArticles: caseSeedArticles && caseSeedArticles.length > 0 ? caseSeedArticles : undefined,
@@ -702,7 +702,7 @@ export const CaseModePage: React.FC = () => {
     setEvidenceResult(null);
     setResult(null);
     try {
-      const response = await api.getCaseToEvidence(
+      const response = await api.knowledge.getCaseToEvidence(
         payload,
         prefillTopic || '',
         (caseSeedArticles || []) as Article[]

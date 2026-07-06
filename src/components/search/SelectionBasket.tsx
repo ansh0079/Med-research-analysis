@@ -32,7 +32,7 @@ export const SelectionBasket: React.FC<SelectionBasketProps> = ({
     setError(null);
 
     try {
-      const data = await api.synthesizeEvidence(topic || 'General Clinical Review', selectedArticles);
+      const data = await api.ai.synthesizeEvidence(topic || 'General Clinical Review', selectedArticles);
       setResult(data);
     } catch (err) {
       if (import.meta.env.DEV) console.error('Synthesis error:', err);

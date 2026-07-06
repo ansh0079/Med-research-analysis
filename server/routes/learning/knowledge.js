@@ -36,7 +36,7 @@ function registerKnowledgeRoutes(app, deps) {
         try {
             const topic = String(req.query.topic || '').trim();
             if (topic.length < 2) return res.status(400).json({ error: 'topic is required' });
-            const { buildTopicEvidenceMemory } = require('../services/topicEvidenceMemoryService');
+            const { buildTopicEvidenceMemory } = require('../../services/topicEvidenceMemoryService');
             const memory = await buildTopicEvidenceMemory(db, req.user.id, topic);
             res.json({ memory });
         } catch (error) {

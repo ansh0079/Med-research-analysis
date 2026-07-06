@@ -18,7 +18,7 @@ export function useClientFeatures(): ClientFeatures {
 
   useEffect(() => {
     let cancelled = false;
-    void api.getClientConfig().then((config) => {
+    void api.search.getClientConfig().then((config) => {
       if (cancelled) return;
       const betaMode = Boolean(
         (config as { betaMode?: boolean; betaOpenAccess?: boolean }).betaOpenAccess

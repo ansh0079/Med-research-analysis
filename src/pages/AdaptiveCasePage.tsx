@@ -428,8 +428,8 @@ export const AdaptiveCasePage: React.FC = () => {
     if (phase !== 'setup') return;
     setRecsLoading(true);
     Promise.all([
-      api.getCaseRecommendations().catch(() => ({ recommendations: [], recentTopics: [] })),
-      api.listCaseSessions().catch(() => ({ sessions: [] })),
+      api.learning.getCaseRecommendations().catch(() => ({ recommendations: [], recentTopics: [] })),
+      api.learning.listCaseSessions().catch(() => ({ sessions: [] })),
     ]).then(([recs, hist]) => {
       setRecommendations(recs.recommendations);
       setHistory(hist.sessions.slice(0, 5));
@@ -447,7 +447,7 @@ export const AdaptiveCasePage: React.FC = () => {
     setPhase('loading');
     setError(null);
     try {
-      const result = await api.generateAdaptiveCase({ topic: topic.trim(), learningMode, difficulty });
+      const result = await api.learning.generateAdaptiveCase({ topic: topic.trim(), learningMode, difficulty });
       setSession(result.session);
       setEvidenceWarning(result.evidenceWarning || null);
       setFeedback(null);
@@ -464,7 +464,7 @@ export const AdaptiveCasePage: React.FC = () => {
     const stepIndex = session.currentStep;
     setGeneratingStep(true);
     try {
-      const result = await api.submitCaseStepResponse(session.id, {
+      const result = await api.learning.submitCaseStepResponse(session.id, {
         stepIndex, selectedAnswer: answer, timeMs,
       });
       setFeedback(result.stepFeedback);

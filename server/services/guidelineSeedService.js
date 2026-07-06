@@ -1,7 +1,7 @@
 'use strict';
 
 const logger = require('../config/logger');
-const { createAiService } = require('./aiService');
+const { createAiService, getSharedAiService } = require('./aiService');
 const { getProviderCandidates } = require('../utils/aiProvider');
 let _parseJsonArrayBlock, _repairJsonCandidate;
 try {
@@ -168,7 +168,7 @@ async function generateGuidelineMcqs({ db, topicName, serverConfig, fetchImpl, l
     if (!providerCandidates.length) {
         return { status: 'no_provider', mcqCount: 0 };
     }
-    const ai = createAiService({ serverConfig, fetchImpl });
+    const ai = getSharedAiService({ serverConfig, fetchImpl });
     const prompt = buildMcqPrompt(topicName, guidelines);
 
     const candidate = providerCandidates[0];

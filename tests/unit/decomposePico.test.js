@@ -3,6 +3,7 @@ const callStructured = jest.fn();
 jest.mock('../../server/services/aiService', () => ({
     ...jest.requireActual('../../server/services/aiService'),
     createAiService: jest.fn(() => ({ callStructured })),
+    getSharedAiService: jest.fn(() => ({ callStructured })),
 }));
 
 const { decomposePico } = require('../../server/services/unifiedEvidenceSearch');

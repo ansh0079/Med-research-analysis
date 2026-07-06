@@ -148,7 +148,7 @@ function learningRoundItemsToQuestions(
 async function waitForClaimJob(jobKey: string, maxMs = 120000): Promise<void> {
   const start = Date.now();
   while (Date.now() - start < maxMs) {
-    const { job } = await api.getAiGenerationJob(jobKey);
+    const { job } = await api.ai.getAiGenerationJob(jobKey);
     if (job.status === 'completed') return;
     if (job.status === 'failed') {
       throw new QuizGenerationError(job.errorMessage || 'Claim generation failed', {
@@ -380,7 +380,7 @@ export const QuizPage: React.FC = () => {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    api.getLearningProfile().then((r) => setLearningProfile(r.profile)).catch(() => {});
+    api.learning.getLearningProfile().then((r) => setLearningProfile(r.profile)).catch(() => {});
   }, [isAuthenticated]);
 
   useEffect(() => {
@@ -390,7 +390,7 @@ export const QuizPage: React.FC = () => {
       return;
     }
     let cancelled = false;
-    api.getTopicMemory(activeTopic.trim())
+    api.learning.getTopicMemory(activeTopic.trim())
       .then((r) => { if (!cancelled) setTopicMemory(r.memory); })
       .catch(() => { if (!cancelled) setTopicMemory(null); });
     return () => { cancelled = true; };
@@ -416,7 +416,7 @@ export const QuizPage: React.FC = () => {
     }
     try {
       if (urlRoundId && isAuthenticated) {
-        const { round } = await api.getLearningRound(urlRoundId);
+        const { round } = await api.knowledge.getLearningRound(urlRoundId);
         if (isStale()) return;
         const roundQuestions = learningRoundItemsToQuestions(
           (round.items || []) as Array<{
@@ -568,7 +568,7 @@ export const QuizPage: React.FC = () => {
     const qid = currentQ.id;
     if (feedbackSentIds.has(qid)) return;
     setFeedbackSentIds((prev) => new Set([...prev, qid]));
-    api.postQuizFeedback({
+    api.learning.postQuizFeedback({
       topic: manualTopic.trim(),
       outlineNodeId: currentQ.outlineNodeId || currentQ.id,
       feedbackType,
@@ -653,7 +653,7 @@ export const QuizPage: React.FC = () => {
           confidence: confidenceByQuestion[q.id] ?? answerConfidence,
         };
       });
-      await api.submitQuizAttempt({
+      await api.learning.submitQuizAttempt({
         topic: activeTopic,
         studyRunId: activeStudyRunId,
         ...(curriculumTopicIdParam ? { curriculumTopicId: curriculumTopicIdParam } : {}),
@@ -663,7 +663,7 @@ export const QuizPage: React.FC = () => {
       // Fire-and-forget CPD log — non-critical
       if (isAuthenticated) {
         const correctCount = attempts.filter((a) => a.isCorrect).length;
-        api.logCpdSession({
+        api.learning.logCpdSession({
           activityType: 'quiz',
           topic: activeTopic,
           durationMinutes: Math.round(attempts.length * 2.5),
@@ -675,7 +675,7 @@ export const QuizPage: React.FC = () => {
       // Refresh run data so gap report reflects the attempts we just saved
       if (activeStudyRunId && isAuthenticated) {
         try {
-          const { run, outline } = await api.getStudyRun(activeStudyRunId);
+          const { run, outline } = await api.learning.getStudyRun(activeStudyRunId);
           setStudyRun(run);
           setStudyOutline(outline);
           setStudyRunLoadFailed(false);
@@ -683,7 +683,7 @@ export const QuizPage: React.FC = () => {
           setStudyRunLoadFailed(true);
         }
       }
-      api.getTopicMemory(activeTopic.trim())
+      api.learning.getTopicMemory(activeTopic.trim())
         .then((r) => setTopicMemory(r.memory))
         .catch(() => {});
     } catch {
@@ -764,7 +764,7 @@ export const QuizPage: React.FC = () => {
     const { kind, uniqueWeakTypes, evidenceUsed } = buildQuizReflectionSections();
     setReflectionSaveStatus('saving');
     try {
-      await api.createPortfolioReflection({
+      await api.learning.createPortfolioReflection({
         reflectionType: kind,
         sourceType: 'quiz',
         topic: activeTopic,

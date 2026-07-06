@@ -15,7 +15,7 @@ export function useSearchRecents(searchHistory: string[], isAuthenticated: boole
       setAccountRecents([]);
       return;
     }
-    void api.getSearchHistory()
+    void api.documents.getSearchHistory()
       .then((r) => setAccountRecents((r.history || []).map((h) => h.query).filter(Boolean)))
       .catch(() => setAccountRecents([]));
   }, [isAuthenticated]);

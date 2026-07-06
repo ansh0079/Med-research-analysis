@@ -288,4 +288,8 @@ router.delete('/:teamId/collections/:collectionId/articles/:articleId', requireA
     }
 });
 
-module.exports = { teamRoutes: router };
+function registerTeamRoutes(app, _deps) {
+    app.use('/api/teams', router);
+}
+
+module.exports = { registerTeamRoutes };

@@ -116,7 +116,7 @@ GET /api/articles/path                # Path between papers
 - `src/services/collaboration.ts` - Real-time collaboration service
 - `src/hooks/useCollaboration.ts` - Custom hooks
 - `src/components/collaboration/` - 5 React components
-- `server/collaboration-routes.js` - API routes
+- `server/routes/collaboration.js` - API routes
 - `server/socket-handler.js` - Socket.io handler
 
 **Features:**

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '@services/api';
 
-type CompetencyData = Awaited<ReturnType<typeof api.getCompetencyRecord>>;
+type CompetencyData = Awaited<ReturnType<typeof api.learning.getCompetencyRecord>>;
 
 const QTYPE_LABEL: Record<string, string> = {
   recall: 'Recall',
@@ -31,7 +31,7 @@ export function CompetencyRecord({ topic }: Props) {
     if (!topic) return;
     setLoading(true);
     setError(null);
-    api.getCompetencyRecord(topic)
+    api.learning.getCompetencyRecord(topic)
       .then(setData)
       .catch((e) => setError(e?.message || 'Failed to load competency record'))
       .finally(() => setLoading(false));

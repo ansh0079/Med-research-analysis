@@ -27,7 +27,8 @@ const db = require('./database');
 const cache = require('./cache');
 
 const { rateLimit, userRateLimit, setMetricsRegistry, createSlowDown } = require('./server/middleware/rateLimiter');
-const { optionalAuth, requireAuthJwt, requireAuthOrBeta, requireVerifiedEmail, requireRole, requirePaidFeature, registerAuthRoutes } = require('./server/middleware/auth');
+const { optionalAuth, requireAuthJwt, requireAuthOrBeta, requireVerifiedEmail, requireRole, requirePaidFeature } = require('./server/middleware/auth');
+const { validateProductionEnv } = require('./server/lib/productionReadiness');
 const { auditLog } = require('./server/middleware/audit');
 const { requireJson, validateAnalysisBody, validateBody, schemas } = require('./server/utils/validation');
 const { safeFetch } = require('./server/utils/fetch');
@@ -47,16 +48,17 @@ const { registerAiExtraRoutes } = require('./server/routes/aiExtras');
 const { registerEmbeddingStatusRoute } = require('./server/routes/embeddings');
 const { registerAgentRoutes } = require('./server/routes/agent');
 const { registerGuidelineRoutes } = require('./server/routes/guidelines');
-const { registerLearningRoutes } = require('./server/controllers/learningRoutes');
+const { registerLearningRoutes } = require('./server/routes/learning');
 
-const { registerVectorSearchRoutes, registerPdfRoutes } = require('./server/controllers/vectorRoutes');
-const { registerAiRoutes } = require('./server/controllers/aiRoutes');
-const { registerReviewRoutes } = require('./server/controllers/reviewRoutes');
-const { registerRecommendationRoutes } = require('./server/controllers/recommendationRoutes');
-const { registerBillingRoutes } = require('./server/controllers/billingRoutes');
-const { registerDeveloperRoutes } = require('./server/controllers/developerRoutes');
-const { collaborationRoutes } = require('./server/collaboration-routes');
-const { teamRoutes } = require('./server/controllers/teamRoutes');
+const { registerVectorSearchRoutes, registerPdfRoutes } = require('./server/routes/vector');
+const { registerAiRoutes } = require('./server/routes/ai');
+const { registerReviewRoutes } = require('./server/routes/review');
+const { registerRecommendationRoutes } = require('./server/routes/recommendation');
+const { registerBillingRoutes } = require('./server/routes/billing');
+const { registerDeveloperRoutes } = require('./server/routes/developer');
+const { registerCollaborationRoutes } = require('./server/routes/collaboration');
+const { registerTeamRoutes } = require('./server/routes/team');
+const { registerAuthRoutes } = require('./server/routes/auth');
 const setupSocketHandlers = require('./server/socket-handler');
 const { extendAiTimeout, DEFAULT_AI_TIMEOUT_MS } = require('./server/middleware/aiTimeout');
 
@@ -77,46 +79,14 @@ const { enqueuePdfPreindex: _enqueuePdfPreindex } = require('./server/services/p
 // Production safety checks
 // ==========================================
 if (process.env.NODE_ENV === 'production') {
-    const databaseUrl = String(process.env.DATABASE_URL || '').trim();
-    const databaseIsPostgres = databaseUrl.startsWith('postgresql://') || databaseUrl.startsWith('postgres://');
-    if (!databaseIsPostgres) {
-        logger.fatal('DATABASE_URL must be set to a PostgreSQL connection string in production. SQLite is not allowed for beta/commercial deployments.');
-        process.exit(1);
+    const { errors, warnings } = validateProductionEnv({ mode: 'runtime' });
+    for (const warning of warnings) {
+        logger.warn(warning);
     }
-    if (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'change-this-in-production') {
-        logger.fatal('JWT_SECRET must be set to a secure value in production.');
-        process.exit(1);
+    for (const error of errors) {
+        logger.fatal(error);
     }
-    if (!process.env.CORS_ORIGINS) {
-        logger.fatal('CORS_ORIGINS must be set in production.');
-        process.exit(1);
-    }
-    if (String(process.env.REQUIRE_SMTP || '').toLowerCase() === 'true') {
-        const hasManagedProvider = Boolean(process.env.RESEND_API_KEY || process.env.SENDGRID_API_KEY);
-        const hasSmtpProvider = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS'].every((k) => Boolean(process.env[k]));
-        const missingCommon = ['SMTP_FROM', 'APP_URL'].filter((k) => !process.env[k]);
-        if ((!hasManagedProvider && !hasSmtpProvider) || missingCommon.length > 0) {
-            logger.fatal({
-                missing: [
-                    ...missingCommon,
-                    ...(!hasManagedProvider && !hasSmtpProvider ? ['RESEND_API_KEY or SENDGRID_API_KEY or SMTP_HOST/SMTP_USER/SMTP_PASS'] : []),
-                ],
-            }, 'Email provider readiness failed');
-            process.exit(1);
-        }
-    }
-    if (String(process.env.REQUIRE_VECTOR_SEARCH || '').toLowerCase() === 'true') {
-        if (!process.env.PG_VECTOR_URL && !process.env.VECTOR_DATABASE_URL) {
-            logger.fatal('Vector readiness failed. Set PG_VECTOR_URL or VECTOR_DATABASE_URL.');
-            process.exit(1);
-        }
-    }
-    if (process.env.STRIPE_SECRET_KEY && !process.env.STRIPE_WEBHOOK_SECRET) {
-        logger.fatal('STRIPE_WEBHOOK_SECRET must be set in production when STRIPE_SECRET_KEY is configured. Without it, anyone can forge webhook events and upgrade themselves for free.');
-        process.exit(1);
-    }
-    if (!process.env.REDIS_URL) {
-        logger.fatal('REDIS_URL must be set in production for cache, rate limits, sessions, and job queues.');
+    if (errors.length > 0) {
         process.exit(1);
     }
 }
@@ -494,7 +464,7 @@ registerRecommendationRoutes(app, routeDeps);
 registerBillingRoutes(app, routeDeps);
 registerDeveloperRoutes(app, routeDeps);
 
-app.use('/api/teams', teamRoutes);
+registerTeamRoutes(app, routeDeps);
 
 // Queue status (admin only)
 app.get('/api/admin/queues', requireAuthJwt, requireRole('admin'), async (req, res) => {
@@ -511,7 +481,7 @@ app.get('/api/admin/slo-status', requireAuthJwt, requireRole('admin'), async (re
     res.json(getSloStatus());
 });
 
-app.use('/api/collaboration', collaborationRoutes);
+registerCollaborationRoutes(app, routeDeps);
 
 // API documentation (dev / staging only)
 if (process.env.NODE_ENV !== 'production' || process.env.ENABLE_API_DOCS === 'true') {

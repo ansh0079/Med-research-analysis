@@ -10,6 +10,17 @@ CREATE TABLE IF NOT EXISTS admin_runtime_settings (
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS users (
+    id TEXT PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL, 
+    name TEXT,
+    role TEXT DEFAULT 'user', 
+    preferences TEXT, 
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMPTZ
+, email_verified INTEGER DEFAULT 0, email_verification_token TEXT, email_verification_expires TIMESTAMPTZ, updated_at TIMESTAMPTZ, stripe_customer_id TEXT, stripe_subscription_id TEXT, subscription_status TEXT DEFAULT 'free', subscription_plan TEXT DEFAULT 'free', subscription_current_period_end TEXT, subscription_cancel_at_period_end INTEGER DEFAULT 0, trial_started_at TEXT, trial_ends_at TEXT, has_used_trial INTEGER NOT NULL DEFAULT 0, access_token_version INTEGER NOT NULL DEFAULT 0);
+
 CREATE TABLE IF NOT EXISTS agent_conversations (
     id SERIAL PRIMARY KEY,
     user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -19,8 +30,8 @@ CREATE TABLE IF NOT EXISTS agent_conversations (
     messages TEXT NOT NULL DEFAULT '[]',
     message_count INTEGER DEFAULT 0,
     last_message_at TEXT,
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP)
-, conversation_summary TEXT, learner_snapshot_json TEXT NOT NULL DEFAULT '{}', updated_at TEXT DEFAULT (CURRENT_TIMESTAMP));
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
+, conversation_summary TEXT, learner_snapshot_json TEXT NOT NULL DEFAULT '{}', updated_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')));
 
 CREATE TABLE IF NOT EXISTS ai_generation_claims (
     id SERIAL PRIMARY KEY,
@@ -33,7 +44,7 @@ CREATE TABLE IF NOT EXISTS ai_generation_claims (
     confidence REAL,
     validation_status TEXT NOT NULL DEFAULT 'unvalidated',
     concept_key TEXT,
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP),
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
     UNIQUE(job_key, claim_key)
 );
 
@@ -51,12 +62,12 @@ CREATE TABLE IF NOT EXISTS ai_generation_jobs (
     model TEXT,
     audit_payload TEXT,
     attempts INTEGER NOT NULL DEFAULT 0,
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP),
-    updated_at TEXT DEFAULT (CURRENT_TIMESTAMP),
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
+    updated_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
     started_at TEXT,
     completed_at TEXT,
     expires_at TEXT
-);
+, user_id TEXT);
 
 CREATE TABLE IF NOT EXISTS ai_usage_monthly (
     id          SERIAL PRIMARY KEY,
@@ -64,7 +75,7 @@ CREATE TABLE IF NOT EXISTS ai_usage_monthly (
     year_month  TEXT    NOT NULL,
     feature     TEXT    NOT NULL,
     count       INTEGER NOT NULL DEFAULT 0,
-    updated_at  TEXT    NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+    updated_at  TEXT    NOT NULL DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
     UNIQUE (user_id, year_month, feature)
 );
 
@@ -107,7 +118,7 @@ CREATE TABLE IF NOT EXISTS api_keys (
     key_hash TEXT NOT NULL UNIQUE,
     scopes TEXT NOT NULL DEFAULT 'read',
     last_used_at TEXT,
-    created_at TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+    created_at TEXT NOT NULL DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
     revoked_at TEXT
 );
 
@@ -169,7 +180,7 @@ CREATE TABLE IF NOT EXISTS case_attempts (
     ai_feedback TEXT,
     score INTEGER,
     seed_article_uids TEXT DEFAULT '[]',
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP)
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
 );
 
 CREATE TABLE IF NOT EXISTS case_evidence_briefs (
@@ -180,7 +191,26 @@ CREATE TABLE IF NOT EXISTS case_evidence_briefs (
     brief_json TEXT NOT NULL DEFAULT '{}',
     articles_json TEXT NOT NULL DEFAULT '[]',
     related_claims_json TEXT NOT NULL DEFAULT '[]',
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP)
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
+);
+
+CREATE TABLE IF NOT EXISTS case_sessions (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    topic TEXT NOT NULL,
+    normalized_topic TEXT NOT NULL,
+    learning_mode TEXT NOT NULL DEFAULT 'student',
+    difficulty TEXT NOT NULL DEFAULT 'medium',
+    case_data TEXT NOT NULL,
+    targeted_weaknesses TEXT DEFAULT '[]',
+    evidence_context TEXT,
+    generation_mode TEXT NOT NULL DEFAULT 'branching',
+    status TEXT NOT NULL DEFAULT 'in_progress',
+    current_step INTEGER NOT NULL DEFAULT 0,
+    responses TEXT DEFAULT '[]',
+    total_score INTEGER,
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
+    completed_at TEXT
 );
 
 CREATE TABLE IF NOT EXISTS claim_contradiction_searches (
@@ -245,6 +275,19 @@ CREATE TABLE IF NOT EXISTS collab_annotations (
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS collab_collections (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT,
+    owner_id TEXT NOT NULL,
+    owner_name TEXT,
+    is_public INTEGER DEFAULT 0,
+    tags TEXT DEFAULT '[]',
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS collab_collection_articles (
     id SERIAL PRIMARY KEY,
     collection_id TEXT NOT NULL,
@@ -270,28 +313,6 @@ CREATE TABLE IF NOT EXISTS collab_collection_collaborators (
     FOREIGN KEY (collection_id) REFERENCES collab_collections(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS collab_collections (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    description TEXT,
-    owner_id TEXT NOT NULL,
-    owner_name TEXT,
-    is_public INTEGER DEFAULT 0,
-    tags TEXT DEFAULT '[]',
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS collab_comment_reactions (
-    id SERIAL PRIMARY KEY,
-    comment_id TEXT NOT NULL,
-    emoji TEXT NOT NULL,
-    user_id TEXT NOT NULL,
-    UNIQUE(comment_id, emoji, user_id),
-    FOREIGN KEY (comment_id) REFERENCES collab_comments(id) ON DELETE CASCADE
-);
-
 CREATE TABLE IF NOT EXISTS collab_comments (
     id TEXT PRIMARY KEY,
     article_id TEXT NOT NULL,
@@ -305,6 +326,15 @@ CREATE TABLE IF NOT EXISTS collab_comments (
     reply_count INTEGER DEFAULT 0,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS collab_comment_reactions (
+    id SERIAL PRIMARY KEY,
+    comment_id TEXT NOT NULL,
+    emoji TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    UNIQUE(comment_id, emoji, user_id),
+    FOREIGN KEY (comment_id) REFERENCES collab_comments(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS collab_invitations (
@@ -352,7 +382,7 @@ CREATE TABLE IF NOT EXISTS cpd_sessions (
     accuracy_pct INTEGER DEFAULT NULL,
     notes TEXT DEFAULT '',
     source TEXT NOT NULL DEFAULT 'auto',
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP)
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
 );
 
 CREATE TABLE IF NOT EXISTS curricula (
@@ -423,6 +453,17 @@ CREATE TABLE IF NOT EXISTS learning_events (
     created_at TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS learning_rounds (
+    id SERIAL PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    topic TEXT NOT NULL,
+    normalized_topic TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'active',
+    item_count INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL,
+    completed_at TEXT
+);
+
 CREATE TABLE IF NOT EXISTS learning_round_items (
     id SERIAL PRIMARY KEY,
     round_id INTEGER NOT NULL,
@@ -434,17 +475,6 @@ CREATE TABLE IF NOT EXISTS learning_round_items (
     explanation TEXT,
     sort_order INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (round_id) REFERENCES learning_rounds(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS learning_rounds (
-    id SERIAL PRIMARY KEY,
-    user_id TEXT NOT NULL,
-    topic TEXT NOT NULL,
-    normalized_topic TEXT NOT NULL,
-    status TEXT NOT NULL DEFAULT 'active',
-    item_count INTEGER NOT NULL DEFAULT 0,
-    created_at TEXT NOT NULL,
-    completed_at TEXT
 );
 
 CREATE TABLE IF NOT EXISTS learning_scheduler_runs (
@@ -476,7 +506,7 @@ CREATE TABLE IF NOT EXISTS llm_usage_log (
     success INTEGER NOT NULL DEFAULT 1,
     error_message TEXT,
     duration_ms INTEGER,
-    created_at TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP)
+    created_at TEXT NOT NULL DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
 );
 
 CREATE TABLE IF NOT EXISTS low_recall_searches (
@@ -512,7 +542,37 @@ CREATE TABLE IF NOT EXISTS pdf_sections (
     url TEXT,
     source TEXT,
     numpages INTEGER DEFAULT 0,
-    indexed_at TEXT DEFAULT (CURRENT_TIMESTAMP)
+    indexed_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
+, extraction_backend TEXT DEFAULT 'legacy', grobid_version TEXT);
+
+CREATE TABLE IF NOT EXISTS personalization_arm_state (
+    id SERIAL PRIMARY KEY,
+    policy_type TEXT NOT NULL,
+    arm_id TEXT NOT NULL,
+    scope_key TEXT NOT NULL DEFAULT 'global',
+    alpha REAL NOT NULL DEFAULT 1.0,
+    beta REAL NOT NULL DEFAULT 1.0,
+    pulls INTEGER NOT NULL DEFAULT 0,
+    total_reward REAL NOT NULL DEFAULT 0,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(policy_type, arm_id, scope_key)
+);
+
+CREATE TABLE IF NOT EXISTS personalization_decisions (
+    id SERIAL PRIMARY KEY,
+    user_id TEXT,
+    policy_type TEXT NOT NULL,
+    arm_id TEXT NOT NULL,
+    search_id INTEGER,
+    topic TEXT,
+    normalized_topic TEXT,
+    article_uid TEXT,
+    context_json TEXT,
+    immediate_reward REAL,
+    delayed_reward REAL,
+    total_reward REAL,
+    reward_computed_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS pico_extractions (
@@ -540,8 +600,8 @@ CREATE TABLE IF NOT EXISTS portfolio_reflections (
     supervisor_discussion TEXT NOT NULL DEFAULT '',
     status TEXT NOT NULL DEFAULT 'draft',
     linked_cpd_session_id INTEGER REFERENCES cpd_sessions(id) ON DELETE SET NULL,
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP),
-    updated_at TEXT DEFAULT (CURRENT_TIMESTAMP)
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
+    updated_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
 );
 
 CREATE TABLE IF NOT EXISTS proactive_evidence_alerts (
@@ -555,7 +615,22 @@ CREATE TABLE IF NOT EXISTS proactive_evidence_alerts (
     payload_json TEXT,
     landmark_article_uid TEXT,
     read_at TEXT,
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP)
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
+);
+
+CREATE TABLE IF NOT EXISTS product_quality_feedback (
+    id SERIAL PRIMARY KEY,
+    user_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+    session_id TEXT,
+    product_type TEXT NOT NULL,
+    topic TEXT,
+    factual_accuracy INTEGER,
+    completeness INTEGER,
+    clinical_usefulness INTEGER,
+    time_saved_minutes INTEGER,
+    comment TEXT,
+    metadata_json TEXT DEFAULT '{}',
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS quiz_attempts (
@@ -574,7 +649,7 @@ CREATE TABLE IF NOT EXISTS quiz_attempts (
     source_article_uid TEXT,
     study_run_id INTEGER,
     outline_node_id TEXT,
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP)
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
 , concept_hash TEXT, claim_key TEXT, reasoning_tags TEXT DEFAULT '[]', reasoning_note TEXT, prompt_variant TEXT);
 
 CREATE TABLE IF NOT EXISTS quiz_validation_results (
@@ -590,7 +665,18 @@ CREATE TABLE IF NOT EXISTS quiz_validation_results (
     reviewer_notes TEXT,
     source_provider TEXT,
     source_model TEXT,
-    validated_at TEXT DEFAULT (CURRENT_TIMESTAMP)
+    validated_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
+);
+
+CREATE TABLE IF NOT EXISTS refresh_tokens (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    token_hash TEXT NOT NULL UNIQUE,
+    family_id TEXT NOT NULL,
+    expires_at TIMESTAMPTZ NOT NULL,
+    revoked_at TIMESTAMPTZ,
+    replaced_by TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS review_articles (
@@ -621,7 +707,7 @@ CREATE TABLE IF NOT EXISTS revoked_tokens (
     token_hash TEXT PRIMARY KEY,
     revoked_at TIMESTAMPTZ NOT NULL,
     expires_at TIMESTAMPTZ NOT NULL
-);
+, token_jti TEXT);
 
 CREATE TABLE IF NOT EXISTS saved_articles (
     id SERIAL PRIMARY KEY,
@@ -644,8 +730,40 @@ CREATE TABLE IF NOT EXISTS search_alerts (
     email TEXT,
     active INTEGER DEFAULT 1,
     last_sent TIMESTAMPTZ,
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, unsubscribe_token TEXT, digest_enabled INTEGER DEFAULT 1,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, unsubscribe_token TEXT, digest_enabled INTEGER DEFAULT 1, author_filter TEXT DEFAULT NULL, journal_filter TEXT DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS search_learning_outcomes (
+    id SERIAL PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    search_id INTEGER,
+    impression_id INTEGER,
+    article_uid TEXT NOT NULL,
+    claim_key TEXT,
+    topic TEXT,
+    normalized_topic TEXT,
+    quiz_attempt_id INTEGER,
+    first_attempt_correct INTEGER NOT NULL DEFAULT 0,
+    reward REAL NOT NULL,
+    bandit_arm_id TEXT,
+    attributed_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS searches (
+    id SERIAL PRIMARY KEY,
+    session_id TEXT NOT NULL,
+    query TEXT NOT NULL,
+    normalized_topic TEXT,
+    sources TEXT, 
+    filters TEXT, 
+    results_count INTEGER DEFAULT 0,
+    execution_time_ms INTEGER,
+    session_sequence_index INTEGER DEFAULT 0,
+    previous_queries TEXT, 
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    ip_address TEXT
 );
 
 CREATE TABLE IF NOT EXISTS search_result_feedback (
@@ -677,23 +795,8 @@ CREATE TABLE IF NOT EXISTS search_usage_daily (
     user_id     TEXT    NOT NULL,
     date        TEXT    NOT NULL,   
     count       INTEGER NOT NULL DEFAULT 0,
-    updated_at  TEXT    NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+    updated_at  TEXT    NOT NULL DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
     UNIQUE (user_id, date)
-);
-
-CREATE TABLE IF NOT EXISTS searches (
-    id SERIAL PRIMARY KEY,
-    session_id TEXT NOT NULL,
-    query TEXT NOT NULL,
-    normalized_topic TEXT,
-    sources TEXT, 
-    filters TEXT, 
-    results_count INTEGER DEFAULT 0,
-    execution_time_ms INTEGER,
-    session_sequence_index INTEGER DEFAULT 0,
-    previous_queries TEXT, 
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    ip_address TEXT
 );
 
 CREATE TABLE IF NOT EXISTS sessions (
@@ -715,15 +818,30 @@ CREATE TABLE IF NOT EXISTS spaced_rep_cards (
     interval_days REAL NOT NULL DEFAULT 1,
     easiness REAL NOT NULL DEFAULT 2.5,
     repetitions INTEGER NOT NULL DEFAULT 0,
-    due_at TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+    due_at TEXT NOT NULL DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
     last_reviewed_at TEXT,
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP),
-    updated_at TEXT DEFAULT (CURRENT_TIMESTAMP),
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
+    updated_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
     stability REAL NOT NULL DEFAULT 0,
     difficulty REAL NOT NULL DEFAULT 0,
     state TEXT NOT NULL DEFAULT 'new',
     lapses INTEGER NOT NULL DEFAULT 0,
     UNIQUE(user_id, normalized_topic, outline_node_id)
+);
+
+CREATE TABLE IF NOT EXISTS topic_knowledge (
+    id SERIAL PRIMARY KEY,
+    topic TEXT NOT NULL UNIQUE,
+    normalized_topic TEXT NOT NULL UNIQUE,
+    knowledge TEXT NOT NULL,
+    source_articles TEXT NOT NULL DEFAULT '[]',
+    aliases_normalized TEXT NOT NULL DEFAULT '[]',
+    canonical_normalized TEXT NOT NULL DEFAULT '',
+    status TEXT NOT NULL DEFAULT 'ai_generated',
+    confidence REAL NOT NULL DEFAULT 0.5,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    last_refreshed_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS study_runs (
@@ -736,10 +854,25 @@ CREATE TABLE IF NOT EXISTS study_runs (
     status TEXT NOT NULL DEFAULT 'active',
     progress TEXT NOT NULL DEFAULT '{}',
     node_coverage TEXT NOT NULL DEFAULT '{}',
-    started_at TEXT DEFAULT (CURRENT_TIMESTAMP),
-    last_active_at TEXT DEFAULT (CURRENT_TIMESTAMP),
+    started_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
+    last_active_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
     completed_at TEXT,
     FOREIGN KEY (outline_id) REFERENCES topic_knowledge(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS synopsis_feedback (
+    id SERIAL PRIMARY KEY,
+    user_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+    session_id TEXT,
+    article_uid TEXT NOT NULL,
+    topic TEXT,
+    training_stage TEXT,
+    provider TEXT,
+    model TEXT,
+    feedback_type TEXT NOT NULL,
+    reason TEXT,
+    metadata_json TEXT DEFAULT '{}',
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS synthesis_snapshots (
@@ -753,7 +886,7 @@ CREATE TABLE IF NOT EXISTS synthesis_snapshots (
     article_uids TEXT NOT NULL DEFAULT '[]',
     claim_fingerprint TEXT,
     claim_texts_json TEXT NOT NULL DEFAULT '[]',
-    generated_at TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP)
+    generated_at TEXT NOT NULL DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
 );
 
 CREATE TABLE IF NOT EXISTS teaching_object_claims (
@@ -771,8 +904,8 @@ CREATE TABLE IF NOT EXISTS teaching_object_claims (
     verification_status TEXT NOT NULL DEFAULT 'unverified',
     verification_reason TEXT,
     verified_at TEXT,
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP),
-    updated_at TEXT DEFAULT (CURRENT_TIMESTAMP)
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
+    updated_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
 , curator_metadata TEXT);
 
 CREATE TABLE IF NOT EXISTS teaching_objects (
@@ -787,9 +920,33 @@ CREATE TABLE IF NOT EXISTS teaching_objects (
     provider TEXT,
     model TEXT,
     confidence REAL NOT NULL DEFAULT 0.5,
-    generated_at TEXT DEFAULT (CURRENT_TIMESTAMP),
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP),
-    updated_at TEXT DEFAULT (CURRENT_TIMESTAMP)
+    generated_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
+    updated_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
+);
+
+CREATE TABLE IF NOT EXISTS teams (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    owner_id TEXT NOT NULL,
+    plan TEXT DEFAULT 'free',
+    member_limit INTEGER DEFAULT 3,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS team_collections (
+    id TEXT PRIMARY KEY,
+    team_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    description TEXT,
+    created_by TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE,
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS team_collection_articles (
@@ -803,18 +960,6 @@ CREATE TABLE IF NOT EXISTS team_collection_articles (
     UNIQUE(collection_id, article_id),
     FOREIGN KEY (collection_id) REFERENCES team_collections(id) ON DELETE CASCADE,
     FOREIGN KEY (added_by) REFERENCES users(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS team_collections (
-    id TEXT PRIMARY KEY,
-    team_id TEXT NOT NULL,
-    name TEXT NOT NULL,
-    description TEXT,
-    created_by TEXT NOT NULL,
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE,
-    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS team_invitations (
@@ -851,18 +996,6 @@ CREATE TABLE IF NOT EXISTS team_saved_articles (
     UNIQUE(team_id, article_id),
     FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE,
     FOREIGN KEY (saved_by) REFERENCES users(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS teams (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    slug TEXT UNIQUE NOT NULL,
-    owner_id TEXT NOT NULL,
-    plan TEXT DEFAULT 'free',
-    member_limit INTEGER DEFAULT 3,
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS topic_bouquet_signals (
@@ -928,21 +1061,6 @@ CREATE TABLE IF NOT EXISTS topic_guidelines (
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS topic_knowledge (
-    id SERIAL PRIMARY KEY,
-    topic TEXT NOT NULL UNIQUE,
-    normalized_topic TEXT NOT NULL UNIQUE,
-    knowledge TEXT NOT NULL,
-    source_articles TEXT NOT NULL DEFAULT '[]',
-    aliases_normalized TEXT NOT NULL DEFAULT '[]',
-    canonical_normalized TEXT NOT NULL DEFAULT '',
-    status TEXT NOT NULL DEFAULT 'ai_generated',
-    confidence REAL NOT NULL DEFAULT 0.5,
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    last_refreshed_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE IF NOT EXISTS topic_knowledge_proposals (
     id SERIAL PRIMARY KEY,
     topic TEXT NOT NULL,
@@ -956,8 +1074,8 @@ CREATE TABLE IF NOT EXISTS topic_knowledge_proposals (
     status TEXT NOT NULL DEFAULT 'pending_review',
     reviewed_by TEXT,
     reviewed_at TEXT,
-    created_at TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-    updated_at TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP)
+    created_at TEXT NOT NULL DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
+    updated_at TEXT NOT NULL DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
 );
 
 CREATE TABLE IF NOT EXISTS user_claim_misconceptions (
@@ -969,8 +1087,8 @@ CREATE TABLE IF NOT EXISTS user_claim_misconceptions (
     topic TEXT NOT NULL,
     normalized_topic TEXT,
     count INTEGER NOT NULL DEFAULT 1,
-    last_seen_at TEXT DEFAULT (CURRENT_TIMESTAMP),
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP)
+    last_seen_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
 , misconception_category TEXT);
 
 CREATE TABLE IF NOT EXISTS user_curriculum_progress (
@@ -981,7 +1099,7 @@ CREATE TABLE IF NOT EXISTS user_curriculum_progress (
     quiz_attempts INTEGER NOT NULL DEFAULT 0,
     correct_count INTEGER NOT NULL DEFAULT 0,
     last_score_pct INTEGER,
-    updated_at TEXT DEFAULT (CURRENT_TIMESTAMP),
+    updated_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
     UNIQUE(user_id, curriculum_topic_id)
 );
 
@@ -1012,8 +1130,8 @@ CREATE TABLE IF NOT EXISTS user_learning_profiles (
     specialty_interest TEXT,
     study_goal TEXT,
     active_curriculum_id INTEGER REFERENCES curricula(id) ON DELETE SET NULL,
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP),
-    updated_at TEXT DEFAULT (CURRENT_TIMESTAMP)
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
+    updated_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
 , effective_difficulty TEXT DEFAULT 'mixed');
 
 CREATE TABLE IF NOT EXISTS user_saved_articles (
@@ -1043,8 +1161,8 @@ CREATE TABLE IF NOT EXISTS user_topic_mastery (
     correct_count INTEGER DEFAULT 0,
     last_attempt_at TEXT,
     next_review_at TEXT,
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP),
-    updated_at TEXT DEFAULT (CURRENT_TIMESTAMP),
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
+    updated_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
     UNIQUE(user_id, normalized_topic)
 );
 
@@ -1056,7 +1174,7 @@ CREATE TABLE IF NOT EXISTS user_topic_mastery_snapshots (
     overall_score INTEGER NOT NULL,
     session_score INTEGER,
     snapshot_reason TEXT,
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP)
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
 );
 
 CREATE TABLE IF NOT EXISTS user_topic_memory (
@@ -1072,8 +1190,8 @@ CREATE TABLE IF NOT EXISTS user_topic_memory (
     memory_score REAL NOT NULL DEFAULT 0,
     memory_tier TEXT NOT NULL DEFAULT 'sparse',
     promoted_proposal_at TEXT,
-    created_at TEXT DEFAULT (CURRENT_TIMESTAMP),
-    updated_at TEXT DEFAULT (CURRENT_TIMESTAMP),
+    created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
+    updated_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')), inferred_misconceptions TEXT,
     UNIQUE(user_id, normalized_topic)
 );
 
@@ -1084,28 +1202,22 @@ CREATE TABLE IF NOT EXISTS user_topic_reviews (
     PRIMARY KEY (user_id, normalized_topic)
 );
 
-CREATE TABLE IF NOT EXISTS users (
-    id TEXT PRIMARY KEY,
-    email TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL, 
-    name TEXT,
-    role TEXT DEFAULT 'user', 
-    preferences TEXT, 
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    last_login TIMESTAMPTZ
-, email_verified INTEGER DEFAULT 0, email_verification_token TEXT, email_verification_expires TIMESTAMPTZ, updated_at TIMESTAMPTZ, stripe_customer_id TEXT, stripe_subscription_id TEXT, subscription_status TEXT DEFAULT 'free', subscription_plan TEXT DEFAULT 'free', subscription_current_period_end TEXT, subscription_cancel_at_period_end INTEGER DEFAULT 0, trial_started_at TEXT, trial_ends_at TEXT, has_used_trial INTEGER NOT NULL DEFAULT 0);
-
 CREATE INDEX IF NOT EXISTS idx_agent_conv_last_message ON agent_conversations(user_id, last_message_at);
 
 CREATE INDEX IF NOT EXISTS idx_agent_conv_topic ON agent_conversations(normalized_topic);
 
 CREATE INDEX IF NOT EXISTS idx_agent_conv_user ON agent_conversations(user_id);
 
+CREATE INDEX IF NOT EXISTS idx_agent_conversations_user_topic ON agent_conversations(user_id, normalized_topic);
+
 CREATE INDEX IF NOT EXISTS idx_ai_gen_claims_job ON ai_generation_claims(job_key, ordinal);
 
 CREATE INDEX IF NOT EXISTS idx_ai_generation_jobs_status ON ai_generation_jobs(status, updated_at);
 
 CREATE INDEX IF NOT EXISTS idx_ai_generation_jobs_type_topic ON ai_generation_jobs(job_type, topic);
+
+CREATE INDEX IF NOT EXISTS idx_ai_generation_jobs_user_status
+    ON ai_generation_jobs(user_id, status, updated_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_ai_usage_user_month
     ON ai_usage_monthly (user_id, year_month);
@@ -1125,15 +1237,6 @@ CREATE INDEX IF NOT EXISTS idx_api_keys_hash ON api_keys (key_hash);
 CREATE INDEX IF NOT EXISTS idx_api_keys_user ON api_keys (user_id);
 
 CREATE INDEX IF NOT EXISTS idx_article_cache_expires ON article_cache(expires_at);
-
--- Idempotent ADD COLUMN: article_cache's own CREATE TABLE above already declares these,
--- but that statement is a no-op against a database where article_cache was created before
--- these columns existed (see migration 002_quality_retraction.sql). Without this, the
--- indexes below fail with "column does not exist" on every boot on such a database.
-ALTER TABLE article_cache ADD COLUMN IF NOT EXISTS quality_data TEXT;
-ALTER TABLE article_cache ADD COLUMN IF NOT EXISTS retraction_data TEXT;
-ALTER TABLE article_cache ADD COLUMN IF NOT EXISTS quality_score INTEGER DEFAULT 0;
-ALTER TABLE article_cache ADD COLUMN IF NOT EXISTS is_retracted INTEGER DEFAULT 0;
 
 CREATE INDEX IF NOT EXISTS idx_article_cache_quality ON article_cache(quality_score);
 
@@ -1168,6 +1271,10 @@ CREATE INDEX IF NOT EXISTS idx_case_attempts_user_created ON case_attempts(user_
 CREATE INDEX IF NOT EXISTS idx_case_attempts_user_topic ON case_attempts(user_id, normalized_topic);
 
 CREATE INDEX IF NOT EXISTS idx_case_evidence_briefs_user ON case_evidence_briefs(user_id, created_at);
+
+CREATE INDEX IF NOT EXISTS idx_case_sessions_user_created ON case_sessions(user_id, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_case_sessions_user_status ON case_sessions(user_id, status);
 
 CREATE INDEX IF NOT EXISTS idx_claim_history_claim ON claim_status_history(claim_key, created_at DESC);
 
@@ -1268,7 +1375,18 @@ CREATE INDEX IF NOT EXISTS idx_password_reset_token ON password_reset_tokens(tok
 
 CREATE INDEX IF NOT EXISTS idx_password_reset_user ON password_reset_tokens(user_id);
 
+CREATE INDEX IF NOT EXISTS idx_pdf_sections_backend ON pdf_sections(extraction_backend);
+
 CREATE INDEX IF NOT EXISTS idx_pdf_sections_uid ON pdf_sections(article_uid);
+
+CREATE INDEX IF NOT EXISTS idx_personalization_arm_policy
+    ON personalization_arm_state(policy_type, scope_key);
+
+CREATE INDEX IF NOT EXISTS idx_personalization_decisions_search
+    ON personalization_decisions(search_id, article_uid);
+
+CREATE INDEX IF NOT EXISTS idx_personalization_decisions_user
+    ON personalization_decisions(user_id, policy_type, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_pico_extractions_article ON pico_extractions(article_id);
 
@@ -1281,6 +1399,12 @@ CREATE INDEX IF NOT EXISTS idx_proactive_evidence_alerts_user_created
 
 CREATE INDEX IF NOT EXISTS idx_proactive_evidence_alerts_user_topic
     ON proactive_evidence_alerts(user_id, normalized_topic);
+
+CREATE INDEX IF NOT EXISTS idx_product_quality_feedback_type_time
+    ON product_quality_feedback(product_type, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_product_quality_feedback_user
+    ON product_quality_feedback(user_id, created_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_quiz_attempts_concept_hash ON quiz_attempts(user_id, concept_hash);
 
@@ -1307,6 +1431,12 @@ CREATE INDEX IF NOT EXISTS idx_qvr_question ON quiz_validation_results(question_
 
 CREATE INDEX IF NOT EXISTS idx_qvr_topic ON quiz_validation_results(normalized_topic, status);
 
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_family ON refresh_tokens(family_id);
+
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_hash ON refresh_tokens(token_hash);
+
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user ON refresh_tokens(user_id, expires_at);
+
 CREATE INDEX IF NOT EXISTS idx_review_articles_review ON review_articles(review_id);
 
 CREATE INDEX IF NOT EXISTS idx_review_articles_status ON review_articles(screening_status);
@@ -1314,6 +1444,8 @@ CREATE INDEX IF NOT EXISTS idx_review_articles_status ON review_articles(screeni
 CREATE INDEX IF NOT EXISTS idx_review_projects_owner ON review_projects(owner_type, owner_id);
 
 CREATE INDEX IF NOT EXISTS idx_revoked_tokens_expires ON revoked_tokens(expires_at);
+
+CREATE INDEX IF NOT EXISTS idx_revoked_tokens_jti ON revoked_tokens(token_jti);
 
 CREATE INDEX IF NOT EXISTS idx_saved_articles_session ON saved_articles(session_id);
 
@@ -1325,14 +1457,16 @@ CREATE INDEX IF NOT EXISTS idx_search_feedback_session ON search_result_feedback
 
 CREATE INDEX IF NOT EXISTS idx_search_feedback_user_article ON search_result_feedback(user_id, article_uid);
 
+CREATE INDEX IF NOT EXISTS idx_search_learning_outcomes_article
+    ON search_learning_outcomes(article_uid, claim_key);
+
+CREATE INDEX IF NOT EXISTS idx_search_learning_outcomes_user
+    ON search_learning_outcomes(user_id, normalized_topic, attributed_at);
+
 CREATE INDEX IF NOT EXISTS idx_search_usage_user_date
     ON search_usage_daily (user_id, date);
 
 CREATE INDEX IF NOT EXISTS idx_searches_created ON searches(created_at);
-
--- Idempotent ADD COLUMN: see migration 031_search_normalized_topic.sql — same
--- already-existing-table gap as article_cache above.
-ALTER TABLE searches ADD COLUMN IF NOT EXISTS normalized_topic TEXT;
 
 CREATE INDEX IF NOT EXISTS idx_searches_normalized_topic ON searches(normalized_topic, created_at);
 
@@ -1353,6 +1487,15 @@ CREATE INDEX IF NOT EXISTS idx_study_runs_outline ON study_runs(outline_id);
 CREATE INDEX IF NOT EXISTS idx_study_runs_user_status ON study_runs(user_id, status, last_active_at);
 
 CREATE INDEX IF NOT EXISTS idx_study_runs_user_topic ON study_runs(user_id, normalized_topic, last_active_at);
+
+CREATE INDEX IF NOT EXISTS idx_synopsis_feedback_article
+    ON synopsis_feedback(article_uid, created_at);
+
+CREATE INDEX IF NOT EXISTS idx_synopsis_feedback_type_time
+    ON synopsis_feedback(feedback_type, created_at);
+
+CREATE INDEX IF NOT EXISTS idx_synopsis_feedback_user_article
+    ON synopsis_feedback(user_id, article_uid, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_synthesis_snapshots_topic
     ON synthesis_snapshots(normalized_topic, generated_at DESC);
@@ -1387,6 +1530,8 @@ CREATE INDEX IF NOT EXISTS idx_teams_owner ON teams(owner_id);
 
 CREATE INDEX IF NOT EXISTS idx_topic_guidelines_checked ON topic_guidelines(last_checked_at);
 
+CREATE INDEX IF NOT EXISTS idx_topic_guidelines_normalized ON topic_guidelines(normalized_topic);
+
 CREATE INDEX IF NOT EXISTS idx_topic_guidelines_source ON topic_guidelines(source_body);
 
 CREATE INDEX IF NOT EXISTS idx_topic_guidelines_status ON topic_guidelines(status);
@@ -1413,7 +1558,7 @@ CREATE INDEX IF NOT EXISTS idx_ucp_topic ON user_curriculum_progress(curriculum_
 
 CREATE INDEX IF NOT EXISTS idx_ucp_user ON user_curriculum_progress(user_id);
 
-CREATE UNIQUE INDEX idx_user_claim_misconception
+CREATE UNIQUE INDEX IF NOT EXISTS idx_user_claim_misconception
     ON user_claim_misconceptions(user_id, claim_key, wrong_option_text);
 
 CREATE INDEX IF NOT EXISTS idx_user_claim_misconceptions_claim
@@ -1426,9 +1571,14 @@ CREATE INDEX IF NOT EXISTS idx_user_interactions_session ON user_interactions(se
 
 CREATE INDEX IF NOT EXISTS idx_user_interactions_user ON user_interactions(user_id, article_id, created_at);
 
+CREATE INDEX IF NOT EXISTS idx_user_topic_mastery_user_topic ON user_topic_mastery(user_id, normalized_topic);
+
 CREATE INDEX IF NOT EXISTS idx_user_topic_memory_norm ON user_topic_memory(normalized_topic);
 
 CREATE INDEX IF NOT EXISTS idx_user_topic_memory_user ON user_topic_memory(user_id, updated_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_user_topic_memory_user_id
+    ON user_topic_memory(user_id);
 
 CREATE INDEX IF NOT EXISTS idx_users_stripe_customer ON users(stripe_customer_id);
 

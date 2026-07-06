@@ -1,31 +1,5 @@
 import { API_BASE, BaseApiClient } from './core';
 import type { AuthUser } from './core';
-import type {
-  Article,
-  SearchFilters,
-  AnalysisType,
-  AnalysisResult,
-  CollectionSummary,
-  SavedAlert,
-  Annotation,
-  SynthesisResult,
-  ReviewProject,
-  ReviewArticle,
-  ReviewCriteria,
-  PrismaCounts,
-  PicoExtraction,
-  CaseModeResult,
-  CaseLearningMode,
-  ArticleSynopsisResult,
-  SearchResponse,
-  AgentGuidance,
-  TopicKnowledge,
-  TopicKnowledgeListResponse,
-  TopicKnowledgeProposal,
-  TopicKnowledgeProposalListResponse,
-  LearningHealthResponse,
-  LearningRecommendation,
-} from '@types';
 
 export class AuthApi extends BaseApiClient {
   async register(data: Record<string, unknown>): Promise<{ user: AuthUser; message?: string }> {
@@ -35,20 +9,28 @@ export class AuthApi extends BaseApiClient {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Registration failed');
+      await this.parseErrorResponse(response);
     }
     return response.json();
   }
 
+  /**
+   * Returns the current session user, or `null` when the session is no
+   * longer valid (401). Network errors and server failures are re-thrown
+   * so callers can distinguish "logged out" from "the API is broken".
+   */
   async getMe(): Promise<{ user: AuthUser } | null> {
+    let response: Response;
     try {
-      const response = await this.fetchWithSession(`${API_BASE}/api/auth/me`);
-      if (!response.ok) return null;
-      return response.json();
-    } catch {
-      return null;
+      response = await this.fetchWithSession(`${API_BASE}/api/auth/me`);
+    } catch (err) {
+      throw new Error(err instanceof Error ? err.message : 'Network error while fetching session');
     }
+    if (response.status === 401) return null;
+    if (!response.ok) {
+      await this.parseErrorResponse(response);
+    }
+    return response.json();
   }
 
   async login(credentials: Record<string, unknown>): Promise<{ user: AuthUser }> {
@@ -58,18 +40,20 @@ export class AuthApi extends BaseApiClient {
       body: JSON.stringify(credentials),
     });
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Login failed');
+      await this.parseErrorResponse(response);
     }
     return response.json();
   }
 
   async forgotPassword(email: string): Promise<void> {
-    await this.fetchWithSession(`${API_BASE}/api/auth/forgot-password`, {
+    const response = await this.fetchWithSession(`${API_BASE}/api/auth/forgot-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
     });
+    if (!response.ok) {
+      await this.parseErrorResponse(response);
+    }
   }
 
   async resetPassword(token: string, password: string): Promise<void> {
@@ -79,8 +63,7 @@ export class AuthApi extends BaseApiClient {
       body: JSON.stringify({ token, password }),
     });
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Password reset failed');
+      await this.parseErrorResponse(response);
     }
   }
 
@@ -91,8 +74,7 @@ export class AuthApi extends BaseApiClient {
       body: JSON.stringify({ token }),
     });
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Verification failed');
+      await this.parseErrorResponse(response);
     }
     return response.json();
   }
@@ -102,22 +84,30 @@ export class AuthApi extends BaseApiClient {
       method: 'POST',
     });
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Failed to resend verification email');
+      await this.parseErrorResponse(response);
     }
   }
 
+  /**
+   * Returns a refreshed session user, or `null` when the refresh token is no
+   * longer valid (401). Network errors and server failures are re-thrown
+   * so callers can distinguish "session expired" from "the API is broken".
+   */
   async refreshSession(): Promise<{ user: AuthUser } | null> {
+    let response: Response;
     try {
-      const response = await this.fetchWithSession(`${API_BASE}/api/auth/refresh`, {
+      response = await this.fetchWithSession(`${API_BASE}/api/auth/refresh`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       });
-      if (!response.ok) return null;
-      return response.json();
-    } catch {
-      return null;
+    } catch (err) {
+      throw new Error(err instanceof Error ? err.message : 'Network error while refreshing session');
     }
+    if (response.status === 401) return null;
+    if (!response.ok) {
+      await this.parseErrorResponse(response);
+    }
+    return response.json();
   }
 
   async logout() {
@@ -135,8 +125,7 @@ export class AuthApi extends BaseApiClient {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Update failed');
+      await this.parseErrorResponse(response);
     }
     return response.json();
   }
@@ -148,8 +137,7 @@ export class AuthApi extends BaseApiClient {
       body: JSON.stringify({ currentPassword, newPassword }),
     });
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Password change failed');
+      await this.parseErrorResponse(response);
     }
     return response.json();
   }
@@ -159,8 +147,7 @@ export class AuthApi extends BaseApiClient {
       method: 'POST',
     });
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Failed to start trial');
+      await this.parseErrorResponse(response);
     }
     return response.json();
   }
@@ -172,8 +159,7 @@ export class AuthApi extends BaseApiClient {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      const err = await response.json().catch(() => ({})) as { error?: string };
-      throw new Error(err.error || 'Failed to request email change');
+      await this.parseErrorResponse(response);
     }
     return response.json();
   }
@@ -183,16 +169,14 @@ export class AuthApi extends BaseApiClient {
       method: 'DELETE',
     });
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Failed to delete account');
+      await this.parseErrorResponse(response);
     }
   }
 
   async downloadAccountData(): Promise<Blob> {
     const response = await this.fetchWithSession(`${API_BASE}/api/account/data-export`);
     if (!response.ok) {
-      const err = await response.json().catch(() => ({})) as { error?: string };
-      throw new Error(err.error || 'Failed to export account data');
+      await this.parseErrorResponse(response);
     }
     return response.blob();
   }

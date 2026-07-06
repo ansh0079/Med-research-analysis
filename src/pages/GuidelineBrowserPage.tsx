@@ -28,7 +28,7 @@ export const GuidelineBrowserPage: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await api.browseGuidelines({
+      const res = await api.collaboration.browseGuidelines({
         query: q || undefined,
         status: st || undefined,
         limit: PAGE_SIZE,

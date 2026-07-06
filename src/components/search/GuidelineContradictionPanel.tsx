@@ -62,7 +62,7 @@ export const GuidelineContradictionPanel: React.FC<Props> = ({ query }) => {
     (async () => {
       try {
         setLoading(true);
-        const res = await api.getGuidelineContradictions(query);
+        const res = await api.collaboration.getGuidelineContradictions(query);
         if (!cancelled) setContradictions(res.contradictions);
       } catch {
         if (!cancelled) setContradictions([]);

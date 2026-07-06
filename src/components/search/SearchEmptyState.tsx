@@ -56,7 +56,7 @@ export const SearchEmptyState: React.FC<Props> = ({ onExampleClick, isAuthentica
     }
     let cancelled = false;
     setRecsLoading(true);
-    void api.getLearningRecommendations(4)
+    void api.learning.getLearningRecommendations(4)
       .then((r) => {
         if (!cancelled) setRecommendations(r.recommendations || []);
       })

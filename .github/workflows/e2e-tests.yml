@@ -35,21 +35,19 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps ${{ matrix.browser }}
 
-      - name: Start server
-        run: node server.js &
+      - name: Start server, wait, and run E2E tests
+        run: |
+          node server.js &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID" EXIT
+          npx wait-on http://localhost:3002/health --timeout 120000
+          npx playwright test tests/e2e/beta-smoke.spec.js --project=${{ matrix.browser }}
         env:
           PORT: 3002
           NODE_ENV: e2e
           APP_ROLE: web
           JWT_SECRET: test-jwt-secret-e2e
           ADMIN_TOKEN: test-admin-token-e2e
-
-      - name: Wait for server
-        run: npx wait-on http://localhost:3002/health --timeout 120000
-
-      - name: Run beta smoke E2E tests
-        run: npx playwright test tests/e2e/beta-smoke.spec.js --project=${{ matrix.browser }}
-        env:
           BASE_URL: http://localhost:3002
           CI: true
 
@@ -85,21 +83,19 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Start server
-        run: node server.js &
+      - name: Start server, wait, and run mobile E2E tests
+        run: |
+          node server.js &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID" EXIT
+          npx wait-on http://localhost:3002/health --timeout 120000
+          npx playwright test tests/e2e/beta-smoke.spec.js --project='Mobile Chrome'
         env:
           PORT: 3002
           NODE_ENV: e2e
           APP_ROLE: web
           JWT_SECRET: test-jwt-secret-e2e
           ADMIN_TOKEN: test-admin-token-e2e
-
-      - name: Wait for server
-        run: npx wait-on http://localhost:3002/health --timeout 120000
-
-      - name: Run mobile beta smoke E2E tests
-        run: npx playwright test tests/e2e/beta-smoke.spec.js --project='Mobile Chrome'
-        env:
           BASE_URL: http://localhost:3002
           CI: true
 
@@ -135,21 +131,19 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Start server
-        run: node server.js &
+      - name: Start server, wait, and run compliance/accessibility tests
+        run: |
+          node server.js &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID" EXIT
+          npx wait-on http://localhost:3002/health --timeout 120000
+          npx playwright test tests/e2e/beta-smoke.spec.js --project=chromium --grep "compliance|legal"
         env:
           PORT: 3002
           NODE_ENV: e2e
           APP_ROLE: web
           JWT_SECRET: test-jwt-secret-e2e
           ADMIN_TOKEN: test-admin-token-e2e
-
-      - name: Wait for server
-        run: npx wait-on http://localhost:3002/health --timeout 120000
-
-      - name: Run compliance/accessibility smoke tests
-        run: npx playwright test tests/e2e/beta-smoke.spec.js --project=chromium --grep "compliance|legal"
-        env:
           BASE_URL: http://localhost:3002
           CI: true
 

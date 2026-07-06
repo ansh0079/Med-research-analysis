@@ -1,35 +1,24 @@
 import { API_BASE, BaseApiClient } from './core';
 import type {
   Article,
-  SearchFilters,
-  AnalysisType,
-  AnalysisResult,
-  CollectionSummary,
-  SavedAlert,
-  Annotation,
-  SynthesisResult,
-  ReviewProject,
-  ReviewArticle,
-  ReviewCriteria,
-  PrismaCounts,
-  PicoExtraction,
-  CaseModeResult,
-  CaseLearningMode,
-  ArticleSynopsisResult,
-  SearchResponse,
   AgentGuidance,
   TopicKnowledge,
   TopicKnowledgeListResponse,
   TopicKnowledgeProposal,
   TopicKnowledgeProposalListResponse,
   LearningHealthResponse,
-  LearningRecommendation,
 } from '@types';
 
 export class KnowledgeApi extends BaseApiClient {
   async getTopicKnowledge(topic: string): Promise<{ found: boolean; agentGuidance: AgentGuidance | null; updatedAt?: string; lastRefreshedAt?: string }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/knowledge/${encodeURIComponent(topic)}`);
-    if (!response.ok) return { found: false, agentGuidance: null };
+    // 404/401 are legitimate "not built yet / not authenticated" signals.
+    // 5xx and network errors must propagate so callers can distinguish a
+    // missing topic from a broken backend.
+    if (response.status === 404 || response.status === 401) {
+      return { found: false, agentGuidance: null };
+    }
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
 
@@ -49,10 +38,7 @@ export class KnowledgeApi extends BaseApiClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({}),
     });
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.error || 'Failed to review topic knowledge');
-    }
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
 
@@ -65,10 +51,7 @@ export class KnowledgeApi extends BaseApiClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.error || 'Failed to verify anchor');
-    }
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
 
@@ -80,7 +63,10 @@ export class KnowledgeApi extends BaseApiClient {
     if (options.unreadOnly) params.set('unread', '1');
     if (options.topic) params.set('topic', options.topic);
     const response = await this.fetchWithSession(`${API_BASE}/api/me/evidence-alerts?${params}`);
-    if (!response.ok) return { alerts: [] };
+    if (response.status === 404 || response.status === 401) {
+      return { alerts: [] };
+    }
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
 
@@ -88,16 +74,27 @@ export class KnowledgeApi extends BaseApiClient {
     const response = await this.fetchWithSession(`${API_BASE}/api/me/evidence-alerts/${encodeURIComponent(String(id))}/read`, {
       method: 'POST',
     });
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.error || 'Failed to update alert');
-    }
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
+  }
+
+  /**
+   * Download the admin audit log as CSV. Goes through `fetchWithSession` so the
+   * request carries the session/CSRF headers and benefits from 401 refresh.
+   */
+  async exportAuditLog(options: { dateFrom?: string; dateTo?: string } = {}): Promise<Blob> {
+    const params = new URLSearchParams();
+    if (options.dateFrom) params.set('dateFrom', options.dateFrom);
+    if (options.dateTo) params.set('dateTo', options.dateTo);
+    const url = `${API_BASE}/api/admin/audit-log/export${params.toString() ? '?' + params.toString() : ''}`;
+    const response = await this.fetchWithSession(url);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.blob();
   }
 
   async getSynapseGraph(topic: string): Promise<import('@types').SynapseGraphPayload> {
     const response = await this.fetchWithSession(`${API_BASE}/api/topics/${encodeURIComponent(topic)}/synapse-graph`);
-    if (!response.ok) throw new Error('Synapse graph failed');
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
 
@@ -110,10 +107,7 @@ export class KnowledgeApi extends BaseApiClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ articles }),
     });
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.error || 'Failed to propose topic knowledge');
-    }
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
 

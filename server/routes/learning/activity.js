@@ -687,9 +687,9 @@ Return ONLY valid JSON:
   "evidenceUsed": "Key papers or guidelines referenced — derive from the evidence list above where possible"
 }`;
 
-            const { createAiService, PINNED_MODELS } = require('../services/aiService');
+            const { getSharedAiService, PINNED_MODELS } = require('../services/aiService');
             const { serverConfig } = deps;
-            const ai = createAiService({ serverConfig });
+            const ai = getSharedAiService({ serverConfig });
             const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider: 'auto' }, serverConfig);
             if (!selectedProvider) {
                 return res.status(503).json({ error: 'No AI provider configured' });

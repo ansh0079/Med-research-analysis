@@ -1,8 +1,8 @@
 // Learning Agent Routes — orchestrator
-const { registerProfileRoutes } = require('./learning/profileRoutes');
-const { registerKnowledgeRoutes } = require('./learning/knowledgeRoutes');
-const { registerQuizRoutes } = require('./learning/quizRoutes');
-const { registerActivityRoutes } = require('./learning/activityRoutes');
+const { registerProfileRoutes } = require('./profile');
+const { registerKnowledgeRoutes } = require('./knowledge');
+const { registerQuizRoutes } = require('./quiz');
+const { registerActivityRoutes } = require('./activity');
 
 function registerLearningRoutes(app, deps) {
     registerProfileRoutes(app, deps);

@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const logger = require('../config/logger');
-const { createAiService, PINNED_MODELS, TEMPERATURE, MAX_OUTPUT_TOKENS, AI_DISCLAIMER } = require('../services/aiService');
+const { createAiService, getSharedAiService, PINNED_MODELS, TEMPERATURE, MAX_OUTPUT_TOKENS, AI_DISCLAIMER } = require('../services/aiService');
 const { buildQuizPrompt, buildSeminalKnowledgeExtractionPrompt, buildAnalysisPrompt, buildPicoExtractionPrompt, buildJournalClubPrompt } = require('../prompts');
 const { batchCheckRetractions } = require('../services/qualityService');
 const { validateMedicalOutputCitations, validateSourceIndices } = require('../services/citationValidator');
@@ -1545,7 +1545,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             .sort((a, b) => (b._impact?.score ?? 0) - (a._impact?.score ?? 0))
             .slice(0, 8);
         try {
-            const ai = createAiService({ serverConfig, fetchImpl });
+            const ai = getSharedAiService({ serverConfig, fetchImpl });
             const normalizedTopic = String(topic || '').trim();
             const [teachingObjects, groundedClaims] = await Promise.all([
                 db.listTeachingObjectsForTopic(normalizedTopic, { limit: 3 }).catch(() => []),

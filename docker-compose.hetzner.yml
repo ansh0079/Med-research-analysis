@@ -97,13 +97,26 @@ services:
       SEMANTIC_SCHOLAR_KEY: ${SEMANTIC_SCHOLAR_KEY:-}
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+      STRIPE_RESEARCHER_PRICE_ID: ${STRIPE_RESEARCHER_PRICE_ID:-}
+      STRIPE_PRO_PRICE_ID: ${STRIPE_PRO_PRICE_ID:-}
+      STRIPE_TEAM_PRICE_ID: ${STRIPE_TEAM_PRICE_ID:-}
       RESEND_API_KEY: ${RESEND_API_KEY:-}
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY:-}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-Signal MD <hello@signalmd.co>}
       APP_URL: https://${DOMAIN:?set DOMAIN in .env}
       CORS_ORIGINS: https://${DOMAIN}
       CLIENT_URL: https://${DOMAIN}
       API_URL: https://${DOMAIN}
-      AUTO_SEED_ON_SEARCH: ${AUTO_SEED_ON_SEARCH:-true}
-      PAYWALL_ENABLED: ${PAYWALL_ENABLED:-false}
+      AUTO_SEED_ON_SEARCH: ${AUTO_SEED_ON_SEARCH:-false}
+      PAYWALL_ENABLED: ${PAYWALL_ENABLED:-true}
+      PAYWALL_ALLOW_IN_DEV: "false"
+      REQUIRE_STRIPE: "true"
+      REQUIRE_SMTP: "true"
+      REQUIRE_VECTOR_SEARCH: "true"
       GROBID_URL: http://grobid:8070
       LOG_LEVEL: ${LOG_LEVEL:-info}
       SENTRY_DSN: ${SENTRY_DSN:-}
@@ -150,8 +163,16 @@ services:
       NCBI_EMAIL: ${NCBI_EMAIL:-}
       MISTRAL_API_KEY: ${MISTRAL_API_KEY:-}
       RESEND_API_KEY: ${RESEND_API_KEY:-}
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY:-}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-Signal MD <hello@signalmd.co>}
       APP_URL: https://${DOMAIN}
-      AUTO_SEED_ON_SEARCH: ${AUTO_SEED_ON_SEARCH:-true}
+      AUTO_SEED_ON_SEARCH: ${AUTO_SEED_ON_SEARCH:-false}
+      REQUIRE_SMTP: "true"
+      REQUIRE_VECTOR_SEARCH: "true"
       GROBID_URL: http://grobid:8070
       LOG_LEVEL: ${LOG_LEVEL:-info}
       SENTRY_DSN: ${SENTRY_DSN:-}

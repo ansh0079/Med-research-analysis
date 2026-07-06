@@ -107,7 +107,7 @@ export const GradePanel: React.FC<Props> = ({ reviewId, includedCount, cached, o
     setState('loading');
     setError('');
     try {
-      const result = await api.generateGradeTable(reviewId);
+      const result = await api.review.generateGradeTable(reviewId);
       setTable(result.gradeTable);
       setState('done');
       onResult?.(result.gradeTable);

@@ -483,7 +483,6 @@ export interface TopicKnowledge {
     reviewedAt?: string;
     editedBy?: string | null;
     editedAt?: string;
-    [key: string]: unknown;
   };
   sourceArticles: NonNullable<AgentGuidance['sourceArticles']>;
   status: string;
@@ -583,7 +582,7 @@ export interface LearningHealthResponse {
       refreshedCount: number;
       skippedCount: number;
       errorCount: number;
-      details: { topics?: Array<Record<string, unknown>>; [key: string]: unknown };
+      details: { topics?: Array<Record<string, unknown>> };
       error: string | null;
     }>;
     teachingObjects?: {
@@ -917,7 +916,7 @@ export interface CollectionArticleEntry {
   tags: string[];
 }
 
-/** Full collection detail — matches enrichCollection() in server/collaboration-routes.js */
+/** Full collection detail — matches enrichCollection() in server/routes/collaboration.js */
 export interface CollectionDetail {
   id: string;
   name: string;
@@ -1555,7 +1554,7 @@ export interface QuizAttempt {
   topic: string;
   normalizedTopic: string;
   questionId: string;
-  questionType: 'recall' | 'clinical_application' | 'trial_interpretation' | 'guideline' | 'pitfall';
+  questionType: QuestionType;
   questionText: string;
   userAnswer: string;
   correctAnswer: string;
@@ -1638,7 +1637,6 @@ export interface StudyRun {
     coveredNodes?: number;
     totalNodes?: number;
     quizCompletedAt?: string;
-    [key: string]: unknown;
   };
   nodeCoverage: Record<string, { seen: boolean; quizAttempts: number; correct: number; lastAttemptAt: string | null }>;
   startedAt: string;

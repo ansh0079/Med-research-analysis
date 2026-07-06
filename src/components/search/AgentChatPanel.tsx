@@ -149,14 +149,14 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
   // Load existing conversations for this topic on mount
   useEffect(() => {
     if (!isAuthenticated) return;
-    api.getAgentSessions(topic)
+    api.learning.getAgentSessions(topic)
       .then((res) => setConversations(res.conversations))
       .catch(() => setConversations([]));
   }, [isAuthenticated, topic]);
 
   const loadConversation = useCallback(async (id: number) => {
     try {
-      const { conversation } = await api.getAgentSession(id);
+      const { conversation } = await api.learning.getAgentSession(id);
       setMessages(conversation.messages as ChatMessage[]);
       setConversationId(conversation.id);
       setFeedbackByIndex({});
@@ -190,7 +190,7 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
       let reply = '';
       try {
         if (isAuthenticated && !convId) {
-          const { conversation } = await api.createAgentSession(topic, topic);
+          const { conversation } = await api.learning.createAgentSession(topic, topic);
           convId = conversation.id;
           setConversationId(convId);
           setConversations((prev) => [conversation, ...prev]);
@@ -211,7 +211,7 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
           }
         } catch { /* ignore */ }
 
-        await api.agentChatStream(
+        await api.ai.agentChatStream(
           topic,
           trimmed,
           history,
@@ -236,7 +236,7 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
         );
 
         if (isAuthenticated && convId && reply) {
-          api.appendAgentMessages(convId, [
+          api.learning.appendAgentMessages(convId, [
             { role: 'user', content: trimmed, timestamp: new Date().toISOString() },
             { role: 'assistant', content: reply, timestamp: new Date().toISOString() },
           ]).catch(() => {});
@@ -267,7 +267,7 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
   const handleAgentFeedback = useCallback((messageIndex: number, feedbackType: AgentFeedbackType) => {
     if (!isAuthenticated) return;
     setFeedbackByIndex((prev) => ({ ...prev, [messageIndex]: feedbackType }));
-    api.recordAgentFeedback({
+    api.ai.recordAgentFeedback({
       topic,
       feedbackType,
       conversationId,

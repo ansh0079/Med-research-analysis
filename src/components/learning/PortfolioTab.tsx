@@ -113,7 +113,7 @@ export function PortfolioTab() {
     setLoading(true);
     setError('');
     try {
-      const { reflections: data } = await api.getPortfolioReflections({ limit: 100, status: filterStatus });
+      const { reflections: data } = await api.learning.getPortfolioReflections({ limit: 100, status: filterStatus });
       setReflections(data);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to load reflections');
@@ -152,7 +152,7 @@ export function PortfolioTab() {
     setDrafting(true);
     setDraftError('');
     try {
-      const { draft } = await api.draftPortfolioReflection(form.reflectionType, form.topic);
+      const { draft } = await api.learning.draftPortfolioReflection(form.reflectionType, form.topic);
       setForm((f) => ({
         ...f,
         whatHappened: draft.whatHappened || f.whatHappened,
@@ -172,9 +172,9 @@ export function PortfolioTab() {
     setSaving(true);
     try {
       if (editingId) {
-        await api.updatePortfolioReflection(editingId, form);
+        await api.learning.updatePortfolioReflection(editingId, form);
       } else {
-        await api.createPortfolioReflection({
+        await api.learning.createPortfolioReflection({
           reflectionType: form.reflectionType,
           topic: form.topic.trim(),
           whatHappened: form.whatHappened,
@@ -196,7 +196,7 @@ export function PortfolioTab() {
 
   const changeStatus = async (id: number, status: ReflectionStatus) => {
     try {
-      await api.updatePortfolioReflection(id, { status });
+      await api.learning.updatePortfolioReflection(id, { status });
       setReflections((prev) => prev.map((r) => r.id === id ? { ...r, status } : r));
     } catch {
       // silent — list will refresh on next load

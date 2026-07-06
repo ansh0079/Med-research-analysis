@@ -295,7 +295,7 @@ function TopicSynapseGraphSection({ query, onOpenTopic }: { query: string; onOpe
     setLoading(true);
     setErr(null);
     try {
-      const g = await api.getSynapseGraph(query);
+      const g = await api.knowledge.getSynapseGraph(query);
       setGraph(g);
     } catch {
       setErr('Could not load graph.');

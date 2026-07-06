@@ -42,7 +42,7 @@ export const HistoryPage: React.FC = () => {
   const { showToast } = useToast();
 
   useEffect(() => {
-    api.getSearchHistory()
+    api.documents.getSearchHistory()
       .then((data) => setHistory(data.history))
       .catch((err) => {
         showToast(err instanceof Error ? err.message : 'History load failed', 'error');
@@ -57,7 +57,7 @@ export const HistoryPage: React.FC = () => {
       try {
         setAlertsLoading(true);
         setAlertsError('');
-        const data = await api.getAlerts();
+        const data = await api.review.getAlerts();
         if (!cancelled) setAlerts(data.alerts);
       } catch {
         if (!cancelled) setAlertsError('Failed to load saved queries.');
@@ -78,7 +78,7 @@ export const HistoryPage: React.FC = () => {
     if (!newQuery.trim()) return;
     setCreating(true);
     try {
-      const result = await api.createAlert(newQuery.trim(), filters.sources ?? ['pubmed'], newFrequency);
+      const result = await api.review.createAlert(newQuery.trim(), filters.sources ?? ['pubmed'], newFrequency);
       setAlerts((prev) => [result.alert, ...prev]);
       setNewQuery('');
     } catch (err) {
@@ -90,7 +90,7 @@ export const HistoryPage: React.FC = () => {
 
   const handleDeleteAlert = async (id: number) => {
     try {
-      await api.deleteAlert(id);
+      await api.review.deleteAlert(id);
       setAlerts((prev) => prev.filter((a) => a.id !== id));
     } catch {
       setAlertsError('Failed to delete query.');

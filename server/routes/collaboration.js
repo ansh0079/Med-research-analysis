@@ -4,9 +4,9 @@
 // ==========================================
 
 const express = require('express');
-const { requireAuthJwt } = require('./middleware/auth');
-const { sanitizeUserInput, sanitizeTopicName } = require('./utils/sanitization');
-const db = require('../database');
+const { requireAuthJwt } = require('../middleware/auth');
+const { sanitizeUserInput, sanitizeTopicName } = require('../utils/sanitization');
+const db = require('../../database');
 
 const router = express.Router();
 
@@ -1024,4 +1024,8 @@ router.post('/notifications/:notificationId/read', requireAuth, async (req, res,
   }
 });
 
-module.exports = { collaborationRoutes: router };
+function registerCollaborationRoutes(app, _deps) {
+    app.use('/api/collaboration', router);
+}
+
+module.exports = { registerCollaborationRoutes };

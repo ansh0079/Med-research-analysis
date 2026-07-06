@@ -33,7 +33,7 @@ export const AnnotationPanel: React.FC<AnnotationPanelProps> = ({ articleId, art
       try {
         setLoading(true);
         setError('');
-        const data = await api.getAnnotations(articleId);
+        const data = await api.documents.getAnnotations(articleId);
         if (!cancelled) setAnnotations(data);
       } catch (err) {
         if (cancelled) return;
@@ -55,7 +55,7 @@ export const AnnotationPanel: React.FC<AnnotationPanelProps> = ({ articleId, art
     setSaving(true);
     setError('');
     try {
-      const result = await api.addAnnotation(articleId, newText.trim());
+      const result = await api.documents.addAnnotation(articleId, newText.trim());
       setAnnotations((prev) => [
         ...prev,
         { id: result.id, articleId, text: newText.trim() },

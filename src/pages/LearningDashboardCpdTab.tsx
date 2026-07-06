@@ -55,9 +55,9 @@ export function LearningDashboardCpdTab() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     Promise.all([
-      api.getCpdSummary(year),
-      api.getCpdSessions({ startDate: `${year}-01-01`, endDate: `${year}-12-31`, limit: 100 }),
-      api.getPortfolioReflections({ limit: 50 }),
+      api.learning.getCpdSummary(year),
+      api.learning.getCpdSessions({ startDate: `${year}-01-01`, endDate: `${year}-12-31`, limit: 100 }),
+      api.learning.getPortfolioReflections({ limit: 50 }),
     ]).then(([{ summary: sum }, { sessions: sess }, { reflections: refs }]) => {
       if (cancelled) return;
       setSummary(sum);
@@ -70,9 +70,9 @@ export function LearningDashboardCpdTab() {
 
   const refreshData = async () => {
     const [{ summary: sum }, { sessions: sess }, { reflections: refs }] = await Promise.all([
-      api.getCpdSummary(year),
-      api.getCpdSessions({ startDate: `${year}-01-01`, endDate: `${year}-12-31`, limit: 100 }),
-      api.getPortfolioReflections({ limit: 50 }),
+      api.learning.getCpdSummary(year),
+      api.learning.getCpdSessions({ startDate: `${year}-01-01`, endDate: `${year}-12-31`, limit: 100 }),
+      api.learning.getPortfolioReflections({ limit: 50 }),
     ]);
     setSummary(sum);
     setSessions(sess);
@@ -84,7 +84,7 @@ export function LearningDashboardCpdTab() {
     if (!logForm.topic.trim() || logForm.durationMinutes < 1) return;
     setLogStatus('saving');
     try {
-      await api.logCpdSession({ ...logForm, source: 'manual' });
+      await api.learning.logCpdSession({ ...logForm, source: 'manual' });
       await refreshData();
       setLogForm((f) => ({ ...f, topic: '', notes: '' }));
       setLogStatus('saved');
@@ -142,7 +142,7 @@ export function LearningDashboardCpdTab() {
     if (!summary || sessions.length === 0) return;
     setPdfExporting(true);
     try {
-      const blob = await api.downloadCpdPdf(year);
+      const blob = await api.learning.downloadCpdPdf(year);
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -224,7 +224,7 @@ ${reflectionBlocks || '<p>No reflection drafts saved yet.</p>'}
     if (!editingReflection) return;
     setReflectionSaveStatus('saving');
     try {
-      const { reflection } = await api.updatePortfolioReflection(editingReflection.id, {
+      const { reflection } = await api.learning.updatePortfolioReflection(editingReflection.id, {
         reflectionType: reflectionForm.reflectionType as 'CBD' | 'mini-CEX' | 'DOPS',
         topic: String(reflectionForm.topic || ''),
         whatHappened: String(reflectionForm.whatHappened || ''),
@@ -246,7 +246,7 @@ ${reflectionBlocks || '<p>No reflection drafts saved yet.</p>'}
 
   const quickSetReflectionStatus = async (reflection: PortfolioReflection, status: ReflectionStatus) => {
     try {
-      const { reflection: updated } = await api.updatePortfolioReflection(reflection.id, { status });
+      const { reflection: updated } = await api.learning.updatePortfolioReflection(reflection.id, { status });
       setReflections((items) => items.map((item) => item.id === updated.id ? updated : item));
     } catch {
       // Keep card state unchanged if save fails.

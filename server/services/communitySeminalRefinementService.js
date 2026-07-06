@@ -1,7 +1,7 @@
 const logger = require('../config/logger');
 const { fetchUnifiedEvidence } = require('./unifiedEvidenceSearch');
 const { selectTopEvidence } = require('../utils/selectTopEvidence');
-const { createAiService, TEMPERATURE } = require('./aiService');
+const { createAiService, getSharedAiService, TEMPERATURE } = require('./aiService');
 const { resolveProvider } = require('../utils/aiProvider');
 const { buildSeminalKnowledgeExtractionPrompt } = require('../prompts');
 
@@ -74,7 +74,7 @@ async function refineSeminalKnowledgeFromCommunity({
     const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
     if (!provider) throw new Error('No AI provider configured');
 
-    const ai = createAiService({ serverConfig, fetchImpl });
+    const ai = getSharedAiService({ serverConfig, fetchImpl });
     const prompt = buildSeminalKnowledgeExtractionPrompt(displayTopic, synthesisResult, evidenceArticles, existingKnowledge);
     const rawAi = await ai.callText(prompt, provider, model, { temperature: TEMPERATURE.synopsis });
     const knowledge = extractJsonObject(rawAi);

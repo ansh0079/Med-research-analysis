@@ -56,6 +56,14 @@ module.exports = {
             restoreMocks: true,
             testTimeout: 10000,
             detectOpenHandles: true,
+            coverageThreshold: {
+                global: {
+                    branches: 40,
+                    functions: 45,
+                    lines: 50,
+                    statements: 50,
+                },
+            },
         },
         {
             displayName: 'frontend',
@@ -71,6 +79,14 @@ module.exports = {
             clearMocks: true,
             restoreMocks: true,
             testTimeout: 10000,
+            coverageThreshold: {
+                global: {
+                    branches: 30,
+                    functions: 35,
+                    lines: 40,
+                    statements: 40,
+                },
+            },
         },
     ],
     verbose: true,

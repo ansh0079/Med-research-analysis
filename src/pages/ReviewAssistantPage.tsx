@@ -234,7 +234,7 @@ export const ReviewAssistantPage: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await api.getReview(r.id);
+      const data = await api.review.getReview(r.id);
       setReview(data.review);
       setRows(data.articles);
       setPrisma(data.prisma);
@@ -255,7 +255,7 @@ export const ReviewAssistantPage: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const created = await api.createReview({ question, title: question.slice(0, 80), criteria });
+      const created = await api.review.createReview({ question, title: question.slice(0, 80), criteria });
       setReview(created.review);
       let prefillArticles: Article[] = [];
       try {
@@ -264,9 +264,9 @@ export const ReviewAssistantPage: React.FC = () => {
       } catch { /* ignore */ }
       const articleSeed = prefillArticles.length > 0 ? prefillArticles : results.length > 0 ? results : savedArticles.slice(0, 20);
       if (articleSeed.length > 0) {
-        const added = await api.addReviewArticles(created.review.id, articleSeed);
+        const added = await api.review.addReviewArticles(created.review.id, articleSeed);
         setRows(added.articles);
-        const counts = await api.getReviewPrisma(created.review.id);
+        const counts = await api.review.getReviewPrisma(created.review.id);
         setPrisma(counts.prisma);
       }
     } catch (err) {
@@ -281,7 +281,7 @@ export const ReviewAssistantPage: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.extractPico(rows.map((r) => r.article_data));
+      const response = await api.review.extractPico(rows.map((r) => r.article_data));
       const map: Record<string, PicoExtraction> = {};
       response.results.forEach((item) => { map[item.articleId] = item.extraction; });
       setPicoById((prev) => ({ ...prev, ...map }));
@@ -295,7 +295,7 @@ export const ReviewAssistantPage: React.FC = () => {
   const onDecision = async (articleId: string, decision: 'included' | 'excluded' | 'maybe', payload: { exclusionReason?: string; notes?: string } = {}) => {
     if (!review) return;
     try {
-      const updated = await api.updateReviewScreening(review.id, articleId, { decision, ...payload });
+      const updated = await api.review.updateReviewScreening(review.id, articleId, { decision, ...payload });
       setRows((prev) => prev.map((row) => (row.article_id === articleId ? updated.article : row)));
       setPrisma(updated.prisma);
     } catch (err) {
@@ -309,9 +309,9 @@ export const ReviewAssistantPage: React.FC = () => {
     setError(null);
     try {
       const imported = parseRisBibtex(bulkImportText);
-      const added = await api.addReviewArticles(review.id, imported);
+      const added = await api.review.addReviewArticles(review.id, imported);
       setRows((prev) => [...prev, ...added.articles]);
-      const counts = await api.getReviewPrisma(review.id);
+      const counts = await api.review.getReviewPrisma(review.id);
       setPrisma(counts.prisma);
       setBulkImportText('');
     } catch (err) {
@@ -323,7 +323,7 @@ export const ReviewAssistantPage: React.FC = () => {
 
   // ── Exports ──────────────────────────────────────────────────────────────
 
-  const exportCsv = () => { if (review) window.open(api.getReviewExportUrl(review.id), '_blank', 'noopener'); };
+  const exportCsv = () => { if (review) window.open(api.review.getReviewExportUrl(review.id), '_blank', 'noopener'); };
 
   const exportMetaAnalysisCsv = () => {
     const headers = ['title', 'status', 'population', 'intervention', 'comparison', 'outcomes', 'study_design', 'sample_size', 'quality', 'doi', 'notes'];

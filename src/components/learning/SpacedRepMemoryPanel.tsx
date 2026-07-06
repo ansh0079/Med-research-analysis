@@ -53,7 +53,7 @@ export const SpacedRepMemoryPanel: React.FC = () => {
     let cancelled = false;
     (async () => {
       try {
-        const { topics: t } = await api.getSpacedRepTopics();
+        const { topics: t } = await api.learning.getSpacedRepTopics();
         if (!cancelled) setTopics(t);
       } catch {
         if (!cancelled) setTopics([]);

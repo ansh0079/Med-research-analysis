@@ -23,8 +23,7 @@ export const useCollaboration = (articleId: string | null) => {
     let cancelled = false;
 
     // Load initial annotations
-    api
-      .getAnnotations(articleId)
+    api.documents.getAnnotations(articleId)
       .then((data) => {
         if (!cancelled) setAnnotations(data);
       })
@@ -63,7 +62,7 @@ export const useCollaboration = (articleId: string | null) => {
   const addAnnotation = useCallback(async (text: string, position?: { x: number; y: number; page: number }) => {
     if (!articleId) return;
     try {
-      await api.addAnnotation(articleId, text, position);
+      await api.documents.addAnnotation(articleId, text, position);
     } catch (err) {
       if (err instanceof Error && err.message === 'AUTH_REQUIRED') {
         setNeedsAuth(true);

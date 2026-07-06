@@ -6,19 +6,21 @@ import { api } from '@services/api';
 // Mock the API service
 jest.mock('@services/api', () => ({
   api: {
-    getMe: jest.fn(),
-    login: jest.fn(),
-    register: jest.fn(),
-    logout: jest.fn(),
-    forgotPassword: jest.fn(),
-    resendVerification: jest.fn(),
+    auth: {
+      getMe: jest.fn(),
+      login: jest.fn(),
+      register: jest.fn(),
+      logout: jest.fn(),
+      forgotPassword: jest.fn(),
+      resendVerification: jest.fn(),
       updateProfile: jest.fn(),
       changePassword: jest.fn(),
       deleteAccount: jest.fn(),
+    },
   },
 }));
 
-const mockedApi = api as jest.Mocked<typeof api>;
+const mockedApi = api as unknown as { [K in keyof typeof api]: jest.Mocked<(typeof api)[K]> };
 
 describe('AuthContext', () => {
   beforeEach(() => {
@@ -26,7 +28,7 @@ describe('AuthContext', () => {
   });
 
   it('provides initial auth state (not authenticated, loading)', async () => {
-    mockedApi.getMe.mockResolvedValue(null);
+    mockedApi.auth.getMe.mockResolvedValue(null);
 
     const TestComponent = () => {
       const { user, isAuthenticated, isLoading } = useAuth();
@@ -57,7 +59,7 @@ describe('AuthContext', () => {
 
   it('hydrates auth from httpOnly cookie on mount', async () => {
     const mockUser = { id: '1', email: 'user@example.com', role: 'user' };
-    mockedApi.getMe.mockResolvedValue({ user: mockUser });
+    mockedApi.auth.getMe.mockResolvedValue({ user: mockUser });
 
     const TestComponent = () => {
       const { user, isAuthenticated, isLoading } = useAuth();
@@ -81,11 +83,11 @@ describe('AuthContext', () => {
     });
     expect(screen.getByText('User: user@example.com')).toBeInTheDocument();
     expect(screen.getByText('Authenticated: true')).toBeInTheDocument();
-    expect(mockedApi.getMe).toHaveBeenCalledTimes(1);
+    expect(mockedApi.auth.getMe).toHaveBeenCalledTimes(1);
   });
 
   it('handles hydration error gracefully', async () => {
-    mockedApi.getMe.mockRejectedValue(new Error('Network error'));
+    mockedApi.auth.getMe.mockRejectedValue(new Error('Network error'));
 
     const TestComponent = () => {
       const { user, isLoading, isAuthenticated } = useAuth();
@@ -112,7 +114,7 @@ describe('AuthContext', () => {
   });
 
   it('cleans up hydration on unmount', async () => {
-    mockedApi.getMe.mockImplementation(
+    mockedApi.auth.getMe.mockImplementation(
       () => new Promise(() => {
         // Never resolves
       })
@@ -135,8 +137,8 @@ describe('AuthContext', () => {
 
   it('logs in user with email and password', async () => {
     const mockUser = { id: '1', email: 'user@example.com', role: 'user' };
-    mockedApi.getMe.mockResolvedValue(null);
-    mockedApi.login.mockResolvedValue({ user: mockUser });
+    mockedApi.auth.getMe.mockResolvedValue(null);
+    mockedApi.auth.login.mockResolvedValue({ user: mockUser });
 
     const TestComponent = () => {
       const { user, login } = useAuth();
@@ -164,7 +166,7 @@ describe('AuthContext', () => {
     await waitFor(() => {
       expect(screen.getByText('User: user@example.com')).toBeInTheDocument();
     });
-    expect(mockedApi.login).toHaveBeenCalledWith({
+    expect(mockedApi.auth.login).toHaveBeenCalledWith({
       email: 'user@example.com',
       password: 'password',
     });
@@ -172,7 +174,7 @@ describe('AuthContext', () => {
 
   it('does not cache auth in localStorage', async () => {
     const mockUser = { id: '1', email: 'user@example.com', role: 'user' };
-    mockedApi.getMe.mockResolvedValue({ user: mockUser });
+    mockedApi.auth.getMe.mockResolvedValue({ user: mockUser });
 
     render(
       <AuthProvider>
@@ -192,8 +194,8 @@ describe('AuthContext', () => {
 
   it('registers new user', async () => {
     const mockUser = { id: '2', email: 'newuser@example.com', role: 'user' };
-    mockedApi.getMe.mockResolvedValue(null);
-    mockedApi.register.mockResolvedValue({
+    mockedApi.auth.getMe.mockResolvedValue(null);
+    mockedApi.auth.register.mockResolvedValue({
       user: mockUser,
       message: 'Registration successful',
     });
@@ -230,7 +232,7 @@ describe('AuthContext', () => {
     await waitFor(() => {
       expect(screen.getByText('User: newuser@example.com')).toBeInTheDocument();
     });
-    expect(mockedApi.register).toHaveBeenCalledWith({
+    expect(mockedApi.auth.register).toHaveBeenCalledWith({
       email: 'newuser@example.com',
       password: 'password',
       name: 'New User',
@@ -239,8 +241,8 @@ describe('AuthContext', () => {
 
   it('logs out user', async () => {
     const mockUser = { id: '1', email: 'user@example.com', role: 'user' };
-    mockedApi.getMe.mockResolvedValue({ user: mockUser });
-    mockedApi.logout.mockResolvedValue(undefined);
+    mockedApi.auth.getMe.mockResolvedValue({ user: mockUser });
+    mockedApi.auth.logout.mockResolvedValue(undefined);
 
     const TestComponent = () => {
       const { user, logout, isAuthenticated } = useAuth();
@@ -270,12 +272,12 @@ describe('AuthContext', () => {
       expect(screen.getByText('User: null')).toBeInTheDocument();
     });
     expect(screen.getByText('Authenticated: false')).toBeInTheDocument();
-    expect(mockedApi.logout).toHaveBeenCalledTimes(1);
+    expect(mockedApi.auth.logout).toHaveBeenCalledTimes(1);
   });
 
   it('handles forgot password', async () => {
-    mockedApi.getMe.mockResolvedValue(null);
-    mockedApi.forgotPassword.mockResolvedValue(undefined);
+    mockedApi.auth.getMe.mockResolvedValue(null);
+    mockedApi.auth.forgotPassword.mockResolvedValue(undefined);
 
     const TestComponent = () => {
       const { forgotPassword } = useAuth();
@@ -296,13 +298,13 @@ describe('AuthContext', () => {
     btn.click();
 
     await waitFor(() => {
-      expect(mockedApi.forgotPassword).toHaveBeenCalledWith('user@example.com');
+      expect(mockedApi.auth.forgotPassword).toHaveBeenCalledWith('user@example.com');
     });
   });
 
   it('resends verification email', async () => {
-    mockedApi.getMe.mockResolvedValue(null);
-    mockedApi.resendVerification.mockResolvedValue(undefined);
+    mockedApi.auth.getMe.mockResolvedValue(null);
+    mockedApi.auth.resendVerification.mockResolvedValue(undefined);
 
     const TestComponent = () => {
       const { resendVerification } = useAuth();
@@ -321,12 +323,12 @@ describe('AuthContext', () => {
     btn.click();
 
     await waitFor(() => {
-      expect(mockedApi.resendVerification).toHaveBeenCalledTimes(1);
+      expect(mockedApi.auth.resendVerification).toHaveBeenCalledTimes(1);
     });
   });
 
   it('allows manual user override with setUser', async () => {
-    mockedApi.getMe.mockResolvedValue(null);
+    mockedApi.auth.getMe.mockResolvedValue(null);
 
     const TestComponent = () => {
       const { user, setUser } = useAuth();
@@ -382,7 +384,7 @@ describe('AuthContext', () => {
 
   it('maintains isAuthenticated boolean derived from user', async () => {
     const mockUser = { id: '1', email: 'user@example.com' };
-    mockedApi.getMe.mockResolvedValue({ user: mockUser });
+    mockedApi.auth.getMe.mockResolvedValue({ user: mockUser });
 
     const TestComponent = () => {
       const { user, isAuthenticated } = useAuth();

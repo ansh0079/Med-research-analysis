@@ -109,8 +109,8 @@ export const BillingPage: React.FC = () => {
 
   React.useEffect(() => {
     Promise.all([
-      api.getBillingStatus(),
-      api.getBillingUsage().catch(() => null),
+      api.collaboration.getBillingStatus(),
+      api.collaboration.getBillingUsage().catch(() => null),
     ])
       .then(([status, usageData]) => {
         setBilling(status);
@@ -124,7 +124,7 @@ export const BillingPage: React.FC = () => {
     setCheckoutLoading(planId);
     setError(null);
     try {
-      const { url } = await api.createCheckoutSession(planId);
+      const { url } = await api.collaboration.createCheckoutSession(planId);
       // eslint-disable-next-line react-hooks/immutability
       window.location.href = url;
     } catch (err) {
@@ -137,7 +137,7 @@ export const BillingPage: React.FC = () => {
     setPortalLoading(true);
     setError(null);
     try {
-      const { url } = await api.openBillingPortal();
+      const { url } = await api.collaboration.openBillingPortal();
       window.location.href = url;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to open billing portal');
@@ -149,7 +149,7 @@ export const BillingPage: React.FC = () => {
     setTrialLoading(true);
     setError(null);
     try {
-      await api.startTrial();
+      await api.auth.startTrial();
       window.location.reload();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to start trial');

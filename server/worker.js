@@ -17,18 +17,11 @@ const { getEmbeddingOptions } = require('./services/embeddingOptions');
 const { startSavedEmbeddingWorker, stopSavedEmbeddingWorker } = require('./saved-embedding-worker');
 const { registerAllJobHandlers } = require('./services/jobHandlers');
 const { startWorkers, stopWorkers } = require('./services/jobQueue');
-const { scheduleDigests, stopDigests } = require('./services/digestService');
-const { scheduleTopicRefresh, stopTopicRefresh } = require('./services/topicRefreshScheduler');
-const { scheduleKnowledgeDrift, stopKnowledgeDrift } = require('./services/knowledgeDriftService');
-const { scheduleClaimRegeneration, stopClaimRegeneration } = require('./services/claimRegenerationScheduler');
-const { scheduleGuidelineWatchtower, stopGuidelineWatchtower } = require('./services/guidelineWatchtowerScheduler');
-const { scheduleCurriculumSeed, stopCurriculumSeed } = require('./services/curriculumSeedScheduler');
-const { scheduleCollectiveMemory, stopCollectiveMemory } = require('./services/collectiveMemoryScheduler');
-const { scheduleLearnerProfileRollup, stopLearnerProfileRollup } = require('./services/learnerProfileRollupScheduler');
-const { schedulePersonalizationBandit, stopPersonalizationBandit } = require('./services/personalizationBanditScheduler');
+const { buildSchedulerRegistry, startAllSchedulers, stopAllSchedulers } = require('./services/schedulerRegistry');
 
 const PORT = process.env.WORKER_HEALTH_PORT || 3003;
 let healthServer = null;
+let schedulerRegistryRef = null;
 
 async function startWorker() {
     await db.connect();
@@ -51,15 +44,15 @@ async function startWorker() {
     startWorkers(jobDeps);
 
     const appUrl = process.env.APP_URL || `http://localhost:${serverConfig.ports.node}`;
-    scheduleDigests(db, appUrl, serverConfig, safeFetch);
-    scheduleTopicRefresh(db, serverConfig, safeFetch, logger);
-    scheduleKnowledgeDrift(db, serverConfig, safeFetch, logger);
-    scheduleClaimRegeneration(db, { serverConfig, fetchImpl: safeFetch, cache }, logger);
-    scheduleGuidelineWatchtower(db, logger);
-    scheduleCurriculumSeed(db, { serverConfig, fetchImpl: safeFetch, cache }, logger);
-    scheduleCollectiveMemory(db, logger);
-    scheduleLearnerProfileRollup(db, logger);
-    schedulePersonalizationBandit(db, logger);
+    const registry = buildSchedulerRegistry({
+        db,
+        serverConfig,
+        fetchImpl: safeFetch,
+        cache,
+        appUrl,
+    });
+    startAllSchedulers(registry);
+    schedulerRegistryRef = registry;
 
     const http = require('http');
     healthServer = http.createServer((req, res) => {
@@ -82,15 +75,7 @@ async function shutdown(signal) {
         await new Promise((resolve) => healthServer.close(resolve));
     }
     stopSavedEmbeddingWorker();
-    stopDigests();
-    stopTopicRefresh();
-    stopKnowledgeDrift();
-    stopClaimRegeneration();
-    stopGuidelineWatchtower();
-    stopCurriculumSeed();
-    stopCollectiveMemory();
-    stopLearnerProfileRollup();
-    stopPersonalizationBandit();
+    stopAllSchedulers(schedulerRegistryRef || []);
     await stopWorkers();
     await db.close();
     await db.closeVectorPool?.();

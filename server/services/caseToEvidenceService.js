@@ -1,6 +1,6 @@
 'use strict';
 
-const { createAiService, PINNED_MODELS, TEMPERATURE } = require('./aiService');
+const { createAiService, getSharedAiService, PINNED_MODELS, TEMPERATURE } = require('./aiService');
 const { resolveProvider } = require('../utils/aiProvider');
 const { gatherEvidenceArticlesForCase } = require('./caseEvidenceService');
 const { classifyClaimGuidelineAlignment } = require('./claimGuidelineAlignmentService');
@@ -108,7 +108,7 @@ async function buildCaseToEvidenceBrief(db, {
     });
 
     const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
-    const ai = createAiService({ serverConfig, fetchImpl });
+    const ai = getSharedAiService({ serverConfig, fetchImpl });
     const evidenceList = articles.slice(0, 8).map((a, i) =>
         `[${i + 1}] ${a.title} (${a.pubdate || a.year || 'n.d.'}) — ${(a.abstract || '').slice(0, 220)}`
     ).join('\n');

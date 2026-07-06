@@ -2,7 +2,7 @@
 
 const logger = require('../config/logger');
 const crypto = require('crypto');
-const { createAiService, PINNED_MODELS, TEMPERATURE, AI_DISCLAIMER } = require('./aiService');
+const { createAiService, getSharedAiService, PINNED_MODELS, TEMPERATURE, AI_DISCLAIMER } = require('./aiService');
 const { buildSynopsisPrompt } = require('../prompts');
 const { persistPaperTeachingObject } = require('./teachingObjectService');
 const { getProviderCandidates } = require('../utils/aiProvider');
@@ -122,7 +122,7 @@ async function runPaperSynopsisGenerationInner({
     if (!providerCandidates.length) {
         throw new Error('No AI service configured. Add GEMINI_API_KEY or MISTRAL_API_KEY.');
     }
-    const ai = createAiService({ serverConfig, fetchImpl });
+    const ai = getSharedAiService({ serverConfig, fetchImpl });
 
     const effectiveTrainingStage = normalizeTrainingStage(trainingStage);
     let explanationPreferences = null;

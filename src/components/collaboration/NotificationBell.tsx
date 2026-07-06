@@ -22,8 +22,8 @@ export const NotificationBell: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const refresh = useCallback(() => {
-    api.getNotifications().then(setNotifications).catch(() => {});
-    api.getInvitations().then(setInvitations).catch(() => {});
+    api.collaboration.getNotifications().then(setNotifications).catch(() => {});
+    api.collaboration.getInvitations().then(setInvitations).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export const NotificationBell: React.FC = () => {
   const handleNotificationClick = async (notification: CollabNotification) => {
     if (!notification.isRead) {
       setNotifications((prev) => prev.map((n) => (n.id === notification.id ? { ...n, isRead: true } : n)));
-      api.markNotificationRead(notification.id).catch(() => {});
+      api.collaboration.markNotificationRead(notification.id).catch(() => {});
     }
     if (notification.relatedCollectionId) {
       openCollection(notification.relatedCollectionId);
@@ -48,7 +48,7 @@ export const NotificationBell: React.FC = () => {
 
   const handleAccept = async (invitationId: string) => {
     try {
-      await api.acceptCollabInvitation(invitationId);
+      await api.collaboration.acceptCollabInvitation(invitationId);
       setInvitations((prev) => prev.filter((inv) => inv.id !== invitationId));
       refresh();
     } catch {
@@ -58,7 +58,7 @@ export const NotificationBell: React.FC = () => {
 
   const handleDecline = async (invitationId: string) => {
     try {
-      await api.declineCollabInvitation(invitationId);
+      await api.collaboration.declineCollabInvitation(invitationId);
       setInvitations((prev) => prev.filter((inv) => inv.id !== invitationId));
     } catch {
       // Leave the invitation in the list; user can retry.

@@ -32,7 +32,7 @@ export const CollectionDetailDrawer: React.FC<Props> = ({ collectionId, onClose 
     if (!collectionId) return;
     setLoading(true);
     setError('');
-    api.getCollection(collectionId)
+    api.collaboration.getCollection(collectionId)
       .then(setCollection)
       .catch(() => setError('Failed to load collection.'))
       .finally(() => setLoading(false));

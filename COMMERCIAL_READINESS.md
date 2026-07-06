@@ -1,6 +1,6 @@
 # Commercial Readiness
 
-Last updated: 2026-06-04
+Last updated: 2026-07-06
 
 This is the canonical launch-readiness tracker for the app. Older launch notes and review files should be treated as historical unless they are referenced here.
 
@@ -66,6 +66,13 @@ Commercial target:
 
 **Self-hosted (Hetzner VPS):** see [docs/HETZNER_DEPLOY.md](docs/HETZNER_DEPLOY.md) — Docker Compose + Caddy + Postgres + Redis on a single CPX22+ server.
 
+Use [.env.production.example](.env.production.example) as the single production environment checklist. It is intentionally stricter than local `.env.example`: PostgreSQL, Redis, Stripe/paywall, email, Sentry, and at least one LLM key are required. Before staging or production traffic, run:
+
+```bash
+NODE_ENV=production npm run verify:production-env
+NODE_ENV=production npm run beta:safety
+```
+
 Recommended production posture:
 
 ```env
@@ -82,6 +89,25 @@ AUTO_SEED_ON_SEARCH=false
 AGENT_LLM_INTENT_CLASSIFIER=false
 ```
 
+## Worker Split
+
+Production must run separate process roles:
+
+- `APP_ROLE=web`: HTTP/API only; enqueues BullMQ jobs and exposes `/metrics`.
+- `APP_ROLE=worker`: BullMQ consumers, saved-embedding worker, and schedulers.
+
+Use `ecosystem.config.cjs` for PM2 or `docker-compose.hetzner.yml` for Docker Compose. `REDIS_URL` is mandatory so queued jobs survive web restarts and complete on the worker. `/metrics` exposes `medsearch_job_queue_jobs` and `medsearch_job_queue_recurring_failures` for queue depth and failure monitoring.
+
+## Backup And Restore Drill
+
+Run and record one PostgreSQL restore test before paid launch. Procedure: [docs/BACKUP_RESTORE_DRILL.md](docs/BACKUP_RESTORE_DRILL.md).
+
+Latest drill record:
+
+| Date | Environment | Backup | Restore Target | `db:schema:check` | Smoke Tests | Operator | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Not yet run | staging required | pending | pending | pending | pending | pending | Required for commercial launch acceptance. |
+
 ## Remaining High-Impact Work
 
 1. Build a 30-50 query labelled search eval set.
@@ -91,4 +117,3 @@ AGENT_LLM_INTENT_CLASSIFIER=false
 5. Run a restore drill and document backup/retention policy.
 6. Remove placeholder marketing content before public launch.
 7. Convert stale launch docs into links to this file.
-

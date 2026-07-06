@@ -28,7 +28,7 @@ export const GrantWritingPage: React.FC = () => {
     setResult(null); // Clear previous results on new generation
     setError(null);
     try {
-      const data = await api.generateGrantSection(researchQuestion.trim(), sourceArticles, citationStyle);
+      const data = await api.ai.generateGrantSection(researchQuestion.trim(), sourceArticles, citationStyle);
       setResult(data);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Failed to generate section';

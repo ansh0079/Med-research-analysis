@@ -21,21 +21,25 @@ jest.mock('./useAnalytics', () => ({
 
 jest.mock('@services/api', () => ({
   api: {
-    search: jest.fn(),
-    fetchSearchIntelligence: jest.fn(),
-    getClientConfig: jest.fn(),
-    listEvidenceAlerts: jest.fn(),
-    getTopicKnowledge: jest.fn(),
-    getAiEnrichment: jest.fn(),
-    indexArticlesForVector: jest.fn(),
-    logSearchImpressions: jest.fn(),
-    markEvidenceAlertRead: jest.fn(),
+    search: {
+      search: jest.fn(),
+      fetchSearchIntelligence: jest.fn(),
+      getClientConfig: jest.fn(),
+      getAiEnrichment: jest.fn(),
+      indexArticlesForVector: jest.fn(),
+      logSearchImpressions: jest.fn(),
+    },
+    knowledge: {
+      listEvidenceAlerts: jest.fn(),
+      getTopicKnowledge: jest.fn(),
+      markEvidenceAlertRead: jest.fn(),
+    },
   },
 }));
 jest.mock('@contexts/SearchContext');
 jest.mock('@contexts/AuthContext');
 
-const mockedApi = api as jest.Mocked<typeof api>;
+const mockedApi = api as unknown as { [K in keyof typeof api]: jest.Mocked<(typeof api)[K]> };
 const mockedSearchContext = searchContext as jest.Mocked<typeof searchContext>;
 const mockedAuthContext = authContext as jest.Mocked<typeof authContext>;
 
@@ -107,14 +111,14 @@ function setupDefaultMocks() {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  mockedApi.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'] } as any);
-  mockedApi.getClientConfig.mockResolvedValue({ features: { vectorSearch: false } });
+  mockedApi.search.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'] } as any);
+  mockedApi.search.getClientConfig.mockResolvedValue({ features: { vectorSearch: false } });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  mockedApi.listEvidenceAlerts.mockResolvedValue({ alerts: [] } as any);
+  mockedApi.knowledge.listEvidenceAlerts.mockResolvedValue({ alerts: [] } as any);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  mockedApi.getTopicKnowledge.mockResolvedValue({ found: false, agentGuidance: null } as any);
+  mockedApi.knowledge.getTopicKnowledge.mockResolvedValue({ found: false, agentGuidance: null } as any);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  mockedApi.getAiEnrichment.mockResolvedValue({ status: 'ready' } as any);
+  mockedApi.search.getAiEnrichment.mockResolvedValue({ status: 'ready' } as any);
 }
 
 // ── Tests ─────────────────────────────────────────────────────────────────────
@@ -146,7 +150,7 @@ describe('useSearch', () => {
 
   // ── Basic search ──────────────────────────────────────────────────────────
 
-  it('calls api.search with query and returns articles', async () => {
+  it('calls api.search.search with query and returns articles', async () => {
     const { result } = renderHook(() => useSearch());
 
     let articles: any;
@@ -155,7 +159,7 @@ describe('useSearch', () => {
     });
 
     expect(articles).toEqual(mockArticles);
-    expect(mockedApi.search).toHaveBeenCalledWith(
+    expect(mockedApi.search.search).toHaveBeenCalledWith(
       'diabetes',
       expect.any(Object),
       expect.any(Object)
@@ -195,7 +199,7 @@ describe('useSearch', () => {
       await result.current.search('diabetes');
     });
 
-    expect(mockedApi.search).toHaveBeenCalledTimes(1);
+    expect(mockedApi.search.search).toHaveBeenCalledTimes(1);
   });
 
   it('returns empty array and skips api call when query is whitespace only', async () => {
@@ -207,12 +211,12 @@ describe('useSearch', () => {
     });
 
     expect(articles).toEqual([]);
-    expect(mockedApi.search).not.toHaveBeenCalled();
+    expect(mockedApi.search.search).not.toHaveBeenCalled();
   });
 
-  it('returns empty array when api.search returns no articles', async () => {
+  it('returns empty array when api.search.search returns no articles', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mockedApi.search.mockResolvedValue({ articles: [], count: 0, sources: [] } as any);
+    mockedApi.search.search.mockResolvedValue({ articles: [], count: 0, sources: [] } as any);
     const { result } = renderHook(() => useSearch());
 
     let articles: any;
@@ -226,23 +230,23 @@ describe('useSearch', () => {
   // ── Error handling ────────────────────────────────────────────────────────
 
   it('does not index vector results from the client', async () => {
-    mockedApi.getClientConfig.mockResolvedValue({ features: { vectorSearch: true } });
+    mockedApi.search.getClientConfig.mockResolvedValue({ features: { vectorSearch: true } });
     const { result } = renderHook(() => useSearch());
 
     await act(async () => {
       await result.current.search('diabetes');
     });
 
-    expect(mockedApi.search).toHaveBeenCalledWith(
+    expect(mockedApi.search.search).toHaveBeenCalledWith(
       'diabetes',
       expect.any(Object),
       expect.objectContaining({ vector: true })
     );
-    expect(mockedApi.indexArticlesForVector).not.toHaveBeenCalled();
+    expect(mockedApi.search.indexArticlesForVector).not.toHaveBeenCalled();
   });
 
-  it('calls setError and returns empty array when api.search throws', async () => {
-    mockedApi.search.mockRejectedValue(new Error('Network error'));
+  it('calls setError and returns empty array when api.search.search throws', async () => {
+    mockedApi.search.search.mockRejectedValue(new Error('Network error'));
     const { result } = renderHook(() => useSearch());
 
     let articles: any;
@@ -259,7 +263,7 @@ describe('useSearch', () => {
 
   it('stores searchId from api response as lastSearchId', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mockedApi.search.mockResolvedValue({ articles: mockArticles, searchId: 42, count: 2, sources: ['pubmed'] } as any);
+    mockedApi.search.search.mockResolvedValue({ articles: mockArticles, searchId: 42, count: 2, sources: ['pubmed'] } as any);
     const { result } = renderHook(() => useSearch());
 
     await act(async () => {
@@ -270,7 +274,7 @@ describe('useSearch', () => {
   });
 
   it('updates lastSearchId on consecutive searches', async () => {
-    mockedApi.search
+    mockedApi.search.search
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .mockResolvedValueOnce({ articles: mockArticles, searchId: 10, count: 2, sources: ['pubmed'] } as any)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -284,13 +288,13 @@ describe('useSearch', () => {
     await act(async () => { await result.current.search('query2'); });
     expect(result.current.lastSearchId).toBe(11);
 
-    expect(mockedApi.search).toHaveBeenCalledTimes(2);
+    expect(mockedApi.search.search).toHaveBeenCalledTimes(2);
   });
 
   // ── Topic guide status ────────────────────────────────────────────────────
 
   it('sets topicGuideStatus to ready when agentGuidance is returned', async () => {
-    mockedApi.search.mockResolvedValue({
+    mockedApi.search.search.mockResolvedValue({
       articles: mockArticles, count: 2, sources: ['pubmed'],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       agentGuidance: { topic: 'diabetes', mentorMessage: 'Use insulin' } as any,
@@ -310,7 +314,7 @@ describe('useSearch', () => {
 
   it('sets topicGuideStatus to building when 2+ articles and no knowledge yet', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mockedApi.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'], knowledgeAvailable: false } as any);
+    mockedApi.search.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'], knowledgeAvailable: false } as any);
     const { result } = renderHook(() => useSearch());
 
     await act(async () => {
@@ -322,7 +326,7 @@ describe('useSearch', () => {
 
   it('sets topicGuideStatus to none when single result and no guidance', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mockedApi.search.mockResolvedValue({ articles: [mockArticles[0]], count: 1, sources: ['pubmed'] } as any);
+    mockedApi.search.search.mockResolvedValue({ articles: [mockArticles[0]], count: 1, sources: ['pubmed'] } as any);
     const { result } = renderHook(() => useSearch());
 
     await act(async () => {
@@ -338,7 +342,7 @@ describe('useSearch', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mockAlert = { summary: 'Update available', changedPrinciples: [], newPapers: [], daysSinceUpdate: 3 } as any;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mockedApi.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'], proactiveAlert: mockAlert } as any);
+    mockedApi.search.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'], proactiveAlert: mockAlert } as any);
     const { result } = renderHook(() => useSearch());
 
     await act(async () => {
@@ -349,7 +353,7 @@ describe('useSearch', () => {
   });
 
   it('clears proactiveAlert on next search', async () => {
-    mockedApi.search
+    mockedApi.search.search
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .mockResolvedValueOnce({ articles: mockArticles, count: 2, sources: ['pubmed'], proactiveAlert: { summary: 'alert', changedPrinciples: [], newPapers: [], daysSinceUpdate: 1 } } as any)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -368,9 +372,9 @@ describe('useSearch', () => {
 
   it('starts aiEnrichmentLoading when enrichment is pending and polls for completion', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mockedApi.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'], aiEnrichmentKey: 'key-123', aiEnrichmentStatus: 'pending' } as any);
+    mockedApi.search.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'], aiEnrichmentKey: 'key-123', aiEnrichmentStatus: 'pending' } as any);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mockedApi.getAiEnrichment.mockResolvedValue({ status: 'ready' } as any);
+    mockedApi.search.getAiEnrichment.mockResolvedValue({ status: 'ready' } as any);
 
     const { result } = renderHook(() => useSearch());
 
@@ -384,7 +388,7 @@ describe('useSearch', () => {
       await Promise.resolve();
     });
 
-    expect(mockedApi.getAiEnrichment).toHaveBeenCalledWith('key-123');
+    expect(mockedApi.search.getAiEnrichment).toHaveBeenCalledWith('key-123');
     expect(result.current.aiEnrichmentLoading).toBe(false);
   });
 
@@ -401,7 +405,7 @@ describe('useSearch', () => {
   });
 
   it('does not add to history when search fails', async () => {
-    mockedApi.search.mockRejectedValue(new Error('Fail'));
+    mockedApi.search.search.mockRejectedValue(new Error('Fail'));
     const { result } = renderHook(() => useSearch());
 
     await act(async () => {
@@ -432,7 +436,7 @@ describe('useSearch', () => {
 
   it('does not throw when hook unmounts with pending poll timers', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mockedApi.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'], knowledgeAvailable: false } as any);
+    mockedApi.search.search.mockResolvedValue({ articles: mockArticles, count: 2, sources: ['pubmed'], knowledgeAvailable: false } as any);
     const { result, unmount } = renderHook(() => useSearch());
 
     await act(async () => {
@@ -477,16 +481,16 @@ describe('useSearch', () => {
       topicGuideStatus: 'idle',
     } as unknown as ReturnType<typeof searchContext.useSearchMeta>);
 
-    mockedApi.search.mockResolvedValue({
+    mockedApi.search.search.mockResolvedValue({
       articles: mockArticles,
       count: 2,
       sources: ['pubmed'],
       intelligenceStatus: 'deferred',
       knowledgeAvailable: false,
-    } as Awaited<ReturnType<typeof mockedApi.search>>);
+    } as Awaited<ReturnType<typeof mockedApi.search.search>>);
 
-    let resolveIntel: (v: Awaited<ReturnType<typeof mockedApi.fetchSearchIntelligence>>) => void;
-    mockedApi.fetchSearchIntelligence.mockImplementation(
+    let resolveIntel: (v: Awaited<ReturnType<typeof mockedApi.search.fetchSearchIntelligence>>) => void;
+    mockedApi.search.fetchSearchIntelligence.mockImplementation(
       () => new Promise((resolve) => {
         resolveIntel = resolve;
       })
@@ -517,7 +521,7 @@ describe('useSearch', () => {
       await searchPromise!;
     });
 
-    expect(mockedApi.fetchSearchIntelligence).toHaveBeenCalledWith(
+    expect(mockedApi.search.fetchSearchIntelligence).toHaveBeenCalledWith(
       'diabetes',
       mockArticles,
       expect.any(Object),
@@ -534,7 +538,7 @@ describe('useSearch', () => {
       { id: 1, normalizedTopic: 'diabetes', title: 'New RCT published', alertKind: 'new_evidence' },
     ];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mockedApi.listEvidenceAlerts.mockResolvedValue({ alerts: mockAlerts } as any);
+    mockedApi.knowledge.listEvidenceAlerts.mockResolvedValue({ alerts: mockAlerts } as any);
 
     const { result } = renderHook(() => useSearch());
 
@@ -565,7 +569,7 @@ describe('useSearch', () => {
 
     await act(async () => { await Promise.resolve(); });
 
-    expect(mockedApi.listEvidenceAlerts).not.toHaveBeenCalled();
+    expect(mockedApi.knowledge.listEvidenceAlerts).not.toHaveBeenCalled();
   });
 
   it('dismissKnowledgeDriftAlert removes alert from list', async () => {
@@ -574,8 +578,8 @@ describe('useSearch', () => {
       { id: 2, normalizedTopic: 'topic', title: 'Alert 2' },
     ];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mockedApi.listEvidenceAlerts.mockResolvedValue({ alerts: mockAlerts } as any);
-    (mockedApi as any).markEvidenceAlertRead = jest.fn().mockResolvedValue(undefined);
+    mockedApi.knowledge.listEvidenceAlerts.mockResolvedValue({ alerts: mockAlerts } as any);
+    (mockedApi.knowledge as any).markEvidenceAlertRead = jest.fn().mockResolvedValue(undefined);
 
     const { result } = renderHook(() => useSearch());
     await act(async () => { await Promise.resolve(); });

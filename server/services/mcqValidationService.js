@@ -41,7 +41,16 @@ function createMcqValidationService({ ai, db, logger, PINNED_MODELS, serverConfi
             jsonMode: true,
             allowBudgetSkip,
         };
-        return ai.callStructured(prompt, provider, model || PINNED_MODELS[provider] || PINNED_MODELS.gemini, opts);
+        // Resolve the model in priority order: explicit arg → provider's pinned model.
+        // We deliberately do NOT fall back to PINNED_MODELS.gemini when the chosen
+        // provider has no pinned model — that would send a Gemini model string to a
+        // Claude/Mistral endpoint and silently misroute the request. Callers must
+        // pick a different provider via alternateProvider() instead.
+        const resolvedModel = model || PINNED_MODELS[provider];
+        if (!resolvedModel) {
+            throw new Error(`No pinned model configured for provider "${provider}" and no explicit model supplied`);
+        }
+        return ai.callStructured(prompt, provider, resolvedModel, opts);
     }
 
     function buildReviewPrompt(topic, compact, sourceContext, guidelineContext) {

@@ -5,6 +5,7 @@ const { buildAnalysisPrompt, buildPicoExtractionPrompt, buildScreeningAssistProm
 const { buildCaseSearchQueryPrompt, buildCaseEvidencePrompt } = require('./case');
 const { buildTeachingVignettePrompt } = require('./teaching');
 const { buildSynopsisPrompt, buildJournalClubPrompt } = require('./synopsis');
+const { buildGuidelineQuizPrompt } = require('./guidelineQuiz');
 const { formatStoredTopicKnowledgeForPrompt } = require('./_helpers');
 
 module.exports = {
@@ -20,6 +21,7 @@ module.exports = {
     buildTeachingVignettePrompt,
     buildSynopsisPrompt,
     buildJournalClubPrompt,
+    buildGuidelineQuizPrompt,
     formatStoredTopicKnowledgeForPrompt,
     ...require('./contextBuilders'),
 };

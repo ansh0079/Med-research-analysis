@@ -1,5 +1,6 @@
 const { formatStoredTopicKnowledgeForPrompt } = require('./_helpers');
 const { formatLearnerPromptSupplement } = require('../services/learnerContextService');
+const { TRAINING_STAGES, normaliseTrainingStage } = require('./trainingStages');
 
 function buildQuizPrompt(topic, articles = [], options = {}, guidelines = [], userContext = null) {
     const safeCount = Math.min(Math.max(parseInt(String(options.count || 5), 10) || 5, 3), 10);
@@ -11,12 +12,9 @@ function buildQuizPrompt(topic, articles = [], options = {}, guidelines = [], us
         ? options.promptVariant
         : 'control';
 
-    const VALID_STAGES = ['preclinical', 'early_clinical', 'finals', 'foundation_doctor', 'clinician', 'specialist'];
-    const trainingStage = VALID_STAGES.includes(options.trainingStage)
-        ? options.trainingStage
-        : (userContext?.profile?.trainingStage && VALID_STAGES.includes(userContext.profile.trainingStage)
-            ? userContext.profile.trainingStage
-            : 'finals');
+    const trainingStage = normaliseTrainingStage(
+        TRAINING_STAGES.includes(options.trainingStage) ? options.trainingStage : userContext?.profile?.trainingStage
+    );
 
     const explanationDepth = ['foundation', 'exam_focus', 'mechanistic'].includes(options.explanationDepth)
         ? options.explanationDepth

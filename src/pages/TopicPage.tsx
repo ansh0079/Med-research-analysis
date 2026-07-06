@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '@services/api';
+import { handleAsyncError } from '@utils/handleAsyncError';
 import type { Article, SynthesisResult, StudyRun } from '@types';
 import { SynthesisPanel } from '@components/search/SynthesisPanel';
 import { StudyEncounterPanel } from '@components/search/StudyEncounterPanel';
@@ -49,7 +50,7 @@ function StudyPlanWidget({ topic, activeRun, onStartRun }: {
             </div>
             <div className="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
               <div className="h-full bg-emerald-500 rounded-full transition-all" data-pct={pct}
-                ref={(el) => { if (el) el.style.width = `${pct}%`; }} />
+                style={{ width: `${pct}%` }} />
             </div>
           </div>
         )}
@@ -126,19 +127,19 @@ export function TopicPage() {
   useEffect(() => {
     if (!topic) return;
     setOverviewLoading(true);
-    api.getTopicOverview(topic)
+    api.knowledge.getTopicOverview(topic)
       .then((d) => {
         setActiveRun(d.activeRun);
         setPracticeAlerts(d.practiceAlerts);
         setLatestSnapshot(d.latestSnapshot);
       })
-      .catch(() => undefined)
+      .catch((err) => handleAsyncError(err, 'TopicPage/getTopicOverview'))
       .finally(() => setOverviewLoading(false));
   }, [topic]);
 
   useEffect(() => {
     if (!topic) return;
-    api.getEvidenceDeltaBrief(topic)
+    api.knowledge.getEvidenceDeltaBrief(topic)
       .then((r) => {
         setEvidenceDelta({
           summary: r.brief.summary,
@@ -148,20 +149,32 @@ export function TopicPage() {
         });
       })
       .catch(() => setEvidenceDelta(null));
-    api.getTopicEvidenceMemory(topic)
+    api.knowledge.getTopicEvidenceMemory(topic)
       .then((r) => setEvidenceMemoryMessages(r.memory?.messages || []))
       .catch(() => setEvidenceMemoryMessages([]));
-    api.getClaimLifecycle(topic)
+    api.knowledge.getClaimLifecycle(topic)
       .then((r) => setLifecycleAttention(r.summary?.needsAttention ?? 0))
       .catch(() => setLifecycleAttention(0));
-    api.getPersonalKnowledgeGraph(topic)
+    api.knowledge.getPersonalKnowledgeGraph(topic)
       .then((r) => setWeakClaims(r.graph?.weakClaims || []))
       .catch(() => setWeakClaims([]));
-    api.getGuidelineWatchEvents(topic)
+    api.knowledge.getGuidelineWatchEvents(topic)
       .then((r) => setGuidelineWatch(r.events || []))
       .catch(() => setGuidelineWatch([]));
+  }, [topic]);
+
+  // Record a topic review exactly once when leaving this topic.
+  // Uses a ref guard so React StrictMode's mount→unmount→remount in dev does
+  // not double-count, and so re-running this effect for any other reason won't
+  // fire a duplicate POST.
+  const reviewedTopicRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!topic) return;
+    reviewedTopicRef.current = topic;
     return () => {
-      api.recordTopicReview(topic).catch(() => undefined);
+      if (reviewedTopicRef.current !== topic) return;
+      reviewedTopicRef.current = null;
+      api.knowledge.recordTopicReview(topic).catch((err) => handleAsyncError(err, 'TopicPage/recordTopicReview'));
     };
   }, [topic]);
 
@@ -169,9 +182,14 @@ export function TopicPage() {
   useEffect(() => {
     if (!topic) return;
     setArticlesLoading(true);
-    api.search(topic, {}, { vector: true })
+    api.search.getClientConfig()
+      .then((cfg) => {
+        const canUseVector = Boolean(cfg.features?.vectorSearch);
+        return api.search.search(topic, {}, { vector: canUseVector });
+      })
+      .catch(() => api.search.search(topic, {}, { vector: false }))
       .then((r) => setArticles(r.articles.slice(0, 15)))
-      .catch(() => undefined)
+      .catch((err) => handleAsyncError(err, 'TopicPage/loadEvidence'))
       .finally(() => setArticlesLoading(false));
   }, [topic]);
 
@@ -181,7 +199,7 @@ export function TopicPage() {
     setSynthesisError('');
     setShowSynthesis(true);
     try {
-      const result = await api.synthesizeEvidence(topic, articles.slice(0, 10));
+      const result = await api.ai.synthesizeEvidence(topic, articles.slice(0, 10));
       setSynthesis(result);
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Synthesis failed';
@@ -194,7 +212,7 @@ export function TopicPage() {
   const handleStartRun = useCallback(async () => {
     setStartingRun(true);
     try {
-      const { run } = await api.createStudyRun(topic);
+      const { run } = await api.learning.createStudyRun(topic);
       navigate(`/learning/${run.id}`);
     } catch {
       setStartingRun(false);
@@ -278,9 +296,9 @@ export function TopicPage() {
               disabled={roundLoading}
               onClick={() => {
                 setRoundLoading(true);
-                api.createLearningRound(topic)
+                api.knowledge.createLearningRound(topic)
                   .then((r) => { if (r.round?.id) navigate(`/quiz?topic=${encodeURIComponent(topic)}&roundId=${r.round.id}`); })
-                  .catch(() => undefined)
+                  .catch((err) => handleAsyncError(err, 'TopicPage/createLearningRound'))
                   .finally(() => setRoundLoading(false));
               }}
               className="rounded-xl bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white text-xs font-bold px-4 py-2 transition-colors"

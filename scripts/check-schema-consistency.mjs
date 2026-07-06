@@ -205,6 +205,36 @@ if (pgMainTables.has('articles_cache')) {
   ok = false;
 }
 
+// Verify production_schema.sql is dependency-ordered: every FK target must appear
+// before the table that references it.
+const pgSql = fs.readFileSync(pgSchemaPath, 'utf8');
+const pgTableOrder = [];
+const pgTableDefinitions = new Map();
+for (const stmt of splitStatements(pgSql)) {
+  const m = stmt.match(/^CREATE TABLE(?:\s+IF\s+NOT\s+EXISTS)?\s+(\w+)/i);
+  if (m) {
+    const name = m[1].toLowerCase();
+    pgTableOrder.push(name);
+    pgTableDefinitions.set(name, stmt);
+  }
+}
+const pgTableIndex = new Map(pgTableOrder.map((name, i) => [name, i]));
+for (const [name, stmt] of pgTableDefinitions) {
+  const targets = [...stmt.matchAll(/REFERENCES\s+(\w+)\s*\(/gi)].map((m) => m[1].toLowerCase());
+  for (const target of targets) {
+    if (target === name) continue; // self-reference is fine
+    const targetIdx = pgTableIndex.get(target);
+    const sourceIdx = pgTableIndex.get(name);
+    if (targetIdx == null) {
+      console.error(`production_schema.sql: ${name} references unknown table ${target}`);
+      ok = false;
+    } else if (targetIdx > sourceIdx) {
+      console.error(`production_schema.sql: forward FK reference — ${name} (line ${sourceIdx + 1}) references ${target} (line ${targetIdx + 1}). Run db:schema:regen.`);
+      ok = false;
+    }
+  }
+}
+
 const sqliteSnapshot = parseTablesFromSqlFile(sqliteSchemaPath);
 ok = isSubset('production_schema.sql tables must exist in schema.sql', pgMainTables, sqliteSnapshot) && ok;
 

@@ -75,7 +75,7 @@ export function PracticePoolPage() {
     setLoading(true);
     setError(null);
     try {
-      const data = await api.fetchPracticePool({
+      const data = await api.collaboration.fetchPracticePool({
         count,
         difficulty: difficulty === 'all' ? undefined : difficulty,
         type: qType === 'all' ? undefined : qType,
@@ -104,7 +104,7 @@ export function PracticePoolPage() {
     setAnswers(prev => ({ ...prev, [currentQ.id]: letter }));
     setShowExplanation(true);
     setSyncError(null);
-    api.submitQuizAttempt({
+    api.learning.submitQuizAttempt({
       topic: currentQ.topic,
       attempts: [{
         questionId: currentQ.id,

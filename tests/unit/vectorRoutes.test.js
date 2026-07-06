@@ -10,7 +10,7 @@ jest.mock('../../server/services/vectorSearchService');
 jest.mock('../../server/services/pdfService');
 jest.mock('../../server/services/pdfPreindexService');
 
-const { registerVectorSearchRoutes, registerPdfRoutes } = require('../../server/controllers/vectorRoutes');
+const { registerVectorSearchRoutes, registerPdfRoutes } = require('../../server/routes/vector');
 const { createVectorSearchService } = require('../../server/services/vectorSearchService');
 const { createPdfService } = require('../../server/services/pdfService');
 const { getCachedPdf } = require('../../server/services/pdfPreindexService');

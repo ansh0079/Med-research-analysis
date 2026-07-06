@@ -120,46 +120,27 @@ async initialize() {
         // tables) would silently never get created — the migration runner's baseline-skip
         // logic also assumes this file already covers them, compounding the gap.
         //
-        // production_schema.sql is alphabetically ordered, not dependency-ordered, so a
-        // table like team_members can appear (and be executed) before its FK target teams.
-        // A single top-to-bottom pass fails those statements with "relation does not
-        // exist" even though the target table exists later in the same file. Retrying in
-        // bounded passes lets later-created parents satisfy earlier-failed children without
-        // needing to hand-maintain dependency order in the schema file.
+        // production_schema.sql is generated dependency-ordered (parents before children)
+        // and in native PostgreSQL syntax, so a single top-to-bottom pass is sufficient.
         const schema = fs.readFileSync(schemaPath, 'utf8');
-        const pgOpts = { usersIdType: this.pgUsersIdType };
-        let pending = schema.split(';')
+        const statements = schema.split(';')
             .map((s) => s.trim())
-            .filter(Boolean)
-            .map((s) => convertSqliteDdlToPostgres(s, pgOpts));
+            .filter(Boolean);
 
-        const MAX_PASSES = 5;
-        let lastPassErrors = [];
-        for (let pass = 0; pass < MAX_PASSES && pending.length > 0; pass++) {
-            const stillPending = [];
-            lastPassErrors = [];
-            for (const statement of pending) {
-                try {
-                    await this.run(statement);
-                } catch (err) {
-                    const msg = String(err?.message || '');
-                    const code = err?.code || '';
-                    if (code === '42P07' || code === '42710' || msg.includes('already exists')) {
-                        continue;
-                    }
-                    stillPending.push(statement);
-                    lastPassErrors.push({ statement, code, msg });
+        for (const statement of statements) {
+            try {
+                await this.run(statement);
+            } catch (err) {
+                const msg = String(err?.message || '');
+                const code = err?.code || '';
+                if (code === '42P07' || code === '42710' || msg.includes('already exists')) {
+                    continue;
                 }
+                // Dependency-ordered generation should make FK errors impossible on a
+                // fresh database. Log the statement and rethrow so startup fails fast.
+                console.error(`Schema bootstrap statement failed (${code}): ${msg}\n   ${statement.trim().slice(0, 200)}`);
+                throw err;
             }
-            if (stillPending.length === pending.length) break; // no progress this pass
-            pending = stillPending;
-        }
-        // Anything still failing after retries is either a genuine, pre-existing schema
-        // gap (e.g. a column an index depends on that a later migration hasn't added yet)
-        // or a real DDL bug — neither should block the whole app from starting. Warn and
-        // move on rather than crashing every request the app would otherwise serve.
-        for (const { statement, code, msg } of lastPassErrors) {
-            console.warn(`⚠️  Schema bootstrap statement failed after retries (${code}): ${msg}\n   ${statement.trim().slice(0, 200)}`);
         }
     }
     const migrationsDdl = this.isPostgres

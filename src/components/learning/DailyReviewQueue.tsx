@@ -91,8 +91,8 @@ export function DailyReviewQueue() {
     setLoading(true);
     try {
       const [result, habitStatus] = await Promise.all([
-        api.getDueReviews(),
-        api.getHabitStatus().catch(() => null),
+        api.learning.getDueReviews(),
+        api.learning.getHabitStatus().catch(() => null),
       ]);
       setData(result);
       setHabit(habitStatus);
@@ -232,7 +232,7 @@ export function DueReviewBadge() {
   const [count, setCount] = useState<number | null>(null);
 
   useEffect(() => {
-    api.getDueReviewCount()
+    api.learning.getDueReviewCount()
       .then((r) => setCount(r.count))
       .catch(() => setCount(null));
   }, []);

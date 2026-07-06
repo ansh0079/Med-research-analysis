@@ -56,7 +56,7 @@ export const CollectionActivityTab: React.FC<Props> = ({ collectionId }) => {
 
   useEffect(() => {
     setLoading(true);
-    api.getActivity({ collectionId, limit: 50 })
+    api.collaboration.getActivity({ collectionId, limit: 50 })
       .then(setActivity)
       .catch(() => {})
       .finally(() => setLoading(false));

@@ -64,7 +64,7 @@ export const GuidelineReviewPage: React.FC = () => {
       try {
         setLoading(true);
         setError('');
-        const data = await api.listGuidelines({ query, status: statusFilter, sourceBody: sourceFilter, limit: 100 });
+        const data = await api.collaboration.listGuidelines({ query, status: statusFilter, sourceBody: sourceFilter, limit: 100 });
         if (cancelled) return;
         setGuidelines(data.guidelines);
         setSelected((current) => {
@@ -84,7 +84,7 @@ export const GuidelineReviewPage: React.FC = () => {
     try {
       setLoading(true);
       setError('');
-      const data = await api.listGuidelines({ query, status: statusFilter, sourceBody: sourceFilter, limit: 100 });
+      const data = await api.collaboration.listGuidelines({ query, status: statusFilter, sourceBody: sourceFilter, limit: 100 });
       setGuidelines(data.guidelines);
       setSelected((current) => {
         if (!current) return data.guidelines[0] ?? null;
@@ -102,7 +102,7 @@ export const GuidelineReviewPage: React.FC = () => {
     setSaving(true);
     setError('');
     try {
-      await api.updateGuideline(selected.id, {
+      await api.collaboration.updateGuideline(selected.id, {
         recommendationText: recommendationText.trim(),
         sourceBody: sourceBody.trim(),
         sourceRegion: sourceRegion.trim() || undefined,
@@ -127,7 +127,7 @@ export const GuidelineReviewPage: React.FC = () => {
     if (!selected) return;
     setSaving(true);
     try {
-      await api.reviewGuideline(selected.id);
+      await api.collaboration.reviewGuideline(selected.id);
       setNotice('Marked as reviewed');
       await reloadGuidelines();
     } catch (err) {
@@ -141,7 +141,7 @@ export const GuidelineReviewPage: React.FC = () => {
     if (!selected) return;
     setSaving(true);
     try {
-      await api.staleGuideline(selected.id);
+      await api.collaboration.staleGuideline(selected.id);
       setNotice('Marked as stale');
       await reloadGuidelines();
     } catch (err) {

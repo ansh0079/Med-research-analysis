@@ -2,7 +2,7 @@
 
 /**
  * Adaptive item selection for the cached MCQ pools (cold-start / guideline /
- * live-quiz teaching objects — see server/controllers/aiRoutes.js's
+ * live-quiz teaching objects — see server/routes/ai.js's
  * serveColdStartMCQs). These pools accumulate a handful of pre-generated
  * questions per topic that get served repeatedly to different users; once
  * enough attempts land on a given cached question, itemPsychometricsService

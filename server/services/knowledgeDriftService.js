@@ -8,7 +8,7 @@ const cron = require('node-cron');
 const { validateQuery } = require('../utils/articles');
 const { fetchUnifiedEvidence } = require('./unifiedEvidenceSearch');
 const { selectTopEvidence } = require('../utils/selectTopEvidence');
-const { createAiService, TEMPERATURE } = require('./aiService');
+const { createAiService, getSharedAiService, TEMPERATURE } = require('./aiService');
 const { resolveProvider } = require('../utils/aiProvider');
 
 let scheduledJob = null;
@@ -57,7 +57,7 @@ async function buildWhatsNewSummary({ serverConfig, fetchImpl, displayTopic, art
     if (!provider) {
         return `New evidence surfaced for "${displayTopic}": ${article.title || 'Recent study'}. Open the topic to review context and seminal papers.`;
     }
-    const ai = createAiService({ serverConfig, fetch: fetchImpl });
+    const ai = getSharedAiService({ serverConfig, fetchImpl });
     const prompt = `You write concise "What's New" clinical education blurbs for specialists.
 
 Topic: "${displayTopic}"

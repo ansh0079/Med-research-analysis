@@ -50,6 +50,7 @@ async function withDb(fn) {
 
 function parsePayload(payloadJson) {
     try {
+        if (payloadJson && typeof payloadJson === 'object') return payloadJson;
         return JSON.parse(payloadJson || '{}');
     } catch {
         return {};
@@ -195,6 +196,64 @@ async function extractControlCohort(db, days) {
     }));
 }
 
+async function extractLearningSignalSummary(db, days) {
+    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+    const watchedTypes = [
+        'agent_message',
+        'agent_turn_memory',
+        'agent_session_reflection',
+        'feedback_helpful',
+        'feedback_confusing',
+        'mcq_answered',
+        'quiz_session_feedback',
+        'paper_click',
+        'paper_save',
+        'paper_dwell',
+    ];
+    const placeholders = watchedTypes.map(() => '?').join(',');
+    const rows = await db.all(
+        `SELECT event_type, COUNT(*) AS count
+         FROM learning_events
+         WHERE occurred_at >= ?
+           AND event_type IN (${placeholders})
+         GROUP BY event_type
+         ORDER BY event_type`,
+        [since, ...watchedTypes]
+    ).catch(() => []);
+
+    const counts = Object.fromEntries(watchedTypes.map((type) => [type, 0]));
+    for (const row of rows || []) counts[row.event_type] = Number(row.count || 0);
+    return counts;
+}
+
+async function extractRecentProfileDeltas(db, days, limit = 10) {
+    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+    const rows = await db.all(
+        `SELECT user_id, topic, occurred_at, payload_json
+         FROM learning_events
+         WHERE occurred_at >= ?
+           AND event_type IN ('agent_turn_memory', 'agent_session_reflection')
+         ORDER BY occurred_at DESC
+         LIMIT ?`,
+        [since, limit]
+    ).catch(() => []);
+
+    return (rows || []).map((row) => {
+        const payload = parsePayload(row.payload_json);
+        return {
+            userId: row.user_id,
+            topic: row.topic,
+            occurredAt: row.occurred_at,
+            focusAreas: Array.isArray(payload.focusAreas) ? payload.focusAreas.slice(0, 4) : [],
+            misconceptions: Array.isArray(payload.misconceptions) ? payload.misconceptions.slice(0, 4) : [],
+            breakthroughMoments: Array.isArray(payload.breakthroughMoments) ? payload.breakthroughMoments.slice(0, 4) : [],
+            learningPatterns: Array.isArray(payload.learningPatterns) ? payload.learningPatterns.slice(0, 4) : [],
+            nextStudyFocus: payload.nextStudyFocus || null,
+            summaryChars: Number(payload.summaryChars || 0),
+        };
+    });
+}
+
 // ============================================================
 // Metrics
 // ============================================================
@@ -235,14 +294,27 @@ function breakdownByTopic(agentCohort) {
 // Output formatters
 // ============================================================
 
-function printTable(metrics, controlMetrics) {
+function printTable(metrics, controlMetrics, signalSummary = {}, profileDeltas = []) {
     console.log('\n📊 Agent Quality Evaluation Results\n');
     console.log(`Agent cohort:  n=${metrics.n}  meanΔ=${(metrics.meanDelta * 100).toFixed(1)}%  medianΔ=${(metrics.medianDelta * 100).toFixed(1)}%  p25=${(metrics.p25 * 100).toFixed(1)}%  p75=${(metrics.p75 * 100).toFixed(1)}%  significant=${metrics.significant}`);
     console.log(`Control cohort: n=${controlMetrics.n}  meanΔ=${(controlMetrics.meanDelta * 100).toFixed(1)}%  medianΔ=${(controlMetrics.medianDelta * 100).toFixed(1)}%  p25=${(controlMetrics.p25 * 100).toFixed(1)}%  p75=${(controlMetrics.p75 * 100).toFixed(1)}%  significant=${controlMetrics.significant}`);
+    console.log('\nLearning signal counts:');
+    for (const [type, count] of Object.entries(signalSummary)) {
+        console.log(`  ${type.padEnd(24)} ${count}`);
+    }
+    console.log(`\nRecent profile deltas: ${profileDeltas.length}`);
+    for (const delta of profileDeltas.slice(0, 3)) {
+        const focus = [
+            ...(delta.focusAreas || []),
+            ...(delta.misconceptions || []),
+            ...(delta.learningPatterns || []),
+        ].filter(Boolean).slice(0, 3).join('; ');
+        console.log(`  ${delta.topic || 'unknown'} - ${focus || 'no compact delta fields'}`);
+    }
     console.log();
 }
 
-function buildMarkdown(agentCohort, controlCohort, metrics, controlMetrics, topicBreakdown) {
+function buildMarkdown(agentCohort, controlCohort, metrics, controlMetrics, topicBreakdown, signalSummary = {}, profileDeltas = []) {
     const ts = new Date().toISOString();
     return `# Agent Quality Evaluation Report
 
@@ -261,6 +333,20 @@ function buildMarkdown(agentCohort, controlCohort, metrics, controlMetrics, topi
 | Topic | n | Mean Δ | Median Δ |
 |-------|---|--------|----------|
 ${topicBreakdown.map((t) => `| ${t.topic} | ${t.n} | ${(t.meanDelta * 100).toFixed(1)}% | ${(t.medianDelta * 100).toFixed(1)}% |`).join('\n')}
+
+## Learning Signal Coverage
+
+| Event type | Count |
+|------------|------:|
+${Object.entries(signalSummary).map(([type, count]) => `| ${type} | ${count} |`).join('\n')}
+
+## Recent Profile Deltas
+
+| Topic | Focus areas | Misconceptions | Breakthroughs / patterns |
+|-------|-------------|----------------|--------------------------|
+${profileDeltas.length
+        ? profileDeltas.map((d) => `| ${d.topic || ''} | ${(d.focusAreas || []).join('; ')} | ${(d.misconceptions || []).join('; ')} | ${[...(d.breakthroughMoments || []), ...(d.learningPatterns || [])].join('; ')} |`).join('\n')
+        : '| _No agent-memory profile deltas found in this evaluation window._ | | | |'}
 
 ## Interpretation
 
@@ -281,17 +367,26 @@ ${metrics.meanDelta > controlMetrics.meanDelta
 async function main() {
     console.log(`🔬 Running agent quality eval (last ${DAYS} days)...\n`);
 
-    const { agentCohort, controlCohort } = await withDb(async (db) => {
-        const agent = await extractAgentCohort(db, DAYS);
-        const control = await extractControlCohort(db, DAYS);
-        return { agentCohort: agent, controlCohort: control };
+    const { agentCohort, controlCohort, signalSummary, profileDeltas } = await withDb(async (db) => {
+        const [agent, control, signals, deltas] = await Promise.all([
+            extractAgentCohort(db, DAYS),
+            extractControlCohort(db, DAYS),
+            extractLearningSignalSummary(db, DAYS),
+            extractRecentProfileDeltas(db, DAYS),
+        ]);
+        return {
+            agentCohort: agent,
+            controlCohort: control,
+            signalSummary: signals,
+            profileDeltas: deltas,
+        };
     });
 
     const metrics = computeMetrics(agentCohort, 'agent');
     const controlMetrics = computeMetrics(controlCohort, 'control');
     const topicBreakdown = breakdownByTopic(agentCohort);
 
-    printTable(metrics, controlMetrics);
+    printTable(metrics, controlMetrics, signalSummary, profileDeltas);
 
     // JSON output
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -301,6 +396,8 @@ async function main() {
         days: DAYS,
         metrics,
         controlMetrics,
+        signalSummary,
+        profileDeltas,
         topicBreakdown,
         cohort: agentCohort,
         control: controlCohort,
@@ -310,7 +407,7 @@ async function main() {
     // Markdown output
     if (FORMAT === 'markdown') {
         const mdPath = path.join(OUT_DIR, 'agent-quality-report.md');
-        const md = buildMarkdown(agentCohort, controlCohort, metrics, controlMetrics, topicBreakdown);
+        const md = buildMarkdown(agentCohort, controlCohort, metrics, controlMetrics, topicBreakdown, signalSummary, profileDeltas);
         fs.writeFileSync(mdPath, md);
         console.log(`📄 Markdown report written to ${mdPath}\n`);
     }

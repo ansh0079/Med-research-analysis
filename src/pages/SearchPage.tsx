@@ -130,7 +130,7 @@ export const SearchPage: React.FC = () => {
 
   React.useEffect(() => {
     let cancelled = false;
-    void api.getClientConfig().then((config) => {
+    void api.search.getClientConfig().then((config) => {
       if (!cancelled) setVectorSearchEnabled(Boolean(config.features?.vectorSearch));
     });
     return () => { cancelled = true; };
@@ -271,7 +271,7 @@ export const SearchPage: React.FC = () => {
       return () => { cancelled = true; };
     }
 
-    api.getTopicEvidenceMemory(topic)
+    api.knowledge.getTopicEvidenceMemory(topic)
       .then((response) => {
         if (!cancelled) setTopicEvidenceMemory(response.memory);
       })
@@ -295,7 +295,7 @@ export const SearchPage: React.FC = () => {
       let liveText = '';
       let finalResult: SynthesisResult | null = null;
       await new Promise<void>((resolve, reject) => {
-        api.synthesizeEvidenceStream(currentQuery, top5Articles, {
+        api.ai.synthesizeEvidenceStream(currentQuery, top5Articles, {
           onChunk: (chunk) => {
             liveText += chunk;
             setSynthesisLiveText(liveText);
@@ -312,7 +312,7 @@ export const SearchPage: React.FC = () => {
         setSynthesis(resolved);
         // Check for evidence shift vs prior synthesis for this topic
         if (isAuthenticated && resolved.topic) {
-          api.getTopicStaleness(resolved.topic).then((s) => {
+          api.knowledge.getTopicStaleness(resolved.topic).then((s) => {
             if (s.significantChange && s.changes.length > 0) {
               setStalenessBanner({
                 changes: s.changes,
@@ -398,7 +398,7 @@ export const SearchPage: React.FC = () => {
     setTopicGuideRefreshState('loading');
     setTopicGuideRefreshError(null);
     try {
-      const { agentGuidance: nextGuidance } = await api.refreshTopicKnowledge(topic);
+      const { agentGuidance: nextGuidance } = await api.knowledge.refreshTopicKnowledge(topic);
       setAgentGuidance(nextGuidance);
       setTopicGuideStatus('ready');
       trackFeatureUsage('topic_guide_refresh_success', { topic: topic.slice(0, 200) });
@@ -426,7 +426,7 @@ export const SearchPage: React.FC = () => {
     }
     setKnowledgeReviewStatus('saving');
     try {
-      const response = await api.reviewTopicKnowledge(agentGuidance.topic);
+      const response = await api.knowledge.reviewTopicKnowledge(agentGuidance.topic);
       if (response.agentGuidance) setAgentGuidance(response.agentGuidance);
       setKnowledgeReviewStatus('saved');
     } catch {
@@ -442,7 +442,7 @@ export const SearchPage: React.FC = () => {
     setProposingKnowledge(true);
     setProposeError(null);
     try {
-      const response = await api.proposeTopicKnowledge(currentQuery, top5Articles);
+      const response = await api.knowledge.proposeTopicKnowledge(currentQuery, top5Articles);
       if (response.agentGuidance) {
         setProposedGuidance(response.agentGuidance);
       }
@@ -883,7 +883,7 @@ export const SearchPage: React.FC = () => {
                                   setAnchorVerifyKey(key);
                                   try {
                                     const topic = agentGuidance.topic || currentQuery;
-                                    const res = await api.verifyTopicKnowledgeAnchor(topic, { claimText: tp.claim });
+                                    const res = await api.knowledge.verifyTopicKnowledgeAnchor(topic, { claimText: tp.claim });
                                     if (res.agentGuidance) setAgentGuidance(res.agentGuidance);
                                   } catch {
                                     /* toast optional */
@@ -957,7 +957,7 @@ export const SearchPage: React.FC = () => {
                 articles={top5Articles.length > 0 ? top5Articles : results.slice(0, 5)}
                 autoExpand={inPlaceQuizExpanded}
                 onAuthSubmit={async (attempts) => {
-                  await api.submitQuizAttempt({ topic: currentQuery, attempts });
+                  await api.learning.submitQuizAttempt({ topic: currentQuery, attempts });
                 }}
               />
             </div>

@@ -59,7 +59,7 @@ export const TeamWorkspacePage: React.FC = () => {
 
   const loadTeams = useCallback(async () => {
     try {
-      const { teams: data } = await api.getTeams();
+      const { teams: data } = await api.collaboration.getTeams();
       setTeams(data);
       setActiveTeam((prev) => {
         if (data.length === 0) return null;
@@ -73,11 +73,11 @@ export const TeamWorkspacePage: React.FC = () => {
 
   const loadTeamDetails = useCallback(async (teamId: string) => {
     try {
-      const { team, members: m, role } = await api.getTeam(teamId);
+      const { team, members: m, role } = await api.collaboration.getTeam(teamId);
       setActiveTeam(team);
       setMembers(m);
       setUserRole(role);
-      const { collections: c } = await api.getTeamCollections(teamId);
+      const { collections: c } = await api.collaboration.getTeamCollections(teamId);
       setCollections(c);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to load team details');
@@ -94,7 +94,7 @@ export const TeamWorkspacePage: React.FC = () => {
     let cancelled = false;
     (async () => {
       try {
-        const r = await api.acceptInvitation(inviteToken);
+        const r = await api.collaboration.acceptInvitation(inviteToken);
         if (cancelled) return;
         setSearchParams({}, { replace: true });
         setError(null);
@@ -130,12 +130,12 @@ export const TeamWorkspacePage: React.FC = () => {
     let cancelled = false;
     (async () => {
       try {
-        const { team, members: m, role } = await api.getTeam(activeTeam.id);
+        const { team, members: m, role } = await api.collaboration.getTeam(activeTeam.id);
         if (cancelled) return;
         setActiveTeam(team);
         setMembers(m);
         setUserRole(role);
-        const { collections: c } = await api.getTeamCollections(activeTeam.id);
+        const { collections: c } = await api.collaboration.getTeamCollections(activeTeam.id);
         if (!cancelled) setCollections(c);
       } catch (err: unknown) {
         if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load team details');
@@ -152,7 +152,7 @@ export const TeamWorkspacePage: React.FC = () => {
   const handleCreateTeam = async () => {
     if (!newTeamName.trim()) return;
     try {
-      const { team } = await api.createTeam(newTeamName.trim());
+      const { team } = await api.collaboration.createTeam(newTeamName.trim());
       setTeams(prev => [...prev, team]);
       setActiveTeam(team);
       setNewTeamName('');
@@ -165,7 +165,7 @@ export const TeamWorkspacePage: React.FC = () => {
   const handleInvite = async () => {
     if (!activeTeam || !inviteEmail.trim()) return;
     try {
-      const res = await api.inviteTeamMember(activeTeam.id, inviteEmail.trim());
+      const res = await api.collaboration.inviteTeamMember(activeTeam.id, inviteEmail.trim());
       const token = res.invitation?.token;
       if (token && typeof window !== 'undefined') {
         setLastInviteLink(`${window.location.origin}/team?invite=${encodeURIComponent(token)}`);
@@ -188,7 +188,7 @@ export const TeamWorkspacePage: React.FC = () => {
     setExpandedCollectionId(collectionId);
     setCollectionLoading(true);
     try {
-      const { collection } = await api.getTeamCollection(activeTeam.id, collectionId);
+      const { collection } = await api.collaboration.getTeamCollection(activeTeam.id, collectionId);
       setCollectionArticles((collection.articles as Article[]) || []);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to load collection');
@@ -201,9 +201,9 @@ export const TeamWorkspacePage: React.FC = () => {
   const removeFromCollection = async (articleId: string) => {
     if (!activeTeam || !expandedCollectionId) return;
     try {
-      await api.removeArticleFromTeamCollection(activeTeam.id, expandedCollectionId, articleId);
+      await api.collaboration.removeArticleFromTeamCollection(activeTeam.id, expandedCollectionId, articleId);
       addActivity('Removed an article from a team collection');
-      const { collection } = await api.getTeamCollection(activeTeam.id, expandedCollectionId);
+      const { collection } = await api.collaboration.getTeamCollection(activeTeam.id, expandedCollectionId);
       setCollectionArticles((collection.articles as Article[]) || []);
       loadTeamDetails(activeTeam.id);
     } catch (err: unknown) {
@@ -217,7 +217,7 @@ export const TeamWorkspacePage: React.FC = () => {
     if (user?.id === uid) return;
     if (!window.confirm(`Remove ${row.email} from this team?`)) return;
     try {
-      await api.removeTeamMember(activeTeam.id, uid);
+      await api.collaboration.removeTeamMember(activeTeam.id, uid);
       addActivity(`Removed member ${row.email}`);
       loadTeamDetails(activeTeam.id);
     } catch (err: unknown) {
@@ -229,7 +229,7 @@ export const TeamWorkspacePage: React.FC = () => {
     if (!activeTeam || row.role === 'owner') return;
     const uid = memberUserId(row);
     try {
-      await api.updateTeamMemberRole(activeTeam.id, uid, role);
+      await api.collaboration.updateTeamMemberRole(activeTeam.id, uid, role);
       addActivity(`Updated role for ${row.email}`);
       loadTeamDetails(activeTeam.id);
     } catch (err: unknown) {
@@ -240,7 +240,7 @@ export const TeamWorkspacePage: React.FC = () => {
   const handleCreateCollection = async () => {
     if (!activeTeam || !newCollectionName.trim()) return;
     try {
-      await api.createTeamCollection(activeTeam.id, newCollectionName.trim());
+      await api.collaboration.createTeamCollection(activeTeam.id, newCollectionName.trim());
       addActivity(`Created collection "${newCollectionName.trim()}" in ${activeTeam.name}`);
       setNewCollectionName('');
       loadTeamDetails(activeTeam.id);
@@ -608,7 +608,7 @@ export const TeamWorkspacePage: React.FC = () => {
                               onClick={async () => {
                                 if (!activeTeam || !teamRename.trim() || teamRename.trim() === activeTeam.name) return;
                                 try {
-                                  await api.updateTeam(activeTeam.id, { name: teamRename.trim() });
+                                  await api.collaboration.updateTeam(activeTeam.id, { name: teamRename.trim() });
                                   addActivity(`Renamed team to "${teamRename.trim()}"`);
                                   loadTeamDetails(activeTeam.id);
                                   loadTeams();
@@ -626,7 +626,7 @@ export const TeamWorkspacePage: React.FC = () => {
                           <select
                             value={activeTeam.plan}
                             onChange={async (e) => {
-                              await api.updateTeam(activeTeam.id, { plan: e.target.value });
+                              await api.collaboration.updateTeam(activeTeam.id, { plan: e.target.value });
                               loadTeamDetails(activeTeam.id);
                             }}
                             className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"

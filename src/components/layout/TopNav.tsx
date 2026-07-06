@@ -49,9 +49,9 @@ export const TopNav: React.FC = () => {
 
   React.useEffect(() => {
     if (!isAuthenticated) return;
-    api.getDueReviewCount().then((r) => setDueCount(r.count)).catch(() => setDueCount(0));
+    api.learning.getDueReviewCount().then((r) => setDueCount(r.count)).catch(() => setDueCount(0));
     const id = setInterval(() => {
-      api.getDueReviewCount().then((r) => setDueCount(r.count)).catch(() => {});
+      api.learning.getDueReviewCount().then((r) => setDueCount(r.count)).catch(() => {});
     }, 60000);
     return () => clearInterval(id);
   }, [isAuthenticated]);

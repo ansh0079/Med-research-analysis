@@ -23,7 +23,7 @@ export const RelatedTopicsBar: React.FC<RelatedTopicsBarProps> = ({
     }
     let cancelled = false;
     setLoading(true);
-    void api.getTopicCrosslinks(trimmed)
+    void api.search.getTopicCrosslinks(trimmed)
       .then((r) => {
         if (cancelled) return;
         setCrosslinkTopics((r.crosslinks || []).map((c) => c.topic).filter(Boolean));

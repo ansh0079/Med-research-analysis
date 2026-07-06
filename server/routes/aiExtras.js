@@ -1,4 +1,4 @@
-const { createAiService } = require('../services/aiService');
+const { getSharedAiService } = require('../services/aiService');
 const { checkGuidelineAlignment } = require('../services/guidelineService');
 const { generateGrantSection } = require('../services/grantService');
 
@@ -17,7 +17,7 @@ function registerAiExtraRoutes(app, { serverConfig, db, rateLimit, requireJson, 
                     return res.status(400).json({ error: 'topic, synthesisConsensus, and articles[] are required' });
                 }
 
-                const ai = createAiService({ serverConfig, fetchImpl: f });
+                const ai = getSharedAiService({ serverConfig, fetchImpl: f });
                 const alignment = await checkGuidelineAlignment(
                     topic,
                     synthesisConsensus,
@@ -45,7 +45,7 @@ function registerAiExtraRoutes(app, { serverConfig, db, rateLimit, requireJson, 
                 return res.status(400).json({ error: 'researchQuestion and articles[] are required' });
             }
 
-            const ai = createAiService({ serverConfig, fetchImpl: f });
+            const ai = getSharedAiService({ serverConfig, fetchImpl: f });
             const result = await generateGrantSection(
                 researchQuestion,
                 articles,

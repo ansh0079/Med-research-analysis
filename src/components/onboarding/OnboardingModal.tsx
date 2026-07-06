@@ -110,7 +110,7 @@ export const OnboardingModal: React.FC<Props> = ({ onDone }) => {
   const finish = async (destination: Destination) => {
     completeOnboarding();
     try {
-      await api.saveLearningProfile({
+      await api.learning.saveLearningProfile({
         persona: persona === 'student' ? (trainingStage === 'foundation_doctor' ? 'clinician' : 'student') : persona,
         goals: [studyGoal],
         trainingStage: persona === 'student' ? trainingStage : (persona === 'clinician' ? 'foundation_doctor' : undefined),

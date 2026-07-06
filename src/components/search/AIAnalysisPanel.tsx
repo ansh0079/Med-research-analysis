@@ -161,7 +161,7 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
   // Check pre-index status whenever article changes
   useEffect(() => {
     if (!article) return;
-    api.getPdfStatus({ uid: article.uid, doi: article.doi, pmcid: article.pmcid }).then(setPdfStatus).catch(() => {});
+    api.documents.getPdfStatus({ uid: article.uid, doi: article.doi, pmcid: article.pmcid }).then(setPdfStatus).catch(() => {});
   }, [article]);
 
   const analyze = useCallback(
@@ -181,7 +181,7 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
         // 1. Try pre-indexed section if user picked one
         if (selectedSection) {
           try {
-            const secData = await api.getPdfSection(
+            const secData = await api.documents.getPdfSection(
               { uid: article.uid, doi: article.doi, pmcid: article.pmcid },
               selectedSection
             );
@@ -197,7 +197,7 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
         if (!selectedSection && (analysisType === 'comprehensive' || analysisType === 'critical')) {
           try {
             // Try pre-indexed first (instant)
-            const cached = await api.getPdfStatus({ uid: article.uid, doi: article.doi, pmcid: article.pmcid });
+            const cached = await api.documents.getPdfStatus({ uid: article.uid, doi: article.doi, pmcid: article.pmcid });
             if (cached.indexed && cached.wordCount && cached.wordCount > 500) {
               // Fetch the highest-value sections (methods + results + discussion)
               const keyOrder = ['methods', 'results', 'discussion', 'conclusion', 'introduction'];
@@ -205,7 +205,7 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
               if (available.length > 0) {
                 const parts = await Promise.all(
                   available.slice(0, 3).map((s) =>
-                    api.getPdfSection({ uid: article.uid, doi: article.doi, pmcid: article.pmcid }, s)
+                    api.documents.getPdfSection({ uid: article.uid, doi: article.doi, pmcid: article.pmcid }, s)
                       .catch(() => null)
                   )
                 );
@@ -217,9 +217,9 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
               }
             } else {
               // Live PDF cascade
-              const { url, isFree } = await api.findFullText(article.doi || '', { pmcid: article.pmcid });
+              const { url, isFree } = await api.documents.findFullText(article.doi || '', { pmcid: article.pmcid });
               if (url && isFree) {
-                const { text } = await api.extractPdfText(url);
+                const { text } = await api.documents.extractPdfText(url);
                 if (text && text.length > textToAnalyze.length) {
                   textToAnalyze = text;
                   setUsingFullText(true);
@@ -234,7 +234,7 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
         let liveText = '';
         let finalResult: AnalysisResult | null = null;
         await new Promise<void>((resolve, reject) => {
-          api.analyzeWithAIStream(textToAnalyze, { type: analysisType }, {
+          api.ai.analyzeWithAIStream(textToAnalyze, { type: analysisType }, {
             onChunk: (chunk) => {
               liveText += chunk;
               if (reqId === requestIdRef.current) setStreamedText(liveText);
@@ -266,7 +266,7 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
     setError(null);
     setPicoResult(null);
     try {
-      const res = await api.extractSinglePico(article);
+      const res = await api.review.extractSinglePico(article);
       setPicoResult(res.extraction);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'PICO extraction failed');
@@ -303,7 +303,7 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
     setShowTables(true);
     if (tables.length > 0) return;
     try {
-      const data = await api.getPdfTables({ uid: article.uid, doi: article.doi, pmcid: article.pmcid });
+      const data = await api.documents.getPdfTables({ uid: article.uid, doi: article.doi, pmcid: article.pmcid });
       setTables(data.tables || []);
     } catch { /* no tables */ }
   };

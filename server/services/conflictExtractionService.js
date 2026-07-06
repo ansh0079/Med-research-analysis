@@ -1,9 +1,11 @@
 'use strict';
 
-let _aiService;
+// Lazy require to avoid the circular dependency between aiService (which
+// requires ../prompts) and this module. The shared AI service is memoised at
+// the aiService module level, so we get one instance + one set of circuit
+// breakers per process.
 function getAiService() {
-    if (!_aiService) _aiService = require('./aiService');
-    return _aiService;
+    return require('./aiService');
 }
 const { classifyClaimGuidelineAlignment } = require('./claimGuidelineAlignmentService');
 const { validateAiOutput } = require('./aiOutputValidation');
@@ -215,8 +217,8 @@ async function extractTrialGuidelineConflicts(evidenceRows, guidelines, options 
 
     if (serverConfig && (serverConfig.keys?.anthropic || serverConfig.keys?.gemini || serverConfig.keys?.mistral)) {
         try {
-            const { createAiService, PINNED_MODELS, TEMPERATURE: T } = getAiService();
-            const ai = createAiService({ serverConfig, fetchImpl });
+            const { createAiService, getSharedAiService, PINNED_MODELS, TEMPERATURE: T } = getAiService();
+            const ai = getSharedAiService({ serverConfig, fetchImpl });
             const prompt = buildConflictExtractionPrompt(rows, guides, topic);
             const provider = serverConfig.keys?.anthropic ? 'claude'
                 : serverConfig.keys?.gemini ? 'gemini' : 'mistral';

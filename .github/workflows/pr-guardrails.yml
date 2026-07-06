@@ -45,8 +45,8 @@ jobs:
           JWT_SECRET: test-jwt-secret
           ADMIN_TOKEN: test-admin-token
 
-      - name: Run TypeScript
-        run: npx tsc --noEmit
+      - name: Run TypeScript (client + server)
+        run: npm run typecheck:all
 
       - name: Run ESLint
         run: npx eslint .
@@ -56,12 +56,34 @@ jobs:
           npm run docs:openapi:generate
           npm run docs:openapi:validate
 
+      - name: Verify production env checklist
+        run: npm run verify:production-env
+        env:
+          NODE_ENV: production
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
+          REDIS_URL: redis://localhost:6379/0
+          JWT_SECRET: test-jwt-secret-at-least-thirty-two-characters-long
+          CORS_ORIGINS: http://localhost:3002
+          APP_URL: https://localhost:3002
+          SMTP_FROM: noreply@example.com
+          RESEND_API_KEY: test-resend-key
+          GEMINI_API_KEY: test-gemini-key
+          SENTRY_DSN: https://test@sentry.example.com/1
+          PAYWALL_ENABLED: true
+          STRIPE_SECRET_KEY: sk_test_xxx
+          STRIPE_WEBHOOK_SECRET: whsec_xxx
+          STRIPE_RESEARCHER_PRICE_ID: price_xxx
+          STRIPE_PRO_PRICE_ID: price_xxx
+          STRIPE_TEAM_PRICE_ID: price_xxx
+
       - name: Build frontend for E2E
         run: npm run build
 
       - name: Run fast E2E tests
         run: |
           NODE_ENV=e2e JWT_SECRET=test-jwt-secret ADMIN_TOKEN=test-admin-token npm start &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID" EXIT
           for i in {1..30}; do
             curl -sf http://localhost:3002/health && break
             sleep 1
@@ -69,4 +91,39 @@ jobs:
           npm run test:e2e:ci
 
       - name: Run npm audit
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=moderate
+
+  # Search quality eval runs in its own job so it reports visibly without
+  # blocking merge if external APIs or ranking noise make it flaky.
+  search-quality-eval:
+    name: Labelled Search Quality Eval
+    runs-on: ubuntu-latest
+    needs: guardrails
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run labelled search quality eval
+        run: |
+          NODE_ENV=test APP_ROLE=web JWT_SECRET=test-jwt-secret ADMIN_TOKEN=test-admin-token npm start &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID" EXIT
+          for i in {1..30}; do
+            curl -sf http://localhost:3002/health && break
+            sleep 1
+          done
+          npm run eval:search-quality:gold
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret
+          ADMIN_TOKEN: test-admin-token

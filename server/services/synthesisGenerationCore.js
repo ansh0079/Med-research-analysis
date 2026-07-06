@@ -2,7 +2,7 @@
 
 const logger = require('../config/logger');
 const crypto = require('crypto');
-const { createAiService, TEMPERATURE, MAX_OUTPUT_TOKENS, AI_DISCLAIMER } = require('./aiService');
+const { createAiService, getSharedAiService, TEMPERATURE, MAX_OUTPUT_TOKENS, AI_DISCLAIMER } = require('./aiService');
 const { buildSynthesisPrompt } = require('../prompts');
 const { buildLearnerContext } = require('./learnerContextService');
 const { batchCheckRetractions } = require('./qualityService');
@@ -445,7 +445,7 @@ async function runFullSynthesisGenerationInner({
         }
     }
 
-    const ai = createAiService({ serverConfig, fetchImpl });
+    const ai = getSharedAiService({ serverConfig, fetchImpl });
     const context = await prepareSynthesisContext({ articles: topArticles, topic, db, cache, userId });
     const providerCandidates = getProviderCandidates({ provider }, serverConfig);
     if (!providerCandidates.length) {

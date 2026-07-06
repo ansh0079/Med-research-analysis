@@ -33,7 +33,7 @@ Implement `rerankArticlesByPico(articles, picoProfile, options)`:
 **PICO profile source:** Re-use the existing `buildCaseSearchQueryPrompt` parsing logic, or extract PICO from the case text via a dedicated lightweight prompt before search.
 
 ### 1.2 Integrate Reranker into Case Analysis
-**File:** `server/controllers/reviewRoutes.js`
+**File:** `server/routes/review.js`
 
 In the `POST /api/cases/analyze` route:
 1. Change `gatherEvidenceArticlesForCase` call from `limit: 14` to `limit: 30`.
@@ -53,7 +53,7 @@ const clinicallyAlignedArticles = reranked
 ```
 
 ### 1.3 Update Cache Key to Include User Mastery
-**File:** `server/controllers/reviewRoutes.js`
+**File:** `server/routes/review.js`
 
 The current cache key:
 ```js
@@ -124,7 +124,7 @@ Update `buildCaseEvidencePrompt`:
 - Instruct the AI to incorporate these into `uncertainties`, `interventions`, and `caseMCQs` rather than inventing new conflicts.
 
 ### 2.3 Return Structured Conflict Data in API Response
-**File:** `server/controllers/reviewRoutes.js`
+**File:** `server/routes/review.js`
 
 In the `POST /api/cases/analyze` response, add:
 ```js
@@ -162,7 +162,7 @@ guidelineAlignment: {
 **Commercial gate:** Every meaningful user interaction writes a compact learning event. Agent prompts use compact summaries rather than full raw histories.
 
 ### 3.1 Infer Misconception Tags from Quiz Patterns
-**File:** `server/controllers/learningRoutes.js`
+**File:** `server/routes/learning/index.js`
 
 The existing `recordQuizAttempt` already writes to `user_claim_misconceptions` with `misconception_category`. Extend this:
 
@@ -178,7 +178,7 @@ The existing `recordQuizAttempt` already writes to `user_claim_misconceptions` w
    - Ensure `learningRoutes.js` also uses this expanded lookback when updating topic memory.
 
 ### 3.2 Inject Misconceptions into Case Analysis
-**File:** `server/controllers/reviewRoutes.js`
+**File:** `server/routes/review.js`
 
 In `POST /api/cases/analyze`:
 1. After fetching `userContext`, also fetch `personalMisconceptions`:
@@ -293,9 +293,9 @@ Phase 4 — Commercial Hardening
 - `benchmarks/searchRerankBenchmark.mjs`
 
 ### Backend Modifications
-- `server/controllers/reviewRoutes.js` — rerank integration, cache key, conflict matrix in response, misconception fetch
-- `server/controllers/learningRoutes.js` — misconception_tag inference
-- `server/controllers/aiRoutes.js` — ensure quiz prompts already use `limit: 5, minOccurrences: 1` (verify)
+- `server/routes/review.js` — rerank integration, cache key, conflict matrix in response, misconception fetch
+- `server/routes/learning/index.js` — misconception_tag inference
+- `server/routes/ai.js` — ensure quiz prompts already use `limit: 5, minOccurrences: 1` (verify)
 - `server/prompts/case.js` — conflict injection, personal learning context
 - `server/prompts/synthesis.js` — optional: deepen evidenceDisagreement rubric with conflict levels
 - `server/services/aiGenerationJobService.js` — extend workers
