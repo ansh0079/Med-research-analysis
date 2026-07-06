@@ -1,4 +1,5 @@
 const logger = require('../config/logger');
+const { computeItemPsychometrics } = require('./itemPsychometricsService');
 
 async function aggregateCollectiveMemory(db) {
     const topicRows = await db.all(
@@ -51,12 +52,45 @@ async function aggregateCollectiveMemory(db) {
             [normalizedTopic, normalizedTopic]
         );
 
+        // Raw (user, item, correctness) rows for real point-biserial discrimination —
+        // see itemPsychometricsService.js for why a p-value band isn't discrimination.
+        const rawAttempts = await db.all(
+            `SELECT concept_hash, user_id, is_correct FROM quiz_attempts WHERE normalized_topic = ? AND concept_hash IS NOT NULL`,
+            [normalizedTopic]
+        );
+        const attemptsByItem = new Map();
+        const userTotals = new Map(); // userId -> { correct, total }
+        for (const a of rawAttempts) {
+            if (!attemptsByItem.has(a.concept_hash)) attemptsByItem.set(a.concept_hash, []);
+            attemptsByItem.get(a.concept_hash).push({ userId: a.user_id, isCorrect: !!a.is_correct });
+            const u = userTotals.get(a.user_id) || { correct: 0, total: 0 };
+            u.correct += a.is_correct ? 1 : 0;
+            u.total += 1;
+            userTotals.set(a.user_id, u);
+        }
+
         const highDiscrimination = [];
         const tooEasy = [];
         const tooHard = [];
+        const flaggedItems = [];
 
         for (const q of questionStats) {
             const rate = q.total_attempts > 0 ? q.correct_count / q.total_attempts : 0;
+            const itemAttempts = attemptsByItem.get(q.concept_hash) || [];
+            // "Other items" accuracy for each user who attempted this item — excludes
+            // this item's own contribution so the item isn't correlated with itself.
+            const otherAccuracyByUser = new Map();
+            for (const { userId } of itemAttempts) {
+                if (otherAccuracyByUser.has(userId)) continue;
+                const itemOwnAttempts = itemAttempts.filter((a) => a.userId === userId);
+                const itemOwnCorrect = itemOwnAttempts.filter((a) => a.isCorrect).length;
+                const total = userTotals.get(userId);
+                const otherTotal = total.total - itemOwnAttempts.length;
+                const otherCorrect = total.correct - itemOwnCorrect;
+                if (otherTotal > 0) otherAccuracyByUser.set(userId, otherCorrect / otherTotal);
+            }
+            const psychometrics = computeItemPsychometrics(itemAttempts, otherAccuracyByUser);
+
             const entry = {
                 conceptHash: q.concept_hash,
                 questionText: q.question_text,
@@ -64,8 +98,11 @@ async function aggregateCollectiveMemory(db) {
                 correctRate: Math.round(rate * 100),
                 totalAttempts: q.total_attempts,
                 uniqueUsers: q.unique_users,
+                discrimination: psychometrics.discrimination != null ? Math.round(psychometrics.discrimination * 100) / 100 : null,
+                discriminationLabel: psychometrics.discriminationLabel,
             };
-            if (rate >= 0.40 && rate <= 0.75) highDiscrimination.push(entry);
+            if (psychometrics.discriminationLabel === 'flag_negative' && psychometrics.sampleSize >= 5) flaggedItems.push(entry);
+            else if (rate >= 0.40 && rate <= 0.75 && ['good', 'excellent'].includes(psychometrics.discriminationLabel)) highDiscrimination.push(entry);
             else if (rate > 0.90) tooEasy.push(entry);
             else if (rate < 0.20) tooHard.push(entry);
         }
@@ -80,9 +117,12 @@ async function aggregateCollectiveMemory(db) {
         const collective_memory = {
             interactionCount: Number(row.total_attempts),
             uniqueUsers: Number(row.unique_users),
-            highDiscriminationMcqs: highDiscrimination.slice(0, 15),
-            tooEasyMcqs: tooEasy.map((q) => q.conceptHash),
-            tooHardMcqs: tooHard.map((q) => q.conceptHash),
+            highDiscrimination: highDiscrimination.slice(0, 15),
+            tooEasy: tooEasy.slice(0, 15),
+            tooHard: tooHard.slice(0, 15),
+            // Items where weaker performers outscore stronger ones — a strong signal
+            // of a miskeyed answer or an ambiguous distractor, worth human review.
+            flaggedForReview: flaggedItems.slice(0, 10),
             sharedMisconceptions,
             lastAggregatedAt: new Date().toISOString(),
         };
