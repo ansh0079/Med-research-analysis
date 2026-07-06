@@ -128,11 +128,11 @@ Latest drill record:
 2. Move auto-seeding, MCQ generation, PDF indexing, enrichment, and memory extraction fully into workers.
 3. Add Redis-backed source cache and single-flight behavior in production.
 4. Add dashboards for search latency breakdown, external API errors, cache hit rate, and LLM cost.
-5. ~~Run a restore drill and document backup/retention policy.~~ **Done — see drill record below.**
+5. ~~Run a restore drill and document backup/retention policy.~~ **Done - see drill record below.**
 6. Remove placeholder marketing content before public launch.
 7. Convert stale launch docs into links to this file.
 
-## Backup/Restore Drill — 2026-07-06T21:54:43Z
+## Backup/Restore Drill - 2026-07-06T21:54:43Z
 
 - **Operator:** automated via Claude Code (ansh0079@gmail.com)
 - **Started:** 2026-07-06T21:54:43Z
@@ -143,10 +143,10 @@ Latest drill record:
 - **Backup size:** 30,432,696 bytes (~29 MB)
 - **Backup method:** `docker exec medsearch-pg pg_dump` --format=custom
 - **Restore method:** `docker exec medsearch-pg pg_restore` --clean --if-exists --no-owner --no-acl
-- **verify-restored-db.mjs:** ✅ passed — 107 expected tables present, 87 migrations in ledger, pgvector installed, articles_cache present
+- **verify-restored-db.mjs:** passed - 107 expected tables present, 87 migrations in ledger, pgvector installed, articles_cache present
 - **Row counts (critical tables):** users=1, searches=182, topic_knowledge=273, agent_conversations=0, quiz_attempts=0
-- **db:schema:check:** ✅ passed (local SQLite consistency check)
+- **db:schema:check:** passed (local SQLite consistency check)
 - **Smoke tests:** skipped (no Playwright environment on server)
 - **Restore DB cleanup:** dropped post-verification
-- **Side-effects found:** `agent_turn_side_effects` was in production_schema.sql but no longer exists in the live DB (dropped from snapshot). Fixed in this commit.
-- **Follow-up:** None — drill passed. Re-run before each paid launch window and after any schema migration.
+- **Side-effects found:** `agent_turn_side_effects` was absent from the restored live DB, but the app still references it and the baseline schema still includes it.
+- **Follow-up:** Reconcile live Postgres with the baseline via a focused migration or retire the durable side-effect path deliberately. Re-run before each paid launch window and after any schema migration.
