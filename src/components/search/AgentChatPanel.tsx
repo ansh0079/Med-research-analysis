@@ -222,7 +222,7 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
               reply += chunk;
               setStreamingContent((prev) => prev + chunk);
             },
-            onDone: (_doneTopic, doneConvId) => {
+            onDone: (_doneTopic, doneConvId, _promptVersion) => {
               if (doneConvId != null) {
                 setConversationId(doneConvId);
               }

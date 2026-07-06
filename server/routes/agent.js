@@ -1,8 +1,12 @@
 const logger = require('../config/logger');
 const { safeFetch } = require('../utils/fetch');
-const { createAiService, getSharedAiService, PINNED_MODELS, TEMPERATURE } = require('../services/aiService');
-const { resolveProvider, getProviderCandidates } = require('../utils/aiProvider');
+const { getSharedAiService, PINNED_MODELS, TEMPERATURE } = require('../services/aiService');
+const { getProviderCandidates } = require('../utils/aiProvider');
 const { topicRefreshPriority } = require('../services/topicKnowledgeFreshness');
+const { AGENT_PROMPT_VERSION } = require('../services/agentPromptVersion');
+const { truncateAgentPrompt, getAgentOutputTokenBudget } = require('../services/agentPromptBudget');
+const { enqueueAgentTurnSideEffects } = require('../services/agentSideEffectService');
+const { runWithLlmBudget, createBudgetForAction, getActiveLlmBudget } = require('../services/llmRequestBudget');
 const { CLAIM_VERIFICATION, stableClaimKey } = require('../services/teachingObjectService');
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -97,6 +101,22 @@ function buildAgentEvidenceAnchors({ currentArticles = [], guidelines = [], grou
             verificationStatus: claim.verificationStatus || null,
         })) : []),
     ];
+}
+
+function isTransientStreamError(err) {
+    if (!err) return false;
+    const code = String(err.code || '').toUpperCase();
+    const msg = String(err.message || '').toLowerCase();
+    const statusMatch = msg.match(/\b(\d{3})\b/);
+    const status = statusMatch ? Number(statusMatch[1]) : 0;
+    if (['ECONNRESET', 'ETIMEDOUT', 'ECONNREFUSED', 'EPIPE', 'ENOTFOUND', 'EAI_AGAIN'].includes(code)) {
+        return true;
+    }
+    if (status >= 500 || status === 429) return true;
+    if (msg.includes('timeout')) return true;
+    if (msg.includes('rate limit')) return true;
+    if (msg.includes('temporarily unavailable')) return true;
+    return false;
 }
 
 const { formatMisconceptionPromptBlock } = require('../utils/misconceptionPromptBlock');
@@ -515,7 +535,6 @@ function parseHistoryForProvider(conversationHistory, _provider) {
 
 const { formatLearnerSnapshot } = require('../services/learnerStateService');
 const { buildLearnerContext } = require('../services/learnerContextService');
-const { persistAgentTurnMemory, reflectOnAgentSession, isSessionEndingTurn } = require('../services/agentTurnMemoryService');
 const { setupSSE, sendSSE } = require('../utils/sse');
 
 function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, requireAuthJwt }) {
@@ -570,7 +589,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
         }
     });
 
-    app.post('/api/agent/chat', requireJson, requireAuthJwt, rateLimit(20, 60), async (req, res) => {
+    app.post('/api/agent/chat', requireJson, requireAuthJwt, rateLimit(20, 60), async (req, res) => runWithLlmBudget(createBudgetForAction('agent_turn'), async () => {
         const {
             topic,
             message,
@@ -610,7 +629,6 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
             const topicKnowledge = await db.getTopicKnowledge(trimmedTopic);
 
             const guidelines = await db.getGuidelinesByTopic(trimmedTopic, { limit: 5 }).catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; });
-            const normalizedTopic = db.normalizeTopic(trimmedTopic);
             const [teachingObjects, groundedClaims, userContext] = await Promise.all([
                 db.listTeachingObjectsForTopic(trimmedTopic, { limit: 3 }).catch((err) => { logger.warn({ err }, 'all failed'); return []; }),
                 db.listTeachingObjectClaimsForTopic(trimmedTopic, { limit: 5 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectClaimsForTopic failed'); return []; }),
@@ -716,191 +734,126 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
 
             const fullPrompt = `${systemPrompt}${feedbackContext}\n\n${conversationContext ? conversationContext + '\n\n---\n\n' : '---\n\n'}${trimmedMessage}`;
 
+            const { prompt: truncatedPrompt, truncated: promptWasTruncated, originalTokens, finalTokens } = truncateAgentPrompt(fullPrompt);
+            if (promptWasTruncated) {
+                logger.info({
+                    topic: trimmedTopic,
+                    userId: req.user?.id,
+                    originalTokens,
+                    finalTokens,
+                }, 'Agent prompt truncated to fit token budget');
+            }
+
             setupSSE(res);
 
             let reply = '';
             let chunksSent = false;
             let lastStreamErr = null;
-            const maxTokens = MAX_OUTPUT_TOKENS_BY_INTENT[classifiedIntent] ?? 1800;
+            let streamSucceeded = false;
+            const maxTokens = getAgentOutputTokenBudget(classifiedIntent, 1800);
+            const maxRetries = Math.max(0, Number(process.env.AGENT_STREAM_MAX_RETRIES_PER_PROVIDER) || 2);
+            const retryDelayMs = Math.max(0, Number(process.env.AGENT_STREAM_RETRY_DELAY_MS) || 500);
+            const activeBudget = getActiveLlmBudget() || createBudgetForAction('agent_turn');
 
             for (const candidate of providerCandidates) {
-                try {
-                    const streamIter = ai.callTextStream(fullPrompt, candidate.provider, candidate.model, {
-                        temperature: TEMPERATURE.explain,
-                        maxOutputTokens: maxTokens,
-                    });
-                    for await (const chunk of streamIter) {
-                        chunksSent = true;
-                        reply += chunk;
-                        sendSSE(res, 'chunk', { text: chunk });
-                    }
-                    selectedProvider = candidate.provider;
-                    selectedModel = candidate.model;
-                    break;
-                } catch (streamErr) {
-                    if (chunksSent) {
-                        logger.warn({ err: streamErr, provider: candidate.provider }, 'Agent stream failed after chunks sent; cannot retry');
-                        sendSSE(res, 'error', { message: isDev ? streamErr.message : 'Stream failed' });
-                        return res.end();
-                    }
-                    lastStreamErr = streamErr;
-                    logger.warn({ err: streamErr, provider: candidate.provider, model: candidate.model }, 'Agent stream provider failed; trying fallback');
+                const breaker = ai._breakers?.[candidate.provider];
+                if (breaker && !breaker.isHealthy()) {
+                    logger.debug({ provider: candidate.provider }, 'Agent stream provider breaker open; skipping');
+                    continue;
                 }
+
+                for (let attempt = 0; attempt <= maxRetries; attempt++) {
+                    try {
+                        const streamIter = ai.callTextStream(truncatedPrompt, candidate.provider, candidate.model, {
+                            temperature: TEMPERATURE.explain,
+                            maxOutputTokens: maxTokens,
+                            budget: activeBudget,
+                        });
+                        for await (const chunk of streamIter) {
+                            chunksSent = true;
+                            reply += chunk;
+                            sendSSE(res, 'chunk', { text: chunk });
+                        }
+                        selectedProvider = candidate.provider;
+                        selectedModel = candidate.model;
+                        streamSucceeded = true;
+                        break;
+                    } catch (streamErr) {
+                        if (chunksSent) {
+                            logger.warn({ err: streamErr, provider: candidate.provider }, 'Agent stream failed after chunks sent; cannot retry');
+                            sendSSE(res, 'error', { message: isDev ? streamErr.message : 'Stream failed' });
+                            return res.end();
+                        }
+                        lastStreamErr = streamErr;
+                        const isTransient = isTransientStreamError(streamErr);
+                        const isLastAttempt = attempt >= maxRetries;
+                        if (isTransient && !isLastAttempt) {
+                            logger.warn({
+                                err: streamErr,
+                                provider: candidate.provider,
+                                model: candidate.model,
+                                attempt: attempt + 1,
+                            }, 'Agent stream provider transient failure; retrying');
+                            await new Promise((r) => setTimeout(r, retryDelayMs * 2 ** attempt));
+                            continue;
+                        }
+                        logger.warn({
+                            err: streamErr,
+                            provider: candidate.provider,
+                            model: candidate.model,
+                            attempt: attempt + 1,
+                            isTransient,
+                        }, 'Agent stream provider failed; trying fallback');
+                        break;
+                    }
+                }
+
+                if (streamSucceeded) break;
             }
 
-            if (!reply) {
+            if (!streamSucceeded || !reply) {
                 sendSSE(res, 'error', { message: isDev ? (lastStreamErr?.message ?? 'AI returned an empty response') : 'Stream failed' });
                 return res.end();
             }
 
-            sendSSE(res, 'done', { topic: trimmedTopic, conversationId: conversationId || null });
+            sendSSE(res, 'done', {
+                topic: trimmedTopic,
+                conversationId: conversationId || null,
+                promptVersion: AGENT_PROMPT_VERSION,
+            });
             res.end();
 
-            // Post-response side effects — fire-and-forget, don't block the stream
-            void (async () => {
-                try {
-                    if (conversationId && req.user?.id) {
-                        await persistAgentTurnMemory({
-                            db,
-                            ai,
-                            conversationId,
-                            userId: req.user.id,
-                            topic: trimmedTopic,
-                            userMessage: trimmedMessage,
-                            assistantReply: reply,
-                            existingSummary: persistedConversation?.conversationSummary || null,
-                            existingSnapshot: persistedConversation?.learnerSnapshot || null,
-                            evidenceAnchors: buildAgentEvidenceAnchors({ currentArticles, guidelines, groundedClaims }),
-                            provider: selectedProvider,
-                            model: auxModel,
-                        }).catch((err) => req.log?.warn?.({ err }, 'persistAgentTurnMemory failed'));
-                    }
-
-                    if (sessionFeedback && req.user?.id) {
-                        await db.recordLearningEvent({
-                            userId: req.user.id,
-                            eventType: 'quiz_session_feedback',
-                            topic: sessionFeedback.topic || trimmedTopic,
-                            sourceType: 'agent_chat',
-                            sourceId: conversationId ? String(conversationId) : req.sessionId,
-                            payload: {
-                                score: sessionFeedback.score,
-                                totalQuestions: sessionFeedback.totalQuestions,
-                                weakAreas: sessionFeedback.weakAreas || [],
-                            },
-                        }).catch((err) => logger.warn({ err }, 'quiz_session_feedback event failed'));
-                    }
-
-                    const shouldReflect = conversationId && req.user?.id && isSessionEndingTurn(trimmedMessage, {
-                        sessionEnd: Boolean(sessionEnd),
-                        sessionFeedback,
-                    });
-                    if (shouldReflect) {
-                        await reflectOnAgentSession({
-                            db,
-                            ai,
-                            userId: req.user.id,
-                            topic: trimmedTopic,
-                            conversationId,
-                            conversationSummary: persistedConversation?.conversationSummary || conversationSummary || null,
-                            learnerSnapshot: persistedConversation?.learnerSnapshot || null,
-                            conversationHistory: [
-                                ...conversationHistory,
-                                { role: 'user', content: trimmedMessage },
-                                { role: 'assistant', content: reply },
-                            ],
-                            sessionFeedback,
-                            provider: selectedProvider,
-                            model: auxModel,
-                        }).catch((err) => req.log?.warn?.({ err }, 'reflectOnAgentSession failed'));
-                    }
-
-                    // classifiedIntent was computed pre-stream from the fast regex classifier.
-                    // If the LLM classifier is enabled, upgrade it asynchronously for richer analytics
-                    // without blocking the post-turn pipeline.
-                    let effectiveIntent = classifiedIntent;
-                    if (isLlmIntentClassifierEnabled()) {
-                        effectiveIntent = await inferDemandIntent(trimmedMessage, ai, selectedProvider, auxModel);
-                    }
-                    await db.logEvent?.('agent_chat', req.sessionId, {
-                        topic: trimmedTopic,
-                        messageLength: trimmedMessage.length,
-                        provider: selectedProvider,
-                        historyTurns: recentMessages.length,
-                        groundedClaimCount: groundedClaims.length,
-                        weakClaimCount: claimMastery.filter((c) => c.masteryState === 'weak').length,
-                        intent: effectiveIntent,
-                        hasSessionFeedback: Boolean(sessionFeedback),
-                        hadConversationSummary: Boolean(conversationSummary),
-                    });
-                    await Promise.allSettled([
-                        db.recordLearningEvent({
-                            userId: req.user?.id || null,
-                            eventType: 'agent_message',
-                            topic: trimmedTopic,
-                            sourceType: 'agent_chat',
-                            sourceId: req.sessionId || null,
-                            payload: {
-                                role: 'user',
-                                messageLength: trimmedMessage.length,
-                                intent: effectiveIntent,
-                                historyTurns: recentMessages.length,
-                            },
-                        }),
-                        db.recordLearningEvent({
-                            userId: req.user?.id || null,
-                            eventType: 'agent_message',
-                            topic: trimmedTopic,
-                            sourceType: 'agent_chat',
-                            sourceId: req.sessionId || null,
-                            payload: {
-                                role: 'assistant',
-                                messageLength: reply.length,
-                                provider: selectedProvider,
-                                model: selectedModel,
-                                groundedClaimCount: groundedClaims.length,
-                                weakClaimCount: claimMastery.filter((c) => c.masteryState === 'weak').length,
-                            },
-                        }),
-                    ]);
-                    await Promise.allSettled([
-                        db.recordTopicDemandSignal(trimmedTopic, trimmedTopic, effectiveIntent),
-                        previousQueries?.length
-                            ? db.maybeRegisterTopicAlias(trimmedTopic, previousQueries[previousQueries.length - 1])
-                            : Promise.resolve(),
-                    ]);
-                    const crypto = require('crypto');
-                    const answerObjectKey = `agent-answer:${crypto
-                        .createHash('sha256')
-                        .update(`${trimmedTopic}|${trimmedMessage}|${reply.slice(0, 800)}`)
-                        .digest('hex')
-                        .slice(0, 24)}`;
-                    const answerClaims = await extractGroundedClaimsStructured(
-                        reply,
-                        { topic: trimmedTopic, objectKey: answerObjectKey },
-                        ai, selectedProvider, auxModel
-                    );
-                    if (answerClaims.length > 0) {
-                        await db.upsertTeachingObject({
-                            objectKey: answerObjectKey,
-                            objectType: 'agent_answer',
-                            topic: trimmedTopic,
-                            title: `Agent answer: ${trimmedTopic}`,
-                            confidence: 0.45,
-                            provider: selectedProvider,
-                            model: selectedModel,
-                            payload: {
-                                kind: 'agent_answer_teaching_object',
-                                prompt: trimmedMessage,
-                                answer: reply,
-                                claimAnchors: answerClaims,
-                            },
-                        }).catch((err) => req.log?.warn?.({ err, topic: trimmedTopic }, 'Agent answer claim persistence skipped'));
-                    }
-                } catch (err) {
-                    req.log?.warn?.({ err, topic: trimmedTopic, userId: req.user?.id, conversationId }, 'Agent post-stream side-effects failed');
-                }
-            })();
+            // Persist side effects durably and process them asynchronously.
+            if (req.user?.id) {
+                await enqueueAgentTurnSideEffects({
+                    db,
+                    serverConfig,
+                    conversationId,
+                    userId: req.user.id,
+                    topic: trimmedTopic,
+                    userMessage: trimmedMessage,
+                    assistantReply: reply,
+                    evidenceAnchors: buildAgentEvidenceAnchors({ currentArticles, guidelines, groundedClaims }),
+                    persistedConversationSummary: persistedConversation?.conversationSummary || null,
+                    persistedLearnerSnapshot: persistedConversation?.learnerSnapshot || null,
+                    conversationSummary,
+                    conversationHistory,
+                    sessionFeedback,
+                    sessionEnd,
+                    recentMessages,
+                    previousQueries,
+                    groundedClaims,
+                    claimMastery,
+                    sessionId: req.sessionId,
+                    selectedProvider,
+                    selectedModel,
+                    auxModel,
+                    classifiedIntent,
+                    promptVersion: AGENT_PROMPT_VERSION,
+                }).catch((err) => {
+                    req.log?.warn?.({ err, topic: trimmedTopic, userId: req.user?.id, conversationId }, 'Agent side-effect enqueue failed');
+                });
+            }
         } catch (error) {
             req.log?.error?.({ err: error, topic: trimmedTopic }, 'Agent chat error');
             if (!res.headersSent) {
@@ -909,7 +862,22 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
             sendSSE(res, 'error', { message: isDev ? error.message : 'Agent error — please try again' });
             res.end();
         }
-    });
+    }));
 }
 
-module.exports = { registerAgentRoutes, buildAgentSystemPrompt, buildRetrievalContext, buildAgentEvidenceAnchors, extractGroundedClaimsFromReply, extractGroundedClaimsStructured, inferDemandIntent, inferDemandIntentRegex, buildSessionFeedbackContext, summarizeOlderMessages, formatRecentMessages, MAX_OUTPUT_TOKENS_BY_INTENT };
+module.exports = {
+    registerAgentRoutes,
+    buildAgentSystemPrompt,
+    buildRetrievalContext,
+    buildAgentEvidenceAnchors,
+    extractGroundedClaimsFromReply,
+    extractGroundedClaimsStructured,
+    inferDemandIntent,
+    inferDemandIntentRegex,
+    isLlmIntentClassifierEnabled,
+    buildSessionFeedbackContext,
+    parseHistoryForProvider,
+    summarizeOlderMessages,
+    formatRecentMessages,
+    MAX_OUTPUT_TOKENS_BY_INTENT,
+};

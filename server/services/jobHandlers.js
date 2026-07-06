@@ -8,18 +8,18 @@ function registerAllJobHandlers(deps) {
     const { registerJobHandler } = require('./jobQueue');
     const logger = deps.logger || require('../config/logger');
 
-    registerJobHandler('pdf', 'extract', async ({ url }, ctx) => {
+    registerJobHandler('pdf', 'extract', async ({ url }, _ctx) => {
         const { createPdfService } = require('./pdfService');
         const pdf = createPdfService({ serverConfig: deps.serverConfig, fetch: deps.fetchImpl });
         return pdf.extractPdfText(url);
     });
 
-    registerJobHandler('pdf', 'preindex', async ({ articleId, article }, ctx) => {
+    registerJobHandler('pdf', 'preindex', async ({ articleId: _articleId, article }, _ctx) => {
         const { runPdfPreindex } = require('./pdfPreindexRunner');
         return runPdfPreindex(article, deps);
     });
 
-    registerJobHandler('embedding', 'article', async ({ article }, ctx) => {
+    registerJobHandler('embedding', 'article', async ({ article }, _ctx) => {
         const { generateEmbedding, articleToEmbedText } = require('../embeddings');
         const db = deps.db;
         if (!db || typeof db.isVectorSearchAvailable !== 'function' || !db.isVectorSearchAvailable()) return;
@@ -36,16 +36,19 @@ function registerAllJobHandlers(deps) {
         );
     });
 
-    registerJobHandler('digest', 'run', async (_data, ctx) => {
+    registerJobHandler('digest', 'run', async (_data, _ctx) => {
         const { runAlertDigests } = require('./digestService');
         const appUrl = process.env.APP_URL || `http://localhost:${process.env.PORT || 3002}`;
         return runAlertDigests(deps.db, appUrl, deps.serverConfig, deps.fetchImpl);
     });
 
-    registerJobHandler('ai-generation', 'process', async ({ jobKey }, ctx) => {
+    registerJobHandler('ai-generation', 'process', async ({ jobKey }, _ctx) => {
         const { processAiGenerationJobByKey } = require('./aiGenerationJobProcessor');
         return processAiGenerationJobByKey(jobKey, deps);
     });
+
+    const { registerAgentSideEffectHandler } = require('./agentSideEffectService');
+    registerAgentSideEffectHandler(deps);
 
     logger.info('Job handlers registered');
 }

@@ -314,7 +314,7 @@ export class AiApi extends BaseApiClient {
     previousQueries: string[] = [],
     callbacks: {
       onChunk: (text: string) => void;
-      onDone: (topic: string, conversationId?: number | null) => void;
+      onDone: (topic: string, conversationId: number | null | undefined, promptVersion: string | null) => void;
       onError: (msg: string) => void;
     },
     sessionFeedback?: {
@@ -366,7 +366,8 @@ export class AiApi extends BaseApiClient {
             else if (event === 'done') {
               callbacks.onDone(
                 data.topic ?? topic,
-                data.conversationId != null ? Number(data.conversationId) : conversationId ?? null
+                data.conversationId != null ? Number(data.conversationId) : conversationId ?? null,
+                data.promptVersion ?? null
               );
             }
             else if (event === 'error') callbacks.onError(data.message ?? 'Unknown error');
