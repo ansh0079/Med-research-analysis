@@ -1,7 +1,7 @@
 const logger = require('../config/logger');
 const { safeFetch } = require('../utils/fetch');
-const { createAiService, PINNED_MODELS, TEMPERATURE } = require('../services/aiService');
-const { resolveProvider } = require('../utils/aiProvider');
+const { createAiService, getSharedAiService, PINNED_MODELS, TEMPERATURE } = require('../services/aiService');
+const { resolveProvider, getProviderCandidates } = require('../utils/aiProvider');
 const { topicRefreshPriority } = require('../services/topicKnowledgeFreshness');
 const { CLAIM_VERIFICATION, stableClaimKey } = require('../services/teachingObjectService');
 
@@ -211,17 +211,21 @@ function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = []
             ? `Cross-topic synapses in current evidence: ${synapseTopics.join(', ')}`
             : '';
 
-        // Normalise training stage: DB may return snake_case or camelCase; 'specialist' aliases 'clinician'
+        // Normalise training stage: DB may return snake_case or camelCase.
+        // The agent collapses 'specialist' → 'clinician' (the two stages share
+        // an identical scaffolding directive). Canonical list lives in
+        // prompts/trainingStages.js so the agent and the quiz prompt don't drift.
+        const { normaliseAgentStage } = require('../prompts/trainingStages');
         const rawStage = profile?.trainingStage || profile?.training_stage || '';
-        const normalisedStage = rawStage === 'specialist' ? 'clinician' : rawStage;
+        const normalisedStage = normaliseAgentStage(rawStage);
 
         const stageSpecifics = {
             'preclinical': 'SCAFFOLDING: Focus on mechanism and basic physiology. Use simple analogies. Avoid complex trial statistics. Prioritise definitions, drug classes, and classic associations. Do NOT cite methodological limitations or subgroup contradictions.',
             'early_clinical': 'SCAFFOLDING: Focus on illness scripts and initial management priorities. Use moderate-length vignettes. Emphasise "what would you do first" reasoning. Moderate clinical depth — avoid advanced statistical critique.',
             'finals': 'SCAFFOLDING: Focus on discriminators, next diagnostic steps, first-line management, contraindications, and exam traps. Include guideline-anchored reasoning. Aim for exam-ready precision.',
             'foundation_doctor': 'SCAFFOLDING: Focus on ESCALATION and SAFETY. Prioritise: (1) when to call a senior, (2) safe prescribing thresholds and drug interactions, (3) NEWS/deterioration criteria, (4) referral pathways, (5) what could go wrong acutely. Keep explanations practical and ward-applicable. Avoid abstract trial methodology.',
+            // 'specialist' is normalised to 'clinician' at line 216, so it is handled by the clinician branch below.
             'clinician': 'SCAFFOLDING: Focus on METHODOLOGICAL NUANCE and SUBGROUP CONTRADICTIONS. Critique study design, internal validity, and applicability limits. Discuss NNT/NNH in the context of comorbidity. Surface practice-changing uncertainties and areas of genuine expert disagreement. Do NOT oversimplify — the learner is a practising clinician.',
-            'specialist': 'SCAFFOLDING: Focus on METHODOLOGICAL NUANCE and SUBGROUP CONTRADICTIONS. Critique study design, internal validity, and applicability limits. Discuss NNT/NNH in the context of comorbidity. Surface practice-changing uncertainties and areas of genuine expert disagreement. Do NOT oversimplify — the learner is a practising clinician.',
         };
 
         const scaffolding = stageSpecifics[normalisedStage] || stageSpecifics['finals'];
@@ -316,6 +320,15 @@ function inferDemandIntentRegex(message) {
 
 const VALID_INTENTS = new Set(['quiz', 'case', 'guideline', 'appraisal', 'synopsis', 'agent_chat']);
 
+const MAX_OUTPUT_TOKENS_BY_INTENT = {
+    quiz: 2500,
+    case: 2500,
+    guideline: 2500,
+    appraisal: 2500,
+    synopsis: 4000,
+    agent_chat: 1800,
+};
+
 function isLlmIntentClassifierEnabled() {
     return String(process.env.AGENT_LLM_INTENT_CLASSIFIER || '').toLowerCase() === 'true';
 }
@@ -363,6 +376,58 @@ function extractGroundedClaimsFromReply(reply, { topic, objectKey }) {
             verificationStatus: CLAIM_VERIFICATION.AGENT_DRAFT,
             verificationReason: 'Claim was extracted from an agent chat answer and has not been source-verified.',
         }));
+}
+
+/**
+ * Structured claim extraction via LLM JSON output — catches multi-sentence claims
+ * and citations that the sentence-boundary regex misses. Falls back to the regex
+ * extractor so a model error never silently drops claim persistence entirely.
+ */
+async function extractGroundedClaimsStructured(reply, { topic, objectKey }, ai, provider, model) {
+    try {
+        const parsed = await ai.callStructured(
+            `Extract grounded claims from this medical AI assistant reply. A grounded claim is a factual clinical assertion explicitly backed by a citation marker in the text (e.g. [RES-1], [MEM-3], [CLAIM-...], [G1]).
+
+Reply:
+${String(reply || '').slice(0, 4000)}
+
+Topic: ${topic}
+
+Return JSON with this exact shape:
+{"claims":[{"text":"<claim text, 40-700 chars>","citations":["RES-1"]}]}
+
+Rules:
+- Only include claims that have at least one explicit citation marker
+- Do not fabricate citations
+- Max 6 claims
+- If no grounded claims exist, return {"claims":[]}`,
+            provider,
+            model,
+            { temperature: 0.0, maxOutputTokens: 600, timeoutMs: 10000 }
+        );
+        const claims = Array.isArray(parsed?.claims) ? parsed.claims : [];
+        return claims
+            .filter((c) => c?.text && String(c.text).length >= 40 && String(c.text).length <= 700)
+            .slice(0, 6)
+            .map((c, ordinal) => {
+                const text = String(c.text);
+                return {
+                    claimKey: stableClaimKey(objectKey, text),
+                    ordinal,
+                    claimText: text,
+                    evidenceQuote: null,
+                    sourcePath: 'agent.answer',
+                    topic,
+                    conceptKey: 'agent_grounded_answer',
+                    confidence: 0.45,
+                    verificationStatus: CLAIM_VERIFICATION.AGENT_DRAFT,
+                    verificationReason: 'Claim was extracted from an agent chat answer and has not been source-verified.',
+                };
+            });
+    } catch (err) {
+        logger.debug({ err }, 'Structured claim extraction failed; using regex fallback');
+        return extractGroundedClaimsFromReply(reply, { topic, objectKey });
+    }
 }
 
 /**
@@ -454,7 +519,7 @@ const { persistAgentTurnMemory, reflectOnAgentSession, isSessionEndingTurn } = r
 const { setupSSE, sendSSE } = require('../utils/sse');
 
 function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, requireAuthJwt }) {
-    const ai = createAiService({ serverConfig, fetchImpl: safeFetch });
+    const ai = getSharedAiService({ serverConfig, fetchImpl: safeFetch });
 
     app.post('/api/agent/feedback', requireJson, requireAuthJwt, rateLimit(60, 60), async (req, res) => {
         const {
@@ -526,7 +591,12 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
 
         const trimmedTopic = topic.trim().slice(0, 200);
         const trimmedMessage = message.trim().slice(0, 1000);
-        const conversationId = rawConversationId != null ? parseInt(String(rawConversationId), 10) : null;
+        // Parse the conversation id defensively. A non-numeric client value must
+        // NOT become `NaN` (which is falsy enough to skip the persistence block
+        // but truthy enough to leak into other code paths). Treat any non-finite
+        // parse result as "no conversation id supplied".
+        const parsedConversationId = rawConversationId != null ? parseInt(String(rawConversationId), 10) : NaN;
+        const conversationId = Number.isFinite(parsedConversationId) ? parsedConversationId : null;
         let persistedConversation = null;
 
         try {
@@ -609,14 +679,20 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
 
             const systemPrompt = buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines, userContext, crossTopicBridges, retrieval);
 
-            const { provider: selectedProvider, model: selectedModel } = resolveProvider({}, serverConfig);
-            if (!selectedProvider) {
+            const providerCandidates = getProviderCandidates({}, serverConfig);
+            if (!providerCandidates.length) {
                 return res.status(503).json({ error: 'No AI provider configured' });
             }
+            let selectedProvider = providerCandidates[0].provider;
+            let selectedModel = providerCandidates[0].model;
             // Gemini has a dedicated cheap "lite" tier for auxiliary calls (intent
             // classification, conversation summarization); claude/mistral's pinned
             // models are already the cheap tier, so reuse selectedModel for those.
             const auxModel = selectedProvider === 'gemini' ? PINNED_MODELS.geminiLite : selectedModel;
+
+            // Classify intent pre-stream so it can drive maxOutputTokens selection.
+            // Regex is instant; the optional LLM classifier runs post-stream for analytics only.
+            const classifiedIntent = inferDemandIntentRegex(trimmedMessage);
 
             // Conversation context: persisted summary + summarise older client history
             const recentMessages = formatRecentMessages(conversationHistory, 4);
@@ -643,20 +719,37 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
             setupSSE(res);
 
             let reply = '';
-            try {
-                const streamIter = ai.callTextStream(fullPrompt, selectedProvider, selectedModel, { temperature: TEMPERATURE.explain, maxOutputTokens: 1800 });
+            let chunksSent = false;
+            let lastStreamErr = null;
+            const maxTokens = MAX_OUTPUT_TOKENS_BY_INTENT[classifiedIntent] ?? 1800;
 
-                for await (const chunk of streamIter) {
-                    reply += chunk;
-                    sendSSE(res, 'chunk', { text: chunk });
+            for (const candidate of providerCandidates) {
+                try {
+                    const streamIter = ai.callTextStream(fullPrompt, candidate.provider, candidate.model, {
+                        temperature: TEMPERATURE.explain,
+                        maxOutputTokens: maxTokens,
+                    });
+                    for await (const chunk of streamIter) {
+                        chunksSent = true;
+                        reply += chunk;
+                        sendSSE(res, 'chunk', { text: chunk });
+                    }
+                    selectedProvider = candidate.provider;
+                    selectedModel = candidate.model;
+                    break;
+                } catch (streamErr) {
+                    if (chunksSent) {
+                        logger.warn({ err: streamErr, provider: candidate.provider }, 'Agent stream failed after chunks sent; cannot retry');
+                        sendSSE(res, 'error', { message: isDev ? streamErr.message : 'Stream failed' });
+                        return res.end();
+                    }
+                    lastStreamErr = streamErr;
+                    logger.warn({ err: streamErr, provider: candidate.provider, model: candidate.model }, 'Agent stream provider failed; trying fallback');
                 }
-            } catch (streamErr) {
-                sendSSE(res, 'error', { message: isDev ? streamErr.message : 'Stream failed' });
-                return res.end();
             }
 
             if (!reply) {
-                sendSSE(res, 'error', { message: 'AI returned an empty response' });
+                sendSSE(res, 'error', { message: isDev ? (lastStreamErr?.message ?? 'AI returned an empty response') : 'Stream failed' });
                 return res.end();
             }
 
@@ -722,7 +815,13 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                         }).catch((err) => req.log?.warn?.({ err }, 'reflectOnAgentSession failed'));
                     }
 
-                    const classifiedIntent = await inferDemandIntent(trimmedMessage, ai, selectedProvider, auxModel);
+                    // classifiedIntent was computed pre-stream from the fast regex classifier.
+                    // If the LLM classifier is enabled, upgrade it asynchronously for richer analytics
+                    // without blocking the post-turn pipeline.
+                    let effectiveIntent = classifiedIntent;
+                    if (isLlmIntentClassifierEnabled()) {
+                        effectiveIntent = await inferDemandIntent(trimmedMessage, ai, selectedProvider, auxModel);
+                    }
                     await db.logEvent?.('agent_chat', req.sessionId, {
                         topic: trimmedTopic,
                         messageLength: trimmedMessage.length,
@@ -730,7 +829,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                         historyTurns: recentMessages.length,
                         groundedClaimCount: groundedClaims.length,
                         weakClaimCount: claimMastery.filter((c) => c.masteryState === 'weak').length,
-                        intent: classifiedIntent,
+                        intent: effectiveIntent,
                         hasSessionFeedback: Boolean(sessionFeedback),
                         hadConversationSummary: Boolean(conversationSummary),
                     });
@@ -744,7 +843,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                             payload: {
                                 role: 'user',
                                 messageLength: trimmedMessage.length,
-                                intent: classifiedIntent,
+                                intent: effectiveIntent,
                                 historyTurns: recentMessages.length,
                             },
                         }),
@@ -765,7 +864,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                         }),
                     ]);
                     await Promise.allSettled([
-                        db.recordTopicDemandSignal(trimmedTopic, trimmedTopic, classifiedIntent),
+                        db.recordTopicDemandSignal(trimmedTopic, trimmedTopic, effectiveIntent),
                         previousQueries?.length
                             ? db.maybeRegisterTopicAlias(trimmedTopic, previousQueries[previousQueries.length - 1])
                             : Promise.resolve(),
@@ -776,7 +875,11 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                         .update(`${trimmedTopic}|${trimmedMessage}|${reply.slice(0, 800)}`)
                         .digest('hex')
                         .slice(0, 24)}`;
-                    const answerClaims = extractGroundedClaimsFromReply(reply, { topic: trimmedTopic, objectKey: answerObjectKey });
+                    const answerClaims = await extractGroundedClaimsStructured(
+                        reply,
+                        { topic: trimmedTopic, objectKey: answerObjectKey },
+                        ai, selectedProvider, auxModel
+                    );
                     if (answerClaims.length > 0) {
                         await db.upsertTeachingObject({
                             objectKey: answerObjectKey,
@@ -792,10 +895,10 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                                 answer: reply,
                                 claimAnchors: answerClaims,
                             },
-                        }).catch((err) => req.log?.warn?.({ err }, 'Agent answer claim persistence skipped'));
+                        }).catch((err) => req.log?.warn?.({ err, topic: trimmedTopic }, 'Agent answer claim persistence skipped'));
                     }
                 } catch (err) {
-                    req.log?.warn?.({ err }, 'Agent post-stream side-effects failed');
+                    req.log?.warn?.({ err, topic: trimmedTopic, userId: req.user?.id, conversationId }, 'Agent post-stream side-effects failed');
                 }
             })();
         } catch (error) {
@@ -809,4 +912,4 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
     });
 }
 
-module.exports = { registerAgentRoutes, buildAgentSystemPrompt, buildRetrievalContext, buildAgentEvidenceAnchors, extractGroundedClaimsFromReply, inferDemandIntent, inferDemandIntentRegex, buildSessionFeedbackContext, summarizeOlderMessages, formatRecentMessages };
+module.exports = { registerAgentRoutes, buildAgentSystemPrompt, buildRetrievalContext, buildAgentEvidenceAnchors, extractGroundedClaimsFromReply, extractGroundedClaimsStructured, inferDemandIntent, inferDemandIntentRegex, buildSessionFeedbackContext, summarizeOlderMessages, formatRecentMessages, MAX_OUTPUT_TOKENS_BY_INTENT };
