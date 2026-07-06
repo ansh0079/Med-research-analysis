@@ -1,5 +1,6 @@
 const logger = require('../config/logger');
 const { createAiService, PINNED_MODELS, TEMPERATURE, AI_DISCLAIMER } = require('./aiService');
+const { resolveProvider } = require('../utils/aiProvider');
 const {
     filterCitedStringList,
     validateMedicalOutputCitations,
@@ -298,7 +299,7 @@ async function generateConsensusSynopsis({
         };
     }
 
-    const provider = serverConfig?.keys?.gemini ? 'gemini' : serverConfig?.keys?.mistral ? 'mistral' : null;
+    const { provider, model: resolvedModel } = resolveProvider({ provider: 'auto', model: PINNED_MODELS.geminiQuality }, serverConfig);
     if (!provider) {
         return {
             status: 'provider_unavailable',
@@ -343,7 +344,7 @@ async function generateConsensusSynopsis({
 
     const ai = createAiService({ serverConfig, fetchImpl });
     const prompt = buildConsensusSynopsisPrompt(topic, freeArticles, abstractArticles, guidelines, topicKnowledge);
-    const model = provider === 'gemini' ? PINNED_MODELS.geminiQuality : PINNED_MODELS.mistral;
+    const model = resolvedModel;
     const parsed = await ai.callStructured(prompt, provider, model, {
         temperature: TEMPERATURE.synopsis,
         maxOutputTokens: 2200,

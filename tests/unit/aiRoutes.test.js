@@ -20,6 +20,7 @@ jest.mock('../../server/services/aiService', () => ({
         callText: jest.fn().mockResolvedValue('gemini result'),
         callGeminiStream: jest.fn().mockImplementation(async function* () { yield 'chunk1'; yield 'chunk2'; }),
         callMistralStream: jest.fn().mockImplementation(async function* () { yield 'chunk1'; yield 'chunk2'; }),
+        callTextStream: jest.fn().mockImplementation(async function* () { yield 'chunk1'; yield 'chunk2'; }),
     }),
     PINNED_MODELS: { gemini: 'gemini-model', mistral: 'mistral-model' },
     TEMPERATURE: { analysis: 0.3, synthesis: 0.4, explain: 0.5 },

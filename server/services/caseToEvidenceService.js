@@ -141,12 +141,7 @@ Return JSON only:
   "quizQuestion": { "question": "...", "options": ["A","B","C","D"], "correctAnswer": "...", "explanation": "..." }
 }`;
 
-    let raw;
-    if (provider === 'gemini') {
-        raw = await ai.callGemini(prompt, model || PINNED_MODELS.gemini, { temperature: TEMPERATURE.synopsis });
-    } else {
-        raw = await ai.callMistralAI(prompt, model || PINNED_MODELS.mistral, { temperature: TEMPERATURE.synopsis });
-    }
+    const raw = await ai.callText(prompt, provider, model, { temperature: TEMPERATURE.synopsis });
     const start = raw.indexOf('{');
     const end = raw.lastIndexOf('}');
     let structured = {};

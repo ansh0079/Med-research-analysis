@@ -45,17 +45,18 @@ function registerReviewRoutes(app, deps) {
 
     const ai = createAiService({ serverConfig, fetchImpl });
     const reviews = createReviewService({ db });
-    const mcqValidator = createMcqValidationService({ ai, db, logger, PINNED_MODELS });
+    const mcqValidator = createMcqValidationService({ ai, db, logger, PINNED_MODELS, serverConfig });
 
     async function validateCaseMcqs(topic, mcqs, articles = []) {
         const normalized = normalizeCaseMcqList(mcqs, { prefix: 'case' });
         if (!normalized.length) return normalized;
         try {
+            const { provider: validationProvider, model: validationModel } = resolveProviderUtil({ provider: 'auto' }, serverConfig);
             const validation = await mcqValidator.validateBatch({
                 topic,
                 questions: normalized,
-                provider: 'gemini',
-                model: PINNED_MODELS.gemini,
+                provider: validationProvider,
+                model: validationModel,
                 articles,
                 guidelines: [],
             });
@@ -135,12 +136,8 @@ function registerReviewRoutes(app, deps) {
         if (!selectedProvider) {
             throw new Error('No AI provider configured for review assistant');
         }
-        if (selectedProvider === 'gemini') {
-            const text = await ai.callGemini(prompt, model);
-            return { text, provider: 'gemini', model };
-        }
-        const text = await ai.callMistralAI(prompt, model);
-        return { text, provider: 'mistral', model };
+        const text = await ai.callText(prompt, selectedProvider, model);
+        return { text, provider: selectedProvider, model };
     }
 
     function normalizeLearningMode(mode) {

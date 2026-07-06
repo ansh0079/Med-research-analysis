@@ -64,7 +64,7 @@ async function streamSynthesisGeneration(res, {
         
         // Stream tokens from AI
         let tokenCount = 0;
-        const synthesisPayload = await ai.callGeminiStructured(context.prompt, selectedModel, {
+        const synthesisPayload = await ai.callStructured(context.prompt, selectedProvider, selectedModel, {
             temperature: TEMPERATURE.synthesis,
             maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis,
             onToken: (token) => {

@@ -1,7 +1,8 @@
 const logger = require('../config/logger');
 const { fetchUnifiedEvidence } = require('./unifiedEvidenceSearch');
 const { selectTopEvidence } = require('../utils/selectTopEvidence');
-const { createAiService, PINNED_MODELS, TEMPERATURE } = require('./aiService');
+const { createAiService, TEMPERATURE } = require('./aiService');
+const { resolveProvider } = require('../utils/aiProvider');
 const { buildSeminalKnowledgeExtractionPrompt } = require('../prompts');
 
 function extractJsonObject(text) {
@@ -70,14 +71,12 @@ async function refineSeminalKnowledgeFromCommunity({
         instruction: 'Promote papers to seminal only when community engagement plus evidence quality supports durable teaching value. Preserve protected/human-reviewed knowledge by proposing updates when needed.',
     };
 
-    const provider = serverConfig?.keys?.gemini ? 'gemini' : serverConfig?.keys?.mistral ? 'mistral' : null;
+    const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
     if (!provider) throw new Error('No AI provider configured');
 
     const ai = createAiService({ serverConfig, fetchImpl });
     const prompt = buildSeminalKnowledgeExtractionPrompt(displayTopic, synthesisResult, evidenceArticles, existingKnowledge);
-    const rawAi = provider === 'gemini'
-        ? await ai.callGemini(prompt, PINNED_MODELS.gemini, { temperature: TEMPERATURE.synopsis })
-        : await ai.callMistralAI(prompt, PINNED_MODELS.mistral, { temperature: TEMPERATURE.synopsis });
+    const rawAi = await ai.callText(prompt, provider, model, { temperature: TEMPERATURE.synopsis });
     const knowledge = extractJsonObject(rawAi);
 
     const sourceArticles = evidenceArticles.map((article, index) => ({

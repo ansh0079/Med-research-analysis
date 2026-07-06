@@ -701,12 +701,9 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
 
                         const ai = createAiService({ serverConfig, fetchImpl: f });
                         const prompt = buildTopicKnowledgePrompt(seedQuery, seedArticles);
-                        let raw;
-                        if (serverConfig.keys.gemini) {
-                            raw = await ai.callGemini(prompt, PINNED_MODELS.gemini, { temperature: 0.15 });
-                        } else if (serverConfig.keys.mistral) {
-                            raw = await ai.callMistralAI(prompt, PINNED_MODELS.mistral, { temperature: 0.15 });
-                        } else return;
+                        const { provider: seedProvider, model: seedModel } = resolveProvider({}, serverConfig);
+                        if (!seedProvider) return;
+                        const raw = await ai.callText(prompt, seedProvider, seedModel, { temperature: 0.15 });
 
                         const knowledgeRaw = parseJsonBlock(raw);
                         const validated = validateAiOutput('topic_knowledge', knowledgeRaw, { allowDegrade: false });
@@ -729,7 +726,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
 
                         // Generate cold-start MCQs from the knowledge we just created
                         try {
-                            await generateAndStoreMCQs(db, ai, seedQuery, knowledge, { provider: 'gemini' });
+                            await generateAndStoreMCQs(db, ai, seedQuery, knowledge, { provider: seedProvider, model: seedModel });
                             logger.info({ topic: seedQuery }, 'Auto-generated cold-start MCQs');
                         } catch (mcqErr) {
                             logger.warn({ err: mcqErr, topic: seedQuery }, 'Auto MCQ generation failed');
@@ -775,7 +772,7 @@ Rules:
 Start your response with [ and end with ]. No markdown.
 [{"type":"multiple_choice","questionType":"guideline|clinical_application|pitfall","question":"...","options":["A: ...","B: ...","C: ...","D: ..."],"correctAnswer":"A","explanation":"2-3 sentences citing the guideline","guidelineRef":"source — recommendation","difficulty":"easy|medium|hard"}]`;
                                         try {
-                                            const glRaw = await ai.callGemini(glPrompt, PINNED_MODELS.gemini, { temperature: 0.3, maxOutputTokens: 2500 });
+                                            const glRaw = await ai.callText(glPrompt, seedProvider, seedModel, { temperature: 0.3, maxOutputTokens: 2500 });
                                             const glMcqsRaw = parseJsonArrayBlock(glRaw);
                                             const validatedGl = validateAiOutput('quiz_generation', glMcqsRaw, { allowDegrade: false });
                                             const glMcqs = validatedGl.ok
@@ -789,8 +786,8 @@ Start your response with [ and end with ]. No markdown.
                                                         topic: db.normalizeTopic(seedQuery),
                                                         title: `Guideline MCQs: ${seedQuery}`,
                                                         payload: { mcqs: glMcqs.slice(0, 5), guidelineCount: guidelines.length, generatedAt: new Date().toISOString() },
-                                                        provider: 'gemini',
-                                                        model: PINNED_MODELS.gemini,
+                                                        provider: seedProvider,
+                                                        model: seedModel,
                                                         confidence: 0.85,
                                                     });
                                                     logger.info({ topic: seedQuery, count: glMcqs.length, guidelines: guidelines.length }, 'Auto-generated guideline MCQs');
@@ -1245,14 +1242,8 @@ Start your response with [ and end with ]. No markdown.
                 return res.status(503).json({ error: 'No AI provider configured' });
             }
 
-            let raw = '';
-            if (selectedProvider === 'claude') {
-                raw = await ai.callClaude(prompt, selectedModel, { temperature: 0.3, maxOutputTokens: 8192 });
-            } else if (selectedProvider === 'gemini') {
-                raw = await ai.callGemini(prompt, selectedModel, { temperature: 0.3 });
-            } else {
-                raw = await ai.callMistralAI(prompt, selectedModel, { temperature: 0.3 });
-            }
+            const maxOutputTokens = selectedProvider === 'claude' ? 8192 : undefined;
+            const raw = await ai.callText(prompt, selectedProvider, selectedModel, { temperature: 0.3, maxOutputTokens });
 
             // Extract JSON from possible markdown fences
             const jsonMatch = raw.match(/```json\s*([\s\S]*?)\s*```/) || raw.match(/```\s*([\s\S]*?)\s*```/);

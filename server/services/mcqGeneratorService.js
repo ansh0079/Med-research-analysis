@@ -175,30 +175,14 @@ async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemi
         }
 
         const prompt = buildMcqPrompt(topic, knowledge, { includeExemplars: true, sourceArticles });
-        let parsed;
-
-        if (provider === 'gemini' && ai.callGeminiStructured) {
-            parsed = await ai.callGeminiStructured(prompt, model || undefined, {
-                temperature: 0.4,
-                maxOutputTokens: 4000,  // Increased for 10 MCQs
-                usage: { operation: 'cold_start_mcq', topic },
-            });
-        } else if (ai.callGeminiStructured) {
-            // Fallback: Gemini structured (no provider key set for primary path)
-            parsed = await ai.callGeminiStructured(prompt, model || undefined, {
-                temperature: 0.4,
-                maxOutputTokens: 4000,
-                usage: { operation: 'cold_start_mcq_fallback', topic },
-            });
-        } else if (ai.callMistralStructured) {
-            parsed = await ai.callMistralStructured(prompt, model || undefined, {
-                temperature: 0.4,
-                maxOutputTokens: 4000,
-                usage: { operation: 'cold_start_mcq', topic },
-            });
-        } else {
+        if (!provider) {
             throw new Error('No AI provider available for MCQ generation');
         }
+        const parsed = await ai.callStructured(prompt, provider, model || undefined, {
+            temperature: 0.4,
+            maxOutputTokens: 4000,  // Increased for 10 MCQs
+            usage: { operation: 'cold_start_mcq', topic },
+        });
 
         const validated = validateAiOutput('quiz_generation', parsed, { allowDegrade: false });
         if (!validated.ok) {

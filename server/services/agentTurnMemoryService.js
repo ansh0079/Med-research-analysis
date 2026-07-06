@@ -135,7 +135,7 @@ function formatConversationForReflection(conversationHistory = [], maxTurns = 8)
 /**
  * Incrementally update rolling summary (cheap model).
  */
-async function mergeConversationSummary(ai, existingSummary, userMessage, assistantReply, topic) {
+async function mergeConversationSummary(ai, existingSummary, userMessage, assistantReply, topic, provider = 'gemini', model = 'gemini-2.5-flash-lite') {
     const user = String(userMessage || '').slice(0, 600);
     const assistant = String(assistantReply || '').slice(0, 900);
     const prior = String(existingSummary || '').trim();
@@ -164,7 +164,7 @@ Assistant: ${assistant}
 Return bullets only.`;
 
     try {
-        const raw = await ai.callGemini(prompt, 'gemini-2.5-flash-lite' /* intentional: cheap model fine for conversational memory */, {
+        const raw = await ai.callText(prompt, provider, model, {
             temperature: 0.0,
             maxOutputTokens: 320,
             timeoutMs: 8000,
@@ -180,7 +180,7 @@ Return bullets only.`;
 /**
  * Extract structured learner snapshot from the latest turn.
  */
-async function extractTurnLearnerSnapshot(ai, userMessage, assistantReply, topic) {
+async function extractTurnLearnerSnapshot(ai, userMessage, assistantReply, topic, provider = 'gemini', model = 'gemini-2.5-flash-lite') {
     const fallback = {
         focusAreas: [],
         misconceptions: [],
@@ -203,7 +203,7 @@ User: ${String(userMessage || '').slice(0, 500)}
 Assistant: ${String(assistantReply || '').slice(0, 700)}`;
 
     try {
-        const raw = await ai.callGemini(prompt, 'gemini-2.5-flash-lite' /* intentional: cheap model fine for conversational memory */, {
+        const raw = await ai.callText(prompt, provider, model, {
             temperature: 0.0,
             maxOutputTokens: 280,
             timeoutMs: 6000,
@@ -239,6 +239,8 @@ async function persistAgentTurnMemory({
     existingSnapshot = null,
     evidenceAnchors = [],
     metrics = null,
+    provider = 'gemini',
+    model = 'gemini-2.5-flash-lite',
     minUserChars = Number(process.env.AGENT_TURN_MEMORY_MIN_USER_CHARS || 24),
     minAssistantChars = Number(process.env.AGENT_TURN_MEMORY_MIN_ASSISTANT_CHARS || 120),
 }) {
@@ -259,8 +261,8 @@ async function persistAgentTurnMemory({
     let turnSnapshot;
     try {
         [summary, turnSnapshot] = await Promise.all([
-            mergeConversationSummary(ai, existingSummary, userMessage, assistantReply, topic),
-            extractTurnLearnerSnapshot(ai, userMessage, assistantReply, topic),
+            mergeConversationSummary(ai, existingSummary, userMessage, assistantReply, topic, provider, model),
+            extractTurnLearnerSnapshot(ai, userMessage, assistantReply, topic, provider, model),
         ]);
         metrics?.timing?.('agent_memory.persist_ms', Date.now() - started);
     } catch (err) {
@@ -335,6 +337,8 @@ async function reflectOnAgentSession({
     learnerSnapshot = null,
     conversationHistory = [],
     sessionFeedback = null,
+    provider = 'gemini',
+    model = 'gemini-2.5-flash-lite',
 }) {
     if (!db || !conversationId || !userId) return null;
     if (typeof db.updateAgentConversationMemory !== 'function') return null;
@@ -377,7 +381,7 @@ Return ONLY valid JSON:
 }`;
 
         try {
-            const raw = await ai.callGemini(prompt, 'gemini-2.5-flash-lite' /* intentional: cheap model fine for conversational memory */, {
+            const raw = await ai.callText(prompt, provider, model, {
                 temperature: 0.1,
                 maxOutputTokens: 420,
                 timeoutMs: 9000,

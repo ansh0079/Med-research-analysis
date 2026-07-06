@@ -8,7 +8,8 @@ const cron = require('node-cron');
 const { validateQuery } = require('../utils/articles');
 const { fetchUnifiedEvidence } = require('./unifiedEvidenceSearch');
 const { selectTopEvidence } = require('../utils/selectTopEvidence');
-const { createAiService, PINNED_MODELS, TEMPERATURE } = require('./aiService');
+const { createAiService, TEMPERATURE } = require('./aiService');
+const { resolveProvider } = require('../utils/aiProvider');
 
 let scheduledJob = null;
 
@@ -52,7 +53,7 @@ function collectKnownUidSet({ userRow, topicKnowledge }) {
 }
 
 async function buildWhatsNewSummary({ serverConfig, fetchImpl, displayTopic, article }) {
-    const provider = serverConfig?.keys?.gemini ? 'gemini' : serverConfig?.keys?.mistral ? 'mistral' : null;
+    const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
     if (!provider) {
         return `New evidence surfaced for "${displayTopic}": ${article.title || 'Recent study'}. Open the topic to review context and seminal papers.`;
     }
@@ -68,10 +69,7 @@ Abstract (trimmed): ${String(article.abstract || '').slice(0, 1200)}
 In ≤3 short sentences, explain why this may matter for practice and what a clinician should verify before changing management. No bullet symbols. Plain text only.`;
 
     try {
-        const raw =
-            provider === 'gemini'
-                ? await ai.callGemini(prompt, PINNED_MODELS.gemini, { temperature: TEMPERATURE.synopsis })
-                : await ai.callMistralAI(prompt, PINNED_MODELS.mistral, { temperature: TEMPERATURE.synopsis });
+        const raw = await ai.callText(prompt, provider, model, { temperature: TEMPERATURE.synopsis });
         const t = String(raw || '').trim();
         return t.length > 40 ? t.slice(0, 2000) : null;
     } catch (err) {

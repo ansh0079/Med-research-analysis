@@ -10,22 +10,29 @@ function isSafetyClassifierEnabled() {
     return String(process.env.MCQ_VALIDATION_SAFETY_CLASSIFIER || 'true').toLowerCase() !== 'false';
 }
 
-function alternateProvider(provider) {
-    return provider === 'gemini' ? 'mistral' : 'gemini';
+// Cross-check deliberately uses a DIFFERENT provider family than the primary
+// review so a shared model blind spot doesn't pass its own mistakes. claude
+// cross-checks against gemini (falling back to mistral if no gemini key),
+// and gemini/mistral continue to cross-check each other as before.
+function alternateProvider(provider, serverConfig) {
+    if (provider === 'gemini') return 'mistral';
+    if (provider === 'mistral') return 'gemini';
+    return serverConfig?.keys?.gemini ? 'gemini' : 'mistral';
 }
 
 function alternateModel(provider, PINNED_MODELS) {
-    return provider === 'gemini' ? PINNED_MODELS.mistral : PINNED_MODELS.gemini;
+    return PINNED_MODELS[provider] || PINNED_MODELS.gemini;
 }
 
 /**
  * @param {object} deps
- * @param {object} deps.ai - AI service with callGemini and callMistralAI
+ * @param {object} deps.ai - AI service with callStructured
  * @param {object} deps.db - Database instance
  * @param {object} deps.logger - Logger instance
- * @param {object} deps.PINNED_MODELS - Model map { gemini, mistral }
+ * @param {object} deps.PINNED_MODELS - Model map { claude, gemini, mistral }
+ * @param {object} [deps.serverConfig] - Used to pick a cross-check provider when primary is claude
  */
-function createMcqValidationService({ ai, db, logger, PINNED_MODELS }) {
+function createMcqValidationService({ ai, db, logger, PINNED_MODELS, serverConfig }) {
     async function callModelStructured(prompt, provider, model, topic, operation, { allowBudgetSkip = false } = {}) {
         const opts = {
             temperature: 0.05,
@@ -34,10 +41,7 @@ function createMcqValidationService({ ai, db, logger, PINNED_MODELS }) {
             jsonMode: true,
             allowBudgetSkip,
         };
-        if (provider === 'gemini') {
-            return ai.callGeminiStructured(prompt, model || PINNED_MODELS.gemini, opts);
-        }
-        return ai.callMistralStructured(prompt, model || PINNED_MODELS.mistral, opts);
+        return ai.callStructured(prompt, provider, model || PINNED_MODELS[provider] || PINNED_MODELS.gemini, opts);
     }
 
     function buildReviewPrompt(topic, compact, sourceContext, guidelineContext) {
@@ -243,7 +247,7 @@ ${JSON.stringify(compact)}`;
 
         let secondary = null;
         if (isCrossCheckEnabled()) {
-            const crossProvider = alternateProvider(primaryProvider);
+            const crossProvider = alternateProvider(primaryProvider, serverConfig);
             try {
                 secondary = await runPrimaryReview({
                     topic,
@@ -265,8 +269,8 @@ ${JSON.stringify(compact)}`;
                 safety = await runSafetyReview({
                     topic,
                     compact,
-                    provider: 'gemini',
-                    model: PINNED_MODELS.gemini,
+                    provider: primaryProvider,
+                    model,
                     allowBudgetSkip: true,
                 });
             } catch (err) {
@@ -316,4 +320,4 @@ ${JSON.stringify(compact)}`;
     return { validateBatch, recordValidationResult };
 }
 
-module.exports = { createMcqValidationService };
+module.exports = { createMcqValidationService, alternateProvider, alternateModel };

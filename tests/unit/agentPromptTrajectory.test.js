@@ -105,22 +105,24 @@ describe('agent trajectory prompt', () => {
     });
 
     test('agent demand intent uses regex by default without an LLM call', async () => {
-        const ai = { callGemini: jest.fn().mockResolvedValue('guideline') };
+        const ai = { callText: jest.fn().mockResolvedValue('guideline') };
 
         await expect(inferDemandIntent('quiz me on ARDS ventilation', ai)).resolves.toBe('quiz');
 
-        expect(ai.callGemini).not.toHaveBeenCalled();
+        expect(ai.callText).not.toHaveBeenCalled();
         expect(inferDemandIntentRegex('summarise the bottom line')).toBe('synopsis');
     });
 
-    test('agent demand intent can opt into LLM classification', async () => {
+    test('agent demand intent can opt into LLM classification, routed through the resolved provider', async () => {
         const previous = process.env.AGENT_LLM_INTENT_CLASSIFIER;
         process.env.AGENT_LLM_INTENT_CLASSIFIER = 'true';
-        const ai = { callGemini: jest.fn().mockResolvedValue('guideline') };
+        const ai = { callText: jest.fn().mockResolvedValue('guideline') };
 
         try {
-            await expect(inferDemandIntent('what do the latest statements say?', ai)).resolves.toBe('guideline');
-            expect(ai.callGemini).toHaveBeenCalledTimes(1);
+            await expect(inferDemandIntent('what do the latest statements say?', ai, 'claude', 'claude-haiku-4-5')).resolves.toBe('guideline');
+            expect(ai.callText).toHaveBeenCalledTimes(1);
+            expect(ai.callText.mock.calls[0][1]).toBe('claude');
+            expect(ai.callText.mock.calls[0][2]).toBe('claude-haiku-4-5');
         } finally {
             if (previous == null) {
                 delete process.env.AGENT_LLM_INTENT_CLASSIFIER;

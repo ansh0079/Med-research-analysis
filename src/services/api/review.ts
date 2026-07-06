@@ -101,7 +101,7 @@ export class ReviewApi extends BaseApiClient {
 
   async extractSinglePico(
     article: Article,
-    provider: 'auto' | 'gemini' | 'mistral' = 'auto'
+    provider: 'auto' | 'claude' | 'gemini' | 'mistral' = 'auto'
   ): Promise<{ extraction: PicoExtraction; cached: boolean; articleId: string }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/ai/pico`, {
       method: 'POST',
@@ -115,7 +115,7 @@ export class ReviewApi extends BaseApiClient {
 
   async extractPico(
     articles: Article[],
-    provider: 'auto' | 'gemini' | 'mistral' = 'auto'
+    provider: 'auto' | 'claude' | 'gemini' | 'mistral' = 'auto'
   ): Promise<{ results: Array<{ articleId: string; extraction: PicoExtraction; cached: boolean; confidence: number }> }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/reviews/pico/extract`, {
       method: 'POST',
@@ -129,7 +129,7 @@ export class ReviewApi extends BaseApiClient {
   async assessRiskOfBias(
     reviewId: string,
     articleId: string,
-    provider: 'auto' | 'gemini' | 'mistral' = 'auto'
+    provider: 'auto' | 'claude' | 'gemini' | 'mistral' = 'auto'
   ): Promise<{ rob: ROBResult; provider: string; model: string; articleId: string }> {
     const response = await this.fetchWithSession(
       `${API_BASE}/api/reviews/${encodeURIComponent(reviewId)}/articles/${encodeURIComponent(articleId)}/rob`,
@@ -143,7 +143,7 @@ export class ReviewApi extends BaseApiClient {
     articleA: Article,
     articleB: Article,
     topic?: string,
-    provider: 'auto' | 'gemini' | 'mistral' = 'auto'
+    provider: 'auto' | 'claude' | 'gemini' | 'mistral' = 'auto'
   ): Promise<{ comparison: ArticleComparison; articleIdA: string; articleIdB: string; provider: string; model: string; cached?: boolean }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/ai/compare`, {
       method: 'POST',
@@ -157,7 +157,7 @@ export class ReviewApi extends BaseApiClient {
 
   async assessConsort(
     article: Article,
-    provider: 'auto' | 'gemini' | 'mistral' = 'auto'
+    provider: 'auto' | 'claude' | 'gemini' | 'mistral' = 'auto'
   ): Promise<{ consort: ConsortResult; provider: string; model: string; articleId: string }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/ai/consort`, {
       method: 'POST',
@@ -171,7 +171,7 @@ export class ReviewApi extends BaseApiClient {
 
   async generateGradeTable(
     reviewId: string,
-    provider: 'auto' | 'gemini' | 'mistral' = 'auto'
+    provider: 'auto' | 'claude' | 'gemini' | 'mistral' = 'auto'
   ): Promise<{ gradeTable: GRADETable; provider: string; model: string; includedCount: number }> {
     const response = await this.fetchWithSession(
       `${API_BASE}/api/reviews/${encodeURIComponent(reviewId)}/grade-table`,
@@ -184,7 +184,7 @@ export class ReviewApi extends BaseApiClient {
   async screeningAssist(payload: {
     criteria: ReviewCriteria;
     article: Article;
-    provider?: 'auto' | 'gemini' | 'mistral';
+    provider?: 'auto' | 'claude' | 'gemini' | 'mistral';
   }): Promise<{ decision: 'include' | 'exclude' | 'uncertain'; rationale: string; matchedInclusion: string[]; triggeredExclusion: string[] }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/reviews/screening/assist`, {
       method: 'POST',

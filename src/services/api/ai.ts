@@ -289,7 +289,7 @@ export class AiApi extends BaseApiClient {
 
   async analyzeCase(
     caseText: string,
-    provider: 'auto' | 'gemini' | 'mistral' = 'auto',
+    provider: 'auto' | 'claude' | 'gemini' | 'mistral' = 'auto',
     options: {
       topic?: string;
       learningMode?: CaseModeResult['mode'];
@@ -400,7 +400,7 @@ export class AiApi extends BaseApiClient {
     topic: string,
     seedArticles: Partial<Article>[],
     learningMode: CaseLearningMode = 'resident',
-    provider: 'auto' | 'gemini' | 'mistral' = 'auto'
+    provider: 'auto' | 'claude' | 'gemini' | 'mistral' = 'auto'
   ): Promise<TeachingVignetteResult> {
     const response = await this.fetchWithSession(`${API_BASE}/api/cases/teaching-vignette`, {
       method: 'POST',
@@ -549,7 +549,7 @@ export class AiApi extends BaseApiClient {
   async generateJournalClub(
     topic: string,
     articles: import('@types').Article[],
-    provider: 'auto' | 'gemini' | 'mistral' = 'auto'
+    provider: 'auto' | 'claude' | 'gemini' | 'mistral' = 'auto'
   ): Promise<{
     topic: string;
     provider: string;

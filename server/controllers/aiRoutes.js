@@ -75,7 +75,7 @@ function registerAiRoutes(app, deps) {
         fetchImpl,
         onLlmCall: async (meta) => logLlm(buildUsageEntry(meta)),
     });
-    const mcqValidator = createMcqValidationService({ ai, db, logger, PINNED_MODELS });
+    const mcqValidator = createMcqValidationService({ ai, db, logger, PINNED_MODELS, serverConfig });
 
     // Content negotiation: non-streaming AI endpoints automatically delegate to SSE
     // handlers when the client sends Accept: text/event-stream. This prevents
@@ -398,9 +398,7 @@ function registerAiRoutes(app, deps) {
                 ? buildDeltaKnowledgeExtractionPrompt(cleanTopic, synthesis, articlesToAnalyze, existingKnowledge, interactionStats)
                 : buildSeminalKnowledgeExtractionPrompt(cleanTopic, synthesis, articlesToAnalyze, existingKnowledge, interactionStats);
             
-            const raw = provider === 'mistral'
-                ? await ai.callMistralAI(prompt, model || PINNED_MODELS.mistral, { temperature: 0.15 })
-                : await ai.callGemini(prompt, model || PINNED_MODELS.gemini, { temperature: 0.15 });
+            const raw = await ai.callText(prompt, provider, model || PINNED_MODELS[provider] || PINNED_MODELS.gemini, { temperature: 0.15 });
             const knowledge = extractJsonObject(raw);
             
             // Merge incremental updates with existing knowledge
@@ -1534,13 +1532,8 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             if (!selectedProvider) {
                 return res.status(503).json({ error: 'No AI provider configured' });
             }
-            let rawText;
             const used = selectedProvider;
-            if (selectedProvider === 'gemini') {
-                rawText = await ai.callGemini(prompt, selectedModel, { temperature: 0.25 });
-            } else {
-                rawText = await ai.callMistralAI(prompt, selectedModel, { temperature: 0.25 });
-            }
+            const rawText = await ai.callText(prompt, selectedProvider, selectedModel, { temperature: 0.25 });
             let pack;
             try {
                 const jsonMatch = String(rawText || '').match(/\{[\s\S]*\}/);
@@ -1607,27 +1600,9 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
 
             const temperature = TEMPERATURE.analysis;
             let fullText = '';
-            if (selectedProvider === 'gemini') {
-                if (!serverConfig.keys.gemini) {
-                    sendSSE(res, 'error', { message: 'Gemini API key not configured' });
-                    return res.end();
-                }
-                for await (const chunk of ai.callGeminiStream(prompt, selectedModel, { temperature })) {
-                    fullText += chunk;
-                    sendSSE(res, 'chunk', { text: chunk });
-                }
-            } else if (selectedProvider === 'mistral') {
-                if (!serverConfig.keys.mistral) {
-                    sendSSE(res, 'error', { message: 'Mistral API key not configured' });
-                    return res.end();
-                }
-                for await (const chunk of ai.callMistralStream(prompt, selectedModel, { temperature })) {
-                    fullText += chunk;
-                    sendSSE(res, 'chunk', { text: chunk });
-                }
-            } else {
-                sendSSE(res, 'error', { message: 'Invalid provider. Use "gemini" or "mistral"' });
-                return res.end();
+            for await (const chunk of ai.callTextStream(prompt, selectedProvider, selectedModel, { temperature })) {
+                fullText += chunk;
+                sendSSE(res, 'chunk', { text: chunk });
             }
 
             const result = {
@@ -1681,18 +1656,10 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             if (memCached) return res.json({ ...memCached, cached: true });
 
             const prompt = buildPicoExtractionPrompt(article);
-            let extraction;
-            if (selectedProvider === 'gemini') {
-                extraction = await ai.callGeminiStructured(prompt, selectedModel, {
-                    temperature: TEMPERATURE.synthesis,
-                    maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis,
-                });
-            } else {
-                extraction = await ai.callMistralStructured(prompt, selectedModel, {
-                    temperature: TEMPERATURE.synthesis,
-                    maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis,
-                });
-            }
+            let extraction = await ai.callStructured(prompt, selectedProvider, selectedModel, {
+                temperature: TEMPERATURE.synthesis,
+                maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis,
+            });
             if (!extraction || typeof extraction !== 'object') {
                 return res.status(502).json({ error: 'AI returned malformed PICO data. Please retry.' });
             }
@@ -1777,12 +1744,7 @@ Return ONLY valid JSON:
   }
 }`;
 
-            let rawText;
-            if (selectedProvider === 'gemini') {
-                rawText = await ai.callGemini(prompt, selectedModel);
-            } else {
-                rawText = await ai.callMistralAI(prompt, selectedModel);
-            }
+            const rawText = await ai.callText(prompt, selectedProvider, selectedModel);
 
             const jsonMatch = rawText.match(/\{[\s\S]*\}/);
             let parsed;
@@ -1908,12 +1870,7 @@ Return ONLY valid JSON:
   }
 }`;
 
-            let rawText;
-            if (selectedProvider === 'gemini') {
-                rawText = await ai.callGemini(prompt, selectedModel);
-            } else {
-                rawText = await ai.callMistralAI(prompt, selectedModel);
-            }
+            const rawText = await ai.callText(prompt, selectedProvider, selectedModel);
 
             const jsonMatch = rawText.match(/\{[\s\S]*\}/);
             let parsed;
@@ -1970,16 +1927,9 @@ Return ONLY valid JSON:
             }
 
             let rawText = '';
-            if (selectedProvider === 'gemini') {
-                for await (const chunk of ai.callGeminiStream(context.prompt, selectedModel, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis })) {
-                    rawText += chunk;
-                    sendSSE(res, 'chunk', { text: chunk });
-                }
-            } else {
-                for await (const chunk of ai.callMistralStream(context.prompt, selectedModel, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis })) {
-                    rawText += chunk;
-                    sendSSE(res, 'chunk', { text: chunk });
-                }
+            for await (const chunk of ai.callTextStream(context.prompt, selectedProvider, selectedModel, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis })) {
+                rawText += chunk;
+                sendSSE(res, 'chunk', { text: chunk });
             }
 
             const synthesis = parseSynthesisText(rawText);

@@ -291,6 +291,69 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         return proxy.claudeMessages(prompt, { model, temperature, maxOutputTokens, timeoutMs, jsonMode });
     }
 
+    /**
+     * Stream Claude response as an async generator of text chunks.
+     * Mirrors callGeminiStreamRaw/callMistralStreamRaw so all three providers
+     * are interchangeable behind the same streaming interface.
+     */
+    async function* callClaudeStreamRaw(prompt, model = PINNED_MODELS.claude, { temperature = TEMPERATURE.analysis, maxOutputTokens = 2048 } = {}) {
+        const apiKey = serverConfig.keys.anthropic;
+        if (!apiKey) throw new Error('Anthropic API key not configured');
+
+        logger.debug({ model, temperature }, 'Calling Claude stream');
+
+        const response = await f('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+                'x-api-key': apiKey,
+                'anthropic-version': '2023-06-01',
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                model,
+                max_tokens: maxOutputTokens,
+                temperature,
+                messages: [{ role: 'user', content: prompt }],
+                stream: true,
+            }),
+        });
+
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(`Claude stream error: ${response.status} ${errText.slice(0, 200)}`);
+        }
+
+        const stream = response.body;
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        try {
+            for await (const chunk of stream) {
+                buffer += decoder.decode(chunk, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop() || '';
+                for (const line of lines) {
+                    const trimmed = line.trim();
+                    if (!trimmed.startsWith('data: ')) continue;
+                    const payload = trimmed.slice(6);
+                    try {
+                        const data = JSON.parse(payload);
+                        if (data.type === 'content_block_delta' && data.delta?.type === 'text_delta') {
+                            yield data.delta.text;
+                        } else if (data.type === 'error') {
+                            throw new Error(`Claude stream error: ${data.error?.message || 'unknown'}`);
+                        }
+                    } catch (e) {
+                        if (e.message?.includes('Claude stream error')) throw e;
+                        // Ignore parse errors for malformed SSE lines
+                    }
+                }
+            }
+        } finally {
+            if (stream && typeof stream.destroy === 'function') stream.destroy();
+        }
+    }
+
     async function callClaude(prompt, model, options = {}) {
         const { usage, budget, allowBudgetSkip, ...rest } = options;
         return executeProviderCall({
@@ -359,6 +422,18 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         return callMistralAI(prompt, model, options);
     }
 
+    /**
+     * Dispatch to the matching provider's streaming generator. Lets callers write
+     * one branch-free streaming code path instead of duplicating gemini/mistral/claude
+     * if-else chains (the pattern that caused claude-only deployments to error on
+     * /api/ai/analyze/stream — see resolveProvider).
+     */
+    function callTextStream(prompt, provider, model, options = {}) {
+        if (provider === 'claude') return callClaudeStreamRaw(prompt, model, options);
+        if (provider === 'gemini') return callGeminiStreamRaw(prompt, model, options);
+        return callMistralStreamRaw(prompt, model, options);
+    }
+
     return {
         callMistralAI,
         callHuggingFace,
@@ -371,6 +446,8 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         callText,
         callGeminiStream: callGeminiStreamRaw,
         callMistralStream: callMistralStreamRaw,
+        callClaudeStream: callClaudeStreamRaw,
+        callTextStream,
         AI_PROVIDERS,
         // Expose breaker health for monitoring endpoints
         _breakers: { mistral: mistralBreaker, gemini: geminiBreaker },

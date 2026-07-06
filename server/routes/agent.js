@@ -326,13 +326,14 @@ function isLlmIntentClassifierEnabled() {
  * runs after every agent turn and should not add default latency/cost.
  * Fire-and-forget: used for analytics and demand signals, not blocking.
  */
-async function inferDemandIntent(message, ai) {
+async function inferDemandIntent(message, ai, provider, model) {
     const regexResult = inferDemandIntentRegex(message);
     if (!ai || !isLlmIntentClassifierEnabled()) return regexResult;
     try {
-        const raw = await ai.callGemini(
+        const raw = await ai.callText(
             `Classify this medical learner message into exactly one category.\nCategories: quiz, case, guideline, appraisal, synopsis, agent_chat\n\nRules:\n- quiz: user wants MCQs, test questions, "quiz me", "test my knowledge"\n- case: user wants a clinical case, vignette, or scenario\n- guideline: user asks about clinical guidelines, recommendations from bodies (NICE, AHA, ESC, WHO)\n- appraisal: user wants to critique methodology, discuss bias, limitations, validity, study design\n- synopsis: user wants a summary, bottom line, or overview\n- agent_chat: general discussion, explanation request, anything else\n\nMessage: "${String(message || '').slice(0, 300)}"\n\nRespond with ONLY the category name, nothing else.`,
-            'gemini-2.5-flash-lite',
+            provider,
+            model,
             { temperature: 0.0, maxOutputTokens: 20, timeoutMs: 4000 }
         );
         const intent = String(raw || '').trim().toLowerCase().replace(/[^a-z_]/g, '');
@@ -379,7 +380,7 @@ function formatRecentMessages(conversationHistory, count = 4) {
  * Summarise older messages into a concise context block using a cheap LLM call.
  * Falls back to simple truncation if no LLM is available or the call fails.
  */
-async function summarizeOlderMessages(ai, conversationHistory, recentCount = 4) {
+async function summarizeOlderMessages(ai, conversationHistory, recentCount = 4, provider, model) {
     if (!Array.isArray(conversationHistory) || conversationHistory.length <= recentCount) {
         return null;
     }
@@ -401,9 +402,10 @@ async function summarizeOlderMessages(ai, conversationHistory, recentCount = 4) 
     }
 
     try {
-        const summary = await ai.callGemini(
+        const summary = await ai.callText(
             `Summarise this medical education conversation into 3-5 bullet points. Focus on: topics discussed, key conclusions reached, questions still open, and areas the learner struggled with.\n\n${olderText}`,
-            'gemini-2.5-flash-lite',
+            provider,
+            model,
             { temperature: 0.0, maxOutputTokens: 300, timeoutMs: 6000 }
         );
         return String(summary || '').trim() || null;
@@ -607,9 +609,18 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
 
             const systemPrompt = buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines, userContext, crossTopicBridges, retrieval);
 
+            const { provider: selectedProvider, model: selectedModel } = resolveProvider({}, serverConfig);
+            if (!selectedProvider) {
+                return res.status(503).json({ error: 'No AI provider configured' });
+            }
+            // Gemini has a dedicated cheap "lite" tier for auxiliary calls (intent
+            // classification, conversation summarization); claude/mistral's pinned
+            // models are already the cheap tier, so reuse selectedModel for those.
+            const auxModel = selectedProvider === 'gemini' ? PINNED_MODELS.geminiLite : selectedModel;
+
             // Conversation context: persisted summary + summarise older client history
             const recentMessages = formatRecentMessages(conversationHistory, 4);
-            const ephemeralSummary = await summarizeOlderMessages(ai, conversationHistory, 4);
+            const ephemeralSummary = await summarizeOlderMessages(ai, conversationHistory, 4, selectedProvider, auxModel);
             const conversationSummary = [
                 persistedConversation?.conversationSummary
                     ? `### Stored thread summary\n${persistedConversation.conversationSummary}`
@@ -620,14 +631,8 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
             // Session feedback: inject adaptive teaching instructions when quiz scores were poor
             const feedbackContext = buildSessionFeedbackContext(sessionFeedback);
 
-            const { provider: selectedProvider, model: selectedModel } = resolveProvider({}, serverConfig);
-            if (!selectedProvider) {
-                return res.status(503).json({ error: 'No AI provider configured' });
-            }
-
-            // Build a single user turn that includes system context so aiService
-            // stream methods can carry it as a prefix (Gemini handles systemInstruction
-            // natively; Mistral gets it as the system role via callMistralStream).
+            // Build a single user turn that includes system context so callTextStream
+            // can carry it as a prefix regardless of which provider is selected.
             const conversationContext = [
                 conversationSummary ? `## Earlier conversation summary\n${conversationSummary}` : '',
                 recentMessages.length > 0 ? `## Recent conversation\n${recentMessages.map((m) => `**${m.role}**: ${m.content}`).join('\n\n')}` : '',
@@ -639,9 +644,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
 
             let reply = '';
             try {
-                const streamIter = selectedProvider === 'gemini'
-                    ? ai.callGeminiStream(fullPrompt, selectedModel, { temperature: TEMPERATURE.explain, maxOutputTokens: 1800 })
-                    : ai.callMistralStream(fullPrompt, selectedModel, { temperature: TEMPERATURE.explain, maxOutputTokens: 1800 });
+                const streamIter = ai.callTextStream(fullPrompt, selectedProvider, selectedModel, { temperature: TEMPERATURE.explain, maxOutputTokens: 1800 });
 
                 for await (const chunk of streamIter) {
                     reply += chunk;
@@ -675,6 +678,8 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                             existingSummary: persistedConversation?.conversationSummary || null,
                             existingSnapshot: persistedConversation?.learnerSnapshot || null,
                             evidenceAnchors: buildAgentEvidenceAnchors({ currentArticles, guidelines, groundedClaims }),
+                            provider: selectedProvider,
+                            model: auxModel,
                         }).catch((err) => req.log?.warn?.({ err }, 'persistAgentTurnMemory failed'));
                     }
 
@@ -712,10 +717,12 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                                 { role: 'assistant', content: reply },
                             ],
                             sessionFeedback,
+                            provider: selectedProvider,
+                            model: auxModel,
                         }).catch((err) => req.log?.warn?.({ err }, 'reflectOnAgentSession failed'));
                     }
 
-                    const classifiedIntent = await inferDemandIntent(trimmedMessage, ai);
+                    const classifiedIntent = await inferDemandIntent(trimmedMessage, ai, selectedProvider, auxModel);
                     await db.logEvent?.('agent_chat', req.sessionId, {
                         topic: trimmedTopic,
                         messageLength: trimmedMessage.length,
@@ -778,7 +785,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                             title: `Agent answer: ${trimmedTopic}`,
                             confidence: 0.45,
                             provider: selectedProvider,
-                            model: selectedProvider === 'gemini' ? PINNED_MODELS.gemini : PINNED_MODELS.mistral,
+                            model: selectedModel,
                             payload: {
                                 kind: 'agent_answer_teaching_object',
                                 prompt: trimmedMessage,

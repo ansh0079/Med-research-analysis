@@ -81,28 +81,15 @@ async function generateLiveClinicalAnswer({ topic, articles = [], guidelines = [
     if (topArticles.length === 0) return null;
     const ai = createAiService({ serverConfig, fetchImpl });
     const prompt = buildSynthesisPrompt(topArticles, topic, guidelines, { previousQueries, trainingStage, sessionDepth });
-    let synthesis;
-    let provider;
-    let model;
-    if (serverConfig?.keys?.gemini) {
-        provider = 'gemini';
-        model = PINNED_MODELS.geminiQuality;
-        synthesis = await ai.callGeminiStructured(prompt, model, {
-            temperature: 0.2,
-            allowBudgetSkip: true,
-            usage: { operation: 'live_clinical_answer', topic },
-        });
-    } else if (serverConfig?.keys?.mistral) {
-        provider = 'mistral';
-        model = PINNED_MODELS.mistral;
-        synthesis = await ai.callMistralStructured(prompt, model, {
-            temperature: 0.2,
-            allowBudgetSkip: true,
-            usage: { operation: 'live_clinical_answer', topic },
-        });
-    } else {
+    const { provider, model } = resolveProvider({ provider: 'auto', model: PINNED_MODELS.geminiQuality }, serverConfig);
+    if (!provider) {
         return { clinicalAnswer: null, synthesis: null, provider: null, model: null };
     }
+    const synthesis = await ai.callStructured(prompt, provider, model, {
+        temperature: 0.2,
+        allowBudgetSkip: true,
+        usage: { operation: 'live_clinical_answer', topic },
+    });
     if (!synthesis) {
         return { clinicalAnswer: null, synthesis: null, provider, model, budgetSkipped: true };
     }

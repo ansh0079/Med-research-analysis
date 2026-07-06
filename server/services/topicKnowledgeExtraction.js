@@ -103,12 +103,7 @@ async function extractAndUpsertTopicKnowledge({
 
     const ai = createAiService({ serverConfig, fetchImpl });
     const prompt = buildTopicKnowledgePrompt(queryValidation.sanitized, evidenceArticles, interactionStats, existingKnowledge?.knowledge || null);
-    let rawAi;
-    if (selectedProvider === 'gemini') {
-        rawAi = await ai.callGemini(prompt, selectedModel, { temperature: 0.15 });
-    } else {
-        rawAi = await ai.callMistralAI(prompt, selectedModel, { temperature: 0.15 });
-    }
+    const rawAi = await ai.callText(prompt, selectedProvider, selectedModel, { temperature: 0.15 });
 
     const jsonMatch = String(rawAi || '').match(/```json\s*([\s\S]*?)\s*```/) || String(rawAi || '').match(/```\s*([\s\S]*?)\s*```/);
     const jsonText = jsonMatch ? jsonMatch[1].trim() : String(rawAi || '').trim();

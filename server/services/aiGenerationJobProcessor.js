@@ -13,6 +13,7 @@ const { PINNED_MODELS } = require('./aiService');
 const claimMapService = require('./claimMapService');
 const { createAiService } = require('./aiService');
 const { generateAndStoreMCQs } = require('./mcqGeneratorService');
+const { resolveProvider } = require('../utils/aiProvider');
 
 async function completeJobAndClaims(db, jobKey, jobType, { resultPayload, provider = null, model = null, auditPayload = null } = {}) {
     const payload = { ...(resultPayload || {}), jobKey };
@@ -113,7 +114,7 @@ async function processAiGenerationJobByKey(jobKey, deps) {
             await completeJobAndClaims(db, jobKey, 'consensus_synopsis', {
                 resultPayload: { ...result, jobKey },
                 provider: result.provider || null,
-                model: result.model || (result.provider === 'gemini' ? PINNED_MODELS.geminiQuality : result.provider === 'mistral' ? PINNED_MODELS.mistral : null),
+                model: result.model || PINNED_MODELS[result.provider] || null,
                 auditPayload: {
                     citationValidation: result.citationValidation || null,
                     freePaperCount: result.freePaperCount,
@@ -164,11 +165,9 @@ async function processAiGenerationJobByKey(jobKey, deps) {
             }
 
             const ai = createAiService({ serverConfig, fetchImpl });
-            const provider = serverConfig?.keys?.gemini ? 'gemini'
-                : serverConfig?.keys?.mistral ? 'mistral'
-                    : input.provider || 'gemini';
+            const { provider, model: mcqModel } = resolveProvider({ provider: input.provider || 'auto' }, serverConfig);
             const sourceArticles = Array.isArray(topicKnowledgeRow?.sourceArticles) ? topicKnowledgeRow.sourceArticles : [];
-            const result = await generateAndStoreMCQs(db, ai, topic, knowledge, { provider, sourceArticles });
+            const result = await generateAndStoreMCQs(db, ai, topic, knowledge, { provider, model: mcqModel, sourceArticles });
             await db.completeAiGenerationJob(jobKey, {
                 resultPayload: { status: result?.skipped ? 'skipped' : 'completed', jobKey, ...(result || {}) },
                 provider,

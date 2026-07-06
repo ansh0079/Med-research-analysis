@@ -125,24 +125,13 @@ Return ONLY valid JSON:
 async function generateCaseScenario(ai, { topic, difficulty, userProfile, provider = 'gemini', model, guidelines = [] }) {
     return runWithLlmBudget(createBudgetForAction('case_generation'), async () => {
         const prompt = buildCaseScenarioPrompt(topic, difficulty, userProfile, guidelines);
-        
-        let parsed;
-        if (provider === 'gemini' && ai.callGeminiStructured) {
-            parsed = await ai.callGeminiStructured(prompt, model, {
-                temperature: 0.5,  // Slightly higher for creative case generation
-                maxOutputTokens: 3500,
-                usage: { operation: 'case_generation', topic, difficulty }
-            });
-        } else if (ai.callMistralStructured) {
-            parsed = await ai.callMistralStructured(prompt, model, {
-                temperature: 0.5,
-                maxOutputTokens: 3500,
-                usage: { operation: 'case_generation', topic, difficulty }
-            });
-        } else {
-            throw new Error('No AI provider configured for case generation');
-        }
-        
+
+        const parsed = await ai.callStructured(prompt, provider, model, {
+            temperature: 0.5,  // Slightly higher for creative case generation
+            maxOutputTokens: 3500,
+            usage: { operation: 'case_generation', topic, difficulty }
+        });
+
         const caseScenario = parseStructuredOutput(String(parsed || '{}'));
         
         // Validate structure
