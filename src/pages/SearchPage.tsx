@@ -1,17 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-const AIAnalysisPanel = React.lazy(() => import('@components/search/AIAnalysisPanel').then(m => ({ default: m.AIAnalysisPanel })));
-// AgentChatPanel is lazy-loaded because it only appears after topic knowledge is ready.
-const AgentChatPanel = React.lazy(() => import('@components/search/AgentChatPanel').then(m => ({ default: m.AgentChatPanel })));
 import { TopicActionBanner } from '@components/quiz/TopicActionBanner';
-import { SelectionBasket } from '@components/search/SelectionBasket';
-import { ComparisonView } from '@components/search/ComparisonView';
 import { EvidenceProjectPanel } from '@components/search/EvidenceProjectPanel';
-import { TopicBriefPanel } from '@components/search/TopicBriefPanel';
-import { EvidenceQuizPanel } from '@components/search/EvidenceQuizPanel';
-import { EvidenceMapPanel } from '@components/search/EvidenceMapPanel';
-import { ArticleDetailDrawer } from '@components/search/ArticleDetailDrawer';
-import { SearchKnowledgePanels } from '@components/search/SearchKnowledgePanels';
 
 import { GuidelineSnapshot } from '@components/search/GuidelineSnapshot';
 import { useSearchMeta, useSearchQuery, useSearchSelection } from '@contexts/SearchContext';
@@ -48,6 +38,8 @@ import { useSearchPageKeyboard } from './search/useSearchPageKeyboard';
 import { useSearchPageSynthesis } from './search/useSearchPageSynthesis';
 import { useSearchPageTopicActions } from './search/useSearchPageTopicActions';
 import { useTopicEvidenceMemory } from './search/useTopicEvidenceMemory';
+import { SearchEvidenceWorkspaceSection } from './search/SearchEvidenceWorkspaceSection';
+import { SearchOverlays } from './search/SearchOverlays';
 import { SearchSynthesisSection } from './search/SearchSynthesisSection';
 import { SearchResultsSection } from './search/SearchResultsSection';
 
@@ -386,85 +378,51 @@ export const SearchPage: React.FC = () => {
           onOpenAnalysis={openAnalysis}
         />
 
-        {results.length > 0 && (
-          <>
-          <SearchKnowledgePanels
-            show={results.length > 0}
-            agentGuidance={agentGuidance}
-            proposedGuidance={proposedGuidance}
-            results={results}
-            currentQuery={currentQuery}
-            intelligenceLoading={intelligenceLoading}
-            topicGuideStatus={topicGuideStatus}
-            proposeError={proposeError}
-            proposingKnowledge={proposingKnowledge}
-            isFlagshipTopic={isFlagshipTopic}
-            isAuthenticated={isAuthenticated}
-            topicGuideRefreshState={topicGuideRefreshState}
-            topicGuideRefreshError={topicGuideRefreshError}
-            knowledgeReviewStatus={knowledgeReviewStatus}
-            canVerifyTeachingAnchor={canVerifyTeachingAnchor}
-            anchorVerifyKey={anchorVerifyKey}
-            onProposeKnowledge={() => void handleProposeKnowledge(top5Articles)}
-            onGenerateCase={() => openCaseFromWorkflow('mixed')}
-            onGenerateMcqs={() => openQuizFromWorkflow('mixed')}
-            onReviewTopicKnowledge={handleReviewTopicKnowledge}
-            onRefreshTopicGuide={() => void runTopicGuideRefresh()}
-            onVerifyTeachingAnchor={handleVerifyTeachingAnchor}
-            onReviewSeminalEvidence={() => { void handleSynthesize(); }}
-          />
-          {agentGuidance && (
-            <div className="mb-4">
-              <React.Suspense fallback={null}>
-                <AgentChatPanel
-                  topic={agentGuidance.topic}
-                  agentGuidance={agentGuidance}
-                  currentArticles={results}
-                  onGenerateCase={() => openCaseFromWorkflow('mixed')}
-                  onGenerateMcqs={() => openQuizFromWorkflow('mixed')}
-                />
-              </React.Suspense>
-            </div>
-          )}
-          <div id="workflow-evidence" className="mb-4 scroll-mt-28">
-          <TopicBriefPanel
-            query={currentQuery}
-            top5={top5Articles}
-            allResults={results}
-            topicIntelligence={topicIntelligence}
-            synthesis={synthesis}
-            synthesisLoading={synthesisLoading}
-            onSynthesize={handleSynthesize}
-            onSummarizePaper={openAnalysis}
-            onQuiz={openQuizFromWorkflow}
-            onCase={openCaseFromWorkflow}
-            onOpenTopic={handleSearch}
-            onGuidelineCompare={openGuidelineFromWorkflow}
-            agentGuidance={agentGuidance}
-            liveClinicalAnswer={clinicalAnswer}
-            aiEnrichmentLoading={aiEnrichmentLoading}
-            communityInsight={communityInsight}
-            proactiveAlert={proactiveAlert}
-            knowledgeDriftAlerts={knowledgeDriftAlerts}
-            evidenceMemory={topicEvidenceMemory}
-            onDismissKnowledgeDrift={(id) => { void dismissKnowledgeDriftAlert(id); }}
-          />
-          <EvidenceMapPanel evidenceMap={topicIntelligence?.evidenceMap} onOpenTopic={handleSearch} />
-          {results.length > 0 && (
-            <div className="mb-4">
-              <EvidenceQuizPanel
-                topic={currentQuery}
-                articles={top5Articles.length > 0 ? top5Articles : results.slice(0, 5)}
-                autoExpand={inPlaceQuizExpanded}
-                onAuthSubmit={async (attempts) => {
-                  await api.learning.submitQuizAttempt({ topic: currentQuery, attempts });
-                }}
-              />
-            </div>
-          )}
-          </div>
-          </>
-        )}
+        <SearchEvidenceWorkspaceSection
+          results={results}
+          currentQuery={currentQuery}
+          agentGuidance={agentGuidance}
+          proposedGuidance={proposedGuidance}
+          intelligenceLoading={intelligenceLoading}
+          topicGuideStatus={topicGuideStatus}
+          proposeError={proposeError}
+          proposingKnowledge={proposingKnowledge}
+          isFlagshipTopic={isFlagshipTopic}
+          isAuthenticated={isAuthenticated}
+          topicGuideRefreshState={topicGuideRefreshState}
+          topicGuideRefreshError={topicGuideRefreshError}
+          knowledgeReviewStatus={knowledgeReviewStatus}
+          canVerifyTeachingAnchor={canVerifyTeachingAnchor}
+          anchorVerifyKey={anchorVerifyKey}
+          top5Articles={top5Articles}
+          topicIntelligence={topicIntelligence}
+          synthesis={synthesis}
+          synthesisLoading={synthesisLoading}
+          clinicalAnswer={clinicalAnswer}
+          aiEnrichmentLoading={aiEnrichmentLoading}
+          communityInsight={communityInsight}
+          proactiveAlert={proactiveAlert}
+          knowledgeDriftAlerts={knowledgeDriftAlerts}
+          topicEvidenceMemory={topicEvidenceMemory}
+          inPlaceQuizExpanded={inPlaceQuizExpanded}
+          onProposeKnowledge={() => void handleProposeKnowledge(top5Articles)}
+          onGenerateCase={() => openCaseFromWorkflow('mixed')}
+          onGenerateMcqs={() => openQuizFromWorkflow('mixed')}
+          onReviewTopicKnowledge={handleReviewTopicKnowledge}
+          onRefreshTopicGuide={() => void runTopicGuideRefresh()}
+          onVerifyTeachingAnchor={handleVerifyTeachingAnchor}
+          onReviewSeminalEvidence={() => { void handleSynthesize(); }}
+          onSynthesize={() => { void handleSynthesize(); }}
+          onSummarizePaper={openAnalysis}
+          onQuiz={openQuizFromWorkflow}
+          onCase={openCaseFromWorkflow}
+          onOpenTopic={handleSearch}
+          onGuidelineCompare={openGuidelineFromWorkflow}
+          onDismissKnowledgeDrift={(id) => { void dismissKnowledgeDriftAlert(id); }}
+          onQuizSubmit={async (attempts) => {
+            await api.learning.submitQuizAttempt({ topic: currentQuery, attempts });
+          }}
+        />
 
         <ResultLensToolbar
           show={results.length > 0}
@@ -567,33 +525,21 @@ export const SearchPage: React.FC = () => {
         />
       </main>
 
-      <React.Suspense fallback={null}>
-        <AIAnalysisPanel key={activeArticle?.uid ?? 'none'} article={activeArticle} onClose={() => setActiveArticle(null)} />
-      </React.Suspense>
-
-      {detailArticle && (
-        <ArticleDetailDrawer
-          article={detailArticle}
-          onClose={() => setDetailArticle(null)}
-          onOpenInWorkspace={openPdf}
-        />
-      )}
-
-      {isComparing && selectedArticles.length >= 2 && (
-        <ComparisonView
-          articles={[selectedArticles[0], selectedArticles[1]]}
-          topic={currentQuery || undefined}
-          onClose={() => setIsComparing(false)}
-        />
-      )}
-
-      <SelectionBasket 
+      <SearchOverlays
+        activeArticle={activeArticle}
+        onCloseAIPanel={() => setActiveArticle(null)}
+        detailArticle={detailArticle}
+        onCloseDetailDrawer={() => setDetailArticle(null)}
+        onOpenInWorkspace={openPdf}
+        isComparing={isComparing}
         selectedArticles={selectedArticles}
-        onRemove={(uid) => {
+        currentQuery={currentQuery}
+        onCloseComparison={() => setIsComparing(false)}
+        onRemoveFromBasket={(uid) => {
           const article = selectedArticles.find(a => a.uid === uid);
           if (article) toggleSelectArticle(article);
         }}
-        onClear={clearSelection}
+        onClearSelection={clearSelection}
       />
 
       <SearchFooter />
