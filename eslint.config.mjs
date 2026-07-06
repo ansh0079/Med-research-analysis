@@ -19,6 +19,7 @@ export default [
       'tests/load/**',
       'monitoring/**',
       'eval-results/**',
+      '**/*.d.ts',
     ],
   },
 
@@ -56,6 +57,10 @@ export default [
         ecmaVersion: 2022,
         sourceType: 'module',
         ecmaFeatures: { jsx: true },
+      },
+      globals: {
+        React: 'readonly',
+        RequestInit: 'readonly',
       },
     },
     plugins: {

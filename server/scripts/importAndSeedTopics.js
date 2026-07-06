@@ -65,7 +65,7 @@ async function importTopics(opts) {
         throw new Error(`Topics file not found: ${filePath}`);
     }
 
-    const rawText = fs.readFileSync(filePath, 'utf8').replace(/^﻿/, ''); // strip BOM if present
+    const rawText = fs.readFileSync(filePath, 'utf8').replace(/^\uFEFF/, ''); // strip BOM if present
     const raw = JSON.parse(rawText);
     const topics = (Array.isArray(raw) ? raw : [raw]).slice(0, opts.limit);
     console.log(`\n📥  Importing ${topics.length} topics…`);

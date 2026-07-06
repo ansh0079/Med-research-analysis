@@ -23,8 +23,12 @@ function getErrorMessage(error: unknown, fallback: string): string {
  * - In production: dispatches a non-blocking toast via the global async-error
  *   event so App.tsx can surface it to the user.
  */
+function isDev(): boolean {
+  return typeof process !== 'undefined' && process.env?.NODE_ENV === 'development';
+}
+
 export function handleAsyncError(error: unknown, context: string): void {
-  if (import.meta.env.DEV) {
+  if (isDev()) {
     // eslint-disable-next-line no-console
     console.warn(`[${context}]`, error);
   }

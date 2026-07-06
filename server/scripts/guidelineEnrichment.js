@@ -94,7 +94,9 @@ function parseJsonArray(raw) {
                 if (Array.isArray(v) && v.length > 0) return v;
             }
         }
-    } catch {}
+    } catch {
+        // ignore parse errors
+    }
 
     // 2. Extract first [...] block (handles markdown fences, trailing commas)
     const block = parseJsonArrayBlock(text);
@@ -112,7 +114,9 @@ function parseJsonArray(raw) {
                 }
             }
         }
-    } catch {}
+    } catch {
+        // ignore parse errors
+    }
 
     // 4. Recover truncated array — finds all complete {...} objects even without closing ]
     const recovered = recoverTruncatedArray(text);

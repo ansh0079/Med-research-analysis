@@ -36,6 +36,8 @@ const { coldStartMcqKey, guidelineMcqKey, liveQuizMcqKey } = require('../utils/t
 const { generateCaseScenario, saveCaseScenario, getCaseScenario, recordCaseChoice } = require('../services/caseScenarioService');
 const { computeConceptHash } = require('../utils/conceptHash');
 const { estimateAbility, selectAdaptiveItems } = require('../services/adaptiveItemSelectionService');
+const { registerAiJobRoutes } = require('./ai/jobs');
+const { registerCaseRoutes } = require('./ai/cases');
 
 /**
  * @param {import('express').Application} app
@@ -700,79 +702,7 @@ Return JSON:
         });
     });
 
-    app.get('/api/ai/jobs', requireAuthJwt, rateLimit(60, 60), async (req, res) => {
-        try {
-            const statusRaw = String(req.query?.status || 'queued,running').trim();
-            const jobTypeRaw = String(req.query?.jobType || 'full_synthesis').trim();
-            const limit = Math.min(Math.max(parseInt(req.query?.limit, 10) || 12, 1), 30);
-            const statuses = statusRaw.split(',').map((s) => s.trim()).filter(Boolean);
-            const jobTypes = jobTypeRaw.split(',').map((s) => s.trim()).filter(Boolean);
-            const jobs = await db.listUserAiGenerationJobs(req.user.id, { statuses, jobTypes, limit });
-            res.json({
-                jobs: jobs.map((job) => ({
-                    jobKey: job.jobKey,
-                    jobType: job.jobType,
-                    status: job.status,
-                    topic: job.topic,
-                    errorMessage: job.errorMessage,
-                    attempts: job.attempts,
-                    createdAt: job.createdAt,
-                    updatedAt: job.updatedAt,
-                    startedAt: job.startedAt,
-                    completedAt: job.completedAt,
-                })),
-            });
-        } catch (error) {
-            req.log.error({ err: error }, 'AI generation jobs list error');
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-    });
-
-    app.get('/api/ai/jobs/:jobKey', requireAuthJwt, rateLimit(60, 60), async (req, res) => {
-        try {
-            const jobKey = String(req.params.jobKey || '').trim();
-            if (!jobKey || jobKey.length > 160) {
-                return res.status(400).json({ error: 'Valid jobKey is required' });
-            }
-            const job = await db.getAiGenerationJobByKey(jobKey);
-            if (!job) return res.status(404).json({ error: 'AI generation job not found' });
-            res.json({
-                job: {
-                    jobKey: job.jobKey,
-                    jobType: job.jobType,
-                    status: job.status,
-                    topic: job.topic,
-                    result: job.resultPayload,
-                    errorMessage: job.errorMessage,
-                    provider: job.provider,
-                    model: job.model,
-                    audit: job.auditPayload,
-                    attempts: job.attempts,
-                    createdAt: job.createdAt,
-                    updatedAt: job.updatedAt,
-                    startedAt: job.startedAt,
-                    completedAt: job.completedAt,
-                },
-            });
-        } catch (error) {
-            req.log.error({ err: error }, 'AI generation job fetch error');
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-    });
-
-    app.get('/api/ai/jobs/:jobKey/claims', requireAuthJwt, rateLimit(60, 60), async (req, res) => {
-        try {
-            const jobKey = String(req.params.jobKey || '').trim();
-            if (!jobKey || jobKey.length > 160) {
-                return res.status(400).json({ error: 'Valid jobKey is required' });
-            }
-            const claims = await db.listAiGenerationClaimsByJobKey(jobKey);
-            res.json({ jobKey, claims, count: claims.length });
-        } catch (error) {
-            req.log.error({ err: error }, 'AI generation claims fetch error');
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-    });
+    registerAiJobRoutes(app, { db, requireAuthJwt, rateLimit });
 
     app.post('/api/quiz/generate', requireJson, requireAiAuth, aiUserLimit(10, 60), validateBody(schemas.quiz), async (req, res) => {
         return runWithLlmBudget(createBudgetForAction('quiz'), async () => {
@@ -2234,124 +2164,18 @@ Return ONLY valid JSON:
     // CASE SCENARIO GENERATION (Interactive Clinical Cases)
     // ==========================================
     
-    app.post('/api/ai/generate-case',
-        limitBodySize(64 * 1024),
+    registerCaseRoutes(app, {
+        db,
+        serverConfig,
+        ai,
+        rateLimit,
         requireJson,
         requireAuthJwt,
         requireVerifiedEmail,
-        strictAiLimit(3, 3600),  // Only 3 case generations per hour
-        requirePaidFeature('case_scenarios'),  // Paywall for advanced feature
-        async (req, res) => {
-            try {
-                const { topic, difficulty = 'medium', provider = 'auto', model } = req.body;
-                
-                if (!topic || typeof topic !== 'string' || topic.length < 3) {
-                    return res.status(400).json({ error: 'Topic is required and must be at least 3 characters' });
-                }
-                
-                if (!['easy', 'medium', 'hard'].includes(difficulty)) {
-                    return res.status(400).json({ error: 'Difficulty must be easy, medium, or hard' });
-                }
-                
-                // Get user profile for personalization
-                const userProfile = await db.getLearningProfile(req.user.id).catch(() => null);
-                
-                const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider, model }, serverConfig);
-                if (!selectedProvider) {
-                    return res.status(503).json({ error: 'No AI service configured' });
-                }
-
-                const guidelines = await db.getGuidelinesByTopic(topic.trim(), { limit: 5 })
-                    .catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; });
-
-                // Generate case scenario
-                const caseScenario = await generateCaseScenario(ai, {
-                    topic,
-                    difficulty,
-                    userProfile,
-                    provider: selectedProvider,
-                    model: selectedModel,
-                    guidelines
-                });
-                
-                // Save to database
-                const savedCase = await saveCaseScenario(db, req.user.id, caseScenario);
-                
-                // Log event
-                await db.logEvent('case_generated', req.sessionId, {
-                    topic,
-                    difficulty,
-                    caseId: savedCase.caseId,
-                    provider: selectedProvider,
-                    model: selectedModel
-                });
-                
-                res.json({
-                    caseId: savedCase.caseId,
-                    vignette: savedCase.vignette,
-                    initialScenario: savedCase.decisionTree.initial,
-                    disclaimer: AI_DISCLAIMER
-                });
-            } catch (error) {
-                req.log.error({ err: error }, 'Case generation error');
-                res.status(500).json({ error: 'Internal Server Error' });
-            }
-        }
-    );
-    
-    app.get('/api/ai/case/:caseId',
-        requireAuthJwt,
-        rateLimit(60, 60),
-        async (req, res) => {
-            try {
-                const { caseId } = req.params;
-                const caseScenario = await getCaseScenario(db, caseId, req.user.id);
-                
-                if (!caseScenario) {
-                    return res.status(404).json({ error: 'Case scenario not found' });
-                }
-                
-                res.json({ case: caseScenario });
-            } catch (error) {
-                req.log.error({ err: error }, 'Case retrieval error');
-                res.status(500).json({ error: 'Internal Server Error' });
-            }
-        }
-    );
-    
-    app.post('/api/ai/case/:caseId/respond',
-        limitBodySize(16 * 1024),
-        requireJson,
-        requireAuthJwt,
-        rateLimit(30, 60),
-        async (req, res) => {
-            try {
-                const { caseId } = req.params;
-                const { nodeId, choiceId } = req.body;
-                
-                if (!nodeId || !choiceId) {
-                    return res.status(400).json({ error: 'nodeId and choiceId are required' });
-                }
-                
-                const result = await recordCaseChoice(db, caseId, req.user.id, nodeId, choiceId);
-                
-                // Log event
-                await db.logEvent('case_choice', req.sessionId, {
-                    caseId,
-                    nodeId,
-                    choiceId,
-                    isAppropriate: result.feedback?.isAppropriate,
-                    isTerminal: result.isTerminal
-                });
-                
-                res.json(result);
-            } catch (error) {
-                req.log.error({ err: error, caseId: req.params.caseId }, 'Case response error');
-                res.status(500).json({ error: error.message || 'Internal Server Error' });
-            }
-        }
-    );
-
+        requirePaidFeature,
+        strictAiLimit,
+        limitBodySize,
+    });
 }
 
 module.exports = { registerAiRoutes };
