@@ -1,14 +1,282 @@
 /**
  * OpenAPI Spec Generator
- * Auto-generates openapi.json from Joi schemas + manual route registry.
+ * Auto-generates openapi.json from inline JSON schemas + manual route registry.
  */
+
+'use strict';
 
 const fs = require('fs');
 const path = require('path');
-const j2s = require('joi-to-swagger');
-const { schemas } = require('../utils/validation');
 
 const OUTPUT_PATH = path.join(__dirname, '..', '..', 'docs', 'openapi.json');
+
+// Inline JSON Schema representations of each validation schema.
+const COMPONENT_SCHEMAS = {
+    search: {
+        type: 'object',
+        required: ['query'],
+        properties: {
+            query: { type: 'string', maxLength: 500 },
+            max: { type: 'integer', minimum: 1, maximum: 100, default: 20 },
+            sort: { type: 'string', enum: ['relevance', 'date'], default: 'relevance' },
+        },
+    },
+    analyze: {
+        type: 'object',
+        required: ['text'],
+        properties: {
+            text: { type: 'string', maxLength: 100000 },
+            analysisType: { type: 'string', enum: ['quick', 'comprehensive', 'critical', 'layperson', 'methodology'], default: 'comprehensive' },
+            provider: { type: 'string', enum: ['auto', 'gemini', 'mistral'], default: 'auto' },
+            model: { type: 'string', maxLength: 100 },
+        },
+    },
+    saveArticle: {
+        type: 'object',
+        required: ['article'],
+        properties: {
+            article: {
+                type: 'object',
+                required: ['uid'],
+                properties: {
+                    uid: { type: 'string' },
+                    title: { type: 'string' },
+                    abstract: { type: 'string' },
+                },
+            },
+        },
+    },
+    alert: {
+        type: 'object',
+        required: ['query'],
+        properties: {
+            query: { type: 'string', maxLength: 500 },
+            sources: { type: 'array', items: { type: 'string' } },
+            frequency: { type: 'string', enum: ['daily', 'weekly', 'monthly'], default: 'weekly' },
+        },
+    },
+    annotation: {
+        type: 'object',
+        required: ['text'],
+        properties: {
+            text: { type: 'string', maxLength: 5000 },
+            position: { type: 'object', additionalProperties: true },
+        },
+    },
+    quiz: {
+        type: 'object',
+        required: ['topic'],
+        properties: {
+            topic: { type: 'string', maxLength: 200 },
+            articles: { type: 'array' },
+            count: { type: 'integer', minimum: 1, maximum: 10, default: 5 },
+            difficulty: { type: 'string', enum: ['easy', 'medium', 'hard', 'mixed'], default: 'mixed' },
+            studyRunId: { type: 'integer' },
+            trainingStage: { type: 'string', enum: ['preclinical', 'early_clinical', 'finals', 'foundation_doctor'] },
+            explanationDepth: { type: 'string', enum: ['foundation', 'exam_focus', 'mechanistic'] },
+            explicitTargetNodeIds: { type: 'array', items: { type: 'string', maxLength: 120 }, maxItems: 20 },
+            mode: { type: 'string', enum: ['spaced_rep', 'standard'] },
+            claimJobKey: { type: 'string', maxLength: 160, nullable: true },
+            teachingPoints: { type: 'array', items: { type: 'object' }, maxItems: 20 },
+            mcqAngles: { type: 'array', items: { type: 'string', maxLength: 500 }, maxItems: 15 },
+        },
+    },
+    synopsis: {
+        type: 'object',
+        required: ['article'],
+        properties: {
+            article: { type: 'object', required: ['title'], properties: { title: { type: 'string' } }, additionalProperties: true },
+            provider: { type: 'string', enum: ['auto', 'gemini', 'mistral'], default: 'auto' },
+            async: { type: 'boolean' },
+            topic: { type: 'string', maxLength: 500, nullable: true },
+            trainingStage: { type: 'string', enum: ['preclinical', 'early_clinical', 'finals', 'foundation_doctor'] },
+        },
+    },
+    synthesize: {
+        type: 'object',
+        required: ['articles'],
+        properties: {
+            articles: { type: 'array', minItems: 1 },
+            topic: { type: 'string', maxLength: 500 },
+            provider: { type: 'string', enum: ['auto', 'gemini', 'mistral'], default: 'auto' },
+            async: { type: 'boolean' },
+        },
+    },
+    journalClub: {
+        type: 'object',
+        required: ['articles', 'topic'],
+        properties: {
+            articles: { type: 'array', minItems: 1, maxItems: 15 },
+            topic: { type: 'string', maxLength: 500 },
+            provider: { type: 'string', enum: ['auto', 'gemini', 'mistral'], default: 'auto' },
+        },
+    },
+    reviewCreate: {
+        type: 'object',
+        required: ['question'],
+        properties: {
+            title: { type: 'string', maxLength: 300 },
+            question: { type: 'string', maxLength: 2000 },
+            ownerType: { type: 'string', enum: ['user', 'session', 'team'] },
+            teamId: { type: 'string', maxLength: 100 },
+            criteria: {
+                type: 'object',
+                properties: {
+                    inclusion: { type: 'array', items: { type: 'string' }, default: [] },
+                    exclusion: { type: 'array', items: { type: 'string' }, default: [] },
+                },
+                default: { inclusion: [], exclusion: [] },
+            },
+        },
+    },
+    reviewArticles: {
+        type: 'object',
+        required: ['articles'],
+        properties: {
+            articles: {
+                type: 'array',
+                minItems: 1,
+                items: { type: 'object', required: ['uid'], properties: { uid: { type: 'string' } }, additionalProperties: true },
+            },
+        },
+    },
+    reviewScreening: {
+        type: 'object',
+        required: ['decision'],
+        properties: {
+            decision: { type: 'string', enum: ['pending', 'included', 'excluded', 'maybe'] },
+            exclusionReason: { type: 'string', maxLength: 1000, nullable: true },
+            notes: { type: 'string', maxLength: 2000, nullable: true },
+        },
+    },
+    reviewPicoExtract: {
+        type: 'object',
+        required: ['articles'],
+        properties: {
+            articles: {
+                type: 'array',
+                minItems: 1,
+                items: { type: 'object', required: ['uid'], properties: { uid: { type: 'string' } }, additionalProperties: true },
+            },
+            provider: { type: 'string', enum: ['auto', 'gemini', 'mistral'], default: 'auto' },
+        },
+    },
+    reviewScreenAssist: {
+        type: 'object',
+        required: ['criteria', 'article'],
+        properties: {
+            criteria: { type: 'object', additionalProperties: true },
+            article: { type: 'object', required: ['uid'], properties: { uid: { type: 'string' } }, additionalProperties: true },
+            provider: { type: 'string', enum: ['auto', 'gemini', 'mistral'], default: 'auto' },
+        },
+    },
+    caseAnalyze: {
+        type: 'object',
+        required: ['caseText'],
+        properties: {
+            caseText: { type: 'string', maxLength: 5000 },
+            provider: { type: 'string', enum: ['auto', 'gemini', 'mistral'], default: 'auto' },
+            topic: { type: 'string', maxLength: 240, nullable: true },
+            learningMode: { type: 'string', enum: ['student', 'resident', 'specialist', 'exam'], default: 'student' },
+            seedArticles: { type: 'array', items: { type: 'object' }, maxItems: 8 },
+        },
+    },
+    learningProfile: {
+        type: 'object',
+        properties: {
+            persona: { type: 'string', enum: ['clinician', 'researcher', 'student'] },
+            goals: { type: 'array', items: { type: 'string', maxLength: 200 }, maxItems: 10 },
+            weakTopics: { type: 'array', items: { type: 'string', maxLength: 200 }, maxItems: 20 },
+            strongTopics: { type: 'array', items: { type: 'string', maxLength: 200 }, maxItems: 20 },
+            preferredDifficulty: { type: 'string', enum: ['easy', 'medium', 'hard', 'mixed'] },
+            dailyGoalMinutes: { type: 'integer', minimum: 1, maximum: 240 },
+            trainingStage: { type: 'string', enum: ['preclinical', 'early_clinical', 'finals', 'foundation_doctor'] },
+            defaultExplanationDepth: { type: 'string', enum: ['foundation', 'exam_focus', 'mechanistic'] },
+            specialtyInterest: { type: 'string', maxLength: 120, nullable: true },
+            studyGoal: { type: 'string', maxLength: 160, nullable: true },
+            activeCurriculumId: { type: 'integer', nullable: true },
+        },
+    },
+    quizAttempt: {
+        type: 'object',
+        required: ['topic', 'attempts'],
+        properties: {
+            topic: { type: 'string', maxLength: 200 },
+            studyRunId: { type: 'integer' },
+            curriculumTopicId: { type: 'integer' },
+            attempts: {
+                type: 'array',
+                minItems: 1,
+                items: {
+                    type: 'object',
+                    required: ['questionId', 'questionType', 'questionText', 'userAnswer', 'correctAnswer'],
+                    properties: {
+                        questionId: { type: 'string' },
+                        questionType: { type: 'string', enum: ['recall', 'clinical_application', 'trial_interpretation', 'guideline', 'pitfall'] },
+                        questionText: { type: 'string', maxLength: 5000 },
+                        userAnswer: { type: 'string', maxLength: 500 },
+                        correctAnswer: { type: 'string', maxLength: 500 },
+                        isCorrect: { type: 'boolean' },
+                        timeMs: { type: 'integer' },
+                        confidence: { type: 'integer', minimum: 1, maximum: 5 },
+                        sourceArticleUid: { type: 'string' },
+                        sourceArticleTitle: { type: 'string', maxLength: 500, nullable: true },
+                        decisionId: { type: 'integer' },
+                        banditArmId: { type: 'string', maxLength: 80, nullable: true },
+                        searchId: { type: 'integer' },
+                        outlineNodeId: { type: 'string', maxLength: 120, nullable: true },
+                        outlineLabel: { type: 'string', maxLength: 300, nullable: true },
+                        claimKey: { type: 'string', maxLength: 80, nullable: true },
+                        promptVariant: { type: 'string', maxLength: 80, nullable: true },
+                    },
+                },
+            },
+        },
+    },
+    studyRunCreate: {
+        type: 'object',
+        required: ['topic'],
+        properties: {
+            topic: { type: 'string', maxLength: 200 },
+            curriculumTopicId: { type: 'integer' },
+        },
+    },
+    studyRunUpdate: {
+        type: 'object',
+        properties: {
+            status: { type: 'string', enum: ['active', 'completed', 'paused'] },
+            progress: { type: 'object', additionalProperties: true },
+            nodeCoverage: { type: 'object', additionalProperties: true },
+        },
+    },
+    agentConversation: {
+        type: 'object',
+        required: ['topic'],
+        properties: {
+            topic: { type: 'string', maxLength: 200 },
+            title: { type: 'string', maxLength: 200 },
+        },
+    },
+    agentMessageAppend: {
+        type: 'object',
+        required: ['messages'],
+        properties: {
+            messages: {
+                type: 'array',
+                minItems: 1,
+                items: {
+                    type: 'object',
+                    required: ['role', 'content'],
+                    properties: {
+                        role: { type: 'string', enum: ['user', 'assistant'] },
+                        content: { type: 'string', maxLength: 20000 },
+                        timestamp: { type: 'string' },
+                    },
+                },
+            },
+        },
+    },
+};
 
 // Route registry: mount point, method, schema key, auth required, description, tags
 const ROUTE_REGISTRY = [
@@ -91,7 +359,7 @@ function buildSpec() {
           description: 'Session cookie',
         },
       },
-      schemas: {},
+      schemas: { ...COMPONENT_SCHEMAS },
       responses: {
         BadRequest: {
           description: 'Validation error',
@@ -147,18 +415,6 @@ function buildSpec() {
     ],
   };
 
-  // Convert Joi schemas to OpenAPI components
-  Object.keys(schemas).forEach((key) => {
-    try {
-      const { swagger } = j2s(schemas[key]);
-      spec.components.schemas[key] = swagger;
-    } catch (err) {
-      // Fallback for complex Joi features joi-to-swagger may not support
-      spec.components.schemas[key] = { type: 'object', description: `Joi schema: ${key}` };
-    }
-  });
-
-  // Build paths from registry
   ROUTE_REGISTRY.forEach((route) => {
     const pathKey = route.path;
     if (!spec.paths[pathKey]) spec.paths[pathKey] = {};

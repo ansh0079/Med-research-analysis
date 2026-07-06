@@ -1,4 +1,6 @@
-const Joi = require('joi');
+'use strict';
+
+const { z } = require('zod');
 const { sanitizeUserInput, escapeHtml } = require('./sanitization');
 
 function sanitizeInput(input) {
@@ -29,191 +31,196 @@ function validateAnalysisBody(body) {
 
 function validateBody(schema) {
     return (req, res, next) => {
-        const { error } = schema.validate(req.body);
-        if (error) {
+        const result = schema.safeParse(req.body);
+        if (!result.success) {
             return res.status(400).json({
                 error: 'Validation error',
-                details: error.details.map((d) => d.message),
+                details: result.error.issues.map((e) => e.message),
             });
         }
+        req.body = result.data;
         next();
     };
 }
 
+const PROVIDERS = z.enum(['auto', 'gemini', 'mistral']).default('auto');
+const TRAINING_STAGE = z.enum(['preclinical', 'early_clinical', 'finals', 'foundation_doctor']).optional();
+const EXPLANATION_DEPTH = z.enum(['foundation', 'exam_focus', 'mechanistic']).optional();
+
 const schemas = {
-    search: Joi.object({
-        query: Joi.string().max(500).required(),
-        max: Joi.number().integer().min(1).max(100).default(20),
-        sort: Joi.string().valid('relevance', 'date').default('relevance'),
+    search: z.object({
+        query: z.string().max(500),
+        max: z.number().int().min(1).max(100).default(20),
+        sort: z.enum(['relevance', 'date']).default('relevance'),
     }),
-    analyze: Joi.object({
-        text: Joi.string().max(100000).required(),
-        analysisType: Joi.string()
-            .valid('quick', 'comprehensive', 'critical', 'layperson', 'methodology')
-            .default('comprehensive'),
-        provider: Joi.string().valid('auto', 'gemini', 'mistral').default('auto'),
-        model: Joi.string().max(100).optional(),
+
+    analyze: z.object({
+        text: z.string().max(100000),
+        analysisType: z.enum(['quick', 'comprehensive', 'critical', 'layperson', 'methodology']).default('comprehensive'),
+        provider: PROVIDERS,
+        model: z.string().max(100).optional(),
     }),
-    saveArticle: Joi.object({
-        article: Joi.object({
-            uid: Joi.string().required(),
-            title: Joi.string().optional(),
-            abstract: Joi.string().optional(),
-        }).required(),
-    }),
-    alert: Joi.object({
-        query: Joi.string().max(500).required(),
-        sources: Joi.array().items(Joi.string()).optional(),
-        frequency: Joi.string().valid('daily', 'weekly', 'monthly').default('weekly'),
-    }),
-    annotation: Joi.object({
-        text: Joi.string().max(5000).required(),
-        position: Joi.object().optional(),
-    }),
-    quiz: Joi.object({
-        topic: Joi.string().max(200).required(),
-        articles: Joi.array().optional(),
-        count: Joi.number().integer().min(1).max(10).default(5),
-        difficulty: Joi.string().valid('easy', 'medium', 'hard', 'mixed').default('mixed'),
-        studyRunId: Joi.number().integer().optional(),
-        trainingStage: Joi.string()
-            .valid('preclinical', 'early_clinical', 'finals', 'foundation_doctor')
-            .optional(),
-        explanationDepth: Joi.string()
-            .valid('foundation', 'exam_focus', 'mechanistic')
-            .optional(),
-        explicitTargetNodeIds: Joi.array().items(Joi.string().max(120)).max(20).optional(),
-        mode: Joi.string().valid('spaced_rep', 'standard').optional(),
-        /** When set, each question must target one row from ai_generation_claims for this job. */
-        claimJobKey: Joi.string().max(160).allow('', null).optional(),
-        teachingPoints: Joi.array().items(Joi.object().unknown(true)).max(20).optional(),
-        mcqAngles: Joi.array().items(Joi.string().max(500)).max(15).optional(),
-    }),
-    synopsis: Joi.object({
-        article: Joi.object({ title: Joi.string().required() }).unknown(true).required(),
-        provider: Joi.string().valid('auto', 'gemini', 'mistral').default('auto'),
-        async: Joi.boolean().optional(),
-        topic: Joi.string().max(500).allow('', null).optional(),
-        trainingStage: Joi.string()
-            .valid('preclinical', 'early_clinical', 'finals', 'foundation_doctor')
-            .optional(),
-    }),
-    synthesize: Joi.object({
-        articles: Joi.array().min(1).required(),
-        topic: Joi.string().max(500).optional(),
-        provider: Joi.string().valid('auto', 'gemini', 'mistral').default('auto'),
-        async: Joi.boolean().optional(),
-    }),
-    journalClub: Joi.object({
-        articles: Joi.array().min(1).max(15).required(),
-        topic: Joi.string().max(500).required(),
-        provider: Joi.string().valid('auto', 'gemini', 'mistral').default('auto'),
-    }),
-    reviewCreate: Joi.object({
-        title: Joi.string().max(300).optional(),
-        question: Joi.string().max(2000).required(),
-        ownerType: Joi.string().valid('user', 'session', 'team').optional(),
-        teamId: Joi.string().max(100).when('ownerType', {
-            is: 'team',
-            then: Joi.required(),
-            otherwise: Joi.optional(),
+
+    saveArticle: z.object({
+        article: z.object({
+            uid: z.string(),
+            title: z.string().optional(),
+            abstract: z.string().optional(),
         }),
-        criteria: Joi.object({
-            inclusion: Joi.array().items(Joi.string()).default([]),
-            exclusion: Joi.array().items(Joi.string()).default([]),
+    }),
+
+    alert: z.object({
+        query: z.string().max(500),
+        sources: z.array(z.string()).optional(),
+        frequency: z.enum(['daily', 'weekly', 'monthly']).default('weekly'),
+    }),
+
+    annotation: z.object({
+        text: z.string().max(5000),
+        position: z.record(z.string(), z.unknown()).optional(),
+    }),
+
+    quiz: z.object({
+        topic: z.string().max(200),
+        articles: z.array(z.unknown()).optional(),
+        count: z.number().int().min(1).max(10).default(5),
+        difficulty: z.enum(['easy', 'medium', 'hard', 'mixed']).default('mixed'),
+        studyRunId: z.number().int().optional(),
+        trainingStage: TRAINING_STAGE,
+        explanationDepth: EXPLANATION_DEPTH,
+        explicitTargetNodeIds: z.array(z.string().max(120)).max(20).optional(),
+        mode: z.enum(['spaced_rep', 'standard']).optional(),
+        claimJobKey: z.string().max(160).nullable().optional(),
+        teachingPoints: z.array(z.record(z.string(), z.unknown())).max(20).optional(),
+        mcqAngles: z.array(z.string().max(500)).max(15).optional(),
+    }),
+
+    synopsis: z.object({
+        article: z.object({ title: z.string() }).passthrough(),
+        provider: PROVIDERS,
+        async: z.boolean().optional(),
+        topic: z.string().max(500).nullable().optional(),
+        trainingStage: TRAINING_STAGE,
+    }),
+
+    synthesize: z.object({
+        articles: z.array(z.unknown()).min(1),
+        topic: z.string().max(500).optional(),
+        provider: PROVIDERS,
+        async: z.boolean().optional(),
+    }),
+
+    journalClub: z.object({
+        articles: z.array(z.unknown()).min(1).max(15),
+        topic: z.string().max(500),
+        provider: PROVIDERS,
+    }),
+
+    reviewCreate: z.object({
+        title: z.string().max(300).optional(),
+        question: z.string().max(2000),
+        ownerType: z.enum(['user', 'session', 'team']).optional(),
+        teamId: z.string().max(100).optional(),
+        criteria: z.object({
+            inclusion: z.array(z.string()).default([]),
+            exclusion: z.array(z.string()).default([]),
         }).default({ inclusion: [], exclusion: [] }),
+    }).superRefine((data, ctx) => {
+        if (data.ownerType === 'team' && !data.teamId) {
+            ctx.addIssue({ code: 'custom', message: 'teamId is required when ownerType is team', path: ['teamId'] });
+        }
     }),
-    reviewArticles: Joi.object({
-        articles: Joi.array()
-            .items(Joi.object({ uid: Joi.string().required() }).unknown(true))
-            .min(1)
-            .required(),
+
+    reviewArticles: z.object({
+        articles: z.array(z.object({ uid: z.string() }).passthrough()).min(1),
     }),
-    reviewScreening: Joi.object({
-        decision: Joi.string().valid('pending', 'included', 'excluded', 'maybe').required(),
-        exclusionReason: Joi.string().max(1000).allow('', null).optional(),
-        notes: Joi.string().max(2000).allow('', null).optional(),
+
+    reviewScreening: z.object({
+        decision: z.enum(['pending', 'included', 'excluded', 'maybe']),
+        exclusionReason: z.string().max(1000).nullable().optional(),
+        notes: z.string().max(2000).nullable().optional(),
     }),
-    reviewPicoExtract: Joi.object({
-        articles: Joi.array()
-            .items(Joi.object({ uid: Joi.string().required() }).unknown(true))
-            .min(1)
-            .required(),
-        provider: Joi.string().valid('auto', 'gemini', 'mistral').default('auto'),
+
+    reviewPicoExtract: z.object({
+        articles: z.array(z.object({ uid: z.string() }).passthrough()).min(1),
+        provider: PROVIDERS,
     }),
-    reviewScreenAssist: Joi.object({
-        criteria: Joi.object().required(),
-        article: Joi.object({ uid: Joi.string().required() }).unknown(true).required(),
-        provider: Joi.string().valid('auto', 'gemini', 'mistral').default('auto'),
+
+    reviewScreenAssist: z.object({
+        criteria: z.record(z.string(), z.unknown()),
+        article: z.object({ uid: z.string() }).passthrough(),
+        provider: PROVIDERS,
     }),
-    caseAnalyze: Joi.object({
-        caseText: Joi.string().max(5000).required(),
-        provider: Joi.string().valid('auto', 'gemini', 'mistral').default('auto'),
-        topic: Joi.string().max(240).allow('', null).optional(),
-        learningMode: Joi.string().valid('student', 'resident', 'specialist', 'exam').default('student'),
-        /** Topic-workspace “top evidence” rows — merged first into case retrieval (max 8). */
-        seedArticles: Joi.array().items(Joi.object().unknown(true)).max(8).optional(),
+
+    caseAnalyze: z.object({
+        caseText: z.string().max(5000),
+        provider: PROVIDERS,
+        topic: z.string().max(240).nullable().optional(),
+        learningMode: z.enum(['student', 'resident', 'specialist', 'exam']).default('student'),
+        seedArticles: z.array(z.record(z.string(), z.unknown())).max(8).optional(),
     }),
-    learningProfile: Joi.object({
-        persona: Joi.string().valid('clinician', 'researcher', 'student').optional(),
-        goals: Joi.array().items(Joi.string().max(200)).max(10).optional(),
-        weakTopics: Joi.array().items(Joi.string().max(200)).max(20).optional(),
-        strongTopics: Joi.array().items(Joi.string().max(200)).max(20).optional(),
-        preferredDifficulty: Joi.string().valid('easy', 'medium', 'hard', 'mixed').optional(),
-        dailyGoalMinutes: Joi.number().integer().min(1).max(240).optional(),
-        trainingStage: Joi.string()
-            .valid('preclinical', 'early_clinical', 'finals', 'foundation_doctor')
-            .optional(),
-        defaultExplanationDepth: Joi.string()
-            .valid('foundation', 'exam_focus', 'mechanistic')
-            .optional(),
-        specialtyInterest: Joi.string().max(120).allow('', null).optional(),
-        studyGoal: Joi.string().max(160).allow('', null).optional(),
-        activeCurriculumId: Joi.number().integer().allow(null).optional(),
+
+    learningProfile: z.object({
+        persona: z.enum(['clinician', 'researcher', 'student']).optional(),
+        goals: z.array(z.string().max(200)).max(10).optional(),
+        weakTopics: z.array(z.string().max(200)).max(20).optional(),
+        strongTopics: z.array(z.string().max(200)).max(20).optional(),
+        preferredDifficulty: z.enum(['easy', 'medium', 'hard', 'mixed']).optional(),
+        dailyGoalMinutes: z.number().int().min(1).max(240).optional(),
+        trainingStage: TRAINING_STAGE,
+        defaultExplanationDepth: EXPLANATION_DEPTH,
+        specialtyInterest: z.string().max(120).nullable().optional(),
+        studyGoal: z.string().max(160).nullable().optional(),
+        activeCurriculumId: z.number().int().nullable().optional(),
     }),
-    quizAttempt: Joi.object({
-        topic: Joi.string().max(200).required(),
-        studyRunId: Joi.number().integer().optional(),
-        curriculumTopicId: Joi.number().integer().optional(),
-        attempts: Joi.array().items(Joi.object({
-            questionId: Joi.string().required(),
-            questionType: Joi.string().valid('recall', 'clinical_application', 'trial_interpretation', 'guideline', 'pitfall').required(),
-            questionText: Joi.string().max(5000).required(),
-            userAnswer: Joi.string().max(500).required(),
-            correctAnswer: Joi.string().max(500).required(),
-            isCorrect: Joi.boolean().optional(),
-            timeMs: Joi.number().integer().optional(),
-            confidence: Joi.number().integer().min(1).max(5).optional(),
-            sourceArticleUid: Joi.string().optional(),
-            sourceArticleTitle: Joi.string().max(500).allow('', null).optional(),
-            decisionId: Joi.number().integer().optional(),
-            banditArmId: Joi.string().max(80).allow('', null).optional(),
-            searchId: Joi.number().integer().optional(),
-            outlineNodeId: Joi.string().max(120).allow('', null).optional(),
-            outlineLabel: Joi.string().max(300).allow('', null).optional(),
-            claimKey: Joi.string().max(80).allow('', null).optional(),
-            promptVariant: Joi.string().max(80).allow('', null).optional(),
-        })).min(1).required(),
+
+    quizAttempt: z.object({
+        topic: z.string().max(200),
+        studyRunId: z.number().int().optional(),
+        curriculumTopicId: z.number().int().optional(),
+        attempts: z.array(z.object({
+            questionId: z.string(),
+            questionType: z.enum(['recall', 'clinical_application', 'trial_interpretation', 'guideline', 'pitfall']),
+            questionText: z.string().max(5000),
+            userAnswer: z.string().max(500),
+            correctAnswer: z.string().max(500),
+            isCorrect: z.boolean().optional(),
+            timeMs: z.number().int().optional(),
+            confidence: z.number().int().min(1).max(5).optional(),
+            sourceArticleUid: z.string().optional(),
+            sourceArticleTitle: z.string().max(500).nullable().optional(),
+            decisionId: z.number().int().optional(),
+            banditArmId: z.string().max(80).nullable().optional(),
+            searchId: z.number().int().optional(),
+            outlineNodeId: z.string().max(120).nullable().optional(),
+            outlineLabel: z.string().max(300).nullable().optional(),
+            claimKey: z.string().max(80).nullable().optional(),
+            promptVariant: z.string().max(80).nullable().optional(),
+        })).min(1),
     }),
-    studyRunCreate: Joi.object({
-        topic: Joi.string().max(200).required(),
-        curriculumTopicId: Joi.number().integer().optional(),
+
+    studyRunCreate: z.object({
+        topic: z.string().max(200),
+        curriculumTopicId: z.number().int().optional(),
     }),
-    studyRunUpdate: Joi.object({
-        status: Joi.string().valid('active', 'completed', 'paused').optional(),
-        progress: Joi.object().unknown(true).optional(),
-        nodeCoverage: Joi.object().unknown(true).optional(),
+
+    studyRunUpdate: z.object({
+        status: z.enum(['active', 'completed', 'paused']).optional(),
+        progress: z.record(z.string(), z.unknown()).optional(),
+        nodeCoverage: z.record(z.string(), z.unknown()).optional(),
     }),
-    agentConversation: Joi.object({
-        topic: Joi.string().max(200).required(),
-        title: Joi.string().max(200).optional(),
+
+    agentConversation: z.object({
+        topic: z.string().max(200),
+        title: z.string().max(200).optional(),
     }),
-    agentMessageAppend: Joi.object({
-        messages: Joi.array().items(Joi.object({
-            role: Joi.string().valid('user', 'assistant').required(),
-            content: Joi.string().max(20000).required(),
-            timestamp: Joi.string().isoDate().optional(),
-        })).min(1).required(),
+
+    agentMessageAppend: z.object({
+        messages: z.array(z.object({
+            role: z.enum(['user', 'assistant']),
+            content: z.string().max(20000),
+            timestamp: z.string().optional(),
+        })).min(1),
     }),
 };
 
