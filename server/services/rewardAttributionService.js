@@ -18,6 +18,7 @@ const RECOMMENDATION_REWARDS = {
 };
 
 function impressionEngagementReward(impression = {}) {
+    impression = impression || {};
     let reward = 0;
     if (impression.was_saved === 1 || impression.was_saved === true) reward += 0.4;
     else if (impression.was_clicked === 1 || impression.was_clicked === true) reward += 0.04;

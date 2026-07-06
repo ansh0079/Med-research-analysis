@@ -22,7 +22,7 @@ The product has a strong search, learning, and evidence-synthesis foundation. Th
 | Cache/rate limits | Blocked | Redis must be configured for shared cache, rate limiting, and multi-instance consistency. |
 | Background jobs | Partial | LLM-heavy work should run in BullMQ workers with retries, quotas, and monitoring. |
 | Observability | Partial | Sentry, pino logs, `/metrics`, and search latency breakdowns must be visible in dashboards. |
-| Security/compliance | Partial | Backups, restore drill, DB encryption posture, CSRF verification, and PHI handling review must be completed. |
+| Security/compliance | Partial | Backups, restore drill, DB encryption posture, CSRF verification, and PHI handling review must be completed. Restore runbook ready; execute on staging. |
 | Docs | Partial | Public docs, deployment docs, and launch checklist must refer to `server.js` and current env names. |
 
 ## Quality Gates
@@ -100,7 +100,21 @@ Use `ecosystem.config.cjs` for PM2 or `docker-compose.hetzner.yml` for Docker Co
 
 ## Backup And Restore Drill
 
-Run and record one PostgreSQL restore test before paid launch. Procedure: [docs/BACKUP_RESTORE_DRILL.md](docs/BACKUP_RESTORE_DRILL.md).
+Run and record one PostgreSQL restore test before paid launch.
+
+- Procedure: [docs/BACKUP_RESTORE_DRILL.md](docs/BACKUP_RESTORE_DRILL.md)
+- Runbook: `scripts/backup-restore-drill.sh`
+- Restored-DB verification: `scripts/verify-restored-db.mjs`
+
+On the staging host:
+
+```bash
+export SOURCE_URL="postgresql://user:pass@staging:5432/medsearch"
+export RESTORE_DATABASE_URL="postgresql://user:pass@staging:5432/medsearch_restore_$(date -u +%Y%m%d%H%M%S)"
+./scripts/backup-restore-drill.sh
+```
+
+The script records evidence automatically in this file.
 
 Latest drill record:
 
