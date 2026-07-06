@@ -2,7 +2,7 @@
 
 const { safeJsonParse, toPgVectorLiteral } = require('../lib/helpers');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
-const { resolveClaimMasteryState } = require('../../server/services/claimRemediationService');
+const { computeMasteryFromSequence, classifyMasteryState } = require('../../server/services/knowledgeTracingService');
 
 module.exports = (Sup) => class extends Sup {
 // Review Assistant + PICO
@@ -707,16 +707,43 @@ async getUserClaimMastery(userId, topic, { limit = 80, gapDays = 90 } = {}) {
          LIMIT ?`,
         [userId, userId, normalized, normalized, gapCutoff, normalized, normalized, safeLimit]
     );
+
+    // BKT needs the chronological sequence of outcomes per claim, not just
+    // aggregate counts, since order matters (see knowledgeTracingService.js).
+    // One extra query for all attempted claims in this result page, then
+    // group in JS rather than N+1 queries per claim.
+    const claimKeysWithAttempts = rows.filter((r) => Number(r.attempts || 0) > 0).map((r) => r.claim_key);
+    const sequenceByClaim = new Map();
+    if (claimKeysWithAttempts.length > 0) {
+        const placeholders = claimKeysWithAttempts.map(() => '?').join(',');
+        const sequenceRows = await this.all(
+            `SELECT claim_key, is_correct FROM quiz_attempts
+             WHERE user_id = ? AND claim_key IN (${placeholders})
+             ORDER BY claim_key, created_at ASC`,
+            [userId, ...claimKeysWithAttempts]
+        );
+        for (const r of sequenceRows) {
+            if (!sequenceByClaim.has(r.claim_key)) sequenceByClaim.set(r.claim_key, []);
+            sequenceByClaim.get(r.claim_key).push(r.is_correct === 1 || r.is_correct === true);
+        }
+    }
+
     return rows.map((row) => {
         const attempts = Number(row.attempts || 0);
         const correct = Number(row.correct || 0);
         const gapSignals = Number(row.gap_signals || 0);
-        const masteryState = resolveClaimMasteryState({ attempts, correct, gapSignals });
+        const sequence = sequenceByClaim.get(row.claim_key) || [];
+        const { masteryProbability } = computeMasteryFromSequence(sequence);
+        // An explicit misconception detected in agent conversation is a direct
+        // signal independent of quiz correctness — it overrides BKT's estimate
+        // rather than waiting for enough wrong quiz answers to catch up to it.
+        const masteryState = gapSignals > 0 ? 'weak' : classifyMasteryState(masteryProbability, attempts);
         return {
             ...this.mapTeachingObjectClaimRow(row),
             attempts,
             correct,
             accuracy: attempts > 0 ? Math.round((correct / attempts) * 100) : null,
+            masteryProbability: attempts > 0 ? Math.round(masteryProbability * 100) / 100 : null,
             lastAttemptAt: row.last_attempt_at || null,
             claimGapSignals: gapSignals,
             lastClaimGapAt: row.last_gap_at || null,
