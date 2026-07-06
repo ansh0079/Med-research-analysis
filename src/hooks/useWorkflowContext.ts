@@ -3,30 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { extractClinicalScenario, scenarioToEvidenceQuery, type ClinicalScenarioExtract } from '../utils/extractClinicalScenario';
 import type { AgentGuidance, Article, CaseLearningMode, SynthesisResult } from '@types';
 import type { BriefDifficulty } from '@components/search/TopicBriefPanel';
+import { getWorkflowContext, saveWorkflowContext } from '@utils/workflowContext';
 
 const CASE_PREFILL_KEY = 'med_case_prefill';
 const QUIZ_PREFILL_KEY = 'med_quiz_prefill';
-const WORKFLOW_CONTEXT_KEY = 'med_shift_workflow';
-
-function getWorkflowContext(): Record<string, unknown> {
-  try {
-    return JSON.parse(sessionStorage.getItem(WORKFLOW_CONTEXT_KEY) || '{}') as Record<string, unknown>;
-  } catch {
-    return {};
-  }
-}
-
-function saveWorkflowContext(update: Record<string, unknown>): void {
-  try {
-    sessionStorage.setItem(WORKFLOW_CONTEXT_KEY, JSON.stringify({
-      ...getWorkflowContext(),
-      ...update,
-      updatedAt: new Date().toISOString(),
-    }));
-  } catch {
-    // Ignore storage failures; URL navigation still carries the topic.
-  }
-}
 
 /** Minimal article payload for quiz/case prefill (matches server sanitize + dedupe). */
 function articleRowForTopicActions(a: Article) {

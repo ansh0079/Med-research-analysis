@@ -15,6 +15,7 @@ import { FollowUpQuestionsPanel } from '@components/search/FollowUpQuestionsPane
 import { useClientFeatures } from '@hooks/useClientFeatures';
 import { CaseMCQs } from '@components/case/CaseMCQs';
 import { MODES, EVIDENCE_STRENGTH_STYLES } from '@components/case/caseModeConstants';
+import { getWorkflowContext, saveWorkflowContext } from '@utils/workflowContext';
 
 type CaseEvidenceBrief = {
   bestEvidence?: string;
@@ -41,7 +42,6 @@ type CaseToEvidenceResult = {
 const REVIEW_PREFILL_KEY = 'med_review_prefill';
 const CASE_PREFILL_KEY = 'med_case_prefill';
 const QUIZ_PREFILL_KEY = 'med_quiz_prefill';
-const WORKFLOW_CONTEXT_KEY = 'med_shift_workflow';
 const MAX_CHARS = 5000;
 type ReflectionKind = 'CBD' | 'mini-CEX' | 'DOPS';
 
@@ -88,26 +88,6 @@ function reflectionKindLabel(kind: ReflectionKind) {
   return 'Direct Observation of Procedural Skills (DOPS)';
 }
 
-function readWorkflowContext() {
-  try {
-    return JSON.parse(sessionStorage.getItem(WORKFLOW_CONTEXT_KEY) || '{}') as Record<string, unknown>;
-  } catch {
-    return {};
-  }
-}
-
-function writeWorkflowContext(update: Record<string, unknown>) {
-  try {
-    sessionStorage.setItem(WORKFLOW_CONTEXT_KEY, JSON.stringify({
-      ...readWorkflowContext(),
-      ...update,
-      updatedAt: new Date().toISOString(),
-    }));
-  } catch {
-    // Keep the clinical flow working even if session storage is unavailable.
-  }
-}
-
 export const CaseModePage: React.FC = () => {
   const setCurrentPage = useNavigatePage();
   const { setQuery } = useSearchContext();
@@ -142,7 +122,7 @@ export const CaseModePage: React.FC = () => {
   const [tvResult, setTvResult] = React.useState<TeachingVignetteResult | null>(null);
   const [reflectionKind, setReflectionKind] = React.useState<ReflectionKind>('CBD');
   const [reflectionSaveStatus, setReflectionSaveStatus] = React.useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
-  const [workflowContext, setWorkflowContext] = React.useState<Record<string, unknown>>(() => readWorkflowContext());
+  const [workflowContext, setWorkflowContext] = React.useState<Record<string, unknown>>(() => getWorkflowContext());
 
   const [prevSearchParams, setPrevSearchParams] = React.useState(searchParams);
   if (prevSearchParams !== searchParams) {
@@ -195,7 +175,7 @@ export const CaseModePage: React.FC = () => {
         if (prefill.autoGenerate) setAutoGenerateTeachingCase(true);
         if (prefill.workflow) {
           setWorkflowContext(prefill.workflow);
-          writeWorkflowContext(prefill.workflow);
+          saveWorkflowContext(prefill.workflow);
         }
       }
     } catch { /* ignore */ }
@@ -419,7 +399,7 @@ export const CaseModePage: React.FC = () => {
     ].filter(Boolean).map(cleanText).slice(0, 5);
 
     try {
-      writeWorkflowContext({
+      saveWorkflowContext({
         topic,
         currentStep: 'quiz',
         source: 'case',
@@ -431,7 +411,7 @@ export const CaseModePage: React.FC = () => {
         articles: evidence.map(articleQuizSeed),
         teachingPoints,
         mcqAngles,
-        workflow: readWorkflowContext(),
+        workflow: getWorkflowContext(),
       }));
     } catch {
       // Navigation still works with URL params if storage is unavailable.

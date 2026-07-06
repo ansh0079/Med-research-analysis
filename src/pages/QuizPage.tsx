@@ -20,19 +20,10 @@ import {
   DIFFICULTY_COLORS,
   parseSourceLabel,
 } from '@components/learning/QuizWidgets';
+import { getWorkflowContext } from '@utils/workflowContext';
 
 function currentTimeMs(): number {
   return Date.now();
-}
-
-const WORKFLOW_CONTEXT_KEY = 'med_shift_workflow';
-
-function readWorkflowContext() {
-  try {
-    return JSON.parse(sessionStorage.getItem(WORKFLOW_CONTEXT_KEY) || '{}') as Record<string, unknown>;
-  } catch {
-    return {};
-  }
 }
 
 const INITIAL_STATE: QuizState = {
@@ -133,7 +124,7 @@ export const QuizPage: React.FC = () => {
     } catch { return null; }
   });
   const [workflowContext] = useState<Record<string, unknown>>(() => ({
-    ...readWorkflowContext(),
+    ...getWorkflowContext(),
     ...(quizPrefill?.workflow || {}),
   }));
 

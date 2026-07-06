@@ -15,10 +15,12 @@ const AGENT_INPUT_TOKEN_BUDGET = Math.max(
     Number(process.env.AGENT_INPUT_TOKEN_BUDGET) || 12000,
 );
 
-const AGENT_OUTPUT_TOKEN_BUDGET = Math.max(
-    256,
-    Number(process.env.AGENT_OUTPUT_TOKEN_BUDGET) || 0,
-);
+// When unset, intent-specific defaults from agentPromptVersion apply.
+// Set AGENT_OUTPUT_TOKEN_BUDGET to cap all agent outputs globally (min 256).
+const AGENT_OUTPUT_TOKEN_BUDGET = process.env.AGENT_OUTPUT_TOKEN_BUDGET != null
+    && String(process.env.AGENT_OUTPUT_TOKEN_BUDGET).trim() !== ''
+    ? Math.max(256, Number(process.env.AGENT_OUTPUT_TOKEN_BUDGET) || 0)
+    : 0;
 
 function estimateTokens(text) {
     return estimateTokensFromChars(String(text || '').length);
@@ -80,9 +82,24 @@ function truncateAgentPrompt(fullPrompt, maxTokens = AGENT_INPUT_TOKEN_BUDGET) {
         if (trimmedPrefix === prev) break;
     }
 
-    const finalPrompt = trimmedPrefix
+    let finalPrompt = trimmedPrefix
         ? `${trimmedPrefix}${separator}${trimmedUserTurn}`
         : trimmedUserTurn;
+
+    // Hard cap: never exceed maxTokens (trim prefix first, then user turn as last resort).
+    while (estimateTokens(finalPrompt) > maxTokens) {
+        if (trimmedPrefix.length > 0) {
+            trimmedPrefix = trimmedPrefix.slice(0, Math.max(0, Math.floor(trimmedPrefix.length * 0.9)));
+            finalPrompt = `${trimmedPrefix}${separator}${trimmedUserTurn}`;
+            continue;
+        }
+        if (trimmedUserTurn.length > 80) {
+            trimmedUserTurn = trimmedUserTurn.slice(0, Math.max(80, Math.floor(trimmedUserTurn.length * 0.9)));
+            finalPrompt = trimmedUserTurn;
+            continue;
+        }
+        break;
+    }
 
     const finalTokens = estimateTokens(finalPrompt);
 
