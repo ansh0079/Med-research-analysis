@@ -184,7 +184,13 @@ export class BaseApiClient {
         response = await fetch(url, fetchOpts);
       }
     }
-    const clonedResponse = response.clone();
+    const clonedResponse = (() => {
+      try {
+        return response.clone();
+      } catch {
+        return response;
+      }
+    })();
 
     const serverRequestId = response.headers.get('X-Request-Id');
     if (serverRequestId && serverRequestId !== this.requestId) {

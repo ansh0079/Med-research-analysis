@@ -22,6 +22,8 @@ export default defineConfig({
     navigationTimeout: 30000,
     viewport: { width: 1280, height: 720 },
     ignoreHTTPSErrors: true,
+    // Production builds register public/sw.js; block SW so page.route mocks work.
+    serviceWorkers: 'block',
   },
   projects: [
     {

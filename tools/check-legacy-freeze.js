@@ -28,14 +28,25 @@ const blockedLegacyPaths = [
 ];
 
 function getChangedFiles(base, head) {
-  const output = execSync(`git diff --name-only "${base}...${head}"`, {
-    encoding: 'utf8',
-    stdio: ['ignore', 'pipe', 'pipe'],
-  });
-  return output
-    .split(/\r?\n/)
-    .map((s) => s.trim())
-    .filter(Boolean);
+  const commands = [
+    `git diff --name-only "${base}...${head}"`,
+    `git diff --name-only "${base}" "${head}"`,
+  ];
+  for (const command of commands) {
+    try {
+      const output = execSync(command, {
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'pipe'],
+      });
+      return output
+        .split(/\r?\n/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+    } catch {
+      // Shallow CI checkouts may lack a merge base for three-dot diff.
+    }
+  }
+  throw new Error(`Unable to diff ${base} against ${head}`);
 }
 
 try {

@@ -23,6 +23,8 @@ const mockSearchResponse = {
   count: 1,
   query: 'sglt2 hfpef',
   sources: ['pubmed'],
+  searchId: 'e2e-search-1',
+  intelligenceStatus: 'sync',
   agentGuidance: null,
   topicIntelligence: null,
   knowledgeAvailable: true,
@@ -35,6 +37,10 @@ test.describe('beta smoke', () => {
     // exercises it directly, and it never renders for anonymous visitors anyway.
     await page.addInitScript(() => {
       localStorage.setItem('med_cookie_consent_v1', 'accepted');
+      // Unregister any SW left from a prior run so Playwright route mocks apply.
+      void navigator.serviceWorker?.getRegistrations?.().then((regs) => {
+        regs.forEach((reg) => { void reg.unregister(); });
+      });
     });
 
     await page.route('**/api/config', async (route) => {
@@ -50,10 +56,46 @@ test.describe('beta smoke', () => {
     });
 
     await page.route('**/api/search**', async (route) => {
+      const url = route.request().url();
+      if (route.request().method() !== 'GET' || !url.includes('q=')) {
+        await route.continue();
+        return;
+      }
+      if (url.includes('/api/search/intelligence')
+        || url.includes('/api/search/impressions')
+        || url.includes('/api/search/ai-enrichment')
+        || url.includes('/api/search/mesh-suggest')) {
+        await route.continue();
+        return;
+      }
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify(mockSearchResponse),
+      });
+    });
+
+    await page.route('**/api/search/intelligence', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          agentGuidance: null,
+          topicIntelligence: null,
+          knowledgeAvailable: true,
+        }),
+      });
+    });
+
+    await page.route('**/api/search/impressions', async (route) => {
+      await route.fulfill({ status: 204, body: '' });
+    });
+
+    await page.route('**/api/guidelines/contradictions**', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ contradictions: [] }),
       });
     });
 
@@ -75,13 +117,6 @@ test.describe('beta smoke', () => {
     await expect(page.getByText(/Search 100 M\+/i)).toBeVisible();
   });
 
-  // KNOWN FAILING (2026-07-04): traced this end-to-end — search() and api.search()
-  // both execute correctly and the mocked /api/search request resolves with a real
-  // 200, but the app never renders the result. Root cause not yet confirmed; the
-  // most likely culprit is something in fetchWithSession's post-fetch handling
-  // (core.ts, the response.clone() body-read path) not playing well with
-  // Playwright's route.fulfill() response objects specifically. Needs a dedicated
-  // follow-up session — do not delete/skip, this documents where tracing stopped.
   test('loads the search route and returns mocked results', async ({ page }) => {
     await page.goto('/search');
 
@@ -142,14 +177,15 @@ test.describe('beta smoke', () => {
     // Step 2: training stage
     await page.getByRole('button', { name: /Finals/i }).click();
     await page.getByRole('button', { name: /^Next$/ }).click();
-    // Step 3: specialty
-    await page.getByRole('button', { name: /Cardiology/i }).click();
+    // Step 3: specialty — avoid example-query buttons that also mention Cardiology
+    await page.getByRole('button', { name: /Cardiology/ })
+      .filter({ hasNotText: /SGLT2|thrombectomy|prone positioning|GLP-1/i })
+      .click();
     await page.getByRole('button', { name: /^Next$/ }).click();
     // Step 4: goal
     await page.getByRole('button', { name: /Pass exams/i }).click();
     await page.getByRole('button', { name: /^Next$/ }).click();
-    // Step 5: difficulty
-    await page.getByRole('button', { name: /^Mixed$/ }).click();
+    // Step 5: difficulty — mixed is already the default selection
     await page.getByRole('button', { name: /^Next$/ }).click();
     // Step 6: daily time budget — final step, submits the profile
     await page.getByRole('button', { name: /25 minutes per day/i }).click();
