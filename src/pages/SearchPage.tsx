@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { ArticleCard } from '@components/search/ArticleCard';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 const AIAnalysisPanel = React.lazy(() => import('@components/search/AIAnalysisPanel').then(m => ({ default: m.AIAnalysisPanel })));
 // AgentChatPanel is lazy-loaded because it only appears after topic knowledge is ready.
 const AgentChatPanel = React.lazy(() => import('@components/search/AgentChatPanel').then(m => ({ default: m.AgentChatPanel })));
-import { SynthesisPanel } from '@components/search/SynthesisPanel';
 import { TopicActionBanner } from '@components/quiz/TopicActionBanner';
 import { SelectionBasket } from '@components/search/SelectionBasket';
 import { ComparisonView } from '@components/search/ComparisonView';
@@ -19,13 +17,9 @@ import { GuidelineSnapshot } from '@components/search/GuidelineSnapshot';
 import { useSearchMeta, useSearchQuery, useSearchSelection } from '@contexts/SearchContext';
 import { useAuth } from '@contexts/AuthContext';
 import { useAnalytics, useSearch } from '@hooks';
-import { Button } from '@components/ui/Button';
-import { SkeletonCard } from '@components/search/SkeletonCard';
-import { ResearchWorkspace } from '@components/search/ResearchWorkspace';
 import { SearchHero } from '@components/search/SearchHero';
-import { ErrorBanner } from '@components/common/ErrorBanner';
 import { TopicIntelligenceStatusBanner } from '@components/search/TopicIntelligenceStatusBanner';
-import { SearchEmptyState } from '@components/search/SearchEmptyState';
+
 import { LowRecallBanner } from '@components/search/LowRecallBanner';
 import { RelatedTopicsBar } from '@components/search/RelatedTopicsBar';
 import { useSearchRecents } from '@hooks/useSearchRecents';
@@ -36,7 +30,7 @@ import { useWorkflowContext } from '@hooks/useWorkflowContext';
 import { useClientFeatures } from '@hooks/useClientFeatures';
 import { api } from '@services/api';
 import { selectTopEvidence } from '../utils/selectTopEvidence';
-import type { AgentGuidance, Article, SynthesisResult, TopicEvidenceMemory } from '@types';
+import type { Article } from '@types';
 import {
   PersonalizedRemediationBanner,
   ResultLensToolbar,
@@ -47,12 +41,18 @@ import {
   ShiftReviewToolbar,
 } from '@components/search/SearchPagePanels';
 
-const RECENT_ANALYSES_KEY = 'med_recent_analyses';
-const SAVED_SEARCH_COUNTS_KEY = 'med_saved_search_counts';
+import { useSearchPageOnboarding } from './search/useSearchPageOnboarding';
+import { useNewPaperNotice } from './search/useNewPaperNotice';
+import { useSearchPageRecentAnalyses } from './search/useSearchPageRecentAnalyses';
+import { useSearchPageKeyboard } from './search/useSearchPageKeyboard';
+import { useSearchPageSynthesis } from './search/useSearchPageSynthesis';
+import { useSearchPageTopicActions } from './search/useSearchPageTopicActions';
+import { useTopicEvidenceMemory } from './search/useTopicEvidenceMemory';
+import { SearchSynthesisSection } from './search/SearchSynthesisSection';
+import { SearchResultsSection } from './search/SearchResultsSection';
 
 export const SearchPage: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { trackFeatureUsage } = useAnalytics();
   const {
     results,
@@ -82,11 +82,11 @@ export const SearchPage: React.FC = () => {
 
   const { user, isAuthenticated, resendVerification } = useAuth();
   const { betaOpenAccess } = useClientFeatures();
-  const [verifyBannerDismissed, setVerifyBannerDismissed] = React.useState(false);
-  const [resendStatus, setResendStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
+  const [verifyBannerDismissed, setVerifyBannerDismissed] = useState(false);
+  const [resendStatus, setResendStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
   const showVerifyBanner = isAuthenticated && user?.emailVerified === false && !verifyBannerDismissed;
 
-  const handleResendVerification = React.useCallback(async () => {
+  const handleResendVerification = useCallback(async () => {
     setResendStatus('sending');
     try {
       await resendVerification();
@@ -108,55 +108,19 @@ export const SearchPage: React.FC = () => {
   const [activeArticle, setActiveArticle] = useState<Article | null>(null);
   const [isComparing, setIsComparing] = useState(false);
   const [vectorSearchEnabled, setVectorSearchEnabled] = useState(false);
-  const [synthesis, setSynthesis] = useState<SynthesisResult | null>(null);
-  const [synthesisLoading, setSynthesisLoading] = useState(false);
-  const [synthesisError, setSynthesisError] = useState<string | null>(null);
-  const [synthesisLiveText, setSynthesisLiveText] = useState('');
-  const [stalenessBanner, setStalenessBanner] = useState<{ changes: string[]; priorGrade: string; newGrade: string } | null>(null);
-  const [knowledgeReviewStatus, setKnowledgeReviewStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
-  const [proposingKnowledge, setProposingKnowledge] = useState(false);
-  const [proposedGuidance, setProposedGuidance] = useState<AgentGuidance | null>(null);
-  const [proposeError, setProposeError] = useState<string | null>(null);
-  const [topicEvidenceMemory, setTopicEvidenceMemory] = useState<TopicEvidenceMemory | null>(null);
-  const [topicGuideRefreshState, setTopicGuideRefreshState] = React.useState<'idle' | 'loading'>('idle');
-  const [topicGuideRefreshError, setTopicGuideRefreshError] = React.useState<string | null>(null);
-  const [currentQuery, setCurrentQuery] = useState(() => {
-    const q = sessionStorage.getItem('med_onboarding_query');
-    return q || '';
-  });
-  const [requestGuidelineAlignment, setRequestGuidelineAlignment] = useState(false);
-  const [anchorVerifyKey, setAnchorVerifyKey] = useState<string | null>(null);
-  const canVerifyTeachingAnchor = ['admin', 'curator', 'specialist'].includes(String(user?.role || ''));
   const [inPlaceQuizExpanded, setInPlaceQuizExpanded] = useState(false);
-  const [recentAnalyses, setRecentAnalyses] = useState<Article[]>(() => {
-    try {
-      return JSON.parse(localStorage.getItem(RECENT_ANALYSES_KEY) || '[]');
-    } catch {
-      return [];
-    }
-  });
-  const [newPaperNotice, setNewPaperNotice] = useState<string | null>(null);
   const [detailArticle, setDetailArticle] = useState<Article | null>(null);
 
-  React.useEffect(() => {
+  const { currentQuery, setCurrentQuery } = useSearchPageOnboarding(search, filters);
+  const { newPaperNotice, updateNewPaperNotice } = useNewPaperNotice();
+  const { recentAnalyses, openAnalysis } = useSearchPageRecentAnalyses();
+
+  useEffect(() => {
     let cancelled = false;
     void api.search.getClientConfig().then((config) => {
       if (!cancelled) setVectorSearchEnabled(Boolean(config.features?.vectorSearch));
     });
     return () => { cancelled = true; };
-  }, []);
-
-  // Pick up onboarding pre-selected query and run it automatically
-  const onboardingSearchDone = React.useRef(false);
-  React.useEffect(() => {
-    if (onboardingSearchDone.current) return;
-    const onboardingQuery = currentQuery || sessionStorage.getItem('med_onboarding_query');
-    if (onboardingQuery) {
-      onboardingSearchDone.current = true;
-      sessionStorage.removeItem('med_onboarding_query');
-      void search(onboardingQuery, filters);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const {
@@ -169,94 +133,29 @@ export const SearchPage: React.FC = () => {
     resetForNewSearch,
   } = useResultsFilter(results);
 
-  const handleSearch = React.useCallback(
-    async (query: string) => {
-      const trimmed = query.trim();
-      if (!trimmed) return [];
-      setSynthesis(null);
-      setSynthesisError(null);
-      setSynthesisLiveText('');
-      setTopicGuideRefreshError(null);
-      setCurrentQuery(trimmed);
-      resetForNewSearch();
-      const found = await search(trimmed, filters);
-      try {
-        const savedCounts = JSON.parse(localStorage.getItem(SAVED_SEARCH_COUNTS_KEY) || '{}') as Record<string, number>;
-        const previous = savedCounts[trimmed.toLowerCase()];
-        if (typeof previous === 'number' && found.length > previous) {
-          setNewPaperNotice(`${found.length - previous} new paper${found.length - previous === 1 ? '' : 's'} since your last search for this query.`);
-        } else {
-          setNewPaperNotice(null);
-        }
-        savedCounts[trimmed.toLowerCase()] = found.length;
-        localStorage.setItem(SAVED_SEARCH_COUNTS_KEY, JSON.stringify(savedCounts));
-      } catch {
-        setNewPaperNotice(null);
-      }
-      return found;
-    },
-    [filters, resetForNewSearch, search]
+  useSearchPageKeyboard({
+    visibleResults,
+    activeResultIndex,
+    setActiveResultIndex,
+    toggleSaveArticle,
+    openAnalysis,
+  });
+
+  const top5Articles = useMemo(
+    () => topicIntelligence?.evidenceBouquet.topPapers?.length
+      ? topicIntelligence.evidenceBouquet.topPapers
+      : selectTopEvidence(results, results.length),
+    [results, topicIntelligence]
   );
 
-  const evidenceRelatedTopics = React.useMemo(
+  const evidenceRelatedTopics = useMemo(
     () => (topicIntelligence?.evidenceMap?.nodes?.relatedTopics || [])
       .map((entry) => entry.displayTopic || entry.normalizedTopic)
       .filter(Boolean),
     [topicIntelligence?.evidenceMap?.nodes?.relatedTopics]
   );
 
-  const openAnalysis = React.useCallback((article: Article) => {
-    setActiveArticle(article);
-    setRecentAnalyses((prev) => {
-      const updated = [article, ...prev.filter((item) => item.uid !== article.uid)].slice(0, 10);
-      try {
-        localStorage.setItem(RECENT_ANALYSES_KEY, JSON.stringify(updated));
-      } catch {
-        // Ignore storage failures.
-      }
-      return updated;
-    });
-  }, []);
-
-  const { exportResults } = useExportResults({ currentQuery, selectedArticles, visibleResults });
-
-  React.useEffect(() => {
-    const handleKey = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement | null;
-      const isTyping = target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable;
-      if (event.key === '/' && !isTyping) {
-        event.preventDefault();
-        window.dispatchEvent(new Event('medsearch:focus-search'));
-      }
-      if (isTyping || visibleResults.length === 0) return;
-      if (event.key === 'j') {
-        event.preventDefault();
-        setActiveResultIndex((idx) => Math.min(visibleResults.length - 1, idx + 1));
-      }
-      if (event.key === 'k') {
-        event.preventDefault();
-        setActiveResultIndex((idx) => Math.max(0, idx - 1));
-      }
-      if (event.key === 's') {
-        event.preventDefault();
-        void toggleSaveArticle(visibleResults[activeResultIndex]);
-      }
-      if (event.key === 'a') {
-        event.preventDefault();
-        openAnalysis(visibleResults[activeResultIndex]);
-      }
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [activeResultIndex, openAnalysis, setActiveResultIndex, toggleSaveArticle, visibleResults]);
-
-  const top5Articles = React.useMemo(
-    () => topicIntelligence?.evidenceBouquet.topPapers?.length
-      ? topicIntelligence.evidenceBouquet.topPapers
-      : selectTopEvidence(results, results.length),
-    [results, topicIntelligence]
-  );
-  const isFlagshipTopic = React.useMemo(
+  const isFlagshipTopic = useMemo(
     () => Boolean(
       topicIntelligence &&
       agentGuidance &&
@@ -267,85 +166,74 @@ export const SearchPage: React.FC = () => {
     [agentGuidance, top5Articles.length, topicIntelligence]
   );
 
-  React.useEffect(() => {
-    let cancelled = false;
-    const topic = (agentGuidance?.topic || currentQuery || '').trim();
+  const topicEvidenceMemory = useTopicEvidenceMemory({
+    topic: agentGuidance?.topic || currentQuery,
+    isAuthenticated,
+    resultsCount: results.length,
+  });
 
-    if (!isAuthenticated || topic.length < 2 || results.length === 0) {
-      void Promise.resolve().then(() => {
-        if (!cancelled) setTopicEvidenceMemory(null);
-      });
-      return () => { cancelled = true; };
-    }
+  const {
+    synthesis,
+    synthesisLoading,
+    synthesisError,
+    synthesisLiveText,
+    stalenessBanner,
+    setSynthesis,
+    setSynthesisError,
+    setSynthesisLiveText,
+    setStalenessBanner,
+    handleSynthesize,
+  } = useSearchPageSynthesis({
+    currentQuery,
+    top5Articles,
+    results,
+    isAuthenticated,
+    betaOpenAccess,
+  });
 
-    api.knowledge.getTopicEvidenceMemory(topic)
-      .then((response) => {
-        if (!cancelled) setTopicEvidenceMemory(response.memory);
-      })
-      .catch(() => {
-        if (!cancelled) setTopicEvidenceMemory(null);
-      });
+  const {
+    knowledgeReviewStatus,
+    proposingKnowledge,
+    proposedGuidance,
+    proposeError,
+    topicGuideRefreshState,
+    topicGuideRefreshError,
+    setTopicGuideRefreshError,
+    anchorVerifyKey,
+    canVerifyTeachingAnchor,
+    runTopicGuideRefresh,
+    handleReviewTopicKnowledge,
+    handleProposeKnowledge,
+    handleVerifyTeachingAnchor,
+  } = useSearchPageTopicActions({
+    currentQuery,
+    agentGuidance,
+    isAuthenticated,
+    user,
+    setAgentGuidance,
+    setTopicGuideStatus,
+    setCurrentPage,
+    trackFeatureUsage,
+  });
 
-    return () => { cancelled = true; };
-  }, [agentGuidance?.topic, currentQuery, isAuthenticated, results.length]);
+  const handleSearch = useCallback(
+    async (query: string) => {
+      const trimmed = query.trim();
+      if (!trimmed) return [];
+      setSynthesis(null);
+      setSynthesisError(null);
+      setSynthesisLiveText('');
+      setTopicGuideRefreshError(null);
+      setCurrentQuery(trimmed);
+      resetForNewSearch();
+      const found = await search(trimmed, filters);
+      updateNewPaperNotice(trimmed, found.length);
+      return found;
+    },
+    [filters, resetForNewSearch, search, setCurrentQuery, setSynthesis, setSynthesisError, setSynthesisLiveText, setTopicGuideRefreshError, updateNewPaperNotice]
+  );
 
-  const handleSynthesize = React.useCallback(async (): Promise<SynthesisResult | null> => {
-    if (!results.length) return null;
-    if (!isAuthenticated && !betaOpenAccess) {
-      setSynthesisError('Sign in to use Evidence Synthesis');
-      return null;
-    }
-    setSynthesisLoading(true);
-    setSynthesisError(null);
-    setSynthesisLiveText('');
-    try {
-      let liveText = '';
-      let finalResult: SynthesisResult | null = null;
-      await new Promise<void>((resolve, reject) => {
-        api.ai.synthesizeEvidenceStream(currentQuery, top5Articles, {
-          onChunk: (chunk) => {
-            liveText += chunk;
-            setSynthesisLiveText(liveText);
-          },
-          onResult: (result) => {
-            finalResult = result;
-          },
-          onError: reject,
-          onDone: resolve,
-        });
-      });
-      const resolved = finalResult as SynthesisResult | null;
-      if (resolved) {
-        setSynthesis(resolved);
-        // Check for evidence shift vs prior synthesis for this topic
-        if (isAuthenticated && resolved.topic) {
-          api.knowledge.getTopicStaleness(resolved.topic).then((s) => {
-            if (s.significantChange && s.changes.length > 0) {
-              setStalenessBanner({
-                changes: s.changes,
-                priorGrade: s.prior?.evidence_grade ?? '',
-                newGrade: s.latest?.evidence_grade ?? '',
-              });
-            }
-          }).catch(() => undefined);
-        }
-        return resolved;
-      }
-      return null;
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Synthesis failed';
-      if (msg === 'AUTH_REQUIRED') {
-        setSynthesisError('Sign in to use Evidence Synthesis');
-      } else if (msg.startsWith('UPGRADE_REQUIRED:')) {
-        setSynthesisError('UPGRADE_REQUIRED:aiSynthesis');
-      } else {
-        setSynthesisError(msg);
-      }
-    } finally {
-      setSynthesisLoading(false);
-    }
-    return null;
-  }, [results, top5Articles, currentQuery, isAuthenticated, betaOpenAccess]);
+  const { exportResults } = useExportResults({ currentQuery, selectedArticles, visibleResults });
 
   const {
     shiftPresentation, setShiftPresentation,
@@ -370,7 +258,9 @@ export const SearchPage: React.FC = () => {
     trackFeatureUsage,
   });
 
-  const openGuidelineFromWorkflow = React.useCallback(async () => {
+  const [requestGuidelineAlignment, setRequestGuidelineAlignment] = useState(false);
+
+  const openGuidelineFromWorkflow = useCallback(async () => {
     saveWorkflowContext({
       topic: currentQuery,
       currentStep: 'guideline',
@@ -393,86 +283,6 @@ export const SearchPage: React.FC = () => {
       document.getElementById('workflow-guideline')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }, [currentQuery, handleSynthesize, isAuthenticated, results.length, saveWorkflowContext, synthesis]);
-
-  const runTopicGuideRefresh = React.useCallback(async () => {
-    const topic = currentQuery.trim();
-    if (!topic) return;
-    if (!isAuthenticated) {
-      navigate('/auth', { state: { from: location } });
-      return;
-    }
-    trackFeatureUsage('topic_guide_refresh_request', { topic: topic.slice(0, 200) });
-    setTopicGuideRefreshState('loading');
-    setTopicGuideRefreshError(null);
-    try {
-      const { agentGuidance: nextGuidance } = await api.knowledge.refreshTopicKnowledge(topic);
-      setAgentGuidance(nextGuidance);
-      setTopicGuideStatus('ready');
-      trackFeatureUsage('topic_guide_refresh_success', { topic: topic.slice(0, 200) });
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : 'Refresh failed';
-      setTopicGuideRefreshError(msg);
-      trackFeatureUsage('topic_guide_refresh_error', { message: msg.slice(0, 200) });
-    } finally {
-      setTopicGuideRefreshState('idle');
-    }
-  }, [
-    currentQuery,
-    isAuthenticated,
-    location,
-    navigate,
-    setAgentGuidance,
-    setTopicGuideStatus,
-    trackFeatureUsage,
-  ]);
-
-  const handleReviewTopicKnowledge = React.useCallback(async () => {
-    if (!agentGuidance || !isAuthenticated) {
-      setCurrentPage('auth');
-      return;
-    }
-    setKnowledgeReviewStatus('saving');
-    try {
-      const response = await api.knowledge.reviewTopicKnowledge(agentGuidance.topic);
-      if (response.agentGuidance) setAgentGuidance(response.agentGuidance);
-      setKnowledgeReviewStatus('saved');
-    } catch {
-      setKnowledgeReviewStatus('error');
-    }
-  }, [agentGuidance, isAuthenticated, setAgentGuidance, setCurrentPage]);
-
-  const handleProposeKnowledge = React.useCallback(async () => {
-    if (!isAuthenticated) {
-      setCurrentPage('auth');
-      return;
-    }
-    setProposingKnowledge(true);
-    setProposeError(null);
-    try {
-      const response = await api.knowledge.proposeTopicKnowledge(currentQuery, top5Articles);
-      if (response.agentGuidance) {
-        setProposedGuidance(response.agentGuidance);
-      }
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to synthesize topic knowledge';
-      setProposeError(msg);
-    } finally {
-      setProposingKnowledge(false);
-    }
-  }, [currentQuery, top5Articles, isAuthenticated, setCurrentPage]);
-
-  const handleVerifyTeachingAnchor = React.useCallback(async (key: string, claimText: string) => {
-    setAnchorVerifyKey(key);
-    try {
-      const topic = agentGuidance?.topic || currentQuery;
-      const res = await api.knowledge.verifyTopicKnowledgeAnchor(topic, { claimText });
-      if (res.agentGuidance) setAgentGuidance(res.agentGuidance);
-    } catch {
-      /* toast optional */
-    } finally {
-      setAnchorVerifyKey(null);
-    }
-  }, [agentGuidance, currentQuery, setAgentGuidance]);
 
   return (
     <div className="min-h-screen aurora-bg mesh-bg">
@@ -595,7 +405,7 @@ export const SearchPage: React.FC = () => {
             knowledgeReviewStatus={knowledgeReviewStatus}
             canVerifyTeachingAnchor={canVerifyTeachingAnchor}
             anchorVerifyKey={anchorVerifyKey}
-            onProposeKnowledge={handleProposeKnowledge}
+            onProposeKnowledge={() => void handleProposeKnowledge(top5Articles)}
             onGenerateCase={() => openCaseFromWorkflow('mixed')}
             onGenerateMcqs={() => openQuizFromWorkflow('mixed')}
             onReviewTopicKnowledge={handleReviewTopicKnowledge}
@@ -690,62 +500,18 @@ export const SearchPage: React.FC = () => {
           />
         )}
 
-        {synthesisError && (
-          synthesisError.startsWith('UPGRADE_REQUIRED:') ? (
-            <div aria-live="polite" className="mb-6 p-6 rounded-2xl bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800 text-center">
-              <i className="fas fa-star text-2xl text-violet-400 mb-2 block" />
-              <p className="text-sm font-semibold text-violet-800 dark:text-violet-200">Evidence synthesis is a Pro feature</p>
-              <p className="text-xs text-violet-600 dark:text-violet-400 mt-1 mb-3">Upgrade to synthesize papers into clinical bottom lines and teaching claims.</p>
-              <a href="/billing" className="inline-block text-xs font-bold px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors">
-                View plans →
-              </a>
-            </div>
-          ) : (
-            <div aria-live="polite" className="mb-6">
-              <ErrorBanner error={synthesisError} />
-            </div>
-          )
-        )}
-
-        {synthesisLoading && !synthesisLiveText && (
-          <div aria-live="polite" className="sr-only">Generating evidence synthesis…</div>
-        )}
-        {synthesisLiveText && synthesisLoading && (
-          <div aria-live="polite" className="mb-6 rounded-2xl border border-indigo-100 bg-white/90 p-4 text-sm text-slate-700 shadow-sm dark:border-indigo-900/40 dark:bg-slate-900/90 dark:text-slate-300">
-            <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-indigo-500">Live synthesis</p>
-            <p className="whitespace-pre-wrap leading-relaxed">{synthesisLiveText}</p>
-          </div>
-        )}
-
-        {stalenessBanner && (
-          <div className="mb-4 rounded-2xl border border-amber-200 dark:border-amber-800/50 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 flex items-start gap-3">
-            <i className="fas fa-exclamation-triangle text-amber-500 text-sm mt-0.5 shrink-0" />
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-amber-800 dark:text-amber-200">Evidence has shifted since your last synthesis</p>
-              <ul className="mt-1 space-y-0.5">
-                {stalenessBanner.changes.map((c, i) => (
-                  <li key={i} className="text-[11px] text-amber-700 dark:text-amber-300">{c}</li>
-                ))}
-              </ul>
-            </div>
-            <button type="button" onClick={() => setStalenessBanner(null)}
-              className="shrink-0 text-amber-400 hover:text-amber-600 dark:hover:text-amber-200 transition-colors">
-              <i className="fas fa-times text-xs" />
-            </button>
-          </div>
-        )}
-
-        {synthesis && (
-          <div className="mb-8" data-synthesis-panel>
-            <SynthesisPanel
-              result={synthesis}
-              articles={top5Articles}
-              onClose={() => setSynthesis(null)}
-              onGenerateCase={openSynthesisCase}
-              onSearch={handleSearch}
-            />
-          </div>
-        )}
+        <SearchSynthesisSection
+          synthesis={synthesis}
+          synthesisLoading={synthesisLoading}
+          synthesisError={synthesisError}
+          synthesisLiveText={synthesisLiveText}
+          stalenessBanner={stalenessBanner}
+          top5Articles={top5Articles}
+          onClose={() => setSynthesis(null)}
+          onGenerateCase={openSynthesisCase}
+          onSearch={handleSearch}
+          onDismissStaleness={() => setStalenessBanner(null)}
+        />
 
         <TopicActionBanner
           onTestYourself={() => openQuizFromWorkflow('mixed')}
@@ -771,61 +537,34 @@ export const SearchPage: React.FC = () => {
 
         <GuidelineSnapshot query={currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
 
-        {loading && results.length === 0 && (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
-            {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
-          </div>
-        )}
-
-        {results.length > 0 ? (
-          <ResearchWorkspace
-            layout={layout}
-            isPdfOpen={isOpen}
-            onToggleLayout={toggleLayout}
-            onClosePdf={closePdf}
-            pdfPanel={
-              activePdf ? (
-                <iframe
-                  title="Full text PDF or article"
-                  src={activePdf}
-                  className="h-full min-h-[60vh] w-full rounded-xl border border-gray-200 bg-white dark:border-slate-600 dark:bg-slate-900"
-                />
-              ) : null
-            }
-          >
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {renderedResults.map((article, index) => (
-                <div key={article.uid} className={index === activeResultIndex ? 'rounded-2xl ring-2 ring-indigo-400/70 ring-offset-2 ring-offset-transparent' : ''}>
-                  <ArticleCard
-                  key={article.uid}
-                  article={article}
-                  isSaved={isSaved(article.uid)}
-                  isSelected={isSelected(article.uid)}
-                  onSave={toggleSaveArticle}
-                  onSelect={toggleSelectArticle}
-                  onAnalyze={openAnalysis}
-                  onGenerateCase={openArticleCase}
-                  onQuizPaper={openArticleQuiz}
-                  onOpenTopic={handleSearch}
-                  onOpenInWorkspace={openPdf}
-                  onViewDetails={setDetailArticle}
-                  searchId={lastSearchId ?? undefined}
-                  searchCompletedAt={searchCompletedAt ?? undefined}
-                />
-                </div>
-              ))}
-            </div>
-            {visibleCount < visibleResults.length && (
-              <div className="mt-6 flex justify-center">
-                <Button variant="secondary" onClick={() => setVisibleCount((count) => Math.min(visibleResults.length, count + 20))}>
-                  Load more results ({visibleResults.length - visibleCount} remaining)
-                </Button>
-              </div>
-            )}
-          </ResearchWorkspace>
-        ) : !loading ? (
-          <SearchEmptyState onExampleClick={handleSearch} isAuthenticated={isAuthenticated} />
-        ) : null}
+        <SearchResultsSection
+          loading={loading}
+          results={results}
+          renderedResults={renderedResults}
+          visibleResults={visibleResults}
+          visibleCount={visibleCount}
+          setVisibleCount={setVisibleCount}
+          activeResultIndex={activeResultIndex}
+          activePdf={activePdf}
+          isPdfOpen={isOpen}
+          layout={layout}
+          onToggleLayout={toggleLayout}
+          onClosePdf={closePdf}
+          isSaved={isSaved}
+          isSelected={isSelected}
+          onSave={toggleSaveArticle}
+          onSelect={toggleSelectArticle}
+          onAnalyze={openAnalysis}
+          onGenerateCase={openArticleCase}
+          onQuizPaper={openArticleQuiz}
+          onOpenTopic={handleSearch}
+          onOpenInWorkspace={openPdf}
+          onViewDetails={setDetailArticle}
+          searchId={lastSearchId ?? undefined}
+          searchCompletedAt={searchCompletedAt ?? undefined}
+          isAuthenticated={isAuthenticated}
+          onExampleClick={handleSearch}
+        />
       </main>
 
       <React.Suspense fallback={null}>
