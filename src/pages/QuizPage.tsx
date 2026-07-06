@@ -22,6 +22,7 @@ import {
 } from '@components/quiz/QuizQuestionParts';
 import {
   INITIAL_STATE,
+  buildQuizReflectionSections,
   currentTimeMs,
   getDifficultyFromParam,
   learningRoundItemsToQuestions,
@@ -449,39 +450,14 @@ export const QuizPage: React.FC = () => {
     }
   };
 
-  const buildQuizReflectionSections = () => {
-    const kind = reflectionKind;
-    const stamp = new Date().toISOString().split('T')[0];
-    const weakTypes = quiz.questions
-      .filter((q) => quiz.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase())
-      .map((q) => q.questionType || 'recall');
-    const uniqueWeakTypes = [...new Set(weakTypes)];
-    const evidenceTitles = evidenceSnippets
-      .map((s: { title?: string }) => s.title)
-      .filter(Boolean)
-      .slice(0, 5) as string[];
-    const sections = [
-      ['WBA / portfolio type', kind === 'CBD' ? 'Case-based Discussion (CBD)' : kind === 'mini-CEX' ? 'Mini Clinical Evaluation Exercise (mini-CEX)' : 'Direct Observation of Procedural Skills (DOPS)'],
-      ['Generated', stamp],
-      ['Topic', activeTopic],
-      ['Original clinical question', typeof workflowContext.originalPresentation === 'string' && workflowContext.originalPresentation.trim() ? workflowContext.originalPresentation : 'Not captured. Add the de-identified presentation before submission.'],
-      ['Learning journey', typeof workflowContext.source === 'string' ? `Started from ${workflowContext.source}.` : 'Started from evidence search.'],
-      ['Quiz performance', `${quiz.score}/${quiz.questions.length} correct (${scorePercent}%)`],
-      ['Questions attempted', String(quiz.questions.length)],
-      ['Areas for improvement', uniqueWeakTypes.length > 0 ? uniqueWeakTypes.join(', ') : 'None identified - strong overall performance.'],
-      ['Evidence used', evidenceTitles.length > 0 ? evidenceTitles.join('\n') : 'Current topic evidence and generated quiz explanations.'],
-      ['Reflection notes', 'Use this quiz result to structure a discussion on clinical reasoning, evidence appraisal, and specific learning actions.'],
-    ] as Array<[string, string]>;
-    return {
-      kind,
-      stamp,
-      sections,
-      uniqueWeakTypes,
-      evidenceUsed: evidenceTitles.length > 0
-        ? evidenceTitles.map((title: string, index: number) => `${index + 1}. ${title}`).join('\n')
-        : 'Quiz questions generated from the current topic evidence.',
-    };
-  };
+  const getQuizReflection = () => buildQuizReflectionSections({
+    reflectionKind,
+    quiz,
+    evidenceSnippets,
+    activeTopic,
+    workflowContext,
+    scorePercent,
+  });
 
   const exportQuizReflection = (format: 'doc' | 'txt') => {
     const kind = reflectionKind;
@@ -519,7 +495,7 @@ export const QuizPage: React.FC = () => {
       setCurrentPage('auth');
       return;
     }
-    const { kind, uniqueWeakTypes, evidenceUsed } = buildQuizReflectionSections();
+    const { kind, uniqueWeakTypes, evidenceUsed } = getQuizReflection();
     setReflectionSaveStatus('saving');
     try {
       await api.learning.createPortfolioReflection({

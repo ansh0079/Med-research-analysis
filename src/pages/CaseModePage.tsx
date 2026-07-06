@@ -4,7 +4,6 @@ import { Button } from '@components/ui/Button';
 import { useNavigatePage, useSearchContext } from '@contexts/SearchContext';
 import { useAuth } from '@contexts/AuthContext';
 import { api } from '@services/api';
-import { downloadText } from '@services/exportArticles';
 import type { Article, CaseModeResult, CaseLearningMode, QuizQuestion, TeachingVignetteResult } from '@types';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
 import { ConflictMatrixPanel } from '@components/search/ConflictMatrixPanel';
@@ -23,11 +22,11 @@ import {
   QUIZ_PREFILL_KEY,
   REVIEW_PREFILL_KEY,
   articleQuizSeed,
-  articleReference,
-  cleanText,
-  escapeHtml,
+  buildCaseQuizPrefill,
+  buildCaseReflectionSections,
+  buildEvidenceQuizMcqs,
+  exportCaseReflection,
   readWorkflowContext,
-  reflectionKindLabel,
   writeWorkflowContext,
   type ReflectionKind,
 } from '@components/case/CaseModeUtils';
@@ -176,87 +175,22 @@ export const CaseModePage: React.FC = () => {
     }).catch(() => undefined);
   };
 
-  const buildReflectionSections = (
-    source: 'analysis' | 'teaching_vignette',
-    kind: ReflectionKind,
-  ) => {
-    const generatedAt = new Date().toLocaleString();
-    const sourceResult = source === 'analysis' ? result : null;
-    const sourceVignette = source === 'teaching_vignette' ? tvResult : null;
-    const evidence = sourceResult?.citations?.length
-      ? sourceResult.citations
-      : caseSeedArticles ?? [];
-    const originalPresentation = typeof workflowContext.originalPresentation === 'string' ? workflowContext.originalPresentation : '';
-    const presentation = cleanText(
-      originalPresentation ||
-      sourceResult?.vignette ||
-      sourceResult?.patientPresentation ||
-      sourceResult?.caseSummary ||
-      sourceVignette?.presentingComplaint ||
-      caseText ||
-      buildPayload()
-    );
-    const decisionPoint = cleanText(
-      sourceResult?.keyDecisionPoint ||
-      sourceResult?.differentialReasoning ||
-      sourceVignette?.managementReasoning ||
-      prefillTopic ||
-      'Clinical decision point reviewed with evidence'
-    );
-    const evidenceSummary = [
-      sourceResult?.evidenceExplanation,
-      sourceVignette?.managementReasoning,
-      sourceResult?.interventions?.map((item) => `${item.name}: ${item.rationale} [${item.evidenceStrength}]`).join('\n'),
-    ].filter(Boolean).map(cleanText).join('\n\n');
-    const learningPoints = sourceVignette?.teachingPoints?.length
-      ? sourceVignette.teachingPoints.map((tp, index) => `${index + 1}. ${tp.point}`)
-      : [
-        ...(sourceResult?.interventions ?? []).slice(0, 3).map((item, index) => `${index + 1}. ${item.name}: ${item.rationale}`),
-        ...(sourceResult?.caseMCQs ?? []).slice(0, 2).map((q, index) => `${index + 1 + (sourceResult?.interventions?.slice(0, 3).length ?? 0)}. ${q.explanation}`),
-      ];
-    const uncertainties = [
-      ...(sourceResult?.uncertainties ?? []),
-      ...(sourceVignette?.uncertaintyFlags ?? []),
-    ];
-    const actionPlan = kind === 'DOPS'
-      ? 'Clarify the relevant local procedural guideline, discuss supervision requirements, and document observed competence separately if a real procedure was performed.'
-      : kind === 'mini-CEX'
-        ? 'Discuss the case with a senior clinician, compare the evidence against local guidance, and identify one behaviour to use in the next similar presentation.'
-        : 'Use this evidence summary to structure a CBD discussion: clinical reasoning, evidence appraisal, uncertainty, patient safety, and a specific learning action.';
-
-    return [
-      ['WBA / portfolio type', reflectionKindLabel(kind)],
-      ['Generated', generatedAt],
-      ['Topic', cleanText(prefillTopic || sourceResult?.query || sourceVignette?.topic || 'Clinical evidence reflection')],
-      ['Original clinical question', cleanText(originalPresentation) || 'Not captured. Add the de-identified presentation before submission.'],
-      ['De-identified case / scenario', presentation],
-      ['Clinical decision point', decisionPoint],
-      ['Evidence reviewed', evidence.length ? evidence.map(articleReference).join('\n') : 'No seed articles recorded. Add citations before portfolio submission.'],
-      ['Evidence appraisal', evidenceSummary || 'Summarise the main evidence, guideline comparison, and limitations after senior review.'],
-      ['Learning points', learningPoints.length ? learningPoints.map(cleanText).join('\n') : 'Add 2-3 personal learning points before submission.'],
-      ['Uncertainty and safety', uncertainties.length ? uncertainties.map((item) => `- ${cleanText(item)}`).join('\n') : 'No explicit uncertainties captured. Verify against local guidelines and patient-specific factors.'],
-      ['Reflection', 'This was generated from an evidence-assisted learning workflow and should be edited into first person before portfolio submission. Include what changed in your clinical reasoning and how this will affect future practice.'],
-      ['Action plan', actionPlan],
-      ['Governance note', 'Do not include identifiable patient data. Verify against local policy, guideline recommendations, and senior clinical judgement.'],
-    ] as Array<[string, string]>;
-  };
+  const buildReflectionSections = (source: 'analysis' | 'teaching_vignette', kind: ReflectionKind) =>
+    buildCaseReflectionSections({
+      source,
+      kind,
+      result,
+      tvResult,
+      caseSeedArticles,
+      workflowContext,
+      caseText,
+      buildPayload,
+      prefillTopic,
+    });
 
   const exportReflection = (source: 'analysis' | 'teaching_vignette', format: 'doc' | 'txt') => {
     const sections = buildReflectionSections(source, reflectionKind);
-    const stamp = new Date().toISOString().split('T')[0];
-    const safeKind = reflectionKind.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    if (format === 'txt') {
-      const text = sections.map(([title, body]) => `${title}\n${body}`).join('\n\n');
-      downloadText(`portfolio_reflection_${safeKind}_${stamp}.txt`, text);
-      return;
-    }
-    const html = `<!doctype html><html><head><meta charset="utf-8"><title>${escapeHtml(reflectionKindLabel(reflectionKind))}</title>
-      <style>body{font-family:Arial,sans-serif;line-height:1.45;color:#111827;max-width:820px;margin:32px auto;padding:0 24px}h1{font-size:24px}h2{font-size:15px;margin-top:20px;border-bottom:1px solid #e5e7eb;padding-bottom:4px}p{font-size:13px;white-space:pre-wrap}</style>
-    </head><body>
-      <h1>${escapeHtml(reflectionKindLabel(reflectionKind))}</h1>
-      ${sections.map(([title, body]) => `<h2>${escapeHtml(title)}</h2><p>${escapeHtml(body)}</p>`).join('\n')}
-    </body></html>`;
-    downloadText(`portfolio_reflection_${safeKind}_${stamp}.doc`, html, 'application/msword');
+    exportCaseReflection(sections, reflectionKind, format);
   };
 
   const saveReflectionDraft = async (source: 'analysis' | 'teaching_vignette') => {
@@ -336,33 +270,13 @@ export const CaseModePage: React.FC = () => {
   );
 
   const startQuizFromCase = (source: 'analysis' | 'teaching_vignette') => {
-    const sourceResult = source === 'analysis' ? result : null;
-    const sourceVignette = source === 'teaching_vignette' ? tvResult : null;
-    const topic = cleanText(
-      sourceResult?.keyDecisionPoint ||
-      sourceResult?.query ||
-      sourceVignette?.managementReasoning ||
-      sourceVignette?.topic ||
-      prefillTopic ||
-      'Clinical decision point'
-    );
-    const evidence = sourceResult?.citations?.length
-      ? sourceResult.citations
-      : caseSeedArticles ?? [];
-    const teachingPoints = sourceVignette?.teachingPoints?.map((tp) => ({
-      claim: tp.point,
-      evidence: tp.seedIndices?.map((idx) => `Seed ${idx}`).join(', '),
-    })) || sourceResult?.interventions?.map((item) => ({
-      claim: item.name,
-      evidence: item.rationale,
-    })) || [];
-    const mcqAngles = [
-      sourceResult?.keyDecisionPoint,
-      sourceResult?.evidenceExplanation,
-      sourceVignette?.managementReasoning,
-      ...(sourceResult?.uncertainties ?? []),
-      ...(sourceVignette?.uncertaintyFlags ?? []),
-    ].filter(Boolean).map(cleanText).slice(0, 5);
+    const { topic, evidence, teachingPoints, mcqAngles } = buildCaseQuizPrefill({
+      source,
+      result,
+      tvResult,
+      prefillTopic,
+      caseSeedArticles,
+    });
 
     try {
       writeWorkflowContext({
@@ -503,19 +417,7 @@ export const CaseModePage: React.FC = () => {
   };
 
   const evidenceQuizMcqs: QuizQuestion[] = React.useMemo(() => {
-    const q = evidenceResult?.brief?.quizQuestion;
-    if (!q?.question || !Array.isArray(q.options) || !q.options.length) return [];
-    const letter = String(q.correctAnswer || 'A').trim().charAt(0).toUpperCase();
-    return [{
-      id: 'case-evidence-quiz-1',
-      question: q.question,
-      options: q.options.map((opt, i) => `${String.fromCharCode(65 + i)}: ${opt}`),
-      correctAnswer: /^[A-D]$/i.test(letter) ? letter : 'A',
-      explanation: q.explanation || evidenceResult?.brief?.keyUncertainty || '',
-      difficulty: 'medium',
-      type: 'multiple_choice',
-      questionType: 'clinical_application',
-    }];
+    return buildEvidenceQuizMcqs(evidenceResult?.brief?.quizQuestion, evidenceResult?.brief?.keyUncertainty || '');
   }, [evidenceResult]);
 
   return (
