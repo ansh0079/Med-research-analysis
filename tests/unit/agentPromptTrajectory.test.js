@@ -1,10 +1,10 @@
 const {
     buildAgentSystemPrompt,
     buildRetrievalContext,
-    extractGroundedClaimsFromReply,
     inferDemandIntent,
     inferDemandIntentRegex,
 } = require('../../server/routes/agent');
+const { extractGroundedClaimsFromReply } = require('../../server/services/agentClaimExtractionService');
 
 describe('agent trajectory prompt', () => {
     test('labels current results and memory separately and includes weak trajectory context', () => {

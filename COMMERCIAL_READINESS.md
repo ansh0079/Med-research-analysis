@@ -64,7 +64,7 @@ Commercial target:
 
 ## Production Environment
 
-**Self-hosted (Hetzner VPS):** see [docs/HETZNER_DEPLOY.md](docs/HETZNER_DEPLOY.md) — Docker Compose + Caddy + Postgres + Redis on a single CPX22+ server.
+**Self-hosted (Hetzner VPS):** see [docs/HETZNER_DEPLOY.md](docs/HETZNER_DEPLOY.md) — Docker Compose + Caddy + Postgres + Redis on a single CPX22+ server. Operator `.env` template: [deploy/hetzner/env.example](deploy/hetzner/env.example) (aligned with this checklist; compose injects `DATABASE_URL`, `REDIS_URL`, and URL vars from `DOMAIN`).
 
 Use [.env.production.example](.env.production.example) as the single production environment checklist. It is intentionally stricter than local `.env.example`: PostgreSQL, Redis, Stripe/paywall, email, Sentry, and at least one LLM key are required. Before staging or production traffic, run:
 
@@ -114,6 +114,17 @@ Latest drill record:
 2. Move auto-seeding, MCQ generation, PDF indexing, enrichment, and memory extraction fully into workers.
 3. Add Redis-backed source cache and single-flight behavior in production.
 4. Add dashboards for search latency breakdown, external API errors, cache hit rate, and LLM cost.
-5. Run a restore drill and document backup/retention policy.
+5. Run a restore drill and document backup/retention policy (`docs/BACKUP_RESTORE_DRILL.md`; preflight: `npm run db:schema:check` after restore).
 6. Remove placeholder marketing content before public launch.
 7. Convert stale launch docs into links to this file.
+
+## Dependency And Architecture Notes (2026-07-06)
+
+| Area | Status |
+| --- | --- |
+| **Jest / ts-jest** | Jest 30 + ts-jest 29.4.x is supported (peer range includes Jest 30). No separate ts-jest@30 package. |
+| **Joi vs Zod** | Intentional split: Joi for HTTP ingress + OpenAPI; Zod for shared clinical contracts + AI output validation. Consolidation is a large migration, not a quick dep bump. |
+| **`ws` override** | Pinned to 8.21.0 for socket.io transitive security alignment. |
+| **API client** | Namespaced composite client complete (`src/services/api/index.ts`). Stale monolithic `api.ts` references in older docs only. |
+| **Agent route** | Claim extraction moved to `server/services/agentClaimExtractionService.js`; turn orchestration still in `server/routes/agent.js` (future `agentTurnService`). |
+| **Production readiness** | Canonical module: `server/lib/productionReadiness.js` — used by startup, `verify:production-env`, and `/api/admin/readiness`. |

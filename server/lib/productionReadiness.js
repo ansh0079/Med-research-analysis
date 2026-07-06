@@ -155,6 +155,83 @@ function checkRuntimeStripe(errors) {
     if (env('STRIPE_SECRET_KEY') && !env('STRIPE_WEBHOOK_SECRET')) {
         errors.push('STRIPE_WEBHOOK_SECRET must be set in production when STRIPE_SECRET_KEY is configured');
     }
+    if (env('REQUIRE_STRIPE').toLowerCase() === 'true') {
+        checkBilling(errors);
+    }
+}
+
+function emailProviderStatus() {
+    const hasManagedProvider = Boolean(env('RESEND_API_KEY') || env('SENDGRID_API_KEY'));
+    const hasSmtpProvider = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS'].every((key) => Boolean(env(key)));
+    const missing = [];
+    if (!hasManagedProvider && !hasSmtpProvider) {
+        missing.push('RESEND_API_KEY or SENDGRID_API_KEY or SMTP_HOST/SMTP_PORT/SMTP_USER/SMTP_PASS');
+    }
+    if (!env('SMTP_FROM')) missing.push('SMTP_FROM');
+    if (!env('APP_URL')) missing.push('APP_URL');
+    return {
+        configured: missing.length === 0,
+        provider: hasManagedProvider
+            ? (env('RESEND_API_KEY') ? 'resend' : 'sendgrid')
+            : (hasSmtpProvider ? 'smtp' : null),
+        missing,
+    };
+}
+
+/**
+ * Snapshot for admin dashboards and ops tooling — mirrors canonical readiness checks.
+ */
+function getProductionReadinessSnapshot({ db } = {}) {
+    const strictSmtp = env('REQUIRE_SMTP').toLowerCase() === 'true';
+    const strictVector = env('REQUIRE_VECTOR_SEARCH').toLowerCase() === 'true';
+    const strictStripe = env('REQUIRE_STRIPE').toLowerCase() === 'true';
+    const email = emailProviderStatus();
+    const vectorConfigured = Boolean(env('PG_VECTOR_URL') || env('VECTOR_DATABASE_URL'));
+    const stripeKeys = [
+        'STRIPE_SECRET_KEY',
+        'STRIPE_WEBHOOK_SECRET',
+        'STRIPE_RESEARCHER_PRICE_ID',
+        'STRIPE_PRO_PRICE_ID',
+        'STRIPE_TEAM_PRICE_ID',
+    ];
+    const missingStripe = stripeKeys.filter((key) => !env(key));
+
+    return {
+        strictFlags: {
+            requireSmtp: strictSmtp,
+            requireVectorSearch: strictVector,
+            requireStripe: strictStripe,
+        },
+        smtp: email,
+        vector: {
+            configured: vectorConfigured,
+            runtimeAvailable: typeof db?.isVectorSearchAvailable === 'function' ? db.isVectorSearchAvailable() : null,
+            provider: env('PG_VECTOR_URL')
+                ? 'PG_VECTOR_URL'
+                : env('VECTOR_DATABASE_URL')
+                    ? 'VECTOR_DATABASE_URL'
+                    : null,
+        },
+        paywall: {
+            enabled: env('PAYWALL_ENABLED').toLowerCase() === 'true',
+            allowInDev: env('PAYWALL_ALLOW_IN_DEV', 'true').toLowerCase() === 'true',
+            allowedRoles: env('PAYWALL_ALLOWED_ROLES', 'admin,researcher,pro,enterprise')
+                .split(',')
+                .map((r) => r.trim())
+                .filter(Boolean),
+        },
+        stripe: {
+            configured: missingStripe.length === 0 && env('PAYWALL_ENABLED').toLowerCase() === 'true',
+            missing: missingStripe,
+        },
+        redis: {
+            configured: Boolean(env('REDIS_URL')),
+        },
+        database: {
+            configured: Boolean(env('DATABASE_URL')) && isPostgresUrl(env('DATABASE_URL')),
+        },
+        checkedAt: new Date().toISOString(),
+    };
 }
 
 /**
@@ -214,6 +291,7 @@ function validateProductionEnv({ mode = 'verify' } = {}) {
 
 module.exports = {
     validateProductionEnv,
+    getProductionReadinessSnapshot,
     // Exposed for reuse by other runtime guards (e.g. auth middleware JWT check).
     checkJwt,
 };

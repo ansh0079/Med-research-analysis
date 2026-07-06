@@ -119,8 +119,8 @@ Optional pre-flight (set vars first):
 export $(grep -v '^#' .env | xargs)
 export NODE_ENV=production
 export DATABASE_URL=postgresql://medsearch:${POSTGRES_PASSWORD}@localhost:5432/medsearch
-export REDIS_URL=redis://localhost:6379
-node scripts/verify-production-env.mjs
+export REDIS_URL=redis://:${REDIS_PASSWORD}@localhost:6379
+npm run verify:production-env
 ```
 
 ---

@@ -60,35 +60,8 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
     });
 
     app.get('/api/admin/readiness', requireAuthJwt, requireRole('admin'), async (req, res) => {
-        const strictSmtp = String(process.env.REQUIRE_SMTP || '').toLowerCase() === 'true';
-        const strictVector = String(process.env.REQUIRE_VECTOR_SEARCH || '').toLowerCase() === 'true';
-        const smtpFields = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS', 'SMTP_FROM', 'APP_URL'];
-        const missingSmtp = smtpFields.filter((k) => !process.env[k]);
-        const vectorConfigured = Boolean(process.env.PG_VECTOR_URL || process.env.VECTOR_DATABASE_URL);
-        const vectorAvailable = db.isVectorSearchAvailable();
-
-        res.json({
-            strictFlags: { requireSmtp: strictSmtp, requireVectorSearch: strictVector },
-            smtp: { configured: missingSmtp.length === 0, missing: missingSmtp },
-            vector: {
-                configured: vectorConfigured,
-                runtimeAvailable: vectorAvailable,
-                provider: process.env.PG_VECTOR_URL
-                    ? 'PG_VECTOR_URL'
-                    : process.env.VECTOR_DATABASE_URL
-                    ? 'VECTOR_DATABASE_URL'
-                    : null,
-            },
-            paywall: {
-                enabled: String(process.env.PAYWALL_ENABLED || '').toLowerCase() === 'true',
-                allowInDev: String(process.env.PAYWALL_ALLOW_IN_DEV || 'true').toLowerCase() === 'true',
-                allowedRoles: String(process.env.PAYWALL_ALLOWED_ROLES || 'admin,researcher,pro,enterprise')
-                    .split(',')
-                    .map((r) => r.trim())
-                    .filter(Boolean),
-            },
-            checkedAt: new Date().toISOString(),
-        });
+        const { getProductionReadinessSnapshot } = require('../lib/productionReadiness');
+        res.json(getProductionReadinessSnapshot({ db }));
     });
 
     app.get('/api/admin/learning-health', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {

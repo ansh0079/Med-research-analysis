@@ -18,9 +18,10 @@ const { safeFetch } = require('../utils/fetch');
 const { persistAgentTurnMemory, reflectOnAgentSession, isSessionEndingTurn } = require('./agentTurnMemoryService');
 const { AGENT_PROMPT_VERSION } = require('./agentPromptVersion');
 
-function loadAgentRouteFns() {
-    // Lazy require to avoid a circular dependency with server/routes/agent.js,
-    // which imports this service.
+const { extractGroundedClaimsStructured } = require('./agentClaimExtractionService');
+
+function loadAgentIntentFns() {
+    // Lazy require to avoid circular dependency with server/routes/agent.js.
     return require('../routes/agent');
 }
 
@@ -171,9 +172,9 @@ async function runAgentTurnSideEffects(jobData, { logger: jobLogger = logger } =
                 : 0;
 
             let effectiveIntent = classifiedIntent;
-            if (loadAgentRouteFns().isLlmIntentClassifierEnabled?.()) {
+            if (loadAgentIntentFns().isLlmIntentClassifierEnabled?.()) {
                 try {
-                    effectiveIntent = await loadAgentRouteFns().inferDemandIntent(userMessage, ai, selectedProvider || 'gemini', auxModel);
+                    effectiveIntent = await loadAgentIntentFns().inferDemandIntent(userMessage, ai, selectedProvider || 'gemini', auxModel);
                 } catch (err) {
                     log.debug({ err }, 'LLM intent classifier failed; using regex intent');
                 }
@@ -240,7 +241,6 @@ async function runAgentTurnSideEffects(jobData, { logger: jobLogger = logger } =
                 .update(`${topic}|${userMessage}|${assistantReply.slice(0, 800)}`)
                 .digest('hex')
                 .slice(0, 24)}`;
-            const { extractGroundedClaimsStructured } = loadAgentRouteFns();
             const answerClaims = await extractGroundedClaimsStructured(
                 assistantReply,
                 { topic, objectKey: answerObjectKey },
