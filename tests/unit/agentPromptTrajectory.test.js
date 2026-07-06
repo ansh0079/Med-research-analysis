@@ -1,9 +1,11 @@
 const {
     buildAgentSystemPrompt,
     buildRetrievalContext,
+} = require('../../server/services/agentPromptService');
+const {
     inferDemandIntent,
     inferDemandIntentRegex,
-} = require('../../server/routes/agent');
+} = require('../../server/services/agentIntentService');
 const { extractGroundedClaimsFromReply } = require('../../server/services/agentClaimExtractionService');
 
 describe('agent trajectory prompt', () => {

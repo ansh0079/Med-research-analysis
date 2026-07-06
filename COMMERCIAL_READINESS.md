@@ -126,5 +126,5 @@ Latest drill record:
 | **Joi vs Zod** | Intentional split: Joi for HTTP ingress + OpenAPI; Zod for shared clinical contracts + AI output validation. Consolidation is a large migration, not a quick dep bump. |
 | **`ws` override** | Pinned to 8.21.0 for socket.io transitive security alignment. |
 | **API client** | Namespaced composite client complete (`src/services/api/index.ts`). Stale monolithic `api.ts` references in older docs only. |
-| **Agent route** | Claim extraction moved to `server/services/agentClaimExtractionService.js`; turn orchestration still in `server/routes/agent.js` (future `agentTurnService`). |
+| **Agent route** | Turn orchestration in `agentTurnService.js`; prompts in `agentPromptService.js`; intent in `agentIntentService.js`; claims in `agentClaimExtractionService.js`. Route file is HTTP-only (~190 lines). |
 | **Production readiness** | Canonical module: `server/lib/productionReadiness.js` — used by startup, `verify:production-env`, and `/api/admin/readiness`. |

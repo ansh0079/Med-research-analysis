@@ -19,11 +19,7 @@ const { persistAgentTurnMemory, reflectOnAgentSession, isSessionEndingTurn } = r
 const { AGENT_PROMPT_VERSION } = require('./agentPromptVersion');
 
 const { extractGroundedClaimsStructured } = require('./agentClaimExtractionService');
-
-function loadAgentIntentFns() {
-    // Lazy require to avoid circular dependency with server/routes/agent.js.
-    return require('../routes/agent');
-}
+const { inferDemandIntent, isLlmIntentClassifierEnabled } = require('./agentIntentService');
 
 const agentSideEffectsQueue = new JobQueue({ concurrency: 3, name: 'agent-side-effects' });
 
@@ -172,9 +168,9 @@ async function runAgentTurnSideEffects(jobData, { logger: jobLogger = logger } =
                 : 0;
 
             let effectiveIntent = classifiedIntent;
-            if (loadAgentIntentFns().isLlmIntentClassifierEnabled?.()) {
+            if (isLlmIntentClassifierEnabled()) {
                 try {
-                    effectiveIntent = await loadAgentIntentFns().inferDemandIntent(userMessage, ai, selectedProvider || 'gemini', auxModel);
+                    effectiveIntent = await inferDemandIntent(userMessage, ai, selectedProvider || 'gemini', auxModel);
                 } catch (err) {
                     log.debug({ err }, 'LLM intent classifier failed; using regex intent');
                 }
