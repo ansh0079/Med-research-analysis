@@ -3,28 +3,7 @@ import { yearRangeToPubMedFilter } from '@utils/searchStudyFilters';
 import type {
   Article,
   SearchFilters,
-  AnalysisType,
-  AnalysisResult,
-  CollectionSummary,
-  SavedAlert,
-  Annotation,
-  SynthesisResult,
-  ReviewProject,
-  ReviewArticle,
-  ReviewCriteria,
-  PrismaCounts,
-  PicoExtraction,
-  CaseModeResult,
-  CaseLearningMode,
-  ArticleSynopsisResult,
   SearchResponse,
-  AgentGuidance,
-  TopicKnowledge,
-  TopicKnowledgeListResponse,
-  TopicKnowledgeProposal,
-  TopicKnowledgeProposalListResponse,
-  LearningHealthResponse,
-  LearningRecommendation,
 } from '@types';
 
 export class SearchApi extends BaseApiClient {
