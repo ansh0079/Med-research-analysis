@@ -1,6 +1,46 @@
 const logger = require('../config/logger');
 const { sanitizeArticleOutput } = require('../utils/articles');
 
+const DEFAULT_NOTIFICATION_PREFS = {
+    digestEmails: true,
+    evidenceAlerts: true,
+    weeklyDigest: true,
+    spacedRepReminders: true,
+};
+
+function parseNotificationPreferences(raw) {
+    if (!raw) return { ...DEFAULT_NOTIFICATION_PREFS };
+    try {
+        const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+        const notifications = parsed?.notifications && typeof parsed.notifications === 'object'
+            ? parsed.notifications
+            : {};
+        return { ...DEFAULT_NOTIFICATION_PREFS, ...notifications };
+    } catch {
+        return { ...DEFAULT_NOTIFICATION_PREFS };
+    }
+}
+
+function mergeUserPreferences(raw, notificationsPatch) {
+    let base = {};
+    if (raw) {
+        try {
+            base = typeof raw === 'string' ? JSON.parse(raw) : raw;
+        } catch {
+            base = {};
+        }
+    }
+    if (!base || typeof base !== 'object') base = {};
+    const current = parseNotificationPreferences(base);
+    const nextNotifications = { ...current };
+    for (const key of Object.keys(DEFAULT_NOTIFICATION_PREFS)) {
+        if (notificationsPatch[key] !== undefined) {
+            nextNotifications[key] = Boolean(notificationsPatch[key]);
+        }
+    }
+    return { ...base, notifications: nextNotifications };
+}
+
 function registerUserRoutes(app, { db, requireJson, requireAuthJwt, auditLog, enqueueArticleForEmbedding, enqueuePdfPreindex }) {
     async function resolveSaveOwner(req) {
         const teamId = req.body?.teamId || req.query?.teamId;
@@ -34,6 +74,42 @@ function registerUserRoutes(app, { db, requireJson, requireAuthJwt, auditLog, en
             res.json({ history });
         } catch (error) {
             req.log.error({ err: error }, 'Get search history error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.get('/api/user/preferences', requireAuthJwt, async (req, res) => {
+        try {
+            const row = await db.getUserById(req.user.id);
+            if (!row) return res.status(404).json({ error: 'User not found' });
+            res.json({ notifications: parseNotificationPreferences(row.preferences) });
+        } catch (error) {
+            req.log.error({ err: error }, 'Get user preferences error');
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    app.patch('/api/user/preferences', requireAuthJwt, requireJson, async (req, res) => {
+        const { notifications } = req.body;
+        if (!notifications || typeof notifications !== 'object') {
+            return res.status(400).json({ error: 'notifications object is required' });
+        }
+
+        const invalidKeys = Object.keys(notifications).filter(
+            (key) => !(key in DEFAULT_NOTIFICATION_PREFS) || typeof notifications[key] !== 'boolean'
+        );
+        if (invalidKeys.length > 0) {
+            return res.status(400).json({ error: `Invalid notification preference keys: ${invalidKeys.join(', ')}` });
+        }
+
+        try {
+            const row = await db.getUserById(req.user.id);
+            if (!row) return res.status(404).json({ error: 'User not found' });
+            const merged = mergeUserPreferences(row.preferences, notifications);
+            await db.updateUser(req.user.id, { preferences: JSON.stringify(merged) });
+            res.json({ notifications: merged.notifications });
+        } catch (error) {
+            req.log.error({ err: error }, 'Update user preferences error');
             res.status(500).json({ error: error.message });
         }
     });
@@ -145,4 +221,8 @@ function registerUserRoutes(app, { db, requireJson, requireAuthJwt, auditLog, en
     });
 }
 
-module.exports = { registerUserRoutes };
+module.exports = {
+    registerUserRoutes,
+    parseNotificationPreferences,
+    DEFAULT_NOTIFICATION_PREFS,
+};

@@ -162,6 +162,9 @@ export const BillingPage: React.FC = () => {
   const trialDaysLeft = billing?.trialEndsAt
     ? Math.max(0, Math.ceil((new Date(billing.trialEndsAt).getTime() - nowMs) / (1000 * 60 * 60 * 24)))
     : 0;
+  const isAdmin = user?.role === 'admin' || user?.role === 'curator';
+  const showStripeDevBanner = billing && !billing.stripeConfigured && (import.meta.env.DEV || isAdmin);
+  const showStripeUnavailableBanner = billing && !billing.stripeConfigured && !import.meta.env.DEV && !isAdmin;
 
   return (
     <div className="min-h-screen aurora-bg">
@@ -260,13 +263,23 @@ export const BillingPage: React.FC = () => {
               </div>
             )}
 
-            {/* Stripe not configured warning */}
-            {!billing.stripeConfigured && (
+            {/* Stripe configuration (dev/admin only) */}
+            {showStripeDevBanner && (
               <div className="flex items-start gap-3 px-4 py-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 rounded-xl">
                 <i className="fas fa-triangle-exclamation text-amber-500 text-sm mt-0.5 shrink-0" />
                 <div className="text-xs text-amber-700 dark:text-amber-300 space-y-1">
-                  <p className="font-semibold">Stripe not configured</p>
-                  <p>Add <code className="bg-amber-100 dark:bg-amber-900/40 px-1 rounded">STRIPE_SECRET_KEY</code>, <code className="bg-amber-100 dark:bg-amber-900/40 px-1 rounded">STRIPE_RESEARCHER_PRICE_ID</code>, <code className="bg-amber-100 dark:bg-amber-900/40 px-1 rounded">STRIPE_PRO_PRICE_ID</code>, and <code className="bg-amber-100 dark:bg-amber-900/40 px-1 rounded">STRIPE_TEAM_PRICE_ID</code> to your <code className="bg-amber-100 dark:bg-amber-900/40 px-1 rounded">.env</code> file to enable payments.</p>
+                  <p className="font-semibold">Stripe not configured (developer notice)</p>
+                  <p>Add <code className="bg-amber-100 dark:bg-amber-900/40 px-1 rounded">STRIPE_SECRET_KEY</code>, price IDs, and webhook secret to enable checkout in this environment.</p>
+                </div>
+              </div>
+            )}
+
+            {showStripeUnavailableBanner && (
+              <div className="flex items-start gap-3 px-4 py-3 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-700 rounded-xl">
+                <i className="fas fa-info-circle text-slate-500 text-sm mt-0.5 shrink-0" />
+                <div className="text-xs text-slate-600 dark:text-slate-300 space-y-1">
+                  <p className="font-semibold">Online checkout is temporarily unavailable</p>
+                  <p>Paid upgrades are not open yet on this deployment. Your free trial and existing plan features remain available.</p>
                 </div>
               </div>
             )}
@@ -340,9 +353,11 @@ export const BillingPage: React.FC = () => {
                       >
                         {checkoutLoading === plan.id
                           ? <><div className="spinner" /> Redirecting…</>
-                          : !plan.available
-                            ? 'Coming soon'
-                            : `Upgrade to ${plan.name}`
+                          : !billing.stripeConfigured
+                            ? 'Checkout unavailable'
+                            : !plan.available
+                              ? 'Unavailable'
+                              : `Upgrade to ${plan.name}`
                         }
                       </button>
                     )}

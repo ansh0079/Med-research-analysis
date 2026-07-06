@@ -56,7 +56,7 @@ const { registerRecommendationRoutes } = require('./server/controllers/recommend
 const { registerBillingRoutes } = require('./server/controllers/billingRoutes');
 const { registerDeveloperRoutes } = require('./server/controllers/developerRoutes');
 const { collaborationRoutes } = require('./server/collaboration-routes');
-const { teamRoutes } = require('./server/controllers/teamRoutes');
+const { registerTeamRoutes } = require('./server/controllers/teamRoutes');
 const setupSocketHandlers = require('./server/socket-handler');
 const { extendAiTimeout, DEFAULT_AI_TIMEOUT_MS } = require('./server/middleware/aiTimeout');
 
@@ -493,8 +493,7 @@ registerReviewRoutes(app, routeDeps);
 registerRecommendationRoutes(app, routeDeps);
 registerBillingRoutes(app, routeDeps);
 registerDeveloperRoutes(app, routeDeps);
-
-app.use('/api/teams', teamRoutes);
+registerTeamRoutes(app, routeDeps);
 
 // Queue status (admin only)
 app.get('/api/admin/queues', requireAuthJwt, requireRole('admin'), async (req, res) => {

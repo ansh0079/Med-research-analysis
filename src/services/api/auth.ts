@@ -141,6 +141,46 @@ export class AuthApi extends BaseApiClient {
     return response.json();
   }
 
+  async getNotificationPreferences(): Promise<{
+    notifications: {
+      digestEmails: boolean;
+      evidenceAlerts: boolean;
+      weeklyDigest: boolean;
+      spacedRepReminders: boolean;
+    };
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/user/preferences`);
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to load notification preferences');
+    return response.json();
+  }
+
+  async updateNotificationPreferences(notifications: {
+    digestEmails?: boolean;
+    evidenceAlerts?: boolean;
+    weeklyDigest?: boolean;
+    spacedRepReminders?: boolean;
+  }): Promise<{
+    notifications: {
+      digestEmails: boolean;
+      evidenceAlerts: boolean;
+      weeklyDigest: boolean;
+      spacedRepReminders: boolean;
+    };
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/user/preferences`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ notifications }),
+    });
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || 'Failed to save notification preferences');
+    }
+    return response.json();
+  }
+
   async changePassword(currentPassword: string, newPassword: string): Promise<{ message: string }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/auth/change-password`, {
       method: 'POST',

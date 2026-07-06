@@ -396,6 +396,59 @@ export class CollaborationApi extends BaseApiClient {
     if (!response.ok) throw new Error('Failed to remove article from collection');
   }
 
+  async getTeamActivity(teamId: string): Promise<{
+    activity: Array<{ id: number; message: string; createdAt: string; userId: string | null; userName: string | null }>;
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/teams/${teamId}/activity`);
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to fetch team activity');
+    return response.json();
+  }
+
+  async getTeamAssignments(teamId: string): Promise<{
+    assignments: Array<{
+      id: string;
+      title: string;
+      assigneeUserId: string | null;
+      assigneeName: string | null;
+      dueDate: string | null;
+      status: string;
+      createdAt: string;
+      createdBy: string;
+    }>;
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/teams/${teamId}/assignments`);
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to fetch team assignments');
+    return response.json();
+  }
+
+  async createTeamAssignment(
+    teamId: string,
+    data: { title: string; assigneeUserId?: string; dueDate?: string }
+  ): Promise<{ assignment: { id: string; title: string; assigneeUserId: string | null; dueDate: string | null; status: string } }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/teams/${teamId}/assignments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || 'Failed to create assignment');
+    }
+    return response.json();
+  }
+
+  async deleteTeamAssignment(teamId: string, assignmentId: string): Promise<void> {
+    const response = await this.fetchWithSession(
+      `${API_BASE}/api/teams/${teamId}/assignments/${assignmentId}`,
+      { method: 'DELETE' }
+    );
+    if (response.status === 401) throw new Error('AUTH_REQUIRED');
+    if (!response.ok) throw new Error('Failed to delete assignment');
+  }
+
   async removeTeamMember(teamId: string, userId: string): Promise<void> {
     const response = await this.fetchWithSession(`${API_BASE}/api/teams/${teamId}/members/${encodeURIComponent(userId)}`, {
       method: 'DELETE',

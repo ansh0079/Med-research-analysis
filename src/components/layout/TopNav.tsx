@@ -22,7 +22,8 @@ const TOOLS_NAV = [
   { to: '/grant',       label: 'Grant writing',  icon: 'fa-file-alt',     color: 'text-amber-500'  },
   { to: '/saved',       label: 'Saved articles', icon: 'fa-bookmark',     color: 'text-indigo-500' },
   { to: '/team',        label: 'Team workspace', icon: 'fa-users',        color: 'text-sky-500'    },
-  { to: '/guidelines',  label: 'Guidelines',     icon: 'fa-book-medical', color: 'text-slate-500'  },
+  { to: '/guideline-library', label: 'Guideline library', icon: 'fa-book-open', color: 'text-emerald-500' },
+  { to: '/guidelines',  label: 'Guideline review', icon: 'fa-book-medical', color: 'text-slate-500'  },
 ] as const;
 
 // User menu — account-level actions

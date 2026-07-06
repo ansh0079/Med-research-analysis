@@ -19,12 +19,13 @@ const DEFAULT_PREFS: NotificationPrefs = {
   spacedRepReminders: true,
 };
 
-function loadPrefs(): NotificationPrefs {
+function loadLegacyLocalPrefs(): Partial<NotificationPrefs> | null {
   try {
     const saved = localStorage.getItem(NOTIFICATION_PREFS_KEY);
-    return saved ? { ...DEFAULT_PREFS, ...JSON.parse(saved) } : DEFAULT_PREFS;
+    if (!saved) return null;
+    return JSON.parse(saved) as Partial<NotificationPrefs>;
   } catch {
-    return DEFAULT_PREFS;
+    return null;
   }
 }
 
@@ -163,8 +164,39 @@ export const SettingsPage: React.FC = () => {
   const [emailError, setEmailError] = useState('');
 
   // Notification prefs state
-  const [prefs, setPrefs] = useState<NotificationPrefs>(loadPrefs);
+  const [prefs, setPrefs] = useState<NotificationPrefs>(DEFAULT_PREFS);
   const [prefsSaved, setPrefsSaved] = useState(false);
+  const [prefsLoading, setPrefsLoading] = useState(true);
+  const [prefsError, setPrefsError] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setPrefsLoading(true);
+      setPrefsError('');
+      try {
+        const { notifications } = await api.getNotificationPreferences();
+        if (cancelled) return;
+        let merged = { ...DEFAULT_PREFS, ...notifications };
+
+        const legacy = loadLegacyLocalPrefs();
+        if (legacy) {
+          merged = { ...merged, ...legacy };
+          await api.updateNotificationPreferences(merged);
+          localStorage.removeItem(NOTIFICATION_PREFS_KEY);
+        }
+
+        setPrefs(merged);
+      } catch (err) {
+        if (!cancelled) {
+          setPrefsError(err instanceof Error ? err.message : 'Failed to load notification preferences');
+        }
+      } finally {
+        if (!cancelled) setPrefsLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     setName(user?.name || '');
@@ -232,13 +264,15 @@ export const SettingsPage: React.FC = () => {
     }
   };
 
-  const handleSavePrefs = () => {
+  const handleSavePrefs = async () => {
+    setPrefsError('');
     try {
-      localStorage.setItem(NOTIFICATION_PREFS_KEY, JSON.stringify(prefs));
+      const { notifications } = await api.updateNotificationPreferences(prefs);
+      setPrefs(notifications);
       setPrefsSaved(true);
       setTimeout(() => setPrefsSaved(false), 2000);
-    } catch {
-      // ignore storage errors
+    } catch (err) {
+      setPrefsError(err instanceof Error ? err.message : 'Failed to save preferences');
     }
   };
 
@@ -380,7 +414,11 @@ export const SettingsPage: React.FC = () => {
         {/* Notification preferences */}
         <div className="neo-card rounded-2xl p-6 space-y-4">
           <h2 className="text-lg font-black text-slate-900 dark:text-white">Notifications</h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">Control which emails we send you. Changes take effect on the next send cycle.</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">Control which emails we send you. Preferences sync to your account and apply on the next send cycle.</p>
+          {prefsError && <p className="text-xs text-red-600 dark:text-red-400">{prefsError}</p>}
+          {prefsLoading ? (
+            <p className="text-xs text-slate-400">Loading preferences…</p>
+          ) : (
           <div className="space-y-3">
             {([
               { key: 'digestEmails', label: 'Research digest', description: 'Daily email with new papers matching your saved searches' },
@@ -410,9 +448,10 @@ export const SettingsPage: React.FC = () => {
               </label>
             ))}
           </div>
+          )}
           <div className="flex justify-end items-center gap-3">
             {prefsSaved && <span className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-1"><i className="fas fa-check" /> Saved</span>}
-            <Button type="button" size="sm" onClick={handleSavePrefs}>Save preferences</Button>
+            <Button type="button" size="sm" onClick={handleSavePrefs} disabled={prefsLoading}>Save preferences</Button>
           </div>
         </div>
 

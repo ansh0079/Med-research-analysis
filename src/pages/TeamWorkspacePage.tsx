@@ -8,6 +8,24 @@ import type { Team, TeamMember, TeamCollection, Article } from '@types';
 
 type MemberRow = TeamMember & { user_id?: string };
 
+type TeamActivityEntry = {
+  id: number;
+  message: string;
+  createdAt: string;
+  userId: string | null;
+  userName: string | null;
+};
+
+type TeamAssignmentEntry = {
+  id: string;
+  title: string;
+  assigneeUserId: string | null;
+  assigneeName: string | null;
+  dueDate: string | null;
+  status: string;
+  createdAt: string;
+};
+
 function memberUserId(m: MemberRow): string {
   return String(m.user_id || m.id);
 }
@@ -37,24 +55,33 @@ export const TeamWorkspacePage: React.FC = () => {
   const [assignmentTitle, setAssignmentTitle] = useState('');
   const [assignmentMember, setAssignmentMember] = useState('');
   const [assignmentDue, setAssignmentDue] = useState('');
-  const [activityFeed, setActivityFeed] = useState<string[]>(() => {
-    try {
-      return JSON.parse(localStorage.getItem('med_team_activity') || '[]');
-    } catch {
-      return [];
-    }
-  });
+  const [activityFeed, setActivityFeed] = useState<TeamActivityEntry[]>([]);
+  const [assignments, setAssignments] = useState<TeamAssignmentEntry[]>([]);
+  const [assignmentsLoading, setAssignmentsLoading] = useState(false);
+  const [activityLoading, setActivityLoading] = useState(false);
 
-  const addActivity = useCallback((message: string) => {
-    setActivityFeed((prev) => {
-      const updated = [`${new Date().toLocaleString()}: ${message}`, ...prev].slice(0, 20);
-      try {
-        localStorage.setItem('med_team_activity', JSON.stringify(updated));
-      } catch {
-        // Ignore local activity persistence failures.
-      }
-      return updated;
-    });
+  const loadTeamActivity = useCallback(async (teamId: string) => {
+    setActivityLoading(true);
+    try {
+      const { activity } = await api.getTeamActivity(teamId);
+      setActivityFeed(activity);
+    } catch {
+      setActivityFeed([]);
+    } finally {
+      setActivityLoading(false);
+    }
+  }, []);
+
+  const loadTeamAssignments = useCallback(async (teamId: string) => {
+    setAssignmentsLoading(true);
+    try {
+      const { assignments: rows } = await api.getTeamAssignments(teamId);
+      setAssignments(rows);
+    } catch {
+      setAssignments([]);
+    } finally {
+      setAssignmentsLoading(false);
+    }
   }, []);
 
   const loadTeams = useCallback(async () => {
@@ -98,9 +125,11 @@ export const TeamWorkspacePage: React.FC = () => {
         if (cancelled) return;
         setSearchParams({}, { replace: true });
         setError(null);
-        addActivity('Joined a team via invitation link');
         await loadTeams();
-        if (r.teamId) await loadTeamDetails(r.teamId);
+        if (r.teamId) {
+          await loadTeamDetails(r.teamId);
+          await loadTeamActivity(r.teamId);
+        }
       } catch (err: unknown) {
         if (!cancelled) {
           setError(err instanceof Error ? err.message : 'Invalid or expired invitation');
@@ -109,7 +138,7 @@ export const TeamWorkspacePage: React.FC = () => {
       }
     })();
     return () => { cancelled = true; };
-  }, [inviteToken, isAuthenticated, setSearchParams, loadTeams, loadTeamDetails, addActivity]);
+  }, [inviteToken, isAuthenticated, setSearchParams, loadTeams, loadTeamDetails, loadTeamActivity]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -137,17 +166,16 @@ export const TeamWorkspacePage: React.FC = () => {
         setUserRole(role);
         const { collections: c } = await api.getTeamCollections(activeTeam.id);
         if (!cancelled) setCollections(c);
+        if (!cancelled) {
+          await loadTeamActivity(activeTeam.id);
+          await loadTeamAssignments(activeTeam.id);
+        }
       } catch (err: unknown) {
         if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load team details');
       }
     })();
     return () => { cancelled = true; };
-  }, [activeTeam?.id]);
-
-  useEffect(() => {
-    setExpandedCollectionId(null);
-    setCollectionArticles([]);
-  }, [activeTeam?.id]);
+  }, [activeTeam?.id, loadTeamActivity, loadTeamAssignments]);
 
   const handleCreateTeam = async () => {
     if (!newTeamName.trim()) return;
@@ -156,7 +184,7 @@ export const TeamWorkspacePage: React.FC = () => {
       setTeams(prev => [...prev, team]);
       setActiveTeam(team);
       setNewTeamName('');
-      addActivity(`Created team "${team.name}"`);
+      await loadTeamActivity(team.id);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to create team');
     }
@@ -170,9 +198,9 @@ export const TeamWorkspacePage: React.FC = () => {
       if (token && typeof window !== 'undefined') {
         setLastInviteLink(`${window.location.origin}/team?invite=${encodeURIComponent(token)}`);
       }
-      addActivity(`Invited ${inviteEmail.trim()} to ${activeTeam.name}`);
       setInviteEmail('');
       loadTeamDetails(activeTeam.id);
+      await loadTeamActivity(activeTeam.id);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to invite member');
     }
@@ -202,10 +230,10 @@ export const TeamWorkspacePage: React.FC = () => {
     if (!activeTeam || !expandedCollectionId) return;
     try {
       await api.removeArticleFromTeamCollection(activeTeam.id, expandedCollectionId, articleId);
-      addActivity('Removed an article from a team collection');
       const { collection } = await api.getTeamCollection(activeTeam.id, expandedCollectionId);
       setCollectionArticles((collection.articles as Article[]) || []);
       loadTeamDetails(activeTeam.id);
+      await loadTeamActivity(activeTeam.id);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to remove article');
     }
@@ -218,8 +246,8 @@ export const TeamWorkspacePage: React.FC = () => {
     if (!window.confirm(`Remove ${row.email} from this team?`)) return;
     try {
       await api.removeTeamMember(activeTeam.id, uid);
-      addActivity(`Removed member ${row.email}`);
       loadTeamDetails(activeTeam.id);
+      await loadTeamActivity(activeTeam.id);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to remove member');
     }
@@ -230,8 +258,8 @@ export const TeamWorkspacePage: React.FC = () => {
     const uid = memberUserId(row);
     try {
       await api.updateTeamMemberRole(activeTeam.id, uid, role);
-      addActivity(`Updated role for ${row.email}`);
       loadTeamDetails(activeTeam.id);
+      await loadTeamActivity(activeTeam.id);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to update role');
     }
@@ -241,21 +269,41 @@ export const TeamWorkspacePage: React.FC = () => {
     if (!activeTeam || !newCollectionName.trim()) return;
     try {
       await api.createTeamCollection(activeTeam.id, newCollectionName.trim());
-      addActivity(`Created collection "${newCollectionName.trim()}" in ${activeTeam.name}`);
       setNewCollectionName('');
       loadTeamDetails(activeTeam.id);
+      await loadTeamActivity(activeTeam.id);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to create collection');
     }
   };
 
-  const handleCreateAssignment = () => {
-    if (!assignmentTitle.trim()) return;
-    const member = members.find((m) => memberUserId(m as MemberRow) === assignmentMember);
-    addActivity(`Assigned "${assignmentTitle.trim()}" to ${member?.name || member?.email || 'a reviewer'}${assignmentDue ? ` due ${assignmentDue}` : ''}`);
-    setAssignmentTitle('');
-    setAssignmentMember('');
-    setAssignmentDue('');
+  const handleCreateAssignment = async () => {
+    if (!activeTeam || !assignmentTitle.trim()) return;
+    try {
+      await api.createTeamAssignment(activeTeam.id, {
+        title: assignmentTitle.trim(),
+        assigneeUserId: assignmentMember || undefined,
+        dueDate: assignmentDue || undefined,
+      });
+      setAssignmentTitle('');
+      setAssignmentMember('');
+      setAssignmentDue('');
+      await loadTeamAssignments(activeTeam.id);
+      await loadTeamActivity(activeTeam.id);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to create assignment');
+    }
+  };
+
+  const handleDeleteAssignment = async (assignmentId: string) => {
+    if (!activeTeam) return;
+    try {
+      await api.deleteTeamAssignment(activeTeam.id, assignmentId);
+      await loadTeamAssignments(activeTeam.id);
+      await loadTeamActivity(activeTeam.id);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to delete assignment');
+    }
   };
 
   if (!isAuthenticated) return null;
@@ -534,54 +582,91 @@ export const TeamWorkspacePage: React.FC = () => {
                   )}
 
                   {tab === 'assignments' && (
-                    <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
-                      <h3 className="font-bold text-gray-900 dark:text-white mb-4">Review Assignment</h3>
-                      <div className="grid gap-3 md:grid-cols-[1fr_0.8fr_0.5fr_auto]">
-                        <input
-                          value={assignmentTitle}
-                          onChange={(e) => setAssignmentTitle(e.target.value)}
-                          placeholder="Paper, collection, or screening task"
-                          className="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
-                        />
-                        <select
-                          title="Assign reviewer"
-                          value={assignmentMember}
-                          onChange={(e) => setAssignmentMember(e.target.value)}
-                          className="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
-                        >
-                          <option value="">Unassigned</option>
-                          {members.map((member) => (
-                            <option key={memberUserId(member as MemberRow)} value={memberUserId(member as MemberRow)}>
-                              {member.name || member.email}
-                            </option>
-                          ))}
-                        </select>
-                        <input
-                          type="date"
-                          value={assignmentDue}
-                          onChange={(e) => setAssignmentDue(e.target.value)}
-                          className="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
-                        />
-                        <Button variant="primary" onClick={handleCreateAssignment} leftIcon={<i className="fas fa-user-check" />}>
-                          Assign
-                        </Button>
+                    <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 space-y-6">
+                      <div>
+                        <h3 className="font-bold text-gray-900 dark:text-white mb-4">Review Assignment</h3>
+                        <div className="grid gap-3 md:grid-cols-[1fr_0.8fr_0.5fr_auto]">
+                          <input
+                            value={assignmentTitle}
+                            onChange={(e) => setAssignmentTitle(e.target.value)}
+                            placeholder="Paper, collection, or screening task"
+                            className="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                          />
+                          <select
+                            title="Assign reviewer"
+                            value={assignmentMember}
+                            onChange={(e) => setAssignmentMember(e.target.value)}
+                            className="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                          >
+                            <option value="">Unassigned</option>
+                            {members.map((member) => (
+                              <option key={memberUserId(member as MemberRow)} value={memberUserId(member as MemberRow)}>
+                                {member.name || member.email}
+                              </option>
+                            ))}
+                          </select>
+                          <input
+                            type="date"
+                            value={assignmentDue}
+                            onChange={(e) => setAssignmentDue(e.target.value)}
+                            className="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                          />
+                          <Button variant="primary" onClick={handleCreateAssignment} leftIcon={<i className="fas fa-user-check" />}>
+                            Assign
+                          </Button>
+                        </div>
                       </div>
-                      <p className="mt-3 text-xs text-gray-400 dark:text-gray-500">
-                        Assignments are logged to the workspace activity feed. A server-backed assignment table can persist reviewer workload across devices next.
-                      </p>
+
+                      <div>
+                        <h4 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">Open assignments</h4>
+                        {assignmentsLoading ? (
+                          <p className="text-sm text-gray-400"><i className="fas fa-spinner fa-spin mr-2" />Loading…</p>
+                        ) : assignments.length === 0 ? (
+                          <p className="text-sm text-gray-400 dark:text-gray-500">No assignments yet.</p>
+                        ) : (
+                          <ul className="space-y-2">
+                            {assignments.map((assignment) => (
+                              <li key={assignment.id} className="flex items-start justify-between gap-3 rounded-xl bg-gray-50 dark:bg-slate-700/50 px-4 py-3">
+                                <div>
+                                  <p className="text-sm font-semibold text-gray-900 dark:text-white">{assignment.title}</p>
+                                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                    {assignment.assigneeName || 'Unassigned'}
+                                    {assignment.dueDate ? ` · due ${assignment.dueDate}` : ''}
+                                  </p>
+                                </div>
+                                {(userRole === 'owner' || userRole === 'admin') && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteAssignment(assignment.id)}
+                                    className="text-xs font-bold text-red-600 dark:text-red-400 shrink-0"
+                                  >
+                                    Remove
+                                  </button>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
                     </div>
                   )}
 
                   {tab === 'activity' && (
                     <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
                       <h3 className="font-bold text-gray-900 dark:text-white mb-4">Workspace Activity</h3>
-                      {activityFeed.length === 0 ? (
+                      {activityLoading ? (
+                        <p className="text-sm text-gray-400"><i className="fas fa-spinner fa-spin mr-2" />Loading…</p>
+                      ) : activityFeed.length === 0 ? (
                         <p className="text-sm text-gray-400 dark:text-gray-500">No activity yet.</p>
                       ) : (
                         <div className="space-y-2">
-                          {activityFeed.map((entry, index) => (
-                            <div key={`${entry}-${index}`} className="rounded-xl bg-gray-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
-                              {entry}
+                          {activityFeed.map((entry) => (
+                            <div key={entry.id} className="rounded-xl bg-gray-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                              <span className="text-xs text-gray-400 dark:text-gray-500 block mb-1">
+                                {new Date(entry.createdAt).toLocaleString()}
+                                {entry.userName ? ` · ${entry.userName}` : ''}
+                              </span>
+                              {entry.message}
                             </div>
                           ))}
                         </div>
@@ -609,9 +694,9 @@ export const TeamWorkspacePage: React.FC = () => {
                                 if (!activeTeam || !teamRename.trim() || teamRename.trim() === activeTeam.name) return;
                                 try {
                                   await api.updateTeam(activeTeam.id, { name: teamRename.trim() });
-                                  addActivity(`Renamed team to "${teamRename.trim()}"`);
                                   loadTeamDetails(activeTeam.id);
                                   loadTeams();
+                                  await loadTeamActivity(activeTeam.id);
                                 } catch (err: unknown) {
                                   setError(err instanceof Error ? err.message : 'Failed to rename team');
                                 }
