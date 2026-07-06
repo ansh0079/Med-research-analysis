@@ -6,8 +6,8 @@ const {
     scoreCaseOutput,
     evaluateLearningPlan,
     summarizeLearningQuality,
+    evaluateFixture,
 } = require('../../server/services/learningQualityEvalService');
-const { evaluateFixture } = require('../../scripts/eval-learning-quality');
 
 describe('learning quality eval service', () => {
     test('separates grounded MCQ sets from thin or unsafe MCQ sets', () => {

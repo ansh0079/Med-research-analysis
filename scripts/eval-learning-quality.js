@@ -3,12 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const {
-    evaluateMcqSet,
-    scoreCaseOutput,
-    evaluateLearningPlan,
-    summarizeLearningQuality,
-} = require('../server/services/learningQualityEvalService');
+const { evaluateFixture } = require('../server/services/learningQualityEvalService');
 
 const args = process.argv.slice(2);
 
@@ -26,55 +21,6 @@ function loadFixture() {
     return {
         fixturePath,
         fixture: JSON.parse(fs.readFileSync(fixturePath, 'utf8')),
-    };
-}
-
-function expectationOk(row) {
-    return row.expectPass === undefined || Boolean(row.pass) === Boolean(row.expectPass);
-}
-
-function evaluateFixture(fixture) {
-    const mcq = (fixture.mcqSets || []).map((spec) => {
-        const result = evaluateMcqSet(spec.questions, spec.options || {});
-        return {
-            id: spec.id,
-            expectPass: spec.expectPass,
-            ...result,
-            expectationOk: expectationOk({ ...result, expectPass: spec.expectPass }),
-        };
-    });
-
-    const caseRows = (fixture.caseOutputs || []).map((spec) => {
-        const result = scoreCaseOutput(spec.case, spec.options || {});
-        return {
-            id: spec.id,
-            expectPass: spec.expectPass,
-            ...result,
-            expectationOk: expectationOk({ ...result, expectPass: spec.expectPass }),
-        };
-    });
-
-    const learning = (fixture.learningPlans || []).map((spec) => {
-        const result = evaluateLearningPlan(spec.plan, spec.options || {});
-        return {
-            id: spec.id,
-            expectPass: spec.expectPass,
-            ...result,
-            expectationOk: expectationOk({ ...result, expectPass: spec.expectPass }),
-        };
-    });
-
-    const summary = summarizeLearningQuality({ mcq, case: caseRows, learning }, fixture.thresholds || {});
-    const expectationFailures = [...mcq, ...caseRows, ...learning].filter((row) => !row.expectationOk);
-    return {
-        summary: {
-            ...summary,
-            expectationFailures: expectationFailures.map((row) => row.id),
-            pass: summary.pass && expectationFailures.length === 0,
-        },
-        mcq,
-        case: caseRows,
-        learning,
     };
 }
 

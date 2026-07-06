@@ -22,6 +22,7 @@ const { scheduleCollectiveMemory, stopCollectiveMemory } = require('./server/ser
 const { schedulePersonalizationBandit, stopPersonalizationBandit } = require('./server/services/personalizationBanditScheduler');
 const { scheduleLearnerProfileRollup, stopLearnerProfileRollup } = require('./server/services/learnerProfileRollupScheduler');
 const { scheduleQueueFailureDigest, stopQueueFailureDigest } = require('./server/services/queueFailureDigestService');
+const { scheduleLearningQualityEval, stopLearningQualityEval } = require('./server/services/learningQualityEvalScheduler');
 const authSecurityStore = require('./server/services/authSecurityStore');
 const { safeFetch } = require('./server/utils/fetch');
 
@@ -61,6 +62,7 @@ async function gracefulShutdown(signal) {
             stopLearnerProfileRollup();
             stopPersonalizationBandit();
             stopQueueFailureDigest();
+            stopLearningQualityEval();
             const { stopWorkers } = require('./server/services/jobQueue');
             await stopWorkers();
             await db.close();
@@ -174,6 +176,7 @@ async function startServer() {
             schedulePersonalizationBandit(db,
                 logger.child({ task: 'personalization-bandit' }));
             scheduleQueueFailureDigest(logger.child({ task: 'queue-failure-digest' }));
+            scheduleLearningQualityEval(logger.child({ task: 'learning-quality-eval' }));
         }
 
         if (runHttp) {
