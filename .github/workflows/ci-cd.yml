@@ -28,6 +28,25 @@ jobs:
         run: npx eslint . --quiet
       - name: TypeScript type-check
         run: npm run typecheck:all
+      - name: Verify production env checklist
+        run: npm run verify:production-env
+        env:
+          NODE_ENV: production
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
+          REDIS_URL: redis://localhost:6379/0
+          JWT_SECRET: test-jwt-secret-at-least-thirty-two-characters-long
+          CORS_ORIGINS: http://localhost:3002
+          APP_URL: https://localhost:3002
+          SMTP_FROM: noreply@example.com
+          RESEND_API_KEY: test-resend-key
+          GEMINI_API_KEY: test-gemini-key
+          SENTRY_DSN: https://test@sentry.example.com/1
+          PAYWALL_ENABLED: true
+          STRIPE_SECRET_KEY: sk_test_xxx
+          STRIPE_WEBHOOK_SECRET: whsec_xxx
+          STRIPE_RESEARCHER_PRICE_ID: price_xxx
+          STRIPE_PRO_PRICE_ID: price_xxx
+          STRIPE_TEAM_PRICE_ID: price_xxx
 
 # ──────────────────────────────────────────────
 # Job 2: Unit + API tests (with coverage)
