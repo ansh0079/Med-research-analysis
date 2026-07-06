@@ -5,95 +5,21 @@ import { generateQuiz, generateQuizFromEvidence, QuizGenerationError, type QuizA
 import { selectTopEvidence } from '../utils/selectTopEvidence';
 import { api } from '@services/api';
 import { lookupArticleAttribution } from '@utils/searchAttribution';
-import { downloadText } from '@services/exportArticles';
 import { useAuth } from '@contexts/AuthContext';
-import { StudyRunPanel } from '@components/learning/StudyRunPanel';
-import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
-import type { QuizQuestion, QuizState, QuestionType, StudyRun, StudyRunOutline, LearningProfile, UserTopicMemory } from '@types';
-import { VerificationBadge } from '@components/ui/VerificationBadge';
+import type { QuizQuestion, QuizState, StudyRun, StudyRunOutline, LearningProfile, UserTopicMemory } from '@types';
+import { EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
 import {
-  MemoryDetailBadge,
-  SourceBadge,
-  QuestionTypeBadge,
-  VisualExplanation,
-  OptionButton,
-  DIFFICULTY_COLORS,
-  parseSourceLabel,
-} from '@components/learning/QuizWidgets';
+  QUIZ_INITIAL_STATE,
+  currentTimeMs,
+  getDifficultyFromParam,
+  learningRoundItemsToQuestions,
+  waitForClaimJob,
+} from '@components/learning/quizPageUtils';
+import { buildQuizReflectionSections, exportQuizReflection, type ReflectionKind } from '@components/learning/quizReflectionExport';
+import { QuizPageHeader, QuizSpacedRepBanner, QuizGeneratingPanel, QuizErrorPanel } from '@components/learning/QuizPageStatusPanels';
+import { QuizCompletePanel } from '@components/learning/QuizCompletePanel';
+import { QuizActiveQuestionPanel } from '@components/learning/QuizActiveQuestionPanel';
 import { getWorkflowContext } from '@utils/workflowContext';
-
-function currentTimeMs(): number {
-  return Date.now();
-}
-
-const INITIAL_STATE: QuizState = {
-  questions: [],
-  currentIndex: 0,
-  answers: {},
-  showExplanation: false,
-  score: 0,
-  complete: false,
-};
-
-function getDifficultyFromParam(value: string | null): 'easy' | 'medium' | 'hard' | 'mixed' {
-  if (value === 'easy' || value === 'medium' || value === 'hard' || value === 'mixed') return value;
-  return 'mixed';
-}
-
-function mapRoundItemType(itemType: string): QuestionType {
-  if (itemType === 'clinical_application') return 'clinical_application';
-  if (itemType === 'evidence_appraisal') return 'trial_interpretation';
-  if (itemType === 'overclaim_trap') return 'pitfall';
-  return 'recall';
-}
-
-function learningRoundItemsToQuestions(
-  items: Array<{
-    id?: number;
-    itemType?: string;
-    claimKey?: string | null;
-    questionText?: string;
-    options?: string[];
-    correctAnswer?: string | null;
-    explanation?: string | null;
-  }>
-): QuizQuestion[] {
-  return items
-    .filter((item) => String(item.questionText || '').trim().length > 0)
-    .map((item, idx) => ({
-      id: `round-${item.id ?? idx}`,
-      type: 'multiple_choice' as const,
-      questionType: mapRoundItemType(String(item.itemType || 'claim_recall')),
-      question: String(item.questionText || ''),
-      options: Array.isArray(item.options) ? item.options : [],
-      correctAnswer: String(item.correctAnswer || item.options?.[0] || ''),
-      explanation: String(item.explanation || ''),
-      difficulty: 'medium' as const,
-      claimKey: item.claimKey || null,
-    }));
-}
-
-async function waitForClaimJob(jobKey: string, maxMs = 120000): Promise<void> {
-  const start = Date.now();
-  while (Date.now() - start < maxMs) {
-    const { job } = await api.ai.getAiGenerationJob(jobKey);
-    if (job.status === 'completed') return;
-    if (job.status === 'failed') {
-      throw new QuizGenerationError(job.errorMessage || 'Claim generation failed', {
-        code: 'JOB_FAILED',
-        status: 409,
-        jobKey,
-        jobStatus: job.status,
-      });
-    }
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-  }
-  throw new QuizGenerationError('Timed out waiting for teaching claims', {
-    code: 'JOB_TIMEOUT',
-    status: 409,
-    jobKey,
-  });
-}
 
 export const QuizPage: React.FC = () => {
   const navigate = useNavigate();
@@ -114,7 +40,6 @@ export const QuizPage: React.FC = () => {
   const urlRoundId = Number(searchParams.get('roundId') || 0) || undefined;
   const urlCount = Math.min(Math.max(Number(searchParams.get('count') || 5) || 5, 1), 10);
 
-  // Support legacy sessionStorage prefill as fallback
   const [quizPrefill] = useState(() => {
     try {
       const raw = sessionStorage.getItem('med_quiz_prefill');
@@ -131,7 +56,7 @@ export const QuizPage: React.FC = () => {
   const activeTopic = urlTopic || quizPrefill?.topic || detectedTopic || '';
   const activeStudyRunId = urlStudyRunId || (Number(quizPrefill?.studyRunId || 0) || undefined);
   const prefillDifficulty = urlDifficulty || (quizPrefill?.difficulty === 'easy' || quizPrefill?.difficulty === 'medium' || quizPrefill?.difficulty === 'hard' || quizPrefill?.difficulty === 'mixed' ? quizPrefill.difficulty : 'mixed');
-  // Full article objects preserved from search — used to resolve sourceIndices back to real papers
+
   const lockedArticles = useMemo<QuizArticle[]>(() => {
     if (!quizPrefill?.articles?.length) return [];
     return quizPrefill.articles
@@ -164,10 +89,8 @@ export const QuizPage: React.FC = () => {
     }));
   }, [lockedArticles, results]);
 
-  // Full source articles indexed by 1-based sourceIndex — resolves quiz question sourceIndices
   const [quizSourceArticles, setQuizSourceArticles] = useState<QuizArticle[]>([]);
-
-  const [quiz, setQuiz] = useState<QuizState>(INITIAL_STATE);
+  const [quiz, setQuiz] = useState<QuizState>(QUIZ_INITIAL_STATE);
   const [generating, setGenerating] = useState(true);
   const [genError, setGenError] = useState<string | null>(null);
   const [genErrorCode, setGenErrorCode] = useState<string | null>(null);
@@ -186,7 +109,7 @@ export const QuizPage: React.FC = () => {
   const [manualTopic, setManualTopic] = useState(activeTopic);
   const [learningProfile, setLearningProfile] = useState<LearningProfile | null>(null);
   const [topicMemory, setTopicMemory] = useState<UserTopicMemory | null>(null);
-  const [reflectionKind, setReflectionKind] = useState<'CBD' | 'mini-CEX' | 'DOPS'>('CBD');
+  const [reflectionKind, setReflectionKind] = useState<ReflectionKind>('CBD');
   const [reflectionSaveStatus, setReflectionSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [adaptiveNotice, setAdaptiveNotice] = useState<string | null>(null);
 
@@ -229,7 +152,7 @@ export const QuizPage: React.FC = () => {
       setGenerating(true);
       setGenError(null);
       setGenErrorCode(null);
-      setQuiz(INITIAL_STATE);
+      setQuiz(QUIZ_INITIAL_STATE);
       setSelected(null);
       setQuizEvidenceAudit(null);
       setAdaptiveNotice(null);
@@ -335,6 +258,7 @@ export const QuizPage: React.FC = () => {
     urlRoundId,
     urlCount,
     isAuthenticated,
+    quizPrefill,
   ]);
 
   const loadQuiz = useCallback(() => fetchQuiz(() => false), [fetchQuiz]);
@@ -360,92 +284,15 @@ export const QuizPage: React.FC = () => {
 
   const currentQ: QuizQuestion | undefined = quiz.questions[quiz.currentIndex];
   const isAnswered = currentQ ? quiz.answers[currentQ.id] !== undefined : false;
-  const isCorrect = currentQ && quiz.answers[currentQ.id]?.toLowerCase() === currentQ.correctAnswer.toLowerCase();
+  const isCorrect = Boolean(currentQ && quiz.answers[currentQ.id]?.toLowerCase() === currentQ.correctAnswer.toLowerCase());
 
-  /** Resolve the primary source article for a question using its sourceIndices (1-based). */
   const resolveSourceArticle = useCallback((q: QuizQuestion): QuizArticle | null => {
     const idx = q.sourceIndices?.[0];
     if (idx && idx > 0 && idx <= quizSourceArticles.length) return quizSourceArticles[idx - 1];
     return null;
   }, [quizSourceArticles]);
+
   const scorePercent = quiz.questions.length > 0 ? Math.round((quiz.score / quiz.questions.length) * 100) : 0;
-
-  const handleAnswer = (answer: string) => {
-    if (!currentQ || isAnswered) return;
-    setSelected(answer);
-    setConfidenceByQuestion((prev) => ({ ...prev, [currentQ.id]: answerConfidence }));
-    const correct = answer.toLowerCase() === currentQ.correctAnswer.toLowerCase();
-    setQuiz((prev) => ({
-      ...prev,
-      answers: { ...prev.answers, [currentQ.id]: answer },
-      score: correct ? prev.score + 1 : prev.score,
-      showExplanation: true,
-    }));
-  };
-
-  const handleExplanationFeedback = useCallback((feedbackType: 'confusing' | 'clear') => {
-    if (!currentQ || !isAuthenticated) return;
-    const qid = currentQ.id;
-    if (feedbackSentIds.has(qid)) return;
-    setFeedbackSentIds((prev) => new Set([...prev, qid]));
-    api.learning.postQuizFeedback({
-      topic: manualTopic.trim(),
-      outlineNodeId: currentQ.outlineNodeId || currentQ.id,
-      feedbackType,
-    }).catch(() => undefined);
-  }, [currentQ, isAuthenticated, feedbackSentIds, manualTopic]);
-
-  const handleNext = () => {
-    const nextIndex = quiz.currentIndex + 1;
-    if (nextIndex >= quiz.questions.length) {
-      setQuiz((prev) => ({ ...prev, complete: true }));
-      // Store session feedback for the agent chat — if the score is poor,
-      // the agent will adapt its teaching approach next time.
-      try {
-        const weakTypes = quiz.questions
-          .filter((q) => quiz.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase())
-          .map((q) => q.questionType || 'recall');
-        sessionStorage.setItem('med_agent_session_feedback', JSON.stringify({
-          topic: activeTopic,
-          score: quiz.score,
-          totalQuestions: quiz.questions.length,
-          weakAreas: [...new Set(weakTypes)],
-          timestamp: currentTimeMs(),
-        }));
-      } catch { /* sessionStorage unavailable */ }
-      // Auto-save quiz attempt for authenticated users
-      if (isAuthenticated && activeTopic) {
-        saveQuizAttempt(quiz.questions, quiz.answers);
-      }
-    } else {
-      let nextAdaptiveNotice: string | null = null;
-      setQuiz((prev) => {
-        if (!currentQ) return { ...prev, currentIndex: nextIndex, showExplanation: false };
-        const recentAnswered = prev.questions
-          .slice(0, prev.currentIndex + 1)
-          .filter((q) => prev.answers[q.id] !== undefined);
-        const lastThree = recentAnswered.slice(-3);
-        const lastTwo = recentAnswered.slice(-2);
-        const easyCorrectStreak = lastThree.length === 3
-          && lastThree.every((q) => q.difficulty === 'easy' && prev.answers[q.id]?.toLowerCase() === q.correctAnswer.toLowerCase());
-        const hardWrongStreak = lastTwo.length === 2
-          && lastTwo.every((q) => q.difficulty === 'hard' && prev.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase());
-        const desired = easyCorrectStreak ? 'hard' : hardWrongStreak ? 'medium' : null;
-        if (!desired) return { ...prev, currentIndex: nextIndex, showExplanation: false };
-        const swapIndex = prev.questions.findIndex((q, index) => index >= nextIndex && q.difficulty === desired);
-        if (swapIndex <= nextIndex) return { ...prev, currentIndex: nextIndex, showExplanation: false };
-        const questions = [...prev.questions];
-        [questions[nextIndex], questions[swapIndex]] = [questions[swapIndex], questions[nextIndex]];
-        nextAdaptiveNotice = desired === 'hard'
-          ? 'Difficulty escalated after three easy correct answers.'
-          : 'Difficulty eased after two hard misses.';
-        return { ...prev, questions, currentIndex: nextIndex, showExplanation: false };
-      });
-      setAdaptiveNotice(nextAdaptiveNotice);
-      setSelected(null);
-      setAnswerConfidence(3);
-    }
-  };
 
   const saveQuizAttempt = async (questions: QuizQuestion[], answers: Record<string, string>) => {
     setSaveStatus('saving');
@@ -480,7 +327,6 @@ export const QuizPage: React.FC = () => {
         attempts,
       });
       setSaveStatus('saved');
-      // Fire-and-forget CPD log — non-critical
       if (isAuthenticated) {
         const correctCount = attempts.filter((a) => a.isCorrect).length;
         api.learning.logCpdSession({
@@ -492,7 +338,6 @@ export const QuizPage: React.FC = () => {
           source: 'auto',
         }).catch(() => { /* non-critical */ });
       }
-      // Refresh run data so gap report reflects the attempts we just saved
       if (activeStudyRunId && isAuthenticated) {
         try {
           const { run, outline } = await api.learning.getStudyRun(activeStudyRunId);
@@ -511,69 +356,78 @@ export const QuizPage: React.FC = () => {
     }
   };
 
-  const buildQuizReflectionSections = () => {
-    const kind = reflectionKind;
-    const stamp = new Date().toISOString().split('T')[0];
-    const weakTypes = quiz.questions
-      .filter((q) => quiz.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase())
-      .map((q) => q.questionType || 'recall');
-    const uniqueWeakTypes = [...new Set(weakTypes)];
-    const evidenceTitles = evidenceSnippets
-      .map((s: { title?: string }) => s.title)
-      .filter(Boolean)
-      .slice(0, 5) as string[];
-    const sections = [
-      ['WBA / portfolio type', kind === 'CBD' ? 'Case-based Discussion (CBD)' : kind === 'mini-CEX' ? 'Mini Clinical Evaluation Exercise (mini-CEX)' : 'Direct Observation of Procedural Skills (DOPS)'],
-      ['Generated', stamp],
-      ['Topic', activeTopic],
-      ['Original clinical question', typeof workflowContext.originalPresentation === 'string' && workflowContext.originalPresentation.trim() ? workflowContext.originalPresentation : 'Not captured. Add the de-identified presentation before submission.'],
-      ['Learning journey', typeof workflowContext.source === 'string' ? `Started from ${workflowContext.source}.` : 'Started from evidence search.'],
-      ['Quiz performance', `${quiz.score}/${quiz.questions.length} correct (${scorePercent}%)`],
-      ['Questions attempted', String(quiz.questions.length)],
-      ['Areas for improvement', uniqueWeakTypes.length > 0 ? uniqueWeakTypes.join(', ') : 'None identified - strong overall performance.'],
-      ['Evidence used', evidenceTitles.length > 0 ? evidenceTitles.join('\n') : 'Current topic evidence and generated quiz explanations.'],
-      ['Reflection notes', 'Use this quiz result to structure a discussion on clinical reasoning, evidence appraisal, and specific learning actions.'],
-    ] as Array<[string, string]>;
-    return {
-      kind,
-      stamp,
-      sections,
-      uniqueWeakTypes,
-      evidenceUsed: evidenceTitles.length > 0
-        ? evidenceTitles.map((title: string, index: number) => `${index + 1}. ${title}`).join('\n')
-        : 'Quiz questions generated from the current topic evidence.',
-    };
+  const handleAnswer = (answer: string) => {
+    if (!currentQ || isAnswered) return;
+    setSelected(answer);
+    setConfidenceByQuestion((prev) => ({ ...prev, [currentQ.id]: answerConfidence }));
+    const correct = answer.toLowerCase() === currentQ.correctAnswer.toLowerCase();
+    setQuiz((prev) => ({
+      ...prev,
+      answers: { ...prev.answers, [currentQ.id]: answer },
+      score: correct ? prev.score + 1 : prev.score,
+      showExplanation: true,
+    }));
   };
 
-  const exportQuizReflection = (format: 'doc' | 'txt') => {
-    const kind = reflectionKind;
-    const stamp = new Date().toISOString().split('T')[0];
-    const safeKind = kind.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    const weakTypes = quiz.questions
-      .filter((q) => quiz.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase())
-      .map((q) => q.questionType || 'recall');
-    const uniqueWeakTypes = [...new Set(weakTypes)];
-    const sections = [
-      ['WBA / portfolio type', kind === 'CBD' ? 'Case-based Discussion (CBD)' : kind === 'mini-CEX' ? 'Mini Clinical Evaluation Exercise (mini-CEX)' : 'Direct Observation of Procedural Skills (DOPS)'],
-      ['Generated', stamp],
-      ['Topic', activeTopic],
-      ['Quiz performance', `${quiz.score}/${quiz.questions.length} correct (${scorePercent}%)`],
-      ['Questions attempted', String(quiz.questions.length)],
-      ['Areas for improvement', uniqueWeakTypes.length > 0 ? uniqueWeakTypes.join(', ') : 'None identified — strong overall performance.'],
-      ['Reflection notes', 'Use this quiz result to structure a discussion on clinical reasoning, evidence appraisal, and specific learning actions.'],
-    ] as Array<[string, string]>;
-    if (format === 'txt') {
-      const text = sections.map(([title, body]) => `${title}\n${body}`).join('\n\n');
-      downloadText(`portfolio_reflection_${safeKind}_${stamp}.txt`, text);
-      return;
+  const handleExplanationFeedback = useCallback((feedbackType: 'confusing' | 'clear') => {
+    if (!currentQ || !isAuthenticated) return;
+    const qid = currentQ.id;
+    if (feedbackSentIds.has(qid)) return;
+    setFeedbackSentIds((prev) => new Set([...prev, qid]));
+    api.learning.postQuizFeedback({
+      topic: manualTopic.trim(),
+      outlineNodeId: currentQ.outlineNodeId || currentQ.id,
+      feedbackType,
+    }).catch(() => undefined);
+  }, [currentQ, isAuthenticated, feedbackSentIds, manualTopic]);
+
+  const handleNext = () => {
+    const nextIndex = quiz.currentIndex + 1;
+    if (nextIndex >= quiz.questions.length) {
+      setQuiz((prev) => ({ ...prev, complete: true }));
+      try {
+        const weakTypes = quiz.questions
+          .filter((q) => quiz.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase())
+          .map((q) => q.questionType || 'recall');
+        sessionStorage.setItem('med_agent_session_feedback', JSON.stringify({
+          topic: activeTopic,
+          score: quiz.score,
+          totalQuestions: quiz.questions.length,
+          weakAreas: [...new Set(weakTypes)],
+          timestamp: currentTimeMs(),
+        }));
+      } catch { /* sessionStorage unavailable */ }
+      if (isAuthenticated && activeTopic) {
+        saveQuizAttempt(quiz.questions, quiz.answers);
+      }
+    } else {
+      let nextAdaptiveNotice: string | null = null;
+      setQuiz((prev) => {
+        if (!currentQ) return { ...prev, currentIndex: nextIndex, showExplanation: false };
+        const recentAnswered = prev.questions
+          .slice(0, prev.currentIndex + 1)
+          .filter((q) => prev.answers[q.id] !== undefined);
+        const lastThree = recentAnswered.slice(-3);
+        const lastTwo = recentAnswered.slice(-2);
+        const easyCorrectStreak = lastThree.length === 3
+          && lastThree.every((q) => q.difficulty === 'easy' && prev.answers[q.id]?.toLowerCase() === q.correctAnswer.toLowerCase());
+        const hardWrongStreak = lastTwo.length === 2
+          && lastTwo.every((q) => q.difficulty === 'hard' && prev.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase());
+        const desired = easyCorrectStreak ? 'hard' : hardWrongStreak ? 'medium' : null;
+        if (!desired) return { ...prev, currentIndex: nextIndex, showExplanation: false };
+        const swapIndex = prev.questions.findIndex((q, index) => index >= nextIndex && q.difficulty === desired);
+        if (swapIndex <= nextIndex) return { ...prev, currentIndex: nextIndex, showExplanation: false };
+        const questions = [...prev.questions];
+        [questions[nextIndex], questions[swapIndex]] = [questions[swapIndex], questions[nextIndex]];
+        nextAdaptiveNotice = desired === 'hard'
+          ? 'Difficulty escalated after three easy correct answers.'
+          : 'Difficulty eased after two hard misses.';
+        return { ...prev, questions, currentIndex: nextIndex, showExplanation: false };
+      });
+      setAdaptiveNotice(nextAdaptiveNotice);
+      setSelected(null);
+      setAnswerConfidence(3);
     }
-    const html = `<!doctype html><html><head><meta charset="utf-8"><title>${kind} Reflection</title>
-      <style>body{font-family:Arial,sans-serif;line-height:1.45;color:#111827;max-width:820px;margin:32px auto;padding:0 24px}h1{font-size:24px}h2{font-size:15px;margin-top:20px;border-bottom:1px solid #e5e7eb;padding-bottom:4px}p{font-size:13px;white-space:pre-wrap}</style>
-    </head><body>
-      <h1>${kind} Reflection</h1>
-      ${sections.map(([title, body]) => `<h2>${title}</h2><p>${body}</p>`).join('\n')}
-    </body></html>`;
-    downloadText(`portfolio_reflection_${safeKind}_${stamp}.doc`, html, 'application/msword');
   };
 
   const saveQuizReflectionDraft = async () => {
@@ -581,11 +435,21 @@ export const QuizPage: React.FC = () => {
       setCurrentPage('auth');
       return;
     }
-    const { kind, uniqueWeakTypes, evidenceUsed } = buildQuizReflectionSections();
+    const { uniqueWeakTypes, evidenceUsed } = buildQuizReflectionSections({
+      reflectionKind,
+      activeTopic,
+      quizScore: quiz.score,
+      questionCount: quiz.questions.length,
+      scorePercent,
+      questions: quiz.questions,
+      answers: quiz.answers,
+      workflowContext,
+      evidenceSnippets,
+    });
     setReflectionSaveStatus('saving');
     try {
       await api.learning.createPortfolioReflection({
-        reflectionType: kind,
+        reflectionType: reflectionKind,
         sourceType: 'quiz',
         topic: activeTopic,
         whatHappened: [
@@ -611,591 +475,105 @@ export const QuizPage: React.FC = () => {
 
   return (
     <div className="min-h-screen aurora-bg">
-      <header className="w-full pt-[calc(var(--nav-h)+1.5rem)] pb-16 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/5 to-purple-600/5 -z-10" />
-        <div className="max-w-3xl mx-auto">
-          <button type="button" onClick={() => setCurrentPage('search')}
-            className="flex items-center gap-2 text-slate-500 hover:text-slate-900 dark:hover:text-white text-sm font-medium transition-colors mb-8">
-            <i className="fas fa-arrow-left" /> Back to results
-          </button>
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-900/40">
-              <i className="fas fa-brain text-white text-xl" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-black text-slate-900 dark:text-white">Test yourself</h1>
-              <p className="text-sm text-indigo-500 font-semibold capitalize">{activeTopic}</p>
-              {lockedArticles.length === 1 && quizPrefill?.singlePaperMode && (
-                <span className="mt-1 inline-block text-[10px] font-bold uppercase tracking-widest text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/20 px-2 py-0.5 rounded-full">
-                  <i className="fas fa-file-medical mr-1" />
-                  Questions grounded in this paper only
-                </span>
-              )}
-              {lockedArticles.length > 1 && (
-                <span className="mt-1 inline-block text-[10px] font-bold uppercase tracking-widest text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/20 px-2 py-0.5 rounded-full">
-                  <i className="fas fa-layer-group mr-1" />
-                  Grounded in top {lockedArticles.length} evidence papers from your search
-                </span>
-              )}
-              {fromDataset && (
-                <span className="mt-1 inline-block text-[10px] font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-2 py-0.5 rounded-full">
-                  General medical questions · MedMCQA dataset
-                </span>
-              )}
-              <div className="mt-3 flex flex-wrap items-center gap-3">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                  Training: {String(trainingStage).replace(/_/g, ' ')}
-                </span>
-                {isAuthenticated && topicMemory && topicMemory.searchCount + topicMemory.topPaperCount + topicMemory.savedPaperCount > 0 && (
-                  <MemoryDetailBadge memory={topicMemory} />
-                )}
-                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
-                  Explain
-                  <select
-                    value={effectiveExplanationDepth}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      const next = new URLSearchParams(searchParams);
-                      next.set('explain', v);
-                      setSearchParams(next, { replace: true });
-                    }}
-                    className="rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 px-2 py-1 text-[11px] font-semibold text-slate-700 dark:text-slate-200"
-                  >
-                    <option value="foundation">First principles</option>
-                    <option value="exam_focus">Exam focus</option>
-                    <option value="mechanistic">Mechanistic</option>
-                  </select>
-                </label>
-                {curriculumTopicIdParam ? (
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-rose-500">
-                    Study path topic
-                  </span>
-                ) : null}
-              </div>
-              {typeof workflowContext.originalPresentation === 'string' && workflowContext.originalPresentation.trim() && (
-                <div className="mt-3 max-w-2xl rounded-xl border border-cyan-200 bg-cyan-50/80 px-3 py-2 text-xs text-cyan-950/80 dark:border-cyan-900/60 dark:bg-cyan-950/20 dark:text-cyan-100/80">
-                  <span className="font-bold uppercase tracking-widest text-cyan-700 dark:text-cyan-300">Shift context: </span>
-                  {workflowContext.originalPresentation}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
+      <QuizPageHeader
+        activeTopic={activeTopic}
+        lockedArticleCount={lockedArticles.length}
+        singlePaperMode={quizPrefill?.singlePaperMode}
+        fromDataset={fromDataset}
+        trainingStage={trainingStage}
+        isAuthenticated={isAuthenticated}
+        topicMemory={topicMemory}
+        effectiveExplanationDepth={effectiveExplanationDepth}
+        curriculumTopicId={curriculumTopicIdParam}
+        workflowContext={workflowContext}
+        onBack={() => setCurrentPage('search')}
+        onExplainDepthChange={(depth) => {
+          const next = new URLSearchParams(searchParams);
+          next.set('explain', depth);
+          setSearchParams(next, { replace: true });
+        }}
+      />
 
       <main className="max-w-3xl mx-auto px-4 -mt-8 pb-24">
         {urlMode === 'spaced_rep' && urlTargetNodeIds && urlTargetNodeIds.length > 0 && (
-          <div className="mb-4 rounded-xl border border-violet-200 dark:border-violet-700/40 bg-violet-50 dark:bg-violet-950/20 px-4 py-3 flex items-center gap-3">
-            <i className="fas fa-rotate text-violet-500 dark:text-violet-400 shrink-0" />
-            <div className="min-w-0">
-              <p className="text-sm font-bold text-violet-800 dark:text-violet-200">Spaced repetition session</p>
-              <p className="text-xs text-violet-600 dark:text-violet-400 mt-0.5">
-                Targeting {urlTargetNodeIds.length} concept{urlTargetNodeIds.length === 1 ? '' : 's'} due for review.
-                Completing this session will reschedule them.
-              </p>
-            </div>
-          </div>
-        )}
-        {generating && (
-          <div className="rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 p-12 text-center shadow-sm">
-            <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-slate-500 dark:text-slate-400 font-medium">Generating questions from your research…</p>
-            <p className="text-xs text-slate-400 mt-1">Includes recall, clinical application, and trial interpretation questions</p>
-          </div>
+          <QuizSpacedRepBanner targetNodeCount={urlTargetNodeIds.length} />
         )}
 
+        {generating && <QuizGeneratingPanel />}
+
         {genError && (
-          <div className="rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-8 text-center">
-            <i className="fas fa-exclamation-circle text-3xl text-red-500 mb-3 block" />
-            <p className="text-red-700 dark:text-red-300 font-medium mb-4">{genError}</p>
-            {genErrorCode === 'CLAIMS_REQUIRED' && evidenceSnippets.length > 0 && (
-              <button
-                type="button"
-                onClick={loadQuiz}
-                className="mb-4 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm transition-colors"
-              >
-                Quiz from search evidence instead
-              </button>
-            )}
-            {genErrorCode === 'CLAIMS_REQUIRED' && (
-              <p className="text-xs text-red-600 dark:text-red-400 mb-4 max-w-md mx-auto">
-                Generate paper synopses or run evidence synthesis on this topic first to unlock claim-anchored questions.
-              </p>
-            )}
-            {(genErrorCode === 'JOB_TIMEOUT' || (urlClaimJobKey && genErrorCode !== 'CLAIMS_REQUIRED')) && (
-              <p className="text-xs text-red-600 dark:text-red-400 mb-4">
-                Teaching claims are still generating. Wait a moment, then try again.
-              </p>
-            )}
-            {(!activeTopic || activeTopic.trim().length < 2) ? (
-              <div className="mx-auto max-w-md">
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <input
-                    value={manualTopic}
-                    onChange={(e) => setManualTopic(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === 'Enter') startManualQuiz(); }}
-                    placeholder="Enter a topic, e.g. sepsis"
-                    className="flex-1 rounded-xl border border-red-200 dark:border-red-800 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-red-400"
-                  />
-                  <button
-                    type="button"
-                    disabled={manualTopic.trim().length < 2}
-                    onClick={startManualQuiz}
-                    className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl font-bold text-sm transition-colors"
-                  >
-                    Start quiz
-                  </button>
-                </div>
-                <p className="mt-3 text-xs text-red-500 dark:text-red-300">
-                  You can quiz a topic directly; linked study runs add outline gap tracking when available.
-                </p>
-              </div>
-            ) : (
-              <button type="button" onClick={loadQuiz}
-                className="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold text-sm transition-colors">
-                Try again
-              </button>
-            )}
-          </div>
+          <QuizErrorPanel
+            genError={genError}
+            genErrorCode={genErrorCode}
+            activeTopic={activeTopic}
+            manualTopic={manualTopic}
+            hasEvidenceSnippets={evidenceSnippets.length > 0}
+            urlClaimJobKey={urlClaimJobKey}
+            onManualTopicChange={setManualTopic}
+            onStartManualQuiz={startManualQuiz}
+            onRetry={loadQuiz}
+            onQuizFromEvidence={loadQuiz}
+          />
         )}
 
         {!generating && !genError && quiz.complete && (
-          <div className="space-y-4">
-            {/* Score card — always first */}
-            <div className="rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 p-8 text-center shadow-sm">
-              <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl ${
-                scorePercent >= 70 ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400'
-              }`}>
-                <i className={`fas fa-${scorePercent >= 70 ? 'trophy' : 'chart-bar'}`} />
-              </div>
-              <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-2">{quiz.score}/{quiz.questions.length}</h2>
-              <p className="text-lg text-slate-500 dark:text-slate-400 mb-1">{scorePercent}% correct</p>
-              <p className="text-sm text-slate-400 dark:text-slate-500 mb-6">
-                {scorePercent >= 80 ? 'Excellent — strong knowledge of this topic.' : scorePercent >= 60 ? 'Good effort — review explanations to solidify understanding.' : 'Keep studying — review source articles and try again.'}
-              </p>
-              <div className="flex flex-wrap justify-center gap-3">
-                <button type="button" onClick={loadQuiz}
-                  className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm transition-colors">
-                  <i className="fas fa-redo mr-2" /> New questions
-                </button>
-                {activeStudyRunId ? (
-                  <button type="button" onClick={() => navigate(`/learning/${activeStudyRunId}`)}
-                    className="px-5 py-2.5 border-2 border-indigo-200 dark:border-indigo-700 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-xl font-bold text-sm transition-colors">
-                    <i className="fas fa-map mr-2" /> Back to run
-                  </button>
-                ) : (
-                  <button type="button" onClick={() => setCurrentPage('search')}
-                    className="px-5 py-2.5 border-2 border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl font-bold text-sm transition-colors">
-                    <i className="fas fa-search mr-2" /> Back to papers
-                  </button>
-                )}
-              </div>
-              {isAuthenticated && saveStatus !== 'idle' && (
-                <div className="mt-4">
-                  {saveStatus === 'saving' && (
-                    <span className="text-xs text-slate-400"><i className="fas fa-spinner fa-spin mr-1" /> Saving progress...</span>
-                  )}
-                  {saveStatus === 'saved' && (
-                    <span className="text-xs text-emerald-600 font-semibold"><i className="fas fa-check mr-1" /> Progress saved</span>
-                  )}
-                  {saveStatus === 'error' && (
-                    <span className="text-xs text-red-500"><i className="fas fa-exclamation-triangle mr-1" /> Failed to save progress</span>
-                  )}
-                </div>
-              )}
-              {!isAuthenticated && (
-                <div className="mt-4">
-                  <span className="text-xs text-slate-400">
-                    <i className="fas fa-info-circle mr-1" />
-                    <button type="button" onClick={() => setCurrentPage('auth')} className="underline hover:text-indigo-600">Sign in</button> to track your progress
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {/* Re-read panel — papers the doctor missed questions from */}
-            {(() => {
-              const missedPapers = new Map<string, { article: QuizArticle; missCount: number; questionTypes: string[] }>();
-              quiz.questions.forEach((q) => {
-                const wrong = (quiz.answers[q.id] || '').toLowerCase() !== q.correctAnswer.toLowerCase();
-                if (!wrong) return;
-                const src = resolveSourceArticle(q);
-                if (!src) return;
-                const key = src.uid || src.title;
-                const existing = missedPapers.get(key);
-                if (existing) {
-                  existing.missCount += 1;
-                  if (q.questionType && !existing.questionTypes.includes(q.questionType)) existing.questionTypes.push(q.questionType);
-                } else {
-                  missedPapers.set(key, { article: src, missCount: 1, questionTypes: q.questionType ? [q.questionType] : [] });
-                }
-              });
-              if (missedPapers.size === 0) return null;
-              const entries = [...missedPapers.values()].sort((a, b) => b.missCount - a.missCount);
-              return (
-                <div className="rounded-2xl bg-white dark:bg-slate-800 border border-red-100 dark:border-red-900/30 p-6 shadow-sm">
-                  <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-1 flex items-center gap-2">
-                    <i className="fas fa-book-open text-red-500" />
-                    Review these papers before your next session
-                  </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-                    You missed {quiz.questions.length - quiz.score} question{quiz.questions.length - quiz.score === 1 ? '' : 's'} grounded in the following evidence.
-                  </p>
-                  <div className="space-y-3">
-                    {entries.map(({ article, missCount, questionTypes }) => {
-                      const year = article.pubdate?.slice(0, 4) ?? null;
-                      const journal = article.source ?? article.journal ?? null;
-                      const pubmedUrl = article.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${article.pmid}/` : article.doi ? `https://doi.org/${article.doi}` : null;
-                      return (
-                        <div key={article.uid || article.title} className="flex gap-3 rounded-xl bg-red-50/60 dark:bg-red-950/10 border border-red-100 dark:border-red-900/20 px-4 py-3">
-                          <i className="fas fa-circle-xmark text-red-400 mt-0.5 shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 leading-snug">{article.title}</p>
-                            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                              {[journal, year].filter(Boolean).join(' · ')}
-                              {missCount > 1 && <span className="ml-2 font-semibold text-red-500">{missCount} questions missed</span>}
-                              {questionTypes.length > 0 && <span className="ml-2 text-slate-400">({questionTypes.join(', ')})</span>}
-                            </p>
-                            {pubmedUrl && (
-                              <a href={pubmedUrl} target="_blank" rel="noopener noreferrer"
-                                className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
-                                <i className="fas fa-arrow-up-right-from-square text-[9px]" /> View paper
-                              </a>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })()}
-
-            {/* Gap report — only when part of a study run and data is ready */}
-            {activeStudyRunId && studyRun && studyOutline && studyOutline.nodes.length > 0 && (
-              <div className="rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 p-6 shadow-sm">
-                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
-                  <i className="fas fa-map-signs text-indigo-500" /> Outline coverage — gap report
-                </h3>
-                <StudyRunPanel
-                  run={studyRun}
-                  outline={studyOutline}
-                  gapReportMode
-                  onContinue={() => navigate(`/quiz?topic=${encodeURIComponent(studyRun.topic)}&difficulty=mixed&studyRunId=${studyRun.id}`)}
-                />
-              </div>
-            )}
-
-            {/* Fallback when gap report fetch failed */}
-            {activeStudyRunId && studyRunLoadFailed && (
-              <div className="rounded-2xl border border-amber-200 dark:border-amber-800/50 bg-amber-50 dark:bg-amber-950/30 p-4 flex items-center gap-3">
-                <i className="fas fa-exclamation-triangle text-amber-500 shrink-0" />
-                <div>
-                  <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">Gap report unavailable</p>
-                  <p className="text-xs text-amber-600 dark:text-amber-400 mt-0.5">
-                    Could not load your outline coverage. Your quiz results were saved.{' '}
-                    <button type="button" onClick={() => navigate(`/learning/${activeStudyRunId}`)}
-                      className="underline hover:no-underline font-bold">
-                      View run page
-                    </button>{' '}to see the full gap report.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Portfolio reflection export */}
-            <div className="rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 p-6 shadow-sm">
-              <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center gap-2">
-                <i className="fas fa-file-export text-emerald-500" /> Portfolio reflection
-              </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-                Export a de-identified WBA draft for CBD, mini-CEX, or DOPS evidence.
-              </p>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <select
-                  value={reflectionKind}
-                  onChange={(e) => setReflectionKind(e.target.value as 'CBD' | 'mini-CEX' | 'DOPS')}
-                  className="h-9 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 px-2 text-xs font-bold text-slate-700 dark:text-slate-200"
-                  aria-label="Portfolio reflection type"
-                >
-                  <option value="CBD">CBD</option>
-                  <option value="mini-CEX">mini-CEX</option>
-                  <option value="DOPS">DOPS</option>
-                </select>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={saveQuizReflectionDraft}
-                    disabled={reflectionSaveStatus === 'saving'}
-                    className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-slate-900 px-3 text-xs font-black text-white transition-colors hover:bg-slate-700 disabled:opacity-60 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
-                  >
-                    <i className={`fas ${reflectionSaveStatus === 'saving' ? 'fa-circle-notch fa-spin' : reflectionSaveStatus === 'saved' ? 'fa-check' : 'fa-save'} text-[10px]`} />
-                    {reflectionSaveStatus === 'saved' ? 'Saved' : 'Save draft'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => exportQuizReflection('doc')}
-                    className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-emerald-600 px-3 text-xs font-black text-white transition-colors hover:bg-emerald-500"
-                  >
-                    <i className="fas fa-file-word text-[10px]" />
-                    Export .doc
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => exportQuizReflection('txt')}
-                    className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-emerald-200 bg-white px-3 text-xs font-black text-emerald-700 transition-colors hover:bg-emerald-50 dark:border-emerald-800 dark:bg-slate-950 dark:text-emerald-200 dark:hover:bg-emerald-950/40"
-                  >
-                    <i className="fas fa-file-lines text-[10px]" />
-                    Export .txt
-                  </button>
-                </div>
-              </div>
-              {reflectionSaveStatus === 'error' && (
-                <p className="mt-3 text-xs font-semibold text-red-500">Could not save draft. Please sign in and try again.</p>
-              )}
-            </div>
-          </div>
+          <QuizCompletePanel
+            quiz={quiz}
+            scorePercent={scorePercent}
+            activeStudyRunId={activeStudyRunId}
+            studyRun={studyRun}
+            studyOutline={studyOutline}
+            studyRunLoadFailed={studyRunLoadFailed}
+            isAuthenticated={isAuthenticated}
+            saveStatus={saveStatus}
+            reflectionKind={reflectionKind}
+            reflectionSaveStatus={reflectionSaveStatus}
+            resolveSourceArticle={resolveSourceArticle}
+            onNewQuestions={loadQuiz}
+            onBackToRun={() => navigate(`/learning/${activeStudyRunId}`)}
+            onBackToSearch={() => setCurrentPage('search')}
+            onContinueGapReview={() => {
+              if (studyRun) {
+                navigate(`/quiz?topic=${encodeURIComponent(studyRun.topic)}&difficulty=mixed&studyRunId=${studyRun.id}`);
+              }
+            }}
+            onSignIn={() => setCurrentPage('auth')}
+            onViewRunPage={() => navigate(`/learning/${activeStudyRunId}`)}
+            onReflectionKindChange={setReflectionKind}
+            onSaveReflectionDraft={saveQuizReflectionDraft}
+            onExportReflection={(format) => exportQuizReflection({
+              reflectionKind,
+              activeTopic,
+              quizScore: quiz.score,
+              questionCount: quiz.questions.length,
+              scorePercent,
+              questions: quiz.questions,
+              answers: quiz.answers,
+              format,
+            })}
+          />
         )}
 
         {!generating && !genError && !quiz.complete && currentQ && (
-          <>
-            {/* Progress bar */}
-            <div className="mb-6">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
-                  Question {quiz.currentIndex + 1} of {quiz.questions.length}
-                </span>
-                <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{quiz.score} correct</span>
-              </div>
-              <div className="h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                <div
-                  className="impact-bar-fill"
-                  data-pct={String(Math.round((quiz.currentIndex / Math.max(1, quiz.questions.length)) * 100 / 10) * 10)}
-                />
-              </div>
-            </div>
-
-            {adaptiveNotice && (
-              <div className="mb-4 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-3 text-xs font-semibold text-indigo-700 dark:border-indigo-800/50 dark:bg-indigo-950/30 dark:text-indigo-300">
-                <i className="fas fa-sliders mr-2" />
-                {adaptiveNotice}
-              </div>
-            )}
-
-            {/* Question card */}
-            <div className="rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 p-6 shadow-sm mb-4">
-              <div className="flex items-center gap-2 mb-4 flex-wrap">
-                <span className={`text-xs font-bold px-2.5 py-1 rounded-lg capitalize ${DIFFICULTY_COLORS[currentQ.difficulty] ?? DIFFICULTY_COLORS.medium}`}>
-                  {currentQ.difficulty}
-                </span>
-                <QuestionTypeBadge type={currentQ.questionType} />
-                {!currentQ.questionType && (
-                  <span className="text-xs text-slate-400 capitalize">
-                    {currentQ.type === 'true_false' ? 'True / False' : 'Multiple choice'}
-                  </span>
-                )}
-              </div>
-
-              <p className="text-base font-semibold text-slate-900 dark:text-white leading-relaxed mb-4">
-                {currentQ.question}
-              </p>
-
-              {!isAnswered && (
-                <div className="mb-5 rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/40 px-4 py-3">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-2">
-                    Confidence before answering (1 = guessing, 5 = certain)
-                  </label>
-                  <div className="flex items-center gap-3">
-                    <input
-                      type="range"
-                      min={1}
-                      max={5}
-                      step={1}
-                      value={answerConfidence}
-                      onChange={(e) => setAnswerConfidence(Number(e.target.value))}
-                      className="flex-1 accent-indigo-600"
-                      aria-label="Answer confidence"
-                    />
-                    <span className="text-sm font-black text-indigo-600 dark:text-indigo-400 w-6 text-center">{answerConfidence}</span>
-                  </div>
-                </div>
-              )}
-
-              {currentQ.type === 'multiple_choice' && currentQ.options ? (
-                <div className="space-y-3">
-                  {currentQ.options.map((opt) => {
-                    const letter = opt.split(':')[0].trim();
-                    return (
-                      <OptionButton
-                        key={letter}
-                        opt={opt}
-                        letter={letter}
-                        isAnswered={isAnswered}
-                        isCorrectLetter={letter.toLowerCase() === currentQ.correctAnswer.toLowerCase()}
-                        isSelected={selected === letter}
-                        onClick={() => handleAnswer(letter)}
-                      />
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="flex gap-4">
-                  {['true', 'false'].map((val) => (
-                    <OptionButton
-                      key={val}
-                      opt={val}
-                      letter={val}
-                      isAnswered={isAnswered}
-                      isCorrectLetter={val === currentQ.correctAnswer.toLowerCase()}
-                      isSelected={selected === val}
-                      onClick={() => handleAnswer(val)}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Explanation panel */}
-            {quiz.showExplanation && (
-              <div className={`rounded-2xl p-5 mb-4 border-2 animate-fade-in ${
-                isCorrect
-                  ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800'
-                  : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800'
-              }`}>
-                <div className="flex flex-wrap items-center gap-2 mb-2">
-                  <i className={`fas fa-${isCorrect ? 'check-circle text-emerald-600' : 'lightbulb text-amber-600'}`} />
-                  <span className={`text-sm font-bold ${isCorrect ? 'text-emerald-800 dark:text-emerald-300' : 'text-amber-800 dark:text-amber-300'}`}>
-                    {isCorrect ? 'Correct!' : `Correct answer: ${currentQ.correctAnswer}`}
-                  </span>
-                  <VerificationBadge status={(currentQ as { verificationStatus?: string }).verificationStatus || 'synthesis_inferred'} />
-                </div>
-
-                {(() => {
-                  const parsed = parseSourceLabel(currentQ.explanation || '');
-                  return (
-                    <div className="mb-3">
-                      <p className={`text-sm leading-relaxed ${isCorrect ? 'text-emerald-700 dark:text-emerald-400' : 'text-amber-700 dark:text-amber-400'}`}>
-                        {parsed.text}
-                      </p>
-                      {parsed.label && <div className="mt-2"><SourceBadge label={parsed.label} /></div>}
-                    </div>
-                  );
-                })()}
-
-                {effectiveExplanationDepth === 'mechanistic' && currentQ.explanationDeep && (
-                  <div className="mb-3 rounded-xl bg-white/70 dark:bg-slate-900/50 border border-slate-200/80 dark:border-slate-600 px-3 py-2">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400 mb-1">Mechanistic depth</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{currentQ.explanationDeep}</p>
-                  </div>
-                )}
-
-                <VisualExplanation visual={currentQ.visualExplanation ?? null} />
-
-                {currentQ.distractorRationale && isAnswered && (
-                  <div className="mt-3 pt-3 border-t border-current/10">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">Per-option rationale</p>
-                    <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
-                      {(['A', 'B', 'C', 'D'] as const).map((letter) => {
-                        const text = currentQ.distractorRationale?.[letter];
-                        if (!text) return null;
-                        return (
-                          <li key={letter}>
-                            <span className="font-bold text-slate-700 dark:text-slate-300">{letter}.</span>{' '}
-                            {text}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                )}
-
-                {currentQ.whyOthersWrong && (
-                  <div className="mt-3 pt-3 border-t border-current/10">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">Summary (wrong options)</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{currentQ.whyOthersWrong}</p>
-                  </div>
-                )}
-
-                {(() => {
-                  const src = resolveSourceArticle(currentQ);
-                  const year = src?.pubdate?.slice(0, 4) ?? null;
-                  const journal = src?.source ?? src?.journal ?? null;
-                  const pubmedUrl = src?.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${src.pmid}/` : src?.doi ? `https://doi.org/${src.doi}` : null;
-                  if (!src && !currentQ.sourceArticle && !currentQ.sourceReference) return null;
-                  return (
-                    <div className="mt-3 rounded-lg border border-indigo-100 bg-indigo-50/60 dark:border-indigo-800/40 dark:bg-indigo-950/20 px-3 py-2">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-indigo-500 dark:text-indigo-400 mb-1 flex items-center gap-1">
-                        <i className="fas fa-book-open text-[9px]" />
-                        Evidence source for this question
-                      </p>
-                      <p className="text-xs font-semibold text-slate-800 dark:text-slate-100 leading-snug">
-                        {src?.title ?? currentQ.sourceArticle ?? currentQ.sourceReference}
-                      </p>
-                      {(year || journal) && (
-                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                          {[journal, year].filter(Boolean).join(' · ')}
-                        </p>
-                      )}
-                      {pubmedUrl && (
-                        <a href={pubmedUrl} target="_blank" rel="noopener noreferrer"
-                          className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
-                          <i className="fas fa-arrow-up-right-from-square text-[9px]" />
-                          View paper
-                        </a>
-                      )}
-                    </div>
-                  );
-                })()}
-              </div>
-            )}
-
-            {isAnswered && isAuthenticated && currentQ && (
-              <div className="flex items-center justify-end gap-2 -mt-1">
-                {feedbackSentIds.has(currentQ.id) ? (
-                  <span className="text-[11px] text-slate-400 dark:text-slate-500 italic">Thanks for your feedback</span>
-                ) : (
-                  <>
-                    <span className="text-[11px] text-slate-400 dark:text-slate-500">Explanation helpful?</span>
-                    <button
-                      type="button"
-                      onClick={() => handleExplanationFeedback('clear')}
-                      className="rounded-full px-2.5 py-0.5 text-[11px] font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/30 dark:text-emerald-400 transition-colors"
-                    >
-                      <i className="fas fa-thumbs-up mr-1 text-[9px]" />Yes
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleExplanationFeedback('confusing')}
-                      className="rounded-full px-2.5 py-0.5 text-[11px] font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-950/30 dark:text-amber-400 transition-colors"
-                    >
-                      <i className="fas fa-question mr-1 text-[9px]" />Confusing
-                    </button>
-                  </>
-                )}
-              </div>
-            )}
-
-            {isAnswered && (
-              <button type="button" onClick={handleNext}
-                className="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition-colors shadow-md shadow-indigo-200 dark:shadow-indigo-900/40">
-                {quiz.currentIndex + 1 < quiz.questions.length
-                  ? <><span>Next question</span> <i className="fas fa-arrow-right ml-2" /></>
-                  : <><span>See results</span> <i className="fas fa-trophy ml-2" /></>
-                }
-              </button>
-            )}
-
-            {quizEvidenceAudit && (
-              <EvidenceAuditPanel snapshot={quizEvidenceAudit} className="mt-4" />
-            )}
-
-            {disclaimer && (
-              <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-700 dark:border-amber-800/50 dark:bg-amber-950/30 dark:text-amber-300">
-                <i className="fas fa-triangle-exclamation mr-2" />
-                {disclaimer}
-              </div>
-            )}
-          </>
+          <QuizActiveQuestionPanel
+            quiz={quiz}
+            currentQ={currentQ}
+            isAnswered={isAnswered}
+            isCorrect={isCorrect}
+            selected={selected}
+            answerConfidence={answerConfidence}
+            effectiveExplanationDepth={effectiveExplanationDepth}
+            adaptiveNotice={adaptiveNotice}
+            isAuthenticated={isAuthenticated}
+            feedbackSentIds={feedbackSentIds}
+            quizEvidenceAudit={quizEvidenceAudit}
+            disclaimer={disclaimer}
+            resolveSourceArticle={resolveSourceArticle}
+            onAnswerConfidenceChange={setAnswerConfidence}
+            onAnswer={handleAnswer}
+            onExplanationFeedback={handleExplanationFeedback}
+            onNext={handleNext}
+          />
         )}
       </main>
     </div>
