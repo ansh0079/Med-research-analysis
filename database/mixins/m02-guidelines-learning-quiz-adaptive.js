@@ -3,6 +3,7 @@
 const { safeJsonParse, toPgVectorLiteral } = require('../lib/helpers');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
 const { assessGuidelineQuality } = require('../../server/services/guidelineQualityService');
+const { computeConceptHash } = require('../../server/utils/conceptHash');
 
 module.exports = (Sup) => class extends Sup {
 // Guideline Memory
@@ -417,11 +418,12 @@ async updateEffectiveDifficulty(userId, effectiveDifficulty) {
 
 async createQuizAttempt(attempt) {
     const normalizedTopic = this.normalizeTopic(attempt.topic);
-    // Stable concept identifier: deterministic hash of (topic, questionType, first 100 chars of question)
-    const conceptSeed = attempt.claimKey
-        ? `${normalizedTopic}|claim|${attempt.claimKey}`
-        : `${normalizedTopic}|${attempt.questionType || ''}|${String(attempt.questionText || '').slice(0, 100)}`;
-    const conceptHash = require('crypto').createHash('sha256').update(conceptSeed).digest('hex').slice(0, 32);
+    const conceptHash = computeConceptHash({
+        normalizedTopic,
+        questionType: attempt.questionType,
+        questionText: attempt.questionText,
+        claimKey: attempt.claimKey,
+    });
     const reasoningTags = Array.isArray(attempt.reasoningTags)
         ? attempt.reasoningTags.map((tag) => String(tag || '').trim()).filter(Boolean).slice(0, 8)
         : [];
@@ -521,6 +523,29 @@ async getRepeatedMisconceptions(userId, { limit = 10, minAttempts = 2 } = {}) {
         wrongCount: Number(r.wrong_count),
         errorRate: Number(r.wrong_count) / Number(r.total_attempts),
     }));
+}
+
+/**
+ * Bulk empirical p-value (fraction correct) lookup by concept_hash, for
+ * adaptiveItemSelectionService — lets a cached MCQ pool be ordered by real
+ * measured difficulty instead of storage order once enough attempts exist.
+ * @param {string} normalizedTopic
+ * @param {string[]} conceptHashes
+ * @returns {Promise<Map<string, number>>} conceptHash -> pValue (0-1)
+ */
+async getConceptHashPValues(normalizedTopic, conceptHashes) {
+    const hashes = [...new Set((conceptHashes || []).filter(Boolean))];
+    if (hashes.length === 0) return new Map();
+    const placeholders = hashes.map(() => '?').join(',');
+    const rows = await this.all(
+        `SELECT concept_hash, COUNT(*) AS total, SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) AS correct
+         FROM quiz_attempts
+         WHERE normalized_topic = ? AND concept_hash IN (${placeholders})
+         GROUP BY concept_hash
+         HAVING total >= 3`,
+        [normalizedTopic, ...hashes]
+    );
+    return new Map(rows.map((r) => [r.concept_hash, Number(r.correct) / Number(r.total)]));
 }
 
 async getQuizAttemptStats(userId, topic) {

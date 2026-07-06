@@ -34,6 +34,8 @@ const { enrichLearnerContextForQuiz } = require('../services/learnerContextServi
 const { buildEvidenceDeltaBrief } = require('../services/evidenceDeltaBriefService');
 const { coldStartMcqKey, guidelineMcqKey, liveQuizMcqKey } = require('../utils/teachingObjectKeys');
 const { generateCaseScenario, saveCaseScenario, getCaseScenario, recordCaseChoice } = require('../services/caseScenarioService');
+const { computeConceptHash } = require('../utils/conceptHash');
+const { estimateAbility, selectAdaptiveItems } = require('../services/adaptiveItemSelectionService');
 
 /**
  * @param {import('express').Application} app
@@ -142,7 +144,24 @@ function registerAiRoutes(app, deps) {
                     promptVariant: q.promptVariant || null,
                 });
 
-    async function serveColdStartMCQs(database, topic, count) {
+    /**
+     * Within a single evidence-quality tier, order cached MCQs by how well their
+     * empirical difficulty (from prior attempts across all users, once >= 3 exist —
+     * see getConceptHashPValues) matches this learner's ability, instead of the
+     * fixed storage order every learner used to be served in. Items with no attempt
+     * history yet (brand-new cache entries) fall back to a neutral middle-of-pack
+     * position via adaptiveItemSelectionService's default prior.
+     */
+    function orderTierByAbility(mcqs, ability, normalizedTopic, pValueByHash) {
+        if (!pValueByHash || mcqs.length === 0) return mcqs;
+        const withPValue = mcqs.map((mcq) => {
+            const hash = computeConceptHash({ normalizedTopic, questionType: mcq.questionType, questionText: mcq.question, claimKey: mcq.claimKey });
+            return { ...mcq, pValue: pValueByHash.get(hash) ?? null };
+        });
+        return selectAdaptiveItems(withPValue, ability).map(({ pValue: _pValue, ...mcq }) => mcq);
+    }
+
+    async function serveColdStartMCQs(database, topic, count, userId = null) {
         try {
             const [coldObj, guidelineObj, liveObj] = await Promise.all([
                 database.getTeachingObjectByKey(coldStartMcqKey(database, topic)),
@@ -150,16 +169,32 @@ function registerAiRoutes(app, deps) {
                 database.getTeachingObjectByKey(liveQuizMcqKey(database, topic)),
             ]);
 
-            const liveMcqs = (liveObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'live_cache'));
-            if (liveMcqs.length >= count) return liveMcqs.slice(0, count);
+            let liveMcqs = (liveObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'live_cache'));
+            let coldMcqs = (coldObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'cold_start'));
+            let guidelineMcqs = (guidelineObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'guideline'));
 
-            const coldMcqs = (coldObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'cold_start'));
-            const guidelineMcqs = (guidelineObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'guideline'));
+            if (userId) {
+                const normalizedTopic = database.normalizeTopic(topic);
+                const allHashes = [...liveMcqs, ...coldMcqs, ...guidelineMcqs].map((mcq) =>
+                    computeConceptHash({ normalizedTopic, questionType: mcq.questionType, questionText: mcq.question, claimKey: mcq.claimKey })
+                );
+                const [mastery, pValueByHash] = await Promise.all([
+                    database.getUserTopicMastery(userId, topic).catch(() => null),
+                    database.getConceptHashPValues(normalizedTopic, allHashes).catch(() => new Map()),
+                ]);
+                const ability = estimateAbility({ overallScore: mastery?.overallScore });
+                liveMcqs = orderTierByAbility(liveMcqs, ability, normalizedTopic, pValueByHash);
+                coldMcqs = orderTierByAbility(coldMcqs, ability, normalizedTopic, pValueByHash);
+                guidelineMcqs = orderTierByAbility(guidelineMcqs, ability, normalizedTopic, pValueByHash);
+            }
+
+            if (liveMcqs.length >= count) return liveMcqs.slice(0, count);
 
             // Assessment content is normative ("what is the correct thing to do?"), so it
             // must rest on a defensible, citable answer. Guideline-grounded MCQs are that;
             // paper-synthesis (cold-start) MCQs are the fallback when no guideline exists.
-            // Order: live cache (freshest) → guideline → cold-start.
+            // Order: live cache (freshest) → guideline → cold-start; within each tier,
+            // ability-matched ordering when userId is available.
             const merged = [...liveMcqs, ...guidelineMcqs, ...coldMcqs].slice(0, count);
 
             return merged.length > 0 ? merged : null;
@@ -787,7 +822,7 @@ Return JSON:
             const uniqueUsers = collectiveMemory?.uniqueUsers || 0;
             const topicPath = uniqueUsers >= 50 ? 'hot' : uniqueUsers >= 15 ? 'warm' : 'cold';
             if (topicPath === 'hot') {
-                const poolMcqs = await serveColdStartMCQs(db, cleanTopic, safeCount);
+                const poolMcqs = await serveColdStartMCQs(db, cleanTopic, safeCount, req.user?.id);
                 if (poolMcqs) {
                     logger.info({ topic: cleanTopic, uniqueUsers, path: 'hot' }, 'Serving from collective memory pool');
                     return res.json({
@@ -905,7 +940,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             else claimAnchorMode = 'adaptive_teaching_object';
         }
         if (!resolvedClaimJobKey && (!teachingClaims || teachingClaims.length === 0)) {
-            const poolMcqs = await serveColdStartMCQs(db, cleanTopic, safeCount);
+            const poolMcqs = await serveColdStartMCQs(db, cleanTopic, safeCount, req.user?.id);
             if (poolMcqs) {
                 return res.json({
                     questions: poolMcqs,
@@ -930,7 +965,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
             if (claimAnchors.length) claimAnchorMode = 'adaptive_teaching_object';
         }
         if (!claimAnchors) {
-            const poolMcqs = await serveColdStartMCQs(db, cleanTopic, safeCount);
+            const poolMcqs = await serveColdStartMCQs(db, cleanTopic, safeCount, req.user?.id);
             if (poolMcqs) {
                 return res.json({
                     questions: poolMcqs,
@@ -1051,7 +1086,7 @@ Generate ${safeCount} questions: mix of all types. ${difficultyInstruction} Outp
                 } else {
                     req.log.warn({ err: providerErr }, 'Primary provider failed; trying cold-start MCQs');
                 }
-                const coldStart = await serveColdStartMCQs(db, cleanTopic, effectiveQuizCount);
+                const coldStart = await serveColdStartMCQs(db, cleanTopic, effectiveQuizCount, req.user?.id);
                 if (coldStart) {
                     return res.json({
                         questions: coldStart,
