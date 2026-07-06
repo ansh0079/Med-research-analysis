@@ -517,7 +517,7 @@ export const LearningDashboardPage: React.FC = () => {
           </button>
         </div>
 
-        {/* SM-2 spaced-rep cards due banner — highest priority */}
+        {/* FSRS spaced-rep cards due banner — highest priority */}
         {(dashboard?.dueCardCount ?? 0) > 0 && (
           <div className="rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/50 p-4 flex items-center gap-4 mb-5">
             <div className="w-10 h-10 rounded-xl bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center shrink-0">

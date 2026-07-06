@@ -102,6 +102,116 @@ function calculateCaseConfidence(caseScenario) {
     };
 }
 
+// Maps the app's 1-5 pre-answer confidence slider ("1 = guessing, 5 = certain")
+// to a predicted probability of being correct, so it can be compared against
+// observed accuracy. 5 maps to 0.95 rather than 1.0 — claiming literal 100%
+// certainty is a stronger claim than the UI's "certain" label warrants, and
+// keeping it under 1.0 avoids Brier-score edge behavior at exactly 0/1.
+const CONFIDENCE_TO_PROBABILITY = { 1: 0.2, 2: 0.4, 3: 0.6, 4: 0.8, 5: 0.95 };
+const MIN_BUCKET_SAMPLE_FOR_VERDICT = 5;
+
+/**
+ * Aggregate a reliability diagram: for each confidence level 1-5, the
+ * observed accuracy vs. what that confidence level predicts, and the gap
+ * between them. A well-calibrated learner has gap ≈ 0 at every level; large
+ * negative gaps at high confidence = overconfidence, large positive gaps at
+ * low confidence = underconfidence (a milder, lower-priority problem).
+ * @param {Array<{ isCorrect: boolean, confidence: number|null }>} attempts
+ * @returns {Array<{ confidenceLevel: number, predictedProbability: number, observedAccuracy: number|null, gap: number|null, count: number }>}
+ */
+function computeCalibrationCurve(attempts) {
+    const byLevel = new Map([1, 2, 3, 4, 5].map((level) => [level, { correct: 0, total: 0 }]));
+    for (const a of attempts || []) {
+        const level = Math.round(Number(a.confidence));
+        if (!byLevel.has(level)) continue;
+        const bucket = byLevel.get(level);
+        bucket.total += 1;
+        if (a.isCorrect) bucket.correct += 1;
+    }
+    return [...byLevel.entries()].map(([confidenceLevel, { correct, total }]) => {
+        const predictedProbability = CONFIDENCE_TO_PROBABILITY[confidenceLevel];
+        const observedAccuracy = total > 0 ? correct / total : null;
+        return {
+            confidenceLevel,
+            predictedProbability,
+            observedAccuracy,
+            gap: observedAccuracy != null ? Math.round((observedAccuracy - predictedProbability) * 100) / 100 : null,
+            count: total,
+        };
+    });
+}
+
+/**
+ * Brier score: mean squared error between predicted probability (from
+ * confidence) and the binary outcome. 0 = perfect, 0.25 = the score from
+ * always predicting 50/50, 1 = maximally wrong every time.
+ */
+function computeBrierScore(attempts) {
+    const scored = (attempts || []).filter((a) => CONFIDENCE_TO_PROBABILITY[Math.round(Number(a.confidence))] != null);
+    if (scored.length === 0) return null;
+    const sumSquaredError = scored.reduce((sum, a) => {
+        const p = CONFIDENCE_TO_PROBABILITY[Math.round(Number(a.confidence))];
+        const outcome = a.isCorrect ? 1 : 0;
+        return sum + (p - outcome) ** 2;
+    }, 0);
+    return Math.round((sumSquaredError / scored.length) * 1000) / 1000;
+}
+
+/**
+ * Human-readable calibration verdict, keyed on the highest-confidence bucket
+ * with enough samples to trust — that's the one that matters most for
+ * clinical safety (a learner confidently wrong is the dangerous case).
+ */
+function describeCalibrationVerdict(curve) {
+    const trustworthy = curve.filter((b) => b.count >= MIN_BUCKET_SAMPLE_FOR_VERDICT && b.gap != null);
+    if (trustworthy.length === 0) {
+        return { verdict: 'insufficient_data', message: 'Not enough confidence-rated attempts yet to assess calibration.' };
+    }
+    const highestConfidenceBucket = trustworthy.reduce((best, b) => (b.confidenceLevel > best.confidenceLevel ? b : best));
+    if (highestConfidenceBucket.gap <= -0.2) {
+        return {
+            verdict: 'overconfident',
+            message: `When you rate yourself confidence ${highestConfidenceBucket.confidenceLevel}/5, you're actually right only ${Math.round(highestConfidenceBucket.observedAccuracy * 100)}% of the time — worth double-checking answers you feel certain about.`,
+        };
+    }
+    const lowestConfidenceBucket = trustworthy.reduce((worst, b) => (b.confidenceLevel < worst.confidenceLevel ? b : worst));
+    if (lowestConfidenceBucket.gap >= 0.3) {
+        return {
+            verdict: 'underconfident',
+            message: `At confidence ${lowestConfidenceBucket.confidenceLevel}/5 ("guessing") you're actually right ${Math.round(lowestConfidenceBucket.observedAccuracy * 100)}% of the time — you may know more than you think.`,
+        };
+    }
+    return { verdict: 'well_calibrated', message: 'Your confidence ratings track your actual accuracy reasonably well.' };
+}
+
+/**
+ * Full calibration summary for a set of confidence-rated attempts: the
+ * reliability curve, Brier score, bucket counts by risk category (reusing
+ * classifyCalibrationAttempt), and a plain-language verdict.
+ * @param {Array<{ isCorrect: boolean, confidence: number|null }>} attempts
+ */
+function summarizeCalibration(attempts) {
+    const rated = (attempts || []).filter((a) => a.confidence != null && Number.isFinite(Number(a.confidence)));
+    const curve = computeCalibrationCurve(rated);
+    const brierScore = computeBrierScore(rated);
+    const { verdict, message } = describeCalibrationVerdict(curve);
+
+    const bucketCounts = { dangerous_misconception: 0, needs_consolidation: 0, calibrated_correct: 0, low_confidence_incorrect: 0 };
+    for (const a of rated) {
+        const { bucket } = classifyCalibrationAttempt(a);
+        if (bucket in bucketCounts) bucketCounts[bucket] += 1;
+    }
+
+    return {
+        sampleSize: rated.length,
+        curve,
+        brierScore,
+        verdict,
+        message,
+        bucketCounts,
+    };
+}
+
 function classifyCalibrationAttempt({ isCorrect, confidence }) {
     const value = Number(confidence);
     const normalizedConfidence = Number.isFinite(value) ? value : 0;
@@ -228,5 +338,10 @@ module.exports = {
     calculateSynthesisConfidence,
     calculateMCQConfidence,
     calculateCaseConfidence,
-    classifyCalibrationAttempt
+    classifyCalibrationAttempt,
+    computeCalibrationCurve,
+    computeBrierScore,
+    describeCalibrationVerdict,
+    summarizeCalibration,
+    CONFIDENCE_TO_PROBABILITY,
 };

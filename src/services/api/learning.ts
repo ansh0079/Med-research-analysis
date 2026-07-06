@@ -357,7 +357,7 @@ export class LearningApi extends BaseApiClient {
     return response.json();
   }
 
-  async getLearningInsights(): Promise<{ insights: import('@types').LearningInsight[]; profile: import('@types').LearningProfile | null }> {
+  async getLearningInsights(): Promise<{ insights: import('@types').LearningInsight[]; profile: import('@types').LearningProfile | null; calibration: import('@types').CalibrationSummary }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/learning/insights`);
     if (!response.ok) throw new Error('Failed to load insights');
     return response.json();

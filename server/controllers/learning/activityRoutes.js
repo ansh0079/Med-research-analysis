@@ -5,6 +5,7 @@ const { getPersonalisedRecommendations } = require('../../services/learningAgent
 const { getLearningVelocity } = require('../../services/learningVelocityService');
 const { attributeRecommendationFollowThrough } = require('../../services/searchLearningOutcomeService');
 const { calculateMastery, nextReviewDate, normalizeAttemptClaimKey, inferEvidenceJudgement, textIncludes, buildOutline, summarizeRunGaps } = require('../../utils/learningUtils');
+const { summarizeCalibration } = require('../../services/confidenceCalibrationService');
 function registerActivityRoutes(app, deps) {
     const { db, requireAuthJwt, requireAuthOrBeta, requireVerifiedEmail, rateLimit, serverConfig, fetch: fetchImpl } = deps;
     const { limitBodySize, requireJson, validateBody, schemas } = require('../../utils/validation');
@@ -338,7 +339,24 @@ function registerActivityRoutes(app, deps) {
                 });
             }
 
-            res.json({ insights, profile });
+            // Confidence calibration — surfaces overconfidence as a first-class
+            // insight since a learner who is confidently wrong is the clinically
+            // riskiest pattern this app can detect.
+            const calibration = summarizeCalibration(allAttempts);
+            if (calibration.verdict === 'overconfident') {
+                insights.push({
+                    type: 'calibration',
+                    severity: 'high',
+                    icon: 'fa-bullseye',
+                    color: 'red',
+                    message: 'Your confidence and accuracy are out of sync.',
+                    detail: calibration.message,
+                    action: null,
+                    topic: null,
+                });
+            }
+
+            res.json({ insights, profile, calibration });
         } catch (error) {
             req.log.error({ err: error }, 'Learning insights error');
             res.status(500).json({ error: 'Internal Server Error' });

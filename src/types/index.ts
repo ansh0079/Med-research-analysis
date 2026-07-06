@@ -1455,7 +1455,7 @@ export interface CrossLearningRecommendation {
 // ==========================================
 
 export interface LearningInsight {
-  type: 'weak_type' | 'review_due' | 'strength' | 'milestone' | 'onboarding' | 'coverage_gap' | 'active_run';
+  type: 'weak_type' | 'review_due' | 'strength' | 'milestone' | 'onboarding' | 'coverage_gap' | 'active_run' | 'calibration';
   severity: 'high' | 'medium' | 'low';
   icon: string;
   color: string;
@@ -1466,6 +1466,28 @@ export interface LearningInsight {
   questionType?: string;
   studyRunId?: number;
   gapReport?: StudyRunGapReport;
+}
+
+export interface CalibrationCurvePoint {
+  confidenceLevel: number;
+  predictedProbability: number;
+  observedAccuracy: number | null;
+  gap: number | null;
+  count: number;
+}
+
+export interface CalibrationSummary {
+  sampleSize: number;
+  curve: CalibrationCurvePoint[];
+  brierScore: number | null;
+  verdict: 'insufficient_data' | 'overconfident' | 'underconfident' | 'well_calibrated';
+  message: string;
+  bucketCounts: {
+    dangerous_misconception: number;
+    needs_consolidation: number;
+    calibrated_correct: number;
+    low_confidence_incorrect: number;
+  };
 }
 
 export interface LearningProfile {

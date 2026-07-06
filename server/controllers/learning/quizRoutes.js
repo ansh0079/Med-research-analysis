@@ -80,7 +80,7 @@ function registerQuizRoutes(app, deps) {
                 if (!run || run.userId !== userId) return res.status(403).json({ error: 'Forbidden' });
             }
 
-            // Insert all attempts and update SM-2 spaced rep cards
+            // Insert all attempts and update FSRS spaced rep cards
             const normalizedTopic = db.normalizeTopic(topic);
             const attemptsWithJudgement = attempts.map((attempt) => {
                 const claimKey = normalizeAttemptClaimKey(attempt);
