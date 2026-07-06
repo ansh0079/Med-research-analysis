@@ -37,6 +37,7 @@ const { fetchUnifiedEvidence } = require('../services/unifiedEvidenceSearch');
 const { safeFetch } = require('../utils/fetch');
 const { buildConsensusTeachingObject } = require('../services/teachingObjectService');
 const { parseJsonBlock, parseJsonArrayBlock } = require('../utils/parseJson');
+const { aggregateCollectiveMemory } = require('../services/collectiveMemoryService');
 
 const topicsData = require('./topics.json');
 const ALL_TOPICS = topicsData.topics;
@@ -823,124 +824,14 @@ async function aggregateTopicMemory() {
     console.log('║  Phase 8: Collective Topic Memory         ║');
     console.log('╚══════════════════════════════════════════╝');
 
-    // Get all distinct topics that have quiz attempts
-    const topicRows = await db.all(
-        `SELECT normalized_topic, COUNT(DISTINCT user_id) as unique_users, COUNT(*) as total_attempts
-         FROM quiz_attempts
-         GROUP BY normalized_topic
-         HAVING unique_users >= 1
-         ORDER BY total_attempts DESC`
-    );
-
-    if (topicRows.length === 0) {
-        console.log('  No quiz attempt data yet. Run the app and get some users first.');
-        return { topics: 0 };
-    }
-
-    console.log(`  Found ${topicRows.length} topic(s) with attempt data.`);
-
-    let processed = 0;
-
-    for (const row of topicRows) {
-        const normalizedTopic = row.normalized_topic;
-
-        // Per-question stats grouped by concept_hash
-        const questionStats = await db.all(
-            `SELECT concept_hash,
-                    MAX(question_text) as question_text,
-                    MAX(question_type) as question_type,
-                    COUNT(*) as total_attempts,
-                    SUM(is_correct) as correct_count,
-                    COUNT(DISTINCT user_id) as unique_users
-             FROM quiz_attempts
-             WHERE normalized_topic = ?
-             GROUP BY concept_hash
-             HAVING total_attempts >= 3`,
-            [normalizedTopic]
-        );
-
-        // Wrong answer frequencies (misconceptions)
-        const wrongAnswers = await db.all(
-            `SELECT concept_hash,
-                    MAX(question_text) as question_text,
-                    user_answer,
-                    COUNT(*) as pick_count,
-                    total.total_attempts
-             FROM quiz_attempts qa
-             JOIN (
-                 SELECT concept_hash, COUNT(*) as total_attempts
-                 FROM quiz_attempts WHERE normalized_topic = ? GROUP BY concept_hash
-             ) total USING (concept_hash)
-             WHERE qa.normalized_topic = ? AND qa.is_correct = 0
-             GROUP BY concept_hash, user_answer
-             HAVING CAST(pick_count AS REAL) / total_attempts >= 0.25
-             ORDER BY pick_count DESC`,
-            [normalizedTopic, normalizedTopic]
-        );
-
-        // Classify questions
-        const highDiscrimination = [];
-        const tooEasy = [];
-        const tooHard = [];
-
-        for (const q of questionStats) {
-            const rate = q.total_attempts > 0 ? q.correct_count / q.total_attempts : 0;
-            const entry = {
-                conceptHash: q.concept_hash,
-                questionText: q.question_text,
-                questionType: q.question_type,
-                correctRate: Math.round(rate * 100),
-                totalAttempts: q.total_attempts,
-                uniqueUsers: q.unique_users,
-            };
-            if (rate >= 0.40 && rate <= 0.75) highDiscrimination.push(entry);
-            else if (rate > 0.90) tooEasy.push(entry);
-            else if (rate < 0.20) tooHard.push(entry);
-        }
-
-        // Build misconception fingerprints
-        const sharedMisconceptions = wrongAnswers.slice(0, 8).map(w => ({
-            conceptHash: w.concept_hash,
-            questionText: w.question_text?.slice(0, 200),
-            wrongAnswer: w.user_answer,
-            pickRate: Math.round((w.pick_count / w.total_attempts) * 100),
-        }));
-
-        const collective_memory = {
-            interactionCount: Number(row.total_attempts),
-            uniqueUsers: Number(row.unique_users),
-            highDiscriminationMcqs: highDiscrimination.slice(0, 15),
-            tooEasyMcqs: tooEasy.map(q => q.conceptHash),
-            tooHardMcqs: tooHard.map(q => q.conceptHash),
-            sharedMisconceptions,
-            lastAggregatedAt: new Date().toISOString(),
-        };
-
-        // Write back to topic_knowledge
-        const existing = await db.get(
-            `SELECT topic, knowledge FROM topic_knowledge WHERE normalized_topic = ? LIMIT 1`,
-            [normalizedTopic]
-        );
-
-        if (existing) {
-            let knowledge = {};
-            try { knowledge = JSON.parse(existing.knowledge || '{}'); } catch (parseErr) { void parseErr; }
-            knowledge.collective_memory = collective_memory;
-
-            const path = collective_memory.uniqueUsers >= 50 ? 'hot'
-                       : collective_memory.uniqueUsers >= 15 ? 'warm' : 'cold';
-
-            await db.run(
-                `UPDATE topic_knowledge SET knowledge = ?, updated_at = ? WHERE normalized_topic = ?`,
-                [JSON.stringify(knowledge), new Date().toISOString(), normalizedTopic]
-            );
-            console.log(`  ✅ ${existing.topic} — ${collective_memory.uniqueUsers} users, ${highDiscrimination.length} good Qs, ${sharedMisconceptions.length} misconceptions [${path}]`);
-            processed++;
-        }
-    }
-
-    console.log(`\n  Phase 8 complete: ${processed} topics updated with collective memory.`);
-    return { topics: processed };
+    // Delegates to collectiveMemoryService.js — this used to duplicate that
+    // logic inline (with a stale p-value-band "discrimination" heuristic and
+    // a highDiscriminationMcqs/tooEasyMcqs/tooHardMcqs field-name mismatch
+    // against what synopsis.js actually reads). Single source of truth now.
+    const result = await aggregateCollectiveMemory(db);
+    console.log(`  ${result.message || `Aggregated collective memory for ${result.topics} topic(s).`}`);
+    console.log(`\n  Phase 8 complete: ${result.topics} topics updated with collective memory.`);
+    return result;
 }
 
 // ─── Phase 9: Cross-topic evidence cross-links ───────────────────────────────
