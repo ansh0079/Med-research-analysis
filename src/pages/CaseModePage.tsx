@@ -8,11 +8,12 @@ import { useClientFeatures } from '@hooks/useClientFeatures';
 import { CaseAnalysisResultPanel } from '@components/case/CaseAnalysisResultPanel';
 import { CaseEvidenceBriefPanel, type CaseEvidenceBrief, type CaseToEvidenceResult } from '@components/case/CaseEvidenceBriefPanel';
 import { CaseInputCard } from '@components/case/CaseInputCard';
+import { CaseModeSetupPanel } from '@components/case/CaseModeSetupPanel';
+import { CaseReflectionExportPanel } from '@components/case/CaseReflectionExportPanel';
 import { TeachingVignettePanel } from '@components/case/TeachingVignettePanel';
 import {
   CASE_PREFILL_KEY,
   MAX_CHARS,
-  MODES,
   QUIZ_PREFILL_KEY,
   REVIEW_PREFILL_KEY,
   articleQuizSeed,
@@ -189,56 +190,13 @@ export const CaseModePage: React.FC = () => {
   };
 
   const renderReflectionExport = (source: 'analysis' | 'teaching_vignette') => (
-    <div className="rounded-xl border border-emerald-100 bg-emerald-50/70 p-4 dark:border-emerald-900/40 dark:bg-emerald-950/20">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-300">Portfolio reflection</p>
-          <p className="mt-1 text-xs text-emerald-900/80 dark:text-emerald-100/75">
-            Export a de-identified WBA draft for CBD, mini-CEX, or DOPS evidence.
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <select
-            value={reflectionKind}
-            onChange={(event) => setReflectionKind(event.target.value as ReflectionKind)}
-            className="h-9 rounded-lg border border-emerald-200 bg-white px-2 text-xs font-bold text-emerald-800 outline-none dark:border-emerald-800 dark:bg-slate-950 dark:text-emerald-100"
-            aria-label="Portfolio reflection type"
-          >
-            <option value="CBD">CBD</option>
-            <option value="mini-CEX">mini-CEX</option>
-            <option value="DOPS">DOPS</option>
-          </select>
-          <button
-            type="button"
-            onClick={() => exportReflection(source, 'doc')}
-            className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-emerald-600 px-3 text-xs font-black text-white transition-colors hover:bg-emerald-500"
-          >
-            <i className="fas fa-file-word text-[10px]" />
-            Save .doc
-          </button>
-          <button
-            type="button"
-            onClick={() => void saveReflectionDraft(source)}
-            disabled={reflectionSaveStatus === 'saving'}
-            className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-slate-900 px-3 text-xs font-black text-white transition-colors hover:bg-slate-700 disabled:opacity-60 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
-          >
-            <i className={`fas ${reflectionSaveStatus === 'saving' ? 'fa-circle-notch fa-spin' : reflectionSaveStatus === 'saved' ? 'fa-check' : 'fa-save'} text-[10px]`} />
-            {reflectionSaveStatus === 'saved' ? 'Saved' : 'Save draft'}
-          </button>
-          <button
-            type="button"
-            onClick={() => exportReflection(source, 'txt')}
-            className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-emerald-200 bg-white px-3 text-xs font-black text-emerald-700 transition-colors hover:bg-emerald-50 dark:border-emerald-800 dark:bg-slate-950 dark:text-emerald-200 dark:hover:bg-emerald-950/40"
-          >
-            <i className="fas fa-file-lines text-[10px]" />
-            Text
-          </button>
-        </div>
-        {reflectionSaveStatus === 'error' && (
-          <p className="text-xs font-semibold text-red-600 dark:text-red-300">Could not save draft. Sign in and try again.</p>
-        )}
-      </div>
-    </div>
+    <CaseReflectionExportPanel
+      kind={reflectionKind}
+      saveStatus={reflectionSaveStatus}
+      onKindChange={setReflectionKind}
+      onExport={(format) => exportReflection(source, format)}
+      onSaveDraft={() => { void saveReflectionDraft(source); }}
+    />
   );
 
   const startQuizFromCase = (source: 'analysis' | 'teaching_vignette') => {
@@ -396,62 +354,14 @@ export const CaseModePage: React.FC = () => {
     <div className="min-h-screen aurora-bg">
       <div className="max-w-3xl mx-auto px-4 pt-[calc(var(--nav-h)+1.5rem)] pb-10 space-y-5">
 
-        {/* Header */}
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Clinical Case Scenario</h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Evidence-backed case-based learning — research assistant only</p>
-          </div>
-          <button type="button" onClick={() => setCurrentPage('search')}
-            className="text-xs font-bold text-slate-400 uppercase tracking-widest hover:text-indigo-600 transition-colors flex items-center gap-1.5">
-            <i className="fas fa-arrow-left" /> Back
-          </button>
-        </div>
-
-        {prefillTopic && (
-          <div className="flex items-start gap-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 px-4 py-3 text-sm">
-            <i className="fas fa-search text-indigo-400 mt-0.5 shrink-0" />
-            <div>
-              <span className="font-semibold text-indigo-700 dark:text-indigo-300">Pre-populated from your search: </span>
-              <span className="text-indigo-600 dark:text-indigo-400">{prefillTopic}</span>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Add patient-specific details below, then run analysis.</p>
-              {caseSeedArticles && caseSeedArticles.length > 0 && (
-                <p className="text-[11px] text-emerald-700 dark:text-emerald-300 mt-2 font-medium">
-                  <i className="fas fa-layer-group mr-1" />
-                  Evidence retrieval prioritises your top {caseSeedArticles.length} papers from this topic, then fills with live literature search.
-                </p>
-              )}
-            </div>
-          </div>
-        )}
-
-        {typeof workflowContext.originalPresentation === 'string' && workflowContext.originalPresentation.trim() && (
-          <div className="rounded-xl border border-cyan-200 bg-cyan-50/80 px-4 py-3 text-sm dark:border-cyan-900/60 dark:bg-cyan-950/20">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-cyan-700 dark:text-cyan-300">Shift review context</p>
-            <p className="mt-1 text-xs leading-relaxed text-cyan-950/80 dark:text-cyan-100/80 line-clamp-3">
-              {workflowContext.originalPresentation}
-            </p>
-          </div>
-        )}
-
-        {/* Mode selector */}
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Learner Level</p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {MODES.map((m) => (
-              <button key={m.id} type="button" onClick={() => setMode(m.id)}
-                className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all text-center ${
-                  mode === m.id
-                    ? m.activeColor + ' shadow-sm'
-                    : 'border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800/40 hover:border-slate-300 dark:hover:border-slate-600'
-                }`}>
-                <i className={`fas ${m.icon} text-base`} />
-                <span className="text-[11px] font-bold leading-tight">{m.label}</span>
-                <span className="text-[9px] opacity-70 leading-tight hidden sm:block">{m.desc}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+        <CaseModeSetupPanel
+          mode={mode}
+          prefillTopic={prefillTopic}
+          seedArticles={caseSeedArticles}
+          workflowContext={workflowContext}
+          onModeChange={setMode}
+          onBack={() => setCurrentPage('search')}
+        />
 
         {prefillTopic && caseSeedArticles && caseSeedArticles.length > 0 && (
           <TeachingVignettePanel
