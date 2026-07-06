@@ -9,6 +9,7 @@ import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
 import { TopicEvidenceMemoryBanner } from '@components/learning/TopicEvidenceMemoryBanner';
 import type { EvidenceMemoryMessage } from '@components/learning/TopicEvidenceMemoryBanner';
 import { TopicCrosslinks } from '@components/topic/TopicCrosslinks';
+import { ClaimMasteryPanel } from '@components/learning/ClaimMasteryPanel';
 import { PracticeAlertCard, EVIDENCE_GRADE_CHIP } from '@components/ui';
 
 function readableSynthesisSnapshot(text = '') {
@@ -358,6 +359,9 @@ export function TopicPage() {
             </button>
           </div>
         )}
+
+        {/* Per-claim mastery (Bayesian Knowledge Tracing) */}
+        <ClaimMasteryPanel topic={topic} />
 
         {/* Cross-topic links */}
         <TopicCrosslinks topic={topic} />

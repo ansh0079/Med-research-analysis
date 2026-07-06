@@ -562,6 +562,8 @@ export class KnowledgeApi extends BaseApiClient {
       attempts: number;
       correct: number;
       accuracy: number | null;
+      /** Bayesian Knowledge Tracing probability of mastery (0-1), null if untested. */
+      masteryProbability: number | null;
       masteryState: 'untested' | 'weak' | 'mastered' | string;
     }>;
   }> {
