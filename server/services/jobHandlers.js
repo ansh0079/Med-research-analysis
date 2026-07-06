@@ -47,6 +47,9 @@ function registerAllJobHandlers(deps) {
         return processAiGenerationJobByKey(jobKey, deps);
     });
 
+    const { registerAgentSideEffectHandler } = require('./agentSideEffectService');
+    registerAgentSideEffectHandler();
+
     logger.info('Job handlers registered');
 }
 

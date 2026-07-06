@@ -604,6 +604,143 @@ async appendAgentMessages(conversationId, newMessages) {
     });
 }
 
+// ==========================================
+// Learning Agent — Durable turn side effects
+// ==========================================
+
+async createAgentTurnSideEffect({
+    jobKey,
+    conversationId,
+    userId,
+    topic,
+    payload,
+}) {
+    const now = new Date().toISOString();
+    await this.run(
+        `INSERT INTO agent_turn_side_effects
+         (job_key, conversation_id, user_id, topic, status, payload, attempts, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            jobKey,
+            conversationId || null,
+            userId,
+            topic,
+            'queued',
+            JSON.stringify(payload),
+            0,
+            now,
+            now,
+        ]
+    );
+    return this.getAgentTurnSideEffectByJobKey(jobKey);
+}
+
+async getAgentTurnSideEffectByJobKey(jobKey) {
+    const row = await this.get(
+        `SELECT * FROM agent_turn_side_effects WHERE job_key = ?`,
+        [jobKey]
+    );
+    if (!row) return null;
+    return {
+        id: row.id,
+        jobKey: row.job_key,
+        conversationId: row.conversation_id,
+        userId: row.user_id,
+        topic: row.topic,
+        status: row.status,
+        payload: safeJsonParse(row.payload, {}),
+        resultPayload: safeJsonParse(row.result_payload, {}),
+        errorMessage: row.error_message,
+        attempts: row.attempts,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at,
+        completedAt: row.completed_at,
+        nextAttemptAt: row.next_attempt_at,
+    };
+}
+
+async getPendingAgentTurnSideEffects({ limit = 50, before = new Date().toISOString() } = {}) {
+    const rows = await this.all(
+        `SELECT * FROM agent_turn_side_effects
+         WHERE status IN ('queued', 'failed')
+           AND (next_attempt_at IS NULL OR next_attempt_at <= ?)
+           AND attempts < 5
+         ORDER BY created_at ASC
+         LIMIT ?`,
+        [before, Math.min(Math.max(Number(limit) || 50, 1), 200)]
+    );
+    return rows.map((row) => ({
+        id: row.id,
+        jobKey: row.job_key,
+        conversationId: row.conversation_id,
+        userId: row.user_id,
+        topic: row.topic,
+        status: row.status,
+        payload: safeJsonParse(row.payload, {}),
+        resultPayload: safeJsonParse(row.result_payload, {}),
+        errorMessage: row.error_message,
+        attempts: row.attempts,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at,
+        completedAt: row.completed_at,
+        nextAttemptAt: row.next_attempt_at,
+    }));
+}
+
+async markAgentTurnSideEffectRunning(id) {
+    const now = new Date().toISOString();
+    await this.run(
+        `UPDATE agent_turn_side_effects
+         SET status = ?, attempts = attempts + 1, updated_at = ?, next_attempt_at = NULL
+         WHERE id = ?`,
+        ['running', now, id]
+    );
+    return this.getAgentTurnSideEffectById(id);
+}
+
+async getAgentTurnSideEffectById(id) {
+    const row = await this.get(`SELECT * FROM agent_turn_side_effects WHERE id = ?`, [id]);
+    if (!row) return null;
+    return {
+        id: row.id,
+        jobKey: row.job_key,
+        conversationId: row.conversation_id,
+        userId: row.user_id,
+        topic: row.topic,
+        status: row.status,
+        payload: safeJsonParse(row.payload, {}),
+        resultPayload: safeJsonParse(row.result_payload, {}),
+        errorMessage: row.error_message,
+        attempts: row.attempts,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at,
+        completedAt: row.completed_at,
+        nextAttemptAt: row.next_attempt_at,
+    };
+}
+
+async markAgentTurnSideEffectComplete(id, resultPayload) {
+    const now = new Date().toISOString();
+    await this.run(
+        `UPDATE agent_turn_side_effects
+         SET status = ?, result_payload = ?, completed_at = ?, updated_at = ?, next_attempt_at = NULL
+         WHERE id = ?`,
+        ['completed', JSON.stringify(resultPayload || {}), now, now, id]
+    );
+    return this.getAgentTurnSideEffectById(id);
+}
+
+async markAgentTurnSideEffectFailed(id, errorMessage, { retryable = true, nextAttemptAt = null } = {}) {
+    const now = new Date().toISOString();
+    await this.run(
+        `UPDATE agent_turn_side_effects
+         SET status = ?, error_message = ?, updated_at = ?, next_attempt_at = ?
+         WHERE id = ?`,
+        [retryable ? 'failed' : 'permanently_failed', String(errorMessage || '').slice(0, 2000), now, retryable ? nextAttemptAt : null, id]
+    );
+    return this.getAgentTurnSideEffectById(id);
+}
+
 async deleteAgentConversation(id) {
     await this.run(`DELETE FROM agent_conversations WHERE id = ?`, [id]);
     return { deleted: true };

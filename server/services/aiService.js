@@ -430,11 +430,34 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
      * one branch-free streaming code path instead of duplicating gemini/mistral/claude
      * if-else chains (the pattern that caused claude-only deployments to error on
      * /api/ai/analyze/stream — see resolveProvider).
+     *
+     * When a `budget` option is supplied, the stream is wrapped so that the budget
+     * is checked before the first chunk and recorded after the stream completes or
+     * fails. The accumulated response text is used for the cost estimate.
      */
-    function callTextStream(prompt, provider, model, options = {}) {
-        if (provider === 'claude') return callClaudeStreamRaw(prompt, model, options);
-        if (provider === 'gemini') return callGeminiStreamRaw(prompt, model, options);
-        return callMistralStreamRaw(prompt, model, options);
+    async function* callTextStream(prompt, provider, model, options = {}) {
+        const { budget, ...providerOptions } = options;
+        const activeBudget = budget || getActiveLlmBudget();
+        if (activeBudget) {
+            activeBudget.assertCanCall({ prompt, model });
+        }
+
+        const generator = provider === 'claude'
+            ? callClaudeStreamRaw(prompt, model, providerOptions)
+            : provider === 'gemini'
+                ? callGeminiStreamRaw(prompt, model, providerOptions)
+                : callMistralStreamRaw(prompt, model, providerOptions);
+
+        let response = '';
+        for await (const chunk of generator) {
+            response += chunk;
+            yield chunk;
+        }
+        // Budget is only recorded on successful stream completion. A failed
+        // stream is not charged, so retries remain within the budget.
+        if (activeBudget) {
+            activeBudget.recordCall({ prompt, response, model });
+        }
     }
 
     return {
