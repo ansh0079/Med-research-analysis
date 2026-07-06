@@ -1,22 +1,22 @@
-function clampLimit(val, def = 20, min = 1, max = 100) {
+﻿function clampLimit(val, def = 20, min = 1, max = 100) {
     const n = parseInt(String(val), 10);
     return Number.isNaN(n) ? def : Math.min(Math.max(n, min), max);
 }
 
 const logger = require('../config/logger');
-const { validateQuery, validatePagination, sanitizeArticleOutput } = require('../utils/articles');
+const { validateQuery, sanitizeArticleOutput } = require('../utils/articles');
 const { safeFetch } = require('../utils/fetch');
-const { articleFromOpenAlexWork } = require('../services/unifiedEvidenceSearch');
 const { classifyQueryIntent } = require('../services/evidenceBouquetService');
 const { parseSearchRequestQuery, parsePreviousQueries, fetchAndRankSearchArticles, prefetchTeachingArtifacts } = require('../services/searchPipeline');
 const { buildTeachingSignalBoosts } = require('../services/searchRankingConstants');
 const { registerExternalSourceRoutes } = require('./search/externalSources');
+const { registerSearchFeedbackRoutes } = require('./search/feedback');
 const { mergeCuratedWithLiveEvidence } = require('../services/searchEvidenceMergeService');
 const { buildSearchLearningContext, applySearchLearningBoost, publicLearningContext } = require('../services/searchLearningService');
 const { recordSearchRankingDecisions } = require('../services/personalizationBanditService');
 const { buildLearnerContext, publicLearnerContextSummary } = require('../services/learnerContextService');
 const crypto = require('crypto');
-const { createAiService, getSharedAiService, PINNED_MODELS, TEMPERATURE } = require('../services/aiService');
+const { getSharedAiService } = require('../services/aiService');
 const { buildTopicKnowledgePrompt, buildGuidelineQuizPrompt } = require('../prompts');
 const { resolveProvider } = require('../utils/aiProvider');
 const { generateAndStoreMCQs } = require('../services/mcqGeneratorService');
@@ -33,8 +33,6 @@ const { createBudgetForAction, runWithLlmBudget } = require('../services/llmRequ
 const { persistSearchedArticles } = require('../services/articlePersistenceService');
 const { validateAiOutput } = require('../services/aiOutputValidation');
 const { publicRankingTraces } = require('../services/searchRankingTrace');
-const { explainInteractionReward } = require('../services/rewardAttributionService');
-const { attributeSearchInteractionReward } = require('../services/searchLearningOutcomeService');
 
 async function attachApiKeyUser(req, res, next) {
     const raw = req.headers['x-api-key'];
@@ -54,14 +52,7 @@ async function attachApiKeyUser(req, res, next) {
     }
 }
 
-const CROSSREF_BASE = 'https://api.crossref.org';
-
 const isDev = process.env.NODE_ENV === 'development';
-
-function setEdgeCacheHeaders(res, seconds = 300) {
-    res.setHeader('Cache-Control', `public, max-age=60, s-maxage=${seconds}, stale-while-revalidate=86400`);
-    res.setHeader('CDN-Cache-Control', `public, s-maxage=${seconds}`);
-}
 
 /** Unified search applies post-fetch relevance filtering; avoid CDN/browser storing pre-filter responses. */
 function setNoStoreSearchHeaders(res) {
@@ -180,7 +171,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
         const normalized = safeNormalizeTopic(topic);
         const [guidelineSnapshot, teachingObjects, relatedTopics, clusterArticles, teachingClaims] = await Promise.all([
             safeDbList('getGuidelinesByTopic', [topic, { limit: 5 }], 'getGuidelinesByTopic failed'),
-            // Reuse objects fetched during boost step — avoids a second DB round-trip for the same data
+            // Reuse objects fetched during boost step â€” avoids a second DB round-trip for the same data
             prefetchedObjects ?? safeDbList('listTeachingObjectsForTopic', [topic, { limit: 12 }], 'listTeachingObjectsForTopic failed'),
             safeDbList('getRelatedBouquetTopicsForTopic', [normalized, { limit: 5, minSharedArticles: 1 }], 'getRelatedBouquetTopicsForTopic failed'),
             safeDbList('getClusterBouquetArticlesForTopic', [normalized, { topicLimit: 5, articleLimit: 10, minSharedArticles: 1 }], 'getClusterBouquetArticlesForTopic failed'),
@@ -373,8 +364,8 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
                 sessionId: req.sessionId ?? null,
             });
 
-            let {
-                articles,
+            let { articles } = ranked;
+            const {
                 telemetry,
                 teachingObjects: boostedObjects,
                 teachingClaims: boostedClaims,
@@ -836,7 +827,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
         }
     });
 
-    // ── Agent Knowledge lookup ────────────────────────────────────────────────
+    // â”€â”€ Agent Knowledge lookup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     app.get('/api/knowledge', requireAuthJwt, requireRole('admin', 'curator'), rateLimit(60, 60), async (req, res) => {
         try {
             const result = await db.listTopicKnowledge({
@@ -1056,7 +1047,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
         }
     });
 
-    // ── Propose topic knowledge from live search results ─────────────────────
+    // â”€â”€ Propose topic knowledge from live search results â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     app.post('/api/search/:topic/propose-knowledge', requireJson, requireAuthJwt, rateLimit(10, 60), async (req, res) => {
         const topic = String(req.params.topic || '').trim();
         if (!topic || topic.length < 2) return res.status(400).json({ error: 'topic is required' });
@@ -1124,7 +1115,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
             res.status(500).json({ error: isDev ? error.message : 'Internal Server Error' });
         }
     });
-    // ── Topic cross-links endpoint ────────────────────────────────────────────
+    // â”€â”€ Topic cross-links endpoint â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     app.get('/api/topic/:topic/crosslinks', requireAuthJwt, rateLimit(60, 60), async (req, res) => {
         const topic = String(req.params.topic || '').trim();
         if (!topic) return res.status(400).json({ error: 'topic is required' });
@@ -1138,179 +1129,7 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
         }
     });
 
-    app.post('/api/search/impressions', rateLimit(120, 60), requireJson, async (req, res) => {
-        const { searchId, impressions } = req.body || {};
-        const sid = Number(searchId);
-        if (!sid || !Array.isArray(impressions) || impressions.length === 0) {
-            return res.status(400).json({ error: 'searchId and impressions[] are required' });
-        }
-        try {
-            const normalized = impressions
-                .map((imp, index) => ({
-                    articleUid: String(imp.articleUid || imp.uid || '').trim(),
-                    position: Number(imp.position ?? index + 1),
-                }))
-                .filter((imp) => imp.articleUid && imp.position > 0)
-                .slice(0, 30);
-            if (!normalized.length) return res.status(400).json({ error: 'No valid impressions' });
-            await db.recordSearchImpressions(sid, req.sessionId, normalized, req.user?.id ?? null);
-            return res.json({ ok: true, recorded: normalized.length });
-        } catch (err) {
-            req.log?.error?.({ err }, 'Search impressions error');
-            return res.status(500).json({ error: 'Failed to record impressions' });
-        }
-    });
-
-    app.post('/api/search/interaction', rateLimit(180, 60), requireJson, async (req, res) => {
-        const { searchId, articleUid, interactionType, dwellMs, elapsedMs, decisionId } = req.body || {};
-        const sid = Number(searchId);
-        const uid = String(articleUid || '').trim();
-        const type = String(interactionType || '').trim();
-        if (!sid || !uid || !['click', 'save', 'dwell'].includes(type)) {
-            return res.status(400).json({ error: 'searchId, articleUid, and interactionType (click|save|dwell) are required' });
-        }
-        try {
-            const updates = {};
-            if (type === 'click') updates.wasClicked = true;
-            if (type === 'save') updates.wasSaved = true;
-            if (type === 'dwell' && dwellMs != null) updates.dwellTimeMs = Number(dwellMs);
-            await db.updateSearchImpressionInteraction(sid, uid, updates);
-            const { trackUserInteraction } = require('../services/userInteractionService');
-            void trackUserInteraction(db, {
-                type: `paper_${type}`,
-                rawType: type,
-                userId: req.user?.id ?? null,
-                sessionId: req.sessionId,
-                paperId: uid,
-                searchId: sid,
-                duration: dwellMs != null ? Number(dwellMs) : (elapsedMs != null ? Number(elapsedMs) : null),
-                metadata: { elapsedMs: elapsedMs != null ? Number(elapsedMs) : null },
-            }, { logger: req.log });
-            if (type === 'click') {
-                db.logEvent('search_result_click', req.sessionId, {
-                    searchId: sid,
-                    articleUid: uid,
-                    dwellMs: dwellMs != null ? Number(dwellMs) : null,
-                    elapsedMs: elapsedMs != null ? Number(elapsedMs) : null,
-                }).catch(() => undefined);
-            }
-            const rewardExplain = explainInteractionReward({
-                interactionType: type,
-                impression: {
-                    was_clicked: type === 'click',
-                    was_saved: type === 'save',
-                    dwell_time_ms: dwellMs != null ? Number(dwellMs) : 0,
-                },
-            });
-            let banditReward = null;
-            const banditUserId = req.user?.id ?? null;
-            const canAttributeBandit = Boolean(banditUserId || decisionId != null);
-            if (canAttributeBandit) {
-                banditReward = await attributeSearchInteractionReward(db, banditUserId, {
-                    searchId: sid,
-                    articleUid: uid,
-                    decisionId: decisionId != null ? Number(decisionId) : null,
-                    interactionType: type,
-                    dwellMs: dwellMs != null ? Number(dwellMs) : null,
-                    wasClicked: type === 'click',
-                    wasSaved: type === 'save',
-                }).catch((err) => {
-                    req.log?.warn?.({ err }, 'attributeSearchInteractionReward failed');
-                    return null;
-                });
-            }
-            return res.json({ ok: true, rewardExplain, banditReward });
-        } catch (err) {
-            req.log?.error?.({ err }, 'Search interaction error');
-            return res.status(500).json({ error: 'Failed to record interaction' });
-        }
-    });
-
-    app.get('/api/search/reward-explain', rateLimit(120, 60), async (req, res) => {
-        const interactionType = String(req.query.interactionType || '').trim() || null;
-        const feedbackType = String(req.query.feedbackType || '').trim() || null;
-        const dwellMs = req.query.dwellMs != null ? Number(req.query.dwellMs) : null;
-        const wasClicked = req.query.wasClicked === '1' || req.query.wasClicked === 'true';
-        const wasSaved = req.query.wasSaved === '1' || req.query.wasSaved === 'true';
-        const isCorrect = req.query.isCorrect === '1' || req.query.isCorrect === 'true';
-        const isFirstAttempt = req.query.isFirstAttempt !== '0' && req.query.isFirstAttempt !== 'false';
-
-        const rewardExplain = explainInteractionReward({
-            interactionType,
-            feedbackType: ['helpful', 'not_helpful'].includes(feedbackType || '') ? feedbackType : null,
-            impression: (wasClicked || wasSaved || dwellMs != null) ? {
-                was_clicked: wasClicked,
-                was_saved: wasSaved,
-                dwell_time_ms: dwellMs ?? 0,
-            } : null,
-            quizAttempt: req.query.isCorrect != null ? { isCorrect, isFirstAttempt } : null,
-            recommendationEventType: String(req.query.recommendationEventType || '').trim() || null,
-        });
-        return res.json(rewardExplain);
-    });
-
-    app.post('/api/search/feedback', rateLimit(60, 60), requireJson, async (req, res) => {
-        const { articleUid, feedbackType, reason, searchId, decisionId } = req.body || {};
-        const uid = String(articleUid || '').trim();
-        const type = String(feedbackType || '').trim();
-        if (!uid || !['helpful', 'not_helpful'].includes(type)) {
-            return res.status(400).json({ error: 'articleUid and feedbackType (helpful|not_helpful) are required' });
-        }
-        try {
-            await db.recordSearchResultFeedback({
-                userId: req.user?.id ?? null,
-                sessionId: req.sessionId,
-                searchId: searchId != null ? Number(searchId) : null,
-                articleUid: uid,
-                feedbackType: type,
-                reason: reason ? String(reason).slice(0, 500) : null,
-            });
-            const rewardExplain = explainInteractionReward({
-                interactionType: 'feedback',
-                feedbackType: type,
-            });
-            let banditReward = null;
-            const banditUserId = req.user?.id ?? null;
-            const canAttributeBandit = Boolean(banditUserId || decisionId != null);
-            if (canAttributeBandit) {
-                banditReward = await attributeSearchInteractionReward(db, banditUserId, {
-                    searchId: searchId != null ? Number(searchId) : null,
-                    articleUid: uid,
-                    decisionId: decisionId != null ? Number(decisionId) : null,
-                    feedbackType: type,
-                }).catch((err) => {
-                    req.log?.warn?.({ err }, 'attributeSearchInteractionReward failed');
-                    return null;
-                });
-            }
-            return res.json({ ok: true, rewardExplain, banditReward });
-        } catch (err) {
-            req.log?.error?.({ err }, 'Search feedback error');
-            return res.status(500).json({ error: 'Failed to record feedback' });
-        }
-    });
-
-    // ── AI enrichment poll endpoint ───────────────────────────────────────────
-    app.get('/api/search/ai-enrichment/:key', rateLimit(60, 60), async (req, res) => {
-        const key = String(req.params.key || '');
-        if (!/^[0-9a-f]{32}$/.test(key)) {
-            return res.status(400).json({ error: 'Invalid enrichment key' });
-        }
-        try {
-            const cached = await Promise.resolve(cache.get(`enrichment:${key}`)).catch((err) => { logger.warn({ err }, 'cache get failed'); return null; });
-            if (!cached) return res.json({ status: 'pending' });
-            return res.json({
-                status: cached.status,
-                ...(cached.status === 'ready' ? {
-                    clinicalAnswer: cached.clinicalAnswer ?? null,
-                    consensusSynopsis: cached.consensusSynopsis ?? null,
-                } : {}),
-            });
-        } catch (err) {
-            req.log?.warn?.({ err }, 'Enrichment poll error');
-            return res.json({ status: 'pending' });
-        }
-    });
+    registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson });
 }
 
 module.exports = { registerSearchRoutes };
