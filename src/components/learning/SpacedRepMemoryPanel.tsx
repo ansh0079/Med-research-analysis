@@ -9,22 +9,28 @@ function formatDue(daysUntil: number | null): string {
   return `in ${daysUntil}d`;
 }
 
-/** Stylized retention curve: vertical = notional recall, horizontal = days since last review into interval. */
-function MemoryCurveSvg({ intervalDays, daysSince }: { intervalDays: number; daysSince: number | null }) {
+/**
+ * Real FSRS forgetting curve: R(t,S) = (1 + t/(9*S))^-1, the same formula the
+ * backend uses to schedule reviews (see server/services/fsrsService.js). The
+ * dashed marker is "you are here" — today's actual predicted recall odds,
+ * not a stylized approximation.
+ */
+function MemoryCurveSvg({ stability, daysSince }: { stability: number; daysSince: number | null }) {
   const w = 200;
   const h = 56;
-  const maxDay = Math.max(1, intervalDays, (daysSince ?? 0) + 1);
+  const s = Math.max(0.5, stability);
+  const maxDay = Math.max(s * 2, (daysSince ?? 0) + 1);
   const pts: string[] = [];
   for (let i = 0; i <= 20; i++) {
-    const t = (i / 20) * maxDay * 1.15;
-    const recall = 100 * Math.exp(-t / (intervalDays * 1.2 || 3));
-    const x = 8 + (t / (maxDay * 1.15)) * (w - 16);
+    const t = (i / 20) * maxDay;
+    const recall = 100 * (1 / (1 + t / (9 * s)));
+    const x = 8 + (t / maxDay) * (w - 16);
     const y = h - 10 - (recall / 100) * (h - 20);
     pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
   }
   const d = `M ${pts.join(' L ')}`;
   const youX = daysSince != null
-    ? 8 + Math.min(1, daysSince / (maxDay * 1.15)) * (w - 16)
+    ? 8 + Math.min(1, daysSince / maxDay) * (w - 16)
     : null;
 
   return (
@@ -74,7 +80,7 @@ export const SpacedRepMemoryPanel: React.FC = () => {
           <i className="fas fa-wave-square text-violet-500" /> Spaced repetition memory
         </h3>
         <p className="text-xs text-slate-500 dark:text-slate-400">
-          Quiz on study-run outline nodes to start SM-2 scheduling. You will see last review, next due date, and easiness here—evidence that spaced practice is working.
+          Quiz on study-run outline nodes to start FSRS scheduling. You will see last review, next due date, and memory strength here—evidence that spaced practice is working.
         </p>
       </div>
     );
@@ -86,13 +92,16 @@ export const SpacedRepMemoryPanel: React.FC = () => {
         <i className="fas fa-wave-square text-violet-500" /> Spaced repetition memory
       </h3>
       <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-        SM-2 interval, easiness, and when each outline node is due again. The curve is a visual metaphor for forgetting—reviewing on schedule resets strength.
+        FSRS-scheduled: each node tracks memory stability (days until recall odds fall to ~90%) and difficulty independently. The curve shows your real predicted recall probability over time, not an approximation.
       </p>
       <div className="space-y-2">
         {topics.map((g) => {
           const key = g.normalizedTopic;
           const isOpen = open[key] ?? false;
-          const avgEase = g.cards.reduce((s, c) => s + c.easiness, 0) / g.cards.length;
+          const retrievabilities = g.cards.map((c) => c.retrievability).filter((r): r is number => typeof r === 'number');
+          const avgRetrievability = retrievabilities.length
+            ? retrievabilities.reduce((s, r) => s + r, 0) / retrievabilities.length
+            : null;
           const soonest = g.cards.reduce((a, c) => {
             const du = c.daysUntilDue;
             if (du == null) return a;
@@ -110,7 +119,8 @@ export const SpacedRepMemoryPanel: React.FC = () => {
                 <span className="flex-1 min-w-0">
                   <span className="text-xs font-bold text-slate-800 dark:text-slate-100 capitalize truncate block">{g.topic}</span>
                   <span className="text-[10px] text-slate-500">
-                    {g.cards.length} node{g.cards.length !== 1 ? 's' : ''} · avg easiness {avgEase.toFixed(2)}
+                    {g.cards.length} node{g.cards.length !== 1 ? 's' : ''}
+                    {avgRetrievability != null ? ` · ~${Math.round(avgRetrievability * 100)}% recall now` : ''}
                     {soonest != null ? ` · next ${formatDue(soonest)}` : ''}
                   </span>
                 </span>
@@ -118,28 +128,32 @@ export const SpacedRepMemoryPanel: React.FC = () => {
               </button>
               {isOpen && (
                 <ul className="border-t border-slate-100 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-700">
-                  {g.cards.map((c) => (
-                    <li key={c.outlineNodeId} className="px-3 py-3 flex flex-col sm:flex-row sm:items-center gap-3 bg-white/50 dark:bg-slate-900/20">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[11px] font-bold text-slate-700 dark:text-slate-200">
-                          {c.outlineLabel || c.outlineNodeId}
-                        </p>
-                        <p className="text-[10px] text-slate-500 mt-0.5">
-                          Last review {c.daysSinceReview != null ? `${c.daysSinceReview}d ago` : '—'}
-                          {' · '}
-                          interval {c.intervalDays}d
-                          {' · '}
-                          easiness {typeof c.easiness === 'number' ? c.easiness.toFixed(2) : '—'}
-                          {' · '}
-                          reps {c.repetitions}
-                        </p>
-                        <p className={`text-[10px] font-bold mt-1 ${c.daysUntilDue != null && c.daysUntilDue <= 0 ? 'text-rose-600 dark:text-rose-400' : 'text-violet-600 dark:text-violet-400'}`}>
-                          Due {formatDue(c.daysUntilDue)}
-                        </p>
-                      </div>
-                      <MemoryCurveSvg intervalDays={c.intervalDays} daysSince={c.daysSinceReview} />
-                    </li>
-                  ))}
+                  {g.cards.map((c) => {
+                    const stability = c.stability && c.stability > 0 ? c.stability : c.intervalDays;
+                    return (
+                      <li key={c.outlineNodeId} className="px-3 py-3 flex flex-col sm:flex-row sm:items-center gap-3 bg-white/50 dark:bg-slate-900/20">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[11px] font-bold text-slate-700 dark:text-slate-200">
+                            {c.outlineLabel || c.outlineNodeId}
+                          </p>
+                          <p className="text-[10px] text-slate-500 mt-0.5">
+                            Last review {c.daysSinceReview != null ? `${c.daysSinceReview}d ago` : '—'}
+                            {' · '}
+                            memory strength {stability.toFixed(1)}d
+                            {typeof c.difficulty === 'number' && c.difficulty > 0 ? ` · difficulty ${c.difficulty.toFixed(1)}/10` : ''}
+                            {typeof c.retrievability === 'number' ? ` · ${Math.round(c.retrievability * 100)}% recall now` : ''}
+                            {' · '}
+                            reps {c.repetitions}
+                            {c.lapses ? ` · ${c.lapses} lapse${c.lapses !== 1 ? 's' : ''}` : ''}
+                          </p>
+                          <p className={`text-[10px] font-bold mt-1 ${c.daysUntilDue != null && c.daysUntilDue <= 0 ? 'text-rose-600 dark:text-rose-400' : 'text-violet-600 dark:text-violet-400'}`}>
+                            Due {formatDue(c.daysUntilDue)}
+                          </p>
+                        </div>
+                        <MemoryCurveSvg stability={stability} daysSince={c.daysSinceReview} />
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
             </div>

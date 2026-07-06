@@ -1674,6 +1674,15 @@ export interface SpacedRepCardMemory {
   lastReviewedAt?: string | null;
   daysSinceReview: number | null;
   daysUntilDue: number | null;
+  /** FSRS: days until predicted recall probability decays to ~90% ("memory strength"). */
+  stability?: number;
+  /** FSRS: 1 (easy) - 10 (hard), independent of stability. */
+  difficulty?: number;
+  /** FSRS: 'new' | 'review' | 'relearning'. */
+  state?: string;
+  lapses?: number;
+  /** FSRS: live-computed recall probability (0-1) right now, given stability and elapsed time. */
+  retrievability?: number | null;
 }
 
 export interface SpacedRepTopicGroup {

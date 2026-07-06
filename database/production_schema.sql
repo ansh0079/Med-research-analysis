@@ -719,6 +719,10 @@ CREATE TABLE IF NOT EXISTS spaced_rep_cards (
     last_reviewed_at TEXT,
     created_at TEXT DEFAULT (CURRENT_TIMESTAMP),
     updated_at TEXT DEFAULT (CURRENT_TIMESTAMP),
+    stability REAL NOT NULL DEFAULT 0,
+    difficulty REAL NOT NULL DEFAULT 0,
+    state TEXT NOT NULL DEFAULT 'new',
+    lapses INTEGER NOT NULL DEFAULT 0,
     UNIQUE(user_id, normalized_topic, outline_node_id)
 );
 
