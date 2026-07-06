@@ -65,7 +65,7 @@ jobs:
       - name: Legacy surface freeze (PRs only)
         if: github.event_name == 'pull_request'
         run: |
-          git fetch origin "${{ github.base_ref }}" --depth=0
+          git fetch origin "${{ github.base_ref }}"
           node tools/check-legacy-freeze.js "origin/${{ github.base_ref }}" "HEAD"
       - name: Run tests with coverage
         run: npm test -- --coverage --coverageReporters=text --coverageReporters=lcov

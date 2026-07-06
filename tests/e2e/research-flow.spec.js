@@ -75,6 +75,9 @@ test.describe('search → results → interaction flow', () => {
     await page.addInitScript(() => {
       localStorage.setItem('med_cookie_consent_v1', 'accepted');
       localStorage.setItem('med_onboarding_done', '1');
+      void navigator.serviceWorker?.getRegistrations?.().then((regs) => {
+        regs.forEach((reg) => { void reg.unregister(); });
+      });
     });
 
     await page.route('**/api/config', async (route) => {
@@ -89,7 +92,19 @@ test.describe('search → results → interaction flow', () => {
       });
     });
 
-    await page.route(/\/api\/search\?.*/, async (route) => {
+    await page.route('**/api/search**', async (route) => {
+      const url = route.request().url();
+      if (route.request().method() !== 'GET' || !url.includes('q=')) {
+        await route.continue();
+        return;
+      }
+      if (url.includes('/api/search/intelligence')
+        || url.includes('/api/search/impressions')
+        || url.includes('/api/search/ai-enrichment')
+        || url.includes('/api/search/mesh-suggest')) {
+        await route.continue();
+        return;
+      }
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -140,8 +155,9 @@ test.describe('search → results → interaction flow', () => {
     await page.getByPlaceholder(/SGLT2 inhibitors/i).fill('sglt2 heart failure');
     await page.getByRole('banner').getByRole('button', { name: /^Search$/ }).click();
 
-    await expect(page.getByText(/Evidence found/i)).toBeVisible();
-    await expect(page.getByText(/Open access/i)).toBeVisible();
+    const statsBanner = page.locator('main .grid.grid-cols-2').first();
+    await expect(statsBanner.getByText('Evidence found', { exact: true })).toBeVisible();
+    await expect(statsBanner.getByText('Open access', { exact: true })).toBeVisible();
   });
 
   test('filter within results narrows list', async ({ page }) => {
@@ -153,8 +169,9 @@ test.describe('search → results → interaction flow', () => {
     const filterInput = page.getByPlaceholder(/Filter titles/i);
     await filterInput.fill('empagliflozin');
 
-    await expect(page.getByText(/Empagliflozin/i)).toBeVisible();
-    await expect(page.getByText(/SGLT2 inhibitors in heart failure/i)).not.toBeVisible();
+    const resultCards = page.locator('main .grid.grid-cols-1.gap-6').getByRole('article');
+    await expect(resultCards.filter({ hasText: /Empagliflozin/i })).toHaveCount(1);
+    await expect(resultCards.filter({ hasText: /SGLT2 inhibitors in heart failure/i })).toHaveCount(0);
   });
 
   test('deferred intelligence renders results first then mentor guidance', async ({ page }) => {
@@ -212,7 +229,7 @@ test.describe('search → results → interaction flow', () => {
     });
 
     await page.goto('/search');
-    const dismiss = page.getByRole('button', { name: /Dismiss/i });
+    const dismiss = page.getByRole('button', { name: /Dismiss/i }).first();
     if (await dismiss.isVisible().catch(() => false)) {
       await dismiss.click();
     }

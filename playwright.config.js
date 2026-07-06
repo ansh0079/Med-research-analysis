@@ -66,6 +66,9 @@ module.exports = defineConfig({
 
     // Ignore HTTPS errors
     ignoreHTTPSErrors: true,
+
+    // Production builds register public/sw.js; block SW so page.route mocks work.
+    serviceWorkers: 'block',
   },
 
   // Configure projects for major browsers

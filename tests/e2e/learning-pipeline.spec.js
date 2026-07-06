@@ -1,5 +1,5 @@
 /**
- * End-to-End Pipeline Test: search → synopsis → quiz → mastery update
+ * End-to-End Pipeline Test: search → appraisal → quiz → mastery update
  * Mocks all LLM and backend API calls to run fast and deterministically.
  */
 
@@ -33,54 +33,76 @@ const mockSearchResponse = {
   knowledgeAvailable: true,
 };
 
-const mockSynopsis = {
-  synopsis: 'Metformin remains first-line therapy for T2DM, with proven cardiovascular safety.',
-  keyPoints: ['First-line therapy', 'Cardiovascular safety'],
-  clinicalPearls: ['Start low and titrate to minimize GI side effects.'],
+const mockSynopsisResponse = {
+  synopsis: {
+    takeaway: 'Metformin remains first-line therapy for T2DM.',
+    clinicalQuestion: 'Is metformin safe for cardiovascular outcomes?',
+    studyDesign: 'Systematic review',
+    population: 'Adults with type 2 diabetes',
+    intervention: 'Metformin',
+    comparator: 'Standard care',
+    outcomes: 'Cardiovascular events',
+    mainFindings: 'Metformin shows cardiovascular safety in large cohorts.',
+    clinicalMeaning: 'Metformin remains first-line therapy for T2DM, with proven cardiovascular safety.',
+    limitations: 'Mostly observational data.',
+    bottomLine: 'Continue metformin as first-line unless contraindicated.',
+    trustRating: 'moderate',
+    trustRationale: 'Consistent evidence from systematic reviews.',
+  },
+  status: 'completed',
 };
 
-const mockQuiz = {
+const mockQuizFromEvidence = {
   questions: [
     {
       id: 'q-e2e-1',
-      type: 'recall',
-      text: 'What is the primary mechanism of metformin?',
+      type: 'multiple_choice',
+      questionType: 'recall',
+      question: 'What is the primary mechanism of metformin?',
       options: [
-        { id: 'opt-a', text: 'Decreases hepatic glucose production' },
-        { id: 'opt-b', text: 'Stimulates insulin secretion' },
-        { id: 'opt-c', text: 'Inhibits intestinal glucose absorption' },
-        { id: 'opt-d', text: 'Increases peripheral insulin sensitivity' },
+        'A. Decreases hepatic glucose production',
+        'B. Stimulates insulin secretion',
+        'C. Inhibits intestinal glucose absorption',
+        'D. Increases peripheral insulin sensitivity',
       ],
-      correctOptionId: 'opt-a',
+      correctAnswer: 'A',
       explanation: 'Metformin primarily suppresses hepatic gluconeogenesis.',
+      difficulty: 'medium',
     },
     {
       id: 'q-e2e-2',
-      type: 'clinical_application',
-      text: 'Which patient should NOT receive metformin?',
+      type: 'multiple_choice',
+      questionType: 'clinical_application',
+      question: 'Which patient should NOT receive metformin?',
       options: [
-        { id: 'opt-a', text: 'eGFR 45 mL/min/1.73m²' },
-        { id: 'opt-b', text: 'eGFR 25 mL/min/1.73m²' },
-        { id: 'opt-c', text: 'BMI 32 kg/m²' },
-        { id: 'opt-d', text: 'Age 55 years' },
+        'A. eGFR 45 mL/min/1.73m²',
+        'B. eGFR 25 mL/min/1.73m²',
+        'C. BMI 32 kg/m²',
+        'D. Age 55 years',
       ],
-      correctOptionId: 'opt-b',
+      correctAnswer: 'B',
       explanation: 'Metformin is contraindicated when eGFR < 30.',
+      difficulty: 'medium',
     },
     {
       id: 'q-e2e-3',
-      type: 'guideline',
-      text: 'According to ADA guidelines, metformin is:',
+      type: 'multiple_choice',
+      questionType: 'guideline',
+      question: 'According to ADA guidelines, metformin is:',
       options: [
-        { id: 'opt-a', text: 'Second-line after sulfonylureas' },
-        { id: 'opt-b', text: 'First-line for most adults with T2DM' },
-        { id: 'opt-c', text: 'Only for monotherapy' },
-        { id: 'opt-d', text: 'Contraindicated in prediabetes' },
+        'A. Second-line after sulfonylureas',
+        'B. First-line for most adults with T2DM',
+        'C. Only for monotherapy',
+        'D. Contraindicated in prediabetes',
       ],
-      correctOptionId: 'opt-b',
+      correctAnswer: 'B',
       explanation: 'ADA recommends metformin as first-line unless contraindicated.',
+      difficulty: 'medium',
     },
   ],
+  topic: 'diabetes mellitus',
+  provider: 'mock',
+  disclaimer: 'For education only',
 };
 
 const mockQuizAttemptResponse = {
@@ -90,20 +112,18 @@ const mockQuizAttemptResponse = {
   masteryDelta: 0.15,
 };
 
-const mockMastery = {
-  topic: 'diabetes mellitus',
-  overall: 0.72,
-  claimMastery: { 'metformin-mechanism': 0.90, 'metformin-contraindication': 0.50, 'ada-guideline': 0.75 },
-  history: [
-    { date: new Date().toISOString(), score: 2, total: 3 },
-  ],
-};
-
-test.describe('learning pipeline: search → synopsis → quiz → mastery', () => {
+test.describe('learning pipeline: search → appraisal → quiz → mastery', () => {
   test.use({ storageState: 'tests/e2e/.auth/user.json' });
 
   test.beforeEach(async ({ page }) => {
-    // Mock config
+    await page.addInitScript(() => {
+      localStorage.setItem('med_cookie_consent_v1', 'accepted');
+      localStorage.setItem('med_onboarding_done', '1');
+      void navigator.serviceWorker?.getRegistrations?.().then((regs) => {
+        regs.forEach((reg) => { void reg.unregister(); });
+      });
+    });
+
     await page.route('**/api/config', async (route) => {
       await route.fulfill({
         status: 200,
@@ -112,8 +132,19 @@ test.describe('learning pipeline: search → synopsis → quiz → mastery', () 
       });
     });
 
-    // Mock search
-    await page.route(/\/api\/search\?.*/, async (route) => {
+    await page.route('**/api/search**', async (route) => {
+      const url = route.request().url();
+      if (route.request().method() !== 'GET' || !url.includes('q=')) {
+        await route.continue();
+        return;
+      }
+      if (url.includes('/api/search/intelligence')
+        || url.includes('/api/search/impressions')
+        || url.includes('/api/search/ai-enrichment')
+        || url.includes('/api/search/mesh-suggest')) {
+        await route.continue();
+        return;
+      }
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -121,35 +152,30 @@ test.describe('learning pipeline: search → synopsis → quiz → mastery', () 
       });
     });
 
-    // Mock MeSH suggest
     await page.route('**/api/search/mesh-suggest?**', async (route) => {
       await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ suggestions: [] }) });
     });
 
-    // Mock alerts
     await page.route('**/api/evidence-alerts**', async (route) => {
       await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ alerts: [] }) });
     });
 
-    // Mock synopsis
     await page.route('**/api/ai/synopsis', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify(mockSynopsis),
+        body: JSON.stringify(mockSynopsisResponse),
       });
     });
 
-    // Mock quiz generate
-    await page.route('**/api/quiz/generate', async (route) => {
+    await page.route('**/api/quiz/from-evidence', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify(mockQuiz),
+        body: JSON.stringify(mockQuizFromEvidence),
       });
     });
 
-    // Mock quiz attempt
     await page.route('**/api/learning/quiz-attempt', async (route) => {
       await route.fulfill({
         status: 200,
@@ -157,66 +183,37 @@ test.describe('learning pipeline: search → synopsis → quiz → mastery', () 
         body: JSON.stringify(mockQuizAttemptResponse),
       });
     });
-
-    // Mock mastery
-    await page.route('**/api/learning/mastery/**', async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(mockMastery),
-      });
-    });
   });
 
-  test('full pipeline from search to mastery update', async ({ page }) => {
-    // ── 1. Search ──
+  test('full pipeline from search to quiz completion', async ({ page }) => {
     await page.goto('/search');
-    await expect(page.getByPlaceholder(/diabetes/i)).toBeVisible();
+    const searchBox = page.getByPlaceholder(/SGLT2 inhibitors/i);
+    await expect(searchBox).toBeVisible();
 
-    const searchBox = page.getByPlaceholder(/diabetes/i);
     await searchBox.fill('diabetes mellitus');
+    await page.getByRole('banner').getByRole('button', { name: /^Search$/ }).click();
 
-    const submitButton = page.getByRole('banner').getByRole('button', { name: /^Search$/ });
-    await submitButton.click();
+    const articleCard = page.getByRole('article').filter({ hasText: /Metformin and cardiovascular outcomes/i });
+    await expect(articleCard).toBeVisible();
 
-    await expect(page.getByRole('link', { name: /Metformin and cardiovascular outcomes/i })).toBeVisible();
+    await articleCard.getByRole('button', { name: /Critically Appraise/i }).click();
+    await expect(articleCard.getByText(/first-line therapy/i).first()).toBeVisible({ timeout: 10000 });
 
-    // ── 2. Synopsis ──
-    await page.getByRole('link', { name: /Metformin and cardiovascular outcomes/i }).click();
-
-    // Wait for synopsis to appear (UI may show it inline or in a drawer)
-    await expect(page.getByText(/Synopsis/i).first()).toBeVisible({ timeout: 10000 });
-    await expect(page.getByText(/first-line therapy/i)).toBeVisible();
-
-    // ── 3. Quiz Generation ──
-    // Click quiz generation trigger (adapt selector to actual UI)
-    const quizTrigger = page.getByRole('button', { name: /Quiz|Test|Study/i }).first();
-    if (await quizTrigger.isVisible().catch(() => false)) {
-      await quizTrigger.click();
-    }
-
-    // Wait for quiz questions to render
+    await page.getByRole('button', { name: /Quiz me on this/i }).click();
     await expect(page.getByText(/What is the primary mechanism of metformin/i)).toBeVisible({ timeout: 10000 });
+
+    await page.getByRole('button', { name: /^A:/ }).click();
+    await page.getByRole('button', { name: 'Next' }).click();
+
     await expect(page.getByText(/Which patient should NOT receive metformin/i)).toBeVisible();
+    await page.getByRole('button', { name: /^B:/ }).click();
+    await page.getByRole('button', { name: 'Next' }).click();
+
     await expect(page.getByText(/According to ADA guidelines/i)).toBeVisible();
+    await page.getByRole('button', { name: /^A:/ }).click();
+    await page.getByRole('button', { name: 'Finish' }).click();
 
-    // ── 4. Quiz Attempt ──
-    // Answer Q1 correctly
-    await page.getByText(/Decreases hepatic glucose production/i).click();
-    // Answer Q2 correctly
-    await page.getByText(/eGFR 25 mL\/min\/1\.73m²/i).click();
-    // Answer Q3 correctly
-    await page.getByText(/First-line for most adults with T2DM/i).click();
-
-    // Submit quiz
-    const submitQuiz = page.getByRole('button', { name: /Submit|Finish|Done/i });
-    await submitQuiz.click();
-
-    // ── 5. Mastery Update ──
-    await expect(page.getByText(/2\s*\/\s*3/i).first()).toBeVisible({ timeout: 10000 });
-    await expect(page.getByText(/Score/i)).toBeVisible();
-
-    // Verify mastery dashboard link/content is visible
-    await expect(page.getByText(/Mastery/i).first()).toBeVisible();
+    await expect(page.getByText(/2 of 3 correct/i)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/Saved/i).first()).toBeVisible({ timeout: 10000 });
   });
 });
