@@ -70,7 +70,7 @@ async function getUserUsageSummary(db, user) {
         yearMonth: ym,
         meters: {
             aiAnalysesPerMonth: buildMeter('aiAnalysesPerMonth', 'AI analyses', FEATURE_SLUGS.aiAnalysesPerMonth),
-            synthesisPerMonth: buildMeter('synthesisPerMonth', 'Evidence synthesis', FEATURE_SLUGS.ai_synthesis),
+            synthesisPerMonth: buildMeter('synthesisPerMonth', 'Evidence synthesis', FEATURE_SLUGS.synthesisPerMonth),
             searchesPerDay: {
                 limitKey: 'searchesPerDay',
                 label: 'Searches today',
