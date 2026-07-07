@@ -3,7 +3,6 @@
 const db = require('../../../database');
 const { hasFeature, resolvePlan } = require('../../config/entitlements');
 const { extractToken, verifyToken } = require('./tokens');
-const { maybeDowngradeExpiredTrial } = require('./trial');
 const { isTokenRevoked } = require('./security');
 const { isAccessTokenVersionCurrent } = require('./accessTokenVersion');
 
@@ -82,9 +81,6 @@ async function requireAuthJwt(req, res, next) {
         });
     }
 
-    // Auto-downgrade expired trials on every authenticated request
-    await maybeDowngradeExpiredTrial(db, decoded.id);
-
     req.user = { id: decoded.id, name: decoded.name, email: decoded.email, role: decoded.role || 'user', emailVerified: decoded.emailVerified || false, subscriptionPlan: decoded.subscriptionPlan || 'free' };
     req.token = token;
     next();
@@ -101,7 +97,6 @@ async function requireAuthOrBeta(req, res, next) {
     if (token && !(await isTokenRevoked(token))) {
         const decoded = verifyToken(token);
         if (decoded && await isAccessTokenVersionCurrent(decoded)) {
-            await maybeDowngradeExpiredTrial(db, decoded.id);
             req.user = {
                 id: decoded.id,
                 name: decoded.name,

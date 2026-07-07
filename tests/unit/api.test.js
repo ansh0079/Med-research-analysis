@@ -1956,9 +1956,7 @@ describe('API Endpoints', () => {
         position: null,
         created_at: '2026-04-26T12:00:00.000Z'
       };
-      db.get
-        .mockResolvedValueOnce(null)
-        .mockResolvedValueOnce(row);
+      db.get.mockResolvedValueOnce(row);
 
       const response = await request(app)
         .post('/api/articles/999/annotations')
