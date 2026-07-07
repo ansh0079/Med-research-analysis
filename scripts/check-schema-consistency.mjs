@@ -48,7 +48,9 @@ function execStatement(db, statement) {
 }
 
 function parseTablesFromSqlFile(filePath) {
-  const sql = fs.readFileSync(filePath, 'utf8');
+  const sql = fs.readFileSync(filePath, 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/--.*$/gm, '');
   return new Set(
     [...sql.matchAll(/CREATE TABLE(?: IF NOT EXISTS)?\s+(\w+)/gi)].map((m) => m[1].toLowerCase())
   );
