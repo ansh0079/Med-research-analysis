@@ -11,6 +11,7 @@ import { RankingTraceBadge } from '@components/search/RankingTraceBadge';
 import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
 import { VerificationBadge } from '@components/ui/VerificationBadge';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
+import { logAsyncError } from '@utils/handleAsyncError';
 
 interface ArticleCardProps {
   article: Article;
@@ -365,12 +366,13 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
     if (PREFETCHED_ARTICLES.has(article.uid)) return;
     PREFETCHED_ARTICLES.add(article.uid);
     if (article.doi) {
-      void api.documents.findFullText(article.doi).catch(() => undefined);
+      void api.documents.findFullText(article.doi).catch((err) => logAsyncError(err, 'ArticleCard/findFullText'));
     }
-    void api.ai.checkRetraction(article.uid, article.doi, article.pmid).catch(() => undefined);
+    void api.ai.checkRetraction(article.uid, article.doi, article.pmid)
+      .catch((err) => logAsyncError(err, 'ArticleCard/checkRetraction'));
     void api.documents.getPdfStatus({ uid: article.uid, doi: article.doi, pmcid: article.pmcid })
       .then((s) => { if (s.indexed) setPdfIndexed(true); })
-      .catch(() => undefined);
+      .catch((err) => logAsyncError(err, 'ArticleCard/getPdfStatus'));
   }, [article.doi, article.pmid, article.uid, article.pmcid]);
 
   const flushDwell = React.useCallback(() => {

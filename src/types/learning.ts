@@ -232,7 +232,7 @@ export interface LearningInsight {
   detail: string;
   action: string | null;
   topic: string | null;
-  questionType?: string;
+  questionType?: QuestionType;
   studyRunId?: number;
   gapReport?: StudyRunGapReport;
 }

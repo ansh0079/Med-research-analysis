@@ -5,6 +5,7 @@ import { useAuth } from '@contexts/AuthContext';
 import { api } from '@services/api';
 import type { Article, CaseModeResult, CaseLearningMode, QuizQuestion, TeachingVignetteResult } from '@types';
 import { useClientFeatures } from '@hooks/useClientFeatures';
+import { logAsyncError } from '@utils/handleAsyncError';
 import { CaseAnalysisResultPanel } from '@components/case/CaseAnalysisResultPanel';
 import { CaseEvidenceBriefPanel, type CaseEvidenceBrief, type CaseToEvidenceResult } from '@components/case/CaseEvidenceBriefPanel';
 import { CaseInputCard } from '@components/case/CaseInputCard';
@@ -146,7 +147,7 @@ export const CaseModePage: React.FC = () => {
       userResponse: null,
       aiFeedback: null,
       seedArticleUids: caseSeedArticles?.map((a) => String(a.uid || '')).filter(Boolean) ?? [],
-    }).catch(() => undefined);
+    }).catch((err) => logAsyncError(err, 'CaseModePage/submitCaseAttempt'));
   };
 
   const buildReflectionSections = (source: 'analysis' | 'teaching_vignette', kind: ReflectionKind) =>

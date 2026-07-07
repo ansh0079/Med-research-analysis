@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { api } from '@services/api';
 import type { Article, SynthesisResult } from '@types';
+import { logAsyncError } from '@utils/handleAsyncError';
 
 interface UseSearchPageSynthesisOptions {
   currentQuery: string;
@@ -61,7 +62,7 @@ export function useSearchPageSynthesis({
                 newGrade: s.latest?.evidence_grade ?? '',
               });
             }
-          }).catch(() => undefined);
+          }).catch((err) => logAsyncError(err, 'useSearchPageSynthesis/getTopicStaleness'));
         }
         return resolved;
       }

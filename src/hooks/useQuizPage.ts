@@ -5,6 +5,7 @@ import { generateQuiz, generateQuizFromEvidence, QuizGenerationError, type QuizA
 import { selectTopEvidence } from '../utils/selectTopEvidence';
 import { api } from '@services/api';
 import { lookupArticleAttribution } from '@utils/searchAttribution';
+import { logAsyncError } from '@utils/handleAsyncError';
 import { downloadText } from '@services/exportArticles';
 import { useAuth } from '@contexts/AuthContext';
 import type { EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
@@ -374,7 +375,7 @@ export function useQuizPage() {
       topic: manualTopic.trim(),
       outlineNodeId: currentQ.outlineNodeId || currentQ.id,
       feedbackType,
-    }).catch(() => undefined);
+    }).catch((err) => logAsyncError(err, 'useQuizPage/postQuizFeedback'));
   }, [currentQ, isAuthenticated, feedbackSentIds, manualTopic]);
 
   const handleNext = () => {

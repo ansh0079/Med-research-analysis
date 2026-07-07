@@ -27,9 +27,20 @@ function isDev(): boolean {
   return typeof process !== 'undefined' && process.env?.NODE_ENV === 'development';
 }
 
+/**
+ * Dev-only logging for background/fire-and-forget calls (prefetch, telemetry,
+ * best-effort enrichment) where a user-facing toast would be noise rather
+ * than help. Replaces bare `.catch(() => undefined)` so failures are at
+ * least visible in development instead of silently swallowed everywhere.
+ */
+export function logAsyncError(error: unknown, context: string): void {
+  if (isDev()) {
+    console.warn(`[${context}]`, error);
+  }
+}
+
 export function handleAsyncError(error: unknown, context: string): void {
   if (isDev()) {
-    // eslint-disable-next-line no-console
     console.warn(`[${context}]`, error);
   }
 

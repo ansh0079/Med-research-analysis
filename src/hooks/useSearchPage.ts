@@ -11,6 +11,7 @@ import { useWorkflowContext } from '@hooks/useWorkflowContext';
 import { useClientFeatures } from '@hooks/useClientFeatures';
 import { api } from '@services/api';
 import { selectTopEvidence } from '../utils/selectTopEvidence';
+import { logAsyncError } from '@utils/handleAsyncError';
 import type { AgentGuidance, Article, SynthesisResult, TopicEvidenceMemory } from '@types';
 
 const RECENT_ANALYSES_KEY = 'med_recent_analyses';
@@ -294,7 +295,7 @@ export function useSearchPage() {
                 newGrade: s.latest?.evidence_grade ?? '',
               });
             }
-          }).catch(() => undefined);
+          }).catch((err) => logAsyncError(err, 'useSearchPage/getTopicStaleness'));
         }
         return resolved;
       }
