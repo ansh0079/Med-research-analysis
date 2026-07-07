@@ -676,6 +676,7 @@ mapUserTopicMemoryRow(row) {
     if (!row) return null;
     const top = safeJsonParse(row.top_article_uids, []);
     const saved = safeJsonParse(row.saved_article_uids, []);
+    const excluded = safeJsonParse(row.excluded_article_uids, []);
     const weakOutlineNodeIds = safeJsonParse(row.weak_outline_node_ids, []);
     return {
         userId: row.user_id,
@@ -685,11 +686,13 @@ mapUserTopicMemoryRow(row) {
         lastSearchAt: row.last_search_at,
         topArticles: top,
         savedArticles: saved,
+        excludedArticles: excluded,
         weakOutlineNodeIds,
         memoryScore: Number(row.memory_score || 0),
         memoryTier: row.memory_tier || 'sparse',
         topPaperCount: top.length,
         savedPaperCount: saved.length,
+        excludedPaperCount: excluded.length,
         promotedProposalAt: row.promoted_proposal_at || null,
         updatedAt: row.updated_at,
     };
@@ -841,6 +844,61 @@ async recordUserTopicSavedArticleSignal(userId, displayTopic, articleUid) {
            display_topic = CASE WHEN LENGTH(excluded.display_topic) > LENGTH(COALESCE(user_topic_memory.display_topic, '')) THEN excluded.display_topic ELSE user_topic_memory.display_topic END,
            updated_at = excluded.updated_at`,
         [userId, normalized, display_topic, searchCount, topJson, JSON.stringify(mergedSaved), weakJson, created, now]
+    );
+    return this._finalizeUserTopicMemory(userId, normalized);
+}
+
+async recordUserTopicNegativeArticleSignal(userId, displayTopic, articleUid) {
+    if (!this.kysely || !userId || !displayTopic || !articleUid) return null;
+    const normalized = this.normalizeTopic(displayTopic);
+    if (!normalized) return null;
+    const uid = String(articleUid).trim();
+    if (!uid) return null;
+    const now = new Date().toISOString();
+    const row = await this.get(`SELECT * FROM user_topic_memory WHERE user_id = ? AND normalized_topic = ?`, [userId, normalized]);
+    const existingTop = row ? safeJsonParse(row.top_article_uids, []) : [];
+    const existingSaved = row ? safeJsonParse(row.saved_article_uids, []) : [];
+    const existingExcluded = row ? safeJsonParse(row.excluded_article_uids, []) : [];
+    const weakJson = row ? row.weak_outline_node_ids || '[]' : '[]';
+    const searchCount = row ? Number(row.search_count || 0) : 0;
+    const created = row ? row.created_at : now;
+    const display_topic = String(displayTopic).trim().slice(0, 240);
+
+    const top = existingTop
+        .map((entry) => {
+            const entryUid = String(typeof entry === 'string' ? entry : entry?.uid || '');
+            if (entryUid !== uid) return entry;
+            const nextWeight = Math.max(0, Number(entry?.w || entry?.weight || 1) - 2);
+            return nextWeight > 0 ? { ...entry, uid: entryUid, w: nextWeight, at: now } : null;
+        })
+        .filter(Boolean);
+    const saved = existingSaved.filter((entry) => String(typeof entry === 'string' ? entry : entry?.uid || '') !== uid);
+    const excludedMap = new Map();
+    for (const entry of existingExcluded) {
+        const entryUid = String(typeof entry === 'string' ? entry : entry?.uid || '');
+        if (!entryUid) continue;
+        excludedMap.set(entryUid, {
+            uid: entryUid,
+            w: Number(entry?.w || entry?.weight || 1),
+            at: entry?.at || null,
+        });
+    }
+    const current = excludedMap.get(uid) || { uid, w: 0, at: null };
+    current.w += 1;
+    current.at = now;
+    excludedMap.set(uid, current);
+    const excluded = [...excludedMap.values()].sort((a, b) => b.w - a.w).slice(0, 50);
+
+    await this.run(
+        `INSERT INTO user_topic_memory (user_id, normalized_topic, display_topic, search_count, last_search_at, top_article_uids, saved_article_uids, excluded_article_uids, weak_outline_node_ids, memory_score, memory_tier, promoted_proposal_at, created_at, updated_at)
+         VALUES (?, ?, ?, ?, NULL, ?, ?, ?, ?, 0, 'sparse', NULL, ?, ?)
+         ON CONFLICT(user_id, normalized_topic) DO UPDATE SET
+           top_article_uids = excluded.top_article_uids,
+           saved_article_uids = excluded.saved_article_uids,
+           excluded_article_uids = excluded.excluded_article_uids,
+           display_topic = CASE WHEN LENGTH(excluded.display_topic) > LENGTH(COALESCE(user_topic_memory.display_topic, '')) THEN excluded.display_topic ELSE user_topic_memory.display_topic END,
+           updated_at = excluded.updated_at`,
+        [userId, normalized, display_topic, searchCount, JSON.stringify(top), JSON.stringify(saved), JSON.stringify(excluded), weakJson, created, now]
     );
     return this._finalizeUserTopicMemory(userId, normalized);
 }

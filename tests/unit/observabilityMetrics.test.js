@@ -17,6 +17,7 @@ describe('observability metrics', () => {
     updateQueueMetrics({
       'ai-generation': {
         backend: 'bullmq',
+        workerRunning: false,
         bullmq: { waiting: 2, active: 1, completed: 10, failed: 3 },
       },
     });
@@ -25,6 +26,7 @@ describe('observability metrics', () => {
     const output = await registry.metrics();
     expect(output).toContain('medsearch_slo_error_budget_burn_rate');
     expect(output).toContain('medsearch_job_queue_jobs');
+    expect(output).toContain('medsearch_job_queue_worker_running');
     expect(output).toContain('medsearch_job_queue_recurring_failures');
     expect(getSloStatus().rolling.some((row) => row.slo === 'search_latency_p95')).toBe(true);
   });

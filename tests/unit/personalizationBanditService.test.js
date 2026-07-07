@@ -4,6 +4,7 @@ const {
     SEARCH_RANKING_ARMS,
     RECOMMENDATION_ARM_BY_TYPE,
     applyRecommendationBandit,
+    recommendationContextFeatures,
 } = require('../../server/services/personalizationBanditService');
 
 describe('personalizationBanditService', () => {
@@ -32,6 +33,17 @@ describe('personalizationBanditService', () => {
         expect(SEARCH_RANKING_ARMS.misconception_heavy.misconception).toBeGreaterThan(
             SEARCH_RANKING_ARMS.heuristic_default.misconception
         );
+    });
+
+    test('recommendationContextFeatures derives time, streak, and mastery bands', () => {
+        expect(recommendationContextFeatures(
+            { overallScore: 82 },
+            { now: new Date('2026-07-07T09:00:00.000Z'), profile: { currentStreak: 5 } }
+        )).toMatchObject({
+            timeOfDay: 'morning',
+            streakBand: 'active',
+            masteryBand: 'strong',
+        });
     });
 
     test('applyRecommendationBandit re-ranks with bandit metadata', async () => {

@@ -4,6 +4,7 @@ const logger = require('../config/logger');
 
 const POLICY_SEARCH_RANKING = 'search_ranking';
 const POLICY_RECOMMENDATION = 'recommendation_strategy';
+const POLICY_QUIZ_CLAIM_SELECTION = 'quiz_claim_selection';
 
 const SEARCH_RANKING_ARMS = {
     heuristic_default: {
@@ -182,7 +183,21 @@ async function recordSearchRankingDecisions(db, {
     return { decisions };
 }
 
-async function applyRecommendationBandit(db, userId, recommendations = []) {
+function recommendationContextFeatures(rec, context = {}) {
+    const now = context.now instanceof Date ? context.now : new Date();
+    const hour = now.getHours();
+    const timeOfDay = hour < 6 ? 'overnight' : hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening';
+    const streak = Number(context.profile?.currentStreak ?? context.profile?.current_streak ?? 0) || 0;
+    const mastery = Number(rec.masteryScore ?? rec.overallScore ?? rec.overall_score ?? 0) || 0;
+    return {
+        timeOfDay,
+        hour,
+        streakBand: streak >= 14 ? 'long' : streak >= 3 ? 'active' : streak > 0 ? 'started' : 'none',
+        masteryBand: mastery >= 80 ? 'strong' : mastery >= 60 ? 'building' : mastery > 0 ? 'weak' : 'unknown',
+    };
+}
+
+async function applyRecommendationBandit(db, userId, recommendations = [], context = {}) {
     if (!Array.isArray(recommendations) || recommendations.length === 0) return recommendations;
     if (!isBanditEnabled() || !db?.listPersonalizationArmStates) return recommendations;
 
@@ -201,12 +216,14 @@ async function applyRecommendationBandit(db, userId, recommendations = []) {
     const adjusted = recommendations.map((rec) => {
         const armId = RECOMMENDATION_ARM_BY_TYPE[rec.type] || rec.type || 'explore';
         const sample = samples[armId] ?? 0.5;
+        const contextFeatures = recommendationContextFeatures(rec, context);
         const banditMultiplier = 0.65 + sample * 0.7;
         return {
             ...rec,
             priority: Math.round((Number(rec.priority) || 0) * banditMultiplier),
             banditArmId: armId,
             banditSample: sample,
+            banditContext: contextFeatures,
         };
     });
 
@@ -225,8 +242,9 @@ async function applyRecommendationBandit(db, userId, recommendations = []) {
                     action: rec.action,
                     basePriority: rec.priority,
                     banditSample: rec.banditSample,
+                    ...rec.banditContext,
                 },
-            }).catch((err) => logger.debug({ err }, 'recommendation decision log failed'));
+            }).catch((err) => logger.warn({ err, userId, armId: rec.banditArmId }, 'recommendation decision log failed'));
         }
     }
 
@@ -239,7 +257,9 @@ async function recordBanditReward(db, policyType, armId, reward, userId = null) 
     await db.recordPersonalizationArmPull(policyType, armId, reward, scopeKey).catch((err) => {
         logger.warn({ err, policyType, armId }, 'recordPersonalizationArmPull failed');
     });
-    await db.recordPersonalizationArmPull(policyType, armId, reward, 'global').catch(() => null);
+    await db.recordPersonalizationArmPull(policyType, armId, reward, 'global').catch((err) => {
+        logger.warn({ err, policyType, armId }, 'recordPersonalizationArmPull global failed');
+    });
 }
 
 async function reconcileImpressionRewards(db, { days = 7 } = {}) {
@@ -279,7 +299,9 @@ async function reconcileImpressionRewards(db, { days = 7 } = {}) {
 module.exports = {
     POLICY_SEARCH_RANKING,
     POLICY_RECOMMENDATION,
+    POLICY_QUIZ_CLAIM_SELECTION,
     SEARCH_RANKING_ARMS,
+    recommendationContextFeatures,
     RECOMMENDATION_ARM_BY_TYPE,
     isBanditEnabled,
     selectSearchRankingArm,

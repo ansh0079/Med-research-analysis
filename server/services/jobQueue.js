@@ -243,6 +243,10 @@ async function stopWorkers() {
 async function getQueueStatus() {
     const all = [pdfQueue, embeddingQueue, digestQueue, aiGenerationQueue];
     const result = {};
+    const workerQueues = new Set(workers.map((worker) => {
+        const name = worker?.name || '';
+        return String(name).replace(/^medsearch-/, '');
+    }).filter(Boolean));
     for (const q of all) {
         const local = q.getStatus();
         let redisStats = null;
@@ -263,6 +267,8 @@ async function getQueueStatus() {
         }
         result[q.name] = {
             ...local,
+            workerRunning: q.bullEnabled ? workerQueues.has(q.name) : true,
+            workerCount: q.bullEnabled ? (workerQueues.has(q.name) ? 1 : 0) : 1,
             redis: redisStats ? {
                 pending: parseInt(redisStats.pending, 10) || 0,
                 running: parseInt(redisStats.running, 10) || 0,

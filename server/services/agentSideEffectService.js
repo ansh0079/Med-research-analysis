@@ -50,12 +50,21 @@ async function enqueueAgentTurnSideEffects({ db, ...payload }) {
         });
     }
 
-    aiGenerationQueue.enqueueNamed(JOB_TYPE, { jobKey }, {
-        label: JOB_TYPE,
-        priority: -5,
-    }).catch((err) => {
+    try {
+        await aiGenerationQueue.enqueueNamed(JOB_TYPE, { jobKey }, {
+            label: JOB_TYPE,
+            priority: -5,
+        });
+    } catch (err) {
         logger.warn({ err, jobKey }, 'Agent side-effect queue enqueue failed');
-    });
+        const shouldRunSync = payload.criticalSideEffects === true
+            || String(process.env.AGENT_SIDE_EFFECT_SYNC_FALLBACK || '').toLowerCase() === 'true';
+        if (shouldRunSync) {
+            logger.warn({ jobKey }, 'Running agent side effects synchronously after queue failure');
+            const syncResult = await processAgentTurnSideEffect(jobKey, { db });
+            return { ...sideEffect, syncFallback: true, syncResult };
+        }
+    }
 
     return sideEffect;
 }

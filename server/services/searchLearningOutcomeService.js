@@ -1,5 +1,5 @@
 const logger = require('../config/logger');
-const { POLICY_SEARCH_RANKING, recordBanditReward } = require('./personalizationBanditService');
+const { POLICY_SEARCH_RANKING, POLICY_QUIZ_CLAIM_SELECTION, recordBanditReward } = require('./personalizationBanditService');
 const {
     quizAttemptReward,
     impressionEngagementReward,
@@ -153,6 +153,9 @@ async function attributeQuizAttemptRewards(db, userId, attempts = [], topic = ''
             : 0;
         const isFirstAttempt = priorAttempts === 0;
         const reward = quizAttemptReward(isCorrect, isFirstAttempt);
+        if (claimKey) {
+            await recordBanditReward(db, POLICY_QUIZ_CLAIM_SELECTION, String(claimKey), reward, decisionUserId);
+        }
 
         if (!articleUid && !claimKey && !decisionId && !banditArmId) continue;
 

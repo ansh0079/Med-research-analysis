@@ -120,6 +120,12 @@ function registerObservabilityMetrics(registry, client) {
             labelNames: ['queue', 'job_name'],
             registers: [registry],
         }),
+        queueWorkerRunning: new client.Gauge({
+            name: 'medsearch_job_queue_worker_running',
+            help: '1 when this process reports a worker for the queue, else 0',
+            labelNames: ['queue', 'backend'],
+            registers: [registry],
+        }),
     };
     for (const slo of Object.keys(SLO_DEFINITIONS)) {
         metrics.sloBurnRate.set({ slo }, 0);
@@ -141,6 +147,7 @@ function updateQueueMetrics(queueStatus = {}) {
         for (const [stateName, count] of Object.entries(counts)) {
             metrics.queueJobs.set({ queue, state: stateName, backend }, Number(count || 0));
         }
+        metrics.queueWorkerRunning.set({ queue, backend }, status.workerRunning === false ? 0 : 1);
     }
 }
 

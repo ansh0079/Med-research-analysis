@@ -3,6 +3,7 @@
 const logger = require('../config/logger');
 const { createBudgetForAction, runWithLlmBudget } = require('./llmRequestBudget');
 const { parseStructuredOutput } = require('../utils/parseJson');
+const { recordBanditReward } = require('./personalizationBanditService');
 
 /**
  * Generates a branching clinical case scenario for medical education.
@@ -261,6 +262,38 @@ async function recordCaseChoice(db, caseId, userId, nodeId, choiceId) {
                 new Date().toISOString()
             ]
         );
+        const reward = Math.max(-0.25, Math.min(1, (scorePercentage - 50) / 50));
+        const sideEffects = await Promise.allSettled([
+            db.recordLearningEvent?.({
+                userId,
+                eventType: 'case_scenario_completed',
+                topic: caseScenario.topic,
+                sourceType: 'case_scenario',
+                sourceId: caseId,
+                payload: {
+                    difficulty: caseScenario.difficulty,
+                    scorePercentage,
+                    appropriateChoices,
+                    totalChoices,
+                    outcomeType: nextNode.replace('outcome_', ''),
+                    reward,
+                },
+            }),
+            db.upsertUserTopicMastery?.(userId, caseScenario.topic, {
+                overallScore: scorePercentage,
+                clinicalApplicationScore: scorePercentage,
+                attemptsCount: 1,
+                correctCount: scorePercentage >= 70 ? 1 : 0,
+                lastAttemptAt: new Date().toISOString(),
+                nextReviewAt: new Date(Date.now() + (scorePercentage >= 70 ? 14 : 3) * 86400000).toISOString(),
+            }),
+            recordBanditReward(db, 'case_scenario_outcome', `difficulty:${caseScenario.difficulty}`, reward, userId),
+        ]);
+        sideEffects.forEach((result, index) => {
+            if (result.status === 'rejected') {
+                logger.warn({ err: result.reason, caseId, index }, 'case scenario completion side effect failed');
+            }
+        });
     }
     
     return {

@@ -65,9 +65,10 @@ describe('rewardAttributionService', () => {
             expect(quizAttemptReward(true, false)).toBe(0.25);
         });
 
-        test('wrong answer is zero', () => {
+        test('wrong answer carries a small negative reward', () => {
             expect(quizAttemptReward(false, true)).toBe(REWARD_WRONG);
             expect(quizAttemptReward(false, false)).toBe(REWARD_WRONG);
+            expect(REWARD_WRONG).toBeLessThan(0);
         });
     });
 

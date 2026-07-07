@@ -207,6 +207,38 @@ CREATE TABLE IF NOT EXISTS case_attempts (
     created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
 );
 
+CREATE TABLE IF NOT EXISTS case_scenarios (
+    id SERIAL PRIMARY KEY,
+    case_id TEXT NOT NULL UNIQUE,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    topic TEXT NOT NULL,
+    difficulty TEXT NOT NULL,
+    vignette TEXT NOT NULL,
+    decision_tree TEXT NOT NULL,
+    outcomes TEXT NOT NULL,
+    current_node TEXT NOT NULL,
+    choices_made TEXT NOT NULL DEFAULT '[]',
+    created_at TEXT NOT NULL,
+    updated_at TEXT,
+    completed_at TEXT,
+    provider TEXT,
+    model TEXT
+);
+
+CREATE TABLE IF NOT EXISTS case_scenario_attempts (
+    id SERIAL PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    case_id TEXT NOT NULL REFERENCES case_scenarios(case_id) ON DELETE CASCADE,
+    topic TEXT NOT NULL,
+    normalized_topic TEXT NOT NULL,
+    difficulty TEXT NOT NULL,
+    score_percentage INTEGER NOT NULL,
+    appropriate_choices INTEGER NOT NULL,
+    total_choices INTEGER NOT NULL,
+    outcome_type TEXT NOT NULL,
+    completed_at TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS case_evidence_briefs (
     id SERIAL PRIMARY KEY,
     user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -1210,6 +1242,7 @@ CREATE TABLE IF NOT EXISTS user_topic_memory (
     last_search_at TEXT,
     top_article_uids TEXT NOT NULL DEFAULT '[]',
     saved_article_uids TEXT NOT NULL DEFAULT '[]',
+    excluded_article_uids TEXT NOT NULL DEFAULT '[]',
     weak_outline_node_ids TEXT NOT NULL DEFAULT '[]',
     memory_score REAL NOT NULL DEFAULT 0,
     memory_tier TEXT NOT NULL DEFAULT 'sparse',
@@ -1293,6 +1326,16 @@ CREATE INDEX IF NOT EXISTS idx_case_attempts_topic ON case_attempts(normalized_t
 CREATE INDEX IF NOT EXISTS idx_case_attempts_user_created ON case_attempts(user_id, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_case_attempts_user_topic ON case_attempts(user_id, normalized_topic);
+
+CREATE INDEX IF NOT EXISTS idx_case_scenario_attempts_score ON case_scenario_attempts(score_percentage DESC);
+
+CREATE INDEX IF NOT EXISTS idx_case_scenario_attempts_user_topic ON case_scenario_attempts(user_id, normalized_topic);
+
+CREATE INDEX IF NOT EXISTS idx_case_scenarios_completed ON case_scenarios(completed_at);
+
+CREATE INDEX IF NOT EXISTS idx_case_scenarios_topic ON case_scenarios(topic);
+
+CREATE INDEX IF NOT EXISTS idx_case_scenarios_user ON case_scenarios(user_id, created_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_case_evidence_briefs_user ON case_evidence_briefs(user_id, created_at);
 

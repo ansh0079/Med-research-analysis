@@ -114,7 +114,7 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
     });
 
     app.post('/api/search/feedback', rateLimit(60, 60), requireJson, async (req, res) => {
-        const { articleUid, feedbackType, reason, searchId, decisionId } = req.body || {};
+        const { articleUid, feedbackType, reason, searchId, decisionId, topic } = req.body || {};
         const uid = String(articleUid || '').trim();
         const type = String(feedbackType || '').trim();
         if (!uid || !['helpful', 'not_helpful'].includes(type)) {
@@ -128,6 +128,7 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
                 articleUid: uid,
                 feedbackType: type,
                 reason: reason ? String(reason).slice(0, 500) : null,
+                topic: topic ? String(topic).slice(0, 240) : null,
             });
             const rewardExplain = explainInteractionReward({
                 interactionType: 'feedback',

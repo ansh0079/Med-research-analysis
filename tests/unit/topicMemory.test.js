@@ -7,7 +7,7 @@ const path = require('path');
 const fs = require('fs');
 const { Database } = require('../../database');
 
-const TEST_DB_PATH = path.join(__dirname, '__topic_memory_test__.db');
+const TEST_DB_PATH = path.join(__dirname, `__topic_memory_test__-${process.pid}-${Date.now()}.db`);
 
 describe('Topic Memory (real SQLite)', () => {
     let db;
@@ -27,9 +27,16 @@ describe('Topic Memory (real SQLite)', () => {
     });
 
     afterAll(async () => {
-        await db.close();
-        if (fs.existsSync(TEST_DB_PATH)) {
-            fs.unlinkSync(TEST_DB_PATH);
+        await db?.close();
+        for (const suffix of ['', '-shm', '-wal']) {
+            const file = `${TEST_DB_PATH}${suffix}`;
+            if (fs.existsSync(file)) {
+                try {
+                    fs.unlinkSync(file);
+                } catch {
+                    // Windows/OneDrive can briefly retain SQLite handles after close.
+                }
+            }
         }
     });
 
@@ -146,6 +153,17 @@ describe('Topic Memory (real SQLite)', () => {
         await db.recordUserTopicSearchSignal('u-test', 'sepsis management', ['pmid-1', 'pmid-2']);
         const result = await db.recordUserTopicSearchSignal('u-test', 'sepsis management', ['pmid-1', 'pmid-3']);
         expect(result.topPaperCount).toBe(3); // pmid-1, pmid-2, pmid-3
+    });
+
+    test('recordUserTopicNegativeArticleSignal down-weights and excludes not-helpful articles', async () => {
+        await db.recordUserTopicSearchSignal('u-test', 'sepsis management', ['pmid-1', 'pmid-1', 'pmid-2']);
+        const result = await db.recordUserTopicNegativeArticleSignal('u-test', 'sepsis management', 'pmid-1');
+
+        expect(result.topArticles.find((a) => a.uid === 'pmid-1')).toBeUndefined();
+        expect(result.excludedArticles).toEqual(expect.arrayContaining([
+            expect.objectContaining({ uid: 'pmid-1', w: 1 }),
+        ]));
+        expect(result.excludedPaperCount).toBe(1);
     });
 
     // ==========================================

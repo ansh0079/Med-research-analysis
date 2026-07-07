@@ -9,7 +9,7 @@ describe('searchLearningOutcomeService', () => {
     test('quizAttemptReward prefers first-attempt correctness', () => {
         expect(quizAttemptReward(true, true)).toBe(1);
         expect(quizAttemptReward(true, false)).toBe(0.25);
-        expect(quizAttemptReward(false, true)).toBe(0);
+        expect(quizAttemptReward(false, true)).toBe(-0.1);
     });
 
     test('passive click updates decision reward without pulling the bandit arm', async () => {

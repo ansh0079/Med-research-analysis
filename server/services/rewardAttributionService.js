@@ -7,7 +7,7 @@
 
 const REWARD_FIRST_CORRECT = 1.0;
 const REWARD_REPEAT_CORRECT = 0.25;
-const REWARD_WRONG = 0.0;
+const REWARD_WRONG = -0.1;
 
 const RECOMMENDATION_REWARDS = {
     quiz_session: 0.85,

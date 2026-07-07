@@ -2,6 +2,7 @@
 
 const { safeJsonParse, toPgVectorLiteral, sqlAuthorityWeightedImpressionScore } = require('../lib/helpers');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
+const logger = require('../../server/config/logger');
 
 module.exports = (Sup) => class extends Sup {
 // ==========================================
@@ -73,10 +74,10 @@ async getArticleInteractionCounts(articleIds) {
 // Search Result Feedback
 // ==========================================
 
-async recordSearchResultFeedback({ userId, sessionId, searchId, articleUid, feedbackType, reason = null }) {
+async recordSearchResultFeedback({ userId, sessionId, searchId, articleUid, feedbackType, reason = null, topic = null }) {
     if (!this.kysely || (!userId && !sessionId) || !articleUid || !feedbackType) return null;
     const now = new Date().toISOString();
-    return this.kysely
+    const result = await this.kysely
         .insertInto('search_result_feedback')
         .values({
             search_id: searchId != null ? Number(searchId) : null,
@@ -88,6 +89,23 @@ async recordSearchResultFeedback({ userId, sessionId, searchId, articleUid, feed
             created_at: now,
         })
         .execute();
+    if (userId && feedbackType === 'not_helpful' && typeof this.recordUserTopicNegativeArticleSignal === 'function') {
+        let displayTopic = topic ? String(topic).trim() : '';
+        if (!displayTopic && searchId != null) {
+            const search = await this.get(`SELECT query, normalized_topic FROM searches WHERE id = ? LIMIT 1`, [Number(searchId)]).catch((err) => {
+                logger.warn({ err, searchId }, 'recordSearchResultFeedback search lookup failed');
+                return null;
+            });
+            displayTopic = String(search?.query || search?.normalized_topic || '').trim();
+        }
+        if (displayTopic) {
+            await this.recordUserTopicNegativeArticleSignal(userId, displayTopic, articleUid).catch((err) => {
+                logger.warn({ err, userId, articleUid, displayTopic }, 'recordUserTopicNegativeArticleSignal failed');
+                return null;
+            });
+        }
+    }
+    return result;
 }
 
 async getSearchResultFeedbackForUser(userId, articleUid) {
@@ -105,14 +123,16 @@ async getSearchResultFeedbackForUser(userId, articleUid) {
 async listSearchResultFeedbackForUser(userId, { limit = 200, days = 90 } = {}) {
     if (!this.kysely || !userId) return [];
     const since = new Date(Date.now() - Number(days || 90) * 24 * 60 * 60 * 1000).toISOString();
-    return this.kysely
-        .selectFrom('search_result_feedback')
-        .selectAll()
-        .where('user_id', '=', userId)
-        .where('created_at', '>=', since)
-        .orderBy('created_at', 'desc')
-        .limit(Math.min(Math.max(Number(limit) || 200, 1), 500))
-        .execute();
+    const safeLimit = Math.min(Math.max(Number(limit) || 200, 1), 500);
+    return this.all(
+        `SELECT f.*, s.query AS search_query, s.normalized_topic AS search_normalized_topic
+         FROM search_result_feedback f
+         LEFT JOIN searches s ON f.search_id = s.id
+         WHERE f.user_id = ? AND f.created_at >= ?
+         ORDER BY f.created_at DESC
+         LIMIT ?`,
+        [userId, since, safeLimit]
+    );
 }
 
 async listSynopsisFeedbackForUser(userId, { limit = 250, days = 120 } = {}) {

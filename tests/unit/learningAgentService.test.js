@@ -2,7 +2,7 @@
 
 const { getPersonalisedRecommendations, freshnessHint, normalizeCandidate } = require('../../server/services/learningAgentService');
 
-function makeDb({ mastery = [], dueCards = [], searches = [], quizzes = [], topicRows = [], topicLookup = null } = {}) {
+function makeDb({ mastery = [], dueCards = [], searches = [], quizzes = [], feedback = [], topicRows = [], topicLookup = null } = {}) {
   const db = {
     isPostgres: false,
     normalizeTopic: jest.fn((value) => String(value || '').toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, ' ').trim()),
@@ -20,6 +20,7 @@ function makeDb({ mastery = [], dueCards = [], searches = [], quizzes = [], topi
       return topicRows.find((row) => row.normalized_topic === normalized) || null;
     }),
     getTopicCrosslinks: jest.fn().mockResolvedValue([]),
+    listSearchResultFeedbackForUser: jest.fn().mockResolvedValue(feedback),
   };
   return db;
 }
@@ -71,6 +72,31 @@ describe('learningAgentService recommendations', () => {
       action: 'quiz',
     });
     expect(recommendations[0].reason).toContain('high-confidence wrong');
+  });
+
+  test('feeds not-helpful search feedback into recommendations', async () => {
+    const db = makeDb({
+      feedback: [
+        {
+          feedback_type: 'not_helpful',
+          article_uid: 'pmid-1',
+          search_query: 'ARDS ventilation',
+          search_normalized_topic: 'ards ventilation',
+        },
+      ],
+    });
+
+    const recommendations = await getPersonalisedRecommendations(db, 'u1', { limit: 5 });
+
+    expect(db.listSearchResultFeedbackForUser).toHaveBeenCalledWith('u1', { limit: 100, days: 90 });
+    expect(recommendations).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        type: 'recalibrate_search',
+        normalizedTopic: 'ards ventilation',
+        action: 'topic',
+        feedbackArticleCount: 1,
+      }),
+    ]));
   });
 
   test('uses dialect-appropriate random expression for cold start and factors stale memory', async () => {

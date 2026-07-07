@@ -53,7 +53,13 @@ async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
     const recommendations = [];
     const now = new Date();
 
-    const [mastery, dueCards, recentSearches, recentQuizzes] = await Promise.all([
+    const [profile, mastery, dueCards, recentSearches, recentQuizzes, recentSearchFeedback] = await Promise.all([
+        typeof db.getLearningProfile === 'function'
+            ? db.getLearningProfile(userId).catch((err) => {
+                logger.warn({ err, userId }, 'getLearningProfile for recommendation bandit failed');
+                return null;
+            })
+            : Promise.resolve(null),
         db.all(
             `SELECT topic, normalized_topic, overall_score, recall_score,
                     clinical_application_score, guideline_score, pitfall_score,
@@ -79,6 +85,12 @@ async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
              ORDER BY created_at DESC LIMIT 50`,
             [userId]
         ),
+        typeof db.listSearchResultFeedbackForUser === 'function'
+            ? db.listSearchResultFeedbackForUser(userId, { limit: 100, days: 90 }).catch((err) => {
+                logger.warn({ err, userId }, 'listSearchResultFeedbackForUser failed');
+                return [];
+            })
+            : Promise.resolve([]),
     ]);
 
     const masteryMap = new Map(mastery.map(m => [m.normalized_topic, m]));
@@ -194,6 +206,36 @@ async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
             action: 'quiz',
             priority: 82 + Math.min(gap.highConfidenceWrong * 4 + gap.taggedGaps, 14),
             icon: 'fa-balance-scale',
+        });
+    }
+
+    const notHelpfulByTopic = new Map();
+    for (const row of Array.isArray(recentSearchFeedback) ? recentSearchFeedback : []) {
+        const type = row.feedback_type || row.feedbackType;
+        if (type !== 'not_helpful') continue;
+        const label = String(row.topic || row.search_query || row.query || row.search_normalized_topic || '').trim();
+        const normalizedTopic = row.search_normalized_topic || normalizeCandidate(db, label);
+        if (!normalizedTopic) continue;
+        const current = notHelpfulByTopic.get(normalizedTopic) || {
+            topic: label || normalizedTopic,
+            normalizedTopic,
+            count: 0,
+            articles: new Set(),
+        };
+        current.count += 1;
+        if (row.article_uid || row.articleUid) current.articles.add(String(row.article_uid || row.articleUid));
+        notHelpfulByTopic.set(normalizedTopic, current);
+    }
+    for (const feedback of [...notHelpfulByTopic.values()].slice(0, 3)) {
+        recommendations.push({
+            type: 'recalibrate_search',
+            topic: feedback.topic,
+            normalizedTopic: feedback.normalizedTopic,
+            reason: `${feedback.count} recent search result${feedback.count > 1 ? 's were' : ' was'} marked not helpful. Refresh with alternate evidence and re-test the topic.`,
+            action: 'topic',
+            priority: 74 + Math.min(feedback.count * 3, 12),
+            icon: 'fa-filter',
+            feedbackArticleCount: feedback.articles.size,
         });
     }
 
@@ -328,7 +370,7 @@ async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
         }
     }
 
-    const banditRanked = await applyRecommendationBandit(db, userId, recommendations);
+    const banditRanked = await applyRecommendationBandit(db, userId, recommendations, { profile, now });
     return banditRanked.slice(0, limit);
 }
 
