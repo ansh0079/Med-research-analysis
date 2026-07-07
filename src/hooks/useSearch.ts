@@ -73,6 +73,7 @@ export function useSearch() {
   const [intelligenceLoading, setIntelligenceLoading] = useState(false);
   const [lowRecallLearning, setLowRecallLearning] = useState<LowRecallLearning | null>(null);
   const requestIdRef = useRef(0);
+  const abortControllerRef = useRef<AbortController | null>(null);
   const lastSearchRef = useRef<{ key: string; query: string; time: number } | null>(null);
   const lastSuccessfulSearchRef = useRef<{ key: string; articles: Article[] } | null>(null);
 
@@ -164,18 +165,22 @@ export function useSearch() {
   const enrichmentPollRef = useRef(enrichmentPoll);
   enrichmentPollRef.current = enrichmentPoll;
 
-  // Cancel any in-flight polling when the consumer unmounts so background
-  // network requests don't keep firing and setState doesn't fire on a
-  // detached component.
+  // Cancel any in-flight polling and HTTP requests when the consumer unmounts
+  // so background network requests don't keep firing and setState doesn't
+  // fire on a detached component.
   useEffect(() => {
     return () => {
       cancelPollRef.current();
+      abortControllerRef.current?.abort();
     };
   }, []);
 
   const search = useCallback(
     async (query: string, filters: SearchFilters = {}): Promise<Article[]> => {
       const thisRequestId = ++requestIdRef.current;
+      abortControllerRef.current?.abort();
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
       cancelPollRef.current();
       setAiEnrichmentLoading(false);
 
@@ -214,7 +219,7 @@ export function useSearch() {
         const data = await api.search.search(
           query,
           enrichedFilters,
-          { vector: fuseVector, previousQueries, intelligence: 'async' }
+          { vector: fuseVector, previousQueries, intelligence: 'async', signal: controller.signal }
         );
 
         const {
@@ -318,6 +323,7 @@ export function useSearch() {
 
         return articles;
       } catch (err) {
+        if (err instanceof Error && err.name === 'AbortError') return [];
         if (thisRequestId !== requestIdRef.current) return [];
         const error = err instanceof Error ? err : new Error('Search failed');
         setError(error);

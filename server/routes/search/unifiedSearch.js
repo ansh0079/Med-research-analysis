@@ -26,6 +26,10 @@ const { clampLimit, setNoStoreSearchHeaders, shouldAutoSeedFromSearch, attachApi
 
 const isDev = process.env.NODE_ENV === 'development';
 
+// Guards against two concurrent identical queries both spawning a background
+// LLM enrichment job. Node.js is single-threaded so Set operations are atomic.
+const enrichmentInFlight = new Set();
+
 function registerUnifiedSearchRoutes(app, deps) {
     const {
         db,
@@ -190,15 +194,21 @@ function registerUnifiedSearchRoutes(app, deps) {
                 db.recordUserTopicSearchSignal(req.user.id, queryValidation.sanitized, uids).catch((err) => { logger.warn({ err }, 'recordUserTopicSearchSignal failed'); });
             }
             let rankingAttribution = [];
-            if (searchId && banditMeta?.armId) {
+            if (searchId) {
                 try {
+                    // Always record decisions so the RL loop has signal even for
+                    // anonymous / first-time searches. Use 'organic' as the arm
+                    // when no bandit arm was selected.
+                    const effectiveBanditMeta = banditMeta?.armId
+                        ? { ...banditMeta, forceLog: true }
+                        : { armId: 'organic', forceLog: true };
                     const logged = await recordSearchRankingDecisions(db, {
                         userId: req.user?.id ?? null,
                         searchId,
                         topic: queryValidation.sanitized,
                         normalizedTopic: db.normalizeTopic(queryValidation.sanitized),
                         articles,
-                        banditMeta: { ...banditMeta, forceLog: true },
+                        banditMeta: effectiveBanditMeta,
                     });
                     rankingAttribution = logged?.decisions || [];
                 } catch (err) {
@@ -388,8 +398,10 @@ function registerUnifiedSearchRoutes(app, deps) {
                 reviewerId: null,
             }).catch((err) => { req.log?.warn?.({ err }, 'background guideline align skipped'); });
 
-            // If already cached, skip background job.
+            // If already cached or a job is already running for this key, skip.
             if (existingEnrich?.status === 'ready') return;
+            if (enrichmentInFlight.has(enrichCacheKey)) return;
+            enrichmentInFlight.add(enrichCacheKey);
 
             // Capture values before request scope ends, then fire background AI job.
             const enrichQuery = queryValidation.sanitized;
@@ -451,6 +463,8 @@ function registerUnifiedSearchRoutes(app, deps) {
                 } catch (err) {
                     console.warn('[enrichment] background job failed:', err?.message);
                     await Promise.resolve(cache.set(enrichCacheKey, { status: 'failed' }, 300)).catch((err) => { logger.warn({ err }, 'cache set failed'); });
+                } finally {
+                    enrichmentInFlight.delete(enrichCacheKey);
                 }
             });
 
