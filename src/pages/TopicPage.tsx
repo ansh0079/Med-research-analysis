@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '@services/api';
 import type { Article, SynthesisResult, StudyRun } from '@types';
@@ -89,6 +89,7 @@ export function TopicPage() {
   const { topic: rawTopic = '' } = useParams<{ topic: string }>();
   const topic = decodeURIComponent(rawTopic);
   const navigate = useNavigate();
+  const recordedTopicRef = useRef<string | null>(null);
 
   // Overview data
   const [activeRun, setActiveRun] = useState<StudyRun | null>(null);
@@ -138,6 +139,10 @@ export function TopicPage() {
 
   useEffect(() => {
     if (!topic) return;
+    if (recordedTopicRef.current !== topic) {
+      recordedTopicRef.current = topic;
+      api.recordTopicReview(topic).catch(() => undefined);
+    }
     api.getEvidenceDeltaBrief(topic)
       .then((r) => {
         setEvidenceDelta({
@@ -160,19 +165,25 @@ export function TopicPage() {
     api.getGuidelineWatchEvents(topic)
       .then((r) => setGuidelineWatch(r.events || []))
       .catch(() => setGuidelineWatch([]));
-    return () => {
-      api.recordTopicReview(topic).catch(() => undefined);
-    };
   }, [topic]);
 
   // Load evidence on mount
   useEffect(() => {
     if (!topic) return;
+    let cancelled = false;
     setArticlesLoading(true);
-    api.search(topic, {}, { vector: true })
-      .then((r) => setArticles(r.articles.slice(0, 15)))
+    api.getClientConfig()
+      .then((config) => api.search(topic, {}, { vector: Boolean(config.features?.vectorSearch) }))
+      .then((r) => {
+        if (!cancelled) setArticles(r.articles.slice(0, 15));
+      })
       .catch(() => undefined)
-      .finally(() => setArticlesLoading(false));
+      .finally(() => {
+        if (!cancelled) setArticlesLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [topic]);
 
   const handleSynthesize = useCallback(async () => {

@@ -164,6 +164,10 @@ export function useSearch() {
   const enrichmentPollRef = useRef(enrichmentPoll);
   enrichmentPollRef.current = enrichmentPoll;
 
+  useEffect(() => () => {
+    cancelPollRef.current();
+  }, []);
+
   const search = useCallback(
     async (query: string, filters: SearchFilters = {}): Promise<Article[]> => {
       const thisRequestId = ++requestIdRef.current;
@@ -194,7 +198,7 @@ export function useSearch() {
       setError(null);
 
       try {
-        const maxResults = filters.maxResults || 20;
+        const maxResults = filters.maxResults ?? 20;
         const config = await api.getClientConfig();
         const canUseVector = Boolean(config.features?.vectorSearch);
         const fuseVector = canUseVector && filters.useVectorSearch !== false;
@@ -217,9 +221,8 @@ export function useSearch() {
           rankingAttribution,
         } = data;
 
-        trackSearch(query, { filters, resultsCount: articles.length });
-
         if (thisRequestId !== requestIdRef.current) return articles;
+        trackSearch(query, { filters, resultsCount: articles.length });
         lastSuccessfulSearchRef.current = { key: requestKey, articles };
         setResults(articles);
         setLastSearchId(searchId ?? null);
