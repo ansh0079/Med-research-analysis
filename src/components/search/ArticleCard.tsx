@@ -9,9 +9,17 @@ import api from '@services/api';
 import type { Article, ArticleSynopsisFields, ConsortResult } from '@types';
 import { RankingTraceBadge } from '@components/search/RankingTraceBadge';
 import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
-import { VerificationBadge } from '@components/ui/VerificationBadge';
-import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
 import { logAsyncError } from '@utils/handleAsyncError';
+import { ArticleCardConsortPanel } from './ArticleCardConsortPanel';
+import { ArticleCardSynopsisPanel, type SynopsisSourceMode } from './ArticleCardSynopsisPanel';
+import {
+  CURRENT_YEAR,
+  EVIDENCE_TYPE_LABEL,
+  GRADE_CLASS,
+  isLikelyPreprint,
+  isPotentialPredatoryJournal,
+  quickSignalClass,
+} from './articleCardUtils';
 
 interface ArticleCardProps {
   article: Article;
@@ -30,249 +38,7 @@ interface ArticleCardProps {
   searchCompletedAt?: number | null;
 }
 
-const GRADE_CLASS: Record<string, string> = {
-  A: 'grade-A',
-  B: 'grade-B',
-  C: 'grade-C',
-  D: 'grade-D',
-};
-
-const EVIDENCE_TYPE_LABEL: Record<string, string> = {
-  meta: 'Meta-analysis',
-  rct: 'Randomised trial',
-  other: 'Other study',
-};
-
 const PREFETCHED_ARTICLES = new Set<string>();
-const CURRENT_YEAR = new Date().getFullYear();
-
-const TRUST_BADGE: Record<string, { label: string; cls: string }> = {
-  HIGH: { label: 'HIGH', cls: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' },
-  MODERATE: { label: 'MODERATE', cls: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' },
-  LOW: { label: 'LOW', cls: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300' },
-  VERY_LOW: { label: 'VERY LOW', cls: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' },
-};
-
-interface SynopsisRow { label: string; value: string | null | undefined }
-
-function SynopsisField({ label, value }: SynopsisRow) {
-  if (!value) return null;
-  return (
-    <div className="flex flex-col gap-0.5">
-      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">{label}</span>
-      <span className="text-xs text-slate-700 dark:text-slate-200 leading-relaxed">{value}</span>
-    </div>
-  );
-}
-
-function SynopsisList({ label, items }: { label: string; items?: string[] }) {
-  const safeItems = (items || []).filter(Boolean);
-  if (!safeItems.length) return null;
-  return (
-    <div>
-      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">{label}</span>
-      <ul className="mt-1 space-y-1 text-xs text-slate-700 dark:text-slate-200 leading-relaxed">
-        {safeItems.slice(0, 5).map((item, i) => <li key={i}>{item}</li>)}
-      </ul>
-    </div>
-  );
-}
-
-type SynopsisSourceMode = 'full_text_used' | 'abstract_only';
-
-function InlineSynopsisPanel({ synopsis, sourceMode, onClose }: { synopsis: ArticleSynopsisFields; sourceMode?: SynopsisSourceMode; onClose: () => void }) {
-  const trust = TRUST_BADGE[synopsis.trustRating] ?? TRUST_BADGE.MODERATE;
-  const sourceLabel = sourceMode === 'full_text_used' ? 'Full Text Used' : 'Abstract Only';
-  return (
-    <div className="mx-0 mt-3 mb-2 rounded-xl border border-violet-200/60 dark:border-violet-800/40 bg-violet-50/60 dark:bg-violet-950/20 overflow-hidden animate-fade-in">
-      <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-violet-100 dark:border-violet-800/30">
-        <div className="flex items-center gap-2">
-          <i className="fas fa-microscope text-violet-500 text-[11px]" />
-          <span className="text-[11px] font-bold text-violet-700 dark:text-violet-300 uppercase tracking-wider">Critical Appraisal</span>
-          <span className={`text-[10px] font-bold rounded-full px-2 py-0.5 ${trust.cls}`}>
-            Trust: {trust.label}
-          </span>
-          {sourceMode && (
-            <span className={`text-[9px] font-bold uppercase tracking-wider rounded-full px-1.5 py-0.5 ${sourceMode === 'full_text_used' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'}`}>
-              {sourceLabel}
-            </span>
-          )}
-        </div>
-        <button type="button" onClick={onClose} aria-label="Close critical appraisal" className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors p-0.5">
-          <i className="fas fa-times text-xs" />
-        </button>
-      </div>
-
-      <div className="px-4 py-3 space-y-3">
-        {synopsis.takeaway && (
-          <div className="rounded-lg bg-violet-100/70 dark:bg-violet-900/20 px-3 py-2.5">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-violet-500 dark:text-violet-400">Key Takeaway</span>
-            <p className="mt-0.5 text-xs font-semibold text-violet-800 dark:text-violet-200 leading-snug">{synopsis.takeaway}</p>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <SynopsisField label="Clinical Question" value={synopsis.clinicalQuestion} />
-          <SynopsisField label="Study Design" value={synopsis.studyDesign} />
-          <SynopsisField label="Setting" value={synopsis.setting} />
-          <SynopsisField label="Population" value={synopsis.population} />
-          <SynopsisField label="Intervention" value={synopsis.intervention} />
-          <SynopsisField label="Comparator" value={synopsis.comparator} />
-        </div>
-
-        <SynopsisField label="Background" value={synopsis.background} />
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <SynopsisList label="Inclusion" items={synopsis.inclusionCriteria} />
-          <SynopsisList label="Exclusion" items={synopsis.exclusionCriteria} />
-        </div>
-        <SynopsisField label="Primary Outcome" value={synopsis.primaryOutcome || synopsis.outcomes} />
-        <SynopsisList label="Secondary Outcomes" items={synopsis.secondaryOutcomes} />
-        <SynopsisList label="Safety Outcomes" items={synopsis.safetyOutcomes} />
-        <SynopsisField label="Main Findings" value={synopsis.mainFindings} />
-        <SynopsisField label="Authors' Conclusion" value={synopsis.authorsConclusion} />
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <SynopsisList label="Strengths" items={synopsis.strengths} />
-          <SynopsisList label="Weaknesses" items={synopsis.weaknesses} />
-        </div>
-        <SynopsisField label="Clinical Meaning" value={synopsis.clinicalMeaning} />
-        <SynopsisField label="Limitations" value={synopsis.limitations} />
-        <SynopsisField label="Practice Implication" value={synopsis.practiceImplication} />
-
-        {synopsis.bottomLine && (
-          <div className="rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 px-3 py-2.5">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Bottom Line</span>
-            <p className="mt-0.5 text-xs text-emerald-800 dark:text-emerald-200 leading-snug">{synopsis.bottomLine}</p>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <SynopsisList label="Do Not Overclaim" items={synopsis.whatNotToOverclaim} />
-          <SynopsisList label="Quiz Focus" items={synopsis.quizFocusPoints} />
-        </div>
-
-        {synopsis.trustRationale && (
-          <div className="rounded-lg bg-slate-50 dark:bg-slate-800/40 px-3 py-2">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Trust Rationale</span>
-            <p className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">{synopsis.trustRationale}</p>
-          </div>
-        )}
-
-        <ClinicalSafetyNotice
-          status={sourceMode === 'full_text_used' ? 'source_verified' : 'abstract_only'}
-        />
-      </div>
-    </div>
-  );
-}
-const CONSORT_DOMAIN_LABELS: Record<string, string> = {
-  title_abstract: 'Title & Abstract',
-  eligibility_criteria: 'Eligibility Criteria',
-  interventions: 'Interventions',
-  outcomes: 'Outcomes',
-  sample_size: 'Sample Size',
-  randomisation: 'Randomisation',
-  blinding: 'Blinding',
-  statistical_methods: 'Statistical Methods',
-  harms: 'Harms Reporting',
-  trial_registration: 'Trial Registration',
-};
-
-const CONSORT_ADHERENCE_STYLE: Record<string, { dot: string; chip: string }> = {
-  adequate:     { dot: 'bg-emerald-500', chip: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' },
-  partial:      { dot: 'bg-amber-400',   chip: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300' },
-  not_reported: { dot: 'bg-red-400',     chip: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' },
-};
-
-const CONSORT_OVERALL: Record<string, { label: string; bar: string; text: string }> = {
-  high:     { label: 'High adherence',     bar: 'bg-emerald-500', text: 'text-emerald-700 dark:text-emerald-300' },
-  moderate: { label: 'Moderate adherence', bar: 'bg-amber-400',   text: 'text-amber-700 dark:text-amber-300' },
-  low:      { label: 'Low adherence',      bar: 'bg-red-500',     text: 'text-red-700 dark:text-red-300' },
-};
-
-function InlineConsortPanel({ consort, onClose }: { consort: ConsortResult; onClose: () => void }) {
-  const overall = CONSORT_OVERALL[consort.overallAdherence] ?? CONSORT_OVERALL.low;
-  const pct = Math.round((consort.adequateCount / consort.totalDomains) * 100);
-  return (
-    <div className="mx-0 mt-3 mb-2 rounded-xl border border-blue-200/60 dark:border-blue-800/40 bg-blue-50/60 dark:bg-blue-950/20 overflow-hidden animate-fade-in">
-      <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-blue-100 dark:border-blue-800/30">
-        <div className="flex items-center gap-2">
-          <i className="fas fa-clipboard-check text-blue-500 text-[11px]" />
-          <span className="text-[11px] font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider">CONSORT 2010 Checklist</span>
-          <span className={`text-[10px] font-bold rounded-full px-2 py-0.5 ${overall.text} bg-white/60 dark:bg-slate-900/40`}>
-            {consort.adequateCount}/{consort.totalDomains} adequate
-          </span>
-          {!consort.isRct && (
-            <span className="text-[9px] font-bold rounded-full px-2 py-0.5 bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">
-              Non-RCT — applies partially
-            </span>
-          )}
-        </div>
-        <button type="button" onClick={onClose} title="Close CONSORT assessment" aria-label="Close CONSORT assessment" className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors p-0.5">
-          <i className="fas fa-times text-xs" />
-        </button>
-      </div>
-      <div className="px-4 py-3 space-y-3">
-        {consort.overallSummary && (
-          <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{consort.overallSummary}</p>
-        )}
-        <div className="flex items-center gap-3">
-          <div className="flex-1 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
-            <div className={`impact-bar-fill ${overall.bar} h-full rounded-full transition-all duration-500`} data-pct={String(Math.round(pct / 10) * 10)} />
-          </div>
-          <span className={`text-xs font-bold ${overall.text}`}>{overall.label} ({pct}%)</span>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-          {Object.entries(consort.domains).map(([key, domain]) => {
-            const style = CONSORT_ADHERENCE_STYLE[domain.adherence] ?? CONSORT_ADHERENCE_STYLE.not_reported;
-            return (
-              <div key={key} className="flex items-start gap-2 rounded-lg bg-white/60 dark:bg-slate-900/30 px-2.5 py-2 border border-slate-100 dark:border-slate-700/50" title={domain.rationale}>
-                <span className={`w-2 h-2 rounded-full shrink-0 mt-1 ${style.dot}`} />
-                <div className="min-w-0">
-                  <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">{CONSORT_DOMAIN_LABELS[key] ?? key}</p>
-                  <span className={`inline-block text-[9px] font-bold rounded-full px-1.5 py-0.5 mt-0.5 ${style.chip}`}>
-                    {domain.adherence.replace('_', ' ')}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <p className="text-[10px] text-slate-400 dark:text-slate-500 leading-relaxed italic">
-          Assessment based on abstract text only. Full CONSORT adherence requires access to the complete manuscript.
-        </p>
-      </div>
-    </div>
-  );
-}
-
-const PREDATORY_JOURNAL_TERMS = [
-  'omics international',
-  'science publishing group',
-  'iosr journal',
-  'world academy of science',
-  'global journals',
-];
-
-function isLikelyPreprint(article: Article) {
-  const text = `${article.source || ''} ${article.journal || ''} ${article.pubtype?.join(' ') || ''}`.toLowerCase();
-  return Boolean(article._isPreprint || /medrxiv|biorxiv|preprint|research square|ssrn/.test(text));
-}
-
-function isPotentialPredatoryJournal(article: Article) {
-  const journal = `${article.journal || article.source || ''}`.toLowerCase();
-  return PREDATORY_JOURNAL_TERMS.some((term) => journal.includes(term));
-}
-
-function quickSignalClass(tone: 'good' | 'info' | 'warn' | 'danger' | 'neutral') {
-  const map = {
-    good: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800/50 dark:bg-emerald-950/30 dark:text-emerald-300',
-    info: 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800/50 dark:bg-blue-950/30 dark:text-blue-300',
-    warn: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800/50 dark:bg-amber-950/30 dark:text-amber-300',
-    danger: 'border-red-200 bg-red-50 text-red-700 dark:border-red-800/50 dark:bg-red-950/30 dark:text-red-300',
-    neutral: 'border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-300',
-  };
-  return map[tone];
-}
 
 const ArticleCardComponent: React.FC<ArticleCardProps> = ({
   article, isSaved = false, isSelected = false, onSave, onSelect, onAnalyze, onGenerateCase, onQuizPaper, onOpenTopic, onOpenInWorkspace, onViewDetails, onFeedback, searchId, searchCompletedAt,
@@ -394,7 +160,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
       void api.search.logSearchInteraction(searchId, article.uid, 'dwell', dwellMs, undefined, article._decisionId ?? undefined);
     }
     void api.documents.logEvent('article_dwell', { articleUid: article.uid, dwellMs, source: article._source });
-  }, [article._source, article.uid, searchId]);
+  }, [article._decisionId, article._source, article.uid, searchId]);
 
   const startDwell = React.useCallback(() => {
     prefetchArticle();
@@ -412,7 +178,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
         void api.documents.logEvent('article_dwell', { articleUid: article.uid, dwellMs, source: article._source });
       }
     }, 3000);
-  }, [article._source, article.uid, prefetchArticle, searchId]);
+  }, [article._decisionId, article._source, article.uid, prefetchArticle, searchId]);
 
   React.useEffect(() => {
     const handleVisibilityChange = () => {
@@ -468,7 +234,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
 
             {impact?.level && (
               <span className={`badge ${impact.level === 'high' ? 'badge-impact-high' : 'badge-source'}`}>
-                {impact.level === 'high' ? '↑ High Impact' : impact.level === 'medium' ? '~ Mid Impact' : 'Low Impact'}
+                {impact.level === 'high' ? 'â†‘ High Impact' : impact.level === 'medium' ? '~ Mid Impact' : 'Low Impact'}
               </span>
             )}
 
@@ -483,13 +249,13 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
             </span>
 
             {article._retraction?.isRetracted && (
-              <span className="badge badge-retracted">⚠ Retracted</span>
+              <span className="badge badge-retracted">Warning: Retracted</span>
             )}
 
             {article._isPreprint && (
               <span className="badge" style={{ background: 'rgba(251,191,36,0.15)', color: '#b45309', border: '1px solid rgba(251,191,36,0.4)' }}
-                title="Preprint — not yet peer reviewed">
-                ⚠ Preprint
+                title="Preprint â€” not yet peer reviewed">
+                Warning: Preprint
               </span>
             )}
 
@@ -531,31 +297,31 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
             {isPracticeChanging && (
               <span
                 className="badge font-semibold"
-                title="Recent high-citation paper — may represent practice-changing evidence"
+                title="Recent high-citation paper â€” may represent practice-changing evidence"
                 style={{ background: 'rgba(139,92,246,0.12)', color: '#7c3aed', border: '1px solid rgba(139,92,246,0.35)' }}
               >
-                ⚡ Recent high-impact
+                âš¡ Recent high-impact
               </span>
             )}
 
             {isOutdated && !isPracticeChanging && (
               <span
                 className="badge font-semibold"
-                title="Published 10+ years ago — verify against current guidelines before applying"
+                title="Published 10+ years ago â€” verify against current guidelines before applying"
                 style={{ background: 'rgba(245,158,11,0.12)', color: '#b45309', border: '1px solid rgba(245,158,11,0.35)' }}
               >
-                ⚠ Verify recency
+                Warning: Verify recency
               </span>
             )}
 
             {pdfIndexed && (
               <span
                 className="badge font-semibold"
-                title="Full text has been pre-indexed — AI can analyze specific sections"
+                title="Full text has been pre-indexed â€” AI can analyze specific sections"
                 style={{ background: 'rgba(16,185,129,0.12)', color: '#059669', border: '1px solid rgba(16,185,129,0.35)' }}
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block mr-1" />
-                Full Text ✓
+                Full Text âœ“
               </span>
             )}
 
@@ -581,7 +347,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
                       else navigate(`/search?q=${encodeURIComponent(synTopic)}`);
                     }}
                   >
-                    ↔ {synTopic}
+                    â†” {synTopic}
                   </span>
                 ))}
               </div>
@@ -592,7 +358,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
             {quality && (
               <div
                 className={`grade-ring ${GRADE_CLASS[quality.grade] ?? 'grade-D'}`}
-                title={`Quality ${quality.grade} · ${quality.score}/100\n${quality.factors.slice(0, 3).join(' · ')}`}
+                title={`Quality ${quality.grade} Â· ${quality.score}/100\n${quality.factors.slice(0, 3).join(' Â· ')}`}
               >
                 {quality.grade}
               </div>
@@ -626,8 +392,8 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
             className="mb-3 px-3 py-2 bg-red-600 text-white border border-red-700 rounded-xl text-xs shadow-lg shadow-red-500/20"
           >
             <span className="font-black uppercase tracking-wide">Retracted paper - verify the retraction notice before using this source</span>
-            {article._retraction.retractionDate && ` · ${article._retraction.retractionDate}`}
-            {article._retraction.reason && ` · ${article._retraction.reason}`}
+            {article._retraction.retractionDate && ` Â· ${article._retraction.retractionDate}`}
+            {article._retraction.reason && ` Â· ${article._retraction.reason}`}
           </div>
         )}
 
@@ -671,11 +437,11 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
         {/* Meta row */}
         <div className="flex items-center gap-2 text-[0.7rem] text-slate-400 dark:text-slate-500 mb-3 flex-wrap font-mono">
           <span className="truncate max-w-[12rem]">{article.source || article.journal || 'Unknown Journal'}</span>
-          <span className="opacity-40">·</span>
+          <span className="opacity-40">Â·</span>
           <span>{article.pubdate?.split(' ')[0] || article.year}</span>
           {citations !== undefined && (
             <>
-              <span className="opacity-40">·</span>
+              <span className="opacity-40">Â·</span>
               <span className="text-indigo-500 dark:text-indigo-400 font-bold">{citations.toLocaleString()} cit.</span>
             </>
           )}
@@ -699,7 +465,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
           </div>
         )}
 
-        {/* Hover abstract preview — shown after 350ms of hover, hidden once synopsis is expanded */}
+        {/* Hover abstract preview â€” shown after 350ms of hover, hidden once synopsis is expanded */}
         {hoverPreview && !showAbstract && !synopsisExpanded && article.abstract && (
           <div className="mb-3 px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 animate-fade-in">
             {synopsis?.takeaway && (
@@ -777,7 +543,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition-all hover:shadow-lg hover:shadow-emerald-500/25"
               >
-                <i className="fas fa-unlock text-[10px]" /> Read Free · Full Text
+                <i className="fas fa-unlock text-[10px]" /> Read Free Â· Full Text
               </a>
             </div>
           ) : (
@@ -808,13 +574,13 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
               )}
               {pdfLookup === 'loading' && (
                 <div className="flex items-center justify-center gap-2 py-2 text-xs text-slate-400">
-                  <div className="spinner" /> Searching open-access repositories…
+                  <div className="spinner" /> Searching open-access repositoriesâ€¦
                 </div>
               )}
               {pdfLookup === 'found' && pdfUrl && (
                 <a href={pdfUrl} target="_blank" rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition-colors">
-                  <i className="fas fa-unlock text-[10px]" /> Free Version Found · Open PDF
+                  <i className="fas fa-unlock text-[10px]" /> Free Version Found Â· Open PDF
                 </a>
               )}
               {pdfLookup === 'not-found' && (
@@ -827,7 +593,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
         {/* Inline synopsis panel */}
         {synopsisExpanded && synopsis && (
           <div className="mt-2 space-y-2">
-            <InlineSynopsisPanel synopsis={synopsis} sourceMode={synopsisSourceMode} onClose={() => { setSynopsisExpanded(false); setSynopsisAudit(null); }} />
+            <ArticleCardSynopsisPanel synopsis={synopsis} sourceMode={synopsisSourceMode} onClose={() => { setSynopsisExpanded(false); setSynopsisAudit(null); }} />
             {synopsisAudit && <EvidenceAuditPanel snapshot={synopsisAudit} />}
           </div>
         )}
@@ -835,7 +601,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
         {/* Inline CONSORT panel */}
         {consortExpanded && consort && (
           <div className="mt-2">
-            <InlineConsortPanel consort={consort} onClose={() => setConsortExpanded(false)} />
+            <ArticleCardConsortPanel consort={consort} onClose={() => setConsortExpanded(false)} />
           </div>
         )}
 
@@ -875,11 +641,11 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
                 ? 'bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300'
                 : 'bg-violet-50 text-violet-600 hover:bg-violet-100 dark:bg-violet-950/30 dark:text-violet-400 dark:hover:bg-violet-900/40'
             }`}
-            title="Critically appraise this paper — PICO, methodology, trust rating, bottom line"
+            title="Critically appraise this paper â€” PICO, methodology, trust rating, bottom line"
             disabled={synopsisState === 'loading'}
           >
             {synopsisState === 'loading'
-              ? <><div className="spinner w-3 h-3" /> Appraising…</>
+              ? <><div className="spinner w-3 h-3" /> Appraisingâ€¦</>
               : synopsisState === 'error'
                 ? <><i className="fas fa-exclamation-circle text-[10px]" /> Retry appraisal</>
                 : synopsis
@@ -911,7 +677,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
               }`}
             >
               {consortState === 'loading'
-                ? <><div className="spinner w-3 h-3" /> CONSORT…</>
+                ? <><div className="spinner w-3 h-3" /> CONSORTâ€¦</>
                 : consortState === 'error'
                   ? <><i className="fas fa-exclamation-circle text-[10px]" /> Retry</>
                   : consort
@@ -1082,3 +848,4 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
 };
 ArticleCardComponent.displayName = 'ArticleCard';
 export const ArticleCard = React.memo(ArticleCardComponent);
+
