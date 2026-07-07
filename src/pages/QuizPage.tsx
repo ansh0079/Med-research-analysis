@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useSearchContext } from '@contexts/SearchContext';
 import { generateQuiz, generateQuizFromEvidence, QuizGenerationError, type QuizArticle } from '@services/quizService';
-import { selectTopEvidence } from '../utils/selectTopEvidence';
 import { api } from '@services/api';
 import { lookupArticleAttribution } from '@utils/searchAttribution';
 import { useAuth } from '@contexts/AuthContext';
@@ -17,80 +16,33 @@ import {
   buildQuizReflectionSections,
   currentTimeMs,
   exportQuizReflection as exportQuizReflectionFile,
-  getDifficultyFromParam,
   learningRoundItemsToQuestions,
-  readWorkflowContext,
   waitForClaimJob,
 } from '@components/quiz/QuizPageUtils';
+import { useQuizLaunchContext } from './quiz/useQuizLaunchContext';
 
 export const QuizPage: React.FC = () => {
   const navigate = useNavigate();
   const { detectedTopic, results, setCurrentPage } = useSearchContext();
   const [searchParams, setSearchParams] = useSearchParams();
-  const urlTopic = searchParams.get('topic');
-  const urlStudyRunId = Number(searchParams.get('studyRunId') || 0) || undefined;
-  const curriculumTopicIdParam = Number(searchParams.get('curriculumTopicId') || 0) || undefined;
-  const explainParam = searchParams.get('explain');
-  const urlDifficulty = getDifficultyFromParam(searchParams.get('difficulty'));
-  const urlMode = searchParams.get('mode') as 'spaced_rep' | 'standard' | null;
-  const urlTargetNodeIds = useMemo(() => {
-    const raw = searchParams.get('targetNodes');
-    if (!raw) return undefined;
-    return raw.split(',').map((s) => s.trim()).filter(Boolean);
-  }, [searchParams]);
-  const urlClaimJobKey = searchParams.get('claimJob')?.trim() || undefined;
-  const urlRoundId = Number(searchParams.get('roundId') || 0) || undefined;
-  const urlCount = Math.min(Math.max(Number(searchParams.get('count') || 5) || 5, 1), 10);
-
-  // Support legacy sessionStorage prefill as fallback
-  const [quizPrefill] = useState(() => {
-    try {
-      const raw = sessionStorage.getItem('med_quiz_prefill');
-      if (!raw) return null;
-      sessionStorage.removeItem('med_quiz_prefill');
-      return JSON.parse(raw);
-    } catch { return null; }
-  });
-  const [workflowContext] = useState<Record<string, unknown>>(() => ({
-    ...readWorkflowContext(),
-    ...(quizPrefill?.workflow || {}),
-  }));
-
-  const activeTopic = urlTopic || quizPrefill?.topic || detectedTopic || '';
-  const activeStudyRunId = urlStudyRunId || (Number(quizPrefill?.studyRunId || 0) || undefined);
-  const prefillDifficulty = urlDifficulty || (quizPrefill?.difficulty === 'easy' || quizPrefill?.difficulty === 'medium' || quizPrefill?.difficulty === 'hard' || quizPrefill?.difficulty === 'mixed' ? quizPrefill.difficulty : 'mixed');
-  // Full article objects preserved from search — used to resolve sourceIndices back to real papers
-  const lockedArticles = useMemo<QuizArticle[]>(() => {
-    if (!quizPrefill?.articles?.length) return [];
-    return quizPrefill.articles
-      .map((a: Record<string, unknown>) => ({
-        uid: String(a.uid || ''),
-        title: String(a.title || '').trim(),
-        abstract: a.abstract as string | undefined,
-        doi: a.doi as string | null | undefined,
-        pmid: a.pmid as string | null | undefined,
-        pubdate: a.pubdate as string | null | undefined,
-        source: (a.source ?? a.journal) as string | null | undefined,
-        pmcrefcount: a.pmcrefcount as number | undefined,
-        pubtype: a.pubtype as string[] | undefined,
-      }))
-      .filter((a: QuizArticle) => a.title.length > 0);
-  }, [quizPrefill]);
-
-  const evidenceSnippets = useMemo<QuizArticle[]>(() => {
-    if (lockedArticles.length > 0) return lockedArticles;
-    return selectTopEvidence(results, 5).map((a) => ({
-      uid: a.uid,
-      title: a.title,
-      abstract: a.abstract,
-      doi: a.doi,
-      pmid: a.pmid,
-      pubdate: a.pubdate,
-      source: a.source ?? a.journal,
-      pmcrefcount: a.pmcrefcount,
-      pubtype: a.pubtype,
-    }));
-  }, [lockedArticles, results]);
+  const {
+    activeStudyRunId,
+    activeTopic,
+    curriculumTopicIdParam,
+    evidenceSnippets,
+    explainParam,
+    lockedArticles,
+    prefillDifficulty,
+    prefillMcqAngles,
+    prefillTeachingPoints,
+    quizPrefill,
+    urlClaimJobKey,
+    urlCount,
+    urlMode,
+    urlRoundId,
+    urlTargetNodeIds,
+    workflowContext,
+  } = useQuizLaunchContext({ searchParams, detectedTopic, results });
 
   // Full source articles indexed by 1-based sourceIndex — resolves quiz question sourceIndices
   const [quizSourceArticles, setQuizSourceArticles] = useState<QuizArticle[]>([]);
@@ -125,9 +77,6 @@ export const QuizPage: React.FC = () => {
   }, [explainParam, learningProfile]);
 
   const trainingStage = (learningProfile?.trainingStage || 'finals') as NonNullable<LearningProfile['trainingStage']>;
-  const prefillTeachingPoints = Array.isArray(quizPrefill?.teachingPoints) ? quizPrefill.teachingPoints : undefined;
-  const prefillMcqAngles = Array.isArray(quizPrefill?.mcqAngles) ? quizPrefill.mcqAngles : undefined;
-
   useEffect(() => {
     if (!isAuthenticated) return;
     api.learning.getLearningProfile().then((r) => setLearningProfile(r.profile)).catch(() => {});
