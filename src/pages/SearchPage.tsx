@@ -22,14 +22,22 @@ import { Button } from '@components/ui/Button';
 import { SkeletonCard } from '@components/search/SkeletonCard';
 import { ResearchWorkspace } from '@components/search/ResearchWorkspace';
 import { SearchHero } from '@components/search/SearchHero';
-import { ErrorBanner } from '@components/common/ErrorBanner';
 import { TopicIntelligenceStatusBanner } from '@components/search/TopicIntelligenceStatusBanner';
 import { SearchEmptyState } from '@components/search/SearchEmptyState';
 import { LowRecallBanner } from '@components/search/LowRecallBanner';
 import { RelatedTopicsBar } from '@components/search/RelatedTopicsBar';
+import { VerifyEmailBanner } from '@components/search/VerifyEmailBanner';
+import { SearchResultsStats } from '@components/search/SearchResultsStats';
+import { PersonalizedRemediationBanner } from '@components/search/PersonalizedRemediationBanner';
+import { ShiftReviewBar } from '@components/search/ShiftReviewBar';
+import { SearchResultsFilterSection } from '@components/search/SearchResultsFilterSection';
+import { TopicKnowledgeDiscovery } from '@components/search/TopicKnowledgeDiscovery';
+import { AgentMentorPanel } from '@components/search/AgentMentorPanel';
+import { ResultLensToolbar } from '@components/search/ResultLensToolbar';
+import { SynthesisStatusSection } from '@components/search/SynthesisStatusSection';
 import { useSearchRecents } from '@hooks/useSearchRecents';
 import { usePdfViewer } from '@hooks/usePdfViewer';
-import { useResultsFilter, type ResultLens } from '@hooks/useResultsFilter';
+import { useResultsFilter } from '@hooks/useResultsFilter';
 import { useExportResults } from '@hooks/useExportResults';
 import { useWorkflowContext } from '@hooks/useWorkflowContext';
 import { useClientFeatures } from '@hooks/useClientFeatures';
@@ -458,40 +466,12 @@ export const SearchPage: React.FC = () => {
     <div className="min-h-screen aurora-bg mesh-bg">
       <div className="aurora-content">
 
-      {/* Email verification banner — sits just below the fixed TopNav */}
       {showVerifyBanner && (
-        <div className="fixed top-[var(--nav-h)] left-0 right-0 z-40 bg-amber-50 dark:bg-amber-950/40 border-b border-amber-200 dark:border-amber-800/60 px-4 py-2">
-          <div className="max-w-4xl mx-auto flex items-center justify-between gap-3 flex-wrap">
-            <p className="text-xs text-amber-800 dark:text-amber-200 flex items-center gap-2">
-              <i className="fas fa-envelope text-amber-500" />
-              Please verify your email address to unlock all features.
-            </p>
-            <div className="flex items-center gap-3">
-              {resendStatus === 'sent' ? (
-                <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
-                  <i className="fas fa-check" /> Email sent — check your inbox
-                </span>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleResendVerification}
-                  disabled={resendStatus === 'sending'}
-                  className="text-xs font-semibold text-amber-700 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-100 underline transition-colors disabled:opacity-50"
-                >
-                  {resendStatus === 'sending' ? 'Sending…' : 'Resend verification email'}
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={() => setVerifyBannerDismissed(true)}
-                className="text-amber-400 hover:text-amber-600 dark:hover:text-amber-200 transition-colors"
-                aria-label="Dismiss"
-              >
-                <i className="fas fa-times text-xs" />
-              </button>
-            </div>
-          </div>
-        </div>
+        <VerifyEmailBanner
+          resendStatus={resendStatus}
+          onResend={handleResendVerification}
+          onDismiss={() => setVerifyBannerDismissed(true)}
+        />
       )}
 
       <SearchHero
@@ -541,24 +521,12 @@ export const SearchPage: React.FC = () => {
         )}
 
         {results.length > 0 && (
-          <div className="mb-4 grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4">
-            {[
-              { label: 'Evidence found', value: results.length, icon: 'fa-layer-group', tone: 'text-indigo-500' },
-              { label: 'Open access', value: openAccessCount, icon: 'fa-unlock', tone: 'text-emerald-500' },
-              { label: 'A/B quality', value: highQualityCount, icon: 'fa-shield-alt', tone: 'text-blue-500' },
-              { label: 'Retracted flags', value: retractedCount, icon: 'fa-triangle-exclamation', tone: retractedCount ? 'text-red-500' : 'text-slate-400' },
-            ].map((item) => (
-              <div key={item.label} className="neo-card p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
-                <div className={`w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center ${item.tone}`}>
-                  <i className={`fas ${item.icon} text-xs`} />
-                </div>
-                <div>
-                  <p className="font-mono text-base sm:text-lg font-black text-slate-900 dark:text-white">{item.value}</p>
-                  <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">{item.label}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <SearchResultsStats
+            totalCount={results.length}
+            openAccessCount={openAccessCount}
+            highQualityCount={highQualityCount}
+            retractedCount={retractedCount}
+          />
         )}
 
         {results.length > 0 && (intelligenceLoading || (!agentGuidance && (topicGuideStatus === 'building' || topicGuideStatus === 'pending'))) && (
@@ -571,347 +539,69 @@ export const SearchPage: React.FC = () => {
         )}
 
         {results.length > 0 && learnerContext?.hasPersonalization && (learnerContext.weakClaimCount > 0 || learnerContext.hasTrajectory || learnerContext.weakTopicCount > 0) && (
-          <div className="mb-4 rounded-xl border border-violet-200 bg-violet-50 p-4 dark:border-violet-900/50 dark:bg-violet-950/25">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="min-w-0">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-violet-600 dark:text-violet-300">Personalized remediation</p>
-                <p className="mt-1 text-sm font-semibold text-slate-800 dark:text-slate-100">
-                  {learnerContext.weakClaimCount > 0
-                    ? `${learnerContext.weakClaimCount} weak claim${learnerContext.weakClaimCount === 1 ? '' : 's'} from your learning history match this topic.`
-                    : learnerContext.hasTrajectory
-                      ? 'Your recent learning trajectory includes this topic.'
-                      : 'This search overlaps with prior weak topics.'}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <button type="button" onClick={() => setInPlaceQuizExpanded(true)}
-                  className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-violet-600 px-3 text-xs font-bold text-white hover:bg-violet-500">
-                  <i className="fas fa-brain text-[10px]" /> Targeted quiz
-                </button>
-                {agentGuidance && (
-                  <button type="button" onClick={() => document.getElementById('agent-mentor-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-violet-300 px-3 text-xs font-bold text-violet-700 hover:bg-white dark:border-violet-800 dark:text-violet-200 dark:hover:bg-violet-900/40">
-                    <i className="fas fa-comments text-[10px]" /> Ask mentor
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
+          <PersonalizedRemediationBanner
+            learnerContext={learnerContext}
+            onOpenQuiz={() => setInPlaceQuizExpanded(true)}
+            agentGuidance={agentGuidance}
+          />
         )}
 
         {results.length > 0 && (
-          <div className="sticky top-[calc(var(--nav-h)+0.75rem)] z-20 mb-4 rounded-2xl border border-slate-200/80 bg-white/92 p-3 shadow-sm backdrop-blur dark:border-slate-700/80 dark:bg-slate-900/88">
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-              <div className="min-w-0">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Shift review</p>
-                <p className="truncate text-xs font-semibold text-slate-700 dark:text-slate-200">{currentQuery}</p>
-              </div>
-              <div className="grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap sm:items-center">
-                <button type="button" onClick={() => document.getElementById('workflow-evidence')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                  className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-2.5 sm:px-3 text-xs font-bold text-white hover:bg-indigo-500">
-                  <i className="fas fa-layer-group text-[10px]" /> Evidence
-                </button>
-                <button type="button" onClick={openGuidelineFromWorkflow}
-                  className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border border-blue-200 px-2.5 sm:px-3 text-xs font-bold text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-950/40">
-                  <i className="fas fa-book-medical text-[10px]" /> Guideline
-                </button>
-                <button type="button" onClick={() => openCaseFromWorkflow('mixed')}
-                  className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border border-emerald-200 px-2.5 sm:px-3 text-xs font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300 dark:hover:bg-emerald-950/40">
-                  <i className="fas fa-stethoscope text-[10px]" /> Case
-                </button>
-                <button type="button" onClick={() => setInPlaceQuizExpanded((v) => !v)}
-                  className={`inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border px-2.5 sm:px-3 text-xs font-bold transition-colors ${
-                    inPlaceQuizExpanded
-                      ? 'bg-violet-600 border-violet-600 text-white hover:bg-violet-500'
-                      : 'border-violet-200 text-violet-700 hover:bg-violet-50 dark:border-violet-800 dark:text-violet-300 dark:hover:bg-violet-950/40'
-                  }`}>
-                  <i className="fas fa-brain text-[10px]" /> {inPlaceQuizExpanded ? 'Close quiz' : 'Quiz me on this'}
-                </button>
-                <button type="button" onClick={() => openCaseFromWorkflow('mixed')}
-                  className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border border-slate-200 px-2.5 sm:px-3 text-xs font-bold text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800/40">
-                  <i className="fas fa-file-export text-[10px]" /> Reflection
-                </button>
-              </div>
-            </div>
-          </div>
+          <ShiftReviewBar
+            currentQuery={currentQuery}
+            inPlaceQuizExpanded={inPlaceQuizExpanded}
+            onOpenGuideline={openGuidelineFromWorkflow}
+            onOpenCase={() => openCaseFromWorkflow('mixed')}
+            onToggleQuiz={() => setInPlaceQuizExpanded((v) => !v)}
+          />
         )}
 
         {(newPaperNotice || results.length > 0) && (
-          <div className="mb-4 grid gap-3 lg:grid-cols-[1fr_0.7fr]">
-            <div className="neo-card p-4">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Search within results</p>
-                  {newPaperNotice && <p className="mt-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">{newPaperNotice}</p>}
-                </div>
-                <input
-                  value={resultFilter}
-                  onChange={(event) => setResultFilter(event.target.value)}
-                  placeholder="Filter titles, abstracts, journals..."
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white sm:w-80"
-                />
-              </div>
-              <p className="mt-2 text-[11px] text-slate-400">
-                Shortcuts: / search, j/k move, s save, a analyze.
-              </p>
-            </div>
-            {recentAnalyses.length > 0 && (
-              <div className="neo-card p-4">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Recently analyzed</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {recentAnalyses.slice(0, 5).map((article) => (
-                    <button
-                      key={article.uid}
-                      type="button"
-                      onClick={() => openAnalysis(article)}
-                      className="max-w-full rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-indigo-950/40"
-                      title={article.title}
-                    >
-                      <span className="inline-block max-w-[13rem] truncate align-bottom">{article.title}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+          <SearchResultsFilterSection
+            resultFilter={resultFilter}
+            onResultFilterChange={setResultFilter}
+            newPaperNotice={newPaperNotice}
+            recentAnalyses={recentAnalyses}
+            onOpenAnalysis={openAnalysis}
+          />
         )}
 
         {results.length > 0 && (
           <>
-          {/* ── Discovery banner for unknown topics ────────────────────────── */}
-          {!agentGuidance && !proposedGuidance && results.length > 0 && (
-            <div className="mb-4 neo-card overflow-hidden border border-indigo-100 dark:border-indigo-900/40">
-              <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 px-5 py-3 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-8 h-8 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
-                    <i className="fas fa-compass text-white text-sm" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/70">Discovery</p>
-                    <p className="text-sm font-black text-white truncate">{currentQuery}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="p-5 space-y-4">
-                <TopicIntelligenceStatusBanner
-                  intelligenceLoading={intelligenceLoading}
-                  topicGuideStatus={topicGuideStatus}
-                />
-                <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-                  I&apos;m exploring this topic for the first time. I found <strong>{results.length} papers</strong> across multiple sources.
-                  Would you like me to synthesise what I found and add it to memory so future searches get a mentor greeting?
-                </p>
-                {proposeError && (
-                  <p className="text-xs text-red-600 dark:text-red-400 font-semibold">
-                    <i className="fas fa-triangle-exclamation mr-1" />{proposeError}
-                  </p>
-                )}
-                <div className="flex flex-wrap items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={handleProposeKnowledge}
-                    disabled={proposingKnowledge}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-xs font-bold transition-colors"
-                  >
-                    {proposingKnowledge ? (
-                      <><span className="w-3 h-3 border-2 border-white/40 border-t-white rounded-full animate-spin shrink-0" />Synthesising…</>
-                    ) : (
-                      <><i className="fas fa-brain text-[10px]" />Synthesise &amp; Add to Memory</>
-                    )}
-                  </button>
-                  <span className="text-[11px] text-slate-400">
-                    Requires sign-in. Creates a proposal for curator review.
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ── Proposed knowledge preview ─────────────────────────────────── */}
-          {proposedGuidance && (
-            <div className="mb-4 neo-card overflow-hidden border border-violet-100 dark:border-violet-900/40">
-              <div className="bg-violet-600 px-5 py-3 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-8 h-8 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
-                    <i className="fas fa-lightbulb text-white text-sm" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/70">Proposed Knowledge &middot; Pending Review</p>
-                    <p className="text-sm font-black text-white truncate">{proposedGuidance.topic}</p>
-                  </div>
-                </div>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white">
-                  <i className="fas fa-clock text-[9px]" /> Awaiting curator
-                </span>
-              </div>
-              <div className="p-5 space-y-4">
-                <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">{proposedGuidance.mentorMessage}</p>
-                {proposedGuidance.seminalPapers.length > 0 && (
-                  <div className="grid gap-2 md:grid-cols-2">
-                    {proposedGuidance.seminalPapers.slice(0, 4).map((paper) => (
-                      <div key={`${paper.sourceIndex}-${paper.title}`} className="rounded-xl bg-slate-50 p-3 dark:bg-slate-800/50">
-                        <p className="text-xs font-bold text-slate-800 dark:text-slate-200">[{paper.sourceIndex}] {paper.title}</p>
-                        {paper.clinicalPrinciple && <p className="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">{paper.clinicalPrinciple}</p>}
-                      </div>
-                    ))}
-                  </div>
-                )}
-                {proposedGuidance.teachingPoints.length > 0 && (
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Key Teaching Points</p>
-                    <ul className="space-y-1.5">
-                      {proposedGuidance.teachingPoints.slice(0, 4).map((tp, i) => (
-                        <li key={i} className="flex gap-2 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                          <i className="fas fa-circle-dot text-violet-500 mt-0.5 text-[8px] shrink-0" />
-                          <span>{typeof tp === 'string' ? tp : tp.claim}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                <div className="flex flex-wrap gap-2">
-                  <Button variant="gradient" size="sm" onClick={() => openCaseFromWorkflow('mixed')}
-                    leftIcon={<i className="fas fa-stethoscope text-[10px]" />}>Generate Case</Button>
-                  <Button variant="secondary" size="sm" onClick={() => openQuizFromWorkflow('mixed')}
-                    leftIcon={<i className="fas fa-brain text-[10px]" />}>Generate MCQs</Button>
-                </div>
-              </div>
-            </div>
+          {!agentGuidance && (
+            <TopicKnowledgeDiscovery
+              currentQuery={currentQuery}
+              resultsCount={results.length}
+              intelligenceLoading={intelligenceLoading}
+              topicGuideStatus={topicGuideStatus}
+              proposeError={proposeError}
+              proposingKnowledge={proposingKnowledge}
+              onProposeKnowledge={handleProposeKnowledge}
+              proposedGuidance={proposedGuidance}
+              onOpenCase={openCaseFromWorkflow}
+              onOpenQuiz={openQuizFromWorkflow}
+            />
           )}
 
           {agentGuidance && (
-            <div id="agent-mentor-panel" className="mb-4 neo-card overflow-hidden border border-emerald-100 dark:border-emerald-900/40">
-              <div className="bg-emerald-600 px-5 py-3 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-8 h-8 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
-                    <i className="fas fa-user-graduate text-white text-sm" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/70">
-                      {isFlagshipTopic ? 'Flagship Topic · Evidence Mentor Ready' : 'Mentor Message'}
-                    </p>
-                    <p className="text-sm font-black text-white truncate">{agentGuidance.topic}</p>
-                  </div>
-                </div>
-                <div className="hidden sm:flex items-center gap-2">
-                  {isAuthenticated && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      disabled={topicGuideRefreshState === 'loading'}
-                      onClick={() => void runTopicGuideRefresh()}
-                      leftIcon={<i className="fas fa-arrows-rotate text-[10px]" />}
-                    >
-                      {topicGuideRefreshState === 'loading' ? 'Refreshing…' : 'Refresh'}
-                    </Button>
-                  )}
-                  {isFlagshipTopic && (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white">
-                      <i className="fas fa-award text-[9px]" />
-                      Flagship
-                    </span>
-                  )}
-                  {agentGuidance.lastRefreshedAt && (
-                    <span className="text-[10px] font-mono text-white/70">
-                      refreshed {new Date(agentGuidance.lastRefreshedAt).toLocaleDateString()}
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="p-5 space-y-4">
-                <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">{agentGuidance.mentorMessage}</p>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
-                    agentGuidance.status === 'human_reviewed'
-                      ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300'
-                      : 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300'
-                  }`}>
-                    {agentGuidance.status === 'human_reviewed' ? 'Clinician reviewed' : 'AI generated'}
-                  </span>
-                  <span className="text-[11px] text-slate-400">
-                    confidence {Math.round((agentGuidance.confidence || 0) * 100)}%
-                  </span>
-                  {agentGuidance.status !== 'human_reviewed' && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleReviewTopicKnowledge}
-                      disabled={knowledgeReviewStatus === 'saving'}
-                      leftIcon={<i className="fas fa-check text-[10px]" />}
-                    >
-                      {knowledgeReviewStatus === 'saving' ? 'Saving' : 'Mark Reviewed'}
-                    </Button>
-                  )}
-                  {knowledgeReviewStatus === 'error' && (
-                    <span className="text-[11px] font-semibold text-red-500">Sign in or retry to review.</span>
-                  )}
-                  {topicGuideRefreshError && (
-                    <span className="text-[11px] font-semibold text-red-500">{topicGuideRefreshError}</span>
-                  )}
-                </div>
-                {agentGuidance.seminalPapers.length > 0 && (
-                  <div className="grid gap-2 md:grid-cols-2">
-                    {agentGuidance.seminalPapers.slice(0, 4).map((paper) => (
-                      <div key={`${paper.sourceIndex}-${paper.title}`} className="rounded-xl bg-slate-50 p-3 dark:bg-slate-800/50">
-                        <p className="text-xs font-bold text-slate-800 dark:text-slate-200">[{paper.sourceIndex}] {paper.title}</p>
-                        {paper.clinicalPrinciple && <p className="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">{paper.clinicalPrinciple}</p>}
-                      </div>
-                    ))}
-                  </div>
-                )}
-                {agentGuidance.teachingPoints.length > 0 && (
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Key Teaching Points</p>
-                    <ul className="space-y-1.5">
-                      {agentGuidance.teachingPoints.slice(0, 4).map((tp, i) => {
-                        const anchored = (agentGuidance.verifiedAnchors || []).some((a) => (a.text || '').trim() === (tp.claim || '').trim());
-                        return (
-                          <li key={i} className="flex gap-2 text-xs text-slate-600 dark:text-slate-400 leading-relaxed items-start">
-                            <i className="fas fa-circle-dot text-emerald-500 mt-0.5 text-[8px] shrink-0" />
-                            <span className="flex-1 min-w-0">{tp.claim}</span>
-                            {anchored && (
-                              <span className="shrink-0 rounded bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 text-[9px] font-black uppercase tracking-wide px-1.5 py-0.5">
-                                Anchor
-                              </span>
-                            )}
-                            {canVerifyTeachingAnchor && !anchored && isAuthenticated && (
-                              <button
-                                type="button"
-                                disabled={anchorVerifyKey === `tp-${i}`}
-                                onClick={async () => {
-                                  const key = `tp-${i}`;
-                                  setAnchorVerifyKey(key);
-                                  try {
-                                    const topic = agentGuidance.topic || currentQuery;
-                                    const res = await api.verifyTopicKnowledgeAnchor(topic, { claimText: tp.claim });
-                                    if (res.agentGuidance) setAgentGuidance(res.agentGuidance);
-                                  } catch {
-                                    /* toast optional */
-                                  } finally {
-                                    setAnchorVerifyKey(null);
-                                  }
-                                }}
-                                className="shrink-0 text-[10px] font-black uppercase tracking-wide text-indigo-600 dark:text-indigo-400 hover:underline disabled:opacity-40"
-                              >
-                                {anchorVerifyKey === `tp-${i}` ? '…' : 'Verify'}
-                              </button>
-                            )}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                )}
-                <div className="flex flex-wrap gap-2">
-                  <Button variant="gradient" size="sm" onClick={() => openCaseFromWorkflow('mixed')}
-                    leftIcon={<i className="fas fa-stethoscope text-[10px]" />}>Generate Case</Button>
-                  <Button variant="secondary" size="sm" onClick={() => openQuizFromWorkflow('mixed')}
-                    leftIcon={<i className="fas fa-brain text-[10px]" />}>Generate MCQs</Button>
-                  <Button variant="ghost" size="sm" onClick={handleSynthesize}
-                    leftIcon={<i className="fas fa-layer-group text-[10px]" />}>Review Seminal Evidence</Button>
-                </div>
-              </div>
-            </div>
+            <AgentMentorPanel
+              agentGuidance={agentGuidance}
+              isFlagshipTopic={isFlagshipTopic}
+              isAuthenticated={isAuthenticated}
+              topicGuideRefreshState={topicGuideRefreshState}
+              onRefreshTopicGuide={runTopicGuideRefresh}
+              knowledgeReviewStatus={knowledgeReviewStatus}
+              onReviewTopicKnowledge={handleReviewTopicKnowledge}
+              topicGuideRefreshError={topicGuideRefreshError}
+              canVerifyTeachingAnchor={canVerifyTeachingAnchor}
+              anchorVerifyKey={anchorVerifyKey}
+              onAnchorVerifyKeyChange={setAnchorVerifyKey}
+              currentQuery={currentQuery}
+              onAgentGuidanceChange={setAgentGuidance}
+              onOpenCase={openCaseFromWorkflow}
+              onOpenQuiz={openQuizFromWorkflow}
+              onSynthesize={() => void handleSynthesize()}
+            />
           )}
           {agentGuidance && (
             <div className="mb-4">
@@ -967,82 +657,32 @@ export const SearchPage: React.FC = () => {
         )}
 
         {results.length > 0 && (
-          <div className="mb-4 neo-card p-3 flex flex-wrap gap-2 items-center">
-            <div className="flex w-full flex-wrap items-center gap-1.5 border-b border-slate-100 pb-2 dark:border-slate-800">
-              {[
-                { id: 'all' as ResultLens, label: 'All', count: results.length, icon: 'fa-list' },
-                { id: 'open_access' as ResultLens, label: 'Open access', count: openAccessCount, icon: 'fa-unlock' },
-                { id: 'high_quality' as ResultLens, label: 'High quality', count: highQualityCount, icon: 'fa-shield-halved' },
-                { id: 'recent' as ResultLens, label: 'Recent', count: recentCount, icon: 'fa-calendar-days' },
-                { id: 'practice_changing' as ResultLens, label: 'Practice-changing', count: practiceChangingCount, icon: 'fa-bolt' },
-              ].map((lens) => (
-                <button
-                  key={lens.id}
-                  type="button"
-                  disabled={lens.count === 0}
-                  onClick={() => {
-                    setResultLens(lens.id);
-                    setVisibleCount(30);
-                    trackFeatureUsage('result_lens_click', { lens: lens.id, count: lens.count });
-                  }}
-                  className={`inline-flex min-h-8 items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[11px] font-bold transition-colors disabled:pointer-events-none disabled:opacity-35 ${
-                    resultLens === lens.id
-                      ? 'border-indigo-300 bg-indigo-50 text-indigo-700 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300'
-                      : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
-                  }`}
-                >
-                  <i className={`fas ${lens.icon} text-[10px]`} />
-                  {lens.label}
-                  <span className="font-mono text-[10px] opacity-70">{lens.count}</span>
-                </button>
-              ))}
-              {(resultLens !== 'all' || resultFilter.trim()) && (
-                <button
-                  type="button"
-                  onClick={() => { setResultLens('all'); setResultFilter(''); setVisibleCount(30); }}
-                  className="ml-auto inline-flex min-h-8 items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-bold text-slate-400 transition-colors hover:bg-slate-50 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
-                >
-                  <i className="fas fa-xmark text-[10px]" />
-                  Clear lens
-                </button>
-              )}
-            </div>
-            {selectedArticles.length >= 2 && (
-              <Button onClick={() => setIsComparing(true)} variant="gradient" size="sm"
-                leftIcon={<i className="fas fa-balance-scale text-[10px]" />}>
-                Compare {Math.min(selectedArticles.length, 2)}
-              </Button>
-            )}
-            {isAuthenticated && (
-              <>
-                <Button onClick={() => setCurrentPage('team')} variant="ghost" size="sm"
-                  leftIcon={<i className="fas fa-users text-[10px]" />}>Team</Button>
-                <Button onClick={() => setCurrentPage('grant')} variant="ghost" size="sm"
-                  leftIcon={<i className="fas fa-file-signature text-[10px]" />}>Grant</Button>
-              </>
-            )}
-            {savedArticles.length > 0 && (
-              <Button onClick={() => setCurrentPage('saved')} variant="ghost" size="sm"
-                leftIcon={<i className="fas fa-bookmark text-[10px]" />}>
-                Saved · {savedArticles.length}
-              </Button>
-            )}
-            {selectedArticles.length > 0 && (
-              <Button variant="ghost" size="sm" onClick={clearSelection}>Clear</Button>
-            )}
-            <Button onClick={() => setCurrentPage('history')} variant="ghost" size="sm"
-              leftIcon={<i className="fas fa-history text-[10px]" />}>History</Button>
-            <div className="flex w-full flex-wrap gap-1.5 sm:ml-auto sm:w-auto">
-              <Button variant="ghost" size="sm" onClick={() => exportResults('ris')}
-                leftIcon={<i className="fas fa-file-alt text-[10px]" />}>RIS</Button>
-              <Button variant="ghost" size="sm" onClick={() => exportResults('bibtex')}
-                leftIcon={<i className="fas fa-file-code text-[10px]" />}>BibTeX</Button>
-              <Button variant="ghost" size="sm" onClick={() => exportResults('csl')}
-                leftIcon={<i className="fas fa-quote-right text-[10px]" />}>CSL</Button>
-              <Button variant="ghost" size="sm" onClick={() => exportResults('doc')}
-                leftIcon={<i className="fas fa-file-word text-[10px]" />}>Word</Button>
-            </div>
-          </div>
+          <ResultLensToolbar
+            resultsCount={results.length}
+            openAccessCount={openAccessCount}
+            highQualityCount={highQualityCount}
+            recentCount={recentCount}
+            practiceChangingCount={practiceChangingCount}
+            resultLens={resultLens}
+            resultFilter={resultFilter}
+            selectedArticles={selectedArticles}
+            savedArticles={savedArticles}
+            isAuthenticated={isAuthenticated}
+            onLensChange={(lens) => {
+              setResultLens(lens);
+              setVisibleCount(30);
+            }}
+            onClearLens={() => {
+              setResultLens('all');
+              setResultFilter('');
+              setVisibleCount(30);
+            }}
+            onCompare={() => setIsComparing(true)}
+            onNavigate={setCurrentPage}
+            onClearSelection={clearSelection}
+            onExport={exportResults}
+            trackFeatureUsage={trackFeatureUsage}
+          />
         )}
 
         {results.length > 0 && (
@@ -1054,50 +694,13 @@ export const SearchPage: React.FC = () => {
           />
         )}
 
-        {synthesisError && (
-          synthesisError.startsWith('UPGRADE_REQUIRED:') ? (
-            <div aria-live="polite" className="mb-6 p-6 rounded-2xl bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800 text-center">
-              <i className="fas fa-star text-2xl text-violet-400 mb-2 block" />
-              <p className="text-sm font-semibold text-violet-800 dark:text-violet-200">Evidence synthesis is a Pro feature</p>
-              <p className="text-xs text-violet-600 dark:text-violet-400 mt-1 mb-3">Upgrade to synthesize papers into clinical bottom lines and teaching claims.</p>
-              <a href="/billing" className="inline-block text-xs font-bold px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors">
-                View plans →
-              </a>
-            </div>
-          ) : (
-            <div aria-live="polite" className="mb-6">
-              <ErrorBanner error={synthesisError} />
-            </div>
-          )
-        )}
-
-        {synthesisLoading && !synthesisLiveText && (
-          <div aria-live="polite" className="sr-only">Generating evidence synthesis…</div>
-        )}
-        {synthesisLiveText && synthesisLoading && (
-          <div aria-live="polite" className="mb-6 rounded-2xl border border-indigo-100 bg-white/90 p-4 text-sm text-slate-700 shadow-sm dark:border-indigo-900/40 dark:bg-slate-900/90 dark:text-slate-300">
-            <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-indigo-500">Live synthesis</p>
-            <p className="whitespace-pre-wrap leading-relaxed">{synthesisLiveText}</p>
-          </div>
-        )}
-
-        {stalenessBanner && (
-          <div className="mb-4 rounded-2xl border border-amber-200 dark:border-amber-800/50 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 flex items-start gap-3">
-            <i className="fas fa-exclamation-triangle text-amber-500 text-sm mt-0.5 shrink-0" />
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-amber-800 dark:text-amber-200">Evidence has shifted since your last synthesis</p>
-              <ul className="mt-1 space-y-0.5">
-                {stalenessBanner.changes.map((c, i) => (
-                  <li key={i} className="text-[11px] text-amber-700 dark:text-amber-300">{c}</li>
-                ))}
-              </ul>
-            </div>
-            <button type="button" onClick={() => setStalenessBanner(null)}
-              className="shrink-0 text-amber-400 hover:text-amber-600 dark:hover:text-amber-200 transition-colors">
-              <i className="fas fa-times text-xs" />
-            </button>
-          </div>
-        )}
+        <SynthesisStatusSection
+          synthesisError={synthesisError}
+          synthesisLoading={synthesisLoading}
+          synthesisLiveText={synthesisLiveText}
+          stalenessBanner={stalenessBanner}
+          onDismissStaleness={() => setStalenessBanner(null)}
+        />
 
         {synthesis && (
           <div className="mb-8" data-synthesis-panel>
