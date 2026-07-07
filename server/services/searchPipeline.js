@@ -11,12 +11,15 @@ const {
     hasCitationData,
     getYear,
     isPreclinical,
+    isGroundbreakingBasicScience,
     isPredatoryJournal,
+    matchesPopulationFilter,
     MECHANISM_QUERY_PATTERNS,
     queryAliasMatchScore,
 } = require('./evidenceBouquetService');
 const { fetchUnifiedEvidence, collapseNearDuplicateTitles, decomposePico } = require('./unifiedEvidenceSearch');
 const { sanitizeArticleOutput } = require('../utils/articles');
+const logger = require('../config/logger');
 const { createAiService, getSharedAiService } = require('./aiService');
 const { rerankArticlesByPico } = require('./articleReranker');
 const {
@@ -393,6 +396,10 @@ function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMes
     const meshTerms = Array.isArray(queryMeshTerms) ? queryMeshTerms : [];
 
     return (Array.isArray(raw) ? raw : []).filter((article) => {
+        // Retracted papers must never appear in results
+        if (article._retraction?.isRetracted) return false;
+        // Population mismatch (e.g. adult-only article for a pediatric query)
+        if (!matchesPopulationFilter(article, query)) return false;
         const aliasMatched = queryAliasMatchScore(article, queryAliases) > 0;
         if (!aliasMatched && isOffTopic(article, query, { queryMeshTerms: meshTerms })) return false;
         if (!yearInFilters(article, parsedYearFilters)) return false;
@@ -403,7 +410,8 @@ function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMes
         // → 0 here silently dropped every PubMed article older than 2 years — including
         // decades-old landmark trials (RALES, SOLVD, ARDSNet, etc.).
         if (hasCitationData(article) && getCitationCount(article) === 0 && age > 2) return false;
-        if (!queryWantsMechanisms && isPreclinical(article)) return false;
+        // Allow groundbreaking basic science through even for clinical queries
+        if (!queryWantsMechanisms && isPreclinical(article) && !isGroundbreakingBasicScience(article)) return false;
         if (isPredatoryJournal(article)) return false;
         if (isStrictMode) {
             const types = (Array.isArray(article.pubtype) ? article.pubtype : []).map((t) => (t || '').toLowerCase());
@@ -463,7 +471,7 @@ async function fetchAndRankSearchArticles({
         const timings = {};
         const started = Date.now();
         const _trace = process.env.SEARCH_TRACE
-            ? (label, arr) => { const t = process.env.SEARCH_TRACE.toLowerCase(); console.log(`[SEARCH_TRACE] ${label}: ${arr.length}` + (t ? ` | hit=${arr.some(a => String(a.uid||a.pmid||'').toLowerCase().includes(t))}` : '')); }
+            ? (label, arr) => { const t = process.env.SEARCH_TRACE.toLowerCase(); logger.debug({ label, count: arr.length, hit: arr.some(a => String(a.uid||a.pmid||'').toLowerCase().includes(t)) }, '[SEARCH_TRACE]'); }
             : () => {};
         // PICO decomposition runs in parallel with evidence fetching
         const picoPromise = withSpan('search.pico_decomposition', { 'search.query': query }, () => (

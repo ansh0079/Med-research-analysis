@@ -64,6 +64,7 @@ export const SearchPage: React.FC = () => {
     knowledgeDriftAlerts,
     dismissKnowledgeDriftAlert,
     lowRecallLearning,
+    searchTelemetry,
     recentSearches,
     pdfViewer,
     activeArticle,
@@ -199,6 +200,7 @@ export const SearchPage: React.FC = () => {
             openAccessCount={openAccessCount}
             highQualityCount={highQualityCount}
             retractedCount={retractedCount}
+            sourceTelemetry={searchTelemetry?.sources}
           />
         )}
 

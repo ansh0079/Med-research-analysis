@@ -86,7 +86,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                     const vectorStarted = Date.now();
                     const { createVectorSearchService } = require('../../services/vectorSearchService');
                     const vs = createVectorSearchService({ db, serverConfig });
-                    const vr = await vs.searchVector({ query: queryValidation.sanitized, limit: safeLimit, minScore: 0.25 });
+                    const vr = await vs.searchVector({ query: queryValidation.sanitized, limit: safeLimit });
                     vectorList = Array.isArray(vr.articles) ? vr.articles : [];
                     routeTimings.vectorMs = Date.now() - vectorStarted;
                 } catch (e) {
@@ -461,7 +461,7 @@ function registerUnifiedSearchRoutes(app, deps) {
 
                     await Promise.resolve(cache.set(enrichCacheKey, { status: 'ready', clinicalAnswer, consensusSynopsis }, 3600)).catch((err) => { logger.warn({ err }, 'cache set failed'); });
                 } catch (err) {
-                    console.warn('[enrichment] background job failed:', err?.message);
+                    logger.warn({ err }, 'search enrichment background job failed');
                     await Promise.resolve(cache.set(enrichCacheKey, { status: 'failed' }, 300)).catch((err) => { logger.warn({ err }, 'cache set failed'); });
                 } finally {
                     enrichmentInFlight.delete(enrichCacheKey);

@@ -2,13 +2,7 @@
 
 const crypto = require('crypto');
 const { topicRefreshPriority } = require('./topicKnowledgeFreshness');
-
-function stableArticleUid(article = {}) {
-    return String(article.uid || article.pmid || article.doi || '')
-        .replace(/^https?:\/\/(dx\.)?doi\.org\//i, '')
-        .trim()
-        || crypto.createHash('sha1').update(String(article.title || 'untitled')).digest('hex').slice(0, 16);
-}
+const { stableArticleUid } = require('../utils/articleKeys');
 
 function safeArray(value, max = 8) {
     return Array.isArray(value) ? value.filter(Boolean).slice(0, max) : [];

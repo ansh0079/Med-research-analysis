@@ -143,11 +143,7 @@ function normalizeDoi(doi) {
     return d || null;
 }
 
-function normalizePmid(pmid) {
-    if (!pmid) return null;
-    const match = String(pmid).match(/\d{4,12}/);
-    return match ? match[0] : null;
-}
+const { normalizePmid } = require('../utils/articleKeys');
 
 const TITLE_STOPWORDS = new Set([
     'the', 'a', 'an', 'and', 'or', 'of', 'for', 'to', 'in', 'on', 'at', 'with', 'by', 'from',

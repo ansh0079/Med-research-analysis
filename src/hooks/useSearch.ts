@@ -72,6 +72,7 @@ export function useSearch() {
   const [aiEnrichmentLoading, setAiEnrichmentLoading] = useState(false);
   const [intelligenceLoading, setIntelligenceLoading] = useState(false);
   const [lowRecallLearning, setLowRecallLearning] = useState<LowRecallLearning | null>(null);
+  const [searchTelemetry, setSearchTelemetry] = useState<import('@types').SearchResponse['searchTelemetry'] | null>(null);
   const requestIdRef = useRef(0);
   const abortControllerRef = useRef<AbortController | null>(null);
   const lastSearchRef = useRef<{ key: string; query: string; time: number } | null>(null);
@@ -257,6 +258,7 @@ export function useSearch() {
         setProactiveAlert(proactiveAlert || null);
         setLearnerContext(nextLearnerContext || null);
         setLowRecallLearning(nextLowRecallLearning || null);
+        setSearchTelemetry(data.searchTelemetry ?? null);
         addToSearchHistory(query.trim());
         refreshKnowledgeDriftAlerts();
 
@@ -378,5 +380,6 @@ export function useSearch() {
     knowledgeDriftAlerts,
     dismissKnowledgeDriftAlert,
     lowRecallLearning,
+    searchTelemetry,
   };
 }

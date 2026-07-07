@@ -3,6 +3,12 @@ const { getEmbeddingOptions: getKeys } = require('./embeddingOptions');
 
 const EMBEDDING_DIM = 384;
 
+// Unified minimum cosine-similarity threshold for vector search results.
+// Override with VECTOR_SEARCH_MIN_SCORE env var (0–1, default 0.25).
+// The unified search route historically used 0.25 while standalone routes
+// defaulted to 0.4 — 0.25 is the right value for recall in the main pipeline.
+const DEFAULT_MIN_SCORE = Math.min(0.99, Math.max(0, parseFloat(process.env.VECTOR_SEARCH_MIN_SCORE || '0.25')));
+
 function normalizeVector(vec) {
     if (!Array.isArray(vec) || vec.length !== EMBEDDING_DIM) {
         return null;
@@ -32,7 +38,7 @@ function blendEmbeddings(queryEmbedding, userEmbedding = null, { queryWeight = 0
  * @param {import('../../config').serverConfig} deps.serverConfig
  */
 function createVectorSearchService({ db, serverConfig }) {
-    async function findSimilarPapers(embedding, { limit = 10, minScore = 0.4 } = {}) {
+    async function findSimilarPapers(embedding, { limit = 10, minScore = DEFAULT_MIN_SCORE } = {}) {
         if (!db.isVectorSearchAvailable()) {
             const err = new Error('UNAVAILABLE');
             err.code = 'UNAVAILABLE';
@@ -52,7 +58,7 @@ function createVectorSearchService({ db, serverConfig }) {
     async function semanticSearch({
         query,
         limit = 10,
-        minScore = 0.4,
+        minScore = DEFAULT_MIN_SCORE,
         userEmbedding = null,
         userProfileText = '',
         queryWeight = 0.75,
@@ -77,7 +83,7 @@ function createVectorSearchService({ db, serverConfig }) {
         };
     }
 
-    async function searchVector({ query, limit = 10, minScore = 0.4 }) {
+    async function searchVector({ query, limit = 10, minScore = DEFAULT_MIN_SCORE }) {
         return semanticSearch({ query, limit, minScore });
     }
 

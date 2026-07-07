@@ -508,23 +508,12 @@ function buildEvidenceBouquet(articles, query, options = {}) {
             ? new Map(Object.entries(options.articleSignalBoosts))
             : new Map());
 
-    // 1. Filter
-    const queryWantsMechanisms = MECHANISM_QUERY_PATTERNS.test(String(query || ''));
+    // 1. Filter — lightweight safety net for callers that bypass filterRelevantArticles.
+    // The full filter (alias, year, preclinical, predatory, PICO) runs in searchPipeline's
+    // filterRelevantArticles before articles reach this function in the normal pipeline.
     const filtered = articles.filter((a) => {
         if (a._retraction?.isRetracted) return false;
         if (!matchesPopulationFilter(a, query)) return false;
-        const aliasMatched = queryAliasMatchScore(a, options.queryAliases) > 0;
-        if (!aliasMatched && isOffTopic(a, query)) return false;
-        // Drop old papers only when we KNOW they are uncited. Missing citation data
-        // (e.g. PubMed results, which carry no counts) must not be treated as zero —
-        // that silently dropped decades-old landmark trials that retrieval ranked highly.
-        const age = CURRENT_YEAR - getYear(a);
-        if (hasCitationData(a) && getCitationCount(a) === 0 && age > 2) return false;
-        // Drop preclinical/experimental papers unless the query is specifically mechanistic,
-        // OR the paper is groundbreaking basic science (landmark-cited, top-tier journal, clinical translation)
-        if (!queryWantsMechanisms && isPreclinical(a) && !isGroundbreakingBasicScience(a)) return false;
-        // Drop predatory journal papers entirely
-        if (isPredatoryJournal(a)) return false;
         return true;
     });
 
@@ -719,6 +708,7 @@ module.exports = {
     hasCitationData,
     getYear,
     isOffTopic,
+    matchesPopulationFilter,
     meshRelevanceRatio,
     queryMatchScore,
     queryAliasMatchScore,

@@ -1,6 +1,7 @@
 'use strict';
 
 const logger = require('../config/logger');
+const { articleUid } = require('../utils/articleKeys');
 const { CLAIM_VERIFICATION, stableClaimKey } = require('./teachingObjectService');
 const { formatMisconceptionPromptBlock } = require('../utils/misconceptionPromptBlock');
 const { formatLearnerSnapshot } = require('./learnerStateService');
@@ -74,7 +75,7 @@ function buildAgentEvidenceAnchors({ currentArticles = [], guidelines = [], grou
     return [
         ...(Array.isArray(currentArticles) ? currentArticles.slice(0, 5).map((article) => ({
             type: 'paper',
-            uid: article.uid || article.pmid || article.doi || null,
+            uid: articleUid(article),
             title: article.title,
             source: article.source || article.journal || null,
             confidence: article._quality?.score != null ? Number(article._quality.score) / 100 : null,
