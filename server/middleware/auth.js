@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-const { sendVerificationEmail, sendPasswordResetEmail } = require('../services/emailService');
+const { sendVerificationEmail } = require('../services/emailService');
 const logger = require('../config/logger');
 const db = require('../../database');
 const authSecurityStore = require('../services/authSecurityStore');
@@ -14,6 +14,7 @@ const {
     REFRESH_TOKEN_TTL_MS,
 } = require('../services/refreshTokenService');
 const { hasFeature, resolvePlan } = require('../config/entitlements');
+const { registerPasswordResetRoutes } = require('./auth/passwordResetRoutes');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'change-this-in-production';
 const JWT_SECRET_PLACEHOLDERS = new Set([
@@ -86,11 +87,6 @@ async function issueSession(res, user) {
     }
 }
 
-function setSessionCookie(res, user) {
-    const token = buildAccessToken(user);
-    res.cookie(COOKIE_NAME, token, ACCESS_COOKIE_OPTIONS);
-}
-
 function clearAuthCookies(res) {
     const clearOpts = cookieBaseOptions();
     res.clearCookie(COOKIE_NAME, clearOpts);
@@ -98,6 +94,8 @@ function clearAuthCookies(res) {
 }
 
 const TRIAL_DAYS = 14;
+const TRIAL_DOWNGRADE_CHECK_INTERVAL_MS = 5 * 60 * 1000;
+const trialDowngradeCheckedAt = new Map();
 
 async function startProTrial(database, userId) {
     const now = new Date();
@@ -114,13 +112,23 @@ async function startProTrial(database, userId) {
     );
 }
 
-async function maybeDowngradeExpiredTrial(database, userId) {
+async function maybeDowngradeExpiredTrial(database, userId, { force = false } = {}) {
+    if (!userId) return false;
+    const now = Date.now();
+    if (!force) {
+        const lastChecked = trialDowngradeCheckedAt.get(userId) || 0;
+        if (now - lastChecked < TRIAL_DOWNGRADE_CHECK_INTERVAL_MS) return false;
+    }
+    if (trialDowngradeCheckedAt.size > 5000) trialDowngradeCheckedAt.clear();
+    trialDowngradeCheckedAt.set(userId, now);
+
     const user = await database.get(
         'SELECT trial_ends_at, subscription_status, has_used_trial FROM users WHERE id = ?',
         [userId]
     );
     if (!user || user.subscription_status !== 'trialing' || !user.trial_ends_at) return false;
     if (new Date(user.trial_ends_at) < new Date()) {
+        trialDowngradeCheckedAt.delete(userId);
         await database.run(
             `UPDATE users SET
                 subscription_status = 'free',
@@ -186,7 +194,6 @@ async function upsertOAuthUser(database, profile) {
 const revokeToken = (token) => authSecurityStore.revokeToken(token);
 const isTokenRevoked = (token) => authSecurityStore.isTokenRevoked(token);
 const recordFailedLogin = (email) => authSecurityStore.recordFailedLogin(email);
-const isLoginLocked = (email) => authSecurityStore.isLoginLocked(email);
 const getLoginThrottleState = (email) => authSecurityStore.getLoginThrottleState(email);
 const clearLoginAttempts = (email) => authSecurityStore.clearLoginAttempts(email);
 const timingSafeEqualStrings = (a, b) => authSecurityStore.timingSafeEqualStrings(a, b);
@@ -649,9 +656,8 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
 
             await clearLoginAttempts(email);
             await db.updateUser(stored.id, { last_login: new Date().toISOString() });
-            const emailVerified = Boolean(stored.email_verified);
             // Check and downgrade expired trial on login
-            await maybeDowngradeExpiredTrial(db, stored.id);
+            await maybeDowngradeExpiredTrial(db, stored.id, { force: true });
             const freshUser = await db.get('SELECT id, name, email, role, email_verified, subscription_plan, access_token_version FROM users WHERE id = ?', [stored.id]);
             const finalUser = freshUser || stored;
             const finalEmailVerified = Boolean(finalUser.email_verified);
@@ -695,7 +701,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
                 return res.status(401).json({ error: 'User not found', tokenExpired: true });
             }
 
-            await maybeDowngradeExpiredTrial(db, user.id);
+            await maybeDowngradeExpiredTrial(db, user.id, { force: true });
             const freshUser = await db.get(
                 'SELECT id, name, email, role, email_verified, subscription_plan, access_token_version FROM users WHERE id = ?',
                 [user.id]
@@ -725,7 +731,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // ==========================================
     app.get('/api/auth/me', requireAuthJwt, async (req, res) => {
         // Auto-downgrade expired trial on every auth check
-        const wasDowngraded = await maybeDowngradeExpiredTrial(db, req.user.id);
+        const wasDowngraded = await maybeDowngradeExpiredTrial(db, req.user.id, { force: true });
         if (wasDowngraded) {
             // Re-read user to return fresh state
             const fresh = await db.get('SELECT id, name, email, role, email_verified, subscription_plan, subscription_status, trial_ends_at, access_token_version FROM users WHERE id = ?', [req.user.id]);
@@ -981,82 +987,14 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // ==========================================
     // Forgot password — generate reset token
     // ==========================================
-    app.post('/api/auth/forgot-password', authRateLimit, async (req, res) => {
-        const { email } = req.body;
-        if (!email) return res.status(400).json({ error: 'email is required' });
-
-        // Always return the same response to prevent email enumeration
-        const genericResponse = { message: 'If an account exists for that email, a reset link has been sent.' };
-
-        // Per-email rate limit — silently return generic response to avoid enumeration
-        if (await isResetLimited(email)) return res.json(genericResponse);
-        await recordResetAttempt(email);
-
-        try {
-            const user = await db.getUserByEmail(email);
-            if (!user) return res.json(genericResponse);
-
-            const resetToken = crypto.randomBytes(32).toString('hex');
-            const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
-
-            await db.withTransaction(async () => {
-                await db.run('DELETE FROM password_reset_tokens WHERE user_id = ?', [user.id]);
-                await db.run(
-                    'INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES (?, ?, ?)',
-                    [user.id, resetToken, expiresAt]
-                );
-            });
-
-            sendPasswordResetEmail({ to: user.email, name: user.name, token: resetToken, appUrl }).catch((err) => {
-                logger.error({ err }, 'Failed to send password reset email');
-            });
-
-            res.json(genericResponse);
-        } catch (err) {
-            logger.error({ err }, 'Forgot password error');
-            res.json(genericResponse); // Still return generic to prevent info leak
-        }
-    });
-
-    // ==========================================
-    // Reset password — consume token, update password
-    // ==========================================
-    app.post('/api/auth/reset-password', authRateLimit, async (req, res) => {
-        const { token, password } = req.body;
-        if (!token || !password) return res.status(400).json({ error: 'token and password are required' });
-        if (password.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters' });
-
-        try {
-            const row = await db.get(
-                'SELECT prt.*, u.name, u.email, u.role FROM password_reset_tokens prt JOIN users u ON u.id = prt.user_id WHERE prt.token = ? AND prt.used = 0',
-                [token]
-            );
-
-            if (!row) return res.status(400).json({ error: 'Invalid or expired reset link' });
-            if (new Date(row.expires_at) < new Date()) {
-                await db.run('DELETE FROM password_reset_tokens WHERE token = ?', [token]);
-                return res.status(400).json({ error: 'Reset link has expired. Please request a new one.' });
-            }
-
-            const hashedPassword = await bcrypt.hash(password, 12);
-
-            await db.withTransaction(async () => {
-                await db.run('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, row.user_id]);
-                await db.run('UPDATE password_reset_tokens SET used = 1 WHERE token = ?', [token]);
-            });
-
-            await revokeUserAccessTokens(db, row.user_id);
-            await revokeAllUserRefreshTokens(db, row.user_id);
-            const userRow = await db.get(
-                'SELECT id, name, email, role, email_verified, subscription_plan, access_token_version FROM users WHERE id = ?',
-                [row.user_id]
-            );
-            if (userRow) await issueSession(res, userRow);
-            res.json({ message: 'Password updated successfully', user: { id: row.user_id, name: row.name, email: row.email, role: row.role } });
-        } catch (err) {
-            logger.error({ err }, 'Reset password error');
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
+    registerPasswordResetRoutes(app, {
+        appUrl,
+        authRateLimit,
+        db,
+        isResetLimited,
+        issueSession,
+        recordResetAttempt,
+        revokeUserAccessTokens,
     });
 }
 
