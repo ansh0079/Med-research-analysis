@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ArticleCard } from '@components/search/ArticleCard';
 const AIAnalysisPanel = React.lazy(() => import('@components/search/AIAnalysisPanel').then(m => ({ default: m.AIAnalysisPanel })));
 // AgentChatPanel is lazy-loaded because it only appears after topic knowledge is ready.
@@ -25,6 +25,7 @@ import { SearchHero } from '@components/search/SearchHero';
 import { ErrorBanner } from '@components/common/ErrorBanner';
 import { TopicIntelligenceStatusBanner } from '@components/search/TopicIntelligenceStatusBanner';
 import { SearchEmptyState } from '@components/search/SearchEmptyState';
+import { SearchFooter, SearchResultLensToolbar, SearchStatsCards, SearchVerifyBanner } from '@components/search/SearchPagePanels';
 import { LowRecallBanner } from '@components/search/LowRecallBanner';
 import { RelatedTopicsBar } from '@components/search/RelatedTopicsBar';
 import { useSearchRecents } from '@hooks/useSearchRecents';
@@ -458,40 +459,12 @@ export const SearchPage: React.FC = () => {
     <div className="min-h-screen aurora-bg mesh-bg">
       <div className="aurora-content">
 
-      {/* Email verification banner — sits just below the fixed TopNav */}
       {showVerifyBanner && (
-        <div className="fixed top-[var(--nav-h)] left-0 right-0 z-40 bg-amber-50 dark:bg-amber-950/40 border-b border-amber-200 dark:border-amber-800/60 px-4 py-2">
-          <div className="max-w-4xl mx-auto flex items-center justify-between gap-3 flex-wrap">
-            <p className="text-xs text-amber-800 dark:text-amber-200 flex items-center gap-2">
-              <i className="fas fa-envelope text-amber-500" />
-              Please verify your email address to unlock all features.
-            </p>
-            <div className="flex items-center gap-3">
-              {resendStatus === 'sent' ? (
-                <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
-                  <i className="fas fa-check" /> Email sent — check your inbox
-                </span>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleResendVerification}
-                  disabled={resendStatus === 'sending'}
-                  className="text-xs font-semibold text-amber-700 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-100 underline transition-colors disabled:opacity-50"
-                >
-                  {resendStatus === 'sending' ? 'Sending…' : 'Resend verification email'}
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={() => setVerifyBannerDismissed(true)}
-                className="text-amber-400 hover:text-amber-600 dark:hover:text-amber-200 transition-colors"
-                aria-label="Dismiss"
-              >
-                <i className="fas fa-times text-xs" />
-              </button>
-            </div>
-          </div>
-        </div>
+        <SearchVerifyBanner
+          resendStatus={resendStatus}
+          onResend={() => { void handleResendVerification(); }}
+          onDismiss={() => setVerifyBannerDismissed(true)}
+        />
       )}
 
       <SearchHero
@@ -541,24 +514,12 @@ export const SearchPage: React.FC = () => {
         )}
 
         {results.length > 0 && (
-          <div className="mb-4 grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4">
-            {[
-              { label: 'Evidence found', value: results.length, icon: 'fa-layer-group', tone: 'text-indigo-500' },
-              { label: 'Open access', value: openAccessCount, icon: 'fa-unlock', tone: 'text-emerald-500' },
-              { label: 'A/B quality', value: highQualityCount, icon: 'fa-shield-alt', tone: 'text-blue-500' },
-              { label: 'Retracted flags', value: retractedCount, icon: 'fa-triangle-exclamation', tone: retractedCount ? 'text-red-500' : 'text-slate-400' },
-            ].map((item) => (
-              <div key={item.label} className="neo-card p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
-                <div className={`w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center ${item.tone}`}>
-                  <i className={`fas ${item.icon} text-xs`} />
-                </div>
-                <div>
-                  <p className="font-mono text-base sm:text-lg font-black text-slate-900 dark:text-white">{item.value}</p>
-                  <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">{item.label}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <SearchStatsCards
+            resultsCount={results.length}
+            openAccessCount={openAccessCount}
+            highQualityCount={highQualityCount}
+            retractedCount={retractedCount}
+          />
         )}
 
         {results.length > 0 && (intelligenceLoading || (!agentGuidance && (topicGuideStatus === 'building' || topicGuideStatus === 'pending'))) && (
@@ -967,82 +928,31 @@ export const SearchPage: React.FC = () => {
         )}
 
         {results.length > 0 && (
-          <div className="mb-4 neo-card p-3 flex flex-wrap gap-2 items-center">
-            <div className="flex w-full flex-wrap items-center gap-1.5 border-b border-slate-100 pb-2 dark:border-slate-800">
-              {[
-                { id: 'all' as ResultLens, label: 'All', count: results.length, icon: 'fa-list' },
-                { id: 'open_access' as ResultLens, label: 'Open access', count: openAccessCount, icon: 'fa-unlock' },
-                { id: 'high_quality' as ResultLens, label: 'High quality', count: highQualityCount, icon: 'fa-shield-halved' },
-                { id: 'recent' as ResultLens, label: 'Recent', count: recentCount, icon: 'fa-calendar-days' },
-                { id: 'practice_changing' as ResultLens, label: 'Practice-changing', count: practiceChangingCount, icon: 'fa-bolt' },
-              ].map((lens) => (
-                <button
-                  key={lens.id}
-                  type="button"
-                  disabled={lens.count === 0}
-                  onClick={() => {
-                    setResultLens(lens.id);
-                    setVisibleCount(30);
-                    trackFeatureUsage('result_lens_click', { lens: lens.id, count: lens.count });
-                  }}
-                  className={`inline-flex min-h-8 items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[11px] font-bold transition-colors disabled:pointer-events-none disabled:opacity-35 ${
-                    resultLens === lens.id
-                      ? 'border-indigo-300 bg-indigo-50 text-indigo-700 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300'
-                      : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
-                  }`}
-                >
-                  <i className={`fas ${lens.icon} text-[10px]`} />
-                  {lens.label}
-                  <span className="font-mono text-[10px] opacity-70">{lens.count}</span>
-                </button>
-              ))}
-              {(resultLens !== 'all' || resultFilter.trim()) && (
-                <button
-                  type="button"
-                  onClick={() => { setResultLens('all'); setResultFilter(''); setVisibleCount(30); }}
-                  className="ml-auto inline-flex min-h-8 items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-bold text-slate-400 transition-colors hover:bg-slate-50 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
-                >
-                  <i className="fas fa-xmark text-[10px]" />
-                  Clear lens
-                </button>
-              )}
-            </div>
-            {selectedArticles.length >= 2 && (
-              <Button onClick={() => setIsComparing(true)} variant="gradient" size="sm"
-                leftIcon={<i className="fas fa-balance-scale text-[10px]" />}>
-                Compare {Math.min(selectedArticles.length, 2)}
-              </Button>
-            )}
-            {isAuthenticated && (
-              <>
-                <Button onClick={() => setCurrentPage('team')} variant="ghost" size="sm"
-                  leftIcon={<i className="fas fa-users text-[10px]" />}>Team</Button>
-                <Button onClick={() => setCurrentPage('grant')} variant="ghost" size="sm"
-                  leftIcon={<i className="fas fa-file-signature text-[10px]" />}>Grant</Button>
-              </>
-            )}
-            {savedArticles.length > 0 && (
-              <Button onClick={() => setCurrentPage('saved')} variant="ghost" size="sm"
-                leftIcon={<i className="fas fa-bookmark text-[10px]" />}>
-                Saved · {savedArticles.length}
-              </Button>
-            )}
-            {selectedArticles.length > 0 && (
-              <Button variant="ghost" size="sm" onClick={clearSelection}>Clear</Button>
-            )}
-            <Button onClick={() => setCurrentPage('history')} variant="ghost" size="sm"
-              leftIcon={<i className="fas fa-history text-[10px]" />}>History</Button>
-            <div className="flex w-full flex-wrap gap-1.5 sm:ml-auto sm:w-auto">
-              <Button variant="ghost" size="sm" onClick={() => exportResults('ris')}
-                leftIcon={<i className="fas fa-file-alt text-[10px]" />}>RIS</Button>
-              <Button variant="ghost" size="sm" onClick={() => exportResults('bibtex')}
-                leftIcon={<i className="fas fa-file-code text-[10px]" />}>BibTeX</Button>
-              <Button variant="ghost" size="sm" onClick={() => exportResults('csl')}
-                leftIcon={<i className="fas fa-quote-right text-[10px]" />}>CSL</Button>
-              <Button variant="ghost" size="sm" onClick={() => exportResults('doc')}
-                leftIcon={<i className="fas fa-file-word text-[10px]" />}>Word</Button>
-            </div>
-          </div>
+          <SearchResultLensToolbar
+            resultsCount={results.length}
+            resultLens={resultLens}
+            resultFilter={resultFilter}
+            lenses={[
+              { id: 'all' as ResultLens, label: 'All', count: results.length, icon: 'fa-list' },
+              { id: 'open_access' as ResultLens, label: 'Open access', count: openAccessCount, icon: 'fa-unlock' },
+              { id: 'high_quality' as ResultLens, label: 'High quality', count: highQualityCount, icon: 'fa-shield-halved' },
+              { id: 'recent' as ResultLens, label: 'Recent', count: recentCount, icon: 'fa-calendar-days' },
+              { id: 'practice_changing' as ResultLens, label: 'Practice-changing', count: practiceChangingCount, icon: 'fa-bolt' },
+            ]}
+            selectedArticlesCount={selectedArticles.length}
+            isAuthenticated={isAuthenticated}
+            savedArticlesCount={savedArticles.length}
+            onSelectLens={(lens, count) => {
+              setResultLens(lens);
+              setVisibleCount(30);
+              trackFeatureUsage('result_lens_click', { lens, count });
+            }}
+            onClearLens={() => { setResultLens('all'); setResultFilter(''); setVisibleCount(30); }}
+            onCompare={() => setIsComparing(true)}
+            onSetPage={setCurrentPage}
+            onClearSelection={clearSelection}
+            onExport={exportResults}
+          />
         )}
 
         {results.length > 0 && (
@@ -1221,16 +1131,7 @@ export const SearchPage: React.FC = () => {
         onClear={clearSelection}
       />
 
-      <footer className="py-8 border-t border-gray-200/60 dark:border-slate-700/70 text-center space-y-2">
-        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
-          Signal MD · Multi-Source Medical Evidence Search
-        </p>
-        <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] text-slate-500 dark:text-slate-400">
-          <Link to="/legal/terms" className="hover:text-indigo-600 dark:hover:text-indigo-400 underline-offset-2 hover:underline">Terms of Use</Link>
-          <span aria-hidden className="text-slate-300 dark:text-slate-600">·</span>
-          <Link to="/legal/privacy" className="hover:text-indigo-600 dark:hover:text-indigo-400 underline-offset-2 hover:underline">Privacy</Link>
-        </nav>
-      </footer>
+      <SearchFooter />
       </div>
     </div>
   );
