@@ -4,9 +4,8 @@ function clampLimit(val, def = 20, min = 1, max = 100) {
 }
 
 const logger = require('../config/logger');
-const { validateQuery, validatePagination, sanitizeArticleOutput } = require('../utils/articles');
+const { validateQuery, sanitizeArticleOutput } = require('../utils/articles');
 const { safeFetch } = require('../utils/fetch');
-const { articleFromOpenAlexWork } = require('../services/unifiedEvidenceSearch');
 const { classifyQueryIntent } = require('../services/evidenceBouquetService');
 const { parseSearchRequestQuery, parsePreviousQueries, fetchAndRankSearchArticles, prefetchTeachingArtifacts } = require('../services/searchPipeline');
 const { mergeCuratedWithLiveEvidence } = require('../services/searchEvidenceMergeService');
@@ -24,15 +23,14 @@ const { buildEvidenceMap, persistConsensusTeachingObject } = require('../service
 const { enqueuePdfPreindexForArticles } = require('../services/pdfPreindexService');
 const { alignTopicClaimsWithGuidelines } = require('../services/claimGuidelineEngine');
 const { parseJsonBlock, parseJsonArrayBlock } = require('../utils/parseJson');
-const { buildProxyService } = require('../services/externalApiProxy');
 const { authenticateApiKey } = require('../services/apiKeyService');
 const { hasFeature } = require('../config/entitlements');
 const { createBudgetForAction, runWithLlmBudget } = require('../services/llmRequestBudget');
 const { persistSearchedArticles } = require('../services/articlePersistenceService');
 const { validateAiOutput } = require('../services/aiOutputValidation');
 const { publicRankingTraces } = require('../services/searchRankingTrace');
-const { explainInteractionReward } = require('../services/rewardAttributionService');
-const { attributeSearchInteractionReward } = require('../services/searchLearningOutcomeService');
+const { registerExternalSourceRoutes } = require('./search/externalSources');
+const { registerSearchFeedbackRoutes } = require('./search/feedback');
 
 async function attachApiKeyUser(req, res, next) {
     const raw = req.headers['x-api-key'];
@@ -51,8 +49,6 @@ async function attachApiKeyUser(req, res, next) {
         return res.status(500).json({ error: 'Authentication error' });
     }
 }
-
-const CROSSREF_BASE = 'https://api.crossref.org';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -78,7 +74,6 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
         ? requireDailySearchLimit()
         : ((_req, _res, next) => next());
     const f = fetchImpl || safeFetch;
-    const proxy = buildProxyService({ serverConfig, fetchImpl: f });
     const pdfDeps = { cache, db, serverConfig, fetch: f };
     const queueFullTextIndexing = (articleList) => {
         if (typeof enqueuePdfPreindex === 'function') {
@@ -328,145 +323,14 @@ function registerSearchRoutes(app, { serverConfig, db, cache, rateLimit, require
         return { articles: boostedArticles, teachingObjects, claims };
     }
 
-    app.get('/api/pubmed/search', rateLimit(30, 60), async (req, res) => {
-        const startTime = Date.now();
-        const { query, max = 20, sort = 'relevance' } = req.query;
-        const safeMax = clampLimit(max);
-        setEdgeCacheHeaders(res);
-
-        const queryValidation = validateQuery(query);
-        if (!queryValidation.valid) return res.status(400).json({ error: queryValidation.error });
-        const { limit: validatedMax } = validatePagination(1, safeMax);
-
-        try {
-            const cached = await cache.getSearchResults(queryValidation.sanitized, ['pubmed'], 'moderate');
-            if (cached?.results?.length) {
-                req.log.debug({ query: queryValidation.sanitized }, 'PubMed cache hit');
-                return res.json({
-                    articles: cached.results.map(sanitizeArticleOutput),
-                    count: cached.results.length,
-                    cached: true,
-                });
-            }
-
-            const articles = await proxy.pubmedSearch(queryValidation.sanitized, { maxResults: validatedMax, sort });
-
-            await cache.setSearchResults(queryValidation.sanitized, ['pubmed'], 'moderate', articles);
-            const executionTime = Date.now() - startTime;
-            await db.logSearch(req.sessionId, queryValidation.sanitized, ['pubmed'], { sort }, articles.length, executionTime, req.ip);
-            await db.logEvent('search', req.sessionId, { source: 'pubmed', query: queryValidation.sanitized, results: articles.length });
-            if (req.user?.id) {
-                const uids = articles.slice(0, 14).map((a) => a.uid).filter(Boolean);
-                db.recordUserTopicSearchSignal(req.user.id, queryValidation.sanitized, uids).catch((err) => { logger.warn({ err }, 'recordUserTopicSearchSignal failed'); });
-            }
-
-            res.json({ articles: articles.map(sanitizeArticleOutput), count: articles.length });
-        } catch (error) {
-            req.log.error({ err: error }, 'PubMed search error');
-            res.status(500).json({ error: isDev ? error.message : 'Internal Server Error' });
-        }
-    });
-
-    const handleSemanticSearch = async (req, res) => {
-        const { query, limit = 20 } = req.query;
-        const safeLimit = clampLimit(limit);
-        setEdgeCacheHeaders(res);
-        if (!query) return res.status(400).json({ error: 'Query is required' });
-
-        try {
-            const cached = await cache.getSearchResults(query, ['semantic'], 'moderate');
-            if (cached?.results?.length) {
-                return res.json({
-                    articles: cached.results.map(sanitizeArticleOutput),
-                    count: cached.results.length,
-                    cached: true,
-                });
-            }
-
-            const articles = await proxy.semanticScholarSearch(query, { limit: safeLimit });
-
-            await cache.setSearchResults(query, ['semantic'], 'moderate', articles);
-            await db.logEvent('search', req.sessionId, { source: 'semantic', query, results: articles.length });
-
-            res.json({ articles: articles.map(sanitizeArticleOutput), count: articles.length });
-        } catch (error) {
-            req.log.error({ err: error }, 'Semantic Scholar search error');
-            res.status(500).json({ error: isDev ? error.message : 'Internal Server Error' });
-        }
-    };
-
-    app.get('/api/semantic/search', rateLimit(30, 60), handleSemanticSearch);
-    app.get('/api/semantic-scholar/search', rateLimit(30, 60), handleSemanticSearch);
-
-    app.get('/api/openalex/search', rateLimit(30, 60), async (req, res) => {
-        const { query, limit = 20 } = req.query;
-        const safeLimit = clampLimit(limit);
-        setEdgeCacheHeaders(res);
-        if (!query) return res.status(400).json({ error: 'Query is required' });
-
-        try {
-            const cached = await cache.getSearchResults(query, ['openalex'], 'moderate');
-            if (cached?.results?.length) {
-                return res.json({
-                    articles: cached.results.map(sanitizeArticleOutput),
-                    count: cached.results.length,
-                    cached: true,
-                });
-            }
-
-            const works = await proxy.openAlexSearch(query, { limit: safeLimit });
-            const articles = works.map(articleFromOpenAlexWork);
-
-            await cache.setSearchResults(query, ['openalex'], 'moderate', articles);
-            await db.logEvent('search', req.sessionId, { source: 'openalex', query, results: articles.length });
-
-            res.json({ articles: articles.map(sanitizeArticleOutput), count: articles.length });
-        } catch (error) {
-            req.log.error({ err: error }, 'OpenAlex search error');
-            res.status(500).json({ error: isDev ? error.message : 'Internal Server Error' });
-        }
-    });
-
-    app.get('/api/crossref/search', rateLimit(30, 60), async (req, res) => {
-        const { query, limit = 20 } = req.query;
-        const safeLimit = clampLimit(limit);
-        setEdgeCacheHeaders(res);
-        if (!query) return res.status(400).json({ error: 'Query is required' });
-
-        try {
-            const cached = await cache.getSearchResults(query, ['crossref'], 'moderate');
-            if (cached?.results?.length) {
-                return res.json({
-                    articles: cached.results.map(sanitizeArticleOutput),
-                    count: cached.results.length,
-                    cached: true,
-                });
-            }
-
-            const articles = await proxy.crossrefSearch(query, { limit: safeLimit });
-
-            await cache.setSearchResults(query, ['crossref'], 'moderate', articles);
-            await db.logEvent('search', req.sessionId, { source: 'crossref', query, results: articles.length });
-
-            res.json({ articles: articles.map(sanitizeArticleOutput), count: articles.length });
-        } catch (error) {
-            req.log.error({ err: error }, 'Crossref search error');
-            res.status(500).json({ error: isDev ? error.message : 'Internal Server Error' });
-        }
-    });
-
-    // MeSH term suggestion — returns canonical MeSH terms matching a query fragment
-    app.get('/api/search/mesh-suggest', rateLimit(60, 60), async (req, res) => {
-        const { q } = req.query;
-        if (!q || typeof q !== 'string' || q.trim().length < 2) {
-            return res.status(400).json({ error: 'q is required (min 2 chars)' });
-        }
-        try {
-            const suggestions = await proxy.meshSuggest(q.trim());
-            return res.json({ suggestions });
-        } catch {
-            return res.json({ suggestions: [] });
-        }
+    registerExternalSourceRoutes(app, {
+        cache,
+        db,
+        fetchImpl: f,
+        isDev,
+        rateLimit,
+        serverConfig,
+        setEdgeCacheHeaders,
     });
 
     app.get('/api/search', rateLimit(30, 60), attachApiKeyUser, dailySearchLimit, async (req, res) => {
@@ -1306,159 +1170,12 @@ Start your response with [ and end with ]. No markdown.
         }
     });
 
-    app.post('/api/search/impressions', rateLimit(120, 60), requireJson, async (req, res) => {
-        const { searchId, impressions } = req.body || {};
-        const sid = Number(searchId);
-        if (!sid || !Array.isArray(impressions) || impressions.length === 0) {
-            return res.status(400).json({ error: 'searchId and impressions[] are required' });
-        }
-        try {
-            const normalized = impressions
-                .map((imp, index) => ({
-                    articleUid: String(imp.articleUid || imp.uid || '').trim(),
-                    position: Number(imp.position ?? index + 1),
-                }))
-                .filter((imp) => imp.articleUid && imp.position > 0)
-                .slice(0, 30);
-            if (!normalized.length) return res.status(400).json({ error: 'No valid impressions' });
-            await db.recordSearchImpressions(sid, req.sessionId, normalized, req.user?.id ?? null);
-            return res.json({ ok: true, recorded: normalized.length });
-        } catch (err) {
-            req.log?.error?.({ err }, 'Search impressions error');
-            return res.status(500).json({ error: 'Failed to record impressions' });
-        }
+    registerSearchFeedbackRoutes(app, {
+        db,
+        rateLimit,
+        requireJson,
     });
 
-    app.post('/api/search/interaction', rateLimit(180, 60), requireJson, async (req, res) => {
-        const { searchId, articleUid, interactionType, dwellMs, elapsedMs, decisionId } = req.body || {};
-        const sid = Number(searchId);
-        const uid = String(articleUid || '').trim();
-        const type = String(interactionType || '').trim();
-        if (!sid || !uid || !['click', 'save', 'dwell'].includes(type)) {
-            return res.status(400).json({ error: 'searchId, articleUid, and interactionType (click|save|dwell) are required' });
-        }
-        try {
-            const updates = {};
-            if (type === 'click') updates.wasClicked = true;
-            if (type === 'save') updates.wasSaved = true;
-            if (type === 'dwell' && dwellMs != null) updates.dwellTimeMs = Number(dwellMs);
-            await db.updateSearchImpressionInteraction(sid, uid, updates);
-            const { trackUserInteraction } = require('../services/userInteractionService');
-            void trackUserInteraction(db, {
-                type: `paper_${type}`,
-                rawType: type,
-                userId: req.user?.id ?? null,
-                sessionId: req.sessionId,
-                paperId: uid,
-                searchId: sid,
-                duration: dwellMs != null ? Number(dwellMs) : (elapsedMs != null ? Number(elapsedMs) : null),
-                metadata: { elapsedMs: elapsedMs != null ? Number(elapsedMs) : null },
-            }, { logger: req.log });
-            if (type === 'click') {
-                db.logEvent('search_result_click', req.sessionId, {
-                    searchId: sid,
-                    articleUid: uid,
-                    dwellMs: dwellMs != null ? Number(dwellMs) : null,
-                    elapsedMs: elapsedMs != null ? Number(elapsedMs) : null,
-                }).catch(() => undefined);
-            }
-            const rewardExplain = explainInteractionReward({
-                interactionType: type,
-                impression: {
-                    was_clicked: type === 'click',
-                    was_saved: type === 'save',
-                    dwell_time_ms: dwellMs != null ? Number(dwellMs) : 0,
-                },
-            });
-            let banditReward = null;
-            const banditUserId = req.user?.id ?? null;
-            const canAttributeBandit = Boolean(banditUserId || decisionId != null);
-            if (canAttributeBandit) {
-                banditReward = await attributeSearchInteractionReward(db, banditUserId, {
-                    searchId: sid,
-                    articleUid: uid,
-                    decisionId: decisionId != null ? Number(decisionId) : null,
-                    interactionType: type,
-                    dwellMs: dwellMs != null ? Number(dwellMs) : null,
-                    wasClicked: type === 'click',
-                    wasSaved: type === 'save',
-                }).catch((err) => {
-                    req.log?.warn?.({ err }, 'attributeSearchInteractionReward failed');
-                    return null;
-                });
-            }
-            return res.json({ ok: true, rewardExplain, banditReward });
-        } catch (err) {
-            req.log?.error?.({ err }, 'Search interaction error');
-            return res.status(500).json({ error: 'Failed to record interaction' });
-        }
-    });
-
-    app.get('/api/search/reward-explain', rateLimit(120, 60), async (req, res) => {
-        const interactionType = String(req.query.interactionType || '').trim() || null;
-        const feedbackType = String(req.query.feedbackType || '').trim() || null;
-        const dwellMs = req.query.dwellMs != null ? Number(req.query.dwellMs) : null;
-        const wasClicked = req.query.wasClicked === '1' || req.query.wasClicked === 'true';
-        const wasSaved = req.query.wasSaved === '1' || req.query.wasSaved === 'true';
-        const isCorrect = req.query.isCorrect === '1' || req.query.isCorrect === 'true';
-        const isFirstAttempt = req.query.isFirstAttempt !== '0' && req.query.isFirstAttempt !== 'false';
-
-        const rewardExplain = explainInteractionReward({
-            interactionType,
-            feedbackType: ['helpful', 'not_helpful'].includes(feedbackType || '') ? feedbackType : null,
-            impression: (wasClicked || wasSaved || dwellMs != null) ? {
-                was_clicked: wasClicked,
-                was_saved: wasSaved,
-                dwell_time_ms: dwellMs ?? 0,
-            } : null,
-            quizAttempt: req.query.isCorrect != null ? { isCorrect, isFirstAttempt } : null,
-            recommendationEventType: String(req.query.recommendationEventType || '').trim() || null,
-        });
-        return res.json(rewardExplain);
-    });
-
-    app.post('/api/search/feedback', rateLimit(60, 60), requireJson, async (req, res) => {
-        const { articleUid, feedbackType, reason, searchId, decisionId } = req.body || {};
-        const uid = String(articleUid || '').trim();
-        const type = String(feedbackType || '').trim();
-        if (!uid || !['helpful', 'not_helpful'].includes(type)) {
-            return res.status(400).json({ error: 'articleUid and feedbackType (helpful|not_helpful) are required' });
-        }
-        try {
-            await db.recordSearchResultFeedback({
-                userId: req.user?.id ?? null,
-                sessionId: req.sessionId,
-                searchId: searchId != null ? Number(searchId) : null,
-                articleUid: uid,
-                feedbackType: type,
-                reason: reason ? String(reason).slice(0, 500) : null,
-            });
-            const rewardExplain = explainInteractionReward({
-                interactionType: 'feedback',
-                feedbackType: type,
-            });
-            let banditReward = null;
-            const banditUserId = req.user?.id ?? null;
-            const canAttributeBandit = Boolean(banditUserId || decisionId != null);
-            if (canAttributeBandit) {
-                banditReward = await attributeSearchInteractionReward(db, banditUserId, {
-                    searchId: searchId != null ? Number(searchId) : null,
-                    articleUid: uid,
-                    decisionId: decisionId != null ? Number(decisionId) : null,
-                    feedbackType: type,
-                }).catch((err) => {
-                    req.log?.warn?.({ err }, 'attributeSearchInteractionReward failed');
-                    return null;
-                });
-            }
-            return res.json({ ok: true, rewardExplain, banditReward });
-        } catch (err) {
-            req.log?.error?.({ err }, 'Search feedback error');
-            return res.status(500).json({ error: 'Failed to record feedback' });
-        }
-    });
-
-    // ── AI enrichment poll endpoint ───────────────────────────────────────────
     app.get('/api/search/ai-enrichment/:key', rateLimit(60, 60), async (req, res) => {
         const key = String(req.params.key || '');
         if (!/^[0-9a-f]{32}$/.test(key)) {
