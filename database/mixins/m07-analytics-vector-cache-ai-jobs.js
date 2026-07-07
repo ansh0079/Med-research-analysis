@@ -550,6 +550,66 @@ async failAiGenerationJob(jobKey, errorMessage) {
     return this.getAiGenerationJobByKey(jobKey);
 }
 
+async resetAiGenerationJobForRetry(jobKey) {
+    const now = new Date().toISOString();
+    await this.run(
+        `UPDATE ai_generation_jobs
+         SET status = 'queued', error_message = NULL, updated_at = ?
+         WHERE job_key = ? AND status = 'failed'`,
+        [now, String(jobKey)]
+    );
+    return this.getAiGenerationJobByKey(jobKey);
+}
+
+async upsertTrialGuidelineConflictReview({
+    normalizedTopic,
+    jobKey = null,
+    conflictHash,
+    conflictLevel = 'nuanced',
+    trialIndex,
+    guidelineIndex,
+    trialClaim,
+    guidelineClaim,
+    populationGap = null,
+    clinicalNuance = null,
+    recommendation = null,
+    detectionMethod = 'llm',
+} = {}) {
+    if (!normalizedTopic || !conflictHash || !trialClaim || !guidelineClaim) return false;
+    const now = new Date().toISOString();
+    try {
+        await this.run(
+            `INSERT INTO trial_guideline_conflict_reviews (
+                normalized_topic, job_key, conflict_hash, conflict_level, trial_index, guideline_index,
+                trial_claim, guideline_claim, population_gap, clinical_nuance, recommendation,
+                detection_method, status, created_at, updated_at
+             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'ai_detected', ?, ?)
+             ON CONFLICT(normalized_topic, conflict_hash) DO UPDATE SET
+                updated_at = excluded.updated_at,
+                job_key = COALESCE(excluded.job_key, trial_guideline_conflict_reviews.job_key)`,
+            [
+                String(normalizedTopic),
+                jobKey || null,
+                String(conflictHash),
+                String(conflictLevel),
+                Number(trialIndex) || 0,
+                Number(guidelineIndex) || 0,
+                String(trialClaim).slice(0, 2000),
+                String(guidelineClaim).slice(0, 2000),
+                populationGap ? String(populationGap).slice(0, 1000) : null,
+                clinicalNuance ? String(clinicalNuance).slice(0, 1000) : null,
+                recommendation ? String(recommendation).slice(0, 1000) : null,
+                String(detectionMethod),
+                now,
+                now,
+            ]
+        );
+        return true;
+    } catch {
+        return false;
+    }
+}
+
 mapAiGenerationClaimRow(row) {
     if (!row) return null;
     return {

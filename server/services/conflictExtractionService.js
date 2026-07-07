@@ -1,7 +1,8 @@
 'use strict';
 
-// Lazy require to avoid the circular dependency between aiService (which
-// requires ../prompts) and this module. The shared AI service is memoised at
+const crypto = require('crypto');
+
+// Lazy require to avoid the circular dependency between aiService (which// requires ../prompts) and this module. The shared AI service is memoised at
 // the aiService module level, so we get one instance + one set of circuit
 // breakers per process.
 function getAiService() {
@@ -157,7 +158,7 @@ function buildHeuristicConflictMatrix(evidenceRows, guidelines) {
                 trialClaim: safeString(claim, 500),
                 guidelineClaim: guidelineClaimFromRow(guides[gi], gi),
                 populationGap: safeString(alignment.reason, 300),
-                clinicalNuance: 'Heuristic token overlap detected opposing polarity between trial summary and guideline wording.',
+                clinicalNuance: 'Semantic alignment detected opposing polarity between trial summary and guideline wording.',
                 recommendation: 'Treat as a hypothesis for manual curator review; confirm against full guideline text and trial methods.',
             });
             if (matrix.length >= 4) return matrix;
@@ -166,7 +167,7 @@ function buildHeuristicConflictMatrix(evidenceRows, guidelines) {
     return matrix;
 }
 
-function buildGuidelineAlignmentSummary(conflictMatrix) {
+function buildGuidelineAlignmentSummary(conflictMatrix, { humanReviewQueued = 0 } = {}) {
     const divergentCount = conflictMatrix.length;
     const majorCount = conflictMatrix.filter((c) => c.level === 'major').length;
     const alignedCount = Math.max(0, divergentCount === 0 ? 1 : 0);
@@ -179,10 +180,47 @@ function buildGuidelineAlignmentSummary(conflictMatrix) {
         divergentCount,
         majorCount,
         keyDivergence,
+        humanReviewQueued,
+        requiresHumanReview: divergentCount > 0,
         summary: divergentCount === 0
             ? 'No material trial–guideline conflicts detected in the pre-computed matrix.'
             : `${divergentCount} trial–guideline divergence${divergentCount !== 1 ? 's' : ''} flagged (${majorCount} major).`,
     };
+}
+
+async function queueConflictsForHumanReview(db, topic, conflictMatrix, { jobKey = null, detectionMethod = 'llm' } = {}) {
+    if (!db || typeof db.upsertTrialGuidelineConflictReview !== 'function' || !Array.isArray(conflictMatrix)) {
+        return 0;
+    }
+    const normalizedTopic = typeof db.normalizeTopic === 'function'
+        ? db.normalizeTopic(topic)
+        : String(topic || '').toLowerCase().trim();
+    let queued = 0;
+    for (const item of conflictMatrix) {
+        if (!item || item.level === 'nuanced') continue;
+        const conflictHash = crypto.createHash('sha256').update(JSON.stringify({
+            trialIndex: item.trialIndex,
+            guidelineIndex: item.guidelineIndex,
+            trialClaim: item.trialClaim,
+            guidelineClaim: item.guidelineClaim,
+        })).digest('hex').slice(0, 40);
+        const ok = await db.upsertTrialGuidelineConflictReview({
+            normalizedTopic,
+            jobKey,
+            conflictHash,
+            conflictLevel: item.level,
+            trialIndex: item.trialIndex,
+            guidelineIndex: item.guidelineIndex,
+            trialClaim: item.trialClaim,
+            guidelineClaim: item.guidelineClaim,
+            populationGap: item.populationGap,
+            clinicalNuance: item.clinicalNuance,
+            recommendation: item.recommendation,
+            detectionMethod,
+        }).catch(() => false);
+        if (ok) queued += 1;
+    }
+    return queued;
 }
 
 function formatConflictMatrixForPrompt(conflictMatrix) {
@@ -213,7 +251,9 @@ async function extractTrialGuidelineConflicts(evidenceRows, guidelines, options 
 
     const serverConfig = options.serverConfig;
     const fetchImpl = options.fetchImpl;
+    const db = options.db;
     let conflictMatrix = [];
+    let detectionMethod = 'heuristic';
 
     if (serverConfig && (serverConfig.keys?.anthropic || serverConfig.keys?.gemini || serverConfig.keys?.mistral)) {
         try {
@@ -236,6 +276,7 @@ async function extractTrialGuidelineConflicts(evidenceRows, guidelines, options 
                 const validated = validateAiOutput('conflict_extraction', parsed, { allowDegrade: true });
                 const payload = validated.ok ? validated.data : validated.degraded;
                 conflictMatrix = normalizeConflictMatrix(payload?.conflictMatrix, rows, guides);
+                detectionMethod = 'llm';
             }
         } catch (err) {
             if (err instanceof LlmBudgetExceededError) throw err;
@@ -247,9 +288,14 @@ async function extractTrialGuidelineConflicts(evidenceRows, guidelines, options 
         conflictMatrix = buildHeuristicConflictMatrix(rows, guides);
     }
 
+    const humanReviewQueued = await queueConflictsForHumanReview(db, topic, conflictMatrix, {
+        jobKey: options.jobKey || null,
+        detectionMethod,
+    });
+
     return {
         conflictMatrix,
-        guidelineAlignment: buildGuidelineAlignmentSummary(conflictMatrix),
+        guidelineAlignment: buildGuidelineAlignmentSummary(conflictMatrix, { humanReviewQueued }),
     };
 }
 
@@ -260,4 +306,5 @@ module.exports = {
     buildGuidelineAlignmentSummary,
     formatConflictMatrixForPrompt,
     buildHeuristicConflictMatrix,
+    queueConflictsForHumanReview,
 };

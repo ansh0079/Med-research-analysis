@@ -43,6 +43,7 @@ export function SearchEvidenceWorkspaceSection({
   synthesisLoading,
   clinicalAnswer,
   aiEnrichmentLoading,
+  aiEnrichmentFailed,
   communityInsight,
   proactiveAlert,
   knowledgeDriftAlerts,
@@ -85,6 +86,7 @@ export function SearchEvidenceWorkspaceSection({
   synthesisLoading: boolean;
   clinicalAnswer: ClinicalAnswer | null;
   aiEnrichmentLoading: boolean;
+  aiEnrichmentFailed?: boolean;
   communityInsight: CommunityInsight | null;
   proactiveAlert: ProactiveAlert | null;
   knowledgeDriftAlerts: ProactiveEvidenceAlert[];
@@ -167,6 +169,7 @@ export function SearchEvidenceWorkspaceSection({
           agentGuidance={agentGuidance}
           liveClinicalAnswer={clinicalAnswer}
           aiEnrichmentLoading={aiEnrichmentLoading}
+          aiEnrichmentFailed={aiEnrichmentFailed}
           communityInsight={communityInsight}
           proactiveAlert={proactiveAlert}
           knowledgeDriftAlerts={knowledgeDriftAlerts}

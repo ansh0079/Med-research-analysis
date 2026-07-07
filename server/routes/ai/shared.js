@@ -9,6 +9,7 @@ const { buildEvidenceDeltaBrief } = require('../../services/evidenceDeltaBriefSe
 const { coldStartMcqKey, guidelineMcqKey, liveQuizMcqKey } = require('../../utils/teachingObjectKeys');
 const { computeConceptHash } = require('../../utils/conceptHash');
 const { estimateAbility, selectAdaptiveItems } = require('../../services/adaptiveItemSelectionService');
+const { isArticleNewerThan, findMatchingTeachingPointIndex } = require('../../services/topicKnowledgeMergeUtils');
 
 function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
     function extractJsonArray(text) {
@@ -319,10 +320,7 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             
             if (existingKnowledge && existingKnowledge.lastRefreshedAt) {
                 const lastUpdate = new Date(existingKnowledge.lastRefreshedAt);
-                const recentArticles = articles.filter(a => {
-                    const publishDate = new Date(a.pubdate || a.year);
-                    return publishDate > lastUpdate;
-                });
+                const recentArticles = articles.filter((a) => isArticleNewerThan(a, lastUpdate));
                 
                 if (recentArticles.length > 0 && recentArticles.length < articles.length) {
                     // We have NEW articles - do incremental update
@@ -444,9 +442,7 @@ Return JSON:
         if (Array.isArray(deltaKnowledge.strengtheningEvidence)) {
             for (const evidence of deltaKnowledge.strengtheningEvidence) {
                 // Find matching teaching point and boost confidence
-                const matchIdx = (merged.teachingPoints || []).findIndex(tp => 
-                    String(tp.claim || tp.text || '').includes(evidence.existingPoint.slice(0, 50))
-                );
+                const matchIdx = findMatchingTeachingPointIndex(merged.teachingPoints || [], evidence.existingPoint);
                 if (matchIdx >= 0 && merged.teachingPoints[matchIdx]) {
                     merged.teachingPoints[matchIdx].confidence = 
                         Math.min((merged.teachingPoints[matchIdx].confidence || 0.5) * 1.15, 0.95);

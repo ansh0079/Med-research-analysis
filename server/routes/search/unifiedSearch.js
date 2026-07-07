@@ -22,6 +22,7 @@ const { persistSearchedArticles } = require('../../services/articlePersistenceSe
 const { validateAiOutput } = require('../../services/aiOutputValidation');
 const { publicRankingTraces } = require('../../services/searchRankingTrace');
 const { createBudgetForAction, runWithLlmBudget } = require('../../services/llmRequestBudget');
+const { buildEnrichmentCacheKey } = require('../../services/synthesisPersonalization');
 const { clampLimit, setNoStoreSearchHeaders, shouldAutoSeedFromSearch, attachApiKeyUser } = require('./searchHelpers');
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -29,6 +30,12 @@ const isDev = process.env.NODE_ENV === 'development';
 // Guards against two concurrent identical queries both spawning a background
 // LLM enrichment job. Node.js is single-threaded so Set operations are atomic.
 const enrichmentInFlight = new Set();
+const ENRICHMENT_MAX_ATTEMPTS = 3;
+const ENRICHMENT_BACKOFF_MS = [0, 2000, 5000];
+
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 function registerUnifiedSearchRoutes(app, deps) {
     const {
@@ -230,11 +237,24 @@ function registerUnifiedSearchRoutes(app, deps) {
             }
 
             // Stable key so repeated identical searches reuse cached AI output.
-            const enrichKey = crypto
-                .createHash('sha256')
-                .update(JSON.stringify({ q: queryValidation.sanitized, uids: articles.slice(0, 8).map((a) => a.uid) }))
-                .digest('hex')
-                .slice(0, 32);
+            const enrichUserId = req.user?.id ?? null;
+            const enrichPreviousQueries = Array.isArray(previousQueries) ? previousQueries : [];
+            let enrichTrainingStage = null;
+            let enrichSessionDepth = learnerContext?.searchCount ?? 0;
+            if (enrichUserId) {
+                const profile = await db.getLearningProfile(enrichUserId).catch((err) => { logger.warn({ err }, 'getLearningProfile failed'); return null; });
+                enrichTrainingStage = profile?.trainingStage || profile?.training_stage || null;
+                if (!enrichSessionDepth) {
+                    const topicMemory = await db.getUserTopicMemory(enrichUserId, queryValidation.sanitized).catch((err) => { logger.warn({ err }, 'getUserTopicMemory failed'); return null; });
+                    enrichSessionDepth = Number(topicMemory?.searchCount || 0);
+                }
+            }
+            const enrichKey = buildEnrichmentCacheKey(queryValidation.sanitized, articles, {
+                userId: enrichUserId,
+                trainingStage: enrichTrainingStage,
+                previousQueries: enrichPreviousQueries,
+                sessionDepth: enrichSessionDepth,
+            });
             const enrichCacheKey = `enrichment:${enrichKey}`;
             const existingEnrich = await Promise.resolve(cache.get(enrichCacheKey)).catch((err) => { logger.warn({ err }, 'cache get failed'); return null; });
             const aiEnrichmentStatus = existingEnrich?.status === 'ready' ? 'ready' : 'pending';
@@ -406,66 +426,93 @@ function registerUnifiedSearchRoutes(app, deps) {
             // Capture values before request scope ends, then fire background AI job.
             const enrichQuery = queryValidation.sanitized;
             const enrichPapers = articles.slice(0, 8);
-            const enrichUserId = req.user?.id ?? null;
-            const enrichPreviousQueries = Array.isArray(req.previousQueries) ? req.previousQueries : [];
 
             void runWithLlmBudget(createBudgetForAction('search_enrichment'), async () => {
-                try {
-                    let trainingStage = null;
-                    if (enrichUserId) {
-                        const p = await db.getLearningProfile(enrichUserId).catch((err) => { logger.warn({ err }, 'getLearningProfile failed'); return null; });
-                        trainingStage = p?.trainingStage || p?.training_stage || null;
+                let lastError = null;
+                for (let attempt = 0; attempt < ENRICHMENT_MAX_ATTEMPTS; attempt += 1) {
+                    if (attempt > 0) {
+                        await sleep(ENRICHMENT_BACKOFF_MS[attempt] || 5000);
                     }
-                    let userTopicMemory = null;
-                    if (enrichUserId) {
-                        userTopicMemory = await db.getUserTopicMemory(enrichUserId, enrichQuery).catch((err) => { logger.warn({ err }, 'getUserTopicMemory failed'); return null; });
-                    }
-                    const sessionDepth = Number(userTopicMemory?.searchCount || 0);
+                    try {
+                        let trainingStage = enrichTrainingStage;
+                        let sessionDepth = enrichSessionDepth;
+                        if (enrichUserId && (trainingStage == null || !sessionDepth)) {
+                            const [profile, userTopicMemory] = await Promise.all([
+                                trainingStage == null
+                                    ? db.getLearningProfile(enrichUserId).catch((err) => { logger.warn({ err }, 'getLearningProfile failed'); return null; })
+                                    : Promise.resolve(null),
+                                !sessionDepth
+                                    ? db.getUserTopicMemory(enrichUserId, enrichQuery).catch((err) => { logger.warn({ err }, 'getUserTopicMemory failed'); return null; })
+                                    : Promise.resolve(null),
+                            ]);
+                            if (profile) trainingStage = profile.trainingStage || profile.training_stage || null;
+                            if (userTopicMemory) sessionDepth = Number(userTopicMemory.searchCount || 0);
+                        }
 
-                    const { generateLiveClinicalAnswer } = require('../../services/aiGenerationJobService');
-                    const { generateConsensusSynopsisSafe } = require('../../services/consensusSynopsisService');
+                        const { generateLiveClinicalAnswer } = require('../../services/aiGenerationJobService');
+                        const { generateConsensusSynopsisSafe } = require('../../services/consensusSynopsisService');
 
-                    const [caResult, csResult] = await Promise.allSettled([
-                        generateLiveClinicalAnswer({
-                            topic: enrichQuery,
-                            articles: enrichPapers,
-                            guidelines: [],
-                            previousQueries: enrichPreviousQueries,
-                            trainingStage,
-                            sessionDepth,
-                            serverConfig,
-                            fetchImpl: f,
-                        }),
-                        generateConsensusSynopsisSafe({
-                            topic: enrichQuery,
-                            articles: enrichPapers,
-                            serverConfig,
-                            fetchImpl: f,
-                            cache,
-                            db,
-                            limit: 5,
-                        }, console),
-                    ]);
+                        const [caResult, csResult] = await Promise.allSettled([
+                            generateLiveClinicalAnswer({
+                                topic: enrichQuery,
+                                articles: enrichPapers,
+                                guidelines: [],
+                                previousQueries: enrichPreviousQueries,
+                                trainingStage,
+                                sessionDepth,
+                                serverConfig,
+                                fetchImpl: f,
+                            }),
+                            generateConsensusSynopsisSafe({
+                                topic: enrichQuery,
+                                articles: enrichPapers,
+                                serverConfig,
+                                fetchImpl: f,
+                                cache,
+                                db,
+                                limit: 5,
+                            }, console),
+                        ]);
 
-                    const caRaw = caResult.status === 'fulfilled' ? caResult.value : null;
-                    const clinicalAnswer = caRaw?.clinicalAnswer ?? null;
-                    const consensusSynopsis = csResult.status === 'fulfilled' ? csResult.value : null;
-                    if (consensusSynopsis) {
-                        await persistConsensusTeachingObject({
-                            db,
-                            topic: enrichQuery,
+                        const caRaw = caResult.status === 'fulfilled' ? caResult.value : null;
+                        const clinicalAnswer = caRaw?.clinicalAnswer ?? null;
+                        const consensusSynopsis = csResult.status === 'fulfilled' ? csResult.value : null;
+                        const caFailed = caResult.status === 'rejected';
+                        const csFailed = csResult.status === 'rejected';
+                        if (caFailed && csFailed) {
+                            const caErr = caResult.reason;
+                            const csErr = csResult.reason;
+                            throw caErr || csErr || new Error('Search enrichment failed');
+                        }
+                        if (consensusSynopsis) {
+                            await persistConsensusTeachingObject({
+                                db,
+                                topic: enrichQuery,
+                                consensusSynopsis,
+                                articles: enrichPapers,
+                            }).catch((err) => { logger.warn({ err }, 'persistConsensusTeachingObject failed'); return null; });
+                        }
+
+                        await Promise.resolve(cache.set(enrichCacheKey, {
+                            status: 'ready',
+                            clinicalAnswer,
                             consensusSynopsis,
-                            articles: enrichPapers,
-                        }).catch((err) => { logger.warn({ err }, 'persistConsensusTeachingObject failed'); return null; });
+                            partialFailure: caFailed || csFailed,
+                        }, 3600)).catch((err) => { logger.warn({ err }, 'cache set failed'); });
+                        return;
+                    } catch (err) {
+                        lastError = err;
+                        logger.warn({ err, attempt: attempt + 1, maxAttempts: ENRICHMENT_MAX_ATTEMPTS }, 'search enrichment attempt failed');
                     }
-
-                    await Promise.resolve(cache.set(enrichCacheKey, { status: 'ready', clinicalAnswer, consensusSynopsis }, 3600)).catch((err) => { logger.warn({ err }, 'cache set failed'); });
-                } catch (err) {
-                    logger.warn({ err }, 'search enrichment background job failed');
-                    await Promise.resolve(cache.set(enrichCacheKey, { status: 'failed' }, 300)).catch((err) => { logger.warn({ err }, 'cache set failed'); });
-                } finally {
-                    enrichmentInFlight.delete(enrichCacheKey);
                 }
+                logger.warn({ err: lastError }, 'search enrichment background job failed');
+                await Promise.resolve(cache.set(enrichCacheKey, {
+                    status: 'failed',
+                    errorMessage: lastError?.message || 'Search enrichment failed',
+                    attempts: ENRICHMENT_MAX_ATTEMPTS,
+                }, 300)).catch((err) => { logger.warn({ err }, 'cache set failed'); });
+            }).finally(() => {
+                enrichmentInFlight.delete(enrichCacheKey);
             });
 
         } catch (error) {

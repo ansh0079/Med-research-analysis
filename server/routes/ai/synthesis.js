@@ -118,7 +118,8 @@ function registerSynthesisRoutes(app, {
         }
 
         const topArticles = selectTopSynthesisArticles(articles);
-        const cacheKey = getSynthesisCacheKey(topic, topArticles);
+        const synthesisPersonalization = { userId: req.user?.id || null };
+        const cacheKey = getSynthesisCacheKey(topic, topArticles, null, synthesisPersonalization);
         const cached = await cache.getAsync(cacheKey);
         if (cached) {
             setupSSE(res);

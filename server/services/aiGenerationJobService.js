@@ -9,30 +9,13 @@ const {
     selectAbstractEvidence,
     enrichWithCachedFullText,
 } = require('./consensusSynopsisService');
-const claimMapService = require('./claimMapService');
+
 const { runFullSynthesisGeneration } = require('./synthesisGenerationCore');
 const { runPaperSynopsisGeneration } = require('./paperSynopsisCore');
 const { resolveProvider } = require('../utils/aiProvider');
-
-const ENQUEUED_KEYS = new Set();
-
-async function completeJobAndClaims(db, jobKey, jobType, { resultPayload, provider = null, model = null, auditPayload = null } = {}) {
-    const payload = { ...(resultPayload || {}), jobKey };
-    const complete = async () => {
-        await db.completeAiGenerationJob(jobKey, {
-            resultPayload: payload,
-            provider,
-            model,
-            auditPayload,
-        });
-        await claimMapService.persistClaimsForJob(db, jobKey, jobType, payload);
-    };
-    if (typeof db.withTransaction === 'function') {
-        await db.withTransaction(complete);
-    } else {
-        await complete();
-    }
-}
+const { completeJobAndClaims } = require('./aiGenerationJobCompletion');
+const { enqueueAiGenerationJobIfClaimed, shouldEnqueueAiGenerationJob } = require('./aiGenerationJobEnqueue');
+const { buildFullSynthesisJobKey } = require('./synthesisPersonalization');
 
 function stableHash(value) {
     return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
@@ -173,18 +156,17 @@ function consensusPlaceholder({ topic, articles = [], jobKey, status = 'queued',
 }
 
 function enqueueConsensusJob({ db, jobKey, serverConfig, fetchImpl, cache, logger }) {
-    if (ENQUEUED_KEYS.has(jobKey)) return jobKey;
-    ENQUEUED_KEYS.add(jobKey);
-
-    aiGenerationQueue.enqueueNamed('process', { jobKey }, {
-        label: `ai-consensus:${String(jobKey).slice(0, 24)}`,
-        priority: 1,
-    }).catch((err) => {
-        logger?.warn?.({ err, jobKey }, 'Consensus AI generation job failed');
-    }).finally(() => {
-        ENQUEUED_KEYS.delete(jobKey);
+    void enqueueAiGenerationJobIfClaimed({
+        db,
+        jobKey,
+        logger,
+        enqueueFn: () => aiGenerationQueue.enqueueNamed('process', { jobKey }, {
+            label: `ai-consensus:${String(jobKey).slice(0, 24)}`,
+            priority: 1,
+        }).catch((err) => {
+            logger?.warn?.({ err, jobKey }, 'Consensus AI generation job failed');
+        }),
     });
-
     return jobKey;
 }
 
@@ -263,43 +245,42 @@ function hasDurableJobStore(db) {
 
 function enqueueLiveClinicalAnswerJob({ db, topic, articles, guidelines = [], previousQueries = [], trainingStage = null, sessionDepth = 0, serverConfig, fetchImpl, logger }) {
     const jobKey = liveClinicalAnswerJobKey(topic, articles, { previousQueries, trainingStage, sessionDepth });
-    if (ENQUEUED_KEYS.has(jobKey)) return jobKey;
-    ENQUEUED_KEYS.add(jobKey);
-
-    aiGenerationQueue.enqueue(async () => {
-        try {
-            await db.markAiGenerationJobRunning(jobKey);
-            const generated = await generateLiveClinicalAnswer({
-                topic,
-                articles,
-                guidelines,
-                previousQueries,
-                trainingStage,
-                sessionDepth,
-                serverConfig,
-                fetchImpl,
-            });
-            await completeJobAndClaims(db, jobKey, 'live_clinical_answer', {
-                resultPayload: { status: 'completed', jobKey, ...(generated || {}) },
-                provider: generated?.provider || null,
-                model: generated?.model || null,
-                auditPayload: {
-                    ...(generated?.audit || {}),
-                    humanReviewStatus: 'none',
-                    generatedAt: new Date().toISOString(),
-                },
-            });
-            return generated;
-        } catch (err) {
-            await db.failAiGenerationJob(jobKey, err.message).catch((err) => { logger.warn({ err }, 'failAiGenerationJob failed'); return null; });
-            throw err;
-        } finally {
-            ENQUEUED_KEYS.delete(jobKey);
-        }
-    }, { label: `ai-live-ca:${String(topic || '').slice(0, 40)}`, priority: 1 }).catch((err) => {
-        logger?.warn?.({ err, topic }, 'Live clinical answer AI generation job failed');
+    void enqueueAiGenerationJobIfClaimed({
+        db,
+        jobKey,
+        logger,
+        enqueueFn: () => aiGenerationQueue.enqueue(async () => {
+            try {
+                await db.markAiGenerationJobRunning(jobKey);
+                const generated = await generateLiveClinicalAnswer({
+                    topic,
+                    articles,
+                    guidelines,
+                    previousQueries,
+                    trainingStage,
+                    sessionDepth,
+                    serverConfig,
+                    fetchImpl,
+                });
+                await completeJobAndClaims(db, jobKey, 'live_clinical_answer', {
+                    resultPayload: { status: 'completed', jobKey, ...(generated || {}) },
+                    provider: generated?.provider || null,
+                    model: generated?.model || null,
+                    auditPayload: {
+                        ...(generated?.audit || {}),
+                        humanReviewStatus: 'none',
+                        generatedAt: new Date().toISOString(),
+                    },
+                });
+                return generated;
+            } catch (err) {
+                await db.failAiGenerationJob(jobKey, err.message).catch((failErr) => { logger.warn({ err: failErr }, 'failAiGenerationJob failed'); return null; });
+                throw err;
+            }
+        }, { label: `ai-live-ca:${String(topic || '').slice(0, 40)}`, priority: 1 }).catch((err) => {
+            logger?.warn?.({ err, topic }, 'Live clinical answer AI generation job failed');
+        }),
     });
-
     return jobKey;
 }
 
@@ -353,9 +334,8 @@ async function getOrEnqueueLiveClinicalAnswer({ db, topic, articles = [], guidel
     return { status: 'queued', jobKey, clinicalAnswer: null };
 }
 
-function fullSynthesisJobKey(topic, articles = []) {
-    const uids = [...articles].map((a) => a.uid).filter(Boolean).slice(0, 15).sort();
-    return `synth:${stableHash({ topic: String(topic || ''), uids }).slice(0, 40)}`;
+function fullSynthesisJobKey(topic, articles = [], personalization = {}) {
+    return buildFullSynthesisJobKey(topic, articles, personalization);
 }
 
 function fullSynthesisPlaceholder({ topic, jobKey, status = 'queued', errorMessage = null }) {
@@ -372,26 +352,29 @@ function fullSynthesisPlaceholder({ topic, jobKey, status = 'queued', errorMessa
 }
 
 function enqueueFullSynthesisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger }) {
-    if (ENQUEUED_KEYS.has(jobKey)) return jobKey;
-    ENQUEUED_KEYS.add(jobKey);
-    aiGenerationQueue.enqueueNamed('process', { jobKey }, {
-        label: `ai-synth:${String(jobKey).slice(0, 24)}`,
-        priority: 2,
-    }).catch((err) => {
-        logger?.warn?.({ err, jobKey }, 'Full synthesis job failed');
-    }).finally(() => {
-        ENQUEUED_KEYS.delete(jobKey);
+    void enqueueAiGenerationJobIfClaimed({
+        db,
+        jobKey,
+        logger,
+        enqueueFn: () => aiGenerationQueue.enqueueNamed('process', { jobKey }, {
+            label: `ai-synth:${String(jobKey).slice(0, 24)}`,
+            priority: 2,
+        }).catch((err) => {
+            logger?.warn?.({ err, jobKey }, 'Full synthesis job failed');
+        }),
     });
     return jobKey;
 }
 
 async function getOrEnqueueFullSynthesis({
     db, topic, articles = [], provider = 'auto', serverConfig, fetchImpl, cache, logger, userId = null,
+    trainingStage = null, previousQueries = [], sessionDepth = 0,
 }) {
     const topArticles = [...articles]
         .sort((a, b) => (b._impact?.score ?? 0) - (a._impact?.score ?? 0))
         .slice(0, 15);
-    const jobKey = fullSynthesisJobKey(topic, topArticles);
+    const personalization = { userId, trainingStage, previousQueries, sessionDepth };
+    const jobKey = fullSynthesisJobKey(topic, topArticles, personalization);
     if (!hasDurableJobStore(db)) {
         try {
             const result = await runFullSynthesisGeneration({
@@ -404,6 +387,9 @@ async function getOrEnqueueFullSynthesis({
                 fetchImpl,
                 jobKey,
                 userId,
+                trainingStage,
+                previousQueries,
+                sessionDepth,
             });
             return { status: 'completed', jobKey, ...result };
         } catch (err) {
@@ -418,14 +404,19 @@ async function getOrEnqueueFullSynthesis({
         return fullSynthesisPlaceholder({ topic, jobKey, status: existing.status });
     }
     if (existing?.status === 'failed') {
-        return fullSynthesisPlaceholder({ topic, jobKey, status: 'failed', errorMessage: existing.errorMessage });
+        const canRetry = await shouldEnqueueAiGenerationJob(db, jobKey);
+        if (!canRetry) {
+            return fullSynthesisPlaceholder({ topic, jobKey, status: 'failed', errorMessage: existing.errorMessage });
+        }
+        enqueueFullSynthesisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger });
+        return fullSynthesisPlaceholder({ topic, jobKey, status: 'queued' });
     }
     await db.createAiGenerationJob({
         jobKey,
         jobType: 'full_synthesis',
         topic,
-        inputHash: stableHash({ topic, uids: topArticles.map((a) => a.uid).filter(Boolean) }),
-        inputPayload: { topic, provider, articles: topArticles, userId },
+        inputHash: stableHash({ topic, uids: topArticles.map((a) => a.uid).filter(Boolean), ...personalization }),
+        inputPayload: { topic, provider, articles: topArticles, userId, trainingStage, previousQueries, sessionDepth },
         userId: userId || null,
         provider: serverConfig?.keys?.gemini ? 'gemini' : serverConfig?.keys?.mistral ? 'mistral' : null,
     }).catch((err) => { logger.warn({ err }, 'createAiGenerationJob failed'); return null; });
@@ -446,16 +437,17 @@ function quizPrefetchJobKey(topic, { sourceJobKey = null } = {}) {
     }).slice(0, 40)}`;
 }
 
-function enqueueQuizPrefetchJob({ jobKey, logger }) {
-    if (ENQUEUED_KEYS.has(jobKey)) return jobKey;
-    ENQUEUED_KEYS.add(jobKey);
-    aiGenerationQueue.enqueueNamed('process', { jobKey }, {
-        label: `ai-quiz-prefetch:${String(jobKey).slice(0, 24)}`,
-        priority: -1,
-    }).catch((err) => {
-        logger?.warn?.({ err, jobKey }, 'Quiz prefetch job failed');
-    }).finally(() => {
-        ENQUEUED_KEYS.delete(jobKey);
+function enqueueQuizPrefetchJob({ db, jobKey, logger }) {
+    void enqueueAiGenerationJobIfClaimed({
+        db,
+        jobKey,
+        logger,
+        enqueueFn: () => aiGenerationQueue.enqueueNamed('process', { jobKey }, {
+            label: `ai-quiz-prefetch:${String(jobKey).slice(0, 24)}`,
+            priority: -1,
+        }).catch((err) => {
+            logger?.warn?.({ err, jobKey }, 'Quiz prefetch job failed');
+        }),
     });
     return jobKey;
 }
@@ -506,20 +498,21 @@ async function maybeEnqueueQuizPrefetch({
         return null;
     });
 
-    enqueueQuizPrefetchJob({ jobKey, logger });
+    enqueueQuizPrefetchJob({ db, jobKey, logger });
     return { status: 'queued', jobKey };
 }
 
 function enqueuePaperSynopsisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger }) {
-    if (ENQUEUED_KEYS.has(jobKey)) return jobKey;
-    ENQUEUED_KEYS.add(jobKey);
-    aiGenerationQueue.enqueueNamed('process', { jobKey }, {
-        label: `ai-synop:${String(jobKey).slice(0, 24)}`,
-        priority: 3,
-    }).catch((err) => {
-        logger?.warn?.({ err, jobKey }, 'Paper synopsis job failed');
-    }).finally(() => {
-        ENQUEUED_KEYS.delete(jobKey);
+    void enqueueAiGenerationJobIfClaimed({
+        db,
+        jobKey,
+        logger,
+        enqueueFn: () => aiGenerationQueue.enqueueNamed('process', { jobKey }, {
+            label: `ai-synop:${String(jobKey).slice(0, 24)}`,
+            priority: 3,
+        }).catch((err) => {
+            logger?.warn?.({ err, jobKey }, 'Paper synopsis job failed');
+        }),
     });
     return jobKey;
 }
