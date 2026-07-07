@@ -210,7 +210,7 @@ function buildDigestHtml({ userName, date, alertResults, appUrl, spacedRepData }
           <td style="padding:12px 0;border-bottom:1px solid #e5e7eb;">
             <div style="font-weight:600;color:#111827;font-size:14px;margin-bottom:4px;">${idx + 1}. ${escapeHtml(art.title)}</div>
             <div style="font-size:12px;color:#6b7280;margin-bottom:6px;">
-              ${art.source || art.journal || 'Unknown Journal'} • ${art.pubdate?.split(' ')[0] || art.year || 'N/A'}
+              ${escapeHtml(art.source || art.journal || 'Unknown Journal')} • ${escapeHtml(art.pubdate?.split(' ')[0] || art.year || 'N/A')}
               ${art.pmcrefcount !== undefined || art.citationCount !== undefined ? ` • ${art.pmcrefcount ?? art.citationCount} citations` : ''}
             </div>
             <div>${qualityBadge}${retractedBadge}</div>
@@ -222,7 +222,7 @@ function buildDigestHtml({ userName, date, alertResults, appUrl, spacedRepData }
     return `
       <div style="margin-bottom:32px;">
         <h3 style="font-size:16px;font-weight:bold;color:#1f2937;margin-bottom:8px;border-left:4px solid #4f46e5;padding-left:12px;">
-          🔍 ${alert.query}
+          🔍 ${escapeHtml(alert.query)}
         </h3>
         <p style="font-size:12px;color:#6b7280;margin-bottom:12px;">Sources: ${(() => { try { const s = typeof alert.sources === 'string' ? JSON.parse(alert.sources) : (alert.sources || ['pubmed']); return Array.isArray(s) ? s.join(', ') : String(s); } catch { return 'pubmed'; } })()}</p>
         <table style="width:100%;border-collapse:collapse;">${articleRows || '<tr><td style="padding:12px 0;color:#9ca3af;font-size:13px;">No new articles this period.</td></tr>'}</table>

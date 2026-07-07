@@ -95,6 +95,7 @@ node22.zip
 # SQLite WAL/shm files
 *.db-shm
 *.db-wal
+*.db-journal
 
 # Runtime artifacts
 $null

@@ -120,7 +120,7 @@ Latest drill record:
 
 | Date | Environment | Backup | Restore Target | `db:schema:check` | Smoke Tests | Operator | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Not yet run | staging required | pending | pending | pending | pending | pending | Required for commercial launch acceptance. |
+| 2026-07-06 | production (178.105.155.246, Docker) | pg_dump custom, ~29 MB | medsearch_restore_20260706T215443Z (dropped after verify) | passed | skipped (no Playwright on server) | Claude Code (ansh0079@gmail.com) | Passed — 107 tables, 87 migrations, pgvector OK. See full record below. Follow-up: reconcile `agent_turn_side_effects` drift. |
 
 ## Remaining High-Impact Work
 

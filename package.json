@@ -185,6 +185,10 @@
     "type": "git",
     "url": ""
   },
+  "overridesNotes": {
+    "ws": "Pinned to 8.21.0: patched DoS CVE-2024-37890 lineage; socket.io/engine.io and jsdom pull older ranges. Re-check with `npm ls ws` before removing.",
+    "ts-jest": "29.4.x is the latest line and officially supports Jest 30 (peer range ^29 || ^30). No ts-jest 30 exists — do not 'fix' the apparent major-version skew."
+  },
   "overrides": {
     "ws": "8.21.0"
   }
