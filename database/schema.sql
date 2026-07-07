@@ -5,6 +5,13 @@
 -- Vector DB: database/pgvector.schema.sql (NOT this file)
 -- ==========================================
 
+-- ==========================================
+-- Medical Research App — SQLite app schema (AUTO-GENERATED body optional)
+-- Source: database/migrations/*.sql after this baseline snapshot.
+-- Regenerate: npm run db:schema:regen
+-- Vector DB: database/pgvector.schema.sql (NOT this file)
+-- ==========================================
+
 CREATE TABLE IF NOT EXISTS admin_runtime_settings (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL DEFAULT '{}',

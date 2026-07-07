@@ -4,6 +4,12 @@
 -- Regenerate: npm run db:schema:regen  |  Check: npm run db:schema:check
 -- ==========================================
 
+-- ==========================================
+-- Medical Research App — PostgreSQL main app schema
+-- Does NOT include pgvector articles_cache — see pgvector.schema.sql
+-- Regenerate: npm run db:schema:regen  |  Check: npm run db:schema:check
+-- ==========================================
+
 CREATE TABLE IF NOT EXISTS admin_runtime_settings (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL DEFAULT '{}',

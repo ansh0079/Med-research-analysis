@@ -314,4 +314,61 @@ module.exports = (Sup) => class extends Sup {
         await this.addTeamMember(invitation.team_id, userId, invitation.role);
         return invitation;
     }
+
+    async createTeamActivity({ teamId, userId, message }) {
+        return this.run(
+            `INSERT INTO team_activity (team_id, user_id, message, created_at)
+             VALUES (?, ?, ?, datetime('now'))`,
+            [teamId, userId || null, message]
+        );
+    }
+
+    async getTeamActivity(teamId, limit = 50) {
+        return this.all(
+            `SELECT ta.*, u.name AS user_name, u.email AS user_email
+             FROM team_activity ta
+             LEFT JOIN users u ON ta.user_id = u.id
+             WHERE ta.team_id = ?
+             ORDER BY ta.created_at DESC
+             LIMIT ?`,
+            [teamId, limit]
+        );
+    }
+
+    async createTeamAssignment(assignment) {
+        const now = new Date().toISOString();
+        return this.run(
+            `INSERT INTO team_assignments
+             (id, team_id, title, assignee_user_id, due_date, created_by, status, created_at, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, 'open', ?, ?)`,
+            [
+                assignment.id,
+                assignment.teamId,
+                assignment.title,
+                assignment.assigneeUserId || null,
+                assignment.dueDate || null,
+                assignment.createdBy,
+                now,
+                now,
+            ]
+        );
+    }
+
+    async getTeamAssignments(teamId) {
+        return this.all(
+            `SELECT ta.*, u.name AS assignee_name, u.email AS assignee_email
+             FROM team_assignments ta
+             LEFT JOIN users u ON ta.assignee_user_id = u.id
+             WHERE ta.team_id = ?
+             ORDER BY ta.created_at DESC`,
+            [teamId]
+        );
+    }
+
+    async deleteTeamAssignment(teamId, assignmentId) {
+        return this.run(
+            `DELETE FROM team_assignments WHERE team_id = ? AND id = ?`,
+            [teamId, assignmentId]
+        );
+    }
 };
