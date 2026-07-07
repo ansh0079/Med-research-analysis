@@ -104,7 +104,7 @@ export function useSearchPage() {
 
   React.useEffect(() => {
     let cancelled = false;
-    void api.getClientConfig().then((config) => {
+    void api.search.getClientConfig().then((config) => {
       if (!cancelled) setVectorSearchEnabled(Boolean(config.features?.vectorSearch));
     });
     return () => { cancelled = true; };
@@ -246,7 +246,7 @@ export function useSearchPage() {
       return () => { cancelled = true; };
     }
 
-    api.getTopicEvidenceMemory(topic)
+    api.knowledge.getTopicEvidenceMemory(topic)
       .then((response) => {
         if (!cancelled) setTopicEvidenceMemory(response.memory);
       })
@@ -270,7 +270,7 @@ export function useSearchPage() {
       let liveText = '';
       let finalResult: SynthesisResult | null = null;
       await new Promise<void>((resolve, reject) => {
-        api.synthesizeEvidenceStream(currentQuery, top5Articles, {
+        api.ai.synthesizeEvidenceStream(currentQuery, top5Articles, {
           onChunk: (chunk) => {
             liveText += chunk;
             setSynthesisLiveText(liveText);
@@ -286,7 +286,7 @@ export function useSearchPage() {
       if (resolved) {
         setSynthesis(resolved);
         if (isAuthenticated && resolved.topic) {
-          api.getTopicStaleness(resolved.topic).then((s) => {
+          api.knowledge.getTopicStaleness(resolved.topic).then((s) => {
             if (s.significantChange && s.changes.length > 0) {
               setStalenessBanner({
                 changes: s.changes,
@@ -374,7 +374,7 @@ export function useSearchPage() {
     setTopicGuideRefreshState('loading');
     setTopicGuideRefreshError(null);
     try {
-      const { agentGuidance: nextGuidance } = await api.refreshTopicKnowledge(topic);
+      const { agentGuidance: nextGuidance } = await api.knowledge.refreshTopicKnowledge(topic);
       setAgentGuidance(nextGuidance);
       setTopicGuideStatus('ready');
       trackFeatureUsage('topic_guide_refresh_success', { topic: topic.slice(0, 200) });
@@ -402,7 +402,7 @@ export function useSearchPage() {
     }
     setKnowledgeReviewStatus('saving');
     try {
-      const response = await api.reviewTopicKnowledge(agentGuidance.topic);
+      const response = await api.knowledge.reviewTopicKnowledge(agentGuidance.topic);
       if (response.agentGuidance) setAgentGuidance(response.agentGuidance);
       setKnowledgeReviewStatus('saved');
     } catch {
@@ -418,7 +418,7 @@ export function useSearchPage() {
     setProposingKnowledge(true);
     setProposeError(null);
     try {
-      const response = await api.proposeTopicKnowledge(currentQuery, top5Articles);
+      const response = await api.knowledge.proposeTopicKnowledge(currentQuery, top5Articles);
       if (response.agentGuidance) {
         setProposedGuidance(response.agentGuidance);
       }

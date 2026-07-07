@@ -36,9 +36,9 @@ export function useLearningDashboardPage() {
       try {
         setLoading(true);
         const [dash, insightData, memData] = await Promise.all([
-          api.getLearningDashboard(),
-          api.getLearningInsights().catch(() => ({ insights: [], profile: null, calibration: null })),
-          api.listTopicMemory(10, 0).catch(() => ({ memories: [] })),
+          api.learning.getLearningDashboard(),
+          api.learning.getLearningInsights().catch(() => ({ insights: [], profile: null, calibration: null })),
+          api.learning.listTopicMemory(10, 0).catch(() => ({ memories: [] })),
         ]);
         if (!cancelled) {
           setDashboard(dash);
@@ -60,8 +60,8 @@ export function useLearningDashboardPage() {
     let cancelled = false;
     (async () => {
       const [alertsRes, judgRes] = await Promise.allSettled([
-        api.getPracticeAlerts('', 15),
-        api.getEvidenceJudgementProfile('', 12),
+        api.knowledge.getPracticeAlerts('', 15),
+        api.knowledge.getEvidenceJudgementProfile('', 12),
       ]);
       if (cancelled) return;
       if (alertsRes.status === 'fulfilled') setPracticeAlerts(alertsRes.value.alerts);
@@ -109,7 +109,7 @@ export function useLearningDashboardPage() {
     if (topic.length < 2) return;
     setPendingStartTopic(topic);
     try {
-      const { run } = await api.createStudyRun(topic);
+      const { run } = await api.learning.createStudyRun(topic);
       setDetectedTopic(topic);
       navigate(`/learning/${run.id}`);
     } catch (err) {
@@ -132,7 +132,7 @@ export function useLearningDashboardPage() {
 
   const handleSaveProfile = useCallback(async (data: Partial<LearningProfile>) => {
     try {
-      const { profile: updated } = await api.updateLearningProfile(data);
+      const { profile: updated } = await api.learning.updateLearningProfile(data);
       setProfile(updated);
     } catch { /* ignore */ }
   }, []);

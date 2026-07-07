@@ -8,5 +8,3 @@ export * from './team';
 export * from './ui';
 export * from './learning';
 export * from './review';
-export * from './analysis';
-export * from './case';

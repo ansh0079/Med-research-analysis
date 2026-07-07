@@ -120,7 +120,7 @@ export function useQuizPage() {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    api.getLearningProfile().then((r) => setLearningProfile(r.profile)).catch(() => {});
+    api.learning.getLearningProfile().then((r) => setLearningProfile(r.profile)).catch(() => {});
   }, [isAuthenticated]);
 
   useEffect(() => {
@@ -130,7 +130,7 @@ export function useQuizPage() {
       return;
     }
     let cancelled = false;
-    api.getTopicMemory(activeTopic.trim())
+    api.learning.getTopicMemory(activeTopic.trim())
       .then((r) => { if (!cancelled) setTopicMemory(r.memory); })
       .catch(() => { if (!cancelled) setTopicMemory(null); });
     return () => { cancelled = true; };
@@ -156,7 +156,7 @@ export function useQuizPage() {
     }
     try {
       if (urlRoundId && isAuthenticated) {
-        const { round } = await api.getLearningRound(urlRoundId);
+        const { round } = await api.knowledge.getLearningRound(urlRoundId);
         if (isStale()) return;
         const roundQuestions = learningRoundItemsToQuestions(
           (round.items || []) as Array<{
@@ -316,7 +316,7 @@ export function useQuizPage() {
           confidence: confidenceByQuestion[q.id] ?? answerConfidence,
         };
       });
-      await api.submitQuizAttempt({
+      await api.learning.submitQuizAttempt({
         topic: activeTopic,
         studyRunId: activeStudyRunId,
         ...(curriculumTopicIdParam ? { curriculumTopicId: curriculumTopicIdParam } : {}),
@@ -325,7 +325,7 @@ export function useQuizPage() {
       setSaveStatus('saved');
       if (isAuthenticated) {
         const correctCount = attempts.filter((a) => a.isCorrect).length;
-        api.logCpdSession({
+        api.learning.logCpdSession({
           activityType: 'quiz',
           topic: activeTopic,
           durationMinutes: Math.round(attempts.length * 2.5),
@@ -336,7 +336,7 @@ export function useQuizPage() {
       }
       if (activeStudyRunId && isAuthenticated) {
         try {
-          const { run, outline } = await api.getStudyRun(activeStudyRunId);
+          const { run, outline } = await api.learning.getStudyRun(activeStudyRunId);
           setStudyRun(run);
           setStudyOutline(outline);
           setStudyRunLoadFailed(false);
@@ -344,7 +344,7 @@ export function useQuizPage() {
           setStudyRunLoadFailed(true);
         }
       }
-      api.getTopicMemory(activeTopic.trim())
+      api.learning.getTopicMemory(activeTopic.trim())
         .then((r) => setTopicMemory(r.memory))
         .catch(() => {});
     } catch {
@@ -370,7 +370,7 @@ export function useQuizPage() {
     const qid = currentQ.id;
     if (feedbackSentIds.has(qid)) return;
     setFeedbackSentIds((prev) => new Set([...prev, qid]));
-    api.postQuizFeedback({
+    api.learning.postQuizFeedback({
       topic: manualTopic.trim(),
       outlineNodeId: currentQ.outlineNodeId || currentQ.id,
       feedbackType,
@@ -499,7 +499,7 @@ export function useQuizPage() {
     const { kind, uniqueWeakTypes, evidenceUsed } = buildQuizReflectionSections();
     setReflectionSaveStatus('saving');
     try {
-      await api.createPortfolioReflection({
+      await api.learning.createPortfolioReflection({
         reflectionType: kind,
         sourceType: 'quiz',
         topic: activeTopic,

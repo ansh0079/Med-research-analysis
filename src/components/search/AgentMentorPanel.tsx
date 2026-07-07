@@ -146,7 +146,7 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
                         onAnchorVerifyKeyChange(key);
                         try {
                           const topic = agentGuidance.topic || currentQuery;
-                          const res = await api.verifyTopicKnowledgeAnchor(topic, { claimText: tp.claim });
+                          const res = await api.knowledge.verifyTopicKnowledgeAnchor(topic, { claimText: tp.claim });
                           if (res.agentGuidance) onAgentGuidanceChange(res.agentGuidance);
                         } catch {
                           /* toast optional */

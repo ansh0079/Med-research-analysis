@@ -9,12 +9,12 @@ export function ForYouPanel({ onNavigate }: { onNavigate: (path: string) => void
   const shownLogged = React.useRef(false);
 
   React.useEffect(() => {
-    api.getLearningRecommendations(8)
+    api.learning.getLearningRecommendations(8)
       .then((r) => {
         setRecs(r.recommendations);
         if (!shownLogged.current && r.recommendations.length > 0) {
           shownLogged.current = true;
-          void api.logLearningEvent({
+          void api.learning.logLearningEvent({
             eventType: 'recommendation_shown',
             sourceType: 'for_you_panel',
             payload: {
@@ -33,7 +33,7 @@ export function ForYouPanel({ onNavigate }: { onNavigate: (path: string) => void
   if (recs.length === 0) return null;
 
   const handleClick = (rec: LearningRecommendation) => {
-    void api.logLearningEvent({
+    void api.learning.logLearningEvent({
       eventType: 'recommendation_clicked',
       topic: rec.topic,
       sourceType: 'for_you_panel',

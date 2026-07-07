@@ -88,7 +88,7 @@ export function learningRoundItemsToQuestions(
 export async function waitForClaimJob(jobKey: string, maxMs = 120000): Promise<void> {
   const start = Date.now();
   while (Date.now() - start < maxMs) {
-    const { job } = await api.getAiGenerationJob(jobKey);
+    const { job } = await api.ai.getAiGenerationJob(jobKey);
     if (job.status === 'completed') return;
     if (job.status === 'failed') {
       throw new QuizGenerationError(job.errorMessage || 'Claim generation failed', {
