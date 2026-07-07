@@ -8,3 +8,4 @@ export { useTheme } from './useTheme';
 export { useResultsFilter, type ResultLens } from './useResultsFilter';
 export { useExportResults } from './useExportResults';
 export { useWorkflowContext } from './useWorkflowContext';
+export { useSearchPage } from './useSearchPage';
