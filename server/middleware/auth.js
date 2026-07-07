@@ -308,9 +308,6 @@ async function requireAuthJwt(req, res, next) {
         });
     }
 
-    // Auto-downgrade expired trials on every authenticated request
-    await maybeDowngradeExpiredTrial(db, decoded.id);
-
     req.user = { id: decoded.id, name: decoded.name, email: decoded.email, role: decoded.role || 'user', emailVerified: decoded.emailVerified || false, subscriptionPlan: decoded.subscriptionPlan || 'free' };
     req.token = token;
     next();
@@ -327,7 +324,6 @@ async function requireAuthOrBeta(req, res, next) {
     if (token && !(await isTokenRevoked(token))) {
         const decoded = verifyToken(token);
         if (decoded && await isAccessTokenVersionCurrent(decoded)) {
-            await maybeDowngradeExpiredTrial(db, decoded.id);
             req.user = {
                 id: decoded.id,
                 name: decoded.name,
@@ -990,11 +986,12 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
 
         // Per-email rate limit — silently return generic response to avoid enumeration
         if (await isResetLimited(email)) return res.json(genericResponse);
-        await recordResetAttempt(email);
 
         try {
             const user = await db.getUserByEmail(email);
             if (!user) return res.json(genericResponse);
+
+            await recordResetAttempt(email);
 
             const resetToken = crypto.randomBytes(32).toString('hex');
             const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
