@@ -3,7 +3,6 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useSearchContext } from '@contexts/SearchContext';
 import { generateQuiz, generateQuizFromEvidence, QuizGenerationError, type QuizArticle } from '@services/quizService';
 import { api } from '@services/api';
-import { lookupArticleAttribution } from '@utils/searchAttribution';
 import { useAuth } from '@contexts/AuthContext';
 import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
 import type { QuizQuestion, QuizState, StudyRun, StudyRunOutline, LearningProfile, UserTopicMemory } from '@types';
@@ -19,6 +18,7 @@ import {
   learningRoundItemsToQuestions,
   waitForClaimJob,
 } from '@components/quiz/QuizPageUtils';
+import { buildQuizAttempts } from './quiz/quizAttemptUtils';
 import { useQuizLaunchContext } from './quiz/useQuizLaunchContext';
 
 export const QuizPage: React.FC = () => {
@@ -331,28 +331,12 @@ export const QuizPage: React.FC = () => {
   const saveQuizAttempt = async (questions: QuizQuestion[], answers: Record<string, string>) => {
     setSaveStatus('saving');
     try {
-      const attempts = questions.map((q) => {
-        const resolvedSrc = resolveSourceArticle(q);
-        const uid = resolvedSrc?.uid || q.sourceArticle || undefined;
-        const attribution = uid ? lookupArticleAttribution(uid) : null;
-        return {
-          questionId: q.id,
-          questionType: q.questionType || 'recall',
-          questionText: q.question,
-          userAnswer: answers[q.id] || '',
-          correctAnswer: q.correctAnswer,
-          isCorrect: (answers[q.id] || '').toLowerCase() === q.correctAnswer.toLowerCase(),
-          sourceArticleUid: uid,
-          sourceArticleTitle: resolvedSrc?.title || q.sourceArticle || undefined,
-          decisionId: attribution?.decisionId,
-          banditArmId: attribution?.banditArmId || undefined,
-          searchId: attribution?.searchId,
-          outlineNodeId: q.outlineNodeId || (q.sourceIndices?.[0] ? `src-${q.sourceIndices[0]}` : null),
-          outlineLabel: q.outlineLabel ?? undefined,
-          claimKey: q.claimKey ?? undefined,
-          promptVariant: q.promptVariant ?? undefined,
-          confidence: confidenceByQuestion[q.id] ?? answerConfidence,
-        };
+      const attempts = buildQuizAttempts({
+        answers,
+        confidenceByQuestion,
+        fallbackConfidence: answerConfidence,
+        questions,
+        resolveSourceArticle,
       });
       await api.learning.submitQuizAttempt({
         topic: activeTopic,
