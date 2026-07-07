@@ -5,20 +5,18 @@ import { generateQuiz, generateQuizFromEvidence, QuizGenerationError, type QuizA
 import { selectTopEvidence } from '../utils/selectTopEvidence';
 import { api } from '@services/api';
 import { lookupArticleAttribution } from '@utils/searchAttribution';
-import { downloadText } from '@services/exportArticles';
 import { useAuth } from '@contexts/AuthContext';
 import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
 import type { QuizQuestion, QuizState, StudyRun, StudyRunOutline, LearningProfile, UserTopicMemory } from '@types';
-import {
-  MemoryDetailBadge,
-} from '@components/quiz/QuizQuestionParts';
 import { QuizCompletionPanel } from '@components/quiz/QuizCompletionPanel';
 import { QuizGenerationStatePanel } from '@components/quiz/QuizGenerationStatePanel';
+import { QuizHeaderPanel } from '@components/quiz/QuizHeaderPanel';
 import { QuizQuestionPanel } from '@components/quiz/QuizQuestionPanel';
 import {
   INITIAL_STATE,
   buildQuizReflectionSections,
   currentTimeMs,
+  exportQuizReflection as exportQuizReflectionFile,
   getDifficultyFromParam,
   learningRoundItemsToQuestions,
   readWorkflowContext,
@@ -455,34 +453,8 @@ export const QuizPage: React.FC = () => {
   });
 
   const exportQuizReflection = (format: 'doc' | 'txt') => {
-    const kind = reflectionKind;
-    const stamp = new Date().toISOString().split('T')[0];
-    const safeKind = kind.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    const weakTypes = quiz.questions
-      .filter((q) => quiz.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase())
-      .map((q) => q.questionType || 'recall');
-    const uniqueWeakTypes = [...new Set(weakTypes)];
-    const sections = [
-      ['WBA / portfolio type', kind === 'CBD' ? 'Case-based Discussion (CBD)' : kind === 'mini-CEX' ? 'Mini Clinical Evaluation Exercise (mini-CEX)' : 'Direct Observation of Procedural Skills (DOPS)'],
-      ['Generated', stamp],
-      ['Topic', activeTopic],
-      ['Quiz performance', `${quiz.score}/${quiz.questions.length} correct (${scorePercent}%)`],
-      ['Questions attempted', String(quiz.questions.length)],
-      ['Areas for improvement', uniqueWeakTypes.length > 0 ? uniqueWeakTypes.join(', ') : 'None identified — strong overall performance.'],
-      ['Reflection notes', 'Use this quiz result to structure a discussion on clinical reasoning, evidence appraisal, and specific learning actions.'],
-    ] as Array<[string, string]>;
-    if (format === 'txt') {
-      const text = sections.map(([title, body]) => `${title}\n${body}`).join('\n\n');
-      downloadText(`portfolio_reflection_${safeKind}_${stamp}.txt`, text);
-      return;
-    }
-    const html = `<!doctype html><html><head><meta charset="utf-8"><title>${kind} Reflection</title>
-      <style>body{font-family:Arial,sans-serif;line-height:1.45;color:#111827;max-width:820px;margin:32px auto;padding:0 24px}h1{font-size:24px}h2{font-size:15px;margin-top:20px;border-bottom:1px solid #e5e7eb;padding-bottom:4px}p{font-size:13px;white-space:pre-wrap}</style>
-    </head><body>
-      <h1>${kind} Reflection</h1>
-      ${sections.map(([title, body]) => `<h2>${title}</h2><p>${body}</p>`).join('\n')}
-    </body></html>`;
-    downloadText(`portfolio_reflection_${safeKind}_${stamp}.doc`, html, 'application/msword');
+    const { kind, stamp, sections } = getQuizReflection();
+    exportQuizReflectionFile(sections, kind, stamp, format);
   };
 
   const saveQuizReflectionDraft = async () => {
@@ -520,77 +492,24 @@ export const QuizPage: React.FC = () => {
 
   return (
     <div className="min-h-screen aurora-bg">
-      <header className="w-full pt-[calc(var(--nav-h)+1.5rem)] pb-16 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/5 to-purple-600/5 -z-10" />
-        <div className="max-w-3xl mx-auto">
-          <button type="button" onClick={() => setCurrentPage('search')}
-            className="flex items-center gap-2 text-slate-500 hover:text-slate-900 dark:hover:text-white text-sm font-medium transition-colors mb-8">
-            <i className="fas fa-arrow-left" /> Back to results
-          </button>
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-900/40">
-              <i className="fas fa-brain text-white text-xl" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-black text-slate-900 dark:text-white">Test yourself</h1>
-              <p className="text-sm text-indigo-500 font-semibold capitalize">{activeTopic}</p>
-              {lockedArticles.length === 1 && quizPrefill?.singlePaperMode && (
-                <span className="mt-1 inline-block text-[10px] font-bold uppercase tracking-widest text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/20 px-2 py-0.5 rounded-full">
-                  <i className="fas fa-file-medical mr-1" />
-                  Questions grounded in this paper only
-                </span>
-              )}
-              {lockedArticles.length > 1 && (
-                <span className="mt-1 inline-block text-[10px] font-bold uppercase tracking-widest text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/20 px-2 py-0.5 rounded-full">
-                  <i className="fas fa-layer-group mr-1" />
-                  Grounded in top {lockedArticles.length} evidence papers from your search
-                </span>
-              )}
-              {fromDataset && (
-                <span className="mt-1 inline-block text-[10px] font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-2 py-0.5 rounded-full">
-                  General medical questions · MedMCQA dataset
-                </span>
-              )}
-              <div className="mt-3 flex flex-wrap items-center gap-3">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                  Training: {String(trainingStage).replace(/_/g, ' ')}
-                </span>
-                {isAuthenticated && topicMemory && topicMemory.searchCount + topicMemory.topPaperCount + topicMemory.savedPaperCount > 0 && (
-                  <MemoryDetailBadge memory={topicMemory} />
-                )}
-                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
-                  Explain
-                  <select
-                    value={effectiveExplanationDepth}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      const next = new URLSearchParams(searchParams);
-                      next.set('explain', v);
-                      setSearchParams(next, { replace: true });
-                    }}
-                    className="rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 px-2 py-1 text-[11px] font-semibold text-slate-700 dark:text-slate-200"
-                  >
-                    <option value="foundation">First principles</option>
-                    <option value="exam_focus">Exam focus</option>
-                    <option value="mechanistic">Mechanistic</option>
-                  </select>
-                </label>
-                {curriculumTopicIdParam ? (
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-rose-500">
-                    Study path topic
-                  </span>
-                ) : null}
-              </div>
-              {typeof workflowContext.originalPresentation === 'string' && workflowContext.originalPresentation.trim() && (
-                <div className="mt-3 max-w-2xl rounded-xl border border-cyan-200 bg-cyan-50/80 px-3 py-2 text-xs text-cyan-950/80 dark:border-cyan-900/60 dark:bg-cyan-950/20 dark:text-cyan-100/80">
-                  <span className="font-bold uppercase tracking-widest text-cyan-700 dark:text-cyan-300">Shift context: </span>
-                  {workflowContext.originalPresentation}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
+      <QuizHeaderPanel
+        activeTopic={activeTopic}
+        lockedArticles={lockedArticles}
+        singlePaperMode={Boolean(quizPrefill?.singlePaperMode)}
+        fromDataset={fromDataset}
+        trainingStage={trainingStage}
+        isAuthenticated={isAuthenticated}
+        topicMemory={topicMemory}
+        explanationDepth={effectiveExplanationDepth}
+        hasCurriculumTopic={Boolean(curriculumTopicIdParam)}
+        workflowContext={workflowContext}
+        onBack={() => setCurrentPage('search')}
+        onExplanationDepthChange={(depth) => {
+          const next = new URLSearchParams(searchParams);
+          next.set('explain', depth);
+          setSearchParams(next, { replace: true });
+        }}
+      />
 
       <main className="max-w-3xl mx-auto px-4 -mt-8 pb-24">
         {urlMode === 'spaced_rep' && urlTargetNodeIds && urlTargetNodeIds.length > 0 && (

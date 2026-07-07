@@ -9,6 +9,7 @@ import { CaseAnalysisResultPanel } from '@components/case/CaseAnalysisResultPane
 import { CaseEvidenceBriefPanel, type CaseEvidenceBrief, type CaseToEvidenceResult } from '@components/case/CaseEvidenceBriefPanel';
 import { CaseInputCard } from '@components/case/CaseInputCard';
 import { CaseModeSetupPanel } from '@components/case/CaseModeSetupPanel';
+import { CaseQuizActionButton } from '@components/case/CaseQuizActionButton';
 import { CaseReflectionExportPanel } from '@components/case/CaseReflectionExportPanel';
 import { TeachingVignettePanel } from '@components/case/TeachingVignettePanel';
 import {
@@ -234,14 +235,7 @@ export const CaseModePage: React.FC = () => {
   };
 
   const renderCaseQuizButton = (source: 'analysis' | 'teaching_vignette') => (
-    <button
-      type="button"
-      onClick={() => startQuizFromCase(source)}
-      className="inline-flex items-center justify-center gap-2 rounded-xl bg-violet-600 px-4 py-2 text-xs font-black text-white transition-colors hover:bg-violet-500"
-    >
-      <i className="fas fa-brain text-[10px]" />
-      Quiz this decision point
-    </button>
+    <CaseQuizActionButton onClick={() => startQuizFromCase(source)} />
   );
 
   const guardAuth = () => {
