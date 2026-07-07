@@ -180,4 +180,22 @@ export class AuthApi extends BaseApiClient {
     }
     return response.blob();
   }
+
+  async getPreferences(): Promise<Record<string, unknown>> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/account/preferences`);
+    if (!response.ok) throw new Error('Failed to load preferences');
+    const data = await response.json();
+    return data.preferences;
+  }
+
+  async savePreferences(prefs: Record<string, unknown>): Promise<Record<string, unknown>> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/account/preferences`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(prefs),
+    });
+    if (!response.ok) throw new Error('Failed to save preferences');
+    const data = await response.json();
+    return data.preferences;
+  }
 }

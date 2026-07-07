@@ -16,7 +16,7 @@ const getDb = (req) => req.app.locals.db;
 const _rl = {};
 function rateLimit(max, windowSec) {
     return (req, res, next) => {
-        const key = `team:${req.user?.id || req.ip}`;
+        const key = `team:${req.method}:${req.path}:${req.user?.id || req.ip}`;
         const now = Date.now();
         if (!_rl[key] || now - _rl[key].start > windowSec * 1000) {
             _rl[key] = { count: 1, start: now };

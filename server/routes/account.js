@@ -34,6 +34,30 @@ function registerAccountRoutes(app, { db, requireAuthJwt, rateLimit, auditLog })
         }
     });
 
+    app.get('/api/account/preferences', requireAuthJwt, async (req, res) => {
+        try {
+            const row = await db.get('SELECT preferences FROM users WHERE id = ?', [req.user.id]);
+            const prefs = row?.preferences ? JSON.parse(row.preferences) : {};
+            res.json({ preferences: prefs });
+        } catch (err) {
+            logger.warn({ err, userId: req.user.id }, 'Failed to load preferences');
+            res.status(500).json({ error: 'Failed to load preferences' });
+        }
+    });
+
+    app.patch('/api/account/preferences', requireAuthJwt, async (req, res) => {
+        try {
+            const row = await db.get('SELECT preferences FROM users WHERE id = ?', [req.user.id]);
+            const existing = row?.preferences ? JSON.parse(row.preferences) : {};
+            const updated = { ...existing, ...req.body };
+            await db.run('UPDATE users SET preferences = ? WHERE id = ?', [JSON.stringify(updated), req.user.id]);
+            res.json({ preferences: updated });
+        } catch (err) {
+            logger.warn({ err, userId: req.user.id }, 'Failed to save preferences');
+            res.status(500).json({ error: 'Failed to save preferences' });
+        }
+    });
+
     app.delete('/api/account', requireAuthJwt, deleteLimit, async (req, res) => {
         const userId = req.user.id;
         try {

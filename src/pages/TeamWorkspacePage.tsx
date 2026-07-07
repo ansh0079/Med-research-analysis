@@ -37,24 +37,33 @@ export const TeamWorkspacePage: React.FC = () => {
   const [assignmentTitle, setAssignmentTitle] = useState('');
   const [assignmentMember, setAssignmentMember] = useState('');
   const [assignmentDue, setAssignmentDue] = useState('');
-  const [activityFeed, setActivityFeed] = useState<string[]>(() => {
-    try {
-      return JSON.parse(localStorage.getItem('med_team_activity') || '[]');
-    } catch {
-      return [];
-    }
-  });
+  const [assignments, setAssignments] = useState<Array<{ id: string; title: string; assigneeUserId: string | null; assigneeName: string | null; dueDate: string | null; status: string; createdAt: string; createdBy: string }>>([]);
+  const [assignmentsLoading, setAssignmentsLoading] = useState(false);
+  const [activityFeed, setActivityFeed] = useState<Array<{ id: number; message: string; createdAt: string; userName: string | null }>>([]);
+  const [activityLoading, setActivityLoading] = useState(false);
 
-  const addActivity = useCallback((message: string) => {
-    setActivityFeed((prev) => {
-      const updated = [`${new Date().toLocaleString()}: ${message}`, ...prev].slice(0, 20);
-      try {
-        localStorage.setItem('med_team_activity', JSON.stringify(updated));
-      } catch {
-        // Ignore local activity persistence failures.
-      }
-      return updated;
-    });
+  const loadTeamActivity = useCallback(async (teamId: string) => {
+    setActivityLoading(true);
+    try {
+      const rows = await api.collaboration.getTeamActivity(teamId);
+      setActivityFeed(rows);
+    } catch {
+      // Best-effort — don't surface as an error banner.
+    } finally {
+      setActivityLoading(false);
+    }
+  }, []);
+
+  const loadAssignments = useCallback(async (teamId: string) => {
+    setAssignmentsLoading(true);
+    try {
+      const rows = await api.collaboration.getTeamAssignments(teamId);
+      setAssignments(rows);
+    } catch {
+      // Best-effort.
+    } finally {
+      setAssignmentsLoading(false);
+    }
   }, []);
 
   const loadTeams = useCallback(async () => {
@@ -98,9 +107,11 @@ export const TeamWorkspacePage: React.FC = () => {
         if (cancelled) return;
         setSearchParams({}, { replace: true });
         setError(null);
-        addActivity('Joined a team via invitation link');
         await loadTeams();
-        if (r.teamId) await loadTeamDetails(r.teamId);
+        if (r.teamId) {
+          await loadTeamDetails(r.teamId);
+          loadTeamActivity(r.teamId);
+        }
       } catch (err: unknown) {
         if (!cancelled) {
           setError(err instanceof Error ? err.message : 'Invalid or expired invitation');
@@ -109,7 +120,7 @@ export const TeamWorkspacePage: React.FC = () => {
       }
     })();
     return () => { cancelled = true; };
-  }, [inviteToken, isAuthenticated, setSearchParams, loadTeams, loadTeamDetails, addActivity]);
+  }, [inviteToken, isAuthenticated, setSearchParams, loadTeams, loadTeamDetails, loadTeamActivity]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -141,8 +152,10 @@ export const TeamWorkspacePage: React.FC = () => {
         if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load team details');
       }
     })();
+    loadTeamActivity(activeTeam.id);
+    loadAssignments(activeTeam.id);
     return () => { cancelled = true; };
-  }, [activeTeam?.id]);
+  }, [activeTeam?.id, loadTeamActivity, loadAssignments]);
 
   useEffect(() => {
     setExpandedCollectionId(null);
@@ -156,7 +169,6 @@ export const TeamWorkspacePage: React.FC = () => {
       setTeams(prev => [...prev, team]);
       setActiveTeam(team);
       setNewTeamName('');
-      addActivity(`Created team "${team.name}"`);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to create team');
     }
@@ -170,8 +182,8 @@ export const TeamWorkspacePage: React.FC = () => {
       if (token && typeof window !== 'undefined') {
         setLastInviteLink(`${window.location.origin}/team?invite=${encodeURIComponent(token)}`);
       }
-      addActivity(`Invited ${inviteEmail.trim()} to ${activeTeam.name}`);
       setInviteEmail('');
+      loadTeamActivity(activeTeam.id);
       loadTeamDetails(activeTeam.id);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to invite member');
@@ -202,7 +214,6 @@ export const TeamWorkspacePage: React.FC = () => {
     if (!activeTeam || !expandedCollectionId) return;
     try {
       await api.collaboration.removeArticleFromTeamCollection(activeTeam.id, expandedCollectionId, articleId);
-      addActivity('Removed an article from a team collection');
       const { collection } = await api.collaboration.getTeamCollection(activeTeam.id, expandedCollectionId);
       setCollectionArticles((collection.articles as Article[]) || []);
       loadTeamDetails(activeTeam.id);
@@ -218,8 +229,8 @@ export const TeamWorkspacePage: React.FC = () => {
     if (!window.confirm(`Remove ${row.email} from this team?`)) return;
     try {
       await api.collaboration.removeTeamMember(activeTeam.id, uid);
-      addActivity(`Removed member ${row.email}`);
       loadTeamDetails(activeTeam.id);
+      loadTeamActivity(activeTeam.id);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to remove member');
     }
@@ -230,8 +241,8 @@ export const TeamWorkspacePage: React.FC = () => {
     const uid = memberUserId(row);
     try {
       await api.collaboration.updateTeamMemberRole(activeTeam.id, uid, role);
-      addActivity(`Updated role for ${row.email}`);
       loadTeamDetails(activeTeam.id);
+      loadTeamActivity(activeTeam.id);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to update role');
     }
@@ -241,21 +252,41 @@ export const TeamWorkspacePage: React.FC = () => {
     if (!activeTeam || !newCollectionName.trim()) return;
     try {
       await api.collaboration.createTeamCollection(activeTeam.id, newCollectionName.trim());
-      addActivity(`Created collection "${newCollectionName.trim()}" in ${activeTeam.name}`);
       setNewCollectionName('');
       loadTeamDetails(activeTeam.id);
+      loadTeamActivity(activeTeam.id);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to create collection');
     }
   };
 
-  const handleCreateAssignment = () => {
-    if (!assignmentTitle.trim()) return;
-    const member = members.find((m) => memberUserId(m as MemberRow) === assignmentMember);
-    addActivity(`Assigned "${assignmentTitle.trim()}" to ${member?.name || member?.email || 'a reviewer'}${assignmentDue ? ` due ${assignmentDue}` : ''}`);
-    setAssignmentTitle('');
-    setAssignmentMember('');
-    setAssignmentDue('');
+  const handleCreateAssignment = async () => {
+    if (!activeTeam || !assignmentTitle.trim()) return;
+    try {
+      await api.collaboration.createTeamAssignment(activeTeam.id, {
+        title: assignmentTitle.trim(),
+        assigneeUserId: assignmentMember || undefined,
+        dueDate: assignmentDue || undefined,
+      });
+      setAssignmentTitle('');
+      setAssignmentMember('');
+      setAssignmentDue('');
+      loadAssignments(activeTeam.id);
+      loadTeamActivity(activeTeam.id);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to create assignment');
+    }
+  };
+
+  const handleDeleteAssignment = async (assignmentId: string) => {
+    if (!activeTeam) return;
+    try {
+      await api.collaboration.deleteTeamAssignment(activeTeam.id, assignmentId);
+      loadAssignments(activeTeam.id);
+      loadTeamActivity(activeTeam.id);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to delete assignment');
+    }
   };
 
   if (!isAuthenticated) return null;
@@ -534,54 +565,100 @@ export const TeamWorkspacePage: React.FC = () => {
                   )}
 
                   {tab === 'assignments' && (
-                    <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
-                      <h3 className="font-bold text-gray-900 dark:text-white mb-4">Review Assignment</h3>
-                      <div className="grid gap-3 md:grid-cols-[1fr_0.8fr_0.5fr_auto]">
-                        <input
-                          value={assignmentTitle}
-                          onChange={(e) => setAssignmentTitle(e.target.value)}
-                          placeholder="Paper, collection, or screening task"
-                          className="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
-                        />
-                        <select
-                          title="Assign reviewer"
-                          value={assignmentMember}
-                          onChange={(e) => setAssignmentMember(e.target.value)}
-                          className="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
-                        >
-                          <option value="">Unassigned</option>
-                          {members.map((member) => (
-                            <option key={memberUserId(member as MemberRow)} value={memberUserId(member as MemberRow)}>
-                              {member.name || member.email}
-                            </option>
-                          ))}
-                        </select>
-                        <input
-                          type="date"
-                          value={assignmentDue}
-                          onChange={(e) => setAssignmentDue(e.target.value)}
-                          className="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
-                        />
-                        <Button variant="primary" onClick={handleCreateAssignment} leftIcon={<i className="fas fa-user-check" />}>
-                          Assign
-                        </Button>
+                    <div className="space-y-4">
+                      {(userRole === 'owner' || userRole === 'admin') && (
+                        <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
+                          <h3 className="font-bold text-gray-900 dark:text-white mb-4">Create Assignment</h3>
+                          <div className="grid gap-3 md:grid-cols-[1fr_0.8fr_0.5fr_auto]">
+                            <input
+                              value={assignmentTitle}
+                              onChange={(e) => setAssignmentTitle(e.target.value)}
+                              placeholder="Paper, collection, or screening task"
+                              className="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                            />
+                            <select
+                              title="Assign reviewer"
+                              value={assignmentMember}
+                              onChange={(e) => setAssignmentMember(e.target.value)}
+                              className="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                            >
+                              <option value="">Unassigned</option>
+                              {members.map((member) => (
+                                <option key={memberUserId(member as MemberRow)} value={memberUserId(member as MemberRow)}>
+                                  {member.name || member.email}
+                                </option>
+                              ))}
+                            </select>
+                            <input
+                              type="date"
+                              value={assignmentDue}
+                              onChange={(e) => setAssignmentDue(e.target.value)}
+                              className="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                            />
+                            <Button variant="primary" onClick={handleCreateAssignment} leftIcon={<i className="fas fa-user-check" />}>
+                              Assign
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                      <div className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 overflow-hidden">
+                        <div className="px-6 py-4 border-b border-gray-100 dark:border-slate-700">
+                          <h3 className="font-bold text-gray-900 dark:text-white">Current Assignments</h3>
+                        </div>
+                        {assignmentsLoading ? (
+                          <div className="p-6 text-center"><i className="fas fa-spinner fa-spin text-indigo-400" /></div>
+                        ) : assignments.length === 0 ? (
+                          <p className="p-6 text-sm text-gray-400 dark:text-gray-500">No assignments yet.</p>
+                        ) : (
+                          <div className="divide-y divide-gray-100 dark:divide-slate-700">
+                            {assignments.map((a) => (
+                              <div key={a.id} className="px-6 py-4 flex items-start justify-between gap-4">
+                                <div>
+                                  <p className="font-medium text-gray-900 dark:text-white text-sm">{a.title}</p>
+                                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                    {a.assigneeName ? `Assigned to ${a.assigneeName}` : 'Unassigned'}
+                                    {a.dueDate ? ` · due ${a.dueDate}` : ''}
+                                  </p>
+                                </div>
+                                <div className="flex items-center gap-3 shrink-0">
+                                  <span className={`px-2 py-0.5 rounded-full text-xs font-bold uppercase ${a.status === 'open' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'}`}>
+                                    {a.status}
+                                  </span>
+                                  {(userRole === 'owner' || userRole === 'admin') && (
+                                    <button
+                                      type="button"
+                                      onClick={() => handleDeleteAssignment(a.id)}
+                                      className="text-xs text-red-500 dark:text-red-400 font-bold"
+                                    >
+                                      Remove
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                      <p className="mt-3 text-xs text-gray-400 dark:text-gray-500">
-                        Assignments are logged to the workspace activity feed. A server-backed assignment table can persist reviewer workload across devices next.
-                      </p>
                     </div>
                   )}
 
                   {tab === 'activity' && (
                     <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
                       <h3 className="font-bold text-gray-900 dark:text-white mb-4">Workspace Activity</h3>
-                      {activityFeed.length === 0 ? (
+                      {activityLoading ? (
+                        <div className="text-center py-4"><i className="fas fa-spinner fa-spin text-indigo-400" /></div>
+                      ) : activityFeed.length === 0 ? (
                         <p className="text-sm text-gray-400 dark:text-gray-500">No activity yet.</p>
                       ) : (
                         <div className="space-y-2">
-                          {activityFeed.map((entry, index) => (
-                            <div key={`${entry}-${index}`} className="rounded-xl bg-gray-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
-                              {entry}
+                          {activityFeed.map((entry) => (
+                            <div key={entry.id} className="rounded-xl bg-gray-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                              <span className="font-medium text-gray-700 dark:text-gray-200">{entry.userName || 'Team member'}</span>
+                              {' · '}
+                              {entry.message}
+                              <span className="ml-2 text-xs text-gray-400 dark:text-gray-500">
+                                {new Date(entry.createdAt).toLocaleString()}
+                              </span>
                             </div>
                           ))}
                         </div>
@@ -609,9 +686,9 @@ export const TeamWorkspacePage: React.FC = () => {
                                 if (!activeTeam || !teamRename.trim() || teamRename.trim() === activeTeam.name) return;
                                 try {
                                   await api.collaboration.updateTeam(activeTeam.id, { name: teamRename.trim() });
-                                  addActivity(`Renamed team to "${teamRename.trim()}"`);
                                   loadTeamDetails(activeTeam.id);
                                   loadTeams();
+                                  loadTeamActivity(activeTeam.id);
                                 } catch (err: unknown) {
                                   setError(err instanceof Error ? err.message : 'Failed to rename team');
                                 }

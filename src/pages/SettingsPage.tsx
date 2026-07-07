@@ -162,13 +162,25 @@ export const SettingsPage: React.FC = () => {
   const [emailMessage, setEmailMessage] = useState('');
   const [emailError, setEmailError] = useState('');
 
-  // Notification prefs state
+  // Notification prefs state — initialised from localStorage, then synced from server.
   const [prefs, setPrefs] = useState<NotificationPrefs>(loadPrefs);
   const [prefsSaved, setPrefsSaved] = useState(false);
+  const [prefsLoading, setPrefsLoading] = useState(false);
 
   useEffect(() => {
     setName(user?.name || '');
   }, [user?.name]);
+
+  useEffect(() => {
+    if (!user) return;
+    api.auth.getPreferences().then((serverPrefs) => {
+      if (serverPrefs && typeof serverPrefs === 'object' && Object.keys(serverPrefs).length > 0) {
+        setPrefs((prev) => ({ ...prev, ...(serverPrefs as Partial<NotificationPrefs>) }));
+      }
+    }).catch(() => {
+      // Fall back to localStorage values already in state.
+    });
+  }, [user]);
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -232,13 +244,21 @@ export const SettingsPage: React.FC = () => {
     }
   };
 
-  const handleSavePrefs = () => {
+  const handleSavePrefs = async () => {
+    setPrefsLoading(true);
     try {
-      localStorage.setItem(NOTIFICATION_PREFS_KEY, JSON.stringify(prefs));
+      await api.auth.savePreferences(prefs as unknown as Record<string, unknown>);
+      // Mirror to localStorage as a cache for next cold-load before server responds.
+      try { localStorage.setItem(NOTIFICATION_PREFS_KEY, JSON.stringify(prefs)); } catch { /* ignore */ }
       setPrefsSaved(true);
       setTimeout(() => setPrefsSaved(false), 2000);
     } catch {
-      // ignore storage errors
+      // Fall back to localStorage-only save so the user isn't blocked.
+      try { localStorage.setItem(NOTIFICATION_PREFS_KEY, JSON.stringify(prefs)); } catch { /* ignore */ }
+      setPrefsSaved(true);
+      setTimeout(() => setPrefsSaved(false), 2000);
+    } finally {
+      setPrefsLoading(false);
     }
   };
 
@@ -412,7 +432,7 @@ export const SettingsPage: React.FC = () => {
           </div>
           <div className="flex justify-end items-center gap-3">
             {prefsSaved && <span className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-1"><i className="fas fa-check" /> Saved</span>}
-            <Button type="button" size="sm" onClick={handleSavePrefs}>Save preferences</Button>
+            <Button type="button" size="sm" isLoading={prefsLoading} onClick={handleSavePrefs}>Save preferences</Button>
           </div>
         </div>
 
