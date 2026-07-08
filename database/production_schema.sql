@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS agent_turn_side_effects (
     id SERIAL PRIMARY KEY,
     job_key TEXT NOT NULL UNIQUE,
     conversation_id UUID REFERENCES agent_conversations(id) ON DELETE CASCADE,
-    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     topic TEXT NOT NULL,
     status TEXT NOT NULL DEFAULT 'queued',
     payload TEXT NOT NULL DEFAULT '{}',
