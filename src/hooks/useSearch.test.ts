@@ -202,6 +202,34 @@ describe('useSearch', () => {
     expect(mockedApi.search.search).toHaveBeenCalledTimes(1);
   });
 
+  it('logs impressions again when serving an exact repeat from hook cache', async () => {
+    mockedApi.search.search.mockResolvedValue({
+      articles: mockArticles,
+      searchId: 42,
+      count: 2,
+      sources: ['pubmed'],
+    } as any);
+    const { result } = renderHook(() => useSearch());
+
+    await act(async () => {
+      await result.current.search('diabetes');
+    });
+
+    await act(async () => {
+      jest.advanceTimersByTime(5001);
+      await result.current.search('diabetes');
+    });
+
+    expect(mockedApi.search.search).toHaveBeenCalledTimes(1);
+    expect(mockedApi.search.logSearchImpressions).toHaveBeenCalledTimes(2);
+    expect(mockedApi.search.logSearchImpressions).toHaveBeenLastCalledWith(
+      42,
+      expect.arrayContaining([
+        expect.objectContaining({ articleUid: 'a1', position: 1 }),
+      ])
+    );
+  });
+
   it('returns empty array and skips api call when query is whitespace only', async () => {
     const { result } = renderHook(() => useSearch());
 

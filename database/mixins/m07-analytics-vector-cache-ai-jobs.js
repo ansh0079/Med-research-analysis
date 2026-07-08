@@ -565,6 +565,143 @@ async resetAiGenerationJobForRetry(jobKey) {
     return this.getAiGenerationJobByKey(jobKey);
 }
 
+async moveAiGenerationJobToDeadLetter(jobKey) {
+    const row = await this.getAiGenerationJobByKey(jobKey);
+    if (!row) return null;
+    const now = new Date().toISOString();
+    await this.run(
+        `INSERT INTO dead_letter_jobs (
+            job_key, job_type, topic, input_payload, result_payload, error_message,
+            provider, model, audit_payload, attempts, created_at, failed_at, original_created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(job_key) DO UPDATE SET
+            error_message = EXCLUDED.error_message,
+            result_payload = COALESCE(EXCLUDED.result_payload, dead_letter_jobs.result_payload),
+            attempts = EXCLUDED.attempts,
+            failed_at = EXCLUDED.failed_at,
+            audit_payload = COALESCE(EXCLUDED.audit_payload, dead_letter_jobs.audit_payload)`,
+        [
+            row.jobKey,
+            row.jobType,
+            row.topic || null,
+            row.inputPayload ? JSON.stringify(row.inputPayload) : null,
+            row.resultPayload ? JSON.stringify(row.resultPayload) : null,
+            row.errorMessage ? String(row.errorMessage).slice(0, 2000) : null,
+            row.provider || null,
+            row.model || null,
+            row.auditPayload ? JSON.stringify(row.auditPayload) : null,
+            row.attempts || 0,
+            row.createdAt || now,
+            now,
+            row.createdAt || null,
+        ]
+    );
+    await this.run(`DELETE FROM ai_generation_jobs WHERE job_key = ?`, [String(jobKey)]);
+    return this.getDeadLetterJobByKey(jobKey);
+}
+
+async requeueDeadLetterJob(jobKey) {
+    const row = await this.getDeadLetterJobByKey(jobKey);
+    if (!row) return null;
+    const now = new Date().toISOString();
+    await this.run(
+        `INSERT INTO ai_generation_jobs (
+            job_key, job_type, status, topic, input_hash, input_payload, result_payload,
+            provider, model, audit_payload, attempts, created_at, updated_at, expires_at
+        ) VALUES (?, ?, 'queued', ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)
+        ON CONFLICT(job_key) DO UPDATE SET
+            status = 'queued',
+            error_message = NULL,
+            attempts = 0,
+            updated_at = EXCLUDED.updated_at`,
+        [
+            row.jobKey,
+            row.jobType,
+            row.topic || null,
+            null,
+            row.inputPayload ? JSON.stringify(row.inputPayload) : null,
+            row.resultPayload ? JSON.stringify(row.resultPayload) : null,
+            row.provider || null,
+            row.model || null,
+            row.auditPayload ? JSON.stringify(row.auditPayload) : null,
+            row.originalCreatedAt || now,
+            now,
+            null,
+        ]
+    );
+    await this.run(`DELETE FROM dead_letter_jobs WHERE job_key = ?`, [String(jobKey)]);
+    return this.getAiGenerationJobByKey(jobKey);
+}
+
+async getDeadLetterJobByKey(jobKey) {
+    if (!jobKey) return null;
+    const row = await this.get(`SELECT * FROM dead_letter_jobs WHERE job_key = ?`, [String(jobKey)]);
+    if (!row) return null;
+    return {
+        jobKey: row.job_key,
+        jobType: row.job_type,
+        topic: row.topic,
+        inputPayload: safeJsonParse(row.input_payload, null),
+        resultPayload: safeJsonParse(row.result_payload, null),
+        errorMessage: row.error_message,
+        provider: row.provider,
+        model: row.model,
+        auditPayload: safeJsonParse(row.audit_payload, null),
+        attempts: Number(row.attempts || 0),
+        createdAt: row.created_at,
+        failedAt: row.failed_at,
+        originalCreatedAt: row.original_created_at,
+    };
+}
+
+async listDeadLetterJobs({ jobTypes = [], limit = 50, topic = null } = {}) {
+    const safeLimit = Math.min(Math.max(Number(limit) || 50, 1), 200);
+    const typeList = (Array.isArray(jobTypes) ? jobTypes : String(jobTypes || '').split(','))
+        .map((s) => String(s || '').trim())
+        .filter(Boolean);
+    const typeClause = typeList.length ? `AND job_type IN (${typeList.map(() => '?').join(', ')})` : '';
+    const topicClause = topic ? `AND topic = ?` : '';
+    const params = [...typeList, ...(topic ? [topic] : []), safeLimit];
+    const rows = await this.all(
+        `SELECT * FROM dead_letter_jobs
+         WHERE 1=1 ${typeClause} ${topicClause}
+         ORDER BY failed_at DESC
+         LIMIT ?`,
+        params
+    ).catch(() => []);
+    return rows.map((row) => ({
+        jobKey: row.job_key,
+        jobType: row.job_type,
+        topic: row.topic,
+        errorMessage: row.error_message,
+        attempts: Number(row.attempts || 0),
+        failedAt: row.failed_at,
+        originalCreatedAt: row.original_created_at,
+    }));
+}
+
+async listAiGenerationJobs({ statuses = [], jobTypes = [], limit = 50, topic = null } = {}) {
+    const safeLimit = Math.min(Math.max(Number(limit) || 50, 1), 200);
+    const statusList = (Array.isArray(statuses) ? statuses : String(statuses || '').split(','))
+        .map((s) => String(s || '').trim())
+        .filter(Boolean);
+    const typeList = (Array.isArray(jobTypes) ? jobTypes : String(jobTypes || '').split(','))
+        .map((s) => String(s || '').trim())
+        .filter(Boolean);
+    const statusClause = statusList.length ? `AND status IN (${statusList.map(() => '?').join(', ')})` : '';
+    const typeClause = typeList.length ? `AND job_type IN (${typeList.map(() => '?').join(', ')})` : '';
+    const topicClause = topic ? `AND topic = ?` : '';
+    const params = [...statusList, ...typeList, ...(topic ? [topic] : []), safeLimit];
+    const rows = await this.all(
+        `SELECT * FROM ai_generation_jobs
+         WHERE 1=1 ${statusClause} ${typeClause} ${topicClause}
+         ORDER BY updated_at DESC
+         LIMIT ?`,
+        params
+    ).catch(() => []);
+    return rows.map((row) => this.mapAiGenerationJobRow(row));
+}
+
 async upsertTrialGuidelineConflictReview({
     normalizedTopic,
     jobKey = null,
