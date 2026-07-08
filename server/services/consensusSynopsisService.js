@@ -1,4 +1,5 @@
 const logger = require('../config/logger');
+const { batchCheckRetractions } = require('./qualityService');
 const { createAiService, getSharedAiService, PINNED_MODELS, TEMPERATURE, AI_DISCLAIMER } = require('./aiService');
 const { resolveProvider } = require('../utils/aiProvider');
 const {
@@ -328,6 +329,13 @@ async function generateConsensusSynopsis({
         abstractArticles = selectAbstractEvidence(articles, abstractLimit);
     }
 
+    const retractionResults = await batchCheckRetractions([...freeArticles, ...abstractArticles])
+        .catch((err) => { logger.warn({ err }, 'batchCheckRetractions failed for consensus synopsis'); return {}; });
+    const filterRetracted = (list) => list.filter((a) => !retractionResults[a.uid]?.isRetracted);
+    freeArticles = filterRetracted(freeArticles);
+    abstractArticles = filterRetracted(abstractArticles);
+    const retractedCount = Object.values(retractionResults).filter((r) => r?.isRetracted).length;
+
     if (freeArticles.length < 2 && abstractArticles.length < 2) {
         return synopsisFallback({
             status: 'insufficient_free_evidence',
@@ -389,7 +397,14 @@ async function generateConsensusSynopsis({
     if (!validated.ok && !synopsisPayload) {
         throw new Error(`Consensus synopsis validation failed: ${(validated.errors || []).join('; ')}`);
     }
-    return normalizeSynopsis(synopsisPayload, topic, freeArticles, abstractArticles, provider, model, guidelines);
+    const normalized = normalizeSynopsis(synopsisPayload, topic, freeArticles, abstractArticles, provider, model, guidelines);
+    if (retractedCount > 0) {
+        normalized.retractionWarning = {
+            retractedCount,
+            message: `${retractedCount} retracted paper${retractedCount === 1 ? '' : 's'} excluded from consensus evidence.`,
+        };
+    }
+    return normalized;
 }
 
 async function generateConsensusSynopsisSafe(options, logger = console) {

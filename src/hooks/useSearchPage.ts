@@ -66,6 +66,7 @@ export function useSearchPage() {
   const {
     search, loading, error, lastSearchId, searchCompletedAt, proactiveAlert, learnerContext,
     aiEnrichmentLoading, intelligenceLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert,
+    aiEnrichmentFailed,
     lowRecallLearning, searchTelemetry,
   } = useSearch();
   const recentSearches = useSearchRecents(searchHistory, isAuthenticated);
@@ -464,6 +465,7 @@ export function useSearchPage() {
     proactiveAlert,
     learnerContext,
     aiEnrichmentLoading,
+    aiEnrichmentFailed,
     intelligenceLoading,
     knowledgeDriftAlerts,
     dismissKnowledgeDriftAlert,

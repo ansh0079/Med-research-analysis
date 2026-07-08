@@ -15,6 +15,7 @@ const { getPromptVersion } = require('../prompts/promptVersions');
 const { parseStructuredOutput } = require('../utils/parseJson');
 const { validateAiOutput } = require('./aiOutputValidation');
 const { createBudgetForAction, runWithLlmBudget, LlmBudgetExceededError, getActiveLlmBudget } = require('./llmRequestBudget');
+const { buildSynthesisCacheKey, normalizePersonalization } = require('./synthesisPersonalization');
 
 /**
  * Validates that a cited source is semantically relevant to the claim.
@@ -109,10 +110,8 @@ function selectTopSynthesisArticles(articles = []) {
         .slice(0, 15);
 }
 
-function getSynthesisCacheKey(topic, articles = [], promptVersion = null) {
-    const pv = promptVersion || getPromptVersion('synthesis');
-    const base = Buffer.from(String(topic || '') + articles.map((a) => a.uid).join(',')).toString('base64').slice(0, 40);
-    return `synthesis:${base}:pv:${pv}`;
+function getSynthesisCacheKey(topic, articles = [], promptVersion = null, personalization = {}) {
+    return buildSynthesisCacheKey(topic, articles, promptVersion, personalization);
 }
 
 function extractSynthesisClaims(synthesis = {}) {
@@ -234,13 +233,28 @@ function validateSynthesisCitations(synthesis, { sourceCount, guidelineCount }) 
     };
 }
 
-async function prepareSynthesisContext({ articles, topic, db, cache, userId = null }) {
+async function prepareSynthesisContext({
+    articles,
+    topic,
+    db,
+    cache,
+    userId = null,
+    trainingStage = null,
+    previousQueries = [],
+    sessionDepth = 0,
+}) {
     if (!Array.isArray(articles) || articles.length === 0) {
         throw new Error('At least one article is required for synthesis');
     }
 
+    const personalization = normalizePersonalization({
+        userId,
+        trainingStage,
+        previousQueries,
+        sessionDepth,
+    });
     const topArticles = selectTopSynthesisArticles(articles);
-    const cacheKey = getSynthesisCacheKey(topic, topArticles);
+    const cacheKey = getSynthesisCacheKey(topic, topArticles, null, personalization);
     const retractionResults = await batchCheckRetractions(topArticles).catch((err) => { logger.warn({ err }, 'batchCheckRetractions failed'); return {}; });
     const retractedUids = Object.entries(retractionResults)
         .filter(([, r]) => r.isRetracted)
@@ -268,6 +282,9 @@ async function prepareSynthesisContext({ articles, topic, db, cache, userId = nu
         personalMisconceptions,
         inferredMisconceptions,
         qualityHints,
+        trainingStage: personalization.trainingStage,
+        previousQueries: personalization.previousQueries,
+        sessionDepth: personalization.sessionDepth,
     });
     const sourceMap = topArticles.map((a, idx) => ({
         studyIndex: idx + 1,
@@ -293,6 +310,7 @@ async function prepareSynthesisContext({ articles, topic, db, cache, userId = nu
         sourceMap,
         fullTextIndexedCount,
         fullTextCoverageRatio,
+        personalization,
     };
 }
 
@@ -409,6 +427,9 @@ async function runFullSynthesisGeneration({
     fetchImpl,
     jobKey = null,
     userId = null,
+    trainingStage = null,
+    previousQueries = [],
+    sessionDepth = 0,
 }) {
     return runWithLlmBudget(createBudgetForAction('synthesis'), () => runFullSynthesisGenerationInner({
         articles,
@@ -420,6 +441,9 @@ async function runFullSynthesisGeneration({
         fetchImpl,
         jobKey,
         userId,
+        trainingStage,
+        previousQueries,
+        sessionDepth,
     }));
 }
 
@@ -433,9 +457,13 @@ async function runFullSynthesisGenerationInner({
     fetchImpl,
     jobKey = null,
     userId = null,
+    trainingStage = null,
+    previousQueries = [],
+    sessionDepth = 0,
 }) {
     const topArticles = selectTopSynthesisArticles(articles);
-    const cacheKey = getSynthesisCacheKey(topic, topArticles);
+    const personalization = normalizePersonalization({ userId, trainingStage, previousQueries, sessionDepth });
+    const cacheKey = getSynthesisCacheKey(topic, topArticles, null, personalization);
     if (cache?.getAsync) {
         const cached = await cache.getAsync(cacheKey);
         if (cached) {
@@ -446,7 +474,16 @@ async function runFullSynthesisGenerationInner({
     }
 
     const ai = getSharedAiService({ serverConfig, fetchImpl });
-    const context = await prepareSynthesisContext({ articles: topArticles, topic, db, cache, userId });
+    const context = await prepareSynthesisContext({
+        articles: topArticles,
+        topic,
+        db,
+        cache,
+        userId,
+        trainingStage,
+        previousQueries,
+        sessionDepth,
+    });
     const providerCandidates = getProviderCandidates({ provider }, serverConfig);
     if (!providerCandidates.length) {
         throw new Error('No AI provider configured. Add ANTHROPIC_API_KEY, GEMINI_API_KEY, or MISTRAL_API_KEY to .env');
@@ -506,6 +543,8 @@ async function runFullSynthesisGenerationInner({
             provider,
             logger,
             allowBudgetSkip: true,
+            db,
+            jobKey,
         }
     ).catch((err) => {
         if (err instanceof LlmBudgetExceededError) {

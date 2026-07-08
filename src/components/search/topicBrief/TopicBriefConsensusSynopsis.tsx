@@ -62,7 +62,7 @@ export const TopicBriefConsensusSynopsis: React.FC<Props> = ({ consensusSynopsis
         )}
       </div>
 
-      {(consensusSynopsis.areasOfAgreement.length > 0 || consensusSynopsis.areasOfUncertainty.length > 0 || consensusSynopsis.quizFocusPoints.length > 0) && (
+      {(consensusSynopsis.areasOfAgreement.length > 0 || consensusSynopsis.areasOfUncertainty.length > 0 || consensusSynopsis.conflictingSignals.length > 0 || consensusSynopsis.quizFocusPoints.length > 0) && (
         <div className="mt-3 grid gap-3 lg:grid-cols-3">
           {consensusSynopsis.areasOfAgreement.length > 0 && (
             <div className="rounded-xl bg-slate-50 p-3 dark:bg-slate-900/50">
@@ -80,6 +80,14 @@ export const TopicBriefConsensusSynopsis: React.FC<Props> = ({ consensusSynopsis
               </ul>
             </div>
           )}
+          {consensusSynopsis.conflictingSignals.length > 0 && (
+            <div className="rounded-xl bg-amber-50 p-3 dark:bg-amber-950/20">
+              <p className="mb-1.5 text-[10px] font-black uppercase tracking-widest text-amber-700 dark:text-amber-300">Conflicting Signals</p>
+              <ul className="space-y-1 text-xs leading-relaxed text-amber-800 dark:text-amber-200">
+                {consensusSynopsis.conflictingSignals.slice(0, 3).map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
+            </div>
+          )}
           {consensusSynopsis.quizFocusPoints.length > 0 && (
             <div className="rounded-xl bg-slate-50 p-3 dark:bg-slate-900/50">
               <p className="mb-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400">Quiz Focus</p>
@@ -88,6 +96,26 @@ export const TopicBriefConsensusSynopsis: React.FC<Props> = ({ consensusSynopsis
               </ul>
             </div>
           )}
+        </div>
+      )}
+
+      {(['LOW', 'VERY_LOW'].includes(consensusSynopsis.evidenceStrength) || consensusSynopsis.conflictingSignals.length > 0) && consensusSynopsis.includedArticles.length > 0 && (
+        <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50/60 px-3 py-2 text-[11px] text-amber-900 dark:border-amber-800 dark:bg-amber-950/20 dark:text-amber-200">
+          <p className="font-semibold">Evidence strength is limited — review primary sources before acting on this synopsis.</p>
+          <div className="mt-1 flex flex-wrap gap-2">
+            {consensusSynopsis.includedArticles.slice(0, 4).map((article) => (
+              <a
+                key={article.uid || article.sourceIndex}
+                href={article.freeFullTextUrl || (article.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${article.pmid}/` : undefined) || (article.doi ? `https://doi.org/${article.doi}` : '#')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 rounded-full bg-white/80 px-2 py-0.5 font-semibold text-amber-800 hover:underline dark:bg-amber-950/40 dark:text-amber-100"
+              >
+                <i className="fas fa-arrow-up-right-from-square text-[9px]" />
+                Review source {article.sourceIndex}
+              </a>
+            ))}
+          </div>
         </div>
       )}
 

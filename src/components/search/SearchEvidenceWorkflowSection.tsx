@@ -33,6 +33,7 @@ interface SearchEvidenceWorkflowSectionProps {
   inPlaceQuizExpanded: boolean;
   clinicalAnswer: ClinicalAnswer | null | undefined;
   aiEnrichmentLoading: boolean;
+  aiEnrichmentFailed?: boolean;
   communityInsight: CommunityInsight | null | undefined;
   proactiveAlert: ProactiveAlert | null | undefined;
   knowledgeDriftAlerts: ProactiveEvidenceAlert[];
@@ -74,6 +75,7 @@ export const SearchEvidenceWorkflowSection: React.FC<SearchEvidenceWorkflowSecti
   inPlaceQuizExpanded,
   clinicalAnswer,
   aiEnrichmentLoading,
+  aiEnrichmentFailed,
   communityInsight,
   proactiveAlert,
   knowledgeDriftAlerts,
@@ -159,6 +161,7 @@ export const SearchEvidenceWorkflowSection: React.FC<SearchEvidenceWorkflowSecti
         agentGuidance={agentGuidance}
         liveClinicalAnswer={clinicalAnswer}
         aiEnrichmentLoading={aiEnrichmentLoading}
+        aiEnrichmentFailed={aiEnrichmentFailed}
         communityInsight={communityInsight}
         proactiveAlert={proactiveAlert}
         knowledgeDriftAlerts={knowledgeDriftAlerts}

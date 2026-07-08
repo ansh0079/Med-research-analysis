@@ -70,6 +70,7 @@ export function useSearch() {
   const [proactiveAlert, setProactiveAlert] = useState<ProactiveAlert | null>(null);
   const [learnerContext, setLearnerContext] = useState<LearnerContextSummary | null>(null);
   const [aiEnrichmentLoading, setAiEnrichmentLoading] = useState(false);
+  const [aiEnrichmentFailed, setAiEnrichmentFailed] = useState(false);
   const [intelligenceLoading, setIntelligenceLoading] = useState(false);
   const [lowRecallLearning, setLowRecallLearning] = useState<LowRecallLearning | null>(null);
   const [searchTelemetry, setSearchTelemetry] = useState<import('@types').SearchResponse['searchTelemetry'] | null>(null);
@@ -124,6 +125,7 @@ export function useSearch() {
     }) => {
       if (enrichPollRequestIdRef.current !== requestIdRef.current) return;
       if (enrichment.status === 'ready') {
+        setAiEnrichmentFailed(false);
         if (enrichment.clinicalAnswer) setClinicalAnswer(enrichment.clinicalAnswer);
         if (enrichment.consensusSynopsis) {
           const cs = enrichment.consensusSynopsis;
@@ -140,6 +142,8 @@ export function useSearch() {
               : prev
           );
         }
+      } else if (enrichment.status === 'failed') {
+        setAiEnrichmentFailed(true);
       }
       setAiEnrichmentLoading(false);
     }, [setClinicalAnswer, setTopicIntelligence]),
@@ -184,6 +188,7 @@ export function useSearch() {
       abortControllerRef.current = controller;
       cancelPollRef.current();
       setAiEnrichmentLoading(false);
+      setAiEnrichmentFailed(false);
 
       if (!query.trim()) {
         setResults([]);
@@ -318,6 +323,7 @@ export function useSearch() {
         // Poll for AI enrichment (consensus synopsis + clinical answer) if still pending
         if (aiEnrichmentKey && aiEnrichmentStatus === 'pending') {
           setAiEnrichmentLoading(true);
+          setAiEnrichmentFailed(false);
           enrichPollRequestIdRef.current = thisRequestId;
           setEnrichKey(aiEnrichmentKey);
           enrichmentPollRef.current.start();
@@ -362,6 +368,7 @@ export function useSearch() {
     setTopicGuideStatus('idle');
     setLastSearchId(null);
     setAiEnrichmentLoading(false);
+    setAiEnrichmentFailed(false);
     setIntelligenceLoading(false);
   }, [setResults, setError, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, cancelPoll]);
 
@@ -376,6 +383,7 @@ export function useSearch() {
     proactiveAlert,
     learnerContext,
     aiEnrichmentLoading,
+    aiEnrichmentFailed,
     intelligenceLoading,
     knowledgeDriftAlerts,
     dismissKnowledgeDriftAlert,

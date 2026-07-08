@@ -14,23 +14,7 @@ const claimMapService = require('./claimMapService');
 const { generateAndStoreMCQs } = require('./mcqGeneratorService');
 const { resolveProvider } = require('../utils/aiProvider');
 
-async function completeJobAndClaims(db, jobKey, jobType, { resultPayload, provider = null, model = null, auditPayload = null } = {}) {
-    const payload = { ...(resultPayload || {}), jobKey };
-    const complete = async () => {
-        await db.completeAiGenerationJob(jobKey, {
-            resultPayload: payload,
-            provider,
-            model,
-            auditPayload,
-        });
-        await claimMapService.persistClaimsForJob(db, jobKey, jobType, payload);
-    };
-    if (typeof db.withTransaction === 'function') {
-        await db.withTransaction(complete);
-    } else {
-        await complete();
-    }
-}
+const { completeJobAndClaims } = require('./aiGenerationJobCompletion');
 
 /**
  * Process DB-backed AI generation jobs (full synthesis, paper synopsis).
@@ -59,6 +43,9 @@ async function processAiGenerationJobByKey(jobKey, deps) {
                 fetchImpl,
                 jobKey,
                 userId: input.userId || null,
+                trainingStage: input.trainingStage || null,
+                previousQueries: input.previousQueries || [],
+                sessionDepth: input.sessionDepth || 0,
             });
             await completeJobAndClaims(db, jobKey, 'full_synthesis', {
                 resultPayload: { ...result, jobKey },

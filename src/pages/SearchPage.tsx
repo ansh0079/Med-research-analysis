@@ -60,6 +60,7 @@ export const SearchPage: React.FC = () => {
     proactiveAlert,
     learnerContext,
     aiEnrichmentLoading,
+    aiEnrichmentFailed,
     intelligenceLoading,
     knowledgeDriftAlerts,
     dismissKnowledgeDriftAlert,
@@ -265,6 +266,7 @@ export const SearchPage: React.FC = () => {
             inPlaceQuizExpanded={inPlaceQuizExpanded}
             clinicalAnswer={clinicalAnswer}
             aiEnrichmentLoading={aiEnrichmentLoading}
+            aiEnrichmentFailed={aiEnrichmentFailed}
             communityInsight={communityInsight}
             proactiveAlert={proactiveAlert}
             knowledgeDriftAlerts={knowledgeDriftAlerts}
