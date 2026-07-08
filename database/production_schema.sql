@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS users (
 , email_verified INTEGER DEFAULT 0, email_verification_token TEXT, email_verification_expires TIMESTAMPTZ, updated_at TIMESTAMPTZ, stripe_customer_id TEXT, stripe_subscription_id TEXT, subscription_status TEXT DEFAULT 'free', subscription_plan TEXT DEFAULT 'free', subscription_current_period_end TEXT, subscription_cancel_at_period_end INTEGER DEFAULT 0, trial_started_at TEXT, trial_ends_at TEXT, has_used_trial INTEGER NOT NULL DEFAULT 0, access_token_version INTEGER NOT NULL DEFAULT 0);
 
 CREATE TABLE IF NOT EXISTS agent_conversations (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     topic TEXT NOT NULL,
     normalized_topic TEXT NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS agent_conversations (
 CREATE TABLE IF NOT EXISTS agent_turn_side_effects (
     id SERIAL PRIMARY KEY,
     job_key TEXT NOT NULL UNIQUE,
-    conversation_id INTEGER REFERENCES agent_conversations(id) ON DELETE CASCADE,
+    conversation_id UUID REFERENCES agent_conversations(id) ON DELETE CASCADE,
     user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     topic TEXT NOT NULL,
     status TEXT NOT NULL DEFAULT 'queued',
