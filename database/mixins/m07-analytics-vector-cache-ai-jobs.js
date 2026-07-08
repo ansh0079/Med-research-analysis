@@ -468,8 +468,9 @@ async createAiGenerationJob({
     if (!jobKey || !jobType) return null;
     const now = new Date().toISOString();
     const resolvedUserId = userId || inputPayload?.userId || null;
+    let changes = 0;
     try {
-        await this.run(
+        const r = await this.run(
             `INSERT INTO ai_generation_jobs (job_key, job_type, status, topic, input_hash, input_payload, provider, model, user_id, created_at, updated_at, expires_at)
              VALUES (?, ?, 'queued', ?, ?, ?, ?, ?, ?, ?, ?, ?)
              ON CONFLICT(job_key) DO NOTHING`,
@@ -487,8 +488,9 @@ async createAiGenerationJob({
                 expiresAt || null,
             ]
         );
+        changes = r?.changes ?? 0;
     } catch {
-        await this.run(
+        const r = await this.run(
             `INSERT INTO ai_generation_jobs (job_key, job_type, status, topic, input_hash, input_payload, provider, model, created_at, updated_at, expires_at)
              VALUES (?, ?, 'queued', ?, ?, ?, ?, ?, ?, ?, ?)
              ON CONFLICT(job_key) DO NOTHING`,
@@ -505,8 +507,10 @@ async createAiGenerationJob({
                 expiresAt || null,
             ]
         );
+        changes = r?.changes ?? 0;
     }
-    return this.getAiGenerationJobByKey(jobKey);
+    const row = await this.getAiGenerationJobByKey(jobKey);
+    return row ? { ...row, inserted: changes === 1 } : null;
 }
 
 async markAiGenerationJobRunning(jobKey) {

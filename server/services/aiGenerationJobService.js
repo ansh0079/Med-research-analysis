@@ -215,7 +215,7 @@ async function getOrEnqueueConsensusSynopsis({ db, topic, articles = [], serverC
     }
 
     if (typeof db.createAiGenerationJob === 'function') {
-        await db.createAiGenerationJob({
+        const created = await db.createAiGenerationJob({
             jobKey,
             jobType: 'consensus_synopsis',
             topic,
@@ -229,7 +229,7 @@ async function getOrEnqueueConsensusSynopsis({ db, topic, articles = [], serverC
             },
             provider: serverConfig?.keys?.gemini ? 'gemini' : serverConfig?.keys?.mistral ? 'mistral' : null,
         }).catch((err) => { logger.warn({ err }, 'createAiGenerationJob failed'); return null; });
-        enqueueConsensusJob({ db, jobKey, serverConfig, fetchImpl, cache, logger });
+        if (created?.inserted) enqueueConsensusJob({ db, jobKey, serverConfig, fetchImpl, cache, logger });
     }
 
     return consensusPlaceholder({ topic, articles, jobKey, status: 'queued' });
@@ -316,7 +316,7 @@ async function getOrEnqueueLiveClinicalAnswer({ db, topic, articles = [], guidel
         return { status: 'failed', jobKey, clinicalAnswer: null, errorMessage: existing.errorMessage };
     }
 
-    await db.createAiGenerationJob({
+    const createdLca = await db.createAiGenerationJob({
         jobKey,
         jobType: 'live_clinical_answer',
         topic,
@@ -330,7 +330,7 @@ async function getOrEnqueueLiveClinicalAnswer({ db, topic, articles = [], guidel
         },
         provider: serverConfig?.keys?.gemini ? 'gemini' : serverConfig?.keys?.mistral ? 'mistral' : null,
     }).catch((err) => { logger.warn({ err }, 'createAiGenerationJob failed'); return null; });
-    enqueueLiveClinicalAnswerJob({ db, topic, articles, guidelines, previousQueries, trainingStage, sessionDepth, serverConfig, fetchImpl, logger });
+    if (createdLca?.inserted) enqueueLiveClinicalAnswerJob({ db, topic, articles, guidelines, previousQueries, trainingStage, sessionDepth, serverConfig, fetchImpl, logger });
     return { status: 'queued', jobKey, clinicalAnswer: null };
 }
 
@@ -411,7 +411,7 @@ async function getOrEnqueueFullSynthesis({
         enqueueFullSynthesisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger });
         return fullSynthesisPlaceholder({ topic, jobKey, status: 'queued' });
     }
-    await db.createAiGenerationJob({
+    const createdSynth = await db.createAiGenerationJob({
         jobKey,
         jobType: 'full_synthesis',
         topic,
@@ -420,7 +420,7 @@ async function getOrEnqueueFullSynthesis({
         userId: userId || null,
         provider: serverConfig?.keys?.gemini ? 'gemini' : serverConfig?.keys?.mistral ? 'mistral' : null,
     }).catch((err) => { logger.warn({ err }, 'createAiGenerationJob failed'); return null; });
-    enqueueFullSynthesisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger });
+    if (createdSynth?.inserted) enqueueFullSynthesisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger });
     return fullSynthesisPlaceholder({ topic, jobKey, status: 'queued' });
 }
 
@@ -480,7 +480,7 @@ async function maybeEnqueueQuizPrefetch({
         return { skipped: true, reason: `already_${existing.status}`, jobKey };
     }
 
-    await db.createAiGenerationJob({
+    const createdQuiz = await db.createAiGenerationJob({
         jobKey,
         jobType: 'quiz_prefetch',
         topic: cleanTopic,
@@ -498,7 +498,7 @@ async function maybeEnqueueQuizPrefetch({
         return null;
     });
 
-    enqueueQuizPrefetchJob({ db, jobKey, logger });
+    if (createdQuiz?.inserted) enqueueQuizPrefetchJob({ db, jobKey, logger });
     return { status: 'queued', jobKey };
 }
 
@@ -554,7 +554,7 @@ async function getOrEnqueuePaperSynopsis({
     if (existing?.status === 'failed') {
         return { status: 'failed', jobKey, errorMessage: existing.errorMessage };
     }
-    await db.createAiGenerationJob({
+    const createdSynop = await db.createAiGenerationJob({
         jobKey,
         jobType: 'paper_synopsis',
         topic: topic || null,
@@ -564,7 +564,7 @@ async function getOrEnqueuePaperSynopsis({
         provider: selectedProvider,
         model: selectedModel,
     }).catch((err) => { logger.warn({ err }, 'createAiGenerationJob failed'); return null; });
-    enqueuePaperSynopsisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger });
+    if (createdSynop?.inserted) enqueuePaperSynopsisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger });
     return { status: 'queued', jobKey, synopsis: null };
 }
 
