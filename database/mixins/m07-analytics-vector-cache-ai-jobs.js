@@ -878,6 +878,122 @@ async getRecommendationSatisfactionEvents(days = 30) {
     );
 }
 
+async getSearchFeedbackStats(days = 30) {
+    if (!this.kysely) return { helpful: 0, notHelpful: 0, total: 0, notHelpfulRate: null };
+    const since = this._metricsSinceIso(days);
+    const rows = await this.all(
+        `SELECT feedback_type, COUNT(*) AS count
+         FROM search_result_feedback
+         WHERE created_at >= ?
+         GROUP BY feedback_type`,
+        [since]
+    );
+    const counts = Object.fromEntries(rows.map((row) => [String(row.feedback_type), Number(row.count || 0)]));
+    const helpful = Number(counts.helpful || 0);
+    const notHelpful = Number(counts.not_helpful || 0);
+    const total = helpful + notHelpful;
+    return {
+        helpful,
+        notHelpful,
+        total,
+        notHelpfulRate: total ? notHelpful / total : null,
+    };
+}
+
+async getSearchNoClickStats(days = 30) {
+    if (!this.kysely) return { searchCount: 0, noClickCount: 0, noClickRate: null, sampleTopics: [] };
+    const since = this._metricsSinceIso(days);
+    const rows = await this.all(
+        `SELECT s.id AS search_id,
+                s.query,
+                s.normalized_topic,
+                SUM(CASE WHEN i.was_clicked = 1 OR i.was_saved = 1 OR i.dwell_time_ms >= 30000 THEN 1 ELSE 0 END) AS relevant_interactions
+         FROM searches s
+         JOIN search_result_impressions i ON i.search_id = s.id
+         WHERE s.created_at >= ?
+         GROUP BY s.id, s.query, s.normalized_topic`,
+        [since]
+    );
+    const noClickRows = rows.filter((row) => Number(row.relevant_interactions || 0) === 0);
+    const topicCounts = new Map();
+    for (const row of noClickRows) {
+        const topic = String(row.normalized_topic || row.query || '').trim().toLowerCase();
+        if (!topic) continue;
+        topicCounts.set(topic, (topicCounts.get(topic) || 0) + 1);
+    }
+    const sampleTopics = [...topicCounts.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10)
+        .map(([topic, count]) => ({ topic, count }));
+    const searchCount = rows.length;
+    const noClickCount = noClickRows.length;
+    return {
+        searchCount,
+        noClickCount,
+        noClickRate: searchCount ? noClickCount / searchCount : null,
+        sampleTopics,
+    };
+}
+
+async getLowRecallSearchStatsWindow(days = 30, limit = 50) {
+    if (!this.kysely) return [];
+    const since = this._metricsSinceIso(days);
+    const safeLimit = Math.min(Math.max(Number(limit) || 50, 1), 200);
+    return this.all(
+        `SELECT display_query, normalized_topic, result_count, attempt_count, last_seen_at, sources_json
+         FROM low_recall_searches
+         WHERE last_seen_at >= ?
+         ORDER BY attempt_count DESC, last_seen_at DESC
+         LIMIT ?`,
+        [since, safeLimit]
+    );
+}
+
+async getTopicSearchFailureClusters(days = 30, limit = 20) {
+    if (!this.kysely) return [];
+    const since = this._metricsSinceIso(days);
+    const safeLimit = Math.min(Math.max(Number(limit) || 20, 1), 100);
+    const rows = await this.all(
+        `SELECT normalized_topic AS topic,
+                COUNT(*) AS low_recall_count,
+                MAX(result_count) AS max_result_count,
+                MAX(last_seen_at) AS last_seen_at
+         FROM low_recall_searches
+         WHERE last_seen_at >= ?
+           AND normalized_topic IS NOT NULL
+           AND TRIM(normalized_topic) != ''
+         GROUP BY normalized_topic
+         ORDER BY low_recall_count DESC, last_seen_at DESC
+         LIMIT ?`,
+        [since, safeLimit]
+    );
+    return rows.map((row) => ({
+        topic: row.topic,
+        lowRecallCount: Number(row.low_recall_count || 0),
+        maxResultCount: Number(row.max_result_count || 0),
+        lastSeenAt: row.last_seen_at,
+    }));
+}
+
+async getSearchVolumeStats(days = 30) {
+    if (!this.kysely) return { totalSearches: 0, reformulatedSearches: 0, reformulationRate: null };
+    const since = this._metricsSinceIso(days);
+    const row = await this.get(
+        `SELECT COUNT(*) AS total,
+                SUM(CASE WHEN session_sequence_index > 0 THEN 1 ELSE 0 END) AS reformulated
+         FROM searches
+         WHERE created_at >= ?`,
+        [since]
+    );
+    const totalSearches = Number(row?.total || 0);
+    const reformulatedSearches = Number(row?.reformulated || 0);
+    return {
+        totalSearches,
+        reformulatedSearches,
+        reformulationRate: totalSearches ? reformulatedSearches / totalSearches : null,
+    };
+}
+
 async getSynthesisCitationValidationStats(days = 30) {
     if (!this.kysely) return { passRate: null, sampleSize: 0 };
     const since = this._metricsSinceIso(days);

@@ -1,7 +1,7 @@
 {
-  "version": 3,
+  "version": 4,
   "k": 10,
-  "description": "Curated gold-standard relevance set for offline search-quality evaluation. relevantUids are PubMed IDs (no prefix), each verified against the live NCBI esummary API on 2026-07-02 to confirm the PMID resolves to the intended landmark trial/guideline/meta-analysis. requiredTypes use lowercase substrings matched against article pubtype/studyDesign. offTopicUids are intentionally empty; populate them from live search results the team agrees are irrelevant (an empty set scores off-topic-rate 0, which is safe for the pass gate). Run with: npm run eval:search-quality:gold",
+  "description": "Curated gold-standard relevance set for offline search-quality evaluation (Phase 2). Base fixture contains 40 core queries; tests/fixtures/search-quality-gold-expansion.json adds 20 more plus off-topic/category overrides for a 60-query eval set. Metrics: MRR, NDCG@10, Precision@5, recall proxy, off-topic rate, landmark/guideline hit rate. Run with: npm run eval:search-quality:gold",
   "queries": [
     {
       "query": "SGLT2 inhibitors heart failure reduced ejection fraction randomized trial",

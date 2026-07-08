@@ -177,6 +177,33 @@ function buildLearningAgentMetrics({
     };
 }
 
+function buildSearchOnlineQualityMetrics({
+    impressionRows = [],
+    clickLatencyRows = [],
+    feedbackStats = {},
+    noClickStats = {},
+    lowRecallRows = [],
+    volumeStats = {},
+    failureClusters = [],
+} = {}) {
+    const base = buildSearchQualityMetrics(impressionRows, clickLatencyRows);
+    return {
+        ...base,
+        noClickRate: noClickStats.noClickRate ?? null,
+        noClickSearchCount: noClickStats.noClickCount ?? 0,
+        impressionSearchCount: noClickStats.searchCount ?? 0,
+        reformulationRate: volumeStats.reformulationRate ?? null,
+        reformulatedSearchCount: volumeStats.reformulatedSearches ?? 0,
+        totalSearchCount: volumeStats.totalSearches ?? 0,
+        searchNotHelpfulRate: feedbackStats.notHelpfulRate ?? null,
+        searchFeedbackHelpful: feedbackStats.helpful ?? 0,
+        searchFeedbackNotHelpful: feedbackStats.notHelpful ?? 0,
+        lowRecallQueryCount: lowRecallRows.length,
+        topicFailureClusters: failureClusters.slice(0, 10),
+        noClickTopicSamples: noClickStats.sampleTopics || [],
+    };
+}
+
 async function collectQualityMetrics(db, days = 30) {
     const safeDays = Math.min(90, Math.max(1, Number(days) || 30));
     const [
@@ -188,6 +215,11 @@ async function collectQualityMetrics(db, days = 30) {
         memoryRows,
         satisfactionRows,
         citationStats,
+        searchFeedbackStats,
+        noClickStats,
+        lowRecallRows,
+        volumeStats,
+        failureClusters,
     ] = await Promise.all([
         db.getSearchImpressionMetricsWindow?.(safeDays) ?? [],
         db.getSearchClickLatencyEvents?.(safeDays) ?? [],
@@ -197,12 +229,25 @@ async function collectQualityMetrics(db, days = 30) {
         db.getKnowledgeProgressionSnapshot?.(safeDays) ?? [],
         db.getRecommendationSatisfactionEvents?.(safeDays) ?? [],
         db.getSynthesisCitationValidationStats?.(safeDays) ?? { passRate: null, sampleSize: 0 },
+        db.getSearchFeedbackStats?.(safeDays) ?? { helpful: 0, notHelpful: 0, total: 0, notHelpfulRate: null },
+        db.getSearchNoClickStats?.(safeDays) ?? { searchCount: 0, noClickCount: 0, noClickRate: null, sampleTopics: [] },
+        db.getLowRecallSearchStatsWindow?.(safeDays, 50) ?? [],
+        db.getSearchVolumeStats?.(safeDays) ?? { totalSearches: 0, reformulatedSearches: 0, reformulationRate: null },
+        db.getTopicSearchFailureClusters?.(safeDays, 15) ?? [],
     ]);
 
     return {
         generatedAt: new Date().toISOString(),
         windowDays: safeDays,
-        search: buildSearchQualityMetrics(impressionRows, clickLatencyRows),
+        search: buildSearchOnlineQualityMetrics({
+            impressionRows,
+            clickLatencyRows,
+            feedbackStats: searchFeedbackStats,
+            noClickStats,
+            lowRecallRows,
+            volumeStats,
+            failureClusters,
+        }),
         synthesis: buildSynthesisQualityMetrics(feedbackRows, citationStats),
         learningAgent: buildLearningAgentMetrics({
             retentionRows,
@@ -222,6 +267,7 @@ module.exports = {
     mrrFromRelevanceFlags,
     ndcgFromRelevanceFlags,
     buildSearchQualityMetrics,
+    buildSearchOnlineQualityMetrics,
     buildSynthesisQualityMetrics,
     buildLearningAgentMetrics,
     collectQualityMetrics,

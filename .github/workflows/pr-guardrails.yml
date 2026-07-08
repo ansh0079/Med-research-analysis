@@ -31,6 +31,13 @@ jobs:
           JWT_SECRET: test-jwt-secret
           ADMIN_TOKEN: test-admin-token
 
+      - name: Run search quality unit tests
+        run: npm test -- --testPathPatterns="searchQualityEvalService.test|searchQualityRegression.test|searchGoldFixture.test|qualityMetricsService.test" --no-coverage
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret
+          ADMIN_TOKEN: test-admin-token
+
       - name: Run search personalization eval
         run: npm run eval:search-personalization
         env:
@@ -126,3 +133,11 @@ jobs:
           NODE_ENV: test
           JWT_SECRET: test-jwt-secret
           ADMIN_TOKEN: test-admin-token
+
+      - name: Upload search quality eval artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: search-quality-eval-${{ github.run_id }}
+          path: eval-results/search-quality-gold-*.json
+          if-no-files-found: ignore

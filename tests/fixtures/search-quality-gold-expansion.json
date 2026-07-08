@@ -1,0 +1,268 @@
+{
+  "version": 1,
+  "description": "Phase 2 expansion: 20 additional labelled queries plus off-topic/category overrides for base gold queries.",
+  "queryOverrides": [
+    {
+      "query": "SGLT2 inhibitors heart failure reduced ejection fraction randomized trial",
+      "category": "landmark_rct",
+      "specialty": "cardiology",
+      "offTopicUids": ["26378978"]
+    },
+    {
+      "query": "sacubitril valsartan heart failure reduced ejection fraction mortality",
+      "category": "landmark_rct",
+      "specialty": "cardiology",
+      "offTopicUids": ["10471456"]
+    },
+    {
+      "query": "empagliflozin cardiovascular outcomes type 2 diabetes EMPA-REG",
+      "category": "landmark_rct",
+      "specialty": "endocrinology",
+      "offTopicUids": ["31535829"]
+    },
+    {
+      "query": "pembrolizumab plus chemotherapy metastatic non-small cell lung cancer",
+      "category": "landmark_rct",
+      "specialty": "oncology",
+      "offTopicUids": ["31562797"]
+    },
+    {
+      "query": "nivolumab ipilimumab advanced melanoma overall survival",
+      "category": "landmark_rct",
+      "specialty": "oncology",
+      "offTopicUids": ["29658856"]
+    },
+    {
+      "query": "dexamethasone COVID-19 hospitalized mechanical ventilation mortality",
+      "category": "landmark_rct",
+      "specialty": "infectious_disease",
+      "offTopicUids": ["33933206"]
+    },
+    {
+      "query": "atrial fibrillation diagnosis and management guideline",
+      "category": "guideline",
+      "specialty": "cardiology",
+      "offTopicUids": ["21870978"]
+    },
+    {
+      "query": "surviving sepsis campaign guidelines management sepsis septic shock",
+      "category": "guideline",
+      "specialty": "critical_care",
+      "offTopicUids": ["23688302"]
+    },
+    {
+      "query": "intensive LDL cholesterol lowering statin meta-analysis",
+      "category": "meta_analysis",
+      "specialty": "cardiology",
+      "offTopicUids": ["28304224"]
+    },
+    {
+      "query": "global burden bacterial antimicrobial resistance",
+      "category": "systematic_review",
+      "specialty": "infectious_disease",
+      "offTopicUids": ["12537872"]
+    }
+  ],
+  "queries": [
+    {
+      "query": "metoprolol succinate chronic heart failure mortality MERIT-HF",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "cardiology",
+      "relevantUids": ["10966806"],
+      "offTopicUids": ["30221597"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "MERIT-HF (10966806)."
+    },
+    {
+      "query": "cardiac resynchronization therapy heart failure COMPANION trial",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "cardiology",
+      "relevantUids": ["12963388"],
+      "offTopicUids": ["25176015"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "COMPANION CRT (12963388)."
+    },
+    {
+      "query": "rivaroxaban treatment acute deep vein thrombosis EINSTEIN",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "hematology",
+      "relevantUids": ["21635378"],
+      "offTopicUids": ["19717844"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "EINSTEIN-DVT (21635378)."
+    },
+    {
+      "query": "semaglutide once weekly obesity weight loss STEP 1",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "endocrinology",
+      "relevantUids": ["33567185"],
+      "offTopicUids": ["27295427"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "STEP 1 semaglutide obesity (33567185)."
+    },
+    {
+      "query": "bariatric surgery versus medical therapy type 2 diabetes STAMPEDE",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "endocrinology",
+      "relevantUids": ["29260272"],
+      "offTopicUids": ["9742976"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "STAMPEDE surgery vs medical therapy (29260272)."
+    },
+    {
+      "query": "trastuzumab adjuvant HER2 positive breast cancer BCIRG 006",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "oncology",
+      "relevantUids": ["17409101"],
+      "offTopicUids": ["29226797"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "BCIRG 006 trastuzumab (17409101)."
+    },
+    {
+      "query": "imatinib versus interferon chronic myeloid leukemia IRIS trial",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "oncology",
+      "relevantUids": ["11430304"],
+      "offTopicUids": ["33283989"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "IRIS imatinib CML (11430304)."
+    },
+    {
+      "query": "tranexamic acid trauma hemorrhage CRASH-2",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "emergency_medicine",
+      "relevantUids": ["20554319"],
+      "offTopicUids": ["7477192"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "CRASH-2 TXA (20554319)."
+    },
+    {
+      "query": "oseltamivir treatment influenza healthy adults",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "infectious_disease",
+      "relevantUids": ["12537872"],
+      "offTopicUids": ["32678530"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "Milestone oseltamivir treatment trial (12537872)."
+    },
+    {
+      "query": "methotrexate early rheumatoid arthritis combination therapy TEAR",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "rheumatology",
+      "relevantUids": ["20425138"],
+      "offTopicUids": ["35065702"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "TEAR RA strategy (20425138)."
+    },
+    {
+      "query": "meropenem versus piperacillin tazobactam sepsis MERINO trial",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "infectious_disease",
+      "relevantUids": ["26904085"],
+      "offTopicUids": ["34599691"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "MERINO meropenem vs pip-tazo (26904085)."
+    },
+    {
+      "query": "vitamin K antagonist bridging atrial fibrillation perioperative BRIDGE trial",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "cardiology",
+      "relevantUids": ["26008996"],
+      "offTopicUids": ["38033089"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "BRIDGE perioperative AF (26008996)."
+    },
+    {
+      "query": "clopidogrel aspirin acute minor ischemic stroke CHANCE",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "neurology",
+      "relevantUids": ["24501052"],
+      "offTopicUids": ["27673305"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "CHANCE dual antiplatelet stroke (24501052)."
+    },
+    {
+      "query": "tenecteplase alteplase acute ischemic stroke EXTEND-IA TNK",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "neurology",
+      "relevantUids": ["29129157"],
+      "offTopicUids": ["7477192"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "EXTEND-IA TNK thrombolysis (29129157)."
+    },
+    {
+      "query": "inhaled corticosteroid long acting beta agonist asthma SMART strategy",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "pulmonology",
+      "relevantUids": ["30879544"],
+      "offTopicUids": ["32579807"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "SMART budesonide-formoterol strategy (30879544)."
+    },
+    {
+      "query": "Helicobacter pylori eradication peptic ulcer bleeding recurrence",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "gastroenterology",
+      "relevantUids": ["8781440"],
+      "offTopicUids": ["20554319"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "Landmark H. pylori eradication ulcer trial (8781440)."
+    },
+    {
+      "query": "continuous positive airway pressure obstructive sleep apnea cardiovascular outcomes SAVE",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "pulmonology",
+      "relevantUids": ["27707544"],
+      "offTopicUids": ["26551272"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "SAVE CPAP OSA CV outcomes (27707544)."
+    },
+    {
+      "query": "fecal microbiota transplant recurrent Clostridioides difficile infection",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "gastroenterology",
+      "relevantUids": ["23395276"],
+      "offTopicUids": ["26904085"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "van Nood FMT C diff (23395276)."
+    },
+    {
+      "query": "early goal-directed therapy septic shock ProCESS trial",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "critical_care",
+      "relevantUids": ["24635773"],
+      "offTopicUids": ["10793162"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "ProCESS EGDT sepsis (24635773)."
+    },
+    {
+      "query": "HPV vaccination cervical intraepithelial neoplasia FUTURE II",
+      "sources": "pubmed,openalex",
+      "category": "landmark_rct",
+      "specialty": "preventive_medicine",
+      "relevantUids": ["16531679"],
+      "offTopicUids": ["34634250"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "FUTURE II HPV vaccine (16531679)."
+    }
+  ]
+}

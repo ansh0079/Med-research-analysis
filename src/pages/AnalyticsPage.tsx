@@ -21,6 +21,16 @@ interface QualityMetricBlock {
   ctrTop3?: number | null;
   ctrTop10?: number | null;
   timeToRelevantPaperMs?: number | null;
+  noClickRate?: number | null;
+  noClickSearchCount?: number;
+  reformulationRate?: number | null;
+  reformulatedSearchCount?: number;
+  searchNotHelpfulRate?: number | null;
+  searchFeedbackHelpful?: number;
+  searchFeedbackNotHelpful?: number;
+  lowRecallQueryCount?: number;
+  topicFailureClusters?: Array<{ topic: string; lowRecallCount: number; maxResultCount?: number; lastSeenAt?: string }>;
+  noClickTopicSamples?: Array<{ topic: string; count: number }>;
   factualAccuracyScore?: number | null;
   completenessScore?: number | null;
   clinicalUsefulnessScore?: number | null;
@@ -343,16 +353,50 @@ export const AnalyticsPage: React.FC = () => {
 
             <div className="space-y-4">
               <h2 className="text-lg font-black text-gray-900 dark:text-white">Product quality metrics</h2>
-              <p className="text-xs text-gray-400 -mt-2">Search MRR/NDCG from impressions; synthesis and learning agent from user feedback and learning events.</p>
+              <p className="text-xs text-gray-400 -mt-2">Online search quality from impressions, feedback, reformulations, and low-recall clusters.</p>
 
               <div className="neo-card rounded-2xl p-6 space-y-4">
-                <h3 className="font-bold text-gray-900 dark:text-white">Search quality</h3>
+                <h3 className="font-bold text-gray-900 dark:text-white">Search quality (online)</h3>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                  <MetricTile label="MRR" value={formatRate(qualityMetrics?.search?.mrr)} hint={`n=${qualityMetrics?.search?.sampleSize ?? 0} searches`} />
+                  <MetricTile label="MRR" value={formatRate(qualityMetrics?.search?.mrr)} hint={`n=${qualityMetrics?.search?.sampleSize ?? 0} impression sessions`} />
                   <MetricTile label="NDCG@10" value={formatRate(qualityMetrics?.search?.ndcgAt10)} />
+                  <MetricTile label="No-click rate" value={formatRate(qualityMetrics?.search?.noClickRate != null ? qualityMetrics.search.noClickRate * 100 : null, 0) + (qualityMetrics?.search?.noClickRate != null ? '%' : '')} hint={`${qualityMetrics?.search?.noClickSearchCount ?? 0} zero-engagement searches`} />
+                  <MetricTile label="Reformulation rate" value={formatRate(qualityMetrics?.search?.reformulationRate != null ? qualityMetrics.search.reformulationRate * 100 : null, 0) + (qualityMetrics?.search?.reformulationRate != null ? '%' : '')} hint={`${qualityMetrics?.search?.reformulatedSearchCount ?? 0} refined queries`} />
+                  <MetricTile label="Not-helpful feedback" value={formatRate(qualityMetrics?.search?.searchNotHelpfulRate != null ? qualityMetrics.search.searchNotHelpfulRate * 100 : null, 0) + (qualityMetrics?.search?.searchNotHelpfulRate != null ? '%' : '')} hint={`${qualityMetrics?.search?.searchFeedbackNotHelpful ?? 0} negative / ${(qualityMetrics?.search?.searchFeedbackHelpful ?? 0) + (qualityMetrics?.search?.searchFeedbackNotHelpful ?? 0)} total`} />
+                  <MetricTile label="Low-recall queries" value={String(qualityMetrics?.search?.lowRecallQueryCount ?? 0)} hint="distinct low-recall topics in window" />
                   <MetricTile label="CTR top 3" value={formatRate(qualityMetrics?.search?.ctrTop3)} />
                   <MetricTile label="Time to relevant" value={qualityMetrics?.search?.timeToRelevantPaperMs != null ? `${Math.round(qualityMetrics.search.timeToRelevantPaperMs / 1000)}s` : '—'} hint="avg click latency" />
                 </div>
+                {(qualityMetrics?.search?.topicFailureClusters?.length || qualityMetrics?.search?.noClickTopicSamples?.length) ? (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-2">
+                    {qualityMetrics?.search?.topicFailureClusters?.length ? (
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Topic failure clusters (low recall)</p>
+                        <ul className="text-xs text-slate-600 dark:text-slate-300 space-y-1">
+                          {qualityMetrics.search.topicFailureClusters.slice(0, 6).map((row) => (
+                            <li key={row.topic} className="flex justify-between gap-2">
+                              <span className="truncate">{row.topic}</span>
+                              <span className="font-semibold shrink-0">{row.lowRecallCount}x</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                    {qualityMetrics?.search?.noClickTopicSamples?.length ? (
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">No-click topic samples</p>
+                        <ul className="text-xs text-slate-600 dark:text-slate-300 space-y-1">
+                          {qualityMetrics.search.noClickTopicSamples.slice(0, 6).map((row) => (
+                            <li key={row.topic} className="flex justify-between gap-2">
+                              <span className="truncate">{row.topic}</span>
+                              <span className="font-semibold shrink-0">{row.count}x</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
               </div>
 
               <div className="neo-card rounded-2xl p-6 space-y-4">
