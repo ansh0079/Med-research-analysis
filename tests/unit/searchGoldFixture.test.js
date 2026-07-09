@@ -4,10 +4,10 @@ const { loadSearchGoldFixture } = require('../../scripts/load-search-gold-fixtur
 const { inferQueryCategory, evaluateSearchResults, summarizeSearchEval } = require('../../server/services/searchQualityEvalService');
 
 describe('search gold fixture loader', () => {
-    test('loads base fixture plus expansion to reach 60 queries', () => {
+    test('loads base fixture plus expansion to reach 65 queries', () => {
         const fixture = loadSearchGoldFixture('tests/fixtures/search-quality-gold.json');
-        expect(fixture.queryCount).toBeGreaterThanOrEqual(60);
-        expect(fixture.expansionQueryCount).toBe(20);
+        expect(fixture.queryCount).toBeGreaterThanOrEqual(65);
+        expect(fixture.expansionQueryCount).toBe(25);
     });
 
     test('applies off-topic overrides from expansion file', () => {

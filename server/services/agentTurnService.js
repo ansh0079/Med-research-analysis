@@ -21,7 +21,8 @@ const {
     summarizeOlderMessages,
 } = require('./agentHelpers');
 
-const { selectTeachingStrategyArm } = require('./personalizationBanditService');
+const { recordBanditReward, selectTeachingStrategyArm } = require('./personalizationBanditService');
+const { agentFollowUpReward } = require('./learningLoopSignalService');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -144,6 +145,9 @@ async function executeAgentTurn(
     }
 
     const teachingStrategyArm = await selectTeachingStrategyArm(db, userId).catch(() => null);
+    const implicitFollowUpReward = teachingStrategyArm?.armId && userId
+        ? agentFollowUpReward({ conversationHistory, message: trimmedMessage })
+        : 0;
     const systemPrompt = buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines, userContext, crossTopicBridges, retrieval, { teachingStrategy: teachingStrategyArm?.strategy ? teachingStrategyArm : null });
 
     const providerCandidates = getProviderCandidates({}, serverConfig);
@@ -244,6 +248,30 @@ async function executeAgentTurn(
 
     // Enqueue side effects asynchronously — never block the response.
     if (userId) {
+        if (teachingStrategyArm?.armId) {
+            db.recordLearningEvent?.({
+                userId,
+                eventType: 'agent_turn_completed',
+                topic: trimmedTopic,
+                sourceType: 'agent_turn',
+                sourceId: conversationId != null ? String(conversationId) : sessionId,
+                payload: {
+                    classifiedIntent,
+                    messageWordCount: trimmedMessage.split(/\s+/).filter(Boolean).length,
+                    conversationTurnCount: Array.isArray(conversationHistory) ? conversationHistory.length : 0,
+                    followUpReward: implicitFollowUpReward,
+                    banditMeta: {
+                        policyType: 'agent_teaching_strategy',
+                        armId: teachingStrategyArm.armId,
+                        scopeKey: teachingStrategyArm.scopeKey,
+                    },
+                },
+            }).catch((err) => logger.warn({ err, topic: trimmedTopic, userId }, 'agent turn learning event failed'));
+            if (implicitFollowUpReward > 0) {
+                recordBanditReward(db, 'agent_teaching_strategy', teachingStrategyArm.armId, implicitFollowUpReward, userId)
+                    .catch((err) => logger.warn({ err, armId: teachingStrategyArm.armId }, 'agent follow-up bandit reward failed'));
+            }
+        }
         enqueueAgentTurnSideEffects({
             db,
             serverConfig,

@@ -55,8 +55,12 @@ function registerCaseRoutes(app, {
                     return res.status(400).json({ error: 'Difficulty must be easy, medium, or hard' });
                 }
 
-                // Get user profile for personalization
-                const userProfile = await db.getLearningProfile(req.user.id).catch(() => null);
+                // Get user profile and topic mastery for personalization.
+                const [profile, topicMastery] = await Promise.all([
+                    db.getLearningProfile(req.user.id).catch(() => null),
+                    db.getUserTopicMastery?.(req.user.id, topic.trim()).catch(() => null),
+                ]);
+                const userProfile = { ...(profile || {}), topicMastery: topicMastery || null };
 
                 const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider, model }, serverConfig);
                 if (!selectedProvider) {

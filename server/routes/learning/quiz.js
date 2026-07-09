@@ -5,7 +5,11 @@ const { inferMisconceptionCategory } = require('../../services/misconceptionCate
 const { recordMasterySnapshot, getLearningVelocity } = require('../../services/learningVelocityService');
 const { updateInferredMisconceptionsForTopic } = require('../../services/misconceptionInferenceService');
 const { analyzeQuizErrorPatterns } = require('../../services/quizErrorPatternService');
-const { attributeQuizAttemptRewards, attributeRecommendationFollowThrough } = require('../../services/searchLearningOutcomeService');
+const {
+    attributeAgentQuizOutcomeReward,
+    attributeQuizAttemptRewards,
+    attributeRecommendationFollowThrough,
+} = require('../../services/searchLearningOutcomeService');
 const {
     calculateMastery, nextReviewDate, updateStreak,
     buildOutline, initialCoverage, updateCoverage, summarizeRunGaps,
@@ -298,6 +302,9 @@ function registerQuizRoutes(app, deps) {
                 normalizedTopic,
                 eventType: 'quiz_session',
             }).catch((err) => { logger.warn({ err }, 'attributeRecommendationFollowThrough failed'); });
+
+            void attributeAgentQuizOutcomeReward(db, userId, attemptsWithJudgement, topic)
+                .catch((err) => { logger.warn({ err }, 'attributeAgentQuizOutcomeReward failed'); });
 
             const errorPatterns = analyzeQuizErrorPatterns(attemptsWithJudgement, { topic });
             if (errorPatterns.hasPatterns && db.recordLearningEvent) {

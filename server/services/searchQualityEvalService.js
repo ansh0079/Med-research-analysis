@@ -43,26 +43,43 @@ function inferQueryCategory(querySpec = {}) {
     return 'landmark_rct';
 }
 
-function scoreAtK(topUids, relevant, offTopic, requiredTypes, topArticles, k) {
+function buildRelevanceMap(querySpec = {}) {
+    const map = new Map();
+    for (const uid of querySpec?.relevantUids || []) {
+        if (typeof uid === 'string' || typeof uid === 'number') {
+            map.set(normalizeUid(uid), 1);
+        } else if (uid && typeof uid === 'object') {
+            const key = normalizeUid(uid.uid || uid.pmid || uid.id || uid.articleUid);
+            if (key) map.set(key, Math.max(0, Math.min(3, Number(uid.grade ?? uid.relevance ?? uid.score ?? 1) || 1)));
+        }
+    }
+    for (const [uid, grade] of Object.entries(querySpec?.relevanceGrades || {})) {
+        const key = normalizeUid(uid);
+        if (key) map.set(key, Math.max(0, Math.min(3, Number(grade) || 0)));
+    }
+    return map;
+}
+
+function scoreAtK(topUids, relevanceMap, offTopic, requiredTypes, topArticles, k) {
     const slice = topUids.slice(0, k);
     const topSlice = topArticles.slice(0, k);
-    const relevantHits = slice.filter((uid) => relevant.has(uid));
+    const relevantHits = slice.filter((uid) => (relevanceMap.get(uid) || 0) > 0);
     const offTopicHits = slice.filter((uid) => offTopic.has(uid));
     const typeCoverage = requiredTypes.length === 0
         ? 1
         : requiredTypes.filter((type) => topSlice.some((article) => articleMatchesType(article, type))).length / requiredTypes.length;
-    const relevanceFlags = slice.map((uid) => relevant.has(uid));
+    const relevanceFlags = slice.map((uid) => (relevanceMap.get(uid) || 0) > 0);
     const firstRelevantRank = relevanceFlags.findIndex(Boolean);
     const mrr = firstRelevantRank >= 0 ? 1 / (firstRelevantRank + 1) : 0;
-    const gradedRelevance = slice.map((uid) => (relevant.has(uid) ? 1 : 0));
+    const gradedRelevance = slice.map((uid) => relevanceMap.get(uid) || 0);
     let dcg = 0;
     let idcg = 0;
     for (let i = 0; i < gradedRelevance.length; i++) {
-        if (gradedRelevance[i] > 0) dcg += gradedRelevance[i] / Math.log2(i + 2);
+        if (gradedRelevance[i] > 0) dcg += (2 ** gradedRelevance[i] - 1) / Math.log2(i + 2);
     }
-    const ideal = [...gradedRelevance].sort((a, b) => b - a);
+    const ideal = [...relevanceMap.values()].sort((a, b) => b - a).slice(0, k);
     for (let i = 0; i < ideal.length; i++) {
-        if (ideal[i] > 0) idcg += ideal[i] / Math.log2(i + 2);
+        if (ideal[i] > 0) idcg += (2 ** ideal[i] - 1) / Math.log2(i + 2);
     }
     const ndcgAtK = idcg > 0 ? dcg / idcg : 0;
     return {
@@ -70,7 +87,7 @@ function scoreAtK(topUids, relevant, offTopic, requiredTypes, topArticles, k) {
         relevantHits: relevantHits.length,
         offTopicHits: offTopicHits.length,
         precisionAtK: slice.length ? relevantHits.length / slice.length : 0,
-        recallAtK: relevant.size ? relevantHits.length / relevant.size : 0,
+        recallAtK: relevanceMap.size ? relevantHits.length / relevanceMap.size : 0,
         offTopicRateAtK: slice.length ? offTopicHits.length / slice.length : 0,
         mrr,
         ndcgAtK,
@@ -82,14 +99,14 @@ function scoreAtK(topUids, relevant, offTopic, requiredTypes, topArticles, k) {
 function evaluateSearchResults(querySpec, articles, options = {}) {
     const k = Math.max(1, Math.min(Number(options.k || querySpec?.k || 10), Array.isArray(articles) ? articles.length || 1 : 1));
     const top = Array.isArray(articles) ? articles.slice(0, k) : [];
-    const relevant = new Set((querySpec?.relevantUids || []).map(normalizeUid).filter(Boolean));
+    const relevanceMap = buildRelevanceMap(querySpec);
     const offTopic = new Set((querySpec?.offTopicUids || []).map(normalizeUid).filter(Boolean));
     const requiredTypes = Array.isArray(querySpec?.requiredTypes) ? querySpec.requiredTypes : [];
     const category = inferQueryCategory(querySpec);
 
     const topUids = top.map(articleUid).filter(Boolean);
-    const atK = scoreAtK(topUids, relevant, offTopic, requiredTypes, top, k);
-    const at5 = scoreAtK(topUids, relevant, offTopic, requiredTypes, top, Math.min(5, k));
+    const atK = scoreAtK(topUids, relevanceMap, offTopic, requiredTypes, top, k);
+    const at5 = scoreAtK(topUids, relevanceMap, offTopic, requiredTypes, top, Math.min(5, k));
 
     const result = {
         query: querySpec?.query || '',
@@ -97,13 +114,13 @@ function evaluateSearchResults(querySpec, articles, options = {}) {
         specialty: querySpec?.specialty || null,
         k,
         resultCount: top.length,
-        relevantTotal: relevant.size,
+        relevantTotal: relevanceMap.size,
         relevantHits: atK.relevantHits,
         offTopicHits: atK.offTopicHits,
         precisionAtK: atK.precisionAtK,
         precisionAt5: at5.precisionAtK,
         recallAtK: atK.recallAtK,
-        recallProxy: atK.anyRelevantHit ? Math.max(atK.recallAtK, 1 / Math.max(relevant.size, 1)) : 0,
+        recallProxy: atK.anyRelevantHit ? Math.max(atK.recallAtK, 1 / Math.max(relevanceMap.size, 1)) : 0,
         offTopicRateAtK: atK.offTopicRateAtK,
         mrr: atK.mrr,
         ndcgAtK: atK.ndcgAtK,
@@ -111,8 +128,9 @@ function evaluateSearchResults(querySpec, articles, options = {}) {
         anyRelevantHit: atK.anyRelevantHit,
         landmarkHit: category === 'landmark_rct' ? atK.anyRelevantHit : null,
         guidelineHit: category === 'guideline' ? atK.anyRelevantHit : null,
-        missingRelevantUids: [...relevant].filter((uid) => !topUids.includes(uid)),
-        hitUids: topUids.filter((uid) => relevant.has(uid)),
+        missingRelevantUids: [...relevanceMap.keys()].filter((uid) => !topUids.includes(uid)),
+        hitUids: topUids.filter((uid) => relevanceMap.has(uid)),
+        relevanceGrades: Object.fromEntries(relevanceMap),
         offTopicHitUids: topUids.filter((uid) => offTopic.has(uid)),
     };
     recordSearchQuality({ offTopicRateAt10: result.offTopicRateAtK });
@@ -192,6 +210,7 @@ module.exports = {
     evaluateSearchResults,
     summarizeSearchEval,
     finalizeSummary,
+    buildRelevanceMap,
     articleMatchesType,
     inferQueryCategory,
 };

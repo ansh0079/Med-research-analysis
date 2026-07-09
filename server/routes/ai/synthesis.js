@@ -19,6 +19,10 @@ const {
     invalidatePaperSynopsisCache,
 } = require('../../services/paperSynopsisCore');
 const { recordBanditReward } = require('../../services/personalizationBanditService');
+const {
+    synopsisFeedbackReward,
+    synopsisRegenerationTargets,
+} = require('../../services/learningLoopSignalService');
 const { getOrEnqueueFullSynthesis, getOrEnqueuePaperSynopsis } = require('../../services/aiGenerationJobService');
 const { persistPaperTeachingObject } = require('../../services/teachingObjectService');
 
@@ -285,6 +289,7 @@ function registerSynthesisRoutes(app, {
             return res.status(400).json({ error: 'articleUid/article and feedbackType (helpful|not_helpful) are required' });
         }
         try {
+            const regenerationTargets = type === 'not_helpful' ? synopsisRegenerationTargets(reason) : [];
             if (db?.recordSynopsisFeedback) {
                 await db.recordSynopsisFeedback({
                     userId: req.user?.id || null,
@@ -296,7 +301,7 @@ function registerSynthesisRoutes(app, {
                     model,
                     feedbackType: type,
                     reason,
-                    metadata: { cached },
+                    metadata: { cached, regenerationTargets },
                 });
             }
             if (type === 'not_helpful' && article) {
@@ -314,12 +319,17 @@ function registerSynthesisRoutes(app, {
             }
             // Close the synopsis_style bandit reward loop
             if (banditMeta?.policyType && banditMeta?.armId) {
-                const reward = type === 'helpful' ? 1 : 0;
+                const reward = synopsisFeedbackReward(type, reason);
                 recordBanditReward(db, banditMeta.policyType, banditMeta.armId, reward, req.user?.id ?? null)
                     .catch((err) => logger.warn({ err, armId: banditMeta.armId }, 'synopsis bandit reward failed'));
             }
 
-            return res.json({ ok: true, feedbackType: type, cacheInvalidated: type === 'not_helpful' && Boolean(article) });
+            return res.json({
+                ok: true,
+                feedbackType: type,
+                cacheInvalidated: type === 'not_helpful' && Boolean(article),
+                regenerationTargets,
+            });
         } catch (error) {
             req.log.error({ err: error }, 'Synopsis feedback error');
             return res.status(500).json({ error: 'Failed to record synopsis feedback' });

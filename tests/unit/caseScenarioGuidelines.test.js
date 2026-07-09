@@ -1,4 +1,4 @@
-const { buildCaseScenarioPrompt } = require('../../server/services/caseScenarioService');
+const { buildCaseBranchDifficultyPlan, buildCaseScenarioPrompt } = require('../../server/services/caseScenarioService');
 
 describe('buildCaseScenarioPrompt guideline grounding', () => {
     test('includes guideline context block when guidelines are supplied', () => {
@@ -16,5 +16,15 @@ describe('buildCaseScenarioPrompt guideline grounding', () => {
         const prompt = buildCaseScenarioPrompt('sepsis', 'medium', { trainingStage: 'finals' });
 
         expect(prompt).toContain('No guideline context provided.');
+    });
+
+    test('injects BKT branch difficulty targets into case prompt', () => {
+        const plan = buildCaseBranchDifficultyPlan('hard', { topicMastery: { overallScore: 82 } });
+        const prompt = buildCaseScenarioPrompt('sepsis', 'hard', { trainingStage: 'finals', topicMastery: { overallScore: 82 } });
+
+        expect(plan.management).toBe('hard');
+        expect(prompt).toContain('BKT-ADAPTIVE BRANCH PLAN');
+        expect(prompt).toContain('"difficultyTarget"');
+        expect(prompt).toContain('The management decision should target "hard"');
     });
 });

@@ -1,5 +1,6 @@
 const {
     quizAttemptReward,
+    attributeAgentQuizOutcomeReward,
     attributeQuizAttemptRewards,
     attributeSearchInteractionReward,
     getQuizAttributionCoverage,
@@ -211,5 +212,33 @@ describe('searchLearningOutcomeService', () => {
             sourceCoverageRate: 0.8,
             attributionRate: 0.75,
         });
+    });
+
+    test('attributeAgentQuizOutcomeReward rewards recent agent strategy after strong quiz outcome', async () => {
+        const db = {
+            normalizeTopic: (t) => String(t).toLowerCase(),
+            all: jest.fn().mockResolvedValue([
+                { payload_json: JSON.stringify({ banditMeta: { armId: 'socratic' } }) },
+            ]),
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+            recordLearningEvent: jest.fn().mockResolvedValue({ id: 1 }),
+        };
+
+        const result = await attributeAgentQuizOutcomeReward(db, 'u1', [
+            { isCorrect: true },
+            { isCorrect: true },
+            { isCorrect: true },
+        ], 'Sepsis');
+
+        expect(result).toMatchObject({ rewarded: 1, reward: 0.7 });
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith(
+            'agent_teaching_strategy',
+            'socratic',
+            0.7,
+            'user:u1'
+        );
+        expect(db.recordLearningEvent).toHaveBeenCalledWith(expect.objectContaining({
+            eventType: 'agent_quiz_reward_attributed',
+        }));
     });
 });

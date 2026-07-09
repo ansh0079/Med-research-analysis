@@ -4,11 +4,36 @@ const logger = require('../config/logger');
 const { createBudgetForAction, runWithLlmBudget } = require('./llmRequestBudget');
 const { parseStructuredOutput } = require('../utils/parseJson');
 const { recordBanditReward } = require('./personalizationBanditService');
+const { estimateAbility, targetItemDifficulty } = require('./adaptiveItemSelectionService');
 
 /**
  * Generates a branching clinical case scenario for medical education.
  * Cases progress through: initial presentation → investigations → management → outcome
  */
+
+function buildCaseBranchDifficultyPlan(difficulty, userProfile = {}) {
+    const masteryProbability = userProfile.masteryProbability
+        ?? userProfile.mastery_probability
+        ?? userProfile.topicMastery?.masteryProbability
+        ?? null;
+    const overallScore = userProfile.topicMastery?.overallScore
+        ?? userProfile.topicMastery?.overall_score
+        ?? userProfile.overallScore
+        ?? null;
+    const ability = estimateAbility({ masteryProbability, overallScore });
+    const targetP = targetItemDifficulty(ability);
+    const requested = ['easy', 'medium', 'hard'].includes(difficulty) ? difficulty : 'medium';
+    const base = targetP >= 0.7 ? 'easy' : targetP >= 0.45 ? 'medium' : 'hard';
+    const initial = requested === 'hard' && ability < 0.35 ? 'medium' : base;
+    return {
+        ability: Math.round(ability * 100) / 100,
+        targetPValue: Math.round(targetP * 100) / 100,
+        initial,
+        ifCorrect: ability >= 0.7 || requested === 'hard' ? 'hard' : 'medium',
+        ifIncorrect: initial === 'hard' ? 'medium' : 'easy',
+        management: ability >= 0.7 || requested === 'hard' ? 'hard' : 'medium',
+    };
+}
 
 function buildCaseScenarioPrompt(topic, difficulty, userProfile = {}, guidelines = []) {
     const difficultyMap = {
@@ -31,11 +56,18 @@ function buildCaseScenarioPrompt(topic, difficulty, userProfile = {}, guidelines
 Source: ${g.source_body}${g.source_year ? ` (${g.source_year})` : ''}
 Recommendation: ${g.recommendation_text}${g.recommendation_strength ? ` | Strength: ${g.recommendation_strength}` : ''}${g.recommendation_certainty ? ` | Certainty: ${g.recommendation_certainty}` : ''}`).join('\n\n')
         : 'No guideline context provided.';
+    const branchPlan = buildCaseBranchDifficultyPlan(difficulty, userProfile);
 
     return `Generate a branching clinical case scenario about "${topic}" for a ${trainingStage} learner.
 
 DIFFICULTY: ${difficulty} — ${difficultyMap[difficulty]}
 LEARNER GUIDANCE: ${stageGuidance[trainingStage] || stageGuidance.finals}
+BKT-ADAPTIVE BRANCH PLAN:
+- Estimated ability=${branchPlan.ability}; target item p-value=${branchPlan.targetPValue}.
+- Initial decision point difficultyTarget="${branchPlan.initial}".
+- If the learner chooses an appropriate option, move the next branch toward difficultyTarget="${branchPlan.ifCorrect}".
+- If the learner chooses an inappropriate option, scaffold the next branch toward difficultyTarget="${branchPlan.ifIncorrect}".
+- The management decision should target "${branchPlan.management}" while staying safe and guideline-grounded.
 
 EVIDENCE PRIORITY: Ground diagnosis and management decisions first in the Clinical Guidelines below when available, falling back to standard evidence-based medical knowledge otherwise.
 
@@ -68,6 +100,7 @@ Return ONLY valid JSON:
   "decisionTree": {
     "initial": {
       "stage": "initial_presentation",
+      "difficultyTarget": "${branchPlan.initial}",
       "scenario": "Full presenting scenario",
       "question": "What is your immediate priority?",
       "options": [
@@ -83,18 +116,21 @@ Return ONLY valid JSON:
     },
     "node_exam": {
       "stage": "examination",
+      "difficultyTarget": "easy|medium|hard",
       "scenario": "Examination findings based on previous choice",
       "question": "What investigation would you order?",
       "options": [...]
     },
     "node_diagnosis": {
       "stage": "diagnosis",
+      "difficultyTarget": "easy|medium|hard",
       "scenario": "Investigation results",
       "question": "What is the most likely diagnosis?",
       "options": [...]
     },
     "node_management": {
       "stage": "management",
+      "difficultyTarget": "${branchPlan.management}",
       "scenario": "Diagnostic certainty established",
       "question": "What is your management plan?",
       "options": [...]
@@ -312,5 +348,6 @@ module.exports = {
     saveCaseScenario,
     getCaseScenario,
     recordCaseChoice,
+    buildCaseBranchDifficultyPlan,
     buildCaseScenarioPrompt
 };

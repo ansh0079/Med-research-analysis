@@ -180,6 +180,39 @@ Recommendation: ${g.recommendation_text}${g.recommendation_strength ? ` | Streng
         collectiveMisconceptionContext = `\nCOLLECTIVE MISCONCEPTIONS — across all learners on this topic, these wrong answers were consistently chosen:\n${lines}\nINSTRUCTION: Generate at least one question directly targeting the most common misconception above. Frame it so the wrong answer is a plausible distractor — explain clearly in the rationale why it is incorrect.\n`;
     }
 
+    let psychometricContext = '';
+    const psychometrics = options.itemPsychometrics || options.topicKnowledge?.knowledge?.collective_memory || null;
+    if (psychometrics) {
+        const highDiscrimination = Array.isArray(psychometrics.highDiscrimination) ? psychometrics.highDiscrimination : [];
+        const tooEasy = Array.isArray(psychometrics.tooEasy) ? psychometrics.tooEasy : [];
+        const tooHard = Array.isArray(psychometrics.tooHard) ? psychometrics.tooHard : [];
+        const flagged = Array.isArray(psychometrics.flaggedForReview) ? psychometrics.flaggedForReview : [];
+        const lines = [];
+        if (highDiscrimination.length) {
+            lines.push(`High-discrimination items to emulate:\n${highDiscrimination.slice(0, 3).map((item, i) =>
+                `  ${i + 1}. p=${Number(item.correctRate ?? 0)}%, discr=${item.discrimination ?? 'n/a'}: ${String(item.questionText || '').slice(0, 180)}`
+            ).join('\n')}`);
+        }
+        if (tooEasy.length) {
+            lines.push(`Too-easy patterns to make more discriminating:\n${tooEasy.slice(0, 3).map((item, i) =>
+                `  ${i + 1}. p=${Number(item.correctRate ?? 0)}%: ${String(item.questionText || '').slice(0, 160)}`
+            ).join('\n')}`);
+        }
+        if (tooHard.length) {
+            lines.push(`Too-hard patterns to scaffold more clearly:\n${tooHard.slice(0, 3).map((item, i) =>
+                `  ${i + 1}. p=${Number(item.correctRate ?? 0)}%: ${String(item.questionText || '').slice(0, 160)}`
+            ).join('\n')}`);
+        }
+        if (flagged.length) {
+            lines.push(`Flagged/negative-discrimination items to avoid copying:\n${flagged.slice(0, 3).map((item, i) =>
+                `  ${i + 1}. discr=${item.discrimination ?? 'n/a'}: ${String(item.questionText || '').slice(0, 160)}`
+            ).join('\n')}`);
+        }
+        if (lines.length) {
+            psychometricContext = `\nITEM PSYCHOMETRICS FROM PRIOR ATTEMPTS:\n${lines.join('\n\n')}\nINSTRUCTION: Use these only to shape difficulty and distractor design. Emulate high-discrimination patterns, avoid ambiguous flagged items, make too-easy concepts more discriminating, and scaffold too-hard concepts with clearer stems rather than lowering clinical validity.\n`;
+        }
+    }
+
     // Personal misconceptions: THIS specific learner's repeated wrong-answer patterns
     let personalMisconceptionContext = '';
     const personalMisconceptions = Array.isArray(options.personalMisconceptions) ? options.personalMisconceptions : [];
@@ -222,7 +255,7 @@ ${EXPLAIN_RUBRIC[explanationDepth] || EXPLAIN_RUBRIC.exam_focus}
 
 ${variantInstruction}
 
-${topicBaseline ? `${topicBaseline}\n` : ''}${teachingObjectContext ? `REUSABLE PAPER TEACHING OBJECTS:\n${teachingObjectContext}\n\nINSTRUCTION: Treat these as the preferred quiz seed for bottom line, misconception traps, and paper-specific appraisal angles. Still ground source-specific claims in RESEARCH CONTEXT indices.\n\n` : ''}${outlineContext}${targetContext}${communityContext}${claimAnchorContext}${collectiveMisconceptionContext}${personalMisconceptionContext}${confusingNodeContext}EVIDENCE PRIORITY: When grounding questions, prefer (1) Clinical Guidelines — use for "guideline" questionType; then (2) landmark/practice-defining trials in the research context — use for "trial_interpretation"; then (3) supporting evidence for clinical_application and recall.
+${topicBaseline ? `${topicBaseline}\n` : ''}${teachingObjectContext ? `REUSABLE PAPER TEACHING OBJECTS:\n${teachingObjectContext}\n\nINSTRUCTION: Treat these as the preferred quiz seed for bottom line, misconception traps, and paper-specific appraisal angles. Still ground source-specific claims in RESEARCH CONTEXT indices.\n\n` : ''}${outlineContext}${targetContext}${communityContext}${claimAnchorContext}${collectiveMisconceptionContext}${psychometricContext}${personalMisconceptionContext}${confusingNodeContext}EVIDENCE PRIORITY: When grounding questions, prefer (1) Clinical Guidelines — use for "guideline" questionType; then (2) landmark/practice-defining trials in the research context — use for "trial_interpretation"; then (3) supporting evidence for clinical_application and recall.
 
 GUIDELINE CONTEXT (primary authority):
 ${guidelineContext}

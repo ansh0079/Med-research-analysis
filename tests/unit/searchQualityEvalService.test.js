@@ -3,6 +3,7 @@
 const {
     evaluateSearchResults,
     summarizeSearchEval,
+    buildRelevanceMap,
     articleMatchesType,
 } = require('../../server/services/searchQualityEvalService');
 
@@ -214,6 +215,23 @@ describe('evaluateSearchResults — nDCG', () => {
         const good = evaluateSearchResults(spec, makeArticles(['a', 'b', 'x', 'y']));
         const bad = evaluateSearchResults(spec, makeArticles(['x', 'y', 'a', 'b']));
         expect(good.ndcgAtK).toBeGreaterThan(bad.ndcgAtK);
+    });
+
+    test('graded relevance rewards putting the most useful result first', () => {
+        const spec = makeSpec({
+            relevantUids: [
+                { uid: 'guideline', grade: 3 },
+                { uid: 'review', grade: 1 },
+            ],
+            k: 2,
+        });
+        const ideal = evaluateSearchResults(spec, makeArticles(['guideline', 'review']));
+        const reversed = evaluateSearchResults(spec, makeArticles(['review', 'guideline']));
+
+        expect(buildRelevanceMap(spec).get('guideline')).toBe(3);
+        expect(ideal.ndcgAtK).toBe(1);
+        expect(reversed.ndcgAtK).toBeLessThan(ideal.ndcgAtK);
+        expect(reversed.relevantHits).toBe(2);
     });
 });
 

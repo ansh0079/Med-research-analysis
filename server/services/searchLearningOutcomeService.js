@@ -1,6 +1,12 @@
 const logger = require('../config/logger');
-const { POLICY_SEARCH_RANKING, POLICY_QUIZ_CLAIM_SELECTION, recordBanditReward } = require('./personalizationBanditService');
+const {
+    POLICY_SEARCH_RANKING,
+    POLICY_QUIZ_CLAIM_SELECTION,
+    POLICY_TEACHING_STRATEGY,
+    recordBanditReward,
+} = require('./personalizationBanditService');
 const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('./learningSignalService');
+const { quizOutcomeRewardForAgent } = require('./learningLoopSignalService');
 const {
     quizAttemptReward,
     impressionEngagementReward,
@@ -383,8 +389,51 @@ async function attributeRecommendationFollowThrough(db, userId, {
     return { rewarded: rows[0]?.arm_id || null, followReward };
 }
 
+async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic = '') {
+    if (!db?.all || !userId || !Array.isArray(attempts) || attempts.length === 0) return { rewarded: 0 };
+    const reward = quizOutcomeRewardForAgent(attempts);
+    if (reward <= 0) return { rewarded: 0, reward };
+    const normalizedTopic = typeof db.normalizeTopic === 'function' ? db.normalizeTopic(topic) : String(topic || '').toLowerCase();
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const rows = await db.all(
+        `SELECT payload_json
+         FROM learning_events
+         WHERE user_id = ?
+           AND event_type = 'agent_turn_completed'
+           AND (normalized_topic = ? OR topic = ?)
+           AND occurred_at >= ?
+         ORDER BY occurred_at DESC
+         LIMIT 3`,
+        [String(userId), normalizedTopic, topic, since]
+    ).catch(() => []);
+    let rewarded = 0;
+    const seen = new Set();
+    for (const row of rows || []) {
+        let payload = {};
+        try { payload = JSON.parse(row.payload_json || '{}'); } catch { payload = {}; }
+        const armId = payload?.banditMeta?.armId || payload?.armId || null;
+        if (!armId || seen.has(armId)) continue;
+        seen.add(armId);
+        await recordBanditReward(db, POLICY_TEACHING_STRATEGY, armId, reward, userId);
+        await recordLearningSignal(db, {
+            userId,
+            eventType: 'agent_quiz_reward_attributed',
+            topic,
+            payload: {
+                reward,
+                armId,
+                attemptCount: attempts.length,
+                correctCount: attempts.filter((attempt) => Boolean(attempt.isCorrect ?? attempt.is_correct === 1)).length,
+            },
+        });
+        rewarded += 1;
+    }
+    return { rewarded, reward };
+}
+
 module.exports = {
     quizAttemptReward,
+    attributeAgentQuizOutcomeReward,
     attributeQuizAttemptRewards,
     attributeRecommendationFollowThrough,
     attributeSearchInteractionReward,

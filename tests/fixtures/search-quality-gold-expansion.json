@@ -263,6 +263,72 @@
       "offTopicUids": ["34634250"],
       "requiredTypes": ["randomized controlled trial"],
       "notes": "FUTURE II HPV vaccine (16531679)."
+    },
+    {
+      "query": "community acquired pneumonia diagnosis empiric antibiotic management guideline adult",
+      "sources": "pubmed,openalex",
+      "category": "management_intent",
+      "specialty": "infectious_disease",
+      "relevantUids": [
+        { "uid": "31573350", "grade": 3 },
+        { "uid": "32853142", "grade": 1 }
+      ],
+      "offTopicUids": ["7445464"],
+      "requiredTypes": ["guideline"],
+      "notes": "ATS/IDSA CAP guideline should outrank commentary and narrow reviews."
+    },
+    {
+      "query": "heart failure reduced ejection fraction management guideline SGLT2 ARNI MRA beta blocker",
+      "sources": "pubmed,openalex",
+      "category": "management_intent",
+      "specialty": "cardiology",
+      "relevantUids": [
+        { "uid": "35363499", "grade": 3 },
+        { "uid": "35378257", "grade": 2 },
+        { "uid": "37637197", "grade": 1 }
+      ],
+      "offTopicUids": ["36460629"],
+      "requiredTypes": ["guideline"],
+      "notes": "Tests guideline-first management intent rather than only landmark known-item retrieval."
+    },
+    {
+      "query": "suspected pulmonary embolism diagnosis YEARS algorithm D-dimer CT pulmonary angiography",
+      "sources": "pubmed,openalex",
+      "category": "diagnosis_intent",
+      "specialty": "emergency_medicine",
+      "relevantUids": [
+        { "uid": "28549662", "grade": 3 },
+        { "uid": "39915029", "grade": 1 }
+      ],
+      "offTopicUids": ["27707544"],
+      "requiredTypes": ["clinical decision rule"],
+      "notes": "Diagnosis query with graded preference for the original YEARS management study."
+    },
+    {
+      "query": "sepsis diagnosis qSOFA SOFA criteria Sepsis-3 definition",
+      "sources": "pubmed,openalex",
+      "category": "diagnosis_intent",
+      "specialty": "critical_care",
+      "relevantUids": [
+        { "uid": "26903338", "grade": 3 },
+        { "uid": "26903335", "grade": 2 }
+      ],
+      "offTopicUids": ["34599691"],
+      "requiredTypes": ["consensus"],
+      "notes": "Diagnosis intent should find Sepsis-3 definitions before management guidelines."
+    },
+    {
+      "query": "sepsis septic shock management surviving sepsis campaign 2021 guideline antibiotics fluids vasopressors",
+      "sources": "pubmed,openalex",
+      "category": "management_intent",
+      "specialty": "critical_care",
+      "relevantUids": [
+        { "uid": "34599691", "grade": 3 },
+        { "uid": "35791800", "grade": 1 }
+      ],
+      "offTopicUids": ["26903338"],
+      "requiredTypes": ["guideline"],
+      "notes": "Management intent should prefer SSC treatment guideline over Sepsis-3 definition paper."
     }
   ]
 }
