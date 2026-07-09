@@ -28,6 +28,7 @@
       "@contexts/*": ["src/contexts/*"],
       "@pages/*": ["src/pages/*"],
       "@utils/*": ["src/utils/*"],
+      "@config/*": ["src/config/*"],
       "@contracts": ["shared/contracts/index.js"],
       "@contracts/*": ["shared/contracts/*"]
     }

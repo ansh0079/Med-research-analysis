@@ -413,6 +413,7 @@ export const SearchPage: React.FC = () => {
           article={detailArticle}
           onClose={() => setDetailArticle(null)}
           onOpenInWorkspace={openPdf}
+          searchTopic={currentQuery || undefined}
         />
       )}
 

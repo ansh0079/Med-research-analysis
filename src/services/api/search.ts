@@ -233,6 +233,27 @@ export class SearchApi extends BaseApiClient {
     }
   }
 
+  async inferTopicForArticle(
+    article: Article,
+    searchTopic?: string,
+  ): Promise<{
+    displayTopic: string;
+    normalizedTopic: string;
+    canonicalTopic: string;
+    source: string;
+    confidence: number;
+    reason: string;
+    candidates: Array<{ displayTopic: string; source: string; confidence: number }>;
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/topics/infer`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ article, searchTopic: searchTopic || undefined }),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
   async getTopicCrosslinks(topic: string): Promise<{
     crosslinks: Array<{
       topic: string;

@@ -4,6 +4,7 @@ import { useAuth } from '@contexts/AuthContext';
 import { useTheme } from '@hooks';
 import api from '@services/api';
 import { NotificationBell } from '@components/collaboration/NotificationBell';
+import { LEARNING_SURFACES, WORKSPACE_TOOLS, learningSurfacesByGroup } from '@config/learningSurfaces';
 
 // Primary nav — 4 items visible at all times
 const PRIMARY_NAV = [
@@ -11,19 +12,7 @@ const PRIMARY_NAV = [
   { to: '/review', label: 'Review', icon: 'fa-clipboard-check' },
 ] as const;
 
-// Tools dropdown — secondary features grouped together
-const TOOLS_NAV = [
-  { to: '/learning',     label: 'Topic review',   icon: 'fa-graduation-cap', color: 'text-indigo-500' },
-  { to: '/cases',        label: 'Clinical cases', icon: 'fa-heartbeat',    color: 'text-rose-500'    },
-  { to: '/case',         label: 'Case analysis',  icon: 'fa-stethoscope',  color: 'text-emerald-500' },
-  { to: '/quiz',         label: 'Quiz',           icon: 'fa-brain',        color: 'text-violet-500'  },
-  { to: '/practice',    label: 'Practice pool',  icon: 'fa-layer-group',  color: 'text-teal-500'   },
-  { to: '/study-paths', label: 'Study paths',    icon: 'fa-route',        color: 'text-rose-500'   },
-  { to: '/grant',       label: 'Grant writing',  icon: 'fa-file-alt',     color: 'text-amber-500'  },
-  { to: '/saved',       label: 'Saved articles', icon: 'fa-bookmark',     color: 'text-indigo-500' },
-  { to: '/team',        label: 'Team workspace', icon: 'fa-users',        color: 'text-sky-500'    },
-  { to: '/guidelines',  label: 'Guidelines',     icon: 'fa-book-medical', color: 'text-slate-500'  },
-] as const;
+const TOOLS_ROUTES = [...LEARNING_SURFACES.map((s) => s.route), ...WORKSPACE_TOOLS.map((t) => t.route)];
 
 // User menu — account-level actions
 const ACCOUNT_NAV = [
@@ -56,7 +45,7 @@ export const TopNav: React.FC = () => {
     return () => clearInterval(id);
   }, [isAuthenticated]);
 
-  const isToolsActive = TOOLS_NAV.some((t) => pathname.startsWith(t.to) && t.to !== '/learning');
+  const isToolsActive = TOOLS_ROUTES.some((to) => pathname.startsWith(to) && to !== '/learning');
   const closeMenuOnFocusLeave = (
     event: React.FocusEvent<HTMLDivElement>,
     close: React.Dispatch<React.SetStateAction<boolean>>,
@@ -139,14 +128,33 @@ export const TopNav: React.FC = () => {
                 <i className="fas fa-chevron-down text-[8px] opacity-60" />
               </button>
               {toolsMenuOpen && (
-                <div id="tools-menu" role="menu" className="absolute left-0 top-full mt-1 w-52 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-xl py-1.5 z-50 animate-fade-in">
-                  {TOOLS_NAV.map(({ to, label, icon, color }) => (
+                <div id="tools-menu" role="menu" className="absolute left-0 top-full mt-1 w-60 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-xl py-1.5 z-50 animate-fade-in">
+                  {learningSurfacesByGroup().map(({ group, label, surfaces }) => (
+                    <div key={group}>
+                      <p className="px-3.5 pt-2 pb-1 text-[9px] font-bold uppercase tracking-wider text-slate-400">{label}</p>
+                      {surfaces.map(({ route, label: surfaceLabel, icon, color, description }) => (
+                        <button
+                          key={route}
+                          type="button"
+                          role="menuitem"
+                          title={description}
+                          className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors"
+                          onClick={() => { navigate(route); setToolsMenuOpen(false); }}
+                        >
+                          <i className={`fas ${icon} w-3.5 ${color}`} /> {surfaceLabel}
+                        </button>
+                      ))}
+                    </div>
+                  ))}
+                  <div className="my-1 border-t border-slate-100 dark:border-slate-700" />
+                  <p className="px-3.5 pt-1 pb-1 text-[9px] font-bold uppercase tracking-wider text-slate-400">Workspace</p>
+                  {WORKSPACE_TOOLS.map(({ route, label, icon, color }) => (
                     <button
-                      key={to}
+                      key={route}
                       type="button"
                       role="menuitem"
                       className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors"
-                      onClick={() => { navigate(to); setToolsMenuOpen(false); }}
+                      onClick={() => { navigate(route); setToolsMenuOpen(false); }}
                     >
                       <i className={`fas ${icon} w-3.5 ${color}`} /> {label}
                     </button>
@@ -283,10 +291,23 @@ export const TopNav: React.FC = () => {
           {isAuthenticated && (
             <>
               <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 pt-2 pb-1">Tools</div>
-              {TOOLS_NAV.map(({ to, label, icon, color }) => (
-                <button key={to} type="button"
-                  onClick={() => { navigate(to); setMobileMenuOpen(false); }}
-                  className={`nav-link w-full text-left ${pathname.startsWith(to) ? 'active' : ''}`}>
+              {learningSurfacesByGroup().map(({ group, label, surfaces }) => (
+                <React.Fragment key={group}>
+                  <div className="text-[9px] font-bold uppercase tracking-wider text-slate-400 px-2 pt-1.5 pb-0.5">{label}</div>
+                  {surfaces.map(({ route, label: surfaceLabel, icon, color }) => (
+                    <button key={route} type="button"
+                      onClick={() => { navigate(route); setMobileMenuOpen(false); }}
+                      className={`nav-link w-full text-left ${pathname.startsWith(route) ? 'active' : ''}`}>
+                      <i className={`fas ${icon} text-[10px] ${color}`} /> {surfaceLabel}
+                    </button>
+                  ))}
+                </React.Fragment>
+              ))}
+              <div className="text-[9px] font-bold uppercase tracking-wider text-slate-400 px-2 pt-1.5 pb-0.5">Workspace</div>
+              {WORKSPACE_TOOLS.map(({ route, label, icon, color }) => (
+                <button key={route} type="button"
+                  onClick={() => { navigate(route); setMobileMenuOpen(false); }}
+                  className={`nav-link w-full text-left ${pathname.startsWith(route) ? 'active' : ''}`}>
                   <i className={`fas ${icon} text-[10px] ${color}`} /> {label}
                 </button>
               ))}

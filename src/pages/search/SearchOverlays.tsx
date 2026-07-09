@@ -42,6 +42,7 @@ export const SearchOverlays: React.FC<SearchOverlaysProps> = ({
         article={detailArticle}
         onClose={onCloseDetailDrawer}
         onOpenInWorkspace={onOpenInWorkspace}
+        searchTopic={currentQuery || undefined}
       />
     )}
 

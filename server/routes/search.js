@@ -11,6 +11,7 @@ const { registerSearchIntelligenceRoutes } = require('./search/searchIntelligenc
 const { registerTopicKnowledgeRoutes } = require('./search/topicKnowledge');
 const { registerEvidenceMapRoutes } = require('./search/evidenceMap');
 const { registerEvidenceAlertRoutes } = require('./search/evidenceAlerts');
+const { registerTopicInferenceRoutes } = require('./search/topicInference');
 const { clampLimit } = require('./search/searchHelpers');
 
 /**
@@ -76,6 +77,7 @@ function registerSearchRoutes(app, deps) {
         requireAuthJwt,
     });
     registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson });
+    registerTopicInferenceRoutes(app, { db, rateLimit, requireJson });
 }
 
 module.exports = { registerSearchRoutes, clampLimit };
