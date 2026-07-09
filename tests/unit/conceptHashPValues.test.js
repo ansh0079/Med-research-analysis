@@ -62,7 +62,7 @@ describe('getConceptHashPValues (real SQLite)', () => {
         await insertAttempt({ userId: 'u-pv', conceptHash: hash, isCorrect: false });
 
         const result = await db.getConceptHashPValues('ards', [hash]);
-        expect(result.get(hash)).toBe(0.5);
+        expect(result.get(hash)).toEqual({ pValue: 0.5, sampleSize: 4 });
     });
 
     test('looks up multiple hashes at once', async () => {
@@ -72,7 +72,7 @@ describe('getConceptHashPValues (real SQLite)', () => {
         for (let i = 0; i < 3; i++) await insertAttempt({ userId: 'u-pv', conceptHash: hashB, isCorrect: false });
 
         const result = await db.getConceptHashPValues('ards', [hashA, hashB]);
-        expect(result.get(hashA)).toBe(1);
-        expect(result.get(hashB)).toBe(0);
+        expect(result.get(hashA)).toEqual({ pValue: 1, sampleSize: 3 });
+        expect(result.get(hashB)).toEqual({ pValue: 0, sampleSize: 3 });
     });
 });

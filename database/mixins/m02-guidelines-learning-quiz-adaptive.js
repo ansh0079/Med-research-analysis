@@ -545,7 +545,10 @@ async getConceptHashPValues(normalizedTopic, conceptHashes) {
          HAVING total >= 3`,
         [normalizedTopic, ...hashes]
     );
-    return new Map(rows.map((r) => [r.concept_hash, Number(r.correct) / Number(r.total)]));
+    return new Map(rows.map((r) => [r.concept_hash, {
+        pValue: Number(r.correct) / Number(r.total),
+        sampleSize: Number(r.total),
+    }]));
 }
 
 async getQuizAttemptStats(userId, topic) {

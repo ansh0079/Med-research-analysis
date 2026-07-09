@@ -1,6 +1,26 @@
 const { buildQuizPrompt } = require('../../server/prompts/quiz');
 
 describe('buildQuizPrompt psychometric feedback', () => {
+    test('respects the requested question count exactly', () => {
+        const prompt = buildQuizPrompt('ARDS', [], { count: 1 });
+
+        expect(prompt).toContain('Generate 1 high-quality questions');
+        expect(prompt).not.toContain('Generate 3 high-quality questions');
+    });
+
+    test('surfaces guideline staleness in context and explanation instructions', () => {
+        const prompt = buildQuizPrompt('sepsis', [], { count: 2 }, [
+            {
+                source_body: 'Example Society',
+                source_year: 2016,
+                recommendation_text: 'Use early antibiotics.',
+            },
+        ]);
+
+        expect(prompt).toContain('Freshness: stale');
+        expect(prompt).toContain('mention the guideline year/freshness caveat');
+    });
+
     test('injects item psychometrics into generation guidance', () => {
         const prompt = buildQuizPrompt('sepsis', [], {
             count: 3,

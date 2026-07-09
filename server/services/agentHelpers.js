@@ -442,6 +442,60 @@ function formatRecentMessages(conversationHistory, count = 4) {
     }));
 }
 
+function normalizeConversationMessage(msg) {
+    if (!msg || typeof msg !== 'object') return null;
+    const content = String(msg.content || '').trim();
+    if (!content) return null;
+    return {
+        role: msg.role === 'assistant' ? 'assistant' : 'user',
+        content: content.slice(0, 4000),
+    };
+}
+
+function conversationMessageSignature(msg) {
+    const normalized = normalizeConversationMessage(msg);
+    if (!normalized) return null;
+    return `${normalized.role}\u0000${normalized.content.replace(/\s+/g, ' ')}`;
+}
+
+function reconcileConversationHistory(clientHistory = [], persistedConversation = null, { maxMessages = 40 } = {}) {
+    const merged = [];
+    const seen = new Set();
+    const persistedMessages = Array.isArray(persistedConversation?.messages)
+        ? persistedConversation.messages.map(normalizeConversationMessage).filter(Boolean)
+        : [];
+    const clientMessages = Array.isArray(clientHistory)
+        ? clientHistory.map(normalizeConversationMessage).filter(Boolean)
+        : [];
+    const addMessage = (msg) => {
+        const normalized = normalizeConversationMessage(msg);
+        if (!normalized) return;
+        const signature = conversationMessageSignature(normalized);
+        if (!signature || seen.has(signature)) return;
+        seen.add(signature);
+        merged.push(normalized);
+    };
+
+    persistedMessages.forEach(addMessage);
+
+    if (persistedMessages.length === 0) {
+        clientMessages.forEach(addMessage);
+    } else {
+        const persistedSignatures = persistedMessages.map(conversationMessageSignature).filter(Boolean);
+        let lastOverlapIndex = -1;
+        for (const signature of persistedSignatures) {
+            const idx = clientMessages.findIndex((msg, i) => i > lastOverlapIndex && conversationMessageSignature(msg) === signature);
+            if (idx >= 0) lastOverlapIndex = idx;
+        }
+        if (lastOverlapIndex >= 0) {
+            clientMessages.slice(lastOverlapIndex + 1).forEach(addMessage);
+        }
+    }
+
+    const safeMax = Math.max(1, Number(maxMessages) || 40);
+    return merged.slice(-safeMax);
+}
+
 async function summarizeOlderMessages(ai, conversationHistory, recentCount = 4, provider, model) {
     if (!Array.isArray(conversationHistory) || conversationHistory.length <= recentCount) {
         return null;
@@ -518,6 +572,9 @@ module.exports = {
     extractGroundedClaimsFromReply,
     extractGroundedClaimsStructured,
     formatRecentMessages,
+    normalizeConversationMessage,
+    conversationMessageSignature,
+    reconcileConversationHistory,
     summarizeOlderMessages,
     buildSessionFeedbackContext,
     parseHistoryForProvider,

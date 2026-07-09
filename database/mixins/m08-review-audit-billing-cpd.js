@@ -1223,4 +1223,28 @@ async listPracticeChangingTeachingObjects({ topic = '', limit = 20 } = {}) {
         };
     });
 }
+
+async getTopicBktAbility(userId, topic) {
+    const normalized = this.normalizeTopic(topic);
+    const rows = await this.all(
+        `SELECT claim_key, is_correct FROM quiz_attempts
+         WHERE user_id = ? AND normalized_topic = ?
+         ORDER BY claim_key, created_at ASC`,
+        [userId, normalized]
+    );
+    if (rows.length === 0) return null;
+    const sequences = new Map();
+    for (const r of rows) {
+        if (!r.claim_key) continue;
+        if (!sequences.has(r.claim_key)) sequences.set(r.claim_key, []);
+        sequences.get(r.claim_key).push(r.is_correct === 1 || r.is_correct === true);
+    }
+    if (sequences.size === 0) return null;
+    let sum = 0;
+    for (const seq of sequences.values()) {
+        const { masteryProbability } = computeMasteryFromSequence(seq);
+        sum += masteryProbability;
+    }
+    return sum / sequences.size;
+}
 };

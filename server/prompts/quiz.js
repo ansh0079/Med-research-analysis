@@ -2,8 +2,19 @@ const { formatStoredTopicKnowledgeForPrompt } = require('./_helpers');
 const { formatLearnerPromptSupplement } = require('../services/learnerContextService');
 const { TRAINING_STAGES, normaliseTrainingStage } = require('./trainingStages');
 
+function formatGuidelineFreshness(g, now = new Date()) {
+    const year = Number(g?.source_year || g?.publication_year || g?.year || 0);
+    if (!Number.isFinite(year) || year <= 0) return 'Freshness: year not provided; do not imply this is current.';
+    const currentYear = now.getUTCFullYear();
+    const ageYears = Math.max(0, currentYear - year);
+    if (ageYears >= 8) return `Freshness: stale (${ageYears} years old); mention the date and caveat that newer guidance may supersede it.`;
+    if (ageYears >= 5) return `Freshness: aging (${ageYears} years old); mention the date in explanations.`;
+    return `Freshness: recent (${ageYears} years old).`;
+}
+
 function buildQuizPrompt(topic, articles = [], options = {}, guidelines = [], userContext = null) {
-    const safeCount = Math.min(Math.max(parseInt(String(options.count || 5), 10) || 5, 3), 10);
+    const requestedCount = parseInt(String(options.count || 5), 10) || 5;
+    const safeCount = Math.min(Math.max(requestedCount, 1), 20);
     let difficulty = ['easy', 'medium', 'hard', 'mixed'].includes(options.difficulty) ? options.difficulty : 'mixed';
     const profileEffectiveDifficulty = userContext?.profile?.effectiveDifficulty
         || userContext?.profile?.preferredDifficulty
@@ -116,7 +127,8 @@ Abstract: ${String(a.abstract || '').slice(0, 900)}`)
     const guidelineContext = guidelines.length > 0
         ? guidelines.map((g, i) => `[GUIDELINE ${i + 1}]
 Source: ${g.source_body}${g.source_year ? ` (${g.source_year})` : ''}
-Recommendation: ${g.recommendation_text}${g.recommendation_strength ? ` | Strength: ${g.recommendation_strength}` : ''}${g.recommendation_certainty ? ` | Certainty: ${g.recommendation_certainty}` : ''}`).join('\n\n')
+Recommendation: ${g.recommendation_text}${g.recommendation_strength ? ` | Strength: ${g.recommendation_strength}` : ''}${g.recommendation_certainty ? ` | Certainty: ${g.recommendation_certainty}` : ''}
+${formatGuidelineFreshness(g)}`).join('\n\n')
         : 'No guideline context provided.';
 
     const topicBaseline = formatStoredTopicKnowledgeForPrompt(options.topicKnowledge || null);
@@ -208,8 +220,13 @@ Recommendation: ${g.recommendation_text}${g.recommendation_strength ? ` | Streng
                 `  ${i + 1}. discr=${item.discrimination ?? 'n/a'}: ${String(item.questionText || '').slice(0, 160)}`
             ).join('\n')}`);
         }
+        const reliableCount = [...highDiscrimination, ...tooEasy, ...tooHard, ...flagged].filter((i) => i.reliable !== false).length;
+        const totalCount = [...highDiscrimination, ...tooEasy, ...tooHard, ...flagged].length;
+        const reliabilityNote = totalCount > 0 && reliableCount < totalCount
+            ? `\nNOTE: Some items have fewer than 30 attempts — their statistics are preliminary estimates, not definitive.\n`
+            : '';
         if (lines.length) {
-            psychometricContext = `\nITEM PSYCHOMETRICS FROM PRIOR ATTEMPTS:\n${lines.join('\n\n')}\nINSTRUCTION: Use these only to shape difficulty and distractor design. Emulate high-discrimination patterns, avoid ambiguous flagged items, make too-easy concepts more discriminating, and scaffold too-hard concepts with clearer stems rather than lowering clinical validity.\n`;
+            psychometricContext = `\nITEM PSYCHOMETRICS FROM PRIOR ATTEMPTS:${reliabilityNote}\n${lines.join('\n\n')}\nINSTRUCTION: Use these only to shape difficulty and distractor design. Emulate high-discrimination patterns, avoid ambiguous flagged items, make too-easy concepts more discriminating, and scaffold too-hard concepts with clearer stems rather than lowering clinical validity.\n`;
         }
     }
 
@@ -267,6 +284,7 @@ When explaining answers, append a source label in square brackets at the end of 
 - Use [Trial] when the rationale comes from a randomised trial or study in the RESEARCH CONTEXT.
 - Use [Guideline] when the rationale comes from the GUIDELINE CONTEXT.
 - Use [Topic memory] when the rationale comes from the STORED TOPIC BASELINE or general topic knowledge.
+If using an aging, stale, or undated guideline, explicitly mention the guideline year/freshness caveat inside the explanation before the final source label.
 Place the label at the very end of the explanation string, e.g. "...therefore first-line management is metformin. [Guideline]"
 
 Difficulty instruction: ${difficultyInstruction}${adaptiveInstruction}
@@ -313,4 +331,4 @@ Rules:
 - For mechanistic explanationDepth, explanationDeep must be a non-empty string on every item.${claimAnchors.length > 0 ? '\n- CLAIM MODE: claimKey is REQUIRED on every object and must match one of the listed keys exactly; one question per claimKey.' : ''}`;
 }
 
-module.exports = { buildQuizPrompt };
+module.exports = { buildQuizPrompt, formatGuidelineFreshness };

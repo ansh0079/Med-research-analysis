@@ -26,6 +26,7 @@ const DIFFICULTY_STRETCH = 0.15;
 const MIN_TARGET_P = 0.3;
 const MAX_TARGET_P = 0.85;
 const DEFAULT_ITEM_P_VALUE = 0.6; // neutral prior for items with no attempt history yet
+const MIN_RELIABLE_ATTEMPTS = 30; // classical test theory: <30 attempts → unreliable p-value
 
 /**
  * @param {{ masteryProbability?: number|null, overallScore?: number|null }} signal
@@ -46,9 +47,22 @@ function targetItemDifficulty(ability) {
     return Math.max(MIN_TARGET_P, Math.min(MAX_TARGET_P, ability - DIFFICULTY_STRETCH));
 }
 
+/**
+ * Bayesian shrinkage: blend an observed p-value toward the prior when
+ * sample size is small.  At MIN_RELIABLE_ATTEMPTS the observed value
+ * dominates; below that, the prior pulls the estimate toward 0.6 so
+ * low-n items don't get over-trusted.
+ */
+function shrinkPValue(observed, sampleSize) {
+    if (typeof sampleSize !== 'number' || sampleSize <= 0) return DEFAULT_ITEM_P_VALUE;
+    const weight = Math.min(1, sampleSize / MIN_RELIABLE_ATTEMPTS);
+    return weight * observed + (1 - weight) * DEFAULT_ITEM_P_VALUE;
+}
+
 /** Higher score = better match between an item's difficulty and the target. */
-function scoreItemMatch(itemPValue, targetPValue) {
-    const p = typeof itemPValue === 'number' && Number.isFinite(itemPValue) ? itemPValue : DEFAULT_ITEM_P_VALUE;
+function scoreItemMatch(itemPValue, targetPValue, sampleSize) {
+    const raw = typeof itemPValue === 'number' && Number.isFinite(itemPValue) ? itemPValue : DEFAULT_ITEM_P_VALUE;
+    const p = typeof sampleSize === 'number' ? shrinkPValue(raw, sampleSize) : raw;
     return 1 - Math.abs(p - targetPValue);
 }
 
@@ -64,7 +78,7 @@ function scoreItemMatch(itemPValue, targetPValue) {
 function selectAdaptiveItems(items, ability) {
     const target = targetItemDifficulty(ability);
     return [...(items || [])]
-        .map((item, index) => ({ item, index, score: scoreItemMatch(item.pValue, target) }))
+        .map((item, index) => ({ item, index, score: scoreItemMatch(item.pValue, target, item.sampleSize) }))
         .sort((a, b) => b.score - a.score || a.index - b.index)
         .map((entry) => entry.item);
 }
@@ -74,8 +88,10 @@ module.exports = {
     MIN_TARGET_P,
     MAX_TARGET_P,
     DEFAULT_ITEM_P_VALUE,
+    MIN_RELIABLE_ATTEMPTS,
     estimateAbility,
     targetItemDifficulty,
+    shrinkPValue,
     scoreItemMatch,
     selectAdaptiveItems,
 };

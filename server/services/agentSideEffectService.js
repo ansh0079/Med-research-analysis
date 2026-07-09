@@ -9,6 +9,10 @@ const {
     reflectOnAgentSession,
     isSessionEndingTurn,
 } = require('./agentTurnMemoryService');
+const {
+    conversationMessageSignature,
+    normalizeConversationMessage,
+} = require('./agentHelpers');
 
 const JOB_TYPE = 'agent-turn-side-effects';
 
@@ -23,6 +27,36 @@ function hashPayload(parts) {
 function nextRetryAt(attempts) {
     const delayMs = Math.min(15 * 60 * 1000, 1000 * 2 ** Math.max(0, Number(attempts || 0)));
     return new Date(Date.now() + delayMs).toISOString();
+}
+
+async function appendAgentTurnMessages({ db, conversationId, userMessage, assistantReply }) {
+    if (!db || !conversationId || typeof db.appendAgentMessages !== 'function') {
+        return { skipped: true, reason: 'append_unavailable' };
+    }
+
+    const nextMessages = [
+        normalizeConversationMessage({ role: 'user', content: userMessage }),
+        normalizeConversationMessage({ role: 'assistant', content: assistantReply }),
+    ].filter(Boolean);
+    if (nextMessages.length === 0) return { skipped: true, reason: 'empty_messages' };
+
+    let existingMessages = [];
+    if (typeof db.getAgentConversation === 'function') {
+        const conversation = await db.getAgentConversation(conversationId).catch((err) => {
+            logger.warn({ err, conversationId }, 'getAgentConversation before append failed');
+            return null;
+        });
+        existingMessages = Array.isArray(conversation?.messages) ? conversation.messages : [];
+    }
+
+    const existingSignatures = new Set(existingMessages.map(conversationMessageSignature).filter(Boolean));
+    const messagesToAppend = nextMessages.filter((msg) => {
+        const signature = conversationMessageSignature(msg);
+        return signature && !existingSignatures.has(signature);
+    });
+    if (messagesToAppend.length === 0) return { skipped: true, reason: 'duplicate_messages' };
+
+    return db.appendAgentMessages(conversationId, messagesToAppend);
 }
 
 async function enqueueAgentTurnSideEffects({ db, ...payload }) {
@@ -101,6 +135,13 @@ async function processAgentTurnSideEffect(jobKey, deps = {}) {
         }
 
         if (payload.conversationId && payload.userId) {
+            await appendAgentTurnMessages({
+                db,
+                conversationId: payload.conversationId,
+                userMessage: payload.userMessage,
+                assistantReply: payload.assistantReply,
+            }).catch((err) => logger.warn({ err, jobKey }, 'appendAgentTurnMessages failed'));
+
             await persistAgentTurnMemory({
                 db,
                 ai,
@@ -281,6 +322,7 @@ function registerAgentSideEffectHandler(deps = {}) {
 
 module.exports = {
     JOB_TYPE,
+    appendAgentTurnMessages,
     enqueueAgentTurnSideEffects,
     processAgentTurnSideEffect,
     drainPendingAgentTurnSideEffects,

@@ -25,6 +25,7 @@ jest.mock('../../server/routes/agent', () => ({
 
 const {
     JOB_TYPE,
+    appendAgentTurnMessages,
     enqueueAgentTurnSideEffects,
     processAgentTurnSideEffect,
 } = require('../../server/services/agentSideEffectService');
@@ -117,6 +118,47 @@ describe('agentSideEffectService', () => {
         expect(result).toBe(existing);
         expect(db.createAgentTurnSideEffect).not.toHaveBeenCalled();
         expect(enqueueNamed).toHaveBeenCalled();
+    });
+
+    test('appendAgentTurnMessages appends a completed turn once', async () => {
+        const db = {
+            getAgentConversation: jest.fn().mockResolvedValue({
+                id: 9,
+                messages: [{ role: 'user', content: 'Prior question' }],
+            }),
+            appendAgentMessages: jest.fn().mockResolvedValue({ id: 9 }),
+        };
+
+        await appendAgentTurnMessages({
+            db,
+            conversationId: 9,
+            userMessage: 'What next?',
+            assistantReply: 'Treat early.',
+        });
+
+        expect(db.appendAgentMessages).toHaveBeenCalledWith(9, [
+            { role: 'user', content: 'What next?' },
+            { role: 'assistant', content: 'Treat early.' },
+        ]);
+
+        db.getAgentConversation.mockResolvedValueOnce({
+            id: 9,
+            messages: [
+                { role: 'user', content: 'What next?' },
+                { role: 'assistant', content: 'Treat early.' },
+            ],
+        });
+        db.appendAgentMessages.mockClear();
+
+        const duplicate = await appendAgentTurnMessages({
+            db,
+            conversationId: 9,
+            userMessage: 'What next?',
+            assistantReply: 'Treat early.',
+        });
+
+        expect(duplicate).toMatchObject({ skipped: true, reason: 'duplicate_messages' });
+        expect(db.appendAgentMessages).not.toHaveBeenCalled();
     });
 
     test('enqueueAgentTurnSideEffects runs critical side effects synchronously when queue enqueue fails', async () => {

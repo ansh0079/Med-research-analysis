@@ -76,9 +76,12 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
         if (!pValueByHash || mcqs.length === 0) return mcqs;
         const withPValue = mcqs.map((mcq) => {
             const hash = computeConceptHash({ normalizedTopic, questionType: mcq.questionType, questionText: mcq.question, claimKey: mcq.claimKey });
-            return { ...mcq, pValue: pValueByHash.get(hash) ?? null };
+            const entry = pValueByHash.get(hash);
+            const pValue = entry?.pValue ?? entry ?? null;
+            const sampleSize = entry?.sampleSize ?? null;
+            return { ...mcq, pValue, sampleSize };
         });
-        return selectAdaptiveItems(withPValue, ability).map(({ pValue: _pValue, ...mcq }) => mcq);
+        return selectAdaptiveItems(withPValue, ability).map(({ pValue: _pValue, sampleSize: _ss, ...mcq }) => mcq);
     }
 
     async function serveColdStartMCQs(database, topic, count, userId = null) {
@@ -98,24 +101,25 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
                 const allHashes = [...liveMcqs, ...coldMcqs, ...guidelineMcqs].map((mcq) =>
                     computeConceptHash({ normalizedTopic, questionType: mcq.questionType, questionText: mcq.question, claimKey: mcq.claimKey })
                 );
-                const [mastery, pValueByHash] = await Promise.all([
+                const [mastery, pValueByHash, bktAbility] = await Promise.all([
                     database.getUserTopicMastery(userId, topic).catch(() => null),
                     database.getConceptHashPValues(normalizedTopic, allHashes).catch(() => new Map()),
+                    typeof database.getTopicBktAbility === 'function'
+                        ? database.getTopicBktAbility(userId, topic).catch(() => null)
+                        : Promise.resolve(null),
                 ]);
-                const ability = estimateAbility({ overallScore: mastery?.overallScore });
+                const ability = estimateAbility({ masteryProbability: bktAbility, overallScore: mastery?.overallScore });
                 liveMcqs = orderTierByAbility(liveMcqs, ability, normalizedTopic, pValueByHash);
                 coldMcqs = orderTierByAbility(coldMcqs, ability, normalizedTopic, pValueByHash);
                 guidelineMcqs = orderTierByAbility(guidelineMcqs, ability, normalizedTopic, pValueByHash);
             }
 
-            if (liveMcqs.length >= count) return liveMcqs.slice(0, count);
-
             // Assessment content is normative ("what is the correct thing to do?"), so it
             // must rest on a defensible, citable answer. Guideline-grounded MCQs are that;
             // paper-synthesis (cold-start) MCQs are the fallback when no guideline exists.
-            // Order: live cache (freshest) → guideline → cold-start; within each tier,
-            // ability-matched ordering when userId is available.
-            const merged = [...liveMcqs, ...guidelineMcqs, ...coldMcqs].slice(0, count);
+            // Order: guideline -> live cache -> cold-start; within each tier, ability-
+            // matched ordering when userId is available.
+            const merged = [...guidelineMcqs, ...liveMcqs, ...coldMcqs].slice(0, count);
 
             return merged.length > 0 ? merged : null;
         } catch {

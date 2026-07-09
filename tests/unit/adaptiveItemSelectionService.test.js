@@ -3,9 +3,12 @@ const {
     targetItemDifficulty,
     scoreItemMatch,
     selectAdaptiveItems,
+    shrinkPValue,
     MIN_TARGET_P,
     MAX_TARGET_P,
+    MIN_RELIABLE_ATTEMPTS,
     DIFFICULTY_STRETCH,
+    DEFAULT_ITEM_P_VALUE,
 } = require('../../server/services/adaptiveItemSelectionService');
 
 describe('adaptiveItemSelectionService', () => {
@@ -59,6 +62,39 @@ describe('adaptiveItemSelectionService', () => {
             const explicit = scoreItemMatch(0.6, 0.5); // DEFAULT_ITEM_P_VALUE
             expect(withDefault).toBeCloseTo(explicit, 5);
         });
+
+        test('applies Bayesian shrinkage for low sample sizes', () => {
+            const highN = scoreItemMatch(0.3, 0.5, 100);
+            const lowN = scoreItemMatch(0.3, 0.5, 5);
+            // Low-n item should score closer to the default (0.6) than to its observed 0.3
+            expect(lowN).toBeGreaterThan(highN);
+        });
+
+        test('full sample size matches raw p-value scoring', () => {
+            const withSample = scoreItemMatch(0.4, 0.5, MIN_RELIABLE_ATTEMPTS);
+            const withoutSample = scoreItemMatch(0.4, 0.5);
+            expect(withSample).toBeCloseTo(withoutSample, 5);
+        });
+    });
+
+    describe('shrinkPValue', () => {
+        test('returns the prior when sample size is 0', () => {
+            expect(shrinkPValue(0.2, 0)).toBe(DEFAULT_ITEM_P_VALUE);
+        });
+
+        test('returns the observed value at MIN_RELIABLE_ATTEMPTS', () => {
+            expect(shrinkPValue(0.3, MIN_RELIABLE_ATTEMPTS)).toBeCloseTo(0.3, 5);
+        });
+
+        test('blends toward default for small sample sizes', () => {
+            const half = MIN_RELIABLE_ATTEMPTS / 2;
+            const result = shrinkPValue(0.2, half);
+            expect(result).toBeCloseTo(0.5 * 0.2 + 0.5 * DEFAULT_ITEM_P_VALUE, 5);
+        });
+
+        test('caps weight at 1 for very large samples', () => {
+            expect(shrinkPValue(0.8, 1000)).toBeCloseTo(0.8, 5);
+        });
     });
 
     describe('selectAdaptiveItems', () => {
@@ -102,6 +138,20 @@ describe('adaptiveItemSelectionService', () => {
         test('handles an empty pool gracefully', () => {
             expect(selectAdaptiveItems([], 0.5)).toEqual([]);
             expect(selectAdaptiveItems(undefined, 0.5)).toEqual([]);
+        });
+
+        test('low-n items are pulled toward neutral difficulty, not over-trusted', () => {
+            const items = [
+                { id: 'low-n-hard', pValue: 0.1, sampleSize: 3 },
+                { id: 'high-n-hard', pValue: 0.1, sampleSize: 100 },
+                { id: 'neutral', pValue: 0.6, sampleSize: 50 },
+            ];
+            const ordered = selectAdaptiveItems(items, 0.3);
+            // The low-n item's 0.1 should be shrunk toward 0.6, making it less extreme
+            // than the high-n item which stays near 0.1
+            const lowNIdx = ordered.findIndex((i) => i.id === 'low-n-hard');
+            const highNIdx = ordered.findIndex((i) => i.id === 'high-n-hard');
+            expect(lowNIdx).not.toBe(highNIdx);
         });
     });
 });

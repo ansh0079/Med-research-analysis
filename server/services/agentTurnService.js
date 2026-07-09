@@ -18,6 +18,7 @@ const {
     formatRecentMessages,
     inferDemandIntentRegex,
     isTransientStreamError,
+    reconcileConversationHistory,
     summarizeOlderMessages,
 } = require('./agentHelpers');
 
@@ -59,6 +60,7 @@ async function executeAgentTurn(
 ) {
     const trimmedTopic = String(topic).trim().slice(0, 200);
     const trimmedMessage = String(message).trim().slice(0, 1000);
+    const reconciledConversationHistory = reconcileConversationHistory(conversationHistory, persistedConversation, { maxMessages: 50 });
 
     const topicKnowledge = await db.getTopicKnowledge(trimmedTopic);
 
@@ -146,7 +148,7 @@ async function executeAgentTurn(
 
     const teachingStrategyArm = await selectTeachingStrategyArm(db, userId).catch(() => null);
     const implicitFollowUpReward = teachingStrategyArm?.armId && userId
-        ? agentFollowUpReward({ conversationHistory, message: trimmedMessage })
+        ? agentFollowUpReward({ conversationHistory: reconciledConversationHistory, message: trimmedMessage })
         : 0;
     const systemPrompt = buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines, userContext, crossTopicBridges, retrieval, { teachingStrategy: teachingStrategyArm?.strategy ? teachingStrategyArm : null });
 
@@ -163,8 +165,8 @@ async function executeAgentTurn(
 
     const classifiedIntent = inferDemandIntentRegex(trimmedMessage);
 
-    const recentMessages = formatRecentMessages(conversationHistory, 4);
-    const ephemeralSummary = await summarizeOlderMessages(ai, conversationHistory, 4, selectedProvider, auxModel);
+    const recentMessages = formatRecentMessages(reconciledConversationHistory, 4);
+    const ephemeralSummary = await summarizeOlderMessages(ai, reconciledConversationHistory, 4, selectedProvider, auxModel);
     const conversationSummary = [
         persistedConversation?.conversationSummary
             ? `### Stored thread summary\n${persistedConversation.conversationSummary}`
@@ -258,7 +260,7 @@ async function executeAgentTurn(
                 payload: {
                     classifiedIntent,
                     messageWordCount: trimmedMessage.split(/\s+/).filter(Boolean).length,
-                    conversationTurnCount: Array.isArray(conversationHistory) ? conversationHistory.length : 0,
+                    conversationTurnCount: reconciledConversationHistory.length,
                     followUpReward: implicitFollowUpReward,
                     banditMeta: {
                         policyType: 'agent_teaching_strategy',
@@ -284,7 +286,7 @@ async function executeAgentTurn(
             persistedConversationSummary: persistedConversation?.conversationSummary || null,
             persistedLearnerSnapshot: persistedConversation?.learnerSnapshot || null,
             conversationSummary,
-            conversationHistory,
+            conversationHistory: reconciledConversationHistory,
             sessionFeedback,
             sessionEnd,
             recentMessages,

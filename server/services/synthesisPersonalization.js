@@ -26,7 +26,7 @@ function normalizePersonalization({
 function buildSynthesisCacheKey(topic, articles = [], promptVersion = null, personalization = {}) {
     const pv = promptVersion || getPromptVersion('synthesis');
     const p = normalizePersonalization(personalization);
-    const uids = (articles || []).map((a) => a.uid).filter(Boolean);
+    const uids = (articles || []).map((a) => String(a.uid || '').trim()).filter(Boolean).sort();
     const digest = stableHash({
         topic: String(topic || ''),
         uids,

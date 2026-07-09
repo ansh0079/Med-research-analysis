@@ -100,6 +100,8 @@ async function aggregateCollectiveMemory(db) {
                 uniqueUsers: q.unique_users,
                 discrimination: psychometrics.discrimination != null ? Math.round(psychometrics.discrimination * 100) / 100 : null,
                 discriminationLabel: psychometrics.discriminationLabel,
+                sampleSize: psychometrics.sampleSize,
+                reliable: psychometrics.sampleSize >= 30,
             };
             if (psychometrics.discriminationLabel === 'flag_negative' && psychometrics.sampleSize >= 5) flaggedItems.push(entry);
             else if (rate >= 0.40 && rate <= 0.75 && ['good', 'excellent'].includes(psychometrics.discriminationLabel)) highDiscrimination.push(entry);
