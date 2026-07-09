@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { api } from '@services/api';
 import { useAuth } from '@contexts/AuthContext';
 import { useSearchContext } from '@contexts/SearchContext';
-import type { AgentGuidance, Article } from '@types';
+import type { AgentGuidance, Article, BanditMeta } from '@types';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
 
 interface ChatMessage {
@@ -137,6 +137,7 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
   const [conversations, setConversations] = useState<Array<{ id: number; title?: string; topic: string; lastMessageAt?: string }>>([]);
   const [showThreads, setShowThreads] = useState(false);
   const [feedbackByIndex, setFeedbackByIndex] = useState<Record<number, AgentFeedbackType>>({});
+  const [banditMetaByIndex, setBanditMetaByIndex] = useState<Record<number, BanditMeta | null>>({});
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { isAuthenticated } = useAuth();
@@ -222,11 +223,15 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
               reply += chunk;
               setStreamingContent((prev) => prev + chunk);
             },
-            onDone: (_doneTopic, doneConvId, _promptVersion) => {
+            onDone: (_doneTopic, doneConvId, _promptVersion, doneBanditMeta) => {
               if (doneConvId != null) {
                 setConversationId(doneConvId);
               }
+              const newIndex = messages.length;
               setMessages((prev) => [...prev, { role: 'assistant', content: reply }]);
+              if (doneBanditMeta) {
+                setBanditMetaByIndex((prev) => ({ ...prev, [newIndex]: doneBanditMeta }));
+              }
               setStreamingContent('');
             },
             onError: (msg) => setError(msg),
@@ -272,6 +277,7 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
       feedbackType,
       conversationId,
       messageIndex,
+      banditMeta: banditMetaByIndex[messageIndex] ?? null,
     }).catch(() => {
       setFeedbackByIndex((prev) => {
         const next = { ...prev };
@@ -279,7 +285,7 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
         return next;
       });
     });
-  }, [conversationId, isAuthenticated, topic]);
+  }, [conversationId, isAuthenticated, topic, banditMetaByIndex]);
 
   return (
     <div className="neo-card overflow-hidden border border-emerald-100 dark:border-emerald-900/40">

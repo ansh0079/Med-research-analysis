@@ -25,6 +25,7 @@ import type {
   TopicKnowledgeProposalListResponse,
   LearningHealthResponse,
   LearningRecommendation,
+  BanditMeta,
 } from '@types';
 
 export class AiApi extends BaseApiClient {
@@ -179,6 +180,7 @@ export class AiApi extends BaseApiClient {
     cached?: boolean | null;
     feedbackType: 'helpful' | 'not_helpful';
     reason?: string | null;
+    banditMeta?: BanditMeta | null;
   }): Promise<{ ok: boolean; feedbackType: 'helpful' | 'not_helpful'; cacheInvalidated?: boolean }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/ai/synopsis/feedback`, {
       method: 'POST',
@@ -314,7 +316,7 @@ export class AiApi extends BaseApiClient {
     previousQueries: string[] = [],
     callbacks: {
       onChunk: (text: string) => void;
-      onDone: (topic: string, conversationId: number | null | undefined, promptVersion: string | null) => void;
+      onDone: (topic: string, conversationId: number | null | undefined, promptVersion: string | null, banditMeta?: BanditMeta | null) => void;
       onError: (msg: string) => void;
     },
     sessionFeedback?: {
@@ -367,7 +369,8 @@ export class AiApi extends BaseApiClient {
               callbacks.onDone(
                 data.topic ?? topic,
                 data.conversationId != null ? Number(data.conversationId) : conversationId ?? null,
-                data.promptVersion ?? null
+                data.promptVersion ?? null,
+                data.banditMeta ?? null
               );
             }
             else if (event === 'error') callbacks.onError(data.message ?? 'Unknown error');
@@ -385,6 +388,7 @@ export class AiApi extends BaseApiClient {
     conversationId?: number | null;
     messageIndex?: number | null;
     reason?: string | null;
+    banditMeta?: BanditMeta | null;
   }): Promise<void> {
     const response = await this.fetchWithSession(`${API_BASE}/api/agent/feedback`, {
       method: 'POST',

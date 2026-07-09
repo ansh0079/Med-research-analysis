@@ -135,6 +135,13 @@ export interface ArticleSynopsisFields {
 
 export type SynopsisReviewState = 'unreviewed' | 'machine_checked' | 'human_reviewed' | 'needs_revision';
 
+/** Arm selection metadata from a personalisation bandit — echoed back on feedback to close the reward loop. */
+export interface BanditMeta {
+  policyType: string;
+  armId: string;
+  scopeKey?: string | null;
+}
+
 export interface ArticleSynopsisResult {
   synopsis?: ArticleSynopsisFields;
   articleId?: string;
@@ -148,6 +155,7 @@ export interface ArticleSynopsisResult {
   jobKey?: string | null;
   errorMessage?: string | null;
   audit?: Record<string, unknown>;
+  banditMeta?: BanditMeta | null;
   evidenceDelta?: {
     significantChange: boolean;
     summary: string | null;

@@ -12,6 +12,8 @@ interface Props {
   article: Article | null;
   onClose: () => void;
   onOpenInWorkspace?: (url: string) => void;
+  /** Active search query — improves guideline topic inference */
+  searchTopic?: string;
 }
 
 type Tab = 'overview' | 'synopsis' | 'consort' | 'guidelines';
@@ -64,7 +66,7 @@ function FieldList({ label, items }: { label: string; items?: string[] }) {
   );
 }
 
-export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenInWorkspace }) => {
+export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenInWorkspace, searchTopic }) => {
   const [tab, setTab] = useState<Tab>('overview');
   const [synopsis, setSynopsis] = useState<ArticleSynopsisFields | null>(null);
   const [synopsisResult, setSynopsisResult] = useState<ArticleSynopsisResult | null>(null);
@@ -75,6 +77,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
   const [consortState, setConsortState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [guidelines, setGuidelines] = useState<GuidelineEntry[]>([]);
   const [guidelineState, setGuidelineState] = useState<'idle' | 'loading' | 'done' | 'empty'>('idle');
+  const [inferredTopic, setInferredTopic] = useState<{ display: string; source: string; confidence: number } | null>(null);
 
   // Reset state when article changes
   useEffect(() => {
@@ -87,6 +90,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
     setConsortState('idle');
     setGuidelines([]);
     setGuidelineState('idle');
+    setInferredTopic(null);
     setTab('overview');
   }, [article?.uid]);
 
@@ -120,11 +124,10 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
     if (!article || guidelineState !== 'idle') return;
     setGuidelineState('loading');
     try {
-      // Infer topic from first 4 content words of the title (drop common words)
-      const stopWords = new Set(['the', 'a', 'an', 'of', 'in', 'and', 'or', 'for', 'with', 'on', 'at', 'to', 'vs', 'versus']);
-      const topicWords = article.title.toLowerCase().split(/\W+/).filter((w) => w.length > 3 && !stopWords.has(w)).slice(0, 4);
-      const topic = topicWords.join(' ');
+      const inference = await api.search.inferTopicForArticle(article, searchTopic);
+      const topic = inference.displayTopic?.trim();
       if (!topic) { setGuidelineState('empty'); return; }
+      setInferredTopic({ display: topic, source: inference.source, confidence: inference.confidence });
       const result = await fetch(`/api/guidelines?topic=${encodeURIComponent(topic)}&limit=4`);
       if (!result.ok) throw new Error('failed');
       const data = await result.json() as { guidelines: GuidelineEntry[] };
@@ -133,7 +136,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
     } catch {
       setGuidelineState('empty');
     }
-  }, [article, guidelineState]);
+  }, [article, guidelineState, searchTopic]);
 
   useEffect(() => {
     if (tab === 'synopsis' && synopsisState === 'idle') loadSynopsis();
@@ -152,6 +155,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
         model: synopsisResult?.model ?? null,
         cached: Boolean(synopsisResult?.cached),
         feedbackType,
+        banditMeta: synopsisResult?.banditMeta ?? null,
       });
       setSynopsisFeedback(feedbackType);
       if (feedbackType === 'not_helpful') {
@@ -589,6 +593,12 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
             )}
             {guidelineState === 'done' && guidelines.length > 0 && (
               <>
+                {inferredTopic && (
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400">
+                    Matched topic: <span className="font-semibold text-slate-700 dark:text-slate-200">{inferredTopic.display}</span>
+                    {inferredTopic.confidence < 0.5 && ' (low confidence)'}
+                  </p>
+                )}
                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
                   {guidelines.length} guideline snippet{guidelines.length !== 1 ? 's' : ''} matched
                 </p>
@@ -626,7 +636,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
                   })}
                 </div>
                 <p className="text-[10px] text-slate-400 italic">
-                  Snippet matching uses keywords from the article title. Always verify the full guideline context before applying to patient care.
+                  Topic inferred from search context, article metadata, and curated topic maps — not title keywords alone. Always verify the full guideline context before applying to patient care.
                 </p>
               </>
             )}
