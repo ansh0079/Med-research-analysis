@@ -45,4 +45,21 @@ describe('buildQuizPrompt psychometric feedback', () => {
         expect(prompt).toContain('Too-easy patterns to make more discriminating');
         expect(prompt).toContain('Flagged/negative-discrimination items to avoid copying');
     });
+
+    test('notes when psychometric items have fewer than 30 attempts', () => {
+        const prompt = buildQuizPrompt('sepsis', [], {
+            count: 3,
+            itemPsychometrics: {
+                highDiscrimination: [
+                    { questionText: 'Reliable item', correctRate: 62, discrimination: 0.42, sampleSize: 40, reliable: true },
+                ],
+                tooEasy: [
+                    { questionText: 'Preliminary item', correctRate: 96, sampleSize: 8, reliable: false },
+                ],
+            },
+        });
+
+        expect(prompt).toContain('fewer than 30 attempts');
+        expect(prompt).toContain('preliminary estimates');
+    });
 });

@@ -112,6 +112,35 @@ export interface TopicIntelligence {
   };
 }
 
+export interface CollectiveMemoryPsychometricItem {
+  conceptHash: string;
+  questionText: string;
+  questionType?: string;
+  correctRate?: number;
+  totalAttempts?: number;
+  uniqueUsers?: number;
+  discrimination?: number | null;
+  discriminationLabel?: string;
+  sampleSize?: number;
+  reliable?: boolean;
+}
+
+export interface TopicCollectiveMemory {
+  interactionCount?: number;
+  uniqueUsers?: number;
+  highDiscrimination?: CollectiveMemoryPsychometricItem[];
+  tooEasy?: CollectiveMemoryPsychometricItem[];
+  tooHard?: CollectiveMemoryPsychometricItem[];
+  flaggedForReview?: CollectiveMemoryPsychometricItem[];
+  sharedMisconceptions?: Array<{
+    conceptHash: string;
+    questionText?: string;
+    wrongAnswer: string;
+    pickRate: number;
+  }>;
+  lastAggregatedAt?: string;
+}
+
 export interface TopicKnowledge {
   id: number;
   topic: string;
@@ -126,6 +155,7 @@ export interface TopicKnowledge {
     mcqAngles?: string[];
     controversies?: unknown[];
     keywords?: string[];
+    collective_memory?: TopicCollectiveMemory;
     reviewedBy?: string | null;
     reviewedAt?: string;
     editedBy?: string | null;

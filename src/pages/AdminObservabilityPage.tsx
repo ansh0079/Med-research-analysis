@@ -10,6 +10,8 @@ function CollectiveMemoryPanel() {
     topicsWithAttempts: number;
     totalAttempts: number;
     topicsWithMemory: number;
+    trackedPsychometricItems?: number;
+    unreliablePsychometricItems?: number;
     topTopics: { normalized_topic: string; attempts: number; users: number }[];
   } | null>(null);
   const [running, setRunning] = useState(false);
@@ -70,6 +72,19 @@ function CollectiveMemoryPanel() {
               <p className="text-slate-500 mt-0.5">{c.label}</p>
             </div>
           ))}
+        </div>
+      )}
+
+      {stats && (stats.trackedPsychometricItems ?? 0) > 0 && (
+        <div className={`rounded-lg border px-3 py-2 text-xs ${
+          (stats.unreliablePsychometricItems ?? 0) > 0
+            ? 'border-amber-200 bg-amber-50/70 text-amber-800 dark:border-amber-900/40 dark:bg-amber-950/20 dark:text-amber-200'
+            : 'border-emerald-200 bg-emerald-50/70 text-emerald-800 dark:border-emerald-900/40 dark:bg-emerald-950/20 dark:text-emerald-200'
+        }`}>
+          <i className={`fas ${(stats.unreliablePsychometricItems ?? 0) > 0 ? 'fa-hourglass-half' : 'fa-check-circle'} mr-2`} />
+          {(stats.unreliablePsychometricItems ?? 0) > 0
+            ? `${stats.unreliablePsychometricItems} of ${stats.trackedPsychometricItems} tracked items have fewer than 30 attempts — psychometric estimates are preliminary. Review per-topic details in Knowledge Review → Learning Health.`
+            : `${stats.trackedPsychometricItems} tracked items meet the 30-attempt reliability threshold.`}
         </div>
       )}
 

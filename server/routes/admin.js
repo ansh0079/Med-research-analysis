@@ -496,19 +496,51 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
 
     app.get('/api/admin/aggregate-memory/stats', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
         try {
-            const [topicCount, attemptCount, topicsWithMemory] = await Promise.all([
+            const [topicCount, attemptCount, topicsWithMemory, memoryRows] = await Promise.all([
                 db.get(`SELECT COUNT(DISTINCT normalized_topic) as count FROM quiz_attempts`),
                 db.get(`SELECT COUNT(*) as count FROM quiz_attempts`),
                 db.get(`SELECT COUNT(*) as count FROM topic_knowledge WHERE knowledge LIKE '%collective_memory%'`),
+                db.all(`SELECT knowledge FROM topic_knowledge WHERE knowledge LIKE '%collective_memory%'`),
             ]);
             const topTopics = await db.all(
                 `SELECT normalized_topic, COUNT(*) as attempts, COUNT(DISTINCT user_id) as users
                  FROM quiz_attempts GROUP BY normalized_topic ORDER BY attempts DESC LIMIT 10`
             );
+
+            let trackedPsychometricItems = 0;
+            let unreliablePsychometricItems = 0;
+            for (const row of memoryRows || []) {
+                let knowledge = {};
+                try {
+                    knowledge = JSON.parse(row.knowledge || '{}');
+                } catch {
+                    continue;
+                }
+                const cm = knowledge.collective_memory;
+                if (!cm) continue;
+                const items = [
+                    ...(Array.isArray(cm.highDiscrimination) ? cm.highDiscrimination : []),
+                    ...(Array.isArray(cm.tooEasy) ? cm.tooEasy : []),
+                    ...(Array.isArray(cm.tooHard) ? cm.tooHard : []),
+                    ...(Array.isArray(cm.flaggedForReview) ? cm.flaggedForReview : []),
+                ];
+                const seen = new Set();
+                for (const item of items) {
+                    const key = item?.conceptHash || item?.questionText;
+                    if (!key || seen.has(key)) continue;
+                    seen.add(key);
+                    trackedPsychometricItems += 1;
+                    const attempts = Number(item.sampleSize ?? item.totalAttempts ?? 0);
+                    if (item.reliable === false || attempts < 30) unreliablePsychometricItems += 1;
+                }
+            }
+
             res.json({
                 topicsWithAttempts: topicCount?.count ?? 0,
                 totalAttempts: attemptCount?.count ?? 0,
                 topicsWithMemory: topicsWithMemory?.count ?? 0,
+                trackedPsychometricItems,
+                unreliablePsychometricItems,
                 topTopics,
             });
         } catch (error) {

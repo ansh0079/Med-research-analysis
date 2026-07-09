@@ -18,6 +18,7 @@ import {
   type SeminalPaper,
   type TeachingPointDraft,
 } from '@components/knowledge/KnowledgeReviewPanels';
+import { TopicItemPsychometricsPanel } from '@components/knowledge/TopicItemPsychometricsPanel';
 
 export const KnowledgeReviewPage: React.FC = () => {
   const setCurrentPage = useNavigatePage();
@@ -614,12 +615,15 @@ export const KnowledgeReviewPage: React.FC = () => {
                   )}
 
                   {activeTab === 'health' && (
-                    <LearningHealthPanel
-                      health={learningHealth}
-                      loading={healthLoading}
-                      error={healthError}
-                      onRefresh={() => void loadLearningHealth()}
-                    />
+                    <div className="space-y-4">
+                      <LearningHealthPanel
+                        health={learningHealth}
+                        loading={healthLoading}
+                        error={healthError}
+                        onRefresh={() => void loadLearningHealth()}
+                      />
+                      <TopicItemPsychometricsPanel memory={selected.knowledge?.collective_memory} />
+                    </div>
                   )}
                 </div>
               </>

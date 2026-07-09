@@ -490,7 +490,14 @@ export class CollaborationApi extends BaseApiClient {
     return response.json();
   }
 
-  async getAggregateMemoryStats(): Promise<{ topicsWithAttempts: number; totalAttempts: number; topicsWithMemory: number; topTopics: { normalized_topic: string; attempts: number; users: number }[] }> {
+  async getAggregateMemoryStats(): Promise<{
+    topicsWithAttempts: number;
+    totalAttempts: number;
+    topicsWithMemory: number;
+    trackedPsychometricItems?: number;
+    unreliablePsychometricItems?: number;
+    topTopics: { normalized_topic: string; attempts: number; users: number }[];
+  }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/admin/aggregate-memory/stats`);
     if (!response.ok) throw new Error('Failed to get aggregate memory stats');
     return response.json();
