@@ -51,7 +51,7 @@ function buildEnrichmentCacheKey(query, articles = [], personalization = {}) {
         .createHash('sha256')
         .update(JSON.stringify({
             q: String(query || ''),
-            uids: (articles || []).slice(0, 8).map((a) => a.uid),
+            uids: (articles || []).slice(0, 8).map((a) => a.uid).filter(Boolean).sort(),
             ...p,
         }))
         .digest('hex')

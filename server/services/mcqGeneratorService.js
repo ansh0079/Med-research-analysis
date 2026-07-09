@@ -129,7 +129,7 @@ function buildMcqPrompt(topic, knowledge, { includeExemplars = true, sourceArtic
         ? `\nSOURCE PAPERS (ground questions in these; prioritise the landmark / practice-defining trials among them):\n${sourceArticles.slice(0, 10).map((a, i) => `${i + 1}. ${a.title || ''}${a.pubdate ? ` (${String(a.pubdate).slice(0, 4)})` : ''}`).join('\n')}\n`
         : '';
 
-    return `Generate 10 high-quality MCQs about "${topic}" for final-year medical students.
+    return `Generate 7 high-quality MCQs about "${topic}" for final-year medical students.
 
 TOPIC KNOWLEDGE: ${k.mentorMessage || ''}
 KEY TEACHING POINTS:
@@ -137,8 +137,8 @@ ${teachingPoints || 'General knowledge'}
 MCQ ANGLES: ${mcqAngles || 'Mixed'}
 ${sourceBlock}${exemplarBlock}
 STRICT REQUIREMENTS:
-- Question types: Generate AT LEAST 2 clinical_application, 2 recall, 1 guideline, 1 pitfall, and fill remaining with mixed types
-- Difficulty: Generate AT LEAST 3 easy, 4 medium, 3 hard
+- Question types: Generate AT LEAST 2 clinical_application, 1 recall, 1 guideline, 1 pitfall, and fill remaining with mixed types
+- Difficulty: Generate AT LEAST 2 easy, 3 medium, 2 hard
 - Clinical vignettes MUST include: age, sex, presenting complaint, relevant comorbidities
 - 4 options (A-D), exactly one correct
 - Distractors must be plausible but clearly incorrect to an expert
@@ -180,7 +180,7 @@ async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemi
         }
         const parsed = await ai.callStructured(prompt, provider, model || undefined, {
             temperature: 0.4,
-            maxOutputTokens: 4000,  // Increased for 10 MCQs
+            maxOutputTokens: 3000,
             usage: { operation: 'cold_start_mcq', topic },
         });
 
