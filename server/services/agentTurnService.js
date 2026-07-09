@@ -282,6 +282,11 @@ async function executeAgentTurn(
         selectedModel,
         classifiedIntent,
         promptVersion: AGENT_PROMPT_VERSION,
+        banditMeta: teachingStrategyArm?.armId ? {
+            policyType: 'agent_teaching_strategy',
+            armId: teachingStrategyArm.armId,
+            scopeKey: teachingStrategyArm.scopeKey,
+        } : null,
     };
 }
 

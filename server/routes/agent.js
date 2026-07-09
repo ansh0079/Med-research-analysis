@@ -22,6 +22,8 @@ const {
     MAX_OUTPUT_TOKENS_BY_INTENT,
 } = require('../services/agentHelpers');
 
+const { recordBanditReward } = require('../services/personalizationBanditService');
+
 const isDev = process.env.NODE_ENV === 'development';
 
 function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, requireAuthJwt }) {
@@ -34,6 +36,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
             conversationId = null,
             messageIndex = null,
             reason = null,
+            banditMeta = null,
         } = req.body || {};
         const trimmedTopic = String(topic || '').trim().slice(0, 200);
         const type = String(feedbackType || '').trim();
@@ -68,6 +71,13 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                     reason: reason ? String(reason).slice(0, 500) : null,
                 },
             });
+
+            // Close the agent_teaching_strategy bandit reward loop
+            if (banditMeta?.policyType && banditMeta?.armId) {
+                const reward = type === 'helpful' ? 1 : (type === 'not_helpful' ? 0 : 0.5);
+                recordBanditReward(db, banditMeta.policyType, banditMeta.armId, reward, req.user.id)
+                    .catch((err) => logger.warn({ err, armId: banditMeta.armId }, 'agent teaching bandit reward failed'));
+            }
 
             res.json({ ok: true, feedbackType: type });
         } catch (error) {
@@ -141,6 +151,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                 topic: result.trimmedTopic,
                 conversationId: result.conversationId,
                 promptVersion: result.promptVersion,
+                banditMeta: result.banditMeta ?? null,
             });
             res.end();
         } catch (err) {

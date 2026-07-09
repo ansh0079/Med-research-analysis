@@ -18,6 +18,7 @@ const {
     getPaperSynopsisArticleId,
     invalidatePaperSynopsisCache,
 } = require('../../services/paperSynopsisCore');
+const { recordBanditReward } = require('../../services/personalizationBanditService');
 const { getOrEnqueueFullSynthesis, getOrEnqueuePaperSynopsis } = require('../../services/aiGenerationJobService');
 const { persistPaperTeachingObject } = require('../../services/teachingObjectService');
 
@@ -276,6 +277,7 @@ function registerSynthesisRoutes(app, {
             feedbackType,
             reason = null,
             cached = null,
+            banditMeta = null,
         } = req.body || {};
         const type = String(feedbackType || '').trim();
         const uid = articleUid || (article ? getPaperSynopsisArticleId(article) : null);
@@ -310,6 +312,13 @@ function registerSynthesisRoutes(app, {
                     trainingStage,
                 }).catch((err) => { logger.warn({ err }, 'synopsis feedback logEvent failed'); return null; });
             }
+            // Close the synopsis_style bandit reward loop
+            if (banditMeta?.policyType && banditMeta?.armId) {
+                const reward = type === 'helpful' ? 1 : 0;
+                recordBanditReward(db, banditMeta.policyType, banditMeta.armId, reward, req.user?.id ?? null)
+                    .catch((err) => logger.warn({ err, armId: banditMeta.armId }, 'synopsis bandit reward failed'));
+            }
+
             return res.json({ ok: true, feedbackType: type, cacheInvalidated: type === 'not_helpful' && Boolean(article) });
         } catch (error) {
             req.log.error({ err: error }, 'Synopsis feedback error');
