@@ -1,5 +1,8 @@
 import type { ArticleSynopsisFields } from '@types';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
+import { SynopsisTrustBanner, type SynopsisSourceMode } from './SynopsisTrustBanner';
+
+export type { SynopsisSourceMode };
 
 interface SynopsisRow {
   label: string;
@@ -36,15 +39,19 @@ function SynopsisList({ label, items }: { label: string; items?: string[] }) {
   );
 }
 
-export type SynopsisSourceMode = 'full_text_used' | 'abstract_only';
-
 export function ArticleCardSynopsisPanel({
   synopsis,
   sourceMode,
+  reviewState,
+  citationOk,
+  abstractOnly,
   onClose,
 }: {
   synopsis: ArticleSynopsisFields;
   sourceMode?: SynopsisSourceMode;
+  reviewState?: string | null;
+  citationOk?: boolean | null;
+  abstractOnly?: boolean | null;
   onClose: () => void;
 }) {
   const trust = TRUST_BADGE[synopsis.trustRating] ?? TRUST_BADGE.MODERATE;
@@ -71,6 +78,13 @@ export function ArticleCardSynopsisPanel({
       </div>
 
       <div className="px-4 py-3 space-y-3">
+        <SynopsisTrustBanner
+          sourceMode={sourceMode}
+          reviewState={reviewState}
+          citationOk={citationOk ?? synopsis.citationCheckPassed ?? null}
+          abstractOnly={abstractOnly ?? sourceMode === 'abstract_only'}
+        />
+
         {synopsis.takeaway && (
           <div className="rounded-lg bg-violet-100/70 dark:bg-violet-900/20 px-3 py-2.5">
             <span className="text-[10px] font-bold uppercase tracking-widest text-violet-500 dark:text-violet-400">Key Takeaway</span>

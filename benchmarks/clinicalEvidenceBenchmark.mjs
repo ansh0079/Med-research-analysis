@@ -5,7 +5,7 @@
  * Usage:
  *   BASE_URL=http://127.0.0.1:3000 JWT=<bearer> node benchmarks/clinicalEvidenceBenchmark.mjs
  */
-/* eslint-disable no-console */
+
 
 const scenarios = [
   { id: 'sepsis-hour-1', topic: 'sepsis hour-1 bundle lactate', landmarkTerms: ['sepsis', 'lactate'] },

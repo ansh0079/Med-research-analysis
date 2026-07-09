@@ -935,6 +935,7 @@ CREATE TABLE IF NOT EXISTS teaching_object_claims (
     verification_status TEXT NOT NULL DEFAULT 'unverified',
     verification_reason TEXT,
     verified_at TEXT,
+    review_state TEXT NOT NULL DEFAULT 'unreviewed',
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now'))
 , curator_metadata TEXT);
@@ -951,6 +952,7 @@ CREATE TABLE IF NOT EXISTS teaching_objects (
     provider TEXT,
     model TEXT,
     confidence REAL NOT NULL DEFAULT 0.5,
+    review_state TEXT NOT NULL DEFAULT 'unreviewed',
     generated_at TEXT DEFAULT (datetime('now')),
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now'))

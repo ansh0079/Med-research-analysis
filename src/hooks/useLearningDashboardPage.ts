@@ -125,7 +125,7 @@ export function useLearningDashboardPage() {
     if (!topic) return;
     onboardingStartHandled.current = true;
     sessionStorage.removeItem('med_learning_start_topic');
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setStartTopic(topic);
     void startReview(topic);
   }, [loading, startReview]);

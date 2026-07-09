@@ -25,7 +25,7 @@ function buildApp() {
     const app = express();
     app.use(express.json());
     registerCollaborationRoutes(app);
-    // eslint-disable-next-line no-unused-vars
+
     app.use((err, req, res, next) => res.status(500).json({ error: err.message }));
     return app;
 }

@@ -168,7 +168,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     onSpecificityChange?.(template.specificity);
     trackSearch(nextQuery, { template: template.id, specificity: template.specificity, sources: sources.join(',') });
     onSearch(nextQuery);
-  }, [onSearch, onSpecificityChange, onStudyTypesChange, query, sources, trackSearch]);
+  }, [onSearch, onSpecificityChange, onStudyTypesChange, query, setQuery, sources, trackSearch]);
 
   return (
     <div className="w-full">

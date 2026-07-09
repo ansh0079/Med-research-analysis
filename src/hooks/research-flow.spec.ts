@@ -2,8 +2,8 @@ import { test, expect } from '@playwright/test';
 
 /**
  * Medical Research Platform E2E Suite
- * 
- * Covers: Search functionality, Selection Basket, 
+ *
+ * Covers: Search functionality, Selection Basket,
  * AI Synthesis, and Collaborative Presence.
  */
 
@@ -53,7 +53,7 @@ test.describe('Medical Research Platform E2E', () => {
     const context2 = await browser.newContext();
     const page2 = await context2.newPage();
     const articleUrl = '/article/test-id';
-    
+
     await page1.goto(articleUrl);
     await page2.goto(articleUrl);
 

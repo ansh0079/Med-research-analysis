@@ -1,316 +1,115 @@
-# 🔬 Medical Research Intelligence Platform
+# Signal MD
 
-<p align="center">
-  <img src="https://img.shields.io/badge/version-3.0.0-blue.svg?style=flat-square" alt="Version">
-  <img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="License">
-  <img src="https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg?style=flat-square" alt="Node.js">
-  <img src="https://img.shields.io/badge/python-3.8%2B-blue.svg?style=flat-square" alt="Python">
-</p>
+Medical evidence intelligence for search, synopsis, review, and adaptive learning.
 
-<p align="center">
-  <a href="#features">Features</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#usage">Usage</a> •
-  <a href="#api-documentation">API</a> •
-  <a href="#contributing">Contributing</a>
-</p>
+![Version](https://img.shields.io/badge/version-2.0.0-blue.svg?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)
+![Node](https://img.shields.io/badge/node-%3E%3D22.13.0-brightgreen.svg?style=flat-square)
 
----
+## Overview
 
-## 🚀 Overview
+Signal MD combines multi-source biomedical search, evidence synthesis, citation and retraction signals, and learning-agent feedback loops for clinicians, researchers, and medical learners. The app is a React/Vite frontend backed by an Express API, SQLite/Postgres storage, optional pgvector search, and Redis-backed background jobs.
 
-The **Medical Research Intelligence Platform** is an advanced, AI-powered research tool designed for healthcare professionals, researchers, and medical students. It combines multi-source academic search with state-of-the-art AI analysis to accelerate literature review and evidence-based decision making.
+## Core Capabilities
 
-> **"Transforming how medical professionals discover, analyze, and synthesize research."**
+- Multi-source evidence search across PubMed, OpenAlex, Semantic Scholar, guidelines, and cached local evidence.
+- AI-assisted clinical answer, paper synopsis, consensus synthesis, and claim provenance workflows.
+- Search quality signals including impressions, clicks, saves, dwell, no-click rate, reformulations, and feedback.
+- Adaptive quizzes, spaced repetition, learner memory, and reward attribution from search-to-learning outcomes.
+- Admin and quality dashboards for readiness, observability, synthesis quality, learning quality, and search quality.
+- Team workspaces, collections, comments, review projects, exports, billing hooks, and production safety checks.
 
-## ✨ Features
+## Requirements
 
-### 🔍 Multi-Source Intelligence Search
+- Node.js 22.14.0 recommended, 22.13.0 minimum. The repo includes `.nvmrc`.
+- npm 10+.
+- SQLite works out of the box for local development.
+- Optional: PostgreSQL for the main app database, pgvector for vector search, and Redis for durable queues/rate-limit storage.
 
-- **PubMed Integration** - Direct access to 35+ million biomedical articles
-- **Semantic Scholar** - AI-powered academic search with citation contexts
-- **Cross-Ref & CORE** - Comprehensive coverage of open-access literature
-- **Smart Query Parsing** - Natural language to structured search conversion
-
-### 🤖 AI-Powered Analysis
-
-- **Mistral-7B Integration** - Local or API-based medical text analysis
-- **BioGPT Support** - Biomedical-specific language understanding
-- **Multiple Analysis Modes:**
-  - 🔬 Comprehensive Analysis
-  - ⚡ Quick Summary
-  - 🎯 Critical Appraisal
-  - 🧬 Biomedical Entity Extraction
-  - 👨‍👩‍👧‍👦 Layperson Explanation
-
-### 📊 Research Visualization
-
-- **Research Timeline** - Chronological view of study evolution
-- **Impact Scoring** - Advanced metrics for paper significance
-
-### 🔄 Collaboration Tools
-
-- **Smart Collections** - Organize research into shareable projects
-- **Batch Analysis** - Process multiple papers simultaneously
-- **Synthesis Reports** - Auto-generate systematic review drafts
-- **Export Options** - PDF, JSON, and citation formats
-
-### 🧠 Intelligent Features
-
-- **Research Memory** - Persistent session history and notes
-- **Agentic Search** - AI-driven multi-vector exploration
-- **Smart Recommendations** - ML-powered paper suggestions
-- **Comparative Analysis** - Side-by-side paper comparison
-
-## 📸 Screenshots
-
-<p align="center">
-  <img src="./docs/screenshots/dashboard.png" alt="Dashboard" width="800">
-  <br>
-  <em>Main Dashboard with Multi-Source Search</em>
-</p>
-
-<p align="center">
-  <img src="./docs/screenshots/ai-analysis.png" alt="AI Analysis" width="800">
-  <br>
-  <em>AI-Powered Research Analysis</em>
-</p>
-
-<p align="center">
-  <img src="./docs/screenshots/citation-network.png" alt="Citation Network" width="800">
-  <br>
-  <em>Interactive Citation Network Visualization</em>
-</p>
-
-## 🛠️ Tech Stack
-
-<p align="center">
-  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
-  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
-  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js">
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
-  <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express.js">
-  <img src="https://img.shields.io/badge/D3.js-F9A03C?style=for-the-badge&logo=d3.js&logoColor=white" alt="D3.js">
-  <img src="https://img.shields.io/badge/Hugging_Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black" alt="Hugging Face">
-</p>
-
-## 📦 Installation
-
-### Prerequisites
-
-- **Node.js** >= 18.0.0
-- **Python** >= 3.8 (optional - for local AI server)
-- **npm** or **yarn**
-
-### Quick Start
+## Quick Start
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/medical-research-intelligence.git
-cd medical-research-intelligence
-
-# Install dependencies
-npm install
-
-# Start API + frontend in development
-npm run dev
-
-# Open in browser
-http://localhost:5173
-```
-
-For production-style API only, run `npm start` and use port `3002`.
-
-### Production Deployment
-
-See [LAUNCH_CHECKLIST.md](./LAUNCH_CHECKLIST.md) for complete pre-launch verification and deployment steps.
-
-### Detailed Setup
-
-#### 1. Node.js API Server (Recommended)
-
-```bash
-npm install
+nvm use
+npm ci
+cp .env.example .env
 npm run dev
 ```
 
-The API server runs on `http://localhost:3002` and handles:
+The development command starts both services:
 
-- Multi-source search endpoints
-- AI analysis endpoints (`/api/ai/*`)
-- Rate limiting (30 req/min)
-- Response caching
+- API: `http://localhost:3002`
+- Vite frontend: `http://localhost:5173`
 
-#### 2. Local Python AI Server (Optional - Best Performance)
+For API-only local runs:
 
 ```bash
-pip install -r requirements.txt
-python biogpt_server.py
+npm start
 ```
 
-Runs Mistral-7B locally for:
+## Configuration
 
-- Zero API costs
-- Faster inference
-- Full privacy
+Start with `.env.example` and fill only what you need for the environment.
 
-#### 3. API Configuration
+Useful local variables:
 
-Add your API keys in the app settings (gear icon):
+- `JWT_SECRET`: required for auth flows; use at least 32 characters.
+- `ADMIN_TOKEN`: enables protected admin endpoints locally.
+- `DATABASE_URL`: optional Postgres main database URL.
+- `PG_VECTOR_URL` or `VECTOR_DATABASE_URL`: optional pgvector database URL.
+- `REDIS_URL`: optional Redis URL for queues and shared rate limits.
+- `GEMINI_API_KEY`, `OPENAI_API_KEY`, or provider-specific keys: optional AI backends.
 
-- **Hugging Face**: Get token at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
-- **OpenAI** (optional): For GPT-based analysis
+Production hardening flags are documented in `.env.example`, `COMMERCIAL_READINESS.md`, and the deployment docs.
 
-## 🚀 Usage
-
-### Entry Points
-
-- **Default (modern UI):** `index.html` (or `/` in production)
-- **Status:** Legacy fallback entry points have been retired in Phase 4.
-
-### Basic Search
-
-1. Enter your research query in natural language
-2. Select data sources (PubMed, Semantic Scholar, etc.)
-3. Adjust specificity level (broad → moderate → narrow)
-4. Click Search or press Enter
-
-### AI Analysis
-
-1. Click the **AI Analysis** button on any article
-2. Select analysis type:
-   - **Comprehensive** - Full research breakdown
-   - **Quick** - Brief summary
-   - **Critical** - Study quality assessment
-   - **Biomedical** - Entity extraction
-   - **Layperson** - Patient-friendly explanation
-
-### Citation Network
-
-1. Select an article with citations
-2. Click **View Citation Network**
-3. Explore paper relationships interactively
-4. Identify key papers and research clusters
-
-### Collections & Collaboration
-
-1. Save articles to collections
-2. Add notes and tags
-3. Export collections as PDF reports
-4. Share with colleagues
-
-## 📚 API Documentation
-
-Comprehensive API documentation is available at:
-
-📖 **[API Documentation](./docs/API.md)**
-
-Key endpoints:
-
-- `POST /api/ai/analyze` - AI text analysis
-- `POST /api/ai/explain` - Patient-friendly explanation
-- `POST /api/quiz/generate` - Quiz generation from topic/articles
-- `GET /health` - Health check
-- `GET /api/admin/readiness` - Admin readiness snapshot for SMTP/vector/paywall config
-
-### Premium Feature Gating (Optional)
-
-You can enable a lightweight paywall around premium endpoints with environment flags:
-
-- `PAYWALL_ENABLED=true`
-- `PAYWALL_ALLOW_IN_DEV=false` (recommended for staging QA)
-- `PAYWALL_ALLOWED_ROLES=admin,researcher,pro,enterprise`
-
-Premium-gated endpoints:
-
-- `POST /api/guidelines/align`
-- `POST /api/cases/analyze`
-- `GET /api/reviews/:id/export.csv`
-
-### Strict Production Readiness Flags
-
-To fail-fast in production when critical premium infra is missing:
-
-- `REQUIRE_SMTP=true` requires `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`, and `APP_URL`
-- `REQUIRE_VECTOR_SEARCH=true` requires `PG_VECTOR_URL` or `VECTOR_DATABASE_URL`
-
-## 🗺️ Roadmap
-
-- Legacy surface retirement plan: [LEGACY_DEPRECATION_PLAN.md](./LEGACY_DEPRECATION_PLAN.md)
-- Phase 3 parity checklist: [PHASE3_PARITY_CHECKLIST.md](./PHASE3_PARITY_CHECKLIST.md)
-- Phase 4 removal execution plan: [PHASE4_REMOVAL_PLAN.md](./PHASE4_REMOVAL_PLAN.md)
-- [x] Multi-source search integration
-- [x] AI-powered analysis (Mistral-7B, BioGPT)
-- [x] Citation network visualization
-- [x] Smart collections
-- [x] Batch processing
-- [x] Research memory & timeline
-- [ ] PDF full-text extraction
-- [ ] Collaborative annotations
-- [ ] Mobile app (React Native)
-- [ ] Browser extension
-- [ ] Institutional SSO integration
-
-## 🚨 Security Notice
-
-**IMPORTANT:** If you pulled this code before **March 9, 2026**, you need to:
-
-1. **Rotate your API keys immediately** - Old keys may have been exposed
-2. **Update your installation** - Hardcoded API keys have been removed
-3. **Configure your keys** - Add them to `.env` or the Settings modal
-
-See [SECURITY_FIXES.md](./SECURITY_FIXES.md) for full details.
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
-
-### Development Setup
+## Common Commands
 
 ```bash
-# Fork and clone
-git clone https://github.com/yourusername/medical-research-intelligence.git
-
-# Install dev dependencies
-npm install
-
-# Run tests
-npm test
-
-# Start dev server with hot reload
-npm run dev
+npm run dev                  # Start API and frontend
+npm start                    # Start Express API
+npm run build                # Typecheck and build frontend
+npm test                     # Run Jest suites
+npm run lint                 # Run ESLint with zero-warning policy
+npm run typecheck:all        # Client and server TypeScript checks
+npm run db:schema:check      # Validate schema snapshots
+npm run verify:db-contract   # Check route/controller DB guard contracts
+npm run eval:search-quality  # Search quality smoke/eval script
 ```
 
-### Code Style
+## Quality Gates
 
-- **JavaScript**: ESLint + Prettier
-- **Python**: Black + isort
-- **Commits**: Conventional commits format
+Before opening a PR, run:
 
-## 📄 License
+```bash
+npm run typecheck:all
+npm test -- --runInBand
+npm run build
+npm run lint
+npm run db:schema:check
+npm run verify:db-contract
+```
 
-This project is licensed under the **MIT License** - see the [LICENSE](./LICENSE) file for details.
+The GitHub PR guardrail workflow also runs targeted search pipeline, search quality, personalization, OpenAPI, production-env, build, E2E smoke, and audit checks.
 
-## 🙏 Acknowledgments
+## Repository Map
 
-- **Hugging Face** for the Inference API and model hosting
-- **NCBI** for PubMed E-utilities
-- **Semantic Scholar** for academic graph data
-- **Mistral AI** for the incredible Mistral-7B model
+- `src/`: React frontend, hooks, pages, UI, and API clients.
+- `server/`: Express routes, services, jobs, auth, search, synthesis, learning, and admin logic.
+- `database/`: database core, mixins, schemas, migrations, and SQL conversion tools.
+- `scripts/`: evals, schema tooling, deployment checks, and maintenance scripts.
+- `tests/`: backend, integration, load, and E2E tests.
+- `docs/`: architecture, deployment, collaboration, and operational notes.
 
-## 📧 Contact
+## Deployment Notes
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/medical-research-intelligence/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/medical-research-intelligence/discussions)
-- **Email**: <contact@medicalresearch.app>
+- Docker Compose and Hetzner deployment files are included for production-style deployments.
+- See `docs/HETZNER_DEPLOY.md`, `COMMERCIAL_READINESS.md`, and `.env.production.example`.
+- `npm run verify:production-env` checks required production settings.
+- The app defaults to safe local development behavior; do not use placeholder secrets in production.
 
----
+## Security
 
-<p align="center">
-  Made with ❤️ for the medical research community
-  <br>
-  ⭐ Star us on GitHub if you find this useful!
-</p>
+Rotate secrets if they were ever committed or shared. Keep `JWT_SECRET`, provider API keys, SMTP credentials, Stripe secrets, and database URLs outside git. Use `npm run secrets:generate` for strong local secret generation.
+
+## License
+
+MIT. See `LICENSE`.

@@ -2,7 +2,7 @@
 
 /**
  * Hierarchical Caching Service
- * 
+ *
  * Implements multi-level caching to reduce redundant synthesis regeneration:
  * - Level 1: Topic-level summaries (long TTL, 7 days)
  * - Level 2: Article-specific insights (medium TTL, 48 hours)
@@ -44,27 +44,27 @@ async function getHierarchicalSynthesis(cache, topic, articles) {
     if (!cache || !Array.isArray(articles) || articles.length === 0) {
         return { hit: false, level: null, data: null };
     }
-    
+
     // Sort articles by date to identify most recent
     const sortedArticles = [...articles].sort((a, b) => {
         const dateA = new Date(a.pubdate || a.year || 0);
         const dateB = new Date(b.pubdate || b.year || 0);
         return dateB - dateA;
     });
-    
+
     const mostRecent = sortedArticles[0];
-    
+
     // Level 3: Try full synthesis cache (keyed by most recent article)
     const l3Key = synthesisKey(topic, mostRecent.uid);
     const l3Hit = await cache.getAsync?.(l3Key).catch(() => null);
     if (l3Hit) {
         return { hit: true, level: 3, data: l3Hit, cacheKey: l3Key };
     }
-    
+
     // Level 2: Try to reconstruct from article insights
     const articleKeys = sortedArticles.slice(0, 10).map(a => articleInsightKey(a.uid));
     const articleInsights = await cache.mget?.(articleKeys).catch(() => []);
-    
+
     if (articleInsights && articleInsights.filter(Boolean).length >= 5) {
         // We have enough article-level insights to reconstruct
         return {
@@ -74,7 +74,7 @@ async function getHierarchicalSynthesis(cache, topic, articles) {
             cacheKey: l3Key
         };
     }
-    
+
     // Level 1: Try topic summary (provides general context)
     const l1Key = topicSummaryKey(topic);
     const l1Hit = await cache.getAsync?.(l1Key).catch(() => null);
@@ -87,7 +87,7 @@ async function getHierarchicalSynthesis(cache, topic, articles) {
             requiresFullGeneration: true
         };
     }
-    
+
     return { hit: false, level: null, data: null };
 }
 
@@ -96,19 +96,19 @@ async function getHierarchicalSynthesis(cache, topic, articles) {
  */
 async function setHierarchicalSynthesis(cache, topic, articles, synthesisResult) {
     if (!cache || !synthesisResult) return;
-    
+
     const sortedArticles = [...articles].sort((a, b) => {
         const dateA = new Date(a.pubdate || a.year || 0);
         const dateB = new Date(b.pubdate || b.year || 0);
         return dateB - dateA;
     });
-    
+
     const mostRecent = sortedArticles[0];
-    
+
     // Level 3: Store full synthesis
     const l3Key = synthesisKey(topic, mostRecent.uid);
     await cache.setAsync?.(l3Key, synthesisResult, CACHE_TTL.fullSynthesis).catch(() => {});
-    
+
     // Level 2: Extract and store article-specific insights
     if (synthesisResult.sources && Array.isArray(synthesisResult.sources)) {
         for (const source of synthesisResult.sources.slice(0, 10)) {
@@ -120,7 +120,7 @@ async function setHierarchicalSynthesis(cache, topic, articles, synthesisResult)
             }
         }
     }
-    
+
     // Level 1: Store topic summary
     const l1Key = topicSummaryKey(topic);
     const topicSummary = {
@@ -139,17 +139,17 @@ async function setHierarchicalSynthesis(cache, topic, articles, synthesisResult)
  */
 function needsRegeneration(cachedSynthesis, newArticles) {
     if (!cachedSynthesis || !cachedSynthesis.sources) return true;
-    
+
     const cachedUids = new Set(cachedSynthesis.sources.map(s => s.uid));
     const newArticleUids = newArticles.map(a => a.uid);
-    
+
     // Check if there are NEW articles not in cache
     const hasNewArticles = newArticleUids.some(uid => !cachedUids.has(uid));
-    
+
     // Check if cached synthesis is stale (>24 hours)
     const cacheAge = Date.now() - new Date(cachedSynthesis.timestamp).getTime();
     const isStale = cacheAge > CACHE_TTL.fullSynthesis * 1000;
-    
+
     return hasNewArticles || isStale;
 }
 
@@ -159,7 +159,7 @@ function needsRegeneration(cachedSynthesis, newArticles) {
 function extractArticleInsight(synthesisResult, articleUid) {
     const source = synthesisResult.sources?.find(s => s.uid === articleUid);
     if (!source) return null;
-    
+
     return {
         uid: articleUid,
         title: source.title,

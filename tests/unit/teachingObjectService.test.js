@@ -84,7 +84,12 @@ describe('teachingObjectService', () => {
                 provider: 'gemini',
                 model: 'flash',
                 timestamp: '2026-05-18T00:00:00.000Z',
-                audit: { fullTextCoverageRatio: 0 },
+                audit: {
+                    fullTextCoverageRatio: 0,
+                    reviewState: 'needs_revision',
+                    abstractOnly: true,
+                    sourceMode: 'abstract_only',
+                },
                 synopsis: {
                     mainFindings: 'Abstract reports no clear benefit.',
                     bottomLine: 'Do not infer mortality benefit.',
@@ -98,8 +103,12 @@ describe('teachingObjectService', () => {
         expect(object.payload.paper.fullTextUsed).toBe(false);
         expect(object.payload.claimAnchors[0]).toMatchObject({
             verificationStatus: 'abstract_only',
+            highCertaintyEligible: false,
         });
-        expect(object.payload.claimAnchors[0].verificationReason).toContain('indexed full text was not confirmed');
+        expect(object.payload.claimAnchors[0].confidence).toBeLessThanOrEqual(0.42);
+        expect(object.confidence).toBeLessThanOrEqual(0.42);
+        expect(object.reviewState).toBeDefined();
+        expect(object.payload.sourceMode).toBe('abstract_only');
     });
 
     test('turns consensus outputs into quiz context', () => {

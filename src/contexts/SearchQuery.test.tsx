@@ -72,7 +72,7 @@ describe('SearchQueryContext', () => {
     const mockArticles = [
       { uid: '1', id: '1', title: 'Article 1', abstract: 'Abstract 1', _source: 'pubmed' },
       { uid: '2', id: '2', title: 'Article 2', abstract: 'Abstract 2', _source: 'pubmed' },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     ] as any[];
 
     const TestComponent = () => {

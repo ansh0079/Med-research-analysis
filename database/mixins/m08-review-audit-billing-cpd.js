@@ -447,6 +447,7 @@ mapTeachingObjectRow(row) {
         model: row.model || null,
         confidence: Number(row.confidence || 0),
         generatedAt: row.generated_at || null,
+        reviewState: row.review_state || 'unreviewed',
         createdAt: row.created_at || null,
         updatedAt: row.updated_at || null,
     };
@@ -463,8 +464,8 @@ async upsertTeachingObject(object = {}) {
     await this.run(
         `INSERT INTO teaching_objects (
             object_key, object_type, article_uid, normalized_topic, topic, title,
-            object_payload, provider, model, confidence, generated_at, created_at, updated_at
-         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            object_payload, provider, model, confidence, review_state, generated_at, created_at, updated_at
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON CONFLICT(object_key) DO UPDATE SET
             object_type = excluded.object_type,
             article_uid = excluded.article_uid,
@@ -475,6 +476,7 @@ async upsertTeachingObject(object = {}) {
             provider = excluded.provider,
             model = excluded.model,
             confidence = excluded.confidence,
+            review_state = excluded.review_state,
             generated_at = excluded.generated_at,
             updated_at = excluded.updated_at`,
         [
@@ -488,6 +490,7 @@ async upsertTeachingObject(object = {}) {
             object.provider || null,
             object.model || null,
             Math.max(0, Math.min(1, Number(object.confidence || 0.5))),
+            String(object.reviewState || object.payload?.reviewState || 'unreviewed').slice(0, 40),
             object.generatedAt || now,
             now,
             now,
@@ -555,6 +558,7 @@ mapTeachingObjectClaimRow(row) {
         curatorMetadata: row.curator_metadata
             ? (() => { try { return JSON.parse(row.curator_metadata); } catch { return null; } })()
             : null,
+        reviewState: row.review_state || 'unreviewed',
         createdAt: row.created_at || null,
         updatedAt: row.updated_at || null,
     };
@@ -574,8 +578,8 @@ async replaceTeachingObjectClaims({ objectKey, articleUid = null, normalizedTopi
                 `INSERT INTO teaching_object_claims (
                     object_key, claim_key, ordinal, claim_text, evidence_quote, source_path,
                     article_uid, normalized_topic, concept_key, confidence, verification_status,
-                    verification_reason, verified_at, created_at, updated_at
-                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    verification_reason, verified_at, review_state, created_at, updated_at
+                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                  ON CONFLICT(claim_key) DO UPDATE SET
                     object_key = excluded.object_key,
                     ordinal = excluded.ordinal,
@@ -589,6 +593,7 @@ async replaceTeachingObjectClaims({ objectKey, articleUid = null, normalizedTopi
                     verification_status = excluded.verification_status,
                     verification_reason = excluded.verification_reason,
                     verified_at = excluded.verified_at,
+                    review_state = excluded.review_state,
                     updated_at = excluded.updated_at`,
                 [
                     objectKey,
@@ -604,6 +609,7 @@ async replaceTeachingObjectClaims({ objectKey, articleUid = null, normalizedTopi
                     claim.verificationStatus ? String(claim.verificationStatus).slice(0, 80) : 'unverified',
                     claim.verificationReason ? String(claim.verificationReason).slice(0, 500) : null,
                     claim.verifiedAt ? String(claim.verifiedAt).slice(0, 40) : null,
+                    String(claim.reviewState || 'unreviewed').slice(0, 40),
                     now,
                     now,
                 ]
@@ -837,6 +843,10 @@ async updateTeachingClaimVerification(claimKey, { verificationStatus, verificati
         ['human_reviewed', 'guideline_supported', 'guideline_conflict'].includes(status) ? now : null,
         now,
     ];
+    if (status === 'human_reviewed') {
+        fields.push('review_state = ?');
+        values.push('human_reviewed');
+    }
     if (claimText != null) {
         const text = String(claimText || '').trim().slice(0, 1400);
         if (text) {

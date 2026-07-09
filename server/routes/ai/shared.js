@@ -10,6 +10,7 @@ const { coldStartMcqKey, guidelineMcqKey, liveQuizMcqKey } = require('../../util
 const { computeConceptHash } = require('../../utils/conceptHash');
 const { estimateAbility, selectAdaptiveItems } = require('../../services/adaptiveItemSelectionService');
 const { isArticleNewerThan, findMatchingTeachingPointIndex } = require('../../services/topicKnowledgeMergeUtils');
+const { isHighCertaintyQuizEligible } = require('../../services/paperSynopsisTrust');
 
 function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
     function extractJsonArray(text) {
@@ -285,7 +286,15 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
         for (const item of buckets) {
             if (selected.length >= safeCount) break;
             const normalized = normalize(item.claim, item.priority, item.index);
-            if (normalized) selected.push(normalized);
+            if (!normalized) continue;
+            if (!isHighCertaintyQuizEligible({
+                verificationStatus: normalized.verificationStatus,
+                conceptKey: item.claim?.conceptKey,
+                reviewState: item.claim?.reviewState,
+            })) {
+                continue;
+            }
+            selected.push(normalized);
         }
         return selected;
     }
@@ -317,19 +326,19 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             // INCREMENTAL UPDATE: Only extract NEW knowledge from articles published after last update
             let articlesToAnalyze = articles.slice(0, 10);
             let updateMode = 'full';
-            
+
             if (existingKnowledge && existingKnowledge.lastRefreshedAt) {
                 const lastUpdate = new Date(existingKnowledge.lastRefreshedAt);
                 const recentArticles = articles.filter((a) => isArticleNewerThan(a, lastUpdate));
-                
+
                 if (recentArticles.length > 0 && recentArticles.length < articles.length) {
                     // We have NEW articles - do incremental update
                     articlesToAnalyze = recentArticles.slice(0, 10);
                     updateMode = 'incremental';
-                    log?.info?.({ 
-                        topic: cleanTopic, 
+                    log?.info?.({
+                        topic: cleanTopic,
                         newArticles: recentArticles.length,
-                        totalArticles: articles.length 
+                        totalArticles: articles.length
                     }, 'Performing incremental knowledge update');
                 }
             }
@@ -348,16 +357,16 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             const prompt = promptType === 'delta'
                 ? buildDeltaKnowledgeExtractionPrompt(cleanTopic, synthesis, articlesToAnalyze, existingKnowledge, interactionStats)
                 : buildSeminalKnowledgeExtractionPrompt(cleanTopic, synthesis, articlesToAnalyze, existingKnowledge, interactionStats);
-            
+
             const raw = await ai.callText(prompt, provider, model || PINNED_MODELS[provider] || PINNED_MODELS.gemini, { temperature: 0.15 });
             const knowledge = extractJsonObject(raw);
-            
+
             // Merge incremental updates with existing knowledge
             let finalKnowledge = knowledge;
             if (updateMode === 'incremental' && existingKnowledge?.knowledge) {
                 finalKnowledge = mergeKnowledgeDeltas(existingKnowledge.knowledge, knowledge, articlesToAnalyze);
             }
-            
+
             const sourceArticles = articles.slice(0, 10).map((article, index) => ({
                 sourceIndex: index + 1,
                 uid: article.uid,
@@ -367,7 +376,7 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
                 source: article.source || article._source || null,
                 pubdate: article.pubdate || (article.year ? String(article.year) : null),
             }));
-            
+
             return await db.upsertTopicKnowledge(cleanTopic, finalKnowledge, sourceArticles, 'ai_generated', 0.65);
         } catch (err) {
             log?.warn?.({ err, topic: cleanTopic }, 'Topic knowledge extraction skipped');
@@ -382,11 +391,11 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
         const existingPoints = (existingKnowledge?.knowledge?.teachingPoints || [])
             .map((tp, i) => `${i + 1}. ${typeof tp === 'string' ? tp : tp.claim || tp.text}`)
             .join('\n');
-        
-        const newArticlesText = newArticles.map((a, i) => 
+
+        const newArticlesText = newArticles.map((a, i) =>
             `[NEW-${i + 1}] ${a.title} (${a.pubdate || a.year})`
         ).join('\n');
-        
+
         return `You are updating medical knowledge about "${topic}" with NEW evidence.
 
 EXISTING TEACHING POINTS:
@@ -411,13 +420,13 @@ Return JSON:
   "updateRequired": true/false
 }`;
     }
-    
+
     /**
      * Merges delta knowledge updates with existing knowledge base
      */
     function mergeKnowledgeDeltas(existingKnowledge, deltaKnowledge, newArticles) {
         const merged = { ...existingKnowledge };
-        
+
         // Add new insights to teaching points
         if (Array.isArray(deltaKnowledge.newInsights) && deltaKnowledge.newInsights.length > 0) {
             merged.teachingPoints = [
@@ -429,7 +438,7 @@ Return JSON:
                 }))
             ].slice(0, 20);  // Cap at 20 teaching points
         }
-        
+
         // Flag contradictions for human review
         if (Array.isArray(deltaKnowledge.contradictions) && deltaKnowledge.contradictions.length > 0) {
             merged.contradictions = [
@@ -437,21 +446,21 @@ Return JSON:
                 ...deltaKnowledge.contradictions
             ];
         }
-        
+
         // Update confidence for strengthened points
         if (Array.isArray(deltaKnowledge.strengtheningEvidence)) {
             for (const evidence of deltaKnowledge.strengtheningEvidence) {
                 // Find matching teaching point and boost confidence
                 const matchIdx = findMatchingTeachingPointIndex(merged.teachingPoints || [], evidence.existingPoint);
                 if (matchIdx >= 0 && merged.teachingPoints[matchIdx]) {
-                    merged.teachingPoints[matchIdx].confidence = 
+                    merged.teachingPoints[matchIdx].confidence =
                         Math.min((merged.teachingPoints[matchIdx].confidence || 0.5) * 1.15, 0.95);
-                    merged.teachingPoints[matchIdx].strengtheningEvidence = 
+                    merged.teachingPoints[matchIdx].strengtheningEvidence =
                         [...(merged.teachingPoints[matchIdx].strengtheningEvidence || []), evidence.newEvidence];
                 }
             }
         }
-        
+
         return merged;
     }
 

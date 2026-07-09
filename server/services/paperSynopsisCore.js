@@ -17,6 +17,8 @@ const {
     getUserExplanationPreferences,
     hasCustomExplanationPreferences,
 } = require('./agentSelfImprovementService');
+const { processPaperSynopsisTrust } = require('./paperSynopsisTrust');
+const { selectSynopsisStyleArm, recordBanditReward, POLICY_SYNOPSIS_STYLE } = require('./personalizationBanditService');
 
 function getPaperSynopsisArticleId(article = {}) {
     return article.uid || article.pmid || article.doi
@@ -132,6 +134,7 @@ async function runPaperSynopsisGenerationInner({
             return null;
         });
     }
+    const synopsisStyleArm = await selectSynopsisStyleArm(db, userId).catch(() => null);
     const preferenceSuffix = explanationPreferencesCacheSuffix(explanationPreferences);
     const selectedModelForCache = providerCandidates[0]?.model || 'unknown';
     const candidateCacheKeys = [...new Set(providerCandidates
@@ -187,6 +190,7 @@ async function runPaperSynopsisGenerationInner({
         trainingStage: effectiveTrainingStage,
         synopsisFeedbackStats,
         explanationPreferences,
+        synopsisStyle: synopsisStyleArm?.style ?? null,
     });
     let rawSynopsis = null;
     let selectedProvider = null;
@@ -226,7 +230,9 @@ async function runPaperSynopsisGenerationInner({
     }
     synopsis = validated.data;
 
-    const hasAbstract = Boolean(article.abstract && String(article.abstract).length > 40);
+    const fullTextCoverageRatio = enriched._fullTextIndexed ? 1 : (article._pdfIndexed || article.pdfIndexed ? 1 : 0);
+    const trustProcessed = processPaperSynopsisTrust(synopsis, { fullTextCoverageRatio });
+    synopsis = trustProcessed.synopsis;
     const result = {
         synopsis,
         articleId,
@@ -235,6 +241,11 @@ async function runPaperSynopsisGenerationInner({
         timestamp: new Date().toISOString(),
         disclaimer: AI_DISCLAIMER,
         jobKey,
+        banditMeta: synopsisStyleArm ? {
+            policyType: POLICY_SYNOPSIS_STYLE,
+            armId: synopsisStyleArm.armId,
+            scopeKey: synopsisStyleArm.scopeKey,
+        } : null,
         audit: {
             provider: selectedProvider,
             model: selectedModel,
@@ -243,13 +254,10 @@ async function runPaperSynopsisGenerationInner({
             trainingStage: effectiveTrainingStage,
             synopsisFeedbackStats,
             sourceCount: 1,
-            fullTextCoverageRatio: enriched._fullTextIndexed ? 1 : (article._pdfIndexed || article.pdfIndexed ? 1 : 0),
-            citationValidation: null,
             retractionChecked: Boolean(article._retraction),
             retractionFlagged: Boolean(article._retraction?.isRetracted),
-            humanReviewStatus: 'none',
             generatedAt: new Date().toISOString(),
-            abstractOnly: !hasAbstract,
+            ...trustProcessed.audit,
         },
     };
 

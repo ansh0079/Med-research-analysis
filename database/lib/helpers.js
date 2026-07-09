@@ -15,13 +15,19 @@ function safeJsonParse(value, fallback = null) {
 /** Apply SQL migrations via scripts/sqlite-migrate.mjs (node:sqlite) before opening better-sqlite3 */
 function runExternalSqliteMigrations(absDbPath) {
     const migrateScript = path.join(__dirname, '..', '..', 'scripts', 'sqlite-migrate.mjs');
-    const { status, error } = spawnSync(process.execPath, [migrateScript], {
+    const quiet = process.env.NODE_ENV === 'test';
+    const { status, error, stdout, stderr } = spawnSync(process.execPath, [migrateScript], {
         env: { ...process.env, SQLITE_PATH: absDbPath },
-        stdio: 'inherit',
+        stdio: quiet ? 'pipe' : 'inherit',
+        encoding: quiet ? 'utf8' : undefined,
         windowsHide: true,
     });
     if (error) throw error;
     if (status !== 0) {
+        if (quiet) {
+            if (stdout) process.stdout.write(stdout);
+            if (stderr) process.stderr.write(stderr);
+        }
         throw new Error(
             `SQLite migrations failed (exit ${status}). Fix errors above or set SKIP_BUILTIN_SQLITE_MIGRATE=1 and use db:migrate:kysely after repairing better-sqlite3.`
         );

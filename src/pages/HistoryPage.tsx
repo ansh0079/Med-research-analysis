@@ -48,7 +48,7 @@ export const HistoryPage: React.FC = () => {
         showToast(err instanceof Error ? err.message : 'History load failed', 'error');
       })
       .finally(() => setHistoryLoading(false));
-  }, []);
+  }, [showToast]);
 
   useEffect(() => {
     if (tab !== 'saved-queries') return;

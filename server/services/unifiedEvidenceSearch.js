@@ -569,7 +569,7 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     // Only fires for conversational queries (>4 words, contains question-like patterns).
     // Skip reformulation if query already contains medical terminology to preserve precision.
     const hasMedicalTerms = /\b(syndrome|disease|treatment|therapy|diagnosis|cardiac|pulmonary|renal|diabetes|hypertension|infection|cancer|trial|study|efficacy|management|pathophysiology)\b/i.test(query);
-    const isNaturalLanguageQuery = !hasMedicalTerms && 
+    const isNaturalLanguageQuery = !hasMedicalTerms &&
         process.env.NODE_ENV !== 'test' && (
         query.split(/\s+/).length > 4 ||
         /\b(does|how|what|why|which|can|is|are|should)\b/i.test(query)

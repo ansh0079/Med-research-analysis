@@ -45,7 +45,7 @@ export function useEventSource<T = unknown>(url: string | null, _options?: Event
   }, [url]);
 
   // Connection must start on mount; setIsLoading is part of EventSource lifecycle.
-  // eslint-disable-next-line react-hooks/set-state-in-effect
+
   useEffect(() => connect(), [connect]);
 
   return { latestMessage, messages, isLoading, error, connect };

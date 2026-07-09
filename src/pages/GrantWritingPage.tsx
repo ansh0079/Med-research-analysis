@@ -37,7 +37,7 @@ export const GrantWritingPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [researchQuestion, sourceArticles, citationStyle]);
+  }, [researchQuestion, sourceArticles, citationStyle, showToast]);
 
   if (!isAuthenticated) {
     return (

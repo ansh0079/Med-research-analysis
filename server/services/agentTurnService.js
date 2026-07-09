@@ -21,6 +21,8 @@ const {
     summarizeOlderMessages,
 } = require('./agentHelpers');
 
+const { selectTeachingStrategyArm } = require('./personalizationBanditService');
+
 const isDev = process.env.NODE_ENV === 'development';
 
 /**
@@ -141,7 +143,8 @@ async function executeAgentTurn(
         }
     }
 
-    const systemPrompt = buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines, userContext, crossTopicBridges, retrieval);
+    const teachingStrategyArm = await selectTeachingStrategyArm(db, userId).catch(() => null);
+    const systemPrompt = buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines, userContext, crossTopicBridges, retrieval, { teachingStrategy: teachingStrategyArm?.strategy ? teachingStrategyArm : null });
 
     const providerCandidates = getProviderCandidates({}, serverConfig);
     if (!providerCandidates.length) {

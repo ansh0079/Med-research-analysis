@@ -238,7 +238,7 @@ async getAnnotationsByArticle(articleId, userId = null) {
         query = query.where('user_id', '=', userId);
     }
     const rows = await query.orderBy('created_at', 'asc').execute();
-    
+
     return rows.map(row => ({
         ...row,
         position: safeJsonParse(row.position, null)

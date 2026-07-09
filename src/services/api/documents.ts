@@ -31,15 +31,15 @@ export class DocumentsApi extends BaseApiClient {
   async getAnnotations(articleId: string): Promise<Annotation[]> {
     const response = await this.fetchWithSession(`${API_BASE}/api/articles/${articleId}/annotations`);
     if (response.status === 401) {
-      throw new Error('AUTH_REQUIRED'); 
+      throw new Error('AUTH_REQUIRED');
     }
     if (!response.ok) throw new Error('Failed to fetch annotations');
     return response.json();
   }
 
   async addAnnotation(
-    articleId: string, 
-    text: string, 
+    articleId: string,
+    text: string,
     position?: { x: number; y: number; page: number }
   ): Promise<{ id: string }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/articles/${articleId}/annotations`, {
@@ -121,7 +121,7 @@ export class DocumentsApi extends BaseApiClient {
     return this.withRetry(() => this._extractPdfText(url));
   }
 
-  protected async _extractPdfText( 
+  protected async _extractPdfText(
     url: string
   ): Promise<{ text: string; pages: number; metadata: Record<string, unknown> }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/pdf/extract`, {
@@ -148,10 +148,10 @@ export class DocumentsApi extends BaseApiClient {
     return response.text();
   }
 
-  async getSearchHistory(): Promise<{ history: Array<{ 
-    query: string; 
-    timestamp: string; 
-    results_count: number 
+  async getSearchHistory(): Promise<{ history: Array<{
+    query: string;
+    timestamp: string;
+    results_count: number
   }> }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/user/history`);
     if (!response.ok) throw new Error('Failed to fetch history');
@@ -165,10 +165,10 @@ export class DocumentsApi extends BaseApiClient {
   }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/analytics/summary`);
     if (!response.ok) throw new Error('Failed to fetch analytics');
-    return response.json() as Promise<{ 
-      dailyStats: Array<{ date: string; searches: number; analyses: number }>; 
-      popularSearches: Array<{ query: string; count: number }>; 
-      generatedAt: string 
+    return response.json() as Promise<{
+      dailyStats: Array<{ date: string; searches: number; analyses: number }>;
+      popularSearches: Array<{ query: string; count: number }>;
+      generatedAt: string
     }>;
   }
 

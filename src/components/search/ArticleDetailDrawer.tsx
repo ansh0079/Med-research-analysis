@@ -5,6 +5,8 @@ import type { Article, ArticleSynopsisFields, ArticleSynopsisResult, ConsortResu
 import { QualityBadge } from './QualityBadge';
 import { RetractionBadge } from './RetractionBadge';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
+import { SynopsisTrustBanner } from '@components/search/SynopsisTrustBanner';
+import { EvidenceAuditPanel } from '@components/search/EvidenceAuditPanel';
 
 interface Props {
   article: Article | null;
@@ -352,7 +354,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
             )}
             {synopsisState === 'done' && synopsis && (
               <>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   {synopsis.trustRating && (() => {
                     const trust = TRUST_BADGE[synopsis.trustRating] ?? TRUST_BADGE.MODERATE;
                     return <span className={`text-[10px] font-bold rounded-full px-2.5 py-1 ${trust.cls}`}>Trust: {trust.label}</span>;
@@ -361,6 +363,52 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
                     <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">{synopsis.studyDesign}</span>
                   )}
                 </div>
+
+                <SynopsisTrustBanner
+                  sourceMode={
+                    typeof synopsisResult?.audit?.fullTextCoverageRatio === 'number'
+                      ? (synopsisResult.audit.fullTextCoverageRatio as number) > 0 ? 'full_text_used' : 'abstract_only'
+                      : null
+                  }
+                  reviewState={
+                    (synopsisResult?.audit?.reviewState as string | undefined)
+                    || (synopsisResult?.audit?.humanReviewStatus as string | undefined)
+                    || null
+                  }
+                  citationOk={
+                    typeof synopsisResult?.audit?.citationCheckPassed === 'boolean'
+                      ? synopsisResult.audit.citationCheckPassed as boolean
+                      : (synopsisResult?.audit?.citationValidation as { ok?: boolean } | undefined)?.ok ?? synopsis.citationCheckPassed ?? null
+                  }
+                  abstractOnly={synopsisResult?.audit?.abstractOnly === true
+                    || (typeof synopsisResult?.audit?.fullTextCoverageRatio === 'number'
+                      && (synopsisResult.audit.fullTextCoverageRatio as number) === 0)}
+                />
+
+                {synopsisResult?.audit && (
+                  <EvidenceAuditPanel
+                    title="Synopsis audit"
+                    snapshot={{
+                      model: synopsisResult.model ?? null,
+                      provider: synopsisResult.provider ?? null,
+                      generatedAt: synopsisResult.timestamp ?? null,
+                      sourceCount: 1,
+                      fullTextCoverageRatio: typeof synopsisResult.audit.fullTextCoverageRatio === 'number'
+                        ? synopsisResult.audit.fullTextCoverageRatio as number
+                        : null,
+                      citationOk: typeof synopsisResult.audit.citationCheckPassed === 'boolean'
+                        ? synopsisResult.audit.citationCheckPassed as boolean
+                        : (synopsisResult.audit.citationValidation as { ok?: boolean } | undefined)?.ok ?? null,
+                      citationIssueCount: (synopsisResult.audit.citationValidation as { issueCount?: number } | undefined)?.issueCount ?? null,
+                      humanReviewStatus: (synopsisResult.audit.reviewState as string | undefined)
+                        || (synopsisResult.audit.humanReviewStatus as string | undefined)
+                        || 'unreviewed',
+                      retractionFlagged: synopsisResult.audit.retractionFlagged === true,
+                      retractionChecked: synopsisResult.audit.retractionChecked === true,
+                      jobKey: synopsisResult.jobKey ?? null,
+                    }}
+                  />
+                )}
 
                 {synopsis.takeaway && (
                   <div className="rounded-xl bg-violet-50 dark:bg-violet-950/20 border border-violet-200/60 dark:border-violet-800/40 px-4 py-3">
@@ -447,7 +495,14 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
                   </div>
                 </div>
 
-                <ClinicalSafetyNotice status="abstract_only" />
+                <ClinicalSafetyNotice
+                  status={
+                    typeof synopsisResult?.audit?.fullTextCoverageRatio === 'number'
+                      && (synopsisResult.audit.fullTextCoverageRatio as number) > 0
+                      ? 'source_verified'
+                      : 'abstract_only'
+                  }
+                />
               </>
             )}
           </div>

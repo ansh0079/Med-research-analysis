@@ -322,7 +322,7 @@ async function applyPicoRerankStage({
                 const payload = typeof meta === 'object' && meta !== null ? meta : {};
                 // Keep this at debug-level semantics; the heuristic fallback is expected in local/dev.
                 if (process.env.NODE_ENV !== 'test') {
-                    // eslint-disable-next-line no-console
+
                     console.debug('[searchPipeline] PICO rerank:', message, payload);
                 }
             },

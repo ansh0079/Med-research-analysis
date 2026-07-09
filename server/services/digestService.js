@@ -22,13 +22,13 @@ function generateToken() {
  */
 async function runSearchForAlert(query, sources, serverConfig, fetchImpl) {
   const results = [];
-  
+
   // Advanced Query: Prioritize systematic reviews, clinical trials, and guidelines in PubMed
   // Using PubMed [sb] (Subset) and [pt] (Publication Type) filters for high-quality evidence
   const qualityFilter = ' AND (systematic[sb] OR clinical trial[pt] OR guideline[pt])';
   const pubmedQuery = encodeURIComponent(query + qualityFilter);
   const genericQuery = encodeURIComponent(query);
-  
+
   const ncbiEmail = serverConfig?.keys?.ncbiEmail || 'digest@medsearch.app';
 
   const tasks = sources.map(async (source) => {

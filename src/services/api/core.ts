@@ -195,7 +195,7 @@ export class BaseApiClient {
         // ignore storage errors
       }
     }
-    
+
     const serverSession = response.headers.get('X-Session-Id');
     if (serverSession && serverSession !== this.sessionId) {
       this.sessionId = serverSession;

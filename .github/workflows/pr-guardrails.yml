@@ -56,7 +56,7 @@ jobs:
         run: npm run typecheck:all
 
       - name: Run ESLint
-        run: npx eslint .
+        run: npm run lint
 
       - name: Generate and validate OpenAPI
         run: |

@@ -63,6 +63,17 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
 
   const currentQuestion = questions[currentIndex];
 
+  const getSourceTitle = useCallback((sourceArticle?: string | null, sourceIndices?: number[] | null) => {
+    if (sourceArticle) return sourceArticle;
+    if (sourceIndices && sourceIndices.length > 0) {
+      const idx = sourceIndices[0] - 1;
+      if (idx >= 0 && idx < articles.length) {
+        return articles[idx].title;
+      }
+    }
+    return null;
+  }, [articles]);
+
   const handleSelect = (letter: string) => {
     if (showExplanation || !currentQuestion) return;
     const timeMs = currentTimeMs() - questionStartRef.current;
@@ -120,7 +131,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
         showToast('Could not save quiz progress', 'info', 3000);
       }
     }
-  }, [isAuthenticated, questions, topic, showToast]);
+  }, [isAuthenticated, questions, topic, showToast, getSourceTitle, onAuthSubmit]);
 
   const handleNext = () => {
     if (currentIndex + 1 >= questions.length) {
@@ -147,17 +158,6 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
     setSaveStatus('idle');
     answersRef.current = [];
     fetchQuestions();
-  };
-
-  const getSourceTitle = (sourceArticle?: string | null, sourceIndices?: number[] | null) => {
-    if (sourceArticle) return sourceArticle;
-    if (sourceIndices && sourceIndices.length > 0) {
-      const idx = sourceIndices[0] - 1;
-      if (idx >= 0 && idx < articles.length) {
-        return articles[idx].title;
-      }
-    }
-    return null;
   };
 
   return (

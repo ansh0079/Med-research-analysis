@@ -68,29 +68,29 @@ function shuffle(array) {
  * Validates and enforces MCQ diversity by overgeneration + filtering
  */
 function enforceMCQDiversity(questions, targetDistribution) {
-    const { 
+    const {
         types = { recall: 1, clinical_application: 2, guideline: 1, pitfall: 1 },
         difficulties = { easy: 2, medium: 2, hard: 1 }
     } = targetDistribution;
-    
+
     const byType = groupBy(questions, 'questionType');
     const selected = [];
     const typeKeys = Object.keys(types);
     const difficultyKeys = Object.keys(difficulties);
-    
+
     // First pass: select by question type distribution
     for (const [type, count] of Object.entries(types)) {
         const available = byType[type] || [];
         const shuffled = shuffle(available);
         selected.push(...shuffled.slice(0, count));
     }
-    
+
     // If we don't have enough, fill from any available questions
     if (selected.length < 5) {
         const remaining = questions.filter(q => !selected.includes(q));
         selected.push(...shuffle(remaining).slice(0, 5 - selected.length));
     }
-    
+
     // Validate difficulty distribution
     const selectedDifficulties = groupBy(selected, 'difficulty');
     const difficultyReport = difficultyKeys.map(d => ({
@@ -98,13 +98,13 @@ function enforceMCQDiversity(questions, targetDistribution) {
         target: difficulties[d] || 0,
         actual: (selectedDifficulties[d] || []).length
     }));
-    
+
     const typeReport = typeKeys.map(t => ({
         type: t,
         target: types[t] || 0,
         actual: selected.filter(q => q.questionType === t).length
     }));
-    
+
     return {
         questions: selected.slice(0, 5),
         diversityReport: {
@@ -158,13 +158,13 @@ async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemi
         const objectKey = coldStartMcqKey(db, topic);
 
         const existing = await db.getTeachingObjectByKey(objectKey).catch(() => null);
-        
+
         // Check if existing MCQs are stale or low quality
         if (existing?.payload?.mcqs?.length > 0) {
             const age = Date.now() - new Date(existing.generatedAt).getTime();
             const ageInDays = age / (1000 * 60 * 60 * 24);
             const confidence = existing.confidence || 0;
-            
+
             // Expire old low-confidence MCQs
             if (ageInDays > 90 && confidence < 0.7) {
                 logger.info({ topic, age: ageInDays, confidence }, 'Cold-start MCQs expired, regenerating');
@@ -199,7 +199,7 @@ async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemi
             difficulties: { easy: 2, medium: 2, hard: 1 }
         };
         const { questions: mcqs, diversityReport } = enforceMCQDiversity(allMcqs, targetDistribution);
-        
+
         // Calculate confidence based on diversity achievement
         let confidence = 0.65;
         if (diversityReport.meetsTypeTarget && diversityReport.meetsDifficultyTarget) {
@@ -217,8 +217,8 @@ async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemi
             model: model || provider,
             confidence,
             generatedAt: new Date().toISOString(),
-            payload: { 
-                mcqs, 
+            payload: {
+                mcqs,
                 topic,
                 diversityReport,
                 generationMetadata: {
@@ -229,13 +229,13 @@ async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemi
             },
         });
 
-        logger.info({ 
-            topic, 
-            count: mcqs.length, 
+        logger.info({
+            topic,
+            count: mcqs.length,
             diversity: diversityReport,
-            confidence 
+            confidence
         }, 'Cold-start MCQs stored with diversity enforcement');
-        
+
         return { topic, count: mcqs.length, mcqs, diversityReport, confidence };
     });
 }

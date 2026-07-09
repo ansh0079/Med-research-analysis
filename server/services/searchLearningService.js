@@ -2,6 +2,7 @@ const logger = require('../config/logger');
 const { buildLearningTrajectorySection } = require('./learnerStateService');
 const { selectSearchRankingArm, SEARCH_RANKING_ARMS } = require('./personalizationBanditService');
 const { loadMisconceptionBoostContext, misconceptionArticleBoost } = require('./misconceptionSearchBoostService');
+const { applyBoostSafety, auditArmSafety } = require('./banditSafetyGuard');
 
 function normalizeUid(value) {
     return String(value || '').trim().toLowerCase();
@@ -72,7 +73,7 @@ function learningContextFromMemory(memory, weakArticleUids = new Set()) {
     const top = weightedUidSet(memory?.topArticles || []);
     const saved = weightedUidSet(memory?.savedArticles || []);
     const memoryTier = memory?.memoryTier || 'none';
-    let shouldPersonalize = memoryTier === 'building' || memoryTier === 'strong';
+    const shouldPersonalize = memoryTier === 'building' || memoryTier === 'strong';
 
     return {
         memoryTier,
@@ -349,6 +350,8 @@ function articleLearningBoost(article, context) {
 
     const misconceptionBoost = misconceptionArticleBoost(article, context.misconceptionBoost, weights);
     if (misconceptionBoost > 0) boost = Math.max(boost, misconceptionBoost);
+
+    boost = applyBoostSafety(article, boost);
 
     const blob = articleTextBlob(article);
     if (blob && context.trajectoryTerms?.size) {

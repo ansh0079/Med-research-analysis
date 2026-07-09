@@ -75,7 +75,7 @@ export const EvidenceAuditPanel: React.FC<{
             ? 'Checked'
             : '—',
     },
-    { k: 'Human review', v: fmt(humanReviewStatus, 'none') },
+    { k: 'Human review', v: fmt(humanReviewStatus === 'none' ? 'unreviewed' : humanReviewStatus, 'unreviewed') },
     ...(claimCount != null ? [{ k: 'Claims', v: String(claimCount) }] : []),
     ...(jobKey ? [{ k: 'Job', v: jobKey.slice(0, 18) + (jobKey.length > 18 ? '…' : '') }] : []),
     ...(jobType ? [{ k: 'Job type', v: jobType }] : []),

@@ -2,7 +2,7 @@
 
 /**
  * Content Sanitization Utilities
- * 
+ *
  * Protects against XSS, injection attacks, and malicious content in user inputs.
  */
 
@@ -50,7 +50,7 @@ function neutralizeDangerousProtocols(text) {
 function sanitizeUserInput(text, maxLength = 2000) {
     if (!text) return '';
     const options = resolveOptions(maxLength, { maxLength: 2000, escapeHtml: true, normalizeWhitespace: true });
-    
+
     let sanitized = stripControlChars(text);
     sanitized = neutralizeDangerousProtocols(sanitized);
 
@@ -63,7 +63,7 @@ function sanitizeUserInput(text, maxLength = 2000) {
     } else {
         sanitized = sanitized.trim();
     }
-    
+
     return sanitized.slice(0, options.maxLength);
 }
 
@@ -73,14 +73,14 @@ function sanitizeUserInput(text, maxLength = 2000) {
 function sanitizeMarkdown(markdown, maxLength = 10000) {
     if (!markdown) return '';
     const options = resolveOptions(maxLength, { maxLength: 10000, escapeHtml: true });
-    
+
     let sanitized = stripControlChars(markdown);
     sanitized = neutralizeDangerousProtocols(sanitized);
 
     if (options.escapeHtml) {
         sanitized = escapeHtml(sanitized);
     }
-    
+
     return sanitized.slice(0, options.maxLength);
 }
 
@@ -101,20 +101,20 @@ function sanitizeTopicName(topic) {
  */
 function sanitizeMedicalQuery(query) {
     if (!query) return '';
-    
+
     let sanitized = stripControlChars(query);
-    
+
     // Remove SQL injection patterns
     sanitized = sanitized.replace(/;\s*(DROP|DELETE|UPDATE|INSERT|ALTER|CREATE)\s/gi, '');
     sanitized = sanitized.replace(/--/g, '');
     sanitized = sanitized.replace(/\/\*/g, '');
-    
+
     sanitized = neutralizeDangerousProtocols(sanitized);
     sanitized = escapeHtml(sanitized);
-    
+
     // Normalize whitespace
     sanitized = sanitized.replace(/\s+/g, ' ').trim();
-    
+
     return sanitized.slice(0, 500);
 }
 
@@ -124,7 +124,7 @@ function sanitizeMedicalQuery(query) {
 function sanitizeJsonInput(input, schema = null) {
     try {
         const parsed = typeof input === 'string' ? JSON.parse(input) : input;
-        
+
         // Recursive sanitization for string values
         const sanitizeObject = (obj) => {
             if (typeof obj === 'string') {
@@ -144,7 +144,7 @@ function sanitizeJsonInput(input, schema = null) {
             }
             return obj;
         };
-        
+
         return sanitizeObject(parsed);
     } catch (err) {
         throw new Error('Invalid JSON input');
@@ -156,15 +156,15 @@ function sanitizeJsonInput(input, schema = null) {
  */
 function sanitizeEmail(email) {
     if (!email) return '';
-    
+
     const sanitized = String(email).toLowerCase().trim().slice(0, 320);
-    
+
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(sanitized)) {
         throw new Error('Invalid email format');
     }
-    
+
     return sanitized;
 }
 
@@ -173,16 +173,16 @@ function sanitizeEmail(email) {
  */
 function sanitizeFilePath(filePath) {
     if (!filePath) return '';
-    
+
     let sanitized = String(filePath);
-    
+
     // Remove directory traversal attempts
     sanitized = sanitized.replace(/\.\./g, '');
     sanitized = sanitized.replace(/[/\\]{2,}/g, '/');
-    
+
     // Remove dangerous characters
     sanitized = sanitized.replace(/[<>:"|?*]/g, '');
-    
+
     return sanitized.slice(0, 255);
 }
 
@@ -191,17 +191,17 @@ function sanitizeFilePath(filePath) {
  */
 function sanitizeUrl(url) {
     if (!url) return '';
-    
+
     const sanitized = String(url).trim().slice(0, 2048);
-    
+
     try {
         const parsed = new URL(sanitized);
-        
+
         // Only allow http and https
         if (!['http:', 'https:'].includes(parsed.protocol)) {
             throw new Error('Invalid URL protocol');
         }
-        
+
         return parsed.toString();
     } catch (err) {
         throw new Error('Invalid URL format');

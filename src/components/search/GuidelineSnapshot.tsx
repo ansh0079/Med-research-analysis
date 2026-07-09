@@ -117,7 +117,7 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
   React.useEffect(() => {
     if (autoRunAlignment && evidenceForAlignment.length > 0 && !alignment && !alignmentLoading) {
       // One-time auto-run triggered by external prop; gated by dependency checks above.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+
       void runAlignment();
     }
   }, [alignment, alignmentLoading, autoRunAlignment, evidenceForAlignment.length, runAlignment]);

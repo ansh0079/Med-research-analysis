@@ -7,6 +7,13 @@ const { formatMisconceptionPromptBlock } = require('../utils/misconceptionPrompt
 const { formatLearnerSnapshot } = require('./learnerStateService');
 const { normaliseAgentStage } = require('../prompts/trainingStages');
 
+const TEACHING_STRATEGY_DIRECTIVES = {
+    explain_then_quiz: 'Provide a clear, direct explanation first. Then immediately follow up with one targeted MCQ or reflective question to consolidate understanding.',
+    question_first:    'Begin with a Socratic question to elicit the learner\'s prior understanding before explaining. Build on their answer rather than starting from scratch.',
+    analogy_bridge:    'Anchor your first explanation in a concrete analogy or real-world clinical scenario before presenting the evidence. Make the mechanism intuitive before the data.',
+    example_first:     'Open with a brief worked clinical example (a patient presentation or trial vignette) before explaining the underlying principle or evidence.',
+};
+
 function compactTeachingObject(object) {
     const payload = object?.payload || {};
     const synopsis = payload.synopsis || {};
@@ -115,7 +122,7 @@ function isTransientStreamError(err) {
     return false;
 }
 
-function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = [], userContext = null, crossTopicBridges = [], retrieval = {}) {
+function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = [], userContext = null, crossTopicBridges = [], retrieval = {}, { teachingStrategy = null } = {}) {
     const k = topicKnowledge?.knowledge;
     const topic = topicKnowledge?.topic || 'this medical topic';
 
@@ -266,7 +273,8 @@ CRITICAL INSTRUCTION: All responses MUST respect the SCAFFOLDING directive above
 ACTIVE REMEDIATION: If the learner has low mastery in a specific area (see mastery breakdown), provide scaffolding first, then build up to current evidence.
 PROACTIVE LINKING: If the current query relates to one of the user's 'weak topics' or 'weak outline nodes', explicitly point out the connection and how this new evidence helps resolve that previous gap.
 BREAKTHROUGH CONTINUITY: If breakthrough moments are listed in the learner snapshot, reference them when building on prior understanding — do not re-explain from scratch what the learner already clicked on.
-BRIDGE BUILDING: If the user pivots topics (e.g. from Sepsis to AKI), identify 'Synapses'—points where the evidence for the old and new topics intersect.${misconceptionBlock}`;
+BRIDGE BUILDING: If the user pivots topics (e.g. from Sepsis to AKI), identify 'Synapses'—points where the evidence for the old and new topics intersect.${misconceptionBlock}${teachingStrategy ? `
+TEACHING STRATEGY (${teachingStrategy.label}): ${TEACHING_STRATEGY_DIRECTIVES[teachingStrategy.strategy] || ''}` : ''}`;
     }
 
     return `You are a clinical education mentor assistant specialising in evidence-based medicine.

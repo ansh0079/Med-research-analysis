@@ -49,7 +49,7 @@ function startOpenTelemetry() {
         });
     } catch (err) {
         // Telemetry must never keep the app from booting.
-        // eslint-disable-next-line no-console
+
         console.warn('[otel] OpenTelemetry startup skipped:', err?.message || err);
         sdk = null;
     }

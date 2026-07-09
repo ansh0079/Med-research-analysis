@@ -125,7 +125,7 @@ export const BillingPage: React.FC = () => {
     setError(null);
     try {
       const { url } = await api.collaboration.createCheckoutSession(planId);
-      // eslint-disable-next-line react-hooks/immutability
+
       window.location.href = url;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to start checkout');

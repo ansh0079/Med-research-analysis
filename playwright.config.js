@@ -1,6 +1,6 @@
 /**
  * Playwright Configuration for Medical Research Application E2E Tests
- * 
+ *
  * Best Practices:
  * - Parallel execution for faster test runs
  * - Screenshots on failure for debugging
@@ -73,7 +73,7 @@ module.exports = defineConfig({
     // Desktop browsers
     {
       name: 'chromium',
-      use: { 
+      use: {
         ...devices['Desktop Chrome'],
         // Additional permissions for medical research features
         permissions: ['clipboard-read', 'clipboard-write'],
@@ -111,7 +111,7 @@ module.exports = defineConfig({
     // High DPI / Retina
     {
       name: 'Desktop Chrome HiDPI',
-      use: { 
+      use: {
         ...devices['Desktop Chrome HiDPI'],
       },
     },

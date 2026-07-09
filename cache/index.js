@@ -176,7 +176,7 @@ class CacheManager {
             specificity
         }, ttlSeconds);
     }
-    
+
     async _scanRedisKeys(matchPattern) {
         if (!this.redis) return [];
         const keys = [];
