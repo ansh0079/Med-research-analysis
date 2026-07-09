@@ -30,7 +30,11 @@ module.exports = (Sup) => class extends Sup {
     async recordPersonalizationArmPull(policyType, armId, reward, scopeKey = 'global') {
         if (!this.kysely || !policyType || !armId) return null;
         const now = new Date().toISOString();
-        const success = Number(reward) > 0.03;
+        // Rewards range [-1, 1] (see rewardAttributionService.js). Rescale to a
+        // [0, 1] pseudo-success weight so the Beta posterior reflects reward
+        // magnitude instead of collapsing every pull to a binary hit/miss.
+        const r = Math.max(-1, Math.min(1, Number(reward) || 0));
+        const successWeight = (r + 1) / 2;
         await this.ensurePersonalizationArms(policyType, [armId], scopeKey);
         await this.run(
             `UPDATE personalization_arm_state
@@ -41,16 +45,16 @@ module.exports = (Sup) => class extends Sup {
                  updated_at = ?
              WHERE policy_type = ? AND arm_id = ? AND scope_key = ?`,
             [
-                success ? 1 : 0,
-                success ? 0 : 1,
-                Number(reward) || 0,
+                successWeight,
+                1 - successWeight,
+                r,
                 now,
                 String(policyType),
                 String(armId),
                 String(scopeKey),
             ]
         );
-        return { policyType, armId, scopeKey, reward, success };
+        return { policyType, armId, scopeKey, reward: r, successWeight };
     }
 
     async insertPersonalizationDecision({

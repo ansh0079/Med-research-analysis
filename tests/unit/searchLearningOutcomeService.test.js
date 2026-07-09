@@ -193,6 +193,53 @@ describe('searchLearningOutcomeService', () => {
         );
     });
 
+    test('attributeQuizAttemptRewards records a wrong-answer decisionId reward (negative signal)', async () => {
+        const db = {
+            normalizeTopic: (t) => String(t).toLowerCase().replace(/\s+/g, '-'),
+            findRecentSearchImpressionsForAttribution: jest.fn().mockResolvedValue([]),
+            all: jest.fn().mockResolvedValue([{ id: 13, arm_id: 'quiz_gap_heavy', delayed_reward: null }]),
+            updatePersonalizationDecisionReward: jest.fn().mockResolvedValue(true),
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+        };
+
+        const result = await attributeQuizAttemptRewards(db, 'u1', [{
+            id: 102,
+            isCorrect: false,
+            decisionId: 13,
+        }], 'Sepsis');
+
+        expect(result.attributed).toBe(1);
+        // combineSearchQuizReward(0, -0.1) = -0.09 (impression 0 weight 0.1, quiz -0.1 weight 0.9)
+        const call = db.recordPersonalizationArmPull.mock.calls.find((args) => args[3] === 'user:u1');
+        expect(call[0]).toBe('search_ranking');
+        expect(call[1]).toBe('quiz_gap_heavy');
+        expect(call[2]).toBeCloseTo(-0.09, 5);
+    });
+
+    test('attributeAgentQuizOutcomeReward records a negative reward after a failed quiz', async () => {
+        const db = {
+            normalizeTopic: (t) => String(t).toLowerCase(),
+            all: jest.fn().mockResolvedValue([
+                { payload_json: JSON.stringify({ banditMeta: { armId: 'socratic' } }) },
+            ]),
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+            recordLearningEvent: jest.fn().mockResolvedValue({ id: 1 }),
+        };
+
+        const result = await attributeAgentQuizOutcomeReward(db, 'u1', [
+            { isCorrect: false },
+            { isCorrect: false },
+        ], 'Sepsis');
+
+        expect(result).toMatchObject({ rewarded: 1, reward: -0.15 });
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith(
+            'agent_teaching_strategy',
+            'socratic',
+            -0.15,
+            'user:u1'
+        );
+    });
+
     test('getQuizAttributionCoverage reports source and attribution rates', async () => {
         const db = {
             get: jest.fn().mockResolvedValue({

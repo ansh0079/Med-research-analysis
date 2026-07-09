@@ -12,9 +12,11 @@ function synopsisFeedbackReward(feedbackType, reason = '') {
     if (type === 'helpful') return 1;
     if (type !== 'not_helpful') return 0;
     const r = normalizeReason(reason);
+    // Trust/factual complaints aren't the style arm's fault — no update (caller skips reward===0).
     if (TRUST_REASON_RE.test(r)) return 0;
-    if (STYLE_REASON_RE.test(r)) return 0.02;
-    return 0;
+    // A not_helpful verdict that names a style complaint IS this arm's fault.
+    if (STYLE_REASON_RE.test(r)) return -0.3;
+    return -0.15;
 }
 
 function synopsisRegenerationTargets(reason = '') {
@@ -63,7 +65,7 @@ function quizOutcomeRewardForAgent(attempts = []) {
     if (score >= 0.8) return 0.7;
     if (score >= 0.6) return 0.35;
     if (score >= 0.4) return 0.05;
-    return 0;
+    return -0.15;
 }
 
 module.exports = {

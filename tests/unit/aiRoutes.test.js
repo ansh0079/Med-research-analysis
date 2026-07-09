@@ -250,6 +250,7 @@ describe('aiRoutes', () => {
                     reason: 'too vague',
                     model: 'gemini-model',
                     trainingStage: 'finals',
+                    banditMeta: { policyType: 'synopsis_style', armId: 'pico_structured' },
                 });
             expect(res.status).toBe(200);
             expect(mockDb.recordSynopsisFeedback).toHaveBeenCalledWith(expect.objectContaining({
@@ -261,6 +262,7 @@ describe('aiRoutes', () => {
                 article: expect.objectContaining({ uid: 'a1' }),
                 selectedModel: 'gemini-model',
                 trainingStage: 'finals',
+                synopsisStyleArmId: 'pico_structured',
             }));
         });
     });

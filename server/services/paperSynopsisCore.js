@@ -35,6 +35,21 @@ function explanationPreferencesCacheSuffix(preferences) {
     return `:ep:${crypto.createHash('md5').update(JSON.stringify(preferences)).digest('hex').slice(0, 8)}`;
 }
 
+function cacheSafePart(value) {
+    return String(value || '').replace(/[^a-zA-Z0-9_.-]/g, '_').slice(0, 80);
+}
+
+function synopsisStyleArmCacheSuffix(armId) {
+    const safeArmId = cacheSafePart(armId);
+    return safeArmId ? `:sa:${safeArmId}` : '';
+}
+
+function synopsisStyleCacheSuffix(synopsisStyleArm) {
+    const scopeKey = String(synopsisStyleArm?.scopeKey || '');
+    if (!scopeKey.startsWith('user:')) return '';
+    return synopsisStyleArmCacheSuffix(synopsisStyleArm?.armId);
+}
+
 function getPaperSynopsisCacheKey(article = {}, selectedModel = 'unknown', trainingStage = null, promptVersion = null, preferenceSuffix = '') {
     const articleId = getPaperSynopsisArticleId(article);
     const stage = normalizeTrainingStage(trainingStage) || 'default';
@@ -42,7 +57,13 @@ function getPaperSynopsisCacheKey(article = {}, selectedModel = 'unknown', train
     return `synopsis:${articleId}:${selectedModel}:${stage}:pv:${pv}${preferenceSuffix || ''}`;
 }
 
-async function invalidatePaperSynopsisCache({ cache, article, selectedModel = null, trainingStage = null } = {}) {
+async function invalidatePaperSynopsisCache({
+    cache,
+    article,
+    selectedModel = null,
+    trainingStage = null,
+    synopsisStyleArmId = null,
+} = {}) {
     if (!cache || !article) return false;
     const models = selectedModel
         ? [...new Set([selectedModel, PINNED_MODELS.gemini, PINNED_MODELS.mistral, 'unknown'].filter(Boolean))]
@@ -50,11 +71,13 @@ async function invalidatePaperSynopsisCache({ cache, article, selectedModel = nu
     const stages = trainingStage
         ? [trainingStage]
         : ['default', 'preclinical', 'early_clinical', 'finals', 'foundation_doctor'];
+    const armSuffix = synopsisStyleArmCacheSuffix(synopsisStyleArmId);
+    const suffixes = armSuffix ? ['', armSuffix] : [''];
     const del = cache.delAsync || cache.del;
     if (typeof del !== 'function') return false;
     const articleId = getPaperSynopsisArticleId(article);
     const keys = [
-        ...models.flatMap((model) => stages.map((stage) => getPaperSynopsisCacheKey(article, model, stage))),
+        ...models.flatMap((model) => stages.flatMap((stage) => suffixes.map((suffix) => getPaperSynopsisCacheKey(article, model, stage, null, suffix)))),
         ...models.map((model) => `synopsis:${articleId}:${model}`),
     ];
     await Promise.all([...new Set(keys)].map((key) => (
@@ -135,7 +158,7 @@ async function runPaperSynopsisGenerationInner({
         });
     }
     const synopsisStyleArm = await selectSynopsisStyleArm(db, userId).catch(() => null);
-    const preferenceSuffix = explanationPreferencesCacheSuffix(explanationPreferences);
+    const preferenceSuffix = `${explanationPreferencesCacheSuffix(explanationPreferences)}${synopsisStyleCacheSuffix(synopsisStyleArm)}`;
     const selectedModelForCache = providerCandidates[0]?.model || 'unknown';
     const candidateCacheKeys = [...new Set(providerCandidates
         .map((candidate) => getPaperSynopsisCacheKey(
@@ -262,7 +285,7 @@ async function runPaperSynopsisGenerationInner({
     };
 
     if (cache?.setAsync) {
-        const cacheKey = getPaperSynopsisCacheKey(article, selectedModel || selectedModelForCache, effectiveTrainingStage);
+        const cacheKey = getPaperSynopsisCacheKey(article, selectedModel || selectedModelForCache, effectiveTrainingStage, null, preferenceSuffix);
         await withSpan('synopsis.cache_set', { 'cache.key': cacheKey }, () => cache.setAsync(cacheKey, result, 7 * 86400));
     }
     if (sessionId && db?.logEvent) {
@@ -298,5 +321,6 @@ module.exports = {
     runPaperSynopsisGeneration,
     getPaperSynopsisArticleId,
     getPaperSynopsisCacheKey,
+    synopsisStyleCacheSuffix,
     invalidatePaperSynopsisCache,
 };

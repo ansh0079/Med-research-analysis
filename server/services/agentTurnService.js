@@ -270,8 +270,20 @@ async function executeAgentTurn(
                 },
             }).catch((err) => logger.warn({ err, topic: trimmedTopic, userId }, 'agent turn learning event failed'));
             if (implicitFollowUpReward > 0) {
-                recordBanditReward(db, 'agent_teaching_strategy', teachingStrategyArm.armId, implicitFollowUpReward, userId)
-                    .catch((err) => logger.warn({ err, armId: teachingStrategyArm.armId }, 'agent follow-up bandit reward failed'));
+                // Don't let engagement (follow-up length) stack on top of an explicit
+                // helpful/not_helpful vote for this conversation — explicit feedback wins.
+                (async () => {
+                    const existingFeedback = conversationId
+                        ? await db.all?.(
+                            `SELECT 1 FROM learning_events
+                             WHERE user_id = ? AND source_id = ? AND event_type IN ('feedback_helpful', 'feedback_confusing')
+                             LIMIT 1`,
+                            [String(userId), String(conversationId)]
+                        ).catch(() => [])
+                        : [];
+                    if (existingFeedback?.length) return;
+                    await recordBanditReward(db, 'agent_teaching_strategy', teachingStrategyArm.armId, implicitFollowUpReward, userId);
+                })().catch((err) => logger.warn({ err, armId: teachingStrategyArm.armId }, 'agent follow-up bandit reward failed'));
             }
         }
         enqueueAgentTurnSideEffects({

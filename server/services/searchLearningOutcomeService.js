@@ -243,7 +243,7 @@ async function attributeQuizAttemptRewards(db, userId, attempts = [], topic = ''
                     immediateReward: 0,
                     delayedReward: reward,
                     totalReward,
-                    recordArmPull: reward > 0,
+                    recordArmPull: reward !== 0,
                 });
                 await recordLearningSignal(db, {
                     userId: decisionUserId,
@@ -257,7 +257,7 @@ async function attributeQuizAttemptRewards(db, userId, attempts = [], topic = ''
                 attributed += 1;
                 continue;
             }
-            if (banditArmId && reward > 0) {
+            if (banditArmId && reward !== 0) {
                 await recordBanditReward(db, POLICY_SEARCH_RANKING, banditArmId, reward, decisionUserId);
                 attributed += 1;
                 continue;
@@ -392,7 +392,7 @@ async function attributeRecommendationFollowThrough(db, userId, {
 async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic = '') {
     if (!db?.all || !userId || !Array.isArray(attempts) || attempts.length === 0) return { rewarded: 0 };
     const reward = quizOutcomeRewardForAgent(attempts);
-    if (reward <= 0) return { rewarded: 0, reward };
+    if (reward === 0) return { rewarded: 0, reward };
     const normalizedTopic = typeof db.normalizeTopic === 'function' ? db.normalizeTopic(topic) : String(topic || '').toLowerCase();
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const rows = await db.all(

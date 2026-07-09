@@ -305,7 +305,13 @@ function registerSynthesisRoutes(app, {
                 });
             }
             if (type === 'not_helpful' && article) {
-                await invalidatePaperSynopsisCache({ cache, article, selectedModel: model, trainingStage }).catch((err) => {
+                await invalidatePaperSynopsisCache({
+                    cache,
+                    article,
+                    selectedModel: model,
+                    trainingStage,
+                    synopsisStyleArmId: banditMeta?.policyType === 'synopsis_style' ? banditMeta.armId : null,
+                }).catch((err) => {
                     logger.warn({ err, articleUid: uid }, 'synopsis cache invalidation failed');
                     return false;
                 });
@@ -320,8 +326,12 @@ function registerSynthesisRoutes(app, {
             // Close the synopsis_style bandit reward loop
             if (banditMeta?.policyType && banditMeta?.armId) {
                 const reward = synopsisFeedbackReward(type, reason);
-                recordBanditReward(db, banditMeta.policyType, banditMeta.armId, reward, req.user?.id ?? null)
-                    .catch((err) => logger.warn({ err, armId: banditMeta.armId }, 'synopsis bandit reward failed'));
+                // reward === 0 means "not this arm's fault" (e.g. a factual/trust
+                // complaint) — don't touch the style arm's posterior at all.
+                if (reward !== 0) {
+                    recordBanditReward(db, banditMeta.policyType, banditMeta.armId, reward, req.user?.id ?? null)
+                        .catch((err) => logger.warn({ err, armId: banditMeta.armId }, 'synopsis bandit reward failed'));
+                }
             }
 
             return res.json({

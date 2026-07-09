@@ -291,9 +291,12 @@ async function recordBanditReward(db, policyType, armId, reward, userId = null) 
     await db.recordPersonalizationArmPull(policyType, armId, reward, scopeKey).catch((err) => {
         logger.warn({ err, policyType, armId }, 'recordPersonalizationArmPull failed');
     });
-    await db.recordPersonalizationArmPull(policyType, armId, reward, 'global').catch((err) => {
-        logger.warn({ err, policyType, armId }, 'recordPersonalizationArmPull global failed');
-    });
+    // Anonymous (no-user) rewards already write to 'global' above — don't double-count.
+    if (scopeKey !== 'global') {
+        await db.recordPersonalizationArmPull(policyType, armId, reward, 'global').catch((err) => {
+            logger.warn({ err, policyType, armId }, 'recordPersonalizationArmPull global failed');
+        });
+    }
 }
 
 /**

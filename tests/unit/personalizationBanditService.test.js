@@ -5,6 +5,8 @@ const {
     RECOMMENDATION_ARM_BY_TYPE,
     applyRecommendationBandit,
     recommendationContextFeatures,
+    selectSynopsisStyleArm,
+    recordBanditReward,
 } = require('../../server/services/personalizationBanditService');
 
 describe('personalizationBanditService', () => {
@@ -63,5 +65,40 @@ describe('personalizationBanditService', () => {
         expect(adjusted[0].banditArmId).toBeDefined();
         expect(RECOMMENDATION_ARM_BY_TYPE.review).toBe('review');
         expect(db.insertPersonalizationDecision).toHaveBeenCalled();
+    });
+
+    test('selectSynopsisStyleArm uses user scope only after the cold-start pull threshold', async () => {
+        const db = {
+            ensurePersonalizationArms: jest.fn().mockResolvedValue(true),
+            listPersonalizationArmStates: jest.fn(async (_policyType, scopeKey) => {
+                if (scopeKey === 'user:u1') {
+                    return [{ arm_id: 'teaching_points', alpha: 6, beta: 1, pulls: 8 }];
+                }
+                return [{ arm_id: 'bottom_line_first', alpha: 2, beta: 1, pulls: 20 }];
+            }),
+        };
+
+        const selected = await selectSynopsisStyleArm(db, 'u1');
+
+        expect(selected.scopeKey).toBe('user:u1');
+    });
+
+    test('recordBanditReward with no userId writes to global exactly once', async () => {
+        const db = {
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+        };
+        await recordBanditReward(db, 'search_ranking', 'heuristic_default', 0.5, null);
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledTimes(1);
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith('search_ranking', 'heuristic_default', 0.5, 'global');
+    });
+
+    test('recordBanditReward with a userId writes to both user and global scope', async () => {
+        const db = {
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+        };
+        await recordBanditReward(db, 'search_ranking', 'heuristic_default', 0.5, 'u1');
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledTimes(2);
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith('search_ranking', 'heuristic_default', 0.5, 'user:u1');
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith('search_ranking', 'heuristic_default', 0.5, 'global');
     });
 });
