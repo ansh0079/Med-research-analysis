@@ -7,6 +7,9 @@ const {
     recommendationContextFeatures,
     selectSynopsisStyleArm,
     recordBanditReward,
+    reconcileImpressionRewards,
+    hierarchicalUserWeight,
+    blendedArmSample,
 } = require('../../server/services/personalizationBanditService');
 
 describe('personalizationBanditService', () => {
@@ -81,6 +84,68 @@ describe('personalizationBanditService', () => {
         const selected = await selectSynopsisStyleArm(db, 'u1');
 
         expect(selected.scopeKey).toBe('user:u1');
+    });
+
+    test('hierarchicalUserWeight keeps cold-start users global and gradually trusts user scope', () => {
+        expect(hierarchicalUserWeight(7)).toBe(0);
+        expect(hierarchicalUserWeight(8)).toBeGreaterThan(0);
+        expect(hierarchicalUserWeight(30)).toBe(1);
+        expect(blendedArmSample(0.2, 0.9, 8)).toBeLessThan(0.9);
+        expect(blendedArmSample(0.2, 0.9, 30)).toBeCloseTo(0.9, 5);
+    });
+
+    test('reconcileImpressionRewards propagates quiz outcomes into synopsis and teaching decisions', async () => {
+        const pending = [
+            {
+                id: 1,
+                user_id: 'u1',
+                policy_type: 'synopsis_style',
+                arm_id: 'pico_structured',
+                topic: 'ARDS',
+                normalized_topic: 'ards',
+                article_uid: 'pmid-1',
+                created_at: '2026-07-01T00:00:00.000Z',
+            },
+            {
+                id: 2,
+                user_id: 'u1',
+                policy_type: 'agent_teaching_strategy',
+                arm_id: 'socratic',
+                topic: 'ARDS',
+                normalized_topic: 'ards',
+                article_uid: null,
+                created_at: '2026-07-01T00:00:00.000Z',
+            },
+        ];
+        const db = {
+            listPersonalizationDecisionsPendingReward: jest.fn().mockResolvedValue(pending),
+            findRecentSearchImpressionsForAttribution: jest.fn().mockResolvedValue([]),
+            updatePersonalizationDecisionReward: jest.fn().mockResolvedValue(true),
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+            all: jest.fn(async (sql, params) => {
+                if (sql.includes('FROM quiz_attempts') && params.includes('pmid-1')) {
+                    return [{ is_correct: 1 }, { is_correct: 1 }];
+                }
+                if (sql.includes('FROM quiz_attempts')) {
+                    return [{ is_correct: 0 }, { is_correct: 0 }];
+                }
+                return [];
+            }),
+        };
+
+        const result = await reconcileImpressionRewards(db, { days: 14 });
+
+        expect(result.updated).toBe(2);
+        expect(db.updatePersonalizationDecisionReward).toHaveBeenCalledWith(1, expect.objectContaining({
+            delayedReward: 0.7,
+            totalReward: 0.7,
+        }));
+        expect(db.updatePersonalizationDecisionReward).toHaveBeenCalledWith(2, expect.objectContaining({
+            delayedReward: -0.15,
+            totalReward: -0.15,
+        }));
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith('synopsis_style', 'pico_structured', 0.7, 'user:u1');
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith('agent_teaching_strategy', 'socratic', -0.15, 'user:u1');
     });
 
     test('recordBanditReward with no userId writes to global exactly once', async () => {

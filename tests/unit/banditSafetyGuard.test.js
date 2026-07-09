@@ -7,6 +7,7 @@ const {
     applyBoostSafety,
     validateArmWeights,
     auditArmSafety,
+    assertArmSafetyOrThrow,
 } = require('../../server/services/banditSafetyGuard');
 
 const { SEARCH_RANKING_ARMS } = require('../../server/services/personalizationBanditService');
@@ -42,6 +43,14 @@ describe('articleSafetyTier', () => {
     });
     test('reads _impact.ebmScore as fallback', () => {
         expect(articleSafetyTier(article({ _impact: { ebmScore: 2 } }))).toBe('weak');
+    });
+});
+
+describe('assertArmSafetyOrThrow', () => {
+    test('hard-fails unsafe arm maps', () => {
+        expect(() => assertArmSafetyOrThrow({
+            unsafe: { impression: 3, saved: 3, misconception: 0.1, missed: 0.1 },
+        }, { policyType: 'search_ranking' })).toThrow(/Unsafe personalization arm configuration/);
     });
 });
 

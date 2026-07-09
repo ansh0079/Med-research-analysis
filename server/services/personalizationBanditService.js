@@ -1,7 +1,8 @@
 'use strict';
 
 const logger = require('../config/logger');
-const { auditArmSafety } = require('./banditSafetyGuard');
+const { assertArmSafetyOrThrow } = require('./banditSafetyGuard');
+const { quizOutcomeRewardForAgent } = require('./learningLoopSignalService');
 
 const POLICY_SEARCH_RANKING = 'search_ranking';
 const POLICY_RECOMMENDATION = 'recommendation_strategy';
@@ -36,6 +37,7 @@ const RECOMMENDATION_ARM_BY_TYPE = {
 };
 
 const MIN_PULLS_FOR_USER_ARM = Number(process.env.BANDIT_MIN_USER_PULLS || 8);
+const FULL_PULLS_FOR_USER_ARM = Number(process.env.BANDIT_FULL_USER_PULLS || 30);
 
 // ─── synopsis_style arms ─────────────────────────────────────────────────────
 // Each arm maps to a rendering style injected into the synopsis prompt.
@@ -60,12 +62,7 @@ const TEACHING_STRATEGY_ARMS = {
 
 // Audit arm safety at module load — catches unsafe weight vectors before any traffic.
 (function auditArmsAtStartup() {
-    const results = auditArmSafety(SEARCH_RANKING_ARMS);
-    for (const [armId, result] of Object.entries(results)) {
-        if (!result.safe) {
-            logger.warn({ armId, violations: result.violations }, 'bandit arm failed safety audit');
-        }
-    }
+    assertArmSafetyOrThrow(SEARCH_RANKING_ARMS, { policyType: POLICY_SEARCH_RANKING });
 }());
 
 function isBanditEnabled() {
@@ -127,6 +124,37 @@ async function loadArmSamples(db, policyType, armIds, scopeKey) {
     return samples;
 }
 
+function hierarchicalUserWeight(userPulls, {
+    minPulls = MIN_PULLS_FOR_USER_ARM,
+    fullPulls = FULL_PULLS_FOR_USER_ARM,
+} = {}) {
+    const pulls = Math.max(0, Number(userPulls) || 0);
+    const min = Math.max(0, Number(minPulls) || 0);
+    const full = Math.max(min + 1, Number(fullPulls) || min + 1);
+    if (pulls < min) return 0;
+    return Math.min(1, pulls / full);
+}
+
+function blendedArmSample(globalSample = 0.5, userSample = null, userPulls = 0) {
+    const global = Number.isFinite(Number(globalSample)) ? Number(globalSample) : 0.5;
+    const user = Number.isFinite(Number(userSample)) ? Number(userSample) : global;
+    const userWeight = hierarchicalUserWeight(userPulls);
+    return global * (1 - userWeight) + user * userWeight;
+}
+
+function chooseArmBySamples(armIds, globalSamples = {}, userSamples = {}, userPulls = 0, fallbackArm = armIds[0]) {
+    let bestArm = fallbackArm;
+    let bestSample = -1;
+    for (const armId of armIds) {
+        const sample = blendedArmSample(globalSamples[armId] ?? 0.5, userSamples[armId], userPulls);
+        if (sample > bestSample) {
+            bestSample = sample;
+            bestArm = armId;
+        }
+    }
+    return { armId: bestArm, sampled: bestSample };
+}
+
 async function selectSearchRankingArm(db, userId) {
     const armIds = Object.keys(SEARCH_RANKING_ARMS);
     if (!isBanditEnabled() || !db?.listPersonalizationArmStates) {
@@ -147,17 +175,13 @@ async function selectSearchRankingArm(db, userId) {
         : [];
     const userPulls = userRows.reduce((sum, row) => sum + Number(row.pulls || 0), 0);
 
-    let bestArm = 'heuristic_default';
-    let bestSample = -1;
-    for (const armId of armIds) {
-        const sample = userPulls >= MIN_PULLS_FOR_USER_ARM
-            ? (userSamples[armId] ?? globalSamples[armId] ?? 0.5)
-            : (globalSamples[armId] ?? 0.5);
-        if (sample > bestSample) {
-            bestSample = sample;
-            bestArm = armId;
-        }
-    }
+    const { armId: bestArm, sampled: bestSample } = chooseArmBySamples(
+        armIds,
+        globalSamples,
+        userSamples,
+        userPulls,
+        'heuristic_default'
+    );
 
     return {
         armId: bestArm,
@@ -244,12 +268,14 @@ async function applyRecommendationBandit(db, userId, recommendations = [], conte
         ? await db.listPersonalizationArmStates(POLICY_RECOMMENDATION, userScope).catch(() => [])
         : [];
     const userPulls = userRows.reduce((sum, row) => sum + Number(row.pulls || 0), 0);
-    const scopeKey = userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global';
-    const samples = await loadArmSamples(db, POLICY_RECOMMENDATION, armIds, scopeKey);
+    const [globalSamples, userSamples] = await Promise.all([
+        loadArmSamples(db, POLICY_RECOMMENDATION, armIds, 'global'),
+        userId ? loadArmSamples(db, POLICY_RECOMMENDATION, armIds, userScope) : Promise.resolve({}),
+    ]);
 
     const adjusted = recommendations.map((rec) => {
         const armId = RECOMMENDATION_ARM_BY_TYPE[rec.type] || rec.type || 'explore';
-        const sample = samples[armId] ?? 0.5;
+        const sample = blendedArmSample(globalSamples[armId] ?? 0.5, userSamples[armId], userPulls);
         const contextFeatures = recommendationContextFeatures(rec, context);
         const banditMultiplier = 0.65 + sample * 0.7;
         return {
@@ -319,15 +345,18 @@ async function selectSynopsisStyleArm(db, userId) {
         ? await db.listPersonalizationArmStates(POLICY_SYNOPSIS_STYLE, userScope).catch(() => [])
         : [];
     const userPulls = userRows.reduce((sum, r) => sum + Number(r.pulls || 0), 0);
+    const [globalSamples, userSamples] = await Promise.all([
+        loadArmSamples(db, POLICY_SYNOPSIS_STYLE, armIds, 'global'),
+        userId ? loadArmSamples(db, POLICY_SYNOPSIS_STYLE, armIds, userScope) : Promise.resolve({}),
+    ]);
+    const { armId: bestArm, sampled: bestSample } = chooseArmBySamples(
+        armIds,
+        globalSamples,
+        userSamples,
+        userPulls,
+        'bottom_line_first'
+    );
     const scopeKey = userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global';
-    const samples = await loadArmSamples(db, POLICY_SYNOPSIS_STYLE, armIds, scopeKey);
-
-    let bestArm = 'bottom_line_first';
-    let bestSample = -1;
-    for (const armId of armIds) {
-        const s = samples[armId] ?? 0.5;
-        if (s > bestSample) { bestSample = s; bestArm = armId; }
-    }
 
     return { armId: bestArm, style: SYNOPSIS_STYLE_ARMS[bestArm], scopeKey, sampled: bestSample };
 }
@@ -351,27 +380,84 @@ async function selectTeachingStrategyArm(db, userId) {
         ? await db.listPersonalizationArmStates(POLICY_TEACHING_STRATEGY, userScope).catch(() => [])
         : [];
     const userPulls = userRows.reduce((sum, r) => sum + Number(r.pulls || 0), 0);
+    const [globalSamples, userSamples] = await Promise.all([
+        loadArmSamples(db, POLICY_TEACHING_STRATEGY, armIds, 'global'),
+        userId ? loadArmSamples(db, POLICY_TEACHING_STRATEGY, armIds, userScope) : Promise.resolve({}),
+    ]);
+    const { armId: bestArm, sampled: bestSample } = chooseArmBySamples(
+        armIds,
+        globalSamples,
+        userSamples,
+        userPulls,
+        'direct'
+    );
     const scopeKey = userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global';
-    const samples = await loadArmSamples(db, POLICY_TEACHING_STRATEGY, armIds, scopeKey);
-
-    let bestArm = 'direct';
-    let bestSample = -1;
-    for (const armId of armIds) {
-        const s = samples[armId] ?? 0.5;
-        if (s > bestSample) { bestSample = s; bestArm = armId; }
-    }
 
     return { armId: bestArm, strategy: TEACHING_STRATEGY_ARMS[bestArm], scopeKey, sampled: bestSample };
 }
 
+async function findQuizAttemptsForDecision(db, decision, { days = 7 } = {}) {
+    if (!db?.all || !decision?.user_id) return [];
+    const safeDays = Math.min(Math.max(Number(days) || 7, 1), 60);
+    const since = new Date(Date.now() - safeDays * 86400000).toISOString();
+    const params = [String(decision.user_id), decision.created_at || since, since];
+    const clauses = [
+        'user_id = ?',
+        'created_at >= ?',
+        'created_at >= ?',
+    ];
+    const normalizedTopic = decision.normalized_topic || '';
+    const topic = decision.topic || '';
+    if (normalizedTopic || topic) {
+        clauses.push('(normalized_topic = ? OR topic = ?)');
+        params.push(String(normalizedTopic), String(topic));
+    }
+    if (decision.policy_type === POLICY_SYNOPSIS_STYLE && decision.article_uid) {
+        clauses.push('LOWER(source_article_uid) = ?');
+        params.push(String(decision.article_uid).toLowerCase());
+    }
+    params.push(20);
+    return db.all(
+        `SELECT id, is_correct, question_type, source_article_uid, created_at
+         FROM quiz_attempts
+         WHERE ${clauses.join(' AND ')}
+         ORDER BY created_at ASC
+         LIMIT ?`,
+        params
+    ).catch((err) => {
+        logger.debug({ err, decisionId: decision.id }, 'findQuizAttemptsForDecision failed');
+        return [];
+    });
+}
+
+async function reconcileQuizOutcomeDecisionReward(db, row, { days = 7 } = {}) {
+    if (!row?.id || !row?.arm_id || !row?.user_id) return false;
+    const attempts = await findQuizAttemptsForDecision(db, row, { days });
+    if (!attempts.length) return false;
+    const reward = quizOutcomeRewardForAgent(attempts);
+    if (reward === 0) return false;
+    await db.updatePersonalizationDecisionReward(row.id, {
+        immediateReward: Number(row.immediate_reward || 0),
+        delayedReward: reward,
+        totalReward: reward,
+    });
+    await recordBanditReward(db, row.policy_type, row.arm_id, reward, row.user_id);
+    return true;
+}
+
 async function reconcileImpressionRewards(db, { days = 7 } = {}) {
-    if (!db?.listPersonalizationDecisionsPendingReward || !db?.findRecentSearchImpressionsForAttribution) {
+    if (!db?.listPersonalizationDecisionsPendingReward || !db?.updatePersonalizationDecisionReward) {
         return { updated: 0 };
     }
     const pending = await db.listPersonalizationDecisionsPendingReward({ days, limit: 300 });
     let updated = 0;
     for (const row of pending) {
-        if (row.policy_type !== POLICY_SEARCH_RANKING || !row.article_uid) continue;
+        if (row.policy_type === POLICY_SYNOPSIS_STYLE || row.policy_type === POLICY_TEACHING_STRATEGY) {
+            const didUpdate = await reconcileQuizOutcomeDecisionReward(db, row, { days });
+            if (didUpdate) updated += 1;
+            continue;
+        }
+        if (row.policy_type !== POLICY_SEARCH_RANKING || !row.article_uid || !db?.findRecentSearchImpressionsForAttribution) continue;
         const impressions = row.user_id
             ? await db.findRecentSearchImpressionsForAttribution(row.user_id, {
                 normalizedTopic: row.normalized_topic,
@@ -409,7 +495,11 @@ module.exports = {
     TEACHING_STRATEGY_ARMS,
     recommendationContextFeatures,
     RECOMMENDATION_ARM_BY_TYPE,
+    MIN_PULLS_FOR_USER_ARM,
+    FULL_PULLS_FOR_USER_ARM,
     isBanditEnabled,
+    hierarchicalUserWeight,
+    blendedArmSample,
     selectSearchRankingArm,
     selectSynopsisStyleArm,
     selectTeachingStrategyArm,

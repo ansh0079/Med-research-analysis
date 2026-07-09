@@ -22,7 +22,7 @@ const {
     summarizeOlderMessages,
 } = require('./agentHelpers');
 
-const { recordBanditReward, selectTeachingStrategyArm } = require('./personalizationBanditService');
+const { POLICY_TEACHING_STRATEGY, recordBanditReward, selectTeachingStrategyArm } = require('./personalizationBanditService');
 const { agentFollowUpReward } = require('./learningLoopSignalService');
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -251,6 +251,21 @@ async function executeAgentTurn(
     // Enqueue side effects asynchronously — never block the response.
     if (userId) {
         if (teachingStrategyArm?.armId) {
+            db.insertPersonalizationDecision?.({
+                userId,
+                policyType: POLICY_TEACHING_STRATEGY,
+                armId: teachingStrategyArm.armId,
+                topic: trimmedTopic,
+                normalizedTopic: typeof db.normalizeTopic === 'function' ? db.normalizeTopic(trimmedTopic) : trimmedTopic.toLowerCase(),
+                context: {
+                    conversationId,
+                    sessionId,
+                    classifiedIntent,
+                    promptVersion: AGENT_PROMPT_VERSION,
+                    scopeKey: teachingStrategyArm.scopeKey,
+                },
+            }).catch((err) => logger.debug({ err, topic: trimmedTopic, userId }, 'agent teaching personalization decision log failed'));
+
             db.recordLearningEvent?.({
                 userId,
                 eventType: 'agent_turn_completed',

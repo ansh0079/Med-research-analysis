@@ -240,6 +240,44 @@ describe('searchLearningOutcomeService', () => {
         );
     });
 
+    test('attributeAgentQuizOutcomeReward consumes pending teaching decisions before learning-event fallback', async () => {
+        const db = {
+            normalizeTopic: (t) => String(t).toLowerCase(),
+            all: jest.fn(async (sql) => {
+                if (sql.includes('FROM personalization_decisions')) {
+                    return [{ id: 22, arm_id: 'worked_example' }];
+                }
+                return [{ payload_json: JSON.stringify({ banditMeta: { armId: 'socratic' } }) }];
+            }),
+            updatePersonalizationDecisionReward: jest.fn().mockResolvedValue(true),
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+            recordLearningEvent: jest.fn().mockResolvedValue({ id: 1 }),
+        };
+
+        const result = await attributeAgentQuizOutcomeReward(db, 'u1', [
+            { isCorrect: true },
+            { isCorrect: true },
+        ], 'Sepsis');
+
+        expect(result).toMatchObject({ rewarded: 1, reward: 0.7 });
+        expect(db.updatePersonalizationDecisionReward).toHaveBeenCalledWith(22, expect.objectContaining({
+            delayedReward: 0.7,
+            totalReward: 0.7,
+        }));
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith(
+            'agent_teaching_strategy',
+            'worked_example',
+            0.7,
+            'user:u1'
+        );
+        expect(db.recordPersonalizationArmPull).not.toHaveBeenCalledWith(
+            'agent_teaching_strategy',
+            'socratic',
+            expect.any(Number),
+            'user:u1'
+        );
+    });
+
     test('getQuizAttributionCoverage reports source and attribution rates', async () => {
         const db = {
             get: jest.fn().mockResolvedValue({

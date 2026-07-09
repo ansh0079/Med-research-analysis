@@ -288,6 +288,24 @@ async function runPaperSynopsisGenerationInner({
         const cacheKey = getPaperSynopsisCacheKey(article, selectedModel || selectedModelForCache, effectiveTrainingStage, null, preferenceSuffix);
         await withSpan('synopsis.cache_set', { 'cache.key': cacheKey }, () => cache.setAsync(cacheKey, result, 7 * 86400));
     }
+    if (userId && db?.insertPersonalizationDecision && synopsisStyleArm?.armId) {
+        await db.insertPersonalizationDecision({
+            userId,
+            policyType: POLICY_SYNOPSIS_STYLE,
+            armId: synopsisStyleArm.armId,
+            topic,
+            normalizedTopic: typeof db.normalizeTopic === 'function' ? db.normalizeTopic(topic) : String(topic || '').toLowerCase(),
+            articleUid: articleId,
+            context: {
+                articleId,
+                model: selectedModel,
+                provider: selectedProvider,
+                trainingStage: effectiveTrainingStage,
+                promptVersion: getPromptVersion('synopsis'),
+                scopeKey: synopsisStyleArm.scopeKey,
+            },
+        }).catch((err) => logger.debug({ err, articleId, userId }, 'synopsis personalization decision log failed'));
+    }
     if (sessionId && db?.logEvent) {
         await db.logEvent('synopsis', sessionId, { articleId, userId: userId || undefined }).catch((err) => { logger.warn({ err }, 'logEvent failed'); return null; });
     }

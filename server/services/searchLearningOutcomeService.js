@@ -395,6 +395,47 @@ async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic 
     if (reward === 0) return { rewarded: 0, reward };
     const normalizedTopic = typeof db.normalizeTopic === 'function' ? db.normalizeTopic(topic) : String(topic || '').toLowerCase();
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const pendingDecisions = await db.all(
+        `SELECT id, arm_id
+         FROM personalization_decisions
+         WHERE user_id = ?
+           AND policy_type = ?
+           AND delayed_reward IS NULL
+           AND (normalized_topic = ? OR topic = ?)
+           AND created_at >= ?
+         ORDER BY created_at DESC
+         LIMIT 3`,
+        [String(userId), POLICY_TEACHING_STRATEGY, normalizedTopic, topic, since]
+    ).catch(() => []);
+    if (pendingDecisions?.length) {
+        let rewarded = 0;
+        const seen = new Set();
+        for (const row of pendingDecisions) {
+            if (!row.arm_id || seen.has(row.arm_id)) continue;
+            seen.add(row.arm_id);
+            await db.updatePersonalizationDecisionReward?.(row.id, {
+                immediateReward: 0,
+                delayedReward: reward,
+                totalReward: reward,
+            }).catch(() => null);
+            await recordBanditReward(db, POLICY_TEACHING_STRATEGY, row.arm_id, reward, userId);
+            rewarded += 1;
+        }
+        if (rewarded > 0) {
+            await recordLearningSignal(db, {
+                userId,
+                eventType: 'agent_quiz_reward_attributed',
+                topic,
+                payload: {
+                    reward,
+                    attributedVia: 'personalization_decision',
+                    attemptCount: attempts.length,
+                    correctCount: attempts.filter((attempt) => Boolean(attempt.isCorrect ?? attempt.is_correct === 1)).length,
+                },
+            });
+            return { rewarded, reward };
+        }
+    }
     const rows = await db.all(
         `SELECT payload_json
          FROM learning_events

@@ -120,6 +120,18 @@ function auditArmSafety(armMap = {}) {
     return results;
 }
 
+function assertArmSafetyOrThrow(armMap = {}, { policyType = 'unknown' } = {}) {
+    const results = auditArmSafety(armMap);
+    const unsafe = Object.entries(results).filter(([, result]) => !result.safe);
+    if (unsafe.length === 0) return results;
+    const detail = unsafe
+        .map(([armId, result]) => `${armId}: ${result.violations.join('; ')}`)
+        .join(' | ');
+    const err = new Error(`Unsafe personalization arm configuration for ${policyType}: ${detail}`);
+    err.unsafeArms = unsafe.map(([armId, result]) => ({ armId, violations: result.violations }));
+    throw err;
+}
+
 module.exports = {
     WEAK_EVIDENCE_MAX_BOOST,
     MODERATE_EVIDENCE_MAX_BOOST,
@@ -128,4 +140,5 @@ module.exports = {
     applyBoostSafety,
     validateArmWeights,
     auditArmSafety,
+    assertArmSafetyOrThrow,
 };
