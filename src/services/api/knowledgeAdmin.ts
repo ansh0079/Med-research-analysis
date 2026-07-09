@@ -2,6 +2,34 @@
 import type { LearningHealthResponse } from '@types';
 import { KnowledgeCoreApi } from './knowledgeCore';
 
+export type ProductionObservabilityStatus = 'healthy' | 'watch' | 'degraded' | 'insufficient_data';
+
+export type ProductionObservability = {
+  generatedAt: string;
+  windowDays: number;
+  status: ProductionObservabilityStatus;
+  score: number;
+  sections: Record<string, {
+    status: ProductionObservabilityStatus;
+    metrics: Record<string, unknown>;
+    checks: Array<{
+      status: ProductionObservabilityStatus;
+      label: string;
+      value: unknown;
+      threshold: unknown;
+      message: string;
+      action?: string;
+    }>;
+  }>;
+  alerts: Array<{
+    severity: 'info' | 'warning' | 'critical';
+    area: string;
+    message: string;
+    action?: string;
+  }>;
+  actions: string[];
+};
+
 export class KnowledgeAdminApi extends KnowledgeCoreApi {
   async getLearningHealth(options: { limit?: number; days?: number } = {}): Promise<LearningHealthResponse> {
     const params = new URLSearchParams();
@@ -39,6 +67,14 @@ export class KnowledgeAdminApi extends KnowledgeCoreApi {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getProductionObservability(options: { days?: number } = {}): Promise<{ observability: ProductionObservability }> {
+    const params = new URLSearchParams();
+    if (options.days) params.set('days', String(options.days));
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/production-observability?${params}`);
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }

@@ -15,6 +15,7 @@ const {
 } = require('../services/backgroundAutomationService');
 const { aggregateCollectiveMemory } = require('../services/collectiveMemoryService');
 const { QUALITY_QUEUES } = require('../services/clinicalQualityReviewService');
+const { collectProductionObservability } = require('../services/productionObservabilityService');
 const fs = require('fs/promises');
 const path = require('path');
 
@@ -276,6 +277,17 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ dashboard });
         } catch (error) {
             req.log.error({ err: error }, 'LLM cost dashboard error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    app.get('/api/admin/production-observability', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const days = Math.min(Math.max(parseInt(String(req.query.days || '7'), 10) || 7, 1), 90);
+            const observability = await collectProductionObservability(db, { days });
+            res.json({ observability });
+        } catch (error) {
+            req.log.error({ err: error }, 'Production observability error');
             res.status(500).json({ error: 'Internal server error' });
         }
     });
