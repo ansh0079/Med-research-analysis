@@ -200,6 +200,19 @@ const TopicBriefPanelComponent: React.FC<Props> = ({
         setDifficulty={setDifficulty}
         saveTopic={saveTopic}
         saveBrief={saveBrief}
+        exportTrust={consensusSynopsis ? {
+          abstractOnly: Number(consensusSynopsis.freePaperCount || 0) === 0
+            && Number(consensusSynopsis.abstractPaperCount || 0) > 0,
+          sourceMode: Number(consensusSynopsis.freePaperCount || 0) === 0
+            && Number(consensusSynopsis.abstractPaperCount || 0) > 0
+            ? 'abstract_only'
+            : 'full_text_used',
+          reviewState: consensusSynopsis.reviewState || undefined,
+          citationOk: consensusSynopsis.citationValidation?.ok
+            ?? consensusSynopsis.citationCheckPassed
+            ?? undefined,
+          trustRating: consensusSynopsis.evidenceStrength || undefined,
+        } : undefined}
       />
 
       <TopicBriefFooter

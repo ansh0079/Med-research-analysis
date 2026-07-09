@@ -64,7 +64,7 @@ async function buildCaseToEvidenceBrief(db, {
     limit = 12,
     userId = null,
 } = {}) {
-    let rawQuestion = String(clinicalQuestion || '').trim();
+    const rawQuestion = String(clinicalQuestion || '').trim();
     if (rawQuestion.length < 12) {
         throw new Error('clinicalQuestion must be at least 12 characters');
     }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { api } from '@services/api';
 import { Button } from '@components/ui/Button';
 import type { Article, ArticleComparison } from '@types';
@@ -33,7 +33,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({ articles, topic,
   const [comparison, setComparison] = useState<ArticleComparison | null>(null);
   const [aiError, setAiError] = useState<string | null>(null);
 
-  const fetchFullText = async (article: Article, index: number) => {
+  const fetchFullText = useCallback(async (article: Article, index: number) => {
     if (!article.doi) {
       setErrors(prev => { const n = [...prev] as [string | null, string | null]; n[index] = 'No DOI available.'; return n; });
       setLoading(prev => { const n = [...prev] as [boolean, boolean]; n[index] = false; return n; });
@@ -50,23 +50,9 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({ articles, topic,
     } finally {
       setLoading(prev => { const n = [...prev] as [boolean, boolean]; n[index] = false; return n; });
     }
-  };
-
-  useEffect(() => {
-    if (tab === 'fulltext' && !texts[0] && !texts[1] && !loading[0] && !loading[1]) {
-      fetchFullText(articles[0], 0);
-      fetchFullText(articles[1], 1);
-    }
-    if (tab === 'ai' && aiState === 'idle') {
-      runAiComparison();
-    }
-  }, [tab]);
-
-  useEffect(() => {
-    if (aiState === 'idle') runAiComparison();
   }, []);
 
-  const runAiComparison = async () => {
+  const runAiComparison = useCallback(async () => {
     setAiState('loading');
     setAiError(null);
     try {
@@ -77,7 +63,17 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({ articles, topic,
       setAiError(err instanceof Error ? err.message : 'Comparison failed.');
       setAiState('error');
     }
-  };
+  }, [articles, topic]);
+
+  useEffect(() => {
+    if (tab === 'fulltext' && !texts[0] && !texts[1] && !loading[0] && !loading[1]) {
+      fetchFullText(articles[0], 0);
+      fetchFullText(articles[1], 1);
+    }
+    if (tab === 'ai' && aiState === 'idle') {
+      runAiComparison();
+    }
+  }, [tab, texts, loading, articles, fetchFullText, aiState, runAiComparison]);
 
   return (
     <div className="fixed inset-0 bg-white dark:bg-slate-900 z-[60] flex flex-col">

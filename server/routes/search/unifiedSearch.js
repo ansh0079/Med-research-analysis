@@ -8,34 +8,25 @@ const { parseSearchRequestQuery, fetchAndRankSearchArticles } = require('../../s
 const { buildSearchLearningContext, publicLearningContext } = require('../../services/searchLearningService');
 const { recordSearchRankingDecisions } = require('../../services/personalizationBanditService');
 const { buildLearnerContext, publicLearnerContextSummary } = require('../../services/learnerContextService');
-const { getSharedAiService } = require('../../services/aiService');
-const { buildTopicKnowledgePrompt, buildGuidelineQuizPrompt } = require('../../prompts');
-const { resolveProvider } = require('../../utils/aiProvider');
-const { generateAndStoreMCQs } = require('../../services/mcqGeneratorService');
-const { guidelineMcqKey } = require('../../utils/teachingObjectKeys');
-const { searchGuidelines } = require('../../services/guidelineService');
-const { persistConsensusTeachingObject } = require('../../services/teachingObjectService');
-const { enqueuePdfPreindexForArticles } = require('../../services/pdfPreindexService');
-const { alignTopicClaimsWithGuidelines } = require('../../services/claimGuidelineEngine');
-const { parseJsonBlock, parseJsonArrayBlock } = require('../../utils/parseJson');
 const { persistSearchedArticles } = require('../../services/articlePersistenceService');
-const { validateAiOutput } = require('../../services/aiOutputValidation');
 const { publicRankingTraces } = require('../../services/searchRankingTrace');
-const { createBudgetForAction, runWithLlmBudget } = require('../../services/llmRequestBudget');
 const { buildEnrichmentCacheKey } = require('../../services/synthesisPersonalization');
+const {
+    getOrEnqueueConsensusSynopsis,
+    getOrEnqueueLiveClinicalAnswer,
+} = require('../../services/aiGenerationJobService');
+const {
+    getOrEnqueueTopicSeed,
+    getOrEnqueueGuidelineAlign,
+    getOrEnqueuePdfIndex,
+} = require('../../services/enrichmentJobService');
+const {
+    consensusEnrichmentJobKey,
+    liveClinicalAnswerEnrichmentJobKey,
+} = require('../../services/searchEnrichmentKeys');
 const { clampLimit, setNoStoreSearchHeaders, shouldAutoSeedFromSearch, attachApiKeyUser } = require('./searchHelpers');
 
 const isDev = process.env.NODE_ENV === 'development';
-
-// Guards against two concurrent identical queries both spawning a background
-// LLM enrichment job. Node.js is single-threaded so Set operations are atomic.
-const enrichmentInFlight = new Set();
-const ENRICHMENT_MAX_ATTEMPTS = 3;
-const ENRICHMENT_BACKOFF_MS = [0, 2000, 5000];
-
-function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 function registerUnifiedSearchRoutes(app, deps) {
     const {
@@ -45,7 +36,6 @@ function registerUnifiedSearchRoutes(app, deps) {
         rateLimit,
         requireDailySearchLimit,
         fetchImpl,
-        enqueuePdfPreindex,
         topicHelpers,
     } = deps;
     const { buildAgentGuidance, buildTopicIntelligence } = topicHelpers;
@@ -53,15 +43,6 @@ function registerUnifiedSearchRoutes(app, deps) {
         ? requireDailySearchLimit()
         : ((_req, _res, next) => next());
     const f = fetchImpl || safeFetch;
-    const pdfDeps = { cache, db, serverConfig, fetch: f };
-
-    const queueFullTextIndexing = (articleList) => {
-        if (typeof enqueuePdfPreindex === 'function') {
-            for (const article of (articleList || []).slice(0, 6)) enqueuePdfPreindex(article, pdfDeps);
-        } else {
-            enqueuePdfPreindexForArticles(articleList, pdfDeps);
-        }
-    };
 
     app.get('/api/search', rateLimit(30, 60), attachApiKeyUser, dailySearchLimit, async (req, res) => {
         const { q, query: queryParam, sources = 'pubmed', limit = 20, vector, specificity = 'moderate' } = req.query;
@@ -295,224 +276,87 @@ function registerUnifiedSearchRoutes(app, deps) {
             // Avoid background AI/PDF work during Jest API tests (prevents open handles and hung supertest).
             if (process.env.NODE_ENV === 'test') return;
 
-            queueFullTextIndexing(articles);
+            // Queue durable PDF indexing jobs for search hits (idempotent, deduped).
+            const freeArticles = articles.filter((a) => a && (a.isFree || a.pmcid || a.openAccess || a.openAccessUrl || a.fullTextUrl));
+            const pdfCandidates = [...freeArticles, ...articles].slice(0, 6);
+            const seenPdf = new Set();
+            for (const article of pdfCandidates) {
+                const key = String(article?.doi || article?.pmid || article?.pmcid || article?.uid || '').toLowerCase();
+                if (!key || seenPdf.has(key)) continue;
+                seenPdf.add(key);
+                void getOrEnqueuePdfIndex({ db, article, cache, logger }).catch((err) => {
+                    logger.warn({ err }, 'getOrEnqueuePdfIndex failed');
+                });
+            }
 
             // Persist search-accessed articles as permanent system resources (fire-and-forget)
             void persistSearchedArticles(db, articles, queryValidation.sanitized).catch((err) => {
                 logger.warn({ err }, 'persistSearchedArticles failed');
             });
 
-            // Auto-seed topic knowledge for any query that has enough papers but no existing synopsis
+            // Auto-seed topic knowledge for any query that has enough papers but no existing synopsis.
             if (shouldAutoSeedFromSearch() && articles.length >= 2) {
-                const seedQuery = queryValidation.sanitized;
-                const seedArticles = articles.slice(0, 8);
-                void (async () => {
-                    try {
-                        // Double-check no concurrent seed already landed
-                        const alreadySeeded = await db.getTopicKnowledge(seedQuery);
-                        if (alreadySeeded) return;
-
-                        const ai = getSharedAiService({ serverConfig, fetchImpl: f });
-                        const prompt = buildTopicKnowledgePrompt(seedQuery, seedArticles);
-                        const { provider: seedProvider, model: seedModel } = resolveProvider({}, serverConfig);
-                        if (!seedProvider) return;
-                        const raw = await ai.callText(prompt, seedProvider, seedModel, { temperature: 0.15 });
-
-                        const knowledgeRaw = parseJsonBlock(raw);
-                        const validated = validateAiOutput('topic_knowledge', knowledgeRaw, { allowDegrade: false });
-                        if (!validated.ok) return;
-                        const knowledge = validated.data;
-                        if (!knowledge?.mentorMessage) return;
-
-                        const sourceArticles = seedArticles.map((a, i) => ({
-                            sourceIndex: i + 1,
-                            uid: a.uid || null,
-                            title: a.title || 'Unknown',
-                            doi: a.doi || null,
-                            pmid: a.pmid || null,
-                            source: a.journal || a.source || null,
-                            pubdate: a.pubdate || null,
-                        }));
-
-                        await db.upsertTopicKnowledge(seedQuery, knowledge, sourceArticles, 'ai_generated', 0.65);
-                        logger.info({ topic: seedQuery, papers: seedArticles.length }, 'Auto-seeded new topic from user query');
-
-                        // Generate cold-start MCQs from the knowledge we just created
-                        try {
-                            await generateAndStoreMCQs(db, ai, seedQuery, knowledge, { provider: seedProvider, model: seedModel });
-                            logger.info({ topic: seedQuery }, 'Auto-generated cold-start MCQs');
-                        } catch (mcqErr) {
-                            logger.warn({ err: mcqErr, topic: seedQuery }, 'Auto MCQ generation failed');
-                        }
-
-                        // Search for clinical guidelines and generate guideline MCQs if found
-                        try {
-                            const ncbiKey = serverConfig.keys.ncbi;
-                            const ncbiEmail = serverConfig.keys.ncbiEmail;
-                            const guidelines = await searchGuidelines(seedQuery, ncbiKey, ncbiEmail);
-                            if (guidelines.length > 0) {
-                                // Store guidelines
-                                for (const gl of guidelines) {
-                                    await db.createGuideline({
-                                        topic: seedQuery,
-                                        sourceBody: gl.source || 'PubMed Guideline',
-                                        sourceYear: gl.pubdate ? parseInt(String(gl.pubdate).slice(0, 4), 10) : null,
-                                        recommendationText: gl.title,
-                                        sourceUrl: gl.uid ? `https://pubmed.ncbi.nlm.nih.gov/${gl.uid}/` : null,
-                                    }).catch(() => {});
-                                }
-
-                                // Generate guideline-anchored MCQs via Claude if available
-                                if (serverConfig.keys.anthropic) {
-                                    const guidelineKey = guidelineMcqKey(db, seedQuery);
-                                    const existingGl = await db.getTeachingObjectByKey(guidelineKey).catch(() => null);
-                                    if (!existingGl) {
-                                        const glPrompt = buildGuidelineQuizPrompt(seedQuery, guidelines);
-                                        try {
-                                            const glRaw = await ai.callText(glPrompt, seedProvider, seedModel, { temperature: 0.3, maxOutputTokens: 2500 });
-                                            const glMcqsRaw = parseJsonArrayBlock(glRaw);
-                                            const validatedGl = validateAiOutput('quiz_generation', glMcqsRaw, { allowDegrade: false });
-                                            const glMcqs = validatedGl.ok
-                                                ? (Array.isArray(validatedGl.data?.questions) ? validatedGl.data.questions : glMcqsRaw)
-                                                : null;
-                                            if (Array.isArray(glMcqs) && glMcqs.length > 0) {
-                                                {
-                                                    await db.upsertTeachingObject({
-                                                        objectKey: guidelineKey,
-                                                        objectType: 'guideline_mcq',
-                                                        topic: db.normalizeTopic(seedQuery),
-                                                        title: `Guideline MCQs: ${seedQuery}`,
-                                                        payload: { mcqs: glMcqs.slice(0, 5), guidelineCount: guidelines.length, generatedAt: new Date().toISOString() },
-                                                        provider: seedProvider,
-                                                        model: seedModel,
-                                                        confidence: 0.85,
-                                                    });
-                                                    logger.info({ topic: seedQuery, count: glMcqs.length, guidelines: guidelines.length }, 'Auto-generated guideline MCQs');
-                                                }
-                                            }
-                                        } catch (glMcqErr) {
-                                            logger.warn({ err: glMcqErr, topic: seedQuery }, 'Auto guideline MCQ generation failed');
-                                        }
-                                    }
-                                }
-                                logger.info({ topic: seedQuery, guidelines: guidelines.length }, 'Auto-stored guidelines for new topic');
-                            }
-                        } catch (glErr) {
-                            logger.warn({ err: glErr, topic: seedQuery }, 'Auto guideline search failed');
-                        }
-                    } catch (err) {
-                        logger.warn({ err, topic: seedQuery }, 'Auto-seed failed');
-                        // Record failure so it can be retried via the admin panel
-                        db.logEvent('auto_seed_failed', null, {
-                            topic: seedQuery,
-                            error: err.message,
-                            papers: seedArticles.length,
-                        }).catch(() => {});
-                    }
-                })();
+                void getOrEnqueueTopicSeed({
+                    db,
+                    topic: queryValidation.sanitized,
+                    articles: articles.slice(0, 8),
+                    serverConfig,
+                    fetchImpl: f,
+                    cache,
+                    logger,
+                }).catch((err) => {
+                    logger.warn({ err, topic: queryValidation.sanitized }, 'getOrEnqueueTopicSeed failed');
+                });
             }
 
-            void alignTopicClaimsWithGuidelines(db, queryValidation.sanitized, {
+            // Guideline alignment runs as a durable job.
+            void getOrEnqueueGuidelineAlign({
+                db,
+                topic: queryValidation.sanitized,
+                cache,
+                logger,
                 limit: 24,
-                apply: true,
-                reviewerId: null,
-            }).catch((err) => { req.log?.warn?.({ err }, 'background guideline align skipped'); });
+            }).catch((err) => {
+                req.log?.warn?.({ err }, 'getOrEnqueueGuidelineAlign failed');
+            });
 
-            // If already cached or a job is already running for this key, skip.
+            // Search enrichment (clinical answer + consensus synopsis) runs as durable jobs.
+            // If already cached, skip. Otherwise enqueue idempotent jobs.
             if (existingEnrich?.status === 'ready') return;
-            if (enrichmentInFlight.has(enrichCacheKey)) return;
-            enrichmentInFlight.add(enrichCacheKey);
 
-            // Capture values before request scope ends, then fire background AI job.
             const enrichQuery = queryValidation.sanitized;
             const enrichPapers = articles.slice(0, 8);
+            const consensusKey = consensusEnrichmentJobKey(enrichKey);
+            const liveCaKey = liveClinicalAnswerEnrichmentJobKey(enrichKey);
 
-            void runWithLlmBudget(createBudgetForAction('search_enrichment'), async () => {
-                let lastError = null;
-                for (let attempt = 0; attempt < ENRICHMENT_MAX_ATTEMPTS; attempt += 1) {
-                    if (attempt > 0) {
-                        await sleep(ENRICHMENT_BACKOFF_MS[attempt] || 5000);
-                    }
-                    try {
-                        let trainingStage = enrichTrainingStage;
-                        let sessionDepth = enrichSessionDepth;
-                        if (enrichUserId && (trainingStage == null || !sessionDepth)) {
-                            const [profile, userTopicMemory] = await Promise.all([
-                                trainingStage == null
-                                    ? db.getLearningProfile(enrichUserId).catch((err) => { logger.warn({ err }, 'getLearningProfile failed'); return null; })
-                                    : Promise.resolve(null),
-                                !sessionDepth
-                                    ? db.getUserTopicMemory(enrichUserId, enrichQuery).catch((err) => { logger.warn({ err }, 'getUserTopicMemory failed'); return null; })
-                                    : Promise.resolve(null),
-                            ]);
-                            if (profile) trainingStage = profile.trainingStage || profile.training_stage || null;
-                            if (userTopicMemory) sessionDepth = Number(userTopicMemory.searchCount || 0);
-                        }
+            void getOrEnqueueConsensusSynopsis({
+                db,
+                topic: enrichQuery,
+                articles: enrichPapers,
+                serverConfig,
+                fetchImpl: f,
+                cache,
+                logger,
+                jobKey: consensusKey,
+            }).catch((err) => {
+                logger.warn({ err, topic: enrichQuery }, 'getOrEnqueueConsensusSynopsis failed');
+            });
 
-                        const { generateLiveClinicalAnswer } = require('../../services/aiGenerationJobService');
-                        const { generateConsensusSynopsisSafe } = require('../../services/consensusSynopsisService');
-
-                        const [caResult, csResult] = await Promise.allSettled([
-                            generateLiveClinicalAnswer({
-                                topic: enrichQuery,
-                                articles: enrichPapers,
-                                guidelines: [],
-                                previousQueries: enrichPreviousQueries,
-                                trainingStage,
-                                sessionDepth,
-                                serverConfig,
-                                fetchImpl: f,
-                            }),
-                            generateConsensusSynopsisSafe({
-                                topic: enrichQuery,
-                                articles: enrichPapers,
-                                serverConfig,
-                                fetchImpl: f,
-                                cache,
-                                db,
-                                limit: 5,
-                            }, console),
-                        ]);
-
-                        const caRaw = caResult.status === 'fulfilled' ? caResult.value : null;
-                        const clinicalAnswer = caRaw?.clinicalAnswer ?? null;
-                        const consensusSynopsis = csResult.status === 'fulfilled' ? csResult.value : null;
-                        const caFailed = caResult.status === 'rejected';
-                        const csFailed = csResult.status === 'rejected';
-                        if (caFailed && csFailed) {
-                            const caErr = caResult.reason;
-                            const csErr = csResult.reason;
-                            throw caErr || csErr || new Error('Search enrichment failed');
-                        }
-                        if (consensusSynopsis) {
-                            await persistConsensusTeachingObject({
-                                db,
-                                topic: enrichQuery,
-                                consensusSynopsis,
-                                articles: enrichPapers,
-                            }).catch((err) => { logger.warn({ err }, 'persistConsensusTeachingObject failed'); return null; });
-                        }
-
-                        await Promise.resolve(cache.set(enrichCacheKey, {
-                            status: 'ready',
-                            clinicalAnswer,
-                            consensusSynopsis,
-                            partialFailure: caFailed || csFailed,
-                        }, 3600)).catch((err) => { logger.warn({ err }, 'cache set failed'); });
-                        return;
-                    } catch (err) {
-                        lastError = err;
-                        logger.warn({ err, attempt: attempt + 1, maxAttempts: ENRICHMENT_MAX_ATTEMPTS }, 'search enrichment attempt failed');
-                    }
-                }
-                logger.warn({ err: lastError }, 'search enrichment background job failed');
-                await Promise.resolve(cache.set(enrichCacheKey, {
-                    status: 'failed',
-                    errorMessage: lastError?.message || 'Search enrichment failed',
-                    attempts: ENRICHMENT_MAX_ATTEMPTS,
-                }, 300)).catch((err) => { logger.warn({ err }, 'cache set failed'); });
-            }).finally(() => {
-                enrichmentInFlight.delete(enrichCacheKey);
+            void getOrEnqueueLiveClinicalAnswer({
+                db,
+                topic: enrichQuery,
+                articles: enrichPapers,
+                guidelines: [],
+                previousQueries: enrichPreviousQueries,
+                trainingStage: enrichTrainingStage,
+                sessionDepth: enrichSessionDepth,
+                serverConfig,
+                fetchImpl: f,
+                cache,
+                logger,
+                jobKey: liveCaKey,
+            }).catch((err) => {
+                logger.warn({ err, topic: enrichQuery }, 'getOrEnqueueLiveClinicalAnswer failed');
             });
 
         } catch (error) {

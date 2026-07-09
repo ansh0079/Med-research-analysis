@@ -151,7 +151,7 @@ async getCachedArticle(articleId) {
             eb('expires_at', '>', new Date().toISOString())
         ]))
         .executeTakeFirst();
-    
+
     if (row) {
         return {
             ...safeJsonParse(row.data, {}),

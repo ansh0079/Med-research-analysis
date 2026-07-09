@@ -28,6 +28,16 @@ export const TopicBriefConsensusSynopsis: React.FC<Props> = ({ consensusSynopsis
                 Full text used
               </span>
             )}
+            {Number(consensusSynopsis.abstractPaperCount || 0) > 0 && consensusSynopsis.freePaperCount === 0 && (
+              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-black uppercase text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">
+                Abstract-only evidence
+              </span>
+            )}
+            {consensusSynopsis.reviewState && (
+              <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-black uppercase text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                {consensusSynopsis.reviewState.replace(/_/g, ' ')}
+              </span>
+            )}
             {consensusSynopsis.citationValidation && (
               <span className={`rounded-full px-2 py-0.5 text-[10px] font-black uppercase ${
                 consensusSynopsis.citationValidation.ok

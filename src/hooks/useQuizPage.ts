@@ -126,7 +126,7 @@ export function useQuizPage() {
 
   useEffect(() => {
     if (!isAuthenticated || !activeTopic || activeTopic.trim().length < 2) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+
       setTopicMemory(null);
       return;
     }
@@ -256,6 +256,8 @@ export function useQuizPage() {
     urlRoundId,
     urlCount,
     isAuthenticated,
+    quizPrefill.mcqAngles,
+    quizPrefill.teachingPoints,
   ]);
 
   const loadQuiz = useCallback(() => fetchQuiz(() => false), [fetchQuiz]);
@@ -268,13 +270,13 @@ export function useQuizPage() {
   }, [manualTopic, navigate, prefillDifficulty]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setManualTopic(activeTopic);
   }, [activeTopic]);
 
   useEffect(() => {
     let cancelled = false;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     fetchQuiz(() => cancelled);
     return () => { cancelled = true; };
   }, [fetchQuiz]);

@@ -156,7 +156,7 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
 
   const { annotations, addAnnotation, needsAuth } = useCollaboration(article?.uid || null);
   const requestIdRef = useRef(0);
-  
+
 
   // Check pre-index status whenever article changes
   useEffect(() => {

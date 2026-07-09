@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react';
 import { useSelectionBasket } from './useSelectionBasket';
 
 describe('useSelectionBasket', () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   const a = (uid: string, n: number) => ({ uid, title: `Article ${n}`, id: String(n), _source: 'pubmed' }) as any;
   const mockArticle1 = a('a1', 1);
   const mockArticle2 = a('a2', 2);

@@ -1,10 +1,11 @@
 /**
  * PDF pre-index service.
  *
- * When a user saves an article the save handler calls enqueuePdfPreindex().
- * A background job finds the open-access PDF (cascade), extracts text + sections,
- * and stores the result in both the shared cache (24h TTL for fast access) and
- * the database (no TTL — persists across server restarts).
+ * When a user saves an article or a search result is returned, a durable
+ * `pdf_index` job is enqueued. The job finds the open-access PDF (cascade),
+ * extracts text + sections, and stores the result in both the shared cache
+ * (24h TTL for fast access) and the database (no TTL — persists across
+ * server restarts).
  *
  * Storage hierarchy:
  *   1. In-memory cache (24h TTL) — fastest path
@@ -12,8 +13,11 @@
  *   3. Live PDF extraction — fallback
  */
 
+'use strict';
+
 const logger = require('../config/logger');
 const { pdfQueue } = require('./jobQueue');
+const { getOrEnqueuePdfIndex } = require('./enrichmentJobService');
 
 const PDF_CACHE_TTL_SECONDS = 24 * 60 * 60;  // 24 hours
 
@@ -67,12 +71,23 @@ async function getCachedPdf(article, cache, db = null) {
 /**
  * Enqueue a background PDF pre-index job for an article.
  * Safe to call multiple times — deduplicates by article ID.
- * When Redis is available (production), uses SET NX with a 5-minute TTL so that
- * all PM2 cluster workers share the dedup guard. Falls back to an in-process Set
- * for local dev / non-Redis environments.
+ * When a durable job store is available, creates/uses a `pdf_index` job row.
+ * Otherwise falls back to the legacy `pdf` BullMQ queue with Redis SET NX.
  */
-async function enqueuePdfPreindex(article, { cache, serverConfig, fetch: fetchImpl, db = null } = {}) {
+async function enqueuePdfPreindex(article, { cache, serverConfig, fetch: fetchImpl, db = null, logger: log = null } = {}) {
     if (!article || (!article.doi && !article.pmid && !article.pmcid)) return;
+
+    // Prefer durable job store when available.
+    if (db && typeof db.getAiGenerationJobByKey === 'function') {
+        try {
+            await getOrEnqueuePdfIndex({ db, article, cache, logger: log || logger });
+            return;
+        } catch (err) {
+            logger.warn({ err }, 'Durable PDF index enqueue failed; falling back to legacy pdf queue');
+        }
+    }
+
+    // Legacy path: transient dedup + pdfQueue.
     const id = article.doi || article.pmid || article.uid;
     if (!id) return;
 
@@ -127,6 +142,7 @@ async function enrichWithCachedFullText(articles = [], cache, db = null) {
 
 /**
  * Queue open-access full-text indexing for search/synopsis hits (deduped per article id).
+ * Prefer `getOrEnqueuePdfIndex` directly; this helper is kept for backward compatibility.
  */
 async function enqueuePdfPreindexForArticles(articles = [], deps = {}) {
     if (!Array.isArray(articles) || !articles.length) return;

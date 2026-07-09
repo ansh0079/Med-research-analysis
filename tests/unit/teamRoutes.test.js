@@ -25,7 +25,7 @@ function buildApp(db) {
     const app = express();
     app.use(express.json());
     registerTeamRoutes(app, { db });
-    // eslint-disable-next-line no-unused-vars
+
     app.use((err, req, res, next) => res.status(500).json({ error: err.message }));
     return app;
 }

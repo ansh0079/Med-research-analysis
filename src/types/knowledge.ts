@@ -96,6 +96,9 @@ export interface TopicIntelligence {
       issueCount: number;
       issues: Array<{ path: string; value?: string; errors: string[] }>;
     };
+    citationCheckPassed?: boolean;
+    reviewState?: 'unreviewed' | 'machine_checked' | 'human_reviewed' | 'needs_revision' | string;
+    abstractPaperCount?: number;
     disclaimer: string;
   };
   agentGuidance?: AgentGuidance | null;

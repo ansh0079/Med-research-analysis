@@ -1,7 +1,7 @@
 const logger = require('../config/logger');
 const { sanitizeArticleOutput } = require('../utils/articles');
 
-function registerUserRoutes(app, { db, requireJson, requireAuthJwt, auditLog, enqueueArticleForEmbedding, enqueuePdfPreindex }) {
+function registerUserRoutes(app, { db, cache, requireJson, requireAuthJwt, auditLog, enqueueArticleForEmbedding, enqueuePdfPreindex }) {
     async function resolveSaveOwner(req) {
         const teamId = req.body?.teamId || req.query?.teamId;
         if (teamId) {
@@ -67,7 +67,7 @@ function registerUserRoutes(app, { db, requireJson, requireAuthJwt, auditLog, en
                 req.log.warn({ err: e }, 'Saved-article embed enqueue skipped');
             }
             try {
-                if (typeof enqueuePdfPreindex === 'function') enqueuePdfPreindex(article);
+                if (typeof enqueuePdfPreindex === 'function') enqueuePdfPreindex(article, { db, cache });
             } catch (e) {
                 req.log.warn({ err: e }, 'PDF pre-index enqueue skipped');
             }

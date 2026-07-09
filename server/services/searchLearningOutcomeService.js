@@ -1,5 +1,6 @@
 const logger = require('../config/logger');
 const { POLICY_SEARCH_RANKING, POLICY_QUIZ_CLAIM_SELECTION, recordBanditReward } = require('./personalizationBanditService');
+const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('./learningSignalService');
 const {
     quizAttemptReward,
     impressionEngagementReward,
@@ -17,15 +18,32 @@ function normalizeUid(value) {
     return String(value || '').trim().toLowerCase();
 }
 
-async function findSearchRankingDecision(db, userId, { decisionId = null, searchId = null, articleUid = null } = {}) {
+async function findSearchRankingDecision(db, userId, {
+    decisionId = null,
+    searchId = null,
+    articleUid = null,
+    sessionId = null,
+} = {}) {
     if (!db?.all) return null;
     if (decisionId) {
         const params = [Number(decisionId), POLICY_SEARCH_RANKING];
-        const userClause = userId ? ' AND user_id = ?' : '';
-        if (userId) params.push(String(userId));
+        let joinClause = '';
+        let actorClause = '';
+        if (userId) {
+            actorClause = ' AND d.user_id = ?';
+            params.push(String(userId));
+        } else if (sessionId) {
+            joinClause = ' LEFT JOIN searches s ON s.id = d.search_id';
+            actorClause = ' AND d.user_id IS NULL AND s.session_id = ?';
+            params.push(String(sessionId));
+        } else {
+            return null;
+        }
         const rows = await db.all(
-            `SELECT id, arm_id, delayed_reward FROM personalization_decisions
-             WHERE id = ? AND policy_type = ?${userClause}
+            `SELECT d.id, d.arm_id, d.delayed_reward
+             FROM personalization_decisions d
+             ${joinClause}
+             WHERE d.id = ? AND d.policy_type = ?${actorClause}
              LIMIT 1`,
             params
         ).catch(() => []);
@@ -41,11 +59,15 @@ async function findSearchRankingDecision(db, userId, { decisionId = null, search
             ).catch(() => []);
             return rows?.[0] || null;
         }
+        if (!sessionId) return null;
         const rows = await db.all(
-            `SELECT id, arm_id, delayed_reward FROM personalization_decisions
-             WHERE user_id IS NULL AND policy_type = ? AND search_id = ? AND article_uid = ?
-             ORDER BY created_at DESC LIMIT 1`,
-            [POLICY_SEARCH_RANKING, Number(searchId), String(articleUid)]
+            `SELECT d.id, d.arm_id, d.delayed_reward
+             FROM personalization_decisions d
+             JOIN searches s ON s.id = d.search_id
+             WHERE d.user_id IS NULL AND d.policy_type = ? AND d.search_id = ? AND d.article_uid = ?
+               AND s.session_id = ?
+             ORDER BY d.created_at DESC LIMIT 1`,
+            [POLICY_SEARCH_RANKING, Number(searchId), String(articleUid), String(sessionId)]
         ).catch(() => []);
         return rows?.[0] || null;
     }
@@ -85,9 +107,11 @@ async function attributeSearchInteractionReward(db, userId, {
     wasClicked = false,
     wasSaved = false,
     feedbackType = null,
+    sessionId = null,
+    topic = '',
 } = {}) {
     if (!db) return { rewarded: false, reason: 'missing_context' };
-    if (!userId && decisionId == null) return { rewarded: false, reason: 'missing_context' };
+    if (!userId && !sessionId) return { rewarded: false, reason: 'missing_context' };
 
     const impression = {
         was_clicked: wasClicked || interactionType === 'click',
@@ -107,8 +131,19 @@ async function attributeSearchInteractionReward(db, userId, {
         decisionId,
         searchId,
         articleUid,
+        sessionId,
     });
     if (!decision?.id) {
+        await recordLearningSignal(db, {
+            userId,
+            sessionId,
+            eventType: LEARNING_SIGNAL_TYPES.SEARCH_REWARD_SKIPPED,
+            topic,
+            articleUid,
+            searchId,
+            decisionId,
+            payload: { immediate, reason: 'no_decision', feedbackType, interactionType },
+        });
         return { rewarded: false, immediate, reason: 'no_decision' };
     }
 
@@ -120,6 +155,24 @@ async function attributeSearchInteractionReward(db, userId, {
         delayedReward: delayed,
         totalReward: total,
         recordArmPull: explicitLearningSignal,
+    });
+    await recordLearningSignal(db, {
+        userId,
+        sessionId,
+        eventType: LEARNING_SIGNAL_TYPES.SEARCH_REWARD_ATTRIBUTED,
+        topic,
+        articleUid,
+        searchId,
+        decisionId: decision.id,
+        payload: {
+            immediateReward: immediate,
+            delayedReward: delayed,
+            totalReward: total,
+            feedbackType,
+            interactionType,
+            armId: decision.arm_id || null,
+            armPullRecorded: explicitLearningSignal,
+        },
     });
 
     return {
@@ -175,15 +228,25 @@ async function attributeQuizAttemptRewards(db, userId, attempts = [], topic = ''
         }
 
         if (!impressions.length && (decisionId || banditArmId)) {
-            let decision = decisionId
-                ? await findSearchRankingDecision(db, decisionUserId, { decisionId })
+            const decision = decisionId
+                ? await findSearchRankingDecision(db, decisionUserId, { decisionId, sessionId })
                 : null;
             if (decision?.id) {
+                const totalReward = combineSearchQuizReward(0, reward);
                 await applyDecisionReward(db, decisionUserId, decision, {
                     immediateReward: 0,
                     delayedReward: reward,
-                    totalReward: combineSearchQuizReward(0, reward),
+                    totalReward,
                     recordArmPull: reward > 0,
+                });
+                await recordLearningSignal(db, {
+                    userId: decisionUserId,
+                    sessionId,
+                    eventType: LEARNING_SIGNAL_TYPES.QUIZ_REWARD_ATTRIBUTED,
+                    topic,
+                    articleUid,
+                    decisionId: decision.id,
+                    payload: { reward, totalReward, claimKey, isCorrect, isFirstAttempt },
                 });
                 attributed += 1;
                 continue;
@@ -218,12 +281,13 @@ async function attributeQuizAttemptRewards(db, userId, attempts = [], topic = ''
         if (db.updatePersonalizationDecisionReward) {
             let decision = null;
             if (decisionId) {
-                decision = await findSearchRankingDecision(db, decisionUserId, { decisionId });
+                decision = await findSearchRankingDecision(db, decisionUserId, { decisionId, sessionId });
             }
             if (!decision && impression.search_id) {
                 decision = await findSearchRankingDecision(db, decisionUserId, {
                     searchId: impression.search_id,
                     articleUid: impression.article_uid || articleUid,
+                    sessionId,
                 });
             }
             if (decision?.id) {
@@ -232,6 +296,16 @@ async function attributeQuizAttemptRewards(db, userId, attempts = [], topic = ''
                     delayedReward: reward,
                     totalReward,
                     recordArmPull: true,
+                });
+                await recordLearningSignal(db, {
+                    userId: decisionUserId,
+                    sessionId,
+                    eventType: LEARNING_SIGNAL_TYPES.QUIZ_REWARD_ATTRIBUTED,
+                    topic,
+                    articleUid: impression.article_uid || articleUid,
+                    searchId: impression.search_id,
+                    decisionId: decision.id,
+                    payload: { reward, totalReward, claimKey, isCorrect, isFirstAttempt },
                 });
             } else if (banditArmId || attempt._banditArmId) {
                 await recordBanditReward(db, POLICY_SEARCH_RANKING, banditArmId || attempt._banditArmId, totalReward, decisionUserId);

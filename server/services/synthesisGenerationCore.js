@@ -24,13 +24,13 @@ const { buildSynthesisCacheKey, normalizePersonalization } = require('./synthesi
 function validateCitationRelevance(claimText, sourceIndex, articles) {
     const article = articles[sourceIndex - 1];
     if (!article) {
-        return { 
-            valid: false, 
-            relevanceScore: 0, 
-            reason: 'Source index out of bounds' 
+        return {
+            valid: false,
+            relevanceScore: 0,
+            reason: 'Source index out of bounds'
         };
     }
-    
+
     const titleAndAbstract = `${article.title || ''} ${article.abstract || ''}`.toLowerCase();
     if (titleAndAbstract.length < 20) {
         return {
@@ -39,26 +39,26 @@ function validateCitationRelevance(claimText, sourceIndex, articles) {
             reason: 'Abstract not available for validation'
         };
     }
-    
+
     // Extract meaningful words from claim (filter stopwords, keep medical terms)
     const claimWords = String(claimText || '')
         .toLowerCase()
         .split(/\s+/)
         .filter(w => w.length > 4 && !/^(the|and|that|this|with|from|have|been|were|was)$/.test(w))
         .slice(0, 30);  // Cap to avoid noise
-    
+
     if (claimWords.length === 0) {
         return { valid: false, relevanceScore: 0, reason: 'Claim too short for validation' };
     }
-    
+
     // Calculate overlap: how many claim words appear in article?
     const overlap = claimWords.filter(word => titleAndAbstract.includes(word)).length;
     const relevanceScore = overlap / claimWords.length;
-    
+
     return {
         valid: relevanceScore > 0.25,  // At least 25% keyword overlap required
         relevanceScore: Math.round(relevanceScore * 100) / 100,
-        reason: relevanceScore <= 0.25 
+        reason: relevanceScore <= 0.25
             ? `Low semantic overlap (${Math.round(relevanceScore * 100)}%) between claim and cited source`
             : 'Acceptable relevance'
     };
@@ -71,7 +71,7 @@ function extractAndValidateCitations(text, articles) {
     const citationPattern = /\[(\d+)\]/g;
     const citations = [];
     let match;
-    
+
     while ((match = citationPattern.exec(text)) !== null) {
         const sourceIndex = parseInt(match[1], 10);
         if (sourceIndex > 0 && sourceIndex <= articles.length) {
@@ -82,7 +82,7 @@ function extractAndValidateCitations(text, articles) {
             });
         }
     }
-    
+
     return citations;
 }
 
@@ -187,11 +187,11 @@ function validateSynthesisCitations(synthesis, { sourceCount, guidelineCount }) 
         requiredPaths: CITATION_REQUIRED_PATHS,
         requiredListPaths: ['agreement', 'uncertainties'],
     });
-    
+
     // Add semantic relevance check for key claims
     const relevanceIssues = [];
     const articles = synthesis._contextArticles || [];
-    
+
     if (articles.length > 0) {
         // Validate clinical bottom line citation
         if (synthesis.clinicalBottomLine) {
@@ -205,7 +205,7 @@ function validateSynthesisCitations(synthesis, { sourceCount, guidelineCount }) 
                 });
             }
         }
-        
+
         // Validate key findings
         if (Array.isArray(synthesis.keyFindings)) {
             synthesis.keyFindings.slice(0, 5).forEach((finding, idx) => {
@@ -222,7 +222,7 @@ function validateSynthesisCitations(synthesis, { sourceCount, guidelineCount }) 
             });
         }
     }
-    
+
     return {
         ...validation,
         citationRelevance: {
@@ -334,10 +334,10 @@ function buildSynthesisResult({
     const promptHashDigest = crypto.createHash('md5').update(prompt).digest('hex');
     const claimsJobKey = jobKey || `syn:${promptHashDigest}`;
     const claimFingerprint = buildSynthesisClaimFingerprint(synthesis);
-    
+
     // Generate warnings for quality issues
     const warnings = [];
-    
+
     // Warning for low full-text coverage
     if (fullTextCoverageRatio < 0.3 && topArticles.length > 0) {
         warnings.push({
@@ -347,7 +347,7 @@ function buildSynthesisResult({
             affectedFields: ['clinicalBottomLine', 'limitations', 'methodologicalQuality']
         });
     }
-    
+
     // Warning for irrelevant citations
     if (citationValidation?.citationRelevance?.hasIrrelevantCitations) {
         const issueCount = citationValidation.citationRelevance.issues.length;
@@ -358,7 +358,7 @@ function buildSynthesisResult({
             details: citationValidation.citationRelevance.issues.slice(0, 3)
         });
     }
-    
+
     return {
         synthesis,
         articleCount: topArticles.length,
@@ -524,10 +524,10 @@ async function runFullSynthesisGenerationInner({
         synthesis = { ...synthesis, ...validated.degraded };
         logger.warn({ errors: validated.errors, topic }, 'Synthesis output degraded after validation');
     }
-    
+
     // Attach articles for citation validation
     synthesis._contextArticles = context.topArticles;
-    
+
     const citationValidation = validateSynthesisCitations(synthesis, {
         sourceCount: context.topArticles.length,
         guidelineCount: context.guidelines.length,

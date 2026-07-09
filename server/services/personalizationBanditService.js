@@ -1,10 +1,13 @@
 'use strict';
 
 const logger = require('../config/logger');
+const { auditArmSafety } = require('./banditSafetyGuard');
 
 const POLICY_SEARCH_RANKING = 'search_ranking';
 const POLICY_RECOMMENDATION = 'recommendation_strategy';
 const POLICY_QUIZ_CLAIM_SELECTION = 'quiz_claim_selection';
+const POLICY_SYNOPSIS_STYLE = 'synopsis_style';
+const POLICY_TEACHING_STRATEGY = 'agent_teaching_strategy';
 
 const SEARCH_RANKING_ARMS = {
     heuristic_default: {
@@ -33,6 +36,37 @@ const RECOMMENDATION_ARM_BY_TYPE = {
 };
 
 const MIN_PULLS_FOR_USER_ARM = Number(process.env.BANDIT_MIN_USER_PULLS || 8);
+
+// ─── synopsis_style arms ─────────────────────────────────────────────────────
+// Each arm maps to a rendering style injected into the synopsis prompt.
+// The arm config carries metadata only (no weight vector) — reward is user
+// feedback (helpful / not-helpful) recorded via recordBanditReward.
+const SYNOPSIS_STYLE_ARMS = {
+    bottom_line_first: { label: 'Bottom line first', tone: 'concise', structure: 'conclusion_first' },
+    pico_structured:   { label: 'PICO structured',  tone: 'clinical', structure: 'pico' },
+    narrative:         { label: 'Narrative flow',   tone: 'explanatory', structure: 'narrative' },
+    teaching_points:   { label: 'Teaching points',  tone: 'educational', structure: 'bullet_teaching' },
+};
+
+// ─── agent_teaching_strategy arms ───────────────────────────────────────────
+// Controls how the AI tutor frames explanations: Socratic questioning,
+// direct explanation, analogy-led, or worked-example-first.
+const TEACHING_STRATEGY_ARMS = {
+    direct:        { label: 'Direct explanation',   strategy: 'explain_then_quiz' },
+    socratic:      { label: 'Socratic questioning', strategy: 'question_first' },
+    analogy:       { label: 'Analogy-led',          strategy: 'analogy_bridge' },
+    worked_example:{ label: 'Worked example first', strategy: 'example_first' },
+};
+
+// Audit arm safety at module load — catches unsafe weight vectors before any traffic.
+(function auditArmsAtStartup() {
+    const results = auditArmSafety(SEARCH_RANKING_ARMS);
+    for (const [armId, result] of Object.entries(results)) {
+        if (!result.safe) {
+            logger.warn({ armId, violations: result.violations }, 'bandit arm failed safety audit');
+        }
+    }
+}());
 
 function isBanditEnabled() {
     return String(process.env.PERSONALIZATION_BANDIT_ENABLED || 'true').toLowerCase() !== 'false';
@@ -262,6 +296,71 @@ async function recordBanditReward(db, policyType, armId, reward, userId = null) 
     });
 }
 
+/**
+ * Select a synopsis style arm for a given user using Thompson sampling.
+ * Falls back to global scope until MIN_PULLS_FOR_USER_ARM pulls are logged.
+ *
+ * @returns {{ armId, style, scopeKey, sampled }}
+ */
+async function selectSynopsisStyleArm(db, userId) {
+    const armIds = Object.keys(SYNOPSIS_STYLE_ARMS);
+    if (!isBanditEnabled() || !db?.listPersonalizationArmStates) {
+        return { armId: 'bottom_line_first', style: SYNOPSIS_STYLE_ARMS.bottom_line_first, scopeKey: 'global', sampled: null };
+    }
+
+    const userScope = scopeKeyForUser(userId);
+    await ensurePolicyArms(db, POLICY_SYNOPSIS_STYLE, armIds, 'global');
+    if (userId) await ensurePolicyArms(db, POLICY_SYNOPSIS_STYLE, armIds, userScope);
+
+    const userRows = userId
+        ? await db.listPersonalizationArmStates(POLICY_SYNOPSIS_STYLE, userScope).catch(() => [])
+        : [];
+    const userPulls = userRows.reduce((sum, r) => sum + Number(r.pulls || 0), 0);
+    const scopeKey = userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global';
+    const samples = await loadArmSamples(db, POLICY_SYNOPSIS_STYLE, armIds, scopeKey);
+
+    let bestArm = 'bottom_line_first';
+    let bestSample = -1;
+    for (const armId of armIds) {
+        const s = samples[armId] ?? 0.5;
+        if (s > bestSample) { bestSample = s; bestArm = armId; }
+    }
+
+    return { armId: bestArm, style: SYNOPSIS_STYLE_ARMS[bestArm], scopeKey, sampled: bestSample };
+}
+
+/**
+ * Select a teaching strategy arm for a given user using Thompson sampling.
+ *
+ * @returns {{ armId, strategy, scopeKey, sampled }}
+ */
+async function selectTeachingStrategyArm(db, userId) {
+    const armIds = Object.keys(TEACHING_STRATEGY_ARMS);
+    if (!isBanditEnabled() || !db?.listPersonalizationArmStates) {
+        return { armId: 'direct', strategy: TEACHING_STRATEGY_ARMS.direct, scopeKey: 'global', sampled: null };
+    }
+
+    const userScope = scopeKeyForUser(userId);
+    await ensurePolicyArms(db, POLICY_TEACHING_STRATEGY, armIds, 'global');
+    if (userId) await ensurePolicyArms(db, POLICY_TEACHING_STRATEGY, armIds, userScope);
+
+    const userRows = userId
+        ? await db.listPersonalizationArmStates(POLICY_TEACHING_STRATEGY, userScope).catch(() => [])
+        : [];
+    const userPulls = userRows.reduce((sum, r) => sum + Number(r.pulls || 0), 0);
+    const scopeKey = userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global';
+    const samples = await loadArmSamples(db, POLICY_TEACHING_STRATEGY, armIds, scopeKey);
+
+    let bestArm = 'direct';
+    let bestSample = -1;
+    for (const armId of armIds) {
+        const s = samples[armId] ?? 0.5;
+        if (s > bestSample) { bestSample = s; bestArm = armId; }
+    }
+
+    return { armId: bestArm, strategy: TEACHING_STRATEGY_ARMS[bestArm], scopeKey, sampled: bestSample };
+}
+
 async function reconcileImpressionRewards(db, { days = 7 } = {}) {
     if (!db?.listPersonalizationDecisionsPendingReward || !db?.findRecentSearchImpressionsForAttribution) {
         return { updated: 0 };
@@ -300,11 +399,17 @@ module.exports = {
     POLICY_SEARCH_RANKING,
     POLICY_RECOMMENDATION,
     POLICY_QUIZ_CLAIM_SELECTION,
+    POLICY_SYNOPSIS_STYLE,
+    POLICY_TEACHING_STRATEGY,
     SEARCH_RANKING_ARMS,
+    SYNOPSIS_STYLE_ARMS,
+    TEACHING_STRATEGY_ARMS,
     recommendationContextFeatures,
     RECOMMENDATION_ARM_BY_TYPE,
     isBanditEnabled,
     selectSearchRankingArm,
+    selectSynopsisStyleArm,
+    selectTeachingStrategyArm,
     immediateImpressionReward,
     recordSearchRankingDecisions,
     applyRecommendationBandit,

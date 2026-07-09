@@ -247,7 +247,7 @@ export const SearchSelectionProvider: React.FC<{ children: React.ReactNode }> = 
       savedArticles, selectedArticles,
       toggleSaveArticle, toggleSelectArticle, clearSelection, isSaved, isSelected,
     }),
-    [savedArticles, selectedArticles, toggleSaveArticle, isSaved, isSelected]
+    [savedArticles, selectedArticles, toggleSaveArticle, toggleSelectArticle, clearSelection, isSaved, isSelected]
   );
 
   return <SearchSelectionContext.Provider value={value}>{children}</SearchSelectionContext.Provider>;

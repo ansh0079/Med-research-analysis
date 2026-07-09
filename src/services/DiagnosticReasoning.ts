@@ -36,7 +36,7 @@ export class DiagnosticReasoningService {
     let urgency: 'routine' | 'urgent' | 'emergent' = 'routine';
 
     thinking.push(`Step 1: Analyzing ${symptoms.length} symptoms.`);
-    
+
     symptoms.forEach(s => {
       const lowerS = s.toLowerCase();
       for (const [key, pattern] of Object.entries(this.patterns)) {

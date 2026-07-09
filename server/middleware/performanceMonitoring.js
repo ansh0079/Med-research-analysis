@@ -4,7 +4,7 @@ const logger = require('../config/logger');
 
 /**
  * Performance Monitoring Middleware
- * 
+ *
  * Tracks request performance and logs slow requests for optimization
  */
 
@@ -22,17 +22,17 @@ const THRESHOLDS = {
 function performanceTracker(req, res, next) {
     const start = Date.now();
     const requestId = req.id || generateRequestId();
-    
+
     req.requestId = requestId;
     req.startTime = start;
-    
+
     // Track response
     const originalSend = res.send;
     res.send = function(data) {
         const duration = Date.now() - start;
         const isAiRoute = req.path.includes('/api/ai/');
         const threshold = isAiRoute ? THRESHOLDS.AI_OPERATION : THRESHOLDS.SLOW_REQUEST;
-        
+
         // Log performance metrics
         const logData = {
             requestId,
@@ -44,7 +44,7 @@ function performanceTracker(req, res, next) {
             ip: req.ip,
             userAgent: req.get('user-agent')?.slice(0, 100)
         };
-        
+
         if (duration > THRESHOLDS.VERY_SLOW_REQUEST) {
             logger.error({ ...logData, threshold: 'very_slow' }, 'Very slow request detected');
         } else if (duration > threshold) {
@@ -52,14 +52,14 @@ function performanceTracker(req, res, next) {
         } else if (process.env.LOG_ALL_REQUESTS === 'true') {
             logger.debug(logData, 'Request completed');
         }
-        
+
         // Add performance headers
         res.setHeader('X-Response-Time', `${duration}ms`);
         res.setHeader('X-Request-ID', requestId);
-        
+
         return originalSend.call(this, data);
     };
-    
+
     next();
 }
 
@@ -70,7 +70,7 @@ function wrapDatabaseWithPerformanceTracking(db) {
     const originalRun = db.run.bind(db);
     const originalGet = db.get.bind(db);
     const originalAll = db.all.bind(db);
-    
+
     db.run = async function(...args) {
         const start = Date.now();
         try {
@@ -86,7 +86,7 @@ function wrapDatabaseWithPerformanceTracking(db) {
             }
         }
     };
-    
+
     db.get = async function(...args) {
         const start = Date.now();
         try {
@@ -102,7 +102,7 @@ function wrapDatabaseWithPerformanceTracking(db) {
             }
         }
     };
-    
+
     db.all = async function(...args) {
         const start = Date.now();
         try {
@@ -118,7 +118,7 @@ function wrapDatabaseWithPerformanceTracking(db) {
             }
         }
     };
-    
+
     return db;
 }
 
@@ -128,14 +128,14 @@ function wrapDatabaseWithPerformanceTracking(db) {
 function logMemoryUsage() {
     const usage = process.memoryUsage();
     const mb = (bytes) => Math.round(bytes / 1024 / 1024);
-    
+
     logger.info({
         rss: `${mb(usage.rss)}MB`,
         heapTotal: `${mb(usage.heapTotal)}MB`,
         heapUsed: `${mb(usage.heapUsed)}MB`,
         external: `${mb(usage.external)}MB`
     }, 'Memory usage');
-    
+
     // Warn if heap usage is over 80%
     const heapUsagePercent = (usage.heapUsed / usage.heapTotal) * 100;
     if (heapUsagePercent > 80) {
@@ -166,7 +166,7 @@ function generateRequestId() {
  */
 function errorTracker(err, req, res, next) {
     const duration = req.startTime ? Date.now() - req.startTime : 0;
-    
+
     logger.error({
         error: {
             message: err.message,
@@ -182,7 +182,7 @@ function errorTracker(err, req, res, next) {
             ip: req.ip
         }
     }, 'Request error');
-    
+
     // Don't expose internal errors in production
     const isDev = process.env.NODE_ENV === 'development';
     res.status(err.status || 500).json({

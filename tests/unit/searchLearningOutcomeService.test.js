@@ -46,6 +46,47 @@ describe('searchLearningOutcomeService', () => {
         expect(db.recordPersonalizationArmPull).toHaveBeenCalled();
     });
 
+    test('anonymous decisionId reward requires matching session context', async () => {
+        const db = {
+            all: jest.fn().mockResolvedValue([]),
+            updatePersonalizationDecisionReward: jest.fn().mockResolvedValue(true),
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+            recordLearningEvent: jest.fn().mockResolvedValue({ id: 1 }),
+        };
+
+        const result = await attributeSearchInteractionReward(db, null, {
+            decisionId: 7,
+            feedbackType: 'helpful',
+        });
+
+        expect(result).toMatchObject({ rewarded: false, reason: 'missing_context' });
+        expect(db.all).not.toHaveBeenCalled();
+        expect(db.updatePersonalizationDecisionReward).not.toHaveBeenCalled();
+    });
+
+    test('anonymous decisionId reward joins through search session when session is present', async () => {
+        const db = {
+            all: jest.fn().mockResolvedValue([{ id: 7, arm_id: 'organic', delayed_reward: null }]),
+            updatePersonalizationDecisionReward: jest.fn().mockResolvedValue(true),
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+            recordLearningEvent: jest.fn().mockResolvedValue({ id: 1 }),
+        };
+
+        const result = await attributeSearchInteractionReward(db, null, {
+            decisionId: 7,
+            feedbackType: 'helpful',
+            sessionId: 'sess-1',
+        });
+
+        expect(result).toMatchObject({ rewarded: true, armPullRecorded: true });
+        expect(db.all.mock.calls[0][0]).toContain('JOIN searches');
+        expect(db.all.mock.calls[0][1]).toContain('sess-1');
+        expect(db.recordLearningEvent).toHaveBeenCalledWith(expect.objectContaining({
+            eventType: 'search_reward_attributed',
+            sourceId: 'decision:7',
+        }));
+    });
+
     test('attributeQuizAttemptRewards links quiz attempts to recent impressions', async () => {
         const db = {
             normalizeTopic: (t) => String(t).toLowerCase().replace(/\s+/g, '-'),

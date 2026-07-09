@@ -17,6 +17,8 @@
 const fs = require('fs');
 const path = require('path');
 const { evaluateSearchResults, summarizeSearchEval } = require('../server/services/searchQualityEvalService');
+const { compareSummaryToBaseline } = require('../server/services/searchQualityRegression');
+const { loadSearchGoldFixture } = require('./load-search-gold-fixture');
 
 const args = process.argv.slice(2);
 const flag = (name, fallback) => {
@@ -28,6 +30,44 @@ const BASE = flag('--base', 'http://localhost:3001');
 const SOURCES = flag('--sources', 'pubmed,semantic');
 const LIMIT = 10;
 const GOLD = flag('--gold', null);
+const BASELINE_PATH = flag('--baseline', 'tests/fixtures/search-quality-baseline.json');
+
+function loadBaselineSpec() {
+    const fullPath = path.resolve(process.cwd(), BASELINE_PATH);
+    if (!fs.existsSync(fullPath)) return null;
+    return JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+}
+
+function evaluateAbsoluteGates(summary, baselineSpec = {}) {
+    const gates = baselineSpec.absoluteGates || {};
+    const checks = [];
+    if (gates.landmarkHitRateMin != null && summary.landmarkHitRate != null) {
+        checks.push({
+            label: 'landmarkHitRateMin',
+            current: summary.landmarkHitRate,
+            threshold: gates.landmarkHitRateMin,
+            pass: summary.landmarkHitRate >= gates.landmarkHitRateMin,
+        });
+    }
+    if (gates.offTopicRateAtKMax != null) {
+        checks.push({
+            label: 'offTopicRateAtKMax',
+            current: summary.offTopicRateAtK,
+            threshold: gates.offTopicRateAtKMax,
+            pass: summary.offTopicRateAtK <= gates.offTopicRateAtKMax,
+        });
+    }
+    if (gates.guidelineHitRateMin != null && summary.guidelineHitRate != null) {
+        checks.push({
+            label: 'guidelineHitRateMin',
+            current: summary.guidelineHitRate,
+            threshold: gates.guidelineHitRateMin,
+            pass: summary.guidelineHitRate >= gates.guidelineHitRateMin,
+        });
+    }
+    const failingChecks = checks.filter((row) => !row.pass);
+    return { pass: failingChecks.length === 0, checks, failingChecks };
+}
 
 // ============================================================
 // 20 representative medical queries spanning different scenarios
@@ -154,16 +194,19 @@ async function fetchNew(query) {
 }
 
 async function runGoldEval(goldPath) {
-    const fullPath = path.resolve(process.cwd(), goldPath);
-    const fixture = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+    const fixture = loadSearchGoldFixture(goldPath);
     const queries = Array.isArray(fixture.queries) ? fixture.queries : [];
     const k = Number(fixture.k || LIMIT);
     if (queries.length === 0) {
         throw new Error(`No labelled queries found in ${goldPath}`);
     }
 
-    console.log(`\nLabelled Search Quality Eval`);
-    console.log(`Base: ${BASE}   Fixture: ${goldPath}   Queries: ${queries.length}   K: ${k}\n`);
+    console.log(`\nLabelled Search Quality Eval (Phase 2)`);
+    console.log(`Base: ${BASE}   Fixture: ${goldPath}   Queries: ${queries.length}   K: ${k}`);
+    if (fixture.expansionQueryCount) {
+        console.log(`Expansion queries: ${fixture.expansionQueryCount}   Overrides: ${fixture.overrideCount || 0}`);
+    }
+    console.log('');
 
     const rows = [];
     for (const spec of queries) {
@@ -175,19 +218,27 @@ async function runGoldEval(goldPath) {
             const articles = Array.isArray(data.articles) ? data.articles : [];
             const metrics = evaluateSearchResults({ ...spec, k }, articles, { k });
             rows.push(metrics);
-            console.log(`P@${k}=${metrics.precisionAtK.toFixed(2)} R@${k}=${metrics.recallAtK.toFixed(2)} off=${metrics.offTopicRateAtK.toFixed(2)} type=${metrics.requiredTypeCoverage.toFixed(2)}`);
+            console.log(`P5=${metrics.precisionAt5.toFixed(2)} R@${k}=${metrics.recallAtK.toFixed(2)} MRR=${metrics.mrr.toFixed(2)} off=${metrics.offTopicRateAtK.toFixed(2)} lm=${metrics.landmarkHit == null ? '-' : metrics.landmarkHit ? 'Y' : 'N'}`);
         } catch (err) {
             rows.push({
                 query: spec.query,
+                category: spec.category || 'landmark_rct',
                 k,
                 resultCount: 0,
                 relevantTotal: (spec.relevantUids || []).length,
                 relevantHits: 0,
                 offTopicHits: 0,
                 precisionAtK: 0,
+                precisionAt5: 0,
                 recallAtK: 0,
+                recallProxy: 0,
                 offTopicRateAtK: 1,
+                mrr: 0,
+                ndcgAtK: 0,
                 requiredTypeCoverage: 0,
+                anyRelevantHit: false,
+                landmarkHit: spec.category === 'guideline' ? null : false,
+                guidelineHit: spec.category === 'guideline' ? false : null,
                 missingRelevantUids: spec.relevantUids || [],
                 hitUids: [],
                 error: err.message,
@@ -198,36 +249,67 @@ async function runGoldEval(goldPath) {
     }
 
     const summary = summarizeSearchEval(rows);
+    const baselineSpec = loadBaselineSpec();
+    const regression = baselineSpec ? compareSummaryToBaseline(summary, baselineSpec) : null;
+    const absoluteGates = baselineSpec ? evaluateAbsoluteGates(summary, baselineSpec) : null;
+
     console.log('\nSUMMARY');
-    console.log(`Queries: ${summary.queryCount}`);
-    console.log(`Precision@${k}: ${summary.precisionAtK.toFixed(2)}`);
-    console.log(`Recall@${k}: ${summary.recallAtK.toFixed(2)}`);
-    console.log(`MRR: ${summary.mrr.toFixed(2)}`);
-    console.log(`nDCG@${k}: ${summary.ndcgAtK.toFixed(2)}`);
-    console.log(`Off-topic@${k}: ${summary.offTopicRateAtK.toFixed(2)}`);
-    console.log(`Type coverage: ${summary.requiredTypeCoverage.toFixed(2)}`);
+    console.log(`Queries: ${summary.queryCount} (landmark ${summary.landmarkQueryCount}, guideline ${summary.guidelineQueryCount})`);
+    console.log(`Precision@5: ${summary.precisionAt5.toFixed(3)}`);
+    console.log(`Recall@${k}: ${summary.recallAtK.toFixed(3)}`);
+    console.log(`Recall proxy: ${summary.recallProxy.toFixed(3)}`);
+    console.log(`Any-relevant hit rate: ${summary.anyRelevantHitRate.toFixed(3)}`);
+    console.log(`MRR: ${summary.mrr.toFixed(3)}`);
+    console.log(`nDCG@${k}: ${summary.ndcgAtK.toFixed(3)}`);
+    console.log(`Off-topic@${k}: ${summary.offTopicRateAtK.toFixed(3)} (${summary.offTopicQueryCount} queries with off-topic hits)`);
+    console.log(`Landmark hit rate: ${summary.landmarkHitRate == null ? 'n/a' : summary.landmarkHitRate.toFixed(3)}`);
+    console.log(`Guideline hit rate: ${summary.guidelineHitRate == null ? 'n/a' : summary.guidelineHitRate.toFixed(3)}`);
+    console.log(`Type coverage: ${summary.requiredTypeCoverage.toFixed(3)}`);
     if (summary.failingQueries.length) {
         console.log('\nFailing queries:');
         summary.failingQueries.forEach((q) => console.log(`  - ${q}`));
+    }
+    if (summary.landmarkMisses?.length) {
+        console.log('\nLandmark misses:');
+        summary.landmarkMisses.slice(0, 12).forEach((q) => console.log(`  - ${q}`));
+    }
+    if (regression) {
+        console.log('\nREGRESSION VS BASELINE');
+        regression.checks.forEach((row) => {
+            const delta = row.delta == null ? 'n/a' : row.delta.toFixed(3);
+            console.log(`  ${row.pass ? 'PASS' : 'FAIL'} ${row.label}: ${row.current.toFixed(3)} (baseline ${row.baseline.toFixed(3)}, delta ${delta})`);
+        });
+    }
+    if (absoluteGates?.checks?.length) {
+        console.log('\nABSOLUTE GATES');
+        absoluteGates.checks.forEach((row) => {
+            console.log(`  ${row.pass ? 'PASS' : 'FAIL'} ${row.label}: ${row.current.toFixed(3)} threshold ${row.threshold}`);
+        });
     }
 
     const outDir = path.join(process.cwd(), 'eval-results');
     fs.mkdirSync(outDir, { recursive: true });
     const outPath = path.join(outDir, `search-quality-gold-${Date.now()}.json`);
-    fs.writeFileSync(outPath, JSON.stringify({ meta: { base: BASE, fixture: goldPath, k, ran: new Date().toISOString() }, summary, results: rows }, null, 2));
+    fs.writeFileSync(outPath, JSON.stringify({
+        meta: {
+            base: BASE,
+            fixture: goldPath,
+            queryCount: queries.length,
+            k,
+            ran: new Date().toISOString(),
+            expansionQueryCount: fixture.expansionQueryCount || 0,
+        },
+        summary,
+        regression,
+        absoluteGates,
+        results: rows,
+    }, null, 2));
     console.log(`\nFull labelled results written to ${outPath}`);
 
-    // This gold set is a known-item benchmark: most queries have a single
-    // correct paper, so Precision@k is capped at 1/k (~0.10 at k=10) and is
-    // NOT a meaningful gate. The signals that matter for "did we surface the
-    // landmark paper" are Recall@k, MRR (how high it ranked), and required
-    // study-type coverage. Precision is reported above for transparency only.
-    const thresholds = { recallAtK: 0.70, mrr: 0.50, offTopicRateAtK: 0.20, requiredTypeCoverage: 0.80 };
-    const pass = summary.recallAtK >= thresholds.recallAtK
-        && summary.mrr >= thresholds.mrr
-        && summary.offTopicRateAtK <= thresholds.offTopicRateAtK
-        && summary.requiredTypeCoverage >= thresholds.requiredTypeCoverage;
-    console.log(`\nGate (known-item): recall@${k}>=${thresholds.recallAtK} mrr>=${thresholds.mrr} off-topic<=${thresholds.offTopicRateAtK} type-cov>=${thresholds.requiredTypeCoverage} => ${pass ? 'PASS' : 'FAIL'}`);
+    const regressionPass = regression ? regression.pass : true;
+    const absolutePass = absoluteGates ? absoluteGates.pass : true;
+    const pass = regressionPass && absolutePass;
+    console.log(`\nGate => ${pass ? 'PASS' : 'FAIL'} (regression=${regressionPass ? 'pass' : 'fail'}, absolute=${absolutePass ? 'pass' : 'fail'})`);
     process.exit(pass ? 0 : 1);
 }
 

@@ -1,4 +1,5 @@
-import type { Article } from '@types';
+import type { Article, ArticleSynopsisFields } from '@types';
+import { synopsisTrustExportLines } from '@utils/synopsisTrustLabels';
 
 function clean(value?: string | number | null) {
   return String(value ?? '').replace(/\s+/g, ' ').trim();
@@ -76,12 +77,75 @@ export interface LearningBriefExport {
   summary?: string;
   topPapers: Article[];
   generatedAt?: string;
+  trustRating?: string;
+  sourceMode?: 'full_text_used' | 'abstract_only';
+  reviewState?: string;
+  citationOk?: boolean;
+  abstractOnly?: boolean;
+}
+
+export interface PaperSynopsisExport {
+  title: string;
+  synopsis: ArticleSynopsisFields;
+  sourceMode?: 'full_text_used' | 'abstract_only';
+  reviewState?: string;
+  citationOk?: boolean;
+  abstractOnly?: boolean;
+  generatedAt?: string;
+}
+
+export function paperSynopsisToText(exportData: PaperSynopsisExport) {
+  const lines = [
+    `Paper synopsis: ${clean(exportData.title)}`,
+    `Generated: ${clean(exportData.generatedAt || new Date().toLocaleString())}`,
+    ...synopsisTrustExportLines({
+      sourceMode: exportData.sourceMode,
+      reviewState: exportData.reviewState,
+      citationOk: exportData.citationOk,
+      trustRating: exportData.synopsis.trustRating,
+      abstractOnly: exportData.abstractOnly,
+    }),
+    '',
+  ];
+  if (exportData.synopsis.takeaway) lines.push(`Takeaway: ${clean(exportData.synopsis.takeaway)}`);
+  if (exportData.synopsis.bottomLine) lines.push(`Bottom line: ${clean(exportData.synopsis.bottomLine)}`);
+  if (exportData.synopsis.mainFindings) lines.push(`Main findings: ${clean(exportData.synopsis.mainFindings)}`);
+  if (exportData.synopsis.limitations) lines.push(`Limitations: ${clean(exportData.synopsis.limitations)}`);
+  if (exportData.synopsis.trustRationale) lines.push(`Trust rationale: ${clean(exportData.synopsis.trustRationale)}`);
+  return lines.filter(Boolean).join('\n');
+}
+
+export function paperSynopsisToHtml(exportData: PaperSynopsisExport) {
+  const trustLines = [
+    exportData.abstractOnly || exportData.sourceMode === 'abstract_only'
+      ? '<p><strong style="color:#b45309">⚠ ABSTRACT-ONLY SYNOPSIS</strong> — full text was not used.</p>'
+      : '',
+    exportData.reviewState ? `<p><strong>Review:</strong> ${clean(exportData.reviewState.replace(/_/g, ' '))}</p>` : '',
+    exportData.citationOk === false ? '<p><strong>Citation validation:</strong> issues detected</p>' : '',
+    exportData.citationOk === true ? '<p><strong>Citation validation:</strong> pass</p>' : '',
+  ].filter(Boolean).join('\n');
+  return `<!doctype html><html><head><meta charset="utf-8"><title>${clean(exportData.title)} Synopsis</title></head><body>
+    <h1>${clean(exportData.title)}</h1>
+    ${trustLines}
+    ${exportData.synopsis.bottomLine ? `<h2>Bottom line</h2><p>${clean(exportData.synopsis.bottomLine)}</p>` : ''}
+    ${exportData.synopsis.mainFindings ? `<h2>Main findings</h2><p>${clean(exportData.synopsis.mainFindings)}</p>` : ''}
+  </body></html>`;
 }
 
 export function learningBriefToText(brief: LearningBriefExport) {
+  const trustHeader = [
+    brief.abstractOnly || brief.sourceMode === 'abstract_only'
+      ? '⚠ ABSTRACT-ONLY EVIDENCE — treat AI synopsis cautiously.'
+      : '',
+    brief.reviewState ? `Review state: ${brief.reviewState.replace(/_/g, ' ')}` : '',
+    brief.citationOk === false ? 'Citation validation: issues detected' : '',
+    brief.citationOk === true ? 'Citation validation: pass' : '',
+    brief.trustRating ? `Trust rating: ${brief.trustRating}` : '',
+  ].filter(Boolean);
   const lines = [
     `Learning brief: ${clean(brief.topic)}`,
     `Generated: ${brief.generatedAt || new Date().toLocaleString()}`,
+    ...trustHeader,
     '',
     brief.summary ? `AI synopsis:\n${clean(brief.summary)}\n` : '',
     'Top papers:',
@@ -102,10 +166,13 @@ export function learningBriefToHtml(brief: LearningBriefExport) {
     <p>${clean(article.abstract || 'No abstract available.')}</p>
   `).join('\n');
   return `<!doctype html><html><head><meta charset="utf-8"><title>${clean(brief.topic)} Learning Brief</title>
-    <style>body{font-family:Arial,sans-serif;line-height:1.45;color:#111827;max-width:820px;margin:32px auto;padding:0 24px}h1{font-size:28px}h2{font-size:18px;margin-top:24px}p{font-size:13px}</style>
+    <style>body{font-family:Arial,sans-serif;line-height:1.45;color:#111827;max-width:820px;margin:32px auto;padding:0 24px}h1{font-size:28px}h2{font-size:18px;margin-top:24px}p{font-size:13px}.warn{color:#b45309;font-weight:700}</style>
   </head><body>
     <h1>${clean(brief.topic)} Learning Brief</h1>
     <p><strong>Generated:</strong> ${clean(brief.generatedAt || new Date().toLocaleString())}</p>
+    ${brief.abstractOnly || brief.sourceMode === 'abstract_only' ? '<p class="warn">⚠ ABSTRACT-ONLY EVIDENCE — treat AI synopsis cautiously.</p>' : ''}
+    ${brief.reviewState ? `<p><strong>Review state:</strong> ${clean(brief.reviewState.replace(/_/g, ' '))}</p>` : ''}
+    ${brief.citationOk === false ? '<p><strong>Citation validation:</strong> issues detected</p>' : ''}
     ${brief.summary ? `<h2>AI Synopsis</h2><p>${clean(brief.summary)}</p>` : ''}
     <h2>Evidence Bouquet</h2>
     ${papers}

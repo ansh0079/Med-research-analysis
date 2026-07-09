@@ -57,7 +57,7 @@ export const useCollaboration = (articleId: string | null) => {
       newSocket.emit('leave-article', articleId);
       newSocket.disconnect();
     };
-  }, [articleId]); 
+  }, [articleId]);
 
   const addAnnotation = useCallback(async (text: string, position?: { x: number; y: number; page: number }) => {
     if (!articleId) return;

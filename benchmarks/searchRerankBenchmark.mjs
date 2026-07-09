@@ -19,7 +19,7 @@
  *   Median latency    <  1500ms (rerank stage only)
  */
 
-/* eslint-disable no-console */
+
 
 import {
   rerankArticlesByPico,

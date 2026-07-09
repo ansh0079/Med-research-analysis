@@ -1,5 +1,10 @@
 const { explainInteractionReward } = require('../../services/rewardAttributionService');
 const { attributeSearchInteractionReward } = require('../../services/searchLearningOutcomeService');
+const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('../../services/learningSignalService');
+const {
+    consensusEnrichmentJobKey,
+    liveClinicalAnswerEnrichmentJobKey,
+} = require('../../services/searchEnrichmentKeys');
 
 function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }) {
     app.post('/api/search/impressions', rateLimit(120, 60), requireJson, async (req, res) => {
@@ -18,6 +23,16 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
                 .slice(0, 30);
             if (!normalized.length) return res.status(400).json({ error: 'No valid impressions' });
             await db.recordSearchImpressions(sid, req.sessionId, normalized, req.user?.id ?? null);
+            for (const imp of normalized.slice(0, 20)) {
+                void recordLearningSignal(db, {
+                    userId: req.user?.id ?? null,
+                    sessionId: req.sessionId,
+                    eventType: LEARNING_SIGNAL_TYPES.SEARCH_IMPRESSION,
+                    articleUid: imp.articleUid,
+                    searchId: sid,
+                    payload: { position: imp.position },
+                });
+            }
             return res.json({ ok: true, recorded: normalized.length });
         } catch (err) {
             req.log?.error?.({ err }, 'Search impressions error');
@@ -38,7 +53,27 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
             if (type === 'click') updates.wasClicked = true;
             if (type === 'save') updates.wasSaved = true;
             if (type === 'dwell' && dwellMs != null) updates.dwellTimeMs = Number(dwellMs);
-            await db.updateSearchImpressionInteraction(sid, uid, updates);
+            await db.updateSearchImpressionInteraction(sid, uid, updates, {
+                userId: req.user?.id ?? null,
+                sessionId: req.sessionId,
+            });
+            void recordLearningSignal(db, {
+                userId: req.user?.id ?? null,
+                sessionId: req.sessionId,
+                eventType: type === 'click'
+                    ? LEARNING_SIGNAL_TYPES.SEARCH_CLICK
+                    : type === 'save'
+                        ? LEARNING_SIGNAL_TYPES.SEARCH_SAVE
+                        : LEARNING_SIGNAL_TYPES.SEARCH_DWELL,
+                articleUid: uid,
+                searchId: sid,
+                decisionId: decisionId != null ? Number(decisionId) : null,
+                payload: {
+                    interactionType: type,
+                    dwellMs: dwellMs != null ? Number(dwellMs) : null,
+                    elapsedMs: elapsedMs != null ? Number(elapsedMs) : null,
+                },
+            });
             const { trackUserInteraction } = require('../../services/userInteractionService');
             void trackUserInteraction(db, {
                 type: `paper_${type}`,
@@ -78,6 +113,7 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
                     dwellMs: dwellMs != null ? Number(dwellMs) : null,
                     wasClicked: type === 'click',
                     wasSaved: type === 'save',
+                    sessionId: req.sessionId,
                 }).catch((err) => {
                     req.log?.warn?.({ err }, 'attributeSearchInteractionReward failed');
                     return null;
@@ -130,6 +166,21 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
                 reason: reason ? String(reason).slice(0, 500) : null,
                 topic: topic ? String(topic).slice(0, 240) : null,
             });
+            void recordLearningSignal(db, {
+                userId: req.user?.id ?? null,
+                sessionId: req.sessionId,
+                eventType: type === 'helpful'
+                    ? LEARNING_SIGNAL_TYPES.SEARCH_FEEDBACK_HELPFUL
+                    : LEARNING_SIGNAL_TYPES.SEARCH_FEEDBACK_NOT_HELPFUL,
+                topic: topic ? String(topic).slice(0, 240) : '',
+                articleUid: uid,
+                searchId: searchId != null ? Number(searchId) : null,
+                decisionId: decisionId != null ? Number(decisionId) : null,
+                payload: {
+                    feedbackType: type,
+                    reason: reason ? String(reason).slice(0, 500) : null,
+                },
+            });
             const rewardExplain = explainInteractionReward({
                 interactionType: 'feedback',
                 feedbackType: type,
@@ -143,6 +194,8 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
                     articleUid: uid,
                     decisionId: decisionId != null ? Number(decisionId) : null,
                     feedbackType: type,
+                    sessionId: req.sessionId,
+                    topic: topic ? String(topic).slice(0, 240) : '',
                 }).catch((err) => {
                     req.log?.warn?.({ err }, 'attributeSearchInteractionReward failed');
                     return null;
@@ -162,14 +215,51 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
         }
         try {
             const cached = await Promise.resolve(cache.get(`enrichment:${key}`)).catch((err) => { req.log?.warn?.({ err }, 'cache get failed'); return null; });
-            if (!cached) return res.json({ status: 'pending' });
-            return res.json({
-                status: cached.status,
-                ...(cached.status === 'ready' ? {
-                    clinicalAnswer: cached.clinicalAnswer ?? null,
-                    consensusSynopsis: cached.consensusSynopsis ?? null,
-                } : {}),
-            });
+            if (cached) {
+                return res.json({
+                    status: cached.status,
+                    ...(cached.status === 'ready' ? {
+                        clinicalAnswer: cached.clinicalAnswer ?? null,
+                        consensusSynopsis: cached.consensusSynopsis ?? null,
+                    } : {}),
+                    ...(cached.status === 'failed' ? { errorMessage: cached.errorMessage || 'Enrichment failed' } : {}),
+                });
+            }
+
+            // Fallback to durable job rows when cache has expired or was never populated.
+            if (typeof db?.getAiGenerationJobByKey === 'function') {
+                const [consensusJob, clinicalAnswerJob] = await Promise.all([
+                    db.getAiGenerationJobByKey(consensusEnrichmentJobKey(key)).catch(() => null),
+                    db.getAiGenerationJobByKey(liveClinicalAnswerEnrichmentJobKey(key)).catch(() => null),
+                ]);
+
+                const consensusStatus = consensusJob?.status || 'pending';
+                const caStatus = clinicalAnswerJob?.status || 'pending';
+                const status = consensusStatus === 'failed' && caStatus === 'failed'
+                    ? 'failed'
+                    : consensusStatus === 'completed' || caStatus === 'completed'
+                        ? 'ready'
+                        : consensusStatus === 'running' || caStatus === 'running'
+                            ? 'running'
+                            : 'pending';
+
+                if (status === 'ready') {
+                    return res.json({
+                        status: 'ready',
+                        clinicalAnswer: clinicalAnswerJob?.resultPayload?.clinicalAnswer ?? null,
+                        consensusSynopsis: consensusJob?.resultPayload ?? null,
+                    });
+                }
+                if (status === 'failed') {
+                    return res.json({
+                        status: 'failed',
+                        errorMessage: consensusJob?.errorMessage || clinicalAnswerJob?.errorMessage || 'Enrichment failed',
+                    });
+                }
+                return res.json({ status });
+            }
+
+            return res.json({ status: 'pending' });
         } catch (err) {
             req.log?.warn?.({ err }, 'Enrichment poll error');
             return res.json({ status: 'pending' });

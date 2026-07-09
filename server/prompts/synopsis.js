@@ -106,6 +106,19 @@ function formatExplanationPreferences(preferences) {
     ].join('\n');
 }
 
+const SYNOPSIS_STYLE_INSTRUCTIONS = {
+    bottom_line_first: 'Open with the single most actionable clinical takeaway in the first sentence before any background.',
+    pico_structured:   'Organise the clinicalMeaning field using PICO framing: Population → Intervention → Comparator → Outcome.',
+    narrative:         'Write in flowing prose where possible; use bullet points only for limitations and key numbers.',
+    bullet_teaching:   'Lead each field with a bolded teaching-point sentence, then support it with one or two evidence sentences.',
+};
+
+function formatSynopsisStyleInstruction(style) {
+    if (!style?.structure) return '';
+    const instruction = SYNOPSIS_STYLE_INSTRUCTIONS[style.structure];
+    return instruction ? `PRESENTATION STYLE (${style.label}): ${instruction}` : '';
+}
+
 function buildSynopsisPrompt(article, context = {}) {
     const year = article.pubdate ? article.pubdate.slice(0, 4) : 'unknown';
     const authors = (article.authors || []).slice(0, 3).map((a) => a.name).join(', ');
@@ -118,6 +131,7 @@ function buildSynopsisPrompt(article, context = {}) {
     const stageInstruction = trainingStage ? `\n${SYNOPSIS_STAGE_RUBRIC[trainingStage]}\n${SYNOPSIS_STAGE_STRUCTURE[trainingStage]}\n` : '';
     const feedbackText = formatSynopsisFeedbackStats(context.synopsisFeedbackStats);
     const explanationPreferencesText = formatExplanationPreferences(context.explanationPreferences);
+    const styleInstruction = formatSynopsisStyleInstruction(context.synopsisStyle);
 
     // Build full-text block when available (same section order as synthesis prompt)
     let fullTextBlock = '';
@@ -143,8 +157,7 @@ function buildSynopsisPrompt(article, context = {}) {
 
     return `You are a medical research assistant producing a rapid critical-appraisal synopsis for a doctor.
 Style target: a concise "The Bottom Line"-style appraisal, not a generic abstract summary.
-${stageInstruction}
-${sourceNote}
+${stageInstruction}${styleInstruction ? `${styleInstruction}\n` : ''}${sourceNote}
 If a field cannot be determined, use null or [].
 
 Article metadata:
@@ -202,6 +215,8 @@ Return a single JSON object with EXACTLY these fields:
 
 Rules:
 - Be especially careful not to turn a neutral result into a positive recommendation.
+- Every factual claim in mainFindings, bottomLine, and clinicalMeaning MUST include an inline source citation [1] (this paper is source 1).
+- If a field cannot be tied to the article text, set it to null rather than inventing content.
 - If the study is underpowered, stopped early, highly selected, open-label, industry-funded, or has safety concerns, mention that under weaknesses/safety/practice implication if stated.
 - If guideline or topic context is supplied, use it to explain clinicalMeaning/practiceImplication and conflicts with current practice, but keep all study results grounded in the article text.
 - The bottomLine should be clinically useful and conservative.

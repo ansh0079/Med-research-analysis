@@ -134,12 +134,12 @@ async function generateCaseScenario(ai, { topic, difficulty, userProfile, provid
         });
 
         const caseScenario = parseStructuredOutput(String(parsed || '{}'));
-        
+
         // Validate structure
         if (!caseScenario.vignette || !caseScenario.decisionTree || !caseScenario.outcomes) {
             throw new Error('Invalid case scenario structure from AI');
         }
-        
+
         return {
             ...caseScenario,
             generatedAt: new Date().toISOString(),
@@ -151,7 +151,7 @@ async function generateCaseScenario(ai, { topic, difficulty, userProfile, provid
 
 async function saveCaseScenario(db, userId, caseScenario) {
     const caseId = `case_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-    
+
     await db.run(
         `INSERT INTO case_scenarios (
             case_id, user_id, topic, difficulty, vignette, decision_tree, outcomes,
@@ -172,7 +172,7 @@ async function saveCaseScenario(db, userId, caseScenario) {
             caseScenario.model
         ]
     );
-    
+
     return { caseId, ...caseScenario };
 }
 
@@ -181,9 +181,9 @@ async function getCaseScenario(db, caseId, userId) {
         `SELECT * FROM case_scenarios WHERE case_id = ? AND user_id = ?`,
         [caseId, userId]
     );
-    
+
     if (!row) return null;
-    
+
     return {
         caseId: row.case_id,
         topic: row.topic,
@@ -201,13 +201,13 @@ async function getCaseScenario(db, caseId, userId) {
 async function recordCaseChoice(db, caseId, userId, nodeId, choiceId) {
     const caseScenario = await getCaseScenario(db, caseId, userId);
     if (!caseScenario) throw new Error('Case scenario not found');
-    
+
     const currentNode = caseScenario.decisionTree[nodeId];
     if (!currentNode) throw new Error('Invalid node ID');
-    
+
     const selectedOption = currentNode.options.find(opt => opt.id === choiceId);
     if (!selectedOption) throw new Error('Invalid choice ID');
-    
+
     const choicesMade = [
         ...caseScenario.choicesMade,
         {
@@ -217,10 +217,10 @@ async function recordCaseChoice(db, caseId, userId, nodeId, choiceId) {
             timestamp: new Date().toISOString()
         }
     ];
-    
+
     const nextNode = selectedOption.nextNode;
     const isTerminal = nextNode.startsWith('outcome_');
-    
+
     // Update case state
     await db.run(
         `UPDATE case_scenarios 
@@ -235,14 +235,14 @@ async function recordCaseChoice(db, caseId, userId, nodeId, choiceId) {
             userId
         ]
     );
-    
+
     // Record attempt for mastery tracking
     if (isTerminal) {
         const outcome = caseScenario.outcomes[nextNode];
         const appropriateChoices = choicesMade.filter(c => c.isAppropriate).length;
         const totalChoices = choicesMade.length;
         const scorePercentage = Math.round((appropriateChoices / totalChoices) * 100);
-        
+
         await db.run(
             `INSERT INTO case_scenario_attempts (
                 user_id, case_id, topic, normalized_topic, difficulty,
@@ -295,13 +295,13 @@ async function recordCaseChoice(db, caseId, userId, nodeId, choiceId) {
             }
         });
     }
-    
+
     return {
         nextNode,
         isTerminal,
         feedback: selectedOption.feedback,
         clinicalConsequence: selectedOption.clinicalConsequence,
-        nextScenario: isTerminal 
+        nextScenario: isTerminal
             ? caseScenario.outcomes[nextNode]
             : caseScenario.decisionTree[nextNode]
     };

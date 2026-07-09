@@ -3,6 +3,11 @@
 const crypto = require('crypto');
 const { topicRefreshPriority } = require('./topicKnowledgeFreshness');
 const { stableArticleUid } = require('../utils/articleKeys');
+const {
+    applyAbstractOnlyConfidence,
+    isAbstractOnlySource,
+    isHighCertaintyQuizEligible,
+} = require('./paperSynopsisTrust');
 
 function safeArray(value, max = 8) {
     return Array.isArray(value) ? value.filter(Boolean).slice(0, max) : [];
@@ -175,7 +180,14 @@ function buildKnowledgeGraphRelationships({
     };
 }
 
-function buildClaimAnchors(seed, candidates, { article = {}, topic = '', confidence = 0.5, verification = {} } = {}) {
+function buildClaimAnchors(seed, candidates, {
+    article = {},
+    topic = '',
+    confidence = 0.5,
+    verification = {},
+    abstractOnly = false,
+    reviewState = 'unreviewed',
+} = {}) {
     const seen = new Set();
     const out = [];
     candidates.forEach((candidate) => {
@@ -184,7 +196,12 @@ function buildClaimAnchors(seed, candidates, { article = {}, topic = '', confide
         const claimKey = stableClaimKey(seed, claimText);
         if (seen.has(claimKey)) return;
         seen.add(claimKey);
-        out.push({
+        const conceptKey = candidate.conceptKey || safeString(candidate.sourcePath || 'teaching_object', 80);
+        const verificationStatus = candidate.verificationStatus || verification.verificationStatus || CLAIM_VERIFICATION.UNVERIFIED;
+        const rawConfidence = Math.max(0, Math.min(1, Number(candidate.confidence || confidence || 0.5)));
+        const cappedConfidence = applyAbstractOnlyConfidence(rawConfidence, conceptKey, abstractOnly);
+        const claimReviewState = candidate.reviewState || reviewState || 'unreviewed';
+        const claim = {
             claimKey,
             ordinal: out.length,
             claimText,
@@ -192,12 +209,22 @@ function buildClaimAnchors(seed, candidates, { article = {}, topic = '', confide
             sourcePath: candidate.sourcePath || 'article.abstract',
             articleUid: article.uid || article.pmid || article.doi || null,
             topic,
-            conceptKey: candidate.conceptKey || safeString(candidate.sourcePath || 'teaching_object', 80),
-            confidence: Math.max(0, Math.min(1, Number(candidate.confidence || confidence || 0.5))),
-            verificationStatus: candidate.verificationStatus || verification.verificationStatus || CLAIM_VERIFICATION.UNVERIFIED,
+            conceptKey,
+            confidence: cappedConfidence,
+            verificationStatus,
             verificationReason: candidate.verificationReason || verification.verificationReason || null,
             verifiedAt: candidate.verifiedAt || verification.verifiedAt || null,
-        });
+            reviewState: claimReviewState,
+            highCertaintyEligible: isHighCertaintyQuizEligible({
+                verificationStatus,
+                conceptKey,
+                reviewState: claimReviewState,
+            }),
+        };
+        if (abstractOnly && verificationStatus === CLAIM_VERIFICATION.ABSTRACT_ONLY && !claim.verificationReason) {
+            claim.verificationReason = 'Lower-trust abstract-only claim; not eligible for high-certainty quiz or guideline promotion.';
+        }
+        out.push(claim);
     });
     return out.slice(0, 12);
 }
@@ -229,13 +256,18 @@ function buildPaperTeachingObject({ article, synopsisResult, topic = '' }) {
             : synopsis.trustRating === 'LOW' ? 0.45 : 0.3;
     const verification = claimVerificationForPaper(article, studyType, synopsisResult);
     const fullTextCoverageRatio = Number(synopsisResult?.audit?.fullTextCoverageRatio ?? 0);
+    const abstractOnly = isAbstractOnlySource(fullTextCoverageRatio);
+    const reviewState = synopsisResult?.audit?.reviewState || 'unreviewed';
+    const objectConfidence = abstractOnly
+        ? Math.min(confidence, 0.42)
+        : confidence;
     const claimAnchors = buildClaimAnchors(objectKey, [
         { claimText: synopsis.bottomLine || synopsis.clinicalMeaning || synopsis.practiceImplication, sourcePath: 'synopsis.bottomLine', conceptKey: 'clinical_bottom_line' },
         { claimText: synopsis.mainFindings, sourcePath: 'synopsis.mainFindings', conceptKey: 'main_findings' },
         { claimText: synopsis.limitations, sourcePath: 'synopsis.limitations', conceptKey: 'limitations' },
         ...safeArray(synopsis.quizFocusPoints, 5).map((item) => ({ claimText: item, sourcePath: 'synopsis.quizFocusPoints', conceptKey: 'quiz_focus' })),
         ...safeArray(synopsis.whatNotToOverclaim, 5).map((item) => ({ claimText: item, sourcePath: 'synopsis.whatNotToOverclaim', conceptKey: 'misconception_trap' })),
-    ], { article, topic, confidence, verification });
+    ], { article, topic, confidence: objectConfidence, verification, abstractOnly, reviewState });
     const knowledgeGraph = buildKnowledgeGraphRelationships({
         objectKey,
         objectType: 'paper',
@@ -251,11 +283,15 @@ function buildPaperTeachingObject({ article, synopsisResult, topic = '' }) {
         title,
         provider: synopsisResult?.provider || null,
         model: synopsisResult?.model || null,
-        confidence,
+        confidence: objectConfidence,
+        reviewState,
         generatedAt,
         payload: {
             kind: 'paper_teaching_object',
             generatedAt,
+            reviewState,
+            sourceMode: abstractOnly ? 'abstract_only' : 'full_text_used',
+            citationValidation: synopsisResult?.audit?.citationValidation || null,
             paper: {
                 uid: articleUid,
                 title,
@@ -329,6 +365,8 @@ function buildConsensusTeachingObject({ topic, consensusSynopsis, articles = [] 
         },
     });
     const includedArticleUids = articles.map(stableArticleUid).filter(Boolean).slice(0, 12);
+    const reviewState = consensusSynopsis?.reviewState
+        || (consensusSynopsis?.citationValidation?.ok ? 'machine_checked' : 'needs_revision');
     const knowledgeGraph = buildKnowledgeGraphRelationships({
         objectKey,
         objectType: 'topic_consensus',
@@ -343,10 +381,12 @@ function buildConsensusTeachingObject({ topic, consensusSynopsis, articles = [] 
         title: `Consensus synopsis: ${normalizedTopic}`,
         provider: consensusSynopsis?.provider || null,
         confidence,
+        reviewState,
         generatedAt,
         payload: {
             kind: 'topic_consensus_teaching_object',
             generatedAt,
+            reviewState,
             topic: normalizedTopic,
             consensusSynopsis,
             includedArticleUids,

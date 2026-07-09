@@ -102,10 +102,18 @@ function extractClaimsFromJobResult(jobType, resultPayload, extra = {}) {
 
     if (jobType === 'paper_synopsis') {
         const syn = resultPayload.synopsis || {};
+        const audit = resultPayload.audit || {};
         const uid = resultPayload.articleId ? [`article:${resultPayload.articleId}`] : [];
-        if (syn.takeaway) push(syn.takeaway, uid, syn.takeaway, 0.65, 'single_source');
-        if (syn.mainFindings) push(syn.mainFindings, uid, syn.mainFindings, 0.62, 'single_source');
-        if (syn.authorsConclusion) push(`Authors' conclusion: ${syn.authorsConclusion}`, uid, syn.authorsConclusion, 0.5, 'attributed_quote');
+        const cv = audit.citationValidation || (syn.citationCheckPassed != null
+            ? { ok: syn.citationCheckPassed === true, issueCount: syn.citationCheckPassed ? 0 : 1, issues: [] }
+            : null);
+        const vStatus = cv && cv.ok === false ? 'citation_issue' : cv && cv.ok === true ? 'citations_ok' : 'single_source';
+        const abstractOnly = audit.abstractOnly === true || Number(audit.fullTextCoverageRatio || 0) === 0;
+        const baseConfidence = abstractOnly ? 0.42 : 0.65;
+        if (syn.takeaway) push(syn.takeaway, uid, syn.takeaway, baseConfidence - 0.03, vStatus);
+        if (syn.mainFindings) push(syn.mainFindings, uid, syn.mainFindings, baseConfidence - 0.05, vStatus);
+        if (syn.bottomLine) push(syn.bottomLine, uid, syn.bottomLine, baseConfidence, vStatus);
+        if (syn.authorsConclusion) push(`Authors' conclusion: ${syn.authorsConclusion}`, uid, syn.authorsConclusion, baseConfidence - 0.15, 'attributed_quote');
         return claims;
     }
 
@@ -136,7 +144,7 @@ async function persistClaimsForJob(db, jobKey, jobType, resultPayload) {
         await db.replaceAiGenerationClaims(jobKey, claims);
     } catch (err) {
         // Non-fatal — job result still valid without claim row persistence
-        // eslint-disable-next-line no-console
+
         console.warn('[claimMap] persist failed', err.message);
     }
 }

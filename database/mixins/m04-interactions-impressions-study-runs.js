@@ -175,19 +175,24 @@ async recordSearchImpressions(searchId, sessionId, impressions, userId = null) {
     }
 }
 
-async updateSearchImpressionInteraction(searchId, articleUid, { wasClicked, wasSaved, dwellTimeMs } = {}) {
+async updateSearchImpressionInteraction(searchId, articleUid, { wasClicked, wasSaved, dwellTimeMs } = {}, actor = {}) {
     if (!this.kysely || !searchId || !articleUid) return;
     const updates = {};
     if (wasClicked !== undefined) updates.was_clicked = wasClicked ? 1 : 0;
     if (wasSaved !== undefined) updates.was_saved = wasSaved ? 1 : 0;
     if (dwellTimeMs !== undefined) updates.dwell_time_ms = Number(dwellTimeMs);
     if (Object.keys(updates).length === 0) return;
-    await this.kysely
+    let query = this.kysely
         .updateTable('search_result_impressions')
         .set(updates)
         .where('search_id', '=', Number(searchId))
-        .where('article_uid', '=', String(articleUid))
-        .execute();
+        .where('article_uid', '=', String(articleUid));
+    if (actor?.userId) {
+        query = query.where('user_id', '=', String(actor.userId));
+    } else if (actor?.sessionId) {
+        query = query.where('session_id', '=', String(actor.sessionId));
+    }
+    await query.execute();
 }
 
 async getImpressionsForSearch(searchId, { limit = 20 } = {}) {

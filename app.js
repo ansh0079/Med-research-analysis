@@ -42,6 +42,7 @@ const { registerCitationRoutes } = require('./server/routes/citations');
 const { registerQualityRoutes } = require('./server/routes/quality');
 const { registerAlertRoutes } = require('./server/routes/alerts');
 const { registerAdminRoutes } = require('./server/routes/admin');
+const { registerAdminJobRoutes } = require('./server/routes/admin/jobs');
 const { registerTeachingClaimRoutes } = require('./server/routes/teachingClaims');
 const { registerAnnotationRoutes } = require('./server/routes/annotations');
 const { registerAiExtraRoutes } = require('./server/routes/aiExtras');
@@ -288,7 +289,7 @@ app.use(compression({ threshold: 1024 }));
 app.use((req, res, next) => {
     const unsafeMethod = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method);
     if (!unsafeMethod || process.env.NODE_ENV === 'test') return next();
-    
+
     // Enhanced check: Verify the custom X-Requested-With header for non-GET requests
     const secFetchSite = String(req.headers['sec-fetch-site'] || '').toLowerCase();
     if (secFetchSite === 'cross-site') {
@@ -447,6 +448,7 @@ registerCitationRoutes(app, routeDeps);
 registerQualityRoutes(app, routeDeps);
 registerAlertRoutes(app, routeDeps);
 registerAdminRoutes(app, routeDeps);
+registerAdminJobRoutes(app, routeDeps);
 registerTeachingClaimRoutes(app, routeDeps);
 registerAnnotationRoutes(app, routeDeps);
 registerAiExtraRoutes(app, { ...routeDeps, requirePaidFeature });
@@ -537,7 +539,7 @@ app.use((req, res, next) => {
 
 const { isAppError, normalizeToAppError } = require('./server/errors/appErrors');
 
-// eslint-disable-next-line no-unused-vars
+
 app.use((err, req, res, _next) => {
     const log = req.log || logger;
     log.error({ err, path: req.path, method: req.method }, 'Unhandled error');

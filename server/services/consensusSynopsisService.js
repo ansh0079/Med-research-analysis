@@ -305,6 +305,9 @@ function normalizeSynopsis(raw, topic, freeArticles, abstractArticles, provider,
         requiredListPaths: ['areasOfAgreement', 'conflictingSignals'],
     });
 
+    normalized.reviewState = normalized.citationValidation.ok ? 'machine_checked' : 'needs_revision';
+    normalized.citationCheckPassed = normalized.citationValidation.ok;
+
     return normalized;
 }
 

@@ -130,7 +130,10 @@ export interface ArticleSynopsisFields {
   quizFocusPoints?: string[];
   trustRating: TrustRating;
   trustRationale: string | null;
+  citationCheckPassed?: boolean;
 }
+
+export type SynopsisReviewState = 'unreviewed' | 'machine_checked' | 'human_reviewed' | 'needs_revision';
 
 export interface ArticleSynopsisResult {
   synopsis?: ArticleSynopsisFields;

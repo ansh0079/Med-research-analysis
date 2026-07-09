@@ -6,7 +6,8 @@ import type { AgentGuidance, Article, LearnerContextSummary, LowRecallLearning, 
 import { useAuth } from '@contexts/AuthContext';
 import { useAnalytics } from './useAnalytics';
 import { usePolling } from './usePolling';
-import { storeSearchAttributionFromArticles } from '@utils/searchAttribution';
+import { storeSearchAttribution, storeSearchAttributionFromArticles } from '@utils/searchAttribution';
+import type { SearchResponse } from '@types';
 
 const POLL_DELAYS = [8000, 12000, 18000]; // 8 s, then 12 s, then 18 s — three attempts
 const ENRICHMENT_POLL_DELAYS = [2000, 3000, 4000, 5000, 6000, 8000, 10000]; // up to ~38 s total
@@ -77,7 +78,7 @@ export function useSearch() {
   const requestIdRef = useRef(0);
   const abortControllerRef = useRef<AbortController | null>(null);
   const lastSearchRef = useRef<{ key: string; query: string; time: number } | null>(null);
-  const lastSuccessfulSearchRef = useRef<{ key: string; articles: Article[] } | null>(null);
+  const lastSuccessfulSearchRef = useRef<{ key: string; response: SearchResponse } | null>(null);
 
   // Topic-knowledge polling --------------------------------------------------
   const [pollTopic, setPollTopic] = useState<string | null>(null);
@@ -170,6 +171,18 @@ export function useSearch() {
   const enrichmentPollRef = useRef(enrichmentPoll);
   enrichmentPollRef.current = enrichmentPoll;
 
+  const recordSearchView = useCallback((searchId: number | null | undefined, articles: Article[]) => {
+    if (!searchId || articles.length === 0) return;
+    void api.search.logSearchImpressions(
+      searchId,
+      articles.slice(0, 20).map((article, index) => ({
+        articleUid: article.uid,
+        position: index + 1,
+      }))
+    );
+    storeSearchAttributionFromArticles(searchId, articles);
+  }, []);
+
   // Cancel any in-flight polling and HTTP requests when the consumer unmounts
   // so background network requests don't keep firing and setState doesn't
   // fire on a detached component.
@@ -202,10 +215,19 @@ export function useSearch() {
       const requestKey = searchRequestKey(query, filters);
       const lastSuccessful = lastSuccessfulSearchRef.current;
       if (lastSuccessful?.key === requestKey) {
-        return lastSuccessful.articles;
+        recordSearchView(lastSuccessful.response.searchId ?? null, lastSuccessful.response.articles || []);
+        trackSearch(query, {
+          filters,
+          resultsCount: lastSuccessful.response.articles?.length || 0,
+          cached: true,
+          cacheLayer: 'hook',
+        });
+        return lastSuccessful.response.articles;
       }
       const last = lastSearchRef.current;
       if (last && last.key === requestKey && now - last.time < 5000) {
+        recordSearchView(lastSearchId, results);
+        trackSearch(query, { filters, resultsCount: results.length, cached: true, cacheLayer: 'dedupe' });
         return results;
       }
       lastSearchRef.current = { key: requestKey, query: query.trim(), time: now };
@@ -239,21 +261,13 @@ export function useSearch() {
 
         if (thisRequestId !== requestIdRef.current) return articles;
         trackSearch(query, { filters, resultsCount: articles.length });
-        lastSuccessfulSearchRef.current = { key: requestKey, articles };
+        lastSuccessfulSearchRef.current = { key: requestKey, response: data };
         setResults(articles);
         setLastSearchId(searchId ?? null);
         setSearchCompletedAt(Date.now());
         if (searchId && articles.length > 0) {
-          void api.search.logSearchImpressions(
-            searchId,
-            articles.slice(0, 20).map((article, index) => ({
-              articleUid: article.uid,
-              position: index + 1,
-            }))
-          );
-          storeSearchAttributionFromArticles(searchId, articles);
+          recordSearchView(searchId, articles);
           if (rankingAttribution?.length) {
-            const { storeSearchAttribution } = await import('@utils/searchAttribution');
             storeSearchAttribution(searchId, rankingAttribution);
           }
         }

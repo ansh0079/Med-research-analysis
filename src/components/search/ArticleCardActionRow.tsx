@@ -70,6 +70,9 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
           <ArticleCardSynopsisPanel
             synopsis={synopsis}
             sourceMode={synopsisSourceMode}
+            reviewState={typeof synopsisAudit?.humanReviewStatus === 'string' ? synopsisAudit.humanReviewStatus : null}
+            citationOk={synopsisAudit?.citationOk ?? null}
+            abstractOnly={synopsisAudit?.fullTextCoverageRatio === 0}
             onClose={() => { setSynopsisExpanded(false); setSynopsisAudit(null); }}
           />
           {synopsisAudit && <EvidenceAuditPanel snapshot={synopsisAudit} />}
@@ -100,10 +103,15 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
                 generatedAt: result.timestamp ?? null,
                 sourceCount: 1,
                 fullTextCoverageRatio: typeof au?.fullTextCoverageRatio === 'number' ? (au.fullTextCoverageRatio as number) : null,
-                citationOk: null,
+                citationOk: typeof au?.citationCheckPassed === 'boolean'
+                  ? au.citationCheckPassed as boolean
+                  : (au?.citationValidation as { ok?: boolean } | undefined)?.ok ?? null,
+                citationIssueCount: (au?.citationValidation as { issueCount?: number } | undefined)?.issueCount ?? null,
                 retractionFlagged: Boolean(article._retraction?.isRetracted),
                 retractionChecked: Boolean(au?.retractionChecked ?? article._retraction),
-                humanReviewStatus: typeof au?.humanReviewStatus === 'string' ? (au.humanReviewStatus as string) : 'none',
+                humanReviewStatus: typeof au?.humanReviewStatus === 'string'
+                  ? (au.humanReviewStatus as string)
+                  : (typeof au?.reviewState === 'string' ? (au.reviewState as string) : 'unreviewed'),
               });
               setSynopsis(result.synopsis);
               setSynopsisState('done');

@@ -177,7 +177,7 @@ async initialize() {
  */
 async runMigrations() {
     const migrationsDir = path.join(__dirname, 'migrations');
-    
+
     if (!fs.existsSync(migrationsDir)) {
         console.log('ℹ️ No migrations directory');
         return { migrated: 0 };
@@ -225,9 +225,9 @@ async runMigrations() {
     for (const file of pending) {
         const filePath = path.join(migrationsDir, file);
         const sql = fs.readFileSync(filePath, 'utf8');
-        
+
         console.log(`Running migration: ${file}`);
-        
+
         // Strip line comments before splitting on semicolons to avoid
         // fragments from comments that contain semicolons.
         const sqlWithoutComments = sql
@@ -237,7 +237,7 @@ async runMigrations() {
         const statements = sqlWithoutComments.split(';')
             .map(s => s.trim())
             .filter(s => s.length > 0);
-        
+
         for (let statement of statements) {
             if (statement.trim()) {
                 if (this.isPostgres) {
@@ -265,7 +265,7 @@ async runMigrations() {
                 }
             }
         }
-        
+
         await this.run('INSERT INTO _migrations (name) VALUES (?) ON CONFLICT (name) DO NOTHING', [file]);
         console.log(`✅ Completed: ${file}`);
     }

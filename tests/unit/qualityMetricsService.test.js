@@ -2,6 +2,7 @@ const {
     meanReciprocalRank,
     ndcgAtK,
     buildSearchQualityMetrics,
+    buildSearchOnlineQualityMetrics,
     buildSynthesisQualityMetrics,
     buildLearningAgentMetrics,
     isRelevantImpression,
@@ -71,5 +72,22 @@ describe('qualityMetricsService', () => {
         expect(metrics.avgSearchRefinementDepth).toBe(3);
         expect(metrics.avgKnowledgeMemoryScore).toBe(70);
         expect(metrics.recommendationSatisfactionRate).toBeCloseTo(2 / 3);
+    });
+
+    test('buildSearchOnlineQualityMetrics adds no-click and feedback signals', () => {
+        const metrics = buildSearchOnlineQualityMetrics({
+            impressionRows: [
+                { search_id: 1, position: 1, was_clicked: 0, was_saved: 0, dwell_time_ms: 0 },
+            ],
+            feedbackStats: { helpful: 3, notHelpful: 1, notHelpfulRate: 0.25 },
+            noClickStats: { noClickRate: 0.4, noClickCount: 4, searchCount: 10, sampleTopics: [{ topic: 'heart failure', count: 2 }] },
+            volumeStats: { reformulationRate: 0.2, reformulatedSearches: 2, totalSearches: 10 },
+            lowRecallRows: [{ display_query: 'ards ventilation' }],
+            failureClusters: [{ topic: 'ards ventilation', lowRecallCount: 3 }],
+        });
+        expect(metrics.noClickRate).toBe(0.4);
+        expect(metrics.searchNotHelpfulRate).toBe(0.25);
+        expect(metrics.lowRecallQueryCount).toBe(1);
+        expect(metrics.topicFailureClusters[0].topic).toBe('ards ventilation');
     });
 });

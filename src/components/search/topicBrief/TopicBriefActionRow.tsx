@@ -8,13 +8,6 @@ import {
 } from '@services/exportArticles';
 import type { BriefDifficulty } from './topicBriefUtils';
 
-interface LearningBrief {
-  topic: string;
-  summary: string;
-  topPapers: Article[];
-  generatedAt: string;
-}
-
 interface Props {
   query: string;
   top5: Article[];
@@ -31,6 +24,14 @@ interface Props {
   setDifficulty: (d: BriefDifficulty) => void;
   saveTopic: () => void;
   saveBrief: () => void;
+  /** Optional trust metadata for exported learning briefs */
+  exportTrust?: {
+    sourceMode?: 'full_text_used' | 'abstract_only';
+    reviewState?: string;
+    citationOk?: boolean;
+    abstractOnly?: boolean;
+    trustRating?: string;
+  };
 }
 
 export const TopicBriefActionRow: React.FC<Props> = ({
@@ -49,13 +50,15 @@ export const TopicBriefActionRow: React.FC<Props> = ({
   setDifficulty,
   saveTopic,
   saveBrief,
+  exportTrust,
 }) => {
   const synthesisSummary = synthesis?.synthesis?.clinicalBottomLine || synthesis?.synthesis?.consensus || '';
-  const brief: LearningBrief = {
+  const brief = {
     topic: query,
     summary: synthesisSummary,
     topPapers: top5,
     generatedAt: new Date().toLocaleString(),
+    ...(exportTrust || {}),
   };
 
   const copyBrief = async () => {

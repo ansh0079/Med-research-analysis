@@ -15,25 +15,25 @@ const VALID_EVIDENCE_GRADES = new Set([
 function validateTopicKnowledgeShape(k) {
     if (!k || typeof k !== 'object') throw new Error('Topic knowledge is not an object');
     if (typeof k.mentorMessage !== 'string' || k.mentorMessage.trim().length < 10)
-        throw new Error('Topic knowledge: mentorMessage missing or too short');
+        {throw new Error('Topic knowledge: mentorMessage missing or too short');}
     if (!Array.isArray(k.teachingPoints) || k.teachingPoints.length < 1)
-        throw new Error('Topic knowledge: teachingPoints must be a non-empty array');
+        {throw new Error('Topic knowledge: teachingPoints must be a non-empty array');}
     if (!Array.isArray(k.mcqAngles) || k.mcqAngles.length < 1)
-        throw new Error('Topic knowledge: mcqAngles must be a non-empty array');
+        {throw new Error('Topic knowledge: mcqAngles must be a non-empty array');}
     if (!Array.isArray(k.caseGenerationHooks) || k.caseGenerationHooks.length < 1)
-        throw new Error('Topic knowledge: caseGenerationHooks must be a non-empty array');
+        {throw new Error('Topic knowledge: caseGenerationHooks must be a non-empty array');}
     if (!Array.isArray(k.seminalPapers))
-        throw new Error('Topic knowledge: seminalPapers must be an array');
+        {throw new Error('Topic knowledge: seminalPapers must be an array');}
     // clinicalAnswer is new — validate if present, skip if absent (backward-compat with old rows)
     if (k.clinicalAnswer !== undefined) {
         const ca = k.clinicalAnswer;
         if (!ca || typeof ca !== 'object') throw new Error('Topic knowledge: clinicalAnswer must be an object');
         if (typeof ca.bottomLine !== 'string' || ca.bottomLine.trim().length < 5)
-            throw new Error('Topic knowledge: clinicalAnswer.bottomLine missing');
+            {throw new Error('Topic knowledge: clinicalAnswer.bottomLine missing');}
         if (typeof ca.whatChangesManagement !== 'string' || ca.whatChangesManagement.trim().length < 5)
-            throw new Error('Topic knowledge: clinicalAnswer.whatChangesManagement missing');
+            {throw new Error('Topic knowledge: clinicalAnswer.whatChangesManagement missing');}
         if (ca.evidenceGrade && !VALID_EVIDENCE_GRADES.has(ca.evidenceGrade))
-            throw new Error(`Topic knowledge: clinicalAnswer.evidenceGrade "${ca.evidenceGrade}" is not a valid value`);
+            {throw new Error(`Topic knowledge: clinicalAnswer.evidenceGrade "${ca.evidenceGrade}" is not a valid value`);}
     }
 }
 

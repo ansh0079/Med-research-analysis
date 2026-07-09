@@ -9,15 +9,31 @@ const {
     selectAbstractEvidence,
     enrichWithCachedFullText,
 } = require('./consensusSynopsisService');
+const { generateLiveClinicalAnswer } = require('./aiGenerationJobService');
 const { PINNED_MODELS, getSharedAiService } = require('./aiService');
 const claimMapService = require('./claimMapService');
 const { generateAndStoreMCQs } = require('./mcqGeneratorService');
 const { resolveProvider } = require('../utils/aiProvider');
+const { processTopicSeedJob } = require('./topicSeedJobProcessor');
+const { processGuidelineAlignJob } = require('./guidelineAlignJobProcessor');
+const { runPdfPreindex } = require('./pdfPreindexRunner');
+const { MAX_JOB_ATTEMPTS } = require('./aiGenerationJobEnqueue');
 
 const { completeJobAndClaims } = require('./aiGenerationJobCompletion');
+const { persistConsensusTeachingObject } = require('./teachingObjectService');
+
+async function maybeMoveToDeadLetter(db, jobKey) {
+    if (typeof db.moveAiGenerationJobToDeadLetter !== 'function') return null;
+    const row = await db.getAiGenerationJobByKey(jobKey).catch(() => null);
+    if (!row) return null;
+    if (Number(row.attempts || 0) >= MAX_JOB_ATTEMPTS) {
+        return db.moveAiGenerationJobToDeadLetter(jobKey);
+    }
+    return null;
+}
 
 /**
- * Process DB-backed AI generation jobs (full synthesis, paper synopsis).
+ * Process DB-backed AI generation jobs (full synthesis, paper synopsis, etc.).
  * @param {string} jobKey
  * @param {object} deps
  */
@@ -97,6 +113,12 @@ async function processAiGenerationJobByKey(jobKey, deps) {
                 abstractLimit,
                 preEnrichedArticles: { freeArticles, abstractArticles },
             });
+            await persistConsensusTeachingObject({
+                db,
+                topic: input.topic || '',
+                consensusSynopsis: result,
+                articles: input.articles || [],
+            }).catch((err) => { logger.warn({ err }, 'persistConsensusTeachingObject failed'); return null; });
             await completeJobAndClaims(db, jobKey, 'consensus_synopsis', {
                 resultPayload: { ...result, jobKey },
                 provider: result.provider || null,
@@ -106,6 +128,30 @@ async function processAiGenerationJobByKey(jobKey, deps) {
                     freePaperCount: result.freePaperCount,
                     abstractPaperCount: result.abstractPaperCount,
                     fullTextUsed: (result.includedArticles || []).some((a) => a.fullTextIndexed),
+                    humanReviewStatus: 'none',
+                    generatedAt: new Date().toISOString(),
+                },
+            });
+            return result;
+        }
+
+        if (jobType === 'live_clinical_answer') {
+            const result = await generateLiveClinicalAnswer({
+                topic: input.topic || row.topic || '',
+                articles: input.articles || [],
+                guidelines: input.guidelines || [],
+                previousQueries: input.previousQueries || [],
+                trainingStage: input.trainingStage || null,
+                sessionDepth: input.sessionDepth || 0,
+                serverConfig,
+                fetchImpl,
+            });
+            await completeJobAndClaims(db, jobKey, 'live_clinical_answer', {
+                resultPayload: { status: 'completed', jobKey, ...(result || {}) },
+                provider: result?.provider || null,
+                model: result?.model || null,
+                auditPayload: {
+                    ...(result?.audit || {}),
                     humanReviewStatus: 'none',
                     generatedAt: new Date().toISOString(),
                 },
@@ -170,11 +216,72 @@ async function processAiGenerationJobByKey(jobKey, deps) {
             return result;
         }
 
+        if (jobType === 'topic_seed') {
+            const result = await processTopicSeedJob({
+                topic: input.topic || row.topic || '',
+                articles: input.articles || [],
+                serverConfig,
+                fetchImpl,
+                db,
+                cache,
+            });
+            const isFailed = result.status === 'failed';
+            await db.completeAiGenerationJob(jobKey, {
+                resultPayload: { ...result, jobKey },
+                provider: null,
+                model: null,
+                auditPayload: {
+                    generatedAt: new Date().toISOString(),
+                    humanReviewStatus: 'none',
+                },
+            });
+            if (isFailed) {
+                throw new Error(result.reason || 'topic_seed failed');
+            }
+            return result;
+        }
+
+        if (jobType === 'guideline_align') {
+            const result = await processGuidelineAlignJob({
+                topic: input.topic || row.topic || '',
+                db,
+                limit: input.limit || 24,
+                apply: input.apply !== false,
+            });
+            await db.completeAiGenerationJob(jobKey, {
+                resultPayload: { ...result, jobKey },
+                provider: null,
+                model: null,
+                auditPayload: {
+                    generatedAt: new Date().toISOString(),
+                    humanReviewStatus: 'none',
+                },
+            });
+            return result;
+        }
+
+        if (jobType === 'pdf_index') {
+            const article = input.article || {};
+            const result = await runPdfPreindex(article, { db, cache, serverConfig, fetch: fetchImpl, logger });
+            await db.completeAiGenerationJob(jobKey, {
+                resultPayload: { status: 'completed', jobKey, ...(result || {}) },
+                provider: null,
+                model: null,
+                auditPayload: {
+                    generatedAt: new Date().toISOString(),
+                    humanReviewStatus: 'none',
+                },
+            });
+            return result;
+        }
+
         throw new Error(`Unsupported BullMQ AI job type: ${jobType}`);
     } catch (err) {
-        await db.failAiGenerationJob(jobKey, err.message).catch((e) => {
+        const failedRow = await db.failAiGenerationJob(jobKey, err.message).catch((e) => {
             logger.warn({ err: e }, 'failAiGenerationJob failed');
+            return null;
         });
+        await maybeMoveToDeadLetter(db, jobKey);
         throw err;
     }
 }

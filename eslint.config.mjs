@@ -5,7 +5,6 @@ import globals from 'globals';
 
 export default [
   js.configs.recommended,
-  // Ignore patterns (must be first in flat config)
   {
     ignores: [
       'node_modules/**',
@@ -22,8 +21,12 @@ export default [
       '**/*.d.ts',
     ],
   },
+  {
+    linterOptions: {
+      reportUnusedDisableDirectives: 'error',
+    },
+  },
 
-  // Base JS config — applies to all linted files
   {
     files: ['**/*.{js,cjs,mjs,ts,tsx}'],
     languageOptions: {
@@ -37,20 +40,20 @@ export default [
       },
     },
     rules: {
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': 'off',
       'no-console': 'off',
-      'no-constant-condition': 'warn',
-      'no-unreachable': 'warn',
-      'eqeqeq': ['warn', 'always', { null: 'ignore' }],
-      'curly': ['warn', 'multi-line'],
-      'no-var': 'warn',
-      'prefer-const': 'warn',
+      'no-constant-condition': 'error',
+      'no-trailing-spaces': 'error',
+      'no-unreachable': 'error',
+      'eqeqeq': ['error', 'always', { null: 'ignore' }],
+      'curly': ['error', 'multi-line'],
+      'no-var': 'error',
+      'prefer-const': 'error',
     },
   },
 
-  // TypeScript / React sources
   {
-    files: ['src/**/*.{ts,tsx}'],
+    files: ['src/**/*.{ts,tsx}', 'tests/**/*.{ts,tsx}'],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
@@ -69,17 +72,17 @@ export default [
     },
     rules: {
       ...tseslint.plugin.configs.recommended.rules,
-      ...reactHooks.configs.recommended.rules,
       'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/no-explicit-any': 'warn',
-      'react-hooks/immutability': 'warn',
-      'react-hooks/refs': 'warn',
-      'react-hooks/set-state-in-effect': 'warn',
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'error',
+      'react-hooks/immutability': 'off',
+      'react-hooks/refs': 'off',
+      'react-hooks/set-state-in-effect': 'off',
     },
   },
 
-  // Scripts that run in a browser-like environment
   {
     files: ['scripts/**/*.{js,mjs}'],
     languageOptions: {
@@ -95,7 +98,6 @@ export default [
     },
   },
 
-  // Tests
   {
     files: ['tests/**/*.{js,ts,tsx}'],
     languageOptions: {

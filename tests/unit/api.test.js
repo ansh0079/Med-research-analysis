@@ -552,7 +552,7 @@ describe('API Endpoints', () => {
 
       test('Should accept valid query and return articles', async () => {
         cache.getSearchResults.mockReturnValueOnce(null);
-        
+
         // Mock PubMed search response
         mockFetch
           .mockResolvedValueOnce({
@@ -607,7 +607,7 @@ describe('API Endpoints', () => {
 
       test('Should return empty array when no results found', async () => {
         cache.getSearchResults.mockReturnValueOnce(null);
-        
+
         mockFetch.mockResolvedValueOnce({
           ok: true,
           json: async () => ({
@@ -978,7 +978,7 @@ describe('API Endpoints', () => {
 
       test('Should search Semantic Scholar and return articles', async () => {
         cache.getSearchResults.mockReturnValueOnce(null);
-        
+
         mockFetch.mockResolvedValueOnce({
           ok: true,
           json: async () => ({
@@ -1051,7 +1051,7 @@ describe('API Endpoints', () => {
 
       test('Should search OpenAlex and return works', async () => {
         cache.getSearchResults.mockReturnValueOnce(null);
-        
+
         mockFetch.mockResolvedValueOnce({
           ok: true,
           json: async () => ({
@@ -1151,7 +1151,7 @@ describe('API Endpoints', () => {
       test('Should analyze text and return results', async () => {
         db.getCachedAnalysis.mockResolvedValueOnce(null);
         cache.getAnalysis.mockReturnValueOnce(null);
-        
+
         mockFetch.mockResolvedValueOnce({
           ok: true,
           json: async () => ({
@@ -1162,7 +1162,7 @@ describe('API Endpoints', () => {
         const response = await request(app)
           .post('/api/ai/analyze')
           .set('Cookie', `med_auth_token=${authToken()}`)
-          .send({ 
+          .send({
             text: 'This is a medical research text about diabetes treatment.',
             analysisType: 'quick',
             model: 'mistralai/Mistral-7B-Instruct-v0.2'
@@ -1245,7 +1245,7 @@ describe('API Endpoints', () => {
       test('Should explain text in layperson terms', async () => {
         db.getCachedAnalysis.mockResolvedValueOnce(null);
         cache.getAnalysis.mockReturnValueOnce(null);
-        
+
         mockFetch.mockResolvedValueOnce({
           ok: true,
           json: async () => ({
@@ -1256,7 +1256,7 @@ describe('API Endpoints', () => {
         const response = await request(app)
           .post('/api/ai/explain')
           .set('Cookie', `med_auth_token=${authToken()}`)
-          .send({ 
+          .send({
             text: 'Diabetes mellitus is a metabolic disorder characterized by hyperglycemia.',
             model: 'mistralai/Mistral-7B-Instruct-v0.2'
           })
@@ -1432,7 +1432,7 @@ describe('API Endpoints', () => {
   describe('Cache Behavior', () => {
     test('Should check cache before fetching from external API', async () => {
       cache.getSearchResults.mockReturnValueOnce(null);
-      
+
       mockFetch
         .mockResolvedValueOnce({
           ok: true,
@@ -1453,7 +1453,7 @@ describe('API Endpoints', () => {
 
     test('Should store results in cache after fetching', async () => {
       cache.getSearchResults.mockReturnValueOnce(null);
-      
+
       mockFetch
         .mockResolvedValueOnce({
           ok: true,
@@ -1984,7 +1984,7 @@ describe('API Endpoints', () => {
 
     test('Should preserve existing session ID', async () => {
       cache.getSession.mockReturnValueOnce({ createdAt: new Date().toISOString() });
-      
+
       const response = await request(app)
         .get('/health')
         .set('X-Session-Id', 'existing-session')

@@ -33,10 +33,10 @@ describe('offline learning-agent eval fixtures', () => {
         if (sql.includes('user_topic_mastery')) return [{ topic: 'ARDS', normalized_topic: 'ards', overall_score: 75, attempts_count: 8 }];
         if (sql.includes('spaced_rep_cards')) return [];
         if (sql.includes('searches')) return [];
-        if (sql.includes('quiz_attempts')) return [
+        if (sql.includes('quiz_attempts')) {return [
           { topic: 'ARDS', normalized_topic: 'ards', is_correct: 0, confidence: 5, reasoning_tags: '["high_confidence_wrong"]' },
           { topic: 'ARDS', normalized_topic: 'ards', is_correct: 0, confidence: 4, reasoning_tags: '["misses_applicability"]' },
-        ];
+        ];}
         return [];
       }),
       get: jest.fn().mockResolvedValue(null),

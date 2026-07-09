@@ -16,9 +16,9 @@ export function ProfileSettings({ profile, onSave }: { profile: LearningProfile 
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     if (profile?.trainingStage) setTrainingStage(profile.trainingStage);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     if (profile?.defaultExplanationDepth) setDefaultExplanationDepth(profile.defaultExplanationDepth);
   }, [profile?.trainingStage, profile?.defaultExplanationDepth]);
 

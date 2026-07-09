@@ -42,7 +42,7 @@ describe('SearchMetaContext', () => {
   });
 
   it('sets agent guidance', () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const mockGuidance = { topic: 'diabetes', guidance: 'Test guidance', keyInsights: ['insight 1', 'insight 2'] } as any;
 
     const TestComponent = () => {
@@ -50,7 +50,7 @@ describe('SearchMetaContext', () => {
       return (
         <>
           <button onClick={() => setAgentGuidance(mockGuidance)}>Set Guidance</button>
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          { }
           <div>Guidance: {(agentGuidance as any)?.guidance || 'null'}</div>
         </>
       );
@@ -66,7 +66,7 @@ describe('SearchMetaContext', () => {
   });
 
   it('clears agent guidance', () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const mockGuidance = { topic: 'diabetes', guidance: 'Test' } as any;
 
     const TestComponent = () => {
@@ -75,7 +75,7 @@ describe('SearchMetaContext', () => {
         <>
           <button onClick={() => setAgentGuidance(mockGuidance)}>Set</button>
           <button onClick={() => setAgentGuidance(null)}>Clear</button>
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          { }
           <div>Guidance: {(agentGuidance as any)?.guidance || 'null'}</div>
         </>
       );
@@ -91,7 +91,7 @@ describe('SearchMetaContext', () => {
   });
 
   it('sets topic intelligence', () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const mockIntelligence = { topic: 'cardiology', insights: ['insight 1'], evidence: 'evidence text' } as any;
 
     const TestComponent = () => {
@@ -114,7 +114,7 @@ describe('SearchMetaContext', () => {
   });
 
   it('sets clinical answer', () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const mockAnswer = { answer: 'Clinical answer text', evidence: 'Supporting evidence', level: 'expert' } as any;
 
     const TestComponent = () => {
@@ -122,7 +122,7 @@ describe('SearchMetaContext', () => {
       return (
         <>
           <button onClick={() => setClinicalAnswer(mockAnswer)}>Set Answer</button>
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          { }
           <div>Answer: {(clinicalAnswer as any)?.answer || 'null'}</div>
         </>
       );
@@ -136,7 +136,7 @@ describe('SearchMetaContext', () => {
   });
 
   it('sets community insight', () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const mockInsight = { type: 'consensus', summary: 'Community consensus text', confidence: 0.95 } as any;
 
     const TestComponent = () => {
@@ -147,7 +147,7 @@ describe('SearchMetaContext', () => {
             Set Insight
           </button>
           <div>
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            { }
             Insight: {(communityInsight as any)?.summary || 'null'}
           </div>
         </>
@@ -206,9 +206,9 @@ describe('SearchMetaContext', () => {
 
 
   it('maintains independent state for each meta property', () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const mockGuidance = { topic: 'test', guidance: 'guid' } as any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const mockIntelligence = { topic: 'test', insights: [] } as any;
 
     const TestComponent = () => {
