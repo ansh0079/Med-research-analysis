@@ -6,6 +6,11 @@
  * Run: npx jest tests/integration/db.integration.test.js
  */
 
+// This suite is explicitly about the real SQLite path. The CI integration job
+// exports a postgres:// DATABASE_URL, which the Database constructor honours
+// over the file path passed in — clear it so this suite stays SQLite there.
+delete process.env.DATABASE_URL;
+
 const dbModule = require('../../database');
 const Database = dbModule.Database;
 const path = require('path');

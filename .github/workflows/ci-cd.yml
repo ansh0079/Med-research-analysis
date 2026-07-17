@@ -118,7 +118,9 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - name: Run backend tests against Postgres + Redis
-        run: npm test -- --testPathPatterns="DatabaseCore|db\\.integration|redisClient" --coverage=false
+        # runInBand: these suites bootstrap the same Postgres database; parallel
+        # workers race on CREATE TABLE (pg_type_typname_nsp_index errors).
+        run: npm test -- --testPathPatterns="DatabaseCore|db\\.integration|redisClient" --coverage=false --runInBand
         env:
           NODE_ENV: test
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
