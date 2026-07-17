@@ -484,6 +484,15 @@ export function AdminObservabilityPage() {
   const [updatingScheduler, setUpdatingScheduler] = useState(false);
   const [scheduler, setScheduler] = useState<CurriculumScheduler | null>(null);
   const [automation, setAutomation] = useState<{ paused: boolean; pausedAt: string | null; reason: string | null } | null>(null);
+  const [cronHealth, setCronHealth] = useState<Array<{
+    task: string;
+    lastRunAt: string | null;
+    lastStatus: string | null;
+    lastError: string | null;
+    consecutiveFailures: number;
+    runsTotal: number;
+    stale: boolean;
+  }> | null>(null);
   const [togglingAutomation, setTogglingAutomation] = useState(false);
   const [costDashboard, setCostDashboard] = useState<{
     totals: { llmCalls: number; estimatedCostUsd: number; synopsesGenerated: number; failedCalls: number };
@@ -500,13 +509,15 @@ export function AdminObservabilityPage() {
     setLoading(true);
     setError(null);
     try {
-      const [res, costRes, automationRes, productionRes] = await Promise.all([
+      const [res, costRes, automationRes, productionRes, cronRes] = await Promise.all([
         api.knowledge.getAdminClaimObservability({ limit: 30 }),
         api.knowledge.getAdminLlmCostDashboard({ days: 30, limit: 12 }).catch(() => null),
         api.knowledge.getBackgroundAutomation().catch(() => null),
         api.knowledge.getProductionObservability({ days: 7 }).catch(() => null),
+        api.knowledge.getCronHealth().catch(() => null),
       ]);
       setAutomation(automationRes?.automation ?? null);
+      setCronHealth(cronRes?.crons ?? null);
       setData(res.observability);
       setCostDashboard(costRes?.dashboard ?? null);
       setProductionObservability(productionRes?.observability ?? null);
@@ -669,6 +680,40 @@ export function AdminObservabilityPage() {
                   {togglingAutomation ? 'Saving...' : automation.paused ? 'Resume all schedulers' : 'Pause all schedulers'}
                 </button>
               </div>
+            </div>
+          </section>
+        )}
+        {cronHealth && cronHealth.length > 0 && !loading && (
+          <section className={`neo-card p-4 border-l-4 ${cronHealth.some((c) => c.lastStatus === 'error' || c.stale) ? 'border-rose-500' : 'border-emerald-500'}`}>
+            <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Scheduled task health</p>
+            <div className="mt-2 overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="text-left text-slate-400">
+                    <th className="py-1 pr-3 font-semibold">Task</th>
+                    <th className="py-1 pr-3 font-semibold">Last run</th>
+                    <th className="py-1 pr-3 font-semibold">Status</th>
+                    <th className="py-1 pr-3 font-semibold">Fails</th>
+                    <th className="py-1 font-semibold">Runs</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cronHealth.map((c) => (
+                    <tr key={c.task} className="border-t border-slate-100 dark:border-slate-800">
+                      <td className="py-1.5 pr-3 font-mono">{c.task}</td>
+                      <td className="py-1.5 pr-3 text-slate-500">{c.lastRunAt ? new Date(c.lastRunAt).toLocaleString() : 'never'}</td>
+                      <td className="py-1.5 pr-3">
+                        <span className={`font-semibold ${c.lastStatus === 'error' || c.stale ? 'text-rose-600' : 'text-emerald-600'}`}
+                          title={c.lastError || undefined}>
+                          {c.stale ? 'stale' : (c.lastStatus ?? '—')}
+                        </span>
+                      </td>
+                      <td className={`py-1.5 pr-3 ${c.consecutiveFailures > 0 ? 'text-rose-600 font-semibold' : 'text-slate-500'}`}>{c.consecutiveFailures}</td>
+                      <td className="py-1.5 text-slate-500">{c.runsTotal}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </section>
         )}

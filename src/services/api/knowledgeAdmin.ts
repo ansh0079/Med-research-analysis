@@ -105,6 +105,25 @@ export class KnowledgeAdminApi extends KnowledgeCoreApi {
     return response.json();
   }
 
+  async getCronHealth(): Promise<{
+    crons: Array<{
+      task: string;
+      lastRunAt: string | null;
+      lastStatus: string | null;
+      lastError: string | null;
+      lastDurationMs: number | null;
+      consecutiveFailures: number;
+      runsTotal: number;
+      stale: boolean;
+    }>;
+    failingCount: number;
+    generatedAt: string;
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/cron-health`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
   async getBackgroundAutomation(): Promise<{
     automation: { paused: boolean; pausedAt: string | null; pausedBy: string | null; reason: string | null };
     curriculumScheduler: { enabled: boolean };
