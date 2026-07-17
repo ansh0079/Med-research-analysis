@@ -1,5 +1,6 @@
 const cron = require('node-cron');
 const { aggregateCollectiveMemory } = require('./collectiveMemoryService');
+const { withCronHeartbeat } = require('./cronHeartbeat');
 
 let task = null;
 
@@ -11,14 +12,10 @@ function scheduleCollectiveMemory(db, logger = console) {
     }
 
     const expression = process.env.COLLECTIVE_MEMORY_CRON || '15 2 * * *';
-    task = cron.schedule(expression, async () => {
-        try {
-            const result = await aggregateCollectiveMemory(db);
-            logger.info?.({ result }, 'Collective memory aggregation complete');
-        } catch (err) {
-            logger.error?.({ err }, 'Collective memory aggregation failed');
-        }
-    }, {
+    task = cron.schedule(expression, withCronHeartbeat('collective-memory', async () => {
+        const result = await aggregateCollectiveMemory(db);
+        logger.info?.({ result }, 'Collective memory aggregation complete');
+    }, { db, logger }), {
         timezone: process.env.TZ || 'UTC',
     });
 

@@ -1,6 +1,6 @@
 # Commercial Readiness
 
-Last updated: 2026-07-06
+Last updated: 2026-07-17
 
 This is the canonical launch-readiness tracker for the app. Older launch notes and review files should be treated as historical unless they are referenced here.
 
@@ -17,11 +17,11 @@ The product has a strong search, learning, and evidence-synthesis foundation. Th
 | Core search | Partial | Search eval suite must pass agreed Precision@10, Recall@10, off-topic-rate, and required-type coverage thresholds. |
 | Search specificity | Partial | QueryParser study type/year/specificity signals must be covered by backend tests and live eval queries. |
 | Learning agent | Partial | Agent feedback, quiz outcomes, and search interactions must produce measurable learner-memory updates. |
-| Payments | Blocked | Stripe keys, webhook secret, product IDs, and `PAYWALL_ENABLED=true` must be configured in production. |
-| Production database | Blocked | PostgreSQL must be used for production app data; SQLite is acceptable for local/dev only. |
-| Cache/rate limits | Blocked | Redis must be configured for shared cache, rate limiting, and multi-instance consistency. |
-| Background jobs | Partial | LLM-heavy work should run in BullMQ workers with retries, quotas, and monitoring. |
-| Observability | Partial | Sentry, pino logs, `/metrics`, and search latency breakdowns must be visible in dashboards. |
+| Payments | Configured | Stripe keys, webhook secret, 3 price IDs, and `PAYWALL_ENABLED=true` are live in production (verified 2026-07-17). Remaining: one end-to-end live-webhook test (real checkout → webhook → subscription row). |
+| Production database | Done | Production runs PostgreSQL (pgvector/pg16) via docker-compose.hetzner.yml; `DATABASE_URL` verified live 2026-07-17. SQLite is local/dev only. |
+| Cache/rate limits | Done | Redis 7 is live in production (`REDIS_URL` verified 2026-07-17) for cache, rate limiting, and BullMQ. |
+| Background jobs | Partial | BullMQ workers + dead-letter queue live. Cron heartbeats (`cron_heartbeats` table + `/api/admin/cron-health`) added 2026-07-17 after two nightly crons were found silently failing; worker now reports failures to Sentry. |
+| Observability | Partial | Sentry (web + worker), pino logs, `/metrics`, cron heartbeats, and the admin observability page are live. Remaining: external dashboards/alerts on top of `/metrics`. |
 | Security/compliance | Partial | Restore drill complete 2026-07-06 (see drill record at bottom). DB encryption posture, CSRF verification, and PHI handling review still pending. |
 | Docs | Partial | Public docs, deployment docs, and launch checklist must refer to `server.js` and current env names. |
 

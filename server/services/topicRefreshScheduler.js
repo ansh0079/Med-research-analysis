@@ -248,12 +248,15 @@ async function runStrongMemoryRefresh({ db, serverConfig, fetchImpl, logger }) {
 }
 
 function scheduleTopicRefresh(db, serverConfig, fetchImpl, logger) {
-    const tick = async () => {
+    const { withCronHeartbeat } = require('./cronHeartbeat');
+    const tick = withCronHeartbeat('topic-refresh', async () => {
         const { isBackgroundAutomationPaused } = require('./backgroundAutomationService');
         if (await isBackgroundAutomationPaused(db)) return;
-        await runStaleTopicRefresh({ db, serverConfig, fetchImpl, logger }).catch((err) => { logger?.warn?.({ err }, 'runStaleTopicRefresh failed'); });
-        await runStrongMemoryRefresh({ db, serverConfig, fetchImpl, logger }).catch((err) => { logger?.warn?.({ err }, 'runStrongMemoryRefresh failed'); });
-    };
+        const errors = [];
+        await runStaleTopicRefresh({ db, serverConfig, fetchImpl, logger }).catch((err) => { logger?.warn?.({ err }, 'runStaleTopicRefresh failed'); errors.push(err); });
+        await runStrongMemoryRefresh({ db, serverConfig, fetchImpl, logger }).catch((err) => { logger?.warn?.({ err }, 'runStrongMemoryRefresh failed'); errors.push(err); });
+        if (errors.length) throw errors[0];
+    }, { db, logger });
     startupTimer = setTimeout(() => { void tick(); }, STARTUP_DELAY_MS);
     refreshTimer = setInterval(() => { void tick(); }, INTERVAL_MS);
 }

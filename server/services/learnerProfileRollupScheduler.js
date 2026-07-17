@@ -1,5 +1,6 @@
 const cron = require('node-cron');
 const { rollupAllLearnerProfiles } = require('./learnerProfileRollupService');
+const { withCronHeartbeat } = require('./cronHeartbeat');
 
 let task = null;
 
@@ -11,15 +12,11 @@ function scheduleLearnerProfileRollup(db, logger = console) {
     }
 
     const expression = process.env.LEARNER_PROFILE_ROLLUP_CRON || '30 3 * * *';
-    task = cron.schedule(expression, async () => {
-        try {
-            const days = Math.min(Math.max(parseInt(process.env.LEARNER_PROFILE_ROLLUP_DAYS || '30', 10) || 30, 7), 180);
-            const result = await rollupAllLearnerProfiles(db, { days });
-            logger.info?.({ result, days }, 'Learner profile rollup complete');
-        } catch (err) {
-            logger.error?.({ err }, 'Learner profile rollup failed');
-        }
-    }, {
+    task = cron.schedule(expression, withCronHeartbeat('learner-profile-rollup', async () => {
+        const days = Math.min(Math.max(parseInt(process.env.LEARNER_PROFILE_ROLLUP_DAYS || '30', 10) || 30, 7), 180);
+        const result = await rollupAllLearnerProfiles(db, { days });
+        logger.info?.({ result, days }, 'Learner profile rollup complete');
+    }, { db, logger }), {
         timezone: process.env.TZ || 'UTC',
     });
 

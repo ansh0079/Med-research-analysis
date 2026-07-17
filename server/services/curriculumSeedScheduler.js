@@ -266,8 +266,9 @@ function scheduleCurriculumSeed(db, deps = {}, log = logger, {
     limits = { searchLimit: 24, synthesisArticles: 8, synopsisArticles: 3 },
 } = {}) {
     if (intervalId || startupTimer) return;
-    const tick = () => {
-        runCurriculumSeedBatch({
+    const { withCronHeartbeat } = require('./cronHeartbeat');
+    const tick = withCronHeartbeat('curriculum-seed', async () => {
+        await runCurriculumSeedBatch({
             db,
             serverConfig: deps.serverConfig,
             fetchImpl: deps.fetchImpl,
@@ -275,8 +276,8 @@ function scheduleCurriculumSeed(db, deps = {}, log = logger, {
             log,
             batchSize,
             limits,
-        }).catch((err) => log.warn({ err }, 'curriculum seed scheduler tick failed'));
-    };
+        });
+    }, { db, logger: log });
 
     startupTimer = setTimeout(tick, startupDelayMs);
     intervalId = setInterval(tick, intervalMs);

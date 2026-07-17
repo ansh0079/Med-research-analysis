@@ -4,6 +4,7 @@ const cron = require('node-cron');
 const logger = require('../config/logger');
 const { getRecurringFailedJobs } = require('./jobQueue');
 const { updateRecurringFailureMetrics } = require('./observabilityMetrics');
+const { withCronHeartbeat } = require('./cronHeartbeat');
 
 let scheduledJob = null;
 
@@ -36,11 +37,9 @@ async function runQueueFailureDigest({ log = logger } = {}) {
 
 function scheduleQueueFailureDigest(log = logger) {
     if (scheduledJob) scheduledJob.stop();
-    scheduledJob = cron.schedule('0 8 * * 1', () => {
-        runQueueFailureDigest({ log }).catch((err) => {
-            log.warn({ err }, 'Queue failure digest failed');
-        });
-    }, {
+    scheduledJob = cron.schedule('0 8 * * 1', withCronHeartbeat('queue-failure-digest', async () => {
+        await runQueueFailureDigest({ log });
+    }, { logger: log }), {
         scheduled: true,
         timezone: process.env.TZ || 'UTC',
     });

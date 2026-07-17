@@ -220,12 +220,11 @@ function scheduleDigests(db, appUrl, serverConfig = {}, fetchImpl = fetch, logge
   }
 
   // Run daily at 09:00
-  scheduledJob = cron.schedule('0 9 * * *', async () => {
+  const { withCronHeartbeat } = require('./cronHeartbeat');
+  scheduledJob = cron.schedule('0 9 * * *', withCronHeartbeat('digest-scheduler', async () => {
     log.info('Running scheduled digest job');
-    digestQueue.enqueueNamed('run', {}, { label: 'scheduled-digest' }).catch((err) => {
-      log.error({ err }, 'Scheduled digest failed');
-    });
-  }, {
+    await digestQueue.enqueueNamed('run', {}, { label: 'scheduled-digest' });
+  }, { logger: log }), {
     scheduled: true,
     timezone: process.env.TZ || 'UTC',
   });

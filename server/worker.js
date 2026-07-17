@@ -9,6 +9,24 @@ const { loadEnv, serverConfig } = require('../config');
 loadEnv();
 
 const logger = require('./config/logger');
+
+// Sentry for the worker process. The web process initialises Sentry in
+// app.js; without this the cron schedulers' failures (via cronHeartbeat)
+// never reach Sentry at all — they only exist as log lines.
+if (process.env.SENTRY_DSN) {
+    try {
+        const Sentry = require('@sentry/node');
+        Sentry.init({
+            dsn: process.env.SENTRY_DSN,
+            environment: process.env.NODE_ENV || 'development',
+            release: process.env.SENTRY_RELEASE || undefined,
+            initialScope: { tags: { app_role: 'worker' } },
+        });
+        logger.info('Sentry monitoring enabled (worker)');
+    } catch (err) {
+        logger.warn({ err }, 'Sentry init failed in worker');
+    }
+}
 const db = require('../database');
 const cache = require('../cache');
 const authSecurityStore = require('./services/authSecurityStore');

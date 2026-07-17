@@ -177,15 +177,12 @@ function scheduleKnowledgeDrift(db, serverConfig, fetchImpl, logger) {
         scheduledJob.stop();
         scheduledJob = null;
     }
-    scheduledJob = cron.schedule('15 7 * * *', async () => {
-        try {
-            const { isBackgroundAutomationPaused } = require('./backgroundAutomationService');
-            if (await isBackgroundAutomationPaused(db)) return;
-            await runKnowledgeDriftScan({ db, serverConfig, fetchImpl, logger });
-        } catch (e) {
-            logger?.warn?.({ err: e }, 'knowledgeDrift: scheduled run failed');
-        }
-    });
+    const { withCronHeartbeat } = require('./cronHeartbeat');
+    scheduledJob = cron.schedule('15 7 * * *', withCronHeartbeat('knowledge-drift', async () => {
+        const { isBackgroundAutomationPaused } = require('./backgroundAutomationService');
+        if (await isBackgroundAutomationPaused(db)) return;
+        await runKnowledgeDriftScan({ db, serverConfig, fetchImpl, logger });
+    }, { db, logger }));
     logger?.info?.('Knowledge drift scheduler active (daily 07:15 UTC)');
 }
 

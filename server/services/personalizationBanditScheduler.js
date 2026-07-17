@@ -2,6 +2,7 @@
 
 const cron = require('node-cron');
 const { reconcileImpressionRewards } = require('./personalizationBanditService');
+const { withCronHeartbeat } = require('./cronHeartbeat');
 
 let task = null;
 
@@ -13,14 +14,10 @@ function schedulePersonalizationBandit(db, logger = console) {
     }
 
     const expression = process.env.PERSONALIZATION_BANDIT_CRON || '45 3 * * *';
-    task = cron.schedule(expression, async () => {
-        try {
-            const result = await reconcileImpressionRewards(db, { days: 14 });
-            logger.info?.({ result }, 'Personalization bandit reconciliation complete');
-        } catch (err) {
-            logger.error?.({ err }, 'Personalization bandit reconciliation failed');
-        }
-    }, {
+    task = cron.schedule(expression, withCronHeartbeat('personalization-bandit', async () => {
+        const result = await reconcileImpressionRewards(db, { days: 14 });
+        logger.info?.({ result }, 'Personalization bandit reconciliation complete');
+    }, { db, logger }), {
         timezone: process.env.TZ || 'UTC',
     });
 

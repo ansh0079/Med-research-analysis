@@ -114,6 +114,36 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
         }
     });
 
+    app.get('/api/admin/cron-health', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const rows = await db.all('SELECT * FROM cron_heartbeats ORDER BY task').catch(() => []);
+            const now = Date.now();
+            // A task is stale when its last run is older than its expected cadence
+            // (longest cadence is weekly) plus slack. Interval tasks run far more
+            // often; anything silent for >26h that has ever run deserves a flag.
+            const WEEKLY_TASKS = new Set(['queue-failure-digest']);
+            const crons = rows.map((row) => {
+                const lastRunMs = row.last_run_at ? Date.parse(row.last_run_at) : null;
+                const staleAfterMs = (WEEKLY_TASKS.has(row.task) ? 7 * 24 + 2 : 26) * 3600 * 1000;
+                return {
+                    task: row.task,
+                    lastRunAt: row.last_run_at,
+                    lastStatus: row.last_status,
+                    lastError: row.last_error,
+                    lastDurationMs: row.last_duration_ms,
+                    consecutiveFailures: Number(row.consecutive_failures || 0),
+                    runsTotal: Number(row.runs_total || 0),
+                    stale: lastRunMs != null && (now - lastRunMs) > staleAfterMs,
+                };
+            });
+            const failing = crons.filter((c) => c.lastStatus === 'error' || c.stale);
+            res.json({ crons, failingCount: failing.length, generatedAt: new Date().toISOString() });
+        } catch (error) {
+            req.log.error({ err: error }, 'Cron health error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
     app.get('/api/admin/automation', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
         try {
             const [automation, curriculumScheduler] = await Promise.all([

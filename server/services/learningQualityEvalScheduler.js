@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const cron = require('node-cron');
 const { evaluateFixture } = require('./learningQualityEvalService');
+const { withCronHeartbeat } = require('./cronHeartbeat');
 
 const DEFAULT_FIXTURE_PATH = path.join(__dirname, '..', '..', 'tests', 'fixtures', 'learning-quality-gold.json');
 
@@ -37,26 +38,22 @@ function scheduleLearningQualityEval(logger = console, { fixturePath = DEFAULT_F
     }
 
     const expression = process.env.LEARNING_QUALITY_EVAL_CRON || '30 3 * * *';
-    task = cron.schedule(expression, () => {
-        try {
-            const result = runLearningQualityEval(fixturePath);
-            const { summary } = result;
-            const logPayload = {
-                pass: summary.pass,
-                mcqPassRate: summary.mcq.passRate,
-                casePassRate: summary.case.passRate,
-                learningPassRate: summary.learning.passRate,
-                expectationFailures: summary.expectationFailures,
-            };
-            if (summary.pass) {
-                logger.info?.(logPayload, 'Learning quality eval passed');
-            } else {
-                logger.error?.(logPayload, 'Learning quality eval FAILED — content-quality regression gate did not pass');
-            }
-        } catch (err) {
-            logger.error?.({ err }, 'Learning quality eval run failed to execute');
+    task = cron.schedule(expression, withCronHeartbeat('learning-quality-eval', async () => {
+        const result = runLearningQualityEval(fixturePath);
+        const { summary } = result;
+        const logPayload = {
+            pass: summary.pass,
+            mcqPassRate: summary.mcq.passRate,
+            casePassRate: summary.case.passRate,
+            learningPassRate: summary.learning.passRate,
+            expectationFailures: summary.expectationFailures,
+        };
+        if (summary.pass) {
+            logger.info?.(logPayload, 'Learning quality eval passed');
+        } else {
+            logger.error?.(logPayload, 'Learning quality eval FAILED — content-quality regression gate did not pass');
         }
-    }, {
+    }, { logger }), {
         timezone: process.env.TZ || 'UTC',
     });
 
