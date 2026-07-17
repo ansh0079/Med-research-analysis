@@ -8,7 +8,7 @@ async function aggregateCollectiveMemory(db) {
                 COUNT(DISTINCT user_id) as unique_users
          FROM quiz_attempts
          GROUP BY normalized_topic
-         HAVING total_attempts >= 1`
+         HAVING COUNT(*) >= 1`
     );
 
     if (topicRows.length === 0) {
@@ -30,7 +30,7 @@ async function aggregateCollectiveMemory(db) {
              FROM quiz_attempts
              WHERE normalized_topic = ?
              GROUP BY concept_hash
-             HAVING total_attempts >= 3`,
+             HAVING COUNT(*) >= 3`,
             [normalizedTopic]
         );
 
@@ -39,7 +39,7 @@ async function aggregateCollectiveMemory(db) {
                     MAX(question_text) as question_text,
                     user_answer,
                     COUNT(*) as pick_count,
-                    total.total_attempts
+                    MAX(total.total_attempts) as total_attempts
              FROM quiz_attempts qa
              JOIN (
                  SELECT concept_hash, COUNT(*) as total_attempts
@@ -47,7 +47,7 @@ async function aggregateCollectiveMemory(db) {
              ) total USING (concept_hash)
              WHERE qa.normalized_topic = ? AND qa.is_correct = 0
              GROUP BY concept_hash, user_answer
-             HAVING CAST(pick_count AS REAL) / total_attempts >= 0.25
+             HAVING CAST(COUNT(*) AS REAL) / MAX(total.total_attempts) >= 0.25
              ORDER BY pick_count DESC`,
             [normalizedTopic, normalizedTopic]
         );

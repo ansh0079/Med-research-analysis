@@ -69,6 +69,8 @@ COPY --from=builder /app/database ./database
 COPY --from=builder /app/cache ./cache
 COPY --from=builder /app/shared ./shared
 COPY --from=builder /app/server ./server
+# Gold fixtures are read by the nightly quality-eval schedulers in the worker
+COPY --from=builder /app/tests/fixtures ./tests/fixtures
 
 # Fix ownership
 RUN chown -R nodejs:nodejs /app

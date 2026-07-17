@@ -6,7 +6,7 @@ function buildMockDb({ topicRows, questionStats, wrongAnswers, rawAttempts, exis
         updates,
         async all(sql) {
             if (sql.includes('GROUP BY normalized_topic')) return topicRows;
-            if (sql.includes('GROUP BY concept_hash\n             HAVING total_attempts >= 3') || (sql.includes('GROUP BY concept_hash') && sql.includes('HAVING total_attempts >= 3'))) return questionStats;
+            if (sql.includes('SUM(is_correct)')) return questionStats;
             if (sql.includes('is_correct = 0')) return wrongAnswers;
             if (sql.includes('concept_hash IS NOT NULL')) return rawAttempts;
             return [];
