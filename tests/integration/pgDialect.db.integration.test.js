@@ -32,9 +32,8 @@ describePg('Postgres dialect smoke (real cron queries, empty tables)', () => {
         await db.runMigrations();
     }, 120000);
 
-    afterAll(async () => {
-        await db.close();
-    });
+    // No afterAll close: tests/setup.js already closes the db singleton, and
+    // pg-pool throws "Called end on pool more than once" on a double end().
 
     test('collective-memory aggregation parses on Postgres', async () => {
         const { aggregateCollectiveMemory } = require('../../server/services/collectiveMemoryService');
