@@ -32,13 +32,19 @@ export NODE_ENV=production
 echo "Target DB: ${DB_NAME} (via medsearch-web container)"
 echo "Mode: ${MODE}"
 
+WEB_CONTAINER="$(docker ps --filter "ancestor=medsearch-web" --format "{{.Names}}" | head -1)"
+if [[ -z "${WEB_CONTAINER:-}" ]]; then
+  WEB_CONTAINER="$(docker ps --filter "name=medsearch-web" --format "{{.Names}}" | head -1)"
+fi
+echo "Using container: ${WEB_CONTAINER}"
+
 run_node() {
   docker exec \
     -e DATABASE_URL \
     -e USE_POSTGRES_MAIN \
     -e NODE_ENV \
     -w /app \
-    medsearch-web \
+    "${WEB_CONTAINER}" \
     node "$@"
 }
 
