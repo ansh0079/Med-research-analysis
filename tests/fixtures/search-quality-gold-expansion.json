@@ -269,19 +269,23 @@
       "sources": "pubmed,openalex",
       "category": "management_intent",
       "specialty": "infectious_disease",
+      "specificity": "strict",
+      "parsedStudyTypes": ["\"Practice Guideline\"[Publication Type]"],
       "relevantUids": [
         { "uid": "31573350", "grade": 3 },
         { "uid": "32853142", "grade": 1 }
       ],
       "offTopicUids": ["7445464"],
       "requiredTypes": ["guideline"],
-      "notes": "ATS/IDSA CAP guideline should outrank commentary and narrow reviews."
+      "notes": "ATS/IDSA CAP guideline should outrank commentary and narrow reviews. Uses strict + guideline study-type filters."
     },
     {
       "query": "heart failure reduced ejection fraction management guideline SGLT2 ARNI MRA beta blocker",
       "sources": "pubmed,openalex",
       "category": "management_intent",
       "specialty": "cardiology",
+      "specificity": "strict",
+      "parsedStudyTypes": ["\"Practice Guideline\"[Publication Type]"],
       "relevantUids": [
         { "uid": "35363499", "grade": 3 },
         { "uid": "35378257", "grade": 2 },
@@ -289,13 +293,14 @@
       ],
       "offTopicUids": ["36460629"],
       "requiredTypes": ["guideline"],
-      "notes": "Tests guideline-first management intent rather than only landmark known-item retrieval."
+      "notes": "Tests guideline-first management intent with strict specificity rather than only landmark known-item retrieval."
     },
     {
       "query": "suspected pulmonary embolism diagnosis YEARS algorithm D-dimer CT pulmonary angiography",
       "sources": "pubmed,openalex",
       "category": "diagnosis_intent",
       "specialty": "emergency_medicine",
+      "specificity": "moderate",
       "relevantUids": [
         { "uid": "28549662", "grade": 3 },
         { "uid": "39915029", "grade": 1 }
@@ -309,6 +314,7 @@
       "sources": "pubmed,openalex",
       "category": "diagnosis_intent",
       "specialty": "critical_care",
+      "specificity": "moderate",
       "relevantUids": [
         { "uid": "26903338", "grade": 3 },
         { "uid": "26903335", "grade": 2 }
@@ -322,6 +328,8 @@
       "sources": "pubmed,openalex",
       "category": "management_intent",
       "specialty": "critical_care",
+      "specificity": "strict",
+      "parsedStudyTypes": ["\"Practice Guideline\"[Publication Type]"],
       "relevantUids": [
         { "uid": "34599691", "grade": 3 },
         { "uid": "35791800", "grade": 1 }

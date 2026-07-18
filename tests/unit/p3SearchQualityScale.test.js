@@ -89,6 +89,9 @@ describe('P3 search-quality baseline gates (CI)', () => {
     test('baseline absolute gates are defined', () => {
         expect(baselineSpec.absoluteGates.landmarkHitRateMin).toBeGreaterThanOrEqual(0.90);
         expect(baselineSpec.absoluteGates.offTopicRateAtKMax).toBeLessThanOrEqual(0.05);
+        expect(baselineSpec.absoluteGates.managementIntentHitRateMin).toBeGreaterThanOrEqual(0.33);
+        expect(baselineSpec.metrics).toHaveProperty('managementIntentHitRate');
+        expect(baselineSpec.metrics).toHaveProperty('diagnosisIntentHitRate');
     });
 
     test('regression helper fails when landmark hit rate drops beyond tolerance', () => {
@@ -99,6 +102,22 @@ describe('P3 search-quality baseline gates (CI)', () => {
         const result = compareSummaryToBaseline(summary, baselineSpec);
         expect(result.pass).toBe(false);
         expect(result.failingChecks.some((c) => c.label === 'landmarkHitRate')).toBe(true);
+    });
+
+    test('expansion gold management queries carry specificity filters for productized eval', () => {
+        const expansion = require('../fixtures/search-quality-gold-expansion.json');
+        const management = (expansion.queries || []).filter((q) => q.category === 'management_intent');
+        expect(management.length).toBeGreaterThanOrEqual(3);
+        for (const q of management) {
+            expect(q.specificity).toBe('strict');
+            expect(Array.isArray(q.parsedStudyTypes)).toBe(true);
+            expect(q.parsedStudyTypes.some((c) => /Practice Guideline/i.test(c))).toBe(true);
+        }
+        const diagnosis = (expansion.queries || []).filter((q) => q.category === 'diagnosis_intent');
+        expect(diagnosis.length).toBeGreaterThanOrEqual(2);
+        for (const q of diagnosis) {
+            expect(q.specificity).toBe('moderate');
+        }
     });
 });
 

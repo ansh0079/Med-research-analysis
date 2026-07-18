@@ -5,6 +5,7 @@ const {
     inferServerQueryHints,
     annotateSearchRankMetadata,
     filterRelevantArticles,
+    filterByStudyType,
     matchesPicoInterventionComparator,
     mergeRerankedWithRemainder,
     normalizePicoProfileForReranker,
@@ -340,5 +341,32 @@ describe('PubMed publication filters', () => {
         expect(q).toContain('humans[MeSH Terms]');
         expect(q).toContain('english[lang]');
         expect(q).toContain('2020:2024[PDAT]');
+    });
+
+    test('appendPubMedPublicationFilters applies study-type clauses in moderate mode without strict clamps', () => {
+        const q = appendPubMedPublicationFilters(
+            'CAP management',
+            'moderate',
+            ['"Practice Guideline"[Publication Type]'],
+            []
+        );
+        expect(q).toContain('Practice Guideline');
+        expect(q).not.toContain('humans[MeSH Terms]');
+    });
+});
+
+describe('filterByStudyType', () => {
+    test('keeps PubMed rows and drops non-matching OpenAlex when guideline selected', () => {
+        const filtered = filterByStudyType([
+            { uid: 'p1', _source: 'pubmed', title: 'Any pubmed hit', pubtype: ['Journal Article'] },
+            { uid: 'oa1', _source: 'openalex', title: 'Narrative review of CAP', pubtype: ['Review'] },
+            {
+                uid: 'oa2',
+                _source: 'openalex',
+                title: 'ATS IDSA CAP guideline',
+                pubtype: ['Practice Guideline'],
+            },
+        ], ['"Practice Guideline"[Publication Type]']);
+        expect(filtered.map((a) => a.uid)).toEqual(['p1', 'oa2']);
     });
 });

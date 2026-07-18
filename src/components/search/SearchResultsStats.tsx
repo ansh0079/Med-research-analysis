@@ -9,6 +9,18 @@ type SourceEntry = {
   resultCount?: number;
 };
 
+const INTENT_LABEL: Record<string, string> = {
+  therapeutic: 'Management',
+  management: 'Management',
+  diagnostic: 'Diagnosis',
+  diagnosis: 'Diagnosis',
+  guideline: 'Guideline',
+  prognostic: 'Prognosis',
+  epidemiological: 'Epidemiology',
+  mechanistic: 'Mechanism',
+  general: 'General',
+};
+
 interface SearchResultsStatsProps {
   totalCount: number;
   openAccessCount: number;
@@ -16,6 +28,12 @@ interface SearchResultsStatsProps {
   retractedCount: number;
   sourceTelemetry?: Record<string, SourceEntry> | null;
   sourceFailures?: Record<string, { failed?: boolean; error?: string }> | null;
+  queryIntent?: string | null;
+  activeFilters?: {
+    specificity?: string;
+    studyTypeLabels?: string[];
+    yearRange?: [number, number];
+  } | null;
 }
 
 export const SearchResultsStats: React.FC<SearchResultsStatsProps> = ({
@@ -25,6 +43,8 @@ export const SearchResultsStats: React.FC<SearchResultsStatsProps> = ({
   retractedCount,
   sourceTelemetry,
   sourceFailures,
+  queryIntent = null,
+  activeFilters = null,
 }) => {
   const sourceEntries = sourceTelemetry ? Object.entries(sourceTelemetry) : [];
   const failureEntries = Object.entries(sourceFailures || {}).filter(([, info]) => info?.failed !== false);
@@ -33,8 +53,45 @@ export const SearchResultsStats: React.FC<SearchResultsStatsProps> = ({
     ? failureEntries
     : failedFromTelemetry.map(([src, info]) => [src, { failed: true, error: info.error }]);
 
+  const intentLabel = queryIntent ? (INTENT_LABEL[queryIntent] || queryIntent) : null;
+  const hasActiveFilters = Boolean(
+    (activeFilters?.specificity && activeFilters.specificity !== 'moderate')
+    || (activeFilters?.studyTypeLabels && activeFilters.studyTypeLabels.length > 0)
+    || activeFilters?.yearRange
+  );
+
   return (
     <div className="mb-4">
+      {(intentLabel || hasActiveFilters) && (
+        <div className="mb-2 flex flex-wrap items-center gap-1.5">
+          {intentLabel && (
+            <span
+              className="inline-flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200"
+              title="Detected clinical question intent from your query"
+            >
+              Intent · {intentLabel}
+            </span>
+          )}
+          {activeFilters?.specificity && activeFilters.specificity !== 'moderate' && (
+            <span className="rounded-md border border-violet-200 bg-violet-50 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-300">
+              Focus · {activeFilters.specificity}
+            </span>
+          )}
+          {(activeFilters?.studyTypeLabels || []).map((label) => (
+            <span
+              key={label}
+              className="rounded-md border border-indigo-200 bg-indigo-50 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-indigo-700 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300"
+            >
+              {label}
+            </span>
+          ))}
+          {activeFilters?.yearRange && (
+            <span className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+              {activeFilters.yearRange[0]}–{activeFilters.yearRange[1]}
+            </span>
+          )}
+        </div>
+      )}
       <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4">
         {[
           { label: 'Evidence found', value: totalCount, icon: 'fa-layer-group', tone: 'text-indigo-500' },

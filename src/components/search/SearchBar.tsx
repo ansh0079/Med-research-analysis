@@ -314,8 +314,85 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             )}
           </div>
 
-          {/* Specificity tabs (Broad / Balanced / Strict) removed — always use moderate */}
+          {onSpecificityChange && (
+            <div className="flex flex-wrap items-center gap-1.5 border-t border-slate-100 pt-2 dark:border-slate-800 sm:border-t-0 sm:pt-0 sm:pl-2 sm:border-l">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">Focus</span>
+              {SPECIFICITY_OPTIONS.map((opt) => {
+                const active = specificity === opt.value;
+                return (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => onSpecificityChange(opt.value)}
+                    title={opt.title}
+                    className={`min-h-11 rounded-full border px-3 py-1 text-[11px] font-semibold transition-colors sm:min-h-0 sm:px-2.5 ${
+                      active
+                        ? 'border-violet-300 bg-violet-50 text-violet-700 dark:border-violet-700 dark:bg-violet-950/50 dark:text-violet-300'
+                        : 'border-transparent bg-transparent text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300'
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
+
+        {(studyTypes.length > 0 || yearRange || (specificity && specificity !== 'moderate')) && (
+          <div className="mt-2 flex flex-wrap items-center gap-1.5">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">Active</span>
+            {specificity && specificity !== 'moderate' && (
+              <span className="inline-flex items-center gap-1 rounded-md border border-violet-200 bg-violet-50 px-2 py-0.5 text-[10px] font-bold text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-300">
+                {SPECIFICITY_OPTIONS.find((o) => o.value === specificity)?.label || specificity}
+                {onSpecificityChange && (
+                  <button type="button" aria-label="Reset focus to balanced" className="opacity-70 hover:opacity-100" onClick={() => onSpecificityChange('moderate')}>
+                    ×
+                  </button>
+                )}
+              </span>
+            )}
+            {studyTypes.map((clause) => {
+              const label = STUDY_TYPE_FILTER_OPTIONS.find((o) => o.clause === clause)?.label || 'Study type';
+              return (
+                <span
+                  key={clause}
+                  className="inline-flex items-center gap-1 rounded-md border border-indigo-200 bg-indigo-50 px-2 py-0.5 text-[10px] font-bold text-indigo-700 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300"
+                >
+                  {label}
+                  {onStudyTypesChange && (
+                    <button type="button" aria-label={`Remove ${label}`} className="opacity-70 hover:opacity-100" onClick={() => toggleStudyType(clause)}>
+                      ×
+                    </button>
+                  )}
+                </span>
+              );
+            })}
+            {yearRange && (
+              <span className="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[10px] font-bold text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                {yearRange[0]}–{yearRange[1]}
+                {onYearRangeChange && (
+                  <button type="button" aria-label="Clear year range" className="opacity-70 hover:opacity-100" onClick={() => onYearRangeChange(undefined)}>
+                    ×
+                  </button>
+                )}
+              </span>
+            )}
+            {(onStudyTypesChange || onYearRangeChange || onSpecificityChange) && (
+              <button
+                type="button"
+                className="text-[10px] font-semibold text-slate-400 underline-offset-2 hover:text-slate-600 hover:underline dark:hover:text-slate-300"
+                onClick={() => {
+                  onStudyTypesChange?.([]);
+                  onYearRangeChange?.(undefined);
+                  onSpecificityChange?.('moderate');
+                }}
+              >
+                Clear filters
+              </button>
+            )}
+          </div>
+        )}
 
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
           <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">Templates</span>

@@ -62,6 +62,7 @@ export function useSearch() {
   const [intelligenceLoading, setIntelligenceLoading] = useState(false);
   const [lowRecallLearning, setLowRecallLearning] = useState<LowRecallLearning | null>(null);
   const [searchTelemetry, setSearchTelemetry] = useState<import('@types').SearchResponse['searchTelemetry'] | null>(null);
+  const [queryIntent, setQueryIntent] = useState<string | null>(null);
   const requestIdRef = useRef(0);
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -241,6 +242,7 @@ export function useSearch() {
         setLearnerContext(nextLearnerContext || null);
         setLowRecallLearning(nextLowRecallLearning || null);
         setSearchTelemetry(data.searchTelemetry ?? null);
+        setQueryIntent(typeof data.queryIntent === 'string' ? data.queryIntent : null);
         addToSearchHistory(query.trim());
         refreshKnowledgeDriftAlerts();
 
@@ -320,6 +322,8 @@ export function useSearch() {
         setTopicGuideStatus('idle');
         setLearnerContext(null);
         setLowRecallLearning(null);
+        setQueryIntent(null);
+        setSearchTelemetry(null);
         return [];
       } finally {
         if (thisRequestId === requestIdRef.current) setLoading(false);
@@ -340,6 +344,8 @@ export function useSearch() {
     setProactiveAlert(null);
     setLearnerContext(null);
     setLowRecallLearning(null);
+    setQueryIntent(null);
+    setSearchTelemetry(null);
     setTopicGuideStatus('idle');
     setLastSearchId(null);
     setAiEnrichmentLoading(false);
@@ -364,5 +370,6 @@ export function useSearch() {
     dismissKnowledgeDriftAlert,
     lowRecallLearning,
     searchTelemetry,
+    queryIntent,
   };
 }

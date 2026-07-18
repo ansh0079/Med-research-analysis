@@ -128,6 +128,8 @@ function evaluateSearchResults(querySpec, articles, options = {}) {
         anyRelevantHit: atK.anyRelevantHit,
         landmarkHit: category === 'landmark_rct' ? atK.anyRelevantHit : null,
         guidelineHit: category === 'guideline' ? atK.anyRelevantHit : null,
+        managementIntentHit: category === 'management_intent' ? atK.anyRelevantHit : null,
+        diagnosisIntentHit: category === 'diagnosis_intent' ? atK.anyRelevantHit : null,
         missingRelevantUids: [...relevanceMap.keys()].filter((uid) => !topUids.includes(uid)),
         hitUids: topUids.filter((uid) => relevanceMap.has(uid)),
         relevanceGrades: Object.fromEntries(relevanceMap),
@@ -164,8 +166,12 @@ function summarizeSearchEval(rows) {
         requiredTypeCoverage: avg('requiredTypeCoverage'),
         landmarkHitRate: rateForCategory(items, 'landmark_rct', 'landmarkHit'),
         guidelineHitRate: rateForCategory(items, 'guideline', 'guidelineHit'),
+        managementIntentHitRate: rateForCategory(items, 'management_intent', 'managementIntentHit'),
+        diagnosisIntentHitRate: rateForCategory(items, 'diagnosis_intent', 'diagnosisIntentHit'),
         landmarkQueryCount: items.filter((row) => row.category === 'landmark_rct').length,
         guidelineQueryCount: items.filter((row) => row.category === 'guideline').length,
+        managementIntentQueryCount: items.filter((row) => row.category === 'management_intent').length,
+        diagnosisIntentQueryCount: items.filter((row) => row.category === 'diagnosis_intent').length,
         offTopicQueryCount: items.filter((row) => row.offTopicHits > 0).length,
         failingQueries: items
             .filter((row) => row.recallAtK < 1 || row.offTopicRateAtK > 0.2 || row.requiredTypeCoverage < 1)
@@ -175,6 +181,12 @@ function summarizeSearchEval(rows) {
             .map((row) => row.query),
         guidelineMisses: items
             .filter((row) => row.category === 'guideline' && !row.guidelineHit)
+            .map((row) => row.query),
+        managementIntentMisses: items
+            .filter((row) => row.category === 'management_intent' && !row.managementIntentHit)
+            .map((row) => row.query),
+        diagnosisIntentMisses: items
+            .filter((row) => row.category === 'diagnosis_intent' && !row.diagnosisIntentHit)
             .map((row) => row.query),
         categoryBreakdown: items.reduce((acc, row) => {
             const key = row.category || 'unknown';

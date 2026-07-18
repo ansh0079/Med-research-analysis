@@ -306,6 +306,84 @@ describe('summarizeSearchEval', () => {
         expect(summary.mrr).toBe(0);
         expect(summary.failingQueries).toEqual([]);
     });
+
+    test('tracks management and diagnosis intent hit rates separately', () => {
+        const rows = [
+            {
+                query: 'mgmt hit',
+                category: 'management_intent',
+                managementIntentHit: true,
+                diagnosisIntentHit: null,
+                precisionAtK: 1,
+                recallAtK: 1,
+                offTopicRateAtK: 0,
+                mrr: 1,
+                ndcgAtK: 1,
+                requiredTypeCoverage: 1,
+                anyRelevantHit: true,
+            },
+            {
+                query: 'mgmt miss',
+                category: 'management_intent',
+                managementIntentHit: false,
+                diagnosisIntentHit: null,
+                precisionAtK: 0,
+                recallAtK: 0,
+                offTopicRateAtK: 0,
+                mrr: 0,
+                ndcgAtK: 0,
+                requiredTypeCoverage: 1,
+                anyRelevantHit: false,
+            },
+            {
+                query: 'dx hit',
+                category: 'diagnosis_intent',
+                managementIntentHit: null,
+                diagnosisIntentHit: true,
+                precisionAtK: 1,
+                recallAtK: 1,
+                offTopicRateAtK: 0,
+                mrr: 1,
+                ndcgAtK: 1,
+                requiredTypeCoverage: 1,
+                anyRelevantHit: true,
+            },
+        ];
+        const summary = summarizeSearchEval(rows);
+        expect(summary.managementIntentHitRate).toBeCloseTo(0.5);
+        expect(summary.diagnosisIntentHitRate).toBe(1);
+        expect(summary.managementIntentMisses).toEqual(['mgmt miss']);
+        expect(summary.diagnosisIntentMisses).toEqual([]);
+    });
+});
+
+describe('evaluateSearchResults — intent categories', () => {
+    test('sets managementIntentHit for management_intent category', () => {
+        const spec = makeSpec({
+            query: 'CAP management guideline',
+            category: 'management_intent',
+            relevantUids: ['31573350'],
+            k: 3,
+        });
+        const hit = evaluateSearchResults(spec, makeArticles(['31573350', 'x', 'y']));
+        expect(hit.managementIntentHit).toBe(true);
+        expect(hit.diagnosisIntentHit).toBeNull();
+
+        const miss = evaluateSearchResults(spec, makeArticles(['x', 'y', 'z']));
+        expect(miss.managementIntentHit).toBe(false);
+    });
+
+    test('sets diagnosisIntentHit for diagnosis_intent category', () => {
+        const spec = makeSpec({
+            query: 'sepsis diagnosis qSOFA',
+            category: 'diagnosis_intent',
+            relevantUids: ['26903338'],
+            k: 3,
+        });
+        const hit = evaluateSearchResults(spec, makeArticles(['26903338', 'x', 'y']));
+        expect(hit.diagnosisIntentHit).toBe(true);
+        expect(hit.managementIntentHit).toBeNull();
+    });
 });
 
 // ---------------------------------------------------------------------------

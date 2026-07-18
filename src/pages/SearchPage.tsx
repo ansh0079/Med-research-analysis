@@ -15,6 +15,7 @@ import { LowRecallBanner } from '@components/search/LowRecallBanner';
 import { RelatedTopicsBar } from '@components/search/RelatedTopicsBar';
 import { VerifyEmailBanner } from '@components/search/VerifyEmailBanner';
 import { SearchResultsStats } from '@components/search/SearchResultsStats';
+import { STUDY_TYPE_FILTER_OPTIONS } from '@utils/searchStudyFilters';
 import { PersonalizedRemediationBanner } from '@components/search/PersonalizedRemediationBanner';
 import { ShiftReviewBar } from '@components/search/ShiftReviewBar';
 import { SearchResultsFilterSection } from '@components/search/SearchResultsFilterSection';
@@ -66,6 +67,7 @@ export const SearchPage: React.FC = () => {
     dismissKnowledgeDriftAlert,
     lowRecallLearning,
     searchTelemetry,
+    queryIntent,
     recentSearches,
     pdfViewer,
     activeArticle,
@@ -203,6 +205,14 @@ export const SearchPage: React.FC = () => {
             retractedCount={retractedCount}
             sourceTelemetry={searchTelemetry?.sources}
             sourceFailures={searchTelemetry?.sourceFailures}
+            queryIntent={queryIntent}
+            activeFilters={{
+              specificity: filters.specificity,
+              studyTypeLabels: (filters.studyTypes || [])
+                .map((clause) => STUDY_TYPE_FILTER_OPTIONS.find((o) => o.clause === clause)?.label)
+                .filter((label): label is string => Boolean(label)),
+              yearRange: filters.yearRange,
+            }}
           />
         )}
 

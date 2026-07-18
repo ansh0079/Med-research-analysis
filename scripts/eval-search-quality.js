@@ -65,8 +65,42 @@ function evaluateAbsoluteGates(summary, baselineSpec = {}) {
             pass: summary.guidelineHitRate >= gates.guidelineHitRateMin,
         });
     }
+    if (gates.managementIntentHitRateMin != null && summary.managementIntentHitRate != null) {
+        checks.push({
+            label: 'managementIntentHitRateMin',
+            current: summary.managementIntentHitRate,
+            threshold: gates.managementIntentHitRateMin,
+            pass: summary.managementIntentHitRate >= gates.managementIntentHitRateMin,
+        });
+    }
+    if (gates.diagnosisIntentHitRateMin != null && summary.diagnosisIntentHitRate != null) {
+        checks.push({
+            label: 'diagnosisIntentHitRateMin',
+            current: summary.diagnosisIntentHitRate,
+            threshold: gates.diagnosisIntentHitRateMin,
+            pass: summary.diagnosisIntentHitRate >= gates.diagnosisIntentHitRateMin,
+        });
+    }
     const failingChecks = checks.filter((row) => !row.pass);
     return { pass: failingChecks.length === 0, checks, failingChecks };
+}
+
+function buildGoldSearchUrl(spec, k) {
+    const sources = spec.sources || SOURCES;
+    const params = new URLSearchParams({
+        q: spec.query,
+        sources: String(sources),
+        limit: String(k),
+        intelligence: 'async',
+    });
+    if (spec.specificity) params.set('specificity', String(spec.specificity));
+    if (Array.isArray(spec.parsedStudyTypes) && spec.parsedStudyTypes.length) {
+        params.set('parsedStudyTypes', JSON.stringify(spec.parsedStudyTypes));
+    }
+    if (Array.isArray(spec.parsedYearFilters) && spec.parsedYearFilters.length) {
+        params.set('parsedYearFilters', JSON.stringify(spec.parsedYearFilters));
+    }
+    return `${BASE}/api/search?${params.toString()}`;
 }
 
 // ============================================================
@@ -210,8 +244,7 @@ async function runGoldEval(goldPath) {
 
     const rows = [];
     for (const spec of queries) {
-        const sources = spec.sources || SOURCES;
-        const url = `${BASE}/api/search?q=${encodeURIComponent(spec.query)}&sources=${encodeURIComponent(sources)}&limit=${k}&intelligence=async`;
+        const url = buildGoldSearchUrl(spec, k);
         process.stdout.write(`  ${spec.query.slice(0, 64).padEnd(64)} `);
         try {
             const data = await fetchJSON(url);
@@ -254,7 +287,7 @@ async function runGoldEval(goldPath) {
     const absoluteGates = baselineSpec ? evaluateAbsoluteGates(summary, baselineSpec) : null;
 
     console.log('\nSUMMARY');
-    console.log(`Queries: ${summary.queryCount} (landmark ${summary.landmarkQueryCount}, guideline ${summary.guidelineQueryCount})`);
+    console.log(`Queries: ${summary.queryCount} (landmark ${summary.landmarkQueryCount}, guideline ${summary.guidelineQueryCount}, management ${summary.managementIntentQueryCount || 0}, diagnosis ${summary.diagnosisIntentQueryCount || 0})`);
     console.log(`Precision@5: ${summary.precisionAt5.toFixed(3)}`);
     console.log(`Recall@${k}: ${summary.recallAtK.toFixed(3)}`);
     console.log(`Recall proxy: ${summary.recallProxy.toFixed(3)}`);
@@ -264,6 +297,8 @@ async function runGoldEval(goldPath) {
     console.log(`Off-topic@${k}: ${summary.offTopicRateAtK.toFixed(3)} (${summary.offTopicQueryCount} queries with off-topic hits)`);
     console.log(`Landmark hit rate: ${summary.landmarkHitRate == null ? 'n/a' : summary.landmarkHitRate.toFixed(3)}`);
     console.log(`Guideline hit rate: ${summary.guidelineHitRate == null ? 'n/a' : summary.guidelineHitRate.toFixed(3)}`);
+    console.log(`Management intent hit rate: ${summary.managementIntentHitRate == null ? 'n/a' : summary.managementIntentHitRate.toFixed(3)}`);
+    console.log(`Diagnosis intent hit rate: ${summary.diagnosisIntentHitRate == null ? 'n/a' : summary.diagnosisIntentHitRate.toFixed(3)}`);
     console.log(`Type coverage: ${summary.requiredTypeCoverage.toFixed(3)}`);
     if (summary.failingQueries.length) {
         console.log('\nFailing queries:');

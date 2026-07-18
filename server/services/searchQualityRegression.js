@@ -8,6 +8,8 @@ const DEFAULT_TOLERANCE = {
     offTopicRateAtK: 0.05,
     landmarkHitRate: 0.03,
     guidelineHitRate: 0.05,
+    managementIntentHitRate: 0.15,
+    diagnosisIntentHitRate: 0.15,
     anyRelevantHitRate: 0.05,
 };
 
@@ -39,6 +41,8 @@ function compareSummaryToBaseline(summary, baselineSpec = {}) {
         }),
         compareMetric(summary.landmarkHitRate, baseline.landmarkHitRate, tolerance.landmarkHitRate, { label: 'landmarkHitRate' }),
         compareMetric(summary.guidelineHitRate, baseline.guidelineHitRate, tolerance.guidelineHitRate, { label: 'guidelineHitRate' }),
+        compareMetric(summary.managementIntentHitRate, baseline.managementIntentHitRate, tolerance.managementIntentHitRate, { label: 'managementIntentHitRate' }),
+        compareMetric(summary.diagnosisIntentHitRate, baseline.diagnosisIntentHitRate, tolerance.diagnosisIntentHitRate, { label: 'diagnosisIntentHitRate' }),
         compareMetric(summary.anyRelevantHitRate, baseline.anyRelevantHitRate, tolerance.anyRelevantHitRate, { label: 'anyRelevantHitRate' }),
     ].filter((row) => !row.skipped);
 
