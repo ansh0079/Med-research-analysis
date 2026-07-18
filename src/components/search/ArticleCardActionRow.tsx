@@ -50,6 +50,7 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
   const [consort, setConsort] = useState<ConsortResult | null>(null);
   const [consortExpanded, setConsortExpanded] = useState(false);
   const [userFeedback, setUserFeedback] = useState<'helpful' | 'not_helpful' | null>(null);
+  const [feedbackReason, setFeedbackReason] = useState('');
   const [feedbackPending, setFeedbackPending] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
 
@@ -253,7 +254,7 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
               onFeedback?.(article, 'not_helpful');
               setFeedbackPending(true);
               try {
-                await api.search.recordSearchFeedback(article.uid, 'not_helpful', undefined, searchId, article._decisionId ?? undefined);
+                await api.search.recordSearchFeedback(article.uid, 'not_helpful', feedbackReason || undefined, searchId, article._decisionId ?? undefined);
               } catch {
                 setUserFeedback(previousFeedback);
               } finally {
@@ -270,6 +271,36 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
             <i className={`${userFeedback === 'not_helpful' ? 'fas' : 'far'} fa-thumbs-down`} />
           </button>
         </div>
+
+        {userFeedback === 'not_helpful' && (
+          <select
+            value={feedbackReason}
+            onChange={async (event) => {
+              const reason = event.target.value;
+              setFeedbackReason(reason);
+              if (!reason) return;
+              setFeedbackPending(true);
+              try {
+                await api.search.recordSearchFeedback(article.uid, 'not_helpful', reason, searchId, article._decisionId ?? undefined);
+              } finally {
+                setFeedbackPending(false);
+              }
+            }}
+            className="h-8 rounded-lg border border-red-100 bg-red-50 px-2 text-[11px] font-semibold text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300"
+            aria-label="Reason this result was not helpful"
+          >
+            <option value="">Reason</option>
+            <option value="wrong_paper">Wrong paper</option>
+            <option value="off_topic">Off-topic</option>
+            <option value="missing_guideline">Missing guideline</option>
+            <option value="outdated">Outdated</option>
+            <option value="unsafe_overclaim">Unsafe overclaim</option>
+            <option value="too_basic">Too basic</option>
+            <option value="too_complex">Too complex</option>
+            <option value="bad_citation">Bad citation</option>
+            <option value="poor_explanation">Poor explanation</option>
+          </select>
+        )}
 
         {/* More menu */}
         <div className="relative ml-auto" onBlur={closeMoreMenuOnFocusLeave}>

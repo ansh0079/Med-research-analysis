@@ -223,6 +223,7 @@ export class DocumentsApi extends BaseApiClient {
     clinicalUsefulness?: number;
     timeSavedMinutes?: number;
     comment?: string;
+    metadata?: Record<string, unknown>;
   }): Promise<void> {
     const response = await this.fetchWithSession(`${API_BASE}/api/analytics/quality-feedback`, {
       method: 'POST',

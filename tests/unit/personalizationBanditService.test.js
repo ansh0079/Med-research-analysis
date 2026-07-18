@@ -70,14 +70,17 @@ describe('personalizationBanditService', () => {
         expect(db.insertPersonalizationDecision).toHaveBeenCalled();
     });
 
-    test('selectSynopsisStyleArm uses user scope only after the cold-start pull threshold', async () => {
+    test('selectSynopsisStyleArm uses user scope only after cold-start and global density thresholds', async () => {
         const db = {
             ensurePersonalizationArms: jest.fn().mockResolvedValue(true),
             listPersonalizationArmStates: jest.fn(async (_policyType, scopeKey) => {
                 if (scopeKey === 'user:u1') {
                     return [{ arm_id: 'teaching_points', alpha: 6, beta: 1, pulls: 8 }];
                 }
-                return [{ arm_id: 'bottom_line_first', alpha: 2, beta: 1, pulls: 20 }];
+                return [
+                    { arm_id: 'bottom_line_first', alpha: 2, beta: 1, pulls: 20 },
+                    { arm_id: 'teaching_points', alpha: 2, beta: 2, pulls: 4 },
+                ];
             }),
         };
 

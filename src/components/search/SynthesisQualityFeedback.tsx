@@ -8,7 +8,28 @@ interface SynthesisQualityFeedbackProps {
 export const SynthesisQualityFeedback: React.FC<SynthesisQualityFeedbackProps> = ({ topic }) => {
   const [clinicalUsefulness, setClinicalUsefulness] = useState(0);
   const [timeSavedMinutes, setTimeSavedMinutes] = useState('');
+  const [reasons, setReasons] = useState<string[]>([]);
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+
+  const reasonOptions = [
+    ['wrong_paper', 'Wrong paper'],
+    ['off_topic', 'Off-topic'],
+    ['missing_guideline', 'Missing guideline'],
+    ['outdated', 'Outdated'],
+    ['unsafe_overclaim', 'Unsafe overclaim'],
+    ['too_basic', 'Too basic'],
+    ['too_complex', 'Too complex'],
+    ['bad_citation', 'Bad citation'],
+    ['poor_explanation', 'Poor explanation'],
+  ] as const;
+
+  const toggleReason = (reason: string) => {
+    setReasons((current) => (
+      current.includes(reason)
+        ? current.filter((item) => item !== reason)
+        : [...current, reason]
+    ));
+  };
 
   const submit = async () => {
     if (clinicalUsefulness < 1) return;
@@ -19,6 +40,7 @@ export const SynthesisQualityFeedback: React.FC<SynthesisQualityFeedbackProps> =
         topic,
         clinicalUsefulness,
         timeSavedMinutes: timeSavedMinutes ? Number(timeSavedMinutes) : undefined,
+        metadata: { reasons },
       });
       setStatus('saved');
     } catch {
@@ -37,6 +59,25 @@ export const SynthesisQualityFeedback: React.FC<SynthesisQualityFeedbackProps> =
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/40 p-4">
       <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Rate this synthesis</p>
+      <div className="mb-3 flex flex-wrap gap-1.5">
+        {reasonOptions.map(([value, label]) => {
+          const active = reasons.includes(value);
+          return (
+            <button
+              key={value}
+              type="button"
+              onClick={() => toggleReason(value)}
+              className={`rounded-full border px-2 py-1 text-[10px] font-semibold transition-colors ${
+                active
+                  ? 'border-indigo-300 bg-indigo-50 text-indigo-700 dark:border-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300'
+                  : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400'
+              }`}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
       <div className="flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-1">
           {[1, 2, 3, 4, 5].map((score) => (

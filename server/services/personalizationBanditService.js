@@ -39,6 +39,7 @@ const RECOMMENDATION_ARM_BY_TYPE = {
 
 const MIN_PULLS_FOR_USER_ARM = Number(process.env.BANDIT_MIN_USER_PULLS || 8);
 const FULL_PULLS_FOR_USER_ARM = Number(process.env.BANDIT_FULL_USER_PULLS || 30);
+const MIN_GLOBAL_PULLS_FOR_POLICY = Number(process.env.BANDIT_MIN_GLOBAL_PULLS || 20);
 
 // ─── synopsis_style arms ─────────────────────────────────────────────────────
 // Each arm maps to a rendering style injected into the synopsis prompt.
@@ -135,6 +136,21 @@ async function loadArmSamples(db, policyType, armIds, scopeKey) {
         samples[armId] = sampleBeta(row?.alpha ?? 1, row?.beta ?? 1);
     }
     return samples;
+}
+
+async function policyHasDenseGlobalData(db, policyType, fallbackArm, armIds) {
+    if (!db?.listPersonalizationArmStates) {
+        return { ok: false, globalPulls: 0, rows: [] };
+    }
+    const rows = await db.listPersonalizationArmStates(policyType, 'global').catch(() => []);
+    const globalPulls = rows.reduce((sum, row) => sum + Number(row.pulls || 0), 0);
+    const triedArms = new Set(rows.filter((row) => Number(row.pulls || 0) > 0).map((row) => row.arm_id));
+    const nonFallbackTried = Array.from(triedArms).some((armId) => armId !== fallbackArm && armIds.includes(armId));
+    return {
+        ok: globalPulls >= MIN_GLOBAL_PULLS_FOR_POLICY && nonFallbackTried,
+        globalPulls,
+        rows,
+    };
 }
 
 function hierarchicalUserWeight(userPulls, {
@@ -314,6 +330,20 @@ async function selectSearchRankingArm(db, userId, context = {}) {
     await ensurePolicyArms(db, POLICY_SEARCH_RANKING, armIds, 'global');
     if (userId) await ensurePolicyArms(db, POLICY_SEARCH_RANKING, armIds, userScope);
 
+    const density = await policyHasDenseGlobalData(db, POLICY_SEARCH_RANKING, 'heuristic_default', armIds);
+    if (!density.ok) {
+        return {
+            armId: 'heuristic_default',
+            weights: SEARCH_RANKING_ARMS.heuristic_default,
+            scopeKey: 'global',
+            sampled: null,
+            propensity: 1,
+            selectionSource: 'density_gate',
+            densityGate: { globalPulls: density.globalPulls, minGlobalPulls: MIN_GLOBAL_PULLS_FOR_POLICY },
+            contextFeatures,
+        };
+    }
+
     const [globalSamples, userSamples] = await Promise.all([
         loadArmSamples(db, POLICY_SEARCH_RANKING, armIds, 'global'),
         userId ? loadArmSamples(db, POLICY_SEARCH_RANKING, armIds, userScope) : Promise.resolve({}),
@@ -432,6 +462,9 @@ async function applyRecommendationBandit(db, userId, recommendations = [], conte
     await ensurePolicyArms(db, POLICY_RECOMMENDATION, armIds, 'global');
     if (userId) await ensurePolicyArms(db, POLICY_RECOMMENDATION, armIds, userScope);
 
+    const density = await policyHasDenseGlobalData(db, POLICY_RECOMMENDATION, 'explore', armIds);
+    if (!density.ok) return recommendations;
+
     const userRows = userId
         ? await db.listPersonalizationArmStates(POLICY_RECOMMENDATION, userScope).catch(() => [])
         : [];
@@ -509,6 +542,18 @@ async function selectSynopsisStyleArm(db, userId) {
     await ensurePolicyArms(db, POLICY_SYNOPSIS_STYLE, armIds, 'global');
     if (userId) await ensurePolicyArms(db, POLICY_SYNOPSIS_STYLE, armIds, userScope);
 
+    const density = await policyHasDenseGlobalData(db, POLICY_SYNOPSIS_STYLE, 'bottom_line_first', armIds);
+    if (!density.ok) {
+        return {
+            armId: 'bottom_line_first',
+            style: SYNOPSIS_STYLE_ARMS.bottom_line_first,
+            scopeKey: 'global',
+            sampled: null,
+            selectionSource: 'density_gate',
+            densityGate: { globalPulls: density.globalPulls, minGlobalPulls: MIN_GLOBAL_PULLS_FOR_POLICY },
+        };
+    }
+
     const userRows = userId
         ? await db.listPersonalizationArmStates(POLICY_SYNOPSIS_STYLE, userScope).catch(() => [])
         : [];
@@ -543,6 +588,18 @@ async function selectTeachingStrategyArm(db, userId) {
     const userScope = scopeKeyForUser(userId);
     await ensurePolicyArms(db, POLICY_TEACHING_STRATEGY, armIds, 'global');
     if (userId) await ensurePolicyArms(db, POLICY_TEACHING_STRATEGY, armIds, userScope);
+
+    const density = await policyHasDenseGlobalData(db, POLICY_TEACHING_STRATEGY, 'direct', armIds);
+    if (!density.ok) {
+        return {
+            armId: 'direct',
+            strategy: TEACHING_STRATEGY_ARMS.direct,
+            scopeKey: 'global',
+            sampled: null,
+            selectionSource: 'density_gate',
+            densityGate: { globalPulls: density.globalPulls, minGlobalPulls: MIN_GLOBAL_PULLS_FOR_POLICY },
+        };
+    }
 
     const userRows = userId
         ? await db.listPersonalizationArmStates(POLICY_TEACHING_STRATEGY, userScope).catch(() => [])
@@ -583,6 +640,18 @@ async function selectCaseDifficultyArm(db, userId) {
     const userScope = scopeKeyForUser(userId);
     await ensurePolicyArms(db, POLICY_CASE_DIFFICULTY, armIds, 'global');
     if (userId) await ensurePolicyArms(db, POLICY_CASE_DIFFICULTY, armIds, userScope);
+
+    const density = await policyHasDenseGlobalData(db, POLICY_CASE_DIFFICULTY, fallback, armIds);
+    if (!density.ok) {
+        return {
+            armId: fallback,
+            difficulty: CASE_DIFFICULTY_ARMS[fallback].difficulty,
+            scopeKey: 'global',
+            sampled: null,
+            selectionSource: 'density_gate',
+            densityGate: { globalPulls: density.globalPulls, minGlobalPulls: MIN_GLOBAL_PULLS_FOR_POLICY },
+        };
+    }
 
     const userRows = userId
         ? await db.listPersonalizationArmStates(POLICY_CASE_DIFFICULTY, userScope).catch(() => [])

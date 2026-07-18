@@ -30,6 +30,59 @@ export type ProductionObservability = {
   actions: string[];
 };
 
+export type TopicReadinessTier = 'needs_enrichment' | 'search_ready' | 'learner_ready' | 'flagship';
+
+export type TopicReadinessRow = {
+  source: 'curriculum' | 'topic_knowledge';
+  curriculumTopicId: number | string | null;
+  displayName: string;
+  normalizedTopic: string;
+  block: string;
+  priority: string;
+  volatility: string;
+  seedStatus: string;
+  suggestedQuery: string;
+  lastSeededAt: string | null;
+  reviewDueAt: string | null;
+  topicKnowledge: {
+    id: number | string;
+    status: string;
+    confidence: number;
+    updatedAt: string | null;
+    lastRefreshedAt: string | null;
+  } | null;
+  counts: {
+    sourceArticles: number;
+    guidelines: number;
+    teachingObjects: number;
+    paperObjects: number;
+    mcqObjects: number;
+    claims: number;
+  };
+  tier: TopicReadinessTier;
+  missing: string[];
+};
+
+export type TopicReadinessResponse = {
+  readiness: {
+    generatedAt: string;
+    curriculumSlug: string;
+    summary: {
+      canonicalTopics: number;
+      curriculumTopics: number;
+      topicKnowledgeRows: number;
+      knowledgeOnlyTopics: number;
+      byTier: Partial<Record<TopicReadinessTier, number>>;
+      byBlock: Record<string, number>;
+      bySeedStatus: Record<string, number>;
+      tableCounts: Record<string, number>;
+    };
+    limit: number;
+    offset: number;
+    topics: TopicReadinessRow[];
+  };
+};
+
 export class KnowledgeAdminApi extends KnowledgeCoreApi {
   async getLearningHealth(options: { limit?: number; days?: number } = {}): Promise<LearningHealthResponse> {
     const params = new URLSearchParams();
@@ -75,6 +128,20 @@ export class KnowledgeAdminApi extends KnowledgeCoreApi {
     const params = new URLSearchParams();
     if (options.days) params.set('days', String(options.days));
     const response = await this.fetchWithSession(`${API_BASE}/api/admin/production-observability?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getTopicReadiness(options: {
+    limit?: number;
+    offset?: number;
+    curriculumSlug?: string;
+  } = {}): Promise<TopicReadinessResponse> {
+    const params = new URLSearchParams();
+    if (options.limit) params.set('limit', String(options.limit));
+    if (options.offset) params.set('offset', String(options.offset));
+    if (options.curriculumSlug) params.set('curriculumSlug', options.curriculumSlug);
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/topics/readiness?${params}`);
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }

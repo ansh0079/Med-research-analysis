@@ -151,6 +151,30 @@
       "all": ["\\bsurviving sepsis\\b|\\bsepsis campaign\\b", "\\bguideline\\b|\\bseptic shock\\b|\\bvasopressors?\\b"],
       "aliases": ["Surviving Sepsis Campaign 2021"],
       "pmids": ["34599691", "35791800"]
+    },
+    {
+      "source": "canonical_topic_alias",
+      "all": ["\\bheart failure\\b|\\bhfref\\b|\\bhfpef\\b|\\breduced ejection fraction\\b|\\bpreserved ejection fraction\\b"],
+      "aliases": ["heart failure", "HFrEF", "HFpEF", "reduced ejection fraction", "preserved ejection fraction", "cardiac failure"],
+      "pmids": ["35363499", "35378257", "37637197"]
+    },
+    {
+      "source": "canonical_topic_alias",
+      "all": ["\\bcopd\\b|\\bchronic obstructive pulmonary\\b|\\bacute copd exacerbation\\b|\\bexacerbation of copd\\b"],
+      "aliases": ["COPD exacerbation", "acute COPD exacerbation", "AECOPD", "chronic obstructive pulmonary disease exacerbation"],
+      "pmids": ["32579807"]
+    },
+    {
+      "source": "canonical_topic_alias",
+      "all": ["\\bards\\b|\\bacute respiratory distress syndrome\\b|\\bacute lung injury\\b"],
+      "aliases": ["ARDS", "acute respiratory distress syndrome", "acute lung injury", "ARDSNet", "Berlin Definition"],
+      "pmids": ["10793162", "23688302", "22797452"]
+    },
+    {
+      "source": "canonical_topic_alias",
+      "all": ["\\bischaemic\\b|\\bischemic\\b|\\bhaemorrhage\\b|\\bhemorrhage\\b|\\bpaediatric\\b|\\bpediatric\\b"],
+      "aliases": ["ischemic", "ischaemic", "hemorrhage", "haemorrhage", "pediatric", "paediatric"],
+      "pmids": []
     }
   ]
 }
