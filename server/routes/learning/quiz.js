@@ -2,7 +2,11 @@ const logger = require('../../config/logger');
 const spacedRep = require('../../services/spacedRepService');
 const { applyEffectiveDifficultyCalibration, sessionScorePct, detectPlateauAndSuggestLevelUp } = require('../../services/learningDifficultyService');
 const { inferMisconceptionCategory } = require('../../services/misconceptionCategoryService');
-const { recordMasterySnapshot, getLearningVelocity } = require('../../services/learningVelocityService');
+const {
+    recordMasterySnapshot,
+    getLearningVelocity,
+    getQuizLiftReport,
+} = require('../../services/learningVelocityService');
 const { updateInferredMisconceptionsForTopic } = require('../../services/misconceptionInferenceService');
 const { analyzeQuizErrorPatterns } = require('../../services/quizErrorPatternService');
 const {
@@ -441,6 +445,25 @@ function registerQuizRoutes(app, deps) {
             res.json({ attempts });
         } catch (error) {
             req.log.error({ err: error }, 'Get quiz history error');
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    /** Before/after mastery lift for a topic (optionally after recent agent tutoring). */
+    app.get('/api/learning/quiz-lift', requireAuthJwt, rateLimit(30, 60), async (req, res) => {
+        try {
+            const topic = String(req.query.topic || '').trim();
+            if (topic.length < 2) {
+                return res.status(400).json({ error: 'topic query parameter is required' });
+            }
+            const days = Math.min(Math.max(parseInt(String(req.query.days || '7'), 10) || 7, 1), 30);
+            const lift = await getQuizLiftReport(db, req.user.id, topic, { days });
+            if (!lift) {
+                return res.json({ lift: null, topic, message: 'Not enough mastery snapshots yet — complete another quiz on this topic.' });
+            }
+            return res.json({ lift, topic });
+        } catch (error) {
+            req.log.error({ err: error }, 'Get quiz lift error');
             res.status(500).json({ error: 'Internal Server Error' });
         }
     });

@@ -292,5 +292,27 @@ describe('searchLearningService', () => {
 
         expect(missed._missedQuizCount).toBe(3);
         expect(missed._learningBoost).toBeGreaterThan(0);
+        expect(missed._learnerAdaptationReason).toMatch(/Boosted — 3 quiz misses/i);
+    });
+
+    test('buildLearnerAdaptationReason includes misconception gap text', () => {
+        const { buildLearnerAdaptationReason } = require('../../server/services/searchLearningService');
+        const reason = buildLearnerAdaptationReason(
+            {
+                uid: 'pubmed-1',
+                title: 'SGLT2 inhibitors in heart failure with reduced ejection fraction',
+                abstract: 'Dapagliflozin reduced worsening heart failure events.',
+                _learningBoost: 1.2,
+            },
+            {
+                misconceptionBoost: {
+                    misconceptionPhrases: ['SGLT2 inhibitors only for diabetes not heart failure'],
+                    correctiveArticleUids: new Map([['pubmed-1', 1]]),
+                },
+            },
+            2
+        );
+        expect(reason).toMatch(/missed quiz/i);
+        expect(reason).toMatch(/SGLT2/i);
     });
 });

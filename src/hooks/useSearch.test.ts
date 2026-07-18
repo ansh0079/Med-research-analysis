@@ -187,7 +187,7 @@ describe('useSearch', () => {
     expect(mockSetResults).toHaveBeenCalledWith(mockArticles);
   });
 
-  it('does not re-fetch the same query and filters after the duplicate window', async () => {
+  it('re-fetches an identical repeat query (no hook-level cache — results are personalized per request)', async () => {
     const { result } = renderHook(() => useSearch());
 
     await act(async () => {
@@ -199,10 +199,10 @@ describe('useSearch', () => {
       await result.current.search('diabetes');
     });
 
-    expect(mockedApi.search.search).toHaveBeenCalledTimes(1);
+    expect(mockedApi.search.search).toHaveBeenCalledTimes(2);
   });
 
-  it('logs impressions again when serving an exact repeat from hook cache', async () => {
+  it('logs impressions again on an exact repeat search', async () => {
     mockedApi.search.search.mockResolvedValue({
       articles: mockArticles,
       searchId: 42,
@@ -220,7 +220,7 @@ describe('useSearch', () => {
       await result.current.search('diabetes');
     });
 
-    expect(mockedApi.search.search).toHaveBeenCalledTimes(1);
+    expect(mockedApi.search.search).toHaveBeenCalledTimes(2);
     expect(mockedApi.search.logSearchImpressions).toHaveBeenCalledTimes(2);
     expect(mockedApi.search.logSearchImpressions).toHaveBeenLastCalledWith(
       42,

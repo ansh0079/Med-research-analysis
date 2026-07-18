@@ -1,17 +1,17 @@
 {
-  "version": 1,
-  "recordedAt": "2026-07-02",
-  "source": "docs/LAUNCH_PROOF_RUNBOOK.md measured baseline before Phase 2 gates",
+  "version": 2,
+  "recordedAt": "2026-07-18",
+  "source": "live gold eval after expansion PMID corrections + pinned-landmark filter bypass",
   "metrics": {
-    "recallAtK": 0.59,
-    "mrr": 0.37,
-    "ndcgAtK": 0.42,
-    "precisionAt5": 0.12,
-    "offTopicRateAtK": 0.0,
-    "landmarkHitRate": 0.585,
+    "recallAtK": 0.969,
+    "mrr": 0.625,
+    "ndcgAtK": 0.705,
+    "precisionAt5": 0.185,
+    "offTopicRateAtK": 0.002,
+    "landmarkHitRate": 1.0,
     "guidelineHitRate": 1.0,
-    "anyRelevantHitRate": 0.63,
-    "requiredTypeCoverage": 0.88
+    "anyRelevantHitRate": 0.985,
+    "requiredTypeCoverage": 0.969
   },
   "regressionTolerance": {
     "recallAtK": 0.05,
@@ -24,8 +24,8 @@
     "anyRelevantHitRate": 0.05
   },
   "absoluteGates": {
-    "landmarkHitRateMin": 0.55,
-    "offTopicRateAtKMax": 0.20,
+    "landmarkHitRateMin": 0.90,
+    "offTopicRateAtKMax": 0.05,
     "guidelineHitRateMin": 0.50
   }
 }

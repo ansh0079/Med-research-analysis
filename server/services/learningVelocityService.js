@@ -66,9 +66,61 @@ function formatLearningVelocity(velocity) {
     return `LEARNING VELOCITY: ${sign}${velocity.pointsPerDay} mastery points/day over ${velocity.daysSpanned}d (${velocity.fromScore}% → ${velocity.toScore}%, trend: ${velocity.trend}).`;
 }
 
+/**
+ * Before/after mastery report for a topic, optionally noting recent agent tutoring.
+ * Uses mastery snapshots (same source as learning velocity) plus learning_events.
+ */
+async function getQuizLiftReport(db, userId, topic, {
+    days = 7,
+    agentLookbackHours = 72,
+} = {}) {
+    if (!db || !userId || !topic) return null;
+    const velocity = await getLearningVelocity(db, userId, topic, { days }).catch(() => null);
+    if (!velocity) return null;
+
+    let agentTutoredAt = null;
+    const agentTypes = new Set(['agent_turn_completed', 'agent_message', 'agent_session_reflection']);
+    const cutoffMs = Date.now() - Math.max(1, agentLookbackHours) * 60 * 60 * 1000;
+    if (typeof db.listLearningEvents === 'function') {
+        const events = await db.listLearningEvents({
+            userId,
+            topic,
+            limit: 40,
+        }).catch(() => []);
+        const agentEvent = (Array.isArray(events) ? events : []).find((e) => {
+            const type = String(e?.eventType || e?.event_type || '');
+            if (!agentTypes.has(type)) return false;
+            const ts = new Date(e?.occurredAt || e?.createdAt || e?.created_at || 0).getTime();
+            return !ts || ts >= cutoffMs;
+        });
+        agentTutoredAt = agentEvent
+            ? (agentEvent.occurredAt || agentEvent.createdAt || agentEvent.created_at || null)
+            : null;
+    }
+
+    return {
+        topic,
+        beforeMastery: velocity.fromScore,
+        afterMastery: velocity.toScore,
+        deltaPoints: velocity.deltaPoints,
+        pointsPerDay: velocity.pointsPerDay,
+        trend: velocity.trend,
+        daysSpanned: velocity.daysSpanned,
+        snapshotCount: velocity.snapshotCount,
+        afterAgentTutoring: Boolean(agentTutoredAt),
+        agentTutoredAt,
+        summary: velocity.deltaPoints > 0
+            ? `Mastery ${velocity.fromScore}% → ${velocity.toScore}% (+${velocity.deltaPoints})`
+            : velocity.deltaPoints < 0
+                ? `Mastery ${velocity.fromScore}% → ${velocity.toScore}% (${velocity.deltaPoints})`
+                : `Mastery steady at ${velocity.toScore}%`,
+    };
+}
+
 module.exports = {
     computeVelocityFromSnapshots,
     recordMasterySnapshot,
     getLearningVelocity,
+    getQuizLiftReport,
     formatLearningVelocity,
 };

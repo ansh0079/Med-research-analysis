@@ -69,30 +69,30 @@
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "cardiology",
-      "relevantUids": ["10966806"],
+      "relevantUids": ["10376614"],
       "offTopicUids": ["30221597"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "MERIT-HF (10966806)."
+      "notes": "MERIT-HF Lancet 1999 (10376614). Prior fixture PMID was incorrect."
     },
     {
       "query": "cardiac resynchronization therapy heart failure COMPANION trial",
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "cardiology",
-      "relevantUids": ["12963388"],
+      "relevantUids": ["15152059"],
       "offTopicUids": ["25176015"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "COMPANION CRT (12963388)."
+      "notes": "COMPANION CRT Bristow NEJM 2004 (15152059). Prior fixture PMID was incorrect."
     },
     {
       "query": "rivaroxaban treatment acute deep vein thrombosis EINSTEIN",
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "hematology",
-      "relevantUids": ["21635378"],
+      "relevantUids": ["21128814"],
       "offTopicUids": ["19717844"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "EINSTEIN-DVT (21635378)."
+      "notes": "EINSTEIN-DVT Bauersachs NEJM 2010 (21128814). Prior fixture PMID was incorrect."
     },
     {
       "query": "semaglutide once weekly obesity weight loss STEP 1",
@@ -109,30 +109,30 @@
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "endocrinology",
-      "relevantUids": ["29260272"],
+      "relevantUids": ["22449319"],
       "offTopicUids": ["9742976"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "STAMPEDE surgery vs medical therapy (29260272)."
+      "notes": "STAMPEDE Schauer NEJM 2012 (22449319). Prior fixture PMID was incorrect."
     },
     {
       "query": "trastuzumab adjuvant HER2 positive breast cancer BCIRG 006",
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "oncology",
-      "relevantUids": ["17409101"],
+      "relevantUids": ["21991949"],
       "offTopicUids": ["29226797"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "BCIRG 006 trastuzumab (17409101)."
+      "notes": "BCIRG-006 Slamon NEJM 2011 (21991949). Prior fixture PMID was incorrect."
     },
     {
       "query": "imatinib versus interferon chronic myeloid leukemia IRIS trial",
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "oncology",
-      "relevantUids": ["11430304"],
+      "relevantUids": ["12637609"],
       "offTopicUids": ["33283989"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "IRIS imatinib CML (11430304)."
+      "notes": "IRIS imatinib CML O'Brien NEJM 2003 (12637609). Prior fixture PMID was incorrect."
     },
     {
       "query": "tranexamic acid trauma hemorrhage CRASH-2",
@@ -149,100 +149,100 @@
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "infectious_disease",
-      "relevantUids": ["12537872"],
+      "relevantUids": ["10697061"],
       "offTopicUids": ["32678530"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "Milestone oseltamivir treatment trial (12537872)."
+      "notes": "Oseltamivir Treanor JAMA 2000 (10697061). Prior fixture PMID was incorrect."
     },
     {
       "query": "methotrexate early rheumatoid arthritis combination therapy TEAR",
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "rheumatology",
-      "relevantUids": ["20425138"],
+      "relevantUids": ["22508468"],
       "offTopicUids": ["35065702"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "TEAR RA strategy (20425138)."
+      "notes": "TEAR early RA Moreland 2012 (22508468). Prior fixture PMID was incorrect."
     },
     {
       "query": "meropenem versus piperacillin tazobactam sepsis MERINO trial",
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "infectious_disease",
-      "relevantUids": ["26904085"],
+      "relevantUids": ["30208454"],
       "offTopicUids": ["34599691"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "MERINO meropenem vs pip-tazo (26904085)."
+      "notes": "MERINO Harris JAMA 2018 (30208454). Prior fixture PMID was incorrect."
     },
     {
       "query": "vitamin K antagonist bridging atrial fibrillation perioperative BRIDGE trial",
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "cardiology",
-      "relevantUids": ["26008996"],
+      "relevantUids": ["26095867"],
       "offTopicUids": ["38033089"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "BRIDGE perioperative AF (26008996)."
+      "notes": "BRIDGE Douketis NEJM 2015 (26095867). Prior fixture PMID was incorrect."
     },
     {
       "query": "clopidogrel aspirin acute minor ischemic stroke CHANCE",
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "neurology",
-      "relevantUids": ["24501052"],
+      "relevantUids": ["23803136"],
       "offTopicUids": ["27673305"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "CHANCE dual antiplatelet stroke (24501052)."
+      "notes": "CHANCE Wang NEJM 2013 (23803136). Prior fixture PMID was incorrect."
     },
     {
       "query": "tenecteplase alteplase acute ischemic stroke EXTEND-IA TNK",
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "neurology",
-      "relevantUids": ["29129157"],
+      "relevantUids": ["29694815"],
       "offTopicUids": ["7477192"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "EXTEND-IA TNK thrombolysis (29129157)."
+      "notes": "EXTEND-IA TNK Campbell NEJM 2018 (29694815). Prior fixture PMID was incorrect."
     },
     {
       "query": "inhaled corticosteroid long acting beta agonist asthma SMART strategy",
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "pulmonology",
-      "relevantUids": ["30879544"],
+      "relevantUids": ["15502112"],
       "offTopicUids": ["32579807"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "SMART budesonide-formoterol strategy (30879544)."
+      "notes": "SMART O'Byrne 2005 maintenance+reliever (15502112). Prior fixture PMID was incorrect."
     },
     {
       "query": "Helicobacter pylori eradication peptic ulcer bleeding recurrence",
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "gastroenterology",
-      "relevantUids": ["8781440"],
+      "relevantUids": ["7800005"],
       "offTopicUids": ["20554319"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "Landmark H. pylori eradication ulcer trial (8781440)."
+      "notes": "H. pylori ulcer antibacterial treatment Sung 1995 (7800005). Prior fixture PMID was incorrect."
     },
     {
       "query": "continuous positive airway pressure obstructive sleep apnea cardiovascular outcomes SAVE",
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "pulmonology",
-      "relevantUids": ["27707544"],
+      "relevantUids": ["27571048"],
       "offTopicUids": ["26551272"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "SAVE CPAP OSA CV outcomes (27707544)."
+      "notes": "SAVE McEvoy NEJM 2016 (27571048). Prior fixture PMID was incorrect."
     },
     {
       "query": "fecal microbiota transplant recurrent Clostridioides difficile infection",
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "gastroenterology",
-      "relevantUids": ["23395276"],
-      "offTopicUids": ["26904085"],
+      "relevantUids": ["23323867"],
+      "offTopicUids": ["30208454"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "van Nood FMT C diff (23395276)."
+      "notes": "van Nood FMT C. diff NEJM 2013 (23323867). Prior fixture PMID was incorrect."
     },
     {
       "query": "early goal-directed therapy septic shock ProCESS trial",
@@ -259,10 +259,10 @@
       "sources": "pubmed,openalex",
       "category": "landmark_rct",
       "specialty": "preventive_medicine",
-      "relevantUids": ["16531679"],
+      "relevantUids": ["17494925"],
       "offTopicUids": ["34634250"],
       "requiredTypes": ["randomized controlled trial"],
-      "notes": "FUTURE II HPV vaccine (16531679)."
+      "notes": "FUTURE II HPV vaccine NEJM 2007 (17494925). Prior fixture PMID was incorrect."
     },
     {
       "query": "community acquired pneumonia diagnosis empiric antibiotic management guideline adult",

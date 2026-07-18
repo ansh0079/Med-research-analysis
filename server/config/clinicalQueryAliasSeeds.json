@@ -6,19 +6,19 @@
       "source": "gold_expansion",
       "all": ["\\bmetoprolol\\b", "\\bheart failure\\b|\\bmerit-?hf\\b"],
       "aliases": ["MERIT-HF", "metoprolol CR/XL"],
-      "pmids": ["10966806"]
+      "pmids": ["10376614"]
     },
     {
       "source": "gold_expansion",
       "all": ["\\bresynchronization\\b|\\bcrt\\b", "\\bheart failure\\b|\\bcompanion\\b"],
       "aliases": ["COMPANION"],
-      "pmids": ["12963388"]
+      "pmids": ["15152059"]
     },
     {
       "source": "gold_expansion",
       "all": ["\\brivaroxaban\\b", "\\bdeep vein\\b|\\bdvt\\b|\\beinstein\\b"],
       "aliases": ["EINSTEIN", "EINSTEIN-DVT"],
-      "pmids": ["21635378"]
+      "pmids": ["21128814"]
     },
     {
       "source": "gold_expansion",
@@ -30,19 +30,19 @@
       "source": "gold_expansion",
       "all": ["\\bbariatric\\b|\\bstampede\\b", "\\btype 2 diabetes\\b|\\bdiabetes\\b"],
       "aliases": ["STAMPEDE"],
-      "pmids": ["29260272"]
+      "pmids": ["22449319"]
     },
     {
       "source": "gold_expansion",
       "all": ["\\btrastuzumab\\b|\\bher2\\b", "\\bbreast cancer\\b|\\bbcirg\\b"],
       "aliases": ["BCIRG 006", "trastuzumab adjuvant"],
-      "pmids": ["17409101"]
+      "pmids": ["21991949"]
     },
     {
       "source": "gold_expansion",
       "all": ["\\bimatinib\\b", "\\bmyeloid leukemia\\b|\\bcml\\b|\\biris\\b"],
       "aliases": ["IRIS", "imatinib CML"],
-      "pmids": ["11430304"]
+      "pmids": ["12637609"]
     },
     {
       "source": "gold_expansion",
@@ -54,61 +54,61 @@
       "source": "gold_expansion",
       "all": ["\\boseltamivir\\b|\\btamiflu\\b", "\\binfluenza\\b"],
       "aliases": ["oseltamivir influenza"],
-      "pmids": ["12537872"]
+      "pmids": ["10697061"]
     },
     {
       "source": "gold_expansion",
       "all": ["\\bmethotrexate\\b", "\\brheumatoid\\b|\\btear\\b"],
       "aliases": ["TEAR"],
-      "pmids": ["20425138"]
+      "pmids": ["22508468"]
     },
     {
       "source": "gold_expansion",
       "all": ["\\bmeropenem\\b|\\bpiperacillin\\b|\\btazobactam\\b", "\\bsepsis\\b|\\bmerino\\b"],
       "aliases": ["MERINO"],
-      "pmids": ["26904085"]
+      "pmids": ["30208454"]
     },
     {
       "source": "gold_expansion",
       "all": ["\\bbridging\\b|\\bvitamin k antagonist\\b", "\\batrial fibrillation\\b|\\bperioperative\\b|\\bbridge\\b"],
       "aliases": ["BRIDGE"],
-      "pmids": ["26008996"]
+      "pmids": ["26095867"]
     },
     {
       "source": "gold_expansion",
       "all": ["\\bclopidogrel\\b", "\\bminor (ischemic |ischaemic )?stroke\\b|\\bchance\\b"],
       "aliases": ["CHANCE"],
-      "pmids": ["24501052"]
+      "pmids": ["23803136"]
     },
     {
       "source": "gold_expansion",
       "all": ["\\btenecteplase\\b|\\btnk\\b", "\\bstroke\\b|\\balteplase\\b|\\bextend-?ia\\b"],
       "aliases": ["EXTEND-IA TNK", "tenecteplase"],
-      "pmids": ["29129157"]
+      "pmids": ["29694815"]
     },
     {
       "source": "gold_expansion",
       "all": ["\\basthma\\b", "\\bsmart\\b|\\bbudesonide\\b|\\bformoterol\\b|\\binhaled corticosteroid\\b"],
       "aliases": ["SMART", "budesonide-formoterol"],
-      "pmids": ["30879544"]
+      "pmids": ["15502112"]
     },
     {
       "source": "gold_expansion",
       "all": ["\\bhelicobacter\\b|\\bh\\.?\\s*pylori\\b", "\\bulcer\\b|\\bbleeding\\b"],
       "aliases": ["H. pylori eradication ulcer"],
-      "pmids": ["8781440"]
+      "pmids": ["7800005"]
     },
     {
       "source": "gold_expansion",
       "all": ["\\bcpap\\b|\\bcontinuous positive airway\\b", "\\bsleep apnea\\b|\\bsave\\b"],
       "aliases": ["SAVE"],
-      "pmids": ["27707544"]
+      "pmids": ["27571048"]
     },
     {
       "source": "gold_expansion",
-      "all": ["\\bfecal microbiota\\b|\\bfaecal microbiota\\b|\\bfmt\\b", "\\bclostridioides\\b|\\bclostridium difficile\\b|\\bc\\.?\\s*diff"],
-      "aliases": ["van Nood FMT", "fecal microbiota transplant"],
-      "pmids": ["23395276"]
+      "all": ["\\bfecal microbiota\\b|\\bfaecal microbiota\\b|\\bfmt\\b|\\bdonor feces\\b|\\bdonor faeces\\b", "\\bclostridioides\\b|\\bclostridium difficile\\b|\\bc\\.?\\s*diff"],
+      "aliases": ["van Nood", "duodenal infusion of donor feces", "fecal microbiota transplant", "faecal microbiota transplant"],
+      "pmids": ["23323867"]
     },
     {
       "source": "gold_expansion",
@@ -120,7 +120,7 @@
       "source": "gold_expansion",
       "all": ["\\bhpv\\b|\\bhuman papillomavirus\\b", "\\bcervical\\b|\\bfuture ii\\b|\\bvaccine\\b"],
       "aliases": ["FUTURE II"],
-      "pmids": ["16531679"]
+      "pmids": ["17494925"]
     },
     {
       "source": "gold_expansion",

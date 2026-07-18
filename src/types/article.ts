@@ -52,6 +52,8 @@ export interface Article {
   _learningRank?: number;
   _rankMovedByLearning?: boolean;
   _rankReasons?: string[];
+  /** Short “because you missed X → boosted Y” explanation for learner-visible ranking. */
+  _learnerAdaptationReason?: string | null;
   _ranking?: {
     compositeScore?: number;
     archetype?: string;

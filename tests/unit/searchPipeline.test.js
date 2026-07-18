@@ -148,6 +148,26 @@ describe('searchPipeline helpers', () => {
         });
         expect(filtered).toHaveLength(1);
     });
+
+    test('filterRelevantArticles keeps curated pinned landmarks despite historic title wording', () => {
+        const articles = [
+            {
+                uid: 'pubmed-23323867',
+                pmid: '23323867',
+                _pinnedLandmark: true,
+                title: 'Duodenal infusion of donor feces for recurrent Clostridium difficile',
+                abstract: '',
+                pubdate: '2013',
+                pubtype: ['Randomized Controlled Trial'],
+            },
+        ];
+        const filtered = filterRelevantArticles(articles, {
+            query: 'fecal microbiota transplant recurrent Clostridioides difficile infection',
+            queryAliases: [],
+        });
+        expect(filtered).toHaveLength(1);
+        expect(filtered[0].pmid).toBe('23323867');
+    });
 });
 
 describe('specificity-weighted ranking', () => {
@@ -265,6 +285,19 @@ describe('rank metadata annotation', () => {
         expect(annotated[0]._rankReasons).toContain('Personalized for your learning gaps');
         expect(annotated[1]._rankMovedByLearning).toBe(true);
         expect(annotated[1]._ranking.archetype).toBe('guideline');
+    });
+
+    test('prefers curated learner adaptation reason in rank reasons', () => {
+        const annotated = annotateSearchRankMetadata([
+            {
+                uid: 'boosted',
+                title: 'Boosted paper',
+                _learningBoost: 1.5,
+                _learnerAdaptationReason: 'Boosted — you missed quiz items on this paper (gap: “ARNI first-line”)',
+            },
+        ], [{ uid: 'boosted', reasons: ['Well cited'] }]);
+        expect(annotated[0]._rankReasons[0]).toMatch(/ARNI first-line/);
+        expect(annotated[0]._rankMovedByLearning).toBe(true);
     });
 });
 

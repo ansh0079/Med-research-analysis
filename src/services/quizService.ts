@@ -127,6 +127,8 @@ export async function generateQuiz(
   evidenceAudit?: EvidenceAuditSnapshot;
   claimJobKey?: string;
   promptVariant?: string;
+  claimAnchorMode?: string;
+  adaptiveClaimCount?: number;
 }> {
   const body: Record<string, unknown> = { topic, articles, count, difficulty, studyRunId };
   if (opts?.trainingStage) body.trainingStage = opts.trainingStage;
@@ -156,5 +158,7 @@ export async function generateQuiz(
     evidenceAudit: ea,
     claimJobKey: data.claimJobKey as string | undefined,
     promptVariant: data.promptVariant as string | undefined,
+    claimAnchorMode: typeof data.claimAnchorMode === 'string' ? data.claimAnchorMode : undefined,
+    adaptiveClaimCount: typeof data.adaptiveClaimCount === 'number' ? data.adaptiveClaimCount : undefined,
   };
 }

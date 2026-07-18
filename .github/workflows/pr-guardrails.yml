@@ -141,8 +141,10 @@ jobs:
           JWT_SECRET: test-jwt-secret
           ADMIN_TOKEN: test-admin-token
 
-  # Live labelled eval reports visibly. Continues on error so PubMed/OpenAlex flakiness
-  # does not block merge; offline gate above is the merge gate when fixtures change.
+  # Live labelled eval is advisory in CI: PubMed/OpenAlex flakiness must not block
+  # merge. Offline gate above + absolute thresholds in search-quality-baseline.json
+  # (landmarkHitRateMin 0.90) are the hard contracts; treat a red live job as a
+  # signal to re-run locally before merge when fixtures/seeds change.
   search-quality-eval:
     name: Labelled Search Quality Eval
     runs-on: ubuntu-latest

@@ -62,9 +62,40 @@ export class LearningApi extends BaseApiClient {
     return response.json();
   }
 
+  async getQuizLift(topic: string, days = 7): Promise<{
+    topic: string;
+    lift: {
+      beforeMastery: number;
+      afterMastery: number;
+      deltaPoints: number;
+      pointsPerDay: number;
+      trend: string;
+      daysSpanned: number;
+      snapshotCount: number;
+      afterAgentTutoring: boolean;
+      agentTutoredAt: string | null;
+      summary: string;
+    } | null;
+    message?: string;
+  }> {
+    const response = await this.fetchWithSession(
+      `${API_BASE}/api/learning/quiz-lift?topic=${encodeURIComponent(topic)}&days=${days}`
+    );
+    if (!response.ok) throw new Error('Failed to load quiz lift');
+    return response.json();
+  }
+
   async submitQuizAttempt(data: import('@types').QuizAttemptSubmission): Promise<{
     saved: number;
     mastery: { overall: number; byType: Record<string, number> };
+    learningVelocity?: {
+      fromScore: number;
+      toScore: number;
+      deltaPoints: number;
+      pointsPerDay: number;
+      trend: string;
+      daysSpanned: number;
+    } | null;
     remediation?: {
       missedCount: number;
       targets: Array<{

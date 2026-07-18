@@ -5,33 +5,54 @@ interface RankingTraceBadgeProps {
   trace: SearchResultRanking;
   movedByLearning?: boolean;
   compactReasons?: string[];
+  adaptationReason?: string | null;
 }
 
-export function RankingTraceBadge({ trace, movedByLearning, compactReasons }: RankingTraceBadgeProps) {
+export function RankingTraceBadge({
+  trace,
+  movedByLearning,
+  compactReasons,
+  adaptationReason,
+}: RankingTraceBadgeProps) {
   const [open, setOpen] = useState(false);
   const reasons = (trace.reasons?.length ? trace.reasons : compactReasons) || [];
   const rankShift = trace.evidenceRank != null && trace.learningRank != null
     && trace.evidenceRank !== trace.learningRank;
+  const headline = (adaptationReason || reasons.find((r) => /boosted|missed|learning gap|personalized|deprioritized/i.test(r)) || '').trim();
+  const personalized = Boolean(movedByLearning || rankShift || headline);
 
   return (
-    <span className="relative inline-flex">
+    <span className="relative inline-flex max-w-full flex-col gap-1 sm:flex-row sm:items-center">
+      {headline ? (
+        <span
+          className="badge font-semibold max-w-[18rem] truncate"
+          style={{
+            background: 'rgba(16,185,129,0.12)',
+            color: '#047857',
+            border: '1px solid rgba(16,185,129,0.35)',
+          }}
+          title={headline}
+        >
+          Adapted for you
+        </span>
+      ) : null}
       <button
         type="button"
         className="badge font-semibold cursor-pointer hover:opacity-80"
         style={{
-          background: movedByLearning || rankShift
+          background: personalized
             ? 'rgba(99,102,241,0.14)'
             : 'rgba(100,116,139,0.12)',
-          color: movedByLearning || rankShift ? '#4f46e5' : '#475569',
-          border: movedByLearning || rankShift
+          color: personalized ? '#4f46e5' : '#475569',
+          border: personalized
             ? '1px solid rgba(99,102,241,0.35)'
             : '1px solid rgba(100,116,139,0.3)',
         }}
-        title="Why this paper ranked here"
+        title={headline || 'Why this paper ranked here'}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
       >
-        {movedByLearning || rankShift ? '↕ Personalized rank' : 'Ranking trace'}
+        {personalized ? '↕ Personalized rank' : 'Ranking trace'}
       </button>
       {open && (
         <div
@@ -73,9 +94,10 @@ export function RankingTraceBadge({ trace, movedByLearning, compactReasons }: Ra
               </div>
             )}
           </dl>
-          {reasons.length > 0 && (
+          {(headline || reasons.length > 0) && (
             <ul className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800 space-y-1 text-[10px] text-slate-500 dark:text-slate-400">
-              {reasons.slice(0, 6).map((r, i) => (
+              {headline ? <li className="font-semibold text-emerald-700 dark:text-emerald-300">• {headline}</li> : null}
+              {reasons.filter((r) => r !== headline).slice(0, 5).map((r, i) => (
                 <li key={i}>• {r}</li>
               ))}
             </ul>

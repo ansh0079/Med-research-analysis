@@ -40,6 +40,7 @@ export const QuizPage: React.FC = () => {
     reflectionKind,
     reflectionSaveStatus,
     adaptiveNotice,
+    learningVelocity,
     effectiveExplanationDepth,
     trainingStage,
     currentQ,
@@ -116,6 +117,7 @@ export const QuizPage: React.FC = () => {
             saveStatus={saveStatus}
             reflectionKind={reflectionKind}
             reflectionSaveStatus={reflectionSaveStatus}
+            learningVelocity={learningVelocity}
             onReflectionKindChange={setReflectionKind}
             onLoadQuiz={loadQuiz}
             onBackToSearch={() => setCurrentPage('search')}

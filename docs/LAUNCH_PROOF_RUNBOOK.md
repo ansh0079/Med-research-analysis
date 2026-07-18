@@ -1,6 +1,6 @@
 # Launch Proof Runbook
 
-Last updated: 2026-07-02
+Last updated: 2026-07-18
 
 Four things stand between "beta-ready" and "defensibly launch-ready." None of them is more code — each converts a belief into a measured fact. Do them in this order; each is self-contained and turnkey once the prerequisite environment is in front of you.
 
@@ -12,7 +12,7 @@ Ownership note: 1–3 are one-time gates you run yourself. 4 is a standing proce
 
 **Goal:** prove the search surfaces landmark papers, or find exactly where it doesn't.
 
-**Prerequisite:** a running server (staging or local prod-mode) whose database has the gold-set papers reachable via `/api/search`. The 42 relevant PMIDs live in [tests/fixtures/search-quality-gold.json](../tests/fixtures/search-quality-gold.json).
+**Prerequisite:** a running server (staging or local prod-mode) that can reach PubMed/OpenAlex via `/api/search`. Labelled queries live in [tests/fixtures/search-quality-gold.json](../tests/fixtures/search-quality-gold.json) (core + expansion). Regression/absolute thresholds live in [tests/fixtures/search-quality-baseline.json](../tests/fixtures/search-quality-baseline.json).
 
 **Steps:**
 
@@ -46,22 +46,31 @@ Ownership note: 1–3 are one-time gates you run yourself. 4 is a standing proce
 
 **Record:** commit the summary numbers (not the raw dump) into the readiness tracker so there is a dated baseline.
 
-**Current measured baseline (2026-07-02, live `/api/search`):**
+**Current measured baseline (2026-07-18, live `/api/search`, 65 gold queries):**
 
-| Metric | Before citation-cascade fix | After citation-cascade fix |
+| Metric | Value | Absolute gate |
 | --- | ---: | ---: |
-| Recall@10 | 0.22 | 0.59 |
-| MRR | 0.15 | 0.37 |
-| nDCG@10 | 0.17 | 0.42 |
-| Required-type coverage | 0.80 | 0.95 |
-| Landmark hits | 9/41 | 24/41 |
+| Recall@10 | 0.969 | (regression) |
+| MRR | 0.625 | (regression) |
+| nDCG@10 | 0.705 | (regression) |
+| Landmark hit rate | 1.000 | ≥ 0.90 |
+| Guideline hit rate | 1.000 | ≥ 0.50 |
+| Off-topic@10 | 0.002 | ≤ 0.05 |
 
-Root cause: citation-less PubMed articles were being sanitized with derived
-`_impact.citations = 0`, then later treated as if a real source had reported
-zero citations. The bouquet age+citation filter therefore deleted old landmark
-trials after relevance filtering. Keep this invariant intact: only raw source
-fields such as `citationCount` and `pmcrefcount` prove that citation data is
-known; derived `_impact.citations` must not be used by citation-data guards.
+**2026-07-18 root cause (expansion landmarks):** most expansion gold PMIDs were
+wrong papers (e.g. MERIT-HF listed as `10966806` / Rab GTPases instead of
+`10376614`). Corrected in `search-quality-gold-expansion.json` and
+`clinicalQueryAliasSeeds.json`. Fixture integrity is guarded offline via
+`search-quality-gold-pmid-titles.json`.
+
+**Pinned-landmark filter:** curated PMID pins must bypass off-topic/age filters
+in `filterRelevantArticles` — landmark titles often lack modern query phrasing
+(e.g. van Nood 2013 “duodenal infusion of donor feces” vs “FMT”).
+
+Historical note (2026-07-02): citation-less PubMed articles were sanitized with
+derived `_impact.citations = 0`, then treated as known-zero and dropped by the
+bouquet age+citation filter. Keep the invariant: only raw `citationCount` /
+`pmcrefcount` prove citation data is known.
 
 For live-stage debugging, set `SEARCH_TRACE` to a PMID or UID fragment and run
 the query through `/api/search`. The trace prints stage counts from raw fetch

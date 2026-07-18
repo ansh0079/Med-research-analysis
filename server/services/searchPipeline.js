@@ -363,7 +363,12 @@ function annotateSearchRankMetadata(articles, bouquetRanking = []) {
         const learningRank = index + 1;
         const learningBoost = Number(article?._learningBoost || 0);
         const reasons = Array.isArray(ranking?.reasons) ? [...ranking.reasons] : [];
-        if (learningBoost > 0) {
+        const adaptationReason = typeof article?._learnerAdaptationReason === 'string'
+            ? article._learnerAdaptationReason.trim()
+            : '';
+        if (adaptationReason) {
+            reasons.unshift(adaptationReason);
+        } else if (learningBoost > 0) {
             const missCount = Number(article?._missedQuizCount || 0);
             if (missCount > 0) {
                 reasons.push(`${missCount} quiz question${missCount === 1 ? '' : 's'} from this paper answered incorrectly — review recommended`);
@@ -371,13 +376,14 @@ function annotateSearchRankMetadata(articles, bouquetRanking = []) {
                 reasons.push('Personalized for your learning gaps');
             }
         }
-        if (learningBoost < 0) reasons.push('Deprioritized by your feedback');
+        if (learningBoost < 0 && !adaptationReason) reasons.push('Deprioritized by your feedback');
 
         return {
             ...article,
             _evidenceRank: evidenceRank,
             _learningRank: learningRank,
-            _rankMovedByLearning: evidenceRank !== learningRank,
+            _rankMovedByLearning: evidenceRank !== learningRank || Boolean(adaptationReason),
+            _learnerAdaptationReason: adaptationReason || article?._learnerAdaptationReason || null,
             _rankReasons: [...new Set(reasons)].slice(0, 8),
             _ranking: ranking ? {
                 compositeScore: ranking.compositeScore,
@@ -398,6 +404,10 @@ function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMes
     return (Array.isArray(raw) ? raw : []).filter((article) => {
         // Retracted papers must never appear in results
         if (article._retraction?.isRetracted) return false;
+        // Curated PMID pins bypass relevance/age filters — titles often lack the
+        // modern query phrasing (e.g. van Nood 2013: "duodenal infusion of donor feces"
+        // vs query "fecal microbiota transplant"), which would otherwise look off-topic.
+        if (article._pinnedLandmark) return true;
         // Population mismatch (e.g. adult-only article for a pediatric query)
         if (!matchesPopulationFilter(article, query)) return false;
         const aliasMatched = queryAliasMatchScore(article, queryAliases) > 0;

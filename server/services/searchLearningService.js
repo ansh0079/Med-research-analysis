@@ -1,8 +1,70 @@
 const logger = require('../config/logger');
 const { buildLearningTrajectorySection } = require('./learnerStateService');
 const { selectSearchRankingArm, SEARCH_RANKING_ARMS } = require('./personalizationBanditService');
-const { loadMisconceptionBoostContext, misconceptionArticleBoost } = require('./misconceptionSearchBoostService');
+const {
+    loadMisconceptionBoostContext,
+    misconceptionArticleBoost,
+    phraseOverlapScore,
+} = require('./misconceptionSearchBoostService');
 const { applyBoostSafety, auditArmSafety } = require('./banditSafetyGuard');
+
+function clipReasonPhrase(text, maxLen = 90) {
+    const cleaned = String(text || '').replace(/\s+/g, ' ').trim();
+    if (!cleaned) return '';
+    return cleaned.length > maxLen ? `${cleaned.slice(0, maxLen - 1)}…` : cleaned;
+}
+
+function articleInCorrectiveSet(article, boostContext) {
+    if (!boostContext?.correctiveArticleUids?.size) return false;
+    for (const uid of articleUidCandidates(article)) {
+        if (boostContext.correctiveArticleUids.has(uid)) return true;
+    }
+    return false;
+}
+
+function bestMisconceptionPhraseForArticle(article, phrases = []) {
+    const list = Array.isArray(phrases) ? phrases.map(String).filter(Boolean) : [];
+    if (!list.length) return null;
+    const blob = `${article?.title || ''} ${article?.abstract || ''}`;
+    let best = null;
+    let bestScore = 0;
+    for (const phrase of list) {
+        const score = phraseOverlapScore(blob, [phrase]);
+        if (score > bestScore) {
+            bestScore = score;
+            best = phrase;
+        }
+    }
+    return bestScore > 0 ? best : null;
+}
+
+/**
+ * Human-readable "because you missed X, we boosted Y" copy for search cards.
+ */
+function buildLearnerAdaptationReason(article, context, missCount = 0) {
+    const phrases = context?.misconceptionBoost?.misconceptionPhrases || [];
+    let phrase = bestMisconceptionPhraseForArticle(article, phrases);
+    if (!phrase && articleInCorrectiveSet(article, context?.misconceptionBoost) && phrases.length) {
+        phrase = phrases[0];
+    }
+    const gap = clipReasonPhrase(phrase);
+    const boost = Number(article?._learningBoost || 0);
+
+    if (boost < 0) return 'Deprioritized by your feedback';
+    if (missCount > 0 && gap) {
+        return `Boosted — you missed quiz items on this paper (gap: “${gap}”)`;
+    }
+    if (missCount > 0) {
+        return `Boosted — ${missCount} quiz miss${missCount === 1 ? '' : 'es'} from this paper`;
+    }
+    if (gap) {
+        return `Boosted for your learning gap: “${gap}”`;
+    }
+    if (context?.banditSelection?.calibrationOverride === 'dangerous_misconception') {
+        return 'Boosted to correct a high-confidence misconception';
+    }
+    return 'Personalized for your learning gaps';
+}
 
 function normalizeUid(value) {
     return String(value || '').trim().toLowerCase();
@@ -436,16 +498,17 @@ function applySearchLearningBoost(articles, context, bouquetRanking = []) {
             return a.index - b.index; // stable tiebreak: preserve evidence order
         });
 
-    const result = ranked.map(({ article, boost, missCount }) => (
-        boost !== 0
-            ? {
-                ...article,
-                _learningBoost: Number(boost.toFixed(3)),
-                _banditArmId: context.banditSelection?.armId || null,
-                ...(missCount > 0 ? { _missedQuizCount: missCount } : {}),
-            }
-            : article
-    ));
+    const result = ranked.map(({ article, boost, missCount }) => {
+        if (boost === 0) return article;
+        const enriched = {
+            ...article,
+            _learningBoost: Number(boost.toFixed(3)),
+            _banditArmId: context.banditSelection?.armId || null,
+            ...(missCount > 0 ? { _missedQuizCount: missCount } : {}),
+        };
+        enriched._learnerAdaptationReason = buildLearnerAdaptationReason(enriched, context, missCount);
+        return enriched;
+    });
 
     context._banditMeta = {
         armId: context.banditSelection?.armId || 'heuristic_default',
@@ -467,6 +530,7 @@ module.exports = {
     articleUidCandidates,
     buildCompositeScoreMap,
     buildSearchLearningContext,
+    buildLearnerAdaptationReason,
     collectTrajectoryTerms,
     publicLearningContext,
     interactionWeight,

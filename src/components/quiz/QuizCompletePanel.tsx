@@ -3,6 +3,15 @@ import { StudyRunPanel } from '@components/learning/StudyRunPanel';
 import type { QuizArticle } from '@services/quizService';
 import type { QuizQuestion, QuizState, StudyRun, StudyRunOutline } from '@types';
 
+interface QuizLiftSummary {
+  fromScore: number;
+  toScore: number;
+  deltaPoints: number;
+  pointsPerDay: number;
+  trend: string;
+  daysSpanned: number;
+}
+
 interface QuizCompletePanelProps {
   quiz: QuizState;
   scorePercent: number;
@@ -14,6 +23,7 @@ interface QuizCompletePanelProps {
   saveStatus: 'idle' | 'saving' | 'saved' | 'error';
   reflectionKind: 'CBD' | 'mini-CEX' | 'DOPS';
   reflectionSaveStatus: 'idle' | 'saving' | 'saved' | 'error';
+  learningVelocity?: QuizLiftSummary | null;
   onReflectionKindChange: (kind: 'CBD' | 'mini-CEX' | 'DOPS') => void;
   onLoadQuiz: () => void;
   onBackToSearch: () => void;
@@ -36,6 +46,7 @@ export const QuizCompletePanel: React.FC<QuizCompletePanelProps> = ({
   saveStatus,
   reflectionKind,
   reflectionSaveStatus,
+  learningVelocity = null,
   onReflectionKindChange,
   onLoadQuiz,
   onBackToSearch,
@@ -73,9 +84,34 @@ export const QuizCompletePanel: React.FC<QuizCompletePanelProps> = ({
         </div>
         <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-2">{quiz.score}/{quiz.questions.length}</h2>
         <p className="text-lg text-slate-500 dark:text-slate-400 mb-1">{scorePercent}% correct</p>
-        <p className="text-sm text-slate-400 dark:text-slate-500 mb-6">
+        <p className="text-sm text-slate-400 dark:text-slate-500 mb-4">
           {scorePercent >= 80 ? 'Excellent — strong knowledge of this topic.' : scorePercent >= 60 ? 'Good effort — review explanations to solidify understanding.' : 'Keep studying — review source articles and try again.'}
         </p>
+        {learningVelocity && typeof learningVelocity.fromScore === 'number' && typeof learningVelocity.toScore === 'number' && (
+          <div className="mb-6 mx-auto max-w-md rounded-xl border border-emerald-200 bg-emerald-50/80 px-4 py-3 text-left dark:border-emerald-800 dark:bg-emerald-950/30">
+            <p className="text-[10px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-300">
+              Learning lift on this topic
+            </p>
+            <p className="mt-1 text-sm font-semibold text-emerald-900 dark:text-emerald-100">
+              Mastery {learningVelocity.fromScore}% → {learningVelocity.toScore}%
+              {learningVelocity.deltaPoints !== 0 && (
+                <span className="ml-1 font-bold">
+                  ({learningVelocity.deltaPoints > 0 ? '+' : ''}{learningVelocity.deltaPoints})
+                </span>
+              )}
+            </p>
+            <p className="mt-0.5 text-[11px] text-emerald-800/80 dark:text-emerald-200/80">
+              {learningVelocity.trend === 'improving'
+                ? 'You’re improving — recent practice is moving the needle.'
+                : learningVelocity.trend === 'declining'
+                  ? 'Recent scores dipped — review the missed papers below, then retest.'
+                  : 'Mastery is steady — keep spacing reviews to lock it in.'}
+              {learningVelocity.pointsPerDay !== 0 && (
+                <> · {learningVelocity.pointsPerDay > 0 ? '+' : ''}{learningVelocity.pointsPerDay} pts/day over {learningVelocity.daysSpanned}d</>
+              )}
+            </p>
+          </div>
+        )}
         <div className="flex flex-wrap justify-center gap-3">
           <button type="button" onClick={onLoadQuiz}
             className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm transition-colors">

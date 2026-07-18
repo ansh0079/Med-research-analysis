@@ -49,24 +49,42 @@ export function SynopsisTrustBanner({
           </p>
         </div>
       )}
-      <div className="flex flex-wrap items-center gap-1.5">
+      <div className="flex flex-wrap items-center gap-2">
         {coverage && !isAbstractOnly && (
-          <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+          <span
+            className="inline-flex items-center gap-1 rounded-md border border-blue-300/70 bg-blue-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-blue-800 dark:border-blue-700/60 dark:bg-blue-950/40 dark:text-blue-200"
+            title="Share of synopsis grounding from indexed full text"
+          >
+            <i className="fas fa-file-alt text-[9px]" />
             {coverage}
           </span>
         )}
         {reviewState && (
-          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+          <span
+            className={`inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-[10px] font-black uppercase tracking-wider ${
+              String(reviewState) === 'human_reviewed'
+                ? 'border-emerald-400/80 bg-emerald-50 text-emerald-800 dark:border-emerald-600/60 dark:bg-emerald-950/40 dark:text-emerald-200'
+                : String(reviewState) === 'needs_revision'
+                  ? 'border-amber-400/80 bg-amber-50 text-amber-900 dark:border-amber-600/60 dark:bg-amber-950/40 dark:text-amber-200'
+                  : 'border-slate-300 bg-slate-50 text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200'
+            }`}
+            title="Synopsis review state"
+          >
+            {String(reviewState) === 'human_reviewed' ? (
+              <i className="fas fa-user-check text-[9px]" />
+            ) : (
+              <i className="fas fa-clipboard-check text-[9px]" />
+            )}
             {formatReviewStateLabel(reviewState)}
           </span>
         )}
         {citationOk === true && (
-          <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+          <span className="inline-flex items-center rounded-md border border-emerald-300/70 bg-emerald-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-emerald-800 dark:border-emerald-700/60 dark:bg-emerald-950/40 dark:text-emerald-200">
             Citations checked
           </span>
         )}
         {citationOk === false && (
-          <span className="rounded-full bg-red-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-red-700 dark:bg-red-900/30 dark:text-red-300">
+          <span className="inline-flex items-center rounded-md border border-red-300/70 bg-red-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-red-800 dark:border-red-700/60 dark:bg-red-950/40 dark:text-red-200">
             Citation warning
           </span>
         )}

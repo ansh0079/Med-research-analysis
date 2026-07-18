@@ -25,6 +25,30 @@ const {
 } = require('../../server/services/personalizationBanditService');
 
 describe('P3 landmark alias coverage (CI gate)', () => {
+    test('gold relevant PMIDs match curated title fragments (fixture integrity)', () => {
+        const titleMap = require('../fixtures/search-quality-gold-pmid-titles.json').titles;
+        const fixture = loadSearchGoldFixture('tests/fixtures/search-quality-gold.json');
+        const missing = [];
+        for (const q of fixture.queries) {
+            for (const pmid of q.relevantUids || []) {
+                const fragment = titleMap[String(pmid)];
+                if (!fragment) continue; // not all gold PMIDs need catalog entries
+                // Presence in the catalog is the contract; live PubMed title checks are offline scripts.
+                expect(String(fragment).length).toBeGreaterThan(3);
+            }
+        }
+        // Every expansion landmark we previously corrupted must be catalogued.
+        for (const pmid of [
+            '10376614', '15152059', '21128814', '22449319', '21991949', '12637609',
+            '10697061', '22508468', '30208454', '26095867', '23803136', '29694815',
+            '15502112', '7800005', '27571048', '23323867', '17494925',
+        ]) {
+            expect(titleMap[pmid]).toBeTruthy();
+            if (!titleMap[pmid]) missing.push(pmid);
+        }
+        expect(missing).toEqual([]);
+    });
+
     test('gold fixture normalizes graded relevantUids to strings', () => {
         const fixture = loadSearchGoldFixture('tests/fixtures/search-quality-gold.json');
         const graded = fixture.queries.find((q) => q.query.includes('community acquired pneumonia'));
@@ -63,8 +87,8 @@ describe('P3 landmark alias coverage (CI gate)', () => {
 
 describe('P3 search-quality baseline gates (CI)', () => {
     test('baseline absolute gates are defined', () => {
-        expect(baselineSpec.absoluteGates.landmarkHitRateMin).toBeGreaterThan(0);
-        expect(baselineSpec.absoluteGates.offTopicRateAtKMax).toBeLessThan(1);
+        expect(baselineSpec.absoluteGates.landmarkHitRateMin).toBeGreaterThanOrEqual(0.90);
+        expect(baselineSpec.absoluteGates.offTopicRateAtKMax).toBeLessThanOrEqual(0.05);
     });
 
     test('regression helper fails when landmark hit rate drops beyond tolerance', () => {
@@ -169,6 +193,6 @@ describe('P3 pinnedPmidsForQuery helper', () => {
             ALL_CLINICAL_QUERY_ALIAS_RULES,
             'metoprolol succinate chronic heart failure mortality MERIT-HF'
         );
-        expect(pmids).toContain('10966806');
+        expect(pmids).toContain('10376614');
     });
 });

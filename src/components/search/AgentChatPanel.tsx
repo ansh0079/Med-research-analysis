@@ -287,6 +287,73 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
     });
   }, [conversationId, isAuthenticated, topic, banditMetaByIndex]);
 
+  const [quizLift, setQuizLift] = useState<{
+    summary: string;
+    beforeMastery: number;
+    afterMastery: number;
+    deltaPoints: number;
+    afterAgentTutoring: boolean;
+    trend: string;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!isAuthenticated || !topic || topic.trim().length < 2) {
+      setQuizLift(null);
+      return;
+    }
+    let cancelled = false;
+    let hasFreshSessionLift = false;
+    // Prefer fresh sessionStorage from a just-finished quiz, else server lift report.
+    try {
+      const raw = sessionStorage.getItem('med_quiz_lift');
+      if (raw) {
+        const parsed = JSON.parse(raw) as {
+          topic?: string;
+          fromScore?: number;
+          toScore?: number;
+          deltaPoints?: number;
+          trend?: string;
+          timestamp?: number;
+        };
+        const age = Date.now() - (parsed.timestamp || 0);
+        if (
+          age < 2 * 60 * 60 * 1000
+          && parsed.topic
+          && parsed.topic.toLowerCase() === topic.toLowerCase()
+          && typeof parsed.fromScore === 'number'
+          && typeof parsed.toScore === 'number'
+        ) {
+          hasFreshSessionLift = true;
+          setQuizLift({
+            summary: `Mastery ${parsed.fromScore}% → ${parsed.toScore}%`,
+            beforeMastery: parsed.fromScore,
+            afterMastery: parsed.toScore,
+            deltaPoints: Number(parsed.deltaPoints || parsed.toScore - parsed.fromScore),
+            afterAgentTutoring: true,
+            trend: String(parsed.trend || 'stable'),
+          });
+        }
+      }
+    } catch { /* ignore */ }
+
+    if (!hasFreshSessionLift) {
+      api.learning.getQuizLift(topic, 7)
+        .then((res) => {
+          if (cancelled || !res.lift) return;
+          setQuizLift({
+            summary: res.lift.summary,
+            beforeMastery: res.lift.beforeMastery,
+            afterMastery: res.lift.afterMastery,
+            deltaPoints: res.lift.deltaPoints,
+            afterAgentTutoring: res.lift.afterAgentTutoring,
+            trend: res.lift.trend,
+          });
+        })
+        .catch(() => { /* non-critical */ });
+    }
+    return () => { cancelled = true; };
+  }, [isAuthenticated, topic, messages.length]);
+
   return (
     <div className="neo-card overflow-hidden border border-emerald-100 dark:border-emerald-900/40">
       {/* Header */}
@@ -369,6 +436,27 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
           {/* Starter prompts (only before first message) */}
           {messages.length === 0 && (
             <StarterPrompts guidance={agentGuidance} onSelect={handleStarterSelect} />
+          )}
+
+          {quizLift && (quizLift.deltaPoints !== 0 || quizLift.afterAgentTutoring) && (
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50/90 px-3 py-2.5 dark:border-emerald-800 dark:bg-emerald-950/30">
+              <p className="text-[10px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-300">
+                {quizLift.afterAgentTutoring ? 'After tutoring — quiz lift' : 'Topic mastery lift'}
+              </p>
+              <p className="mt-0.5 text-xs font-semibold text-emerald-900 dark:text-emerald-100">
+                {quizLift.summary}
+                {quizLift.deltaPoints !== 0 && (
+                  <span className="ml-1">({quizLift.deltaPoints > 0 ? '+' : ''}{quizLift.deltaPoints} pts)</span>
+                )}
+              </p>
+              <p className="mt-0.5 text-[10px] text-emerald-800/80 dark:text-emerald-200/70">
+                {quizLift.trend === 'improving'
+                  ? 'Your recent quizzes show improvement on this topic.'
+                  : quizLift.trend === 'declining'
+                    ? 'Scores dipped recently — ask the mentor to remediate weak claims, then retest.'
+                    : 'Retake a short quiz after this chat to measure lift.'}
+              </p>
+            </div>
           )}
 
           {/* Message thread */}

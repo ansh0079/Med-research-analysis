@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "description": "Expected title fragments for gold relevant PMIDs (offline integrity check). Update when correcting gold fixtures.",
+  "titles": {
+    "10376614": "MERIT-HF",
+    "15152059": "Cardiac-resynchronization therapy",
+    "21128814": "rivaroxaban",
+    "22449319": "Bariatric surgery versus intensive medical therapy",
+    "21991949": "trastuzumab",
+    "12637609": "Imatinib compared with interferon",
+    "10697061": "oseltamivir",
+    "22508468": "Early Aggressive Rheumatoid Arthritis",
+    "30208454": "Piperacillin-Tazobactam vs Meropenem",
+    "26095867": "Bridging Anticoagulation",
+    "23803136": "Clopidogrel with aspirin",
+    "29694815": "Tenecteplase versus Alteplase",
+    "15502112": "Budesonide/formoterol",
+    "7800005": "Helicobacter pylori",
+    "27571048": "CPAP for Prevention of Cardiovascular Events",
+    "23323867": "Duodenal infusion of donor feces",
+    "17494925": "Quadrivalent vaccine against human papillomavirus",
+    "31535829": "Dapagliflozin",
+    "25176015": "Angiotensin-neprilysin",
+    "10471456": "spironolactone",
+    "10793162": "tidal volume",
+    "20554319": "tranexamic"
+  }
+}

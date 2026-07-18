@@ -147,11 +147,23 @@ export const ArticleCardBadgesRow: React.FC<ArticleCardBadgesRowProps> = ({
           </span>
         )}
 
-        {article._rankingTrace && (
+        {(article._rankingTrace || article._learnerAdaptationReason || article._rankMovedByLearning) && (
           <RankingTraceBadge
-            trace={article._rankingTrace}
+            trace={article._rankingTrace || {
+              articleUid: String(article.uid || article.pmid || 'unknown'),
+              baseEvidenceScore: 0,
+              deterministicPenalties: [],
+              teachingObjectBoost: 0,
+              learnerBoost: Number(article._learningBoost || 0),
+              finalScore: 0,
+              evidenceRank: article._evidenceRank,
+              learningRank: article._learningRank,
+              banditArm: article._banditArmId || null,
+              reasons: article._rankReasons || [],
+            }}
             movedByLearning={article._rankMovedByLearning}
             compactReasons={article._rankReasons}
+            adaptationReason={article._learnerAdaptationReason}
           />
         )}
 

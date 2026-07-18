@@ -110,6 +110,14 @@ export function useQuizPage() {
   const [reflectionKind, setReflectionKind] = useState<'CBD' | 'mini-CEX' | 'DOPS'>('CBD');
   const [reflectionSaveStatus, setReflectionSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [adaptiveNotice, setAdaptiveNotice] = useState<string | null>(null);
+  const [learningVelocity, setLearningVelocity] = useState<{
+    fromScore: number;
+    toScore: number;
+    deltaPoints: number;
+    pointsPerDay: number;
+    trend: string;
+    daysSpanned: number;
+  } | null>(null);
 
   const effectiveExplanationDepth = useMemo(() => {
     if (explainParam === 'foundation' || explainParam === 'exam_focus' || explainParam === 'mechanistic') return explainParam;
@@ -154,6 +162,7 @@ export function useQuizPage() {
       setSelected(null);
       setQuizEvidenceAudit(null);
       setAdaptiveNotice(null);
+      setLearningVelocity(null);
     }
     try {
       if (urlRoundId && isAuthenticated) {
@@ -230,6 +239,20 @@ export function useQuizPage() {
       setQuizEvidenceAudit('evidenceAudit' in result ? (result.evidenceAudit ?? null) : null);
       setQuizSourceArticles(result.sourceArticles ?? evidenceSnippets);
       setQuiz((prev) => ({ ...prev, questions: result.questions }));
+      if ('claimAnchorMode' in result
+        && typeof result.claimAnchorMode === 'string'
+        && result.claimAnchorMode.startsWith('adaptive_teaching_object')) {
+        const adaptiveQs = result.questions.filter((q) => q.outlineLabel || q.claimKey);
+        const sampleGap = adaptiveQs.find((q) => q.outlineLabel)?.outlineLabel;
+        const count = typeof result.adaptiveClaimCount === 'number'
+          ? result.adaptiveClaimCount
+          : adaptiveQs.length;
+        setAdaptiveNotice(
+          sampleGap
+            ? `Selected ${count || adaptiveQs.length} question${(count || adaptiveQs.length) === 1 ? '' : 's'} from your weak claims — e.g. “${String(sampleGap).slice(0, 100)}”.`
+            : `Selected from your weak teaching claims (${count || 'adaptive'} items) so practice targets what you missed.`
+        );
+      }
     } catch (err) {
       if (!isStale()) {
         if (err instanceof QuizGenerationError) {
@@ -319,13 +342,26 @@ export function useQuizPage() {
           confidence: confidenceByQuestion[q.id] ?? answerConfidence,
         };
       });
-      await api.learning.submitQuizAttempt({
+      const submitResult = await api.learning.submitQuizAttempt({
         topic: activeTopic,
         studyRunId: activeStudyRunId,
         ...(curriculumTopicIdParam ? { curriculumTopicId: curriculumTopicIdParam } : {}),
         attempts,
       });
       setSaveStatus('saved');
+      if (submitResult.learningVelocity) {
+        setLearningVelocity(submitResult.learningVelocity);
+        try {
+          sessionStorage.setItem('med_quiz_lift', JSON.stringify({
+            topic: activeTopic,
+            ...submitResult.learningVelocity,
+            sessionScore: attempts.length
+              ? Math.round((attempts.filter((a) => a.isCorrect).length / attempts.length) * 100)
+              : null,
+            timestamp: Date.now(),
+          }));
+        } catch { /* sessionStorage unavailable */ }
+      }
       if (isAuthenticated) {
         const correctCount = attempts.filter((a) => a.isCorrect).length;
         api.learning.logCpdSession({
@@ -560,6 +596,7 @@ export function useQuizPage() {
     reflectionKind,
     reflectionSaveStatus,
     adaptiveNotice,
+    learningVelocity,
     effectiveExplanationDepth,
     trainingStage,
     currentQ,

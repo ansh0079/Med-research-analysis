@@ -77,8 +77,21 @@ export function ArticleCardSynopsisPanel({
             </span>
           )}
           {coveragePct != null && (
-            <span className="text-[9px] font-bold uppercase tracking-wider rounded-full px-1.5 py-0.5 bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+            <span className={`text-[10px] font-black uppercase tracking-wider rounded-md border px-2 py-0.5 ${
+              coveragePct >= 50
+                ? 'border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-200'
+                : 'border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200'
+            }`}>
               {coveragePct}% full text
+            </span>
+          )}
+          {reviewState && (
+            <span className={`text-[10px] font-black uppercase tracking-wider rounded-md border px-2 py-0.5 ${
+              reviewState === 'human_reviewed'
+                ? 'border-emerald-400 bg-emerald-50 text-emerald-800 dark:border-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-200'
+                : 'border-slate-300 bg-white text-slate-600 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300'
+            }`}>
+              {reviewState === 'human_reviewed' ? 'Human reviewed' : String(reviewState).replace(/_/g, ' ')}
             </span>
           )}
         </div>
