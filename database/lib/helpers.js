@@ -4,7 +4,9 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 
 function safeJsonParse(value, fallback = null) {
-    if (!value) return fallback;
+    if (value === null || value === undefined || value === '') return fallback;
+    // Kysely returns Postgres JSONB columns as already-parsed JS objects — pass through directly.
+    if (typeof value === 'object') return value;
     try {
         return JSON.parse(value);
     } catch {
