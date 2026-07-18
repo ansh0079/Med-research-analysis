@@ -427,6 +427,240 @@
         "obstructive sleep apnea CPAP guideline cardiovascular"
       ],
       "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Heart failure with preserved ejection fraction",
+      "block": "Cardiology",
+      "priority": "high",
+      "aliases": ["HFpEF", "preserved ejection fraction", "diastolic heart failure"],
+      "landmarkPmids": ["34614324", "25538992", "33999510"],
+      "guidelineQueries": ["heart failure preserved ejection fraction guideline SGLT2"],
+      "searchQueries": [
+        "empagliflozin heart failure preserved ejection fraction EMPEROR-Preserved",
+        "spironolactone heart failure preserved ejection fraction TOPCAT"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Secondary stroke prevention antiplatelet anticoagulation",
+      "block": "Neurology",
+      "priority": "high",
+      "aliases": ["secondary stroke prevention", "TIA management", "DAPT stroke"],
+      "landmarkPmids": ["23991709", "29766750", "18753638"],
+      "guidelineQueries": ["secondary stroke prevention guideline antiplatelet anticoagulation"],
+      "searchQueries": [
+        "clopidogrel aspirin acute minor ischemic stroke TIA CHANCE trial",
+        "ticagrelor aspirin minor stroke TIA POINT trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "HIV antiretroviral therapy initiation",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["HIV", "antiretroviral therapy", "ART", "dolutegravir", "INSTI"],
+      "landmarkPmids": ["26192873", "21767103", "31731119"],
+      "guidelineQueries": ["HIV antiretroviral therapy initiation guideline DHHS WHO"],
+      "searchQueries": [
+        "early antiretroviral therapy HIV CD4 count START trial",
+        "dolutegravir abacavir lamivudine HIV first-line SINGLE trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Inflammatory bowel disease biologic therapy",
+      "block": "Gastroenterology",
+      "priority": "high",
+      "aliases": ["IBD", "Crohn's disease", "ulcerative colitis", "infliximab", "vedolizumab"],
+      "landmarkPmids": ["20393175", "24224617", "23770726"],
+      "guidelineQueries": ["Crohn's disease ulcerative colitis biologic guideline infliximab vedolizumab"],
+      "searchQueries": [
+        "infliximab azathioprine Crohn's disease combination therapy SONIC trial",
+        "vedolizumab induction maintenance ulcerative colitis GEMINI trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Upper gastrointestinal bleeding management",
+      "block": "Gastroenterology",
+      "priority": "high",
+      "aliases": ["upper GI bleed", "UGIB", "peptic ulcer bleed", "variceal bleed", "PPI infusion"],
+      "landmarkPmids": ["31917290", "10749965", "23323491"],
+      "guidelineQueries": ["upper gastrointestinal bleeding management guideline PPI endoscopy"],
+      "searchQueries": [
+        "proton pump inhibitor intravenous bolus infusion peptic ulcer bleeding PEPTIC trial",
+        "early endoscopy upper gastrointestinal bleeding outcome"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Preeclampsia prevention aspirin",
+      "block": "Obstetrics",
+      "priority": "high",
+      "aliases": ["preeclampsia", "pre-eclampsia", "aspirin pregnancy", "ASPRE"],
+      "landmarkPmids": ["30072537", "8105032", "28283533"],
+      "guidelineQueries": ["preeclampsia prevention aspirin guideline high risk"],
+      "searchQueries": [
+        "aspirin preeclampsia prevention high risk first trimester ASPRE trial",
+        "low dose aspirin preterm preeclampsia prevention placebo"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Multiple sclerosis disease-modifying therapy",
+      "block": "Neurology",
+      "priority": "high",
+      "aliases": ["MS", "multiple sclerosis", "natalizumab", "ocrelizumab", "DMT"],
+      "landmarkPmids": ["17005952", "29262673", "28002688"],
+      "guidelineQueries": ["multiple sclerosis disease-modifying therapy guideline relapsing"],
+      "searchQueries": [
+        "natalizumab relapsing-remitting multiple sclerosis AFFIRM trial",
+        "ocrelizumab relapsing multiple sclerosis OPERA trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Osteoporosis fracture prevention pharmacotherapy",
+      "block": "Rheumatology",
+      "priority": "high",
+      "aliases": ["osteoporosis", "bisphosphonate", "zoledronic acid", "denosumab", "FRAX"],
+      "landmarkPmids": ["17267905", "19671655", "26716735"],
+      "guidelineQueries": ["osteoporosis fracture prevention bisphosphonate denosumab guideline"],
+      "searchQueries": [
+        "zoledronic acid osteoporosis vertebral fracture HORIZON pivotal fracture trial",
+        "denosumab postmenopausal osteoporosis fracture reduction FREEDOM trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "MRSA bacteremia treatment",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["MRSA", "methicillin-resistant Staphylococcus aureus", "vancomycin", "daptomycin", "Staph aureus bacteremia"],
+      "landmarkPmids": ["15769966", "17989380", "31722027"],
+      "guidelineQueries": ["MRSA bacteremia treatment guideline vancomycin daptomycin"],
+      "searchQueries": [
+        "daptomycin versus vancomycin Staphylococcus aureus bacteremia endocarditis",
+        "MRSA bacteremia treatment guideline duration echocardiography"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Metastatic castration-sensitive prostate cancer",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["prostate cancer", "mCSPC", "CHAARTED", "docetaxel prostate", "enzalutamide prostate"],
+      "landmarkPmids": ["25163328", "28481449", "29949494"],
+      "guidelineQueries": ["metastatic prostate cancer docetaxel enzalutamide guideline"],
+      "searchQueries": [
+        "docetaxel androgen deprivation therapy metastatic prostate cancer CHAARTED",
+        "enzalutamide abiraterone metastatic castration-sensitive prostate cancer"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Breast cancer adjuvant endocrine therapy",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["breast cancer endocrine", "aromatase inhibitor", "tamoxifen", "letrozole", "SOFT"],
+      "landmarkPmids": ["11856106", "25866867", "22904694"],
+      "guidelineQueries": ["breast cancer adjuvant endocrine therapy guideline aromatase inhibitor"],
+      "searchQueries": [
+        "anastrozole tamoxifen breast cancer adjuvant ATAC trial",
+        "ovarian function suppression premenopausal breast cancer SOFT TEXT trials"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Colorectal cancer adjuvant chemotherapy",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["colorectal cancer", "colon cancer adjuvant", "FOLFOX", "oxaliplatin", "MOSAIC"],
+      "landmarkPmids": ["15317790", "15187072", "35858617"],
+      "guidelineQueries": ["colorectal cancer adjuvant chemotherapy guideline FOLFOX duration"],
+      "searchQueries": [
+        "oxaliplatin fluorouracil leucovorin stage III colon cancer MOSAIC trial",
+        "adjuvant chemotherapy duration colorectal cancer 3 versus 6 months IDEA"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Acute myeloid leukemia venetoclax azacitidine",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["AML", "acute myeloid leukemia", "venetoclax", "azacitidine", "VIALE-A"],
+      "landmarkPmids": ["32978981", "21339478", "20593019"],
+      "guidelineQueries": ["acute myeloid leukemia venetoclax azacitidine guideline elderly unfit"],
+      "searchQueries": [
+        "venetoclax azacitidine acute myeloid leukemia unfit intensive chemotherapy VIALE-A",
+        "azacitidine versus conventional care older AML patients AZA-001"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Lung cancer screening low-dose CT",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["lung cancer screening", "NLST", "LDCT", "low dose CT screening"],
+      "landmarkPmids": ["21714641", "32374465", "26485620"],
+      "guidelineQueries": ["lung cancer screening low-dose CT guideline high risk smokers"],
+      "searchQueries": [
+        "low-dose CT screening lung cancer mortality smokers NLST trial",
+        "lung cancer screening high-risk individuals USPSTF guideline"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Major depressive disorder pharmacotherapy",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["depression", "MDD", "SSRI", "SNRI", "antidepressant", "STAR*D"],
+      "landmarkPmids": ["16554526", "28166580", "23511824"],
+      "guidelineQueries": ["major depressive disorder antidepressant guideline SSRI SNRI"],
+      "searchQueries": [
+        "sequential antidepressant treatment steps depressed outpatients STAR*D",
+        "antidepressant efficacy meta-analysis 21 drugs major depression Cipriani"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "systematic review", "guideline"]
+    },
+    {
+      "topic": "Hospital-acquired and ventilator-associated pneumonia",
+      "block": "Critical Care",
+      "priority": "medium",
+      "aliases": ["HAP", "VAP", "hospital acquired pneumonia", "ventilator associated pneumonia"],
+      "landmarkPmids": ["27418577", "24814589", "30863757"],
+      "guidelineQueries": ["hospital acquired pneumonia ventilator-associated pneumonia guideline antibiotic"],
+      "searchQueries": [
+        "hospital acquired pneumonia IDSA ATS guideline antibiotic treatment",
+        "subglottic secretion drainage ventilator associated pneumonia prevention"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Acute kidney injury prevention management",
+      "block": "Renal",
+      "priority": "high",
+      "aliases": ["AKI", "acute kidney injury", "acute renal failure", "KDIGO AKI"],
+      "landmarkPmids": ["22890468", "32726550", "27589537"],
+      "guidelineQueries": ["acute kidney injury KDIGO guideline prevention management"],
+      "searchQueries": [
+        "KDIGO acute kidney injury guideline 2012 staging management",
+        "standard versus accelerated initiation kidney replacement therapy AKI STARRT"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Non-alcoholic fatty liver disease pharmacotherapy",
+      "block": "Gastroenterology",
+      "priority": "medium",
+      "aliases": ["NAFLD", "NASH", "non-alcoholic steatohepatitis", "resmetirom", "semaglutide NASH"],
+      "landmarkPmids": ["26700631", "38413864", "37084116"],
+      "guidelineQueries": ["NAFLD NASH treatment guideline pharmacotherapy"],
+      "searchQueries": [
+        "resmetirom NASH fibrosis MAESTRO-NASH trial",
+        "semaglutide NASH histological improvement NEJM"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
     }
   ]
 }
