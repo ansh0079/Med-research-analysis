@@ -26,6 +26,8 @@ jobs:
       - run: npm install
       - name: ESLint
         run: npx eslint . --quiet
+      - name: SQL dialect drift gate
+        run: npm run verify:sql-dialect
       - name: TypeScript type-check
         run: npm run typecheck:all
       - name: Verify production env checklist

@@ -150,3 +150,23 @@ Latest drill record:
 - **Restore DB cleanup:** dropped post-verification
 - **Side-effects found:** `agent_turn_side_effects` was absent from the restored live DB, but the app still references it and the baseline schema still includes it.
 - **Follow-up:** Reconcile live Postgres with the baseline via a focused migration or retire the durable side-effect path deliberately. Re-run before each paid launch window and after any schema migration.
+
+## SQL Dialect Containment - 2026-07-18
+
+Prod runs Postgres; the local test suite runs SQLite. Seven dialect bugs have shipped
+through that gap (HAVING aliases, LEAST/GREATEST, INSERT OR IGNORE, two
+`datetime('now', <modifier>)` calls, `strftime`, and a broken `withTransaction`).
+Containment now in place:
+
+- **`withTransaction` fixed (was silently non-atomic on Postgres):** BEGIN/COMMIT went
+  through `pool.query()` and could land on different pooled connections, leaking open
+  transactions into the pool. Now uses a dedicated client held in AsyncLocalStorage so
+  all `db.run/get/all` calls inside the callback share it. Affected auth password reset,
+  refresh-token rotation, account deletion, billing, and case sessions.
+- **Static gate:** `npm run verify:sql-dialect` (CI lint job) bans SQLite-only constructs
+  in `server/` and `database/mixins/`; explicit `isPostgres` branches opt out with a
+  `sqlite-ok` line marker.
+- **PG smoke suite:** `tests/integration/pgDialect.db.integration.test.js` runs real
+  service queries plus a transaction-atomicity check against real Postgres in CI.
+- **Migration trigger:** if a dialect bug ships to prod despite both gates, full
+  Postgres standardization (tests included) jumps the queue. Until then it stays parked.

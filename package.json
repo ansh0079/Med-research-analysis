@@ -51,6 +51,7 @@
     "backfill:pdf-flagship:high": "node server/scripts/backfillPdfBouquet.js --priority=high --force-retry",
     "compose:hetzner:config": "docker compose -f docker-compose.hetzner.yml config",
     "verify:db-contract": "node tools/check-db-guards.js",
+    "verify:sql-dialect": "node tools/check-sql-dialect.js",
     "verify:legacy-freeze": "node tools/check-legacy-freeze.js",
     "verify:legacy-removal-ready": "node tools/check-legacy-removal-ready.js",
     "typecheck": "tsc --noEmit",

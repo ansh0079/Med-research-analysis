@@ -8,6 +8,14 @@ const path = require('path');
 const fs = require('fs');
 const { buildPgPoolConfig, buildPgVectorPoolConfig } = require('../server/utils/pgPoolOptions');
 const { runExternalSqliteMigrations } = require('./lib/helpers');
+const { AsyncLocalStorage } = require('async_hooks');
+
+// Carries the dedicated pg client for the duration of a withTransaction callback,
+// so run/get/all issued inside the callback execute on that client. Without this,
+// BEGIN/COMMIT and the statements between them go through pool.query() and can land
+// on DIFFERENT pooled connections — no atomicity, plus a connection is returned to
+// the pool with an open transaction that unrelated queries then run inside.
+const pgTxStorage = new AsyncLocalStorage();
 const { convertSqliteDdlToPostgres } = require('./lib/sqliteDdlToPg');
 
 const MIGRATION_ALIASES = {
@@ -336,10 +344,16 @@ toPgQuery(sql) {
     return result;
 }
 
+// Returns the executor for pg queries: the transaction-scoped client when we are
+// inside a withTransaction callback, otherwise the shared pool.
+_pgExecutor() {
+    return pgTxStorage.getStore()?.client || this.pool;
+}
+
 run(sqlText, params = []) {
     if (this.isPostgres) {
         const pgSql = this.toPgQuery(sqlText);
-        return this.pool.query(pgSql, params).then((res) => {
+        return this._pgExecutor().query(pgSql, params).then((res) => {
             const id = res.rows && res.rows[0] && res.rows[0].id !== null && res.rows[0].id !== undefined ? res.rows[0].id : null;
             return { id: id ?? res.insertId, changes: res.rowCount, rows: res.rows };
         });
@@ -356,6 +370,23 @@ run(sqlText, params = []) {
 }
 
 async withTransaction(fn) {
+    if (this.isPostgres) {
+        // Already inside a transaction (nested call): join it rather than issuing
+        // a second BEGIN, which Postgres rejects.
+        if (pgTxStorage.getStore()) return fn(this);
+        const client = await this.pool.connect();
+        try {
+            await client.query('BEGIN');
+            const result = await pgTxStorage.run({ client }, () => fn(this));
+            await client.query('COMMIT');
+            return result;
+        } catch (err) {
+            await client.query('ROLLBACK').catch(() => {});
+            throw err;
+        } finally {
+            client.release();
+        }
+    }
     await this.run('BEGIN');
     try {
         const result = await fn(this);
@@ -370,7 +401,7 @@ async withTransaction(fn) {
 get(sqlText, params = []) {
     if (this.isPostgres) {
         const pgSql = this.toPgQuery(sqlText);
-        return this.pool.query(pgSql, params).then((res) => res.rows[0]);
+        return this._pgExecutor().query(pgSql, params).then((res) => res.rows[0]);
     }
     return new Promise((resolve, reject) => {
         try {
@@ -386,7 +417,7 @@ get(sqlText, params = []) {
 all(sqlText, params = []) {
     if (this.isPostgres) {
         const pgSql = this.toPgQuery(sqlText);
-        return this.pool.query(pgSql, params).then((res) => res.rows);
+        return this._pgExecutor().query(pgSql, params).then((res) => res.rows);
     }
     return new Promise((resolve, reject) => {
         try {

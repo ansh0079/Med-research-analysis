@@ -199,6 +199,10 @@ function registerProfileRoutes(app, deps) {
     app.get('/api/learning/prompt-variant-metrics', requireAuthJwt, rateLimit(30, 60), async (req, res) => {
         try {
             const days = Math.min(Math.max(parseInt(String(req.query.days || '14'), 10) || 14, 1), 90);
+            // Cutoff computed in JS: SQLite date-modifier syntax fails on Postgres.
+            // 'YYYY-MM-DD HH:MM:SS' (UTC) compares correctly on both engines.
+            const cutoff = new Date(Date.now() - days * 86400000)
+                .toISOString().slice(0, 19).replace('T', ' ');
             const rows = await db.all(
                 `SELECT COALESCE(prompt_variant, 'unknown') AS prompt_variant,
                         COUNT(*) AS attempts,
@@ -206,10 +210,10 @@ function registerProfileRoutes(app, deps) {
                         AVG(CASE WHEN is_correct = 1 THEN 1.0 ELSE 0.0 END) AS accuracy,
                         AVG(confidence) AS avg_confidence
                  FROM quiz_attempts
-                 WHERE user_id = ? AND created_at >= datetime('now', ?)
+                 WHERE user_id = ? AND created_at >= ?
                  GROUP BY COALESCE(prompt_variant, 'unknown')
                  ORDER BY attempts DESC`,
-                [req.user.id, `-${days} days`]
+                [req.user.id, cutoff]
             );
             res.json({
                 days,

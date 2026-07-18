@@ -302,9 +302,13 @@ async getCpdSummary(userId, { year = new Date().getFullYear() } = {}) {
         };
         totalMinutes += Number(r.total_minutes) || 0;
     }
-    // Monthly breakdown for chart
+    // Monthly breakdown for chart. Month expression is dialect-branched:
+    // strftime is SQLite-only, TO_CHAR is the Postgres equivalent (both yield 'MM').
+    const monthExpr = this.isPostgres
+        ? "TO_CHAR(created_at, 'MM')"
+        : "strftime('%m', created_at)"; // sqlite-ok: explicit dialect branch
     const monthly = await this.all(
-        `SELECT strftime('%m', created_at) AS month,
+        `SELECT ${monthExpr} AS month,
                 SUM(duration_minutes) AS minutes,
                 COUNT(*) AS sessions
          FROM cpd_sessions

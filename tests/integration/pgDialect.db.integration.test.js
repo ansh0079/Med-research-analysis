@@ -57,4 +57,70 @@ describePg('Postgres dialect smoke (real cron queries, empty tables)', () => {
         expect(await recordCronRun(db, 'pg-smoke-test', { ok: false, error: 'y', durationMs: 5 })).toBe(2);
         expect(await recordCronRun(db, 'pg-smoke-test', { ok: true, durationMs: 5 })).toBe(0);
     });
+
+    test('withTransaction is atomic on Postgres (rollback undoes all statements)', async () => {
+        await db.run('DELETE FROM cron_heartbeats WHERE task = ?', ['pg-tx-test']);
+        await expect(
+            db.withTransaction(async () => {
+                await db.run(
+                    `INSERT INTO cron_heartbeats (task, last_run_at, last_status, consecutive_failures, runs_total, updated_at)
+                     VALUES (?, datetime('now'), 'ok', 0, 1, datetime('now'))`,
+                    ['pg-tx-test']
+                );
+                // The insert must be visible INSIDE the transaction (same client)...
+                const inside = await db.get('SELECT task FROM cron_heartbeats WHERE task = ?', ['pg-tx-test']);
+                expect(inside?.task).toBe('pg-tx-test');
+                throw new Error('force rollback');
+            })
+        ).rejects.toThrow('force rollback');
+        // ...and gone after rollback. With the old pool.query('BEGIN') implementation
+        // the insert ran outside any real transaction and survived the rollback.
+        const after = await db.get('SELECT task FROM cron_heartbeats WHERE task = ?', ['pg-tx-test']);
+        expect(after).toBeUndefined();
+    });
+
+    test('spaced-rep due-card queries parse on Postgres (datetime translation)', async () => {
+        const { getDueCards, countDueCards, updateCard } = require('../../server/services/spacedRepService');
+        await expect(getDueCards(db, 'pg-smoke-user', 5)).resolves.toEqual([]);
+        await expect(countDueCards(db, 'pg-smoke-user')).resolves.toBe(0);
+        // updateCard exercises both INSERT and UPDATE paths' datetime('now') writes.
+        await updateCard(db, {
+            userId: 'pg-smoke-user', topic: 'smoke', normalizedTopic: 'smoke',
+            outlineNodeId: 'n1', outlineLabel: 'L', stability: 1, difficulty: 5,
+            state: 'review', lapses: 0, intervalDays: 1, easiness: 2.5,
+            repetitions: 1, dueAt: '2099-01-01 00:00:00',
+        });
+        await db.run('DELETE FROM spaced_rep_cards WHERE user_id = ?', ['pg-smoke-user']);
+    });
+
+    test('case-evidence brief recency lookup parses on Postgres (JS cutoff)', async () => {
+        // findRecentBrief is internal; exercise the same shape it now uses.
+        const cutoff = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 19).replace('T', ' ');
+        await expect(db.get(
+            `SELECT * FROM case_evidence_briefs
+             WHERE user_id = ? AND lower(clinical_question) = ? AND created_at > ?
+             ORDER BY created_at DESC LIMIT 1`,
+            ['pg-smoke-user', 'q', cutoff]
+        )).resolves.toBeUndefined();
+    });
+
+    test('CPD annual summary month expression parses on Postgres (TO_CHAR branch)', async () => {
+        await expect(db.getCpdSummary('pg-smoke-user', { year: 2026 })).resolves.toMatchObject({ year: 2026 });
+    });
+
+    test('prompt-variant metrics query parses on Postgres (JS cutoff)', async () => {
+        const cutoff = new Date(Date.now() - 14 * 86400000).toISOString().slice(0, 19).replace('T', ' ');
+        await expect(db.all(
+            `SELECT COALESCE(prompt_variant, 'unknown') AS prompt_variant,
+                    COUNT(*) AS attempts,
+                    SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) AS correct,
+                    AVG(CASE WHEN is_correct = 1 THEN 1.0 ELSE 0.0 END) AS accuracy,
+                    AVG(confidence) AS avg_confidence
+             FROM quiz_attempts
+             WHERE user_id = ? AND created_at >= ?
+             GROUP BY COALESCE(prompt_variant, 'unknown')
+             ORDER BY attempts DESC`,
+            ['pg-smoke-user', cutoff]
+        )).resolves.toEqual([]);
+    });
 });

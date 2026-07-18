@@ -12,12 +12,17 @@ const MAX_BRIEF_AGE_DAYS = 7;
 async function findRecentBrief(db, userId, clinicalQuestion) {
     if (!db || !userId) return null;
     const normalized = String(clinicalQuestion || '').trim().toLowerCase().replace(/\s+/g, ' ').slice(0, 300);
+    // Cutoff computed in JS: SQLite date-modifier syntax does not exist on Postgres.
+    // 'YYYY-MM-DD HH:MM:SS' (UTC) compares correctly against both SQLite TEXT
+    // timestamps and Postgres TIMESTAMPTZ columns.
+    const cutoff = new Date(Date.now() - MAX_BRIEF_AGE_DAYS * 86400000)
+        .toISOString().slice(0, 19).replace('T', ' ');
     const row = await db.get(
         `SELECT * FROM case_evidence_briefs
          WHERE user_id = ? AND lower(clinical_question) = ?
-           AND created_at > datetime('now', '-${MAX_BRIEF_AGE_DAYS} days')
+           AND created_at > ?
          ORDER BY created_at DESC LIMIT 1`,
-        [userId, normalized]
+        [userId, normalized, cutoff]
     );
     if (!row) return null;
     try {
