@@ -82,7 +82,7 @@
       "block": "Respiratory",
       "priority": "high",
       "aliases": ["SMART", "budesonide formoterol", "GINA asthma"],
-      "landmarkPmids": ["30879544", "15502112"],
+      "landmarkPmids": ["30879544", "15502112", "31447015"],
       "guidelineQueries": ["GINA asthma guideline budesonide formoterol"],
       "searchQueries": [
         "asthma SMART budesonide formoterol randomized trial",
@@ -108,7 +108,7 @@
       "block": "Renal",
       "priority": "high",
       "aliases": ["CKD", "chronic kidney disease", "CREDENCE", "EMPA-KIDNEY"],
-      "landmarkPmids": ["30990260", "36331190"],
+      "landmarkPmids": ["30990260", "36331190", "32970396"],
       "guidelineQueries": ["KDIGO chronic kidney disease SGLT2 inhibitor guideline"],
       "searchQueries": [
         "canagliflozin chronic kidney disease CREDENCE trial",
@@ -134,7 +134,7 @@
       "block": "Emergency Medicine",
       "priority": "high",
       "aliases": ["PE", "pulmonary embolism", "YEARS", "D-dimer"],
-      "landmarkPmids": ["28549662", "39915029"],
+      "landmarkPmids": ["28549662", "39915029", "31170498"],
       "guidelineQueries": ["pulmonary embolism diagnosis guideline D-dimer YEARS"],
       "searchQueries": [
         "pulmonary embolism YEARS algorithm D-dimer",
@@ -147,7 +147,7 @@
       "block": "Haematology",
       "priority": "high",
       "aliases": ["DVT", "deep vein thrombosis", "EINSTEIN-DVT", "rivaroxaban"],
-      "landmarkPmids": ["21128814", "26095867"],
+      "landmarkPmids": ["21128814", "26095867", "23816708"],
       "guidelineQueries": ["venous thromboembolism anticoagulation guideline"],
       "searchQueries": [
         "rivaroxaban treatment acute deep vein thrombosis EINSTEIN",
@@ -160,7 +160,7 @@
       "block": "Infectious Diseases",
       "priority": "high",
       "aliases": ["CAP", "community acquired pneumonia", "ATS IDSA CAP"],
-      "landmarkPmids": ["31573350", "32853142"],
+      "landmarkPmids": ["31573350", "32853142", "17460190"],
       "guidelineQueries": ["ATS IDSA community acquired pneumonia guideline"],
       "searchQueries": [
         "community acquired pneumonia ATS IDSA guideline empiric antibiotics",
@@ -173,7 +173,7 @@
       "block": "Cardiology",
       "priority": "high",
       "aliases": ["hypertension", "blood pressure", "SPRINT", "HYVET"],
-      "landmarkPmids": ["26551272", "18378519"],
+      "landmarkPmids": ["26551272", "18378519", "20228401"],
       "guidelineQueries": ["hypertension guideline blood pressure target elderly"],
       "searchQueries": [
         "intensive blood pressure control cardiovascular outcomes systolic",
@@ -199,7 +199,7 @@
       "block": "Cardiology",
       "priority": "high",
       "aliases": ["ACS", "acute coronary syndrome", "PLATO", "ticagrelor", "clopidogrel"],
-      "landmarkPmids": ["19717846", "26039521"],
+      "landmarkPmids": ["19717846", "26039521", "11519503"],
       "guidelineQueries": ["acute coronary syndrome antiplatelet guideline"],
       "searchQueries": [
         "ticagrelor versus clopidogrel acute coronary syndromes",
@@ -238,7 +238,7 @@
       "block": "Infectious Diseases",
       "priority": "high",
       "aliases": ["COVID-19", "RECOVERY", "dexamethasone", "tocilizumab"],
-      "landmarkPmids": ["32678530", "33933206"],
+      "landmarkPmids": ["32678530", "33933206", "33278625"],
       "guidelineQueries": ["COVID-19 severe hospitalized guideline dexamethasone tocilizumab"],
       "searchQueries": [
         "dexamethasone COVID-19 hospitalized mechanical ventilation mortality",
@@ -277,7 +277,7 @@
       "block": "Oncology",
       "priority": "high",
       "aliases": ["NSCLC", "KEYNOTE-189", "pembrolizumab"],
-      "landmarkPmids": ["29658856"],
+      "landmarkPmids": ["29658856", "27718847", "30280635"],
       "guidelineQueries": ["non-small cell lung cancer immunotherapy guideline pembrolizumab"],
       "searchQueries": [
         "pembrolizumab plus chemotherapy metastatic non-small cell lung cancer",
@@ -355,7 +355,7 @@
       "block": "Endocrinology",
       "priority": "high",
       "aliases": ["obesity", "semaglutide", "STEP 1", "weight loss"],
-      "landmarkPmids": ["33567185"],
+      "landmarkPmids": ["33567185", "33755728", "35658024"],
       "guidelineQueries": ["obesity pharmacotherapy guideline semaglutide"],
       "searchQueries": [
         "semaglutide once weekly obesity weight loss STEP 1",
