@@ -3,15 +3,15 @@
  * Extend over time for high-traffic teaching topics.
  */
 const TOPIC_SYNONYM_GROUPS = [
-    ['ards', 'acute respiratory distress syndrome', 'acute respiratory distress'],
-    ['copd', 'chronic obstructive pulmonary disease', 'chronic obstructive airways disease'],
-    ['chf', 'congestive heart failure', 'heart failure'],
+    ['ards', 'acute respiratory distress syndrome', 'acute respiratory distress', 'acute lung injury'],
+    ['copd', 'chronic obstructive pulmonary disease', 'chronic obstructive airways disease', 'copd exacerbation', 'acute copd exacerbation', 'aecopd'],
+    ['chf', 'congestive heart failure', 'heart failure', 'hfref', 'heart failure reduced ejection fraction', 'hfpef', 'heart failure preserved ejection fraction'],
     ['af', 'atrial fibrillation'],
     ['aki', 'acute kidney injury', 'acute renal failure'],
     ['ckd', 'chronic kidney disease', 'chronic renal failure'],
-    ['tia', 'transient ischemic attack'],
+    ['tia', 'transient ischemic attack', 'transient ischaemic attack'],
     ['stemi', 'st elevation myocardial infarction', 'st elevation mi'],
-    ['nstemi', 'non st elevation myocardial infarction'],
+    ['nstemi', 'non st elevation myocardial infarction', 'non st elevation mi'],
     ['dvt', 'deep vein thrombosis', 'deep venous thrombosis'],
     ['pe', 'pulmonary embolism'],
     ['cap', 'community acquired pneumonia'],

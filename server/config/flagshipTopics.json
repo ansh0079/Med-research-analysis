@@ -1,0 +1,432 @@
+{
+  "version": 1,
+  "description": "Initial flagship-topic program. These topics should become the app's highest-quality evidence + learning surfaces before broad corpus scaling.",
+  "targets": {
+    "flagshipCount": 50,
+    "minimumSearchQueriesPerTopic": 2,
+    "minimumSourceArticles": 3,
+    "minimumGuidelines": 1,
+    "minimumTeachingClaims": 8,
+    "minimumTeachingObjects": 3,
+    "minimumMcqObjects": 1,
+    "minimumLandmarkPmids": 1
+  },
+  "topics": [
+    {
+      "topic": "Heart failure with reduced ejection fraction",
+      "block": "Cardiology",
+      "priority": "high",
+      "aliases": ["heart failure", "HFrEF", "reduced ejection fraction"],
+      "landmarkPmids": ["31535829", "32865377", "25176015", "10471456", "2057034"],
+      "guidelineQueries": ["ACC AHA heart failure guideline", "ESC heart failure guideline"],
+      "searchQueries": [
+        "SGLT2 inhibitors heart failure reduced ejection fraction randomized trial",
+        "sacubitril valsartan heart failure reduced ejection fraction mortality"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Atrial fibrillation anticoagulation",
+      "block": "Cardiology",
+      "priority": "high",
+      "aliases": ["AF", "atrial fibrillation", "CHA2DS2-VASc"],
+      "landmarkPmids": ["19717844", "21870978", "38033089"],
+      "guidelineQueries": ["atrial fibrillation diagnosis and management guideline"],
+      "searchQueries": [
+        "apixaban versus warfarin atrial fibrillation ARISTOTLE",
+        "atrial fibrillation diagnosis and management guideline"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "ARDS",
+      "block": "Critical Care",
+      "priority": "high",
+      "aliases": ["acute respiratory distress syndrome", "acute lung injury", "ARDSNet"],
+      "landmarkPmids": ["10793162", "23688302", "22797452"],
+      "guidelineQueries": ["ARDS clinical practice guideline mechanical ventilation prone positioning"],
+      "searchQueries": [
+        "low tidal volume ventilation acute respiratory distress syndrome ARDSNet",
+        "prone positioning severe ARDS PROSEVA trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Sepsis and septic shock",
+      "block": "Critical Care",
+      "priority": "high",
+      "aliases": ["sepsis", "septic shock", "Surviving Sepsis Campaign"],
+      "landmarkPmids": ["26903338", "26903335", "34599691", "24635773"],
+      "guidelineQueries": ["surviving sepsis campaign guidelines management sepsis septic shock"],
+      "searchQueries": [
+        "Surviving Sepsis Campaign septic shock vasopressor guideline",
+        "early goal-directed therapy septic shock ProCESS trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "COPD exacerbation",
+      "block": "Respiratory",
+      "priority": "high",
+      "aliases": ["AECOPD", "acute COPD exacerbation", "chronic obstructive pulmonary disease exacerbation"],
+      "landmarkPmids": ["32579807"],
+      "guidelineQueries": ["GOLD COPD exacerbation guideline"],
+      "searchQueries": [
+        "COPD exacerbation GOLD guideline",
+        "triple inhaled therapy COPD exacerbation IMPACT ETHOS"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Asthma reliever controller strategy",
+      "block": "Respiratory",
+      "priority": "high",
+      "aliases": ["SMART", "budesonide formoterol", "GINA asthma"],
+      "landmarkPmids": ["30879544", "15502112"],
+      "guidelineQueries": ["GINA asthma guideline budesonide formoterol"],
+      "searchQueries": [
+        "asthma SMART budesonide formoterol randomized trial",
+        "GINA asthma guideline inhaled corticosteroid formoterol"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Type 2 diabetes cardiovascular outcomes",
+      "block": "Endocrinology",
+      "priority": "high",
+      "aliases": ["T2DM", "type 2 diabetes", "EMPA-REG", "LEADER"],
+      "landmarkPmids": ["26378978", "27295427", "9742976", "18539917"],
+      "guidelineQueries": ["ADA standards of care type 2 diabetes cardiovascular disease"],
+      "searchQueries": [
+        "empagliflozin cardiovascular outcomes type 2 diabetes EMPA-REG",
+        "GLP-1 receptor agonist liraglutide cardiovascular outcomes type 2 diabetes"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Chronic kidney disease SGLT2 inhibitors",
+      "block": "Renal",
+      "priority": "high",
+      "aliases": ["CKD", "chronic kidney disease", "CREDENCE", "EMPA-KIDNEY"],
+      "landmarkPmids": ["30990260", "36331190"],
+      "guidelineQueries": ["KDIGO chronic kidney disease SGLT2 inhibitor guideline"],
+      "searchQueries": [
+        "canagliflozin chronic kidney disease CREDENCE trial",
+        "empagliflozin chronic kidney disease EMPA-KIDNEY trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Acute ischemic stroke reperfusion",
+      "block": "Neurology",
+      "priority": "high",
+      "aliases": ["acute ischaemic stroke", "alteplase", "thrombectomy", "tenecteplase"],
+      "landmarkPmids": ["7477192", "27673305", "29694815"],
+      "guidelineQueries": ["acute ischemic stroke reperfusion guideline thrombectomy alteplase"],
+      "searchQueries": [
+        "alteplase acute ischemic stroke NINDS trial",
+        "endovascular thrombectomy acute ischemic stroke HERMES meta analysis"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "meta-analysis", "guideline"]
+    },
+    {
+      "topic": "Pulmonary embolism diagnosis",
+      "block": "Emergency Medicine",
+      "priority": "high",
+      "aliases": ["PE", "pulmonary embolism", "YEARS", "D-dimer"],
+      "landmarkPmids": ["28549662", "39915029"],
+      "guidelineQueries": ["pulmonary embolism diagnosis guideline D-dimer YEARS"],
+      "searchQueries": [
+        "pulmonary embolism YEARS algorithm D-dimer",
+        "pulmonary embolism diagnosis guideline risk stratification"
+      ],
+      "requiredStudyTypes": ["diagnostic study", "guideline"]
+    },
+    {
+      "topic": "Venous thromboembolism anticoagulation",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["DVT", "deep vein thrombosis", "EINSTEIN-DVT", "rivaroxaban"],
+      "landmarkPmids": ["21128814", "26095867"],
+      "guidelineQueries": ["venous thromboembolism anticoagulation guideline"],
+      "searchQueries": [
+        "rivaroxaban treatment acute deep vein thrombosis EINSTEIN",
+        "venous thromboembolism anticoagulation guideline duration"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Community-acquired pneumonia",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["CAP", "community acquired pneumonia", "ATS IDSA CAP"],
+      "landmarkPmids": ["31573350", "32853142"],
+      "guidelineQueries": ["ATS IDSA community acquired pneumonia guideline"],
+      "searchQueries": [
+        "community acquired pneumonia ATS IDSA guideline empiric antibiotics",
+        "community acquired pneumonia guideline severity site of care"
+      ],
+      "requiredStudyTypes": ["guideline"]
+    },
+    {
+      "topic": "Hypertension treatment intensity",
+      "block": "Cardiology",
+      "priority": "high",
+      "aliases": ["hypertension", "blood pressure", "SPRINT", "HYVET"],
+      "landmarkPmids": ["26551272", "18378519"],
+      "guidelineQueries": ["hypertension guideline blood pressure target elderly"],
+      "searchQueries": [
+        "intensive blood pressure control cardiovascular outcomes systolic",
+        "hypertension treatment patients 80 years or older very elderly"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "LDL lowering and ASCVD prevention",
+      "block": "Cardiology",
+      "priority": "high",
+      "aliases": ["LDL", "statin", "PCSK9", "FOURIER", "IMPROVE-IT", "JUPITER"],
+      "landmarkPmids": ["18997196", "28304224", "21067804", "26039521"],
+      "guidelineQueries": ["cholesterol guideline LDL lowering ASCVD prevention"],
+      "searchQueries": [
+        "intensive LDL cholesterol lowering statin meta-analysis",
+        "PCSK9 inhibitor evolocumab cardiovascular outcomes"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "meta-analysis", "guideline"]
+    },
+    {
+      "topic": "Acute coronary syndrome antiplatelet strategy",
+      "block": "Cardiology",
+      "priority": "high",
+      "aliases": ["ACS", "acute coronary syndrome", "PLATO", "ticagrelor", "clopidogrel"],
+      "landmarkPmids": ["19717846", "26039521"],
+      "guidelineQueries": ["acute coronary syndrome antiplatelet guideline"],
+      "searchQueries": [
+        "ticagrelor versus clopidogrel acute coronary syndromes",
+        "ezetimibe added to statin therapy acute coronary syndrome"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Stable coronary disease invasive strategy",
+      "block": "Cardiology",
+      "priority": "medium",
+      "aliases": ["stable coronary disease", "ISCHEMIA", "ischemic heart disease"],
+      "landmarkPmids": ["32227755", "12517460"],
+      "guidelineQueries": ["stable coronary disease invasive conservative guideline"],
+      "searchQueries": [
+        "initial invasive or conservative strategy stable coronary disease",
+        "primary angioplasty versus thrombolytic therapy acute myocardial infarction"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Aortic stenosis TAVR",
+      "block": "Cardiology",
+      "priority": "medium",
+      "aliases": ["aortic stenosis", "TAVR", "TAVI", "PARTNER 3"],
+      "landmarkPmids": ["30883058"],
+      "guidelineQueries": ["aortic stenosis TAVR guideline low risk"],
+      "searchQueries": [
+        "transcatheter aortic valve replacement balloon-expandable low-risk patients",
+        "aortic stenosis TAVR guideline low risk surgical risk"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "COVID-19 severe disease immunomodulation",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["COVID-19", "RECOVERY", "dexamethasone", "tocilizumab"],
+      "landmarkPmids": ["32678530", "33933206"],
+      "guidelineQueries": ["COVID-19 severe hospitalized guideline dexamethasone tocilizumab"],
+      "searchQueries": [
+        "dexamethasone COVID-19 hospitalized mechanical ventilation mortality",
+        "tocilizumab COVID-19 hospitalized patients"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Antimicrobial resistance burden",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["AMR", "antimicrobial resistance", "GRAM"],
+      "landmarkPmids": ["35065702"],
+      "guidelineQueries": ["antimicrobial resistance stewardship guideline"],
+      "searchQueries": [
+        "global burden bacterial antimicrobial resistance",
+        "antimicrobial resistance stewardship guideline"
+      ],
+      "requiredStudyTypes": ["systematic review", "guideline"]
+    },
+    {
+      "topic": "Influenza antiviral treatment",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["influenza", "oseltamivir", "Tamiflu"],
+      "landmarkPmids": ["10697061"],
+      "guidelineQueries": ["influenza antiviral treatment guideline oseltamivir"],
+      "searchQueries": [
+        "oseltamivir treatment influenza healthy adults",
+        "influenza antiviral treatment guideline oseltamivir"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Non-small cell lung cancer immunotherapy",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["NSCLC", "KEYNOTE-189", "pembrolizumab"],
+      "landmarkPmids": ["29658856"],
+      "guidelineQueries": ["non-small cell lung cancer immunotherapy guideline pembrolizumab"],
+      "searchQueries": [
+        "pembrolizumab plus chemotherapy metastatic non-small cell lung cancer",
+        "non-small cell lung cancer immunotherapy guideline pembrolizumab"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Advanced melanoma immunotherapy",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["melanoma", "CheckMate 067", "nivolumab", "ipilimumab"],
+      "landmarkPmids": ["31562797"],
+      "guidelineQueries": ["advanced melanoma immunotherapy guideline nivolumab ipilimumab"],
+      "searchQueries": [
+        "nivolumab ipilimumab advanced melanoma overall survival",
+        "advanced melanoma immunotherapy guideline nivolumab ipilimumab"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "HER2 positive breast cancer adjuvant trastuzumab",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["HER2 breast cancer", "trastuzumab", "BCIRG 006"],
+      "landmarkPmids": ["21991949"],
+      "guidelineQueries": ["HER2 positive breast cancer adjuvant trastuzumab guideline"],
+      "searchQueries": [
+        "trastuzumab adjuvant HER2 positive breast cancer BCIRG 006",
+        "HER2 positive breast cancer adjuvant trastuzumab guideline"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Chronic myeloid leukemia imatinib",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["CML", "imatinib", "IRIS"],
+      "landmarkPmids": ["12637609"],
+      "guidelineQueries": ["chronic myeloid leukemia imatinib guideline"],
+      "searchQueries": [
+        "imatinib versus interferon chronic myeloid leukemia IRIS trial",
+        "chronic myeloid leukemia imatinib guideline"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "CAR-T therapy large B-cell lymphoma",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["CAR-T", "axicabtagene", "ZUMA-1", "large B-cell lymphoma"],
+      "landmarkPmids": ["29226797"],
+      "guidelineQueries": ["large B-cell lymphoma CAR-T guideline"],
+      "searchQueries": [
+        "CAR-T cell therapy refractory large B-cell lymphoma axicabtagene",
+        "large B-cell lymphoma CAR-T guideline"
+      ],
+      "requiredStudyTypes": ["clinical trial", "guideline"]
+    },
+    {
+      "topic": "Sickle cell disease gene editing",
+      "block": "Haematology",
+      "priority": "medium",
+      "aliases": ["sickle cell disease", "CRISPR", "Cas9", "CTX001", "exa-cel"],
+      "landmarkPmids": ["33283989"],
+      "guidelineQueries": ["sickle cell disease gene therapy guideline exagamglogene"],
+      "searchQueries": [
+        "CRISPR-Cas9 gene editing sickle cell disease beta-thalassemia",
+        "sickle cell disease gene therapy guideline exagamglogene"
+      ],
+      "requiredStudyTypes": ["clinical trial", "guideline"]
+    },
+    {
+      "topic": "Obesity pharmacotherapy",
+      "block": "Endocrinology",
+      "priority": "high",
+      "aliases": ["obesity", "semaglutide", "STEP 1", "weight loss"],
+      "landmarkPmids": ["33567185"],
+      "guidelineQueries": ["obesity pharmacotherapy guideline semaglutide"],
+      "searchQueries": [
+        "semaglutide once weekly obesity weight loss STEP 1",
+        "obesity pharmacotherapy guideline semaglutide"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Bariatric surgery in type 2 diabetes",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["bariatric surgery", "metabolic surgery", "STAMPEDE"],
+      "landmarkPmids": ["22449319"],
+      "guidelineQueries": ["bariatric surgery type 2 diabetes guideline"],
+      "searchQueries": [
+        "bariatric surgery versus medical therapy type 2 diabetes STAMPEDE",
+        "bariatric surgery type 2 diabetes guideline"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Rheumatoid arthritis initial DMARD strategy",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["rheumatoid arthritis", "methotrexate", "TEAR"],
+      "landmarkPmids": ["22508468"],
+      "guidelineQueries": ["rheumatoid arthritis methotrexate DMARD guideline"],
+      "searchQueries": [
+        "methotrexate early rheumatoid arthritis combination therapy TEAR",
+        "rheumatoid arthritis methotrexate DMARD guideline"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Recurrent Clostridioides difficile infection",
+      "block": "Gastroenterology",
+      "priority": "medium",
+      "aliases": ["C difficile", "Clostridioides difficile", "FMT", "fecal microbiota transplant"],
+      "landmarkPmids": ["23323867"],
+      "guidelineQueries": ["recurrent Clostridioides difficile infection FMT guideline"],
+      "searchQueries": [
+        "fecal microbiota transplant recurrent Clostridioides difficile infection",
+        "recurrent Clostridioides difficile infection FMT guideline"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Peptic ulcer bleeding and H pylori",
+      "block": "Gastroenterology",
+      "priority": "medium",
+      "aliases": ["peptic ulcer bleeding", "H pylori", "Helicobacter pylori"],
+      "landmarkPmids": ["7800005"],
+      "guidelineQueries": ["peptic ulcer bleeding H pylori eradication guideline"],
+      "searchQueries": [
+        "Helicobacter pylori eradication peptic ulcer bleeding recurrence",
+        "peptic ulcer bleeding H pylori eradication guideline"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Obstructive sleep apnea CPAP cardiovascular outcomes",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["OSA", "obstructive sleep apnea", "CPAP", "SAVE"],
+      "landmarkPmids": ["27571048"],
+      "guidelineQueries": ["obstructive sleep apnea CPAP guideline cardiovascular"],
+      "searchQueries": [
+        "continuous positive airway pressure obstructive sleep apnea cardiovascular outcomes SAVE",
+        "obstructive sleep apnea CPAP guideline cardiovascular"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    }
+  ]
+}
