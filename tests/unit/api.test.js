@@ -1912,11 +1912,13 @@ describe('API Endpoints', () => {
         })
         .expect(200);
 
-      expect(response.body.claimAnchorMode).toBe('adaptive_teaching_object');
+      expect(response.body.claimAnchorMode).toBe('adaptive_teaching_object_bandit');
       expect(response.body.adaptiveClaimCount).toBe(2);
-      expect(response.body.questions.map((q) => q.claimKey)).toEqual([
-        'weakclaim1234567890abcdef',
+      // Claim selection is Thompson-sampled now, so ordering is not deterministic —
+      // assert both adaptive anchors are present, not their order.
+      expect(response.body.questions.map((q) => q.claimKey).sort()).toEqual([
         'untestedclaim1234567890ab',
+        'weakclaim1234567890abcdef',
       ]);
       const promptBody = JSON.parse(mockFetch.mock.calls[0][1].body);
       const prompt = promptBody.contents[0].parts[0].text;

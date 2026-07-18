@@ -17,10 +17,18 @@ jest.mock('../../server/services/agentTurnMemoryService', () => ({
     isSessionEndingTurn: jest.fn(() => false),
 }));
 
-jest.mock('../../server/routes/agent', () => ({
+// The intent/claim helpers moved from routes/agent into agentHelpers; keep the
+// rest of the module real (message signatures etc. are used by the service).
+jest.mock('../../server/services/agentHelpers', () => ({
+    ...jest.requireActual('../../server/services/agentHelpers'),
     inferDemandIntent: jest.fn().mockResolvedValue('clarify'),
     isLlmIntentClassifierEnabled: jest.fn(() => false),
     extractGroundedClaimsStructured: jest.fn().mockResolvedValue([]),
+}));
+
+jest.mock('../../server/services/agentSelfImprovementService', () => ({
+    ...jest.requireActual('../../server/services/agentSelfImprovementService'),
+    analyzeConversationQuality: jest.fn().mockResolvedValue({ ok: true }),
 }));
 
 const {
@@ -32,7 +40,7 @@ const {
 const {
     persistAgentTurnMemory,
 } = require('../../server/services/agentTurnMemoryService');
-const agentRoutes = require('../../server/routes/agent');
+const agentHelpers = require('../../server/services/agentHelpers');
 
 function makeQueued(overrides = {}) {
     return {
@@ -64,7 +72,7 @@ describe('agentSideEffectService', () => {
     beforeEach(() => {
         jest.clearAllMocks();
         enqueueNamed.mockResolvedValue({ queued: true });
-        agentRoutes.extractGroundedClaimsStructured.mockResolvedValue([]);
+        agentHelpers.extractGroundedClaimsStructured.mockResolvedValue([]);
     });
 
     test('enqueueAgentTurnSideEffects creates a durable row and queues the processor once', async () => {
@@ -234,7 +242,7 @@ describe('agentSideEffectService', () => {
             recordLearningEvent: jest.fn().mockResolvedValue(true),
             recordTopicDemandSignal: jest.fn().mockResolvedValue(true),
         };
-        agentRoutes.extractGroundedClaimsStructured.mockRejectedValue(new Error('claims offline'));
+        agentHelpers.extractGroundedClaimsStructured.mockRejectedValue(new Error('claims offline'));
 
         await expect(processAgentTurnSideEffect('agent-turn:abc', { db })).rejects.toThrow('claims offline');
 

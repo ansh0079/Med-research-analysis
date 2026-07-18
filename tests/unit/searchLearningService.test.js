@@ -28,6 +28,7 @@ describe('searchLearningService', () => {
             hasTrajectoryHints: false,
             personalized: false,
             banditArmId: null,
+            banditContext: null,
             misconceptionTargets: 0,
             calibrationOverride: null,
             hasDangerousMisconception: false,
