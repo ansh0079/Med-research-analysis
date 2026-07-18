@@ -4,12 +4,14 @@
 .env.*.local
 .env.example.local
 
-# Database files (SQLite)
+# Database files (SQLite) and Postgres dumps
 *.db
 *.sqlite
 *.sqlite3
+*.dump
 database/*.db
 database/*.sqlite
+medsearch-*.dump
 
 # Cache directories (data/runtime, not the cache/ source module)
 .cache/
