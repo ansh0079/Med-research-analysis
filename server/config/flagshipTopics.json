@@ -16,7 +16,7 @@
       "topic": "Heart failure with reduced ejection fraction",
       "block": "Cardiology",
       "priority": "high",
-      "aliases": ["heart failure", "HFrEF", "reduced ejection fraction"],
+      "aliases": ["HFrEF", "reduced ejection fraction", "Guideline-directed medical therapy for HFrEF", "GDMT HFrEF"],
       "landmarkPmids": ["31535829", "32865377", "25176015", "10471456", "2057034"],
       "guidelineQueries": ["ACC AHA heart failure guideline", "ESC heart failure guideline"],
       "searchQueries": [
@@ -68,8 +68,8 @@
       "topic": "COPD exacerbation",
       "block": "Respiratory",
       "priority": "high",
-      "aliases": ["AECOPD", "acute COPD exacerbation", "chronic obstructive pulmonary disease exacerbation"],
-      "landmarkPmids": ["32579807"],
+      "aliases": ["AECOPD", "acute COPD exacerbation", "Acute exacerbation of COPD", "chronic obstructive pulmonary disease exacerbation"],
+      "landmarkPmids": ["32579807", "30920913", "33098434"],
       "guidelineQueries": ["GOLD COPD exacerbation guideline"],
       "searchQueries": [
         "COPD exacerbation GOLD guideline",

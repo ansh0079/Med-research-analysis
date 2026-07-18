@@ -55,21 +55,29 @@ Going forward, `curriculumSeedService` upserts `topic_knowledge` from the eviden
 
 ## Real DB Restore
 
-The local DB currently has empty readiness-critical tables. To restore a real enriched corpus, place the dump in a known path and restore it into `database/app.db` or point `FLAGSHIP_DB` at it for audits:
+Nightly Postgres dumps are pulled by the Windows task **MedSearchBackupPull** (10:00, `StartWhenAvailable`) into:
 
-```powershell
-$env:FLAGSHIP_DB='C:\path\to\enriched-topics.db'
-npm run audit:flagship-topics
-node scripts/audit-topic-dataset.mjs
+`C:\Users\ansh0\OneDrive\medsearch-backups\`
+
+(e.g. `medsearch-YYYYMMDD-030001.dump`). Same artifact also lives on the prod server under `/var/backups/medsearch/`.
+
+These are **Postgres custom-format** dumps (`pg_dump`), not SQLite — do not point `FLAGSHIP_DB` at them.
+
+### Scratch restore on the prod host (recommended)
+
+Uses the dump already on the server; never writes to the live `medsearch` DB:
+
+```bash
+# on server
+bash /tmp/restore-scratch-on-server.sh /var/backups/medsearch/medsearch-YYYYMMDD-030001.dump medsearch_restore
+bash /opt/medsearch/scripts/run-flagship-ops-on-restore.sh --dry-run
+# when ready:
+bash /opt/medsearch/scripts/run-flagship-ops-on-restore.sh --apply
 ```
 
-For production-like Postgres, restore with the normal database tooling, then run:
+Scripts live in repo `scripts/restore-scratch-on-server.sh` and `scripts/run-flagship-ops-on-restore.sh`.
 
-```powershell
-npm run db:migrate:postgres
-npm run audit:flagship-topics
-npm run eval:search-quality:gold
-```
+Verified restore (2026-07-18 dump): curriculum_topics=1139, topic_knowledge=273, topic_guidelines=5304, teaching_objects=6999, teaching_object_claims=20872.
 
 ## First Cohort
 

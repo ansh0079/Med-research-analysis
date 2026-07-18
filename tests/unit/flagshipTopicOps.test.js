@@ -19,12 +19,35 @@ describe('flagshipTopicOps', () => {
         expect(curriculumMatchesFlagship('Sepsis and septic shock', sepsis).match).toBe(true);
         expect(curriculumMatchesFlagship('sepsis', sepsis).match).toBe(true);
         expect(curriculumMatchesFlagship('Surviving Sepsis Campaign', sepsis).match).toBe(true);
+        expect(curriculumMatchesFlagship(
+            'Sepsis and septic shock: Sepsis-3 definitions, qSOFA, SOFA score, 1-hour bundle',
+            sepsis
+        ).match).toBe(true);
     });
 
     test('does not swallow sibling disease modifiers without fuzzy', () => {
         expect(curriculumMatchesFlagship('Neutropenic sepsis', sepsis).match).toBe(false);
         expect(curriculumMatchesFlagship('Septic arthritis', sepsis).match).toBe(false);
         expect(curriculumMatchesFlagship('Sepsis-associated AKI', sepsis).match).toBe(false);
+        expect(curriculumMatchesFlagship('Transfusion-Related Acute Lung Injury', {
+            topic: 'ARDS',
+            aliases: ['acute respiratory distress syndrome', 'acute lung injury', 'ARDSNet'],
+        }).match).toBe(false);
+    });
+
+    test('does not cross-match HFrEF with HFpEF curriculum rows', () => {
+        const hfref = {
+            topic: 'Heart failure with reduced ejection fraction',
+            aliases: ['HFrEF', 'Guideline-directed medical therapy for HFrEF'],
+        };
+        expect(curriculumMatchesFlagship(
+            'Heart failure with preserved ejection fraction (HFpEF): diagnosis and emerging therapies',
+            hfref
+        ).match).toBe(false);
+        expect(curriculumMatchesFlagship(
+            'Guideline-directed medical therapy for HFrEF: ARNI, beta-blockers, MRA, SGLT2',
+            hfref
+        ).match).toBe(true);
     });
 
     test('pickClusterWinner prefers exact flagship title then richest content', () => {

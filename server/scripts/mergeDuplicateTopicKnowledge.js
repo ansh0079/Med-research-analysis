@@ -40,8 +40,9 @@ async function main() {
     await db.connect();
     await db.runMigrations();
 
+    // Postgres rejects "" as an identifier; use standard SQL single quotes.
     const rows = await db.all(
-        'SELECT * FROM topic_knowledge WHERE TRIM(COALESCE(canonical_normalized, "")) != "" ORDER BY updated_at DESC',
+        "SELECT * FROM topic_knowledge WHERE TRIM(COALESCE(canonical_normalized, '')) != '' ORDER BY updated_at DESC",
         []
     );
     const byCanon = new Map();

@@ -5,7 +5,10 @@
 const TOPIC_SYNONYM_GROUPS = [
     ['ards', 'acute respiratory distress syndrome', 'acute respiratory distress', 'acute lung injury'],
     ['copd', 'chronic obstructive pulmonary disease', 'chronic obstructive airways disease', 'copd exacerbation', 'acute copd exacerbation', 'aecopd'],
-    ['chf', 'congestive heart failure', 'heart failure', 'hfref', 'heart failure reduced ejection fraction', 'heart failure with reduced ejection fraction', 'guideline directed medical therapy for hfref', 'hfpef', 'heart failure preserved ejection fraction'],
+    // Keep HFrEF and HFpEF in separate clusters so merges do not cross phenotypes.
+    ['chf', 'congestive heart failure', 'heart failure'],
+    ['hfref', 'heart failure reduced ejection fraction', 'heart failure with reduced ejection fraction', 'guideline directed medical therapy for hfref', 'guideline-directed medical therapy for hfref'],
+    ['hfpef', 'heart failure preserved ejection fraction', 'heart failure with preserved ejection fraction'],
     ['af', 'atrial fibrillation', 'atrial fibrillation anticoagulation'],
     ['aki', 'acute kidney injury', 'acute renal failure'],
     ['ckd', 'chronic kidney disease', 'chronic renal failure'],
