@@ -210,7 +210,7 @@ export const SearchPage: React.FC = () => {
               specificity: filters.specificity,
               studyTypeLabels: (filters.studyTypes || [])
                 .map((clause) => STUDY_TYPE_FILTER_OPTIONS.find((o) => o.clause === clause)?.label)
-                .filter((label): label is string => Boolean(label)),
+                .filter(Boolean) as string[],
               yearRange: filters.yearRange,
             }}
           />
