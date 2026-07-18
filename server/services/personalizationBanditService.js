@@ -9,6 +9,7 @@ const POLICY_RECOMMENDATION = 'recommendation_strategy';
 const POLICY_QUIZ_CLAIM_SELECTION = 'quiz_claim_selection';
 const POLICY_SYNOPSIS_STYLE = 'synopsis_style';
 const POLICY_TEACHING_STRATEGY = 'agent_teaching_strategy';
+const POLICY_CASE_DIFFICULTY = 'case_scenario_outcome';
 
 const SEARCH_RANKING_ARMS = {
     heuristic_default: {
@@ -59,6 +60,18 @@ const TEACHING_STRATEGY_ARMS = {
     analogy:       { label: 'Analogy-led',          strategy: 'analogy_bridge' },
     worked_example:{ label: 'Worked example first', strategy: 'example_first' },
 };
+
+// Case difficulty arms — arm IDs match historical rewards: difficulty:{easy|medium|hard}
+const CASE_DIFFICULTY_ARMS = {
+    'difficulty:easy': { difficulty: 'easy', label: 'Easy' },
+    'difficulty:medium': { difficulty: 'medium', label: 'Medium' },
+    'difficulty:hard': { difficulty: 'hard', label: 'Hard' },
+};
+
+function caseDifficultyArmId(difficulty) {
+    const d = ['easy', 'medium', 'hard'].includes(difficulty) ? difficulty : 'medium';
+    return `difficulty:${d}`;
+}
 
 // Audit arm safety at module load — catches unsafe weight vectors before any traffic.
 (function auditArmsAtStartup() {
@@ -155,10 +168,146 @@ function chooseArmBySamples(armIds, globalSamples = {}, userSamples = {}, userPu
     return { armId: bestArm, sampled: bestSample };
 }
 
-async function selectSearchRankingArm(db, userId) {
+function searchRankingContextFeatures(context = {}) {
+    const streak = Number(
+        context.profile?.currentStreak
+        ?? context.profile?.current_streak
+        ?? context.currentStreak
+        ?? 0
+    ) || 0;
+    const mastery = Number(
+        context.topicMastery
+        ?? context.masteryScore
+        ?? context.overallScore
+        ?? context.profile?.overallScore
+        ?? 0
+    ) || 0;
+    return {
+        streakBand: streak >= 14 ? 'long' : streak >= 3 ? 'active' : streak > 0 ? 'started' : 'none',
+        masteryBand: mastery >= 80 ? 'strong' : mastery >= 60 ? 'building' : mastery > 0 ? 'weak' : 'unknown',
+        hasDangerousMisconception: Boolean(context.hasDangerousMisconception),
+        streak,
+        mastery,
+    };
+}
+
+/**
+ * Soft contextual prior over Thompson samples — does not hard-override arms.
+ * Weak mastery → quiz/misconception arms; strong mastery → engagement; long streaks → engagement.
+ */
+function contextualArmPriorBoost(armId, features = {}) {
+    let boost = 1;
+    const masteryBand = features.masteryBand || 'unknown';
+    const streakBand = features.streakBand || 'none';
+    if (masteryBand === 'weak' || masteryBand === 'unknown') {
+        if (armId === 'quiz_gap_heavy') boost *= 1.18;
+        if (armId === 'misconception_heavy') boost *= 1.12;
+        if (armId === 'engagement_heavy') boost *= 0.92;
+    } else if (masteryBand === 'strong') {
+        if (armId === 'engagement_heavy') boost *= 1.12;
+        if (armId === 'quiz_gap_heavy') boost *= 0.9;
+    }
+    if (streakBand === 'long' && armId === 'engagement_heavy') boost *= 1.08;
+    if (streakBand === 'none' && armId === 'heuristic_default') boost *= 1.05;
+    if (features.hasDangerousMisconception && armId === 'misconception_heavy') boost *= 1.2;
+    return boost;
+}
+
+/**
+ * Softmax propensities over Thompson scores (logged for offline IPS).
+ * Temperature < 1 sharpens; default 1 keeps relative sample scale.
+ */
+function softmaxPropensities(scores = [], temperature = 1) {
+    if (!scores.length) return [];
+    const t = Math.max(0.05, Number(temperature) || 1);
+    const max = Math.max(...scores);
+    const exps = scores.map((s) => Math.exp((Number(s) - max) / t));
+    const sum = exps.reduce((a, b) => a + b, 0) || 1;
+    return exps.map((e) => e / sum);
+}
+
+function chooseArmBySamplesContextual(
+    armIds,
+    globalSamples = {},
+    userSamples = {},
+    userPulls = 0,
+    fallbackArm = armIds[0],
+    contextFeatures = null
+) {
+    let bestArm = fallbackArm;
+    let bestSample = -1;
+    let bestRaw = null;
+    const boostedScores = [];
+    for (const armId of armIds) {
+        const raw = blendedArmSample(globalSamples[armId] ?? 0.5, userSamples[armId], userPulls);
+        const boosted = contextFeatures
+            ? raw * contextualArmPriorBoost(armId, contextFeatures)
+            : raw;
+        boostedScores.push(boosted);
+        if (boosted > bestSample) {
+            bestSample = boosted;
+            bestArm = armId;
+            bestRaw = raw;
+        }
+    }
+    const propensities = softmaxPropensities(boostedScores);
+    const propensityByArm = {};
+    armIds.forEach((armId, i) => {
+        propensityByArm[armId] = propensities[i] ?? (1 / Math.max(armIds.length, 1));
+    });
+    return {
+        armId: bestArm,
+        sampled: bestSample,
+        rawSampled: bestRaw,
+        propensity: propensityByArm[bestArm] ?? (1 / Math.max(armIds.length, 1)),
+        propensityByArm,
+    };
+}
+
+let _linearModelCache = { model: null, fittedAt: 0, days: 30 };
+
+async function maybeSelectArmViaLinearValue(db, contextFeatures) {
+    let linearMod;
+    try {
+        linearMod = require('./contextualValueModel');
+    } catch {
+        return null;
+    }
+    if (!linearMod.isLinearValueEnabled()) return null;
+
+    const ttlMs = Number(process.env.BANDIT_LINEAR_CACHE_MS || 15 * 60 * 1000);
+    const now = Date.now();
+    if (!_linearModelCache.model || (now - _linearModelCache.fittedAt) > ttlMs) {
+        if (!db?.all) return null;
+        const { loadDecisionsForOfflineEval } = require('./policyReplayEvaluator');
+        const decisions = await loadDecisionsForOfflineEval(db, POLICY_SEARCH_RANKING, 30).catch(() => []);
+        const model = linearMod.fitLinearValueModel(decisions);
+        _linearModelCache = { model, fittedAt: now, days: 30 };
+    }
+    if (!_linearModelCache.model?.ok) return null;
+
+    const epsilon = Number(process.env.BANDIT_LINEAR_EPSILON || 0.1);
+    const pick = linearMod.selectArmByLinearValue(_linearModelCache.model, contextFeatures, { epsilon });
+    if (!pick?.armId || !SEARCH_RANKING_ARMS[pick.armId]) return null;
+    return {
+        ...pick,
+        modelRmse: _linearModelCache.model.rmse,
+        modelN: _linearModelCache.model.n,
+    };
+}
+
+async function selectSearchRankingArm(db, userId, context = {}) {
     const armIds = Object.keys(SEARCH_RANKING_ARMS);
+    const contextFeatures = searchRankingContextFeatures(context);
     if (!isBanditEnabled() || !db?.listPersonalizationArmStates) {
-        return { armId: 'heuristic_default', weights: SEARCH_RANKING_ARMS.heuristic_default, scopeKey: 'global', sampled: null };
+        return {
+            armId: 'heuristic_default',
+            weights: SEARCH_RANKING_ARMS.heuristic_default,
+            scopeKey: 'global',
+            sampled: null,
+            propensity: 1,
+            contextFeatures,
+        };
     }
 
     const userScope = scopeKeyForUser(userId);
@@ -175,19 +324,35 @@ async function selectSearchRankingArm(db, userId) {
         : [];
     const userPulls = userRows.reduce((sum, row) => sum + Number(row.pulls || 0), 0);
 
-    const { armId: bestArm, sampled: bestSample } = chooseArmBySamples(
+    const thompson = chooseArmBySamplesContextual(
         armIds,
         globalSamples,
         userSamples,
         userPulls,
-        'heuristic_default'
+        'heuristic_default',
+        contextFeatures
     );
+
+    // Optional P4 linear value override (epsilon-greedy). Thompson propensity still logged
+    // for the arm that is ultimately served when override wins.
+    const linearPick = await maybeSelectArmViaLinearValue(db, contextFeatures).catch(() => null);
+    const useLinear = Boolean(linearPick?.armId && linearPick.source === 'linear');
+    const bestArm = useLinear ? linearPick.armId : thompson.armId;
+    const propensity = thompson.propensityByArm?.[bestArm]
+        ?? thompson.propensity
+        ?? (1 / armIds.length);
 
     return {
         armId: bestArm,
         weights: SEARCH_RANKING_ARMS[bestArm] || SEARCH_RANKING_ARMS.heuristic_default,
         scopeKey: userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global',
-        sampled: bestSample,
+        sampled: thompson.sampled,
+        rawSampled: thompson.rawSampled,
+        propensity,
+        propensityByArm: thompson.propensityByArm,
+        selectionSource: useLinear ? 'linear_value' : 'thompson_contextual',
+        linearMeta: linearPick || null,
+        contextFeatures,
     };
 }
 
@@ -225,6 +390,9 @@ async function recordSearchRankingDecisions(db, {
                 boost,
                 position: topArticles.indexOf(article),
                 memoryTier: banditMeta.memoryTier || null,
+                propensity: banditMeta.propensity != null ? Number(banditMeta.propensity) : null,
+                selectionSource: banditMeta.selectionSource || null,
+                ...(banditMeta.contextFeatures || {}),
             },
         }).catch((err) => {
             logger.debug({ err }, 'insertPersonalizationDecision failed');
@@ -396,6 +564,137 @@ async function selectTeachingStrategyArm(db, userId) {
     return { armId: bestArm, strategy: TEACHING_STRATEGY_ARMS[bestArm], scopeKey, sampled: bestSample };
 }
 
+/**
+ * Thompson-sample case difficulty among easy/medium/hard.
+ * @returns {{ armId: string, difficulty: 'easy'|'medium'|'hard', scopeKey: string, sampled: number|null }}
+ */
+async function selectCaseDifficultyArm(db, userId) {
+    const armIds = Object.keys(CASE_DIFFICULTY_ARMS);
+    const fallback = 'difficulty:medium';
+    if (!isBanditEnabled() || !db?.listPersonalizationArmStates) {
+        return {
+            armId: fallback,
+            difficulty: CASE_DIFFICULTY_ARMS[fallback].difficulty,
+            scopeKey: 'global',
+            sampled: null,
+        };
+    }
+
+    const userScope = scopeKeyForUser(userId);
+    await ensurePolicyArms(db, POLICY_CASE_DIFFICULTY, armIds, 'global');
+    if (userId) await ensurePolicyArms(db, POLICY_CASE_DIFFICULTY, armIds, userScope);
+
+    const userRows = userId
+        ? await db.listPersonalizationArmStates(POLICY_CASE_DIFFICULTY, userScope).catch(() => [])
+        : [];
+    const userPulls = userRows.reduce((sum, r) => sum + Number(r.pulls || 0), 0);
+    const [globalSamples, userSamples] = await Promise.all([
+        loadArmSamples(db, POLICY_CASE_DIFFICULTY, armIds, 'global'),
+        userId ? loadArmSamples(db, POLICY_CASE_DIFFICULTY, armIds, userScope) : Promise.resolve({}),
+    ]);
+    const { armId: bestArm, sampled: bestSample } = chooseArmBySamples(
+        armIds,
+        globalSamples,
+        userSamples,
+        userPulls,
+        fallback
+    );
+    const scopeKey = userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global';
+    const meta = CASE_DIFFICULTY_ARMS[bestArm] || CASE_DIFFICULTY_ARMS[fallback];
+    return { armId: bestArm, difficulty: meta.difficulty, scopeKey, sampled: bestSample };
+}
+
+/**
+ * Rank adaptive claim anchors with Thompson sampling, log decisions, attach decision ids.
+ * Heuristic priority remains a soft prior so weak/untested claims stay slightly preferred.
+ *
+ * @param {object} db
+ * @param {string|null} userId
+ * @param {Array<object>} claimAnchors
+ * @param {{ count?: number, topic?: string, normalizedTopic?: string }} [opts]
+ * @returns {Promise<{ anchors: object[], decisions: object[], scopeKey: string }>}
+ */
+async function applyQuizClaimSelectionBandit(db, userId, claimAnchors, {
+    count = 5,
+    topic = '',
+    normalizedTopic = '',
+} = {}) {
+    const candidates = (Array.isArray(claimAnchors) ? claimAnchors : [])
+        .filter((c) => c && c.claimKey);
+    if (!candidates.length) {
+        return { anchors: [], decisions: [], scopeKey: 'global' };
+    }
+
+    const safeCount = Math.min(Math.max(Number(count) || 5, 1), candidates.length);
+    const armIds = [...new Set(candidates.map((c) => String(c.claimKey)))];
+    let scopeKey = 'global';
+    let samples = {};
+
+    if (isBanditEnabled() && db?.listPersonalizationArmStates && armIds.length > 1) {
+        const userScope = scopeKeyForUser(userId);
+        await ensurePolicyArms(db, POLICY_QUIZ_CLAIM_SELECTION, armIds, 'global');
+        if (userId) await ensurePolicyArms(db, POLICY_QUIZ_CLAIM_SELECTION, armIds, userScope);
+
+        const userRows = userId
+            ? await db.listPersonalizationArmStates(POLICY_QUIZ_CLAIM_SELECTION, userScope).catch(() => [])
+            : [];
+        const userPulls = userRows.reduce((sum, r) => sum + Number(r.pulls || 0), 0);
+        const [globalSamples, userSamples] = await Promise.all([
+            loadArmSamples(db, POLICY_QUIZ_CLAIM_SELECTION, armIds, 'global'),
+            userId ? loadArmSamples(db, POLICY_QUIZ_CLAIM_SELECTION, armIds, userScope) : Promise.resolve({}),
+        ]);
+        scopeKey = userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global';
+        samples = {};
+        for (const armId of armIds) {
+            samples[armId] = blendedArmSample(globalSamples[armId] ?? 0.5, userSamples[armId], userPulls);
+        }
+    } else {
+        for (const armId of armIds) samples[armId] = 0.5;
+    }
+
+    const ranked = [...candidates].sort((a, b) => {
+        const sampleA = samples[String(a.claimKey)] ?? 0.5;
+        const sampleB = samples[String(b.claimKey)] ?? 0.5;
+        // Lower heuristic priority (weak=0) gets a small bonus so cold arms stay pedagogically sound.
+        const scoreA = sampleA - (Number(a.priority) || 0) * 0.04;
+        const scoreB = sampleB - (Number(b.priority) || 0) * 0.04;
+        return scoreB - scoreA;
+    });
+
+    const selected = ranked.slice(0, safeCount);
+    const decisions = [];
+    for (const anchor of selected) {
+        const claimKey = String(anchor.claimKey);
+        let decisionId = null;
+        if (db?.insertPersonalizationDecision) {
+            const inserted = await db.insertPersonalizationDecision({
+                userId: userId || null,
+                policyType: POLICY_QUIZ_CLAIM_SELECTION,
+                armId: claimKey,
+                topic: topic || null,
+                normalizedTopic: normalizedTopic || null,
+                articleUid: anchor.articleUid || null,
+                context: {
+                    priority: anchor.priority,
+                    verificationStatus: anchor.verificationStatus || null,
+                    scopeKey,
+                    banditSample: samples[claimKey] ?? null,
+                },
+            }).catch((err) => {
+                logger.warn({ err, claimKey }, 'quiz claim decision log failed');
+                return null;
+            });
+            decisionId = inserted?.id ?? null;
+        }
+        anchor.claimDecisionId = decisionId;
+        anchor._banditArmId = claimKey;
+        anchor._banditSample = samples[claimKey] ?? null;
+        decisions.push({ claimKey, decisionId, armId: claimKey });
+    }
+
+    return { anchors: selected, decisions, scopeKey, samples };
+}
+
 async function findQuizAttemptsForDecision(db, decision, { days = 7 } = {}) {
     if (!db?.all || !decision?.user_id) return [];
     const safeDays = Math.min(Math.max(Number(days) || 7, 1), 60);
@@ -490,10 +789,17 @@ module.exports = {
     POLICY_QUIZ_CLAIM_SELECTION,
     POLICY_SYNOPSIS_STYLE,
     POLICY_TEACHING_STRATEGY,
+    POLICY_CASE_DIFFICULTY,
     SEARCH_RANKING_ARMS,
     SYNOPSIS_STYLE_ARMS,
     TEACHING_STRATEGY_ARMS,
+    CASE_DIFFICULTY_ARMS,
+    caseDifficultyArmId,
     recommendationContextFeatures,
+    searchRankingContextFeatures,
+    contextualArmPriorBoost,
+    chooseArmBySamplesContextual,
+    softmaxPropensities,
     RECOMMENDATION_ARM_BY_TYPE,
     MIN_PULLS_FOR_USER_ARM,
     FULL_PULLS_FOR_USER_ARM,
@@ -503,6 +809,8 @@ module.exports = {
     selectSearchRankingArm,
     selectSynopsisStyleArm,
     selectTeachingStrategyArm,
+    selectCaseDifficultyArm,
+    applyQuizClaimSelectionBandit,
     immediateImpressionReward,
     recordSearchRankingDecisions,
     applyRecommendationBandit,

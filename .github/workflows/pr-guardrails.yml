@@ -100,12 +100,54 @@ jobs:
       - name: Run npm audit
         run: npm audit --audit-level=moderate
 
-  # Search quality eval runs in its own job so it reports visibly without
-  # blocking merge if external APIs or ranking noise make it flaky.
+  # Offline gates always block: gold fixture ↔ landmark alias coverage + baseline contracts.
+  search-quality-offline-gate:
+    name: Search Quality Offline Gate
+    runs-on: ubuntu-latest
+    needs: guardrails
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run offline search-quality CI gates
+        run: npm run test:search-quality-gate
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret
+          ADMIN_TOKEN: test-admin-token
+
+      - name: Run offline IPS / linear-value unit gates
+        run: npm run test:offline-policy
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret
+          ADMIN_TOKEN: test-admin-token
+
+      - name: Service boundary + platform hardening gates
+        run: |
+          npm run check:service-boundaries
+          npm run test:platform-hardening
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret
+          ADMIN_TOKEN: test-admin-token
+
+  # Live labelled eval reports visibly. Continues on error so PubMed/OpenAlex flakiness
+  # does not block merge; offline gate above is the merge gate when fixtures change.
   search-quality-eval:
     name: Labelled Search Quality Eval
     runs-on: ubuntu-latest
     needs: guardrails
+    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4

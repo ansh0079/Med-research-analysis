@@ -167,6 +167,10 @@ export interface QuizQuestion {
   outlineNodeId?: string | null;
   /** Anchors quiz to a row from ai_generation_claims (provenance mode). */
   claimKey?: string | null;
+  /** personalization_decisions.id for quiz_claim_selection bandit arm. */
+  claimDecisionId?: number | null;
+  /** Bandit arm id (usually claimKey) when claim selection bandit ran. */
+  banditArmId?: string | null;
   outlineLabel?: string | null;
   promptVariant?: string | null;
   validationStatus?: 'llm_validated' | 'validation_skipped' | string;

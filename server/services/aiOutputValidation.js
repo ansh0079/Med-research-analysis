@@ -50,11 +50,20 @@ const OUTPUT_PROFILES = {
             const STRING_FIELDS = [
                 'takeaway', 'clinicalQuestion', 'studyDesign', 'population', 'intervention',
                 'comparator', 'mainFindings', 'clinicalMeaning', 'limitations', 'bottomLine',
-                'trustRationale', 'whatNotToOverclaim',
+                'trustRationale',
             ];
             for (const field of STRING_FIELDS) {
                 if (Array.isArray(data[field])) {
                     data[field] = data[field].filter(Boolean).join('. ');
+                }
+            }
+            // whatNotToOverclaim / quizFocusPoints are string[] in the contract; coerce scalars.
+            for (const listField of ['whatNotToOverclaim', 'quizFocusPoints']) {
+                if (typeof data[listField] === 'string') {
+                    const trimmed = data[listField].trim();
+                    data[listField] = trimmed ? [trimmed] : [];
+                } else if (Array.isArray(data[listField])) {
+                    data[listField] = data[listField].map((item) => String(item || '').trim()).filter(Boolean);
                 }
             }
             return data;

@@ -118,7 +118,7 @@ describe('vectorRoutes', () => {
             expect(mockVector.semanticSearch).toHaveBeenCalledWith({
                 query: 'diabetes',
                 limit: 5,
-                minScore: 0.4,
+                minScore: 0.25,
                 userEmbedding: null,
                 userProfileText: '',
                 queryWeight: 0.75,

@@ -9,6 +9,12 @@
 const { generateCaseScenario, saveCaseScenario, getCaseScenario, recordCaseChoice } = require('../../services/caseScenarioService');
 const { resolveProvider } = require('../../utils/aiProvider');
 const { AI_DISCLAIMER } = require('../../services/aiService');
+const {
+    POLICY_CASE_DIFFICULTY,
+    caseDifficultyArmId,
+    selectCaseDifficultyArm,
+} = require('../../services/personalizationBanditService');
+const logger = require('../../config/logger');
 
 /**
  * @param {import('express').Application} app
@@ -45,15 +51,23 @@ function registerCaseRoutes(app, {
         requirePaidFeature('case_scenarios'),  // Paywall for advanced feature
         async (req, res) => {
             try {
-                const { topic, difficulty = 'medium', provider = 'auto', model } = req.body;
+                const { topic, difficulty: requestedDifficulty = 'auto', provider = 'auto', model } = req.body;
 
                 if (!topic || typeof topic !== 'string' || topic.length < 3) {
                     return res.status(400).json({ error: 'Topic is required and must be at least 3 characters' });
                 }
 
-                if (!['easy', 'medium', 'hard'].includes(difficulty)) {
-                    return res.status(400).json({ error: 'Difficulty must be easy, medium, or hard' });
+                if (
+                    requestedDifficulty != null
+                    && !['easy', 'medium', 'hard', 'auto', 'mixed'].includes(requestedDifficulty)
+                ) {
+                    return res.status(400).json({ error: 'Difficulty must be easy, medium, hard, auto, or mixed' });
                 }
+
+                // Explicit easy|medium|hard is respected; auto/mixed/omitted → bandit selects.
+                const explicitDifficulty = ['easy', 'medium', 'hard'].includes(requestedDifficulty)
+                    ? requestedDifficulty
+                    : null;
 
                 // Get user profile and topic mastery for personalization.
                 const [profile, topicMastery] = await Promise.all([
@@ -62,13 +76,23 @@ function registerCaseRoutes(app, {
                 ]);
                 const userProfile = { ...(profile || {}), topicMastery: topicMastery || null };
 
+                let difficulty = explicitDifficulty;
+                let difficultyBandit = null;
+                if (!difficulty) {
+                    difficultyBandit = await selectCaseDifficultyArm(db, req.user.id).catch((err) => {
+                        logger.warn({ err }, 'selectCaseDifficultyArm failed');
+                        return null;
+                    });
+                    difficulty = difficultyBandit?.difficulty || 'medium';
+                }
+
                 const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider, model }, serverConfig);
                 if (!selectedProvider) {
                     return res.status(503).json({ error: 'No AI service configured' });
                 }
 
                 const guidelines = await db.getGuidelinesByTopic(topic.trim(), { limit: 5 })
-                    .catch((err) => { require('../../config/logger').warn({ err }, 'getGuidelinesByTopic failed'); return []; });
+                    .catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; });
 
                 // Generate case scenario
                 const caseScenario = await generateCaseScenario(ai, {
@@ -79,9 +103,30 @@ function registerCaseRoutes(app, {
                     model: selectedModel,
                     guidelines
                 });
+                caseScenario.topic = caseScenario.topic || topic.trim();
+                caseScenario.difficulty = difficulty;
 
                 // Save to database
                 const savedCase = await saveCaseScenario(db, req.user.id, caseScenario);
+
+                const armId = caseDifficultyArmId(difficulty);
+                const decision = await db.insertPersonalizationDecision?.({
+                    userId: req.user.id,
+                    policyType: POLICY_CASE_DIFFICULTY,
+                    armId,
+                    topic: topic.trim(),
+                    normalizedTopic: db.normalizeTopic(topic.trim()),
+                    context: {
+                        caseId: savedCase.caseId,
+                        difficulty,
+                        selectedBy: difficultyBandit ? 'bandit' : 'client',
+                        scopeKey: difficultyBandit?.scopeKey || null,
+                        banditSample: difficultyBandit?.sampled ?? null,
+                    },
+                }).catch((err) => {
+                    logger.warn({ err }, 'case difficulty decision log failed');
+                    return null;
+                });
 
                 // Log event
                 await db.logEvent('case_generated', req.sessionId, {
@@ -89,13 +134,22 @@ function registerCaseRoutes(app, {
                     difficulty,
                     caseId: savedCase.caseId,
                     provider: selectedProvider,
-                    model: selectedModel
+                    model: selectedModel,
+                    difficultyDecisionId: decision?.id || null,
+                    difficultySelectedBy: difficultyBandit ? 'bandit' : 'client',
                 });
 
                 res.json({
                     caseId: savedCase.caseId,
                     vignette: savedCase.vignette,
                     initialScenario: savedCase.decisionTree.initial,
+                    difficulty,
+                    banditMeta: {
+                        policyType: POLICY_CASE_DIFFICULTY,
+                        armId,
+                        decisionId: decision?.id || null,
+                        selectedBy: difficultyBandit ? 'bandit' : 'client',
+                    },
                     disclaimer: AI_DISCLAIMER
                 });
             } catch (error) {

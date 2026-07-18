@@ -85,6 +85,7 @@ async function applyDecisionReward(db, userId, decision, {
     delayedReward = null,
     totalReward = null,
     recordArmPull = true,
+    policyType = POLICY_SEARCH_RANKING,
 } = {}) {
     if (!decision?.id || !db?.updatePersonalizationDecisionReward) return false;
     const delayed = delayedReward != null ? Number(delayedReward) : Number(decision.delayed_reward || 0);
@@ -96,7 +97,7 @@ async function applyDecisionReward(db, userId, decision, {
         totalReward: total,
     }).catch(() => null);
     if (recordArmPull && decision.arm_id && total !== 0) {
-        await recordBanditReward(db, POLICY_SEARCH_RANKING, decision.arm_id, total, userId);
+        await recordBanditReward(db, policyType || POLICY_SEARCH_RANKING, decision.arm_id, total, userId);
     }
     return true;
 }
@@ -191,6 +192,40 @@ async function attributeSearchInteractionReward(db, userId, {
     };
 }
 
+async function findQuizClaimDecision(db, userId, {
+    claimDecisionId = null,
+    claimKey = null,
+    topic = '',
+    normalizedTopic = '',
+} = {}) {
+    if (!db?.all) return null;
+    if (claimDecisionId) {
+        const rows = await db.all(
+            `SELECT id, arm_id, delayed_reward, policy_type FROM personalization_decisions
+             WHERE id = ? AND policy_type = ?
+             LIMIT 1`,
+            [Number(claimDecisionId), POLICY_QUIZ_CLAIM_SELECTION]
+        ).catch(() => []);
+        return rows?.[0] || null;
+    }
+    if (!claimKey || !userId) return null;
+    const params = [String(userId), POLICY_QUIZ_CLAIM_SELECTION, String(claimKey)];
+    let topicClause = '';
+    if (normalizedTopic || topic) {
+        topicClause = ' AND (normalized_topic = ? OR topic = ?)';
+        params.push(String(normalizedTopic || ''), String(topic || ''));
+    }
+    params.push(1);
+    const rows = await db.all(
+        `SELECT id, arm_id, delayed_reward, policy_type FROM personalization_decisions
+         WHERE user_id = ? AND policy_type = ? AND arm_id = ?${topicClause}
+         ORDER BY created_at DESC
+         LIMIT ?`,
+        params
+    ).catch(() => []);
+    return rows?.[0] || null;
+}
+
 async function attributeQuizAttemptRewards(db, userId, attempts = [], topic = '', { sessionId = null } = {}) {
     if (!db || !Array.isArray(attempts) || attempts.length === 0) return { attributed: 0 };
     if (!userId && !sessionId) return { attributed: 0 };
@@ -206,6 +241,7 @@ async function attributeQuizAttemptRewards(db, userId, attempts = [], topic = ''
         const claimKey = attempt.claimKey || attempt.claim_key || null;
         const banditArmId = attempt.banditArmId || attempt._banditArmId || null;
         const decisionId = attempt.decisionId || attempt._decisionId || null;
+        const claimDecisionId = attempt.claimDecisionId || attempt._claimDecisionId || null;
         const isCorrect = Boolean(attempt.isCorrect ?? attempt.is_correct === 1);
         const priorAttempts = claimKey && userId && db.countPriorQuizAttemptsOnClaim
             ? await db.countPriorQuizAttemptsOnClaim(userId, claimKey, attempt.id)
@@ -213,7 +249,23 @@ async function attributeQuizAttemptRewards(db, userId, attempts = [], topic = ''
         const isFirstAttempt = priorAttempts === 0;
         const reward = quizAttemptReward(isCorrect, isFirstAttempt);
         if (claimKey) {
-            await recordBanditReward(db, POLICY_QUIZ_CLAIM_SELECTION, String(claimKey), reward, decisionUserId);
+            const claimDecision = await findQuizClaimDecision(db, decisionUserId, {
+                claimDecisionId,
+                claimKey,
+                topic,
+                normalizedTopic,
+            });
+            if (claimDecision?.id) {
+                await applyDecisionReward(db, decisionUserId, claimDecision, {
+                    immediateReward: 0,
+                    delayedReward: reward,
+                    totalReward: reward,
+                    recordArmPull: reward !== 0,
+                    policyType: POLICY_QUIZ_CLAIM_SELECTION,
+                });
+            } else {
+                await recordBanditReward(db, POLICY_QUIZ_CLAIM_SELECTION, String(claimKey), reward, decisionUserId);
+            }
         }
 
         if (!articleUid && !claimKey && !decisionId && !banditArmId) continue;

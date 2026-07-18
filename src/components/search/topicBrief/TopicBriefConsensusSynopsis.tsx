@@ -8,6 +8,15 @@ interface Props {
 
 export const TopicBriefConsensusSynopsis: React.FC<Props> = ({ consensusSynopsis }) => {
   const strengthClass = EVIDENCE_STRENGTH_CLASS[consensusSynopsis.evidenceStrength] ?? EVIDENCE_STRENGTH_CLASS.LOW;
+  const includedCount = consensusSynopsis.includedArticles.length;
+  const fullTextCount = typeof consensusSynopsis.fullTextIndexedCount === 'number'
+    ? consensusSynopsis.fullTextIndexedCount
+    : consensusSynopsis.includedArticles.filter((article) => article.fullTextIndexed).length;
+  const coverageRatio = typeof consensusSynopsis.fullTextCoverageRatio === 'number'
+    ? consensusSynopsis.fullTextCoverageRatio
+    : (includedCount > 0 ? fullTextCount / includedCount : 0);
+  const coveragePct = Math.round(Math.max(0, Math.min(1, coverageRatio)) * 100);
+
   return (
     <div className="border-b border-slate-100 bg-white px-5 py-4 dark:border-slate-800 dark:bg-slate-950/30">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -23,11 +32,13 @@ export const TopicBriefConsensusSynopsis: React.FC<Props> = ({ consensusSynopsis
             <span className="text-[11px] font-semibold text-slate-400">
               {consensusSynopsis.freePaperCount} free paper{consensusSynopsis.freePaperCount === 1 ? '' : 's'}
             </span>
-            {consensusSynopsis.includedArticles.some((article) => article.fullTextIndexed) && (
-              <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-black uppercase text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-                Full text used
-              </span>
-            )}
+            <span className={`rounded-full px-2 py-0.5 text-[10px] font-black uppercase ${
+              coveragePct > 0
+                ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                : 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200'
+            }`}>
+              {coveragePct}% full text ({fullTextCount}/{includedCount || 0})
+            </span>
             {Number(consensusSynopsis.abstractPaperCount || 0) > 0 && consensusSynopsis.freePaperCount === 0 && (
               <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-black uppercase text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">
                 Abstract-only evidence

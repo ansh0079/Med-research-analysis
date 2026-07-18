@@ -13,6 +13,7 @@ const {
     conversationMessageSignature,
     normalizeConversationMessage,
 } = require('./agentHelpers');
+const { analyzeConversationQuality } = require('./agentSelfImprovementService');
 
 const JOB_TYPE = 'agent-turn-side-effects';
 
@@ -122,7 +123,11 @@ async function processAgentTurnSideEffect(jobKey, deps = {}) {
             serverConfig: deps.serverConfig || {},
             fetchImpl: deps.fetchImpl,
         });
-        const { inferDemandIntent, isLlmIntentClassifierEnabled, extractGroundedClaimsStructured } = require('../routes/agent');
+        const {
+            inferDemandIntent,
+            isLlmIntentClassifierEnabled,
+            extractGroundedClaimsStructured,
+        } = require('./agentHelpers');
 
         let effectiveIntent = payload.classifiedIntent;
         if (isLlmIntentClassifierEnabled()) {
@@ -156,6 +161,11 @@ async function processAgentTurnSideEffect(jobKey, deps = {}) {
                 provider: payload.selectedProvider,
                 model: payload.auxModel,
             }).catch((err) => logger.warn({ err, jobKey }, 'persistAgentTurnMemory failed'));
+
+            // Learn from corrections / clarification patterns for future prompt injection.
+            await analyzeConversationQuality(db, payload.conversationId).catch((err) => {
+                logger.debug({ err, jobKey, conversationId: payload.conversationId }, 'analyzeConversationQuality failed');
+            });
         }
 
         if (payload.sessionFeedback && payload.userId) {

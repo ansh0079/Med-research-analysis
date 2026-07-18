@@ -400,16 +400,19 @@ Offline gold-set eval also tracks **Precision@10** (≥ 0.75) and **off-topic ra
 - `recommendationService.personalizedSemanticSearch` wraps existing `vectorSearchService.semanticSearch`
 - Production path already fuses vector in `GET /api/search`
 
-### 5.5 State management (deferred)
-- Keep split `SearchContext` (Query / Selection / Meta) for now
-- Evaluate Zustand only for cross-page workflow state in a follow-up sprint
+### 5.5 State management (closed — deferred by design) ✅
+- Keep split `SearchContext` (Query / Selection / Meta); see `docs/ARCHITECTURE.md`
+- Zustand only for cross-page workflow state in a later sprint (not blocking Phase 5)
 
-### 5.6 Test expansion (ongoing)
-- Baseline: 50+ unit tests, integration, e2e, load
-- New: `eventBus`, `userInteractionService`, `appErrors`, `recommendationService`, `qualityMetricsService`
+### 5.6 Test expansion ✅
+- Coverage for `eventBus`, `userInteractionService`, `appErrors`, `recommendationService`, `qualityMetricsService`
+- Learning-signal health section in `productionObservabilityService` (interaction + propensity density)
+- `npm run test:platform-hardening`
 
-### 5.7 Future: microservice extraction (Phase 6+)
-Extract when independent scaling or team ownership requires it:
+### 5.7 Module boundaries (pre-microservice) ✅
+- `tools/check-service-boundaries.js` — services/lib must not import `server/routes` or `src/`
+- `npm run check:service-boundaries` (also exercised in `tests/unit/p5PlatformHardening.test.js`)
+- Full process split remains **Phase 6+** when scale/ownership requires it:
 
 ```
 services/search-service      ← unifiedEvidenceSearch, searchPipeline, articleReranker
@@ -417,5 +420,3 @@ services/ai-service          ← aiService, synthesisGenerationCore, conflictExt
 services/user-service        ← learningRoutes, learnerContext, topic memory
 services/recommendation-service ← recommendationService, vectorSearch, searchLearning
 ```
-
-Until then, enforce boundaries via **module imports only** (no cross-layer cycles).

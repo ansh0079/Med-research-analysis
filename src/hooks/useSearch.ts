@@ -7,22 +7,9 @@ import { useAuth } from '@contexts/AuthContext';
 import { useAnalytics } from './useAnalytics';
 import { usePolling } from './usePolling';
 import { storeSearchAttribution, storeSearchAttributionFromArticles } from '@utils/searchAttribution';
-import type { SearchResponse } from '@types';
 
 const POLL_DELAYS = [8000, 12000, 18000]; // 8 s, then 12 s, then 18 s — three attempts
 const ENRICHMENT_POLL_DELAYS = [2000, 3000, 4000, 5000, 6000, 8000, 10000]; // up to ~38 s total
-
-function searchRequestKey(query: string, filters: SearchFilters): string {
-  return JSON.stringify({
-    query: query.trim().toLowerCase(),
-    sources: filters.sources || ['pubmed', 'openalex'],
-    maxResults: filters.maxResults ?? 20,
-    specificity: filters.specificity || null,
-    studyTypes: filters.studyTypes || [],
-    yearRange: filters.yearRange || null,
-    useVectorSearch: filters.useVectorSearch !== false,
-  });
-}
 
 export function useSearch() {
   const {
@@ -77,8 +64,6 @@ export function useSearch() {
   const [searchTelemetry, setSearchTelemetry] = useState<import('@types').SearchResponse['searchTelemetry'] | null>(null);
   const requestIdRef = useRef(0);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const lastSearchRef = useRef<{ key: string; query: string; time: number } | null>(null);
-  const lastSuccessfulSearchRef = useRef<{ key: string; response: SearchResponse } | null>(null);
 
   // Topic-knowledge polling --------------------------------------------------
   const [pollTopic, setPollTopic] = useState<string | null>(null);
@@ -211,27 +196,6 @@ export function useSearch() {
         return [];
       }
 
-      const now = Date.now();
-      const requestKey = searchRequestKey(query, filters);
-      const lastSuccessful = lastSuccessfulSearchRef.current;
-      if (lastSuccessful?.key === requestKey) {
-        recordSearchView(lastSuccessful.response.searchId ?? null, lastSuccessful.response.articles || []);
-        trackSearch(query, {
-          filters,
-          resultsCount: lastSuccessful.response.articles?.length || 0,
-          cached: true,
-          cacheLayer: 'hook',
-        });
-        return lastSuccessful.response.articles;
-      }
-      const last = lastSearchRef.current;
-      if (last && last.key === requestKey && now - last.time < 5000) {
-        recordSearchView(lastSearchId, results);
-        trackSearch(query, { filters, resultsCount: results.length, cached: true, cacheLayer: 'dedupe' });
-        return results;
-      }
-      lastSearchRef.current = { key: requestKey, query: query.trim(), time: now };
-
       setLoading(true);
       setError(null);
 
@@ -261,7 +225,6 @@ export function useSearch() {
 
         if (thisRequestId !== requestIdRef.current) return articles;
         trackSearch(query, { filters, resultsCount: articles.length });
-        lastSuccessfulSearchRef.current = { key: requestKey, response: data };
         setResults(articles);
         setLastSearchId(searchId ?? null);
         setSearchCompletedAt(Date.now());
@@ -368,8 +331,6 @@ export function useSearch() {
 
   const clearResults = useCallback(() => {
     cancelPoll();
-    lastSearchRef.current = null;
-    lastSuccessfulSearchRef.current = null;
     setResults([]);
     setError(null);
     setAgentGuidance(null);

@@ -20,17 +20,17 @@ describe('rewardAttributionService', () => {
         });
 
         test('click without save yields small reward', () => {
-            expect(impressionEngagementReward({ was_clicked: true })).toBe(0.04);
-            expect(impressionEngagementReward({ was_clicked: 1 })).toBe(0.04);
+            expect(impressionEngagementReward({ was_clicked: true })).toBe(0.02);
+            expect(impressionEngagementReward({ was_clicked: 1 })).toBe(0.02);
         });
 
         test('dwell time adds incremental reward', () => {
-            expect(impressionEngagementReward({ was_clicked: true, dwell_time_ms: 12000 })).toBeCloseTo(0.06);
-            expect(impressionEngagementReward({ was_clicked: true, dwell_time_ms: 30000 })).toBeCloseTo(0.1);
+            expect(impressionEngagementReward({ was_clicked: true, dwell_time_ms: 12000 })).toBeCloseTo(0.03);
+            expect(impressionEngagementReward({ was_clicked: true, dwell_time_ms: 30000 })).toBeCloseTo(0.05);
         });
 
         test('save plus long dwell sums to max impression reward', () => {
-            expect(impressionEngagementReward({ was_saved: true, dwell_time_ms: 30000 })).toBeCloseTo(0.46);
+            expect(impressionEngagementReward({ was_saved: true, dwell_time_ms: 30000 })).toBeCloseTo(0.43);
         });
 
         test('no engagement yields zero reward', () => {
@@ -110,8 +110,8 @@ describe('rewardAttributionService', () => {
                 impression: { was_saved: true, dwell_time_ms: 30000 },
             });
             expect(result.interactionType).toBe('search_result');
-            expect(result.totalReward).toBeCloseTo(0.46);
-            expect(result.components).toContainEqual({ source: 'impression_engagement', reward: expect.closeTo(0.46) });
+            expect(result.totalReward).toBeCloseTo(0.43);
+            expect(result.components).toContainEqual({ source: 'impression_engagement', reward: expect.closeTo(0.43) });
         });
 
         test('explains feedback reward', () => {
@@ -133,7 +133,7 @@ describe('rewardAttributionService', () => {
                 impression: { was_clicked: true, dwell_time_ms: 30000 },
                 quizAttempt: { isCorrect: true, isFirstAttempt: true },
             });
-            expect(result.totalReward).toBeCloseTo(0.91);
+            expect(result.totalReward).toBeCloseTo(0.905);
             expect(result.components).toContainEqual({
                 source: 'quiz_outcome',
                 reward: REWARD_FIRST_CORRECT,
@@ -141,7 +141,7 @@ describe('rewardAttributionService', () => {
             });
             expect(result.components).toContainEqual({
                 source: 'search_quiz_combined',
-                reward: expect.closeTo(0.91),
+                reward: expect.closeTo(0.905),
             });
         });
 

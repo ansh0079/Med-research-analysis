@@ -73,6 +73,7 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
             reviewState={typeof synopsisAudit?.humanReviewStatus === 'string' ? synopsisAudit.humanReviewStatus : null}
             citationOk={synopsisAudit?.citationOk ?? null}
             abstractOnly={synopsisAudit?.fullTextCoverageRatio === 0}
+            fullTextCoverageRatio={typeof synopsisAudit?.fullTextCoverageRatio === 'number' ? synopsisAudit.fullTextCoverageRatio : null}
             onClose={() => { setSynopsisExpanded(false); setSynopsisAudit(null); }}
           />
           {synopsisAudit && <EvidenceAuditPanel snapshot={synopsisAudit} />}

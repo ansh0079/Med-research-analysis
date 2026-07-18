@@ -45,6 +45,7 @@ export function ArticleCardSynopsisPanel({
   reviewState,
   citationOk,
   abstractOnly,
+  fullTextCoverageRatio,
   onClose,
 }: {
   synopsis: ArticleSynopsisFields;
@@ -52,10 +53,14 @@ export function ArticleCardSynopsisPanel({
   reviewState?: string | null;
   citationOk?: boolean | null;
   abstractOnly?: boolean | null;
+  fullTextCoverageRatio?: number | null;
   onClose: () => void;
 }) {
   const trust = TRUST_BADGE[synopsis.trustRating] ?? TRUST_BADGE.MODERATE;
   const sourceLabel = sourceMode === 'full_text_used' ? 'Full Text Used' : 'Abstract Only';
+  const coveragePct = typeof fullTextCoverageRatio === 'number'
+    ? Math.round(Math.max(0, Math.min(1, fullTextCoverageRatio)) * 100)
+    : null;
 
   return (
     <div className="mx-0 mt-3 mb-2 rounded-xl border border-violet-200/60 dark:border-violet-800/40 bg-violet-50/60 dark:bg-violet-950/20 overflow-hidden animate-fade-in">
@@ -71,6 +76,11 @@ export function ArticleCardSynopsisPanel({
               {sourceLabel}
             </span>
           )}
+          {coveragePct != null && (
+            <span className="text-[9px] font-bold uppercase tracking-wider rounded-full px-1.5 py-0.5 bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+              {coveragePct}% full text
+            </span>
+          )}
         </div>
         <button type="button" onClick={onClose} aria-label="Close critical appraisal" className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors p-0.5">
           <i className="fas fa-times text-xs" />
@@ -83,6 +93,7 @@ export function ArticleCardSynopsisPanel({
           reviewState={reviewState}
           citationOk={citationOk ?? synopsis.citationCheckPassed ?? null}
           abstractOnly={abstractOnly ?? sourceMode === 'abstract_only'}
+          fullTextCoverageRatio={fullTextCoverageRatio}
         />
 
         {synopsis.takeaway && (

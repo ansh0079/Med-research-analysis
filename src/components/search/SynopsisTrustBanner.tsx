@@ -8,21 +8,30 @@ import {
 export type { SynopsisSourceMode, SynopsisReviewState };
 export { formatReviewStateLabel, synopsisTrustExportLines } from '@utils/synopsisTrustLabels';
 
+function coverageLabel(ratio?: number | null) {
+  if (typeof ratio !== 'number' || Number.isNaN(ratio)) return null;
+  const pct = Math.round(Math.max(0, Math.min(1, ratio)) * 100);
+  return `${pct}% full text`;
+}
+
 export function SynopsisTrustBanner({
   sourceMode,
   reviewState,
   citationOk,
   abstractOnly,
+  fullTextCoverageRatio,
   className = '',
 }: {
   sourceMode?: SynopsisSourceMode | null;
   reviewState?: SynopsisReviewState | string | null;
   citationOk?: boolean | null;
   abstractOnly?: boolean | null;
+  fullTextCoverageRatio?: number | null;
   className?: string;
 }) {
   const isAbstractOnly = abstractOnly === true || sourceMode === 'abstract_only';
-  if (!isAbstractOnly && citationOk !== false && !reviewState) return null;
+  const coverage = coverageLabel(fullTextCoverageRatio);
+  if (!isAbstractOnly && citationOk !== false && !reviewState && !coverage) return null;
 
   return (
     <div className={`space-y-2 ${className}`}>
@@ -36,10 +45,16 @@ export function SynopsisTrustBanner({
           </p>
           <p className="mt-1 text-[11px] leading-relaxed text-amber-900/90 dark:text-amber-100/90">
             This appraisal used abstract and metadata only — full text was not indexed. Treat numerical results and practice claims cautiously.
+            {coverage ? ` Coverage: ${coverage}.` : ''}
           </p>
         </div>
       )}
       <div className="flex flex-wrap items-center gap-1.5">
+        {coverage && !isAbstractOnly && (
+          <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+            {coverage}
+          </span>
+        )}
         {reviewState && (
           <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-600 dark:bg-slate-800 dark:text-slate-300">
             {formatReviewStateLabel(reviewState)}

@@ -16,6 +16,7 @@ const {
 const { aggregateCollectiveMemory } = require('../services/collectiveMemoryService');
 const { QUALITY_QUEUES } = require('../services/clinicalQualityReviewService');
 const { collectProductionObservability } = require('../services/productionObservabilityService');
+const { collectTopicReadiness } = require('../services/topicReadinessService');
 const fs = require('fs/promises');
 const path = require('path');
 
@@ -393,6 +394,25 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ health: report, generatedAt: new Date().toISOString() });
         } catch (error) {
             req.log.error({ err: error }, 'Curriculum seed health report error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    app.get('/api/admin/topics/readiness', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const limit = Math.min(Math.max(parseInt(String(req.query.limit || '200'), 10) || 200, 1), 2000);
+            const offset = Math.max(parseInt(String(req.query.offset || '0'), 10) || 0, 0);
+            const curriculumSlug = String(req.query.curriculumSlug || 'specialty-clinical-topics').trim();
+            const includeRows = String(req.query.includeRows || 'true').toLowerCase() !== 'false';
+            const readiness = await collectTopicReadiness(db, {
+                curriculumSlug,
+                limit,
+                offset,
+                includeRows,
+            });
+            res.json({ readiness });
+        } catch (error) {
+            req.log.error({ err: error }, 'Topic readiness report error');
             res.status(500).json({ error: 'Internal server error' });
         }
     });

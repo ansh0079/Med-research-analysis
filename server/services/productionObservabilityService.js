@@ -116,6 +116,142 @@ async function collectRewardStats(db, days) {
     };
 }
 
+/**
+ * Phase 5 — observability of user learning signals (interactions, decisions, propensity).
+ */
+async function collectLearningSignalStats(db, days) {
+    const since = sinceIso(days);
+    const [interactionRows, decisionRow, propensityRow, quizRow] = await Promise.all([
+        safeAll(
+            db,
+            `SELECT event_type, COUNT(*) AS count
+             FROM learning_events
+             WHERE occurred_at >= ?
+               AND event_type IN (
+                 'paper_click', 'paper_save', 'paper_dwell',
+                 'search_click', 'search_save', 'search_dwell'
+               )
+             GROUP BY event_type`,
+            [since]
+        ),
+        safeGet(
+            db,
+            `SELECT COUNT(*) AS count
+             FROM personalization_decisions
+             WHERE created_at >= ?
+               AND policy_type = 'search_ranking'`,
+            [since]
+        ),
+        safeGet(
+            db,
+            `SELECT COUNT(*) AS count
+             FROM personalization_decisions
+             WHERE created_at >= ?
+               AND policy_type = 'search_ranking'
+               AND context_json LIKE '%"propensity"%'`,
+            [since]
+        ),
+        safeGet(
+            db,
+            `SELECT COUNT(*) AS count
+             FROM learning_events
+             WHERE occurred_at >= ?
+               AND event_type IN ('quiz_reward_attributed', 'quiz_attempt', 'quiz_completed')`,
+            [since]
+        ),
+    ]);
+
+    const interactionCounts = Object.fromEntries(
+        (interactionRows || []).map((row) => [String(row.event_type), Number(row.count || 0)])
+    );
+    const interactionTotal = Object.values(interactionCounts).reduce((a, b) => a + b, 0);
+    const decisions = countValue(decisionRow);
+    const withPropensity = countValue(propensityRow);
+    const quizSignals = countValue(quizRow);
+
+    return {
+        interactionTotal,
+        interactionCounts,
+        searchRankingDecisions: decisions,
+        decisionsWithPropensity: withPropensity,
+        propensityCoverage: rate(withPropensity, decisions),
+        quizSignals,
+        totalLearningSignals: interactionTotal + decisions + quizSignals,
+    };
+}
+
+function evaluateLearningSignals(signals = {}, alerts) {
+    const checks = [];
+    const total = Number(signals.totalLearningSignals || 0);
+    if (!total) {
+        pushCheck(checks, alerts, 'learningSignals', {
+            status: 'insufficient_data',
+            label: 'Learning signals',
+            value: 0,
+            threshold: '> 0 signals',
+            message: 'No recent user interaction / bandit / quiz learning signals were recorded.',
+            action: 'Smoke-test search clicks, saves, and a quiz attempt; confirm event bus handlers are registered.',
+        });
+        return { status: worstStatus(checks.map((c) => c.status)), checks };
+    }
+
+    if (Number(signals.interactionTotal || 0) === 0) {
+        pushCheck(checks, alerts, 'learningSignals', {
+            status: 'watch',
+            label: 'Interaction events',
+            value: 0,
+            threshold: '> 0 interactions',
+            message: 'Bandit/quiz signals exist but paper interaction events are missing.',
+            action: 'Verify POST /api/search/interaction reaches trackUserInteraction / recordLearningSignal.',
+        });
+    }
+
+    const decisions = Number(signals.searchRankingDecisions || 0);
+    if (decisions >= 20) {
+        const coverage = Number(signals.propensityCoverage);
+        if (!Number.isFinite(coverage) || coverage < 0.5) {
+            pushCheck(checks, alerts, 'learningSignals', {
+                status: 'watch',
+                label: 'Decision propensity coverage',
+                value: coverage,
+                threshold: '>= 0.50',
+                message: 'Search ranking decisions lack logged propensities needed for offline IPS.',
+                action: 'Confirm selectSearchRankingArm logs propensity on personalization_decisions.context_json.',
+            });
+        } else {
+            pushCheck(checks, alerts, 'learningSignals', {
+                status: 'healthy',
+                label: 'Decision propensity coverage',
+                value: coverage,
+                threshold: '>= 0.50',
+                message: 'Enough propensity-labelled decisions for offline IPS evaluation.',
+            });
+        }
+    } else {
+        pushCheck(checks, alerts, 'learningSignals', {
+            status: 'insufficient_data',
+            label: 'Search ranking decisions',
+            value: decisions,
+            threshold: '>= 20',
+            message: 'Too few search ranking decisions to judge propensity coverage.',
+            action: 'Run authenticated searches with personalization enabled to accumulate decision logs.',
+        });
+    }
+
+    if (Number(signals.interactionTotal || 0) > 0
+        && !checks.some((c) => c.label === 'Interaction events')) {
+        pushCheck(checks, alerts, 'learningSignals', {
+            status: 'healthy',
+            label: 'Interaction pipeline',
+            value: signals.interactionTotal,
+            threshold: '> 0',
+            message: 'User interaction learning signals are flowing.',
+        });
+    }
+
+    return { status: worstStatus(checks.map((c) => c.status)), checks };
+}
+
 async function collectJobStats(db, days) {
     const statusRows = await safeAll(
         db,
@@ -422,6 +558,7 @@ function buildProductionReadinessSummary({
     rewardStats = {},
     jobStats = {},
     synopsisStats = {},
+    learningSignalStats = {},
     generatedAt = new Date().toISOString(),
     windowDays = 7,
 } = {}) {
@@ -431,12 +568,14 @@ function buildProductionReadinessSummary({
     const jobs = evaluateJobs(jobStats, alerts);
     const synopsis = evaluateSynopsis(synopsisStats, qualityMetrics.synthesis, alerts);
     const sloSection = evaluateSlo(slo, alerts);
+    const learningSignals = evaluateLearningSignals(learningSignalStats, alerts);
     const sections = {
         search: { ...search, metrics: qualityMetrics.search || {} },
         rewards: { ...rewards, metrics: rewardStats },
         jobs: { ...jobs, metrics: jobStats },
         synopsis: { ...synopsis, metrics: { ...synopsisStats, synthesis: qualityMetrics.synthesis || {} } },
         slo: { ...sloSection, metrics: slo },
+        learningSignals: { ...learningSignals, metrics: learningSignalStats },
     };
     const sectionStatuses = Object.values(sections).map((section) => section.status);
     const status = worstStatus(sectionStatuses);
@@ -457,11 +596,12 @@ function buildProductionReadinessSummary({
 
 async function collectProductionObservability(db, { days = 7 } = {}) {
     const safeDays = clampDays(days);
-    const [qualityMetrics, rewardStats, jobStats, synopsisStats] = await Promise.all([
+    const [qualityMetrics, rewardStats, jobStats, synopsisStats, learningSignalStats] = await Promise.all([
         collectQualityMetrics(db, safeDays),
         collectRewardStats(db, safeDays),
         collectJobStats(db, safeDays),
         collectSynopsisStats(db, safeDays),
+        collectLearningSignalStats(db, safeDays),
     ]);
     return buildProductionReadinessSummary({
         qualityMetrics,
@@ -469,6 +609,7 @@ async function collectProductionObservability(db, { days = 7 } = {}) {
         rewardStats,
         jobStats,
         synopsisStats,
+        learningSignalStats,
         generatedAt: new Date().toISOString(),
         windowDays: safeDays,
     });
@@ -480,5 +621,7 @@ module.exports = {
     collectJobStats,
     collectRewardStats,
     collectSynopsisStats,
+    collectLearningSignalStats,
+    evaluateLearningSignals,
     worstStatus,
 };

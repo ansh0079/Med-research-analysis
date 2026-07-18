@@ -39,6 +39,14 @@ describe('productionObservabilityService', () => {
                 trustRate: 50 / 60,
                 riskyRate: 4 / 60,
             },
+            learningSignalStats: {
+                totalLearningSignals: 100,
+                interactionTotal: 50,
+                searchRankingDecisions: 40,
+                decisionsWithPropensity: 36,
+                propensityCoverage: 0.9,
+                quizSignals: 10,
+            },
             slo: {
                 rolling: [
                     { slo: 'search_latency_p95', total: 20, ok: true, successRate: 0.98 },
@@ -53,6 +61,7 @@ describe('productionObservabilityService', () => {
         expect(summary.sections.search.status).toBe('healthy');
         expect(summary.sections.rewards.status).toBe('healthy');
         expect(summary.sections.synopsis.status).toBe('healthy');
+        expect(summary.sections.learningSignals.status).toBe('healthy');
     });
 
     test('surfaces degraded alerts and concrete actions', () => {

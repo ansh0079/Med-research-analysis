@@ -258,10 +258,18 @@ async function buildSearchLearningContext({ db, userId, query, sessionId, previo
         }
         context.trajectoryTerms = collectTrajectoryTerms(previousQueries, misconceptionPhrases);
         context.profileWeakTopics = [];
+        context.profile = null;
+        context.topicMastery = null;
         if (userId && typeof db.getLearningProfile === 'function') {
             const profile = await db.getLearningProfile(userId).catch(() => null);
+            context.profile = profile;
             context.profileWeakTopics = Array.isArray(profile?.weakTopics) ? profile.weakTopics.map(String).filter(Boolean) : [];
             if (context.profileWeakTopics.length > 0) context.shouldPersonalize = true;
+        }
+        if (userId && typeof db.getUserTopicMastery === 'function') {
+            const mastery = await db.getUserTopicMastery(userId, query).catch(() => null);
+            context.topicMastery = mastery?.overallScore ?? null;
+            if (context.topicMastery != null) context.shouldPersonalize = true;
         }
         if (userId) {
             context.trajectoryHint = await buildLearningTrajectorySection(db, userId, query, { limit: 6, days: 60 });
@@ -277,7 +285,12 @@ async function buildSearchLearningContext({ db, userId, query, sessionId, previo
                 || context.misconceptionBoost?.misconceptionPhrases?.length > 0) {
                 context.shouldPersonalize = true;
             }
-            context.banditSelection = await selectSearchRankingArm(db, userId).catch((err) => {
+            const banditContext = {
+                profile: context.profile,
+                topicMastery: context.topicMastery,
+                hasDangerousMisconception: context.hasDangerousMisconception,
+            };
+            context.banditSelection = await selectSearchRankingArm(db, userId, banditContext).catch((err) => {
                 logger.debug({ err }, 'selectSearchRankingArm failed');
                 return { armId: 'heuristic_default', weights: SEARCH_RANKING_ARMS.heuristic_default };
             });
@@ -318,6 +331,7 @@ function publicLearningContext(context) {
         hasTrajectoryHints: Boolean(context?.trajectoryHint),
         personalized: Boolean(context?.shouldPersonalize),
         banditArmId: context?.banditSelection?.armId || null,
+        banditContext: context?.banditSelection?.contextFeatures || null,
         misconceptionTargets: context?.misconceptionBoost?.correctiveArticleUids?.size || 0,
         calibrationOverride: context?.banditSelection?.calibrationOverride || null,
         hasDangerousMisconception: Boolean(context?.hasDangerousMisconception),
@@ -438,7 +452,10 @@ function applySearchLearningBoost(articles, context, bouquetRanking = []) {
         scopeKey: context.banditSelection?.scopeKey || 'global',
         memoryTier: context.memoryTier || 'none',
         sampled: context.banditSelection?.sampled ?? null,
+        propensity: context.banditSelection?.propensity ?? null,
+        selectionSource: context.banditSelection?.selectionSource || null,
         misconceptionBoostCount: context.misconceptionBoost?.correctiveArticleUids?.size || 0,
+        contextFeatures: context.banditSelection?.contextFeatures || null,
     };
 
     return result;

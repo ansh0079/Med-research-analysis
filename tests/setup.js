@@ -64,8 +64,10 @@ afterAll(async () => {
         await new Promise(resolve => setTimeout(resolve, 100));
     }
 
-    // Shutdown PDF worker pool if it exists
-    const pdfExtractor = require('../server/pdf-extract-pooled');
+    // Shutdown the PDF worker pool only if a test already loaded it. Requiring it
+    // here imports pdf-parse/@napi-rs/canvas globally and leaves native handles open.
+    const pdfExtractorPath = require.resolve('../server/pdf-extract-pooled');
+    const pdfExtractor = require.cache[pdfExtractorPath]?.exports;
     if (pdfExtractor && typeof pdfExtractor.closePool === 'function') {
         await pdfExtractor.closePool();
     }

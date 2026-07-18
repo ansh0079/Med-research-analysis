@@ -5,6 +5,7 @@ const {
     validateMedicalOutputCitations,
     filterCitedStringList,
 } = require('./citationValidator');
+const { scoreClaimSourceRelevanceSync } = require('./citationRelevanceService');
 
 const REVIEW_STATES = Object.freeze([
     'unreviewed',
@@ -156,11 +157,57 @@ function buildPaperSynopsisTrustAudit({
     };
 }
 
-function processPaperSynopsisTrust(synopsis, { fullTextCoverageRatio = 0, priorReviewState = null } = {}) {
+function applyPaperSynopsisClaimRelevance(synopsis = {}, article = null) {
+    if (!article) {
+        return { synopsis, citationRelevance: { checked: false, issues: [], hasIrrelevantCitations: false } };
+    }
+    const issues = [];
+    const fields = [
+        ['bottomLine', synopsis.bottomLine],
+        ['mainFindings', synopsis.mainFindings],
+        ['clinicalMeaning', synopsis.clinicalMeaning],
+    ];
+    for (const [field, text] of fields) {
+        if (!text || !String(text).trim()) continue;
+        const scored = scoreClaimSourceRelevanceSync(text, article);
+        if (!scored.valid) {
+            issues.push({ field, ...scored, text: String(text).slice(0, 200) });
+        }
+    }
+    const next = { ...synopsis };
+    if (issues.length > 0) {
+        next.trustRating = minTrustRating(next.trustRating || 'MODERATE', 'LOW');
+        const note = 'Claim–evidence relevance flagged weak overlap between key synopsis fields and the source paper.';
+        next.trustRationale = next.trustRationale ? `${next.trustRationale} ${note}` : note;
+    }
+    return {
+        synopsis: next,
+        citationRelevance: {
+            checked: true,
+            issues,
+            hasIrrelevantCitations: issues.length > 0,
+            method: 'keyword',
+        },
+    };
+}
+
+function processPaperSynopsisTrust(synopsis, {
+    fullTextCoverageRatio = 0,
+    priorReviewState = null,
+    article = null,
+} = {}) {
     const abstractOnly = isAbstractOnlySource(fullTextCoverageRatio);
     let nextSynopsis = applyAbstractOnlySynopsisTrust(synopsis, abstractOnly);
     const { synopsis: validatedSynopsis, citationValidation } = applyPaperSynopsisCitationValidation(nextSynopsis);
     nextSynopsis = validatedSynopsis;
+    const relevance = applyPaperSynopsisClaimRelevance(nextSynopsis, article);
+    nextSynopsis = relevance.synopsis;
+    if (relevance.citationRelevance.hasIrrelevantCitations) {
+        citationValidation.citationRelevance = relevance.citationRelevance;
+        // Soft signal only — do not force needs_revision solely from lexical relevance.
+    } else {
+        citationValidation.citationRelevance = relevance.citationRelevance;
+    }
     if (abstractOnly) {
         nextSynopsis.trustRating = capTrustRatingForAbstractOnly(nextSynopsis.trustRating);
     }
@@ -169,6 +216,7 @@ function processPaperSynopsisTrust(synopsis, { fullTextCoverageRatio = 0, priorR
         citationValidation,
         fullTextCoverageRatio,
         priorReviewState,
+        extra: { citationRelevance: relevance.citationRelevance },
     });
     return { synopsis: nextSynopsis, audit, abstractOnly, citationValidation };
 }
@@ -185,6 +233,7 @@ module.exports = {
     resolveReviewState,
     normalizeHumanReviewStatus,
     applyPaperSynopsisCitationValidation,
+    applyPaperSynopsisClaimRelevance,
     applyAbstractOnlySynopsisTrust,
     buildPaperSynopsisTrustAudit,
     processPaperSynopsisTrust,

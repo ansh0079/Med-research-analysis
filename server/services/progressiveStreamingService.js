@@ -22,6 +22,7 @@ async function streamSynthesisGeneration(res, {
 }) {
     const {
         prepareSynthesisContext,
+        runSynthesisConflictExtraction,
         validateSynthesisCitations,
         buildSynthesisResult,
         persistSynthesisResult
@@ -88,11 +89,27 @@ async function streamSynthesisGeneration(res, {
             ? JSON.parse(synthesisPayload)
             : synthesisPayload;
 
-        synthesis._contextArticles = context.topArticles;
+        synthesis._contextArticles = context.enrichedArticles || context.topArticles;
 
-        const citationValidation = validateSynthesisCitations(synthesis, {
+        const citationValidation = await validateSynthesisCitations(synthesis, {
             sourceCount: context.topArticles.length,
             guidelineCount: context.guidelines.length,
+            embeddingKeys: serverConfig?.keys || null,
+        });
+
+        sendEvent('validating', {
+            progress: 88,
+            message: 'Extracting trial–guideline conflicts...'
+        });
+
+        const conflictExtraction = await runSynthesisConflictExtraction({
+            topArticles: context.topArticles,
+            guidelines: context.guidelines,
+            topic,
+            serverConfig,
+            fetchImpl,
+            provider: selectedProvider,
+            db,
         });
 
         sendEvent('validating', {
@@ -116,7 +133,9 @@ async function streamSynthesisGeneration(res, {
             provider: selectedProvider,
             model: selectedModel,
             fullTextIndexedCount: context.fullTextIndexedCount,
-            fullTextCoverageRatio: context.fullTextCoverageRatio
+            fullTextCoverageRatio: context.fullTextCoverageRatio,
+            conflictMatrix: conflictExtraction.conflictMatrix,
+            guidelineAlignment: conflictExtraction.guidelineAlignment,
         });
 
         sendEvent('finalizing', { progress: 95, message: 'Saving to cache...' });

@@ -233,6 +233,8 @@ function synopsisFallback({
     whatNotToOverclaim = [],
 }) {
     const allArticles = [...freeArticles, ...abstractArticles];
+    const includedArticles = allArticles.map((a, i) => includedArticleFrom(a, i, false));
+    const fullTextIndexedCount = includedArticles.filter((a) => a.fullTextIndexed).length;
     return {
         status,
         topic,
@@ -242,7 +244,11 @@ function synopsisFallback({
         model: null,
         freePaperCount: freeArticles.length,
         abstractPaperCount: abstractArticles.length,
-        includedArticles: allArticles.map((a, i) => includedArticleFrom(a, i, false)),
+        includedArticles,
+        fullTextIndexedCount,
+        fullTextCoverageRatio: includedArticles.length > 0
+            ? Math.round((fullTextIndexedCount / includedArticles.length) * 100) / 100
+            : 0,
         statement,
         clinicalBottomLine: '',
         areasOfAgreement: [],
@@ -307,6 +313,11 @@ function normalizeSynopsis(raw, topic, freeArticles, abstractArticles, provider,
 
     normalized.reviewState = normalized.citationValidation.ok ? 'machine_checked' : 'needs_revision';
     normalized.citationCheckPassed = normalized.citationValidation.ok;
+    const fullTextIndexedCount = normalized.includedArticles.filter((a) => a.fullTextIndexed).length;
+    normalized.fullTextIndexedCount = fullTextIndexedCount;
+    normalized.fullTextCoverageRatio = sourceCount > 0
+        ? Math.round((fullTextIndexedCount / sourceCount) * 100) / 100
+        : 0;
 
     return normalized;
 }
@@ -425,6 +436,8 @@ async function generateConsensusSynopsisSafe(options, logger = console) {
             freePaperCount: freeCount,
             abstractPaperCount: abstractCount,
             includedArticles: [],
+            fullTextIndexedCount: 0,
+            fullTextCoverageRatio: 0,
             statement: 'Consensus synopsis could not be generated for this search.',
             clinicalBottomLine: '',
             areasOfAgreement: [],

@@ -71,8 +71,10 @@ Run: `npm test`, `npm run eval:search-quality`, `npm run eval:quality-metrics`
 | Item | Status |
 |------|--------|
 | Archive cleanup | `.claude/worktrees/` gitignored + cleanup script |
-| Unified state | Deferred — document Context-first; Zustand later |
+| Unified state | Deferred by design — Context-first; Zustand later |
 | Typed errors + recovery | `AppError` server + client |
 | Event bus for interactions | `eventBus` + `userInteractionService` |
 | Vector search facade | `recommendationService.personalizedSemanticSearch` |
 | Tests for new modules | `tests/unit/eventBus.test.js`, etc. |
+| Learning-signal observability | `collectLearningSignalStats` in production readiness |
+| Module import boundaries | `npm run check:service-boundaries` |

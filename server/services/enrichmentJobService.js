@@ -152,7 +152,7 @@ async function getOrEnqueueGuidelineAlign({ db, topic, cache, logger, limit = 24
     return { status: 'queued', jobKey };
 }
 
-async function getOrEnqueuePdfIndex({ db, article, cache, logger }) {
+async function getOrEnqueuePdfIndex({ db, article, cache, logger, priority = -1 }) {
     const jobKey = pdfIndexJobKey(article);
     if (!hasDurableJobStore(db)) {
         return { status: 'skipped', reason: 'no_durable_job_store', jobKey };
@@ -186,9 +186,61 @@ async function getOrEnqueuePdfIndex({ db, article, cache, logger }) {
     });
 
     if (created?.inserted) {
-        await enqueueProcessJob({ db, jobKey, cache, logger, priority: -1, label: `pdf-index:${String(jobKey).slice(0, 24)}` });
+        await enqueueProcessJob({
+            db,
+            jobKey,
+            cache,
+            logger,
+            priority: Number.isFinite(Number(priority)) ? Number(priority) : -1,
+            label: `pdf-index:${String(jobKey).slice(0, 24)}`,
+        });
     }
     return { status: 'queued', jobKey };
+}
+
+/**
+ * Prefer Evidence Bouquet / OA papers for PDF+GROBID indexing.
+ * Bouquet papers get higher queue priority so synopsis grounding catches up sooner.
+ */
+async function enqueuePdfIndexForBouquetArticles({
+    db,
+    articles = [],
+    bouquetRanking = [],
+    cache,
+    logger,
+    limit = 8,
+} = {}) {
+    const bouquetUids = new Set(
+        (Array.isArray(bouquetRanking) ? bouquetRanking : [])
+            .slice(0, Math.max(limit, 1))
+            .map((row) => String(row?.uid || row?.articleUid || '').toLowerCase())
+            .filter(Boolean)
+    );
+    const list = Array.isArray(articles) ? articles.filter(Boolean) : [];
+    const bouquetArticles = list.filter((a) => bouquetUids.has(String(a.uid || '').toLowerCase()));
+    const freeArticles = list.filter((a) => a.isFree || a.pmcid || a.openAccess || a.openAccessUrl || a.fullTextUrl);
+    const ordered = [...bouquetArticles, ...freeArticles, ...list];
+    const seen = new Set();
+    const results = [];
+    for (const article of ordered) {
+        if (results.length >= limit) break;
+        const key = String(article?.doi || article?.pmid || article?.pmcid || article?.uid || '').toLowerCase();
+        if (!key || seen.has(key)) continue;
+        seen.add(key);
+        const isBouquet = bouquetUids.has(String(article.uid || '').toLowerCase());
+        const out = await getOrEnqueuePdfIndex({
+            db,
+            article,
+            cache,
+            logger,
+            priority: isBouquet ? 2 : -1,
+        }).catch((err) => {
+            logger?.warn?.({ err, key }, 'getOrEnqueuePdfIndex failed');
+            return { status: 'failed', error: err?.message };
+        });
+        results.push({ key, isBouquet, ...out });
+    }
+    return results;
 }
 
 module.exports = {
@@ -197,5 +249,6 @@ module.exports = {
     pdfIndexJobKey,
     getOrEnqueueTopicSeed,
     getOrEnqueueGuidelineAlign,
+    enqueuePdfIndexForBouquetArticles,
     getOrEnqueuePdfIndex,
 };

@@ -98,7 +98,8 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
     if (!article || synopsis || synopsisState === 'loading') return;
     setSynopsisState('loading');
     try {
-      const result = await api.ai.getSynopsis(article, { async: true });
+      const topic = searchTopic?.trim() || undefined;
+      const result = await api.ai.getSynopsis(article, { async: true, topic });
       if (!result.synopsis) throw new Error('unavailable');
       setSynopsis(result.synopsis);
       setSynopsisResult(result);
@@ -106,7 +107,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
     } catch {
       setSynopsisState('error');
     }
-  }, [article, synopsis, synopsisState]);
+  }, [article, searchTopic, synopsis, synopsisState]);
 
   const loadConsort = useCallback(async () => {
     if (!article || consort || consortState === 'loading') return;
@@ -154,6 +155,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
         provider: synopsisResult?.provider ?? null,
         model: synopsisResult?.model ?? null,
         cached: Boolean(synopsisResult?.cached),
+        topic: searchTopic?.trim() || null,
         feedbackType,
         banditMeta: synopsisResult?.banditMeta ?? null,
       });
@@ -166,7 +168,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
     } finally {
       setSynopsisFeedbackPending(false);
     }
-  }, [article, synopsisFeedback, synopsisFeedbackPending, synopsisResult]);
+  }, [article, searchTopic, synopsisFeedback, synopsisFeedbackPending, synopsisResult]);
 
   if (!article) return null;
 
@@ -387,6 +389,11 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
                   abstractOnly={synopsisResult?.audit?.abstractOnly === true
                     || (typeof synopsisResult?.audit?.fullTextCoverageRatio === 'number'
                       && (synopsisResult.audit.fullTextCoverageRatio as number) === 0)}
+                  fullTextCoverageRatio={
+                    typeof synopsisResult?.audit?.fullTextCoverageRatio === 'number'
+                      ? synopsisResult.audit.fullTextCoverageRatio as number
+                      : null
+                  }
                 />
 
                 {synopsisResult?.audit && (

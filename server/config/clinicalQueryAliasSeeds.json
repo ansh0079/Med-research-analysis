@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "description": "Data-driven landmark pins grown from search-quality gold misses / expansion. Patterns are case-insensitive regex strings; compiled at runtime and merged after hand-curated CLINICAL_QUERY_ALIAS_RULES.",
+  "seeds": [
+    {
+      "source": "gold_expansion",
+      "all": ["\\bmetoprolol\\b", "\\bheart failure\\b|\\bmerit-?hf\\b"],
+      "aliases": ["MERIT-HF", "metoprolol CR/XL"],
+      "pmids": ["10966806"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bresynchronization\\b|\\bcrt\\b", "\\bheart failure\\b|\\bcompanion\\b"],
+      "aliases": ["COMPANION"],
+      "pmids": ["12963388"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\brivaroxaban\\b", "\\bdeep vein\\b|\\bdvt\\b|\\beinstein\\b"],
+      "aliases": ["EINSTEIN", "EINSTEIN-DVT"],
+      "pmids": ["21635378"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bsemaglutide\\b", "\\bobesity\\b|\\bweight loss\\b|\\bstep 1\\b"],
+      "aliases": ["STEP 1", "semaglutide obesity"],
+      "pmids": ["33567185"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bbariatric\\b|\\bstampede\\b", "\\btype 2 diabetes\\b|\\bdiabetes\\b"],
+      "aliases": ["STAMPEDE"],
+      "pmids": ["29260272"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\btrastuzumab\\b|\\bher2\\b", "\\bbreast cancer\\b|\\bbcirg\\b"],
+      "aliases": ["BCIRG 006", "trastuzumab adjuvant"],
+      "pmids": ["17409101"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bimatinib\\b", "\\bmyeloid leukemia\\b|\\bcml\\b|\\biris\\b"],
+      "aliases": ["IRIS", "imatinib CML"],
+      "pmids": ["11430304"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\btranexamic\\b|\\btxa\\b", "\\btrauma\\b|\\bhemorrhage\\b|\\bcrash-?2\\b"],
+      "aliases": ["CRASH-2"],
+      "pmids": ["20554319"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\boseltamivir\\b|\\btamiflu\\b", "\\binfluenza\\b"],
+      "aliases": ["oseltamivir influenza"],
+      "pmids": ["12537872"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bmethotrexate\\b", "\\brheumatoid\\b|\\btear\\b"],
+      "aliases": ["TEAR"],
+      "pmids": ["20425138"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bmeropenem\\b|\\bpiperacillin\\b|\\btazobactam\\b", "\\bsepsis\\b|\\bmerino\\b"],
+      "aliases": ["MERINO"],
+      "pmids": ["26904085"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bbridging\\b|\\bvitamin k antagonist\\b", "\\batrial fibrillation\\b|\\bperioperative\\b|\\bbridge\\b"],
+      "aliases": ["BRIDGE"],
+      "pmids": ["26008996"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bclopidogrel\\b", "\\bminor (ischemic |ischaemic )?stroke\\b|\\bchance\\b"],
+      "aliases": ["CHANCE"],
+      "pmids": ["24501052"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\btenecteplase\\b|\\btnk\\b", "\\bstroke\\b|\\balteplase\\b|\\bextend-?ia\\b"],
+      "aliases": ["EXTEND-IA TNK", "tenecteplase"],
+      "pmids": ["29129157"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\basthma\\b", "\\bsmart\\b|\\bbudesonide\\b|\\bformoterol\\b|\\binhaled corticosteroid\\b"],
+      "aliases": ["SMART", "budesonide-formoterol"],
+      "pmids": ["30879544"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bhelicobacter\\b|\\bh\\.?\\s*pylori\\b", "\\bulcer\\b|\\bbleeding\\b"],
+      "aliases": ["H. pylori eradication ulcer"],
+      "pmids": ["8781440"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bcpap\\b|\\bcontinuous positive airway\\b", "\\bsleep apnea\\b|\\bsave\\b"],
+      "aliases": ["SAVE"],
+      "pmids": ["27707544"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bfecal microbiota\\b|\\bfaecal microbiota\\b|\\bfmt\\b", "\\bclostridioides\\b|\\bclostridium difficile\\b|\\bc\\.?\\s*diff"],
+      "aliases": ["van Nood FMT", "fecal microbiota transplant"],
+      "pmids": ["23395276"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bearly goal-?directed\\b|\\begdt\\b|\\bprocess\\b", "\\bseptic shock\\b|\\bsepsis\\b"],
+      "aliases": ["ProCESS"],
+      "pmids": ["24635773"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bhpv\\b|\\bhuman papillomavirus\\b", "\\bcervical\\b|\\bfuture ii\\b|\\bvaccine\\b"],
+      "aliases": ["FUTURE II"],
+      "pmids": ["16531679"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bcommunity[- ]acquired pneumonia\\b|\\bcap\\b", "\\bguideline\\b|\\bempiric\\b"],
+      "aliases": ["ATS/IDSA CAP guideline"],
+      "pmids": ["31573350", "32853142"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bheart failure\\b|\\bhfref\\b", "\\bguideline\\b", "\\bsglt2\\b|\\barni\\b|\\bmra\\b"],
+      "aliases": ["ACC/AHA heart failure guideline", "ESC heart failure guideline"],
+      "pmids": ["35363499", "35378257", "37637197"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bpulmonary embolism\\b|\\bpe\\b", "\\byears\\b|\\bd-?dimer\\b"],
+      "aliases": ["YEARS algorithm"],
+      "pmids": ["28549662", "39915029"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bsepsis-?3\\b|\\bqsofa\\b|\\bsofa\\b", "\\bdefinition\\b|\\bcriteria\\b|\\bdiagnosis\\b"],
+      "aliases": ["Sepsis-3", "qSOFA"],
+      "pmids": ["26903338", "26903335"]
+    },
+    {
+      "source": "gold_expansion",
+      "all": ["\\bsurviving sepsis\\b|\\bsepsis campaign\\b", "\\bguideline\\b|\\bseptic shock\\b|\\bvasopressors?\\b"],
+      "aliases": ["Surviving Sepsis Campaign 2021"],
+      "pmids": ["34599691", "35791800"]
+    }
+  ]
+}

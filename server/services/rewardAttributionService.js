@@ -20,10 +20,11 @@ const RECOMMENDATION_REWARDS = {
 function impressionEngagementReward(impression = {}) {
     impression = impression || {};
     let reward = 0;
+    // Keep click/dwell small so quiz/mastery outcomes dominate arm learning.
     if (impression.was_saved === 1 || impression.was_saved === true) reward += 0.4;
-    else if (impression.was_clicked === 1 || impression.was_clicked === true) reward += 0.04;
-    if ((impression.dwell_time_ms || 0) >= 30000) reward += 0.06;
-    else if ((impression.dwell_time_ms || 0) >= 12000) reward += 0.02;
+    else if (impression.was_clicked === 1 || impression.was_clicked === true) reward += 0.02;
+    if ((impression.dwell_time_ms || 0) >= 30000) reward += 0.03;
+    else if ((impression.dwell_time_ms || 0) >= 12000) reward += 0.01;
     return Math.min(1, reward);
 }
 

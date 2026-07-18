@@ -1,6 +1,6 @@
 'use strict';
 
-const { createVectorSearchService } = require('./vectorSearchService');
+const { createVectorSearchService, DEFAULT_MIN_SCORE } = require('./vectorSearchService');
 
 /**
  * Personalization facade — maps to future recommendation-service boundary.
@@ -13,7 +13,7 @@ async function personalizedSemanticSearch({
     userProfileText = '',
     userEmbedding = null,
     limit = 10,
-    minScore = 0.4,
+    minScore = DEFAULT_MIN_SCORE,
     queryWeight = 0.75,
 } = {}) {
     if (!query || typeof query !== 'string') {

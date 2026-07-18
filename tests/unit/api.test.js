@@ -1818,6 +1818,8 @@ describe('API Endpoints', () => {
       expect(response.text).toContain('event: result');
       expect(response.text).toContain('Streamed GRADE summary for tests');
       expect(response.text).toContain('"fullTextCoverageRatio":1');
+      expect(response.text).toContain('"conflictMatrix"');
+      expect(response.text).toContain('"guidelineAlignment"');
       expect(db.saveSynthesisSnapshot).toHaveBeenCalledWith(
         'streamed diabetes',
         expect.objectContaining({ consensus: 'Streamed GRADE summary for tests [1].' }),

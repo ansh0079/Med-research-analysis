@@ -254,7 +254,19 @@ async function runPaperSynopsisGenerationInner({
     synopsis = validated.data;
 
     const fullTextCoverageRatio = enriched._fullTextIndexed ? 1 : (article._pdfIndexed || article.pdfIndexed ? 1 : 0);
-    const trustProcessed = processPaperSynopsisTrust(synopsis, { fullTextCoverageRatio });
+    let priorReviewState = null;
+    if (db?.getTeachingObjectForArticle) {
+        const existingObject = await db.getTeachingObjectForArticle(articleId).catch((err) => {
+            logger.debug({ err, articleId }, 'Failed to load prior synopsis review state');
+            return null;
+        });
+        priorReviewState = existingObject?.reviewState || null;
+    }
+    const trustProcessed = processPaperSynopsisTrust(synopsis, {
+        fullTextCoverageRatio,
+        priorReviewState,
+        article: enriched,
+    });
     synopsis = trustProcessed.synopsis;
     const result = {
         synopsis,

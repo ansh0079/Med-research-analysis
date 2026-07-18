@@ -122,7 +122,21 @@ function isTransientStreamError(err) {
     return false;
 }
 
-function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = [], userContext = null, crossTopicBridges = [], retrieval = {}, { teachingStrategy = null } = {}) {
+function formatAgentMistakesBlock(agentMistakes = []) {
+    const rows = (Array.isArray(agentMistakes) ? agentMistakes : [])
+        .filter((m) => m && (m.avoidClaim || m.correctVersion))
+        .slice(0, 5);
+    if (!rows.length) return '';
+    const lines = rows.map((m, i) => {
+        const avoid = String(m.avoidClaim || '').slice(0, 220);
+        const correct = String(m.correctVersion || '').slice(0, 220);
+        const times = m.timesRepeated != null ? ` (seen ${m.timesRepeated}×)` : '';
+        return `${i + 1}. Avoid: ${avoid}${correct ? `\n   Prefer: ${correct}` : ''}${times}`;
+    });
+    return `\nAVOID PRIOR MISTAKES (user-corrected in past chats on this topic):\n${lines.join('\n')}\nDo not repeat these incorrect framings.`;
+}
+
+function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = [], userContext = null, crossTopicBridges = [], retrieval = {}, { teachingStrategy = null, agentMistakes = [] } = {}) {
     const k = topicKnowledge?.knowledge;
     const topic = topicKnowledge?.topic || 'this medical topic';
 
@@ -250,6 +264,7 @@ function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = []
             inferredMisconceptions: userContext.inferredMisconceptions,
             style: 'agent',
         });
+        const mistakesBlock = formatAgentMistakesBlock(agentMistakes);
 
         learnerContext = `\n## Learner Profile
 - Role / Persona: ${persona}
@@ -273,8 +288,10 @@ CRITICAL INSTRUCTION: All responses MUST respect the SCAFFOLDING directive above
 ACTIVE REMEDIATION: If the learner has low mastery in a specific area (see mastery breakdown), provide scaffolding first, then build up to current evidence.
 PROACTIVE LINKING: If the current query relates to one of the user's 'weak topics' or 'weak outline nodes', explicitly point out the connection and how this new evidence helps resolve that previous gap.
 BREAKTHROUGH CONTINUITY: If breakthrough moments are listed in the learner snapshot, reference them when building on prior understanding — do not re-explain from scratch what the learner already clicked on.
-BRIDGE BUILDING: If the user pivots topics (e.g. from Sepsis to AKI), identify 'Synapses'—points where the evidence for the old and new topics intersect.${misconceptionBlock}${teachingStrategy ? `
+BRIDGE BUILDING: If the user pivots topics (e.g. from Sepsis to AKI), identify 'Synapses'—points where the evidence for the old and new topics intersect.${misconceptionBlock}${mistakesBlock}${teachingStrategy ? `
 TEACHING STRATEGY (${teachingStrategy.label}): ${TEACHING_STRATEGY_DIRECTIVES[teachingStrategy.strategy] || ''}` : ''}`;
+    } else if (Array.isArray(agentMistakes) && agentMistakes.length > 0) {
+        learnerContext = formatAgentMistakesBlock(agentMistakes);
     }
 
     return `You are a clinical education mentor assistant specialising in evidence-based medicine.
@@ -563,6 +580,7 @@ module.exports = {
     buildRetrievalContext,
     buildAgentEvidenceAnchors,
     isTransientStreamError,
+    formatAgentMistakesBlock,
     buildAgentSystemPrompt,
     inferDemandIntentRegex,
     VALID_INTENTS,

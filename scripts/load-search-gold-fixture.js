@@ -19,6 +19,37 @@ function applyQueryOverrides(queries, overrides = []) {
     });
 }
 
+/**
+ * Normalize graded relevance objects `{ uid, grade }` into string UIDs + relevanceGrades map.
+ */
+function normalizeQueryRelevantUids(querySpec = {}) {
+    const relevanceGrades = { ...(querySpec.relevanceGrades || {}) };
+    const relevantUids = [];
+    for (const entry of querySpec.relevantUids || []) {
+        if (typeof entry === 'string' || typeof entry === 'number') {
+            const uid = String(entry).trim();
+            if (uid) relevantUids.push(uid);
+            continue;
+        }
+        if (entry && typeof entry === 'object') {
+            const uid = String(entry.uid || entry.pmid || entry.id || '').trim();
+            if (!uid) continue;
+            relevantUids.push(uid);
+            if (entry.grade != null || entry.relevance != null || entry.score != null) {
+                relevanceGrades[uid] = Math.max(
+                    0,
+                    Math.min(3, Number(entry.grade ?? entry.relevance ?? entry.score ?? 1) || 1)
+                );
+            }
+        }
+    }
+    return {
+        ...querySpec,
+        relevantUids,
+        relevanceGrades,
+    };
+}
+
 function loadSearchGoldFixture(primaryPath, options = {}) {
     const root = options.root || process.cwd();
     const fullPrimary = path.resolve(root, primaryPath);
@@ -34,8 +65,9 @@ function loadSearchGoldFixture(primaryPath, options = {}) {
         fixture.expansionQueryCount = extraQueries.length;
         fixture.overrideCount = Array.isArray(expansion.queryOverrides) ? expansion.queryOverrides.length : 0;
     }
+    fixture.queries = (fixture.queries || []).map(normalizeQueryRelevantUids);
     fixture.queryCount = Array.isArray(fixture.queries) ? fixture.queries.length : 0;
     return fixture;
 }
 
-module.exports = { loadSearchGoldFixture };
+module.exports = { loadSearchGoldFixture, normalizeQueryRelevantUids, applyQueryOverrides };

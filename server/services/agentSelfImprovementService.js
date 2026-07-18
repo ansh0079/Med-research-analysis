@@ -14,14 +14,22 @@ const { sanitizeUserInput } = require('../utils/sanitization');
  * Analyzes a conversation thread for quality signals and learning opportunities
  */
 async function analyzeConversationQuality(db, threadId) {
-    const thread = await db.getAgentThread(threadId).catch(() => null);
+    const loadThread = typeof db.getAgentConversation === 'function'
+        ? db.getAgentConversation.bind(db)
+        : (typeof db.getAgentThread === 'function' ? db.getAgentThread.bind(db) : null);
+    if (!loadThread) return null;
+
+    const thread = await loadThread(threadId).catch(() => null);
     if (!thread || !Array.isArray(thread.messages)) {
         return null;
     }
 
     const messages = thread.messages;
-    const userId = thread.userId;
-    const topic = sanitizeUserInput(thread.metadata?.topic || 'general', 200);
+    const userId = thread.userId || thread.user_id || null;
+    const topic = sanitizeUserInput(
+        thread.topic || thread.metadata?.topic || thread.normalizedTopic || 'general',
+        200
+    );
 
     // Signal 1: Detect explicit user corrections
     const correctionSignals = [

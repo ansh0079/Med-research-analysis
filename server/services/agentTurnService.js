@@ -24,6 +24,7 @@ const {
 
 const { POLICY_TEACHING_STRATEGY, recordBanditReward, selectTeachingStrategyArm } = require('./personalizationBanditService');
 const { agentFollowUpReward } = require('./learningLoopSignalService');
+const { getAgentMistakesForContext } = require('./agentSelfImprovementService');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -147,10 +148,27 @@ async function executeAgentTurn(
     }
 
     const teachingStrategyArm = await selectTeachingStrategyArm(db, userId).catch(() => null);
+    const agentMistakes = userId
+        ? await getAgentMistakesForContext(db, userId, trimmedTopic).catch((err) => {
+            logger.debug({ err, userId, topic: trimmedTopic }, 'getAgentMistakesForContext failed');
+            return [];
+        })
+        : [];
     const implicitFollowUpReward = teachingStrategyArm?.armId && userId
         ? agentFollowUpReward({ conversationHistory: reconciledConversationHistory, message: trimmedMessage })
         : 0;
-    const systemPrompt = buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines, userContext, crossTopicBridges, retrieval, { teachingStrategy: teachingStrategyArm?.strategy ? teachingStrategyArm : null });
+    const systemPrompt = buildAgentSystemPrompt(
+        topicKnowledge,
+        currentArticles,
+        guidelines,
+        userContext,
+        crossTopicBridges,
+        retrieval,
+        {
+            teachingStrategy: teachingStrategyArm?.strategy ? teachingStrategyArm : null,
+            agentMistakes,
+        }
+    );
 
     const providerCandidates = getProviderCandidates({}, serverConfig);
     if (!providerCandidates.length) {

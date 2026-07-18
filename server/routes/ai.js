@@ -34,6 +34,7 @@ function registerAiRoutes(app, deps) {
         validateBody,
         schemas,
         fetch: fetchImpl,
+        appendRagContext = null,
     } = deps;
 
     const requireAiAuth = requireAuthOrBeta || requireAuthJwt;
@@ -76,7 +77,7 @@ function registerAiRoutes(app, deps) {
 
     registerQuizRoutes(app, { db, serverConfig, ai, mcqValidator, logger, requireJson, requireAiAuth, requireAuthJwt, rateLimit, aiUserLimit, validateBody, schemas, helpers });
 
-    registerSynthesisRoutes(app, { db, cache, serverConfig, fetchImpl, ai, logger, limitBodySize, requireJson, requireAiAuth, requireAuthJwt, requireVerifiedEmail, requirePaidFeature, requireMonthlyLimit, rateLimit, aiUserLimit, synthesisLimit, validateBody, schemas, helpers });
+    registerSynthesisRoutes(app, { db, cache, serverConfig, fetchImpl, ai, logger, limitBodySize, requireJson, requireAiAuth, requireAuthJwt, requireVerifiedEmail, requirePaidFeature, requireMonthlyLimit, rateLimit, aiUserLimit, synthesisLimit, validateBody, schemas, helpers, appendRagContext });
 
     registerCaseRoutes(app, { db, serverConfig, ai, rateLimit, requireJson, requireAuthJwt, requireVerifiedEmail, requirePaidFeature, strictAiLimit, limitBodySize });
 }

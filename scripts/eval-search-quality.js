@@ -7,7 +7,7 @@
  * scores each result set with a simple rubric and prints a side-by-side report.
  *
  * Usage:
- *   node scripts/eval-search-quality.js [--base http://localhost:3001] [--sources pubmed,semantic]
+ *   node scripts/eval-search-quality.js [--base http://localhost:3002] [--sources pubmed,semantic]
  *
  * Outputs:
  *   - Console table with per-query scores and winner
@@ -26,7 +26,7 @@ const flag = (name, fallback) => {
     return idx !== -1 ? args[idx + 1] : fallback;
 };
 
-const BASE = flag('--base', 'http://localhost:3001');
+const BASE = flag('--base', 'http://localhost:3002');
 const SOURCES = flag('--sources', 'pubmed,semantic');
 const LIMIT = 10;
 const GOLD = flag('--gold', null);
@@ -308,6 +308,12 @@ async function runGoldEval(goldPath) {
 
     const regressionPass = regression ? regression.pass : true;
     const absolutePass = absoluteGates ? absoluteGates.pass : true;
+    const usableResultCount = rows.reduce((sum, row) => sum + Number(row.resultCount || 0), 0);
+    const allRequestsFailed = rows.length > 0 && rows.every((row) => row.error);
+    if (usableResultCount === 0 || allRequestsFailed) {
+        console.log('\nGate => FAIL (no usable search results; check --base and server availability)');
+        process.exit(1);
+    }
     const pass = regressionPass && absolutePass;
     console.log(`\nGate => ${pass ? 'PASS' : 'FAIL'} (regression=${regressionPass ? 'pass' : 'fail'}, absolute=${absolutePass ? 'pass' : 'fail'})`);
     process.exit(pass ? 0 : 1);
@@ -329,6 +335,8 @@ async function main() {
     const results = [];
     let oldWins = 0, newWins = 0, ties = 0;
     let totalOld = 0, totalNew = 0;
+    let totalNewArticles = 0;
+    let newFetchFailures = 0;
 
     for (const query of QUERIES) {
         process.stdout.write(`  ${query.slice(0, 50).padEnd(50)} `);
@@ -337,6 +345,8 @@ async function main() {
 
         try { oldArticles = await fetchOld(query); } catch (e) { oldErr = e.message; }
         try { newArticles = await fetchNew(query); } catch (e) { newErr = e.message; }
+        if (newErr) newFetchFailures++;
+        totalNewArticles += Array.isArray(newArticles) ? newArticles.length : 0;
 
         const oldScore = oldErr ? { total: 0, breakdown: {}, counts: {} } : scoreResultSet(oldArticles, query);
         const newScore = newErr ? { total: 0, breakdown: {}, counts: {} } : scoreResultSet(newArticles, query);
@@ -399,6 +409,10 @@ async function main() {
     const outPath = path.join(__dirname, '..', 'eval-results.json');
     fs.writeFileSync(outPath, JSON.stringify({ meta: { base: BASE, sources: SOURCES, limit: LIMIT, ran: new Date().toISOString(), avgOld, avgNew, improvement, newWins, oldWins, ties }, results }, null, 2));
     console.log(`\nFull results written to eval-results.json`);
+    if (totalNewArticles === 0 || newFetchFailures === QUERIES.length) {
+        console.log('\nGate => FAIL (no usable unified-search results; check --base and server availability)\n');
+        process.exit(1);
+    }
     console.log('\nDone.\n');
 
     process.exit(newWins >= oldWins ? 0 : 1);

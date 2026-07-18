@@ -63,6 +63,8 @@ export interface TopicIntelligence {
     generatedAt: string;
     provider?: string;
     freePaperCount: number;
+    fullTextIndexedCount?: number;
+    fullTextCoverageRatio?: number;
     includedArticles: Array<{
       sourceIndex: number;
       uid?: string;

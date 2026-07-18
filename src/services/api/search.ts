@@ -76,17 +76,9 @@ export class SearchApi extends BaseApiClient {
     }
     params.set('intelligence', opts.intelligence === 'sync' ? 'sync' : 'async');
 
-    const cacheKey = `search:${params.toString()}`;
-    const cached = this.getCache<SearchResponse>(cacheKey);
-    if (cached) return cached;
-
     const response = await this.fetchWithSession(`${API_BASE}/api/search?${params}`, undefined, opts.signal);
     if (!response.ok) await this.parseErrorResponse(response);
-    const data = await response.json() as SearchResponse;
-    if (!opts.signal?.aborted) {
-      this.setCache(cacheKey, data);
-    }
-    return data;
+    return response.json() as Promise<SearchResponse>;
   }
 
   async fetchSearchIntelligence(

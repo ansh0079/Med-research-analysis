@@ -476,7 +476,12 @@ async upsertTeachingObject(object = {}) {
             provider = excluded.provider,
             model = excluded.model,
             confidence = excluded.confidence,
-            review_state = excluded.review_state,
+            review_state = CASE
+                WHEN teaching_objects.review_state = 'human_reviewed'
+                    AND (excluded.review_state IS NULL OR excluded.review_state != 'needs_revision')
+                THEN teaching_objects.review_state
+                ELSE excluded.review_state
+            END,
             generated_at = excluded.generated_at,
             updated_at = excluded.updated_at`,
         [

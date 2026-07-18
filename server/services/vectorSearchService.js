@@ -122,4 +122,10 @@ function createVectorSearchService({ db, serverConfig }) {
     return { searchVector, semanticSearch, findSimilarPapers, indexArticles, articleToEmbedText };
 }
 
-module.exports = { createVectorSearchService, blendEmbeddings, normalizeVector };
+module.exports = {
+    createVectorSearchService,
+    DEFAULT_MIN_SCORE,
+    EMBEDDING_DIM,
+    normalizeVector,
+    blendEmbeddings,
+};

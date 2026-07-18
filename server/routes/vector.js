@@ -1,4 +1,4 @@
-const { createVectorSearchService } = require('../services/vectorSearchService');
+const { createVectorSearchService, DEFAULT_MIN_SCORE } = require('../services/vectorSearchService');
 
 const isDev = process.env.NODE_ENV === 'development';
 const { createPdfService } = require('../services/pdfService');
@@ -21,7 +21,7 @@ function registerVectorSearchRoutes(app, deps) {
         const {
             query,
             limit = 10,
-            minScore = 0.4,
+            minScore = DEFAULT_MIN_SCORE,
             userEmbedding = null,
             userProfileText = '',
             queryWeight = 0.75,

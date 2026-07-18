@@ -6,6 +6,7 @@ const { setupSSE, sendSSE } = require('../../utils/sse');
 const {
     runFullSynthesisGeneration,
     prepareSynthesisContext,
+    runSynthesisConflictExtraction,
     parseSynthesisText,
     validateSynthesisCitations,
     buildSynthesisResult,
@@ -46,6 +47,7 @@ function registerSynthesisRoutes(app, {
     validateBody,
     schemas,
     helpers,
+    appendRagContext = null,
 }) {
     const { maybeStoreTopicKnowledge, attachEvidenceDeltaIfAvailable } = helpers;
 
@@ -93,6 +95,8 @@ function registerSynthesisRoutes(app, {
                 serverConfig,
                 fetchImpl,
                 userId: req.user?.id || null,
+                sessionId: req.sessionId || null,
+                appendRagContext,
             });
             void maybeStoreTopicKnowledge({
                 topic,
@@ -136,7 +140,16 @@ function registerSynthesisRoutes(app, {
         }
 
         try {
-            const context = await prepareSynthesisContext({ articles: topArticles, topic, db, cache, userId: req.user?.id || null });
+            const context = await prepareSynthesisContext({
+                articles: topArticles,
+                topic,
+                db,
+                cache,
+                userId: req.user?.id || null,
+                sessionId: req.sessionId || null,
+                appendRagContext,
+                ragKeys: serverConfig?.keys || null,
+            });
 
             setupSSE(res);
 
@@ -153,9 +166,21 @@ function registerSynthesisRoutes(app, {
             }
 
             const synthesis = parseSynthesisText(rawText);
-            const citationValidation = validateSynthesisCitations(synthesis, {
+            synthesis._contextArticles = context.enrichedArticles || context.topArticles;
+            const citationValidation = await validateSynthesisCitations(synthesis, {
                 sourceCount: context.topArticles.length,
                 guidelineCount: context.guidelines.length,
+                embeddingKeys: serverConfig?.keys || null,
+            });
+            const conflictExtraction = await runSynthesisConflictExtraction({
+                topArticles: context.topArticles,
+                guidelines: context.guidelines,
+                topic,
+                serverConfig,
+                fetchImpl,
+                provider: selectedProvider,
+                db,
+                log: req.log,
             });
             const result = buildSynthesisResult({
                 synthesis,
@@ -170,6 +195,8 @@ function registerSynthesisRoutes(app, {
                 model: selectedModel,
                 fullTextIndexedCount: context.fullTextIndexedCount,
                 fullTextCoverageRatio: context.fullTextCoverageRatio,
+                conflictMatrix: conflictExtraction.conflictMatrix,
+                guidelineAlignment: conflictExtraction.guidelineAlignment,
             });
 
             await persistSynthesisResult({

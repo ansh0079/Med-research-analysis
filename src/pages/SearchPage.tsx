@@ -202,6 +202,7 @@ export const SearchPage: React.FC = () => {
             highQualityCount={highQualityCount}
             retractedCount={retractedCount}
             sourceTelemetry={searchTelemetry?.sources}
+            sourceFailures={searchTelemetry?.sourceFailures}
           />
         )}
 

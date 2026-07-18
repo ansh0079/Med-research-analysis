@@ -99,10 +99,14 @@ const CLINICAL_QUERY_ALIAS_RULES = [
     { all: [/\bsurviving sepsis\b|\bsepsis campaign\b/i, /\bsepsis\b|\bseptic shock\b/i], aliases: ['Surviving Sepsis Campaign'], pmids: ['34599691'] },
 ];
 
+const { loadClinicalQueryAliasSeeds } = require('./clinicalQueryAliasSeeds');
+const DATA_DRIVEN_ALIAS_RULES = loadClinicalQueryAliasSeeds();
+const ALL_CLINICAL_QUERY_ALIAS_RULES = [...CLINICAL_QUERY_ALIAS_RULES, ...DATA_DRIVEN_ALIAS_RULES];
+
 function clinicalQueryAliases(query) {
     const text = String(query || '');
     const out = new Set();
-    for (const rule of CLINICAL_QUERY_ALIAS_RULES) {
+    for (const rule of ALL_CLINICAL_QUERY_ALIAS_RULES) {
         if (rule.all.every((pattern) => pattern.test(text))) {
             rule.aliases.forEach((alias) => out.add(alias));
         }
@@ -113,7 +117,7 @@ function clinicalQueryAliases(query) {
 function clinicalQueryPinnedPmids(query) {
     const text = String(query || '');
     const out = new Set();
-    for (const rule of CLINICAL_QUERY_ALIAS_RULES) {
+    for (const rule of ALL_CLINICAL_QUERY_ALIAS_RULES) {
         if (Array.isArray(rule.pmids) && rule.all.every((pattern) => pattern.test(text))) {
             rule.pmids.forEach((pmid) => out.add(pmid));
         }
@@ -622,6 +626,29 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
 
     // Phase 2: Build per-source fetch promises and run them all in parallel.
     const sourceFetches = [];
+    const recordSourceFailure = (source, err) => {
+        if (!telemetry || typeof telemetry !== 'object') return;
+        telemetry.sourceFailures = telemetry.sourceFailures || {};
+        telemetry.sourceFailures[source] = {
+            failed: true,
+            error: String(err?.message || err || 'unknown error').slice(0, 240),
+        };
+        telemetry.sourceFetches = telemetry.sourceFetches || {};
+        telemetry.sourceFetches[source] = {
+            ...(telemetry.sourceFetches[source] || {}),
+            failed: true,
+            error: telemetry.sourceFailures[source].error,
+        };
+    };
+    const recordSourceOk = (source, count) => {
+        if (!telemetry || typeof telemetry !== 'object') return;
+        telemetry.sourceFetches = telemetry.sourceFetches || {};
+        telemetry.sourceFetches[source] = {
+            ...(telemetry.sourceFetches[source] || {}),
+            failed: false,
+            resultCount: count,
+        };
+    };
 
     if (sourceList.includes('pubmed')) {
         // The broadened query (base OR MeSH OR aliases) maximises recall, but on already
@@ -659,9 +686,11 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
                         expandedAliases: meshExpansions,
                     };
                 }
+                recordSourceOk('pubmed', merged.length);
                 return merged;
             } catch (err) {
                 console.warn('[unifiedEvidence] PubMed failed', err.message);
+                recordSourceFailure('pubmed', err);
                 return [];
             }
         })());
@@ -670,9 +699,12 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     if (sourceList.includes('semantic') || sourceList.includes('semantic-scholar')) {
         sourceFetches.push((async () => {
             try {
-                return await proxy.semanticScholarSearch(query, { limit: safeLimit });
+                const results = await proxy.semanticScholarSearch(query, { limit: safeLimit });
+                recordSourceOk('semantic', Array.isArray(results) ? results.length : 0);
+                return results;
             } catch (err) {
                 console.warn('[unifiedEvidence] Semantic Scholar failed', err.message);
+                recordSourceFailure('semantic', err);
                 return [];
             }
         })());
@@ -682,9 +714,12 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
         sourceFetches.push((async () => {
             try {
                 const works = await proxy.openAlexSearch(query, { limit: safeLimit });
-                return works.map(articleFromOpenAlexWork);
+                const mapped = works.map(articleFromOpenAlexWork);
+                recordSourceOk('openalex', mapped.length);
+                return mapped;
             } catch (err) {
                 console.warn('[unifiedEvidence] OpenAlex failed', err.message);
+                recordSourceFailure('openalex', err);
                 return [];
             }
         })());
@@ -693,6 +728,9 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     const sourceResults = await Promise.all(sourceFetches);
     if (telemetry && typeof telemetry === 'object') {
         telemetry.unifiedFetchMs = Date.now() - overallStart;
+        if (vectorList.length > 0) {
+            recordSourceOk('vector', vectorList.length);
+        }
     }
     const perSourceLists = sourceResults.filter((list) => list.length > 0);
 
@@ -722,6 +760,9 @@ module.exports = {
     normalizeDoi,
     clinicalQueryAliases,
     clinicalQueryPinnedPmids,
+    CLINICAL_QUERY_ALIAS_RULES,
+    DATA_DRIVEN_ALIAS_RULES,
+    ALL_CLINICAL_QUERY_ALIAS_RULES,
     buildPubMedSearchQuery,
     appendPubMedPublicationFilters,
     publicationTypeClause,

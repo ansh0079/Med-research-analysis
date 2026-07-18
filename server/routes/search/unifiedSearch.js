@@ -18,8 +18,9 @@ const {
 const {
     getOrEnqueueTopicSeed,
     getOrEnqueueGuidelineAlign,
-    getOrEnqueuePdfIndex,
+    enqueuePdfIndexForBouquetArticles,
 } = require('../../services/enrichmentJobService');
+const { enqueueVectorIndexForBouquetArticles } = require('../../services/vectorCoverageService');
 const {
     consensusEnrichmentJobKey,
     liveClinicalAnswerEnrichmentJobKey,
@@ -261,6 +262,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                 searchTelemetry: {
                     timings: { ...telemetry.timings, ...routeTimings },
                     sources: telemetry.sourceFetches || {},
+                    sourceFailures: telemetry.sourceFailures || {},
                     reformulation: telemetry.reformulation || null,
                     meshLookupMs: telemetry.meshLookupMs ?? null,
                 },
@@ -276,17 +278,27 @@ function registerUnifiedSearchRoutes(app, deps) {
             // Avoid background AI/PDF work during Jest API tests (prevents open handles and hung supertest).
             if (process.env.NODE_ENV === 'test') return;
 
-            // Queue durable PDF indexing jobs for search hits (idempotent, deduped).
-            const freeArticles = articles.filter((a) => a && (a.isFree || a.pmcid || a.openAccess || a.openAccessUrl || a.fullTextUrl));
-            const pdfCandidates = [...freeArticles, ...articles].slice(0, 6);
-            const seenPdf = new Set();
-            for (const article of pdfCandidates) {
-                const key = String(article?.doi || article?.pmid || article?.pmcid || article?.uid || '').toLowerCase();
-                if (!key || seenPdf.has(key)) continue;
-                seenPdf.add(key);
-                void getOrEnqueuePdfIndex({ db, article, cache, logger }).catch((err) => {
-                    logger.warn({ err }, 'getOrEnqueuePdfIndex failed');
+            // Prefer Evidence Bouquet papers for PDF/GROBID so synopsis grounding catches up first.
+            void enqueuePdfIndexForBouquetArticles({
+                db,
+                articles,
+                bouquetRanking: ranked?.bouquetRanking || [],
+                cache,
+                logger,
+                limit: 8,
+            }).catch((err) => {
+                logger.warn({ err }, 'enqueuePdfIndexForBouquetArticles failed');
+            });
+
+            // Grow article_cache vector coverage for bouquet papers (unified min-score retrieval).
+            try {
+                enqueueVectorIndexForBouquetArticles({
+                    articles,
+                    bouquetRanking: ranked?.bouquetRanking || [],
+                    limit: 12,
                 });
+            } catch (err) {
+                logger.warn({ err }, 'enqueueVectorIndexForBouquetArticles failed');
             }
 
             // Persist search-accessed articles as permanent system resources (fire-and-forget)

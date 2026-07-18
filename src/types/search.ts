@@ -109,7 +109,15 @@ export interface SearchResponse {
   queryIntent?: string;
   searchTelemetry?: {
     timings?: Record<string, number>;
-    sources?: Record<string, { ms?: number; cached?: boolean; shared?: boolean }>;
+    sources?: Record<string, {
+      ms?: number;
+      cached?: boolean;
+      shared?: boolean;
+      failed?: boolean;
+      error?: string;
+      resultCount?: number;
+    }>;
+    sourceFailures?: Record<string, { failed?: boolean; error?: string }>;
     reformulation?: { cached?: boolean; failed?: boolean; ms?: number } | null;
     meshLookupMs?: number | null;
   };

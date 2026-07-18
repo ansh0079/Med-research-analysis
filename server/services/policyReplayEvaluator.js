@@ -99,6 +99,11 @@ async function loadDecisions(db, policyType, days) {
     }));
 }
 
+/** Shared loader for IPS / linear-value offline eval (P4). */
+async function loadDecisionsForOfflineEval(db, policyType, days = DEFAULT_DAYS) {
+    return loadDecisions(db, policyType, days);
+}
+
 // ─── public API ─────────────────────────────────────────────────────────────
 
 /**
@@ -246,6 +251,7 @@ module.exports = {
     replayPolicy,
     replayAllArms,
     replayGatePasses,
+    loadDecisionsForOfflineEval,
     // exported for tests
     simulateBoost,
     MIN_COVERAGE,

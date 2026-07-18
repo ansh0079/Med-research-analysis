@@ -3,7 +3,11 @@
 const logger = require('../config/logger');
 const { createBudgetForAction, runWithLlmBudget } = require('./llmRequestBudget');
 const { parseStructuredOutput } = require('../utils/parseJson');
-const { recordBanditReward } = require('./personalizationBanditService');
+const {
+    POLICY_CASE_DIFFICULTY,
+    caseDifficultyArmId,
+    recordBanditReward,
+} = require('./personalizationBanditService');
 const { estimateAbility, targetItemDifficulty } = require('./adaptiveItemSelectionService');
 
 /**
@@ -299,6 +303,7 @@ async function recordCaseChoice(db, caseId, userId, nodeId, choiceId) {
             ]
         );
         const reward = Math.max(-0.25, Math.min(1, (scorePercentage - 50) / 50));
+        const armId = caseDifficultyArmId(caseScenario.difficulty);
         const sideEffects = await Promise.allSettled([
             db.recordLearningEvent?.({
                 userId,
@@ -313,6 +318,7 @@ async function recordCaseChoice(db, caseId, userId, nodeId, choiceId) {
                     totalChoices,
                     outcomeType: nextNode.replace('outcome_', ''),
                     reward,
+                    armId,
                 },
             }),
             db.upsertUserTopicMastery?.(userId, caseScenario.topic, {
@@ -323,7 +329,30 @@ async function recordCaseChoice(db, caseId, userId, nodeId, choiceId) {
                 lastAttemptAt: new Date().toISOString(),
                 nextReviewAt: new Date(Date.now() + (scorePercentage >= 70 ? 14 : 3) * 86400000).toISOString(),
             }),
-            recordBanditReward(db, 'case_scenario_outcome', `difficulty:${caseScenario.difficulty}`, reward, userId),
+            recordBanditReward(db, POLICY_CASE_DIFFICULTY, armId, reward, userId),
+            (async () => {
+                if (!db?.all || !db?.updatePersonalizationDecisionReward) return;
+                const rows = await db.all(
+                    `SELECT id FROM personalization_decisions
+                     WHERE user_id = ? AND policy_type = ? AND arm_id = ?
+                       AND (context_json LIKE ? OR topic = ?)
+                     ORDER BY created_at DESC LIMIT 1`,
+                    [
+                        String(userId),
+                        POLICY_CASE_DIFFICULTY,
+                        armId,
+                        `%"caseId":"${caseId}"%`,
+                        String(caseScenario.topic || ''),
+                    ]
+                ).catch(() => []);
+                const decisionId = rows?.[0]?.id;
+                if (!decisionId) return;
+                await db.updatePersonalizationDecisionReward(decisionId, {
+                    immediateReward: 0,
+                    delayedReward: reward,
+                    totalReward: reward,
+                });
+            })(),
         ]);
         sideEffects.forEach((result, index) => {
             if (result.status === 'rejected') {

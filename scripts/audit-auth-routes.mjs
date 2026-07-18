@@ -12,6 +12,10 @@ const AUTH_MARKERS = [
     'requireRole',
     'requireReviewAccess',
     'attachApiKeyUser',
+    'requireAiAuth',
+    'requireQuizAuth',
+    'requireCaseAuth',
+    'requireAdmin',
 ];
 const PUBLIC_PATTERNS = [
     /^\/health$/,
@@ -28,6 +32,9 @@ const PUBLIC_PATTERNS = [
     /^\/api\/search(?:\/mesh-suggest)?$/,
     /^\/api\/search\/intelligence$/,
     /^\/api\/search\/ai-enrichment\//,
+    /^\/api\/search\/(?:impressions|interaction|feedback|reward-explain)$/,
+    /^\/api\/topics\/infer$/,
+    /^\/api\/analytics\/quality-feedback$/,
     /^\/api\/pdf\/find$/,
     /^\/api\/guidelines(?:\/|$)/,
     /^\/api\/knowledge\/[^/]+$/,

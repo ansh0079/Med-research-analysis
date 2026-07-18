@@ -17,55 +17,21 @@ const { validateAiOutput } = require('./aiOutputValidation');
 const { createBudgetForAction, runWithLlmBudget, LlmBudgetExceededError, getActiveLlmBudget } = require('./llmRequestBudget');
 const { buildSynthesisCacheKey, normalizePersonalization } = require('./synthesisPersonalization');
 
+const {
+    scoreClaimSourceRelevanceSync,
+    scoreClaimSourceRelevance,
+} = require('./citationRelevanceService');
+
 /**
- * Validates that a cited source is semantically relevant to the claim.
- * Uses keyword overlap as a fast heuristic for citation relevance.
+ * Validates that a cited source is relevant to the claim (sync keyword + full-text excerpts).
  */
 function validateCitationRelevance(claimText, sourceIndex, articles) {
     const article = articles[sourceIndex - 1];
-    if (!article) {
-        return {
-            valid: false,
-            relevanceScore: 0,
-            reason: 'Source index out of bounds'
-        };
-    }
-
-    const titleAndAbstract = `${article.title || ''} ${article.abstract || ''}`.toLowerCase();
-    if (titleAndAbstract.length < 20) {
-        return {
-            valid: true,  // Benefit of doubt if abstract unavailable
-            relevanceScore: 0.5,
-            reason: 'Abstract not available for validation'
-        };
-    }
-
-    // Extract meaningful words from claim (filter stopwords, keep medical terms)
-    const claimWords = String(claimText || '')
-        .toLowerCase()
-        .split(/\s+/)
-        .filter(w => w.length > 4 && !/^(the|and|that|this|with|from|have|been|were|was)$/.test(w))
-        .slice(0, 30);  // Cap to avoid noise
-
-    if (claimWords.length === 0) {
-        return { valid: false, relevanceScore: 0, reason: 'Claim too short for validation' };
-    }
-
-    // Calculate overlap: how many claim words appear in article?
-    const overlap = claimWords.filter(word => titleAndAbstract.includes(word)).length;
-    const relevanceScore = overlap / claimWords.length;
-
-    return {
-        valid: relevanceScore > 0.25,  // At least 25% keyword overlap required
-        relevanceScore: Math.round(relevanceScore * 100) / 100,
-        reason: relevanceScore <= 0.25
-            ? `Low semantic overlap (${Math.round(relevanceScore * 100)}%) between claim and cited source`
-            : 'Acceptable relevance'
-    };
+    return scoreClaimSourceRelevanceSync(claimText, article);
 }
 
 /**
- * Extracts all citations from a text field and validates them.
+ * Extracts all citations from a text field and validates them (sync).
  */
 function extractAndValidateCitations(text, articles) {
     const citationPattern = /\[(\d+)\]/g;
@@ -83,6 +49,29 @@ function extractAndValidateCitations(text, articles) {
         }
     }
 
+    return citations;
+}
+
+/**
+ * Async citation extraction with optional embedding similarity.
+ */
+async function extractAndValidateCitationsAsync(text, articles, { embeddingKeys = null } = {}) {
+    const citationPattern = /\[(\d+)\]/g;
+    const citations = [];
+    let match;
+    const tasks = [];
+
+    while ((match = citationPattern.exec(String(text || ''))) !== null) {
+        const sourceIndex = parseInt(match[1], 10);
+        if (sourceIndex > 0 && sourceIndex <= articles.length) {
+            tasks.push(
+                scoreClaimSourceRelevance(text, articles[sourceIndex - 1], { keys: embeddingKeys })
+                    .then((validation) => ({ sourceIndex, ...validation }))
+            );
+        }
+    }
+    const resolved = await Promise.all(tasks);
+    citations.push(...resolved);
     return citations;
 }
 
@@ -180,7 +169,7 @@ function parseSynthesisText(rawText) {
     }
 }
 
-function validateSynthesisCitations(synthesis, { sourceCount, guidelineCount }) {
+async function validateSynthesisCitations(synthesis, { sourceCount, guidelineCount, embeddingKeys = null } = {}) {
     const validation = validateMedicalOutputCitations(synthesis, {
         sourceCount,
         guidelineCount,
@@ -188,38 +177,42 @@ function validateSynthesisCitations(synthesis, { sourceCount, guidelineCount }) 
         requiredListPaths: ['agreement', 'uncertainties'],
     });
 
-    // Add semantic relevance check for key claims
+    // Claim–evidence relevance for key claims (keyword + optional embeddings)
     const relevanceIssues = [];
     const articles = synthesis._contextArticles || [];
+    const useAsync = Boolean(embeddingKeys);
 
     if (articles.length > 0) {
-        // Validate clinical bottom line citation
         if (synthesis.clinicalBottomLine) {
-            const citations = extractAndValidateCitations(synthesis.clinicalBottomLine, articles);
-            const irrelevant = citations.filter(c => !c.valid);
+            const citations = useAsync
+                ? await extractAndValidateCitationsAsync(synthesis.clinicalBottomLine, articles, { embeddingKeys })
+                : extractAndValidateCitations(synthesis.clinicalBottomLine, articles);
+            const irrelevant = citations.filter((c) => !c.valid);
             if (irrelevant.length > 0) {
                 relevanceIssues.push({
                     field: 'clinicalBottomLine',
                     citations: irrelevant,
-                    text: synthesis.clinicalBottomLine.slice(0, 200)
+                    text: synthesis.clinicalBottomLine.slice(0, 200),
                 });
             }
         }
 
-        // Validate key findings
         if (Array.isArray(synthesis.keyFindings)) {
-            synthesis.keyFindings.slice(0, 5).forEach((finding, idx) => {
+            for (let idx = 0; idx < Math.min(5, synthesis.keyFindings.length); idx += 1) {
+                const finding = synthesis.keyFindings[idx];
                 const findingText = typeof finding === 'string' ? finding : finding.text || finding.finding || '';
-                const citations = extractAndValidateCitations(findingText, articles);
-                const irrelevant = citations.filter(c => !c.valid);
+                const citations = useAsync
+                    ? await extractAndValidateCitationsAsync(findingText, articles, { embeddingKeys })
+                    : extractAndValidateCitations(findingText, articles);
+                const irrelevant = citations.filter((c) => !c.valid);
                 if (irrelevant.length > 0) {
                     relevanceIssues.push({
                         field: `keyFindings[${idx}]`,
                         citations: irrelevant,
-                        text: findingText.slice(0, 200)
+                        text: findingText.slice(0, 200),
                     });
                 }
-            });
+            }
         }
     }
 
@@ -228,8 +221,9 @@ function validateSynthesisCitations(synthesis, { sourceCount, guidelineCount }) 
         citationRelevance: {
             checked: articles.length > 0,
             issues: relevanceIssues,
-            hasIrrelevantCitations: relevanceIssues.length > 0
-        }
+            hasIrrelevantCitations: relevanceIssues.length > 0,
+            method: useAsync ? 'embedding_or_keyword' : 'keyword',
+        },
     };
 }
 
@@ -242,6 +236,9 @@ async function prepareSynthesisContext({
     trainingStage = null,
     previousQueries = [],
     sessionDepth = 0,
+    sessionId = null,
+    appendRagContext = null,
+    ragKeys = null,
 }) {
     if (!Array.isArray(articles) || articles.length === 0) {
         throw new Error('At least one article is required for synthesis');
@@ -278,7 +275,7 @@ async function prepareSynthesisContext({
             .catch((err) => { logger.warn({ err, topic }, 'getSynthesisQualityHintsForTopic failed'); return null; });
     }
 
-    const prompt = buildSynthesisPrompt(enrichedArticles, topic || 'General Medical Inquiry', guidelines, {
+    let prompt = buildSynthesisPrompt(enrichedArticles, topic || 'General Medical Inquiry', guidelines, {
         personalMisconceptions,
         inferredMisconceptions,
         qualityHints,
@@ -286,6 +283,18 @@ async function prepareSynthesisContext({
         previousQueries: personalization.previousQueries,
         sessionDepth: personalization.sessionDepth,
     });
+    if (typeof appendRagContext === 'function' && sessionId && db) {
+        try {
+            prompt = await appendRagContext(prompt, {
+                topic: topic || '',
+                sessionId,
+                db,
+                keys: ragKeys || {},
+            });
+        } catch (err) {
+            logger.warn({ err, topic }, 'appendRagContext failed; continuing without library hints');
+        }
+    }
     const sourceMap = topArticles.map((a, idx) => ({
         studyIndex: idx + 1,
         uid: a.uid,
@@ -312,6 +321,46 @@ async function prepareSynthesisContext({
         fullTextCoverageRatio,
         personalization,
     };
+}
+
+/**
+ * Shared conflict / guideline alignment step used by async and stream synthesis paths.
+ */
+async function runSynthesisConflictExtraction({
+    topArticles,
+    guidelines,
+    topic,
+    serverConfig,
+    fetchImpl,
+    provider = 'auto',
+    db = null,
+    jobKey = null,
+    log = logger,
+}) {
+    const evidenceRows = (topArticles || []).map((article) => ({ article, pico: article._pico || null }));
+    try {
+        return await extractTrialGuidelineConflicts(
+            evidenceRows,
+            guidelines || [],
+            {
+                topic,
+                serverConfig,
+                fetchImpl,
+                provider,
+                logger: log,
+                allowBudgetSkip: true,
+                db,
+                jobKey,
+            }
+        );
+    } catch (err) {
+        if (err instanceof LlmBudgetExceededError) {
+            log.info({ budget: err.snapshot }, 'Skipping conflict extraction — LLM budget exhausted');
+            return { conflictMatrix: [], guidelineAlignment: null, budgetSkipped: true };
+        }
+        log.warn({ err }, 'conflict extraction failed during synthesis');
+        return { conflictMatrix: [], guidelineAlignment: null };
+    }
 }
 
 function buildSynthesisResult({
@@ -430,6 +479,8 @@ async function runFullSynthesisGeneration({
     trainingStage = null,
     previousQueries = [],
     sessionDepth = 0,
+    sessionId = null,
+    appendRagContext = null,
 }) {
     return runWithLlmBudget(createBudgetForAction('synthesis'), () => runFullSynthesisGenerationInner({
         articles,
@@ -444,6 +495,8 @@ async function runFullSynthesisGeneration({
         trainingStage,
         previousQueries,
         sessionDepth,
+        sessionId,
+        appendRagContext,
     }));
 }
 
@@ -460,6 +513,8 @@ async function runFullSynthesisGenerationInner({
     trainingStage = null,
     previousQueries = [],
     sessionDepth = 0,
+    sessionId = null,
+    appendRagContext = null,
 }) {
     const topArticles = selectTopSynthesisArticles(articles);
     const personalization = normalizePersonalization({ userId, trainingStage, previousQueries, sessionDepth });
@@ -483,6 +538,9 @@ async function runFullSynthesisGenerationInner({
         trainingStage,
         previousQueries,
         sessionDepth,
+        sessionId,
+        appendRagContext,
+        ragKeys: serverConfig?.keys || null,
     });
     const providerCandidates = getProviderCandidates({ provider }, serverConfig);
     if (!providerCandidates.length) {
@@ -525,34 +583,23 @@ async function runFullSynthesisGenerationInner({
         logger.warn({ errors: validated.errors, topic }, 'Synthesis output degraded after validation');
     }
 
-    // Attach articles for citation validation
-    synthesis._contextArticles = context.topArticles;
+    // Prefer enriched articles so relevance can use full-text sections when indexed.
+    synthesis._contextArticles = context.enrichedArticles || context.topArticles;
 
-    const citationValidation = validateSynthesisCitations(synthesis, {
+    const citationValidation = await validateSynthesisCitations(synthesis, {
         sourceCount: context.topArticles.length,
         guidelineCount: context.guidelines.length,
+        embeddingKeys: serverConfig?.keys || null,
     });
-    const evidenceRows = context.topArticles.map((article) => ({ article, pico: article._pico || null }));
-    const conflictExtraction = await extractTrialGuidelineConflicts(
-        evidenceRows,
-        context.guidelines,
-        {
-            topic,
-            serverConfig,
-            fetchImpl,
-            provider,
-            logger,
-            allowBudgetSkip: true,
-            db,
-            jobKey,
-        }
-    ).catch((err) => {
-        if (err instanceof LlmBudgetExceededError) {
-            logger.info({ budget: err.snapshot }, 'Skipping conflict extraction — LLM budget exhausted');
-            return { conflictMatrix: [], guidelineAlignment: null, budgetSkipped: true };
-        }
-        logger.warn({ err }, 'conflict extraction failed during synthesis');
-        return { conflictMatrix: [], guidelineAlignment: null };
+    const conflictExtraction = await runSynthesisConflictExtraction({
+        topArticles: context.topArticles,
+        guidelines: context.guidelines,
+        topic,
+        serverConfig,
+        fetchImpl,
+        provider,
+        db,
+        jobKey,
     });
     const result = buildSynthesisResult({
         synthesis,
@@ -592,10 +639,12 @@ async function runFullSynthesisGenerationInner({
 module.exports = {
     runFullSynthesisGeneration,
     prepareSynthesisContext,
+    runSynthesisConflictExtraction,
     parseSynthesisText,
     validateSynthesisCitations,
     validateCitationRelevance,
     extractAndValidateCitations,
+    extractAndValidateCitationsAsync,
     buildSynthesisResult,
     persistSynthesisResult,
     buildSynthesisClaimFingerprint,

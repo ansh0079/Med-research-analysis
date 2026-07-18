@@ -7,6 +7,7 @@ const { teachingObjectsToQuizContext } = require('./teachingObjectService');
 const { resolveProvider } = require('../utils/aiProvider');
 const { enrichLearnerContextForQuiz } = require('./learnerContextService');
 const { liveQuizMcqKey } = require('../utils/teachingObjectKeys');
+const { applyQuizClaimSelectionBandit } = require('./personalizationBanditService');
 
 const VALID_QTYPES = ['recall', 'clinical_application', 'trial_interpretation', 'guideline', 'pitfall'];
 const LETTERS = ['A', 'B', 'C', 'D'];
@@ -254,13 +255,21 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 db.listTeachingObjectsForTopic(cleanTopic, { limit: 8 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectsForTopic failed'); return []; }),
                 db.listTeachingObjectClaimsForTopic(cleanTopic, { limit: 40 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectClaimsForTopic failed'); return []; }),
             ]);
-            claimAnchors = selectAdaptiveClaimAnchors({
+            const candidatePool = selectAdaptiveClaimAnchors({
                 claimMastery,
                 groundedClaims: teachingClaims,
-                count: safeCount,
+                count: Math.min(Math.max(safeCount * 3, safeCount), 15),
             });
-            if (!claimAnchors.length) claimAnchors = null;
-            else claimAnchorMode = 'adaptive_teaching_object';
+            if (candidatePool.length) {
+                const banditPick = await applyQuizClaimSelectionBandit(db, user?.id || null, candidatePool, {
+                    count: safeCount,
+                    topic: cleanTopic,
+                    normalizedTopic: db.normalizeTopic(cleanTopic),
+                });
+                claimAnchors = banditPick.anchors;
+                claimAnchorMode = 'adaptive_teaching_object_bandit';
+            }
+            if (!claimAnchors?.length) claimAnchors = null;
         }
 
         if (!resolvedClaimJobKey && (!teachingClaims || teachingClaims.length === 0)) {
@@ -282,12 +291,20 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         }
 
         if (!claimAnchors && teachingClaims.length > 0) {
-            claimAnchors = selectAdaptiveClaimAnchors({
+            const candidatePool = selectAdaptiveClaimAnchors({
                 claimMastery,
                 groundedClaims: teachingClaims,
-                count: safeCount,
+                count: Math.min(Math.max(safeCount * 3, safeCount), 15),
             });
-            if (claimAnchors.length) claimAnchorMode = 'adaptive_teaching_object';
+            if (candidatePool.length) {
+                const banditPick = await applyQuizClaimSelectionBandit(db, user?.id || null, candidatePool, {
+                    count: safeCount,
+                    topic: cleanTopic,
+                    normalizedTopic: db.normalizeTopic(cleanTopic),
+                });
+                claimAnchors = banditPick.anchors;
+                claimAnchorMode = 'adaptive_teaching_object_bandit';
+            }
         }
 
         if (!claimAnchors) {
@@ -471,6 +488,8 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                     outlineNodeId: normalizeOutlineNodeId(q.outlineNodeId, validOutlineNodeIds, targetNodes, sourceIndices, idx),
                     topic: cleanTopic,
                     claimKey: ck,
+                    claimDecisionId: cmeta?.claimDecisionId ?? null,
+                    banditArmId: cmeta?._banditArmId || ck || null,
                     promptVariant,
                     validationStatus: validation.validationSummary.skipped ? 'validation_skipped' : 'llm_validated',
                     outlineLabel: cmeta ? String(cmeta.claimText || '').slice(0, 200) : null,
@@ -501,7 +520,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 promptVariant,
                 validation: validation.validationSummary,
                 claimAnchorMode,
-                adaptiveClaimCount: claimAnchorMode === 'adaptive_teaching_object' ? claimAnchors.length : undefined,
+                adaptiveClaimCount: claimAnchorMode.startsWith('adaptive_teaching_object') ? claimAnchors.length : undefined,
                 evidenceAudit: buildEvidenceAudit(claimSourceJob, claimAnchors),
             });
         } catch (error) {
