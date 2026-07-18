@@ -1,6 +1,6 @@
 {
   "sentry": {
-    "enabled": false,
+    "enabled": true,
     "alerts": [
       {
         "name": "High Error Rate",
@@ -8,7 +8,7 @@
         "threshold": 5,
         "window": "5m",
         "severity": "warning",
-        "notification": ["email", "slack"]
+        "notification": ["email"]
       },
       {
         "name": "Critical Error Rate",
@@ -16,7 +16,7 @@
         "threshold": 20,
         "window": "5m",
         "severity": "critical",
-        "notification": ["email", "slack", "pagerduty"]
+        "notification": ["email"]
       },
       {
         "name": "New Issues Spike",
@@ -27,24 +27,24 @@
         "notification": ["email"]
       },
       {
-        "name": "Performance Regression",
+        "name": "Search Latency Regression",
         "metric": "transaction.duration",
-        "threshold": 2000,
+        "threshold": 3000,
         "window": "15m",
         "severity": "warning",
         "filter": "transaction:/api/search",
-        "notification": ["slack"]
+        "notification": ["email"]
       }
     ]
   },
   "uptime": {
-    "enabled": false,
+    "enabled": true,
     "alerts": [
       {
         "name": "Downtime",
         "condition": "down",
         "threshold": 0,
-        "notification": ["email", "slack"]
+        "notification": ["email"]
       },
       {
         "name": "Slow Response",
@@ -56,31 +56,10 @@
       }
     ]
   },
-  "logrocket": {
-    "enabled": false,
-    "alerts": [
-      {
-        "name": "User Frustration",
-        "condition": "rage_clicks",
-        "threshold": 3,
-        "window": "1 session",
-        "action": "review_session"
-      }
-    ]
-  },
   "notification_channels": {
     "email": {
       "enabled": true,
-      "recipients": ["admin@yourdomain.com"]
-    },
-    "slack": {
-      "enabled": false,
-      "webhook_url": "",
-      "channel": "#alerts"
-    },
-    "pagerduty": {
-      "enabled": false,
-      "service_key": ""
+      "recipients": ["ansh0079@gmail.com"]
     }
   }
 }

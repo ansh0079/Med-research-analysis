@@ -41,7 +41,7 @@ jobs:
           SERVER_PID=$!
           trap "kill $SERVER_PID" EXIT
           npx wait-on http://localhost:3002/health --timeout 120000
-          npx playwright test tests/e2e/beta-smoke.spec.js --project=${{ matrix.browser }}
+          npx playwright test tests/e2e/beta-smoke.spec.js tests/e2e/learning-pipeline.spec.js tests/e2e/research-flow.spec.js --project=${{ matrix.browser }}
         env:
           PORT: 3002
           NODE_ENV: e2e
@@ -89,7 +89,7 @@ jobs:
           SERVER_PID=$!
           trap "kill $SERVER_PID" EXIT
           npx wait-on http://localhost:3002/health --timeout 120000
-          npx playwright test tests/e2e/beta-smoke.spec.js --project='Mobile Chrome'
+          npx playwright test tests/e2e/beta-smoke.spec.js tests/e2e/learning-pipeline.spec.js tests/e2e/research-flow.spec.js --project='Mobile Chrome'
         env:
           PORT: 3002
           NODE_ENV: e2e

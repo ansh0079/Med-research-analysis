@@ -52,6 +52,11 @@ function recordSloEvent(slo, ok, value = null) {
     metrics.sloOk.set({ slo }, stats.ok ? 1 : 0);
 }
 
+function recordExternalApiCall(source, ok) {
+    if (!metrics) return;
+    metrics.externalApiCalls.inc({ source: source || 'unknown', outcome: ok ? 'ok' : 'error' });
+}
+
 function recordSynopsisGeneration({ ok, provider = 'unknown', model = 'unknown' } = {}) {
     if (metrics) {
         metrics.synopsisGeneration.inc({
@@ -126,6 +131,12 @@ function registerObservabilityMetrics(registry, client) {
             labelNames: ['queue', 'backend'],
             registers: [registry],
         }),
+        externalApiCalls: new client.Counter({
+            name: 'medsearch_external_api_calls_total',
+            help: 'External API call count by source and outcome (ok/error)',
+            labelNames: ['source', 'outcome'],
+            registers: [registry],
+        }),
     };
     for (const slo of Object.keys(SLO_DEFINITIONS)) {
         metrics.sloBurnRate.set({ slo }, 0);
@@ -173,6 +184,7 @@ function getSloStatus() {
 module.exports = {
     SLO_DEFINITIONS,
     getSloStatus,
+    recordExternalApiCall,
     recordSearchQuality,
     recordSloEvent,
     recordSynopsisGeneration,

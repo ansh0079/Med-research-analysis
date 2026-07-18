@@ -13,6 +13,7 @@
 
 const logger = require('../config/logger');
 const crypto = require('crypto');
+const { recordExternalApiCall } = require('./observabilityMetrics');
 
 // Lazily-loaded GoogleAuth instance for Vertex AI OAuth2 token caching.
 // Only initialised when GOOGLE_APPLICATION_CREDENTIALS is set.
@@ -247,11 +248,13 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
           if (res.status === 503 || res.status === 429) { lastErr = new Error(`OpenAlex ${res.status}`); continue; }
           if (!res.ok) throw new Error(`OpenAlex ${res.status}`);
           const data = await res.json();
+          recordExternalApiCall('openalex', true);
           return data.results || [];
         } catch (err) {
           lastErr = err;
         }
       }
+      recordExternalApiCall('openalex', false);
       throw lastErr || new Error('OpenAlex request failed');
     });
   }

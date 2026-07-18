@@ -1,35 +1,27 @@
 {
   "monitors": [
     {
-      "friendly_name": "Medical Research App - Homepage",
-      "url": "https://yourapp.com",
+      "friendly_name": "Signal MD - Homepage",
+      "url": "https://signalmd.co",
       "type": 1,
       "interval": 300,
       "timeout": 30,
       "alert_contacts": ["default"]
     },
     {
-      "friendly_name": "Medical Research App - API Health",
-      "url": "https://yourapp.com/api/health",
+      "friendly_name": "Signal MD - Health Check",
+      "url": "https://signalmd.co/health",
       "type": 1,
       "interval": 300,
       "timeout": 10,
       "alert_contacts": ["default"]
     },
     {
-      "friendly_name": "Medical Research App - Search API",
-      "url": "https://yourapp.com/api/search?q=test",
+      "friendly_name": "Signal MD - Search API",
+      "url": "https://signalmd.co/api/search?q=heart+failure",
       "type": 1,
       "interval": 600,
       "timeout": 30,
-      "alert_contacts": ["default"]
-    },
-    {
-      "friendly_name": "Medical Research App - BioGPT Server",
-      "url": "https://yourapp.com/api/health/biogpt",
-      "type": 1,
-      "interval": 600,
-      "timeout": 10,
       "alert_contacts": ["default"]
     }
   ],
@@ -37,7 +29,7 @@
     {
       "type": 2,
       "friendly_name": "Admin Email",
-      "value": "admin@yourdomain.com"
+      "value": "ansh0079@gmail.com"
     }
   ]
 }
