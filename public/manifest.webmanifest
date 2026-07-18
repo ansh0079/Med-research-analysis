@@ -1,10 +1,39 @@
 {
-  "name": "Medical Research Intelligence",
-  "short_name": "MedResearch",
+  "name": "Signal MD Medical Evidence Intelligence",
+  "short_name": "Signal MD",
   "description": "Search, save, and review medical evidence.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#f8fafc",
-  "theme_color": "#4f46e5"
+  "theme_color": "#4f46e5",
+  "categories": ["medical", "education", "productivity"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Search Evidence",
+      "short_name": "Search",
+      "url": "/",
+      "description": "Open the evidence search workspace"
+    },
+    {
+      "name": "Saved Articles",
+      "short_name": "Saved",
+      "url": "/saved",
+      "description": "Review saved evidence while offline"
+    }
+  ]
 }

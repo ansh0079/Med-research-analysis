@@ -38,6 +38,7 @@ export interface CaseModeResult {
   conflictMatrix?: ConflictItem[];
   guidelineAlignment?: TrialGuidelineAlignmentSummary | null;
   followUpQuestions?: FollowUpQuestion[];
+  justInTimeReminder?: string | null;
 }
 
 export interface QuizState {

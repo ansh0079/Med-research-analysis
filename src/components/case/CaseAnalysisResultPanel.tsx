@@ -42,6 +42,16 @@ export function CaseAnalysisResultPanel({
         <p className="text-xs text-slate-500 dark:text-slate-400 italic border-l-2 border-amber-400 pl-3">{result.disclaimer}</p>
       )}
 
+      {result.justInTimeReminder && (
+        <div className="rounded-xl border border-blue-200 bg-blue-50/80 px-4 py-3 text-sm text-blue-900 dark:border-blue-800/60 dark:bg-blue-950/30 dark:text-blue-100">
+          <div className="mb-1 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-blue-600 dark:text-blue-300">
+            <i className="fas fa-lightbulb text-[11px]" />
+            Quick Reminder
+          </div>
+          <p className="text-xs leading-relaxed text-blue-800 dark:text-blue-200">{result.justInTimeReminder}</p>
+        </div>
+      )}
+
       {result.vignette && (
         <div className="rounded-2xl bg-gradient-to-br from-slate-50 to-indigo-50/40 dark:from-slate-800/60 dark:to-indigo-950/20 border border-indigo-100 dark:border-indigo-900/40 p-5">
           <p className="text-[10px] font-bold uppercase tracking-widest text-indigo-500 mb-2">Clinical Vignette</p>

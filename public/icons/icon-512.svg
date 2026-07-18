@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Signal MD">
+  <rect width="512" height="512" rx="112" fill="#4f46e5"/>
+  <path d="M132 282c48-94 112-94 160 0 26 50 50 50 88 0" fill="none" stroke="#ffffff" stroke-width="38" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M148 192h216" stroke="#a7f3d0" stroke-width="32" stroke-linecap="round"/>
+  <path d="M148 360h216" stroke="#c7d2fe" stroke-width="32" stroke-linecap="round"/>
+</svg>

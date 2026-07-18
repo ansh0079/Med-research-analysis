@@ -1,6 +1,21 @@
-const CACHE_NAME = 'medresearch-shell-v3';
-const RUNTIME_CACHE = 'medresearch-runtime-v3';
-const SHELL_ASSETS = ['/', '/index.html', '/manifest.webmanifest'];
+const CACHE_NAME = 'medresearch-shell-v4';
+const RUNTIME_CACHE = 'medresearch-runtime-v4';
+const SHELL_ASSETS = [
+  '/',
+  '/index.html',
+  '/manifest.webmanifest',
+  '/icons/icon-192.svg',
+  '/icons/icon-512.svg',
+];
+
+function isOfflineReadingApi(url) {
+  return url.pathname === '/api/user/saved';
+}
+
+function isCacheableAsset(request, url) {
+  if (request.destination) return ['style', 'script', 'worker', 'font', 'image', 'manifest'].includes(request.destination);
+  return /\.(?:js|css|woff2?|svg|png|jpg|jpeg|webp|ico)$/i.test(url.pathname);
+}
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -28,9 +43,16 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  // All same-origin requests: network-first, cache fallback for offline
   if (request.mode === 'navigate') {
     event.respondWith(fetch(request).catch(() => caches.match('/index.html')));
+    return;
+  }
+
+  if (url.pathname.startsWith('/api/') && !isOfflineReadingApi(url)) {
+    return;
+  }
+
+  if (!isOfflineReadingApi(url) && !isCacheableAsset(request, url)) {
     return;
   }
 
