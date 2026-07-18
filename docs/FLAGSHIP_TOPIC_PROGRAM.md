@@ -24,6 +24,35 @@ A flagship topic should have:
 5. Add or tighten search eval fixtures for each flagship topic.
 6. Re-run readiness and search quality evals.
 
+## Closing the curriculum ↔ knowledge gap
+
+Curriculum seeding historically wrote guidelines / teaching objects / claims but **not** `topic_knowledge.source_articles`. Hand-seeded topics (ARDS, stroke) have both — and that is what flips a topic to flagship tier.
+
+Run against a restored enriched DB (not the empty local SQLite), in order:
+
+```powershell
+# 0) optional: unify topic_knowledge.canonical_normalized
+npm run db:backfill-canonical
+
+# 1) merge near-duplicate curriculum rows for the first 5 high-priority flagships (dry-run first)
+npm run db:merge-flagship-clusters -- --dry-run --priority=high --limit=5
+npm run db:merge-flagship-clusters -- --priority=high --limit=5
+
+# 2) also merge duplicate topic_knowledge rows that share a canonical key
+npm run db:merge-topic-dupes -- --dry-run
+npm run db:merge-topic-dupes
+
+# 3) backfill landmark source_articles + topic_knowledge stubs for flagships missing them
+npm run backfill:flagship-knowledge -- --dry-run --priority=high --limit=5
+npm run backfill:flagship-knowledge -- --priority=high
+
+# 4) confirm readiness, then search landmarks
+npm run audit:flagship-topics
+npm run eval:search-quality:gold
+```
+
+Going forward, `curriculumSeedService` upserts `topic_knowledge` from the evidence articles it already fetched, so new seeds should not recreate the gap.
+
 ## Real DB Restore
 
 The local DB currently has empty readiness-critical tables. To restore a real enriched corpus, place the dump in a known path and restore it into `database/app.db` or point `FLAGSHIP_DB` at it for audits:

@@ -8,6 +8,7 @@ const { runFullSynthesisGeneration } = require('./synthesisGenerationCore');
 const { runPaperSynopsisGeneration } = require('./paperSynopsisCore');
 const { alignTopicClaimsWithGuidelines } = require('./claimGuidelineEngine');
 const { runGuidelineEnrichmentForTopic } = require('./guidelineSeedService');
+const { mergeSourceArticles } = require('./flagshipTopicOps');
 
 function addDays(date, days) {
     const next = new Date(date);
@@ -186,6 +187,54 @@ async function seedCurriculumTopic({
                 : addDays(new Date(), 1),
         });
 
+        // Bridge curriculum seed → topic_knowledge so flagship readiness can see source_articles.
+        let topicKnowledge = null;
+        if (typeof db.upsertTopicKnowledge === 'function' && selectedArticles.length >= 2) {
+            const sourceArticles = selectedArticles.slice(0, 10).map((a, i) => ({
+                sourceIndex: i + 1,
+                uid: a.uid || (a.pmid ? `pubmed-${a.pmid}` : null),
+                pmid: a.pmid || null,
+                doi: a.doi || null,
+                title: a.title || null,
+                source: a.source || a._source || null,
+                pubdate: a.pubdate || a.year || null,
+            }));
+            const stubKnowledge = {
+                mentorMessage: `${topic.displayName}: seeded from curriculum evidence pipeline.`,
+                teachingPoints: [],
+                seminalPapers: sourceArticles.slice(0, 5).map((a) => ({
+                    pmid: a.pmid,
+                    title: a.title,
+                    uid: a.uid,
+                })),
+                keywords: [topic.displayName, topic.suggestedQuery].filter(Boolean),
+                seededFrom: 'curriculumSeedService',
+                seededAt: new Date().toISOString(),
+            };
+            try {
+                const existing = await db.getTopicKnowledge(topic.displayName).catch(() => null);
+                const protectedStatus = ['human_reviewed', 'locked', 'verified'].includes(
+                    String(existing?.status || '').toLowerCase()
+                );
+                if (!protectedStatus) {
+                    const mergedSources = mergeSourceArticles(existing?.sourceArticles || [], sourceArticles);
+                    topicKnowledge = await db.upsertTopicKnowledge(
+                        topic.displayName,
+                        existing?.knowledge && Object.keys(existing.knowledge || {}).length
+                            ? existing.knowledge
+                            : stubKnowledge,
+                        mergedSources,
+                        existing ? 'ai_refreshed' : 'ai_generated',
+                        Math.max(Number(existing?.confidence || 0), 0.65)
+                    );
+                } else {
+                    topicKnowledge = existing;
+                }
+            } catch (err) {
+                log.warn({ err, topic: topic.displayName }, 'curriculum seed topic_knowledge upsert failed');
+            }
+        }
+
         return {
             topic: updatedTopic,
             articleCount: rawArticles.length,
@@ -197,6 +246,7 @@ async function seedCurriculumTopic({
             guidelineAlignment,
             guidelineEnrichment,
             contentCounts,
+            topicKnowledge: topicKnowledge ? { id: topicKnowledge.id, status: topicKnowledge.status } : null,
         };
     } catch (err) {
         await db.updateCurriculumSeedStatus(topic.id, {

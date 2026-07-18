@@ -5,19 +5,19 @@
 const TOPIC_SYNONYM_GROUPS = [
     ['ards', 'acute respiratory distress syndrome', 'acute respiratory distress', 'acute lung injury'],
     ['copd', 'chronic obstructive pulmonary disease', 'chronic obstructive airways disease', 'copd exacerbation', 'acute copd exacerbation', 'aecopd'],
-    ['chf', 'congestive heart failure', 'heart failure', 'hfref', 'heart failure reduced ejection fraction', 'hfpef', 'heart failure preserved ejection fraction'],
-    ['af', 'atrial fibrillation'],
+    ['chf', 'congestive heart failure', 'heart failure', 'hfref', 'heart failure reduced ejection fraction', 'heart failure with reduced ejection fraction', 'guideline directed medical therapy for hfref', 'hfpef', 'heart failure preserved ejection fraction'],
+    ['af', 'atrial fibrillation', 'atrial fibrillation anticoagulation'],
     ['aki', 'acute kidney injury', 'acute renal failure'],
     ['ckd', 'chronic kidney disease', 'chronic renal failure'],
     ['tia', 'transient ischemic attack', 'transient ischaemic attack'],
     ['stemi', 'st elevation myocardial infarction', 'st elevation mi'],
     ['nstemi', 'non st elevation myocardial infarction', 'non st elevation mi'],
     ['dvt', 'deep vein thrombosis', 'deep venous thrombosis'],
-    ['pe', 'pulmonary embolism'],
+    ['pe', 'pulmonary embolism', 'pulmonary embolism diagnosis'],
     ['cap', 'community acquired pneumonia'],
     ['hap', 'hospital acquired pneumonia'],
     ['sirs', 'systemic inflammatory response syndrome'],
-    ['sepsis', 'septic shock'],
+    ['sepsis', 'septic shock', 'sepsis and septic shock', 'sepsis-3', 'surviving sepsis campaign'],
     ['ohca', 'out of hospital cardiac arrest'],
 ];
 

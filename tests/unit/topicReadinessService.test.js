@@ -114,4 +114,57 @@ describe('topicReadinessService', () => {
         expect(report.topics.find((topic) => topic.displayName === 'Sepsis').tier).toBe('flagship');
         expect(report.topics.find((topic) => topic.displayName === 'ARDS').source).toBe('topic_knowledge');
     });
+
+    test('attaches topic_knowledge via aliases_normalized when display names differ', async () => {
+        const db = createMockDb()
+            .set('curriculum', [
+                {
+                    id: 11,
+                    display_name: 'Guideline-directed medical therapy for HFrEF',
+                    suggested_query: 'HFrEF GDMT',
+                    priority: 'high',
+                    volatility: 'high',
+                    seed_status: 'seeded',
+                    block_name: 'Cardiology',
+                },
+            ])
+            .set('knowledge', [
+                {
+                    id: 30,
+                    topic: 'Heart failure with reduced ejection fraction',
+                    normalized_topic: 'heart failure with reduced ejection fraction',
+                    canonical_normalized: 'heart failure with reduced ejection fraction',
+                    aliases_normalized: JSON.stringify([
+                        'heart failure with reduced ejection fraction',
+                        'guideline directed medical therapy for hfref',
+                        'hfref',
+                    ]),
+                    status: 'ai_generated',
+                    confidence: 0.75,
+                    source_articles: JSON.stringify([{ uid: 'a' }, { uid: 'b' }, { uid: 'c' }]),
+                    updated_at: '2026-01-01T00:00:00.000Z',
+                },
+            ])
+            .set('guidelines', [{
+                normalized_topic: 'guideline-directed medical therapy for hfref',
+                count: 4,
+            }])
+            .set('teachingObjects', [{
+                normalized_topic: 'guideline-directed medical therapy for hfref',
+                total: 5,
+                papers: 3,
+                mcqs: 1,
+            }])
+            .set('claims', [{
+                normalized_topic: 'guideline-directed medical therapy for hfref',
+                count: 17,
+            }]);
+
+        const report = await collectTopicReadiness(db);
+        const row = report.topics.find((t) => t.displayName === 'Guideline-directed medical therapy for HFrEF');
+        expect(row.topicKnowledge).toBeTruthy();
+        expect(row.counts.sourceArticles).toBe(3);
+        expect(row.counts.guidelines).toBe(4);
+        expect(row.tier).toBe('flagship');
+    });
 });

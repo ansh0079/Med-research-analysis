@@ -67,6 +67,8 @@
     "db:migrate:kysely": "node -e \"const db = require('./database'); db.connect().then(() => db.runMigrations()).finally(() => db.close())\"",
     "db:backfill-canonical": "node server/scripts/backfillCanonicalTopics.js",
     "db:merge-topic-dupes": "node server/scripts/mergeDuplicateTopicKnowledge.js",
+    "db:merge-flagship-clusters": "node server/scripts/mergeFlagshipCurriculumClusters.js",
+    "backfill:flagship-knowledge": "node server/scripts/backfillFlagshipTopicKnowledge.js",
     "seed:ards": "node server/scripts/seedFlagshipArds.js",
     "qa:ards": "node server/scripts/qaArdsLive.js",
     "health": "curl http://localhost:3002/health",

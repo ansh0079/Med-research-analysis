@@ -50,6 +50,33 @@ function readinessIndex(readiness) {
   return byTopic;
 }
 
+function findReadinessRow(readinessByTopic, topic) {
+  const exact = readinessByTopic.get(normalizeTopic(topic.topic));
+  if (exact) return exact;
+  const aliases = [topic.topic, ...(topic.aliases || [])].map((x) => normalizeTopic(x)).filter(Boolean);
+  for (const alias of aliases) {
+    const hit = readinessByTopic.get(alias);
+    if (hit) return hit;
+  }
+  // Fall back to best containment match among loaded readiness rows.
+  let best = null;
+  let bestScore = 0;
+  const target = normalizeTopic(topic.topic);
+  for (const row of readinessByTopic.values()) {
+    const name = normalizeTopic(row.displayName || row.normalizedTopic);
+    if (!name) continue;
+    if (name === target) return row;
+    const score = name.includes(target) || target.includes(name)
+      ? Math.min(name.length, target.length) / Math.max(name.length, target.length)
+      : 0;
+    if (score > bestScore && score >= 0.55) {
+      best = row;
+      bestScore = score;
+    }
+  }
+  return best;
+}
+
 async function loadReadiness() {
   const dbPath = process.env.FLAGSHIP_DB || path.join(ROOT, 'database/app.db');
   if (!fs.existsSync(dbPath)) return { dbPath, readiness: null, pdfCoverage: null, error: 'DB not found' };
@@ -81,7 +108,7 @@ async function loadReadiness() {
 
 function assessTopic(topic, goldRows, readinessByTopic, targets = {}, pdfCoverageByTopic = new Map()) {
   const normalizedTopic = normalizeTopic(topic.topic);
-  const row = readinessByTopic.get(normalizedTopic) || null;
+  const row = findReadinessRow(readinessByTopic, topic);
   const matchingGold = goldRows.filter((gold) => goldMatchesTopic(gold, topic));
   const counts = row?.counts || {};
   const missing = new Set(row?.missing || []);

@@ -1,5 +1,7 @@
 'use strict';
 
+const { resolveCanonicalNormalized } = require('../utils/topicSynonyms');
+
 function safeJsonParse(value, fallback) {
     try {
         if (value == null || value === '') return fallback;
@@ -11,6 +13,38 @@ function safeJsonParse(value, fallback) {
 
 function normalizeForMap(db, topic) {
     return db.normalizeTopic(String(topic || '').trim());
+}
+
+function normalizeKeyVariants(db, topic) {
+    const raw = String(topic || '').trim();
+    if (!raw) return [];
+    const primary = normalizeForMap(db, raw);
+    const dehyphenated = normalizeForMap(db, raw.replace(/-/g, ' '));
+    return [...new Set([primary, dehyphenated].filter(Boolean))];
+}
+
+function knowledgeLookupKeys(db, topic) {
+    const raw = String(topic || '').trim();
+    if (!raw) return [];
+    // Prefer exact + canonical keys only. Full synonym token expansion is too broad
+    // (e.g. "neutropenic sepsis" must not inherit plain sepsis knowledge).
+    const keys = new Set(normalizeKeyVariants(db, raw));
+    const canon = resolveCanonicalNormalized(raw, (s) => db.normalizeTopic(s));
+    const canonDehyphen = resolveCanonicalNormalized(raw.replace(/-/g, ' '), (s) => db.normalizeTopic(s));
+    if (canon) keys.add(canon);
+    if (canonDehyphen) keys.add(canonDehyphen);
+    return [...keys];
+}
+
+function resolveKnowledgeRow(knowledgeByTopic, knowledgeByAlias, db, topic) {
+    const keys = knowledgeLookupKeys(db, topic);
+    for (const key of keys) {
+        if (knowledgeByTopic.has(key)) return knowledgeByTopic.get(key);
+    }
+    for (const key of keys) {
+        if (knowledgeByAlias.has(key)) return knowledgeByAlias.get(key);
+    }
+    return null;
 }
 
 function readinessTier(row) {
@@ -97,8 +131,8 @@ async function collectTopicReadiness(db, {
             [curriculumSlug]
         ).catch(() => []),
         db.all(
-            `SELECT id, topic, normalized_topic, status, confidence, source_articles,
-                    updated_at, last_refreshed_at
+            `SELECT id, topic, normalized_topic, canonical_normalized, aliases_normalized,
+                    status, confidence, source_articles, updated_at, last_refreshed_at
              FROM topic_knowledge
              ORDER BY updated_at DESC`
         ).catch(() => []),
@@ -138,9 +172,20 @@ async function collectTopicReadiness(db, {
     }]));
     const claimsByTopic = new Map(claimRows.map((row) => [String(row.normalized_topic || ''), Number(row.count || 0)]));
     const knowledgeByTopic = new Map();
+    const knowledgeByAlias = new Map();
     for (const row of knowledgeRows) {
         const key = String(row.normalized_topic || normalizeForMap(db, row.topic));
         if (!knowledgeByTopic.has(key)) knowledgeByTopic.set(key, row);
+        const canon = String(row.canonical_normalized || '').trim();
+        if (canon && !knowledgeByTopic.has(canon)) knowledgeByTopic.set(canon, row);
+        const aliases = safeJsonParse(row.aliases_normalized, []);
+        if (Array.isArray(aliases)) {
+            for (const alias of aliases) {
+                for (const a of normalizeKeyVariants(db, alias)) {
+                    if (!knowledgeByAlias.has(a)) knowledgeByAlias.set(a, row);
+                }
+            }
+        }
     }
 
     const topicMap = new Map();
@@ -182,7 +227,9 @@ async function collectTopicReadiness(db, {
 
     const rows = [];
     for (const topic of topicMap.values()) {
-        const knowledge = knowledgeByTopic.get(topic.normalizedTopic) || null;
+        const knowledge = resolveKnowledgeRow(knowledgeByTopic, knowledgeByAlias, db, topic.displayName)
+            || knowledgeByTopic.get(topic.normalizedTopic)
+            || null;
         const sourceArticles = safeJsonParse(knowledge?.source_articles, []);
         const teachingCounts = teachingByTopic.get(topic.normalizedTopic) || {};
         const enriched = {
@@ -247,4 +294,6 @@ module.exports = {
     collectTopicReadiness,
     readinessTier,
     missingSignals,
+    resolveKnowledgeRow,
+    knowledgeLookupKeys,
 };
