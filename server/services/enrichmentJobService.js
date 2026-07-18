@@ -152,7 +152,22 @@ async function getOrEnqueueGuidelineAlign({ db, topic, cache, logger, limit = 24
     return { status: 'queued', jobKey };
 }
 
-async function getOrEnqueuePdfIndex({ db, article, cache, logger, priority = -1 }) {
+function pdfJobResultLooksIndexed(existing) {
+    let payload = existing?.resultPayload || existing?.result_payload || {};
+    if (typeof payload === 'string') {
+        try { payload = JSON.parse(payload); } catch { payload = {}; }
+    }
+    if (payload?.indexed === true) return true;
+    if (Number(payload?.wordCount || 0) >= 500) return true;
+    // Explicit empty miss from the structured pdf_index result path.
+    if (payload?.indexed === false) return false;
+    // Legacy completed jobs lack structured flags — assume indexed to avoid thrash.
+    // Failed jobs and --force-retry still re-queue; new empty runs fail instead of complete.
+    if (existing?.status === 'completed') return true;
+    return false;
+}
+
+async function getOrEnqueuePdfIndex({ db, article, cache, logger, priority = -1, forceRetry = false }) {
     const jobKey = pdfIndexJobKey(article);
     if (!hasDurableJobStore(db)) {
         return { status: 'skipped', reason: 'no_durable_job_store', jobKey };
@@ -162,14 +177,37 @@ async function getOrEnqueuePdfIndex({ db, article, cache, logger, priority = -1 
         logger?.warn?.({ err, jobKey }, 'getAiGenerationJobByKey failed for PDF index');
         return null;
     });
-    if (existing?.status === 'completed') {
-        return { status: 'completed', jobKey, cached: true };
-    }
     if (existing?.status === 'running' || existing?.status === 'queued') {
         return { status: existing.status, jobKey };
     }
-    if (existing?.status === 'failed') {
-        return { status: 'failed', jobKey, errorMessage: existing.errorMessage };
+
+    const completedButEmpty = existing?.status === 'completed' && !pdfJobResultLooksIndexed(existing);
+    const shouldRetry = forceRetry
+        || existing?.status === 'failed'
+        || completedButEmpty;
+
+    if (existing?.status === 'completed' && !shouldRetry) {
+        return { status: 'completed', jobKey, cached: true };
+    }
+
+    if (shouldRetry) {
+        if (completedButEmpty && typeof db.failAiGenerationJob === 'function') {
+            await db.failAiGenerationJob(jobKey, 'pdf_index:retry_empty_completed').catch(() => null);
+        }
+        if (typeof db.resetAiGenerationJobForRetry === 'function') {
+            await db.resetAiGenerationJobForRetry(jobKey).catch((err) => {
+                logger?.debug?.({ err, jobKey }, 'resetAiGenerationJobForRetry failed');
+            });
+        }
+        await enqueueProcessJob({
+            db,
+            jobKey,
+            cache,
+            logger,
+            priority: Number.isFinite(Number(priority)) ? Number(priority) : -1,
+            label: `pdf-index:${String(jobKey).slice(0, 24)}`,
+        });
+        return { status: 'queued', jobKey, retried: true };
     }
 
     const created = await db.createAiGenerationJob({

@@ -52,7 +52,7 @@ function readinessIndex(readiness) {
 
 async function loadReadiness() {
   const dbPath = process.env.FLAGSHIP_DB || path.join(ROOT, 'database/app.db');
-  if (!fs.existsSync(dbPath)) return { dbPath, readiness: null, error: 'DB not found' };
+  if (!fs.existsSync(dbPath)) return { dbPath, readiness: null, pdfCoverage: null, error: 'DB not found' };
   try {
     const Database = (await import('better-sqlite3')).default;
     const sqlite = new Database(dbPath, { readonly: true, fileMustExist: true });
@@ -60,26 +60,37 @@ async function loadReadiness() {
       get: async (sql, params = []) => sqlite.prepare(sql).get(params),
       all: async (sql, params = []) => sqlite.prepare(sql).all(params),
       normalizeTopic,
+      getPdfSections: async (id) => {
+        const row = sqlite.prepare(
+          `SELECT word_count, sections_json FROM pdf_sections WHERE article_id = ? OR article_id = ? LIMIT 1`
+        ).get(String(id), `pubmed-${id}`);
+        if (!row) return null;
+        return { wordCount: Number(row.word_count || 0) };
+      },
     };
     const { collectTopicReadiness } = require('../server/services/topicReadinessService');
+    const { measureFlagshipPdfCoverage } = require('../server/services/pdfCoverageService');
     const readiness = await collectTopicReadiness(db, { limit: 3000 });
+    const pdfCoverage = await measureFlagshipPdfCoverage(db).catch(() => null);
     sqlite.close();
-    return { dbPath, readiness, error: null };
+    return { dbPath, readiness, pdfCoverage, error: null };
   } catch (err) {
-    return { dbPath, readiness: null, error: err.message };
+    return { dbPath, readiness: null, pdfCoverage: null, error: err.message };
   }
 }
 
-function assessTopic(topic, goldRows, readinessByTopic, targets = {}) {
+function assessTopic(topic, goldRows, readinessByTopic, targets = {}, pdfCoverageByTopic = new Map()) {
   const normalizedTopic = normalizeTopic(topic.topic);
   const row = readinessByTopic.get(normalizedTopic) || null;
   const matchingGold = goldRows.filter((gold) => goldMatchesTopic(gold, topic));
   const counts = row?.counts || {};
   const missing = new Set(row?.missing || []);
+  const pdfRow = pdfCoverageByTopic.get(topic.topic) || null;
 
   if ((topic.searchQueries || []).length < 2 && matchingGold.length < 2) missing.add('search_eval_queries');
   if ((topic.landmarkPmids || []).length < Number(targets.minimumLandmarkPmids || 1)) missing.add('landmark_pmids');
   if ((topic.guidelineQueries || []).length < 1) missing.add('guideline_query');
+  if (pdfRow && pdfRow.landmarkTotal > 0 && pdfRow.meetsNorm === false) missing.add('landmark_full_text_coverage');
 
   return {
     topic: topic.topic,
@@ -101,6 +112,13 @@ function assessTopic(topic, goldRows, readinessByTopic, targets = {}) {
       searchQueries: (topic.searchQueries || []).length,
       matchingGoldQueries: matchingGold.length,
     },
+    pdfCoverage: pdfRow ? {
+      landmarkIndexed: pdfRow.landmarkIndexed,
+      landmarkTotal: pdfRow.landmarkTotal,
+      fullTextCoverageRatio: pdfRow.fullTextCoverageRatio,
+      meetsNorm: pdfRow.meetsNorm,
+      missingLandmarkPmids: pdfRow.missingLandmarkPmids,
+    } : null,
     missing: [...missing],
   };
 }
@@ -125,15 +143,24 @@ function summarize(rows) {
 async function main() {
   const config = readJson('server/config/flagshipTopics.json');
   const goldRows = loadGoldQueries();
-  const { dbPath, readiness, error } = await loadReadiness();
+  const { dbPath, readiness, pdfCoverage, error } = await loadReadiness();
   const readinessByTopic = readinessIndex(readiness);
-  const topics = (config.topics || []).map((topic) => assessTopic(topic, goldRows, readinessByTopic, config.targets));
+  const pdfCoverageByTopic = new Map((pdfCoverage?.topics || []).map((row) => [row.topic, row]));
+  const topics = (config.topics || []).map((topic) => (
+    assessTopic(topic, goldRows, readinessByTopic, config.targets, pdfCoverageByTopic)
+  ));
   const report = {
     generatedAt: new Date().toISOString(),
     dbPath,
     dbError: error,
     configVersion: config.version,
     targets: config.targets,
+    pdfCoverageSummary: pdfCoverage ? {
+      topicsMeetingCoverageNorm: pdfCoverage.topicsMeetingCoverageNorm,
+      topicsWithLandmarks: pdfCoverage.topicsWithLandmarks,
+      meanLandmarkCoverage: pdfCoverage.meanLandmarkCoverage,
+      coverageNormThreshold: pdfCoverage.coverageNormThreshold,
+    } : null,
     summary: summarize(topics),
     topics,
   };
@@ -147,6 +174,13 @@ async function main() {
   console.log(`Flagship-ready: ${report.summary.flagshipReady}`);
   console.log(`Learner-ready or better: ${report.summary.learnerReady}`);
   console.log(`Two-query eval coverage: ${report.summary.withTwoSearchQueries}/${report.summary.topicCount}`);
+  if (report.pdfCoverageSummary) {
+    console.log(
+      `Landmark full-text ≥60%: ${report.pdfCoverageSummary.topicsMeetingCoverageNorm}/`
+      + `${report.pdfCoverageSummary.topicsWithLandmarks}`
+      + ` (mean ${((report.pdfCoverageSummary.meanLandmarkCoverage || 0) * 100).toFixed(0)}%)`
+    );
+  }
   console.log(`Tiers: ${JSON.stringify(report.summary.byTier)}`);
   console.log(`Missing: ${JSON.stringify(report.summary.byMissing)}`);
   if (error) console.log(`DB readiness note: ${error}`);

@@ -263,14 +263,24 @@ async function processAiGenerationJobByKey(jobKey, deps) {
         if (jobType === 'pdf_index') {
             const article = input.article || {};
             const result = await runPdfPreindex(article, { db, cache, serverConfig, fetch: fetchImpl, logger });
-            await db.completeAiGenerationJob(jobKey, {
-                resultPayload: { status: 'completed', jobKey, ...(result || {}) },
-                provider: null,
-                model: null,
-                auditPayload: {
-                    generatedAt: new Date().toISOString(),
-                    humanReviewStatus: 'none',
-                },
+            // Only mark completed when full text is actually indexed. Empty OA misses used to
+            // complete forever and block flagship retries via getOrEnqueuePdfIndex.
+            if (result?.indexed) {
+                await db.completeAiGenerationJob(jobKey, {
+                    resultPayload: { status: 'completed', jobKey, ...(result || {}) },
+                    provider: null,
+                    model: null,
+                    auditPayload: {
+                        generatedAt: new Date().toISOString(),
+                        humanReviewStatus: 'none',
+                    },
+                });
+                return result;
+            }
+            const reason = result?.reason || 'not_indexed';
+            await db.failAiGenerationJob(jobKey, `pdf_index:${reason}`).catch((e) => {
+                logger.warn({ err: e, jobKey, reason }, 'failAiGenerationJob for empty pdf_index failed');
+                return null;
             });
             return result;
         }

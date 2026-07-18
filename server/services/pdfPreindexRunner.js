@@ -14,9 +14,14 @@ function cacheKey(article) {
  * @param {object} article
  * @param {{ cache: object, serverConfig: object, fetchImpl: Function, db?: object }} deps
  */
+/**
+ * @returns {Promise<{ indexed: boolean, reason?: string, wordCount?: number, id?: string, cached?: boolean }>}
+ */
 async function runPdfPreindex(article, deps) {
     const { cache, serverConfig, fetchImpl, db = null } = deps;
-    if (!article || (!article.doi && !article.pmid && !article.pmcid)) return;
+    if (!article || (!article.doi && !article.pmid && !article.pmcid)) {
+        return { indexed: false, reason: 'missing_identifiers' };
+    }
 
     const id = article.doi || article.pmid || article.uid;
 
@@ -29,7 +34,14 @@ async function runPdfPreindex(article, deps) {
             await cache.setAsync(cacheKey(article), existing, PDF_CACHE_TTL_SECONDS).catch((err) => {
                 logger.warn({ err }, 'cache set failed');
             });
-            return;
+            const wordCount = Number(existing.wordCount || 0);
+            return {
+                indexed: wordCount >= 500,
+                cached: true,
+                wordCount,
+                id,
+                reason: wordCount >= 500 ? 'already_indexed' : 'thin_extract',
+            };
         }
     }
 
@@ -43,7 +55,7 @@ async function runPdfPreindex(article, deps) {
 
     if (!url || !isFree) {
         logger.debug({ id, oaSource }, '[pdfPreindex] No open-access PDF found');
-        return;
+        return { indexed: false, reason: 'no_open_access_pdf', id, oaSource: oaSource || null };
     }
 
     logger.debug({ id, url: url.slice(0, 80), oaSource }, '[pdfPreindex] Extracting PDF');
@@ -76,6 +88,15 @@ async function runPdfPreindex(article, deps) {
             logger.warn({ err, id }, '[pdfPreindex] claim upgrade after full text failed');
         });
     }
+
+    const wordCount = Number(payload.wordCount || 0);
+    return {
+        indexed: wordCount >= 500,
+        wordCount,
+        id,
+        reason: wordCount >= 500 ? 'indexed' : 'thin_extract',
+        extractionBackend: payload.extractionBackend,
+    };
 }
 
 module.exports = { runPdfPreindex, cacheKey, PDF_CACHE_TTL_SECONDS };

@@ -2,21 +2,29 @@
 'use strict';
 
 /**
- * Backfill PDF/GROBID indexing for top bouquet / seminal papers on flagship topics.
+ * Backfill PDF/GROBID indexing for flagship / bouquet landmark papers.
  *
  * Usage:
  *   node server/scripts/backfillPdfBouquet.js
  *   node server/scripts/backfillPdfBouquet.js --topic=ARDS --limit=12
+ *   node server/scripts/backfillPdfBouquet.js --priority=high --force-retry
  */
 
 async function main() {
     const args = process.argv.slice(2);
     const topicArg = args.find((a) => a.startsWith('--topic='))?.split('=')[1] || '';
-    const limit = Math.min(Math.max(parseInt(args.find((a) => a.startsWith('--limit='))?.split('=')[1] || '10', 10) || 10, 1), 40);
+    const priorityArg = args.find((a) => a.startsWith('--priority='))?.split('=')[1] || '';
+    const limit = Math.min(Math.max(parseInt(args.find((a) => a.startsWith('--limit='))?.split('=')[1] || '12', 10) || 12, 1), 40);
+    const forceRetry = args.includes('--force-retry');
 
     const db = require('../../database');
     const logger = require('../config/logger');
-    const { enqueuePdfIndexForBouquetArticles } = require('../services/enrichmentJobService');
+    const { getOrEnqueuePdfIndex } = require('../services/enrichmentJobService');
+    const {
+        collectFlagshipArticlesForPdfBackfill,
+        flagshipTopicNames,
+        measureFlagshipPdfCoverage,
+    } = require('../services/pdfCoverageService');
 
     await db.connect();
 
@@ -24,55 +32,67 @@ async function main() {
     if (topicArg) {
         topics = [topicArg];
     } else {
-        const rows = await db.all?.(
-            `SELECT DISTINCT topic FROM topic_knowledge ORDER BY updated_at DESC LIMIT 25`
-        ).catch(() => []);
-        topics = (rows || []).map((r) => r.topic).filter(Boolean);
+        topics = flagshipTopicNames({ priority: priorityArg || null });
     }
 
-    if (!topics.length) {
-        console.log('No topics found to backfill.');
+    const articles = await collectFlagshipArticlesForPdfBackfill(db, {
+        topics,
+        limitPerTopic: limit,
+        includeLandmarks: true,
+        priorityOnly: priorityArg || null,
+    });
+
+    if (!articles.length) {
+        console.log('No flagship / seminal articles found to backfill.');
         await db.close?.();
         return;
     }
 
-    let enqueued = 0;
-    for (const topic of topics) {
-        const knowledge = await db.getTopicKnowledge?.(topic).catch(() => null);
-        const seminal = Array.isArray(knowledge?.knowledge?.seminalPapers)
-            ? knowledge.knowledge.seminalPapers
-            : [];
-        const articles = seminal.slice(0, limit).map((p, idx) => ({
-            uid: p.uid || p.pmid || p.doi || `seminal-${topic}-${idx}`,
-            pmid: p.pmid || null,
-            doi: p.doi || null,
-            pmcid: p.pmcid || null,
-            title: p.title || 'Untitled',
-            isFree: Boolean(p.isFree || p.pmcid || p.openAccess),
-            openAccess: Boolean(p.openAccess),
-            openAccessUrl: p.openAccessUrl || p.fullTextUrl || null,
-            fullTextUrl: p.fullTextUrl || null,
-        }));
-        if (!articles.length) {
-            console.log(`[skip] ${topic}: no seminal papers`);
-            continue;
-        }
-        const bouquetRanking = articles.map((a) => ({ uid: a.uid }));
-        const results = await enqueuePdfIndexForBouquetArticles({
+    let queued = 0;
+    let completed = 0;
+    let failed = 0;
+    const byTopic = new Map();
+
+    for (const article of articles) {
+        const out = await getOrEnqueuePdfIndex({
             db,
-            articles,
-            bouquetRanking,
+            article,
             cache: null,
             logger,
-            limit,
-        });
-        const queued = results.filter((r) => r.status === 'queued' || r.status === 'running').length;
-        const completed = results.filter((r) => r.status === 'completed' || r.status === 'cached').length;
-        enqueued += queued;
-        console.log(`[${topic}] candidates=${results.length} queued/running=${queued} already_done=${completed}`);
+            priority: 3,
+            forceRetry,
+        }).catch((err) => ({ status: 'failed', error: err?.message }));
+
+        const topic = article.topic || 'unknown';
+        const stats = byTopic.get(topic) || { queued: 0, completed: 0, failed: 0, total: 0 };
+        stats.total += 1;
+        if (out.status === 'queued' || out.status === 'running') {
+            queued += 1;
+            stats.queued += 1;
+        } else if (out.status === 'completed' || out.status === 'cached') {
+            completed += 1;
+            stats.completed += 1;
+        } else {
+            failed += 1;
+            stats.failed += 1;
+        }
+        byTopic.set(topic, stats);
     }
 
-    console.log(`Done. Newly queued/running PDF index jobs: ${enqueued}`);
+    for (const [topic, stats] of byTopic.entries()) {
+        console.log(`[${topic}] candidates=${stats.total} queued/running=${stats.queued} already_done=${stats.completed} other=${stats.failed}`);
+    }
+
+    console.log(`Done. articles=${articles.length} newly queued/running=${queued} already_done=${completed}`);
+
+    if (typeof db.getPdfSections === 'function') {
+        const coverage = await measureFlagshipPdfCoverage(db, { topics: topics.length ? topics : null });
+        console.log(
+            `Landmark PDF coverage: ${coverage.topicsMeetingCoverageNorm}/${coverage.topicsWithLandmarks} topics ≥60% `
+            + `(mean ${(Number(coverage.meanLandmarkCoverage || 0) * 100).toFixed(0)}%)`
+        );
+    }
+
     await db.close?.();
 }
 

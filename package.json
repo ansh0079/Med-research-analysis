@@ -47,6 +47,8 @@
     "audit:auth-routes": "node scripts/audit-auth-routes.mjs",
     "audit:mega-files": "node scripts/audit-mega-files.mjs",
     "audit:flagship-topics": "node scripts/audit-flagship-program.mjs",
+    "backfill:pdf-flagship": "node server/scripts/backfillPdfBouquet.js",
+    "backfill:pdf-flagship:high": "node server/scripts/backfillPdfBouquet.js --priority=high --force-retry",
     "compose:hetzner:config": "docker compose -f docker-compose.hetzner.yml config",
     "verify:db-contract": "node tools/check-db-guards.js",
     "verify:legacy-freeze": "node tools/check-legacy-freeze.js",

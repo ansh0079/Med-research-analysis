@@ -721,7 +721,14 @@ async function applyQuizClaimSelectionBandit(db, userId, claimAnchors, {
         for (const armId of armIds) samples[armId] = 0.5;
     }
 
+    const isHumanReviewedClaim = (claim) => (
+        claim?.verificationStatus === 'human_reviewed' || claim?.reviewState === 'human_reviewed'
+    );
     const ranked = [...candidates].sort((a, b) => {
+        // Curator-reviewed claims are the default teaching tier; bandit explores within-tier only.
+        const humanA = isHumanReviewedClaim(a) ? 1 : 0;
+        const humanB = isHumanReviewedClaim(b) ? 1 : 0;
+        if (humanA !== humanB) return humanB - humanA;
         const sampleA = samples[String(a.claimKey)] ?? 0.5;
         const sampleB = samples[String(b.claimKey)] ?? 0.5;
         // Lower heuristic priority (weak=0) gets a small bonus so cold arms stay pedagogically sound.

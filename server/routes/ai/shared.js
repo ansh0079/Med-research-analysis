@@ -263,42 +263,69 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
                 articleUid: claim.articleUid || null,
                 verificationStatus: claim.verificationStatus || 'unverified',
                 verificationReason: claim.verificationReason || null,
+                reviewState: claim.reviewState || null,
                 priority,
                 index,
             };
         };
         const masteryRows = Array.isArray(claimMastery) ? claimMastery : [];
         const claimRows = Array.isArray(groundedClaims) ? groundedClaims : [];
-        const verificationRank = (claim) => ({
-            human_reviewed: 0,
-            source_verified: 1,
-            guideline_supported: 2,
-            abstract_only: 3,
-            synthesis_inferred: 4,
-            unverified: 6,
-            stale_needs_refresh: 7,
-            agent_draft: 8,
-        }[claim?.verificationStatus || 'unverified'] ?? 6);
+        const isHumanReviewed = (claim) => (
+            claim?.verificationStatus === 'human_reviewed'
+            || claim?.reviewState === 'human_reviewed'
+        );
+        const verificationRank = (claim) => {
+            if (isHumanReviewed(claim)) return 0;
+            return ({
+                human_reviewed: 0,
+                source_verified: 1,
+                full_text_available: 2,
+                guideline_supported: 2,
+                abstract_only: 4,
+                synthesis_inferred: 5,
+                unverified: 6,
+                stale_needs_refresh: 7,
+                agent_draft: 8,
+            }[claim?.verificationStatus || 'unverified'] ?? 6);
+        };
         const byTrust = (a, b) => verificationRank(a) - verificationRank(b);
-        const buckets = [
-            ...masteryRows.filter((claim) => claim.masteryState === 'weak').sort(byTrust).map((claim, index) => ({ claim, priority: 0, index })),
-            ...masteryRows.filter((claim) => claim.masteryState === 'untested').sort(byTrust).map((claim, index) => ({ claim, priority: 1, index })),
-            ...claimRows.sort(byTrust).map((claim, index) => ({ claim, priority: 2, index })),
-            ...masteryRows.filter((claim) => !['weak', 'untested'].includes(claim.masteryState)).sort(byTrust).map((claim, index) => ({ claim, priority: 3, index })),
-        ];
-        const selected = [];
-        for (const item of buckets) {
-            if (selected.length >= safeCount) break;
-            const normalized = normalize(item.claim, item.priority, item.index);
-            if (!normalized) continue;
+        const tryPush = (selected, claim, priority, index) => {
+            if (selected.length >= safeCount) return false;
+            const normalized = normalize(claim, priority, index);
+            if (!normalized) return false;
             if (!isHighCertaintyQuizEligible({
                 verificationStatus: normalized.verificationStatus,
-                conceptKey: item.claim?.conceptKey,
-                reviewState: item.claim?.reviewState,
+                conceptKey: claim?.conceptKey,
+                reviewState: claim?.reviewState || normalized.reviewState,
             })) {
-                continue;
+                return false;
             }
             selected.push(normalized);
+            return true;
+        };
+
+        // Default teaching seeds: human-reviewed claims first (weak → untested → pool),
+        // then fall back to the existing mastery/trust buckets.
+        const selected = [];
+        const humanPool = [
+            ...masteryRows.filter((c) => isHumanReviewed(c) && c.masteryState === 'weak').sort(byTrust),
+            ...masteryRows.filter((c) => isHumanReviewed(c) && c.masteryState === 'untested').sort(byTrust),
+            ...claimRows.filter((c) => isHumanReviewed(c)).sort(byTrust),
+            ...masteryRows.filter((c) => isHumanReviewed(c) && !['weak', 'untested'].includes(c.masteryState)).sort(byTrust),
+        ];
+        humanPool.forEach((claim, index) => tryPush(selected, claim, 0, index));
+
+        if (selected.length < safeCount) {
+            const buckets = [
+                ...masteryRows.filter((claim) => claim.masteryState === 'weak').sort(byTrust).map((claim, index) => ({ claim, priority: 0, index })),
+                ...masteryRows.filter((claim) => claim.masteryState === 'untested').sort(byTrust).map((claim, index) => ({ claim, priority: 1, index })),
+                ...claimRows.sort(byTrust).map((claim, index) => ({ claim, priority: 2, index })),
+                ...masteryRows.filter((claim) => !['weak', 'untested'].includes(claim.masteryState)).sort(byTrust).map((claim, index) => ({ claim, priority: 3, index })),
+            ];
+            for (const item of buckets) {
+                if (selected.length >= safeCount) break;
+                tryPush(selected, item.claim, item.priority, item.index);
+            }
         }
         return selected;
     }
