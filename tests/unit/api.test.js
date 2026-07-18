@@ -275,6 +275,13 @@ jest.mock('../../server/services/vectorSearchService', () => ({
   })),
 }));
 
+jest.mock('../../server/services/pdfService', () => ({
+  createPdfService: jest.fn(() => ({
+    findOpenAccessPdf: jest.fn().mockResolvedValue(null),
+    extractPdfText: jest.fn().mockResolvedValue({ text: '', numpages: 0, sections: {}, orderedKeys: [] }),
+  })),
+}));
+
 jest.mock('../../server/services/curriculumSeedService', () => ({
   seedCurriculumTopic: jest.fn().mockResolvedValue({
     topic: { id: 1, displayName: 'Hypertension', seedStatus: 'seeded', claimCount: 9 },
