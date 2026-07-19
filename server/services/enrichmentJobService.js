@@ -281,42 +281,60 @@ async function enqueuePdfIndexForBouquetArticles({
     return results;
 }
 
+const FLAGSHIP_ENRICH_MIN_CLAIMS = 8;
+
 /**
  * Enqueue flagship-level enrichment (landmark PMID claim extraction + guideline MCQs)
  * for a topic that matches a flagship config entry but has insufficient claims (<8).
  * Priority is intentionally low (-2) so user-facing jobs always run first.
+ *
+ * Retries completed jobs that still have fewer than 8 claims (empty/partial runs),
+ * matching the pdf_index empty-completed self-heal pattern.
  */
-async function getOrEnqueueFlagshipEnrich({ db, topic, flagship, cache, logger: log }) {
+async function getOrEnqueueFlagshipEnrich({ db, topic, flagship, articles = [], cache, logger: log }) {
     const { flagshipEnrichJobKey } = require('./flagshipEnrichService');
     const jobKey = flagshipEnrichJobKey(topic);
     if (!hasDurableJobStore(db)) {
         return { status: 'skipped', reason: 'no_durable_job_store', jobKey };
     }
 
-    const existing = await db.getAiGenerationJobByKey(jobKey).catch(() => null);
-    if (existing?.status === 'completed') return { status: 'completed', jobKey, cached: true };
-    if (existing?.status === 'running' || existing?.status === 'queued') return { status: existing.status, jobKey };
-    // For failed jobs, allow re-queue so transient errors self-heal on next search
-    if (existing?.status === 'failed') {
-        if (typeof db.resetAiGenerationJobForRetry === 'function') {
-            await db.resetAiGenerationJobForRetry(jobKey).catch(() => null);
-        } else {
-            return { status: 'failed', jobKey };
-        }
-    }
-
-    // Skip if this topic already has enough claims — avoids pointless re-enrichment
+    const topicStr = String(topic || '').trim();
     const normalizedTopic = typeof db.normalizeTopic === 'function'
-        ? db.normalizeTopic(String(topic || '').trim())
-        : String(topic || '').trim().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, ' ').trim();
+        ? db.normalizeTopic(topicStr)
+        : topicStr.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, ' ').trim();
     const claimRow = await db.get(
         'SELECT COUNT(*) AS count FROM teaching_object_claims WHERE normalized_topic = ?',
         [normalizedTopic]
     ).catch(() => null);
     const claimCount = Number(claimRow?.count || 0);
-    if (claimCount >= 8) return { status: 'skipped', reason: 'sufficient_claims', claimCount, jobKey };
+    if (claimCount >= FLAGSHIP_ENRICH_MIN_CLAIMS) {
+        return { status: 'skipped', reason: 'sufficient_claims', claimCount, jobKey };
+    }
 
-    const topicStr = String(topic || '').trim();
+    const existing = await db.getAiGenerationJobByKey(jobKey).catch(() => null);
+    if (existing?.status === 'running' || existing?.status === 'queued') {
+        return { status: existing.status, jobKey, claimCount };
+    }
+
+    const completedButInsufficient = existing?.status === 'completed' && claimCount < FLAGSHIP_ENRICH_MIN_CLAIMS;
+    const shouldRetry = existing?.status === 'failed' || completedButInsufficient;
+
+    if (shouldRetry) {
+        if (completedButInsufficient && typeof db.failAiGenerationJob === 'function') {
+            await db.failAiGenerationJob(jobKey, 'flagship_enrich:retry_insufficient_claims').catch(() => null);
+        }
+        if (typeof db.resetAiGenerationJobForRetry === 'function') {
+            await db.resetAiGenerationJobForRetry(jobKey).catch(() => null);
+        } else if (existing?.status === 'failed') {
+            return { status: 'failed', jobKey, claimCount };
+        }
+        await enqueueProcessJob({
+            db, jobKey, cache, logger: log, priority: -2,
+            label: `flagship-enrich:${topicStr.slice(0, 40)}`,
+        });
+        return { status: 'queued', jobKey, claimCount, retried: true };
+    }
+
     const created = await db.createAiGenerationJob({
         jobKey,
         jobType: 'flagship_enrich',
@@ -328,6 +346,15 @@ async function getOrEnqueueFlagshipEnrich({ db, topic, flagship, cache, logger: 
                 topic: flagship?.topic || topicStr,
                 landmarkPmids: flagship?.landmarkPmids || [],
                 aliases: flagship?.aliases || [],
+                // Passed for non-flagship topics so the job can auto-discover PMIDs
+                discoveryArticles: (Array.isArray(articles) ? articles : [])
+                    .slice(0, 8)
+                    .map((a) => ({
+                        pmid: a.pmid || null,
+                        citationCount: a.citationCount || null,
+                        pmcrefcount: a.pmcrefcount || null,
+                        _isLandmark: a._isLandmark || null,
+                    })),
             },
         },
         provider: null,

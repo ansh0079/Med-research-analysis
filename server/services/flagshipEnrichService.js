@@ -60,6 +60,38 @@ function matchFlagshipTopic(searchQuery, configPath) {
     return best;
 }
 
+// ── Landmark paper discovery from search results ──────────────────────────────
+
+/**
+ * Pick up to `limit` PMIDs from search result articles for use as auto-discovered
+ * landmark papers when there are no hand-curated landmarkPmids available.
+ *
+ * Preference order:
+ *   1. Articles the bouquet service already classified as landmark (≥300 citations or flagged)
+ *   2. Articles with any citation count, sorted descending
+ *   3. Whatever has a PMID in bouquet rank order
+ */
+function discoverLandmarkPmids(articles, limit = 3) {
+    const list = (Array.isArray(articles) ? articles : []).filter(
+        (a) => a && String(a.pmid || '').replace(/\D/g, '')
+    );
+    if (!list.length) return [];
+
+    const getCitations = (a) =>
+        Number(a.citationCount || a.pmcrefcount || a._impact?.citations || 0);
+
+    const isLandmark = (a) =>
+        getCitations(a) >= 300 || Boolean(a._isLandmark || a._flagshipEvidence);
+
+    const landmarks = list.filter(isLandmark).sort((a, b) => getCitations(b) - getCitations(a));
+    const rest = list.filter((a) => !isLandmark(a)).sort((a, b) => getCitations(b) - getCitations(a));
+
+    return [...landmarks, ...rest]
+        .slice(0, limit)
+        .map((a) => String(a.pmid).replace(/\D/g, ''))
+        .filter(Boolean);
+}
+
 // ── PubMed helpers ────────────────────────────────────────────────────────────
 
 const PUBMED_EFETCH = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi';
@@ -220,7 +252,11 @@ async function runFlagshipEnrichForTopic({ db, topic, flagship, serverConfig, fe
         ? db.normalizeTopic(topicName)
         : topicName.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, ' ').trim();
 
-    const pmids = (flagship?.landmarkPmids || []).filter(Boolean);
+    // Use curated PMIDs if available; fall back to auto-discovery from search articles.
+    const curatedPmids = (flagship?.landmarkPmids || []).filter(Boolean);
+    const pmids = curatedPmids.length
+        ? curatedPmids
+        : discoverLandmarkPmids(flagship?.discoveryArticles || []);
     const f = fetchImpl || safeFetch;
     const ai = getSharedAiService({ serverConfig, fetchImpl: f });
     const { provider, model: resolvedModel } = resolveProvider({}, serverConfig);
@@ -235,7 +271,11 @@ async function runFlagshipEnrichForTopic({ db, topic, flagship, serverConfig, fe
     for (const pmid of pmids.slice(0, 3)) {
         const objectKey = `landmark-paper:${pmid}:${normalizedTopic.replace(/\s+/g, '-').slice(0, 40)}`;
         const existing = await db.getTeachingObjectByKey(objectKey).catch(() => null);
-        if (existing) { paperTOsCreated++; continue; }
+        const existingAnchors = Array.isArray(existing?.payload?.claimAnchors)
+            ? existing.payload.claimAnchors.length
+            : 0;
+        // Skip only when the paper TO already has claims; empty stubs must re-extract.
+        if (existing && existingAnchors > 0) { paperTOsCreated++; continue; }
 
         let papers = [];
         try { papers = await fetchAbstracts([pmid], f); }
@@ -265,11 +305,11 @@ async function runFlagshipEnrichForTopic({ db, topic, flagship, serverConfig, fe
                 abstract: paper.abstract?.slice(0, 800),
                 claimAnchors: claims,
                 generatedAt: new Date().toISOString(),
-                generationSource: 'flagship_enrich_job',
+                generationSource: curatedPmids.length ? 'flagship_enrich_job' : 'auto_discovery',
             },
             provider,
             model,
-            confidence: 0.85,
+            confidence: curatedPmids.length ? 0.85 : 0.70,
         });
         paperTOsCreated++;
         totalClaimsWritten += claims.length;
@@ -339,5 +379,6 @@ module.exports = {
     flagshipEnrichJobKey,
     loadFlagshipConfigCached,
     matchFlagshipTopic,
+    discoverLandmarkPmids,
     runFlagshipEnrichForTopic,
 };

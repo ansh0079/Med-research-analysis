@@ -334,17 +334,30 @@ function registerUnifiedSearchRoutes(app, deps) {
                 req.log?.warn?.({ err }, 'getOrEnqueueGuidelineAlign failed');
             });
 
-            // Knowledge flywheel: if the search query matches a flagship topic that still
-            // lacks landmark-paper claims, enqueue deep enrichment as a low-priority background job.
-            // The job is idempotent — duplicate searches hit the existing queued/completed record.
+            // Knowledge flywheel: enqueue deep enrichment (landmark-paper claims + guideline MCQs)
+            // for any search with sufficient articles. Flagship topics use curated PMIDs; all others
+            // use auto-discovered PMIDs from the top-cited search results. Job is idempotent.
             void (async () => {
                 try {
                     const match = matchFlagshipTopic(queryValidation.sanitized);
+                    const articlesWithPmids = articles.filter((a) => a?.pmid);
                     if (match) {
+                        // Flagship path — use curated landmarkPmids from config
                         await getOrEnqueueFlagshipEnrich({
                             db,
                             topic: match.flagship.topic,
                             flagship: match.flagship,
+                            articles: articlesWithPmids,
+                            cache,
+                            logger,
+                        });
+                    } else if (articlesWithPmids.length >= 3) {
+                        // General path — auto-discover landmark PMIDs from the top search results
+                        await getOrEnqueueFlagshipEnrich({
+                            db,
+                            topic: queryValidation.sanitized,
+                            flagship: { topic: queryValidation.sanitized, landmarkPmids: [] },
+                            articles: articlesWithPmids,
                             cache,
                             logger,
                         });
