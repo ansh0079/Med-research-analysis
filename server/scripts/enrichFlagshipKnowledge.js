@@ -43,6 +43,7 @@ function argValue(flag) {
 const DRY_RUN = process.argv.includes('--dry-run');
 const FORCE   = process.argv.includes('--force');
 const TOPIC_FILTER = argValue('--topic');
+const QUERY_OVERRIDE = argValue('--query');
 const LIMIT = Number(argValue('--limit') || 50) || 50;
 
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
@@ -293,7 +294,7 @@ async function enrichTopic(aiService, flagship, currentTier) {
         console.log(`  [skip] guideline MCQ TO already exists (${existingGuidelineRows.length} guidelines)`);
     } else {
         // Search for guidelines
-        const coreQuery = topicName.split(':')[0].trim();
+        const coreQuery = QUERY_OVERRIDE || topicName.split(':')[0].trim();
         console.log(`  Searching PubMed guidelines for: ${coreQuery}...`);
         let guidelinePmids = [];
         try {

@@ -22,7 +22,7 @@ async function main() {
     const flagshipNames = new Set(cfg.topics.map((t) => t.topic.toLowerCase().trim()));
 
     const result = await collectTopicReadiness(db, { limit: 2000 });
-    const rows = result.rows.filter((r) =>
+    const rows = (result.topics || []).filter((r) =>
         flagshipNames.has((r.displayName || '').toLowerCase().trim())
     );
 
