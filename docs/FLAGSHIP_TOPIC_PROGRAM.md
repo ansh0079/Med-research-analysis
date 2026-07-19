@@ -81,7 +81,7 @@ Verified restore (2026-07-18 dump): curriculum_topics=1139, topic_knowledge=273,
 
 ## Cohort size
 
-`server/config/flagshipTopics.json` currently lists **75** curated topics (priorities: high / medium / expand). Readiness and ops scripts should target this list — do not mass-merge or backfill the full ~1,385 curriculum catalog.
+`server/config/flagshipTopics.json` currently lists **466** curated topics (priorities: high / medium), including expanded **Cardiology**, **Critical Care**, **Endocrinology**, **Gastroenterology**, **Haematology**, **Infectious Diseases**, **Nephrology**, **Neurology**, **Rheumatology**, **Respiratory**, **Psychiatry**, **Oncology**, and **Immunology** blocks. Infectious Diseases currently has **50** flagship topics. Readiness and ops scripts should target this list — do not mass-merge or backfill the full ~1,385 curriculum catalog.
 
 ## Synopsis enrichment path
 
@@ -106,10 +106,19 @@ npm run audit:flagship-topics
 
 Curriculum seed now merges flagship landmark PMIDs into `source_articles` and upserts stub `topic_knowledge` (`seededFrom: curriculumSeedService`). The mentor UI badges landmark stubs as “not yet enriched” until AI/human refresh.
 
+## Knowledge flywheel (claims auto-heal)
+
+Two paths keep flagship topics from sitting forever at `claimCount === 0` after seed:
+
+1. **Nightly cron** (`flagship-enrich` in `schedulerRegistry`, default `FLAGSHIP_ENRICH_CRON=0 4 * * *`): scans `flagshipTopics.json`, enqueues `flagship_enrich` for topics with zero `teaching_object_claims` (batch size `FLAGSHIP_ENRICH_BATCH_LIMIT`, default 25). Disable with `FLAGSHIP_ENRICH_CRON_DISABLED=true`.
+2. **Search path**: `GET /api/search` matches flagship topics (and general topics with ≥3 PMID hits) and calls `getOrEnqueueFlagshipEnrich` when `claimCount < 8`. Completed-but-empty jobs are reset and retried.
+
+Prefer these over manual `npm run enrich:flagship-knowledge -- --force` except for ops backfills.
+
 ## Learning loop (search ↔ quiz)
 
 Missed quiz items write `quiz_miss_for_search` learning events and already boost those papers on the next search. Quiz complete UI links each missed paper into personalized search (`/search?q=…&focusPmid=…`). Ranking cards show the adaptation reason when personalization moves a result.
 
 ## First Cohort (historical)
 
-The program started with 12 high-impact topics, then grew through 30 → 50 → **75**. Keep promoting only topics that pass readiness + search-eval gates.
+The program started with 12 high-impact topics, then grew through 30 → 50 → 75 → 100 → 125 → 150 → 175 → 200 → 225 → 272 → 297 → 322 → 352 → 452 → **466** (including Respiratory, Psychiatry, Oncology, and Immunology expansion cohorts plus earlier Cardiology/Critical Care and other specialty blocks). Current block sizes include Cardiology **64**, Infectious Diseases **50**, Endocrinology **28**, Respiratory **30**, Psychiatry **28**, Oncology **39**, and Immunology **25**. Keep promoting only topics that pass readiness + search-eval gates.

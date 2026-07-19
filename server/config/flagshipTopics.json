@@ -1,8 +1,8 @@
 {
-  "version": 10,
-  "description": "Flagship-topic program - 272 topics spanning evidence + learning surfaces, with expanded Cardiology (64), Critical Care (50), and Haematology (28) coverage.",
+  "version": 14,
+  "description": "Flagship-topic program - 466 topics spanning evidence + learning surfaces, with expanded Cardiology, Critical Care, Endocrinology, Gastroenterology, Haematology, Infectious Diseases (50), Immunology, Nephrology, Neurology, Oncology, Psychiatry, Respiratory, and Rheumatology coverage.",
   "targets": {
-    "flagshipCount": 272,
+    "flagshipCount": 466,
     "minimumSearchQueriesPerTopic": 2,
     "minimumSourceArticles": 3,
     "minimumGuidelines": 1,
@@ -6841,6 +6841,2528 @@
         "intravenous iron therapy iron deficiency anaemia efficacy safety ferric carboxymaltose meta-analysis"
       ],
       "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Type 1 diabetes intensive glycemic control",
+      "block": "Endocrinology",
+      "priority": "high",
+      "aliases": ["DCCT", "EDIC", "type 1 diabetes HbA1c complications"],
+      "landmarkPmids": ["8366922", "16371630", "10666428"],
+      "guidelineQueries": ["type 1 diabetes glycemic targets ADA ISPAD guideline"],
+      "searchQueries": [
+        "DCCT intensive diabetes treatment microvascular complications",
+        "EDIC long-term type 1 diabetes intensive therapy outcomes"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Hybrid closed-loop insulin delivery in type 1 diabetes",
+      "block": "Endocrinology",
+      "priority": "high",
+      "aliases": ["artificial pancreas", "automated insulin delivery", "Control-IQ", "HCL insulin pump"],
+      "landmarkPmids": ["31618560", "35045227", "24931572"],
+      "guidelineQueries": ["automated insulin delivery type 1 diabetes guideline ADA"],
+      "searchQueries": [
+        "hybrid closed-loop insulin delivery type 1 diabetes randomized",
+        "Control-IQ automated insulin delivery multicenter trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Continuous glucose monitoring in diabetes",
+      "block": "Endocrinology",
+      "priority": "high",
+      "aliases": ["CGM DIAMOND", "CGM GOLD", "flash glucose monitoring", "rtCGM"],
+      "landmarkPmids": ["28118453", "28118454", "29352491"],
+      "guidelineQueries": ["continuous glucose monitoring diabetes guideline ADA"],
+      "searchQueries": [
+        "DIAMOND continuous glucose monitoring type 1 diabetes randomized",
+        "GOLD CGM type 1 diabetes hypoglycemia randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Diabetic ketoacidosis fluid and insulin management",
+      "block": "Endocrinology",
+      "priority": "high",
+      "aliases": ["DKA management", "diabetic ketoacidosis protocol", "SGLT2 DKA"],
+      "landmarkPmids": ["11194218", "19564476", "26294774"],
+      "guidelineQueries": ["diabetic ketoacidosis management ADA JBDS guideline"],
+      "searchQueries": [
+        "diabetic ketoacidosis fluid resuscitation insulin protocol randomized",
+        "SGLT2 inhibitor diabetic ketoacidosis risk type 1 diabetes"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Gestational diabetes screening and treatment",
+      "block": "Endocrinology",
+      "priority": "high",
+      "aliases": ["GDM", "HAPO", "MiG metformin gestational diabetes", "Crowther GDM"],
+      "landmarkPmids": ["15951574", "18463376", "30996054"],
+      "guidelineQueries": ["gestational diabetes screening treatment ACOG ADA guideline"],
+      "searchQueries": [
+        "Crowther treatment of gestational diabetes mellitus randomized",
+        "metformin versus insulin gestational diabetes MiG trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Intensive glycemic targets in type 2 diabetes",
+      "block": "Endocrinology",
+      "priority": "high",
+      "aliases": ["ACCORD", "ADVANCE", "VADT", "intensive HbA1c type 2 diabetes"],
+      "landmarkPmids": ["18539917", "18539915", "19092145"],
+      "guidelineQueries": ["glycemic targets type 2 diabetes ACCORD ADVANCE guideline"],
+      "searchQueries": [
+        "ACCORD intensive glucose lowering type 2 diabetes mortality",
+        "ADVANCE intensive blood glucose control type 2 diabetes"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Metformin and glycemic legacy in type 2 diabetes",
+      "block": "Endocrinology",
+      "priority": "high",
+      "aliases": ["UKPDS metformin", "UKPDS 34", "glycemic legacy effect"],
+      "landmarkPmids": ["9742977", "18784090", "9742976"],
+      "guidelineQueries": ["metformin first-line type 2 diabetes ADA EASD guideline"],
+      "searchQueries": [
+        "UKPDS metformin overweight type 2 diabetes randomized",
+        "UKPDS 10-year follow-up legacy effect glycemic control"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Diabetes prevention lifestyle and metformin",
+      "block": "Endocrinology",
+      "priority": "high",
+      "aliases": ["DPP diabetes prevention", "prediabetes metformin", "Diabetes Prevention Program"],
+      "landmarkPmids": ["11832527", "19878986", "26531509"],
+      "guidelineQueries": ["diabetes prevention prediabetes metformin lifestyle ADA guideline"],
+      "searchQueries": [
+        "Diabetes Prevention Program lifestyle metformin impaired glucose tolerance",
+        "DPPOS long-term diabetes prevention metformin lifestyle"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "SGLT2 inhibitor therapy for type 2 diabetes",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["CANVAS", "DECLARE-TIMI 58", "dapagliflozin empagliflozin T2DM"],
+      "landmarkPmids": ["29166232", "30415602", "26981940"],
+      "guidelineQueries": ["SGLT2 inhibitor type 2 diabetes ADA EASD guideline"],
+      "searchQueries": [
+        "CANVAS canagliflozin cardiovascular renal outcomes type 2 diabetes",
+        "DECLARE-TIMI 58 dapagliflozin type 2 diabetes randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "GLP-1 receptor agonist therapy for type 2 diabetes",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["SUSTAIN-6", "AWARD", "dulaglutide semaglutide T2DM glycemic"],
+      "landmarkPmids": ["28249135", "27295427", "31189511"],
+      "guidelineQueries": ["GLP-1 receptor agonist type 2 diabetes ADA EASD guideline"],
+      "searchQueries": [
+        "SUSTAIN-6 semaglutide type 2 diabetes cardiovascular outcomes",
+        "dulaglutide AWARD glycemic control type 2 diabetes"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Basal insulin initiation in type 2 diabetes",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["ORIGIN trial", "DEVOTE", "glargine degludec type 2 diabetes"],
+      "landmarkPmids": ["22686416", "28605603", "23043166"],
+      "guidelineQueries": ["basal insulin initiation type 2 diabetes ADA guideline"],
+      "searchQueries": [
+        "ORIGIN insulin glargine cardiovascular outcomes type 2 diabetes",
+        "DEVOTE insulin degludec versus glargine hypoglycemia"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Hypoglycemia prevention in insulin-treated diabetes",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["severe hypoglycemia diabetes", "hypoglycemia unawareness", "insulin hypoglycemia risk"],
+      "landmarkPmids": ["23589542", "20925543"],
+      "guidelineQueries": ["hypoglycemia management prevention diabetes ADA guideline"],
+      "searchQueries": [
+        "severe hypoglycemia cardiovascular outcomes type 2 diabetes",
+        "hypoglycemia prevention continuous glucose monitoring insulin therapy"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Diabetic retinopathy anti-VEGF therapy",
+      "block": "Endocrinology",
+      "priority": "high",
+      "aliases": ["DRCR Protocol T", "diabetic macular edema anti-VEGF", "Protocol S proliferative DR"],
+      "landmarkPmids": ["25692915", "26565927", "22330964"],
+      "guidelineQueries": ["diabetic retinopathy anti-VEGF AAO ADA guideline"],
+      "searchQueries": [
+        "DRCR Protocol T aflibercept bevacizumab ranibizumab diabetic macular edema",
+        "Protocol S panretinal photocoagulation versus ranibizumab proliferative diabetic retinopathy"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Diabetic peripheral neuropathy pharmacotherapy",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["diabetic neuropathy pregabalin", "duloxetine diabetic neuropathic pain", "DPN treatment"],
+      "landmarkPmids": ["18796160", "15927394", "15288411"],
+      "guidelineQueries": ["diabetic peripheral neuropathy treatment ADA AAN guideline"],
+      "searchQueries": [
+        "pregabalin diabetic peripheral neuropathy randomized pain",
+        "duloxetine diabetic neuropathic pain randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Primary hypothyroidism levothyroxine replacement",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["levothyroxine hypothyroidism", "thyroid hormone replacement", "myxedema"],
+      "landmarkPmids": ["25266247", "23246686", "28976862"],
+      "guidelineQueries": ["hypothyroidism levothyroxine ATA guideline"],
+      "searchQueries": [
+        "levothyroxine replacement primary hypothyroidism guideline outcomes",
+        "thyroid hormone replacement dose titration hypothyroidism randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Subclinical hypothyroidism treatment thresholds",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["TRUST trial thyroid", "subclinical hypothyroidism elderly", "TSH treatment threshold"],
+      "landmarkPmids": ["28976862", "31088853", "14722150"],
+      "guidelineQueries": ["subclinical hypothyroidism treatment ATA guideline"],
+      "searchQueries": [
+        "TRUST thyroid hormone therapy older adults subclinical hypothyroidism",
+        "subclinical hypothyroidism levothyroxine cardiovascular outcomes"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Graves disease antithyroid and radioiodine therapy",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["Graves hyperthyroidism", "methimazole RAI", "antithyroid drug therapy"],
+      "landmarkPmids": ["27521067", "21700562", "23824415"],
+      "guidelineQueries": ["Graves disease hyperthyroidism ATA guideline"],
+      "searchQueries": [
+        "antithyroid drugs versus radioiodine Graves disease randomized",
+        "methimazole propylthiouracil Graves disease relapse"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Thyroid nodule evaluation and FNA",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["TI-RADS", "thyroid FNA Bethesda", "thyroid nodule ultrasound"],
+      "landmarkPmids": ["27741354", "28372962", "29091573"],
+      "guidelineQueries": ["thyroid nodule FNA ATA TI-RADS guideline"],
+      "searchQueries": [
+        "ATA thyroid nodule fine needle aspiration guideline",
+        "ACR TI-RADS thyroid nodule management outcomes"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Primary aldosteronism diagnosis and treatment",
+      "block": "Endocrinology",
+      "priority": "high",
+      "aliases": ["Conn syndrome", "aldosterone renin ratio", "mineralocorticoid hypertension"],
+      "landmarkPmids": ["26934393", "26414968", "29129575"],
+      "guidelineQueries": ["primary aldosteronism Endocrine Society guideline"],
+      "searchQueries": [
+        "primary aldosteronism mineralocorticoid receptor antagonist surgery outcomes",
+        "PATHWAY-2 spironolactone resistant hypertension aldosterone"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Cushing syndrome medical therapy",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["Cushing disease pasireotide", "hypercortisolism medical therapy", "osilodrostat"],
+      "landmarkPmids": ["22397653", "26222757", "22090294"],
+      "guidelineQueries": ["Cushing syndrome medical therapy Endocrine Society guideline"],
+      "searchQueries": [
+        "pasireotide Cushing disease randomized trial",
+        "osilodrostat LINC Cushing disease randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Prolactinoma dopamine agonist therapy",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["cabergoline prolactinoma", "bromocriptine prolactinoma", "hyperprolactinemia"],
+      "landmarkPmids": ["7915824", "10404830", "21296991"],
+      "guidelineQueries": ["prolactinoma dopamine agonist Endocrine Society guideline"],
+      "searchQueries": [
+        "cabergoline versus bromocriptine hyperprolactinemia randomized",
+        "cabergoline prolactinoma tumor shrinkage outcomes"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Acromegaly somatostatin analog therapy",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["acromegaly octreotide", "pegvisomant", "GH adenoma medical therapy"],
+      "landmarkPmids": ["10770982", "25356808", "15886238"],
+      "guidelineQueries": ["acromegaly treatment Endocrine Society guideline"],
+      "searchQueries": [
+        "octreotide LAR acromegaly randomized biochemical control",
+        "pegvisomant acromegaly growth hormone receptor antagonist"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Polycystic ovary syndrome metabolic management",
+      "block": "Endocrinology",
+      "priority": "high",
+      "aliases": ["PCOS metformin", "PCOS clomiphene", "polycystic ovary syndrome"],
+      "landmarkPmids": ["17287476", "24151290", "32452622"],
+      "guidelineQueries": ["polycystic ovary syndrome metformin Endocrine Society guideline"],
+      "searchQueries": [
+        "clomiphene metformin polycystic ovary syndrome infertility Legro",
+        "metformin PCOS metabolic insulin resistance randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Menopausal hormone therapy risks and benefits",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["WHI hormone therapy", "menopausal HRT", "estrogen progestin menopause"],
+      "landmarkPmids": ["12117397", "15082697", "28898378"],
+      "guidelineQueries": ["menopausal hormone therapy NAMS Endocrine Society guideline"],
+      "searchQueries": [
+        "Women Health Initiative estrogen plus progestin cardiovascular outcomes",
+        "WHI estrogen alone hysterectomy coronary disease"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Male hypogonadism testosterone replacement",
+      "block": "Endocrinology",
+      "priority": "medium",
+      "aliases": ["TRAVERSE trial", "testosterone replacement hypogonadism", "TRT cardiovascular"],
+      "landmarkPmids": ["37326322", "26886521", "29562364"],
+      "guidelineQueries": ["testosterone therapy hypogonadism Endocrine Society guideline"],
+      "searchQueries": [
+        "TRAVERSE testosterone cardiovascular safety hypogonadism randomized",
+        "testosterone replacement older men sexual function randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Rheumatoid arthritis biologic and JAK inhibitor therapy",
+      "block": "Rheumatology",
+      "priority": "high",
+      "aliases": ["RA biologic therapy", "JAK inhibitors RA", "tofacitinib", "baricitinib", "difficult-to-treat rheumatoid arthritis"],
+      "landmarkPmids": ["34101376", "23294500", "28199814"],
+      "guidelineQueries": ["ACR rheumatoid arthritis guideline biologic DMARD JAK inhibitor"],
+      "searchQueries": [
+        "tofacitinib methotrexate inadequate response TNF inhibitor rheumatoid arthritis randomized trial",
+        "baricitinib placebo adalimumab rheumatoid arthritis randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Psoriatic arthritis IL-17 and targeted therapy",
+      "block": "Rheumatology",
+      "priority": "high",
+      "aliases": ["PsA", "psoriatic arthritis biologics", "secukinumab", "ixekizumab", "GRAPPA recommendations"],
+      "landmarkPmids": ["26135703", "27553214", "35761070"],
+      "guidelineQueries": ["GRAPPA psoriatic arthritis treatment recommendations biologic targeted therapy"],
+      "searchQueries": [
+        "secukinumab psoriatic arthritis FUTURE 2 randomized trial",
+        "ixekizumab biologic-naive psoriatic arthritis SPIRIT-P1 randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Axial spondyloarthritis biologic therapy",
+      "block": "Rheumatology",
+      "priority": "high",
+      "aliases": ["axSpA", "ankylosing spondylitis", "non-radiographic axial spondyloarthritis", "secukinumab axSpA", "adalimumab ABILITY-1"],
+      "landmarkPmids": ["26699169", "22772328", "36270658"],
+      "guidelineQueries": ["ASAS EULAR axial spondyloarthritis management recommendations biologic therapy"],
+      "searchQueries": [
+        "secukinumab interleukin-17A inhibitor ankylosing spondylitis randomized trial",
+        "adalimumab non-radiographic axial spondyloarthritis ABILITY-1 randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Giant cell arteritis glucocorticoid-sparing therapy",
+      "block": "Rheumatology",
+      "priority": "high",
+      "aliases": ["GCA", "temporal arteritis", "tocilizumab giant cell arteritis", "large vessel vasculitis imaging", "GiACTA"],
+      "landmarkPmids": ["28745999", "31270110", "37550004"],
+      "guidelineQueries": ["giant cell arteritis guideline tocilizumab glucocorticoid taper imaging"],
+      "searchQueries": [
+        "tocilizumab giant cell arteritis GiACTA randomized trial",
+        "EULAR large vessel vasculitis recommendations giant cell arteritis imaging"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Polymyalgia rheumatica relapse prevention",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["PMR", "polymyalgia rheumatica", "tocilizumab PMR", "sarilumab PMR", "glucocorticoid taper PMR"],
+      "landmarkPmids": ["26359488", "36125471", "35210264"],
+      "guidelineQueries": ["EULAR ACR polymyalgia rheumatica management recommendations glucocorticoid taper"],
+      "searchQueries": [
+        "tocilizumab active polymyalgia rheumatica glucocorticoid therapy randomized trial",
+        "PMR-SPARE tocilizumab new-onset polymyalgia rheumatica randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Systemic lupus erythematosus biologic therapy",
+      "block": "Rheumatology",
+      "priority": "high",
+      "aliases": ["SLE", "belimumab", "anifrolumab", "BLISS trial", "TULIP trial"],
+      "landmarkPmids": ["21296403", "31851795", "37827694"],
+      "guidelineQueries": ["EULAR systemic lupus erythematosus recommendations biologic therapy"],
+      "searchQueries": [
+        "belimumab active systemic lupus erythematosus phase 3 randomized trial",
+        "anifrolumab active systemic lupus erythematosus randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Antiphospholipid syndrome anticoagulation strategy",
+      "block": "Rheumatology",
+      "priority": "high",
+      "aliases": ["APS", "antiphospholipid syndrome", "TRAPS trial", "RAPS trial", "triple-positive antiphospholipid antibodies"],
+      "landmarkPmids": ["30002145", "27570089", "31092409"],
+      "guidelineQueries": ["EULAR antiphospholipid syndrome management recommendations anticoagulation"],
+      "searchQueries": [
+        "TRAPS rivaroxaban versus warfarin high-risk antiphospholipid syndrome",
+        "RAPS rivaroxaban versus warfarin thrombotic antiphospholipid syndrome randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Sjogren syndrome systemic and topical therapy",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["Sj?gren syndrome", "primary Sjogren", "sicca syndrome", "hydroxychloroquine Sjogren", "rituximab Sjogren"],
+      "landmarkPmids": ["25027140", "24727841", "31672775"],
+      "guidelineQueries": ["EULAR Sjogren syndrome topical systemic therapy recommendations"],
+      "searchQueries": [
+        "JOQUER hydroxychloroquine primary Sjogren syndrome randomized trial",
+        "rituximab primary Sjogren syndrome randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Systemic sclerosis interstitial lung disease",
+      "block": "Rheumatology",
+      "priority": "high",
+      "aliases": ["SSc-ILD", "systemic sclerosis lung disease", "nintedanib SENSCIS", "mycophenolate SLS II", "scleroderma ILD"],
+      "landmarkPmids": ["31112379", "27469583", "39874237"],
+      "guidelineQueries": ["systemic sclerosis interstitial lung disease guideline nintedanib mycophenolate"],
+      "searchQueries": [
+        "SENSCIS nintedanib systemic sclerosis associated interstitial lung disease randomized trial",
+        "SLS II mycophenolate cyclophosphamide scleroderma interstitial lung disease randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Systemic sclerosis pulmonary arterial hypertension",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["SSc-PAH", "connective tissue disease PAH", "macitentan SERAPHIN", "bosentan pulmonary arterial hypertension", "scleroderma PAH"],
+      "landmarkPmids": ["23984728", "11907289", "38378970"],
+      "guidelineQueries": ["systemic sclerosis pulmonary arterial hypertension guideline endothelin receptor antagonist"],
+      "searchQueries": [
+        "SERAPHIN macitentan pulmonary arterial hypertension morbidity mortality trial",
+        "bosentan therapy pulmonary arterial hypertension randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Idiopathic inflammatory myopathy immunotherapy",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["dermatomyositis", "polymyositis", "immune-mediated necrotizing myopathy", "IVIG dermatomyositis", "rituximab myositis"],
+      "landmarkPmids": ["36198179", "23124935", "30670084"],
+      "guidelineQueries": ["idiopathic inflammatory myopathy treatment guideline IVIG rituximab"],
+      "searchQueries": [
+        "intravenous immune globulin dermatomyositis randomized trial",
+        "rituximab refractory dermatomyositis polymyositis randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "ANCA-associated vasculitis steroid-sparing therapy",
+      "block": "Rheumatology",
+      "priority": "high",
+      "aliases": ["AAV", "ANCA vasculitis", "avacopan", "ADVOCATE trial", "PEXIVAS"],
+      "landmarkPmids": ["32053298", "33596356", "36927642"],
+      "guidelineQueries": ["EULAR ANCA-associated vasculitis management recommendations avacopan rituximab"],
+      "searchQueries": [
+        "PEXIVAS plasma exchange glucocorticoids severe ANCA-associated vasculitis",
+        "avacopan treatment ANCA-associated vasculitis ADVOCATE randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Takayasu arteritis biologic therapy",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["Takayasu arteritis", "large vessel vasculitis", "tocilizumab Takayasu", "TAKT study", "vascular imaging Takayasu"],
+      "landmarkPmids": ["29191819", "31270110", "32000551"],
+      "guidelineQueries": ["Takayasu arteritis treatment guideline biologic therapy imaging"],
+      "searchQueries": [
+        "tocilizumab refractory Takayasu arteritis TAKT randomized trial",
+        "EULAR large vessel vasculitis recommendations Takayasu arteritis"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Behcet syndrome mucocutaneous and organ disease",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["Beh?et disease", "Behcet syndrome", "apremilast oral ulcers", "Behcet uveitis", "EULAR Behcet"],
+      "landmarkPmids": ["31722152", "29625968", "30107448"],
+      "guidelineQueries": ["EULAR Behcet syndrome management recommendations apremilast biologic therapy"],
+      "searchQueries": [
+        "apremilast oral ulcers Behcet syndrome randomized trial",
+        "EULAR recommendations management Behcet syndrome organ involvement"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "IgG4-related disease diagnosis and B-cell depletion",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["IgG4-RD", "IgG4 related disease", "rituximab IgG4", "ACR EULAR IgG4 criteria", "fibroinflammatory disease"],
+      "landmarkPmids": ["25667206", "31793250", "40071397"],
+      "guidelineQueries": ["IgG4-related disease guideline rituximab ACR EULAR classification criteria"],
+      "searchQueries": [
+        "rituximab IgG4-related disease prospective open-label trial",
+        "ACR EULAR classification criteria IgG4-related disease"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Adult-onset Still disease IL-1 and IL-6 blockade",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["AOSD", "adult-onset Still disease", "Still disease", "canakinumab", "anakinra tocilizumab Still disease"],
+      "landmarkPmids": ["39317417", "32404342", "38302170"],
+      "guidelineQueries": ["EULAR PReS Still disease recommendations IL-1 IL-6 blockade"],
+      "searchQueries": [
+        "canakinumab adult-onset Still disease CONSIDER randomized trial",
+        "biologic DMARDs adult-onset Still disease systematic review"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Familial Mediterranean fever and autoinflammatory fever syndromes",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["FMF", "familial Mediterranean fever", "colchicine resistant FMF", "canakinumab CLUSTER", "autoinflammatory recurrent fever"],
+      "landmarkPmids": ["26802180", "29768139", "32571870"],
+      "guidelineQueries": ["EULAR familial Mediterranean fever management recommendations colchicine canakinumab"],
+      "searchQueries": [
+        "EULAR recommendations familial Mediterranean fever colchicine management",
+        "canakinumab autoinflammatory recurrent fever syndromes CLUSTER randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Calcium pyrophosphate deposition disease management",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["CPPD", "pseudogout", "calcium pyrophosphate arthritis", "chondrocalcinosis", "colchicine CPPD"],
+      "landmarkPmids": ["21257614", "25315665", "33360232"],
+      "guidelineQueries": ["EULAR calcium pyrophosphate deposition disease management recommendations"],
+      "searchQueries": [
+        "EULAR recommendations calcium pyrophosphate deposition disease management",
+        "methotrexate chronic recurrent calcium pyrophosphate deposition disease randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Osteoarthritis nonoperative management",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["OA", "knee osteoarthritis", "hand osteoarthritis", "hip osteoarthritis", "exercise weight loss osteoarthritis"],
+      "landmarkPmids": ["31908149", "24462672", "15146420"],
+      "guidelineQueries": ["ACR Arthritis Foundation osteoarthritis guideline hand hip knee nonoperative management"],
+      "searchQueries": [
+        "ACR Arthritis Foundation guideline osteoarthritis hand hip knee management",
+        "exercise dietary weight loss overweight obese knee osteoarthritis randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Fibromyalgia multidisciplinary management",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["fibromyalgia", "central sensitization", "duloxetine fibromyalgia", "pregabalin fibromyalgia", "exercise fibromyalgia"],
+      "landmarkPmids": ["27377815", "26982602", "24385423"],
+      "guidelineQueries": ["EULAR fibromyalgia management recommendations exercise pharmacologic therapy"],
+      "searchQueries": [
+        "EULAR revised recommendations fibromyalgia management",
+        "pregabalin duloxetine combination fibromyalgia randomized controlled trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Sarcoidosis systemic immunosuppression",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["sarcoidosis", "pulmonary sarcoidosis", "cutaneous sarcoidosis", "infliximab sarcoidosis", "ERS sarcoidosis guideline"],
+      "landmarkPmids": ["34140301", "16840744", "26847095"],
+      "guidelineQueries": ["ERS sarcoidosis treatment guideline infliximab methotrexate glucocorticoids"],
+      "searchQueries": [
+        "infliximab chronic pulmonary sarcoidosis randomized trial",
+        "ERS clinical practice guideline treatment sarcoidosis"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Noninfectious uveitis biologic therapy",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["uveitis", "noninfectious uveitis", "adalimumab VISUAL", "uveitic flare prevention", "TNF inhibitor uveitis"],
+      "landmarkPmids": ["27602665", "27542302", "33981245"],
+      "guidelineQueries": ["noninfectious uveitis guideline adalimumab immunomodulatory therapy"],
+      "searchQueries": [
+        "VISUAL I adalimumab active noninfectious uveitis randomized trial",
+        "VISUAL II adalimumab prevention uveitic flare randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Reproductive health in rheumatic disease",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["rheumatic disease pregnancy", "reproductive health rheumatology", "hydroxychloroquine pregnancy lupus", "TNF inhibitor pregnancy", "contraception rheumatic disease"],
+      "landmarkPmids": ["32090466", "32090480", "33055080"],
+      "guidelineQueries": ["ACR reproductive health rheumatic musculoskeletal disease pregnancy contraception guideline"],
+      "searchQueries": [
+        "ACR guideline reproductive health rheumatic musculoskeletal diseases pregnancy contraception",
+        "EULAR recommendations pregnancy registries rheumatology core data set"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Juvenile idiopathic arthritis biologic strategy",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["JIA", "juvenile idiopathic arthritis", "systemic JIA", "tocilizumab JIA", "oligoarthritis polyarthritis"],
+      "landmarkPmids": ["35233986", "35233961", "23252525"],
+      "guidelineQueries": ["ACR juvenile idiopathic arthritis treatment guideline biologic methotrexate"],
+      "searchQueries": [
+        "ACR guideline juvenile idiopathic arthritis therapeutic approaches oligoarthritis systemic JIA",
+        "tocilizumab systemic juvenile idiopathic arthritis randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Gout urate-lowering treat-to-target strategy",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["gout", "urate-lowering therapy", "allopurinol dose escalation", "treat-to-target urate", "febuxostat gout"],
+      "landmarkPmids": ["32391934", "28314755", "38925627"],
+      "guidelineQueries": ["ACR gout management guideline urate-lowering treat-to-target allopurinol febuxostat"],
+      "searchQueries": [
+        "ACR guideline gout management urate-lowering therapy treat-to-target",
+        "allopurinol dose escalation target serum urate randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Tuberculosis treatment regimens",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["TB", "pulmonary tuberculosis", "rifapentine moxifloxacin", "four-month TB regimen", "BPaL"],
+      "landmarkPmids": ["33951360", "40693952", "32130813"],
+      "guidelineQueries": ["ATS CDC ERS IDSA tuberculosis treatment guideline rifapentine moxifloxacin BPaL"],
+      "searchQueries": [
+        "four month rifapentine moxifloxacin regimen drug-susceptible pulmonary tuberculosis trial",
+        "pretomanid bedaquiline linezolid highly drug resistant pulmonary tuberculosis Nix-TB trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Latent tuberculosis infection treatment",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["LTBI", "latent TB infection", "3HP", "rifampin four months", "isoniazid prevention"],
+      "landmarkPmids": ["22150035", "19017587", "31980498"],
+      "guidelineQueries": ["CDC NTCA latent tuberculosis infection treatment guideline 3HP 4R isoniazid"],
+      "searchQueries": [
+        "three months weekly rifapentine isoniazid latent tuberculosis randomized trial",
+        "four months rifampin versus nine months isoniazid latent tuberculosis trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Drug-resistant tuberculosis all-oral regimens",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["MDR-TB", "XDR-TB", "BPaL", "pretomanid", "bedaquiline linezolid"],
+      "landmarkPmids": ["32130813", "38455633", "40693952"],
+      "guidelineQueries": ["WHO drug-resistant tuberculosis treatment guideline BPaL bedaquiline pretomanid linezolid"],
+      "searchQueries": [
+        "pretomanid bedaquiline linezolid extensively drug resistant tuberculosis trial",
+        "all oral shorter regimen multidrug resistant tuberculosis guideline"
+      ],
+      "requiredStudyTypes": ["clinical trial", "guideline"]
+    },
+    {
+      "topic": "Nontuberculous mycobacterial pulmonary disease",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["NTM pulmonary disease", "MAC lung disease", "Mycobacterium abscessus", "M kansasii", "nodular bronchiectatic NTM"],
+      "landmarkPmids": ["32636299", "33202438", "39405483"],
+      "guidelineQueries": ["ATS ERS ESCMID IDSA nontuberculous mycobacterial pulmonary disease treatment guideline"],
+      "searchQueries": [
+        "nontuberculous mycobacterial pulmonary disease guideline Mycobacterium avium complex treatment",
+        "Mycobacterium abscessus pulmonary disease macrolide amikacin treatment outcomes"
+      ],
+      "requiredStudyTypes": ["guideline", "systematic review"]
+    },
+    {
+      "topic": "HIV pre-exposure prophylaxis",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["PrEP", "tenofovir emtricitabine prevention", "cabotegravir PrEP", "HIV prevention", "long-acting PrEP"],
+      "landmarkPmids": ["21091279", "22784037", "37606667"],
+      "guidelineQueries": ["CDC HIV PrEP guideline cabotegravir tenofovir emtricitabine preexposure prophylaxis"],
+      "searchQueries": [
+        "preexposure prophylaxis HIV infection tenofovir emtricitabine randomized trial",
+        "long acting cabotegravir PrEP randomized trial HIV prevention"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Severe malaria artesunate therapy",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["severe malaria", "falciparum malaria", "intravenous artesunate", "quinine comparison", "AQUAMAT"],
+      "landmarkPmids": ["16125588", "21062666", "22696354"],
+      "guidelineQueries": ["WHO severe malaria treatment guideline intravenous artesunate quinine"],
+      "searchQueries": [
+        "intravenous artesunate versus quinine severe falciparum malaria randomized trial",
+        "African children severe malaria artesunate quinine AQUAMAT trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Dengue clinical management and supportive care",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["dengue", "severe dengue", "dengue shock syndrome", "fluid management dengue", "warning signs"],
+      "landmarkPmids": ["23762963", "36574088", "10589889"],
+      "guidelineQueries": ["WHO dengue diagnosis treatment prevention control guideline fluid management warning signs"],
+      "searchQueries": [
+        "dengue shock syndrome fluid replacement randomized trial",
+        "dengue clinical management supportive care warning signs guideline"
+      ],
+      "requiredStudyTypes": ["guideline", "randomized controlled trial"]
+    },
+    {
+      "topic": "Enteric fever antimicrobial therapy",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["typhoid fever", "paratyphoid fever", "Salmonella Typhi", "azithromycin typhoid", "ceftriaxone typhoid"],
+      "landmarkPmids": ["11073741", "36420914", "21975746"],
+      "guidelineQueries": ["WHO enteric fever typhoid antimicrobial treatment guideline azithromycin ceftriaxone fluoroquinolone"],
+      "searchQueries": [
+        "azithromycin versus ceftriaxone uncomplicated typhoid fever trial",
+        "enteric fever typhoid paratyphoid antimicrobial treatment systematic review"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "systematic review"]
+    },
+    {
+      "topic": "Lyme disease diagnosis and treatment",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["Lyme borreliosis", "erythema migrans", "Lyme neuroborreliosis", "post-treatment Lyme symptoms", "Borrelia burgdorferi"],
+      "landmarkPmids": ["33417672", "19930447", "30573008"],
+      "guidelineQueries": ["IDSA AAN ACR Lyme disease diagnosis treatment guideline erythema migrans neuroborreliosis"],
+      "searchQueries": [
+        "Lyme disease diagnosis treatment guideline erythema migrans neuroborreliosis",
+        "post treatment Lyme disease symptoms randomized trial antibiotic therapy"
+      ],
+      "requiredStudyTypes": ["guideline", "randomized controlled trial"]
+    },
+    {
+      "topic": "Prosthetic joint infection diagnosis and retention strategy",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["PJI", "prosthetic joint infection", "DAIR", "rifampin biofilm", "arthroplasty infection"],
+      "landmarkPmids": ["23223583", "30699315", "31373271"],
+      "guidelineQueries": ["IDSA prosthetic joint infection guideline DAIR rifampin arthroplasty"],
+      "searchQueries": [
+        "prosthetic joint infection diagnosis debridement implant retention rifampin guideline",
+        "oral versus intravenous antibiotics prosthetic joint infection bone joint OVIVA trial"
+      ],
+      "requiredStudyTypes": ["guideline", "randomized controlled trial"]
+    },
+    {
+      "topic": "Diabetic foot infection and osteomyelitis",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["DFI", "diabetic foot osteomyelitis", "infected diabetic ulcer", "limb infection", "foot osteomyelitis"],
+      "landmarkPmids": ["22619242", "20010969", "30699315"],
+      "guidelineQueries": ["IDSA IWGDF diabetic foot infection osteomyelitis guideline antibiotic duration"],
+      "searchQueries": [
+        "diabetic foot infection osteomyelitis antibiotic duration guideline",
+        "diabetic foot osteomyelitis medical versus surgical management review"
+      ],
+      "requiredStudyTypes": ["guideline", "randomized controlled trial"]
+    },
+    {
+      "topic": "Bone and joint infection oral step-down therapy",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["osteomyelitis", "bone infection", "joint infection", "oral antibiotics", "OVIVA"],
+      "landmarkPmids": ["30699315", "31373271", "26690812"],
+      "guidelineQueries": ["bone joint infection oral antibiotic step-down osteomyelitis guideline OVIVA"],
+      "searchQueries": [
+        "oral versus intravenous antibiotics bone joint infection randomized trial OVIVA",
+        "osteomyelitis oral step down antibiotic therapy systematic review"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "systematic review"]
+    },
+    {
+      "topic": "Native joint septic arthritis antibiotic duration",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["septic arthritis", "native joint infection", "infectious arthritis", "joint drainage", "antibiotic duration"],
+      "landmarkPmids": ["30992295", "31917233", "30699315"],
+      "guidelineQueries": ["native joint septic arthritis antibiotic duration drainage guideline"],
+      "searchQueries": [
+        "two weeks versus four weeks antibiotic therapy native joint septic arthritis randomized trial",
+        "septic arthritis native joint drainage antibiotic duration systematic review"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Skin and soft tissue infection antibiotic strategy",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["SSTI", "cellulitis", "abscess", "purulent skin infection", "TMP-SMX clindamycin"],
+      "landmarkPmids": ["24973422", "26962903", "25785967"],
+      "guidelineQueries": ["IDSA skin soft tissue infection guideline abscess cellulitis MRSA antibiotics"],
+      "searchQueries": [
+        "skin abscess trimethoprim sulfamethoxazole placebo randomized trial",
+        "clindamycin versus trimethoprim sulfamethoxazole uncomplicated skin infection randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Gram-negative bloodstream infection duration",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["gram-negative bacteremia", "bloodstream infection", "seven day antibiotics", "bacteremia duration", "Enterobacterales bacteremia"],
+      "landmarkPmids": ["30535100", "32484534", "40116824"],
+      "guidelineQueries": ["gram negative bloodstream infection antibiotic duration consensus guidance seven days"],
+      "searchQueries": [
+        "seven versus fourteen days antibiotic therapy uncomplicated gram negative bacteremia randomized trial",
+        "gram negative bloodstream infection duration randomized trial systematic review"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "systematic review"]
+    },
+    {
+      "topic": "ESBL Enterobacterales bloodstream infection therapy",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["ESBL bacteremia", "extended-spectrum beta-lactamase", "ceftriaxone-resistant Enterobacterales", "MERINO trial", "carbapenem sparing"],
+      "landmarkPmids": ["30208454", "39108079", "35439291"],
+      "guidelineQueries": ["IDSA antimicrobial resistant gram negative guidance ESBL Enterobacterales bloodstream infection carbapenem"],
+      "searchQueries": [
+        "piperacillin tazobactam versus meropenem ceftriaxone resistant E coli Klebsiella bloodstream infection MERINO trial",
+        "ESBL Enterobacterales bloodstream infection carbapenem guideline"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Carbapenem-resistant Enterobacterales treatment",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["CRE", "carbapenem-resistant Enterobacterales", "KPC infection", "meropenem vaborbactam", "ceftazidime avibactam"],
+      "landmarkPmids": ["30270406", "31098989", "39108079"],
+      "guidelineQueries": ["IDSA antimicrobial resistant gram negative guidance carbapenem resistant Enterobacterales treatment"],
+      "searchQueries": [
+        "meropenem vaborbactam versus best available therapy carbapenem resistant Enterobacteriaceae TANGO II",
+        "carbapenem resistant Enterobacterales treatment ceftazidime avibactam meropenem vaborbactam guideline"
+      ],
+      "requiredStudyTypes": ["clinical trial", "guideline"]
+    },
+    {
+      "topic": "Invasive candidiasis and candidemia antifungal therapy",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["candidemia", "invasive candidiasis", "echinocandin", "anidulafungin", "fluconazole step-down"],
+      "landmarkPmids": ["26679628", "17568028", "22026929"],
+      "guidelineQueries": ["IDSA candidiasis guideline candidemia echinocandin fluconazole step-down"],
+      "searchQueries": [
+        "anidulafungin versus fluconazole invasive candidiasis candidemia randomized trial",
+        "candidemia echinocandin fluconazole step down guideline"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Invasive aspergillosis antifungal therapy",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["aspergillosis", "invasive aspergillosis", "voriconazole", "isavuconazole", "mold-active therapy"],
+      "landmarkPmids": ["12167683", "26684607", "27365388"],
+      "guidelineQueries": ["IDSA aspergillosis guideline voriconazole isavuconazole invasive aspergillosis"],
+      "searchQueries": [
+        "voriconazole versus amphotericin invasive aspergillosis randomized trial",
+        "isavuconazole versus voriconazole invasive mould disease SECURE trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Cryptococcal meningitis induction therapy",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["cryptococcal meningitis", "Cryptococcus neoformans", "amphotericin flucytosine", "single-dose liposomal amphotericin", "HIV cryptococcus"],
+      "landmarkPmids": ["23550668", "35320642", "30344084"],
+      "guidelineQueries": ["WHO cryptococcal meningitis guideline amphotericin flucytosine induction therapy"],
+      "searchQueries": [
+        "cryptococcal meningitis amphotericin flucytosine induction therapy randomized trial",
+        "single dose liposomal amphotericin B cryptococcal meningitis randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Pneumocystis jirovecii pneumonia prevention and treatment",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["PJP", "PCP pneumonia", "Pneumocystis jirovecii", "TMP-SMX prophylaxis", "opportunistic pneumonia"],
+      "landmarkPmids": ["27550992", "25771943", "30179565"],
+      "guidelineQueries": ["Pneumocystis jirovecii pneumonia prophylaxis treatment guideline immunocompromised adults"],
+      "searchQueries": [
+        "Pneumocystis jirovecii pneumonia prophylaxis immunocompromised adults guideline",
+        "Pneumocystis pneumonia treatment trimethoprim sulfamethoxazole adjunctive corticosteroids review"
+      ],
+      "requiredStudyTypes": ["guideline", "systematic review"]
+    },
+    {
+      "topic": "Cytomegalovirus prevention in transplant recipients",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["CMV transplant", "cytomegalovirus prophylaxis", "valganciclovir", "kidney transplant CMV", "preemptive therapy"],
+      "landmarkPmids": ["20353469", "29596116", "40200403"],
+      "guidelineQueries": ["cytomegalovirus transplant prevention guideline valganciclovir prophylaxis preemptive therapy"],
+      "searchQueries": [
+        "valganciclovir 200 days versus 100 days cytomegalovirus kidney transplant trial",
+        "cytomegalovirus prevention transplant prophylaxis preemptive therapy guideline"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Surgical site infection prevention",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["SSI prevention", "surgical prophylaxis", "perioperative antibiotics", "surgical infection prevention", "postoperative infection"],
+      "landmarkPmids": ["28467526", "27816413", "34843035"],
+      "guidelineQueries": ["CDC WHO surgical site infection prevention guideline perioperative antibiotic prophylaxis"],
+      "searchQueries": [
+        "surgical site infection prevention guideline antibiotic prophylaxis chlorhexidine decolonization",
+        "global guidelines surgical site infection prevention systematic review"
+      ],
+      "requiredStudyTypes": ["guideline", "systematic review"]
+    },
+    {
+      "topic": "Catheter-associated urinary tract infection prevention and treatment",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["CAUTI", "catheter-associated UTI", "urinary catheter infection", "asymptomatic bacteriuria catheter", "catheter removal"],
+      "landmarkPmids": ["20175247", "34362659", "24077850"],
+      "guidelineQueries": ["IDSA catheter-associated urinary tract infection guideline catheter removal antibiotics"],
+      "searchQueries": [
+        "catheter associated urinary tract infection prevention treatment guideline",
+        "urinary catheter infection antibiotic treatment catheter removal systematic review"
+      ],
+      "requiredStudyTypes": ["guideline", "systematic review"]
+    },
+    {
+      "topic": "Complicated urinary tract infection antimicrobial strategy",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["complicated UTI", "pyelonephritis", "febrile UTI", "urosepsis", "oral step-down UTI"],
+      "landmarkPmids": ["29486041", "38354140", "40228579"],
+      "guidelineQueries": ["complicated urinary tract infection pyelonephritis antimicrobial treatment guideline oral step-down"],
+      "searchQueries": [
+        "complicated urinary tract infection antimicrobial therapy randomized trial oral step down",
+        "pyelonephritis complicated UTI antibiotic duration systematic review"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Gonorrhea and chlamydia treatment",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["gonorrhea", "chlamydia", "ceftriaxone gonorrhea", "doxycycline chlamydia", "STI treatment"],
+      "landmarkPmids": ["34292926", "33332296", "23157146"],
+      "guidelineQueries": ["CDC sexually transmitted infections treatment guideline gonorrhea chlamydia ceftriaxone doxycycline"],
+      "searchQueries": [
+        "gonorrhea treatment ceftriaxone guideline antimicrobial resistance",
+        "chlamydia treatment doxycycline azithromycin randomized trial"
+      ],
+      "requiredStudyTypes": ["guideline", "randomized controlled trial"]
+    },
+    {
+      "topic": "Syphilis diagnosis and treatment",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["syphilis", "neurosyphilis", "benzathine penicillin", "congenital syphilis", "treponemal testing"],
+      "landmarkPmids": ["34292926", "16218887", "1477221"],
+      "guidelineQueries": ["CDC sexually transmitted infections treatment guideline syphilis neurosyphilis penicillin"],
+      "searchQueries": [
+        "syphilis diagnosis treatment guideline benzathine penicillin neurosyphilis",
+        "azithromycin versus penicillin early syphilis randomized trial"
+      ],
+      "requiredStudyTypes": ["guideline", "randomized controlled trial"]
+    },
+    {
+      "topic": "Vaccination in immunocompromised adults",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["immunocompromised vaccination", "transplant vaccines", "cancer vaccines", "live vaccine contraindication", "adult immunization"],
+      "landmarkPmids": ["24421306", "30179565", "39084261"],
+      "guidelineQueries": ["IDSA vaccination immunocompromised host guideline adult transplant cancer biologic therapy"],
+      "searchQueries": [
+        "vaccination immunocompromised adult guideline transplant biologic therapy",
+        "adult immunization immunocompromised host vaccine safety effectiveness systematic review"
+      ],
+      "requiredStudyTypes": ["guideline", "systematic review"]
+    },
+    {
+      "topic": "Fever and neutropenia empiric antibiotic strategy",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["febrile neutropenia", "neutropenic fever", "empiric antipseudomonal antibiotics", "cancer infection", "antifungal escalation"],
+      "landmarkPmids": ["29461916", "21258094", "36689694"],
+      "guidelineQueries": ["IDSA ASCO fever neutropenia guideline empiric antibiotic antipseudomonal therapy"],
+      "searchQueries": [
+        "febrile neutropenia empiric antibiotic guideline high risk cancer",
+        "neutropenic fever antibiotic escalation de escalation randomized trial systematic review"
+      ],
+      "requiredStudyTypes": ["guideline", "systematic review"]
+    },
+    {
+      "topic": "Antimicrobial stewardship program implementation",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["antibiotic stewardship", "ASP", "prospective audit feedback", "preauthorization", "diagnostic stewardship"],
+      "landmarkPmids": ["27118828", "34843035", "30179565"],
+      "guidelineQueries": ["IDSA SHEA antimicrobial stewardship program implementation guideline prospective audit feedback preauthorization"],
+      "searchQueries": [
+        "antimicrobial stewardship program implementation guideline prospective audit feedback preauthorization",
+        "antibiotic stewardship intervention outcomes systematic review hospital"
+      ],
+      "requiredStudyTypes": ["guideline", "systematic review"]
+    },
+    {
+      "topic": "Community-acquired pneumonia antibiotic strategy",
+      "block": "Respiratory",
+      "priority": "high",
+      "aliases": ["CAP antibiotics", "CURB-65 pneumonia", "community acquired pneumonia antibiotics"],
+      "landmarkPmids": ["17278083", "27455166", "31573350"],
+      "guidelineQueries": ["community acquired pneumonia antibiotic IDSA ATS guideline"],
+      "searchQueries": [
+        "community acquired pneumonia antibiotic duration randomized",
+        "CURB-65 PSI community acquired pneumonia"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Acute asthma exacerbation systemic corticosteroids",
+      "block": "Respiratory",
+      "priority": "high",
+      "aliases": ["asthma exacerbation steroids", "acute asthma corticosteroids"],
+      "landmarkPmids": ["15072167", "11279726", "38859634"],
+      "guidelineQueries": ["acute asthma exacerbation corticosteroid GINA guideline"],
+      "searchQueries": [
+        "systemic corticosteroids acute asthma exacerbation randomized",
+        "GINA asthma exacerbation systemic steroid"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Asthma biologic therapy anti-IgE and anti-IL5",
+      "block": "Respiratory",
+      "priority": "high",
+      "aliases": ["omalizumab asthma", "mepolizumab asthma", "severe eosinophilic asthma biologic"],
+      "landmarkPmids": ["25199059", "27609408", "32064642"],
+      "guidelineQueries": ["severe asthma biologic GINA anti-IL5 omalizumab"],
+      "searchQueries": [
+        "mepolizumab severe eosinophilic asthma randomized",
+        "omalizumab allergic asthma exacerbation"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "COPD pulmonary rehabilitation",
+      "block": "Respiratory",
+      "priority": "high",
+      "aliases": ["pulmonary rehab COPD", "exercise training COPD"],
+      "landmarkPmids": ["25705944", "27930803", "24127811"],
+      "guidelineQueries": ["COPD pulmonary rehabilitation GOLD guideline"],
+      "searchQueries": [
+        "pulmonary rehabilitation COPD hospitalization randomized",
+        "exercise pulmonary rehabilitation COPD"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Noninvasive ventilation for COPD hypercapnic failure",
+      "block": "Respiratory",
+      "priority": "high",
+      "aliases": ["NIV COPD", "BiPAP AECOPD", "noninvasive ventilation hypercapnia"],
+      "landmarkPmids": ["7651472", "10859037", "28702957"],
+      "guidelineQueries": ["noninvasive ventilation COPD hypercapnic GOLD guideline"],
+      "searchQueries": [
+        "noninvasive ventilation COPD hypercapnic failure randomized",
+        "NIV acute exacerbation COPD intubation"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Idiopathic pulmonary fibrosis antifibrotic therapy",
+      "block": "Respiratory",
+      "priority": "high",
+      "aliases": ["IPF nintedanib", "pirfenidone IPF", "antifibrotic IPF"],
+      "landmarkPmids": ["24836310", "24836312", "35486072"],
+      "guidelineQueries": ["idiopathic pulmonary fibrosis antifibrotic ATS guideline"],
+      "searchQueries": [
+        "nintedanib idiopathic pulmonary fibrosis INPULSIS",
+        "pirfenidone idiopathic pulmonary fibrosis ASCEND"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Pulmonary nodule evaluation and Fleischner follow-up",
+      "block": "Respiratory",
+      "priority": "high",
+      "aliases": ["Fleischner criteria", "incidental pulmonary nodule", "lung nodule follow-up"],
+      "landmarkPmids": ["28240562", "16244247"],
+      "guidelineQueries": ["Fleischner Society pulmonary nodule guidelines"],
+      "searchQueries": [
+        "Fleischner Society incidental pulmonary nodules",
+        "pulmonary nodule CT follow-up malignancy"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Pleural effusion and parapneumonic effusion management",
+      "block": "Respiratory",
+      "priority": "high",
+      "aliases": ["parapneumonic effusion", "empyema MIST", "pleural infection"],
+      "landmarkPmids": ["31097519", "15745977", "20696693"],
+      "guidelineQueries": ["pleural infection parapneumonic effusion BTS guideline"],
+      "searchQueries": [
+        "MIST2 intrapleural tPA DNase pleural infection",
+        "parapneumonic effusion empyema drainage"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Primary spontaneous pneumothorax management",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["spontaneous pneumothorax", "needle aspiration pneumothorax"],
+      "landmarkPmids": ["31995686", "11991872", "20696690"],
+      "guidelineQueries": ["primary spontaneous pneumothorax BTS guideline"],
+      "searchQueries": [
+        "conservative management primary spontaneous pneumothorax randomized",
+        "needle aspiration chest tube pneumothorax"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Bronchiectasis long-term macrolide therapy",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["bronchiectasis azithromycin", "non-CF bronchiectasis macrolide"],
+      "landmarkPmids": ["23532241", "22901887", "23532242"],
+      "guidelineQueries": ["bronchiectasis macrolide ERS guideline"],
+      "searchQueries": [
+        "azithromycin bronchiectasis exacerbation BAT EMBRACE",
+        "long-term macrolide bronchiectasis"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Chronic cough evaluation and empiric therapy",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["chronic cough", "refractory chronic cough", "cough variant asthma"],
+      "landmarkPmids": ["29080708", "31515408", "36996347"],
+      "guidelineQueries": ["chronic cough CHEST ERS guideline"],
+      "searchQueries": [
+        "chronic cough empiric therapy GERD asthma",
+        "gefapixant refractory chronic cough"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Interstitial lung disease multidisciplinary diagnosis",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["ILD MDT", "multidisciplinary ILD", "HRCT UIP"],
+      "landmarkPmids": ["15256390", "30168753"],
+      "guidelineQueries": ["interstitial lung disease multidisciplinary ATS guideline"],
+      "searchQueries": [
+        "multidisciplinary discussion interstitial lung disease diagnosis",
+        "HRCT usual interstitial pneumonia"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Oxygen therapy targets in COPD",
+      "block": "Respiratory",
+      "priority": "high",
+      "aliases": ["LTOT COPD", "long-term oxygen COPD", "LOTT oxygen"],
+      "landmarkPmids": ["6776858", "24259054"],
+      "guidelineQueries": ["long-term oxygen therapy COPD GOLD guideline"],
+      "searchQueries": [
+        "long-term oxygen treatment trial LOTT COPD",
+        "NOTT nocturnal oxygen COPD"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Malignant pleural effusion management",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["indwelling pleural catheter", "talc pleurodesis", "malignant effusion"],
+      "landmarkPmids": ["22610520", "27898215", "33952602"],
+      "guidelineQueries": ["malignant pleural effusion BTS guideline"],
+      "searchQueries": [
+        "indwelling pleural catheter talc pleurodesis malignant",
+        "TIME2 talc pleurodesis"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Pulmonary sarcoidosis corticosteroid therapy",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["pulmonary sarcoidosis steroids", "sarcoidosis lung treatment"],
+      "landmarkPmids": ["15846612", "16235385", "10793154"],
+      "guidelineQueries": ["pulmonary sarcoidosis corticosteroid ATS guideline"],
+      "searchQueries": [
+        "corticosteroid pulmonary sarcoidosis randomized",
+        "methotrexate steroid-sparing sarcoidosis"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Hypersensitivity pneumonitis diagnosis and antigen avoidance",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["extrinsic allergic alveolitis", "HP antigen avoidance"],
+      "landmarkPmids": ["32706311", "28598197", "23828161"],
+      "guidelineQueries": ["hypersensitivity pneumonitis ATS guideline"],
+      "searchQueries": [
+        "hypersensitivity pneumonitis diagnostic criteria antigen",
+        "chronic hypersensitivity pneumonitis fibrosis"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Aspiration pneumonia prevention and antibiotics",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["aspiration pneumonitis", "aspiration pneumonia antibiotics"],
+      "landmarkPmids": ["11228282", "30763196", "10584721"],
+      "guidelineQueries": ["aspiration pneumonia antibiotic IDSA guideline"],
+      "searchQueries": [
+        "aspiration pneumonia antibiotic anaerobic coverage",
+        "prevention aspiration pneumonia hospitalized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Cystic fibrosis CFTR modulator therapy",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["elexacaftor tezacaftor ivacaftor", "Trikafta", "CFTR modulator"],
+      "landmarkPmids": ["31697873", "31679946", "22047557"],
+      "guidelineQueries": ["cystic fibrosis CFTR modulator guideline"],
+      "searchQueries": [
+        "elexacaftor tezacaftor ivacaftor cystic fibrosis",
+        "ivacaftor G551D cystic fibrosis"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Obesity hypoventilation syndrome noninvasive ventilation",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["OHS NIV", "obesity hypoventilation CPAP"],
+      "landmarkPmids": ["28130492", "41136085", "18203817"],
+      "guidelineQueries": ["obesity hypoventilation syndrome NIV ATS guideline"],
+      "searchQueries": [
+        "noninvasive ventilation obesity hypoventilation randomized",
+        "CPAP versus NIV obesity hypoventilation"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Alpha-1 antitrypsin deficiency augmentation therapy",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["AATD augmentation", "alpha-1 antitrypsin emphysema"],
+      "landmarkPmids": ["28848891", "26030601", "27753559"],
+      "guidelineQueries": ["alpha-1 antitrypsin deficiency augmentation guideline"],
+      "searchQueries": [
+        "alpha-1 antitrypsin augmentation RAPID randomized",
+        "intravenous alpha-1 antitrypsin emphysema"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Pulmonary embolism risk stratification and outpatient care",
+      "block": "Respiratory",
+      "priority": "high",
+      "aliases": ["PE outpatient", "PESI sPESI", "low-risk PE home treatment"],
+      "landmarkPmids": ["21703676", "20696966", "21645235"],
+      "guidelineQueries": ["pulmonary embolism risk stratification outpatient ESC"],
+      "searchQueries": [
+        "outpatient treatment low-risk pulmonary embolism",
+        "PESI sPESI pulmonary embolism"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Nontuberculous mycobacteria pulmonary disease antibiotics",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["MAC pulmonary disease", "NTM lung disease", "Mycobacterium avium complex lung"],
+      "landmarkPmids": ["32636299", "29054853"],
+      "guidelineQueries": ["nontuberculous mycobacterial pulmonary disease ATS guideline"],
+      "searchQueries": [
+        "CONVERT amikacin liposome Mycobacterium avium",
+        "MAC pulmonary disease antibiotic"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Lung cancer screening shared decision and nodule workup",
+      "block": "Respiratory",
+      "priority": "high",
+      "aliases": ["LDCT shared decision", "NLST clinical pathway", "lung screening nodule"],
+      "landmarkPmids": ["31995683", "34270968"],
+      "guidelineQueries": ["lung cancer screening LDCT USPSTF ATS"],
+      "searchQueries": [
+        "NLST low-dose CT lung cancer screening",
+        "lung cancer screening shared decision nodule"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Acute exacerbation of idiopathic pulmonary fibrosis",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["AE-IPF", "IPF exacerbation", "acute exacerbation IPF"],
+      "landmarkPmids": ["27299520", "20595144", "16584880"],
+      "guidelineQueries": ["acute exacerbation idiopathic pulmonary fibrosis ATS"],
+      "searchQueries": [
+        "acute exacerbation idiopathic pulmonary fibrosis management",
+        "corticosteroids acute exacerbation IPF"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Home noninvasive ventilation for COPD hypercapnia",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["home NIV COPD", "domiciliary NIV COPD", "HOT-HMV"],
+      "landmarkPmids": ["28528348", "25066329", "24781217"],
+      "guidelineQueries": ["home noninvasive ventilation COPD hypercapnia GOLD"],
+      "searchQueries": [
+        "home noninvasive ventilation COPD HOT-HMV",
+        "domiciliary NIV COPD hypercapnia"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Bipolar mania acute pharmacotherapy",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["acute mania lithium", "bipolar mania antipsychotic"],
+      "landmarkPmids": ["10327902", "10807488", "34599629"],
+      "guidelineQueries": ["bipolar mania acute treatment CANMAT NICE"],
+      "searchQueries": [
+        "lithium acute mania randomized",
+        "olanzapine acute bipolar mania"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Bipolar disorder maintenance mood stabilizer therapy",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["lithium maintenance bipolar", "BALANCE trial", "mood stabilizer prophylaxis"],
+      "landmarkPmids": ["20092882", "25530932"],
+      "guidelineQueries": ["bipolar maintenance lithium CANMAT NICE"],
+      "searchQueries": [
+        "lithium maintenance bipolar relapse prevention",
+        "BALANCE lithium valproate bipolar"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Bipolar depression pharmacotherapy",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["bipolar depression lurasidone", "quetiapine bipolar depression", "BOLDER trial"],
+      "landmarkPmids": ["24170180", "15994719"],
+      "guidelineQueries": ["bipolar depression pharmacotherapy CANMAT"],
+      "searchQueries": [
+        "lurasidone bipolar depression randomized",
+        "quetiapine bipolar depression BOLDER"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Generalized anxiety disorder SSRI and CBT",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["GAD SSRI", "generalized anxiety CBT"],
+      "landmarkPmids": ["12668365", "15274172", "24487344"],
+      "guidelineQueries": ["generalized anxiety disorder NICE APA SSRI CBT"],
+      "searchQueries": [
+        "SSRI generalized anxiety disorder randomized",
+        "CBT generalized anxiety disorder"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Panic disorder pharmacotherapy and CBT",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["panic disorder SSRI", "panic CBT"],
+      "landmarkPmids": ["9819070", "10815116", "16582055"],
+      "guidelineQueries": ["panic disorder treatment NICE APA"],
+      "searchQueries": [
+        "SSRI panic disorder randomized",
+        "CBT panic disorder randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "PTSD trauma-focused psychotherapy and SSRI",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["PTSD prolonged exposure", "PTSD sertraline", "trauma focused CBT"],
+      "landmarkPmids": ["10770145", "17327524", "20546985"],
+      "guidelineQueries": ["PTSD treatment NICE VA DoD"],
+      "searchQueries": [
+        "prolonged exposure PTSD randomized",
+        "sertraline PTSD randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Obsessive-compulsive disorder SSRI and ERP",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["OCD exposure response prevention", "OCD SSRI"],
+      "landmarkPmids": ["15625214", "8031229", "35747299"],
+      "guidelineQueries": ["obsessive compulsive disorder NICE APA"],
+      "searchQueries": [
+        "exposure response prevention OCD randomized",
+        "SSRI OCD dose response"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Alcohol use disorder naltrexone and acamprosate",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["AUD pharmacotherapy", "naltrexone alcohol", "COMBINE study"],
+      "landmarkPmids": ["18080059", "24945054", "20824837"],
+      "guidelineQueries": ["alcohol use disorder pharmacotherapy APA ASAM"],
+      "searchQueries": [
+        "naltrexone alcohol use disorder COMBINE",
+        "acamprosate alcohol dependence"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Opioid use disorder buprenorphine and methadone",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["OUD buprenorphine", "methadone maintenance", "X:BOT"],
+      "landmarkPmids": ["24500948", "29150198", "12954743"],
+      "guidelineQueries": ["opioid use disorder buprenorphine methadone ASAM"],
+      "searchQueries": [
+        "buprenorphine methadone opioid use disorder",
+        "X:BOT buprenorphine XR-naltrexone"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Alcohol withdrawal benzodiazepine treatment",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["AWS CIWA", "alcohol withdrawal delirium tremens"],
+      "landmarkPmids": ["8046805", "9214531", "20238336"],
+      "guidelineQueries": ["alcohol withdrawal benzodiazepine ASAM"],
+      "searchQueries": [
+        "benzodiazepine alcohol withdrawal symptom triggered",
+        "CIWA-Ar alcohol withdrawal"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Clozapine for treatment-resistant schizophrenia",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["treatment resistant schizophrenia clozapine", "TRS clozapine Kane"],
+      "landmarkPmids": ["3046553", "16585434", "27388573"],
+      "guidelineQueries": ["clozapine treatment-resistant schizophrenia NICE"],
+      "searchQueries": [
+        "clozapine treatment resistant schizophrenia Kane",
+        "clozapine versus antipsychotics TRS"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Lithium monitoring and toxicity prevention",
+      "block": "Psychiatry",
+      "priority": "medium",
+      "aliases": ["lithium level monitoring", "lithium toxicity", "lithium renal thyroid"],
+      "landmarkPmids": ["22265699", "20092882", "31112628"],
+      "guidelineQueries": ["lithium monitoring toxicity NICE CANMAT"],
+      "searchQueries": [
+        "lithium serum level monitoring safety",
+        "lithium toxicity renal thyroid"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Treatment-resistant depression ketamine and ECT",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["TRD ketamine", "ECT depression", "esketamine treatment resistant"],
+      "landmarkPmids": ["16894061", "23982301"],
+      "guidelineQueries": ["treatment resistant depression ECT ketamine APA"],
+      "searchQueries": [
+        "ketamine treatment resistant depression randomized",
+        "electroconvulsive therapy major depression"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Perinatal depression screening and treatment",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["postpartum depression", "antenatal depression SSRI", "EPDS screening"],
+      "landmarkPmids": ["16855451", "26813212", "3651732"],
+      "guidelineQueries": ["perinatal depression screening ACOG NICE"],
+      "searchQueries": [
+        "postpartum depression SSRI randomized",
+        "Edinburgh postnatal depression screening"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Suicide risk assessment and safety planning",
+      "block": "Psychiatry",
+      "priority": "high",
+      "aliases": ["suicide safety plan", "crisis response planning", "Stanley Brown safety plan"],
+      "landmarkPmids": ["29998307", "28142085", "40405820"],
+      "guidelineQueries": ["suicide risk assessment safety planning VA NICE"],
+      "searchQueries": [
+        "safety planning intervention suicide randomized",
+        "crisis response planning suicide"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Insomnia CBT-I and hypnotic stewardship",
+      "block": "Psychiatry",
+      "priority": "medium",
+      "aliases": ["CBT-I", "cognitive behavioral therapy insomnia", "hypnotic deprescribing"],
+      "landmarkPmids": ["26784485", "19454639"],
+      "guidelineQueries": ["insomnia CBT-I ACP AASM"],
+      "searchQueries": [
+        "cognitive behavioral therapy insomnia randomized",
+        "hypnotic deprescribing insomnia"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Eating disorder medical stabilization and refeeding",
+      "block": "Psychiatry",
+      "priority": "medium",
+      "aliases": ["anorexia nervosa refeeding", "eating disorder hospitalization", "refeeding syndrome"],
+      "landmarkPmids": ["26661289", "26538078", "24004613"],
+      "guidelineQueries": ["eating disorder medical stabilization NICE APA"],
+      "searchQueries": [
+        "anorexia nervosa refeeding protocol",
+        "medical stabilization eating disorder"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Borderline personality disorder dialectical behavior therapy",
+      "block": "Psychiatry",
+      "priority": "medium",
+      "aliases": ["BPD DBT", "dialectical behaviour therapy borderline", "Linehan DBT"],
+      "landmarkPmids": ["1845222", "16818865", "32368793"],
+      "guidelineQueries": ["borderline personality disorder DBT NICE"],
+      "searchQueries": [
+        "dialectical behavior therapy borderline personality randomized",
+        "DBT self-harm borderline"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Antipsychotic metabolic monitoring",
+      "block": "Psychiatry",
+      "priority": "medium",
+      "aliases": ["antipsychotic weight gain", "metabolic syndrome antipsychotics", "CATIE metabolic"],
+      "landmarkPmids": ["16172203", "15998156"],
+      "guidelineQueries": ["antipsychotic metabolic monitoring ADA APA consensus"],
+      "searchQueries": [
+        "antipsychotic weight gain metabolic monitoring",
+        "CATIE olanzapine metabolic"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Benzodiazepine deprescribing in anxiety and insomnia",
+      "block": "Psychiatry",
+      "priority": "medium",
+      "aliases": ["benzo taper", "benzodiazepine withdrawal", "deprescribing benzodiazepines"],
+      "landmarkPmids": ["16946355", "24493654", "29760253"],
+      "guidelineQueries": ["benzodiazepine deprescribing NICE"],
+      "searchQueries": [
+        "benzodiazepine taper deprescribing randomized",
+        "benzodiazepine withdrawal outpatient"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Social anxiety disorder SSRI and CBT",
+      "block": "Psychiatry",
+      "priority": "medium",
+      "aliases": ["social phobia SSRI", "social anxiety CBT"],
+      "landmarkPmids": ["9728642", "15466674", "26506554"],
+      "guidelineQueries": ["social anxiety disorder NICE SSRI CBT"],
+      "searchQueries": [
+        "SSRI social anxiety disorder randomized",
+        "CBT social phobia randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Catatonia benzodiazepines and ECT",
+      "block": "Psychiatry",
+      "priority": "medium",
+      "aliases": ["catatonia lorazepam", "Bush-Francis catatonia", "malignant catatonia ECT"],
+      "landmarkPmids": ["8686483", "25538636", "11776269"],
+      "guidelineQueries": ["catatonia lorazepam ECT guideline"],
+      "searchQueries": [
+        "lorazepam challenge catatonia",
+        "electroconvulsive therapy catatonia"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Dementia behavioral symptoms antipsychotic caution",
+      "block": "Psychiatry",
+      "priority": "medium",
+      "aliases": ["BPSD antipsychotics", "dementia aggression antipsychotic", "antipsychotic mortality dementia"],
+      "landmarkPmids": ["16234500", "17035647", "19138567"],
+      "guidelineQueries": ["behavioral symptoms dementia antipsychotic AGS APA"],
+      "searchQueries": [
+        "antipsychotic dementia mortality risk Schneider",
+        "risperidone Alzheimer aggression"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Stimulant use disorder contingency management",
+      "block": "Psychiatry",
+      "priority": "medium",
+      "aliases": ["methamphetamine contingency management", "cocaine contingency management"],
+      "landmarkPmids": ["25762429", "17074952"],
+      "guidelineQueries": ["stimulant use disorder contingency management ASAM"],
+      "searchQueries": [
+        "contingency management cocaine methamphetamine randomized",
+        "stimulant use disorder psychosocial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Serotonin syndrome recognition and management",
+      "block": "Psychiatry",
+      "priority": "medium",
+      "aliases": ["serotonin toxicity", "Hunter criteria serotonin", "SSRI serotonin syndrome"],
+      "landmarkPmids": ["12925718", "20238197", "17874986"],
+      "guidelineQueries": ["serotonin syndrome diagnosis management toxicology"],
+      "searchQueries": [
+        "Hunter serotonin toxicity criteria",
+        "serotonin syndrome cyproheptadine"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Early-stage NSCLC surgery versus SBRT",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["stage I lung cancer SBRT", "stereotactic body radiotherapy NSCLC"],
+      "landmarkPmids": ["20233825", "25981812", "30770291"],
+      "guidelineQueries": ["early stage NSCLC SBRT surgery NCCN"],
+      "searchQueries": [
+        "SBRT stage I NSCLC randomized",
+        "lobectomy versus SBRT early lung cancer"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Metastatic NSCLC EGFR and ALK targeted therapy",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["osimertinib EGFR", "alectinib ALK", "FLAURA ALEX"],
+      "landmarkPmids": ["29151359", "28586279"],
+      "guidelineQueries": ["EGFR ALK NSCLC targeted therapy NCCN"],
+      "searchQueries": [
+        "osimertinib FLAURA EGFR NSCLC",
+        "alectinib ALEX ALK NSCLC"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Small cell lung cancer first-line chemoimmunotherapy",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["SCLC atezolizumab", "IMpower133", "CASPIAN durvalumab"],
+      "landmarkPmids": ["30280641", "31590988", "33439693"],
+      "guidelineQueries": ["small cell lung cancer first-line immunotherapy NCCN"],
+      "searchQueries": [
+        "atezolizumab IMpower133 extensive stage SCLC",
+        "durvalumab CASPIAN SCLC"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Metastatic colorectal cancer systemic therapy sequencing",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["mCRC FOLFOX bevacizumab", "RAS wild-type CRC EGFR"],
+      "landmarkPmids": ["15175435", "24024839", "27380959"],
+      "guidelineQueries": ["metastatic colorectal cancer systemic therapy NCCN ESMO"],
+      "searchQueries": [
+        "FOLFOX bevacizumab metastatic colorectal cancer",
+        "cetuximab RAS wild-type mCRC"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "MSI-high metastatic colorectal cancer immunotherapy",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["pembrolizumab MSI-H CRC", "KEYNOTE-177", "dMMR colorectal"],
+      "landmarkPmids": ["33264544", "29355075"],
+      "guidelineQueries": ["MSI-H colorectal cancer immunotherapy NCCN"],
+      "searchQueries": [
+        "pembrolizumab KEYNOTE-177 MSI-H colorectal",
+        "checkpoint inhibitor dMMR CRC"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Prostate cancer active surveillance",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["low-risk prostate cancer surveillance", "active surveillance Gleason 6", "ProtecT"],
+      "landmarkPmids": ["27626136", "25512465", "42048777"],
+      "guidelineQueries": ["prostate cancer active surveillance NCCN AUA"],
+      "searchQueries": [
+        "active surveillance low-risk prostate cancer ProtecT",
+        "watchful waiting prostate cancer"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Metastatic castration-resistant prostate cancer therapy",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["mCRPC abiraterone", "enzalutamide CRPC", "AFFIRM PREVAIL"],
+      "landmarkPmids": ["21612468", "22894553", "24881730"],
+      "guidelineQueries": ["metastatic castration resistant prostate cancer NCCN"],
+      "searchQueries": [
+        "abiraterone COU-AA mCRPC",
+        "enzalutamide AFFIRM PREVAIL"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Early breast cancer neoadjuvant systemic therapy",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["neoadjuvant breast cancer", "pathologic complete response breast"],
+      "landmarkPmids": ["24529560", "22508812"],
+      "guidelineQueries": ["neoadjuvant therapy early breast cancer NCCN"],
+      "searchQueries": [
+        "neoadjuvant chemotherapy pathologic complete response breast",
+        "neoadjuvant HER2 dual blockade"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Metastatic HR-positive breast cancer CDK4/6 inhibitors",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["palbociclib ribociclib abemaciclib", "PALOMA MONALEESA CDK4/6"],
+      "landmarkPmids": ["38252901", "27717303", "28968163"],
+      "guidelineQueries": ["CDK4/6 inhibitor metastatic HR positive breast cancer NCCN"],
+      "searchQueries": [
+        "palbociclib PALOMA metastatic breast cancer",
+        "ribociclib MONALEESA breast cancer"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Pancreatic adenocarcinoma systemic therapy",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["FOLFIRINOX pancreas", "gemcitabine nab-paclitaxel", "metastatic pancreatic cancer"],
+      "landmarkPmids": ["21561347", "24131140", "36048453"],
+      "guidelineQueries": ["pancreatic adenocarcinoma systemic therapy NCCN"],
+      "searchQueries": [
+        "FOLFIRINOX metastatic pancreatic cancer",
+        "nab-paclitaxel gemcitabine pancreas"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Gastric cancer perioperative chemotherapy",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["FLOT gastric cancer", "MAGIC trial perioperative", "perioperative chemotherapy stomach"],
+      "landmarkPmids": ["30982686", "16822992", "21444866"],
+      "guidelineQueries": ["perioperative chemotherapy gastric cancer NCCN ESMO"],
+      "searchQueries": [
+        "FLOT perioperative gastric cancer",
+        "MAGIC ECF perioperative gastric"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Head and neck squamous cell chemoradiation",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["HNSCC cisplatin radiation", "Bonner cetuximab radiation", "oropharynx chemoradiation"],
+      "landmarkPmids": ["16467544", "19470968", "14645636"],
+      "guidelineQueries": ["head neck squamous cell carcinoma chemoradiation NCCN"],
+      "searchQueries": [
+        "cisplatin concurrent chemoradiation head neck",
+        "cetuximab radiation Bonner head neck"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Glioblastoma temozolomide and radiotherapy",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["Stupp protocol", "GBM temozolomide", "MGMT glioblastoma"],
+      "landmarkPmids": ["15758009", "15758010", "19269895"],
+      "guidelineQueries": ["glioblastoma temozolomide radiotherapy NCCN"],
+      "searchQueries": [
+        "temozolomide radiotherapy glioblastoma Stupp",
+        "MGMT methylation temozolomide"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Advanced renal cell carcinoma immunotherapy",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["RCC nivolumab ipilimumab", "pembrolizumab axitinib RCC", "CheckMate 214"],
+      "landmarkPmids": ["29562145", "35843776", "30779531"],
+      "guidelineQueries": ["renal cell carcinoma immunotherapy NCCN"],
+      "searchQueries": [
+        "nivolumab ipilimumab CheckMate 214 RCC",
+        "pembrolizumab axitinib KEYNOTE RCC"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Cancer-associated thrombosis anticoagulation",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["CAT DOAC", "CLOT trial LMWH", "cancer VTE edoxaban"],
+      "landmarkPmids": ["12853587", "29231094", "29746227"],
+      "guidelineQueries": ["cancer associated thrombosis anticoagulation ASCO"],
+      "searchQueries": [
+        "edoxaban dalteparin cancer VTE Hokusai",
+        "CLOT dalteparin warfarin cancer"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Chemotherapy-induced nausea antiemetic prophylaxis",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["CINV NK1", "olanzapine antiemetic", "ASCO antiemetic"],
+      "landmarkPmids": ["27410922", "28759346", "27664248"],
+      "guidelineQueries": ["chemotherapy induced nausea vomiting ASCO MASCC"],
+      "searchQueries": [
+        "olanzapine chemotherapy nausea vomiting randomized",
+        "NK1 receptor antagonist highly emetogenic"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Bone metastases denosumab and zoledronic acid",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["skeletal related events", "denosumab bone mets", "zoledronic acid metastasis"],
+      "landmarkPmids": ["21060033", "21353695", "11693896"],
+      "guidelineQueries": ["bone metastases denosumab zoledronic acid ASCO"],
+      "searchQueries": [
+        "denosumab versus zoledronic acid skeletal related events",
+        "zoledronic acid bone metastases"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Melanoma adjuvant immunotherapy",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["adjuvant pembrolizumab melanoma", "adjuvant nivolumab melanoma", "CheckMate 238"],
+      "landmarkPmids": ["28891423", "39146951", "28891408"],
+      "guidelineQueries": ["adjuvant immunotherapy melanoma NCCN"],
+      "searchQueries": [
+        "adjuvant pembrolizumab KEYNOTE melanoma",
+        "adjuvant nivolumab CheckMate 238"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Esophageal cancer neoadjuvant chemoradiation",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["CROSS trial esophageal", "neoadjuvant chemoradiation esophagus"],
+      "landmarkPmids": ["22646630", "26254683", "33891478"],
+      "guidelineQueries": ["esophageal cancer neoadjuvant chemoradiation NCCN"],
+      "searchQueries": [
+        "CROSS neoadjuvant chemoradiotherapy esophageal",
+        "neoadjuvant chemoradiation esophagus"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Cervical cancer definitive chemoradiation",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["cervical cancer cisplatin radiation", "FIGO cervical chemoradiation"],
+      "landmarkPmids": ["10202165", "10202166", "10202164"],
+      "guidelineQueries": ["cervical cancer chemoradiation NCCN"],
+      "searchQueries": [
+        "concurrent cisplatin chemoradiation cervical cancer",
+        "cervical cancer chemoradiation survival"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Testicular germ cell tumor chemotherapy",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["BEP testicular cancer", "nonseminoma chemotherapy", "germ cell tumor"],
+      "landmarkPmids": ["2437455", "2437518", "69965"],
+      "guidelineQueries": ["testicular germ cell tumor chemotherapy NCCN"],
+      "searchQueries": [
+        "BEP chemotherapy nonseminoma testicular",
+        "good risk germ cell tumor chemotherapy"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Localized prostate cancer radiation versus prostatectomy",
+      "block": "Oncology",
+      "priority": "high",
+      "aliases": ["ProtecT prostate", "radical prostatectomy versus radiotherapy"],
+      "landmarkPmids": ["27626136", "36912538", "22808955"],
+      "guidelineQueries": ["localized prostate cancer radiation prostatectomy NCCN AUA"],
+      "searchQueries": [
+        "ProtecT prostatectomy radiotherapy monitoring",
+        "radical prostatectomy versus radiation"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Adjuvant therapy resected pancreatic cancer",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["PRODIGE adjuvant pancreas", "adjuvant FOLFIRINOX pancreas", "ESPAC"],
+      "landmarkPmids": ["36048453", "28129987", "24104372"],
+      "guidelineQueries": ["adjuvant chemotherapy resected pancreatic cancer NCCN"],
+      "searchQueries": [
+        "modified FOLFIRINOX adjuvant pancreatic PRODIGE",
+        "gemcitabine adjuvant pancreatic"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Supportive growth factor prophylaxis febrile neutropenia",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["G-CSF prophylaxis", "pegfilgrastim febrile neutropenia"],
+      "landmarkPmids": ["15718314", "1711156"],
+      "guidelineQueries": ["febrile neutropenia G-CSF prophylaxis ASCO NCCN"],
+      "searchQueries": [
+        "pegfilgrastim primary prophylaxis febrile neutropenia",
+        "G-CSF chemotherapy febrile neutropenia"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Endometrial cancer systemic therapy and immunotherapy",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["endometrial pembrolizumab lenvatinib", "dMMR endometrial IO", "KEYNOTE-775"],
+      "landmarkPmids": ["35045221", "34990208", "31682550"],
+      "guidelineQueries": ["endometrial cancer immunotherapy NCCN"],
+      "searchQueries": [
+        "pembrolizumab lenvatinib endometrial KEYNOTE-775",
+        "immunotherapy dMMR endometrial cancer"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Anaphylaxis epinephrine emergency management",
+      "block": "Immunology",
+      "priority": "high",
+      "aliases": ["anaphylaxis IM epinephrine", "adrenaline anaphylaxis"],
+      "landmarkPmids": ["26525001", "32001253", "24909803"],
+      "guidelineQueries": ["anaphylaxis epinephrine WAO AAAAI guideline"],
+      "searchQueries": [
+        "intramuscular epinephrine anaphylaxis first-line",
+        "anaphylaxis emergency biphasic"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Allergic rhinitis intranasal steroids and immunotherapy",
+      "block": "Immunology",
+      "priority": "high",
+      "aliases": ["allergic rhinitis INCS", "SCIT allergic rhinitis", "ARIA rhinitis"],
+      "landmarkPmids": ["41877472", "32707227", "17253469"],
+      "guidelineQueries": ["allergic rhinitis ARIA AAAAI guideline"],
+      "searchQueries": [
+        "intranasal corticosteroid allergic rhinitis",
+        "allergen immunotherapy allergic rhinitis"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Peanut oral immunotherapy food allergy",
+      "block": "Immunology",
+      "priority": "high",
+      "aliases": ["peanut OIT", "PALISADE peanut", "AR101 peanut"],
+      "landmarkPmids": ["30449234", "31030987"],
+      "guidelineQueries": ["peanut oral immunotherapy AAAAI guideline"],
+      "searchQueries": [
+        "PALISADE AR101 peanut oral immunotherapy",
+        "peanut OIT desensitization randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Penicillin allergy delabeling and testing",
+      "block": "Immunology",
+      "priority": "high",
+      "aliases": ["penicillin allergy label", "penicillin skin testing", "beta-lactam delabel"],
+      "landmarkPmids": ["30644987", "33914051"],
+      "guidelineQueries": ["penicillin allergy testing delabeling AAAAI"],
+      "searchQueries": [
+        "penicillin allergy delabeling skin testing",
+        "direct oral challenge penicillin allergy"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Chronic spontaneous urticaria omalizumab",
+      "block": "Immunology",
+      "priority": "high",
+      "aliases": ["CSU omalizumab", "chronic idiopathic urticaria", "ASTERIA"],
+      "landmarkPmids": ["23432142", "23810097"],
+      "guidelineQueries": ["chronic spontaneous urticaria omalizumab EAACI"],
+      "searchQueries": [
+        "omalizumab chronic spontaneous urticaria ASTERIA",
+        "anti-IgE chronic urticaria"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Hereditary angioedema on-demand and prophylaxis",
+      "block": "Immunology",
+      "priority": "high",
+      "aliases": ["HAE C1-INH", "lanadelumab HAE", "icatibant HAE"],
+      "landmarkPmids": ["20818886", "30480729", "20818888"],
+      "guidelineQueries": ["hereditary angioedema WAO HAEA guideline"],
+      "searchQueries": [
+        "C1 esterase inhibitor hereditary angioedema",
+        "lanadelumab HELP hereditary angioedema"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Primary immunodeficiency immunoglobulin replacement",
+      "block": "Immunology",
+      "priority": "high",
+      "aliases": ["IVIG PID", "SCIG primary immunodeficiency", "antibody deficiency IGRT"],
+      "landmarkPmids": ["16580469", "28041678", "26371839"],
+      "guidelineQueries": ["primary immunodeficiency immunoglobulin replacement AAAAI"],
+      "searchQueries": [
+        "IVIG primary antibody deficiency",
+        "subcutaneous immunoglobulin PID"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Common variable immunodeficiency diagnosis and infection prevention",
+      "block": "Immunology",
+      "priority": "high",
+      "aliases": ["CVID diagnosis", "common variable immune deficiency"],
+      "landmarkPmids": ["26563668", "24582312", "18319398"],
+      "guidelineQueries": ["common variable immunodeficiency ESID AAAAI"],
+      "searchQueries": [
+        "common variable immunodeficiency diagnostic criteria",
+        "immunoglobulin replacement CVID"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Vaccine responses in immunocompromised adults",
+      "block": "Immunology",
+      "priority": "high",
+      "aliases": ["vaccine immunocompromised", "biologic vaccine timing", "immunosuppression immunization"],
+      "landmarkPmids": ["24421306", "24348484", "31848290"],
+      "guidelineQueries": ["vaccination immunocompromised adults IDSA ACIP"],
+      "searchQueries": [
+        "vaccine immunogenicity biologics immunosuppressants",
+        "pneumococcal influenza vaccine immunocompromised"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Insect venom immunotherapy",
+      "block": "Immunology",
+      "priority": "medium",
+      "aliases": ["Hymenoptera venom immunotherapy", "bee wasp VIT", "venom anaphylaxis"],
+      "landmarkPmids": ["28007086", "23076950", "28748641"],
+      "guidelineQueries": ["venom immunotherapy AAAAI EAACI"],
+      "searchQueries": [
+        "venom immunotherapy Hymenoptera anaphylaxis",
+        "bee wasp venom immunotherapy"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Subcutaneous allergen immunotherapy efficacy and safety",
+      "block": "Immunology",
+      "priority": "medium",
+      "aliases": ["SCIT allergy", "allergy shots", "allergen immunotherapy"],
+      "landmarkPmids": ["21122901", "10441602", "17253469"],
+      "guidelineQueries": ["allergen immunotherapy SCIT AAAAI EAACI"],
+      "searchQueries": [
+        "subcutaneous allergen immunotherapy rhinitis asthma",
+        "allergen immunotherapy disease modification"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Aspirin-exacerbated respiratory disease management",
+      "block": "Immunology",
+      "priority": "medium",
+      "aliases": ["AERD Samter", "aspirin desensitization AERD", "NERD"],
+      "landmarkPmids": ["12532116", "23639708"],
+      "guidelineQueries": ["aspirin-exacerbated respiratory disease AAAAI"],
+      "searchQueries": [
+        "aspirin desensitization AERD",
+        "AERD nasal polyp biologic"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Drug reaction with eosinophilia and systemic symptoms",
+      "block": "Immunology",
+      "priority": "medium",
+      "aliases": ["DRESS syndrome", "DIHS", "drug hypersensitivity syndrome"],
+      "landmarkPmids": ["23855313", "21592453", "23602182"],
+      "guidelineQueries": ["DRESS syndrome diagnosis management allergy"],
+      "searchQueries": [
+        "DRESS RegiSCAR diagnostic criteria",
+        "drug reaction eosinophilia systemic symptoms"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Stevens-Johnson syndrome and TEN acute care",
+      "block": "Immunology",
+      "priority": "high",
+      "aliases": ["SJS TEN", "toxic epidermal necrolysis", "SCORTEN"],
+      "landmarkPmids": ["27287213", "11069512", "23522338"],
+      "guidelineQueries": ["Stevens-Johnson TEN management burn dermatology"],
+      "searchQueries": [
+        "SCORTEN toxic epidermal necrolysis",
+        "cyclosporine etanercept TEN"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Eosinophilic granulomatosis with polyangiitis biologics",
+      "block": "Immunology",
+      "priority": "medium",
+      "aliases": ["EGPA mepolizumab", "Churg-Strauss", "MIRRA trial"],
+      "landmarkPmids": ["28514601", "33347592"],
+      "guidelineQueries": ["EGPA mepolizumab EULAR"],
+      "searchQueries": [
+        "mepolizumab EGPA MIRRA",
+        "eosinophilic granulomatosis polyangiitis biologic"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Hemophagocytic lymphohistiocytosis diagnosis and therapy",
+      "block": "Immunology",
+      "priority": "medium",
+      "aliases": ["HLH-2004", "hemophagocytic syndrome", "HLH etoposide"],
+      "landmarkPmids": ["16937360", "21828139", "30992265"],
+      "guidelineQueries": ["hemophagocytic lymphohistiocytosis HLH-2004"],
+      "searchQueries": [
+        "HLH-2004 diagnostic criteria",
+        "etoposide dexamethasone HLH"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Acute graft-versus-host disease prophylaxis and treatment",
+      "block": "Immunology",
+      "priority": "medium",
+      "aliases": ["aGVHD ruxolitinib", "graft versus host disease", "REACH2"],
+      "landmarkPmids": ["32780849", "22510384", "38184001"],
+      "guidelineQueries": ["acute GVHD prophylaxis treatment ASTCT"],
+      "searchQueries": [
+        "ruxolitinib steroid refractory acute GVHD REACH2",
+        "GVHD prophylaxis transplant"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Solid organ transplant induction immunosuppression",
+      "block": "Immunology",
+      "priority": "medium",
+      "aliases": ["transplant induction ATG", "basiliximab induction", "kidney transplant induction"],
+      "landmarkPmids": ["17093248", "15616206"],
+      "guidelineQueries": ["solid organ transplant induction immunosuppression KDIGO"],
+      "searchQueries": [
+        "ATG versus basiliximab kidney transplant induction",
+        "induction immunosuppression transplant rejection"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Secondary immunodeficiency from biologics and steroids",
+      "block": "Immunology",
+      "priority": "medium",
+      "aliases": ["iatrogenic immunodeficiency", "biologic infection risk", "TNF inhibitor infection"],
+      "landmarkPmids": ["21328309", "19854715", "23852763"],
+      "guidelineQueries": ["infection prevention biologics corticosteroids"],
+      "searchQueries": [
+        "serious infection TNF inhibitor corticosteroid",
+        "secondary immunodeficiency biologic screening"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Latex and perioperative allergy evaluation",
+      "block": "Immunology",
+      "priority": "medium",
+      "aliases": ["latex allergy", "perioperative anaphylaxis", "NMBD allergy"],
+      "landmarkPmids": ["29935567", "21428815", "29778465"],
+      "guidelineQueries": ["perioperative anaphylaxis latex AAAAI"],
+      "searchQueries": [
+        "perioperative anaphylaxis neuromuscular blocking latex",
+        "latex allergy healthcare workers"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Eosinophilic esophagitis topical steroid and elimination diet",
+      "block": "Immunology",
+      "priority": "medium",
+      "aliases": ["EoE swallowed steroid", "eosinophilic oesophagitis", "dupilumab EoE"],
+      "landmarkPmids": ["31593702", "26247167", "32359562"],
+      "guidelineQueries": ["eosinophilic esophagitis AGA AAAAI"],
+      "searchQueries": [
+        "swallowed topical corticosteroid eosinophilic esophagitis",
+        "dupilumab eosinophilic esophagitis"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Mastocytosis diagnosis and anaphylaxis risk",
+      "block": "Immunology",
+      "priority": "medium",
+      "aliases": ["systemic mastocytosis", "tryptase mastocytosis", "mast cell disorder"],
+      "landmarkPmids": ["24745670", "27355533", "30536695"],
+      "guidelineQueries": ["systemic mastocytosis AAAAI WHO"],
+      "searchQueries": [
+        "systemic mastocytosis diagnostic criteria tryptase",
+        "mastocytosis venom anaphylaxis"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Complement deficiency infection susceptibility",
+      "block": "Immunology",
+      "priority": "medium",
+      "aliases": ["terminal complement deficiency", "meningococcal complement deficiency"],
+      "landmarkPmids": ["1889047", "20930072", "24104403"],
+      "guidelineQueries": ["complement deficiency meningococcal vaccination"],
+      "searchQueries": [
+        "terminal complement deficiency Neisseria vaccination",
+        "complement deficiency recurrent infection"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Biologic therapy pre-treatment infection screening",
+      "block": "Immunology",
+      "priority": "high",
+      "aliases": ["LTBI screening before biologics", "hepatitis B reactivation biologic", "TNF inhibitor screening"],
+      "landmarkPmids": ["26545940", "25447852"],
+      "guidelineQueries": ["infection screening before biologic therapy ACR AAD"],
+      "searchQueries": [
+        "latent tuberculosis screening before TNF inhibitor",
+        "hepatitis B reactivation biologic therapy"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Atopic dermatitis stepped topical and systemic therapy",
+      "block": "Immunology",
+      "priority": "high",
+      "aliases": ["eczema stepped care", "atopic dermatitis dupilumab", "topical calcineurin eczema"],
+      "landmarkPmids": ["28296614", "29878606", "41949508"],
+      "guidelineQueries": ["atopic dermatitis management AAAAI AAD"],
+      "searchQueries": [
+        "dupilumab moderate severe atopic dermatitis",
+        "stepped topical therapy atopic dermatitis"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Staphylococcus aureus bacteremia diagnostic workup and duration",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["SAB", "Staph aureus bacteremia", "MSSA bacteremia", "persistent bacteremia", "echocardiography SAB"],
+      "landmarkPmids": ["40193249", "25268440", "21208910"],
+      "guidelineQueries": ["IDSA Staphylococcus aureus bacteremia management echocardiography duration source control guideline"],
+      "searchQueries": [
+        "Staphylococcus aureus bacteremia echocardiography duration source control review",
+        "uncomplicated versus complicated Staphylococcus aureus bacteremia treatment duration"
+      ],
+      "requiredStudyTypes": ["guideline", "systematic review"]
+    },
+    {
+      "topic": "Infective endocarditis antimicrobial and oral step-down strategy",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["endocarditis", "POET trial", "left-sided infective endocarditis", "oral step-down endocarditis", "AHA endocarditis"],
+      "landmarkPmids": ["26373316", "30152252", "37879115"],
+      "guidelineQueries": ["AHA ESC infective endocarditis antimicrobial therapy oral step-down guideline"],
+      "searchQueries": [
+        "partial oral versus intravenous antibiotic treatment infective endocarditis POET trial",
+        "infective endocarditis diagnosis antimicrobial therapy management complications guideline"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Acute bacterial meningitis empiric therapy and dexamethasone",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["bacterial meningitis", "dexamethasone meningitis", "pneumococcal meningitis", "empiric meningitis antibiotics", "lumbar puncture antibiotics"],
+      "landmarkPmids": ["15494903", "12432041", "26362566"],
+      "guidelineQueries": ["IDSA bacterial meningitis guideline empiric antibiotics dexamethasone adults"],
+      "searchQueries": [
+        "dexamethasone adults acute bacterial meningitis randomized trial",
+        "acute bacterial meningitis empiric antibiotic therapy guideline lumbar puncture"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Viral encephalitis diagnostic and empiric acyclovir strategy",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["HSV encephalitis", "acyclovir encephalitis", "viral encephalitis", "CSF HSV PCR", "valacyclovir extension"],
+      "landmarkPmids": ["18582201", "9328248", "25956891"],
+      "guidelineQueries": ["IDSA encephalitis guideline herpes simplex encephalitis acyclovir PCR"],
+      "searchQueries": [
+        "herpes simplex encephalitis acyclovir treatment guideline",
+        "long-term valacyclovir after herpes simplex encephalitis randomized trial"
+      ],
+      "requiredStudyTypes": ["guideline", "randomized controlled trial"]
+    },
+    {
+      "topic": "Clostridioides difficile infection treatment strategy",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["CDI", "C difficile", "fidaxomicin", "oral vancomycin", "bezlotoxumab recurrence"],
+      "landmarkPmids": ["34164674", "21288078", "28121498"],
+      "guidelineQueries": ["IDSA SHEA Clostridioides difficile infection guideline fidaxomicin vancomycin bezlotoxumab"],
+      "searchQueries": [
+        "fidaxomicin versus vancomycin Clostridioides difficile randomized trial",
+        "bezlotoxumab prevention recurrent Clostridioides difficile infection MODIFY trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Complicated intra-abdominal infection source control and duration",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["cIAI", "intra-abdominal infection", "source control", "STOP-IT trial", "peritonitis antibiotics"],
+      "landmarkPmids": ["20034345", "25992746", "37316989"],
+      "guidelineQueries": ["SIS IDSA complicated intra-abdominal infection source control antibiotic duration guideline"],
+      "searchQueries": [
+        "STOP-IT trial short-course antimicrobial therapy intraabdominal infection source control",
+        "complicated intra-abdominal infection antibiotic duration after source control guideline"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Outpatient parenteral antimicrobial therapy program safety",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["OPAT", "home IV antibiotics", "parenteral antimicrobial therapy", "vascular access monitoring", "OPAT stewardship"],
+      "landmarkPmids": ["30423035", "15227610", "24532684"],
+      "guidelineQueries": ["IDSA outpatient parenteral antimicrobial therapy guideline monitoring vascular access stewardship"],
+      "searchQueries": [
+        "outpatient parenteral antimicrobial therapy IDSA guideline monitoring adverse events",
+        "OPAT antimicrobial stewardship infectious diseases approval outcomes"
+      ],
+      "requiredStudyTypes": ["guideline", "cohort study"]
+    },
+    {
+      "topic": "Penicillin allergy evaluation and delabeling",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["penicillin allergy", "beta-lactam allergy", "PEN-FAST", "direct oral challenge", "allergy delabeling"],
+      "landmarkPmids": ["37459086", "32662696", "34735748"],
+      "guidelineQueries": ["penicillin allergy delabeling direct oral challenge PEN-FAST guideline beta-lactam allergy"],
+      "searchQueries": [
+        "PALACE randomized trial direct oral challenge low-risk penicillin allergy",
+        "penicillin allergy delabeling direct oral challenge systematic review adults"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "systematic review"]
+    },
+    {
+      "topic": "Infectious diarrhea and travelers diarrhea management",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["infectious diarrhea", "travelers diarrhea", "azithromycin diarrhea", "rifaximin", "stool testing stewardship"],
+      "landmarkPmids": ["29053792", "28521004", "11049792"],
+      "guidelineQueries": ["IDSA infectious diarrhea guideline travelers diarrhea azithromycin rifaximin stool testing"],
+      "searchQueries": [
+        "infectious diarrhea diagnosis management IDSA guideline stool testing antibiotics",
+        "travelers diarrhea azithromycin rifaximin treatment guideline"
+      ],
+      "requiredStudyTypes": ["guideline", "systematic review"]
+    },
+    {
+      "topic": "Rabies pre- and post-exposure prophylaxis",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["rabies PEP", "rabies PrEP", "human rabies immune globulin", "animal bite prophylaxis", "rabies vaccine schedule"],
+      "landmarkPmids": ["20300058", "35511716", "32946729"],
+      "guidelineQueries": ["ACIP rabies postexposure prophylaxis preexposure prophylaxis vaccine immune globulin guideline"],
+      "searchQueries": [
+        "rabies postexposure prophylaxis reduced four-dose vaccine schedule ACIP recommendations",
+        "rabies preexposure prophylaxis two-dose vaccine schedule ACIP recommendations"
+      ],
+      "requiredStudyTypes": ["guideline", "cohort study"]
+    },
+    {
+      "topic": "Tick-borne rickettsial disease empiric doxycycline",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["RMSF", "Rocky Mountain spotted fever", "ehrlichiosis", "anaplasmosis", "doxycycline tick-borne"],
+      "landmarkPmids": ["16572105", "27172113", "41314471"],
+      "guidelineQueries": ["CDC tickborne rickettsial diseases guideline doxycycline RMSF ehrlichiosis anaplasmosis"],
+      "searchQueries": [
+        "tickborne rickettsial diseases doxycycline treatment guideline adults children",
+        "Rocky Mountain spotted fever empiric doxycycline delayed treatment outcomes"
+      ],
+      "requiredStudyTypes": ["guideline", "systematic review"]
+    },
+    {
+      "topic": "Ebola virus disease therapeutics and supportive care",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["EVD", "Ebola therapeutics", "PALM trial", "REGN-EB3", "mAb114"],
+      "landmarkPmids": ["31774950", "27732819", "32563280"],
+      "guidelineQueries": ["WHO Ebola virus disease therapeutics guideline REGN-EB3 mAb114 supportive care"],
+      "searchQueries": [
+        "PALM randomized controlled trial Ebola virus disease therapeutics mAb114 REGN-EB3",
+        "Ebola virus disease therapeutics guideline monoclonal antibody supportive care"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Healthcare-associated MRSA decolonization and prevention",
+      "block": "Infectious Diseases",
+      "priority": "medium",
+      "aliases": ["MRSA decolonization", "mupirocin chlorhexidine", "REDUCE MRSA", "CLEAR trial", "universal decolonization"],
+      "landmarkPmids": ["23718152", "30763195", "26847518"],
+      "guidelineQueries": ["MRSA decolonization prevention guideline chlorhexidine mupirocin universal decolonization"],
+      "searchQueries": [
+        "targeted versus universal decolonization ICU MRSA infection REDUCE MRSA trial",
+        "postdischarge decolonization MRSA carriers CLEAR trial infection risk"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Rapid diagnostics for bloodstream infection stewardship",
+      "block": "Infectious Diseases",
+      "priority": "high",
+      "aliases": ["rapid blood culture diagnostics", "molecular rapid diagnostic testing", "bloodstream infection stewardship", "RDT ASP", "gram-negative bacteremia diagnostics"],
+      "landmarkPmids": ["27678085", "38676943", "24841135"],
+      "guidelineQueries": ["rapid diagnostic testing bloodstream infection antimicrobial stewardship guideline molecular blood culture"],
+      "searchQueries": [
+        "molecular rapid diagnostic testing bloodstream infection clinical outcomes meta-analysis",
+        "rapid diagnostics antimicrobial stewardship bloodstream infection mortality network meta-analysis"
+      ],
+      "requiredStudyTypes": ["systematic review", "cohort study"]
     }
   ]
 }

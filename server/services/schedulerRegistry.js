@@ -49,6 +49,9 @@ const {
 const {
     scheduleLearningQualityEval, stopLearningQualityEval,
 } = require('./learningQualityEvalScheduler');
+const {
+    scheduleFlagshipEnrich, stopFlagshipEnrich,
+} = require('./flagshipEnrichScheduler');
 
 /**
  * @typedef {Object} SchedulerEntry
@@ -127,6 +130,11 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
             task: 'learning-quality-eval',
             start: () => scheduleLearningQualityEval(baseLogger.child({ task: 'learning-quality-eval' })),
             stop: () => stopLearningQualityEval(),
+        },
+        {
+            task: 'flagship-enrich',
+            start: () => scheduleFlagshipEnrich(db, { cache }, baseLogger.child({ task: 'flagship-enrich' })),
+            stop: () => stopFlagshipEnrich(),
         },
     ];
 }

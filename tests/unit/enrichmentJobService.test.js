@@ -5,7 +5,9 @@ const {
     getOrEnqueueTopicSeed,
     getOrEnqueueGuidelineAlign,
     getOrEnqueuePdfIndex,
+    getOrEnqueueFlagshipEnrich,
 } = require('../../server/services/enrichmentJobService');
+const { flagshipEnrichJobKey } = require('../../server/services/flagshipEnrichService');
 
 describe('enrichmentJobService', () => {
     function createDb(overrides = {}) {
@@ -19,7 +21,8 @@ describe('enrichmentJobService', () => {
             markAiGenerationJobRunning: jest.fn(),
             completeAiGenerationJob: jest.fn(),
             failAiGenerationJob: jest.fn(),
-            resetAiGenerationJobForRetry: jest.fn(),
+            resetAiGenerationJobForRetry: jest.fn(async () => null),
+            failAiGenerationJob: jest.fn(async () => null),
             ...overrides,
         };
     }
@@ -130,6 +133,77 @@ describe('enrichmentJobService', () => {
             });
             expect(result.status).toBe('completed');
             expect(result.cached).toBe(true);
+            expect(db.createAiGenerationJob).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('getOrEnqueueFlagshipEnrich', () => {
+        function createEnrichDb(overrides = {}) {
+            return createDb({
+                normalizeTopic: (t) => String(t || '').toLowerCase().trim(),
+                get: jest.fn(async () => ({ count: 0 })),
+                failAiGenerationJob: jest.fn(async () => null),
+                ...overrides,
+            });
+        }
+
+        it('skips when topic already has enough claims', async () => {
+            const db = createEnrichDb({
+                get: jest.fn(async () => ({ count: 12 })),
+            });
+            const result = await getOrEnqueueFlagshipEnrich({
+                db,
+                topic: 'Heart failure with reduced ejection fraction',
+                flagship: { topic: 'Heart failure with reduced ejection fraction', landmarkPmids: ['1'] },
+                cache: createCache(),
+                logger: console,
+            });
+            expect(result.status).toBe('skipped');
+            expect(result.reason).toBe('sufficient_claims');
+            expect(db.createAiGenerationJob).not.toHaveBeenCalled();
+        });
+
+        it('creates a queued job when none exists and claims are low', async () => {
+            const db = createEnrichDb();
+            const result = await getOrEnqueueFlagshipEnrich({
+                db,
+                topic: 'Community-acquired pneumonia antibiotic strategy',
+                flagship: {
+                    topic: 'Community-acquired pneumonia antibiotic strategy',
+                    landmarkPmids: ['1', '2'],
+                },
+                cache: createCache(),
+                logger: console,
+            });
+            expect(result.status).toBe('queued');
+            expect(result.claimCount).toBe(0);
+            expect(db.createAiGenerationJob).toHaveBeenCalledWith(
+                expect.objectContaining({ jobType: 'flagship_enrich' })
+            );
+        });
+
+        it('retries completed jobs that still have insufficient claims', async () => {
+            const topic = 'Anaphylaxis epinephrine emergency management';
+            const jobKey = flagshipEnrichJobKey(topic);
+            const db = createEnrichDb({
+                getAiGenerationJobByKey: jest.fn(async () => ({
+                    jobKey,
+                    status: 'completed',
+                    resultPayload: { totalClaimsWritten: 0 },
+                })),
+                get: jest.fn(async () => ({ count: 0 })),
+            });
+            const result = await getOrEnqueueFlagshipEnrich({
+                db,
+                topic,
+                flagship: { topic, landmarkPmids: ['1'] },
+                cache: createCache(),
+                logger: console,
+            });
+            expect(result.status).toBe('queued');
+            expect(result.retried).toBe(true);
+            expect(db.failAiGenerationJob).toHaveBeenCalled();
+            expect(db.resetAiGenerationJobForRetry).toHaveBeenCalledWith(jobKey);
             expect(db.createAiGenerationJob).not.toHaveBeenCalled();
         });
     });

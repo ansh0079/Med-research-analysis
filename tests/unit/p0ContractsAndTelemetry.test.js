@@ -1,9 +1,15 @@
 'use strict';
 
-const { validateContract, ArticleSynopsisSchema, ConsensusSynopsisSchema } = require('../../shared/contracts');
+const {
+    validateContract,
+    ArticleSynopsisSchema,
+    ConsensusSynopsisSchema,
+    LearningEventSchema,
+} = require('../../shared/contracts');
 const { validateAiOutput } = require('../../server/services/aiOutputValidation');
 const { fetchUnifiedEvidence } = require('../../server/services/unifiedEvidenceSearch');
 const { runSynthesisConflictExtraction } = require('../../server/services/synthesisGenerationCore');
+const { LEARNING_SIGNAL_TYPES } = require('../../server/services/learningSignalService');
 
 describe('P0 schema contracts', () => {
     test('ArticleSynopsisSchema accepts whatNotToOverclaim as string[]', () => {
@@ -47,6 +53,38 @@ describe('P0 schema contracts', () => {
         expect(result.ok).toBe(true);
         expect(result.data.evidenceStrength).toBe('MODERATE');
         expect(result.data.whatNotToOverclaim).toEqual(['Do not treat as a guideline.']);
+    });
+
+    test('LearningEventSchema accepts runtime learning telemetry events', () => {
+        const durableRuntimeEvents = [
+            'agent_turn_completed',
+            'agent_quiz_reward_attributed',
+            'case_attempted',
+            'case_generated',
+            'case_scenario_completed',
+            'claim_gap',
+            'claim_seen',
+            'mcq_answered',
+            'paper_click',
+            'paper_save',
+            'paper_dwell',
+            'paper_view',
+            'quiz_error_patterns',
+            'quiz_session_feedback',
+            'topic_open',
+            'validation_mismatch',
+        ];
+        const events = [...Object.values(LEARNING_SIGNAL_TYPES), ...durableRuntimeEvents];
+
+        for (const eventType of events) {
+            const result = validateContract(LearningEventSchema, {
+                eventType,
+                userId: 'u-telemetry',
+                topic: 'ARDS',
+                payload: { source: 'contract-test' },
+            });
+            expect(result.ok).toBe(true);
+        }
     });
 });
 
