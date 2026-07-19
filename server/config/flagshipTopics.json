@@ -1,8 +1,8 @@
 {
-  "version": 9,
-  "description": "Flagship-topic program - 247 topics spanning evidence + learning surfaces, with expanded Cardiology (64), Nephrology, Neurology, Gastroenterology, and Critical Care (50) coverage.",
+  "version": 10,
+  "description": "Flagship-topic program - 272 topics spanning evidence + learning surfaces, with expanded Cardiology (64), Critical Care (50), and Haematology (28) coverage.",
   "targets": {
-    "flagshipCount": 247,
+    "flagshipCount": 272,
     "minimumSearchQueriesPerTopic": 2,
     "minimumSourceArticles": 3,
     "minimumGuidelines": 1,
@@ -6516,6 +6516,331 @@
         "acute respiratory distress syndrome Berlin criteria validation predictive validity mortality"
       ],
       "requiredStudyTypes": ["consensus guideline"]
+    },
+    {
+      "topic": "JAK2 mutation and the pathogenesis of myeloproliferative neoplasms",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["JAK2 V617F", "myeloproliferative neoplasms JAK2", "JAK2 mutation polycythemia vera", "MPN driver mutation", "gain-of-function JAK2"],
+      "landmarkPmids": ["15858187"],
+      "guidelineQueries": ["JAK2 V617F mutation myeloproliferative neoplasm diagnosis guideline"],
+      "searchQueries": [
+        "JAK2 V617F gain-of-function mutation polycythemia vera essential thrombocythemia myelofibrosis pathogenesis",
+        "somatic JAK2 mutation myeloproliferative disorders clonal hematopoiesis driver biology"
+      ],
+      "requiredStudyTypes": ["landmark study", "guideline"]
+    },
+    {
+      "topic": "Polycythemia vera: hematocrit targets, aspirin, and cardiovascular risk reduction",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["polycythemia vera management", "PV hematocrit target", "aspirin polycythemia vera", "ECLAP trial", "phlebotomy PV cardiovascular risk"],
+      "landmarkPmids": ["23216616", "14711910"],
+      "guidelineQueries": ["polycythemia vera management guideline hematocrit aspirin ELN thrombosis prevention"],
+      "searchQueries": [
+        "Marchioli cardiovascular events intensity treatment polycythemia vera randomized hematocrit target",
+        "ECLAP aspirin low-dose polycythemia vera thrombosis prevention randomized Landolfi"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Polycythemia vera: ruxolitinib for hydroxyurea-resistant or intolerant disease",
+      "block": "Haematology",
+      "priority": "medium",
+      "aliases": ["ruxolitinib polycythemia vera", "RESPONSE trial PV", "JAK inhibitor PV hydroxyurea resistant", "hydroxyurea intolerant polycythemia vera"],
+      "landmarkPmids": ["25629741"],
+      "guidelineQueries": ["ruxolitinib polycythemia vera hydroxyurea resistant guideline RESPONSE"],
+      "searchQueries": [
+        "RESPONSE ruxolitinib versus standard therapy polycythemia vera randomized Vannucchi NEJM 2015",
+        "ruxolitinib hydroxyurea resistant intolerant polycythemia vera hematocrit control splenomegaly"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial"]
+    },
+    {
+      "topic": "Essential thrombocythemia: cytoreduction with hydroxyurea versus anagrelide",
+      "block": "Haematology",
+      "priority": "medium",
+      "aliases": ["essential thrombocythemia cytoreduction", "anagrelide ET", "hydroxyurea essential thrombocythemia", "PT-1 trial ET", "high-risk ET management"],
+      "landmarkPmids": ["16000354"],
+      "guidelineQueries": ["essential thrombocythemia cytoreduction guideline hydroxyurea anagrelide ELN high-risk"],
+      "searchQueries": [
+        "hydroxyurea anagrelide high-risk essential thrombocythemia randomized PT-1 Harrison NEJM",
+        "cytoreductive therapy essential thrombocythemia thrombosis risk aspirin risk stratification platelet"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Myelofibrosis: JAK inhibition with ruxolitinib",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["ruxolitinib myelofibrosis", "COMFORT-I COMFORT-II trial", "JAK inhibitor myelofibrosis", "primary myelofibrosis treatment splenomegaly"],
+      "landmarkPmids": ["22375971", "22375970"],
+      "guidelineQueries": ["myelofibrosis ruxolitinib guideline JAK inhibitor treatment ELN NCCN"],
+      "searchQueries": [
+        "COMFORT-I COMFORT-II ruxolitinib versus placebo best available therapy myelofibrosis Verstovsek Harrison NEJM",
+        "ruxolitinib JAK inhibitor splenomegaly constitutional symptoms myelofibrosis survival benefit"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Chronic myeloid leukaemia: imatinib and second-generation TKI therapy",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["CML imatinib", "BCR-ABL TKI chronic myeloid leukemia", "IRIS trial CML", "nilotinib dasatinib CML frontline", "ENESTnd trial", "chronic phase CML"],
+      "landmarkPmids": ["12637609", "20525993"],
+      "guidelineQueries": ["chronic myeloid leukemia TKI imatinib guideline ELN NCCN BCR-ABL molecular response"],
+      "searchQueries": [
+        "IRIS imatinib interferon cytarabine newly diagnosed chronic myeloid leukemia BCR-ABL randomized O'Brien NEJM",
+        "ENESTnd nilotinib versus imatinib newly diagnosed CML major molecular response randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Chronic lymphocytic leukaemia: chemoimmunotherapy with FCR",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["CLL FCR", "fludarabine cyclophosphamide rituximab CLL", "CLL8 trial Hallek", "CLL chemotherapy fit patients IGHV mutated"],
+      "landmarkPmids": ["20888994"],
+      "guidelineQueries": ["chronic lymphocytic leukemia FCR chemoimmunotherapy guideline IGHV mutated fit patients"],
+      "searchQueries": [
+        "Hallek fludarabine cyclophosphamide rituximab versus FC CLL first-line randomized Lancet CLL8",
+        "FCR chemoimmunotherapy CLL IGHV mutated fit patients progression-free survival long-term"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Chronic lymphocytic leukaemia: ibrutinib and venetoclax-based targeted therapy",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["ibrutinib CLL elderly", "RESONATE-2 trial", "venetoclax obinutuzumab CLL14", "BTK inhibitor CLL unfit", "BCL2 inhibitor venetoclax CLL"],
+      "landmarkPmids": ["26639149", "31166681"],
+      "guidelineQueries": ["CLL ibrutinib venetoclax targeted therapy guideline elderly unfit IGHV unmutated"],
+      "searchQueries": [
+        "RESONATE-2 ibrutinib versus chlorambucil previously untreated older CLL randomized Burger NEJM",
+        "CLL14 venetoclax obinutuzumab versus chlorambucil obinutuzumab CLL coexisting conditions randomized NEJM"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Hodgkin lymphoma: brentuximab vedotin frontline therapy",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["Hodgkin lymphoma treatment", "brentuximab vedotin advanced HL", "ECHELON-1 trial", "A+AVD versus ABVD Hodgkin", "stage III IV Hodgkin frontline"],
+      "landmarkPmids": ["29224502"],
+      "guidelineQueries": ["Hodgkin lymphoma frontline chemotherapy guideline brentuximab ABVD BEACOPP advanced"],
+      "searchQueries": [
+        "ECHELON-1 brentuximab vedotin AVD versus ABVD stage III IV Hodgkin lymphoma randomized Connors NEJM",
+        "advanced Hodgkin lymphoma frontline chemotherapy PET-adapted de-escalation progression-free survival"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Diffuse large B-cell lymphoma: CAR-T cell therapy in relapsed/refractory disease",
+      "block": "Haematology",
+      "priority": "medium",
+      "aliases": ["DLBCL CAR-T", "tisagenlecleucel DLBCL second-line", "axicabtagene ciloleucel aggressive lymphoma", "chimeric antigen receptor T-cell DLBCL relapsed"],
+      "landmarkPmids": ["34904798"],
+      "guidelineQueries": ["DLBCL relapsed refractory CAR-T cell therapy second-line guideline NCCN"],
+      "searchQueries": [
+        "tisagenlecleucel versus standard care second-line relapsed refractory aggressive B-cell lymphoma randomized NEJM",
+        "axicabtagene ciloleucel second-line DLBCL ZUMA-7 versus standard salvage plus ASCT randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Follicular lymphoma: obinutuzumab-based and lenalidomide-rituximab regimens",
+      "block": "Haematology",
+      "priority": "medium",
+      "aliases": ["follicular lymphoma first-line", "obinutuzumab FL GALLIUM", "RELEVANCE trial lenalidomide rituximab", "anti-CD20 follicular lymphoma frontline"],
+      "landmarkPmids": ["28976863", "30184451"],
+      "guidelineQueries": ["follicular lymphoma first-line therapy obinutuzumab rituximab lenalidomide guideline"],
+      "searchQueries": [
+        "GALLIUM obinutuzumab chemotherapy first-line follicular lymphoma progression-free survival Marcus NEJM",
+        "RELEVANCE lenalidomide rituximab versus chemoimmunotherapy untreated follicular lymphoma randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Multiple myeloma: VRd versus Rd for newly diagnosed disease",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["multiple myeloma VRd", "bortezomib lenalidomide dexamethasone myeloma", "SWOG S0777 trial", "triplet induction newly diagnosed myeloma"],
+      "landmarkPmids": ["28017406"],
+      "guidelineQueries": ["multiple myeloma newly diagnosed induction VRd bortezomib lenalidomide dexamethasone guideline"],
+      "searchQueries": [
+        "SWOG S0777 bortezomib lenalidomide dexamethasone versus Rd newly diagnosed myeloma Durie Lancet",
+        "VRd triplet induction newly diagnosed multiple myeloma transplant eligible ineligible progression-free"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Multiple myeloma: daratumumab-based frontline therapy",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["daratumumab myeloma frontline", "MAIA trial daratumumab", "Dara-Rd transplant ineligible myeloma", "anti-CD38 monoclonal antibody myeloma"],
+      "landmarkPmids": ["31141632"],
+      "guidelineQueries": ["daratumumab multiple myeloma frontline therapy guideline MAIA transplant ineligible elderly"],
+      "searchQueries": [
+        "MAIA daratumumab lenalidomide dexamethasone versus Rd untreated transplant-ineligible myeloma Facon NEJM",
+        "daratumumab-based quadruplet frontline multiple myeloma progression-free overall survival"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Multiple myeloma: autologous stem cell transplantation",
+      "block": "Haematology",
+      "priority": "medium",
+      "aliases": ["myeloma ASCT", "autologous transplant myeloma", "stem cell transplantation multiple myeloma consolidation", "single double ASCT myeloma Attal"],
+      "landmarkPmids": ["14695409"],
+      "guidelineQueries": ["multiple myeloma autologous stem cell transplantation guideline role consolidation transplant eligible"],
+      "searchQueries": [
+        "Attal single versus double autologous stem-cell transplantation multiple myeloma randomized NEJM",
+        "upfront autologous stem cell transplantation versus novel agents myeloma era randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Heparin-induced thrombocytopenia: diagnosis and management",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["HIT heparin thrombocytopenia", "4T score HIT", "argatroban HIT treatment", "PF4 antibodies heparin", "LMWH HIT"],
+      "landmarkPmids": ["7715641"],
+      "guidelineQueries": ["heparin-induced thrombocytopenia diagnosis management guideline ASH ACCP 4T score"],
+      "searchQueries": [
+        "Warkentin heparin-induced thrombocytopenia low-molecular-weight unfractionated heparin LMWH pathogenesis incidence",
+        "4T score HIT pretest probability PF4 antibody diagnosis alternative anticoagulation argatroban fondaparinux"
+      ],
+      "requiredStudyTypes": ["guideline", "cohort study"]
+    },
+    {
+      "topic": "Thrombotic thrombocytopenic purpura: caplacizumab and plasma exchange",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["TTP thrombotic thrombocytopenic purpura", "caplacizumab HERCULES trial", "ADAMTS13 TTP", "plasma exchange TTP acquired", "anti-VWF caplacizumab"],
+      "landmarkPmids": ["30625070"],
+      "guidelineQueries": ["thrombotic thrombocytopenic purpura management caplacizumab plasma exchange guideline ADAMTS13 inhibitor"],
+      "searchQueries": [
+        "HERCULES caplacizumab acquired thrombotic thrombocytopenic purpura randomized double-blind placebo NEJM",
+        "plasma exchange ADAMTS13 inhibitor thrombotic thrombocytopenic purpura treatment outcomes refractory"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Immune thrombocytopenia: thrombopoietin receptor agonists",
+      "block": "Haematology",
+      "priority": "medium",
+      "aliases": ["ITP immune thrombocytopenia", "eltrombopag RAISE trial ITP", "romiplostim ITP", "TPO receptor agonist chronic ITP", "second-line ITP management"],
+      "landmarkPmids": ["20739054"],
+      "guidelineQueries": ["immune thrombocytopenia treatment guideline eltrombopag romiplostim second-line ASH"],
+      "searchQueries": [
+        "RAISE eltrombopag management chronic immune thrombocytopenia randomised 6-month Cheng Lancet",
+        "romiplostim eltrombopag thrombopoietin receptor agonist ITP platelet count durable response"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Haemophilia A: factor VIII prophylaxis and emicizumab for inhibitor patients",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["haemophilia A prophylaxis", "factor VIII prophylaxis joint disease", "emicizumab HAVEN-1 inhibitors", "bispecific antibody haemophilia A", "FIXa FXa emicizumab"],
+      "landmarkPmids": ["28691557", "17687129"],
+      "guidelineQueries": ["haemophilia A treatment guideline prophylaxis emicizumab inhibitor factor VIII"],
+      "searchQueries": [
+        "HAVEN-1 emicizumab prophylaxis haemophilia A factor VIII inhibitors randomized NEJM Oldenburg",
+        "factor VIII prophylaxis versus episodic treatment joint disease haemophilia boys severe randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Aplastic anaemia: immunosuppression with ATG and eltrombopag",
+      "block": "Haematology",
+      "priority": "medium",
+      "aliases": ["aplastic anaemia ATG", "horse antithymocyte globulin aplastic anemia", "eltrombopag aplastic anaemia Townsley", "immunosuppression severe aplastic anemia cyclosporine"],
+      "landmarkPmids": ["28423296", "21812672"],
+      "guidelineQueries": ["aplastic anemia immunosuppression ATG eltrombopag guideline treatment response allogeneic"],
+      "searchQueries": [
+        "Townsley eltrombopag added standard immunosuppression aplastic anemia randomized NEJM 2017",
+        "horse versus rabbit antithymocyte globulin acquired aplastic anemia Scheinberg randomized NEJM 2011"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Myelodysplastic syndrome: azacitidine hypomethylating therapy",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["MDS azacitidine", "hypomethylating agent MDS", "AZA-001 trial higher-risk", "5-azacytidine myelodysplastic syndrome", "azacitidine decitabine MDS"],
+      "landmarkPmids": ["19230772"],
+      "guidelineQueries": ["myelodysplastic syndrome azacitidine hypomethylating therapy guideline higher-risk IPSS"],
+      "searchQueries": [
+        "AZA-001 azacitidine conventional care regimens higher-risk myelodysplastic syndromes overall survival Fenaux Lancet Oncology",
+        "azacitidine decitabine hypomethylating agent MDS overall survival progression acute myeloid leukemia"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Disseminated intravascular coagulation: diagnostic criteria and management",
+      "block": "Haematology",
+      "priority": "medium",
+      "aliases": ["DIC diagnosis", "ISTH DIC score", "overt DIC non-overt DIC", "disseminated intravascular coagulation scoring", "DIC coagulopathy management"],
+      "landmarkPmids": ["11816725"],
+      "guidelineQueries": ["disseminated intravascular coagulation diagnostic criteria management guideline ISTH"],
+      "searchQueries": [
+        "ISTH DIC scoring system overt non-overt disseminated intravascular coagulation diagnostic criteria Taylor 2001",
+        "DIC management fresh frozen plasma cryoprecipitate tranexamic acid treatment coagulopathy sepsis"
+      ],
+      "requiredStudyTypes": ["guideline", "consensus guideline"]
+    },
+    {
+      "topic": "Sickle cell disease: hydroxyurea therapy and crisis prevention",
+      "block": "Haematology",
+      "priority": "high",
+      "aliases": ["sickle cell hydroxyurea", "MSH trial sickle cell anemia", "fetal haemoglobin induction hydroxyurea", "HbF sickle cell anemia vaso-occlusive crisis"],
+      "landmarkPmids": ["7715639"],
+      "guidelineQueries": ["sickle cell disease hydroxyurea guideline fetal hemoglobin vaso-occlusive crisis prevention"],
+      "searchQueries": [
+        "MSH hydroxyurea frequency painful crises sickle cell anemia Investigators randomized controlled NEJM 1995",
+        "hydroxyurea sickle cell disease fetal hemoglobin induction clinical benefit mortality children adults"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Platelet transfusion thresholds in haematological malignancies",
+      "block": "Haematology",
+      "priority": "medium",
+      "aliases": ["platelet transfusion threshold haematology", "prophylactic platelet transfusion AML", "10 x 10^9 platelet trigger", "TOPPS trial platelet transfusion"],
+      "landmarkPmids": ["9407153"],
+      "guidelineQueries": ["platelet transfusion threshold guideline prophylactic haematological malignancy AML chemotherapy"],
+      "searchQueries": [
+        "threshold prophylactic platelet transfusions adults acute myeloid leukemia chemotherapy randomized Lancet",
+        "TOPPS prophylactic versus therapeutic platelet transfusion AML myelosuppression randomized trial"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Autoimmune haemolytic anaemia: steroids and rituximab",
+      "block": "Haematology",
+      "priority": "medium",
+      "aliases": ["AIHA warm antibody", "autoimmune hemolytic anemia treatment", "rituximab AIHA Birgens", "direct antiglobulin test warm AIHA steroids second-line"],
+      "landmarkPmids": ["23981017"],
+      "guidelineQueries": ["autoimmune haemolytic anaemia treatment guideline corticosteroids rituximab first-line second-line"],
+      "searchQueries": [
+        "Birgens rituximab versus glucocorticoid monotherapy warm autoimmune haemolytic anaemia randomized phase III",
+        "warm autoimmune hemolytic anemia corticosteroids rituximab splenectomy treatment response relapse"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Iron deficiency anaemia: intravenous iron therapy",
+      "block": "Haematology",
+      "priority": "medium",
+      "aliases": ["intravenous iron IDA", "ferric carboxymaltose", "FAIR-HF trial iron deficiency", "IV iron heart failure anaemia", "parenteral iron deficiency treatment"],
+      "landmarkPmids": ["19920054"],
+      "guidelineQueries": ["intravenous iron therapy iron deficiency anaemia guideline ferric carboxymaltose sucrose"],
+      "searchQueries": [
+        "FAIR-HF ferric carboxymaltose patients heart failure iron deficiency randomized Anker NEJM 2009",
+        "intravenous iron therapy iron deficiency anaemia efficacy safety ferric carboxymaltose meta-analysis"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
     }
   ]
 }
