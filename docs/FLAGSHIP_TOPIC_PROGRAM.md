@@ -79,6 +79,37 @@ Scripts live in repo `scripts/restore-scratch-on-server.sh` and `scripts/run-fla
 
 Verified restore (2026-07-18 dump): curriculum_topics=1139, topic_knowledge=273, topic_guidelines=5304, teaching_objects=6999, teaching_object_claims=20872.
 
-## First Cohort
+## Cohort size
 
-The initial cohort intentionally starts with 12 high-impact topics across cardiology, critical care, respiratory, endocrine, renal, neurology, emergency medicine, haematology, and infectious disease. Grow this to 30, then 50, only after the first 12 are passing readiness and eval gates.
+`server/config/flagshipTopics.json` currently lists **75** curated topics (priorities: high / medium / expand). Readiness and ops scripts should target this list — do not mass-merge or backfill the full ~1,385 curriculum catalog.
+
+## Synopsis enrichment path
+
+After landmark `source_articles` exist, deepen mentor knowledge and teaching objects:
+
+```powershell
+# Pin missing landmark PMIDs into topic_knowledge.source_articles
+npm run sync:flagship-sources -- --dry-run
+npm run sync:flagship-sources
+
+# Extract claims from landmarks + guideline/MCQ enrichment (AI; use --limit for batches)
+npm run enrich:flagship-knowledge -- --dry-run --limit=5
+npm run enrich:flagship-knowledge -- --priority=high --limit=10
+
+# PDF bouquet for synopsis grounding (high priority first)
+npm run backfill:pdf-flagship:high
+
+# Tier breakdown (SRC / guidelines / claims / TOs / MCQs)
+npm run audit:flagship-readiness
+npm run audit:flagship-topics
+```
+
+Curriculum seed now merges flagship landmark PMIDs into `source_articles` and upserts stub `topic_knowledge` (`seededFrom: curriculumSeedService`). The mentor UI badges landmark stubs as “not yet enriched” until AI/human refresh.
+
+## Learning loop (search ↔ quiz)
+
+Missed quiz items write `quiz_miss_for_search` learning events and already boost those papers on the next search. Quiz complete UI links each missed paper into personalized search (`/search?q=…&focusPmid=…`). Ranking cards show the adaptation reason when personalization moves a result.
+
+## First Cohort (historical)
+
+The program started with 12 high-impact topics, then grew through 30 → 50 → **75**. Keep promoting only topics that pass readiness + search-eval gates.

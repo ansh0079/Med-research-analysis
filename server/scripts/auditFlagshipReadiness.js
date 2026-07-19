@@ -49,6 +49,17 @@ async function main() {
     Object.entries(byTier).sort((a, b) => (tierOrder[a[0]] ?? 0) - (tierOrder[b[0]] ?? 0))
         .forEach(([tier, n]) => console.log(`  ${tier.padEnd(20)} ${n}`));
 
+    const withSrc = rows.filter((r) => Number(r.counts?.sourceArticles || 0) >= 3).length;
+    const withGuide = rows.filter((r) => Number(r.counts?.guidelines || 0) >= 1).length;
+    const withClaims = rows.filter((r) => Number(r.counts?.claims || 0) >= 8).length;
+    const withMcq = rows.filter((r) => Number(r.counts?.mcqObjects || 0) >= 1).length;
+    console.log('\nCoverage gates (matched rows):');
+    console.log(`  source_articles ≥ 3 : ${withSrc} / ${rows.length}`);
+    console.log(`  guidelines ≥ 1      : ${withGuide} / ${rows.length}`);
+    console.log(`  claims ≥ 8          : ${withClaims} / ${rows.length}`);
+    console.log(`  mcq objects ≥ 1     : ${withMcq} / ${rows.length}`);
+    console.log('  (PDF bouquet: npm run backfill:pdf-flagship:high — not counted in readiness tiers)');
+
     console.log('\n' + '-'.repeat(80));
     console.log('TIER'.padEnd(20) + 'SRC G  CL  TO MCQ  TOPIC');
     console.log('-'.repeat(80));

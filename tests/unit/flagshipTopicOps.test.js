@@ -4,6 +4,7 @@ const {
     curriculumMatchesFlagship,
     pickClusterWinner,
     buildLandmarkSourceArticles,
+    buildStubKnowledge,
     mergeSourceArticles,
     flagshipMatchKeys,
 } = require('../../server/services/flagshipTopicOps');
@@ -75,5 +76,15 @@ describe('flagshipTopicOps', () => {
     test('flagshipMatchKeys includes aliases', () => {
         const keys = flagshipMatchKeys(sepsis);
         expect(keys).toEqual(expect.arrayContaining(['sepsis', 'septic shock', 'sepsis and septic shock']));
+    });
+
+    test('buildStubKnowledge marks landmark seed provenance', () => {
+        const stub = buildStubKnowledge('Sepsis and septic shock', sepsis);
+        expect(stub.seededFrom).toBe('flagshipTopics.json');
+        expect(stub.mentorMessage).toMatch(/landmark seed/i);
+        expect(stub.seminalPapers.map((p) => p.pmid)).toEqual(
+            expect.arrayContaining(['26903338', '34599691'])
+        );
+        expect(stub.keywords).toEqual(expect.arrayContaining(['Sepsis and septic shock', 'sepsis']));
     });
 });

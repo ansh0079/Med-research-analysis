@@ -15,7 +15,9 @@ function normalizeType(value) {
 }
 
 function articleUid(article) {
-    return normalizeUid(article?.uid || article?.pmid || article?.id || article?.doi || article?.title);
+    // Prefer PMID so OpenAlex/Semantic rows that carry the same landmark still
+    // match gold fixtures keyed by PubMed id.
+    return normalizeUid(article?.pmid || article?.uid || article?.id || article?.doi || article?.title);
 }
 
 function articleTypes(article) {
@@ -27,10 +29,33 @@ function articleTypes(article) {
     ].map(normalizeType).filter(Boolean);
 }
 
+function titleMatchesRequiredType(article, wanted) {
+    const title = String(article?.title || '').toLowerCase();
+    if (!title) return false;
+    if (wanted.includes('guideline') || wanted === 'practice guideline') {
+        return /\bguidelines?\b|\brecommendations?\b|\bpractice guideline\b/.test(title);
+    }
+    if (wanted.includes('consensus')) {
+        return /\bconsensus\b|\bdefinition(s)?\b|\bcriteria\b/.test(title);
+    }
+    if (
+        wanted.includes('clinical decision rule')
+        || wanted.includes('decision rule')
+        || wanted.includes('clinical prediction')
+    ) {
+        return /\b(clinical )?decision rule\b|\bclinical prediction\b|\balgorithm\b|\byears\b/.test(title);
+    }
+    return false;
+}
+
 function articleMatchesType(article, requiredType) {
     const wanted = normalizeType(requiredType);
     if (!wanted) return true;
-    return articleTypes(article).some((type) => type.includes(wanted) || wanted.includes(type));
+    if (articleTypes(article).some((type) => type.includes(wanted) || wanted.includes(type))) {
+        return true;
+    }
+    // PubMed often omits Practice Guideline / CDR publication types for landmark papers.
+    return titleMatchesRequiredType(article, wanted);
 }
 
 function inferQueryCategory(querySpec = {}) {

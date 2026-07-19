@@ -13,6 +13,7 @@
  * Usage:
  *   node server/scripts/enrichFlagshipKnowledge.js [--dry-run] [--topic "Name"] [--force]
  *   node server/scripts/enrichFlagshipKnowledge.js --limit 5
+ *   node server/scripts/enrichFlagshipKnowledge.js --priority=high --limit=10
  */
 'use strict';
 
@@ -44,6 +45,7 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const FORCE   = process.argv.includes('--force');
 const TOPIC_FILTER = argValue('--topic');
 const QUERY_OVERRIDE = argValue('--query');
+const PRIORITY = (argValue('--priority') || '').toLowerCase().trim();
 const LIMIT = Number(argValue('--limit') || 50) || 50;
 
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
@@ -393,6 +395,9 @@ async function main() {
     const aiService = createAiService({ serverConfig, fetchImpl });
 
     let flagships = cfg.topics.filter((t) => t.priority === 'high' || t.priority === 'medium');
+    if (PRIORITY) {
+        flagships = cfg.topics.filter((t) => String(t.priority || '').toLowerCase() === PRIORITY);
+    }
     if (TOPIC_FILTER) {
         const f = TOPIC_FILTER.toLowerCase();
         flagships = flagships.filter((t) => t.topic.toLowerCase().includes(f));

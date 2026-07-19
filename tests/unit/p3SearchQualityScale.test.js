@@ -89,9 +89,12 @@ describe('P3 search-quality baseline gates (CI)', () => {
     test('baseline absolute gates are defined', () => {
         expect(baselineSpec.absoluteGates.landmarkHitRateMin).toBeGreaterThanOrEqual(0.90);
         expect(baselineSpec.absoluteGates.offTopicRateAtKMax).toBeLessThanOrEqual(0.05);
-        expect(baselineSpec.absoluteGates.managementIntentHitRateMin).toBeGreaterThanOrEqual(0.33);
+        expect(baselineSpec.absoluteGates.managementIntentHitRateMin).toBeGreaterThanOrEqual(1.0);
+        expect(baselineSpec.absoluteGates.diagnosisIntentHitRateMin).toBeGreaterThanOrEqual(1.0);
+        expect(baselineSpec.absoluteGates.requiredTypeCoverageMin).toBeGreaterThanOrEqual(0.98);
         expect(baselineSpec.metrics).toHaveProperty('managementIntentHitRate');
         expect(baselineSpec.metrics).toHaveProperty('diagnosisIntentHitRate');
+        expect(baselineSpec.metrics.requiredTypeCoverage).toBeGreaterThanOrEqual(0.98);
     });
 
     test('regression helper fails when landmark hit rate drops beyond tolerance', () => {

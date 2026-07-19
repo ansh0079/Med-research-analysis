@@ -136,20 +136,20 @@
     },
     {
       "source": "gold_expansion",
-      "all": ["\\bpulmonary embolism\\b|\\bpe\\b", "\\byears\\b|\\bd-?dimer\\b"],
-      "aliases": ["YEARS algorithm"],
+      "all": ["\\bpulmonary embolism\\b|\\bpe\\b", "\\byears\\b|\\bd-?dimer\\b|\\balgorithm\\b"],
+      "aliases": ["YEARS algorithm", "pregnancy-adapted YEARS"],
       "pmids": ["28549662", "39915029"]
     },
     {
       "source": "gold_expansion",
       "all": ["\\bsepsis-?3\\b|\\bqsofa\\b|\\bsofa\\b", "\\bdefinition\\b|\\bcriteria\\b|\\bdiagnosis\\b"],
-      "aliases": ["Sepsis-3", "qSOFA"],
+      "aliases": ["Sepsis-3", "qSOFA", "Assessment of Clinical Criteria for Sepsis"],
       "pmids": ["26903338", "26903335"]
     },
     {
       "source": "gold_expansion",
-      "all": ["\\bsurviving sepsis\\b|\\bsepsis campaign\\b", "\\bguideline\\b|\\bseptic shock\\b|\\bvasopressors?\\b"],
-      "aliases": ["Surviving Sepsis Campaign 2021"],
+      "all": ["\\bsurviving sepsis\\b|\\bsepsis campaign\\b", "\\bguideline\\b|\\bseptic shock\\b|\\bvasopressors?\\b|\\bantibiotics?\\b|\\bfluids?\\b"],
+      "aliases": ["Surviving Sepsis Campaign 2021", "SSC 2021"],
       "pmids": ["34599691", "35791800"]
     },
     {

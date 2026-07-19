@@ -55,6 +55,40 @@ describe('unifiedEvidenceSearch helpers', () => {
         expect(out.map((a) => a.uid)).toEqual(['1', '3']);
     });
 
+    test('collapseNearDuplicateTitles prefers pinned PubMed twin over OpenAlex without PMID', () => {
+        const { articleFromOpenAlexWork } = require('../../server/services/unifiedEvidenceSearch');
+        const openAlex = articleFromOpenAlexWork({
+            id: 'https://openalex.org/W2282181907',
+            display_name: 'Assessment of Clinical Criteria for Sepsis',
+            publication_year: 2016,
+            ids: { pmid: 'https://pubmed.ncbi.nlm.nih.gov/26903335' },
+            authorships: [],
+        });
+        expect(openAlex.pmid).toBe('26903335');
+
+        const out = collapseNearDuplicateTitles([
+            {
+                uid: 'https://openalex.org/W2282181907',
+                title: 'Assessment of Clinical Criteria for Sepsis',
+                pubdate: '2016',
+                _source: 'openalex',
+            },
+            {
+                uid: 'pubmed-26903335',
+                pmid: '26903335',
+                title: 'Assessment of Clinical Criteria for Sepsis: For the Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3)',
+                pubdate: '2016',
+                _source: 'pubmed',
+                _pinnedLandmark: true,
+                pubtype: ['Journal Article'],
+            },
+        ], { minJaccard: 0.5 });
+        expect(out).toHaveLength(1);
+        expect(out[0].pmid).toBe('26903335');
+        expect(out[0]._pinnedLandmark).toBe(true);
+        expect(String(out[0].uid)).toContain('26903335');
+    });
+
     test('collapseNearDuplicateTitles does not merge different years when both known', () => {
         const articles = [
             {

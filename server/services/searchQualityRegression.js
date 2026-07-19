@@ -11,6 +11,7 @@ const DEFAULT_TOLERANCE = {
     managementIntentHitRate: 0.15,
     diagnosisIntentHitRate: 0.15,
     anyRelevantHitRate: 0.05,
+    requiredTypeCoverage: 0.05,
 };
 
 function compareMetric(current, baseline, tolerance, { higherIsBetter = true, label } = {}) {
@@ -44,6 +45,7 @@ function compareSummaryToBaseline(summary, baselineSpec = {}) {
         compareMetric(summary.managementIntentHitRate, baseline.managementIntentHitRate, tolerance.managementIntentHitRate, { label: 'managementIntentHitRate' }),
         compareMetric(summary.diagnosisIntentHitRate, baseline.diagnosisIntentHitRate, tolerance.diagnosisIntentHitRate, { label: 'diagnosisIntentHitRate' }),
         compareMetric(summary.anyRelevantHitRate, baseline.anyRelevantHitRate, tolerance.anyRelevantHitRate, { label: 'anyRelevantHitRate' }),
+        compareMetric(summary.requiredTypeCoverage, baseline.requiredTypeCoverage, tolerance.requiredTypeCoverage, { label: 'requiredTypeCoverage' }),
     ].filter((row) => !row.skipped);
 
     const failingChecks = checks.filter((row) => !row.pass);

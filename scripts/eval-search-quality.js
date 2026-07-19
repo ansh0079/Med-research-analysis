@@ -81,6 +81,14 @@ function evaluateAbsoluteGates(summary, baselineSpec = {}) {
             pass: summary.diagnosisIntentHitRate >= gates.diagnosisIntentHitRateMin,
         });
     }
+    if (gates.requiredTypeCoverageMin != null && summary.requiredTypeCoverage != null) {
+        checks.push({
+            label: 'requiredTypeCoverageMin',
+            current: summary.requiredTypeCoverage,
+            threshold: gates.requiredTypeCoverageMin,
+            pass: summary.requiredTypeCoverage >= gates.requiredTypeCoverageMin,
+        });
+    }
     const failingChecks = checks.filter((row) => !row.pass);
     return { pass: failingChecks.length === 0, checks, failingChecks };
 }

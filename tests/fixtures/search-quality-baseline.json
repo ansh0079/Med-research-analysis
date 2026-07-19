@@ -10,10 +10,10 @@
     "offTopicRateAtK": 0.002,
     "landmarkHitRate": 1.0,
     "guidelineHitRate": 1.0,
-    "managementIntentHitRate": 0.33,
-    "diagnosisIntentHitRate": 0.0,
-    "anyRelevantHitRate": 0.985,
-    "requiredTypeCoverage": 0.969
+    "managementIntentHitRate": 1.0,
+    "diagnosisIntentHitRate": 1.0,
+    "anyRelevantHitRate": 1.0,
+    "requiredTypeCoverage": 1.0
   },
   "regressionTolerance": {
     "recallAtK": 0.05,
@@ -23,14 +23,17 @@
     "offTopicRateAtK": 0.05,
     "landmarkHitRate": 0.03,
     "guidelineHitRate": 0.05,
-    "managementIntentHitRate": 0.20,
-    "diagnosisIntentHitRate": 0.25,
-    "anyRelevantHitRate": 0.05
+    "managementIntentHitRate": 0.15,
+    "diagnosisIntentHitRate": 0.15,
+    "anyRelevantHitRate": 0.05,
+    "requiredTypeCoverage": 0.05
   },
   "absoluteGates": {
     "landmarkHitRateMin": 0.90,
     "offTopicRateAtKMax": 0.05,
     "guidelineHitRateMin": 0.50,
-    "managementIntentHitRateMin": 0.33
+    "managementIntentHitRateMin": 1.0,
+    "diagnosisIntentHitRateMin": 1.0,
+    "requiredTypeCoverageMin": 0.98
   }
 }

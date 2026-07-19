@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '@components/ui/Button';
 import { api } from '@services/api';
 import type { AgentGuidance } from '@types';
+import { isLandmarkSeedKnowledge } from '@utils/topicKnowledgeTrust';
 import type { BriefDifficulty } from './TopicBriefPanel';
 
 interface AgentMentorPanelProps {
@@ -82,6 +83,14 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
     <div className="p-5 space-y-4">
       <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">{agentGuidance.mentorMessage}</p>
       <div className="flex flex-wrap items-center gap-2">
+        {isLandmarkSeedKnowledge(agentGuidance) && (
+          <span
+            className="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
+            title="Landmark PMIDs are pinned; mentor copy still needs AI/human enrichment"
+          >
+            Landmark seed — not yet enriched
+          </span>
+        )}
         <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
           agentGuidance.status === 'human_reviewed'
             ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300'

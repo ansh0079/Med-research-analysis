@@ -25,7 +25,7 @@ export function RankingTraceBadge({
     <span className="relative inline-flex max-w-full flex-col gap-1 sm:flex-row sm:items-center">
       {headline ? (
         <span
-          className="badge font-semibold max-w-[18rem] truncate"
+          className="badge font-semibold max-w-[22rem] truncate"
           style={{
             background: 'rgba(16,185,129,0.12)',
             color: '#047857',
@@ -33,7 +33,7 @@ export function RankingTraceBadge({
           }}
           title={headline}
         >
-          Adapted for you
+          {headline.length > 72 ? `${headline.slice(0, 69)}…` : headline}
         </span>
       ) : null}
       <button

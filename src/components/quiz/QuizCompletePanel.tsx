@@ -176,12 +176,21 @@ export const QuizCompletePanel: React.FC<QuizCompletePanelProps> = ({
                       {missCount > 1 && <span className="ml-2 font-semibold text-red-500">{missCount} questions missed</span>}
                       {questionTypes.length > 0 && <span className="ml-2 text-slate-400">({questionTypes.join(', ')})</span>}
                     </p>
-                    {pubmedUrl && (
-                      <a href={pubmedUrl} target="_blank" rel="noopener noreferrer"
-                        className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
-                        <i className="fas fa-arrow-up-right-from-square text-[9px]" /> View paper
+                    <div className="mt-1.5 flex flex-wrap items-center gap-3">
+                      {pubmedUrl && (
+                        <a href={pubmedUrl} target="_blank" rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+                          <i className="fas fa-arrow-up-right-from-square text-[9px]" /> View paper
+                        </a>
+                      )}
+                      <a
+                        href={`/search?q=${encodeURIComponent(article.title || quiz.topic || '')}${article.pmid ? `&focusPmid=${encodeURIComponent(article.pmid)}` : ''}`}
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 hover:underline"
+                        title="Open search with personalization — missed papers are boosted for you"
+                      >
+                        <i className="fas fa-user-graduate text-[9px]" /> Find in search (personalized)
                       </a>
-                    )}
+                    </div>
                   </div>
                 </div>
               );

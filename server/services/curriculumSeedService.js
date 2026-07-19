@@ -8,7 +8,13 @@ const { runFullSynthesisGeneration } = require('./synthesisGenerationCore');
 const { runPaperSynopsisGeneration } = require('./paperSynopsisCore');
 const { alignTopicClaimsWithGuidelines } = require('./claimGuidelineEngine');
 const { runGuidelineEnrichmentForTopic } = require('./guidelineSeedService');
-const { mergeSourceArticles } = require('./flagshipTopicOps');
+const {
+    mergeSourceArticles,
+    buildLandmarkSourceArticles,
+    loadFlagshipConfig,
+    curriculumMatchesFlagship,
+    defaultNormalize,
+} = require('./flagshipTopicOps');
 
 function addDays(date, days) {
     const next = new Date(date);
@@ -189,8 +195,8 @@ async function seedCurriculumTopic({
 
         // Bridge curriculum seed → topic_knowledge so flagship readiness can see source_articles.
         let topicKnowledge = null;
-        if (typeof db.upsertTopicKnowledge === 'function' && selectedArticles.length >= 2) {
-            const sourceArticles = selectedArticles.slice(0, 10).map((a, i) => ({
+        if (typeof db.upsertTopicKnowledge === 'function' && selectedArticles.length >= 1) {
+            let sourceArticles = selectedArticles.slice(0, 10).map((a, i) => ({
                 sourceIndex: i + 1,
                 uid: a.uid || (a.pmid ? `pubmed-${a.pmid}` : null),
                 pmid: a.pmid || null,
@@ -199,6 +205,22 @@ async function seedCurriculumTopic({
                 source: a.source || a._source || null,
                 pubdate: a.pubdate || a.year || null,
             }));
+            try {
+                const flagshipConfig = loadFlagshipConfig();
+                const normalizeFn = (t) => (typeof db.normalizeTopic === 'function' ? db.normalizeTopic(t) : defaultNormalize(t));
+                const matchedFlagship = (flagshipConfig.topics || []).find((f) => (
+                    curriculumMatchesFlagship(topic.displayName, f, { normalizeFn }).match
+                    || curriculumMatchesFlagship(topic.suggestedQuery || '', f, { normalizeFn }).match
+                ));
+                if (matchedFlagship?.landmarkPmids?.length) {
+                    sourceArticles = mergeSourceArticles(
+                        sourceArticles,
+                        buildLandmarkSourceArticles(matchedFlagship.landmarkPmids)
+                    );
+                }
+            } catch (err) {
+                log.warn({ err, topic: topic.displayName }, 'curriculum seed flagship landmark merge skipped');
+            }
             const stubKnowledge = {
                 mentorMessage: `${topic.displayName}: seeded from curriculum evidence pipeline.`,
                 teachingPoints: [],

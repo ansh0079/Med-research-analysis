@@ -35,6 +35,8 @@ export interface AgentGuidance {
   confidence: number;
   lastRefreshedAt?: string;
   mentorMessage: string;
+  /** Present when knowledge came from landmark/curriculum stub backfill rather than full enrichment. */
+  seededFrom?: string | null;
   clinicalAnswer?: ClinicalAnswer;
   contradictions?: Contradiction[];
   seminalPapers: Array<{

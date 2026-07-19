@@ -12,6 +12,7 @@ const LEARNING_SIGNAL_TYPES = Object.freeze({
     SEARCH_REWARD_ATTRIBUTED: 'search_reward_attributed',
     SEARCH_REWARD_SKIPPED: 'search_reward_skipped',
     QUIZ_REWARD_ATTRIBUTED: 'quiz_reward_attributed',
+    QUIZ_MISS_FOR_SEARCH: 'quiz_miss_for_search',
 });
 
 async function recordLearningSignal(db, {

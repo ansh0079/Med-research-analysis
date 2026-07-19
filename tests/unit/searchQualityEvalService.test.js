@@ -51,6 +51,21 @@ describe('articleMatchesType', () => {
     test('returns false when type not present', () => {
         expect(articleMatchesType({ pubtype: ['Case Report'] }, 'meta-analysis')).toBe(false);
     });
+
+    test('matches guideline/consensus/CDR from title when PubMed omits publication type', () => {
+        expect(articleMatchesType({
+            title: 'Surviving Sepsis Campaign: International Guidelines for Management of Sepsis',
+            pubtype: ['Journal Article'],
+        }, 'guideline')).toBe(true);
+        expect(articleMatchesType({
+            title: 'The Third International Consensus Definitions for Sepsis and Septic Shock',
+            pubtype: ['Journal Article'],
+        }, 'consensus')).toBe(true);
+        expect(articleMatchesType({
+            title: 'Pregnancy-Adapted YEARS Algorithm for Diagnosis of Suspected Pulmonary Embolism',
+            pubtype: ['Journal Article'],
+        }, 'clinical decision rule')).toBe(true);
+    });
 });
 
 // ---------------------------------------------------------------------------
@@ -401,5 +416,25 @@ describe('evaluateSearchResults — UID normalization', () => {
         const spec = makeSpec({ relevantUids: ['pmid:12345678'], k: 3 });
         const articles = [{ uid: '12345678' }];
         expect(evaluateSearchResults(spec, articles).relevantHits).toBe(1);
+    });
+
+    test('matches gold PMID when OpenAlex uid lacks pubmed prefix but pmid is set', () => {
+        const spec = makeSpec({
+            query: 'sepsis diagnosis',
+            category: 'diagnosis_intent',
+            relevantUids: ['26903335'],
+            requiredTypes: ['consensus'],
+            k: 3,
+        });
+        const articles = [{
+            uid: 'https://openalex.org/W2282181907',
+            pmid: '26903335',
+            title: 'Assessment of Clinical Criteria for Sepsis: consensus definitions',
+            pubtype: [],
+        }];
+        const metrics = evaluateSearchResults(spec, articles);
+        expect(metrics.relevantHits).toBe(1);
+        expect(metrics.requiredTypeCoverage).toBe(1);
+        expect(metrics.diagnosisIntentHit).toBe(true);
     });
 });

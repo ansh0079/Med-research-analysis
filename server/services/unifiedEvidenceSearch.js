@@ -173,6 +173,17 @@ function jaccardWordSets(a, b) {
     return union === 0 ? 0 : inter / union;
 }
 
+function titlesNearDuplicate(aWords, bWords, minJaccard = 0.72) {
+    if (jaccardWordSets(aWords, bWords) >= minJaccard) return true;
+    // OpenAlex often truncates titles; treat high containment of the shorter set as a near-dup.
+    const smaller = aWords.size <= bWords.size ? aWords : bWords;
+    const larger = aWords.size <= bWords.size ? bWords : aWords;
+    if (smaller.size < 3) return false;
+    let hit = 0;
+    for (const w of smaller) if (larger.has(w)) hit += 1;
+    return hit / smaller.size >= 0.85;
+}
+
 function parseArticleYear(article) {
     const y = article.year ?? article.pubdate;
     if (typeof y === 'number' && y > 1900 && y < 2100) return y;
@@ -194,19 +205,47 @@ function publicationYearsCompatible(a, b) {
  * Drop near-duplicate titles (same paper, different DOI/uid across sources) after RRF.
  * Preserves first occurrence = higher fused rank.
  */
+function preferCanonicalArticle(primary, incoming) {
+    if (!primary) return incoming;
+    if (!incoming) return primary;
+    // Prefer pinned PubMed landmarks over OpenAlex title twins that lack PMIDs.
+    if (incoming._pinnedLandmark && !primary._pinnedLandmark) return incoming;
+    if (primary._pinnedLandmark && !incoming._pinnedLandmark) return primary;
+    const primaryPmid = normalizePmid(primary.pmid);
+    const incomingPmid = normalizePmid(incoming.pmid);
+    if (incomingPmid && !primaryPmid) return incoming;
+    if (primaryPmid && !incomingPmid) return primary;
+    const primaryIsPubmed = String(primary._source || primary.uid || '').toLowerCase().includes('pubmed');
+    const incomingIsPubmed = String(incoming._source || incoming.uid || '').toLowerCase().includes('pubmed');
+    if (incomingIsPubmed && !primaryIsPubmed) return incoming;
+    return primary;
+}
+
 function collapseNearDuplicateTitles(articles, { minJaccard = 0.72 } = {}) {
     const kept = [];
     const seen = [];
     for (const article of articles) {
         const words = titleWordSet(article.title);
-        let isNearDup = false;
-        for (const prev of seen) {
-            if (jaccardWordSets(words, prev.words) >= minJaccard && publicationYearsCompatible(article, prev.article)) {
-                isNearDup = true;
+        let mergeAt = -1;
+        for (let i = 0; i < seen.length; i++) {
+            if (titlesNearDuplicate(words, seen[i].words, minJaccard) && publicationYearsCompatible(article, seen[i].article)) {
+                mergeAt = i;
                 break;
             }
         }
-        if (!isNearDup) {
+        if (mergeAt >= 0) {
+            const previous = kept[mergeAt];
+            const preferred = preferCanonicalArticle(previous, article);
+            const other = preferred === previous ? article : previous;
+            const merged = mergeArticleMetadata(preferred, other);
+            const pmid = normalizePmid(merged.pmid);
+            if (pmid && !normalizePmid(merged.uid)) {
+                merged.uid = `pubmed-${pmid}`;
+            }
+            if (previous._pinnedLandmark || article._pinnedLandmark) merged._pinnedLandmark = true;
+            kept[mergeAt] = merged;
+            seen[mergeAt] = { words: titleWordSet(merged.title), article: merged };
+        } else {
             kept.push(article);
             seen.push({ words, article });
         }
@@ -253,6 +292,17 @@ function mergeArticleMetadata(primary, incoming) {
     for (const field of ['doi', 'pmid', 'pmcid', 'abstract', 'journal', 'source', 'pubdate', 'year']) {
         if (!merged[field] && incoming[field]) merged[field] = incoming[field];
     }
+    if (incoming._pinnedLandmark) merged._pinnedLandmark = true;
+    // Keep a PubMed-shaped uid when we know the PMID so gold eval / pins resolve.
+    const pmid = normalizePmid(merged.pmid || incoming.pmid);
+    if (pmid) {
+        merged.pmid = pmid;
+        const uidHasPmid = normalizePmid(merged.uid) === pmid;
+        if (!uidHasPmid && (primary._pinnedLandmark || incoming._pinnedLandmark || String(primary._source || '').includes('pubmed') || String(incoming._source || '').includes('pubmed'))) {
+            merged.uid = `pubmed-${pmid}`;
+            merged._source = merged._source || 'pubmed';
+        }
+    }
     const sources = new Set([
         ...(Array.isArray(primary._sources) ? primary._sources : [primary._source || primary.source].filter(Boolean)),
         ...(Array.isArray(incoming._sources) ? incoming._sources : [incoming._source || incoming.source].filter(Boolean)),
@@ -262,6 +312,9 @@ function mergeArticleMetadata(primary, incoming) {
     const incomingAuthors = Array.isArray(incoming.authors) ? incoming.authors : [];
     if (primaryAuthors.length === 0 && incomingAuthors.length > 0) merged.authors = incomingAuthors;
     if ((incoming.pmcrefcount || 0) > (merged.pmcrefcount || 0)) merged.pmcrefcount = incoming.pmcrefcount;
+    const primaryTypes = Array.isArray(primary.pubtype) ? primary.pubtype : [];
+    const incomingTypes = Array.isArray(incoming.pubtype) ? incoming.pubtype : [];
+    if (primaryTypes.length === 0 && incomingTypes.length > 0) merged.pubtype = incomingTypes;
     return merged;
 }
 
@@ -367,12 +420,19 @@ function articleFromOpenAlexWork(w) {
         abstractPlain = pairs.map((x) => x.token).join(' ');
     }
 
+    const ids = w.ids && typeof w.ids === 'object' ? w.ids : {};
+    const pmidRaw = ids.pmid || ids.PMID || null;
+    const pmid = pmidRaw ? normalizePmid(String(pmidRaw).replace(/^https?:\/\/pubmed\.ncbi\.nlm\.nih\.gov\//i, '')) : null;
+    const doi = normalizeDoi(w.doi || ids.doi || null);
+
     return {
         uid: w.id,
         title: w.display_name,
         authors: w.authorships?.map((a) => ({ name: a.author?.display_name })).filter(Boolean),
         pubdate: w.publication_year?.toString(),
         source: src?.display_name || 'OpenAlex',
+        pmid: pmid || undefined,
+        doi: doi || undefined,
         pmcrefcount: w.cited_by_count,
         abstract: abstractPlain,
         openAccess: w.open_access?.is_oa,

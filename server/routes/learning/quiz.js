@@ -14,6 +14,7 @@ const {
     attributeQuizAttemptRewards,
     attributeRecommendationFollowThrough,
 } = require('../../services/searchLearningOutcomeService');
+const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('../../services/learningSignalService');
 const {
     calculateMastery, nextReviewDate, updateStreak,
     buildOutline, initialCoverage, updateCoverage, summarizeRunGaps,
@@ -29,6 +30,30 @@ function registerQuizRoutes(app, deps) {
             logger.warn({ err, eventType: event?.eventType }, 'recordLearningEvent failed');
             return null;
         });
+    }
+
+    /** Ledger misses so search personalization / RL can attribute "boosted because you missed this paper". */
+    function recordQuizMissesForSearch(userId, sessionId, topic, attemptsWithJudgement = []) {
+        const misses = (attemptsWithJudgement || []).filter((a) => !a.isCorrect);
+        if (!misses.length) return;
+        for (const attempt of misses) {
+            const articleUid = attempt.sourceArticleUid || attempt.source_article_uid || null;
+            void recordLearningSignal(db, {
+                userId: userId || null,
+                sessionId: sessionId || null,
+                eventType: LEARNING_SIGNAL_TYPES.QUIZ_MISS_FOR_SEARCH,
+                topic,
+                articleUid,
+                sourceType: 'quiz_attempt',
+                sourceId: attempt.id != null ? String(attempt.id) : null,
+                payload: {
+                    claimKey: attempt.claimKey || null,
+                    questionType: attempt.questionType || null,
+                    sourceArticleTitle: attempt.sourceArticleTitle || null,
+                    pmid: attempt.pmid || null,
+                },
+            });
+        }
     }
 
     app.post('/api/learning/quiz-attempt', limitBodySize(256 * 1024), requireJson, requireQuizAuth, requireVerifiedEmail, rateLimit(60, 60), validateBody(schemas.quizAttempt), async (req, res) => {
@@ -70,6 +95,7 @@ function registerQuizRoutes(app, deps) {
                 }
                 void attributeQuizAttemptRewards(db, null, attemptsWithJudgement, topic, { sessionId: req.sessionId })
                     .catch((err) => { logger.warn({ err }, 'attributeQuizAttemptRewards (beta) failed'); });
+                recordQuizMissesForSearch(null, req.sessionId, topic, attemptsWithJudgement);
                 return res.json({
                     saved: attempts.length,
                     mastery: { overall: 0, byType: {} },
@@ -309,6 +335,8 @@ function registerQuizRoutes(app, deps) {
 
             void attributeAgentQuizOutcomeReward(db, userId, attemptsWithJudgement, topic)
                 .catch((err) => { logger.warn({ err }, 'attributeAgentQuizOutcomeReward failed'); });
+
+            recordQuizMissesForSearch(userId, req.sessionId, topic, attemptsWithJudgement);
 
             const errorPatterns = analyzeQuizErrorPatterns(attemptsWithJudgement, { topic });
             if (errorPatterns.hasPatterns && db.recordLearningEvent) {
