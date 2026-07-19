@@ -615,7 +615,7 @@
       "block": "Psychiatry",
       "priority": "high",
       "aliases": ["depression", "MDD", "SSRI", "SNRI", "antidepressant", "STAR*D"],
-      "landmarkPmids": ["16554526", "29477251"],
+      "landmarkPmids": ["16554526", "29477251", "20051569"],
       "guidelineQueries": ["major depressive disorder antidepressant guideline SSRI SNRI"],
       "searchQueries": [
         "sequential antidepressant treatment steps depressed outpatients STAR*D",
