@@ -212,7 +212,7 @@
       "block": "Cardiology",
       "priority": "medium",
       "aliases": ["stable coronary disease", "ISCHEMIA", "ischemic heart disease"],
-      "landmarkPmids": ["32227755", "12517460"],
+      "landmarkPmids": ["32227755", "12517460", "19228612"],
       "guidelineQueries": ["stable coronary disease invasive conservative guideline"],
       "searchQueries": [
         "initial invasive or conservative strategy stable coronary disease",
@@ -225,7 +225,7 @@
       "block": "Cardiology",
       "priority": "medium",
       "aliases": ["aortic stenosis", "TAVR", "TAVI", "PARTNER 3"],
-      "landmarkPmids": ["30883058"],
+      "landmarkPmids": ["30883058", "20961243", "27040324"],
       "guidelineQueries": ["aortic stenosis TAVR guideline low risk"],
       "searchQueries": [
         "transcatheter aortic valve replacement balloon-expandable low-risk patients",
@@ -251,7 +251,7 @@
       "block": "Infectious Diseases",
       "priority": "medium",
       "aliases": ["AMR", "antimicrobial resistance", "GRAM"],
-      "landmarkPmids": ["35065702"],
+      "landmarkPmids": ["35065702", "24252483", "29581252"],
       "guidelineQueries": ["antimicrobial resistance stewardship guideline"],
       "searchQueries": [
         "global burden bacterial antimicrobial resistance",
@@ -264,7 +264,7 @@
       "block": "Infectious Diseases",
       "priority": "medium",
       "aliases": ["influenza", "oseltamivir", "Tamiflu"],
-      "landmarkPmids": ["10697061"],
+      "landmarkPmids": ["10697061", "10866439", "30184455"],
       "guidelineQueries": ["influenza antiviral treatment guideline oseltamivir"],
       "searchQueries": [
         "oseltamivir treatment influenza healthy adults",
@@ -290,7 +290,7 @@
       "block": "Oncology",
       "priority": "medium",
       "aliases": ["melanoma", "CheckMate 067", "nivolumab", "ipilimumab"],
-      "landmarkPmids": ["31562797"],
+      "landmarkPmids": ["31562797", "25891173", "28822576"],
       "guidelineQueries": ["advanced melanoma immunotherapy guideline nivolumab ipilimumab"],
       "searchQueries": [
         "nivolumab ipilimumab advanced melanoma overall survival",
@@ -303,7 +303,7 @@
       "block": "Oncology",
       "priority": "medium",
       "aliases": ["HER2 breast cancer", "trastuzumab", "BCIRG 006"],
-      "landmarkPmids": ["21991949"],
+      "landmarkPmids": ["21991949", "16236737", "25332249"],
       "guidelineQueries": ["HER2 positive breast cancer adjuvant trastuzumab guideline"],
       "searchQueries": [
         "trastuzumab adjuvant HER2 positive breast cancer BCIRG 006",
@@ -316,7 +316,7 @@
       "block": "Oncology",
       "priority": "medium",
       "aliases": ["CML", "imatinib", "IRIS"],
-      "landmarkPmids": ["12637609"],
+      "landmarkPmids": ["12637609", "28273028", "33414482"],
       "guidelineQueries": ["chronic myeloid leukemia imatinib guideline"],
       "searchQueries": [
         "imatinib versus interferon chronic myeloid leukemia IRIS trial",
@@ -329,7 +329,7 @@
       "block": "Oncology",
       "priority": "medium",
       "aliases": ["CAR-T", "axicabtagene", "ZUMA-1", "large B-cell lymphoma"],
-      "landmarkPmids": ["29226797"],
+      "landmarkPmids": ["29226797", "34891224", "41252666"],
       "guidelineQueries": ["large B-cell lymphoma CAR-T guideline"],
       "searchQueries": [
         "CAR-T cell therapy refractory large B-cell lymphoma axicabtagene",
@@ -342,7 +342,7 @@
       "block": "Haematology",
       "priority": "medium",
       "aliases": ["sickle cell disease", "CRISPR", "Cas9", "CTX001", "exa-cel"],
-      "landmarkPmids": ["33283989"],
+      "landmarkPmids": ["33283989", "34898139", "28249145"],
       "guidelineQueries": ["sickle cell disease gene therapy guideline exagamglogene"],
       "searchQueries": [
         "CRISPR-Cas9 gene editing sickle cell disease beta-thalassemia",
@@ -368,7 +368,7 @@
       "block": "Endocrinology",
       "priority": "medium",
       "aliases": ["bariatric surgery", "metabolic surgery", "STAMPEDE"],
-      "landmarkPmids": ["22449319"],
+      "landmarkPmids": ["22449319", "24679060", "28199805"],
       "guidelineQueries": ["bariatric surgery type 2 diabetes guideline"],
       "searchQueries": [
         "bariatric surgery versus medical therapy type 2 diabetes STAMPEDE",
@@ -381,7 +381,7 @@
       "block": "Rheumatology",
       "priority": "medium",
       "aliases": ["rheumatoid arthritis", "methotrexate", "TEAR"],
-      "landmarkPmids": ["22508468"],
+      "landmarkPmids": ["22508468", "9920948", "16385520"],
       "guidelineQueries": ["rheumatoid arthritis methotrexate DMARD guideline"],
       "searchQueries": [
         "methotrexate early rheumatoid arthritis combination therapy TEAR",
@@ -394,7 +394,7 @@
       "block": "Gastroenterology",
       "priority": "medium",
       "aliases": ["C difficile", "Clostridioides difficile", "FMT", "fecal microbiota transplant"],
-      "landmarkPmids": ["23323867"],
+      "landmarkPmids": ["23323867", "21288078", "33800841"],
       "guidelineQueries": ["recurrent Clostridioides difficile infection FMT guideline"],
       "searchQueries": [
         "fecal microbiota transplant recurrent Clostridioides difficile infection",
@@ -407,7 +407,7 @@
       "block": "Gastroenterology",
       "priority": "medium",
       "aliases": ["peptic ulcer bleeding", "H pylori", "Helicobacter pylori"],
-      "landmarkPmids": ["7800005"],
+      "landmarkPmids": ["7800005", "10674604", "1558340"],
       "guidelineQueries": ["peptic ulcer bleeding H pylori eradication guideline"],
       "searchQueries": [
         "Helicobacter pylori eradication peptic ulcer bleeding recurrence",
@@ -420,7 +420,7 @@
       "block": "Respiratory",
       "priority": "medium",
       "aliases": ["OSA", "obstructive sleep apnea", "CPAP", "SAVE"],
-      "landmarkPmids": ["27571048"],
+      "landmarkPmids": ["27571048", "26914592", "37863463"],
       "guidelineQueries": ["obstructive sleep apnea CPAP guideline cardiovascular"],
       "searchQueries": [
         "continuous positive airway pressure obstructive sleep apnea cardiovascular outcomes SAVE",
@@ -602,7 +602,7 @@
       "block": "Oncology",
       "priority": "medium",
       "aliases": ["lung cancer screening", "NLST", "LDCT", "low dose CT screening"],
-      "landmarkPmids": ["21714641", "26485620"],
+      "landmarkPmids": ["21714641", "26485620", "31995683"],
       "guidelineQueries": ["lung cancer screening low-dose CT guideline high risk smokers"],
       "searchQueries": [
         "low-dose CT screening lung cancer mortality smokers NLST trial",
@@ -654,7 +654,7 @@
       "block": "Gastroenterology",
       "priority": "medium",
       "aliases": ["NAFLD", "NASH", "non-alcoholic steatohepatitis", "resmetirom", "semaglutide NASH"],
-      "landmarkPmids": ["38324483"],
+      "landmarkPmids": ["38324483", "33185364", "20578268"],
       "guidelineQueries": ["NAFLD NASH treatment guideline pharmacotherapy"],
       "searchQueries": [
         "resmetirom NASH fibrosis MAESTRO-NASH trial",
