@@ -281,6 +281,70 @@ async function enqueuePdfIndexForBouquetArticles({
     return results;
 }
 
+/**
+ * Enqueue flagship-level enrichment (landmark PMID claim extraction + guideline MCQs)
+ * for a topic that matches a flagship config entry but has insufficient claims (<8).
+ * Priority is intentionally low (-2) so user-facing jobs always run first.
+ */
+async function getOrEnqueueFlagshipEnrich({ db, topic, flagship, cache, logger: log }) {
+    const { flagshipEnrichJobKey } = require('./flagshipEnrichService');
+    const jobKey = flagshipEnrichJobKey(topic);
+    if (!hasDurableJobStore(db)) {
+        return { status: 'skipped', reason: 'no_durable_job_store', jobKey };
+    }
+
+    const existing = await db.getAiGenerationJobByKey(jobKey).catch(() => null);
+    if (existing?.status === 'completed') return { status: 'completed', jobKey, cached: true };
+    if (existing?.status === 'running' || existing?.status === 'queued') return { status: existing.status, jobKey };
+    // For failed jobs, allow re-queue so transient errors self-heal on next search
+    if (existing?.status === 'failed') {
+        if (typeof db.resetAiGenerationJobForRetry === 'function') {
+            await db.resetAiGenerationJobForRetry(jobKey).catch(() => null);
+        } else {
+            return { status: 'failed', jobKey };
+        }
+    }
+
+    // Skip if this topic already has enough claims — avoids pointless re-enrichment
+    const normalizedTopic = typeof db.normalizeTopic === 'function'
+        ? db.normalizeTopic(String(topic || '').trim())
+        : String(topic || '').trim().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, ' ').trim();
+    const claimRow = await db.get(
+        'SELECT COUNT(*) AS count FROM teaching_object_claims WHERE normalized_topic = ?',
+        [normalizedTopic]
+    ).catch(() => null);
+    const claimCount = Number(claimRow?.count || 0);
+    if (claimCount >= 8) return { status: 'skipped', reason: 'sufficient_claims', claimCount, jobKey };
+
+    const topicStr = String(topic || '').trim();
+    const created = await db.createAiGenerationJob({
+        jobKey,
+        jobType: 'flagship_enrich',
+        topic: topicStr || null,
+        inputHash: stableHash({ topic: topicStr.toLowerCase() }),
+        inputPayload: {
+            topic: topicStr,
+            flagship: {
+                topic: flagship?.topic || topicStr,
+                landmarkPmids: flagship?.landmarkPmids || [],
+                aliases: flagship?.aliases || [],
+            },
+        },
+        provider: null,
+    }).catch((err) => {
+        log?.warn?.({ err, jobKey }, 'createAiGenerationJob failed for flagship_enrich');
+        return null;
+    });
+
+    if (created?.inserted) {
+        await enqueueProcessJob({
+            db, jobKey, cache, logger: log, priority: -2,
+            label: `flagship-enrich:${topicStr.slice(0, 40)}`,
+        });
+    }
+    return { status: 'queued', jobKey, claimCount };
+}
+
 module.exports = {
     topicSeedJobKey,
     guidelineAlignJobKey,
@@ -289,4 +353,5 @@ module.exports = {
     getOrEnqueueGuidelineAlign,
     enqueuePdfIndexForBouquetArticles,
     getOrEnqueuePdfIndex,
+    getOrEnqueueFlagshipEnrich,
 };

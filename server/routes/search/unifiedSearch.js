@@ -19,7 +19,9 @@ const {
     getOrEnqueueTopicSeed,
     getOrEnqueueGuidelineAlign,
     enqueuePdfIndexForBouquetArticles,
+    getOrEnqueueFlagshipEnrich,
 } = require('../../services/enrichmentJobService');
+const { matchFlagshipTopic } = require('../../services/flagshipEnrichService');
 const { enqueueVectorIndexForBouquetArticles } = require('../../services/vectorCoverageService');
 const {
     consensusEnrichmentJobKey,
@@ -331,6 +333,26 @@ function registerUnifiedSearchRoutes(app, deps) {
             }).catch((err) => {
                 req.log?.warn?.({ err }, 'getOrEnqueueGuidelineAlign failed');
             });
+
+            // Knowledge flywheel: if the search query matches a flagship topic that still
+            // lacks landmark-paper claims, enqueue deep enrichment as a low-priority background job.
+            // The job is idempotent — duplicate searches hit the existing queued/completed record.
+            void (async () => {
+                try {
+                    const match = matchFlagshipTopic(queryValidation.sanitized);
+                    if (match) {
+                        await getOrEnqueueFlagshipEnrich({
+                            db,
+                            topic: match.flagship.topic,
+                            flagship: match.flagship,
+                            cache,
+                            logger,
+                        });
+                    }
+                } catch (err) {
+                    logger.warn({ err, query: queryValidation.sanitized }, 'flagship flywheel enqueue failed');
+                }
+            })();
 
             // Search enrichment (clinical answer + consensus synopsis) runs as durable jobs.
             // If already cached, skip. Otherwise enqueue idempotent jobs.

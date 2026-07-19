@@ -285,6 +285,29 @@ async function processAiGenerationJobByKey(jobKey, deps) {
             return result;
         }
 
+        if (jobType === 'flagship_enrich') {
+            const { runFlagshipEnrichForTopic } = require('./flagshipEnrichService');
+            const result = await runFlagshipEnrichForTopic({
+                db,
+                topic: input.topic || row.topic || '',
+                flagship: input.flagship || {},
+                serverConfig,
+                fetchImpl,
+            });
+            await db.completeAiGenerationJob(jobKey, {
+                resultPayload: { ...result, jobKey },
+                provider: null,
+                model: null,
+                auditPayload: {
+                    paperTOsCreated: result.paperTOsCreated || 0,
+                    totalClaimsWritten: result.totalClaimsWritten || 0,
+                    generatedAt: new Date().toISOString(),
+                    humanReviewStatus: 'none',
+                },
+            });
+            return result;
+        }
+
         throw new Error(`Unsupported BullMQ AI job type: ${jobType}`);
     } catch (err) {
         const failedRow = await db.failAiGenerationJob(jobKey, err.message).catch((e) => {

@@ -16,9 +16,8 @@ function setNoStoreSearchHeaders(res) {
 
 function shouldAutoSeedFromSearch() {
     const flag = String(process.env.AUTO_SEED_ON_SEARCH || '').toLowerCase();
-    if (flag === 'true' || flag === '1') return true;
     if (flag === 'false' || flag === '0') return false;
-    return process.env.NODE_ENV !== 'production';
+    return true; // on by default everywhere; durable job store prevents duplicate seeding
 }
 
 async function attachApiKeyUser(req, res, next) {
