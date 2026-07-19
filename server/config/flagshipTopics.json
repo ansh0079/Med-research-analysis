@@ -147,7 +147,7 @@
       "block": "Haematology",
       "priority": "high",
       "aliases": ["DVT", "deep vein thrombosis", "EINSTEIN-DVT", "rivaroxaban"],
-      "landmarkPmids": ["21128814", "26095867", "23816708"],
+      "landmarkPmids": ["21128814", "26095867", "23991658"],
       "guidelineQueries": ["venous thromboembolism anticoagulation guideline"],
       "searchQueries": [
         "rivaroxaban treatment acute deep vein thrombosis EINSTEIN",
@@ -498,7 +498,7 @@
       "block": "Obstetrics",
       "priority": "high",
       "aliases": ["preeclampsia", "pre-eclampsia", "aspirin pregnancy", "ASPRE"],
-      "landmarkPmids": ["30072537", "8105032", "28283533"],
+      "landmarkPmids": ["28657417", "28784417"],
       "guidelineQueries": ["preeclampsia prevention aspirin guideline high risk"],
       "searchQueries": [
         "aspirin preeclampsia prevention high risk first trimester ASPRE trial",
@@ -511,7 +511,7 @@
       "block": "Neurology",
       "priority": "high",
       "aliases": ["MS", "multiple sclerosis", "natalizumab", "ocrelizumab", "DMT"],
-      "landmarkPmids": ["17005952", "29262673", "28002688"],
+      "landmarkPmids": ["16510744", "22992073", "28002688"],
       "guidelineQueries": ["multiple sclerosis disease-modifying therapy guideline relapsing"],
       "searchQueries": [
         "natalizumab relapsing-remitting multiple sclerosis AFFIRM trial",
@@ -537,7 +537,7 @@
       "block": "Infectious Diseases",
       "priority": "high",
       "aliases": ["MRSA", "methicillin-resistant Staphylococcus aureus", "vancomycin", "daptomycin", "Staph aureus bacteremia"],
-      "landmarkPmids": ["15769966", "17989380", "31722027"],
+      "landmarkPmids": ["16914701", "21208910"],
       "guidelineQueries": ["MRSA bacteremia treatment guideline vancomycin daptomycin"],
       "searchQueries": [
         "daptomycin versus vancomycin Staphylococcus aureus bacteremia endocarditis",
@@ -550,7 +550,7 @@
       "block": "Oncology",
       "priority": "high",
       "aliases": ["prostate cancer", "mCSPC", "CHAARTED", "docetaxel prostate", "enzalutamide prostate"],
-      "landmarkPmids": ["25163328", "28481449", "29949494"],
+      "landmarkPmids": ["28578607", "26244877", "29949494"],
       "guidelineQueries": ["metastatic prostate cancer docetaxel enzalutamide guideline"],
       "searchQueries": [
         "docetaxel androgen deprivation therapy metastatic prostate cancer CHAARTED",
@@ -563,7 +563,7 @@
       "block": "Oncology",
       "priority": "high",
       "aliases": ["breast cancer endocrine", "aromatase inhibitor", "tamoxifen", "letrozole", "SOFT"],
-      "landmarkPmids": ["11856106", "25866867", "22904694"],
+      "landmarkPmids": ["12090977", "25495490"],
       "guidelineQueries": ["breast cancer adjuvant endocrine therapy guideline aromatase inhibitor"],
       "searchQueries": [
         "anastrozole tamoxifen breast cancer adjuvant ATAC trial",
@@ -589,7 +589,7 @@
       "block": "Haematology",
       "priority": "high",
       "aliases": ["AML", "acute myeloid leukemia", "venetoclax", "azacitidine", "VIALE-A"],
-      "landmarkPmids": ["32978981", "21339478", "20593019"],
+      "landmarkPmids": ["32786187", "20026804"],
       "guidelineQueries": ["acute myeloid leukemia venetoclax azacitidine guideline elderly unfit"],
       "searchQueries": [
         "venetoclax azacitidine acute myeloid leukemia unfit intensive chemotherapy VIALE-A",
@@ -602,7 +602,7 @@
       "block": "Oncology",
       "priority": "medium",
       "aliases": ["lung cancer screening", "NLST", "LDCT", "low dose CT screening"],
-      "landmarkPmids": ["21714641", "32374465", "26485620"],
+      "landmarkPmids": ["21714641", "26485620"],
       "guidelineQueries": ["lung cancer screening low-dose CT guideline high risk smokers"],
       "searchQueries": [
         "low-dose CT screening lung cancer mortality smokers NLST trial",
@@ -615,7 +615,7 @@
       "block": "Psychiatry",
       "priority": "high",
       "aliases": ["depression", "MDD", "SSRI", "SNRI", "antidepressant", "STAR*D"],
-      "landmarkPmids": ["16554526", "28166580", "23511824"],
+      "landmarkPmids": ["16554526", "29477251"],
       "guidelineQueries": ["major depressive disorder antidepressant guideline SSRI SNRI"],
       "searchQueries": [
         "sequential antidepressant treatment steps depressed outpatients STAR*D",
@@ -641,7 +641,7 @@
       "block": "Renal",
       "priority": "high",
       "aliases": ["AKI", "acute kidney injury", "acute renal failure", "KDIGO AKI"],
-      "landmarkPmids": ["22890468", "32726550", "27589537"],
+      "landmarkPmids": ["22890468", "32668114"],
       "guidelineQueries": ["acute kidney injury KDIGO guideline prevention management"],
       "searchQueries": [
         "KDIGO acute kidney injury guideline 2012 staging management",
@@ -654,7 +654,7 @@
       "block": "Gastroenterology",
       "priority": "medium",
       "aliases": ["NAFLD", "NASH", "non-alcoholic steatohepatitis", "resmetirom", "semaglutide NASH"],
-      "landmarkPmids": ["26700631", "38413864", "37084116"],
+      "landmarkPmids": ["38324483"],
       "guidelineQueries": ["NAFLD NASH treatment guideline pharmacotherapy"],
       "searchQueries": [
         "resmetirom NASH fibrosis MAESTRO-NASH trial",
