@@ -1,8 +1,8 @@
 {
-  "version": 1,
-  "description": "Initial flagship-topic program. These topics should become the app's highest-quality evidence + learning surfaces before broad corpus scaling.",
+  "version": 2,
+  "description": "Flagship-topic program — 75 topics spanning evidence + learning surfaces across all major medical specialties.",
   "targets": {
-    "flagshipCount": 50,
+    "flagshipCount": 75,
     "minimumSearchQueriesPerTopic": 2,
     "minimumSourceArticles": 3,
     "minimumGuidelines": 1,
@@ -659,6 +659,331 @@
       "searchQueries": [
         "resmetirom NASH fibrosis MAESTRO-NASH trial",
         "semaglutide NASH histological improvement NEJM"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Cardiac resynchronization therapy in heart failure",
+      "block": "Cardiology",
+      "priority": "medium",
+      "aliases": ["CRT", "cardiac resynchronization", "CRT-D", "biventricular pacing", "LBBB heart failure"],
+      "landmarkPmids": ["12063368", "15152059", "15753115"],
+      "guidelineQueries": ["cardiac resynchronization therapy guideline heart failure", "CRT device therapy heart failure ACC AHA"],
+      "searchQueries": [
+        "cardiac resynchronization therapy randomized trial heart failure CRT",
+        "biventricular pacing mortality heart failure COMPANION CARE-HF"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "COPD maintenance bronchodilator combination therapy",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["LAMA LABA COPD", "triple therapy COPD", "IMPACT ETHOS TRILOGY", "umeclidinium vilanterol indacaterol"],
+      "landmarkPmids": ["27181606", "29668352", "32579807"],
+      "guidelineQueries": ["GOLD COPD pharmacotherapy maintenance bronchodilator guideline"],
+      "searchQueries": [
+        "LAMA LABA combination COPD exacerbation prevention randomized",
+        "triple inhaled therapy COPD IMPACT ETHOS ICS LAMA LABA"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Multiple myeloma daratumumab-based regimens",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["daratumumab myeloma", "DARA VMP MAIA POLLUX", "anti-CD38 myeloma"],
+      "landmarkPmids": ["31141632", "31171419", "27705267"],
+      "guidelineQueries": ["multiple myeloma treatment guideline NCCN IMWG", "daratumumab myeloma regimen"],
+      "searchQueries": [
+        "daratumumab multiple myeloma randomized phase 3 progression-free survival",
+        "MAIA POLLUX ALCYONE daratumumab frontline relapsed myeloma"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Ovarian cancer PARP inhibitor maintenance therapy",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["PARP inhibitor ovarian cancer", "olaparib niraparib rucaparib maintenance", "BRCA ovarian"],
+      "landmarkPmids": ["27717299", "30345884", "28916367"],
+      "guidelineQueries": ["ovarian cancer maintenance therapy PARP inhibitor guideline NCCN"],
+      "searchQueries": [
+        "PARP inhibitor ovarian cancer maintenance randomized progression-free survival",
+        "olaparib niraparib maintenance platinum-sensitive ovarian cancer SOLO-2 NOVA"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Heart failure SGLT2 inhibitor treatment",
+      "block": "Cardiology",
+      "priority": "medium",
+      "aliases": ["SGLT2 inhibitor heart failure", "empagliflozin dapagliflozin HF", "EMPEROR DAPA-HF EMPEROR-Preserved"],
+      "landmarkPmids": ["31535829", "32865377", "34449189"],
+      "guidelineQueries": ["SGLT2 inhibitor heart failure guideline ACC AHA HFrEF HFpEF"],
+      "searchQueries": [
+        "dapagliflozin empagliflozin heart failure reduced preserved ejection fraction randomized",
+        "DAPA-HF EMPEROR-Reduced EMPEROR-Preserved SGLT2 inhibitor worsening heart failure"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Hepatitis C virus direct-acting antiviral therapy",
+      "block": "Gastroenterology",
+      "priority": "medium",
+      "aliases": ["HCV DAA therapy", "sofosbuvir ledipasvir velpatasvir", "pan-genotypic HCV treatment", "sustained virologic response"],
+      "landmarkPmids": ["24725239", "24725238", "23607594"],
+      "guidelineQueries": ["HCV treatment guideline AASLD EASL direct-acting antiviral"],
+      "searchQueries": [
+        "sofosbuvir hepatitis C randomized trial sustained virologic response SVR",
+        "pan-genotypic direct-acting antiviral hepatitis C ASTRAL POLARIS"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Hepatocellular carcinoma systemic therapy",
+      "block": "Gastroenterology",
+      "priority": "medium",
+      "aliases": ["HCC systemic treatment", "sorafenib atezolizumab bevacizumab lenvatinib liver cancer"],
+      "landmarkPmids": ["18650514", "32402160", "29433850"],
+      "guidelineQueries": ["hepatocellular carcinoma systemic therapy guideline EASL BCLC"],
+      "searchQueries": [
+        "sorafenib hepatocellular carcinoma overall survival SHARP randomized",
+        "atezolizumab bevacizumab IMbrave150 hepatocellular carcinoma first-line"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Pulmonary arterial hypertension targeted therapy",
+      "block": "Respiratory",
+      "priority": "medium",
+      "aliases": ["PAH therapy", "macitentan riociguat selexipag", "endothelin receptor antagonist PAH", "phosphodiesterase-5 PAH"],
+      "landmarkPmids": ["23984728", "26699168", "23883378"],
+      "guidelineQueries": ["pulmonary arterial hypertension treatment guideline ESC ERS"],
+      "searchQueries": [
+        "macitentan selexipag riociguat pulmonary arterial hypertension randomized trial",
+        "ESC ERS pulmonary hypertension guideline targeted therapy combination"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Triple-negative breast cancer immunotherapy",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["TNBC immunotherapy", "pembrolizumab sacituzumab KEYNOTE-522 ASCENT", "PD-L1 breast cancer"],
+      "landmarkPmids": ["30345906", "32101663", "33882206"],
+      "guidelineQueries": ["triple-negative breast cancer treatment guideline NCCN immunotherapy"],
+      "searchQueries": [
+        "pembrolizumab triple-negative breast cancer neoadjuvant KEYNOTE-522 event-free survival",
+        "sacituzumab govitecan TNBC metastatic ASCENT randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Atrial fibrillation catheter ablation and early rhythm control",
+      "block": "Cardiology",
+      "priority": "medium",
+      "aliases": ["AF ablation", "pulmonary vein isolation", "early rhythm control EAST-AFNET", "CABANA cryoablation"],
+      "landmarkPmids": ["29385358", "30874766", "32865375"],
+      "guidelineQueries": ["atrial fibrillation catheter ablation guideline rhythm control"],
+      "searchQueries": [
+        "catheter ablation versus antiarrhythmic drug therapy atrial fibrillation CABANA randomized",
+        "early rhythm control atrial fibrillation EAST-AFNET cardiovascular outcomes"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Advanced urothelial carcinoma treatment",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["bladder cancer treatment", "enfortumab vedotin pembrolizumab EV-302", "urothelial cancer immunotherapy ADC"],
+      "landmarkPmids": ["32945632", "37870949", "33577729"],
+      "guidelineQueries": ["urothelial carcinoma advanced treatment guideline NCCN EAU"],
+      "searchQueries": [
+        "enfortumab vedotin pembrolizumab urothelial bladder cancer EV-302 randomized",
+        "avelumab maintenance urothelial cancer immunotherapy JAVELIN Bladder 100"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Schizophrenia antipsychotic treatment strategies",
+      "block": "Psychiatry",
+      "priority": "medium",
+      "aliases": ["schizophrenia antipsychotics", "clozapine olanzapine risperidone CATIE", "first episode psychosis treatment"],
+      "landmarkPmids": ["3046553", "16172203", "23810019"],
+      "guidelineQueries": ["schizophrenia treatment guideline antipsychotic APA"],
+      "searchQueries": [
+        "CATIE schizophrenia effectiveness antipsychotics randomized olanzapine",
+        "clozapine treatment-resistant schizophrenia randomized superiority"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Smoking cessation pharmacotherapy",
+      "block": "Preventive Medicine",
+      "priority": "medium",
+      "aliases": ["smoking cessation", "varenicline bupropion NRT quit smoking", "tobacco dependence treatment"],
+      "landmarkPmids": ["27116918", "9337378", "23152200"],
+      "guidelineQueries": ["smoking cessation pharmacotherapy guideline USPSTF"],
+      "searchQueries": [
+        "varenicline bupropion nicotine replacement therapy smoking cessation randomized comparative",
+        "EAGLES varenicline safety smoking cessation cardiovascular neuropsychiatric"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Primary biliary cholangitis pharmacotherapy",
+      "block": "Gastroenterology",
+      "priority": "medium",
+      "aliases": ["PBC treatment", "ursodeoxycholic acid obeticholic acid PBC", "primary biliary cirrhosis pharmacotherapy"],
+      "landmarkPmids": ["27532829", "29874528", "1674105"],
+      "guidelineQueries": ["primary biliary cholangitis treatment guideline AASLD EASL"],
+      "searchQueries": [
+        "obeticholic acid primary biliary cholangitis randomized POISE alkaline phosphatase",
+        "ursodeoxycholic acid primary biliary cirrhosis randomized survival"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Lupus nephritis induction and maintenance therapy",
+      "block": "Rheumatology",
+      "priority": "medium",
+      "aliases": ["lupus nephritis treatment", "voclosporin belimumab mycophenolate AURORA BLISS-LN", "SLE nephritis"],
+      "landmarkPmids": ["32937045", "33971155", "14999109"],
+      "guidelineQueries": ["lupus nephritis treatment guideline ACR EULAR"],
+      "searchQueries": [
+        "voclosporin lupus nephritis AURORA randomized renal response",
+        "belimumab BLISS-LN lupus nephritis randomized primary renal endpoint"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Transthyretin amyloidosis treatment",
+      "block": "Cardiology",
+      "priority": "medium",
+      "aliases": ["ATTR amyloidosis", "tafamidis patisiran inotersen TTR", "transthyretin cardiac amyloidosis polyneuropathy"],
+      "landmarkPmids": ["30145929", "29972753", "29972757"],
+      "guidelineQueries": ["transthyretin amyloidosis treatment guideline cardiac polyneuropathy"],
+      "searchQueries": [
+        "tafamidis transthyretin amyloid cardiomyopathy ATTR-ACT randomized mortality",
+        "patisiran inotersen hereditary transthyretin amyloidosis polyneuropathy APOLLO NEURO-TTR"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Pediatric ALL immunotherapy and targeted therapy",
+      "block": "Oncology",
+      "priority": "medium",
+      "aliases": ["pediatric ALL blinatumomab", "CAR-T ALL children", "tisagenlecleucel B-ALL", "blinatumomab pediatric leukemia"],
+      "landmarkPmids": ["28249141", "33651091", "29385370"],
+      "guidelineQueries": ["pediatric ALL treatment guideline immunotherapy blinatumomab CAR-T"],
+      "searchQueries": [
+        "blinatumomab pediatric B-cell ALL relapsed refractory randomized",
+        "tisagenlecleucel CAR-T pediatric ALL ELIANA ENSIGN overall remission"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Hypertrophic cardiomyopathy myosin inhibitor therapy",
+      "block": "Cardiology",
+      "priority": "medium",
+      "aliases": ["HCM mavacamten", "obstructive HCM treatment", "mavacamten EXPLORER-HCM VALOR-HCM", "cardiac myosin inhibitor"],
+      "landmarkPmids": ["32871100", "37639243", "39217450"],
+      "guidelineQueries": ["hypertrophic cardiomyopathy treatment guideline AHA ACC mavacamten"],
+      "searchQueries": [
+        "mavacamten obstructive hypertrophic cardiomyopathy EXPLORER-HCM randomized",
+        "VALOR-HCM mavacamten septal reduction therapy deferral randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Plaque psoriasis biologic therapy (IL-17/IL-23 inhibitors)",
+      "block": "Dermatology",
+      "priority": "medium",
+      "aliases": ["psoriasis biologic", "secukinumab ixekizumab risankizumab guselkumab", "IL-17 IL-23 psoriasis"],
+      "landmarkPmids": ["25007392", "26422722", "31280967"],
+      "guidelineQueries": ["plaque psoriasis biologic therapy guideline AAD EADV"],
+      "searchQueries": [
+        "secukinumab ixekizumab IL-17 plaque psoriasis randomized PASI 90",
+        "risankizumab guselkumab IL-23 psoriasis randomized superiority PASI"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Alzheimer's disease anti-amyloid immunotherapy",
+      "block": "Neurology",
+      "priority": "medium",
+      "aliases": ["Alzheimer amyloid antibody", "lecanemab donanemab aducanumab CLARITY-AD TRAILBLAZER", "anti-amyloid AD therapy"],
+      "landmarkPmids": ["36449413", "37459141", "33720637"],
+      "guidelineQueries": ["Alzheimer disease amyloid immunotherapy treatment guideline"],
+      "searchQueries": [
+        "lecanemab CLARITY-AD Alzheimer amyloid randomized clinical decline",
+        "donanemab TRAILBLAZER-ALZ-2 Alzheimer amyloid plaque randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Migraine CGRP monoclonal antibody prevention",
+      "block": "Neurology",
+      "priority": "medium",
+      "aliases": ["CGRP antibody migraine", "erenumab fremanezumab galcanezumab", "calcitonin gene-related peptide migraine prevention"],
+      "landmarkPmids": ["29171821", "29171818", "29813147"],
+      "guidelineQueries": ["migraine prevention CGRP antibody guideline AAN AHS"],
+      "searchQueries": [
+        "erenumab CGRP antibody episodic migraine prevention randomized monthly migraine days",
+        "fremanezumab galcanezumab CGRP monoclonal antibody migraine prevention randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "ADHD pharmacotherapy (stimulants and comparative meta-analysis)",
+      "block": "Psychiatry",
+      "priority": "medium",
+      "aliases": ["ADHD treatment", "methylphenidate amphetamine MTA ADHD", "attention deficit hyperactivity disorder pharmacotherapy"],
+      "landmarkPmids": ["10591283", "30097390", "10591284"],
+      "guidelineQueries": ["ADHD treatment guideline pharmacotherapy AAP APA stimulant"],
+      "searchQueries": [
+        "MTA cooperative group ADHD randomized 14-month treatment strategies children",
+        "comparative efficacy stimulants ADHD Cortese network meta-analysis Lancet Psychiatry"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Dupilumab (IL-4/IL-13 inhibitor) biologic therapy",
+      "block": "Dermatology",
+      "priority": "medium",
+      "aliases": ["dupilumab atopic dermatitis asthma", "IL-4 IL-13 blockade", "Dupixent SOLO QUEST type 2 inflammation"],
+      "landmarkPmids": ["27690741", "29782217", "29782224"],
+      "guidelineQueries": ["dupilumab atopic dermatitis asthma guideline biologic therapy"],
+      "searchQueries": [
+        "dupilumab atopic dermatitis SOLO phase 3 randomized NEJM",
+        "dupilumab asthma QUEST moderate-severe uncontrolled randomized"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "IgA nephropathy treatment (sparsentan and targeted therapy)",
+      "block": "Renal",
+      "priority": "medium",
+      "aliases": ["IgAN treatment", "IgA nephropathy sparsentan budesonide PROTECT NEFIGAN", "Berger disease therapy"],
+      "landmarkPmids": ["37931634", "37591292", "28763548"],
+      "guidelineQueries": ["IgA nephropathy treatment guideline KDIGO 2021"],
+      "searchQueries": [
+        "sparsentan IgA nephropathy PROTECT randomized proteinuria endpoint",
+        "targeted-release budesonide NEFIGAN IgA nephropathy randomized eGFR"
+      ],
+      "requiredStudyTypes": ["randomized controlled trial", "guideline"]
+    },
+    {
+      "topic": "Venous thromboembolism direct oral anticoagulant therapy",
+      "block": "Cardiology",
+      "priority": "medium",
+      "aliases": ["VTE DOAC treatment", "DVT PE anticoagulation apixaban rivaroxaban edoxaban", "AMPLIFY EINSTEIN Hokusai-VTE"],
+      "landmarkPmids": ["23808982", "22449293", "23991658"],
+      "guidelineQueries": ["venous thromboembolism anticoagulation guideline DOAC ACCP"],
+      "searchQueries": [
+        "apixaban rivaroxaban edoxaban venous thromboembolism randomized noninferiority warfarin",
+        "AMPLIFY EINSTEIN-PE Hokusai-VTE direct oral anticoagulant DVT pulmonary embolism"
       ],
       "requiredStudyTypes": ["randomized controlled trial", "guideline"]
     }
