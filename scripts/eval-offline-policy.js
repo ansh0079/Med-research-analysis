@@ -7,11 +7,13 @@
  * Usage:
  *   node scripts/eval-offline-policy.js
  *   node scripts/eval-offline-policy.js --days=60
+ *   node scripts/eval-offline-policy.js --strict   # fail on empty or density gate fail (release gate)
  */
 
 async function main() {
     const args = process.argv.slice(2);
     const days = Math.min(90, Math.max(1, parseInt(args.find((a) => a.startsWith('--days='))?.split('=')[1] || '30', 10) || 30));
+    const strict = args.includes('--strict');
 
     const db = require('../database');
     const { runOfflinePolicyEval } = require('../server/services/offlinePolicyEvalService');
@@ -71,7 +73,7 @@ async function main() {
     fs.mkdirSync(outDir, { recursive: true });
     const outPath = path.join(outDir, `offline-policy-${Date.now()}.json`);
     fs.writeFileSync(outPath, JSON.stringify({
-        meta: { days, ran: new Date().toISOString() },
+        meta: { days, strict, ran: new Date().toISOString() },
         density: ipsReport.density,
         constantPolicies: ipsReport.constantPolicies,
         linear: linear.ok ? { n: linear.n, rmse: linear.rmse, fittedAt: linear.fittedAt } : linear,
@@ -80,6 +82,16 @@ async function main() {
     console.log(`\nWrote ${outPath}`);
 
     await db.close?.();
+
+    // Default (CI / local empty DB): empty data exits 0 (skip). Density fail with data → 1.
+    // --strict (release gate): empty data and density fail both exit 1.
+    if (strict) {
+        if (ipsReport.density.n === 0) {
+            console.error('\nSTRICT GATE FAILED: no labelled decisions — cannot promote personalization arms');
+            process.exit(1);
+        }
+        process.exit(ipsReport.density.pass ? 0 : 1);
+    }
     process.exit(ipsReport.density.pass || ipsReport.density.n === 0 ? 0 : 1);
 }
 

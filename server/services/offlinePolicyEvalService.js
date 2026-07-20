@@ -14,6 +14,7 @@ const { loadDecisionsForOfflineEval } = require('./policyReplayEvaluator');
 const DEFAULT_DAYS = 30;
 const MIN_PROPENSITY = 0.02;
 const MIN_LABELLED_FOR_GATE = Number(process.env.OFFLINE_POLICY_MIN_LABELLED || 40);
+const MIN_PROPENSITY_COVERAGE = Number(process.env.OFFLINE_POLICY_MIN_PROPENSITY_COVERAGE || 0.5);
 
 function clampPropensity(p, min = MIN_PROPENSITY) {
     const v = Number(p);
@@ -114,19 +115,30 @@ function evaluateContextualPolicy(decisions, selectArmFromContext, options = {})
     }, options);
 }
 
-function offlineEvalDensityGate(decisions = [], { minLabelled = MIN_LABELLED_FOR_GATE } = {}) {
+function offlineEvalDensityGate(decisions = [], {
+    minLabelled = MIN_LABELLED_FOR_GATE,
+    minPropensityCoverage = MIN_PROPENSITY_COVERAGE,
+} = {}) {
     const n = Array.isArray(decisions) ? decisions.length : 0;
     const withPropensity = (decisions || []).filter((r) => clampPropensity(r?.context?.propensity) != null).length;
-    const pass = n >= minLabelled;
+    const propensityCoverage = n > 0 ? withPropensity / n : 0;
+    const densityOk = n >= minLabelled;
+    const propensityOk = n === 0 || propensityCoverage >= minPropensityCoverage;
+    const pass = densityOk && propensityOk;
+    let reason = null;
+    if (!densityOk) {
+        reason = `Need ≥${minLabelled} labelled decisions with rewards (have ${n}) before trusting offline IPS / linear value updates`;
+    } else if (!propensityOk) {
+        reason = `Need propensityCoverage ≥${Math.round(minPropensityCoverage * 100)}% (have ${Math.round(propensityCoverage * 100)}%) before promoting arm weights`;
+    }
     return {
         pass,
         n,
         withPropensity,
         minLabelled,
-        propensityCoverage: n > 0 ? withPropensity / n : 0,
-        reason: pass
-            ? null
-            : `Need ≥${minLabelled} labelled decisions with rewards (have ${n}) before trusting offline IPS / linear value updates`,
+        minPropensityCoverage,
+        propensityCoverage,
+        reason,
     };
 }
 
@@ -158,6 +170,7 @@ async function runOfflinePolicyEval(db, {
 module.exports = {
     MIN_PROPENSITY,
     MIN_LABELLED_FOR_GATE,
+    MIN_PROPENSITY_COVERAGE,
     clampPropensity,
     behaviorPropensity,
     evaluateIps,

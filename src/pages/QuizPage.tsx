@@ -108,6 +108,7 @@ export const QuizPage: React.FC = () => {
         {!generating && !genError && quiz.complete && (
           <QuizCompletePanel
             quiz={quiz}
+            activeTopic={activeTopic}
             scorePercent={scorePercent}
             activeStudyRunId={activeStudyRunId}
             studyRun={studyRun}

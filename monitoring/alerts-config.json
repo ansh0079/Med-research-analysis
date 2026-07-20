@@ -34,6 +34,15 @@
         "severity": "warning",
         "filter": "transaction:/api/search",
         "notification": ["email"]
+      },
+      {
+        "name": "LLM Error Rate",
+        "metric": "error_rate",
+        "threshold": 10,
+        "window": "15m",
+        "severity": "warning",
+        "filter": "transaction:/api/ai",
+        "notification": ["email"]
       }
     ]
   },
@@ -53,6 +62,57 @@
         "window": "3 checks",
         "severity": "warning",
         "notification": ["email"]
+      }
+    ]
+  },
+  "application": {
+    "enabled": true,
+    "source": "productionObservabilityService Phase 7 + /metrics",
+    "alerts": [
+      {
+        "name": "RL Attribution Coverage Low",
+        "metric": "rewards.attributionRate",
+        "threshold": 0.45,
+        "comparator": "lt",
+        "window": "7d",
+        "severity": "warning",
+        "action": "Verify decisionId round-trip on click/save/quiz; check searchAttribution + feedback routes"
+      },
+      {
+        "name": "Search Precision@5 Watch",
+        "metric": "search.precisionAt5",
+        "threshold": 0.2,
+        "comparator": "lt",
+        "window": "gold-eval",
+        "severity": "warning",
+        "action": "Run npm run eval:search-quality:gold and inspect bouquet/rerank fusion"
+      },
+      {
+        "name": "Synopsis Abstract-Only Ratio High",
+        "metric": "synopsis.abstractOnlyRatio",
+        "threshold": 0.6,
+        "comparator": "gt",
+        "window": "7d",
+        "severity": "warning",
+        "action": "Increase PDF preindex throughput; confirm claimFullTextUpgrade after index"
+      },
+      {
+        "name": "AI Job Dead-Letter Growth",
+        "metric": "jobs.deadLetterCount",
+        "threshold": 25,
+        "comparator": "gte",
+        "window": "24h",
+        "severity": "critical",
+        "action": "Inspect Admin Observability → Background jobs dead letter; requeue or fix workers"
+      },
+      {
+        "name": "Stripe Webhook Rejects",
+        "metric": "billing.webhookRejects",
+        "threshold": 1,
+        "comparator": "gte",
+        "window": "1h",
+        "severity": "critical",
+        "action": "Confirm STRIPE_WEBHOOK_SECRET and raw body middleware on /api/billing/webhook"
       }
     ]
   },

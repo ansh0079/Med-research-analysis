@@ -253,7 +253,14 @@ async function runPaperSynopsisGenerationInner({
     }
     synopsis = validated.data;
 
-    const fullTextCoverageRatio = enriched._fullTextIndexed ? 1 : (article._pdfIndexed || article.pdfIndexed ? 1 : 0);
+    // Prefer explicit full-text index flags; fall back to PDF word-count coverage
+    // so partial extracts still lift abstract-only confidence caps.
+    const indexed = Boolean(enriched._fullTextIndexed || article._pdfIndexed || article.pdfIndexed);
+    const wordCount = Number(enriched._fullTextWordCount || article._fullTextWordCount || article.fullTextWordCount || 0);
+    let fullTextCoverageRatio = 0;
+    if (indexed) fullTextCoverageRatio = 1;
+    else if (wordCount >= 500) fullTextCoverageRatio = 1;
+    else if (wordCount >= 200) fullTextCoverageRatio = 0.5;
     let priorReviewState = null;
     if (db?.getTeachingObjectForArticle) {
         const existingObject = await db.getTeachingObjectForArticle(articleId).catch((err) => {

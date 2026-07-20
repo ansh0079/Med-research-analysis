@@ -529,7 +529,9 @@ function buildEvidenceBouquet(articles, query, options = {}) {
         const matchScore = queryMatchScore(a, query);
         const aliasMatchScore = queryAliasMatchScore(a, options.queryAliases);
         const specificity = String(options.specificity || 'moderate');
-        const matchWeight = specificity === 'strict' ? 14 : specificity === 'broad' ? 3 : 8;
+        // Moderate default was 8 — too weak vs EBM/citation mass, so relevant
+        // papers landed in top-10 but missed Precision@5. Align closer to strict.
+        const matchWeight = specificity === 'strict' ? 14 : specificity === 'broad' ? 3 : 16;
         score += matchScore * matchWeight;
         score += aliasMatchScore * 24;
         // Curated exact-PMID pins (see clinicalQueryPinnedPmids) are a stronger signal
@@ -606,8 +608,15 @@ function buildEvidenceBouquet(articles, query, options = {}) {
         archetypesCovered.add(candidate.archetype);
     }
 
-    // Re-sort selected by composite score for final ordering
-    selected.sort((a, b) => b.compositeScore - a.compositeScore);
+    // Final top-k pass: keep archetype diversity from selection, but order the
+    // bouquet so topical match dominates Precision@5 (composite already includes
+    // matchWeight; add a light topical tie-break so near-ties prefer query fit).
+    selected.sort((a, b) => {
+        if (b.compositeScore !== a.compositeScore) return b.compositeScore - a.compositeScore;
+        const topicA = (a.queryMatchScore || 0) + (a.queryAliasMatchScore || 0);
+        const topicB = (b.queryMatchScore || 0) + (b.queryAliasMatchScore || 0);
+        return topicB - topicA;
+    });
 
     return {
         topPapers: selected.map((s) => s.article),
