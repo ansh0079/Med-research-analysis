@@ -148,13 +148,19 @@ Latest drill record:
 - **db:schema:check:** passed (local SQLite consistency check)
 - **Smoke tests:** skipped (no Playwright environment on server)
 - **Restore DB cleanup:** dropped post-verification
-- **Side-effects found:** `agent_turn_side_effects` was absent from the restored live DB, but the app still references it and the baseline schema still includes it.
-- **Follow-up (reconcile path):** Apply migration `079_learning_rl_schema_reconciliation.sql` on live Postgres (`CREATE TABLE IF NOT EXISTS agent_turn_side_effects` — DDL is converted via `convertSqliteDdlToPostgres`). Verify with `SELECT to_regclass('public.agent_turn_side_effects');` then re-run the restore drill before each paid launch window.
+- **Side-effects found (2026-07-06):** `agent_turn_side_effects` was absent from the restored live DB.
+- **Reconcile verified (2026-07-20):** Live PG has `public.agent_turn_side_effects` and `_migrations` row `079_learning_rl_schema_reconciliation.sql` (id=89, applied_at 2026-07-08). Confirmed via Actions SSH workflow `verify-prod-ops.yml`.
+- **Deploy unblocked (2026-07-20):** Merged PR #11; Hetzner deploy green (`Health check passed`). Prod health `https://signalmd.co/health` → ok, database ok.
 - **Release gates (ops):**
-  - Search ranking: `npm run eval:search-quality:gold` (watch Precision@5)
-  - Offline personalization: `npm run eval:offline-policy:strict` (requires ≥40 labelled decisions + propensity coverage)
-  - Agent efficacy: `npm run eval:agent-quality:strict` (requires min cohort; fails if agent underperforms control by >5pp)
-  - Alerts: `monitoring/alerts-config.json` now includes RL attribution, synopsis abstract-only, job DLQ, Stripe webhook rejects
+  - Search ranking: `npm run eval:search-quality:gold -- --base https://signalmd.co` (watch Precision@5; avoid running across a live redeploy — 502s poison the score). **2026-07-20 stable run: Gate PASS** — Precision@5=0.204 (baseline 0.185), landmarkHitRate=1.0, offTopic@10=0.002.
+  - Offline personalization: `npm run eval:offline-policy:strict` inside `medsearch-web` once `scripts/` is in the image (Dockerfile ships scripts as of 2026-07-20); needs ≥40 labelled decisions + propensity coverage
+  - Agent efficacy: `npm run eval:agent-quality:strict` (same; min cohort)
+  - Alerts spec: `monitoring/alerts-config.json` (RL attribution, synopsis abstract-only, job DLQ, Stripe webhook rejects, search P@5)
+- **Alert wiring checklist (manual — JSON is not auto-applied):**
+  1. **Sentry** (project `signal-md` / frontend `signal-md-frontend`): create metric alerts matching `monitoring/alerts-config.json` → `sentry.alerts` (error rate 5%/20% per 5m; new issues ≥10/1h; `/api/search` p95 >3s /15m; `/api/ai` error rate >10%/15m). Notify `ansh0079@gmail.com`.
+  2. **UptimeRobot** (or equivalent): HTTPS monitor `https://signalmd.co/health` every 5m; alert on down + response >5s for 3 checks.
+  3. **App metrics:** Admin Observability already surfaces Phase 7 metrics; wire thresholds from `application.alerts` when Prometheus/Sentry custom metrics are connected.
+  4. Note: production Docker builds currently log Sentry sourcemap 403 (`SENTRY_AUTH_TOKEN` lacks release permission) — fix token scopes so release health alerts are trustworthy.
 
 ## SQL Dialect Containment - 2026-07-18
 
