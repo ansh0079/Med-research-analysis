@@ -27,6 +27,8 @@ const flag = (name, fallback) => {
 
 const DAYS = Math.min(90, Math.max(1, parseInt(flag('--days', '30'), 10) || 30));
 const FORMAT = flag('--format', 'table');
+const STRICT = args.includes('--strict');
+const MIN_COHORT = Math.max(1, parseInt(flag('--min-cohort', process.env.AGENT_QUALITY_MIN_COHORT || '10'), 10) || 10);
 const OUT_DIR = path.join(process.cwd(), 'eval-results');
 
 // Ensure output directory exists
@@ -48,6 +50,19 @@ async function withDb(fn) {
     }
 }
 
+/** Dialect-safe timestamp offset for learning_events.occurred_at windows. */
+function tsOffset(db, column, hours) {
+    const sign = hours >= 0 ? '+' : '';
+    if (db.isPostgres) {
+        return `(${column}::timestamptz + INTERVAL '${sign}${hours} hours')`;
+    }
+    return `datetime(${column}, '${sign}${hours} hours')`;
+}
+
+function nullSafeEq(db, left, right) {
+    return db.isPostgres ? `${left} IS NOT DISTINCT FROM ${right}` : `${left} IS ${right}`;
+}
+
 function parsePayload(payloadJson) {
     try {
         if (payloadJson && typeof payloadJson === 'object') return payloadJson;
@@ -63,6 +78,9 @@ function parsePayload(payloadJson) {
 
 async function extractAgentCohort(db, days) {
     const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+    const preWindow = tsOffset(db, 'a.occurred_at', -24);
+    const postWindow = tsOffset(db, 'a.occurred_at', 72);
+    const claimEq = nullSafeEq(db, 'pre.claim_key', 'post.claim_key');
 
     // Find all agent_message events with subsequent mcq_answered events
     const rows = await db.all(
@@ -86,14 +104,13 @@ async function extractAgentCohort(db, days) {
                 a.claim_key,
                 a.occurred_at AS agent_at,
                 COUNT(*) AS pre_count,
-                AVG(CASE WHEN le.payload_json LIKE '%"isCorrect":true%' THEN 1.0 ELSE 0.0 END) AS pre_accuracy,
-                GROUP_CONCAT(le.id) AS pre_attempt_ids
+                AVG(CASE WHEN le.payload_json LIKE '%"isCorrect":true%' THEN 1.0 ELSE 0.0 END) AS pre_accuracy
             FROM agent_events a
             JOIN learning_events le ON le.user_id = a.user_id
                 AND le.normalized_topic = a.normalized_topic
                 AND le.event_type = 'mcq_answered'
                 AND le.occurred_at < a.occurred_at
-                AND le.occurred_at >= datetime(a.occurred_at, '-24 hours')
+                AND le.occurred_at >= ${preWindow}
             GROUP BY a.user_id, a.normalized_topic, a.claim_key, a.occurred_at
          ),
          post_quiz AS (
@@ -103,14 +120,13 @@ async function extractAgentCohort(db, days) {
                 a.claim_key,
                 a.occurred_at AS agent_at,
                 COUNT(*) AS post_count,
-                AVG(CASE WHEN le.payload_json LIKE '%"isCorrect":true%' THEN 1.0 ELSE 0.0 END) AS post_accuracy,
-                GROUP_CONCAT(le.id) AS post_attempt_ids
+                AVG(CASE WHEN le.payload_json LIKE '%"isCorrect":true%' THEN 1.0 ELSE 0.0 END) AS post_accuracy
             FROM agent_events a
             JOIN learning_events le ON le.user_id = a.user_id
                 AND le.normalized_topic = a.normalized_topic
                 AND le.event_type = 'mcq_answered'
                 AND le.occurred_at > a.occurred_at
-                AND le.occurred_at <= datetime(a.occurred_at, '+72 hours')
+                AND le.occurred_at <= ${postWindow}
             GROUP BY a.user_id, a.normalized_topic, a.claim_key, a.occurred_at
          )
          SELECT
@@ -125,7 +141,7 @@ async function extractAgentCohort(db, days) {
          FROM pre_quiz pre
          JOIN post_quiz post ON pre.user_id = post.user_id
             AND pre.normalized_topic = post.normalized_topic
-            AND pre.claim_key IS post.claim_key
+            AND ${claimEq}
             AND pre.agent_at = post.agent_at
          WHERE pre.pre_count >= 1 AND post.post_count >= 1
          ORDER BY pre.agent_at DESC`,
@@ -147,6 +163,7 @@ async function extractAgentCohort(db, days) {
 
 async function extractControlCohort(db, days) {
     const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+    const postWindow = tsOffset(db, 'le1.occurred_at', 96);
 
     // Users who did quizzes pre→post in a 96h window but had NO agent_message between them
     const rows = await db.all(
@@ -164,7 +181,7 @@ async function extractControlCohort(db, days) {
                 AND le1.event_type = 'mcq_answered'
                 AND le2.event_type = 'mcq_answered'
                 AND le2.occurred_at > le1.occurred_at
-                AND le2.occurred_at <= datetime(le1.occurred_at, '+96 hours')
+                AND le2.occurred_at <= ${postWindow}
             WHERE le1.occurred_at >= ?
               AND le1.user_id IS NOT NULL
               AND NOT EXISTS (
@@ -410,6 +427,16 @@ async function main() {
         const md = buildMarkdown(agentCohort, controlCohort, metrics, controlMetrics, topicBreakdown, signalSummary, profileDeltas);
         fs.writeFileSync(mdPath, md);
         console.log(`📄 Markdown report written to ${mdPath}\n`);
+    }
+
+    // Cohort density gate (release / --strict): empty or tiny n must not silently pass.
+    if (STRICT && agentCohort.length < MIN_COHORT) {
+        console.error(`🚨 STRICT GATE FAILED: agent cohort n=${agentCohort.length} < min ${MIN_COHORT}`);
+        process.exit(1);
+    }
+    if (!STRICT && agentCohort.length === 0) {
+        console.log('ℹ️  No agent cohort rows — skipping efficacy gate (pass). Use --strict for release.');
+        process.exit(0);
     }
 
     // Exit non-zero if agent cohort underperforms control by >5pp (quality gate)

@@ -325,7 +325,7 @@ async function main() {
     const cfg = loadFlagshipConfig();
     const mediumTopics = cfg.topics.filter((t) => t.priority === 'medium');
 
-    let targets = TOPIC_ARG
+    const targets = TOPIC_ARG
         ? mediumTopics.filter((t) => t.topic.toLowerCase().includes(TOPIC_ARG.toLowerCase()))
         : mediumTopics;
 

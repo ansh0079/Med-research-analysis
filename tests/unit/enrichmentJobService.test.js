@@ -20,7 +20,6 @@ describe('enrichmentJobService', () => {
             })),
             markAiGenerationJobRunning: jest.fn(),
             completeAiGenerationJob: jest.fn(),
-            failAiGenerationJob: jest.fn(),
             resetAiGenerationJobForRetry: jest.fn(async () => null),
             failAiGenerationJob: jest.fn(async () => null),
             ...overrides,

@@ -6,6 +6,9 @@ const { enqueueRegenerationForArticleClaims } = require('./claimRegenerationServ
 /**
  * After PDF full text is indexed, advance abstract-only claims to full_text_available
  * and queue synopsis regeneration to upgrade teaching claims.
+ *
+ * Trust reprocessing happens when the regeneration worker re-runs paper synopsis
+ * (paperSynopsisCore applies fullTextCoverageRatio once _fullTextIndexed is set).
  */
 async function upgradeClaimsAfterFullText(db, articleUid, { minWordCount = 500, topic = '' } = {}) {
     const uid = String(articleUid || '').trim();
@@ -23,7 +26,7 @@ async function upgradeClaimsAfterFullText(db, articleUid, { minWordCount = 500, 
             const prior = claim.verificationStatus;
             await db.updateTeachingClaimVerification(claim.claimKey, {
                 verificationStatus: 'full_text_available',
-                verificationReason: `Full text is now indexed (${minWordCount}+ words). Synopsis regeneration queued to upgrade this claim.`,
+                verificationReason: `Full text is now indexed (${minWordCount}+ words). Synopsis regeneration queued to upgrade this claim and lift abstract-only trust caps.`,
                 reviewerId: null,
             });
             if (typeof db.logClaimStatusChange === 'function') {
@@ -47,9 +50,15 @@ async function upgradeClaimsAfterFullText(db, articleUid, { minWordCount = 500, 
             triggerReason: 'full_text_indexed',
         }).catch(() => ({ queued: 0 }));
         queued = regen?.queued || 0;
+        logger.info({
+            articleUid: uid,
+            upgraded,
+            queued,
+            objectKey: object.objectKey,
+        }, 'Claims advanced to full_text_available; regeneration queued for trust reprocess');
     }
 
-    return { upgraded, queued, articleUid: uid };
+    return { upgraded, queued, articleUid: uid, objectKey: object.objectKey };
 }
 
 module.exports = { upgradeClaimsAfterFullText };

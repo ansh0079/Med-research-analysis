@@ -72,6 +72,18 @@ describe('P4 IPS / SNIPS', () => {
         expect(offlineEvalDensityGate(Array.from({ length: 10 }, () => decision('heuristic_default', 0.1))).pass).toBe(false);
         expect(offlineEvalDensityGate(Array.from({ length: 40 }, () => decision('heuristic_default', 0.1))).pass).toBe(true);
     });
+
+    test('density gate fails when propensity coverage is too low', () => {
+        const rows = Array.from({ length: 40 }, (_, i) => ({
+            armId: 'heuristic_default',
+            totalReward: 0.1,
+            context: i < 10 ? { propensity: 0.25 } : {},
+        }));
+        const gate = offlineEvalDensityGate(rows, { minPropensityCoverage: 0.5 });
+        expect(gate.pass).toBe(false);
+        expect(gate.propensityCoverage).toBeLessThan(0.5);
+        expect(gate.reason).toMatch(/propensityCoverage/);
+    });
 });
 
 describe('P4 linear contextual value model', () => {

@@ -104,7 +104,7 @@ function curriculumMatchesFlagship(displayName, flagship, {
             if (
                 SHORT_PREFIX_ALLOW.has(key)
                 && n.startsWith(key)
-                && /^[:\s,\-]/.test(n.slice(key.length))
+                && /^[:\s,-]/.test(n.slice(key.length))
             ) {
                 return { match: true, reason: 'prefix_short_alias', score: 0.92 };
             }
@@ -114,7 +114,7 @@ function curriculumMatchesFlagship(displayName, flagship, {
             continue;
         }
         // Curriculum rows often look like "Concept: long subtitle…".
-        if (n.startsWith(key) && (n.length === key.length || /^[:\s,\-]/.test(n.slice(key.length)))) {
+        if (n.startsWith(key) && (n.length === key.length || /^[:\s,-]/.test(n.slice(key.length)))) {
             return { match: true, reason: 'prefix_alias', score: 0.95 };
         }
         // Require the alias to dominate the display name so

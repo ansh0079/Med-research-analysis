@@ -149,7 +149,12 @@ Latest drill record:
 - **Smoke tests:** skipped (no Playwright environment on server)
 - **Restore DB cleanup:** dropped post-verification
 - **Side-effects found:** `agent_turn_side_effects` was absent from the restored live DB, but the app still references it and the baseline schema still includes it.
-- **Follow-up:** Reconcile live Postgres with the baseline via a focused migration or retire the durable side-effect path deliberately. Re-run before each paid launch window and after any schema migration.
+- **Follow-up (reconcile path):** Apply migration `079_learning_rl_schema_reconciliation.sql` on live Postgres (`CREATE TABLE IF NOT EXISTS agent_turn_side_effects` — DDL is converted via `convertSqliteDdlToPostgres`). Verify with `SELECT to_regclass('public.agent_turn_side_effects');` then re-run the restore drill before each paid launch window.
+- **Release gates (ops):**
+  - Search ranking: `npm run eval:search-quality:gold` (watch Precision@5)
+  - Offline personalization: `npm run eval:offline-policy:strict` (requires ≥40 labelled decisions + propensity coverage)
+  - Agent efficacy: `npm run eval:agent-quality:strict` (requires min cohort; fails if agent underperforms control by >5pp)
+  - Alerts: `monitoring/alerts-config.json` now includes RL attribution, synopsis abstract-only, job DLQ, Stripe webhook rejects
 
 ## SQL Dialect Containment - 2026-07-18
 
