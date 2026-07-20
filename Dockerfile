@@ -71,6 +71,8 @@ COPY --from=builder /app/shared ./shared
 COPY --from=builder /app/server ./server
 # Gold fixtures are read by the nightly quality-eval schedulers in the worker
 COPY --from=builder /app/tests/fixtures ./tests/fixtures
+# Eval harnesses for release gates / SSH verify (offline policy, agent quality, search)
+COPY --from=builder /app/scripts ./scripts
 
 # Fix ownership
 RUN chown -R nodejs:nodejs /app
