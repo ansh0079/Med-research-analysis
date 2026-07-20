@@ -6,8 +6,10 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/verify-prod-ops.yml'
+      - 'Dockerfile'
       - 'scripts/eval-offline-policy.js'
       - 'scripts/eval-agent-quality.js'
+      - 'COMMERCIAL_READINESS.md'
 
 jobs:
   verify:
@@ -25,6 +27,18 @@ jobs:
             set -e
             cd /opt/medsearch
 
+            echo "=== wait for deploy/health + eval scripts in image ==="
+            for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24; do
+              if docker exec medsearch-web wget -qO- http://127.0.0.1:3002/health >/dev/null 2>&1 \
+                && docker exec medsearch-web test -f /app/scripts/eval-offline-policy.js \
+                && docker exec medsearch-web test -f /app/scripts/eval-agent-quality.js; then
+                echo "ready on attempt $i"
+                break
+              fi
+              echo "waiting for web image with scripts (attempt $i)..."
+              sleep 15
+            done
+
             echo "=== git HEAD ==="
             git rev-parse --short HEAD
             git log -1 --oneline
@@ -41,14 +55,14 @@ jobs:
 
             echo "=== offline policy strict ==="
             set +e
-            docker exec medsearch-web node scripts/eval-offline-policy.js --strict
+            docker exec -w /app medsearch-web node scripts/eval-offline-policy.js --strict
             OFFLINE_RC=$?
             set -e
             echo "offline_policy_exit=$OFFLINE_RC"
 
             echo "=== agent quality strict ==="
             set +e
-            docker exec medsearch-web node scripts/eval-agent-quality.js --strict
+            docker exec -w /app medsearch-web node scripts/eval-agent-quality.js --strict
             AGENT_RC=$?
             set -e
             echo "agent_quality_exit=$AGENT_RC"
