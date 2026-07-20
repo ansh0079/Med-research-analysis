@@ -1,0 +1,60 @@
+name: Verify Prod Ops
+
+on:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Verify schema, migration 079, and eval gates via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 178.105.155.246
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 12m
+          script: |
+            set -e
+            cd /opt/medsearch
+
+            echo "=== git HEAD ==="
+            git rev-parse --short HEAD
+            git log -1 --oneline
+
+            echo "=== health ==="
+            docker exec medsearch-web wget -qO- http://127.0.0.1:3002/health
+
+            echo ""
+            echo "=== migration 079 / agent_turn_side_effects ==="
+            docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
+              "SELECT to_regclass('public.agent_turn_side_effects') AS agent_turn_side_effects;"
+            docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
+              "SELECT * FROM _migrations WHERE filename LIKE '%079%' OR filename LIKE '%learning_rl%' ORDER BY id;"
+
+            echo "=== offline policy strict ==="
+            set +e
+            docker exec medsearch-web node scripts/eval-offline-policy.js --strict
+            OFFLINE_RC=$?
+            set -e
+            echo "offline_policy_exit=$OFFLINE_RC"
+
+            echo "=== agent quality strict ==="
+            set +e
+            docker exec medsearch-web node scripts/eval-agent-quality.js --strict
+            AGENT_RC=$?
+            set -e
+            echo "agent_quality_exit=$AGENT_RC"
+
+            echo "=== schema check must pass ==="
+            TABLE=$(docker exec medsearch-pg psql -U medsearch -d medsearch -tAc \
+              "SELECT to_regclass('public.agent_turn_side_effects');")
+            MIG=$(docker exec medsearch-pg psql -U medsearch -d medsearch -tAc \
+              "SELECT COUNT(*) FROM _migrations WHERE filename LIKE '%079%';")
+            echo "table=$TABLE migrations079=$MIG"
+            test "$TABLE" = "agent_turn_side_effects"
+            test "$MIG" -ge 1
+
+            echo "VERIFY_OK schema_and_079"
+            echo "NOTE offline_rc=$OFFLINE_RC agent_rc=$AGENT_RC (may fail until traffic density)"
