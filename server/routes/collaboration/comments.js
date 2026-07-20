@@ -123,17 +123,19 @@ function registerCommentRoutes(router, ctx) {
 
     const { content, isResolved } = req.body;
     const now = new Date().toISOString();
-    const fields = ['updated_at = ?'];
+    // Explicit column map — field names are controlled here, never derived from req.body.
+    const COLS = { content: 'content', isResolved: 'is_resolved' };
+    const setClauses = ['updated_at = ?'];
     const params = [now];
 
     if (content !== undefined) {
-      fields.push('content = ?');
+      setClauses.push(`${COLS.content} = ?`);
       params.push(sanitizeUserInput(content, { maxLength: 5000, escapeHtml: true, normalizeWhitespace: false }) || '');
     }
-    if (isResolved !== undefined) { fields.push('is_resolved = ?'); params.push(isResolved ? 1 : 0); }
+    if (isResolved !== undefined) { setClauses.push(`${COLS.isResolved} = ?`); params.push(isResolved ? 1 : 0); }
 
     params.push(commentId);
-    await db.run(`UPDATE collab_comments SET ${fields.join(', ')} WHERE id = ?`, params);
+    await db.run(`UPDATE collab_comments SET ${setClauses.join(', ')} WHERE id = ?`, params);
 
     if (isResolved) {
       await logActivity({ type: 'comment_resolved', userId: req.user.id, userName: req.user.name, collectionId: row.collection_id, articleId: row.article_id, commentId });

@@ -1986,8 +1986,10 @@ describe('API Endpoints', () => {
   // ==========================================
   describe('Security Headers', () => {
     test('Should include session ID header', async () => {
+      // /health is excluded from session tracking (health probe optimisation);
+      // /api/config is a public endpoint that exercises the session middleware.
       const response = await request(app)
-        .get('/health')
+        .get('/api/config')
         .expect(200);
 
       expect(response.headers).toHaveProperty('x-session-id');
@@ -1997,7 +1999,7 @@ describe('API Endpoints', () => {
       cache.getSession.mockReturnValueOnce({ createdAt: new Date().toISOString() });
 
       const response = await request(app)
-        .get('/health')
+        .get('/api/config')
         .set('X-Session-Id', 'existing-session')
         .expect(200);
 
@@ -2009,7 +2011,7 @@ describe('API Endpoints', () => {
       cache.getSession.mockReturnValueOnce({ createdAt: new Date().toISOString() });
 
       await request(app)
-        .get('/health')
+        .get('/api/config')
         .set('X-Session-Id', 'existing-session')
         .expect(200);
 

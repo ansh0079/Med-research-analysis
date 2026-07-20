@@ -37,20 +37,26 @@ async getCurriculumDetailBySlug(slug) {
         `SELECT id, curriculum_id, name, sort_order FROM curriculum_blocks WHERE curriculum_id = ? ORDER BY sort_order ASC, id ASC`,
         [cur.id]
     );
+    // Fetch all topics for this curriculum in one query instead of one per block.
+    const allTopics = await this.all(
+        `SELECT t.id, t.block_id, t.display_name, t.suggested_query, t.sort_order, t.prerequisites
+         FROM curriculum_topics t
+         INNER JOIN curriculum_blocks b ON t.block_id = b.id
+         WHERE b.curriculum_id = ?
+         ORDER BY b.sort_order ASC, b.id ASC, t.sort_order ASC, t.id ASC`,
+        [cur.id]
+    );
     const topicsByBlock = {};
-    for (const b of blocks) {
-        const topics = await this.all(
-            `SELECT id, block_id, display_name, suggested_query, sort_order, prerequisites FROM curriculum_topics WHERE block_id = ? ORDER BY sort_order ASC, id ASC`,
-            [b.id]
-        );
-        topicsByBlock[b.id] = topics.map((t) => ({
+    for (const t of allTopics) {
+        if (!topicsByBlock[t.block_id]) topicsByBlock[t.block_id] = [];
+        topicsByBlock[t.block_id].push({
             id: t.id,
             blockId: t.block_id,
             displayName: t.display_name,
             suggestedQuery: t.suggested_query,
             sortOrder: t.sort_order,
             prerequisites: (() => { try { return JSON.parse(t.prerequisites || '[]'); } catch { return []; } })(),
-        }));
+        });
     }
     return {
         id: cur.id,

@@ -68,16 +68,18 @@ function registerCollectionRoutes(router, ctx) {
     const { collectionId } = req.params;
     const now = new Date().toISOString();
 
-    const fields = ['updated_at = ?'];
+    // Explicit column map — field names are controlled here, never derived from req.body.
+    const COLS = { name: 'name', description: 'description', isPublic: 'is_public', tags: 'tags' };
+    const setClauses = ['updated_at = ?'];
     const params = [now];
 
-    if (name !== undefined) { fields.push('name = ?'); params.push(name.trim()); }
-    if (description !== undefined) { fields.push('description = ?'); params.push(description?.trim() || null); }
-    if (isPublic !== undefined) { fields.push('is_public = ?'); params.push(isPublic ? 1 : 0); }
-    if (tags !== undefined) { fields.push('tags = ?'); params.push(JSON.stringify(tags)); }
+    if (name !== undefined) { setClauses.push(`${COLS.name} = ?`); params.push(name.trim()); }
+    if (description !== undefined) { setClauses.push(`${COLS.description} = ?`); params.push(description?.trim() || null); }
+    if (isPublic !== undefined) { setClauses.push(`${COLS.isPublic} = ?`); params.push(isPublic ? 1 : 0); }
+    if (tags !== undefined) { setClauses.push(`${COLS.tags} = ?`); params.push(JSON.stringify(tags)); }
 
     params.push(collectionId);
-    await db.run(`UPDATE collab_collections SET ${fields.join(', ')} WHERE id = ?`, params);
+    await db.run(`UPDATE collab_collections SET ${setClauses.join(', ')} WHERE id = ?`, params);
 
     await logActivity({
       type: 'collection_updated',

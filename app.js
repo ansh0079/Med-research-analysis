@@ -20,7 +20,8 @@ const { execSync } = require('child_process');
 // Config must load env first so all subsequent requires see populated process.env
 const { loadEnv, serverConfig, clientConfig } = require('./config');
 loadEnv();
-require('./server/config/otel').startOpenTelemetry();
+// OTel is started by server.js before requiring this module; the otel module is
+// idempotent (module-level sdk guard), but calling it here is redundant.
 
 const logger = require('./server/config/logger');
 const db = require('./database');
@@ -357,8 +358,11 @@ app.use((req, res, next) => {
     next();
 });
 
-// Session tracking
+// Session tracking — skip for health probes, metrics, and static assets to
+// avoid a cache+DB round trip on paths that never need session state.
+const SESSION_SKIP_PATHS = /^\/(health|metrics|favicon\.ico|robots\.txt)/;
 app.use(async (req, res, next) => {
+    if (SESSION_SKIP_PATHS.test(req.path)) return next();
     let sessionId = req.headers['x-session-id'];
     if (!sessionId) sessionId = crypto.randomUUID();
     res.setHeader('X-Session-Id', sessionId);
@@ -507,7 +511,7 @@ app.use(rateLimit(200, 60));
 // so express.static never shadows an /api endpoint
 const distDir = path.join(__dirname, 'dist');
 const distIndex = path.join(distDir, 'index.html');
-if (process.env.NODE_ENV !== 'test' && fs.existsSync(distIndex)) {
+if ((process.env.NODE_ENV !== 'test' || process.env.E2E_SERVE_STATIC === 'true') && fs.existsSync(distIndex)) {
     app.use('/assets', express.static(path.join(distDir, 'assets'), {
         maxAge: '1y',
         immutable: true,

@@ -77,20 +77,22 @@ function registerAnnotationRoutes(router, ctx) {
 
     const { note, color, isPrivate, tags } = req.body;
     const now = new Date().toISOString();
+    // Explicit column map — field names are controlled here, never derived from req.body.
+    const COLS = { note: 'note', color: 'color', isPrivate: 'is_private', tags: 'tags' };
     const fields = ['updated_at = ?'];
     const params = [now];
 
     if (note !== undefined) {
-      fields.push('note = ?');
+      fields.push(`${COLS.note} = ?`);
       params.push(sanitizeUserInput(note, { maxLength: 5000, escapeHtml: true, normalizeWhitespace: false }) || null);
     }
-    if (color !== undefined) { fields.push('color = ?'); params.push(color); }
-    if (isPrivate !== undefined) { fields.push('is_private = ?'); params.push(isPrivate ? 1 : 0); }
+    if (color !== undefined) { fields.push(`${COLS.color} = ?`); params.push(color); }
+    if (isPrivate !== undefined) { fields.push(`${COLS.isPrivate} = ?`); params.push(isPrivate ? 1 : 0); }
     if (tags !== undefined) {
       const sanitizedTags = Array.isArray(tags)
         ? tags.slice(0, 20).map((tag) => sanitizeTopicName(tag)).filter(Boolean)
         : [];
-      fields.push('tags = ?');
+      fields.push(`${COLS.tags} = ?`);
       params.push(JSON.stringify(sanitizedTags));
     }
 
