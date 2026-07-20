@@ -217,7 +217,7 @@ async function executeAgentTurn(
 
     for (const candidate of providerCandidates) {
         const breaker = ai._breakers?.[candidate.provider];
-        if (breaker && !breaker.isHealthy()) {
+        if (breaker && breaker.isOpen) {
             logger.debug({ provider: candidate.provider }, 'Agent stream provider breaker open; skipping');
             continue;
         }

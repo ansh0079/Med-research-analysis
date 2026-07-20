@@ -8,6 +8,12 @@ const MODEL_COST_PER_MTOK = {
     'gemini-2.5-flash-lite': { in: 0.1, out: 0.4 },
     'gemini-2.5-flash': { in: 0.3, out: 2.5 },
     'mistral-small-2603': { in: 0.15, out: 0.6 },
+    'claude-haiku-4-5': { in: 1.0, out: 5.0 },
+    'claude-sonnet-4-6': { in: 3.0, out: 15.0 },
+    'claude-opus-4-8': { in: 5.0, out: 25.0 },
+    'claude-opus-4-7': { in: 5.0, out: 25.0 },
+    'claude-opus-4-6': { in: 5.0, out: 25.0 },
+    'claude-fable-5': { in: 10.0, out: 50.0 },
     default: { in: 0.25, out: 0.75 },
 };
 

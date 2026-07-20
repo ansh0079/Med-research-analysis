@@ -319,7 +319,7 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     return jsonMode ? '{' + text : (text || 'No response');
   }
 
-  async function mistralChat(prompt, { model = 'mistral-small-2603', temperature = 0.7, maxOutputTokens, jsonMode = false } = {}) {
+  async function mistralChat(prompt, { model = 'mistral-small-2603', temperature = 0.7, maxOutputTokens, jsonMode = false, timeoutMs = DEFAULT_TIMEOUTS.mistral } = {}) {
     if (!keys.mistral) throw new Error('Mistral API key not configured');
     const body = {
         model,
@@ -342,6 +342,7 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
+      signal: AbortSignal.timeout(timeoutMs),
     });
     if (!res.ok) {
       const text = await res.text();

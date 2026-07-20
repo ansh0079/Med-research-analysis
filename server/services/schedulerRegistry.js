@@ -52,6 +52,9 @@ const {
 const {
     scheduleFlagshipEnrich, stopFlagshipEnrich,
 } = require('./flagshipEnrichScheduler');
+const {
+    scheduleZombieSweep, stopZombieSweep,
+} = require('./zombieJobSweeper');
 
 /**
  * @typedef {Object} SchedulerEntry
@@ -135,6 +138,11 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
             task: 'flagship-enrich',
             start: () => scheduleFlagshipEnrich(db, { cache }, baseLogger.child({ task: 'flagship-enrich' })),
             stop: () => stopFlagshipEnrich(),
+        },
+        {
+            task: 'zombie-job-sweep',
+            start: () => scheduleZombieSweep(db, baseLogger.child({ task: 'zombie-job-sweep' })),
+            stop: () => stopZombieSweep(),
         },
     ];
 }
