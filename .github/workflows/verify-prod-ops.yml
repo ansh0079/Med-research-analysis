@@ -2,6 +2,12 @@ name: Verify Prod Ops
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-prod-ops.yml'
+      - 'scripts/eval-offline-policy.js'
+      - 'scripts/eval-agent-quality.js'
 
 jobs:
   verify:
@@ -31,7 +37,7 @@ jobs:
             docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
               "SELECT to_regclass('public.agent_turn_side_effects') AS agent_turn_side_effects;"
             docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
-              "SELECT * FROM _migrations WHERE filename LIKE '%079%' OR filename LIKE '%learning_rl%' ORDER BY id;"
+              "SELECT id, name, applied_at FROM _migrations WHERE name LIKE '%079%' OR name LIKE '%learning_rl%' ORDER BY id;"
 
             echo "=== offline policy strict ==="
             set +e
@@ -51,7 +57,7 @@ jobs:
             TABLE=$(docker exec medsearch-pg psql -U medsearch -d medsearch -tAc \
               "SELECT to_regclass('public.agent_turn_side_effects');")
             MIG=$(docker exec medsearch-pg psql -U medsearch -d medsearch -tAc \
-              "SELECT COUNT(*) FROM _migrations WHERE filename LIKE '%079%';")
+              "SELECT COUNT(*) FROM _migrations WHERE name LIKE '%079%';")
             echo "table=$TABLE migrations079=$MIG"
             test "$TABLE" = "agent_turn_side_effects"
             test "$MIG" -ge 1
