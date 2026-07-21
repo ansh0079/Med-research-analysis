@@ -27,15 +27,20 @@ jobs:
             set -e
             cd /opt/medsearch
 
-            echo "=== wait for deploy/health + eval scripts in image ==="
-            for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24; do
+            echo "=== wait for deploy/health + eval scripts matching HEAD ==="
+            EXPECTED=$(git rev-parse HEAD)
+            for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30; do
+              git fetch origin main >/dev/null 2>&1 || true
+              git reset --hard origin/main >/dev/null 2>&1 || true
+              EXPECTED=$(git rev-parse HEAD)
               if docker exec medsearch-web wget -qO- http://127.0.0.1:3002/health >/dev/null 2>&1 \
                 && docker exec medsearch-web test -f /app/scripts/eval-offline-policy.js \
-                && docker exec medsearch-web test -f /app/scripts/eval-agent-quality.js; then
-                echo "ready on attempt $i"
+                && docker exec medsearch-web grep -q 'function asTs' /app/scripts/eval-agent-quality.js \
+                && docker exec medsearch-web grep -q 'asTs(db, '"'"'occurred_at'"'"')' /app/scripts/eval-agent-quality.js; then
+                echo "ready on attempt $i (host HEAD=$EXPECTED)"
                 break
               fi
-              echo "waiting for web image with scripts (attempt $i)..."
+              echo "waiting for web image with asTs casts (attempt $i, host=$EXPECTED)..."
               sleep 15
             done
 

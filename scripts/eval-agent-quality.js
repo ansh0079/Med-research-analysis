@@ -254,9 +254,9 @@ async function extractRecentProfileDeltas(db, days, limit = 10) {
     const rows = await db.all(
         `SELECT user_id, topic, occurred_at, payload_json
          FROM learning_events
-         WHERE occurred_at >= ?
+         WHERE ${asTs(db, 'occurred_at')} >= ${asTs(db, '?')}
            AND event_type IN ('agent_turn_memory', 'agent_session_reflection')
-         ORDER BY occurred_at DESC
+         ORDER BY ${asTs(db, 'occurred_at')} DESC
          LIMIT ?`,
         [since, limit]
     ).catch(() => []);
