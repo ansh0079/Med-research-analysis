@@ -169,6 +169,7 @@ async function extractAgentCohort(db, days) {
 async function extractControlCohort(db, days) {
     const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
     const postWindow = tsOffset(db, 'le1.occurred_at', 96);
+    const sinceParam = asTs(db, '?');
 
     // Users who did quizzes pre→post in a 96h window but had NO agent_message between them
     const rows = await db.all(
@@ -185,17 +186,17 @@ async function extractControlCohort(db, days) {
                 AND le1.normalized_topic = le2.normalized_topic
                 AND le1.event_type = 'mcq_answered'
                 AND le2.event_type = 'mcq_answered'
-                AND le2.occurred_at > le1.occurred_at
-                AND le2.occurred_at <= ${postWindow}
-            WHERE le1.occurred_at >= ?
+                AND ${asTs(db, 'le2.occurred_at')} > ${asTs(db, 'le1.occurred_at')}
+                AND ${asTs(db, 'le2.occurred_at')} <= ${postWindow}
+            WHERE ${asTs(db, 'le1.occurred_at')} >= ${sinceParam}
               AND le1.user_id IS NOT NULL
               AND NOT EXISTS (
                   SELECT 1 FROM learning_events lea
                   WHERE lea.user_id = le1.user_id
                     AND lea.normalized_topic = le1.normalized_topic
                     AND lea.event_type = 'agent_message'
-                    AND lea.occurred_at > le1.occurred_at
-                    AND lea.occurred_at < le2.occurred_at
+                    AND ${asTs(db, 'lea.occurred_at')} > ${asTs(db, 'le1.occurred_at')}
+                    AND ${asTs(db, 'lea.occurred_at')} < ${asTs(db, 'le2.occurred_at')}
               )
             GROUP BY le1.user_id, le1.normalized_topic, le1.occurred_at
          )
@@ -236,7 +237,7 @@ async function extractLearningSignalSummary(db, days) {
     const rows = await db.all(
         `SELECT event_type, COUNT(*) AS count
          FROM learning_events
-         WHERE occurred_at >= ?
+         WHERE ${asTs(db, 'occurred_at')} >= ${asTs(db, '?')}
            AND event_type IN (${placeholders})
          GROUP BY event_type
          ORDER BY event_type`,
@@ -253,9 +254,9 @@ async function extractRecentProfileDeltas(db, days, limit = 10) {
     const rows = await db.all(
         `SELECT user_id, topic, occurred_at, payload_json
          FROM learning_events
-         WHERE occurred_at >= ?
+         WHERE ${asTs(db, 'occurred_at')} >= ${asTs(db, '?')}
            AND event_type IN ('agent_turn_memory', 'agent_session_reflection')
-         ORDER BY occurred_at DESC
+         ORDER BY ${asTs(db, 'occurred_at')} DESC
          LIMIT ?`,
         [since, limit]
     ).catch(() => []);
