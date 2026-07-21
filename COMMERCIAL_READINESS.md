@@ -156,6 +156,7 @@ Latest drill record:
   - Offline personalization: `npm run eval:offline-policy:strict` inside `medsearch-web` once `scripts/` is in the image (Dockerfile ships scripts as of 2026-07-20); needs ≥40 labelled decisions + propensity coverage
   - Agent efficacy: `npm run eval:agent-quality:strict` (same; min cohort)
   - Alerts spec: `monitoring/alerts-config.json` (RL attribution, synopsis abstract-only, job DLQ, Stripe webhook rejects, search P@5)
+- **Strict gates on live PG (2026-07-21):** `eval-offline-policy --strict` and `eval-agent-quality --strict` both execute in `medsearch-web` after Dockerfile `scripts/` copy + PG cast/GROUP BY fixes. Current fail reasons are density only: offline labelled decisions=0; agent cohort n=0 (need traffic). Re-run after real search rewards + agent→quiz sessions accumulate.
 - **Alert wiring checklist (manual — JSON is not auto-applied):**
   1. **Sentry** (project `signal-md` / frontend `signal-md-frontend`): create metric alerts matching `monitoring/alerts-config.json` → `sentry.alerts` (error rate 5%/20% per 5m; new issues ≥10/1h; `/api/search` p95 >3s /15m; `/api/ai` error rate >10%/15m). Notify `ansh0079@gmail.com`.
   2. **UptimeRobot** (or equivalent): HTTPS monitor `https://signalmd.co/health` every 5m; alert on down + response >5s for 3 checks.
