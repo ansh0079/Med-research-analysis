@@ -78,3 +78,5 @@ jobs:
 
             echo "VERIFY_OK schema_and_079"
             echo "NOTE offline_rc=$OFFLINE_RC agent_rc=$AGENT_RC (may fail until traffic density)"
+
+# retrigger after agent-quality image deploy
