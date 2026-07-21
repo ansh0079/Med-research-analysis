@@ -27,18 +27,18 @@ jobs:
             set -e
             cd /opt/medsearch
 
-            echo "=== wait for deploy/health + AGENT_QUALITY_PG_CASTS_V2 image ==="
+            echo "=== wait for deploy/health + AGENT_QUALITY_PG_CASTS_V3 image ==="
             for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36; do
               git fetch origin main >/dev/null 2>&1 || true
               git reset --hard origin/main >/dev/null 2>&1 || true
               EXPECTED=$(git rev-parse --short HEAD)
               if docker exec medsearch-web wget -qO- http://127.0.0.1:3002/health >/dev/null 2>&1 \
                 && docker exec medsearch-web test -f /app/scripts/eval-offline-policy.js \
-                && docker exec medsearch-web grep -q 'AGENT_QUALITY_PG_CASTS_V2' /app/scripts/eval-agent-quality.js; then
+                && docker exec medsearch-web grep -q 'AGENT_QUALITY_PG_CASTS_V3' /app/scripts/eval-agent-quality.js; then
                 echo "ready on attempt $i (host HEAD=$EXPECTED)"
                 break
               fi
-              echo "waiting for V2 cast image (attempt $i, host=$EXPECTED)..."
+              echo "waiting for V3 cast image (attempt $i, host=$EXPECTED)..."
               sleep 15
             done
 
