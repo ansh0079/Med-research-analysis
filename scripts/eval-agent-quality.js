@@ -51,7 +51,7 @@ async function withDb(fn) {
 }
 
 /** Dialect-safe cast: learning_events.occurred_at may be TEXT on PG restores. */
-// AGENT_QUALITY_PG_CASTS_V2
+// AGENT_QUALITY_PG_CASTS_V3
 function asTs(db, column) {
     return db.isPostgres ? `${column}::timestamptz` : column;
 }
@@ -179,7 +179,6 @@ async function extractControlCohort(db, days) {
                 le1.user_id,
                 le1.normalized_topic,
                 le1.occurred_at AS pre_at,
-                le2.occurred_at AS post_at,
                 AVG(CASE WHEN le1.payload_json LIKE '%"isCorrect":true%' THEN 1.0 ELSE 0.0 END) AS pre_accuracy,
                 AVG(CASE WHEN le2.payload_json LIKE '%"isCorrect":true%' THEN 1.0 ELSE 0.0 END) AS post_accuracy
             FROM learning_events le1
