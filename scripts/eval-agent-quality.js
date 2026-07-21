@@ -51,6 +51,7 @@ async function withDb(fn) {
 }
 
 /** Dialect-safe cast: learning_events.occurred_at may be TEXT on PG restores. */
+// AGENT_QUALITY_PG_CASTS_V2
 function asTs(db, column) {
     return db.isPostgres ? `${column}::timestamptz` : column;
 }
