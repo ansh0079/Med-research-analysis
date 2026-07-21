@@ -50,11 +50,16 @@ async function withDb(fn) {
     }
 }
 
+/** Dialect-safe cast: learning_events.occurred_at may be TEXT on PG restores. */
+function asTs(db, column) {
+    return db.isPostgres ? `${column}::timestamptz` : column;
+}
+
 /** Dialect-safe timestamp offset for learning_events.occurred_at windows. */
 function tsOffset(db, column, hours) {
     const sign = hours >= 0 ? '+' : '';
     if (db.isPostgres) {
-        return `(${column}::timestamptz + INTERVAL '${sign}${hours} hours')`;
+        return `(${asTs(db, column)} + INTERVAL '${sign}${hours} hours')`;
     }
     return `datetime(${column}, '${sign}${hours} hours')`;
 }
@@ -94,7 +99,7 @@ async function extractAgentCohort(db, days) {
                 payload_json
             FROM learning_events
             WHERE event_type = 'agent_message'
-              AND occurred_at >= ?
+              AND ${asTs(db, 'occurred_at')} >= ${asTs(db, '?')}
               AND user_id IS NOT NULL
          ),
          pre_quiz AS (
@@ -109,8 +114,8 @@ async function extractAgentCohort(db, days) {
             JOIN learning_events le ON le.user_id = a.user_id
                 AND le.normalized_topic = a.normalized_topic
                 AND le.event_type = 'mcq_answered'
-                AND le.occurred_at < a.occurred_at
-                AND le.occurred_at >= ${preWindow}
+                AND ${asTs(db, 'le.occurred_at')} < ${asTs(db, 'a.occurred_at')}
+                AND ${asTs(db, 'le.occurred_at')} >= ${preWindow}
             GROUP BY a.user_id, a.normalized_topic, a.claim_key, a.occurred_at
          ),
          post_quiz AS (
@@ -125,8 +130,8 @@ async function extractAgentCohort(db, days) {
             JOIN learning_events le ON le.user_id = a.user_id
                 AND le.normalized_topic = a.normalized_topic
                 AND le.event_type = 'mcq_answered'
-                AND le.occurred_at > a.occurred_at
-                AND le.occurred_at <= ${postWindow}
+                AND ${asTs(db, 'le.occurred_at')} > ${asTs(db, 'a.occurred_at')}
+                AND ${asTs(db, 'le.occurred_at')} <= ${postWindow}
             GROUP BY a.user_id, a.normalized_topic, a.claim_key, a.occurred_at
          )
          SELECT
