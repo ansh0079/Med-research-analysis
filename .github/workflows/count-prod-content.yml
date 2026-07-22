@@ -1,7 +1,6 @@
 name: Count Prod Content
 
 on:
-  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -12,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Count topics, guidelines, articles on Hetzner
+      - name: Count articles referenced in topic knowledge
         uses: appleboy/ssh-action@v1
         with:
           host: 178.105.155.246
@@ -21,17 +20,9 @@ jobs:
           command_timeout: 3m
           script: |
             set -e
-            echo '=== topic_knowledge ==='
-            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT COUNT(*) AS topic_knowledge FROM topic_knowledge;"
-            echo '=== topic_guidelines ==='
-            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT COUNT(*) AS guidelines, COUNT(DISTINCT source_body) AS source_bodies, COUNT(DISTINCT normalized_topic) AS guideline_topics FROM topic_guidelines;"
-            echo '=== curriculum ==='
-            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT (SELECT COUNT(*) FROM curriculum_topics) AS curriculum_topics, (SELECT COUNT(*) FROM curriculum_blocks) AS curriculum_blocks;"
-            echo '=== articles_cache ==='
-            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT COUNT(*) AS articles_cache FROM articles_cache;"
-            echo '=== articles_cache by source ==='
-            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT source, COUNT(*) FROM articles_cache GROUP BY 1 ORDER BY 2 DESC;"
-            echo '=== saved_articles / searches ==='
-            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT (SELECT COUNT(*) FROM saved_articles) AS saved_articles, (SELECT COUNT(*) FROM searches) AS searches;"
-            echo '=== flagship config on host ==='
-            node -e 'const c=require("/opt/medsearch/server/config/flagshipTopics.json"); console.log("flagshipTopics", c.topics.length, "version", c.version);'
+            echo '=== source_articles PMIDs in topic_knowledge ==='
+            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT COUNT(*) AS topics_with_sources, COALESCE(SUM(jsonb_array_length(source_articles::jsonb)),0) AS source_article_refs FROM topic_knowledge WHERE source_articles IS NOT NULL AND source_articles <> '' AND source_articles <> '[]';"
+            echo '=== unique external ids in source_articles ==='
+            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT COUNT(DISTINCT elem) AS unique_source_refs FROM topic_knowledge, LATERAL jsonb_array_elements_text(CASE WHEN source_articles ~ '^\\[' THEN source_articles::jsonb ELSE '[]'::jsonb END) AS elem;"
+            echo '=== teaching claims / papers if present ==='
+            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT relname FROM pg_class WHERE relkind='r' AND relname ILIKE '%article%' OR relname ILIKE '%paper%' OR relname ILIKE '%pmid%' ORDER BY 1;"
