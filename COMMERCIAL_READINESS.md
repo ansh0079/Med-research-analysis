@@ -152,7 +152,7 @@ Latest drill record:
 - **Reconcile verified (2026-07-20):** Live PG has `public.agent_turn_side_effects` and `_migrations` row `079_learning_rl_schema_reconciliation.sql` (id=89, applied_at 2026-07-08). Confirmed via Actions SSH workflow `verify-prod-ops.yml`.
 - **Deploy unblocked (2026-07-20):** Merged PR #11; Hetzner deploy green (`Health check passed`). Prod health `https://signalmd.co/health` → ok, database ok.
 - **Release gates (ops):**
-  - Search ranking: `npm run eval:search-quality:gold -- --base https://signalmd.co` (watch Precision@5; avoid running across a live redeploy — 502s poison the score). **2026-07-20 stable run: Gate PASS** — Precision@5=0.204 (baseline 0.185), landmarkHitRate=1.0, offTopic@10=0.002.
+  - Search ranking: `npm run eval:search-quality:gold -- --base https://signalmd.co` (watch Precision@5 / MRR; avoid running across a live redeploy — 502s poison the score). **2026-07-20 stable run: Gate PASS** — Precision@5=0.204 (baseline 0.185), landmarkHitRate=1.0, offTopic@10=0.002. **2026-07-22 after ranking tune (#27): Gate PASS** — Precision@5=0.204, **MRR=0.850** (was 0.625), **nDCG@10=0.879** (was 0.705), Recall@10=0.987, landmarkHitRate=1.0, offTopic@10=0.002. Baseline fixture bumped to v3.
   - Offline personalization: `npm run eval:offline-policy:strict` inside `medsearch-web` once `scripts/` is in the image (Dockerfile ships scripts as of 2026-07-20); needs ≥40 labelled decisions + propensity coverage
   - Agent efficacy: `npm run eval:agent-quality:strict` (same; min cohort)
   - Alerts spec: `monitoring/alerts-config.json` (RL attribution, synopsis abstract-only, job DLQ, Stripe webhook rejects, search P@5)

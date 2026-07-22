@@ -22,8 +22,13 @@ const { loadSearchGoldFixture } = require('./load-search-gold-fixture');
 
 const args = process.argv.slice(2);
 const flag = (name, fallback) => {
-    const idx = args.indexOf(name);
-    return idx !== -1 ? args[idx + 1] : fallback;
+    // Prefer the last occurrence so CLI overrides npm-script defaults
+    // (e.g. `npm run eval:search-quality:gold -- --base https://signalmd.co`).
+    let value = fallback;
+    for (let i = 0; i < args.length; i += 1) {
+        if (args[i] === name && args[i + 1] != null) value = args[i + 1];
+    }
+    return value;
 };
 
 const BASE = flag('--base', 'http://localhost:3002');
