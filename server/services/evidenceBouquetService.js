@@ -148,7 +148,8 @@ function isRCT(article) {
     const pubtypes = (article.pubtype || []).map((p) => String(p).toLowerCase());
     if (pubtypes.some((p) => p.includes('randomized') || p.includes('controlled trial') || p.includes('clinical trial'))) return true;
     const ebm = article._ebmScore ?? 0;
-    return ebm === 5; // RCT threshold
+    // EBM_SCORES: RCT = 6, controlled/clinical trial = 5 (was incorrectly === 5 only)
+    return ebm === 6 || ebm === 5;
 }
 
 function isCohort(article) {
@@ -216,9 +217,11 @@ function computeCompositeScore(article) {
     const grade = GRADE_ORDER[(article._quality?.grade)] ?? 0;
     score += (grade / 4) * 20;
 
-    // 3. Impact / citations → up to 25 points (log-scaled) — ranked above recency
+    // 3. Impact / citations → up to 18 points (log-scaled).
+    //    Cap lowered from 25 so topical match can win Precision@5 against
+    //    famous-but-less-relevant highly-cited papers.
     const citations = getCitationCount(article);
-    score += Math.min(25, Math.log10(Math.max(1, citations)) * 5);
+    score += Math.min(18, Math.log10(Math.max(1, citations)) * 4.2);
 
     // 4. Recency → up to 10 points, but only if paper has ≥5 citations
     //    (prevents uncited recent papers floating above validated work)
@@ -499,6 +502,82 @@ function scorePicoRelevance(article, pico) {
     return matches >= 2 ? 2 : matches * 0.5;
 }
 
+// Intent-conditioned archetype score bias applied after the base composite.
+// Therapeutic / guideline queries should surface trials & guidelines first;
+// teaching/general keep light diversity bias without burying topical hits.
+const INTENT_ARCHETYPE_BIAS = {
+    therapeutic: {
+        landmark_rct: 10,
+        management_trial: 8,
+        rct: 6,
+        guideline: 8,
+        recent_review: 2,
+        definition: 0,
+        landmark_basic_science: -4,
+        mechanism: -8,
+        cohort: 1,
+        other: 0,
+    },
+    guideline: {
+        guideline: 14,
+        definition: 4,
+        recent_review: 5,
+        landmark_rct: 3,
+        management_trial: 2,
+        rct: 1,
+        mechanism: -10,
+        landmark_basic_science: -6,
+    },
+    diagnostic: {
+        definition: 8,
+        guideline: 7,
+        recent_review: 4,
+        review: 3,
+        landmark_rct: 1,
+        mechanism: -4,
+    },
+    prognostic: {
+        cohort: 8,
+        recent_review: 5,
+        review: 4,
+        landmark_rct: 3,
+        mechanism: -4,
+    },
+    epidemiological: {
+        cohort: 8,
+        review: 5,
+        recent_review: 4,
+        mechanism: -6,
+    },
+    mechanistic: {
+        landmark_basic_science: 10,
+        mechanism: 8,
+        recent_review: 3,
+        landmark_rct: -2,
+        management_trial: -2,
+    },
+    general: {
+        landmark_rct: 4,
+        guideline: 4,
+        management_trial: 3,
+        definition: 2,
+        recent_review: 1,
+        mechanism: -4,
+    },
+};
+
+function intentArchetypeBias(intent, archetype) {
+    const table = INTENT_ARCHETYPE_BIAS[intent] || INTENT_ARCHETYPE_BIAS.general;
+    return Number(table[archetype] || 0);
+}
+
+function topicalMatchWeight(specificity) {
+    // Raised so query/alias fit beats citation mass for Precision@5.
+    if (specificity === 'strict') return 20;
+    if (specificity === 'broad') return 4;
+    return 22; // moderate default
+}
+
 function buildEvidenceBouquet(articles, query, options = {}) {
     const count = Math.min(Math.max(parseInt(String(options.count || 5), 10) || 5, 1), 50);
     const previousQueries = Array.isArray(options.previousQueries) ? options.previousQueries : [];
@@ -507,6 +586,10 @@ function buildEvidenceBouquet(articles, query, options = {}) {
         : (typeof options.articleSignalBoosts === 'object' && options.articleSignalBoosts !== null
             ? new Map(Object.entries(options.articleSignalBoosts))
             : new Map());
+    const queryIntent = options.queryIntent || classifyQueryIntent(query);
+    // relevance = search results list (topical + intent score, no diversity slotting)
+    // diversity = teaching bouquet (archetype coverage for mentor / MCQ seeding)
+    const selectionMode = options.selectionMode === 'diversity' ? 'diversity' : 'relevance';
 
     // 1. Filter — lightweight safety net for callers that bypass filterRelevantArticles.
     // The full filter (alias, year, preclinical, predatory, PICO) runs in searchPipeline's
@@ -524,16 +607,17 @@ function buildEvidenceBouquet(articles, query, options = {}) {
         ? [...new Set(previousQueries.flatMap((q) => String(q).toLowerCase().split(/\s+/).filter((t) => t.length > 3)))]
         : [];
 
+    const matchWeight = topicalMatchWeight(String(options.specificity || 'moderate'));
+    const aliasWeight = 28;
+
     const scored = filtered.map((a) => {
         let score = computeCompositeScore(a);
         const matchScore = queryMatchScore(a, query);
         const aliasMatchScore = queryAliasMatchScore(a, options.queryAliases);
-        const specificity = String(options.specificity || 'moderate');
-        // Moderate default was 8 — too weak vs EBM/citation mass, so relevant
-        // papers landed in top-10 but missed Precision@5. Align closer to strict.
-        const matchWeight = specificity === 'strict' ? 14 : specificity === 'broad' ? 3 : 16;
+        const archetype = classifyArchetype(a);
         score += matchScore * matchWeight;
-        score += aliasMatchScore * 24;
+        score += aliasMatchScore * aliasWeight;
+        score += intentArchetypeBias(queryIntent, archetype);
         // Curated exact-PMID pins (see clinicalQueryPinnedPmids) are a stronger signal
         // than a fuzzy alias/keyword match — they're a verified answer to this exact
         // query pattern, not text overlap. Boost enough to clear typical top-10 cutoffs.
@@ -568,38 +652,47 @@ function buildEvidenceBouquet(articles, query, options = {}) {
             compositeScore: score,
             queryMatchScore: matchScore,
             queryAliasMatchScore: aliasMatchScore,
-            archetype: classifyArchetype(a),
+            archetype,
             year: getYear(a),
             citations: getCitationCount(a),
         };
     });
 
-    // 3. Sort by composite score
-    scored.sort((a, b) => b.compositeScore - a.compositeScore);
+    // 3. Sort by composite score (intent + topical already folded in)
+    scored.sort((a, b) => {
+        if (b.compositeScore !== a.compositeScore) return b.compositeScore - a.compositeScore;
+        const topicA = (a.queryMatchScore || 0) + (a.queryAliasMatchScore || 0);
+        const topicB = (b.queryMatchScore || 0) + (b.queryAliasMatchScore || 0);
+        return topicB - topicA;
+    });
 
-    // 4. Archetype-aware selection: try to cover key archetypes
-    const BASE_PRIORITY_ARCHETYPES = ['definition', 'landmark_rct', 'management_trial', 'guideline', 'recent_review', 'landmark_basic_science'];
-    // Reorder so user-preferred archetypes are considered first
-    const preferred = Array.isArray(options.preferredArchetypes) ? options.preferredArchetypes : [];
-    const PRIORITY_ARCHETYPES = [
-        ...preferred.filter((p) => BASE_PRIORITY_ARCHETYPES.includes(p)),
-        ...BASE_PRIORITY_ARCHETYPES.filter((p) => !preferred.includes(p)),
-    ];
     const selected = [];
     const selectedIds = new Set();
     const archetypesCovered = new Set();
 
-    // First pass: pick highest-scoring from each priority archetype
-    for (const archetype of PRIORITY_ARCHETYPES) {
-        const candidate = scored.find((s) => s.archetype === archetype && !selectedIds.has(s.article.uid));
-        if (candidate) {
-            selected.push(candidate);
-            selectedIds.add(candidate.article.uid);
-            archetypesCovered.add(archetype);
+    if (selectionMode === 'diversity') {
+        // Teaching bouquet: archetype-aware selection for mentor / MCQ coverage
+        const BASE_PRIORITY_ARCHETYPES = ['definition', 'landmark_rct', 'management_trial', 'guideline', 'recent_review', 'landmark_basic_science'];
+        const preferred = Array.isArray(options.preferredArchetypes) ? options.preferredArchetypes : [];
+        const seenArch = new Set();
+        const orderedArchetypes = [];
+        for (const arch of [...preferred, ...BASE_PRIORITY_ARCHETYPES]) {
+            if (!arch || seenArch.has(arch)) continue;
+            seenArch.add(arch);
+            orderedArchetypes.push(arch);
+        }
+
+        for (const archetype of orderedArchetypes) {
+            const candidate = scored.find((s) => s.archetype === archetype && !selectedIds.has(s.article.uid));
+            if (candidate) {
+                selected.push(candidate);
+                selectedIds.add(candidate.article.uid);
+                archetypesCovered.add(archetype);
+            }
         }
     }
 
-    // Second pass: fill remaining slots with highest composite score
+    // Fill remaining slots (or all slots in relevance mode) by score
     for (const candidate of scored) {
         if (selected.length >= count) break;
         if (selectedIds.has(candidate.article.uid)) continue;
@@ -608,9 +701,8 @@ function buildEvidenceBouquet(articles, query, options = {}) {
         archetypesCovered.add(candidate.archetype);
     }
 
-    // Final top-k pass: keep archetype diversity from selection, but order the
-    // bouquet so topical match dominates Precision@5 (composite already includes
-    // matchWeight; add a light topical tie-break so near-ties prefer query fit).
+    // Final order: always by composite (topical+intent), not by archetype insertion order.
+    // Diversity mode still *selects* for coverage, but the displayed rank is relevance.
     selected.sort((a, b) => {
         if (b.compositeScore !== a.compositeScore) return b.compositeScore - a.compositeScore;
         const topicA = (a.queryMatchScore || 0) + (a.queryAliasMatchScore || 0);
@@ -627,10 +719,14 @@ function buildEvidenceBouquet(articles, query, options = {}) {
             citations: s.citations,
             year: s.year,
             reasons: buildReasons(s),
+            selectionMode,
+            queryIntent,
         })),
         archetypesCovered: Array.from(archetypesCovered),
         totalScored: scored.length,
         filteredCount: filtered.length,
+        selectionMode,
+        queryIntent,
     };
 }
 
@@ -724,8 +820,11 @@ module.exports = {
     isPreclinical,
     isGroundbreakingBasicScience,
     isPredatoryJournal,
+    isRCT,
     MECHANISM_QUERY_PATTERNS,
     mapStudyTypesToArchetypes,
     classifyQueryIntent,
     intentToPreferredArchetypes,
+    intentArchetypeBias,
+    topicalMatchWeight,
 };
