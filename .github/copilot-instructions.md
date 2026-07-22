@@ -44,3 +44,8 @@ Facts. Diffs. Commands. Done.
 - Rules bind all models + all extensions equally.
 - Do not weaken rules for faster/cheaper models or other vendors.
 - Do not invent product-domain rules unless the open workspace asks for them.
+
+## Token Savior MCP (when enabled)
+- Prefer `token-savior-recall` tools for code nav (symbols, search, structure, impact).
+- Avoid fat Read/Grep chains when TS tools answer cheaper.
+- Fall back to native Read/Grep only if TS missing or fails.
