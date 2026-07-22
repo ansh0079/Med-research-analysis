@@ -50,14 +50,14 @@ async function updateCard(db, { userId, topic, normalizedTopic, outlineNodeId, o
         await db.run(
             `UPDATE spaced_rep_cards
              SET stability = ?, difficulty = ?, state = ?, lapses = ?, interval_days = ?, easiness = ?, repetitions = ?,
-                 due_at = ?, last_reviewed_at = datetime('now'), updated_at = datetime('now')
+                 due_at = ?, last_reviewed_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
              WHERE user_id = ? AND normalized_topic = ? AND outline_node_id = ?`,
             [stability, difficulty, state, lapses, intervalDays, easiness, repetitions, dueAt, userId, normalizedTopic, outlineNodeId]
         );
     } else {
         await db.run(
             `INSERT INTO spaced_rep_cards (user_id, topic, normalized_topic, outline_node_id, outline_label, stability, difficulty, state, lapses, interval_days, easiness, repetitions, due_at, last_reviewed_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
             [userId, topic, normalizedTopic, outlineNodeId, outlineLabel ?? null, stability, difficulty, state, lapses, intervalDays, easiness, repetitions, dueAt]
         );
     }
@@ -75,10 +75,10 @@ async function getDueCards(db, userId, limit = 50) {
     const rows = await db.all(
         `SELECT topic, normalized_topic, outline_node_id, outline_label, stability, difficulty, state, lapses, interval_days, easiness, repetitions, due_at, last_reviewed_at
          FROM spaced_rep_cards
-         WHERE user_id = ? AND due_at <= datetime('now')
+         WHERE user_id = ? AND due_at <= ?
          ORDER BY due_at ASC
          LIMIT ?`,
-        [userId, limit]
+        [userId, new Date().toISOString(), limit]
     ).catch((err) => { logger.warn({ err }, 'operation failed'); return []; });
     return rows.map((r) => ({
         topic: r.topic,
@@ -106,8 +106,8 @@ async function getDueCards(db, userId, limit = 50) {
 async function countDueCards(db, userId) {
     if (typeof db.get !== 'function') return 0;
     const row = await db.get(
-        `SELECT COUNT(*) AS cnt FROM spaced_rep_cards WHERE user_id = ? AND due_at <= CURRENT_TIMESTAMP`,
-        [userId]
+        `SELECT COUNT(*) AS cnt FROM spaced_rep_cards WHERE user_id = ? AND due_at <= ?`,
+        [userId, new Date().toISOString()]
     ).catch((err) => { logger.warn({ err }, 'countDueCards get failed'); return null; });
     return row ? Number(row.cnt) : 0;
 }
