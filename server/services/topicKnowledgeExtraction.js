@@ -102,7 +102,20 @@ async function extractAndUpsertTopicKnowledge({
     }
 
     const ai = getSharedAiService({ serverConfig, fetchImpl });
-    const prompt = buildTopicKnowledgePrompt(queryValidation.sanitized, evidenceArticles, interactionStats, existingKnowledge?.knowledge || null);
+    let guidelines = [];
+    if (typeof db.getGuidelinesByTopic === 'function') {
+        guidelines = await db.getGuidelinesByTopic(queryValidation.sanitized, { limit: 12 }).catch((err) => {
+            logger.warn({ err }, 'getGuidelinesByTopic failed during topic extraction');
+            return [];
+        });
+    }
+    const prompt = buildTopicKnowledgePrompt(
+        queryValidation.sanitized,
+        evidenceArticles,
+        interactionStats,
+        existingKnowledge?.knowledge || null,
+        { guidelines }
+    );
     const rawAi = await ai.callText(prompt, selectedProvider, selectedModel, { temperature: 0.15 });
 
     const jsonMatch = String(rawAi || '').match(/```json\s*([\s\S]*?)\s*```/) || String(rawAi || '').match(/```\s*([\s\S]*?)\s*```/);

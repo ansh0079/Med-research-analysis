@@ -50,7 +50,7 @@ export const TopicKnowledgeDiscovery: React.FC<TopicKnowledgeDiscoveryProps> = (
           />
           <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
             I&apos;m exploring this topic for the first time. I found <strong>{resultsCount} papers</strong> across multiple sources.
-            Would you like me to synthesise what I found and add it to memory so future searches get a mentor greeting?
+            Synthesise them with stored clinical guidelines into topic memory so future searches get a mentor greeting, claims, and quiz angles.
           </p>
           {proposeError && (
             <p className="text-xs text-red-600 dark:text-red-400 font-semibold">
@@ -67,7 +67,7 @@ export const TopicKnowledgeDiscovery: React.FC<TopicKnowledgeDiscoveryProps> = (
               {proposingKnowledge ? (
                 <>
                   <span className="w-3 h-3 border-2 border-white/40 border-t-white rounded-full animate-spin shrink-0" />
-                  Synthesising…
+                  Evolving topic…
                 </>
               ) : (
                 <>
@@ -77,7 +77,7 @@ export const TopicKnowledgeDiscovery: React.FC<TopicKnowledgeDiscoveryProps> = (
               )}
             </button>
             <span className="text-[11px] text-slate-400">
-              Requires sign-in. Creates a proposal for curator review.
+              Uses papers + guidelines. High-confidence topics go live; contested ones stay as curator proposals.
             </span>
           </div>
         </div>

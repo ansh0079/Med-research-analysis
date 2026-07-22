@@ -1,11 +1,6 @@
 'use strict';
 
 const logger = require('../../config/logger');
-const { getSharedAiService } = require('../../services/aiService');
-const { buildTopicKnowledgePrompt } = require('../../prompts');
-const { resolveProvider } = require('../../utils/aiProvider');
-const { parseJsonBlock, parseJsonArrayBlock } = require('../../utils/parseJson');
-const { validateAiOutput } = require('../../services/aiOutputValidation');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -203,66 +198,56 @@ function registerTopicKnowledgeRoutes(app, deps) {
         const topic = String(req.params.topic || '').trim();
         if (!topic || topic.length < 2) return res.status(400).json({ error: 'topic is required' });
 
-        const { articles = [] } = req.body || {};
+        const { articles = [], forceProposal = false } = req.body || {};
         if (!Array.isArray(articles) || articles.length < 3) {
             return res.status(400).json({ error: 'At least 3 articles are required to build topic knowledge' });
         }
 
         try {
-            const ai = getSharedAiService({ serverConfig, fetchImpl });
-            const prompt = buildTopicKnowledgePrompt(topic, articles);
-            const { provider: selectedProvider, model: selectedModel } = resolveProvider({}, serverConfig);
-            if (!selectedProvider) {
-                return res.status(503).json({ error: 'No AI provider configured' });
-            }
-
-            const maxOutputTokens = selectedProvider === 'claude' ? 8192 : undefined;
-            const raw = await ai.callText(prompt, selectedProvider, selectedModel, { temperature: 0.3, maxOutputTokens });
-
-            // Extract JSON from possible markdown fences
-            const jsonMatch = raw.match(/```json\s*([\s\S]*?)\s*```/) || raw.match(/```\s*([\s\S]*?)\s*```/);
-            const jsonText = jsonMatch ? jsonMatch[1].trim() : raw.trim();
-            let knowledge;
-            try {
-                knowledge = JSON.parse(jsonText);
-            } catch (parseErr) {
-                req.log?.warn?.({ err: parseErr, raw: raw.slice(0, 500) }, 'Topic knowledge JSON parse failed');
-                return res.status(502).json({ error: 'AI returned unparseable knowledge. Please retry or edit manually.' });
-            }
-
-            const sourceArticles = Array.isArray(knowledge.sourceArticles) ? knowledge.sourceArticles : [];
-
-            const proposal = await db.createTopicKnowledgeProposal(topic, {
-                knowledge,
-                sourceArticles,
-                proposedStatus: 'ai_generated',
-                confidence: 0.65,
-                reason: `Auto-generated from ${articles.length} live search results via propose-knowledge endpoint`,
-                createdBy: req.user?.id || null,
-            });
-
-            if (!proposal) {
-                return res.status(500).json({ error: 'Failed to create topic knowledge proposal' });
-            }
-
-            await db.logEvent?.('topic_knowledge_proposed', req.sessionId, {
+            const { evolveTopicKnowledge } = require('../../services/topicEvolutionService');
+            const result = await evolveTopicKnowledge({
                 topic,
-                proposalId: proposal.id,
+                articles,
+                serverConfig,
+                fetchImpl,
+                db,
+                cache: deps.cache || null,
                 userId: req.user?.id || null,
+                sessionId: req.sessionId || null,
+                forceProposal: Boolean(forceProposal),
+                allowLiveCommit: true,
             });
+
+            await db.logEvent?.(
+                result.commitMode === 'live' ? 'topic_knowledge_evolved' : 'topic_knowledge_proposed',
+                req.sessionId,
+                {
+                    topic,
+                    proposalId: result.proposal?.id || null,
+                    commitMode: result.commitMode,
+                    confidence: result.confidence,
+                    guidelineCount: result.guidelineCount,
+                    paperCount: result.paperCount,
+                    userId: req.user?.id || null,
+                }
+            );
 
             res.json({
-                proposal,
-                agentGuidance: buildAgentGuidance({
-                    topic,
-                    status: 'pending_review',
-                    confidence: 0.65,
-                    knowledge,
-                    sourceArticles,
-                }),
+                commitMode: result.commitMode,
+                confidence: result.confidence,
+                proposal: result.proposal,
+                topicKnowledge: result.topicKnowledge,
+                guidelineCount: result.guidelineCount,
+                paperCount: result.paperCount,
+                jobs: result.jobs,
+                agentGuidance: buildAgentGuidance(result.agentGuidancePayload),
             });
         } catch (error) {
-            req.log?.error?.({ err: error, topic }, 'Topic knowledge proposal generation failed');
+            const code = error.statusCode || error.status || 500;
+            if (code === 400 || code === 502 || code === 503) {
+                return res.status(code).json({ error: error.message || 'Topic evolution failed' });
+            }
+            req.log?.error?.({ err: error, topic }, 'Topic knowledge evolution failed');
             res.status(500).json({ error: isDev ? error.message : 'Internal Server Error' });
         }
     });

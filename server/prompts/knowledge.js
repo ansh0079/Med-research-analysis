@@ -83,8 +83,12 @@ Rules:
  *
  * @param {string} topic
  * @param {Array<{title:string; abstract?:string; pubdate?:string; journal?:string; pubtype?:string[]; uid?:string; doi?:string; pmid?:string}>} articles
+ * @param {object} [interactionStats]
+ * @param {object|null} [existingKnowledgeObj]
+ * @param {{ guidelines?: Array<object> }} [options]
  */
-function buildTopicKnowledgePrompt(topic, articles, interactionStats = {}, existingKnowledgeObj = null) {
+function buildTopicKnowledgePrompt(topic, articles, interactionStats = {}, existingKnowledgeObj = null, options = {}) {
+    const guidelines = Array.isArray(options?.guidelines) ? options.guidelines : [];
     const anchorBlock = (() => {
         const anchors = existingKnowledgeObj?.verifiedAnchors;
         if (!Array.isArray(anchors) || anchors.length === 0) return '';
@@ -113,6 +117,19 @@ Year: ${year} | Journal: ${a.journal || a.source || 'Unknown'} | Design: ${desig
 Abstract: ${(a.abstract || 'No abstract').slice(0, 700)}`;
     }).join('\n\n');
 
+    const guidelineContext = guidelines.slice(0, 12).map((g, i) => {
+        const body = g.sourceBody || g.source_body || 'Guideline body';
+        const year = g.sourceYear || g.source_year || 'unknown';
+        const text = g.recommendationText || g.recommendation_text || '';
+        const strength = g.recommendationStrength || g.recommendation_strength || '';
+        const url = g.sourceUrl || g.source_url || '';
+        return `[GUIDELINE ${i + 1}]
+Source: ${body} (${year})
+Strength: ${strength || 'unspecified'}
+URL: ${url || 'n/a'}
+Recommendation: ${String(text).slice(0, 500)}`;
+    }).join('\n\n');
+
     const sourceArticles = (articles || []).slice(0, 20).map((a, i) => ({
         sourceIndex: i + 1,
         uid: a.uid || null,
@@ -123,17 +140,32 @@ Abstract: ${(a.abstract || 'No abstract').slice(0, 700)}`;
         pubdate: a.pubdate || null,
     }));
 
+    const guidelineBlock = guidelineContext
+        ? `
+
+CLINICAL GUIDELINES (cite as [G1], [G2], … — these are practice standards, not research papers):
+${guidelineContext}
+`
+        : `
+
+CLINICAL GUIDELINES: none stored for this topic yet. Prefer paper-grounded teaching points and note guideline gaps in controversies if relevant.
+`;
+
+    const existingBlock = existingKnowledgeObj
+        ? `\nEXISTING TOPIC MEMORY (difference analysis — preserve unchanged durable points; update only where new papers/guidelines strengthen, nuance, or contradict):\n${JSON.stringify(existingKnowledgeObj, null, 2)}\n`
+        : '';
+
     return `You are a senior clinical medical educator building a permanent, citation-grounded knowledge base entry for the topic: "${topic}".
 
-You have been given ${(articles || []).length} research papers. Your job is to extract the most important, enduring, and high-yield knowledge about this topic — knowledge that will guide future learners and inform case/MCQ generation.
-${anchorBlock}
+You have been given ${(articles || []).length} research papers and ${guidelines.length} clinical guideline recommendations. Your job is to extract the most important, enduring, and high-yield knowledge about this topic — knowledge that will guide future learners and inform case/MCQ generation. Prefer guideline-backed teaching points when guidelines and papers agree; surface conflicts explicitly.
+${anchorBlock}${existingBlock}${guidelineBlock}
 PAPERS:
 ${context}
 
 Return ONLY a valid JSON object — no markdown, no prose outside JSON:
 
 {
-  "mentorMessage": "1-2 sentence expert mentor intro: what every clinician must know about ${topic} and why this evidence matters. Authoritative, not generic.",
+  "mentorMessage": "1-2 sentence expert mentor intro: what every clinician must know about ${topic} and why this evidence matters. Cite papers as [1] and guidelines as [G1] where helpful. Authoritative, not generic.",
   "seminalPapers": [
     {
       "sourceIndex": 1,
@@ -147,6 +179,7 @@ Return ONLY a valid JSON object — no markdown, no prose outside JSON:
     {
       "claim": "High-yield, specific clinical teaching point — not an obvious fact",
       "sourceIndices": [1, 2],
+      "guidelineIndices": [1],
       "confidence": "HIGH" | "MODERATE" | "LOW" | "VERY_LOW"
     }
   ],
@@ -156,6 +189,13 @@ Return ONLY a valid JSON object — no markdown, no prose outside JSON:
   "mcqAngles": [
     "A specific discriminator, pitfall, or controversy worth testing as an MCQ"
   ],
+  "controversies": [
+    {
+      "issue": "paper vs guideline tension or clinical uncertainty",
+      "sourceIndices": [1],
+      "guidelineIndices": [1]
+    }
+  ],
   "verifiedAnchors": [],
   "sourceArticles": ${JSON.stringify(sourceArticles)}
 }
@@ -163,11 +203,12 @@ Return ONLY a valid JSON object — no markdown, no prose outside JSON:
 Rules:
 - seminalPapers: include only papers you can genuinely identify as changing practice or establishing evidence. Max 5. Rank by clinical impact.
 - sourceIndex values are 1-based integers matching [PAPER n] blocks above.
-- teachingPoints: 3-6 bullet points, specific and grounded. sourceIndices must cite at least one paper.
+- guidelineIndices (optional) are 1-based integers matching [GUIDELINE n] blocks.
+- teachingPoints: 3-6 bullet points, specific and grounded. Prefer claims that are both paper- and guideline-supported when possible. sourceIndices must cite at least one paper OR set guidelineIndices when purely guideline-derived.
 - caseGenerationHooks: 2-4 concrete scenario seeds. Include patient demographics and clinical context.
-- mcqAngles: 3-5 specific angles — common pitfalls, discriminators between diagnoses, trial results that counter intuition.
+- mcqAngles: 3-5 specific angles — common pitfalls, discriminators between diagnoses, trial results that counter intuition, guideline vs trial conflicts.
 - mentorMessage: 1-2 sentences only, clinically precise, not generic.
-- Do NOT invent effect sizes, drug doses, or trial names not present in the supplied papers.
+- Do NOT invent effect sizes, drug doses, or trial names not present in the supplied papers/guidelines.
 - sourceArticles is pre-filled above — do not modify it, include it verbatim in your output.
 - verifiedAnchors: If VERIFIED CLINICIAN ANCHORS were provided above, copy that array verbatim. Otherwise use [].
 - Papers marked [CLINICAL GEM CANDIDATE] have high real-world clinician engagement despite modest citation counts. If their content warrants it, elevate them into seminalPapers and explicitly explain why practising clinicians find them clinically important.`;

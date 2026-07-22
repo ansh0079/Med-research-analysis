@@ -55,6 +55,9 @@ const {
 const {
     scheduleZombieSweep, stopZombieSweep,
 } = require('./zombieJobSweeper');
+const {
+    scheduleTopicEvolution, stopTopicEvolution,
+} = require('./topicEvolutionScheduler');
 
 /**
  * @typedef {Object} SchedulerEntry
@@ -143,6 +146,11 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
             task: 'zombie-job-sweep',
             start: () => scheduleZombieSweep(db, baseLogger.child({ task: 'zombie-job-sweep' })),
             stop: () => stopZombieSweep(),
+        },
+        {
+            task: 'topic-evolution',
+            start: () => scheduleTopicEvolution(db, { serverConfig, fetchImpl, cache }, baseLogger.child({ task: 'topic-evolution' })),
+            stop: () => stopTopicEvolution(),
         },
     ];
 }
