@@ -13,6 +13,12 @@ function topicSeedJobKey(topic) {
     return `topic-seed:${stableHash({ topic: normalized }).slice(0, 40)}`;
 }
 
+function topicEvolutionJobKey(topic, reason = 'refresh') {
+    const normalized = String(topic || '').trim().toLowerCase();
+    const day = new Date().toISOString().slice(0, 10);
+    return `topic-evolution:${stableHash({ topic: normalized, reason: String(reason || 'refresh'), day }).slice(0, 40)}`;
+}
+
 function guidelineAlignJobKey(topic) {
     const normalized = String(topic || '').trim().toLowerCase();
     return `guideline-align:${stableHash({ topic: normalized }).slice(0, 40)}`;
@@ -107,6 +113,84 @@ async function getOrEnqueueTopicSeed({ db, topic, articles = [], serverConfig, f
 
     if (created?.inserted) {
         await enqueueProcessJob({ db, jobKey, cache, logger, priority: 0, label: `topic-seed:${String(topic).slice(0, 40)}` });
+    }
+    return { status: 'queued', jobKey };
+}
+
+/**
+ * Enqueue a durable topic-evolution refresh (re-runs even when topic_knowledge exists).
+ * Job keys are day+reason bucketed to avoid duplicate storms from watchtower scans.
+ */
+async function getOrEnqueueTopicEvolution({
+    db,
+    topic,
+    articles = [],
+    reason = 'refresh',
+    forceProposal = false,
+    cache,
+    logger,
+    serverConfig = null,
+}) {
+    const jobKey = topicEvolutionJobKey(topic, reason);
+    if (!hasDurableJobStore(db)) {
+        return { status: 'skipped', reason: 'no_durable_job_store', jobKey };
+    }
+
+    const existing = await db.getAiGenerationJobByKey(jobKey).catch((err) => {
+        logger?.warn?.({ err, jobKey }, 'getAiGenerationJobByKey failed for topic evolution');
+        return null;
+    });
+    if (existing?.status === 'completed') {
+        return { status: 'completed', jobKey, cached: true };
+    }
+    if (existing?.status === 'running' || existing?.status === 'queued') {
+        return { status: existing.status, jobKey };
+    }
+    if (existing?.status === 'failed') {
+        return { status: 'failed', jobKey, errorMessage: existing.errorMessage };
+    }
+
+    const topicStr = String(topic || '').trim();
+    const created = await db.createAiGenerationJob({
+        jobKey,
+        jobType: 'topic_evolution',
+        topic: topicStr || null,
+        inputHash: stableHash({
+            topic: topicStr.toLowerCase(),
+            reason: String(reason || 'refresh'),
+            articleCount: Array.isArray(articles) ? articles.length : 0,
+        }),
+        inputPayload: {
+            topic: topicStr,
+            reason: String(reason || 'refresh'),
+            forceProposal: Boolean(forceProposal),
+            articles: (Array.isArray(articles) ? articles : []).slice(0, 12).map((a) => ({
+                uid: a.uid || null,
+                title: a.title || null,
+                doi: a.doi || null,
+                pmid: a.pmid || null,
+                pmcid: a.pmcid || null,
+                abstract: a.abstract || null,
+                journal: a.journal || a.source || null,
+                pubdate: a.pubdate || null,
+                year: a.year || null,
+            })),
+        },
+        provider: serverConfig?.keys?.gemini ? 'gemini' : serverConfig?.keys?.mistral ? 'mistral' : null,
+    }).catch((err) => {
+        logger?.warn?.({ err, jobKey }, 'createAiGenerationJob failed for topic evolution');
+        return null;
+    });
+
+    if (created?.inserted) {
+        await enqueueProcessJob({
+            db,
+            jobKey,
+            cache,
+            logger,
+            priority: -1,
+            label: `topic-evolution:${topicStr.slice(0, 40)}`,
+        });
     }
     return { status: 'queued', jobKey };
 }
@@ -374,9 +458,11 @@ async function getOrEnqueueFlagshipEnrich({ db, topic, flagship, articles = [], 
 
 module.exports = {
     topicSeedJobKey,
+    topicEvolutionJobKey,
     guidelineAlignJobKey,
     pdfIndexJobKey,
     getOrEnqueueTopicSeed,
+    getOrEnqueueTopicEvolution,
     getOrEnqueueGuidelineAlign,
     enqueuePdfIndexForBouquetArticles,
     getOrEnqueuePdfIndex,

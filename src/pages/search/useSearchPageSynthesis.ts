@@ -11,6 +11,7 @@ interface UseSearchPageSynthesisOptions {
   betaOpenAccess: boolean;
 }
 
+/** Evidence synthesis uses the full bouquet (up to 12), not a hard top-5. */
 export function useSearchPageSynthesis({
   currentQuery,
   top5Articles,

@@ -87,7 +87,8 @@ function createSearchTopicHelpers({ db, logger, serverConfig }) {
         const { articles: evidenceBouquet, ranking, archetypesCovered } = mergeCuratedWithLiveEvidence(
             curatedArticles,
             articles,
-            5,
+            // Full bouquet for synthesize / topic evolution (server still caps at 12).
+            12,
             topic,
             { previousQueries, learningContext }
         );

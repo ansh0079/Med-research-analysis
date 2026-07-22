@@ -15,8 +15,44 @@ const { validateAiOutput } = require('./aiOutputValidation');
 const { parseJsonBlock } = require('../utils/parseJson');
 const { generateAndStoreMCQs } = require('./mcqGeneratorService');
 const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('./learningSignalService');
+const {
+    POLICY_RECOMMENDATION,
+    recordBanditReward,
+} = require('./personalizationBanditService');
 
 const LIVE_COMMIT_MIN_CONFIDENCE = Number(process.env.TOPIC_EVOLUTION_LIVE_MIN_CONFIDENCE || 0.7) || 0.7;
+
+/**
+ * Map evolution outcomes onto recommendation_strategy arms so the bandit
+ * learns which refresh/calibrate paths produce durable topic memory.
+ */
+async function recordEvolutionBanditRewards(db, {
+    userId = null,
+    commitMode,
+    confidence,
+    guidelineCount = 0,
+} = {}) {
+    if (!db || typeof recordBanditReward !== 'function') return;
+    const live = commitMode === 'live';
+    const conf = Number(confidence) || 0;
+
+    // Live commits reward the "refresh" arm; proposals still give a weak signal.
+    const refreshReward = live
+        ? Math.max(0.55, Math.min(1, 0.45 + conf * 0.55))
+        : Math.max(0.2, Math.min(0.45, conf * 0.5));
+    await recordBanditReward(db, POLICY_RECOMMENDATION, 'refresh', refreshReward, userId).catch((err) => {
+        logger.debug({ err, commitMode }, 'evolution refresh bandit reward failed');
+    });
+
+    if (guidelineCount > 0) {
+        const calibrateReward = live
+            ? Math.max(0.5, Math.min(1, 0.4 + conf * 0.5 + Math.min(0.15, guidelineCount * 0.03)))
+            : 0.25;
+        await recordBanditReward(db, POLICY_RECOMMENDATION, 'calibrate', calibrateReward, userId).catch((err) => {
+            logger.debug({ err, commitMode }, 'evolution calibrate bandit reward failed');
+        });
+    }
+}
 
 function scoreEvolutionConfidence({ articles = [], guidelines = [], knowledge = null } = {}) {
     const paperN = Array.isArray(articles) ? articles.length : 0;
@@ -274,6 +310,13 @@ async function evolveTopicKnowledge({
             payload: { guidelineCount: guidelines.length, commitMode },
         });
     }
+
+    await recordEvolutionBanditRewards(db, {
+        userId,
+        commitMode,
+        confidence,
+        guidelineCount: guidelines.length,
+    });
 
     logger.info({
         topic: seedQuery,

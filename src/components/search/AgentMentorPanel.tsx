@@ -41,7 +41,32 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
   onOpenCase,
   onOpenQuiz,
   onSynthesize,
-}) => (
+}) => {
+  const [memoryFeedback, setMemoryFeedback] = React.useState<'helpful' | 'not_helpful' | null>(null);
+  const [feedbackBusy, setFeedbackBusy] = React.useState(false);
+
+  React.useEffect(() => {
+    setMemoryFeedback(null);
+  }, [agentGuidance.topic]);
+
+  const submitMemoryFeedback = async (feedbackType: 'helpful' | 'not_helpful') => {
+    if (!isAuthenticated || feedbackBusy || memoryFeedback) return;
+    setFeedbackBusy(true);
+    try {
+      await api.ai.recordAgentFeedback({
+        topic: agentGuidance.topic || currentQuery,
+        feedbackType,
+        reason: 'mentor_memory_panel',
+      });
+      setMemoryFeedback(feedbackType);
+    } catch {
+      /* optional toast */
+    } finally {
+      setFeedbackBusy(false);
+    }
+  };
+
+  return (
   <div id="agent-mentor-panel" className="mb-4 neo-card overflow-hidden border border-emerald-100 dark:border-emerald-900/40">
     <div className="bg-emerald-600 px-5 py-3 flex items-center justify-between gap-3">
       <div className="flex items-center gap-3 min-w-0">
@@ -119,6 +144,38 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
           <span className="text-[11px] font-semibold text-red-500">{topicGuideRefreshError}</span>
         )}
       </div>
+      {isAuthenticated && (
+        <div className="flex flex-wrap items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 dark:bg-slate-800/40">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Was this mentor memory helpful?</span>
+          <button
+            type="button"
+            disabled={feedbackBusy || Boolean(memoryFeedback)}
+            onClick={() => void submitMemoryFeedback('helpful')}
+            className={`rounded-lg px-2.5 py-1 text-[10px] font-black uppercase tracking-wide disabled:opacity-50 ${
+              memoryFeedback === 'helpful'
+                ? 'bg-emerald-600 text-white'
+                : 'bg-white text-emerald-700 border border-emerald-200 hover:bg-emerald-50 dark:bg-slate-900 dark:border-emerald-800 dark:text-emerald-300'
+            }`}
+          >
+            Helpful
+          </button>
+          <button
+            type="button"
+            disabled={feedbackBusy || Boolean(memoryFeedback)}
+            onClick={() => void submitMemoryFeedback('not_helpful')}
+            className={`rounded-lg px-2.5 py-1 text-[10px] font-black uppercase tracking-wide disabled:opacity-50 ${
+              memoryFeedback === 'not_helpful'
+                ? 'bg-rose-600 text-white'
+                : 'bg-white text-rose-700 border border-rose-200 hover:bg-rose-50 dark:bg-slate-900 dark:border-rose-800 dark:text-rose-300'
+            }`}
+          >
+            Wrong / not helpful
+          </button>
+          {memoryFeedback && (
+            <span className="text-[11px] text-slate-500">Thanks — this trains the learning loop.</span>
+          )}
+        </div>
+      )}
       {agentGuidance.seminalPapers.length > 0 && (
         <div className="grid gap-2 md:grid-cols-2">
           {agentGuidance.seminalPapers.slice(0, 4).map((paper) => (
@@ -184,4 +241,5 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
       </div>
     </div>
   </div>
-);
+  );
+};

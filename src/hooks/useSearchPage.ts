@@ -221,10 +221,13 @@ export function useSearchPage() {
     return () => window.removeEventListener('keydown', handleKey);
   }, [activeResultIndex, openAnalysis, toggleSaveArticle, visibleResults, setActiveResultIndex]);
 
+  // Prefer the evidence bouquet (up to 12); otherwise rank live results to the same cap.
   const top5Articles = React.useMemo(
-    () => topicIntelligence?.evidenceBouquet.topPapers?.length
-      ? topicIntelligence.evidenceBouquet.topPapers
-      : selectTopEvidence(results, results.length),
+    () => {
+      const bouquet = topicIntelligence?.evidenceBouquet.topPapers;
+      if (bouquet?.length) return bouquet.slice(0, 12);
+      return selectTopEvidence(results, 12);
+    },
     [results, topicIntelligence]
   );
 
