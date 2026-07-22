@@ -14,6 +14,7 @@
     "server": "node server.js",
     "proxy": "node server.js",
     "start:prod": "cross-env NODE_ENV=production node server.js",
+    "start:e2e-server": "node scripts/start-e2e-server.js",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "nodemon server.js",
     "dev:client": "vite",

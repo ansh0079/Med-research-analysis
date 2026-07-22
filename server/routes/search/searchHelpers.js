@@ -3,6 +3,7 @@
 const logger = require('../../config/logger');
 const { authenticateApiKey } = require('../../services/apiKeyService');
 const { hasFeature } = require('../../config/entitlements');
+const { shouldAutoSeedFromSearch } = require('../../services/searchLearningConfig');
 
 function clampLimit(val, def = 20, min = 1, max = 100) {
     const n = parseInt(String(val), 10);
@@ -12,12 +13,6 @@ function clampLimit(val, def = 20, min = 1, max = 100) {
 /** Unified search applies post-fetch relevance filtering; avoid CDN/browser storing pre-filter responses. */
 function setNoStoreSearchHeaders(res) {
     res.setHeader('Cache-Control', 'private, no-store');
-}
-
-function shouldAutoSeedFromSearch() {
-    const flag = String(process.env.AUTO_SEED_ON_SEARCH || '').toLowerCase();
-    if (flag === 'false' || flag === '0') return false;
-    return true; // on by default everywhere; durable job store prevents duplicate seeding
 }
 
 async function attachApiKeyUser(req, res, next) {

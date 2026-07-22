@@ -1,10 +1,13 @@
 'use strict';
 
 const crypto = require('crypto');
-const { TEMPERATURE, AI_DISCLAIMER } = require('../../services/aiService');
+const { TEMPERATURE, AI_DISCLAIMER, PINNED_MODELS } = require('../../services/aiService');
 const { buildAnalysisPrompt } = require('../../prompts');
 const { resolveProvider } = require('../../utils/aiProvider');
 const { setupSSE, sendSSE } = require('../../utils/sse');
+
+// Analysis routes always use Claude Haiku — fast, cost-effective, reliable JSON.
+const ANALYSIS_PROVIDER = { provider: 'claude', model: PINNED_MODELS.claude };
 
 /**
  * Registers /api/ai/analyze (JSON), /api/ai/analyze/stream, and /api/ai/explain.
@@ -28,16 +31,16 @@ function registerAnalysisRoutes(app, {
         requireMonthlyLimit('aiAnalysesPerMonth', 'ai_analysis'), aiUserLimit(10, 60),
         validateBody(schemas.analyze),
         async (req, res) => {
-            const { text, analysisType, provider = 'auto', model } = req.body;
+            const { text, analysisType } = req.body;
 
             const validationErrors = validateAnalysisBody(req.body);
             if (validationErrors.length > 0) {
                 return res.status(400).json({ error: 'Validation failed', details: validationErrors });
             }
 
-            const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider, model }, serverConfig);
-            if (!selectedProvider) {
-                return res.status(503).json({ error: 'No AI service configured. Add GEMINI_API_KEY or MISTRAL_API_KEY to .env' });
+            const { provider: selectedProvider, model: selectedModel } = resolveProvider(ANALYSIS_PROVIDER, serverConfig);
+            if (!selectedProvider || !serverConfig?.keys?.anthropic) {
+                return res.status(503).json({ error: 'No Anthropic API key configured. Add ANTHROPIC_API_KEY to .env' });
             }
 
             const textHash = crypto.createHash('md5').update(text).digest('hex');
@@ -89,16 +92,16 @@ function registerAnalysisRoutes(app, {
         requireMonthlyLimit('aiAnalysesPerMonth', 'ai_analysis'), aiUserLimit(10, 60),
         validateBody(schemas.analyze),
         async (req, res) => {
-            const { text, analysisType, provider = 'auto', model } = req.body;
+            const { text, analysisType } = req.body;
 
             const validationErrors = validateAnalysisBody(req.body);
             if (validationErrors.length > 0) {
                 return res.status(400).json({ error: 'Validation failed', details: validationErrors });
             }
 
-            const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider, model }, serverConfig);
-            if (!selectedProvider) {
-                return res.status(503).json({ error: 'No AI service configured. Add GEMINI_API_KEY or MISTRAL_API_KEY to .env' });
+            const { provider: selectedProvider, model: selectedModel } = resolveProvider(ANALYSIS_PROVIDER, serverConfig);
+            if (!selectedProvider || !serverConfig?.keys?.anthropic) {
+                return res.status(503).json({ error: 'No Anthropic API key configured. Add ANTHROPIC_API_KEY to .env' });
             }
 
             const textHash = crypto.createHash('md5').update(text).digest('hex');
@@ -162,7 +165,7 @@ function registerAnalysisRoutes(app, {
         aiUserLimit(10, 60),
         validateBody(schemas.analyze),
         async (req, res) => {
-            const { text, provider = 'auto', model } = req.body;
+            const { text } = req.body;
 
             if (!text || typeof text !== 'string') {
                 return res.status(400).json({ error: 'Text is required and must be a string' });
@@ -171,9 +174,9 @@ function registerAnalysisRoutes(app, {
                 return res.status(400).json({ error: 'Text exceeds maximum length of 50000 characters' });
             }
 
-            const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider, model }, serverConfig);
-            if (!selectedProvider) {
-                return res.status(503).json({ error: 'No AI service configured. Add GEMINI_API_KEY or MISTRAL_API_KEY to .env' });
+            const { provider: selectedProvider, model: selectedModel } = resolveProvider(ANALYSIS_PROVIDER, serverConfig);
+            if (!selectedProvider || !serverConfig?.keys?.anthropic) {
+                return res.status(503).json({ error: 'No Anthropic API key configured. Add ANTHROPIC_API_KEY to .env' });
             }
 
             const textHash = crypto.createHash('md5').update(text).digest('hex');

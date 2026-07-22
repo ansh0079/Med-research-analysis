@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const baseURL = process.env.BASE_URL || 'http://localhost:3002';
+
 export default defineConfig({
   testDir: './tests/e2e',
   testMatch: '**/*.spec.js',
@@ -14,7 +16,7 @@ export default defineConfig({
     ['junit', { outputFile: 'playwright-report/results.xml' }],
   ],
   use: {
-    baseURL: process.env.BASE_URL || 'http://localhost:3002',
+    baseURL,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'on-first-retry',
@@ -70,16 +72,10 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run build && npm run start:prod',
-    url: 'http://localhost:3002/health',
-    reuseExistingServer: true,
+    command: 'node scripts/start-e2e-server.js',
+    url: baseURL,
+    reuseExistingServer: false,
     timeout: 180 * 1000,
-    env: {
-      NODE_ENV: 'production',
-      JWT_SECRET: process.env.JWT_SECRET || 'playwright-local-jwt-secret-change-me',
-      CORS_ORIGINS: process.env.CORS_ORIGINS || 'http://localhost:3002',
-      BASE_URL: process.env.BASE_URL || 'http://localhost:3002',
-    },
   },
   globalSetup: require.resolve('./tests/e2e/global-setup.js'),
   globalTeardown: require.resolve('./tests/e2e/global-teardown.js'),

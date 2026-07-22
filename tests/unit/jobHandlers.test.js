@@ -10,6 +10,7 @@ jest.mock('../../server/services/jobQueue', () => ({
     embeddingQueue: {},
     digestQueue: {},
     aiGenerationQueue: {},
+    searchQueue: {},
 }));
 
 jest.mock('../../server/services/pdfService', () => ({
@@ -37,6 +38,10 @@ jest.mock('../../server/services/agentSideEffectService', () => ({
     registerAgentSideEffectHandler: jest.fn(),
 }));
 
+jest.mock('../../server/services/searchObservedService', () => ({
+    registerSearchObservedHandler: jest.fn(),
+}));
+
 const { registerAllJobHandlers } = require('../../server/services/jobHandlers');
 const { createPdfService } = require('../../server/services/pdfService');
 const { runPdfPreindex } = require('../../server/services/pdfPreindexRunner');
@@ -44,6 +49,7 @@ const { generateEmbedding, articleToEmbedText } = require('../../server/embeddin
 const { runAlertDigests } = require('../../server/services/digestService');
 const { processAiGenerationJobByKey } = require('../../server/services/aiGenerationJobProcessor');
 const { registerAgentSideEffectHandler } = require('../../server/services/agentSideEffectService');
+const { registerSearchObservedHandler } = require('../../server/services/searchObservedService');
 
 describe('registerAllJobHandlers', () => {
     const deps = {
@@ -72,6 +78,7 @@ describe('registerAllJobHandlers', () => {
         expect(handlers.has('digest:run')).toBe(true);
         expect(handlers.has('ai-generation:process')).toBe(true);
         expect(registerAgentSideEffectHandler).toHaveBeenCalledWith(deps);
+        expect(registerSearchObservedHandler).toHaveBeenCalledWith(deps);
     });
 
     describe('pdf:extract handler', () => {

@@ -143,13 +143,13 @@ test.describe('beta smoke', () => {
     await page.getByRole('button', { name: /Finals/i }).click();
     await page.getByRole('button', { name: /^Next$/ }).click();
     // Step 3: specialty
-    await page.getByRole('button', { name: /Cardiology/i }).click();
+    await page.getByRole('button', { name: /Cardiology$/i }).click();
     await page.getByRole('button', { name: /^Next$/ }).click();
     // Step 4: goal
     await page.getByRole('button', { name: /Pass exams/i }).click();
     await page.getByRole('button', { name: /^Next$/ }).click();
     // Step 5: difficulty
-    await page.getByRole('button', { name: /^Mixed$/ }).click();
+    await page.getByRole('button', { name: /Mixed/i }).click();
     await page.getByRole('button', { name: /^Next$/ }).click();
     // Step 6: daily time budget — final step, submits the profile
     await page.getByRole('button', { name: /25 minutes per day/i }).click();

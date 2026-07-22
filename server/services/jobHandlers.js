@@ -50,6 +50,9 @@ function registerAllJobHandlers(deps) {
     const { registerAgentSideEffectHandler } = require('./agentSideEffectService');
     registerAgentSideEffectHandler(deps);
 
+    const { registerSearchObservedHandler } = require('./searchObservedService');
+    registerSearchObservedHandler(deps);
+
     logger.info('Job handlers registered');
 }
 

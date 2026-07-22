@@ -11,6 +11,8 @@
 
 const { defineConfig, devices } = require('@playwright/test');
 
+const baseURL = process.env.BASE_URL || 'http://localhost:3002';
+
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -44,7 +46,7 @@ module.exports = defineConfig({
   // Shared settings for all projects
   use: {
     // Base URL to use in actions like `await page.goto('/')`
-    baseURL: process.env.BASE_URL || 'http://localhost:3002',
+    baseURL,
 
     // Collect trace when retrying the failed test
     trace: 'on-first-retry',
@@ -128,11 +130,9 @@ module.exports = defineConfig({
   // Run local dev server before starting tests
   webServer: {
     // Serve built SPA from dist/ (API-only start returns 404 for /search)
-    command: process.platform === 'win32'
-      ? 'set NODE_ENV=production&& node server.js'
-      : 'NODE_ENV=production node server.js',
-    url: 'http://localhost:3002',
-    reuseExistingServer: true,
+    command: 'node scripts/start-e2e-server.js',
+    url: baseURL,
+    reuseExistingServer: false,
     timeout: 120 * 1000,
   },
 

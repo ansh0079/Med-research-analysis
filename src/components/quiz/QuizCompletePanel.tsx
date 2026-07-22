@@ -14,7 +14,6 @@ interface QuizLiftSummary {
 
 interface QuizCompletePanelProps {
   quiz: QuizState;
-  activeTopic?: string;
   scorePercent: number;
   activeStudyRunId?: number;
   studyRun: StudyRun | null;
@@ -38,7 +37,6 @@ interface QuizCompletePanelProps {
 
 export const QuizCompletePanel: React.FC<QuizCompletePanelProps> = ({
   quiz,
-  activeTopic = '',
   scorePercent,
   activeStudyRunId,
   studyRun,
@@ -75,6 +73,7 @@ export const QuizCompletePanel: React.FC<QuizCompletePanelProps> = ({
     }
   });
   const missedEntries = [...missedPapers.values()].sort((a, b) => b.missCount - a.missCount);
+  const fallbackSearchTopic = quiz.questions.find((question) => question.topic)?.topic ?? '';
 
   return (
     <div className="space-y-4">
@@ -186,7 +185,7 @@ export const QuizCompletePanel: React.FC<QuizCompletePanelProps> = ({
                         </a>
                       )}
                       <a
-                        href={`/search?q=${encodeURIComponent(article.title || activeTopic || '')}${article.pmid ? `&focusPmid=${encodeURIComponent(article.pmid)}` : ''}`}
+                        href={`/search?q=${encodeURIComponent(article.title || fallbackSearchTopic)}${article.pmid ? `&focusPmid=${encodeURIComponent(article.pmid)}` : ''}`}
                         className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 hover:underline"
                         title="Open search with personalization — missed papers are boosted for you"
                       >

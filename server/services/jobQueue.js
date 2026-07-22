@@ -185,6 +185,7 @@ class JobQueue {
 
 const pdfQueue = new JobQueue({ concurrency: 2, name: 'pdf' });
 const embeddingQueue = new JobQueue({ concurrency: 3, name: 'embedding' });
+const searchQueue = new JobQueue({ concurrency: 2, name: 'search' });
 const digestQueue = new JobQueue({ concurrency: 1, name: 'digest' });
 const aiGenerationQueue = new JobQueue({ concurrency: 1, name: 'ai-generation' });
 
@@ -192,7 +193,7 @@ function startWorkers(deps = {}) {
     if (!useBullMQ() || workers.length > 0) return;
 
     const conn = getConnection();
-    const allQueues = [pdfQueue, embeddingQueue, digestQueue, aiGenerationQueue];
+    const allQueues = [pdfQueue, embeddingQueue, searchQueue, digestQueue, aiGenerationQueue];
 
     for (const q of allQueues) {
         const worker = new Worker(
@@ -241,7 +242,7 @@ async function stopWorkers() {
 }
 
 async function getQueueStatus() {
-    const all = [pdfQueue, embeddingQueue, digestQueue, aiGenerationQueue];
+    const all = [pdfQueue, embeddingQueue, searchQueue, digestQueue, aiGenerationQueue];
     const result = {};
     const workerQueues = new Set(workers.map((worker) => {
         const name = worker?.name || '';
@@ -284,7 +285,7 @@ async function getQueueStatus() {
 }
 
 async function getRecurringFailedJobs({ limitPerQueue = 50, minCount = 2 } = {}) {
-    const all = [pdfQueue, embeddingQueue, digestQueue, aiGenerationQueue];
+    const all = [pdfQueue, embeddingQueue, searchQueue, digestQueue, aiGenerationQueue];
     const grouped = new Map();
     for (const q of all) {
         if (!q.bullEnabled || !q.bullQueue) continue;
@@ -321,6 +322,7 @@ module.exports = {
     JobQueue,
     pdfQueue,
     embeddingQueue,
+    searchQueue,
     digestQueue,
     aiGenerationQueue,
     registerJobHandler,

@@ -25,11 +25,20 @@ function mockUnifiedSearchFetch({
   pmids = [],
   summary = {},
   geminiText = null,
+  claudeText = null,
 } = {}) {
   mockFetch.mockImplementation((url) => {
     const target = String(url);
     if (target.includes('id.nlm.nih.gov/mesh')) {
       return Promise.resolve({ ok: true, json: async () => mesh });
+    }
+    if (target.includes('api.anthropic.com') && claudeText != null) {
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({
+          content: [{ type: 'text', text: claudeText }],
+        }),
+      });
     }
     if (target.includes('generativelanguage.googleapis.com') && geminiText != null) {
       return Promise.resolve({
@@ -1122,6 +1131,10 @@ describe('API Endpoints', () => {
   // 5. AI Endpoints Tests
   // ==========================================
   describe('AI Endpoints', () => {
+    const config = require('../../config');
+    beforeEach(() => { config.serverConfig.keys.anthropic = 'test-anthropic-key'; });
+    afterEach(() => { delete config.serverConfig.keys.anthropic; });
+
     describe('POST /api/ai/analyze', () => {
       test('Should require text parameter', async () => {
         const response = await request(app)
@@ -1135,34 +1148,29 @@ describe('API Endpoints', () => {
       });
 
       test('Should return 503 when AI service not configured', async () => {
-        // Temporarily remove AI keys
         const config = require('../../config');
-        const originalGemini = config.serverConfig.keys.gemini;
-        const originalMistral = config.serverConfig.keys.mistral;
-        config.serverConfig.keys.gemini = null;
-        config.serverConfig.keys.mistral = null;
-
-        const response = await request(app)
-          .post('/api/ai/analyze')
-          .set('Cookie', `med_auth_token=${authToken()}`)
-          .send({ text: 'Test text', analysisType: 'quick' })
-          .expect(503);
-
-        expect(response.body).toHaveProperty('error', 'No AI service configured. Add GEMINI_API_KEY or MISTRAL_API_KEY to .env');
-
-        // Restore keys
-        config.serverConfig.keys.gemini = originalGemini;
-        config.serverConfig.keys.mistral = originalMistral;
+        const originalAnthropic = config.serverConfig.keys.anthropic;
+        config.serverConfig.keys.anthropic = null;
+        try {
+          const response = await request(app)
+            .post('/api/ai/analyze')
+            .set('Cookie', `med_auth_token=${authToken()}`)
+            .send({ text: 'Test text', analysisType: 'quick' })
+            .expect(503);
+          expect(response.body).toHaveProperty('error', 'No Anthropic API key configured. Add ANTHROPIC_API_KEY to .env');
+        } finally {
+          config.serverConfig.keys.anthropic = originalAnthropic;
+        }
       });
 
       test('Should analyze text and return results', async () => {
         db.getCachedAnalysis.mockResolvedValueOnce(null);
-        cache.getAnalysis.mockReturnValueOnce(null);
+        cache.getAsync.mockResolvedValueOnce(null);
 
         mockFetch.mockResolvedValueOnce({
           ok: true,
           json: async () => ({
-            candidates: [{ content: { parts: [{ text: 'This is a test analysis result' }] } }]
+            content: [{ type: 'text', text: 'This is a test analysis result' }]
           })
         });
 
@@ -1171,8 +1179,7 @@ describe('API Endpoints', () => {
           .set('Cookie', `med_auth_token=${authToken()}`)
           .send({
             text: 'This is a medical research text about diabetes treatment.',
-            analysisType: 'quick',
-            model: 'mistralai/Mistral-7B-Instruct-v0.2'
+            analysisType: 'quick'
           })
           .expect(200);
 
@@ -1251,12 +1258,12 @@ describe('API Endpoints', () => {
 
       test('Should explain text in layperson terms', async () => {
         db.getCachedAnalysis.mockResolvedValueOnce(null);
-        cache.getAnalysis.mockReturnValueOnce(null);
+        cache.getAsync.mockResolvedValueOnce(null);
 
         mockFetch.mockResolvedValueOnce({
           ok: true,
           json: async () => ({
-            candidates: [{ content: { parts: [{ text: 'This means that diabetes is a condition where...' }] } }]
+            content: [{ type: 'text', text: 'This means that diabetes is a condition where...' }]
           })
         });
 
@@ -1264,8 +1271,7 @@ describe('API Endpoints', () => {
           .post('/api/ai/explain')
           .set('Cookie', `med_auth_token=${authToken()}`)
           .send({
-            text: 'Diabetes mellitus is a metabolic disorder characterized by hyperglycemia.',
-            model: 'mistralai/Mistral-7B-Instruct-v0.2'
+            text: 'Diabetes mellitus is a metabolic disorder characterized by hyperglycemia.'
           })
           .expect(200);
 

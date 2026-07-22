@@ -15,7 +15,10 @@ const {
 } = require('../services/backgroundAutomationService');
 const { aggregateCollectiveMemory } = require('../services/collectiveMemoryService');
 const { QUALITY_QUEUES } = require('../services/clinicalQualityReviewService');
-const { collectProductionObservability } = require('../services/productionObservabilityService');
+const {
+    collectProductionObservability,
+    collectLearningLoopControl,
+} = require('../services/productionObservabilityService');
 const { collectTopicReadiness } = require('../services/topicReadinessService');
 const fs = require('fs/promises');
 const path = require('path');
@@ -319,6 +322,17 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole, serv
             res.json({ observability });
         } catch (error) {
             req.log.error({ err: error }, 'Production observability error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    app.get('/api/admin/learning-loop-control', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const days = Math.min(Math.max(parseInt(String(req.query.days || '7'), 10) || 7, 1), 90);
+            const control = await collectLearningLoopControl(db, { days });
+            res.json({ control });
+        } catch (error) {
+            req.log.error({ err: error }, 'Learning loop control error');
             res.status(500).json({ error: 'Internal server error' });
         }
     });

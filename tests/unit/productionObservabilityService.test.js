@@ -1,5 +1,6 @@
 const {
     buildProductionReadinessSummary,
+    buildLearningLoopControlSummary,
 } = require('../../server/services/productionObservabilityService');
 
 describe('productionObservabilityService', () => {
@@ -57,6 +58,7 @@ describe('productionObservabilityService', () => {
 
         expect(summary.status).toBe('healthy');
         expect(summary.score).toBe(100);
+        expect(summary.learningControl.mode).toBe('learning_enabled');
         expect(summary.alerts).toHaveLength(0);
         expect(summary.sections.search.status).toBe('healthy');
         expect(summary.sections.rewards.status).toBe('healthy');
@@ -116,5 +118,52 @@ describe('productionObservabilityService', () => {
             'slo',
         ]));
         expect(summary.actions.join(' ')).toMatch(/dead-letter|reward|quality queue/i);
+        expect(summary.learningControl.mode).toBe('safe_heuristic_fallback');
+    });
+
+    test('keeps learning loop in observe-only until beta signals exist', () => {
+        const control = buildLearningLoopControlSummary({
+            rewardStats: { totalSignals: 0, attributionRate: null },
+            learningSignalStats: { totalLearningSignals: 0, searchRankingDecisions: 0 },
+            jobStats: { deadLetter: 0 },
+        });
+
+        expect(control.mode).toBe('observe_only');
+        expect(control.onlineLearningSafe).toBe(false);
+        expect(control.warnings.join(' ')).toMatch(/No reward signals/i);
+    });
+
+    test('enables learning when rewards, propensity, and job health are safe', () => {
+        const control = buildLearningLoopControlSummary({
+            rewardStats: { totalSignals: 60, attributedSignals: 52, attributionRate: 52 / 60 },
+            learningSignalStats: {
+                totalLearningSignals: 140,
+                searchRankingDecisions: 60,
+                decisionsWithPropensity: 54,
+                propensityCoverage: 0.9,
+            },
+            jobStats: { deadLetter: 0 },
+        });
+
+        expect(control.mode).toBe('learning_enabled');
+        expect(control.onlineLearningSafe).toBe(true);
+        expect(control.blockers).toHaveLength(0);
+    });
+
+    test('falls back when dead letters or unsafe reward attribution are present', () => {
+        const control = buildLearningLoopControlSummary({
+            rewardStats: { totalSignals: 30, attributedSignals: 6, attributionRate: 0.2 },
+            learningSignalStats: {
+                totalLearningSignals: 80,
+                searchRankingDecisions: 35,
+                decisionsWithPropensity: 10,
+                propensityCoverage: 10 / 35,
+            },
+            jobStats: { deadLetter: 1 },
+        });
+
+        expect(control.mode).toBe('safe_heuristic_fallback');
+        expect(control.onlineLearningSafe).toBe(false);
+        expect(control.blockers.join(' ')).toMatch(/Dead-letter|Reward attribution|propensity/i);
     });
 });

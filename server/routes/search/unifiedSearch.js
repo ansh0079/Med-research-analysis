@@ -8,26 +8,10 @@ const { parseSearchRequestQuery, fetchAndRankSearchArticles } = require('../../s
 const { buildSearchLearningContext, publicLearningContext } = require('../../services/searchLearningService');
 const { recordSearchRankingDecisions } = require('../../services/personalizationBanditService');
 const { buildLearnerContext, publicLearnerContextSummary } = require('../../services/learnerContextService');
-const { persistSearchedArticles } = require('../../services/articlePersistenceService');
 const { publicRankingTraces } = require('../../services/searchRankingTrace');
 const { buildEnrichmentCacheKey } = require('../../services/synthesisPersonalization');
-const {
-    getOrEnqueueConsensusSynopsis,
-    getOrEnqueueLiveClinicalAnswer,
-} = require('../../services/aiGenerationJobService');
-const {
-    getOrEnqueueTopicSeed,
-    getOrEnqueueGuidelineAlign,
-    enqueuePdfIndexForBouquetArticles,
-    getOrEnqueueFlagshipEnrich,
-} = require('../../services/enrichmentJobService');
-const { matchFlagshipTopic } = require('../../services/flagshipEnrichService');
-const { enqueueVectorIndexForBouquetArticles } = require('../../services/vectorCoverageService');
-const {
-    consensusEnrichmentJobKey,
-    liveClinicalAnswerEnrichmentJobKey,
-} = require('../../services/searchEnrichmentKeys');
-const { clampLimit, setNoStoreSearchHeaders, shouldAutoSeedFromSearch, attachApiKeyUser } = require('./searchHelpers');
+const { enqueueSearchObservedSideEffects } = require('../../services/searchObservedService');
+const { clampLimit, setNoStoreSearchHeaders, attachApiKeyUser } = require('./searchHelpers');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -280,130 +264,18 @@ function registerUnifiedSearchRoutes(app, deps) {
             // Avoid background AI/PDF work during Jest API tests (prevents open handles and hung supertest).
             if (process.env.NODE_ENV === 'test') return;
 
-            // Prefer Evidence Bouquet papers for PDF/GROBID so synopsis grounding catches up first.
-            void enqueuePdfIndexForBouquetArticles({
-                db,
+            void enqueueSearchObservedSideEffects({
+                query: queryValidation.sanitized,
                 articles,
                 bouquetRanking: ranked?.bouquetRanking || [],
-                cache,
-                logger,
-                limit: 8,
-            }).catch((err) => {
-                logger.warn({ err }, 'enqueuePdfIndexForBouquetArticles failed');
-            });
-
-            // Grow article_cache vector coverage for bouquet papers (unified min-score retrieval).
-            try {
-                enqueueVectorIndexForBouquetArticles({
-                    articles,
-                    bouquetRanking: ranked?.bouquetRanking || [],
-                    limit: 12,
-                });
-            } catch (err) {
-                logger.warn({ err }, 'enqueueVectorIndexForBouquetArticles failed');
-            }
-
-            // Persist search-accessed articles as permanent system resources (fire-and-forget)
-            void persistSearchedArticles(db, articles, queryValidation.sanitized).catch((err) => {
-                logger.warn({ err }, 'persistSearchedArticles failed');
-            });
-
-            // Auto-seed topic knowledge for any query that has enough papers but no existing synopsis.
-            if (shouldAutoSeedFromSearch() && articles.length >= 2) {
-                void getOrEnqueueTopicSeed({
-                    db,
-                    topic: queryValidation.sanitized,
-                    articles: articles.slice(0, 8),
-                    serverConfig,
-                    fetchImpl: f,
-                    cache,
-                    logger,
-                }).catch((err) => {
-                    logger.warn({ err, topic: queryValidation.sanitized }, 'getOrEnqueueTopicSeed failed');
-                });
-            }
-
-            // Guideline alignment runs as a durable job.
-            void getOrEnqueueGuidelineAlign({
-                db,
-                topic: queryValidation.sanitized,
-                cache,
-                logger,
-                limit: 24,
-            }).catch((err) => {
-                req.log?.warn?.({ err }, 'getOrEnqueueGuidelineAlign failed');
-            });
-
-            // Knowledge flywheel: enqueue deep enrichment (landmark-paper claims + guideline MCQs)
-            // for any search with sufficient articles. Flagship topics use curated PMIDs; all others
-            // use auto-discovered PMIDs from the top-cited search results. Job is idempotent.
-            void (async () => {
-                try {
-                    const match = matchFlagshipTopic(queryValidation.sanitized);
-                    const articlesWithPmids = articles.filter((a) => a?.pmid);
-                    if (match) {
-                        // Flagship path — use curated landmarkPmids from config
-                        await getOrEnqueueFlagshipEnrich({
-                            db,
-                            topic: match.flagship.topic,
-                            flagship: match.flagship,
-                            articles: articlesWithPmids,
-                            cache,
-                            logger,
-                        });
-                    } else if (articlesWithPmids.length >= 3) {
-                        // General path — auto-discover landmark PMIDs from the top search results
-                        await getOrEnqueueFlagshipEnrich({
-                            db,
-                            topic: queryValidation.sanitized,
-                            flagship: { topic: queryValidation.sanitized, landmarkPmids: [] },
-                            articles: articlesWithPmids,
-                            cache,
-                            logger,
-                        });
-                    }
-                } catch (err) {
-                    logger.warn({ err, query: queryValidation.sanitized }, 'flagship flywheel enqueue failed');
-                }
-            })();
-
-            // Search enrichment (clinical answer + consensus synopsis) runs as durable jobs.
-            // If already cached, skip. Otherwise enqueue idempotent jobs.
-            if (existingEnrich?.status === 'ready') return;
-
-            const enrichQuery = queryValidation.sanitized;
-            const enrichPapers = articles.slice(0, 8);
-            const consensusKey = consensusEnrichmentJobKey(enrichKey);
-            const liveCaKey = liveClinicalAnswerEnrichmentJobKey(enrichKey);
-
-            void getOrEnqueueConsensusSynopsis({
-                db,
-                topic: enrichQuery,
-                articles: enrichPapers,
-                serverConfig,
-                fetchImpl: f,
-                cache,
-                logger,
-                jobKey: consensusKey,
-            }).catch((err) => {
-                logger.warn({ err, topic: enrichQuery }, 'getOrEnqueueConsensusSynopsis failed');
-            });
-
-            void getOrEnqueueLiveClinicalAnswer({
-                db,
-                topic: enrichQuery,
-                articles: enrichPapers,
-                guidelines: [],
                 previousQueries: enrichPreviousQueries,
+                userId: enrichUserId,
+                sessionId: req.sessionId || null,
+                enrichKey,
                 trainingStage: enrichTrainingStage,
                 sessionDepth: enrichSessionDepth,
-                serverConfig,
-                fetchImpl: f,
-                cache,
-                logger,
-                jobKey: liveCaKey,
             }).catch((err) => {
-                logger.warn({ err, topic: enrichQuery }, 'getOrEnqueueLiveClinicalAnswer failed');
+                logger.warn({ err, query: queryValidation.sanitized }, 'search-observed enqueue failed');
             });
 
         } catch (error) {

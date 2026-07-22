@@ -1,6 +1,6 @@
 'use strict';
 
-const { AI_DISCLAIMER } = require('../services/aiService');
+const { AI_DISCLAIMER } = require('../services/aiConstants');
 const { formatMisconceptionPromptBlock } = require('../utils/misconceptionPromptBlock');
 const { formatStoredTopicKnowledgeForPrompt } = require('./_helpers');
 const { formatLearnerPromptSupplement } = require('../services/learnerContextService');
