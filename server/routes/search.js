@@ -57,6 +57,7 @@ function registerSearchRoutes(app, deps) {
     });
     registerTopicKnowledgeRoutes(app, {
         db,
+        cache,
         serverConfig,
         rateLimit,
         requireJson,

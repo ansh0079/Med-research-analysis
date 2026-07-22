@@ -100,7 +100,15 @@ export class KnowledgeCoreApi extends BaseApiClient {
   async proposeTopicKnowledge(
     topic: string,
     articles: Article[]
-  ): Promise<{ proposal: TopicKnowledgeProposal; agentGuidance: AgentGuidance | null }> {
+  ): Promise<{
+    commitMode?: 'live' | 'proposal';
+    confidence?: number;
+    proposal: TopicKnowledgeProposal | null;
+    topicKnowledge?: TopicKnowledge | null;
+    guidelineCount?: number;
+    paperCount?: number;
+    agentGuidance: AgentGuidance | null;
+  }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/search/${encodeURIComponent(topic)}/propose-knowledge`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

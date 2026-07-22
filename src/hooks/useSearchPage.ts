@@ -47,7 +47,7 @@ export function useSearchPage() {
     communityInsight,
   } = useSearchMeta();
 
-  const { user, isAuthenticated, resendVerification } = useAuth();
+  const { user, isAuthenticated, resendVerification, setUser } = useAuth();
   const { betaOpenAccess } = useClientFeatures();
   const [verifyBannerDismissed, setVerifyBannerDismissed] = React.useState(false);
   const [resendStatus, setResendStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
@@ -421,16 +421,26 @@ export function useSearchPage() {
     setProposeError(null);
     try {
       const response = await api.knowledge.proposeTopicKnowledge(currentQuery, top5Articles);
-      if (response.agentGuidance) {
+      if (response.commitMode === 'live' && response.agentGuidance) {
+        setAgentGuidance(response.agentGuidance);
+        setProposedGuidance(null);
+        setTopicGuideStatus('ready');
+      } else if (response.agentGuidance) {
         setProposedGuidance(response.agentGuidance);
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Failed to synthesize topic knowledge';
-      setProposeError(msg);
+      if (msg === 'AUTH_REQUIRED') {
+        setUser(null);
+        setProposeError('Your session expired. Please sign in again to synthesise this topic into memory.');
+        setCurrentPage('auth');
+      } else {
+        setProposeError(msg);
+      }
     } finally {
       setProposingKnowledge(false);
     }
-  }, [currentQuery, top5Articles, isAuthenticated, setCurrentPage]);
+  }, [currentQuery, top5Articles, isAuthenticated, setCurrentPage, setAgentGuidance, setTopicGuideStatus, setUser]);
 
   return {
     navigate,

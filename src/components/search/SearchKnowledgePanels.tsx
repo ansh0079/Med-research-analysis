@@ -88,7 +88,7 @@ function DiscoveryKnowledgePanel({
             )}
           </button>
           <span className="text-[11px] text-slate-400">
-            Requires sign-in. Creates a proposal for curator review.
+            Requires sign-in. Uses papers + guidelines; high-confidence topics go live.
           </span>
         </div>
       </div>
