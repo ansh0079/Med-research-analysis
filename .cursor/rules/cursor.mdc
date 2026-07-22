@@ -1,3 +1,10 @@
+---
+description: Cursor universal agent rules — all models/modes
+alwaysApply: true
+globs:
+  - "**/*"
+---
+
 # Cursor — universal agent rules
 
 Applies to EVERY Cursor model, mode, agent, Composer, Tab, inline edit, and cloud agent.
@@ -43,4 +50,4 @@ Facts. Diffs. Commands. Done.
 ## Models / extensions
 - Rules above bind all Cursor models + extensions equally.
 - Do not weaken rules for “faster” or “cheaper” models.
-- Do not invent Signal-MD / product domain rules unless the open workspace asks for them.
+- Do not invent product-domain rules unless the open workspace asks for them.
