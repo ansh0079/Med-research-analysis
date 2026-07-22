@@ -293,6 +293,7 @@ export const SearchPage: React.FC = () => {
             onSearch={handleSearch}
             onOpenGuideline={openGuidelineFromWorkflow}
             onOpenAnalysis={openAnalysis}
+            onViewDetails={setDetailArticle}
             onDismissKnowledgeDrift={(id) => { void dismissKnowledgeDriftAlert(id); }}
           />
         )}

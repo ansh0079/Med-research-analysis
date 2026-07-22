@@ -49,6 +49,7 @@ interface SearchEvidenceWorkflowSectionProps {
   onSearch: (query: string) => void;
   onOpenGuideline: () => void;
   onOpenAnalysis: (article: Article) => void;
+  onViewDetails: (article: Article) => void;
   onDismissKnowledgeDrift: (id: number) => void;
 }
 
@@ -91,6 +92,7 @@ export const SearchEvidenceWorkflowSection: React.FC<SearchEvidenceWorkflowSecti
   onSearch,
   onOpenGuideline,
   onOpenAnalysis,
+  onViewDetails,
   onDismissKnowledgeDrift,
 }) => (
   <>
@@ -154,6 +156,7 @@ export const SearchEvidenceWorkflowSection: React.FC<SearchEvidenceWorkflowSecti
         synthesisLoading={synthesisLoading}
         onSynthesize={onSynthesize}
         onSummarizePaper={onOpenAnalysis}
+        onArticleClick={onViewDetails}
         onQuiz={onOpenQuiz}
         onCase={onOpenCase}
         onOpenTopic={onSearch}

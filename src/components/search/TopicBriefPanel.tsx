@@ -41,6 +41,7 @@ interface Props {
   synthesisLoading: boolean;
   onSynthesize: () => void;
   onSummarizePaper: (article: Article) => void;
+  onArticleClick?: (article: Article) => void;
   onQuiz: (difficulty: BriefDifficulty) => void;
   onCase: (difficulty: BriefDifficulty) => void;
   onOpenTopic: (query: string) => void;
@@ -66,6 +67,7 @@ const TopicBriefPanelComponent: React.FC<Props> = ({
   synthesisLoading,
   onSynthesize,
   onSummarizePaper,
+  onArticleClick,
   onQuiz,
   onCase,
   onOpenTopic,
@@ -182,6 +184,7 @@ const TopicBriefPanelComponent: React.FC<Props> = ({
         sections={sections}
         expanded={expanded}
         topicIntelligence={topicIntelligence}
+        onArticleClick={onArticleClick}
       />
 
       <TopicBriefActionRow
