@@ -1204,7 +1204,7 @@ describe('API Endpoints', () => {
 
       test('Should return cached analysis from memory cache', async () => {
         db.getCachedAnalysis.mockResolvedValueOnce(null);
-        cache.getAnalysisAsync.mockResolvedValueOnce({
+        cache.getAsync.mockResolvedValueOnce({
           result: 'Memory cached result'
         });
 
@@ -1221,7 +1221,7 @@ describe('API Endpoints', () => {
 
       test('Should handle AI API errors', async () => {
         db.getCachedAnalysis.mockResolvedValueOnce(null);
-        cache.getAnalysisAsync.mockResolvedValueOnce(null);
+        cache.getAsync.mockResolvedValueOnce(null);
         mockFetch.mockResolvedValueOnce({
           ok: false,
           status: 500,

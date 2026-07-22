@@ -106,7 +106,7 @@ async function getDueCards(db, userId, limit = 50) {
 async function countDueCards(db, userId) {
     if (typeof db.get !== 'function') return 0;
     const row = await db.get(
-        `SELECT COUNT(*) AS cnt FROM spaced_rep_cards WHERE user_id = ? AND due_at <= datetime('now')`,
+        `SELECT COUNT(*) AS cnt FROM spaced_rep_cards WHERE user_id = ? AND due_at <= CURRENT_TIMESTAMP`,
         [userId]
     ).catch((err) => { logger.warn({ err }, 'countDueCards get failed'); return null; });
     return row ? Number(row.cnt) : 0;

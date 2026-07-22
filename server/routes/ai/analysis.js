@@ -48,7 +48,8 @@ function registerAnalysisRoutes(app, {
                     return res.json({ ...cached, cached: true, provider: selectedProvider });
                 }
 
-                const memCached = await cache.getAnalysisAsync(textHash, analysisType, selectedModel);
+                const analysisCacheKey = `analysis:${textHash}:${analysisType}:${selectedModel}`;
+                const memCached = await cache.getAsync(analysisCacheKey);
                 if (memCached) {
                     return res.json({ result: memCached.result, cached: true, provider: selectedProvider });
                 }
@@ -65,7 +66,7 @@ function registerAnalysisRoutes(app, {
                     disclaimer: AI_DISCLAIMER,
                 };
 
-                await cache.setAnalysisAsync(textHash, analysisType, selectedModel, result);
+                await cache.setAsync(analysisCacheKey, result, 3600);
                 await db.cacheAnalysis(textHash, analysisType, selectedModel, result, 0, 0);
                 await db.logEvent('analyze', req.sessionId, { type: analysisType, model: selectedModel, provider: selectedProvider });
 
@@ -111,7 +112,8 @@ function registerAnalysisRoutes(app, {
                     return res.end();
                 }
 
-                const memCached = await cache.getAnalysisAsync(textHash, analysisType, selectedModel);
+                const streamCacheKey = `analysis:${textHash}:${analysisType}:${selectedModel}`;
+                const memCached = await cache.getAsync(streamCacheKey);
                 if (memCached) {
                     setupSSE(res);
                     sendSSE(res, 'result', { result: memCached.result, cached: true, provider: selectedProvider });
@@ -137,7 +139,7 @@ function registerAnalysisRoutes(app, {
                     disclaimer: AI_DISCLAIMER,
                 };
 
-                await cache.setAnalysisAsync(textHash, analysisType, selectedModel, result);
+                await cache.setAsync(streamCacheKey, result, 3600);
                 await db.cacheAnalysis(textHash, analysisType, selectedModel, result, 0, 0);
                 await db.logEvent('analyze', req.sessionId, { type: analysisType, model: selectedModel, provider: selectedProvider });
 
@@ -183,7 +185,8 @@ function registerAnalysisRoutes(app, {
                     return res.json({ ...cached, cached: true, provider: selectedProvider });
                 }
 
-                const memCached = await cache.getAnalysisAsync(textHash, analysisType, selectedModel);
+                const explainCacheKey = `analysis:${textHash}:${analysisType}:${selectedModel}`;
+                const memCached = await cache.getAsync(explainCacheKey);
                 if (memCached) {
                     return res.json({ result: memCached.result, cached: true, provider: selectedProvider });
                 }
@@ -200,7 +203,7 @@ function registerAnalysisRoutes(app, {
                     disclaimer: AI_DISCLAIMER,
                 };
 
-                await cache.setAnalysisAsync(textHash, analysisType, selectedModel, result);
+                await cache.setAsync(explainCacheKey, result, 3600);
                 await db.cacheAnalysis(textHash, analysisType, selectedModel, result, 0, 0);
                 await db.logEvent('explain', req.sessionId, { provider: selectedProvider, model: selectedModel });
 

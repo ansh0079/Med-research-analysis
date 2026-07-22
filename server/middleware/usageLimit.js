@@ -31,9 +31,9 @@ function requireMonthlyLimit(limitKey, featureSlug) {
             // Upsert: increment counter atomically
             await db.run(
                 `INSERT INTO ai_usage_monthly (user_id, year_month, feature, count, updated_at)
-                 VALUES (?, ?, ?, 1, datetime('now'))
+                 VALUES (?, ?, ?, 1, CURRENT_TIMESTAMP)
                  ON CONFLICT(user_id, year_month, feature)
-                 DO UPDATE SET count = count + 1, updated_at = datetime('now')`,
+                 DO UPDATE SET count = ai_usage_monthly.count + 1, updated_at = CURRENT_TIMESTAMP`,
                 [req.user.id, ym, featureSlug]
             );
 
@@ -51,7 +51,7 @@ function requireMonthlyLimit(limitKey, featureSlug) {
             if (used > cap) {
                 // Roll back the increment we just applied so we don't over-count
                 await db.run(
-                    `UPDATE ai_usage_monthly SET count = count - 1, updated_at = datetime('now')
+                    `UPDATE ai_usage_monthly SET count = count - 1, updated_at = CURRENT_TIMESTAMP
                      WHERE user_id = ? AND year_month = ? AND feature = ?`,
                     [req.user.id, ym, featureSlug]
                 );
@@ -95,9 +95,9 @@ function requireDailySearchLimit() {
         try {
             await db.run(
                 `INSERT INTO search_usage_daily (user_id, date, count, updated_at)
-                 VALUES (?, ?, 1, datetime('now'))
+                 VALUES (?, ?, 1, CURRENT_TIMESTAMP)
                  ON CONFLICT(user_id, date)
-                 DO UPDATE SET count = count + 1, updated_at = datetime('now')`,
+                 DO UPDATE SET count = search_usage_daily.count + 1, updated_at = CURRENT_TIMESTAMP`,
                 [req.user.id, dt]
             );
 

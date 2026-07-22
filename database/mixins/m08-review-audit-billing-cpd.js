@@ -703,7 +703,10 @@ async getUserClaimMastery(userId, topic, { limit = 80, gapDays = 90 } = {}) {
             GROUP BY claim_key
          ) gap ON gap.claim_key = c.claim_key
          WHERE (? = '' OR c.normalized_topic = ?)
-         GROUP BY c.claim_key
+         GROUP BY c.id, c.object_key, c.claim_key, c.ordinal, c.claim_text,
+                  c.evidence_quote, c.source_path, c.article_uid, c.normalized_topic,
+                  c.concept_key, c.confidence, c.created_at, c.updated_at,
+                  c.verification_status, c.verification_reason, c.verified_at, c.curator_metadata
          ORDER BY
             CASE WHEN COALESCE(gap.gap_signals, 0) > 0 THEN 0 ELSE 1 END ASC,
             CASE WHEN COUNT(q.id) = 0 THEN 0 ELSE 1 END ASC,
@@ -791,7 +794,11 @@ async listTeachingClaimsForReview({ topic = '', status = '', limit = 50, offset 
          LEFT JOIN quiz_attempts q ON q.claim_key = c.claim_key
          WHERE (? = '' OR c.normalized_topic = ?)
          ${statusClause}
-         GROUP BY c.claim_key
+         GROUP BY c.id, c.object_key, c.claim_key, c.ordinal, c.claim_text,
+                  c.evidence_quote, c.source_path, c.article_uid, c.normalized_topic,
+                  c.concept_key, c.confidence, c.created_at, c.updated_at,
+                  c.verification_status, c.verification_reason, c.verified_at, c.curator_metadata,
+                  o.object_type, o.topic, o.title
          ORDER BY
             CASE c.verification_status
                 WHEN 'agent_draft' THEN 0
@@ -1178,7 +1185,11 @@ async listClinicalQualityReviewClaims({ queue = 'abstract_only', topic = '', lim
          LEFT JOIN quiz_attempts qz ON qz.claim_key = c.claim_key
          WHERE (? = '' OR c.normalized_topic = ?)
          ${whereExtra}
-         GROUP BY c.claim_key
+         GROUP BY c.id, c.object_key, c.claim_key, c.ordinal, c.claim_text,
+                  c.evidence_quote, c.source_path, c.article_uid, c.normalized_topic,
+                  c.concept_key, c.confidence, c.created_at, c.updated_at,
+                  c.verification_status, c.verification_reason, c.verified_at, c.curator_metadata,
+                  o.object_type, o.topic, o.title
          ORDER BY c.updated_at DESC
          LIMIT ? OFFSET ?`,
         [normalized, normalized, safeLimit, safeOffset]
