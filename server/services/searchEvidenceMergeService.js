@@ -42,6 +42,9 @@ function mergeCuratedWithLiveEvidence(curated, live, limit, query, options = {})
         count: limit,
         previousQueries,
         preferredArchetypes: intentToPreferredArchetypes(classifyQueryIntent(query)),
+        queryIntent: classifyQueryIntent(query),
+        // Teaching / topic brief: keep archetype diversity for mentor + MCQ coverage.
+        selectionMode: 'diversity',
     });
     bouquet.topPapers.forEach(push);
     const merged = out.slice(0, limit);

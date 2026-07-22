@@ -556,6 +556,9 @@ async function fetchAndRankSearchArticles({
                 specificity,
                 pico,
                 queryAliases: telemetry.clinicalAliases,
+                queryIntent,
+                // Search result list: pure relevance rank (no archetype diversity slotting).
+                selectionMode: 'relevance',
             });
             span.setAttribute('search.top_count', ranked.topPapers.length);
             return ranked;
