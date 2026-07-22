@@ -21,23 +21,17 @@ jobs:
           command_timeout: 3m
           script: |
             set -e
-            docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 <<'SQL'
-            SELECT 'topic_knowledge' AS metric, COUNT(*)::text AS value FROM topic_knowledge
-            UNION ALL SELECT 'topic_guidelines', COUNT(*)::text FROM topic_guidelines
-            UNION ALL SELECT 'topic_guidelines_distinct_topics', COUNT(DISTINCT topic)::text FROM topic_guidelines
-            UNION ALL SELECT 'curriculum_topics', COUNT(*)::text FROM curriculum_topics
-            UNION ALL SELECT 'curriculum_blocks', COUNT(*)::text FROM curriculum_blocks
-            UNION ALL SELECT 'articles_cache', COUNT(*)::text FROM articles_cache
-            UNION ALL SELECT 'saved_articles', COUNT(*)::text FROM saved_articles
-            UNION ALL SELECT 'searches', COUNT(*)::text FROM searches
-            ORDER BY 1;
-            SQL
-            echo '--- guidelines by source ---'
-            docker exec medsearch-pg psql -U medsearch -d medsearch -c \
-              "SELECT COUNT(*) AS guidelines, COUNT(DISTINCT source_body) AS source_bodies, COUNT(DISTINCT normalized_topic) AS topics FROM topic_guidelines;"
-            echo '--- topic_knowledge ---'
-            docker exec medsearch-pg psql -U medsearch -d medsearch -c \
-              "SELECT COUNT(*) AS rows, COUNT(*) FILTER (WHERE knowledge IS NOT NULL AND knowledge <> '' AND knowledge <> '{}') AS with_knowledge FROM topic_knowledge;"
-            echo '--- articles_cache by source ---'
-            docker exec medsearch-pg psql -U medsearch -d medsearch -c \
-              "SELECT source, COUNT(*) FROM articles_cache GROUP BY source ORDER BY COUNT(*) DESC;"
+            echo '=== topic_knowledge ==='
+            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT COUNT(*) AS topic_knowledge FROM topic_knowledge;"
+            echo '=== topic_guidelines ==='
+            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT COUNT(*) AS guidelines, COUNT(DISTINCT source_body) AS source_bodies, COUNT(DISTINCT normalized_topic) AS guideline_topics FROM topic_guidelines;"
+            echo '=== curriculum ==='
+            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT (SELECT COUNT(*) FROM curriculum_topics) AS curriculum_topics, (SELECT COUNT(*) FROM curriculum_blocks) AS curriculum_blocks;"
+            echo '=== articles_cache ==='
+            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT COUNT(*) AS articles_cache FROM articles_cache;"
+            echo '=== articles_cache by source ==='
+            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT source, COUNT(*) FROM articles_cache GROUP BY 1 ORDER BY 2 DESC;"
+            echo '=== saved_articles / searches ==='
+            docker exec medsearch-pg psql -U medsearch -d medsearch -c "SELECT (SELECT COUNT(*) FROM saved_articles) AS saved_articles, (SELECT COUNT(*) FROM searches) AS searches;"
+            echo '=== flagship config on host ==='
+            node -e 'const c=require("/opt/medsearch/server/config/flagshipTopics.json"); console.log("flagshipTopics", c.topics.length, "version", c.version);'
