@@ -79,6 +79,13 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
   const [guidelineState, setGuidelineState] = useState<'idle' | 'loading' | 'done' | 'empty'>('idle');
   const [inferredTopic, setInferredTopic] = useState<{ display: string; source: string; confidence: number } | null>(null);
 
+  // Close on Escape key
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [onClose]);
+
   // Reset state when article changes
   useEffect(() => {
     setSynopsis(null);
@@ -188,6 +195,8 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
   ];
 
   return (
+    <>
+    <div className="fixed inset-0 z-[69] bg-black/20 dark:bg-black/40" onClick={onClose} aria-hidden="true" />
     <div className="fixed inset-y-0 right-0 z-[70] flex flex-col w-full max-w-xl bg-white dark:bg-slate-900 shadow-2xl border-l border-gray-200 dark:border-slate-700 animate-slide-in-right">
       {/* Header */}
       <div className="px-5 pt-5 pb-3 border-b border-gray-100 dark:border-slate-800">
@@ -652,5 +661,6 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
 
       </div>
     </div>
+    </>
   );
 };
