@@ -72,11 +72,35 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                 },
             });
 
+            if (String(reason || '') === 'mentor_memory_panel') {
+                const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('../services/learningSignalService');
+                await recordLearningSignal(db, {
+                    userId: req.user.id,
+                    sessionId: req.sessionId || null,
+                    eventType: LEARNING_SIGNAL_TYPES.MENTOR_MEMORY_FEEDBACK,
+                    topic: trimmedTopic,
+                    sourceType: 'mentor_panel',
+                    sourceId: conversationId != null ? String(conversationId) : null,
+                    payload: {
+                        feedbackType: type,
+                        helpful: type === 'helpful',
+                    },
+                });
+            }
+
             // Close the agent_teaching_strategy bandit reward loop
             if (banditMeta?.policyType && banditMeta?.armId) {
                 const reward = type === 'helpful' ? 1 : (type === 'not_helpful' ? 0 : 0.5);
                 recordBanditReward(db, banditMeta.policyType, banditMeta.armId, reward, req.user.id)
                     .catch((err) => logger.warn({ err, armId: banditMeta.armId }, 'agent teaching bandit reward failed'));
+            }
+
+            // Mentor memory panel feedback also trains recommendation refresh arm.
+            if (String(reason || '') === 'mentor_memory_panel') {
+                const { POLICY_RECOMMENDATION } = require('../services/personalizationBanditService');
+                const reward = type === 'helpful' ? 0.9 : (type === 'not_helpful' ? 0.1 : 0.45);
+                recordBanditReward(db, POLICY_RECOMMENDATION, 'refresh', reward, req.user.id)
+                    .catch((err) => logger.warn({ err }, 'mentor memory refresh bandit reward failed'));
             }
 
             res.json({ ok: true, feedbackType: type });

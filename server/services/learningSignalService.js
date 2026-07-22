@@ -16,6 +16,8 @@ const LEARNING_SIGNAL_TYPES = Object.freeze({
     TOPIC_EVOLVED: 'topic_evolved',
     GUIDELINE_ANCHORED: 'guideline_anchored',
     TOPIC_SYNTHESIZED: 'topic_synthesized',
+    MENTOR_GUIDELINE_FIDELITY: 'mentor_guideline_fidelity',
+    MENTOR_MEMORY_FEEDBACK: 'mentor_memory_feedback',
 });
 
 async function recordLearningSignal(db, {

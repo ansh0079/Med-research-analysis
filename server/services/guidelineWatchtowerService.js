@@ -1,10 +1,38 @@
 'use strict';
 
 const { classifyClaimGuidelineAlignment } = require('./claimGuidelineAlignmentService');
+const logger = require('../config/logger');
 
 const STALE_DAYS = Number(process.env.GUIDELINE_WATCH_STALE_DAYS || 365);
 
-async function runGuidelineWatchtowerScan(db, topic, { limit = 40 } = {}) {
+async function maybeEnqueueEvolutionFromWatchtower(db, topic, events = [], { cache = null } = {}) {
+    const triggers = (events || []).filter((e) => (
+        e.eventType === 'guideline_stale' || e.eventType === 'claim_conflicts_guideline'
+    ));
+    if (!triggers.length || !topic) return null;
+
+    try {
+        const { getOrEnqueueTopicEvolution } = require('./enrichmentJobService');
+        const reason = triggers.some((e) => e.eventType === 'claim_conflicts_guideline')
+            ? 'watchtower_conflict'
+            : 'watchtower_stale';
+        const result = await getOrEnqueueTopicEvolution({
+            db,
+            topic,
+            reason,
+            // Conflicts should land as proposals for curator review rather than silent live overwrite.
+            forceProposal: reason === 'watchtower_conflict',
+            cache,
+            logger,
+        });
+        return result;
+    } catch (err) {
+        logger.warn({ err, topic }, 'watchtower topic evolution enqueue failed');
+        return null;
+    }
+}
+
+async function runGuidelineWatchtowerScan(db, topic, { limit = 40, cache = null } = {}) {
     const normalized = db.normalizeTopic(topic);
     const [guidelines, claims] = await Promise.all([
         db.getGuidelinesByTopic(topic, { limit: 50 }).catch(() => []),
@@ -72,10 +100,19 @@ async function runGuidelineWatchtowerScan(db, topic, { limit = 40 } = {}) {
         }
     }
 
-    return { topic, normalizedTopic: normalized, guidelineCount: guidelines.length, claimCount: claims.length, events };
+    const evolution = await maybeEnqueueEvolutionFromWatchtower(db, topic, events, { cache });
+
+    return {
+        topic,
+        normalizedTopic: normalized,
+        guidelineCount: guidelines.length,
+        claimCount: claims.length,
+        events,
+        evolution,
+    };
 }
 
-async function runGuidelineWatchtowerBatch(db, { topicLimit = 8 } = {}) {
+async function runGuidelineWatchtowerBatch(db, { topicLimit = 8, cache = null } = {}) {
     const rows = await db.all?.(
         `SELECT DISTINCT normalized_topic AS topic FROM teaching_object_claims
          WHERE normalized_topic IS NOT NULL AND normalized_topic != ''
@@ -87,7 +124,7 @@ async function runGuidelineWatchtowerBatch(db, { topicLimit = 8 } = {}) {
     for (const row of rows) {
         const topic = row.topic;
         if (!topic) continue;
-        results.push(await runGuidelineWatchtowerScan(db, topic, { limit: 25 }));
+        results.push(await runGuidelineWatchtowerScan(db, topic, { limit: 25, cache }));
     }
     return { scanned: results.length, results };
 }

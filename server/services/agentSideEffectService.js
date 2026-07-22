@@ -168,6 +168,21 @@ async function processAgentTurnSideEffect(jobKey, deps = {}) {
             });
         }
 
+        // Score mentor reply against stored guidelines / teaching points (RL signal).
+        try {
+            const { scoreMentorGuidelineFidelity } = require('./agentGuidelineFidelityService');
+            await scoreMentorGuidelineFidelity(db, {
+                topic: payload.topic,
+                assistantReply: payload.assistantReply,
+                userId: payload.userId || null,
+                sessionId: payload.sessionId || null,
+                conversationId: payload.conversationId || null,
+                banditMeta: payload.banditMeta || null,
+            });
+        } catch (err) {
+            logger.debug({ err, jobKey }, 'scoreMentorGuidelineFidelity failed');
+        }
+
         if (payload.sessionFeedback && payload.userId) {
             await db.recordLearningEvent?.({
                 userId: payload.userId,

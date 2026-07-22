@@ -18,8 +18,13 @@ jest.mock('../../server/services/enrichmentJobService', () => ({
 jest.mock('../../server/saved-embedding-worker', () => ({
     enqueueArticleForEmbedding: jest.fn(() => true),
 }));
+jest.mock('../../server/services/personalizationBanditService', () => ({
+    POLICY_RECOMMENDATION: 'recommendation_strategy',
+    recordBanditReward: jest.fn(async () => true),
+}));
 
 const { getSharedAiService } = require('../../server/services/aiService');
+const { recordBanditReward } = require('../../server/services/personalizationBanditService');
 const {
     evolveTopicKnowledge,
     scoreEvolutionConfidence,
@@ -113,6 +118,20 @@ describe('topicEvolutionService', () => {
         expect(db.createTopicKnowledgeProposal).not.toHaveBeenCalled();
         expect(result.knowledge.guidelineAnchors).toHaveLength(1);
         expect(result.jobs.embeddings).toBeGreaterThan(0);
+        expect(recordBanditReward).toHaveBeenCalledWith(
+            db,
+            'recommendation_strategy',
+            'refresh',
+            expect.any(Number),
+            'u1'
+        );
+        expect(recordBanditReward).toHaveBeenCalledWith(
+            db,
+            'recommendation_strategy',
+            'calibrate',
+            expect.any(Number),
+            'u1'
+        );
     });
 
     it('creates a proposal when forceProposal is set', async () => {

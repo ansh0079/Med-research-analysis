@@ -22,6 +22,18 @@ const TOPIC_SYNONYM_GROUPS = [
     ['sirs', 'systemic inflammatory response syndrome'],
     ['sepsis', 'septic shock', 'sepsis and septic shock', 'sepsis-3', 'surviving sepsis campaign'],
     ['ohca', 'out of hospital cardiac arrest'],
+    // PRES / PRESS — clinico-radiological hypertensive encephalopathy syndrome
+    [
+        'pres',
+        'press',
+        'posterior reversible encephalopathy syndrome',
+        'posterior reversible encephalopathy',
+        'reversible posterior leukoencephalopathy',
+        'reversible posterior leukoencephalopathy syndrome',
+        'hypertensive encephalopathy',
+        'management of press',
+        'management of pres',
+    ],
 ];
 
 /**

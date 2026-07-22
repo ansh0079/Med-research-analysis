@@ -15,6 +15,7 @@ const claimMapService = require('./claimMapService');
 const { generateAndStoreMCQs } = require('./mcqGeneratorService');
 const { resolveProvider } = require('../utils/aiProvider');
 const { processTopicSeedJob } = require('./topicSeedJobProcessor');
+const { processTopicEvolutionJob } = require('./topicEvolutionJobProcessor');
 const { processGuidelineAlignJob } = require('./guidelineAlignJobProcessor');
 const { runPdfPreindex } = require('./pdfPreindexRunner');
 const { MAX_JOB_ATTEMPTS } = require('./aiGenerationJobEnqueue');
@@ -237,6 +238,34 @@ async function processAiGenerationJobByKey(jobKey, deps) {
             });
             if (isFailed) {
                 throw new Error(result.reason || 'topic_seed failed');
+            }
+            return result;
+        }
+
+        if (jobType === 'topic_evolution') {
+            const result = await processTopicEvolutionJob({
+                topic: input.topic || row.topic || '',
+                articles: input.articles || [],
+                reason: input.reason || 'refresh',
+                forceProposal: Boolean(input.forceProposal),
+                serverConfig,
+                fetchImpl,
+                db,
+                cache,
+            });
+            const isFailed = result.status === 'failed';
+            await db.completeAiGenerationJob(jobKey, {
+                resultPayload: { ...result, jobKey },
+                provider: null,
+                model: null,
+                auditPayload: {
+                    generatedAt: new Date().toISOString(),
+                    humanReviewStatus: 'none',
+                    triggerReason: input.reason || 'refresh',
+                },
+            });
+            if (isFailed) {
+                throw new Error(result.reason || 'topic_evolution failed');
             }
             return result;
         }

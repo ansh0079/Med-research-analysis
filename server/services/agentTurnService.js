@@ -344,6 +344,11 @@ async function executeAgentTurn(
             auxModel,
             classifiedIntent,
             promptVersion: AGENT_PROMPT_VERSION,
+            banditMeta: teachingStrategyArm?.armId ? {
+                policyType: POLICY_TEACHING_STRATEGY,
+                armId: teachingStrategyArm.armId,
+                scopeKey: teachingStrategyArm.scopeKey,
+            } : null,
         }).catch((err) => {
             logger.warn({ err, topic: trimmedTopic, userId, conversationId }, 'Agent side-effect enqueue failed');
         });

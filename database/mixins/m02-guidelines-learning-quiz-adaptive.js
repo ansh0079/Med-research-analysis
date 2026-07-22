@@ -89,23 +89,32 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
     const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 20, 1), 100);
     const statusFilter = String(status || '').trim();
     const staleThreshold = new Date(Date.now() - 365 * 86400000).toISOString();
-    // Auto-flag stale guidelines on read
+    const keys = [...new Set([
+        normalized,
+        resolveCanonicalNormalized(String(topic || '').trim(), (s) => this.normalizeTopic(s)),
+        ...expandNormalizedTopicKeys(normalized, (s) => this.normalizeTopic(s)),
+    ].filter(Boolean))];
+    if (!keys.length) return [];
+
+    // Auto-flag stale guidelines on read (all synonym keys)
+    const stalePlaceholders = keys.map(() => '?').join(', ');
     await this.run(
         `UPDATE topic_guidelines SET status = 'stale'
-         WHERE normalized_topic = ?
+         WHERE normalized_topic IN (${stalePlaceholders})
            AND status IN ('ai_extracted', 'human_reviewed')
            AND last_checked_at < ?
            AND superseded_by_id IS NULL`,
-        [normalized, staleThreshold]
+        [...keys, staleThreshold]
     );
+
     const rows = await this.all(
         `SELECT * FROM topic_guidelines
-         WHERE normalized_topic = ?
+         WHERE normalized_topic IN (${stalePlaceholders})
            AND (? = '' OR status = ?)
            AND superseded_by_id IS NULL
          ORDER BY source_year DESC, updated_at DESC
          LIMIT ?`,
-        [normalized, statusFilter, statusFilter, safeLimit]
+        [...keys, statusFilter, statusFilter, safeLimit]
     );
     return rows.map((row) => this.mapGuidelineRow(row));
 }

@@ -193,6 +193,49 @@ export const KnowledgeReviewPage: React.FC = () => {
     }
   };
 
+  const [proposalActionId, setProposalActionId] = React.useState<number | null>(null);
+
+  const handleApproveProposal = async (proposalId: number) => {
+    setProposalActionId(proposalId);
+    setError('');
+    try {
+      const result = await api.knowledge.approveTopicKnowledgeProposal(proposalId);
+      setNotice(`Proposal #${proposalId} approved — live topic memory updated.`);
+      setProposals((prev) => prev.filter((p) => p.id !== proposalId));
+      if (result.topicKnowledge) {
+        setSelected(result.topicKnowledge);
+        setTopics((prev) => {
+          const idx = prev.findIndex((t) => t.id === result.topicKnowledge.id);
+          if (idx >= 0) {
+            const next = [...prev];
+            next[idx] = result.topicKnowledge;
+            return next;
+          }
+          return [result.topicKnowledge, ...prev];
+        });
+      }
+      await loadTopics();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to approve proposal.');
+    } finally {
+      setProposalActionId(null);
+    }
+  };
+
+  const handleRejectProposal = async (proposalId: number) => {
+    setProposalActionId(proposalId);
+    setError('');
+    try {
+      await api.knowledge.rejectTopicKnowledgeProposal(proposalId);
+      setNotice(`Proposal #${proposalId} rejected.`);
+      setProposals((prev) => prev.filter((p) => p.id !== proposalId));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to reject proposal.');
+    } finally {
+      setProposalActionId(null);
+    }
+  };
+
   const buildKnowledge = (): TopicKnowledge['knowledge'] => ({
     ...selected!.knowledge,
     mentorMessage: mentorMessage.trim(),
@@ -497,13 +540,53 @@ export const KnowledgeReviewPage: React.FC = () => {
                   <div className="mx-6 mt-4 rounded-xl border border-violet-200 bg-violet-50 px-4 py-3 dark:border-violet-900/40 dark:bg-violet-950/20">
                     <div className="flex items-start gap-3">
                       <i className="fas fa-lightbulb text-violet-500 mt-0.5 text-sm" />
-                      <div className="flex-1">
-                        <p className="text-xs font-bold text-violet-800 dark:text-violet-200">
-                          Your repeated study of "{selected.topic}" triggered an AI knowledge proposal.
-                        </p>
-                        <p className="text-[11px] text-violet-600 dark:text-violet-300 mt-0.5">
-                          Adaptive memory draft from your searches and tracked papers — curator review required.
-                        </p>
+                      <div className="flex-1 min-w-0 space-y-3">
+                        <div>
+                          <p className="text-xs font-bold text-violet-800 dark:text-violet-200">
+                            {proposals.length} pending knowledge proposal{proposals.length === 1 ? '' : 's'} for "{selected.topic}"
+                          </p>
+                          <p className="text-[11px] text-violet-600 dark:text-violet-300 mt-0.5">
+                            Adaptive memory drafts from evolution / study signals — approve to commit live, or reject.
+                          </p>
+                        </div>
+                        {proposals.slice(0, 5).map((proposal) => (
+                          <div
+                            key={proposal.id}
+                            className="rounded-lg border border-violet-200/80 bg-white/70 px-3 py-2 dark:border-violet-800/50 dark:bg-slate-900/40"
+                          >
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                              <div className="min-w-0">
+                                <p className="text-[11px] font-semibold text-slate-700 dark:text-slate-200 truncate">
+                                  #{proposal.id} · confidence {Math.round((proposal.confidence || 0) * 100)}%
+                                  {proposal.proposedStatus ? ` · ${proposal.proposedStatus.replace(/_/g, ' ')}` : ''}
+                                </p>
+                                {proposal.reason && (
+                                  <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">
+                                    {proposal.reason}
+                                  </p>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-2 shrink-0">
+                                <button
+                                  type="button"
+                                  disabled={proposalActionId === proposal.id}
+                                  onClick={() => void handleApproveProposal(proposal.id)}
+                                  className="rounded-lg bg-emerald-600 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-white hover:bg-emerald-500 disabled:opacity-50"
+                                >
+                                  {proposalActionId === proposal.id ? '…' : 'Approve'}
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={proposalActionId === proposal.id}
+                                  onClick={() => void handleRejectProposal(proposal.id)}
+                                  className="rounded-lg bg-slate-200 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-slate-700 hover:bg-slate-300 disabled:opacity-50 dark:bg-slate-700 dark:text-slate-200"
+                                >
+                                  Reject
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
