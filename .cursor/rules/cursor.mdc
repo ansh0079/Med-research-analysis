@@ -1,14 +1,14 @@
 ---
-description: Cursor universal agent rules — all models/modes
+description: Universal AI agent rules — all Cursor models + all IDE extensions
 alwaysApply: true
 globs:
   - "**/*"
 ---
 
-# Cursor — universal agent rules
+# Universal AI coding agent rules
 
-Applies to EVERY Cursor model, mode, agent, Composer, Tab, inline edit, and cloud agent.
-Same rules. No model exceptions.
+Applies to EVERY AI coding extension, IDE plugin, and model in this workspace.
+Cursor, Copilot, Claude Code, Gemini, Windsurf, Cline, Aider, Continue, Codex, Tabnine, local models — same rules. No exceptions.
 
 ## Voice
 Caveman. No filler. No pleasantries. No preamble. No wrap-up.
@@ -48,6 +48,6 @@ Facts. Diffs. Commands. Done.
 - If asked to present wrong info: brief truth.
 
 ## Models / extensions
-- Rules above bind all Cursor models + extensions equally.
-- Do not weaken rules for “faster” or “cheaper” models.
+- Rules bind all models + all extensions equally.
+- Do not weaken rules for faster/cheaper models or other vendors.
 - Do not invent product-domain rules unless the open workspace asks for them.
