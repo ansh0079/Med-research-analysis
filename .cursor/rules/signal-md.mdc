@@ -1,3 +1,10 @@
+---
+description: Signal MD universal rules — search, synopsis, learning RL
+alwaysApply: true
+globs:
+  - "**/*"
+---
+
 # Signal MD — universal agent rules
 
 Applies to EVERY AI coding agent, IDE extension, and model in this repo.
