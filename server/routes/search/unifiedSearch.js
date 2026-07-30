@@ -32,7 +32,7 @@ function registerUnifiedSearchRoutes(app, deps) {
     const f = fetchImpl || safeFetch;
 
     app.get('/api/search', rateLimit(30, 60), attachApiKeyUser, dailySearchLimit, async (req, res) => {
-        const { q, query: queryParam, sources = 'pubmed', limit = 20, vector, specificity = 'moderate' } = req.query;
+        const { q, query: queryParam, sources = 'pubmed,openalex', limit = 20, vector, specificity = 'moderate' } = req.query;
         const { previousQueries, parsedStudyTypes, parsedYearFilters, intelligenceMode } = parseSearchRequestQuery(req);
         req.previousQueries = previousQueries;
         const safeLimit = clampLimit(limit);

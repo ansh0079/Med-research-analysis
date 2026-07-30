@@ -38,12 +38,12 @@ function mergeCuratedWithLiveEvidence(curated, live, limit, query, options = {})
         rankedLive = applySearchLearningBoost(rankedLive, learningContext);
     }
 
+    const queryIntent = classifyQueryIntent(query);
     const bouquet = buildEvidenceBouquet(rankedLive, query, {
         count: limit,
         previousQueries,
-        preferredArchetypes: intentToPreferredArchetypes(classifyQueryIntent(query)),
-        queryIntent: classifyQueryIntent(query),
-        // Teaching / topic brief: keep archetype diversity for mentor + MCQ coverage.
+        queryIntent,
+        preferredArchetypes: intentToPreferredArchetypes(queryIntent),
         selectionMode: 'diversity',
     });
     bouquet.topPapers.forEach(push);

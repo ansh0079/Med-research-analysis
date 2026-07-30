@@ -55,6 +55,12 @@ describe('unifiedEvidenceSearch helpers', () => {
         expect(out.map((a) => a.uid)).toEqual(['1', '3']);
     });
 
+    test('getEbmScore treats guideline publication types as top authority evidence', () => {
+        expect(getEbmScore({ pubtype: ['Practice Guideline'] })).toBe(7);
+        expect(getEbmScore({ pubtype: ['Clinical Practice Guideline'] })).toBe(7);
+        expect(getEbmScore({ pubtype: ['Consensus Development Conference'] })).toBe(6);
+    });
+
     test('collapseNearDuplicateTitles prefers pinned PubMed twin over OpenAlex without PMID', () => {
         const { articleFromOpenAlexWork } = require('../../server/services/unifiedEvidenceSearch');
         const openAlex = articleFromOpenAlexWork({

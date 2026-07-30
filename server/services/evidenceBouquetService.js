@@ -137,6 +137,23 @@ function isGuideline(article) {
     return /\bguidelines?\b|\bconsensus\b|\brecommendations?\b/.test(title);
 }
 
+// Major guideline-issuing bodies whose recommendations are widely adopted across
+// health systems. A guideline endorsed by one of these is a stronger "widely
+// followed / authoritative" signal than an unattributed or regional one.
+const AUTHORITATIVE_GUIDELINE_BODIES = /\b(who|world health organization|nice|national institute for health and care excellence|uspstf|u\.s\. preventive services task force|cdc|centers for disease control|acc\b|american college of cardiology|aha\b|american heart association|esc\b|european society of cardiology|idsa|infectious diseases society|ats\b|american thoracic society|ers\b|european respiratory society|aasld|easl|american association for the study of liver|kdigo|ada\b|american diabetes association|easd|asco|nccn|acr\b|american college of (rheumatology|radiology|physicians)|acp\b|acg\b|american college of gastroenterology|aga\b|surviving sepsis|gina\b|gold\b|kdoqi|eular|endocrine society|nkf\b|national kidney foundation)\b/i;
+
+// Signal that a guideline reflects multi-society / broadly-endorsed consensus.
+const CONSENSUS_ENDORSEMENT_PATTERNS = /\b(joint (guideline|statement|task force)|multisociety|multi-society|international consensus|expert consensus|scientific statement|collaborative (statement|guideline)|endorsed by)\b/i;
+
+function guidelineAuthorityBonus(article) {
+    if (!isGuideline(article)) return 0;
+    const text = `${String(article.title || '')} ${String(article.abstract || '')} ${getJournalName(article)}`;
+    let bonus = 0;
+    if (AUTHORITATIVE_GUIDELINE_BODIES.test(text)) bonus += 8;
+    if (CONSENSUS_ENDORSEMENT_PATTERNS.test(text)) bonus += 4;
+    return Math.min(10, bonus);
+}
+
 function isReview(article) {
     const pubtypes = (article.pubtype || []).map((p) => String(p).toLowerCase());
     if (pubtypes.some((p) => p.includes('review') || p.includes('meta-analysis') || p.includes('systematic review'))) return true;
@@ -223,23 +240,25 @@ function computeCompositeScore(article) {
     const citations = getCitationCount(article);
     score += Math.min(18, Math.log10(Math.max(1, citations)) * 4.2);
 
-    // 4. Recency → up to 10 points, but only if paper has ≥5 citations
-    //    (prevents uncited recent papers floating above validated work)
+    // 4. Recency → up to 18 points
     const year = getYear(article);
     const age = Math.max(0, CURRENT_YEAR - year);
-    const recencyScore = citations >= 5
-        ? (age <= 1 ? 10 : age <= 3 ? 7 : age <= 5 ? 4 : age <= 10 ? 2 : 0)
+    const hasCitations = hasCitationData(article);
+    const citedEnough = !hasCitations || citations >= 2 || age <= 2;
+    const recencyScore = citedEnough
+        ? (age <= 1 ? 18 : age <= 3 ? 14 : age <= 5 ? 9 : age <= 10 ? 4 : 0)
         : 0;
     score += recencyScore;
 
-    // 4b. Recency × citations synergy → up to 5 points
+    // 4b. Recency × citations synergy → up to 6 points
     const recencyCitationScore = (recencyScore > 0 && citations > 0)
-        ? Math.min(5, (Math.log10(citations + 1) * recencyScore) / 10)
+        ? Math.min(6, (Math.log10(citations + 1) * recencyScore) / 10)
         : 0;
     score += recencyCitationScore;
 
-    // 5. Guideline bonus → up to 10 points
-    if (isGuideline(article)) score += 10;
+    // 5. Guideline bonus → up to 20 points, plus up to 10 for authoritative /
+    //    widely-endorsed issuing bodies (WHO, NICE, AASLD, ACC/AHA, KDIGO, …).
+    if (isGuideline(article)) score += 20 + guidelineAuthorityBonus(article);
 
     // 6. Open access → 5 points
     if (article.isFree || article.pmcid) score += 5;
@@ -581,12 +600,12 @@ function topicalMatchWeight(specificity) {
 function buildEvidenceBouquet(articles, query, options = {}) {
     const count = Math.min(Math.max(parseInt(String(options.count || 5), 10) || 5, 1), 50);
     const previousQueries = Array.isArray(options.previousQueries) ? options.previousQueries : [];
+    const queryIntent = options.queryIntent || classifyQueryIntent(query);
     const signalBoosts = options.articleSignalBoosts instanceof Map
         ? options.articleSignalBoosts
         : (typeof options.articleSignalBoosts === 'object' && options.articleSignalBoosts !== null
             ? new Map(Object.entries(options.articleSignalBoosts))
             : new Map());
-    const queryIntent = options.queryIntent || classifyQueryIntent(query);
     // relevance = search results list (topical + intent score, no diversity slotting)
     // diversity = teaching bouquet (archetype coverage for mentor / MCQ seeding)
     const selectionMode = options.selectionMode === 'diversity' ? 'diversity' : 'relevance';
@@ -612,6 +631,7 @@ function buildEvidenceBouquet(articles, query, options = {}) {
 
     const scored = filtered.map((a) => {
         let score = computeCompositeScore(a);
+        score += intentRecencyAdjustment(a, queryIntent, query);
         const matchScore = queryMatchScore(a, query);
         const aliasMatchScore = queryAliasMatchScore(a, options.queryAliases);
         const archetype = classifyArchetype(a);
@@ -734,7 +754,9 @@ function buildReasons(scored) {
     const reasons = [];
     const a = scored.article;
 
-    if (scored.archetype === 'guideline') reasons.push('Clinical guideline');
+    if (scored.archetype === 'guideline') {
+        reasons.push(guidelineAuthorityBonus(a) >= 8 ? 'Guideline from a major society' : 'Clinical guideline');
+    }
     if (scored.archetype === 'landmark_rct') reasons.push('Landmark RCT');
     if (scored.archetype === 'management_trial') reasons.push('Management trial');
     if (scored.archetype === 'definition') reasons.push('Definition or classification');
@@ -750,6 +772,7 @@ function buildReasons(scored) {
     const year = getYear(a);
     if (year >= CURRENT_YEAR - 2) reasons.push('Very recent');
     else if (year >= CURRENT_YEAR - 5) reasons.push('Recent');
+    else if (year > 0 && year < CURRENT_YEAR - 12) reasons.push('Older landmark / historical');
 
     if (a._quality?.grade === 'A') reasons.push('Top quality (A)');
     if (a._openalexMetrics?.isTopCitationPercentile) reasons.push('Top citation percentile');
@@ -781,16 +804,57 @@ const INTENT_PATTERNS = {
     mechanistic:    MECHANISM_QUERY_PATTERNS,
 };
 
-// Archetype priority lists per intent — the bouquet fills slots in this order
+// Archetype priority lists per intent — the bouquet fills slots in this order.
+// Therapeutic/management queries must prefer current guidance over ultra-cited
+// 1990s–2010s landmarks (those still appear, just not as the whole top-3).
 const INTENT_ARCHETYPES = {
     guideline:       ['guideline', 'definition', 'recent_review', 'landmark_rct'],
-    therapeutic:     ['landmark_rct', 'management_trial', 'guideline', 'recent_review'],
+    therapeutic:     ['guideline', 'recent_review', 'management_trial', 'landmark_rct'],
     diagnostic:      ['definition', 'guideline', 'recent_review', 'review'],
     prognostic:      ['cohort', 'recent_review', 'review', 'landmark_rct'],
     epidemiological: ['cohort', 'review', 'recent_review'],
     mechanistic:     ['landmark_basic_science', 'mechanism', 'recent_review'],
-    general:         ['definition', 'landmark_rct', 'management_trial', 'guideline', 'recent_review'],
+    general:         ['definition', 'guideline', 'management_trial', 'recent_review', 'landmark_rct'],
 };
+
+/** Intents where clinicians expect current practice evidence, not citation archaeology. */
+const RECENCY_SENSITIVE_INTENTS = new Set(['therapeutic', 'guideline', 'diagnostic']);
+
+/**
+ * Soft recency pressure for management/guideline queries.
+ * Old landmark RCTs keep historical value but must not crowd out current guidance.
+ */
+function intentRecencyAdjustment(article, intent, query = '') {
+    if (!RECENCY_SENSITIVE_INTENTS.has(intent)) return 0;
+    const year = getYear(article);
+    if (!year) return 0;
+    const age = Math.max(0, CURRENT_YEAR - year);
+    const isGuidelineArticle = isGuideline(article);
+    const wantsCurrentPractice = /\b(current|latest|update|updated|modern|today|now|management|guideline)\b/i
+        .test(String(query || ''));
+
+    let adj = 0;
+    if (age <= 3) adj += isGuidelineArticle ? 18 : 12;
+    else if (age <= 5) adj += isGuidelineArticle ? 14 : 8;
+    else if (age <= 10) adj += isGuidelineArticle ? 6 : 2;
+    else if (isGuidelineArticle) adj -= 8;
+    else if (age <= 15) adj -= 18;
+    else if (age <= 25) adj -= 28;
+    else adj -= 36;
+
+    if (wantsCurrentPractice) {
+        if (age <= 5) adj += 8;
+        else if (age > 10 && !isGuidelineArticle) adj -= 8;
+    }
+
+    if (age > 10 && !isGuidelineArticle) {
+        const citations = getCitationCount(article);
+        adj -= Math.min(18, Math.log10(Math.max(1, citations)) * 4);
+        if (citations >= LANDMARK_CITATION_THRESHOLD || isRCT(article)) adj -= 12;
+    }
+
+    return adj;
+}
 
 function classifyQueryIntent(query) {
     const q = String(query || '');
@@ -827,4 +891,5 @@ module.exports = {
     intentToPreferredArchetypes,
     intentArchetypeBias,
     topicalMatchWeight,
+    intentRecencyAdjustment,
 };

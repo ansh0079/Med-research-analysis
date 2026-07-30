@@ -295,6 +295,44 @@ function mergeRerankedWithRemainder(reranked, original, limit) {
     return out;
 }
 
+function blendPicoWithEvidenceOrder(reranked, original) {
+    if (!Array.isArray(reranked) || reranked.length === 0) return [];
+    const evidenceRankByKey = new Map();
+    const total = Math.max(1, Array.isArray(original) ? original.length : reranked.length);
+
+    (Array.isArray(original) ? original : []).forEach((article, index) => {
+        for (const key of articleRankKeyCandidates(article)) {
+            if (!evidenceRankByKey.has(key)) evidenceRankByKey.set(key, index + 1);
+        }
+    });
+
+    return reranked
+        .map((article, picoIndex) => {
+            const evidenceRank = articleRankKeyCandidates(article)
+                .map((key) => evidenceRankByKey.get(key))
+                .find((rank) => Number.isFinite(rank)) || total;
+            const evidenceScore = total <= 1 ? 1 : 1 - ((evidenceRank - 1) / (total - 1));
+            const picoScore = Number(article?._rerank?.overallScore);
+            const normalizedPico = Number.isFinite(picoScore) ? Math.max(0, Math.min(1, picoScore)) : 0.5;
+            const blendedScore = (normalizedPico * 0.6) + (evidenceScore * 0.4);
+            return {
+                ...article,
+                _rerank: {
+                    ...(article._rerank || {}),
+                    evidenceRank,
+                    evidenceScore: Math.round(evidenceScore * 1000) / 1000,
+                    blendedScore: Math.round(blendedScore * 1000) / 1000,
+                },
+                _picoRerankIndex: picoIndex + 1,
+            };
+        })
+        .sort((a, b) => {
+            const blendedDelta = (b._rerank?.blendedScore ?? 0) - (a._rerank?.blendedScore ?? 0);
+            if (blendedDelta !== 0) return blendedDelta;
+            return (a._rerank?.evidenceRank ?? total) - (b._rerank?.evidenceRank ?? total);
+        });
+}
+
 async function applyPicoRerankStage({
     articles,
     pico,
@@ -336,7 +374,8 @@ async function applyPicoRerankStage({
                 rerankedCount: Array.isArray(reranked) ? reranked.length : 0,
             };
         }
-        return mergeRerankedWithRemainder(reranked, articles, Math.max(safeLimit, articles.length));
+        const blended = blendPicoWithEvidenceOrder(reranked, articles);
+        return mergeRerankedWithRemainder(blended, articles, Math.max(safeLimit, articles.length));
     } catch (err) {
         if (telemetry && typeof telemetry === 'object') {
             telemetry.picoRerank = { used: false, failed: true, ms: Date.now() - started };
@@ -550,6 +589,7 @@ async function fetchAndRankSearchArticles({
         }, async (span) => {
             const ranked = buildEvidenceBouquet(sanitized, query, {
                 count: safeLimit,
+                queryIntent,
                 preferredArchetypes: intentToPreferredArchetypes(queryIntent),
                 previousQueries,
                 articleSignalBoosts: signalBoosts,
@@ -636,6 +676,7 @@ module.exports = {
     articleRankKeyCandidates,
     normalizePicoProfileForReranker,
     mergeRerankedWithRemainder,
+    blendPicoWithEvidenceOrder,
     applyPicoRerankStage,
     yearInFilters,
     filterByStudyType,

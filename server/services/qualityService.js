@@ -17,6 +17,10 @@ const STUDY_DESIGNS = [
 ];
 
 const PUBTYPE_MAP = {
+  'Clinical Practice Guideline': 30,
+  'Practice Guideline': 30,
+  'Guideline': 25,
+  'Consensus Development Conference': 25,
   'Randomized Controlled Trial': 30,
   'Meta-Analysis': 25,
   'Systematic Review': 20,

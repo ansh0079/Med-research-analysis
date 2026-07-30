@@ -7,6 +7,7 @@ const {
     filterRelevantArticles,
     filterByStudyType,
     matchesPicoInterventionComparator,
+    blendPicoWithEvidenceOrder,
     mergeRerankedWithRemainder,
     normalizePicoProfileForReranker,
     yearInFilters,
@@ -14,6 +15,9 @@ const {
 const {
     buildEvidenceBouquet,
     classifyArchetype,
+    classifyQueryIntent,
+    intentRecencyAdjustment,
+    intentToPreferredArchetypes,
     isOffTopic,
     meshRelevanceRatio,
     queryAliasMatchScore,
@@ -116,6 +120,25 @@ describe('searchPipeline helpers', () => {
             { uid: 'b', title: 'B', _rerank: { overallScore: 0.9 } },
         ];
         expect(mergeRerankedWithRemainder(reranked, original, 3).map((a) => a.uid)).toEqual(['b', 'a', 'c']);
+    });
+
+    test('blendPicoWithEvidenceOrder keeps strong evidence from being buried by a small PICO gap', () => {
+        const original = [
+            { uid: 'guideline', title: 'Current guideline' },
+            { uid: 'review', title: 'Recent review' },
+            { uid: 'case-report', title: 'Case report' },
+        ];
+        const reranked = [
+            { uid: 'case-report', title: 'Case report', _rerank: { overallScore: 0.95 } },
+            { uid: 'guideline', title: 'Current guideline', _rerank: { overallScore: 0.8 } },
+            { uid: 'review', title: 'Recent review', _rerank: { overallScore: 0.75 } },
+        ];
+
+        const blended = blendPicoWithEvidenceOrder(reranked, original);
+
+        expect(blended[0].uid).toBe('guideline');
+        expect(blended[0]._rerank.evidenceRank).toBe(1);
+        expect(blended[0]._rerank.blendedScore).toBeGreaterThan(blended[1]._rerank.blendedScore);
     });
 
     test('filterRelevantArticles removes off-topic papers', () => {
@@ -368,5 +391,99 @@ describe('filterByStudyType', () => {
             },
         ], ['"Practice Guideline"[Publication Type]']);
         expect(filtered.map((a) => a.uid)).toEqual(['p1', 'oa2']);
+    });
+});
+
+describe('therapeutic management recency', () => {
+    const query = 'atrial fibrillation anticoagulation management';
+
+    test('classifies management queries as therapeutic and prefers guidelines before landmarks', () => {
+        expect(classifyQueryIntent(query)).toBe('therapeutic');
+        expect(intentToPreferredArchetypes('therapeutic')[0]).toBe('guideline');
+        expect(intentToPreferredArchetypes('therapeutic')).toContain('landmark_rct');
+    });
+
+    test('penalizes decade-old trials and boosts recent guidelines on management queries', () => {
+        const ancient = intentRecencyAdjustment({
+            title: 'Warfarin in atrial fibrillation',
+            pubdate: '1994',
+            pubtype: ['Randomized Controlled Trial'],
+            pmcrefcount: 2500,
+        }, 'therapeutic', query);
+        const oldish = intentRecencyAdjustment({
+            title: 'Anticoagulation for atrial fibrillation',
+            pubdate: '2012',
+            pubtype: ['Randomized Controlled Trial'],
+            pmcrefcount: 900,
+        }, 'therapeutic', query);
+        const guideline = intentRecencyAdjustment({
+            title: '2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation',
+            pubdate: '2023',
+            pubtype: ['Practice Guideline'],
+            pmcrefcount: 200,
+        }, 'therapeutic', query);
+
+        expect(ancient).toBeLessThan(0);
+        expect(oldish).toBeLessThan(0);
+        expect(guideline).toBeGreaterThan(0);
+        expect(guideline).toBeGreaterThan(ancient);
+        expect(guideline).toBeGreaterThan(oldish);
+    });
+
+    test('AF anticoagulation management ranks recent guideline above 1994/2012 trials', () => {
+        const ancientTrial = {
+            uid: 'spaf-1994',
+            title: 'Warfarin versus aspirin for prevention of thromboembolism in atrial fibrillation',
+            abstract: 'Patients with atrial fibrillation were randomized to anticoagulation management with warfarin.',
+            pubdate: '1994',
+            journal: 'N Engl J Med',
+            pubtype: ['Randomized Controlled Trial'],
+            pmcrefcount: 2800,
+            _ebmScore: 6,
+            _quality: { grade: 'A' },
+        };
+        const oldTrial = {
+            uid: 'af-2012',
+            title: 'Apixaban versus warfarin in patients with atrial fibrillation',
+            abstract: 'Randomized trial of anticoagulation therapy for stroke prevention in atrial fibrillation.',
+            pubdate: '2012',
+            journal: 'N Engl J Med',
+            pubtype: ['Randomized Controlled Trial'],
+            pmcrefcount: 4200,
+            _ebmScore: 6,
+            _quality: { grade: 'A' },
+        };
+        const recentGuideline = {
+            uid: 'af-guideline-2023',
+            title: '2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation',
+            abstract: 'Evidence-based recommendations for anticoagulation management in atrial fibrillation.',
+            pubdate: '2023',
+            journal: 'Circulation',
+            pubtype: ['Practice Guideline'],
+            pmcrefcount: 180,
+            _ebmScore: 7,
+            _quality: { grade: 'A' },
+        };
+        const recentReview = {
+            uid: 'af-review-2024',
+            title: 'Anticoagulation management in atrial fibrillation: a recent review',
+            abstract: 'Patients with atrial fibrillation and current anticoagulation treatment options including DOACs.',
+            pubdate: '2024',
+            journal: 'JAMA',
+            pubtype: ['Review'],
+            pmcrefcount: 40,
+            _ebmScore: 5,
+        };
+
+        const bouquet = buildEvidenceBouquet(
+            [ancientTrial, oldTrial, recentGuideline, recentReview],
+            query,
+            { count: 3, specificity: 'moderate', queryIntent: 'therapeutic' }
+        );
+
+        expect(bouquet.topPapers[0].uid).toBe('af-guideline-2023');
+        expect(bouquet.topPapers.slice(0, 3).map((a) => a.uid)).not.toContain('spaf-1994');
+        const topYears = bouquet.topPapers.slice(0, 2).map((a) => Number(a.pubdate));
+        expect(topYears.every((y) => y >= 2020)).toBe(true);
     });
 });

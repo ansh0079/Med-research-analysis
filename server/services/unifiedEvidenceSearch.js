@@ -11,6 +11,11 @@ const { isTier1Journal: isCanonicalTier1Journal } = require('./searchRankingCons
 
 // EBM evidence hierarchy — higher score = stronger study design
 const EBM_SCORES = {
+    'clinical practice guideline': 7,
+    'practice guideline': 7,
+    'guideline': 7,
+    'consensus development conference': 6,
+    'consensus statement': 6,
     'systematic review': 7,
     'meta-analysis': 7,
     'meta analysis': 7,
