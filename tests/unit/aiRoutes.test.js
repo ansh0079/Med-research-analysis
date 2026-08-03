@@ -59,14 +59,13 @@ jest.mock('../../server/services/synthesisGenerationCore', () => ({
 }));
 
 jest.mock('../../server/services/paperSynopsisCore', () => ({
-    runPaperSynopsisGeneration: jest.fn().mockResolvedValue({ synopsis: {} }),
     getPaperSynopsisArticleId: jest.fn((article) => article.uid || article.pmid || article.doi || 'hashed'),
     invalidatePaperSynopsisCache: jest.fn().mockResolvedValue(true),
 }));
 
 jest.mock('../../server/services/aiGenerationJobService', () => ({
     getOrEnqueueFullSynthesis: jest.fn().mockResolvedValue({ status: 'queued', jobKey: 'job-1' }),
-    getOrEnqueuePaperSynopsis: jest.fn().mockResolvedValue({ status: 'queued', jobKey: 'job-2' }),
+    getOrEnqueuePaperSynopsis: jest.fn().mockResolvedValue({ status: 'completed', jobKey: 'job-2', synopsis: {} }),
 }));
 
 jest.mock('../../server/services/claimMapService', () => ({
@@ -225,16 +224,22 @@ describe('aiRoutes', () => {
     });
 
     describe('POST /api/ai/synopsis', () => {
-        test('passes learner training stage into inline synopsis generation', async () => {
-            const { runPaperSynopsisGeneration } = require('../../server/services/paperSynopsisCore');
+        test('passes learner training stage into forceSync synopsis helper', async () => {
+            const { getOrEnqueuePaperSynopsis } = require('../../server/services/aiGenerationJobService');
+            getOrEnqueuePaperSynopsis.mockResolvedValueOnce({
+                status: 'completed',
+                jobKey: 'synop:test',
+                synopsis: { clinicalBottomLine: 'ok' },
+            });
             const res = await request(app)
                 .post('/api/ai/synopsis')
                 .set('Authorization', `Bearer ${authToken()}`)
                 .send({ article: { uid: 'a1', title: 'A' }, topic: 'Sepsis', async: false });
             expect(res.status).toBe(200);
-            expect(runPaperSynopsisGeneration).toHaveBeenCalledWith(expect.objectContaining({
+            expect(getOrEnqueuePaperSynopsis).toHaveBeenCalledWith(expect.objectContaining({
                 topic: 'Sepsis',
                 trainingStage: 'foundation_doctor',
+                forceSync: true,
             }));
         });
 

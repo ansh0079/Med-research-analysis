@@ -15,7 +15,6 @@ const {
     selectTopSynthesisArticles,
 } = require('../../services/synthesisGenerationCore');
 const {
-    runPaperSynopsisGeneration,
     getPaperSynopsisArticleId,
     invalidatePaperSynopsisCache,
 } = require('../../services/paperSynopsisCore');
@@ -243,7 +242,9 @@ function registerSynthesisRoutes(app, {
     // ─────────────────────────────────────────────────────────────────
     // POST /api/ai/synopsis
     // Single-article structured synopsis — returns the 13-field schema.
-    // Cached 24 hours. Use body.async=true to queue a durable job (poll GET /api/ai/jobs/:jobKey).
+    // Cached 24 hours. Both sync and async go through getOrEnqueuePaperSynopsis.
+    // Use body.async=true to queue a durable job (poll GET /api/ai/jobs/:jobKey);
+    // default/async=false runs forceSync inline and returns the result directly.
     // ─────────────────────────────────────────────────────────────────
     app.post('/api/ai/synopsis', limitBodySize(512 * 1024), requireJson, requireAiAuth, requirePaidFeature('aiSynthesis'), rateLimit(20, 60), validateBody(schemas.synopsis), async (req, res) => {
         const { article, provider = 'auto', async: asyncJob, topic = '', trainingStage: requestedTrainingStage = null } = req.body;
@@ -256,40 +257,31 @@ function registerSynthesisRoutes(app, {
                 });
                 trainingStage = profile?.trainingStage || profile?.training_stage || null;
             }
-            if (asyncJob === true) {
-                const out = await getOrEnqueuePaperSynopsis({
-                    db,
-                    article,
-                    provider,
-                    serverConfig,
-                    fetchImpl,
-                    cache,
-                    logger: req.log,
-                    topic,
-                    trainingStage,
-                    userId: req.user?.id || null,
-                });
-                const code = out.status === 'queued' || out.status === 'running' ? 202
-                    : out.status === 'failed' ? 503 : 200;
-                const withDelta = code === 200
-                    ? await attachEvidenceDeltaIfAvailable(out, topic, req.user?.id || null)
-                    : out;
-                return res.status(code).json(withDelta);
-            }
-            const result = await runPaperSynopsisGeneration({
+            const forceSync = asyncJob !== true;
+            const out = await getOrEnqueuePaperSynopsis({
+                db,
                 article,
                 provider,
                 serverConfig,
                 fetchImpl,
                 cache,
-                db,
-                sessionId: req.sessionId,
-                log: req.log,
+                logger: req.log,
                 topic,
                 trainingStage,
                 userId: req.user?.id || null,
+                forceSync,
+                sessionId: req.sessionId,
+                log: req.log,
             });
-            return res.json(await attachEvidenceDeltaIfAvailable(result, topic, req.user?.id || null));
+            if (out.status === 'failed') {
+                const status = /No AI service|No AI provider/.test(out.errorMessage || '') ? 503 : 500;
+                return res.status(status).json({ error: out.errorMessage || 'Synopsis generation failed' });
+            }
+            const code = out.status === 'queued' || out.status === 'running' ? 202 : 200;
+            const withDelta = code === 200
+                ? await attachEvidenceDeltaIfAvailable(out, topic, req.user?.id || null)
+                : out;
+            return res.status(code).json(withDelta);
         } catch (error) {
             req.log.error({ err: error }, 'Synopsis generation error');
             const status = /No AI service|No AI provider/.test(error.message) ? 503 : 500;
@@ -376,18 +368,24 @@ function registerSynthesisRoutes(app, {
     app.post('/api/teaching-objects/paper', limitBodySize(512 * 1024), requireJson, requireAiAuth, requirePaidFeature('aiSynthesis'), rateLimit(20, 60), validateBody(schemas.synopsis), async (req, res) => {
         const { article, provider = 'auto', topic = '' } = req.body;
         try {
-            const synopsisResult = await runPaperSynopsisGeneration({
+            const synopsisResult = await getOrEnqueuePaperSynopsis({
+                db,
                 article,
                 provider,
                 serverConfig,
                 fetchImpl,
                 cache,
-                db,
-                sessionId: req.sessionId,
-                log: req.log,
+                logger: req.log,
                 topic,
                 userId: req.user?.id || null,
+                forceSync: true,
+                sessionId: req.sessionId,
+                log: req.log,
             });
+            if (synopsisResult.status === 'failed') {
+                const status = /No AI service|No AI provider/.test(synopsisResult.errorMessage || '') ? 503 : 500;
+                return res.status(status).json({ error: synopsisResult.errorMessage || 'Synopsis generation failed' });
+            }
             const teachingObject = await persistPaperTeachingObject({ db, article, synopsisResult, topic });
             res.json({ synopsis: synopsisResult.synopsis, articleId: synopsisResult.articleId, teachingObject });
         } catch (error) {

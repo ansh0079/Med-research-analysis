@@ -1,11 +1,17 @@
+jest.mock('../../server/services/paperSynopsisCore', () => ({
+    runPaperSynopsisGeneration: jest.fn(),
+}));
+
 const {
     consensusJobKey,
     getOrEnqueueConsensusSynopsis,
     getOrEnqueueLiveClinicalAnswer,
+    getOrEnqueuePaperSynopsis,
     liveClinicalAnswerJobKey,
     maybeEnqueueQuizPrefetch,
     quizPrefetchJobKey,
 } = require('../../server/services/aiGenerationJobService');
+const { runPaperSynopsisGeneration } = require('../../server/services/paperSynopsisCore');
 
 describe('aiGenerationJobService', () => {
     const articles = [
@@ -164,5 +170,44 @@ describe('aiGenerationJobService', () => {
         });
 
         expect(result).toMatchObject({ skipped: true, reason: 'missing_teaching_object_store' });
+    });
+
+    test('forceSync runs paper synopsis inline even when durable store exists', async () => {
+        runPaperSynopsisGeneration.mockResolvedValueOnce({
+            synopsis: { clinicalBottomLine: 'Treat early' },
+            articleId: 'a-1',
+        });
+        const db = {
+            getAiGenerationJobByKey: jest.fn(),
+            createAiGenerationJob: jest.fn(),
+            markAiGenerationJobRunning: jest.fn(),
+            completeAiGenerationJob: jest.fn(),
+            failAiGenerationJob: jest.fn(),
+        };
+
+        const result = await getOrEnqueuePaperSynopsis({
+            db,
+            article: { uid: 'a-1', title: 'Paper' },
+            provider: 'auto',
+            serverConfig: { keys: { gemini: 'test' } },
+            fetchImpl: jest.fn(),
+            cache: {},
+            forceSync: true,
+            topic: 'sepsis',
+            trainingStage: 'resident',
+        });
+
+        expect(result).toMatchObject({
+            status: 'completed',
+            synopsis: { clinicalBottomLine: 'Treat early' },
+            articleId: 'a-1',
+        });
+        expect(runPaperSynopsisGeneration).toHaveBeenCalledWith(expect.objectContaining({
+            article: expect.objectContaining({ uid: 'a-1' }),
+            topic: 'sepsis',
+            trainingStage: 'resident',
+        }));
+        expect(db.createAiGenerationJob).not.toHaveBeenCalled();
+        expect(db.getAiGenerationJobByKey).not.toHaveBeenCalled();
     });
 });

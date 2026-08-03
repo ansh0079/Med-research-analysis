@@ -12,7 +12,9 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         with:
-          host: 178.105.155.246
+          # Set repository/org secret HETZNER_HOST (e.g. former value 178.105.155.246).
+          # Do not hardcode production IPs in the workflow.
+          host: ${{ secrets.HETZNER_HOST }}
           username: root
           key: ${{ secrets.HETZNER_SSH_KEY }}
           command_timeout: 8m
@@ -22,11 +24,25 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             docker compose -f docker-compose.hetzner.yml up -d --build --remove-orphans
+            echo "Running Postgres migrations..."
+            docker compose -f docker-compose.hetzner.yml exec -T web npm run db:migrate:postgres
             set +e
+            web_ok=0
+            worker_ok=0
             for i in 1 2 3 4 5 6 7 8 9 10; do
               sleep 5
-              docker exec medsearch-web wget -qO- http://127.0.0.1:3002/health > /dev/null 2>&1 && echo "Health check passed on attempt $i" && exit 0
-              echo "Waiting for server (attempt $i)..."
+              if docker exec medsearch-web wget -qO- http://127.0.0.1:3002/health > /dev/null 2>&1; then
+                web_ok=1
+              fi
+              if docker exec medsearch-worker wget -qO- http://127.0.0.1:3003/health > /dev/null 2>&1 \
+                || docker exec medsearch-worker node -e "require('http').get('http://127.0.0.1:3003/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"; then
+                worker_ok=1
+              fi
+              if [ "$web_ok" = "1" ] && [ "$worker_ok" = "1" ]; then
+                echo "Health check passed on attempt $i (web + worker)"
+                exit 0
+              fi
+              echo "Waiting for health (attempt $i): web=$web_ok worker=$worker_ok"
             done
-            echo "Health check failed after 10 attempts"
+            echo "Health check failed after 10 attempts (web=$web_ok worker=$worker_ok)"
             exit 1

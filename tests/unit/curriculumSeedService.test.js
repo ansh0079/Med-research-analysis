@@ -6,8 +6,8 @@ jest.mock('../../server/services/synthesisGenerationCore', () => ({
     runFullSynthesisGeneration: jest.fn(),
 }));
 
-jest.mock('../../server/services/paperSynopsisCore', () => ({
-    runPaperSynopsisGeneration: jest.fn(),
+jest.mock('../../server/services/aiGenerationJobService', () => ({
+    getOrEnqueuePaperSynopsis: jest.fn(),
 }));
 
 jest.mock('../../server/services/claimGuidelineEngine', () => ({
@@ -16,7 +16,7 @@ jest.mock('../../server/services/claimGuidelineEngine', () => ({
 
 const { fetchUnifiedEvidence } = require('../../server/services/unifiedEvidenceSearch');
 const { runFullSynthesisGeneration } = require('../../server/services/synthesisGenerationCore');
-const { runPaperSynopsisGeneration } = require('../../server/services/paperSynopsisCore');
+const { getOrEnqueuePaperSynopsis } = require('../../server/services/aiGenerationJobService');
 const { alignTopicClaimsWithGuidelines } = require('../../server/services/claimGuidelineEngine');
 const { seedCurriculumTopic, reviewDueForVolatility } = require('../../server/services/curriculumSeedService');
 
@@ -54,7 +54,7 @@ describe('curriculumSeedService', () => {
         ];
         fetchUnifiedEvidence.mockResolvedValueOnce(articles);
         runFullSynthesisGeneration.mockResolvedValueOnce({ timestamp: '2026-05-19T12:00:00.000Z', jobKey: 'syn:abc' });
-        runPaperSynopsisGeneration.mockResolvedValue({});
+        getOrEnqueuePaperSynopsis.mockResolvedValue({ status: 'completed', synopsis: {} });
         alignTopicClaimsWithGuidelines.mockResolvedValueOnce({ processed: 2, results: [] });
 
         const result = await seedCurriculumTopic({
@@ -75,7 +75,8 @@ describe('curriculumSeedService', () => {
             topic: 'Sepsis and septic shock',
             articles: expect.arrayContaining([expect.objectContaining({ uid: 'a1' })]),
         }));
-        expect(runPaperSynopsisGeneration).toHaveBeenCalledTimes(2);
+        expect(getOrEnqueuePaperSynopsis).toHaveBeenCalledTimes(2);
+        expect(getOrEnqueuePaperSynopsis).toHaveBeenCalledWith(expect.objectContaining({ forceSync: true }));
         expect(alignTopicClaimsWithGuidelines).toHaveBeenCalledWith(db, 'Sepsis and septic shock', { limit: 40, apply: true });
         expect(db.updateCurriculumSeedStatus).toHaveBeenLastCalledWith(7, expect.objectContaining({
             seedStatus: 'seeded',
@@ -136,7 +137,7 @@ describe('curriculumSeedService', () => {
             { uid: 'a2', pmid: '222', title: 'Review two', abstract: 'B', _impact: { score: 8 } },
         ]);
         runFullSynthesisGeneration.mockResolvedValueOnce({ timestamp: '2026-05-19T12:00:00.000Z', jobKey: 'syn:abc' });
-        runPaperSynopsisGeneration.mockResolvedValue({});
+        getOrEnqueuePaperSynopsis.mockResolvedValue({ status: 'completed', synopsis: {} });
         alignTopicClaimsWithGuidelines.mockResolvedValueOnce({ processed: 1, results: [] });
 
         await seedCurriculumTopic({

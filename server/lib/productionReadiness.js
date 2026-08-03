@@ -67,6 +67,17 @@ function checkAuthBypass(errors) {
     }
 }
 
+function isSqliteForced() {
+    const value = env('USE_SQLITE').toLowerCase();
+    return value === '1' || value === 'true';
+}
+
+function checkSqliteForbidden(errors) {
+    if (isSqliteForced()) {
+        errors.push('USE_SQLITE is forbidden in beta/production — use PostgreSQL via DATABASE_URL');
+    }
+}
+
 function checkUrls(errors, warnings) {
     const appUrl = env('APP_URL');
     const cors = env('CORS_ORIGINS');
@@ -171,6 +182,8 @@ function validateProductionEnv({ mode = 'verify' } = {}) {
 
     if (mode === 'runtime') {
         // Fatal startup checks preserved from app.js.
+        checkSqliteForbidden(errors);
+
         const databaseUrl = env('DATABASE_URL');
         if (!databaseUrl || !isPostgresUrl(databaseUrl)) {
             errors.push('DATABASE_URL must be set to a PostgreSQL connection string in production. SQLite is not allowed for beta/commercial deployments.');
@@ -198,6 +211,7 @@ function validateProductionEnv({ mode = 'verify' } = {}) {
     } else {
         // Full CI/manual checklist from verify-production-env.mjs.
         checkJwt(errors);
+        checkSqliteForbidden(errors);
         checkDatabase(errors, warnings);
         checkRedis(errors, warnings);
         checkAuthBypass(errors);
