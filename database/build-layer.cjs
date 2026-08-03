@@ -62,8 +62,7 @@ const ranges = [
     [1882, 2348, 'mixins/m04-interactions-impressions-study-runs.js'],
     [2351, 2815, 'mixins/m05-curriculum-agent-case-mastery.js'],
     [2817, 3295, 'mixins/m06-sessions-saved-cache-teams.js'],
-    [3298, 3705, 'mixins/m07-analytics-vector-cache-ai-jobs.js'],
-    [3707, 4062, 'mixins/m08-review-audit-billing-cpd.js'],
+    // m07/m08 were hand-split into domain slices (m07a–c, m08a–d); do not regenerate those here.
 ];
 
 for (const [a, b, rel] of ranges) {
@@ -74,12 +73,5 @@ for (const [a, b, rel] of ranges) {
     fs.writeFileSync(fp, out);
 }
 
-const portfolioPath = path.join(dbDir, 'mixins/m08-review-audit-billing-cpd.js');
-let m8 = fs.readFileSync(portfolioPath, 'utf8');
-m8 = m8.replace(
-    `const row = await this.get(\`SELECT * FROM portfolio_reflections WHERE id = ? AND user_id = ?\`, [reflectionId, userId]);`,
-    `const reflectionId = result.lastID || result.id;\n        const row = await this.get(\`SELECT * FROM portfolio_reflections WHERE id = ? AND user_id = ?\`, [reflectionId, userId]);`
-);
-fs.writeFileSync(portfolioPath, m8);
-
 console.log('Wrote DatabaseCore.js and', ranges.length, 'mixins from', inputPath);
+console.log('Skipped m07/m08 — maintained as m07a–c / m08a–d slices');
