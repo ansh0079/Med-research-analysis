@@ -183,11 +183,18 @@ class JobQueue {
     }
 }
 
+const { aiGenerationQueueConcurrency } = require('./aiGenerationConcurrency');
+
 const pdfQueue = new JobQueue({ concurrency: 2, name: 'pdf' });
 const embeddingQueue = new JobQueue({ concurrency: 3, name: 'embedding' });
 const searchQueue = new JobQueue({ concurrency: 2, name: 'search' });
 const digestQueue = new JobQueue({ concurrency: 1, name: 'digest' });
-const aiGenerationQueue = new JobQueue({ concurrency: 1, name: 'ai-generation' });
+// Outer pool (default 3). Per-job-type limits inside aiGenerationConcurrency
+// keep full_synthesis from starving synopsis / topic_seed under load.
+const aiGenerationQueue = new JobQueue({
+    concurrency: aiGenerationQueueConcurrency(),
+    name: 'ai-generation',
+});
 
 function startWorkers(deps = {}) {
     if (!useBullMQ() || workers.length > 0) return;

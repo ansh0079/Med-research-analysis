@@ -9,6 +9,7 @@ const path = require('path');
 const fs = require('fs');
 
 const DEFAULT_SEEDS_PATH = path.join(__dirname, '../config/clinicalQueryAliasSeeds.json');
+const DEFAULT_RULES_PATH = path.join(__dirname, '../config/clinicalQueryAliasRules.json');
 
 function compileSeedRule(seed = {}) {
     const patterns = Array.isArray(seed.all) ? seed.all : [];
@@ -36,6 +37,33 @@ function loadClinicalQueryAliasSeeds(seedsPath = DEFAULT_SEEDS_PATH) {
     const raw = JSON.parse(fs.readFileSync(seedsPath, 'utf8'));
     const seeds = Array.isArray(raw?.seeds) ? raw.seeds : [];
     return seeds.map(compileSeedRule).filter(Boolean);
+}
+
+/**
+ * Load hand-curated landmark alias rules from JSON (regex source strings).
+ * Same shape as data-driven seeds after compileSeedRule.
+ */
+function loadClinicalQueryAliasRules(rulesPath = DEFAULT_RULES_PATH) {
+    if (!fs.existsSync(rulesPath)) return [];
+    const raw = JSON.parse(fs.readFileSync(rulesPath, 'utf8'));
+    const rules = Array.isArray(raw?.rules) ? raw.rules : [];
+    return rules.map((rule) => compileSeedRule({
+        ...rule,
+        source: rule.source || 'curated',
+    })).filter(Boolean);
+}
+
+/**
+ * Curated rules first, then data-driven seeds (later rules can add pins).
+ */
+function loadAllClinicalQueryAliasRules({
+    rulesPath = DEFAULT_RULES_PATH,
+    seedsPath = DEFAULT_SEEDS_PATH,
+} = {}) {
+    return [
+        ...loadClinicalQueryAliasRules(rulesPath),
+        ...loadClinicalQueryAliasSeeds(seedsPath),
+    ];
 }
 
 /**
@@ -114,8 +142,11 @@ function pinnedPmidsForQuery(rules, query) {
 
 module.exports = {
     DEFAULT_SEEDS_PATH,
+    DEFAULT_RULES_PATH,
     compileSeedRule,
     loadClinicalQueryAliasSeeds,
+    loadClinicalQueryAliasRules,
+    loadAllClinicalQueryAliasRules,
     suggestSeedsFromLandmarkMisses,
     analyzeAliasCoverage,
     ruleMatchesQuery,

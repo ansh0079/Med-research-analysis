@@ -125,6 +125,14 @@ jobs:
           JWT_SECRET: test-jwt-secret
           ADMIN_TOKEN: test-admin-token
 
+      - name: Run mocked search-pipeline integration gate
+        run: npm run test:search-pipeline-integration
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret
+          ADMIN_TOKEN: test-admin-token
+          SEARCH_PICO_RERANK_ENABLED: 'false'
+
       - name: Run offline IPS / linear-value unit gates
         run: npm run test:offline-policy
         env:
