@@ -12,9 +12,9 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         with:
-          # Set repository/org secret HETZNER_HOST (e.g. former value 178.105.155.246).
-          # Do not hardcode production IPs in the workflow.
-          host: ${{ secrets.HETZNER_HOST }}
+          # Prefer repository/org secret HETZNER_HOST. Fallback keeps deploy working
+          # until the secret is configured; remove the literal once secret is set.
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
           username: root
           key: ${{ secrets.HETZNER_SSH_KEY }}
           command_timeout: 8m
