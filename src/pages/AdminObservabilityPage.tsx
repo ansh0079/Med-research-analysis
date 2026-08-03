@@ -2,10 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '@services/api';
 import { useAuth } from '@contexts/AuthContext';
-import type { ProductionObservability } from '@services/api/knowledgeAdmin';
+import type { BanditObservability, ProductionObservability } from '@services/api/knowledgeAdmin';
 import { VerificationBadge } from '@components/ui/VerificationBadge';
 import { CollectiveMemoryPanel } from '@components/admin/CollectiveMemoryPanel';
 import { ProductionObservabilityPanel } from '@components/admin/ProductionObservabilityPanel';
+import { BanditObservabilityPanel } from '@components/admin/BanditObservabilityPanel';
 import { BackgroundJobsPanel } from '@components/admin/BackgroundJobsPanel';
 import { TopicReadinessPanel } from '@components/admin/TopicReadinessPanel';
 import { ClaimRow } from '@components/admin/ClaimRow';
@@ -48,6 +49,7 @@ export function AdminObservabilityPage() {
     failedGenerationJobs: Array<{ jobKey: string; jobType: string; errorMessage: string | null }>;
   } | null>(null);
   const [productionObservability, setProductionObservability] = useState<ProductionObservability | null>(null);
+  const [banditObservability, setBanditObservability] = useState<BanditObservability | null>(null);
 
   const isStaff = user?.role === 'admin' || user?.role === 'curator';
 
@@ -55,18 +57,20 @@ export function AdminObservabilityPage() {
     setLoading(true);
     setError(null);
     try {
-      const [res, costRes, automationRes, productionRes, cronRes] = await Promise.all([
+      const [res, costRes, automationRes, productionRes, cronRes, banditRes] = await Promise.all([
         api.knowledge.getAdminClaimObservability({ limit: 30 }),
         api.knowledge.getAdminLlmCostDashboard({ days: 30, limit: 12 }).catch(() => null),
         api.knowledge.getBackgroundAutomation().catch(() => null),
         api.knowledge.getProductionObservability({ days: 7 }).catch(() => null),
         api.knowledge.getCronHealth().catch(() => null),
+        api.knowledge.getBanditObservability({ policyType: 'search_ranking', scopeKey: 'global', days: 7 }).catch(() => null),
       ]);
       setAutomation(automationRes?.automation ?? null);
       setCronHealth(cronRes?.crons ?? null);
       setData(res.observability);
       setCostDashboard(costRes?.dashboard ?? null);
       setProductionObservability(productionRes?.observability ?? null);
+      setBanditObservability(banditRes?.observability ?? null);
       const seedRes = await api.knowledge.listCurriculumSeedTopics({ limit: 120 });
       setSeedTopics(seedRes.topics);
       const schedulerRes = await api.knowledge.getCurriculumSchedulerObservability({ limit: 8 });
@@ -271,6 +275,10 @@ export function AdminObservabilityPage() {
 
             {productionObservability && (
               <ProductionObservabilityPanel observability={productionObservability} />
+            )}
+
+            {banditObservability && (
+              <BanditObservabilityPanel observability={banditObservability} />
             )}
 
             <TopicReadinessPanel />
