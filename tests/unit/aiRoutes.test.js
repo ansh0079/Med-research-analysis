@@ -25,7 +25,7 @@ jest.mock('../../server/services/aiService', () => {
     return {
         createAiService: jest.fn().mockReturnValue(shared),
         getSharedAiService: jest.fn().mockReturnValue(shared),
-        PINNED_MODELS: { gemini: 'gemini-model', mistral: 'mistral-model' },
+        PINNED_MODELS: { gemini: 'gemini-model', mistral: 'mistral-model', claude: 'claude-haiku' },
         TEMPERATURE: { analysis: 0.3, synthesis: 0.4, explain: 0.5 },
         AI_DISCLAIMER: 'AI-generated content.',
     };
@@ -85,10 +85,11 @@ jest.mock('../../server/utils/validation', () => ({
 }));
 
 jest.mock('../../server/utils/aiProvider', () => ({
-    resolveProvider: jest.fn().mockImplementation(({ provider }) => {
+    resolveProvider: jest.fn().mockImplementation(({ provider } = {}) => {
+        if (provider === 'claude') return { provider: 'claude', model: 'claude-haiku' };
         if (provider === 'auto' || provider === 'gemini') return { provider: 'gemini', model: 'gemini-model' };
         if (provider === 'mistral') return { provider: 'mistral', model: 'mistral-model' };
-        return null;
+        return { provider: null, model: null };
     }),
 }));
 
@@ -139,7 +140,7 @@ describe('aiRoutes', () => {
     };
 
     const deps = {
-        serverConfig: { keys: { gemini: 'gk', mistral: 'mk' } },
+        serverConfig: { keys: { gemini: 'gk', mistral: 'mk', anthropic: 'ak' } },
         db: mockDb,
         cache: mockCache,
         rateLimit: () => (req, res, next) => next(),
@@ -194,9 +195,10 @@ describe('aiRoutes', () => {
             const res = await request(app)
                 .post('/api/ai/analyze')
                 .set('Authorization', `Bearer ${authToken()}`)
-                .send({ text: 'Patient has diabetes.', analysisType: 'summary', provider: 'gemini' });
+                .send({ text: 'Patient has diabetes.', analysisType: 'summary' });
             expect(res.status).toBe(200);
             expect(res.body.result).toBe('gemini result');
+            expect(res.body.provider).toBe('claude');
             expect(mockDb.cacheAnalysis).toHaveBeenCalled();
         });
     });
@@ -278,7 +280,7 @@ describe('aiRoutes', () => {
                 .post('/api/ai/analyze/stream')
                 .set('Authorization', `Bearer ${authToken()}`)
                 .set('Accept', 'text/event-stream')
-                .send({ text: 'Diabetes overview.', analysisType: 'summary', provider: 'gemini' })
+                .send({ text: 'Diabetes overview.', analysisType: 'summary' })
                 .buffer(true)
                 .parse((res, callback) => {
                     res.text = '';

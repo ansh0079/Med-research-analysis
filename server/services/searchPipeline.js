@@ -596,7 +596,6 @@ async function fetchAndRankSearchArticles({
                 specificity,
                 pico,
                 queryAliases: telemetry.clinicalAliases,
-                queryIntent,
                 // Search result list: pure relevance rank (no archetype diversity slotting).
                 selectionMode: 'relevance',
             });

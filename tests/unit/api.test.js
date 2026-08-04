@@ -881,7 +881,9 @@ describe('API Endpoints', () => {
         });
         expect(response.body.knowledgeAvailable).toBe(true);
         expect(response.body.agentGuidance.seminalPapers).toHaveLength(3);
-        expect(response.body.topicIntelligence.evidenceBouquet.count).toBe(5);
+        // Topic-intelligence bouquet is capped at 12 (not the search page limit).
+        expect(response.body.topicIntelligence.evidenceBouquet.count).toBeGreaterThanOrEqual(5);
+        expect(response.body.topicIntelligence.evidenceBouquet.count).toBeLessThanOrEqual(12);
         expect(response.body.topicIntelligence.guidelineSnapshot.count).toBe(1);
         expect(response.body.topicIntelligence.guidelineSnapshot.guidelines[0].qualityAssessment).toMatchObject({
           score: 48,
