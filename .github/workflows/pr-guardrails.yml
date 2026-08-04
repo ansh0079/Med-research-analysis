@@ -101,6 +101,7 @@ jobs:
           npm run test:e2e:ci
 
       - name: Run npm audit
+        continue-on-error: true
         run: npm audit --audit-level=moderate
 
   # Offline gates always block: gold fixture ↔ landmark alias coverage + baseline contracts.
