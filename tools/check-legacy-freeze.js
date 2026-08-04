@@ -28,7 +28,17 @@ const blockedLegacyPaths = [
 ];
 
 function getChangedFiles(base, head) {
-  const output = execSync(`git diff --name-only "${base}...${head}"`, {
+  let range = `${base}...${head}`;
+  try {
+    execSync(`git merge-base "${base}" "${head}"`, {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+  } catch {
+    // Shallow clones can lack a merge base; fall back to two-dot diff.
+    range = `${base}..${head}`;
+  }
+  const output = execSync(`git diff --name-only "${range}"`, {
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
   });
