@@ -38,7 +38,7 @@ function registerAnalysisRoutes(app, {
                 return res.status(400).json({ error: 'Validation failed', details: validationErrors });
             }
 
-            const { provider: selectedProvider, model: selectedModel } = resolveProvider(ANALYSIS_PROVIDER, serverConfig);
+            const { provider: selectedProvider, model: selectedModel } = resolveProvider(ANALYSIS_PROVIDER, serverConfig) || {};
             if (!selectedProvider || !serverConfig?.keys?.anthropic) {
                 return res.status(503).json({ error: 'No Anthropic API key configured. Add ANTHROPIC_API_KEY to .env' });
             }
@@ -99,7 +99,7 @@ function registerAnalysisRoutes(app, {
                 return res.status(400).json({ error: 'Validation failed', details: validationErrors });
             }
 
-            const { provider: selectedProvider, model: selectedModel } = resolveProvider(ANALYSIS_PROVIDER, serverConfig);
+            const { provider: selectedProvider, model: selectedModel } = resolveProvider(ANALYSIS_PROVIDER, serverConfig) || {};
             if (!selectedProvider || !serverConfig?.keys?.anthropic) {
                 return res.status(503).json({ error: 'No Anthropic API key configured. Add ANTHROPIC_API_KEY to .env' });
             }
@@ -174,7 +174,7 @@ function registerAnalysisRoutes(app, {
                 return res.status(400).json({ error: 'Text exceeds maximum length of 50000 characters' });
             }
 
-            const { provider: selectedProvider, model: selectedModel } = resolveProvider(ANALYSIS_PROVIDER, serverConfig);
+            const { provider: selectedProvider, model: selectedModel } = resolveProvider(ANALYSIS_PROVIDER, serverConfig) || {};
             if (!selectedProvider || !serverConfig?.keys?.anthropic) {
                 return res.status(503).json({ error: 'No Anthropic API key configured. Add ANTHROPIC_API_KEY to .env' });
             }

@@ -46,6 +46,11 @@ const KNOWN_LEARNING_EVENT_TYPES = [
     'regional_guideline_divergence',
     'claim_conflicts_guideline',
     'claim_guideline_uncertain',
+    'topic_evolved',
+    'guideline_anchored',
+    'topic_synthesized',
+    'mentor_guideline_fidelity',
+    'mentor_memory_feedback',
 ];
 
 const LearningEventTypeSchema = z.enum(KNOWN_LEARNING_EVENT_TYPES);

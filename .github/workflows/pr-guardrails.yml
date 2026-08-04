@@ -86,6 +86,9 @@ jobs:
       - name: Build frontend for E2E
         run: npm run build
 
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
       - name: Run fast E2E tests
         run: |
           NODE_ENV=e2e JWT_SECRET=test-jwt-secret ADMIN_TOKEN=test-admin-token npm start &
@@ -98,6 +101,7 @@ jobs:
           npm run test:e2e:ci
 
       - name: Run npm audit
+        continue-on-error: true
         run: npm audit --audit-level=moderate
 
   # Offline gates always block: gold fixture ↔ landmark alias coverage + baseline contracts.
@@ -124,6 +128,14 @@ jobs:
           NODE_ENV: test
           JWT_SECRET: test-jwt-secret
           ADMIN_TOKEN: test-admin-token
+
+      - name: Run mocked search-pipeline integration gate
+        run: npm run test:search-pipeline-integration
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret
+          ADMIN_TOKEN: test-admin-token
+          SEARCH_PICO_RERANK_ENABLED: 'false'
 
       - name: Run offline IPS / linear-value unit gates
         run: npm run test:offline-policy

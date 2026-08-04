@@ -74,7 +74,8 @@ export default defineConfig({
   webServer: {
     command: 'node scripts/start-e2e-server.js',
     url: baseURL,
-    reuseExistingServer: false,
+    // CI workflows start the app themselves before Playwright; reuse that server.
+    reuseExistingServer: true,
     timeout: 180 * 1000,
   },
   globalSetup: require.resolve('./tests/e2e/global-setup.js'),

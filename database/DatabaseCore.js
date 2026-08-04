@@ -44,9 +44,11 @@ constructor(dbPath = './database/app.db') {
     // Postgres mode is active when DATABASE_URL is a postgres:// or postgresql:// connection string.
     // Auto-detected from the URL scheme — no need to set USE_POSTGRES_MAIN manually.
     // USE_POSTGRES_MAIN=true is a legacy override but is ignored unless the URL is also a PG URL.
+    // USE_SQLITE=1|true forces SQLite even if DATABASE_URL is postgres (dev escape hatch only).
+    const useSqlite = ['1', 'true'].includes(String(process.env.USE_SQLITE || '').trim().toLowerCase());
     const dbUrl = process.env.DATABASE_URL || '';
     const urlIsPostgres = dbUrl.startsWith('postgresql://') || dbUrl.startsWith('postgres://');
-    this.isPostgres = urlIsPostgres && Boolean(dbUrl);
+    this.isPostgres = !useSqlite && urlIsPostgres && Boolean(dbUrl);
 }
 
 async connect() {

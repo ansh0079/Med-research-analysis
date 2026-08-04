@@ -46,6 +46,11 @@ async function processAiGenerationJobByKey(jobKey, deps) {
     const jobType = row.jobType || row.job_type;
     const input = row.inputPayload || row.input_payload || {};
 
+    // Per-type slot: outer BullMQ concurrency can be >1; this prevents
+    // expensive LLM jobs from monopolising provider quota.
+    const { acquireAiJobSlot } = require('./aiGenerationConcurrency');
+    const releaseSlot = await acquireAiJobSlot(jobType, { logger: deps.logger || logger });
+
     await db.markAiGenerationJobRunning(jobKey);
 
     try {
@@ -345,6 +350,8 @@ async function processAiGenerationJobByKey(jobKey, deps) {
         });
         await maybeMoveToDeadLetter(db, jobKey);
         throw err;
+    } finally {
+        try { releaseSlot(); } catch (_e) { /* ignore */ }
     }
 }
 

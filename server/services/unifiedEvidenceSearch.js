@@ -55,58 +55,18 @@ function isPreprint(article) {
     return sources.some((s) => text.includes(s));
 }
 
-// `pmids` pins the known landmark-trial PMID directly via esummary (bypassing esearch
-// relevance ranking). This matters because many older trials (pre-2000s) never cite their
-// own acronym in the title/abstract — the acronym became common self-citation only after
-// the CONSORT/registry era — so acronym-based Title/Abstract search finds papers that cite
-// the trial, not the trial itself, and buries the source under decades of later citations.
-const CLINICAL_QUERY_ALIAS_RULES = [
-    { all: [/\bsglt2\b|\bsodium[- ]glucose\b/i, /\bheart failure\b|\bhfref\b|\breduced ejection fraction\b/i], aliases: ['DAPA-HF', 'EMPEROR-Reduced', 'dapagliflozin', 'empagliflozin'], pmids: ['31535829', '32865377'] },
-    { all: [/\bsacubitril\b|\bvalsartan\b|\bneprilysin\b/i, /\bheart failure\b|\bhfref\b|\bmortality\b/i], aliases: ['PARADIGM-HF', 'LCZ696'], pmids: ['25176015'] },
-    { all: [/\bspironolactone\b|\bmineralocorticoid\b|\baldosterone\b/i, /\bheart failure\b|\bsurvival\b/i], aliases: ['RALES'], pmids: ['10471456'] },
-    { all: [/\benalapril\b|\bace inhibitor\b/i, /\bleft ventricular\b|\bejection fraction\b|\bsurvival\b/i], aliases: ['SOLVD', 'Studies of Left Ventricular Dysfunction'], pmids: ['2057034'] },
-    { all: [/\bintensive\b/i, /\bblood pressure\b|\bsystolic\b/i], aliases: ['SPRINT'], pmids: ['26551272'] },
-    { all: [/\bhypertension\b/i, /\b80\b|\bvery elderly\b|\belderly\b/i], aliases: ['HYVET'], pmids: ['18378519'] },
-    { all: [/\bempagliflozin\b/i, /\bcardiovascular outcomes?\b|\btype 2 diabetes\b/i], aliases: ['EMPA-REG OUTCOME'], pmids: ['26378978'] },
-    { all: [/\bliraglutide\b|\bglp-?1\b/i, /\bcardiovascular outcomes?\b|\btype 2 diabetes\b/i], aliases: ['LEADER'], pmids: ['27295427'] },
-    { all: [/\bukpds\b|\bsulphonylureas?\b|\bsulfonylureas?\b/i, /\btype 2 diabetes\b|\bblood glucose\b/i], aliases: ['UKPDS 33'], pmids: ['9742976'] },
-    { all: [/\baccord\b|\bintensive glucose\b|\bglucose lowering\b/i, /\btype 2 diabetes\b|\bmortality\b/i], aliases: ['ACCORD'], pmids: ['18539917'] },
-    { all: [/\bcanagliflozin\b/i, /\brenal\b|\bnephropathy\b|\bkidney\b/i], aliases: ['CREDENCE'], pmids: ['30990260'] },
-    { all: [/\bempagliflozin\b/i, /\bchronic kidney disease\b|\bckd\b|\bkidney disease\b/i], aliases: ['EMPA-KIDNEY'], pmids: ['36331190'] },
-    { all: [/\brosuvastatin\b|\bc-reactive protein\b|\bprimary prevention\b/i], aliases: ['JUPITER'], pmids: ['18997196'] },
-    { all: [/\bevolocumab\b|\bpcsk9\b/i, /\bcardiovascular outcomes?\b/i], aliases: ['FOURIER'], pmids: ['28304224'] },
-    { all: [/\bldl\b|\bcholesterol lowering\b/i, /\bstatin\b/i, /\bmeta.?analysis\b|\bsystematic review\b/i], aliases: ['Cholesterol Treatment Trialists', 'CTT collaboration'], pmids: ['21067804'] },
-    { all: [/\bezetimibe\b/i, /\bacute coronary syndrome\b|\bstatin\b/i], aliases: ['IMPROVE-IT'], pmids: ['26039521'] },
-    { all: [/\bcanakinumab\b|\banti-inflammatory\b/i, /\batheroscler/i], aliases: ['CANTOS'], pmids: ['28845751'] },
-    { all: [/\bdabigatran\b/i, /\bwarfarin\b|\batrial fibrillation\b/i], aliases: ['RE-LY'], pmids: ['19717844'] },
-    { all: [/\bapixaban\b/i, /\bwarfarin\b|\batrial fibrillation\b/i], aliases: ['ARISTOTLE'], pmids: ['21870978'] },
-    { all: [/\bcha2?ds2\b|\bvasc\b|\brisk stratification\b/i, /\batrial fibrillation\b|\bstroke\b/i], aliases: ['CHA2DS2-VASc', 'CHA2DS2VASc'] },
-    { all: [/\batrial fibrillation\b/i, /\bguideline\b/i], aliases: ['ACC/AHA atrial fibrillation guideline', 'HRS AF guideline'], pmids: ['38033089'] },
-    { all: [/\bticagrelor\b/i, /\bclopidogrel\b|\bacute coronary syndromes?\b/i], aliases: ['PLATO'], pmids: ['19717846'] },
-    { all: [/\binvasive\b/i, /\bconservative\b/i, /\bstable coronary\b|\bischemic heart\b/i], aliases: ['ISCHEMIA'], pmids: ['32227755'] },
-    { all: [/\bprimary angioplasty\b|\bprimary pci\b|\bthrombolytic\b|\bthrombolysis\b/i, /\bmyocardial infarction\b|\bami\b|\bstemi\b/i], aliases: ['primary PCI', 'Keeley'], pmids: ['12517460'] },
-    { all: [/\btranscatheter\b|\btavr\b|\btavi\b/i, /\blow-risk\b|\blow risk\b|\bballoon-expandable\b/i], aliases: ['PARTNER 3'], pmids: ['30883058'] },
-    { all: [/\blow tidal volume\b|\blung protective\b/i, /\bards\b|\bacute respiratory distress\b/i], aliases: ['ARDSNet', 'ARMA', 'Ventilation with lower tidal volumes', 'acute lung injury'], pmids: ['10793162'] },
-    { all: [/\bprone\b|\bproning\b/i, /\bards\b|\bacute respiratory distress\b/i], aliases: ['PROSEVA'], pmids: ['23688302'] },
-    { all: [/\btriple inhaled\b|\btriple therapy\b/i, /\bcopd\b|\bexacerbation\b/i], aliases: ['IMPACT', 'ETHOS'], pmids: ['32579807'] },
-    { all: [/\baspirin\b/i, /\belderly\b|\bhealthy elderly\b|\bprimary prevention\b/i], aliases: ['ASPREE'], pmids: ['30221597'] },
-    { all: [/\bdexamethasone\b/i, /\bcovid/i], aliases: ['RECOVERY'], pmids: ['32678530'] },
-    { all: [/\btocilizumab\b/i, /\bcovid/i], aliases: ['RECOVERY', 'REMAP-CAP'], pmids: ['33933206'] },
-    { all: [/\bpembrolizumab\b/i, /\bnon-small cell\b|\bnsclc\b|\blung cancer\b/i], aliases: ['KEYNOTE-189'], pmids: ['29658856'] },
-    { all: [/\bnivolumab\b/i, /\bipilimumab\b/i, /\bmelanoma\b/i], aliases: ['CheckMate 067'], pmids: ['31562797'] },
-    { all: [/\bcar-?t\b|\baxicabtagene\b/i, /\blymphoma\b|\blarge b-cell\b/i], aliases: ['ZUMA-1'], pmids: ['29226797'] },
-    { all: [/\bcrispr\b|\bcas9\b|\bctx001\b/i, /\bsickle cell\b|\bbeta-thalassemia\b|\bthalassaemia\b/i], aliases: ['CTX001', 'exagamglogene autotemcel', 'CLIMB THAL-111'], pmids: ['33283989'] },
-    { all: [/\btissue plasminogen\b|\balteplase\b|\btpa\b/i, /\bstroke\b|\bischemic\b|\bischaemic\b/i], aliases: ['NINDS', 'rt-PA', 'National Institute of Neurological Disorders', 'National Institute of Neurological Disorders and Stroke'], pmids: ['7477192'] },
-    { all: [/\bendovascular thrombectomy\b|\bthrombectomy\b/i, /\bstroke\b|\btime to treatment\b/i], aliases: ['HERMES'], pmids: ['27673305'] },
-    { all: [/\bantimicrobial resistance\b|\bamr\b/i, /\bglobal burden\b|\bglobal prevalence\b|\bgram\b/i], aliases: ['GRAM', 'Global Antimicrobial Resistance and Research Programme'], pmids: ['35065702'] },
-    { all: [/\bdepression\b|\banxiety\b/i, /\bcovid/i, /\bglobal\b|\bpandemic\b|\bprevalence\b/i], aliases: ['GBD COVID mental health', 'global burden disease mental health'], pmids: ['34634250'] },
-    { all: [/\bantidepressant\b|\bdepressed outpatients\b/i, /\bsequential\b|\btreatment steps\b/i], aliases: ['STAR*D', 'Sequenced Treatment Alternatives to Relieve Depression'], pmids: ['17074942'] },
-    { all: [/\bsurviving sepsis\b|\bsepsis campaign\b/i, /\bsepsis\b|\bseptic shock\b/i], aliases: ['Surviving Sepsis Campaign'], pmids: ['34599691'] },
-];
-
-const { loadClinicalQueryAliasSeeds } = require('./clinicalQueryAliasSeeds');
+// Landmark alias/PMID rules live in JSON configs (validated + editable without
+// touching fetch/RRF code). See server/config/clinicalQueryAliasRules.json and
+// clinicalQueryAliasSeeds.json. Older trials often omit their own acronym in
+// title/abstract — pinned PMIDs bypass esearch relevance ranking.
+const {
+    loadClinicalQueryAliasRules,
+    loadClinicalQueryAliasSeeds,
+    loadAllClinicalQueryAliasRules,
+} = require('./clinicalQueryAliasSeeds');
+const CLINICAL_QUERY_ALIAS_RULES = loadClinicalQueryAliasRules();
 const DATA_DRIVEN_ALIAS_RULES = loadClinicalQueryAliasSeeds();
-const ALL_CLINICAL_QUERY_ALIAS_RULES = [...CLINICAL_QUERY_ALIAS_RULES, ...DATA_DRIVEN_ALIAS_RULES];
+const ALL_CLINICAL_QUERY_ALIAS_RULES = loadAllClinicalQueryAliasRules();
 
 function clinicalQueryAliases(query) {
     const text = String(query || '');

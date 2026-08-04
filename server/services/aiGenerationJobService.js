@@ -516,14 +516,18 @@ function enqueuePaperSynopsisJob({ db, jobKey, serverConfig, fetchImpl, cache, l
 }
 
 async function getOrEnqueuePaperSynopsis({
-    db, article, provider = 'auto', serverConfig, fetchImpl, cache, logger, topic = '', trainingStage = null, userId = null,
+    db, article, provider = 'auto', serverConfig, fetchImpl, cache, logger,
+    topic = '', trainingStage = null, userId = null,
+    forceSync = false, sessionId = null, log = null,
 }) {
     const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider }, serverConfig);
     if (!selectedProvider) {
         return { status: 'failed', jobKey: null, errorMessage: 'No AI provider configured' };
     }
     const jobKey = paperSynopsisJobKey(article, selectedModel, trainingStage);
-    if (!hasDurableJobStore(db)) {
+    // forceSync (or no durable job store): always run inline and return the result —
+    // callers do not need to poll GET /api/ai/jobs/:jobKey.
+    if (forceSync || !hasDurableJobStore(db)) {
         try {
             const result = await runPaperSynopsisGeneration({
                 article,
@@ -536,6 +540,8 @@ async function getOrEnqueuePaperSynopsis({
                 topic,
                 trainingStage,
                 userId,
+                sessionId,
+                log: log || logger,
             });
             return { status: 'completed', jobKey, ...result };
         } catch (err) {

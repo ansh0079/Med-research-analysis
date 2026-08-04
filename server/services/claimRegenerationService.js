@@ -1,7 +1,7 @@
 'use strict';
 
 const logger = require('../config/logger');
-const { runPaperSynopsisGeneration } = require('./paperSynopsisCore');
+const { getOrEnqueuePaperSynopsis } = require('./aiGenerationJobService');
 
 function articleFromTeachingObject(teachingObject, articleUid) {
     const payload = teachingObject?.payload || {};
@@ -48,15 +48,20 @@ async function processClaimRegenerationJob(db, job, { serverConfig, fetchImpl, c
 
     await db.updateClaimRegenerationStatus(job.id, { status: 'running' });
 
-    const result = await runPaperSynopsisGeneration({
+    const result = await getOrEnqueuePaperSynopsis({
         article,
         db,
         cache,
         serverConfig,
         fetchImpl,
         topic,
+        logger,
         log: logger,
+        forceSync: true,
     });
+    if (result.status === 'failed') {
+        throw new Error(result.errorMessage || 'Synopsis generation failed');
+    }
 
     const refreshed = await db.getTeachingClaimByKey?.(job.claimKey).catch(() => null);
     if (refreshed && typeof db.logClaimStatusChange === 'function' && refreshed.verificationStatus !== priorStatus) {

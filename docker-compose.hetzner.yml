@@ -172,6 +172,7 @@ services:
       SMTP_FROM: ${SMTP_FROM:-Signal MD <hello@signalmd.co>}
       APP_URL: https://${DOMAIN}
       AUTO_SEED_ON_SEARCH: ${AUTO_SEED_ON_SEARCH:-true}
+      AI_GENERATION_CONCURRENCY: ${AI_GENERATION_CONCURRENCY:-3}
       REQUIRE_SMTP: "true"
       REQUIRE_VECTOR_SEARCH: "true"
       GROBID_URL: http://grobid:8070

@@ -30,6 +30,33 @@ export type ProductionObservability = {
   actions: string[];
 };
 
+export type BanditArmObservability = {
+  policyType: string | null;
+  armId: string | null;
+  scopeKey: string | null;
+  alpha: number;
+  beta: number;
+  pulls: number;
+  totalReward: number;
+  meanReward: number | null;
+  thompsonMean: number | null;
+  updatedAt: string | null;
+};
+
+export type BanditObservability = {
+  policyType: string;
+  scopeKey: string;
+  days: number;
+  arms: BanditArmObservability[];
+  decisions: {
+    total: number;
+    withReward: number;
+    withPropensity: number;
+    rewardDensity: number;
+  };
+  generatedAt: string;
+};
+
 export type TopicReadinessTier = 'needs_enrichment' | 'search_ready' | 'learner_ready' | 'flagship';
 
 export type TopicReadinessRow = {
@@ -128,6 +155,20 @@ export class KnowledgeAdminApi extends KnowledgeCoreApi {
     const params = new URLSearchParams();
     if (options.days) params.set('days', String(options.days));
     const response = await this.fetchWithSession(`${API_BASE}/api/admin/production-observability?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getBanditObservability(options: {
+    policyType?: string;
+    scopeKey?: string;
+    days?: number;
+  } = {}): Promise<{ observability: BanditObservability }> {
+    const params = new URLSearchParams();
+    if (options.policyType) params.set('policyType', options.policyType);
+    if (options.scopeKey) params.set('scopeKey', options.scopeKey);
+    if (options.days) params.set('days', String(options.days));
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/bandit/observability?${params}`);
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }

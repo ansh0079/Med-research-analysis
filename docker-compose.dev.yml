@@ -53,6 +53,8 @@ services:
       - PORT=3002
       - PG_VECTOR_URL=postgresql://medsearch:medsearch@postgres:5432/medsearch
       - DATABASE_PATH=/app/data/app.db
+      # Dev escape hatch: keep main app on SQLite even if DATABASE_URL is postgres.
+      - USE_SQLITE=1
       - ENABLE_COLLABORATION_API=${ENABLE_COLLABORATION_API:-false}
       - JWT_SECRET=${JWT_SECRET:-dev-jwt-secret-change-me}
       - GEMINI_API_KEY=${GEMINI_API_KEY:-}

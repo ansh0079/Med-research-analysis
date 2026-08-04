@@ -5,7 +5,7 @@ const { safeFetch } = require('../utils/fetch');
 const { fetchUnifiedEvidence } = require('./unifiedEvidenceSearch');
 const { selectTopEvidence } = require('../utils/selectTopEvidence');
 const { runFullSynthesisGeneration } = require('./synthesisGenerationCore');
-const { runPaperSynopsisGeneration } = require('./paperSynopsisCore');
+const { getOrEnqueuePaperSynopsis } = require('./aiGenerationJobService');
 const { alignTopicClaimsWithGuidelines } = require('./claimGuidelineEngine');
 const { runGuidelineEnrichmentForTopic } = require('./guidelineSeedService');
 const {
@@ -121,7 +121,7 @@ async function seedCurriculumTopic({
         let synopsisCount = 0;
         for (const article of selectedArticles.slice(0, synopsisLimit)) {
             try {
-                await runPaperSynopsisGeneration({
+                const out = await getOrEnqueuePaperSynopsis({
                     article,
                     topic: topic.displayName,
                     provider,
@@ -129,8 +129,13 @@ async function seedCurriculumTopic({
                     cache,
                     serverConfig,
                     fetchImpl,
+                    logger: log,
                     log,
+                    forceSync: true,
                 });
+                if (out.status === 'failed') {
+                    throw new Error(out.errorMessage || 'Synopsis generation failed');
+                }
                 synopsisCount += 1;
             } catch (err) {
                 synopsisFailures.push({

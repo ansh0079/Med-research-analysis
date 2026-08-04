@@ -1,0 +1,521 @@
+{
+  "version": 1,
+  "description": "Hand-curated landmark alias/PMID rules. Patterns are case-insensitive regex strings compiled at runtime.",
+  "rules": [
+    {
+      "all": [
+        "\\bsglt2\\b|\\bsodium[- ]glucose\\b",
+        "\\bheart failure\\b|\\bhfref\\b|\\breduced ejection fraction\\b"
+      ],
+      "aliases": [
+        "DAPA-HF",
+        "EMPEROR-Reduced",
+        "dapagliflozin",
+        "empagliflozin"
+      ],
+      "pmids": [
+        "31535829",
+        "32865377"
+      ]
+    },
+    {
+      "all": [
+        "\\bsacubitril\\b|\\bvalsartan\\b|\\bneprilysin\\b",
+        "\\bheart failure\\b|\\bhfref\\b|\\bmortality\\b"
+      ],
+      "aliases": [
+        "PARADIGM-HF",
+        "LCZ696"
+      ],
+      "pmids": [
+        "25176015"
+      ]
+    },
+    {
+      "all": [
+        "\\bspironolactone\\b|\\bmineralocorticoid\\b|\\baldosterone\\b",
+        "\\bheart failure\\b|\\bsurvival\\b"
+      ],
+      "aliases": [
+        "RALES"
+      ],
+      "pmids": [
+        "10471456"
+      ]
+    },
+    {
+      "all": [
+        "\\benalapril\\b|\\bace inhibitor\\b",
+        "\\bleft ventricular\\b|\\bejection fraction\\b|\\bsurvival\\b"
+      ],
+      "aliases": [
+        "SOLVD",
+        "Studies of Left Ventricular Dysfunction"
+      ],
+      "pmids": [
+        "2057034"
+      ]
+    },
+    {
+      "all": [
+        "\\bintensive\\b",
+        "\\bblood pressure\\b|\\bsystolic\\b"
+      ],
+      "aliases": [
+        "SPRINT"
+      ],
+      "pmids": [
+        "26551272"
+      ]
+    },
+    {
+      "all": [
+        "\\bhypertension\\b",
+        "\\b80\\b|\\bvery elderly\\b|\\belderly\\b"
+      ],
+      "aliases": [
+        "HYVET"
+      ],
+      "pmids": [
+        "18378519"
+      ]
+    },
+    {
+      "all": [
+        "\\bempagliflozin\\b",
+        "\\bcardiovascular outcomes?\\b|\\btype 2 diabetes\\b"
+      ],
+      "aliases": [
+        "EMPA-REG OUTCOME"
+      ],
+      "pmids": [
+        "26378978"
+      ]
+    },
+    {
+      "all": [
+        "\\bliraglutide\\b|\\bglp-?1\\b",
+        "\\bcardiovascular outcomes?\\b|\\btype 2 diabetes\\b"
+      ],
+      "aliases": [
+        "LEADER"
+      ],
+      "pmids": [
+        "27295427"
+      ]
+    },
+    {
+      "all": [
+        "\\bukpds\\b|\\bsulphonylureas?\\b|\\bsulfonylureas?\\b",
+        "\\btype 2 diabetes\\b|\\bblood glucose\\b"
+      ],
+      "aliases": [
+        "UKPDS 33"
+      ],
+      "pmids": [
+        "9742976"
+      ]
+    },
+    {
+      "all": [
+        "\\baccord\\b|\\bintensive glucose\\b|\\bglucose lowering\\b",
+        "\\btype 2 diabetes\\b|\\bmortality\\b"
+      ],
+      "aliases": [
+        "ACCORD"
+      ],
+      "pmids": [
+        "18539917"
+      ]
+    },
+    {
+      "all": [
+        "\\bcanagliflozin\\b",
+        "\\brenal\\b|\\bnephropathy\\b|\\bkidney\\b"
+      ],
+      "aliases": [
+        "CREDENCE"
+      ],
+      "pmids": [
+        "30990260"
+      ]
+    },
+    {
+      "all": [
+        "\\bempagliflozin\\b",
+        "\\bchronic kidney disease\\b|\\bckd\\b|\\bkidney disease\\b"
+      ],
+      "aliases": [
+        "EMPA-KIDNEY"
+      ],
+      "pmids": [
+        "36331190"
+      ]
+    },
+    {
+      "all": [
+        "\\brosuvastatin\\b|\\bc-reactive protein\\b|\\bprimary prevention\\b"
+      ],
+      "aliases": [
+        "JUPITER"
+      ],
+      "pmids": [
+        "18997196"
+      ]
+    },
+    {
+      "all": [
+        "\\bevolocumab\\b|\\bpcsk9\\b",
+        "\\bcardiovascular outcomes?\\b"
+      ],
+      "aliases": [
+        "FOURIER"
+      ],
+      "pmids": [
+        "28304224"
+      ]
+    },
+    {
+      "all": [
+        "\\bldl\\b|\\bcholesterol lowering\\b",
+        "\\bstatin\\b",
+        "\\bmeta.?analysis\\b|\\bsystematic review\\b"
+      ],
+      "aliases": [
+        "Cholesterol Treatment Trialists",
+        "CTT collaboration"
+      ],
+      "pmids": [
+        "21067804"
+      ]
+    },
+    {
+      "all": [
+        "\\bezetimibe\\b",
+        "\\bacute coronary syndrome\\b|\\bstatin\\b"
+      ],
+      "aliases": [
+        "IMPROVE-IT"
+      ],
+      "pmids": [
+        "26039521"
+      ]
+    },
+    {
+      "all": [
+        "\\bcanakinumab\\b|\\banti-inflammatory\\b",
+        "\\batheroscler"
+      ],
+      "aliases": [
+        "CANTOS"
+      ],
+      "pmids": [
+        "28845751"
+      ]
+    },
+    {
+      "all": [
+        "\\bdabigatran\\b",
+        "\\bwarfarin\\b|\\batrial fibrillation\\b"
+      ],
+      "aliases": [
+        "RE-LY"
+      ],
+      "pmids": [
+        "19717844"
+      ]
+    },
+    {
+      "all": [
+        "\\bapixaban\\b",
+        "\\bwarfarin\\b|\\batrial fibrillation\\b"
+      ],
+      "aliases": [
+        "ARISTOTLE"
+      ],
+      "pmids": [
+        "21870978"
+      ]
+    },
+    {
+      "all": [
+        "\\bcha2?ds2\\b|\\bvasc\\b|\\brisk stratification\\b",
+        "\\batrial fibrillation\\b|\\bstroke\\b"
+      ],
+      "aliases": [
+        "CHA2DS2-VASc",
+        "CHA2DS2VASc"
+      ]
+    },
+    {
+      "all": [
+        "\\batrial fibrillation\\b",
+        "\\bguideline\\b"
+      ],
+      "aliases": [
+        "ACC/AHA atrial fibrillation guideline",
+        "HRS AF guideline"
+      ],
+      "pmids": [
+        "38033089"
+      ]
+    },
+    {
+      "all": [
+        "\\bticagrelor\\b",
+        "\\bclopidogrel\\b|\\bacute coronary syndromes?\\b"
+      ],
+      "aliases": [
+        "PLATO"
+      ],
+      "pmids": [
+        "19717846"
+      ]
+    },
+    {
+      "all": [
+        "\\binvasive\\b",
+        "\\bconservative\\b",
+        "\\bstable coronary\\b|\\bischemic heart\\b"
+      ],
+      "aliases": [
+        "ISCHEMIA"
+      ],
+      "pmids": [
+        "32227755"
+      ]
+    },
+    {
+      "all": [
+        "\\bprimary angioplasty\\b|\\bprimary pci\\b|\\bthrombolytic\\b|\\bthrombolysis\\b",
+        "\\bmyocardial infarction\\b|\\bami\\b|\\bstemi\\b"
+      ],
+      "aliases": [
+        "primary PCI",
+        "Keeley"
+      ],
+      "pmids": [
+        "12517460"
+      ]
+    },
+    {
+      "all": [
+        "\\btranscatheter\\b|\\btavr\\b|\\btavi\\b",
+        "\\blow-risk\\b|\\blow risk\\b|\\bballoon-expandable\\b"
+      ],
+      "aliases": [
+        "PARTNER 3"
+      ],
+      "pmids": [
+        "30883058"
+      ]
+    },
+    {
+      "all": [
+        "\\blow tidal volume\\b|\\blung protective\\b",
+        "\\bards\\b|\\bacute respiratory distress\\b"
+      ],
+      "aliases": [
+        "ARDSNet",
+        "ARMA",
+        "Ventilation with lower tidal volumes",
+        "acute lung injury"
+      ],
+      "pmids": [
+        "10793162"
+      ]
+    },
+    {
+      "all": [
+        "\\bprone\\b|\\bproning\\b",
+        "\\bards\\b|\\bacute respiratory distress\\b"
+      ],
+      "aliases": [
+        "PROSEVA"
+      ],
+      "pmids": [
+        "23688302"
+      ]
+    },
+    {
+      "all": [
+        "\\btriple inhaled\\b|\\btriple therapy\\b",
+        "\\bcopd\\b|\\bexacerbation\\b"
+      ],
+      "aliases": [
+        "IMPACT",
+        "ETHOS"
+      ],
+      "pmids": [
+        "32579807"
+      ]
+    },
+    {
+      "all": [
+        "\\baspirin\\b",
+        "\\belderly\\b|\\bhealthy elderly\\b|\\bprimary prevention\\b"
+      ],
+      "aliases": [
+        "ASPREE"
+      ],
+      "pmids": [
+        "30221597"
+      ]
+    },
+    {
+      "all": [
+        "\\bdexamethasone\\b",
+        "\\bcovid"
+      ],
+      "aliases": [
+        "RECOVERY"
+      ],
+      "pmids": [
+        "32678530"
+      ]
+    },
+    {
+      "all": [
+        "\\btocilizumab\\b",
+        "\\bcovid"
+      ],
+      "aliases": [
+        "RECOVERY",
+        "REMAP-CAP"
+      ],
+      "pmids": [
+        "33933206"
+      ]
+    },
+    {
+      "all": [
+        "\\bpembrolizumab\\b",
+        "\\bnon-small cell\\b|\\bnsclc\\b|\\blung cancer\\b"
+      ],
+      "aliases": [
+        "KEYNOTE-189"
+      ],
+      "pmids": [
+        "29658856"
+      ]
+    },
+    {
+      "all": [
+        "\\bnivolumab\\b",
+        "\\bipilimumab\\b",
+        "\\bmelanoma\\b"
+      ],
+      "aliases": [
+        "CheckMate 067"
+      ],
+      "pmids": [
+        "31562797"
+      ]
+    },
+    {
+      "all": [
+        "\\bcar-?t\\b|\\baxicabtagene\\b",
+        "\\blymphoma\\b|\\blarge b-cell\\b"
+      ],
+      "aliases": [
+        "ZUMA-1"
+      ],
+      "pmids": [
+        "29226797"
+      ]
+    },
+    {
+      "all": [
+        "\\bcrispr\\b|\\bcas9\\b|\\bctx001\\b",
+        "\\bsickle cell\\b|\\bbeta-thalassemia\\b|\\bthalassaemia\\b"
+      ],
+      "aliases": [
+        "CTX001",
+        "exagamglogene autotemcel",
+        "CLIMB THAL-111"
+      ],
+      "pmids": [
+        "33283989"
+      ]
+    },
+    {
+      "all": [
+        "\\btissue plasminogen\\b|\\balteplase\\b|\\btpa\\b",
+        "\\bstroke\\b|\\bischemic\\b|\\bischaemic\\b"
+      ],
+      "aliases": [
+        "NINDS",
+        "rt-PA",
+        "National Institute of Neurological Disorders",
+        "National Institute of Neurological Disorders and Stroke"
+      ],
+      "pmids": [
+        "7477192"
+      ]
+    },
+    {
+      "all": [
+        "\\bendovascular thrombectomy\\b|\\bthrombectomy\\b",
+        "\\bstroke\\b|\\btime to treatment\\b"
+      ],
+      "aliases": [
+        "HERMES"
+      ],
+      "pmids": [
+        "27673305"
+      ]
+    },
+    {
+      "all": [
+        "\\bantimicrobial resistance\\b|\\bamr\\b",
+        "\\bglobal burden\\b|\\bglobal prevalence\\b|\\bgram\\b"
+      ],
+      "aliases": [
+        "GRAM",
+        "Global Antimicrobial Resistance and Research Programme"
+      ],
+      "pmids": [
+        "35065702"
+      ]
+    },
+    {
+      "all": [
+        "\\bdepression\\b|\\banxiety\\b",
+        "\\bcovid",
+        "\\bglobal\\b|\\bpandemic\\b|\\bprevalence\\b"
+      ],
+      "aliases": [
+        "GBD COVID mental health",
+        "global burden disease mental health"
+      ],
+      "pmids": [
+        "34634250"
+      ]
+    },
+    {
+      "all": [
+        "\\bantidepressant\\b|\\bdepressed outpatients\\b",
+        "\\bsequential\\b|\\btreatment steps\\b"
+      ],
+      "aliases": [
+        "STAR*D",
+        "Sequenced Treatment Alternatives to Relieve Depression"
+      ],
+      "pmids": [
+        "17074942"
+      ]
+    },
+    {
+      "all": [
+        "\\bsurviving sepsis\\b|\\bsepsis campaign\\b",
+        "\\bsepsis\\b|\\bseptic shock\\b"
+      ],
+      "aliases": [
+        "Surviving Sepsis Campaign"
+      ],
+      "pmids": [
+        "34599691"
+      ]
+    }
+  ]
+}
