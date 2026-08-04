@@ -132,7 +132,7 @@ module.exports = defineConfig({
     // Serve built SPA from dist/ (API-only start returns 404 for /search)
     command: 'node scripts/start-e2e-server.js',
     url: baseURL,
-    reuseExistingServer: false,
+    reuseExistingServer: true,
     timeout: 120 * 1000,
   },
 
