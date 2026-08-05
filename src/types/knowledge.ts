@@ -299,6 +299,16 @@ export interface TopicEvidenceMemory {
   daysSinceRefresh: number | null;
   lifecycleNeedsAttention?: number;
   messages: Array<{ key: string; text: string; tone: 'positive' | 'neutral' | 'warning' }>;
+  /** Durable best-evidence set (guidelines / landmarks / reviews / safety). */
+  durableEvidence?: {
+    guidelines?: Array<{ uid: string; title?: string | null; role?: string }>;
+    landmarkTrials?: Array<{ uid: string; title?: string | null; role?: string }>;
+    recentReviews?: Array<{ uid: string; title?: string | null; role?: string }>;
+    controversies?: Array<{ uid: string; title?: string | null; role?: string }>;
+    safetyUpdates?: Array<{ uid: string; title?: string | null; role?: string }>;
+    articleUids?: string[];
+    updatedAt?: string | null;
+  } | null;
 }
 
 export interface TeachingClaimReviewItem {

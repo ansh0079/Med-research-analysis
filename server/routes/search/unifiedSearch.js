@@ -134,6 +134,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                 || telemetry.meshExpansions
                 || [];
             const sparseAfterRank = Array.isArray(articles) && articles.length > 0 && articles.length < 4;
+            let queryAutoRepair = null;
             if (telemetry.lowRecallLearning || sparseAfterRank) {
                 const resultCount = telemetry.lowRecallLearning?.resultCount ?? articles.length;
                 lowRecallLearning = {
@@ -153,6 +154,21 @@ function registerUnifiedSearchRoutes(app, deps) {
                     db.mergeTopicKnowledgeAliases(queryValidation.sanitized, expandedAliases, {
                         reason: telemetry.lowRecallLearning ? 'low_recall_mesh' : 'sparse_ranked_mesh',
                     }).catch((err) => { logger.warn({ err }, 'mergeTopicKnowledgeAliases failed'); });
+                }
+                try {
+                    const { runQueryFailureAutoRepair } = require('../../services/search/queryFailureAutoRepairService');
+                    queryAutoRepair = await runQueryFailureAutoRepair({
+                        db,
+                        query: queryValidation.sanitized,
+                        resultCount,
+                        threshold: 5,
+                        logger,
+                    });
+                    if (queryAutoRepair?.winner?.reformulatedQuery) {
+                        lowRecallLearning.suggestedReformulation = queryAutoRepair.winner;
+                    }
+                } catch (err) {
+                    logger.warn({ err }, 'queryFailureAutoRepair failed');
                 }
             }
 
@@ -262,9 +278,12 @@ function registerUnifiedSearchRoutes(app, deps) {
                 },
                 ...(existingEnrich?.status === 'ready' ? { clinicalAnswer: existingEnrich.clinicalAnswer ?? null } : {}),
                 ...(lowRecallLearning ? { lowRecallLearning } : {}),
+                ...(queryAutoRepair ? { queryAutoRepair } : {}),
+                ...(telemetry.topicEvidenceMemory ? { topicEvidenceMemory: telemetry.topicEvidenceMemory } : {}),
                 personalizationAudit: {
                     banditMeta: banditMeta || null,
                     rankingTraces: publicRankingTraces(articles),
+                    guardrailMeta: banditMeta?.guardrailMeta || null,
                 },
                 rankingAttribution,
             });
