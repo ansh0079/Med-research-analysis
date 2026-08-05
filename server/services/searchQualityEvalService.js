@@ -62,9 +62,14 @@ function inferQueryCategory(querySpec = {}) {
     if (querySpec.category) return String(querySpec.category);
     const requiredTypes = (querySpec.requiredTypes || []).map(normalizeType);
     if (requiredTypes.some((type) => type.includes('guideline'))) return 'guideline';
+    if (requiredTypes.some((type) => type.includes('clinical decision rule'))) return 'diagnosis_intent';
     if (requiredTypes.some((type) => type.includes('meta-analysis') || type.includes('systematic review'))) {
         return requiredTypes.some((type) => type.includes('meta-analysis')) ? 'meta_analysis' : 'systematic_review';
     }
+    const q = String(querySpec.query || '').toLowerCase();
+    if (/\b(diagnos\w*|workup|criteria|best initial test|distinguish|meet berlin)\b/.test(q)) return 'diagnosis_intent';
+    if (/\bguideline\b/.test(q)) return 'guideline';
+    if (/\b(how (should|do) i|should i|management of|when do i)\b/.test(q)) return 'management_intent';
     return 'landmark_rct';
 }
 

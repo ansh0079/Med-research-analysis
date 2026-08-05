@@ -1,0 +1,222 @@
+{
+  "version": 1,
+  "description": "Offline fixture for agent-quality eval when live learning_events are empty. Deterministic pre→agent→post quiz cohorts so the harness can validate wiring with n>0.",
+  "days": 30,
+  "agentCohort": [
+    {
+      "userId": "synth-u1",
+      "topic": "ards",
+      "claimKey": "ards-ltv",
+      "agentAt": "2026-07-01T10:00:00.000Z",
+      "preCount": 4,
+      "preAccuracy": 0.25,
+      "postCount": 4,
+      "postAccuracy": 0.75,
+      "accuracyDelta": 0.5
+    },
+    {
+      "userId": "synth-u2",
+      "topic": "sepsis",
+      "claimKey": "sepsis-fluids",
+      "agentAt": "2026-07-02T11:00:00.000Z",
+      "preCount": 3,
+      "preAccuracy": 0.33,
+      "postCount": 3,
+      "postAccuracy": 0.67,
+      "accuracyDelta": 0.34
+    },
+    {
+      "userId": "synth-u3",
+      "topic": "heart-failure",
+      "claimKey": "hf-sglt2",
+      "agentAt": "2026-07-03T09:30:00.000Z",
+      "preCount": 5,
+      "preAccuracy": 0.4,
+      "postCount": 5,
+      "postAccuracy": 0.8,
+      "accuracyDelta": 0.4
+    },
+    {
+      "userId": "synth-u4",
+      "topic": "ards",
+      "claimKey": "ards-prone",
+      "agentAt": "2026-07-04T14:00:00.000Z",
+      "preCount": 2,
+      "preAccuracy": 0.5,
+      "postCount": 2,
+      "postAccuracy": 0.5,
+      "accuracyDelta": 0
+    },
+    {
+      "userId": "synth-u5",
+      "topic": "afib",
+      "claimKey": "af-anticoag",
+      "agentAt": "2026-07-05T16:00:00.000Z",
+      "preCount": 4,
+      "preAccuracy": 0.5,
+      "postCount": 4,
+      "postAccuracy": 0.75,
+      "accuracyDelta": 0.25
+    },
+    {
+      "userId": "synth-u6",
+      "topic": "pe",
+      "claimKey": "pe-doac",
+      "agentAt": "2026-07-06T12:00:00.000Z",
+      "preCount": 3,
+      "preAccuracy": 0.67,
+      "postCount": 3,
+      "postAccuracy": 1,
+      "accuracyDelta": 0.33
+    },
+    {
+      "userId": "synth-u7",
+      "topic": "sepsis",
+      "claimKey": "sepsis-abx",
+      "agentAt": "2026-07-07T08:00:00.000Z",
+      "preCount": 4,
+      "preAccuracy": 0.25,
+      "postCount": 4,
+      "postAccuracy": 0.5,
+      "accuracyDelta": 0.25
+    },
+    {
+      "userId": "synth-u8",
+      "topic": "aki",
+      "claimKey": "aki-fluids",
+      "agentAt": "2026-07-08T13:00:00.000Z",
+      "preCount": 2,
+      "preAccuracy": 0,
+      "postCount": 2,
+      "postAccuracy": 0.5,
+      "accuracyDelta": 0.5
+    },
+    {
+      "userId": "synth-u9",
+      "topic": "heart-failure",
+      "claimKey": "hf-arni",
+      "agentAt": "2026-07-09T15:00:00.000Z",
+      "preCount": 3,
+      "preAccuracy": 0.33,
+      "postCount": 3,
+      "postAccuracy": 0.67,
+      "accuracyDelta": 0.34
+    },
+    {
+      "userId": "synth-u10",
+      "topic": "copd",
+      "claimKey": "copd-steroid",
+      "agentAt": "2026-07-10T10:30:00.000Z",
+      "preCount": 4,
+      "preAccuracy": 0.5,
+      "postCount": 4,
+      "postAccuracy": 0.75,
+      "accuracyDelta": 0.25
+    },
+    {
+      "userId": "synth-u11",
+      "topic": "stroke",
+      "claimKey": "stroke-tpa",
+      "agentAt": "2026-07-11T11:00:00.000Z",
+      "preCount": 3,
+      "preAccuracy": 0.67,
+      "postCount": 3,
+      "postAccuracy": 0.67,
+      "accuracyDelta": 0
+    },
+    {
+      "userId": "synth-u12",
+      "topic": "ards",
+      "claimKey": "ards-ecmo",
+      "agentAt": "2026-07-12T09:00:00.000Z",
+      "preCount": 2,
+      "preAccuracy": 0.5,
+      "postCount": 2,
+      "postAccuracy": 1,
+      "accuracyDelta": 0.5
+    }
+  ],
+  "controlCohort": [
+    {
+      "userId": "synth-c1",
+      "topic": "ards",
+      "preAccuracy": 0.5,
+      "postAccuracy": 0.5,
+      "accuracyDelta": 0
+    },
+    {
+      "userId": "synth-c2",
+      "topic": "sepsis",
+      "preAccuracy": 0.4,
+      "postAccuracy": 0.45,
+      "accuracyDelta": 0.05
+    },
+    {
+      "userId": "synth-c3",
+      "topic": "heart-failure",
+      "preAccuracy": 0.6,
+      "postAccuracy": 0.55,
+      "accuracyDelta": -0.05
+    },
+    {
+      "userId": "synth-c4",
+      "topic": "afib",
+      "preAccuracy": 0.5,
+      "postAccuracy": 0.5,
+      "accuracyDelta": 0
+    },
+    {
+      "userId": "synth-c5",
+      "topic": "pe",
+      "preAccuracy": 0.33,
+      "postAccuracy": 0.4,
+      "accuracyDelta": 0.07
+    },
+    {
+      "userId": "synth-c6",
+      "topic": "aki",
+      "preAccuracy": 0.5,
+      "postAccuracy": 0.5,
+      "accuracyDelta": 0
+    },
+    {
+      "userId": "synth-c7",
+      "topic": "copd",
+      "preAccuracy": 0.4,
+      "postAccuracy": 0.5,
+      "accuracyDelta": 0.1
+    },
+    {
+      "userId": "synth-c8",
+      "topic": "stroke",
+      "preAccuracy": 0.6,
+      "postAccuracy": 0.6,
+      "accuracyDelta": 0
+    }
+  ],
+  "signalSummary": {
+    "agent_message": 24,
+    "agent_turn_memory": 12,
+    "agent_session_reflection": 8,
+    "feedback_helpful": 6,
+    "feedback_confusing": 2,
+    "mcq_answered": 96,
+    "quiz_session_feedback": 10,
+    "paper_click": 40,
+    "paper_save": 14,
+    "paper_dwell": 22
+  },
+  "profileDeltas": [
+    {
+      "userId": "synth-u1",
+      "topic": "ards",
+      "occurredAt": "2026-07-01T10:05:00.000Z",
+      "focusAreas": ["lung-protective ventilation", "P/F ratio"],
+      "misconceptions": ["equating high FiO2 with lung protection"],
+      "breakthroughMoments": ["connected tidal volume to barotrauma risk"],
+      "learningPatterns": ["asks for landmark trial before guidelines"],
+      "nextStudyFocus": "prone positioning selection",
+      "summaryChars": 420
+    }
+  ]
+}
