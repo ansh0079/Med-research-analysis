@@ -57,12 +57,12 @@ const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../..
 
 const ranges = [
     [386, 935, 'mixins/m01-search-topic-knowledge.js'],
-    [936, 1563, 'mixins/m02-guidelines-learning-quiz-adaptive.js'],
+    // m02 split into m02a–d; do not regenerate.
     [1564, 1881, 'mixins/m03-bouquet-learning-observability-prelude.js'],
     [1882, 2348, 'mixins/m04-interactions-impressions-study-runs.js'],
-    [2351, 2815, 'mixins/m05-curriculum-agent-case-mastery.js'],
+    // m05 split into m05a–d; do not regenerate.
     [2817, 3295, 'mixins/m06-sessions-saved-cache-teams.js'],
-    // m07/m08 were hand-split into domain slices (m07a–c, m08a–d); do not regenerate those here.
+    // m07/m08 were hand-split into domain slices (m07a–c, m08a–f); do not regenerate those here.
 ];
 
 for (const [a, b, rel] of ranges) {
@@ -74,4 +74,4 @@ for (const [a, b, rel] of ranges) {
 }
 
 console.log('Wrote DatabaseCore.js and', ranges.length, 'mixins from', inputPath);
-console.log('Skipped m07/m08 — maintained as m07a–c / m08a–d slices');
+console.log('Skipped m02/m05/m07/m08 — maintained as m02a–d / m05a–d / m07a–c / m08a–f slices');
