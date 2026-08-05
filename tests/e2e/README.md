@@ -8,7 +8,7 @@ Comprehensive end-to-end tests using Playwright for the Medical Research Finder 
 tests/e2e/
 ├── README.md                      # This file
 ├── research-flow.spec.js          # Main test suite (all test cases)
-├── playwright.config.js           # Playwright configuration (root)
+├── playwright.config.ts           # Playwright configuration (repo root)
 ├── global-setup.js                # Global setup (runs before all tests)
 ├── global-teardown.js             # Global teardown (runs after all tests)
 ├── helpers.js                     # Shared utility functions
@@ -154,7 +154,7 @@ npm run test:e2e:report
 
 ### Playwright Configuration
 
-The `playwright.config.js` file includes:
+The `playwright.config.ts` file includes:
 
 - **Browsers**: Chromium, Firefox, WebKit
 - **Mobile**: Pixel 5, iPhone 12

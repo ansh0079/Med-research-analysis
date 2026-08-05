@@ -1,0 +1,523 @@
+/**
+ * LLM text generation and prompt builders (Mistral, Gemini).
+ * Embeddings for RAG live in server/embeddings.js.
+ */
+const logger = require('../../config/logger');
+
+const AI_PROVIDERS = {
+    mistral: {
+        name: 'Mistral AI',
+        url: 'https://api.mistral.ai/v1/chat/completions',
+        models: {
+            'mistral-small': 'mistral-small-2603',
+        },
+    },
+};
+
+// Pinned model versions for reproducibility and deterministic outputs.
+const PINNED_MODELS = {
+    claude: 'claude-haiku-4-5-20251001',  // Primary: reliable structured JSON, medical synthesis
+    gemini: 'gemini-2.5-flash',           // Fallback: Flash for clinical reasoning quality
+    geminiLite: 'gemini-2.5-flash-lite',  // Lite: agent memory, cheap conversational tasks only
+    geminiQuality: 'gemini-2.5-flash',    // Quality tier (same as Flash; upgrade to Pro when needed)
+    mistral: 'mistral-small-2603',
+};
+
+// Temperature presets for medical use-cases.
+const TEMPERATURE = {
+    analysis: 0.7,      // Creative but grounded
+    synthesis: 0.2,     // Highly deterministic for evidence synthesis
+    synopsis: 0.15,     // Maximum grounding — pure factual extraction from abstract
+    quiz: 0.5,          // Balanced variety
+    explain: 0.6,       // Patient-friendly but consistent
+};
+
+const MAX_OUTPUT_TOKENS = {
+    synthesis: 2800,
+};
+
+const { AI_DISCLAIMER } = require('../aiConstants');
+
+/**
+ * @param {object} options
+ * @param {import('../../config').serverConfig} options.serverConfig
+ * @param {typeof fetch} [options.fetchImpl]
+ */
+const { CircuitBreaker } = require('../circuitBreaker');
+const { buildProxyService } = require('../externalApiProxy');
+const { getActiveLlmBudget } = require('../llmRequestBudget');
+const { parseStructuredOutput } = require('../../utils/parseJson');
+
+function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) {
+    const f = fetchImpl;
+    const proxy = buildProxyService({ serverConfig, fetchImpl: f });
+
+    async function emitLlmCall(meta) {
+        if (typeof onLlmCall !== 'function') return;
+        try {
+            await onLlmCall(meta);
+        } catch (err) {
+            logger.warn({ err }, 'LLM usage log callback failed');
+        }
+    }
+
+    async function withUsageLog({ operation, provider, model, prompt, topic, userId, budget }, fn) {
+        const started = Date.now();
+        const activeBudget = budget || getActiveLlmBudget();
+        if (activeBudget) activeBudget.assertCanCall({ prompt, model });
+        try {
+            const text = await fn();
+            if (activeBudget) activeBudget.recordCall({ prompt, response: text, model });
+            await emitLlmCall({
+                operation,
+                provider,
+                model,
+                topic,
+                userId,
+                prompt,
+                response: text,
+                success: true,
+                durationMs: Date.now() - started,
+            });
+            return text;
+        } catch (err) {
+            await emitLlmCall({
+                operation,
+                provider,
+                model,
+                topic,
+                userId,
+                prompt,
+                response: '',
+                success: false,
+                errorMessage: err.message,
+                durationMs: Date.now() - started,
+            });
+            throw err;
+        }
+    }
+
+    async function executeProviderCall({ provider, model, prompt, usage, budget, allowBudgetSkip, fn }) {
+        const activeBudget = budget || getActiveLlmBudget();
+        if (activeBudget && !activeBudget.canAffordCall({ prompt, model })) {
+            if (allowBudgetSkip) return null;
+            activeBudget.assertCanCall({ prompt, model });
+        }
+        if (usage?.operation) {
+            return withUsageLog(
+                { operation: usage.operation, provider, model, prompt, topic: usage.topic, userId: usage.userId, budget: activeBudget },
+                fn
+            );
+        }
+        if (activeBudget) {
+            activeBudget.assertCanCall({ prompt, model });
+            const text = await fn();
+            activeBudget.recordCall({ prompt, response: text, model });
+            return text;
+        }
+        return fn();
+    }
+
+    // Circuit breakers protect against cascading failures when LLM APIs degrade.
+    // All three primary text providers (Mistral, Gemini, Claude) are wrapped so a
+    // degraded upstream trips the breaker instead of every request paying the full
+    // timeout cost. Streaming calls are intentionally NOT wrapped here — the
+    // initial HTTP fetch is the critical failure point and stream errors are
+    // handled per-chunk; fetch timeouts in safeFetch already protect against
+    // hanging connections.
+    const mistralBreaker = new CircuitBreaker(callMistralAIRaw, { failureThreshold: 5, resetTimeoutMs: 30000 });
+    const geminiBreaker = new CircuitBreaker(callGeminiRaw, { failureThreshold: 5, resetTimeoutMs: 30000 });
+    const claudeBreaker = new CircuitBreaker(callClaudeRaw, { failureThreshold: 5, resetTimeoutMs: 30000 });
+
+    async function callMistralAIRaw(prompt, model = PINNED_MODELS.mistral, { temperature = TEMPERATURE.analysis, maxOutputTokens, jsonMode = false } = {}) {
+        return proxy.mistralChat(prompt, { model, temperature, maxOutputTokens, jsonMode });
+    }
+
+    // Kept for backward compatibility with provider selection surfaces.
+    async function callHuggingFace(prompt, model = 'mistralai/Mistral-7B-Instruct-v0.2') {
+        if (!serverConfig.keys.huggingface) {
+            throw new Error('HuggingFace API key not configured');
+        }
+        const response = await f(`https://api-inference.huggingface.co/models/${model}`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${serverConfig.keys.huggingface}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                inputs: prompt,
+                parameters: {
+                    max_new_tokens: 512,
+                    temperature: 0.7,
+                    return_full_text: false,
+                },
+            }),
+        });
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(`HF API error: ${response.status} - ${errText}`);
+        }
+        const data = await response.json();
+        if (Array.isArray(data) && data[0]?.generated_text) return data[0].generated_text;
+        if (data?.generated_text) return data.generated_text;
+        return typeof data === 'string' ? data : 'No response';
+    }
+
+    async function callGeminiRaw(prompt, model = PINNED_MODELS.gemini, { temperature = TEMPERATURE.analysis, maxOutputTokens, timeoutMs = 45000, jsonMode = false } = {}) {
+        logger.debug({ model, temperature, jsonMode }, 'Calling Gemini');
+        return proxy.geminiGenerate(prompt, { model, temperature, maxOutputTokens, timeoutMs, jsonMode });
+    }
+
+    /**
+     * Stream Gemini response as an async generator of text chunks.
+     */
+    async function* callGeminiStreamRaw(prompt, model = PINNED_MODELS.gemini, { temperature = TEMPERATURE.analysis, maxOutputTokens } = {}) {
+        const apiKey = serverConfig.keys.gemini;
+        if (!apiKey) throw new Error('Gemini API key not configured');
+
+        const modelName = model.includes('gemini') ? model : PINNED_MODELS.gemini;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:streamGenerateContent?alt=sse`;
+
+        logger.debug({ model: modelName, temperature }, 'Calling Gemini stream');
+
+        const response = await f(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-goog-api-key': apiKey,
+            },
+            body: JSON.stringify({
+                contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                generationConfig: {
+                    temperature,
+                    maxOutputTokens: maxOutputTokens ?? (prompt.length > 5000 ? 2500 : 1024),
+                    topP: 0.95,
+                    topK: 40,
+                },
+            }),
+        });
+
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(`Gemini stream error: ${response.status} ${errText.slice(0, 200)}`);
+        }
+
+        const stream = response.body;
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        try {
+            for await (const chunk of stream) {
+                buffer += decoder.decode(chunk, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop() || '';
+                for (const line of lines) {
+                    const trimmed = line.trim();
+                    if (!trimmed.startsWith('data: ')) continue;
+                    const payload = trimmed.slice(6);
+                    if (payload === '[DONE]') return;
+                    try {
+                        const data = JSON.parse(payload);
+                        const textChunk = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                        if (textChunk) yield textChunk;
+                        if (data.promptFeedback?.blockReason) {
+                            throw new Error(`Content blocked: ${data.promptFeedback.blockReason}`);
+                        }
+                    } catch (e) {
+                        if (e.message?.includes('blocked')) throw e;
+                        // Ignore parse errors for malformed SSE lines
+                    }
+                }
+            }
+        } finally {
+            if (stream && typeof stream.destroy === 'function') stream.destroy();
+        }
+    }
+
+    /**
+     * Stream Mistral response as an async generator of text chunks.
+     */
+    async function* callMistralStreamRaw(prompt, model = PINNED_MODELS.mistral, { temperature = TEMPERATURE.analysis, maxOutputTokens } = {}) {
+        const response = await f('https://api.mistral.ai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${serverConfig.keys.mistral}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                model,
+                messages: [
+                    { role: 'system', content: 'You are a medical research assistant. Provide accurate, evidence-based analysis.' },
+                    { role: 'user', content: prompt },
+                ],
+                max_tokens: maxOutputTokens ?? (prompt.length > 5000 ? 1500 : 512),
+                temperature,
+                stream: true,
+            }),
+        });
+
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(`Mistral stream error: ${response.status} - ${errText}`);
+        }
+
+        const stream = response.body;
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        try {
+            for await (const chunk of stream) {
+                buffer += decoder.decode(chunk, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop() || '';
+                for (const line of lines) {
+                    const trimmed = line.trim();
+                    if (!trimmed.startsWith('data: ')) continue;
+                    const payload = trimmed.slice(6);
+                    if (payload === '[DONE]') return;
+                    try {
+                        const data = JSON.parse(payload);
+                        const textChunk = data.choices?.[0]?.delta?.content;
+                        if (textChunk) yield textChunk;
+                    } catch (err) {
+                        logger.debug({ err }, 'Ignoring malformed SSE line from AI provider');
+                    }
+                }
+            }
+        } finally {
+            if (stream && typeof stream.destroy === 'function') stream.destroy();
+        }
+    }
+
+    // Public API: circuit-breaker-wrapped versions for non-streaming calls
+    async function callClaudeRaw(prompt, model = PINNED_MODELS.claude, { temperature = TEMPERATURE.analysis, maxOutputTokens = 2048, timeoutMs = 45000, jsonMode = false } = {}) {
+        return proxy.claudeMessages(prompt, { model, temperature, maxOutputTokens, timeoutMs, jsonMode });
+    }
+
+    /**
+     * Stream Claude response as an async generator of text chunks.
+     * Mirrors callGeminiStreamRaw/callMistralStreamRaw so all three providers
+     * are interchangeable behind the same streaming interface.
+     */
+    async function* callClaudeStreamRaw(prompt, model = PINNED_MODELS.claude, { temperature = TEMPERATURE.analysis, maxOutputTokens = 2048 } = {}) {
+        const apiKey = serverConfig.keys.anthropic;
+        if (!apiKey) throw new Error('Anthropic API key not configured');
+
+        logger.debug({ model, temperature }, 'Calling Claude stream');
+
+        const response = await f('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+                'x-api-key': apiKey,
+                'anthropic-version': '2023-06-01',
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                model,
+                max_tokens: maxOutputTokens,
+                temperature,
+                messages: [{ role: 'user', content: prompt }],
+                stream: true,
+            }),
+        });
+
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(`Claude stream error: ${response.status} ${errText.slice(0, 200)}`);
+        }
+
+        const stream = response.body;
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        try {
+            for await (const chunk of stream) {
+                buffer += decoder.decode(chunk, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop() || '';
+                for (const line of lines) {
+                    const trimmed = line.trim();
+                    if (!trimmed.startsWith('data: ')) continue;
+                    const payload = trimmed.slice(6);
+                    try {
+                        const data = JSON.parse(payload);
+                        if (data.type === 'content_block_delta' && data.delta?.type === 'text_delta') {
+                            yield data.delta.text;
+                        } else if (data.type === 'error') {
+                            throw new Error(`Claude stream error: ${data.error?.message || 'unknown'}`);
+                        }
+                    } catch (e) {
+                        if (e.message?.includes('Claude stream error')) throw e;
+                        // Ignore parse errors for malformed SSE lines
+                    }
+                }
+            }
+        } finally {
+            if (stream && typeof stream.destroy === 'function') stream.destroy();
+        }
+    }
+
+    async function callClaude(prompt, model, options = {}) {
+        const { usage, budget, allowBudgetSkip, ...rest } = options;
+        return executeProviderCall({
+            provider: 'claude',
+            model,
+            prompt,
+            usage,
+            budget,
+            allowBudgetSkip,
+            fn: () => claudeBreaker.fire(prompt, model, rest),
+        });
+    }
+
+    async function callClaudeStructured(prompt, model, options = {}) {
+        const text = await callClaude(prompt, model, { ...options, jsonMode: true });
+        if (text === null) return null;
+        return parseStructuredOutput(text);
+    }
+
+    async function callMistralAI(prompt, model, options = {}) {
+        const { usage, budget, allowBudgetSkip, ...rest } = options;
+        return executeProviderCall({
+            provider: 'mistral',
+            model,
+            prompt,
+            usage,
+            budget,
+            allowBudgetSkip,
+            fn: () => mistralBreaker.fire(prompt, model, rest),
+        });
+    }
+    async function callGemini(prompt, model, options = {}) {
+        const { usage, budget, allowBudgetSkip, ...rest } = options;
+        return executeProviderCall({
+            provider: 'gemini',
+            model,
+            prompt,
+            usage,
+            budget,
+            allowBudgetSkip,
+            fn: () => geminiBreaker.fire(prompt, model, rest),
+        });
+    }
+
+    async function callGeminiStructured(prompt, model, options = {}) {
+        const text = await callGemini(prompt, model, { ...options, jsonMode: true });
+        if (text === null) return null;
+        return parseStructuredOutput(text);
+    }
+
+    async function callMistralStructured(prompt, model, options = {}) {
+        const text = await callMistralAI(prompt, model, { ...options, jsonMode: true });
+        if (text === null) return null;
+        return parseStructuredOutput(text);
+    }
+
+    async function callStructured(prompt, provider, model, options = {}) {
+        if (provider === 'claude') return callClaudeStructured(prompt, model, options);
+        if (provider === 'gemini') return callGeminiStructured(prompt, model, options);
+        return callMistralStructured(prompt, model, options);
+    }
+
+    async function callText(prompt, provider, model, options = {}) {
+        if (provider === 'claude') return callClaude(prompt, model, options);
+        if (provider === 'gemini') return callGemini(prompt, model, options);
+        return callMistralAI(prompt, model, options);
+    }
+
+    /**
+     * Dispatch to the matching provider's streaming generator. Lets callers write
+     * one branch-free streaming code path instead of duplicating gemini/mistral/claude
+     * if-else chains (the pattern that caused claude-only deployments to error on
+     * /api/ai/analyze/stream — see resolveProvider).
+     *
+     * When a `budget` option is supplied, the stream is wrapped so that the budget
+     * is checked before the first chunk and recorded after the stream completes or
+     * fails. The accumulated response text is used for the cost estimate.
+     */
+    async function* callTextStream(prompt, provider, model, options = {}) {
+        const { budget, ...providerOptions } = options;
+        const activeBudget = budget || getActiveLlmBudget();
+        if (activeBudget) {
+            activeBudget.assertCanCall({ prompt, model });
+        }
+
+        const generator = provider === 'claude'
+            ? callClaudeStreamRaw(prompt, model, providerOptions)
+            : provider === 'gemini'
+                ? callGeminiStreamRaw(prompt, model, providerOptions)
+                : callMistralStreamRaw(prompt, model, providerOptions);
+
+        let response = '';
+        for await (const chunk of generator) {
+            response += chunk;
+            yield chunk;
+        }
+        // Budget is only recorded on successful stream completion. A failed
+        // stream is not charged, so retries remain within the budget.
+        if (activeBudget) {
+            activeBudget.recordCall({ prompt, response, model });
+        }
+    }
+
+    return {
+        callMistralAI,
+        callHuggingFace,
+        callGemini,
+        callClaude,
+        callGeminiStructured,
+        callClaudeStructured,
+        callMistralStructured,
+        callStructured,
+        callText,
+        callGeminiStream: callGeminiStreamRaw,
+        callMistralStream: callMistralStreamRaw,
+        callClaudeStream: callClaudeStreamRaw,
+        callTextStream,
+        AI_PROVIDERS,
+        // Expose breaker health for monitoring endpoints
+        _breakers: { mistral: mistralBreaker, gemini: geminiBreaker, claude: claudeBreaker },
+    };
+}
+
+
+const prompts = require('../../prompts');
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Process-wide memoised AI service
+// ─────────────────────────────────────────────────────────────────────────────
+// Most call sites pass the same { serverConfig, fetchImpl } pair, so creating a
+// fresh AI service per request just churns garbage and — more importantly —
+// gives each request its own circuit breaker, so a degraded provider never
+// trips a shared breaker. `getSharedAiService` returns one instance per
+// process, keyed by the serverConfig object identity, so all callers sharing
+// the same serverConfig share the same breakers and budget state.
+//
+// In production, `serverConfig` is a single stable object from `config.js`, so
+// every caller gets the same memoised instance. In tests, each test typically
+// passes a fresh `serverConfig` literal, so the cache misses and each test
+// gets a fresh instance with its own `fetchImpl` mock — preserving test
+// isolation. Callers that need a bespoke instance (e.g. with an `onLlmCall`
+// hook for usage logging) should still call `createAiService` directly.
+let _sharedAiService = null;
+let _sharedAiServiceConfig = null;
+
+function getSharedAiService({ serverConfig, fetchImpl }) {
+    if (_sharedAiService && _sharedAiServiceConfig === serverConfig) {
+        return _sharedAiService;
+    }
+    _sharedAiService = createAiService({ serverConfig, fetchImpl });
+    _sharedAiServiceConfig = serverConfig;
+    return _sharedAiService;
+}
+
+module.exports = {
+    createAiService,
+    getSharedAiService,
+    ...prompts,
+    AI_PROVIDERS,
+    PINNED_MODELS,
+    TEMPERATURE,
+    MAX_OUTPUT_TOKENS,
+    AI_DISCLAIMER,
+};

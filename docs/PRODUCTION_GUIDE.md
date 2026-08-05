@@ -98,39 +98,28 @@ After testing proves everything works, deploy with confidence.
 
 ### Components
 
-#### 1. Docker Containerization
+#### 1. Docker Containerization (Hetzner)
 
-**Files Created:**
-- `docker/Dockerfile` - Multi-stage build
-- `docker-compose.yml` - Full stack orchestration
-- `docker/nginx.conf` - Reverse proxy config
+**Canonical files:**
+- `Dockerfile` — multi-stage build
+- `docker-compose.hetzner.yml` — full stack
+- `deploy/hetzner/` — Caddy TLS, bootstrap, deploy, backup
 
-**Features:**
-- ✅ Multi-stage build (smaller image)
-- ✅ Non-root user (security)
-- ✅ Health checks
-- ✅ Production-optimized
+See [HETZNER_DEPLOY.md](./HETZNER_DEPLOY.md) and [docker.md](./docker.md).
 
 **Usage:**
 ```bash
-# Build image
-docker build -t medresearch:v3.0 .
-
-# Run container
-docker run -d -p 3002:3002 --env-file .env medresearch:v3.0
-
-# Or use docker-compose (recommended)
-docker-compose up -d
+docker compose -f docker-compose.hetzner.yml up -d --build
 ```
 
 **Services Included:**
 | Service | Port | Purpose |
 |---------|------|---------|
-| App | 3002 | Main application |
-| Redis | 6379 | Distributed cache |
-| Nginx | 80/443 | Reverse proxy + SSL |
-| Prometheus | 9090 | Metrics collection |
-| Grafana | 3000 | Monitoring dashboard |
+| web | 3002 (internal) | Main application |
+| worker | 3003 (internal) | BullMQ + schedulers |
+| Redis | 6379 (internal) | Queue + cache |
+| Postgres | 5432 (internal) | Primary DB + pgvector |
+| Caddy | 80/443 | Reverse proxy + TLS |
 
 #### 2. Redis Cluster (Optional)
 
@@ -141,7 +130,7 @@ docker-compose up -d
 
 **Configuration:**
 ```yaml
-# docker-compose.yml (already configured)
+# docker-compose.hetzner.yml (already configured)
 redis:
   image: redis:7-alpine
   command: redis-server --appendonly yes

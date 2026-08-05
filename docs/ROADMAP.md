@@ -47,7 +47,7 @@ A large fraction of the previous P0/P1 list has shipped. Concrete wins:
 ### Build / dev experience
 - TypeScript clean except for one known legacy file.
 - Vite production build outputs in `dist/`.
-- PM2 ecosystem (`ecosystem.config.cjs`) present.
+- Hetzner Docker Compose deploy (`docker-compose.hetzner.yml`) present.
 
 ---
 
@@ -248,5 +248,5 @@ Legacy bundle retirement completed in Phase 4. Legacy HTML entry points and `scr
 - Modern UI: `src/main.tsx` → `src/App.tsx` → `src/pages/*` + `src/services/api.ts`
 - Legacy UI: retired in Phase 4 (modern UI only)
 - Tests: `tests/unit/api.test.js`, `tests/integration/db.integration.test.js`, `tests/e2e/*`
-- Ops: `ecosystem.config.cjs`, `.env.example`, `.snyk`
+- Ops: `docker-compose.hetzner.yml`, `deploy/hetzner/`, `.env.example`, `.snyk`
 - Observability: `@sentry/node`, `pino` (pending wire-up), Sentry + LogRocket on the client (`src/services/api.ts:7–13`)
