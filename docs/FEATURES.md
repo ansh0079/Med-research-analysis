@@ -378,23 +378,7 @@ Chronological view of research evolution:
 
 Privacy-first AI processing:
 
-**Setup:**
-```bash
-pip install -r requirements.txt
-python biogpt_server.py
-```
-
-**Benefits:**
-- ✅ Zero API costs
-- ✅ Full privacy
-- ✅ Works offline
-- ✅ No rate limits
-- ✅ Custom model fine-tuning potential
-
-**Requirements:**
-- ~8GB RAM minimum
-- ~1.5GB disk space for models
-- CUDA GPU optional (speeds up inference)
+**Setup:** point `BIOGPT_SERVER_URL` at any compatible local inference server. The legacy in-repo Python BioGPT sidecar was removed; cloud AI (Claude/Gemini) is the supported path.
 
 ### Mobile Responsive
 

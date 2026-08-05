@@ -14,7 +14,7 @@
 - [x] All production dependencies installed
 - [x] SQLite3 updated to v5.1.7 (latest stable)
 - [x] Node.js version requirement: >= 18.0.0
-- [x] Python requirements documented in `requirements.txt`
+- [x] Optional local AI via `BIOGPT_SERVER_URL` (external service; not shipped in-repo)
 
 ### ✅ 3. Environment Configuration
 - [x] `.env.example` exists with all required variables
@@ -82,34 +82,27 @@ cd medical-research-analysis
 # 2. Install Node.js dependencies
 npm install
 
-# 3. Install Python dependencies (optional - for local AI)
-pip install -r requirements.txt
-
-# 4. Copy environment template
+# 3. Copy environment template
 cp .env.example .env
 
-# 5. Edit .env with your API keys
-# Required: At least one AI service key (HUGGINGFACE_TOKEN recommended)
+# 4. Edit .env with your API keys
+# Required: cloud AI key (e.g. ANTHROPIC_API_KEY / GEMINI_API_KEY)
+# Production: follow docs/HETZNER_DEPLOY.md
 ```
 
 ### Step 2: Database Initialization
 ```bash
 # Database is auto-initialized on first server start
-# SQLite database file: ./medresearch.db
+# Local default: SQLite; production Hetzner: Postgres via compose
 ```
 
 ### Step 3: Start Services
 ```bash
-# Option A: Start main enhanced server (RECOMMENDED)
-npm start
-# or
-node server-enhanced.js
+# Local development
+npm run dev
 
-# Option B: Start proxy server only (for BioGPT)
-# Option B: Start Python AI server (optional, for local inference)
-npm run python-server
-# or
-python biogpt_server.py
+# Production (Hetzner)
+docker compose -f docker-compose.hetzner.yml up -d --build
 ```
 
 ### Step 4: Verify Deployment

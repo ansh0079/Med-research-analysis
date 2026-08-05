@@ -96,7 +96,7 @@ Production must run separate process roles:
 - `APP_ROLE=web`: HTTP/API only; enqueues BullMQ jobs and exposes `/metrics`.
 - `APP_ROLE=worker`: BullMQ consumers, saved-embedding worker, and schedulers.
 
-Use `ecosystem.config.cjs` for PM2 or `docker-compose.hetzner.yml` for Docker Compose. `REDIS_URL` is mandatory so queued jobs survive web restarts and complete on the worker. `/metrics` exposes `medsearch_job_queue_jobs` and `medsearch_job_queue_recurring_failures` for queue depth and failure monitoring.
+Use `docker-compose.hetzner.yml` (web + worker roles). `REDIS_URL` is mandatory so queued jobs survive web restarts and complete on the worker. `/metrics` exposes `medsearch_job_queue_jobs` and `medsearch_job_queue_recurring_failures` for queue depth and failure monitoring.
 
 ## Backup And Restore Drill
 

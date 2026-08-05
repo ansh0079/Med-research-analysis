@@ -127,7 +127,7 @@ medical research analysis/
     ├── README-BIOGPT.md              # Original docs
     ├── ROADMAP.md                    # 5-phase plan
     ├── MIGRATION.md                  # Migration guide
-    ├── ARCHITECTURE_v2.md            # Architecture overview
+    ├── ARCHITECTURE.md               # Architecture overview
     ├── NEXT_STEPS.md                 # Decision guide
     ├── PHASE3_FEATURES.md            # Phase 3 details
     ├── QUICK_TEST_RESULTS.md         # Test results

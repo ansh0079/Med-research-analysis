@@ -246,6 +246,6 @@ Later scaling options:
 
 ---
 
-## Alternative: nginx + Certbot
+## Reverse proxy
 
-If you prefer nginx over Caddy, use root `nginx.conf` on the host with Certbot (`certbot --nginx`). The Docker+Caddy path above is simpler for a single VPS because TLS renewal is fully automatic inside Compose.
+Production uses **Caddy** in `docker-compose.hetzner.yml` (automatic HTTPS). There is no alternate nginx config in-repo.
