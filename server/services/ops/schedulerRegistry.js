@@ -58,6 +58,12 @@ const {
 const {
     scheduleTopicEvolution, stopTopicEvolution,
 } = require('../topicEvolutionScheduler');
+const {
+    scheduleDelayedRewardBackfill, stopDelayedRewardBackfill,
+} = require('../delayedRewardBackfillScheduler');
+const {
+    scheduleOfflineEvalNightly, stopOfflineEvalNightly,
+} = require('../offlineEvalNightlyScheduler');
 
 /**
  * @typedef {Object} SchedulerEntry
@@ -151,6 +157,16 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
             task: 'topic-evolution',
             start: () => scheduleTopicEvolution(db, { serverConfig, fetchImpl, cache }, baseLogger.child({ task: 'topic-evolution' })),
             stop: () => stopTopicEvolution(),
+        },
+        {
+            task: 'delayed-reward-backfill',
+            start: () => scheduleDelayedRewardBackfill(db, baseLogger.child({ task: 'delayed-reward-backfill' })),
+            stop: () => stopDelayedRewardBackfill(),
+        },
+        {
+            task: 'offline-eval-nightly',
+            start: () => scheduleOfflineEvalNightly(db, baseLogger.child({ task: 'offline-eval-nightly' })),
+            stop: () => stopOfflineEvalNightly(),
         },
     ];
 }

@@ -7,6 +7,7 @@ const {
     phraseOverlapScore,
 } = require('../misconceptionSearchBoostService');
 const { applyBoostSafety, auditArmSafety } = require('../banditSafetyGuard');
+const { enforcePersonalizationGuardrails } = require('../bandit/personalizationGuardrails');
 
 function clipReasonPhrase(text, maxLen = 90) {
     const cleaned = String(text || '').replace(/\s+/g, ' ').trim();
@@ -472,6 +473,7 @@ function applySearchLearningBoost(articles, context, bouquetRanking = []) {
         return articles;
     }
 
+    const originalArticles = [...articles];
     const compositeScores = buildCompositeScoreMap(bouquetRanking);
     const N = articles.length;
 
@@ -498,7 +500,7 @@ function applySearchLearningBoost(articles, context, bouquetRanking = []) {
             return a.index - b.index; // stable tiebreak: preserve evidence order
         });
 
-    const result = ranked.map(({ article, boost, missCount }) => {
+    const personalized = ranked.map(({ article, boost, missCount }) => {
         if (boost === 0) return article;
         const enriched = {
             ...article,
@@ -510,6 +512,13 @@ function applySearchLearningBoost(articles, context, bouquetRanking = []) {
         return enriched;
     });
 
+    // Guardrails: personalization reorders within safe bands — never bury
+    // guidelines, landmark RCTs, SRs/MAs, retraction warnings, or recent safety updates.
+    const { articles: result, guardrailMeta } = enforcePersonalizationGuardrails(
+        personalized,
+        originalArticles
+    );
+
     context._banditMeta = {
         armId: context.banditSelection?.armId || 'heuristic_default',
         scopeKey: context.banditSelection?.scopeKey || 'global',
@@ -519,6 +528,7 @@ function applySearchLearningBoost(articles, context, bouquetRanking = []) {
         selectionSource: context.banditSelection?.selectionSource || null,
         misconceptionBoostCount: context.misconceptionBoost?.correctiveArticleUids?.size || 0,
         contextFeatures: context.banditSelection?.contextFeatures || null,
+        guardrailMeta: guardrailMeta || null,
     };
 
     return result;

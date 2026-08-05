@@ -6,6 +6,9 @@ const {
     collectLearningLoopControl,
 } = require('../../services/productionObservabilityService');
 const { collectBanditObservability } = require('../../services/banditObservabilityService');
+const { inspectLearningEvents } = require('../../services/ops/learningEventInspectorService');
+const { listOfflineEvalRuns, runNightlyOfflineEval } = require('../../services/ops/offlineEvalNightlyService');
+const { getTopicEvidenceMemory } = require('../../services/topic/topicEvidenceMemoryService');
 
 function registerAdminObservabilityRoutes(app, { db, requireAuthJwt, requireRole, rateLimit }) {
     const requireAdmin = [requireAuthJwt, requireRole('admin', 'curator')];
@@ -117,6 +120,62 @@ function registerAdminObservabilityRoutes(app, { db, requireAuthJwt, requireRole
             res.json({ control });
         } catch (error) {
             req.log.error({ err: error }, 'Learning loop control error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    app.get('/api/admin/learning-events', ...requireAdmin, banditLimit, async (req, res) => {
+        try {
+            const days = Math.min(Math.max(parseInt(String(req.query.days || '7'), 10) || 7, 1), 90);
+            const limit = Math.min(Math.max(parseInt(String(req.query.limit || '30'), 10) || 30, 1), 100);
+            const offset = Math.max(parseInt(String(req.query.offset || '0'), 10) || 0, 0);
+            const policyType = String(req.query.policyType || 'search_ranking').trim();
+            const onlyWithReward = String(req.query.onlyWithReward || '') === '1'
+                || String(req.query.onlyWithReward || '').toLowerCase() === 'true';
+            const inspector = await inspectLearningEvents(db, {
+                policyType,
+                days,
+                limit,
+                offset,
+                onlyWithReward,
+            });
+            res.json({ inspector });
+        } catch (error) {
+            req.log.error({ err: error }, 'Learning event inspector error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    app.get('/api/admin/offline-eval-runs', ...requireAdmin, banditLimit, async (req, res) => {
+        try {
+            const limit = Math.min(Math.max(parseInt(String(req.query.limit || '20'), 10) || 20, 1), 100);
+            const runs = await listOfflineEvalRuns(db, { limit });
+            res.json({ runs });
+        } catch (error) {
+            req.log.error({ err: error }, 'Offline eval runs list error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    app.post('/api/admin/offline-eval-runs/trigger', ...requireAdmin, banditLimit, async (req, res) => {
+        try {
+            const days = Math.min(Math.max(parseInt(String(req.body?.days || '30'), 10) || 30, 1), 90);
+            const run = await runNightlyOfflineEval(db, { days });
+            res.json({ run });
+        } catch (error) {
+            req.log.error({ err: error }, 'Offline eval trigger error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    app.get('/api/admin/topic-evidence-memory', ...requireAdmin, banditLimit, async (req, res) => {
+        try {
+            const topic = String(req.query.topic || '').trim();
+            if (!topic) return res.status(400).json({ error: 'topic is required' });
+            const memory = await getTopicEvidenceMemory(db, topic);
+            res.json({ memory });
+        } catch (error) {
+            req.log.error({ err: error }, 'Topic evidence memory error');
             res.status(500).json({ error: 'Internal server error' });
         }
     });
