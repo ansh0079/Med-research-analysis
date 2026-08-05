@@ -173,6 +173,42 @@ export class KnowledgeAdminApi extends KnowledgeCoreApi {
     return response.json();
   }
 
+  async getLearningEvents(options: {
+    policyType?: string;
+    days?: number;
+    limit?: number;
+    offset?: number;
+    onlyWithReward?: boolean;
+  } = {}): Promise<{ inspector: { events: unknown[]; total: number; days: number } }> {
+    const params = new URLSearchParams();
+    if (options.policyType) params.set('policyType', options.policyType);
+    if (options.days) params.set('days', String(options.days));
+    if (options.limit) params.set('limit', String(options.limit));
+    if (options.offset) params.set('offset', String(options.offset));
+    if (options.onlyWithReward) params.set('onlyWithReward', '1');
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/learning-events?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getOfflineEvalRuns(options: { limit?: number } = {}): Promise<{ runs: Array<Record<string, unknown>> }> {
+    const params = new URLSearchParams();
+    if (options.limit) params.set('limit', String(options.limit));
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/offline-eval-runs?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async triggerOfflineEvalRun(options: { days?: number } = {}): Promise<{ run: Record<string, unknown> }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/offline-eval-runs/trigger`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ days: options.days ?? 30 }),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
   async getTopicReadiness(options: {
     limit?: number;
     offset?: number;
