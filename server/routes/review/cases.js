@@ -15,6 +15,12 @@ const {
 } = require('../../services/articleReranker');
 const { getInferredMisconceptionsForTopic } = require('../../services/misconceptionInferenceService');
 const { findRelatedTopicsWithMisconceptions, buildJitReminder } = require('../../services/relatedTopicService');
+const {
+    POLICY_CASE_DIFFICULTY,
+    caseDifficultyArmId,
+    selectCaseDifficultyArm,
+    recordBanditReward,
+} = require('../../services/personalizationBanditService');
 
 function registerReviewCaseRoutes(app, {
     db,
@@ -340,7 +346,28 @@ function registerReviewCaseRoutes(app, {
             const topic = String(req.body.topic || '').trim();
             if (!topic) return res.status(400).json({ error: 'topic is required' });
             const learningMode = normalizeLearningMode(req.body.learningMode);
-            const difficulty = ['easy', 'medium', 'hard'].includes(req.body.difficulty) ? req.body.difficulty : 'medium';
+            const requestedDifficulty = req.body.difficulty;
+            if (
+                requestedDifficulty != null
+                && requestedDifficulty !== ''
+                && !['easy', 'medium', 'hard', 'auto'].includes(requestedDifficulty)
+            ) {
+                return res.status(400).json({ error: 'Difficulty must be easy, medium, hard, or auto' });
+            }
+            // Explicit easy|medium|hard is respected; auto/omitted → bandit selects.
+            const explicitDifficulty = ['easy', 'medium', 'hard'].includes(requestedDifficulty)
+                ? requestedDifficulty
+                : null;
+
+            let difficulty = explicitDifficulty;
+            let difficultyBandit = null;
+            if (!difficulty) {
+                difficultyBandit = await selectCaseDifficultyArm(db, req.user.id).catch((err) => {
+                    req.log?.warn?.({ err }, 'selectCaseDifficultyArm failed');
+                    return null;
+                });
+                difficulty = difficultyBandit?.difficulty || 'medium';
+            }
 
             const [guidelines, topicKnowledge, mastery] = await Promise.all([
                 db.getGuidelinesByTopic(topic, { limit: 8 }).catch(() => []),
@@ -418,8 +445,45 @@ function registerReviewCaseRoutes(app, {
                 generationMode: 'branching',
             });
 
-            await db.logEvent('case:adaptive_vignette', req.sessionId, { topic, learningMode, difficulty, mode: 'branching', evidenceDensity });
-            res.json({ session, evidenceWarning });
+            const armId = caseDifficultyArmId(difficulty);
+            const decision = await db.insertPersonalizationDecision?.({
+                userId: req.user.id,
+                policyType: POLICY_CASE_DIFFICULTY,
+                armId,
+                topic,
+                normalizedTopic: db.normalizeTopic(topic),
+                context: {
+                    caseSessionId: session.id,
+                    difficulty,
+                    selectedBy: difficultyBandit ? 'bandit' : 'client',
+                    scopeKey: difficultyBandit?.scopeKey || null,
+                    banditSample: difficultyBandit?.sampled ?? null,
+                },
+            }).catch((err) => {
+                req.log?.warn?.({ err }, 'adaptive case difficulty decision log failed');
+                return null;
+            });
+
+            await db.logEvent('case:adaptive_vignette', req.sessionId, {
+                topic,
+                learningMode,
+                difficulty,
+                mode: 'branching',
+                evidenceDensity,
+                difficultyDecisionId: decision?.id || null,
+                difficultySelectedBy: difficultyBandit ? 'bandit' : 'client',
+            });
+            res.json({
+                session,
+                evidenceWarning,
+                difficulty,
+                banditMeta: {
+                    policyType: POLICY_CASE_DIFFICULTY,
+                    armId,
+                    decisionId: decision?.id || null,
+                    selectedBy: difficultyBandit ? 'bandit' : 'client',
+                },
+            });
         } catch (error) {
             req.log?.error?.({ err: error }, 'Adaptive vignette error');
             res.status(500).json({ error: error.message });
@@ -612,6 +676,38 @@ function registerReviewCaseRoutes(app, {
                     suggestedDifficulty = session.difficulty === 'easy' ? 'medium' : 'hard';
                 } else if (totalScore <= 40 && session.difficulty !== 'easy') {
                     suggestedDifficulty = session.difficulty === 'hard' ? 'medium' : 'easy';
+                }
+
+                // Case difficulty bandit reward (same scale as caseScenarioService)
+                try {
+                    const reward = Math.max(-0.25, Math.min(1, (totalScore - 50) / 50));
+                    const armId = caseDifficultyArmId(session.difficulty);
+                    await recordBanditReward(db, POLICY_CASE_DIFFICULTY, armId, reward, req.user.id);
+                    if (db?.all && db?.updatePersonalizationDecisionReward) {
+                        const rows = await db.all(
+                            `SELECT id FROM personalization_decisions
+                             WHERE user_id = ? AND policy_type = ? AND arm_id = ?
+                               AND (context_json LIKE ? OR topic = ?)
+                             ORDER BY created_at DESC LIMIT 1`,
+                            [
+                                String(req.user.id),
+                                POLICY_CASE_DIFFICULTY,
+                                armId,
+                                `%"caseSessionId":"${session.id}"%`,
+                                String(session.topic || ''),
+                            ]
+                        ).catch(() => []);
+                        const decisionId = rows?.[0]?.id;
+                        if (decisionId) {
+                            await db.updatePersonalizationDecisionReward(decisionId, {
+                                immediateReward: 0,
+                                delayedReward: reward,
+                                totalReward: reward,
+                            });
+                        }
+                    }
+                } catch (err) {
+                    req.log?.warn?.({ err, sessionId: session.id }, 'adaptive case bandit reward failed');
                 }
 
                 // Cross-learning recommendation
