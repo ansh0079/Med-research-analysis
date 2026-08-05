@@ -1,443 +1,315 @@
 #!/usr/bin/env node
 /**
- * Search Rerank Benchmark
+ * Search Rerank Benchmark (ground-truth graded)
  *
- * Measures the quality improvement from the hybrid reranker introduced in Phase 1.
- * Evaluates Precision@10, off-topic rate, and study-type appropriateness against a
- * labelled set of clinical queries.
+ * Scores the heuristic reranker against a FIXED labelled article pool.
+ * Relevance metrics use groundTruthGrade only — never the mock LLM's scores —
+ * so the harness can fail when ranking is wrong.
  *
  * Usage:
- *   # Unit-style benchmark (tests articleReranker.js in isolation with mock AI)
  *   node benchmarks/searchRerankBenchmark.mjs
+ *   node benchmarks/searchRerankBenchmark.mjs --adversarial   # mock LLM inverts grades
  *
- *   # Integration benchmark (hits live /api/cases/analyze against running server)
- *   BASE_URL=http://127.0.0.1:3000 JWT=<bearer> node benchmarks/searchRerankBenchmark.mjs --live
- *
- * Expected targets:
- *   Precision@10      >= 0.75
- *   Off-topic rate    <= 0.10
- *   Median latency    <  1500ms (rerank stage only)
+ * Targets (beta):
+ *   nDCG@10           >= 0.70
+ *   Precision@5 (g>0) >= 0.60
  */
 
 
 
 import {
-  rerankArticlesByPico,
   selectTopRerankedArticles,
-  extractPicoProfile,
   computeHeuristicScore,
 } from '../server/services/articleReranker.js';
 
 // =============================================================================
-// Labelled Query Set
+// Labelled queries + fixed article pools (grades 0–3)
 // =============================================================================
 
 const LABELLED_QUERIES = [
   {
-    id: 'ards-severe-steroids',
-    caseText: '68-year-old man with severe ARDS (PaO2/FiO2 85) on mechanical ventilation. Considering methylprednisolone.',
-    topic: 'ARDS corticosteroids',
-    // Articles that SHOULD appear in top 10
-    relevantUids: ['pmid-12345678', 'pmid-22345679'],
-    relevantTerms: ['ARDS', 'steroid', 'corticosteroid', 'methylprednisolone', 'acute respiratory distress'],
-    // Articles that should NOT appear (wrong population or design)
-    irrelevantTerms: ['paediatric', 'children', 'case report', 'COPD', 'asthma'],
-    expectedStudyTypes: ['randomized controlled trial', 'meta-analysis', 'systematic review'],
+    id: 'ards-vent-management',
+    caseText: '68-year-old man with severe ARDS (PaO2/FiO2 85) on mechanical ventilation.',
+    topic: 'ARDS ventilation',
+    queryIntent: 'management',
+    articles: [
+      { uid: 'gt-ards-ltv', title: 'Ventilation with lower tidal volumes for ARDS', abstract: 'Multicenter RCT of 6 vs 12 mL/kg tidal volume in adults with ARDS.', pubtype: ['Randomized Controlled Trial'], year: 2000, groundTruthGrade: 3 },
+      { uid: 'gt-ards-prone', title: 'Prone positioning in severe ARDS', abstract: 'RCT of early prone positioning in severe adult ARDS.', pubtype: ['Randomized Controlled Trial'], year: 2013, groundTruthGrade: 3 },
+      { uid: 'gt-ards-berlin', title: 'Berlin Definition of ARDS', abstract: 'Consensus definition for acute respiratory distress syndrome.', pubtype: ['Guideline'], year: 2012, groundTruthGrade: 2 },
+      { uid: 'gt-ards-meta', title: 'Meta-analysis of lung-protective ventilation', abstract: 'Systematic review of low tidal volume strategies in adults.', pubtype: ['Meta-Analysis'], year: 2019, groundTruthGrade: 2 },
+      { uid: 'gt-copd-case', title: 'Case report: paediatric asthma ventilation', abstract: 'Single paediatric case of asthma exacerbation.', pubtype: ['Case Report'], year: 2021, groundTruthGrade: 0 },
+      { uid: 'gt-diabetes', title: 'SGLT2 inhibitors in heart failure', abstract: 'Cardiovascular outcomes in HFrEF unrelated to ARDS.', pubtype: ['Randomized Controlled Trial'], year: 2019, groundTruthGrade: 0 },
+      { uid: 'gt-ards-obs', title: 'Observational ICU ventilation practices', abstract: 'Cohort describing ventilator settings without intervention.', pubtype: ['Observational Study'], year: 2018, groundTruthGrade: 1 },
+      { uid: 'gt-neonatal', title: 'Neonatal respiratory distress syndrome surfactant', abstract: 'Paediatric/neonatal population mismatch.', pubtype: ['Randomized Controlled Trial'], year: 2016, groundTruthGrade: 0 },
+      { uid: 'gt-ards-review', title: 'Narrative review of ARDS therapies', abstract: 'Narrative overview without new outcome data.', pubtype: ['Review'], year: 2020, groundTruthGrade: 1 },
+      { uid: 'gt-sepsis-bundle', title: 'Hour-1 sepsis bundle outcomes', abstract: 'Sepsis resuscitation unrelated to ARDS ventilation.', pubtype: ['Cohort Study'], year: 2020, groundTruthGrade: 0 },
+      { uid: 'gt-ards-ecmo', title: 'ECMO for severe ARDS', abstract: 'RCT of ECMO in refractory hypoxaemic ARDS.', pubtype: ['Randomized Controlled Trial'], year: 2018, groundTruthGrade: 2 },
+      { uid: 'gt-filler-1', title: 'General ICU quality improvement', abstract: 'Hospital operations paper.', pubtype: ['Journal Article'], year: 2022, groundTruthGrade: 0 },
+    ],
   },
   {
-    id: 'sepsis-hour-1-lactate',
-    caseText: '45-year-old woman in septic shock. ED clinician asking about hour-1 bundle and lactate-guided resuscitation.',
+    id: 'sepsis-hour1-management',
+    caseText: '45-year-old woman in septic shock. Asking about hour-1 bundle and lactate-guided resuscitation.',
     topic: 'sepsis hour-1 bundle',
-    relevantTerms: ['sepsis', 'septic shock', 'lactate', 'resuscitation', 'bundle'],
-    irrelevantTerms: ['paediatric', 'neonatal', 'COVID-19', 'case report'],
-    expectedStudyTypes: ['randomized controlled trial', 'cohort study', 'meta-analysis'],
+    queryIntent: 'management',
+    articles: [
+      { uid: 'gt-ssc', title: 'Surviving Sepsis Campaign guidelines', abstract: 'International guidelines for management of sepsis and septic shock.', pubtype: ['Practice Guideline'], year: 2021, groundTruthGrade: 3 },
+      { uid: 'gt-sepsis-rct', title: 'Early goal-directed therapy RCT', abstract: 'RCT of protocolised resuscitation in septic shock.', pubtype: ['Randomized Controlled Trial'], year: 2001, groundTruthGrade: 2 },
+      { uid: 'gt-lactate', title: 'Lactate-guided resuscitation trial', abstract: 'Adult septic shock lactate clearance strategy.', pubtype: ['Randomized Controlled Trial'], year: 2010, groundTruthGrade: 2 },
+      { uid: 'gt-ards-ltv2', title: 'Low tidal volume ventilation ARDS', abstract: 'ARDS ventilation trial, wrong syndrome for this query.', pubtype: ['Randomized Controlled Trial'], year: 2000, groundTruthGrade: 0 },
+      { uid: 'gt-neo-sepsis', title: 'Neonatal sepsis antibiotics', abstract: 'Paediatric sepsis population.', pubtype: ['Randomized Controlled Trial'], year: 2017, groundTruthGrade: 0 },
+      { uid: 'gt-sepsis-case', title: 'Case report of septic shock', abstract: 'Single-patient case report.', pubtype: ['Case Report'], year: 2022, groundTruthGrade: 0 },
+      { uid: 'gt-sepsis-cohort', title: 'Cohort of ED sepsis alerts', abstract: 'Observational bundle compliance study.', pubtype: ['Cohort Study'], year: 2019, groundTruthGrade: 1 },
+      { uid: 'gt-hf', title: 'SGLT2 inhibitors HFrEF', abstract: 'Heart failure outcomes, off topic.', pubtype: ['Randomized Controlled Trial'], year: 2019, groundTruthGrade: 0 },
+      { uid: 'gt-sepsis-meta', title: 'Meta-analysis of sepsis bundles', abstract: 'Systematic review of early sepsis interventions.', pubtype: ['Meta-Analysis'], year: 2020, groundTruthGrade: 2 },
+      { uid: 'gt-filler-2', title: 'Hospital staffing ratios', abstract: 'Operations research.', pubtype: ['Journal Article'], year: 2021, groundTruthGrade: 0 },
+    ],
   },
   {
-    id: 'covid-ards-dexamethasone',
-    caseText: '55-year-old man with COVID-19 pneumonia and moderate ARDS. Should we start dexamethasone?',
-    topic: 'COVID-19 ARDS dexamethasone',
-    relevantTerms: ['COVID-19', 'dexamethasone', 'ARDS', 'corticosteroid', 'SARS-CoV-2'],
-    irrelevantTerms: ['rheumatoid arthritis', 'multiple myeloma', 'paediatric', 'case report'],
-    expectedStudyTypes: ['randomized controlled trial', 'meta-analysis'],
+    id: 'af-guideline-stroke',
+    caseText: '70-year-old with new atrial fibrillation. What do guidelines recommend for stroke prevention?',
+    topic: 'atrial fibrillation guideline',
+    queryIntent: 'guideline',
+    articles: [
+      { uid: 'gt-af-gl', title: '2023 ACC/AHA atrial fibrillation guideline', abstract: 'Practice guideline for diagnosis and management of AF including anticoagulation.', pubtype: ['Practice Guideline'], year: 2023, groundTruthGrade: 3 },
+      { uid: 'gt-re-ly', title: 'Dabigatran versus warfarin in AF', abstract: 'RE-LY RCT of anticoagulation for stroke prevention.', pubtype: ['Randomized Controlled Trial'], year: 2009, groundTruthGrade: 2 },
+      { uid: 'gt-aristotle', title: 'Apixaban versus warfarin in AF', abstract: 'ARISTOTLE RCT.', pubtype: ['Randomized Controlled Trial'], year: 2011, groundTruthGrade: 2 },
+      { uid: 'gt-ards3', title: 'Prone positioning severe ARDS', abstract: 'Critical care ventilation trial, off topic.', pubtype: ['Randomized Controlled Trial'], year: 2013, groundTruthGrade: 0 },
+      { uid: 'gt-af-review', title: 'Narrative review of AF rate control', abstract: 'Narrative review without guideline status.', pubtype: ['Review'], year: 2020, groundTruthGrade: 1 },
+      { uid: 'gt-af-case', title: 'Case report of AF ablation', abstract: 'Single case.', pubtype: ['Case Report'], year: 2021, groundTruthGrade: 0 },
+      { uid: 'gt-pe', title: 'Rivaroxaban for pulmonary embolism', abstract: 'PE anticoagulation RCT, related drug class but wrong indication.', pubtype: ['Randomized Controlled Trial'], year: 2012, groundTruthGrade: 0 },
+      { uid: 'gt-af-meta', title: 'Meta-analysis of DOACs in AF', abstract: 'Systematic review of DOAC stroke prevention.', pubtype: ['Meta-Analysis'], year: 2019, groundTruthGrade: 2 },
+      { uid: 'gt-filler-3', title: 'Outpatient clinic scheduling', abstract: 'Operations.', pubtype: ['Journal Article'], year: 2022, groundTruthGrade: 0 },
+      { uid: 'gt-htn-gl', title: 'Hypertension clinical practice guideline', abstract: 'BP guideline, not AF-specific.', pubtype: ['Practice Guideline'], year: 2017, groundTruthGrade: 0 },
+    ],
   },
   {
-    id: 'pe-anticoagulation-dosing',
-    caseText: '70-year-old with acute pulmonary embolism and normal renal function. Discussing DOAC vs warfarin.',
-    topic: 'pulmonary embolism anticoagulation',
-    relevantTerms: ['pulmonary embolism', 'anticoagulation', 'DOAC', 'warfarin', 'rivaroxaban', 'apixaban'],
-    irrelevantTerms: ['cancer', 'thrombolysis', 'paediatric', 'case report'],
-    expectedStudyTypes: ['randomized controlled trial', 'cohort study', 'meta-analysis'],
+    id: 'pe-diagnosis',
+    caseText: 'Stable adult with suspected PE. What is the best initial diagnostic approach?',
+    topic: 'PE diagnosis',
+    queryIntent: 'diagnosis',
+    articles: [
+      { uid: 'gt-wells', title: 'Clinical decision rule for PE (Wells)', abstract: 'Validated clinical decision rule for suspected pulmonary embolism.', pubtype: ['Clinical Decision Rule'], year: 2000, groundTruthGrade: 3 },
+      { uid: 'gt-perc', title: 'PERC rule for pulmonary embolism', abstract: 'Decision rule to exclude PE in low-risk patients.', pubtype: ['Clinical Decision Rule'], year: 2008, groundTruthGrade: 3 },
+      { uid: 'gt-pe-rct', title: 'Rivaroxaban for symptomatic PE', abstract: 'Treatment RCT, not a diagnostic study.', pubtype: ['Randomized Controlled Trial'], year: 2012, groundTruthGrade: 1 },
+      { uid: 'gt-pe-cta', title: 'CT pulmonary angiography accuracy', abstract: 'Diagnostic accuracy study for CTA in suspected PE.', pubtype: ['Comparative Study'], year: 2006, groundTruthGrade: 2 },
+      { uid: 'gt-ards4', title: 'Berlin ARDS definition', abstract: 'Wrong syndrome.', pubtype: ['Guideline'], year: 2012, groundTruthGrade: 0 },
+      { uid: 'gt-pe-case', title: 'Case report of PE thrombolysis', abstract: 'Case report.', pubtype: ['Case Report'], year: 2020, groundTruthGrade: 0 },
+      { uid: 'gt-dvt', title: 'D-dimer in deep vein thrombosis', abstract: 'Adjacent but not PE-primary.', pubtype: ['Cohort Study'], year: 2015, groundTruthGrade: 1 },
+      { uid: 'gt-filler-4', title: 'ED triage algorithms', abstract: 'General ED operations.', pubtype: ['Journal Article'], year: 2021, groundTruthGrade: 0 },
+      { uid: 'gt-pe-review', title: 'Review of PE imaging choices', abstract: 'Diagnostic pathway review.', pubtype: ['Review'], year: 2019, groundTruthGrade: 2 },
+      { uid: 'gt-stroke', title: 'tPA for ischemic stroke', abstract: 'Unrelated acute care RCT.', pubtype: ['Randomized Controlled Trial'], year: 1995, groundTruthGrade: 0 },
+    ],
   },
   {
-    id: 'aki-fluids-diuretics',
-    caseText: '62-year-old with septic AKI stage 2. Fluid balance is positive 3L. Should we give diuretics?',
-    topic: 'acute kidney injury fluid management',
-    relevantTerms: ['acute kidney injury', 'AKI', 'fluid', 'diuretic', 'renal', 'sepsis'],
-    irrelevantTerms: ['chronic kidney disease', 'dialysis', 'paediatric', 'case report'],
-    expectedStudyTypes: ['randomized controlled trial', 'cohort study', 'meta-analysis'],
+    id: 'aki-fluids-management',
+    caseText: '62-year-old with septic AKI stage 2, positive fluid balance. Role of diuretics?',
+    topic: 'AKI fluid management',
+    queryIntent: 'management',
+    articles: [
+      { uid: 'gt-factt', title: 'Conservative fluid strategy in acute lung injury', abstract: 'RCT of fluid management relevant to positive balance.', pubtype: ['Randomized Controlled Trial'], year: 2006, groundTruthGrade: 2 },
+      { uid: 'gt-aki-diuretic', title: 'Diuretics in AKI systematic review', abstract: 'Review of loop diuretics for oliguric AKI.', pubtype: ['Systematic Review'], year: 2018, groundTruthGrade: 3 },
+      { uid: 'gt-kdigo', title: 'KDIGO AKI clinical practice guideline', abstract: 'Guideline recommendations for AKI management.', pubtype: ['Practice Guideline'], year: 2012, groundTruthGrade: 3 },
+      { uid: 'gt-ckd', title: 'SGLT2 inhibitors in CKD', abstract: 'Chronic kidney disease outcomes, wrong acuity.', pubtype: ['Randomized Controlled Trial'], year: 2020, groundTruthGrade: 0 },
+      { uid: 'gt-aki-case', title: 'Case report of diuretic infusion', abstract: 'Case report.', pubtype: ['Case Report'], year: 2021, groundTruthGrade: 0 },
+      { uid: 'gt-aki-cohort', title: 'Observational fluid balance and AKI', abstract: 'Cohort linking fluid overload to outcomes.', pubtype: ['Cohort Study'], year: 2017, groundTruthGrade: 2 },
+      { uid: 'gt-neo-aki', title: 'Neonatal AKI definitions', abstract: 'Paediatric mismatch.', pubtype: ['Guideline'], year: 2019, groundTruthGrade: 0 },
+      { uid: 'gt-filler-5', title: 'Pharmacy inventory systems', abstract: 'Unrelated.', pubtype: ['Journal Article'], year: 2022, groundTruthGrade: 0 },
+      { uid: 'gt-sepsis2', title: 'Surviving Sepsis fluids section', abstract: 'Sepsis guideline with fluid recommendations overlapping AKI context.', pubtype: ['Practice Guideline'], year: 2021, groundTruthGrade: 1 },
+      { uid: 'gt-dialysis', title: 'Timing of RRT in AKI RCT', abstract: 'Dialysis timing trial — related but not first-line diuretic question.', pubtype: ['Randomized Controlled Trial'], year: 2020, groundTruthGrade: 1 },
+    ],
   },
 ];
 
 // =============================================================================
-// Mock Article Generators
+// Metrics against ground-truth grades (NOT model scores)
 // =============================================================================
 
-function makeArticle(overrides = {}) {
-  const id = overrides.uid || `pmid-${Math.floor(Math.random() * 90000000 + 10000000)}`;
-  return {
-    uid: id,
-    pmid: id,
-    title: overrides.title || 'Untitled study',
-    abstract: overrides.abstract || 'No abstract available.',
-    year: overrides.year || 2023,
-    pubdate: String(overrides.year || 2023),
-    journal: overrides.journal || 'Medical Journal',
-    source: overrides.source || 'pubmed',
-    pubtype: overrides.pubtype || ['Journal Article'],
-    ...overrides,
-  };
+function ndcgAtK(articles, k) {
+  const slice = articles.slice(0, k);
+  let dcg = 0;
+  for (let i = 0; i < slice.length; i++) {
+    const g = Number(slice[i].groundTruthGrade || 0);
+    if (g > 0) dcg += (2 ** g - 1) / Math.log2(i + 2);
+  }
+  const ideal = [...articles]
+    .map((a) => Number(a.groundTruthGrade || 0))
+    .sort((a, b) => b - a)
+    .slice(0, k);
+  let idcg = 0;
+  for (let i = 0; i < ideal.length; i++) {
+    if (ideal[i] > 0) idcg += (2 ** ideal[i] - 1) / Math.log2(i + 2);
+  }
+  return idcg > 0 ? dcg / idcg : 0;
 }
 
-function generateMockArticlesForQuery(query) {
-  const articles = [];
+function precisionAtK(articles, k, minGrade = 1) {
+  const slice = articles.slice(0, k);
+  if (!slice.length) return 0;
+  const hits = slice.filter((a) => Number(a.groundTruthGrade || 0) >= minGrade).length;
+  return hits / slice.length;
+}
 
-  // Relevant articles (should score highly)
-  for (let i = 0; i < 8; i++) {
-    const term = query.relevantTerms[i % query.relevantTerms.length];
-    const design = query.expectedStudyTypes[i % query.expectedStudyTypes.length];
-    articles.push(makeArticle({
-      uid: `pmid-${10000000 + i}`,
-      title: `${design}: ${term} in ${query.topic}`,
-      abstract: `This ${design} evaluates ${term} in adult patients with ${query.topic}. Methods: randomized allocation. Results: significant improvement. Conclusion: supports use in relevant population.`,
-      pubtype: [design],
-      year: 2020 + (i % 5),
-    }));
-  }
-
-  // Irrelevant articles (should score low or be excluded)
-  for (let i = 0; i < 12; i++) {
-    const badTerm = query.irrelevantTerms[i % query.irrelevantTerms.length];
-    const isCaseReport = i % 3 === 0;
-    articles.push(makeArticle({
-      uid: `pmid-${90000000 + i}`,
-      title: isCaseReport
-        ? `Case report: ${badTerm} in ${query.topic}`
-        : `Observational study of ${badTerm} and ${query.topic}`,
-      abstract: `This study examines ${badTerm} in the context of ${query.topic}. The population differs significantly from typical adult presentations.`,
-      pubtype: isCaseReport ? ['Case Report'] : ['Observational Study'],
-      year: 2018 + (i % 5),
-    }));
-  }
-
-  // Shuffle
-  for (let i = articles.length - 1; i > 0; i--) {
+function shuffle(list) {
+  const out = [...list];
+  for (let i = out.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [articles[i], articles[j]] = [articles[j], articles[i]];
+    [out[i], out[j]] = [out[j], out[i]];
   }
-
-  return articles;
+  return out;
 }
 
-// =============================================================================
-// Mock AI Service
-// =============================================================================
-
-function createMockAiService(delayMs = 50) {
+function toArticle(row) {
   return {
-    async callGemini(prompt, _model, _options) {
-      await sleep(delayMs);
-      return mockLlmResponse(prompt);
-    },
-    async callMistralAI(prompt, _model, _options) {
-      await sleep(delayMs);
-      return mockLlmResponse(prompt);
-    },
+    uid: row.uid,
+    pmid: row.uid,
+    title: row.title,
+    abstract: row.abstract,
+    year: row.year,
+    pubdate: String(row.year),
+    journal: 'Benchmark Journal',
+    source: 'fixture',
+    pubtype: row.pubtype,
+    groundTruthGrade: row.groundTruthGrade,
   };
 }
 
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function mockLlmResponse(prompt) {
-  // Detect if this is a PICO extraction prompt
-  if (prompt.includes('PATIENT CASE PROFILE') === false && prompt.includes('patient case')) {
-    // PICO extraction
-    const population = extractField(prompt, 'Population:') || 'Adult patients';
-    const intervention = extractField(prompt, 'Intervention/Exposure:') || '';
-    return JSON.stringify({
-      population,
-      intervention,
-      comparison: '',
-      outcome: '',
-      ageRange: 'Adult',
-      severity: 'Severe',
-      setting: 'ICU',
-      queryIntent: 'management',
-    });
-  }
-
-  // Reranking prompt: score each article
-  const scores = [];
-  const articleMatches = prompt.match(/\[ARTICLE (\d+)\]/g) || [];
-
-  for (let idx = 1; idx <= articleMatches.length; idx++) {
-    const blockStart = prompt.indexOf(`[ARTICLE ${idx}]`);
-    const blockEnd = idx < articleMatches.length
-      ? prompt.indexOf(`[ARTICLE ${idx + 1}]`)
-      : prompt.length;
-    const block = prompt.slice(blockStart, blockEnd).toLowerCase();
-
-    const isCaseReport = block.includes('case report');
-    const isPaediatric = block.includes('paediatric') || block.includes('children') || block.includes('pediatric');
-    const isRelevant = !isCaseReport && !isPaediatric &&
-      (block.includes('randomized') || block.includes('cohort') || block.includes('meta-analysis') || block.includes('systematic review'));
-
-    const populationMatch = isPaediatric ? 0.1 : isRelevant ? 0.85 : 0.4;
-    const interventionMatch = isRelevant ? 0.8 : 0.3;
-    const outcomeMatch = isRelevant ? 0.8 : 0.3;
-    const studyDesignScore = isCaseReport ? 0.15 : isRelevant ? 0.9 : 0.5;
-    const overallScore = isPaediatric ? 0.15 : isCaseReport ? 0.2 : isRelevant ? 0.88 : 0.42;
-
-    const flags = [];
-    if (isPaediatric) flags.push('population_mismatch');
-    if (isCaseReport) flags.push('design_too_weak');
-
-    scores.push({
-      articleIndex: idx,
-      populationMatch,
-      interventionMatch,
-      outcomeMatch,
-      studyDesignScore,
-      overallScore,
-      exclusionFlags: flags,
-      rationale: isPaediatric
-        ? 'Population mismatch: paediatric study does not match adult case'
-        : isCaseReport
-          ? 'Design too weak: case report for management query'
-          : isRelevant
-            ? 'Strong RCT/meta-analysis matching case population'
-            : 'Moderate relevance with some population differences',
-    });
-  }
-
-  return JSON.stringify(scores);
-}
-
-function extractField(prompt, label) {
-  const regex = new RegExp(`${label}\\s*(.+?)\\n`);
-  const match = prompt.match(regex);
-  return match ? match[1].trim() : '';
-}
-
-// =============================================================================
-// Metrics
-// =============================================================================
-
-function precisionAtK(relevantSet, retrievedSet, k) {
-  const topK = retrievedSet.slice(0, k);
-  let relevantCount = 0;
-  for (const item of topK) {
-    const title = (item.title || '').toLowerCase();
-    const abstract = (item.abstract || '').toLowerCase();
-    const isRelevant = relevantSet.some((term) => title.includes(term.toLowerCase()) || abstract.includes(term.toLowerCase()));
-    if (isRelevant) relevantCount++;
-  }
-  return relevantCount / k;
-}
-
-function offTopicRateAtK(relevantSet, retrievedSet, k) {
-  const topK = retrievedSet.slice(0, k);
-  let offTopicCount = 0;
-  for (const item of topK) {
-    const title = (item.title || '').toLowerCase();
-    const abstract = (item.abstract || '').toLowerCase();
-    const isRelevant = relevantSet.some((term) => title.includes(term.toLowerCase()) || abstract.includes(term.toLowerCase()));
-    if (!isRelevant) offTopicCount++;
-  }
-  return offTopicCount / k;
-}
-
-function studyTypeCoverage(expectedTypes, retrievedSet, k) {
-  const topK = retrievedSet.slice(0, k);
-  let covered = 0;
-  for (const item of topK) {
-    const st = String(item.pubtype?.[0] || item.studyType || '').toLowerCase();
-    if (expectedTypes.some((et) => st.includes(et.toLowerCase()))) {
-      covered++;
-    }
-  }
-  return covered / k;
-}
-
-// =============================================================================
-// Benchmark Runner
-// =============================================================================
-
-async function runUnitBenchmark() {
-  console.log('\n=== Unit Benchmark (mock AI) ===\n');
-
-  const mockAi = createMockAiService(10);
-  const mockCache = {
-    async get() { return null; },
-    async set() {},
+function picoFor(query) {
+  return {
+    population: 'Adult',
+    intervention: '',
+    outcome: '',
+    severity: 'Severe',
+    setting: 'ICU',
+    queryIntent: query.queryIntent || 'management',
   };
-  const mockServerConfig = { keys: { gemini: 'mock' } };
+}
 
-  const results = [];
+/** Deterministic non-oracle LLM: constant scores — cannot encode ground truth. */
+function applyConstantLlmScores(articles, score = 0.5) {
+  return articles.map((article, index) => ({
+    ...article,
+    _rerank: {
+      overallScore: score,
+      populationMatch: score,
+      interventionMatch: score,
+      outcomeMatch: score,
+      studyDesignScore: score,
+      exclusionFlags: [],
+      rationale: 'constant mock LLM score (non-oracle)',
+      source: 'mock_llm_constant',
+      rank: index + 1,
+    },
+  }));
+}
+
+/** Adversarial LLM: higher scores for lower ground-truth grades. */
+function applyAdversarialLlmScores(articles) {
+  return articles.map((article, index) => {
+    const g = Number(article.groundTruthGrade || 0);
+    const overallScore = (3 - g) / 3;
+    return {
+      ...article,
+      _rerank: {
+        overallScore,
+        populationMatch: overallScore,
+        interventionMatch: overallScore,
+        outcomeMatch: overallScore,
+        studyDesignScore: overallScore,
+        exclusionFlags: g >= 2 ? ['adversarial_demote'] : [],
+        rationale: 'adversarial mock LLM inverts ground truth',
+        source: 'mock_llm_adversarial',
+        rank: index + 1,
+      },
+    };
+  }).sort((a, b) => b._rerank.overallScore - a._rerank.overallScore);
+}
+
+function rankByHeuristic(articles, pico) {
+  return articles
+    .map((article) => ({
+      ...article,
+      _rerank: computeHeuristicScore(article, pico),
+    }))
+    .sort((a, b) => b._rerank.overallScore - a._rerank.overallScore);
+}
+
+function evaluateRanking(query, ranked) {
+  const top = selectTopRerankedArticles(ranked, { topN: 10, strictPopulation: false });
+  return {
+    id: query.id,
+    n: query.articles.length,
+    ndcg_at_10: ndcgAtK(top, 10),
+    precision_at_5: precisionAtK(top, 5, 1),
+    precision_at_10: precisionAtK(top, 10, 1),
+    top3: top.slice(0, 3).map((a) => `${a.uid}:g${a.groundTruthGrade}`),
+  };
+}
+
+function aggregate(results) {
+  const avg = (key) => results.reduce((s, r) => s + r[key], 0) / results.length;
+  return {
+    ndcg_at_10: avg('ndcg_at_10'),
+    precision_at_5: avg('precision_at_5'),
+    precision_at_10: avg('precision_at_10'),
+  };
+}
+
+async function runBenchmark({ adversarial = false } = {}) {
+  console.log(`\n=== Ground-truth rerank benchmark${adversarial ? ' (adversarial LLM)' : ''} ===\n`);
+
+  const heuristicResults = [];
+  const llmResults = [];
 
   for (const query of LABELLED_QUERIES) {
-    const articles = generateMockArticlesForQuery(query);
+    const articles = shuffle(query.articles.map(toArticle));
+    const pico = picoFor(query);
 
-    const t0Pico = performance.now();
-    const picoProfile = await extractPicoProfile(query.caseText, {
-      ai: mockAi,
-      cache: mockCache,
-      serverConfig: mockServerConfig,
-    });
-    const picoLatency = performance.now() - t0Pico;
+    const heuristicRanked = rankByHeuristic(articles, pico);
+    const heuristicEval = evaluateRanking(query, heuristicRanked);
+    heuristicResults.push(heuristicEval);
 
-    const t0Rerank = performance.now();
-    const reranked = await rerankArticlesByPico(articles, picoProfile, {
-      ai: mockAi,
-      serverConfig: mockServerConfig,
-    });
-    const rerankLatency = performance.now() - t0Rerank;
+    const llmRanked = adversarial
+      ? applyAdversarialLlmScores(articles)
+      : applyConstantLlmScores(articles, 0.5);
+    const llmEval = evaluateRanking(query, llmRanked);
+    llmResults.push(llmEval);
 
-    const top10 = selectTopRerankedArticles(reranked, { topN: 10, strictPopulation: true });
-
-    const prec10 = precisionAtK(query.relevantTerms, top10, 10);
-    const offTopic10 = offTopicRateAtK(query.relevantTerms, top10, 10);
-    const typeCov10 = studyTypeCoverage(query.expectedStudyTypes, top10, 10);
-
-    results.push({
-      id: query.id,
-      precision_at_10: prec10.toFixed(2),
-      off_topic_rate: offTopic10.toFixed(2),
-      study_type_cov: typeCov10.toFixed(2),
-      pico_ms: Math.round(picoLatency),
-      rerank_ms: Math.round(rerankLatency),
-      total_ms: Math.round(picoLatency + rerankLatency),
-      articles_returned: top10.length,
-    });
-
-    // Show top 3 for inspection
-    console.log(`\n[${query.id}] Top 3:`);
-    top10.slice(0, 3).forEach((a, i) => {
-      console.log(`  ${i + 1}. score=${a._rerank?.overallScore?.toFixed(2) ?? '?'} flags=[${a._rerank?.exclusionFlags?.join(', ') ?? ''}] ${a.title.slice(0, 80)}`);
-    });
+    console.log(`[${query.id}] heuristic nDCG@10=${heuristicEval.ndcg_at_10.toFixed(3)} P@5=${heuristicEval.precision_at_5.toFixed(3)} top3=${heuristicEval.top3.join(', ')}`);
+    console.log(`             llm-mock  nDCG@10=${llmEval.ndcg_at_10.toFixed(3)} P@5=${llmEval.precision_at_5.toFixed(3)}`);
   }
 
-  console.log('\n--- Results ---');
-  console.table(results);
+  const heuristicAgg = aggregate(heuristicResults);
+  const llmAgg = aggregate(llmResults);
 
-  const avgPrecision = results.reduce((s, r) => s + parseFloat(r.precision_at_10), 0) / results.length;
-  const avgOffTopic = results.reduce((s, r) => s + parseFloat(r.off_topic_rate), 0) / results.length;
-  const avgTypeCov = results.reduce((s, r) => s + parseFloat(r.study_type_cov), 0) / results.length;
-  const medianLatency = results.map((r) => r.total_ms).sort((a, b) => a - b)[Math.floor(results.length / 2)];
+  console.log('\n--- Heuristic (scored vs ground truth) ---');
+  console.table(heuristicResults.map((r) => ({
+    id: r.id,
+    ndcg_at_10: r.ndcg_at_10.toFixed(3),
+    precision_at_5: r.precision_at_5.toFixed(3),
+    precision_at_10: r.precision_at_10.toFixed(3),
+  })));
 
   console.log('\n=== Aggregates ===');
-  console.log(`Precision@10:  ${avgPrecision.toFixed(3)} (target >= 0.75)`);
-  console.log(`Off-topic@10:  ${avgOffTopic.toFixed(3)} (target <= 0.10)`);
-  console.log(`Study-type cov: ${avgTypeCov.toFixed(3)} (target >= 0.80)`);
-  console.log(`Median latency: ${medianLatency}ms (target < 1500ms)`);
+  console.log(`Heuristic nDCG@10:  ${heuristicAgg.ndcg_at_10.toFixed(3)} (target >= 0.70)`);
+  console.log(`Heuristic P@5:      ${heuristicAgg.precision_at_5.toFixed(3)} (target >= 0.60)`);
+  console.log(`Constant/adversarial LLM nDCG@10: ${llmAgg.ndcg_at_10.toFixed(3)} (must NOT beat heuristic by oracle leak)`);
 
-  const passed = avgPrecision >= 0.70 && avgOffTopic <= 0.20; // beta thresholds
-  console.log(`\nBenchmark ${passed ? 'PASSED' : 'FAILED'} (beta thresholds)`);
+  const heuristicPass = heuristicAgg.ndcg_at_10 >= 0.70 && heuristicAgg.precision_at_5 >= 0.60;
+  // Guard: a non-oracle / adversarial LLM path must not outperform heuristic on GT metrics
+  // by a large margin — that would indicate metrics are still coupled to model scores.
+  const llmOracleLeak = llmAgg.ndcg_at_10 > heuristicAgg.ndcg_at_10 + 0.05;
+  const passed = heuristicPass && !llmOracleLeak;
+
+  if (llmOracleLeak) {
+    console.error('🚨 Oracle-leak guard failed: non-informative LLM ranking beat heuristic on ground-truth metrics.');
+  }
+  console.log(`\nBenchmark ${passed ? 'PASSED' : 'FAILED'}`);
   return passed;
 }
 
-async function runHeuristicBaseline() {
-  console.log('\n=== Baseline Benchmark (heuristic only, no LLM rerank) ===\n');
-
-  const results = [];
-
-  for (const query of LABELLED_QUERIES) {
-    const articles = generateMockArticlesForQuery(query);
-    const picoProfile = { population: 'Adult', intervention: '', outcome: '', severity: 'Severe', setting: 'ICU', queryIntent: 'management' };
-
-    const scored = articles.map((article) => ({
-      ...article,
-      _rerank: computeHeuristicScore(article, picoProfile),
-    })).sort((a, b) => b._rerank.overallScore - a._rerank.overallScore);
-
-    const top10 = scored.slice(0, 10);
-    const prec10 = precisionAtK(query.relevantTerms, top10, 10);
-    const offTopic10 = offTopicRateAtK(query.relevantTerms, top10, 10);
-
-    results.push({ id: query.id, precision_at_10: prec10.toFixed(2), off_topic_rate: offTopic10.toFixed(2) });
-  }
-
-  console.table(results);
-  const avgPrecision = results.reduce((s, r) => s + parseFloat(r.precision_at_10), 0) / results.length;
-  console.log(`Baseline Precision@10: ${avgPrecision.toFixed(3)}`);
-}
-
-async function runLiveBenchmark() {
-  console.log('\n=== Live Integration Benchmark ===\n');
-  const base = process.env.BASE_URL || 'http://127.0.0.1:3000';
-  const jwt = process.env.JWT || '';
-
-  const headers = { 'Content-Type': 'application/json' };
-  if (jwt) headers.Authorization = `Bearer ${jwt}`;
-
-  const results = [];
-
-  for (const query of LABELLED_QUERIES.slice(0, 3)) {
-    const t0 = performance.now();
-    const res = await fetch(`${base}/api/cases/analyze`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        caseText: query.caseText,
-        topic: query.topic,
-        learningMode: 'resident',
-      }),
-    }).catch((e) => ({ ok: false, error: e.message }));
-
-    const latency = performance.now() - t0;
-
-    if (!res.ok) {
-      console.log(`[${query.id}] FAILED: ${res.status ?? res.error}`);
-      results.push({ id: query.id, ok: false, latency_ms: Math.round(latency), error: res.status ?? res.error });
-      continue;
-    }
-
-    const data = await res.json();
-    const citations = data.citations || [];
-
-    const prec10 = precisionAtK(query.relevantTerms, citations, Math.min(10, citations.length));
-    const offTopic10 = offTopicRateAtK(query.relevantTerms, citations, Math.min(10, citations.length));
-
-    results.push({
-      id: query.id,
-      ok: true,
-      latency_ms: Math.round(latency),
-      citations: citations.length,
-      precision_at_10: prec10.toFixed(2),
-      off_topic_rate: offTopic10.toFixed(2),
-      reranked: data.rerankMeta ? 'yes' : 'no',
-    });
-  }
-
-  console.table(results);
-}
-
-// =============================================================================
-// Main
-// =============================================================================
-
-const isLive = process.argv.includes('--live');
-
-if (isLive) {
-  runLiveBenchmark().catch((e) => {
-    console.error(e);
-    process.exit(1);
-  });
-} else {
-  (async () => {
-    await runHeuristicBaseline();
-    const passed = await runUnitBenchmark();
-    process.exit(passed ? 0 : 1);
-  })();
-}
+const adversarial = process.argv.includes('--adversarial');
+runBenchmark({ adversarial }).then((passed) => process.exit(passed ? 0 : 1)).catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

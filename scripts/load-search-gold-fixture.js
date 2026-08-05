@@ -50,12 +50,30 @@ function normalizeQueryRelevantUids(querySpec = {}) {
     };
 }
 
+function loadExtraQueryFile(fixture, filePath, metaKey) {
+    if (!fs.existsSync(filePath)) return fixture;
+    const extra = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    const extraQueries = Array.isArray(extra.queries) ? extra.queries : [];
+    fixture.queries = [...(fixture.queries || []), ...extraQueries];
+    fixture[metaKey] = filePath;
+    fixture[`${metaKey}QueryCount`] = extraQueries.length;
+    if (Array.isArray(extra.queryOverrides) && extra.queryOverrides.length) {
+        fixture.queries = applyQueryOverrides(fixture.queries || [], extra.queryOverrides);
+        fixture.overrideCount = (fixture.overrideCount || 0) + extra.queryOverrides.length;
+    }
+    return fixture;
+}
+
 function loadSearchGoldFixture(primaryPath, options = {}) {
     const root = options.root || process.cwd();
     const fullPrimary = path.resolve(root, primaryPath);
     const fixture = JSON.parse(fs.readFileSync(fullPrimary, 'utf8'));
+    const dir = path.dirname(fullPrimary);
     const expansionPath = options.expansionPath
-        || path.join(path.dirname(fullPrimary), 'search-quality-gold-expansion.json');
+        || path.join(dir, 'search-quality-gold-expansion.json');
+    const nlClinicalPath = options.nlClinicalPath
+        || path.join(dir, 'search-quality-gold-nl-clinical.json');
+
     if (fs.existsSync(expansionPath)) {
         const expansion = JSON.parse(fs.readFileSync(expansionPath, 'utf8'));
         fixture.queries = applyQueryOverrides(fixture.queries || [], expansion.queryOverrides || []);
@@ -65,6 +83,9 @@ function loadSearchGoldFixture(primaryPath, options = {}) {
         fixture.expansionQueryCount = extraQueries.length;
         fixture.overrideCount = Array.isArray(expansion.queryOverrides) ? expansion.queryOverrides.length : 0;
     }
+
+    loadExtraQueryFile(fixture, nlClinicalPath, 'nlClinicalLoaded');
+
     fixture.queries = (fixture.queries || []).map(normalizeQueryRelevantUids);
     fixture.queryCount = Array.isArray(fixture.queries) ? fixture.queries.length : 0;
     return fixture;

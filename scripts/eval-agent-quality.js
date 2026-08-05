@@ -28,6 +28,14 @@ const flag = (name, fallback) => {
 const DAYS = Math.min(90, Math.max(1, parseInt(flag('--days', '30'), 10) || 30));
 const FORMAT = flag('--format', 'table');
 const STRICT = args.includes('--strict');
+const ALLOW_EMPTY = args.includes('--allow-empty');
+const FIXTURE_PATH = path.resolve(
+    process.cwd(),
+    flag('--fixture-path', process.env.AGENT_QUALITY_FIXTURE || 'tests/fixtures/agent-quality-synthetic.json')
+);
+const USE_FIXTURE = args.includes('--fixture') || args.includes('--offline')
+    || args.includes('--fixture-path')
+    || String(process.env.AGENT_QUALITY_USE_FIXTURE || '').toLowerCase() === 'true';
 const MIN_COHORT = Math.max(1, parseInt(flag('--min-cohort', process.env.AGENT_QUALITY_MIN_COHORT || '10'), 10) || 10);
 const OUT_DIR = path.join(process.cwd(), 'eval-results');
 
@@ -383,14 +391,21 @@ ${metrics.meanDelta > controlMetrics.meanDelta
 `;
 }
 
-// ============================================================
-// Main
-// ============================================================
+function loadFixtureCohort(fixturePath) {
+    const raw = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
+    return {
+        dataSource: 'fixture',
+        days: Number(raw.days || DAYS),
+        agentCohort: Array.isArray(raw.agentCohort) ? raw.agentCohort : [],
+        controlCohort: Array.isArray(raw.controlCohort) ? raw.controlCohort : [],
+        signalSummary: raw.signalSummary || {},
+        profileDeltas: Array.isArray(raw.profileDeltas) ? raw.profileDeltas : [],
+        fixturePath,
+    };
+}
 
-async function main() {
-    console.log(`🔬 Running agent quality eval (last ${DAYS} days)...\n`);
-
-    const { agentCohort, controlCohort, signalSummary, profileDeltas } = await withDb(async (db) => {
+async function loadLiveCohort() {
+    return withDb(async (db) => {
         const [agent, control, signals, deltas] = await Promise.all([
             extractAgentCohort(db, DAYS),
             extractControlCohort(db, DAYS),
@@ -398,25 +413,67 @@ async function main() {
             extractRecentProfileDeltas(db, DAYS),
         ]);
         return {
+            dataSource: 'live',
+            days: DAYS,
             agentCohort: agent,
             controlCohort: control,
             signalSummary: signals,
             profileDeltas: deltas,
+            fixturePath: null,
         };
     });
+}
 
+// ============================================================
+// Main
+// ============================================================
+
+async function main() {
+    const modeLabel = USE_FIXTURE ? `offline fixture (${path.relative(process.cwd(), FIXTURE_PATH)})` : `live DB (last ${DAYS} days)`;
+    console.log(`🔬 Running agent quality eval — ${modeLabel}...\n`);
+
+    let payload = USE_FIXTURE
+        ? loadFixtureCohort(FIXTURE_PATH)
+        : await loadLiveCohort();
+
+    // Live empty DB: fall back to fixture so the harness is never n=0-blind,
+    // unless the caller explicitly allows empty (ops debugging).
+    if (!USE_FIXTURE && payload.agentCohort.length === 0 && !ALLOW_EMPTY) {
+        if (fs.existsSync(FIXTURE_PATH)) {
+            console.warn('⚠️  Live agent cohort n=0 (empty or cold DB). Falling back to synthetic fixture.');
+            console.warn('    Use --allow-empty to keep the empty live result, or seed learning_events for real efficacy.');
+            payload = {
+                ...loadFixtureCohort(FIXTURE_PATH),
+                dataSource: 'fixture_fallback',
+                liveEmpty: true,
+            };
+        }
+    }
+
+    const { agentCohort, controlCohort, signalSummary, profileDeltas, dataSource } = payload;
     const metrics = computeMetrics(agentCohort, 'agent');
     const controlMetrics = computeMetrics(controlCohort, 'control');
     const topicBreakdown = breakdownByTopic(agentCohort);
+    const status = agentCohort.length === 0
+        ? 'insufficient_data'
+        : agentCohort.length < MIN_COHORT
+            ? 'low_cohort'
+            : 'ok';
 
     printTable(metrics, controlMetrics, signalSummary, profileDeltas);
+    console.log(`Data source: ${dataSource}  status: ${status}\n`);
 
     // JSON output
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const jsonPath = path.join(OUT_DIR, `agent-quality-${timestamp}.json`);
     fs.writeFileSync(jsonPath, JSON.stringify({
         generatedAt: new Date().toISOString(),
-        days: DAYS,
+        days: payload.days || DAYS,
+        dataSource,
+        status,
+        minCohort: MIN_COHORT,
+        fixturePath: payload.fixturePath || null,
+        liveEmpty: Boolean(payload.liveEmpty),
         metrics,
         controlMetrics,
         signalSummary,
@@ -435,14 +492,19 @@ async function main() {
         console.log(`📄 Markdown report written to ${mdPath}\n`);
     }
 
-    // Cohort density gate (release / --strict): empty or tiny n must not silently pass.
-    if (STRICT && agentCohort.length < MIN_COHORT) {
-        console.error(`🚨 STRICT GATE FAILED: agent cohort n=${agentCohort.length} < min ${MIN_COHORT}`);
+    // Empty / tiny cohort must not silently pass (except explicit --allow-empty).
+    if (status === 'insufficient_data' && !ALLOW_EMPTY) {
+        console.error('🚨 DATA GATE FAILED: agent cohort n=0. Harness cannot measure learning efficacy.');
+        console.error('   Seed learning_events, or run with --fixture / --offline for synthetic validation.');
+        process.exit(2);
+    }
+    if (STRICT && payload.liveEmpty) {
+        console.error('🚨 STRICT GATE FAILED: live DB cohort was empty; fixture fallback is not valid for release.');
         process.exit(1);
     }
-    if (!STRICT && agentCohort.length === 0) {
-        console.log('ℹ️  No agent cohort rows — skipping efficacy gate (pass). Use --strict for release.');
-        process.exit(0);
+    if ((STRICT || status === 'low_cohort') && agentCohort.length < MIN_COHORT && !ALLOW_EMPTY) {
+        console.error(`🚨 STRICT GATE FAILED: agent cohort n=${agentCohort.length} < min ${MIN_COHORT}`);
+        process.exit(1);
     }
 
     // Exit non-zero if agent cohort underperforms control by >5pp (quality gate)

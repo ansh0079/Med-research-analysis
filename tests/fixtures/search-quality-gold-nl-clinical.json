@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "description": "Natural-language clinical queries (management / guideline / diagnostic) with graded relevance labels (0–3). Complements the landmark-RCT-heavy base gold set so ranking weights are not overfit to trial-name queries.",
+  "queries": [
+    {
+      "query": "how should I manage the first hour of septic shock in adults?",
+      "sources": "pubmed,openalex",
+      "category": "management_intent",
+      "specialty": "critical_care",
+      "relevantUids": [
+        { "uid": "28101605", "grade": 3 },
+        { "uid": "32076670", "grade": 2 }
+      ],
+      "offTopicUids": ["31535829"],
+      "requiredTypes": ["guideline"],
+      "notes": "NL management: Surviving Sepsis / hour-1 bundle guidance. Graded: SSC guideline highest; supporting resuscitation evidence secondary."
+    },
+    {
+      "query": "what is the recommended ventilation strategy for severe ARDS?",
+      "sources": "pubmed,openalex",
+      "category": "management_intent",
+      "specialty": "critical_care",
+      "relevantUids": [
+        { "uid": "10793162", "grade": 3 },
+        { "uid": "23688302", "grade": 3 },
+        { "uid": "25693014", "grade": 2 }
+      ],
+      "offTopicUids": ["26378978"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "NL management: ARDSNet low tidal volume (10793162), PROSEVA prone (23688302). Grade 2: EOLIA ECMO (25693014) for refractory severe."
+    },
+    {
+      "query": "should I start an SGLT2 inhibitor for my patient with HFrEF?",
+      "sources": "pubmed,openalex",
+      "category": "management_intent",
+      "specialty": "cardiology",
+      "relevantUids": [
+        { "uid": "31535829", "grade": 3 },
+        { "uid": "32865377", "grade": 3 }
+      ],
+      "offTopicUids": ["26378978"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "NL management phrasing of DAPA-HF / EMPEROR-Reduced — not the trial-name keyword soup."
+    },
+    {
+      "query": "anticoagulation choice for acute PE with normal renal function",
+      "sources": "pubmed,openalex",
+      "category": "management_intent",
+      "specialty": "pulmonology",
+      "relevantUids": [
+        { "uid": "22449293", "grade": 3 },
+        { "uid": "23808992", "grade": 2 }
+      ],
+      "offTopicUids": ["19717844"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "NL management: EINSTEIN-PE (rivaroxaban) and related DOAC evidence preferred over AF stroke trials."
+    },
+    {
+      "query": "when do I use prone positioning in ARDS?",
+      "sources": "pubmed,openalex",
+      "category": "management_intent",
+      "specialty": "critical_care",
+      "relevantUids": [
+        { "uid": "23688302", "grade": 3 }
+      ],
+      "offTopicUids": ["10793162"],
+      "requiredTypes": ["randomized controlled trial"],
+      "notes": "NL management focused on prone selection (PROSEVA), not generic LTV papers as primary."
+    },
+    {
+      "query": "latest guideline recommendations for atrial fibrillation stroke prevention",
+      "sources": "pubmed,openalex",
+      "category": "guideline",
+      "specialty": "cardiology",
+      "relevantUids": [
+        { "uid": "38033089", "grade": 3 }
+      ],
+      "offTopicUids": ["19717844", "21870978"],
+      "requiredTypes": ["guideline"],
+      "notes": "NL guideline intent: 2023 ACC/AHA AF guideline over landmark DOAC RCTs as primary hit."
+    },
+    {
+      "query": "what do the sepsis guidelines say about fluid resuscitation targets?",
+      "sources": "pubmed,openalex",
+      "category": "guideline",
+      "specialty": "critical_care",
+      "relevantUids": [
+        { "uid": "28101605", "grade": 3 },
+        { "uid": "32076670", "grade": 2 }
+      ],
+      "offTopicUids": ["23688302"],
+      "requiredTypes": ["guideline"],
+      "notes": "NL guideline phrasing for SSC fluid recommendations."
+    },
+    {
+      "query": "hypertension guideline blood pressure target for adults",
+      "sources": "pubmed,openalex",
+      "category": "guideline",
+      "specialty": "cardiology",
+      "relevantUids": [
+        { "uid": "29133354", "grade": 3 },
+        { "uid": "26551272", "grade": 2 }
+      ],
+      "offTopicUids": ["18378519"],
+      "requiredTypes": ["guideline"],
+      "notes": "NL guideline: ACC/AHA hypertension guideline preferred; SPRINT as supporting evidence (grade 2)."
+    },
+    {
+      "query": "COPD exacerbation systemic corticosteroid guideline recommendation",
+      "sources": "pubmed,openalex",
+      "category": "guideline",
+      "specialty": "pulmonology",
+      "relevantUids": [
+        { "uid": "24622207", "grade": 2 }
+      ],
+      "offTopicUids": ["23688302"],
+      "requiredTypes": [],
+      "notes": "NL guideline/management for COPD steroids; ARDS prone evidence is off-topic."
+    },
+    {
+      "query": "how do I diagnose ARDS at the bedside?",
+      "sources": "pubmed,openalex",
+      "category": "diagnosis_intent",
+      "specialty": "critical_care",
+      "relevantUids": [
+        { "uid": "22797452", "grade": 3 }
+      ],
+      "offTopicUids": ["10793162", "23688302"],
+      "requiredTypes": [],
+      "notes": "NL diagnostic: Berlin definition (22797452). Treatment RCTs should not dominate."
+    },
+    {
+      "query": "best initial test for suspected pulmonary embolism in a stable patient",
+      "sources": "pubmed,openalex",
+      "category": "diagnosis_intent",
+      "specialty": "pulmonology",
+      "relevantUids": [
+        { "uid": "16051764", "grade": 2 },
+        { "uid": "18577874", "grade": 2 }
+      ],
+      "offTopicUids": ["22449293"],
+      "requiredTypes": ["clinical decision rule"],
+      "notes": "NL diagnostic: Wells/PERC-style decision rules over anticoagulation RCTs."
+    },
+    {
+      "query": "does this patient meet Berlin criteria for severe ARDS?",
+      "sources": "pubmed,openalex",
+      "category": "diagnosis_intent",
+      "specialty": "critical_care",
+      "relevantUids": [
+        { "uid": "22797452", "grade": 3 }
+      ],
+      "offTopicUids": ["31535829"],
+      "requiredTypes": [],
+      "notes": "NL diagnostic phrasing tied to Berlin definition landmark."
+    },
+    {
+      "query": "workup for new heart failure with reduced ejection fraction",
+      "sources": "pubmed,openalex",
+      "category": "diagnosis_intent",
+      "specialty": "cardiology",
+      "relevantUids": [
+        { "uid": "35363499", "grade": 2 },
+        { "uid": "31535829", "grade": 1 }
+      ],
+      "offTopicUids": ["26378978"],
+      "requiredTypes": [],
+      "notes": "NL diagnostic/workup intent: HF evaluation sources preferred; EMPA-REG diabetes CVOT is off-topic; SGLT2 HFrEF RCT is weak secondary (grade 1)."
+    },
+    {
+      "query": "how to distinguish septic shock from cardiogenic shock clinically",
+      "sources": "pubmed,openalex",
+      "category": "diagnosis_intent",
+      "specialty": "critical_care",
+      "relevantUids": [
+        { "uid": "28101605", "grade": 2 }
+      ],
+      "offTopicUids": ["32865377"],
+      "requiredTypes": [],
+      "notes": "NL differential diagnosis — sepsis definitions/guidelines more relevant than HFrEF outcomes trials."
+    },
+    {
+      "query": "management of atrial fibrillation with rapid ventricular response in the ED",
+      "sources": "pubmed,openalex",
+      "category": "management_intent",
+      "specialty": "cardiology",
+      "relevantUids": [
+        { "uid": "38033089", "grade": 3 },
+        { "uid": "19717844", "grade": 1 }
+      ],
+      "offTopicUids": ["31535829"],
+      "requiredTypes": ["guideline"],
+      "notes": "NL acute management: AF guideline primary; RE-LY is weak secondary for stroke prevention context only."
+    }
+  ]
+}

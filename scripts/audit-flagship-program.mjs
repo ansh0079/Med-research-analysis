@@ -22,7 +22,11 @@ function normalizeTopic(value) {
 
 function loadGoldQueries() {
   const rows = [];
-  for (const file of ['tests/fixtures/search-quality-gold.json', 'tests/fixtures/search-quality-gold-expansion.json']) {
+  for (const file of [
+    'tests/fixtures/search-quality-gold.json',
+    'tests/fixtures/search-quality-gold-expansion.json',
+    'tests/fixtures/search-quality-gold-nl-clinical.json',
+  ]) {
     if (!fs.existsSync(path.join(ROOT, file))) continue;
     const json = readJson(file);
     for (const query of json.queries || []) rows.push({ ...query, sourceFile: file });
@@ -167,28 +171,64 @@ function summarize(rows) {
   };
 }
 
+function summarizeConfigCoverage(topics) {
+  return {
+    topicCount: topics.length,
+    withLandmarks: topics.filter((t) => t.configured.landmarkPmids >= 1).length,
+    withGuidelineQuery: topics.filter((t) => t.configured.guidelineQueries >= 1).length,
+    withTwoSearchQueries: topics.filter((t) => t.configured.searchQueries >= 2 || t.configured.matchingGoldQueries >= 2).length,
+    withGoldCoverage: topics.filter((t) => t.configured.matchingGoldQueries >= 1).length,
+  };
+}
+
+function dbLooksEmpty(readiness, error) {
+  if (error) return true;
+  if (!readiness) return true;
+  const rows = readiness.topics || [];
+  if (rows.length === 0) return true;
+  const anyContent = rows.some((row) => {
+    const c = row.counts || {};
+    return Number(c.sourceArticles || 0) + Number(c.guidelines || 0) + Number(c.claims || 0) > 0;
+  });
+  return !anyContent;
+}
+
 async function main() {
+  const strict = process.argv.includes('--strict');
   const config = readJson('server/config/flagshipTopics.json');
   const goldRows = loadGoldQueries();
   const { dbPath, readiness, pdfCoverage, error } = await loadReadiness();
-  const readinessByTopic = readinessIndex(readiness);
+  const emptyDb = dbLooksEmpty(readiness, error);
+  const readinessByTopic = readinessIndex(emptyDb ? null : readiness);
   const pdfCoverageByTopic = new Map((pdfCoverage?.topics || []).map((row) => [row.topic, row]));
   const topics = (config.topics || []).map((topic) => (
     assessTopic(topic, goldRows, readinessByTopic, config.targets, pdfCoverageByTopic)
   ));
+  const dbSummary = emptyDb
+    ? {
+        topicCount: topics.length,
+        flagshipReady: 0,
+        learnerReady: 0,
+        withTwoSearchQueries: summarizeConfigCoverage(topics).withTwoSearchQueries,
+        byTier: { not_loaded: topics.length },
+        byMissing: { db_not_loaded: topics.length },
+      }
+    : summarize(topics);
   const report = {
     generatedAt: new Date().toISOString(),
     dbPath,
     dbError: error,
+    dbStatus: emptyDb ? 'empty_or_missing' : 'loaded',
     configVersion: config.version,
     targets: config.targets,
-    pdfCoverageSummary: pdfCoverage ? {
+    configCoverage: summarizeConfigCoverage(topics),
+    pdfCoverageSummary: (!emptyDb && pdfCoverage) ? {
       topicsMeetingCoverageNorm: pdfCoverage.topicsMeetingCoverageNorm,
       topicsWithLandmarks: pdfCoverage.topicsWithLandmarks,
       meanLandmarkCoverage: pdfCoverage.meanLandmarkCoverage,
       coverageNormThreshold: pdfCoverage.coverageNormThreshold,
     } : null,
-    summary: summarize(topics),
+    summary: dbSummary,
     topics,
   };
 
@@ -197,10 +237,18 @@ async function main() {
   fs.writeFileSync(outPath, JSON.stringify(report, null, 2));
 
   console.log('Flagship Topic Audit');
+  console.log(`DB status: ${report.dbStatus}${error ? ` (${error})` : ''} @ ${dbPath}`);
+  if (emptyDb) {
+    console.log('⚠️  Empty/missing DB — DB readiness tiers are NOT meaningful (0/N ready is expected).');
+    console.log('    Reporting config + gold coverage only. Point FLAGSHIP_DB at a seeded restore to measure readiness.');
+  }
   console.log(`Topics: ${report.summary.topicCount}`);
-  console.log(`Flagship-ready: ${report.summary.flagshipReady}`);
-  console.log(`Learner-ready or better: ${report.summary.learnerReady}`);
-  console.log(`Two-query eval coverage: ${report.summary.withTwoSearchQueries}/${report.summary.topicCount}`);
+  console.log(`Config coverage: landmarks ${report.configCoverage.withLandmarks}/${report.configCoverage.topicCount}`
+    + `, guidelines ${report.configCoverage.withGuidelineQuery}/${report.configCoverage.topicCount}`
+    + `, gold ${report.configCoverage.withGoldCoverage}/${report.configCoverage.topicCount}`
+    + `, two-query ${report.configCoverage.withTwoSearchQueries}/${report.configCoverage.topicCount}`);
+  console.log(`Flagship-ready (DB): ${report.summary.flagshipReady}`);
+  console.log(`Learner-ready or better (DB): ${report.summary.learnerReady}`);
   if (report.pdfCoverageSummary) {
     console.log(
       `Landmark full-text ≥60%: ${report.pdfCoverageSummary.topicsMeetingCoverageNorm}/`
@@ -210,8 +258,12 @@ async function main() {
   }
   console.log(`Tiers: ${JSON.stringify(report.summary.byTier)}`);
   console.log(`Missing: ${JSON.stringify(report.summary.byMissing)}`);
-  if (error) console.log(`DB readiness note: ${error}`);
   console.log(`Full report: ${outPath}`);
+
+  if (strict && emptyDb) {
+    console.error('🚨 STRICT GATE FAILED: flagship audit pointed at empty/missing DB.');
+    process.exit(2);
+  }
 }
 
 main().catch((err) => {
