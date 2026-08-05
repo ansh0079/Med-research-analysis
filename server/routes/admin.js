@@ -7,6 +7,7 @@ const {
 const { getCurriculumSeedSchedulerSettings } = require('../services/curriculumSeedScheduler');
 const { aggregateCollectiveMemory } = require('../services/collectiveMemoryService');
 const { QUALITY_QUEUES } = require('../services/clinicalQualityReviewService');
+const { writeThroughTeachingVerification } = require('../services/claimTrustOverlayService');
 
 function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
     app.get('/api/admin/stats', requireAuthJwt, requireRole('admin'), async (req, res) => {
@@ -200,6 +201,10 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
                 reviewerId: req.user?.id || null,
             });
             if (!claim) return res.status(404).json({ error: 'Claim not found' });
+            // Push curator trust onto matching synthesis claim rows (best-effort).
+            writeThroughTeachingVerification(db, claim).catch((err) => {
+                req.log?.warn?.({ err, claimKey }, 'claim trust write-through failed');
+            });
             res.json({ claim });
         } catch (error) {
             const status = /Invalid verification status/.test(error.message) ? 400 : 500;

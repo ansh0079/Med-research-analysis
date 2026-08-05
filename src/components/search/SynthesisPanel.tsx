@@ -211,7 +211,7 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
                       Why?
                     </button>
                     <span className="flex-1 text-slate-700 dark:text-slate-300 leading-relaxed">{c.claimText}</span>
-                    <VerificationBadge status={c.validationStatus} />
+                    <VerificationBadge status={c.verificationStatus || c.validationStatus} />
                   </li>
                 ))}
               </ul>

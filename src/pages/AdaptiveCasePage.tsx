@@ -18,8 +18,9 @@ export const AdaptiveCasePage: React.FC = () => {
   const [phase, setPhase] = useState<'setup' | 'loading' | 'playing' | 'summary'>('setup');
   const [topic, setTopic] = useState(initialTopic);
   const [learningMode, setLearningMode] = useState<string>('student');
-  const [difficulty, setDifficulty] = useState<string>('medium');
+  const [difficulty, setDifficulty] = useState<string>('auto');
   const [session, setSession] = useState<CaseSession | null>(null);
+  const [banditMeta, setBanditMeta] = useState<{ selectedBy?: string; armId?: string } | null>(null);
   const [feedback, setFeedback] = useState<CaseStepFeedback | null>(null);
   const [showingFeedback, setShowingFeedback] = useState(false);
   const [recommendations, setRecommendations] = useState<CaseRecommendation[]>([]);
@@ -57,6 +58,7 @@ export const AdaptiveCasePage: React.FC = () => {
       const result = await api.learning.generateAdaptiveCase({ topic: topic.trim(), learningMode, difficulty });
       setSession(result.session);
       setEvidenceWarning(result.evidenceWarning || null);
+      setBanditMeta(result.banditMeta || null);
       setFeedback(null);
       setShowingFeedback(false);
       setPhase('playing');
@@ -105,6 +107,7 @@ export const AdaptiveCasePage: React.FC = () => {
     setGeneratingStep(false);
     setEvidenceWarning(null);
     setSuggestedDifficulty(null);
+    setBanditMeta(null);
     setError(null);
   }, []);
 
@@ -230,7 +233,9 @@ export const AdaptiveCasePage: React.FC = () => {
             <i className="fas fa-heartbeat text-rose-500 text-2xl animate-pulse" />
           </div>
           <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">Building your clinical case...</p>
-          <p className="text-xs text-slate-400">Generating a {difficulty} case on {topic}</p>
+          <p className="text-xs text-slate-400">
+            Generating a {difficulty === 'auto' ? 'personalized' : difficulty} case on {topic}
+          </p>
         </div>
       )}
 
@@ -243,7 +248,10 @@ export const AdaptiveCasePage: React.FC = () => {
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 font-medium">
                   <i className="fas fa-hospital mr-1" />{session.caseData.setting}
                 </span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 font-medium">{session.difficulty}</span>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 font-medium">
+                  {session.difficulty}
+                  {banditMeta?.selectedBy === 'bandit' ? ' · adaptive' : ''}
+                </span>
               </div>
             </div>
             <button type="button" onClick={resetToSetup} className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
