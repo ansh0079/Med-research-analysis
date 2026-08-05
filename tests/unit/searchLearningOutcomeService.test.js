@@ -13,7 +13,7 @@ describe('searchLearningOutcomeService', () => {
         expect(quizAttemptReward(false, true)).toBe(-0.1);
     });
 
-    test('passive click updates decision reward without pulling the bandit arm', async () => {
+    test('passive click updates decision reward and pulls the bandit arm', async () => {
         const db = {
             all: jest.fn().mockResolvedValue([{ id: 7, arm_id: 'engagement_heavy', delayed_reward: null }]),
             updatePersonalizationDecisionReward: jest.fn().mockResolvedValue(true),
@@ -26,9 +26,9 @@ describe('searchLearningOutcomeService', () => {
             wasClicked: true,
         });
 
-        expect(result).toMatchObject({ rewarded: true, armPullRecorded: false });
+        expect(result).toMatchObject({ rewarded: true, armPullRecorded: true });
         expect(db.updatePersonalizationDecisionReward).toHaveBeenCalled();
-        expect(db.recordPersonalizationArmPull).not.toHaveBeenCalled();
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalled();
     });
 
     test('explicit helpful feedback pulls the bandit arm immediately', async () => {

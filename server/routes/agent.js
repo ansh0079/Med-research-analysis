@@ -88,11 +88,22 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                 });
             }
 
-            // Close the agent_teaching_strategy bandit reward loop
+            // Close the agent_teaching_strategy bandit reward loop with
+            // arm-aware rewards so "too basic/complex" teach the right strategy.
             if (banditMeta?.policyType && banditMeta?.armId) {
-                const reward = type === 'helpful' ? 1 : (type === 'not_helpful' ? 0 : 0.5);
-                recordBanditReward(db, banditMeta.policyType, banditMeta.armId, reward, req.user.id)
-                    .catch((err) => logger.warn({ err, armId: banditMeta.armId }, 'agent teaching bandit reward failed'));
+                const armId = String(banditMeta.armId);
+                let reward = 0.5;
+                if (type === 'helpful') reward = 1;
+                else if (type === 'not_helpful' || type === 'missed_question') reward = 0;
+                else if (type === 'too_basic') {
+                    // Prefer Socratic / worked-example over direct lecture.
+                    reward = (armId === 'direct') ? 0.15 : (armId === 'socratic' || armId === 'worked_example') ? 0.85 : 0.45;
+                } else if (type === 'too_complex') {
+                    // Prefer direct / analogy over dense Socratic chains.
+                    reward = (armId === 'socratic') ? 0.15 : (armId === 'direct' || armId === 'analogy') ? 0.85 : 0.45;
+                }
+                recordBanditReward(db, banditMeta.policyType, armId, reward, req.user.id)
+                    .catch((err) => logger.warn({ err, armId }, 'agent teaching bandit reward failed'));
             }
 
             // Mentor memory panel feedback also trains recommendation refresh arm.

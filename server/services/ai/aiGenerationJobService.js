@@ -59,32 +59,126 @@ function synthesisToClinicalAnswer(synthesis) {
     };
 }
 
-async function generateLiveClinicalAnswer({ topic, articles = [], guidelines = [], previousQueries = [], trainingStage = null, sessionDepth = 0, serverConfig, fetchImpl }) {
-    const topArticles = (articles || []).slice(0, 5);
-    if (topArticles.length === 0) return null;
+async function generateLiveClinicalAnswer({
+    topic,
+    articles = [],
+    guidelines = [],
+    previousQueries = [],
+    trainingStage = null,
+    sessionDepth = 0,
+    serverConfig,
+    fetchImpl,
+    cache = null,
+    db = null,
+}) {
+    const seedArticles = (articles || []).slice(0, 8);
+    if (seedArticles.length === 0) return null;
+
+    const { batchCheckRetractions } = require('../qualityService');
+    const { validateMedicalOutputCitations } = require('../citationValidator');
+    const { validateAiOutput } = require('../aiOutputValidation');
+
+    const retractionResults = await batchCheckRetractions(seedArticles).catch((err) => {
+        logger.warn({ err }, 'live CA batchCheckRetractions failed');
+        return {};
+    });
+    const nonRetracted = seedArticles.filter((a) => {
+        const key = a.uid || a.doi || a.pmid;
+        const hit = key ? retractionResults[key] : null;
+        return !(hit && hit.isRetracted);
+    });
+    const enriched = cache
+        ? await enrichWithCachedFullText(nonRetracted.slice(0, 5), cache, db).catch(() => nonRetracted.slice(0, 5))
+        : nonRetracted.slice(0, 5);
+    const topArticles = enriched.length ? enriched : nonRetracted.slice(0, 5);
+    if (topArticles.length === 0) {
+        return {
+            clinicalAnswer: null,
+            synthesis: null,
+            provider: null,
+            model: null,
+            blocked: true,
+            reason: 'all_sources_retracted',
+        };
+    }
+
     const ai = getSharedAiService({ serverConfig, fetchImpl });
     const prompt = buildSynthesisPrompt(topArticles, topic, guidelines, { previousQueries, trainingStage, sessionDepth });
     const { provider, model } = resolveProvider({ provider: 'auto', model: PINNED_MODELS.geminiQuality }, serverConfig);
     if (!provider) {
         return { clinicalAnswer: null, synthesis: null, provider: null, model: null };
     }
-    const synthesis = await ai.callStructured(prompt, provider, model, {
+    const synthesisRaw = await ai.callStructured(prompt, provider, model, {
         temperature: 0.2,
         allowBudgetSkip: true,
         usage: { operation: 'live_clinical_answer', topic },
     });
-    if (!synthesis) {
+    if (!synthesisRaw) {
         return { clinicalAnswer: null, synthesis: null, provider, model, budgetSkipped: true };
     }
+
+    const validated = validateAiOutput('full_synthesis', synthesisRaw, { allowDegrade: true });
+    let synthesis = synthesisRaw;
+    if (validated?.ok) {
+        synthesis = validated.data;
+    } else if (validated?.degraded) {
+        synthesis = { ...synthesisRaw, ...validated.degraded };
+        logger.warn({ errors: validated.errors, topic }, 'Live clinical answer degraded after validation');
+    }
+    const citationValidation = validateMedicalOutputCitations(synthesis, {
+        sourceCount: topArticles.length,
+        guidelineCount: Array.isArray(guidelines) ? guidelines.length : 0,
+        requiredPaths: ['clinicalBottomLine', 'overallAnswer'],
+    });
+    const clinicalAnswer = synthesisToClinicalAnswer(synthesis);
+    const fullTextIndexedCount = topArticles.filter((a) => a._fullTextIndexed || a.fullTextIndexed).length;
+    const fullTextCoverageRatio = topArticles.length
+        ? fullTextIndexedCount / topArticles.length
+        : 0;
+    const warnings = [];
+    if (fullTextCoverageRatio < 0.3) {
+        warnings.push({
+            severity: 'HIGH',
+            code: 'LOW_FULLTEXT_COVERAGE',
+            message: `Only ${Math.round(fullTextCoverageRatio * 100)}% of live-answer sources had full text.`,
+        });
+    }
+    if (citationValidation && citationValidation.ok === false) {
+        warnings.push({
+            severity: 'MEDIUM',
+            code: 'CITATION_VALIDATION_FAILED',
+            message: 'Live clinical answer citations need review.',
+            issueCount: citationValidation.issueCount || 0,
+        });
+        if (clinicalAnswer) {
+            clinicalAnswer.unverified = true;
+            clinicalAnswer.citationWarning = true;
+        }
+    }
+    const retractedExcluded = seedArticles.length - nonRetracted.length;
+    if (retractedExcluded > 0) {
+        warnings.push({
+            severity: 'HIGH',
+            code: 'RETRACTIONS_EXCLUDED',
+            message: 'Retracted sources were excluded from the live clinical answer.',
+        });
+    }
+
     return {
-        clinicalAnswer: synthesisToClinicalAnswer(synthesis),
+        clinicalAnswer,
         synthesis,
         provider,
         model,
         audit: {
             promptHash: crypto.createHash('md5').update(prompt).digest('hex'),
             sourceCount: topArticles.length,
+            citationValidation,
+            fullTextCoverageRatio,
+            retractedExcluded,
+            warnings: warnings.length ? warnings : null,
+            schemaDegraded: Boolean(!validated?.ok && validated?.degraded),
         },
+        warnings: warnings.length ? warnings : null,
     };
 }
 
@@ -275,6 +369,8 @@ async function getOrEnqueueLiveClinicalAnswer({ db, topic, articles = [], guidel
                 sessionDepth,
                 serverConfig,
                 fetchImpl,
+                cache,
+                db,
             });
             return { status: 'completed', jobKey: resolvedJobKey, ...(generated || {}) };
         } catch (err) {

@@ -164,7 +164,16 @@ function registerSynthesisRoutes(app, {
                 sendSSE(res, 'chunk', { text: chunk });
             }
 
-            const synthesis = parseSynthesisText(rawText);
+            let synthesis = parseSynthesisText(rawText);
+            // Harden the streamed path the same way as async full synthesis.
+            const { validateAiOutput } = require('../../services/aiOutputValidation');
+            const validated = validateAiOutput('full_synthesis', synthesis, { allowDegrade: true });
+            if (validated.ok) {
+                synthesis = validated.data;
+            } else if (validated.degraded) {
+                synthesis = { ...synthesis, ...validated.degraded };
+                req.log?.warn?.({ errors: validated.errors, topic }, 'Stream synthesis degraded after validation');
+            }
             synthesis._contextArticles = context.enrichedArticles || context.topArticles;
             const citationValidation = await validateSynthesisCitations(synthesis, {
                 sourceCount: context.topArticles.length,

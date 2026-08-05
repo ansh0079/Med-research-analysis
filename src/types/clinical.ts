@@ -20,6 +20,9 @@ export interface ClinicalAnswer {
   whatIsNew?: string | null;
   /** Proactive alert prepended when new landmark evidence arrived since last visit. */
   _proactiveAlert?: string;
+  /** Set when citation validation failed on the live clinical-answer path. */
+  unverified?: boolean;
+  citationWarning?: boolean;
 }
 
 export interface Contradiction {

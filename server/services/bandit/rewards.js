@@ -8,16 +8,28 @@ const {
 } = require('./constants');
 const { scopeKeyForUser } = require('./sampling');
 
+function normalizeBanditArmId(policyType, armId) {
+    const raw = String(armId || '').trim();
+    if (!raw) return raw;
+    // Map legacy anonymous search arm onto the canonical heuristic arm.
+    if (policyType === POLICY_SEARCH_RANKING && raw === 'organic') {
+        return 'heuristic_default';
+    }
+    return raw;
+}
+
 async function recordBanditReward(db, policyType, armId, reward, userId = null) {
     if (!db?.recordPersonalizationArmPull || !armId) return;
+    const normalizedArmId = normalizeBanditArmId(policyType, armId);
+    if (!normalizedArmId) return;
     const scopeKey = userId ? scopeKeyForUser(userId) : 'global';
-    await db.recordPersonalizationArmPull(policyType, armId, reward, scopeKey).catch((err) => {
-        logger.warn({ err, policyType, armId }, 'recordPersonalizationArmPull failed');
+    await db.recordPersonalizationArmPull(policyType, normalizedArmId, reward, scopeKey).catch((err) => {
+        logger.warn({ err, policyType, armId: normalizedArmId }, 'recordPersonalizationArmPull failed');
     });
     // Anonymous (no-user) rewards already write to 'global' above — don't double-count.
     if (scopeKey !== 'global') {
-        await db.recordPersonalizationArmPull(policyType, armId, reward, 'global').catch((err) => {
-            logger.warn({ err, policyType, armId }, 'recordPersonalizationArmPull global failed');
+        await db.recordPersonalizationArmPull(policyType, normalizedArmId, reward, 'global').catch((err) => {
+            logger.warn({ err, policyType, armId: normalizedArmId }, 'recordPersonalizationArmPull global failed');
         });
     }
 }
@@ -65,5 +77,6 @@ async function reconcileImpressionRewards(db, { days = 7 } = {}) {
 
 module.exports = {
     recordBanditReward,
+    normalizeBanditArmId,
     reconcileImpressionRewards,
 };

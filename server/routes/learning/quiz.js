@@ -16,7 +16,7 @@ const {
 } = require('../../services/searchLearningOutcomeService');
 const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('../../services/learningSignalService');
 const {
-    calculateMastery, nextReviewDate, updateStreak,
+    calculateMastery, calculateMasteryWithBkt, nextReviewDate, updateStreak,
     buildOutline, initialCoverage, updateCoverage, summarizeRunGaps,
     textIncludes, inferEvidenceJudgement, normalizeAttemptClaimKey,
 } = require('../../utils/learningUtils');
@@ -258,9 +258,13 @@ function registerQuizRoutes(app, deps) {
                 });
             }
 
-            // Recalculate mastery
+            // Recalculate mastery — blend claim-level BKT when available so
+            // dashboard mastery agrees with the claim tutor model.
             const stats = await db.getQuizAttemptStats(userId, topic);
-            const mastery = calculateMastery(stats);
+            const bktAbility = typeof db.getTopicBktAbility === 'function'
+                ? await db.getTopicBktAbility(userId, topic).catch(() => null)
+                : null;
+            const mastery = calculateMasteryWithBkt(stats, bktAbility);
             const totalAttempts = stats.length;
             const correctCount = stats.filter((s) => s.is_correct === 1).length;
 

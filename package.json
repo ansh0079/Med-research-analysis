@@ -87,6 +87,8 @@
     "test:search-pipeline-integration": "npx jest --testPathPatterns=searchPipeline.integration --no-coverage",
     "eval:offline-policy": "node scripts/eval-offline-policy.js",
     "eval:offline-policy:strict": "node scripts/eval-offline-policy.js --strict",
+    "eval:arm-lift": "node scripts/eval-arm-lift.js",
+    "eval:arm-lift:report": "node scripts/eval-arm-lift.js --format=markdown",
     "test:offline-policy": "npx jest --testPathPatterns=p4OfflinePolicyEval|policyReplayEvaluator --no-coverage",
     "check:service-boundaries": "node tools/check-service-boundaries.js",
     "test:platform-hardening": "npx jest --testPathPatterns=p5PlatformHardening|productionObservabilityService|eventBus|userInteractionService|appErrors|recommendationService --no-coverage",

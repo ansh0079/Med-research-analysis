@@ -82,6 +82,7 @@ export interface LowRecallLearning {
   resultCount: number;
   aliases: string[];
   aliasCount: number;
+  reason?: 'pubmed_zero_hit' | 'sparse_ranked_results' | string;
 }
 
 export interface SearchResponse {

@@ -179,12 +179,15 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
       setError(null);
 
       const history = messages.slice(-10);
-      const articleSubset = currentArticles.slice(0, 6).map((a) => ({
+      // Ground mentor on the same personalized ranking the learner sees (top 10).
+      const articleSubset = currentArticles.slice(0, 10).map((a) => ({
         uid: a.uid,
         title: a.title,
         abstract: a.abstract,
         pubdate: a.pubdate,
         _synapseTopics: a._synapseTopics,
+        _learningBoost: a._learningBoost,
+        _learnerAdaptationReason: a._learnerAdaptationReason,
       }));
 
       let convId = conversationId;
@@ -227,11 +230,15 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
               if (doneConvId != null) {
                 setConversationId(doneConvId);
               }
-              const newIndex = messages.length;
-              setMessages((prev) => [...prev, { role: 'assistant', content: reply }]);
-              if (doneBanditMeta) {
-                setBanditMetaByIndex((prev) => ({ ...prev, [newIndex]: doneBanditMeta }));
-              }
+              // Index must be derived from the updater's prev length — using the
+              // closed-over messages.length attaches meta to the wrong bubble.
+              setMessages((prev) => {
+                const newIndex = prev.length;
+                if (doneBanditMeta) {
+                  setBanditMetaByIndex((metaPrev) => ({ ...metaPrev, [newIndex]: doneBanditMeta }));
+                }
+                return [...prev, { role: 'assistant', content: reply }];
+              });
               setStreamingContent('');
             },
             onError: (msg) => setError(msg),
