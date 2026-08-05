@@ -5,6 +5,8 @@
  * "what did this interaction teach the system?"
  */
 
+const { attributionConfidenceForSource } = require('./attributionConfidence');
+
 const REWARD_FIRST_CORRECT = 1.0;
 const REWARD_REPEAT_CORRECT = 0.25;
 const REWARD_WRONG = -0.1;
@@ -94,10 +96,36 @@ function explainInteractionReward({
         components.unshift({ source: 'interaction_type', value: interactionType });
     }
 
+    let sourceEvent = interactionType || 'default';
+    if (feedbackType) sourceEvent = feedbackType === 'helpful' ? 'search_feedback_helpful' : 'search_feedback_not_helpful';
+    else if (quizAttempt) {
+        sourceEvent = !quizAttempt.isCorrect
+            ? 'quiz_wrong'
+            : (quizAttempt.isFirstAttempt ? 'quiz_first_correct' : 'quiz_repeat_correct');
+    } else if (impression) {
+        sourceEvent = impression.was_saved ? 'impression_saved'
+            : (impression.dwell_time_ms || 0) >= 12000 ? 'impression_dwell'
+                : impression.was_clicked ? 'impression_click'
+                    : 'impression_engagement';
+    } else if (recommendationEventType) {
+        sourceEvent = 'recommendation_follow_through';
+    }
+
+    const attributionConfidence = attributionConfidenceForSource(sourceEvent, {
+        feedbackType,
+        isCorrect: quizAttempt?.isCorrect,
+        isFirstAttempt: quizAttempt?.isFirstAttempt,
+        wasSaved: Boolean(impression?.was_saved),
+        wasClicked: Boolean(impression?.was_clicked),
+        dwellMs: Number(impression?.dwell_time_ms || 0),
+    });
+
     return {
         interactionType: interactionType || null,
         totalReward: Math.max(-1, Math.min(1, total)),
         components,
+        sourceEvent,
+        attributionConfidence,
     };
 }
 

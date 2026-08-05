@@ -273,6 +273,7 @@ async function runPaperSynopsisGenerationInner({
         fullTextCoverageRatio,
         priorReviewState,
         article: enriched,
+        guidelines,
     });
     synopsis = trustProcessed.synopsis;
     const result = {

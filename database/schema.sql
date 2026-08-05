@@ -618,7 +618,30 @@ CREATE TABLE IF NOT EXISTS personalization_decisions (
     delayed_reward REAL,
     total_reward REAL,
     reward_computed_at DATETIME,
+    attribution_confidence REAL,
+    source_event TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS user_synopsis_style_memory (
+    user_id TEXT NOT NULL,
+    style_arm_id TEXT NOT NULL,
+    preference_score REAL NOT NULL DEFAULT 0,
+    updates INTEGER NOT NULL DEFAULT 0,
+    updated_at TEXT NOT NULL,
+    PRIMARY KEY (user_id, style_arm_id)
+);
+
+CREATE TABLE IF NOT EXISTS search_counterfactual_rankings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    search_id INTEGER,
+    user_id TEXT,
+    served_arm_id TEXT NOT NULL,
+    shadow_arm_id TEXT NOT NULL,
+    served_uids_json TEXT NOT NULL DEFAULT '[]',
+    shadow_uids_json TEXT NOT NULL DEFAULT '[]',
+    propensity REAL,
+    created_at TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS pico_extractions (

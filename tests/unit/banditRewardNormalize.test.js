@@ -18,7 +18,8 @@ describe('bandit reward normalization', () => {
             POLICY_SEARCH_RANKING,
             'heuristic_default',
             0.5,
-            expect.any(String)
+            expect.any(String),
+            expect.any(Number)
         );
     });
 });

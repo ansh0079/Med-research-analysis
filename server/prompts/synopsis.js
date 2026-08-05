@@ -210,15 +210,26 @@ Return a single JSON object with EXACTLY these fields:
   "whatNotToOverclaim": ["unsupported claim to avoid", "second overclaim to avoid"],
   "quizFocusPoints": ["concept to quiz the doctor on", "second quiz focus"],
   "trustRating": "HIGH | MODERATE | LOW | VERY_LOW",
-  "trustRationale": "One sentence explaining the trust rating based on study design, sample size, and risk of bias"
+  "trustRationale": "One sentence explaining the trust rating based on study design, sample size, and risk of bias",
+  "paperSignificance": "landmark | practice_changing | confirmatory | niche | weak | underpowered | hypothesis_generating",
+  "whyThisPaperMatters": "One sentence calibrating why a clinician should care (or not) about this paper",
+  "evidenceSpans": [
+    { "field": "bottomLine", "quote": "verbatim phrase from abstract/full text supporting the bottom line" },
+    { "field": "mainFindings", "quote": "verbatim phrase supporting the key numerical finding" }
+  ],
+  "evidenceConflicts": [
+    { "level": "major|minor|nuanced", "versus": "guideline|landmark_trial|prior_evidence", "summary": "How this result differs from prior X/Y evidence", "detail": "optional nuance" }
+  ]
 }
 
 Rules:
 - Be especially careful not to turn a neutral result into a positive recommendation.
 - Every factual claim in mainFindings, bottomLine, and clinicalMeaning MUST include an inline source citation [1] (this paper is source 1).
+- evidenceSpans quotes MUST be verbatim substrings from the article abstract or full-text excerpts above (not paraphrases). Include spans for bottomLine and mainFindings at minimum when those fields are non-null.
 - If a field cannot be tied to the article text, set it to null rather than inventing content.
-- If the study is underpowered, stopped early, highly selected, open-label, industry-funded, or has safety concerns, mention that under weaknesses/safety/practice implication if stated.
-- If guideline or topic context is supplied, use it to explain clinicalMeaning/practiceImplication and conflicts with current practice, but keep all study results grounded in the article text.
+- If the study is underpowered, stopped early, highly selected, open-label, industry-funded, or has safety concerns, mention that under weaknesses/safety/practice implication if stated and set paperSignificance accordingly.
+- If guideline or topic context is supplied, use it to explain clinicalMeaning/practiceImplication and populate evidenceConflicts when the paper conflicts with major guidelines or landmark trials; keep all study results grounded in the article text. Use [] when no conflict.
+- Calibrate paperSignificance using design, sample size, citations implied by context, and whether findings are practice-changing vs confirmatory vs hypothesis-generating.
 - The bottomLine should be clinically useful and conservative.
 - Return ONLY the JSON object. No markdown, no preamble.`;
 }

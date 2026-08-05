@@ -351,14 +351,26 @@ function registerSynthesisRoutes(app, {
                     trainingStage,
                 }).catch((err) => { logger.warn({ err }, 'synopsis feedback logEvent failed'); return null; });
             }
-            // Close the synopsis_style bandit reward loop
+            // Close the synopsis_style bandit reward loop (+ style memory convergence)
             if (banditMeta?.policyType && banditMeta?.armId) {
                 const reward = synopsisFeedbackReward(type, reason);
                 // reward === 0 means "not this arm's fault" (e.g. a factual/trust
                 // complaint) — don't touch the style arm's posterior at all.
                 if (reward !== 0) {
-                    recordBanditReward(db, banditMeta.policyType, banditMeta.armId, reward, req.user?.id ?? null)
-                        .catch((err) => logger.warn({ err, armId: banditMeta.armId }, 'synopsis bandit reward failed'));
+                    const sourceEvent = type === 'helpful'
+                        ? 'synopsis_feedback_helpful'
+                        : 'synopsis_feedback_not_helpful';
+                    const { attributionConfidenceForSource } = require('../../services/learning/attributionConfidence');
+                    const confidence = attributionConfidenceForSource(sourceEvent);
+                    recordBanditReward(db, banditMeta.policyType, banditMeta.armId, reward, req.user?.id ?? null, {
+                        confidence,
+                        sourceEvent,
+                    }).catch((err) => logger.warn({ err, armId: banditMeta.armId }, 'synopsis bandit reward failed'));
+                    if (req.user?.id && banditMeta.policyType === 'synopsis_style') {
+                        const { updateSynopsisStyleMemory } = require('../../services/ai/synopsisStyleMemoryService');
+                        updateSynopsisStyleMemory(db, req.user.id, banditMeta.armId, reward)
+                            .catch((err) => logger.warn({ err }, 'synopsis style memory update failed'));
+                    }
                 }
             }
 

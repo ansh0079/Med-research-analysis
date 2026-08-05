@@ -133,6 +133,15 @@ export interface ArticleSynopsisFields {
   trustRating: TrustRating;
   trustRationale: string | null;
   citationCheckPassed?: boolean;
+  paperSignificance?: 'landmark' | 'practice_changing' | 'confirmatory' | 'niche' | 'weak' | 'underpowered' | 'hypothesis_generating' | string | null;
+  whyThisPaperMatters?: string | null;
+  evidenceSpans?: Array<{ field?: string; quote?: string; score?: number }>;
+  evidenceConflicts?: Array<{
+    level?: string;
+    versus?: string;
+    summary?: string;
+    detail?: string | null;
+  }>;
 }
 
 export type SynopsisReviewState = 'unreviewed' | 'machine_checked' | 'human_reviewed' | 'needs_revision';

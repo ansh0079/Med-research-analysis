@@ -195,6 +195,7 @@ function processPaperSynopsisTrust(synopsis, {
     fullTextCoverageRatio = 0,
     priorReviewState = null,
     article = null,
+    guidelines = [],
 } = {}) {
     const abstractOnly = isAbstractOnlySource(fullTextCoverageRatio);
     let nextSynopsis = applyAbstractOnlySynopsisTrust(synopsis, abstractOnly);
@@ -208,15 +209,37 @@ function processPaperSynopsisTrust(synopsis, {
     } else {
         citationValidation.citationRelevance = relevance.citationRelevance;
     }
+
+    const { applySynopsisSpanGrounding } = require('./synopsisSpanGroundingService');
+    const { applyPaperSignificance } = require('./synopsisPaperSignificance');
+    const { applySynopsisContradictionFlags } = require('./synopsisContradictionService');
+
+    const spanResult = applySynopsisSpanGrounding(nextSynopsis, article);
+    nextSynopsis = spanResult.synopsis;
+    const significanceResult = applyPaperSignificance(nextSynopsis, article);
+    nextSynopsis = significanceResult.synopsis;
+    const contradictionResult = applySynopsisContradictionFlags(nextSynopsis, { guidelines });
+    nextSynopsis = contradictionResult.synopsis;
+
     if (abstractOnly) {
         nextSynopsis.trustRating = capTrustRatingForAbstractOnly(nextSynopsis.trustRating);
     }
+    if (spanResult.spanGrounding && spanResult.spanGrounding.ok === false) {
+        nextSynopsis.trustRating = minTrustRating(nextSynopsis.trustRating || 'MODERATE', 'LOW');
+    }
+
     const audit = buildPaperSynopsisTrustAudit({
         synopsis: nextSynopsis,
         citationValidation,
         fullTextCoverageRatio,
         priorReviewState,
-        extra: { citationRelevance: relevance.citationRelevance },
+        extra: {
+            citationRelevance: relevance.citationRelevance,
+            spanGrounding: spanResult.spanGrounding,
+            paperSignificance: nextSynopsis.paperSignificance || null,
+            paperSignificanceCalibration: significanceResult.paperSignificanceAudit || null,
+            evidenceConflicts: contradictionResult.contradictionAudit || null,
+        },
     });
     return { synopsis: nextSynopsis, audit, abstractOnly, citationValidation };
 }

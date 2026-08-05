@@ -27,34 +27,39 @@ module.exports = (Sup) => class extends Sup {
         );
     }
 
-    async recordPersonalizationArmPull(policyType, armId, reward, scopeKey = 'global') {
+    async recordPersonalizationArmPull(policyType, armId, reward, scopeKey = 'global', confidence = 1) {
         if (!this.kysely || !policyType || !armId) return null;
         const now = new Date().toISOString();
         // Rewards range [-1, 1] (see rewardAttributionService.js). Rescale to a
         // [0, 1] pseudo-success weight so the Beta posterior reflects reward
         // magnitude instead of collapsing every pull to a binary hit/miss.
+        // Attribution confidence scales how hard the update hits the posterior.
         const r = Math.max(-1, Math.min(1, Number(reward) || 0));
+        const c = Math.max(0.05, Math.min(1, Number(confidence) || 1));
         const successWeight = (r + 1) / 2;
+        const alphaDelta = successWeight * c;
+        const betaDelta = (1 - successWeight) * c;
         await this.ensurePersonalizationArms(policyType, [armId], scopeKey);
         await this.run(
             `UPDATE personalization_arm_state
              SET alpha = alpha + ?,
                  beta = beta + ?,
-                 pulls = pulls + 1,
+                 pulls = pulls + ?,
                  total_reward = total_reward + ?,
                  updated_at = ?
              WHERE policy_type = ? AND arm_id = ? AND scope_key = ?`,
             [
-                successWeight,
-                1 - successWeight,
-                r,
+                alphaDelta,
+                betaDelta,
+                c,
+                r * c,
                 now,
                 String(policyType),
                 String(armId),
                 String(scopeKey),
             ]
         );
-        return { policyType, armId, scopeKey, reward: r, successWeight };
+        return { policyType, armId, scopeKey, reward: r, successWeight, confidence: c, alphaDelta, betaDelta };
     }
 
     async insertPersonalizationDecision({
@@ -69,14 +74,22 @@ module.exports = (Sup) => class extends Sup {
         immediateReward = null,
         delayedReward = null,
         totalReward = null,
+        attributionConfidence = null,
+        sourceEvent = null,
     }) {
         if (!this.kysely || !policyType || !armId) return null;
         const now = new Date().toISOString();
+        const ctx = {
+            ...(context || {}),
+            ...(attributionConfidence != null ? { attributionConfidence: Number(attributionConfidence) } : {}),
+            ...(sourceEvent ? { sourceEvent: String(sourceEvent) } : {}),
+        };
         const result = await this.run(
             `INSERT INTO personalization_decisions (
                 user_id, policy_type, arm_id, search_id, topic, normalized_topic, article_uid,
-                context_json, immediate_reward, delayed_reward, total_reward, reward_computed_at, created_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                context_json, immediate_reward, delayed_reward, total_reward, reward_computed_at,
+                attribution_confidence, source_event, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 userId ? String(userId) : null,
                 String(policyType),
@@ -85,11 +98,13 @@ module.exports = (Sup) => class extends Sup {
                 topic ? String(topic).slice(0, 240) : null,
                 normalizedTopic ? String(normalizedTopic).slice(0, 240) : null,
                 articleUid ? String(articleUid).slice(0, 120) : null,
-                JSON.stringify(context || {}),
+                JSON.stringify(ctx),
                 immediateReward != null ? Number(immediateReward) : null,
                 delayedReward != null ? Number(delayedReward) : null,
                 totalReward != null ? Number(totalReward) : null,
                 totalReward != null ? now : null,
+                attributionConfidence != null ? Number(attributionConfidence) : null,
+                sourceEvent ? String(sourceEvent).slice(0, 120) : null,
                 now,
             ]
         );
@@ -212,7 +227,13 @@ module.exports = (Sup) => class extends Sup {
         );
     }
 
-    async updatePersonalizationDecisionReward(decisionId, { immediateReward, delayedReward, totalReward }) {
+    async updatePersonalizationDecisionReward(decisionId, {
+        immediateReward,
+        delayedReward,
+        totalReward,
+        attributionConfidence = null,
+        sourceEvent = null,
+    }) {
         if (!this.kysely || !decisionId) return null;
         const now = new Date().toISOString();
         await this.run(
@@ -220,17 +241,33 @@ module.exports = (Sup) => class extends Sup {
              SET immediate_reward = COALESCE(?, immediate_reward),
                  delayed_reward = COALESCE(?, delayed_reward),
                  total_reward = COALESCE(?, total_reward),
+                 attribution_confidence = COALESCE(?, attribution_confidence),
+                 source_event = COALESCE(?, source_event),
                  reward_computed_at = ?
              WHERE id = ?`,
             [
                 immediateReward != null ? Number(immediateReward) : null,
                 delayedReward != null ? Number(delayedReward) : null,
                 totalReward != null ? Number(totalReward) : null,
+                attributionConfidence != null ? Number(attributionConfidence) : null,
+                sourceEvent ? String(sourceEvent).slice(0, 120) : null,
                 now,
                 Number(decisionId),
             ]
         );
         return true;
+    }
+
+    async listPersonalizationDecisionsForLedger({
+        policyType = '',
+        userId = '',
+        days = 7,
+        limit = 50,
+        offset = 0,
+        onlyWithReward = false,
+    } = {}) {
+        const { listLearningLedger } = require('../../server/services/ops/learningLedgerService');
+        return listLearningLedger(this, { policyType, userId, days, limit, offset, onlyWithReward });
     }
 
     mapPersonalizationArmRow(row) {
@@ -262,6 +299,8 @@ module.exports = (Sup) => class extends Sup {
             immediateReward: row.immediate_reward != null ? Number(row.immediate_reward) : null,
             delayedReward: row.delayed_reward != null ? Number(row.delayed_reward) : null,
             totalReward: row.total_reward != null ? Number(row.total_reward) : null,
+            attributionConfidence: row.attribution_confidence != null ? Number(row.attribution_confidence) : null,
+            sourceEvent: row.source_event || null,
             rewardComputedAt: row.reward_computed_at,
             createdAt: row.created_at,
         };
