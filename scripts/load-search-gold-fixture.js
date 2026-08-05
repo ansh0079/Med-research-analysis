@@ -71,6 +71,9 @@ function loadSearchGoldFixture(primaryPath, options = {}) {
     const dir = path.dirname(fullPrimary);
     const expansionPath = options.expansionPath
         || path.join(dir, 'search-quality-gold-expansion.json');
+    // NL clinical queries are opt-in so PMID alias-coverage CI gates stay stable.
+    // Eval scripts should pass includeNlClinical: true.
+    const includeNlClinical = options.includeNlClinical === true;
     const nlClinicalPath = options.nlClinicalPath
         || path.join(dir, 'search-quality-gold-nl-clinical.json');
 
@@ -84,7 +87,9 @@ function loadSearchGoldFixture(primaryPath, options = {}) {
         fixture.overrideCount = Array.isArray(expansion.queryOverrides) ? expansion.queryOverrides.length : 0;
     }
 
-    loadExtraQueryFile(fixture, nlClinicalPath, 'nlClinicalLoaded');
+    if (includeNlClinical) {
+        loadExtraQueryFile(fixture, nlClinicalPath, 'nlClinicalLoaded');
+    }
 
     fixture.queries = (fixture.queries || []).map(normalizeQueryRelevantUids);
     fixture.queryCount = Array.isArray(fixture.queries) ? fixture.queries.length : 0;

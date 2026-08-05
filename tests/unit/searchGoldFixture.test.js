@@ -4,11 +4,11 @@ const { loadSearchGoldFixture } = require('../../scripts/load-search-gold-fixtur
 const { inferQueryCategory, evaluateSearchResults, summarizeSearchEval } = require('../../server/services/searchQualityEvalService');
 
 describe('search gold fixture loader', () => {
-    test('loads base + expansion + NL clinical fixtures', () => {
+    test('loads base + expansion by default (NL clinical opt-in)', () => {
         const fixture = loadSearchGoldFixture('tests/fixtures/search-quality-gold.json');
-        expect(fixture.queryCount).toBeGreaterThanOrEqual(80);
+        expect(fixture.queryCount).toBeGreaterThanOrEqual(65);
         expect(fixture.expansionQueryCount).toBe(25);
-        expect(fixture.nlClinicalLoadedQueryCount).toBe(15);
+        expect(fixture.nlClinicalLoadedQueryCount).toBeUndefined();
     });
 
     test('applies off-topic overrides from expansion file', () => {
@@ -18,8 +18,13 @@ describe('search gold fixture loader', () => {
         expect(sglt2?.category).toBe('landmark_rct');
     });
 
-    test('NL clinical queries carry graded relevance and intent categories', () => {
-        const fixture = loadSearchGoldFixture('tests/fixtures/search-quality-gold.json');
+    test('NL clinical queries carry graded relevance and intent categories when opted in', () => {
+        const fixture = loadSearchGoldFixture('tests/fixtures/search-quality-gold.json', {
+            includeNlClinical: true,
+        });
+        expect(fixture.queryCount).toBeGreaterThanOrEqual(80);
+        expect(fixture.nlClinicalLoadedQueryCount).toBe(15);
+
         const nl = fixture.queries.find((row) => row.query.includes('first hour of septic shock'));
         expect(nl?.category).toBe('management_intent');
         expect(nl?.relevanceGrades?.['28101605']).toBe(3);

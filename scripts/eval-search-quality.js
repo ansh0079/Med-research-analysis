@@ -241,7 +241,7 @@ async function fetchNew(query) {
 }
 
 async function runGoldEval(goldPath) {
-    const fixture = loadSearchGoldFixture(goldPath);
+    const fixture = loadSearchGoldFixture(goldPath, { includeNlClinical: true });
     const queries = Array.isArray(fixture.queries) ? fixture.queries : [];
     const k = Number(fixture.k || LIMIT);
     if (queries.length === 0) {
@@ -252,6 +252,9 @@ async function runGoldEval(goldPath) {
     console.log(`Base: ${BASE}   Fixture: ${goldPath}   Queries: ${queries.length}   K: ${k}`);
     if (fixture.expansionQueryCount) {
         console.log(`Expansion queries: ${fixture.expansionQueryCount}   Overrides: ${fixture.overrideCount || 0}`);
+    }
+    if (fixture.nlClinicalLoadedQueryCount) {
+        console.log(`NL clinical queries: ${fixture.nlClinicalLoadedQueryCount}`);
     }
     console.log('');
 
