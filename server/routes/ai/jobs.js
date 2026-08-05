@@ -6,6 +6,9 @@
  * helper dependencies.
  */
 
+const { overlayTeachingClaimTrust } = require('../../services/claimTrustOverlayService');
+const logger = require('../../config/logger');
+
 /**
  * @param {import('express').Application} app
  * @param {object} deps
@@ -80,7 +83,16 @@ function registerAiJobRoutes(app, { db, requireAuthJwt, rateLimit }) {
             if (!jobKey || jobKey.length > 160) {
                 return res.status(400).json({ error: 'Valid jobKey is required' });
             }
-            const claims = await db.listAiGenerationClaimsByJobKey(jobKey);
+            const rawClaims = await db.listAiGenerationClaimsByJobKey(jobKey);
+            let topic = null;
+            if (typeof db.getAiGenerationJobByKey === 'function') {
+                const job = await db.getAiGenerationJobByKey(jobKey).catch(() => null);
+                topic = job?.topic || null;
+            }
+            const claims = await overlayTeachingClaimTrust(db, rawClaims, { topic }).catch((err) => {
+                logger.warn({ err, jobKey }, 'overlayTeachingClaimTrust failed');
+                return rawClaims;
+            });
             res.json({ jobKey, claims, count: claims.length });
         } catch (error) {
             req.log.error({ err: error }, 'AI generation claims fetch error');

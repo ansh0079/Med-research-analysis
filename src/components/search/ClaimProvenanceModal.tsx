@@ -9,7 +9,16 @@ export type AiJobClaimRow = {
   sourceIds?: string[];
   evidenceQuote?: string | null;
   validationStatus?: string;
+  /** Curator trust from teaching_object_claims when overlay matched. */
+  verificationStatus?: string;
+  teachingClaimKey?: string;
   confidence?: number | null;
+  trustOverlay?: {
+    matchedBy?: string;
+    teachingClaimKey?: string;
+    verificationStatus?: string;
+    applied?: boolean;
+  } | null;
 };
 
 interface RichClaim {
@@ -69,26 +78,27 @@ export const ClaimProvenanceModal: React.FC<ClaimProvenanceModalProps> = ({
   const [contradictionsError, setContradictionsError] = useState<string | null>(null);
 
   const isInline = !claim?.claimKey || String(claim.claimKey).startsWith('inline-');
+  const teachingLookupKey = claim?.teachingClaimKey || claim?.claimKey || '';
 
   useEffect(() => {
-    if (!open || !claim?.claimKey || isInline) {
+    if (!open || !teachingLookupKey || isInline) {
       setRichClaim(null);
       return;
     }
     setRichLoading(true);
-    api.ai.getTeachingClaim(claim.claimKey)
+    api.ai.getTeachingClaim(teachingLookupKey)
       .then(setRichClaim)
       .catch(() => setRichClaim(null))
       .finally(() => setRichLoading(false));
-  }, [open, claim?.claimKey, isInline]);
+  }, [open, teachingLookupKey, isInline]);
 
   useEffect(() => {
-    if (!open || !claim?.claimKey || isInline) {
+    if (!open || !teachingLookupKey || isInline) {
       setAttempts([]);
       return;
     }
     setAttemptsLoading(true);
-    api.ai.getQuizAttemptsForClaim(claim.claimKey, 40)
+    api.ai.getQuizAttemptsForClaim(teachingLookupKey, 40)
       .then((r) => setAttempts(
         (r.attempts || []).map((a: { id: number; isCorrect: boolean; createdAt: string; questionText: string }) => ({
           id: a.id, isCorrect: a.isCorrect, createdAt: a.createdAt, questionText: a.questionText,
@@ -96,7 +106,7 @@ export const ClaimProvenanceModal: React.FC<ClaimProvenanceModalProps> = ({
       ))
       .catch(() => setAttempts([]))
       .finally(() => setAttemptsLoading(false));
-  }, [open, claim?.claimKey, isInline]);
+  }, [open, teachingLookupKey, isInline]);
 
   useEffect(() => {
     if (!open) {
@@ -114,7 +124,10 @@ export const ClaimProvenanceModal: React.FC<ClaimProvenanceModalProps> = ({
   const linkedArticles = articles.filter((a) => uidSet.has(String(a.uid)));
   const richArticle = richClaim?.article ?? null;
 
-  const effectiveStatus = richClaim?.claim.verificationStatus ?? claim.validationStatus ?? 'unverified';
+  const effectiveStatus = richClaim?.claim.verificationStatus
+    ?? claim.verificationStatus
+    ?? claim.validationStatus
+    ?? 'unverified';
   const effectiveConfidence = richClaim?.claim.confidence ?? claim.confidence ?? null;
   const effectiveQuote = richClaim?.claim.evidenceQuote ?? claim.evidenceQuote ?? null;
 

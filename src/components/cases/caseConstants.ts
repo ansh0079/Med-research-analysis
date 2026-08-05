@@ -20,6 +20,7 @@ export const QUESTION_TYPE_STYLES: Record<string, string> = {
 };
 
 export const DIFFICULTY_OPTIONS = [
+  { value: 'auto', label: 'Adaptive', desc: 'Learns from your outcomes' },
   { value: 'easy', label: 'Foundation', desc: 'Classic presentations' },
   { value: 'medium', label: 'Standard', desc: 'Realistic with distractors' },
   { value: 'hard', label: 'Advanced', desc: 'Atypical, multi-system' },

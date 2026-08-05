@@ -561,7 +561,17 @@ export class LearningApi extends BaseApiClient {
     return response.json();
   }
 
-  async generateAdaptiveCase(data: { topic: string; learningMode?: string; difficulty?: string }): Promise<{ session: import('@types').CaseSession; evidenceWarning?: string | null }> {
+  async generateAdaptiveCase(data: { topic: string; learningMode?: string; difficulty?: string }): Promise<{
+    session: import('@types').CaseSession;
+    evidenceWarning?: string | null;
+    difficulty?: string;
+    banditMeta?: {
+      policyType?: string;
+      armId?: string;
+      decisionId?: number | null;
+      selectedBy?: 'bandit' | 'client' | string;
+    } | null;
+  }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/cases/adaptive-vignette`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
