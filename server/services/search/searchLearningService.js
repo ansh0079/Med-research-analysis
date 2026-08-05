@@ -516,6 +516,7 @@ function applySearchLearningBoost(articles, context, bouquetRanking = []) {
         memoryTier: context.memoryTier || 'none',
         sampled: context.banditSelection?.sampled ?? null,
         propensity: context.banditSelection?.propensity ?? null,
+        propensityByArm: context.banditSelection?.propensityByArm || null,
         selectionSource: context.banditSelection?.selectionSource || null,
         misconceptionBoostCount: context.misconceptionBoost?.correctiveArticleUids?.size || 0,
         contextFeatures: context.banditSelection?.contextFeatures || null,

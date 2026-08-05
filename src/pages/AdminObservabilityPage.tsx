@@ -7,6 +7,7 @@ import { VerificationBadge } from '@components/ui/VerificationBadge';
 import { CollectiveMemoryPanel } from '@components/admin/CollectiveMemoryPanel';
 import { ProductionObservabilityPanel } from '@components/admin/ProductionObservabilityPanel';
 import { BanditObservabilityPanel } from '@components/admin/BanditObservabilityPanel';
+import { LearningLedgerPanel } from '@components/admin/LearningLedgerPanel';
 import { BackgroundJobsPanel } from '@components/admin/BackgroundJobsPanel';
 import { TopicReadinessPanel } from '@components/admin/TopicReadinessPanel';
 import { ClaimRow } from '@components/admin/ClaimRow';
@@ -280,6 +281,8 @@ export function AdminObservabilityPage() {
             {banditObservability && (
               <BanditObservabilityPanel observability={banditObservability} />
             )}
+
+            <LearningLedgerPanel />
 
             <TopicReadinessPanel />
 

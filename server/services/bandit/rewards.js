@@ -7,6 +7,11 @@ const {
     POLICY_TEACHING_STRATEGY,
 } = require('./constants');
 const { scopeKeyForUser } = require('./sampling');
+const {
+    clampConfidence,
+    attributionConfidenceForSource,
+    globalPriorConfidence,
+} = require('../learning/attributionConfidence');
 
 function normalizeBanditArmId(policyType, armId) {
     const raw = String(armId || '').trim();
@@ -18,17 +23,37 @@ function normalizeBanditArmId(policyType, armId) {
     return raw;
 }
 
-async function recordBanditReward(db, policyType, armId, reward, userId = null) {
+/**
+ * @param {object} db
+ * @param {string} policyType
+ * @param {string} armId
+ * @param {number} reward
+ * @param {string|null} userId
+ * @param {{ confidence?: number, sourceEvent?: string|null }} [options]
+ */
+async function recordBanditReward(db, policyType, armId, reward, userId = null, options = {}) {
     if (!db?.recordPersonalizationArmPull || !armId) return;
     const normalizedArmId = normalizeBanditArmId(policyType, armId);
     if (!normalizedArmId) return;
+
+    const sourceEvent = options.sourceEvent || null;
+    const confidence = clampConfidence(
+        options.confidence != null
+            ? options.confidence
+            : attributionConfidenceForSource(sourceEvent),
+        0.5
+    );
+
     const scopeKey = userId ? scopeKeyForUser(userId) : 'global';
-    await db.recordPersonalizationArmPull(policyType, normalizedArmId, reward, scopeKey).catch((err) => {
+    await db.recordPersonalizationArmPull(policyType, normalizedArmId, reward, scopeKey, confidence).catch((err) => {
         logger.warn({ err, policyType, armId: normalizedArmId }, 'recordPersonalizationArmPull failed');
     });
     // Anonymous (no-user) rewards already write to 'global' above — don't double-count.
+    // Per-user rewards also update the global prior at a reduced confidence so new
+    // users benefit from aggregate behaviour without inheriting one user's prefs strongly.
     if (scopeKey !== 'global') {
-        await db.recordPersonalizationArmPull(policyType, normalizedArmId, reward, 'global').catch((err) => {
+        const globalConf = globalPriorConfidence(confidence);
+        await db.recordPersonalizationArmPull(policyType, normalizedArmId, reward, 'global', globalConf).catch((err) => {
             logger.warn({ err, policyType, armId: normalizedArmId }, 'recordPersonalizationArmPull global failed');
         });
     }
@@ -62,13 +87,27 @@ async function reconcileImpressionRewards(db, { days = 7 } = {}) {
         const immediate = impression ? immediateImpressionReward(impression) : 0;
         if (immediate <= 0 && row.delayed_reward == null) continue;
         const total = Math.min(1, immediate + Number(row.delayed_reward || 0));
+        const sourceEvent = impression?.was_saved ? 'impression_saved'
+            : (impression?.dwell_time_ms || 0) >= 12000 ? 'impression_dwell'
+                : impression?.was_clicked ? 'impression_click'
+                    : 'impression_engagement';
+        const confidence = attributionConfidenceForSource(sourceEvent, {
+            wasSaved: Boolean(impression?.was_saved),
+            wasClicked: Boolean(impression?.was_clicked),
+            dwellMs: Number(impression?.dwell_time_ms || 0),
+        });
         await db.updatePersonalizationDecisionReward(row.id, {
             immediateReward: immediate,
             delayedReward: row.delayed_reward,
             totalReward: total,
+            attributionConfidence: confidence,
+            sourceEvent,
         });
         if (row.delayed_reward != null && total !== 0) {
-            await recordBanditReward(db, POLICY_SEARCH_RANKING, row.arm_id, total, row.user_id);
+            await recordBanditReward(db, POLICY_SEARCH_RANKING, row.arm_id, total, row.user_id, {
+                confidence,
+                sourceEvent,
+            });
         }
         updated += 1;
     }

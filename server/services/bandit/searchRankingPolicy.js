@@ -158,9 +158,12 @@ async function recordSearchRankingDecisions(db, {
                 position: topArticles.indexOf(article),
                 memoryTier: banditMeta.memoryTier || null,
                 propensity: banditMeta.propensity != null ? Number(banditMeta.propensity) : null,
+                propensityByArm: banditMeta.propensityByArm || null,
                 selectionSource: banditMeta.selectionSource || null,
+                scopeKey: banditMeta.scopeKey || null,
                 ...(banditMeta.contextFeatures || {}),
             },
+            sourceEvent: 'search_ranking_serve',
         }).catch((err) => {
             logger.debug({ err }, 'insertPersonalizationDecision failed');
             return null;
@@ -173,6 +176,23 @@ async function recordSearchRankingDecisions(db, {
             });
         }
     }
+
+    // Counterfactual: what shadow arms would have ranked (offline eval / debugging).
+    if (searchId != null && topArticles.length) {
+        try {
+            const { persistCounterfactualRankings } = require('../search/counterfactualRankingService');
+            await persistCounterfactualRankings(db, {
+                searchId,
+                userId,
+                servedArmId: armId,
+                articles: topArticles,
+                propensityByArm: banditMeta.propensityByArm || null,
+            });
+        } catch (err) {
+            logger.debug({ err, searchId }, 'persistCounterfactualRankings failed');
+        }
+    }
+
     return { decisions };
 }
 

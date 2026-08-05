@@ -57,6 +57,47 @@ export type BanditObservability = {
   generatedAt: string;
 };
 
+export type LearningLedgerCounterfactual = {
+  servedArmId: string;
+  shadowArmId: string;
+  servedUids: string[];
+  shadowUids: string[];
+  propensity: number | null;
+  createdAt: string;
+};
+
+export type LearningLedgerEntry = {
+  id: number;
+  userId: string | null;
+  policyType: string;
+  armId: string;
+  searchId: number | null;
+  topic: string | null;
+  normalizedTopic: string | null;
+  articleUid: string | null;
+  context: Record<string, unknown>;
+  immediateReward: number | null;
+  delayedReward: number | null;
+  totalReward: number | null;
+  attributionConfidence: number | null;
+  sourceEvent: string | null;
+  scopeHint: string | null;
+  propensity: number | null;
+  selectionSource: string | null;
+  rewardComputedAt: string | null;
+  createdAt: string;
+  counterfactuals?: LearningLedgerCounterfactual[];
+};
+
+export type LearningLedgerResponse = {
+  entries: LearningLedgerEntry[];
+  total: number;
+  days: number;
+  limit: number;
+  offset: number;
+  generatedAt: string;
+};
+
 export type TopicReadinessTier = 'needs_enrichment' | 'search_ready' | 'learner_ready' | 'flagship';
 
 export type TopicReadinessRow = {
@@ -169,6 +210,26 @@ export class KnowledgeAdminApi extends KnowledgeCoreApi {
     if (options.scopeKey) params.set('scopeKey', options.scopeKey);
     if (options.days) params.set('days', String(options.days));
     const response = await this.fetchWithSession(`${API_BASE}/api/admin/bandit/observability?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getLearningLedger(options: {
+    policyType?: string;
+    userId?: string;
+    days?: number;
+    limit?: number;
+    offset?: number;
+    onlyWithReward?: boolean;
+  } = {}): Promise<{ ledger: LearningLedgerResponse }> {
+    const params = new URLSearchParams();
+    if (options.policyType) params.set('policyType', options.policyType);
+    if (options.userId) params.set('userId', options.userId);
+    if (options.days) params.set('days', String(options.days));
+    if (options.limit) params.set('limit', String(options.limit));
+    if (options.offset) params.set('offset', String(options.offset));
+    if (options.onlyWithReward) params.set('onlyWithReward', '1');
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/learning-ledger?${params}`);
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }

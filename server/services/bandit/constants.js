@@ -44,8 +44,9 @@ const MIN_GLOBAL_PULLS_FOR_POLICY = Number(process.env.BANDIT_MIN_GLOBAL_PULLS |
 // The arm config carries metadata only (no weight vector) — reward is user
 // feedback (helpful / not-helpful) recorded via recordBanditReward.
 const SYNOPSIS_STYLE_ARMS = {
-    bottom_line_first: { label: 'Bottom line first', tone: 'concise', structure: 'conclusion_first' },
-    pico_structured:   { label: 'PICO structured',  tone: 'clinical', structure: 'pico' },
+    // `structure` keys must match SYNOPSIS_STYLE_INSTRUCTIONS in prompts/synopsis.js
+    bottom_line_first: { label: 'Bottom line first', tone: 'concise', structure: 'bottom_line_first' },
+    pico_structured:   { label: 'PICO structured',  tone: 'clinical', structure: 'pico_structured' },
     narrative:         { label: 'Narrative flow',   tone: 'explanatory', structure: 'narrative' },
     teaching_points:   { label: 'Teaching points',  tone: 'educational', structure: 'bullet_teaching' },
 };

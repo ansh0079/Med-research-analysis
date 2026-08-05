@@ -147,8 +147,12 @@ describe('personalizationBanditService', () => {
             delayedReward: -0.15,
             totalReward: -0.15,
         }));
-        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith('synopsis_style', 'pico_structured', 0.7, 'user:u1');
-        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith('agent_teaching_strategy', 'socratic', -0.15, 'user:u1');
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith(
+            'synopsis_style', 'pico_structured', 0.7, 'user:u1', expect.any(Number)
+        );
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith(
+            'agent_teaching_strategy', 'socratic', -0.15, 'user:u1', expect.any(Number)
+        );
     });
 
     test('recordBanditReward with no userId writes to global exactly once', async () => {
@@ -157,7 +161,9 @@ describe('personalizationBanditService', () => {
         };
         await recordBanditReward(db, 'search_ranking', 'heuristic_default', 0.5, null);
         expect(db.recordPersonalizationArmPull).toHaveBeenCalledTimes(1);
-        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith('search_ranking', 'heuristic_default', 0.5, 'global');
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith(
+            'search_ranking', 'heuristic_default', 0.5, 'global', expect.any(Number)
+        );
     });
 
     test('recordBanditReward with a userId writes to both user and global scope', async () => {
@@ -166,7 +172,15 @@ describe('personalizationBanditService', () => {
         };
         await recordBanditReward(db, 'search_ranking', 'heuristic_default', 0.5, 'u1');
         expect(db.recordPersonalizationArmPull).toHaveBeenCalledTimes(2);
-        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith('search_ranking', 'heuristic_default', 0.5, 'user:u1');
-        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith('search_ranking', 'heuristic_default', 0.5, 'global');
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith(
+            'search_ranking', 'heuristic_default', 0.5, 'user:u1', expect.any(Number)
+        );
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith(
+            'search_ranking', 'heuristic_default', 0.5, 'global', expect.any(Number)
+        );
+        // Global prior uses reduced confidence vs user scope.
+        const userConf = db.recordPersonalizationArmPull.mock.calls[0][4];
+        const globalConf = db.recordPersonalizationArmPull.mock.calls[1][4];
+        expect(globalConf).toBeLessThan(userConf);
     });
 });

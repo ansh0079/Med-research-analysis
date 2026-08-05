@@ -6,6 +6,7 @@ const {
     collectLearningLoopControl,
 } = require('../../services/productionObservabilityService');
 const { collectBanditObservability } = require('../../services/banditObservabilityService');
+const { listLearningLedger } = require('../../services/ops/learningLedgerService');
 
 function registerAdminObservabilityRoutes(app, { db, requireAuthJwt, requireRole, rateLimit }) {
     const requireAdmin = [requireAuthJwt, requireRole('admin', 'curator')];
@@ -117,6 +118,30 @@ function registerAdminObservabilityRoutes(app, { db, requireAuthJwt, requireRole
             res.json({ control });
         } catch (error) {
             req.log.error({ err: error }, 'Learning loop control error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    app.get('/api/admin/learning-ledger', ...requireAdmin, banditLimit, async (req, res) => {
+        try {
+            const days = Math.min(Math.max(parseInt(String(req.query.days || '7'), 10) || 7, 1), 90);
+            const limit = Math.min(Math.max(parseInt(String(req.query.limit || '40'), 10) || 40, 1), 200);
+            const offset = Math.max(parseInt(String(req.query.offset || '0'), 10) || 0, 0);
+            const policyType = String(req.query.policyType || '').trim();
+            const userId = String(req.query.userId || '').trim();
+            const onlyWithReward = String(req.query.onlyWithReward || '') === '1'
+                || String(req.query.onlyWithReward || '').toLowerCase() === 'true';
+            const ledger = await listLearningLedger(db, {
+                policyType,
+                userId,
+                days,
+                limit,
+                offset,
+                onlyWithReward,
+            });
+            res.json({ ledger });
+        } catch (error) {
+            req.log.error({ err: error }, 'Learning ledger error');
             res.status(500).json({ error: 'Internal server error' });
         }
     });

@@ -374,10 +374,46 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
                     const trust = TRUST_BADGE[synopsis.trustRating] ?? TRUST_BADGE.MODERATE;
                     return <span className={`text-[10px] font-bold rounded-full px-2.5 py-1 ${trust.cls}`}>Trust: {trust.label}</span>;
                   })()}
+                  {synopsis.paperSignificance && (
+                    <span className="text-[10px] font-bold rounded-full px-2.5 py-1 bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-300">
+                      {String(synopsis.paperSignificance).replace(/_/g, ' ')}
+                    </span>
+                  )}
                   {synopsis.studyDesign && (
                     <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">{synopsis.studyDesign}</span>
                   )}
                 </div>
+
+                {synopsis.whyThisPaperMatters && (
+                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    <span className="font-semibold text-slate-500">Why it matters: </span>
+                    {synopsis.whyThisPaperMatters}
+                  </p>
+                )}
+
+                {Array.isArray(synopsis.evidenceConflicts) && synopsis.evidenceConflicts.length > 0 && (
+                  <div className="rounded-lg border border-amber-200 bg-amber-50/80 dark:border-amber-900/50 dark:bg-amber-950/30 px-3 py-2 space-y-1">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
+                      Differs from prior evidence
+                    </p>
+                    {synopsis.evidenceConflicts.slice(0, 3).map((c, i) => (
+                      <p key={i} className="text-xs text-amber-800 dark:text-amber-200 leading-relaxed">
+                        {c.summary || c.detail}
+                      </p>
+                    ))}
+                  </div>
+                )}
+
+                {Array.isArray(synopsis.evidenceSpans) && synopsis.evidenceSpans.length > 0 && (
+                  <div className="rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 space-y-1">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Source spans</p>
+                    {synopsis.evidenceSpans.slice(0, 3).map((s, i) => (
+                      <p key={i} className="text-[11px] text-slate-600 dark:text-slate-300 italic leading-relaxed">
+                        {s.field ? `[${s.field}] ` : ''}“{s.quote}”
+                      </p>
+                    ))}
+                  </div>
+                )}
 
                 <SynopsisTrustBanner
                   sourceMode={
