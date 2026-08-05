@@ -4,10 +4,16 @@ const CoreDatabase = require('./DatabaseCore');
 
 const MIXIN_LAYERS = [
     ['m01-search-topic-knowledge', require('./mixins/m01-search-topic-knowledge')],
-    ['m02-guidelines-learning-quiz-adaptive', require('./mixins/m02-guidelines-learning-quiz-adaptive')],
+    ['m02a-guidelines', require('./mixins/m02a-guidelines')],
+    ['m02b-learning-profiles', require('./mixins/m02b-learning-profiles')],
+    ['m02c-quiz-attempts', require('./mixins/m02c-quiz-attempts')],
+    ['m02d-adaptive-topic-memory', require('./mixins/m02d-adaptive-topic-memory')],
     ['m03-bouquet-learning-observability-prelude', require('./mixins/m03-bouquet-learning-observability-prelude')],
     ['m04-interactions-impressions-study-runs', require('./mixins/m04-interactions-impressions-study-runs')],
-    ['m05-curriculum-agent-case-mastery', require('./mixins/m05-curriculum-agent-case-mastery')],
+    ['m05a-curriculum-seed', require('./mixins/m05a-curriculum-seed')],
+    ['m05b-curriculum-progress', require('./mixins/m05b-curriculum-progress')],
+    ['m05c-agent-conversations', require('./mixins/m05c-agent-conversations')],
+    ['m05d-case-topic-mastery', require('./mixins/m05d-case-topic-mastery')],
     ['m06-sessions-saved-cache-teams', require('./mixins/m06-sessions-saved-cache-teams')],
     ['m07a-analytics-events', require('./mixins/m07a-analytics-events')],
     ['m07b-vector-cache-annotations', require('./mixins/m07b-vector-cache-annotations')],
@@ -16,6 +22,8 @@ const MIXIN_LAYERS = [
     ['m08b-audit-billing', require('./mixins/m08b-audit-billing')],
     ['m08c-cpd-portfolio', require('./mixins/m08c-cpd-portfolio')],
     ['m08d-teaching-objects', require('./mixins/m08d-teaching-objects')],
+    ['m08e-teaching-claims-mastery', require('./mixins/m08e-teaching-claims-mastery')],
+    ['m08f-teaching-quality-bkt', require('./mixins/m08f-teaching-quality-bkt')],
     ['m09-claim-lifecycle', require('./mixins/m09-claim-lifecycle')],
     ['m10-advanced-learning', require('./mixins/m10-advanced-learning')],
     ['m11-llm-usage', require('./mixins/m11-llm-usage')],
@@ -54,7 +62,7 @@ const ALLOWED_REPLACEMENTS = {
         'mergeTopicKnowledgeAliases',
         'markTopicKnowledgeReviewed',
     ]),
-    'm05-curriculum-agent-case-mastery->m13-curriculum-seed': new Set([
+    'm05a-curriculum-seed->m13-curriculum-seed': new Set([
         'mapCurriculumSeedTopicRow',
         'ensureCurriculum',
         'ensureCurriculumBlock',
