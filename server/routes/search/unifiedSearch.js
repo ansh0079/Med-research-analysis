@@ -130,21 +130,29 @@ function registerUnifiedSearchRoutes(app, deps) {
             routeTimings.totalRouteMs = executionTime;
 
             let lowRecallLearning = null;
-            if (telemetry.lowRecallLearning) {
+            const expandedAliases = telemetry.lowRecallLearning?.expandedAliases
+                || telemetry.meshExpansions
+                || [];
+            const sparseAfterRank = Array.isArray(articles) && articles.length > 0 && articles.length < 4;
+            if (telemetry.lowRecallLearning || sparseAfterRank) {
+                const resultCount = telemetry.lowRecallLearning?.resultCount ?? articles.length;
                 lowRecallLearning = {
-                    query: telemetry.lowRecallLearning.query,
-                    resultCount: telemetry.lowRecallLearning.resultCount,
-                    aliasCount: telemetry.lowRecallLearning.aliasCount,
+                    query: telemetry.lowRecallLearning?.query || queryValidation.sanitized,
+                    resultCount,
+                    aliasCount: expandedAliases.length,
+                    aliases: expandedAliases.slice(0, 8),
+                    reason: telemetry.lowRecallLearning ? 'pubmed_zero_hit' : 'sparse_ranked_results',
                 };
-                const expandedAliases = telemetry.lowRecallLearning.expandedAliases || telemetry.meshExpansions || [];
                 db.recordLowRecallSearch({
                     query: queryValidation.sanitized,
-                    resultCount: 0,
+                    resultCount,
                     sources: sourceList,
                     expandedAliases,
                 }).catch((err) => { logger.warn({ err }, 'recordLowRecallSearch failed'); });
                 if (expandedAliases.length > 0) {
-                    db.mergeTopicKnowledgeAliases(queryValidation.sanitized, expandedAliases, { reason: 'low_recall_mesh' }).catch((err) => { logger.warn({ err }, 'mergeTopicKnowledgeAliases failed'); });
+                    db.mergeTopicKnowledgeAliases(queryValidation.sanitized, expandedAliases, {
+                        reason: telemetry.lowRecallLearning ? 'low_recall_mesh' : 'sparse_ranked_mesh',
+                    }).catch((err) => { logger.warn({ err }, 'mergeTopicKnowledgeAliases failed'); });
                 }
             }
 
@@ -172,11 +180,11 @@ function registerUnifiedSearchRoutes(app, deps) {
             if (searchId) {
                 try {
                     // Always record decisions so the RL loop has signal even for
-                    // anonymous / first-time searches. Use 'organic' as the arm
-                    // when no bandit arm was selected.
+                    // anonymous / first-time searches. Use heuristic_default when
+                    // no personalized bandit arm was selected.
                     const effectiveBanditMeta = banditMeta?.armId
                         ? { ...banditMeta, forceLog: true }
-                        : { armId: 'organic', forceLog: true };
+                        : { armId: 'heuristic_default', forceLog: true };
                     const logged = await recordSearchRankingDecisions(db, {
                         userId: req.user?.id ?? null,
                         searchId,

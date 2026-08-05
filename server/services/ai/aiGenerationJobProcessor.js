@@ -151,6 +151,8 @@ async function processAiGenerationJobByKey(jobKey, deps) {
                 sessionDepth: input.sessionDepth || 0,
                 serverConfig,
                 fetchImpl,
+                cache,
+                db,
             });
             await completeJobAndClaims(db, jobKey, 'live_clinical_answer', {
                 resultPayload: { status: 'completed', jobKey, ...(result || {}) },

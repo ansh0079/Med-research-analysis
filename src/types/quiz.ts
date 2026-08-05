@@ -100,6 +100,13 @@ export interface SynthesisResult {
   }>;
   retractionWarning?: string | null;
   disclaimer?: string;
+  warnings?: Array<{
+    severity?: 'HIGH' | 'MEDIUM' | 'LOW' | string;
+    code?: string;
+    message: string;
+    affectedFields?: string[];
+    details?: unknown;
+  }> | null;
   citationValidation?: {
     ok: boolean;
     issueCount: number;

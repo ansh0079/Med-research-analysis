@@ -25,6 +25,27 @@ function calculateMastery(attempts) {
     return { overall, byType: scores };
 }
 
+/**
+ * Blend naive attempt mastery with claim-level BKT ability when available.
+ * BKT is the stronger signal for "can the learner do this topic?"
+ */
+function calculateMasteryWithBkt(attempts, bktAbility = null) {
+    const base = calculateMastery(attempts);
+    if (bktAbility == null || !Number.isFinite(Number(bktAbility))) {
+        return { ...base, source: 'attempts' };
+    }
+    const bktScore = Math.round(Math.max(0, Math.min(1, Number(bktAbility))) * 100);
+    // Prefer BKT once we have claim sequences; keep type breakdown from attempts.
+    const overall = Math.round((bktScore * 0.7) + (base.overall * 0.3));
+    return {
+        overall,
+        byType: base.byType,
+        bktScore,
+        attemptScore: base.overall,
+        source: 'bkt_blend',
+    };
+}
+
 function nextReviewDate(masteryScore) {
     const now = new Date();
     if (masteryScore >= 90) return new Date(now.getTime() + 14 * 86400000).toISOString();
@@ -219,6 +240,7 @@ function normalizeAttemptClaimKey(attempt) {
 
 module.exports = {
     calculateMastery,
+    calculateMasteryWithBkt,
     nextReviewDate,
     updateStreak,
     buildOutline,

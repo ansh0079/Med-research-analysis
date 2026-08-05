@@ -149,6 +149,30 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
           </div>
         )}
 
+        {Array.isArray(result.warnings) && result.warnings.length > 0 && (
+          <div className="space-y-2">
+            {result.warnings.map((warning) => (
+              <div
+                key={`${warning.code}-${warning.message}`}
+                className={`rounded-xl border p-3 ${
+                  warning.severity === 'HIGH'
+                    ? 'border-red-200 bg-red-50 dark:border-red-900/50 dark:bg-red-950/30'
+                    : 'border-amber-200 bg-amber-50 dark:border-amber-900/50 dark:bg-amber-950/25'
+                }`}
+              >
+                <p className={`text-[11px] font-semibold leading-relaxed ${
+                  warning.severity === 'HIGH'
+                    ? 'text-red-700 dark:text-red-300'
+                    : 'text-amber-800 dark:text-amber-200'
+                }`}>
+                  <i className="fas fa-shield-halved mr-1.5" />
+                  {warning.message}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
         <EvidenceAuditPanel
           snapshot={{
             jobKey: result.jobKey,

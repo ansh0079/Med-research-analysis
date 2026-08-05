@@ -156,12 +156,14 @@ async function attributeSearchInteractionReward(db, userId, {
 
     const delayed = Number(decision.delayed_reward || 0);
     const total = Math.min(1, Math.max(-1, immediate + delayed));
-    const explicitLearningSignal = Boolean(feedbackType || wasSaved || interactionType === 'save');
+    // Any non-zero reward should update the bandit posterior so engagement
+    // arms (clicks/dwells) can learn, not only explicit save/feedback.
+    const shouldRecordArmPull = total !== 0;
     await applyDecisionReward(db, userId, decision, {
         immediateReward: immediate,
         delayedReward: delayed,
         totalReward: total,
-        recordArmPull: explicitLearningSignal,
+        recordArmPull: shouldRecordArmPull,
     });
     await recordLearningSignal(db, {
         userId,
@@ -178,7 +180,8 @@ async function attributeSearchInteractionReward(db, userId, {
             feedbackType,
             interactionType,
             armId: decision.arm_id || null,
-            armPullRecorded: explicitLearningSignal,
+            armPullRecorded: shouldRecordArmPull,
+            explicitLearningSignal: Boolean(feedbackType || wasSaved || interactionType === 'save'),
         },
     });
 
@@ -188,7 +191,7 @@ async function attributeSearchInteractionReward(db, userId, {
         total,
         armId: decision.arm_id || null,
         decisionId: decision.id,
-        armPullRecorded: explicitLearningSignal,
+        armPullRecorded: shouldRecordArmPull,
     };
 }
 

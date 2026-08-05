@@ -11,7 +11,7 @@ const isDev = process.env.NODE_ENV === 'development';
 
 function registerSearchIntelligenceRoutes(app, deps) {
     const { db, cache, rateLimit, requireJson, topicHelpers } = deps;
-    const { buildAgentGuidance, buildTopicIntelligence, applyTeachingObjectSearchBoost } = topicHelpers;
+    const { buildAgentGuidance, buildTopicIntelligence } = topicHelpers;
 
     app.post('/api/search/intelligence', rateLimit(30, 60), requireJson, async (req, res) => {
         setNoStoreSearchHeaders(res);
@@ -41,18 +41,22 @@ function registerSearchIntelligenceRoutes(app, deps) {
                 previousQueries,
             });
             const bouquetRanking = Array.isArray(bodyRanking) ? bodyRanking.slice(0, 100) : [];
-            articles = applySearchLearningBoost(articles, learningContextFull, bouquetRanking);
+            // Skip a second learning boost when the client already sent pipeline-ranked
+            // articles that carry personalization metadata — keeps mentor evidence aligned
+            // with the result cards the learner is looking at.
+            const alreadyPersonalized = articles.some((a) => (
+                a?._learningBoost != null || a?._decisionId != null || a?._banditArmId != null
+            ));
+            if (!alreadyPersonalized) {
+                articles = applySearchLearningBoost(articles, learningContextFull, bouquetRanking);
+            }
 
             const { objects: boostedObjects, claims: boostedClaims } = await prefetchTeachingArtifacts(db, queryValidation.sanitized);
-            const { articles: teachingBoosted } = await applyTeachingObjectSearchBoost(
-                queryValidation.sanitized,
-                articles,
-                { prefetchedObjects: boostedObjects, prefetchedClaims: boostedClaims }
-            );
-
+            // Prefer displayed ranking for intelligence; teaching-object weights stay as
+            // soft signals via prefetched claims without reordering away from the UI list.
             const topicIntelligence = await buildTopicIntelligence(
                 queryValidation.sanitized,
-                teachingBoosted,
+                articles,
                 agentGuidance,
                 {
                     topicKnowledge,

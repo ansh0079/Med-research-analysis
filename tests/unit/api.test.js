@@ -754,6 +754,7 @@ describe('API Endpoints', () => {
           query: 'rare syndrome treatment',
           resultCount: 0,
           aliasCount: 2,
+          aliases: ['Rare Syndrome', 'Rare Disease'],
         });
         expect(db.recordLowRecallSearch).toHaveBeenCalledWith(expect.objectContaining({
           query: 'rare syndrome treatment',

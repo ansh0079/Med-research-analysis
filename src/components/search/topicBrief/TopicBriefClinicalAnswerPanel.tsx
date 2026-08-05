@@ -30,7 +30,19 @@ export const TopicBriefClinicalAnswerPanel: React.FC<Props> = ({ ca, proactiveAl
           Clinical Evidence Answer
         </span>
         <TopicBriefEvidenceGradeBadge grade={ca.evidenceGrade} />
+        {(ca.unverified || ca.citationWarning) && (
+          <span className="rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">
+            Needs citation review
+          </span>
+        )}
       </div>
+      {(ca.unverified || ca.citationWarning) && (
+        <div className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 dark:border-amber-800 dark:bg-amber-950/20">
+          <p className="text-[11px] leading-relaxed text-amber-800 dark:text-amber-200">
+            This fast clinical answer has incomplete citation grounding. Prefer the full synthesis or paper synopsis before changing practice.
+          </p>
+        </div>
+      )}
       {effectiveAlert && (
         <div className={`mb-3 rounded-lg border px-3 py-2.5 ${
           isLandmark
