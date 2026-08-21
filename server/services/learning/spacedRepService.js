@@ -75,10 +75,10 @@ async function getDueCards(db, userId, limit = 50) {
     const rows = await db.all(
         `SELECT topic, normalized_topic, outline_node_id, outline_label, stability, difficulty, state, lapses, interval_days, easiness, repetitions, due_at, last_reviewed_at
          FROM spaced_rep_cards
-         WHERE user_id = ? AND due_at <= ?
+         WHERE user_id = ? AND due_at <= datetime('now')
          ORDER BY due_at ASC
          LIMIT ?`,
-        [userId, new Date().toISOString(), limit]
+        [userId, limit]
     ).catch((err) => { logger.warn({ err }, 'operation failed'); return []; });
     return rows.map((r) => ({
         topic: r.topic,
@@ -106,8 +106,8 @@ async function getDueCards(db, userId, limit = 50) {
 async function countDueCards(db, userId) {
     if (typeof db.get !== 'function') return 0;
     const row = await db.get(
-        `SELECT COUNT(*) AS cnt FROM spaced_rep_cards WHERE user_id = ? AND due_at <= ?`,
-        [userId, new Date().toISOString()]
+        `SELECT COUNT(*) AS cnt FROM spaced_rep_cards WHERE user_id = ? AND due_at <= datetime('now')`,
+        [userId]
     ).catch((err) => { logger.warn({ err }, 'countDueCards get failed'); return null; });
     return row ? Number(row.cnt) : 0;
 }

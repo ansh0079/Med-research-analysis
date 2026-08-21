@@ -159,7 +159,7 @@ async function replayPolicy(db, candidateArmId, policyType = POLICY_SEARCH_RANKI
         // the ratio of the simulated boost to the logged boost.
         const loggedBoost = Number(row.context.boost || 0);
         const rewardScale = loggedBoost !== 0 ? sim.simulatedBoost / loggedBoost : 1;
-        const simulatedReward = Math.min(1, Math.max(0, row.totalReward * rewardScale));
+        const simulatedReward = Math.min(1, Math.max(-1, row.totalReward * rewardScale));
         rewards.push(simulatedReward);
         baselineRewards.push(row.totalReward);
     }

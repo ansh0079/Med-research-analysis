@@ -1,5 +1,11 @@
 const { STOPWORDS } = require('./constants');
 
+// Common clinical abbreviations that are ≤3 chars but must not be filtered out
+const CLINICAL_ABBREVIATIONS = new Set([
+    'mi', 'hf', 'pe', 'ckd', 'aki', 'dvt', 'afib', 'af', 'dka', 'htn',
+    'dm', 't2d', 'copd', 'uti', 'acs', 'cad', 'chf', 'pad', 'ild',
+]);
+
 function matchesPopulationFilter(article, query) {
     const q = String(query || '').toLowerCase();
     const text = `${String(article.title || '')} ${String(article.abstract || '')}`.toLowerCase();
@@ -52,7 +58,7 @@ function queryMatchScore(article, query) {
     const title = String(article?.title || '').toLowerCase();
     const abstract = String(article?.abstract || '').toLowerCase();
     const searchText = `${title} ${abstract}`;
-    const queryTerms = q.split(/\s+/).filter((t) => t.length > 3 && !STOPWORDS.has(t));
+    const queryTerms = q.split(/\s+/).filter((t) => (t.length > 3 || CLINICAL_ABBREVIATIONS.has(t)) && !STOPWORDS.has(t));
     if (queryTerms.length === 0) return 0;
     const weighted = queryTerms.reduce((sum, term) => {
         const stem = stemTerm(term);
@@ -106,7 +112,7 @@ function isOffTopic(article, query, options = {}) {
     const abstract = String(article.abstract || '').toLowerCase();
     const searchText = `${title} ${abstract}`;
 
-    const queryTerms = q.split(/\s+/).filter((t) => t.length > 3 && !STOPWORDS.has(t));
+    const queryTerms = q.split(/\s+/).filter((t) => (t.length > 3 || CLINICAL_ABBREVIATIONS.has(t)) && !STOPWORDS.has(t));
     if (queryTerms.length === 0) return false;
 
     const matchCount = queryTerms.filter((t) => {

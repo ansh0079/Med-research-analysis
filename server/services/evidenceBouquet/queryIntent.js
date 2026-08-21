@@ -12,11 +12,11 @@ const {
 
 const INTENT_PATTERNS = {
     guideline:      /\b(guideline|recommendation|consensus|protocol|standard of care|best practice|current approach|management algorithm)\b/i,
+    mechanistic:    MECHANISM_QUERY_PATTERNS,
     therapeutic:    /\b(treat(ment|ing|ed)?|therap(y|ies|eutic)|manag(e|ement)|drug|medication|dose|efficacy|intervention|regimen|first.line|second.line)\b/i,
     diagnostic:     /\b(diagnos\w+|diagnosis|testing|sensitivity|specificity|accuracy|screening|detection|criteria|differential|ddx|workup|investigation)\b/i,
     prognostic:     /\b(prognos\w+|survival|mortality|outcome|prediction|risk (factor|score|stratif)|complication|recurrence|relapse|long.term)\b/i,
     epidemiological:/\b(epidemiology|incidence|prevalence|burden|risk|public health|population|global)\b/i,
-    mechanistic:    MECHANISM_QUERY_PATTERNS,
 };
 
 // Archetype priority lists per intent — the bouquet fills slots in this order.

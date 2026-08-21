@@ -61,10 +61,10 @@ function updateMasteryProbability(priorMastery, isCorrect, params = DEFAULT_BKT_
         posterior = denominator > 0 ? numerator / denominator : pL;
     }
 
-    // A learner who wasn't mastered before this attempt may have just learned
-    // the skill from seeing the correct answer/explanation, regardless of
-    // whether they got THIS attempt right.
-    return posterior + (1 - posterior) * pTransit;
+    // Apply learning transition only on correct answers. Unconditional transit
+    // causes mastery to creep upward on wrong-answer runs (standard BKT bias).
+    const effectiveTransit = isCorrect ? pTransit : 0.01;
+    return posterior + (1 - posterior) * effectiveTransit;
 }
 
 /**

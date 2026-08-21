@@ -1045,7 +1045,8 @@ describe('API Endpoints', () => {
 
       test('Should handle Semantic Scholar API errors', async () => {
         cache.getSearchResults.mockReturnValueOnce(null);
-        mockFetch.mockResolvedValueOnce({
+        // 503 triggers retry loop — all 3 attempts see 503, then graceful degradation (empty results, 200)
+        mockFetch.mockResolvedValue({
           ok: false,
           status: 503,
           statusText: 'Service Unavailable'
@@ -1053,9 +1054,10 @@ describe('API Endpoints', () => {
 
         const response = await request(app)
           .get('/api/semantic-scholar/search?query=test')
-          .expect(500);
+          .expect(200);
 
-        expect(response.body).toHaveProperty('error');
+        expect(response.body).toHaveProperty('articles');
+        expect(Array.isArray(response.body.articles)).toBe(true);
       });
     });
 

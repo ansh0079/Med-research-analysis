@@ -10,21 +10,43 @@ const {
 } = require('./dbUtils');
 
 async function collectRewardStats(db, days) {
-    const rows = await safeAll(
-        db,
-        `SELECT event_type, COUNT(*) AS count
-         FROM learning_events
-         WHERE occurred_at >= ?
-           AND event_type IN ('search_reward_attributed', 'search_reward_skipped', 'quiz_reward_attributed')
-         GROUP BY event_type`,
-        [sinceIso(days)]
-    );
+    const since = sinceIso(days);
+    const [rows, skipRows] = await Promise.all([
+        safeAll(
+            db,
+            `SELECT event_type, COUNT(*) AS count
+             FROM learning_events
+             WHERE occurred_at >= ?
+               AND event_type IN ('search_reward_attributed', 'search_reward_skipped', 'quiz_reward_attributed')
+             GROUP BY event_type`,
+            [since]
+        ),
+        safeAll(
+            db,
+            `SELECT payload_json FROM learning_events
+             WHERE occurred_at >= ? AND event_type = 'search_reward_skipped'
+             LIMIT 200`,
+            [since]
+        ),
+    ]);
     const counts = Object.fromEntries(rows.map((row) => [String(row.event_type), Number(row.count || 0)]));
     const searchAttributed = Number(counts.search_reward_attributed || 0);
     const searchSkipped = Number(counts.search_reward_skipped || 0);
     const quizAttributed = Number(counts.quiz_reward_attributed || 0);
     const attributed = searchAttributed + quizAttributed;
     const total = attributed + searchSkipped;
+
+    const reasonCounts = {};
+    for (const row of skipRows) {
+        try {
+            const p = JSON.parse(row.payload_json || '{}');
+            const r = String(p.reason || 'unknown');
+            reasonCounts[r] = (reasonCounts[r] || 0) + 1;
+        } catch { /* skip malformed */ }
+    }
+    const skippedReasons = Object.entries(reasonCounts)
+        .map(([reason, count]) => ({ reason, count }))
+        .sort((a, b) => b.count - a.count);
 
     return {
         totalSignals: total,
@@ -34,6 +56,7 @@ async function collectRewardStats(db, days) {
         searchSkipped,
         quizAttributed,
         attributionRate: rate(attributed, total),
+        skippedReasons,
     };
 }
 

@@ -91,9 +91,10 @@ async function reconcileImpressionRewards(db, { days = 7 } = {}) {
                 limit: 5,
             })
             : [];
-        const impression = impressions.find((i) => Number(i.search_id) === Number(row.search_id))
-            || impressions[0];
-        const immediate = impression ? immediateImpressionReward(impression) : 0;
+        const impression = impressions.find((i) => Number(i.search_id) === Number(row.search_id));
+        // Do not fall back to impressions[0] — mismatched attribution injects noise into the posterior.
+        if (!impression) continue;
+        const immediate = immediateImpressionReward(impression);
         if (immediate <= 0 && row.delayed_reward == null) continue;
         const total = Math.min(1, immediate + Number(row.delayed_reward || 0));
         await db.updatePersonalizationDecisionReward(row.id, {

@@ -180,6 +180,20 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
         })());
     }
 
+    if (sourceList.includes('crossref')) {
+        sourceFetches.push((async () => {
+            try {
+                const results = await proxy.crossrefSearch(query, { limit: safeLimit });
+                recordSourceOk('crossref', Array.isArray(results) ? results.length : 0);
+                return results;
+            } catch (err) {
+                console.warn('[unifiedEvidence] Crossref failed', err.message);
+                recordSourceFailure('crossref', err);
+                return [];
+            }
+        })());
+    }
+
     const sourceResults = await Promise.all(sourceFetches);
     if (telemetry && typeof telemetry === 'object') {
         telemetry.unifiedFetchMs = Date.now() - overallStart;

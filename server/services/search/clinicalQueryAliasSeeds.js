@@ -140,6 +140,28 @@ function pinnedPmidsForQuery(rules, query) {
     return [...out];
 }
 
+function readAliasSeedCatalog(seedsPath = DEFAULT_SEEDS_PATH) {
+    if (!fs.existsSync(seedsPath)) return { version: 0, seeds: [] };
+    return JSON.parse(fs.readFileSync(seedsPath, 'utf8'));
+}
+
+function validateAliasSeedCatalog(catalog = {}) {
+    const errors = [];
+    const seeds = Array.isArray(catalog?.seeds) ? catalog.seeds : [];
+    let pinnedPmidCount = 0;
+    for (const seed of seeds) {
+        const patterns = Array.isArray(seed.all) ? seed.all : [];
+        for (const p of patterns) {
+            try { new RegExp(String(p), 'i'); } catch { errors.push(`invalid regex in seed "${seed.source}": ${p}`); }
+        }
+        const hasAliases = Array.isArray(seed.aliases) && seed.aliases.length > 0;
+        const hasPmids = Array.isArray(seed.pmids) && seed.pmids.length > 0;
+        if (!hasAliases && !hasPmids) errors.push(`seed "${seed.source}" has no aliases or pmids`);
+        pinnedPmidCount += hasPmids ? seed.pmids.length : 0;
+    }
+    return { ok: errors.length === 0, errors, seedCount: seeds.length, pinnedPmidCount };
+}
+
 module.exports = {
     DEFAULT_SEEDS_PATH,
     DEFAULT_RULES_PATH,
@@ -151,4 +173,6 @@ module.exports = {
     analyzeAliasCoverage,
     ruleMatchesQuery,
     pinnedPmidsForQuery,
+    readAliasSeedCatalog,
+    validateAliasSeedCatalog,
 };

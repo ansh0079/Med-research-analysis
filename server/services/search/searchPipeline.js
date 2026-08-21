@@ -21,7 +21,7 @@ const { fetchUnifiedEvidence, collapseNearDuplicateTitles, decomposePico } = req
 const { sanitizeArticleOutput } = require('../../utils/articles');
 const logger = require('../../config/logger');
 const { createAiService, getSharedAiService } = require('../aiService');
-const { rerankArticlesByPico } = require('../articleReranker');
+const { rerankArticlesByPico, selectTopRerankedArticles } = require('../articleReranker');
 const {
     applySearchLearningBoost,
     buildSearchLearningContext,
@@ -374,7 +374,8 @@ async function applyPicoRerankStage({
                 rerankedCount: Array.isArray(reranked) ? reranked.length : 0,
             };
         }
-        const blended = blendPicoWithEvidenceOrder(reranked, articles);
+        const filtered = selectTopRerankedArticles(reranked);
+        const blended = blendPicoWithEvidenceOrder(filtered, articles);
         return mergeRerankedWithRemainder(blended, articles, Math.max(safeLimit, articles.length));
     } catch (err) {
         if (telemetry && typeof telemetry === 'object') {
