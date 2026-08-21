@@ -261,7 +261,11 @@ function registerQuizRoutes(app, deps) {
             // Recalculate mastery — blend claim-level BKT when available so
             // dashboard mastery agrees with the claim tutor model.
             const stats = await db.getQuizAttemptStats(userId, topic);
-            const bktAbility = await db.getTopicBktAbility(userId, topic).catch(() => null);
+            // Prefer optional call so route DB-contract stays clean;
+            // test mocks and older DBs may omit BKT.
+            const bktAbility = db.getTopicBktAbility
+                ? await db.getTopicBktAbility(userId, topic).catch(() => null)
+                : null;
             const mastery = calculateMasteryWithBkt(stats, bktAbility);
             const totalAttempts = stats.length;
             const correctCount = stats.filter((s) => s.is_correct === 1).length;
