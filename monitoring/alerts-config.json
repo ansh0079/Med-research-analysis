@@ -67,7 +67,7 @@
   },
   "application": {
     "enabled": true,
-    "source": "productionObservabilityService Phase 7 + /metrics",
+    "source": "productionObservabilityService Phase 7 + /metrics + cron_heartbeats gauges",
     "alerts": [
       {
         "name": "RL Attribution Coverage Low",
@@ -86,6 +86,15 @@
         "window": "gold-eval",
         "severity": "warning",
         "action": "Run npm run eval:search-quality:gold and inspect bouquet/rerank fusion"
+      },
+      {
+        "name": "Commercial Precision@10 Watch",
+        "metric": "search.gradedNl.precisionAtK",
+        "threshold": 0.75,
+        "comparator": "lt",
+        "window": "graded-nl-eval",
+        "severity": "critical",
+        "action": "Run eval:search-quality:gold -- --require-commercial; inspect graded NL misses only (not known-item gold)"
       },
       {
         "name": "Synopsis Abstract-Only Ratio High",
@@ -113,6 +122,24 @@
         "window": "1h",
         "severity": "critical",
         "action": "Confirm STRIPE_WEBHOOK_SECRET and raw body middleware on /api/billing/webhook"
+      },
+      {
+        "name": "Cron Heartbeat Stale",
+        "metric": "medsearch_cron_stale",
+        "threshold": 1,
+        "comparator": "gte",
+        "window": "scrape",
+        "severity": "critical",
+        "action": "Check /api/admin/cron-health and Prometheus medsearch_cron_* gauges; scrape /metrics with METRICS_SCRAPE_TOKEN"
+      },
+      {
+        "name": "Cron Consecutive Failures",
+        "metric": "medsearch_cron_consecutive_failures",
+        "threshold": 2,
+        "comparator": "gte",
+        "window": "scrape",
+        "severity": "warning",
+        "action": "Inspect failing cron task logs; verify delayed-reward / offline-eval / learning-quality schedulers"
       }
     ]
   },

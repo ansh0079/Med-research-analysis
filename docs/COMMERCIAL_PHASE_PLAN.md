@@ -76,13 +76,17 @@ Status today: **beta-ready, not commercial-launch-ready.**
 
 **Goal:** Charge money safely.
 
-- Live Stripe checkout → webhook → subscription row → paywall gates Pro surfaces
-- Hit commercial search gates: Precision@10 ≥ 0.75, off-topic ≤ 0.10 (graded set, not only known-item gold)
-- External alerts on `/metrics` + cron heartbeats
-- PHI retention policy + encryption posture review
-- 10 flagship topics polished; wedge = resident/learner Pro
+- [x] Paywall keys aligned (`caseMode`, `quizMode`) + Stripe webhook → `billing_audit_log`
+- [ ] Live Stripe checkout → webhook → subscription row → paywall gates Pro surfaces (ops: `docs/LAUNCH_PROOF_RUNBOOK.md`)
+- [x] Commercial search gate shape: Precision@10 ≥ 0.75, off-topic ≤ 0.10 on **graded NL clinical** subset (`commercialGates`; known-item landmark gold stays separate)
+- [ ] Live graded-NL eval pass with `--require-commercial` against staging/prod
+- [x] External scrape auth on `/metrics` (`METRICS_SCRAPE_TOKEN`) + cron heartbeat Prometheus gauges
+- [x] Alert rules wired for commercial P@10 + cron stale (`monitoring/alerts-config.json`)
+- [x] PHI retention + encryption posture review notes (`docs/PHASE4_PHI_ENCRYPTION_REVIEW.md`)
+- [x] 10 flagship launch cohort + audit gate (`server/config/flagshipLaunchCohort.json`, `npm run audit:flagship-topics:launch`)
+- [ ] Wedge packaging: resident/learner Pro (pricing copy / marketing)
 
----
+**Branch:** `cursor/commercial-phase4-af23` (depends on Phase 1+3 #40 and Phase 2 #41)
 
 ## Success metrics
 
@@ -105,7 +109,8 @@ Status today: **beta-ready, not commercial-launch-ready.**
 | --- | --- |
 | `cursor/commercial-phase1-af23` | Phase 1 + Phase 3 (trust, closed loops, learning quality) |
 | `cursor/commercial-phase2-af23` | Phase 2 RL control plane (idempotent rewards, propensity, promote/hold/regress) |
+| `cursor/commercial-phase4-af23` | Phase 4 commercial launch (paywall, search gates, metrics, launch-10) |
 | `cursor/rl-quality-pack-af23` (#39) | Upstream source for 1A / Phase 2 scaffolding |
 | `cursor/claim-bridge-case-bandit-af23` (#37) | Upstream source for 1B bandit |
 
-Prefer landing Phase 1 as one reviewable PR; close or supersede overlapping PRs after merge.
+Prefer merge order: Phase 1+3 (#40) → Phase 2 (#41) → Phase 4.

@@ -16,8 +16,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { evaluateSearchResults, summarizeSearchEval } = require('../server/services/searchQualityEvalService');
-const { compareSummaryToBaseline } = require('../server/services/searchQualityRegression');
+const { evaluateSearchResults, summarizeSearchEval, summarizeGradedNlClinical } = require('../server/services/searchQualityEvalService');
+const { compareSummaryToBaseline, evaluateCommercialGates } = require('../server/services/searchQualityRegression');
 const { loadSearchGoldFixture } = require('./load-search-gold-fixture');
 
 const args = process.argv.slice(2);
@@ -298,13 +298,16 @@ async function runGoldEval(goldPath) {
     }
 
     const summary = summarizeSearchEval(rows);
+    const gradedNlSummary = summarizeGradedNlClinical(rows);
     const baselineSpec = loadBaselineSpec();
     const regression = baselineSpec ? compareSummaryToBaseline(summary, baselineSpec) : null;
     const absoluteGates = baselineSpec ? evaluateAbsoluteGates(summary, baselineSpec) : null;
+    const commercialGates = baselineSpec ? evaluateCommercialGates(gradedNlSummary, baselineSpec) : null;
 
     console.log('\nSUMMARY');
     console.log(`Queries: ${summary.queryCount} (landmark ${summary.landmarkQueryCount}, guideline ${summary.guidelineQueryCount}, management ${summary.managementIntentQueryCount || 0}, diagnosis ${summary.diagnosisIntentQueryCount || 0})`);
     console.log(`Precision@5: ${summary.precisionAt5.toFixed(3)}`);
+    console.log(`Precision@${k} (all): ${summary.precisionAtK.toFixed(3)}`);
     console.log(`Recall@${k}: ${summary.recallAtK.toFixed(3)}`);
     console.log(`Recall proxy: ${summary.recallProxy.toFixed(3)}`);
     console.log(`Any-relevant hit rate: ${summary.anyRelevantHitRate.toFixed(3)}`);
@@ -316,6 +319,11 @@ async function runGoldEval(goldPath) {
     console.log(`Management intent hit rate: ${summary.managementIntentHitRate == null ? 'n/a' : summary.managementIntentHitRate.toFixed(3)}`);
     console.log(`Diagnosis intent hit rate: ${summary.diagnosisIntentHitRate == null ? 'n/a' : summary.diagnosisIntentHitRate.toFixed(3)}`);
     console.log(`Type coverage: ${summary.requiredTypeCoverage.toFixed(3)}`);
+    console.log('\nGRADED NL CLINICAL (commercial scope)');
+    console.log(`Queries: ${gradedNlSummary.queryCount}`);
+    console.log(`Precision@${k}: ${gradedNlSummary.precisionAtK.toFixed(3)}`);
+    console.log(`Off-topic@${k}: ${gradedNlSummary.offTopicRateAtK.toFixed(3)}`);
+    console.log(`Any-relevant hit rate: ${gradedNlSummary.anyRelevantHitRate.toFixed(3)}`);
     if (summary.failingQueries.length) {
         console.log('\nFailing queries:');
         summary.failingQueries.forEach((q) => console.log(`  - ${q}`));
@@ -332,9 +340,16 @@ async function runGoldEval(goldPath) {
         });
     }
     if (absoluteGates?.checks?.length) {
-        console.log('\nABSOLUTE GATES');
+        console.log('\nABSOLUTE GATES (known-item / intent)');
         absoluteGates.checks.forEach((row) => {
             console.log(`  ${row.pass ? 'PASS' : 'FAIL'} ${row.label}: ${row.current.toFixed(3)} threshold ${row.threshold}`);
+        });
+    }
+    if (commercialGates?.checks?.length) {
+        console.log('\nCOMMERCIAL GATES (graded NL clinical)');
+        commercialGates.checks.forEach((row) => {
+            const current = Number.isFinite(Number(row.current)) ? Number(row.current).toFixed(3) : String(row.current);
+            console.log(`  ${row.pass ? 'PASS' : 'FAIL'} ${row.label}: ${current} threshold ${row.threshold}`);
         });
     }
 
@@ -349,24 +364,31 @@ async function runGoldEval(goldPath) {
             k,
             ran: new Date().toISOString(),
             expansionQueryCount: fixture.expansionQueryCount || 0,
+            nlClinicalQueryCount: fixture.nlClinicalLoadedQueryCount || 0,
         },
         summary,
+        gradedNlSummary,
         regression,
         absoluteGates,
+        commercialGates,
         results: rows,
     }, null, 2));
     console.log(`\nFull labelled results written to ${outPath}`);
 
     const regressionPass = regression ? regression.pass : true;
     const absolutePass = absoluteGates ? absoluteGates.pass : true;
+    // Commercial P@10 is opt-in via --require-commercial so known-item CI stays stable
+    // until a live graded-NL run is recorded against the commercial thresholds.
+    const requireCommercial = args.includes('--require-commercial');
+    const commercialPass = !requireCommercial || !commercialGates || commercialGates.pass;
     const usableResultCount = rows.reduce((sum, row) => sum + Number(row.resultCount || 0), 0);
     const allRequestsFailed = rows.length > 0 && rows.every((row) => row.error);
     if (usableResultCount === 0 || allRequestsFailed) {
         console.log('\nGate => FAIL (no usable search results; check --base and server availability)');
         process.exit(1);
     }
-    const pass = regressionPass && absolutePass;
-    console.log(`\nGate => ${pass ? 'PASS' : 'FAIL'} (regression=${regressionPass ? 'pass' : 'fail'}, absolute=${absolutePass ? 'pass' : 'fail'})`);
+    const pass = regressionPass && absolutePass && commercialPass;
+    console.log(`\nGate => ${pass ? 'PASS' : 'FAIL'} (regression=${regressionPass ? 'pass' : 'fail'}, absolute=${absolutePass ? 'pass' : 'fail'}, commercial=${commercialGates ? (commercialGates.pass ? 'pass' : 'fail') : 'n/a'}${requireCommercial ? '' : ' [informational]'})`);
     process.exit(pass ? 0 : 1);
 }
 

@@ -137,6 +137,24 @@ function registerObservabilityMetrics(registry, client) {
             labelNames: ['source', 'outcome'],
             registers: [registry],
         }),
+        cronLastSuccessUnixtime: new client.Gauge({
+            name: 'medsearch_cron_last_success_unixtime',
+            help: 'Unix timestamp of last successful cron heartbeat for the task',
+            labelNames: ['task'],
+            registers: [registry],
+        }),
+        cronConsecutiveFailures: new client.Gauge({
+            name: 'medsearch_cron_consecutive_failures',
+            help: 'Consecutive failure count from cron_heartbeats',
+            labelNames: ['task'],
+            registers: [registry],
+        }),
+        cronStale: new client.Gauge({
+            name: 'medsearch_cron_stale',
+            help: '1 when the cron has not succeeded within the expected window',
+            labelNames: ['task'],
+            registers: [registry],
+        }),
     };
     for (const slo of Object.keys(SLO_DEFINITIONS)) {
         metrics.sloBurnRate.set({ slo }, 0);
@@ -181,14 +199,54 @@ function getSloStatus() {
     };
 }
 
+const CRON_STALE_MS = {
+    'offline-eval-nightly': 36 * 60 * 60 * 1000,
+    'delayed-reward-backfill': 36 * 60 * 60 * 1000,
+    'learning-quality-eval': 36 * 60 * 60 * 1000,
+    'learner-profile-rollup': 36 * 60 * 60 * 1000,
+    'topic-evolution': 48 * 60 * 60 * 1000,
+    'knowledge-drift': 48 * 60 * 60 * 1000,
+    'queue-failure-digest': 8 * 24 * 60 * 60 * 1000,
+};
+
+/**
+ * Export cron_heartbeats rows as Prometheus gauges for external alerting.
+ */
+async function refreshCronHeartbeatMetrics(db) {
+    if (!metrics || typeof db?.all !== 'function') return;
+    let rows = [];
+    try {
+        rows = await db.all('SELECT task, last_run_at, last_status, consecutive_failures FROM cron_heartbeats');
+    } catch {
+        return;
+    }
+    const now = Date.now();
+    for (const row of rows || []) {
+        const task = row.task || 'unknown';
+        const lastRunMs = row.last_run_at ? Date.parse(row.last_run_at) : NaN;
+        const successUnix = row.last_status === 'ok' && Number.isFinite(lastRunMs)
+            ? Math.floor(lastRunMs / 1000)
+            : 0;
+        metrics.cronLastSuccessUnixtime.set({ task }, successUnix);
+        metrics.cronConsecutiveFailures.set({ task }, Number(row.consecutive_failures || 0));
+        const staleWindow = CRON_STALE_MS[task] || (36 * 60 * 60 * 1000);
+        const stale = !Number.isFinite(lastRunMs)
+            || row.last_status === 'error'
+            || (now - lastRunMs) > staleWindow;
+        metrics.cronStale.set({ task }, stale ? 1 : 0);
+    }
+}
+
 module.exports = {
     SLO_DEFINITIONS,
+    CRON_STALE_MS,
     getSloStatus,
     recordExternalApiCall,
     recordSearchQuality,
     recordSloEvent,
     recordSynopsisGeneration,
     registerObservabilityMetrics,
+    refreshCronHeartbeatMetrics,
     updateQueueMetrics,
     updateRecurringFailureMetrics,
 };

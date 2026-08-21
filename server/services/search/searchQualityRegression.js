@@ -58,8 +58,74 @@ function compareSummaryToBaseline(summary, baselineSpec = {}) {
     };
 }
 
+/**
+ * Commercial absolute gates apply to the graded NL clinical subset only.
+ * Known-item landmark gold is structurally capped near 0.1 Precision@10
+ * (one correct paper per query) and must not be gated on P@10.
+ */
+function evaluateCommercialGates(gradedSummary, baselineSpec = {}) {
+    const gates = baselineSpec.commercialGates || {};
+    const checks = [];
+    if (!gradedSummary || gradedSummary.queryCount === 0) {
+        return {
+            pass: false,
+            checks: [{
+                label: 'gradedNlQueryCount',
+                current: gradedSummary?.queryCount || 0,
+                threshold: gates.minGradedQueryCount || 10,
+                pass: false,
+                reason: 'No graded NL clinical queries in eval summary',
+            }],
+            failingChecks: [{ label: 'gradedNlQueryCount' }],
+            scope: 'graded_nl_clinical',
+        };
+    }
+
+    if (gates.minGradedQueryCount != null) {
+        checks.push({
+            label: 'minGradedQueryCount',
+            current: gradedSummary.queryCount,
+            threshold: gates.minGradedQueryCount,
+            pass: gradedSummary.queryCount >= gates.minGradedQueryCount,
+        });
+    }
+    if (gates.precisionAt10Min != null && gradedSummary.precisionAtK != null) {
+        checks.push({
+            label: 'precisionAt10Min',
+            current: gradedSummary.precisionAtK,
+            threshold: gates.precisionAt10Min,
+            pass: gradedSummary.precisionAtK >= gates.precisionAt10Min,
+        });
+    }
+    if (gates.offTopicRateAtKMax != null && gradedSummary.offTopicRateAtK != null) {
+        checks.push({
+            label: 'offTopicRateAtKMax',
+            current: gradedSummary.offTopicRateAtK,
+            threshold: gates.offTopicRateAtKMax,
+            pass: gradedSummary.offTopicRateAtK <= gates.offTopicRateAtKMax,
+        });
+    }
+    if (gates.anyRelevantHitRateMin != null && gradedSummary.anyRelevantHitRate != null) {
+        checks.push({
+            label: 'anyRelevantHitRateMin',
+            current: gradedSummary.anyRelevantHitRate,
+            threshold: gates.anyRelevantHitRateMin,
+            pass: gradedSummary.anyRelevantHitRate >= gates.anyRelevantHitRateMin,
+        });
+    }
+
+    const failingChecks = checks.filter((row) => !row.pass);
+    return {
+        pass: failingChecks.length === 0,
+        checks,
+        failingChecks,
+        scope: gates.scope || 'graded_nl_clinical',
+    };
+}
+
 module.exports = {
     DEFAULT_TOLERANCE,
     compareMetric,
     compareSummaryToBaseline,
+    evaluateCommercialGates,
 };

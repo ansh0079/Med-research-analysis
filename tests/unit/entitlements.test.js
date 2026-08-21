@@ -33,8 +33,9 @@ describe('PLANS definition', () => {
         expect(PLANS.free.features.aiSynthesis).toBe(false);
     });
 
-    test('pro plan enables case mode and review assistant', () => {
+    test('pro plan enables case mode, quiz mode, and review assistant', () => {
         expect(PLANS.pro.features.caseMode).toBe(true);
+        expect(PLANS.pro.features.quizMode).toBe(true);
         expect(PLANS.pro.features.reviewAssistant).toBe(true);
         expect(PLANS.pro.features.picoExtraction).toBe(true);
     });
@@ -102,6 +103,14 @@ describe('hasFeature()', () => {
 
     test('pro user can access caseMode', () => {
         expect(hasFeature({ subscription_plan: 'pro' }, 'caseMode')).toBe(true);
+    });
+
+    test('free user cannot access quizMode', () => {
+        expect(hasFeature({ role: 'free' }, 'quizMode')).toBe(false);
+    });
+
+    test('pro user can access quizMode', () => {
+        expect(hasFeature({ subscription_plan: 'pro' }, 'quizMode')).toBe(true);
     });
 
     test('free user can access basic search', () => {

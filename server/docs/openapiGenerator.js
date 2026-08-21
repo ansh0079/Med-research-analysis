@@ -283,7 +283,7 @@ const ROUTE_REGISTRY = [
   // Health
   { path: '/health', method: 'get', auth: false, tags: ['System'], description: 'Health check' },
   { path: '/api/config', method: 'get', auth: false, tags: ['System'], description: 'Client configuration' },
-  { path: '/metrics', method: 'get', auth: true, admin: true, tags: ['System'], description: 'Prometheus metrics (admin only)' },
+  { path: '/metrics', method: 'get', auth: true, admin: true, tags: ['System'], description: 'Prometheus metrics (admin JWT or METRICS_SCRAPE_TOKEN)' },
 
   // Search
   { path: '/api/search', method: 'get', auth: false, tags: ['Search'], description: 'Unified search' },

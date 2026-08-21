@@ -1,8 +1,37 @@
+const crypto = require('crypto');
 const { requireAuthJwt, requireRole } = require('../middleware/auth');
 const { checkDbContract } = require('../services/dbContract');
 const { getQueueStatus } = require('../services/jobQueue');
-const { updateQueueMetrics } = require('../services/observabilityMetrics');
+const { updateQueueMetrics, refreshCronHeartbeatMetrics } = require('../services/observabilityMetrics');
 const { version: APP_VERSION } = require('../../package.json');
+
+function timingSafeTokenEqual(provided, expected) {
+    if (!provided || !expected) return false;
+    const a = Buffer.from(String(provided));
+    const b = Buffer.from(String(expected));
+    if (a.length !== b.length) return false;
+    return crypto.timingSafeEqual(a, b);
+}
+
+/**
+ * Prometheus scrapers use METRICS_SCRAPE_TOKEN (X-Metrics-Token or Bearer).
+ * Admins may still authenticate with JWT + admin role.
+ */
+function requireMetricsAccess(req, res, next) {
+    const scrapeToken = process.env.METRICS_SCRAPE_TOKEN;
+    if (scrapeToken) {
+        const headerToken = req.get('x-metrics-token');
+        const auth = req.get('authorization') || '';
+        const bearer = auth.match(/^Bearer\s+(.+)$/i)?.[1];
+        if (timingSafeTokenEqual(headerToken, scrapeToken) || timingSafeTokenEqual(bearer, scrapeToken)) {
+            return next();
+        }
+    }
+    return requireAuthJwt(req, res, (err) => {
+        if (err) return next(err);
+        return requireRole('admin')(req, res, next);
+    });
+}
 
 async function checkDatabaseHealth(db) {
     const start = Date.now();
@@ -95,10 +124,11 @@ function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metr
         });
     });
 
-    app.get('/metrics', requireAuthJwt, requireRole('admin'), async (req, res) => {
+    app.get('/metrics', requireMetricsAccess, async (req, res) => {
         try {
             const queueStatus = await getQueueStatus().catch(() => null);
             if (queueStatus) updateQueueMetrics(queueStatus);
+            await refreshCronHeartbeatMetrics(db).catch(() => null);
             res.set('Content-Type', metricsRegistry.contentType);
             res.end(await metricsRegistry.metrics());
         } catch (error) {
@@ -108,4 +138,4 @@ function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metr
     });
 }
 
-module.exports = { registerHealthRoutes, checkDatabaseHealth };
+module.exports = { registerHealthRoutes, checkDatabaseHealth, requireMetricsAccess };

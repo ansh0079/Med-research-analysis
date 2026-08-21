@@ -202,6 +202,23 @@ function registerBillingRoutes(app, deps) {
 async function handleWebhookEvent(event, db) {
     const { subscriptionStatusToRole } = require('../services/stripeService');
 
+    const audit = async (action, { userId = null, externalRef = null, details = null } = {}) => {
+        if (typeof db?.logBillingEvent !== 'function') return;
+        try {
+            await db.logBillingEvent({
+                userId,
+                action,
+                externalRef: externalRef || event.id || null,
+                details: {
+                    eventType: event.type,
+                    ...(details || {}),
+                },
+            });
+        } catch (err) {
+            logger.warn({ err, action, eventType: event.type }, 'Billing audit log failed in Stripe webhook');
+        }
+    };
+
     switch (event.type) {
         case 'checkout.session.completed': {
             const session = event.data.object;
@@ -217,6 +234,10 @@ async function handleWebhookEvent(event, db) {
             const plan = session.metadata?.plan || sub.metadata?.plan || 'pro';
             if (!userId) {
                 logger.error({ sessionId: session.id, subscriptionId: sub.id }, 'checkout.session.completed missing userId metadata — subscription not linked to a user');
+                await audit('webhook_checkout_missing_user', {
+                    externalRef: session.id,
+                    details: { subscriptionId: sub.id, plan },
+                });
                 break;
             }
 
@@ -234,6 +255,11 @@ async function handleWebhookEvent(event, db) {
                 WHERE id = ?`,
                 [sub.id, sub.status, plan, periodEnd, sub.cancel_at_period_end ? 1 : 0, role, userId]
             );
+            await audit('webhook_subscription_activated', {
+                userId,
+                externalRef: sub.id,
+                details: { plan, status: sub.status, sessionId: session.id },
+            });
             logger.info({ userId, plan, status: sub.status }, 'Subscription activated');
             break;
         }
@@ -243,7 +269,13 @@ async function handleWebhookEvent(event, db) {
         case 'customer.subscription.deleted': {
             const sub = event.data.object;
             const userId = sub.metadata?.userId;
-            if (!userId) break;
+            if (!userId) {
+                await audit('webhook_subscription_missing_user', {
+                    externalRef: sub.id,
+                    details: { status: sub.status },
+                });
+                break;
+            }
 
             const plan = sub.metadata?.plan || 'pro';
             const role = subscriptionStatusToRole(sub.status, plan);
@@ -262,6 +294,16 @@ async function handleWebhookEvent(event, db) {
                 WHERE id = ?`,
                 [sub.id, sub.status, plan, periodEnd, sub.cancel_at_period_end ? 1 : 0, role, userId]
             );
+            await audit(
+                event.type === 'customer.subscription.deleted'
+                    ? 'webhook_subscription_deleted'
+                    : 'webhook_subscription_updated',
+                {
+                    userId,
+                    externalRef: sub.id,
+                    details: { plan, status: sub.status },
+                }
+            );
             logger.info({ userId, plan, status: sub.status }, 'Subscription updated');
             break;
         }
@@ -273,6 +315,10 @@ async function handleWebhookEvent(event, db) {
                 "UPDATE users SET subscription_status = 'past_due' WHERE stripe_customer_id = ?",
                 [customerId]
             );
+            await audit('webhook_payment_failed', {
+                externalRef: invoice.id || customerId,
+                details: { customerId, invoiceId: invoice.id || null },
+            });
             logger.warn({ customerId }, 'Payment failed — subscription marked past_due');
             break;
         }
@@ -283,4 +329,4 @@ async function handleWebhookEvent(event, db) {
     }
 }
 
-module.exports = { registerBillingRoutes };
+module.exports = { registerBillingRoutes, handleWebhookEvent };
