@@ -24,7 +24,13 @@ const {
 async function selectSynopsisStyleArm(db, userId) {
     const armIds = Object.keys(SYNOPSIS_STYLE_ARMS);
     if (!isBanditEnabled() || !db?.listPersonalizationArmStates) {
-        return { armId: 'bottom_line_first', style: SYNOPSIS_STYLE_ARMS.bottom_line_first, scopeKey: 'global', sampled: null };
+        return {
+            armId: 'bottom_line_first',
+            style: SYNOPSIS_STYLE_ARMS.bottom_line_first,
+            scopeKey: 'global',
+            sampled: null,
+            propensity: 1,
+        };
     }
 
     const userScope = scopeKeyForUser(userId);
@@ -38,6 +44,7 @@ async function selectSynopsisStyleArm(db, userId) {
             style: SYNOPSIS_STYLE_ARMS.bottom_line_first,
             scopeKey: 'global',
             sampled: null,
+            propensity: 1,
             selectionSource: 'density_gate',
             densityGate: { globalPulls: density.globalPulls, minGlobalPulls: MIN_GLOBAL_PULLS_FOR_POLICY },
         };
@@ -51,7 +58,7 @@ async function selectSynopsisStyleArm(db, userId) {
         loadArmSamples(db, POLICY_SYNOPSIS_STYLE, armIds, 'global'),
         userId ? loadArmSamples(db, POLICY_SYNOPSIS_STYLE, armIds, userScope) : Promise.resolve({}),
     ]);
-    const { armId: bestArm, sampled: bestSample } = chooseArmBySamples(
+    const { armId: bestArm, sampled: bestSample, propensity, propensityByArm } = chooseArmBySamples(
         armIds,
         globalSamples,
         userSamples,
@@ -60,7 +67,14 @@ async function selectSynopsisStyleArm(db, userId) {
     );
     const scopeKey = userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global';
 
-    return { armId: bestArm, style: SYNOPSIS_STYLE_ARMS[bestArm], scopeKey, sampled: bestSample };
+    return {
+        armId: bestArm,
+        style: SYNOPSIS_STYLE_ARMS[bestArm],
+        scopeKey,
+        sampled: bestSample,
+        propensity,
+        propensityByArm,
+    };
 }
 
 module.exports = {

@@ -281,6 +281,8 @@ async function executeAgentTurn(
                     classifiedIntent,
                     promptVersion: AGENT_PROMPT_VERSION,
                     scopeKey: teachingStrategyArm.scopeKey,
+                    propensity: teachingStrategyArm.propensity != null ? Number(teachingStrategyArm.propensity) : null,
+                    propensityByArm: teachingStrategyArm.propensityByArm || null,
                 },
             }).catch((err) => logger.debug({ err, topic: trimmedTopic, userId }, 'agent teaching personalization decision log failed'));
 

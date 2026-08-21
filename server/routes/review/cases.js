@@ -477,6 +477,8 @@ function registerReviewCaseRoutes(app, {
                     selectedBy: difficultyBandit ? 'bandit' : 'client',
                     scopeKey: difficultyBandit?.scopeKey || null,
                     banditSample: difficultyBandit?.sampled ?? null,
+                    propensity: difficultyBandit?.propensity != null ? Number(difficultyBandit.propensity) : null,
+                    propensityByArm: difficultyBandit?.propensityByArm || null,
                 },
             }).catch((err) => {
                 req.log?.warn?.({ err }, 'adaptive case difficulty decision log failed');

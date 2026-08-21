@@ -682,6 +682,28 @@ CREATE TABLE IF NOT EXISTS delayed_reward_backfill_log (
     UNIQUE(decision_id, horizon_days)
 );
 
+CREATE TABLE IF NOT EXISTS bandit_reward_applications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    application_key TEXT NOT NULL UNIQUE,
+    policy_type TEXT NOT NULL,
+    arm_id TEXT NOT NULL,
+    scope_key TEXT NOT NULL DEFAULT 'global',
+    decision_id INTEGER,
+    reward REAL NOT NULL,
+    source TEXT,
+    created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS policy_serving_state (
+    policy_type TEXT PRIMARY KEY,
+    serving_arm_id TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'hold',
+    last_eval_run_id INTEGER,
+    last_reason TEXT,
+    updated_at TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS pico_extractions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     article_id TEXT NOT NULL UNIQUE,

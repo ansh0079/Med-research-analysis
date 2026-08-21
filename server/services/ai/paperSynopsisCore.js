@@ -322,6 +322,8 @@ async function runPaperSynopsisGenerationInner({
                 trainingStage: effectiveTrainingStage,
                 promptVersion: getPromptVersion('synopsis'),
                 scopeKey: synopsisStyleArm.scopeKey,
+                propensity: synopsisStyleArm.propensity != null ? Number(synopsisStyleArm.propensity) : null,
+                propensityByArm: synopsisStyleArm.propensityByArm || null,
             },
         }).catch((err) => logger.debug({ err, articleId, userId }, 'synopsis personalization decision log failed'));
     }
