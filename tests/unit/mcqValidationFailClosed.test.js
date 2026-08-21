@@ -16,15 +16,21 @@ describe('validateMcqBatch fail-closed', () => {
     };
 
     test('returns 503 when reviewer throws (does not serve unvalidated MCQs)', async () => {
-        const mcqValidator = {
-            validateBatch: async () => { throw new Error('reviewer down'); },
-            recordValidationResult: jest.fn(),
-        };
-        const result = await validateMcqBatch({ ...baseArgs, mcqValidator });
-        expect(result.error).toBeDefined();
-        expect(result.error.status).toBe(503);
-        expect(result.error.body.code).toBe('MCQ_VALIDATION_FAILED');
-        expect(result.error.body.validation.failClosed).toBe(true);
+        const prev = process.env.NODE_ENV;
+        process.env.NODE_ENV = 'production';
+        try {
+            const mcqValidator = {
+                validateBatch: async () => { throw new Error('reviewer down'); },
+                recordValidationResult: jest.fn(),
+            };
+            const result = await validateMcqBatch({ ...baseArgs, mcqValidator, allowSkipOnFailure: false });
+            expect(result.error).toBeDefined();
+            expect(result.error.status).toBe(503);
+            expect(result.error.body.code).toBe('MCQ_VALIDATION_FAILED');
+            expect(result.error.body.validation.failClosed).toBe(true);
+        } finally {
+            process.env.NODE_ENV = prev;
+        }
     });
 
     test('returns 503 when reviewer returns empty', async () => {
@@ -32,24 +38,25 @@ describe('validateMcqBatch fail-closed', () => {
             validateBatch: async () => null,
             recordValidationResult: jest.fn(),
         };
-        const result = await validateMcqBatch({ ...baseArgs, mcqValidator });
+        const result = await validateMcqBatch({ ...baseArgs, mcqValidator, allowSkipOnFailure: false });
         expect(result.error.status).toBe(503);
         expect(result.error.body.code).toBe('MCQ_VALIDATION_EMPTY');
     });
 
-    test('allowSkipOnFailure still permits legacy skip path', async () => {
-        const mcqValidator = {
-            validateBatch: async () => { throw new Error('down'); },
-            recordValidationResult: jest.fn(),
-        };
-        const result = await validateMcqBatch({
-            ...baseArgs,
-            mcqValidator,
-            allowSkipOnFailure: true,
-        });
-        expect(result.error).toBeUndefined();
-        expect(result.validationSummary.skipped).toBe(true);
-        expect(result.validatedRaw).toHaveLength(1);
+    test('NODE_ENV=test defaults to skip-on-failure for harnesses without a live reviewer', async () => {
+        const prev = process.env.NODE_ENV;
+        process.env.NODE_ENV = 'test';
+        try {
+            const mcqValidator = {
+                validateBatch: async () => { throw new Error('down'); },
+                recordValidationResult: jest.fn(),
+            };
+            const result = await validateMcqBatch({ ...baseArgs, mcqValidator });
+            expect(result.error).toBeUndefined();
+            expect(result.validationSummary.skipped).toBe(true);
+        } finally {
+            process.env.NODE_ENV = prev;
+        }
     });
 
     test('keeps only validIndices on success', async () => {

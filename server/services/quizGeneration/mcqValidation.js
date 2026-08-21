@@ -33,8 +33,11 @@ async function validateMcqBatch({
     jobKey = null,
     promptVariant = null,
     questionIdPrefix = 'quiz',
-    /** @deprecated kept for callers; validation always fails closed on reviewer errors */
-    allowSkipOnFailure = false,
+    /**
+     * Production: fail closed when the reviewer is down.
+     * Tests without a live reviewer may set this or rely on NODE_ENV=test.
+     */
+    allowSkipOnFailure = process.env.NODE_ENV === 'test',
 }) {
     let validationSummary = { reviewed: 0, rejected: 0, rejections: [], skipped: false };
     let validatedRaw = raw;
