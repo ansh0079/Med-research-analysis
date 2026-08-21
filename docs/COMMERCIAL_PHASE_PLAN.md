@@ -64,11 +64,11 @@ Status today: **beta-ready, not commercial-launch-ready.**
 
 **Goal:** Marketable claim-anchored questions and cases.
 
-- Fail closed when MCQ validation skips
-- High-stakes question types only from verified / guideline-supported claims
-- Psychometrics → live difficulty
-- Synopsis / clinical answer hard-banner when abstract-only and no guideline support
-- Conflict matrix (not lexical-only) on claim provenance
+- [x] Fail closed when MCQ validation skips / reviewer fails (`MCQ_VALIDATION_FAILED`)
+- [ ] High-stakes question types only from verified / guideline-supported claims
+- [ ] Psychometrics → live difficulty
+- [ ] Synopsis / clinical answer hard-banner when abstract-only and no guideline support
+- [ ] Conflict matrix (not lexical-only) on claim provenance
 
 ---
 
