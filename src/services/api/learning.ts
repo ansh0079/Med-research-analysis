@@ -579,7 +579,9 @@ export class LearningApi extends BaseApiClient {
     });
     if (!response.ok) {
       const err = await response.json().catch(() => ({ error: 'Failed to generate case' }));
-      throw new Error(err.error || 'Failed to generate case');
+      const error = new Error(err.error || 'Failed to generate case') as Error & { code?: string };
+      if (err.code) error.code = err.code;
+      throw error;
     }
     return response.json();
   }
@@ -603,7 +605,12 @@ export class LearningApi extends BaseApiClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    if (!response.ok) throw new Error('Failed to submit step response');
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({ error: 'Failed to submit step response' }));
+      const error = new Error(err.error || 'Failed to submit step response') as Error & { code?: string };
+      if (err.code) error.code = err.code;
+      throw error;
+    }
     return response.json();
   }
 }

@@ -63,7 +63,16 @@ export const AdaptiveCasePage: React.FC = () => {
       setShowingFeedback(false);
       setPhase('playing');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to generate case');
+      const anyErr = err as Error & { code?: string };
+      const code = anyErr?.code;
+      const msg = anyErr?.message || 'Failed to generate case';
+      if (code === 'EVIDENCE_TOO_THIN') {
+        setError(`${msg} Tip: run a search on this topic first so guidelines and teaching points can populate.`);
+      } else if (code === 'CASE_STEP_GENERATION_FAILED') {
+        setError('Could not generate a grounded case. Please retry — we never invent answers without evidence.');
+      } else {
+        setError(msg);
+      }
       setPhase('setup');
     }
   }, [topic, learningMode, difficulty]);
@@ -87,6 +96,13 @@ export const AdaptiveCasePage: React.FC = () => {
       }
       if (result.session.status === 'completed') {
         setTimeout(() => setPhase('summary'), 2500);
+      }
+    } catch (err: unknown) {
+      const anyErr = err as Error & { code?: string };
+      if (anyErr?.code === 'CASE_STEP_GENERATION_FAILED') {
+        setError(anyErr.message || 'Could not generate the next grounded step. Your answer was saved — please retry.');
+      } else {
+        setError(anyErr?.message || 'Failed to submit step');
       }
     } finally {
       setGeneratingStep(false);

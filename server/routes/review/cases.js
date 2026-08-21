@@ -21,6 +21,10 @@ const {
     selectCaseDifficultyArm,
     recordBanditReward,
 } = require('../../services/personalizationBanditService');
+const {
+    validateCaseStep,
+    generateCaseStepWithRetry,
+} = require('../../services/caseStepTrustService');
 
 function registerReviewCaseRoutes(app, {
     db,
@@ -386,27 +390,43 @@ function registerReviewCaseRoutes(app, {
 
             const synopsis = topicKnowledge?.knowledge?.fullTextSynopsis || topicKnowledge?.knowledge?.synopsis || null;
 
-            // Evidence density check
+            // Evidence density check — Phase 1 commercial trust: never start ungrounded.
             const guidelineCount = (guidelines || []).length;
             const tk = topicKnowledge?.knowledge || topicKnowledge;
             const teachingPointCount = (tk?.coreTeachingPoints?.length || 0) + (tk?.teachingPoints?.length || 0);
             const evidenceDensity = guidelineCount + teachingPointCount;
             let evidenceWarning = null;
             if (evidenceDensity === 0) {
-                evidenceWarning = 'No guidelines or teaching points found for this topic. The case will rely on general clinical knowledge and may be less evidence-grounded.';
-            } else if (guidelineCount === 0 && teachingPointCount < 3) {
+                return res.status(422).json({
+                    error: 'This topic has no guidelines or teaching points yet. Enrich the topic (search + synopsis) before starting a case.',
+                    code: 'EVIDENCE_TOO_THIN',
+                    evidenceDensity: 0,
+                });
+            }
+            if (guidelineCount === 0 && teachingPointCount < 3) {
                 evidenceWarning = 'Limited evidence base: no guidelines found and only a few teaching points. Case quality may be reduced.';
             } else if (evidenceDensity < 3) {
                 evidenceWarning = 'Thin evidence base for this topic. The case may not cover all clinical angles.';
             }
 
             // Branching mode: generate only step 1 and store evidence context for later steps
-            const prompt = buildCaseInitPrompt(topic, guidelines, topicKnowledge, weaknesses, { learningMode, difficulty }, synopsis);
-            const { text } = await callProvider(prompt, 'auto');
-            const parsed = reviews.parseJsonBlock(text);
-            if (!parsed || !parsed.step) {
-                return res.status(502).json({ error: 'Failed to generate initial case step' });
+            const initResult = await generateCaseStepWithRetry({
+                callProvider,
+                parseJsonBlock: reviews.parseJsonBlock,
+                buildPrompt: () => buildCaseInitPrompt(
+                    topic, guidelines, topicKnowledge, weaknesses, { learningMode, difficulty }, synopsis
+                ),
+                maxAttempts: 2,
+                logWarn: (meta, msg) => req.log?.warn?.(meta, msg),
+            });
+            if (!initResult.step) {
+                return res.status(503).json({
+                    error: 'Could not generate a grounded case step. Please retry in a moment.',
+                    code: 'CASE_STEP_GENERATION_FAILED',
+                    reason: initResult.error,
+                });
             }
+            const parsed = initResult.parsed || { step: initResult.step };
 
             const sourcesUsed = (guidelines || []).map(g => {
                 let label = g.source_body;
@@ -554,44 +574,36 @@ function registerReviewCaseRoutes(app, {
                 }));
 
                 const nextStepType = STEP_SEQUENCE[nextStepIndex] || 'resolution';
-                const stepPrompt = buildCaseStepPrompt({
-                    topic: session.topic,
-                    stepIndex: nextStepIndex,
-                    stepType: nextStepType,
-                    caseHistory,
-                    userAnswer: selectedAnswer,
-                    wasCorrect: isCorrect,
-                    evidenceContext: session.evidenceContext,
-                    options: { learningMode: session.learningMode, difficulty: session.difficulty },
+                const stepGen = await generateCaseStepWithRetry({
+                    callProvider,
+                    parseJsonBlock: reviews.parseJsonBlock,
+                    buildPrompt: () => buildCaseStepPrompt({
+                        topic: session.topic,
+                        stepIndex: nextStepIndex,
+                        stepType: nextStepType,
+                        caseHistory,
+                        userAnswer: selectedAnswer,
+                        wasCorrect: isCorrect,
+                        evidenceContext: session.evidenceContext,
+                        options: { learningMode: session.learningMode, difficulty: session.difficulty },
+                    }),
+                    maxAttempts: 2,
+                    logWarn: (meta, msg) => req.log?.warn?.(meta, msg),
                 });
 
-                let stepParsed = null;
-                try {
-                    const { text: stepText } = await callProvider(stepPrompt, 'auto');
-                    stepParsed = reviews.parseJsonBlock(stepText);
-                } catch (genErr) {
-                    req.log?.warn?.({ err: genErr }, 'Step generation failed, using fallback');
-                    stepParsed = {
-                        step: {
-                            type: nextStepType,
-                            narrative: `The clinical team continues managing the patient. Based on the previous findings, the case progresses to the ${nextStepType} phase.`,
-                            question: `What is the most appropriate next step in ${nextStepType}?`,
-                            questionType: 'clinical_application',
-                            options: ['A: Continue current management', 'B: Reassess and modify approach', 'C: Escalate to senior review', 'D: Discharge with follow-up'],
-                            correctAnswer: 'B',
-                            explanation: 'Reassessing based on evolving clinical data is the safest approach when the clinical picture is uncertain.',
-                            whyOthersWrong: 'Continuing without reassessment risks missing changes; escalation may be premature; discharge requires stability.',
-                            teachingPoint: 'Always reassess clinical decisions as new information becomes available.',
-                            evidenceSource: null,
-                            branchingNote: 'This step was generated as a fallback due to a technical issue.',
-                        },
-                    };
+                if (!stepGen.step) {
+                    // Do not invent keyed answers — return recoverable error; prior step response already saved.
+                    return res.status(503).json({
+                        error: 'Could not generate the next evidence-grounded step. Your answer was saved — please retry.',
+                        code: 'CASE_STEP_GENERATION_FAILED',
+                        reason: stepGen.error,
+                        stepFeedback,
+                        session: await db.getCaseSession(session.id),
+                    });
                 }
 
-                if (stepParsed?.step) {
-                    await db.appendCaseStep(session.id, stepParsed.step);
-                    stepFeedback.branchingNote = stepParsed.step.branchingNote || null;
-                }
+                await db.appendCaseStep(session.id, stepGen.step);
+                stepFeedback.branchingNote = stepGen.step.branchingNote || null;
             }
 
             // If this was the last step (step 5 answered), finalize
