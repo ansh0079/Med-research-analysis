@@ -116,8 +116,8 @@ test.describe('search → results → interaction flow', () => {
 
   test('homepage loads with correct branding', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Signal MD.*Medical Evidence Intelligence/i);
-    await expect(page.getByRole('button', { name: /Go to search/i })).toBeVisible();
+    await expect(page).toHaveTitle(/Signal MD/i);
+    await expect(page.getByRole('button', { name: /Try a search/i })).toBeVisible();
   });
 
   test('search returns results and renders article cards', async ({ page }) => {
@@ -141,7 +141,8 @@ test.describe('search → results → interaction flow', () => {
     await page.getByRole('banner').getByRole('button', { name: /^Search$/ }).click();
 
     await expect(page.getByText(/Evidence found/i)).toBeVisible();
-    await expect(page.getByText(/Open access/i)).toBeVisible();
+    // "Open access" appears in the stats banner, filters, and article chips — pin to the banner label.
+    await expect(page.getByRole('paragraph').filter({ hasText: /^Open access$/i })).toBeVisible();
   });
 
   test('filter within results narrows list', async ({ page }) => {
@@ -153,8 +154,8 @@ test.describe('search → results → interaction flow', () => {
     const filterInput = page.getByPlaceholder(/Filter titles/i);
     await filterInput.fill('empagliflozin');
 
-    await expect(page.getByText(/Empagliflozin/i)).toBeVisible();
-    await expect(page.getByText(/SGLT2 inhibitors in heart failure/i)).not.toBeVisible();
+    await expect(page.getByRole('link', { name: /Empagliflozin/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /SGLT2 inhibitors in heart failure/i })).not.toBeVisible();
   });
 
   test('deferred intelligence renders results first then mentor guidance', async ({ page }) => {

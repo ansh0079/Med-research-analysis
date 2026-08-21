@@ -171,9 +171,9 @@ test.describe('learning pipeline: search → synopsis → quiz → mastery', () 
   test('full pipeline from search to mastery update', async ({ page }) => {
     // ── 1. Search ──
     await page.goto('/search');
-    await expect(page.getByPlaceholder(/diabetes/i)).toBeVisible();
+    const searchBox = page.getByPlaceholder(/SGLT2 inhibitors/i);
+    await expect(searchBox).toBeVisible();
 
-    const searchBox = page.getByPlaceholder(/diabetes/i);
     await searchBox.fill('diabetes mellitus');
 
     const submitButton = page.getByRole('banner').getByRole('button', { name: /^Search$/ });

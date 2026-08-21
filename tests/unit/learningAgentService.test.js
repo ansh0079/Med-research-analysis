@@ -9,7 +9,6 @@ function makeDb({ mastery = [], dueCards = [], searches = [], quizzes = [], feed
     all: jest.fn(async (sql, params = []) => {
       if (sql.includes('FROM user_topic_mastery')) return mastery;
       if (sql.includes('FROM spaced_rep_cards')) return dueCards;
-      if (sql.includes('FROM searches')) return searches;
       if (sql.includes('FROM quiz_attempts')) return quizzes;
       if (sql.includes('FROM topic_knowledge')) return topicRows;
       return [];
@@ -21,6 +20,7 @@ function makeDb({ mastery = [], dueCards = [], searches = [], quizzes = [], feed
     }),
     getTopicCrosslinks: jest.fn().mockResolvedValue([]),
     listSearchResultFeedbackForUser: jest.fn().mockResolvedValue(feedback),
+    listRecentSearchesForUser: jest.fn().mockResolvedValue(searches),
   };
   return db;
 }

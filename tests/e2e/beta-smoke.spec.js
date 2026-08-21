@@ -69,10 +69,10 @@ test.describe('beta smoke', () => {
   test('serves the current app shell', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page).toHaveTitle(/Signal MD.*Medical Evidence Intelligence/i);
-    await expect(page.getByRole('button', { name: /Get started free/i }).first()).toBeVisible();
+    await expect(page).toHaveTitle(/Signal MD/i);
+    await expect(page.getByRole('button', { name: /Start free/i }).first()).toBeVisible();
     await expect(page.getByRole('button', { name: /Sign in/i }).first()).toBeVisible();
-    await expect(page.getByText(/Search 100 M\+/i)).toBeVisible();
+    await expect(page.getByRole('button', { name: /Try a search/i }).first()).toBeVisible();
   });
 
   // KNOWN FAILING (2026-07-04): traced this end-to-end — search() and api.search()

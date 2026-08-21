@@ -79,15 +79,17 @@ async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
             logger.warn({ err, userId }, 'recommendation due-cards query failed');
             return [];
         }),
-        db.all(
-            `SELECT query, created_at FROM searches
-             WHERE session_id IN (SELECT id FROM sessions WHERE user_id = ?)
-             ORDER BY created_at DESC LIMIT 15`,
-            [userId]
-        ).catch((err) => {
-            logger.warn({ err, userId }, 'recommendation recent-searches query failed');
+        (async () => {
+            // searches/sessions have no user_id in the current schema. Prefer an explicit
+            // helper when present; otherwise skip (do not query a missing column).
+            if (typeof db.listRecentSearchesForUser === 'function') {
+                return db.listRecentSearchesForUser(userId, { limit: 15 }).catch((err) => {
+                    logger.warn({ err, userId }, 'recommendation recent-searches query failed');
+                    return [];
+                });
+            }
             return [];
-        }),
+        })(),
         db.all(
             `SELECT topic, normalized_topic, question_type, is_correct, confidence, reasoning_tags, claim_key, created_at
              FROM quiz_attempts WHERE user_id = ?
