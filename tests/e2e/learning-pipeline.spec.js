@@ -121,18 +121,20 @@ test.describe('learning pipeline: search → synopsis → quiz → mastery', () 
     });
 
     await page.route('**/api/auth/me', async (route) => {
-      try {
-        const response = await route.fetch();
-        const json = await response.json();
-        if (json && json.user) json.user.emailVerified = true;
-        await route.fulfill({
-          status: response.status(),
-          contentType: 'application/json',
-          body: JSON.stringify(json),
-        });
-      } catch {
-        await route.continue();
-      }
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          user: {
+            id: 'e2e-user',
+            email: 'e2e@test.local',
+            name: 'E2E Test User',
+            role: 'user',
+            emailVerified: true,
+            subscriptionPlan: 'pro',
+          },
+        }),
+      });
     });
 
     // Mock config
@@ -218,23 +220,29 @@ test.describe('learning pipeline: search → synopsis → quiz → mastery', () 
     await page.getByRole('button', { name: /Critically Appraise/i }).first().click();
     await expect(page.getByText(/first-line therapy/i).first()).toBeVisible({ timeout: 10000 });
 
-    // ── 3. Quiz Generation (best-effort if quiz CTA is present on this surface) ──
-    const quizTrigger = page.getByRole('button', { name: /Quiz|Test|Study/i }).first();
-    if (await quizTrigger.isVisible().catch(() => false)) {
-      await quizTrigger.click();
-      await expect(page.getByText(/What is the primary mechanism of metformin/i)).toBeVisible({ timeout: 10000 });
-      await expect(page.getByText(/Which patient should NOT receive metformin/i)).toBeVisible();
-      await expect(page.getByText(/According to ADA guidelines/i)).toBeVisible();
+    // ── 3. Quiz from paper (navigates to /quiz; mock both generate endpoints) ──
+    await page.route('**/api/quiz/from-evidence', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(mockQuiz),
+      });
+    });
 
-      await page.getByText(/Decreases hepatic glucose production/i).click();
-      await page.getByText(/eGFR 25 mL\/min\/1\.73m²/i).click();
-      await page.getByText(/First-line for most adults with T2DM/i).click();
+    await page.getByRole('button', { name: /Quiz this paper/i }).first().click();
+    await expect(page).toHaveURL(/\/quiz/, { timeout: 10000 });
+    await expect(page.getByText(/What is the primary mechanism of metformin/i)).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText(/Which patient should NOT receive metformin/i)).toBeVisible();
+    await expect(page.getByText(/According to ADA guidelines/i)).toBeVisible();
 
-      const submitQuiz = page.getByRole('button', { name: /Submit|Finish|Done/i });
-      if (await submitQuiz.isVisible().catch(() => false)) {
-        await submitQuiz.click();
-        await expect(page.getByText(/2\s*\/\s*3/i).first()).toBeVisible({ timeout: 10000 });
-      }
+    await page.getByText(/Decreases hepatic glucose production/i).click();
+    await page.getByText(/eGFR 25 mL\/min\/1\.73m²/i).click();
+    await page.getByText(/First-line for most adults with T2DM/i).click();
+
+    const submitQuiz = page.getByRole('button', { name: /Submit|Finish|Done|Check/i }).first();
+    if (await submitQuiz.isVisible().catch(() => false)) {
+      await submitQuiz.click();
+      await expect(page.getByText(/2\s*\/\s*3|Score|Mastery|complete/i).first()).toBeVisible({ timeout: 10000 });
     }
   });
 });

@@ -26,9 +26,9 @@ export const LandingPage: React.FC = () => {
   return (
     <div className="landing-page min-h-screen overflow-x-hidden bg-[#f3f6f4] text-slate-900">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
-        .landing-page { font-family: 'Source Sans 3', Georgia, serif; }
-        .landing-page .lp-display { font-family: 'Fraunces', Georgia, serif; }
+        /* Load display fonts via <link> in index.html — CSS @import can block first paint on WebKit. */
+        .landing-page { font-family: 'Source Sans 3', 'Source Sans Pro', Georgia, 'Times New Roman', serif; }
+        .landing-page .lp-display { font-family: Fraunces, Georgia, 'Times New Roman', serif; }
         @keyframes lp-rise {
           from { opacity: 0; transform: translateY(14px); }
           to { opacity: 1; transform: translateY(0); }

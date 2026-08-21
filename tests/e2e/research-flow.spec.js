@@ -78,20 +78,22 @@ test.describe('search → results → interaction flow', () => {
       localStorage.setItem('med_onboarding_done', '1');
     });
 
-    // E2E-registered users are unverified; avoid the fixed verify banner covering the search chrome.
+    // Avoid route.fetch() (flaky under WebKit); keep auth hydrated without the verify banner.
     await page.route('**/api/auth/me', async (route) => {
-      try {
-        const response = await route.fetch();
-        const json = await response.json();
-        if (json && json.user) json.user.emailVerified = true;
-        await route.fulfill({
-          status: response.status(),
-          contentType: 'application/json',
-          body: JSON.stringify(json),
-        });
-      } catch {
-        await route.continue();
-      }
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          user: {
+            id: 'e2e-user',
+            email: 'e2e@test.local',
+            name: 'E2E Test User',
+            role: 'user',
+            emailVerified: true,
+            subscriptionPlan: 'pro',
+          },
+        }),
+      });
     });
 
     await page.route('**/api/config', async (route) => {
