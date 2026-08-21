@@ -23,7 +23,13 @@ const {
 async function selectTeachingStrategyArm(db, userId) {
     const armIds = Object.keys(TEACHING_STRATEGY_ARMS);
     if (!isBanditEnabled() || !db?.listPersonalizationArmStates) {
-        return { armId: 'direct', strategy: TEACHING_STRATEGY_ARMS.direct, scopeKey: 'global', sampled: null };
+        return {
+            armId: 'direct',
+            strategy: TEACHING_STRATEGY_ARMS.direct,
+            scopeKey: 'global',
+            sampled: null,
+            propensity: 1,
+        };
     }
 
     const userScope = scopeKeyForUser(userId);
@@ -37,6 +43,7 @@ async function selectTeachingStrategyArm(db, userId) {
             strategy: TEACHING_STRATEGY_ARMS.direct,
             scopeKey: 'global',
             sampled: null,
+            propensity: 1,
             selectionSource: 'density_gate',
             densityGate: { globalPulls: density.globalPulls, minGlobalPulls: MIN_GLOBAL_PULLS_FOR_POLICY },
         };
@@ -50,7 +57,7 @@ async function selectTeachingStrategyArm(db, userId) {
         loadArmSamples(db, POLICY_TEACHING_STRATEGY, armIds, 'global'),
         userId ? loadArmSamples(db, POLICY_TEACHING_STRATEGY, armIds, userScope) : Promise.resolve({}),
     ]);
-    const { armId: bestArm, sampled: bestSample } = chooseArmBySamples(
+    const { armId: bestArm, sampled: bestSample, propensity, propensityByArm } = chooseArmBySamples(
         armIds,
         globalSamples,
         userSamples,
@@ -59,7 +66,14 @@ async function selectTeachingStrategyArm(db, userId) {
     );
     const scopeKey = userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global';
 
-    return { armId: bestArm, strategy: TEACHING_STRATEGY_ARMS[bestArm], scopeKey, sampled: bestSample };
+    return {
+        armId: bestArm,
+        strategy: TEACHING_STRATEGY_ARMS[bestArm],
+        scopeKey,
+        sampled: bestSample,
+        propensity,
+        propensityByArm,
+    };
 }
 
 module.exports = {

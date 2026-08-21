@@ -57,6 +57,90 @@ module.exports = (Sup) => class extends Sup {
         return { policyType, armId, scopeKey, reward: r, successWeight };
     }
 
+    /**
+     * Idempotent Beta update. applicationKey must be unique per logical reward event
+     * (e.g. decision:123:immediate or decision:123:delayed:3).
+     * Returns { applied: false } when the key was already recorded.
+     */
+    async recordPersonalizationArmPullIdempotent({
+        policyType,
+        armId,
+        reward,
+        scopeKey = 'global',
+        applicationKey,
+        decisionId = null,
+        source = null,
+    } = {}) {
+        if (!this.kysely || !policyType || !armId || !applicationKey) {
+            return { applied: false, reason: 'missing_args' };
+        }
+        const now = new Date().toISOString();
+        const r = Math.max(-1, Math.min(1, Number(reward) || 0));
+        const insert = await this.run(
+            `INSERT INTO bandit_reward_applications (
+                application_key, policy_type, arm_id, scope_key, decision_id, reward, source, created_at
+             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+             ON CONFLICT(application_key) DO NOTHING`,
+            [
+                String(applicationKey),
+                String(policyType),
+                String(armId),
+                String(scopeKey),
+                decisionId != null ? Number(decisionId) : null,
+                r,
+                source ? String(source).slice(0, 120) : null,
+                now,
+            ]
+        ).catch(() => null);
+        const changes = Number(insert?.changes ?? insert?.rowCount ?? 0);
+        if (!changes) {
+            return { applied: false, reason: 'duplicate', applicationKey: String(applicationKey) };
+        }
+        const pull = await this.recordPersonalizationArmPull(policyType, armId, r, scopeKey);
+        return { applied: true, applicationKey: String(applicationKey), pull };
+    }
+
+    async getPolicyServingState(policyType) {
+        if (!this.kysely || !policyType) return null;
+        return this.get(
+            `SELECT policy_type, serving_arm_id, status, last_eval_run_id, last_reason, updated_at, created_at
+             FROM policy_serving_state WHERE policy_type = ?`,
+            [String(policyType)]
+        ).catch(() => null);
+    }
+
+    async upsertPolicyServingState({
+        policyType,
+        servingArmId,
+        status = 'hold',
+        lastEvalRunId = null,
+        lastReason = null,
+    } = {}) {
+        if (!this.kysely || !policyType || !servingArmId) return null;
+        const now = new Date().toISOString();
+        await this.run(
+            `INSERT INTO policy_serving_state (
+                policy_type, serving_arm_id, status, last_eval_run_id, last_reason, updated_at, created_at
+             ) VALUES (?, ?, ?, ?, ?, ?, ?)
+             ON CONFLICT(policy_type) DO UPDATE SET
+                serving_arm_id = excluded.serving_arm_id,
+                status = excluded.status,
+                last_eval_run_id = excluded.last_eval_run_id,
+                last_reason = excluded.last_reason,
+                updated_at = excluded.updated_at`,
+            [
+                String(policyType),
+                String(servingArmId),
+                String(status || 'hold'),
+                lastEvalRunId != null ? Number(lastEvalRunId) : null,
+                lastReason ? String(lastReason).slice(0, 500) : null,
+                now,
+                now,
+            ]
+        ).catch(() => null);
+        return this.getPolicyServingState(policyType);
+    }
+
     async insertPersonalizationDecision({
         userId = null,
         policyType,

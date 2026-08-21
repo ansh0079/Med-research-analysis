@@ -18,20 +18,54 @@ function normalizeBanditArmId(policyType, armId) {
     return raw;
 }
 
-async function recordBanditReward(db, policyType, armId, reward, userId = null) {
-    if (!db?.recordPersonalizationArmPull || !armId) return;
+/**
+ * Apply a Beta update. When applicationKey is provided, the pull is idempotent
+ * (duplicate keys no-op). Without a key, falls back to the legacy always-pull path.
+ */
+async function recordBanditReward(db, policyType, armId, reward, userId = null, opts = {}) {
+    if (!armId) return { applied: false, reason: 'missing_arm' };
     const normalizedArmId = normalizeBanditArmId(policyType, armId);
-    if (!normalizedArmId) return;
+    if (!normalizedArmId) return { applied: false, reason: 'missing_arm' };
+
+    const {
+        applicationKey = null,
+        decisionId = null,
+        source = null,
+    } = opts || {};
+
     const scopeKey = userId ? scopeKeyForUser(userId) : 'global';
-    await db.recordPersonalizationArmPull(policyType, normalizedArmId, reward, scopeKey).catch((err) => {
-        logger.warn({ err, policyType, armId: normalizedArmId }, 'recordPersonalizationArmPull failed');
-    });
-    // Anonymous (no-user) rewards already write to 'global' above — don't double-count.
-    if (scopeKey !== 'global') {
-        await db.recordPersonalizationArmPull(policyType, normalizedArmId, reward, 'global').catch((err) => {
-            logger.warn({ err, policyType, armId: normalizedArmId }, 'recordPersonalizationArmPull global failed');
+    const scopes = scopeKey === 'global' ? ['global'] : [scopeKey, 'global'];
+
+    if (applicationKey && db?.recordPersonalizationArmPullIdempotent) {
+        let anyApplied = false;
+        for (const sk of scopes) {
+            const key = sk === 'global' && scopes.length > 1
+                ? `${applicationKey}:global`
+                : applicationKey;
+            const result = await db.recordPersonalizationArmPullIdempotent({
+                policyType,
+                armId: normalizedArmId,
+                reward,
+                scopeKey: sk,
+                applicationKey: key,
+                decisionId,
+                source,
+            }).catch((err) => {
+                logger.warn({ err, policyType, armId: normalizedArmId }, 'idempotent arm pull failed');
+                return { applied: false };
+            });
+            if (result?.applied) anyApplied = true;
+        }
+        return { applied: anyApplied, applicationKey, armId: normalizedArmId };
+    }
+
+    if (!db?.recordPersonalizationArmPull) return { applied: false, reason: 'no_db' };
+    for (const sk of scopes) {
+        await db.recordPersonalizationArmPull(policyType, normalizedArmId, reward, sk).catch((err) => {
+            logger.warn({ err, policyType, armId: normalizedArmId, scopeKey: sk }, 'recordPersonalizationArmPull failed');
         });
     }
+    return { applied: true, armId: normalizedArmId, legacy: true };
 }
 
 async function reconcileImpressionRewards(db, { days = 7 } = {}) {
@@ -68,7 +102,11 @@ async function reconcileImpressionRewards(db, { days = 7 } = {}) {
             totalReward: total,
         });
         if (row.delayed_reward != null && total !== 0) {
-            await recordBanditReward(db, POLICY_SEARCH_RANKING, row.arm_id, total, row.user_id);
+            await recordBanditReward(db, POLICY_SEARCH_RANKING, row.arm_id, total, row.user_id, {
+                applicationKey: `decision:${row.id}:reconcile_impression`,
+                decisionId: row.id,
+                source: 'reconcile_impression',
+            });
         }
         updated += 1;
     }

@@ -52,11 +52,11 @@ Status today: **beta-ready, not commercial-launch-ready.**
 
 **Goal:** See whether personalization learns preference or noise; close delayed medical workflows.
 
-- Learning Event Inspector (decision → shown → interaction → reward → policy)
-- Delayed reward backfill at **1 / 3 / 7 days** (saves, quiz, synopsis, repeat topic)
-- Nightly offline eval → **promote / hold / regress**
-- Idempotent reward application (no double Beta pulls)
-- Propensity logging on synopsis / teaching / case policies
+- [x] Learning Event Inspector (decision → shown → interaction → reward → policy)
+- [x] Delayed reward backfill at **1 / 3 / 7 days** (saves, quiz, synopsis, repeat topic) — incremental per horizon
+- [x] Nightly offline eval → **promote / hold / regress** (persists + actuates `policy_serving_state`)
+- [x] Idempotent reward application (no double Beta pulls) via `bandit_reward_applications`
+- [x] Propensity logging on synopsis / teaching / case policies (softmax over Thompson samples)
 
 ---
 
@@ -103,8 +103,9 @@ Status today: **beta-ready, not commercial-launch-ready.**
 
 | Branch | Scope |
 | --- | --- |
-| `cursor/commercial-phase1-af23` | Phase 1 implementation (this work) |
-| `cursor/rl-quality-pack-af23` (#39) | Upstream source for 1A / Phase 2 pieces |
+| `cursor/commercial-phase1-af23` | Phase 1 + Phase 3 (trust, closed loops, learning quality) |
+| `cursor/commercial-phase2-af23` | Phase 2 RL control plane (idempotent rewards, propensity, promote/hold/regress) |
+| `cursor/rl-quality-pack-af23` (#39) | Upstream source for 1A / Phase 2 scaffolding |
 | `cursor/claim-bridge-case-bandit-af23` (#37) | Upstream source for 1B bandit |
 
 Prefer landing Phase 1 as one reviewable PR; close or supersede overlapping PRs after merge.

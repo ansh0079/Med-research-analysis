@@ -136,6 +136,31 @@ async function alreadyBackfilled(db, decisionId, horizonDays) {
     return Boolean(row?.id);
 }
 
+async function previousHorizonBaseline(db, decision, horizonDays) {
+    const priorHorizons = HORIZONS.filter((h) => h < Number(horizonDays)).sort((a, b) => b - a);
+    for (const h of priorHorizons) {
+        const row = await db.get?.(
+            `SELECT new_total FROM delayed_reward_backfill_log
+             WHERE decision_id = ? AND horizon_days = ?`,
+            [Number(decision.id), Number(h)]
+        ).catch(() => null);
+        if (row && row.new_total != null) {
+            return {
+                previousTotal: Number(row.new_total),
+                delayedPrev: Number(row.new_total) - Number(decision.immediate_reward || 0),
+                fromHorizon: h,
+            };
+        }
+    }
+    return {
+        previousTotal: decision.total_reward != null
+            ? Number(decision.total_reward)
+            : Number(decision.immediate_reward || 0),
+        delayedPrev: decision.delayed_reward != null ? Number(decision.delayed_reward) : 0,
+        fromHorizon: null,
+    };
+}
+
 async function backfillDecisionHorizon(db, decision, horizonDays, { now = Date.now() } = {}) {
     if (!decision?.id || !horizonDue(decision.created_at, horizonDays, now)) {
         return { updated: false, reason: 'not_due' };
@@ -144,9 +169,17 @@ async function backfillDecisionHorizon(db, decision, horizonDays, { now = Date.n
         return { updated: false, reason: 'already_done' };
     }
 
+    // Only apply the newly due horizon in ascending order so 1→3→7 are incremental.
+    const priorDue = HORIZONS.filter((h) => h < Number(horizonDays) && horizonDue(decision.created_at, h, now));
+    for (const h of priorDue) {
+        if (!(await alreadyBackfilled(db, decision.id, h))) {
+            return { updated: false, reason: 'prior_horizon_pending', priorHorizon: h };
+        }
+    }
+
     const { additive, sources } = await collectDelayedSignals(db, decision, { now });
+    const baseline = await previousHorizonBaseline(db, decision, horizonDays);
     if (!sources.length || additive === 0) {
-        // Still record a zero backfill so we don't keep re-scanning.
         await db.run?.(
             `INSERT INTO delayed_reward_backfill_log (
                 decision_id, horizon_days, previous_total, new_total, delta, sources_json, created_at
@@ -155,8 +188,8 @@ async function backfillDecisionHorizon(db, decision, horizonDays, { now = Date.n
             [
                 Number(decision.id),
                 Number(horizonDays),
-                decision.total_reward,
-                decision.total_reward,
+                baseline.previousTotal,
+                baseline.previousTotal,
                 0,
                 JSON.stringify([]),
                 new Date(now).toISOString(),
@@ -165,12 +198,12 @@ async function backfillDecisionHorizon(db, decision, horizonDays, { now = Date.n
         return { updated: false, reason: 'no_signals' };
     }
 
-    const previous = decision.total_reward != null ? Number(decision.total_reward) : Number(decision.immediate_reward || 0);
-    const delayedPrev = decision.delayed_reward != null ? Number(decision.delayed_reward) : 0;
-    const newDelayed = Math.max(-1, Math.min(1, delayedPrev + additive));
+    // additive is cumulative from decision.created_at — convert to incremental vs last horizon.
     const immediate = Number(decision.immediate_reward || 0);
+    const cumulativeDelayed = Math.max(-1, Math.min(1, additive));
+    const newDelayed = Math.max(-1, Math.min(1, cumulativeDelayed));
     const newTotal = Math.max(-1, Math.min(1, immediate + newDelayed));
-    const delta = newTotal - previous;
+    const delta = newTotal - baseline.previousTotal;
 
     await db.updatePersonalizationDecisionReward?.(decision.id, {
         immediateReward: immediate,
@@ -180,7 +213,6 @@ async function backfillDecisionHorizon(db, decision, horizonDays, { now = Date.n
         logger.warn({ err, decisionId: decision.id }, 'delayed reward update failed');
     });
 
-    // Scale the applied delta by attribution confidence for the backfill horizon.
     const confidence = attributionConfidenceForSource('search_quiz_combined')
         * (horizonDays === 1 ? 0.9 : horizonDays === 3 ? 0.75 : 0.6);
     if (Math.abs(delta) >= 0.02 && decision.arm_id) {
@@ -189,7 +221,12 @@ async function backfillDecisionHorizon(db, decision, horizonDays, { now = Date.n
             decision.policy_type || POLICY_SEARCH_RANKING,
             decision.arm_id,
             delta * confidence,
-            decision.user_id || null
+            decision.user_id || null,
+            {
+                applicationKey: `decision:${decision.id}:delayed:${horizonDays}`,
+                decisionId: decision.id,
+                source: `delayed_backfill_${horizonDays}d`,
+            }
         ).catch((err) => logger.warn({ err }, 'delayed bandit reward failed'));
     }
 
@@ -201,7 +238,7 @@ async function backfillDecisionHorizon(db, decision, horizonDays, { now = Date.n
         [
             Number(decision.id),
             Number(horizonDays),
-            previous,
+            baseline.previousTotal,
             newTotal,
             delta,
             JSON.stringify(sources),
@@ -209,7 +246,11 @@ async function backfillDecisionHorizon(db, decision, horizonDays, { now = Date.n
         ]
     ).catch(() => null);
 
-    return { updated: true, delta, sources, newTotal, horizonDays };
+    // Keep in-memory row fresh for subsequent horizons in the same pass.
+    decision.delayed_reward = newDelayed;
+    decision.total_reward = newTotal;
+
+    return { updated: true, delta, sources, newTotal, horizonDays, baselineFrom: baseline.fromHorizon };
 }
 
 async function runDelayedRewardBackfill(db, { daysLookback = 14, limit = 200 } = {}) {
@@ -245,4 +286,5 @@ module.exports = {
     collectDelayedSignals,
     backfillDecisionHorizon,
     runDelayedRewardBackfill,
+    previousHorizonBaseline,
 };

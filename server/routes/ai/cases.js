@@ -122,6 +122,8 @@ function registerCaseRoutes(app, {
                         selectedBy: difficultyBandit ? 'bandit' : 'client',
                         scopeKey: difficultyBandit?.scopeKey || null,
                         banditSample: difficultyBandit?.sampled ?? null,
+                        propensity: difficultyBandit?.propensity != null ? Number(difficultyBandit.propensity) : null,
+                        propensityByArm: difficultyBandit?.propensityByArm || null,
                     },
                 }).catch((err) => {
                     logger.warn({ err }, 'case difficulty decision log failed');

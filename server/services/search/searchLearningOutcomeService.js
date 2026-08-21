@@ -97,7 +97,11 @@ async function applyDecisionReward(db, userId, decision, {
         totalReward: total,
     }).catch(() => null);
     if (recordArmPull && decision.arm_id && total !== 0) {
-        await recordBanditReward(db, policyType || POLICY_SEARCH_RANKING, decision.arm_id, total, userId);
+        await recordBanditReward(db, policyType || POLICY_SEARCH_RANKING, decision.arm_id, total, userId, {
+            applicationKey: `decision:${decision.id}:total:${Number(total).toFixed(4)}`,
+            decisionId: decision.id,
+            source: 'apply_decision_reward',
+        });
     }
     return true;
 }

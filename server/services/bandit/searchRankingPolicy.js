@@ -100,11 +100,24 @@ async function selectSearchRankingArm(db, userId, context = {}) {
         contextFeatures
     );
 
+    // Optional promoted serving arm from nightly offline eval (promote/hold/regress).
+    const servingState = await db.getPolicyServingState?.(POLICY_SEARCH_RANKING).catch(() => null);
+    const promotedArm = servingState?.serving_arm_id;
+    const forcePromoted = Boolean(
+        promotedArm
+        && SEARCH_RANKING_ARMS[promotedArm]
+        && (servingState.status === 'promote' || servingState.status === 'regress')
+    );
+
     // Optional P4 linear value override (epsilon-greedy). Thompson propensity still logged
     // for the arm that is ultimately served when override wins.
-    const linearPick = await maybeSelectArmViaLinearValue(db, contextFeatures).catch(() => null);
+    const linearPick = forcePromoted
+        ? null
+        : await maybeSelectArmViaLinearValue(db, contextFeatures).catch(() => null);
     const useLinear = Boolean(linearPick?.armId && linearPick.source === 'linear');
-    const bestArm = useLinear ? linearPick.armId : thompson.armId;
+    const bestArm = forcePromoted
+        ? promotedArm
+        : (useLinear ? linearPick.armId : thompson.armId);
     const propensity = thompson.propensityByArm?.[bestArm]
         ?? thompson.propensity
         ?? (1 / armIds.length);
@@ -117,8 +130,13 @@ async function selectSearchRankingArm(db, userId, context = {}) {
         rawSampled: thompson.rawSampled,
         propensity,
         propensityByArm: thompson.propensityByArm,
-        selectionSource: useLinear ? 'linear_value' : 'thompson_contextual',
+        selectionSource: forcePromoted
+            ? `serving_state:${servingState.status}`
+            : (useLinear ? 'linear_value' : 'thompson_contextual'),
         linearMeta: linearPick || null,
+        servingState: servingState
+            ? { armId: servingState.serving_arm_id, status: servingState.status }
+            : null,
         contextFeatures,
     };
 }

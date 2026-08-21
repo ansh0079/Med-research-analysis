@@ -102,14 +102,26 @@ function blendedArmSample(globalSample = 0.5, userSample = null, userPulls = 0) 
 function chooseArmBySamples(armIds, globalSamples = {}, userSamples = {}, userPulls = 0, fallbackArm = armIds[0]) {
     let bestArm = fallbackArm;
     let bestSample = -1;
+    const scores = [];
     for (const armId of armIds) {
         const sample = blendedArmSample(globalSamples[armId] ?? 0.5, userSamples[armId], userPulls);
+        scores.push(sample);
         if (sample > bestSample) {
             bestSample = sample;
             bestArm = armId;
         }
     }
-    return { armId: bestArm, sampled: bestSample };
+    const propensities = softmaxPropensities(scores);
+    const propensityByArm = {};
+    armIds.forEach((armId, i) => {
+        propensityByArm[armId] = propensities[i] ?? (1 / Math.max(armIds.length, 1));
+    });
+    return {
+        armId: bestArm,
+        sampled: bestSample,
+        propensity: propensityByArm[bestArm] ?? (1 / Math.max(armIds.length, 1)),
+        propensityByArm,
+    };
 }
 
 function searchRankingContextFeatures(context = {}) {
