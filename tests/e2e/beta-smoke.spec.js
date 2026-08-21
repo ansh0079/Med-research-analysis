@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+const { dismissChromeOverlays, dismissPhiNotice } = require('./helpers/dismissOverlays');
 
 const mockSearchResponse = {
   articles: [
@@ -68,6 +69,7 @@ test.describe('beta smoke', () => {
 
   test('serves the current app shell', async ({ page }) => {
     await page.goto('/');
+    await dismissChromeOverlays(page);
 
     await expect(page).toHaveTitle(/Signal MD/i);
     await expect(page.getByRole('button', { name: /Start free/i }).first()).toBeVisible();
@@ -84,6 +86,7 @@ test.describe('beta smoke', () => {
   // follow-up session — do not delete/skip, this documents where tracing stopped.
   test('loads the search route and returns mocked results', async ({ page }) => {
     await page.goto('/search');
+    await dismissChromeOverlays(page);
 
     const searchBox = page.getByPlaceholder(/SGLT2 inhibitors/i);
     const submitButton = page.locator('button[type="submit"]').first();
@@ -100,6 +103,7 @@ test.describe('beta smoke', () => {
 
   test('renders the compliance notice and legal routes', async ({ page }) => {
     await page.goto('/search');
+    await dismissChromeOverlays(page, { keepPhi: true });
 
     await expect(page.getByText(/not for protected health information/i)).toBeVisible();
     await page.getByLabel('Data use notice').getByRole('link', { name: /Privacy/i }).click();
@@ -112,7 +116,9 @@ test.describe('beta smoke', () => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify({ user: { id: 'u-e2e', email: 'e2e@example.com', role: 'user' } }),
+        body: JSON.stringify({
+          user: { id: 'u-e2e', email: 'e2e@example.com', role: 'user', emailVerified: true },
+        }),
       });
     });
 
@@ -135,25 +141,36 @@ test.describe('beta smoke', () => {
     });
 
     await page.goto('/');
+    // PHI notice sits at z-100; dismiss so mobile Next CTAs stay clickable even if z-index regresses.
+    await dismissPhiNotice(page);
+
+    const next = () => page.getByRole('button', { name: /^Next$/ });
 
     // Step 1: persona — selecting "student" unlocks the training-stage step
     await page.getByRole('button', { name: /Medical Student \/ Trainee/i }).click();
-    await page.getByRole('button', { name: /^Next$/ }).click();
+    await next().scrollIntoViewIfNeeded();
+    await next().click();
     // Step 2: training stage
     await page.getByRole('button', { name: /Finals/i }).click();
-    await page.getByRole('button', { name: /^Next$/ }).click();
+    await next().scrollIntoViewIfNeeded();
+    await next().click();
     // Step 3: specialty
     await page.getByRole('button', { name: /Cardiology$/i }).click();
-    await page.getByRole('button', { name: /^Next$/ }).click();
+    await next().scrollIntoViewIfNeeded();
+    await next().click();
     // Step 4: goal
     await page.getByRole('button', { name: /Pass exams/i }).click();
-    await page.getByRole('button', { name: /^Next$/ }).click();
+    await next().scrollIntoViewIfNeeded();
+    await next().click();
     // Step 5: difficulty
     await page.getByRole('button', { name: /Mixed/i }).click();
-    await page.getByRole('button', { name: /^Next$/ }).click();
+    await next().scrollIntoViewIfNeeded();
+    await next().click();
     // Step 6: daily time budget — final step, submits the profile
     await page.getByRole('button', { name: /25 minutes per day/i }).click();
-    await page.getByRole('button', { name: /Search instead/i }).click();
+    const searchInstead = page.getByRole('button', { name: /Search instead/i });
+    await searchInstead.scrollIntoViewIfNeeded();
+    await searchInstead.click();
 
     await expect.poll(() => savedProfile).toMatchObject({
       trainingStage: 'finals',
