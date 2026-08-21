@@ -88,12 +88,11 @@ function registerUnifiedSearchRoutes(app, deps) {
             });
 
             let { articles } = ranked;
+            let { telemetry, banditMeta } = ranked;
             const {
-                telemetry,
                 teachingObjects: boostedObjects,
                 teachingClaims: boostedClaims,
                 learningContext,
-                banditMeta,
             } = ranked;
             const learnerContext = req.user?.id
                 ? publicLearnerContextSummary(await buildLearnerContext(db, {
@@ -134,6 +133,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                 || telemetry.meshExpansions
                 || [];
             const sparseAfterRank = Array.isArray(articles) && articles.length > 0 && articles.length < 4;
+            let queryAutoRepair = null;
             if (telemetry.lowRecallLearning || sparseAfterRank) {
                 const resultCount = telemetry.lowRecallLearning?.resultCount ?? articles.length;
                 lowRecallLearning = {
@@ -153,6 +153,74 @@ function registerUnifiedSearchRoutes(app, deps) {
                     db.mergeTopicKnowledgeAliases(queryValidation.sanitized, expandedAliases, {
                         reason: telemetry.lowRecallLearning ? 'low_recall_mesh' : 'sparse_ranked_mesh',
                     }).catch((err) => { logger.warn({ err }, 'mergeTopicKnowledgeAliases failed'); });
+                }
+                try {
+                    const { runQueryFailureAutoRepair } = require('../../services/search/queryFailureAutoRepairService');
+                    const { buildProxyService } = require('../../services/externalApiProxy');
+                    const proxy = buildProxyService({ serverConfig, cache, fetchImpl: f, logger });
+                    const countResults = async (reformulated) => {
+                        const ids = await proxy.pubmedEsearch(reformulated, { retmax: 20 });
+                        return Array.isArray(ids) ? ids.length : 0;
+                    };
+                    queryAutoRepair = await runQueryFailureAutoRepair({
+                        db,
+                        query: queryValidation.sanitized,
+                        resultCount,
+                        threshold: 5,
+                        countResults,
+                        logger,
+                    });
+                    if (queryAutoRepair?.winner?.reformulatedQuery) {
+                        lowRecallLearning.suggestedReformulation = queryAutoRepair.winner;
+                    }
+                    // Same-request repair: if a reformulation clearly beats current recall, re-rank once.
+                    const winnerQ = queryAutoRepair?.winner?.reformulatedQuery;
+                    const winnerCount = Number(queryAutoRepair?.winner?.resultCount || 0);
+                    if (
+                        queryAutoRepair?.repaired
+                        && winnerQ
+                        && winnerCount > resultCount
+                        && (articles.length < 4 || telemetry.lowRecallLearning)
+                    ) {
+                        try {
+                            const repairedRanked = await fetchAndRankSearchArticles({
+                                db,
+                                cache,
+                                serverConfig,
+                                fetchImpl: f,
+                                query: winnerQ,
+                                safeLimit,
+                                sourceList,
+                                specificity: validSpecificity,
+                                parsedStudyTypes,
+                                parsedYearFilters,
+                                previousQueries,
+                                vectorList,
+                                userId: req.user?.id ?? null,
+                                sessionId: req.sessionId ?? null,
+                            });
+                            if (Array.isArray(repairedRanked.articles) && repairedRanked.articles.length > articles.length) {
+                                articles = repairedRanked.articles;
+                                banditMeta = repairedRanked.banditMeta || banditMeta;
+                                telemetry = {
+                                    ...(repairedRanked.telemetry || telemetry),
+                                    queryAutoRepaired: true,
+                                    originalLowRecall: telemetry.lowRecallLearning || null,
+                                };
+                                queryAutoRepair = {
+                                    ...queryAutoRepair,
+                                    appliedInRequest: true,
+                                    repairedResultCount: articles.length,
+                                };
+                                lowRecallLearning.appliedReformulation = queryAutoRepair.winner;
+                                lowRecallLearning.resultCount = articles.length;
+                            }
+                        } catch (repairErr) {
+                            logger.warn({ err: repairErr }, 'same-request query auto-repair re-fetch failed');
+                        }
+                    }
+                } catch (err) {
+                    logger.warn({ err }, 'queryFailureAutoRepair failed');
                 }
             }
 
@@ -262,9 +330,12 @@ function registerUnifiedSearchRoutes(app, deps) {
                 },
                 ...(existingEnrich?.status === 'ready' ? { clinicalAnswer: existingEnrich.clinicalAnswer ?? null } : {}),
                 ...(lowRecallLearning ? { lowRecallLearning } : {}),
+                ...(queryAutoRepair ? { queryAutoRepair } : {}),
+                ...(telemetry.topicEvidenceMemory ? { topicEvidenceMemory: telemetry.topicEvidenceMemory } : {}),
                 personalizationAudit: {
                     banditMeta: banditMeta || null,
                     rankingTraces: publicRankingTraces(articles),
+                    guardrailMeta: banditMeta?.guardrailMeta || null,
                 },
                 rankingAttribution,
             });

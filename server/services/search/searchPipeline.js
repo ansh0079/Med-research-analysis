@@ -636,6 +636,29 @@ async function fetchAndRankSearchArticles({
         articles = applySearchLearningBoost(articles, learningContextFull, bouquet.ranking);
         articles = annotateArticlesWithRankingTraces(articles, bouquet.ranking, learningContextFull);
         articles = annotateSearchRankMetadata(articles, bouquet.ranking);
+
+        // Durable topic evidence memory: blend best-evidence set with live results.
+        let topicEvidenceMemoryMeta = null;
+        try {
+            const {
+                getTopicEvidenceMemory,
+                upsertTopicEvidenceMemory,
+                blendLiveWithEvidenceMemory,
+            } = require('../topic/topicEvidenceMemoryService');
+            const memory = await getTopicEvidenceMemory(db, query).catch(() => null);
+            const blended = blendLiveWithEvidenceMemory(articles, memory);
+            articles = blended.articles;
+            topicEvidenceMemoryMeta = {
+                used: blended.memoryUsed,
+                injected: (blended.injected || []).length,
+                updatedAt: memory?.updatedAt || null,
+            };
+            // Refresh memory from this search's ranked set (async-safe, awaited lightly).
+            await upsertTopicEvidenceMemory(db, query, articles, { source: 'search_blend' }).catch(() => null);
+        } catch (err) {
+            telemetry.topicEvidenceMemoryError = err?.message || 'topic_evidence_memory_failed';
+        }
+
         timings.learningMs = Date.now() - learningStarted;
         timings.totalMs = Date.now() - started;
 
@@ -648,7 +671,7 @@ async function fetchAndRankSearchArticles({
 
         return {
             articles,
-            telemetry: { ...telemetry, timings },
+            telemetry: { ...telemetry, timings, topicEvidenceMemory: topicEvidenceMemoryMeta },
             queryMeshTerms,
             queryIntent,
             bouquetRanking: bouquet.ranking,

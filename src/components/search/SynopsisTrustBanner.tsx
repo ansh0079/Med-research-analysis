@@ -20,6 +20,8 @@ export function SynopsisTrustBanner({
   citationOk,
   abstractOnly,
   fullTextCoverageRatio,
+  noGuidelineSupport,
+  hardBanner,
   className = '',
 }: {
   sourceMode?: SynopsisSourceMode | null;
@@ -27,15 +29,36 @@ export function SynopsisTrustBanner({
   citationOk?: boolean | null;
   abstractOnly?: boolean | null;
   fullTextCoverageRatio?: number | null;
+  /** When true with abstract-only, show the commercial hard-banner variant. */
+  noGuidelineSupport?: boolean | null;
+  hardBanner?: boolean | null;
   className?: string;
 }) {
   const isAbstractOnly = abstractOnly === true || sourceMode === 'abstract_only';
+  const showHardBanner = Boolean(
+    hardBanner
+    || (isAbstractOnly && noGuidelineSupport === true)
+  );
   const coverage = coverageLabel(fullTextCoverageRatio);
   if (!isAbstractOnly && citationOk !== false && !reviewState && !coverage) return null;
 
   return (
     <div className={`space-y-2 ${className}`}>
-      {isAbstractOnly && (
+      {showHardBanner && (
+        <div
+          role="alert"
+          className="rounded-lg border-2 border-rose-500/70 bg-rose-50 px-3 py-2.5 dark:border-rose-600/60 dark:bg-rose-950/30"
+        >
+          <p className="text-[11px] font-black uppercase tracking-wider text-rose-800 dark:text-rose-200">
+            Abstract-only · no guideline support
+          </p>
+          <p className="mt-1 text-[11px] leading-relaxed text-rose-900/90 dark:text-rose-100/90">
+            This answer is grounded in abstracts/metadata only and has no guideline backing. Do not use it to change practice — prefer full-text sources or a guideline-aligned brief.
+            {coverage ? ` Coverage: ${coverage}.` : ''}
+          </p>
+        </div>
+      )}
+      {isAbstractOnly && !showHardBanner && (
         <div
           role="status"
           className="rounded-lg border-2 border-amber-400/80 bg-amber-50 px-3 py-2.5 dark:border-amber-600/60 dark:bg-amber-950/30"

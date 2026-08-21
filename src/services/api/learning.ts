@@ -561,7 +561,17 @@ export class LearningApi extends BaseApiClient {
     return response.json();
   }
 
-  async generateAdaptiveCase(data: { topic: string; learningMode?: string; difficulty?: string }): Promise<{ session: import('@types').CaseSession; evidenceWarning?: string | null }> {
+  async generateAdaptiveCase(data: { topic: string; learningMode?: string; difficulty?: string }): Promise<{
+    session: import('@types').CaseSession;
+    evidenceWarning?: string | null;
+    difficulty?: string;
+    banditMeta?: {
+      policyType?: string;
+      armId?: string;
+      decisionId?: number | null;
+      selectedBy?: 'bandit' | 'client' | string;
+    } | null;
+  }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/cases/adaptive-vignette`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -569,7 +579,9 @@ export class LearningApi extends BaseApiClient {
     });
     if (!response.ok) {
       const err = await response.json().catch(() => ({ error: 'Failed to generate case' }));
-      throw new Error(err.error || 'Failed to generate case');
+      const error = new Error(err.error || 'Failed to generate case') as Error & { code?: string };
+      if (err.code) error.code = err.code;
+      throw error;
     }
     return response.json();
   }
@@ -593,7 +605,12 @@ export class LearningApi extends BaseApiClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    if (!response.ok) throw new Error('Failed to submit step response');
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({ error: 'Failed to submit step response' }));
+      const error = new Error(err.error || 'Failed to submit step response') as Error & { code?: string };
+      if (err.code) error.code = err.code;
+      throw error;
+    }
     return response.json();
   }
 }

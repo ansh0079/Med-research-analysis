@@ -155,6 +155,27 @@ async function generateLiveClinicalAnswer({
             clinicalAnswer.citationWarning = true;
         }
     }
+
+    const abstractOnly = !(Number(fullTextCoverageRatio) > 0);
+    const guidelineSupported = Boolean(
+        (clinicalAnswer?.guidelinePosition && String(clinicalAnswer.guidelinePosition).trim())
+        || (Array.isArray(guidelines) && guidelines.length > 0)
+        || clinicalAnswer?.evidenceGrade === 'GUIDELINE_BACKED'
+    );
+    if (clinicalAnswer) {
+        clinicalAnswer.abstractOnly = abstractOnly;
+        clinicalAnswer.fullTextCoverageRatio = fullTextCoverageRatio;
+        clinicalAnswer.guidelineSupported = guidelineSupported;
+        if (abstractOnly && !guidelineSupported) {
+            clinicalAnswer.groundingWarning = 'ABSTRACT_ONLY_NO_GUIDELINE';
+            warnings.push({
+                severity: 'HIGH',
+                code: 'ABSTRACT_ONLY_NO_GUIDELINE',
+                message: 'Clinical answer is abstract-only with no guideline support. Treat practice claims cautiously.',
+            });
+        }
+    }
+
     const retractedExcluded = seedArticles.length - nonRetracted.length;
     if (retractedExcluded > 0) {
         warnings.push({

@@ -25,6 +25,16 @@ function registerGuidelineRoutes(app, { db, serverConfig, rateLimit, requireAuth
             }
             res.json({ topic, contradictions, count });
         } catch (error) {
+            const msg = String(error?.message || '');
+            if (/no such table:\s*guideline_contradictions/i.test(msg)) {
+                return res.json({
+                    topic: req.query.topic,
+                    contradictions: [],
+                    count: { total: 0, major: 0, minor: 0, nuanced: 0 },
+                    degraded: true,
+                    reason: 'guideline_contradictions_unavailable',
+                });
+            }
             req.log.error({ err: error }, 'Get guideline contradictions error');
             res.status(500).json({ error: 'Internal server error' });
         }

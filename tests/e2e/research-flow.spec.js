@@ -4,6 +4,7 @@
  */
 
 const { test, expect } = require('@playwright/test');
+const { dismissChromeOverlays } = require('./helpers/dismissOverlays');
 
 const mockSearchResponse = {
   articles: [
@@ -77,6 +78,24 @@ test.describe('search → results → interaction flow', () => {
       localStorage.setItem('med_onboarding_done', '1');
     });
 
+    // Avoid route.fetch() (flaky under WebKit); keep auth hydrated without the verify banner.
+    await page.route('**/api/auth/me', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          user: {
+            id: 'e2e-user',
+            email: 'e2e@test.local',
+            name: 'E2E Test User',
+            role: 'user',
+            emailVerified: true,
+            subscriptionPlan: 'pro',
+          },
+        }),
+      });
+    });
+
     await page.route('**/api/config', async (route) => {
       await route.fulfill({
         status: 200,
@@ -116,12 +135,16 @@ test.describe('search → results → interaction flow', () => {
 
   test('homepage loads with correct branding', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Signal MD.*Medical Evidence Intelligence/i);
-    await expect(page.getByRole('button', { name: /Go to search/i })).toBeVisible();
+    await dismissChromeOverlays(page);
+    await expect(page).toHaveTitle(/Signal MD/i);
+    // Authenticated storageState renders the app shell (SearchPage) at `/`, not marketing CTAs.
+    await expect(page.getByText('Signal MD').first()).toBeVisible();
+    await expect(page.getByPlaceholder(/SGLT2 inhibitors/i)).toBeVisible();
   });
 
   test('search returns results and renders article cards', async ({ page }) => {
     await page.goto('/search');
+    await dismissChromeOverlays(page);
 
     const searchBox = page.getByPlaceholder(/SGLT2 inhibitors/i);
     await searchBox.fill('sglt2 heart failure');
@@ -136,16 +159,19 @@ test.describe('search → results → interaction flow', () => {
 
   test('result stats banner shows counts', async ({ page }) => {
     await page.goto('/search');
+    await dismissChromeOverlays(page);
 
     await page.getByPlaceholder(/SGLT2 inhibitors/i).fill('sglt2 heart failure');
     await page.getByRole('banner').getByRole('button', { name: /^Search$/ }).click();
 
     await expect(page.getByText(/Evidence found/i)).toBeVisible();
-    await expect(page.getByText(/Open access/i)).toBeVisible();
+    // "Open access" appears in the stats banner, filters, and article chips — pin to the banner label.
+    await expect(page.getByRole('paragraph').filter({ hasText: /^Open access$/i })).toBeVisible();
   });
 
   test('filter within results narrows list', async ({ page }) => {
     await page.goto('/search');
+    await dismissChromeOverlays(page);
 
     await page.getByPlaceholder(/SGLT2 inhibitors/i).fill('sglt2 heart failure');
     await page.getByRole('banner').getByRole('button', { name: /^Search$/ }).click();
@@ -153,8 +179,8 @@ test.describe('search → results → interaction flow', () => {
     const filterInput = page.getByPlaceholder(/Filter titles/i);
     await filterInput.fill('empagliflozin');
 
-    await expect(page.getByText(/Empagliflozin/i)).toBeVisible();
-    await expect(page.getByText(/SGLT2 inhibitors in heart failure/i)).not.toBeVisible();
+    await expect(page.getByRole('link', { name: /Empagliflozin/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /SGLT2 inhibitors in heart failure/i })).not.toBeVisible();
   });
 
   test('deferred intelligence renders results first then mentor guidance', async ({ page }) => {
@@ -212,10 +238,7 @@ test.describe('search → results → interaction flow', () => {
     });
 
     await page.goto('/search');
-    const dismiss = page.getByRole('button', { name: /Dismiss/i });
-    if (await dismiss.isVisible().catch(() => false)) {
-      await dismiss.click();
-    }
+    await dismissChromeOverlays(page);
     await page.getByPlaceholder(/SGLT2 inhibitors/i).fill('sglt2 heart failure');
     await page.getByRole('banner').getByRole('button', { name: /^Search$/ }).click();
 
@@ -230,9 +253,11 @@ test.describe('search → results → interaction flow', () => {
 
   test('legal routes work', async ({ page }) => {
     await page.goto('/search');
+    // Keep PHI notice — this test asserts the compliance chrome itself.
+    await dismissChromeOverlays(page, { keepPhi: true });
     await expect(page.getByText(/not for protected health information/i)).toBeVisible();
 
-    await page.getByRole('link', { name: /Terms of Use/i }).click();
+    await page.getByLabel('Data use notice').getByRole('link', { name: /Terms/i }).click();
     await expect(page).toHaveURL(/\/legal\/terms$/);
     await expect(page.getByRole('heading', { name: /Terms/i })).toBeVisible();
   });

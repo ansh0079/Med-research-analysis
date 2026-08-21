@@ -15,6 +15,15 @@ const {
 } = require('../../services/articleReranker');
 const { getInferredMisconceptionsForTopic } = require('../../services/misconceptionInferenceService');
 const { findRelatedTopicsWithMisconceptions, buildJitReminder } = require('../../services/relatedTopicService');
+const {
+    POLICY_CASE_DIFFICULTY,
+    caseDifficultyArmId,
+    selectCaseDifficultyArm,
+    recordBanditReward,
+} = require('../../services/personalizationBanditService');
+const {
+    generateCaseStepWithRetry,
+} = require('../../services/caseStepTrustService');
 
 function registerReviewCaseRoutes(app, {
     db,
@@ -340,7 +349,28 @@ function registerReviewCaseRoutes(app, {
             const topic = String(req.body.topic || '').trim();
             if (!topic) return res.status(400).json({ error: 'topic is required' });
             const learningMode = normalizeLearningMode(req.body.learningMode);
-            const difficulty = ['easy', 'medium', 'hard'].includes(req.body.difficulty) ? req.body.difficulty : 'medium';
+            const requestedDifficulty = req.body.difficulty;
+            if (
+                requestedDifficulty != null
+                && requestedDifficulty !== ''
+                && !['easy', 'medium', 'hard', 'auto'].includes(requestedDifficulty)
+            ) {
+                return res.status(400).json({ error: 'Difficulty must be easy, medium, hard, or auto' });
+            }
+            // Explicit easy|medium|hard is respected; auto/omitted → bandit selects.
+            const explicitDifficulty = ['easy', 'medium', 'hard'].includes(requestedDifficulty)
+                ? requestedDifficulty
+                : null;
+
+            let difficulty = explicitDifficulty;
+            let difficultyBandit = null;
+            if (!difficulty) {
+                difficultyBandit = await selectCaseDifficultyArm(db, req.user.id).catch((err) => {
+                    req.log?.warn?.({ err }, 'selectCaseDifficultyArm failed');
+                    return null;
+                });
+                difficulty = difficultyBandit?.difficulty || 'medium';
+            }
 
             const [guidelines, topicKnowledge, mastery] = await Promise.all([
                 db.getGuidelinesByTopic(topic, { limit: 8 }).catch(() => []),
@@ -359,27 +389,43 @@ function registerReviewCaseRoutes(app, {
 
             const synopsis = topicKnowledge?.knowledge?.fullTextSynopsis || topicKnowledge?.knowledge?.synopsis || null;
 
-            // Evidence density check
+            // Evidence density check — Phase 1 commercial trust: never start ungrounded.
             const guidelineCount = (guidelines || []).length;
             const tk = topicKnowledge?.knowledge || topicKnowledge;
             const teachingPointCount = (tk?.coreTeachingPoints?.length || 0) + (tk?.teachingPoints?.length || 0);
             const evidenceDensity = guidelineCount + teachingPointCount;
             let evidenceWarning = null;
             if (evidenceDensity === 0) {
-                evidenceWarning = 'No guidelines or teaching points found for this topic. The case will rely on general clinical knowledge and may be less evidence-grounded.';
-            } else if (guidelineCount === 0 && teachingPointCount < 3) {
+                return res.status(422).json({
+                    error: 'This topic has no guidelines or teaching points yet. Enrich the topic (search + synopsis) before starting a case.',
+                    code: 'EVIDENCE_TOO_THIN',
+                    evidenceDensity: 0,
+                });
+            }
+            if (guidelineCount === 0 && teachingPointCount < 3) {
                 evidenceWarning = 'Limited evidence base: no guidelines found and only a few teaching points. Case quality may be reduced.';
             } else if (evidenceDensity < 3) {
                 evidenceWarning = 'Thin evidence base for this topic. The case may not cover all clinical angles.';
             }
 
             // Branching mode: generate only step 1 and store evidence context for later steps
-            const prompt = buildCaseInitPrompt(topic, guidelines, topicKnowledge, weaknesses, { learningMode, difficulty }, synopsis);
-            const { text } = await callProvider(prompt, 'auto');
-            const parsed = reviews.parseJsonBlock(text);
-            if (!parsed || !parsed.step) {
-                return res.status(502).json({ error: 'Failed to generate initial case step' });
+            const initResult = await generateCaseStepWithRetry({
+                callProvider,
+                parseJsonBlock: reviews.parseJsonBlock,
+                buildPrompt: () => buildCaseInitPrompt(
+                    topic, guidelines, topicKnowledge, weaknesses, { learningMode, difficulty }, synopsis
+                ),
+                maxAttempts: 2,
+                logWarn: (meta, msg) => req.log?.warn?.(meta, msg),
+            });
+            if (!initResult.step) {
+                return res.status(503).json({
+                    error: 'Could not generate a grounded case step. Please retry in a moment.',
+                    code: 'CASE_STEP_GENERATION_FAILED',
+                    reason: initResult.error,
+                });
             }
+            const parsed = initResult.parsed || { step: initResult.step };
 
             const sourcesUsed = (guidelines || []).map(g => {
                 let label = g.source_body;
@@ -418,8 +464,45 @@ function registerReviewCaseRoutes(app, {
                 generationMode: 'branching',
             });
 
-            await db.logEvent('case:adaptive_vignette', req.sessionId, { topic, learningMode, difficulty, mode: 'branching', evidenceDensity });
-            res.json({ session, evidenceWarning });
+            const armId = caseDifficultyArmId(difficulty);
+            const decision = await db.insertPersonalizationDecision?.({
+                userId: req.user.id,
+                policyType: POLICY_CASE_DIFFICULTY,
+                armId,
+                topic,
+                normalizedTopic: db.normalizeTopic(topic),
+                context: {
+                    caseSessionId: session.id,
+                    difficulty,
+                    selectedBy: difficultyBandit ? 'bandit' : 'client',
+                    scopeKey: difficultyBandit?.scopeKey || null,
+                    banditSample: difficultyBandit?.sampled ?? null,
+                },
+            }).catch((err) => {
+                req.log?.warn?.({ err }, 'adaptive case difficulty decision log failed');
+                return null;
+            });
+
+            await db.logEvent('case:adaptive_vignette', req.sessionId, {
+                topic,
+                learningMode,
+                difficulty,
+                mode: 'branching',
+                evidenceDensity,
+                difficultyDecisionId: decision?.id || null,
+                difficultySelectedBy: difficultyBandit ? 'bandit' : 'client',
+            });
+            res.json({
+                session,
+                evidenceWarning,
+                difficulty,
+                banditMeta: {
+                    policyType: POLICY_CASE_DIFFICULTY,
+                    armId,
+                    decisionId: decision?.id || null,
+                    selectedBy: difficultyBandit ? 'bandit' : 'client',
+                },
+            });
         } catch (error) {
             req.log?.error?.({ err: error }, 'Adaptive vignette error');
             res.status(500).json({ error: error.message });
@@ -490,44 +573,36 @@ function registerReviewCaseRoutes(app, {
                 }));
 
                 const nextStepType = STEP_SEQUENCE[nextStepIndex] || 'resolution';
-                const stepPrompt = buildCaseStepPrompt({
-                    topic: session.topic,
-                    stepIndex: nextStepIndex,
-                    stepType: nextStepType,
-                    caseHistory,
-                    userAnswer: selectedAnswer,
-                    wasCorrect: isCorrect,
-                    evidenceContext: session.evidenceContext,
-                    options: { learningMode: session.learningMode, difficulty: session.difficulty },
+                const stepGen = await generateCaseStepWithRetry({
+                    callProvider,
+                    parseJsonBlock: reviews.parseJsonBlock,
+                    buildPrompt: () => buildCaseStepPrompt({
+                        topic: session.topic,
+                        stepIndex: nextStepIndex,
+                        stepType: nextStepType,
+                        caseHistory,
+                        userAnswer: selectedAnswer,
+                        wasCorrect: isCorrect,
+                        evidenceContext: session.evidenceContext,
+                        options: { learningMode: session.learningMode, difficulty: session.difficulty },
+                    }),
+                    maxAttempts: 2,
+                    logWarn: (meta, msg) => req.log?.warn?.(meta, msg),
                 });
 
-                let stepParsed = null;
-                try {
-                    const { text: stepText } = await callProvider(stepPrompt, 'auto');
-                    stepParsed = reviews.parseJsonBlock(stepText);
-                } catch (genErr) {
-                    req.log?.warn?.({ err: genErr }, 'Step generation failed, using fallback');
-                    stepParsed = {
-                        step: {
-                            type: nextStepType,
-                            narrative: `The clinical team continues managing the patient. Based on the previous findings, the case progresses to the ${nextStepType} phase.`,
-                            question: `What is the most appropriate next step in ${nextStepType}?`,
-                            questionType: 'clinical_application',
-                            options: ['A: Continue current management', 'B: Reassess and modify approach', 'C: Escalate to senior review', 'D: Discharge with follow-up'],
-                            correctAnswer: 'B',
-                            explanation: 'Reassessing based on evolving clinical data is the safest approach when the clinical picture is uncertain.',
-                            whyOthersWrong: 'Continuing without reassessment risks missing changes; escalation may be premature; discharge requires stability.',
-                            teachingPoint: 'Always reassess clinical decisions as new information becomes available.',
-                            evidenceSource: null,
-                            branchingNote: 'This step was generated as a fallback due to a technical issue.',
-                        },
-                    };
+                if (!stepGen.step) {
+                    // Do not invent keyed answers — return recoverable error; prior step response already saved.
+                    return res.status(503).json({
+                        error: 'Could not generate the next evidence-grounded step. Your answer was saved — please retry.',
+                        code: 'CASE_STEP_GENERATION_FAILED',
+                        reason: stepGen.error,
+                        stepFeedback,
+                        session: await db.getCaseSession(session.id),
+                    });
                 }
 
-                if (stepParsed?.step) {
-                    await db.appendCaseStep(session.id, stepParsed.step);
-                    stepFeedback.branchingNote = stepParsed.step.branchingNote || null;
-                }
+                await db.appendCaseStep(session.id, stepGen.step);
+                stepFeedback.branchingNote = stepGen.step.branchingNote || null;
             }
 
             // If this was the last step (step 5 answered), finalize
@@ -612,6 +687,38 @@ function registerReviewCaseRoutes(app, {
                     suggestedDifficulty = session.difficulty === 'easy' ? 'medium' : 'hard';
                 } else if (totalScore <= 40 && session.difficulty !== 'easy') {
                     suggestedDifficulty = session.difficulty === 'hard' ? 'medium' : 'easy';
+                }
+
+                // Case difficulty bandit reward (same scale as caseScenarioService)
+                try {
+                    const reward = Math.max(-0.25, Math.min(1, (totalScore - 50) / 50));
+                    const armId = caseDifficultyArmId(session.difficulty);
+                    await recordBanditReward(db, POLICY_CASE_DIFFICULTY, armId, reward, req.user.id);
+                    if (db?.all && db?.updatePersonalizationDecisionReward) {
+                        const rows = await db.all(
+                            `SELECT id FROM personalization_decisions
+                             WHERE user_id = ? AND policy_type = ? AND arm_id = ?
+                               AND (context_json LIKE ? OR topic = ?)
+                             ORDER BY created_at DESC LIMIT 1`,
+                            [
+                                String(req.user.id),
+                                POLICY_CASE_DIFFICULTY,
+                                armId,
+                                `%"caseSessionId":"${session.id}"%`,
+                                String(session.topic || ''),
+                            ]
+                        ).catch(() => []);
+                        const decisionId = rows?.[0]?.id;
+                        if (decisionId) {
+                            await db.updatePersonalizationDecisionReward(decisionId, {
+                                immediateReward: 0,
+                                delayedReward: reward,
+                                totalReward: reward,
+                            });
+                        }
+                    }
+                } catch (err) {
+                    req.log?.warn?.({ err, sessionId: session.id }, 'adaptive case bandit reward failed');
                 }
 
                 // Cross-learning recommendation

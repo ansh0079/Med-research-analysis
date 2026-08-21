@@ -31,6 +31,26 @@ const HIGH_CERTAINTY_BLOCKED_CONCEPTS = new Set([
     'consensus_statement',
 ]);
 
+/**
+ * Question types that change management / cite guidelines / interpret trials.
+ * These must be anchored to verified or guideline-supported claims only.
+ */
+const HIGH_STAKES_QTYPES = Object.freeze([
+    'guideline',
+    'clinical_application',
+    'trial_interpretation',
+]);
+
+const HIGH_STAKES_QTYPE_SET = new Set(HIGH_STAKES_QTYPES);
+
+/** Trust ladder floor for high-stakes question types. */
+const VERIFIED_CLAIM_STATUSES = new Set([
+    'source_verified',
+    'guideline_supported',
+    'full_text_available',
+    'human_reviewed',
+]);
+
 const TRUST_RATING_ORDER = ['VERY_LOW', 'LOW', 'MODERATE', 'HIGH'];
 
 function isAbstractOnlySource(fullTextCoverageRatio) {
@@ -65,6 +85,36 @@ function isHighCertaintyQuizEligible(claim = {}) {
         return false;
     }
     if (claim.reviewState === 'needs_revision') return false;
+    return true;
+}
+
+function claimMeetsVerifiedFloor(claim = {}) {
+    if (claim.reviewState === 'human_reviewed' || claim.verificationStatus === 'human_reviewed') {
+        return true;
+    }
+    const status = String(claim.verificationStatus || '').trim();
+    if (VERIFIED_CLAIM_STATUSES.has(status)) return true;
+    // AI job claims use validationStatus rather than the teaching-object trust ladder.
+    const validation = String(claim.validationStatus || '').trim().toLowerCase();
+    if (['validated', 'llm_validated', 'passed', 'ok', 'citation_ok'].includes(validation)) {
+        return true;
+    }
+    return false;
+}
+
+function isHighStakesQuestionType(questionType) {
+    return HIGH_STAKES_QTYPE_SET.has(String(questionType || '').trim());
+}
+
+/**
+ * High-stakes question types require a verified / guideline-supported claim.
+ * Lower-stakes types (recall, pitfall) still respect isHighCertaintyQuizEligible.
+ */
+function claimEligibleForQuestionType(claim = {}, questionType = null) {
+    if (!isHighCertaintyQuizEligible(claim)) return false;
+    if (isHighStakesQuestionType(questionType)) {
+        return claimMeetsVerifiedFloor(claim);
+    }
     return true;
 }
 
@@ -225,11 +275,16 @@ module.exports = {
     REVIEW_STATES,
     ABSTRACT_ONLY_CONFIDENCE_CAP,
     HIGH_CERTAINTY_BLOCKED_CONCEPTS,
+    HIGH_STAKES_QTYPES,
+    VERIFIED_CLAIM_STATUSES,
     isAbstractOnlySource,
     capTrustRatingForAbstractOnly,
     abstractOnlyConfidenceCap,
     applyAbstractOnlyConfidence,
     isHighCertaintyQuizEligible,
+    claimMeetsVerifiedFloor,
+    isHighStakesQuestionType,
+    claimEligibleForQuestionType,
     resolveReviewState,
     normalizeHumanReviewStatus,
     applyPaperSynopsisCitationValidation,

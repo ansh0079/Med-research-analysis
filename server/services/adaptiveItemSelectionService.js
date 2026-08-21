@@ -48,6 +48,18 @@ function targetItemDifficulty(ability) {
 }
 
 /**
+ * Map a 0–1 ability estimate to a live quiz difficulty label.
+ * Used when the client requests "mixed" / auto calibration.
+ */
+function abilityToQuizDifficulty(ability) {
+    const a = typeof ability === 'number' && Number.isFinite(ability) ? ability : 0.5;
+    if (a < 0.35) return 'easy';
+    if (a < 0.55) return 'medium';
+    if (a < 0.75) return 'mixed';
+    return 'hard';
+}
+
+/**
  * Bayesian shrinkage: blend an observed p-value toward the prior when
  * sample size is small.  At MIN_RELIABLE_ATTEMPTS the observed value
  * dominates; below that, the prior pulls the estimate toward 0.6 so
@@ -91,6 +103,7 @@ module.exports = {
     MIN_RELIABLE_ATTEMPTS,
     estimateAbility,
     targetItemDifficulty,
+    abilityToQuizDifficulty,
     shrinkPValue,
     scoreItemMatch,
     selectAdaptiveItems,

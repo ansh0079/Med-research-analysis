@@ -51,16 +51,51 @@ async function findContradictionsForClaim(db, { claimKey, topic, claimText, serv
                 : 'Possibly relevant disconfirming or neutral evidence.',
         }));
 
+    // Structured guideline↔guideline conflicts for this topic (not lexical literature search).
+    let guidelineConflicts = [];
+    if (db && typeof db.getContradictionsForTopic === 'function') {
+        const normalized = typeof db.normalizeTopic === 'function'
+            ? db.normalizeTopic(topic)
+            : String(topic || '').toLowerCase().trim();
+        const rows = await db.getContradictionsForTopic(normalized)
+            .catch(() => []);
+        const claimTokens = String(claimText || '')
+            .toLowerCase()
+            .split(/\s+/)
+            .filter((w) => w.length >= 5)
+            .slice(0, 10);
+        guidelineConflicts = (Array.isArray(rows) ? rows : [])
+            .map((row) => {
+                const hay = `${row.contradictionSummary || ''} ${row.bodyAPosition || ''} ${row.bodyBPosition || ''} ${row.clinicalImplication || ''}`.toLowerCase();
+                const overlap = claimTokens.filter((t) => hay.includes(t)).length;
+                return { ...row, _claimOverlap: overlap };
+            })
+            .filter((row) => claimTokens.length === 0 || row._claimOverlap > 0 || row.severity === 'major')
+            .sort((a, b) => {
+                const sev = { major: 0, minor: 1, nuanced: 2 };
+                return (sev[a.severity] ?? 3) - (sev[b.severity] ?? 3) || (b._claimOverlap - a._claimOverlap);
+            })
+            .slice(0, 8);
+    }
+
     if (typeof db.saveClaimContradictionSearch === 'function') {
         await db.saveClaimContradictionSearch({
             claimKey,
             topic,
             searchQuery: query,
             results: ranked.map((a) => ({ uid: a.uid, title: a.title, score: a._contradictionScore })),
+            guidelineConflictCount: guidelineConflicts.length,
         }).catch(() => {});
     }
 
-    return { claimKey, query, articles: ranked, count: ranked.length };
+    return {
+        claimKey,
+        query,
+        articles: ranked,
+        count: ranked.length,
+        guidelineConflicts,
+        structuredConflictCount: guidelineConflicts.length,
+    };
 }
 
 module.exports = { buildContradictionSearchQuery, findContradictionsForClaim };

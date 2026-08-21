@@ -10,7 +10,7 @@ const { coldStartMcqKey, guidelineMcqKey, liveQuizMcqKey } = require('../../util
 const { computeConceptHash } = require('../../utils/conceptHash');
 const { estimateAbility, selectAdaptiveItems } = require('../../services/adaptiveItemSelectionService');
 const { isArticleNewerThan, findMatchingTeachingPointIndex } = require('../../services/topicKnowledgeMergeUtils');
-const { isHighCertaintyQuizEligible } = require('../../services/paperSynopsisTrust');
+const { isHighCertaintyQuizEligible, claimMeetsVerifiedFloor } = require('../../services/paperSynopsisTrust');
 
 function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
     function extractJsonArray(text) {
@@ -305,7 +305,7 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
         };
 
         // Default teaching seeds: human-reviewed claims first (weak → untested → pool),
-        // then fall back to the existing mastery/trust buckets.
+        // then verified / guideline-supported floor, then fall back to mastery/trust buckets.
         const selected = [];
         const humanPool = [
             ...masteryRows.filter((c) => isHumanReviewed(c) && c.masteryState === 'weak').sort(byTrust),
@@ -316,11 +316,21 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
         humanPool.forEach((claim, index) => tryPush(selected, claim, 0, index));
 
         if (selected.length < safeCount) {
+            const verifiedPool = [
+                ...masteryRows.filter((c) => !isHumanReviewed(c) && claimMeetsVerifiedFloor(c) && c.masteryState === 'weak').sort(byTrust),
+                ...masteryRows.filter((c) => !isHumanReviewed(c) && claimMeetsVerifiedFloor(c) && c.masteryState === 'untested').sort(byTrust),
+                ...claimRows.filter((c) => !isHumanReviewed(c) && claimMeetsVerifiedFloor(c)).sort(byTrust),
+                ...masteryRows.filter((c) => !isHumanReviewed(c) && claimMeetsVerifiedFloor(c) && !['weak', 'untested'].includes(c.masteryState)).sort(byTrust),
+            ];
+            verifiedPool.forEach((claim, index) => tryPush(selected, claim, 1, index));
+        }
+
+        if (selected.length < safeCount) {
             const buckets = [
-                ...masteryRows.filter((claim) => claim.masteryState === 'weak').sort(byTrust).map((claim, index) => ({ claim, priority: 0, index })),
-                ...masteryRows.filter((claim) => claim.masteryState === 'untested').sort(byTrust).map((claim, index) => ({ claim, priority: 1, index })),
-                ...claimRows.sort(byTrust).map((claim, index) => ({ claim, priority: 2, index })),
-                ...masteryRows.filter((claim) => !['weak', 'untested'].includes(claim.masteryState)).sort(byTrust).map((claim, index) => ({ claim, priority: 3, index })),
+                ...masteryRows.filter((claim) => claim.masteryState === 'weak').sort(byTrust).map((claim, index) => ({ claim, priority: 2, index })),
+                ...masteryRows.filter((claim) => claim.masteryState === 'untested').sort(byTrust).map((claim, index) => ({ claim, priority: 3, index })),
+                ...claimRows.sort(byTrust).map((claim, index) => ({ claim, priority: 4, index })),
+                ...masteryRows.filter((claim) => !['weak', 'untested'].includes(claim.masteryState)).sort(byTrust).map((claim, index) => ({ claim, priority: 5, index })),
             ];
             for (const item of buckets) {
                 if (selected.length >= safeCount) break;

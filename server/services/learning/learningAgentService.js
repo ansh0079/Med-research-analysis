@@ -66,25 +66,39 @@ async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
                     attempts_count, last_attempt_at, next_review_at
              FROM user_topic_mastery WHERE user_id = ? ORDER BY updated_at DESC LIMIT 50`,
             [userId]
-        ),
+        ).catch((err) => {
+            logger.warn({ err, userId }, 'recommendation mastery query failed');
+            return [];
+        }),
         db.all(
             `SELECT topic, normalized_topic, due_at, outline_label
              FROM spaced_rep_cards WHERE user_id = ? AND due_at <= ?
              ORDER BY due_at ASC LIMIT 20`,
             [userId, now.toISOString()]
-        ),
-        db.all(
-            `SELECT query, created_at FROM searches
-             WHERE session_id IN (SELECT id FROM sessions WHERE user_id = ?)
-             ORDER BY created_at DESC LIMIT 15`,
-            [userId]
-        ),
+        ).catch((err) => {
+            logger.warn({ err, userId }, 'recommendation due-cards query failed');
+            return [];
+        }),
+        (async () => {
+            // searches/sessions have no user_id in the current schema. Prefer an explicit
+            // helper when present; otherwise skip (do not query a missing column).
+            if (typeof db.listRecentSearchesForUser === 'function') {
+                return db.listRecentSearchesForUser(userId, { limit: 15 }).catch((err) => {
+                    logger.warn({ err, userId }, 'recommendation recent-searches query failed');
+                    return [];
+                });
+            }
+            return [];
+        })(),
         db.all(
             `SELECT topic, normalized_topic, question_type, is_correct, confidence, reasoning_tags, claim_key, created_at
              FROM quiz_attempts WHERE user_id = ?
              ORDER BY created_at DESC LIMIT 50`,
             [userId]
-        ),
+        ).catch((err) => {
+            logger.warn({ err, userId }, 'recommendation quiz-attempts query failed');
+            return [];
+        }),
         typeof db.listSearchResultFeedbackForUser === 'function'
             ? db.listSearchResultFeedbackForUser(userId, { limit: 100, days: 90 }).catch((err) => {
                 logger.warn({ err, userId }, 'listSearchResultFeedbackForUser failed');

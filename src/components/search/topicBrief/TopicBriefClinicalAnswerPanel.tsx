@@ -1,6 +1,7 @@
 import React from 'react';
 import type { ClinicalAnswer, ProactiveAlert } from '@types';
 import { TopicBriefEvidenceGradeBadge } from './TopicBriefEvidenceGradeBadge';
+import { SynopsisTrustBanner } from '@components/search/SynopsisTrustBanner';
 
 interface Props {
   ca: ClinicalAnswer;
@@ -21,6 +22,8 @@ export const TopicBriefClinicalAnswerPanel: React.FC<Props> = ({ ca, proactiveAl
 
   const effectiveAlert = proactiveAlert ?? (ca.whatIsNew ? { summary: ca.whatIsNew, changedPrinciples: [], newPapers: [], daysSinceUpdate: 0 } : null);
   const isLandmark = effectiveAlert?.isLandmarkGreeting ?? false;
+  const showHardGrounding = ca.groundingWarning === 'ABSTRACT_ONLY_NO_GUIDELINE'
+    || (ca.abstractOnly === true && ca.guidelineSupported === false);
 
   return (
     <div className="border-b border-slate-100 dark:border-slate-800 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950/40 dark:to-slate-950/10 px-5 py-4">
@@ -36,7 +39,17 @@ export const TopicBriefClinicalAnswerPanel: React.FC<Props> = ({ ca, proactiveAl
           </span>
         )}
       </div>
-      {(ca.unverified || ca.citationWarning) && (
+      {(showHardGrounding || ca.abstractOnly) && (
+        <SynopsisTrustBanner
+          className="mb-3"
+          abstractOnly={ca.abstractOnly === true || showHardGrounding}
+          fullTextCoverageRatio={ca.fullTextCoverageRatio}
+          noGuidelineSupport={ca.guidelineSupported === false || showHardGrounding}
+          hardBanner={showHardGrounding}
+          citationOk={ca.citationWarning ? false : undefined}
+        />
+      )}
+      {(ca.unverified || ca.citationWarning) && !showHardGrounding && (
         <div className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 dark:border-amber-800 dark:bg-amber-950/20">
           <p className="text-[11px] leading-relaxed text-amber-800 dark:text-amber-200">
             This fast clinical answer has incomplete citation grounding. Prefer the full synthesis or paper synopsis before changing practice.
