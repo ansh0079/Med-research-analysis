@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '@services/api';
-import type { Article, GuidelineAlignment, TeachingClaimReviewItem } from '@types';
+import type { Article, GuidelineAlignment, GuidelineContradiction, TeachingClaimReviewItem } from '@types';
 import { VERIFICATION_STATUS_STYLES } from '@components/ui';
 
 export type AiJobClaimRow = {
@@ -74,6 +74,7 @@ export const ClaimProvenanceModal: React.FC<ClaimProvenanceModalProps> = ({
 
   const [view, setView] = useState<View>('main');
   const [contradictions, setContradictions] = useState<Article[]>([]);
+  const [guidelineConflicts, setGuidelineConflicts] = useState<GuidelineContradiction[]>([]);
   const [contradictionsLoading, setContradictionsLoading] = useState(false);
   const [contradictionsError, setContradictionsError] = useState<string | null>(null);
 
@@ -114,6 +115,7 @@ export const ClaimProvenanceModal: React.FC<ClaimProvenanceModalProps> = ({
       setGuidelineError(null);
       setView('main');
       setContradictions([]);
+      setGuidelineConflicts([]);
       setContradictionsError(null);
     }
   }, [open]);
@@ -145,7 +147,10 @@ export const ClaimProvenanceModal: React.FC<ClaimProvenanceModalProps> = ({
     setContradictionsLoading(true);
     setContradictionsError(null);
     api.ai.findClaimContradictions(claim.claimKey, topic, claim.claimText)
-      .then((r) => setContradictions(r.articles || []))
+      .then((r) => {
+        setContradictions(r.articles || []);
+        setGuidelineConflicts(r.guidelineConflicts || []);
+      })
       .catch((e: unknown) => setContradictionsError(e instanceof Error ? e.message : 'Search failed'))
       .finally(() => setContradictionsLoading(false));
   };
@@ -196,6 +201,7 @@ export const ClaimProvenanceModal: React.FC<ClaimProvenanceModalProps> = ({
               loading={contradictionsLoading}
               error={contradictionsError}
               articles={contradictions}
+              guidelineConflicts={guidelineConflicts}
               claimText={claim.claimText}
             />
           ) : (
@@ -407,17 +413,32 @@ interface ContradictionViewProps {
   loading: boolean;
   error: string | null;
   articles: Article[];
+  guidelineConflicts: GuidelineContradiction[];
   claimText: string;
 }
 
-const ContradictionView: React.FC<ContradictionViewProps> = ({ loading, error, articles, claimText }) => {
+const SEVERITY_STYLES: Record<string, string> = {
+  major: 'border-red-500/40 bg-red-50 text-red-800 dark:bg-red-950/30 dark:text-red-200',
+  minor: 'border-amber-500/40 bg-amber-50 text-amber-900 dark:bg-amber-950/30 dark:text-amber-200',
+  nuanced: 'border-blue-500/40 bg-blue-50 text-blue-900 dark:bg-blue-950/30 dark:text-blue-200',
+};
+
+const ContradictionView: React.FC<ContradictionViewProps> = ({
+  loading,
+  error,
+  articles,
+  guidelineConflicts,
+  claimText,
+}) => {
   if (loading) {
     return (
       <div className="space-y-3">
         <p className="text-xs text-slate-500 italic line-clamp-2">
           Searching for evidence against: "{claimText}"
         </p>
-        <p className="text-xs text-slate-400">Querying PubMed + Semantic Scholar with negation bias…</p>
+        <p className="text-xs text-slate-400">
+          Loading structured guideline conflicts + negation-biased literature…
+        </p>
         <div className="space-y-2">
           {[1, 2, 3].map((i) => (
             <div key={i} className="h-16 rounded-lg bg-slate-100 dark:bg-slate-800 animate-pulse" />
@@ -429,35 +450,69 @@ const ContradictionView: React.FC<ContradictionViewProps> = ({ loading, error, a
 
   if (error) return <p className="text-xs text-red-500">{error}</p>;
 
-  if (articles.length === 0) {
+  if (articles.length === 0 && guidelineConflicts.length === 0) {
     return (
       <div className="text-center py-8">
         <i className="fas fa-check-circle text-2xl text-emerald-500 mb-2 block" />
         <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">No strong contradictions found</p>
         <p className="text-xs text-slate-500 mt-1">
-          The negation-biased search returned no results — this may indicate consistent evidence.
+          No structured guideline conflicts and no negation-biased literature hits — evidence may be consistent.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-3">
-      <p className="text-xs text-slate-500">
-        {articles.length} paper{articles.length === 1 ? '' : 's'} retrieved with negation-biased query.
-        Review each to assess whether it genuinely contradicts the claim.
-      </p>
-      <ul className="space-y-2">
-        {articles.map((a) => (
-          <li key={a.uid}>
-            <ArticleCard article={{
-              uid: String(a.uid), title: a.title, doi: a.doi,
-              pmid: String(a.pmid ?? ''), abstract: a.abstract,
-              authors: a.authors, journal: a.journal, pubdate: a.pubdate,
-            }} />
-          </li>
-        ))}
-      </ul>
+    <div className="space-y-4">
+      {guidelineConflicts.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-[10px] font-black uppercase tracking-widest text-rose-600 dark:text-rose-400">
+            Structured guideline conflicts ({guidelineConflicts.length})
+          </p>
+          <ul className="space-y-2">
+            {guidelineConflicts.map((c) => (
+              <li
+                key={c.id}
+                className={`rounded-lg border px-3 py-2 text-xs leading-relaxed ${SEVERITY_STYLES[c.severity] || SEVERITY_STYLES.nuanced}`}
+              >
+                <p className="font-black uppercase tracking-wider text-[10px] mb-1">{c.severity} conflict</p>
+                <p className="font-semibold">{c.contradictionSummary}</p>
+                <p className="mt-1 opacity-90">
+                  <span className="font-bold">{c.guidelineA?.sourceBody || 'Body A'}:</span> {c.bodyAPosition}
+                </p>
+                <p className="mt-0.5 opacity-90">
+                  <span className="font-bold">{c.guidelineB?.sourceBody || 'Body B'}:</span> {c.bodyBPosition}
+                </p>
+                {c.clinicalImplication && (
+                  <p className="mt-1 italic opacity-80">{c.clinicalImplication}</p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {articles.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+            Literature search ({articles.length})
+          </p>
+          <p className="text-xs text-slate-500">
+            Papers retrieved with a negation-biased query. Review each to assess whether it genuinely contradicts the claim.
+          </p>
+          <ul className="space-y-2">
+            {articles.map((a) => (
+              <li key={a.uid}>
+                <ArticleCard article={{
+                  uid: String(a.uid), title: a.title, doi: a.doi,
+                  pmid: String(a.pmid ?? ''), abstract: a.abstract,
+                  authors: a.authors, journal: a.journal, pubdate: a.pubdate,
+                }} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };

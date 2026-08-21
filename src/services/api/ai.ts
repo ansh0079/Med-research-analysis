@@ -538,7 +538,14 @@ export class AiApi extends BaseApiClient {
     claimKey: string,
     topic: string,
     claimText: string
-  ): Promise<{ claimKey: string; query: string; articles: Article[]; count: number }> {
+  ): Promise<{
+    claimKey: string;
+    query: string;
+    articles: Article[];
+    count: number;
+    guidelineConflicts?: import('@types').GuidelineContradiction[];
+    structuredConflictCount?: number;
+  }> {
     const response = await this.fetchWithSession(
       `${API_BASE}/api/teaching-claims/${encodeURIComponent(claimKey)}/find-contradictions`,
       {

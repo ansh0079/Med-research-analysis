@@ -23,7 +23,7 @@ Status today: **beta-ready, not commercial-launch-ready.**
 
 ---
 
-## Phase 1 — Trust & closed loops (in progress)
+## Phase 1 — Trust & closed loops (complete on branch)
 
 **Goal:** Conversion-critical trust. Users never see invented case keys, buried guidelines, or a dead-end empty search without an automatic repair attempt.
 
@@ -65,10 +65,10 @@ Status today: **beta-ready, not commercial-launch-ready.**
 **Goal:** Marketable claim-anchored questions and cases.
 
 - [x] Fail closed when MCQ validation skips / reviewer fails (`MCQ_VALIDATION_FAILED`)
-- [ ] High-stakes question types only from verified / guideline-supported claims
-- [ ] Psychometrics → live difficulty
-- [ ] Synopsis / clinical answer hard-banner when abstract-only and no guideline support
-- [ ] Conflict matrix (not lexical-only) on claim provenance
+- [x] High-stakes question types only from verified / guideline-supported claims
+- [x] Psychometrics → live difficulty (BKT / ability → `effectiveDifficulty` + item psychometrics in prompt)
+- [x] Synopsis / clinical answer hard-banner when abstract-only and no guideline support
+- [x] Conflict matrix (structured guideline conflicts) on claim provenance (alongside lexical search)
 
 ---
 

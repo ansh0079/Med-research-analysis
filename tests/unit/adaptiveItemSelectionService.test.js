@@ -4,6 +4,7 @@ const {
     scoreItemMatch,
     selectAdaptiveItems,
     shrinkPValue,
+    abilityToQuizDifficulty,
     MIN_TARGET_P,
     MAX_TARGET_P,
     MIN_RELIABLE_ATTEMPTS,
@@ -152,6 +153,15 @@ describe('adaptiveItemSelectionService', () => {
             const lowNIdx = ordered.findIndex((i) => i.id === 'low-n-hard');
             const highNIdx = ordered.findIndex((i) => i.id === 'high-n-hard');
             expect(lowNIdx).not.toBe(highNIdx);
+        });
+    });
+
+    describe('abilityToQuizDifficulty', () => {
+        test('maps ability bands to easy/medium/mixed/hard', () => {
+            expect(abilityToQuizDifficulty(0.2)).toBe('easy');
+            expect(abilityToQuizDifficulty(0.45)).toBe('medium');
+            expect(abilityToQuizDifficulty(0.65)).toBe('mixed');
+            expect(abilityToQuizDifficulty(0.9)).toBe('hard');
         });
     });
 });

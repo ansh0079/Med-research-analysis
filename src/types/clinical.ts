@@ -23,6 +23,13 @@ export interface ClinicalAnswer {
   /** Set when citation validation failed on the live clinical-answer path. */
   unverified?: boolean;
   citationWarning?: boolean;
+  /** True when live-answer sources had no indexed full text. */
+  abstractOnly?: boolean;
+  fullTextCoverageRatio?: number;
+  /** True when a guideline position or guideline corpus backs the answer. */
+  guidelineSupported?: boolean;
+  /** Hard grounding code, e.g. ABSTRACT_ONLY_NO_GUIDELINE. */
+  groundingWarning?: string | null;
 }
 
 export interface Contradiction {

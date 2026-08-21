@@ -16,6 +16,11 @@ const {
 } = require('../quizGeneration/mcqFormatting');
 const { validateMcqBatch } = require('../quizGeneration/mcqValidation');
 const { buildEvidenceAudit } = require('../quizGeneration/evidenceAudit');
+const { estimateAbility, abilityToQuizDifficulty } = require('../adaptiveItemSelectionService');
+const {
+    claimEligibleForQuestionType,
+    isHighStakesQuestionType,
+} = require('../paperSynopsisTrust');
 
 function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logger, helpers }) {
     const {
@@ -133,6 +138,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         let teachingObjects = [];
         let teachingClaims = [];
         let userContext = null;
+        let abilityEstimate = null;
         if (user?.id) {
             userContext = await enrichLearnerContextForQuiz(db, {
                 userId: user.id,
@@ -143,8 +149,28 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 trajectoryDays: 120,
                 recentAttemptLimit: 20,
             });
-            if (userContext?.profile?.effectiveDifficulty) {
-                effectiveDifficulty = userContext.profile.effectiveDifficulty;
+            const requestedDifficulty = String(difficulty || 'mixed').trim().toLowerCase();
+            const explicitDifficulty = ['easy', 'medium', 'hard'].includes(requestedDifficulty);
+            if (!explicitDifficulty) {
+                let bktAbility = null;
+                if (db.getTopicBktAbility) {
+                    bktAbility = await db.getTopicBktAbility(user.id, cleanTopic)
+                        .catch((err) => { logger.warn({ err }, 'getTopicBktAbility failed'); return null; });
+                }
+                const overallScore = userContext?.mastery?.overallScore
+                    ?? userContext?.profile?.overallScore
+                    ?? null;
+                abilityEstimate = estimateAbility({
+                    masteryProbability: typeof bktAbility === 'number' ? bktAbility : null,
+                    overallScore,
+                });
+                const hasAbilitySignal = typeof bktAbility === 'number'
+                    || (typeof overallScore === 'number' && Number.isFinite(overallScore));
+                if (hasAbilitySignal) {
+                    effectiveDifficulty = abilityToQuizDifficulty(abilityEstimate);
+                } else if (userContext?.profile?.effectiveDifficulty) {
+                    effectiveDifficulty = userContext.profile.effectiveDifficulty;
+                }
             }
         }
 
@@ -278,6 +304,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 count: effectiveQuizCount,
                 difficulty: effectiveDifficulty,
                 topicKnowledge: mergedTopicKnowledge,
+                itemPsychometrics: collectiveMemory || undefined,
                 targetNodes,
                 trainingStage,
                 explanationDepth,
@@ -287,6 +314,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 claimAnchors: claimAnchors || undefined,
                 teachingObjectContext,
                 promptVariant,
+                abilityEstimate,
             },
             guidelines,
             userContext
@@ -360,7 +388,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             const validOutlineNodeIds = new Set(outlineNodes.map((node) => node.id));
             const validClaimKeys = claimAnchors ? new Set(claimAnchors.map((c) => c.claimKey)) : null;
             const claimByKey = claimAnchors ? new Map(claimAnchors.map((c) => [c.claimKey, c])) : null;
-            const questions = validation.validatedRaw.map((q, idx) => {
+            const mappedQuestions = validation.validatedRaw.map((q, idx) => {
                 const sourceIndices = validateSourceIndices(q.sourceIndices, articles.length);
                 const ck = claimAnchors ? normalizeClaimKey(q.claimKey, validClaimKeys, claimAnchors, idx) : null;
                 const cmeta = ck && claimByKey ? claimByKey.get(ck) : null;
@@ -392,8 +420,36 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                     promptVariant,
                     validationStatus: validation.validationSummary.skipped ? 'validation_skipped' : 'llm_validated',
                     outlineLabel: cmeta ? String(cmeta.claimText || '').slice(0, 200) : null,
+                    claimVerificationStatus: cmeta?.verificationStatus || null,
                 };
             });
+
+            // Phase 3: high-stakes Q types only from verified / guideline-supported claims.
+            const droppedHighStakes = [];
+            const questions = mappedQuestions.filter((q) => {
+                if (!isHighStakesQuestionType(q.questionType)) return true;
+                const cmeta = q.claimKey && claimByKey ? claimByKey.get(q.claimKey) : null;
+                const ok = claimEligibleForQuestionType(cmeta || {
+                    verificationStatus: q.claimVerificationStatus,
+                }, q.questionType);
+                if (!ok) {
+                    droppedHighStakes.push({
+                        questionType: q.questionType,
+                        claimKey: q.claimKey,
+                        verificationStatus: cmeta?.verificationStatus || q.claimVerificationStatus || null,
+                    });
+                }
+                return ok;
+            });
+
+            if (questions.length === 0) {
+                return response({
+                    error: 'No high-stakes questions could be anchored to verified or guideline-supported claims. Generate stronger claims (synopsis with full text / guideline alignment) before quizzing.',
+                    code: 'HIGH_STAKES_CLAIMS_UNAVAILABLE',
+                    topic: cleanTopic,
+                    dropped: droppedHighStakes,
+                }, 422);
+            }
 
             db.upsertTeachingObject({
                 objectKey: liveQuizMcqKey(db, cleanTopic),
@@ -421,6 +477,9 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 claimAnchorMode,
                 adaptiveClaimCount: claimAnchorMode.startsWith('adaptive_teaching_object') ? claimAnchors.length : undefined,
                 evidenceAudit: buildEvidenceAudit(claimSourceJob, claimAnchors),
+                effectiveDifficulty,
+                abilityEstimate,
+                droppedHighStakes: droppedHighStakes.length ? droppedHighStakes : undefined,
             });
         } catch (error) {
             log.error({ err: error }, 'Quiz generation error');
