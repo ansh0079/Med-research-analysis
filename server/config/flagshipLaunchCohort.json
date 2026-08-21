@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "description": "Phase 4 commercial launch cohort — 10 flagship topics polished for resident/learner Pro wedge. Full catalog remains in flagshipTopics.json.",
+  "wedge": "resident_learner_pro",
+  "targets": {
+    "cohortCount": 10,
+    "minimumSearchQueriesPerTopic": 2,
+    "minimumLandmarkPmids": 1,
+    "minimumGuidelineQueries": 1,
+    "minimumGoldMatches": 1
+  },
+  "topics": [
+    {
+      "topic": "Heart failure with reduced ejection fraction",
+      "block": "Cardiology",
+      "learnerHook": "GDMT titration + SGLT2 evidence for HFrEF"
+    },
+    {
+      "topic": "Atrial fibrillation anticoagulation",
+      "block": "Cardiology",
+      "learnerHook": "Stroke prevention choice and guideline targets"
+    },
+    {
+      "topic": "ARDS",
+      "block": "Critical Care",
+      "learnerHook": "Low tidal volume, prone, and refractory strategies"
+    },
+    {
+      "topic": "Sepsis and septic shock",
+      "block": "Critical Care",
+      "learnerHook": "Hour-1 bundle and fluid resuscitation targets"
+    },
+    {
+      "topic": "COPD exacerbation",
+      "block": "Respiratory",
+      "learnerHook": "Systemic steroids and exacerbation management"
+    },
+    {
+      "topic": "Pulmonary embolism diagnosis",
+      "block": "Pulmonology",
+      "learnerHook": "Wells/PERC-style workup before anticoagulation"
+    },
+    {
+      "topic": "Venous thromboembolism anticoagulation",
+      "block": "Haematology",
+      "learnerHook": "DOAC evidence for acute PE/VTE"
+    },
+    {
+      "topic": "Community-acquired pneumonia",
+      "block": "Infectious Diseases",
+      "learnerHook": "Severity + antibiotic selection from landmark evidence"
+    },
+    {
+      "topic": "Hypertension treatment intensity",
+      "block": "Cardiology",
+      "learnerHook": "Guideline BP targets and intensive control evidence"
+    },
+    {
+      "topic": "Type 2 diabetes cardiovascular outcomes",
+      "block": "Endocrinology",
+      "learnerHook": "SGLT2/GLP-1 CVOT evidence for learners"
+    }
+  ]
+}

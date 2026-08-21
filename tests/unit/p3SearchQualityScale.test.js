@@ -97,6 +97,38 @@ describe('P3 search-quality baseline gates (CI)', () => {
         expect(baselineSpec.metrics.requiredTypeCoverage).toBeGreaterThanOrEqual(0.98);
     });
 
+    test('commercial gates target graded NL Precision@10 (not known-item gold)', () => {
+        expect(baselineSpec.commercialGates.scope).toBe('graded_nl_clinical');
+        expect(baselineSpec.commercialGates.precisionAt10Min).toBeGreaterThanOrEqual(0.75);
+        expect(baselineSpec.commercialGates.offTopicRateAtKMax).toBeLessThanOrEqual(0.10);
+        expect(baselineSpec.commercialGates.minGradedQueryCount).toBeGreaterThanOrEqual(12);
+        const nl = require('../fixtures/search-quality-gold-nl-clinical.json');
+        expect((nl.queries || []).length).toBeGreaterThanOrEqual(baselineSpec.commercialGates.minGradedQueryCount);
+    });
+
+    test('evaluateCommercialGates fails when graded P@10 is below target', () => {
+        const { evaluateCommercialGates } = require('../../server/services/searchQualityRegression');
+        const result = evaluateCommercialGates({
+            queryCount: 14,
+            precisionAtK: 0.4,
+            offTopicRateAtK: 0.01,
+            anyRelevantHitRate: 1,
+        }, baselineSpec);
+        expect(result.pass).toBe(false);
+        expect(result.failingChecks.some((c) => c.label === 'precisionAt10Min')).toBe(true);
+    });
+
+    test('evaluateCommercialGates passes when graded NL meets commercial targets', () => {
+        const { evaluateCommercialGates } = require('../../server/services/searchQualityRegression');
+        const result = evaluateCommercialGates({
+            queryCount: 14,
+            precisionAtK: 0.8,
+            offTopicRateAtK: 0.05,
+            anyRelevantHitRate: 0.95,
+        }, baselineSpec);
+        expect(result.pass).toBe(true);
+    });
+
     test('regression helper fails when landmark hit rate drops beyond tolerance', () => {
         const summary = {
             ...baselineSpec.metrics,

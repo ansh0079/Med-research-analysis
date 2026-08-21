@@ -17,6 +17,7 @@ function registerQuizRoutes(app, {
     requireJson,
     requireAiAuth,
     requireAuthJwt,
+    requirePaidFeature = () => (_req, _res, next) => next(),
     rateLimit,
     aiUserLimit,
     validateBody,
@@ -32,27 +33,43 @@ function registerQuizRoutes(app, {
         helpers,
     });
 
-    app.post('/api/quiz/generate', requireJson, requireAiAuth, aiUserLimit(10, 60), validateBody(schemas.quiz), async (req, res) => {
-        return runWithLlmBudget(createBudgetForAction('quiz'), async () => {
-            const result = await quizGenerationService.generateQuiz({
-                body: req.body,
-                user: req.user,
-                log: req.log,
+    // Pro+ paywall: adaptive / evidence-grounded quiz generation (practice pool stays free).
+    app.post(
+        '/api/quiz/generate',
+        requireJson,
+        requireAiAuth,
+        requirePaidFeature('quizMode'),
+        aiUserLimit(10, 60),
+        validateBody(schemas.quiz),
+        async (req, res) => {
+            return runWithLlmBudget(createBudgetForAction('quiz'), async () => {
+                const result = await quizGenerationService.generateQuiz({
+                    body: req.body,
+                    user: req.user,
+                    log: req.log,
+                });
+                return sendServiceResponse(res, result);
             });
-            return sendServiceResponse(res, result);
-        });
-    });
+        }
+    );
 
-    app.post('/api/quiz/from-evidence', requireJson, requireAiAuth, rateLimit(10, 60), async (req, res) => {
-        return runWithLlmBudget(createBudgetForAction('quiz'), async () => {
-            const result = await quizGenerationService.generateFromEvidence({
-                body: req.body,
-                user: req.user,
-                log: req.log,
+    app.post(
+        '/api/quiz/from-evidence',
+        requireJson,
+        requireAiAuth,
+        requirePaidFeature('quizMode'),
+        rateLimit(10, 60),
+        async (req, res) => {
+            return runWithLlmBudget(createBudgetForAction('quiz'), async () => {
+                const result = await quizGenerationService.generateFromEvidence({
+                    body: req.body,
+                    user: req.user,
+                    log: req.log,
+                });
+                return sendServiceResponse(res, result);
             });
-            return sendServiceResponse(res, result);
-        });
-    });
+        }
+    );
 
     // Practice Pool: serve pre-seeded MCQs across all topics.
     app.get('/api/quiz/pool', requireAuthJwt, rateLimit(30, 60), async (req, res) => {

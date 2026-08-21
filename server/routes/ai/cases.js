@@ -48,7 +48,7 @@ function registerCaseRoutes(app, {
         requireAuthJwt,
         requireVerifiedEmail,
         strictAiLimit(3, 3600),  // Only 3 case generations per hour
-        requirePaidFeature('case_scenarios'),  // Paywall for advanced feature
+        requirePaidFeature('caseMode'),  // Entitlements key (see server/config/entitlements.js)
         async (req, res) => {
             try {
                 const { topic, difficulty: requestedDifficulty = 'auto', provider = 'auto', model } = req.body;

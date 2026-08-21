@@ -1,7 +1,7 @@
 {
-  "version": 3,
-  "recordedAt": "2026-07-22",
-  "source": "live gold eval after search ranking tune (relevance mode + intent bias + topical weights) — https://signalmd.co",
+  "version": 4,
+  "recordedAt": "2026-08-21",
+  "source": "live gold eval after search ranking tune + Phase 4 commercial gate shape — https://signalmd.co",
   "metrics": {
     "recallAtK": 0.987,
     "mrr": 0.85,
@@ -35,5 +35,13 @@
     "managementIntentHitRateMin": 1.0,
     "diagnosisIntentHitRateMin": 1.0,
     "requiredTypeCoverageMin": 0.98
+  },
+  "commercialGates": {
+    "scope": "graded_nl_clinical",
+    "description": "Precision@10 commercial target applies only to graded NL clinical queries (management/guideline/diagnosis). Known-item landmark gold is intentionally excluded — one correct paper per query caps P@10 near 0.10.",
+    "minGradedQueryCount": 12,
+    "precisionAt10Min": 0.75,
+    "offTopicRateAtKMax": 0.10,
+    "anyRelevantHitRateMin": 0.90
   }
 }

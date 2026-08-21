@@ -36,7 +36,17 @@ Ownership note: 1–3 are one-time gates you run yourself. 4 is a standing proce
    | Off-topic@10 | ≤ 0.20 | little irrelevant noise |
    | Required-type coverage | ≥ 0.80 | right study types surfaced |
 
-   Precision@10 is printed but **not** gated — with one correct paper per query it is capped at ~0.10.
+   Precision@10 on the **full known-item gold** is printed but **not** gated — with one correct paper per query it is capped at ~0.10.
+
+   **Commercial target (Phase 4):** Precision@10 ≥ 0.75 and off-topic ≤ 0.10 apply only to the **graded NL clinical** subset (`tests/fixtures/search-quality-gold-nl-clinical.json`). Enforce with:
+
+   ```bash
+   npm run eval:search-quality:commercial
+   # or
+   node scripts/eval-search-quality.js --base https://staging.signalmd.co --gold tests/fixtures/search-quality-gold.json --require-commercial
+   ```
+
+   Thresholds live under `commercialGates` in `tests/fixtures/search-quality-baseline.json`.
 
 4. Full per-query output is written to `eval-results/search-quality-gold-<timestamp>.json`. For any query below gate, inspect `missingRelevantUids` and `hitUids` to see whether the landmark paper was absent, buried, or mis-ranked.
 

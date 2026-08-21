@@ -75,7 +75,7 @@ function registerAiRoutes(app, deps) {
 
     registerAiJobRoutes(app, { db, requireAuthJwt, rateLimit });
 
-    registerQuizRoutes(app, { db, serverConfig, ai, mcqValidator, logger, requireJson, requireAiAuth, requireAuthJwt, rateLimit, aiUserLimit, validateBody, schemas, helpers });
+    registerQuizRoutes(app, { db, serverConfig, ai, mcqValidator, logger, requireJson, requireAiAuth, requireAuthJwt, requirePaidFeature, rateLimit, aiUserLimit, validateBody, schemas, helpers });
 
     registerSynthesisRoutes(app, { db, cache, serverConfig, fetchImpl, ai, logger, limitBodySize, requireJson, requireAiAuth, requireAuthJwt, requireVerifiedEmail, requirePaidFeature, requireMonthlyLimit, rateLimit, aiUserLimit, synthesisLimit, validateBody, schemas, helpers, appendRagContext });
 

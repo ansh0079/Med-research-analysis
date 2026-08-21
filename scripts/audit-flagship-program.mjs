@@ -195,15 +195,47 @@ function dbLooksEmpty(readiness, error) {
 
 async function main() {
   const strict = process.argv.includes('--strict');
-  const config = readJson('server/config/flagshipTopics.json');
+  const launchCohort = process.argv.includes('--launch-cohort');
+  const fullConfig = readJson('server/config/flagshipTopics.json');
+  const cohortConfig = launchCohort
+    ? readJson('server/config/flagshipLaunchCohort.json')
+    : null;
+  const fullByTopic = new Map((fullConfig.topics || []).map((t) => [normalizeTopic(t.topic), t]));
+  const selectedTopics = launchCohort
+    ? (cohortConfig.topics || []).map((row) => {
+        const full = fullByTopic.get(normalizeTopic(row.topic));
+        if (!full) {
+          return {
+            topic: row.topic,
+            block: row.block,
+            priority: 'launch',
+            aliases: [],
+            landmarkPmids: [],
+            guidelineQueries: [],
+            searchQueries: [],
+            missingFromCatalog: true,
+            learnerHook: row.learnerHook,
+          };
+        }
+        return { ...full, priority: 'launch', learnerHook: row.learnerHook };
+      })
+    : (fullConfig.topics || []);
+  const targets = launchCohort
+    ? { ...fullConfig.targets, ...(cohortConfig.targets || {}) }
+    : fullConfig.targets;
   const goldRows = loadGoldQueries();
   const { dbPath, readiness, pdfCoverage, error } = await loadReadiness();
   const emptyDb = dbLooksEmpty(readiness, error);
   const readinessByTopic = readinessIndex(emptyDb ? null : readiness);
   const pdfCoverageByTopic = new Map((pdfCoverage?.topics || []).map((row) => [row.topic, row]));
-  const topics = (config.topics || []).map((topic) => (
-    assessTopic(topic, goldRows, readinessByTopic, config.targets, pdfCoverageByTopic)
-  ));
+  const topics = selectedTopics.map((topic) => {
+    const assessed = assessTopic(topic, goldRows, readinessByTopic, targets, pdfCoverageByTopic);
+    if (topic.missingFromCatalog) assessed.missing.push('missing_from_flagship_catalog');
+    if (launchCohort && assessed.configured.matchingGoldQueries < Number(targets.minimumGoldMatches || 1)) {
+      assessed.missing.push('launch_gold_match');
+    }
+    return assessed;
+  });
   const dbSummary = emptyDb
     ? {
         topicCount: topics.length,
@@ -216,11 +248,13 @@ async function main() {
     : summarize(topics);
   const report = {
     generatedAt: new Date().toISOString(),
+    mode: launchCohort ? 'launch_cohort' : 'full_catalog',
+    wedge: cohortConfig?.wedge || null,
     dbPath,
     dbError: error,
     dbStatus: emptyDb ? 'empty_or_missing' : 'loaded',
-    configVersion: config.version,
-    targets: config.targets,
+    configVersion: launchCohort ? cohortConfig.version : fullConfig.version,
+    targets,
     configCoverage: summarizeConfigCoverage(topics),
     pdfCoverageSummary: (!emptyDb && pdfCoverage) ? {
       topicsMeetingCoverageNorm: pdfCoverage.topicsMeetingCoverageNorm,
@@ -233,10 +267,14 @@ async function main() {
   };
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
-  const outPath = path.join(OUT_DIR, `flagship-topic-audit-${new Date().toISOString().replace(/[:.]/g, '-')}.json`);
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const outPath = path.join(
+    OUT_DIR,
+    launchCohort ? `flagship-launch-cohort-audit-${stamp}.json` : `flagship-topic-audit-${stamp}.json`
+  );
   fs.writeFileSync(outPath, JSON.stringify(report, null, 2));
 
-  console.log('Flagship Topic Audit');
+  console.log(launchCohort ? 'Flagship Launch Cohort Audit' : 'Flagship Topic Audit');
   console.log(`DB status: ${report.dbStatus}${error ? ` (${error})` : ''} @ ${dbPath}`);
   if (emptyDb) {
     console.log('⚠️  Empty/missing DB — DB readiness tiers are NOT meaningful (0/N ready is expected).');
@@ -263,6 +301,30 @@ async function main() {
   if (strict && emptyDb) {
     console.error('🚨 STRICT GATE FAILED: flagship audit pointed at empty/missing DB.');
     process.exit(2);
+  }
+
+  if (launchCohort) {
+    const expected = Number(targets.cohortCount || 10);
+    const incomplete = topics.filter((row) => row.missing.length > 0);
+    if (topics.length !== expected) {
+      console.error(`🚨 LAUNCH COHORT GATE FAILED: expected ${expected} topics, got ${topics.length}`);
+      process.exit(2);
+    }
+    if (report.configCoverage.withLandmarks < expected
+      || report.configCoverage.withGuidelineQuery < expected
+      || report.configCoverage.withTwoSearchQueries < expected
+      || report.configCoverage.withGoldCoverage < expected) {
+      console.error('🚨 LAUNCH COHORT GATE FAILED: config/gold coverage incomplete for launch-10.');
+      process.exit(2);
+    }
+    if (incomplete.length) {
+      console.error(`🚨 LAUNCH COHORT GATE FAILED: ${incomplete.length} topics still missing signals.`);
+      incomplete.slice(0, 10).forEach((row) => {
+        console.error(`  - ${row.topic}: ${row.missing.join(', ')}`);
+      });
+      process.exit(2);
+    }
+    console.log('✅ Launch cohort config gate PASS');
   }
 }
 

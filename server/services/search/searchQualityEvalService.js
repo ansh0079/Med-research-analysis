@@ -233,6 +233,21 @@ function summarizeSearchEval(rows) {
     });
 }
 
+/** Graded NL clinical subset used for commercial Precision@10 gates. */
+function isGradedNlClinicalRow(row) {
+    const category = row?.category || '';
+    return ['management_intent', 'guideline', 'diagnosis_intent'].includes(category)
+        && Number(row?.relevantTotal || 0) > 0;
+}
+
+function summarizeGradedNlClinical(rows) {
+    const subset = (Array.isArray(rows) ? rows : []).filter(isGradedNlClinicalRow);
+    return {
+        ...summarizeSearchEval(subset),
+        scope: 'graded_nl_clinical',
+    };
+}
+
 function finalizeSummary(summary) {
     const next = { ...summary };
     for (const [key, bucket] of Object.entries(next.categoryBreakdown || {})) {
@@ -251,6 +266,8 @@ function finalizeSummary(summary) {
 module.exports = {
     evaluateSearchResults,
     summarizeSearchEval,
+    summarizeGradedNlClinical,
+    isGradedNlClinicalRow,
     finalizeSummary,
     buildRelevanceMap,
     articleMatchesType,
