@@ -142,6 +142,7 @@ export interface BanditMeta {
   policyType: string;
   armId: string;
   scopeKey?: string | null;
+  decisionId?: number | null;
 }
 
 export interface ArticleSynopsisResult {

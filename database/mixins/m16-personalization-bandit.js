@@ -317,6 +317,48 @@ module.exports = (Sup) => class extends Sup {
         return true;
     }
 
+    async updatePersonalizationDecisionRewardScoped(decisionId, {
+        userId,
+        policyType,
+        armId,
+        articleUid = null,
+        immediateReward,
+        delayedReward,
+        totalReward,
+    }) {
+        if (!this.kysely || !decisionId || !userId || !policyType || !armId) return false;
+        const now = new Date().toISOString();
+        const params = [
+            immediateReward != null ? Number(immediateReward) : null,
+            delayedReward != null ? Number(delayedReward) : null,
+            totalReward != null ? Number(totalReward) : null,
+            now,
+            Number(decisionId),
+            String(userId),
+            String(policyType),
+            String(armId),
+        ];
+        let articleClause = '';
+        if (articleUid) {
+            articleClause = ' AND LOWER(article_uid) = ?';
+            params.push(String(articleUid).toLowerCase());
+        }
+        const result = await this.run(
+            `UPDATE personalization_decisions
+             SET immediate_reward = COALESCE(?, immediate_reward),
+                 delayed_reward = COALESCE(?, delayed_reward),
+                 total_reward = COALESCE(?, total_reward),
+                 reward_computed_at = ?
+             WHERE id = ?
+               AND user_id = ?
+               AND policy_type = ?
+               AND arm_id = ?
+               ${articleClause}`,
+            params
+        );
+        return Number(result?.changes || 0) > 0;
+    }
+
     mapPersonalizationArmRow(row) {
         if (!row) return null;
         return {

@@ -1,6 +1,7 @@
 const {
     buildProductionReadinessSummary,
     buildLearningLoopControlSummary,
+    collectRewardStats,
 } = require('../../server/services/productionObservabilityService');
 
 describe('productionObservabilityService', () => {
@@ -165,5 +166,34 @@ describe('productionObservabilityService', () => {
         expect(control.mode).toBe('safe_heuristic_fallback');
         expect(control.onlineLearningSafe).toBe(false);
         expect(control.blockers.join(' ')).toMatch(/Dead-letter|Reward attribution|propensity/i);
+    });
+
+    test('collectRewardStats includes top skipped reward reasons', async () => {
+        const db = {
+            all: jest.fn(async (sql) => {
+                if (sql.includes('GROUP BY event_type')) {
+                    return [
+                        { event_type: 'search_reward_attributed', count: 3 },
+                        { event_type: 'search_reward_skipped', count: 2 },
+                        { event_type: 'quiz_reward_attributed', count: 1 },
+                    ];
+                }
+                return [
+                    { payload_json: JSON.stringify({ reason: 'no_decision' }) },
+                    { payload_json: JSON.stringify({ reason: 'no_decision' }) },
+                    { payload_json: JSON.stringify({ reason: 'missing_context' }) },
+                ];
+            }),
+        };
+
+        const stats = await collectRewardStats(db, 7);
+
+        expect(stats).toMatchObject({
+            totalSignals: 6,
+            attributedSignals: 4,
+            skippedSignals: 2,
+            attributionRate: 4 / 6,
+        });
+        expect(stats.skippedReasons[0]).toEqual({ reason: 'no_decision', count: 2 });
     });
 });

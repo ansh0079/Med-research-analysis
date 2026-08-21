@@ -42,6 +42,17 @@ const STRENGTH_COLOR: Record<string, string> = {
   weak: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
   conditional: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300',
 };
+const SYNOPSIS_STYLE_LABELS: Record<string, string> = {
+  bottom_line_first: 'Bottom line first',
+  pico_structured: 'PICO structured',
+  narrative: 'Narrative',
+  teaching_points: 'Teaching points',
+};
+const SYNOPSIS_STYLE_ARMS = Object.keys(SYNOPSIS_STYLE_LABELS);
+
+function alternateSynopsisStyleArm(currentArmId?: string | null) {
+  return SYNOPSIS_STYLE_ARMS.find((armId) => armId !== currentArmId) ?? 'bottom_line_first';
+}
 
 function Field({ label, value }: { label: string; value?: string | null }) {
   if (!value) return null;
@@ -66,6 +77,42 @@ function FieldList({ label, items }: { label: string; items?: string[] }) {
   );
 }
 
+function SynopsisPreferencePreview({
+  label,
+  synopsis,
+  selected,
+  disabled,
+  onSelect,
+}: {
+  label: string;
+  synopsis: ArticleSynopsisFields;
+  selected: boolean;
+  disabled: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <button type="button" disabled={disabled} onClick={onSelect}
+      className={`text-left rounded-lg border px-3 py-2 transition-colors ${
+        selected
+          ? 'border-emerald-300 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/20'
+          : 'border-slate-200 bg-white hover:border-indigo-300 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-indigo-700'
+      }`}>
+      <div className="mb-1 flex items-center justify-between gap-2">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{label}</span>
+        {selected && <i className="fas fa-check text-[10px] text-emerald-600 dark:text-emerald-300" />}
+      </div>
+      <p className="line-clamp-2 text-[11px] font-semibold leading-snug text-slate-700 dark:text-slate-200">
+        {synopsis.bottomLine || synopsis.takeaway || synopsis.mainFindings || 'No preview available.'}
+      </p>
+      {synopsis.mainFindings && (
+        <p className="mt-1 line-clamp-2 text-[11px] leading-snug text-slate-500 dark:text-slate-400">
+          {synopsis.mainFindings}
+        </p>
+      )}
+    </button>
+  );
+}
+
 export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenInWorkspace, searchTopic }) => {
   const [tab, setTab] = useState<Tab>('overview');
   const [synopsis, setSynopsis] = useState<ArticleSynopsisFields | null>(null);
@@ -73,6 +120,10 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
   const [synopsisState, setSynopsisState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [synopsisFeedback, setSynopsisFeedback] = useState<'helpful' | 'not_helpful' | null>(null);
   const [synopsisFeedbackPending, setSynopsisFeedbackPending] = useState(false);
+  const [synopsisCompareResult, setSynopsisCompareResult] = useState<ArticleSynopsisResult | null>(null);
+  const [synopsisCompareState, setSynopsisCompareState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
+  const [synopsisPreferencePending, setSynopsisPreferencePending] = useState(false);
+  const [synopsisPreferenceChoice, setSynopsisPreferenceChoice] = useState<'current' | 'alternate' | null>(null);
   const [consort, setConsort] = useState<ConsortResult | null>(null);
   const [consortState, setConsortState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [guidelines, setGuidelines] = useState<GuidelineEntry[]>([]);
@@ -93,6 +144,10 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
     setSynopsisState('idle');
     setSynopsisFeedback(null);
     setSynopsisFeedbackPending(false);
+    setSynopsisCompareResult(null);
+    setSynopsisCompareState('idle');
+    setSynopsisPreferencePending(false);
+    setSynopsisPreferenceChoice(null);
     setConsort(null);
     setConsortState('idle');
     setGuidelines([]);
@@ -176,6 +231,52 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
       setSynopsisFeedbackPending(false);
     }
   }, [article, searchTopic, synopsisFeedback, synopsisFeedbackPending, synopsisResult]);
+
+  const loadSynopsisComparison = useCallback(async () => {
+    if (!article || !synopsisResult?.banditMeta?.armId || synopsisCompareState === 'loading') return;
+    setSynopsisCompareState('loading');
+    setSynopsisPreferenceChoice(null);
+    try {
+      const alternateArmId = alternateSynopsisStyleArm(synopsisResult.banditMeta.armId);
+      const result = await api.ai.getSynopsis(article, {
+        async: false,
+        topic: searchTopic?.trim() || undefined,
+        synopsisStyleArmId: alternateArmId,
+      });
+      if (!result.synopsis || !result.banditMeta) throw new Error('comparison unavailable');
+      setSynopsisCompareResult(result);
+      setSynopsisCompareState('done');
+    } catch {
+      setSynopsisCompareState('error');
+    }
+  }, [article, searchTopic, synopsisCompareState, synopsisResult]);
+
+  const handleSynopsisPreference = useCallback(async (choice: 'current' | 'alternate') => {
+    if (!article || !synopsisResult?.banditMeta || !synopsisCompareResult?.banditMeta || synopsisPreferencePending) return;
+    const currentMeta = synopsisResult.banditMeta;
+    const alternateMeta = synopsisCompareResult.banditMeta;
+    const rejectedResult = choice === 'current' ? synopsisCompareResult : synopsisResult;
+    const preferredMeta = choice === 'current' ? currentMeta : alternateMeta;
+    const rejectedMeta = choice === 'current' ? alternateMeta : currentMeta;
+    setSynopsisPreferencePending(true);
+    try {
+      await api.ai.recordSynopsisPreference({
+        articleUid: synopsisResult.articleId || article.uid,
+        topic: searchTopic?.trim() || null,
+        preferred: preferredMeta,
+        rejected: rejectedMeta,
+      });
+      setSynopsisPreferenceChoice(choice);
+      if (choice === 'alternate' && synopsisCompareResult.synopsis) {
+        setSynopsis(synopsisCompareResult.synopsis);
+        setSynopsisResult(synopsisCompareResult);
+        setSynopsisCompareResult(rejectedResult);
+        setSynopsisPreferenceChoice('current');
+      }
+    } finally {
+      setSynopsisPreferencePending(false);
+    }
+  }, [article, searchTopic, synopsisCompareResult, synopsisPreferencePending, synopsisResult]);
 
   if (!article) return null;
 
@@ -484,6 +585,43 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
                   <div className="rounded-lg bg-slate-50 dark:bg-slate-800/40 px-3 py-2">
                     <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Trust Rationale</p>
                     <p className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">{synopsis.trustRationale}</p>
+                  </div>
+                )}
+
+                {synopsisResult?.banditMeta?.armId && (
+                  <div className="rounded-lg bg-slate-50 dark:bg-slate-800/40 px-3 py-2">
+                    <div className="mb-2 flex items-center justify-between gap-3">
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400">Synopsis style</span>
+                      {synopsisCompareState === 'idle' || synopsisCompareState === 'error' ? (
+                        <button type="button" onClick={loadSynopsisComparison}
+                          className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-semibold text-indigo-600 hover:bg-white dark:text-indigo-300 dark:hover:bg-slate-700">
+                          <i className="fas fa-code-branch text-[10px]" />
+                          {synopsisCompareState === 'error' ? 'Retry compare' : 'Compare'}
+                        </button>
+                      ) : (
+                        <span className="text-[10px] font-semibold text-slate-400">
+                          {synopsisCompareState === 'loading' ? 'Loading...' : 'Choose one'}
+                        </span>
+                      )}
+                    </div>
+                    {synopsisCompareState === 'done' && synopsisCompareResult?.synopsis && (
+                      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                        <SynopsisPreferencePreview
+                          label={SYNOPSIS_STYLE_LABELS[synopsisResult.banditMeta.armId] ?? 'Current'}
+                          synopsis={synopsis}
+                          selected={synopsisPreferenceChoice === 'current'}
+                          disabled={synopsisPreferencePending}
+                          onSelect={() => handleSynopsisPreference('current')}
+                        />
+                        <SynopsisPreferencePreview
+                          label={SYNOPSIS_STYLE_LABELS[synopsisCompareResult.banditMeta?.armId || ''] ?? 'Alternate'}
+                          synopsis={synopsisCompareResult.synopsis}
+                          selected={synopsisPreferenceChoice === 'alternate'}
+                          disabled={synopsisPreferencePending}
+                          onSelect={() => handleSynopsisPreference('alternate')}
+                        />
+                      </div>
+                    )}
                   </div>
                 )}
 

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { api } from '@services/api';
 import { useAuth } from '@contexts/AuthContext';
 import type { TeachingClaimReviewItem } from '@types';
+import type { SearchGoldJudgment, SearchGoldJudgmentLabel } from '@services/api/knowledgeAdmin';
 import { VerificationBadge } from '@components/ui/VerificationBadge';
 import { ClaimTrustLadder, trustLadderFromVerificationStatus } from '@components/learning/ClaimTrustLadder';
 
@@ -29,19 +30,37 @@ export function ClinicalQualityQueuePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState('');
+  const [goldJudgments, setGoldJudgments] = useState<SearchGoldJudgment[]>([]);
+  const [goldLabels, setGoldLabels] = useState<SearchGoldJudgmentLabel[]>(['essential', 'useful', 'off_topic', 'outdated', 'wrong_study_type', 'duplicate', 'unsafe']);
+  const [goldForm, setGoldForm] = useState({
+    query: '',
+    articleUid: '',
+    articleTitle: '',
+    label: 'essential' as SearchGoldJudgmentLabel,
+    reason: '',
+  });
+  const [savingGold, setSavingGold] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await api.knowledge.getClinicalQualityQueue({
-        queue: activeQueue,
-        topic: topicFilter.trim() || undefined,
-        limit: 50,
-      });
+      const [data, goldData] = await Promise.all([
+        api.knowledge.getClinicalQualityQueue({
+          queue: activeQueue,
+          topic: topicFilter.trim() || undefined,
+          limit: 50,
+        }),
+        api.knowledge.getSearchGoldJudgments({
+          query: topicFilter.trim() || undefined,
+          limit: 20,
+        }).catch(() => null),
+      ]);
       setQueues(data.queues);
       setCounts(data.counts);
       setClaims(data.claims);
+      setGoldJudgments(goldData?.judgments ?? []);
+      if (goldData?.labels?.length) setGoldLabels(goldData.labels);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to load quality queue');
     } finally {
@@ -68,6 +87,28 @@ export function ClinicalQualityQueuePage() {
       void load();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Update failed');
+    }
+  };
+
+  const saveGoldJudgment = async () => {
+    setSavingGold(true);
+    setError(null);
+    try {
+      const { judgment } = await api.knowledge.recordSearchGoldJudgment({
+        query: goldForm.query,
+        articleUid: goldForm.articleUid,
+        articleTitle: goldForm.articleTitle || undefined,
+        label: goldForm.label,
+        reason: goldForm.reason || undefined,
+        metadata: { surface: 'clinical_quality_queue' },
+      });
+      setGoldJudgments((prev) => [judgment, ...prev.filter((item) => item.id !== judgment.id)].slice(0, 20));
+      setGoldForm((prev) => ({ ...prev, articleUid: '', articleTitle: '', reason: '' }));
+      setNotice('Gold judgment saved for ranker training.');
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Gold judgment save failed');
+    } finally {
+      setSavingGold(false);
     }
   };
 
@@ -114,6 +155,94 @@ export function ClinicalQualityQueuePage() {
 
         {error && <p className="text-sm text-rose-600">{error}</p>}
         {notice && <p className="text-sm text-emerald-600">{notice}</p>}
+
+        <section className="neo-card p-4 space-y-3">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">Gold judgment studio</h2>
+              <p className="mt-1 text-xs text-slate-500">Curate search labels for ranker training and promotion checks.</p>
+            </div>
+            <span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-mono text-slate-500 dark:bg-slate-800">
+              {goldJudgments.length} recent
+            </span>
+          </div>
+          <div className="grid gap-2 md:grid-cols-2">
+            <label className="text-xs text-slate-500">
+              Query
+              <input
+                type="text"
+                value={goldForm.query}
+                onChange={(e) => setGoldForm((prev) => ({ ...prev, query: e.target.value }))}
+                placeholder="Search query"
+                className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-900"
+              />
+            </label>
+            <label className="text-xs text-slate-500">
+              Article UID
+              <input
+                type="text"
+                value={goldForm.articleUid}
+                onChange={(e) => setGoldForm((prev) => ({ ...prev, articleUid: e.target.value }))}
+                placeholder="PMID, DOI, or stable UID"
+                className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-900"
+              />
+            </label>
+            <label className="text-xs text-slate-500">
+              Article title
+              <input
+                type="text"
+                value={goldForm.articleTitle}
+                onChange={(e) => setGoldForm((prev) => ({ ...prev, articleTitle: e.target.value }))}
+                placeholder="Optional"
+                className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-900"
+              />
+            </label>
+            <label className="text-xs text-slate-500">
+              Label
+              <select
+                value={goldForm.label}
+                onChange={(e) => setGoldForm((prev) => ({ ...prev, label: e.target.value as SearchGoldJudgmentLabel }))}
+                className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-900"
+              >
+                {goldLabels.map((label) => (
+                  <option key={label} value={label}>{label.replace(/_/g, ' ')}</option>
+                ))}
+              </select>
+            </label>
+            <label className="text-xs text-slate-500 md:col-span-2">
+              Reason
+              <input
+                type="text"
+                value={goldForm.reason}
+                onChange={(e) => setGoldForm((prev) => ({ ...prev, reason: e.target.value }))}
+                placeholder="Optional curator note"
+                className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-900"
+              />
+            </label>
+          </div>
+          <button
+            type="button"
+            onClick={() => void saveGoldJudgment()}
+            disabled={savingGold || !goldForm.query.trim() || !goldForm.articleUid.trim()}
+            className="rounded-lg bg-slate-900 px-4 py-2 text-xs font-bold text-white disabled:opacity-50 dark:bg-white dark:text-slate-900"
+          >
+            {savingGold ? 'Saving...' : 'Save judgment'}
+          </button>
+          {goldJudgments.length > 0 && (
+            <div className="max-h-40 overflow-y-auto border-t border-slate-100 pt-2 text-xs dark:border-slate-800">
+              {goldJudgments.map((judgment) => (
+                <div key={judgment.id} className="flex flex-wrap items-center justify-between gap-2 py-1">
+                  <span className="min-w-0 flex-1 truncate font-semibold text-slate-700 dark:text-slate-200">
+                    {judgment.query} - {judgment.articleTitle || judgment.articleUid}
+                  </span>
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 font-mono text-[10px] text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                    {judgment.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
 
         <div className="flex flex-wrap gap-2">
           {(queues.length ? queues : [

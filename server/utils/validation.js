@@ -101,6 +101,7 @@ const schemas = {
         async: z.boolean().optional(),
         topic: z.string().max(500).nullable().optional(),
         trainingStage: TRAINING_STAGE,
+        synopsisStyleArmId: z.enum(['bottom_line_first', 'pico_structured', 'narrative', 'teaching_points']).optional(),
     }),
 
     synthesize: z.object({
@@ -158,6 +159,26 @@ const schemas = {
         topic: z.string().max(240).nullable().optional(),
         learningMode: z.enum(['student', 'resident', 'specialist', 'exam']).default('student'),
         seedArticles: z.array(z.record(z.string(), z.unknown())).max(8).optional(),
+    }),
+
+    caseStepRespond: z.object({
+        stepIndex: z.number().int().min(0).max(4),
+        selectedAnswer: z.string().min(1).max(10),
+        timeMs: z.number().int().min(0).optional(),
+    }),
+
+    adaptiveCaseStep: z.object({
+        type: z.string().max(50),
+        narrative: z.string().min(1).max(4000),
+        question: z.string().min(1).max(1000),
+        questionType: z.string().max(50),
+        options: z.array(z.string().max(500)).min(2).max(8),
+        correctAnswer: z.string().max(10),
+        explanation: z.string().max(2000),
+        whyOthersWrong: z.string().max(2000).optional(),
+        teachingPoint: z.string().max(1000).optional(),
+        evidenceSource: z.string().max(200).nullable().optional(),
+        branchingNote: z.string().max(1000).nullable().optional(),
     }),
 
     learningProfile: z.object({

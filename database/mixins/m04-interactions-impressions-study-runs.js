@@ -135,6 +135,135 @@ async listSearchResultFeedbackForUser(userId, { limit = 200, days = 90 } = {}) {
     );
 }
 
+validSearchGoldJudgmentLabels() {
+    return ['essential', 'useful', 'off_topic', 'outdated', 'wrong_study_type', 'duplicate', 'unsafe'];
+}
+
+mapSearchGoldJudgmentRow(row) {
+    if (!row) return null;
+    return {
+        id: row.id,
+        query: row.query,
+        normalizedTopic: row.normalized_topic || null,
+        searchId: row.search_id == null ? null : Number(row.search_id),
+        articleUid: row.article_uid,
+        articleTitle: row.article_title || null,
+        label: row.label,
+        reason: row.reason || null,
+        source: row.source || 'curator',
+        judgedBy: row.judged_by || null,
+        metadata: safeJsonParse(row.metadata_json, {}),
+        createdAt: row.created_at || null,
+        updatedAt: row.updated_at || null,
+    };
+}
+
+async recordSearchGoldJudgment({
+    query,
+    searchId = null,
+    articleUid,
+    articleTitle = null,
+    label,
+    reason = null,
+    source = 'curator',
+    judgedBy = null,
+    metadata = {},
+} = {}) {
+    if (!this.kysely || !query || !articleUid || !label) return null;
+    const normalizedLabel = String(label).trim().toLowerCase();
+    if (!this.validSearchGoldJudgmentLabels().includes(normalizedLabel)) {
+        throw new Error('Invalid search gold judgment label');
+    }
+    const now = new Date().toISOString();
+    const normalizedTopic = this.normalizeTopic(query);
+    await this.run(
+        `INSERT INTO search_gold_judgments (
+            query, normalized_topic, search_id, article_uid, article_title,
+            label, reason, source, judged_by, metadata_json, created_at, updated_at
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         ON CONFLICT(normalized_topic, article_uid, label, judged_by) DO UPDATE SET
+            query = excluded.query,
+            search_id = excluded.search_id,
+            article_title = excluded.article_title,
+            reason = excluded.reason,
+            source = excluded.source,
+            metadata_json = excluded.metadata_json,
+            updated_at = excluded.updated_at`,
+        [
+            String(query).trim().slice(0, 500),
+            normalizedTopic,
+            searchId != null ? Number(searchId) : null,
+            String(articleUid).trim().slice(0, 160),
+            articleTitle ? String(articleTitle).slice(0, 500) : null,
+            normalizedLabel,
+            reason ? String(reason).slice(0, 1000) : null,
+            String(source || 'curator').slice(0, 60),
+            judgedBy || null,
+            JSON.stringify(metadata || {}),
+            now,
+            now,
+        ]
+    );
+    const row = await this.get(
+        `SELECT * FROM search_gold_judgments
+         WHERE normalized_topic = ? AND article_uid = ? AND label = ? AND (judged_by = ? OR (? IS NULL AND judged_by IS NULL))
+         ORDER BY updated_at DESC
+         LIMIT 1`,
+        [normalizedTopic, String(articleUid).trim().slice(0, 160), normalizedLabel, judgedBy || null, judgedBy || null]
+    );
+    return this.mapSearchGoldJudgmentRow(row);
+}
+
+async listSearchGoldJudgments({ query = '', label = '', limit = 100, offset = 0 } = {}) {
+    if (!this.kysely) return { judgments: [], total: 0, limit, offset };
+    const normalized = query ? this.normalizeTopic(query) : '';
+    const safeLimit = Math.min(Math.max(Number(limit) || 100, 1), 500);
+    const safeOffset = Math.max(Number(offset) || 0, 0);
+    const safeLabel = String(label || '').trim().toLowerCase();
+    const rows = await this.all(
+        `SELECT * FROM search_gold_judgments
+         WHERE (? = '' OR normalized_topic = ?)
+           AND (? = '' OR label = ?)
+         ORDER BY updated_at DESC, id DESC
+         LIMIT ? OFFSET ?`,
+        [normalized, normalized, safeLabel, safeLabel, safeLimit, safeOffset]
+    );
+    const countRow = await this.get(
+        `SELECT COUNT(*) AS count FROM search_gold_judgments
+         WHERE (? = '' OR normalized_topic = ?)
+           AND (? = '' OR label = ?)`,
+        [normalized, normalized, safeLabel, safeLabel]
+    );
+    return {
+        judgments: rows.map((row) => this.mapSearchGoldJudgmentRow(row)),
+        total: Number(countRow?.count || 0),
+        limit: safeLimit,
+        offset: safeOffset,
+    };
+}
+
+async getSearchGoldJudgmentStats(days = 90) {
+    if (!this.kysely) return { total: 0, positive: 0, negative: 0, byLabel: {} };
+    const since = new Date(Date.now() - Math.min(Math.max(Number(days) || 90, 1), 365) * 24 * 60 * 60 * 1000).toISOString();
+    const rows = await this.all(
+        `SELECT label, COUNT(*) AS count
+         FROM search_gold_judgments
+         WHERE updated_at >= ?
+         GROUP BY label`,
+        [since]
+    );
+    const byLabel = Object.fromEntries(rows.map((row) => [row.label, Number(row.count || 0)]));
+    const positive = Number(byLabel.essential || 0) + Number(byLabel.useful || 0);
+    const negative = ['off_topic', 'outdated', 'wrong_study_type', 'duplicate', 'unsafe']
+        .reduce((sum, key) => sum + Number(byLabel[key] || 0), 0);
+    return {
+        total: positive + negative,
+        positive,
+        negative,
+        byLabel,
+    };
+}
+
 async listSynopsisFeedbackForUser(userId, { limit = 250, days = 120 } = {}) {
     if (!this.kysely || !userId) return [];
     const since = new Date(Date.now() - Number(days || 120) * 24 * 60 * 60 * 1000).toISOString();

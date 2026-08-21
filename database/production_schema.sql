@@ -833,6 +833,23 @@ CREATE TABLE IF NOT EXISTS search_result_feedback (
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS search_gold_judgments (
+    id SERIAL PRIMARY KEY,
+    query TEXT NOT NULL,
+    normalized_topic TEXT,
+    search_id INTEGER REFERENCES searches(id) ON DELETE SET NULL,
+    article_uid TEXT NOT NULL,
+    article_title TEXT,
+    label TEXT NOT NULL,
+    reason TEXT,
+    source TEXT NOT NULL DEFAULT 'curator',
+    judged_by TEXT REFERENCES users(id) ON DELETE SET NULL,
+    metadata_json TEXT DEFAULT '{}',
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(normalized_topic, article_uid, label, judged_by)
+);
+
 CREATE TABLE IF NOT EXISTS search_result_impressions (
     id SERIAL PRIMARY KEY,
     search_id INTEGER NOT NULL REFERENCES searches(id) ON DELETE CASCADE,
@@ -1523,6 +1540,15 @@ CREATE INDEX IF NOT EXISTS idx_search_feedback_search ON search_result_feedback(
 CREATE INDEX IF NOT EXISTS idx_search_feedback_session ON search_result_feedback(session_id, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_search_feedback_user_article ON search_result_feedback(user_id, article_uid);
+
+CREATE INDEX IF NOT EXISTS idx_search_gold_topic
+    ON search_gold_judgments(normalized_topic, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_search_gold_article
+    ON search_gold_judgments(article_uid, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_search_gold_label
+    ON search_gold_judgments(label, created_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_search_learning_outcomes_article
     ON search_learning_outcomes(article_uid, claim_key);

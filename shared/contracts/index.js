@@ -8,6 +8,7 @@ const { ArticleSynopsisSchema, ConsensusSynopsisSchema } = require('./synopsis')
 const { LearningEventSchema, LearningEventTypeSchema } = require('./learningEvent');
 const { LearnerContextSchema } = require('./learnerContext');
 const { SearchResultRankingSchema } = require('./searchResultRanking');
+const learningLoop = require('./learningLoop');
 
 /**
  * Parse → validate → normalize. Returns { ok, data, errors, degraded }.
@@ -46,6 +47,7 @@ module.exports = {
     ConsensusSynopsisSchema,
     LearningEventSchema,
     LearningEventTypeSchema,
+    learningLoop,
     LearnerContextSchema,
     SearchResultRankingSchema,
     validateContract,

@@ -101,16 +101,18 @@ function computeQualityScore(article) {
 
   // 1. Study design strength
   let designFound = false;
-  // Check PubMed pubtypes first
+  // Check PubMed pubtypes first — take the highest-weight match, not the first
+  let bestDesignScore = 0;
+  let bestDesignName = null;
   for (const pt of pubtypes) {
     const mapped = Object.keys(PUBTYPE_MAP).find(k => pt.toLowerCase().includes(k.toLowerCase()));
-    if (mapped) {
-      score += PUBTYPE_MAP[mapped];
-      factors.push(mapped);
+    if (mapped && PUBTYPE_MAP[mapped] > bestDesignScore) {
+      bestDesignScore = PUBTYPE_MAP[mapped];
+      bestDesignName = mapped;
       designFound = true;
-      break;
     }
   }
+  if (bestDesignName) { score += bestDesignScore; factors.push(bestDesignName); }
   // Fallback to abstract/title regex
   if (!designFound) {
     for (const design of STUDY_DESIGNS) {
@@ -197,7 +199,7 @@ async function checkRetractionStatus(doi, pmid) {
   if (pmid) {
     try {
       const url = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${encodeURIComponent(pmid)}&rettype=xml`;
-      const res = await fetch(url, { timeout: 8000 });
+      const res = await fetchWithTimeout(url, { timeout: 8000 });
       if (res.ok) {
         const xml = await res.text();
         const hasRetraction = xml.includes('Retraction of Publication') || xml.includes('Retracted Publication');
@@ -218,7 +220,7 @@ async function checkRetractionStatus(doi, pmid) {
   if (doi) {
     try {
       const url = `https://api.crossref.org/works/${encodeURIComponent(doi)}`;
-      const res = await fetch(url, { timeout: 8000 });
+      const res = await fetchWithTimeout(url, { timeout: 8000 });
       if (res.ok) {
         const data = await res.json();
         const work = data?.message;

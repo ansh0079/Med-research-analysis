@@ -93,6 +93,10 @@ export interface SearchResponse {
     used: boolean;
     available: boolean;
     count: number;
+    localFallbackUsed?: boolean;
+    localFallbackAvailable?: boolean;
+    localFallbackMode?: string | null;
+    localFallbackCandidateCount?: number;
   };
   agentGuidance?: AgentGuidance | null;
   knowledgeAvailable?: boolean;
@@ -108,6 +112,19 @@ export interface SearchResponse {
   aiEnrichmentStatus?: 'pending' | 'ready' | 'failed';
   intelligenceStatus?: 'sync' | 'deferred';
   queryIntent?: string;
+  queryIntentProfile?: {
+    primaryIntent: string;
+    bouquetIntent: string;
+    facets: string[];
+    confidence: number;
+    specificity: string;
+    preferredArchetypes: string[];
+    sourcePolicy: {
+      ensureSources: string[];
+      sourceOrder: string[];
+      candidateMultiplier: number;
+    };
+  };
   searchTelemetry?: {
     timings?: Record<string, number>;
     sources?: Record<string, {
@@ -121,6 +138,16 @@ export interface SearchResponse {
     sourceFailures?: Record<string, { failed?: boolean; error?: string }>;
     reformulation?: { cached?: boolean; failed?: boolean; ms?: number } | null;
     meshLookupMs?: number | null;
+    sourceCache?: Record<string, { hits?: number; misses?: number; shared?: number; hitRate?: number | null }>;
+    intentRouting?: {
+      explicitSources: boolean;
+      requestedSources: string[];
+      routedSources: string[];
+    };
+    resultSetCache?: {
+      hit: boolean;
+      key?: string;
+    };
   };
   ranking?: Array<{
     uid?: string;

@@ -59,8 +59,19 @@ function stableHash(value) {
 }
 
 async function cachedSingleFlight(cache, key, ttlSeconds, loader) {
-  if (cache && typeof cache.get === 'function') {
-    const cached = await Promise.resolve(cache.get(key)).catch((err) => {
+  const getter = cache && (typeof cache.getAsync === 'function'
+    ? cache.getAsync.bind(cache)
+    : typeof cache.get === 'function'
+      ? cache.get.bind(cache)
+      : null);
+  const setter = cache && (typeof cache.setAsync === 'function'
+    ? cache.setAsync.bind(cache)
+    : typeof cache.set === 'function'
+      ? cache.set.bind(cache)
+      : null);
+
+  if (getter) {
+    const cached = await Promise.resolve(getter(key)).catch((err) => {
       logger.warn({ err, key }, 'External source cache get failed');
       return null;
     });
@@ -74,8 +85,8 @@ async function cachedSingleFlight(cache, key, ttlSeconds, loader) {
 
   const promise = (async () => {
     const value = await loader();
-    if (cache && typeof cache.set === 'function') {
-      await Promise.resolve(cache.set(key, value, ttlSeconds)).catch((err) => {
+    if (setter) {
+      await Promise.resolve(setter(key, value, ttlSeconds)).catch((err) => {
         logger.warn({ err, key }, 'External source cache set failed');
       });
     }
@@ -100,6 +111,19 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     const started = Date.now();
     const { value, cached, shared } = await cachedSingleFlight(cache, key, ttlSeconds, loader);
     if (telemetry && typeof telemetry === 'object') {
+      telemetry.sourceCache = telemetry.sourceCache || {};
+      const prev = telemetry.sourceCache[source] || {
+        hits: 0,
+        misses: 0,
+        shared: 0,
+        lastKey: null,
+      };
+      telemetry.sourceCache[source] = {
+        hits: prev.hits + (cached ? 1 : 0),
+        misses: prev.misses + (!cached && !shared ? 1 : 0),
+        shared: prev.shared + (shared ? 1 : 0),
+        lastKey: process.env.NODE_ENV === 'development' ? key : undefined,
+      };
       telemetry.sourceFetches = telemetry.sourceFetches || {};
       telemetry.sourceFetches[source] = {
         ms: Date.now() - started,
@@ -130,6 +154,10 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     const res = await f(url, { timeout: DEFAULT_TIMEOUTS.pubmed });
     if (!res.ok) throw new Error(`PubMed esearch ${res.status}`);
     const data = await res.json();
+    if (data.esearchresult?.ERROR) {
+      logger.warn({ error: data.esearchresult.ERROR, query }, 'PubMed esearch in-band error');
+      return [];
+    }
     return data.esearchresult?.idlist || [];
   }
 
@@ -141,7 +169,17 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     });
     const res = await f(url, { timeout: DEFAULT_TIMEOUTS.pubmed });
     if (!res.ok) throw new Error(`PubMed esummary ${res.status}`);
-    return (await res.json()).result || {};
+    const summaryData = await res.json();
+    const result = summaryData.result || {};
+    // Filter out article entries that contain an in-band error field
+    for (const [key, val] of Object.entries(result)) {
+      if (key === 'uids') continue;
+      if (val && typeof val === 'object' && val.error) {
+        logger.warn({ pmid: key, error: val.error }, 'PubMed esummary in-band article error — skipping');
+        delete result[key];
+      }
+    }
+    return result;
   }
 
   function mapPubmedSummaryToArticle(pmid, article) {
@@ -206,23 +244,34 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     return withSourceCache('semantic', { query, limit }, 1800, async () => {
       const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(query)}&limit=${limit}&fields=title,authors,year,citationCount,abstract,journal,openAccessPdf,publicationTypes,externalIds`;
       const headers = keys.semantic ? { 'x-api-key': keys.semantic } : {};
-      const res = await f(url, { headers, timeout: DEFAULT_TIMEOUTS.semantic });
-      if (!res.ok) throw new Error(`Semantic Scholar ${res.status}`);
-      const data = await res.json();
-      return (data.data || []).map((p) => ({
-        uid: p.paperId,
-        title: p.title,
-        authors: p.authors?.map((a) => ({ name: a.name })),
-        pubdate: p.year?.toString(),
-        source: p.journal?.name || 'Semantic Scholar',
-        pmcrefcount: p.citationCount,
-        abstract: p.abstract,
-        isFree: !!p.openAccessPdf,
-        fullTextUrl: p.openAccessPdf?.url || null,
-        pubtype: p.publicationTypes || [],
-        doi: p.externalIds?.DOI || null,
-        _source: 'semantic',
-      }));
+      let lastErr;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        if (attempt > 0) await new Promise((r) => setTimeout(r, attempt * 1000));
+        try {
+          const res = await f(url, { headers, timeout: DEFAULT_TIMEOUTS.semantic });
+          if (res.status === 429 || res.status === 503) { lastErr = new Error(`Semantic Scholar ${res.status}`); continue; }
+          if (!res.ok) throw new Error(`Semantic Scholar ${res.status}`);
+          const data = await res.json();
+          return (data.data || []).map((p) => ({
+            uid: p.paperId,
+            title: p.title,
+            authors: p.authors?.map((a) => ({ name: a.name })),
+            pubdate: p.year?.toString(),
+            source: p.journal?.name || 'Semantic Scholar',
+            pmcrefcount: p.citationCount,
+            abstract: p.abstract,
+            isFree: !!p.openAccessPdf,
+            fullTextUrl: p.openAccessPdf?.url || null,
+            pubtype: p.publicationTypes || [],
+            doi: p.externalIds?.DOI || null,
+            _source: 'semantic',
+          }));
+        } catch (err) {
+          lastErr = err;
+        }
+      }
+      logger.warn({ err: lastErr, query }, 'Semantic Scholar request failed after retries');
+      return [];
     });
   }
 
@@ -260,36 +309,40 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
   }
 
   async function crossrefSearch(query, { limit = 20 } = {}) {
-    const url = `https://api.crossref.org/works?query=${encodeURIComponent(query)}&rows=${limit}`;
-    const res = await f(url, { timeout: DEFAULT_TIMEOUTS.crossref });
-    if (!res.ok) throw new Error(`Crossref ${res.status}`);
-    const data = await res.json();
-    return (data.message?.items || []).map((item) => ({
-      uid: item.DOI,
-      title: item.title?.[0],
-      authors: item.author?.map((a) => ({ name: `${a.given} ${a.family}` })),
-      pubdate: item.created?.['date-parts']?.[0]?.[0]?.toString(),
-      source: item['container-title']?.[0],
-      pmcrefcount: item['is-referenced-by-count'],
-      _source: 'crossref',
-    }));
+    return withSourceCache('crossref', { query, limit }, 1800, async () => {
+      const url = `https://api.crossref.org/works?query=${encodeURIComponent(query)}&rows=${limit}`;
+      const res = await f(url, { timeout: DEFAULT_TIMEOUTS.crossref });
+      if (!res.ok) throw new Error(`Crossref ${res.status}`);
+      const data = await res.json();
+      return (data.message?.items || []).map((item) => ({
+        uid: item.DOI,
+        title: item.title?.[0],
+        authors: item.author?.map((a) => ({ name: `${a.given} ${a.family}` })),
+        pubdate: item.created?.['date-parts']?.[0]?.[0]?.toString(),
+        source: item['container-title']?.[0],
+        pmcrefcount: item['is-referenced-by-count'],
+        _source: 'crossref',
+      }));
+    });
   }
 
   async function meshSuggest(query, { limit = 6 } = {}) {
-    const url = `https://id.nlm.nih.gov/mesh/lookup/term?label=${encodeURIComponent(query.trim())}&match=contains&limit=${limit}`;
-    const res = await f(url, {
-      timeout: DEFAULT_TIMEOUTS.mesh,
-      headers: { Accept: 'application/json' },
+    return withSourceCache('mesh', { query, limit }, 86400, async () => {
+      const url = `https://id.nlm.nih.gov/mesh/lookup/term?label=${encodeURIComponent(query.trim())}&match=contains&limit=${limit}`;
+      const res = await f(url, {
+        timeout: DEFAULT_TIMEOUTS.mesh,
+        headers: { Accept: 'application/json' },
+      });
+      if (!res.ok) return [];
+      const data = await res.json();
+      return (Array.isArray(data) ? data : [])
+        .map((item) => ({
+          label: item.label || item.name || '',
+          resource: item.resource || '',
+          note: item.note || '',
+        }))
+        .filter((s) => s.label);
     });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return (Array.isArray(data) ? data : [])
-      .map((item) => ({
-        label: item.label || item.name || '',
-        resource: item.resource || '',
-        note: item.note || '',
-      }))
-      .filter((s) => s.label);
   }
 
   async function claudeMessages(prompt, { model = 'claude-haiku-4-5-20251001', temperature = 0.7, maxOutputTokens = 2048, timeoutMs = DEFAULT_TIMEOUTS.claude, jsonMode = false } = {}) {

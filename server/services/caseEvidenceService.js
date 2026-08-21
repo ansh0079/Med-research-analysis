@@ -113,6 +113,15 @@ async function gatherEvidenceArticlesForCase({
         Math.max(seeds.length || 0, vectorHits.length || 8, safeLimit)
     );
 
+    // TODO: Add retraction screening here, matching the pattern in synthesisGenerationCore.js.
+    // After assembling `ordered`, call batchCheckRetractions(ordered) and filter out or flag
+    // retracted articles before returning. Example:
+    //   const retractionResults = await batchCheckRetractions(ordered).catch(() => ({}));
+    //   const retractedUids = Object.entries(retractionResults)
+    //       .filter(([, v]) => v?.isRetracted).map(([uid]) => uid);
+    //   const screened = ordered.filter(a => !retractedUids.includes(a.uid));
+    // Return retractionResults alongside articles so callers can surface a warning to users.
+
     return {
         articles: ordered.slice(0, maxArticles),
         vectorUsed: vectorHits.length > 0,

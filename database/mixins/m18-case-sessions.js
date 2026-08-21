@@ -20,21 +20,22 @@ mapCaseSessionRow(row) {
         responses: safeJsonParse(row.responses, []),
         totalScore: row.total_score,
         generationMode: row.generation_mode || 'legacy',
+        armId: row.arm_id || null,
         createdAt: row.created_at,
         completedAt: row.completed_at,
     };
 }
 
-async createCaseSession({ userId, topic, learningMode, difficulty, caseData, targetedWeaknesses, evidenceContext, generationMode }) {
+async createCaseSession({ userId, topic, learningMode, difficulty, caseData, targetedWeaknesses, evidenceContext, generationMode, armId }) {
     const normalized = this.normalizeTopic(topic);
     const id = require('crypto').randomUUID();
     await this.run(
-        `INSERT INTO case_sessions (id, user_id, topic, normalized_topic, learning_mode, difficulty, case_data, targeted_weaknesses, evidence_context, generation_mode, status, current_step, responses)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'in_progress', 0, '[]')`,
+        `INSERT INTO case_sessions (id, user_id, topic, normalized_topic, learning_mode, difficulty, case_data, targeted_weaknesses, evidence_context, generation_mode, arm_id, status, current_step, responses)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'in_progress', 0, '[]')`,
         [id, userId, topic, normalized, learningMode || 'student', difficulty || 'medium',
          JSON.stringify(caseData), JSON.stringify(targetedWeaknesses || []),
          evidenceContext ? JSON.stringify(evidenceContext) : null,
-         generationMode || 'legacy']
+         generationMode || 'legacy', armId || null]
     );
     return this.getCaseSession(id);
 }

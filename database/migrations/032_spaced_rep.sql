@@ -1,7 +1,9 @@
 -- ==========================================
--- Spaced Repetition Cards (SM-2)
+-- Spaced Repetition Cards
 -- One card per (user, topic, outline_node_id).
--- Interval and easiness factor are updated after every quiz attempt.
+-- Originally SM-2; scheduling now runs on FSRS (see migration 077), which
+-- derives due_at from stability/difficulty rather than interval/easiness.
+-- interval_days/easiness/repetitions are kept for backward-compatible reads.
 -- ==========================================
 
 CREATE TABLE IF NOT EXISTS spaced_rep_cards (

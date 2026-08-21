@@ -12,6 +12,16 @@ const { publicRankingTraces } = require('../../services/searchRankingTrace');
 const { buildEnrichmentCacheKey } = require('../../services/synthesisPersonalization');
 const { enqueueSearchObservedSideEffects } = require('../../services/searchObservedService');
 const { clampLimit, setNoStoreSearchHeaders, attachApiKeyUser } = require('./searchHelpers');
+const {
+    buildSearchResultCacheKey,
+    getCachedSearchResult,
+    setCachedSearchResult,
+} = require('../../services/searchResultCacheService');
+const { searchLocalArticleCache } = require('../../services/localRetrievalService');
+const {
+    deriveSearchIntentProfile,
+    routeSearchSources,
+} = require('../../services/searchQueryIntentService');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -45,7 +55,10 @@ function registerUnifiedSearchRoutes(app, deps) {
         if (!queryValidation.valid) return res.status(400).json({ error: queryValidation.error });
 
         const validSpecificity = ['broad', 'moderate', 'strict'].includes(specificity) ? specificity : 'moderate';
-        const sourceList = String(sources).split(',').map((s) => s.trim()).filter(Boolean);
+        const requestedSourceList = String(sources).split(',').map((s) => s.trim()).filter(Boolean);
+        const explicitSources = Object.prototype.hasOwnProperty.call(req.query || {}, 'sources');
+        const queryIntentProfile = deriveSearchIntentProfile(queryValidation.sanitized, { specificity: validSpecificity });
+        const sourceList = routeSearchSources(requestedSourceList, queryIntentProfile, { explicitSources });
         const deferIntelligence = intelligenceMode === 'async';
 
         try {
@@ -54,9 +67,23 @@ function registerUnifiedSearchRoutes(app, deps) {
             const vectorOptOut = vectorParam === '0' || vectorParam === 'false';
             const vectorAvailable = db.isVectorSearchAvailable();
             const useVectorFusion = vectorAvailable && !vectorOptOut;
+            const searchResultCacheKey = buildSearchResultCacheKey({
+                query: queryValidation.sanitized,
+                sourceList,
+                safeLimit,
+                specificity: validSpecificity,
+                vectorEnabled: useVectorFusion,
+                userId: req.user?.id ?? null,
+                previousQueries,
+                parsedStudyTypes,
+                parsedYearFilters,
+                queryIntentProfile,
+            });
+            let ranked = await getCachedSearchResult(cache, searchResultCacheKey);
+            const rankedCacheHit = Boolean(ranked);
 
             let vectorList = [];
-            if (useVectorFusion) {
+            if (!ranked && useVectorFusion) {
                 try {
                     const vectorStarted = Date.now();
                     const { createVectorSearchService } = require('../../services/vectorSearchService');
@@ -70,22 +97,37 @@ function registerUnifiedSearchRoutes(app, deps) {
                 }
             }
 
-            const ranked = await fetchAndRankSearchArticles({
-                db,
-                cache,
-                serverConfig,
-                fetchImpl: f,
-                query: queryValidation.sanitized,
-                safeLimit,
-                sourceList,
-                specificity: validSpecificity,
-                parsedStudyTypes,
-                parsedYearFilters,
-                previousQueries,
-                vectorList,
-                userId: req.user?.id ?? null,
-                sessionId: req.sessionId ?? null,
-            });
+            let localRetrieval = { articles: [], used: false, available: Boolean(db?.searchCachedArticlesLocal) };
+            if (!ranked && !useVectorFusion) {
+                const localStarted = Date.now();
+                localRetrieval = await searchLocalArticleCache(db, {
+                    query: queryValidation.sanitized,
+                    limit: safeLimit,
+                });
+                vectorList = localRetrieval.articles;
+                routeTimings.localRetrievalMs = Date.now() - localStarted;
+            }
+
+            if (!ranked) {
+                ranked = await fetchAndRankSearchArticles({
+                    db,
+                    cache,
+                    serverConfig,
+                    fetchImpl: f,
+                    query: queryValidation.sanitized,
+                    safeLimit,
+                    sourceList,
+                    specificity: validSpecificity,
+                    parsedStudyTypes,
+                    parsedYearFilters,
+                    previousQueries,
+                    vectorList,
+                    userId: req.user?.id ?? null,
+                    sessionId: req.sessionId ?? null,
+                    queryIntentProfile,
+                });
+                await setCachedSearchResult(cache, searchResultCacheKey, ranked);
+            }
 
             let { articles } = ranked;
             let { telemetry, banditMeta } = ranked;
@@ -94,18 +136,23 @@ function registerUnifiedSearchRoutes(app, deps) {
                 teachingClaims: boostedClaims,
                 learningContext,
             } = ranked;
-            const learnerContext = req.user?.id
-                ? publicLearnerContextSummary(await buildLearnerContext(db, {
-                    userId: req.user.id,
-                    topic: queryValidation.sanitized,
-                    previousQueries,
-                    includeClaimMastery: true,
-                    includeTrajectory: true,
-                    claimLimit: 25,
-                    trajectoryLimit: 6,
-                    trajectoryDays: 60,
-                }))
-                : null;
+            let learnerContext = null;
+            if (req.user?.id) {
+                try {
+                    learnerContext = publicLearnerContextSummary(await buildLearnerContext(db, {
+                        userId: req.user.id,
+                        topic: queryValidation.sanitized,
+                        previousQueries,
+                        includeClaimMastery: true,
+                        includeTrajectory: true,
+                        claimLimit: 25,
+                        trajectoryLimit: 6,
+                        trajectoryDays: 60,
+                    }));
+                } catch (err) {
+                    logger.warn({ err }, 'buildLearnerContext failed; using null fallback');
+                }
+            }
 
             let topicKnowledge = null;
             let agentGuidance = null;
@@ -117,11 +164,15 @@ function registerUnifiedSearchRoutes(app, deps) {
                 topicKnowledge = await db.getTopicKnowledge(queryValidation.sanitized);
                 agentGuidance = buildAgentGuidance(topicKnowledge);
                 knowledgeAvailable = topicKnowledge !== null;
-                topicIntelligence = await buildTopicIntelligence(queryValidation.sanitized, articles, agentGuidance, {
-                    topicKnowledge,
-                    prefetchedObjects: boostedObjects,
-                    prefetchedClaims: boostedClaims,
-                });
+                try {
+                    topicIntelligence = await buildTopicIntelligence(queryValidation.sanitized, articles, agentGuidance, {
+                        topicKnowledge,
+                        prefetchedObjects: boostedObjects,
+                        prefetchedClaims: boostedClaims,
+                    });
+                } catch (err) {
+                    logger.warn({ err }, 'buildTopicIntelligence failed; using null fallback');
+                }
                 routeTimings.intelligenceMs = Date.now() - intelligenceStarted;
             }
 
@@ -228,6 +279,10 @@ function registerUnifiedSearchRoutes(app, deps) {
                 used: useVectorFusion && vectorList.length > 0,
                 available: vectorAvailable,
                 count: vectorList.length,
+                localFallbackUsed: !useVectorFusion && localRetrieval.used,
+                localFallbackAvailable: localRetrieval.available,
+                localFallbackMode: localRetrieval.mode || null,
+                localFallbackCandidateCount: localRetrieval.candidateCount || 0,
             };
 
             const logSessionMeta = {
@@ -236,8 +291,25 @@ function registerUnifiedSearchRoutes(app, deps) {
             };
 
             const [searchLogResult] = await Promise.allSettled([
-                db.logSearch(req.sessionId, queryValidation.sanitized, sourceList, { vector: useVectorFusion, intelligence: intelligenceMode }, articles.length, executionTime, req.ip, logSessionMeta),
-                db.logEvent('search', req.sessionId, { query: queryValidation.sanitized, sources: sourceList, results: articles.length, timings: { ...telemetry.timings, ...routeTimings } }),
+                db.logSearch(req.sessionId, queryValidation.sanitized, sourceList, {
+                    vector: useVectorFusion,
+                    intelligence: intelligenceMode,
+                    queryIntent: queryIntentProfile.primaryIntent,
+                    queryIntentProfile,
+                }, articles.length, executionTime, req.ip, logSessionMeta),
+                db.logEvent('search', req.sessionId, {
+                    query: queryValidation.sanitized,
+                    sources: sourceList,
+                    results: articles.length,
+                    timings: { ...telemetry.timings, ...routeTimings },
+                    queryIntent: ranked.queryIntent,
+                    queryIntentProfile: ranked.queryIntentProfile || queryIntentProfile,
+                    sourceFetches: telemetry.sourceFetches || {},
+                    sourceCache: telemetry.sourceCache || {},
+                    resultSetCacheHit: rankedCacheHit,
+                    vectorFusion,
+                    shadowRanker: ranked.shadowRanker || null,
+                }),
             ]);
             const searchId = searchLogResult.status === 'fulfilled' ? (searchLogResult.value?.id ?? null) : null;
             if (req.user?.id) {
@@ -320,6 +392,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                 aiEnrichmentStatus,
                 intelligenceStatus: deferIntelligence ? 'deferred' : 'sync',
                 queryIntent: ranked.queryIntent,
+                queryIntentProfile: ranked.queryIntentProfile || queryIntentProfile,
                 ranking: ranked.bouquetRanking,
                 searchTelemetry: {
                     timings: { ...telemetry.timings, ...routeTimings },
@@ -327,6 +400,16 @@ function registerUnifiedSearchRoutes(app, deps) {
                     sourceFailures: telemetry.sourceFailures || {},
                     reformulation: telemetry.reformulation || null,
                     meshLookupMs: telemetry.meshLookupMs ?? null,
+                    sourceCache: telemetry.sourceCache || {},
+                    intentRouting: {
+                        explicitSources,
+                        requestedSources: requestedSourceList,
+                        routedSources: sourceList,
+                    },
+                    resultSetCache: {
+                        hit: rankedCacheHit,
+                        key: isDev ? searchResultCacheKey : undefined,
+                    },
                 },
                 ...(existingEnrich?.status === 'ready' ? { clinicalAnswer: existingEnrich.clinicalAnswer ?? null } : {}),
                 ...(lowRecallLearning ? { lowRecallLearning } : {}),
@@ -334,6 +417,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                 ...(telemetry.topicEvidenceMemory ? { topicEvidenceMemory: telemetry.topicEvidenceMemory } : {}),
                 personalizationAudit: {
                     banditMeta: banditMeta || null,
+                    shadowRanker: ranked.shadowRanker || null,
                     rankingTraces: publicRankingTraces(articles),
                     guardrailMeta: banditMeta?.guardrailMeta || null,
                 },

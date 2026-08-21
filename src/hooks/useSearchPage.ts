@@ -9,10 +9,10 @@ import { useResultsFilter } from '@hooks/useResultsFilter';
 import { useExportResults } from '@hooks/useExportResults';
 import { useWorkflowContext } from '@hooks/useWorkflowContext';
 import { useClientFeatures } from '@hooks/useClientFeatures';
+import { useSearchSynthesis } from '@hooks/useSearchSynthesis';
 import { api } from '@services/api';
 import { selectTopEvidence } from '../utils/selectTopEvidence';
-import { logAsyncError } from '@utils/handleAsyncError';
-import type { AgentGuidance, Article, SynthesisResult, TopicEvidenceMemory } from '@types';
+import type { AgentGuidance, Article, TopicEvidenceMemory } from '@types';
 
 const RECENT_ANALYSES_KEY = 'med_recent_analyses';
 const SAVED_SEARCH_COUNTS_KEY = 'med_saved_search_counts';
@@ -74,11 +74,6 @@ export function useSearchPage() {
   const [activeArticle, setActiveArticle] = useState<Article | null>(null);
   const [isComparing, setIsComparing] = useState(false);
   const [vectorSearchEnabled, setVectorSearchEnabled] = useState(false);
-  const [synthesis, setSynthesis] = useState<SynthesisResult | null>(null);
-  const [synthesisLoading, setSynthesisLoading] = useState(false);
-  const [synthesisError, setSynthesisError] = useState<string | null>(null);
-  const [synthesisLiveText, setSynthesisLiveText] = useState('');
-  const [stalenessBanner, setStalenessBanner] = useState<{ changes: string[]; priorGrade: string; newGrade: string } | null>(null);
   const [knowledgeReviewStatus, setKnowledgeReviewStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [proposingKnowledge, setProposingKnowledge] = useState(false);
   const [proposedGuidance, setProposedGuidance] = useState<AgentGuidance | null>(null);
@@ -140,13 +135,39 @@ export function useSearchPage() {
   const searchRef = React.useRef(search);
   searchRef.current = search;
 
+  // Prefer the evidence bouquet (up to 12); otherwise rank live results to the same cap.
+  const top5Articles = React.useMemo(
+    () => {
+      const bouquet = topicIntelligence?.evidenceBouquet.topPapers;
+      if (bouquet?.length) return bouquet.slice(0, 12);
+      return selectTopEvidence(results, 12);
+    },
+    [results, topicIntelligence]
+  );
+
+  const {
+    synthesis,
+    setSynthesis,
+    synthesisLoading,
+    synthesisError,
+    synthesisLiveText,
+    stalenessBanner,
+    setStalenessBanner,
+    resetSynthesis,
+    handleSynthesize,
+  } = useSearchSynthesis({
+    results,
+    topArticles: top5Articles,
+    currentQuery,
+    isAuthenticated,
+    betaOpenAccess,
+  });
+
   const handleSearch = React.useCallback(
     async (query: string) => {
       const trimmed = query.trim();
       if (!trimmed) return [];
-      setSynthesis(null);
-      setSynthesisError(null);
-      setSynthesisLiveText('');
+      resetSynthesis();
       setTopicGuideRefreshError(null);
       setCurrentQuery(trimmed);
       resetForNewSearch();
@@ -166,7 +187,7 @@ export function useSearchPage() {
       }
       return found;
     },
-    [resetForNewSearch]
+    [resetForNewSearch, resetSynthesis]
   );
 
   const evidenceRelatedTopics = React.useMemo(
@@ -221,16 +242,6 @@ export function useSearchPage() {
     return () => window.removeEventListener('keydown', handleKey);
   }, [activeResultIndex, openAnalysis, toggleSaveArticle, visibleResults, setActiveResultIndex]);
 
-  // Prefer the evidence bouquet (up to 12); otherwise rank live results to the same cap.
-  const top5Articles = React.useMemo(
-    () => {
-      const bouquet = topicIntelligence?.evidenceBouquet.topPapers;
-      if (bouquet?.length) return bouquet.slice(0, 12);
-      return selectTopEvidence(results, 12);
-    },
-    [results, topicIntelligence]
-  );
-
   const isFlagshipTopic = React.useMemo(
     () => Boolean(
       topicIntelligence &&
@@ -261,63 +272,6 @@ export function useSearchPage() {
 
     return () => { cancelled = true; };
   }, [agentGuidance?.topic, currentQuery, isAuthenticated, results.length]);
-
-  const handleSynthesize = React.useCallback(async (): Promise<SynthesisResult | null> => {
-    if (!results.length) return null;
-    if (!isAuthenticated && !betaOpenAccess) {
-      setSynthesisError('Sign in to use Evidence Synthesis');
-      return null;
-    }
-    setSynthesisLoading(true);
-    setSynthesisError(null);
-    setSynthesisLiveText('');
-    try {
-      let liveText = '';
-      let finalResult: SynthesisResult | null = null;
-      await new Promise<void>((resolve, reject) => {
-        api.ai.synthesizeEvidenceStream(currentQuery, top5Articles, {
-          onChunk: (chunk) => {
-            liveText += chunk;
-            setSynthesisLiveText(liveText);
-          },
-          onResult: (result) => {
-            finalResult = result;
-          },
-          onError: reject,
-          onDone: resolve,
-        });
-      });
-      const resolved = finalResult as SynthesisResult | null;
-      if (resolved) {
-        setSynthesis(resolved);
-        if (isAuthenticated && resolved.topic) {
-          api.knowledge.getTopicStaleness(resolved.topic).then((s) => {
-            if (s.significantChange && s.changes.length > 0) {
-              setStalenessBanner({
-                changes: s.changes,
-                priorGrade: s.prior?.evidence_grade ?? '',
-                newGrade: s.latest?.evidence_grade ?? '',
-              });
-            }
-          }).catch((err) => logAsyncError(err, 'useSearchPage/getTopicStaleness'));
-        }
-        return resolved;
-      }
-      return null;
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Synthesis failed';
-      if (msg === 'AUTH_REQUIRED') {
-        setSynthesisError('Sign in to use Evidence Synthesis');
-      } else if (msg.startsWith('UPGRADE_REQUIRED:')) {
-        setSynthesisError('UPGRADE_REQUIRED:aiSynthesis');
-      } else {
-        setSynthesisError(msg);
-      }
-    } finally {
-      setSynthesisLoading(false);
-    }
-    return null;
-  }, [results, top5Articles, currentQuery, isAuthenticated, betaOpenAccess]);
 
   const workflow = useWorkflowContext({
     currentQuery,

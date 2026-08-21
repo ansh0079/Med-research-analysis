@@ -112,6 +112,7 @@ const OUTPUT_PROFILES = {
         }),
     },
     quiz_generation: {
+        // TODO: Apply validateNumericGrounding to quiz explanations once source articles are passed into validation context
         schema: QuizQuestionsSchema,
         normalize: (raw) => {
             if (Array.isArray(raw)) return { questions: raw };
@@ -145,6 +146,66 @@ const OUTPUT_PROFILES = {
  * @param {unknown} raw
  * @param {{ allowDegrade?: boolean }} [options]
  */
+function textFromValue(value) {
+    if (value == null) return '';
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return String(value);
+    if (Array.isArray(value)) return value.map(textFromValue).filter(Boolean).join(' ');
+    if (typeof value === 'object') return Object.values(value).map(textFromValue).filter(Boolean).join(' ');
+    return '';
+}
+
+function articleEvidenceTextForNumericGrounding(article = {}) {
+    if (!article || typeof article !== 'object') return '';
+    return [
+        article.title,
+        article.abstract,
+        article.fullText,
+        article.full_text,
+        article.bodyText,
+        article._fullTextText,
+        article._fullTextContent,
+        article._fullTextSections,
+        article.fullTextSections,
+    ].map(textFromValue).filter(Boolean).join(' ');
+}
+
+function normalizeNumericToken(token) {
+    const cleaned = String(token || '').replace(/,/g, '').replace(/%/g, '').trim();
+    if (!cleaned) return '';
+    const numeric = Number(cleaned);
+    return Number.isFinite(numeric) ? String(numeric) : cleaned;
+}
+
+function extractNumericTokens(text) {
+    const withoutCitations = String(text || '')
+        .replace(/\[(?:\s*\d+\s*,?)+\]/g, ' ')
+        .replace(/\((?:\s*\d+\s*,?)+\)/g, ' ');
+    return Array.from(withoutCitations.matchAll(/\b\d{1,3}(?:,\d{3})*(?:\.\d+)?%?\b|\b\d+(?:\.\d+)?%?\b/g))
+        .map((match) => normalizeNumericToken(match[0]))
+        .filter(Boolean);
+}
+
+function validateNumericGrounding(data, articles = [], fields = ['mainFindings', 'bottomLine']) {
+    const articleList = Array.isArray(articles) ? articles : [articles].filter(Boolean);
+    const sourceTokens = new Set(extractNumericTokens(articleList.map(articleEvidenceTextForNumericGrounding).join(' ')));
+    if (!sourceTokens.size) {
+        const outputHasNumbers = fields.some((field) => extractNumericTokens(data?.[field]).length > 0);
+        return outputHasNumbers
+            ? { ok: false, issues: ['numeric grounding unavailable: source text has no numeric evidence tokens'] }
+            : { ok: true, issues: [] };
+    }
+
+    const issues = [];
+    for (const field of fields) {
+        const tokens = extractNumericTokens(data?.[field]);
+        const missing = [...new Set(tokens.filter((token) => !sourceTokens.has(token)))];
+        if (missing.length) {
+            issues.push(`${field} contains ungrounded numeric value(s): ${missing.join(', ')}`);
+        }
+    }
+    return { ok: issues.length === 0, issues };
+}
+
 function validateAiOutput(profile, raw, options = {}) {
     const spec = OUTPUT_PROFILES[profile];
     if (!spec) {
@@ -170,7 +231,41 @@ function validateAiOutput(profile, raw, options = {}) {
 
     const normalized = spec.normalize(parsed);
     const result = validateContract(spec.schema, normalized, { label: profile });
-    if (result.ok) return result;
+    if (result.ok) {
+        if (profile === 'paper_synopsis' && options.groundingArticles) {
+            const grounding = validateNumericGrounding(result.data, options.groundingArticles);
+            if (!grounding.ok) {
+                const errors = grounding.issues.map((issue) => `paper_synopsis numeric grounding failed: ${issue}`);
+                if (options.allowDegrade) {
+                    return {
+                        ok: false,
+                        data: null,
+                        errors,
+                        degraded: spec.degrade(),
+                    };
+                }
+                return { ok: false, data: null, errors, degraded: null };
+            }
+        }
+
+        // TODO: Numeric grounding for quiz_generation and case outputs.
+        // Quiz MCQ explanations (quiz_generation profile) contain numeric claims that should be
+        // grounded against the source articles used to generate them. Apply validateNumericGrounding
+        // to each question's explanation field once groundingArticles is plumbed through the
+        // validation context. Example for quiz_generation:
+        //   if (profile === 'quiz_generation' && options.groundingArticles) {
+        //       for (const q of result.data.questions || []) {
+        //           const grounding = validateNumericGrounding(q, options.groundingArticles, ['explanation']);
+        //           if (!grounding.ok) { /* flag or degrade */ }
+        //       }
+        //   }
+        // This requires mcqGeneratorService.generateAndStoreMCQs to pass
+        // { groundingArticles: sourceArticles } when calling validateAiOutput('quiz_generation', ...).
+        // Case narrative outputs (no dedicated validateAiOutput profile yet) should receive the
+        // same treatment once a case_narrative profile is introduced.
+
+        return result;
+    }
 
     if (options.allowDegrade) {
         return {
@@ -187,6 +282,9 @@ function validateAiOutput(profile, raw, options = {}) {
 module.exports = {
     OUTPUT_PROFILES,
     validateAiOutput,
+    articleEvidenceTextForNumericGrounding,
+    extractNumericTokens,
+    validateNumericGrounding,
     QuizQuestionsSchema,
     TopicKnowledgeSchema,
     FullSynthesisSchema,

@@ -142,13 +142,26 @@ export class AiApi extends BaseApiClient {
 
   async getSynopsis(
     article: Article,
-    options?: { async?: boolean; pollIntervalMs?: number; maxAttempts?: number; topic?: string; trainingStage?: string }
+    options?: {
+      async?: boolean;
+      pollIntervalMs?: number;
+      maxAttempts?: number;
+      topic?: string;
+      trainingStage?: string;
+      synopsisStyleArmId?: string;
+    }
   ): Promise<ArticleSynopsisResult> {
     const useAsync = options?.async ?? false;
     const response = await this.fetchWithSession(`${API_BASE}/api/ai/synopsis`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ article, async: useAsync, topic: options?.topic, trainingStage: options?.trainingStage }),
+      body: JSON.stringify({
+        article,
+        async: useAsync,
+        topic: options?.topic,
+        trainingStage: options?.trainingStage,
+        synopsisStyleArmId: options?.synopsisStyleArmId,
+      }),
     });
     if (!response.ok) await this.parseErrorResponse(response);
     const initial = (await response.json()) as ArticleSynopsisResult;
@@ -183,6 +196,28 @@ export class AiApi extends BaseApiClient {
     banditMeta?: BanditMeta | null;
   }): Promise<{ ok: boolean; feedbackType: 'helpful' | 'not_helpful'; cacheInvalidated?: boolean }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/ai/synopsis/feedback`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async recordSynopsisPreference(payload: {
+    articleUid?: string | null;
+    topic?: string | null;
+    preferred: BanditMeta;
+    rejected: BanditMeta;
+    reason?: string | null;
+  }): Promise<{
+    ok: boolean;
+    preferredReward: number;
+    rejectedReward: number;
+    preferredDecisionUpdated?: boolean;
+    rejectedDecisionUpdated?: boolean;
+  }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/ai/synopsis/preference`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),

@@ -162,6 +162,72 @@ async getCachedArticle(articleId) {
     return null;
 }
 
+async ensureArticleCacheFts() {
+    if (!this.kysely || this.isPostgres) return false;
+    await this.run(
+        `CREATE VIRTUAL TABLE IF NOT EXISTS article_cache_fts
+         USING fts5(id UNINDEXED, title, abstract, data)`
+    );
+    await this.run('DELETE FROM article_cache_fts');
+    await this.run(
+        `INSERT INTO article_cache_fts(rowid, id, title, abstract, data)
+         SELECT rowid, id, COALESCE(title, ''), COALESCE(abstract, ''), COALESCE(data, '')
+         FROM article_cache
+         WHERE expires_at IS NULL OR expires_at > datetime('now')`
+    );
+    return true;
+}
+
+async searchCachedArticlesLocal(query, { limit = 20 } = {}) {
+    if (!this.kysely || !query) return [];
+    const safeLimit = Math.min(Math.max(Number(limit) || 20, 1), 100);
+    const terms = String(query).toLowerCase().split(/[^a-z0-9]+/).filter((t) => t.length >= 3).slice(0, 8);
+    if (!terms.length) return [];
+
+    const mapRows = (rows = []) => rows.map((row) => {
+        const article = safeJsonParse(row.data, {});
+        return {
+            ...article,
+            uid: article.uid || row.id,
+            title: article.title || row.title || '',
+            abstract: article.abstract || row.abstract || '',
+            _localRetrieval: true,
+        };
+    }).filter((article) => article.uid && article.title);
+
+    if (!this.isPostgres) {
+        try {
+            await this.ensureArticleCacheFts();
+            const ftsQuery = terms.map((term) => `${term}*`).join(' ');
+            const rows = await this.all(
+                `SELECT ac.id, ac.data, ac.title, ac.abstract, bm25(article_cache_fts) AS local_rank
+                 FROM article_cache_fts
+                 JOIN article_cache ac ON ac.rowid = article_cache_fts.rowid
+                 WHERE article_cache_fts MATCH ?
+                 ORDER BY local_rank ASC
+                 LIMIT ?`,
+                [ftsQuery, safeLimit]
+            );
+            if (rows.length) return mapRows(rows);
+        } catch {
+            // FTS5 can be unavailable in some SQLite builds; fall back to LIKE below.
+        }
+    }
+
+    const likeClauses = terms.map(() => '(LOWER(title) LIKE ? OR LOWER(abstract) LIKE ?)');
+    const params = terms.flatMap((term) => [`%${term}%`, `%${term}%`]);
+    params.push(safeLimit);
+    const rows = await this.all(
+        `SELECT id, data, title, abstract
+         FROM article_cache
+         WHERE (${likeClauses.join(' OR ')})
+           AND (expires_at IS NULL OR expires_at > ${this.isPostgres ? 'NOW()' : "datetime('now')"})
+         LIMIT ?`,
+        params
+    ).catch(() => []);
+    return mapRows(rows);
+}
+
 // ==========================================
 // User Authentication Operations
 // ==========================================
