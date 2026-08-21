@@ -1155,6 +1155,30 @@ CREATE TABLE IF NOT EXISTS topic_guidelines (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS guideline_contradictions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    normalized_topic TEXT NOT NULL,
+    guideline_a_id INTEGER NOT NULL,
+    guideline_b_id INTEGER NOT NULL,
+    severity TEXT NOT NULL DEFAULT 'nuanced',
+    contradiction_summary TEXT NOT NULL,
+    body_a_position TEXT NOT NULL,
+    body_b_position TEXT NOT NULL,
+    clinical_implication TEXT,
+    ai_confidence REAL DEFAULT 0.0,
+    status TEXT NOT NULL DEFAULT 'ai_detected',
+    detected_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    reviewed_by TEXT,
+    reviewed_at DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (guideline_a_id, guideline_b_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_gc_topic ON guideline_contradictions(normalized_topic);
+CREATE INDEX IF NOT EXISTS idx_gc_severity ON guideline_contradictions(severity);
+CREATE INDEX IF NOT EXISTS idx_gc_status ON guideline_contradictions(status);
+
 CREATE TABLE IF NOT EXISTS topic_knowledge (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     topic TEXT NOT NULL UNIQUE,
