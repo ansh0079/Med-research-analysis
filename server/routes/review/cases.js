@@ -22,7 +22,6 @@ const {
     recordBanditReward,
 } = require('../../services/personalizationBanditService');
 const {
-    validateCaseStep,
     generateCaseStepWithRetry,
 } = require('../../services/caseStepTrustService');
 
