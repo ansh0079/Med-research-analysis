@@ -55,44 +55,52 @@ const mockQuiz = {
   questions: [
     {
       id: 'q-e2e-1',
-      type: 'recall',
-      text: 'What is the primary mechanism of metformin?',
+      type: 'multiple_choice',
+      questionType: 'recall',
+      question: 'What is the primary mechanism of metformin?',
       options: [
-        { id: 'opt-a', text: 'Decreases hepatic glucose production' },
-        { id: 'opt-b', text: 'Stimulates insulin secretion' },
-        { id: 'opt-c', text: 'Inhibits intestinal glucose absorption' },
-        { id: 'opt-d', text: 'Increases peripheral insulin sensitivity' },
+        'A: Decreases hepatic glucose production',
+        'B: Stimulates insulin secretion',
+        'C: Inhibits intestinal glucose absorption',
+        'D: Increases peripheral insulin sensitivity',
       ],
-      correctOptionId: 'opt-a',
+      correctAnswer: 'A',
       explanation: 'Metformin primarily suppresses hepatic gluconeogenesis.',
+      difficulty: 'medium',
     },
     {
       id: 'q-e2e-2',
-      type: 'clinical_application',
-      text: 'Which patient should NOT receive metformin?',
+      type: 'multiple_choice',
+      questionType: 'clinical_application',
+      question: 'Which patient should NOT receive metformin?',
       options: [
-        { id: 'opt-a', text: 'eGFR 45 mL/min/1.73m²' },
-        { id: 'opt-b', text: 'eGFR 25 mL/min/1.73m²' },
-        { id: 'opt-c', text: 'BMI 32 kg/m²' },
-        { id: 'opt-d', text: 'Age 55 years' },
+        'A: eGFR 45 mL/min/1.73m²',
+        'B: eGFR 25 mL/min/1.73m²',
+        'C: BMI 32 kg/m²',
+        'D: Age 55 years',
       ],
-      correctOptionId: 'opt-b',
+      correctAnswer: 'B',
       explanation: 'Metformin is contraindicated when eGFR < 30.',
+      difficulty: 'medium',
     },
     {
       id: 'q-e2e-3',
-      type: 'guideline',
-      text: 'According to ADA guidelines, metformin is:',
+      type: 'multiple_choice',
+      questionType: 'guideline',
+      question: 'According to ADA guidelines, metformin is:',
       options: [
-        { id: 'opt-a', text: 'Second-line after sulfonylureas' },
-        { id: 'opt-b', text: 'First-line for most adults with T2DM' },
-        { id: 'opt-c', text: 'Only for monotherapy' },
-        { id: 'opt-d', text: 'Contraindicated in prediabetes' },
+        'A: Second-line after sulfonylureas',
+        'B: First-line for most adults with T2DM',
+        'C: Only for monotherapy',
+        'D: Contraindicated in prediabetes',
       ],
-      correctOptionId: 'opt-b',
+      correctAnswer: 'B',
       explanation: 'ADA recommends metformin as first-line unless contraindicated.',
+      difficulty: 'easy',
     },
   ],
+  fromDataset: false,
+  disclaimer: 'E2E mock quiz',
 };
 
 const mockQuizAttemptResponse = {
@@ -232,17 +240,15 @@ test.describe('learning pipeline: search → synopsis → quiz → mastery', () 
     await page.getByRole('button', { name: /Quiz this paper/i }).first().click();
     await expect(page).toHaveURL(/\/quiz/, { timeout: 10000 });
     await expect(page.getByText(/What is the primary mechanism of metformin/i)).toBeVisible({ timeout: 15000 });
+
+    await page.getByRole('button', { name: /Decreases hepatic glucose production/i }).click();
+    await page.getByRole('button', { name: /Next question/i }).click();
     await expect(page.getByText(/Which patient should NOT receive metformin/i)).toBeVisible();
+    await page.getByRole('button', { name: /eGFR 25 mL\/min\/1\.73m²/i }).click();
+    await page.getByRole('button', { name: /Next question/i }).click();
     await expect(page.getByText(/According to ADA guidelines/i)).toBeVisible();
-
-    await page.getByText(/Decreases hepatic glucose production/i).click();
-    await page.getByText(/eGFR 25 mL\/min\/1\.73m²/i).click();
-    await page.getByText(/First-line for most adults with T2DM/i).click();
-
-    const submitQuiz = page.getByRole('button', { name: /Submit|Finish|Done|Check/i }).first();
-    if (await submitQuiz.isVisible().catch(() => false)) {
-      await submitQuiz.click();
-      await expect(page.getByText(/2\s*\/\s*3|Score|Mastery|complete/i).first()).toBeVisible({ timeout: 10000 });
-    }
+    await page.getByRole('button', { name: /First-line for most adults with T2DM/i }).click();
+    await page.getByRole('button', { name: /See results/i }).click();
+    await expect(page.getByText(/2\s*\/\s*3|3\s*\/\s*3/i).first()).toBeVisible({ timeout: 10000 });
   });
 });
