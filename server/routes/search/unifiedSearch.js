@@ -88,12 +88,11 @@ function registerUnifiedSearchRoutes(app, deps) {
             });
 
             let { articles } = ranked;
-            let {
-                telemetry,
+            let { telemetry, banditMeta } = ranked;
+            const {
                 teachingObjects: boostedObjects,
                 teachingClaims: boostedClaims,
                 learningContext,
-                banditMeta,
             } = ranked;
             const learnerContext = req.user?.id
                 ? publicLearnerContextSummary(await buildLearnerContext(db, {

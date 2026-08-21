@@ -84,11 +84,8 @@ function registerAiJobRoutes(app, { db, requireAuthJwt, rateLimit }) {
                 return res.status(400).json({ error: 'Valid jobKey is required' });
             }
             const rawClaims = await db.listAiGenerationClaimsByJobKey(jobKey);
-            let topic = null;
-            if (typeof db.getAiGenerationJobByKey === 'function') {
-                const job = await db.getAiGenerationJobByKey(jobKey).catch(() => null);
-                topic = job?.topic || null;
-            }
+            const job = await db.getAiGenerationJobByKey(jobKey).catch(() => null);
+            const topic = job?.topic || null;
             const claims = await overlayTeachingClaimTrust(db, rawClaims, { topic }).catch((err) => {
                 logger.warn({ err, jobKey }, 'overlayTeachingClaimTrust failed');
                 return rawClaims;

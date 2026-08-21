@@ -191,7 +191,21 @@ export class KnowledgeAdminApi extends KnowledgeCoreApi {
     return response.json();
   }
 
-  async getOfflineEvalRuns(options: { limit?: number } = {}): Promise<{ runs: Array<Record<string, unknown>> }> {
+  async getOfflineEvalRuns(options: { limit?: number } = {}): Promise<{
+    runs: Array<{
+      id: number;
+      recommendation: string;
+      reason: string | null;
+      servingArmId: string | null;
+      bestShadowArmId: string | null;
+      servingScore: number | null;
+      bestShadowScore: number | null;
+      lift: number | null;
+      labelledCount: number;
+      propensityCoverage: number | null;
+      createdAt: string;
+    }>;
+  }> {
     const params = new URLSearchParams();
     if (options.limit) params.set('limit', String(options.limit));
     const response = await this.fetchWithSession(`${API_BASE}/api/admin/offline-eval-runs?${params}`);
