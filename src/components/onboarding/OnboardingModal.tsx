@@ -144,8 +144,8 @@ export const OnboardingModal: React.FC<Props> = ({ onDone }) => {
 
   const defaultDestination: Destination = persona === 'student' ? 'quiz' : persona === 'researcher' ? 'search' : 'search';
 
+  // Above PhiDataNotice / CookieConsent (z-[100]) so mobile Next/CTA stays clickable.
   return (
-    {/* Above PhiDataNotice / CookieConsent (z-[100]) so mobile Next/CTA stays clickable */}
     <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
       <div className="w-full max-w-lg bg-white dark:bg-slate-800 rounded-2xl shadow-2xl shadow-slate-900/30 overflow-hidden">
         {/* Progress bar */}
