@@ -350,6 +350,19 @@ describe('MeSH-aware relevance', () => {
         };
         expect(isOffTopic(article, 'SGLT2 inhibitors heart failure', { queryMeshTerms: ['Heart Failure'] })).toBe(true);
     });
+
+    test('isOffTopic keeps strong lexical hits when MeSH children are ultra-specific', () => {
+        const article = {
+            title: 'Sepsis management in the ICU',
+            abstract: 'Patients with sepsis and septic shock require early antibiotics.',
+        };
+        const childMesh = [
+            'Burkholderia cepacia Sepsis',
+            'Fulminant Meningococcal Sepsis with Adrenal Apoplexy',
+        ];
+        expect(isOffTopic(article, 'sepsis', { queryMeshTerms: childMesh })).toBe(false);
+        expect(isOffTopic(article, 'pneumonia', { queryMeshTerms: childMesh })).toBe(true);
+    });
 });
 
 describe('PubMed publication filters', () => {

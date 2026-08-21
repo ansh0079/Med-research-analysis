@@ -127,6 +127,11 @@ function isOffTopic(article, query, options = {}) {
     else if (queryTerms.length <= 5) threshold = 0.5;
     else threshold = 0.35;
 
+    // Strong lexical match wins — MeSH expansions are rescue-only.
+    // Child MeSH labels from NLM "contains" (e.g. "Burkholderia cepacia Sepsis" for q=sepsis)
+    // must not pull a perfect query-term hit below threshold and wipe the result set.
+    if (matchRatio >= threshold) return false;
+
     if (queryMeshTerms.length > 0) {
         const blended = (matchRatio * 0.6) + (meshRatio * 0.4);
         if (meshRatio >= 0.34 && matchRatio >= 0.2) return false;
