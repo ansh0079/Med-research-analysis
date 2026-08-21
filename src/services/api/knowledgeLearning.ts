@@ -1,4 +1,4 @@
-﻿import { API_BASE } from './core';
+import { API_BASE } from './core';
 import type { Article } from '@types';
 import { KnowledgeAdminApi } from './knowledgeAdmin';
 
@@ -261,4 +261,37 @@ export class KnowledgeLearningApi extends KnowledgeAdminApi {
     );
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
-  }}
+  }
+
+  async getSearchGoldJudgments(options: {
+    query?: string;
+    topic?: string;
+    limit?: number;
+  } = {}): Promise<{ judgments: import('./knowledgeAdmin').SearchGoldJudgment[]; labels?: import('./knowledgeAdmin').SearchGoldJudgmentLabel[]; counts?: Record<string, number> }> {
+    const params = new URLSearchParams();
+    if (options.query) params.set('query', options.query);
+    if (options.topic) params.set('topic', options.topic);
+    if (options.limit) params.set('limit', String(options.limit));
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/search-gold-judgments?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async recordSearchGoldJudgment(data: {
+    query: string;
+    articleUid: string;
+    label: import('./knowledgeAdmin').SearchGoldJudgmentLabel;
+    articleTitle?: string;
+    notes?: string;
+    reason?: string;
+    metadata?: Record<string, unknown>;
+  }): Promise<{ judgment: import('./knowledgeAdmin').SearchGoldJudgment }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/search-gold-judgments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+}

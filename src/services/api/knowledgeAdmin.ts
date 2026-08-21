@@ -57,6 +57,58 @@ export type BanditObservability = {
   generatedAt: string;
 };
 
+export type SearchGoldJudgmentLabel = 'essential' | 'useful' | 'off_topic' | 'outdated' | 'wrong_study_type' | 'duplicate' | 'unsafe';
+
+export type SearchGoldJudgment = {
+  id: number;
+  query: string;
+  normalizedTopic: string | null;
+  articleUid: string;
+  articleTitle?: string | null;
+  label: SearchGoldJudgmentLabel;
+  notes: string | null;
+  judgedBy: string | null;
+  judgedAt: string;
+};
+
+export type SearchQualityDashboard = {
+  generatedAt: string;
+  windowDays: number;
+  summary: {
+    searches: number;
+    zeroResultRate: number | null;
+    resultSetCacheHitRate: number | null;
+    p95LatencyMs: number | null;
+    clickThroughRate: number | null;
+  };
+  sourceCache: Record<string, { hitRate?: number | null; requests?: number | null; [key: string]: unknown }>;
+  intentMix: Record<string, number>;
+  shadowRanker: {
+    sampleSize: number;
+    top1ChangeRate: number | null;
+    meanAbsoluteRankDelta: number | null;
+  };
+  lowRecallQueries: Array<{
+    query: string;
+    normalizedTopic: string | null;
+    attemptCount: number;
+    resultCount: number;
+  }>;
+};
+
+export type SearchRankerPromotionGate = {
+  recommendation: 'promote' | 'hold';
+  reason: string;
+  rolloutEnv: { currentMode: string };
+  checks: Array<{
+    id: string;
+    label: string;
+    status: 'pass' | 'fail' | 'warn';
+    value: unknown;
+    threshold: string;
+  }>;
+};
+
 export type TopicReadinessTier = 'needs_enrichment' | 'search_ready' | 'learner_ready' | 'flagship';
 
 export type TopicReadinessRow = {
