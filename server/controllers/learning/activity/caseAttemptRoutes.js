@@ -2,13 +2,14 @@
 
 const { limitBodySize, requireJson, validateBody, schemas } = require('../../../utils/validation');
 const { recordLearningEventSafe } = require('./helpers');
+const { attributeCaseAttemptRewards } = require('../../../services/searchLearningOutcomeService');
 
 function registerCaseAttemptRoutes(app, deps) {
     const { db, requireAuthJwt, rateLimit, logger } = deps;
 
     app.post('/api/learning/case-attempt', limitBodySize(512 * 1024), requireJson, requireAuthJwt, rateLimit(10, 60), async (req, res) => {
         try {
-            const { topic, caseText, userResponse, score, feedback, difficulty, timeMs, caseType, learningMode, aiFeedback, seedArticleUids } = req.body || {};
+            const { topic, caseText, userResponse, score, feedback, difficulty, timeMs, caseType, learningMode, aiFeedback, seedArticleUids, seedArticleAttributions } = req.body || {};
             if (!String(topic || '').trim()) return res.status(400).json({ error: 'topic is required' });
             const attempt = await db.createCaseAttempt({
                 userId: req.user.id,
@@ -39,6 +40,17 @@ function registerCaseAttemptRoutes(app, deps) {
                     timeMs: timeMs != null ? Number(timeMs) : null,
                     seedArticleCount: Array.isArray(seedArticleUids) ? seedArticleUids.length : 0,
                 },
+            });
+            void attributeCaseAttemptRewards(db, req.user.id, {
+                topic: String(topic).trim(),
+                caseAttemptId: attempt?.id ?? null,
+                seedArticleAttributions: Array.isArray(seedArticleAttributions)
+                    ? seedArticleAttributions
+                    : (Array.isArray(seedArticleUids) ? seedArticleUids.map((uid) => ({ articleUid: uid })) : []),
+                score: score != null ? Number(score) : null,
+                sessionId: req.sessionId || req.sessionID || req.session?.id || null,
+            }).catch((err) => {
+                logger.warn({ err }, 'attributeCaseAttemptRewards failed');
             });
             if (caseType === 'teaching_vignette') {
                 void recordLearningEventSafe(db, logger, {

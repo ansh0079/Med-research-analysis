@@ -68,6 +68,11 @@ export function useQuizPage() {
         source: (a.source ?? a.journal) as string | null | undefined,
         pmcrefcount: a.pmcrefcount as number | undefined,
         pubtype: a.pubtype as string[] | undefined,
+        _decisionId: typeof a._decisionId === 'number' ? a._decisionId : null,
+        _banditArmId: typeof a._banditArmId === 'string' ? a._banditArmId : null,
+        _searchId: typeof a._searchId === 'number' ? a._searchId : null,
+        _evidenceRank: typeof a._evidenceRank === 'number' ? a._evidenceRank : null,
+        _learningRank: typeof a._learningRank === 'number' ? a._learningRank : null,
       }))
       .filter((a: QuizArticle) => a.title.length > 0);
   }, [quizPrefill]);
@@ -321,7 +326,7 @@ export function useQuizPage() {
     try {
       const attempts = questions.map((q) => {
         const resolvedSrc = resolveSourceArticle(q);
-        const uid = resolvedSrc?.uid || q.sourceArticle || undefined;
+        const uid = q.sourceArticleUid || resolvedSrc?.uid || q.sourceArticle || undefined;
         const attribution = uid ? lookupArticleAttribution(uid) : null;
         return {
           questionId: q.id,
@@ -332,9 +337,9 @@ export function useQuizPage() {
           isCorrect: (answers[q.id] || '').toLowerCase() === q.correctAnswer.toLowerCase(),
           sourceArticleUid: uid,
           sourceArticleTitle: resolvedSrc?.title || q.sourceArticle || undefined,
-          decisionId: attribution?.decisionId,
-          banditArmId: attribution?.banditArmId || undefined,
-          searchId: attribution?.searchId,
+          decisionId: resolvedSrc?._decisionId ?? attribution?.decisionId,
+          banditArmId: resolvedSrc?._banditArmId ?? attribution?.banditArmId ?? undefined,
+          searchId: resolvedSrc?._searchId ?? attribution?.searchId,
           outlineNodeId: q.outlineNodeId || (q.sourceIndices?.[0] ? `src-${q.sourceIndices[0]}` : null),
           outlineLabel: q.outlineLabel ?? undefined,
           claimKey: q.claimKey ?? undefined,

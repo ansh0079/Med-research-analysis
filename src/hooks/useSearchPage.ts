@@ -281,6 +281,7 @@ export function useSearchPage() {
     isAuthenticated,
     betaOpenAccess,
     results,
+    searchId: lastSearchId,
     handleSearch,
     trackFeatureUsage,
   });

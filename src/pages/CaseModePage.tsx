@@ -139,6 +139,16 @@ export const CaseModePage: React.FC = () => {
 
   const recordCaseAttempt = (caseType: 'analysis' | 'teaching_vignette', text: string) => {
     if (!isAuthenticated) return;
+    const seedArticleAttributions = (caseSeedArticles || [])
+      .map((article) => ({
+        articleUid: article.uid || null,
+        decisionId: article._decisionId ?? null,
+        banditArmId: article._banditArmId ?? null,
+        searchId: typeof (article as Partial<Article> & { _searchId?: number | null })._searchId === 'number'
+          ? (article as Partial<Article> & { _searchId?: number | null })._searchId ?? null
+          : null,
+      }))
+      .filter((row) => row.articleUid || row.decisionId || row.banditArmId || row.searchId);
     api.learning.submitCaseAttempt({
       topic: prefillTopic || 'general',
       caseText: text,
@@ -147,6 +157,7 @@ export const CaseModePage: React.FC = () => {
       userResponse: null,
       aiFeedback: null,
       seedArticleUids: caseSeedArticles?.map((a) => String(a.uid || '')).filter(Boolean) ?? [],
+      seedArticleAttributions,
     }).catch((err) => logAsyncError(err, 'CaseModePage/submitCaseAttempt'));
   };
 

@@ -14,6 +14,11 @@ export interface QuizArticle {
   journal?: string | null;
   pmcrefcount?: number;
   pubtype?: string[];
+  _decisionId?: number | null;
+  _banditArmId?: string | null;
+  _searchId?: number | null;
+  _evidenceRank?: number | null;
+  _learningRank?: number | null;
 }
 
 export class QuizGenerationError extends Error {

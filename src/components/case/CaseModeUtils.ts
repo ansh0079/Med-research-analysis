@@ -57,6 +57,10 @@ export function articleQuizSeed(article: Partial<Article>) {
     pubdate: article.pubdate,
     source: article.source ?? article.journal,
     _source: article._source,
+    _decisionId: article._decisionId ?? null,
+    _banditArmId: article._banditArmId ?? null,
+    _evidenceRank: article._evidenceRank ?? null,
+    _learningRank: article._learningRank ?? null,
   };
 }
 

@@ -25,9 +25,15 @@ async logSearch(sessionId, query, sources, filters, resultsCount, executionTime,
             ip_address: ipAddress || null,
             created_at: new Date().toISOString()
         })
+        .returning('id')
         .executeTakeFirst();
-    const id = Number(result?.insertId ?? result?.numInsertedOrUpdatedRows ?? 0);
-    return id > 0 ? { id } : null;
+    // Must come from RETURNING, not insertId/numInsertedOrUpdatedRows. Postgres has no
+    // insertId, so the old fallback returned the rows-affected count — always 1 — and
+    // every downstream row (impressions, personalization_decisions, learning outcomes)
+    // was stamped with search_id = 1, a row that does not exist. searches.id is a uuid
+    // in production, so the value is also not numeric: do not coerce it with Number().
+    const id = result?.id ?? null;
+    return id != null ? { id } : null;
 }
 
 async getMaxSessionSequenceIndex(sessionId) {

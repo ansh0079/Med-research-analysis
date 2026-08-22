@@ -192,7 +192,7 @@ async recordSearchGoldJudgment({
         [
             String(query).trim().slice(0, 500),
             normalizedTopic,
-            searchId != null ? Number(searchId) : null,
+            searchId != null ? String(searchId) : null,
             String(articleUid).trim().slice(0, 160),
             articleTitle ? String(articleTitle).slice(0, 500) : null,
             normalizedLabel,

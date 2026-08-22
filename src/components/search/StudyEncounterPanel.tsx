@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { api } from '@services/api';
 import type { Article, QuizQuestion } from '@types';
 import type { AiJobClaimRow } from '@components/search/ClaimProvenanceModal';
+import { lookupArticleAttribution } from '@utils/searchAttribution';
 
 // ─── Weakness analysis ────────────────────────────────────────────────────────
 
@@ -81,6 +82,9 @@ interface AttemptRecord {
   isCorrect: boolean;
   explanation: string;
   sourceArticleUid?: string;
+  decisionId?: number;
+  banditArmId?: string | null;
+  searchId?: number;
   claimKey?: string | null;
 }
 
@@ -122,9 +126,20 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
   const currentQ = questions[qIndex] ?? null;
   const isAnswered = selected !== null;
 
+  const resolveQuestionSourceUid = useCallback((q: QuizQuestion | null): string | undefined => {
+    if (!q) return undefined;
+    if (q.sourceArticleUid) return q.sourceArticleUid;
+    const idx = q.sourceIndices?.[0];
+    if (idx && idx > 0 && idx <= articles.length) return articles[idx - 1]?.uid;
+    return undefined;
+  }, [articles]);
+
   const handleSelect = useCallback((option: string) => {
     if (selected !== null || !currentQ) return;
-    setSelected(option);
+    const letter = option.trim().charAt(0).toUpperCase();
+    const uid = resolveQuestionSourceUid(currentQ);
+    const attribution = uid ? lookupArticleAttribution(uid) : null;
+    setSelected(letter);
     // record attempt
     setAttempts((prev) => [
       ...prev,
@@ -132,15 +147,18 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
         questionId: currentQ.id,
         questionType: currentQ.questionType,
         questionText: currentQ.question,
-        userAnswer: option,
+        userAnswer: letter,
         correctAnswer: currentQ.correctAnswer,
-        isCorrect: option === currentQ.correctAnswer,
+        isCorrect: letter === currentQ.correctAnswer,
         explanation: currentQ.explanation,
-        sourceArticleUid: currentQ.sourceArticle,
+        sourceArticleUid: uid,
+        decisionId: attribution?.decisionId,
+        banditArmId: attribution?.banditArmId ?? null,
+        searchId: attribution?.searchId,
         claimKey: currentQ.claimKey ?? null,
       },
     ]);
-  }, [selected, currentQ]);
+  }, [selected, currentQ, resolveQuestionSourceUid]);
 
   const handleNext = useCallback(async () => {
     if (qIndex < questions.length - 1) {
@@ -161,6 +179,9 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
             correctAnswer: a.correctAnswer,
             isCorrect: a.isCorrect,
             sourceArticleUid: a.sourceArticleUid,
+            decisionId: a.decisionId,
+            banditArmId: a.banditArmId,
+            searchId: a.searchId,
             claimKey: a.claimKey,
           })),
         });
@@ -233,8 +254,9 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
 
     const optionState = (opt: string): 'idle' | 'correct' | 'wrong' | 'missed' => {
       if (!isAnswered) return 'idle';
-      if (opt === currentQ.correctAnswer) return opt === selected ? 'correct' : 'missed';
-      if (opt === selected) return 'wrong';
+      const letter = opt.trim().charAt(0).toUpperCase();
+      if (letter === currentQ.correctAnswer) return letter === selected ? 'correct' : 'missed';
+      if (letter === selected) return 'wrong';
       return 'idle';
     };
 

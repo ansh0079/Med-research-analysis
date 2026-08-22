@@ -29,7 +29,7 @@ function saveWorkflowContext(update: Record<string, unknown>): void {
 }
 
 /** Minimal article payload for quiz/case prefill (matches server sanitize + dedupe). */
-function articleRowForTopicActions(a: Article) {
+function articleRowForTopicActions(a: Article, searchId?: number | null, position?: number | null) {
   return {
     uid: a.uid,
     title: a.title,
@@ -43,6 +43,11 @@ function articleRowForTopicActions(a: Article) {
     _source: a._source,
     _ebmScore: a._ebmScore,
     _isPreprint: a._isPreprint,
+    _decisionId: a._decisionId ?? null,
+    _banditArmId: a._banditArmId ?? null,
+    _searchId: searchId ?? null,
+    _evidenceRank: a._evidenceRank ?? null,
+    _learningRank: a._learningRank ?? position ?? null,
   };
 }
 
@@ -54,6 +59,7 @@ export interface WorkflowContextDeps {
   isAuthenticated: boolean;
   betaOpenAccess?: boolean;
   results: Article[];
+  searchId?: number | null;
   handleSearch: (q: string) => Promise<Article[]>;
   trackFeatureUsage: (event: string, props?: Record<string, unknown>) => void;
 }
@@ -66,6 +72,7 @@ export function useWorkflowContext({
   isAuthenticated,
   betaOpenAccess = false,
   results,
+  searchId = null,
   handleSearch,
   trackFeatureUsage,
 }: WorkflowContextDeps) {
@@ -112,7 +119,7 @@ export function useWorkflowContext({
       sessionStorage.setItem(QUIZ_PREFILL_KEY, JSON.stringify({
         topic: currentQuery,
         difficulty,
-        articles: top5Articles.map(articleRowForTopicActions),
+        articles: top5Articles.map((article, index) => articleRowForTopicActions(article, searchId, index + 1)),
         teachingPoints: agentGuidance?.teachingPoints || [],
         mcqAngles: agentGuidance?.mcqAngles || [],
         workflow: getWorkflowContext(),
@@ -121,7 +128,7 @@ export function useWorkflowContext({
       // Navigation still works with URL params if storage is unavailable.
     }
     navigate(`/quiz?${params.toString()}`);
-  }, [agentGuidance, currentQuery, navigate, top5Articles]);
+  }, [agentGuidance, currentQuery, navigate, searchId, top5Articles]);
 
   const openQuizFromWorkflow = useCallback((difficulty: BriefDifficulty = 'mixed') => {
     trackFeatureUsage('workflow_quiz_click', {
@@ -137,7 +144,7 @@ export function useWorkflowContext({
         sessionStorage.setItem(QUIZ_PREFILL_KEY, JSON.stringify({
           topic: currentQuery,
           difficulty,
-          articles: top5Articles.map(articleRowForTopicActions),
+          articles: top5Articles.map((article, index) => articleRowForTopicActions(article, searchId, index + 1)),
           teachingPoints: agentGuidance?.teachingPoints || [],
           mcqAngles: agentGuidance?.mcqAngles || [],
         }));
@@ -152,7 +159,7 @@ export function useWorkflowContext({
       return;
     }
     handleQuizScenario(difficulty);
-  }, [agentGuidance, betaOpenAccess, currentQuery, handleQuizScenario, isAuthenticated, navigate, results.length, top5Articles, trackFeatureUsage]);
+  }, [agentGuidance, betaOpenAccess, currentQuery, handleQuizScenario, isAuthenticated, navigate, results.length, searchId, top5Articles, trackFeatureUsage]);
 
   const handleCaseScenario = useCallback((difficulty: BriefDifficulty = 'mixed') => {
     const params = new URLSearchParams();
@@ -176,7 +183,7 @@ export function useWorkflowContext({
       sessionStorage.setItem(CASE_PREFILL_KEY, JSON.stringify({
         topic: currentQuery,
         learningMode: mapDifficultyToMode(difficulty),
-        articles: top5Articles.map(articleRowForTopicActions),
+        articles: top5Articles.map((article, index) => articleRowForTopicActions(article, searchId, index + 1)),
         caseHooks: agentGuidance?.caseGenerationHooks || [],
         caseText: fastLaneCaseText,
         autoGenerate: true,
@@ -186,7 +193,7 @@ export function useWorkflowContext({
       // Navigation still works with URL params if storage is unavailable.
     }
     navigate(`/case?${params.toString()}`);
-  }, [agentGuidance, currentQuery, mapDifficultyToMode, navigate, shiftPresentation, top5Articles]);
+  }, [agentGuidance, currentQuery, mapDifficultyToMode, navigate, searchId, shiftPresentation, top5Articles]);
 
   const openCaseFromWorkflow = useCallback((difficulty: BriefDifficulty = 'mixed') => {
     trackFeatureUsage('workflow_case_click', {
@@ -216,7 +223,7 @@ export function useWorkflowContext({
       sessionStorage.setItem(CASE_PREFILL_KEY, JSON.stringify({
         topic,
         learningMode: mode,
-        articles: [articleRowForTopicActions(article)],
+        articles: [articleRowForTopicActions(article, searchId, article._learningRank ?? article._evidenceRank ?? null)],
         caseHooks: [
           `Create a fictional patient case around the clinical decision tested by this paper: ${article.title}`,
         ],
@@ -232,7 +239,7 @@ export function useWorkflowContext({
       hasAbstract: Boolean(article.abstract),
     });
     navigate(`/case?${params.toString()}`);
-  }, [currentQuery, isAuthenticated, navigate, shiftPresentation, trackFeatureUsage]);
+  }, [currentQuery, isAuthenticated, navigate, searchId, shiftPresentation, trackFeatureUsage]);
 
   const openArticleQuiz = useCallback((article: Article) => {
     const topic = (currentQuery || article.title || 'clinical evidence').trim();
@@ -240,7 +247,7 @@ export function useWorkflowContext({
       sessionStorage.setItem(QUIZ_PREFILL_KEY, JSON.stringify({
         topic,
         difficulty: 'mixed',
-        articles: [articleRowForTopicActions(article)],
+        articles: [articleRowForTopicActions(article, searchId, article._learningRank ?? article._evidenceRank ?? null)],
         singlePaperMode: true,
       }));
     } catch {
@@ -252,7 +259,7 @@ export function useWorkflowContext({
       hasAbstract: Boolean(article.abstract),
     });
     navigate(`/quiz?topic=${encodeURIComponent(topic)}&difficulty=mixed&count=3`);
-  }, [currentQuery, isAuthenticated, navigate, trackFeatureUsage]);
+  }, [currentQuery, isAuthenticated, navigate, searchId, trackFeatureUsage]);
 
   const openSynthesisCase = useCallback(() => {
     if (!synthesis) {
@@ -284,7 +291,7 @@ export function useWorkflowContext({
       sessionStorage.setItem(CASE_PREFILL_KEY, JSON.stringify({
         topic,
         learningMode: mode,
-        articles: top5Articles.map(articleRowForTopicActions),
+        articles: top5Articles.map((article, index) => articleRowForTopicActions(article, searchId, index + 1)),
         caseText,
         autoGenerate: true,
         workflow: getWorkflowContext(),
@@ -297,7 +304,7 @@ export function useWorkflowContext({
       resultsCount: results.length,
     });
     navigate(`/case?${params.toString()}`);
-  }, [currentQuery, isAuthenticated, navigate, openCaseFromWorkflow, results.length, shiftPresentation, synthesis, top5Articles, trackFeatureUsage]);
+  }, [currentQuery, isAuthenticated, navigate, openCaseFromWorkflow, results.length, searchId, shiftPresentation, synthesis, top5Articles, trackFeatureUsage]);
 
   const runShiftFastLane = useCallback(async () => {
     const presentation = shiftPresentation.trim();

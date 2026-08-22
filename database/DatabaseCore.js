@@ -132,12 +132,21 @@ async initialize() {
         //
         // production_schema.sql is generated dependency-ordered (parents before children)
         // and in native PostgreSQL syntax, so a single top-to-bottom pass is sufficient.
+        //
+        // Each statement still goes through convertSqliteDdlToPostgres so that FK columns
+        // pointing at users(id) are widened to UUID when this database has a uuid users.id.
+        // The generated file declares them TEXT; without this pass any *new* table added to
+        // production_schema.sql fails at bootstrap with "incompatible types: text and uuid"
+        // and crash-loops the server. The migration runner already does this — the bootstrap
+        // path did not, which is why detectPgUsersIdType() above was previously unused here.
+        // The conversion is idempotent on already-PostgreSQL-native DDL.
         const schema = fs.readFileSync(schemaPath, 'utf8');
         const statements = schema.split(';')
             .map((s) => s.trim())
             .filter(Boolean);
 
-        for (const statement of statements) {
+        for (const rawStatement of statements) {
+            const statement = convertSqliteDdlToPostgres(rawStatement, this.pgDdlOptions());
             try {
                 await this.run(statement);
             } catch (err) {
