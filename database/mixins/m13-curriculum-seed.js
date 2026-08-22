@@ -311,11 +311,11 @@ module.exports = (Sup) => class extends Sup {
                 (date, topics_attempted, topics_seeded, topics_failed, synopses_generated, estimated_cost_usd, updated_at)
              VALUES (?, ?, ?, ?, ?, ?, ?)
              ON CONFLICT(date) DO UPDATE SET
-                topics_attempted = topics_attempted + excluded.topics_attempted,
-                topics_seeded = topics_seeded + excluded.topics_seeded,
-                topics_failed = topics_failed + excluded.topics_failed,
-                synopses_generated = synopses_generated + excluded.synopses_generated,
-                estimated_cost_usd = estimated_cost_usd + excluded.estimated_cost_usd,
+                topics_attempted = curriculum_seed_usage_daily.topics_attempted + excluded.topics_attempted,
+                topics_seeded = curriculum_seed_usage_daily.topics_seeded + excluded.topics_seeded,
+                topics_failed = curriculum_seed_usage_daily.topics_failed + excluded.topics_failed,
+                synopses_generated = curriculum_seed_usage_daily.synopses_generated + excluded.synopses_generated,
+                estimated_cost_usd = curriculum_seed_usage_daily.estimated_cost_usd + excluded.estimated_cost_usd,
                 updated_at = excluded.updated_at`,
             [
                 day,

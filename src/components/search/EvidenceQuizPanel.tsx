@@ -4,6 +4,7 @@ import { Button } from '@components/ui/Button';
 import { useAuth } from '@contexts/AuthContext';
 import { useToast } from '@components/ui/Toast';
 import type { Article, QuizQuestion } from '@types';
+import { lookupArticleAttribution } from '@utils/searchAttribution';
 
 interface Props {
   topic: string;
@@ -12,6 +13,10 @@ interface Props {
   onAuthSubmit?: (attempts: Array<import('@types').QuizAttemptSubmission['attempts'][number]>) => Promise<void>;
   autoExpand?: boolean;
 }
+
+type ArticleWithSearchProvenance = Article & {
+  _searchId?: number | null;
+};
 
 function currentTimeMs(): number {
   return Date.now();
@@ -63,16 +68,27 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
 
   const currentQuestion = questions[currentIndex];
 
-  const getSourceTitle = useCallback((sourceArticle?: string | null, sourceIndices?: number[] | null) => {
-    if (sourceArticle) return sourceArticle;
-    if (sourceIndices && sourceIndices.length > 0) {
-      const idx = sourceIndices[0] - 1;
-      if (idx >= 0 && idx < articles.length) {
-        return articles[idx].title;
-      }
+  const getSourceArticle = useCallback((question: QuizQuestion): ArticleWithSearchProvenance | undefined => {
+    if (question.sourceArticleUid) {
+      const byUid = articles.find((article) => article.uid === question.sourceArticleUid);
+      if (byUid) return byUid;
     }
-    return null;
+    const idx = question.sourceIndices?.[0];
+    if (idx && idx > 0 && idx <= articles.length) return articles[idx - 1];
+    if (question.sourceArticle) {
+      return articles.find((article) => article.uid === question.sourceArticle || article.title === question.sourceArticle);
+    }
+    return undefined;
   }, [articles]);
+
+  const getSourceUid = useCallback((question: QuizQuestion) => {
+    if (question.sourceArticleUid) return question.sourceArticleUid;
+    return getSourceArticle(question)?.uid;
+  }, [getSourceArticle]);
+
+  const getSourceTitle = useCallback((question: QuizQuestion) => {
+    return getSourceArticle(question)?.title || question.sourceArticle || null;
+  }, [getSourceArticle]);
 
   const handleSelect = (letter: string) => {
     if (showExplanation || !currentQuestion) return;
@@ -97,6 +113,9 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
     try {
       const attempts = questions.map((q, idx) => {
         const ans = answersRef.current[idx];
+        const sourceArticle = getSourceArticle(q);
+        const sourceUid = getSourceUid(q);
+        const attribution = sourceUid ? lookupArticleAttribution(sourceUid) : null;
         return {
           questionId: q.id || `${topic}-${idx}`,
           questionType: (q.questionType || 'clinical_application') as import('@types').QuizAttempt['questionType'],
@@ -106,8 +125,11 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
           isCorrect: ans?.isCorrect ?? false,
           timeMs: ans?.timeMs ?? 0,
           confidence: undefined as number | undefined,
-          sourceArticleUid: q.sourceArticle || undefined,
-          sourceArticleTitle: getSourceTitle(q.sourceArticle, q.sourceIndices) || null,
+          sourceArticleUid: sourceUid,
+          sourceArticleTitle: getSourceTitle(q),
+          decisionId: attribution?.decisionId ?? sourceArticle?._decisionId ?? undefined,
+          banditArmId: attribution?.banditArmId ?? sourceArticle?._banditArmId ?? undefined,
+          searchId: attribution?.searchId ?? sourceArticle?._searchId ?? undefined,
           outlineNodeId: null as string | null,
           outlineLabel: null as string | null,
           claimKey: null as string | null,
@@ -131,7 +153,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
         showToast('Could not save quiz progress', 'info', 3000);
       }
     }
-  }, [isAuthenticated, questions, topic, showToast, getSourceTitle, onAuthSubmit]);
+  }, [isAuthenticated, questions, topic, showToast, getSourceArticle, getSourceTitle, getSourceUid, onAuthSubmit]);
 
   const handleNext = () => {
     if (currentIndex + 1 >= questions.length) {
@@ -280,9 +302,9 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
                     )}
                   </div>
 
-                  {getSourceTitle(currentQuestion.sourceArticle, currentQuestion.sourceIndices) && (
+                  {getSourceTitle(currentQuestion) && (
                     <p className="text-[11px] text-slate-400 dark:text-slate-500 italic">
-                      Based on: {getSourceTitle(currentQuestion.sourceArticle, currentQuestion.sourceIndices)}
+                      Based on: {getSourceTitle(currentQuestion)}
                     </p>
                   )}
 

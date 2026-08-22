@@ -19,6 +19,10 @@ const {
 } = require('../rewardAttributionService');
 
 const ATTRIBUTION_DAYS = Number(process.env.SEARCH_QUIZ_ATTRIBUTION_DAYS || 7);
+const configuredCaseFollowThroughReward = Number(process.env.SEARCH_CASE_FOLLOW_THROUGH_REWARD);
+const CASE_FOLLOW_THROUGH_REWARD = Number.isFinite(configuredCaseFollowThroughReward)
+    ? Math.max(0, Math.min(0.15, configuredCaseFollowThroughReward))
+    : 0.08;
 
 function normalizeUid(value) {
     return String(value || '').trim().toLowerCase();
@@ -89,8 +93,8 @@ async function applyDecisionReward(db, userId, decision, {
 } = {}) {
     if (!decision?.id || !db?.updatePersonalizationDecisionReward) return false;
     const delayed = delayedReward != null ? Number(delayedReward) : Number(decision.delayed_reward || 0);
-    const immediate = Number(immediateReward || 0);
-    const total = totalReward != null ? Number(totalReward) : Math.min(1, immediate + delayed);
+    const immediate = immediateReward != null ? Number(immediateReward) : null;
+    const total = totalReward != null ? Number(totalReward) : Math.min(1, (immediate ?? 0) + delayed);
     await db.updatePersonalizationDecisionReward(decision.id, {
         immediateReward: immediate,
         delayedReward: delayed,
@@ -383,6 +387,92 @@ async function attributeQuizAttemptRewards(db, userId, attempts = [], topic = ''
     return { attributed };
 }
 
+async function attributeCaseAttemptRewards(db, userId, {
+    topic = '',
+    caseAttemptId = null,
+    seedArticleAttributions = [],
+    score = null,
+    sessionId = null,
+} = {}) {
+    if (!db || (!userId && !sessionId)) return { attributed: 0 };
+    const rows = (Array.isArray(seedArticleAttributions) ? seedArticleAttributions : [])
+        .map((row) => ({
+            articleUid: normalizeUid(row?.articleUid || row?.uid),
+            decisionId: row?.decisionId != null ? Number(row.decisionId) : null,
+            searchId: row?.searchId != null ? Number(row.searchId) : null,
+            banditArmId: row?.banditArmId || row?._banditArmId || null,
+        }))
+        .filter((row) => row.articleUid || row.decisionId || row.banditArmId || row.searchId)
+        .slice(0, 12);
+    if (!rows.length) return { attributed: 0 };
+
+    const hasScore = score != null && Number.isFinite(Number(score));
+    const reward = hasScore
+        ? Math.max(-0.25, Math.min(1, (Number(score) - 50) / 50))
+        : CASE_FOLLOW_THROUGH_REWARD;
+    const rewardSource = hasScore ? 'case_score' : 'case_follow_through';
+    const rewardKind = hasScore ? 'learning_outcome' : 'engagement_follow_through';
+    let attributed = 0;
+    const seenDecisions = new Set();
+    const seenBanditArms = new Set();
+    for (const row of rows) {
+        let decision = null;
+        if (row.decisionId || (row.searchId && row.articleUid)) {
+            decision = await findSearchRankingDecision(db, userId || null, {
+                decisionId: row.decisionId,
+                searchId: row.searchId,
+                articleUid: row.articleUid,
+                sessionId,
+            });
+        }
+        if (decision?.id) {
+            if (!seenDecisions.has(decision.id)) {
+                seenDecisions.add(decision.id);
+                await applyDecisionReward(db, userId || null, decision, {
+                    immediateReward: hasScore ? null : reward,
+                    delayedReward: hasScore ? reward : Number(decision.delayed_reward || 0),
+                    totalReward: hasScore
+                        ? reward
+                        : Math.min(1, reward + Number(decision.delayed_reward || 0)),
+                    recordArmPull: true,
+                });
+                await recordLearningSignal(db, {
+                    userId: userId || null,
+                    sessionId,
+                    eventType: LEARNING_SIGNAL_TYPES.SEARCH_REWARD_ATTRIBUTED,
+                    topic,
+                    articleUid: row.articleUid || null,
+                    searchId: row.searchId || null,
+                    decisionId: decision.id,
+                    payload: {
+                        reward,
+                        source: rewardSource,
+                        rewardKind,
+                        caseAttemptId,
+                        score: hasScore ? Number(score) : null,
+                        armId: decision.arm_id || null,
+                    },
+                });
+                attributed += 1;
+            }
+            continue; // decision found (new or duplicate), skip banditArmId fallback
+        }
+        if (row.banditArmId && !seenBanditArms.has(row.banditArmId)) {
+            seenBanditArms.add(row.banditArmId);
+            await recordBanditReward(db, POLICY_SEARCH_RANKING, row.banditArmId, reward, userId || null, {
+                applicationKey: caseAttemptId
+                    ? `case_attempt:${caseAttemptId}:${row.banditArmId}:${row.articleUid || 'unknown'}`
+                    : null,
+                source: rewardSource,
+                rewardKind,
+            });
+            attributed += 1;
+        }
+    }
+
+    return { attributed, reward };
+}
+
 async function getQuizAttributionCoverage(db, { days = 7, userId = null } = {}) {
     if (!db?.get) return null;
     const safeDays = Math.min(Math.max(Number(days) || 7, 1), 60);
@@ -533,6 +623,7 @@ async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic 
 
 module.exports = {
     quizAttemptReward,
+    attributeCaseAttemptRewards,
     attributeAgentQuizOutcomeReward,
     attributeQuizAttemptRewards,
     attributeRecommendationFollowThrough,

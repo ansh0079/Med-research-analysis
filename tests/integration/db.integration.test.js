@@ -122,6 +122,30 @@ describe('Database Integration (real SQLite)', () => {
         expect(rows[0].query).toBe('cancer immunotherapy');
     });
 
+    // Regression: logSearch used to fall back to insertId/numInsertedOrUpdatedRows, which
+    // on Postgres is the rows-affected count -- always 1. Every downstream row was stamped
+    // with search_id = 1, a row that does not exist (searches.id is a uuid in production).
+    // No existing test asserted the return value, which is how it survived; assert that the
+    // id comes back and actually identifies the row that was just written.
+    test('db.logSearch returns the id of the row it inserted', async () => {
+        const sess = 'sess-search-returns-id';
+        await db.createSession(sess, 'Test', '127.0.0.1');
+
+        const first = await db.logSearch(sess, 'returned id alpha', ['pubmed'], {}, 1, 10, '127.0.0.1', { sessionSequenceIndex: 1 });
+        const second = await db.logSearch(sess, 'returned id beta', ['pubmed'], {}, 1, 10, '127.0.0.1', { sessionSequenceIndex: 2 });
+
+        expect(first?.id).toBeDefined();
+        expect(second?.id).toBeDefined();
+        // Two distinct inserts must not report the same id.
+        expect(String(second.id)).not.toBe(String(first.id));
+
+        // The returned id must resolve to the row that was actually written.
+        const rows = await db.getSearchHistory(sess, 10);
+        const matched = rows.find((r) => String(r.id) === String(first.id));
+        expect(matched).toBeTruthy();
+        expect(matched.query).toBe('returned id alpha');
+    });
+
     // ==========================================
     // Cache Maintenance
     // ==========================================

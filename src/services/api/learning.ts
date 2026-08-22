@@ -404,7 +404,15 @@ export class LearningApi extends BaseApiClient {
     return response.json();
   }
 
-  async submitCaseAttempt(data: Omit<import('@types').CaseAttempt, 'id' | 'userId' | 'normalizedTopic' | 'createdAt'>): Promise<{ attempt: import('@types').CaseAttempt }> {
+  async submitCaseAttempt(data: Omit<import('@types').CaseAttempt, 'id' | 'userId' | 'normalizedTopic' | 'createdAt'> & {
+    seedArticleAttributions?: Array<{
+      articleUid?: string | null;
+      uid?: string | null;
+      decisionId?: number | null;
+      banditArmId?: string | null;
+      searchId?: number | null;
+    }>;
+  }): Promise<{ attempt: import('@types').CaseAttempt }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/learning/case-attempt`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

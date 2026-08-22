@@ -895,7 +895,9 @@ CREATE TABLE IF NOT EXISTS search_gold_judgments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     query TEXT NOT NULL,
     normalized_topic TEXT,
-    search_id INTEGER REFERENCES searches(id) ON DELETE SET NULL,
+    -- Soft link only, no FK: live Postgres has searches.id as uuid while the
+    -- generated schema declares it SERIAL, so a typed FK cannot be created.
+    search_id TEXT,
     article_uid TEXT NOT NULL,
     article_title TEXT,
     label TEXT NOT NULL,

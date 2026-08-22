@@ -1,6 +1,7 @@
 const {
     quizAttemptReward,
     attributeAgentQuizOutcomeReward,
+    attributeCaseAttemptRewards,
     attributeQuizAttemptRewards,
     attributeSearchInteractionReward,
     getQuizAttributionCoverage,
@@ -214,6 +215,55 @@ describe('searchLearningOutcomeService', () => {
         expect(call[0]).toBe('search_ranking');
         expect(call[1]).toBe('quiz_gap_heavy');
         expect(call[2]).toBeCloseTo(-0.09, 5);
+    });
+
+    test('attributeCaseAttemptRewards rewards search decisions from seed article attribution', async () => {
+        const db = {
+            all: jest.fn().mockResolvedValue([{ id: 17, arm_id: 'quiz_gap_heavy', delayed_reward: null }]),
+            updatePersonalizationDecisionReward: jest.fn().mockResolvedValue(true),
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+            recordLearningEvent: jest.fn().mockResolvedValue({ id: 1 }),
+        };
+
+        const result = await attributeCaseAttemptRewards(db, 'u1', {
+            topic: 'ARDS',
+            caseAttemptId: 44,
+            seedArticleAttributions: [{
+                articleUid: 'pubmed:1',
+                decisionId: 17,
+                searchId: 9,
+                banditArmId: 'quiz_gap_heavy',
+            }],
+        });
+
+        expect(result).toMatchObject({ attributed: 1, reward: 0.08 });
+        expect(db.updatePersonalizationDecisionReward).toHaveBeenCalledWith(
+            17,
+            expect.objectContaining({
+                immediateReward: 0.08,
+                totalReward: 0.08,
+            })
+        );
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith(
+            'search_ranking',
+            'quiz_gap_heavy',
+            0.08,
+            'user:u1'
+        );
+        expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith(
+            'search_ranking',
+            'quiz_gap_heavy',
+            0.08,
+            'global'
+        );
+        expect(db.recordLearningEvent).toHaveBeenCalledWith(expect.objectContaining({
+            eventType: 'search_reward_attributed',
+            sourceId: 'decision:17',
+            payload: expect.objectContaining({
+                source: 'case_follow_through',
+                rewardKind: 'engagement_follow_through',
+            }),
+        }));
     });
 
     test('attributeAgentQuizOutcomeReward records a negative reward after a failed quiz', async () => {
