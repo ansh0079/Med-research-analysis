@@ -25,8 +25,8 @@ async recordBouquetSignals(displayTopic, papers = []) {
                 (normalized_topic, display_topic, article_uid, archetype, composite_score, signal_count, last_seen_at, created_at)
              VALUES (?, ?, ?, ?, ?, 1, ?, ?)
              ON CONFLICT(normalized_topic, article_uid) DO UPDATE SET
-               signal_count = signal_count + 1,
-               composite_score = (composite_score * signal_count + excluded.composite_score) / (signal_count + 1),
+               signal_count = topic_bouquet_signals.signal_count + 1,
+               composite_score = (topic_bouquet_signals.composite_score * topic_bouquet_signals.signal_count + excluded.composite_score) / (topic_bouquet_signals.signal_count + 1),
                archetype = COALESCE(excluded.archetype, topic_bouquet_signals.archetype),
                display_topic = excluded.display_topic,
                last_seen_at = excluded.last_seen_at`,
@@ -299,7 +299,7 @@ async recordTopicDemandSignal(sanitizedTopic, displayTopic, intent = 'general') 
         `INSERT INTO topic_demand_signals (normalized_topic, display_topic, intent, search_count, last_seen_at, created_at)
          VALUES (?, ?, ?, 1, ?, ?)
          ON CONFLICT(normalized_topic, intent) DO UPDATE SET
-           search_count = search_count + 1,
+           search_count = topic_demand_signals.search_count + 1,
            display_topic = excluded.display_topic,
            last_seen_at = excluded.last_seen_at`,
         [normalized, display, safeIntent, now, now]

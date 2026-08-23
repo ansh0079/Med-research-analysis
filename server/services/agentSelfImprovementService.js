@@ -152,7 +152,7 @@ async function recordAgentMistake(db, { userId, topic, incorrectClaim, userCorre
                 thread_id, learned_at, occurrence_count
             ) VALUES (?, ?, ?, ?, ?, ?, ?, 1)
             ON CONFLICT(user_id, topic, incorrect_claim) DO UPDATE SET
-                occurrence_count = occurrence_count + 1,
+                occurrence_count = agent_mistakes.occurrence_count + 1,
                 last_occurred_at = excluded.learned_at,
                 user_correction = excluded.user_correction`,
             [
