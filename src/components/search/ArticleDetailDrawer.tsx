@@ -119,6 +119,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
   const [synopsis, setSynopsis] = useState<ArticleSynopsisFields | null>(null);
   const [synopsisResult, setSynopsisResult] = useState<ArticleSynopsisResult | null>(null);
   const [synopsisState, setSynopsisState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
+  const [synopsisError, setSynopsisError] = useState<string | null>(null);
   const [synopsisFeedback, setSynopsisFeedback] = useState<'helpful' | 'not_helpful' | null>(null);
   const [synopsisFeedbackPending, setSynopsisFeedbackPending] = useState(false);
   const [synopsisCompareResult, setSynopsisCompareResult] = useState<ArticleSynopsisResult | null>(null);
@@ -143,6 +144,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
     setSynopsis(null);
     setSynopsisResult(null);
     setSynopsisState('idle');
+    setSynopsisError(null);
     setSynopsisFeedback(null);
     setSynopsisFeedbackPending(false);
     setSynopsisCompareResult(null);
@@ -160,6 +162,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
   const loadSynopsis = useCallback(async () => {
     if (!article || synopsis || synopsisState === 'loading') return;
     setSynopsisState('loading');
+    setSynopsisError(null);
     try {
       const topic = searchTopic?.trim() || undefined;
       const result = await api.ai.getSynopsis(article, { async: true, topic });
@@ -167,8 +170,9 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
       setSynopsis(result.synopsis);
       setSynopsisResult(result);
       setSynopsisState('done');
-    } catch {
+    } catch (err) {
       setSynopsisState('error');
+      setSynopsisError(err instanceof Error && err.message ? err.message : 'Appraisal unavailable');
     }
   }, [article, searchTopic, synopsis, synopsisState]);
 
@@ -227,6 +231,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
         setSynopsis(null);
         setSynopsisResult(null);
         setSynopsisState('idle');
+        setSynopsisError(null);
       }
     } finally {
       setSynopsisFeedbackPending(false);
@@ -462,7 +467,9 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
             )}
             {synopsisState === 'error' && (
               <div className="text-center py-12">
-                <p className="text-red-500 text-sm mb-3">Appraisal unavailable.</p>
+                <p className="text-red-500 text-sm mb-3 max-w-md mx-auto">
+                  {synopsisError || 'Appraisal unavailable.'}
+                </p>
                 <button type="button" onClick={loadSynopsis}
                   className="px-4 py-2 text-xs font-semibold bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors">
                   Retry

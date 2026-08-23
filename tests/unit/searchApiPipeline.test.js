@@ -28,6 +28,9 @@ function mockPubMed({ pmids, summary }) {
     if (target.includes('esummary.fcgi')) {
       return Promise.resolve({ ok: true, json: async () => ({ result: summary }) });
     }
+    if (target.includes('efetch.fcgi')) {
+      return Promise.resolve({ ok: true, text: async () => '<PubmedArticleSet></PubmedArticleSet>' });
+    }
     return Promise.resolve({ ok: false, status: 404, json: async () => ({}) });
   });
 }
