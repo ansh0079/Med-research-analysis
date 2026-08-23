@@ -32,7 +32,7 @@ async function callFirstHealthyProvider(aiService, srvConfig, prompt, label) {
     const candidates = getProviderCandidates({}, srvConfig);
     for (const candidate of candidates) {
         try {
-            return await aiService.callText(prompt, candidate.provider, candidate.model, { maxOutputTokens: 4096, timeoutMs: 60000, jsonMode: true });
+            return await aiService.callText(prompt, candidate.provider, candidate.model, { maxOutputTokens: 4096, timeoutMs: 60000 });
         } catch (err) {
             console.warn(`[Ingest] Provider ${candidate.provider} failed for ${label}: ${err.message}`);
         }
