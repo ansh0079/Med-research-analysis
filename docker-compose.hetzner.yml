@@ -88,6 +88,9 @@ services:
       JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
       SESSION_SECRET: ${SESSION_SECRET:?set SESSION_SECRET in .env}
       ADMIN_TOKEN: ${ADMIN_TOKEN:-}
+      # Lets a Prometheus scraper read /metrics without an admin JWT. Without it the
+      # endpoint still 401s correctly, but nothing can actually collect the metrics.
+      METRICS_SCRAPE_TOKEN: ${METRICS_SCRAPE_TOKEN:-}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       NCBI_API_KEY: ${NCBI_API_KEY:-}
