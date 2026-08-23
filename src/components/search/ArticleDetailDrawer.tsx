@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { api } from '@services/api';
 import { getArticleLinkInfo } from '@services/articleLinks';
+import { isOpenAccessArticle, resolveFreeFullTextUrl } from '@services/articleAccess';
 import type { Article, ArticleSynopsisFields, ArticleSynopsisResult, ConsortResult, GuidelineEntry } from '@types';
 import { QualityBadge } from './QualityBadge';
 import { RetractionBadge } from './RetractionBadge';
@@ -281,8 +282,8 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
   if (!article) return null;
 
   const { primaryUrl } = getArticleLinkInfo(article);
-  const isFree = article.isFree || !!article.pmcid;
-  const freeUrl = article.pmcid ? `https://www.ncbi.nlm.nih.gov/pmc/articles/${article.pmcid}/` : article.fullTextUrl || null;
+  const isFree = isOpenAccessArticle(article);
+  const freeUrl = resolveFreeFullTextUrl(article);
   const isRct = article._impact?.evidenceType === 'rct' || (article.pubtype ?? []).some((t) => /randomized|randomised|rct/i.test(t));
   const year = article.pubdate?.slice(0, 4) || article.year;
   const authors = article.authors?.slice(0, 4).map((a) => a.name).join(', ');
@@ -410,7 +411,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
                   {article._ebmLabel && (
                     <span className="badge badge-source font-semibold">{article._ebmLabel.label}</span>
                   )}
-                  {article.isFree && <span className="badge badge-free">Open Access</span>}
+                  {isFree && <span className="badge badge-free">Open Access</span>}
                   {article._isPreprint && <span className="badge" style={{ background: 'rgba(251,191,36,0.15)', color: '#b45309', border: '1px solid rgba(251,191,36,0.4)' }}>Preprint</span>}
                 </div>
                 {article._impact.factors && article._impact.factors.length > 0 && (

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@components/ui/Button';
 import type { Article } from '@types';
+import { isOpenAccessArticle } from '@services/articleAccess';
 
 interface EvidenceProjectPanelProps {
   currentQuery: string;
@@ -61,7 +62,7 @@ export const EvidenceProjectPanel: React.FC<EvidenceProjectPanelProps> = ({
   const [project, setProject] = React.useState<ProjectState>(loadProject);
   const evidenceSet = selectedArticles.length > 0 ? selectedArticles : results;
   const includedCount = evidenceSet.length;
-  const openCount = evidenceSet.filter((article) => article.isFree || article.pmcid).length;
+  const openCount = evidenceSet.filter((article) => isOpenAccessArticle(article)).length;
   const retractedCount = evidenceSet.filter((article) => article._retraction?.isRetracted).length;
 
   React.useEffect(() => {
@@ -95,7 +96,7 @@ export const EvidenceProjectPanel: React.FC<EvidenceProjectPanelProps> = ({
         year: article.year || article.pubdate?.split(' ')[0],
         doi: article.doi,
         pmid: article.pmid,
-        openAccess: Boolean(article.isFree || article.pmcid),
+        openAccess: isOpenAccessArticle(article),
         quality: article._quality?.grade,
         impact: article._impact?.score,
         retracted: Boolean(article._retraction?.isRetracted),

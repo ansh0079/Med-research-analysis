@@ -184,10 +184,8 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
 
   function mapPubmedSummaryToArticle(pmid, article) {
     if (!article) return null;
-    const pmcid =
-      article.articleids?.find((id) =>
-        ['pmc', 'pmcid'].includes(String(id.idtype || '').toLowerCase())
-      )?.value || null;
+    const { extractPubmedPmcid } = require('../utils/articleAccess');
+    const pmcid = extractPubmedPmcid(article.articleids);
     return {
       uid: `pubmed-${pmid}`,
       title: article.title,

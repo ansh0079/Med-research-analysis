@@ -29,21 +29,22 @@ export function ArticleCardAccessPanel({
   setPdfUrl,
   onOpenInWorkspace,
 }: ArticleCardAccessPanelProps) {
-  if (isFree && freeUrl) {
+  if (isFree) {
+    const href = freeUrl || primaryUrl;
     return (
       <div className="mb-3 space-y-2">
         <div className="space-y-1.5">
-          {onOpenInWorkspace && (freeUrl.toLowerCase().endsWith('.pdf') || /pmc\//.test(freeUrl)) && (
+          {onOpenInWorkspace && href && (href.toLowerCase().endsWith('.pdf') || /pmc\//.test(href)) && (
             <button
               type="button"
-              onClick={() => onOpenInWorkspace(freeUrl)}
+              onClick={() => onOpenInWorkspace(href)}
               className="flex w-full items-center justify-center gap-2 py-2 rounded-xl border border-indigo-200/60 dark:border-indigo-800/50 bg-indigo-50/60 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:bg-indigo-100/80 dark:hover:bg-indigo-900/40 transition-colors"
             >
               <i className="fas fa-columns text-[10px]" /> Split workspace
             </button>
           )}
           <a
-            href={freeUrl}
+            href={href}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition-all hover:shadow-lg hover:shadow-emerald-500/25"

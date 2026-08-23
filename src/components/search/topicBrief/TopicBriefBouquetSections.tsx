@@ -4,6 +4,7 @@ import type { BouquetSection } from './topicBriefUtils';
 import { isGuideline, isLandmark, whySelected } from './topicBriefUtils';
 
 import type { Article } from '@types';
+import { isOpenAccessArticle } from '@services/articleAccess';
 
 interface Props {
   sections: BouquetSection[];
@@ -27,7 +28,7 @@ export const TopicBriefBouquetSections: React.FC<Props> = ({ sections, expanded,
 
           {section.articles.map((article, i) => {
             const citations = article.pmcrefcount ?? article.citationCount;
-            const isFree = article.isFree || !!article.pmcid;
+            const isFree = isOpenAccessArticle(article);
             const year = (article.pubdate ?? article.year?.toString() ?? '').slice(0, 4);
             const landmark = isLandmark(article);
             const guideline = isGuideline(article);

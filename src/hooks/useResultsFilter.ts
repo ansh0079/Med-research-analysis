@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import type { Article } from '@types';
+import { isOpenAccessArticle } from '@services/articleAccess';
 
 export type ResultLens = 'all' | 'open_access' | 'high_quality' | 'recent' | 'practice_changing';
 
@@ -18,7 +19,7 @@ export function useResultsFilter(results: Article[]) {
     let recentCount = 0;
     let practiceChangingCount = 0;
     for (const article of results) {
-      if (article.isFree || article.pmcid) openAccessCount += 1;
+      if (isOpenAccessArticle(article)) openAccessCount += 1;
       if (article._quality?.grade === 'A' || article._quality?.grade === 'B') highQualityCount += 1;
       if (article._retraction?.isRetracted) retractedCount += 1;
       const year = parseInt((article.pubdate || '').slice(0, 4), 10);
@@ -34,7 +35,7 @@ export function useResultsFilter(results: Article[]) {
   const visibleResults = useMemo(() => {
     const q = resultFilter.trim().toLowerCase();
     return results.filter((article) => {
-      if (resultLens === 'open_access' && !(article.isFree || article.pmcid)) return false;
+      if (resultLens === 'open_access' && !isOpenAccessArticle(article)) return false;
       if (resultLens === 'high_quality' && !(article._quality?.grade === 'A' || article._quality?.grade === 'B')) return false;
       if (resultLens === 'recent') {
         const year = parseInt((article.pubdate || '').slice(0, 4), 10);
