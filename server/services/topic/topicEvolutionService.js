@@ -16,15 +16,21 @@ const { parseJsonBlock } = require('../../utils/parseJson');
 const { generateAndStoreMCQs } = require('../mcqGeneratorService');
 const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('../learningSignalService');
 const {
-    POLICY_RECOMMENDATION,
+    POLICY_TOPIC_EVOLUTION,
     recordBanditReward,
 } = require('../personalizationBanditService');
 
 const LIVE_COMMIT_MIN_CONFIDENCE = Number(process.env.TOPIC_EVOLUTION_LIVE_MIN_CONFIDENCE || 0.7) || 0.7;
 
 /**
- * Map evolution outcomes onto recommendation_strategy arms so the bandit
- * learns which refresh/calibrate paths produce durable topic memory.
+ * Record topic-evolution outcomes against their own policy.
+ *
+ * These previously wrote 'refresh' and 'calibrate' rewards into
+ * recommendation_strategy. Those are real recommendation arms, but the reward here
+ * comes from a background evolution job rather than a user responding to a shown
+ * recommendation -- so the serving policy's arm statistics were being inflated by a
+ * cron loop rewarding itself, and no longer described user behaviour at all. The
+ * signal is still useful for observability, so it is isolated rather than dropped.
  */
 async function recordEvolutionBanditRewards(db, {
     userId = null,
@@ -40,7 +46,7 @@ async function recordEvolutionBanditRewards(db, {
     const refreshReward = live
         ? Math.max(0.55, Math.min(1, 0.45 + conf * 0.55))
         : Math.max(0.2, Math.min(0.45, conf * 0.5));
-    await recordBanditReward(db, POLICY_RECOMMENDATION, 'refresh', refreshReward, userId).catch((err) => {
+    await recordBanditReward(db, POLICY_TOPIC_EVOLUTION, 'refresh', refreshReward, userId).catch((err) => {
         logger.debug({ err, commitMode }, 'evolution refresh bandit reward failed');
     });
 
@@ -48,7 +54,7 @@ async function recordEvolutionBanditRewards(db, {
         const calibrateReward = live
             ? Math.max(0.5, Math.min(1, 0.4 + conf * 0.5 + Math.min(0.15, guidelineCount * 0.03)))
             : 0.25;
-        await recordBanditReward(db, POLICY_RECOMMENDATION, 'calibrate', calibrateReward, userId).catch((err) => {
+        await recordBanditReward(db, POLICY_TOPIC_EVOLUTION, 'calibrate', calibrateReward, userId).catch((err) => {
             logger.debug({ err, commitMode }, 'evolution calibrate bandit reward failed');
         });
     }

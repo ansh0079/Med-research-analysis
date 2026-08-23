@@ -8,6 +8,10 @@ const POLICY_QUIZ_CLAIM_SELECTION = 'quiz_claim_selection';
 const POLICY_SYNOPSIS_STYLE = 'synopsis_style';
 const POLICY_TEACHING_STRATEGY = 'agent_teaching_strategy';
 const POLICY_CASE_DIFFICULTY = 'case_scenario_outcome';
+// Background topic-evolution outcomes. Deliberately NOT recommendation_strategy: these
+// rewards come from a maintenance job, not from a user responding to a recommendation,
+// so mixing them in makes the serving policy's arm statistics off-policy.
+const POLICY_TOPIC_EVOLUTION = 'topic_evolution_outcome';
 
 const SEARCH_RANKING_ARMS = {
     heuristic_default: {
@@ -84,6 +88,7 @@ module.exports = {
     POLICY_SYNOPSIS_STYLE,
     POLICY_TEACHING_STRATEGY,
     POLICY_CASE_DIFFICULTY,
+    POLICY_TOPIC_EVOLUTION,
     SEARCH_RANKING_ARMS,
     RECOMMENDATION_ARM_BY_TYPE,
     MIN_PULLS_FOR_USER_ARM,
