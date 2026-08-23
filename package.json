@@ -110,7 +110,8 @@
     "test:e2e:ci": "playwright test tests/e2e/research-flow.spec.js tests/e2e/learning-pipeline.spec.js --project=chromium --workers=1",
     "docs:openapi:generate": "node server/docs/openapiGenerator.js",
     "docs:openapi:validate": "node server/docs/validateOpenApi.js",
-    "docs:openapi:serve": "node -e \"console.log('Swagger UI available at /api/docs when server is running')\""
+    "docs:openapi:serve": "node -e \"console.log('Swagger UI available at /api/docs when server is running')\"",
+    "verify:migration-numbers": "node tools/check-migration-numbers.js"
   },
   "dependencies": {
     "@apidevtools/swagger-parser": "^12.1.0",

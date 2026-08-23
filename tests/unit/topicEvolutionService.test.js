@@ -20,6 +20,7 @@ jest.mock('../../server/saved-embedding-worker', () => ({
 }));
 jest.mock('../../server/services/personalizationBanditService', () => ({
     POLICY_RECOMMENDATION: 'recommendation_strategy',
+    POLICY_TOPIC_EVOLUTION: 'topic_evolution_outcome',
     recordBanditReward: jest.fn(async () => true),
 }));
 
@@ -118,20 +119,27 @@ describe('topicEvolutionService', () => {
         expect(db.createTopicKnowledgeProposal).not.toHaveBeenCalled();
         expect(result.knowledge.guidelineAnchors).toHaveLength(1);
         expect(result.jobs.embeddings).toBeGreaterThan(0);
+        // Evolution outcomes are recorded against their own policy. They must never land
+        // in recommendation_strategy: that reward comes from a background job, not from a
+        // user responding to a shown recommendation, so it would make the serving policy's
+        // arm statistics off-policy.
         expect(recordBanditReward).toHaveBeenCalledWith(
             db,
-            'recommendation_strategy',
+            'topic_evolution_outcome',
             'refresh',
             expect.any(Number),
             'u1'
         );
         expect(recordBanditReward).toHaveBeenCalledWith(
             db,
-            'recommendation_strategy',
+            'topic_evolution_outcome',
             'calibrate',
             expect.any(Number),
             'u1'
         );
+        // Regression guard for the contamination itself.
+        const policies = recordBanditReward.mock.calls.map((c) => c[1]);
+        expect(policies).not.toContain('recommendation_strategy');
     });
 
     it('creates a proposal when forceProposal is set', async () => {

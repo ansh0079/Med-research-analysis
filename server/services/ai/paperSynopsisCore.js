@@ -8,6 +8,7 @@ const { persistPaperTeachingObject } = require('../teachingObjectService');
 const { getProviderCandidates } = require('../../utils/aiProvider');
 const { enrichWithCachedFullText, enqueuePdfPreindex } = require('../pdfPreindexService');
 const { validateAiOutput } = require('../aiOutputValidation');
+const { buildClaimGrounding, runSynopsisCritic } = require('../synopsisGroundingService');
 const { recordSynopsisGeneration } = require('../observabilityMetrics');
 const { annotateActiveSpan, withSpan } = require('../../utils/tracing');
 const { getPromptVersion } = require('../../prompts/promptVersions');
@@ -275,8 +276,34 @@ async function runPaperSynopsisGenerationInner({
         article: enriched,
     });
     synopsis = trustProcessed.synopsis;
+
+    // Grounding critic. This checks each major claim against the source text and flags
+    // numbers that do not appear in it. An ungrounded number in a synopsis reads as a
+    // reported trial result, so it is failed closed rather than surfaced with a warning:
+    // returning nothing is recoverable, returning a fabricated statistic is not.
+    const claimGrounding = buildClaimGrounding(synopsis, enriched);
+    const critic = runSynopsisCritic(synopsis, {
+        claimGrounding,
+        abstractOnly: fullTextCoverageRatio === 0,
+    });
+    const ungroundedNumbers = (critic.findings || []).filter(
+        (f) => f.severity === 'error' && f.code === 'ungrounded_number'
+    );
+    if (ungroundedNumbers.length) {
+        recordSynopsisGeneration({ ok: false, provider: selectedProvider, model: selectedModel });
+        logger.warn(
+            { articleId, provider: selectedProvider, model: selectedModel, findings: ungroundedNumbers },
+            'Synopsis rejected: numeric claims not grounded in source text'
+        );
+        throw new Error(
+            `AI synopsis grounding failed: ${ungroundedNumbers.map((f) => f.message).join('; ')}`
+        );
+    }
+
     const result = {
         synopsis,
+        claimGrounding,
+        critic,
         articleId,
         provider: selectedProvider,
         model: selectedModel,
