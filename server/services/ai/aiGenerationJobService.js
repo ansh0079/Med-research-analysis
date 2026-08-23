@@ -37,15 +37,55 @@ function liveClinicalAnswerJobKey(topic, articles = [], { previousQueries = [], 
     return `live-ca:${stableHash({ topic, sourceIds, previousQueries: previousQueries.slice(-5), trainingStage, sessionDepth }).slice(0, 40)}`;
 }
 
-function synthesisToClinicalAnswer(synthesis) {
+/**
+ * GRADE certainty (HIGH/MODERATE/LOW/VERY_LOW) describes how much confidence we have
+ * in an effect estimate. It says nothing about study design: MODERATE certainty is
+ * routinely reached by large observational bodies of evidence, and RCT evidence is
+ * routinely downgraded to LOW for imprecision or bias. Mapping certainty straight onto
+ * a design label therefore let observational evidence be presented as RCT_SUPPORTED,
+ * which is a false statement about the literature in a clinical tool.
+ *
+ * Design is now read off the evidence actually cited, and certainty is carried
+ * separately. The rule never claims a stronger design than the sources support.
+ *
+ * @param {object} synthesis
+ * @param {Array<object>} articles seed articles the synthesis was grounded in
+ * @param {Array<object>} guidelines guideline documents retrieved for the topic
+ * @returns {string} one of VALID_EVIDENCE_GRADES
+ */
+function deriveEvidenceGrade(synthesis, articles = [], guidelines = []) {
+    const guidelineBacked = Boolean(
+        (Array.isArray(guidelines) && guidelines.length > 0)
+        || (synthesis?.guidelinePosition && String(synthesis.guidelinePosition).trim())
+    );
+    if (guidelineBacked) return 'GUIDELINE_BACKED';
+
+    const certainty = String(synthesis?.evidenceGrade || '').toUpperCase();
+    // Very low certainty is expert opinion regardless of what was cited.
+    if (certainty === 'VERY_LOW') return 'EXPERT_OPINION';
+
+    const { getEbmScore } = require('../unifiedEvidenceSearch');
+    const { hasGuidelinePubtype } = require('../../utils/articles');
+    const list = Array.isArray(articles) ? articles : [];
+
+    // A guideline sitting in the article list also scores 7 in the EBM table, so check
+    // it explicitly rather than letting it be reported as randomised evidence.
+    if (list.some((a) => hasGuidelinePubtype(a))) return 'GUIDELINE_BACKED';
+
+    // Note: getEbmScore defaults to 2 (observational tier) when an article carries no
+    // usable type metadata. That default is deliberate here -- unknown design must never
+    // be promoted to RCT_SUPPORTED.
+    const best = list.length ? Math.max(...list.map((a) => Number(getEbmScore(a)) || 0)) : 0;
+
+    // EBM tiers: >=6 randomised or systematic-review evidence, >=2 observational designs.
+    if (best >= 6) return certainty === 'LOW' ? 'LOW_CERTAINTY' : 'RCT_SUPPORTED';
+    if (best >= 2) return 'OBSERVATIONAL_ONLY';
+    return 'EXPERT_OPINION';
+}
+
+function synthesisToClinicalAnswer(synthesis, articles = [], guidelines = []) {
     if (!synthesis || typeof synthesis !== 'object') return null;
     const actionCard = synthesis.clinicalActionCard || {};
-    const gradeMap = {
-        HIGH: 'RCT_SUPPORTED',
-        MODERATE: 'RCT_SUPPORTED',
-        LOW: 'OBSERVATIONAL_ONLY',
-        VERY_LOW: 'EXPERT_OPINION',
-    };
     return {
         bottomLine: synthesis.clinicalBottomLine || synthesis.overallAnswer || synthesis.consensus || '',
         whatChangesManagement: actionCard.recommendation || synthesis.clinicalImplications || '',
@@ -53,7 +93,9 @@ function synthesisToClinicalAnswer(synthesis) {
         whatIsUncertain: synthesis.limitations || synthesis.researchGaps || synthesis.whatIsUncertain || '',
         keyContraindications: actionCard.caveat || synthesis.keyContraindications || null,
         guidelinePosition: synthesis.guidelinePosition || null,
-        evidenceGrade: gradeMap[synthesis.evidenceGrade] || 'EXPERT_OPINION',
+        evidenceGrade: deriveEvidenceGrade(synthesis, articles, guidelines),
+        // GRADE certainty, kept distinct from the study-design grade above.
+        evidenceCertainty: String(synthesis.evidenceGrade || '').toUpperCase() || null,
         citationIndices: [],
         recentPracticeChanging: synthesis.recentPracticeChanging || synthesis.practiceImpact?.classification || null,
     };
@@ -130,7 +172,7 @@ async function generateLiveClinicalAnswer({
         guidelineCount: Array.isArray(guidelines) ? guidelines.length : 0,
         requiredPaths: ['clinicalBottomLine', 'overallAnswer'],
     });
-    const clinicalAnswer = synthesisToClinicalAnswer(synthesis);
+    const clinicalAnswer = synthesisToClinicalAnswer(synthesis, nonRetracted, guidelines);
     const fullTextIndexedCount = topArticles.filter((a) => a._fullTextIndexed || a.fullTextIndexed).length;
     const fullTextCoverageRatio = topArticles.length
         ? fullTextIndexedCount / topArticles.length
@@ -696,6 +738,7 @@ module.exports = {
     getOrEnqueueLiveClinicalAnswer,
     generateLiveClinicalAnswer,
     synthesisToClinicalAnswer,
+    deriveEvidenceGrade,
     fullSynthesisJobKey,
     getOrEnqueueFullSynthesis,
     paperSynopsisJobKey,

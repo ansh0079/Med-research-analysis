@@ -248,21 +248,46 @@ function validateAiOutput(profile, raw, options = {}) {
             }
         }
 
-        // TODO: Numeric grounding for quiz_generation and case outputs.
-        // Quiz MCQ explanations (quiz_generation profile) contain numeric claims that should be
-        // grounded against the source articles used to generate them. Apply validateNumericGrounding
-        // to each question's explanation field once groundingArticles is plumbed through the
-        // validation context. Example for quiz_generation:
-        //   if (profile === 'quiz_generation' && options.groundingArticles) {
-        //       for (const q of result.data.questions || []) {
-        //           const grounding = validateNumericGrounding(q, options.groundingArticles, ['explanation']);
-        //           if (!grounding.ok) { /* flag or degrade */ }
-        //       }
-        //   }
-        // This requires mcqGeneratorService.generateAndStoreMCQs to pass
-        // { groundingArticles: sourceArticles } when calling validateAiOutput('quiz_generation', ...).
-        // Case narrative outputs (no dedicated validateAiOutput profile yet) should receive the
-        // same treatment once a case_narrative profile is introduced.
+        // Numeric grounding for MCQ explanations. An explanation that states a trial
+        // result the source articles never reported is the single most dangerous output
+        // this system can produce for a clinical learner, because it reads as a fact
+        // about the literature. Grounding is applied per question so one bad explanation
+        // does not discard an otherwise valid set.
+        if (profile === 'quiz_generation' && options.groundingArticles) {
+            const questions = Array.isArray(result.data?.questions) ? result.data.questions : [];
+            const ungrounded = [];
+            for (let i = 0; i < questions.length; i += 1) {
+                const grounding = validateNumericGrounding(
+                    questions[i],
+                    options.groundingArticles,
+                    ['explanation']
+                );
+                if (!grounding.ok) {
+                    ungrounded.push({ index: i, issues: grounding.issues });
+                }
+            }
+            if (ungrounded.length) {
+                const errors = ungrounded.map(
+                    ({ index, issues }) => `quiz_generation numeric grounding failed (question ${index + 1}): ${issues.join('; ')}`
+                );
+                // Drop only the offending questions when the caller can still use a
+                // partial set; fail outright when nothing survives.
+                const survivors = questions.filter((_, i) => !ungrounded.some((u) => u.index === i));
+                if (options.dropUngroundedQuestions && survivors.length) {
+                    return {
+                        ok: true,
+                        data: { ...result.data, questions: survivors },
+                        errors: [],
+                        warnings: errors,
+                        degraded: null,
+                    };
+                }
+                if (options.allowDegrade) {
+                    return { ok: false, data: null, errors, degraded: spec.degrade() };
+                }
+                return { ok: false, data: null, errors, degraded: null };
+            }
+        }
 
         return result;
     }

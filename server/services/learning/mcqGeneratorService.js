@@ -184,9 +184,19 @@ async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemi
             usage: { operation: 'cold_start_mcq', topic },
         });
 
-        const validated = validateAiOutput('quiz_generation', parsed, { allowDegrade: false });
+        // Ground MCQ explanations against the same articles the prompt was built from.
+        // Ungrounded questions are dropped rather than failing the whole batch, so one
+        // invented statistic does not discard a set of otherwise valid questions.
+        const validated = validateAiOutput('quiz_generation', parsed, {
+            allowDegrade: false,
+            groundingArticles: sourceArticles,
+            dropUngroundedQuestions: true,
+        });
         if (!validated.ok) {
             throw new Error(validated.errors.join('; ') || 'Invalid MCQ JSON from AI');
+        }
+        if (Array.isArray(validated.warnings) && validated.warnings.length) {
+            logger.warn({ topic, dropped: validated.warnings }, 'Dropped MCQs with ungrounded numeric claims');
         }
         const allMcqs = parseStructuredQuizArray(validated.data);
         if (!Array.isArray(allMcqs) || allMcqs.length === 0) {

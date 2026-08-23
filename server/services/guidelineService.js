@@ -5,6 +5,7 @@
 
 const { fetchWithTimeout: fetch } = require('../utils/fetch');
 const { PINNED_MODELS } = require('./aiService');
+const { z } = require('zod');
 
 /**
  * Search PubMed for relevant clinical guidelines on a topic.
@@ -116,6 +117,55 @@ Be conservative: only flag as "contradiction" if the evidence genuinely conflict
  * @param {object} aiService { callGemini, callMistralAI }
  * @returns {Promise<object>}
  */
+const AlignmentSchema = z.object({
+  // The model may legitimately be unable to decide, so null is allowed but a string is not.
+  aligned: z.boolean().nullable().catch(null),
+  alignmentScore: z.coerce.number().min(0).max(100).catch(0),
+  contradictions: z.array(z.string()).catch([]),
+  supportsGuidelines: z.array(z.string()).catch([]),
+  gaps: z.array(z.string()).catch([]),
+  summary: z.string().catch(''),
+});
+
+/**
+ * Extract and validate the alignment object from a raw model response.
+ * Always returns a well-formed object; never throws.
+ *
+ * @param {string} rawText
+ * @param {number} guidelinesFound
+ */
+function parseAlignmentResponse(rawText, guidelinesFound) {
+  const text = String(rawText || '');
+  const fallback = (reason) => ({
+    aligned: null,
+    alignmentScore: 0,
+    guidelinesFound,
+    contradictions: [],
+    supportsGuidelines: [],
+    gaps: [reason],
+    summary: text.slice(0, 500),
+  });
+
+  // Prefer a fenced block, then the outermost braces, then the whole payload.
+  const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  const braced = text.match(/\{[\s\S]*\}/);
+  const candidates = [fenced && fenced[1], braced && braced[0], text].filter(Boolean);
+
+  for (const candidate of candidates) {
+    let parsed;
+    try {
+      parsed = JSON.parse(candidate);
+    } catch {
+      continue;
+    }
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) continue;
+    const result = AlignmentSchema.safeParse(parsed);
+    if (result.success) return { ...result.data, guidelinesFound };
+    return fallback('AI alignment response did not match the expected schema.');
+  }
+  return fallback('Could not parse AI alignment response.');
+}
+
 async function checkGuidelineAlignment(topic, synthesisConsensus, articles, keys, aiService) {
   const guidelines = await searchGuidelines(topic, keys.ncbiKey, keys.ncbiEmail);
 
@@ -130,22 +180,11 @@ async function checkGuidelineAlignment(topic, synthesisConsensus, articles, keys
     throw new Error('No AI provider configured for guideline alignment');
   }
 
-  // Parse JSON
-  let alignment;
-  try {
-    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-    alignment = JSON.parse(jsonMatch ? jsonMatch[0] : rawText);
-  } catch {
-    alignment = {
-      aligned: null,
-      alignmentScore: 0,
-      guidelinesFound: guidelines.length,
-      contradictions: [],
-      supportsGuidelines: [],
-      gaps: ['Could not parse AI alignment response.'],
-      summary: rawText.slice(0, 500),
-    };
-  }
+  // Parse and validate. A greedy /\{[\s\S]*\}/ match plus a bare JSON.parse only proved
+  // the text was *parseable*, not that it had the expected shape -- a model returning
+  // alignmentScore: "high" or contradictions: "none" flowed straight through to callers
+  // and to the UI. Validate against a schema and fall back cleanly when it does not fit.
+  const alignment = parseAlignmentResponse(rawText, guidelines.length);
 
   return {
     ...alignment,
@@ -316,6 +355,7 @@ function wasDiscoveryAttempted(topic, db) {
 }
 
 module.exports = {
+  parseAlignmentResponse,
   searchGuidelines,
   buildAlignmentPrompt,
   checkGuidelineAlignment,
