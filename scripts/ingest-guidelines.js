@@ -255,10 +255,12 @@ async function ingestTopic(topicName, { aiService }) {
 
     let recs;
     try {
-        const jsonMatch = rawText.match(/\[[\s\S]*\]/);
-        recs = JSON.parse(jsonMatch ? jsonMatch[0] : rawText);
+        // Strip markdown fences, then find the first JSON array
+        const cleaned = rawText.replace(/```json?\s*/gi, '').replace(/```\s*/g, '').trim();
+        const jsonMatch = cleaned.match(/\[[\s\S]*\]/);
+        recs = JSON.parse(jsonMatch ? jsonMatch[0] : cleaned);
     } catch {
-        console.warn(`[Ingest] JSON parse failed for "${topicName}"`);
+        console.warn(`[Ingest] JSON parse failed for "${topicName}" — raw: ${rawText.slice(0, 200)}`);
         return { topic: topicName, found: pmids.length, inserted: 0, skippedByVerb: 0 };
     }
     if (!Array.isArray(recs)) return { topic: topicName, found: pmids.length, inserted: 0, skippedByVerb: 0 };
