@@ -121,7 +121,7 @@ export const EvidenceProjectPanel: React.FC<EvidenceProjectPanelProps> = ({
         article.year || article.pubdate?.split(' ')[0] || '',
         article.doi || '',
         article.pmid || '',
-        article.isFree || article.pmcid ? 'yes' : 'no',
+        isOpenAccessArticle(article) ? 'yes' : 'no',
         article._quality?.grade || '',
         article._impact?.score ?? '',
         article._retraction?.isRetracted ? 'yes' : 'no',
