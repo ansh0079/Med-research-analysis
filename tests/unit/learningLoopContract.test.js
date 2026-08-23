@@ -75,8 +75,31 @@ describe('learningLoop contract', () => {
                 learningLoopStage: 'interaction',
                 sessionId: 'sess-1',
                 articleUid: 'pubmed-1',
-                searchId: 2,
+                // searchId is normalized to a string: searches.id is a uuid in
+                // production Postgres, so it cannot be coerced with Number().
+                searchId: '2',
             }),
+        }));
+    });
+
+    test('recordLearningSignal preserves a uuid searchId instead of coercing it', async () => {
+        const db = {
+            recordLearningEvent: jest.fn().mockResolvedValue({ id: 1 }),
+        };
+        const uuid = 'a1b64acc-d7fd-46db-9e20-4752bfe05cb8';
+
+        await recordLearningSignal(db, {
+            userId: 'u1',
+            sessionId: 'sess-1',
+            eventType: 'search_click',
+            topic: 'ARDS',
+            articleUid: 'pubmed-1',
+            searchId: uuid,
+            payload: { position: 1 },
+        });
+
+        expect(db.recordLearningEvent).toHaveBeenCalledWith(expect.objectContaining({
+            payload: expect.objectContaining({ searchId: uuid }),
         }));
     });
 });

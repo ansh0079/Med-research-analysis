@@ -2,6 +2,7 @@
 
 const logger = require('../../config/logger');
 const { normalizeLearningLoopPayload } = require('../../../shared/contracts/learningLoop');
+const { normalizeSearchId } = require('../../../shared/searchId');
 
 const LEARNING_SIGNAL_TYPES = Object.freeze({
     SEARCH_IMPRESSION: 'search_impression',
@@ -38,7 +39,7 @@ async function recordLearningSignal(db, {
     const basePayload = {
         ...(payload && typeof payload === 'object' ? payload : { value: payload }),
         ...(sessionId ? { sessionId } : {}),
-        ...(searchId != null ? { searchId: Number(searchId) } : {}),
+        ...(searchId != null ? { searchId: normalizeSearchId(searchId) } : {}),
         ...(decisionId != null ? { decisionId: Number(decisionId) } : {}),
         ...(articleUid ? { articleUid: String(articleUid) } : {}),
     };

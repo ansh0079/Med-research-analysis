@@ -7,6 +7,7 @@ const {
 } = require('../personalizationBanditService');
 const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('../learningSignalService');
 const { quizOutcomeRewardForAgent } = require('../learningLoopSignalService');
+const { normalizeSearchId } = require('../../../shared/searchId');
 const {
     quizAttemptReward,
     impressionEngagementReward,
@@ -65,7 +66,7 @@ async function findSearchRankingDecision(db, userId, {
                 `SELECT id, arm_id, delayed_reward FROM personalization_decisions
                  WHERE user_id = ? AND policy_type = ? AND search_id = ? AND article_uid = ?
                  ORDER BY created_at DESC LIMIT 1`,
-                [String(userId), POLICY_SEARCH_RANKING, Number(searchId), String(articleUid)]
+                [String(userId), POLICY_SEARCH_RANKING, normalizeSearchId(searchId), String(articleUid)]
             ).catch(() => []);
             return rows?.[0] || null;
         }
@@ -77,7 +78,7 @@ async function findSearchRankingDecision(db, userId, {
              WHERE d.user_id IS NULL AND d.policy_type = ? AND d.search_id = ? AND d.article_uid = ?
                AND s.session_id = ?
              ORDER BY d.created_at DESC LIMIT 1`,
-            [POLICY_SEARCH_RANKING, Number(searchId), String(articleUid), String(sessionId)]
+            [POLICY_SEARCH_RANKING, normalizeSearchId(searchId), String(articleUid), String(sessionId)]
         ).catch(() => []);
         return rows?.[0] || null;
     }

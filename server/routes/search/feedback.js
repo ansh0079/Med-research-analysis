@@ -1,6 +1,7 @@
 const { explainInteractionReward } = require('../../services/rewardAttributionService');
 const { attributeSearchInteractionReward } = require('../../services/searchLearningOutcomeService');
 const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('../../services/learningSignalService');
+const { normalizeSearchId } = require('../../../shared/searchId');
 const {
     consensusEnrichmentJobKey,
     liveClinicalAnswerEnrichmentJobKey,
@@ -9,7 +10,7 @@ const {
 function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }) {
     app.post('/api/search/impressions', rateLimit(120, 60), requireJson, async (req, res) => {
         const { searchId, impressions } = req.body || {};
-        const sid = Number(searchId);
+        const sid = normalizeSearchId(searchId);
         if (!sid || !Array.isArray(impressions) || impressions.length === 0) {
             return res.status(400).json({ error: 'searchId and impressions[] are required' });
         }
@@ -42,7 +43,7 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
 
     app.post('/api/search/interaction', rateLimit(180, 60), requireJson, async (req, res) => {
         const { searchId, articleUid, interactionType, dwellMs, elapsedMs, decisionId } = req.body || {};
-        const sid = Number(searchId);
+        const sid = normalizeSearchId(searchId);
         const uid = String(articleUid || '').trim();
         const type = String(interactionType || '').trim();
         if (!sid || !uid || !['click', 'save', 'dwell'].includes(type)) {
@@ -160,7 +161,7 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
             await db.recordSearchResultFeedback({
                 userId: req.user?.id ?? null,
                 sessionId: req.sessionId,
-                searchId: searchId != null ? Number(searchId) : null,
+                searchId: normalizeSearchId(searchId),
                 articleUid: uid,
                 feedbackType: type,
                 reason: reason ? String(reason).slice(0, 500) : null,
@@ -174,7 +175,7 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
                     : LEARNING_SIGNAL_TYPES.SEARCH_FEEDBACK_NOT_HELPFUL,
                 topic: topic ? String(topic).slice(0, 240) : '',
                 articleUid: uid,
-                searchId: searchId != null ? Number(searchId) : null,
+                searchId: normalizeSearchId(searchId),
                 decisionId: decisionId != null ? Number(decisionId) : null,
                 payload: {
                     feedbackType: type,
@@ -190,7 +191,7 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
             const canAttributeBandit = Boolean(banditUserId || decisionId != null);
             if (canAttributeBandit) {
                 banditReward = await attributeSearchInteractionReward(db, banditUserId, {
-                    searchId: searchId != null ? Number(searchId) : null,
+                    searchId: normalizeSearchId(searchId),
                     articleUid: uid,
                     decisionId: decisionId != null ? Number(decisionId) : null,
                     feedbackType: type,

@@ -3,6 +3,7 @@
 const logger = require('../../config/logger');
 const { POLICY_SEARCH_RANKING, recordBanditReward } = require('../personalizationBanditService');
 const { attributionConfidenceForSource } = require('./attributionConfidence');
+const { normalizeSearchId } = require('../../../shared/searchId');
 
 const HORIZONS = [1, 3, 7];
 
@@ -99,8 +100,8 @@ async function collectDelayedSignals(db, decision, { now = Date.now() } = {}) {
                 String(userId),
                 String(topic),
                 decision.created_at,
-                searchId != null ? Number(searchId) : null,
-                searchId != null ? Number(searchId) : null,
+                normalizeSearchId(searchId),
+                normalizeSearchId(searchId),
             ]
         ).catch(() => ({ cnt: 0 }));
         const n = Number(repeats?.cnt || 0);
