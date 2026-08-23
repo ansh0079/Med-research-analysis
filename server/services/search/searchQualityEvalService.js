@@ -164,9 +164,26 @@ function evaluateSearchResults(querySpec, articles, options = {}) {
         hitUids: topUids.filter((uid) => relevanceMap.has(uid)),
         relevanceGrades: Object.fromEntries(relevanceMap),
         offTopicHitUids: topUids.filter((uid) => offTopic.has(uid)),
+        ...sourceDiversityAtK(top, k),
     };
     recordSearchQuality({ offTopicRateAt10: result.offTopicRateAtK });
     return result;
+}
+
+function sourceDiversityAtK(articles, k = 10) {
+    const slice = (Array.isArray(articles) ? articles : []).slice(0, Math.max(1, k));
+    const counts = Object.create(null);
+    for (const article of slice) {
+        const src = String(article?._source || article?.source || 'unknown').toLowerCase();
+        counts[src] = (counts[src] || 0) + 1;
+    }
+    const uniqueSources = Object.keys(counts).length;
+    const maxShare = slice.length ? Math.max(0, ...Object.values(counts)) / slice.length : 0;
+    return {
+        uniqueSources,
+        maxSourceShareAtK: maxShare,
+        sourceDiversityAtK: slice.length ? Math.min(1, uniqueSources / Math.min(3, slice.length)) : 0,
+    };
 }
 
 function rateForCategory(items, category, field) {
@@ -194,6 +211,8 @@ function summarizeSearchEval(rows) {
         mrr: avg('mrr'),
         ndcgAtK: avg('ndcgAtK'),
         requiredTypeCoverage: avg('requiredTypeCoverage'),
+        sourceDiversityAtK: avg('sourceDiversityAtK'),
+        maxSourceShareAtK: avg('maxSourceShareAtK'),
         landmarkHitRate: rateForCategory(items, 'landmark_rct', 'landmarkHit'),
         guidelineHitRate: rateForCategory(items, 'guideline', 'guidelineHit'),
         managementIntentHitRate: rateForCategory(items, 'management_intent', 'managementIntentHit'),
@@ -272,4 +291,5 @@ module.exports = {
     buildRelevanceMap,
     articleMatchesType,
     inferQueryCategory,
+    sourceDiversityAtK,
 };

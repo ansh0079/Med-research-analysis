@@ -342,6 +342,8 @@ async function applyPicoRerankStage({
     serverConfig,
     fetchImpl,
     telemetry,
+    cache = null,
+    specificity = 'moderate',
 }) {
     if (!shouldUsePicoReranker() || !pico || !Array.isArray(articles) || articles.length < 2) {
         return articles;
@@ -355,6 +357,7 @@ async function applyPicoRerankStage({
     try {
         const reranked = await rerankArticlesByPico(articles, picoProfile, {
             ai,
+            cache,
             serverConfig,
             logWarn: (meta, message) => {
                 const payload = typeof meta === 'object' && meta !== null ? meta : {};
@@ -374,7 +377,9 @@ async function applyPicoRerankStage({
                 rerankedCount: Array.isArray(reranked) ? reranked.length : 0,
             };
         }
-        const filtered = selectTopRerankedArticles(reranked);
+        const filtered = selectTopRerankedArticles(reranked, {
+            strictMode: specificity === 'strict',
+        });
         const blended = blendPicoWithEvidenceOrder(filtered, articles);
         return mergeRerankedWithRemainder(blended, articles, Math.max(safeLimit, articles.length));
     } catch (err) {
@@ -433,6 +438,72 @@ function annotateSearchRankMetadata(articles, bouquetRanking = []) {
             } : undefined,
         };
     });
+}
+
+/**
+ * After rerank, keep top-K from being dominated by one source or journal
+ * when alternatives exist. Pinned landmarks always keep their relative order.
+ */
+function enforceSourceDiversity(articles, { topK = 10, maxSourceShare = 0.6, maxJournalShare = 0.5 } = {}) {
+    if (!Array.isArray(articles) || articles.length <= 2) return articles;
+    const k = Math.min(Math.max(1, Number(topK) || 10), articles.length);
+    const maxSource = Math.max(2, Math.ceil(k * maxSourceShare));
+    const maxJournal = Math.max(2, Math.ceil(k * maxJournalShare));
+    const selected = [];
+    const rest = [];
+    const sourceCounts = Object.create(null);
+    const journalCounts = Object.create(null);
+
+    const journalOf = (article) => String(article?.source || article?.journal?.name || article?.journal || '')
+        .toLowerCase()
+        .trim();
+    const sourceOf = (article) => String(article?._source || 'unknown').toLowerCase();
+
+    for (const article of articles) {
+        if (article?._pinnedLandmark && selected.length < k) {
+            selected.push(article);
+            sourceCounts[sourceOf(article)] = (sourceCounts[sourceOf(article)] || 0) + 1;
+            const journal = journalOf(article);
+            if (journal) journalCounts[journal] = (journalCounts[journal] || 0) + 1;
+        } else {
+            rest.push(article);
+        }
+    }
+
+    while (selected.length < k && rest.length) {
+        const idx = rest.findIndex((article) => {
+            const src = sourceOf(article);
+            const journal = journalOf(article);
+            if ((sourceCounts[src] || 0) >= maxSource) return false;
+            if (journal && (journalCounts[journal] || 0) >= maxJournal) return false;
+            return true;
+        });
+        const pick = idx >= 0 ? rest.splice(idx, 1)[0] : rest.shift();
+        selected.push(pick);
+        sourceCounts[sourceOf(pick)] = (sourceCounts[sourceOf(pick)] || 0) + 1;
+        const journal = journalOf(pick);
+        if (journal) journalCounts[journal] = (journalCounts[journal] || 0) + 1;
+    }
+
+    return [...selected, ...rest];
+}
+
+function sourceDiversityMetrics(articles, k = 10) {
+    const slice = (Array.isArray(articles) ? articles : []).slice(0, Math.max(1, k));
+    const counts = Object.create(null);
+    for (const article of slice) {
+        const src = String(article?._source || 'unknown').toLowerCase();
+        counts[src] = (counts[src] || 0) + 1;
+    }
+    const uniqueSources = Object.keys(counts).length;
+    const maxShare = slice.length
+        ? Math.max(...Object.values(counts)) / slice.length
+        : 0;
+    return {
+        uniqueSources,
+        maxSourceShareAtK: maxShare,
+        sourceDiversityAtK: slice.length ? Math.min(1, uniqueSources / Math.min(3, slice.length)) : 0,
+    };
 }
 
 function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMeshTerms = [], parsedYearFilters = [], pico = null, queryAliases = [] }) {
@@ -619,7 +690,10 @@ async function fetchAndRankSearchArticles({
             serverConfig,
             fetchImpl,
             telemetry,
+            cache,
+            specificity,
         }));
+        articles = enforceSourceDiversity(articles, { topK: safeLimit });
         timings.rankMs = Date.now() - rankStarted;
         _trace('afterRerank', articles);
 
@@ -701,6 +775,8 @@ module.exports = {
     mergeRerankedWithRemainder,
     blendPicoWithEvidenceOrder,
     applyPicoRerankStage,
+    enforceSourceDiversity,
+    sourceDiversityMetrics,
     yearInFilters,
     filterByStudyType,
     prefetchTeachingArtifacts,

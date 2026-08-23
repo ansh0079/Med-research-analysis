@@ -54,6 +54,27 @@ function buildPicoCacheKey(caseText) {
     return `pico:profile:${hash}`;
 }
 
+const PICO_RERANK_CACHE_TTL_SECONDS = 3600;
+
+function articleUidKey(article) {
+    return String(article?.uid || article?.pmid || article?.doi || '').trim();
+}
+
+/**
+ * Cache key for a PICO rerank call: profile + ordered candidate UIDs.
+ */
+function buildPicoRerankCacheKey(picoProfile, articles) {
+    const profileHash = crypto.createHash('sha256')
+        .update(JSON.stringify(picoProfile || {}))
+        .digest('hex')
+        .slice(0, 16);
+    const uidHash = crypto.createHash('sha256')
+        .update((Array.isArray(articles) ? articles : []).map(articleUidKey).join('|'))
+        .digest('hex')
+        .slice(0, 16);
+    return `pico:rerank:${profileHash}:${uidHash}`;
+}
+
 /**
  * Build the prompt to extract a structured PICO + clinical context profile from free-text case data.
  */
@@ -297,23 +318,47 @@ function computeHeuristicScore(article, picoProfile) {
  * @param {Function} [options.logWarn]
  * @returns {Promise<object[]>} articles augmented with `_rerank` score object, sorted descending
  */
-async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, logWarn }) {
+async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, logWarn, cache } = {}) {
     if (!Array.isArray(articles) || articles.length === 0) {
         return [];
     }
 
     const safeArticles = articles.slice(0, MAX_ARTICLES_TO_RERANK);
+    const rerankCacheKey = buildPicoRerankCacheKey(picoProfile, safeArticles);
+    if (cache && typeof cache.get === 'function') {
+        try {
+            const cached = await cache.get(rerankCacheKey);
+            if (Array.isArray(cached) && cached.length) {
+                logger.debug({ rerankCacheKey }, 'PICO rerank cache hit');
+                return cached;
+            }
+        } catch (err) {
+            logWarn?.({ err, rerankCacheKey }, 'PICO rerank cache read failed');
+        }
+    }
+
+    const remember = async (ranked) => {
+        if (cache && typeof cache.set === 'function' && Array.isArray(ranked) && ranked.length) {
+            try {
+                await cache.set(rerankCacheKey, ranked, PICO_RERANK_CACHE_TTL_SECONDS);
+            } catch (err) {
+                logWarn?.({ err, rerankCacheKey }, 'PICO rerank cache write failed');
+            }
+        }
+        return ranked;
+    };
+
     const isEmptyProfile = !picoProfile || Object.values(picoProfile).every((v) => !v);
 
     // If no meaningful PICO profile, fall back to heuristic + study type sorting
     if (isEmptyProfile || !ai) {
         logWarn?.({ articleCount: safeArticles.length }, 'No PICO profile or AI service; using heuristic fallback');
-        return safeArticles
+        return remember(safeArticles
             .map((article) => ({
                 ...article,
                 _rerank: computeHeuristicScore(article, picoProfile || {}),
             }))
-            .sort((a, b) => b._rerank.overallScore - a._rerank.overallScore);
+            .sort((a, b) => b._rerank.overallScore - a._rerank.overallScore));
     }
 
     const prompt = buildBatchScoringPrompt(picoProfile, safeArticles);
@@ -335,12 +380,12 @@ async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, l
 
     // If LLM scoring failed, use heuristic fallback
     if (!scores) {
-        return safeArticles
+        return remember(safeArticles
             .map((article) => ({
                 ...article,
                 _rerank: computeHeuristicScore(article, picoProfile),
             }))
-            .sort((a, b) => b._rerank.overallScore - a._rerank.overallScore);
+            .sort((a, b) => b._rerank.overallScore - a._rerank.overallScore));
     }
 
     // Build a map of articleIndex -> score
@@ -358,8 +403,10 @@ async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, l
     // Sort by overallScore descending
     augmented.sort((a, b) => b._rerank.overallScore - a._rerank.overallScore);
 
-    return augmented;
+    return remember(augmented);
 }
+
+const STRICT_EXCLUSION_FLAGS = ['population_mismatch', 'outcome_mismatch', 'design_too_weak'];
 
 /**
  * Filter out articles with severe mismatches and return the top N.
@@ -368,16 +415,27 @@ async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, l
  * @param {object} [options]
  * @param {number} [options.topN=10]
  * @param {boolean} [options.strictPopulation=true] — discard articles flagged population_mismatch
+ * @param {boolean} [options.strictMode=false] — also discard outcome_mismatch + design_too_weak
  * @returns {object[]} filtered and sliced articles
  */
-function selectTopRerankedArticles(rerankedArticles, { topN = MAX_ARTICLES_TO_RETURN, strictPopulation = true } = {}) {
+function selectTopRerankedArticles(rerankedArticles, {
+    topN = MAX_ARTICLES_TO_RETURN,
+    strictPopulation = true,
+    strictMode = false,
+} = {}) {
     if (!Array.isArray(rerankedArticles)) return [];
 
+    const blocked = new Set();
+    if (strictPopulation) blocked.add('population_mismatch');
+    if (strictMode) {
+        for (const flag of STRICT_EXCLUSION_FLAGS) blocked.add(flag);
+    }
+
     let filtered = rerankedArticles;
-    if (strictPopulation) {
+    if (blocked.size) {
         filtered = rerankedArticles.filter((a) => {
             const flags = a._rerank?.exclusionFlags || [];
-            return !flags.includes('population_mismatch');
+            return !flags.some((flag) => blocked.has(flag));
         });
     }
 
@@ -396,6 +454,9 @@ module.exports = {
     computeHeuristicScore,
     rankForStudyType,
     buildPicoCacheKey,
+    buildPicoRerankCacheKey,
+    PICO_RERANK_CACHE_TTL_SECONDS,
+    STRICT_EXCLUSION_FLAGS,
     // Constants for testing / tuning
     MAX_ARTICLES_TO_RERANK,
     MAX_ARTICLES_TO_RETURN,

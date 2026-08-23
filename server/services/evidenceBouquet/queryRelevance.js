@@ -1,4 +1,5 @@
 const { STOPWORDS } = require('./constants');
+const { stemTerm } = require('./stemmer');
 
 // Common clinical abbreviations that are ≤3 chars but must not be filtered out
 const CLINICAL_ABBREVIATIONS = new Set([
@@ -6,38 +7,30 @@ const CLINICAL_ABBREVIATIONS = new Set([
     'dm', 't2d', 'copd', 'uti', 'acs', 'cad', 'chf', 'pad', 'ild',
 ]);
 
+const PEDIATRIC_PHRASE = /\b(pediatric|paediatric|children?|childhood|infant|neonate|neonatal|adolescent|adolescen(?:t|ce))\b/i;
+const ADULT_PHRASE = /\b(adults?|elderly|geriatric|geriatrics)\b/i;
+
+function hasPediatricPhrase(text) {
+    return PEDIATRIC_PHRASE.test(String(text || ''));
+}
+
+function hasAdultPhrase(text) {
+    return ADULT_PHRASE.test(String(text || ''));
+}
+
 function matchesPopulationFilter(article, query) {
     const q = String(query || '').toLowerCase();
     const text = `${String(article.title || '')} ${String(article.abstract || '')}`.toLowerCase();
 
-    // If query explicitly mentions pediatric/children
-    if (/\b(pediatric|children?|infant|neonate|adolescent)\b/.test(q)) {
-        // Penalize if article is clearly adult-only
-        if (/\b(adults?|elderly|geriatric|aged)\b/.test(text) && !/\b(pediatric|children?|infant|adolescent)\b/.test(text)) {
-            return false;
-        }
+    // Pediatric queries: keep mixed adult+pediatric papers when a pediatric phrase is present.
+    if (hasPediatricPhrase(q)) {
+        if (hasAdultPhrase(text) && !hasPediatricPhrase(text)) return false;
     }
-    // If query explicitly mentions adult
-    if (/\b(adults?|elderly|geriatric)\b/.test(q)) {
-        // Penalize if article is clearly pediatric-only
-        if (/\b(pediatric|children?|infant|neonate|adolescent)\b/.test(text) && !/\b(adults?|elderly|geriatric|aged)\b/.test(text)) {
-            return false;
-        }
+    // Adult queries: drop pediatric-only papers, but keep mixed-age articles.
+    if (hasAdultPhrase(q)) {
+        if (hasPediatricPhrase(text) && !hasAdultPhrase(text)) return false;
     }
     return true;
-}
-
-// Strip common suffixes to get a root form for fuzzy matching
-function stemTerm(t) {
-    return t
-        .replace(/ations?$/, '')
-        .replace(/tions?$/, '')
-        .replace(/ings?$/, '')
-        .replace(/ments?$/, '')
-        .replace(/ities$/, 'ity')
-        .replace(/ies$/, 'y')
-        .replace(/es$/, '')
-        .replace(/s$/, '');
 }
 
 function meshRelevanceRatio(searchText, queryMeshTerms = []) {
@@ -166,9 +159,12 @@ function scorePicoRelevance(article, pico) {
 
 module.exports = {
     matchesPopulationFilter,
+    hasPediatricPhrase,
+    hasAdultPhrase,
     meshRelevanceRatio,
     queryMatchScore,
     queryAliasMatchScore,
     isOffTopic,
     scorePicoRelevance,
+    stemTerm,
 };
