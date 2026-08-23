@@ -25,7 +25,20 @@ const db = require('../database');
 const { fetchWithTimeout: fetch } = require('../server/utils/fetch');
 const { serverConfig } = require('../config');
 const { createAiService } = require('../server/services/ai/aiService');
-const { callFirstHealthyProvider } = require('../server/services/guidelineService');
+const { getProviderCandidates } = require('../server/utils/aiProvider');
+
+// Inline version — avoids dependency on guidelineService export order
+async function callFirstHealthyProvider(aiService, srvConfig, prompt, label) {
+    const candidates = getProviderCandidates({}, srvConfig);
+    for (const candidate of candidates) {
+        try {
+            return await aiService.callText(prompt, candidate.provider, candidate.model, { maxTokens: 4096 });
+        } catch (err) {
+            console.warn(`[Ingest] Provider ${candidate.provider} failed for ${label}: ${err.message}`);
+        }
+    }
+    throw new Error(`All AI providers failed for: ${label}`);
+}
 
 const CONCURRENCY = Number(process.env.INGEST_CONCURRENCY || 3);
 const SKIP_IF_GTE = Number(process.env.INGEST_SKIP_COVERED || 3);
@@ -68,12 +81,21 @@ async function sleep(ms) {
     return new Promise(r => setTimeout(r, ms));
 }
 
+// Topic names are long and specific ("Mechanical thrombectomy: extended time windows, ASPECT scores, CT perfusion").
+// PubMed needs the core clinical term, not the full curriculum title.
+function simplifyTopicForSearch(topicName) {
+    // Take the part before the first colon, then first 8 words
+    const core = topicName.split(/[:–—]/)[0].trim();
+    return core.split(/\s+/).slice(0, 8).join(' ');
+}
+
 async function fetchPubmedGuidelineIds(topic, ncbiKey, ncbiEmail) {
     const apiKeyParam = ncbiKey ? `&api_key=${ncbiKey}` : '';
     const emailParam = ncbiEmail ? `&tool=medsearch&email=${encodeURIComponent(ncbiEmail)}` : '';
+    const searchTerm = simplifyTopicForSearch(topic);
     const guidelineFilter = '(Guideline[pt] OR "Practice Guideline"[pt] OR "Consensus Development Conference"[pt])';
     const langFilter = 'English[lang]';
-    const query = `(${topic}) AND ${guidelineFilter} AND ${langFilter}`;
+    const query = `(${searchTerm}) AND ${guidelineFilter} AND ${langFilter}`;
     const url = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${encodeURIComponent(query)}&retmax=10&retmode=json&sort=date${apiKeyParam}${emailParam}`;
     try {
         const res = await fetch(url, { timeout: 15000 });
