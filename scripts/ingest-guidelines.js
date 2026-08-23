@@ -255,14 +255,34 @@ async function ingestTopic(topicName, { aiService }) {
 
     let recs;
     try {
-        // jsonMode should return bare JSON; strip fences as fallback for non-compliant providers
+        // Strip markdown fences then try multiple JSON shapes
         const cleaned = rawText.replace(/```json?\s*/gi, '').replace(/```\s*/g, '').trim();
-        const jsonMatch = cleaned.match(/\[[\s\S]*\]/);
-        const jsonStr = jsonMatch ? jsonMatch[0] : cleaned;
-        recs = JSON.parse(jsonStr);
+
+        // Try 1: bare array [...]
+        const arrayMatch = cleaned.match(/\[[\s\S]*\]/);
+        if (arrayMatch) {
+            recs = JSON.parse(arrayMatch[0]);
+        } else {
+            // Try 2: full document then extract nested array
+            try {
+                const doc = JSON.parse(cleaned);
+                if (Array.isArray(doc)) {
+                    recs = doc;
+                } else {
+                    // {"recommendations": [...]} or {"guidelines": [...]}
+                    const nested = Object.values(doc).find(v => Array.isArray(v));
+                    recs = nested || [doc]; // single object → wrap
+                }
+            } catch {
+                // Try 3: NDJSON (one object per line)
+                recs = cleaned.split('\n')
+                    .map(l => l.trim()).filter(l => l.startsWith('{') && l.endsWith('}'))
+                    .map(l => { try { return JSON.parse(l); } catch { return null; } })
+                    .filter(Boolean);
+            }
+        }
     } catch (parseErr) {
-        // Log the first 400 chars of the cleaned text to diagnose
-        const preview = rawText.replace(/```json?\s*/gi, '').replace(/```\s*/g, '').trim().slice(0, 400);
+        const preview = rawText.replace(/```json?\s*/gi, '').replace(/```\s*/g, '').trim().slice(0, 200);
         console.warn(`[Ingest] JSON parse failed for "${topicName}" (${parseErr.message}) — cleaned: ${preview}`);
         return { topic: topicName, found: pmids.length, inserted: 0, skippedByVerb: 0 };
     }
