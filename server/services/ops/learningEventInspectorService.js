@@ -1,6 +1,7 @@
 'use strict';
 
 const { safeJsonParse } = require('../../../database/lib/helpers');
+const { normalizeSearchId } = require('../../../shared/searchId');
 
 /**
  * Learning Event Inspector: decision → shown item → interaction → reward → policy update.
@@ -23,7 +24,7 @@ async function loadInteractionsForDecision(db, decision) {
              FROM search_result_impressions
              WHERE search_id = ? AND LOWER(article_uid) = LOWER(?)
              ORDER BY created_at DESC LIMIT 5`,
-            [Number(searchId), String(articleUid)]
+            [normalizeSearchId(searchId), String(articleUid)]
         ).catch(() => []);
         for (const row of impressions || []) {
             out.push({
@@ -47,8 +48,8 @@ async function loadInteractionsForDecision(db, decision) {
             [
                 String(userId),
                 String(articleUid),
-                searchId != null ? Number(searchId) : null,
-                searchId != null ? Number(searchId) : null,
+                normalizeSearchId(searchId),
+                normalizeSearchId(searchId),
             ]
         ).catch(() => []);
         for (const row of outcomes || []) {

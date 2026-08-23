@@ -1,6 +1,7 @@
 'use strict';
 
 const { safeJsonParse } = require('../lib/helpers');
+const { normalizeSearchId } = require('../../shared/searchId');
 
 module.exports = (Sup) => class extends Sup {
     async ensurePersonalizationArms(policyType, armIds = [], scopeKey = 'global') {
@@ -165,7 +166,7 @@ module.exports = (Sup) => class extends Sup {
                 userId ? String(userId) : null,
                 String(policyType),
                 String(armId),
-                searchId != null ? Number(searchId) : null,
+                normalizeSearchId(searchId),
                 topic ? String(topic).slice(0, 240) : null,
                 normalizedTopic ? String(normalizedTopic).slice(0, 240) : null,
                 articleUid ? String(articleUid).slice(0, 120) : null,
@@ -202,7 +203,7 @@ module.exports = (Sup) => class extends Sup {
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 String(userId),
-                searchId != null ? Number(searchId) : null,
+                normalizeSearchId(searchId),
                 impressionId != null ? Number(impressionId) : null,
                 String(articleUid).slice(0, 120),
                 claimKey ? String(claimKey).slice(0, 80) : null,

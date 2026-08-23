@@ -3,6 +3,7 @@
 const { safeJsonParse, toPgVectorLiteral, sqlAuthorityWeightedImpressionScore } = require('../lib/helpers');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
 const logger = require('../../server/config/logger');
+const { normalizeSearchId } = require('../../shared/searchId');
 
 module.exports = (Sup) => class extends Sup {
 // ==========================================
@@ -80,7 +81,7 @@ async recordSearchResultFeedback({ userId, sessionId, searchId, articleUid, feed
     const result = await this.kysely
         .insertInto('search_result_feedback')
         .values({
-            search_id: searchId != null ? Number(searchId) : null,
+            search_id: normalizeSearchId(searchId),
             user_id: userId || null,
             session_id: sessionId || null,
             article_uid: String(articleUid),
@@ -92,7 +93,7 @@ async recordSearchResultFeedback({ userId, sessionId, searchId, articleUid, feed
     if (userId && feedbackType === 'not_helpful' && typeof this.recordUserTopicNegativeArticleSignal === 'function') {
         let displayTopic = topic ? String(topic).trim() : '';
         if (!displayTopic && searchId != null) {
-            const search = await this.get(`SELECT query, normalized_topic FROM searches WHERE id = ? LIMIT 1`, [Number(searchId)]).catch((err) => {
+            const search = await this.get(`SELECT query, normalized_topic FROM searches WHERE id = ? LIMIT 1`, [normalizeSearchId(searchId)]).catch((err) => {
                 logger.warn({ err, searchId }, 'recordSearchResultFeedback search lookup failed');
                 return null;
             });
@@ -145,7 +146,7 @@ mapSearchGoldJudgmentRow(row) {
         id: row.id,
         query: row.query,
         normalizedTopic: row.normalized_topic || null,
-        searchId: row.search_id == null ? null : Number(row.search_id),
+        searchId: normalizeSearchId(row.search_id),
         articleUid: row.article_uid,
         articleTitle: row.article_title || null,
         label: row.label,
@@ -286,7 +287,7 @@ async recordSearchImpressions(searchId, sessionId, impressions, userId = null) {
     const now = new Date().toISOString();
     const uid = userId != null && String(userId).trim() ? String(userId).trim() : null;
     const values = impressions.map((imp) => ({
-        search_id: Number(searchId),
+        search_id: normalizeSearchId(searchId),
         session_id: sessionId || null,
         user_id: uid,
         article_uid: String(imp.articleUid),
@@ -314,7 +315,7 @@ async updateSearchImpressionInteraction(searchId, articleUid, { wasClicked, wasS
     let query = this.kysely
         .updateTable('search_result_impressions')
         .set(updates)
-        .where('search_id', '=', Number(searchId))
+        .where('search_id', '=', normalizeSearchId(searchId))
         .where('article_uid', '=', String(articleUid));
     if (actor?.userId) {
         query = query.where('user_id', '=', String(actor.userId));
@@ -329,7 +330,7 @@ async getImpressionsForSearch(searchId, { limit = 20 } = {}) {
     return this.kysely
         .selectFrom('search_result_impressions')
         .selectAll()
-        .where('search_id', '=', Number(searchId))
+        .where('search_id', '=', normalizeSearchId(searchId))
         .orderBy('position', 'asc')
         .limit(Math.min(Number(limit) || 20, 100))
         .execute();

@@ -1,6 +1,7 @@
 'use strict';
 
 const { emit } = require('../lib/eventBus');
+const { normalizeSearchId } = require('../../shared/searchId');
 
 const INTERACTION_EVENT_MAP = {
     click: 'paper_click',
@@ -26,7 +27,7 @@ function buildInteractionPayload({
         userId,
         sessionId,
         paperId: String(paperId || '').trim(),
-        searchId: searchId != null ? Number(searchId) : null,
+        searchId: normalizeSearchId(searchId),
         topic: topic ? String(topic).slice(0, 240) : null,
         duration: duration != null ? Number(duration) : null,
         sectionsRead: Array.isArray(sectionsRead) ? sectionsRead.slice(0, 12) : [],
