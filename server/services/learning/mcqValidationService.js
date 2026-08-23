@@ -32,6 +32,55 @@ function alternateModel(provider, PINNED_MODELS) {
  * @param {object} deps.PINNED_MODELS - Model map { claude, gemini, mistral }
  * @param {object} [deps.serverConfig] - Used to pick a cross-check provider when primary is claude
  */
+/**
+ * Reject MCQs whose explanations cite a source that was never supplied.
+ *
+ * The prompt shows the model a numbered list of articles and guidelines, and asks it to
+ * cite them by index. Nothing previously checked those indices came back in range, so a
+ * model could attribute a claim to "source 7" when only five articles existed. To a
+ * reader that renders as a real citation, which is worse than no citation at all.
+ *
+ * @param {Array<object>} questions questions carrying sourceIndices
+ * @param {number} articleCount number of articles actually shown to the model
+ * @param {number} guidelineCount number of guidelines actually shown to the model
+ * @param {{requireCitation?: boolean}} [options]
+ * @returns {{ok: boolean, issues: Array<{mcqIndex: number, reason: string}>}}
+ */
+function validateSourceReferences(questions, articleCount, guidelineCount, options = {}) {
+const { requireCitation = false } = options;
+const maxIndex = Math.max(Number(articleCount) || 0, Number(guidelineCount) || 0);
+const issues = [];
+
+(Array.isArray(questions) ? questions : []).forEach((q, i) => {
+    const mcqIndex = i + 1;
+    const raw = Array.isArray(q?.sourceIndices) ? q.sourceIndices : [];
+    const indices = raw
+        .map((n) => Number(n))
+        .filter((n) => Number.isFinite(n));
+
+    if (raw.length !== indices.length) {
+        issues.push({ mcqIndex, reason: 'sourceIndices contains a non-numeric entry' });
+    }
+    if (!indices.length) {
+        if (requireCitation) {
+            issues.push({ mcqIndex, reason: 'explanation cites no source' });
+        }
+        return;
+    }
+    const orphaned = indices.filter((n) => !Number.isInteger(n) || n < 1 || n > maxIndex);
+    if (orphaned.length) {
+        issues.push({
+            mcqIndex,
+            reason: maxIndex === 0
+                ? `cites source(s) ${orphaned.join(', ')} but no sources were supplied`
+                : `cites source(s) ${orphaned.join(', ')} outside the supplied range 1-${maxIndex}`,
+        });
+    }
+});
+
+return { ok: issues.length === 0, issues };
+}
+
 function createMcqValidationService({ ai, db, logger, PINNED_MODELS, serverConfig }) {
     async function callModelStructured(prompt, provider, model, topic, operation, { allowBudgetSkip = false } = {}) {
         const opts = {
@@ -238,6 +287,13 @@ ${JSON.stringify(compact)}`;
             recommendation: String(g.recommendationText || g.recommendation_text || '').slice(0, 500),
         }));
 
+        // Orphaned citations are a hard reject: they are indistinguishable from real
+        // citations downstream, so they must not reach a learner.
+        const citationCheck = validateSourceReferences(compact, sourceContext.length, guidelineContext.length);
+        if (!citationCheck.ok) {
+            logger?.warn?.({ topic, issues: citationCheck.issues }, 'MCQ batch contains orphaned source citations');
+        }
+
         const primaryProvider = provider || 'gemini';
         let primary;
         try {
@@ -329,4 +385,4 @@ ${JSON.stringify(compact)}`;
     return { validateBatch, recordValidationResult };
 }
 
-module.exports = { createMcqValidationService, alternateProvider, alternateModel };
+module.exports = { createMcqValidationService, alternateProvider, alternateModel, validateSourceReferences };
