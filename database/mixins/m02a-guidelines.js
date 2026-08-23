@@ -3,6 +3,31 @@
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
 const { assessGuidelineQuality } = require('../../server/services/guidelineQualityService');
 
+/**
+ * A guideline row is only servable if its text actually reads as a recommendation.
+ *
+ * The extraction prompt asked a model for "specific actionable recommendations" using
+ * only the PubMed *abstract* of a guideline publication as input. Abstracts mostly
+ * contain scope and background, so the model returned what was there: disease
+ * definitions ("Asthma is a complex disorder characterised by..."), epidemiology, and
+ * meta-commentary about guidelines -- each then rendered to a clinician as though a
+ * named body had recommended it. An audit of 9,999 rows found only ~1,995 containing
+ * any recommendation verb.
+ *
+ * This gate is deliberately at the serving layer rather than in extraction: it applies
+ * to the rows already stored, and cannot be bypassed by a future write path.
+ */
+const RECOMMENDATION_VERB_RE =
+    /(should|should not|recommend|recommended|recommends|must|initiate|consider|offer|avoid|do not|start|titrate|discontinue|prescribe|screen|monitor|refer|first-line|second-line|indicated|contraindicated)/i;
+
+const MIN_RECOMMENDATION_LENGTH = 25;
+
+function isServableGuideline(row) {
+    const text = String(row?.recommendation_text || '').trim();
+    if (text.length < MIN_RECOMMENDATION_LENGTH) return false;
+    return RECOMMENDATION_VERB_RE.test(text);
+}
+
 module.exports = (Sup) => class extends Sup {
 // Guideline Memory
 // ==========================================
@@ -117,7 +142,9 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
          LIMIT ?`,
         [...keys, statusFilter, statusFilter, safeLimit]
     );
-    return rows.map((row) => this.mapGuidelineRow(row));
+    // Filter after the query so the limit still applies to the servable set rather
+    // than being consumed by rows that get dropped.
+    return rows.filter(isServableGuideline).map((row) => this.mapGuidelineRow(row));
 }
 
 async listGuidelines({ query = '', status = '', sourceBody = '', limit = 50, offset = 0, onlyActive = false } = {}) {

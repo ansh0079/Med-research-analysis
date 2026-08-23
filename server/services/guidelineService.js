@@ -386,6 +386,7 @@ module.exports = {
   searchGuidelines,
   buildAlignmentPrompt,
   checkGuidelineAlignment,
+  callFirstHealthyProvider,
   discoverGuidelinesForTopic,
   isDiscoveryInFlight,
   wasDiscoveryAttempted,
