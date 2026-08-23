@@ -502,7 +502,7 @@ async recordLowRecallSearch({ query, resultCount = 0, sources = [], expandedAlia
             result_count = excluded.result_count,
             source_list = excluded.source_list,
             expanded_aliases = excluded.expanded_aliases,
-            attempt_count = attempt_count + 1,
+            attempt_count = low_recall_searches.attempt_count + 1,
             last_seen_at = excluded.last_seen_at`,
         [normalized, display, Number(resultCount || 0), sourceJson, aliasJson, now, now]
     );
