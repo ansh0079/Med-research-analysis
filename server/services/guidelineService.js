@@ -6,6 +6,7 @@
 const { fetchWithTimeout: fetch } = require('../utils/fetch');
 const { PINNED_MODELS } = require('./aiService');
 const { z } = require('zod');
+const { getProviderCandidates } = require('../utils/aiProvider');
 
 /**
  * Search PubMed for relevant clinical guidelines on a topic.
@@ -166,19 +167,47 @@ function parseAlignmentResponse(rawText, guidelinesFound) {
   return fallback('Could not parse AI alignment response.');
 }
 
+/**
+ * Call the first AI provider that actually succeeds.
+ *
+ * The previous `if (keys.anthropic) ... else if (keys.gemini)` shape picked a provider
+ * from key *presence* and never retried, so a configured-but-failing provider took the
+ * whole feature down: an Anthropic key with an exhausted credit balance made guideline
+ * discovery and synthesis return 503 while a healthy Gemini key sat unused. Provider
+ * choice must be decided by the call succeeding, not by a key existing.
+ *
+ * @param {object} aiService
+ * @param {object} serverConfig
+ * @param {string} prompt
+ * @param {string} label for logging
+ * @returns {Promise<string>} raw model text
+ */
+async function callFirstHealthyProvider(aiService, serverConfig, prompt, label) {
+  const candidates = getProviderCandidates({}, serverConfig);
+  if (!candidates.length) throw new Error(`No AI provider configured for ${label}`);
+  let lastError = null;
+  for (const candidate of candidates) {
+    try {
+      return await aiService.callText(prompt, candidate.provider, candidate.model);
+    } catch (err) {
+      lastError = err;
+      logger.warn(
+        { err, provider: candidate.provider, model: candidate.model, label },
+        'AI provider failed; trying fallback if available'
+      );
+    }
+  }
+  throw lastError || new Error(`All AI providers failed for ${label}`);
+}
+
 async function checkGuidelineAlignment(topic, synthesisConsensus, articles, keys, aiService) {
   const guidelines = await searchGuidelines(topic, keys.ncbiKey, keys.ncbiEmail);
 
   const prompt = buildAlignmentPrompt(topic, synthesisConsensus, guidelines, articles);
 
-  let rawText;
-  if (keys.gemini) {
-    rawText = await aiService.callGemini(prompt, PINNED_MODELS.geminiQuality);
-  } else if (keys.mistral) {
-    rawText = await aiService.callMistralAI(prompt, PINNED_MODELS.mistral);
-  } else {
-    throw new Error('No AI provider configured for guideline alignment');
-  }
+  const rawText = await callFirstHealthyProvider(
+    aiService, { keys }, prompt, 'guideline alignment'
+  );
 
   // Parse and validate. A greedy /\{[\s\S]*\}/ match plus a bare JSON.parse only proved
   // the text was *parseable*, not that it had the expected shape -- a model returning
@@ -288,14 +317,12 @@ async function discoverGuidelinesForTopic(topic, { db, serverConfig, aiService }
 
       const prompt = buildGuidelineExtractionPrompt(topic, withAbstracts);
       let rawText;
-      if (serverConfig.keys.anthropic) {
-        rawText = await aiService.callClaude(prompt, PINNED_MODELS.claude);
-      } else if (serverConfig.keys.gemini) {
-        rawText = await aiService.callGemini(prompt, PINNED_MODELS.gemini);
-      } else if (serverConfig.keys.mistral) {
-        rawText = await aiService.callMistralAI(prompt, PINNED_MODELS.mistral);
-      } else {
-        logger.warn('[GuidelineDiscovery] No AI provider configured');
+      try {
+        rawText = await callFirstHealthyProvider(
+          aiService, serverConfig, prompt, 'guideline discovery'
+        );
+      } catch (err) {
+        logger.warn({ err, topic }, '[GuidelineDiscovery] All AI providers failed');
         return [];
       }
 

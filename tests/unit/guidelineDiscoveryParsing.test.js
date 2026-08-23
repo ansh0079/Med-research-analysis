@@ -49,7 +49,7 @@ describe('discoverGuidelinesForTopic JSON parsing', () => {
         mockEsearchThenEfetch({ ids: ['211'], efetchXml: buildAbstractXml('211') });
         const db = makeDb();
         const aiService = {
-            callClaude: jest.fn().mockResolvedValue(JSON.stringify([
+            callText: jest.fn().mockResolvedValue(JSON.stringify([
                 { sourceBody: 'AHA', sourceYear: 2024, recommendationText: 'Do the thing.' },
             ])),
         };
@@ -64,7 +64,7 @@ describe('discoverGuidelinesForTopic JSON parsing', () => {
         mockEsearchThenEfetch({ ids: ['212'], efetchXml: buildAbstractXml('212') });
         const db = makeDb();
         const aiService = {
-            callClaude: jest.fn().mockResolvedValue(
+            callText: jest.fn().mockResolvedValue(
                 '```json\n[{"sourceBody":"ESC","sourceYear":2023,"recommendationText":"Do it."}]\n```'
             ),
         };
@@ -78,7 +78,7 @@ describe('discoverGuidelinesForTopic JSON parsing', () => {
         mockEsearchThenEfetch({ ids: ['213'], efetchXml: buildAbstractXml('213') });
         const db = makeDb();
         const aiService = {
-            callClaude: jest.fn().mockResolvedValue('[{"sourceBody":"WHO","recommendationText":"Truncated'),
+            callText: jest.fn().mockResolvedValue('[{"sourceBody":"WHO","recommendationText":"Truncated'),
         };
 
         const result = await discoverGuidelinesForTopic('malaria main', { db, serverConfig, aiService });
@@ -91,7 +91,7 @@ describe('discoverGuidelinesForTopic JSON parsing', () => {
         mockEsearchThenEfetch({ ids: ['214'], efetchXml: buildAbstractXml('214') });
         const db = makeDb();
         const aiService = {
-            callClaude: jest.fn().mockResolvedValue('I could not find any guideline recommendations.'),
+            callText: jest.fn().mockResolvedValue('I could not find any guideline recommendations.'),
         };
 
         const result = await discoverGuidelinesForTopic('rare disease x main', { db, serverConfig, aiService });
@@ -103,7 +103,7 @@ describe('discoverGuidelinesForTopic JSON parsing', () => {
         mockEsearchThenEfetch({ ids: ['215'], efetchXml: buildAbstractXml('215') });
         const db = makeDb();
         const aiService = {
-            callClaude: jest.fn().mockResolvedValue(JSON.stringify([
+            callText: jest.fn().mockResolvedValue(JSON.stringify([
                 { sourceBody: 'NICE' },
                 { recommendationText: 'No source body given.' },
                 { sourceBody: 'IDSA', recommendationText: 'Valid one.' },
@@ -122,11 +122,11 @@ describe('discoverGuidelinesForTopic JSON parsing', () => {
             json: async () => ({ esearchresult: { idlist: [] } }),
         }));
         const db = makeDb();
-        const aiService = { callClaude: jest.fn() };
+        const aiService = { callText: jest.fn() };
 
         const result = await discoverGuidelinesForTopic('extremely obscure topic main', { db, serverConfig, aiService });
 
         expect(result).toEqual([]);
-        expect(aiService.callClaude).not.toHaveBeenCalled();
+        expect(aiService.callText).not.toHaveBeenCalled();
     });
 });
