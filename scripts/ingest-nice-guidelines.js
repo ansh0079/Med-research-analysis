@@ -109,6 +109,8 @@ function parseNiceRecommendations(html, ref) {
         if (!RECOMMENDATION_RE.test(text)) continue;
         // Skip meta-commentary
         if (/\bthis guideline\b|\bmore information\b|\bsee also\b|\bappendix\b|\bfull guideline\b/i.test(text) && text.length < 100) continue;
+        // Skip JavaScript/tracking noise
+        if (/function\s*\(|window\[|gtm\.start|dataLayer|googletag|addEventListener/i.test(text)) continue;
         recs.push(text);
     }
     return [...new Set(recs)]; // deduplicate
