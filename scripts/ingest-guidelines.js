@@ -32,7 +32,7 @@ async function callFirstHealthyProvider(aiService, srvConfig, prompt, label) {
     const candidates = getProviderCandidates({}, srvConfig);
     for (const candidate of candidates) {
         try {
-            return await aiService.callText(prompt, candidate.provider, candidate.model, { maxOutputTokens: 4096, timeoutMs: 60000 });
+            return await aiService.callText(prompt, candidate.provider, candidate.model, { maxOutputTokens: 4096, timeoutMs: 60000, jsonMode: true });
         } catch (err) {
             console.warn(`[Ingest] Provider ${candidate.provider} failed for ${label}: ${err.message}`);
         }
@@ -255,12 +255,15 @@ async function ingestTopic(topicName, { aiService }) {
 
     let recs;
     try {
-        // Strip markdown fences, then find the first JSON array
+        // jsonMode should return bare JSON; strip fences as fallback for non-compliant providers
         const cleaned = rawText.replace(/```json?\s*/gi, '').replace(/```\s*/g, '').trim();
         const jsonMatch = cleaned.match(/\[[\s\S]*\]/);
-        recs = JSON.parse(jsonMatch ? jsonMatch[0] : cleaned);
-    } catch {
-        console.warn(`[Ingest] JSON parse failed for "${topicName}" — raw: ${rawText.slice(0, 200)}`);
+        const jsonStr = jsonMatch ? jsonMatch[0] : cleaned;
+        recs = JSON.parse(jsonStr);
+    } catch (parseErr) {
+        // Log the first 400 chars of the cleaned text to diagnose
+        const preview = rawText.replace(/```json?\s*/gi, '').replace(/```\s*/g, '').trim().slice(0, 400);
+        console.warn(`[Ingest] JSON parse failed for "${topicName}" (${parseErr.message}) — cleaned: ${preview}`);
         return { topic: topicName, found: pmids.length, inserted: 0, skippedByVerb: 0 };
     }
     if (!Array.isArray(recs)) return { topic: topicName, found: pmids.length, inserted: 0, skippedByVerb: 0 };
