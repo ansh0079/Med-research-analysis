@@ -12,7 +12,9 @@ const {
     TEACHING_STRATEGY_ARMS,
     CASE_DIFFICULTY_ARMS,
     caseDifficultyArmId,
+    RECOMMENDATION_STRATEGY_ARMS,
     RECOMMENDATION_ARM_BY_TYPE,
+    DUE_REVIEW_FLOOR_SLOT,
     MIN_PULLS_FOR_USER_ARM,
     FULL_PULLS_FOR_USER_ARM,
 } = require('./constants');
@@ -35,7 +37,11 @@ const {
     recordSearchRankingDecisions,
 } = require('./searchRankingPolicy');
 
-const { applyRecommendationBandit } = require('./recommendationPolicy');
+const {
+    applyRecommendationBandit,
+    applyDueReviewPriorityFloor,
+    isDueReviewItem,
+} = require('./recommendationPolicy');
 const { selectSynopsisStyleArm } = require('./synopsisStylePolicy');
 const { selectTeachingStrategyArm } = require('./teachingStrategyPolicy');
 const { selectCaseDifficultyArm } = require('./caseDifficultyPolicy');
@@ -59,7 +65,11 @@ module.exports = {
     contextualArmPriorBoost,
     chooseArmBySamplesContextual,
     softmaxPropensities,
+    RECOMMENDATION_STRATEGY_ARMS,
     RECOMMENDATION_ARM_BY_TYPE,
+    DUE_REVIEW_FLOOR_SLOT,
+    applyDueReviewPriorityFloor,
+    isDueReviewItem,
     MIN_PULLS_FOR_USER_ARM,
     FULL_PULLS_FOR_USER_ARM,
     isBanditEnabled,

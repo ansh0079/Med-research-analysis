@@ -24,6 +24,7 @@ const SYNOPSIS_STAGE_STRUCTURE = {
 const {
     buildGuidelineContextBlock,
     buildTopicKnowledgeBlock,
+    buildFullTextExcerptsBlock,
     safeText,
 } = require('./contextBuilders');
 
@@ -133,23 +134,7 @@ function buildSynopsisPrompt(article, context = {}) {
     const explanationPreferencesText = formatExplanationPreferences(context.explanationPreferences);
     const styleInstruction = formatSynopsisStyleInstruction(context.synopsisStyle);
 
-    // Build full-text block when available (same section order as synthesis prompt)
-    let fullTextBlock = '';
-    if (article._fullTextIndexed && article._fullTextSections) {
-        const sections = article._fullTextSections;
-        const ordered = ['methods', 'results', 'discussion', 'conclusion'];
-        const parts = [];
-        const sectionLimits = { methods: 5000, results: 8000, discussion: 5000, conclusion: 3000 };
-        for (const key of ordered) {
-            const text = sections[key];
-            if (text && String(text).trim().length > 20) {
-                parts.push(`${key.toUpperCase()}: ${String(text).slice(0, sectionLimits[key] || 4000)}`);
-            }
-        }
-        if (parts.length > 0) {
-            fullTextBlock = `\n\nFull-text excerpts (${article._fullTextWordCount || '?'} words indexed):\n${parts.join('\n')}`;
-        }
-    }
+    const fullTextBlock = buildFullTextExcerptsBlock(article, { variant: 'synopsis' });
 
     const sourceNote = fullTextBlock
         ? 'You have access to both the abstract AND full-text sections below. Prefer full-text data for numerical results, methods detail, and safety outcomes.'

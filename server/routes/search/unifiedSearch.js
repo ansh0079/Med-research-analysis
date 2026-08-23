@@ -22,6 +22,10 @@ const {
     deriveSearchIntentProfile,
     routeSearchSources,
 } = require('../../services/searchQueryIntentService');
+const {
+    createLatencyBudget,
+    VECTOR_SKIP_FRACTION,
+} = require('../../services/search/latencyBudget');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -63,6 +67,7 @@ function registerUnifiedSearchRoutes(app, deps) {
 
         try {
             const routeTimings = {};
+            const latencyBudget = createLatencyBudget({ startedAt: startTime });
             const vectorParam = vector;
             const vectorOptOut = vectorParam === '0' || vectorParam === 'false';
             const vectorAvailable = db.isVectorSearchAvailable();
@@ -83,7 +88,11 @@ function registerUnifiedSearchRoutes(app, deps) {
             const rankedCacheHit = Boolean(ranked);
 
             let vectorList = [];
-            if (!ranked && useVectorFusion) {
+            if (!ranked && useVectorFusion && latencyBudget.shouldSkip(VECTOR_SKIP_FRACTION)) {
+                latencyBudget.skip('vector_fusion');
+                routeTimings.vectorMs = 0;
+                routeTimings.vectorSkippedBudget = true;
+            } else if (!ranked && useVectorFusion) {
                 try {
                     const vectorStarted = Date.now();
                     const { createVectorSearchService } = require('../../services/vectorSearchService');
@@ -125,6 +134,8 @@ function registerUnifiedSearchRoutes(app, deps) {
                     userId: req.user?.id ?? null,
                     sessionId: req.sessionId ?? null,
                     queryIntentProfile,
+                    latencyBudget,
+                    requestStartedAt: startTime,
                 });
                 await setCachedSearchResult(cache, searchResultCacheKey, ranked);
             }
@@ -249,6 +260,8 @@ function registerUnifiedSearchRoutes(app, deps) {
                                 vectorList,
                                 userId: req.user?.id ?? null,
                                 sessionId: req.sessionId ?? null,
+                                latencyBudget,
+                                requestStartedAt: startTime,
                             });
                             if (Array.isArray(repairedRanked.articles) && repairedRanked.articles.length > articles.length) {
                                 articles = repairedRanked.articles;
@@ -410,6 +423,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                         hit: rankedCacheHit,
                         key: isDev ? searchResultCacheKey : undefined,
                     },
+                    latencyBudget: telemetry.latencyBudget || latencyBudget.snapshot(),
                 },
                 ...(existingEnrich?.status === 'ready' ? { clinicalAnswer: existingEnrich.clinicalAnswer ?? null } : {}),
                 ...(lowRecallLearning ? { lowRecallLearning } : {}),
