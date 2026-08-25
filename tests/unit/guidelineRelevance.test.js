@@ -5,6 +5,8 @@ const {
     scoreGuidelineForTopic,
     rankGuidelinesForTopic,
     uniqueTokens,
+    sqlSearchTokens,
+    topicQueryParts,
 } = require('../../server/utils/guidelineRelevance');
 const { buildGuidelineSynopsisPayload, assembleGuidelineSummary } = require('../../server/services/guidelineSeedService');
 const { compactTeachingObject } = require('../../server/services/agentHelpers/retrievalContext');
@@ -66,6 +68,52 @@ describe('guidelineRelevance', () => {
         expect(scoreGuidelineForTopic('CKD anaemia', {
             recommendationText: 'Healthcare professionals should follow our general guidelines on providing information.',
         }).reason).toBe('boilerplate');
+        expect(isBoilerplateGuideline(
+            'Give aspirin 300 mg immediately unless contraindicated.'
+        )).toBe(false);
+    });
+
+    test('requires the distinctive disease token, not a shared modifier', () => {
+        const ranked = rankGuidelinesForTopic('Pulmonary Tuberculosis', [
+            {
+                id: 1,
+                recommendationText: 'Offer pulmonary rehabilitation to adults with COPD and breathlessness.',
+            },
+            {
+                id: 2,
+                recommendationText: 'Start standard four-drug therapy for pulmonary tuberculosis as soon as the diagnosis is made.',
+            },
+        ]);
+        expect(ranked.map((row) => row.id)).toEqual([2]);
+        expect(topicQueryParts('Pulmonary Tuberculosis').distinctive).toBe('tuberculosis');
+    });
+
+    test('treats SAH as an alias of subarachnoid', () => {
+        const ranked = rankGuidelinesForTopic('Subarachnoid haemorrhage: vasospasm, nimodipine', [{
+            recommendationText: 'Give nimodipine to every patient with aneurysmal SAH unless contraindicated.',
+            sourceBody: 'AHA/ASA',
+            sourceYear: 2023,
+        }]);
+        expect(ranked).toHaveLength(1);
+        expect(sqlSearchTokens('Subarachnoid haemorrhage')).toEqual(expect.arrayContaining(['subarachnoid', 'hemorrhage', 'sah']));
+    });
+
+    test('drops near-duplicate recommendations', () => {
+        const ranked = rankGuidelinesForTopic('Hepatorenal syndrome', [
+            {
+                id: 1,
+                recommendationText: 'Terlipressin plus albumin is recommended as first-line pharmacological therapy for hepatorenal syndrome-AKI.',
+            },
+            {
+                id: 2,
+                recommendationText: 'Terlipressin plus albumin is recommended as first-line pharmacological therapy for hepatorenal syndrome AKI.',
+            },
+            {
+                id: 3,
+                recommendationText: 'Norepinephrine is an alternative vasoconstrictor for hepatorenal syndrome when terlipressin is unavailable.',
+            },
+        ]);
+        expect(ranked.map((row) => row.id)).toEqual([1, 3]);
     });
 });
 

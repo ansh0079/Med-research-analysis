@@ -2,7 +2,7 @@
 
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
 const { assessGuidelineQuality } = require('../../server/services/guidelineQualityService');
-const { rankGuidelinesForTopic, fetchCapForLimit } = require('../../server/utils/guidelineRelevance');
+const { rankGuidelinesForTopic, fetchCapForLimit, sqlSearchTokens, contentMatchClause } = require('../../server/utils/guidelineRelevance');
 
 module.exports = (Sup) => class extends Sup {
 // Guideline Memory
@@ -110,16 +110,26 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20, minRelevance = unde
     );
 
     const fetchLimit = skipRank ? safeLimit : fetchCapForLimit(safeLimit);
-    const rows = await this.all(
+    const searchTokens = skipRank ? [] : sqlSearchTokens(String(topic || '').trim());
+    const match = skipRank ? { clause: '', params: [] } : contentMatchClause(searchTokens);
+    const selectSql = (extraClause) => (
         `SELECT * FROM topic_guidelines
          WHERE normalized_topic IN (${stalePlaceholders})
            AND (? = '' OR status = ?)
            AND (? != '' OR status NOT IN ('stale', 'superseded'))
            AND superseded_by_id IS NULL
+           ${extraClause}
          ORDER BY source_year DESC, updated_at DESC
-         LIMIT ?`,
-        [...keys, statusFilter, statusFilter, statusFilter, fetchLimit]
+         LIMIT ?`
     );
+    const baseParams = [...keys, statusFilter, statusFilter, statusFilter];
+    let rows = await this.all(
+        selectSql(match.clause),
+        [...baseParams, ...match.params, fetchLimit]
+    );
+    if (!skipRank && match.clause && (!rows || rows.length === 0)) {
+        rows = await this.all(selectSql(''), [...baseParams, fetchLimit]);
+    }
     const mapped = rows.map((row) => this.mapGuidelineRow(row));
     if (skipRank) return mapped.slice(0, safeLimit);
     return rankGuidelinesForTopic(String(topic || '').trim(), mapped, {

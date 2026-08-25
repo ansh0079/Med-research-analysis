@@ -21,7 +21,7 @@ loadEnv();
 const db = require('../../database');
 const {
     BOILERPLATE_TOPIC_SPAN,
-    isBoilerplateGuideline,
+    BOILERPLATE_PHRASES,
 } = require('../utils/guidelineRelevance');
 
 function argValue(flag, fallback = null) {
@@ -51,17 +51,22 @@ async function main() {
         [minTopics]
     );
 
-    const sample = await db.all(
-        `SELECT id, topic, recommendation_text AS text, status
-         FROM topic_guidelines
-         WHERE superseded_by_id IS NULL
-           AND status NOT IN ('stale', 'superseded')
-         LIMIT 4000`
-    );
-    const patternHits = (sample || []).filter((row) => isBoilerplateGuideline(row.text));
+    const phraseClauses = BOILERPLATE_PHRASES.map(() => 'lower(coalesce(recommendation_text, \'\')) LIKE ?').join(' OR ');
+    const phraseParams = BOILERPLATE_PHRASES.map((phrase) => `%${phrase}%`);
+    const patternHits = phraseClauses
+        ? await db.all(
+            `SELECT id, topic, recommendation_text AS text, status
+             FROM topic_guidelines
+             WHERE superseded_by_id IS NULL
+               AND status NOT IN ('stale', 'superseded')
+               AND (${phraseClauses})
+             LIMIT 20000`,
+            phraseParams
+        )
+        : [];
 
     console.log(`Duplicate texts spanning >${minTopics} topics: ${duplicated.length}`);
-    console.log(`Boilerplate-pattern hits in sample of ${sample.length}: ${patternHits.length}`);
+    console.log(`Boilerplate-phrase hits: ${patternHits.length}`);
     for (const row of duplicated.slice(0, 8)) {
         console.log(`  ${row.topic_count} topics / ${row.row_count} rows: ${String(row.text).slice(0, 120)}`);
     }
