@@ -4,13 +4,27 @@ function compactTeachingObject(object) {
     const payload = object?.payload || {};
     const synopsis = payload.synopsis || {};
     const seed = payload.quizSeed || {};
+    const strong = Array.isArray(payload.strongRecommendations) ? payload.strongRecommendations : [];
+    const claimAnchors = Array.isArray(payload.claimAnchors) ? payload.claimAnchors : [];
+    const bottomLine = payload.clinicalBottomLine
+        || synopsis.bottomLine
+        || strong[0]?.text
+        || claimAnchors[0]?.claimText
+        || '';
+    const findings = synopsis.mainFindings
+        || claimAnchors.slice(0, 2).map((claim) => claim.claimText).filter(Boolean).join('; ')
+        || strong.slice(0, 2).map((row) => row.text).filter(Boolean).join('; ')
+        || '';
+    const focusPoints = Array.isArray(seed.focusPoints) && seed.focusPoints.length
+        ? seed.focusPoints
+        : claimAnchors.filter((claim) => claim.conceptKey === 'quiz_focus').map((claim) => claim.claimText);
     return [
         `- ${object.title || object.objectKey}`,
         object.objectType ? `type: ${object.objectType}` : '',
         object.confidence != null ? `confidence: ${Number(object.confidence).toFixed(2)}` : '',
-        payload.clinicalBottomLine ? `bottom line: ${String(payload.clinicalBottomLine).slice(0, 260)}` : '',
-        synopsis.mainFindings ? `findings: ${String(synopsis.mainFindings).slice(0, 260)}` : '',
-        Array.isArray(seed.focusPoints) && seed.focusPoints.length ? `quiz focus: ${seed.focusPoints.slice(0, 3).join('; ')}` : '',
+        bottomLine ? `bottom line: ${String(bottomLine).slice(0, 260)}` : '',
+        findings ? `findings: ${String(findings).slice(0, 260)}` : '',
+        focusPoints.length ? `quiz focus: ${focusPoints.slice(0, 3).join('; ')}` : '',
     ].filter(Boolean).join(' | ');
 }
 

@@ -2,6 +2,7 @@
 
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
 const { assessGuidelineQuality } = require('../../server/services/guidelineQualityService');
+const { rankGuidelinesForTopic, fetchCapForLimit } = require('../../server/utils/guidelineRelevance');
 
 module.exports = (Sup) => class extends Sup {
 // Guideline Memory
@@ -85,7 +86,7 @@ async getGuidelineById(id) {
     return this.mapGuidelineRow(row);
 }
 
-async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
+async getGuidelinesByTopic(topic, { status = '', limit = 20, minRelevance = undefined, skipRank = false } = {}) {
     const normalized = this.normalizeTopic(topic);
     const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 20, 1), 100);
     const statusFilter = String(status || '').trim();
@@ -108,16 +109,44 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
         [...keys, staleThreshold]
     );
 
+    const fetchLimit = skipRank ? safeLimit : fetchCapForLimit(safeLimit);
     const rows = await this.all(
         `SELECT * FROM topic_guidelines
          WHERE normalized_topic IN (${stalePlaceholders})
            AND (? = '' OR status = ?)
+           AND (? != '' OR status NOT IN ('stale', 'superseded'))
            AND superseded_by_id IS NULL
          ORDER BY source_year DESC, updated_at DESC
          LIMIT ?`,
-        [...keys, statusFilter, statusFilter, safeLimit]
+        [...keys, statusFilter, statusFilter, statusFilter, fetchLimit]
     );
-    return rows.map((row) => this.mapGuidelineRow(row));
+    const mapped = rows.map((row) => this.mapGuidelineRow(row));
+    if (skipRank) return mapped.slice(0, safeLimit);
+    return rankGuidelinesForTopic(String(topic || '').trim(), mapped, {
+        limit: safeLimit,
+        minScore: minRelevance,
+    });
+}
+
+async listGuidelineCoveredTopics({ limit = 2000, minCount = 1 } = {}) {
+    const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 2000, 1), 5000);
+    const safeMin = Math.max(parseInt(String(minCount), 10) || 1, 1);
+    const rows = await this.all(
+        `SELECT topic, normalized_topic, COUNT(*) AS guideline_count
+         FROM topic_guidelines
+         WHERE superseded_by_id IS NULL
+           AND status NOT IN ('stale', 'superseded')
+         GROUP BY topic, normalized_topic
+         HAVING COUNT(*) >= ?
+         ORDER BY guideline_count DESC, topic ASC
+         LIMIT ?`,
+        [safeMin, safeLimit]
+    );
+    return (rows || []).map((row) => ({
+        topic: row.topic,
+        normalizedTopic: row.normalized_topic,
+        guidelineCount: Number(row.guideline_count || 0),
+    }));
 }
 
 async listGuidelines({ query = '', status = '', sourceBody = '', limit = 50, offset = 0, onlyActive = false } = {}) {

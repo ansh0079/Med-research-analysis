@@ -1,8 +1,10 @@
 'use strict';
 
+const crypto = require('crypto');
 const logger = require('../config/logger');
-const { createAiService, getSharedAiService } = require('./aiService');
+const { getSharedAiService } = require('./aiService');
 const { getProviderCandidates } = require('../utils/aiProvider');
+const { rankGuidelinesForTopic } = require('../utils/guidelineRelevance');
 let _parseJsonArrayBlock, _repairJsonCandidate;
 try {
     ({ parseJsonArrayBlock: _parseJsonArrayBlock, repairJsonCandidate: _repairJsonCandidate } = require('../utils/parseJson'));
@@ -53,12 +55,29 @@ function parseJsonArray(raw) {
     return null;
 }
 
+function recText(guideline) {
+    return String(guideline?.recommendationText || guideline?.recommendation_text || '').replace(/\s+/g, ' ').trim();
+}
+
+function recBody(guideline) {
+    return String(guideline?.sourceBody || guideline?.source_body || 'Unknown').trim() || 'Unknown';
+}
+
+function recYear(guideline) {
+    const year = Number(guideline?.sourceYear || guideline?.source_year || 0);
+    return Number.isFinite(year) && year > 0 ? year : null;
+}
+
+function recStrength(guideline) {
+    return String(guideline?.recommendationStrength || guideline?.recommendation_strength || '').trim();
+}
+
 function buildMcqPrompt(topic, guidelines) {
     const guidelineBlocks = guidelines.slice(0, 6).map((g, i) => {
-        const body = g.source_body || g.sourceBody || 'Unknown source';
-        const year = g.source_year || g.sourceYear || '';
-        const text = g.recommendation_text || g.recommendationText || '';
-        const strength = g.recommendation_strength || g.recommendationStrength || '';
+        const body = recBody(g);
+        const year = recYear(g) || '';
+        const text = recText(g);
+        const strength = recStrength(g);
         return `[${i + 1}] ${body}${year ? ` ${year}` : ''}: ${text}${strength ? ` (${strength})` : ''}`;
     }).join('\n');
 
@@ -85,77 +104,165 @@ function slugify(t) {
     return normalizeTopic(t).replace(/\s+/g, '-');
 }
 
-async function assembleGuidelineSummary(db, topicName) {
-    const guidelines = await db.getGuidelinesByTopic(topicName, { limit: 30 });
-    if (!guidelines || guidelines.length === 0) return null;
+function guidelineClaimKey(objectKey, text) {
+    return crypto.createHash('sha256').update(`${objectKey}|${String(text || '').slice(0, 500)}`).digest('hex').slice(0, 24);
+}
+
+function isStrongRecommendation(guideline) {
+    return /strong|class i\b|grade a/i.test(recStrength(guideline));
+}
+
+function cite(guideline) {
+    const year = recYear(guideline);
+    return `${recBody(guideline)}${year ? ` ${year}` : ''}`;
+}
+
+function buildGuidelineSynopsisPayload(topicName, guidelines = []) {
+    const ranked = rankGuidelinesForTopic(topicName, guidelines, { limit: 12 });
+    if (!ranked.length) {
+        return {
+            ok: false,
+            status: 'insufficient_relevant_guidelines',
+            rankedCount: 0,
+            fetchedCount: guidelines.length,
+        };
+    }
 
     const byBody = {};
-    for (const g of guidelines) {
-        const body = g.sourceBody || g.source_body || 'Unknown';
+    for (const g of ranked) {
+        const body = recBody(g);
         if (!byBody[body]) byBody[body] = [];
         byBody[body].push({
-            text: g.recommendationText || g.recommendation_text || '',
-            strength: g.recommendationStrength || g.recommendation_strength || null,
+            text: recText(g),
+            strength: recStrength(g) || null,
             certainty: g.recommendationCertainty || g.recommendation_certainty || null,
-            year: g.sourceYear || g.source_year || null,
+            year: recYear(g),
             population: g.population || null,
             intervention: g.intervention || null,
             cautions: g.cautions || null,
+            relevanceScore: g.relevanceScore,
         });
     }
 
     const bodies = Object.keys(byBody).sort();
-    const latestYear = Math.max(
-        ...guidelines.map(g => Number(g.sourceYear || g.source_year || 0)).filter(Boolean),
-        0
-    );
-    const strongRecs = guidelines.filter(g =>
-        /strong/i.test(g.recommendationStrength || g.recommendation_strength || '')
-    );
+    const latestYear = Math.max(...ranked.map((g) => recYear(g) || 0), 0) || null;
+    const strongRecs = ranked.filter(isStrongRecommendation);
+    const lead = ranked.slice(0, 3);
+    const clinicalBottomLine = lead
+        .map((g) => `${cite(g)}: ${recText(g)}`)
+        .join(' ')
+        .slice(0, 900);
+    const mainFindings = ranked
+        .slice(0, 8)
+        .map((g, i) => `${i + 1}. [${cite(g)}] ${recText(g)}`)
+        .join(' ')
+        .slice(0, 1400);
+    const focusPoints = ranked
+        .slice(0, 6)
+        .map((g) => recText(g).slice(0, 180))
+        .filter(Boolean);
+
+    const objectKey = `guideline-summary:${slugify(topicName)}`;
+    const claimAnchors = ranked.slice(0, 10).map((g, ordinal) => {
+        const text = recText(g);
+        return {
+            claimKey: guidelineClaimKey(objectKey, text),
+            ordinal,
+            claimText: text.slice(0, 1400),
+            evidenceQuote: text.slice(0, 2000),
+            sourcePath: `guideline:${g.id || cite(g)}`,
+            topic: topicName,
+            conceptKey: ordinal === 0 ? 'clinical_bottom_line' : (isStrongRecommendation(g) ? 'quiz_focus' : 'guideline_recommendation'),
+            confidence: Math.max(0.55, Math.min(0.82, 0.55 + (Number(g.relevanceScore) || 0) * 0.3)),
+            verificationStatus: 'guideline_supported',
+            verificationReason: 'Verbatim recommendation after topic-relevance filter.',
+            reviewState: 'machine_checked',
+        };
+    });
+
+    return {
+        ok: true,
+        status: 'assembled',
+        objectKey,
+        rankedCount: ranked.length,
+        fetchedCount: guidelines.length,
+        payload: {
+            kind: 'guideline_summary_teaching_object',
+            generatedAt: new Date().toISOString(),
+            clinicalBottomLine,
+            synopsis: {
+                bottomLine: clinicalBottomLine,
+                mainFindings,
+            },
+            quizSeed: { focusPoints },
+            claimAnchors,
+            guidelineCount: ranked.length,
+            fetchedCount: guidelines.length,
+            bodyCount: bodies.length,
+            bodies,
+            latestYear,
+            strongRecommendationCount: strongRecs.length,
+            byBody,
+            strongRecommendations: strongRecs.slice(0, 10).map((g) => ({
+                body: recBody(g),
+                year: recYear(g),
+                text: recText(g),
+            })),
+            relevance: {
+                kept: ranked.length,
+                fetched: guidelines.length,
+            },
+        },
+    };
+}
+
+async function assembleGuidelineSummary(db, topicName) {
+    const guidelines = await db.getGuidelinesByTopic(topicName, { limit: 30 });
+    const built = buildGuidelineSynopsisPayload(topicName, guidelines);
+    if (!built.ok) {
+        return {
+            status: built.status,
+            objectKey: null,
+            guidelineCount: 0,
+            rankedCount: 0,
+            fetchedCount: built.fetchedCount || guidelines.length,
+        };
+    }
 
     const normalized = normalizeTopic(topicName);
-    const objectKey = `guideline-summary:${slugify(topicName)}`;
-
     await db.upsertTeachingObject({
-        objectKey,
+        objectKey: built.objectKey,
         objectType: 'guideline_summary',
         topic: topicName,
         normalizedTopic: normalized,
         title: `Guideline summary: ${topicName}`,
         provider: 'assembled',
         model: null,
-        confidence: 0.9,
-        payload: {
-            kind: 'guideline_summary_teaching_object',
-            generatedAt: new Date().toISOString(),
-            guidelineCount: guidelines.length,
-            bodyCount: bodies.length,
-            bodies,
-            latestYear: latestYear || null,
-            strongRecommendationCount: strongRecs.length,
-            byBody,
-            strongRecommendations: strongRecs.slice(0, 10).map(g => ({
-                body: g.sourceBody || g.source_body,
-                year: g.sourceYear || g.source_year,
-                text: g.recommendationText || g.recommendation_text,
-            })),
-        },
+        confidence: 0.72,
+        reviewState: 'machine_checked',
+        payload: built.payload,
     });
 
     return {
-        objectKey,
-        guidelineCount: guidelines.length,
-        bodyCount: bodies.length,
-        strongRecommendationCount: strongRecs.length,
+        status: 'stored',
+        objectKey: built.objectKey,
+        guidelineCount: built.rankedCount,
+        rankedCount: built.rankedCount,
+        fetchedCount: built.fetchedCount,
+        bodyCount: built.payload.bodyCount,
+        strongRecommendationCount: built.payload.strongRecommendationCount,
+        claimCount: built.payload.claimAnchors.length,
     };
 }
 
-async function generateGuidelineMcqs({ db, topicName, serverConfig, fetchImpl, log = logger }) {
+const generateGuidelineSynopsis = assembleGuidelineSummary;
+
+async function generateGuidelineMcqs({ db, topicName, serverConfig, fetchImpl, log = logger, force = false }) {
     const normalized = normalizeTopic(topicName);
     const mcqKey = `guideline-mcq:${slugify(topicName)}`;
 
     const existing = await db.getTeachingObjectByKey(mcqKey).catch(() => null);
-    if (existing?.payload?.mcqs?.length > 0) {
+    if (!force && existing?.payload?.mcqs?.length > 0) {
         return { status: 'skipped', mcqCount: existing.payload.mcqs.length };
     }
 
@@ -216,14 +323,14 @@ async function generateGuidelineMcqs({ db, topicName, serverConfig, fetchImpl, l
     return { status: 'generated', mcqCount: mcqs.length };
 }
 
-async function runGuidelineEnrichmentForTopic({ db, topicName, serverConfig, fetchImpl, log = logger }) {
+async function runGuidelineEnrichmentForTopic({ db, topicName, serverConfig, fetchImpl, log = logger, force = false }) {
     const summaryResult = await assembleGuidelineSummary(db, topicName).catch(err => {
         log.warn({ err, topic: topicName }, 'guideline summary assembly failed');
         return null;
     });
 
     const mcqResult = await generateGuidelineMcqs({
-        db, topicName, serverConfig, fetchImpl, log,
+        db, topicName, serverConfig, fetchImpl, log, force,
     }).catch(err => {
         log.warn({ err, topic: topicName }, 'guideline MCQ generation failed');
         return { status: 'error', mcqCount: 0 };
@@ -237,6 +344,8 @@ async function runGuidelineEnrichmentForTopic({ db, topicName, serverConfig, fet
 
 module.exports = {
     assembleGuidelineSummary,
+    generateGuidelineSynopsis,
     generateGuidelineMcqs,
     runGuidelineEnrichmentForTopic,
+    buildGuidelineSynopsisPayload,
 };

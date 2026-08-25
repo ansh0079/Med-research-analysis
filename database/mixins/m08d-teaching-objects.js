@@ -110,7 +110,11 @@ async listTeachingObjectsForTopic(topic, { limit = 20, objectType = '' } = {}) {
         `SELECT * FROM teaching_objects
          WHERE (? = '' OR normalized_topic = ?)
            AND (? = '' OR object_type = ?)
-         ORDER BY updated_at DESC
+         ORDER BY CASE object_type
+            WHEN 'guideline_summary' THEN 0
+            WHEN 'guideline_mcq' THEN 1
+            ELSE 2
+         END ASC, updated_at DESC
          LIMIT ?`,
         [normalized, normalized, type, type, safeLimit]
     );

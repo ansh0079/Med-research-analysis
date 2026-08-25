@@ -26,7 +26,13 @@ function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = []
     const synapseTopics = [...new Set((currentArticles || []).flatMap((a) => a._synapseTopics || []))];
 
     const guidelineText = guidelines.length > 0
-        ? guidelines.map((g, i) => `[G${i + 1}] ${g.source_body}${g.source_year ? ` (${g.source_year})` : ''}: ${g.recommendation_text.slice(0, 300)}`).join('\n')
+        ? guidelines.map((g, i) => {
+            const source = g.sourceBody || g.source_body || 'Guideline';
+            const year = g.sourceYear || g.source_year || '';
+            const rec = String(g.recommendationText || g.recommendation_text || '').replace(/\s+/g, ' ').trim();
+            if (!rec) return null;
+            return `[G${i + 1}] ${source}${year ? ` (${year})` : ''}: ${rec.slice(0, 300)}`;
+        }).filter(Boolean).join('\n') || 'No guideline context provided.'
         : 'No guideline context provided.';
     const retrievalText = buildRetrievalContext(retrieval);
 
