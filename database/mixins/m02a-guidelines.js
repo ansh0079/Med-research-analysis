@@ -18,7 +18,7 @@ const { assessGuidelineQuality } = require('../../server/services/guidelineQuali
  * to the rows already stored, and cannot be bypassed by a future write path.
  */
 const RECOMMENDATION_VERB_RE =
-    /(should|should not|recommend|recommended|recommends|must|initiate|consider|offer|avoid|do not|start|titrate|discontinue|prescribe|screen|monitor|refer|first-line|second-line|indicated|contraindicated)/i;
+    /(should|should not|recommend|recommended|recommends|must|initiate|consider|offer|avoid|do not|start|titrate|discontinue|prescribe|screen|monitor|refer|first-line|second-line|indicated|contraindicated)/i;
 
 const MIN_RECOMMENDATION_LENGTH = 25;
 
