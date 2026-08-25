@@ -33,7 +33,7 @@ const db = require('../database');
 const { processPdf, isGrobidAlive } = require('../server/services/grobidClient');
 const { createAiService } = require('../server/services/ai/aiService');
 const { getProviderCandidates } = require('../server/utils/aiProvider');
-const serverConfig = require('../config');
+const { serverConfig } = require('../config');
 
 const CATALOG_PATH = path.join(__dirname, '..', 'data', 'international-guideline-catalog.json');
 
@@ -271,9 +271,27 @@ async function ingestGuideline(entry, aiService) {
     const currentCount = await getCurrentCount(entry.sourceBody);
     // We don't skip by topic here — we want all matching topics covered
 
-    // Get the guideline text
+    // Get the guideline text — try HTML first (avoids journal paywalls), then PDF+GROBID
     let bodyText = '';
-    if (entry.url) {
+
+    if (!bodyText && entry.htmlUrl) {
+        try {
+            const html = await fetchGuidelineHtml(entry.htmlUrl);
+            const extracted = extractTextFromHtml(html);
+            // Only accept if substantial (landing pages return < 2KB of useful text)
+            if (extracted.length > 3000) {
+                bodyText = extracted;
+                result.method = 'html';
+                console.log(`  ${entry.id}: HTML extracted ${bodyText.length} chars`);
+            } else {
+                console.log(`  ${entry.id}: HTML too short (${extracted.length} chars), trying PDF...`);
+            }
+        } catch (err) {
+            console.log(`  ${entry.id}: HTML failed (${err.message.slice(0, 60)}), trying PDF...`);
+        }
+    }
+
+    if (!bodyText && entry.url) {
         // Try PDF download + GROBID
         try {
             console.log(`  ${entry.id}: downloading PDF...`);
@@ -284,20 +302,7 @@ async function ingestGuideline(entry, aiService) {
             result.method = 'grobid';
             console.log(`  ${entry.id}: GROBID extracted ${bodyText.length} chars`);
         } catch (err) {
-            console.log(`  ${entry.id}: PDF/GROBID failed (${err.message.slice(0, 80)}), trying HTML...`);
-        }
-    }
-
-    if (!bodyText && entry.htmlUrl) {
-        try {
-            const html = await fetchGuidelineHtml(entry.htmlUrl);
-            bodyText = extractTextFromHtml(html);
-            result.method = 'html';
-            console.log(`  ${entry.id}: HTML extracted ${bodyText.length} chars`);
-        } catch (err) {
-            result.error = err.message;
-            console.log(`  ${entry.id}: HTML fetch failed: ${err.message}`);
-            return result;
+            console.log(`  ${entry.id}: PDF/GROBID failed (${err.message.slice(0, 80)})`);
         }
     }
 
