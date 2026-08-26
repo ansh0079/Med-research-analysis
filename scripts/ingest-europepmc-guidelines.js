@@ -110,18 +110,31 @@ function isUsableVariant(v) {
     return true;
 }
 
+// UK -> US spelling. Applied both to search terms and, in the relevance gates, to
+// the text being matched: curriculum names are UK-spelled but most guideline prose
+// indexed in Europe PMC is US-spelled, so "leukaemia" never substring-matches
+// "leukemia" and every recommendation gets rejected as off-topic.
+function toUsSpelling(s) {
+    return String(s || '')
+        .replace(/\bhaemat/gi, 'hemat').replace(/\bhaemo/gi, 'hemo')
+        .replace(/haemorrhage/gi, 'hemorrhage').replace(/\baemia\b/gi, 'emia')
+        .replace(/anaemia/gi, 'anemia').replace(/oedema/gi, 'edema')
+        .replace(/leukaemia/gi, 'leukemia').replace(/thalassaemia/gi, 'thalassemia')
+        .replace(/tumour/gi, 'tumor').replace(/coeliac/gi, 'celiac')
+        .replace(/diarrhoea/gi, 'diarrhea').replace(/natraemia/gi, 'natremia')
+        .replace(/kalaemia/gi, 'kalemia').replace(/calaemia/gi, 'calemia')
+        .replace(/glycaemia/gi, 'glycemia').replace(/uricaemia/gi, 'uricemia')
+        .replace(/ischaemi/gi, 'ischemi').replace(/paediatric/gi, 'pediatric')
+        .replace(/oesophag/gi, 'esophag').replace(/orthopaedic/gi, 'orthopedic');
+}
+
 // Some curriculum names are UK-spelled or bundle two entities with "and"/"vs".
 function searchVariants(displayName) {
     const core = coreTerm(displayName);
     const variants = new Set([core]);
 
     // US spellings — Europe PMC indexes both, but titles usually pick one.
-    const us = core
-        .replace(/\bhaemat/gi, 'hemat').replace(/\bhaemo/gi, 'hemo')
-        .replace(/\banaemia\b/gi, 'anemia').replace(/\boedema\b/gi, 'edema')
-        .replace(/\bleukaemia\b/gi, 'leukemia').replace(/\bthalassaemia\b/gi, 'thalassemia')
-        .replace(/\btumour/gi, 'tumor').replace(/\bcoeliac\b/gi, 'celiac')
-        .replace(/\bdiarrhoea\b/gi, 'diarrhea').replace(/\bparalysis\b/gi, 'paralysis');
+    const us = toUsSpelling(core);
     if (us !== core) variants.add(us);
 
     // "Alpha and Beta Thalassaemia" -> "Alpha Thalassaemia" / "Beta Thalassaemia".
@@ -152,13 +165,78 @@ const REL_STOP = new Set([
 ]);
 
 function relevanceWords(s) {
-    const words = String(s || '').toLowerCase().match(/[a-z]{4,}/g) || [];
+    const words = toUsSpelling(s).toLowerCase().match(/[a-z]{4,}/g) || [];
     return [...new Set(words.filter(w => !REL_STOP.has(w)))];
 }
 
-function overlapCount(text, topicWords) {
-    const lower = String(text || '').toLowerCase();
-    return topicWords.filter(w => lower.includes(w)).length;
+/**
+ * Guideline prose refers to a condition by its abbreviation far more often than by
+ * its full name ("CML", "IgAN", "PAF"), so matching on expanded words alone rejects
+ * genuine on-topic recommendations. Accept: abbreviations already written in the
+ * curriculum name, plus the initialism built from the name's significant words.
+ */
+function relevanceAbbreviations(displayName) {
+    const abbrevs = new Set();
+
+    // Abbreviations spelled out in the topic name itself: "IgA", "INO", "APS-1".
+    for (const m of String(displayName).match(/\b[A-Za-z]*[A-Z]{2,}[A-Za-z0-9-]*\b/g) || []) {
+        if (m.length >= 2 && m.length <= 12) abbrevs.add(m.toLowerCase());
+    }
+
+    // Initialism of the core term: "Chronic Myeloid Leukaemia" -> "cml".
+    // Only grammatical joiners are dropped here, NOT REL_STOP -- REL_STOP contains
+    // clinically meaningful modifiers like "chronic" and "acute" that are part of
+    // the abbreviation, and dropping them turns CML into "ml".
+    const JOINERS = new Set(['and', 'or', 'of', 'the', 'in', 'for', 'with', 'to', 'vs', 'versus']);
+    const words = coreTerm(displayName)
+        .split(/\s+/)
+        .filter(w => /^[A-Za-z]{2,}$/.test(w) && !JOINERS.has(w.toLowerCase()));
+    if (words.length >= 2 && words.length <= 5) {
+        abbrevs.add(words.map(w => w[0].toLowerCase()).join(''));
+    }
+    // Two-letter initialisms collide with units and common words ("ml", "in", "or").
+    return [...abbrevs].filter(a => a.length >= 3);
+}
+
+// Whole-token match, so "cml" does not match inside an unrelated longer word.
+function hasToken(lower, token) {
+    return new RegExp(`(^|[^a-z0-9])${token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}([^a-z0-9]|$)`, 'i').test(lower);
+}
+
+/**
+ * True when the article is about this topic and essentially only this topic, so its
+ * recommendations can be trusted wholesale. Requires every topic content word in the
+ * title (or the topic's abbreviation plus one), and rejects umbrella documents whose
+ * title advertises coverage of a broader class.
+ */
+const UMBRELLA_TITLE_RE = /(diseases|disorders|conditions|overview|compendium|handbook|spectrum|and related|miscellane)/i;
+
+function isTopicSpecific(title, topicWords, abbrevs = []) {
+    if (!topicWords.length) return false;
+    const lower = toUsSpelling(title).toLowerCase();
+    const allWords = topicWords.every(w => lower.includes(w));
+    const abbrevHit = abbrevs.some(a => hasToken(lower, a));
+    const matched = topicWords.filter(w => lower.includes(w)).length;
+    const specific = allWords || (abbrevHit && matched >= 1);
+    return specific && !UMBRELLA_TITLE_RE.test(title || '');
+}
+
+// Tier 0 required a guideline-marker word in the title; otherwise fall back to the
+// indexed publication types. Anything else is treated as ordinary literature.
+const GUIDELINE_PUB_TYPE_RE = /guideline|consensus|practice parameter|position statement/i;
+
+function isGuidelineDocument(article) {
+    if (article._tier === 0) return true;
+    const types = article.pubTypeList?.pubType;
+    const list = Array.isArray(types) ? types : (types ? [types] : []);
+    return list.some(t => GUIDELINE_PUB_TYPE_RE.test(String(t)));
+}
+
+function overlapCount(text, topicWords, abbrevs = []) {
+    const lower = toUsSpelling(text).toLowerCase();
+    let n = topicWords.filter(w => lower.includes(w)).length;
+    if (!n && abbrevs.some(a => hasToken(lower, a))) n = 1;
+    return n;
 }
 
 function esc(s) {
@@ -185,9 +263,17 @@ function buildQueries(term) {
     ];
 }
 
-async function searchGuidelines(displayName) {
+/**
+ * The title-relevance gate is applied here rather than by the caller so that a
+ * variant whose hits are all off-topic falls through to the next variant. Applying
+ * it downstream meant the first variant to return *any* rows ended the search --
+ * UK-spelled "Chronic Myeloid Leukaemia" would match unrelated papers and the
+ * US-spelled variant that finds the ELN recommendations was never tried.
+ */
+async function searchGuidelines(displayName, topicWords, abbrevs) {
+    const need = topicWords.length >= 3 ? 2 : 1;
     for (const term of searchVariants(displayName)) {
-        for (const query of buildQueries(term)) {
+        for (const [tier, query] of buildQueries(term).entries()) {
             let json;
             try {
                 const raw = await httpGet(`${EPMC}/search?query=${query}&format=json&pageSize=8&resultType=core`);
@@ -195,7 +281,10 @@ async function searchGuidelines(displayName) {
             } catch {
                 continue;
             }
-            const hits = (json.resultList?.result || []).filter(r => r.pmcid && r.inEPMC === 'Y');
+            const hits = (json.resultList?.result || [])
+                .filter(r => r.pmcid && r.inEPMC === 'Y')
+                .filter(r => topicWords.length && overlapCount(r.title, topicWords, abbrevs) >= need)
+                .map(r => ({ ...r, _tier: tier }));
             if (hits.length) return { hits, term };
             await sleep(150);
         }
@@ -345,27 +434,18 @@ async function ingestTopic(displayName, aiService) {
         return result;
     }
 
-    const { hits, term } = await searchGuidelines(displayName);
+    // Gate 1 (title relevance) is applied inside searchGuidelines so an off-topic
+    // variant falls through to the next one instead of ending the search.
+    const topicWords = relevanceWords(coreTerm(displayName));
+    const abbrevs = relevanceAbbreviations(displayName);
+    const { hits, term } = await searchGuidelines(displayName, topicWords, abbrevs);
     if (!hits.length) {
         console.log(`  "${displayName.slice(0, 62)}"... no open-access guideline found`);
         return result;
     }
 
-    // Gate 1 — the article's own title must share vocabulary with the topic.
-    // A hit that shares nothing is a query artifact, not a guideline on this topic.
-    const topicWords = relevanceWords(coreTerm(displayName));
-    const relevantHits = hits.filter((a) => {
-        if (!topicWords.length) return false;
-        const need = topicWords.length >= 3 ? 2 : 1;
-        return overlapCount(a.title, topicWords) >= need;
-    });
-    if (!relevantHits.length) {
-        console.log(`  "${displayName.slice(0, 62)}"... ${hits.length} hit(s) but none title-relevant, skipping`);
-        return result;
-    }
-
     const seenTexts = new Set();
-    for (const article of relevantHits.slice(0, ARTICLES_PER_TOPIC)) {
+    for (const article of hits.slice(0, ARTICLES_PER_TOPIC)) {
         let text;
         try {
             text = await fetchFullText(article.pmcid);
@@ -376,6 +456,11 @@ async function ingestTopic(displayName, aiService) {
         result.articles++;
 
         const sourceBody = attributeSource(article);
+        // Relaxing gate 2 is only safe for an actual guideline document. A case
+        // report can carry the topic words in its title -- "...mimicking trochanteric
+        // bursitis" -- and its management text is about the mimic, not the topic.
+        const topicSpecificArticle = isGuidelineDocument(article)
+            && isTopicSpecific(article.title, topicWords, abbrevs);
         const chunks = chunkText(text).slice(0, 3);
         const recs = [];
         for (const chunk of chunks) {
@@ -391,10 +476,16 @@ async function ingestTopic(displayName, aiService) {
             if (seenTexts.has(key)) continue;
             seenTexts.add(key);
 
-            // Gate 2 — the recommendation itself must mention the topic. A guideline
-            // on the right subject still contains passages about comorbidities and
-            // adjacent conditions; those must not be stored under this topic.
-            if (overlapCount(rec.text, topicWords) < 1) {
+            // Gate 2 — for a guideline that covers several conditions, each
+            // recommendation must itself mention this topic, so sections about
+            // adjacent diseases are not stored under it.
+            //
+            // Skipped when the article is wholly about this topic (see
+            // isTopicSpecific): a disease-specific guideline does not restate the
+            // disease in every sentence -- a CML guideline says "BCR-ABL1
+            // transcripts" and "TKI therapy" -- and requiring it there rejected
+            // every genuine recommendation.
+            if (!topicSpecificArticle && overlapCount(rec.text, topicWords, abbrevs) < 1) {
                 result.rejected++;
                 continue;
             }
