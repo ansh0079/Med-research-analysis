@@ -22,6 +22,34 @@ const RECOMMENDATION_VERB_RE =
 
 const MIN_RECOMMENDATION_LENGTH = 25;
 
+// Stop words that carry no topic-discriminating signal.
+const SCORE_STOP = new Set([
+    'and','the','of','in','for','with','to','a','an','or','on','at','by','from','as','is','are','be',
+    'was','were','been','being','have','has','had','do','does','did','will','would','shall','should',
+    'may','might','must','can','could','not','no','nor','but','yet','so',
+    'vs','versus','management','therapy','treatment','disease','syndrome','acute','chronic',
+    'criteria','guidelines','guideline','patient','patients','clinical','care','use','used',
+    'based','associated','related','including','following','due','new','first','also','than',
+    'other','more','risk','high','low','type','level','dose','daily','per','each','all',
+    'when','which','that','this','these','those','who','whom','what','where','how',
+]);
+
+function topicContentWords(topic) {
+    const words = String(topic || '').toLowerCase().match(/[a-z]{4,}/g) || [];
+    return [...new Set(words.filter(w => !SCORE_STOP.has(w)))];
+}
+
+// Returns 0–1 fraction of topic content words found in recommendation text.
+function guidelineTermScore(row, topicWords) {
+    if (!topicWords.length) return 0;
+    const text = String(row.recommendation_text || '').toLowerCase();
+    let hits = 0;
+    for (const w of topicWords) {
+        if (text.includes(w)) hits++;
+    }
+    return hits / topicWords.length;
+}
+
 function isServableGuideline(row) {
     const text = String(row?.recommendation_text || '').trim();
     if (text.length < MIN_RECOMMENDATION_LENGTH) return false;
@@ -133,6 +161,8 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
         [...keys, staleThreshold]
     );
 
+    // Fetch a wider candidate pool so relevant rows beyond the recency-top are reachable.
+    const fetchLimit = Math.min(safeLimit * 8, 400);
     const rows = await this.all(
         `SELECT * FROM topic_guidelines
          WHERE normalized_topic IN (${stalePlaceholders})
@@ -140,11 +170,17 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
            AND superseded_by_id IS NULL
          ORDER BY source_year DESC, updated_at DESC
          LIMIT ?`,
-        [...keys, statusFilter, statusFilter, safeLimit]
+        [...keys, statusFilter, statusFilter, fetchLimit]
     );
-    // Filter after the query so the limit still applies to the servable set rather
-    // than being consumed by rows that get dropped.
-    return rows.filter(isServableGuideline).map((row) => this.mapGuidelineRow(row));
+
+    // Score by term overlap with the topic, then sort relevant-first, recency second.
+    const topicWords = topicContentWords(topic);
+    const scored = rows
+        .filter(isServableGuideline)
+        .map(row => ({ row, score: guidelineTermScore(row, topicWords), year: row.source_year || 0 }));
+    scored.sort((a, b) => b.score - a.score || b.year - a.year);
+
+    return scored.slice(0, safeLimit).map(({ row }) => this.mapGuidelineRow(row));
 }
 
 async listGuidelines({ query = '', status = '', sourceBody = '', limit = 50, offset = 0, onlyActive = false } = {}) {
