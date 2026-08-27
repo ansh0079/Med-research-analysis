@@ -5,7 +5,7 @@ const { TEACHING_STRATEGY_DIRECTIVES } = require('./constants');
 const { buildRetrievalContext } = require('./retrievalContext');
 const { formatAgentMistakesBlock } = require('./streamAndMistakes');
 
-function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = [], userContext = null, crossTopicBridges = [], retrieval = {}, { teachingStrategy = null, agentMistakes = [] } = {}) {
+function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = [], userContext = null, crossTopicBridges = [], retrieval = {}, { teachingStrategy = null, agentMistakes = [], comorbidGrounding = '' } = {}) {
     const k = topicKnowledge?.knowledge;
     const topic = topicKnowledge?.topic || 'this medical topic';
 
@@ -25,8 +25,16 @@ function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = []
 
     const synapseTopics = [...new Set((currentArticles || []).flatMap((a) => a._synapseTopics || []))];
 
+    // db.getGuidelinesByTopic() returns rows mapped to camelCase by mapGuidelineRow,
+    // while raw query results are snake_case. Read both: relying on snake_case alone
+    // threw a TypeError on every topic that actually had guidelines.
     const guidelineText = guidelines.length > 0
-        ? guidelines.map((g, i) => `[G${i + 1}] ${g.source_body}${g.source_year ? ` (${g.source_year})` : ''}: ${g.recommendation_text.slice(0, 300)}`).join('\n')
+        ? guidelines.map((g, i) => {
+            const body = g.sourceBody ?? g.source_body ?? 'unattributed';
+            const year = g.sourceYear ?? g.source_year;
+            const text = String(g.recommendationText ?? g.recommendation_text ?? '').slice(0, 300);
+            return `[G${i + 1}] ${body}${year ? ` (${year})` : ''}: ${text}`;
+        }).filter((line) => !line.endsWith(': ')).join('\n')
         : 'No guideline context provided.';
     const retrievalText = buildRetrievalContext(retrieval);
 
@@ -176,7 +184,7 @@ ${teachingText}
 
 ## Relevant clinical guidelines
 ${guidelineText}
-
+${comorbidGrounding ? `\n## Comorbid presentation — guidelines by condition\n${comorbidGrounding}\n` : ''}
 ## Retrieved app knowledge budget
 ${retrievalText}
 

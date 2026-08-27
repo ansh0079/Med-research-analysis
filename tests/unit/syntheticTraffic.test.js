@@ -21,15 +21,6 @@ describe('classifyTraffic', () => {
             expect(classifyTraffic(req({ 'user-agent': ua })).synthetic).toBe(true);
         });
 
-        test('empty user-agent', () => {
-            const result = classifyTraffic(req({ 'user-agent': '' }));
-            expect(result).toEqual({ synthetic: true, reason: 'empty_user_agent' });
-        });
-
-        test('missing user-agent header entirely', () => {
-            expect(classifyTraffic(req({})).synthetic).toBe(true);
-        });
-
         test('explicit opt-out header beats a real browser UA', () => {
             const result = classifyTraffic(req({
                 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/120.0',
@@ -56,6 +47,13 @@ describe('classifyTraffic', () => {
                 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/120.0',
             }));
             expect(result.synthetic).toBe(false);
+        });
+
+        // Native mobile clients and server-side integrations routinely omit the UA.
+        // Monitors all send one, so absence is not evidence of a monitor.
+        test('missing user-agent is not synthetic', () => {
+            expect(classifyTraffic(req({})).synthetic).toBe(false);
+            expect(classifyTraffic(req({ 'user-agent': '' })).synthetic).toBe(false);
         });
 
         test('opt-out header set to a falsy value does not trip detection', () => {

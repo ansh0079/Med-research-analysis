@@ -51,13 +51,12 @@ function classifyTraffic(req) {
         return { synthetic: true, reason: 'header' };
     }
 
+    // A missing User-Agent is deliberately NOT treated as synthetic. Every uptime
+    // vendor we care about sends one, so the rule would buy nothing — while native
+    // mobile clients, server-side integrations, and privacy tooling routinely omit
+    // it, and misclassifying those silently discards real learning signal.
     const ua = String(headers['user-agent'] || '').trim();
-    if (!ua) {
-        // No UA at all is characteristic of scripted probes, but some privacy
-        // tooling strips it too. Treat as synthetic only for GET health-ish paths.
-        return { synthetic: true, reason: 'empty_user_agent' };
-    }
-    if (SYNTHETIC_UA_RE.test(ua)) {
+    if (ua && SYNTHETIC_UA_RE.test(ua)) {
         return { synthetic: true, reason: 'user_agent' };
     }
 

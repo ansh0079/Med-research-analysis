@@ -11,6 +11,10 @@ const { enqueueAgentTurnSideEffects } = require('../agentSideEffectService');
 const { getActiveLlmBudget, createBudgetForAction } = require('../llmRequestBudget');
 const { buildLearnerContext } = require('../learnerContextService');
 const {
+    composeComorbidGuidelines,
+    buildComorbidGroundingBlock,
+} = require('../evidence/comorbidGuidelineService');
+const {
     buildAgentSystemPrompt,
     buildAgentEvidenceAnchors,
     buildRetrievalContext,
@@ -65,10 +69,28 @@ async function executeAgentTurn(
 
     const topicKnowledge = await db.getTopicKnowledge(trimmedTopic);
 
-    const guidelines = await db.getGuidelinesByTopic(trimmedTopic, { limit: 5 }).catch((err) => {
-        logger.warn({ err }, 'getGuidelinesByTopic failed');
-        return [];
-    });
+    // A presentation like "sepsis with ARDS and AKI" is several guideline bodies at
+    // once. Resolve each condition separately so no condition is silently dropped,
+    // and surface the axes where their recommendations genuinely conflict.
+    const comorbidComposition = await composeComorbidGuidelines(db, trimmedTopic, { perCondition: 5 })
+        .catch((err) => {
+            logger.warn({ err }, 'composeComorbidGuidelines failed');
+            return null;
+        });
+
+    // Single-condition topics collapse to the original behaviour: one condition in,
+    // its guidelines out. Multi-condition topics get the union across conditions.
+    const guidelines = comorbidComposition?.byCondition?.length
+        ? comorbidComposition.byCondition.flatMap((entry) => entry.guidelines)
+        : await db.getGuidelinesByTopic(trimmedTopic, { limit: 5 }).catch((err) => {
+            logger.warn({ err }, 'getGuidelinesByTopic failed');
+            return [];
+        });
+
+    // Only worth a dedicated grounding block when more than one condition resolved.
+    const comorbidGrounding = (comorbidComposition?.byCondition?.length > 1)
+        ? buildComorbidGroundingBlock(comorbidComposition)
+        : '';
 
     const [teachingObjects, groundedClaims, userContext] = await Promise.all([
         db.listTeachingObjectsForTopic(trimmedTopic, { limit: 3 }).catch((err) => {
@@ -167,6 +189,7 @@ async function executeAgentTurn(
         {
             teachingStrategy: teachingStrategyArm?.strategy ? teachingStrategyArm : null,
             agentMistakes,
+            comorbidGrounding,
         }
     );
 
