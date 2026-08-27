@@ -57,7 +57,9 @@ function registerExternalSourceRoutes(app, { db, cache, proxy, rateLimit }) {
 
             await cache.setSearchResults(queryValidation.sanitized, ['pubmed'], 'moderate', articles);
             const executionTime = Date.now() - startTime;
-            await db.logSearch(req.sessionId, queryValidation.sanitized, ['pubmed'], { sort }, articles.length, executionTime, req.ip);
+            if (!req.isSynthetic) {
+                await db.logSearch(req.sessionId, queryValidation.sanitized, ['pubmed'], { sort }, articles.length, executionTime, req.ip);
+            }
             await db.logEvent('search', req.sessionId, { source: 'pubmed', query: queryValidation.sanitized, results: articles.length });
             if (req.user?.id) {
                 const uids = articles.slice(0, 14).map((a) => a.uid).filter(Boolean);

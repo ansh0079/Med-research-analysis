@@ -77,6 +77,7 @@ const {
 } = require('./server/services/observabilityMetrics');
 const { runQueueFailureDigest } = require('./server/services/queueFailureDigestService');
 const { annotateActiveSpan } = require('./server/utils/tracing');
+const { syntheticTrafficMiddleware } = require('./server/utils/syntheticTraffic');
 const { enqueuePdfPreindex: _enqueuePdfPreindex } = require('./server/services/pdfPreindexService');
 
 // ==========================================
@@ -359,6 +360,10 @@ app.use((req, res, next) => {
     });
     next();
 });
+
+// Classify uptime-monitor / bot traffic before any handler writes learning
+// telemetry, so synthetic requests can be excluded from the training corpus.
+app.use(syntheticTrafficMiddleware);
 
 // Session tracking — skip for health probes, metrics, and static assets to
 // avoid a cache+DB round trip on paths that never need session state.

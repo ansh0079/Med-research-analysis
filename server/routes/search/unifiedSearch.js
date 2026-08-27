@@ -11,6 +11,7 @@ const { buildLearnerContext, publicLearnerContextSummary } = require('../../serv
 const { publicRankingTraces } = require('../../services/searchRankingTrace');
 const { buildEnrichmentCacheKey } = require('../../services/synthesisPersonalization');
 const { enqueueSearchObservedSideEffects } = require('../../services/searchObservedService');
+const { captureLowRecallSearch } = require('../../services/lowRecallLearningService');
 const { clampLimit, setNoStoreSearchHeaders, attachApiKeyUser } = require('./searchHelpers');
 const {
     buildSearchResultCacheKey,
@@ -290,13 +291,17 @@ function registerUnifiedSearchRoutes(app, deps) {
                 previousQueries,
             };
 
+            // Uptime monitors never click a result, so their searches would enter the
+            // learning corpus as permanently-unrewarded impressions. Skip the write.
             const [searchLogResult] = await Promise.allSettled([
-                db.logSearch(req.sessionId, queryValidation.sanitized, sourceList, {
-                    vector: useVectorFusion,
-                    intelligence: intelligenceMode,
-                    queryIntent: queryIntentProfile.primaryIntent,
-                    queryIntentProfile,
-                }, articles.length, executionTime, req.ip, logSessionMeta),
+                req.isSynthetic
+                    ? Promise.resolve(null)
+                    : db.logSearch(req.sessionId, queryValidation.sanitized, sourceList, {
+                        vector: useVectorFusion,
+                        intelligence: intelligenceMode,
+                        queryIntent: queryIntentProfile.primaryIntent,
+                        queryIntentProfile,
+                    }, articles.length, executionTime, req.ip, logSessionMeta),
                 db.logEvent('search', req.sessionId, {
                     query: queryValidation.sanitized,
                     sources: sourceList,
@@ -316,12 +321,29 @@ function registerUnifiedSearchRoutes(app, deps) {
                 const uids = articles.slice(0, 14).map((a) => a.uid).filter(Boolean);
                 db.recordUserTopicSearchSignal(req.user.id, queryValidation.sanitized, uids).catch((err) => { logger.warn({ err }, 'recordUserTopicSearchSignal failed'); });
             }
+
+            // A near-empty result set usually means our vocabulary, not the corpus,
+            // is missing the term. Ask NLM MeSH for the canonical synonyms and fold
+            // them into topic knowledge so the next search for this concept hits.
+            // Fire-and-forget: never delay the response on an external lookup.
+            if (!req.isSynthetic) {
+                captureLowRecallSearch({
+                    db,
+                    fetchImpl: safeFetch,
+                    query: queryValidation.sanitized,
+                    resultCount: articles.length,
+                    sources: sourceList,
+                    logger,
+                }).catch((err) => logger.debug({ err }, 'captureLowRecallSearch failed'));
+            }
             let rankingAttribution = [];
-            if (searchId) {
+            if (searchId && !req.isSynthetic) {
                 try {
                     // Always record decisions so the RL loop has signal even for
                     // anonymous / first-time searches. Use heuristic_default when
-                    // no personalized bandit arm was selected.
+                    // no personalized bandit arm was selected. Synthetic traffic is
+                    // excluded: a monitor never clicks, so every row it writes is a
+                    // permanently-unrewarded impression that biases offline eval.
                     const effectiveBanditMeta = banditMeta?.armId
                         ? { ...banditMeta, forceLog: true }
                         : { armId: 'heuristic_default', forceLog: true };
