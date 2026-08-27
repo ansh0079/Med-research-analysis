@@ -7,8 +7,10 @@ const {
     buildComorbidGroundingBlock,
 } = require('../../server/services/evidence/comorbidGuidelineService');
 
-const rec = (text, sourceBody = 'TestBody', sourceYear = 2024) => ({
-    recommendationText: text, sourceBody, sourceYear,
+// Shaped as mapGuidelineRow() returns rows: camelCase, and always carrying the
+// topic the row is filed under (relevance is gated on topic, not on prose).
+const rec = (text, sourceBody = 'TestBody', sourceYear = 2024, topic = 'TestTopic') => ({
+    recommendationText: text, sourceBody, sourceYear, topic,
 });
 
 describe('decomposeConditions', () => {
@@ -115,8 +117,8 @@ describe('composeComorbidGuidelines', () => {
 
     test('resolves each condition separately and reports uncovered ones', async () => {
         const db = dbWith({
-            sepsis: [rec('Give crystalloid bolus.', 'SSC')],
-            ards: [rec('Use conservative fluid strategy.', 'ARDSnet')],
+            sepsis: [rec('Give crystalloid bolus.', 'SSC', 2021, 'Sepsis and septic shock')],
+            ards: [rec('Use conservative fluid strategy.', 'ARDSnet', 2006, 'ARDS')],
         });
         const out = await composeComorbidGuidelines(db, 'sepsis with ARDS and unobtainium');
         expect(out.conditions).toEqual(['sepsis', 'ARDS', 'unobtainium']);
@@ -139,14 +141,46 @@ describe('composeComorbidGuidelines', () => {
         expect(out.byCondition).toHaveLength(0);
         expect(out.uncovered).toEqual(['sepsis', 'AKI']);
     });
+
+    // The lexical fallback matches substrings of stored topic names, which can drag
+    // in a neighbouring topic. Observed on prod: widening for "anaemia" reached rows
+    // filed under unrelated topics. Those must be dropped, not reported as covered.
+    test('lexical fallback discards rows filed under an unrelated topic', async () => {
+        const db = {
+            getGuidelinesByTopic: jest.fn(async () => []),
+            mapGuidelineRow: (r) => r,
+            all: jest.fn(async () => [
+                rec('Iron supplementation improves cognition.', 'NICE', 2026, 'anaemia of chronic disease'),
+                rec('Pharmacist review reduces incidence.', 'WHO', 2026, 'medication safety in hospital'),
+            ]),
+        };
+        const out = await composeComorbidGuidelines(db, 'anaemia and unobtainium');
+        const anaemia = out.byCondition.find((e) => e.condition === 'anaemia');
+        expect(anaemia).toBeDefined();
+        expect(anaemia.matchedVia).toMatch(/^lexical:/);
+        // Only the correctly-filed row survives.
+        expect(anaemia.guidelines).toHaveLength(1);
+        expect(anaemia.guidelines[0].topic).toBe('anaemia of chronic disease');
+    });
+
+    // Guideline prose does not restate the disease in every sentence. Gating on
+    // recommendation text would discard exactly the recommendations we most want.
+    test('keeps a correctly-filed recommendation that never names the condition', async () => {
+        const db = dbWith({
+            sepsis: [rec('Administer 30 mL/kg crystalloid within the first hour.', 'SSC', 2021, 'Sepsis and septic shock')],
+        });
+        const out = await composeComorbidGuidelines(db, 'sepsis');
+        expect(out.byCondition).toHaveLength(1);
+        expect(out.byCondition[0].guidelines).toHaveLength(1);
+    });
 });
 
 describe('buildComorbidGroundingBlock', () => {
     test('names conflicts and forbids averaging them', async () => {
         const db = {
             getGuidelinesByTopic: jest.fn(async (t) => ({
-                sepsis: [rec('Administer 30 mL/kg crystalloid bolus.', 'SSC', 2021)],
-                ards: [rec('Use a conservative fluid strategy.', 'ARDSnet', 2006)],
+                sepsis: [rec('Administer 30 mL/kg crystalloid bolus.', 'SSC', 2021, 'Sepsis and septic shock')],
+                ards: [rec('Use a conservative fluid strategy.', 'ARDSnet', 2006, 'ARDS')],
             }[t.toLowerCase()] || [])),
         };
         const composition = await composeComorbidGuidelines(db, 'sepsis with ARDS');
@@ -162,7 +196,7 @@ describe('buildComorbidGroundingBlock', () => {
 
     test('states uncovered conditions explicitly', () => {
         const block = buildComorbidGroundingBlock({
-            byCondition: [{ condition: 'sepsis', guidelines: [rec('Give fluids.')], sourceBodies: ['SSC'] }],
+            byCondition: [{ condition: 'sepsis', guidelines: [rec('Give fluids.', 'SSC', 2021, 'Sepsis')], sourceBodies: ['SSC'] }],
             conflicts: [],
             uncovered: ['rare-disease-x'],
         });
