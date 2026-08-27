@@ -45,7 +45,7 @@ const { serverConfig } = require('../config');
 
 const DRY_RUN = process.env.INGEST_DRY_RUN === '1';
 const TOPIC_FILTER = process.env.INGEST_TOPIC_FILTER
-    ? new Set(process.env.INGEST_TOPIC_FILTER.split(',').map(s => s.trim().toLowerCase()))
+    ? new Set(process.env.INGEST_TOPIC_FILTER.split(/[,|]/).map(s => s.trim().toLowerCase()).filter(Boolean))
     : null;
 const MAX_TOPICS = Number(process.env.INGEST_MAX_TOPICS || 0);
 const ARTICLES_PER_TOPIC = Math.max(1, Number(process.env.INGEST_ARTICLES_PER_TOPIC || 2));
@@ -526,8 +526,10 @@ async function ingestTopic(displayName, aiService) {
 async function main() {
     await db.connect();
 
+    // When a filter is explicitly provided, include all active topics (including null-specialty).
+    const specialtyClause = TOPIC_FILTER ? '' : "AND specialty IS NOT NULL";
     const allTopics = await db.all(
-        `SELECT display_name FROM curriculum_topics WHERE specialty IS NOT NULL ORDER BY sort_order`,
+        `SELECT display_name FROM curriculum_topics WHERE seed_status != 'archived' ${specialtyClause} ORDER BY sort_order`,
         []
     );
 
