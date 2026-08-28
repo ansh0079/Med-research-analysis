@@ -28,14 +28,24 @@ function buildAgentSystemPrompt(topicKnowledge, currentArticles, guidelines = []
     // db.getGuidelinesByTopic() returns rows mapped to camelCase by mapGuidelineRow,
     // while raw query results are snake_case. Read both: relying on snake_case alone
     // threw a TypeError on every topic that actually had guidelines.
+    // Trials are stored in the same table as guidelines, so the tier must be shown.
+    // A trial reports what happened in one study population; a guideline states what
+    // a body recommends. Rendering them identically invites the model to cite trial
+    // findings as though they were recommendations.
     const guidelineText = guidelines.length > 0
         ? guidelines.map((g, i) => {
             const body = g.sourceBody ?? g.source_body ?? 'unattributed';
             const year = g.sourceYear ?? g.source_year;
             const text = String(g.recommendationText ?? g.recommendation_text ?? '').slice(0, 300);
-            return `[G${i + 1}] ${body}${year ? ` (${year})` : ''}: ${text}`;
-        }).filter((line) => !line.endsWith(': ')).join('\n')
+            const tier = g.evidenceTier ?? g.evidence_tier ?? 'unknown';
+            const marker = tier === 'trial' ? 'T' : 'G';
+            const kind = tier === 'trial' ? ' [TRIAL EVIDENCE]'
+                : tier === 'literature' ? ' [LITERATURE]' : '';
+            return `[${marker}${i + 1}]${kind} ${body}${year ? ` (${year})` : ''}: ${text}`;
+        }).filter((line) => !line.trim().endsWith(':')).join('\n')
         : 'No guideline context provided.';
+
+    const hasTrialTier = guidelines.some((g) => (g.evidenceTier ?? g.evidence_tier) === 'trial');
     const retrievalText = buildRetrievalContext(retrieval);
 
     let learnerContext = '';
@@ -182,8 +192,9 @@ ${seminalText}
 ### Core teaching points
 ${teachingText}
 
-## Relevant clinical guidelines
+## Relevant clinical evidence
 ${guidelineText}
+${hasTrialTier ? '\nEntries marked [TRIAL EVIDENCE] are individual trials, not guidance. Report what the trial found and in whom; do not phrase a trial result as a recommendation, and say so when no guideline has yet incorporated it.\n' : ''}
 ${comorbidGrounding ? `\n## Comorbid presentation — guidelines by condition\n${comorbidGrounding}\n` : ''}
 ## Retrieved app knowledge budget
 ${retrievalText}

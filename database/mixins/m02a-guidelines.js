@@ -75,6 +75,11 @@ mapGuidelineRow(row) {
         sourceUrl: row.source_url || undefined,
         sourceSpecialty: row.source_specialty || undefined,
         sourceDomain: row.source_domain || undefined,
+        // Provenance tier (migration 087). Must survive the mapping: trial rows are
+        // stored in this same table, and without the tier a trial finding reaches
+        // the learner rendered identically to a guideline recommendation — with an
+        // authority it has not earned.
+        evidenceTier: row.evidence_tier || 'unknown',
         recommendationText: row.recommendation_text,
         recommendationStrength: row.recommendation_strength || undefined,
         recommendationCertainty: row.recommendation_certainty || undefined,
