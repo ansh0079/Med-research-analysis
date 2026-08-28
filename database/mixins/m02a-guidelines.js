@@ -86,6 +86,13 @@ mapGuidelineRow(row) {
         population: row.population || undefined,
         intervention: row.intervention || undefined,
         cautions: row.cautions || undefined,
+        // Structured decomposition fields (migration 088). Present on rows that have
+        // been through structure-recommendations.js; null on unstructured rows.
+        recDirection: row.rec_direction || undefined,
+        recExclusions: row.rec_exclusions || undefined,
+        recTrigger: row.rec_trigger || undefined,
+        structuredAt: row.structured_at || undefined,
+        documentId: row.document_id || undefined,
         status: row.status,
         reviewedBy: row.reviewed_by || undefined,
         reviewedAt: row.reviewed_at || undefined,
