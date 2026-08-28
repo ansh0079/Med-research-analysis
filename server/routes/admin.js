@@ -8,6 +8,7 @@ const { getCurriculumSeedSchedulerSettings } = require('../services/curriculumSe
 const { aggregateCollectiveMemory } = require('../services/collectiveMemoryService');
 const { QUALITY_QUEUES } = require('../services/clinicalQualityReviewService');
 const { writeThroughTeachingVerification } = require('../services/claimTrustOverlayService');
+const { evaluateSearchRankerPromotionGate } = require('../services/searchRankerPromotionGateService');
 
 function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
     app.get('/api/admin/stats', requireAuthJwt, requireRole('admin'), async (req, res) => {
@@ -430,6 +431,19 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
             res.status(201).json({ created });
         } catch (error) {
             req.log.error({ err: error }, 'Create invite codes error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    // Search ranker promotion gate — run quality checks before promoting a new ranker.
+    // Returns pass/fail per metric plus an overall recommendation.
+    app.get('/api/admin/search/ranker-gate', requireAuthJwt, requireRole('admin'), async (req, res) => {
+        try {
+            const days = Math.min(90, Math.max(1, Number(req.query.days) || 14));
+            const result = await evaluateSearchRankerPromotionGate(db, { days });
+            res.json(result);
+        } catch (error) {
+            req.log.error({ err: error }, 'Ranker promotion gate error');
             res.status(500).json({ error: 'Internal server error' });
         }
     });

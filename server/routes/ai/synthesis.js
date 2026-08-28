@@ -25,6 +25,8 @@ const {
 } = require('../../services/learningLoopSignalService');
 const { getOrEnqueueFullSynthesis, getOrEnqueuePaperSynopsis } = require('../../services/aiGenerationJobService');
 const { persistPaperTeachingObject } = require('../../services/teachingObjectService');
+const { getHierarchicalSynthesis, setHierarchicalSynthesis, needsRegeneration } = require('../../services/hierarchicalCacheService');
+const { streamSynthesisGeneration } = require('../../services/progressiveStreamingService');
 
 function registerSynthesisRoutes(app, {
     db,
@@ -85,6 +87,13 @@ function registerSynthesisRoutes(app, {
         }
 
         try {
+            // Check hierarchical cache before generating. L3 hit (full synthesis) is
+            // valid only when no new articles have appeared since it was cached.
+            const cached = await getHierarchicalSynthesis(cache, topic || '', topArticles);
+            if (cached && !needsRegeneration(cached, topArticles)) {
+                return res.json({ ...cached, _source: 'hierarchical_cache' });
+            }
+
             const result = await runFullSynthesisGeneration({
                 articles: topArticles,
                 topic: topic || 'General Medical Inquiry',
@@ -105,6 +114,7 @@ function registerSynthesisRoutes(app, {
                 model: result.audit?.model,
                 log: req.log,
             });
+            void setHierarchicalSynthesis(cache, topic || '', topArticles, result).catch(() => {});
             await db.logEvent('synthesize', req.sessionId, {
                 topic,
                 articleCount: topArticles.length,
@@ -119,10 +129,24 @@ function registerSynthesisRoutes(app, {
     });
 
     app.post('/api/ai/synthesize/stream', limitBodySize(2 * 1024 * 1024), requireJson, requireAiAuth, requireVerifiedEmail, requirePaidFeature('aiSynthesis'), requireMonthlyLimit('synthesisPerMonth', 'ai_synthesis'), aiUserLimit(5, 60), validateBody(schemas.synthesize), async (req, res) => {
-        const { articles, topic, provider = 'auto' } = req.body;
+        const { articles, topic, provider = 'auto', progressive = false } = req.body;
 
         if (!Array.isArray(articles) || articles.length === 0) {
             return res.status(400).json({ error: 'At least one article is required for synthesis' });
+        }
+
+        // Progressive mode: richer progress events (preparing/retrieving/generating
+        // stages with percentage) rather than raw text chunks. Clients opt in via
+        // progressive:true in the request body.
+        if (progressive) {
+            return streamSynthesisGeneration(res, {
+                articles, topic, db, cache, serverConfig, fetchImpl,
+                userId: req.user?.id || null,
+                ai,
+            }).catch((err) => {
+                req.log.error({ err }, 'Progressive synthesis stream error');
+                if (!res.headersSent) res.status(500).end();
+            });
         }
 
         const topArticles = selectTopSynthesisArticles(articles);
