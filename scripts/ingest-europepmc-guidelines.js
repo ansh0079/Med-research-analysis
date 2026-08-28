@@ -44,6 +44,15 @@ const { getProviderCandidates } = require('../server/utils/aiProvider');
 const { serverConfig } = require('../config');
 
 const DRY_RUN = process.env.INGEST_DRY_RUN === '1';
+// Explicit list of topic names to ingest, bypassing curriculum_topics entirely.
+// Accepts a pipe/newline-separated value, or a path via INGEST_TOPIC_LIST_FILE.
+const TOPIC_LIST = (() => {
+    const raw = process.env.INGEST_TOPIC_LIST_FILE
+        ? require('fs').readFileSync(process.env.INGEST_TOPIC_LIST_FILE, 'utf8')
+        : (process.env.INGEST_TOPIC_LIST || '');
+    return raw.split(/[|\r\n]+/).map(s => s.trim()).filter(Boolean);
+})();
+
 const TOPIC_FILTER = process.env.INGEST_TOPIC_FILTER
     ? new Set(process.env.INGEST_TOPIC_FILTER.split(/[,|]/).map(s => s.trim().toLowerCase()).filter(Boolean))
     : null;
@@ -526,16 +535,23 @@ async function ingestTopic(displayName, aiService) {
 async function main() {
     await db.connect();
 
-    // When a filter is explicitly provided, include all active topics (including null-specialty).
-    const specialtyClause = TOPIC_FILTER ? '' : "AND specialty IS NOT NULL";
-    const allTopics = await db.all(
-        `SELECT display_name FROM curriculum_topics WHERE seed_status != 'archived' ${specialtyClause} ORDER BY sort_order`,
-        []
-    );
-
-    let candidates = allTopics.map(t => t.display_name);
-    if (TOPIC_FILTER) {
-        candidates = candidates.filter(n => TOPIC_FILTER.has(n.toLowerCase()));
+    // INGEST_TOPIC_LIST seeds conditions that are NOT yet curriculum topics — the
+    // launch-gap list is condition names ("migraine", "HIV infection"), and filtering
+    // against curriculum_topics would silently drop every one of them.
+    let candidates;
+    if (TOPIC_LIST.length) {
+        candidates = TOPIC_LIST;
+    } else {
+        // When a filter is explicitly provided, include all active topics (including null-specialty).
+        const specialtyClause = TOPIC_FILTER ? '' : "AND specialty IS NOT NULL";
+        const allTopics = await db.all(
+            `SELECT display_name FROM curriculum_topics WHERE seed_status != 'archived' ${specialtyClause} ORDER BY sort_order`,
+            []
+        );
+        candidates = allTopics.map(t => t.display_name);
+        if (TOPIC_FILTER) {
+            candidates = candidates.filter(n => TOPIC_FILTER.has(n.toLowerCase()));
+        }
     }
 
     // Only topics with no servable guidelines today.
