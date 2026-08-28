@@ -494,7 +494,37 @@ async function ingestTopic(displayName, aiService) {
         // bursitis" -- and its management text is about the mimic, not the topic.
         const topicSpecificArticle = isGuidelineDocument(article)
             && isTopicSpecific(article.title, topicWords, abbrevs);
-        const chunks = chunkText(text).slice(0, 3);
+
+        // Persist the full document body before extraction so it is readable
+        // later without re-fetching. Document store deduplicates on pmcid, so
+        // re-running this script on the same article is safe.
+        let documentId = null;
+        if (!DRY_RUN) {
+            try {
+                documentId = await db.upsertGuidelineDocument({
+                    pmcid: article.pmcid,
+                    pmid: article.pmid || null,
+                    title: article.title || null,
+                    sourceBody,
+                    sourceYear: article.pubYear ? Number(article.pubYear) : null,
+                    sourceUrl: `https://europepmc.org/article/PMC/${article.pmcid}`,
+                    documentLabel: article.pubTypeList?.pubType?.find?.(t =>
+                        /guideline|recommendation|consensus/i.test(t)) || null,
+                    evidenceTier: 'guideline',
+                    fullText: text,
+                    fullTextSource: 'jats',
+                    fetchedAt: new Date().toISOString(),
+                });
+            } catch (err) {
+                console.warn(`     [warn] document store insert failed: ${err.message}`);
+            }
+        }
+
+        // Process ALL chunks — not just the first 3. The 3-chunk cap was a
+        // performance guard when the text was not persisted; now that the body
+        // is stored, re-extraction is cheap, and recommendations past ~33k chars
+        // (typically the treatment sections) are no longer silently dropped.
+        const chunks = chunkText(text);
         const recs = [];
         for (const chunk of chunks) {
             try {
@@ -538,6 +568,7 @@ async function ingestTopic(displayName, aiService) {
                     recommendationStrength: rec.strength,
                     recommendationCertainty: rec.certainty,
                     status: 'ai_extracted',
+                    documentId,
                 });
                 result.inserted++;
             } catch (err) {

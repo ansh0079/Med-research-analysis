@@ -143,15 +143,19 @@ async function main() {
     if (TOPIC) { topicClause = ' AND normalized_topic = ?'; params.push(TOPIC); }
     params.push(LIMIT);
 
+    // Pull full_text from document store when available so extraction runs on
+    // the actual guideline body, not the already-truncated recommendation sentence.
     const rows = await db.all(
-        `SELECT id, topic, recommendation_text
-         FROM topic_guidelines
-         WHERE structured_at IS NULL
-           AND evidence_tier = ?
-           AND recommendation_text IS NOT NULL
-           AND length(recommendation_text) >= 25
+        `SELECT g.id, g.topic, g.recommendation_text,
+                d.full_text, d.full_text_source, d.word_count
+         FROM topic_guidelines g
+         LEFT JOIN guideline_documents d ON d.id = g.document_id
+         WHERE g.structured_at IS NULL
+           AND g.evidence_tier = ?
+           AND g.recommendation_text IS NOT NULL
+           AND length(g.recommendation_text) >= 25
            ${topicClause}
-         ORDER BY source_year DESC NULLS LAST, id
+         ORDER BY g.source_year DESC NULLS LAST, g.id
          LIMIT ?`,
         params
     );
@@ -164,13 +168,24 @@ async function main() {
 
     for (let i = 0; i < rows.length; i += BATCH) {
         const batch = rows.slice(i, i + BATCH);
+
+        // When all rows in a batch share the same document (common: many recs from
+        // one guideline), pass the full text once as context before the numbered
+        // recommendations. Otherwise fall back to the stored recommendation sentence.
+        const docIds = new Set(batch.map(r => r.document_id).filter(Boolean));
+        let docContext = '';
+        if (docIds.size === 1 && batch[0].full_text) {
+            const words = batch[0].word_count || Math.round(batch[0].full_text.length / 5);
+            docContext = `\n\n## Source document (${words} words)\nUse this to resolve population, exclusions and triggers not explicit in the extracted sentence:\n${batch[0].full_text.slice(0, 24000)}\n\n`;
+        }
+
         const listing = batch
             .map((r, j) => `${j + 1}. [topic: ${r.topic}] ${r.recommendation_text}`)
             .join('\n\n');
 
         let parsed;
         try {
-            const raw = await callModel(aiService, PROMPT + listing, `batch ${i / BATCH + 1}`);
+            const raw = await callModel(aiService, PROMPT + docContext + listing, `batch ${i / BATCH + 1}`);
             parsed = parseResponse(raw, batch.length);
             if (process.env.STRUCT_DEBUG === '1' && parsed.size < batch.length) {
                 console.log(`  [debug] parsed ${parsed.size}/${batch.length}; raw response follows:`);

@@ -419,12 +419,35 @@ async function processTopic(topic) {
             [normalized, url]
         ).catch(() => null);
         if (exists) continue;
+
+        // Persist abstract in the document store so the trial body is readable
+        // without re-fetching from PubMed. Abstracts are short (≤500 words) so
+        // storage overhead is negligible; they survive as the primary source text
+        // for structured field extraction and agent grounding.
+        let documentId = null;
+        if (typeof db.upsertGuidelineDocument === 'function') {
+            const abstractText = String(a.abstractText || entries[i].clinicalPrinciple || '').trim();
+            documentId = await db.upsertGuidelineDocument({
+                pmcid: a.pmcid || null,
+                pmid: a.pmid || null,
+                doi: a.doi || null,
+                title: a.title || null,
+                sourceBody: String(a.journalTitle || 'Clinical trial').slice(0, 120),
+                sourceYear: a.pubYear ? Number(a.pubYear) : null,
+                sourceUrl: url,
+                evidenceTier: 'trial',
+                fullText: abstractText || null,
+                fullTextSource: abstractText ? 'abstract' : null,
+                fetchedAt: new Date().toISOString(),
+            }).catch(() => null);
+        }
+
         await db.run(
             `INSERT INTO topic_guidelines (
                 topic, normalized_topic, source_body, source_year, source_url,
                 recommendation_text, recommendation_strength, status, evidence_tier,
-                last_checked_at, created_at, updated_at
-             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                document_id, last_checked_at, created_at, updated_at
+             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 String(topic).slice(0, 240),
                 normalized,
@@ -435,6 +458,7 @@ async function processTopic(topic) {
                 entries[i].evidenceStrength,
                 'ai_extracted',
                 'trial',
+                documentId,
                 new Date().toISOString(), new Date().toISOString(), new Date().toISOString(),
             ]
         ).catch(() => null);

@@ -106,16 +106,99 @@ mapGuidelineRow(row) {
     };
 }
 
+// ─── Document store ───────────────────────────────────────────────────────────
+
+/**
+ * Upsert a source document (guideline article, trial abstract, …) into the
+ * persistent document store. Returns the row id.
+ *
+ * Dedup key is pmcid when present; otherwise a composite of source_body +
+ * source_year + title (truncated). Caller should prefer pmcid.
+ */
+async upsertGuidelineDocument(doc) {
+    const now = new Date().toISOString();
+    const wordCount = doc.fullText
+        ? String(doc.fullText).trim().split(/\s+/).length
+        : null;
+
+    // Try pmcid-keyed upsert first.
+    if (doc.pmcid) {
+        const existing = await this.get(
+            `SELECT id FROM guideline_documents WHERE pmcid = ?`, [doc.pmcid]
+        );
+        if (existing) {
+            // Update full_text if we now have it and didn't before.
+            if (doc.fullText) {
+                await this.run(
+                    `UPDATE guideline_documents SET
+                        full_text = COALESCE(full_text, ?),
+                        full_text_source = COALESCE(full_text_source, ?),
+                        word_count = COALESCE(word_count, ?),
+                        fetched_at = COALESCE(fetched_at, ?),
+                        updated_at = ?
+                     WHERE id = ?`,
+                    [doc.fullText, doc.fullTextSource || 'jats', wordCount, now, now, existing.id]
+                );
+            }
+            return existing.id;
+        }
+    }
+
+    const result = await this.run(
+        `INSERT INTO guideline_documents (
+            pmcid, pmid, doi, title, source_body, source_year, source_url,
+            document_label, evidence_tier, full_text, full_text_source,
+            word_count, fetched_at, created_at, updated_at
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            doc.pmcid || null,
+            doc.pmid || null,
+            doc.doi || null,
+            doc.title ? String(doc.title).trim().slice(0, 500) : null,
+            doc.sourceBody ? String(doc.sourceBody).trim() : null,
+            doc.sourceYear ? parseInt(doc.sourceYear, 10) : null,
+            doc.sourceUrl ? String(doc.sourceUrl).trim() : null,
+            doc.documentLabel || null,
+            doc.evidenceTier || 'guideline',
+            doc.fullText || null,
+            doc.fullTextSource || (doc.fullText ? 'jats' : null),
+            wordCount,
+            doc.fetchedAt || now,
+            now, now,
+        ]
+    );
+    return result.id;
+}
+
+async getGuidelineDocument(id) {
+    return this.get(`SELECT * FROM guideline_documents WHERE id = ?`, [id]);
+}
+
+async getGuidelineDocumentByPmcid(pmcid) {
+    return this.get(`SELECT * FROM guideline_documents WHERE pmcid = ?`, [pmcid]);
+}
+
+// ─── Recommendations ─────────────────────────────────────────────────────────
+
 async createGuideline(guideline) {
     const now = new Date().toISOString();
     const normalized = this.normalizeTopic(guideline.topic);
+
+    // Optionally link to a document store row.
+    let documentId = guideline.documentId || null;
+    if (!documentId && guideline.pmcid) {
+        const doc = await this.getGuidelineDocumentByPmcid(guideline.pmcid);
+        if (doc) documentId = doc.id;
+    }
+
     const result = await this.run(
         `INSERT INTO topic_guidelines (
             topic, normalized_topic, source_body, source_region, source_year,
             source_url, source_specialty, source_domain, recommendation_text,
             recommendation_strength, recommendation_certainty, population,
-            intervention, cautions, status, last_checked_at, created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            intervention, cautions, status, document_id,
+            last_checked_at, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
             String(guideline.topic || '').trim().slice(0, 240),
             normalized,
@@ -132,6 +215,7 @@ async createGuideline(guideline) {
             guideline.intervention ? String(guideline.intervention).trim() : null,
             guideline.cautions ? String(guideline.cautions).trim() : null,
             guideline.status || 'ai_extracted',
+            documentId,
             now, now, now,
         ]
     );
