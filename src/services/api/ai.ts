@@ -27,6 +27,7 @@ import type {
   LearningHealthResponse,
   LearningRecommendation,
   BanditMeta,
+  ComorbidMeta,
 } from '@types';
 
 export interface WebpageInferenceResult {
@@ -408,7 +409,7 @@ export class AiApi extends BaseApiClient {
     previousQueries: string[] = [],
     callbacks: {
       onChunk: (text: string) => void;
-      onDone: (topic: string, conversationId: number | null | undefined, promptVersion: string | null, banditMeta?: BanditMeta | null) => void;
+      onDone: (topic: string, conversationId: number | null | undefined, promptVersion: string | null, banditMeta?: BanditMeta | null, comorbidMeta?: ComorbidMeta | null) => void;
       onError: (msg: string) => void;
     },
     sessionFeedback?: {
@@ -462,7 +463,8 @@ export class AiApi extends BaseApiClient {
                 data.topic ?? topic,
                 data.conversationId != null ? Number(data.conversationId) : conversationId ?? null,
                 data.promptVersion ?? null,
-                data.banditMeta ?? null
+                data.banditMeta ?? null,
+                data.comorbidMeta ?? null
               );
             }
             else if (event === 'error') callbacks.onError(data.message ?? 'Unknown error');

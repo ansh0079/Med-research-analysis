@@ -145,6 +145,43 @@ export interface BanditMeta {
   decisionId?: number | null;
 }
 
+/** Structured comorbid guideline composition — returned in the agent done event. */
+export interface ComorbidRecommendation {
+  text: string;
+  sourceBody: string | null;
+  sourceYear: number | null;
+  recDirection?: string | null;
+  intervention?: string | null;
+  exclusionHit?: string | null;
+}
+
+export interface ComorbidConditionEntry {
+  condition: string;
+  matchedVia: string | null;
+  sourceBodies: string[];
+  applicable: ComorbidRecommendation[];
+  inapplicable: ComorbidRecommendation[];
+}
+
+export interface ComorbidConflict {
+  axis: string;
+  label: string;
+  conditions: string[];
+  structured: boolean;
+  detail: Array<{
+    condition: string;
+    recommendations: Array<{ text: string; direction?: string | null; sourceBody?: string | null; sourceYear?: number | null }>;
+  }>;
+}
+
+export interface ComorbidMeta {
+  conditions: string[];
+  uncovered: string[];
+  totalRecommendations: number;
+  byCondition: ComorbidConditionEntry[];
+  conflicts: ComorbidConflict[];
+}
+
 export interface ArticleSynopsisResult {
   synopsis?: ArticleSynopsisFields;
   articleId?: string;

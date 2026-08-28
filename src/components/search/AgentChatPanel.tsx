@@ -2,8 +2,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { api } from '@services/api';
 import { useAuth } from '@contexts/AuthContext';
 import { useSearchContext } from '@contexts/SearchContext';
-import type { AgentGuidance, Article, BanditMeta } from '@types';
+import type { AgentGuidance, Article, BanditMeta, ComorbidMeta } from '@types';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
+import { ComorbidConflictPanel } from '@components/agent/ComorbidConflictPanel';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -138,6 +139,7 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
   const [showThreads, setShowThreads] = useState(false);
   const [feedbackByIndex, setFeedbackByIndex] = useState<Record<number, AgentFeedbackType>>({});
   const [banditMetaByIndex, setBanditMetaByIndex] = useState<Record<number, BanditMeta | null>>({});
+  const [comorbidMetaByIndex, setComorbidMetaByIndex] = useState<Record<number, ComorbidMeta | null>>({});
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { isAuthenticated } = useAuth();
@@ -226,7 +228,7 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
               reply += chunk;
               setStreamingContent((prev) => prev + chunk);
             },
-            onDone: (_doneTopic, doneConvId, _promptVersion, doneBanditMeta) => {
+            onDone: (_doneTopic, doneConvId, _promptVersion, doneBanditMeta, doneComorbidMeta) => {
               if (doneConvId != null) {
                 setConversationId(doneConvId);
               }
@@ -236,6 +238,9 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
                 const newIndex = prev.length;
                 if (doneBanditMeta) {
                   setBanditMetaByIndex((metaPrev) => ({ ...metaPrev, [newIndex]: doneBanditMeta }));
+                }
+                if (doneComorbidMeta) {
+                  setComorbidMetaByIndex((metaPrev) => ({ ...metaPrev, [newIndex]: doneComorbidMeta }));
                 }
                 return [...prev, { role: 'assistant', content: reply }];
               });
@@ -470,13 +475,17 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
           {messages.length > 0 && (
             <div className="flex flex-col gap-3 max-h-80 overflow-y-auto pr-1">
               {messages.map((msg, i) => (
-                <MessageBubble
-                  key={i}
-                  message={msg}
-                  index={i}
-                  feedback={feedbackByIndex[i]}
-                  onFeedback={isAuthenticated ? handleAgentFeedback : undefined}
-                />
+                <React.Fragment key={i}>
+                  <MessageBubble
+                    message={msg}
+                    index={i}
+                    feedback={feedbackByIndex[i]}
+                    onFeedback={isAuthenticated ? handleAgentFeedback : undefined}
+                  />
+                  {msg.role === 'assistant' && comorbidMetaByIndex[i] && (
+                    <ComorbidConflictPanel meta={comorbidMetaByIndex[i]!} className="ml-8" />
+                  )}
+                </React.Fragment>
               ))}
               {loading && (
                 <div className="flex gap-2">

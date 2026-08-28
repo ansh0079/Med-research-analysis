@@ -187,6 +187,7 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                 conversationId: result.conversationId,
                 promptVersion: result.promptVersion,
                 banditMeta: result.banditMeta ?? null,
+                comorbidMeta: result.comorbidMeta ?? null,
             });
             res.end();
         } catch (err) {

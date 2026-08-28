@@ -92,6 +92,51 @@ async function executeAgentTurn(
         ? buildComorbidGroundingBlock(comorbidComposition)
         : '';
 
+    // Serializable metadata for the frontend conflict panel. Strips internal
+    // _applicable/_exclusionHit flags into named lists so the client gets a clean shape.
+    const comorbidMeta = comorbidComposition?.byCondition?.length > 1 ? {
+        conditions: comorbidComposition.conditions,
+        uncovered: comorbidComposition.uncovered,
+        totalRecommendations: comorbidComposition.totalRecommendations,
+        byCondition: comorbidComposition.byCondition.map((entry) => ({
+            condition: entry.condition,
+            matchedVia: entry.matchedVia || null,
+            sourceBodies: entry.sourceBodies || [],
+            applicable: (entry.guidelines || [])
+                .filter((g) => g._applicable !== false)
+                .map((g) => ({
+                    text: g.recommendationText || g.recommendation_text || '',
+                    sourceBody: g.sourceBody || g.source_body || null,
+                    sourceYear: g.sourceYear || g.source_year || null,
+                    recDirection: g.recDirection || g.rec_direction || null,
+                    intervention: g.intervention || null,
+                })),
+            inapplicable: (entry.guidelines || [])
+                .filter((g) => g._applicable === false)
+                .map((g) => ({
+                    text: g.recommendationText || g.recommendation_text || '',
+                    sourceBody: g.sourceBody || g.source_body || null,
+                    sourceYear: g.sourceYear || g.source_year || null,
+                    exclusionHit: g._exclusionHit || null,
+                })),
+        })),
+        conflicts: (comorbidComposition.conflicts || []).map((c) => ({
+            axis: c.axis,
+            label: c.label,
+            conditions: c.conditions,
+            structured: c.structured || false,
+            detail: (c.detail || []).map((d) => ({
+                condition: d.condition,
+                recommendations: (d.recommendations || []).map((r) => ({
+                    text: r.text,
+                    direction: r.direction || null,
+                    sourceBody: r.sourceBody || null,
+                    sourceYear: r.sourceYear || null,
+                })),
+            })),
+        })),
+    } : null;
+
     const [teachingObjects, groundedClaims, userContext] = await Promise.all([
         db.listTeachingObjectsForTopic(trimmedTopic, { limit: 3 }).catch((err) => {
             logger.warn({ err }, 'listTeachingObjectsForTopic failed');
@@ -387,6 +432,7 @@ async function executeAgentTurn(
         selectedModel,
         classifiedIntent,
         promptVersion: AGENT_PROMPT_VERSION,
+        comorbidMeta,
         banditMeta: teachingStrategyArm?.armId ? {
             policyType: 'agent_teaching_strategy',
             armId: teachingStrategyArm.armId,
