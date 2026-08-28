@@ -1,4 +1,5 @@
 import { API_BASE, BaseApiClient } from './core';
+import type { WebpageExtractionPayload } from '@utils/webpageExtraction';
 import type {
   Article,
   SearchFilters,
@@ -28,6 +29,45 @@ import type {
   BanditMeta,
 } from '@types';
 
+export interface WebpageInferenceResult {
+  pageType: 'research_article' | 'guideline' | 'news' | 'patient_forum' | 'commercial' | 'login_or_payment' | 'educational' | 'unknown';
+  clinicalTopic: string | null;
+  confidence: number;
+  plainLanguageSummary: string;
+  evidenceLevel: 'high' | 'moderate' | 'low' | 'unclear';
+  pico: {
+    population: string | null;
+    intervention: string | null;
+    comparison: string | null;
+    outcomes: string[];
+  };
+  keyClaims: string[];
+  redFlags: string[];
+  safetyAssessment: {
+    riskLevel: 'low' | 'medium' | 'high' | 'unknown';
+    concerns: string[];
+    privacyWarning: string | null;
+  };
+  searchQuery: string;
+  mcqFocus: string[];
+  caseScenarioSeed: string | null;
+  suggestedActions: Array<'search_evidence' | 'generate_mcqs' | 'create_case' | 'safety_review' | 'save_for_later'>;
+}
+
+export interface WebpageInferenceResponse {
+  inference: WebpageInferenceResult;
+  page: {
+    url: string;
+    title: string;
+    wordCount: number;
+    capturedAt: string;
+  };
+  provider: string;
+  model: string;
+  cached: boolean;
+  timestamp: string;
+}
+
 export class AiApi extends BaseApiClient {
   async generateQuizFromEvidence(
     topic: string,
@@ -49,6 +89,23 @@ export class AiApi extends BaseApiClient {
     options: { type?: AnalysisType; provider?: string; model?: string } = {}
   ): Promise<AnalysisResult> {
     return this.withRetry(() => this._analyzeWithAI(text, options));
+  }
+
+  async inferWebpageContent(
+    page: WebpageExtractionPayload,
+    options: { provider?: 'auto' | 'claude' | 'gemini' | 'mistral'; model?: string } = {}
+  ): Promise<WebpageInferenceResponse> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/ai/webpage/infer`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        page,
+        provider: options.provider || 'auto',
+        model: options.model,
+      }),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
   }
 
   protected async _analyzeWithAI(

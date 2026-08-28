@@ -17,6 +17,18 @@ jest.mock('../../server/services/aiService', () => {
     const shared = {
         callGemini: jest.fn().mockResolvedValue('gemini result'),
         callMistralAI: jest.fn().mockResolvedValue('mistral result'),
+        callStructured: jest.fn().mockResolvedValue({
+            pageType: 'research_article',
+            clinicalTopic: 'ARDS ventilation',
+            confidence: 0.8,
+            plainLanguageSummary: 'This page discusses ARDS ventilation.',
+            evidenceLevel: 'moderate',
+            pico: { population: 'Adults with ARDS', intervention: 'ventilation', comparison: null, outcomes: ['mortality'] },
+            keyClaims: ['Lung protective ventilation is discussed.'],
+            safetyAssessment: { riskLevel: 'low', concerns: [] },
+            searchQuery: 'ARDS ventilation mortality',
+            suggestedActions: ['search_evidence', 'generate_mcqs'],
+        }),
         callText: jest.fn().mockResolvedValue('gemini result'),
         callGeminiStream: jest.fn().mockImplementation(async function* () { yield 'chunk1'; yield 'chunk2'; }),
         callMistralStream: jest.fn().mockImplementation(async function* () { yield 'chunk1'; yield 'chunk2'; }),
@@ -200,6 +212,35 @@ describe('aiRoutes', () => {
             expect(res.body.result).toBe('gemini result');
             expect(res.body.provider).toBe('claude');
             expect(mockDb.cacheAnalysis).toHaveBeenCalled();
+        });
+    });
+
+    describe('POST /api/ai/webpage/infer', () => {
+        test('returns structured webpage inference', async () => {
+            const res = await request(app)
+                .post('/api/ai/webpage/infer')
+                .set('Authorization', `Bearer ${authToken()}`)
+                .send({
+                    page: {
+                        url: 'https://example.org/ards',
+                        title: 'ARDS ventilation article',
+                        text: 'Adults with ARDS receive lung protective ventilation. Mortality is a key outcome in trials and guidelines.',
+                        keywords: ['ards', 'ventilation'],
+                        safetySignals: { hasForms: false, hasPasswordField: false, hasPaymentField: false, externalLinkCount: 2 },
+                    },
+                });
+
+            expect(res.status).toBe(200);
+            expect(res.body.inference).toMatchObject({
+                pageType: 'research_article',
+                clinicalTopic: 'ARDS ventilation',
+                searchQuery: 'ARDS ventilation mortality',
+            });
+            expect(mockDb.logEvent).toHaveBeenCalledWith(
+                'webpage_inference',
+                's1',
+                expect.objectContaining({ pageType: 'research_article', riskLevel: 'low' })
+            );
         });
     });
 

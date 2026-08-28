@@ -24,6 +24,7 @@ import { ResultLensToolbar } from '@components/search/ResultLensToolbar';
 import { SynthesisStatusSection } from '@components/search/SynthesisStatusSection';
 import { SearchResultsGrid } from '@components/search/SearchResultsGrid';
 import { SearchPageFooter } from '@components/search/SearchPageFooter';
+import { WebpageCapturePanel } from '@components/search/WebpageCapturePanel';
 import { useSearchPage } from '@hooks/useSearchPage';
 
 export const SearchPage: React.FC = () => {
@@ -185,6 +186,11 @@ export const SearchPage: React.FC = () => {
       />
 
       <main className="max-w-7xl mx-auto px-3 sm:px-4 -mt-10 sm:-mt-16 pb-24">
+        <WebpageCapturePanel
+          onSearch={handleSearch}
+          onUseAsCaseContext={(context) => setShiftPresentation(context)}
+        />
+
         {currentQuery && (
           <LowRecallBanner lowRecall={lowRecallLearning} onTryQuery={handleSearch} />
         )}

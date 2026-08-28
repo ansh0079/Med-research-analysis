@@ -12,6 +12,7 @@ const { registerAnalysisRoutes } = require('./ai/analysis');
 const { registerArticleToolRoutes } = require('./ai/articleTools');
 const { registerJournalClubRoutes } = require('./ai/journalClub');
 const { registerAiUtilRoutes } = require('./ai/util');
+const { registerWebpageInferenceRoutes } = require('./ai/webpage');
 
 /**
  * @param {import('express').Application} app
@@ -74,6 +75,8 @@ function registerAiRoutes(app, deps) {
     registerAiUtilRoutes(app, { db, serverConfig, ai, logger, requireAuthJwt, rateLimit });
 
     registerAiJobRoutes(app, { db, requireAuthJwt, rateLimit });
+
+    registerWebpageInferenceRoutes(app, { db, cache, serverConfig, ai, limitBodySize, requireJson, requireAiAuth, requirePaidFeature, requireMonthlyLimit, aiUserLimit });
 
     registerQuizRoutes(app, { db, serverConfig, ai, mcqValidator, logger, requireJson, requireAiAuth, requireAuthJwt, requirePaidFeature, rateLimit, aiUserLimit, validateBody, schemas, helpers });
 
