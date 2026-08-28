@@ -269,11 +269,13 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
         [...keys, statusFilter, statusFilter, fetchLimit]
     );
 
-    // Score by term overlap with the topic, then sort relevant-first, recency second.
+    // Score by term overlap with the topic; floor at > 0 prevents cross-topic noise
+    // (rows attributed to this topic via NICE page scrape but containing zero topic words).
     const topicWords = topicContentWords(topic);
     const scored = rows
         .filter(isServableGuideline)
-        .map(row => ({ row, score: guidelineTermScore(row, topicWords), year: row.source_year || 0 }));
+        .map(row => ({ row, score: guidelineTermScore(row, topicWords), year: row.source_year || 0 }))
+        .filter(({ score }) => topicWords.length === 0 || score > 0);
     scored.sort((a, b) => b.score - a.score || b.year - a.year);
 
     return scored.slice(0, safeLimit).map(({ row }) => this.mapGuidelineRow(row));
