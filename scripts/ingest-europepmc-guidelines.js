@@ -42,6 +42,7 @@ const db = require('../database');
 const { createAiService } = require('../server/services/ai/aiService');
 const { getProviderCandidates } = require('../server/utils/aiProvider');
 const { serverConfig } = require('../config');
+const { searchTermsForTopic } = require('../server/services/evidence/guidelineSearchAliases');
 
 const DRY_RUN = process.env.INGEST_DRY_RUN === '1';
 // Explicit list of topic names to ingest, bypassing curriculum_topics entirely.
@@ -139,8 +140,17 @@ function toUsSpelling(s) {
 
 // Some curriculum names are UK-spelled or bundle two entities with "and"/"vs".
 function searchVariants(displayName) {
+    // A curated alias always wins. Curriculum headings are phrased the way a
+    // syllabus is written, not the way a guideline is titled: "Oliguria" finds
+    // nothing because the guidance lives under acute kidney injury, and
+    // "Vasopressor and inotrope use" sits inside the Surviving Sepsis Campaign.
+    // Derived variants cannot bridge that gap, so we do not dilute the alias with
+    // them — we only append them as later fallbacks.
+    const alias = searchTermsForTopic(displayName);
+    const aliased = alias.terms.filter((t) => t && t.toLowerCase() !== String(displayName).toLowerCase());
+
     const core = coreTerm(displayName);
-    const variants = new Set([core]);
+    const variants = new Set([...aliased, core]);
 
     // US spellings — Europe PMC indexes both, but titles usually pick one.
     const us = toUsSpelling(core);
@@ -252,8 +262,18 @@ function esc(s) {
     return encodeURIComponent(s.replace(/"/g, ''));
 }
 
+// Guidance is published under many labels, and searching only for "guideline"
+// misses whole societies: AASLD issues "Practice Guidance", ADA issues "Standards
+// of Care", AHA/ACC issue "Scientific Statement" and "Appropriate Use Criteria".
+// None of those contain the word guideline, so none were reachable before.
 const GUIDELINE_TITLE_WORDS =
-    '(TITLE:guideline OR TITLE:guidelines OR TITLE:recommendations OR TITLE:consensus OR TITLE:%22position%20statement%22 OR TITLE:%22practice%20parameter%22)';
+    '(TITLE:guideline OR TITLE:guidelines OR TITLE:recommendations OR TITLE:consensus'
+    + ' OR TITLE:%22position%20statement%22 OR TITLE:%22practice%20parameter%22'
+    + ' OR TITLE:%22practice%20guidance%22 OR TITLE:%22clinical%20practice%20guidance%22'
+    + ' OR TITLE:%22scientific%20statement%22 OR TITLE:%22clinical%20statement%22'
+    + ' OR TITLE:%22practice%20statement%22 OR TITLE:%22standards%20of%20care%22'
+    + ' OR TITLE:%22appropriate%20use%20criteria%22 OR TITLE:%22expert%20consensus%22'
+    + ' OR TITLE:%22society%20guidance%22 OR TITLE:%22management%20recommendations%22)';
 
 /**
  * Fallback chain, most precise first. Precision matters more than recall here:
@@ -269,6 +289,10 @@ function buildQueries(term) {
         `TITLE:%22${t}%22%20AND%20(guideline%20OR%20recommendations%20OR%20consensus)%20AND%20OPEN_ACCESS:Y%20AND%20HAS_FT:Y`,
         // 3. Topic anywhere, but the article must be typed as a guideline.
         `%22${t}%22%20AND%20(PUB_TYPE:%22Guideline%22%20OR%20PUB_TYPE:%22Practice%20Guideline%22%20OR%20PUB_TYPE:%22Consensus%20Development%20Conference%22)%20AND%20OPEN_ACCESS:Y%20AND%20HAS_FT:Y`,
+        // 4. Fallback rung: a high-quality synthesis. Weaker than a guideline, but
+        //    far better than reporting a condition as having no evidence at all —
+        //    "no guideline found" and "no guidance exists" are different claims.
+        `TITLE:%22${t}%22%20AND%20(TITLE:%22systematic%20review%22%20OR%20TITLE:%22meta-analysis%22)%20AND%20OPEN_ACCESS:Y%20AND%20HAS_FT:Y`,
     ];
 }
 
