@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Signal MD Safe Browsing Capture",
+  "short_name": "Signal MD Capture",
+  "version": "0.1.0",
+  "description": "Capture readable webpage evidence for Signal MD search and learning workflows.",
+  "permissions": ["activeTab", "tabs", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Signal MD"
+  }
+}
