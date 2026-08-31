@@ -3,7 +3,7 @@
 const crypto = require('crypto');
 const { createBudgetForAction, runWithLlmBudget } = require('../../services/llmRequestBudget');
 const { createQuizGenerationService } = require('../../services/quizGenerationService');
-const { computeMcqClaimKey } = require('../../utils/mcqClaimKey');
+const { computeMcqClaimKey, GUIDELINE_BODY } = require('../../utils/mcqClaimKey');
 
 function sendServiceResponse(res, result) {
     return res.status(result.status || 200).json(result.body);
@@ -105,10 +105,19 @@ function registerQuizRoutes(app, {
                     // outlineNodeId card below ever updated.
                     const claimKey = q.claimKey || q.claim_key
                         || computeMcqClaimKey(q, row.object_type, row.topic);
+                    // Only label a question "guideline" when its own guidelineRef
+                    // names a real issuing body -- resolveable to a document, not a
+                    // journal. Otherwise it is literature-grounded, whatever the
+                    // storage object_type says: guideline_mcq rows are only ~30% real
+                    // guideline attribution (see docs/guideline-gap analysis), and the
+                    // client renders this field as a trust badge the user reads
+                    // literally ("Guideline" vs "Evidence").
+                    const isRealGuideline = row.object_type === 'guideline_mcq'
+                        && GUIDELINE_BODY.test(String(q.guidelineRef || ''));
                     allMcqs.push({
                         id: `pool_${stableHash}`,
                         topic: row.topic,
-                        source: row.object_type === 'guideline_mcq' ? 'guideline' : 'evidence',
+                        source: isRealGuideline ? 'guideline' : 'evidence',
                         type: q.type || 'multiple_choice',
                         questionType: q.questionType || 'recall',
                         question: q.question,
