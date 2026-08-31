@@ -102,6 +102,8 @@ const schemas = {
         topic: z.string().max(500).nullable().optional(),
         trainingStage: TRAINING_STAGE,
         synopsisStyleArmId: z.enum(['bottom_line_first', 'pico_structured', 'narrative', 'teaching_points']).optional(),
+        // Bypass the stored-synopsis read-through and regenerate.
+        refresh: z.boolean().optional(),
     }),
 
     synthesize: z.object({

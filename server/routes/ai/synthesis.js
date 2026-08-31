@@ -24,7 +24,7 @@ const {
     synopsisRegenerationTargets,
 } = require('../../services/learningLoopSignalService');
 const { getOrEnqueueFullSynthesis, getOrEnqueuePaperSynopsis } = require('../../services/aiGenerationJobService');
-const { persistPaperTeachingObject } = require('../../services/teachingObjectService');
+const { persistPaperTeachingObject, stableArticleUid } = require('../../services/teachingObjectService');
 const { getHierarchicalSynthesis, setHierarchicalSynthesis, needsRegeneration } = require('../../services/hierarchicalCacheService');
 const { streamSynthesisGeneration } = require('../../services/progressiveStreamingService');
 
@@ -399,8 +399,26 @@ function registerSynthesisRoutes(app, {
     });
 
     app.post('/api/teaching-objects/paper', limitBodySize(512 * 1024), requireJson, requireAiAuth, requirePaidFeature('aiSynthesis'), rateLimit(20, 60), validateBody(schemas.synopsis), async (req, res) => {
-        const { article, provider = 'auto', topic = '' } = req.body;
+        const { article, provider = 'auto', topic = '', refresh = false } = req.body;
         try {
+            // Read through to the stored teaching object first. Generation was
+            // unconditional, so every view of a paper re-billed an LLM call even
+            // though thousands of synopses were already persisted and never read.
+            if (!refresh) {
+                const articleUid = stableArticleUid(article);
+                const existing = articleUid
+                    ? await db.getTeachingObjectForArticle(articleUid).catch(() => null)
+                    : null;
+                if (existing?.payload?.synopsis) {
+                    return res.json({
+                        synopsis: existing.payload.synopsis,
+                        articleId: articleUid,
+                        teachingObject: existing,
+                        cached: true,
+                    });
+                }
+            }
+
             const synopsisResult = await getOrEnqueuePaperSynopsis({
                 db,
                 article,
