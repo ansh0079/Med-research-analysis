@@ -185,6 +185,44 @@ async getGuidelineDocumentByPmcid(pmcid) {
     return this.get(`SELECT * FROM guideline_documents WHERE pmcid = ?`, [pmcid]);
 }
 
+/**
+ * Lightweight rows for browsing -- excludes full_text, which can run to tens
+ * of thousands of words and is not needed until a single document is opened.
+ */
+async listGuidelineDocuments({ limit = 50, offset = 0, hasSynopsis = null } = {}) {
+    const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 50, 1), 200);
+    const safeOffset = Math.max(parseInt(String(offset), 10) || 0, 0);
+    const where = [];
+    if (hasSynopsis === true) where.push('synopsis_json IS NOT NULL');
+    if (hasSynopsis === false) where.push('synopsis_json IS NULL');
+    const rows = await this.all(
+        `SELECT id, pmcid, pmid, doi, title, source_body, source_year, source_url,
+                document_label, evidence_tier, word_count, synopsis_generated_at,
+                (synopsis_json IS NOT NULL) AS has_synopsis
+         FROM guideline_documents
+         ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
+         ORDER BY source_year DESC NULLS LAST, title
+         LIMIT ? OFFSET ?`,
+        [safeLimit, safeOffset]
+    );
+    const total = await this.get(
+        `SELECT COUNT(*) AS c FROM guideline_documents ${where.length ? 'WHERE ' + where.join(' AND ') : ''}`
+    );
+    return { rows, total: Number(total?.c || 0) };
+}
+
+/** Single document with its synopsis parsed, full_text omitted by default. */
+async getGuidelineDocumentWithSynopsis(id, { includeFullText = false } = {}) {
+    const row = await this.getGuidelineDocument(id);
+    if (!row) return null;
+    const { full_text, synopsis_json, ...rest } = row;
+    let synopsis = null;
+    if (synopsis_json) {
+        try { synopsis = JSON.parse(synopsis_json); } catch { synopsis = null; }
+    }
+    return { ...rest, synopsis, fullText: includeFullText ? full_text : undefined };
+}
+
 // ─── Recommendations ─────────────────────────────────────────────────────────
 
 async createGuideline(guideline) {

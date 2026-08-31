@@ -10,6 +10,37 @@ function registerGuidelineRoutes(app, { db, serverConfig, rateLimit, requireAuth
         res.json({ sources: TRUSTED_GUIDELINE_SOURCES });
     });
 
+    // List ingested guideline source documents (public read, rate-limited).
+    // Lightweight rows -- full_text and synopsis body are fetched per-document.
+    app.get('/api/guideline-documents', rateLimit(60, 60), async (req, res) => {
+        try {
+            const limit = req.query.limit;
+            const offset = req.query.offset;
+            const hasSynopsisParam = req.query.hasSynopsis;
+            const hasSynopsis = hasSynopsisParam === 'true' ? true : hasSynopsisParam === 'false' ? false : null;
+            const { rows, total } = await db.listGuidelineDocuments({ limit, offset, hasSynopsis });
+            res.json({ documents: rows, total });
+        } catch (error) {
+            req.log.error({ err: error }, 'List guideline documents error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    // Single guideline source document with its synopsis (public read, rate-limited).
+    // full_text is a document ingested from an open-access source, not user content --
+    // it is included on request only, since it can run to tens of thousands of words.
+    app.get('/api/guideline-documents/:id', rateLimit(60, 60), async (req, res) => {
+        try {
+            const includeFullText = req.query.fullText === 'true';
+            const doc = await db.getGuidelineDocumentWithSynopsis(req.params.id, { includeFullText });
+            if (!doc) return res.status(404).json({ error: 'Guideline document not found' });
+            res.json({ document: doc });
+        } catch (error) {
+            req.log.error({ err: error }, 'Get guideline document error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
     // Guideline contradictions for a topic (public read, rate-limited)
     app.get('/api/guidelines/contradictions', rateLimit(60, 60), async (req, res) => {
         try {
