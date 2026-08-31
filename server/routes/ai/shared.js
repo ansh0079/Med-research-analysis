@@ -8,7 +8,7 @@ const { validateAiOutput } = require('../../services/aiOutputValidation');
 const { buildEvidenceDeltaBrief } = require('../../services/evidenceDeltaBriefService');
 const { coldStartMcqKey, guidelineMcqKey, liveQuizMcqKey } = require('../../utils/teachingObjectKeys');
 const { computeConceptHash } = require('../../utils/conceptHash');
-const { computeMcqClaimKey } = require('../../utils/mcqClaimKey');
+const { computeMcqClaimKey, hasSuspectFutureCitation } = require('../../utils/mcqClaimKey');
 const { estimateAbility, selectAdaptiveItems } = require('../../services/adaptiveItemSelectionService');
 const { isArticleNewerThan, findMatchingTeachingPointIndex } = require('../../services/topicKnowledgeMergeUtils');
 const { isHighCertaintyQuizEligible, claimMeetsVerifiedFloor } = require('../../services/paperSynopsisTrust');
@@ -113,12 +113,18 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             ]);
             const paperObjs = byTopic.filter((o) => o.objectType === 'paper_mcq');
             const claimTopicKey = database.normalizeTopic(topic);
+            // Defense in depth: see hasSuspectFutureCitation in mcqClaimKey.js -- 1,085
+            // stored MCQs cited a fabricated future-dated guideline and were removed by
+            // tools/data-hygiene/remove-fabricated-citation-mcqs.js. This stops any that
+            // slip back in from a future seeding run before the next cleanup pass catches them.
+            const notFabricated = (q) => !hasSuspectFutureCitation(q);
 
-            let liveMcqs = (liveObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'live_cache', 'live_quiz_mcq', claimTopicKey));
-            let coldMcqs = (coldObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'cold_start', 'cold_start_mcq', claimTopicKey));
-            let guidelineMcqs = (guidelineObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'guideline', 'guideline_mcq', claimTopicKey));
+            let liveMcqs = (liveObj?.payload?.mcqs || []).filter(notFabricated).map((q, i) => mapColdStartMcq(q, i, 'live_cache', 'live_quiz_mcq', claimTopicKey));
+            let coldMcqs = (coldObj?.payload?.mcqs || []).filter(notFabricated).map((q, i) => mapColdStartMcq(q, i, 'cold_start', 'cold_start_mcq', claimTopicKey));
+            let guidelineMcqs = (guidelineObj?.payload?.mcqs || []).filter(notFabricated).map((q, i) => mapColdStartMcq(q, i, 'guideline', 'guideline_mcq', claimTopicKey));
             const paperMcqs = paperObjs
                 .flatMap((o) => o.payload?.mcqs || [])
+                .filter(notFabricated)
                 .map((q, i) => mapColdStartMcq(q, i, 'paper', 'paper_mcq', claimTopicKey));
             coldMcqs = coldMcqs.concat(paperMcqs);
 

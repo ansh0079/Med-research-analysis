@@ -3,7 +3,7 @@
 const crypto = require('crypto');
 const { createBudgetForAction, runWithLlmBudget } = require('../../services/llmRequestBudget');
 const { createQuizGenerationService } = require('../../services/quizGenerationService');
-const { computeMcqClaimKey, GUIDELINE_BODY } = require('../../utils/mcqClaimKey');
+const { computeMcqClaimKey, GUIDELINE_BODY, hasSuspectFutureCitation } = require('../../utils/mcqClaimKey');
 
 function sendServiceResponse(res, result) {
     return res.status(result.status || 200).json(result.body);
@@ -92,6 +92,12 @@ function registerQuizRoutes(app, {
                 const mcqs = payload.mcqs || [];
                 for (const q of mcqs) {
                     if (!q.question || !q.options || !q.correctAnswer) continue;
+                    // Defense in depth: 1,085 stored MCQs cited a fabricated future-dated
+                    // guideline ("NICE 2026", "WHO 2026", a "2025 Dutch cohort study" that
+                    // does not exist) and were removed by tools/data-hygiene/remove-fabricated-
+                    // citation-mcqs.js. This stops any that slip back in from a future seeding
+                    // run reaching a user before the next cleanup pass catches them.
+                    if (hasSuspectFutureCitation(q)) continue;
                     if (difficulty !== 'all' && q.difficulty !== difficulty) continue;
                     if (questionType !== 'all' && q.questionType !== questionType) continue;
                     const stableHash = crypto

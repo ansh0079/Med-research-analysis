@@ -54,3 +54,37 @@ describe('computeMcqClaimKey', () => {
             .not.toBe(computeMcqClaimKey(mcq, 'cold_start_mcq', 'topic-b'));
     });
 });
+
+describe('hasSuspectFutureCitation', () => {
+    const { hasSuspectFutureCitation } = require('../../server/utils/mcqClaimKey');
+
+    test('flags a fabricated future-dated guideline citation', () => {
+        expect(hasSuspectFutureCitation({ question: 'Per NICE 2026 guidance, what is first-line?' })).toBe(true);
+        expect(hasSuspectFutureCitation({ explanation: 'A 2027 Dutch nationwide cohort study found...' })).toBe(true);
+    });
+
+    test('does not flag a real, already-published year', () => {
+        // 2025 is deliberately below the flagged range (SUSPECT_CITATION_YEAR = 2026) --
+        // conservative by design, so a genuinely early-2026-published or older guideline
+        // is never wrongly rejected. It will miss some fabrications dated just before the
+        // cutoff, which is the accepted tradeoff for zero false positives on real content.
+        expect(hasSuspectFutureCitation({ question: 'Per NICE NG12 (2019), what is first-line?' })).toBe(false);
+        expect(hasSuspectFutureCitation({ explanation: 'The 2018 Cochrane review found...' })).toBe(false);
+        expect(hasSuspectFutureCitation({ explanation: 'A 2025 Dutch nationwide cohort study found...' })).toBe(false);
+    });
+
+    test('covers every year in the flagged range, not just the boundary', () => {
+        for (const year of [2026, 2027, 2028, 2029, 2030, 2099]) {
+            expect(hasSuspectFutureCitation({ question: `guideline ${year}` })).toBe(true);
+        }
+    });
+
+    test('checks guidelineRef and sourceReference, not just question/explanation', () => {
+        expect(hasSuspectFutureCitation({ guidelineRef: 'ESICM 2026' })).toBe(true);
+        expect(hasSuspectFutureCitation({ sourceReference: 'ERS 2026 unified approach' })).toBe(true);
+    });
+
+    test('returns false when no fields are present', () => {
+        expect(hasSuspectFutureCitation({})).toBe(false);
+    });
+});

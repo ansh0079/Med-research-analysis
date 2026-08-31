@@ -83,3 +83,25 @@ function computeMcqClaimKey(mcq, objectType, topicKey) {
 }
 
 module.exports = { computeMcqClaimKey, GUIDELINE_BODY };
+
+// A guideline/study citation dated at or after the year this constant is
+// updated to is treated as suspect until a human confirms it (see the
+// clinical QA finding that led to this: 1,085 of 11,246 MCQs cited a
+// non-existent "WHO 2026" / "NICE 2026" / "2025 Dutch cohort study" --
+// generation-time hallucination, not real sourcing). Bump the year forward
+// periodically as time passes; do not remove the check.
+const SUSPECT_CITATION_YEAR = 2026;
+// Matches SUSPECT_CITATION_YEAR through 2099. Update this alongside the
+// constant above when bumping it forward -- e.g. for 2027, use
+// `\b(202[7-9]|20[3-9]\d)\b`.
+const FUTURE_CITATION = String.raw`\b(202[6-9]|20[3-9]\d)\b`;
+
+/** True if the MCQ cites a guideline/study year that likely does not exist yet. */
+function hasSuspectFutureCitation(mcq) {
+    const hay = [mcq?.question, mcq?.explanation, mcq?.guidelineRef, mcq?.sourceReference]
+        .filter(Boolean).join(' ');
+    return new RegExp(FUTURE_CITATION).test(hay);
+}
+
+module.exports.hasSuspectFutureCitation = hasSuspectFutureCitation;
+module.exports.SUSPECT_CITATION_YEAR = SUSPECT_CITATION_YEAR;
