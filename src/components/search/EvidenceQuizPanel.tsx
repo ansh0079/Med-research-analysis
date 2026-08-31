@@ -137,13 +137,23 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
         };
       });
 
+      let persisted = true;
       if (onAuthSubmit) {
         await onAuthSubmit(attempts);
       } else {
-        await api.learning.submitQuizAttempt({ topic, attempts });
+        const result = await api.learning.submitQuizAttempt({ topic, attempts });
+        persisted = result.persisted !== false;
       }
       setSaveStatus('saved');
-      showToast('Quiz saved to your learning profile', 'success', 3000);
+      // An anonymous session's answers are counted but not stored against a profile,
+      // so do not claim they were saved.
+      showToast(
+        persisted
+          ? 'Quiz saved to your learning profile'
+          : 'Sign in to save this quiz to your learning profile',
+        persisted ? 'success' : 'warning',
+        persisted ? 3000 : 5000,
+      );
     } catch (err) {
       setSaveStatus('error');
       if (err instanceof Error && err.message === 'VERIFICATION_REQUIRED') {

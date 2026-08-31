@@ -96,10 +96,16 @@ function registerQuizRoutes(app, deps) {
                 void attributeQuizAttemptRewards(db, null, attemptsWithJudgement, topic, { sessionId: req.sessionId })
                     .catch((err) => { logger.warn({ err }, 'attributeQuizAttemptRewards (beta) failed'); });
                 recordQuizMissesForSearch(null, req.sessionId, topic, attemptsWithJudgement);
+                // quiz_attempts.user_id is NOT NULL, so an anonymous session's answers
+                // cannot be persisted as attempts — only the aggregate learning events
+                // above are kept. Report that honestly instead of returning a mastery of
+                // zero, which the client was presenting as a saved profile score.
                 return res.json({
-                    saved: attempts.length,
-                    mastery: { overall: 0, byType: {} },
+                    saved: attemptsWithJudgement.length,
+                    persisted: false,
+                    mastery: null,
                     betaAnonymous: true,
+                    reason: 'sign_in_required_to_save_progress',
                 });
             }
 

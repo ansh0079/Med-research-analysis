@@ -87,7 +87,11 @@ export class LearningApi extends BaseApiClient {
 
   async submitQuizAttempt(data: import('@types').QuizAttemptSubmission): Promise<{
     saved: number;
-    mastery: { overall: number; byType: Record<string, number> };
+    /** null when the caller was anonymous — nothing was written to their profile. */
+    mastery: { overall: number; byType: Record<string, number> } | null;
+    /** false when answers were counted but not saved against a user account. */
+    persisted?: boolean;
+    betaAnonymous?: boolean;
     learningVelocity?: {
       fromScore: number;
       toScore: number;
