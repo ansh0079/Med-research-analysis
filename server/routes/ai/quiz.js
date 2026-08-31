@@ -3,6 +3,7 @@
 const crypto = require('crypto');
 const { createBudgetForAction, runWithLlmBudget } = require('../../services/llmRequestBudget');
 const { createQuizGenerationService } = require('../../services/quizGenerationService');
+const { computeMcqClaimKey } = require('../../utils/mcqClaimKey');
 
 function sendServiceResponse(res, result) {
     return res.status(result.status || 200).json(result.body);
@@ -98,6 +99,12 @@ function registerQuizRoutes(app, {
                         .update(`${row.topic}|${row.object_type}|${q.question}|${q.correctAnswer}`)
                         .digest('hex')
                         .slice(0, 16);
+                    // claimKey was always null here -- see mcqClaimKey.js. That silently
+                    // disabled claim_recalled events, misconception tracking, and bandit
+                    // reward attribution for every pool attempt; only the per-question
+                    // outlineNodeId card below ever updated.
+                    const claimKey = q.claimKey || q.claim_key
+                        || computeMcqClaimKey(q, row.object_type, row.topic);
                     allMcqs.push({
                         id: `pool_${stableHash}`,
                         topic: row.topic,
@@ -112,7 +119,7 @@ function registerQuizRoutes(app, {
                         difficulty: q.difficulty || 'medium',
                         outlineNodeId: q.outlineNodeId || `pool:${stableHash}`,
                         outlineLabel: q.outlineLabel || q.question.slice(0, 120),
-                        claimKey: q.claimKey || q.claim_key || null,
+                        claimKey,
                         sourceArticleUid: q.sourceArticleUid || q.articleUid || null,
                         sourceArticleTitle: q.sourceArticleTitle || q.sourceArticle || null,
                     });

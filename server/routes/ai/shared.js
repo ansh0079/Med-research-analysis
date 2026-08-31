@@ -8,6 +8,7 @@ const { validateAiOutput } = require('../../services/aiOutputValidation');
 const { buildEvidenceDeltaBrief } = require('../../services/evidenceDeltaBriefService');
 const { coldStartMcqKey, guidelineMcqKey, liveQuizMcqKey } = require('../../utils/teachingObjectKeys');
 const { computeConceptHash } = require('../../utils/conceptHash');
+const { computeMcqClaimKey } = require('../../utils/mcqClaimKey');
 const { estimateAbility, selectAdaptiveItems } = require('../../services/adaptiveItemSelectionService');
 const { isArticleNewerThan, findMatchingTeachingPointIndex } = require('../../services/topicKnowledgeMergeUtils');
 const { isHighCertaintyQuizEligible, claimMeetsVerifiedFloor } = require('../../services/paperSynopsisTrust');
@@ -43,7 +44,14 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
         }
     }
 
-    const mapColdStartMcq = (q, idx, prefix) => ({
+    // objectType/topicKey close over the MCQ's origin so a stable claimKey can be
+    // derived when the stored payload never set one -- see mcqClaimKey.js for why
+    // this is what turns spaced repetition, misconception tracking, and bandit
+    // attribution on for the topic-grounded quiz flow, which currently gets none
+    // of that because outlineNodeId and claimKey are both always null on read.
+    const mapColdStartMcq = (q, idx, prefix, objectType = null, topicKey = null) => {
+        const claimKey = q.claimKey || computeMcqClaimKey(q, objectType, topicKey || prefix);
+        return {
                     id: `${prefix}_${Date.now()}_${idx}`,
                     type: q.type || 'multiple_choice',
                     questionType: q.questionType || 'recall',
@@ -59,10 +67,11 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
                     sourceArticle: q.sourceArticle || null,
                     sourceReference: q.sourceReference || q.guidelineRef || null,
                     sourceIndices: q.sourceIndices || [],
-                    outlineNodeId: q.outlineNodeId || null,
-                    claimKey: q.claimKey || null,
+                    outlineNodeId: q.outlineNodeId || `claim:${claimKey}`,
+                    claimKey,
                     promptVariant: q.promptVariant || null,
-                });
+        };
+    };
 
     /**
      * Within a single evidence-quality tier, order cached MCQs by how well their
@@ -103,13 +112,14 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
                 firstOfType('live_quiz_mcq') || database.getTeachingObjectByKey(liveQuizMcqKey(database, topic)),
             ]);
             const paperObjs = byTopic.filter((o) => o.objectType === 'paper_mcq');
+            const claimTopicKey = database.normalizeTopic(topic);
 
-            let liveMcqs = (liveObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'live_cache'));
-            let coldMcqs = (coldObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'cold_start'));
-            let guidelineMcqs = (guidelineObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'guideline'));
+            let liveMcqs = (liveObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'live_cache', 'live_quiz_mcq', claimTopicKey));
+            let coldMcqs = (coldObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'cold_start', 'cold_start_mcq', claimTopicKey));
+            let guidelineMcqs = (guidelineObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'guideline', 'guideline_mcq', claimTopicKey));
             const paperMcqs = paperObjs
                 .flatMap((o) => o.payload?.mcqs || [])
-                .map((q, i) => mapColdStartMcq(q, i, 'paper'));
+                .map((q, i) => mapColdStartMcq(q, i, 'paper', 'paper_mcq', claimTopicKey));
             coldMcqs = coldMcqs.concat(paperMcqs);
 
             if (userId) {
