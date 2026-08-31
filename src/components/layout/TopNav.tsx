@@ -6,9 +6,13 @@ import api from '@services/api';
 import { NotificationBell } from '@components/collaboration/NotificationBell';
 import { LEARNING_SURFACES, WORKSPACE_TOOLS, learningSurfacesByGroup, promotedSurfaces } from '@config/learningSurfaces';
 
-// Primary nav — always visible
+// Primary nav — always visible. Search leads; Review trails the promoted
+// learning surfaces so the topic journey sits next to the dashboard.
 const PRIMARY_NAV = [
   { to: '/search', label: 'Search', icon: 'fa-search' },
+] as const;
+
+const TRAILING_NAV = [
   { to: '/review', label: 'Review', icon: 'fa-clipboard-check' },
 ] as const;
 
@@ -127,6 +131,19 @@ export const TopNav: React.FC = () => {
               title={description}
               onClick={() => navigate(route)}
               className={`nav-link ${pathname.startsWith(route) ? 'active' : ''}`}
+            >
+              <i className={`fas ${icon} text-[10px]`} />
+              {label}
+            </button>
+          ))}
+
+          {/* Review sits after the learning surfaces */}
+          {TRAILING_NAV.map(({ to, label, icon }) => (
+            <button
+              key={to}
+              type="button"
+              onClick={() => navigate(to)}
+              className={`nav-link ${pathname.startsWith(to) ? 'active' : ''}`}
             >
               <i className={`fas ${icon} text-[10px]`} />
               {label}
@@ -314,6 +331,13 @@ export const TopNav: React.FC = () => {
               onClick={() => { navigate(route); setMobileMenuOpen(false); }}
               className={`nav-link w-full text-left ${pathname.startsWith(route) ? 'active' : ''}`}>
               <i className={`fas ${icon} text-[10px] ${color}`} /> {label}
+            </button>
+          ))}
+          {TRAILING_NAV.map(({ to, label, icon }) => (
+            <button key={to} type="button"
+              onClick={() => { navigate(to); setMobileMenuOpen(false); }}
+              className={`nav-link w-full text-left ${pathname.startsWith(to) ? 'active' : ''}`}>
+              <i className={`fas ${icon} text-[10px]`} /> {label}
             </button>
           ))}
           {isAuthenticated && (

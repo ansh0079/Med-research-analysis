@@ -79,21 +79,14 @@ export const StudyPathsPage: React.FC = () => {
     void load();
   }, [load]);
 
-  const startTopic = async (suggestedQuery: string, curriculumTopicId: number) => {
+  // Enter the topic journey rather than jumping straight to questions. The topic
+  // page fetches current guidelines and papers, builds the synopsis, and only then
+  // offers the study run -- going directly to /quiz skipped all of that, which is
+  // the part of the product the MCQs are supposed to be grounded in.
+  const startTopic = (suggestedQuery: string, curriculumTopicId: number) => {
     setStartingId(curriculumTopicId);
-    try {
-      const { run } = await api.learning.createStudyRun(suggestedQuery, curriculumTopicId);
-      const params = new URLSearchParams({
-        topic: suggestedQuery,
-        studyRunId: String(run.id),
-        curriculumTopicId: String(curriculumTopicId),
-      });
-      navigate(`/quiz?${params.toString()}`);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Could not start run');
-    } finally {
-      setStartingId(null);
-    }
+    const params = new URLSearchParams({ curriculumTopicId: String(curriculumTopicId) });
+    navigate(`/topic/${encodeURIComponent(suggestedQuery)}?${params.toString()}`);
   };
 
   return (

@@ -93,13 +93,16 @@ export const WORKSPACE_TOOLS = [
 
 /**
  * Surfaces promoted to the always-visible primary nav rather than the Tools menu.
- * These are the core practice loops; burying them behind a dropdown was the main
- * reason quiz and case engagement sat at zero.
+ *
+ * Study paths leads: it is the curriculum browser, and the topic journey it opens
+ * (current guidelines and papers -> synopsis -> grounded MCQs) is the product.
+ * Quiz and cases follow as the practice surfaces. All three were behind a Tools
+ * dropdown while engagement with 11k+ seeded MCQs sat at zero.
  *
  * `learning-dashboard` is deliberately excluded: the Dashboard nav item already
  * occupies that slot.
  */
-export const PROMOTED_SURFACE_IDS: readonly string[] = ['quiz', 'adaptive-case'];
+export const PROMOTED_SURFACE_IDS: readonly string[] = ['study-paths', 'quiz', 'adaptive-case'];
 
 /** Surfaces shown as top-level nav items, in PROMOTED_SURFACE_IDS order. */
 export function promotedSurfaces(): LearningSurface[] {

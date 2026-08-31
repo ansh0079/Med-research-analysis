@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { api } from '@services/api';
 import { handleAsyncError } from '@utils/handleAsyncError';
 import type { Article, SynthesisResult, StudyRun } from '@types';
@@ -90,6 +90,7 @@ export function TopicPage() {
   const { topic: rawTopic = '' } = useParams<{ topic: string }>();
   const topic = decodeURIComponent(rawTopic);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   // Overview data
   const [activeRun, setActiveRun] = useState<StudyRun | null>(null);
@@ -212,12 +213,16 @@ export function TopicPage() {
   const handleStartRun = useCallback(async () => {
     setStartingRun(true);
     try {
-      const { run } = await api.learning.createStudyRun(topic);
+      // Carry the curriculum topic through when the journey was entered from a
+      // study path, so curriculum progress is recorded against the right topic.
+      const raw = searchParams.get('curriculumTopicId');
+      const curriculumTopicId = raw && !Number.isNaN(Number(raw)) ? Number(raw) : undefined;
+      const { run } = await api.learning.createStudyRun(topic, curriculumTopicId);
       navigate(`/learning/${run.id}`);
     } catch {
       setStartingRun(false);
     }
-  }, [topic, navigate]);
+  }, [topic, navigate, searchParams]);
 
   if (!topic) return null;
 

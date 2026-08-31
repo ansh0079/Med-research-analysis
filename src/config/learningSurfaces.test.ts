@@ -7,9 +7,10 @@ import {
 
 describe('learning surface promotion', () => {
   it('promotes the core practice loops to the primary nav', () => {
-    // Quiz and cases were buried in the Tools dropdown, which is why engagement
-    // with 11k+ seeded MCQs sat at zero. They must stay top-level.
-    expect(PROMOTED_SURFACE_IDS).toEqual(['quiz', 'adaptive-case']);
+    // Study paths opens the topic journey (guidelines + papers -> synopsis -> MCQs),
+    // which is the product; quiz and cases are its practice surfaces. All three were
+    // buried in the Tools dropdown while engagement sat at zero.
+    expect(PROMOTED_SURFACE_IDS).toEqual(['study-paths', 'quiz', 'adaptive-case']);
   });
 
   it('resolves every promoted id to a real surface', () => {
