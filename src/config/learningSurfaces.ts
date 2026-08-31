@@ -91,10 +91,34 @@ export const WORKSPACE_TOOLS = [
   { route: '/guidelines', label: 'Guidelines', icon: 'fa-book-medical', color: 'text-slate-500' },
 ] as const;
 
-export function learningSurfacesByGroup(): Array<{ group: LearningSurfaceGroup; label: string; surfaces: LearningSurface[] }> {
+/**
+ * Surfaces promoted to the always-visible primary nav rather than the Tools menu.
+ * These are the core practice loops; burying them behind a dropdown was the main
+ * reason quiz and case engagement sat at zero.
+ *
+ * `learning-dashboard` is deliberately excluded: the Dashboard nav item already
+ * occupies that slot.
+ */
+export const PROMOTED_SURFACE_IDS: readonly string[] = ['quiz', 'adaptive-case'];
+
+/** Surfaces shown as top-level nav items, in PROMOTED_SURFACE_IDS order. */
+export function promotedSurfaces(): LearningSurface[] {
+  return PROMOTED_SURFACE_IDS
+    .map((id) => LEARNING_SURFACES.find((s) => s.id === id))
+    .filter((s): s is LearningSurface => Boolean(s));
+}
+
+/**
+ * Learning surfaces grouped for the Tools menu.
+ * Pass `excludePromoted` so surfaces already in the primary nav are not listed twice.
+ */
+export function learningSurfacesByGroup(
+  options: { excludePromoted?: boolean } = {},
+): Array<{ group: LearningSurfaceGroup; label: string; surfaces: LearningSurface[] }> {
+  const omit = options.excludePromoted ? new Set(PROMOTED_SURFACE_IDS) : new Set<string>();
   return (Object.keys(LEARNING_SURFACE_GROUPS) as LearningSurfaceGroup[]).map((group) => ({
     group,
     label: LEARNING_SURFACE_GROUPS[group].label,
-    surfaces: LEARNING_SURFACES.filter((s) => s.group === group),
+    surfaces: LEARNING_SURFACES.filter((s) => s.group === group && !omit.has(s.id)),
   })).filter((row) => row.surfaces.length > 0);
 }

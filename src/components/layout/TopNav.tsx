@@ -4,15 +4,22 @@ import { useAuth } from '@contexts/AuthContext';
 import { useTheme } from '@hooks';
 import api from '@services/api';
 import { NotificationBell } from '@components/collaboration/NotificationBell';
-import { LEARNING_SURFACES, WORKSPACE_TOOLS, learningSurfacesByGroup } from '@config/learningSurfaces';
+import { LEARNING_SURFACES, WORKSPACE_TOOLS, learningSurfacesByGroup, promotedSurfaces } from '@config/learningSurfaces';
 
-// Primary nav — 4 items visible at all times
+// Primary nav — always visible
 const PRIMARY_NAV = [
   { to: '/search', label: 'Search', icon: 'fa-search' },
   { to: '/review', label: 'Review', icon: 'fa-clipboard-check' },
 ] as const;
 
-const TOOLS_ROUTES = [...LEARNING_SURFACES.map((s) => s.route), ...WORKSPACE_TOOLS.map((t) => t.route)];
+// Core practice loops promoted out of the Tools menu into the primary nav.
+const PROMOTED_NAV = promotedSurfaces();
+
+const PROMOTED_ROUTES = new Set(PROMOTED_NAV.map((s) => s.route));
+const TOOLS_ROUTES = [
+  ...LEARNING_SURFACES.filter((s) => !PROMOTED_ROUTES.has(s.route)).map((s) => s.route),
+  ...WORKSPACE_TOOLS.map((t) => t.route),
+];
 
 // User menu — account-level actions
 const ACCOUNT_NAV = [
@@ -112,6 +119,20 @@ export const TopNav: React.FC = () => {
             </button>
           ))}
 
+          {/* Promoted practice surfaces — quiz and cases sit here, not in Tools */}
+          {isAuthenticated && PROMOTED_NAV.map(({ route, label, icon, description }) => (
+            <button
+              key={route}
+              type="button"
+              title={description}
+              onClick={() => navigate(route)}
+              className={`nav-link ${pathname.startsWith(route) ? 'active' : ''}`}
+            >
+              <i className={`fas ${icon} text-[10px]`} />
+              {label}
+            </button>
+          ))}
+
           {/* Tools dropdown */}
           {isAuthenticated && (
             <div className="relative" ref={toolsMenuRef} onBlur={(event) => closeMenuOnFocusLeave(event, setToolsMenuOpen)}>
@@ -129,7 +150,7 @@ export const TopNav: React.FC = () => {
               </button>
               {toolsMenuOpen && (
                 <div id="tools-menu" role="menu" className="absolute left-0 top-full mt-1 w-60 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-xl py-1.5 z-50 animate-fade-in">
-                  {learningSurfacesByGroup().map(({ group, label, surfaces }) => (
+                  {learningSurfacesByGroup({ excludePromoted: true }).map(({ group, label, surfaces }) => (
                     <div key={group}>
                       <p className="px-3.5 pt-2 pb-1 text-[9px] font-bold uppercase tracking-wider text-slate-400">{label}</p>
                       {surfaces.map(({ route, label: surfaceLabel, icon, color, description }) => (
@@ -288,10 +309,17 @@ export const TopNav: React.FC = () => {
               <i className={`fas ${icon} text-[10px]`} /> {label}
             </button>
           ))}
+          {isAuthenticated && PROMOTED_NAV.map(({ route, label, icon, color }) => (
+            <button key={route} type="button"
+              onClick={() => { navigate(route); setMobileMenuOpen(false); }}
+              className={`nav-link w-full text-left ${pathname.startsWith(route) ? 'active' : ''}`}>
+              <i className={`fas ${icon} text-[10px] ${color}`} /> {label}
+            </button>
+          ))}
           {isAuthenticated && (
             <>
               <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 pt-2 pb-1">Tools</div>
-              {learningSurfacesByGroup().map(({ group, label, surfaces }) => (
+              {learningSurfacesByGroup({ excludePromoted: true }).map(({ group, label, surfaces }) => (
                 <React.Fragment key={group}>
                   <div className="text-[9px] font-bold uppercase tracking-wider text-slate-400 px-2 pt-1.5 pb-0.5">{label}</div>
                   {surfaces.map(({ route, label: surfaceLabel, icon, color }) => (
