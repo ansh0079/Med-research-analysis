@@ -137,22 +137,23 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
         };
       });
 
-      let persisted = true;
+      let hasProfile = true;
       if (onAuthSubmit) {
         await onAuthSubmit(attempts);
       } else {
         const result = await api.learning.submitQuizAttempt({ topic, attempts });
-        persisted = result.persisted !== false;
+        // An anonymous session's answers are now persisted (migration 092) and
+        // reconciled onto the account at sign-in, but there is no mastery profile
+        // to save them "to" yet -- say that, not either extreme.
+        hasProfile = result.mastery != null;
       }
       setSaveStatus('saved');
-      // An anonymous session's answers are counted but not stored against a profile,
-      // so do not claim they were saved.
       showToast(
-        persisted
+        hasProfile
           ? 'Quiz saved to your learning profile'
-          : 'Sign in to save this quiz to your learning profile',
-        persisted ? 'success' : 'warning',
-        persisted ? 3000 : 5000,
+          : 'Answers saved — sign in to build your mastery profile',
+        hasProfile ? 'success' : 'warning',
+        hasProfile ? 3000 : 5000,
       );
     } catch (err) {
       setSaveStatus('error');

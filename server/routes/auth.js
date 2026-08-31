@@ -116,6 +116,16 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             });
 
             await issueSession(res, user);
+
+            // Attach any quiz attempts answered anonymously in this browser session
+            // before the account existed (migration 092). Non-blocking: registration
+            // must not fail because this bookkeeping step did.
+            if (req.sessionId && db.reconcileAnonymousQuizAttempts) {
+                db.reconcileAnonymousQuizAttempts(req.sessionId, user.id).catch((err) => {
+                    req.log.warn({ err }, 'reconcileAnonymousQuizAttempts (register) failed');
+                });
+            }
+
             res.status(201).json({
                 user: { id: user.id, name: user.name, email: user.email, role: user.role, emailVerified: false, subscriptionPlan: 'pro' },
                 message: 'Account created. Your 14-day Pro trial has started — no credit card required.',
@@ -175,6 +185,15 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
             const finalEmailVerified = Boolean(finalUser.email_verified);
 
             await issueSession(res, finalUser);
+
+            // A returning beta user may have browsed and answered questions
+            // anonymously before logging in this session — attach those attempts.
+            if (req.sessionId && db.reconcileAnonymousQuizAttempts) {
+                db.reconcileAnonymousQuizAttempts(req.sessionId, finalUser.id).catch((err) => {
+                    req.log.warn({ err }, 'reconcileAnonymousQuizAttempts (login) failed');
+                });
+            }
+
             res.json({
                 user: { id: finalUser.id, name: finalUser.name, email: finalUser.email, role: finalUser.role || 'user', emailVerified: finalEmailVerified, subscriptionPlan: finalUser.subscription_plan || 'free' },
             });

@@ -96,16 +96,26 @@ function registerQuizRoutes(app, deps) {
                 void attributeQuizAttemptRewards(db, null, attemptsWithJudgement, topic, { sessionId: req.sessionId })
                     .catch((err) => { logger.warn({ err }, 'attributeQuizAttemptRewards (beta) failed'); });
                 recordQuizMissesForSearch(null, req.sessionId, topic, attemptsWithJudgement);
-                // quiz_attempts.user_id is NOT NULL, so an anonymous session's answers
-                // cannot be persisted as attempts — only the aggregate learning events
-                // above are kept. Report that honestly instead of returning a mastery of
-                // zero, which the client was presenting as a saved profile score.
+                // Persist the raw attempts under the session (migration 092 made
+                // user_id nullable for exactly this) so the answers are not lost --
+                // reconcileAnonymousQuizAttempts attaches them to the account on
+                // sign-in. Spaced-repetition scheduling still does not run here:
+                // spaced_rep_cards.user_id stays NOT NULL, and day-to-day review
+                // scheduling is not meaningful for a session that may not persist
+                // past one sitting. That activates once the same questions are
+                // answered again as an authenticated user.
+                if (db.createQuizAttempt) {
+                    for (const attempt of attemptsWithJudgement) {
+                        void db.createQuizAttempt({ ...attempt, userId: null, sessionId: req.sessionId })
+                            .catch((err) => { logger.warn({ err }, 'createQuizAttempt (beta) failed'); });
+                    }
+                }
                 return res.json({
                     saved: attemptsWithJudgement.length,
-                    persisted: false,
+                    persisted: true,
                     mastery: null,
                     betaAnonymous: true,
-                    reason: 'sign_in_required_to_save_progress',
+                    reason: 'sign_in_to_build_mastery_profile',
                 });
             }
 

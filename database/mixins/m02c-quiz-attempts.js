@@ -19,11 +19,14 @@ async createQuizAttempt(attempt) {
         ? attempt.reasoningTags.map((tag) => String(tag || '').trim()).filter(Boolean).slice(0, 8)
         : [];
     const promptVariant = String(attempt.promptVariant || '').trim().slice(0, 80) || null;
+    // userId is null for an anonymous BETA_MODE session; sessionId is what makes the
+    // row findable later so reconcileAnonymousQuizAttempts can attach it once the
+    // visitor signs in. See migration 092.
     const result = await this.run(
-        `INSERT INTO quiz_attempts (user_id, topic, normalized_topic, question_id, question_type, question_text, user_answer, correct_answer, is_correct, time_ms, confidence, source_article_uid, study_run_id, outline_node_id, concept_hash, claim_key, reasoning_tags, reasoning_note, prompt_variant, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+        `INSERT INTO quiz_attempts (user_id, topic, normalized_topic, question_id, question_type, question_text, user_answer, correct_answer, is_correct, time_ms, confidence, source_article_uid, study_run_id, outline_node_id, concept_hash, claim_key, reasoning_tags, reasoning_note, prompt_variant, session_id, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
         [
-            attempt.userId,
+            attempt.userId || null,
             attempt.topic,
             normalizedTopic,
             attempt.questionId,
@@ -42,9 +45,24 @@ async createQuizAttempt(attempt) {
             JSON.stringify(reasoningTags),
             attempt.reasoningNote ? String(attempt.reasoningNote).slice(0, 500) : null,
             promptVariant,
+            attempt.sessionId || null,
         ]
     );
     return { id: result.id, conceptHash, ...attempt };
+}
+
+/**
+ * Attach a beta-anonymous session's quiz attempts to the account it just
+ * became. Called once at registration or login when the request carries an
+ * X-Session-Id that answered questions before the user signed in.
+ */
+async reconcileAnonymousQuizAttempts(sessionId, userId) {
+    if (!sessionId || !userId) return 0;
+    const result = await this.run(
+        `UPDATE quiz_attempts SET user_id = ? WHERE session_id = ? AND user_id IS NULL`,
+        [userId, sessionId]
+    );
+    return result.changes || result.rowCount || 0;
 }
 
 mapQuizAttemptRow(r) {
