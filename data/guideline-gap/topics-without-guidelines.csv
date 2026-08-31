@@ -1,0 +1,567 @@
+topic,specialty,total_mcqs,has_paper_synopsis,priority
+"Acute aortic dissection diagnosis and management","",3,yes,medium
+"Alport syndrome and inherited collagen nephropathies","",3,yes,medium
+"Antithrombotic therapy after TAVR","",3,yes,medium
+"Atherosclerotic renal artery stenosis revascularization","",3,yes,medium
+"Atrial fibrillation catheter ablation and early rhythm control","",3,yes,medium
+"Autoimmune haemolytic anaemia: steroids and rituximab","",3,yes,medium
+"Autoimmune hepatitis immunosuppression","",3,yes,medium
+"BK polyomavirus nephropathy in kidney transplant","",3,yes,medium
+"C3 glomerulopathy and complement inhibition","",3,yes,medium
+"Cardiac resynchronization therapy in heart failure","",3,yes,medium
+"Cardiorenal syndrome ultrafiltration","",3,yes,medium
+"Cerebral venous thrombosis anticoagulation","",3,yes,medium
+"Cholangiocarcinoma systemic therapy","",3,yes,medium
+"Chronic inflammatory demyelinating polyneuropathy treatment","",3,yes,medium
+"CKD mineral and bone disorder","",3,yes,medium
+"Conservative oxygen therapy in mechanically ventilated patients","",3,yes,medium
+"Contrast-associated acute kidney injury prevention","",3,yes,medium
+"Coronary artery calcium score risk stratification","",3,yes,medium
+"Degenerative cervical myelopathy management","",3,yes,medium
+"Dialysis initiation timing in advanced CKD","",3,yes,medium
+"Essential thrombocythemia: cytoreduction with hydroxyurea versus anagrelide","",3,yes,medium
+"Essential tremor procedural and medical therapy","",3,yes,medium
+"Fever management in critically ill patients","",3,yes,medium
+"FSGS sparsentan and supportive therapy","",3,yes,medium
+"GERD refractory symptoms and antireflux surgery","",3,yes,medium
+"Glycemic control in critical illness","",3,yes,medium
+"Heart failure remote hemodynamic monitoring","",3,yes,medium
+"Heart failure SGLT2 inhibitor treatment","",3,yes,medium
+"Hemodialysis adequacy and frequency","",3,yes,medium
+"Hepatitis C virus direct-acting antiviral therapy","",3,yes,medium
+"Hepatocellular carcinoma systemic therapy","",3,yes,medium
+"Hereditary hemochromatosis diagnosis and phlebotomy","",3,yes,medium
+"Huntington disease chorea management","",3,yes,medium
+"Icosapent ethyl residual cardiovascular risk","",3,yes,medium
+"IgA nephropathy treatment (sparsentan and targeted therapy)","",3,yes,medium
+"Ivabradine in heart failure with reduced ejection fraction","",3,yes,medium
+"Left main coronary disease revascularization","",3,yes,medium
+"Lewy body dementia diagnosis and symptomatic therapy","",3,yes,medium
+"Living kidney donor evaluation and long-term risk","",3,yes,medium
+"Multiple myeloma daratumumab-based regimens","",3,yes,medium
+"Multiple myeloma: autologous stem cell transplantation","",3,yes,medium
+"Neuropathic pain pharmacotherapy","",3,yes,medium
+"Ovarian cancer PARP inhibitor maintenance therapy","",3,yes,medium
+"Peripheral artery disease antithrombotic therapy","",3,yes,medium
+"Physiology-guided PCI fractional flow reserve","",3,yes,medium
+"Platelet transfusion thresholds in haematological malignancies","",3,yes,medium
+"Post-MI beta-blocker therapy contemporary evidence","",3,yes,medium
+"Primary sclerosing cholangitis medical therapy and surveillance","",3,yes,medium
+"Protocol-based versus goal-directed resuscitation in septic shock","",3,yes,medium
+"Pulmonary artery catheter utility in critically ill patients","",3,yes,medium
+"Rate versus rhythm control in atrial fibrillation","",3,yes,medium
+"Recurrent nephrolithiasis medical prevention","",3,yes,medium
+"Restless legs syndrome treatment","",3,yes,medium
+"Rheumatic valvular disease anticoagulation","",3,yes,medium
+"Severe acute pancreatitis ICU management","",3,yes,medium
+"Spontaneous coronary artery dissection","",3,yes,medium
+"Stable angina medical therapy versus PCI","",3,yes,medium
+"Thrombus aspiration in STEMI","",3,yes,medium
+"Tricuspid regurgitation TEER","",3,yes,medium
+"Triple-negative breast cancer immunotherapy","",3,yes,medium
+"Perioperative antiplatelet and anticoagulant management","Anaesthetics",3,no,medium
+"Suspected melanoma, non-melanoma skin cancer and urgent referral","Dermatology",3,no,medium
+"DNACPR, treatment escalation planning and advance care planning","General Medicine",3,no,medium
+"Drug allergy assessment and penicillin allergy de-labelling","General Medicine",3,no,medium
+"Intravenous fluid prescribing and fluid balance management","General Medicine",3,no,medium
+"Oxygen prescribing, target saturations and hypoxia management","General Medicine",3,no,medium
+"Emergency contraception: mechanisms, timing and clinical guidance","Gynaecology",3,no,medium
+"Menopause and hormone replacement therapy: evidence and guidance","Gynaecology",3,no,medium
+"Miscarriage: diagnosis, classification and management","Gynaecology",3,no,medium
+"Transfusion-Transmitted Infections Screening","Haematology",3,yes,medium
+"Acute and chronic pain assessment and opioid safety","MSK",3,no,medium
+"Carpal tunnel syndrome: diagnosis and management","MSK",3,no,medium
+"Lateral epicondylitis (tennis elbow): assessment and management","MSK",3,no,medium
+"Rehabilitation after stroke: principles and evidence","Neurology",3,no,medium
+"Orbital and periorbital cellulitis: classification and management","Ophthalmology",3,no,medium
+"Retinal detachment: presentation and emergency management","Ophthalmology",3,no,medium
+"Compartment syndrome: diagnosis and emergency management","Orthopaedics",3,no,medium
+"Bronchiolitis: assessment, risk stratification and management","Paediatrics",3,no,medium
+"Croup: assessment, severity scoring and management","Paediatrics",3,no,medium
+"Neonatal jaundice: assessment, phototherapy and exchange transfusion","Paediatrics",3,no,medium
+"Paediatric anaphylaxis: recognition and emergency management","Paediatrics",3,no,medium
+"Paediatric asthma: diagnosis, assessment and stepwise management","Paediatrics",3,no,medium
+"Eating disorders and refeeding syndrome","Psychiatry",3,no,medium
+"Mental capacity, consent and best-interest decisions","Psychiatry",3,no,medium
+"Pulmonary Veno-Occlusive Disease","Pulmonology",3,yes,medium
+"CT head and CT pulmonary angiography: common acute findings","Radiology",3,no,medium
+"Seronegative Rheumatoid Arthritis","Rheumatology",3,yes,medium
+"Perioperative diabetes management","Anaesthetics",4,no,low
+"Postoperative nausea and vomiting: prevention and treatment","Anaesthetics",4,no,low
+"ECG interpretation: common acute findings and life-threatening arrhythmias","Cardiology",4,no,low
+"Heart failure landmark trials: PARADIGM-HF, DAPA-HF, EMPEROR-Reduced insights","Cardiology",4,yes,low
+"Landmark structural cardiology trials: PARTNER, COAPT, TRILUMINATE milestones","Cardiology",4,yes,low
+"Atopic dermatitis: diagnosis, stepwise treatment and biologics","Dermatology",4,no,low
+"Contact dermatitis: irritant vs allergic, patch testing and management","Dermatology",4,no,low
+"Drug eruptions and severe cutaneous adverse reactions (SCAR)","Dermatology",4,no,low
+"Herpes simplex, impetigo and common skin infections","Dermatology",4,no,low
+"Hidradenitis suppurativa: assessment and treatment","Dermatology",4,no,low
+"Psoriasis: diagnosis, severity assessment and systemic treatment","Dermatology",4,no,low
+"Scabies: diagnosis, treatment and outbreak management","Dermatology",4,no,low
+"Urticaria and angioedema: classification and management","Dermatology",4,no,low
+"Venous leg ulcers, lymphoedema and lower leg management","Dermatology",4,no,low
+"Epistaxis: assessment and management","ENT",4,no,low
+"Otitis media, otitis externa and mastoiditis","ENT",4,no,low
+"Sudden sensorineural hearing loss: diagnosis and treatment","ENT",4,no,low
+"Tonsillitis, peritonsillar abscess and deep neck infection","ENT",4,no,low
+"Adhesional Small Bowel Obstruction","Gastroenterology",4,yes,low
+"Autoimmune Gastritis and Pernicious Anaemia","Gastroenterology",4,yes,low
+"Carcinoid Tumours and Small Bowel Neuroendocrine Tumours","Gastroenterology",4,yes,low
+"Chronic Intestinal Ischaemia","Gastroenterology",4,yes,low
+"Constipation and Pelvic Floor Disorders","Gastroenterology",4,yes,low
+"Diagnostic Upper GI Endoscopy","Gastroenterology",4,yes,low
+"Dieulafoy Lesion","Gastroenterology",4,yes,low
+"Duodenal Pathology","Gastroenterology",4,yes,low
+"Endoscopic Mucosal Resection and Submucosal Dissection","Gastroenterology",4,yes,low
+"Endoscopy in the Anticoagulated Patient","Gastroenterology",4,yes,low
+"Enteral Nutrition in Clinical Practice","Gastroenterology",4,yes,low
+"GI Endoscopy Sedation and Monitoring","Gastroenterology",4,yes,low
+"Gut Microbiome in GI Disease","Gastroenterology",4,yes,low
+"Hereditary GI Polyposis Syndromes","Gastroenterology",4,yes,low
+"Liver Metastases from Colorectal Cancer","Gastroenterology",4,yes,low
+"Oesophageal Perforation","Gastroenterology",4,yes,low
+"Peritoneal Disorders","Gastroenterology",4,yes,low
+"Portal Hypertension Non-Cirrhotic","Gastroenterology",4,yes,low
+"Protein-Losing Enteropathy","Gastroenterology",4,yes,low
+"Variceal Haemorrhage","Gastroenterology",4,yes,low
+"Zenker's Diverticulum","Gastroenterology",4,yes,low
+"Delirium: recognition, risk factors, prevention and management","Geriatrics",4,no,low
+"Dementia: behavioural and psychological symptoms management","Geriatrics",4,no,low
+"Falls assessment and prevention in older adults","Geriatrics",4,no,low
+"Frailty and comprehensive geriatric assessment","Geriatrics",4,no,low
+"Malnutrition screening: MUST, NRS-2002, and nutritional support","Geriatrics",4,no,low
+"Orthostatic hypotension: diagnosis and management in older adults","Geriatrics",4,no,low
+"Osteoporotic fragility fracture and secondary prevention","Geriatrics",4,no,low
+"Polypharmacy and deprescribing: STOPP/START criteria","Geriatrics",4,no,low
+"Pressure ulcers: staging, prevention and wound management","Geriatrics",4,no,low
+"Ectopic pregnancy: diagnosis and management","Gynaecology",4,no,low
+"Heavy menstrual bleeding: assessment and management","Gynaecology",4,no,low
+"Pelvic inflammatory disease: diagnosis and treatment","Gynaecology",4,no,low
+"Acute Leukaemia of Ambiguous Lineage","Haematology",4,yes,low
+"Acute Promyelocytic Leukaemia","Haematology",4,yes,low
+"AL Amyloidosis and Waldenström Macroglobulinaemia","Haematology",4,yes,low
+"Alpha and Beta Thalassaemia","Haematology",4,yes,low
+"Antiphospholipid Syndrome haematological features","Haematology",4,yes,low
+"Antithrombin, Protein C and Protein S Deficiencies","Haematology",4,yes,low
+"Bernard-Soulier Syndrome and Glanzmann Thrombasthenia","Haematology",4,yes,low
+"Bone Marrow Biopsy Indications and Interpretation","Haematology",4,yes,low
+"CAR-T Cell Therapy in Relapsed Leukaemia","Haematology",4,yes,low
+"DOAC Reversal Agents","Haematology",4,yes,low
+"ESR, Plasma Viscosity and CRP Utility","Haematology",4,yes,low
+"Factor XI Deficiency and Rare Factor Deficiencies","Haematology",4,yes,low
+"Febrile Non-Haemolytic and Allergic Transfusion Reactions","Haematology",4,yes,low
+"Flow Cytometry in Haematology","Haematology",4,yes,low
+"Haemoglobin Electrophoresis Interpretation","Haematology",4,yes,low
+"Hereditary Spherocytosis and Elliptocytosis","Haematology",4,yes,low
+"Hyperferritinaemia and Haemochromatosis","Haematology",4,yes,low
+"MDS with Ring Sideroblasts","Haematology",4,yes,low
+"Monoclonal Gammopathy of Undetermined Significance","Haematology",4,yes,low
+"MPN Blast Phase Management","Haematology",4,yes,low
+"Parvovirus B19 Aplastic Crisis","Haematology",4,yes,low
+"Peripheral Blood Smear Morphology","Haematology",4,yes,low
+"Platelet Storage Pool Diseases","Haematology",4,yes,low
+"Rh Alloimmunisation Management","Haematology",4,yes,low
+"Superficial Thrombophlebitis versus DVT","Haematology",4,yes,low
+"Vitamin K Deficiency and Liver Disease Coagulopathy","Haematology",4,yes,low
+"Warfarin-Induced Skin Necrosis","Haematology",4,yes,low
+"Acute aortic syndromes in the ICU: dissection, intramural haematoma","ICU / Critical Care",4,yes,low
+"Acute pancreatitis in the ICU: Ranson, APACHE, organ support","ICU / Critical Care",4,yes,low
+"Antibiotic stewardship in critical care: de-escalation and duration","ICU / Critical Care",4,yes,low
+"Arterial blood gas interpretation in the ICU: systematic approach","ICU / Critical Care",4,yes,low
+"Burns critical care: fluid resuscitation, Parkland formula, escharotomy","ICU / Critical Care",4,yes,low
+"Candidaemia and invasive candidiasis in the ICU","ICU / Critical Care",4,yes,low
+"Coagulopathy in critical illness: DIC, dilutional, trauma-induced","ICU / Critical Care",4,yes,low
+"Continuous EEG monitoring in the ICU: non-convulsive status epilepticus","ICU / Critical Care",4,yes,low
+"Critical illness polyneuropathy and myopathy: diagnosis and rehabilitation","ICU / Critical Care",4,yes,low
+"Diabetic ketoacidosis and hyperosmolar hyperglycaemic state: ICU management","ICU / Critical Care",4,yes,low
+"Diuretic resistance in volume-overloaded ICU patients","ICU / Critical Care",4,yes,low
+"Early mobilisation and physiotherapy in the ICU","ICU / Critical Care",4,yes,low
+"Ethics in the ICU: goals of care, withholding and withdrawing treatment","ICU / Critical Care",4,yes,low
+"Glycaemic control in the ICU: insulin infusion protocols and targets","ICU / Critical Care",4,yes,low
+"Haematological emergencies in the ICU: hyperleucocytosis, tumour lysis, HLH","ICU / Critical Care",4,yes,low
+"High-flow nasal oxygen and non-invasive ventilation in acute hypoxaemic failure","ICU / Critical Care",4,yes,low
+"ICU admission criteria and triage","ICU / Critical Care",4,yes,low
+"Intermittent haemodialysis vs CRRT: selection criteria in critically ill","ICU / Critical Care",4,yes,low
+"Intra-aortic balloon pump and Impella: principles and ICU management","ICU / Critical Care",4,yes,low
+"Intrahospital transport of the critically ill patient: risk mitigation","ICU / Critical Care",4,yes,low
+"Life-threatening arrhythmias in the ICU: VF, VT storm, advanced ACLS","ICU / Critical Care",4,yes,low
+"Malignant hyperthermia and neuroleptic malignant syndrome: recognition and dantrolene","ICU / Critical Care",4,yes,low
+"Mechanical ventilation modes: volume control, pressure control, SIMV, PSV","ICU / Critical Care",4,yes,low
+"Neuromuscular blocking agents in the ICU: indications and monitoring","ICU / Critical Care",4,yes,low
+"Nutritional support in critical illness: enteral vs parenteral, protein targets","ICU / Critical Care",4,yes,low
+"Organ donation after brain death and DCD: ICU donor management","ICU / Critical Care",4,yes,low
+"Palliative care in the ICU: symptom management, comfort-focused ventilation","ICU / Critical Care",4,yes,low
+"Patient-ventilator dyssynchrony: recognition and management","ICU / Critical Care",4,yes,low
+"PEEP optimisation: recruitment manoeuvres and driving pressure","ICU / Critical Care",4,yes,low
+"Point-of-care ultrasound in the ICU: FAST, lung, cardiac, vascular","ICU / Critical Care",4,yes,low
+"Poisoning and overdose in the ICU: toxidromes, antidotes, extracorporeal removal","ICU / Critical Care",4,yes,low
+"Prone positioning in moderate-severe ARDS","ICU / Critical Care",4,yes,low
+"Pulmonary hypertension crisis in the ICU: triggers, inhaled nitric oxide, prostacyclins","ICU / Critical Care",4,yes,low
+"Quality improvement and patient safety in the ICU: checklists, daily goals, handover","ICU / Critical Care",4,yes,low
+"Right ventricular failure in the ICU: management principles","ICU / Critical Care",4,yes,low
+"Sedation and analgesia in mechanically ventilated patients: ABCDEF bundle","ICU / Critical Care",4,yes,low
+"Status epilepticus management in the ICU: refractory and super-refractory","ICU / Critical Care",4,yes,low
+"Therapeutic plasma exchange in the ICU: TTP, Guillain-Barré, myasthenic crisis","ICU / Critical Care",4,yes,low
+"Thyroid storm and myxoedema coma: ICU recognition and management","ICU / Critical Care",4,yes,low
+"Vasopressor and inotrope pharmacology: noradrenaline, vasopressin, dobutamine, milrinone","ICU / Critical Care",4,yes,low
+"Veno-venous ECMO for respiratory failure: cannulation and monitoring","ICU / Critical Care",4,yes,low
+"Venous thromboembolism prophylaxis in the ICU","ICU / Critical Care",4,yes,low
+"Ventilator-induced lung injury: volutrauma, barotrauma, atelectrauma","ICU / Critical Care",4,yes,low
+"Viral haemorrhagic fevers and high-consequence infectious diseases in the ICU","ICU / Critical Care",4,yes,low
+"Cholera and Vibrio infections: oral rehydration, doxycycline, epidemic control, vaccination","Infectious Diseases",4,yes,low
+"EBV infectious mononucleosis: Monospot, complications, amoxicillin rash, splenic rupture","Infectious Diseases",4,yes,low
+"Infection in solid organ transplant: timeline, CMV prophylaxis, PCP, opportunistic pathogens","Infectious Diseases",4,yes,low
+"Infectious causes of lymphadenopathy: EBV, CMV, toxoplasmosis, TB, lymphoma mimics","Infectious Diseases",4,yes,low
+"Peritoneal dialysis-associated peritonitis: diagnosis, empirical antibiotics, catheter removal criteria","Infectious Diseases",4,yes,low
+"Phage therapy and novel antimicrobial approaches: bacteriophage, monoclonal antibodies, future therapies","Infectious Diseases",4,yes,low
+"Schistosomiasis and helminth infections: praziquantel, albendazole, tropical splenomegaly","Infectious Diseases",4,yes,low
+"Splenectomy and asplenia: encapsulated organism risk, vaccination schedule, emergency antibiotic supply","Infectious Diseases",4,yes,low
+"Tick-borne encephalitis and other arboviral infections: West Nile, Zika: clinical features and prevention","Infectious Diseases",4,yes,low
+"Vaccine-preventable diseases in adults: pneumococcal, meningococcal, HPV, hepatitis B, shingles schedules","Infectious Diseases",4,yes,low
+"Varicella zoster in adults and immunocompromised: severity, aciclovir, VZIG prophylaxis","Infectious Diseases",4,yes,low
+"Viral respiratory infections: RSV, parainfluenza, adenovirus: clinical features, at-risk populations","Infectious Diseases",4,yes,low
+"Mechanical low back pain: assessment, red flags and management","MSK",4,no,low
+"AKI Recovery and Long-Term Outcomes","Nephrology",4,yes,low
+"Anaemia of CKD","Nephrology",4,yes,low
+"Bartter and Gitelman Syndromes","Nephrology",4,yes,low
+"CKD Cardiovascular Risk Management","Nephrology",4,yes,low
+"Drug Dosing in Renal Impairment","Nephrology",4,yes,low
+"Drug-Induced AKI and Nephrotoxins","Nephrology",4,yes,low
+"Fanconi Syndrome","Nephrology",4,yes,low
+"Fluid Assessment and Management in Renal Disease","Nephrology",4,yes,low
+"Hypercalcaemia and Hypocalcaemia","Nephrology",4,yes,low
+"Intermittent Haemodialysis: Principles and Adequacy","Nephrology",4,yes,low
+"Intrinsic AKI: ATN and Renal Ischaemia","Nephrology",4,yes,low
+"Membranoproliferative GN and C3 Glomerulopathy","Nephrology",4,yes,low
+"Myeloma Kidney and Paraprotein Nephropathy","Nephrology",4,yes,low
+"Nephrogenic Diabetes Insipidus","Nephrology",4,yes,low
+"Post-Infectious Glomerulonephritis","Nephrology",4,yes,low
+"Preparation for Renal Replacement Therapy","Nephrology",4,yes,low
+"Recurrent Disease in the Transplant","Nephrology",4,yes,low
+"Renal Imaging in Nephrology","Nephrology",4,yes,low
+"Renal Replacement Therapy Modality Choice","Nephrology",4,yes,low
+"Renal Vein Thrombosis","Nephrology",4,yes,low
+"Renovascular Disease and Renal Artery Stenosis","Nephrology",4,yes,low
+"Thin Basement Membrane Nephropathy","Nephrology",4,yes,low
+"Thrombotic Microangiopathy and the Kidney","Nephrology",4,yes,low
+"Uraemic Complications","Nephrology",4,yes,low
+"Urinalysis and Urine Microscopy","Nephrology",4,yes,low
+"Vascular Access for Haemodialysis","Nephrology",4,yes,low
+"Acute mesenteric ischaemia and arterial thrombosis reperfusion strategies","Neurology",4,yes,low
+"Perforated peptic ulcer disease and omental patch repair","Neurology",4,yes,low
+"Radiation necrosis vs tumour progression: perfusion MRI, PET scan","Neurology",4,yes,low
+"Spinal Muscular Atrophy (SMA): SMN1/SMN2 copy numbers, nusinersen therapeutics","Neurology",4,yes,low
+"Toxic and nutritional neuropathies: B12, B6 deficiency, chemotherapy-induced","Neurology",4,yes,low
+"Wilson’s disease: caeruloplasmin levels, slit-lamp exam, chelating therapies","Neurology",4,yes,low
+"Airway Obstruction in Malignancy","Oncology",4,yes,low
+"Anthracycline Cardiotoxicity","Oncology",4,yes,low
+"Bispecific Antibodies in Haematological Malignancy","Oncology",4,yes,low
+"Bone Metastases and Palliative Radiotherapy","Oncology",4,yes,low
+"Cancer Genetics and Hereditary Syndromes","Oncology",4,yes,low
+"Cancer Pain and WHO Analgesic Ladder","Oncology",4,yes,low
+"Checkpoint Inhibitor Myocarditis","Oncology",4,yes,low
+"Goals of Care and Hospice Referral","Oncology",4,yes,low
+"HER2-Positive Breast Cancer and ADCs","Oncology",4,yes,low
+"HPV-Related Oropharyngeal Cancer","Oncology",4,yes,low
+"Leptomeningeal Disease","Oncology",4,yes,low
+"Malignant Pericardial Tamponade","Oncology",4,yes,low
+"Mechanisms of Chemotherapy","Oncology",4,yes,low
+"Oligodendroglioma and Low-Grade Glioma","Oncology",4,yes,low
+"Oncology Clinical Trial Endpoints","Oncology",4,yes,low
+"Penile Cancer and Rare GU Tumours","Oncology",4,yes,low
+"Plasma Cell Leukaemia","Oncology",4,yes,low
+"Principles of Radiotherapy","Oncology",4,yes,low
+"Salivary Gland and Rare Head and Neck Tumours","Oncology",4,yes,low
+"Targeted Therapy Principles","Oncology",4,yes,low
+"Thymic Tumours and Thymoma","Oncology",4,yes,low
+"Tumour Lysis Syndrome in Oncology","Oncology",4,yes,low
+"Tumour Mutational Burden and MSI-H","Oncology",4,yes,low
+"Vulvar and Vaginal Cancers","Oncology",4,yes,low
+"Acute red eye: differential diagnosis and emergency management","Ophthalmology",4,no,low
+"Hip fracture management and perioperative optimisation","Orthopaedics",4,no,low
+"The febrile child: assessment, red flags and paediatric sepsis","Paediatrics",4,no,low
+"Acute psychosis: assessment, management and antipsychotic therapy","Psychiatry",4,no,low
+"Alcohol use disorder, Wernicke encephalopathy and alcohol-related liver disease","Psychiatry",4,no,low
+"Anxiety disorders and panic disorder: diagnosis and management","Psychiatry",4,no,low
+"Depression: diagnosis, pharmacotherapy and monitoring","Psychiatry",4,no,low
+"Opioid use disorder: withdrawal, maintenance therapy and harm reduction","Psychiatry",4,no,low
+"Self-harm, suicide risk assessment and safe management","Psychiatry",4,no,low
+"Amyotrophic Lateral Sclerosis pulmonary care","Pulmonology",4,yes,low
+"Anterior Mediastinal Masses","Pulmonology",4,yes,low
+"Arterial Blood Gas interpretation","Pulmonology",4,yes,low
+"Benign lung tumors","Pulmonology",4,yes,low
+"Benign Pleural Diseases","Pulmonology",4,yes,low
+"Beryllium Disease","Pulmonology",4,yes,low
+"Biologic therapies in severe eosinophilic asthma","Pulmonology",4,yes,low
+"Byssinosis","Pulmonology",4,yes,low
+"Central Sleep Apnea and Cheyne-Stokes respiration","Pulmonology",4,yes,low
+"Cystic Fibrosis in adults","Pulmonology",4,yes,low
+"Diffuse Alveolar Hemorrhage","Pulmonology",4,yes,low
+"Diffusing Capacity of the Lung for Carbon Monoxide","Pulmonology",4,yes,low
+"Fibrosing Mediastinitis","Pulmonology",4,yes,low
+"Goodpasture Syndrome","Pulmonology",4,yes,low
+"Lung Volumes and Spirometry interpretation","Pulmonology",4,yes,low
+"Lymphangitic Carcinomatosis","Pulmonology",4,yes,low
+"Massive Hemoptysis management","Pulmonology",4,yes,low
+"Molecular testing in NSCLC adenocarcinoma","Pulmonology",4,yes,low
+"Neuromuscular Respiratory Failure","Pulmonology",4,yes,low
+"Paraneoplastic syndromes in lung cancer","Pulmonology",4,yes,low
+"Pleural Effusion workup","Pulmonology",4,yes,low
+"Pleurodesis techniques","Pulmonology",4,yes,low
+"Pseudomonas aeruginosa eradication in bronchiectasis","Pulmonology",4,yes,low
+"Pulmonary Langerhans Cell Histiocytosis","Pulmonology",4,yes,low
+"Pulmonary Vasculitis","Pulmonology",4,yes,low
+"Sarcoidosis pulmonary","Pulmonology",4,yes,low
+"Severe CAP requiring ICU admission","Pulmonology",4,yes,low
+"Upper Airway Resistance Syndrome","Pulmonology",4,yes,low
+"Adult-Onset Still's Disease","Rheumatology",4,yes,low
+"Ankylosing Spondylitis and Axial Spondyloarthritis","Rheumatology",4,yes,low
+"Anti-GBM Disease","Rheumatology",4,yes,low
+"Anti-IL-6 Receptor Therapies","Rheumatology",4,yes,low
+"Anti-Synthetase Syndrome","Rheumatology",4,yes,low
+"Behçet's Disease","Rheumatology",4,yes,low
+"Belimumab in Lupus Therapy","Rheumatology",4,yes,low
+"Biologic switching in RA: mechanism switching vs same class after failure","Rheumatology",4,yes,low
+"Biologic-Induced Psoriasis and Paradoxical Reactions","Rheumatology",4,yes,low
+"Calcium Hydroxyapatite Deposition Disease","Rheumatology",4,yes,low
+"Carpal Tunnel Syndrome rheumatic etiology","Rheumatology",4,yes,low
+"Corticosteroid-Induced Osteoporosis Prevention","Rheumatology",4,yes,low
+"De Quervain's Tenosynovitis","Rheumatology",4,yes,low
+"Diffuse Idiopathic Skeletal Hyperostosis","Rheumatology",4,yes,low
+"Drug-Induced Lupus Erythematosus","Rheumatology",4,yes,low
+"Enteropathic Arthritis","Rheumatology",4,yes,low
+"Erythema Nodosum differential diagnosis","Rheumatology",4,yes,low
+"Giant Cell Arteritis and Polymyalgia Rheumatica","Rheumatology",4,yes,low
+"Granulomatosis with Polyangiitis","Rheumatology",4,yes,low
+"HIV-Associated Rheumatic Manifestations","Rheumatology",4,yes,low
+"Immune-Mediated Necrotizing Myopathy","Rheumatology",4,yes,low
+"Livedo Reticularis workup","Rheumatology",4,yes,low
+"Methotrexate toxicity and monitoring","Rheumatology",4,yes,low
+"Monoarthritis differential diagnosis: crystal, septic, reactive, seronegative, trauma","Rheumatology",4,yes,low
+"Mycobacterial and Fungal Arthritis","Rheumatology",4,yes,low
+"Mycophenolate Mofetil versus Cyclophosphamide regimens","Rheumatology",4,yes,low
+"Paget disease of bone: alkaline phosphatase, zoledronate, complications, osteosarcoma risk","Rheumatology",4,yes,low
+"Polymyositis differentiation","Rheumatology",4,yes,low
+"Psoriatic Arthritis phenotypes","Rheumatology",4,yes,low
+"Relapsing Polychondritis","Rheumatology",4,yes,low
+"Rheumatoid arthritis ILD: UIP vs NSIP pattern, prevalence, nintedanib, pirfenidone","Rheumatology",4,yes,low
+"Rotator Cuff Tendinopathy and Adhesive Capsulitis","Rheumatology",4,yes,low
+"Schnitzler Syndrome","Rheumatology",4,yes,low
+"SLE: SLICC 2012 and ACR/EULAR 2019 classification criteria compared","Rheumatology",4,yes,low
+"Trochanteric Bursitis","Rheumatology",4,yes,low
+"Postoperative ileus: prevention and management","Surgery",4,no,low
+"Surgical site infection: prevention and management","Surgery",4,no,low
+"Sedation minimization and analgesia-first in ICU","",5,yes,low
+"Klinefelter syndrome 47XXY: testosterone deficiency, fertility options, metabolic risks","Endocrinology & Diabetes",5,yes,low
+"Wolfram syndrome DIDMOAD: diabetes insipidus, DM, optic atrophy, deafness","Endocrinology & Diabetes",5,yes,low
+"Clostridioides difficile infection: severity grading, vancomycin, fidaxomicin, FMT, bezlotoxumab","Infectious Diseases",5,yes,low
+"Norovirus and healthcare-associated outbreaks: cohorting, ward closure, environmental decontamination","Infectious Diseases",5,yes,low
+"Pseudomyxoma Peritonei and HIPEC","Oncology",5,yes,low
+"Asthma severity classification and step-care","Pulmonology",5,yes,low
+"Acute gout attack in hospital: colchicine contraindications, IV corticosteroids, IL-1 inhibition","Rheumatology",5,yes,low
+"CIRT and CANTOS trials: methotrexate and canakinumab for cardiovascular inflammation","Rheumatology",5,yes,low
+"Lupus nephritis: ISN/RPS classification, biopsy indications, induction therapy","Rheumatology",5,yes,low
+"Rheumatoid arthritis: ACR/EULAR 2010 classification criteria, RF and anti-CCP serology","Rheumatology",5,yes,low
+"Achalasia endoscopic and surgical therapy","",7,yes,low
+"VTE prophylaxis in mechanically ventilated ICU patients","",7,yes,low
+"Acute liver failure: management and prognostic criteria","",8,yes,low
+"Cardiac rehabilitation after myocardial infarction","",8,yes,low
+"HER2 positive breast cancer adjuvant trastuzumab","",8,yes,low
+"Hypertrophic cardiomyopathy myosin inhibitor therapy","",8,yes,low
+"Migraine CGRP monoclonal antibody prevention","",8,yes,low
+"Non-alcoholic fatty liver disease pharmacotherapy","",8,yes,low
+"Obstructive sleep apnea CPAP cardiovascular outcomes","",8,yes,low
+"Pediatric ALL immunotherapy and targeted therapy","",8,yes,low
+"Perioperative bridging anticoagulation","",8,yes,low
+"Primary biliary cholangitis pharmacotherapy","",8,yes,low
+"Sickle cell disease gene editing","",8,yes,low
+"Syncope evaluation and pacing indications","",8,yes,low
+"Bariatric Surgery Complications","Gastroenterology",8,yes,low
+"Cholelithiasis and Biliary Colic","Gastroenterology",8,yes,low
+"Colonic Polyp Management","Gastroenterology",8,yes,low
+"ERCP indications and complications","Gastroenterology",8,yes,low
+"IBD in Pregnancy","Gastroenterology",8,yes,low
+"Obscure GI Bleeding","Gastroenterology",8,yes,low
+"Sphincter of Oddi Dysfunction","Gastroenterology",8,yes,low
+"Acute Haemolytic Transfusion Reactions","Haematology",8,yes,low
+"Amegakaryocytic Thrombocytopenia","Haematology",8,yes,low
+"AML Transformed from MPN","Haematology",8,yes,low
+"Anticoagulation in Malignancy","Haematology",8,yes,low
+"Catheter-Associated Thrombosis","Haematology",8,yes,low
+"Chronic Neutrophilic Leukaemia","Haematology",8,yes,low
+"Essential Thrombocythaemia","Haematology",8,yes,low
+"Factor V Leiden and APC Resistance","Haematology",8,yes,low
+"Fanconi Anaemia and Dyskeratosis Congenita","Haematology",8,yes,low
+"Large Granular Lymphocytic Leukaemia","Haematology",8,yes,low
+"Minimal Residual Disease Monitoring","Haematology",8,yes,low
+"Philadelphia-Positive ALL Management","Haematology",8,yes,low
+"Polycythaemia Vera","Haematology",8,yes,low
+"Tumour Lysis Syndrome Prophylaxis","Haematology",8,yes,low
+"Vitamin B12 and Folate Deficiency","Haematology",8,yes,low
+"Acid-base disorders in the ICU: Stewart approach and mixed disorders","ICU / Critical Care",8,yes,low
+"Cardiopulmonary resuscitation in the ICU: post-cardiac arrest care, targeted temperature management","ICU / Critical Care",8,yes,low
+"COVID-19 critical illness: oxygenation strategy, dexamethasone, anticoagulation","ICU / Critical Care",8,yes,low
+"Fluid responsiveness assessment: passive leg raise, pulse pressure variation","ICU / Critical Care",8,yes,low
+"Hyperlactataemia in the ICU: differential diagnosis and management","ICU / Critical Care",8,yes,low
+"ICU scoring systems: APACHE II, SOFA, SAPS — prognostication and limitations","ICU / Critical Care",8,yes,low
+"Massive upper GI haemorrhage in the ICU: resuscitation, endoscopy timing","ICU / Critical Care",8,yes,low
+"Pharmacokinetics of antibiotics in critical illness: dose adjustment strategies","ICU / Critical Care",8,yes,low
+"Ventilator weaning and spontaneous breathing trials","ICU / Critical Care",8,yes,low
+"Long COVID and post-infectious syndromes: fatigue, dysautonomia, mechanism, management","Infectious Diseases",8,yes,low
+"Malaria prophylaxis and travel medicine: atovaquone-proguanil, mefloquine, doxycycline, pre-travel assessment","Infectious Diseases",8,yes,low
+"Staphylococcus aureus bacteraemia: MRSA vs MSSA, vancomycin, daptomycin, duration of therapy","Infectious Diseases",8,yes,low
+"Acute Phosphate Nephropathy","Nephrology",8,yes,low
+"Acute Transplant Rejection","Nephrology",8,yes,low
+"AKI in Critical Illness and Sepsis","Nephrology",8,yes,low
+"Anti-GBM Disease and Goodpasture Syndrome","Nephrology",8,yes,low
+"BK Virus Nephropathy Post-Transplant","Nephrology",8,yes,low
+"Conservative Management of CKD","Nephrology",8,yes,low
+"Contrast-Induced AKI","Nephrology",8,yes,low
+"Donor-Specific Antibodies and Sensitisation","Nephrology",8,yes,low
+"Haemodialysis Complications","Nephrology",8,yes,low
+"Hyperphosphataemia in CKD","Nephrology",8,yes,low
+"Hypertensive Nephrosclerosis","Nephrology",8,yes,low
+"Immunosuppression Post-Transplant","Nephrology",8,yes,low
+"Indications for Acute Dialysis","Nephrology",8,yes,low
+"Oxalate Nephropathy","Nephrology",8,yes,low
+"SGLT2 Inhibitors in CKD and Nephrology","Nephrology",8,yes,low
+"Slowing CKD Progression","Nephrology",8,yes,low
+"Tuberous Sclerosis and Renal Angiomyolipoma","Nephrology",8,yes,low
+"Acute cholecystitis and ascending cholangitis: Tokyo Guidelines management","Neurology",8,yes,low
+"Incarcerated and strangulated inguinal, femoral, and ventral hernias","Neurology",8,yes,low
+"Dyspnoea and Breathlessness in Advanced Cancer","Oncology",8,yes,low
+"Hyperviscosity Syndrome","Oncology",8,yes,low
+"Meningioma and Intracranial Tumours","Oncology",8,yes,low
+"Multiple Myeloma Induction and Transplant","Oncology",8,yes,low
+"Osteosarcoma and Bone Sarcomas","Oncology",8,yes,low
+"Precision Oncology and Molecular Profiling","Oncology",8,yes,low
+"Retroperitoneal Sarcoma and Rare Sarcomas","Oncology",8,yes,low
+"Squamous Cell Carcinoma of Head and Neck","Oncology",8,yes,low
+"Parapneumonic Effusion and Empyema","Pulmonology",8,yes,low
+"Accelerated Atherosclerosis in Chronic Inflammation","Rheumatology",8,yes,low
+"Dermatomyositis and Antisynthetase Syndrome","Rheumatology",8,yes,low
+"Eosinophilic Granulomatosis with Polyangiitis","Rheumatology",8,yes,low
+"JAK Inhibitors in Rheumatology","Rheumatology",8,yes,low
+"Juvenile Idiopathic Arthritis subtypes","Rheumatology",8,yes,low
+"Lupus Pneumonitis and Shrinking Lung Syndrome","Rheumatology",8,yes,low
+"Neonatal Lupus and Congenital Heart Block","Rheumatology",8,yes,low
+"Osteomalacia and Rickets","Rheumatology",8,yes,low
+"Plantar Fasciitis and Calcaneal Spurs","Rheumatology",8,yes,low
+"Spondylolysis and Spondylolisthesis","Rheumatology",8,yes,low
+"VEXAS Syndrome","Rheumatology",8,yes,low
+"Type 1 vs Type 2 MI: universal definition and clinical differentiation","Cardiology",9,yes,low
+"Autoimmune polyglandular syndrome APS-1 and APS-2: AIRE mutation, clinical overlap","Endocrinology & Diabetes",9,yes,low
+"Carcinoid tumour and carcinoid syndrome: serotonin, octreotide, liver metastases","Endocrinology & Diabetes",9,yes,low
+"Cushings disease: pituitary source, inferior petrosal sinus sampling, transsphenoidal surgery","Endocrinology & Diabetes",9,yes,low
+"Ectopic ACTH syndrome: small cell lung cancer, CRH stimulation, metyrapone treatment","Endocrinology & Diabetes",9,yes,low
+"Endocrine causes of amenorrhoea: hypothalamic, pituitary, ovarian, thyroid - diagnostic workup","Endocrinology & Diabetes",9,yes,low
+"Endocrine emergencies overview: DKA, HHS, adrenal crisis, thyroid storm - recognition and triage","Endocrinology & Diabetes",9,yes,low
+"Gastrinoma Zollinger-Ellison syndrome: gastrin levels, secretin stimulation, MEN1 association","Endocrinology & Diabetes",9,yes,low
+"Gynaecomastia: causes, drug-induced, physiological, investigation, management","Endocrinology & Diabetes",9,yes,low
+"HbA1c interpretation: glycation, interference factors, target individualisation","Endocrinology & Diabetes",9,yes,low
+"Hereditary phaeochromocytoma syndromes: VHL, NF1, SDH mutations, genetic surveillance","Endocrinology & Diabetes",9,yes,low
+"Immune checkpoint inhibitor endocrinopathies: thyroiditis, hypophysitis, adrenalitis","Endocrinology & Diabetes",9,yes,low
+"Insulinoma: fasting hypoglycaemia, 72-hour fast, C-peptide, surgical resection","Endocrinology & Diabetes",9,yes,low
+"Lipodystrophy syndromes: partial vs generalised, metabolic complications, leptin replacement","Endocrinology & Diabetes",9,yes,low
+"Multiple endocrine neoplasia type 1 MEN1: parathyroid, pituitary, pancreatic tumours","Endocrinology & Diabetes",9,yes,low
+"Multiple endocrine neoplasia type 2 MEN2A and MEN2B: RET mutations, prophylactic thyroidectomy","Endocrinology & Diabetes",9,yes,low
+"Myxoedema coma: precipitants, T4 and T3 replacement, haemodynamic support, mortality","Endocrinology & Diabetes",9,yes,low
+"Pancreatogenic diabetes type 3c: exocrine insufficiency, brittle glycaemia, enzyme replacement","Endocrinology & Diabetes",9,yes,low
+"Perioperative diabetes management: insulin infusion protocols, glucose targets in surgery","Endocrinology & Diabetes",9,yes,low
+"Perioperative steroid management: hydrocortisone cover for adrenal insufficiency in surgery","Endocrinology & Diabetes",9,yes,low
+"Pseudohypoparathyroidism: end-organ PTH resistance, Albright hereditary osteodystrophy","Endocrinology & Diabetes",9,yes,low
+"Thyroid eye disease Graves ophthalmopathy: clinical activity score, selenium, teprotumumab","Endocrinology & Diabetes",9,yes,low
+"Turner syndrome 45X: HRT timing, cardiac surveillance, growth hormone therapy","Endocrinology & Diabetes",9,yes,low
+"Von Hippel-Lindau syndrome: phaeochromocytoma, renal cell carcinoma, pancreatic NETs","Endocrinology & Diabetes",9,yes,low
+"Airway management in the ICU: RSI, video-laryngoscopy, difficult airway","ICU / Critical Care",9,yes,low
+"Electrolyte emergencies: severe hyponatraemia, hyperkalaemia, hypophosphataemia","ICU / Critical Care",9,yes,low
+"ICU delirium: CAM-ICU assessment, prevention, and management","ICU / Critical Care",9,yes,low
+"Immunocompromised patient in the ICU: neutropenic sepsis, PCP, invasive fungal","ICU / Critical Care",9,yes,low
+"Obstetric emergencies in the ICU: eclampsia, amniotic fluid embolism, peripartum cardiomyopathy","ICU / Critical Care",9,yes,low
+"Source control in sepsis: timing and surgical indications","ICU / Critical Care",9,yes,low
+"Aminoglycoside dosing: once-daily dosing, Hartford nomogram, ototoxicity, renal monitoring","Infectious Diseases",9,yes,low
+"Atypical pneumonia pathogens: Mycoplasma, Chlamydophila, Q fever (Coxiella): diagnosis and treatment","Infectious Diseases",9,yes,low
+"Candida bloodstream infection: echocardiography, ophthalmology review, echinocandin, catheter removal","Infectious Diseases",9,yes,low
+"COVID-19 antivirals and immunomodulators: nirmatrelvir-ritonavir, remdesivir, dexamethasone, baricitinib","Infectious Diseases",9,yes,low
+"Fever in the returning traveller: systematic approach, geography, incubation periods","Infectious Diseases",9,yes,low
+"Fever of unknown origin FUO: classical definition, systematic investigation, common causes","Infectious Diseases",9,yes,low
+"Gram-negative resistance: ESBL, carbapenemase-producing organisms, colistin, ceftazidime-avibactam","Infectious Diseases",9,yes,low
+"HIV pre-exposure prophylaxis PrEP: tenofovir-emtricitabine, eligibility, monitoring, efficacy","Infectious Diseases",9,yes,low
+"Hospital-acquired and ventilator-associated pneumonia: MDR pathogens, diagnostic criteria, treatment","Infectious Diseases",9,yes,low
+"Invasive fungal infection in immunocompromised: aspergillosis, candida, galactomannan, voriconazole","Infectious Diseases",9,yes,low
+"Mpox (monkeypox): transmission, clinical features, tecovirimat, vaccination, public health response","Infectious Diseases",9,yes,low
+"Outpatient parenteral antibiotic therapy OPAT: eligibility, monitoring, line care, drugs used","Infectious Diseases",9,yes,low
+"Pneumocystis jirovecii pneumonia PCP: risk factors, LDH, BAL diagnosis, co-trimoxazole, steroids","Infectious Diseases",9,yes,low
+"Procalcitonin and CRP in infection: diagnostic utility, antibiotic stewardship, limitations","Infectious Diseases",9,yes,low
+"Toxoplasmosis in HIV: ring-enhancing lesions, CD4 threshold, pyrimethamine-sulfadiazine, prophylaxis","Infectious Diseases",9,yes,low
+"Vancomycin therapeutic drug monitoring: AUC-based dosing, nephrotoxicity, trough targets","Infectious Diseases",9,yes,low
+"Viral haemorrhagic fevers: Ebola, Lassa, Marburg: infection control, notifiable diseases, supportive care","Infectious Diseases",9,yes,low
+"Neutropenic Sepsis in Oncology","Oncology",9,yes,low
+"COPD diagnosis and staging","Pulmonology",9,yes,low
+"AA Amyloidosis secondary to chronic arthritis","Rheumatology",9,yes,low
+"Adult-onset Stills disease AOSD: quotidian fever, salmon rash, ferritin, IL-1 inhibition","Rheumatology",9,yes,low
+"Autoantibody panel interpretation: ANA, ENA, dsDNA, ANCA, RF, anti-CCP clinical utility","Rheumatology",9,yes,low
+"Azathioprine in rheumatic disease: TPMT testing, dosing, bone marrow suppression","Rheumatology",9,yes,low
+"Belimumab and anifrolumab in SLE: mechanism, indications, trial data","Rheumatology",9,yes,low
+"Bisphosphonates in osteoporosis: alendronate, zoledronate, drug holidays, atypical fractures","Rheumatology",9,yes,low
+"Calcium pyrophosphate deposition CPPD: pseudogout, chondrocalcinosis, crowned dens","Rheumatology",9,no,low
+"Cryoglobulinaemic vasculitis: HCV association, types, skin, renal, nerve involvement","Rheumatology",9,yes,low
+"CTD-associated ILD: screening approach, HRCT, BAL, immunosuppression vs antifibrotics","Rheumatology",9,yes,low
+"Denosumab, romosozumab, teriparatide: anabolic and resorption-inhibiting agents in osteoporosis","Rheumatology",9,yes,low
+"Enteropathic arthritis: IBD-associated joint disease, axial vs peripheral patterns","Rheumatology",9,yes,low
+"Hand and erosive OA: Heberden nodes, Bouchard nodes, trapeziometacarpal OA","Rheumatology",9,yes,low
+"Hydroxychloroquine in SLE: dose, retinal toxicity screening, cardiac monitoring","Rheumatology",9,yes,low
+"IL-6 inhibition: tocilizumab, sarilumab in RA and cytokine storm, COVID-19 trials","Rheumatology",9,yes,low
+"Induction therapy in AAV: rituximab vs cyclophosphamide, RITUXVAS, RAVE trials","Rheumatology",9,yes,low
+"Infection risk with biologics: TB, HBV reactivation, PJP prophylaxis thresholds","Rheumatology",9,yes,low
+"Inflammatory vs mechanical back pain: red flags, MRI indications, AS vs degenerative","Rheumatology",9,yes,low
+"Macrophage activation syndrome MAS in rheumatic disease: distinguishing from HLH","Rheumatology",9,yes,low
+"Musculoskeletal ultrasound in rheumatology: synovitis, power Doppler, guided injection","Rheumatology",9,yes,low
+"Myositis-specific antibodies: anti-Jo-1, anti-MDA5, anti-TIF1-gamma: clinical associations","Rheumatology",9,yes,low
+"Neonatal lupus: anti-Ro, anti-La, congenital heart block, counselling","Rheumatology",9,yes,low
+"NSAID gastrointestinal and renal toxicity: COX-2 selectivity, PPI co-prescription, renal monitoring","Rheumatology",9,yes,low
+"NSAID therapy in axSpA: continuous vs on-demand, radiographic progression","Rheumatology",9,yes,low
+"Pegloticase and lesinurad in refractory gout: indications, infusion reactions","Rheumatology",9,yes,low
+"Pharmacological management of fibromyalgia: duloxetine, pregabalin, milnacipran","Rheumatology",9,yes,low
+"Polymyositis vs statin myopathy: CK levels, EMG, biopsy, anti-HMGCR antibody","Rheumatology",9,yes,low
+"Pregnancy in rheumatic disease: drug safety, disease monitoring, postpartum flare risk","Rheumatology",9,yes,low
+"Pulmonary arterial hypertension in connective tissue disease: screening, ERA, PDE5 inhibitors","Rheumatology",9,yes,low
+"Remission maintenance in AAV: azathioprine, rituximab, MAINRITSAN trial","Rheumatology",9,yes,low
+"Rituximab in rheumatic disease: dosing, pre-treatment screening, hypogammaglobulinaemia","Rheumatology",9,yes,low
+"Shared decision making and patient reported outcomes in rheumatology: HAQ, PROMIS, PROs","Rheumatology",9,yes,low
+"SLE flare vs infection: distinguishing features, complement, anti-dsDNA, CRP","Rheumatology",9,yes,low
+"TNF and IL-17 inhibitors in axSpA: secukinumab, ixekizumab, comparative efficacy","Rheumatology",9,yes,low
+"Tocilizumab in giant cell arteritis: GiACTA trial, steroid sparing, remission","Rheumatology",9,yes,low
+"Treat-to-target in spondyloarthritis: ASDAS remission, ASAS partial remission criteria","Rheumatology",9,yes,low
+"Uveitis in JIA: silent inflammation, slit-lamp screening, methotrexate, adalimumab","Rheumatology",9,yes,low
+"Cardiopulmonary Exercise Testing","Pulmonology",10,yes,low
+"Blood culture technique: timing, volume, number of sets, contamination rates","Infectious Diseases",11,yes,low
+"Biologics and malignancy risk: lymphoma, solid tumours, non-melanoma skin cancer","Rheumatology",11,yes,low
+"Intermediate-risk pulmonary embolism reperfusion","",12,yes,low
+"Rheumatoid arthritis initial DMARD strategy","",12,yes,low
+"ORAL Surveillance trial: cardiovascular safety of tofacitinib vs TNFi in RA","Rheumatology",12,yes,low
+"Chronic myeloid leukemia imatinib","",13,yes,low
+"Metabolic acidosis in chronic kidney disease","",13,yes,low
+"CMV disease in immunocompromised: retinitis, colitis, pneumonitis, ganciclovir, valganciclovir","Infectious Diseases",13,yes,low
+"Pre-Eclampsia and Renal Disease","Nephrology",13,yes,low
+"Hypercalcaemia of Malignancy","Oncology",13,yes,low
+"Hard Metal Lung Disease","Pulmonology",13,yes,low
+"Raynaud phenomenon: primary vs secondary, digital ulcers, calcium channel blockers, PDE5 inhibitors","Rheumatology",13,yes,low
+"Scleroderma ILD: HRCT patterns, nintedanib, mycophenolate, cyclophosphamide","Rheumatology",13,yes,low
+"Acute Cholecystitis","Gastroenterology",14,yes,low
+"Appendicitis","Gastroenterology",14,yes,low
+"Irritable Bowel Syndrome","Gastroenterology",14,yes,low
+"Cellulitis and skin and soft tissue infections: Eron classification, MRSA risk, treatment duration","Infectious Diseases",14,yes,low
+"Empirical antibiotic selection in sepsis: source control, cultures before antibiotics, de-escalation","Infectious Diseases",14,yes,low
+"Hyperkalaemia","Nephrology",14,yes,low
+"Melanoma","Oncology",14,yes,low
+"Idiopathic Pulmonary Fibrosis","Pulmonology",14,yes,low
+"Obesity Hypoventilation Syndrome","Pulmonology",14,yes,low
+"Hypermobility spectrum disorders and hEDS: Beighton score, management, POTS association","Rheumatology",14,yes,low
+"Anaemia of Chronic Disease","Haematology",15,yes,low
+"Bronchiectasis","Pulmonology",15,yes,low
+"HIV antiretroviral therapy initiation","Infectious Diseases",17,yes,low
+"Acute Pancreatitis","Gastroenterology",20,yes,low
+"Upper gastrointestinal bleeding management","Gastroenterology",22,yes,low
+"COPD exacerbation","Pulmonology",22,yes,low
+"Inflammatory bowel disease biologic therapy","Gastroenterology",28,yes,low

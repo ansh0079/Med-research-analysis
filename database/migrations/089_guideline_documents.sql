@@ -14,7 +14,7 @@
 -- that body can be read, re-extracted, or re-structured at any time.
 
 CREATE TABLE IF NOT EXISTS guideline_documents (
-    id              INTEGER PRIMARY KEY,
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
 
     -- Source identity. pmcid is the dedup key for Europe PMC documents.
     pmcid           TEXT UNIQUE,

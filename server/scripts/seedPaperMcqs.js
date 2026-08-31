@@ -255,27 +255,7 @@ async function main() {
 
             await sleep(500);
 
-            // Step 2: Claude Sonnet cross-checks
-            const checkPrompt = buildCrossCheckPrompt(topic, mcqs, paperContext);
-            const checkText = await callSonnet(checkPrompt);
-            const checkParsed = parseJson(checkText);
-            const flags = Array.isArray(checkParsed?.flags) ? checkParsed.flags : [];
-
-            // Mark flagged MCQs
-            if (flags.length > 0) {
-                for (const flag of flags) {
-                    const idx = (flag.mcqIndex || 1) - 1;
-                    if (idx >= 0 && idx < mcqs.length) {
-                        mcqs[idx]._flag = {
-                            flagType: flag.flagType,
-                            detail: flag.detail,
-                            suggestedFix: flag.suggestedFix,
-                        };
-                    }
-                }
-            }
-
-            // Store
+            // Store (cross-check skipped — Gemini-only generation)
             const payload = {
                 kind: 'paper_mcq',
                 mcqs,
@@ -283,8 +263,8 @@ async function main() {
                 paperTitles: papers.map(p => p.paper?.title || 'Untitled'),
                 generatedAt: new Date().toISOString(),
                 generator: 'gemini-2.5-flash',
-                crossChecker: 'claude-sonnet-4-6',
-                crossCheckFlags: flags.length,
+                crossChecker: null,
+                crossCheckFlags: 0,
             };
 
             await db.run(
@@ -301,13 +281,8 @@ async function main() {
             );
 
             generated++;
-            if (flags.length > 0) {
-                flagged++;
-                console.log('5 MCQs, ' + flags.length + ' flag(s): ' + flags.map(f => f.flagType).join(', '));
-            } else {
-                clean++;
-                console.log('5 MCQs, clean ✓');
-            }
+            clean++;
+            console.log('5 MCQs ✓');
 
             await sleep(600);
         } catch (err) {

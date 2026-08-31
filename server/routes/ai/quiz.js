@@ -80,7 +80,7 @@ function registerQuizRoutes(app, {
 
             const rows = await db.all(
                 `SELECT topic, object_type, object_payload FROM teaching_objects
-                 WHERE object_type IN ('cold_start_mcq', 'guideline_mcq')
+                 WHERE object_type IN ('cold_start_mcq', 'guideline_mcq', 'paper_mcq')
                  ORDER BY RANDOM()`
             );
 
