@@ -73,6 +73,8 @@ COPY --from=builder /app/server ./server
 COPY --from=builder /app/tests/fixtures ./tests/fixtures
 # Eval harnesses for release gates / SSH verify (offline policy, agent quality, search)
 COPY --from=builder /app/scripts ./scripts
+# Verification gates run against the live database after deploy (topic reachability)
+COPY --from=builder /app/tools ./tools
 
 # Fix ownership
 RUN chown -R nodejs:nodejs /app
