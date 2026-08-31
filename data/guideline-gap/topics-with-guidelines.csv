@@ -1,7 +1,6 @@
 topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Cerebral amyloid angiopathy (CAA): microbleeds, lobar haemorrhages, diagnostic criteria","Neurology","",4,2025
 "Thyroid disease and cardiovascular haemodynamics: AF in thyrotoxicosis, hypothyroid HF","Cardiology","NICE 2021",4,
-"Symptomatic bradycardia: atropine, temporary pacing, transcutaneous pacing","","",4,
 "New-onset seizure in adults: diagnostic workup, EEG patterns, imaging","Neurology","",4,2022
 "MODY: HNF1A GCK HNF4A subtypes - genetic testing and treatment implications","Endocrinology & Diabetes","",4,
 "Dementia with Lewy Bodies (DLB): core features, neuroleptic sensitivity management","Neurology","",4,2024
@@ -18,10 +17,10 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Intracerebral haemorrhage: blood pressure targets, reversal of anticoagulants","Neurology","NICE (electronic decision support); NICE (cell salvage)",4,2024
 "Drug-resistant epilepsy: epilepsy surgery workup, vagus nerve stimulation (VNS)","Neurology","ILAE 2012 [5]; NICE [1]; Neurologia (Barcelona, Spain) / ILAE 2012",4,2025
 "Moyamoya disease: clinical presentations, surgical revascularisation indications","Neurology","",4,2023
-"Aortic stenosis TAVR","","",4,
+"Antimicrobial resistance burden","Infectious Diseases","NICE 2008; NICE 2019; NICE",4,
 "Seizures in pregnancy: teratogenicity of AEDs, folate dosing, levels","Neurology","NICE [1]; NICE [4]",4,2025
-"Antimicrobial resistance burden","","NICE 2008; NICE 2019; NICE",4,
-"Stable coronary disease invasive strategy","","",4,
+"Stable coronary disease invasive strategy","Cardiology","",4,
+"Aortic stenosis TAVR","Cardiology","",4,
 "Subarachnoid haemorrhage (SAH): vasospasm monitoring, nimodipine protocol, triple-H therapy","Neurology","NICE [1]; NICE [2]; NICE [5]",4,2019
 "Absence seizures and juvenile myoclonic epilepsy (JME) therapeutic profiles","Neurology","",4,2024
 "Obesity pharmacotherapy","Endocrinology & Diabetes","",4,
@@ -35,13 +34,13 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Dystonia classification: focal (blepharospasm, torticollis) and botulinum toxin therapy","Neurology","NICE 2012 (CG145, guideline 3); NICE 2012 (CG145, guideline 5); NICE 2012 (CG145, guideline 6)",4,
 "Cluster headache: high-flow oxygen, triptan rescue, verapamil prophylaxis","Neurology","",4,2023
 "Ischaemic optic neuropathy: arteritic (GCA) vs non- arteritic (NAION) differentiation","Neurology","",2,2026
+"Advanced melanoma immunotherapy","Dermatology","",4,
 "Trigeminal neuralgia: carbamazepine optimization, microvascular decompression","Neurology","EAN 2019, NICE 2021",4,2019
-"Advanced melanoma immunotherapy","","",4,
+"CAR-T therapy large B-cell lymphoma","Haematology","",4,
 "Essential tremor: medical management (beta-blockers, primidone) vs MR-guided FUS","Neurology","",4,2025
 "Medication overuse headache: detoxification strategies, bridging therapies","Neurology","NICE, 2012",4,2011
 "Metabolic and mitochondrial myopathies: MELAS, MERRF, ragged red fibres","Neurology","",4,
 "Restless Legs Syndrome (RLS): iron store optimization, dopamine agonist augmentation","Neurology","",4,2012
-"CAR-T therapy large B-cell lymphoma","","",4,
 "Mild cognitive impairment (MCI): amnestic vs non-amnestic progression tracking","Neurology","",4,2018
 "Statin-induced necrotising autoimmune myopathy: HMGCR antibody management","Neurology","",4,2016
 "Tension-type headache: tricyclic antidepressants, lifestyle interventions","Neurology","NICE 2012",4,2023
@@ -56,6 +55,7 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Pituitary adenomas: micro vs macro, prolactinoma medical care vs transsphenoidal surgery","Neurology","",4,2022
 "Charcot-Marie-Tooth disease: CMT1A duplication, nerve conduction patterns","Neurology","",4,2025
 "Cervical spondylotic myelopathy: clinical signs, surgical decompression indications","Neurology","",4,2009
+"Bariatric surgery in type 2 diabetes","General Medicine","NICE 2013; NICE 2025",2,
 "Syringomyelia: Chiari malformation associations, shunt indications","Neurology","NICE [4]",4,2009
 "Neurosarcoidosis: cranial neuropathies, meningeal enhancement, CSF profile","Neurology","",4,2013
 "Deep brain stimulation (DBS): STN vs GPi target selection, patient criteria","Neurology","",4,2022
@@ -64,11 +64,9 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Third, fourth, and sixth cranial nerve palsies: pupil-sparing oculomotor palsy","Neurology","",4,
 "Spinal cord infarction: anterior spinal artery syndrome, presentation","Neurology","",4,2026
 "Duchenne and Becker muscular dystrophies: dystrophin genetics, cardiomyopathy tracking","Neurology","",4,2025
-"Recurrent Clostridioides difficile infection","","",4,
 "Vestibular Schwannoma: surveillance vs radiation vs surgery, neurofibromatosis 2","Neurology","NICE [5]; NICE [2]; NICE [4]",4,2024
 "Entrapment neuropathies: carpal tunnel, cubital tunnel, peroneal nerve compression","Neurology","",4,2025
 "Frontotemporal dementia: behavioural variant, semantic dementia, PNFA","Neurology","NICE [1]; NICE [2]; NICE [4]",4,
-"Bariatric surgery in type 2 diabetes","","NICE 2013; NICE 2025",2,
 "Idiopathic Intracranial Hypertension (IIH): lumbar puncture opening pressure, acetazolamide, stenting","Neurology","",4,
 "Multiple sclerosis disease-modifying therapy","Neurology","NICE 2022",4,
 "Beta-blockers in heart failure: carvedilol, bisoprolol, metoprolol succinate titration","Cardiology","NICE 2021",4,2025
@@ -82,12 +80,11 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Temporal lobe epilepsy: mesial temporal sclerosis, anterior temporal lobectomy","Neurology","",4,2017
 "Chronic Inflammatory Demyelinating Polyradiculoneuropathy (CIDP): electrodiagnostic criteria, maintenance therapies","Neurology","",4,2021
 "Diverticulitis: Hinchey classification, antibiotic use, surgical indications","Neurology","",4,2022
-"Peptic ulcer bleeding and H pylori","","NICE 2004, amended 2014; NICE 2004",3,
+"Lung cancer screening low-dose CT","Pulmonology","",4,
+"Hospital-acquired and ventilator-associated pneumonia","Pulmonology","",4,
 "Lambert-Eaton Myasthenic Syndrome (LEMS): VGCC antibodies, small cell lung cancer connection","Neurology","",4,2011
 "Internuclear ophthalmoplegia (INO): MLF lesion localization, management","Neurology","",4,
 "Pure Autonomic Failure and Orthostatic Hypotension: midodrine, fludrocortisone optimization","Neurology","",4,2016
-"Lung cancer screening low-dose CT","","",4,
-"Hospital-acquired and ventilator-associated pneumonia","","",4,
 "Mechanical thrombectomy: extended time windows, ASPECT scores, CT perfusion","Neurology","",4,2014
 "Acute limb ischaemia: Rutherford classification, embolectomy, thrombolysis","Cardiology","",2,2023
 "Meningioma: WHO grading, observation guidelines, surgical margins","Neurology","NICE 2018 (Guideline [2]); NICE 2018 (Guideline [6]); NICE 2018 (Guideline [3])",4,2021
@@ -101,7 +98,6 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Acute decompensated heart failure: diuretic titration and decongestion strategies","Cardiology","NICE 2021",4,2022
 "Atrial fibrillation anticoagulation","Cardiology","NICE 2021; NICE 2006, amended 2014",8,2023
 "Heart failure with preserved ejection fraction","Cardiology","",4,2024
-"Influenza antiviral treatment","","NICE guidelines on ARI",4,
 "Cardiac resynchronisation therapy: patient selection, QRS criteria, response predictors","Cardiology","",4,2005
 "Narrow-complex tachycardias: SVT diagnosis, vagal manoeuvres, adenosine, ablation","Cardiology","",4,2025
 "Chronic coronary syndrome: stable angina assessment and revascularisation decisions","Cardiology","NICE guideline [4]; NICE guideline [1]; NICE guideline [3]",4,2024
@@ -124,7 +120,6 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Chronic aortic regurgitation: surveillance intervals and surgical timing","Cardiology","",4,
 "Cardiovascular magnetic resonance: viability, myocarditis, cardiomyopathy assessment","Cardiology","NICE 2012",4,2025
 "Mitral stenosis: commissurotomy vs valve replacement, rheumatic disease","Cardiology","NICE [5], [6]",4,2021
-"COPD maintenance bronchodilator combination therapy","","6 NICE",4,
 "Constrictive pericarditis: haemodynamic features, pericardiectomy indications","Cardiology","",4,2024
 "Coronary artery calcium scoring: risk reclassification and preventive decision-making","Cardiology","",4,2017
 "Cardio-oncology: chemotherapy cardiotoxicity, checkpoint inhibitor myocarditis, surveillance","Cardiology","",4,2025
@@ -184,12 +179,12 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Bronchoscopic Lung Volume Reduction","Pulmonology","",4,2021
 "Antimicrobial stewardship: IV to oral switch, duration of therapy, procalcitonin-guided therapy","Infectious Diseases","",4,2024
 "Hepatitis C: DAA therapy, pangenotypic regimens, SVR12, HCV cure, screening","Infectious Diseases","AASLD ISDA; EASL",4,2026
+"Schizophrenia antipsychotic treatment strategies","General Medicine","",4,
 "Bacterial meningitis: empirical antibiotics, dexamethasone, LP contraindications, CSF interpretation","Infectious Diseases","",4,2016
 "TB treatment: RIPE regimen, hepatotoxicity monitoring, directly observed therapy, drug-resistant TB","Infectious Diseases","",4,2025
+"Transthyretin amyloidosis treatment","General Medicine","",4,
 "Central line-associated bloodstream infection CLABSI: prevention bundles, diagnosis, treatment","Infectious Diseases","",4,2025
 "MRSA: decolonisation, mupirocin, chlorhexidine, glycopeptides, daptomycin, linezolid","Infectious Diseases","Infectious Diseases Society of America (IDSA)",4,2024
-"Schizophrenia antipsychotic treatment strategies","","",4,
-"Transthyretin amyloidosis treatment","","",4,
 "HIV: initial diagnosis, CD4 count, viral load, when to start ART","Infectious Diseases","",4,2025
 "HIV opportunistic infections: PCP prophylaxis thresholds, MAC, CMV retinitis, toxoplasmosis","Infectious Diseases","",4,2016
 "Infective endocarditis: Duke criteria, blood cultures, echocardiography, surgical indications","Infectious Diseases","",4,2015
@@ -198,8 +193,8 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Tuberculosis: active vs latent TB, Mantoux, IGRA, NICE guidance, contact tracing","Infectious Diseases","",4,2026
 "Urinary tract infections: uncomplicated vs complicated, catheter-associated, treatment duration","Infectious Diseases","",4,2024
 "Viral encephalitis: HSV encephalitis, aciclovir, CSF PCR, MRI findings, empirical approach","Infectious Diseases","",4,2012
+"Lupus nephritis induction and maintenance therapy","Rheumatology","",4,
 "Drug-Resistant TB","Pulmonology","",4,2020
-"Lupus nephritis induction and maintenance therapy","","",4,
 "Dengue fever: clinical phases, NS1 antigen, DHF warning signs, fluid management","Infectious Diseases","",4,2010
 "Gonorrhoea resistance: ceftriaxone-azithromycin dual therapy, reduced susceptibility, test of cure","Infectious Diseases","NICE",0,
 "Diabetic foot infection: osteomyelitis diagnosis, MDT approach, antibiotic duration, bone biopsy","Infectious Diseases","SPILF 2023 [1]; SPILF 2023 [3]; SPILF 2023 [4]",4,2023
@@ -218,13 +213,13 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Type 1 diabetes mellitus: autoimmune markers, insulin regimens, honeymoon phase","Endocrinology & Diabetes","",4,
 "Antifungal agents: azoles, echinocandins, polyenes: mechanisms, spectrum, drug interactions","Infectious Diseases","",4,2021
 "Viral hepatitis A and E: faeco-oral transmission, self-limiting, vaccination, fulminant hepatitis","Infectious Diseases","EASL 2018",4,2025
+"Advanced urothelial carcinoma treatment","Oncology","NICE guideline [3]; NICE guideline [1]; NICE guideline [5]",4,
+"Pulmonary arterial hypertension targeted therapy","Pulmonology","NICE guideline [1]; NICE guidelines [4], [5]; NICE guideline [6]",4,
 "Infection prevention and control: standard precautions, contact isolation, hand hygiene evidence","Infectious Diseases","World Health Organization (WHO) 'My Five Moments for Hand Hy",4,2026
 "Legionella pneumophila: urinary antigen, pontiac fever, cooling towers, azithromycin, quinolones","Infectious Diseases","IDSA 2016; Infectious Diseases Society of America (IDSA)",4,1999
 "Tetanus: immunisation status, wound assessment, tetanus immunoglobulin, metronidazole","Infectious Diseases","ACIP 2018; American Academy of Pediatrics 1977, ACIP 2018; EULAR 2020",4,2020
-"Advanced urothelial carcinoma treatment","","NICE guideline [3]; NICE guideline [1]; NICE guideline [5]",4,
 "Beta-lactam allergy: penicillin allergy delabelling, cross-reactivity, skin testing, graded challenge","Infectious Diseases","British Society for Allergy and Clinical Immunology (BSACI);; British Society for Allergy and Clinical Immunology (BSACI)",4,2024
 "Leishmaniasis: visceral vs cutaneous, kala-azar, liposomal amphotericin B, diagnosis","Infectious Diseases","",4,2026
-"Pulmonary arterial hypertension targeted therapy","","NICE guideline [1]; NICE guidelines [4], [5]; NICE guideline [6]",4,
 "Novel antibiotics for resistant Gram-negatives: ceftazidime-avibactam, cefiderocol, imipenem-relebactam","Infectious Diseases","NICE",0,2026
 "Rabies: post-exposure prophylaxis, immunoglobulin, vaccine schedule, wound management","Infectious Diseases","ACIP [1], [4]; ACIP [2]; ACIP [3]",4,2008
 "Septic arthritis: Staphylococcus, Gonococcal, joint washout, antibiotic selection","Infectious Diseases","",4,2024
@@ -232,11 +227,11 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Asbestosis","Pulmonology","",4,2024
 "Hepatitis D: superinfection vs coinfection, severity, peginterferon, bulevirtide","Infectious Diseases","EASL 2025, ACG 2017; EASL 2025, AASLD ISDA 2026; AASLD ISDA 2026, EASL 2025",4,2026
 "Endobronchial ultrasound-guided transbronchial needle aspiration","Pulmonology","",4,2016
-"Venous thromboembolism direct oral anticoagulant therapy","","",4,
 "Biofilm-associated infections: chronic wounds, prosthetics, catheters, rifampicin strategies","Infectious Diseases","ESCMID",3,2015
 "Endocarditis prophylaxis: NICE guidance, high-risk cardiac lesions, dental procedures","Infectious Diseases","",4,2015
 "Notifiable diseases in the UK: statutory notification, Public Health England, outbreak investigation","Infectious Diseases","ACIP, CDC; ACIP",4,2011
 "Surgical site infections: classification, risk factors, prophylaxis timing, MRSA decolonisation","Infectious Diseases","ESCMID/ECIC [1]; ESCMID/ECIC",4,2024
+"Venous thromboembolism direct oral anticoagulant therapy","General Medicine","",4,
 "Pertussis: clinical stages, macrolide treatment, post-exposure prophylaxis, vaccination","Infectious Diseases","ACIP: Infants and young children are recommended to receive; ACIP",4,2018
 "Infection in pregnancy: GBS screening, listeria, toxoplasmosis, antiviral safety","Infectious Diseases","",4,2026
 "Pandemic preparedness: lessons from COVID-19, surveillance, stockpiling, One Health approach","Infectious Diseases","",4,2020
@@ -255,8 +250,8 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Pulmonary embolism diagnosis","Pulmonology","",4,2011
 "Drug-Induced ILD","Pulmonology","EASL Clinical Practice Guidelines: Drug-induced liver injury",0,2021
 "Rickettsial diseases: Rocky Mountain spotted fever, typhus, doxycycline, eschar recognition","Infectious Diseases","",4,2016
+"ADHD pharmacotherapy (stimulants and comparative meta-analysis)","General Medicine","",4,
 "Endemic Mycoses","Pulmonology","",4,2008
-"ADHD pharmacotherapy (stimulants and comparative meta-analysis)","","",4,
 "Hepatopulmonary Syndrome","Pulmonology","",4,2026
 "Lung Cancer screening guidelines","Pulmonology","",4,2023
 "Pulmonary Alveolar Proteinosis","Pulmonology","",4,2024
@@ -264,7 +259,6 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Acute severe asthma","Pulmonology","",4,2002
 "Hyperventilation Syndrome","Pulmonology","",4,
 "Silicosis","Pulmonology","",4,2025
-"Smoking cessation pharmacotherapy","","",4,
 "Malignant Pleural Effusion","Pulmonology","",4,2013
 "Chylothorax","Pulmonology","",4,2026
 "Hemothorax","Pulmonology","",4,2021
@@ -273,7 +267,7 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Pneumomediastinum","Pulmonology","",4,2026
 "Cryptococcal meningitis: India ink, cryptococcal antigen, amphotericin B, flucytosine, fluconazole","Infectious Diseases","",4,2024
 "Alpha-1 Antitrypsin Deficiency","Pulmonology","",4,2022
-"Acute and recurrent pericarditis colchicine","","",4,
+"Acute and recurrent pericarditis colchicine","General Medicine","",4,
 "Fractional Exhaled Nitric Oxide","Pulmonology","",4,2020
 "Pulmonary Tuberculosis","Pulmonology","",4,2025
 "Aspiration Pneumonia","Pulmonology","",4,2025
@@ -290,82 +284,157 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Six-Minute Walk Test","Pulmonology","",4,2020
 "Thoracic Ultrasound","Pulmonology","",4,2026
 "Spontaneous Pneumothorax","Pulmonology","ERS/EACTS/ESTS, American College of Chest Physicians; ERN GENTURIS, ERS/EACTS/ESTS, American College of Chest Phys; ERS/EACTS/ESTS",4,2024
-"Ventricular tachycardia catheter ablation","","",4,
-"Resistant hypertension renal denervation","","",2,
-"Post-cardiac arrest targeted temperature management","","",4,
-"Aspirin for primary cardiovascular prevention","","NICE [2]; NICE [6]; NICE [4], [3]",4,
-"Cardiac implantable electronic device infection","","",4,
-"Pregnancy in chronic kidney disease","","1 NICE 2019; 2 & 3 NICE 2019; 4 NICE 2019",4,
-"Drug-induced acute interstitial nephritis","","",4,
-"Parkinson disease deep brain stimulation","","NICE 2017 [1]; NICE 2017 [3]; NICE 2017 [2]",4,
+"Ventricular tachycardia catheter ablation","General Medicine","",4,
+"Resistant hypertension renal denervation","Nephrology","",2,
+"Post-cardiac arrest targeted temperature management","Cardiology","",4,
+"Aspirin for primary cardiovascular prevention","General Medicine","NICE [2]; NICE [6]; NICE [4], [3]",4,
+"Cardiac implantable electronic device infection","Cardiology","",4,
+"Pregnancy in chronic kidney disease","Nephrology","1 NICE 2019; 2 & 3 NICE 2019; 4 NICE 2019",4,
+"Drug-induced acute interstitial nephritis","General Medicine","",4,
+"Parkinson disease deep brain stimulation","Neurology","NICE 2017 [1]; NICE 2017 [3]; NICE 2017 [2]",4,
 "Herpes zoster: dermatomal distribution, antivirals, post-herpetic neuralgia, vaccination in elderly","Infectious Diseases","",4,2020
 "Vocal Cord Dysfunction","Pulmonology","",4,2017
-"Functional neurological disorder treatment","","NICE guideline [5]; NICE guideline [3]; NICE guideline [4]",3,
-"Corticosteroids in septic shock","","",4,
-"Renal replacement therapy timing in acute kidney injury","","NICE (General RRT Consensus)",1,
-"Targeted temperature management after cardiac arrest","","",4,
-"Traumatic brain injury ICU management","","",4,
-"Fluid resuscitation type in sepsis and critical illness","","ACCP/SCCM Consensus Conference Committee; ESICM",4,
-"Prone positioning in severe ARDS","","ESICM 2017; ATS/ESICM/SCCM 2017; ESICM 2017, Intensive Care Medicine 2019",4,
-"Cardiogenic shock: intra-aortic balloon pump and revascularization","","",4,
-"Red blood cell transfusion threshold in critical illness","","",4,
-"Vasopressor selection in septic and distributive shock","","",4,
-"Nutritional support strategy in critical illness","","NICE",4,
-"Procalcitonin-guided antibiotic de-escalation in ICU","","NICE 2025",2,
-"Neuromuscular blockade in early ARDS","","ESICM 2017; ATS/ESICM/SCCM 2017",4,
-"Metabolic resuscitation in sepsis: vitamin C and corticosteroid bundle","","",4,
-"COVID-19 critical care: dexamethasone and immunomodulation","","NICE 2018",4,
-"Early mobilization and physical rehabilitation in ICU","","NICE [3]; NICE [2]; NICE [1]",4,
-"Venovenous ECMO for severe ARDS","","ESICM 2017; ATS/ESICM/SCCM 2017",4,
-"Stress ulcer prophylaxis in critically ill patients","","",4,
-"Liberation from mechanical ventilation: weaning protocols","","",4,
-"ICU-acquired delirium: prevention, assessment, and treatment","","",4,
+"Functional neurological disorder treatment","General Medicine","NICE guideline [5]; NICE guideline [3]; NICE guideline [4]",3,
+"Corticosteroids in septic shock","ICU / Critical Care","",4,
+"Renal replacement therapy timing in acute kidney injury","Nephrology","NICE (General RRT Consensus)",1,
+"Targeted temperature management after cardiac arrest","Cardiology","",4,
+"Traumatic brain injury ICU management","ICU / Critical Care","",4,
+"Prone positioning in severe ARDS","ICU / Critical Care","ESICM 2017; ATS/ESICM/SCCM 2017; ESICM 2017, Intensive Care Medicine 2019",4,
+"Cardiogenic shock: intra-aortic balloon pump and revascularization","Cardiology","",4,
+"Red blood cell transfusion threshold in critical illness","Haematology","",4,
+"Vasopressor selection in septic and distributive shock","ICU / Critical Care","",4,
+"Nutritional support strategy in critical illness","General Medicine","NICE",4,
+"Procalcitonin-guided antibiotic de-escalation in ICU","ICU / Critical Care","NICE 2025",2,
+"Neuromuscular blockade in early ARDS","ICU / Critical Care","ESICM 2017; ATS/ESICM/SCCM 2017",4,
+"Metabolic resuscitation in sepsis: vitamin C and corticosteroid bundle","ICU / Critical Care","",4,
+"COVID-19 critical care: dexamethasone and immunomodulation","ICU / Critical Care","NICE 2018",4,
+"Early mobilization and physical rehabilitation in ICU","ICU / Critical Care","NICE [3]; NICE [2]; NICE [1]",4,
+"Venovenous ECMO for severe ARDS","ICU / Critical Care","ESICM 2017; ATS/ESICM/SCCM 2017",4,
+"Stress ulcer prophylaxis in critically ill patients","General Medicine","",4,
+"Liberation from mechanical ventilation: weaning protocols","General Medicine","",4,
+"ICU-acquired delirium: prevention, assessment, and treatment","ICU / Critical Care","",4,
 "Multidrug-resistant TB: MDR, XDR definitions, bedaquiline, delamanid, novel regimens","Infectious Diseases","",4,2024
-"High-flow nasal oxygen in acute hypoxemic respiratory failure","","",4,
+"High-flow nasal oxygen in acute hypoxemic respiratory failure","General Medicine","",4,
 "Small fibre neuropathy: skin biopsy quantification, autonomic function testing","Neurology","",4,
-"Anticoagulation for mechanical heart valves","","NICE [2]; NICE [3]; NICE [1]",4,
-"Vericiguat in worsening heart failure","","",4,
-"Cardiac myosin activator therapy in HFrEF","","",1,
-"Acute myocarditis diagnosis and management","","NICE Guideline 1; NICE Guideline 2; NICE Guideline 3",4,
-"Inclisiran for LDL cholesterol lowering","","",4,
-"Barrett esophagus dysplasia endoscopic eradication","","",4,
-"Celiac disease diagnosis and monitoring","","NICE 2008",1,
-"Microscopic colitis budesonide therapy","","NICE 2019, NICE 2012; NICE 2012",2,
-"Acute uncomplicated diverticulitis management","","",4,
-"Chronic pancreatitis pain and exocrine insufficiency","","NICE 2010 [6], NICE 2010 [4]; NICE 2010 [4], NICE 2010 [6]; NICE [2]",4,
-"Choledocholithiasis and acute cholangitis","","",4,
-"Post-ERCP pancreatitis prevention","","",4,
-"High-frequency oscillatory ventilation and lung recruitment in severe ARDS","","ESICM 2019, ATS/ESICM/SCCM 2017; ESICM 2019; ATS/ESICM/SCCM 2017",4,
-"Corticosteroids in ARDS","","ATS/ESICM/SCCM 2023",2,
-"Mean arterial pressure targets in septic shock","","",4,
-"Subarachnoid hemorrhage ICU management","","NICE [2]; NICE [5]; NICE [6]",4,
-"Bempedoic acid cardiovascular outcomes","","NICE TA694, 2021; NICE CG71, 2008 (amended 2023)",4,
+"Anticoagulation for mechanical heart valves","General Medicine","NICE [2]; NICE [3]; NICE [1]",4,
+"Vericiguat in worsening heart failure","Cardiology","",4,
+"Cardiac myosin activator therapy in HFrEF","Cardiology","",1,
+"Acute myocarditis diagnosis and management","General Medicine","NICE Guideline 1; NICE Guideline 2; NICE Guideline 3",4,
+"Inclisiran for LDL cholesterol lowering","General Medicine","",4,
+"Barrett esophagus dysplasia endoscopic eradication","General Medicine","",4,
+"Celiac disease diagnosis and monitoring","General Medicine","NICE 2008",1,
+"Microscopic colitis budesonide therapy","Gastroenterology","NICE 2019, NICE 2012; NICE 2012",2,
+"Acute uncomplicated diverticulitis management","General Medicine","",4,
+"Choledocholithiasis and acute cholangitis","General Medicine","",4,
+"Post-ERCP pancreatitis prevention","General Medicine","",4,
+"High-frequency oscillatory ventilation and lung recruitment in severe ARDS","ICU / Critical Care","ESICM 2019, ATS/ESICM/SCCM 2017; ESICM 2019; ATS/ESICM/SCCM 2017",4,
+"Corticosteroids in ARDS","ICU / Critical Care","ATS/ESICM/SCCM 2023",2,
+"Mean arterial pressure targets in septic shock","ICU / Critical Care","",4,
+"Subarachnoid hemorrhage ICU management","ICU / Critical Care","NICE [2]; NICE [5]; NICE [6]",4,
+"Bempedoic acid cardiovascular outcomes","General Medicine","NICE TA694, 2021; NICE CG71, 2008 (amended 2023)",4,
 "Pneumocystis jirovecii Pneumonia","Pulmonology","",4,2017
 "Creutzfeldt-Jakob Disease (CJD): 14-3-3 protein, RT-QuIC, cortical ribboning","Neurology","NICE Guidelines",2,2001
-"Central line-associated bloodstream infection prevention in ICU","","",4,
-"Candidemia and invasive fungal infections in the ICU","","",4,
-"Tranexamic acid and damage control resuscitation in trauma","","NICE 2016",4,
-"Conservative versus liberal fluid strategy in ARDS (FACTT trial)","","[2] ESICM: Do not use prolonged high-pressure recruitment ma; [1] ESICM: Do not use routine continuous neuromuscular block",4,
-"Alcohol withdrawal syndrome and delirium tremens management in ICU","","[2] NICE, [3] NICE; [3] NICE; [2] NICE",4,
-"ARDS epidemiology and global burden (LUNG SAFE study)","","ESICM (conditional), Intensive Care Medicine (Strong); ESICM (strong); ATS/ESICM/SCCM (Strong)",4,
-"Post-intensive care syndrome and long-term ICU outcomes","","NICE 2023 [3]; NICE 2010 [2]; NICE 2023 [1]",4,
-"ARDS definition: Berlin criteria and severity classification","","ESICM (Guideline 1)",1,
+"Candidemia and invasive fungal infections in the ICU","ICU / Critical Care","",4,
+"Tranexamic acid and damage control resuscitation in trauma","General Medicine","NICE 2016",4,
+"Alcohol withdrawal syndrome and delirium tremens management in ICU","Psychiatry","[2] NICE, [3] NICE; [3] NICE; [2] NICE",4,
+"ARDS epidemiology and global burden (LUNG SAFE study)","ICU / Critical Care","ESICM (conditional), Intensive Care Medicine (Strong); ESICM (strong); ATS/ESICM/SCCM (Strong)",4,
+"Post-intensive care syndrome and long-term ICU outcomes","ICU / Critical Care","NICE 2023 [3]; NICE 2010 [2]; NICE 2023 [1]",4,
+"ARDS definition: Berlin criteria and severity classification","ICU / Critical Care","ESICM (Guideline 1)",1,
+"Central line-associated bloodstream infection prevention in ICU","ICU / Critical Care","",4,
+"syncope","General Medicine","NICE/ESC/AHA 2026 — Deprescribing diuretics in older adults",0,
+"Chronic asthma","Pulmonology","GINA 2026 — Pharmaceutical care interventions in patients wi; NICE 2026 — Dupilumab treatment in patients with type 2 infl",0,
+"Pulmonary embolism risk stratification","Pulmonology","ISTH 2026 — Reperfusion therapy in hemodynamically stable pa; ISTH 2026 — Reperfusion therapy in hemodynamically unstable; ISTH 2026 [G4] — Available evidence supports the use of eith",0,
+"secondary hypertension","General Medicine","NICE 2026 — G1, G3, G4: Primary aldosteronism is underdiagno; NICE 2026 — G2: Structured diagnostic approach determines PA; NICE 2026 — G5, G6: Hypertension in CKD is bidirectional; ag",0,
+"myocardial infarction","General Medicine","NICE 2026 — HIF-PHIs (Roxadustat, Desidustat) reduce LDL-C a; NICE 2026 — HIF-PHIs reduce LDL-C and total cholesterol in C",0,
+"cardiac arrhythmias","Cardiology","NICE 2026 — Omega-3 supplementation shows trend but not stat",0,
+"venous thromboembolism","General Medicine","NICE/ESC/AHA 2026 — For isolated subsegmental pulmonary embo; NICE/ESC/AHA 2026 — For minimal bleeding-risk surgical proce; NICE/ESC/AHA 2026 — Evaluate and compare benefits and risks",0,
+"postural hypotension","General Medicine","NICE 2026 — Orthostatic hypotension is a secondary outcome t; NICE 2026 — Incidences of postural hypotension were signific",0,
+"claudication","General Medicine","NICE 2025 — Supervised Exercise Therapy (SET) is recommended; NICE 2025 — For iliac lesions in intermittent claudication,; NICE 2025 — For femoropopliteal lesions in intermittent clau",0,
 "Neutropenic sepsis: MASCC score, empirical piperacillin-tazobactam, antifungal escalation","Infectious Diseases","",4,2003
-"Coronary angiography timing after cardiac arrest","","NICE guideline [5]; NICE guideline [1]; NICE guideline [4]",4,
+"Coronary angiography timing after cardiac arrest","Cardiology","NICE guideline [5]; NICE guideline [1]; NICE guideline [4]",4,
+"hospital-acquired pneumonia","Pulmonology","NICE 2026 [G2] — Continuous aspiration of subglottic secreti; NICE 2026 [G4, G5] — ICU onset, sepsis/septic shock, previou; NICE 2026 [G1] — Care bundles including hand hygiene signifi",0,
 "5q-minus Syndrome","Haematology","NCCN Guidelines for MDS (general knowledge, not from provide",0,
-"Polycythemia vera: ruxolitinib for hydroxyurea-resistant or intolerant disease","","",4,
-"Follicular lymphoma: obinutuzumab-based and lenalidomide-rituximab regimens","","[3] NICE June 2026; [1] MODERATE, [2] TA226 2011, [4] NICE June 2026, [5] NICE",4,
-"Immune thrombocytopenia: thrombopoietin receptor agonists","","",4,
+"acute COPD exacerbation","Pulmonology","GINA 2026 — Rational application of antibacterials and gluco; GINA 2026 — Long-term use of benzodiazepine receptor positiv",0,
+"asthma stepwise therapy","Pulmonology","NAEPP 2021 and GINA 2020 — Stepwise approach with updated pr",0,
+"dyspepsia","General Medicine","NICE 2026 — Low-FODMAP diet may alleviate functional dyspeps; NICE 2026 — Acupuncture probably improves quality of life an; NICE 2026 — Acupuncture probably improves functional dyspeps",0,
+"non-alcoholic fatty liver disease","Gastroenterology","NICE/WHO 2026 (G2) — GLP-1 receptor agonists promote signifi; NICE/WHO 2026 (G6) — Efruxifermin RR 2.18 for ≥1 stage fibro; NICE/WHO 2026 (G1) — Curcumin supplementation showed no sign",0,
+"intrinsic acute kidney injury","Nephrology","NICE 2024 (G4) — In adult patients with AKI not receiving di; NICE 2024 (G3) — In adult patients with AKI receiving diuret; NICE 2024 (G6) — In adults with AKI, FENa threshold of 1% ha",0,
+"post-renal acute kidney injury","Nephrology","Kidney Disease: Improving Global Outcomes (KDIGO) — post-ren; American Society of Clinical Oncology (ASCO) and American Ur; Infectious Diseases Society of America (IDSA) and American U",0,
+"hypocalcaemia","General Medicine","NICE 2026 [G1] and [G5] — Imaging-based autofluorescence and; NICE 2026 [G6] and [G7] — Total thyroidectomy carries modera; NICE 2026 [G2] — Preoperative iodine solution in Graves dise",0,
+"urinary tract infection","Infectious Diseases","NICE 2026 — Urinary tract infections are recognized complica; IDSA 2026 — Gepotidacin shows non-inferior efficacy and comp; IDSA 2026 — Local resistance patterns of Enterobacterales ar",0,
+"recurrent UTIs","General Medicine","IDSA 2026 (G2) — Intravesical gentamicin is recommended for; IDSA 2026 (G3) — Patient preventative education should be co; WHO 2026 (G1) — Intravaginal Lactobacillus showed mixed or n",0,
+"lower urinary tract symptoms","General Medicine","EAU 2026 and NICE — Evaluate for erectile dysfunction in men; NICE — Consider floating needle (FN) therapy for postpartum; NICE — Consider NeuroSAFE, an intraoperative frozen section",0,
 "Botulism: foodborne vs wound vs infantile, antitoxin, ICU respiratory support","Infectious Diseases","",4,2021
-"Aplastic anaemia: immunosuppression with ATG and eltrombopag","","",3,
-"Disseminated intravascular coagulation: diagnostic criteria and management","","",3,
-"Iron deficiency anaemia: intravenous iron therapy","","[5] NICE; [2] NICE; [1] NICE",4,
+"Follicular lymphoma: obinutuzumab-based and lenalidomide-rituximab regimens","Haematology","[3] NICE June 2026; [1] MODERATE, [2] TA226 2011, [4] NICE June 2026, [5] NICE",4,
+"Immune thrombocytopenia: thrombopoietin receptor agonists","General Medicine","",4,
+"Aplastic anaemia: immunosuppression with ATG and eltrombopag","Haematology","",3,
+"Iron deficiency anaemia: intravenous iron therapy","Haematology","[5] NICE; [2] NICE; [1] NICE",4,
+"hyperglycaemic hyperosmolar state","General Medicine","JBDS 2026 [G2] — Replace approximately 50% of the estimated; JBDS 2026 [G1] — Initiate insulin infusion at 0.05 units/kg/; ADA 2026 and JBDS 2026 — Bicarbonate is not routinely indica",0,
+"adrenal insufficiency","Endocrinology & Diabetes","NICE 2026 [G2, G3] — Early diagnosis of endocrine toxicity i; NICE 2026 [G4, G5] — Timing of AI assessment after glucocort; NICE 2026 [G6] — Partial adrenalectomy reduces postoperative",0,
+"stroke","Neurology","NICE 2026 — Premenopausal hysterectomy and hysterectomy with; NICE 2026 — EVT may provide superior outcomes in vertebrobas; NICE 2026 — Depression prevalence is 35% in young stroke pat",0,
+"thrombectomy criteria","General Medicine","NICE/WHO 2026 — A unified definition of Early Neurologic Imp",0,
+"seizures","General Medicine","NICE 2026 [G6] — Monitor for neuropsychiatric adverse effect; NICE 2026 [G1] — Address vaccine hesitancy in individuals wi; NICE 2026 [G5] — Address barriers to ASM adherence through i",0,
+"epilepsy","General Medicine","NICE 2026 — Monitor for neuropsychiatric adverse effects (so; NICE 2026 — Well-controlled epilepsy is associated with high; NICE 2026 — Develop theory-informed ASM adherence interventi",0,
+"acute confusional states","General Medicine","NICE 2026 G3 — Multicomponent interventions are effective in; NICE 2026 G4 — Perioperative melatonin or ramelteon may redu; NICE 2026 G6 — Individuals with acute kidney injury were at",0,
+"osteoarthritis knee","Orthopaedics","EULAR 2026 (G3) — Intra-articular adipose-derived cell thera; EULAR 2026 (G1) — Quadriceps-focused rehabilitation followin; EULAR 2026 (G2) — Pulsed electromagnetic field (PEMF) therap",0,
+"osteoarthritis hip","Orthopaedics","EULAR 2026 — Exercise therapy may have small, short-term eff; EULAR 2026 — Mobility-related outcomes measured by digital b; NICE 2026 — Evidence-based, non-invasive treatment programs",0,
+"osteoarthritis hand","Orthopaedics","NICE 2026 [G4] and [G5] — Both SBS and LRTI have excellent s; NICE 2026 [G1] — Occupational mechanical exposures may be as; EULAR 2026 [G6] — Exercise may have small effects on hand os",0,
 "Anticoagulation in atrial fibrillation: CHA2DS2-VASc scoring and DOAC selection","Cardiology","NICE 2021 [4], AWMF [1]; NICE 2021 [3]; NICE 2021 [2]",4,2007
+"soft tissue injuries","General Medicine","NICE 2026 — Microsurgical reconstruction is a management str; NICE 2026 — Sudden increases in high-speed running (HSR) or; NICE 2026 — Early assessment by peripheral nerve surgeons is",0,
+"antibiotic stewardship","Infectious Diseases","IDSA 2026 — For phage therapy against S. maltophilia, MOI of; IDSA 2026 — MRSP exhibits broader resistance to oxacillin, c",0,
+"latent tuberculosis","Infectious Diseases","IDSA 2026 — Rifapentine-isoniazid prevention therapy may be; IDSA 2026 — Migrants are at increased risk of latent tubercu; IDSA 2026 — In TB-endemic settings, the safe use of adalimum",0,
+"active tuberculosis","Infectious Diseases","Chinese Medical Association 2025 (G5, G6) — Emphasize emerge",0,
+"HIV testing","Infectious Diseases","IDSA 2026 [G4] — Promote and support HIV self-testing (HIVST; IDSA 2026 [G3] — Assess knowledge about HIV testing, includi",0,
+"viral hepatitis B","General Medicine","IDSA 2026 [G2] — Screen for HBV and HIV co-infection in popu; NICE 2026 [G5] — Implement educational interventions targeti; IDSA 2026 [G6] — Consider virus-directed CAR immunotherapies",0,
+"hepatitis management","General Medicine","IDSA 2026 (G6) — Evaluate the rationale for emerging biologi; NICE 2026 (G1) — Conventional combinatorial therapy involvin",0,
+"device-related infections","General Medicine","IDSA 2026 — Dalbavancin can be used as monotherapy or sequen; IDSA 2025 — 99mTc-HMPAO-WBC SPECT may be especially valuable; IDSA 2025 — Infections and device-related issues are predomi",0,
+"thrombocytopenia","General Medicine","NICE or WHO 2026 (G1) — No association between vaccination ≤; NICE or WHO 2026 (G2) — ITP among most common indications fo; NICE or WHO 2026 (G3) — Thrombocytopenia is a significant pr",0,
+"lymphoma","Haematology","NCCN Guidelines for Non-Hodgkin Lymphomas (2023-2024) — R-CH; NCCN Guidelines for Non-Hodgkin Lymphomas (2023-2024) — Acti; NCCN Guidelines for Chronic Lymphocytic Leukemia (2023-2024)",0,
+"leukaemia","Haematology","ESMO 2026 — Fluoroquinolone prophylaxis during induction che; ESMO 2026 — The MTHFR 677T allele and MTHFR 677T-1298 A hapl; ESMO 2026 — Phase I clinical trials for CD19/CD22 bispecific",0,
+"breast cancer","Oncology","ESMO 2026 [G2] — High pre-treatment PNI associated with bett; ESMO 2026 [G4] — Activity pacing interventions (goal setting; ESMO 2026 [G6] — 3DE recommended for cardiac monitoring in a",0,
+"bowel cancer","Gastroenterology","ESMO 2026 [G1] — Circulating monocyte-related transcriptomic; NICE 2026 [G2] — Preoperative exercise-only interventions si; NICE 2026 [G5] and [G6] — Closing rectal defect after transa",0,
+"prostate cancer","Oncology","NCCN 2026 — Eliminate the very-low-risk group for prostate c; ESMO 2026 — NeuroSAFE-guided RARP improves postoperative ere; NCCN 2026 — Exercise caution in the use of focal therapy in",0,
+"primary care mental health","General Medicine","NICE 2026 [G2][G3] — Primary care should implement training; NICE 2026 [G1][G4] — Primary care should increase detection; NICE 2026 [G1][G3][G4] — Primary care should implement syste",0,
+"acute behavioural disturbance","General Medicine","NICE or WHO 2026 — When managing seizures induced by novel s; NICE or WHO 2026 — Consider ketamine as a treatment option f; NICE or WHO 2025 — Monitor for changes in behavior and sleep",0,
+"anaphylaxis","General Medicine","NICE/WHO 2026 (G1) — Hypersensitivity reactions to iodinated; NICE/WHO 2026 (G2) — Adverse reactions to antivenom in pedia; NICE/WHO 2026 (G3) — Identifying predictors of fatal anaphyl",0,
+"drug rash","General Medicine","NICE 2026 (G1) — Maculopapular rash, pruritus, and unspecifi; NICE 2026 (G2) — Rash was a common clinical feature (66.7%); NICE 2026 (G4, G5) — Acneiform rash from MEK inhibitors can",0,
+"DRESS syndrome","General Medicine","EAACI 2025 — Recommendations for clinical diagnosis and trea; EAACI 2025 — Recommendations for treatment of DRESS in child; EAACI 2025 — Treatment recommendations for DRESS in children",0,
+"Stevens-Johnson syndrome","General Medicine","NICE 2026 G3 — Topical formulations can induce SJS/TEN despi; NICE 2026 G4 — Lamotrigine may cause rare but severe cutaneo; NICE 2026 G5 — ICI combinations with medications like moxifl",0,
 "Obstructive Sleep Apnea","Pulmonology","",4,2022
+"squamous cell carcinoma","Oncology","ESMO 2026 [G1] — TMB has inconsistent predictive value for I; ESMO 2026 [G2, G3] — Medical treatment preferred for OSSN ex; ESMO 2026 [G8] — JFF associated with lower stricture and PCF",0,
+"uterine fibroids","General Medicine","NICE 2026 [G4] — Transradial approach for uterine artery emb; NICE 2026 [G5] — Temporary uterine artery ligation reduces i; NICE 2026 [G1] — Microwave ablation improves both dysmenorrh",0,
+"fever in children","General Medicine","NICE 2026 — Fever documented as frequent adverse event (17.6; NICE 2026 — Low-to-medium dose vitamin A superior to high-do; NICE 2026 — Fever predominant feature (82.1%) in rituximab-i",0,
+"viral wheeze","General Medicine","NICE 2025 (G2) — Corticosteroids or inhaled agents were not; NICE 2025 (G6) — Children with apparent viral pneumonia coul; NICE 2025 (G4) — Laryngitis should be treated with oral cort",0,
+"wheeze phenotypes","General Medicine","GINA 2021 — Asthma is highly heterogeneous and characterized",0,
+"chest pain ED","General Medicine","ESICM 2025 — Arterial pressure monitoring with arterial cath; ESICM 2025 — In patients with persistent shock after initial; ESICM 2025 — Dynamic variables should be used over static ma",0,
+"shortness of breath","General Medicine","NICE 2026 [G2] — Pulmonary rehabilitation is a non-pharmacol; NICE 2026 [G3] — Cognitive behavioral therapy for insomnia (; NICE 2026 [G2] and [G3] — Pulmonary rehabilitation and CBT-I",0,
+"acute respiratory failure","General Medicine","ESICM 2026 [G2] — VV ECMO indicated in refractory end-stage; ESICM 2026 [G1] — VA ECMO may be used in acute RV failure, h",0,
+"cardiac arrest","Cardiology","G6 — NICE 2026: Hypocapnia (PaCO2 <35 mmHg) is associated wi",0,
+"head injury","General Medicine","NICE/WHO 2026 [G1] — Provide support and interventions for c; NICE/WHO 2026 [G2] — Consider early management for maxillofa; NICE/WHO 2026 [G3] and [G4] — Stratified neuroworsening fram",0,
+"acute confusion","General Medicine","NICE 2026 — Perioperative melatonin or ramelteon may reduce",0,
+"perioperative risk assessment","Anaesthetics","ESMO 2025 — Enfortumab vedotin plus pembrolizumab should be",0,
+"airway management","General Medicine","ESICM 2026 (G4, G5) — Prone positioning reduces intubation n; ESICM 2026 (G6) — Nursing interventions reduce ventilator du; ESICM 2026 (G3) — MEBDT is an adjunctive bedside tool for as",0,
+"procedural sedation","Anaesthetics","ESICM 2026 (G6) — Ketamine-propofol combination shows consis; ESICM 2026 (G5) — IV ketamine and midazolam significantly ra; ESICM 2026 (G2, G3) — Esketamine superior to propofol and op",0,
+"sedation safety","Anaesthetics","ESICM 2026 [G1] — Dexmedetomidine may improve tolerance to n; ESICM 2026 [G2] — Dexmedetomidine showed no significant diff; ESICM 2026 [G5] — IV ketamine and midazolam significantly ra",0,
+"vasopressor use septic shock","ICU / Critical Care","ESICM 2026 [G1] — Low-dose corticosteroids reduce refractory; ESICM 2026 [G4] and clinical practice — Vasopressin does not; ESICM 2026 [G4] — No differences in hypotension incidence we",0,
+"regional analgesia","General Medicine","NICE/ESC/AHA-ACC 2026 — PENG+LFCN block combination superior; NICE/ESC/AHA-ACC 2026 — No significant difference in serious; NICE/ESC/AHA-ACC 2026 — S-ESP block reduces rescue analgesic",0,
+"CKD referral thresholds","General Medicine","KDIGO 2022 Clinical Practice Guideline for Diabetes Manageme; KDIGO 2021 Clinical Practice Guideline Update for CKD Evalua; KDIGO 2021 CKD Guideline — ACE-I/ARB recommended despite hyp",0,
+"sepsis bundle","ICU / Critical Care","ESICM 2025 — Arterial pressure should be monitored with an a; ESICM 2025 — In patients with persistent shock after initial; ESICM 2025 — G3: Cardiac output (CO) and/or stroke volume sh",0,
+"paediatric sepsis screening","Paediatrics","SCCM 2026 — Initiate vasopressor support in children with se; SCCM 2026 — Administer broad-spectrum intravenous antibiotic; SCCM 2026 — Escalate vasopressor support with dose increases",0,
+"mechanical ventilation ARDS","ICU / Critical Care","ESICM 2026 [G4] — Use non-invasive respiratory support where; ESICM 2026 [G2] — Nasal high-frequency oscillatory ventilati; ESICM 2026 [G1] and [G5] — LISA reduces BPD compared to INSU",0,
 "Acute pulmonary oedema: NIV, morphine controversy, nitrates, ultrafiltration","Cardiology","NICE",4,2024
 "Acute Gouty Arthritis","Rheumatology","",4,
+"Radiation necrosis vs tumour progression: perfusion MRI and PET scan utility","Oncology","NCCN guidelines for CNS Cancers; EANO guidelines for brain m",0,
+"Benign Paroxysmal Positional Vertigo (BPPV): Dix-Hallpike test, Epley vs Semont maneuvers","ENT","",4,
+"Postural Orthostatic Tachycardia Syndrome (POTS): tilt table test criteria, non-pharmacological methods","General Medicine","",2,
+"Large bowel obstruction, volvulus, and pseudo-obstruction management","Surgery","European Society of Gastrointestinal Endoscopy (ESGE) Guidel",0,
+"Spontaneous bacterial peritonitis vs secondary surgical peritonitis","Surgery","AASLD Practice Guidance: The Management of Ascites in Cirrho",0,
+"Rectal cancer: total mesorectal excision (TME) and neoadjuvant therapy","Oncology","",3,
+"Rectal cancer: total mesorectal excision, neoadjuvant chemoradiotherapy","Oncology","NCCN",0,2022
+"Small bowel obstruction: adhesions vs hernias, non-operative management","Surgery","",2,2021
 "Chronic Myelomonocytic Leukaemia","Haematology","",4,
 "Autoimmune encephalitis: Anti-NMDA receptor, LGI1, Caspr2 antibody profiles","Neurology","",4,2023
+"Trigeminal neuralgia: carbamazepine optimization, microvascular decompression (Janetta)","General Medicine","",4,
 "Von Willebrand Disease","Haematology","",4,
 "ARDS","ICU / Critical Care","NICE 2023 [G1] — Do not use extracorporeal carbon dioxide re; ESICM 2023 [G2] — Reserve neuromuscular blockade for selecte; ESICM 2023 [G5] — Do not use prolonged high-pressure recruit",4,
 "Spontaneous intracranial hypotension: orthostatic headache, brain sag on MRI, blood patch","Neurology","",4,2025
@@ -375,7 +444,38 @@ topic,specialty,guideline_bodies,practice_guideline_mcqs,latest_guideline_year
 "Thyroid Cancer Management","Oncology","",4,
 "Male Breast Cancer","Oncology","ASCO [3]",4,
 "Oesophageal Cancer","Oncology","ESMO [2]",4,
+"Symptomatic bradycardia: atropine, temporary pacing, transcutaneous pacing","General Medicine","",4,
 "Nephrotic Syndrome: Overview and Workup","Nephrology","KDIGO 2025 IgAN guideline",4,
+"Recurrent Clostridioides difficile infection","Infectious Diseases","",4,
+"Peptic ulcer bleeding and H pylori","General Medicine","NICE 2004, amended 2014; NICE 2004",3,
+"Influenza antiviral treatment","Infectious Diseases","NICE guidelines on ARI",4,
+"COPD maintenance bronchodilator combination therapy","Pulmonology","6 NICE",4,
+"Smoking cessation pharmacotherapy","General Medicine","",4,
+"Fluid resuscitation type in sepsis and critical illness","ICU / Critical Care","ACCP/SCCM Consensus Conference Committee; ESICM",4,
+"Chronic pancreatitis pain and exocrine insufficiency","General Medicine","NICE 2010 [6], NICE 2010 [4]; NICE 2010 [4], NICE 2010 [6]; NICE [2]",4,
+"Conservative versus liberal fluid strategy in ARDS (FACTT trial)","ICU / Critical Care","[2] ESICM: Do not use prolonged high-pressure recruitment ma; [1] ESICM: Do not use routine continuous neuromuscular block",4,
+"connective tissue disease-related ILD","General Medicine","EULAR 2024 — Rituximab efficacy in IIM-ILD",0,
+"chronic abdominal pain","General Medicine","NICE 2026 [G1] — Maintain high index of suspicion for NTM in; NICE 2026 [G3] — Consider screening for DGBI such as IBS in; NICE 2026 [G2] — Consider laparoscopic adhesiolysis for pati",0,
+"UTI prophylaxis","General Medicine","NICE 2026 (G3) — Continuous antibiotic prophylaxis is used i; NICE 2025 (G5) — D-mannose was not associated with a reducti; NICE 2026 (G1) — Prophylactic ureteral stents in colorectal",0,
+"Polycythemia vera: ruxolitinib for hydroxyurea-resistant or intolerant disease","General Medicine","",4,
+"Disseminated intravascular coagulation: diagnostic criteria and management","General Medicine","",3,
+"first seizure work-up","Neurology","EULAR 2011 — Investigations for suspected NPSLE seizures sho",0,
+"fracture risk assessment","Orthopaedics","NICE 2026 — Assess value of AI to aid clinician diagnosis of; NICE 2026 — Assess potential value of AI to aid clinician di",0,
+"HIV initial work-up","Infectious Diseases","IDSA 2022 — Initial work-up for chronic HBV should include H; IDSA 2022 — Initial HIV work-up includes serological testing; IDSA 2022 — Initial HBV work-up must include HDV serology in",0,
+"prosthetic infections","General Medicine","IDSA 2026 (G1) — Long-course antibiotic therapy (≥12 weeks); IDSA 2026 (G3) — Withholding antibiotics before bone biopsy; IDSA 2026 (G1) — Long-course therapy (≥12 weeks) reduces PJI",0,
+"anticoagulation reversal","General Medicine","NICE 2025 (G4) — If specific DOAC reversal agents are unavai; NICE 2025 (G5) — Andexanet alfa reverses apixaban and rivaro",0,
+"cancer-associated thrombosis","Oncology","ESMO 2026 G2 — Factor Xa inhibitors show statistically signi; ESMO 2026 G3, G4 — Reduced-dose apixaban (2.5 mg twice daily; ESMO 2026 G1 — Anticoagulation alone does not achieve radiog",0,
+"substance use disorder","Psychiatry","NICE 2026 — Early liver transplantation for alcohol-associat",0,
+"morbilliform rash","General Medicine","NICE 2024 — Erythematous maculopapular/morbilliform rashes a; NICE 2025 — Dupilumab may be considered for the management o; NICE 2022-2025 — DRESS syndrome can recur, and subsequent ep",0,
+"toxic epidermal necrolysis","General Medicine","NICE 2026 [G5] — Clinicians should be aware of the potential; NICE 2026 [G2] — Healthcare professionals should be vigilant; NICE 2026 [G4] — The SCORTEN score should be used to predict",0,
+"hormone replacement therapy","Endocrinology & Diabetes","NICE/WHO 2026 — G2 and G4: Transdermal estradiol initiated n; NICE/WHO 2026 — G3: EPT is associated with OR = 1.44 (95% CI; NICE/WHO 2026 — G1: No cardiovascular mortality observed in",0,
+"paediatric dehydration","Paediatrics","NICE 2026 — Parents and carers should be educated about warn; NICE 2026 — Multi-component approaches combining improved ac; NICE 2026 — School-based educational practices promoting hea",0,
+"capacity assessment","General Medicine","NICE — Training and supervision programmes for primary care; NICE — Simulation-based tools are most effective for assessi; NICE — Policymakers should prioritize standardized benchmark",0,
+"perioperative comorbidity management","Anaesthetics","NICE — The presence of liver cirrhosis is considered a poor; ESICM — Existing cardiology and anesthesiology guidelines re",0,
+"systemic analgesia","General Medicine","NICE 2026 [G1] — Oral pharmacotherapy remains first-line for; NICE 2026 [G2] — Serratus anterior plane block significantly; NICE 2026 [G3] — Ibuprofen use was reduced by transcutaneous",0,
+"atrial fibrillation","Cardiology","NICE 2026 [G1] — Universal PFO screening recommended for cry",0,
+"Papilloedema : funduscopic staging, pseudo- papilloedema vs true disc swelling","General Medicine","",4,
+"Spontaneous bacterial peritonitis: diagnosis, prophylaxis, treatment","General Medicine","",4,2021
 "CKD Staging and Progression","Nephrology","KDIGO Guidelines",0,
 "Acute kidney injury prevention management","ICU / Critical Care","KDIGO",0,
 "Massive pulmonary embolism: systemic thrombolysis vs catheter-directed therapy","ICU / Critical Care","",4,

@@ -1,78 +1,358 @@
 topic,specialty,total_mcqs,has_paper_synopsis,priority
-"Acute aortic dissection diagnosis and management","",3,yes,medium
-"Alport syndrome and inherited collagen nephropathies","",3,yes,medium
-"Antithrombotic therapy after TAVR","",3,yes,medium
-"Atherosclerotic renal artery stenosis revascularization","",3,yes,medium
-"Atrial fibrillation catheter ablation and early rhythm control","",3,yes,medium
-"Autoimmune haemolytic anaemia: steroids and rituximab","",3,yes,medium
-"Autoimmune hepatitis immunosuppression","",3,yes,medium
-"BK polyomavirus nephropathy in kidney transplant","",3,yes,medium
-"C3 glomerulopathy and complement inhibition","",3,yes,medium
-"Cardiac resynchronization therapy in heart failure","",3,yes,medium
-"Cardiorenal syndrome ultrafiltration","",3,yes,medium
-"Cerebral venous thrombosis anticoagulation","",3,yes,medium
-"Cholangiocarcinoma systemic therapy","",3,yes,medium
-"Chronic inflammatory demyelinating polyneuropathy treatment","",3,yes,medium
-"CKD mineral and bone disorder","",3,yes,medium
-"Conservative oxygen therapy in mechanically ventilated patients","",3,yes,medium
-"Contrast-associated acute kidney injury prevention","",3,yes,medium
-"Coronary artery calcium score risk stratification","",3,yes,medium
-"Degenerative cervical myelopathy management","",3,yes,medium
-"Dialysis initiation timing in advanced CKD","",3,yes,medium
-"Essential thrombocythemia: cytoreduction with hydroxyurea versus anagrelide","",3,yes,medium
-"Essential tremor procedural and medical therapy","",3,yes,medium
-"Fever management in critically ill patients","",3,yes,medium
-"FSGS sparsentan and supportive therapy","",3,yes,medium
-"GERD refractory symptoms and antireflux surgery","",3,yes,medium
-"Glycemic control in critical illness","",3,yes,medium
-"Heart failure remote hemodynamic monitoring","",3,yes,medium
-"Heart failure SGLT2 inhibitor treatment","",3,yes,medium
-"Hemodialysis adequacy and frequency","",3,yes,medium
-"Hepatitis C virus direct-acting antiviral therapy","",3,yes,medium
-"Hepatocellular carcinoma systemic therapy","",3,yes,medium
-"Hereditary hemochromatosis diagnosis and phlebotomy","",3,yes,medium
-"Huntington disease chorea management","",3,yes,medium
-"Icosapent ethyl residual cardiovascular risk","",3,yes,medium
-"IgA nephropathy treatment (sparsentan and targeted therapy)","",3,yes,medium
-"Ivabradine in heart failure with reduced ejection fraction","",3,yes,medium
-"Left main coronary disease revascularization","",3,yes,medium
-"Lewy body dementia diagnosis and symptomatic therapy","",3,yes,medium
-"Living kidney donor evaluation and long-term risk","",3,yes,medium
-"Multiple myeloma daratumumab-based regimens","",3,yes,medium
-"Multiple myeloma: autologous stem cell transplantation","",3,yes,medium
-"Neuropathic pain pharmacotherapy","",3,yes,medium
-"Ovarian cancer PARP inhibitor maintenance therapy","",3,yes,medium
-"Peripheral artery disease antithrombotic therapy","",3,yes,medium
-"Physiology-guided PCI fractional flow reserve","",3,yes,medium
-"Platelet transfusion thresholds in haematological malignancies","",3,yes,medium
-"Post-MI beta-blocker therapy contemporary evidence","",3,yes,medium
-"Primary sclerosing cholangitis medical therapy and surveillance","",3,yes,medium
-"Protocol-based versus goal-directed resuscitation in septic shock","",3,yes,medium
-"Pulmonary artery catheter utility in critically ill patients","",3,yes,medium
-"Rate versus rhythm control in atrial fibrillation","",3,yes,medium
-"Recurrent nephrolithiasis medical prevention","",3,yes,medium
-"Restless legs syndrome treatment","",3,yes,medium
-"Rheumatic valvular disease anticoagulation","",3,yes,medium
-"Severe acute pancreatitis ICU management","",3,yes,medium
-"Spontaneous coronary artery dissection","",3,yes,medium
-"Stable angina medical therapy versus PCI","",3,yes,medium
-"Thrombus aspiration in STEMI","",3,yes,medium
-"Tricuspid regurgitation TEER","",3,yes,medium
-"Triple-negative breast cancer immunotherapy","",3,yes,medium
+"Perioperative management of common comorbidities","Anaesthetics",0,yes,high
+"Perioperative risk assessment and optimisation","Anaesthetics",0,yes,high
+"Sedation outside theatres and procedural sedation safety","Anaesthetics",0,yes,high
+"vitamin K antagonist bridging atrial fibrillation perioperative BRIDGE trial","Anaesthetics",0,yes,high
+"apixaban versus warfarin atrial fibrillation","Cardiology",0,yes,high
+"Atrial fibrillation and common arrhythmias","Cardiology",0,yes,high
+"atrial fibrillation diagnosis and management guideline","Cardiology",0,yes,high
+"cardiac resynchronization therapy heart failure COMPANION trial","Cardiology",0,yes,high
+"Collapse, syncope, and cardiac arrest algorithms","Cardiology",0,yes,high
+"Congestive Heart Failure","Cardiology",0,yes,high
+"dabigatran versus warfarin atrial fibrillation stroke prevention","Cardiology",0,yes,high
+"ezetimibe added to statin therapy acute coronary syndrome","Cardiology",0,yes,high
+"Heart failure","Cardiology",0,yes,high
+"heart failure reduced ejection fraction management guideline SGLT2 ARNI MRA beta blocker","Cardiology",0,yes,high
+"initial invasive or conservative strategy stable coronary disease","Cardiology",0,yes,high
+"Ischaemic heart disease and acute coronary syndromes","Cardiology",0,yes,high
+"metoprolol succinate chronic heart failure mortality MERIT-HF","Cardiology",0,yes,high
+"sacubitril valsartan heart failure reduced ejection fraction mortality","Cardiology",0,yes,high
+"SGLT-2 Inhibitor in heart failure","Cardiology",0,yes,high
+"SGLT-2 inhibitors in heart failure","Cardiology",0,yes,high
+"sglt2 heart failure","Cardiology",0,yes,high
+"SGLT2 inhibitors heart failure","Cardiology",0,yes,high
+"SGLT2 inhibitors heart failure reduced ejection fraction randomized trial","Cardiology",0,yes,high
+"spironolactone mineralocorticoid antagonist severe heart failure survival","Cardiology",0,yes,high
+"ticagrelor versus clopidogrel acute coronary syndromes","Cardiology",0,yes,high
+"transcatheter aortic valve replacement balloon-expandable low-risk patients","Cardiology",0,yes,high
+"Cellulitis, erysipelas, and mimics","Dermatology",0,yes,high
+"nivolumab ipilimumab advanced melanoma overall survival","Dermatology",0,yes,high
+"Plaque psoriasis biologic therapy (IL-17/IL-23 inhibitors)","Dermatology",0,no,high
+"intensive blood glucose control sulphonylureas insulin type 2 diabetes UKPDS","Endocrinology & Diabetes",0,yes,high
+"intensive glucose lowering type 2 diabetes","Endocrinology & Diabetes",0,yes,high
+"Cirrhosis and portal hypertension","Gastroenterology",0,yes,high
+"Irritable bowel syndrome diet and microbiome-directed therapy","Gastroenterology",0,yes,high
+"Acute confusion, agitation, and capacity","General Medicine",0,yes,high
+"Alzheimer's disease anti-amyloid immunotherapy","General Medicine",0,no,high
+"Analgesia strategies","General Medicine",0,yes,high
+"Angiotensin II for catecholamine-refractory vasodilatory shock","General Medicine",0,yes,high
+"Anti-CD20 Therapy in Rheumatology","General Medicine",0,yes,high
+"anticoagulation in atrial","General Medicine",0,yes,high
+"Anticoagulation reversal and peri-procedural management","General Medicine",0,yes,high
+"antidepressant sequential treatment steps depressed outpatients outcomes","General Medicine",0,yes,high
+"bariatric surgery versus medical therapy type 2 diabetes STAMPEDE","General Medicine",0,yes,high
+"Barrett's Oesophagus surveillance and management","General Medicine",0,yes,high
+"Bone Marrow Fibrosis Grading","General Medicine",0,yes,high
+"Bronchiectasis and recurrent chest infections","General Medicine",0,yes,high
+"canakinumab anti-inflammatory therapy atherosclerotic disease","General Medicine",0,yes,high
+"Chest pain assessment in the ED","General Medicine",0,yes,high
+"Chikungunya and Zika Arthropathy","General Medicine",0,yes,high
+"Coal Worker's Pneumoconiosis","General Medicine",0,yes,high
+"continuous positive airway pressure obstructive sleep apnea cardiovascular outcomes SAVE","General Medicine",0,yes,high
+"covid","General Medicine",0,yes,high
+"CRISPR-Cas9 gene editing sickle cell disease beta-thalassemia","General Medicine",0,yes,high
+"Delirium and acute confusional states","General Medicine",0,yes,high
+"Difficult airway management","General Medicine",0,yes,high
+"Dupilumab (IL-4/IL-13 inhibitor) biologic therapy","General Medicine",0,no,high
+"Dyslipidaemia and cardiovascular risk modification","General Medicine",0,yes,high
+"Dyspepsia, H. pylori, and peptic ulcer disease","General Medicine",0,yes,high
+"Electrical storm: refractory VT/VF management, stellate ganglion block","General Medicine",0,yes,high
+"empagliflozin cardiovascular outcomes type 2 diabetes EMPA-REG","General Medicine",0,yes,high
+"enalapril ACE inhibitor survival reduced left ventricular ejection fraction","General Medicine",0,yes,high
+"Endocarditis and prophylaxis","General Medicine",0,yes,high
+"Eosinophilia Differential Diagnosis","General Medicine",0,yes,high
+"Eosinophilic esophagitis targeted therapy","General Medicine",0,yes,high
+"Felty's Syndrome","General Medicine",0,yes,high
+"Futility, prognostication, and family communication in critical illness","General Medicine",0,yes,high
+"Gastrointestinal Motility and Dysmotility Overview","General Medicine",0,yes,high
+"Giant cell arteritis: ESR/CRP, temporal artery ultrasound, high-dose steroids","General Medicine",0,yes,high
+"GLP-1 receptor agonist liraglutide cardiovascular outcomes type 2 diabetes","General Medicine",0,yes,high
+"GLP-1 receptor agonists metabolic syndrome","General Medicine",0,yes,high
+"Helicobacter pylori eradication peptic ulcer bleeding recurrence","General Medicine",0,yes,high
+"Heparin-induced thrombocytopenia alternatives: argatroban, fondaparinux, bivalirudin","General Medicine",0,yes,high
+"hepatorenal","General Medicine",0,yes,high
+"Hepatorenal syndrome diagnosis and management","General Medicine",0,yes,high
+"HFref best treatment options","General Medicine",0,yes,high
+"HPV vaccination cervical intraepithelial neoplasia FUTURE II","General Medicine",0,yes,high
+"HRS diagnosis","General Medicine",0,yes,high
+"Huntington's disease: CAG repeats, chorea management, psychiatric features","General Medicine",0,yes,high
+"Hypereosinophilic Syndrome","General Medicine",0,yes,high
+"Hypersensitivity Pneumonitis variants by antigen","General Medicine",0,yes,high
+"Hypogranular APL Morphology Pitfalls","General Medicine",0,yes,high
+"Hypoventilation from central CNS depressants","General Medicine",0,yes,high
+"ICD for secondary prevention: post-VF/VT indications and programming","General Medicine",0,yes,high
+"Idiopathic intracranial hypertension vision protection","General Medicine",0,yes,high
+"intensive blood pressure control cardiovascular outcomes systolic","General Medicine",0,yes,high
+"Intensive care high yield clinical guidelines","General Medicine",0,yes,high
+"intensive LDL cholesterol lowering statin meta-analysis","General Medicine",0,yes,high
+"Irradiated, Leukoreduced and Washed Blood Products","General Medicine",0,yes,high
+"Leflunomide, Sulfasalazine, and Hydroxychloroquine toxicities","General Medicine",0,yes,high
+"Leukaostasis Syndrome","General Medicine",0,yes,high
+"Liddle Syndrome and Pseudohypoaldosteronism","General Medicine",0,yes,high
+"management of HF eith Reduced ejection fraction","General Medicine",0,yes,high
+"management of HF with Reduced ejection fraction","General Medicine",0,yes,high
+"management of PRESS","General Medicine",0,yes,high
+"Melioidosis and Actinomycosis","General Medicine",0,yes,high
+"metformin diabetes","General Medicine",0,yes,high
+"methylene blue in vasoplegic shock","General Medicine",0,yes,high
+"metylene blue in vasoplegic shock","General Medicine",0,yes,high
+"MOG Antibody-Associated Disease (MOGAD): phenotype differentiation from MS/NMOSD","General Medicine",0,yes,high
+"MOG antibody-associated disease diagnosis and relapse prevention","General Medicine",0,yes,high
+"Monocytosis and Lymphocytosis Diagnostic Algorithms","General Medicine",0,yes,high
+"Mycosis Fungoides and Sézary Syndrome","General Medicine",0,yes,high
+"Myotonic Dystrophy (Type 1 and 2): CTG/CCTG repeats, systemic complications","General Medicine",0,yes,high
+"Obstructive sleep apnoea and obesity hypoventilation","General Medicine",0,yes,high
+"Opioid Rotation and Equianalgesic Dosing","General Medicine",0,yes,high
+"oseltamivir treatment influenza healthy adults","General Medicine",0,yes,high
+"Pacemaker indications: sinus node dysfunction, AV block, NICE/ESC criteria","General Medicine",0,yes,high
+"Paget's Disease of Bone","General Medicine",0,yes,high
+"Palindromic Rheumatism","General Medicine",0,yes,high
+"Pancytopenia Diagnostic Workup","General Medicine",0,yes,high
+"Paracetamol toxicity: NAC protocol, King's College criteria for transplant","General Medicine",0,yes,high
+"PCSK9 inhibitor evolocumab cardiovascular outcomes","General Medicine",0,yes,high
+"Peripheral arterial disease and claudication","General Medicine",0,yes,high
+"primary angioplasty versus thrombolytic therapy acute myocardial infarction","General Medicine",0,yes,high
+"prone positioning severe acute respiratory distress syndrome","General Medicine",0,yes,high
+"Psychosis and acute behavioural disturbance","General Medicine",0,yes,high
+"Raynaud's Phenomenon","General Medicine",0,yes,high
+"rivaroxaban treatment acute deep vein thrombosis EINSTEIN","General Medicine",0,yes,high
+"rosuvastatin primary prevention elevated C-reactive protein","General Medicine",0,yes,high
+"semaglutide once weekly obesity weight loss STEP 1","General Medicine",0,yes,high
+"SGLT-2 Inhibitor","General Medicine",0,yes,high
+"sglt2 hfpef","General Medicine",0,yes,high
+"Shortness of breath and acute respiratory failure","General Medicine",0,yes,high
+"Silo Filler's Disease","General Medicine",0,yes,high
+"Sjögren's Syndrome","General Medicine",0,yes,high
+"Sports cardiology: pre-participation screening, athlete's heart, exercise restriction","General Medicine",0,yes,high
+"Syncope and postural hypotension","General Medicine",0,yes,high
+"Takayasu's Arteritis","General Medicine",0,yes,high
+"tocilizumab COVID-19 hospitalized patients","General Medicine",0,yes,high
+"tranexamic acid trauma hemorrhage CRASH-2","General Medicine",0,yes,high
+"Trauma resuscitation and head injury","General Medicine",0,yes,high
+"Type 1 and type 2 diabetes","General Medicine",0,yes,high
+"Upper and lower GI bleeding","General Medicine",0,yes,high
+"Urinary tract infections and pyelonephritis","General Medicine",0,yes,high
+"Vapor Gas Dust and Fume exposures","General Medicine",0,yes,high
+"Vasopressors and inotropes in shock","General Medicine",0,yes,high
+"Venous thromboembolism and anticoagulation management","General Medicine",0,yes,high
+"Viral-Induced Arthritides","General Medicine",0,yes,high
+"Wellens syndrome and left main equivalent ECG patterns","General Medicine",0,yes,high
+"Whipple's Disease","General Medicine",0,yes,high
+"Whipple's Disease rheumatological features","General Medicine",0,yes,high
+"aspirin cardiovascular events bleeding healthy elderly primary prevention","Geriatrics",0,yes,high
+"hypertension treatment patients 80 years or older very elderly","Geriatrics",0,yes,high
+"Antiphospholipid syndrome: Sapporo criteria, thrombosis, obstetric APS management","Gynaecology",0,yes,high
+"Early pregnancy bleeding and ectopic pregnancy","Gynaecology",0,yes,high
+"Hypertensive disorders of pregnancy and pre-eclampsia","Gynaecology",0,yes,high
+"Anaemia","Haematology",0,yes,high
+"CAR-T cell therapy refractory large B-cell lymphoma axicabtagene","Haematology",0,yes,high
+"Delayed Haemolytic Transfusion Reactions","Haematology",0,yes,high
+"Diffuse large B-cell lymphoma: CAR-T cell therapy in relapsed/refractory disease","Haematology",0,no,high
+"imatinib versus interferon chronic myeloid leukemia IRIS trial","Haematology",0,yes,high
+"Acute liver failure in the ICU: King's College criteria, cerebral oedema management","ICU / Critical Care",0,yes,high
+"antifungals in ICU","ICU / Critical Care",0,yes,high
+"antifungals in ICU current clinical practice guideline recommendation","ICU / Critical Care",0,yes,high
+"ARDS guidelines","ICU / Critical Care",0,yes,high
+"ARDS prone positioning","ICU / Critical Care",0,yes,high
+"early goal-directed therapy septic shock ProCESS trial","ICU / Critical Care",0,yes,high
+"Fever in children and sepsis screening","ICU / Critical Care",0,yes,high
+"fungal infection  in ICU","ICU / Critical Care",0,yes,high
+"fungal infection s in ICU","ICU / Critical Care",0,yes,high
+"how should I manage septic shock","ICU / Critical Care",0,yes,high
+"low tidal volume ventilation ARDS lung protective","ICU / Critical Care",0,yes,high
+"meropenem versus piperacillin tazobactam sepsis MERINO trial","ICU / Critical Care",0,yes,high
+"prone positioning ARDS","ICU / Critical Care",0,yes,high
+"sepsis corticosteroids","ICU / Critical Care",0,yes,high
+"sepsis diagnosis qSOFA SOFA criteria Sepsis-3 definition","ICU / Critical Care",0,yes,high
+"sepsis early goal directed therapy","ICU / Critical Care",0,yes,high
+"sepsis septic shock management surviving sepsis campaign 2021 guideline antibiotics fluids vasopressors","ICU / Critical Care",0,yes,high
+"Sepsis-3 definitions and early resuscitation bundles","ICU / Critical Care",0,yes,high
+"steroids in septic shock","ICU / Critical Care",0,yes,high
+"surviving sepsis campaign guidelines management sepsis septic shock","ICU / Critical Care",0,yes,high
+"Antibiotic stewardship for common infections","Infectious Diseases",0,yes,high
+"Bell's palsy: corticosteroid timing, antiviral therapy, eye care","Infectious Diseases",0,yes,high
+"fecal microbiota transplant recurrent Clostridioides difficile infection","Infectious Diseases",0,yes,high
+"global burden bacterial antimicrobial resistance","Infectious Diseases",0,yes,high
+"Infectious mononucleosis complications: airway obstruction, haematological, neurological, splenic rupture","Infectious Diseases",0,yes,high
+"Low back pain and sciatica","MSK",0,yes,high
+"canagliflozin renal outcomes type 2 diabetes nephropathy","Nephrology",0,yes,high
+"empagliflozin chronic kidney disease progression","Nephrology",0,yes,high
+"Post-Renal AKI and Obstructive Uropathy","Nephrology",0,yes,high
+"Pre-Renal AKI and Volume Depletion","Nephrology",0,yes,high
+"clopidogrel aspirin acute minor ischemic stroke CHANCE","Neurology",0,yes,high
+"Delirium vs dementia differentiation","Neurology",0,yes,high
+"endovascular thrombectomy time to treatment ischemic stroke meta-analysis","Neurology",0,yes,high
+"Stroke and TIA","Neurology",0,yes,high
+"tenecteplase alteplase acute ischemic stroke EXTEND-IA TNK","Neurology",0,yes,high
+"trastuzumab adjuvant HER2 positive breast cancer BCIRG 006","Oncology",0,yes,high
+"Bronchiolitis and viral wheeze","Paediatrics",0,yes,high
+"Depression and anxiety disorders","Psychiatry",0,yes,high
+"global prevalence depression anxiety disorders COVID-19 pandemic","Psychiatry",0,yes,high
+"Suicide risk assessment and self-harm","Psychiatry",0,yes,high
+"Acute asthma and COPD exacerbations","Pulmonology",0,yes,high
+"asthma biologics","Pulmonology",0,yes,high
+"Childhood asthma and wheeze phenotypes","Pulmonology",0,yes,high
+"community acquired pneumonia diagnosis empiric antibiotic management guideline adult","Pulmonology",0,yes,high
+"Community- and hospital-acquired pneumonia","Pulmonology",0,yes,high
+"inhaled corticosteroid long acting beta agonist asthma SMART strategy","Pulmonology",0,yes,high
+"pembrolizumab plus chemotherapy metastatic non-small cell lung cancer","Pulmonology",0,yes,high
+"pneumonia","Pulmonology",0,yes,high
+"Pulmonary Capillaritis","Pulmonology",0,yes,high
+"Sleep-related hypoxemia in COPD","Pulmonology",0,yes,high
+"Steroids in community acquired pneumonia","Pulmonology",0,yes,high
+"Steroids in pneumonia","Pulmonology",0,yes,high
+"Steroids in pneumonia for hospitalized patients","Pulmonology",0,yes,high
+"suspected pulmonary embolism diagnosis YEARS algorithm D-dimer CT pulmonary angiography","Pulmonology",0,yes,high
+"triple inhaled therapy COPD moderate to severe exacerbation","Pulmonology",0,yes,high
+"V/Q Mismatch and pulmonary gas exchange","Pulmonology",0,yes,high
+"methotrexate early rheumatoid arthritis combination therapy TEAR","Rheumatology",0,yes,high
+"Acute abdomen and common surgical emergencies","Surgery",0,yes,high
+"Cardiac tamponade: Beck's triad, pericardiocentesis, surgical drainage","Surgery",0,yes,high
+"Meniere's disease: intratympanic therapy, low-salt diet, surgical options","Surgery",0,yes,high
 "Perioperative antiplatelet and anticoagulant management","Anaesthetics",3,no,medium
+"Acute aortic dissection diagnosis and management","Cardiology",3,yes,medium
+"Acute decompensated heart failure decongestion","Cardiology",3,yes,medium
+"Atrial fibrillation catheter ablation and early rhythm control","Cardiology",3,yes,medium
+"CABG versus PCI multivessel coronary disease","Cardiology",3,yes,medium
+"Cardiac resynchronization therapy in heart failure","Cardiology",3,yes,medium
+"Coronary artery calcium score risk stratification","Cardiology",3,yes,medium
+"Coronary CT angiography for stable chest pain","Cardiology",3,yes,medium
+"Durable LVAD therapy for advanced heart failure","Cardiology",3,yes,medium
+"Heart failure remote hemodynamic monitoring","Cardiology",3,yes,medium
+"Heart failure SGLT2 inhibitor treatment","Cardiology",3,yes,medium
+"Hyperkalemia in CKD and heart failure","Cardiology",3,yes,medium
+"Ivabradine in heart failure with reduced ejection fraction","Cardiology",3,yes,medium
+"Left main coronary disease revascularization","Cardiology",3,yes,medium
+"Mineralocorticoid receptor antagonists in heart failure","Cardiology",3,yes,medium
+"Primary prevention ICD sudden cardiac death","Cardiology",3,yes,medium
+"Rate versus rhythm control in atrial fibrillation","Cardiology",3,yes,medium
+"Spontaneous coronary artery dissection","Cardiology",3,yes,medium
 "Suspected melanoma, non-melanoma skin cancer and urgent referral","Dermatology",3,no,medium
+"Acute liver failure transplant referral","Gastroenterology",3,yes,medium
+"Acute severe ulcerative colitis rescue therapy","Gastroenterology",3,yes,medium
+"Cirrhosis ascites and spontaneous bacterial peritonitis","Gastroenterology",3,yes,medium
+"Acute pancreatitis fluid and nutrition strategy","General Medicine",3,yes,medium
+"Alcohol-associated hepatitis corticosteroids","General Medicine",3,yes,medium
+"Alport syndrome and inherited collagen nephropathies","General Medicine",3,yes,medium
+"Amyotrophic lateral sclerosis disease-modifying therapy","General Medicine",3,yes,medium
+"Aneurysmal subarachnoid hemorrhage management","General Medicine",3,yes,medium
+"Antithrombotic therapy after TAVR","General Medicine",3,yes,medium
+"Autoimmune hepatitis immunosuppression","General Medicine",3,yes,medium
+"C3 glomerulopathy and complement inhibition","General Medicine",3,yes,medium
+"Cardiogenic shock mechanical circulatory support","General Medicine",3,yes,medium
+"Cardiorenal syndrome ultrafiltration","General Medicine",3,yes,medium
+"Cerebral venous thrombosis anticoagulation","General Medicine",3,yes,medium
+"Cholangiocarcinoma systemic therapy","General Medicine",3,yes,medium
+"Choledocholithiasis and acute cholangitis endoscopy","General Medicine",3,yes,medium
+"Chronic inflammatory demyelinating polyneuropathy treatment","General Medicine",3,yes,medium
+"CKD mineral and bone disorder","General Medicine",3,yes,medium
+"Complete revascularization after STEMI","General Medicine",3,yes,medium
+"Conservative oxygen therapy in mechanically ventilated patients","General Medicine",3,yes,medium
+"Degenerative cervical myelopathy management","General Medicine",3,yes,medium
 "DNACPR, treatment escalation planning and advance care planning","General Medicine",3,no,medium
 "Drug allergy assessment and penicillin allergy de-labelling","General Medicine",3,no,medium
+"Dual antiplatelet therapy duration after PCI","General Medicine",3,yes,medium
+"Epilepsy antiseizure medication selection","General Medicine",3,yes,medium
+"Essential thrombocythemia: cytoreduction with hydroxyurea versus anagrelide","General Medicine",3,yes,medium
+"Essential tremor procedural and medical therapy","General Medicine",3,yes,medium
+"Fever management in critically ill patients","General Medicine",3,yes,medium
+"FSGS sparsentan and supportive therapy","General Medicine",3,yes,medium
+"GERD refractory symptoms and antireflux surgery","General Medicine",3,yes,medium
+"Glycemic control in critical illness","General Medicine",3,yes,medium
+"Guillain-Barre syndrome immunotherapy","General Medicine",3,yes,medium
+"Hemodialysis adequacy and frequency","General Medicine",3,yes,medium
+"Heparin-induced thrombocytopenia: diagnosis and management","General Medicine",3,yes,medium
+"Hepatorenal syndrome vasoconstrictor therapy","General Medicine",3,yes,medium
+"Hereditary hemochromatosis diagnosis and phlebotomy","General Medicine",3,yes,medium
+"Huntington disease chorea management","General Medicine",3,yes,medium
+"Hyponatremia diagnosis and correction","General Medicine",3,yes,medium
+"Icosapent ethyl residual cardiovascular risk","General Medicine",3,yes,medium
+"IgA nephropathy treatment (sparsentan and targeted therapy)","General Medicine",3,yes,medium
+"Intracerebral hemorrhage acute management","General Medicine",3,yes,medium
 "Intravenous fluid prescribing and fluid balance management","General Medicine",3,no,medium
+"JAK2 mutation and the pathogenesis of myeloproliferative neoplasms","General Medicine",3,yes,medium
+"Mitral regurgitation TEER MitraClip","General Medicine",3,yes,medium
+"Myelodysplastic syndrome: azacitidine hypomethylating therapy","General Medicine",3,yes,medium
+"Myelofibrosis: JAK inhibition with ruxolitinib","General Medicine",3,yes,medium
+"Neuromyelitis optica spectrum disorder biologic therapy","General Medicine",3,yes,medium
+"Neuropathic pain pharmacotherapy","General Medicine",3,yes,medium
+"Noninvasive ventilation for acute respiratory failure","General Medicine",3,yes,medium
 "Oxygen prescribing, target saturations and hypoxia management","General Medicine",3,no,medium
+"PCSK9 inhibitor cardiovascular outcomes","General Medicine",3,yes,medium
+"Peripheral artery disease antithrombotic therapy","General Medicine",3,yes,medium
+"Physiology-guided PCI fractional flow reserve","General Medicine",3,yes,medium
+"Polycythemia vera: hematocrit targets, aspirin, and cardiovascular risk reduction","General Medicine",3,yes,medium
+"Portal hypertension and variceal bleeding","General Medicine",3,yes,medium
+"Post-MI beta-blocker therapy contemporary evidence","General Medicine",3,yes,medium
+"Primary membranous nephropathy immunosuppression","General Medicine",3,yes,medium
+"Primary sclerosing cholangitis medical therapy and surveillance","General Medicine",3,yes,medium
+"Radial versus femoral access for PCI","General Medicine",3,yes,medium
+"Recurrent nephrolithiasis medical prevention","General Medicine",3,yes,medium
+"Restless legs syndrome treatment","General Medicine",3,yes,medium
+"Rheumatic valvular disease anticoagulation","General Medicine",3,yes,medium
+"Sickle cell disease: hydroxyurea therapy and crisis prevention","General Medicine",3,yes,medium
+"Stable angina medical therapy versus PCI","General Medicine",3,yes,medium
+"Status epilepticus emergency treatment","General Medicine",3,yes,medium
+"Status epilepticus pharmacotherapy","General Medicine",3,yes,medium
+"STEMI primary PCI reperfusion","General Medicine",3,yes,medium
+"Thrombotic thrombocytopenic purpura: caplacizumab and plasma exchange","General Medicine",3,yes,medium
+"Thrombus aspiration in STEMI","General Medicine",3,yes,medium
+"Transient ischemic attack rapid assessment","General Medicine",3,yes,medium
+"Traumatic brain injury intracranial pressure management","General Medicine",3,yes,medium
+"Tricuspid regurgitation TEER","General Medicine",3,yes,medium
 "Emergency contraception: mechanisms, timing and clinical guidance","Gynaecology",3,no,medium
 "Menopause and hormone replacement therapy: evidence and guidance","Gynaecology",3,no,medium
 "Miscarriage: diagnosis, classification and management","Gynaecology",3,no,medium
+"Ovarian cancer PARP inhibitor maintenance therapy","Gynaecology",3,yes,medium
+"Autoimmune haemolytic anaemia: steroids and rituximab","Haematology",3,yes,medium
+"Chronic lymphocytic leukaemia: chemoimmunotherapy with FCR","Haematology",3,yes,medium
+"Chronic lymphocytic leukaemia: ibrutinib and venetoclax-based targeted therapy","Haematology",3,yes,medium
+"Chronic myeloid leukaemia: imatinib and second-generation TKI therapy","Haematology",3,yes,medium
+"Haemophilia A: factor VIII prophylaxis and emicizumab for inhibitor patients","Haematology",3,yes,medium
+"Hodgkin lymphoma: brentuximab vedotin frontline therapy","Haematology",3,yes,medium
+"Multiple myeloma daratumumab-based regimens","Haematology",3,yes,medium
+"Multiple myeloma: autologous stem cell transplantation","Haematology",3,yes,medium
+"Multiple myeloma: daratumumab-based frontline therapy","Haematology",3,yes,medium
+"Multiple myeloma: VRd versus Rd for newly diagnosed disease","Haematology",3,yes,medium
+"Platelet transfusion thresholds in haematological malignancies","Haematology",3,yes,medium
 "Transfusion-Transmitted Infections Screening","Haematology",3,yes,medium
+"ICU renal replacement therapy initiation timing","ICU / Critical Care",3,yes,medium
+"Lung-protective ventilation strategy in ARDS","ICU / Critical Care",3,yes,medium
+"Protocol-based versus goal-directed resuscitation in septic shock","ICU / Critical Care",3,yes,medium
+"Sepsis-3 definitions and clinical criteria","ICU / Critical Care",3,yes,medium
+"Severe acute pancreatitis ICU management","ICU / Critical Care",3,yes,medium
+"Surviving Sepsis Campaign guidelines and care bundles","ICU / Critical Care",3,yes,medium
+"Acute bacterial meningitis adjunctive dexamethasone","Infectious Diseases",3,yes,medium
+"Chronic hepatitis B antiviral therapy","Infectious Diseases",3,yes,medium
+"Hepatitis C virus direct-acting antiviral therapy","Infectious Diseases",3,yes,medium
+"Herpes simplex encephalitis antiviral therapy","Infectious Diseases",3,yes,medium
+"Infective endocarditis antibiotic duration and surgery","Infectious Diseases",3,yes,medium
 "Acute and chronic pain assessment and opioid safety","MSK",3,no,medium
 "Carpal tunnel syndrome: diagnosis and management","MSK",3,no,medium
 "Lateral epicondylitis (tennis elbow): assessment and management","MSK",3,no,medium
+"ANCA-associated vasculitis renal disease","Nephrology",3,yes,medium
+"Atherosclerotic renal artery stenosis revascularization","Nephrology",3,yes,medium
+"Autosomal dominant polycystic kidney disease tolvaptan","Nephrology",3,yes,medium
+"BK polyomavirus nephropathy in kidney transplant","Nephrology",3,yes,medium
+"Contrast-associated acute kidney injury prevention","Nephrology",3,yes,medium
+"Diabetic kidney disease finerenone","Nephrology",3,yes,medium
+"Dialysis initiation timing in advanced CKD","Nephrology",3,yes,medium
+"Kidney transplant antibody-mediated rejection","Nephrology",3,yes,medium
+"Kidney transplantation maintenance immunosuppression","Nephrology",3,yes,medium
+"Living kidney donor evaluation and long-term risk","Nephrology",3,yes,medium
+"Peritoneal dialysis peritonitis and catheter infection","Nephrology",3,yes,medium
+"Hepatic encephalopathy recurrence prevention","Neurology",3,yes,medium
+"Left atrial appendage occlusion for AF stroke prevention","Neurology",3,yes,medium
+"Lewy body dementia diagnosis and symptomatic therapy","Neurology",3,yes,medium
+"Myasthenia gravis targeted immunotherapy","Neurology",3,yes,medium
+"Parkinson disease motor complications","Neurology",3,yes,medium
+"Patent foramen ovale closure after cryptogenic stroke","Neurology",3,yes,medium
 "Rehabilitation after stroke: principles and evidence","Neurology",3,no,medium
+"Colorectal cancer screening and FIT strategy","Oncology",3,yes,medium
+"Hepatocellular carcinoma systemic therapy","Oncology",3,yes,medium
+"Metastatic castration-sensitive prostate cancer","Oncology",3,yes,medium
+"Pancreatic cancer systemic and adjuvant therapy","Oncology",3,yes,medium
+"Triple-negative breast cancer immunotherapy","Oncology",3,yes,medium
 "Orbital and periorbital cellulitis: classification and management","Ophthalmology",3,no,medium
 "Retinal detachment: presentation and emergency management","Ophthalmology",3,no,medium
 "Compartment syndrome: diagnosis and emergency management","Orthopaedics",3,no,medium
@@ -83,9 +363,11 @@ topic,specialty,total_mcqs,has_paper_synopsis,priority
 "Paediatric asthma: diagnosis, assessment and stepwise management","Paediatrics",3,no,medium
 "Eating disorders and refeeding syndrome","Psychiatry",3,no,medium
 "Mental capacity, consent and best-interest decisions","Psychiatry",3,no,medium
+"Pulmonary artery catheter utility in critically ill patients","Pulmonology",3,yes,medium
 "Pulmonary Veno-Occlusive Disease","Pulmonology",3,yes,medium
 "CT head and CT pulmonary angiography: common acute findings","Radiology",3,no,medium
 "Seronegative Rheumatoid Arthritis","Rheumatology",3,yes,medium
+"Small bowel obstruction secondary to adhesions vs hernias","Surgery",3,no,medium
 "Perioperative diabetes management","Anaesthetics",4,no,low
 "Postoperative nausea and vomiting: prevention and treatment","Anaesthetics",4,no,low
 "ECG interpretation: common acute findings and life-threatening arrhythmias","Cardiology",4,no,low
@@ -125,6 +407,11 @@ topic,specialty,total_mcqs,has_paper_synopsis,priority
 "Protein-Losing Enteropathy","Gastroenterology",4,yes,low
 "Variceal Haemorrhage","Gastroenterology",4,yes,low
 "Zenker's Diverticulum","Gastroenterology",4,yes,low
+"Acute necrotising pancreatitis and step-up management approach","General Medicine",4,no,low
+"Acute necrotising pancreatitis: step-up approach, debridement timing","General Medicine",4,no,low
+"Idiopathic facial nerve palsy (Bell’s palsy): corticosteroid timing, eye care","General Medicine",4,no,low
+"Statin-induced necrotising autoimmune myopathy (HMGCR antibody-associated)","General Medicine",4,no,low
+"Third, fourth, and sixth cranial nerve palsies: pupil-sparing rule in oculomotor palsy","General Medicine",4,no,low
 "Delirium: recognition, risk factors, prevention and management","Geriatrics",4,no,low
 "Dementia: behavioural and psychological symptoms management","Geriatrics",4,no,low
 "Falls assessment and prevention in older adults","Geriatrics",4,no,low
@@ -349,41 +636,52 @@ topic,specialty,total_mcqs,has_paper_synopsis,priority
 "Schnitzler Syndrome","Rheumatology",4,yes,low
 "SLE: SLICC 2012 and ACR/EULAR 2019 classification criteria compared","Rheumatology",4,yes,low
 "Trochanteric Bursitis","Rheumatology",4,yes,low
+"Diverticulitis classifications (Hinchey) and surgical indications","Surgery",4,no,low
 "Postoperative ileus: prevention and management","Surgery",4,no,low
 "Surgical site infection: prevention and management","Surgery",4,no,low
-"Sedation minimization and analgesia-first in ICU","",5,yes,low
+"Sedation minimization and analgesia-first in ICU","Anaesthetics",5,yes,low
 "Klinefelter syndrome 47XXY: testosterone deficiency, fertility options, metabolic risks","Endocrinology & Diabetes",5,yes,low
 "Wolfram syndrome DIDMOAD: diabetes insipidus, DM, optic atrophy, deafness","Endocrinology & Diabetes",5,yes,low
+"haematological malignancy","General Medicine",5,yes,low
+"hyperuricaemia","General Medicine",5,yes,low
+"spontaneous bacterial peritonitis","General Medicine",5,yes,low
 "Clostridioides difficile infection: severity grading, vancomycin, fidaxomicin, FMT, bezlotoxumab","Infectious Diseases",5,yes,low
 "Norovirus and healthcare-associated outbreaks: cohorting, ward closure, environmental decontamination","Infectious Diseases",5,yes,low
+"tissue plasminogen activator acute ischemic stroke","Neurology",5,yes,low
 "Pseudomyxoma Peritonei and HIPEC","Oncology",5,yes,low
+"self-harm","Psychiatry",5,no,low
 "Asthma severity classification and step-care","Pulmonology",5,yes,low
 "Acute gout attack in hospital: colchicine contraindications, IV corticosteroids, IL-1 inhibition","Rheumatology",5,yes,low
 "CIRT and CANTOS trials: methotrexate and canakinumab for cardiovascular inflammation","Rheumatology",5,yes,low
 "Lupus nephritis: ISN/RPS classification, biopsy indications, induction therapy","Rheumatology",5,yes,low
 "Rheumatoid arthritis: ACR/EULAR 2010 classification criteria, RF and anti-CCP serology","Rheumatology",5,yes,low
-"Achalasia endoscopic and surgical therapy","",7,yes,low
-"VTE prophylaxis in mechanically ventilated ICU patients","",7,yes,low
-"Acute liver failure: management and prognostic criteria","",8,yes,low
-"Cardiac rehabilitation after myocardial infarction","",8,yes,low
-"HER2 positive breast cancer adjuvant trastuzumab","",8,yes,low
-"Hypertrophic cardiomyopathy myosin inhibitor therapy","",8,yes,low
-"Migraine CGRP monoclonal antibody prevention","",8,yes,low
-"Non-alcoholic fatty liver disease pharmacotherapy","",8,yes,low
-"Obstructive sleep apnea CPAP cardiovascular outcomes","",8,yes,low
-"Pediatric ALL immunotherapy and targeted therapy","",8,yes,low
-"Perioperative bridging anticoagulation","",8,yes,low
-"Primary biliary cholangitis pharmacotherapy","",8,yes,low
-"Sickle cell disease gene editing","",8,yes,low
-"Syncope evaluation and pacing indications","",8,yes,low
+"VTE prophylaxis in mechanically ventilated ICU patients","ICU / Critical Care",7,yes,low
+"Achalasia endoscopic and surgical therapy","Surgery",7,yes,low
+"Perioperative bridging anticoagulation","Anaesthetics",8,yes,low
+"Acute coronary syndrome antiplatelet strategy","Cardiology",8,yes,low
+"Cardiac rehabilitation after myocardial infarction","Cardiology",8,yes,low
+"Acute liver failure: management and prognostic criteria","Gastroenterology",8,yes,low
 "Bariatric Surgery Complications","Gastroenterology",8,yes,low
 "Cholelithiasis and Biliary Colic","Gastroenterology",8,yes,low
 "Colonic Polyp Management","Gastroenterology",8,yes,low
 "ERCP indications and complications","Gastroenterology",8,yes,low
 "IBD in Pregnancy","Gastroenterology",8,yes,low
+"Non-alcoholic fatty liver disease pharmacotherapy","Gastroenterology",8,yes,low
 "Obscure GI Bleeding","Gastroenterology",8,yes,low
+"Primary biliary cholangitis pharmacotherapy","Gastroenterology",8,yes,low
 "Sphincter of Oddi Dysfunction","Gastroenterology",8,yes,low
+"COVID-19 severe disease immunomodulation","General Medicine",8,yes,low
+"Hypertension treatment intensity","General Medicine",8,yes,low
+"Hypertrophic cardiomyopathy myosin inhibitor therapy","General Medicine",8,yes,low
+"LDL lowering and ASCVD prevention","General Medicine",8,yes,low
+"Major depressive disorder pharmacotherapy","General Medicine",8,yes,low
+"MRSA bacteremia treatment","General Medicine",8,yes,low
+"Obstructive sleep apnea CPAP cardiovascular outcomes","General Medicine",8,yes,low
+"Preeclampsia prevention aspirin","General Medicine",8,yes,low
+"Sickle cell disease gene editing","General Medicine",8,yes,low
+"Syncope evaluation and pacing indications","General Medicine",8,yes,low
 "Acute Haemolytic Transfusion Reactions","Haematology",8,yes,low
+"Acute myeloid leukemia venetoclax azacitidine","Haematology",8,yes,low
 "Amegakaryocytic Thrombocytopenia","Haematology",8,yes,low
 "AML Transformed from MPN","Haematology",8,yes,low
 "Anticoagulation in Malignancy","Haematology",8,yes,low
@@ -415,6 +713,7 @@ topic,specialty,total_mcqs,has_paper_synopsis,priority
 "AKI in Critical Illness and Sepsis","Nephrology",8,yes,low
 "Anti-GBM Disease and Goodpasture Syndrome","Nephrology",8,yes,low
 "BK Virus Nephropathy Post-Transplant","Nephrology",8,yes,low
+"Chronic kidney disease SGLT2 inhibitors","Nephrology",8,yes,low
 "Conservative Management of CKD","Nephrology",8,yes,low
 "Contrast-Induced AKI","Nephrology",8,yes,low
 "Donor-Specific Antibodies and Sensitisation","Nephrology",8,yes,low
@@ -428,8 +727,12 @@ topic,specialty,total_mcqs,has_paper_synopsis,priority
 "Slowing CKD Progression","Nephrology",8,yes,low
 "Tuberous Sclerosis and Renal Angiomyolipoma","Nephrology",8,yes,low
 "Acute cholecystitis and ascending cholangitis: Tokyo Guidelines management","Neurology",8,yes,low
+"Acute ischemic stroke reperfusion","Neurology",8,yes,low
 "Incarcerated and strangulated inguinal, femoral, and ventral hernias","Neurology",8,yes,low
+"Migraine CGRP monoclonal antibody prevention","Neurology",8,yes,low
+"Breast cancer adjuvant endocrine therapy","Oncology",8,yes,low
 "Dyspnoea and Breathlessness in Advanced Cancer","Oncology",8,yes,low
+"HER2 positive breast cancer adjuvant trastuzumab","Oncology",8,yes,low
 "Hyperviscosity Syndrome","Oncology",8,yes,low
 "Meningioma and Intracranial Tumours","Oncology",8,yes,low
 "Multiple Myeloma Induction and Transplant","Oncology",8,yes,low
@@ -437,6 +740,8 @@ topic,specialty,total_mcqs,has_paper_synopsis,priority
 "Precision Oncology and Molecular Profiling","Oncology",8,yes,low
 "Retroperitoneal Sarcoma and Rare Sarcomas","Oncology",8,yes,low
 "Squamous Cell Carcinoma of Head and Neck","Oncology",8,yes,low
+"Pediatric ALL immunotherapy and targeted therapy","Paediatrics",8,yes,low
+"Asthma reliever controller strategy","Pulmonology",8,yes,low
 "Parapneumonic Effusion and Empyema","Pulmonology",8,yes,low
 "Accelerated Atherosclerosis in Chronic Inflammation","Rheumatology",8,yes,low
 "Dermatomyositis and Antisynthetase Syndrome","Rheumatology",8,yes,low
@@ -534,15 +839,121 @@ topic,specialty,total_mcqs,has_paper_synopsis,priority
 "Tocilizumab in giant cell arteritis: GiACTA trial, steroid sparing, remission","Rheumatology",9,yes,low
 "Treat-to-target in spondyloarthritis: ASDAS remission, ASAS partial remission criteria","Rheumatology",9,yes,low
 "Uveitis in JIA: silent inflammation, slit-lamp screening, methotrexate, adalimumab","Rheumatology",9,yes,low
+"acute coronary syndrome","Cardiology",10,yes,low
+"acute heart failure decompensation","Cardiology",10,yes,low
+"ischaemic heart disease","Cardiology",10,yes,low
+"eczema","Dermatology",10,yes,low
+"acute otitis media","ENT",10,yes,low
+"inflammatory bowel disease","Gastroenterology",10,yes,low
+"liver cirrhosis","Gastroenterology",10,yes,low
+"liver transplant referral","Gastroenterology",10,yes,low
+"abnormal uterine bleeding","General Medicine",10,yes,low
+"ACLS algorithms","General Medicine",10,yes,low
+"acute abdomen","General Medicine",10,yes,low
+"acute thrombolysis","General Medicine",10,yes,low
+"agitation","General Medicine",10,yes,low
+"angioedema","General Medicine",10,yes,low
+"anticoagulation management","General Medicine",10,yes,low
+"antiepileptic drug choice","General Medicine",10,yes,low
+"arterial leg ulcer","General Medicine",10,yes,low
+"ascites","General Medicine",10,yes,low
+"benign prostatic hyperplasia","General Medicine",10,yes,low
+"cardiovascular risk modification","General Medicine",10,yes,low
+"coagulation disorders","General Medicine",10,yes,low
+"collapse","General Medicine",10,yes,low
+"deep vein thrombosis","General Medicine",10,yes,low
+"dengue","General Medicine",10,yes,low
+"dermatitis","General Medicine",10,yes,low
+"dexamethasone COVID-19 hospitalized mechanical ventilation mortality","General Medicine",10,yes,low
+"difficult airway","General Medicine",10,yes,low
+"early pregnancy bleeding","General Medicine",10,yes,low
+"electrolyte disturbances","General Medicine",10,yes,low
+"erysipelas","General Medicine",10,yes,low
+"failure to thrive","General Medicine",10,yes,low
+"fever in returning traveller","General Medicine",10,yes,low
+"folate deficiency","General Medicine",10,yes,low
+"gastroenteritis","General Medicine",10,yes,low
+"gestational diabetes","General Medicine",10,yes,low
+"hyperemesis gravidarum","General Medicine",10,yes,low
+"Hypertension","General Medicine",10,yes,low
+"hypertensive disorders of pregnancy","General Medicine",10,yes,low
+"inotrope use","General Medicine",10,yes,low
+"MASLD","General Medicine",10,yes,low
+"MS initial presentation","General Medicine",10,yes,low
+"NASH","General Medicine",10,yes,low
+"neuropathic leg ulcer","General Medicine",10,yes,low
+"new airway devices","General Medicine",10,yes,low
+"obesity management","General Medicine",10,yes,low
+"obstructive sleep apnoea","General Medicine",10,yes,low
+"obstructive uropathy","General Medicine",10,yes,low
+"opioid-sparing analgesia","General Medicine",10,yes,low
+"outpatient diabetes control","General Medicine",10,yes,low
+"pancreatitis complications","General Medicine",10,yes,low
+"parkinsonism","General Medicine",10,yes,low
+"peri-procedural anticoagulation","General Medicine",10,yes,low
+"peripheral arterial disease","General Medicine",10,yes,low
+"peripheral neuropathy","General Medicine",10,yes,low
+"portal hypertension","General Medicine",10,yes,low
+"post-operative respiratory failure","General Medicine",10,yes,low
+"psychosis","General Medicine",10,yes,low
+"radiculopathy","General Medicine",10,yes,low
+"RCRI score","General Medicine",10,yes,low
+"recurrent chest infections","General Medicine",10,yes,low
+"relapse prevention","General Medicine",10,yes,low
+"respiratory tract infections","General Medicine",10,yes,low
+"safeguarding","General Medicine",10,yes,low
+"sciatica","General Medicine",10,yes,low
+"secondary care mental health","General Medicine",10,yes,low
+"shoulder pathology","General Medicine",10,yes,low
+"TB screening","General Medicine",10,yes,low
+"temporal arteritis","General Medicine",10,yes,low
+"tendinopathies","General Medicine",10,yes,low
+"TIA","General Medicine",10,yes,low
+"tonsillitis","General Medicine",10,yes,low
+"trauma resuscitation","General Medicine",10,yes,low
+"triple inhaler therapy","General Medicine",10,yes,low
+"type 1 diabetes management","General Medicine",10,yes,low
+"type 2 diabetes management","General Medicine",10,yes,low
+"typhoid","General Medicine",10,yes,low
+"variceal GI bleeding","General Medicine",10,yes,low
+"venous leg ulcer","General Medicine",10,yes,low
+"viral hepatitis C","General Medicine",10,yes,low
+"vitamin B12 deficiency","General Medicine",10,yes,low
+"withdrawal syndrome","General Medicine",10,yes,low
+"frailty assessment","Geriatrics",10,yes,low
+"vasopressor use cardiogenic shock","ICU / Critical Care",10,yes,low
+"H. pylori infection","Infectious Diseases",10,yes,low
+"low back pain","MSK",10,yes,low
+"red flags back pain","MSK",10,yes,low
+"chronic kidney disease","Nephrology",10,yes,low
+"pre-renal acute kidney injury","Nephrology",10,yes,low
+"renal colic","Nephrology",10,yes,low
+"dementia vs delirium","Neurology",10,yes,low
+"ischaemic stroke","Neurology",10,yes,low
+"migraine","Neurology",10,yes,low
+"multiple sclerosis","Neurology",10,yes,low
+"Parkinson's disease","Neurology",10,yes,low
+"secondary stroke prevention","Neurology",10,yes,low
+"alcohol use disorder","Psychiatry",10,yes,low
+"anxiety disorder","Psychiatry",10,yes,low
+"suicide risk assessment","Psychiatry",10,yes,low
+"acute asthma exacerbation","Pulmonology",10,yes,low
+"biological therapy for asthma","Pulmonology",10,yes,low
 "Cardiopulmonary Exercise Testing","Pulmonology",10,yes,low
+"childhood asthma","Pulmonology",10,yes,low
+"COPD management","Pulmonology",10,yes,low
+"GOLD COPD strategies","Pulmonology",10,yes,low
+"interstitial lung disease","Pulmonology",10,yes,low
+"lung cancer","Pulmonology",10,yes,low
+"bowel obstruction","Surgery",10,yes,low
 "Blood culture technique: timing, volume, number of sets, contamination rates","Infectious Diseases",11,yes,low
 "Biologics and malignancy risk: lymphoma, solid tumours, non-melanoma skin cancer","Rheumatology",11,yes,low
-"Intermediate-risk pulmonary embolism reperfusion","",12,yes,low
-"Rheumatoid arthritis initial DMARD strategy","",12,yes,low
+"Intermediate-risk pulmonary embolism reperfusion","Pulmonology",12,yes,low
 "ORAL Surveillance trial: cardiovascular safety of tofacitinib vs TNFi in RA","Rheumatology",12,yes,low
-"Chronic myeloid leukemia imatinib","",13,yes,low
-"Metabolic acidosis in chronic kidney disease","",13,yes,low
+"Rheumatoid arthritis initial DMARD strategy","Rheumatology",12,yes,low
+"Chronic myeloid leukemia imatinib","Haematology",13,yes,low
 "CMV disease in immunocompromised: retinitis, colitis, pneumonitis, ganciclovir, valganciclovir","Infectious Diseases",13,yes,low
+"Metabolic acidosis in chronic kidney disease","Nephrology",13,yes,low
 "Pre-Eclampsia and Renal Disease","Nephrology",13,yes,low
 "Hypercalcaemia of Malignancy","Oncology",13,yes,low
 "Hard Metal Lung Disease","Pulmonology",13,yes,low
