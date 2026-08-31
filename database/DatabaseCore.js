@@ -121,6 +121,7 @@ async initialize() {
         await this.run(migrationsDdlPg);
 
         this.pgUsersIdType = await this.detectPgUsersIdType();
+        this.pgUuidTables = await this.detectPgUuidTables();
 
         // Always run production_schema.sql, not just on first boot. Every statement in
         // that file is CREATE TABLE/INDEX IF NOT EXISTS, so this is a safe no-op against
@@ -263,6 +264,9 @@ async runMigrations() {
                     if (!this.pgUsersIdType) {
                         this.pgUsersIdType = await this.detectPgUsersIdType();
                     }
+                    if (!this.pgUuidTables) {
+                        this.pgUuidTables = await this.detectPgUuidTables();
+                    }
                     statement = convertSqliteDdlToPostgres(statement, this.pgDdlOptions());
                 }
                 try {
@@ -305,8 +309,33 @@ async detectPgUsersIdType() {
     }
 }
 
+/**
+ * Every public table whose `id` column is uuid in THIS database.
+ *
+ * The migration files are written in SQLite DDL, where ids are INTEGER/TEXT, but
+ * production was bootstrapped with uuid primary keys. A migration adding
+ * `col TEXT REFERENCES parent(id)` therefore fails on Postgres with "foreign key
+ * constraint cannot be implemented". Feeding this set to the DDL converter lets it
+ * widen those columns automatically instead of each migration hard-coding a type.
+ */
+async detectPgUuidTables() {
+    if (!this.isPostgres || !this.pool) return new Set();
+    try {
+        const res = await this.pool.query(
+            `SELECT table_name FROM information_schema.columns
+             WHERE table_schema = 'public' AND column_name = 'id' AND data_type = 'uuid'`
+        );
+        return new Set(res.rows.map((r) => r.table_name));
+    } catch {
+        return new Set();
+    }
+}
+
 pgDdlOptions() {
-    return { usersIdType: this.pgUsersIdType || 'text' };
+    return {
+        usersIdType: this.pgUsersIdType || 'text',
+        uuidTables: this.pgUuidTables || new Set(),
+    };
 }
 
 toPgQuery(sql) {

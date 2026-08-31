@@ -49,6 +49,41 @@ function convertSqliteDdlToPostgres(sql, options = {}) {
         }
     }
 
+    // Generalisation of the users(id) handling above: any parent table whose primary
+    // key is uuid in this database needs its referencing columns widened too, or
+    // Postgres rejects the FK with "cannot be implemented / incompatible types".
+    // `uuidTables` is the set of such table names, supplied by the caller.
+    const uuidTables = options.uuidTables instanceof Set
+        ? options.uuidTables
+        : new Set(Array.isArray(options.uuidTables) ? options.uuidTables : []);
+
+    for (const table of uuidTables) {
+        if (table === 'users') continue; // already handled above
+        const t = String(table).replace(/[^a-zA-Z0-9_]/g, '');
+        if (!t) continue;
+
+        // Inline: `col TEXT [NOT NULL] REFERENCES <table>(id)`
+        const inlineRe = new RegExp(
+            String.raw`([a-zA-Z_][a-zA-Z0-9_]*)\s+(?:TEXT|INTEGER)((?:\s+NOT\s+NULL)?)\s+REFERENCES\s+`
+            + t + String.raw`\s*\(\s*id\s*\)`,
+            'gi'
+        );
+        out = out.replace(inlineRe, (_m, col, notNull) => `${col} UUID${notNull} REFERENCES ${t}(id)`);
+
+        // Table-level: `FOREIGN KEY (col) REFERENCES <table>(id)` with `col` declared apart.
+        const tableLevelRe = new RegExp(
+            String.raw`FOREIGN\s+KEY\s*\(\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*\)\s*REFERENCES\s+`
+            + t + String.raw`\s*\(\s*id\s*\)`,
+            'gi'
+        );
+        const cols = new Set();
+        let m;
+        while ((m = tableLevelRe.exec(out)) !== null) cols.add(m[1]);
+        for (const col of cols) {
+            out = out.replace(new RegExp(String.raw`` + col + String.raw`\s+(?:TEXT|INTEGER)`, 'gi'), `${col} UUID`);
+        }
+    }
+
     return out;
 }
 

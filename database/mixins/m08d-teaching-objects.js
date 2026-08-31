@@ -35,11 +35,17 @@ async upsertTeachingObject(object = {}) {
     const topic = object.topic ? String(object.topic).trim().slice(0, 240) : null;
     const normalizedTopic = object.normalizedTopic || (topic ? this.normalizeTopic(topic) : null);
     const articleUid = object.articleUid ? String(object.articleUid).trim().slice(0, 240) : null;
+    // Resolve the topic on write. Without this the row is only reachable by exact
+    // string match, which is how 31% of teaching content became orphaned.
+    const curriculumTopicId = topic
+        ? await this.resolveCurriculumTopicId(topic).catch(() => null)
+        : null;
     await this.run(
         `INSERT INTO teaching_objects (
             object_key, object_type, article_uid, normalized_topic, topic, title,
-            object_payload, provider, model, confidence, review_state, generated_at, created_at, updated_at
-         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            object_payload, provider, model, confidence, review_state, generated_at, created_at, updated_at,
+            curriculum_topic_id
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON CONFLICT(object_key) DO UPDATE SET
             object_type = excluded.object_type,
             article_uid = excluded.article_uid,
@@ -57,7 +63,8 @@ async upsertTeachingObject(object = {}) {
                 ELSE excluded.review_state
             END,
             generated_at = excluded.generated_at,
-            updated_at = excluded.updated_at`,
+            updated_at = excluded.updated_at,
+            curriculum_topic_id = COALESCE(excluded.curriculum_topic_id, teaching_objects.curriculum_topic_id)`,
         [
             objectKey,
             String(object.objectType || 'paper').slice(0, 40),
@@ -73,6 +80,7 @@ async upsertTeachingObject(object = {}) {
             object.generatedAt || now,
             now,
             now,
+            curriculumTopicId,
         ]
     );
     await this.replaceTeachingObjectClaims({
@@ -82,6 +90,63 @@ async upsertTeachingObject(object = {}) {
         claims: object.payload?.claimAnchors || [],
     });
     return this.getTeachingObjectByKey(objectKey);
+}
+
+/**
+ * Resolve any topic string to its curriculum topic id via the alias table.
+ *
+ * Teaching content is written by many pipelines, each of which invented its own
+ * topic wording ("syncope" vs "Syncope evaluation and pacing indications"). Joining
+ * on the raw string left 31% of content unreachable. `topic_aliases` is the single
+ * place that maps a string to a topic, so every reader and writer resolves here.
+ *
+ * @returns {Promise<string|null>} curriculum_topics.id, or null when unknown.
+ */
+async resolveCurriculumTopicId(topic) {
+    const alias = this.normalizeTopic(topic);
+    if (!alias) return null;
+    const hit = await this.get('SELECT curriculum_topic_id FROM topic_aliases WHERE alias_norm = ?', [alias]);
+    if (hit) return hit.curriculum_topic_id;
+    // Fall back to the display name so a topic added after the last backfill still resolves.
+    const direct = await this.get('SELECT id FROM curriculum_topics WHERE LOWER(display_name) = ?', [String(topic || '').trim().toLowerCase()]);
+    return direct ? direct.id : null;
+}
+
+/** Record a string -> topic mapping so the same wording resolves next time. */
+async recordTopicAlias(topic, curriculumTopicId, resolution = 'runtime', confidence = 0.8) {
+    const alias = this.normalizeTopic(topic);
+    if (!alias || !curriculumTopicId) return false;
+    await this.run(
+        'INSERT INTO topic_aliases (id, alias_norm, curriculum_topic_id, resolution, confidence) ' +
+        'VALUES (?, ?, ?, ?, ?) ON CONFLICT (alias_norm) DO NOTHING',
+        [require('crypto').randomUUID(), alias, curriculumTopicId, resolution, confidence]
+    );
+    return true;
+}
+
+/**
+ * Every teaching object for a topic, found through the alias table rather than by
+ * string equality. `types` filters object_type (e.g. the MCQ kinds).
+ */
+async getTeachingObjectsByTopicId(curriculumTopicId, types = []) {
+    if (!curriculumTopicId) return [];
+    const list = Array.isArray(types) ? types.filter(Boolean) : [];
+    const params = [curriculumTopicId];
+    let sql = 'SELECT * FROM teaching_objects WHERE curriculum_topic_id = ?';
+    if (list.length) {
+        sql += ` AND object_type IN (${list.map(() => '?').join(',')})`;
+        params.push(...list);
+    }
+    sql += ' ORDER BY updated_at DESC';
+    const rows = await this.all(sql, params);
+    return rows.map((r) => this.mapTeachingObjectRow(r));
+}
+
+/** Convenience: resolve a topic string then fetch its objects. */
+async getTeachingObjectsForTopicString(topic, types = []) {
+    const id = await this.resolveCurriculumTopicId(topic);
+    if (!id) return [];
+    return this.getTeachingObjectsByTopicId(id, types);
 }
 
 async getTeachingObjectByKey(objectKey) {

@@ -86,15 +86,31 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
 
     async function serveColdStartMCQs(database, topic, count, userId = null) {
         try {
+            // Fetch by resolved curriculum topic rather than by object key. Key lookup
+            // only matched when the caller's topic string was byte-identical to the
+            // seeder's, which hid a quarter of all MCQs; the alias table absorbs the
+            // wording differences. paper_mcq is included here — it was unreachable
+            // from the topic journey entirely, being served only by the random pool.
+            const byTopic = await database
+                .getTeachingObjectsForTopicString(topic, ['cold_start_mcq', 'guideline_mcq', 'live_quiz_mcq', 'paper_mcq'])
+                .catch(() => []);
+            const firstOfType = (type) => byTopic.find((o) => o.objectType === type) || null;
+
+            // Key lookup remains as a fallback for objects written before the backfill.
             const [coldObj, guidelineObj, liveObj] = await Promise.all([
-                database.getTeachingObjectByKey(coldStartMcqKey(database, topic)),
-                database.getTeachingObjectByKey(guidelineMcqKey(database, topic)),
-                database.getTeachingObjectByKey(liveQuizMcqKey(database, topic)),
+                firstOfType('cold_start_mcq') || database.getTeachingObjectByKey(coldStartMcqKey(database, topic)),
+                firstOfType('guideline_mcq') || database.getTeachingObjectByKey(guidelineMcqKey(database, topic)),
+                firstOfType('live_quiz_mcq') || database.getTeachingObjectByKey(liveQuizMcqKey(database, topic)),
             ]);
+            const paperObjs = byTopic.filter((o) => o.objectType === 'paper_mcq');
 
             let liveMcqs = (liveObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'live_cache'));
             let coldMcqs = (coldObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'cold_start'));
             let guidelineMcqs = (guidelineObj?.payload?.mcqs || []).map((q, i) => mapColdStartMcq(q, i, 'guideline'));
+            const paperMcqs = paperObjs
+                .flatMap((o) => o.payload?.mcqs || [])
+                .map((q, i) => mapColdStartMcq(q, i, 'paper'));
+            coldMcqs = coldMcqs.concat(paperMcqs);
 
             if (userId) {
                 const normalizedTopic = database.normalizeTopic(topic);
