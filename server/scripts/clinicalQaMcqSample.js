@@ -59,7 +59,7 @@ async function callGemini(prompt) {
         'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
         {
             method: 'POST',
-            signal: AbortSignal.timeout(60000),
+            timeout: 60000,
             headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
             body: JSON.stringify({
                 contents: [{ role: 'user', parts: [{ text: prompt }] }],
@@ -85,7 +85,7 @@ async function callSonnet(prompt) {
     if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
     const res = await safeFetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
-        signal: AbortSignal.timeout(60000),
+        timeout: 60000,
         headers: { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
         body: JSON.stringify({
             model: 'claude-sonnet-4-6',

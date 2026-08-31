@@ -55,7 +55,7 @@ async function semanticScholarSearch(query, { limit = 15 } = {}) {
     for (let attempt = 0; attempt < 3; attempt++) {
         if (attempt > 0) await sleep(attempt * 1500);
         try {
-            const res = await safeFetch(url, { headers, signal: AbortSignal.timeout(20000) });
+            const res = await safeFetch(url, { headers, timeout: 25000 });
             if (res.status === 429 || res.status === 503) { lastErr = new Error(`status ${res.status}`); continue; }
             if (!res.ok) throw new Error(`status ${res.status}`);
             const data = await res.json();
@@ -70,7 +70,7 @@ async function semanticScholarSearch(query, { limit = 15 } = {}) {
 async function openAlexSearch(query, { limit = 15 } = {}) {
     const email = process.env.NCBI_EMAIL || '';
     const url = `https://api.openalex.org/works?search=${encodeURIComponent(query)}&per-page=${limit}&select=title,publication_year,cited_by_count,primary_location,type,doi,ids${email ? `&mailto=${encodeURIComponent(email)}` : ''}`;
-    const res = await safeFetch(url, { signal: AbortSignal.timeout(20000) });
+    const res = await safeFetch(url, { timeout: 25000 });
     if (!res.ok) throw new Error(`OpenAlex status ${res.status}`);
     const data = await res.json();
     return (data.results || []).map((r) => ({
@@ -98,14 +98,14 @@ const PUBMED_ESUMMARY = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.
 async function pubmedSearch(query, { limit = 15 } = {}) {
     const email = process.env.NCBI_EMAIL || '';
     const searchUrl = `${PUBMED_ESEARCH}?db=pubmed&term=${encodeURIComponent(query)}+AND+review[pt]&retmax=${limit}&sort=relevance&retmode=json${email ? `&email=${encodeURIComponent(email)}` : ''}`;
-    const searchRes = await safeFetch(searchUrl, { signal: AbortSignal.timeout(20000) });
+    const searchRes = await safeFetch(searchUrl, { timeout: 25000 });
     if (!searchRes.ok) throw new Error(`PubMed esearch status ${searchRes.status}`);
     const searchData = await searchRes.json();
     const pmids = searchData.esearchresult?.idlist || [];
     if (!pmids.length) return [];
 
     const summaryUrl = `${PUBMED_ESUMMARY}?db=pubmed&id=${pmids.join(',')}&retmode=json${email ? `&email=${encodeURIComponent(email)}` : ''}`;
-    const summaryRes = await safeFetch(summaryUrl, { signal: AbortSignal.timeout(20000) });
+    const summaryRes = await safeFetch(summaryUrl, { timeout: 25000 });
     if (!summaryRes.ok) throw new Error(`PubMed esummary status ${summaryRes.status}`);
     const summaryData = await summaryRes.json();
     const uids = summaryData.result?.uids || [];

@@ -55,7 +55,7 @@ async function callSonnet(prompt) {
     if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
     const res = await safeFetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
-        signal: AbortSignal.timeout(90000),
+        timeout: 90000,
         headers: {
             'x-api-key': apiKey,
             'anthropic-version': '2023-06-01',
@@ -83,7 +83,7 @@ async function callGemini(prompt) {
         'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
         {
             method: 'POST',
-            signal: AbortSignal.timeout(90000),
+            timeout: 90000,
             headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
             body: JSON.stringify({
                 contents: [{ role: 'user', parts: [{ text: prompt }] }],
@@ -142,6 +142,9 @@ function buildPrompt(doc) {
         '- "strength": use "strong" only if the document itself grades it that way (e.g. GRADE strong, Class I); "conditional" for weak/conditional/Class IIa-b; "not_graded" if the document states no formal grade or none is given.',
         '- Do not invent a recommendation the text does not state. If the document is a single-topic trial report rather than a multi-recommendation guideline, keyRecommendations may have as few as 1 entry -- the trial\'s main finding, stated as a recommendation only if the document itself frames it that way, otherwise as the finding.',
         '- notableCaveats can be an empty array if the document states none.',
+        '- If this document is a correction/erratum notice with no clinical content of its own (only',
+        '  amending a prior publication), keyRecommendations may be an empty array -- state that plainly',
+        '  in clinicalBottomLine (containing the word "correction" or "erratum") rather than fabricating a recommendation.',
         truncationNote,
         '',
         `DOCUMENT TITLE: ${doc.title}`,
@@ -154,7 +157,13 @@ function buildPrompt(doc) {
 function validate(parsed) {
     if (!parsed || typeof parsed !== 'object') return 'not an object';
     if (typeof parsed.scope !== 'string' || !parsed.scope.trim()) return 'missing scope';
-    if (!Array.isArray(parsed.keyRecommendations) || parsed.keyRecommendations.length < 1) return 'missing keyRecommendations';
+    if (!Array.isArray(parsed.keyRecommendations)) return 'missing keyRecommendations';
+    // Some ingested documents are genuinely thin -- an erratum notice, or a
+    // full_text that only captured the abstract/introduction of a longer
+    // guideline. The prompt already tells the model not to fabricate a
+    // recommendation to fill the array, so an empty array plus a
+    // clinicalBottomLine that says as much (checked below, both required
+    // regardless) is a correct output, not a failure to force a retry on.
     for (const r of parsed.keyRecommendations) {
         if (!r || typeof r.text !== 'string' || !r.text.trim()) return 'a recommendation is missing text';
         if (!['strong', 'conditional', 'not_graded'].includes(r.strength)) return `invalid strength: ${r.strength}`;
