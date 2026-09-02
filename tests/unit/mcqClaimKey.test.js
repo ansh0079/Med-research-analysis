@@ -1,4 +1,4 @@
-const { computeMcqClaimKey } = require('../../server/utils/mcqClaimKey');
+const { computeMcqClaimKey, hasSuspectFutureCitation, looksLikeGenerationRefusal } = require('../../server/utils/mcqClaimKey');
 
 describe('computeMcqClaimKey', () => {
     test('returns the existing claimKey unchanged when already set', () => {
@@ -56,8 +56,6 @@ describe('computeMcqClaimKey', () => {
 });
 
 describe('hasSuspectFutureCitation', () => {
-    const { hasSuspectFutureCitation } = require('../../server/utils/mcqClaimKey');
-
     test('flags a fabricated future-dated guideline citation', () => {
         expect(hasSuspectFutureCitation({ question: 'Per NICE 2026 guidance, what is first-line?' })).toBe(true);
         expect(hasSuspectFutureCitation({ explanation: 'A 2027 Dutch nationwide cohort study found...' })).toBe(true);
@@ -86,5 +84,19 @@ describe('hasSuspectFutureCitation', () => {
 
     test('returns false when no fields are present', () => {
         expect(hasSuspectFutureCitation({})).toBe(false);
+    });
+});
+
+describe('looksLikeGenerationRefusal', () => {
+    test('flags a refusal describing missing source content', () => {
+        expect(looksLikeGenerationRefusal({ question: 'This MCQ cannot be generated because the SOURCE_PAPERS lacks specific content.' })).toBe(true);
+    });
+
+    test('flags meta-commentary about the generation task itself', () => {
+        expect(looksLikeGenerationRefusal({ question: "A medical education expert is tasked with creating MCQs about 'Steroids in pneumonia'..." })).toBe(true);
+    });
+
+    test('does not flag a real clinical vignette', () => {
+        expect(looksLikeGenerationRefusal({ question: 'A 62-year-old male presents with dyspnea and is found to have a pleural effusion.' })).toBe(false);
     });
 });

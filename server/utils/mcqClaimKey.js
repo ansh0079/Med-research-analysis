@@ -105,3 +105,20 @@ function hasSuspectFutureCitation(mcq) {
 
 module.exports.hasSuspectFutureCitation = hasSuspectFutureCitation;
 module.exports.SUSPECT_CITATION_YEAR = SUSPECT_CITATION_YEAR;
+
+// When a source synopsis is too thin to ground a real question, the model
+// sometimes returns a structurally valid MCQ object whose "question" is
+// actually a refusal or meta-commentary about the task itself -- e.g.
+// "This MCQ cannot be generated because SOURCE_PAPERS lacks..." or
+// "A medical education expert is tasked with creating MCQs about...".
+// Confirmed against two real generated topics that were 100% this pattern
+// (5/5 questions each) despite passing structural validation. A real
+// clinical vignette does not describe its own creation process.
+const GENERATION_REFUSAL = /\b(cannot be (generated|created)|source_?papers (lacks|does not contain)|is tasked with creating|purportedly on ['"]|medical education expert is)\b/i;
+
+/** True if the MCQ's question text is refusal/meta-commentary, not a real vignette. */
+function looksLikeGenerationRefusal(mcq) {
+    return GENERATION_REFUSAL.test(String(mcq?.question || ''));
+}
+
+module.exports.looksLikeGenerationRefusal = looksLikeGenerationRefusal;

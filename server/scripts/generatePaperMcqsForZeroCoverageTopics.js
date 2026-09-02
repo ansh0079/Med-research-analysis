@@ -31,7 +31,7 @@ loadEnv();
 
 const db = require('../../database');
 const { safeFetch } = require('../utils/fetch');
-const { hasSuspectFutureCitation } = require('../utils/mcqClaimKey');
+const { hasSuspectFutureCitation, looksLikeGenerationRefusal } = require('../utils/mcqClaimKey');
 
 const args = process.argv.slice(2);
 const LIMIT = args.includes('--limit') ? parseInt(args[args.indexOf('--limit') + 1], 10) : 9999;
@@ -145,9 +145,14 @@ async function main() {
     }
     const rows = fs.readFileSync(csvPath, 'utf8').split('\n').slice(1).filter(Boolean);
     let targets = rows.map((line) => {
-        const m = line.match(/^"((?:[^"]|"")*)","((?:[^"]|"")*)",(\w+),(\w+),"((?:[^"]|"")*)"$/);
-        if (!m) return null;
-        return { topic: m[1].replace(/""/g, '"'), specialty: m[2].replace(/""/g, '"'), hasPaperSynopsis: m[3] === 'yes' };
+        // Two shapes seen in the wild: the current 3-column
+        // topic,specialty,has_paper_synopsis, and the older 5-column report
+        // that also carried guideline info. Accept either.
+        const m5 = line.match(/^"((?:[^"]|"")*)","((?:[^"]|"")*)",(\w+),(\w+),"((?:[^"]|"")*)"$/);
+        if (m5) return { topic: m5[1].replace(/""/g, '"'), specialty: m5[2].replace(/""/g, '"'), hasPaperSynopsis: m5[3] === 'yes' };
+        const m3 = line.match(/^"((?:[^"]|"")*)","((?:[^"]|"")*)",(\w+)$/);
+        if (m3) return { topic: m3[1].replace(/""/g, '"'), specialty: m3[2].replace(/""/g, '"'), hasPaperSynopsis: m3[3] === 'yes' };
+        return null;
     }).filter(Boolean).filter((t) => t.hasPaperSynopsis);
 
     targets = targets.slice(0, LIMIT);
@@ -198,12 +203,12 @@ async function main() {
             }
 
             const before = mcqs.length;
-            mcqs = mcqs.filter((m) => !hasSuspectFutureCitation(m));
+            mcqs = mcqs.filter((m) => !hasSuspectFutureCitation(m) && !looksLikeGenerationRefusal(m));
             const rejected = before - mcqs.length;
             rejectedFabricated += rejected;
 
             if (mcqs.length === 0) {
-                console.log(`SKIP (all ${before} generated MCQs cited a fabricated guideline)`);
+                console.log(`SKIP (all ${before} generated MCQs were fabricated citations or generation refusals -- source likely too thin)`);
                 errors++;
                 await sleep(800);
                 continue;
