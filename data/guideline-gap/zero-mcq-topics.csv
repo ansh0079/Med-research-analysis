@@ -1,24 +1,7 @@
-topic,specialty,has_paper_synopsis
-"Sedation minimization and analgesia-first in ICU","Anaesthetics",yes
-"Type 1 vs Type 2 MI: universal definition and clinical differentiation","Cardiology",yes
-"Plaque psoriasis biologic therapy (IL-17/IL-23 inhibitors)","Dermatology",yes
-"Irritable bowel syndrome diet and microbiome-directed therapy","Gastroenterology",yes
-"anticoagulation in atrial","General Medicine",yes
-"continuous positive airway pressure obstructive sleep apnea cardiovascular outcomes SAVE","General Medicine",yes
-"GLP-1 receptor agonists metabolic syndrome","General Medicine",yes
-"HFref best treatment options","General Medicine",yes
-"Intensive care high yield clinical guidelines","General Medicine",yes
-"management of PRESS","General Medicine",yes
-"metformin diabetes","General Medicine",yes
-"metylene blue in vasoplegic shock","General Medicine",yes
-"imatinib versus interferon chronic myeloid leukemia IRIS trial","Haematology",yes
-"ARDS guidelines","ICU / Critical Care",yes
-"sepsis corticosteroids","ICU / Critical Care",yes
-"steroids in septic shock","ICU / Critical Care",yes
-"fecal microbiota transplant recurrent Clostridioides difficile infection","Infectious Diseases",yes
-"trastuzumab adjuvant HER2 positive breast cancer BCIRG 006","Oncology",yes
-"Asthma severity classification and step-care","Pulmonology",yes
-"inhaled corticosteroid long acting beta agonist asthma SMART strategy","Pulmonology",yes
-"Steroids in community acquired pneumonia","Pulmonology",yes
-"Steroids in pneumonia","Pulmonology",yes
-"Steroids in pneumonia for hospitalized patients","Pulmonology",yes
+topic,specialty
+"Irritable bowel syndrome diet and microbiome-directed therapy","Gastroenterology"
+"GLP-1 receptor agonists metabolic syndrome","General Medicine"
+"imatinib versus interferon chronic myeloid leukemia IRIS trial","Haematology"
+"steroids in septic shock","ICU / Critical Care"
+"inhaled corticosteroid long acting beta agonist asthma SMART strategy","Pulmonology"
+"Steroids in pneumonia for hospitalized patients","Pulmonology"

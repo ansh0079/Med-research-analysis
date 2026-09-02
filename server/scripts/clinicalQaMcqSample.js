@@ -224,7 +224,7 @@ async function main() {
                  ON CONFLICT DO NOTHING`,
                 [
                     crypto.randomUUID(), questionId, topic, db.normalizeTopic(topic), 'clinical-qa-sample',
-                    1, verdict === 'flagged' ? 'rejected' : verdict === 'error' ? 'error' : 'approved',
+                    1, verdict === 'flagged' ? 'rejected' : verdict === 'error' ? 'needs_review' : 'passed',
                     JSON.stringify(issues), PROVIDER, PROVIDER === 'anthropic' ? 'claude-sonnet-4-6' : 'gemini-2.5-flash',
                     new Date().toISOString(),
                 ]
