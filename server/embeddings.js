@@ -69,7 +69,13 @@ async function embedHuggingFace(text, hfKey) {
         throw new Error('HUGGINGFACE_TOKEN (or HUGGINGFACE_API_KEY / HF_API_TOKEN) is required for HuggingFace embeddings');
     }
     const model = process.env.HF_EMBEDDING_MODEL || 'sentence-transformers/all-MiniLM-L6-v2';
-    const res = await fetch(`https://api-inference.huggingface.co/pipeline/feature-extraction/${model}`, {
+    // api-inference.huggingface.co was retired and no longer resolves at all
+    // (ENOTFOUND) -- it produced 282 failed embedding calls in a single day on
+    // production, silently degrading every search to keyword-only. router.
+    // huggingface.co is the replacement host. Note the token must additionally
+    // carry the "Inference Providers" permission or this returns 403.
+    const base = process.env.HF_INFERENCE_BASE_URL || 'https://router.huggingface.co/hf-inference';
+    const res = await fetch(`${base}/models/${model}/pipeline/feature-extraction`, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${hfKey}`,
@@ -102,7 +108,16 @@ async function generateEmbedding(text, keys = {}) {
     }
     // default: hf
     const hfKey = keys.huggingfaceKey || process.env.HUGGINGFACE_API_KEY || process.env.HF_API_TOKEN || process.env.HUGGINGFACE_TOKEN;
-    return embedHuggingFace(text, hfKey);
+    const openaiKey = keys.openaiKey || process.env.OPENAI_KEY || process.env.OPENAI_API_KEY;
+    try {
+        return await embedHuggingFace(text, hfKey);
+    } catch (err) {
+        // A single provider outage previously took out all embeddings with no
+        // fallback and no visible signal. Prefer a working provider over failing
+        // the caller; only genuinely unrecoverable when neither is usable.
+        if (openaiKey) return embedOpenAI(text, openaiKey);
+        throw err;
+    }
 }
 
 function articleToEmbedText(article) {

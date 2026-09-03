@@ -100,9 +100,15 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             // seeder's, which hid a quarter of all MCQs; the alias table absorbs the
             // wording differences. paper_mcq is included here — it was unreachable
             // from the topic journey entirely, being served only by the random pool.
-            const byTopic = await database
-                .getTeachingObjectsForTopicString(topic, ['cold_start_mcq', 'guideline_mcq', 'live_quiz_mcq', 'paper_mcq'])
-                .catch(() => []);
+            // Guard the method's existence rather than chaining .catch() onto the call:
+            // if it is absent, invoking it throws synchronously and .catch() never runs,
+            // which took out the whole function via the catch below and returned no MCQs
+            // at all. Key lookup still covers this path, so degrading is safe.
+            const byTopic = typeof database.getTeachingObjectsForTopicString === 'function'
+                ? await database
+                    .getTeachingObjectsForTopicString(topic, ['cold_start_mcq', 'guideline_mcq', 'live_quiz_mcq', 'paper_mcq'])
+                    .catch((err) => { logger?.warn?.({ err, topic }, 'getTeachingObjectsForTopicString failed; falling back to key lookup'); return []; })
+                : [];
             const firstOfType = (type) => byTopic.find((o) => o.objectType === type) || null;
 
             // Key lookup remains as a fallback for objects written before the backfill.
@@ -154,7 +160,12 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             const merged = [...guidelineMcqs, ...liveMcqs, ...coldMcqs].slice(0, count);
 
             return merged.length > 0 ? merged : null;
-        } catch {
+        } catch (err) {
+            // Previously swallowed silently, which hid a hard TypeError in this
+            // function behind an ordinary "no cached MCQs" result -- the topic-grounded
+            // quiz flow served nothing and nothing was logged. Returning null still
+            // degrades gracefully for callers, but the cause is now visible.
+            logger?.error?.({ err, topic }, 'serveColdStartMCQs failed; serving no cached MCQs');
             return null;
         }
     }
