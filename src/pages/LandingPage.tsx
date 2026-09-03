@@ -205,15 +205,24 @@ export const LandingPage: React.FC = () => {
             Start with one clinical topic
           </h2>
           <p className="text-sm leading-relaxed text-[#a8cfc3]">
-            Free to begin. No credit card required.
+            Signal MD is invite-only while in beta. No credit card required.
           </p>
-          <button
-            type="button"
-            onClick={() => navigate('/auth')}
-            className="rounded-lg bg-white px-7 py-3.5 text-sm font-semibold text-[#0f3d34] transition-transform hover:scale-[1.02] active:scale-[0.99]"
-          >
-            Get started
-          </button>
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={() => navigate('/auth')}
+              className="rounded-lg bg-white px-7 py-3.5 text-sm font-semibold text-[#0f3d34] transition-transform hover:scale-[1.02] active:scale-[0.99]"
+            >
+              Redeem invite code
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate('/search')}
+              className="rounded-lg px-7 py-3.5 text-sm font-semibold text-[#a8cfc3] underline-offset-4 transition-colors hover:text-white hover:underline"
+            >
+              Try a search first
+            </button>
+          </div>
         </div>
       </section>
 

@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getConsentChoice, setConsentChoice } from '../../services/consent';
 
-export const CookieConsentBanner: React.FC = () => {
+interface CookieConsentBannerProps {
+  /** Fired once the visitor accepts or declines, so the next notice can be shown in turn. */
+  onDecided?: () => void;
+}
+
+export const CookieConsentBanner: React.FC<CookieConsentBannerProps> = ({ onDecided }) => {
   const [decided, setDecided] = useState(() => getConsentChoice() !== null);
 
   if (decided) return null;
@@ -10,6 +15,7 @@ export const CookieConsentBanner: React.FC = () => {
   const choose = (choice: 'accepted' | 'declined') => {
     setConsentChoice(choice);
     setDecided(true);
+    onDecided?.();
   };
 
   return (

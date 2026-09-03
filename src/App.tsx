@@ -14,6 +14,7 @@ import { RoleRoute } from './components/router/RoleRoute';
 import { RouteErrorBoundary } from './components/router/RouteErrorBoundary';
 import { PhiDataNotice } from './components/compliance/PhiDataNotice';
 import { CookieConsentBanner } from './components/compliance/CookieConsentBanner';
+import { getConsentChoice } from './services/consent';
 import { hasCompletedOnboarding } from './components/onboarding/onboardingState';
 const OnboardingModal = React.lazy(() => import('./components/onboarding/OnboardingModal').then(m => ({ default: m.OnboardingModal })));
 import './styles/main.css';
@@ -87,6 +88,11 @@ const AppContent: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  // The cookie banner and the PHI notice both used to appear at once, sandwiching
+  // the page top and bottom before a visitor had seen anything. Show the consent
+  // decision first, then the safety notice, so only one is ever on screen.
+  const [consentDecided, setConsentDecided] = useState(() => getConsentChoice() !== null);
 
   // Show onboarding modal to authenticated users who haven't seen it yet
   const [onboardingDismissed, setOnboardingDismissed] = useState(false);
@@ -221,8 +227,8 @@ const AppContent: React.FC = () => {
         </Suspense>
       )}
 
-      <PhiDataNotice />
-      <CookieConsentBanner />
+      <CookieConsentBanner onDecided={() => setConsentDecided(true)} />
+      {consentDecided && <PhiDataNotice />}
       <ToastContainer toasts={toasts} onRemove={removeToast} />
       <CollectionDetailDrawerHost />
     </div>
