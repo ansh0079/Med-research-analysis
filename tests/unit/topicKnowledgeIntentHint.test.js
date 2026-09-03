@@ -97,3 +97,32 @@ describe('topic knowledge provider fallback', () => {
         expect(src).not.toContain('resolveProvider(');
     });
 });
+
+describe('stripCodeFence', () => {
+    // Gemini's reply was truncated because no output-token budget was passed.
+    // The old regex needed a closing fence, so a cut-off response fell through
+    // to JSON.parse on the raw text and surfaced as "Unexpected token '`'" --
+    // which reads like bad formatting rather than the truncation it was.
+    const { stripCodeFence } = require('../../server/services/topic/topicKnowledgeExtraction');
+
+    test('unwraps a properly closed json fence', () => {
+        expect(stripCodeFence('```json\n{"a":1}\n```')).toBe('{"a":1}');
+    });
+
+    test('unwraps a closed fence with no language tag', () => {
+        expect(stripCodeFence('```\n{"a":1}\n```')).toBe('{"a":1}');
+    });
+
+    test('unwraps a fence that was cut off before closing', () => {
+        expect(stripCodeFence('```json\n{"a":1,"b":"unterminated')).toBe('{"a":1,"b":"unterminated');
+    });
+
+    test('returns bare JSON untouched', () => {
+        expect(stripCodeFence('{"a":1}')).toBe('{"a":1}');
+    });
+
+    test('handles null and empty input without throwing', () => {
+        expect(stripCodeFence(null)).toBe('');
+        expect(stripCodeFence('')).toBe('');
+    });
+});

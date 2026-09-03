@@ -38,6 +38,28 @@ function validateTopicKnowledgeShape(k) {
 }
 
 /**
+ * Pull JSON out of a model response that may be wrapped in a markdown fence.
+ *
+ * The previous regex required a closing fence, so a response that opened with
+ * ```json and was cut short fell through to parsing the raw string -- reported
+ * as "Unexpected token '`'", which reads like a formatting fault rather than
+ * the truncation it actually was. Handle the unterminated case so the real
+ * error surfaces instead.
+ */
+function stripCodeFence(raw) {
+    const text = String(raw || '').trim();
+    const closed = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+    if (closed) return closed[1].trim();
+    const opened = text.match(/```(?:json)?\s*([\s\S]*)$/);
+    if (opened) return opened[1].trim();
+    return text;
+}
+
+// Sized for the full topic_knowledge JSON; see the call site for why a default
+// budget is not enough.
+const TOPIC_KNOWLEDGE_MAX_OUTPUT_TOKENS = 8192;
+
+/**
  * Reduce a per-intent search-count distribution to the single dominant intent.
  * Returns null when there is no usage signal, so the prompt stays unweighted
  * rather than being biased toward an arbitrary intent.
@@ -147,7 +169,15 @@ async function extractAndUpsertTopicKnowledge({
     let lastProviderError = null;
     for (const candidate of providerCandidates) {
         try {
-            rawAi = await ai.callText(prompt, candidate.provider, candidate.model, { temperature: 0.15 });
+            rawAi = await ai.callText(prompt, candidate.provider, candidate.model, {
+                temperature: 0.15,
+                // Without an explicit budget, Gemini caps long prompts at 2500
+                // output tokens and Claude at 2048. A topic knowledge object --
+                // mentor message, seminal papers, teaching points, controversies,
+                // anchors -- runs well past both, so the JSON came back cut off
+                // mid-string and failed to parse every time.
+                maxOutputTokens: TOPIC_KNOWLEDGE_MAX_OUTPUT_TOKENS,
+            });
             selectedProvider = candidate.provider;
             break;
         } catch (err) {
@@ -162,8 +192,7 @@ async function extractAndUpsertTopicKnowledge({
         throw lastProviderError || new Error('No AI provider returned topic knowledge');
     }
 
-    const jsonMatch = String(rawAi || '').match(/```json\s*([\s\S]*?)\s*```/) || String(rawAi || '').match(/```\s*([\s\S]*?)\s*```/);
-    const jsonText = jsonMatch ? jsonMatch[1].trim() : String(rawAi || '').trim();
+    const jsonText = stripCodeFence(rawAi);
     let knowledge;
     try {
         knowledge = JSON.parse(jsonText);
@@ -198,4 +227,4 @@ async function extractAndUpsertTopicKnowledge({
     return db.getTopicKnowledge(queryValidation.sanitized);
 }
 
-module.exports = { extractAndUpsertTopicKnowledge, intentHintFromDistribution };
+module.exports = { extractAndUpsertTopicKnowledge, intentHintFromDistribution, stripCodeFence };
