@@ -355,7 +355,7 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     }
     const res = await f('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      signal: AbortSignal.timeout(timeoutMs),
+      timeout: timeoutMs,
       headers: {
         'x-api-key': keys.anthropic,
         'anthropic-version': '2023-06-01',
@@ -395,7 +395,7 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
-      signal: AbortSignal.timeout(timeoutMs),
+      timeout: timeoutMs,
     });
     if (!res.ok) {
       const text = await res.text();
@@ -456,7 +456,7 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     }
     const res = await f(url, {
       method: 'POST',
-      signal: AbortSignal.timeout(timeoutMs),
+      timeout: timeoutMs,
       headers,
       body: JSON.stringify(requestBody),
     });

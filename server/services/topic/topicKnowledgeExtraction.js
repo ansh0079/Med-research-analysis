@@ -58,6 +58,7 @@ function stripCodeFence(raw) {
 // Sized for the full topic_knowledge JSON; see the call site for why a default
 // budget is not enough.
 const TOPIC_KNOWLEDGE_MAX_OUTPUT_TOKENS = 8192;
+const TOPIC_KNOWLEDGE_TIMEOUT_MS = 120000;
 
 /**
  * Reduce a per-intent search-count distribution to the single dominant intent.
@@ -177,6 +178,9 @@ async function extractAndUpsertTopicKnowledge({
                 // anchors -- runs well past both, so the JSON came back cut off
                 // mid-string and failed to parse every time.
                 maxOutputTokens: TOPIC_KNOWLEDGE_MAX_OUTPUT_TOKENS,
+                // Generating that much JSON runs past the per-provider default.
+                // This is a background refresh, so latency costs nothing here.
+                timeoutMs: TOPIC_KNOWLEDGE_TIMEOUT_MS,
             });
             selectedProvider = candidate.provider;
             break;
