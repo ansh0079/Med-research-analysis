@@ -90,12 +90,22 @@ async function persistPaperObject(db, article, normalizedTopic, rawTopic) {
 
     const objectKey = paperObjectKey(normalizedTopic, uid);
 
+    // Resolve the curriculum topic here too. This is a raw INSERT rather than
+    // db.upsertTeachingObject, so it does not inherit that method's resolution
+    // step -- and it runs on every search, which made it the one live path still
+    // producing orphaned teaching objects (content the app stores but can never
+    // serve back). See migration 090 and tools/check-topic-orphans.js.
+    const curriculumTopicId = typeof db.resolveCurriculumTopicId === 'function'
+        ? await db.resolveCurriculumTopicId(rawTopic || normalizedTopic).catch(() => null)
+        : null;
+
     try {
         await db.run(
             `INSERT INTO teaching_objects (
                 object_key, object_type, article_uid, normalized_topic, topic, title,
-                object_payload, provider, model, confidence, generated_at, created_at, updated_at
-             ) VALUES (?, 'paper', ?, ?, ?, ?, ?, ?, NULL, 0.6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+                object_payload, provider, model, confidence, generated_at, created_at, updated_at,
+                curriculum_topic_id
+             ) VALUES (?, 'paper', ?, ?, ?, ?, ?, ?, NULL, 0.6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, ?)
              ON CONFLICT(object_key) DO NOTHING`,
             [
                 objectKey,
@@ -121,6 +131,7 @@ async function persistPaperObject(db, article, normalizedTopic, rawTopic) {
                     _ebmScore: article._ebmScore || null,
                 }),
                 article._source || 'unknown',
+                curriculumTopicId,
             ]
         );
     } catch (err) {
