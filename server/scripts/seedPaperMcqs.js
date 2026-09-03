@@ -200,7 +200,7 @@ async function main() {
 
     console.log('Topics with ≥2 papers: ' + topicRows.length + '\n');
 
-    let generated = 0, flagged = 0, clean = 0, skipped = 0, errors = 0;
+    let generated = 0, clean = 0, skipped = 0, errors = 0;
 
     for (let i = 0; i < Math.min(topicRows.length, LIMIT); i++) {
         const { topic, paper_count } = topicRows[i];
@@ -293,7 +293,7 @@ async function main() {
     }
 
     console.log('\n--- Paper MCQ Seeding Complete ---');
-    console.log('Generated: ' + generated + ' | Clean: ' + clean + ' | Flagged: ' + flagged + ' | Skipped: ' + skipped + ' | Errors: ' + errors);
+    console.log('Generated: ' + generated + ' | Clean: ' + clean + ' | Skipped: ' + skipped + ' | Errors: ' + errors);
     console.log('Total paper MCQ topics: ' + generated + ' of ' + topicRows.length);
 
     await db.close();

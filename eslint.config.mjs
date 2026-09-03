@@ -107,4 +107,17 @@ export default [
       },
     },
   },
+
+  {
+    // Browser-extension sources run in the extension context, where `chrome` is
+    // provided by the runtime. Without this they produced 22 of the repo's 24
+    // lint errors -- pure config noise that made `eslint .` useless as a gate.
+    files: ['public/extension/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.webextensions,
+      },
+    },
+  },
 ];

@@ -21,7 +21,12 @@ async getArticlesCacheEmbeddingDim() {
           AND NOT attisdropped
         LIMIT 1
     `);
-    const dim = Number(rows?.[0]?.atttypmod || 0) - 4;
+    // pgvector stores the dimension directly in atttypmod. The "- 4" here was the
+    // varchar/char convention (atttypmod = length + VARHDRSZ) and does not apply:
+    // it reported vector(384) as 380, so assertArticlesCacheEmbeddingDim rejected
+    // every correctly-sized embedding and no row could ever be written to the
+    // index. Verified against production: atttypmod = 384 for vector(384).
+    const dim = Number(rows?.[0]?.atttypmod || 0);
     this._articlesCacheEmbeddingDim = Number.isInteger(dim) && dim > 0 ? dim : 384;
     return this._articlesCacheEmbeddingDim;
 }

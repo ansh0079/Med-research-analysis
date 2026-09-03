@@ -102,3 +102,8 @@ node22.zip
 # Runtime artifacts
 $null
 _ul
+
+# Scratch outputs from one-off ingestion/analysis runs. Regenerable, and
+# data/review-articles/ is ~14MB of downloaded source XML.
+data/review-articles/
+topics-without-mcqs.txt

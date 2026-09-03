@@ -111,19 +111,21 @@ describe('composeComorbidGuidelines — applicability integration', () => {
     test('flags inapplicable recommendations on composed guidelines', async () => {
         const db = {
             getGuidelinesByTopic: async (topic) => {
-                if (topic === 'sepsis') return [{
-                    id: 1,
-                    topic: 'Sepsis',
-                    normalizedTopic: 'sepsis',
-                    recommendationText: '30 mL/kg crystalloid bolus',
-                    recExclusions: 'patients with AKI should use reduced volumes',
-                    recDirection: 'recommend',
-                    intervention: 'intravenous fluid resuscitation',
-                    sourceBody: 'SSC',
-                    sourceYear: 2021,
-                    evidenceTier: 'guideline',
-                    status: 'ai_extracted',
-                }];
+                if (topic === 'sepsis') {
+                    return [{
+                        id: 1,
+                        topic: 'Sepsis',
+                        normalizedTopic: 'sepsis',
+                        recommendationText: '30 mL/kg crystalloid bolus',
+                        recExclusions: 'patients with AKI should use reduced volumes',
+                        recDirection: 'recommend',
+                        intervention: 'intravenous fluid resuscitation',
+                        sourceBody: 'SSC',
+                        sourceYear: 2021,
+                        evidenceTier: 'guideline',
+                        status: 'ai_extracted',
+                    }];
+                }
                 return [];
             },
             normalizeTopic: (s) => String(s).toLowerCase().replace(/[^a-z0-9\s-]/g, ' ').trim(),
