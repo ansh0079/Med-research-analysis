@@ -1,0 +1,28 @@
+-- Drop the ivfflat index on articles_cache.embedding in favour of exact search.
+--
+-- The index was built with lists=50. pgvector defaults ivfflat.probes to 1, so
+-- every query searched one list -- ~2% of the index -- and returned near-random
+-- neighbours while looking entirely plausible. Benchmarked over 8 clinical
+-- queries against 3,729 indexed papers (recall@10 vs an exact sequential scan):
+--
+--   EXACT (seq scan)     recall 1.000    12.2ms
+--   ivfflat probes=1     recall 0.225     1.6ms   <- what was live
+--   ivfflat probes=2     recall 0.338     1.7ms
+--   ivfflat probes=10    recall 0.875     2.8ms
+--   ivfflat probes=50    recall 1.000    13.6ms   <- all lists, slower than exact
+--
+-- At this corpus size the index cannot win: reaching full recall means probing
+-- every list, which costs more than scanning the table outright. Its only
+-- "advantage" is speed bought by silently dropping correct results -- the worst
+-- possible trade for clinical retrieval, and one that fails invisibly because
+-- the wrong answers are still plausible papers with plausible scores.
+--
+-- Exact search at 12ms is imperceptible and needs no tuning. Reintroduce an
+-- index only when sequential scan becomes genuinely slow (order of tens of
+-- thousands of rows); prefer HNSW over ivfflat then, and re-run this benchmark
+-- to confirm recall before trusting it.
+--
+-- Note: DROP INDEX IF EXISTS is valid on both PostgreSQL and SQLite. On SQLite
+-- this index never existed (pgvector is Postgres-only), so this is a no-op there.
+
+DROP INDEX IF EXISTS idx_articles_cache_embedding;

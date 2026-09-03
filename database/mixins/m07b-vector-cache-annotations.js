@@ -98,29 +98,15 @@ async searchSimilarArticlesCache(queryEmbedding, limit = 10, minSimilarity = 0.4
         LIMIT $3
     `;
 
-    // The ivfflat index is built with lists=50, and pgvector's default
-    // ivfflat.probes is 1 -- so an unconfigured query searches a single list,
-    // i.e. ~2% of the index, and silently returns near-arbitrary neighbours.
-    // Measured on production for "management of status epilepticus":
-    //   probes=1  -> "The diagnosis and management of syncope"      (0.647)
-    //   probes=10 -> "Status epilepticus in the ICU"                (0.774, also the exact-scan answer)
-    // Recall matters far more than latency at this corpus size, so probe a
-    // meaningful fraction of the lists. SET LOCAL requires a transaction --
-    // outside one it is a silent no-op, which is how this stayed hidden.
-    const probes = Math.max(1, parseInt(process.env.VECTOR_SEARCH_PROBES || '10', 10) || 10);
-    const client = await this.pgVectorPool.connect();
-    let rows;
-    try {
-        await client.query('BEGIN');
-        await client.query(`SET LOCAL ivfflat.probes = ${probes}`);
-        ({ rows } = await client.query(sql, [vec, maxDistance, limit]));
-        await client.query('COMMIT');
-    } catch (err) {
-        await client.query('ROLLBACK').catch(() => {});
-        throw err;
-    } finally {
-        client.release();
-    }
+    // Deliberately an exact (sequential) scan -- there is no ANN index on
+    // articles_cache.embedding, and migration 093 explains why. Briefly: the
+    // previous ivfflat index (lists=50) returned recall@10 of 0.225 at
+    // pgvector's default probes=1, and only reached full recall by probing every
+    // list, which measured slower than scanning the table. Exact search is
+    // ~12ms over 3,729 rows, needs no tuning, and cannot silently drop correct
+    // results. If an index is reintroduced once the corpus is far larger,
+    // re-verify recall against an exact scan before trusting it.
+    const { rows } = await this.pgVectorPool.query(sql, [vec, maxDistance, limit]);
     return rows.map((r) => ({
         data: r.data,
         score: r.score !== null && r.score !== undefined ? Number(r.score) : 0
