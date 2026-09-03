@@ -104,7 +104,7 @@ export const LandingPage: React.FC = () => {
               Search a topic. Get landmark trials, guidelines, and a mentor who can teach it.
             </h1>
             <p className="max-w-md text-base leading-relaxed text-slate-600 sm:text-lg">
-              Then generate a paper synopsis, MCQs, or a case scenario from the same evidence.
+              For clinicians and trainees who want the evidence and the teaching in one place.
             </p>
             <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center">
               <button
@@ -112,7 +112,7 @@ export const LandingPage: React.FC = () => {
                 onClick={() => navigate('/auth')}
                 className="rounded-lg bg-[#0f3d34] px-6 py-3.5 text-sm font-semibold text-white transition-transform hover:bg-[#164f43] hover:scale-[1.02] active:scale-[0.99]"
               >
-                Start free
+                Get started
               </button>
               <button
                 type="button"
@@ -159,29 +159,6 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* After one search */}
-      <section className="border-t border-slate-200/80 bg-white px-5 py-24">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="lp-display text-3xl font-semibold tracking-tight text-[#0f3d34] sm:text-4xl">
-            After one search, the evidence is already organised
-          </h2>
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-600">
-            No dashboard of tools. You get a ranked reading list sorted into what matters clinically — then a mentor message built from that same set.
-          </p>
-          <ol className="mt-12 space-y-8">
-            {EVIDENCE_LANES.map((lane, i) => (
-              <li key={lane.label} className="flex gap-5 border-l-2 border-[#0f3d34]/20 pl-5">
-                <span className="lp-display text-2xl font-medium text-[#0f3d34]/40">{String(i + 1).padStart(2, '0')}</span>
-                <div>
-                  <p className="text-lg font-semibold text-slate-900">{lane.label}</p>
-                  <p className="mt-1 text-sm leading-relaxed text-slate-600">{lane.detail}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
       {/* Learn from it */}
       <section className="relative overflow-hidden border-t border-slate-200/80 px-5 py-24">
         <div
@@ -221,28 +198,6 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Simple flow */}
-      <section className="border-t border-slate-200/80 bg-white px-5 py-20">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="lp-display text-2xl font-semibold text-[#0f3d34] sm:text-3xl">
-            Topic → evidence → teach
-          </h2>
-          <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-slate-600">
-            Search once. Read the organised evidence. Ask the mentor. Test yourself with MCQs or a case.
-          </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm font-semibold text-[#0f3d34]">
-            {['Search', 'Landmark & guidelines', 'Synopsis', 'Mentor', 'MCQ / Case'].map((step, i, arr) => (
-              <React.Fragment key={step}>
-                <span>{step}</span>
-                {i < arr.length - 1 && (
-                  <span className="text-slate-300" aria-hidden="true">→</span>
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="border-t border-slate-200/80 bg-[#0f3d34] px-5 py-24 text-center">
         <div className="mx-auto max-w-lg space-y-5">
@@ -257,7 +212,7 @@ export const LandingPage: React.FC = () => {
             onClick={() => navigate('/auth')}
             className="rounded-lg bg-white px-7 py-3.5 text-sm font-semibold text-[#0f3d34] transition-transform hover:scale-[1.02] active:scale-[0.99]"
           >
-            Create free account
+            Get started
           </button>
         </div>
       </section>
