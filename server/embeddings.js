@@ -1,27 +1,18 @@
 /**
- * Embedding generation for articles_cache (384-dim for pgvector + MiniLM / OpenAI small).
- * Set EMBEDDING_PROVIDER=hf | openai (default: hf)
+ * Embedding generation for articles_cache (384-dim, matching the pgvector column).
+ * Set EMBEDDING_PROVIDER=gemini | openai (default: gemini)
+ *
+ * IMPORTANT: there is deliberately no automatic cross-provider fallback.
+ * Vectors from different embedding models occupy different spaces, so a cosine
+ * similarity between a Gemini vector and an OpenAI one is meaningless -- a
+ * fallback would silently poison the index with incomparable vectors and
+ * produce plausible-looking but wrong similarity scores. Failing loudly is
+ * correct here. Switching provider is an explicit config change, and requires
+ * re-indexing everything already stored.
  */
 const fetch = globalThis.fetch;
 
 const EMBEDDING_DIM = 384;
-
-function meanPoolTokenEmbeddings(tokenMatrix) {
-    if (!Array.isArray(tokenMatrix) || tokenMatrix.length === 0) return null;
-    if (!Array.isArray(tokenMatrix[0])) {
-        return tokenMatrix.length === EMBEDDING_DIM ? tokenMatrix : null;
-    }
-    const h = tokenMatrix.length;
-    const w = tokenMatrix[0].length;
-    const out = new Array(w).fill(0);
-    for (let i = 0; i < h; i++) {
-        const row = tokenMatrix[i];
-        for (let j = 0; j < w; j++) {
-            out[j] += row[j] ?? 0;
-        }
-    }
-    return out.map((v) => v / h);
-}
 
 function normalizeL2(vec) {
     const n = Math.sqrt(vec.reduce((s, x) => s + x * x, 0)) || 1;
@@ -61,63 +52,60 @@ async function embedOpenAI(text, openaiKey) {
 }
 
 /**
- * HuggingFace Inference API embedding (feature-extraction pipeline).
- * Uses mean-pooling over token embeddings to produce a single sentence vector.
+ * Gemini embeddings, truncated to EMBEDDING_DIM via outputDimensionality so the
+ * vector fits the existing pgvector column without a schema migration.
+ *
+ * Replaces the previous HuggingFace provider: api-inference.huggingface.co was
+ * retired and no longer resolves (ENOTFOUND), producing 282 failed embedding
+ * calls in one day on production while silently degrading every search to
+ * keyword-only. Gemini needs no new credential -- the same key already used for
+ * generation works -- and supports 384 dimensions natively.
  */
-async function embedHuggingFace(text, hfKey) {
-    if (!hfKey) {
-        throw new Error('HUGGINGFACE_TOKEN (or HUGGINGFACE_API_KEY / HF_API_TOKEN) is required for HuggingFace embeddings');
+async function embedGemini(text, geminiKey) {
+    if (!geminiKey) {
+        throw new Error('GEMINI_API_KEY is required for Gemini embeddings');
     }
-    const model = process.env.HF_EMBEDDING_MODEL || 'sentence-transformers/all-MiniLM-L6-v2';
-    // api-inference.huggingface.co was retired and no longer resolves at all
-    // (ENOTFOUND) -- it produced 282 failed embedding calls in a single day on
-    // production, silently degrading every search to keyword-only. router.
-    // huggingface.co is the replacement host. Note the token must additionally
-    // carry the "Inference Providers" permission or this returns 403.
-    const base = process.env.HF_INFERENCE_BASE_URL || 'https://router.huggingface.co/hf-inference';
-    const res = await fetch(`${base}/models/${model}/pipeline/feature-extraction`, {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${hfKey}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ inputs: String(text).slice(0, 8000) }),
-    });
+    const model = process.env.GEMINI_EMBEDDING_MODEL || 'gemini-embedding-001';
+    const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:embedContent`,
+        {
+            method: 'POST',
+            headers: {
+                'x-goog-api-key': geminiKey,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                model: `models/${model}`,
+                content: { parts: [{ text: String(text).slice(0, 8000) }] },
+                outputDimensionality: EMBEDDING_DIM,
+            }),
+        }
+    );
     if (!res.ok) {
         const errText = await res.text();
-        throw new Error(`HF embeddings failed: ${res.status} ${errText.slice(0, 200)}`);
+        throw new Error(`Gemini embeddings failed: ${res.status} ${errText.slice(0, 200)}`);
     }
     const data = await res.json();
-    const vec = meanPoolTokenEmbeddings(data);
-    if (!vec || vec.length !== EMBEDDING_DIM) {
-        throw new Error(`HF returned unexpected embedding size: expected ${EMBEDDING_DIM}, got ${vec?.length}`);
+    const arr = data.embedding?.values;
+    if (!Array.isArray(arr) || arr.length !== EMBEDDING_DIM) {
+        throw new Error(`Gemini returned unexpected embedding size: expected ${EMBEDDING_DIM}, got ${arr?.length}`);
     }
-    return normalizeL2(vec);
+    return normalizeL2(arr);
 }
 
 /**
  * @param {string} text
- * @param {{ openaiKey?: string, huggingfaceKey?: string }=} keys
+ * @param {{ openaiKey?: string, geminiKey?: string }=} keys
  * @returns {Promise<number[]>}
  */
 async function generateEmbedding(text, keys = {}) {
-    const provider = process.env.EMBEDDING_PROVIDER || 'hf';
+    const provider = process.env.EMBEDDING_PROVIDER || 'gemini';
     if (provider === 'openai') {
         const key = keys.openaiKey || process.env.OPENAI_KEY || process.env.OPENAI_API_KEY;
         return embedOpenAI(text, key);
     }
-    // default: hf
-    const hfKey = keys.huggingfaceKey || process.env.HUGGINGFACE_API_KEY || process.env.HF_API_TOKEN || process.env.HUGGINGFACE_TOKEN;
-    const openaiKey = keys.openaiKey || process.env.OPENAI_KEY || process.env.OPENAI_API_KEY;
-    try {
-        return await embedHuggingFace(text, hfKey);
-    } catch (err) {
-        // A single provider outage previously took out all embeddings with no
-        // fallback and no visible signal. Prefer a working provider over failing
-        // the caller; only genuinely unrecoverable when neither is usable.
-        if (openaiKey) return embedOpenAI(text, openaiKey);
-        throw err;
-    }
+    const geminiKey = keys.geminiKey || process.env.GEMINI_API_KEY || process.env.GEMINI_KEY;
+    return embedGemini(text, geminiKey);
 }
 
 function articleToEmbedText(article) {

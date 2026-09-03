@@ -12,7 +12,7 @@ const DEDUPE = new Set();
 
 /**
  * @param {import('../database').Database|any} db
- * @param {{ openaiKey?: string, hfToken?: string }} [keys]
+ * @param {{ openaiKey?: string, geminiKey?: string }} [keys]
  */
 function startSavedEmbeddingWorker(db, keys = {}) {
     if (started) return;

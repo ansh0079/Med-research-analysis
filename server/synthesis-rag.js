@@ -7,7 +7,7 @@ const logger = require('./config/logger');
 
 /**
  * @param {string} basePrompt
- * @param {{ topic: string, sessionId?: string, db: import('../database'), keys?: { openaiKey?: string, hfToken?: string } }} options
+ * @param {{ topic: string, sessionId?: string, db: import('../database'), keys?: { openaiKey?: string, geminiKey?: string } }} options
  * @returns {Promise<string>}
  */
 async function appendRagContext(basePrompt, { topic, sessionId, db, keys = {} }) {

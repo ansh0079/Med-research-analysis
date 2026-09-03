@@ -133,35 +133,6 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         return proxy.mistralChat(prompt, { model, temperature, maxOutputTokens, jsonMode });
     }
 
-    // Kept for backward compatibility with provider selection surfaces.
-    async function callHuggingFace(prompt, model = 'mistralai/Mistral-7B-Instruct-v0.2') {
-        if (!serverConfig.keys.huggingface) {
-            throw new Error('HuggingFace API key not configured');
-        }
-        const response = await f(`https://api-inference.huggingface.co/models/${model}`, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${serverConfig.keys.huggingface}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                inputs: prompt,
-                parameters: {
-                    max_new_tokens: 512,
-                    temperature: 0.7,
-                    return_full_text: false,
-                },
-            }),
-        });
-        if (!response.ok) {
-            const errText = await response.text();
-            throw new Error(`HF API error: ${response.status} - ${errText}`);
-        }
-        const data = await response.json();
-        if (Array.isArray(data) && data[0]?.generated_text) return data[0].generated_text;
-        if (data?.generated_text) return data.generated_text;
-        return typeof data === 'string' ? data : 'No response';
-    }
 
     async function callGeminiRaw(prompt, model = PINNED_MODELS.gemini, { temperature = TEMPERATURE.analysis, maxOutputTokens, timeoutMs = 45000, jsonMode = false } = {}) {
         logger.debug({ model, temperature, jsonMode }, 'Calling Gemini');
@@ -462,7 +433,6 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
 
     return {
         callMistralAI,
-        callHuggingFace,
         callGemini,
         callClaude,
         callGeminiStructured,

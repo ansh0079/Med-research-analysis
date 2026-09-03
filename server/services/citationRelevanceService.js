@@ -103,7 +103,7 @@ async function scoreClaimSourceRelevance(claimText, article, {
     threshold = DEFAULT_THRESHOLD,
 } = {}) {
     const keyword = scoreClaimSourceRelevanceSync(claimText, article, { threshold });
-    if (!keys || (!keys.openaiKey && !keys.huggingfaceKey && !keys.openai && !keys.huggingface)) {
+    if (!keys || (!keys.openaiKey && !keys.geminiKey && !keys.openai && !keys.gemini)) {
         return keyword;
     }
 
@@ -111,7 +111,7 @@ async function scoreClaimSourceRelevance(claimText, article, {
         const { generateEmbedding, articleToEmbedText } = require('../embeddings');
         const embedKeys = {
             openaiKey: keys.openaiKey || keys.openai || null,
-            huggingfaceKey: keys.huggingfaceKey || keys.huggingface || null,
+            geminiKey: keys.geminiKey || keys.gemini || null,
         };
         const evidenceForEmbed = articleEvidenceText(article) || articleToEmbedText(article);
         const [claimEmb, articleEmb] = await Promise.all([

@@ -49,7 +49,7 @@ const DEFAULT_TIMEOUTS = {
   claude: 45000,
   mistral: 30000,
   gemini: 45000,
-  huggingface: 30000,
+
 };
 
 const inFlight = new Map();
@@ -475,28 +475,6 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     return text || 'No response';
   }
 
-  async function huggingFaceGenerate(prompt, { model = 'mistralai/Mistral-7B-Instruct-v0.2' } = {}) {
-    if (!keys.huggingface) throw new Error('HuggingFace API key not configured');
-    const res = await f(`https://api-inference.huggingface.co/models/${model}`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${keys.huggingface}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        inputs: prompt,
-        parameters: { max_new_tokens: 512, temperature: 0.7, return_full_text: false },
-      }),
-    });
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`HF ${res.status} — ${text.slice(0, 200)}`);
-    }
-    const data = await res.json();
-    if (Array.isArray(data) && data[0]?.generated_text) return data[0].generated_text;
-    if (data?.generated_text) return data.generated_text;
-    return typeof data === 'string' ? data : 'No response';
-  }
 
   return {
     pubmedSearch,
@@ -510,7 +488,6 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     claudeMessages,
     mistralChat,
     geminiGenerate,
-    huggingFaceGenerate,
   };
 }
 
