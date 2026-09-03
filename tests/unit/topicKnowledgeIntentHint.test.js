@@ -73,3 +73,27 @@ describe('buildTopicKnowledgePrompt intent weighting', () => {
         expect(withHint).toContain('"seminalPapers"');
     });
 });
+
+describe('topic knowledge provider fallback', () => {
+    // Prod had a funded Gemini key and an out-of-credit Anthropic key. Because
+    // this path resolved a single provider up front, every topic refresh died on
+    // "Your credit balance is too low" instead of falling through to Gemini.
+    const { getProviderCandidates } = require('../../server/utils/aiProvider');
+
+    test('offers Gemini as a fallback when both keys are present', () => {
+        const candidates = getProviderCandidates({}, { keys: { anthropic: 'a', gemini: 'g' } });
+        expect(candidates.map((c) => c.provider)).toEqual(['claude', 'gemini']);
+    });
+
+    test('still returns Gemini alone when Anthropic is unconfigured', () => {
+        const candidates = getProviderCandidates({}, { keys: { gemini: 'g' } });
+        expect(candidates.map((c) => c.provider)).toEqual(['gemini']);
+    });
+
+    test('extraction requests the candidate list, not a single provider', () => {
+        const src = require('fs').readFileSync(
+            require.resolve('../../server/services/topic/topicKnowledgeExtraction'), 'utf8');
+        expect(src).toContain('getProviderCandidates');
+        expect(src).not.toContain('resolveProvider(');
+    });
+});

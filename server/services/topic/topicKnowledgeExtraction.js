@@ -5,7 +5,7 @@ const { fetchUnifiedEvidence } = require('../unifiedEvidenceSearch');
 const { selectTopEvidence } = require('../../utils/selectTopEvidence');
 const { createAiService, getSharedAiService } = require('../aiService');
 const { buildTopicKnowledgePrompt } = require('../../prompts');
-const { resolveProvider } = require('../../utils/aiProvider');
+const { getProviderCandidates } = require('../../utils/aiProvider');
 
 const VALID_EVIDENCE_GRADES = new Set([
     'GUIDELINE_BACKED', 'RCT_SUPPORTED', 'OBSERVATIONAL_ONLY',
@@ -103,8 +103,12 @@ async function extractAndUpsertTopicKnowledge({
         throw new Error('Not enough evidence articles to build topic guide (need at least 2)');
     }
 
-    const { provider: selectedProvider, model: selectedModel } = resolveProvider({}, serverConfig);
-    if (!selectedProvider) {
+    // Every other AI path (synopsis, synthesis, agent turns) walks the candidate
+    // list so one provider being down or out of credit does not take the feature
+    // with it. This one used to pick a single provider up front, so an Anthropic
+    // billing failure stopped topic refresh outright even with Gemini funded.
+    const providerCandidates = getProviderCandidates({}, serverConfig);
+    if (providerCandidates.length === 0) {
         throw new Error('No AI provider configured');
     }
 
@@ -138,7 +142,25 @@ async function extractAndUpsertTopicKnowledge({
         existingKnowledge?.knowledge || null,
         { guidelines, intentHint }
     );
-    const rawAi = await ai.callText(prompt, selectedProvider, selectedModel, { temperature: 0.15 });
+    let rawAi = null;
+    let selectedProvider = null;
+    let lastProviderError = null;
+    for (const candidate of providerCandidates) {
+        try {
+            rawAi = await ai.callText(prompt, candidate.provider, candidate.model, { temperature: 0.15 });
+            selectedProvider = candidate.provider;
+            break;
+        } catch (err) {
+            lastProviderError = err;
+            logger.warn(
+                { err, provider: candidate.provider, model: candidate.model, topic: queryValidation.sanitized },
+                'Topic knowledge provider failed; trying fallback if available',
+            );
+        }
+    }
+    if (!selectedProvider) {
+        throw lastProviderError || new Error('No AI provider returned topic knowledge');
+    }
 
     const jsonMatch = String(rawAi || '').match(/```json\s*([\s\S]*?)\s*```/) || String(rawAi || '').match(/```\s*([\s\S]*?)\s*```/);
     const jsonText = jsonMatch ? jsonMatch[1].trim() : String(rawAi || '').trim();
