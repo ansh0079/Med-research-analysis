@@ -3,7 +3,7 @@ const { validateQuery } = require('../../utils/articles');
 const { validateAiOutput } = require('../aiOutputValidation');
 const { fetchUnifiedEvidence } = require('../unifiedEvidenceSearch');
 const { selectTopEvidence } = require('../../utils/selectTopEvidence');
-const { createAiService, getSharedAiService, intentHintFromDistribution } = require('../aiService');
+const { createAiService, getSharedAiService } = require('../aiService');
 const { buildTopicKnowledgePrompt } = require('../../prompts');
 const { resolveProvider } = require('../../utils/aiProvider');
 
@@ -35,6 +35,27 @@ function validateTopicKnowledgeShape(k) {
         if (ca.evidenceGrade && !VALID_EVIDENCE_GRADES.has(ca.evidenceGrade))
             {throw new Error(`Topic knowledge: clinicalAnswer.evidenceGrade "${ca.evidenceGrade}" is not a valid value`);}
     }
+}
+
+/**
+ * Reduce a per-intent search-count distribution to the single dominant intent.
+ * Returns null when there is no usage signal, so the prompt stays unweighted
+ * rather than being biased toward an arbitrary intent.
+ *
+ * @param {Array<{intent:string,count:number}>} distribution
+ * @returns {string|null}
+ */
+function intentHintFromDistribution(distribution) {
+    if (!Array.isArray(distribution) || distribution.length === 0) return null;
+    let best = null;
+    for (const entry of distribution) {
+        const intent = typeof entry?.intent === 'string' ? entry.intent.trim() : '';
+        if (!intent) continue;
+        const count = Number(entry?.count || 0);
+        if (!Number.isFinite(count) || count <= 0) continue;
+        if (!best || count > best.count) best = { intent, count };
+    }
+    return best ? best.intent : null;
 }
 
 /**
@@ -93,7 +114,8 @@ async function extractAndUpsertTopicKnowledge({
         ? await db.getTopicKnowledge(queryValidation.sanitized).catch((err) => { logger.warn({ err }, 'getTopicKnowledge failed'); return null; })
         : null;
     const storedCounts = existingKnowledge?.knowledge?.articleInteractionCounts || {};
-    const interactionStats = { intentHint: intentHintFromDistribution(intentDistribution || []) };
+    const intentHint = intentHintFromDistribution(intentDistribution);
+    const interactionStats = {};
     for (const [uid, counts] of Object.entries(storedCounts)) {
         interactionStats[uid] = {
             saves: Number(counts.saves || 0),
@@ -114,7 +136,7 @@ async function extractAndUpsertTopicKnowledge({
         evidenceArticles,
         interactionStats,
         existingKnowledge?.knowledge || null,
-        { guidelines }
+        { guidelines, intentHint }
     );
     const rawAi = await ai.callText(prompt, selectedProvider, selectedModel, { temperature: 0.15 });
 
@@ -154,4 +176,4 @@ async function extractAndUpsertTopicKnowledge({
     return db.getTopicKnowledge(queryValidation.sanitized);
 }
 
-module.exports = { extractAndUpsertTopicKnowledge };
+module.exports = { extractAndUpsertTopicKnowledge, intentHintFromDistribution };

@@ -85,10 +85,20 @@ Rules:
  * @param {Array<{title:string; abstract?:string; pubdate?:string; journal?:string; pubtype?:string[]; uid?:string; doi?:string; pmid?:string}>} articles
  * @param {object} [interactionStats]
  * @param {object|null} [existingKnowledgeObj]
- * @param {{ guidelines?: Array<object> }} [options]
+ * @param {{ guidelines?: Array<object>, intentHint?: string|null }} [options]
  */
 function buildTopicKnowledgePrompt(topic, articles, interactionStats = {}, existingKnowledgeObj = null, options = {}) {
     const guidelines = Array.isArray(options?.guidelines) ? options.guidelines : [];
+    // Dominant search intent for this topic, when we have usage to derive one.
+    // Steers emphasis without changing the required output shape.
+    const intentHint = typeof options?.intentHint === 'string' && options.intentHint.trim()
+        ? options.intentHint.trim()
+        : null;
+    const intentBlock = intentHint
+        ? `
+DOMINANT LEARNER INTENT: clinicians searching this topic most often want "${intentHint}". Weight teaching points and the mentor message toward that, without omitting anything clinically essential.
+`
+        : '';
     const anchorBlock = (() => {
         const anchors = existingKnowledgeObj?.verifiedAnchors;
         if (!Array.isArray(anchors) || anchors.length === 0) return '';
@@ -158,7 +168,7 @@ CLINICAL GUIDELINES: none stored for this topic yet. Prefer paper-grounded teach
     return `You are a senior clinical medical educator building a permanent, citation-grounded knowledge base entry for the topic: "${topic}".
 
 You have been given ${(articles || []).length} research papers and ${guidelines.length} clinical guideline recommendations. Your job is to extract the most important, enduring, and high-yield knowledge about this topic — knowledge that will guide future learners and inform case/MCQ generation. Prefer guideline-backed teaching points when guidelines and papers agree; surface conflicts explicitly.
-${anchorBlock}${existingBlock}${guidelineBlock}
+${anchorBlock}${intentBlock}${existingBlock}${guidelineBlock}
 PAPERS:
 ${context}
 

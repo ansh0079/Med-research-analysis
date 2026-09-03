@@ -1,21 +1,14 @@
 'use strict';
 
 const logger = require('../config/logger');
+// This file used to import REFRESH_COOKIE_NAME from ../middleware/auth, which
+// does not re-export it -- so the refresh cookie was never cleared on account
+// deletion, and a junk cookie named "undefined" was set instead. The shared
+// clearAuthCookies already does exactly what this file was hand-rolling.
 const {
-    COOKIE_NAME,
-    REFRESH_COOKIE_NAME,
+    clearAuthCookies,
     revokeToken,
 } = require('../middleware/auth');
-
-function clearAccountAuthCookies(res) {
-    const base = {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-    };
-    res.clearCookie(COOKIE_NAME, base);
-    res.clearCookie(REFRESH_COOKIE_NAME, { ...base, path: '/api/auth' });
-}
 
 function registerAccountRoutes(app, { db, requireAuthJwt, rateLimit, auditLog }) {
     const exportLimit = rateLimit ? rateLimit(5, 60) : (_req, _res, next) => next();
@@ -67,7 +60,7 @@ function registerAccountRoutes(app, { db, requireAuthJwt, rateLimit, auditLog })
                     logger.warn({ err, userId }, 'Current access token revoke failed after account deletion');
                 });
             }
-            clearAccountAuthCookies(res);
+            clearAuthCookies(res);
             res.json({ message: 'Account deleted successfully', deletedAt: summary.deletedAt });
         } catch (error) {
             req.log?.error?.({ err: error, userId }, 'Account deletion failed');
