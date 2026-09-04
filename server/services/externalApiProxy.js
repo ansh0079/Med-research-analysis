@@ -444,14 +444,18 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     if (jsonMode) {
       generationConfig.responseMimeType = 'application/json';
     }
-    // Disable thinking for Vertex AI calls — Gemini 2.5 thinking tokens appear in parts[0]
-    // with thought:true, which breaks JSON mode parsing. Thinking adds latency and cost with
-    // no benefit for our structured extraction tasks.
+    // Disable thinking — Gemini 2.5 thinking tokens appear in parts[0] with
+    // thought:true, which breaks JSON mode parsing. They also count against
+    // maxOutputTokens, so on a large structured response they consume the budget
+    // and the answer comes back cut off mid-JSON. This was previously applied to
+    // Vertex only; prod runs against AI Studio, so topic knowledge extraction kept
+    // truncating even after its budget was raised to 8192.
+    // Pro models require a non-zero thinking budget, so leave those alone.
     const requestBody = {
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
       generationConfig,
     };
-    if (useVertexAI) {
+    if (!/pro/i.test(modelName)) {
       requestBody.generationConfig.thinkingConfig = { thinkingBudget: 0 };
     }
     const res = await f(url, {
@@ -470,8 +474,20 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     }
     // Gemini 2.5 models return "thinking" parts (thought: true) before the actual response.
     // Filter them out so we only return the actual answer text.
-    const parts = data.candidates?.[0]?.content?.parts || [];
+    const candidate = data.candidates?.[0];
+    const parts = candidate?.content?.parts || [];
     const text = parts.filter(p => !p.thought).map(p => p.text || '').join('');
+
+    // A response cut off at the token ceiling used to be returned as if complete,
+    // so callers reported it as "unparseable JSON" and the real cause stayed
+    // hidden. Fail loudly instead -- the provider fallback can then try the next
+    // candidate rather than retrying the same truncation.
+    if (candidate?.finishReason && candidate.finishReason !== 'STOP') {
+      throw new Error(
+        `Gemini stopped early (finishReason: ${candidate.finishReason}); `
+        + `returned ${text.length} chars against maxOutputTokens ${generationConfig.maxOutputTokens}`,
+      );
+    }
     return text || 'No response';
   }
 
