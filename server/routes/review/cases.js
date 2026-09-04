@@ -212,7 +212,9 @@ function registerReviewCaseRoutes(app, {
                     })),
                 },
             };
-            await Promise.resolve(cache.set(cacheKey, result, 1800)).catch(() => undefined);
+            await Promise.resolve(cache.set(cacheKey, result, 1800)).catch((err) => {
+                req.log.debug({ err, cacheKey }, 'case cache write failed; result will be regenerated');
+            });
             await db.logEvent('case:analyze', req.sessionId, {
                 query: literatureQuery,
                 topic,
@@ -314,7 +316,9 @@ function registerReviewCaseRoutes(app, {
                     disclaimer: String(parsed.disclaimer || 'FOR RESEARCH AND EDUCATION ONLY. This vignette is fictional. Management steps are derived from provided research abstracts and must not be used for direct patient care.'),
                 };
 
-                await Promise.resolve(cache.set(cacheKey, result, 1800)).catch(() => undefined);
+                await Promise.resolve(cache.set(cacheKey, result, 1800)).catch((err) => {
+                    req.log.debug({ err, cacheKey }, 'case cache write failed; result will be regenerated');
+                });
                 await db.logEvent('case:teaching_vignette', req.sessionId, {
                     topic,
                     learningMode,

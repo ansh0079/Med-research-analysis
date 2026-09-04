@@ -2,6 +2,7 @@
 
 const crypto = require('crypto');
 const db = require('../../database');
+const logger = require('../config/logger');
 
 const KEY_PREFIX = 'mr_live_';
 
@@ -69,7 +70,9 @@ async function authenticateApiKey(rawKey) {
     await db.run(
         `UPDATE api_keys SET last_used_at = datetime('now') WHERE id = ?`,
         [row.id]
-    ).catch(() => {});
+    ).catch((err) => {
+        logger.warn({ err, keyId: row.id }, 'api_keys.last_used_at update failed');
+    });
 
     return {
         keyId: row.id,

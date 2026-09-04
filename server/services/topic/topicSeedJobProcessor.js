@@ -36,7 +36,10 @@ async function processTopicSeedJob({ topic, articles = [], serverConfig, fetchIm
                 sourceYear: gl.pubdate ? parseInt(String(gl.pubdate).slice(0, 4), 10) : null,
                 recommendationText: gl.title,
                 sourceUrl: gl.uid ? `https://pubmed.ncbi.nlm.nih.gov/${gl.uid}/` : null,
-            }).catch(() => {});
+            }).catch((err) => {
+                logger.warn({ err, topic: seedQuery, sourceUrl: gl.uid || null },
+                    'createGuideline failed during topic seed; guideline not stored');
+            });
         }
         if (guidelines.length > 0) {
             logger.info({ topic: seedQuery, guidelines: guidelines.length }, 'Pre-stored guidelines before topic evolution seed');

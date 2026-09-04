@@ -111,7 +111,9 @@ function registerGuidelineRoutes(app, { db, serverConfig, rateLimit, requireAuth
             if (wasDiscoveryAttempted(topic, db)) {
                 return res.json({ topic, guidelines: [], discoveryStatus: 'complete' });
             }
-            discoverGuidelinesForTopic(topic, { db, serverConfig, aiService }).catch(() => {});
+            discoverGuidelinesForTopic(topic, { db, serverConfig, aiService }).catch((err) => {
+                req.log.warn({ err, topic }, 'Background guideline discovery failed; topic stays undiscovered');
+            });
             res.json({ topic, guidelines: [], discoveryStatus: 'pending' });
         } catch (error) {
             req.log.error({ err: error }, 'Get guidelines by topic error');

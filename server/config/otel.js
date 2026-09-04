@@ -45,7 +45,9 @@ function startOpenTelemetry() {
         });
         sdk.start();
         process.once('beforeExit', () => {
-            sdk?.shutdown?.().catch(() => undefined);
+            // Process teardown: nothing can act on a failure here, and the logger may
+    // already be closed. Deliberately silent.
+    sdk?.shutdown?.().catch(() => undefined);
         });
     } catch (err) {
         // Telemetry must never keep the app from booting.

@@ -102,7 +102,9 @@ function registerAnalyticsRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
                 topic: topic ? String(topic).slice(0, 120) : null,
                 clinicalUsefulness: clampRating(clinicalUsefulness),
                 timeSavedMinutes: timeSavedMinutes != null ? Number(timeSavedMinutes) : null,
-            }).catch(() => undefined);
+            }).catch((err) => {
+                req.log.warn({ err, productType: type }, 'quality_feedback event not recorded');
+            });
             res.json({ ok: true });
         } catch (error) {
             req.log.error({ err: error }, 'Quality feedback error');

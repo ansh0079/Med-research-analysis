@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const logger = require('../../config/logger');
 const { getPromptVersion } = require('../../prompts/promptVersions');
 
 /**
@@ -62,7 +63,9 @@ Example output: ("Metformin"[MeSH Terms]) AND ("Polycystic Ovary Syndrome"[MeSH 
         const cleaned = String(raw || '').trim().replace(/^```[\s\S]*?\n/, '').replace(/\n```$/, '').trim();
         if (cleaned.length < 5 || cleaned.length > 400) return null;
         if (cache && typeof cache.set === 'function') {
-            await Promise.resolve(cache.set(cacheKey, cleaned, 86400)).catch(() => undefined);
+            await Promise.resolve(cache.set(cacheKey, cleaned, 86400)).catch((err) => {
+                logger.debug({ err, cacheKey }, 'query reformulation cache write failed; will re-ask the model');
+            });
         }
         if (telemetry && typeof telemetry === 'object') {
             telemetry.reformulation = { cached: false, ms: Date.now() - started };
@@ -118,7 +121,9 @@ If a component is unclear or absent, set it to an empty string. Do not include a
         const parsed = await ai.callStructured(prompt, provider, model, { temperature: 0.0, maxOutputTokens: 300, timeoutMs: 4000 });
         if (parsed && typeof parsed === 'object' && parsed.confidence != null) {
             if (cache && typeof cache.set === 'function') {
-                await Promise.resolve(cache.set(cacheKey, parsed, 86400)).catch(() => undefined);
+                await Promise.resolve(cache.set(cacheKey, parsed, 86400)).catch((err) => {
+                    logger.debug({ err, cacheKey }, 'intent classification cache write failed; will re-ask the model');
+                });
             }
             return parsed;
         }

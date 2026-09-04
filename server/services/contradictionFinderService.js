@@ -2,6 +2,7 @@
 
 const { fetchUnifiedEvidence } = require('./unifiedEvidenceSearch');
 const { sanitizeArticleOutput } = require('../utils/articles');
+const logger = require('../config/logger');
 
 function buildContradictionSearchQuery(topic, claimText) {
     const t = String(topic || '').trim().slice(0, 140);
@@ -85,7 +86,10 @@ async function findContradictionsForClaim(db, { claimKey, topic, claimText, serv
             searchQuery: query,
             results: ranked.map((a) => ({ uid: a.uid, title: a.title, score: a._contradictionScore })),
             guidelineConflictCount: guidelineConflicts.length,
-        }).catch(() => {});
+        }).catch((err) => {
+            logger.warn({ err, claimKey, topic },
+                'saveClaimContradictionSearch failed; contradiction results not persisted');
+        });
     }
 
     return {

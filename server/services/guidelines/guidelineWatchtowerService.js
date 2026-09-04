@@ -96,7 +96,10 @@ async function runGuidelineWatchtowerScan(db, topic, { limit = 40, cache = null 
 
     if (typeof db.insertGuidelineWatchEvent === 'function') {
         for (const event of events.slice(0, 25)) {
-            await db.insertGuidelineWatchEvent(event).catch(() => {});
+            await db.insertGuidelineWatchEvent(event).catch((err) => {
+                logger.warn({ err, sourceBody: event?.sourceBody, topic: event?.normalizedTopic },
+                    'insertGuidelineWatchEvent failed; watch event dropped');
+            });
         }
     }
 

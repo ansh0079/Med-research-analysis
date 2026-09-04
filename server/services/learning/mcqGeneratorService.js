@@ -168,7 +168,10 @@ async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemi
             // Expire old low-confidence MCQs
             if (ageInDays > 90 && confidence < 0.7) {
                 logger.info({ topic, age: ageInDays, confidence }, 'Cold-start MCQs expired, regenerating');
-                await db.deleteTeachingObject(existing.objectKey).catch(() => {});
+                await db.deleteTeachingObject(existing.objectKey).catch((err) => {
+                    logger.warn({ err, topic, objectKey: existing.objectKey },
+                        'deleteTeachingObject failed; expired MCQs left in place');
+                });
             } else {
                 return { skipped: true, topic, reason: 'Recent high-quality MCQs exist' };
             }

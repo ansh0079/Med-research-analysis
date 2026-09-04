@@ -58,6 +58,8 @@ async function extractPdfInWorker(buffer) {
         };
     } finally {
         // Release pdfjs per-document native handles.
+        // Worker teardown in a finally path; the pool replaces the parser either
+        // way and a failure here has nothing to act on. Deliberately silent.
         await parser.destroy().catch(() => {});
     }
 }

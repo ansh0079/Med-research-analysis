@@ -92,7 +92,9 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
                     articleUid: uid,
                     dwellMs: dwellMs != null ? Number(dwellMs) : null,
                     elapsedMs: elapsedMs != null ? Number(elapsedMs) : null,
-                }).catch(() => undefined);
+                }).catch((err) => {
+                    req.log.warn({ err, searchId: sid, articleUid: uid }, 'search_result_click event not recorded');
+                });
             }
             const rewardExplain = explainInteractionReward({
                 interactionType: type,

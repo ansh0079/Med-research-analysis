@@ -10,6 +10,7 @@
  */
 
 const crypto = require('crypto');
+const logger = require('../config/logger');
 
 const CACHE_TTL = {
     topicSummary: 7 * 24 * 3600,      // 7 days
@@ -107,7 +108,9 @@ async function setHierarchicalSynthesis(cache, topic, articles, synthesisResult)
 
     // Level 3: Store full synthesis
     const l3Key = synthesisKey(topic, mostRecent.uid);
-    await cache.setAsync?.(l3Key, synthesisResult, CACHE_TTL.fullSynthesis).catch(() => {});
+    await cache.setAsync?.(l3Key, synthesisResult, CACHE_TTL.fullSynthesis).catch((err) => {
+        logger.debug({ err, key: l3Key, level: 'l3' }, 'hierarchical cache write failed; synthesis will regenerate');
+    });
 
     // Level 2: Extract and store article-specific insights
     if (synthesisResult.sources && Array.isArray(synthesisResult.sources)) {
@@ -116,7 +119,9 @@ async function setHierarchicalSynthesis(cache, topic, articles, synthesisResult)
             if (article) {
                 const insight = extractArticleInsight(synthesisResult, source.uid);
                 const l2Key = articleInsightKey(source.uid);
-                await cache.setAsync?.(l2Key, insight, CACHE_TTL.articleInsight).catch(() => {});
+                await cache.setAsync?.(l2Key, insight, CACHE_TTL.articleInsight).catch((err) => {
+                    logger.debug({ err, key: l2Key, level: 'l2' }, 'hierarchical cache write failed; insight will regenerate');
+                });
             }
         }
     }
@@ -131,7 +136,9 @@ async function setHierarchicalSynthesis(cache, topic, articles, synthesisResult)
         generatedAt: synthesisResult.timestamp,
         articleCount: articles.length
     };
-    await cache.setAsync?.(l1Key, topicSummary, CACHE_TTL.topicSummary).catch(() => {});
+    await cache.setAsync?.(l1Key, topicSummary, CACHE_TTL.topicSummary).catch((err) => {
+        logger.debug({ err, key: l1Key, level: 'l1' }, 'hierarchical cache write failed; topic summary will regenerate');
+    });
 }
 
 /**

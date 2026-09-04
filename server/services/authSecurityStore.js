@@ -88,6 +88,7 @@ async function init({ database, redisUrl } = {}) {
 
 async function close() {
     if (redis) {
+        // Connection teardown -- the socket is going away regardless. Deliberately silent.
         await redis.quit().catch(() => {});
         redis = null;
     }

@@ -35,7 +35,10 @@ async function upgradeClaimsAfterFullText(db, articleUid, { minWordCount = 500, 
                     toStatus: 'full_text_available',
                     normalizedTopic: topic || claim.normalizedTopic || object.topic,
                     reason: 'PDF full text indexed',
-                }).catch(() => {});
+                }).catch((err) => {
+                    logger.warn({ err, claimKey: claim.claimKey },
+                        'logClaimStatusChange failed; full-text upgrade is missing from status history');
+                });
             }
             upgraded += 1;
         } catch (err) {

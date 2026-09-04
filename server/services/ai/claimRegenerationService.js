@@ -70,7 +70,10 @@ async function processClaimRegenerationJob(db, job, { serverConfig, fetchImpl, c
             toStatus: refreshed.verificationStatus,
             normalizedTopic: topic,
             reason: `Automatic regeneration after ${job.triggerReason || 'queue'}.`,
-        }).catch(() => {});
+        }).catch((err) => {
+            logger.warn({ err, claimKey: job.claimKey, jobId: job.id },
+                'logClaimStatusChange failed; status history is missing this transition');
+        });
     }
 
     await db.updateClaimRegenerationStatus(job.id, { status: 'completed' });
@@ -90,7 +93,10 @@ async function processClaimRegenerationBatch(db, deps = {}, { limit = 3 } = {}) 
             await db.updateClaimRegenerationStatus(job.id, {
                 status: 'failed',
                 errorMessage: err.message || 'regeneration failed',
-            }).catch(() => {});
+            }).catch((statusErr) => {
+                logger.warn({ err: statusErr, jobId: job.id },
+                    'updateClaimRegenerationStatus failed; job may be retried as pending');
+            });
         }
     }
     return { processed, attempted: pending.length };

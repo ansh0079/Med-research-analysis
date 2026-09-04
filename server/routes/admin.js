@@ -169,7 +169,9 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
                     verificationStatus: 'stale_needs_refresh',
                     verificationReason: 'Curator marked as overclaimed.',
                     reviewerId: req.user?.id || null,
-                }).catch(() => {});
+                }).catch((err) => {
+                    req.log.warn({ err, claimKey }, 'Overclaim verification update failed; claim left unmarked');
+                });
             }
             res.json({ claim });
         } catch (error) {

@@ -114,7 +114,9 @@ function registerSynthesisRoutes(app, {
                 model: result.audit?.model,
                 log: req.log,
             });
-            void setHierarchicalSynthesis(cache, topic || '', topArticles, result).catch(() => {});
+            void setHierarchicalSynthesis(cache, topic || '', topArticles, result).catch((err) => {
+                req.log.debug({ err, topic }, 'hierarchical synthesis cache write failed; synthesis will regenerate');
+            });
             await db.logEvent('synthesize', req.sessionId, {
                 topic,
                 articleCount: topArticles.length,
