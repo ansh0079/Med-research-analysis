@@ -125,11 +125,26 @@ function chooseArmBySamples(armIds, globalSamples = {}, userSamples = {}, userPu
     };
 }
 
+// Exact enumeration is n!/(n-k)!, so it is only affordable for small prefixes.
+// Anything larger falls back to Gumbel top-k sampling, which draws exactly from
+// the same Plackett-Luce distribution in O(draws * n log n).
+const EXACT_PERMUTATION_BUDGET = 20000;
+const PL_SAMPLE_DRAWS = 2000;
+
+function permutationPrefixCount(n, k) {
+    let count = 1;
+    for (let i = 0; i < k; i += 1) {
+        count *= (n - i);
+        if (count > EXACT_PERMUTATION_BUDGET) return Infinity;
+    }
+    return count;
+}
+
 /**
  * Plackett-Luce inclusion probabilities for top-k without replacement.
- * Exact when |A| <= 12; otherwise sequential softmax along the greedy ranking.
+ * Exact for small (|A|, k); sampled otherwise.
  */
-function topKWithoutReplacementPropensities(armIds, scoresByArm = {}, k = 1) {
+function topKWithoutReplacementPropensities(armIds, scoresByArm = {}, k = 1, { random = Math.random } = {}) {
     const ids = Array.isArray(armIds) ? armIds.map(String) : [];
     const safeK = Math.min(Math.max(Number(k) || 1, 1), ids.length || 1);
     const propensityByArm = Object.fromEntries(ids.map((id) => [id, 0]));
@@ -149,24 +164,29 @@ function topKWithoutReplacementPropensities(armIds, scoresByArm = {}, k = 1) {
         });
     }
 
-    if (ids.length <= 12) {
+    if (permutationPrefixCount(ids.length, safeK) <= EXACT_PERMUTATION_BUDGET) {
         recurse(ids, 0, 1);
-    } else {
-        const ranked = [...ids].sort((a, b) => scoreOf(b) - scoreOf(a));
-        const remaining = [...ids];
-        for (let step = 0; step < safeK; step += 1) {
-            const props = softmaxPropensities(remaining.map(scoreOf));
-            remaining.forEach((id, i) => {
-                propensityByArm[id] += props[i] ?? 0;
-            });
-            const picked = ranked[step];
-            const idx = remaining.indexOf(picked);
-            if (idx >= 0) remaining.splice(idx, 1);
-        }
-        for (const id of ids) {
-            propensityByArm[id] = Math.min(1, propensityByArm[id]);
-        }
+        return { propensityByArm, selectionSource: 'topk_without_replacement' };
     }
+
+    const logWeights = softmaxPropensities(ids.map(scoreOf)).map((w) => Math.log(Math.max(w, 1e-12)));
+    const counts = new Array(ids.length).fill(0);
+    const keys = new Float64Array(ids.length);
+    const order = new Array(ids.length);
+    for (let draw = 0; draw < PL_SAMPLE_DRAWS; draw += 1) {
+        for (let i = 0; i < ids.length; i += 1) {
+            const u = Math.min(1 - 1e-12, Math.max(1e-12, random()));
+            keys[i] = logWeights[i] - Math.log(-Math.log(u));
+            order[i] = i;
+        }
+        order.sort((a, b) => keys[b] - keys[a]);
+        for (let s = 0; s < safeK; s += 1) counts[order[s]] += 1;
+    }
+    // Floor at one draw so a never-sampled arm still yields a finite IPS weight.
+    const floor = 1 / PL_SAMPLE_DRAWS;
+    ids.forEach((id, i) => {
+        propensityByArm[id] = Math.min(1, Math.max(counts[i] / PL_SAMPLE_DRAWS, floor));
+    });
 
     return { propensityByArm, selectionSource: 'topk_without_replacement' };
 }
