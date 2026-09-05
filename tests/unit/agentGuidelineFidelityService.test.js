@@ -36,6 +36,14 @@ describe('agentGuidelineFidelityService', () => {
                 return true;
             }),
             listPersonalizationArmStates: jest.fn(async () => []),
+            all: jest.fn(async () => ([{
+                id: 9,
+                arm_id: 'direct',
+                immediate_reward: 0,
+                total_reward: 0,
+                reward_status: 'pending',
+            }])),
+            updatePersonalizationDecisionReward: jest.fn(async () => ({ updated: true, rewardStatus: 'partial' })),
         };
 
         const result = await scoreMentorGuidelineFidelity(db, {

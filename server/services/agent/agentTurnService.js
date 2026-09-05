@@ -22,8 +22,10 @@ const {
     summarizeOlderMessages,
 } = require('../agentHelpers');
 
-const { POLICY_TEACHING_STRATEGY, recordBanditReward, selectTeachingStrategyArm } = require('../personalizationBanditService');
+const { POLICY_TEACHING_STRATEGY, selectTeachingStrategyArm } = require('../personalizationBanditService');
 const { agentFollowUpReward } = require('../learningLoopSignalService');
+const { attributeLoggedDecisionReward } = require('../search/searchLearningOutcomeService');
+const { buildSelectionContext } = require('../bandit/logSelection');
 const { getAgentMistakesForContext } = require('../agentSelfImprovementService');
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -284,22 +286,31 @@ async function executeAgentTurn(
     // Enqueue side effects asynchronously — never block the response.
     if (userId) {
         if (teachingStrategyArm?.armId) {
-            db.insertPersonalizationDecision?.({
+            const teachingDecision = await db.insertPersonalizationDecision?.({
                 userId,
                 policyType: POLICY_TEACHING_STRATEGY,
                 armId: teachingStrategyArm.armId,
                 topic: trimmedTopic,
                 normalizedTopic: typeof db.normalizeTopic === 'function' ? db.normalizeTopic(trimmedTopic) : trimmedTopic.toLowerCase(),
-                context: {
-                    conversationId,
-                    sessionId,
-                    classifiedIntent,
-                    promptVersion: AGENT_PROMPT_VERSION,
-                    scopeKey: teachingStrategyArm.scopeKey,
-                    propensity: teachingStrategyArm.propensity != null ? Number(teachingStrategyArm.propensity) : null,
-                    selectionSource: teachingStrategyArm.selectionSource || null,
-                },
-            }).catch((err) => logger.debug({ err, topic: trimmedTopic, userId }, 'agent teaching personalization decision log failed'));
+                context: buildSelectionContext({
+                    armId: teachingStrategyArm.armId,
+                    propensity: teachingStrategyArm.propensity != null ? Number(teachingStrategyArm.propensity) : 1,
+                    propensityByArm: teachingStrategyArm.propensityByArm || null,
+                    selectionSource: teachingStrategyArm.selectionSource || 'density_gate',
+                    policy: POLICY_TEACHING_STRATEGY,
+                    extra: {
+                        conversationId,
+                        sessionId,
+                        classifiedIntent,
+                        promptVersion: AGENT_PROMPT_VERSION,
+                        scopeKey: teachingStrategyArm.scopeKey,
+                    },
+                }),
+            }).catch((err) => {
+                logger.debug({ err, topic: trimmedTopic, userId }, 'agent teaching personalization decision log failed');
+                return null;
+            });
+            if (teachingDecision?.id) teachingStrategyArm.decisionId = teachingDecision.id;
 
             db.recordLearningEvent?.({
                 userId,
@@ -333,7 +344,16 @@ async function executeAgentTurn(
                         ).catch(() => [])
                         : [];
                     if (existingFeedback?.length) return;
-                    await recordBanditReward(db, 'agent_teaching_strategy', teachingStrategyArm.armId, implicitFollowUpReward, userId);
+                    await attributeLoggedDecisionReward(db, {
+                        userId,
+                        policyType: POLICY_TEACHING_STRATEGY,
+                        armId: teachingStrategyArm.armId,
+                        decisionId: teachingStrategyArm.decisionId || null,
+                        conversationId,
+                        topic: trimmedTopic,
+                        reward: implicitFollowUpReward,
+                        rewardStatus: 'partial',
+                    });
                 })().catch((err) => logger.warn({ err, armId: teachingStrategyArm.armId }, 'agent follow-up bandit reward failed'));
             }
         }

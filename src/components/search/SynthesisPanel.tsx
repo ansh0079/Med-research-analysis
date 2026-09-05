@@ -1,6 +1,6 @@
 import React from 'react';
 import type { SynthesisResult, Article } from '@types';
-import { EvidenceAuditPanel } from '@components/search/EvidenceAuditPanel';
+import { EvidenceAuditPanel, numericGroundingFromAudit } from '@components/search/EvidenceAuditPanel';
 import { ClaimProvenanceModal } from '@components/search/ClaimProvenanceModal';
 import { VerificationBadge } from '@components/ui/VerificationBadge';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
@@ -187,6 +187,7 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
             retractionFlagged: Boolean(result.retractionWarning) || (Number(result.audit?.retractedInBundleCount) > 0),
             retractionChecked: result.audit?.retractionCheckedCount != null,
             humanReviewStatus: result.audit?.humanReviewStatus,
+            ...numericGroundingFromAudit((result.audit || {}) as Record<string, unknown>),
           }}
         />
 

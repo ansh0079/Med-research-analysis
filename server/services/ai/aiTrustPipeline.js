@@ -18,6 +18,7 @@ const {
 const {
     validateMedicalOutputCitations,
     validateCitationRefs,
+    extractCitationRefs,
     filterCitedStringList,
 } = require('../citationValidator');
 const { scoreClaimSourceRelevanceSync, articleEvidenceText } = require('../citationRelevanceService');
@@ -106,7 +107,7 @@ function appendRationale(payload, field, note) {
     return next;
 }
 
-function applyClaimRelevance(payload, sources, fields) {
+function applyClaimRelevance(payload, sources, fields, { trustField = null, rationaleField = null } = {}) {
     const articles = Array.isArray(sources) ? sources : (sources ? [sources] : []);
     if (!articles.length || !fields?.length) {
         return { payload, citationRelevance: { checked: false, issues: [], hasIrrelevantCitations: false } };
@@ -115,17 +116,23 @@ function applyClaimRelevance(payload, sources, fields) {
     for (const field of fields) {
         const text = payload?.[field];
         if (!text || !String(text).trim()) continue;
-        const scored = articles.map((article) => scoreClaimSourceRelevanceSync(text, article));
+        const refs = extractCitationRefs(text).filter((ref) => ref.kind !== 'guideline');
+        const cited = refs.length
+            ? refs.map((ref) => articles[Math.max(0, Number(ref.index) - 1)]).filter(Boolean)
+            : articles;
+        const pool = cited.length ? cited : articles;
+        const scored = pool.map((article) => scoreClaimSourceRelevanceSync(text, article));
         const anyValid = scored.some((s) => s.valid);
         if (!anyValid) {
-            issues.push({ field, text: String(text).slice(0, 200), method: 'keyword' });
+            issues.push({ field, text: String(text).slice(0, 200), method: 'keyword', citedCount: refs.length });
         }
     }
     let next = { ...payload };
-    if (issues.length > 0) {
-        next = capNamedTrust(next, TRUST_PROFILES.consensus_synopsis.trustField === 'evidenceStrength' && next.evidenceStrength
-            ? 'evidenceStrength'
-            : (next.trustRating ? 'trustRating' : null));
+    if (issues.length > 0 && trustField) {
+        next = capNamedTrust(next, trustField);
+        if (rationaleField) {
+            next = appendRationale(next, rationaleField, 'Claim–evidence relevance flagged weak overlap with cited sources.');
+        }
     }
     return {
         payload: next,
@@ -184,7 +191,7 @@ function applyGuidelineMcqTrust(payload, context = {}) {
                 ? payload.mcqs
                 : [];
     const sourceText = combineSourceText(context.sources || context.guidelines || context.articles);
-    const trusted = items.map((item, index) => {
+    const trusted = items.map((item) => {
         const explanation = item?.explanation || item?.rationale || '';
         const numeric = applyNumericGrounding(
             { explanation },
@@ -196,7 +203,6 @@ function applyGuidelineMcqTrust(payload, context = {}) {
             ...item,
             numericGrounding: numeric.numericGrounding,
             reviewState: ungrounded > 0 ? 'needs_revision' : 'machine_checked',
-            _itemIndex: index,
         };
     });
     const ungroundedCount = trusted.filter((q) => q.reviewState === 'needs_revision').length;
@@ -205,7 +211,7 @@ function applyGuidelineMcqTrust(payload, context = {}) {
         : 'machine_checked';
     const next = Array.isArray(payload)
         ? trusted
-        : { ...payload, questions: trusted, mcqs: trusted };
+        : { ...payload, mcqs: trusted };
     return {
         payload: next,
         audit: {
@@ -267,14 +273,11 @@ function applyAiTrustPipeline(kind, payload, context = {}) {
     next = cited.payload;
     const citationValidation = cited.citationValidation;
 
-    const relevance = applyClaimRelevance(next, sources, profile.relevanceFields);
+    const relevance = applyClaimRelevance(next, sources, profile.relevanceFields, {
+        trustField: profile.trustField,
+        rationaleField: profile.rationaleField,
+    });
     next = relevance.payload;
-    if (relevance.citationRelevance.hasIrrelevantCitations) {
-        if (profile.trustField) next = capNamedTrust(next, profile.trustField);
-        if (profile.rationaleField) {
-            next = appendRationale(next, profile.rationaleField, 'Claim–evidence relevance flagged weak overlap with supplied sources.');
-        }
-    }
     citationValidation.citationRelevance = relevance.citationRelevance;
 
     const numeric = applyNumericGrounding(next, combineSourceText(sources), {
@@ -283,6 +286,9 @@ function applyAiTrustPipeline(kind, payload, context = {}) {
         rationaleField: profile.rationaleField,
     });
     next = numeric.synopsis;
+    if (profile.trustField && numeric.numericGrounding.ungrounded?.length) {
+        next = capNamedTrust(next, profile.trustField);
+    }
 
     if (context.validationDegraded || next._validationDegraded) {
         next._validationDegraded = true;

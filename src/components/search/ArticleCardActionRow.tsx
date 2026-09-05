@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@components/ui/Button';
 import api from '@services/api';
 import type { Article, ArticleSynopsisFields, ConsortResult } from '@types';
-import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
+import { EvidenceAuditPanel, numericGroundingFromAudit, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
 import { ArticleCardConsortPanel } from './ArticleCardConsortPanel';
 import { ArticleCardSynopsisPanel, type SynopsisSourceMode } from './ArticleCardSynopsisPanel';
 
@@ -114,6 +114,7 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
                 humanReviewStatus: typeof au?.humanReviewStatus === 'string'
                   ? (au.humanReviewStatus as string)
                   : (typeof au?.reviewState === 'string' ? (au.reviewState as string) : 'unreviewed'),
+                ...numericGroundingFromAudit(au),
               });
               setSynopsis(result.synopsis);
               setSynopsisState('done');

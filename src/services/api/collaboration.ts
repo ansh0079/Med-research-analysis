@@ -454,7 +454,12 @@ export class CollaborationApi extends BaseApiClient {
     if (!response.ok) throw new Error('Failed to update member role');
   }
 
-  async getGuidelinesForTopic(topic: string): Promise<{ topic: string; guidelines: import('@types').GuidelineEntry[] }> {
+  async getGuidelinesForTopic(topic: string): Promise<{
+    topic: string;
+    guidelines: import('@types').GuidelineEntry[];
+    contradictions?: import('@types').GuidelineContradiction[];
+    discoveryStatus?: string;
+  }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/guidelines?topic=${encodeURIComponent(topic)}`);
     if (!response.ok) throw new Error('Failed to fetch guidelines');
     return response.json();

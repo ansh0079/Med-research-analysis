@@ -10,7 +10,7 @@ const {
     isBanditEnabled,
     scopeKeyForUser,
     ensurePolicyArms,
-    loadArmSamples,
+    loadArmPosterior,
     policyHasDenseGlobalData,
     chooseArmBySamples,
 } = require('./sampling');
@@ -54,16 +54,17 @@ async function selectCaseDifficultyArm(db, userId) {
         ? await db.listPersonalizationArmStates(POLICY_CASE_DIFFICULTY, userScope).catch(() => [])
         : [];
     const userPulls = userRows.reduce((sum, r) => sum + Number(r.pulls || 0), 0);
-    const [globalSamples, userSamples] = await Promise.all([
-        loadArmSamples(db, POLICY_CASE_DIFFICULTY, armIds, 'global'),
-        userId ? loadArmSamples(db, POLICY_CASE_DIFFICULTY, armIds, userScope) : Promise.resolve({}),
+    const [globalPosterior, userPosterior] = await Promise.all([
+        loadArmPosterior(db, POLICY_CASE_DIFFICULTY, armIds, 'global'),
+        userId ? loadArmPosterior(db, POLICY_CASE_DIFFICULTY, armIds, userScope) : Promise.resolve({ samples: {}, params: {} }),
     ]);
     const chosen = chooseArmBySamples(
         armIds,
-        globalSamples,
-        userSamples,
+        globalPosterior.samples,
+        userPosterior.samples,
         userPulls,
-        fallback
+        fallback,
+        { paramsByArm: globalPosterior.params, userParamsByArm: userId ? userPosterior.params : null }
     );
     const scopeKey = userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global';
     const meta = CASE_DIFFICULTY_ARMS[chosen.armId] || CASE_DIFFICULTY_ARMS[fallback];

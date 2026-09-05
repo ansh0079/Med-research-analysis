@@ -10,7 +10,7 @@ const {
     isBanditEnabled,
     scopeKeyForUser,
     ensurePolicyArms,
-    loadArmSamples,
+    loadArmPosterior,
     policyHasDenseGlobalData,
     chooseArmBySamples,
 } = require('./sampling');
@@ -55,16 +55,17 @@ async function selectSynopsisStyleArm(db, userId) {
         ? await db.listPersonalizationArmStates(POLICY_SYNOPSIS_STYLE, userScope).catch(() => [])
         : [];
     const userPulls = userRows.reduce((sum, r) => sum + Number(r.pulls || 0), 0);
-    const [globalSamples, userSamples] = await Promise.all([
-        loadArmSamples(db, POLICY_SYNOPSIS_STYLE, armIds, 'global'),
-        userId ? loadArmSamples(db, POLICY_SYNOPSIS_STYLE, armIds, userScope) : Promise.resolve({}),
+    const [globalPosterior, userPosterior] = await Promise.all([
+        loadArmPosterior(db, POLICY_SYNOPSIS_STYLE, armIds, 'global'),
+        userId ? loadArmPosterior(db, POLICY_SYNOPSIS_STYLE, armIds, userScope) : Promise.resolve({ samples: {}, params: {} }),
     ]);
     const chosen = chooseArmBySamples(
         armIds,
-        globalSamples,
-        userSamples,
+        globalPosterior.samples,
+        userPosterior.samples,
         userPulls,
-        'bottom_line_first'
+        'bottom_line_first',
+        { paramsByArm: globalPosterior.params, userParamsByArm: userId ? userPosterior.params : null }
     );
     const scopeKey = userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global';
 

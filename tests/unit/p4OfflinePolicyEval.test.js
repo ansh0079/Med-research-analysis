@@ -141,7 +141,7 @@ describe('P4 propensity logging helpers', () => {
     });
 
     test('linear serve logs 1-ε greedy or ε/|A| explore propensity', () => {
-        expect(linearServePropensity('linear', 0.1, 4)).toBeCloseTo(0.9, 5);
+        expect(linearServePropensity('linear', 0.1, 4)).toBeCloseTo(0.925, 5);
         expect(linearServePropensity('epsilon_explore', 0.1, 4)).toBeCloseTo(0.025, 5);
     });
 

@@ -166,12 +166,18 @@ function selectArmByLinearValue(model, context = {}, { epsilon = 0.1, random = M
     }
     if (typeof random === 'function' && random() < Math.max(0, Math.min(1, Number(epsilon) || 0))) {
         const pick = ranked[Math.floor(random() * ranked.length)] || ranked[0];
-        return { armId: pick.armId, predictedReward: pick.predictedReward, source: 'epsilon_explore' };
+        return {
+            armId: pick.armId,
+            predictedReward: pick.predictedReward,
+            source: 'epsilon_explore',
+            greedyArmId: ranked[0].armId,
+        };
     }
     return {
         armId: ranked[0].armId,
         predictedReward: ranked[0].predictedReward,
         source: 'linear',
+        greedyArmId: ranked[0].armId,
     };
 }
 

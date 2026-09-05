@@ -197,7 +197,7 @@ async function checkRetractionStatus(doi, pmid) {
   if (pmid) {
     try {
       const url = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${encodeURIComponent(pmid)}&rettype=xml`;
-      const res = await fetch(url, { timeout: 8000 });
+      const res = await fetchWithTimeout(url, { timeout: 8000 });
       if (res.ok) {
         const xml = await res.text();
         const hasRetraction = xml.includes('Retraction of Publication') || xml.includes('Retracted Publication');
@@ -218,7 +218,7 @@ async function checkRetractionStatus(doi, pmid) {
   if (doi) {
     try {
       const url = `https://api.crossref.org/works/${encodeURIComponent(doi)}`;
-      const res = await fetch(url, { timeout: 8000 });
+      const res = await fetchWithTimeout(url, { timeout: 8000 });
       if (res.ok) {
         const data = await res.json();
         const work = data?.message;

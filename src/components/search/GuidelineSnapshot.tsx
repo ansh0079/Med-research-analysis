@@ -59,6 +59,7 @@ function qualityBadge(level?: string) {
 
 export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAlignment = false }) => {
   const [guidelines, setGuidelines] = React.useState<GuidelineEntry[]>([]);
+  const [contradictions, setContradictions] = React.useState<import('@types').GuidelineContradiction[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
   const [error, setError] = React.useState('');
@@ -80,7 +81,10 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
         setLoading(true);
         setError('');
         const res = await api.collaboration.getGuidelinesForTopic(query);
-        if (!cancelled) setGuidelines(res.guidelines);
+        if (!cancelled) {
+          setGuidelines(res.guidelines);
+          setContradictions(res.contradictions || []);
+        }
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load guidelines');
       } finally {
@@ -246,7 +250,7 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
           </div>
         )}
 
-        <GuidelineContradictionPanel query={query} />
+        <GuidelineContradictionPanel query={query} initialContradictions={contradictions} />
 
         {visible.map((g) => (
           <div key={g.id} className="rounded-xl border border-slate-100 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/40 p-3.5">

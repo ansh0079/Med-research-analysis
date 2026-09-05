@@ -55,15 +55,65 @@ async function ensurePolicyArms(db, policyType, armIds, scopeKey = 'global') {
     });
 }
 
-async function loadArmSamples(db, policyType, armIds, scopeKey) {
+async function loadArmPosterior(db, policyType, armIds, scopeKey) {
     const rows = await db.listPersonalizationArmStates(policyType, scopeKey).catch(() => []);
     const byArm = new Map(rows.map((row) => [row.arm_id, row]));
     const samples = {};
+    const params = {};
     for (const armId of armIds) {
         const row = byArm.get(armId);
-        samples[armId] = sampleBeta(row?.alpha ?? 1, row?.beta ?? 1);
+        const alpha = Number(row?.alpha ?? 1) || 1;
+        const beta = Number(row?.beta ?? 1) || 1;
+        params[armId] = { alpha, beta };
+        samples[armId] = sampleBeta(alpha, beta);
     }
-    return samples;
+    return { samples, params };
+}
+
+async function loadArmSamples(db, policyType, armIds, scopeKey) {
+    return (await loadArmPosterior(db, policyType, armIds, scopeKey)).samples;
+}
+
+const MC_ARGMAX_DRAWS = 400;
+
+/**
+ * Monte Carlo P(arm wins argmax Thompson) from Beta posteriors.
+ * Softmax-of-one-draw is not this probability and is unsafe for IPS.
+ */
+function monteCarloArgmaxPropensities(armIds, paramsByArm = {}, {
+    draws = MC_ARGMAX_DRAWS,
+    userParamsByArm = null,
+    userPulls = 0,
+    boostFn = null,
+    sample = sampleBeta,
+} = {}) {
+    const ids = Array.isArray(armIds) ? armIds : [];
+    const counts = Object.fromEntries(ids.map((id) => [id, 0]));
+    if (!ids.length) return {};
+    const n = Math.max(1, Number(draws) || MC_ARGMAX_DRAWS);
+    for (let draw = 0; draw < n; draw += 1) {
+        let bestArm = ids[0];
+        let bestScore = -1;
+        for (const armId of ids) {
+            const global = paramsByArm[armId] || { alpha: 1, beta: 1 };
+            const user = userParamsByArm?.[armId] || null;
+            const globalSample = sample(global.alpha ?? 1, global.beta ?? 1);
+            const userSample = user ? sample(user.alpha ?? 1, user.beta ?? 1) : null;
+            let score = blendedArmSample(globalSample, userSample, userPulls);
+            if (typeof boostFn === 'function') score *= boostFn(armId) || 1;
+            if (score > bestScore) {
+                bestScore = score;
+                bestArm = armId;
+            }
+        }
+        counts[bestArm] += 1;
+    }
+    const floor = 1 / n;
+    const propensityByArm = {};
+    for (const id of ids) {
+        propensityByArm[id] = Math.min(1, Math.max(counts[id] / n, floor));
+    }
+    return propensityByArm;
 }
 
 async function policyHasDenseGlobalData(db, policyType, fallbackArm, armIds) {
@@ -99,7 +149,14 @@ function blendedArmSample(globalSample = 0.5, userSample = null, userPulls = 0) 
     return global * (1 - userWeight) + user * userWeight;
 }
 
-function chooseArmBySamples(armIds, globalSamples = {}, userSamples = {}, userPulls = 0, fallbackArm = armIds[0]) {
+function chooseArmBySamples(
+    armIds,
+    globalSamples = {},
+    userSamples = {},
+    userPulls = 0,
+    fallbackArm = armIds[0],
+    { paramsByArm = null, userParamsByArm = null, draws = MC_ARGMAX_DRAWS } = {}
+) {
     let bestArm = fallbackArm;
     let bestSample = -1;
     const blendedScores = [];
@@ -111,17 +168,18 @@ function chooseArmBySamples(armIds, globalSamples = {}, userSamples = {}, userPu
             bestArm = armId;
         }
     }
-    const propensities = softmaxPropensities(blendedScores);
-    const propensityByArm = {};
-    armIds.forEach((armId, i) => {
-        propensityByArm[armId] = propensities[i] ?? (1 / Math.max(armIds.length, 1));
-    });
+    const propensityByArm = paramsByArm
+        ? monteCarloArgmaxPropensities(armIds, paramsByArm, { userParamsByArm, userPulls, draws })
+        : Object.fromEntries(armIds.map((armId, i) => {
+            const props = softmaxPropensities(blendedScores);
+            return [armId, props[i] ?? (1 / Math.max(armIds.length, 1))];
+        }));
     return {
         armId: bestArm,
         sampled: bestSample,
         propensity: propensityByArm[bestArm] ?? (1 / Math.max(armIds.length, 1)),
         propensityByArm,
-        selectionSource: 'argmax_thompson',
+        selectionSource: paramsByArm ? 'argmax_thompson' : 'argmax_thompson_approx',
     };
 }
 
@@ -255,17 +313,19 @@ function chooseArmBySamplesContextual(
     userSamples = {},
     userPulls = 0,
     fallbackArm = armIds[0],
-    contextFeatures = null
+    contextFeatures = null,
+    { paramsByArm = null, userParamsByArm = null, draws = MC_ARGMAX_DRAWS } = {}
 ) {
     let bestArm = fallbackArm;
     let bestSample = -1;
     let bestRaw = null;
     const boostedScores = [];
+    const boostFn = contextFeatures
+        ? (armId) => contextualArmPriorBoost(armId, contextFeatures)
+        : null;
     for (const armId of armIds) {
         const raw = blendedArmSample(globalSamples[armId] ?? 0.5, userSamples[armId], userPulls);
-        const boosted = contextFeatures
-            ? raw * contextualArmPriorBoost(armId, contextFeatures)
-            : raw;
+        const boosted = boostFn ? raw * boostFn(armId) : raw;
         boostedScores.push(boosted);
         if (boosted > bestSample) {
             bestSample = boosted;
@@ -273,17 +333,24 @@ function chooseArmBySamplesContextual(
             bestRaw = raw;
         }
     }
-    const propensities = softmaxPropensities(boostedScores);
-    const propensityByArm = {};
-    armIds.forEach((armId, i) => {
-        propensityByArm[armId] = propensities[i] ?? (1 / Math.max(armIds.length, 1));
-    });
+    const propensityByArm = paramsByArm
+        ? monteCarloArgmaxPropensities(armIds, paramsByArm, {
+            userParamsByArm,
+            userPulls,
+            boostFn,
+            draws,
+        })
+        : Object.fromEntries(armIds.map((armId, i) => {
+            const props = softmaxPropensities(boostedScores);
+            return [armId, props[i] ?? (1 / Math.max(armIds.length, 1))];
+        }));
     return {
         armId: bestArm,
         sampled: bestSample,
         rawSampled: bestRaw,
         propensity: propensityByArm[bestArm] ?? (1 / Math.max(armIds.length, 1)),
         propensityByArm,
+        selectionSource: paramsByArm ? 'argmax_thompson' : 'argmax_thompson_approx',
     };
 }
 
@@ -309,6 +376,9 @@ module.exports = {
     scopeKeyForUser,
     ensurePolicyArms,
     loadArmSamples,
+    loadArmPosterior,
+    monteCarloArgmaxPropensities,
+    MC_ARGMAX_DRAWS,
     policyHasDenseGlobalData,
     hierarchicalUserWeight,
     blendedArmSample,

@@ -9,12 +9,32 @@ describe('propensity contract', () => {
     test('argmax Thompson logs a softmax propensity that sums to 1', () => {
         const armIds = ['a', 'b', 'c'];
         const chosen = chooseArmBySamples(armIds, { a: 0.9, b: 0.2, c: 0.1 }, {}, 0, 'a');
-        expect(chosen.selectionSource).toBe('argmax_thompson');
+        expect(chosen.selectionSource).toBe('argmax_thompson_approx');
         expect(chosen.propensity).toBeGreaterThan(0);
         expect(chosen.propensity).toBeLessThanOrEqual(1);
         const sum = Object.values(chosen.propensityByArm).reduce((a, b) => a + b, 0);
         expect(sum).toBeCloseTo(1, 5);
         expect(chosen.armId).toBe('a');
+    });
+
+    test('argmax Thompson with Beta params logs Monte Carlo P(win)', () => {
+        const armIds = ['a', 'b'];
+        const chosen = chooseArmBySamples(
+            armIds,
+            { a: 0.9, b: 0.1 },
+            {},
+            0,
+            'a',
+            {
+                paramsByArm: { a: { alpha: 20, beta: 2 }, b: { alpha: 2, beta: 20 } },
+                draws: 300,
+            }
+        );
+        expect(chosen.selectionSource).toBe('argmax_thompson');
+        expect(chosen.armId).toBe('a');
+        expect(chosen.propensityByArm.a).toBeGreaterThan(chosen.propensityByArm.b);
+        const sum = Object.values(chosen.propensityByArm).reduce((acc, n) => acc + n, 0);
+        expect(sum).toBeCloseTo(1, 1);
     });
 
     test('top-k without replacement inclusion probabilities stay in (0, 1] and selected mass is consistent', () => {

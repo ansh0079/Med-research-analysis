@@ -87,8 +87,8 @@ function applyNumericGrounding(synopsis = {}, article = null, options = {}) {
     const fields = Array.isArray(options.fields) && options.fields.length
         ? options.fields
         : DEFAULT_SYNOPSIS_FIELDS;
-    const trustField = options.trustField || 'trustRating';
-    const rationaleField = options.rationaleField || 'trustRationale';
+    const trustField = options.trustField === undefined ? 'trustRating' : options.trustField;
+    const rationaleField = options.rationaleField === undefined ? 'trustRationale' : options.rationaleField;
     const numbers = extractSynopsisNumbers(synopsis, fields);
     if (!numbers.length) {
         return {
@@ -131,8 +131,13 @@ function applyNumericGrounding(synopsis = {}, article = null, options = {}) {
     const ungrounded = numbers.filter((stat) => !sourceContainsNumber(source, stat.value));
     const next = { ...synopsis };
     if (ungrounded.length) {
-        if (trustField && next[trustField] == null && trustField === 'trustRating') {
-            next.trustRating = 'MODERATE';
+        if (trustField) {
+            if (next[trustField] == null && trustField === 'trustRating') {
+                next.trustRating = 'MODERATE';
+            } else if (next[trustField]) {
+                const { minTrustRating } = require('./paperSynopsisTrust');
+                next[trustField] = minTrustRating(next[trustField], 'LOW');
+            }
         }
         const note = `Numeric grounding failed for ${ungrounded.length} statistic${ungrounded.length === 1 ? '' : 's'} (${ungrounded.slice(0, 3).map((s) => s.raw || s.value).join(', ')}).`;
         if (rationaleField) {

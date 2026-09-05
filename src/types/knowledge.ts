@@ -24,6 +24,7 @@ export interface TopicIntelligence {
     guidelines: GuidelineEntry[];
     count: number;
     hasReviewedGuidelines: boolean;
+    contradictions?: import('./learning').GuidelineContradiction[];
   };
   evidenceMap?: {
     generatedAt: string;

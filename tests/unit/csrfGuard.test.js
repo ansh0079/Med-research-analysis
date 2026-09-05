@@ -37,4 +37,17 @@ describe('csrfGuard', () => {
         });
         expect(verdict.ok).toBe(true);
     });
+
+    test('rejects a sibling domain that only shares a prefix', () => {
+        const verdict = evaluateCsrf({
+            method: 'POST',
+            nodeEnv: 'production',
+            origin: 'https://signalmd.co.evil.com',
+            xRequestedWith: 'XMLHttpRequest',
+            path: '/api/search/impressions',
+            allowedOrigins,
+        });
+        expect(verdict.ok).toBe(false);
+        expect(verdict.error).toMatch(/untrusted origin/);
+    });
 });

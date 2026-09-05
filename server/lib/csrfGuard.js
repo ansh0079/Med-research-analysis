@@ -42,10 +42,26 @@ function evaluateCsrf({
     }
 
     const source = originHeader || refererHeader;
-    if (!allowedOrigins.some((allowed) => source.startsWith(allowed))) {
+    if (!originAllowed(source, allowedOrigins)) {
         return { ok: false, error: 'CSRF protection: untrusted origin' };
     }
     return { ok: true };
+}
+
+function originAllowed(source, allowedOrigins = []) {
+    let incoming;
+    try {
+        incoming = new URL(source).origin;
+    } catch {
+        return false;
+    }
+    return (Array.isArray(allowedOrigins) ? allowedOrigins : []).some((allowed) => {
+        try {
+            return new URL(allowed).origin === incoming;
+        } catch {
+            return false;
+        }
+    });
 }
 
 module.exports = {

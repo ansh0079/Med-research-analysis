@@ -62,7 +62,19 @@ async function reconcileImpressionRewards(db, { days = 7 } = {}) {
         const impression = impressions.find((i) => Number(i.search_id) === Number(row.search_id))
             || impressions[0];
         const immediate = impression ? immediateImpressionReward(impression) : 0;
-        if (immediate <= 0 && row.delayed_reward == null) continue;
+        const ageMs = Date.now() - Date.parse(row.created_at || '') || 0;
+        const stale = ageMs > Math.min(Math.max(Number(days) || 7, 1), 60) * 86400000 * 0.85;
+        if (immediate <= 0 && row.delayed_reward == null) {
+            if (!stale) continue;
+            await db.updatePersonalizationDecisionReward(row.id, {
+                immediateReward: 0,
+                delayedReward: 0,
+                totalReward: 0,
+                rewardStatus: 'final',
+            });
+            updated += 1;
+            continue;
+        }
         const total = Math.min(1, immediate + Number(row.delayed_reward || 0));
         const previousTotal = Number(row.total_reward ?? 0) || 0;
         const increment = total - previousTotal;

@@ -7,10 +7,8 @@
 
 const logger = require('../../config/logger');
 const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('../learningSignalService');
-const {
-    POLICY_TEACHING_STRATEGY,
-    recordBanditReward,
-} = require('../personalizationBanditService');
+const { POLICY_TEACHING_STRATEGY } = require('../personalizationBanditService');
+const { attributeLoggedDecisionReward } = require('../search/searchLearningOutcomeService');
 
 function tokenize(text) {
     return String(text || '')
@@ -98,7 +96,16 @@ async function scoreMentorGuidelineFidelity(db, {
 
     const armId = banditMeta?.armId || banditMeta?.teachingStrategyArmId || null;
     if (armId && reward != null) {
-        await recordBanditReward(db, POLICY_TEACHING_STRATEGY, armId, reward, userId).catch((err) => {
+        await attributeLoggedDecisionReward(db, {
+            userId,
+            policyType: POLICY_TEACHING_STRATEGY,
+            armId,
+            decisionId: banditMeta?.decisionId || null,
+            conversationId,
+            topic,
+            reward,
+            rewardStatus: 'partial',
+        }).catch((err) => {
             logger.debug({ err, topic, armId }, 'fidelity bandit reward failed');
         });
     }

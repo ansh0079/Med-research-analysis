@@ -6,7 +6,7 @@ import { QualityBadge } from './QualityBadge';
 import { RetractionBadge } from './RetractionBadge';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
 import { SynopsisTrustBanner } from '@components/search/SynopsisTrustBanner';
-import { EvidenceAuditPanel } from '@components/search/EvidenceAuditPanel';
+import { EvidenceAuditPanel, numericGroundingFromAudit } from '@components/search/EvidenceAuditPanel';
 
 interface Props {
   article: Article | null;
@@ -426,6 +426,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
                       retractionFlagged: synopsisResult.audit.retractionFlagged === true,
                       retractionChecked: synopsisResult.audit.retractionChecked === true,
                       jobKey: synopsisResult.jobKey ?? null,
+                      ...numericGroundingFromAudit(synopsisResult.audit as Record<string, unknown>),
                     }}
                   />
                 )}

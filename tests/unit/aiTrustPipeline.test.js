@@ -91,5 +91,40 @@ describe('applyAiTrustPipeline', () => {
         expect(audit.kind).toBe('guideline_mcq');
         expect(['machine_checked', 'needs_revision']).toContain(reviewState);
         expect(Array.isArray(payload.questions || payload)).toBe(true);
+        const items = payload.mcqs || payload.questions || payload;
+        expect(items[0]._itemIndex).toBeUndefined();
+    });
+
+    test('consensus_synopsis caps evidenceStrength when a statistic is ungrounded', () => {
+        const { payload } = applyAiTrustPipeline('consensus_synopsis', {
+            statement: 'Bundled care reduced events (HR 0.55) [1].',
+            clinicalBottomLine: 'Use bundles as discussion support [1].',
+            areasOfAgreement: ['Bundled care is emphasised [1].'],
+            conflictingSignals: [],
+            evidenceStrength: 'HIGH',
+        }, {
+            articles: [article],
+            sourceCount: 1,
+            fullTextCoverageRatio: 1,
+        });
+        expect(['LOW', 'VERY_LOW']).toContain(payload.evidenceStrength);
+        expect(payload.trustRating).toBeUndefined();
+    });
+
+    test('full_synthesis does not invent a trustRating field', () => {
+        const { payload } = applyAiTrustPipeline('full_synthesis', {
+            clinicalBottomLine: 'Mortality fell (HR 0.55) [1].',
+            overallAnswer: 'Use the cited trial cautiously [1].',
+            consensus: 'Agreement is limited [1].',
+            agreement: ['First-line vasopressor [1].'],
+            uncertainties: ['Mortality effect is imprecise [1].'],
+        }, {
+            articles: [article],
+            sourceCount: 1,
+            fullTextCoverageRatio: 0.5,
+            citationValidation: { ok: true, issueCount: 0, issues: [] },
+        });
+        expect(payload.trustRating).toBeUndefined();
+        expect(payload._contextArticles).toBeUndefined();
     });
 });

@@ -46,7 +46,7 @@ async function findSearchRankingDecision(db, userId, {
             return null;
         }
         const rows = await db.all(
-            `SELECT d.id, d.arm_id, d.delayed_reward, d.total_reward, d.immediate_reward
+            `SELECT d.id, d.arm_id, d.delayed_reward, d.total_reward, d.immediate_reward, d.reward_status
              FROM personalization_decisions d
              ${joinClause}
              WHERE d.id = ? AND d.policy_type = ?${actorClause}
@@ -58,7 +58,7 @@ async function findSearchRankingDecision(db, userId, {
     if (searchId && articleUid) {
         if (userId) {
             const rows = await db.all(
-                `SELECT id, arm_id, delayed_reward, total_reward, immediate_reward FROM personalization_decisions
+                `SELECT id, arm_id, delayed_reward, total_reward, immediate_reward, reward_status FROM personalization_decisions
                  WHERE user_id = ? AND policy_type = ? AND search_id = ? AND article_uid = ?
                  ORDER BY created_at DESC LIMIT 1`,
                 [String(userId), POLICY_SEARCH_RANKING, Number(searchId), String(articleUid)]
@@ -67,7 +67,7 @@ async function findSearchRankingDecision(db, userId, {
         }
         if (!sessionId) return null;
         const rows = await db.all(
-            `SELECT d.id, d.arm_id, d.delayed_reward, d.total_reward, d.immediate_reward
+            `SELECT d.id, d.arm_id, d.delayed_reward, d.total_reward, d.immediate_reward, d.reward_status
              FROM personalization_decisions d
              JOIN searches s ON s.id = d.search_id
              WHERE d.user_id IS NULL AND d.policy_type = ? AND d.search_id = ? AND d.article_uid = ?
@@ -112,6 +112,81 @@ async function applyDecisionReward(db, userId, decision, {
         await recordBanditReward(db, policyType || POLICY_SEARCH_RANKING, decision.arm_id, increment, userId);
     }
     return true;
+}
+
+/**
+ * Close one logged personalization decision and pull the arm by increment only.
+ * If no matching open decision exists, skip — do not write a raw arm pull.
+ */
+async function attributeLoggedDecisionReward(db, {
+    userId = null,
+    policyType,
+    armId = null,
+    decisionId = null,
+    topic = '',
+    normalizedTopic = '',
+    conversationId = null,
+    articleUid = null,
+    reward,
+    rewardStatus = 'final',
+    hours = 24,
+} = {}) {
+    if (!db || reward == null || !Number.isFinite(Number(reward))) return false;
+    const since = new Date(Date.now() - Math.min(Math.max(Number(hours) || 24, 1), 168) * 3600 * 1000).toISOString();
+    let decision = null;
+    if (decisionId && db.all) {
+        const rows = await db.all(
+            `SELECT id, arm_id, immediate_reward, delayed_reward, total_reward, reward_status
+             FROM personalization_decisions
+             WHERE id = ? AND policy_type = ?
+             LIMIT 1`,
+            [Number(decisionId), String(policyType)]
+        ).catch(() => []);
+        decision = rows?.[0] || null;
+    }
+    if (!decision && db.all && userId && (armId || conversationId || articleUid || topic)) {
+        const clauses = [
+            'user_id = ?',
+            'policy_type = ?',
+            "COALESCE(reward_status, 'pending') IN ('pending', 'partial')",
+            'created_at >= ?',
+        ];
+        const params = [String(userId), String(policyType), since];
+        if (armId) {
+            clauses.push('arm_id = ?');
+            params.push(String(armId));
+        }
+        if (normalizedTopic || topic) {
+            clauses.push('(normalized_topic = ? OR topic = ?)');
+            params.push(String(normalizedTopic || ''), String(topic || ''));
+        }
+        if (articleUid) {
+            clauses.push('article_uid = ?');
+            params.push(String(articleUid));
+        }
+        if (conversationId) {
+            clauses.push('context_json LIKE ?');
+            params.push(`%"conversationId":${JSON.stringify(conversationId)}%`);
+        }
+        params.push(1);
+        const rows = await db.all(
+            `SELECT id, arm_id, immediate_reward, delayed_reward, total_reward, reward_status
+             FROM personalization_decisions
+             WHERE ${clauses.join(' AND ')}
+             ORDER BY created_at DESC
+             LIMIT ?`,
+            params
+        ).catch(() => []);
+        decision = rows?.[0] || null;
+    }
+    if (!decision) return false;
+    return applyDecisionReward(db, userId, decision, {
+        immediateReward: Number(decision.immediate_reward || 0),
+        delayedReward: Number(reward),
+        totalReward: Number(reward),
+        policyType,
+        rewardStatus,
+    });
 }
 
 /**
@@ -479,15 +554,13 @@ async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic 
            AND (normalized_topic = ? OR topic = ?)
            AND created_at >= ?
          ORDER BY created_at DESC
-         LIMIT 3`,
+         LIMIT 1`,
         [String(userId), POLICY_TEACHING_STRATEGY, normalizedTopic, topic, since]
     ).catch(() => []);
     if (pendingDecisions?.length) {
         let rewarded = 0;
-        const seen = new Set();
-        for (const row of pendingDecisions) {
-            if (!row.arm_id || seen.has(row.arm_id)) continue;
-            seen.add(row.arm_id);
+        const row = pendingDecisions[0];
+        if (row?.arm_id) {
             const applied = await applyDecisionReward(db, userId, row, {
                 immediateReward: Number(row.immediate_reward || 0),
                 delayedReward: reward,
@@ -551,6 +624,7 @@ async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic 
 module.exports = {
     quizAttemptReward,
     applyDecisionReward,
+    attributeLoggedDecisionReward,
     attributeAgentQuizOutcomeReward,
     attributeQuizAttemptRewards,
     attributeRecommendationFollowThrough,

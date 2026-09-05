@@ -49,14 +49,19 @@ function sourceBadge(source: string) {
 
 interface Props {
   query: string;
+  initialContradictions?: GuidelineContradiction[];
 }
 
-export const GuidelineContradictionPanel: React.FC<Props> = ({ query }) => {
-  const [contradictions, setContradictions] = React.useState<GuidelineContradiction[]>([]);
+export const GuidelineContradictionPanel: React.FC<Props> = ({ query, initialContradictions }) => {
+  const [contradictions, setContradictions] = React.useState<GuidelineContradiction[]>(initialContradictions || []);
   const [loading, setLoading] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
 
   React.useEffect(() => {
+    if (Array.isArray(initialContradictions) && initialContradictions.length) {
+      setContradictions(initialContradictions);
+      return;
+    }
     if (!query || query.length < 3) return;
     let cancelled = false;
     (async () => {
@@ -71,7 +76,7 @@ export const GuidelineContradictionPanel: React.FC<Props> = ({ query }) => {
       }
     })();
     return () => { cancelled = true; };
-  }, [query]);
+  }, [query, initialContradictions]);
 
   if (loading || contradictions.length === 0) return null;
 

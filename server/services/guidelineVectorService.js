@@ -10,6 +10,26 @@ const {
 
 const VECTOR_BLEND_WEIGHT = Number(process.env.GUIDELINE_VECTOR_BLEND || 0.4);
 const VECTOR_MIN_SCORE = Number(process.env.GUIDELINE_VECTOR_MIN_SCORE || 0.35);
+const TOPIC_EMBED_TTL_MS = Number(process.env.GUIDELINE_TOPIC_EMBED_TTL_MS || 60 * 60 * 1000);
+const topicEmbeddingCache = new Map();
+
+function cachedTopicEmbedding(topic, embedding) {
+    const key = String(topic || '').trim().toLowerCase();
+    if (!key || !Array.isArray(embedding)) return embedding;
+    topicEmbeddingCache.set(key, { embedding, expiresAt: Date.now() + TOPIC_EMBED_TTL_MS });
+    return embedding;
+}
+
+function getCachedTopicEmbedding(topic) {
+    const key = String(topic || '').trim().toLowerCase();
+    const hit = topicEmbeddingCache.get(key);
+    if (!hit) return null;
+    if (hit.expiresAt < Date.now()) {
+        topicEmbeddingCache.delete(key);
+        return null;
+    }
+    return hit.embedding;
+}
 
 function hasEmbeddingKeys() {
     const provider = String(process.env.EMBEDDING_PROVIDER || 'hf').toLowerCase();
@@ -76,7 +96,8 @@ async function rerankGuidelinesWithVectors(db, topic, ranked, { limit = 20, keys
     if (!db?.isVectorSearchAvailable?.() || !db.isVectorSearchAvailable()) return ranked;
     if (!hasEmbeddingKeys() && !keys.openaiKey && !keys.huggingfaceKey) return ranked;
     try {
-        const embedding = await generateEmbedding(String(topic || '').slice(0, 500), keys);
+        const embedding = getCachedTopicEmbedding(topic)
+            || cachedTopicEmbedding(topic, await generateEmbedding(String(topic || '').slice(0, 500), keys));
         const hits = await db.searchSimilarArticlesCache(
             embedding,
             Math.min(40, Math.max(limit * 2, 12)),

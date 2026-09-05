@@ -49,4 +49,17 @@ describe('numericGrounding', () => {
         expect(result.numericGrounding.ungrounded).toHaveLength(0);
         expect(result.synopsis.trustRating).toBe('MODERATE');
     });
+
+    test('explicit null trustField does not inject a trustRating onto synthesis-shaped payloads', () => {
+        const result = applyNumericGrounding({
+            clinicalBottomLine: 'Mortality fell (HR 0.55) [1].',
+            overallAnswer: 'May help selected patients.',
+        }, {
+            title: 'Trial',
+            abstract: 'The primary endpoint showed HR 0.82 versus placebo.',
+        }, { trustField: null, rationaleField: null, fields: [['clinicalBottomLine', 'clinicalBottomLine']] });
+        expect(result.numericGrounding.ungrounded.some((row) => row.value === '0.55')).toBe(true);
+        expect(result.synopsis.trustRating).toBeUndefined();
+        expect(result.synopsis.trustRationale).toBeUndefined();
+    });
 });

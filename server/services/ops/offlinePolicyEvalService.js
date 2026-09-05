@@ -122,7 +122,11 @@ function offlineEvalDensityGate(decisions = [], {
     minPropensityCoverage = MIN_PROPENSITY_COVERAGE,
 } = {}) {
     const n = Array.isArray(decisions) ? decisions.length : 0;
-    const withPropensity = (decisions || []).filter((r) => clampPropensity(r?.context?.propensity) != null).length;
+    const withPropensity = (decisions || []).filter((r) => {
+        const source = String(r?.context?.selectionSource || '');
+        if (source === 'density_gate' || source === 'disabled') return true;
+        return clampPropensity(r?.context?.propensity) != null;
+    }).length;
     const propensityCoverage = n > 0 ? withPropensity / n : 0;
     const densityOk = n >= minLabelled;
     const propensityOk = n === 0 || propensityCoverage >= minPropensityCoverage;

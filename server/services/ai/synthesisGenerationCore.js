@@ -605,7 +605,8 @@ async function runFullSynthesisGenerationInner({
         citationValidation,
         validationDegraded: Boolean(synthesis._validationDegraded || (validated && !validated.ok)),
     });
-    synthesis = trusted.payload;
+    const { _contextArticles, ...publicSynthesis } = trusted.payload;
+    synthesis = publicSynthesis;
     const conflictExtraction = await runSynthesisConflictExtraction({
         topArticles: context.topArticles,
         guidelines: context.guidelines,

@@ -618,7 +618,19 @@ async function fetchAndRankSearchArticles({
         });
 
         _trace('bouquet.topPapers', bouquet.topPapers);
-        let articles = collapseNearDuplicateTitles(bouquet.topPapers.map(sanitizeArticleOutput));
+        const bouquetUids = new Set(
+            (bouquet.topPapers || []).flatMap((a) => [a?.uid, a?.pmid, a?.doi].filter(Boolean).map(String))
+        );
+        await withSpan('search.attach_retractions_live', {
+            'search.bouquet_count': bouquetUids.size,
+        }, () => attachRetractionData(bouquet.topPapers, { db, fetchImpl, bouquetUids }).catch((err) => {
+            logger.warn({ err, query }, 'live attachRetractionData failed');
+        }));
+        let articles = collapseNearDuplicateTitles(
+            bouquet.topPapers
+                .filter((article) => !article?._retraction?.isRetracted)
+                .map(sanitizeArticleOutput)
+        );
         _trace('afterCollapse', articles);
         articles = await withSpan('search.pico_rerank', {
             'search.result_count': articles.length,

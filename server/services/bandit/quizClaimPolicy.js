@@ -11,7 +11,7 @@ const {
     isBanditEnabled,
     scopeKeyForUser,
     ensurePolicyArms,
-    loadArmSamples,
+    loadArmPosterior,
     blendedArmSample,
     topKWithoutReplacementPropensities,
 } = require('./sampling');
@@ -52,14 +52,18 @@ async function applyQuizClaimSelectionBandit(db, userId, claimAnchors, {
             ? await db.listPersonalizationArmStates(POLICY_QUIZ_CLAIM_SELECTION, userScope).catch(() => [])
             : [];
         const userPulls = userRows.reduce((sum, r) => sum + Number(r.pulls || 0), 0);
-        const [globalSamples, userSamples] = await Promise.all([
-            loadArmSamples(db, POLICY_QUIZ_CLAIM_SELECTION, armIds, 'global'),
-            userId ? loadArmSamples(db, POLICY_QUIZ_CLAIM_SELECTION, armIds, userScope) : Promise.resolve({}),
+        const [globalPosterior, userPosterior] = await Promise.all([
+            loadArmPosterior(db, POLICY_QUIZ_CLAIM_SELECTION, armIds, 'global'),
+            userId ? loadArmPosterior(db, POLICY_QUIZ_CLAIM_SELECTION, armIds, userScope) : Promise.resolve({ samples: {}, params: {} }),
         ]);
         scopeKey = userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global';
         samples = {};
         for (const armId of armIds) {
-            samples[armId] = blendedArmSample(globalSamples[armId] ?? 0.5, userSamples[armId], userPulls);
+            samples[armId] = blendedArmSample(
+                globalPosterior.samples[armId] ?? 0.5,
+                userPosterior.samples[armId],
+                userPulls
+            );
         }
     } else {
         for (const armId of armIds) samples[armId] = 0.5;
@@ -82,9 +86,15 @@ async function applyQuizClaimSelectionBandit(db, userId, claimAnchors, {
     });
 
     const selected = ranked.slice(0, safeCount);
+    const scoresByArm = {};
+    for (const claim of candidates) {
+        const id = String(claim.claimKey);
+        const human = isHumanReviewedClaim(claim) ? 10 : 0;
+        scoresByArm[id] = (samples[id] ?? 0.5) - (Number(claim.priority) || 0) * 0.04 + human;
+    }
     const { propensityByArm } = topKWithoutReplacementPropensities(
         armIds,
-        samples,
+        scoresByArm,
         safeCount
     );
     const decisions = [];

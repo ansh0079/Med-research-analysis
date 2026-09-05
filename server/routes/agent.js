@@ -23,6 +23,7 @@ const {
 } = require('../services/agentHelpers');
 
 const { recordBanditReward } = require('../services/personalizationBanditService');
+const { attributeLoggedDecisionReward } = require('../services/search/searchLearningOutcomeService');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -102,8 +103,16 @@ function registerAgentRoutes(app, { serverConfig, db, rateLimit, requireJson, re
                     // Prefer direct / analogy over dense Socratic chains.
                     reward = (armId === 'socratic') ? 0.15 : (armId === 'direct' || armId === 'analogy') ? 0.85 : 0.45;
                 }
-                recordBanditReward(db, banditMeta.policyType, armId, reward, req.user.id)
-                    .catch((err) => logger.warn({ err, armId }, 'agent teaching bandit reward failed'));
+                attributeLoggedDecisionReward(db, {
+                    userId: req.user.id,
+                    policyType: banditMeta.policyType,
+                    armId,
+                    decisionId: banditMeta.decisionId || null,
+                    conversationId,
+                    topic: trimmedTopic,
+                    reward,
+                    rewardStatus: 'final',
+                }).catch((err) => logger.warn({ err, armId }, 'agent teaching bandit reward failed'));
             }
 
             // Mentor memory panel feedback also trains recommendation refresh arm.

@@ -104,6 +104,7 @@ export interface SearchResponse {
   lowRecallLearning?: LowRecallLearning | null;
   communityInsight?: CommunityInsight | null;
   proactiveAlert?: ProactiveAlert | null;
+  guidelineContradictions?: import('./learning').GuidelineContradiction[];
   aiEnrichmentKey?: string | null;
   aiEnrichmentStatus?: 'pending' | 'running' | 'ready' | 'failed' | 'timed_out';
   intelligenceStatus?: 'sync' | 'deferred';

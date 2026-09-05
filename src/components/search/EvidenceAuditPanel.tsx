@@ -15,11 +15,30 @@ export interface EvidenceAuditSnapshot {
   retractionChecked?: boolean | null;
   humanReviewStatus?: string | null;
   claimCount?: number | null;
+  ungroundedCount?: number | null;
+  ungroundedSample?: string | null;
 }
 
 function fmt(v: unknown, fallback = '—') {
   if (v === null || v === undefined || v === '') return fallback;
   return String(v);
+}
+
+export function numericGroundingFromAudit(audit: Record<string, unknown> | null | undefined): {
+  ungroundedCount: number | null;
+  ungroundedSample: string | null;
+} {
+  const ng = audit?.numericGrounding as {
+    ungrounded?: Array<{ raw?: string; value?: string }>;
+    ungroundedCount?: number;
+  } | undefined;
+  const ungrounded = Array.isArray(ng?.ungrounded) ? ng.ungrounded : [];
+  const count = Number(ng?.ungroundedCount ?? ungrounded.length) || 0;
+  const sample = ungrounded.slice(0, 2).map((stat) => stat.raw || stat.value).filter(Boolean).join(', ') || null;
+  return {
+    ungroundedCount: count > 0 ? count : null,
+    ungroundedSample: sample,
+  };
 }
 
 function pct(r: number | null | undefined) {
@@ -49,6 +68,8 @@ export const EvidenceAuditPanel: React.FC<{
     retractionChecked,
     humanReviewStatus,
     claimCount,
+    ungroundedCount,
+    ungroundedSample,
   } = snapshot;
 
   const rows: Array<{ k: string; v: string }> = [
@@ -77,6 +98,9 @@ export const EvidenceAuditPanel: React.FC<{
     },
     { k: 'Human review', v: fmt(humanReviewStatus === 'none' ? 'unreviewed' : humanReviewStatus, 'unreviewed') },
     ...(claimCount != null ? [{ k: 'Claims', v: String(claimCount) }] : []),
+    ...(ungroundedCount != null && ungroundedCount > 0
+      ? [{ k: 'Numeric grounding', v: `${ungroundedCount} ungrounded${ungroundedSample ? ` (${ungroundedSample})` : ''}` }]
+      : []),
     ...(jobKey ? [{ k: 'Job', v: jobKey.slice(0, 18) + (jobKey.length > 18 ? '…' : '') }] : []),
     ...(jobType ? [{ k: 'Job type', v: jobType }] : []),
   ];

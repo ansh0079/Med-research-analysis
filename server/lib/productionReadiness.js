@@ -86,6 +86,17 @@ function checkRedis(errors, warnings) {
     }
 }
 
+function checkSessionSecret(errors) {
+    const sessionSecret = env('SESSION_SECRET') || env('JWT_SECRET');
+    if (!sessionSecret) {
+        errors.push('SESSION_SECRET (or JWT_SECRET fallback) is required to sign anonymous learning sessions');
+        return;
+    }
+    if (sessionSecret.length < 32) {
+        errors.push('SESSION_SECRET should be at least 32 characters');
+    }
+}
+
 function checkCommercialGate(errors) {
     if (isProduction() && env('PAYWALL_ENABLED') === 'true' && env('BETA_MODE') === 'true') {
         errors.push('BETA_MODE=true is incompatible with PAYWALL_ENABLED=true in production');
@@ -240,6 +251,7 @@ function validateProductionEnv({ mode = 'verify' } = {}) {
             errors.push('REDIS_URL must be set in production for cache, rate limits, sessions, and job queues.');
         }
         checkRedisPassword(errors);
+        checkSessionSecret(errors);
         checkCommercialGate(errors);
     } else {
         // Full CI/manual checklist from verify-production-env.mjs.

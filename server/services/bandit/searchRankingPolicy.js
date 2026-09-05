@@ -11,11 +11,12 @@ const {
     isBanditEnabled,
     scopeKeyForUser,
     ensurePolicyArms,
-    loadArmSamples,
+    loadArmPosterior,
     policyHasDenseGlobalData,
     chooseArmBySamplesContextual,
     searchRankingContextFeatures,
 } = require('./sampling');
+const { buildSelectionContext } = require('./logSelection');
 
 let _linearModelCache = { model: null, fittedAt: 0, days: 30 };
 
@@ -56,7 +57,18 @@ function linearServePropensity(source, epsilon, armCount) {
     const explore = Math.max(0, Math.min(1, Number(epsilon) || 0));
     const n = Math.max(1, Number(armCount) || 1);
     if (source === 'epsilon_explore') return explore / n;
-    return 1 - explore;
+    return (1 - explore) + (explore / n);
+}
+
+function linearMixedPropensities(greedyArm, armIds, epsilon) {
+    const explore = Math.max(0, Math.min(1, Number(epsilon) || 0));
+    const ids = Array.isArray(armIds) ? armIds : [];
+    const n = Math.max(1, ids.length);
+    const propensityByArm = {};
+    for (const id of ids) {
+        propensityByArm[id] = (id === greedyArm ? (1 - explore) : 0) + (explore / n);
+    }
+    return propensityByArm;
 }
 
 function resolveSearchRankingChoice({
@@ -66,16 +78,22 @@ function resolveSearchRankingChoice({
     epsilon = Number(process.env.BANDIT_LINEAR_EPSILON || 0.1),
 } = {}) {
     const useLinear = Boolean(linearPick?.armId && LINEAR_SERVE_SOURCES.has(linearPick.source));
+    const greedyArm = linearPick?.greedyArmId
+        || ((linearPick?.source === 'linear' || linearPick?.source === 'linear_fallback') ? linearPick.armId : null);
     const bestArm = useLinear ? linearPick.armId : thompson.armId;
+    const linearMap = useLinear
+        ? linearMixedPropensities(greedyArm, armIds, linearPick.epsilon ?? epsilon)
+        : null;
     const propensity = useLinear
-        ? linearServePropensity(linearPick.source, linearPick.epsilon ?? epsilon, armIds.length)
+        ? (linearMap?.[bestArm] ?? linearServePropensity(linearPick.source, linearPick.epsilon ?? epsilon, armIds.length))
         : (thompson.propensityByArm?.[bestArm] ?? thompson.propensity ?? (1 / Math.max(armIds.length, 1)));
     return {
         bestArm,
         propensity,
+        propensityByArm: linearMap || thompson.propensityByArm || null,
         selectionSource: useLinear
             ? (linearPick.source === 'epsilon_explore' ? 'linear_epsilon_explore' : 'linear_value')
-            : 'thompson_contextual',
+            : (thompson.selectionSource || 'thompson_contextual'),
         useLinear,
     };
 }
@@ -112,10 +130,12 @@ async function selectSearchRankingArm(db, userId, context = {}) {
         };
     }
 
-    const [globalSamples, userSamples] = await Promise.all([
-        loadArmSamples(db, POLICY_SEARCH_RANKING, armIds, 'global'),
-        userId ? loadArmSamples(db, POLICY_SEARCH_RANKING, armIds, userScope) : Promise.resolve({}),
+    const [globalPosterior, userPosterior] = await Promise.all([
+        loadArmPosterior(db, POLICY_SEARCH_RANKING, armIds, 'global'),
+        userId ? loadArmPosterior(db, POLICY_SEARCH_RANKING, armIds, userScope) : Promise.resolve({ samples: {}, params: {} }),
     ]);
+    const globalSamples = globalPosterior.samples;
+    const userSamples = userPosterior.samples;
 
     const userRows = userId
         ? await db.listPersonalizationArmStates(POLICY_SEARCH_RANKING, userScope).catch(() => [])
@@ -128,7 +148,8 @@ async function selectSearchRankingArm(db, userId, context = {}) {
         userSamples,
         userPulls,
         'heuristic_default',
-        contextFeatures
+        contextFeatures,
+        { paramsByArm: globalPosterior.params, userParamsByArm: userId ? userPosterior.params : null }
     );
 
     const linearPick = await maybeSelectArmViaLinearValue(db, contextFeatures).catch(() => null);
@@ -146,7 +167,7 @@ async function selectSearchRankingArm(db, userId, context = {}) {
         sampled: thompson.sampled,
         rawSampled: thompson.rawSampled,
         propensity: choice.propensity,
-        propensityByArm: thompson.propensityByArm,
+        propensityByArm: choice.propensityByArm || thompson.propensityByArm,
         selectionSource: choice.selectionSource,
         linearMeta: linearPick || null,
         contextFeatures,
@@ -183,14 +204,19 @@ async function recordSearchRankingDecisions(db, {
             topic,
             normalizedTopic,
             articleUid: uid,
-            context: {
-                boost,
-                position: topArticles.indexOf(article),
-                memoryTier: banditMeta.memoryTier || null,
+            context: buildSelectionContext({
+                armId,
                 propensity: banditMeta.propensity != null ? Number(banditMeta.propensity) : null,
+                propensityByArm: banditMeta.propensityByArm || null,
                 selectionSource: banditMeta.selectionSource || null,
-                ...(banditMeta.contextFeatures || {}),
-            },
+                policy: POLICY_SEARCH_RANKING,
+                extra: {
+                    boost,
+                    position: topArticles.indexOf(article),
+                    memoryTier: banditMeta.memoryTier || null,
+                    ...(banditMeta.contextFeatures || {}),
+                },
+            }),
         }).catch((err) => {
             logger.debug({ err }, 'insertPersonalizationDecision failed');
             return null;
@@ -209,6 +235,7 @@ async function recordSearchRankingDecisions(db, {
 module.exports = {
     LINEAR_SERVE_SOURCES,
     linearServePropensity,
+    linearMixedPropensities,
     resolveSearchRankingChoice,
     maybeSelectArmViaLinearValue,
     selectSearchRankingArm,

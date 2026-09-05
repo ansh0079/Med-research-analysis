@@ -18,7 +18,7 @@ const {
     getPaperSynopsisArticleId,
     invalidatePaperSynopsisCache,
 } = require('../../services/paperSynopsisCore');
-const { recordBanditReward } = require('../../services/personalizationBanditService');
+const { attributeLoggedDecisionReward } = require('../../services/search/searchLearningOutcomeService');
 const {
     synopsisFeedbackReward,
     synopsisRegenerationTargets,
@@ -174,12 +174,22 @@ function registerSynthesisRoutes(app, {
                 synthesis = { ...synthesis, ...validated.degraded };
                 req.log?.warn?.({ errors: validated.errors, topic }, 'Stream synthesis degraded after validation');
             }
-            synthesis._contextArticles = context.enrichedArticles || context.topArticles;
             const citationValidation = await validateSynthesisCitations(synthesis, {
                 sourceCount: context.topArticles.length,
                 guidelineCount: context.guidelines.length,
                 embeddingKeys: serverConfig?.keys || null,
             });
+            const { applyAiTrustPipeline } = require('../../services/ai/aiTrustPipeline');
+            const trusted = applyAiTrustPipeline('full_synthesis', synthesis, {
+                articles: context.enrichedArticles || context.topArticles,
+                sourceCount: context.topArticles.length,
+                guidelineCount: context.guidelines.length,
+                fullTextCoverageRatio: context.fullTextCoverageRatio,
+                citationValidation,
+                validationDegraded: Boolean(synthesis._validationDegraded || (validated && !validated.ok)),
+            });
+            const { _contextArticles, ...publicSynthesis } = trusted.payload;
+            synthesis = publicSynthesis;
             const conflictExtraction = await runSynthesisConflictExtraction({
                 topArticles: context.topArticles,
                 guidelines: context.guidelines,
@@ -195,7 +205,8 @@ function registerSynthesisRoutes(app, {
                 topic,
                 topArticles: context.topArticles,
                 sourceMap: context.sourceMap,
-                citationValidation,
+                citationValidation: trusted.citationValidation || citationValidation,
+                trustAudit: trusted.audit,
                 retractedUids: context.retractedUids,
                 retractionResults: context.retractionResults,
                 prompt: context.prompt,
@@ -357,8 +368,16 @@ function registerSynthesisRoutes(app, {
                 // reward === 0 means "not this arm's fault" (e.g. a factual/trust
                 // complaint) — don't touch the style arm's posterior at all.
                 if (reward !== 0) {
-                    recordBanditReward(db, banditMeta.policyType, banditMeta.armId, reward, req.user?.id ?? null)
-                        .catch((err) => logger.warn({ err, armId: banditMeta.armId }, 'synopsis bandit reward failed'));
+                    attributeLoggedDecisionReward(db, {
+                        userId: req.user?.id ?? null,
+                        policyType: banditMeta.policyType,
+                        armId: banditMeta.armId,
+                        decisionId: banditMeta.decisionId || null,
+                        articleUid: uid || null,
+                        topic,
+                        reward,
+                        rewardStatus: 'final',
+                    }).catch((err) => logger.warn({ err, armId: banditMeta.armId }, 'synopsis bandit reward failed'));
                 }
             }
 

@@ -60,6 +60,7 @@ export function useSearch() {
   const [learnerContext, setLearnerContext] = useState<LearnerContextSummary | null>(null);
   const [aiEnrichmentLoading, setAiEnrichmentLoading] = useState(false);
   const [aiEnrichmentFailed, setAiEnrichmentFailed] = useState(false);
+  const [aiEnrichmentError, setAiEnrichmentError] = useState<string | null>(null);
   const [intelligenceLoading, setIntelligenceLoading] = useState(false);
   const [lowRecallLearning, setLowRecallLearning] = useState<LowRecallLearning | null>(null);
   const [searchTelemetry, setSearchTelemetry] = useState<import('@types').SearchResponse['searchTelemetry'] | null>(null);
@@ -110,10 +111,13 @@ export function useSearch() {
       status: 'pending' | 'running' | 'ready' | 'failed' | 'timed_out';
       clinicalAnswer?: import('@types').ClinicalAnswer | null;
       consensusSynopsis?: import('@types').TopicIntelligence['consensusSynopsis'] | null;
+      errorMessage?: string;
     }) => {
       if (enrichPollRequestIdRef.current !== requestIdRef.current) return;
       if (enrichment.status === 'ready') {
         setAiEnrichmentFailed(false);
+      setAiEnrichmentError(null);
+        setAiEnrichmentError(null);
         if (enrichment.clinicalAnswer) setClinicalAnswer(enrichment.clinicalAnswer);
         if (enrichment.consensusSynopsis) {
           const cs = enrichment.consensusSynopsis;
@@ -132,12 +136,17 @@ export function useSearch() {
         }
       } else if (enrichment.status === 'failed' || enrichment.status === 'timed_out') {
         setAiEnrichmentFailed(true);
+        setAiEnrichmentError(
+          enrichment.errorMessage
+          || (enrichment.status === 'timed_out' ? 'Clinical analysis timed out.' : 'Clinical analysis failed.')
+        );
       }
       setAiEnrichmentLoading(false);
     }, [setClinicalAnswer, setTopicIntelligence]),
     onTimeout: useCallback(() => {
       if (enrichPollRequestIdRef.current !== requestIdRef.current) return;
       setAiEnrichmentFailed(true);
+      setAiEnrichmentError('Clinical analysis timed out.');
       setAiEnrichmentLoading(false);
     }, [setAiEnrichmentLoading]),
   });
@@ -190,6 +199,7 @@ export function useSearch() {
       cancelPollRef.current();
       setAiEnrichmentLoading(false);
       setAiEnrichmentFailed(false);
+      setAiEnrichmentError(null);
 
       if (!query.trim()) {
         setResults([]);
@@ -305,6 +315,7 @@ export function useSearch() {
         if (aiEnrichmentKey && (aiEnrichmentStatus === 'pending' || aiEnrichmentStatus === 'running')) {
           setAiEnrichmentLoading(true);
           setAiEnrichmentFailed(false);
+      setAiEnrichmentError(null);
           enrichPollRequestIdRef.current = thisRequestId;
           setEnrichKey(aiEnrichmentKey);
           enrichmentPollRef.current.start();
@@ -352,6 +363,7 @@ export function useSearch() {
     setLastSearchId(null);
     setAiEnrichmentLoading(false);
     setAiEnrichmentFailed(false);
+    setAiEnrichmentError(null);
     setIntelligenceLoading(false);
   }, [setResults, setError, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, cancelPoll]);
 
@@ -367,6 +379,7 @@ export function useSearch() {
     learnerContext,
     aiEnrichmentLoading,
     aiEnrichmentFailed,
+    aiEnrichmentError,
     intelligenceLoading,
     knowledgeDriftAlerts,
     dismissKnowledgeDriftAlert,

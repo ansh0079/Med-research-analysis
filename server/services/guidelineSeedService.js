@@ -301,9 +301,9 @@ async function generateGuidelineMcqs({ db, topicName, serverConfig, fetchImpl, l
                 }
                 if (validated.degraded && Array.isArray(validated.degraded.questions) && validated.degraded.questions.length) {
                     mcqs = validated.degraded.questions;
+                    mcqs = mcqs.map((q) => ({ ...q, _validationDegraded: true }));
                     break;
                 }
-                if (mcqs.length) break;
             }
         } catch (err) {
             if (attempt === 2) {
