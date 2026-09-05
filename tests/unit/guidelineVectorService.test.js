@@ -1,6 +1,8 @@
 'use strict';
 
 const { blendGuidelineVectorScores, rerankGuidelinesWithVectors } = require('../../server/services/guidelineVectorService');
+const { GUIDELINE_VECTOR_SOURCE } = require('../../server/embeddings');
+const vectorMixin = require('../../database/mixins/m07b-vector-cache-annotations');
 
 describe('guidelineVectorService', () => {
     test('blends lexical relevance with pgvector hits', () => {
@@ -24,5 +26,39 @@ describe('guidelineVectorService', () => {
             ranked
         );
         expect(out).toBe(ranked);
+    });
+});
+
+describe('searchSimilarArticlesCache source scoping', () => {
+    const embedding = new Array(384).fill(0.1);
+
+    function buildDb(captured) {
+        const Db = vectorMixin(class {});
+        const db = new Db();
+        db._articlesCacheEmbeddingDim = 384;
+        db.pgVectorPool = {
+            query: async (sql, params) => {
+                captured.sql = sql;
+                captured.params = params;
+                return { rows: [] };
+            },
+        };
+        return db;
+    }
+
+    test('an unscoped search excludes guideline vectors', async () => {
+        const captured = {};
+        await buildDb(captured).searchSimilarArticlesCache(embedding, 5, 0.4);
+        expect(captured.params[3]).toBeNull();
+        expect(captured.params[4]).toContain(GUIDELINE_VECTOR_SOURCE);
+        expect(captured.sql).toContain('source <> ALL($5::text[])');
+    });
+
+    test('an explicit source scopes the search to that source only', async () => {
+        const captured = {};
+        await buildDb(captured).searchSimilarArticlesCache(embedding, 5, 0.4, {
+            source: GUIDELINE_VECTOR_SOURCE,
+        });
+        expect(captured.params[3]).toBe(GUIDELINE_VECTOR_SOURCE);
     });
 });

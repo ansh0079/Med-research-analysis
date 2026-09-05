@@ -2,6 +2,10 @@
 
 const { safeJsonParse, toPgVectorLiteral } = require('../lib/helpers');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
+const { GUIDELINE_VECTOR_SOURCE } = require('../../server/embeddings');
+
+// Sources stored in articles_cache that are not articles and must be opted into.
+const NON_ARTICLE_VECTOR_SOURCES = [GUIDELINE_VECTOR_SOURCE];
 
 module.exports = (Sup) => class extends Sup {
 // ==========================================
@@ -85,16 +89,25 @@ async searchSimilarArticlesCache(queryEmbedding, limit = 10, minSimilarity = 0.4
     const vec = toPgVectorLiteral(queryEmbedding);
     const maxDistance = 1 - minSimilarity;
     const sourceFilter = source ? String(source) : null;
+    // articles_cache also backs non-article vectors (e.g. guidelines). An
+    // unscoped search must stay article-only or those rows surface as results.
     const sql = `
         SELECT data, 1 - (embedding <=> $1::vector) AS score
         FROM articles_cache
         WHERE embedding IS NOT NULL
           AND (embedding <=> $1::vector) < $2
           AND ($4::text IS NULL OR source = $4)
+          AND ($4::text IS NOT NULL OR source IS NULL OR source <> ALL($5::text[]))
         ORDER BY embedding <=> $1::vector ASC
         LIMIT $3
     `;
-    const { rows } = await this.pgVectorPool.query(sql, [vec, maxDistance, limit, sourceFilter]);
+    const { rows } = await this.pgVectorPool.query(sql, [
+        vec,
+        maxDistance,
+        limit,
+        sourceFilter,
+        NON_ARTICLE_VECTOR_SOURCES,
+    ]);
     return rows.map((r) => ({
         data: r.data,
         score: r.score !== null && r.score !== undefined ? Number(r.score) : 0
