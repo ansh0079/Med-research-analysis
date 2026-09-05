@@ -49,6 +49,19 @@ function registerAdminObservabilityRoutes(app, { db, requireAuthJwt, requireRole
         }
     });
 
+    // Daily LLM spend against the global ceiling. Without this an operator has no
+    // way to see how close the day is to pausing generation, or whether the kill
+    // switch is engaged.
+    app.get('/api/admin/llm-spend', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const { getSpendSnapshot } = require('../../services/ai/globalLlmSpendGuard');
+            res.json({ spend: await getSpendSnapshot() });
+        } catch (error) {
+            req.log.error({ err: error }, 'LLM spend snapshot error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
     app.get('/api/admin/cron-health', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
         try {
             const rows = await db.all('SELECT * FROM cron_heartbeats ORDER BY task').catch(() => []);

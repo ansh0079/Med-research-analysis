@@ -35,6 +35,26 @@ export const AuthPage: React.FC = () => {
     ? { pathname: fromState.pathname, search: fromState.search ?? '', hash: fromState.hash ?? '' }
     : '/';
 
+  // Signing in honours returnTo, but the anonymous path cannot: every blocked
+  // destination is a ProtectedRoute, so sending an anonymous visitor back would
+  // bounce them straight here again. A shared /topic/:topic link previously just
+  // dropped them on an empty search page with the topic lost; carry it into the
+  // search, which is the most of that topic an anonymous visitor can see.
+  const continueWithoutSigningIn = () => {
+    const topicMatch = fromState?.pathname?.match(/^\/topic\/(.+)$/);
+    if (topicMatch?.[1]) {
+      let topic = topicMatch[1];
+      try {
+        topic = decodeURIComponent(topic);
+      } catch {
+        /* malformed escape sequence -- fall back to the raw segment */
+      }
+      navigate(`/search?q=${encodeURIComponent(topic)}`, { replace: true });
+      return;
+    }
+    setCurrentPage('search');
+  };
+
   const [mode, setMode] = useState<Mode>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -413,7 +433,7 @@ export const AuthPage: React.FC = () => {
           <div className="mt-6 pt-6 border-t border-gray-100 dark:border-slate-700 text-center">
             <button
               type="button"
-              onClick={() => setCurrentPage('search')}
+              onClick={continueWithoutSigningIn}
               className="text-sm text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors"
             >
               Continue without signing in →

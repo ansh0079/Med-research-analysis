@@ -252,6 +252,27 @@ describe('paper synopsis pipeline (real modules, stubbed network)', () => {
         })).rejects.toThrow(/grounding/i);
     });
 
+    test('the daily spend cap actually blocks generation on the real call path', async () => {
+        // Proves the guard is wired into executeProviderCall, not merely unit
+        // tested. Public endpoints reach this path with no account, so an
+        // unenforced cap means unbounded spend.
+        const { fetchImpl, calls } = makeFetch();
+        const prev = process.env.LLM_SPEND_KILL_SWITCH;
+        process.env.LLM_SPEND_KILL_SWITCH = 'true';
+        try {
+            await expect(runPaperSynopsisGeneration({
+                article: ARTICLE, serverConfig: serverConfig(), fetchImpl, cache: makeCache(), db: makeDb(), topic: 'sepsis corticosteroids',
+            })).rejects.toThrow(/paused|cap/i);
+
+            // Nothing was sent to any provider -- the cap must stop the spend,
+            // not merely discard the answer after paying for it.
+            expect(calls.filter((c) => c.url.includes('anthropic') || c.url.includes('generativelanguage'))).toHaveLength(0);
+        } finally {
+            if (prev === undefined) delete process.env.LLM_SPEND_KILL_SWITCH;
+            else process.env.LLM_SPEND_KILL_SWITCH = prev;
+        }
+    });
+
     test('throws when no provider is configured rather than returning an empty synopsis', async () => {
         const { fetchImpl } = makeFetch();
 

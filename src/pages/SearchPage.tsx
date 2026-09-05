@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 const AIAnalysisPanel = React.lazy(() => import('@components/search/AIAnalysisPanel').then(m => ({ default: m.AIAnalysisPanel })));
 import { SynthesisPanel } from '@components/search/SynthesisPanel';
 import { TopicActionBanner } from '@components/quiz/TopicActionBanner';
@@ -140,6 +141,23 @@ export const SearchPage: React.FC = () => {
   } = page;
 
   const { activePdf, isOpen, layout, openPdf, closePdf, toggleLayout } = pdfViewer;
+
+  // Run a search supplied in the URL (?q=...). This is how a shared /topic/:topic
+  // link degrades for a visitor who is not signed in: TopicPage is protected, so
+  // they cannot be sent there, but they can still see the evidence for that topic.
+  // Only fires once per query so it does not re-run on every render.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlQuery = searchParams.get('q')?.trim() || '';
+  const consumedQueryRef = React.useRef<string | null>(null);
+  React.useEffect(() => {
+    if (!urlQuery || consumedQueryRef.current === urlQuery) return;
+    consumedQueryRef.current = urlQuery;
+    handleSearch(urlQuery);
+    // Drop the param once consumed so a refresh does not silently re-run a
+    // search the visitor may have since navigated away from.
+    searchParams.delete('q');
+    setSearchParams(searchParams, { replace: true });
+  }, [urlQuery, handleSearch, searchParams, setSearchParams]);
 
   return (
     <div className="min-h-screen aurora-bg mesh-bg">

@@ -23,8 +23,9 @@ describe('Database Integration (real SQLite)', () => {
 
     beforeAll(async () => {
         // Clean up any previous test database
-        if (fs.existsSync(TEST_DB_PATH)) {
-            fs.unlinkSync(TEST_DB_PATH);
+        for (const suffix of ['', '-wal', '-shm']) {
+            const file = `${TEST_DB_PATH}${suffix}`;
+            if (fs.existsSync(file)) fs.unlinkSync(file);
         }
         db = new Database(TEST_DB_PATH);
         await db.connect();
@@ -62,8 +63,18 @@ describe('Database Integration (real SQLite)', () => {
 
     afterAll(async () => {
         await db.close();
-        if (fs.existsSync(TEST_DB_PATH)) {
-            fs.unlinkSync(TEST_DB_PATH);
+        // Best-effort cleanup. On Windows better-sqlite3 can still hold the file
+        // briefly after close(), and under full-suite load the unlink threw
+        // EPERM/EBUSY -- failing afterAll and reporting all 19 tests as failures
+        // for a leftover temp file. A stale temp DB is harmless: beforeAll
+        // deletes it on the next run.
+        for (const suffix of ['', '-wal', '-shm']) {
+            const file = `${TEST_DB_PATH}${suffix}`;
+            try {
+                if (fs.existsSync(file)) fs.unlinkSync(file);
+            } catch {
+                /* handle not yet released; next run's beforeAll clears it */
+            }
         }
     });
 

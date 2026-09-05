@@ -46,6 +46,7 @@ const { AI_DISCLAIMER } = require('../aiConstants');
 const { CircuitBreaker } = require('../circuitBreaker');
 const { buildProxyService } = require('../externalApiProxy');
 const { getActiveLlmBudget } = require('../llmRequestBudget');
+const { assertUnderDailyCap, recordSpend } = require('./globalLlmSpendGuard');
 const { parseStructuredOutput } = require('../../utils/parseJson');
 
 function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) {
@@ -103,19 +104,32 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
             if (allowBudgetSkip) return null;
             activeBudget.assertCanCall({ prompt, model });
         }
+        // Per-request budgets cap one request; this caps the day across every
+        // caller. Without it, public endpoints (/api/search reformulation, and
+        // the AI routes while BETA_MODE admits anonymous sessions) had no upper
+        // bound on spend at all.
+        await assertUnderDailyCap({ prompt, model });
+        const recordGlobalSpend = (response) => {
+            void recordSpend({ prompt, response, model });
+        };
         if (usage?.operation) {
-            return withUsageLog(
+            const logged = await withUsageLog(
                 { operation: usage.operation, provider, model, prompt, topic: usage.topic, userId: usage.userId, budget: activeBudget },
                 fn
             );
+            recordGlobalSpend(logged);
+            return logged;
         }
         if (activeBudget) {
             activeBudget.assertCanCall({ prompt, model });
             const text = await fn();
             activeBudget.recordCall({ prompt, response: text, model });
+            recordGlobalSpend(text);
             return text;
         }
-        return fn();
+        const text = await fn();
+        recordGlobalSpend(text);
+        return text;
     }
 
     // Circuit breakers protect against cascading failures when LLM APIs degrade.
@@ -412,6 +426,10 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         if (activeBudget) {
             activeBudget.assertCanCall({ prompt, model });
         }
+        // Streaming bypasses executeProviderCall, so the daily ceiling has to be
+        // enforced here too -- /api/ai/synthesize/stream is one of the endpoints
+        // anonymous callers can reach.
+        await assertUnderDailyCap({ prompt, model });
 
         const generator = provider === 'claude'
             ? callClaudeStreamRaw(prompt, model, providerOptions)
@@ -429,6 +447,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         if (activeBudget) {
             activeBudget.recordCall({ prompt, response, model });
         }
+        void recordSpend({ prompt, response, model });
     }
 
     return {
