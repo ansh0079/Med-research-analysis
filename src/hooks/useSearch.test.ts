@@ -420,6 +420,31 @@ describe('useSearch', () => {
     expect(result.current.aiEnrichmentLoading).toBe(false);
   });
 
+  it('marks enrichment failed when the poll times out', async () => {
+    mockedApi.search.search.mockResolvedValue({
+      articles: mockArticles,
+      count: 2,
+      sources: ['pubmed'],
+      aiEnrichmentKey: 'key-timeout',
+      aiEnrichmentStatus: 'pending',
+    } as any);
+    mockedApi.search.getAiEnrichment.mockResolvedValue({ status: 'running' } as any);
+
+    const { result } = renderHook(() => useSearch());
+    await act(async () => {
+      await result.current.search('diabetes');
+    });
+    for (let i = 0; i < 8; i += 1) {
+      await act(async () => {
+        jest.advanceTimersByTime(10000);
+        await Promise.resolve();
+        await Promise.resolve();
+      });
+    }
+    expect(result.current.aiEnrichmentFailed).toBe(true);
+    expect(result.current.aiEnrichmentLoading).toBe(false);
+  });
+
   // ── Search history ────────────────────────────────────────────────────────
 
   it('calls addToSearchHistory after successful search', async () => {

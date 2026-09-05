@@ -26,6 +26,7 @@ const {
     contextualArmPriorBoost,
     chooseArmBySamplesContextual,
     softmaxPropensities,
+    topKWithoutReplacementPropensities,
     sampleBeta,
 } = require('./sampling');
 
@@ -61,6 +62,7 @@ module.exports = {
     contextualArmPriorBoost,
     chooseArmBySamplesContextual,
     softmaxPropensities,
+    topKWithoutReplacementPropensities,
     RECOMMENDATION_ARM_BY_TYPE,
     MIN_PULLS_FOR_USER_ARM,
     FULL_PULLS_FOR_USER_ARM,

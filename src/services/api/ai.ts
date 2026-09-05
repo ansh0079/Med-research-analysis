@@ -160,8 +160,8 @@ export class AiApi extends BaseApiClient {
     for (let i = 0; i < maxAttempts; i++) {
       await new Promise((r) => setTimeout(r, interval));
       const { job } = await this.getAiGenerationJob(jobKey);
-      if (job.status === 'failed') {
-        throw new Error(job.errorMessage || 'Synopsis job failed');
+      if (job.status === 'failed' || job.status === 'timed_out') {
+        throw new Error(job.errorMessage || (job.status === 'timed_out' ? 'Synopsis generation timed out' : 'Synopsis job failed'));
       }
       if (job.status === 'completed' && job.result && typeof job.result === 'object') {
         return { ...(job.result as ArticleSynopsisResult), jobKey, status: 'completed' };
@@ -213,8 +213,8 @@ export class AiApi extends BaseApiClient {
     for (let i = 0; i < maxAttempts; i++) {
       await new Promise((r) => setTimeout(r, interval));
       const { job } = await this.getAiGenerationJob(jobKey);
-      if (job.status === 'failed') {
-        throw new Error(job.errorMessage || 'Synthesis job failed');
+      if (job.status === 'failed' || job.status === 'timed_out') {
+        throw new Error(job.errorMessage || (job.status === 'timed_out' ? 'Synthesis generation timed out' : 'Synthesis job failed'));
       }
       if (job.status === 'completed' && job.result && typeof job.result === 'object') {
         return { ...(job.result as SynthesisResult), jobKey, status: 'completed' };

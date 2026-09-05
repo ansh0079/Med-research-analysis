@@ -104,9 +104,10 @@ export class SearchApi extends BaseApiClient {
   }
 
   async getAiEnrichment(key: string): Promise<{
-    status: 'pending' | 'ready' | 'failed';
+    status: 'pending' | 'running' | 'ready' | 'failed' | 'timed_out';
     clinicalAnswer?: import('@types').ClinicalAnswer | null;
     consensusSynopsis?: import('@types').TopicIntelligence['consensusSynopsis'] | null;
+    errorMessage?: string;
   }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/search/ai-enrichment/${encodeURIComponent(key)}`);
     if (!response.ok) return { status: 'failed' };

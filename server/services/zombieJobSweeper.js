@@ -16,7 +16,12 @@ let task = null;
  * SQLite (stores ISO text) and Postgres (casts string param to timestamp).
  */
 async function sweepZombieJobs(db, { stuckAfterMinutes = DEFAULT_STUCK_MINUTES, logger = console } = {}) {
-    if (typeof db?.all !== 'function' || typeof db?.failAiGenerationJob !== 'function') {
+    const markTimeout = typeof db?.timeoutAiGenerationJob === 'function'
+        ? db.timeoutAiGenerationJob.bind(db)
+        : typeof db?.failAiGenerationJob === 'function'
+            ? (jobKey, message) => db.failAiGenerationJob(jobKey, message)
+            : null;
+    if (typeof db?.all !== 'function' || !markTimeout) {
         return { skipped: true, reason: 'db_missing_methods' };
     }
 
@@ -32,11 +37,11 @@ async function sweepZombieJobs(db, { stuckAfterMinutes = DEFAULT_STUCK_MINUTES, 
 
     let recovered = 0;
     for (const row of rows) {
-        await db.failAiGenerationJob(
+        await markTimeout(
             row.job_key,
-            `zombie_recovery: stuck in running for >${stuckAfterMinutes}m (last updated ${row.updated_at})`
+            `timed_out: stuck in running for >${stuckAfterMinutes}m (last updated ${row.updated_at})`
         ).catch((err) => {
-            logger.warn?.({ err, jobKey: row.job_key }, 'zombieSweep: failAiGenerationJob failed');
+            logger.warn?.({ err, jobKey: row.job_key }, 'zombieSweep: timeoutAiGenerationJob failed');
         });
         logger.info?.({ jobKey: row.job_key, jobType: row.job_type, attempts: row.attempts },
             'zombieSweep: recovered stuck job');

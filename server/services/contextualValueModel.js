@@ -75,7 +75,13 @@ function solveLinearSystem(A, b) {
     return M.map((row) => row[n]);
 }
 
-function fitLinearValueModel(decisions = [], { lambda = DEFAULT_LAMBDA, minRows = MIN_FIT_ROWS } = {}) {
+function ipsFitWeight(row, clip = 20) {
+    const p = Number(row?.context?.propensity);
+    if (!Number.isFinite(p) || p <= 0) return 1;
+    return Math.min(clip, 1 / Math.max(0.02, p));
+}
+
+function fitLinearValueModel(decisions = [], { lambda = DEFAULT_LAMBDA, minRows = MIN_FIT_ROWS, propensityWeighted = true } = {}) {
     const rows = (Array.isArray(decisions) ? decisions : []).filter((d) => {
         const reward = Number(d.totalReward ?? d.total_reward);
         const armId = d.armId || d.arm_id;
@@ -90,8 +96,17 @@ function fitLinearValueModel(decisions = [], { lambda = DEFAULT_LAMBDA, minRows 
         };
     }
 
-    const X = rows.map((d) => featureVector(d.context || {}, d.armId || d.arm_id));
-    const y = rows.map((d) => Number(d.totalReward ?? d.total_reward));
+    const rawX = rows.map((d) => featureVector(d.context || {}, d.armId || d.arm_id));
+    const rawY = rows.map((d) => Number(d.totalReward ?? d.total_reward));
+    const X = propensityWeighted
+        ? rawX.map((row, i) => {
+            const scale = Math.sqrt(ipsFitWeight(rows[i]));
+            return row.map((v) => v * scale);
+        })
+        : rawX;
+    const y = propensityWeighted
+        ? rawY.map((value, i) => value * Math.sqrt(ipsFitWeight(rows[i])))
+        : rawY;
     const d = featureDim();
     const Xt = transpose(X);
     const XtX = matMul(Xt, X);
@@ -119,6 +134,7 @@ function fitLinearValueModel(decisions = [], { lambda = DEFAULT_LAMBDA, minRows 
         armIds: ARM_IDS,
         featureDim: d,
         fittedAt: new Date().toISOString(),
+        propensityWeighted: Boolean(propensityWeighted),
     };
 }
 
@@ -170,6 +186,7 @@ module.exports = {
     MIN_FIT_ROWS,
     featureVector,
     featureDim,
+    ipsFitWeight,
     fitLinearValueModel,
     predictReward,
     rankArmsByValue,

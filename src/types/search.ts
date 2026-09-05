@@ -105,7 +105,7 @@ export interface SearchResponse {
   communityInsight?: CommunityInsight | null;
   proactiveAlert?: ProactiveAlert | null;
   aiEnrichmentKey?: string | null;
-  aiEnrichmentStatus?: 'pending' | 'ready' | 'failed';
+  aiEnrichmentStatus?: 'pending' | 'running' | 'ready' | 'failed' | 'timed_out';
   intelligenceStatus?: 'sync' | 'deferred';
   queryIntent?: string;
   searchTelemetry?: {

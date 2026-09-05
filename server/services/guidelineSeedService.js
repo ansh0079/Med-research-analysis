@@ -5,6 +5,8 @@ const logger = require('../config/logger');
 const { getSharedAiService } = require('./aiService');
 const { getProviderCandidates } = require('../utils/aiProvider');
 const { rankGuidelinesForTopic } = require('../utils/guidelineRelevance');
+const { validateAiOutput } = require('./aiOutputValidation');
+const { applyAiTrustPipeline } = require('./ai/aiTrustPipeline');
 let _parseJsonArrayBlock, _repairJsonCandidate;
 try {
     ({ parseJsonArrayBlock: _parseJsonArrayBlock, repairJsonCandidate: _repairJsonCandidate } = require('../utils/parseJson'));
@@ -291,7 +293,18 @@ async function generateGuidelineMcqs({ db, topicName, serverConfig, fetchImpl, l
                 maxOutputTokens: 5000,
             });
             mcqs = parseJsonArray(raw) || [];
-            if (mcqs.length) break;
+            if (mcqs.length) {
+                const validated = validateAiOutput('quiz_generation', mcqs, { allowDegrade: true });
+                if (validated.ok && Array.isArray(validated.data?.questions) && validated.data.questions.length) {
+                    mcqs = validated.data.questions;
+                    break;
+                }
+                if (validated.degraded && Array.isArray(validated.degraded.questions) && validated.degraded.questions.length) {
+                    mcqs = validated.degraded.questions;
+                    break;
+                }
+                if (mcqs.length) break;
+            }
         } catch (err) {
             if (attempt === 2) {
                 log.warn({ err, topic: topicName }, 'guideline MCQ generation failed');
@@ -303,6 +316,15 @@ async function generateGuidelineMcqs({ db, topicName, serverConfig, fetchImpl, l
         return { status: 'failed', mcqCount: 0 };
     }
 
+    const trusted = applyAiTrustPipeline('guideline_mcq', { questions: mcqs, mcqs }, {
+        guidelines,
+        sources: guidelines,
+        validationDegraded: mcqs.some((q) => q?._validationDegraded),
+    });
+    const trustedMcqs = Array.isArray(trusted.payload)
+        ? trusted.payload
+        : (trusted.payload.mcqs || trusted.payload.questions || mcqs);
+
     await db.upsertTeachingObject({
         objectKey: mcqKey,
         objectType: 'guideline_mcq',
@@ -311,16 +333,19 @@ async function generateGuidelineMcqs({ db, topicName, serverConfig, fetchImpl, l
         title: `Evidence MCQs: ${topicName}`,
         provider: candidate.provider,
         model: candidate.model,
-        confidence: 0.80,
+        confidence: trusted.reviewState === 'needs_revision' ? 0.55 : 0.80,
+        reviewState: trusted.reviewState,
         payload: {
-            mcqs,
+            mcqs: trustedMcqs,
             guidelineCount: guidelines.length,
             generatedAt: new Date().toISOString(),
             generationSource: 'seedPipeline',
+            reviewState: trusted.reviewState,
+            trustAudit: trusted.audit,
         },
     });
 
-    return { status: 'generated', mcqCount: mcqs.length };
+    return { status: 'generated', mcqCount: trustedMcqs.length, reviewState: trusted.reviewState };
 }
 
 async function runGuidelineEnrichmentForTopic({ db, topicName, serverConfig, fetchImpl, log = logger, force = false }) {

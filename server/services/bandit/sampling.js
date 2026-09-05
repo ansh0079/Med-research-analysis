@@ -102,14 +102,73 @@ function blendedArmSample(globalSample = 0.5, userSample = null, userPulls = 0) 
 function chooseArmBySamples(armIds, globalSamples = {}, userSamples = {}, userPulls = 0, fallbackArm = armIds[0]) {
     let bestArm = fallbackArm;
     let bestSample = -1;
+    const blendedScores = [];
     for (const armId of armIds) {
         const sample = blendedArmSample(globalSamples[armId] ?? 0.5, userSamples[armId], userPulls);
+        blendedScores.push(sample);
         if (sample > bestSample) {
             bestSample = sample;
             bestArm = armId;
         }
     }
-    return { armId: bestArm, sampled: bestSample };
+    const propensities = softmaxPropensities(blendedScores);
+    const propensityByArm = {};
+    armIds.forEach((armId, i) => {
+        propensityByArm[armId] = propensities[i] ?? (1 / Math.max(armIds.length, 1));
+    });
+    return {
+        armId: bestArm,
+        sampled: bestSample,
+        propensity: propensityByArm[bestArm] ?? (1 / Math.max(armIds.length, 1)),
+        propensityByArm,
+        selectionSource: 'argmax_thompson',
+    };
+}
+
+/**
+ * Plackett-Luce inclusion probabilities for top-k without replacement.
+ * Exact when |A| <= 12; otherwise sequential softmax along the greedy ranking.
+ */
+function topKWithoutReplacementPropensities(armIds, scoresByArm = {}, k = 1) {
+    const ids = Array.isArray(armIds) ? armIds.map(String) : [];
+    const safeK = Math.min(Math.max(Number(k) || 1, 1), ids.length || 1);
+    const propensityByArm = Object.fromEntries(ids.map((id) => [id, 0]));
+    if (!ids.length) return { propensityByArm, selectionSource: 'topk_without_replacement' };
+
+    const scoreOf = (id) => Number(scoresByArm[id] ?? 0.5);
+
+    function recurse(remaining, depth, pathProb) {
+        if (depth >= safeK || !remaining.length) return;
+        const props = softmaxPropensities(remaining.map(scoreOf));
+        remaining.forEach((id, i) => {
+            const p = pathProb * (props[i] ?? 0);
+            propensityByArm[id] += p;
+            if (depth + 1 < safeK) {
+                recurse(remaining.filter((_, j) => j !== i), depth + 1, p);
+            }
+        });
+    }
+
+    if (ids.length <= 12) {
+        recurse(ids, 0, 1);
+    } else {
+        const ranked = [...ids].sort((a, b) => scoreOf(b) - scoreOf(a));
+        const remaining = [...ids];
+        for (let step = 0; step < safeK; step += 1) {
+            const props = softmaxPropensities(remaining.map(scoreOf));
+            remaining.forEach((id, i) => {
+                propensityByArm[id] += props[i] ?? 0;
+            });
+            const picked = ranked[step];
+            const idx = remaining.indexOf(picked);
+            if (idx >= 0) remaining.splice(idx, 1);
+        }
+        for (const id of ids) {
+            propensityByArm[id] = Math.min(1, propensityByArm[id]);
+        }
+    }
+
+    return { propensityByArm, selectionSource: 'topk_without_replacement' };
 }
 
 function searchRankingContextFeatures(context = {}) {
@@ -234,6 +293,7 @@ module.exports = {
     hierarchicalUserWeight,
     blendedArmSample,
     chooseArmBySamples,
+    topKWithoutReplacementPropensities,
     softmaxPropensities,
     chooseArmBySamplesContextual,
     searchRankingContextFeatures,

@@ -6,6 +6,7 @@ import type { AgentGuidance, Article, LearnerContextSummary, LowRecallLearning, 
 import { useAuth } from '@contexts/AuthContext';
 import { useAnalytics } from './useAnalytics';
 import { usePolling } from './usePolling';
+import { isEnrichmentTerminal } from '../types/enrichment';
 import { storeSearchAttribution, storeSearchAttributionFromArticles } from '@utils/searchAttribution';
 
 const POLL_DELAYS = [8000, 12000, 18000]; // 8 s, then 12 s, then 18 s — three attempts
@@ -103,10 +104,10 @@ export function useSearch() {
       return api.search.getAiEnrichment(enrichKey);
     }, [enrichKey]),
     isComplete: useCallback((enrichment: Awaited<ReturnType<typeof api.search.getAiEnrichment>>) => {
-      return enrichment.status === 'ready' || enrichment.status === 'failed';
+      return isEnrichmentTerminal(enrichment.status);
     }, []),
     onSuccess: useCallback((enrichment: {
-      status: 'pending' | 'ready' | 'failed';
+      status: 'pending' | 'running' | 'ready' | 'failed' | 'timed_out';
       clinicalAnswer?: import('@types').ClinicalAnswer | null;
       consensusSynopsis?: import('@types').TopicIntelligence['consensusSynopsis'] | null;
     }) => {
@@ -129,13 +130,14 @@ export function useSearch() {
               : prev
           );
         }
-      } else if (enrichment.status === 'failed') {
+      } else if (enrichment.status === 'failed' || enrichment.status === 'timed_out') {
         setAiEnrichmentFailed(true);
       }
       setAiEnrichmentLoading(false);
     }, [setClinicalAnswer, setTopicIntelligence]),
     onTimeout: useCallback(() => {
       if (enrichPollRequestIdRef.current !== requestIdRef.current) return;
+      setAiEnrichmentFailed(true);
       setAiEnrichmentLoading(false);
     }, [setAiEnrichmentLoading]),
   });
@@ -300,7 +302,7 @@ export function useSearch() {
         }
 
         // Poll for AI enrichment (consensus synopsis + clinical answer) if still pending
-        if (aiEnrichmentKey && aiEnrichmentStatus === 'pending') {
+        if (aiEnrichmentKey && (aiEnrichmentStatus === 'pending' || aiEnrichmentStatus === 'running')) {
           setAiEnrichmentLoading(true);
           setAiEnrichmentFailed(false);
           enrichPollRequestIdRef.current = thisRequestId;

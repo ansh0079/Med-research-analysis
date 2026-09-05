@@ -9,7 +9,7 @@ import {
 export interface DashboardSynthesisJob {
   jobKey: string;
   topic: string;
-  status: 'queued' | 'running' | 'completed' | 'failed';
+  status: 'queued' | 'running' | 'completed' | 'failed' | 'timed_out';
   updatedAt: string;
   errorMessage?: string | null;
 }

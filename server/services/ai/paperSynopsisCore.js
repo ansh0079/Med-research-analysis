@@ -19,6 +19,7 @@ const {
 } = require('../agentSelfImprovementService');
 const { processPaperSynopsisTrust } = require('../paperSynopsisTrust');
 const { selectSynopsisStyleArm, recordBanditReward, POLICY_SYNOPSIS_STYLE } = require('../personalizationBanditService');
+const { buildSelectionContext } = require('../bandit/logSelection');
 
 function getPaperSynopsisArticleId(article = {}) {
     return article.uid || article.pmid || article.doi
@@ -330,14 +331,21 @@ async function runPaperSynopsisGenerationInner({
             topic,
             normalizedTopic: typeof db.normalizeTopic === 'function' ? db.normalizeTopic(topic) : String(topic || '').toLowerCase(),
             articleUid: articleId,
-            context: {
-                articleId,
-                model: selectedModel,
-                provider: selectedProvider,
-                trainingStage: effectiveTrainingStage,
-                promptVersion: getPromptVersion('synopsis'),
-                scopeKey: synopsisStyleArm.scopeKey,
-            },
+            context: buildSelectionContext({
+                armId: synopsisStyleArm.armId,
+                propensity: synopsisStyleArm.propensity ?? (synopsisStyleArm.selectionSource === 'density_gate' || synopsisStyleArm.selectionSource === 'disabled' ? 1 : null),
+                propensityByArm: synopsisStyleArm.propensityByArm || null,
+                selectionSource: synopsisStyleArm.selectionSource || 'argmax_thompson',
+                policy: POLICY_SYNOPSIS_STYLE,
+                extra: {
+                    articleId,
+                    model: selectedModel,
+                    provider: selectedProvider,
+                    trainingStage: effectiveTrainingStage,
+                    promptVersion: getPromptVersion('synopsis'),
+                    scopeKey: synopsisStyleArm.scopeKey,
+                },
+            }),
         }).catch((err) => logger.debug({ err, articleId, userId }, 'synopsis personalization decision log failed'));
     }
     if (sessionId && db?.logEvent) {

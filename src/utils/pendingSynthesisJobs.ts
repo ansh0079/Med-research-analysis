@@ -3,7 +3,7 @@ export const PENDING_SYNTHESIS_JOBS_KEY = 'med_pending_synthesis_jobs';
 export interface PendingSynthesisJobEntry {
   jobKey: string;
   topic: string;
-  status: 'queued' | 'running' | 'completed' | 'failed';
+  status: 'queued' | 'running' | 'completed' | 'failed' | 'timed_out';
   updatedAt: string;
 }
 

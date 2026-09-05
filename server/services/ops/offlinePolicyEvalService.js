@@ -23,6 +23,8 @@ function clampPropensity(p, min = MIN_PROPENSITY) {
 }
 
 function behaviorPropensity(row, armCount = Object.keys(SEARCH_RANKING_ARMS).length) {
+    const source = String(row?.context?.selectionSource || '');
+    if (source === 'density_gate' || source === 'disabled') return 1;
     const fromCtx = clampPropensity(row?.context?.propensity);
     if (fromCtx != null) return fromCtx;
     // Legacy rows: uniform fallback (conservative / higher variance).

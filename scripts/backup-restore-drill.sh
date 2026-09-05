@@ -136,6 +136,15 @@ pg_dump "${SOURCE_URL}" \
 BACKUP_SIZE="$(stat -c%s "${BACKUP_FILE}" 2>/dev/null || stat -f%z "${BACKUP_FILE}" 2>/dev/null || echo unknown)"
 echo "Backup written: ${BACKUP_FILE} (${BACKUP_SIZE} bytes)"
 
+VECTOR_URL="$(SOURCE_URL="${SOURCE_URL}" DATABASE_URL="${SOURCE_URL}" PG_VECTOR_URL="${PG_VECTOR_URL:-}" node "${SCRIPT_DIR}/vector-db-backup-url.mjs" || true)"
+if [[ -n "${VECTOR_URL}" ]]; then
+  VECTOR_BACKUP_FILE="${BACKUP_DIR}/medsearch-vector-restore-drill-${STAMP}.dump"
+  echo "PG_VECTOR_URL is a separate database — dumping vector store to ${VECTOR_BACKUP_FILE}"
+  pg_dump "${VECTOR_URL}" --format=custom --no-owner --no-acl --file "${VECTOR_BACKUP_FILE}"
+  echo "Vector backup written: ${VECTOR_BACKUP_FILE}"
+  echo "Restore the vector dump into a dedicated vector database; do not merge it into the app restore target."
+fi
+
 # ---------------------------------------------------------------------------
 # 2. Prepare restore target
 # ---------------------------------------------------------------------------

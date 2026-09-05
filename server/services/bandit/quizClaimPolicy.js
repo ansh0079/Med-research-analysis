@@ -13,8 +13,9 @@ const {
     ensurePolicyArms,
     loadArmSamples,
     blendedArmSample,
-    softmaxPropensities,
+    topKWithoutReplacementPropensities,
 } = require('./sampling');
+const { buildSelectionContext } = require('./logSelection');
 
 /**
  * Rank adaptive claim anchors with Thompson sampling, log decisions, attach decision ids.
@@ -81,10 +82,11 @@ async function applyQuizClaimSelectionBandit(db, userId, claimAnchors, {
     });
 
     const selected = ranked.slice(0, safeCount);
-    const scoreIds = armIds;
-    const scoreValues = scoreIds.map((armId) => samples[armId] ?? 0.5);
-    const propensities = softmaxPropensities(scoreValues);
-    const propensityByArm = Object.fromEntries(scoreIds.map((armId, i) => [armId, propensities[i] ?? (1 / Math.max(scoreIds.length, 1))]));
+    const { propensityByArm } = topKWithoutReplacementPropensities(
+        armIds,
+        samples,
+        safeCount
+    );
     const decisions = [];
     for (const anchor of selected) {
         const claimKey = String(anchor.claimKey);
@@ -97,13 +99,19 @@ async function applyQuizClaimSelectionBandit(db, userId, claimAnchors, {
                 topic: topic || null,
                 normalizedTopic: normalizedTopic || null,
                 articleUid: anchor.articleUid || null,
-                context: {
-                    priority: anchor.priority,
-                    verificationStatus: anchor.verificationStatus || null,
-                    scopeKey,
-                    banditSample: samples[claimKey] ?? null,
+                context: buildSelectionContext({
+                    armId: claimKey,
                     propensity: propensityByArm[claimKey] ?? null,
-                },
+                    propensityByArm,
+                    selectionSource: 'topk_without_replacement',
+                    policy: POLICY_QUIZ_CLAIM_SELECTION,
+                    extra: {
+                        priority: anchor.priority,
+                        verificationStatus: anchor.verificationStatus || null,
+                        scopeKey,
+                        banditSample: samples[claimKey] ?? null,
+                    },
+                }),
             }).catch((err) => {
                 logger.warn({ err, claimKey }, 'quiz claim decision log failed');
                 return null;
@@ -160,13 +168,18 @@ async function reconcileQuizOutcomeDecisionReward(db, row, { days = 7 } = {}) {
     if (!attempts.length) return false;
     const reward = quizOutcomeRewardForAgent(attempts);
     if (reward === 0) return false;
+    const previousTotal = Number(row.total_reward ?? 0) || 0;
+    const increment = reward - previousTotal;
     await db.updatePersonalizationDecisionReward(row.id, {
         immediateReward: Number(row.immediate_reward || 0),
         delayedReward: reward,
         totalReward: reward,
+        rewardStatus: 'final',
     });
     const { recordBanditReward } = require('./rewards');
-    await recordBanditReward(db, row.policy_type, row.arm_id, reward, row.user_id);
+    if (Math.abs(increment) > 1e-9) {
+        await recordBanditReward(db, row.policy_type, row.arm_id, increment, row.user_id);
+    }
     return true;
 }
 

@@ -21,6 +21,7 @@ const {
     selectCaseDifficultyArm,
     recordBanditReward,
 } = require('../../services/personalizationBanditService');
+const { buildSelectionContext } = require('../../services/bandit/logSelection');
 
 function registerReviewCaseRoutes(app, {
     db,
@@ -452,13 +453,20 @@ function registerReviewCaseRoutes(app, {
                 armId,
                 topic,
                 normalizedTopic: db.normalizeTopic(topic),
-                context: {
-                    caseSessionId: session.id,
-                    difficulty,
-                    selectedBy: difficultyBandit ? 'bandit' : 'client',
-                    scopeKey: difficultyBandit?.scopeKey || null,
-                    banditSample: difficultyBandit?.sampled ?? null,
-                },
+                context: buildSelectionContext({
+                    armId,
+                    propensity: difficultyBandit?.propensity ?? (difficultyBandit ? null : 1),
+                    propensityByArm: difficultyBandit?.propensityByArm || null,
+                    selectionSource: difficultyBandit?.selectionSource || (difficultyBandit ? 'argmax_thompson' : 'client'),
+                    policy: POLICY_CASE_DIFFICULTY,
+                    extra: {
+                        caseSessionId: session.id,
+                        difficulty,
+                        selectedBy: difficultyBandit ? 'bandit' : 'client',
+                        scopeKey: difficultyBandit?.scopeKey || null,
+                        banditSample: difficultyBandit?.sampled ?? null,
+                    },
+                }),
             }).catch((err) => {
                 req.log?.warn?.({ err }, 'adaptive case difficulty decision log failed');
                 return null;

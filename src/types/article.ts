@@ -153,7 +153,7 @@ export interface ArticleSynopsisResult {
   disclaimer?: string;
   cached?: boolean;
   /** Durable job / queued response */
-  status?: 'queued' | 'running' | 'completed' | 'failed';
+  status?: 'queued' | 'running' | 'completed' | 'failed' | 'timed_out';
   jobKey?: string | null;
   errorMessage?: string | null;
   audit?: Record<string, unknown>;

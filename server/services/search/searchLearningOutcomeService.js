@@ -86,21 +86,28 @@ async function applyDecisionReward(db, userId, decision, {
     totalReward = null,
     recordArmPull = true,
     policyType = POLICY_SEARCH_RANKING,
+    rewardStatus = null,
 } = {}) {
     if (!decision?.id || !db?.updatePersonalizationDecisionReward) return false;
+    const currentStatus = decision.reward_status || decision.rewardStatus || 'pending';
+    if (currentStatus === 'final' || currentStatus === 'superseded') return false;
     const delayed = delayedReward != null ? Number(delayedReward) : Number(decision.delayed_reward || 0);
     const immediate = Number(immediateReward || 0);
     const total = totalReward != null ? Number(totalReward) : Math.min(1, immediate + delayed);
     const previousTotal = Number(decision.total_reward ?? 0) || 0;
     const increment = total - previousTotal;
-    await db.updatePersonalizationDecisionReward(decision.id, {
+    const nextStatus = rewardStatus || 'partial';
+    const updated = await db.updatePersonalizationDecisionReward(decision.id, {
         immediateReward: immediate,
         delayedReward: delayed,
         totalReward: total,
+        rewardStatus: nextStatus,
     }).catch(() => null);
+    if (updated && updated.updated === false) return false;
     decision.total_reward = total;
     decision.immediate_reward = immediate;
     decision.delayed_reward = delayed;
+    decision.reward_status = nextStatus;
     if (recordArmPull && decision.arm_id && Math.abs(increment) > 1e-9) {
         await recordBanditReward(db, policyType || POLICY_SEARCH_RANKING, decision.arm_id, increment, userId);
     }
@@ -270,6 +277,7 @@ async function attributeQuizAttemptRewards(db, userId, attempts = [], topic = ''
                     totalReward: reward,
                     recordArmPull: reward !== 0,
                     policyType: POLICY_QUIZ_CLAIM_SELECTION,
+                    rewardStatus: 'final',
                 });
             } else {
                 await recordBanditReward(db, POLICY_QUIZ_CLAIM_SELECTION, String(claimKey), reward, decisionUserId);
@@ -304,6 +312,7 @@ async function attributeQuizAttemptRewards(db, userId, attempts = [], topic = ''
                     delayedReward: reward,
                     totalReward,
                     recordArmPull: reward !== 0,
+                    rewardStatus: 'final',
                 });
                 await recordLearningSignal(db, {
                     userId: decisionUserId,
@@ -362,6 +371,7 @@ async function attributeQuizAttemptRewards(db, userId, attempts = [], topic = ''
                     delayedReward: reward,
                     totalReward,
                     recordArmPull: true,
+                    rewardStatus: 'final',
                 });
                 await recordLearningSignal(db, {
                     userId: decisionUserId,
@@ -444,6 +454,7 @@ async function attributeRecommendationFollowThrough(db, userId, {
         await db.updatePersonalizationDecisionReward?.(row.id, {
             delayedReward: followReward,
             totalReward: followReward,
+            rewardStatus: 'final',
         }).catch(() => null);
     }
     return { rewarded: rows[0]?.arm_id || null, followReward };
@@ -460,7 +471,7 @@ async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic 
          FROM personalization_decisions
          WHERE user_id = ?
            AND policy_type = ?
-           AND delayed_reward IS NULL
+           AND COALESCE(reward_status, 'pending') IN ('pending', 'partial')
            AND (normalized_topic = ? OR topic = ?)
            AND created_at >= ?
          ORDER BY created_at DESC
@@ -477,6 +488,7 @@ async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic 
                 immediateReward: 0,
                 delayedReward: reward,
                 totalReward: reward,
+                rewardStatus: 'final',
             }).catch(() => null);
             await recordBanditReward(db, POLICY_TEACHING_STRATEGY, row.arm_id, reward, userId);
             rewarded += 1;

@@ -28,6 +28,10 @@ jobs:
         run: npx eslint . --quiet
       - name: SQL dialect drift gate
         run: npm run verify:sql-dialect
+      - name: Migration prefix uniqueness
+        run: npm run verify:migration-prefixes
+      - name: Schema consistency
+        run: npm run db:schema:check
       - name: TypeScript type-check
         run: npm run typecheck:all
       - name: Verify production env checklist

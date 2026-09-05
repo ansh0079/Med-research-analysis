@@ -9,6 +9,7 @@ const {
 } = require('./citationValidator');
 const { getCachedPdf } = require('./pdfPreindexService');
 const { validateAiOutput } = require('./aiOutputValidation');
+const { applyAiTrustPipeline } = require('./ai/aiTrustPipeline');
 
 function isFreeEvidence(article) {
     return Boolean(article?.isFree || article?.pmcid || article?.fullTextUrl || article?.openAccess || article?.openAccessUrl);
@@ -305,21 +306,29 @@ function normalizeSynopsis(raw, topic, freeArticles, abstractArticles, provider,
         normalized.clinicalBottomLine = '';
     }
 
-    normalized.citationValidation = validateMedicalOutputCitations(normalized, {
-        sourceCount,
-        requiredPaths: ['statement'],
-        requiredListPaths: ['areasOfAgreement', 'conflictingSignals'],
-    });
-
-    normalized.reviewState = normalized.citationValidation.ok ? 'machine_checked' : 'needs_revision';
-    normalized.citationCheckPassed = normalized.citationValidation.ok;
     const fullTextIndexedCount = normalized.includedArticles.filter((a) => a.fullTextIndexed).length;
     normalized.fullTextIndexedCount = fullTextIndexedCount;
     normalized.fullTextCoverageRatio = sourceCount > 0
         ? Math.round((fullTextIndexedCount / sourceCount) * 100) / 100
         : 0;
 
-    return normalized;
+    const trusted = applyAiTrustPipeline('consensus_synopsis', normalized, {
+        articles: allArticles,
+        sourceCount,
+        guidelineCount: Array.isArray(guidelines) ? guidelines.length : 0,
+        fullTextCoverageRatio: normalized.fullTextCoverageRatio,
+        citationValidation: validateMedicalOutputCitations(normalized, {
+            sourceCount,
+            requiredPaths: ['statement'],
+            requiredListPaths: ['areasOfAgreement', 'conflictingSignals'],
+        }),
+    });
+    const next = trusted.payload;
+    next.citationValidation = trusted.citationValidation;
+    next.reviewState = trusted.reviewState;
+    next.citationCheckPassed = trusted.citationValidation?.ok === true;
+    next.trustAudit = trusted.audit;
+    return next;
 }
 
 async function generateConsensusSynopsis({

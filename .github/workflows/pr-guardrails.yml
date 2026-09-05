@@ -58,6 +58,12 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
+      - name: Migration prefix uniqueness
+        run: npm run verify:migration-prefixes
+
+      - name: Schema consistency
+        run: npm run db:schema:check
+
       - name: Generate and validate OpenAPI
         run: |
           npm run docs:openapi:generate

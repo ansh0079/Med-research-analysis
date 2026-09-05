@@ -14,6 +14,7 @@ const { extractTrialGuidelineConflicts } = require('../conflictExtractionService
 const { getPromptVersion } = require('../../prompts/promptVersions');
 const { parseStructuredOutput } = require('../../utils/parseJson');
 const { validateAiOutput } = require('../aiOutputValidation');
+const { applyAiTrustPipeline } = require('./aiTrustPipeline');
 const { createBudgetForAction, runWithLlmBudget, LlmBudgetExceededError, getActiveLlmBudget } = require('../llmRequestBudget');
 const { buildSynthesisCacheKey, normalizePersonalization } = require('../synthesisPersonalization');
 
@@ -379,6 +380,7 @@ function buildSynthesisResult({
     jobKey = null,
     conflictMatrix = [],
     guidelineAlignment = null,
+    trustAudit = null,
 }) {
     const promptHashDigest = crypto.createHash('md5').update(prompt).digest('hex');
     const claimsJobKey = jobKey || `syn:${promptHashDigest}`;
@@ -432,7 +434,11 @@ function buildSynthesisResult({
             fullTextIndexedCount,
             retractionCheckedCount: Object.keys(retractionResults).length,
             retractedInBundleCount: retractedUids.length,
-            humanReviewStatus: 'none',
+            reviewState: trustAudit?.reviewState
+                || (citationValidation?.ok === false ? 'needs_revision' : 'machine_checked'),
+            humanReviewStatus: trustAudit?.humanReviewStatus
+                || (citationValidation?.ok === false ? 'needs_revision' : 'machine_checked'),
+            numericGrounding: trustAudit?.numericGrounding || null,
             generatedAt: new Date().toISOString(),
             claimFingerprint: claimFingerprint.fingerprint,
             claimFingerprintCount: claimFingerprint.claims.length,
@@ -591,6 +597,15 @@ async function runFullSynthesisGenerationInner({
         guidelineCount: context.guidelines.length,
         embeddingKeys: serverConfig?.keys || null,
     });
+    const trusted = applyAiTrustPipeline('full_synthesis', synthesis, {
+        articles: context.enrichedArticles || context.topArticles,
+        sourceCount: context.topArticles.length,
+        guidelineCount: context.guidelines.length,
+        fullTextCoverageRatio: context.fullTextCoverageRatio,
+        citationValidation,
+        validationDegraded: Boolean(synthesis._validationDegraded || (validated && !validated.ok)),
+    });
+    synthesis = trusted.payload;
     const conflictExtraction = await runSynthesisConflictExtraction({
         topArticles: context.topArticles,
         guidelines: context.guidelines,
@@ -606,7 +621,8 @@ async function runFullSynthesisGenerationInner({
         topic,
         topArticles: context.topArticles,
         sourceMap: context.sourceMap,
-        citationValidation,
+        citationValidation: trusted.citationValidation || citationValidation,
+        trustAudit: trusted.audit,
         retractedUids: context.retractedUids,
         retractionResults: context.retractionResults,
         prompt: context.prompt,

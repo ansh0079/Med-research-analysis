@@ -29,6 +29,9 @@ Use `scripts/backup-restore-drill.sh` on the staging/production host:
 export SOURCE_URL="postgresql://user:pass@staging:5432/medsearch"
 export RESTORE_DATABASE_URL="postgresql://user:pass@staging:5432/medsearch_restore_$(date -u +%Y%m%d%H%M%S)"
 # Optional: export PG_VECTOR_URL="postgresql://..."  # defaults to RESTORE_DATABASE_URL
+# If PG_VECTOR_URL points at a different database than SOURCE_URL, the drill
+# also writes a separate medsearch-vector-*.dump. Restore that dump into its
+# own database — never merge it into the app restore target.
 
 ./scripts/backup-restore-drill.sh
 ```

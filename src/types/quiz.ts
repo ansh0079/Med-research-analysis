@@ -141,7 +141,7 @@ export interface SynthesisResult {
     retractionCheckedCount?: number;
   };
   jobKey?: string;
-  status?: 'queued' | 'running' | 'completed' | 'failed';
+  status?: 'queued' | 'running' | 'completed' | 'failed' | 'timed_out';
   errorMessage?: string | null;
   conflictMatrix?: ConflictItem[];
   guidelineAlignment?: TrialGuidelineAlignmentSummary | null;

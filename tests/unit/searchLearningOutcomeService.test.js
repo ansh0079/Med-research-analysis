@@ -144,7 +144,7 @@ describe('searchLearningOutcomeService', () => {
             ]),
             countPriorQuizAttemptsOnClaim: jest.fn().mockResolvedValue(0),
             insertSearchLearningOutcome: jest.fn().mockResolvedValue({ id: 1 }),
-            all: jest.fn().mockResolvedValue([{ id: 7, arm_id: 'quiz_gap_heavy' }]),
+            all: jest.fn(async () => [{ id: 7, arm_id: 'quiz_gap_heavy' }]),
             updatePersonalizationDecisionReward: jest.fn().mockResolvedValue(true),
             recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
         };

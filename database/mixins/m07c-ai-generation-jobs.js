@@ -187,6 +187,17 @@ async failAiGenerationJob(jobKey, errorMessage) {
     return this.getAiGenerationJobByKey(jobKey);
 }
 
+async timeoutAiGenerationJob(jobKey, errorMessage) {
+    const now = new Date().toISOString();
+    await this.run(
+        `UPDATE ai_generation_jobs
+         SET status = 'timed_out', error_message = ?, updated_at = ?
+         WHERE job_key = ? AND status = 'running'`,
+        [String(errorMessage || 'Generation timed out').slice(0, 2000), now, String(jobKey)]
+    );
+    return this.getAiGenerationJobByKey(jobKey);
+}
+
 async resetAiGenerationJobForRetry(jobKey) {
     const now = new Date().toISOString();
     await this.run(

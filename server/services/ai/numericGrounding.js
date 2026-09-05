@@ -6,7 +6,14 @@ const EFFECT_RE = /\b(?:hr|or|rr|irr|hazard ratio|odds ratio|relative risk)\s*[:
 const PERCENT_RE = /\b(\d{1,3}(?:\.\d+)?)\s?%/g;
 const P_VALUE_RE = /\bp\s*[<=>]\s*(0?\.\d+)\b/gi;
 const SAMPLE_RE = /\b(?:n|N)\s*=\s*(\d{2,7})\b/g;
-const CI_RE = /\b(?:95%\s*ci|ci)\s*[:\[]?\s*(\d+(?:\.\d+)?)\s*(?:[-–to,]+\s*)(\d+(?:\.\d+)?)/gi;
+const CI_RE = /\b(?:95%\s*ci|ci)\s*[:[]?\s*(\d+(?:\.\d+)?)\s*(?:[-–to,]+\s*)(\d+(?:\.\d+)?)/gi;
+
+const DEFAULT_SYNOPSIS_FIELDS = [
+    ['bottomLine', 'bottomLine'],
+    ['mainFindings', 'mainFindings'],
+    ['clinicalMeaning', 'clinicalMeaning'],
+    ['takeaway', 'takeaway'],
+];
 
 function normalizeNumber(raw) {
     return String(raw || '').replace(/,/g, '').replace('·', '.').replace(/\s+/g, '');
@@ -60,18 +67,29 @@ function extractClinicalNumbers(text, field) {
     return found;
 }
 
-function extractSynopsisNumbers(synopsis = {}) {
-    const fields = [
-        ['bottomLine', synopsis.bottomLine],
-        ['mainFindings', synopsis.mainFindings],
-        ['clinicalMeaning', synopsis.clinicalMeaning],
-        ['takeaway', synopsis.takeaway],
-    ];
-    return fields.flatMap(([field, text]) => extractClinicalNumbers(text, field));
+function readField(payload, path) {
+    if (!payload || !path) return '';
+    if (!path.includes('.')) return payload[path];
+    return path.split('.').reduce((acc, key) => (acc == null ? acc : acc[key]), payload);
 }
 
-function applyNumericGrounding(synopsis = {}, article = null) {
-    const numbers = extractSynopsisNumbers(synopsis);
+function extractSynopsisNumbers(synopsis = {}, fields = DEFAULT_SYNOPSIS_FIELDS) {
+    return fields.flatMap(([field, path]) => extractClinicalNumbers(readField(synopsis, path || field), field));
+}
+
+function resolveSourceText(articleOrText) {
+    if (!articleOrText) return '';
+    if (typeof articleOrText === 'string') return articleOrText;
+    return articleEvidenceText(articleOrText);
+}
+
+function applyNumericGrounding(synopsis = {}, article = null, options = {}) {
+    const fields = Array.isArray(options.fields) && options.fields.length
+        ? options.fields
+        : DEFAULT_SYNOPSIS_FIELDS;
+    const trustField = options.trustField || 'trustRating';
+    const rationaleField = options.rationaleField || 'trustRationale';
+    const numbers = extractSynopsisNumbers(synopsis, fields);
     if (!numbers.length) {
         return {
             synopsis,
@@ -96,7 +114,7 @@ function applyNumericGrounding(synopsis = {}, article = null) {
             },
         };
     }
-    const source = articleEvidenceText(article);
+    const source = resolveSourceText(article);
     if (source.length < 20) {
         return {
             synopsis,
@@ -113,9 +131,13 @@ function applyNumericGrounding(synopsis = {}, article = null) {
     const ungrounded = numbers.filter((stat) => !sourceContainsNumber(source, stat.value));
     const next = { ...synopsis };
     if (ungrounded.length) {
-        next.trustRating = next.trustRating || 'MODERATE';
+        if (trustField && next[trustField] == null && trustField === 'trustRating') {
+            next.trustRating = 'MODERATE';
+        }
         const note = `Numeric grounding failed for ${ungrounded.length} statistic${ungrounded.length === 1 ? '' : 's'} (${ungrounded.slice(0, 3).map((s) => s.raw || s.value).join(', ')}).`;
-        next.trustRationale = next.trustRationale ? `${next.trustRationale} ${note}` : note;
+        if (rationaleField) {
+            next[rationaleField] = next[rationaleField] ? `${next[rationaleField]} ${note}` : note;
+        }
     }
     return {
         synopsis: next,
@@ -135,4 +157,5 @@ module.exports = {
     extractClinicalNumbers,
     extractSynopsisNumbers,
     applyNumericGrounding,
+    DEFAULT_SYNOPSIS_FIELDS,
 };

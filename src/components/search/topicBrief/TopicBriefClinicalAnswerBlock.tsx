@@ -29,7 +29,7 @@ export const TopicBriefClinicalAnswerBlock: React.FC<Props> = ({
     {!liveClinicalAnswer && !agentGuidance?.clinicalAnswer && aiEnrichmentFailed && (
       <div className="border-b border-slate-100 dark:border-slate-800 px-5 py-4">
         <div className="rounded-lg bg-amber-50 px-3 py-2 text-[12px] text-amber-800 dark:bg-amber-950/20 dark:text-amber-200">
-          Live clinical analysis could not be generated. Review the source papers directly.
+          Live clinical analysis could not be generated or timed out. Review the source papers directly.
         </div>
       </div>
     )}

@@ -13,7 +13,9 @@ const {
     policyHasDenseGlobalData,
     blendedArmSample,
     recommendationContextFeatures,
+    softmaxPropensities,
 } = require('./sampling');
+const { buildSelectionContext } = require('./logSelection');
 
 async function applyRecommendationBandit(db, userId, recommendations = [], context = {}) {
     if (!Array.isArray(recommendations) || recommendations.length === 0) return recommendations;
@@ -52,22 +54,36 @@ async function applyRecommendationBandit(db, userId, recommendations = [], conte
 
     adjusted.sort((a, b) => b.priority - a.priority);
 
+    const shown = adjusted.slice(0, 6);
+    const shownArmIds = shown.map((rec) => rec.banditArmId || RECOMMENDATION_ARM_BY_TYPE[rec.type] || rec.type);
+    const shownScores = shown.map((rec) => Number(rec.banditSample ?? 0.5));
+    const shownPropensities = softmaxPropensities(shownScores);
+    const propensityByArm = Object.fromEntries(shownArmIds.map((armId, i) => [armId, shownPropensities[i] ?? (1 / Math.max(shownArmIds.length, 1))]));
+
     if (userId && db.insertPersonalizationDecision) {
-        for (const rec of adjusted.slice(0, 6)) {
+        for (const rec of shown) {
+            const armId = rec.banditArmId || RECOMMENDATION_ARM_BY_TYPE[rec.type] || rec.type;
             void db.insertPersonalizationDecision({
                 userId,
                 policyType: POLICY_RECOMMENDATION,
-                armId: rec.banditArmId || RECOMMENDATION_ARM_BY_TYPE[rec.type] || rec.type,
+                armId,
                 topic: rec.topic,
                 normalizedTopic: rec.normalizedTopic,
-                context: {
-                    type: rec.type,
-                    action: rec.action,
-                    basePriority: rec.priority,
-                    banditSample: rec.banditSample,
-                    ...rec.banditContext,
-                },
-            }).catch((err) => logger.warn({ err, userId, armId: rec.banditArmId }, 'recommendation decision log failed'));
+                context: buildSelectionContext({
+                    armId,
+                    propensity: propensityByArm[armId] ?? null,
+                    propensityByArm,
+                    selectionSource: 'softmax_shown',
+                    policy: POLICY_RECOMMENDATION,
+                    extra: {
+                        type: rec.type,
+                        action: rec.action,
+                        basePriority: rec.priority,
+                        banditSample: rec.banditSample,
+                        ...rec.banditContext,
+                    },
+                }),
+            }).catch((err) => logger.warn({ err, userId, armId }, 'recommendation decision log failed'));
         }
     }
 

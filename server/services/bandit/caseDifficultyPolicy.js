@@ -28,6 +28,8 @@ async function selectCaseDifficultyArm(db, userId) {
             difficulty: CASE_DIFFICULTY_ARMS[fallback].difficulty,
             scopeKey: 'global',
             sampled: null,
+            propensity: 1,
+            selectionSource: 'disabled',
         };
     }
 
@@ -43,6 +45,7 @@ async function selectCaseDifficultyArm(db, userId) {
             scopeKey: 'global',
             sampled: null,
             selectionSource: 'density_gate',
+            propensity: 1,
             densityGate: { globalPulls: density.globalPulls, minGlobalPulls: MIN_GLOBAL_PULLS_FOR_POLICY },
         };
     }
@@ -55,7 +58,7 @@ async function selectCaseDifficultyArm(db, userId) {
         loadArmSamples(db, POLICY_CASE_DIFFICULTY, armIds, 'global'),
         userId ? loadArmSamples(db, POLICY_CASE_DIFFICULTY, armIds, userScope) : Promise.resolve({}),
     ]);
-    const { armId: bestArm, sampled: bestSample } = chooseArmBySamples(
+    const chosen = chooseArmBySamples(
         armIds,
         globalSamples,
         userSamples,
@@ -63,8 +66,16 @@ async function selectCaseDifficultyArm(db, userId) {
         fallback
     );
     const scopeKey = userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global';
-    const meta = CASE_DIFFICULTY_ARMS[bestArm] || CASE_DIFFICULTY_ARMS[fallback];
-    return { armId: bestArm, difficulty: meta.difficulty, scopeKey, sampled: bestSample };
+    const meta = CASE_DIFFICULTY_ARMS[chosen.armId] || CASE_DIFFICULTY_ARMS[fallback];
+    return {
+        armId: chosen.armId,
+        difficulty: meta.difficulty,
+        scopeKey,
+        sampled: chosen.sampled,
+        propensity: chosen.propensity,
+        propensityByArm: chosen.propensityByArm,
+        selectionSource: chosen.selectionSource || 'argmax_thompson',
+    };
 }
 
 module.exports = {

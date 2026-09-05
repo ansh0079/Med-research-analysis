@@ -1,6 +1,7 @@
 'use strict';
 
 const { safeJsonParse } = require('../lib/helpers');
+const { isClosedRewardStatus, resolveRewardStatus } = require('../../server/services/bandit/logSelection');
 
 module.exports = (Sup) => class extends Sup {
     async ensurePersonalizationArms(policyType, armIds = [], scopeKey = 'global') {
@@ -72,11 +73,15 @@ module.exports = (Sup) => class extends Sup {
     }) {
         if (!this.kysely || !policyType || !armId) return null;
         const now = new Date().toISOString();
+        const initialStatus = totalReward != null
+            ? (delayedReward != null ? 'final' : 'partial')
+            : 'pending';
         const result = await this.run(
             `INSERT INTO personalization_decisions (
                 user_id, policy_type, arm_id, search_id, topic, normalized_topic, article_uid,
-                context_json, immediate_reward, delayed_reward, total_reward, reward_computed_at, created_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                context_json, immediate_reward, delayed_reward, total_reward, reward_computed_at,
+                reward_status, reward_updated_at, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 userId ? String(userId) : null,
                 String(policyType),
@@ -89,6 +94,8 @@ module.exports = (Sup) => class extends Sup {
                 immediateReward != null ? Number(immediateReward) : null,
                 delayedReward != null ? Number(delayedReward) : null,
                 totalReward != null ? Number(totalReward) : null,
+                totalReward != null ? now : null,
+                initialStatus,
                 totalReward != null ? now : null,
                 now,
             ]
@@ -204,7 +211,7 @@ module.exports = (Sup) => class extends Sup {
         const since = new Date(Date.now() - Math.min(Math.max(Number(days) || 14, 1), 60) * 86400000).toISOString();
         return this.all(
             `SELECT * FROM personalization_decisions
-             WHERE delayed_reward IS NULL
+             WHERE COALESCE(reward_status, 'pending') IN ('pending', 'partial')
                AND created_at >= ?
              ORDER BY created_at ASC
              LIMIT ?`,
@@ -212,25 +219,48 @@ module.exports = (Sup) => class extends Sup {
         );
     }
 
-    async updatePersonalizationDecisionReward(decisionId, { immediateReward, delayedReward, totalReward }) {
+    async updatePersonalizationDecisionReward(decisionId, {
+        immediateReward,
+        delayedReward,
+        totalReward,
+        rewardStatus = null,
+        allowOverwrite = false,
+    } = {}) {
         if (!this.kysely || !decisionId) return null;
+        const row = await this.get(
+            'SELECT id, reward_status, delayed_reward FROM personalization_decisions WHERE id = ?',
+            [Number(decisionId)]
+        ).catch(() => null);
+        const currentStatus = row?.reward_status || 'pending';
+        if (isClosedRewardStatus(currentStatus) && !allowOverwrite) {
+            return { updated: false, reason: 'closed', rewardStatus: currentStatus };
+        }
+        const nextStatus = resolveRewardStatus({
+            currentStatus,
+            delayedReward: delayedReward != null ? delayedReward : row?.delayed_reward,
+            requestedStatus: rewardStatus,
+        });
         const now = new Date().toISOString();
         await this.run(
             `UPDATE personalization_decisions
              SET immediate_reward = COALESCE(?, immediate_reward),
                  delayed_reward = COALESCE(?, delayed_reward),
                  total_reward = COALESCE(?, total_reward),
-                 reward_computed_at = ?
+                 reward_computed_at = ?,
+                 reward_status = ?,
+                 reward_updated_at = ?
              WHERE id = ?`,
             [
                 immediateReward != null ? Number(immediateReward) : null,
                 delayedReward != null ? Number(delayedReward) : null,
                 totalReward != null ? Number(totalReward) : null,
                 now,
+                nextStatus,
+                now,
                 Number(decisionId),
             ]
         );
-        return true;
+        return { updated: true, rewardStatus: nextStatus };
     }
 
     mapPersonalizationArmRow(row) {
@@ -263,6 +293,8 @@ module.exports = (Sup) => class extends Sup {
             delayedReward: row.delayed_reward != null ? Number(row.delayed_reward) : null,
             totalReward: row.total_reward != null ? Number(row.total_reward) : null,
             rewardComputedAt: row.reward_computed_at,
+            rewardStatus: row.reward_status || 'pending',
+            rewardUpdatedAt: row.reward_updated_at || null,
             createdAt: row.created_at,
         };
     }

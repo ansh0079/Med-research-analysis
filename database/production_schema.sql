@@ -628,6 +628,8 @@ CREATE TABLE IF NOT EXISTS personalization_decisions (
     delayed_reward REAL,
     total_reward REAL,
     reward_computed_at TIMESTAMPTZ,
+    reward_status TEXT NOT NULL DEFAULT 'pending',
+    reward_updated_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -1454,6 +1456,9 @@ CREATE INDEX IF NOT EXISTS idx_personalization_decisions_search
 
 CREATE INDEX IF NOT EXISTS idx_personalization_decisions_user
     ON personalization_decisions(user_id, policy_type, created_at);
+
+CREATE INDEX IF NOT EXISTS idx_personalization_decisions_reward_status
+    ON personalization_decisions(reward_status, policy_type, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_pico_extractions_article ON pico_extractions(article_id);
 

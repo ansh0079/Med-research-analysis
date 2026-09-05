@@ -246,6 +246,7 @@ module.exports = {
     ABSTRACT_ONLY_CONFIDENCE_CAP,
     HIGH_CERTAINTY_BLOCKED_CONCEPTS,
     isAbstractOnlySource,
+    minTrustRating,
     capTrustRatingForAbstractOnly,
     abstractOnlyConfidenceCap,
     applyAbstractOnlyConfidence,

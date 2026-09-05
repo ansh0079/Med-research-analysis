@@ -43,6 +43,8 @@ async function reconcileImpressionRewards(db, { days = 7 } = {}) {
     const pending = await db.listPersonalizationDecisionsPendingReward({ days, limit: 300 });
     let updated = 0;
     for (const row of pending) {
+        const status = row.reward_status || row.rewardStatus || 'pending';
+        if (status === 'final' || status === 'superseded') continue;
         if (row.policy_type === POLICY_SYNOPSIS_STYLE || row.policy_type === POLICY_TEACHING_STRATEGY) {
             const didUpdate = await reconcileQuizOutcomeDecisionReward(db, row, { days });
             if (didUpdate) updated += 1;
@@ -62,13 +64,16 @@ async function reconcileImpressionRewards(db, { days = 7 } = {}) {
         const immediate = impression ? immediateImpressionReward(impression) : 0;
         if (immediate <= 0 && row.delayed_reward == null) continue;
         const total = Math.min(1, immediate + Number(row.delayed_reward || 0));
+        const previousTotal = Number(row.total_reward ?? 0) || 0;
+        const increment = total - previousTotal;
         await db.updatePersonalizationDecisionReward(row.id, {
             immediateReward: immediate,
             delayedReward: row.delayed_reward,
             totalReward: total,
+            rewardStatus: row.delayed_reward != null ? 'final' : 'partial',
         });
-        if (row.delayed_reward != null && total !== 0) {
-            await recordBanditReward(db, POLICY_SEARCH_RANKING, row.arm_id, total, row.user_id);
+        if (Math.abs(increment) > 1e-9) {
+            await recordBanditReward(db, POLICY_SEARCH_RANKING, row.arm_id, increment, row.user_id);
         }
         updated += 1;
     }

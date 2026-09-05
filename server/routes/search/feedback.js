@@ -6,6 +6,7 @@ const {
     consensusEnrichmentJobKey,
     liveClinicalAnswerEnrichmentJobKey,
 } = require('../../services/searchEnrichmentKeys');
+const { combineEnrichmentStatuses } = require('../../../shared/enrichmentStatus');
 
 function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }) {
     app.post('/api/search/impressions', rateLimit(120, 60), requireJson, async (req, res) => {
@@ -235,7 +236,9 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
                         clinicalAnswer: cached.clinicalAnswer ?? null,
                         consensusSynopsis: cached.consensusSynopsis ?? null,
                     } : {}),
-                    ...(cached.status === 'failed' ? { errorMessage: cached.errorMessage || 'Enrichment failed' } : {}),
+                    ...(cached.status === 'failed' || cached.status === 'timed_out'
+                        ? { errorMessage: cached.errorMessage || (cached.status === 'timed_out' ? 'Enrichment timed out' : 'Enrichment failed') }
+                        : {}),
                 });
             }
 
@@ -248,13 +251,7 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
 
                 const consensusStatus = consensusJob?.status || 'pending';
                 const caStatus = clinicalAnswerJob?.status || 'pending';
-                const status = consensusStatus === 'failed' && caStatus === 'failed'
-                    ? 'failed'
-                    : consensusStatus === 'completed' || caStatus === 'completed'
-                        ? 'ready'
-                        : consensusStatus === 'running' || caStatus === 'running'
-                            ? 'running'
-                            : 'pending';
+                const status = combineEnrichmentStatuses([consensusStatus, caStatus]);
 
                 if (status === 'ready') {
                     return res.json({
@@ -263,13 +260,15 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
                         consensusSynopsis: consensusJob?.resultPayload ?? null,
                     });
                 }
-                if (status === 'failed') {
+                if (status === 'failed' || status === 'timed_out') {
                     return res.json({
-                        status: 'failed',
-                        errorMessage: consensusJob?.errorMessage || clinicalAnswerJob?.errorMessage || 'Enrichment failed',
+                        status,
+                        errorMessage: consensusJob?.errorMessage
+                            || clinicalAnswerJob?.errorMessage
+                            || (status === 'timed_out' ? 'Enrichment timed out' : 'Enrichment failed'),
                     });
                 }
-                return res.json({ status });
+                return res.json({ status, running: status === 'running' });
             }
 
             return res.json({ status: 'pending' });

@@ -79,11 +79,12 @@ function simulateBoost(row, candidateWeights, articleMeta = null) {
 async function loadDecisions(db, policyType, days) {
     const since = new Date(Date.now() - Math.min(Math.max(Number(days) || DEFAULT_DAYS, 1), 90) * 86400000).toISOString();
     const rows = await db.all(
-        `SELECT id, arm_id, article_uid, total_reward, immediate_reward, delayed_reward, context_json, created_at
+        `SELECT id, arm_id, article_uid, total_reward, immediate_reward, delayed_reward, context_json, created_at, reward_status
          FROM personalization_decisions
          WHERE policy_type = ?
            AND created_at >= ?
            AND total_reward IS NOT NULL
+           AND COALESCE(reward_status, 'pending') IN ('pending', 'partial', 'final')
          ORDER BY created_at DESC
          LIMIT ?`,
         [String(policyType), since, MAX_DECISIONS]
@@ -96,6 +97,7 @@ async function loadDecisions(db, policyType, days) {
         totalReward: Number(r.total_reward || 0),
         context: (() => { try { return JSON.parse(r.context_json || '{}'); } catch { return {}; } })(),
         createdAt: r.created_at,
+        rewardStatus: r.reward_status || 'pending',
     }));
 }
 
