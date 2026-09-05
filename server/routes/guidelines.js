@@ -62,9 +62,10 @@ function registerGuidelineRoutes(app, { db, serverConfig, rateLimit, requireAuth
                 limit: parseInt(String(limit), 10) || 20,
             });
             if (guidelines.length > 0) {
-                const contradictions = typeof db.getContradictionsForTopic === 'function'
-                    ? await db.getContradictionsForTopic(topic).catch(() => [])
-                    : [];
+                const contradictions = await db.getContradictionsForTopic(topic).catch((err) => {
+                    req.log.warn({ err, topic }, 'guideline contradiction lookup failed');
+                    return [];
+                });
                 return res.json({
                     topic,
                     guidelines,

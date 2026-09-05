@@ -90,9 +90,7 @@ function registerAiJobRoutes(app, { db, requireAuthJwt, rateLimit }) {
             if (!jobKey || jobKey.length > 160) {
                 return res.status(400).json({ error: 'Valid jobKey is required' });
             }
-            const job = typeof db.getAiGenerationJobByKey === 'function'
-                ? await db.getAiGenerationJobByKey(jobKey).catch(() => null)
-                : null;
+            const job = await db.getAiGenerationJobByKey(jobKey).catch(() => null);
             if (!job || !userOwnsAiGenerationJob(job, req.user.id)) {
                 return res.status(404).json({ error: 'AI generation job not found' });
             }
