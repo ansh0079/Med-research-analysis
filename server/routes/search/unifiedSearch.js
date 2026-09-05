@@ -92,6 +92,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                 telemetry,
                 teachingObjects: boostedObjects,
                 teachingClaims: boostedClaims,
+                guidelineContradictions = [],
                 learningContext,
                 banditMeta,
             } = ranked;
@@ -247,6 +248,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                 }),
                 learningContext,
                 learnerContext,
+                guidelineContradictions,
                 vectorFusion,
                 aiEnrichmentKey: enrichKey,
                 aiEnrichmentStatus,

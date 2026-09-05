@@ -93,13 +93,14 @@ function createSearchTopicHelpers({ db, logger, serverConfig }) {
             { previousQueries, learningContext }
         );
         const normalized = safeNormalizeTopic(topic);
-        const [guidelineSnapshot, teachingObjects, relatedTopics, clusterArticles, teachingClaims] = await Promise.all([
+        const [guidelineSnapshot, teachingObjects, relatedTopics, clusterArticles, teachingClaims, guidelineContradictions] = await Promise.all([
             safeDbList('getGuidelinesByTopic', [topic, { limit: 5 }], 'getGuidelinesByTopic failed'),
             // Reuse objects fetched during boost step to avoid a second DB round-trip.
             prefetchedObjects ?? safeDbList('listTeachingObjectsForTopic', [topic, { limit: 12 }], 'listTeachingObjectsForTopic failed'),
             safeDbList('getRelatedBouquetTopicsForTopic', [normalized, { limit: 5, minSharedArticles: 1 }], 'getRelatedBouquetTopicsForTopic failed'),
             safeDbList('getClusterBouquetArticlesForTopic', [normalized, { topicLimit: 5, articleLimit: 10, minSharedArticles: 1 }], 'getClusterBouquetArticlesForTopic failed'),
             prefetchedClaims ?? safeDbList('listTeachingObjectClaimsForTopic', [topic, { limit: 20 }], 'listTeachingObjectClaimsForTopic failed'),
+            safeDbList('getContradictionsForTopic', [topic], 'getContradictionsForTopic failed'),
         ]);
         const evidenceMap = buildEvidenceMap({
             topic,
@@ -133,6 +134,7 @@ function createSearchTopicHelpers({ db, logger, serverConfig }) {
                 guidelines: guidelineSnapshot,
                 count: guidelineSnapshot.length,
                 hasReviewedGuidelines: guidelineSnapshot.some((g) => g.status === 'human_reviewed'),
+                contradictions: guidelineContradictions,
             },
             evidenceMap,
             agentGuidance,

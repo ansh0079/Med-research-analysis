@@ -112,8 +112,30 @@ function articleToEmbedText(article) {
     return t.slice(0, 8000);
 }
 
+const GUIDELINE_VECTOR_SOURCE = 'guideline';
+
+function guidelineVectorExternalId(guidelineId) {
+    return `guideline:${String(guidelineId || '').trim()}`;
+}
+
+function guidelineToEmbedText(guideline = {}) {
+    const text = [
+        guideline.sourceBody || guideline.source_body || '',
+        guideline.sourceYear || guideline.source_year || '',
+        guideline.topic || '',
+        guideline.recommendationText || guideline.recommendation_text || '',
+        guideline.population || '',
+        guideline.intervention || '',
+        guideline.cautions || '',
+    ].filter(Boolean).join('\n');
+    return String(text).replace(/\s+/g, ' ').trim().slice(0, 8000);
+}
+
 module.exports = {
     generateEmbedding,
     articleToEmbedText,
+    guidelineToEmbedText,
+    guidelineVectorExternalId,
+    GUIDELINE_VECTOR_SOURCE,
     EMBEDDING_DIM,
 };

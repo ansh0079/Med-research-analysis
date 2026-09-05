@@ -67,7 +67,16 @@ module.exports = (Sup) => class extends Sup {
         );
     }
 
-    async getContradictionsForTopic(normalizedTopic) {
+    async getContradictionsForTopic(topicOrNormalized) {
+        const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
+        const normalized = this.normalizeTopic(topicOrNormalized);
+        const keys = [...new Set([
+            normalized,
+            resolveCanonicalNormalized(String(topicOrNormalized || '').trim(), (s) => this.normalizeTopic(s)),
+            ...expandNormalizedTopicKeys(normalized, (s) => this.normalizeTopic(s)),
+        ].filter(Boolean))];
+        if (!keys.length) return [];
+        const placeholders = keys.map(() => '?').join(', ');
         const rows = await this.all(
             `SELECT gc.*,
                 ga.source_body AS a_source_body, ga.source_year AS a_source_year,
@@ -79,14 +88,14 @@ module.exports = (Sup) => class extends Sup {
              FROM guideline_contradictions gc
              JOIN topic_guidelines ga ON gc.guideline_a_id = ga.id
              JOIN topic_guidelines gb ON gc.guideline_b_id = gb.id
-             WHERE gc.normalized_topic = ?
+             WHERE gc.normalized_topic IN (${placeholders})
                AND gc.status != 'dismissed'
              ORDER BY
                CASE gc.severity WHEN 'major' THEN 1 WHEN 'minor' THEN 2 ELSE 3 END,
                CASE WHEN COALESCE(ga.source_year, 0) > COALESCE(gb.source_year, 0)
                     THEN COALESCE(ga.source_year, 0)
                     ELSE COALESCE(gb.source_year, 0) END DESC`,
-            [normalizedTopic]
+            keys
         );
         return rows.map(r => this.mapContradictionRow(r));
     }

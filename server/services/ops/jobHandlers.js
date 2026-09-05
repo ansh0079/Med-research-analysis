@@ -36,6 +36,13 @@ function registerAllJobHandlers(deps) {
         );
     });
 
+    registerJobHandler('embedding', 'guideline', async ({ guideline }, _ctx) => {
+        const { upsertGuidelineEmbedding } = require('../guidelineVectorService');
+        const db = deps.db;
+        if (!guideline?.id) return;
+        await upsertGuidelineEmbedding(db, guideline, deps.embeddingKeys || {});
+    });
+
     registerJobHandler('digest', 'run', async (_data, _ctx) => {
         const { runAlertDigests } = require('../digestService');
         const appUrl = process.env.APP_URL || `http://localhost:${process.env.PORT || 3002}`;

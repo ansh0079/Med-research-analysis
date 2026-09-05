@@ -77,22 +77,24 @@ async upsertArticleCacheVector(externalId, source, data, embedding, doi = null) 
  * @param {number} limit
  * @param {number} minSimilarity 0..1 (1 = identical direction for cosine)
  */
-async searchSimilarArticlesCache(queryEmbedding, limit = 10, minSimilarity = 0.4) {
+async searchSimilarArticlesCache(queryEmbedding, limit = 10, minSimilarity = 0.4, { source = null } = {}) {
     if (!this.pgVectorPool) {
         throw new Error('Vector search requires PG_VECTOR_URL (or VECTOR_DATABASE_URL)');
     }
     await this.assertArticlesCacheEmbeddingDim(queryEmbedding, 'articles_cache search');
     const vec = toPgVectorLiteral(queryEmbedding);
     const maxDistance = 1 - minSimilarity;
+    const sourceFilter = source ? String(source) : null;
     const sql = `
         SELECT data, 1 - (embedding <=> $1::vector) AS score
         FROM articles_cache
         WHERE embedding IS NOT NULL
           AND (embedding <=> $1::vector) < $2
+          AND ($4::text IS NULL OR source = $4)
         ORDER BY embedding <=> $1::vector ASC
         LIMIT $3
     `;
-    const { rows } = await this.pgVectorPool.query(sql, [vec, maxDistance, limit]);
+    const { rows } = await this.pgVectorPool.query(sql, [vec, maxDistance, limit, sourceFilter]);
     return rows.map((r) => ({
         data: r.data,
         score: r.score !== null && r.score !== undefined ? Number(r.score) : 0

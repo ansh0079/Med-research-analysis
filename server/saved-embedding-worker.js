@@ -47,6 +47,24 @@ function enqueueArticleForEmbedding(article) {
     });
 }
 
+function enqueueGuidelineForEmbedding(guideline) {
+    const id = guideline?.id;
+    if (!id) return;
+    const key = `guideline:${id}`;
+    if (DEDUPE.has(key)) return;
+    DEDUPE.add(key);
+
+    embeddingQueue.enqueueNamed(
+        'guideline',
+        { guideline },
+        { label: `embed:${key}` }
+    ).catch((err) => {
+        logger.warn({ err, guidelineId: id }, 'guideline embedding job enqueue failed');
+    }).finally(() => {
+        DEDUPE.delete(key);
+    });
+}
+
 function getWorkerStatus() {
     return {
         available: started,
@@ -55,4 +73,10 @@ function getWorkerStatus() {
     };
 }
 
-module.exports = { startSavedEmbeddingWorker, stopSavedEmbeddingWorker, enqueueArticleForEmbedding, getWorkerStatus };
+module.exports = {
+    startSavedEmbeddingWorker,
+    stopSavedEmbeddingWorker,
+    enqueueArticleForEmbedding,
+    enqueueGuidelineForEmbedding,
+    getWorkerStatus,
+};

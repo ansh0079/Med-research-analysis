@@ -47,9 +47,16 @@ function buildRetrievalContext(retrieval = {}) {
     const freshness = retrieval.freshness;
 
     const parts = [];
+    const contradictions = Array.isArray(retrieval.contradictions) ? retrieval.contradictions.slice(0, 6) : [];
     if (teachingObjects.length) {
         parts.push(`### Top reusable teaching objects
 ${teachingObjects.map(compactTeachingObject).join('\n')}`);
+    }
+    if (contradictions.length) {
+        const { compactContradictionCard } = require('../guidelineContradictionService');
+        parts.push(`### Cross-body guideline contradiction cards
+${contradictions.map(compactContradictionCard).join('\n')}
+Surface a contradiction card when the learner asks about guidelines, thresholds, or first-line therapy. Do not invent a winner — name both bodies.`);
     }
     if (groundedClaims.length) {
         parts.push(`### Top grounded claims

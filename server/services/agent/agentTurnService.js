@@ -65,10 +65,18 @@ async function executeAgentTurn(
 
     const topicKnowledge = await db.getTopicKnowledge(trimmedTopic);
 
-    const guidelines = await db.getGuidelinesByTopic(trimmedTopic, { limit: 5 }).catch((err) => {
-        logger.warn({ err }, 'getGuidelinesByTopic failed');
-        return [];
-    });
+    const [guidelines, contradictionCards] = await Promise.all([
+        db.getGuidelinesByTopic(trimmedTopic, { limit: 5 }).catch((err) => {
+            logger.warn({ err }, 'getGuidelinesByTopic failed');
+            return [];
+        }),
+        db.getContradictionsForTopic
+            ? db.getContradictionsForTopic(trimmedTopic).catch((err) => {
+                logger.debug({ err }, 'getContradictionsForTopic failed');
+                return [];
+            })
+            : Promise.resolve([]),
+    ]);
 
     const [teachingObjects, groundedClaims, userContext] = await Promise.all([
         db.listTeachingObjectsForTopic(trimmedTopic, { limit: 3 }).catch((err) => {
@@ -116,7 +124,14 @@ async function executeAgentTurn(
         }
     }
 
-    const retrieval = { teachingObjects, groundedClaims, claimMastery, freshness, personalGraphHooks };
+    const retrieval = {
+        teachingObjects,
+        groundedClaims,
+        claimMastery,
+        freshness,
+        personalGraphHooks,
+        contradictions: Array.isArray(contradictionCards) ? contradictionCards.slice(0, 6) : [],
+    };
 
     // Cross-topic bridge lookup: seminal papers from related knowledge bases not in current results.
     const crossTopicBridges = [];

@@ -24,6 +24,11 @@ jest.mock('../../server/services/pdfPreindexRunner', () => ({
 jest.mock('../../server/embeddings', () => ({
     generateEmbedding: jest.fn(),
     articleToEmbedText: jest.fn(),
+    guidelineToEmbedText: jest.fn(),
+}));
+
+jest.mock('../../server/services/guidelineVectorService', () => ({
+    upsertGuidelineEmbedding: jest.fn(),
 }));
 
 jest.mock('../../server/services/digestService', () => ({
@@ -46,6 +51,7 @@ const { registerAllJobHandlers } = require('../../server/services/jobHandlers');
 const { createPdfService } = require('../../server/services/pdfService');
 const { runPdfPreindex } = require('../../server/services/pdfPreindexRunner');
 const { generateEmbedding, articleToEmbedText } = require('../../server/embeddings');
+const { upsertGuidelineEmbedding } = require('../../server/services/guidelineVectorService');
 const { runAlertDigests } = require('../../server/services/digestService');
 const { processAiGenerationJobByKey } = require('../../server/services/aiGenerationJobProcessor');
 const { registerAgentSideEffectHandler } = require('../../server/services/agentSideEffectService');
@@ -75,6 +81,7 @@ describe('registerAllJobHandlers', () => {
         expect(handlers.has('pdf:extract')).toBe(true);
         expect(handlers.has('pdf:preindex')).toBe(true);
         expect(handlers.has('embedding:article')).toBe(true);
+        expect(handlers.has('embedding:guideline')).toBe(true);
         expect(handlers.has('digest:run')).toBe(true);
         expect(handlers.has('ai-generation:process')).toBe(true);
         expect(registerAgentSideEffectHandler).toHaveBeenCalledWith(deps);
@@ -168,6 +175,21 @@ describe('registerAllJobHandlers', () => {
                 article,
                 expect.any(Array),
                 null
+            );
+        });
+    });
+
+    describe('embedding:guideline handler', () => {
+        test('upserts a guideline vector', async () => {
+            upsertGuidelineEmbedding.mockResolvedValue({ externalId: 'guideline:g1' });
+            registerAllJobHandlers(deps);
+            await handlers.get('embedding:guideline')({
+                guideline: { id: 'g1', recommendationText: 'Offer nimodipine after SAH.' },
+            }, {});
+            expect(upsertGuidelineEmbedding).toHaveBeenCalledWith(
+                deps.db,
+                expect.objectContaining({ id: 'g1' }),
+                deps.embeddingKeys
             );
         });
     });

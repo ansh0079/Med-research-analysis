@@ -78,7 +78,16 @@ async createGuideline(guideline) {
             now, now, now,
         ]
     );
-    return this.getGuidelineById(result.id);
+    const created = await this.getGuidelineById(result.id);
+    try {
+        const { enqueueGuidelineForEmbedding } = require('../../server/saved-embedding-worker');
+        enqueueGuidelineForEmbedding(created);
+    } catch { /* embedding is best-effort */ }
+    try {
+        const { refreshLexicalContradictions } = require('../../server/services/guidelineContradictionService');
+        void refreshLexicalContradictions(this, created?.topic || created?.normalizedTopic);
+    } catch { /* contradiction refresh is best-effort */ }
+    return created;
 }
 
 async getGuidelineById(id) {
@@ -132,10 +141,16 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20, minRelevance = unde
     }
     const mapped = rows.map((row) => this.mapGuidelineRow(row));
     if (skipRank) return mapped.slice(0, safeLimit);
-    return rankGuidelinesForTopic(String(topic || '').trim(), mapped, {
+    const ranked = rankGuidelinesForTopic(String(topic || '').trim(), mapped, {
         limit: safeLimit,
         minScore: minRelevance,
     });
+    try {
+        const { rerankGuidelinesWithVectors } = require('../../server/services/guidelineVectorService');
+        return await rerankGuidelinesWithVectors(this, String(topic || '').trim(), ranked, { limit: safeLimit });
+    } catch {
+        return ranked;
+    }
 }
 
 async listGuidelineCoveredTopics({ limit = 2000, minCount = 1 } = {}) {
@@ -225,7 +240,12 @@ async updateGuideline(id, patch) {
     if (fields.length === 0) return existing;
     values.push(id);
     await this.run(`UPDATE topic_guidelines SET ${fields.join(', ')} WHERE id = ?`, values);
-    return this.getGuidelineById(id);
+    const updated = await this.getGuidelineById(id);
+    try {
+        const { enqueueGuidelineForEmbedding } = require('../../server/saved-embedding-worker');
+        enqueueGuidelineForEmbedding(updated);
+    } catch { /* embedding is best-effort */ }
+    return updated;
 }
 
 async markGuidelineReviewed(id, reviewerId) {

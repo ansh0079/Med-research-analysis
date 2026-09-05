@@ -62,7 +62,15 @@ function registerGuidelineRoutes(app, { db, serverConfig, rateLimit, requireAuth
                 limit: parseInt(String(limit), 10) || 20,
             });
             if (guidelines.length > 0) {
-                return res.json({ topic, guidelines, discoveryStatus: 'complete' });
+                const contradictions = typeof db.getContradictionsForTopic === 'function'
+                    ? await db.getContradictionsForTopic(topic).catch(() => [])
+                    : [];
+                return res.json({
+                    topic,
+                    guidelines,
+                    contradictions,
+                    discoveryStatus: 'complete',
+                });
             }
             if (isDiscoveryInFlight(topic, db)) {
                 return res.json({ topic, guidelines: [], discoveryStatus: 'pending' });

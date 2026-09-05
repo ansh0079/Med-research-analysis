@@ -6,6 +6,7 @@ const {
     filterCitedStringList,
 } = require('../citationValidator');
 const { scoreClaimSourceRelevanceSync } = require('../citationRelevanceService');
+const { applyNumericGrounding } = require('./numericGrounding');
 
 const REVIEW_STATES = Object.freeze([
     'unreviewed',
@@ -221,6 +222,11 @@ function processPaperSynopsisTrust(synopsis, {
             ? `${nextSynopsis.trustRationale} ${note}`
             : note;
     }
+    const numeric = applyNumericGrounding(nextSynopsis, article);
+    nextSynopsis = numeric.synopsis;
+    if (numeric.numericGrounding.ungrounded?.length) {
+        nextSynopsis.trustRating = minTrustRating(nextSynopsis.trustRating || 'MODERATE', 'LOW');
+    }
     const audit = buildPaperSynopsisTrustAudit({
         synopsis: nextSynopsis,
         citationValidation,
@@ -229,6 +235,7 @@ function processPaperSynopsisTrust(synopsis, {
         extra: {
             citationRelevance: relevance.citationRelevance,
             validationDegraded: degraded,
+            numericGrounding: numeric.numericGrounding,
         },
     });
     return { synopsis: nextSynopsis, audit, abstractOnly, citationValidation };
@@ -250,4 +257,5 @@ module.exports = {
     applyAbstractOnlySynopsisTrust,
     buildPaperSynopsisTrustAudit,
     processPaperSynopsisTrust,
+    applyNumericGrounding,
 };

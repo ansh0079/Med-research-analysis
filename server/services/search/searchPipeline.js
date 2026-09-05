@@ -474,21 +474,29 @@ function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMes
 
 async function prefetchTeachingArtifacts(db, topic) {
     if (!db || !topic) {
-        return { objects: [], claims: [], signalBoosts: new Map() };
+        return { objects: [], claims: [], contradictions: [], signalBoosts: new Map() };
     }
 
-    const [teachingObjects, claims] = await Promise.all([
+    const [teachingObjects, claims, contradictions] = await Promise.all([
         typeof db.listTeachingObjectsForTopic === 'function'
             ? db.listTeachingObjectsForTopic(topic, { limit: 50 }).catch(() => [])
             : [],
         typeof db.listTeachingObjectClaimsForTopic === 'function'
             ? db.listTeachingObjectClaimsForTopic(topic, { limit: 100 }).catch(() => [])
             : [],
+        typeof db.getContradictionsForTopic === 'function'
+            ? db.getContradictionsForTopic(topic).catch(() => [])
+            : [],
     ]);
 
     const signalBoosts = buildTeachingSignalBoosts(teachingObjects, claims);
 
-    return { objects: teachingObjects, claims, signalBoosts };
+    return {
+        objects: teachingObjects,
+        claims,
+        contradictions: Array.isArray(contradictions) ? contradictions.slice(0, 8) : [],
+        signalBoosts,
+    };
 }
 
 /**
@@ -582,7 +590,7 @@ async function fetchAndRankSearchArticles({
         _trace('relevant', relevant);
 
         const teachingStarted = Date.now();
-        const { objects: teachingObjects, claims: teachingClaims, signalBoosts } = await withSpan('search.prefetch_teaching_artifacts', {
+        const { objects: teachingObjects, claims: teachingClaims, contradictions: guidelineContradictions, signalBoosts } = await withSpan('search.prefetch_teaching_artifacts', {
             'search.topic': query,
         }, () => prefetchTeachingArtifacts(db, query));
         timings.teachingArtifactMs = Date.now() - teachingStarted;
@@ -661,6 +669,7 @@ async function fetchAndRankSearchArticles({
             archetypesCovered: bouquet.archetypesCovered,
             teachingObjects,
             teachingClaims,
+            guidelineContradictions: guidelineContradictions || [],
             learningContext: publicLearningContext(learningContextFull),
             banditMeta: learningContextFull?._banditMeta || null,
         };
