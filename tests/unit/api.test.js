@@ -128,6 +128,7 @@ jest.mock('../../database', () => ({
   createQuizAttempt: jest.fn().mockResolvedValue({ id: 1 }),
   getQuizAttempts: jest.fn().mockResolvedValue([]),
   getQuizAttemptStats: jest.fn().mockResolvedValue([]),
+  getTopicBktAbility: jest.fn().mockResolvedValue(null),
   getEvidenceJudgementProfile: jest.fn().mockResolvedValue({ topic: null, totalTaggedAttempts: 0, tags: [], generatedAt: '2026-05-18T00:00:00.000Z' }),
   listPracticeChangingTeachingObjects: jest.fn().mockResolvedValue([]),
   createStudyRun: jest.fn(),

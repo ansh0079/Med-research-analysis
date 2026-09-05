@@ -1,7 +1,11 @@
 'use strict';
 
 const { resolveRewardStatus, isClosedRewardStatus, buildSelectionContext } = require('../../server/services/bandit/logSelection');
-const { applyDecisionReward } = require('../../server/services/search/searchLearningOutcomeService');
+const {
+    applyDecisionReward,
+    attributeRecommendationFollowThrough,
+    attributeAgentQuizOutcomeReward,
+} = require('../../server/services/search/searchLearningOutcomeService');
 const { reconcileImpressionRewards } = require('../../server/services/bandit/rewards');
 
 describe('reward_status lifecycle', () => {
@@ -58,6 +62,41 @@ describe('reward_status lifecycle', () => {
         const result = await reconcileImpressionRewards(db, { days: 14 });
         expect(result.updated).toBe(0);
         expect(db.updatePersonalizationDecisionReward).not.toHaveBeenCalled();
+    });
+
+    test('recommendation follow-through does not re-pull an already closed decision', async () => {
+        const db = {
+            all: jest.fn().mockResolvedValue([
+                { id: 5, arm_id: 'evidence_first', total_reward: 0.5, reward_status: 'final' },
+            ]),
+            updatePersonalizationDecisionReward: jest.fn().mockResolvedValue({ updated: true }),
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+        };
+        const result = await attributeRecommendationFollowThrough(db, 'u1', {
+            topic: 'Sepsis',
+            normalizedTopic: 'sepsis',
+            eventType: 'recommendation_followed',
+        });
+        expect(result.rewarded).toBeNull();
+        expect(db.updatePersonalizationDecisionReward).not.toHaveBeenCalled();
+        expect(db.recordPersonalizationArmPull).not.toHaveBeenCalled();
+    });
+
+    test('agent quiz outcome rewards only the increment over a partial decision', async () => {
+        const db = {
+            normalizeTopic: (t) => String(t).toLowerCase(),
+            all: jest.fn().mockResolvedValue([
+                { id: 8, arm_id: 'socratic', immediate_reward: 0.2, total_reward: 0.2, reward_status: 'partial' },
+            ]),
+            updatePersonalizationDecisionReward: jest.fn().mockResolvedValue({ updated: true, rewardStatus: 'final' }),
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+            recordLearningEvent: jest.fn().mockResolvedValue({ id: 1 }),
+        };
+        const result = await attributeAgentQuizOutcomeReward(db, 'u1', [{ isCorrect: true }], 'Sepsis');
+        expect(result.rewarded).toBe(1);
+        const pull = db.recordPersonalizationArmPull.mock.calls[0];
+        expect(pull[1]).toBe('socratic');
+        expect(pull[2]).toBeCloseTo(0.5, 5);
     });
 
     test('buildSelectionContext always logs propensity fields', () => {

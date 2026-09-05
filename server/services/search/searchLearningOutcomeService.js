@@ -439,8 +439,9 @@ async function attributeRecommendationFollowThrough(db, userId, {
     if (!db || !userId || !topic) return null;
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const rows = await db.all?.(
-        `SELECT id, arm_id, context_json FROM personalization_decisions
+        `SELECT id, arm_id, context_json, total_reward FROM personalization_decisions
          WHERE user_id = ? AND policy_type = 'recommendation_strategy'
+           AND COALESCE(reward_status, 'pending') IN ('pending', 'partial')
            AND (normalized_topic = ? OR topic = ?)
            AND created_at >= ?
          ORDER BY created_at DESC LIMIT 3`,
@@ -449,15 +450,18 @@ async function attributeRecommendationFollowThrough(db, userId, {
     if (!rows?.length) return null;
 
     const followReward = recommendationFollowThroughReward(eventType);
+    let rewardedArm = null;
     for (const row of rows.slice(0, 1)) {
-        await recordBanditReward(db, 'recommendation_strategy', row.arm_id, followReward, userId);
-        await db.updatePersonalizationDecisionReward?.(row.id, {
+        const applied = await applyDecisionReward(db, userId, row, {
+            immediateReward: Number(row.immediate_reward || 0),
             delayedReward: followReward,
             totalReward: followReward,
+            policyType: 'recommendation_strategy',
             rewardStatus: 'final',
-        }).catch(() => null);
+        });
+        if (applied) rewardedArm = row.arm_id || null;
     }
-    return { rewarded: rows[0]?.arm_id || null, followReward };
+    return { rewarded: rewardedArm, followReward };
 }
 
 async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic = '') {
@@ -467,7 +471,7 @@ async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic 
     const normalizedTopic = typeof db.normalizeTopic === 'function' ? db.normalizeTopic(topic) : String(topic || '').toLowerCase();
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const pendingDecisions = await db.all(
-        `SELECT id, arm_id
+        `SELECT id, arm_id, immediate_reward, delayed_reward, total_reward, reward_status
          FROM personalization_decisions
          WHERE user_id = ?
            AND policy_type = ?
@@ -484,14 +488,14 @@ async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic 
         for (const row of pendingDecisions) {
             if (!row.arm_id || seen.has(row.arm_id)) continue;
             seen.add(row.arm_id);
-            await db.updatePersonalizationDecisionReward?.(row.id, {
-                immediateReward: 0,
+            const applied = await applyDecisionReward(db, userId, row, {
+                immediateReward: Number(row.immediate_reward || 0),
                 delayedReward: reward,
                 totalReward: reward,
+                policyType: POLICY_TEACHING_STRATEGY,
                 rewardStatus: 'final',
-            }).catch(() => null);
-            await recordBanditReward(db, POLICY_TEACHING_STRATEGY, row.arm_id, reward, userId);
-            rewarded += 1;
+            });
+            if (applied) rewarded += 1;
         }
         if (rewarded > 0) {
             await recordLearningSignal(db, {
