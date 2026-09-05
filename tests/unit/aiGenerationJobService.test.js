@@ -236,6 +236,9 @@ describe('aiGenerationJobService', () => {
             })),
             resetAiGenerationJobForRetry: jest.fn().mockResolvedValue(true),
             createAiGenerationJob: jest.fn(),
+            markAiGenerationJobRunning: jest.fn(),
+            completeAiGenerationJob: jest.fn(),
+            failAiGenerationJob: jest.fn(),
         };
 
         const result = await getOrEnqueuePaperSynopsis({
