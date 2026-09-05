@@ -1,3 +1,4 @@
+const { canWriteLearningSignal } = require('../../lib/sessionIdentity');
 const { explainInteractionReward } = require('../../services/rewardAttributionService');
 const { attributeSearchInteractionReward } = require('../../services/searchLearningOutcomeService');
 const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('../../services/learningSignalService');
@@ -8,6 +9,10 @@ const {
 
 function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }) {
     app.post('/api/search/impressions', rateLimit(120, 60), requireJson, async (req, res) => {
+        const access = canWriteLearningSignal(req);
+        if (!access.ok) {
+            return res.status(401).json({ error: 'Authentication or signed session required' });
+        }
         const { searchId, impressions } = req.body || {};
         const sid = Number(searchId);
         if (!sid || !Array.isArray(impressions) || impressions.length === 0) {
@@ -41,6 +46,10 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
     });
 
     app.post('/api/search/interaction', rateLimit(180, 60), requireJson, async (req, res) => {
+        const access = canWriteLearningSignal(req);
+        if (!access.ok) {
+            return res.status(401).json({ error: 'Authentication or signed session required' });
+        }
         const { searchId, articleUid, interactionType, dwellMs, elapsedMs, decisionId } = req.body || {};
         const sid = Number(searchId);
         const uid = String(articleUid || '').trim();
@@ -150,6 +159,10 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
     });
 
     app.post('/api/search/feedback', rateLimit(60, 60), requireJson, async (req, res) => {
+        const access = canWriteLearningSignal(req);
+        if (!access.ok) {
+            return res.status(401).json({ error: 'Authentication or signed session required' });
+        }
         const { articleUid, feedbackType, reason, searchId, decisionId, topic } = req.body || {};
         const uid = String(articleUid || '').trim();
         const type = String(feedbackType || '').trim();

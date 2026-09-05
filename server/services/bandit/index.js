@@ -33,6 +33,8 @@ const {
     selectSearchRankingArm,
     immediateImpressionReward,
     recordSearchRankingDecisions,
+    linearServePropensity,
+    resolveSearchRankingChoice,
 } = require('./searchRankingPolicy');
 
 const { applyRecommendationBandit } = require('./recommendationPolicy');
@@ -66,6 +68,8 @@ module.exports = {
     hierarchicalUserWeight,
     blendedArmSample,
     selectSearchRankingArm,
+    linearServePropensity,
+    resolveSearchRankingChoice,
     selectSynopsisStyleArm,
     selectTeachingStrategyArm,
     selectCaseDifficultyArm,

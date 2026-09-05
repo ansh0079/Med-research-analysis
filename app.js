@@ -30,6 +30,13 @@ const cache = require('./cache');
 const { rateLimit, userRateLimit, setMetricsRegistry, createSlowDown } = require('./server/middleware/rateLimiter');
 const { optionalAuth, requireAuthJwt, requireAuthOrBeta, requireVerifiedEmail, requireRole, requirePaidFeature } = require('./server/middleware/auth');
 const { validateProductionEnv } = require('./server/lib/productionReadiness');
+const { evaluateCsrf } = require('./server/lib/csrfGuard');
+const {
+    SESSION_COOKIE_NAME,
+    signSessionId,
+    resolveIncomingSessionId,
+    sessionCookieOptions,
+} = require('./server/lib/sessionIdentity');
 const { auditLog } = require('./server/middleware/audit');
 const { requireJson, validateAnalysisBody, validateBody, schemas } = require('./server/utils/validation');
 const { safeFetch } = require('./server/utils/fetch');
@@ -290,25 +297,18 @@ app.use(compression({ threshold: 1024 }));
 
 // CSRF protection
 app.use((req, res, next) => {
-    const unsafeMethod = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method);
-    if (!unsafeMethod || process.env.NODE_ENV === 'test') return next();
-
-    // Enhanced check: Verify the custom X-Requested-With header for non-GET requests
-    const secFetchSite = String(req.headers['sec-fetch-site'] || '').toLowerCase();
-    if (secFetchSite === 'cross-site') {
-        return res.status(403).json({ error: 'CSRF protection: cross-site request blocked' });
-    }
-    const originHeader = String(req.headers.origin || '').trim();
-    const refererHeader = String(req.headers.referer || '').trim();
-    if (!originHeader && !refererHeader) return next();
-
-    if (!req.headers['x-requested-with'] && process.env.NODE_ENV === 'production') {
-        return res.status(403).json({ error: 'CSRF protection: missing required headers' });
-    }
-
-    const source = originHeader || refererHeader;
-    if (!allowedOrigins.some((o) => source.startsWith(o))) {
-        return res.status(403).json({ error: 'CSRF protection: untrusted origin' });
+    const verdict = evaluateCsrf({
+        method: req.method,
+        nodeEnv: process.env.NODE_ENV,
+        origin: req.headers.origin,
+        referer: req.headers.referer,
+        secFetchSite: req.headers['sec-fetch-site'],
+        xRequestedWith: req.headers['x-requested-with'],
+        allowedOrigins,
+        path: req.path,
+    });
+    if (!verdict.ok) {
+        return res.status(403).json({ error: verdict.error });
     }
     return next();
 });
@@ -365,10 +365,19 @@ app.use((req, res, next) => {
 const SESSION_SKIP_PATHS = /^\/(health|metrics|favicon\.ico|robots\.txt)/;
 app.use(async (req, res, next) => {
     if (SESSION_SKIP_PATHS.test(req.path)) return next();
-    let sessionId = req.headers['x-session-id'];
-    if (!sessionId) sessionId = crypto.randomUUID();
+    const resolved = resolveIncomingSessionId({
+        headerValue: req.headers['x-session-id'],
+        signedCookieValue: req.cookies?.[SESSION_COOKIE_NAME],
+        isProduction: process.env.NODE_ENV === 'production',
+    });
+    const sessionId = resolved.sessionId;
+    const signedValue = signSessionId(sessionId);
+    if (signedValue) {
+        res.cookie(SESSION_COOKIE_NAME, signedValue, sessionCookieOptions(process.env.NODE_ENV === 'production'));
+    }
     res.setHeader('X-Session-Id', sessionId);
     req.sessionId = sessionId;
+    req.signedSession = Boolean(resolved.signed && signedValue);
     annotateActiveSpan({ 'session.id': sessionId });
 
     const existingSession = await cache.getSession(sessionId);

@@ -9,6 +9,11 @@
 const { overlayTeachingClaimTrust } = require('../../services/claimTrustOverlayService');
 const logger = require('../../config/logger');
 
+function userOwnsAiGenerationJob(job, userId) {
+    if (!job || !userId) return false;
+    return String(job.userId || job.user_id || '') === String(userId);
+}
+
 /**
  * @param {import('express').Application} app
  * @param {object} deps
@@ -52,7 +57,9 @@ function registerAiJobRoutes(app, { db, requireAuthJwt, rateLimit }) {
                 return res.status(400).json({ error: 'Valid jobKey is required' });
             }
             const job = await db.getAiGenerationJobByKey(jobKey);
-            if (!job) return res.status(404).json({ error: 'AI generation job not found' });
+            if (!job || !userOwnsAiGenerationJob(job, req.user.id)) {
+                return res.status(404).json({ error: 'AI generation job not found' });
+            }
             res.json({
                 job: {
                     jobKey: job.jobKey,
@@ -83,12 +90,14 @@ function registerAiJobRoutes(app, { db, requireAuthJwt, rateLimit }) {
             if (!jobKey || jobKey.length > 160) {
                 return res.status(400).json({ error: 'Valid jobKey is required' });
             }
-            const rawClaims = await db.listAiGenerationClaimsByJobKey(jobKey);
-            let topic = null;
-            if (typeof db.getAiGenerationJobByKey === 'function') {
-                const job = await db.getAiGenerationJobByKey(jobKey).catch(() => null);
-                topic = job?.topic || null;
+            const job = typeof db.getAiGenerationJobByKey === 'function'
+                ? await db.getAiGenerationJobByKey(jobKey).catch(() => null)
+                : null;
+            if (!job || !userOwnsAiGenerationJob(job, req.user.id)) {
+                return res.status(404).json({ error: 'AI generation job not found' });
             }
+            const rawClaims = await db.listAiGenerationClaimsByJobKey(jobKey);
+            const topic = job.topic || null;
             const claims = await overlayTeachingClaimTrust(db, rawClaims, { topic }).catch((err) => {
                 logger.warn({ err, jobKey }, 'overlayTeachingClaimTrust failed');
                 return rawClaims;
@@ -101,4 +110,4 @@ function registerAiJobRoutes(app, { db, requireAuthJwt, rateLimit }) {
     });
 }
 
-module.exports = { registerAiJobRoutes };
+module.exports = { registerAiJobRoutes, userOwnsAiGenerationJob };

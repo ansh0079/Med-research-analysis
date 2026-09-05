@@ -1,5 +1,6 @@
 const {
     quizAttemptReward,
+    applyDecisionReward,
     attributeAgentQuizOutcomeReward,
     attributeQuizAttemptRewards,
     attributeSearchInteractionReward,
@@ -11,6 +12,46 @@ describe('searchLearningOutcomeService', () => {
         expect(quizAttemptReward(true, true)).toBe(1);
         expect(quizAttemptReward(true, false)).toBe(0.25);
         expect(quizAttemptReward(false, true)).toBe(-0.1);
+    });
+
+    test('applyDecisionReward records only the increment over previous total', async () => {
+        const db = {
+            updatePersonalizationDecisionReward: jest.fn().mockResolvedValue(true),
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+        };
+        const decision = { id: 7, arm_id: 'engagement_heavy', delayed_reward: 0, total_reward: 0.02 };
+
+        await applyDecisionReward(db, 'u1', decision, {
+            immediateReward: 0.4,
+            delayedReward: 0,
+            totalReward: 0.4,
+        });
+
+        expect(db.updatePersonalizationDecisionReward).toHaveBeenCalledWith(7, expect.objectContaining({
+            totalReward: 0.4,
+        }));
+        const incrementCall = db.recordPersonalizationArmPull.mock.calls.find((args) => args[3] === 'user:u1');
+        expect(incrementCall[0]).toBe('search_ranking');
+        expect(incrementCall[1]).toBe('engagement_heavy');
+        expect(incrementCall[2]).toBeCloseTo(0.38, 5);
+    });
+
+    test('applyDecisionReward skips the arm pull when the cumulative total is unchanged', async () => {
+        const db = {
+            updatePersonalizationDecisionReward: jest.fn().mockResolvedValue(true),
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+        };
+        await applyDecisionReward(db, 'u1', {
+            id: 7,
+            arm_id: 'engagement_heavy',
+            delayed_reward: 0,
+            total_reward: 0.02,
+        }, {
+            immediateReward: 0.02,
+            delayedReward: 0,
+            totalReward: 0.02,
+        });
+        expect(db.recordPersonalizationArmPull).not.toHaveBeenCalled();
     });
 
     test('passive click updates decision reward and pulls the bandit arm', async () => {

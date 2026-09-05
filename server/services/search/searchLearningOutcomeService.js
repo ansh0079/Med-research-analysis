@@ -46,7 +46,7 @@ async function findSearchRankingDecision(db, userId, {
             return null;
         }
         const rows = await db.all(
-            `SELECT d.id, d.arm_id, d.delayed_reward
+            `SELECT d.id, d.arm_id, d.delayed_reward, d.total_reward, d.immediate_reward
              FROM personalization_decisions d
              ${joinClause}
              WHERE d.id = ? AND d.policy_type = ?${actorClause}
@@ -58,7 +58,7 @@ async function findSearchRankingDecision(db, userId, {
     if (searchId && articleUid) {
         if (userId) {
             const rows = await db.all(
-                `SELECT id, arm_id, delayed_reward FROM personalization_decisions
+                `SELECT id, arm_id, delayed_reward, total_reward, immediate_reward FROM personalization_decisions
                  WHERE user_id = ? AND policy_type = ? AND search_id = ? AND article_uid = ?
                  ORDER BY created_at DESC LIMIT 1`,
                 [String(userId), POLICY_SEARCH_RANKING, Number(searchId), String(articleUid)]
@@ -67,7 +67,7 @@ async function findSearchRankingDecision(db, userId, {
         }
         if (!sessionId) return null;
         const rows = await db.all(
-            `SELECT d.id, d.arm_id, d.delayed_reward
+            `SELECT d.id, d.arm_id, d.delayed_reward, d.total_reward, d.immediate_reward
              FROM personalization_decisions d
              JOIN searches s ON s.id = d.search_id
              WHERE d.user_id IS NULL AND d.policy_type = ? AND d.search_id = ? AND d.article_uid = ?
@@ -91,13 +91,18 @@ async function applyDecisionReward(db, userId, decision, {
     const delayed = delayedReward != null ? Number(delayedReward) : Number(decision.delayed_reward || 0);
     const immediate = Number(immediateReward || 0);
     const total = totalReward != null ? Number(totalReward) : Math.min(1, immediate + delayed);
+    const previousTotal = Number(decision.total_reward ?? 0) || 0;
+    const increment = total - previousTotal;
     await db.updatePersonalizationDecisionReward(decision.id, {
         immediateReward: immediate,
         delayedReward: delayed,
         totalReward: total,
     }).catch(() => null);
-    if (recordArmPull && decision.arm_id && total !== 0) {
-        await recordBanditReward(db, policyType || POLICY_SEARCH_RANKING, decision.arm_id, total, userId);
+    decision.total_reward = total;
+    decision.immediate_reward = immediate;
+    decision.delayed_reward = delayed;
+    if (recordArmPull && decision.arm_id && Math.abs(increment) > 1e-9) {
+        await recordBanditReward(db, policyType || POLICY_SEARCH_RANKING, decision.arm_id, increment, userId);
     }
     return true;
 }
@@ -204,7 +209,7 @@ async function findQuizClaimDecision(db, userId, {
     if (!db?.all) return null;
     if (claimDecisionId) {
         const rows = await db.all(
-            `SELECT id, arm_id, delayed_reward, policy_type FROM personalization_decisions
+            `SELECT id, arm_id, delayed_reward, total_reward, immediate_reward, policy_type FROM personalization_decisions
              WHERE id = ? AND policy_type = ?
              LIMIT 1`,
             [Number(claimDecisionId), POLICY_QUIZ_CLAIM_SELECTION]
@@ -220,7 +225,7 @@ async function findQuizClaimDecision(db, userId, {
     }
     params.push(1);
     const rows = await db.all(
-        `SELECT id, arm_id, delayed_reward, policy_type FROM personalization_decisions
+        `SELECT id, arm_id, delayed_reward, total_reward, immediate_reward, policy_type FROM personalization_decisions
          WHERE user_id = ? AND policy_type = ? AND arm_id = ?${topicClause}
          ORDER BY created_at DESC
          LIMIT ?`,
@@ -529,6 +534,7 @@ async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic 
 
 module.exports = {
     quizAttemptReward,
+    applyDecisionReward,
     attributeAgentQuizOutcomeReward,
     attributeQuizAttemptRewards,
     attributeRecommendationFollowThrough,

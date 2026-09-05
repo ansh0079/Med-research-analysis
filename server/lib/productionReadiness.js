@@ -52,12 +52,43 @@ function checkDatabase(errors, warnings) {
     }
 }
 
+const WEAK_REDIS_PASSWORDS = new Set(['changeme', 'password', 'secret', 'redis', 'pass', '123456']);
+
+function redisPasswordFromUrl(url) {
+    try {
+        return decodeURIComponent(new URL(url).password || '');
+    } catch {
+        return '';
+    }
+}
+
+function isWeakRedisPassword(password) {
+    const value = String(password || '');
+    if (!value || value.length < 16) return true;
+    return WEAK_REDIS_PASSWORDS.has(value.toLowerCase());
+}
+
+function checkRedisPassword(errors) {
+    const fromUrl = redisPasswordFromUrl(env('REDIS_URL'));
+    const password = fromUrl || env('REDIS_PASSWORD');
+    if (isWeakRedisPassword(password)) {
+        errors.push('REDIS_PASSWORD must be a strong secret (min 16 chars); placeholders like changeme are forbidden');
+    }
+}
+
 function checkRedis(errors, warnings) {
     if (!env('REDIS_URL')) {
         errors.push('REDIS_URL is missing. Redis is required for beta/production shared cache, rate limits, auth security fallback, and job queues');
     }
+    checkRedisPassword(errors);
     if (env('DISABLE_BULLMQ') === 'true') {
         warnings.push('DISABLE_BULLMQ=true - background jobs will not use Redis queue');
+    }
+}
+
+function checkCommercialGate(errors) {
+    if (isProduction() && env('PAYWALL_ENABLED') === 'true' && env('BETA_MODE') === 'true') {
+        errors.push('BETA_MODE=true is incompatible with PAYWALL_ENABLED=true in production');
     }
 }
 
@@ -208,6 +239,8 @@ function validateProductionEnv({ mode = 'verify' } = {}) {
         if (!env('REDIS_URL')) {
             errors.push('REDIS_URL must be set in production for cache, rate limits, sessions, and job queues.');
         }
+        checkRedisPassword(errors);
+        checkCommercialGate(errors);
     } else {
         // Full CI/manual checklist from verify-production-env.mjs.
         checkJwt(errors);
@@ -219,6 +252,7 @@ function validateProductionEnv({ mode = 'verify' } = {}) {
         checkPgSsl(warnings);
         checkLlm(errors);
         checkBilling(errors);
+        checkCommercialGate(errors);
         checkTelemetry(errors);
         checkEmail(errors);
     }

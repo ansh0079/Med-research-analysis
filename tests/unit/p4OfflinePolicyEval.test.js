@@ -18,6 +18,8 @@ const {
     softmaxPropensities,
     chooseArmBySamplesContextual,
     SEARCH_RANKING_ARMS,
+    linearServePropensity,
+    resolveSearchRankingChoice,
 } = require('../../server/services/personalizationBanditService');
 
 function decision(armId, reward, context = {}) {
@@ -136,5 +138,27 @@ describe('P4 propensity logging helpers', () => {
         expect(chosen.propensity).toBeGreaterThan(0);
         expect(chosen.propensity).toBeLessThanOrEqual(1);
         expect(chosen.propensityByArm[chosen.armId]).toBeCloseTo(chosen.propensity, 5);
+    });
+
+    test('linear serve logs 1-ε greedy or ε/|A| explore propensity', () => {
+        expect(linearServePropensity('linear', 0.1, 4)).toBeCloseTo(0.9, 5);
+        expect(linearServePropensity('epsilon_explore', 0.1, 4)).toBeCloseTo(0.025, 5);
+    });
+
+    test('resolveSearchRankingChoice honors epsilon_explore instead of dropping it', () => {
+        const thompson = {
+            armId: 'heuristic_default',
+            propensity: 0.4,
+            propensityByArm: { heuristic_default: 0.4, quiz_gap_heavy: 0.2 },
+        };
+        const choice = resolveSearchRankingChoice({
+            linearPick: { armId: 'quiz_gap_heavy', source: 'epsilon_explore', epsilon: 0.2 },
+            thompson,
+            armIds: Object.keys(SEARCH_RANKING_ARMS),
+        });
+        expect(choice.useLinear).toBe(true);
+        expect(choice.bestArm).toBe('quiz_gap_heavy');
+        expect(choice.selectionSource).toBe('linear_epsilon_explore');
+        expect(choice.propensity).toBeCloseTo(0.2 / Object.keys(SEARCH_RANKING_ARMS).length, 5);
     });
 });

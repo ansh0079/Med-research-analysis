@@ -62,6 +62,20 @@ describe('paperSynopsisTrust', () => {
         })).toBe(true);
     });
 
+    test('lowers trust when schema validation degraded', () => {
+        const { synopsis, audit } = processPaperSynopsisTrust({
+            mainFindings: 'Primary endpoint met (HR 0.82) [1].',
+            bottomLine: 'May reduce events in selected patients [1].',
+            trustRating: 'HIGH',
+            _validationDegraded: true,
+        }, { fullTextCoverageRatio: 1, validationDegraded: true });
+
+        expect(synopsis._validationDegraded).toBe(true);
+        expect(['LOW', 'VERY_LOW']).toContain(synopsis.trustRating);
+        expect(audit.validationDegraded).toBe(true);
+        expect(synopsis.trustRationale).toMatch(/degraded/i);
+    });
+
     test('preserves human_reviewed review state', () => {
         expect(resolveReviewState({
             citationValidation: { ok: true },

@@ -195,6 +195,7 @@ function processPaperSynopsisTrust(synopsis, {
     fullTextCoverageRatio = 0,
     priorReviewState = null,
     article = null,
+    validationDegraded = false,
 } = {}) {
     const abstractOnly = isAbstractOnlySource(fullTextCoverageRatio);
     let nextSynopsis = applyAbstractOnlySynopsisTrust(synopsis, abstractOnly);
@@ -211,12 +212,24 @@ function processPaperSynopsisTrust(synopsis, {
     if (abstractOnly) {
         nextSynopsis.trustRating = capTrustRatingForAbstractOnly(nextSynopsis.trustRating);
     }
+    const degraded = Boolean(validationDegraded || nextSynopsis._validationDegraded);
+    if (degraded) {
+        nextSynopsis._validationDegraded = true;
+        nextSynopsis.trustRating = minTrustRating(nextSynopsis.trustRating || 'MODERATE', 'LOW');
+        const note = 'Schema validation degraded this synopsis; treat claims as low-trust until a provider returns a valid contract.';
+        nextSynopsis.trustRationale = nextSynopsis.trustRationale
+            ? `${nextSynopsis.trustRationale} ${note}`
+            : note;
+    }
     const audit = buildPaperSynopsisTrustAudit({
         synopsis: nextSynopsis,
         citationValidation,
         fullTextCoverageRatio,
         priorReviewState,
-        extra: { citationRelevance: relevance.citationRelevance },
+        extra: {
+            citationRelevance: relevance.citationRelevance,
+            validationDegraded: degraded,
+        },
     });
     return { synopsis: nextSynopsis, audit, abstractOnly, citationValidation };
 }

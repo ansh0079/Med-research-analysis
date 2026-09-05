@@ -13,6 +13,7 @@ const {
     ensurePolicyArms,
     loadArmSamples,
     blendedArmSample,
+    softmaxPropensities,
 } = require('./sampling');
 
 /**
@@ -80,6 +81,10 @@ async function applyQuizClaimSelectionBandit(db, userId, claimAnchors, {
     });
 
     const selected = ranked.slice(0, safeCount);
+    const scoreIds = armIds;
+    const scoreValues = scoreIds.map((armId) => samples[armId] ?? 0.5);
+    const propensities = softmaxPropensities(scoreValues);
+    const propensityByArm = Object.fromEntries(scoreIds.map((armId, i) => [armId, propensities[i] ?? (1 / Math.max(scoreIds.length, 1))]));
     const decisions = [];
     for (const anchor of selected) {
         const claimKey = String(anchor.claimKey);
@@ -97,6 +102,7 @@ async function applyQuizClaimSelectionBandit(db, userId, claimAnchors, {
                     verificationStatus: anchor.verificationStatus || null,
                     scopeKey,
                     banditSample: samples[claimKey] ?? null,
+                    propensity: propensityByArm[claimKey] ?? null,
                 },
             }).catch((err) => {
                 logger.warn({ err, claimKey }, 'quiz claim decision log failed');
@@ -107,10 +113,11 @@ async function applyQuizClaimSelectionBandit(db, userId, claimAnchors, {
         anchor.claimDecisionId = decisionId;
         anchor._banditArmId = claimKey;
         anchor._banditSample = samples[claimKey] ?? null;
-        decisions.push({ claimKey, decisionId, armId: claimKey });
+        anchor._propensity = propensityByArm[claimKey] ?? null;
+        decisions.push({ claimKey, decisionId, armId: claimKey, propensity: propensityByArm[claimKey] ?? null });
     }
 
-    return { anchors: selected, decisions, scopeKey, samples };
+    return { anchors: selected, decisions, scopeKey, samples, propensityByArm };
 }
 
 async function findQuizAttemptsForDecision(db, decision, { days = 7 } = {}) {

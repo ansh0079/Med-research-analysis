@@ -192,6 +192,33 @@ describe('searchPipeline helpers', () => {
         expect(filtered).toHaveLength(1);
         expect(filtered[0].pmid).toBe('23323867');
     });
+
+    test('filterRelevantArticles drops retracted papers after retraction attach', () => {
+        const articles = [
+            {
+                title: 'SGLT2 inhibitors in heart failure',
+                abstract: 'Patients with HFrEF',
+                pubdate: '2024',
+                pmcrefcount: 10,
+                pubtype: ['Journal Article'],
+            },
+            {
+                title: 'Retracted SGLT2 heart failure trial',
+                abstract: 'Patients with HFrEF',
+                pubdate: '2024',
+                pmcrefcount: 8,
+                pubtype: ['Journal Article'],
+                _retraction: { isRetracted: true },
+            },
+        ];
+        const filtered = filterRelevantArticles(articles, {
+            query: 'SGLT2 inhibitors heart failure',
+            specificity: 'moderate',
+            queryMeshTerms: ['Heart Failure'],
+        });
+        expect(filtered).toHaveLength(1);
+        expect(filtered[0].title).not.toMatch(/Retracted/i);
+    });
 });
 
 describe('specificity-weighted ranking', () => {

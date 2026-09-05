@@ -12,7 +12,7 @@ const {
     ensurePolicyArms,
     loadArmSamples,
     policyHasDenseGlobalData,
-    chooseArmBySamples,
+    chooseArmBySamplesContextual,
 } = require('./sampling');
 
 /**
@@ -23,7 +23,13 @@ const {
 async function selectTeachingStrategyArm(db, userId) {
     const armIds = Object.keys(TEACHING_STRATEGY_ARMS);
     if (!isBanditEnabled() || !db?.listPersonalizationArmStates) {
-        return { armId: 'direct', strategy: TEACHING_STRATEGY_ARMS.direct, scopeKey: 'global', sampled: null };
+        return {
+            armId: 'direct',
+            strategy: TEACHING_STRATEGY_ARMS.direct,
+            scopeKey: 'global',
+            sampled: null,
+            propensity: 1,
+        };
     }
 
     const userScope = scopeKeyForUser(userId);
@@ -38,6 +44,7 @@ async function selectTeachingStrategyArm(db, userId) {
             scopeKey: 'global',
             sampled: null,
             selectionSource: 'density_gate',
+            propensity: 1,
             densityGate: { globalPulls: density.globalPulls, minGlobalPulls: MIN_GLOBAL_PULLS_FOR_POLICY },
         };
     }
@@ -50,7 +57,7 @@ async function selectTeachingStrategyArm(db, userId) {
         loadArmSamples(db, POLICY_TEACHING_STRATEGY, armIds, 'global'),
         userId ? loadArmSamples(db, POLICY_TEACHING_STRATEGY, armIds, userScope) : Promise.resolve({}),
     ]);
-    const { armId: bestArm, sampled: bestSample } = chooseArmBySamples(
+    const chosen = chooseArmBySamplesContextual(
         armIds,
         globalSamples,
         userSamples,
@@ -59,7 +66,15 @@ async function selectTeachingStrategyArm(db, userId) {
     );
     const scopeKey = userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global';
 
-    return { armId: bestArm, strategy: TEACHING_STRATEGY_ARMS[bestArm], scopeKey, sampled: bestSample };
+    return {
+        armId: chosen.armId,
+        strategy: TEACHING_STRATEGY_ARMS[chosen.armId],
+        scopeKey,
+        sampled: chosen.sampled,
+        propensity: chosen.propensity,
+        propensityByArm: chosen.propensityByArm,
+        selectionSource: 'thompson',
+    };
 }
 
 module.exports = {

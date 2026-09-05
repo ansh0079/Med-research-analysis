@@ -270,7 +270,7 @@ class CacheManager {
             }
         }
 
-        let current = this.get(cacheKey);
+        let current = await this.get(cacheKey);
         if (!current) {
             current = { count: 0, windowStart };
         }
@@ -284,7 +284,7 @@ class CacheManager {
         }
 
         current.count++;
-        this.set(cacheKey, current, windowSeconds);
+        await this.set(cacheKey, current, windowSeconds);
 
         return {
             allowed: true,

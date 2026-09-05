@@ -1,5 +1,10 @@
 jest.mock('../../server/services/paperSynopsisCore', () => ({
     runPaperSynopsisGeneration: jest.fn(),
+    resolvePaperSynopsisPreferenceSuffix: jest.fn().mockResolvedValue({
+        preferenceSuffix: '',
+        explanationPreferences: null,
+        synopsisStyleArm: null,
+    }),
 }));
 
 const {
@@ -7,6 +12,7 @@ const {
     getOrEnqueueConsensusSynopsis,
     getOrEnqueueLiveClinicalAnswer,
     getOrEnqueuePaperSynopsis,
+    paperSynopsisJobKey,
     liveClinicalAnswerJobKey,
     maybeEnqueueQuizPrefetch,
     quizPrefetchJobKey,
@@ -209,5 +215,41 @@ describe('aiGenerationJobService', () => {
         }));
         expect(db.createAiGenerationJob).not.toHaveBeenCalled();
         expect(db.getAiGenerationJobByKey).not.toHaveBeenCalled();
+    });
+
+    test('paper synopsis job keys include prompt version and preference suffix', () => {
+        const article = { uid: 'a-1', title: 'Paper' };
+        const base = paperSynopsisJobKey(article, 'gemini-model', 'finals');
+        const styled = paperSynopsisJobKey(article, 'gemini-model', 'finals', {
+            preferenceSuffix: ':sa:pico_structured',
+        });
+        expect(base).not.toBe(styled);
+        expect(base).toMatch(/^synop:/);
+    });
+
+    test('retries a failed paper synopsis when attempts remain', async () => {
+        const db = {
+            getAiGenerationJobByKey: jest.fn(async () => ({
+                status: 'failed',
+                errorMessage: 'provider down',
+                attempts: 1,
+            })),
+            resetAiGenerationJobForRetry: jest.fn().mockResolvedValue(true),
+            createAiGenerationJob: jest.fn(),
+        };
+
+        const result = await getOrEnqueuePaperSynopsis({
+            db,
+            article: { uid: 'a-1', title: 'Paper' },
+            provider: 'auto',
+            serverConfig: { keys: { gemini: 'test' } },
+            fetchImpl: jest.fn(),
+            cache: {},
+            topic: 'sepsis',
+        });
+
+        expect(result.status).toBe('queued');
+        expect(db.resetAiGenerationJobForRetry).toHaveBeenCalled();
+        expect(db.createAiGenerationJob).not.toHaveBeenCalled();
     });
 });

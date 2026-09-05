@@ -50,6 +50,22 @@ function synopsisStyleCacheSuffix(synopsisStyleArm) {
     return synopsisStyleArmCacheSuffix(synopsisStyleArm?.armId);
 }
 
+async function resolvePaperSynopsisPreferenceSuffix({ db = null, userId = null } = {}) {
+    let explanationPreferences = null;
+    if (userId && db) {
+        explanationPreferences = await getUserExplanationPreferences(db, userId).catch((err) => {
+            logger.debug({ err, userId }, 'Failed to load explanation preferences for synopsis');
+            return null;
+        });
+    }
+    const synopsisStyleArm = await selectSynopsisStyleArm(db, userId).catch(() => null);
+    return {
+        preferenceSuffix: `${explanationPreferencesCacheSuffix(explanationPreferences)}${synopsisStyleCacheSuffix(synopsisStyleArm)}`,
+        explanationPreferences,
+        synopsisStyleArm,
+    };
+}
+
 function getPaperSynopsisCacheKey(article = {}, selectedModel = 'unknown', trainingStage = null, promptVersion = null, preferenceSuffix = '') {
     const articleId = getPaperSynopsisArticleId(article);
     const stage = normalizeTrainingStage(trainingStage) || 'default';
@@ -150,15 +166,10 @@ async function runPaperSynopsisGenerationInner({
     const ai = getSharedAiService({ serverConfig, fetchImpl });
 
     const effectiveTrainingStage = normalizeTrainingStage(trainingStage);
-    let explanationPreferences = null;
-    if (userId && db) {
-        explanationPreferences = await getUserExplanationPreferences(db, userId).catch((err) => {
-            logger.debug({ err, userId }, 'Failed to load explanation preferences for synopsis');
-            return null;
-        });
-    }
-    const synopsisStyleArm = await selectSynopsisStyleArm(db, userId).catch(() => null);
-    const preferenceSuffix = `${explanationPreferencesCacheSuffix(explanationPreferences)}${synopsisStyleCacheSuffix(synopsisStyleArm)}`;
+    const {
+        preferenceSuffix,
+        synopsisStyleArm,
+    } = await resolvePaperSynopsisPreferenceSuffix({ db, userId });
     const selectedModelForCache = providerCandidates[0]?.model || 'unknown';
     const candidateCacheKeys = [...new Set(providerCandidates
         .map((candidate) => getPaperSynopsisCacheKey(
@@ -246,12 +257,14 @@ async function runPaperSynopsisGenerationInner({
     }
 
     let synopsis = rawSynopsis;
-    const validated = validateAiOutput('paper_synopsis', synopsis, { allowDegrade: false });
-    if (!validated.ok) {
+    const validated = validateAiOutput('paper_synopsis', synopsis, { allowDegrade: true });
+    const synopsisPayload = validated.ok ? validated.data : validated.degraded;
+    if (!synopsisPayload) {
         recordSynopsisGeneration({ ok: false, provider: selectedProvider, model: selectedModel });
-        throw new Error(`AI synopsis validation failed: ${validated.errors.join('; ')}`);
+        throw new Error(`AI synopsis validation failed: ${(validated.errors || []).join('; ')}`);
     }
-    synopsis = validated.data;
+    synopsis = synopsisPayload;
+    const validationDegraded = Boolean(!validated.ok || synopsis._validationDegraded);
 
     // Prefer explicit full-text index flags; fall back to PDF word-count coverage
     // so partial extracts still lift abstract-only confidence caps.
@@ -273,6 +286,7 @@ async function runPaperSynopsisGenerationInner({
         fullTextCoverageRatio,
         priorReviewState,
         article: enriched,
+        validationDegraded,
     });
     synopsis = trustProcessed.synopsis;
     const result = {
@@ -358,6 +372,7 @@ module.exports = {
     runPaperSynopsisGeneration,
     getPaperSynopsisArticleId,
     getPaperSynopsisCacheKey,
+    resolvePaperSynopsisPreferenceSuffix,
     synopsisStyleCacheSuffix,
     invalidatePaperSynopsisCache,
 };

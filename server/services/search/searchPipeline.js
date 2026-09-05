@@ -30,6 +30,7 @@ const {
 const { annotateArticlesWithRankingTraces } = require('../searchRankingTrace');
 const { withSpan, annotateActiveSpan } = require('../../utils/tracing');
 const { buildTeachingSignalBoosts } = require('../searchRankingConstants');
+const { attachRetractionData } = require('../qualityService');
 
 const STRICT_PUB_TYPES = new Set([
     'systematic review', 'meta-analysis', 'meta analysis',
@@ -557,6 +558,11 @@ async function fetchAndRankSearchArticles({
 
         const filterStarted = Date.now();
         const queryMeshTerms = Array.isArray(telemetry.meshExpansions) ? telemetry.meshExpansions : [];
+        await withSpan('search.attach_retractions', {
+            'search.raw_count': Array.isArray(studyFiltered) ? studyFiltered.length : 0,
+        }, () => attachRetractionData(studyFiltered, { db, fetchImpl }).catch((err) => {
+            logger.warn({ err, query }, 'attachRetractionData failed');
+        }));
         const relevant = await withSpan('search.filter_relevance', {
             'search.raw_count': Array.isArray(studyFiltered) ? studyFiltered.length : 0,
         }, async (span) => {

@@ -11,7 +11,8 @@ const {
 } = require('../consensusSynopsisService');
 
 const { runFullSynthesisGeneration } = require('../synthesisGenerationCore');
-const { runPaperSynopsisGeneration } = require('../paperSynopsisCore');
+const { runPaperSynopsisGeneration, resolvePaperSynopsisPreferenceSuffix } = require('../paperSynopsisCore');
+const { getPromptVersion } = require('../../prompts/promptVersions');
 const { resolveProvider } = require('../../utils/aiProvider');
 const { completeJobAndClaims } = require('../aiGenerationJobCompletion');
 const { enqueueAiGenerationJobIfClaimed, shouldEnqueueAiGenerationJob } = require('../aiGenerationJobEnqueue');
@@ -515,10 +516,18 @@ async function getOrEnqueueFullSynthesis({
     return fullSynthesisPlaceholder({ topic, jobKey, status: 'queued' });
 }
 
-function paperSynopsisJobKey(article, selectedModel, trainingStage = null) {
+function paperSynopsisJobKey(article, selectedModel, trainingStage = null, extras = {}) {
     const articleId = article?.uid || article?.pmid || article?.doi
         || crypto.createHash('md5').update(String(article?.title || '')).digest('hex').slice(0, 12);
-    return `synop:${stableHash({ articleId, selectedModel, trainingStage: trainingStage || 'default' }).slice(0, 40)}`;
+    const pv = extras.promptVersion || getPromptVersion('synopsis');
+    const preferenceSuffix = extras.preferenceSuffix || '';
+    return `synop:${stableHash({
+        articleId,
+        selectedModel,
+        trainingStage: trainingStage || 'default',
+        pv,
+        preferenceSuffix,
+    }).slice(0, 40)}`;
 }
 
 function quizPrefetchJobKey(topic, { sourceJobKey = null } = {}) {
@@ -620,7 +629,11 @@ async function getOrEnqueuePaperSynopsis({
     if (!selectedProvider) {
         return { status: 'failed', jobKey: null, errorMessage: 'No AI provider configured' };
     }
-    const jobKey = paperSynopsisJobKey(article, selectedModel, trainingStage);
+    const { preferenceSuffix } = await resolvePaperSynopsisPreferenceSuffix({ db, userId });
+    const jobKey = paperSynopsisJobKey(article, selectedModel, trainingStage, {
+        promptVersion: getPromptVersion('synopsis'),
+        preferenceSuffix,
+    });
     // forceSync (or no durable job store): always run inline and return the result —
     // callers do not need to poll GET /api/ai/jobs/:jobKey.
     if (forceSync || !hasDurableJobStore(db)) {
@@ -652,7 +665,12 @@ async function getOrEnqueuePaperSynopsis({
         return { status: existing.status, jobKey, synopsis: null };
     }
     if (existing?.status === 'failed') {
-        return { status: 'failed', jobKey, errorMessage: existing.errorMessage };
+        const canRetry = await shouldEnqueueAiGenerationJob(db, jobKey);
+        if (!canRetry) {
+            return { status: 'failed', jobKey, errorMessage: existing.errorMessage };
+        }
+        enqueuePaperSynopsisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger });
+        return { status: 'queued', jobKey, synopsis: null };
     }
     const createdSynop = await db.createAiGenerationJob({
         jobKey,

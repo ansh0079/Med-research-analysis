@@ -281,6 +281,8 @@ async function executeAgentTurn(
                     classifiedIntent,
                     promptVersion: AGENT_PROMPT_VERSION,
                     scopeKey: teachingStrategyArm.scopeKey,
+                    propensity: teachingStrategyArm.propensity != null ? Number(teachingStrategyArm.propensity) : null,
+                    selectionSource: teachingStrategyArm.selectionSource || null,
                 },
             }).catch((err) => logger.debug({ err, topic: trimmedTopic, userId }, 'agent teaching personalization decision log failed'));
 
@@ -299,6 +301,7 @@ async function executeAgentTurn(
                         policyType: 'agent_teaching_strategy',
                         armId: teachingStrategyArm.armId,
                         scopeKey: teachingStrategyArm.scopeKey,
+                        propensity: teachingStrategyArm.propensity != null ? Number(teachingStrategyArm.propensity) : null,
                     },
                 },
             }).catch((err) => logger.warn({ err, topic: trimmedTopic, userId }, 'agent turn learning event failed'));
@@ -348,6 +351,7 @@ async function executeAgentTurn(
                 policyType: POLICY_TEACHING_STRATEGY,
                 armId: teachingStrategyArm.armId,
                 scopeKey: teachingStrategyArm.scopeKey,
+                propensity: teachingStrategyArm.propensity != null ? Number(teachingStrategyArm.propensity) : null,
             } : null,
         }).catch((err) => {
             logger.warn({ err, topic: trimmedTopic, userId, conversationId }, 'Agent side-effect enqueue failed');
@@ -366,6 +370,7 @@ async function executeAgentTurn(
             policyType: 'agent_teaching_strategy',
             armId: teachingStrategyArm.armId,
             scopeKey: teachingStrategyArm.scopeKey,
+            propensity: teachingStrategyArm.propensity != null ? Number(teachingStrategyArm.propensity) : null,
         } : null,
     };
 }

@@ -45,6 +45,7 @@ describe('P1 quiz claim selection bandit', () => {
         expect(out.anchors.every((a) => a.claimDecisionId != null)).toBe(true);
         expect(db.insertPersonalizationDecision).toHaveBeenCalled();
         expect(inserted.every((row) => row.policyType === POLICY_QUIZ_CLAIM_SELECTION)).toBe(true);
+        expect(inserted.every((row) => Number(row.context.propensity) > 0)).toBe(true);
     });
 
     test('attributeQuizAttemptRewards updates claim decision when claimDecisionId present', async () => {

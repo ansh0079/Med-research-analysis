@@ -44,8 +44,39 @@ async function maybeSelectArmViaLinearValue(db, contextFeatures) {
     if (!pick?.armId || !SEARCH_RANKING_ARMS[pick.armId]) return null;
     return {
         ...pick,
+        epsilon,
         modelRmse: _linearModelCache.model.rmse,
         modelN: _linearModelCache.model.n,
+    };
+}
+
+const LINEAR_SERVE_SOURCES = new Set(['linear', 'epsilon_explore', 'linear_fallback']);
+
+function linearServePropensity(source, epsilon, armCount) {
+    const explore = Math.max(0, Math.min(1, Number(epsilon) || 0));
+    const n = Math.max(1, Number(armCount) || 1);
+    if (source === 'epsilon_explore') return explore / n;
+    return 1 - explore;
+}
+
+function resolveSearchRankingChoice({
+    linearPick = null,
+    thompson = {},
+    armIds = [],
+    epsilon = Number(process.env.BANDIT_LINEAR_EPSILON || 0.1),
+} = {}) {
+    const useLinear = Boolean(linearPick?.armId && LINEAR_SERVE_SOURCES.has(linearPick.source));
+    const bestArm = useLinear ? linearPick.armId : thompson.armId;
+    const propensity = useLinear
+        ? linearServePropensity(linearPick.source, linearPick.epsilon ?? epsilon, armIds.length)
+        : (thompson.propensityByArm?.[bestArm] ?? thompson.propensity ?? (1 / Math.max(armIds.length, 1)));
+    return {
+        bestArm,
+        propensity,
+        selectionSource: useLinear
+            ? (linearPick.source === 'epsilon_explore' ? 'linear_epsilon_explore' : 'linear_value')
+            : 'thompson_contextual',
+        useLinear,
     };
 }
 
@@ -100,24 +131,23 @@ async function selectSearchRankingArm(db, userId, context = {}) {
         contextFeatures
     );
 
-    // Optional P4 linear value override (epsilon-greedy). Thompson propensity still logged
-    // for the arm that is ultimately served when override wins.
     const linearPick = await maybeSelectArmViaLinearValue(db, contextFeatures).catch(() => null);
-    const useLinear = Boolean(linearPick?.armId && linearPick.source === 'linear');
-    const bestArm = useLinear ? linearPick.armId : thompson.armId;
-    const propensity = thompson.propensityByArm?.[bestArm]
-        ?? thompson.propensity
-        ?? (1 / armIds.length);
+    const choice = resolveSearchRankingChoice({
+        linearPick,
+        thompson,
+        armIds,
+        epsilon: linearPick?.epsilon ?? Number(process.env.BANDIT_LINEAR_EPSILON || 0.1),
+    });
 
     return {
-        armId: bestArm,
-        weights: SEARCH_RANKING_ARMS[bestArm] || SEARCH_RANKING_ARMS.heuristic_default,
+        armId: choice.bestArm,
+        weights: SEARCH_RANKING_ARMS[choice.bestArm] || SEARCH_RANKING_ARMS.heuristic_default,
         scopeKey: userPulls >= MIN_PULLS_FOR_USER_ARM ? userScope : 'global',
         sampled: thompson.sampled,
         rawSampled: thompson.rawSampled,
-        propensity,
+        propensity: choice.propensity,
         propensityByArm: thompson.propensityByArm,
-        selectionSource: useLinear ? 'linear_value' : 'thompson_contextual',
+        selectionSource: choice.selectionSource,
         linearMeta: linearPick || null,
         contextFeatures,
     };
@@ -177,6 +207,9 @@ async function recordSearchRankingDecisions(db, {
 }
 
 module.exports = {
+    LINEAR_SERVE_SOURCES,
+    linearServePropensity,
+    resolveSearchRankingChoice,
     maybeSelectArmViaLinearValue,
     selectSearchRankingArm,
     immediateImpressionReward,
