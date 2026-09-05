@@ -14,6 +14,7 @@
 const logger = require('../config/logger');
 const crypto = require('crypto');
 const { recordExternalApiCall } = require('./observabilityMetrics');
+const { CircuitBreaker } = require('./circuitBreaker');
 
 // Lazily-loaded GoogleAuth instance for Vertex AI OAuth2 token caching.
 // Only initialised when GOOGLE_APPLICATION_CREDENTIALS is set.
@@ -53,6 +54,49 @@ const DEFAULT_TIMEOUTS = {
 };
 
 const inFlight = new Map();
+
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isRetryableHttpStatus(status) {
+    return status === 429 || status === 502 || status === 503;
+}
+
+function isRetryableError(err) {
+    const message = String(err?.message || err || '');
+    return /timeout|aborted|etimedout|econnreset|429|502|503/i.test(message);
+}
+
+async function fetchWithRetry(fetchImpl, url, options = {}, {
+    retries = 2,
+    source = 'pubmed',
+    breaker = null,
+} = {}) {
+    const run = async () => {
+        let lastError = null;
+        for (let attempt = 0; attempt <= retries; attempt += 1) {
+            try {
+                const res = await fetchImpl(url, options);
+                if (res?.ok) return res;
+                const status = Number(res?.status);
+                lastError = new Error(`${source} ${status}`);
+                lastError.status = status;
+                if (!isRetryableHttpStatus(status) || attempt === retries) throw lastError;
+            } catch (err) {
+                lastError = err;
+                if (err?.circuitOpen) throw err;
+                if ((!isRetryableError(err) && !isRetryableHttpStatus(err?.status)) || attempt === retries) {
+                    throw err;
+                }
+            }
+            const backoffMs = process.env.NODE_ENV === 'test' ? 1 : 150 * (2 ** attempt);
+            await sleep(backoffMs);
+        }
+        throw lastError || new Error(`${source} request failed`);
+    };
+    return breaker ? breaker.fire(run) : run();
+}
 
 function stableHash(value) {
   return crypto.createHash('sha1').update(String(value || '')).digest('hex').slice(0, 24);
@@ -105,6 +149,18 @@ async function cachedSingleFlight(cache, key, ttlSeconds, loader) {
 function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = null }) {
   const f = fetchImpl;
   const keys = serverConfig?.keys || {};
+  const pubmedBreaker = new CircuitBreaker(async (fn) => fn(), {
+    failureThreshold: 5,
+    resetTimeoutMs: 30000,
+  });
+
+  async function pubmedFetch(url, options = {}) {
+    return fetchWithRetry(f, url, options, {
+      retries: 2,
+      source: 'pubmed',
+      breaker: pubmedBreaker,
+    });
+  }
 
   async function withSourceCache(source, cacheParts, ttlSeconds, loader) {
     const key = `external:${source}:${stableHash(JSON.stringify(cacheParts))}`;
@@ -151,7 +207,7 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
       retmax: String(retmax),
       sort,
     });
-    const res = await f(url, { timeout: DEFAULT_TIMEOUTS.pubmed });
+    const res = await pubmedFetch(url, { timeout: DEFAULT_TIMEOUTS.pubmed });
     if (!res.ok) throw new Error(`PubMed esearch ${res.status}`);
     const data = await res.json();
     if (data.esearchresult?.ERROR) {
@@ -167,7 +223,7 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
       db: 'pubmed',
       id: pmids.join(','),
     });
-    const res = await f(url, { timeout: DEFAULT_TIMEOUTS.pubmed });
+    const res = await pubmedFetch(url, { timeout: DEFAULT_TIMEOUTS.pubmed });
     if (!res.ok) throw new Error(`PubMed esummary ${res.status}`);
     const summaryData = await res.json();
     const result = summaryData.result || {};
@@ -507,4 +563,10 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
   };
 }
 
-module.exports = { buildProxyService, clearInFlightRequests: () => inFlight.clear() };
+module.exports = {
+  buildProxyService,
+  fetchWithRetry,
+  isRetryableHttpStatus,
+  isRetryableError,
+  clearInFlightRequests: () => inFlight.clear(),
+};

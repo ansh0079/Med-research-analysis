@@ -75,7 +75,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                 specificity: validSpecificity,
                 vectorEnabled: useVectorFusion,
                 userId: req.user?.id ?? null,
-                previousQueries,
+                sessionId: req.sessionId ?? null,
                 parsedStudyTypes,
                 parsedYearFilters,
                 queryIntentProfile,
@@ -88,7 +88,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                 try {
                     const vectorStarted = Date.now();
                     const { createVectorSearchService } = require('../../services/vectorSearchService');
-                    const vs = createVectorSearchService({ db, serverConfig });
+                    const vs = createVectorSearchService({ db, serverConfig, cache });
                     const vr = await vs.searchVector({ query: queryValidation.sanitized, limit: safeLimit });
                     vectorList = Array.isArray(vr.articles) ? vr.articles : [];
                     routeTimings.vectorMs = Date.now() - vectorStarted;

@@ -5,6 +5,7 @@ const {
     computeHeuristicScore,
     rankForStudyType,
     buildPicoCacheKey,
+    buildPicoRerankCacheKey,
     MAX_ARTICLES_TO_RERANK,
 } = require('../../server/services/articleReranker');
 
@@ -233,6 +234,41 @@ describe('articleReranker', () => {
     // -------------------------------------------------------------------------
     // selectTopRerankedArticles
     // -------------------------------------------------------------------------
+    test('buildPicoRerankCacheKey is stable for same profile + UIDs', () => {
+        const pico = { population: 'Adults', intervention: 'steroids' };
+        const articles = [{ uid: 'a' }, { uid: 'b' }];
+        expect(buildPicoRerankCacheKey(pico, articles)).toBe(buildPicoRerankCacheKey(pico, articles));
+        expect(buildPicoRerankCacheKey(pico, articles)).not.toBe(buildPicoRerankCacheKey(pico, [{ uid: 'c' }]));
+    });
+
+    test('rerankArticlesByPico caches LLM output for 1h', async () => {
+        const articles = [makeArticle({ uid: 'p1', title: 'RCT' })];
+        const cache = makeMockCache(null);
+        const ai = makeMockAi(JSON.stringify([
+            { articleIndex: 1, overallScore: 0.91, exclusionFlags: [], rationale: 'Good' },
+        ]));
+        const pico = { population: 'Adults', intervention: 'steroids' };
+        const first = await rerankArticlesByPico(articles, pico, {
+            ai,
+            cache,
+            serverConfig: { keys: { gemini: 'key' } },
+        });
+        expect(first[0]._rerank.overallScore).toBe(0.91);
+        expect(cache.set).toHaveBeenCalled();
+        const [, cachedValue, ttl] = cache.set.mock.calls[0];
+        expect(ttl).toBe(3600);
+
+        cache.get.mockResolvedValue(cachedValue);
+        ai.callText.mockClear();
+        const second = await rerankArticlesByPico(articles, pico, {
+            ai,
+            cache,
+            serverConfig: { keys: { gemini: 'key' } },
+        });
+        expect(ai.callText).not.toHaveBeenCalled();
+        expect(second[0]._rerank.overallScore).toBe(0.91);
+    });
+
     test('selectTopRerankedArticles filters out population_mismatch by default', () => {
         const articles = [
             { uid: '1', title: 'Good', _rerank: { overallScore: 0.9, exclusionFlags: [] } },
@@ -241,6 +277,17 @@ describe('articleReranker', () => {
         ];
         const result = selectTopRerankedArticles(articles, { topN: 10, strictPopulation: true });
         expect(result.map((a) => a.uid)).toEqual(['1', '3']);
+    });
+
+    test('selectTopRerankedArticles strictMode also drops outcome_mismatch and design_too_weak', () => {
+        const articles = [
+            { uid: '1', title: 'Good', _rerank: { overallScore: 0.9, exclusionFlags: [] } },
+            { uid: '2', title: 'Bad pop', _rerank: { overallScore: 0.95, exclusionFlags: ['population_mismatch'] } },
+            { uid: '3', title: 'Bad outcome', _rerank: { overallScore: 0.88, exclusionFlags: ['outcome_mismatch'] } },
+            { uid: '4', title: 'Weak design', _rerank: { overallScore: 0.8, exclusionFlags: ['design_too_weak'] } },
+        ];
+        const result = selectTopRerankedArticles(articles, { topN: 10, strictMode: true });
+        expect(result.map((a) => a.uid)).toEqual(['1']);
     });
 
     test('selectTopRerankedArticles relaxes filter when too few remain', () => {

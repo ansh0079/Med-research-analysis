@@ -1,17 +1,13 @@
 #!/usr/bin/env node
 /**
- * Phase 1 Search Quality Eval Harness
+ * Search Quality Eval Harness
  *
- * Runs 20 representative queries against both the old client-merge path
- * (/api/pubmed/search) and the new unified RRF path (/api/search), then
- * scores each result set with a simple rubric and prints a side-by-side report.
+ * Default mode scores unified /api/search with a title+abstract rubric.
+ * Gold mode (`--gold`) runs labelled Precision/Recall/nDCG gates.
  *
  * Usage:
- *   node scripts/eval-search-quality.js [--base http://localhost:3002] [--sources pubmed,semantic]
- *
- * Outputs:
- *   - Console table with per-query scores and winner
- *   - eval-results.json with full article lists for manual inspection
+ *   node scripts/eval-search-quality.js [--base http://localhost:3002] [--sources pubmed,openalex]
+ *   node scripts/eval-search-quality.js --gold tests/fixtures/search-quality-gold.json
  */
 
 const fs = require('fs');
@@ -185,10 +181,10 @@ function scoreResultSet(articles, query) {
     const avgEbm = articles.slice(0, 10).reduce((s, a) => s + ebmScore(a), 0) / Math.min(articles.length, 10);
     const ebmPoints = Math.round((avgEbm / 7) * 30);
 
-    // 2. Relevance (0–40): % of articles whose title contains at least one query term
+    // 2. Relevance (0–40): title or abstract contains at least one query term
     const relevant = articles.filter((a) => {
-        const title = (a.title || '').toLowerCase();
-        return queryTerms.some((t) => title.includes(t));
+        const hay = `${a.title || ''} ${a.abstract || ''}`.toLowerCase();
+        return queryTerms.some((t) => hay.includes(t));
     });
     const relevancePoints = Math.round((relevant.length / articles.length) * 40);
 
@@ -224,13 +220,6 @@ async function fetchJSON(url) {
     const res = await fetch(url, { headers: { Accept: 'application/json' } });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText} — ${url}`);
     return res.json();
-}
-
-async function fetchOld(query) {
-    // Old path: per-source parallel fetch (PubMed only for baseline)
-    const url = `${BASE}/api/pubmed/search?query=${encodeURIComponent(query)}&max=${LIMIT}`;
-    const data = await fetchJSON(url);
-    return Array.isArray(data.articles) ? data.articles : [];
 }
 
 async function fetchNew(query) {
@@ -319,6 +308,7 @@ async function runGoldEval(goldPath) {
     console.log(`Management intent hit rate: ${summary.managementIntentHitRate == null ? 'n/a' : summary.managementIntentHitRate.toFixed(3)}`);
     console.log(`Diagnosis intent hit rate: ${summary.diagnosisIntentHitRate == null ? 'n/a' : summary.diagnosisIntentHitRate.toFixed(3)}`);
     console.log(`Type coverage: ${summary.requiredTypeCoverage.toFixed(3)}`);
+    console.log(`Source diversity@${k}: ${Number(summary.sourceDiversityAtK || 0).toFixed(3)} (max share ${Number(summary.maxSourceShareAtK || 0).toFixed(3)})`);
     console.log('\nGRADED NL CLINICAL (commercial scope)');
     console.log(`Queries: ${gradedNlSummary.queryCount}`);
     console.log(`Precision@${k}: ${gradedNlSummary.precisionAtK.toFixed(3)}`);
@@ -400,89 +390,69 @@ async function main() {
         return runGoldEval(GOLD);
     }
 
-    console.log(`\nPhase 1 Search Quality Eval`);
+    console.log(`\nSearch Quality Eval (unified /api/search)`);
     console.log(`Base: ${BASE}   Sources: ${SOURCES}   Limit: ${LIMIT}`);
     console.log(`Queries: ${QUERIES.length}\n`);
     console.log('Running queries...\n');
 
     const results = [];
-    let oldWins = 0, newWins = 0, ties = 0;
-    let totalOld = 0, totalNew = 0;
-    let totalNewArticles = 0;
-    let newFetchFailures = 0;
+    let totalScore = 0;
+    let totalArticles = 0;
+    let fetchFailures = 0;
 
     for (const query of QUERIES) {
         process.stdout.write(`  ${query.slice(0, 50).padEnd(50)} `);
-        let oldArticles = [], newArticles = [];
-        let oldErr = null, newErr = null;
+        let articles = [];
+        let fetchErr = null;
 
-        try { oldArticles = await fetchOld(query); } catch (e) { oldErr = e.message; }
-        try { newArticles = await fetchNew(query); } catch (e) { newErr = e.message; }
-        if (newErr) newFetchFailures++;
-        totalNewArticles += Array.isArray(newArticles) ? newArticles.length : 0;
+        try { articles = await fetchNew(query); } catch (e) { fetchErr = e.message; }
+        if (fetchErr) fetchFailures++;
+        totalArticles += Array.isArray(articles) ? articles.length : 0;
 
-        const oldScore = oldErr ? { total: 0, breakdown: {}, counts: {} } : scoreResultSet(oldArticles, query);
-        const newScore = newErr ? { total: 0, breakdown: {}, counts: {} } : scoreResultSet(newArticles, query);
+        const score = fetchErr ? { total: 0, breakdown: {}, counts: {} } : scoreResultSet(articles, query);
+        totalScore += score.total;
 
-        const diff = newScore.total - oldScore.total;
-        const winner = diff > 2 ? 'NEW' : diff < -2 ? 'OLD' : 'TIE';
-        if (winner === 'NEW') newWins++; else if (winner === 'OLD') oldWins++; else ties++;
-        totalOld += oldScore.total;
-        totalNew += newScore.total;
-
-        const winLabel = winner === 'NEW' ? '✓ NEW' : winner === 'OLD' ? '✗ OLD' : '= TIE';
-        console.log(`old=${String(oldScore.total).padStart(3)}  new=${String(newScore.total).padStart(3)}  ${winLabel}`);
+        console.log(`score=${String(score.total).padStart(3)}  n=${articles.length}${fetchErr ? `  ERROR ${fetchErr}` : ''}`);
 
         results.push({
             query,
-            old: { score: oldScore, articles: oldArticles.slice(0, 5).map((a) => ({ title: a.title, year: a.pubdate || a.year, source: a._source, ebm: ebmScore(a) })), error: oldErr },
-            new: { score: newScore, articles: newArticles.slice(0, 5).map((a) => ({ title: a.title, year: a.pubdate || a.year, source: a._source, ebm: ebmScore(a) })), error: newErr },
-            winner,
-            diff,
+            score,
+            articles: articles.slice(0, 5).map((a) => ({
+                title: a.title,
+                year: a.pubdate || a.year,
+                source: a._source,
+                ebm: ebmScore(a),
+            })),
+            error: fetchErr,
         });
 
-        // Small delay to avoid rate-limiting
         await new Promise((r) => setTimeout(r, 300));
     }
 
-    // ============================================================
-    // Summary
-    // ============================================================
-    const avgOld = Math.round(totalOld / QUERIES.length);
-    const avgNew = Math.round(totalNew / QUERIES.length);
-    const improvement = totalOld > 0 ? (((totalNew - totalOld) / totalOld) * 100).toFixed(1) : 'N/A';
+    const avgScore = Math.round(totalScore / QUERIES.length);
 
     console.log('\n' + '─'.repeat(72));
     console.log('SUMMARY');
     console.log('─'.repeat(72));
-    console.log(`Avg score  —  old: ${avgOld}/100   new: ${avgNew}/100   improvement: ${improvement}%`);
-    console.log(`Wins       —  new: ${newWins}   old: ${oldWins}   ties: ${ties}`);
+    console.log(`Avg score  —  ${avgScore}/100   articles: ${totalArticles}`);
     console.log('─'.repeat(72));
 
-    // Score breakdown by dimension
-    console.log('\nBreakdown (avg per dimension, new path):');
+    console.log('\nBreakdown (avg per dimension):');
     const dims = ['ebm', 'relevance', 'recency', 'dedup', 'diversity'];
     const maxDim = { ebm: 30, relevance: 40, recency: 15, dedup: 10, diversity: 5 };
     for (const dim of dims) {
-        const avg = Math.round(results.reduce((s, r) => s + (r.new.score.breakdown[dim] ?? 0), 0) / results.length);
+        const avg = Math.round(results.reduce((s, r) => s + (r.score.breakdown[dim] ?? 0), 0) / results.length);
         const bar = '█'.repeat(Math.round((avg / maxDim[dim]) * 20));
         console.log(`  ${dim.padEnd(10)} ${String(avg).padStart(2)}/${maxDim[dim]}  ${bar}`);
     }
 
-    // Worst regressions
-    const regressions = results.filter((r) => r.winner === 'OLD').sort((a, b) => a.diff - b.diff);
-    if (regressions.length > 0) {
-        console.log('\nQueries where OLD path won (investigate):');
-        regressions.forEach((r) => {
-            console.log(`  [-${Math.abs(r.diff)}]  ${r.query}`);
-        });
-    }
-
-    // Write full results
     const outPath = path.join(__dirname, '..', 'eval-results.json');
-    fs.writeFileSync(outPath, JSON.stringify({ meta: { base: BASE, sources: SOURCES, limit: LIMIT, ran: new Date().toISOString(), avgOld, avgNew, improvement, newWins, oldWins, ties }, results }, null, 2));
+    fs.writeFileSync(outPath, JSON.stringify({
+        meta: { base: BASE, sources: SOURCES, limit: LIMIT, ran: new Date().toISOString(), avgScore, totalArticles },
+        results,
+    }, null, 2));
     console.log(`\nFull results written to eval-results.json`);
-    if (totalNewArticles === 0 || newFetchFailures === QUERIES.length) {
+    if (totalArticles === 0 || fetchFailures === QUERIES.length) {
         console.log('\nGate => FAIL (no usable unified-search results; check --base and server availability)\n');
         process.exit(1);
     }
