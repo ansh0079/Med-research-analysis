@@ -1,5 +1,7 @@
 'use strict';
 
+const { isRetryableAiJobStatus } = require('../../shared/enrichmentStatus');
+
 const MAX_JOB_ATTEMPTS = 3;
 const CLAIM_TTL_SECONDS = 60;
 
@@ -31,20 +33,25 @@ async function releaseJobClaim(cache, jobKey) {
     }
 }
 
-async function shouldEnqueueAiGenerationJob(db, jobKey) {
-    if (!jobKey || typeof db?.getAiGenerationJobByKey !== 'function') return true;
-    const row = await db.getAiGenerationJobByKey(jobKey).catch(() => null);
+function isEnqueueableRow(row) {
     if (!row) return true;
     if (row.status === 'completed') return false;
     if (row.status === 'running' || row.status === 'queued') return false;
-    if (row.status === 'failed') {
-        const attempts = Number(row.attempts || 0);
-        if (attempts < MAX_JOB_ATTEMPTS && typeof db.resetAiGenerationJobForRetry === 'function') {
-            await db.resetAiGenerationJobForRetry(jobKey);
-            return true;
-        }
+    if (isRetryableAiJobStatus(row.status)) {
+        return Number(row.attempts || 0) < MAX_JOB_ATTEMPTS;
     }
     return false;
+}
+
+/**
+ * Read-only: callers may ask this before enqueuing without changing job state.
+ * Requeuing an exhausted row happens in enqueueAiGenerationJobIfClaimed, under
+ * the distributed claim, so the status change and the queue push stay together.
+ */
+async function shouldEnqueueAiGenerationJob(db, jobKey) {
+    if (!jobKey || typeof db?.getAiGenerationJobByKey !== 'function') return true;
+    const row = await db.getAiGenerationJobByKey(jobKey).catch(() => null);
+    return isEnqueueableRow(row);
 }
 
 async function enqueueAiGenerationJobIfClaimed({ db, jobKey, enqueueFn, logger, cache = null }) {
@@ -55,11 +62,16 @@ async function enqueueAiGenerationJobIfClaimed({ db, jobKey, enqueueFn, logger, 
     if (!claimed) return false;
 
     try {
-        // Double-check after acquiring the distributed claim to avoid races.
-        const stillShouldEnqueue = await shouldEnqueueAiGenerationJob(db, jobKey);
-        if (!stillShouldEnqueue) {
+        // Re-read after acquiring the distributed claim to avoid races.
+        const row = typeof db?.getAiGenerationJobByKey === 'function'
+            ? await db.getAiGenerationJobByKey(jobKey).catch(() => null)
+            : null;
+        if (!isEnqueueableRow(row)) {
             await releaseJobClaim(cache, jobKey);
             return false;
+        }
+        if (row && isRetryableAiJobStatus(row.status) && typeof db.resetAiGenerationJobForRetry === 'function') {
+            await db.resetAiGenerationJobForRetry(jobKey);
         }
         await enqueueFn();
         return true;

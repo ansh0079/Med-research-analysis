@@ -151,7 +151,7 @@ async markAiGenerationJobRunning(jobKey) {
     await this.run(
         `UPDATE ai_generation_jobs
          SET status = 'running', attempts = attempts + 1, started_at = COALESCE(started_at, ?), updated_at = ?
-         WHERE job_key = ? AND status IN ('queued', 'failed')`,
+         WHERE job_key = ? AND status IN ('queued', 'failed', 'timed_out')`,
         [now, now, String(jobKey)]
     );
     return this.getAiGenerationJobByKey(jobKey);
@@ -203,7 +203,7 @@ async resetAiGenerationJobForRetry(jobKey) {
     await this.run(
         `UPDATE ai_generation_jobs
          SET status = 'queued', error_message = NULL, updated_at = ?
-         WHERE job_key = ? AND status = 'failed'`,
+         WHERE job_key = ? AND status IN ('failed', 'timed_out')`,
         [now, String(jobKey)]
     );
     return this.getAiGenerationJobByKey(jobKey);

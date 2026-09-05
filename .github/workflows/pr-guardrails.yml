@@ -74,7 +74,7 @@ jobs:
         env:
           NODE_ENV: production
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
-          REDIS_URL: redis://localhost:6379/0
+          REDIS_URL: redis://:ci-placeholder-redis-password@localhost:6379/0
           JWT_SECRET: test-jwt-secret-at-least-thirty-two-characters-long
           CORS_ORIGINS: http://localhost:3002
           APP_URL: https://localhost:3002

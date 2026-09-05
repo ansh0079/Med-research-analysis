@@ -2,6 +2,7 @@
 
 const logger = require('../../config/logger');
 const { aiGenerationQueue } = require('../../services/jobQueue');
+const { isRetryableAiJobStatus } = require('../../../shared/enrichmentStatus');
 
 const VALID_JOB_TYPES = new Set([
     'full_synthesis',
@@ -30,7 +31,7 @@ function registerAdminJobRoutes(app, { db, requireAuthJwt, requireRole, rateLimi
             const topic = String(req.query.topic || '').trim() || null;
 
             const jobs = await db.listAiGenerationJobs({
-                statuses: statuses.length ? statuses : ['queued', 'running', 'failed'],
+                statuses: statuses.length ? statuses : ['queued', 'running', 'failed', 'timed_out'],
                 jobTypes: jobTypes.length ? jobTypes : [...VALID_JOB_TYPES],
                 limit,
                 topic,
@@ -96,8 +97,8 @@ function registerAdminJobRoutes(app, { db, requireAuthJwt, requireRole, rateLimi
             }
             const row = await db.getAiGenerationJobByKey(jobKey);
             if (!row) return res.status(404).json({ error: 'Job not found' });
-            if (row.status !== 'failed') {
-                return res.status(409).json({ error: 'Only failed jobs can be retried', status: row.status });
+            if (!isRetryableAiJobStatus(row.status)) {
+                return res.status(409).json({ error: 'Only failed or timed-out jobs can be retried', status: row.status });
             }
             const updated = await db.resetAiGenerationJobForRetry(jobKey);
             if (!updated) return res.status(500).json({ error: 'Failed to reset job' });

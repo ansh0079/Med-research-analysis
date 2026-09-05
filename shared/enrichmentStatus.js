@@ -3,6 +3,14 @@
 const ENRICHMENT_STATUSES = Object.freeze(['pending', 'running', 'ready', 'failed', 'timed_out']);
 const TERMINAL_ENRICHMENT_STATUSES = Object.freeze(['ready', 'failed', 'timed_out']);
 
+// ai_generation_jobs rows in these states are exhausted but still re-runnable.
+// 'timed_out' is a distinct diagnostic for sweeper-killed jobs, not a dead end.
+const RETRYABLE_AI_JOB_STATUSES = Object.freeze(['failed', 'timed_out']);
+
+function isRetryableAiJobStatus(status) {
+    return RETRYABLE_AI_JOB_STATUSES.includes(String(status || '').trim());
+}
+
 function mapAiJobStatusToEnrichment(dbStatus) {
     switch (String(dbStatus || '').trim()) {
         case 'completed':
@@ -43,6 +51,8 @@ function isEnrichmentTerminal(status) {
 module.exports = {
     ENRICHMENT_STATUSES,
     TERMINAL_ENRICHMENT_STATUSES,
+    RETRYABLE_AI_JOB_STATUSES,
+    isRetryableAiJobStatus,
     mapAiJobStatusToEnrichment,
     combineEnrichmentStatuses,
     isEnrichmentTerminal,

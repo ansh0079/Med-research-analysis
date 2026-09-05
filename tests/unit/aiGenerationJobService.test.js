@@ -227,10 +227,10 @@ describe('aiGenerationJobService', () => {
         expect(base).toMatch(/^synop:/);
     });
 
-    test('retries a failed paper synopsis when attempts remain', async () => {
+    test.each(['failed', 'timed_out'])('retries a %s paper synopsis when attempts remain', async (status) => {
         const db = {
             getAiGenerationJobByKey: jest.fn(async () => ({
-                status: 'failed',
+                status,
                 errorMessage: 'provider down',
                 attempts: 1,
             })),
@@ -252,6 +252,8 @@ describe('aiGenerationJobService', () => {
         });
 
         expect(result.status).toBe('queued');
+        // The requeue happens in the fire-and-forget enqueue, so let it settle.
+        await new Promise(setImmediate);
         expect(db.resetAiGenerationJobForRetry).toHaveBeenCalled();
         expect(db.createAiGenerationJob).not.toHaveBeenCalled();
     });

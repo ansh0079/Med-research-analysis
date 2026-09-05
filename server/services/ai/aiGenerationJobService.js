@@ -16,6 +16,7 @@ const { getPromptVersion } = require('../../prompts/promptVersions');
 const { resolveProvider } = require('../../utils/aiProvider');
 const { completeJobAndClaims } = require('../aiGenerationJobCompletion');
 const { enqueueAiGenerationJobIfClaimed, shouldEnqueueAiGenerationJob } = require('../aiGenerationJobEnqueue');
+const { isRetryableAiJobStatus } = require('../../../shared/enrichmentStatus');
 const { buildFullSynthesisJobKey } = require('../synthesisPersonalization');
 
 function stableHash(value) {
@@ -306,8 +307,8 @@ async function getOrEnqueueConsensusSynopsis({ db, topic, articles = [], serverC
     if (existing?.status === 'running' || existing?.status === 'queued') {
         return consensusPlaceholder({ topic, articles, jobKey: resolvedJobKey, status: existing.status });
     }
-    if (existing?.status === 'failed') {
-        return consensusPlaceholder({ topic, articles, jobKey: resolvedJobKey, status: 'failed', errorMessage: existing.errorMessage });
+    if (isRetryableAiJobStatus(existing?.status)) {
+        return consensusPlaceholder({ topic, articles, jobKey: resolvedJobKey, status: existing.status, errorMessage: existing.errorMessage });
     }
 
     if (typeof db.createAiGenerationJob === 'function') {
@@ -386,8 +387,8 @@ async function getOrEnqueueLiveClinicalAnswer({ db, topic, articles = [], guidel
     if (existing?.status === 'running' || existing?.status === 'queued') {
         return { status: existing.status, jobKey: resolvedJobKey, clinicalAnswer: null };
     }
-    if (existing?.status === 'failed') {
-        return { status: 'failed', jobKey: resolvedJobKey, clinicalAnswer: null, errorMessage: existing.errorMessage };
+    if (isRetryableAiJobStatus(existing?.status)) {
+        return { status: existing.status, jobKey: resolvedJobKey, clinicalAnswer: null, errorMessage: existing.errorMessage };
     }
 
     const createdLca = await db.createAiGenerationJob({
@@ -495,10 +496,10 @@ async function getOrEnqueueFullSynthesis({
     if (existing?.status === 'running' || existing?.status === 'queued') {
         return fullSynthesisPlaceholder({ topic, jobKey, status: existing.status });
     }
-    if (existing?.status === 'failed') {
+    if (isRetryableAiJobStatus(existing?.status)) {
         const canRetry = await shouldEnqueueAiGenerationJob(db, jobKey);
         if (!canRetry) {
-            return fullSynthesisPlaceholder({ topic, jobKey, status: 'failed', errorMessage: existing.errorMessage });
+            return fullSynthesisPlaceholder({ topic, jobKey, status: existing.status, errorMessage: existing.errorMessage });
         }
         enqueueFullSynthesisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger });
         return fullSynthesisPlaceholder({ topic, jobKey, status: 'queued' });
@@ -664,10 +665,10 @@ async function getOrEnqueuePaperSynopsis({
     if (existing?.status === 'running' || existing?.status === 'queued') {
         return { status: existing.status, jobKey, synopsis: null };
     }
-    if (existing?.status === 'failed') {
+    if (isRetryableAiJobStatus(existing?.status)) {
         const canRetry = await shouldEnqueueAiGenerationJob(db, jobKey);
         if (!canRetry) {
-            return { status: 'failed', jobKey, errorMessage: existing.errorMessage };
+            return { status: existing.status, jobKey, errorMessage: existing.errorMessage };
         }
         enqueuePaperSynopsisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger });
         return { status: 'queued', jobKey, synopsis: null };
