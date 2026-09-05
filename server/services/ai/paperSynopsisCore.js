@@ -168,6 +168,7 @@ async function runPaperSynopsisGenerationInner({
     const effectiveTrainingStage = normalizeTrainingStage(trainingStage);
     const {
         preferenceSuffix,
+        explanationPreferences,
         synopsisStyleArm,
     } = await resolvePaperSynopsisPreferenceSuffix({ db, userId });
     const selectedModelForCache = providerCandidates[0]?.model || 'unknown';
