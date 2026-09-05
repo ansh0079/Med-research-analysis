@@ -215,6 +215,7 @@
     "ts-jest": "29.4.x is the latest line and officially supports Jest 30 (peer range ^29 || ^30). No ts-jest 30 exists - do not 'fix' the apparent major-version skew."
   },
   "overrides": {
-    "ws": "8.21.0"
+    "ws": "8.21.0",
+    "qs": "^6.16.0"
   }
 }
