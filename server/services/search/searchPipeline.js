@@ -28,6 +28,10 @@ const {
     publicLearningContext,
 } = require('../searchLearningService');
 const { annotateArticlesWithRankingTraces } = require('../searchRankingTrace');
+const {
+    createLatencyBudget,
+    PICO_SKIP_FRACTION,
+} = require('./latencyBudget');
 const { withSpan, annotateActiveSpan } = require('../../utils/tracing');
 const { buildTeachingSignalBoosts } = require('../searchRankingConstants');
 
@@ -342,7 +346,15 @@ async function applyPicoRerankStage({
     serverConfig,
     fetchImpl,
     telemetry,
+    latencyBudget = null,
 }) {
+    if (latencyBudget?.shouldSkip(PICO_SKIP_FRACTION)) {
+        latencyBudget.skip('pico_rerank');
+        if (telemetry && typeof telemetry === 'object') {
+            telemetry.picoRerank = { used: false, skippedBudget: true, ms: 0 };
+        }
+        return articles;
+    }
     if (!shouldUsePicoReranker() || !pico || !Array.isArray(articles) || articles.length < 2) {
         return articles;
     }
@@ -509,6 +521,9 @@ async function fetchAndRankSearchArticles({
     vectorList = [],
     userId = null,
     sessionId = null,
+    latencyBudget = null,
+    requestStartedAt = null,
+    latencyBudgetMs = null,
 }) {
     return withSpan('search.pipeline', {
         'search.query': query,
@@ -520,6 +535,10 @@ async function fetchAndRankSearchArticles({
         const telemetry = {};
         const timings = {};
         const started = Date.now();
+        const budget = latencyBudget || createLatencyBudget({
+            budgetMs: latencyBudgetMs,
+            startedAt: requestStartedAt || started,
+        });
         const _trace = process.env.SEARCH_TRACE
             ? (label, arr) => { const t = process.env.SEARCH_TRACE.toLowerCase(); logger.debug({ label, count: arr.length, hit: arr.some(a => String(a.uid||a.pmid||'').toLowerCase().includes(t)) }, '[SEARCH_TRACE]'); }
             : () => {};
@@ -546,6 +565,7 @@ async function fetchAndRankSearchArticles({
             specificity,
             parsedStudyTypes,
             parsedYearFilters,
+            logger,
         }));
         const pico = await picoPromise;
         timings.fetchMs = Date.now() - started;
@@ -619,8 +639,10 @@ async function fetchAndRankSearchArticles({
             serverConfig,
             fetchImpl,
             telemetry,
+            latencyBudget: budget,
         }));
         timings.rankMs = Date.now() - rankStarted;
+        telemetry.latencyBudget = budget.snapshot();
         _trace('afterRerank', articles);
 
         const learningStarted = Date.now();

@@ -12,6 +12,7 @@ const STREAK_BANDS = ['none', 'started', 'active', 'long'];
 const ARM_IDS = Object.keys(SEARCH_RANKING_ARMS);
 const MIN_FIT_ROWS = Number(process.env.BANDIT_LINEAR_MIN_ROWS || 40);
 const DEFAULT_LAMBDA = Number(process.env.BANDIT_LINEAR_RIDGE_LAMBDA || 1.0);
+const MIN_LAMBDA = Number(process.env.BANDIT_LINEAR_RIDGE_MIN_LAMBDA || 1e-3) || 1e-3;
 
 function oneHot(value, levels) {
     return levels.map((level) => (String(value || levels[0]) === level ? 1 : 0));
@@ -49,8 +50,52 @@ function matMul(A, B) {
     return A.map((row) => bt.map((col) => row.reduce((s, v, i) => s + v * col[i], 0)));
 }
 
-/** Gaussian elimination solve Ax = b for small dense systems. */
-function solveLinearSystem(A, b) {
+/**
+ * Cholesky decomposition of a symmetric positive-definite matrix.
+ * Returns lower-triangular L such that A = L L^T, or null if not SPD.
+ */
+function choleskyDecompose(A) {
+    const n = A.length;
+    if (!n || A.some((row) => !Array.isArray(row) || row.length !== n)) return null;
+    const L = Array.from({ length: n }, () => Array(n).fill(0));
+    for (let i = 0; i < n; i += 1) {
+        for (let j = 0; j <= i; j += 1) {
+            let sum = Number(A[i][j]) || 0;
+            for (let k = 0; k < j; k += 1) sum -= L[i][k] * L[j][k];
+            if (i === j) {
+                if (sum <= 1e-12) return null;
+                L[i][j] = Math.sqrt(sum);
+            } else {
+                if (Math.abs(L[j][j]) < 1e-12) return null;
+                L[i][j] = sum / L[j][j];
+            }
+        }
+    }
+    return L;
+}
+
+/** Solve A x = b via Cholesky (A must be SPD). */
+function choleskySolve(A, b) {
+    const L = choleskyDecompose(A);
+    if (!L) return null;
+    const n = b.length;
+    const y = Array(n);
+    for (let i = 0; i < n; i += 1) {
+        let sum = Number(b[i]) || 0;
+        for (let k = 0; k < i; k += 1) sum -= L[i][k] * y[k];
+        y[i] = sum / L[i][i];
+    }
+    const x = Array(n);
+    for (let i = n - 1; i >= 0; i -= 1) {
+        let sum = y[i];
+        for (let k = i + 1; k < n; k += 1) sum -= L[k][i] * x[k];
+        x[i] = sum / L[i][i];
+    }
+    return x;
+}
+
+/** Gaussian elimination fallback when Cholesky rejects a near-singular system. */
+function gaussianSolve(A, b) {
     const n = A.length;
     const M = A.map((row, i) => [...row, b[i]]);
     for (let col = 0; col < n; col += 1) {
@@ -75,7 +120,19 @@ function solveLinearSystem(A, b) {
     return M.map((row) => row[n]);
 }
 
+/** Prefer Cholesky (ridge XtX+λI is SPD); fall back to Gaussian. */
+function solveLinearSystem(A, b) {
+    return choleskySolve(A, b) || gaussianSolve(A, b);
+}
+
+function ridgeLambda(lambda) {
+    const v = Number(lambda);
+    if (!Number.isFinite(v) || v < MIN_LAMBDA) return Math.max(DEFAULT_LAMBDA, MIN_LAMBDA);
+    return v;
+}
+
 function fitLinearValueModel(decisions = [], { lambda = DEFAULT_LAMBDA, minRows = MIN_FIT_ROWS } = {}) {
+    const ridge = ridgeLambda(lambda);
     const rows = (Array.isArray(decisions) ? decisions : []).filter((d) => {
         const reward = Number(d.totalReward ?? d.total_reward);
         const armId = d.armId || d.arm_id;
@@ -95,7 +152,7 @@ function fitLinearValueModel(decisions = [], { lambda = DEFAULT_LAMBDA, minRows 
     const d = featureDim();
     const Xt = transpose(X);
     const XtX = matMul(Xt, X);
-    for (let i = 0; i < d; i += 1) XtX[i][i] += Number(lambda) || 1;
+    for (let i = 0; i < d; i += 1) XtX[i][i] += ridge;
     const Xty = matVec(Xt, y);
     const weights = solveLinearSystem(XtX, Xty);
     if (!weights) {
@@ -113,7 +170,7 @@ function fitLinearValueModel(decisions = [], { lambda = DEFAULT_LAMBDA, minRows 
     return {
         ok: true,
         n: rows.length,
-        lambda: Number(lambda) || 1,
+        lambda: ridge,
         rmse,
         weights,
         armIds: ARM_IDS,
@@ -168,6 +225,12 @@ module.exports = {
     STREAK_BANDS,
     ARM_IDS,
     MIN_FIT_ROWS,
+    MIN_LAMBDA,
+    DEFAULT_LAMBDA,
+    choleskyDecompose,
+    choleskySolve,
+    solveLinearSystem,
+    ridgeLambda,
     featureVector,
     featureDim,
     fitLinearValueModel,

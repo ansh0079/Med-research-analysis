@@ -1,3 +1,4 @@
+const defaultLogger = require('../../config/logger');
 const { buildProxyService } = require('../externalApiProxy');
 const { clinicalQueryAliases, clinicalQueryPinnedPmids, buildPubMedSearchQuery } = require('./clinicalQueryPubmed');
 const { dedupeKey, collapseNearDuplicateTitles } = require('./articleDedupe');
@@ -14,12 +15,29 @@ const { appendPubMedPublicationFilters } = require('./pubmedFilters');
  * @param {import('../../config').serverConfig} opts.serverConfig
  * @param {Function} opts.fetch
  * @param {object} [opts.telemetry] — optional; when PubMed returns zero hits, may set `lowRecallLearning`
+ * @param {object} [opts.logger] — pino-compatible logger; defaults to app logger
  * @param {string} [opts.specificity] — 'broad' | 'moderate' | 'strict'
  * @param {string[]} [opts.parsedStudyTypes] — optional PubMed publication-type clauses inferred server-side
  * @param {string[]} [opts.parsedYearFilters] — optional PubMed year filters such as 2020:2024[PDAT]
  * @returns {Promise<object[]>}
  */
-async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig, fetch: f, cache = null, vectorList = [], telemetry = null, specificity = 'moderate', parsedStudyTypes = [], parsedYearFilters = [] }) {
+function logSourceFailure(log, source, err) {
+    const payload = {
+        event: 'unified_evidence_source_failed',
+        source,
+        err: err instanceof Error
+            ? { message: err.message, name: err.name }
+            : { message: String(err || 'unknown error') },
+    };
+    if (typeof log?.warn === 'function') {
+        log.warn(payload, 'unifiedEvidence source failed');
+        return;
+    }
+    defaultLogger.warn(payload, 'unifiedEvidence source failed');
+}
+
+async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig, fetch: f, cache = null, vectorList = [], telemetry = null, specificity = 'moderate', parsedStudyTypes = [], parsedYearFilters = [], logger: injectedLogger = null }) {
+    const log = injectedLogger || defaultLogger;
     const proxy = buildProxyService({ serverConfig, fetchImpl: f, cache, telemetry });
     const overallStart = Date.now();
 
@@ -58,7 +76,7 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
                 })
                 .slice(0, 2);
         } catch (meshErr) {
-            console.warn('[unifiedEvidence] MeSH proactive lookup skipped:', meshErr.message);
+            logSourceFailure(log, 'mesh', meshErr);
         }
     }
 
@@ -144,7 +162,7 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
                 recordSourceOk('pubmed', merged.length);
                 return merged;
             } catch (err) {
-                console.warn('[unifiedEvidence] PubMed failed', err.message);
+                logSourceFailure(log, 'pubmed', err);
                 recordSourceFailure('pubmed', err);
                 return [];
             }
@@ -158,7 +176,7 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
                 recordSourceOk('semantic', Array.isArray(results) ? results.length : 0);
                 return results;
             } catch (err) {
-                console.warn('[unifiedEvidence] Semantic Scholar failed', err.message);
+                logSourceFailure(log, 'semantic', err);
                 recordSourceFailure('semantic', err);
                 return [];
             }
@@ -173,7 +191,7 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
                 recordSourceOk('openalex', mapped.length);
                 return mapped;
             } catch (err) {
-                console.warn('[unifiedEvidence] OpenAlex failed', err.message);
+                logSourceFailure(log, 'openalex', err);
                 recordSourceFailure('openalex', err);
                 return [];
             }
@@ -187,7 +205,7 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
                 recordSourceOk('crossref', Array.isArray(results) ? results.length : 0);
                 return results;
             } catch (err) {
-                console.warn('[unifiedEvidence] Crossref failed', err.message);
+                logSourceFailure(log, 'crossref', err);
                 recordSourceFailure('crossref', err);
                 return [];
             }
@@ -219,4 +237,5 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
 
 module.exports = {
     fetchUnifiedEvidence,
+    logSourceFailure,
 };

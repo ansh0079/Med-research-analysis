@@ -1,4 +1,5 @@
 const { normalizePmid } = require('../../utils/articleKeys');
+const { mergeOpenAccessFields } = require('../../utils/articleAccess');
 
 const TITLE_STOPWORDS = new Set([
     'the', 'a', 'an', 'and', 'or', 'of', 'for', 'to', 'in', 'on', 'at', 'with', 'by', 'from',
@@ -87,6 +88,7 @@ function mergeArticleMetadata(primary, incoming) {
     for (const field of ['doi', 'pmid', 'pmcid', 'abstract', 'journal', 'source', 'pubdate', 'year']) {
         if (!merged[field] && incoming[field]) merged[field] = incoming[field];
     }
+    Object.assign(merged, mergeOpenAccessFields(merged, incoming));
     if (incoming._pinnedLandmark) merged._pinnedLandmark = true;
     // Keep a PubMed-shaped uid when we know the PMID so gold eval / pins resolve.
     const pmid = normalizePmid(merged.pmid || incoming.pmid);

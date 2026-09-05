@@ -16,10 +16,14 @@ const {
     chooseArmBySamplesContextual,
     searchRankingContextFeatures,
 } = require('./sampling');
+const { defaultSharedStore } = require('./sharedLinearModelStore');
+const { isHoldoutUser } = require('./holdoutAssignment');
 
-let _linearModelCache = { model: null, fittedAt: 0, days: 30 };
-
-async function maybeSelectArmViaLinearValue(db, contextFeatures) {
+async function maybeSelectArmViaLinearValue(db, contextFeatures, {
+    store = null,
+    now = new Date(),
+    random = Math.random,
+} = {}) {
     let linearMod;
     try {
         linearMod = require('../contextualValueModel');
@@ -28,24 +32,27 @@ async function maybeSelectArmViaLinearValue(db, contextFeatures) {
     }
     if (!linearMod.isLinearValueEnabled()) return null;
 
-    const ttlMs = Number(process.env.BANDIT_LINEAR_CACHE_MS || 15 * 60 * 1000);
-    const now = Date.now();
-    if (!_linearModelCache.model || (now - _linearModelCache.fittedAt) > ttlMs) {
+    const shared = store || defaultSharedStore(db);
+    let model = await shared.load(POLICY_SEARCH_RANKING, now).catch(() => null);
+    if (!model?.ok || !Array.isArray(model.weights)) {
         if (!db?.all) return null;
         const { loadDecisionsForOfflineEval } = require('../policyReplayEvaluator');
         const decisions = await loadDecisionsForOfflineEval(db, POLICY_SEARCH_RANKING, 30).catch(() => []);
-        const model = linearMod.fitLinearValueModel(decisions);
-        _linearModelCache = { model, fittedAt: now, days: 30 };
+        model = linearMod.fitLinearValueModel(decisions);
+        if (model?.ok) {
+            await shared.save(POLICY_SEARCH_RANKING, model, now).catch(() => null);
+        }
     }
-    if (!_linearModelCache.model?.ok) return null;
+    if (!model?.ok) return null;
 
     const epsilon = Number(process.env.BANDIT_LINEAR_EPSILON || 0.1);
-    const pick = linearMod.selectArmByLinearValue(_linearModelCache.model, contextFeatures, { epsilon });
+    const pick = linearMod.selectArmByLinearValue(model, contextFeatures, { epsilon, random });
     if (!pick?.armId || !SEARCH_RANKING_ARMS[pick.armId]) return null;
     return {
         ...pick,
-        modelRmse: _linearModelCache.model.rmse,
-        modelN: _linearModelCache.model.n,
+        modelRmse: model.rmse,
+        modelN: model.n,
+        modelKey: shared.hourlyModelKey(POLICY_SEARCH_RANKING, now),
     };
 }
 
@@ -59,6 +66,19 @@ async function selectSearchRankingArm(db, userId, context = {}) {
             scopeKey: 'global',
             sampled: null,
             propensity: 1,
+            contextFeatures,
+        };
+    }
+
+    if (isHoldoutUser(userId)) {
+        return {
+            armId: 'heuristic_default',
+            weights: SEARCH_RANKING_ARMS.heuristic_default,
+            scopeKey: 'global',
+            sampled: null,
+            propensity: 1,
+            selectionSource: 'holdout',
+            holdout: true,
             contextFeatures,
         };
     }
@@ -177,6 +197,7 @@ async function recordSearchRankingDecisions(db, {
                 memoryTier: banditMeta.memoryTier || null,
                 propensity: banditMeta.propensity != null ? Number(banditMeta.propensity) : null,
                 selectionSource: banditMeta.selectionSource || null,
+                holdout: Boolean(banditMeta.holdout),
                 ...(banditMeta.contextFeatures || {}),
             },
         }).catch((err) => {

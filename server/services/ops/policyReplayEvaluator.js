@@ -74,12 +74,58 @@ function simulateBoost(row, candidateWeights, articleMeta = null) {
     return { simulatedBoost: safe, wasCapped };
 }
 
+function clampReward(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return 0;
+    return Math.min(1, Math.max(-1, n));
+}
+
+/**
+ * Model-based counterfactual reward (Phase 5.5).
+ * Never scales observed reward by a boost ratio — that invented impossible lift.
+ * Off-policy rows without a fitted model are skipped (on-policy IPS only).
+ */
+function counterfactualReward(row, candidateArmId, model) {
+    const served = row.armId || row.arm_id;
+    const observed = Number(row.totalReward ?? row.total_reward);
+    let linearMod = null;
+    try {
+        linearMod = require('../contextualValueModel');
+    } catch {
+        linearMod = null;
+    }
+    if (model?.ok && linearMod) {
+        const predCandidate = linearMod.predictReward(model, row.context || {}, candidateArmId);
+        const predServed = linearMod.predictReward(model, row.context || {}, served);
+        if (predCandidate != null) {
+            if (String(served) === String(candidateArmId) && predServed != null && Number.isFinite(observed)) {
+                return {
+                    reward: clampReward(observed + (predCandidate - predServed)),
+                    method: 'doubly_robust',
+                };
+            }
+            return { reward: clampReward(predCandidate), method: 'model_counterfactual' };
+        }
+    }
+    if (String(served) === String(candidateArmId) && Number.isFinite(observed)) {
+        return { reward: clampReward(observed), method: 'on_policy' };
+    }
+    return null;
+}
+
+function clampRelativeLift(meanReward, baselineMean) {
+    if (!Number.isFinite(meanReward) || !Number.isFinite(baselineMean)) return null;
+    if (baselineMean === 0) return null;
+    const raw = (meanReward - baselineMean) / Math.max(Math.abs(baselineMean), 0.05);
+    return Math.max(-1, Math.min(1, raw));
+}
+
 // ─── main query ─────────────────────────────────────────────────────────────
 
 async function loadDecisions(db, policyType, days) {
     const since = new Date(Date.now() - Math.min(Math.max(Number(days) || DEFAULT_DAYS, 1), 90) * 86400000).toISOString();
     const rows = await db.all(
-        `SELECT id, arm_id, article_uid, total_reward, immediate_reward, delayed_reward, context_json, created_at
+        `SELECT id, user_id, arm_id, article_uid, total_reward, immediate_reward, delayed_reward, context_json, created_at
          FROM personalization_decisions
          WHERE policy_type = ?
            AND created_at >= ?
@@ -91,6 +137,7 @@ async function loadDecisions(db, policyType, days) {
 
     return rows.map((r) => ({
         id: r.id,
+        userId: r.user_id ?? null,
         armId: r.arm_id,
         articleUid: r.article_uid,
         totalReward: Number(r.total_reward || 0),
@@ -144,24 +191,31 @@ async function replayPolicy(db, candidateArmId, policyType = POLICY_SEARCH_RANKI
         };
     }
 
+    let linearModel = null;
+    try {
+        const linearMod = require('../contextualValueModel');
+        linearModel = linearMod.fitLinearValueModel(decisions, { minRows: 10 });
+        if (!linearModel?.ok) linearModel = null;
+    } catch {
+        linearModel = null;
+    }
+
     const rewards = [];
     const baselineRewards = [];
+    const methods = new Set();
     let safetyViolations = 0;
     let evaluated = 0;
 
     for (const row of decisions) {
         const sim = simulateBoost(row, candidateWeights);
-        if (!sim) continue;
-        evaluated += 1;
-        if (sim.wasCapped) safetyViolations += 1;
+        if (sim?.wasCapped) safetyViolations += 1;
 
-        // Simulated reward: take the observed total_reward and modulate it by
-        // the ratio of the simulated boost to the logged boost.
-        const loggedBoost = Number(row.context.boost || 0);
-        const rewardScale = loggedBoost !== 0 ? sim.simulatedBoost / loggedBoost : 1;
-        const simulatedReward = Math.min(1, Math.max(-1, row.totalReward * rewardScale));
-        rewards.push(simulatedReward);
-        baselineRewards.push(row.totalReward);
+        const cf = counterfactualReward(row, candidateArmId, linearModel);
+        if (!cf) continue;
+        evaluated += 1;
+        methods.add(cf.method);
+        rewards.push(cf.reward);
+        baselineRewards.push(clampReward(row.totalReward));
     }
 
     if (rewards.length === 0) {
@@ -196,7 +250,9 @@ async function replayPolicy(db, candidateArmId, policyType = POLICY_SEARCH_RANKI
         safetyViolations,
         safetyViolationRate: evaluated > 0 ? safetyViolations / evaluated : 0,
         baselineMeanReward: baselineMean,
-        liftVsBaseline: baselineMean > 0 ? (meanReward - baselineMean) / baselineMean : null,
+        liftVsBaseline: clampRelativeLift(meanReward, baselineMean),
+        rewardMethod: methods.size === 1 ? [...methods][0] : (methods.size ? 'mixed' : null),
+        promotionEligible: false,
     };
 }
 
@@ -228,6 +284,9 @@ const MAX_SAFETY_VIOLATION_RATE = 0.15;
 
 function replayGatePasses(result) {
     if (result.error) return { pass: false, reason: result.error };
+    if (result.rewardMethod === 'boost_scale') {
+        return { pass: false, reason: 'boost-scale replay is diagnostic only and cannot gate promotion' };
+    }
     if (result.n === 0) return { pass: false, reason: 'no historical decisions to evaluate' };
     if (result.coverage < MIN_COVERAGE) {
         return { pass: false, reason: `coverage ${(result.coverage * 100).toFixed(0)}% < ${MIN_COVERAGE * 100}%` };
@@ -254,6 +313,8 @@ module.exports = {
     loadDecisionsForOfflineEval,
     // exported for tests
     simulateBoost,
+    counterfactualReward,
+    clampRelativeLift,
     MIN_COVERAGE,
     MIN_LIFT_FACTOR,
     MAX_SAFETY_VIOLATION_RATE,

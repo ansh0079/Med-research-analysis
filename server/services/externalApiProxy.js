@@ -14,6 +14,10 @@
 const logger = require('../config/logger');
 const crypto = require('crypto');
 const { recordExternalApiCall } = require('./observabilityMetrics');
+const {
+  fetchPubmedAbstractMap,
+  attachAbstractsToArticles,
+} = require('../utils/pubmedAbstracts');
 
 // Lazily-loaded GoogleAuth instance for Vertex AI OAuth2 token caching.
 // Only initialised when GOOGLE_APPLICATION_CREDENTIALS is set.
@@ -144,6 +148,30 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     return `${base}${path}?${q.toString()}${keyParam}`;
   }
 
+  // esummary never returns abstracts. NCBI efetch (XML) is the supported
+  // way to hydrate AbstractText for PubMed-sourced cards and synopses.
+  function buildPubmedEfetchUrl(pmids) {
+    const q = new URLSearchParams({
+      db: 'pubmed',
+      id: pmids.join(','),
+      rettype: 'abstract',
+      retmode: 'xml',
+      tool: 'medsearch_v3',
+    });
+    if (keys.ncbiEmail) q.set('email', keys.ncbiEmail);
+    const keyParam = keys.ncbi ? `&api_key=${keys.ncbi}` : '';
+    return `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?${q.toString()}${keyParam}`;
+  }
+
+  async function pubmedEfetchAbstracts(pmids) {
+    return fetchPubmedAbstractMap({
+      pmids,
+      fetchImpl: f,
+      urlForIds: (ids) => buildPubmedEfetchUrl(ids),
+      timeout: DEFAULT_TIMEOUTS.pubmed,
+    });
+  }
+
   async function pubmedEsearch(query, { retmax = 20, sort = 'relevance' } = {}) {
     const url = buildPubMedUrl('/esearch.fcgi', {
       db: 'pubmed',
@@ -184,10 +212,8 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
 
   function mapPubmedSummaryToArticle(pmid, article) {
     if (!article) return null;
-    const pmcid =
-      article.articleids?.find((id) =>
-        ['pmc', 'pmcid'].includes(String(id.idtype || '').toLowerCase())
-      )?.value || null;
+    const { extractPubmedPmcid } = require('../utils/articleAccess');
+    const pmcid = extractPubmedPmcid(article.articleids);
     return {
       uid: `pubmed-${pmid}`,
       title: article.title,
@@ -214,9 +240,11 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     return withSourceCache('pubmed', { query, maxResults, sort }, 1800, async () => {
       const pmids = await pubmedEsearch(query, { retmax: maxResults, sort });
       const summary = await pubmedEsummary(pmids);
-      return pmids
+      const articles = pmids
         .map((pmid) => mapPubmedSummaryToArticle(pmid, summary[pmid]))
         .filter(Boolean);
+      const abstracts = await pubmedEfetchAbstracts(pmids);
+      return attachAbstractsToArticles(articles, abstracts);
     });
   }
 
@@ -228,7 +256,7 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     if (!ids.length) return [];
     return withSourceCache('pubmed-pinned', { ids }, 86400, async () => {
       const summary = await pubmedEsummary(ids);
-      return ids
+      const articles = ids
         .map((pmid) => {
           const article = mapPubmedSummaryToArticle(pmid, summary[pmid]);
           // Flag so the bouquet ranker can guarantee placement — these are curated,
@@ -237,6 +265,8 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
           return article;
         })
         .filter(Boolean);
+      const abstracts = await pubmedEfetchAbstracts(ids);
+      return attachAbstractsToArticles(articles, abstracts);
     });
   }
 
@@ -497,6 +527,8 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     pubmedFetchByIds,
     pubmedEsearch,
     pubmedEsummary,
+    pubmedEfetchAbstracts,
+    buildPubmedEfetchUrl,
     semanticScholarSearch,
     openAlexSearch,
     crossrefSearch,

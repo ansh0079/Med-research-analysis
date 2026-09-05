@@ -28,16 +28,54 @@ const SEARCH_RANKING_ARMS = {
     },
 };
 
-const RECOMMENDATION_ARM_BY_TYPE = {
-    review: 'review',
-    strengthen: 'strengthen',
-    explore: 'explore',
-    calibrate: 'calibrate',
-    discover: 'discover',
-    refresh: 'refresh',
-    case: 'case',
-    start: 'start',
+// Strategy arms within recommendation types (Phase 5.3).
+// Explore items choose between gap-seeking and strength-adjacent strategies.
+const RECOMMENDATION_STRATEGY_ARMS = {
+    explore_by_gap: {
+        label: 'Explore by knowledge gap',
+        types: ['explore', 'discover', 'start'],
+        scoring: 'gap',
+    },
+    explore_by_strength: {
+        label: 'Explore from strong adjacent topics',
+        types: ['explore', 'discover'],
+        scoring: 'strength',
+    },
+    review_due_first: {
+        label: 'Due reviews first',
+        types: ['review', 'review_due', 'refresh'],
+        scoring: 'due',
+    },
+    strengthen_weak: {
+        label: 'Strengthen weak nodes',
+        types: ['strengthen'],
+        scoring: 'weak',
+    },
+    calibrate_misconception: {
+        label: 'Calibrate high-confidence errors',
+        types: ['calibrate'],
+        scoring: 'misconception',
+    },
+    case_challenge: {
+        label: 'Case challenge',
+        types: ['case'],
+        scoring: 'challenge',
+    },
 };
+
+const RECOMMENDATION_ARM_BY_TYPE = {
+    review: 'review_due_first',
+    review_due: 'review_due_first',
+    strengthen: 'strengthen_weak',
+    explore: 'explore_by_gap',
+    calibrate: 'calibrate_misconception',
+    discover: 'explore_by_gap',
+    refresh: 'review_due_first',
+    case: 'case_challenge',
+    start: 'explore_by_gap',
+};
+
+const DUE_REVIEW_FLOOR_SLOT = Number(process.env.RECOMMENDATION_DUE_FLOOR_SLOT || 3) || 3;
 
 const MIN_PULLS_FOR_USER_ARM = Number(process.env.BANDIT_MIN_USER_PULLS || 8);
 const FULL_PULLS_FOR_USER_ARM = Number(process.env.BANDIT_FULL_USER_PULLS || 30);
@@ -90,7 +128,9 @@ module.exports = {
     POLICY_CASE_DIFFICULTY,
     POLICY_TOPIC_EVOLUTION,
     SEARCH_RANKING_ARMS,
+    RECOMMENDATION_STRATEGY_ARMS,
     RECOMMENDATION_ARM_BY_TYPE,
+    DUE_REVIEW_FLOOR_SLOT,
     MIN_PULLS_FOR_USER_ARM,
     FULL_PULLS_FOR_USER_ARM,
     MIN_GLOBAL_PULLS_FOR_POLICY,

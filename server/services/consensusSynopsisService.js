@@ -9,6 +9,22 @@ const {
 } = require('./citationValidator');
 const { getCachedPdf } = require('./pdfPreindexService');
 const { validateAiOutput } = require('./aiOutputValidation');
+const { articleHasUsableAbstract, attachAbstractsToArticles } = require('../utils/pubmedAbstracts');
+const { buildProxyService } = require('./externalApiProxy');
+
+async function hydrateMissingPubmedAbstracts(articles, { fetchImpl, serverConfig, cache } = {}) {
+    const list = Array.isArray(articles) ? articles : [];
+    const missing = list.filter((article) => article?.pmid && !articleHasUsableAbstract(article));
+    if (!missing.length || typeof fetchImpl !== 'function') return list;
+    try {
+        const proxy = buildProxyService({ serverConfig, fetchImpl, cache });
+        const map = await proxy.pubmedEfetchAbstracts(missing.map((article) => article.pmid));
+        return attachAbstractsToArticles(list, map);
+    } catch (err) {
+        logger.debug({ err }, 'Consensus abstract hydration skipped');
+        return list;
+    }
+}
 
 function isFreeEvidence(article) {
     return Boolean(article?.isFree || article?.pmcid || article?.fullTextUrl || article?.openAccess || article?.openAccessUrl);
@@ -339,8 +355,9 @@ async function generateConsensusSynopsis({
         freeArticles = preEnrichedArticles.freeArticles;
         abstractArticles = preEnrichedArticles.abstractArticles;
     } else {
-        freeArticles = await enrichWithCachedFullText(selectFreeEvidence(articles, limit), cache, db);
-        abstractArticles = selectAbstractEvidence(articles, abstractLimit);
+        const hydrated = await hydrateMissingPubmedAbstracts(articles, { fetchImpl, serverConfig, cache });
+        freeArticles = await enrichWithCachedFullText(selectFreeEvidence(hydrated, limit), cache, db);
+        abstractArticles = selectAbstractEvidence(hydrated, abstractLimit);
     }
 
     const retractionResults = await batchCheckRetractions([...freeArticles, ...abstractArticles])

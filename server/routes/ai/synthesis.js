@@ -309,8 +309,13 @@ function registerSynthesisRoutes(app, {
                 log: req.log,
             });
             if (out.status === 'failed') {
-                const status = /No AI service|No AI provider/.test(out.errorMessage || '') ? 503 : 500;
-                return res.status(status).json({ error: out.errorMessage || 'Synopsis generation failed' });
+                const msg = out.errorMessage || 'Synopsis generation failed';
+                const status = /No AI service|No AI provider/.test(msg)
+                    ? 503
+                    : /no abstract or full text/i.test(msg)
+                        ? 422
+                        : 500;
+                return res.status(status).json({ error: msg });
             }
             const code = out.status === 'queued' || out.status === 'running' ? 202 : 200;
             const withDelta = code === 200
@@ -319,7 +324,11 @@ function registerSynthesisRoutes(app, {
             return res.status(code).json(withDelta);
         } catch (error) {
             req.log.error({ err: error }, 'Synopsis generation error');
-            const status = /No AI service|No AI provider/.test(error.message) ? 503 : 500;
+            const status = /No AI service|No AI provider/.test(error.message)
+                ? 503
+                : /no abstract or full text/i.test(error.message || '')
+                    ? 422
+                    : 500;
             return res.status(status).json({ error: error.message });
         }
     });

@@ -20,6 +20,14 @@ const {
 } = require('../agentSelfImprovementService');
 const { processPaperSynopsisTrust } = require('../paperSynopsisTrust');
 const { selectSynopsisStyleArm, recordBanditReward, POLICY_SYNOPSIS_STYLE } = require('../personalizationBanditService');
+const {
+    articleHasUsableAbstract,
+    articleHasSynopsisSource,
+    hydrateArticleAbstract,
+} = require('../../utils/pubmedAbstracts');
+const { buildProxyService } = require('../externalApiProxy');
+
+const SYNOPSIS_NO_SOURCE_TEXT = 'Cannot generate a synopsis: this paper has no abstract or full text available. Open the free full text, or retry after search refreshes the abstract.';
 
 function getPaperSynopsisArticleId(article = {}) {
     return article.uid || article.pmid || article.doi
@@ -178,10 +186,34 @@ async function runPaperSynopsisGenerationInner({
         }
     }
 
+    // PubMed esummary never returns abstracts. Hydrate via efetch when the
+    // client sent a title-only card so the LLM is not asked to invent a synopsis.
+    let sourceArticle = article;
+    if (!articleHasUsableAbstract(sourceArticle) && sourceArticle.pmid && fetchImpl) {
+        try {
+            const proxy = buildProxyService({ serverConfig, fetchImpl, cache });
+            sourceArticle = await withSpan('synopsis.abstract_hydrate', { 'article.id': articleId }, () => (
+                hydrateArticleAbstract(sourceArticle, {
+                    fetchImpl,
+                    urlForIds: (ids) => proxy.buildPubmedEfetchUrl(ids),
+                    cache,
+                })
+            ));
+        } catch (err) {
+            logger.debug({ err, articleId }, 'Synopsis abstract hydration skipped');
+        }
+    }
+
     // Enrich with full-text sections when cached — improves numerical result extraction
     const [enriched] = await withSpan('synopsis.full_text_enrichment', { 'article.id': articleId }, () => (
-        enrichWithCachedFullText([article], cache, db).catch(() => [article])
+        enrichWithCachedFullText([sourceArticle], cache, db).catch(() => [sourceArticle])
     ));
+    if (!articleHasSynopsisSource(enriched)) {
+        recordSynopsisGeneration({ ok: false, provider, model: selectedModelForCache });
+        const err = new Error(SYNOPSIS_NO_SOURCE_TEXT);
+        err.code = 'SYNOPSIS_NO_SOURCE_TEXT';
+        throw err;
+    }
     let guidelines = [];
     let topicKnowledge = null;
     if (topic && db) {
@@ -358,7 +390,7 @@ async function runPaperSynopsisGenerationInner({
         await db.logEvent('synopsis', sessionId, { articleId, userId: userId || undefined }).catch((err) => { logger.warn({ err }, 'logEvent failed'); return null; });
     }
     await withSpan('synopsis.persist_teaching_object', { 'article.id': articleId, 'synopsis.topic': topic }, () => (
-        persistPaperTeachingObject({ db, article, synopsisResult: result, topic }).catch((err) => {
+        persistPaperTeachingObject({ db, article: enriched, synopsisResult: result, topic }).catch((err) => {
             log?.warn?.({ err, articleId }, 'Paper teaching object persistence skipped');
         })
     ));
@@ -389,4 +421,5 @@ module.exports = {
     getPaperSynopsisCacheKey,
     synopsisStyleCacheSuffix,
     invalidatePaperSynopsisCache,
+    SYNOPSIS_NO_SOURCE_TEXT,
 };

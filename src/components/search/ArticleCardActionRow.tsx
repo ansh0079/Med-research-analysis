@@ -43,6 +43,7 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
   onToggleCitations,
 }) => {
   const [synopsisState, setSynopsisState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
+  const [synopsisError, setSynopsisError] = useState<string | null>(null);
   const [synopsis, setSynopsis] = useState<ArticleSynopsisFields | null>(null);
   const [synopsisExpanded, setSynopsisExpanded] = useState(false);
   const [synopsisAudit, setSynopsisAudit] = useState<EvidenceAuditSnapshot | null>(null);
@@ -93,6 +94,7 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
           onClick={async () => {
             if (synopsis) { setSynopsisExpanded((v) => !v); return; }
             setSynopsisState('loading');
+            setSynopsisError(null);
             setSynopsisAudit(null);
             try {
               const result = await api.ai.getSynopsis(article, { async: true });
@@ -118,8 +120,9 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
               setSynopsis(result.synopsis);
               setSynopsisState('done');
               setSynopsisExpanded(true);
-            } catch {
+            } catch (err) {
               setSynopsisState('error');
+              setSynopsisError(err instanceof Error && err.message ? err.message : 'Appraisal unavailable');
             }
           }}
           className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
@@ -127,7 +130,7 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
               ? 'bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300'
               : 'bg-violet-50 text-violet-600 hover:bg-violet-100 dark:bg-violet-950/30 dark:text-violet-400 dark:hover:bg-violet-900/40'
           }`}
-          title="Critically appraise this paper — PICO, methodology, trust rating, bottom line"
+          title={synopsisError || 'Critically appraise this paper — PICO, methodology, trust rating, bottom line'}
           disabled={synopsisState === 'loading'}
         >
           {synopsisState === 'loading'
@@ -139,6 +142,11 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
                 : <><i className="fas fa-microscope text-[10px]" /> Critically Appraise</>
           }
         </button>
+        {synopsisState === 'error' && synopsisError && (
+          <span className="max-w-[28rem] text-[11px] leading-snug text-red-600 dark:text-red-400">
+            {synopsisError}
+          </span>
+        )}
 
         {isRct && (
           <button

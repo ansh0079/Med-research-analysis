@@ -69,29 +69,46 @@ function buildConflictMatrixBlock(conflictMatrix = []) {
     return formatConflictMatrixForPrompt(conflictMatrix);
 }
 
+const FULL_TEXT_SECTION_ORDER = ['methods', 'results', 'discussion', 'conclusion'];
+const SYNOPSIS_SECTION_LIMITS = { methods: 5000, results: 8000, discussion: 5000, conclusion: 3000 };
+const DEFAULT_SECTION_LIMIT = 1200;
+
+/**
+ * Shared full-text excerpt builder used by synopsis, synthesis, and source blocks.
+ * @param {object} article
+ * @param {{ variant?: 'default'|'synthesis'|'synopsis', includeFullText?: boolean, sectionLimits?: object }} [options]
+ */
+function buildFullTextExcerptsBlock(article = {}, {
+    variant = 'default',
+    includeFullText = true,
+    sectionLimits = null,
+} = {}) {
+    if (!includeFullText || !article._fullTextIndexed || !article._fullTextSections) return '';
+    const sections = article._fullTextSections;
+    const limits = sectionLimits || (variant === 'synopsis' ? SYNOPSIS_SECTION_LIMITS : {});
+    const defaultLimit = variant === 'synopsis' ? 4000 : DEFAULT_SECTION_LIMIT;
+    const parts = [];
+    for (const key of FULL_TEXT_SECTION_ORDER) {
+        const text = sections[key];
+        if (text && String(text).trim().length > 20) {
+            parts.push(`${key.toUpperCase()}: ${String(text).slice(0, limits[key] || defaultLimit)}`);
+        }
+    }
+    if (!parts.length) return '';
+    if (variant === 'synopsis') {
+        return `\n\nFull-text excerpts (${article._fullTextWordCount || '?'} words indexed):\n${parts.join('\n')}`;
+    }
+    if (variant === 'synthesis') {
+        return `\nFull-text excerpts (${article._fullTextWordCount || '?'} words total):\n${parts.join('\n')}`;
+    }
+    return `\nFull-text excerpts:\n${parts.join('\n')}`;
+}
+
 function buildSourceEvidenceBlock(articles = [], { max = 15, includeFullText = true, variant = 'default' } = {}) {
     return (Array.isArray(articles) ? articles : []).slice(0, max).map((a, i) => {
         const year = a.pubdate?.split(' ')[0] || a.year || 'unknown';
         const journal = a.source || a.journal || 'unknown';
-        let fullTextBlock = '';
-        if (includeFullText && a._fullTextIndexed && a._fullTextSections) {
-            const sections = a._fullTextSections;
-            const ordered = variant === 'synthesis'
-                ? ['methods', 'results', 'discussion', 'conclusion']
-                : ['methods', 'results', 'discussion', 'conclusion'];
-            const parts = [];
-            for (const key of ordered) {
-                const text = sections[key];
-                if (text && String(text).trim().length > 20) {
-                    parts.push(`${key.toUpperCase()}: ${String(text).slice(0, 1200)}`);
-                }
-            }
-            if (parts.length) {
-                fullTextBlock = variant === 'synthesis'
-                    ? `\nFull-text excerpts (${a._fullTextWordCount || '?'} words total):\n${parts.join('\n')}`
-                    : `\nFull-text excerpts:\n${parts.join('\n')}`;
-            }
-        }
+        const fullTextBlock = buildFullTextExcerptsBlock(a, { variant, includeFullText });
         const label = variant === 'synthesis' ? 'STUDY' : 'SOURCE';
         if (variant === 'synthesis') {
             const citations = a.pmcrefcount ?? a.citationCount ?? 'unknown';
@@ -128,6 +145,9 @@ module.exports = {
     buildLearnerContextBlock,
     buildConflictMatrixBlock,
     buildSourceEvidenceBlock,
+    buildFullTextExcerptsBlock,
+    FULL_TEXT_SECTION_ORDER,
+    SYNOPSIS_SECTION_LIMITS,
     buildTopicKnowledgeBlock,
     buildSafetyDisclaimerBlock,
     composePromptSections,
