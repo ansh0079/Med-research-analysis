@@ -112,7 +112,8 @@ const OUTPUT_PROFILES = {
         }),
     },
     quiz_generation: {
-        // TODO: Apply validateNumericGrounding to quiz explanations once source articles are passed into validation context
+        // Numeric grounding of quiz explanations is applied below, per question,
+        // when the caller passes options.groundingArticles.
         schema: QuizQuestionsSchema,
         normalize: (raw) => {
             if (Array.isArray(raw)) return { questions: raw };

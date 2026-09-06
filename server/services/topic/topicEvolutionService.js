@@ -127,7 +127,8 @@ async function fanOutEvolutionJobs({
             const ai = getSharedAiService({ serverConfig, fetchImpl });
             const { provider, model } = resolveProvider({}, serverConfig);
             if (provider) {
-                jobs.mcqs = await generateAndStoreMCQs(db, ai, topic, knowledge, { provider, model });
+                // serverConfig enables the fallback loop inside the generator.
+                jobs.mcqs = await generateAndStoreMCQs(db, ai, topic, knowledge, { serverConfig, model });
             }
         } catch (err) {
             log.warn?.({ err, topic }, 'evolution MCQ generation failed');

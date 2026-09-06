@@ -243,6 +243,54 @@ describe('MCQ generation pipeline (real modules, stubbed network)', () => {
         expect(db.upserts).toHaveLength(1);
     });
 
+    test('falls back to the next provider when the first one fails', async () => {
+        // This was the last core-loop path pinned to a single provider: an
+        // out-of-credit Anthropic key would have taken MCQ generation down even
+        // with Gemini funded.
+        const calls = [];
+        const fetchImpl = async (url, options = {}) => {
+            const u = String(url);
+            calls.push(u);
+            const res = (body, ok = true, status = 200) => ({
+                ok, status, headers: new Map(),
+                json: async () => body, text: async () => JSON.stringify(body),
+            });
+            if (u.includes('api.anthropic.com')) {
+                return res({ error: { message: 'Your credit balance is too low' } }, false, 400);
+            }
+            if (u.includes('generativelanguage.googleapis.com')) {
+                return res({ candidates: [{ finishReason: 'STOP', content: { parts: [{ text: JSON.stringify({ questions: QUESTIONS }) }] } }] });
+            }
+            return res({}, false, 503);
+        };
+        const keys = { anthropic: 'test-anthropic-key', gemini: 'test-gemini-key' };
+        const ai = createAiService({ serverConfig: serverConfig(keys), fetchImpl });
+        const db = makeDb();
+
+        const result = await generateAndStoreMCQs(db, ai, TOPIC, KNOWLEDGE, {
+            serverConfig: serverConfig(keys), sourceArticles: SOURCE_ARTICLES,
+        });
+
+        expect(result.count).toBeGreaterThan(0);
+        expect(calls.some((u) => u.includes('api.anthropic.com'))).toBe(true);
+        expect(calls.some((u) => u.includes('generativelanguage'))).toBe(true);
+        // The stored object must name the provider that actually answered.
+        expect(result.provider).toBe('gemini');
+        expect(db.upserts[0].provider).toBe('gemini');
+    });
+
+    test('still works without serverConfig, pinned to a single provider', async () => {
+        // Callers that do not pass serverConfig keep the old behaviour rather
+        // than breaking on an unresolvable 'auto'.
+        const { fetchImpl } = makeFetch();
+        const db = makeDb();
+
+        const result = await generateAndStoreMCQs(db, aiFor(fetchImpl), TOPIC, KNOWLEDGE, { sourceArticles: SOURCE_ARTICLES });
+
+        expect(result.count).toBeGreaterThan(0);
+        expect(result.provider).toBe('gemini');
+    });
+
     test('records a confidence score reflecting the diversity actually achieved', async () => {
         const { fetchImpl } = makeFetch();
         const db = makeDb();

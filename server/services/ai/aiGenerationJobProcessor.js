@@ -205,13 +205,22 @@ async function processAiGenerationJobByKey(jobKey, deps) {
             }
 
             const ai = getSharedAiService({ serverConfig, fetchImpl });
-            const { provider, model: mcqModel } = resolveProvider({ provider: input.provider || 'auto' }, serverConfig);
+            const { model: mcqModel } = resolveProvider({ provider: input.provider || 'auto' }, serverConfig);
             const sourceArticles = Array.isArray(topicKnowledgeRow?.sourceArticles) ? topicKnowledgeRow.sourceArticles : [];
-            const result = await generateAndStoreMCQs(db, ai, topic, knowledge, { provider, model: mcqModel, sourceArticles });
+            // Pass serverConfig rather than a pre-resolved provider so a dead
+            // provider falls through to the next candidate instead of failing.
+            const result = await generateAndStoreMCQs(db, ai, topic, knowledge, {
+                serverConfig,
+                provider: input.provider || 'auto',
+                model: mcqModel,
+                sourceArticles,
+            });
             await db.completeAiGenerationJob(jobKey, {
                 resultPayload: { status: result?.skipped ? 'skipped' : 'completed', jobKey, ...(result || {}) },
-                provider,
-                model: result?.model || provider,
+                // Record the provider that actually answered, which after the
+                // fallback loop is not necessarily the one first requested.
+                provider: result?.provider || null,
+                model: result?.model || result?.provider || null,
                 auditPayload: {
                     mcqCount: result?.count || result?.mcqs?.length || 0,
                     skipped: Boolean(result?.skipped),

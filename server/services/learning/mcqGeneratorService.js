@@ -3,6 +3,7 @@ const { parseStructuredQuizArray } = require('../../utils/parseJson');
 const { coldStartMcqKey } = require('../../utils/teachingObjectKeys');
 const { validateAiOutput } = require('../aiOutputValidation');
 const { createBudgetForAction, runWithLlmBudget } = require('../llmRequestBudget');
+const { getProviderCandidates } = require('../../utils/aiProvider');
 
 /**
  * High-quality MCQ exemplars to guide generation through few-shot learning
@@ -152,7 +153,13 @@ Return ONLY valid JSON with this shape (no markdown, no prose outside JSON):
 {"questions":[{"type":"multiple_choice","questionType":"recall|clinical_application|guideline|pitfall","question":"...","options":["A: ...","B: ...","C: ...","D: ..."],"correctAnswer":"A","explanation":"2-3 sentences with evidence","difficulty":"easy|medium|hard","sourceReference":null}]}`;
 }
 
-async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemini', model = null, sourceArticles = [] } = {}) {
+/**
+ * @param {object} [opts]
+ * @param {object} [opts.serverConfig] Supply this to get provider fallback. Without
+ *   it the call is pinned to a single provider, which is how an out-of-credit key
+ *   used to take the whole feature down.
+ */
+async function generateAndStoreMCQs(db, ai, topic, knowledge, { serverConfig = null, provider = 'auto', model = null, sourceArticles = [] } = {}) {
     return runWithLlmBudget(createBudgetForAction('quiz'), async () => {
         const normalizedTopic = db.normalizeTopic(topic);
         const objectKey = coldStartMcqKey(db, topic);
@@ -178,14 +185,42 @@ async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemi
         }
 
         const prompt = buildMcqPrompt(topic, knowledge, { includeExemplars: true, sourceArticles });
-        if (!provider) {
+
+        // Synopsis, synthesis, agent turns and topic knowledge all walk the
+        // candidate list so one dead provider does not take the feature with it.
+        // This was the last core-loop path still pinned to a single provider.
+        const candidates = serverConfig
+            ? getProviderCandidates({ provider }, serverConfig)
+            : [{ provider: provider === 'auto' ? 'gemini' : provider, model }];
+        if (candidates.length === 0 || !candidates[0].provider) {
             throw new Error('No AI provider available for MCQ generation');
         }
-        const parsed = await ai.callStructured(prompt, provider, model || undefined, {
-            temperature: 0.4,
-            maxOutputTokens: 3000,
-            usage: { operation: 'cold_start_mcq', topic },
-        });
+
+        let parsed = null;
+        let usedProvider = null;
+        let usedModel = null;
+        let lastProviderError = null;
+        for (const candidate of candidates) {
+            try {
+                parsed = await ai.callStructured(prompt, candidate.provider, (model || candidate.model) || undefined, {
+                    temperature: 0.4,
+                    maxOutputTokens: 3000,
+                    usage: { operation: 'cold_start_mcq', topic },
+                });
+                usedProvider = candidate.provider;
+                usedModel = (model || candidate.model) || candidate.provider;
+                break;
+            } catch (err) {
+                lastProviderError = err;
+                logger.warn(
+                    { err, provider: candidate.provider, topic },
+                    'MCQ provider failed; trying fallback if available',
+                );
+            }
+        }
+        if (!usedProvider) {
+            throw lastProviderError || new Error('No AI provider returned MCQs');
+        }
 
         // Ground MCQ explanations against the same articles the prompt was built from.
         // Ungrounded questions are dropped rather than failing the whole batch, so one
@@ -226,8 +261,8 @@ async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemi
             objectType: 'cold_start_mcq',
             topic: normalizedTopic,
             title: `Cold-Start MCQs: ${topic}`,
-            provider,
-            model: model || provider,
+            provider: usedProvider,
+            model: usedModel,
             confidence,
             generatedAt: new Date().toISOString(),
             payload: {
@@ -249,7 +284,7 @@ async function generateAndStoreMCQs(db, ai, topic, knowledge, { provider = 'gemi
             confidence
         }, 'Cold-start MCQs stored with diversity enforcement');
 
-        return { topic, count: mcqs.length, mcqs, diversityReport, confidence };
+        return { topic, count: mcqs.length, mcqs, diversityReport, confidence, provider: usedProvider, model: usedModel };
     });
 }
 

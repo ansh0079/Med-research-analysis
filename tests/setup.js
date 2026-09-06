@@ -51,8 +51,13 @@ process.env.PORT = '0'; // Let OS assign random port
 process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-jwt-secret-at-least-thirty-two-characters-long';
 process.env.ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'test-admin-token';
 
-// Increase timeout for slow tests
-jest.setTimeout(10000);
+// 10s was too tight under a full parallel run on Windows and produced false
+// failures that passed on their own: a test doing jest.resetModules() plus a
+// re-require of the route tree, and the afterAll below, which closes the DB,
+// drains the pool and shuts down the native PDF worker pool. Neither is
+// asserting timing, so a generous ceiling costs nothing and still catches a
+// genuine hang.
+jest.setTimeout(30000);
 
 // Resolve pdf-parse open handle by ensuring any lingering promises are cleared
 afterAll(async () => {

@@ -80,8 +80,11 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
             Medical Evidence,<br />
             <span className="gradient-text">Synthesised by AI</span>
           </h1>
+          {/* Keep the model name in step with PINNED_MODELS.gemini in
+              server/services/ai/aiService.js -- this claimed Flash-Lite while the
+              app actually ran Flash. */}
           <p className="text-xs sm:text-sm text-slate-400 dark:text-slate-500 font-mono tracking-wide break-words">
-            PubMed · Semantic Scholar · OpenAlex · Gemini 2.5 Flash-Lite
+            PubMed · Semantic Scholar · OpenAlex · Gemini 2.5 Flash
           </p>
         </div>
 
