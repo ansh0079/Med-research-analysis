@@ -19,14 +19,37 @@ function overlapScore(a, b) {
     return shared / Math.max(aa.size, bb.size);
 }
 
+// Claims with this concept are quiz-seed questions ("What score on CEPH-FAST
+// indicates a low risk of cephalosporin allergy?"), not factual assertions --
+// see buildKnowledgeGraphRelationships / CONCEPT_RELATIONS in
+// teachingObjectService.js, where quiz_focus is explicitly the question-shaped
+// concept type used to seed MCQ generation. A question cannot semantically
+// agree or conflict with a guideline recommendation the way a factual claim
+// can, so token-overlap scoring against one is structurally guaranteed to read
+// as no/weak match. Found while triaging the guideline_uncertain queue: 26 of
+// 56 flagged items were quiz_focus questions manufacturing false uncertainty
+// signal for content that was never a claim about the guideline in the first
+// place -- their intended purpose (seeding quizzes) is unaffected either way.
+const NON_VERIFIABLE_CONCEPTS = new Set(['quiz_focus']);
+
 function classifyClaimGuidelineAlignment(claim, guidelines = []) {
     const claimText = String(claim?.claimText || claim?.claim_text || '').trim();
+    const conceptKey = claim?.conceptKey || claim?.concept_key || null;
     if (!claimText) {
         return {
             alignmentStatus: 'no_claim_text',
             recommendedVerificationStatus: 'unverified',
             confidence: 0,
             reason: 'No claim text available for guideline comparison.',
+            matchedGuideline: null,
+        };
+    }
+    if (NON_VERIFIABLE_CONCEPTS.has(conceptKey)) {
+        return {
+            alignmentStatus: 'not_verifiable',
+            recommendedVerificationStatus: 'unverified',
+            confidence: 0,
+            reason: `Concept "${conceptKey}" is question-shaped content, not a factual claim -- guideline comparison does not apply.`,
             matchedGuideline: null,
         };
     }
