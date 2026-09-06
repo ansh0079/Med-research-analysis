@@ -166,6 +166,22 @@ describe('evidence quote placeholder-abstract guard', () => {
             expect(isPlaceholderAbstract('  International audience  ')).toBe(true);
         });
 
+        test('flags stringified empty values that reached the field as text', () => {
+            // A null/0/[] that hit a String() call upstream and got stored as if
+            // it were supporting text. Found on clinical_bottom_line and
+            // main_findings claims in production, not just low-stakes concepts.
+            for (const junk of ['null', 'Null', 'undefined', 'none', 'unknown', 'Not specified', '0', '[]', '{}']) {
+                expect(isPlaceholderAbstract(junk)).toBe(true);
+            }
+        });
+
+        test('does not flag real text that merely contains a placeholder word', () => {
+            // The match is on the whole trimmed value, not a substring -- a real
+            // abstract discussing "unknown aetiology" must survive.
+            expect(isPlaceholderAbstract('Aetiology was unknown in 12 of 40 cases.')).toBe(false);
+            expect(isPlaceholderAbstract('No abstract was available for the comparator trial, so it was excluded.')).toBe(false);
+        });
+
         test('flags common "no abstract" placeholders', () => {
             expect(isPlaceholderAbstract('No abstract')).toBe(true);
             expect(isPlaceholderAbstract('No abstract available')).toBe(true);

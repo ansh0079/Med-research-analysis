@@ -77,6 +77,20 @@ const PLACEHOLDER_ABSTRACTS = new Set([
     'no abstract available',
     'n/a',
     'not available',
+    // Stringified empty values: somewhere upstream a null/0/[] reached a
+    // String() call and was stored as if it were real supporting text. Found
+    // 16 of these in production alongside the HAL tag above -- and unlike that
+    // one they were not confined to low-stakes concepts: several sat on
+    // clinical_bottom_line and main_findings, the fields that carry the actual
+    // clinical assertion.
+    'null',
+    'undefined',
+    'none',
+    'unknown',
+    'not specified',
+    '0',
+    '[]',
+    '{}',
 ]);
 
 function isPlaceholderAbstract(text) {
