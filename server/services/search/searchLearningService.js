@@ -360,10 +360,14 @@ async function buildSearchLearningContext({ db, userId, query, sessionId, previo
             // Safety override: dangerous misconception = user is confidently wrong on this topic.
             // Bypass the bandit and force misconception_heavy arm to surface contradicting evidence first.
             if (context.hasDangerousMisconception) {
+                const armIds = Object.keys(SEARCH_RANKING_ARMS);
                 context.banditSelection = {
                     ...context.banditSelection,
                     armId: 'misconception_heavy',
                     weights: SEARCH_RANKING_ARMS.misconception_heavy,
+                    propensity: 1,
+                    propensityByArm: Object.fromEntries(armIds.map((armId) => [armId, armId === 'misconception_heavy' ? 1 : 0])),
+                    selectionSource: 'safety_override',
                     calibrationOverride: 'dangerous_misconception',
                 };
             }
@@ -525,6 +529,7 @@ function applySearchLearningBoost(articles, context, bouquetRanking = []) {
         memoryTier: context.memoryTier || 'none',
         sampled: context.banditSelection?.sampled ?? null,
         propensity: context.banditSelection?.propensity ?? null,
+        propensityByArm: context.banditSelection?.propensityByArm || null,
         selectionSource: context.banditSelection?.selectionSource || null,
         misconceptionBoostCount: context.misconceptionBoost?.correctiveArticleUids?.size || 0,
         contextFeatures: context.banditSelection?.contextFeatures || null,

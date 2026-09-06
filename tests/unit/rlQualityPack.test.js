@@ -98,10 +98,19 @@ describe('topic evidence memory', () => {
                 recentReviews: [],
                 controversies: [],
                 safetyUpdates: [],
-            }
+            },
+            { memoryArticles: [{ uid: 'mem1', title: 'Memory guideline', abstract: 'Trusted cached evidence.', pubtype: ['Guideline'] }] }
         );
         expect(blended.injected.length).toBe(1);
         expect(blended.articles.some((a) => a.uid === 'mem1')).toBe(true);
+    });
+
+    test('does not inject metadata-only memory refs without cached article content', () => {
+        const blended = blendLiveWithEvidenceMemory(
+            [{ uid: 'live1', title: 'Live' }],
+            { articleUids: ['mem1'], guidelines: [{ uid: 'mem1', role: 'guideline' }] }
+        );
+        expect(blended.injected).toEqual([]);
     });
 });
 

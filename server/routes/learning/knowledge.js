@@ -117,7 +117,8 @@ function registerKnowledgeRoutes(app, deps) {
                     payload: { itemCount: items.length },
                 });
             }
-            res.status(201).json(result);
+            const { attachLearningRoundGradingTokens } = require('../../services/quizGradingToken');
+            res.status(201).json(attachLearningRoundGradingTokens(result));
         } catch (error) {
             req.log.error({ err: error }, 'Create learning round error');
             res.status(500).json({ error: error.message || 'Internal Server Error' });
@@ -130,7 +131,8 @@ function registerKnowledgeRoutes(app, deps) {
             if (!roundId) return res.status(400).json({ error: 'invalid round id' });
             const round = await db.getLearningRound(roundId, req.user.id);
             if (!round) return res.status(404).json({ error: 'Round not found' });
-            res.json({ round });
+            const { attachLearningRoundGradingTokens } = require('../../services/quizGradingToken');
+            res.json(attachLearningRoundGradingTokens({ round }));
         } catch (error) {
             req.log.error({ err: error }, 'Get learning round error');
             res.status(500).json({ error: 'Internal Server Error' });

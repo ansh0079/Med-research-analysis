@@ -212,11 +212,12 @@ async function findQuizClaimDecision(db, userId, {
 } = {}) {
     if (!db?.all) return null;
     if (claimDecisionId) {
+        if (!userId) return null;
         const rows = await db.all(
             `SELECT id, arm_id, delayed_reward, policy_type FROM personalization_decisions
-             WHERE id = ? AND policy_type = ?
+             WHERE id = ? AND policy_type = ? AND user_id = ?
              LIMIT 1`,
-            [Number(claimDecisionId), POLICY_QUIZ_CLAIM_SELECTION]
+            [Number(claimDecisionId), POLICY_QUIZ_CLAIM_SELECTION, String(userId)]
         ).catch(() => []);
         return rows?.[0] || null;
     }

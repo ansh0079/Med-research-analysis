@@ -25,6 +25,7 @@ export function buildQuizAttempts({
       questionText: q.question,
       userAnswer: answers[q.id] || '',
       correctAnswer: q.correctAnswer,
+      gradingToken: q.gradingToken || '',
       isCorrect: (answers[q.id] || '').toLowerCase() === q.correctAnswer.toLowerCase(),
       sourceArticleUid: uid,
       sourceArticleTitle: resolvedSrc?.title || q.sourceArticle || undefined,

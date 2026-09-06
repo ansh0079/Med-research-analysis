@@ -21,6 +21,63 @@ const {
     claimEligibleForQuestionType,
     isHighStakesQuestionType,
 } = require('../paperSynopsisTrust');
+const { getLimit } = require('../../config/entitlements');
+const { userCanAccessAiJob } = require('../aiJobAccess');
+const { hasGuidelinePubtype } = require('../../utils/articles');
+const { computeMcqClaimKey } = require('../../utils/mcqClaimKey');
+
+function evidenceSourceTrust(article = {}) {
+    const retracted = Boolean(article?._retraction?.isRetracted || article?.isRetracted || article?.is_retracted);
+    if (retracted) return { verificationStatus: 'unverified', reviewState: 'needs_revision' };
+    if (hasGuidelinePubtype(article)) {
+        return { verificationStatus: 'guideline_supported', reviewState: 'machine_checked' };
+    }
+    const fullTextWordCount = Number(article._fullTextWordCount || article.fullTextWordCount || 0);
+    if (article._fullTextIndexed || article._pdfIndexed || article.pdfIndexed || fullTextWordCount >= 200) {
+        return { verificationStatus: 'full_text_available', reviewState: 'machine_checked' };
+    }
+    return { verificationStatus: 'abstract_only', reviewState: 'unreviewed' };
+}
+
+async function hydrateEvidenceArticles(db, articles = []) {
+    if (typeof db?.getCachedArticle !== 'function') {
+        return articles.map((article) => ({ article, trusted: null }));
+    }
+    const uids = articles.map((article) => article?.uid || article?.id || article?.pmid || null).filter(Boolean).map(String);
+    const retractions = typeof db.getArticleRetractionBatch === 'function'
+        ? await db.getArticleRetractionBatch(uids).catch(() => ({}))
+        : {};
+    return Promise.all(articles.map(async (article) => {
+        const uid = article?.uid || article?.id || article?.pmid || null;
+        if (!uid) return { article, trusted: null };
+        const cached = await db.getCachedArticle(String(uid)).catch(() => null);
+        const trusted = cached ? {
+            ...cached,
+            ...(retractions[String(uid)] ? { _retraction: retractions[String(uid)] } : {}),
+        } : null;
+        return { article: trusted ? { ...article, ...trusted, uid: article.uid || trusted.uid || String(uid) } : article, trusted };
+    }));
+}
+
+function filterQuestionsByEvidenceTrust(questions = []) {
+    const droppedHighStakes = [];
+    const safeQuestions = questions.filter((question) => {
+        if (!isHighStakesQuestionType(question.questionType)) return true;
+        const eligible = claimEligibleForQuestionType({
+            verificationStatus: question.claimVerificationStatus,
+            reviewState: question.claimReviewState,
+        }, question.questionType);
+        if (!eligible) {
+            droppedHighStakes.push({
+                questionType: question.questionType,
+                claimKey: question.claimKey,
+                verificationStatus: question.claimVerificationStatus,
+            });
+        }
+        return eligible;
+    });
+    return { questions: safeQuestions, droppedHighStakes };
+}
 
 function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logger, helpers }) {
     const {
@@ -56,6 +113,9 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             if (!claimSourceJob) {
                 return response({ error: 'claim job not found', jobKey: resolvedClaimJobKey }, 404);
             }
+            if (!userCanAccessAiJob(claimSourceJob, user?.id)) {
+                return response({ error: 'claim job not found', jobKey: resolvedClaimJobKey }, 404);
+            }
             if (claimSourceJob.status !== 'completed') {
                 return response({
                     error: 'AI job not complete - poll GET /api/ai/jobs/:jobKey until status is completed',
@@ -70,8 +130,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             claimAnchorMode = 'job';
         }
 
-        const userPlan = user?.subscription_plan || 'free';
-        const planLimit = userPlan === 'premium' ? 20 : userPlan === 'standard' ? 10 : 3;
+        const planLimit = getLimit(user, 'quizQuestionsPerGeneration') || 3;
         const safeCount = Math.min(Math.max(parseInt(String(count), 10) || Math.min(5, planLimit), 1), planLimit);
 
         const cleanTopic = topic.trim();
@@ -497,7 +556,10 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         }
 
         const cleanTopic = topic.trim();
-        const safeCount = Math.min(Math.max(parseInt(String(count), 10) || 3, 1), 5);
+        const planLimit = getLimit(user, 'quizQuestionsPerGeneration') || 3;
+        const safeCount = Math.min(Math.max(parseInt(String(count), 10) || 3, 1), planLimit);
+        const hydratedSources = await hydrateEvidenceArticles(db, articles.slice(0, 5));
+        const evidenceArticles = hydratedSources.map((source) => source.article);
         const guidelines = await db.getGuidelinesByTopic(cleanTopic, { limit: 3 })
             .catch((err) => { logger.warn({ err }, 'operation failed'); return []; });
 
@@ -521,7 +583,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
 
         const prompt = buildQuizPrompt(
             cleanTopic,
-            articles.slice(0, 5),
+            evidenceArticles,
             { count: safeCount, difficulty, communityTopPicks, teachingObjectContext, promptVariant },
             guidelines,
             userContext
@@ -555,16 +617,20 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 raw,
                 provider: usedProvider,
                 model: quizModel,
-                articles,
+                articles: evidenceArticles,
                 guidelines,
                 promptVariant,
                 questionIdPrefix: 'quiz',
             });
             if (validation.error) return validation.error;
 
-            const questions = validation.validatedRaw.map((q, idx) => {
-                const sourceIndices = validateSourceIndices(q.sourceIndices, articles.length);
-                const resolvedSourceUid = (sourceIndices?.[0] && articles[sourceIndices[0] - 1]?.uid) || null;
+            const mappedQuestions = validation.validatedRaw.map((q, idx) => {
+                const sourceIndices = validateSourceIndices(q.sourceIndices, evidenceArticles.length);
+                const sourceOffset = sourceIndices?.[0] ? sourceIndices[0] - 1 : -1;
+                const source = sourceOffset >= 0 ? hydratedSources[sourceOffset] : null;
+                const resolvedSourceUid = source?.article?.uid || null;
+                const claimKey = computeMcqClaimKey(q, 'evidence_quiz', cleanTopic);
+                const trust = evidenceSourceTrust(source?.trusted || {});
                 return {
                     id: `evq_${validation.batchTs}_${idx}`,
                     type: 'multiple_choice',
@@ -584,10 +650,24 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                     sourceIndices,
                     outlineNodeId: null,
                     topic: cleanTopic,
+                    claimKey,
                     promptVariant,
                     validationStatus: validation.validationSummary.skipped ? 'validation_skipped' : 'llm_validated',
+                    claimVerificationStatus: trust.verificationStatus,
+                    claimReviewState: trust.reviewState,
                 };
             });
+
+            const { questions, droppedHighStakes } = filterQuestionsByEvidenceTrust(mappedQuestions);
+
+            if (questions.length === 0) {
+                return response({
+                    error: 'No questions could be safely anchored to the selected evidence. Add indexed full text or choose lower-stakes recall questions.',
+                    code: 'HIGH_STAKES_CLAIMS_UNAVAILABLE',
+                    topic: cleanTopic,
+                    dropped: droppedHighStakes,
+                }, 422);
+            }
 
             return response({
                 questions,
@@ -597,6 +677,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 promptVariant,
                 validation: validation.validationSummary,
                 disclaimer: AI_DISCLAIMER,
+                droppedHighStakes: droppedHighStakes.length ? droppedHighStakes : undefined,
             });
         } catch (error) {
             log.error({ err: error }, 'Quiz-from-evidence error');
@@ -610,4 +691,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
 module.exports = {
     createQuizGenerationService,
     normalizeDistractorRationale,
+    evidenceSourceTrust,
+    hydrateEvidenceArticles,
+    filterQuestionsByEvidenceTrust,
 };

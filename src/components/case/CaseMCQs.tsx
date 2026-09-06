@@ -42,6 +42,7 @@ export function CaseMCQs({ mcqs, topic }: { mcqs: QuizQuestion[]; topic: string 
           questionText: question.question,
           userAnswer: letter,
           correctAnswer: question.correctAnswer,
+          gradingToken: question.gradingToken || '',
           isCorrect: letter.toLowerCase() === question.correctAnswer.toLowerCase(),
           promptVariant: 'case_embedded',
         }],

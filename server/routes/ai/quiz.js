@@ -4,9 +4,10 @@ const crypto = require('crypto');
 const { createBudgetForAction, runWithLlmBudget } = require('../../services/llmRequestBudget');
 const { createQuizGenerationService } = require('../../services/quizGenerationService');
 const { computeMcqClaimKey, GUIDELINE_BODY, hasSuspectFutureCitation } = require('../../utils/mcqClaimKey');
+const { attachQuizGradingTokens } = require('../../services/quizGradingToken');
 
 function sendServiceResponse(res, result) {
-    return res.status(result.status || 200).json(result.body);
+    return res.status(result.status || 200).json(attachQuizGradingTokens(result.body));
 }
 
 function registerQuizRoutes(app, {
@@ -146,7 +147,7 @@ function registerQuizRoutes(app, {
                 [allMcqs[i], allMcqs[j]] = [allMcqs[j], allMcqs[i]];
             }
 
-            res.json({ questions: allMcqs.slice(0, count), total: allMcqs.length });
+            res.json(attachQuizGradingTokens({ questions: allMcqs.slice(0, count), total: allMcqs.length }));
         } catch (err) {
             req.log.error({ err }, 'Practice pool error');
             res.status(500).json({ error: 'Internal Server Error' });

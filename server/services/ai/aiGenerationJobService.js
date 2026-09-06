@@ -578,10 +578,10 @@ async function getOrEnqueueFullSynthesis({
     return fullSynthesisPlaceholder({ topic, jobKey, status: 'queued' });
 }
 
-function paperSynopsisJobKey(article, selectedModel, trainingStage = null) {
+function paperSynopsisJobKey(article, selectedModel, trainingStage = null, userId = null) {
     const articleId = article?.uid || article?.pmid || article?.doi
         || crypto.createHash('md5').update(String(article?.title || '')).digest('hex').slice(0, 12);
-    return `synop:${stableHash({ articleId, selectedModel, trainingStage: trainingStage || 'default' }).slice(0, 40)}`;
+    return `synop:${stableHash({ articleId, selectedModel, trainingStage: trainingStage || 'default', userId: userId || 'shared' }).slice(0, 40)}`;
 }
 
 function quizPrefetchJobKey(topic, { sourceJobKey = null } = {}) {
@@ -683,7 +683,7 @@ async function getOrEnqueuePaperSynopsis({
     if (!selectedProvider) {
         return { status: 'failed', jobKey: null, errorMessage: 'No AI provider configured' };
     }
-    const jobKey = paperSynopsisJobKey(article, selectedModel, trainingStage);
+    const jobKey = paperSynopsisJobKey(article, selectedModel, trainingStage, userId);
     // forceSync (or no durable job store): always run inline and return the result —
     // callers do not need to poll GET /api/ai/jobs/:jobKey.
     if (forceSync || !hasDurableJobStore(db)) {

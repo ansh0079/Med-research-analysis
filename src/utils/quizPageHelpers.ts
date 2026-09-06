@@ -68,6 +68,7 @@ export function learningRoundItemsToQuestions(
     options?: string[];
     correctAnswer?: string | null;
     explanation?: string | null;
+    gradingToken?: string | null;
   }>
 ): QuizQuestion[] {
   return items
@@ -80,6 +81,7 @@ export function learningRoundItemsToQuestions(
       options: Array.isArray(item.options) ? item.options : [],
       correctAnswer: String(item.correctAnswer || item.options?.[0] || ''),
       explanation: String(item.explanation || ''),
+      gradingToken: item.gradingToken || undefined,
       difficulty: 'medium' as const,
       claimKey: item.claimKey || null,
     }));

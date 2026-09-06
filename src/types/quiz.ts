@@ -154,6 +154,7 @@ export interface QuizQuestion {
   question: string;
   options?: string[];
   correctAnswer: string;
+  gradingToken?: string;
   explanation: string;
   explanationDeep?: string | null;
   whyOthersWrong?: string;

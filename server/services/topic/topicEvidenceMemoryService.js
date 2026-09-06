@@ -137,6 +137,46 @@ function uidOf(article) {
     return String(article?.uid || article?.pmid || article?.doi || '').trim();
 }
 
+function orderedMemoryRefs(memory = null) {
+    if (!memory) return [];
+    const refs = [
+        ...(memory.guidelines || []),
+        ...(memory.landmarkTrials || []),
+        ...(memory.safetyUpdates || []),
+        ...(memory.recentReviews || []),
+        ...(memory.controversies || []),
+    ];
+    const seen = new Set();
+    return refs.filter((ref) => {
+        const uid = uidOf(ref);
+        if (!uid || seen.has(uid)) return false;
+        seen.add(uid);
+        return true;
+    });
+}
+
+async function hydrateEvidenceMemoryArticles(db, memory = null, { limit = 16 } = {}) {
+    if (!memory?.articleUids?.length || typeof db?.getCachedArticle !== 'function') return [];
+    const refs = orderedMemoryRefs(memory).slice(0, Math.max(0, limit));
+    const refUids = refs.map(uidOf).filter(Boolean);
+    const retractions = typeof db.getArticleRetractionBatch === 'function'
+        ? await db.getArticleRetractionBatch(refUids).catch(() => ({}))
+        : {};
+    const hydrated = await Promise.all(refs.map(async (ref) => {
+        const uid = uidOf(ref);
+        const cached = await db.getCachedArticle(uid).catch(() => null);
+        if (!cached) return null;
+        return {
+            ...cached,
+            uid: uidOf(cached) || uid,
+            ...(retractions[uid] ? { _retraction: retractions[uid] } : {}),
+            _fromTopicEvidenceMemory: true,
+            _memoryRole: ref.role || 'memory',
+        };
+    }));
+    return hydrated.filter(Boolean);
+}
+
 function toRef(article, extra = {}) {
     return {
         uid: uidOf(article),
@@ -308,30 +348,24 @@ async function getDurableEvidenceMemory(db, topic) {
 /**
  * Blend durable best-evidence UIDs into live results (memory first for missing items).
  */
-function blendLiveWithEvidenceMemory(liveArticles = [], memory = null, { maxInject = 6 } = {}) {
+function blendLiveWithEvidenceMemory(liveArticles = [], memory = null, { maxInject = 6, maxTotal = Infinity, memoryArticles = [] } = {}) {
     if (!memory?.articleUids?.length) {
         return { articles: liveArticles, injected: [], memoryUsed: false };
     }
     const live = Array.isArray(liveArticles) ? [...liveArticles] : [];
     const liveUids = new Set(live.map(uidOf).filter(Boolean));
-    const memoryRefs = [
-        ...(memory.guidelines || []),
-        ...(memory.landmarkTrials || []),
-        ...(memory.safetyUpdates || []),
-        ...(memory.recentReviews || []),
-        ...(memory.controversies || []),
-    ];
+    const memoryRefs = orderedMemoryRefs(memory);
+    const hydratedByUid = new Map((Array.isArray(memoryArticles) ? memoryArticles : [])
+        .map((article) => [uidOf(article), article])
+        .filter(([uid]) => Boolean(uid)));
     const injected = [];
     for (const ref of memoryRefs) {
         if (injected.length >= maxInject) break;
         if (!ref?.uid || liveUids.has(ref.uid)) continue;
+        const hydrated = hydratedByUid.get(ref.uid);
+        if (!hydrated) continue;
         injected.push({
-            uid: ref.uid,
-            title: ref.title || `Evidence memory: ${ref.uid}`,
-            abstract: '',
-            pubdate: ref.year ? String(ref.year) : undefined,
-            journal: ref.journal || undefined,
-            citationCount: ref.citations || 0,
+            ...hydrated,
             _fromTopicEvidenceMemory: true,
             _protectionClass: ref.role || 'memory',
             _pinnedLandmark: ref.role === 'landmark',
@@ -342,7 +376,7 @@ function blendLiveWithEvidenceMemory(liveArticles = [], memory = null, { maxInje
     const head = live.slice(0, 2);
     const tail = live.slice(2);
     return {
-        articles: [...head, ...injected, ...tail],
+        articles: [...head, ...injected, ...tail].slice(0, maxTotal),
         injected,
         memoryUsed: true,
     };
@@ -352,6 +386,8 @@ module.exports = {
     buildTopicEvidenceMemory,
     buildEvidenceMemoryMessages,
     partitionEvidence,
+    orderedMemoryRefs,
+    hydrateEvidenceMemoryArticles,
     upsertDurableEvidenceMemory,
     getDurableEvidenceMemory,
     blendLiveWithEvidenceMemory,

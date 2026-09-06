@@ -2,11 +2,13 @@
 
 const { resolveProvider: resolveProviderUtil } = require('../../utils/aiProvider');
 const { normalizeCaseMcqList } = require('../../utils/normalizeCaseMcqs');
+const { attachQuizGradingTokens } = require('../../services/quizGradingToken');
 
 function createReviewRouteHelpers({ ai, serverConfig, logger, mcqValidator }) {
     async function validateCaseMcqs(topic, mcqs, articles = []) {
         const normalized = normalizeCaseMcqList(mcqs, { prefix: 'case' });
         if (!normalized.length) return normalized;
+        let validated = normalized;
         try {
             const { provider: validationProvider, model: validationModel } = resolveProviderUtil({ provider: 'auto' }, serverConfig);
             const validation = await mcqValidator.validateBatch({
@@ -18,12 +20,12 @@ function createReviewRouteHelpers({ ai, serverConfig, logger, mcqValidator }) {
                 guidelines: [],
             });
             if (validation?.validIndices?.size) {
-                return normalized.filter((_, idx) => validation.validIndices.has(idx + 1));
+                validated = normalized.filter((_, idx) => validation.validIndices.has(idx + 1));
             }
         } catch (err) {
             logger.warn({ err }, 'case MCQ validation skipped');
         }
-        return normalized;
+        return attachQuizGradingTokens({ questions: validated }).questions;
     }
 
     async function callProvider(prompt, provider = 'auto') {

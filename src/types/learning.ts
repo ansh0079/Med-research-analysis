@@ -350,6 +350,7 @@ export interface QuizAttemptSubmission {
     questionText: string;
     userAnswer: string;
     correctAnswer: string;
+    gradingToken: string;
     isCorrect: boolean;
     timeMs?: number;
     confidence?: number;
@@ -361,7 +362,10 @@ export interface QuizAttemptSubmission {
     outlineNodeId?: string | null;
     outlineLabel?: string | null;
     claimKey?: string | null;
+    claimDecisionId?: number | null;
     promptVariant?: string | null;
+    reasoningTags?: string[];
+    reasoningNote?: string | null;
   }>;
 }
 

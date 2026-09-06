@@ -15,11 +15,36 @@ const {
     attributeRecommendationFollowThrough,
 } = require('../../services/searchLearningOutcomeService');
 const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('../../services/learningSignalService');
+const { verifyQuizGradingToken } = require('../../services/quizGradingToken');
 const {
     calculateMastery, calculateMasteryWithBkt, nextReviewDate, updateStreak,
     buildOutline, initialCoverage, updateCoverage, summarizeRunGaps,
     textIncludes, inferEvidenceJudgement, normalizeAttemptClaimKey,
 } = require('../../utils/learningUtils');
+
+function gradeQuizAttempts(attempts = []) {
+    const gradedAttempts = [];
+    for (const attempt of attempts) {
+        const verification = verifyQuizGradingToken(attempt.gradingToken, attempt);
+        if (!verification.valid) {
+            return { error: verification.reason, attempts: [] };
+        }
+        const claimKey = normalizeAttemptClaimKey(attempt);
+        const correctAnswer = verification.correctAnswer;
+        const computedIsCorrect = String(attempt.userAnswer || '').trim().toLowerCase()
+            === String(correctAnswer || '').trim().toLowerCase();
+        gradedAttempts.push({
+            ...attempt,
+            correctAnswer,
+            claimKey,
+            isCorrect: computedIsCorrect,
+            clientReportedIsCorrect: attempt.isCorrect,
+            ...inferEvidenceJudgement({ ...attempt, correctAnswer, claimKey, isCorrect: computedIsCorrect }),
+        });
+    }
+    return { error: null, attempts: gradedAttempts };
+}
+
 function registerQuizRoutes(app, deps) {
     const { db, requireAuthJwt, requireAuthOrBeta, requireVerifiedEmail, rateLimit, serverConfig, fetch: fetchImpl } = deps;
     const { limitBodySize, requireJson, validateBody, schemas } = require('../../utils/validation');
@@ -59,21 +84,18 @@ function registerQuizRoutes(app, deps) {
     app.post('/api/learning/quiz-attempt', limitBodySize(256 * 1024), requireJson, requireQuizAuth, requireVerifiedEmail, rateLimit(60, 60), validateBody(schemas.quizAttempt), async (req, res) => {
         try {
             const { topic, attempts, studyRunId, curriculumTopicId } = req.body;
+            const grading = gradeQuizAttempts(attempts);
+            if (grading.error) {
+                return res.status(400).json({
+                    error: 'Quiz answers could not be verified. Reload the quiz and try again.',
+                    code: 'QUIZ_GRADING_TOKEN_INVALID',
+                    reason: grading.error,
+                });
+            }
+            const attemptsWithJudgement = grading.attempts;
 
             if (req.betaAnonymous) {
                 const normalizedTopic = db.normalizeTopic(topic);
-                const attemptsWithJudgement = attempts.map((attempt) => {
-                    const claimKey = normalizeAttemptClaimKey(attempt);
-                    const computedIsCorrect = String(attempt.userAnswer || '').trim().toLowerCase()
-                        === String(attempt.correctAnswer || '').trim().toLowerCase();
-                    return {
-                        ...attempt,
-                        claimKey,
-                        isCorrect: computedIsCorrect,
-                        clientReportedIsCorrect: attempt.isCorrect,
-                        ...inferEvidenceJudgement({ ...attempt, claimKey, isCorrect: computedIsCorrect }),
-                    };
-                });
                 for (const attempt of attemptsWithJudgement) {
                     void recordLearningEventSafe({
                         userId: null,
@@ -132,19 +154,6 @@ function registerQuizRoutes(app, deps) {
 
             // Insert all attempts and update FSRS spaced rep cards
             const normalizedTopic = db.normalizeTopic(topic);
-            const attemptsWithJudgement = attempts.map((attempt) => {
-                const claimKey = normalizeAttemptClaimKey(attempt);
-                const computedIsCorrect = String(attempt.userAnswer || '').trim().toLowerCase()
-                    === String(attempt.correctAnswer || '').trim().toLowerCase();
-                const clientReportedIsCorrect = attempt.isCorrect;
-                return {
-                    ...attempt,
-                    claimKey,
-                    isCorrect: computedIsCorrect,
-                    clientReportedIsCorrect,
-                    ...inferEvidenceJudgement({ ...attempt, claimKey, isCorrect: computedIsCorrect }),
-                };
-            });
             for (const attempt of attemptsWithJudgement) {
                 const savedAttempt = await db.createQuizAttempt({ ...attempt, userId, topic, studyRunId: run?.id || null });
                 attempt.id = savedAttempt?.id || null;
@@ -646,4 +655,4 @@ function registerQuizRoutes(app, deps) {
 
 }
 
-module.exports = { registerQuizRoutes };
+module.exports = { registerQuizRoutes, gradeQuizAttempts };

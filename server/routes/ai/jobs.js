@@ -7,6 +7,7 @@
  */
 
 const { overlayTeachingClaimTrust } = require('../../services/claimTrustOverlayService');
+const { userCanAccessAiJob } = require('../../services/aiJobAccess');
 const logger = require('../../config/logger');
 
 /**
@@ -52,7 +53,9 @@ function registerAiJobRoutes(app, { db, requireAuthJwt, rateLimit }) {
                 return res.status(400).json({ error: 'Valid jobKey is required' });
             }
             const job = await db.getAiGenerationJobByKey(jobKey);
-            if (!job) return res.status(404).json({ error: 'AI generation job not found' });
+            if (!userCanAccessAiJob(job, req.user.id)) {
+                return res.status(404).json({ error: 'AI generation job not found' });
+            }
             res.json({
                 job: {
                     jobKey: job.jobKey,
@@ -83,10 +86,13 @@ function registerAiJobRoutes(app, { db, requireAuthJwt, rateLimit }) {
             if (!jobKey || jobKey.length > 160) {
                 return res.status(400).json({ error: 'Valid jobKey is required' });
             }
-            const rawClaims = await db.listAiGenerationClaimsByJobKey(jobKey);
             const job = db.getAiGenerationJobByKey
                 ? await db.getAiGenerationJobByKey(jobKey).catch(() => null)
                 : null;
+            if (!userCanAccessAiJob(job, req.user.id)) {
+                return res.status(404).json({ error: 'AI generation job not found' });
+            }
+            const rawClaims = await db.listAiGenerationClaimsByJobKey(jobKey);
             const topic = job?.topic || null;
             const claims = await overlayTeachingClaimTrust(db, rawClaims, { topic }).catch((err) => {
                 logger.warn({ err, jobKey }, 'overlayTeachingClaimTrust failed');

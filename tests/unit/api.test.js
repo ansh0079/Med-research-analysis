@@ -5,6 +5,18 @@
 
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
+const { createQuizGradingToken } = require('../../server/services/quizGradingToken');
+
+function signedQuizAttempt(attempt) {
+  return {
+    ...attempt,
+    gradingToken: createQuizGradingToken({
+      id: attempt.questionId,
+      question: attempt.questionText,
+      correctAnswer: attempt.correctAnswer,
+    }),
+  };
+}
 
 function authToken(payload = {}) {
   const defaults = { id: 'u1', name: 'Test User', email: 't@test.com', emailVerified: true };
@@ -2663,8 +2675,8 @@ describe('API Endpoints', () => {
         .send({
           topic: 'ARDS',
           attempts: [
-            { questionId: 'q1', questionType: 'recall', questionText: 'What is PEEP?', userAnswer: 'A', correctAnswer: 'A', isCorrect: true },
-            { questionId: 'q2', questionType: 'clinical_application', questionText: 'Case...', userAnswer: 'B', correctAnswer: 'C', isCorrect: false },
+            signedQuizAttempt({ questionId: 'q1', questionType: 'recall', questionText: 'What is PEEP?', userAnswer: 'A', correctAnswer: 'A', isCorrect: true }),
+            signedQuizAttempt({ questionId: 'q2', questionType: 'clinical_application', questionText: 'Case...', userAnswer: 'B', correctAnswer: 'C', isCorrect: false }),
           ],
         })
         .expect(200);
@@ -2682,14 +2694,14 @@ describe('API Endpoints', () => {
         .send({
           topic: 'Sepsis',
           attempts: [
-            {
+            signedQuizAttempt({
               questionId: 'q-trial',
               questionType: 'trial_interpretation',
               questionText: 'This randomised trial used a composite primary outcome and subgroup analysis. What is the main limitation?',
               userAnswer: 'It proves mortality benefit',
               correctAnswer: 'Do not overclaim; assess outcome hierarchy and applicability',
               isCorrect: false,
-            },
+            }),
           ],
         })
         .expect(200);
@@ -2882,7 +2894,7 @@ describe('API Endpoints', () => {
           topic: 'ARDS',
           studyRunId: 99,
           attempts: [
-            { questionId: 'q1', questionType: 'recall', questionText: 'ARDS?', userAnswer: 'A', correctAnswer: 'A', isCorrect: true, outlineNodeId: 'tp-1' },
+            signedQuizAttempt({ questionId: 'q1', questionType: 'recall', questionText: 'ARDS?', userAnswer: 'A', correctAnswer: 'A', isCorrect: true, outlineNodeId: 'tp-1' }),
           ],
         })
         .expect(200);

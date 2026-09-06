@@ -334,6 +334,7 @@ export function useQuizPage() {
           questionText: q.question,
           userAnswer: answers[q.id] || '',
           correctAnswer: q.correctAnswer,
+          gradingToken: q.gradingToken || '',
           isCorrect: (answers[q.id] || '').toLowerCase() === q.correctAnswer.toLowerCase(),
           sourceArticleUid: uid,
           sourceArticleTitle: resolvedSrc?.title || q.sourceArticle || undefined,
@@ -343,6 +344,7 @@ export function useQuizPage() {
           outlineNodeId: q.outlineNodeId || (q.sourceIndices?.[0] ? `src-${q.sourceIndices[0]}` : null),
           outlineLabel: q.outlineLabel ?? undefined,
           claimKey: q.claimKey ?? undefined,
+          claimDecisionId: q.claimDecisionId ?? undefined,
           promptVariant: q.promptVariant ?? undefined,
           confidence: confidenceByQuestion[q.id] ?? answerConfidence,
         };

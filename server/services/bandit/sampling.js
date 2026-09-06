@@ -81,6 +81,43 @@ async function policyHasDenseGlobalData(db, policyType, fallbackArm, armIds) {
     };
 }
 
+function selectBootstrapArm(armIds, fallbackArm, density = {}, {
+    explorationRate = Number(process.env.BANDIT_BOOTSTRAP_EXPLORATION_RATE || 0.1),
+    random = Math.random,
+    minGlobalPulls = MIN_GLOBAL_PULLS_FOR_POLICY,
+} = {}) {
+    const ids = Array.isArray(armIds) ? armIds.filter(Boolean) : [];
+    const fallback = ids.includes(fallbackArm) ? fallbackArm : ids[0];
+    const propensityByArm = Object.fromEntries(ids.map((armId) => [armId, armId === fallback ? 1 : 0]));
+    const globalPulls = Math.max(0, Number(density.globalPulls) || 0);
+    if (!fallback || globalPulls < minGlobalPulls) {
+        return { armId: fallback, propensity: 1, propensityByArm, selectionSource: 'density_gate' };
+    }
+
+    const rows = Array.isArray(density.rows) ? density.rows : [];
+    const pullsByArm = new Map(rows.map((row) => [row.arm_id, Number(row.pulls || 0)]));
+    const alternatives = ids.filter((armId) => armId !== fallback);
+    const untried = alternatives.filter((armId) => (pullsByArm.get(armId) || 0) === 0);
+    const candidates = untried.length ? untried : alternatives;
+    if (!candidates.length) {
+        return { armId: fallback, propensity: 1, propensityByArm, selectionSource: 'density_gate' };
+    }
+
+    const rate = Math.max(0, Math.min(0.5, Number(explorationRate) || 0));
+    propensityByArm[fallback] = 1 - rate;
+    for (const armId of candidates) propensityByArm[armId] = rate / candidates.length;
+    const exploring = rate > 0 && random() < rate;
+    const armId = exploring
+        ? (candidates[Math.min(candidates.length - 1, Math.floor(random() * candidates.length))] || fallback)
+        : fallback;
+    return {
+        armId,
+        propensity: propensityByArm[armId],
+        propensityByArm,
+        selectionSource: exploring ? 'density_bootstrap_explore' : 'density_bootstrap_control',
+    };
+}
+
 function hierarchicalUserWeight(userPulls, {
     minPulls = MIN_PULLS_FOR_USER_ARM,
     fullPulls = FULL_PULLS_FOR_USER_ARM,
@@ -243,6 +280,7 @@ module.exports = {
     ensurePolicyArms,
     loadArmSamples,
     policyHasDenseGlobalData,
+    selectBootstrapArm,
     hierarchicalUserWeight,
     blendedArmSample,
     chooseArmBySamples,

@@ -30,6 +30,7 @@ const PLANS = {
             savedArticles: 25,
             aiAnalysesPerMonth: 5,
             synthesisPerMonth: 0,
+            quizQuestionsPerGeneration: 3,
             exportFormats: [],          // no exports on free
             teamSeats: 0,
         },
@@ -76,6 +77,7 @@ const PLANS = {
             savedArticles: 500,
             aiAnalysesPerMonth: 150,
             synthesisPerMonth: 30,
+            quizQuestionsPerGeneration: 10,
             exportFormats: ['bibtex', 'csv', 'ris'],
             teamSeats: 0,
         },
@@ -122,6 +124,7 @@ const PLANS = {
             savedArticles: 150,
             aiAnalysesPerMonth: 25,
             synthesisPerMonth: 0,
+            quizQuestionsPerGeneration: 3,
             exportFormats: ['bibtex'],
             teamSeats: 0,
         },
@@ -168,6 +171,7 @@ const PLANS = {
             savedArticles: 5000,       // shared workspace
             aiAnalysesPerMonth: 500,   // shared pool
             synthesisPerMonth: 100,
+            quizQuestionsPerGeneration: 15,
             exportFormats: ['bibtex', 'csv', 'ris', 'endnote'],
             teamSeats: 10,
         },
@@ -214,6 +218,7 @@ const PLANS = {
             savedArticles: Infinity,
             aiAnalysesPerMonth: Infinity,
             synthesisPerMonth: Infinity,
+            quizQuestionsPerGeneration: 20,
             exportFormats: ['bibtex', 'csv', 'ris', 'endnote', 'zotero'],
             teamSeats: Infinity,
         },

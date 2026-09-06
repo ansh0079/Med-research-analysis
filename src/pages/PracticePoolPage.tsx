@@ -10,6 +10,7 @@ interface PoolQuestion {
   question: string;
   options: string[];
   correctAnswer: string;
+  gradingToken: string;
   explanation: string | null;
   guidelineRef: string | null;
   difficulty: 'easy' | 'medium' | 'hard';
@@ -112,6 +113,7 @@ export function PracticePoolPage() {
         questionText: currentQ.question,
         userAnswer: letter,
         correctAnswer: currentQ.correctAnswer,
+        gradingToken: currentQ.gradingToken || '',
         isCorrect: letter.toUpperCase() === currentQ.correctAnswer.toUpperCase(),
         sourceArticleUid: currentQ.sourceArticleUid || undefined,
         sourceArticleTitle: currentQ.sourceArticleTitle || undefined,

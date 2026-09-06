@@ -28,9 +28,12 @@ function articleInsightKey(articleUid) {
     return `cache:l2:article:${articleUid}`;
 }
 
-function synthesisKey(topic, mostRecentArticleUid) {
+function synthesisKey(topic, mostRecentArticleUid, { userId = null } = {}) {
     const topicNorm = String(topic || '').toLowerCase().replace(/\s+/g, '-');
-    return `cache:l3:synthesis:${topicNorm}:latest:${mostRecentArticleUid}`;
+    const scope = userId
+        ? `user:${crypto.createHash('sha256').update(String(userId)).digest('hex').slice(0, 16)}`
+        : 'shared';
+    return `cache:l3:synthesis:${topicNorm}:${scope}:latest:${mostRecentArticleUid}`;
 }
 
 function incrementalUpdateKey(topic, updateHash) {
@@ -41,7 +44,7 @@ function incrementalUpdateKey(topic, updateHash) {
 /**
  * Attempts to retrieve synthesis from hierarchical cache
  */
-async function getHierarchicalSynthesis(cache, topic, articles) {
+async function getHierarchicalSynthesis(cache, topic, articles, { userId = null } = {}) {
     if (!cache || !Array.isArray(articles) || articles.length === 0) {
         return { hit: false, level: null, data: null };
     }
@@ -56,7 +59,7 @@ async function getHierarchicalSynthesis(cache, topic, articles) {
     const mostRecent = sortedArticles[0];
 
     // Level 3: Try full synthesis cache (keyed by most recent article)
-    const l3Key = synthesisKey(topic, mostRecent.uid);
+    const l3Key = synthesisKey(topic, mostRecent.uid, { userId });
     const l3Hit = await cache.getAsync?.(l3Key).catch(() => null);
     if (l3Hit) {
         return { hit: true, level: 3, data: l3Hit, cacheKey: l3Key };
@@ -95,7 +98,7 @@ async function getHierarchicalSynthesis(cache, topic, articles) {
 /**
  * Stores synthesis in hierarchical cache
  */
-async function setHierarchicalSynthesis(cache, topic, articles, synthesisResult) {
+async function setHierarchicalSynthesis(cache, topic, articles, synthesisResult, { userId = null } = {}) {
     if (!cache || !synthesisResult) return;
 
     const sortedArticles = [...articles].sort((a, b) => {
@@ -107,7 +110,7 @@ async function setHierarchicalSynthesis(cache, topic, articles, synthesisResult)
     const mostRecent = sortedArticles[0];
 
     // Level 3: Store full synthesis
-    const l3Key = synthesisKey(topic, mostRecent.uid);
+    const l3Key = synthesisKey(topic, mostRecent.uid, { userId });
     await cache.setAsync?.(l3Key, synthesisResult, CACHE_TTL.fullSynthesis).catch((err) => {
         logger.debug({ err, key: l3Key, level: 'l3' }, 'hierarchical cache write failed; synthesis will regenerate');
     });
@@ -147,17 +150,18 @@ async function setHierarchicalSynthesis(cache, topic, articles, synthesisResult)
 function needsRegeneration(cachedSynthesis, newArticles) {
     if (!cachedSynthesis || !cachedSynthesis.sources) return true;
 
-    const cachedUids = new Set(cachedSynthesis.sources.map(s => s.uid));
-    const newArticleUids = newArticles.map(a => a.uid);
+    const cachedUids = new Set(cachedSynthesis.sources.map(s => String(s.uid || '')).filter(Boolean));
+    const newArticleUids = new Set(newArticles.map(a => String(a.uid || '')).filter(Boolean));
 
-    // Check if there are NEW articles not in cache
-    const hasNewArticles = newArticleUids.some(uid => !cachedUids.has(uid));
+    const sourceSetChanged = cachedUids.size !== newArticleUids.size
+        || [...newArticleUids].some(uid => !cachedUids.has(uid));
 
     // Check if cached synthesis is stale (>24 hours)
-    const cacheAge = Date.now() - new Date(cachedSynthesis.timestamp).getTime();
-    const isStale = cacheAge > CACHE_TTL.fullSynthesis * 1000;
+    const cachedAt = new Date(cachedSynthesis.timestamp).getTime();
+    const cacheAge = Date.now() - cachedAt;
+    const isStale = !Number.isFinite(cachedAt) || cacheAge > CACHE_TTL.fullSynthesis * 1000;
 
-    return hasNewArticles || isStale;
+    return sourceSetChanged || isStale;
 }
 
 /**

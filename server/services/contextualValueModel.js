@@ -146,16 +146,36 @@ function rankArmsByValue(model, context = {}) {
 function selectArmByLinearValue(model, context = {}, { epsilon = 0.1, random = Math.random } = {}) {
     const ranked = rankArmsByValue(model, context);
     if (!ranked.length) {
-        return { armId: 'heuristic_default', predictedReward: null, source: 'linear_fallback' };
+        return {
+            armId: 'heuristic_default',
+            predictedReward: null,
+            source: 'linear_fallback',
+            propensity: 1,
+            propensityByArm: Object.fromEntries(ARM_IDS.map((armId) => [armId, armId === 'heuristic_default' ? 1 : 0])),
+        };
     }
-    if (typeof random === 'function' && random() < Math.max(0, Math.min(1, Number(epsilon) || 0))) {
+    const rate = Math.max(0, Math.min(1, Number(epsilon) || 0));
+    const bestArm = ranked[0].armId;
+    const propensityByArm = Object.fromEntries(ranked.map(({ armId }) => [
+        armId,
+        (rate / ranked.length) + (armId === bestArm ? 1 - rate : 0),
+    ]));
+    if (typeof random === 'function' && random() < rate) {
         const pick = ranked[Math.floor(random() * ranked.length)] || ranked[0];
-        return { armId: pick.armId, predictedReward: pick.predictedReward, source: 'epsilon_explore' };
+        return {
+            armId: pick.armId,
+            predictedReward: pick.predictedReward,
+            source: 'epsilon_explore',
+            propensity: propensityByArm[pick.armId],
+            propensityByArm,
+        };
     }
     return {
-        armId: ranked[0].armId,
+        armId: bestArm,
         predictedReward: ranked[0].predictedReward,
         source: 'linear',
+        propensity: propensityByArm[bestArm],
+        propensityByArm,
     };
 }
 

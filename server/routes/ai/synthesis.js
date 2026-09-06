@@ -89,9 +89,10 @@ function registerSynthesisRoutes(app, {
         try {
             // Check hierarchical cache before generating. L3 hit (full synthesis) is
             // valid only when no new articles have appeared since it was cached.
-            const cached = await getHierarchicalSynthesis(cache, topic || '', topArticles);
-            if (cached && !needsRegeneration(cached, topArticles)) {
-                return res.json({ ...cached, _source: 'hierarchical_cache' });
+            const cacheScope = { userId: req.user?.id || null };
+            const cached = await getHierarchicalSynthesis(cache, topic || '', topArticles, cacheScope);
+            if (cached?.hit && cached.level === 3 && cached.data && !needsRegeneration(cached.data, topArticles)) {
+                return res.json({ ...cached.data, _source: 'hierarchical_cache' });
             }
 
             const result = await runFullSynthesisGeneration({
@@ -114,7 +115,7 @@ function registerSynthesisRoutes(app, {
                 model: result.audit?.model,
                 log: req.log,
             });
-            void setHierarchicalSynthesis(cache, topic || '', topArticles, result).catch((err) => {
+            void setHierarchicalSynthesis(cache, topic || '', topArticles, result, cacheScope).catch((err) => {
                 req.log.debug({ err, topic }, 'hierarchical synthesis cache write failed; synthesis will regenerate');
             });
             await db.logEvent('synthesize', req.sessionId, {

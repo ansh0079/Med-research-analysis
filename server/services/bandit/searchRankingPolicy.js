@@ -13,6 +13,7 @@ const {
     ensurePolicyArms,
     loadArmSamples,
     policyHasDenseGlobalData,
+    selectBootstrapArm,
     chooseArmBySamplesContextual,
     searchRankingContextFeatures,
 } = require('./sampling');
@@ -69,13 +70,15 @@ async function selectSearchRankingArm(db, userId, context = {}) {
 
     const density = await policyHasDenseGlobalData(db, POLICY_SEARCH_RANKING, 'heuristic_default', armIds);
     if (!density.ok) {
+        const bootstrap = selectBootstrapArm(armIds, 'heuristic_default', density);
         return {
-            armId: 'heuristic_default',
-            weights: SEARCH_RANKING_ARMS.heuristic_default,
+            armId: bootstrap.armId,
+            weights: SEARCH_RANKING_ARMS[bootstrap.armId],
             scopeKey: 'global',
             sampled: null,
-            propensity: 1,
-            selectionSource: 'density_gate',
+            propensity: bootstrap.propensity,
+            propensityByArm: bootstrap.propensityByArm,
+            selectionSource: bootstrap.selectionSource,
             densityGate: { globalPulls: density.globalPulls, minGlobalPulls: MIN_GLOBAL_PULLS_FOR_POLICY },
             contextFeatures,
         };
@@ -109,18 +112,21 @@ async function selectSearchRankingArm(db, userId, context = {}) {
         && (servingState.status === 'promote' || servingState.status === 'regress')
     );
 
-    // Optional P4 linear value override (epsilon-greedy). Thompson propensity still logged
-    // for the arm that is ultimately served when override wins.
+    // Optional P4 linear value override (epsilon-greedy).
     const linearPick = forcePromoted
         ? null
         : await maybeSelectArmViaLinearValue(db, contextFeatures).catch(() => null);
-    const useLinear = Boolean(linearPick?.armId && linearPick.source === 'linear');
+    const useLinear = Boolean(linearPick?.armId && ['linear', 'epsilon_explore'].includes(linearPick.source));
     const bestArm = forcePromoted
         ? promotedArm
         : (useLinear ? linearPick.armId : thompson.armId);
-    const propensity = thompson.propensityByArm?.[bestArm]
-        ?? thompson.propensity
-        ?? (1 / armIds.length);
+    const oneHot = Object.fromEntries(armIds.map((armId) => [armId, armId === bestArm ? 1 : 0]));
+    const propensityByArm = forcePromoted
+        ? oneHot
+        : (useLinear ? linearPick.propensityByArm : thompson.propensityByArm);
+    const propensity = forcePromoted
+        ? 1
+        : (useLinear ? linearPick.propensity : (thompson.propensityByArm?.[bestArm] ?? thompson.propensity ?? (1 / armIds.length)));
 
     return {
         armId: bestArm,
@@ -129,7 +135,7 @@ async function selectSearchRankingArm(db, userId, context = {}) {
         sampled: thompson.sampled,
         rawSampled: thompson.rawSampled,
         propensity,
-        propensityByArm: thompson.propensityByArm,
+        propensityByArm,
         selectionSource: forcePromoted
             ? `serving_state:${servingState.status}`
             : (useLinear ? 'linear_value' : 'thompson_contextual'),
@@ -176,6 +182,7 @@ async function recordSearchRankingDecisions(db, {
                 position: topArticles.indexOf(article),
                 memoryTier: banditMeta.memoryTier || null,
                 propensity: banditMeta.propensity != null ? Number(banditMeta.propensity) : null,
+                propensityByArm: banditMeta.propensityByArm || null,
                 selectionSource: banditMeta.selectionSource || null,
                 ...(banditMeta.contextFeatures || {}),
             },

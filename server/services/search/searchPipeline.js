@@ -193,7 +193,7 @@ function articleMatchesStudyTypeKey(article, key) {
     return (rules.keywords || []).some((kw) => text.includes(kw));
 }
 
-function filterByStudyType(articles, parsedStudyTypes) {
+function filterByStudyType(articles, parsedStudyTypes, { trustPubmedQueryFilter = true } = {}) {
     if (!Array.isArray(parsedStudyTypes) || parsedStudyTypes.length === 0) return articles;
 
     const clauseKeys = parsedStudyTypes
@@ -204,7 +204,7 @@ function filterByStudyType(articles, parsedStudyTypes) {
 
     return articles.filter((article) => {
         // PubMed articles are already pre-filtered at the query level — always keep
-        if (article._source === 'pubmed') return true;
+        if (trustPubmedQueryFilter && article._source === 'pubmed') return true;
         // For all other sources, keep if the article matches any of the requested types
         return clauseKeys.some((key) => articleMatchesStudyTypeKey(article, key));
     });
@@ -572,7 +572,40 @@ async function fetchAndRankSearchArticles({
             span.setAttribute('search.relevant_count', rows.length);
             return rows;
         });
-        const sanitized = relevant.map(sanitizeArticleOutput);
+        let sanitized = relevant.map(sanitizeArticleOutput);
+        let topicEvidenceMemoryMeta = null;
+        let topicEvidenceMemory = null;
+        try {
+            const {
+                getTopicEvidenceMemory,
+                hydrateEvidenceMemoryArticles,
+                blendLiveWithEvidenceMemory,
+            } = require('../topic/topicEvidenceMemoryService');
+            topicEvidenceMemory = await getTopicEvidenceMemory(db, query).catch(() => null);
+            const hydratedMemory = await hydrateEvidenceMemoryArticles(db, topicEvidenceMemory, { limit: 16 });
+            const memoryStudyFiltered = filterByStudyType(hydratedMemory, parsedStudyTypes, { trustPubmedQueryFilter: false });
+            const memoryRelevant = filterRelevantArticles(memoryStudyFiltered, {
+                query,
+                specificity,
+                queryMeshTerms,
+                parsedYearFilters,
+                pico,
+                queryAliases: telemetry.clinicalAliases,
+            }).map(sanitizeArticleOutput);
+            const blended = blendLiveWithEvidenceMemory(sanitized, topicEvidenceMemory, {
+                memoryArticles: memoryRelevant,
+                maxInject: 6,
+                maxTotal: fetchLimit,
+            });
+            sanitized = collapseNearDuplicateTitles(blended.articles);
+            topicEvidenceMemoryMeta = {
+                used: blended.memoryUsed,
+                injected: blended.injected.length,
+                updatedAt: topicEvidenceMemory?.updatedAt || null,
+            };
+        } catch (err) {
+            telemetry.topicEvidenceMemoryError = err?.message || 'topic_evidence_memory_failed';
+        }
         timings.filterMs = Date.now() - filterStarted;
         _trace('relevant', relevant);
 
@@ -638,24 +671,10 @@ async function fetchAndRankSearchArticles({
         articles = annotateArticlesWithRankingTraces(articles, bouquet.ranking, learningContextFull);
         articles = annotateSearchRankMetadata(articles, bouquet.ranking);
 
-        // Durable topic evidence memory: blend best-evidence set with live results.
-        let topicEvidenceMemoryMeta = null;
+        // Refresh durable memory from the fully filtered and ranked result set.
         try {
-            const {
-                getTopicEvidenceMemory,
-                upsertTopicEvidenceMemory,
-                blendLiveWithEvidenceMemory,
-            } = require('../topic/topicEvidenceMemoryService');
-            const memory = await getTopicEvidenceMemory(db, query).catch(() => null);
-            const blended = blendLiveWithEvidenceMemory(articles, memory);
-            articles = blended.articles;
-            topicEvidenceMemoryMeta = {
-                used: blended.memoryUsed,
-                injected: (blended.injected || []).length,
-                updatedAt: memory?.updatedAt || null,
-            };
-            // Refresh memory from this search's ranked set (async-safe, awaited lightly).
-            await upsertTopicEvidenceMemory(db, query, articles, { source: 'search_blend' }).catch(() => null);
+            const { upsertTopicEvidenceMemory } = require('../topic/topicEvidenceMemoryService');
+            await upsertTopicEvidenceMemory(db, query, articles, { source: 'search_ranked' }).catch(() => null);
         } catch (err) {
             telemetry.topicEvidenceMemoryError = err?.message || 'topic_evidence_memory_failed';
         }

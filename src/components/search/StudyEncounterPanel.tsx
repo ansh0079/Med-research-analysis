@@ -79,6 +79,7 @@ interface AttemptRecord {
   questionText: string;
   userAnswer: string;
   correctAnswer: string;
+  gradingToken: string;
   isCorrect: boolean;
   explanation: string;
   sourceArticleUid?: string;
@@ -86,6 +87,7 @@ interface AttemptRecord {
   banditArmId?: string | null;
   searchId?: number;
   claimKey?: string | null;
+  claimDecisionId?: number;
 }
 
 interface StudyEncounterPanelProps {
@@ -149,6 +151,7 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
         questionText: currentQ.question,
         userAnswer: letter,
         correctAnswer: currentQ.correctAnswer,
+        gradingToken: currentQ.gradingToken || '',
         isCorrect: letter === currentQ.correctAnswer,
         explanation: currentQ.explanation,
         sourceArticleUid: uid,
@@ -156,6 +159,7 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
         banditArmId: attribution?.banditArmId ?? null,
         searchId: attribution?.searchId,
         claimKey: currentQ.claimKey ?? null,
+        claimDecisionId: currentQ.claimDecisionId ?? undefined,
       },
     ]);
   }, [selected, currentQ, resolveQuestionSourceUid]);
@@ -177,12 +181,14 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
             questionText: a.questionText,
             userAnswer: a.userAnswer,
             correctAnswer: a.correctAnswer,
+            gradingToken: a.gradingToken,
             isCorrect: a.isCorrect,
             sourceArticleUid: a.sourceArticleUid,
             decisionId: a.decisionId,
             banditArmId: a.banditArmId,
             searchId: a.searchId,
             claimKey: a.claimKey,
+            claimDecisionId: a.claimDecisionId,
           })),
         });
       } catch {
