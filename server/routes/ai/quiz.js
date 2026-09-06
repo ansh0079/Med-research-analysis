@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const { createBudgetForAction, runWithLlmBudget } = require('../../services/llmRequestBudget');
 const { createQuizGenerationService } = require('../../services/quizGenerationService');
 const { computeMcqClaimKey, GUIDELINE_BODY, hasSuspectFutureCitation } = require('../../utils/mcqClaimKey');
-const { attachQuizGradingTokens } = require('../../services/quizGradingToken');
+const { attachQuizGradingTokens, verifyQuizGradingToken } = require('../../services/quizGradingToken');
 
 function sendServiceResponse(res, result) {
     return res.status(result.status || 200).json(attachQuizGradingTokens(result.body));
@@ -36,6 +36,33 @@ function registerQuizRoutes(app, {
     });
 
     // Pro+ paywall: adaptive / evidence-grounded quiz generation (practice pool stays free).
+    // Reveal the answer only once the learner has committed to one. Questions go
+    // out without `correctAnswer` (see attachQuizGradingTokens), so this is what
+    // the UI calls to show immediate feedback. The signed token is the authority
+    // here -- the client cannot assert its own correctness.
+    app.post(
+        '/api/quiz/grade',
+        requireJson,
+        requireAiAuth,
+        rateLimit(120, 60),
+        async (req, res) => {
+            try {
+                const { gradingToken, questionId, questionText, userAnswer } = req.body || {};
+                const verification = verifyQuizGradingToken(gradingToken, { questionId, questionText });
+                if (!verification.valid) {
+                    return res.status(400).json({ error: 'Invalid grading token', reason: verification.reason });
+                }
+                const correctAnswer = verification.correctAnswer;
+                const isCorrect = String(userAnswer || '').trim().toLowerCase()
+                    === String(correctAnswer).trim().toLowerCase();
+                return res.json({ isCorrect, correctAnswer });
+            } catch (error) {
+                req.log?.error?.({ err: error }, 'Quiz grade error');
+                return res.status(500).json({ error: 'Internal server error' });
+            }
+        }
+    );
+
     app.post(
         '/api/quiz/generate',
         requireJson,

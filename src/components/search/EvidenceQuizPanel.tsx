@@ -90,10 +90,32 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
     return getSourceArticle(question)?.title || question.sourceArticle || null;
   }, [getSourceArticle]);
 
-  const handleSelect = (letter: string) => {
+  const [revealedAnswers, setRevealedAnswers] = useState<Record<string, string>>({});
+  const answerFor = useCallback(
+    (q: QuizQuestion, idx: number) => revealedAnswers[q.id || `${topic}-${idx}`] ?? '',
+    [revealedAnswers, topic],
+  );
+
+  const handleSelect = async (letter: string) => {
     if (showExplanation || !currentQuestion) return;
     const timeMs = currentTimeMs() - questionStartRef.current;
-    const isCorrect = letter === currentQuestion.correctAnswer;
+
+    // Questions arrive without `correctAnswer` so it cannot be read before
+    // answering; the server reveals it once a choice is committed.
+    let isCorrect = false;
+    try {
+      const graded = await api.ai.gradeQuizAnswer({
+        gradingToken: currentQuestion.gradingToken || '',
+        questionId: currentQuestion.id || `${topic}-${currentIndex}`,
+        questionText: currentQuestion.question,
+        userAnswer: letter,
+      });
+      isCorrect = graded.isCorrect;
+      setRevealedAnswers((prev) => ({ ...prev, [currentQuestion.id || `${topic}-${currentIndex}`]: graded.correctAnswer }));
+    } catch {
+      // A network blip must not score the learner wrong or block progress; the
+      // end-of-quiz submit is graded server-side regardless.
+    }
     setSelectedAnswer(letter);
     setShowExplanation(true);
     if (isCorrect) {
@@ -121,7 +143,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
           questionType: (q.questionType || 'clinical_application') as import('@types').QuizAttempt['questionType'],
           questionText: q.question,
           userAnswer: ans?.userAnswer || '',
-          correctAnswer: q.correctAnswer,
+          correctAnswer: answerFor(q, idx),
           gradingToken: q.gradingToken || '',
           isCorrect: ans?.isCorrect ?? false,
           timeMs: ans?.timeMs ?? 0,
@@ -166,11 +188,11 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
         showToast('Could not save quiz progress', 'info', 3000);
       }
     }
-  }, [isAuthenticated, questions, topic, showToast, getSourceArticle, getSourceTitle, getSourceUid, onAuthSubmit]);
+  }, [isAuthenticated, questions, topic, showToast, getSourceArticle, getSourceTitle, getSourceUid, onAuthSubmit, answerFor]);
 
   const handleNext = () => {
     if (currentIndex + 1 >= questions.length) {
-      const finalScore = score + (selectedAnswer === currentQuestion?.correctAnswer ? 1 : 0);
+      const finalScore = score + (currentQuestion && selectedAnswer === answerFor(currentQuestion, currentIndex) ? 1 : 0);
       setCompleted(true);
       onComplete?.(finalScore, questions.length);
       void submitToBackend(finalScore, questions.length);
@@ -278,7 +300,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
                 <div className="space-y-2">
                   {currentQuestion.options.map((opt) => {
                     const letter = opt.trim().charAt(0);
-                    const isCorrect = letter === currentQuestion.correctAnswer;
+                    const isCorrect = letter === answerFor(currentQuestion, currentIndex);
                     const isSelected = letter === selectedAnswer;
                     const showResult = showExplanation;
                     return (

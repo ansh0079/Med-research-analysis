@@ -128,6 +128,10 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
   const currentQ = questions[qIndex] ?? null;
   const isAnswered = selected !== null;
 
+  // Answers revealed by the server at grade time, keyed by question id.
+  const [revealedAnswers, setRevealedAnswers] = useState<Record<string, string>>({});
+  const answerFor = (q: QuizQuestion | null) => (q ? revealedAnswers[q.id] ?? '' : '');
+
   const resolveQuestionSourceUid = useCallback((q: QuizQuestion | null): string | undefined => {
     if (!q) return undefined;
     if (q.sourceArticleUid) return q.sourceArticleUid;
@@ -136,12 +140,32 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
     return undefined;
   }, [articles]);
 
-  const handleSelect = useCallback((option: string) => {
+  const handleSelect = useCallback(async (option: string) => {
     if (selected !== null || !currentQ) return;
     const letter = option.trim().charAt(0).toUpperCase();
     const uid = resolveQuestionSourceUid(currentQ);
     const attribution = uid ? lookupArticleAttribution(uid) : null;
     setSelected(letter);
+
+    // Questions arrive without `correctAnswer` so it cannot be read ahead of
+    // time; the server reveals it once a choice is committed. A failed grade
+    // must not block the encounter -- the batch submit is graded server-side.
+    let revealed = '';
+    let isCorrect = false;
+    try {
+      const graded = await api.ai.gradeQuizAnswer({
+        gradingToken: currentQ.gradingToken || '',
+        questionId: currentQ.id,
+        questionText: currentQ.question,
+        userAnswer: letter,
+      });
+      revealed = graded.correctAnswer;
+      isCorrect = graded.isCorrect;
+      setRevealedAnswers((prev) => ({ ...prev, [currentQ.id]: graded.correctAnswer }));
+    } catch {
+      /* leave correctness unresolved rather than scoring it wrong */
+    }
+
     // record attempt
     setAttempts((prev) => [
       ...prev,
@@ -150,9 +174,9 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
         questionType: currentQ.questionType,
         questionText: currentQ.question,
         userAnswer: letter,
-        correctAnswer: currentQ.correctAnswer,
+        correctAnswer: revealed,
         gradingToken: currentQ.gradingToken || '',
-        isCorrect: letter === currentQ.correctAnswer,
+        isCorrect,
         explanation: currentQ.explanation,
         sourceArticleUid: uid,
         decisionId: attribution?.decisionId,
@@ -261,7 +285,7 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
     const optionState = (opt: string): 'idle' | 'correct' | 'wrong' | 'missed' => {
       if (!isAnswered) return 'idle';
       const letter = opt.trim().charAt(0).toUpperCase();
-      if (letter === currentQ.correctAnswer) return letter === selected ? 'correct' : 'missed';
+      if (letter === answerFor(currentQ)) return letter === selected ? 'correct' : 'missed';
       if (letter === selected) return 'wrong';
       return 'idle';
     };
@@ -292,14 +316,14 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
 
         {isAnswered && (
           <div className={`rounded-xl px-3 py-2.5 text-xs leading-relaxed ${
-            selected === currentQ.correctAnswer
+            selected === answerFor(currentQ)
               ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800/50'
               : 'bg-rose-50 dark:bg-rose-950/30 text-rose-800 dark:text-rose-200 border border-rose-200 dark:border-rose-800/50'
           }`}>
             <p className="font-bold mb-1">
-              {selected === currentQ.correctAnswer
+              {selected === answerFor(currentQ)
                 ? <><i className="fas fa-check mr-1" />Correct</>
-                : <><i className="fas fa-times mr-1" />Incorrect — correct answer: {currentQ.correctAnswer}</>}
+                : <><i className="fas fa-times mr-1" />Incorrect — correct answer: {answerFor(currentQ)}</>}
             </p>
             <p>{currentQ.explanation}</p>
           </div>

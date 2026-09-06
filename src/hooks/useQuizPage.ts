@@ -309,9 +309,20 @@ export function useQuizPage() {
     return () => { cancelled = true; };
   }, [fetchQuiz]);
 
+  // Questions arrive without `correctAnswer` -- the server withholds it so it
+  // cannot be read from the network tab before answering. The answer is revealed
+  // by POST /api/quiz/grade once a choice is committed, and kept here. Every
+  // consumer below runs on an already-answered question, so this is always
+  // populated by the time it is read.
+  const [revealedAnswers, setRevealedAnswers] = useState<Record<string, string>>({});
+  const answerFor = useCallback(
+    (q: { id: string }) => revealedAnswers[q.id] ?? '',
+    [revealedAnswers],
+  );
+
   const currentQ: QuizQuestion | undefined = quiz.questions[quiz.currentIndex];
   const isAnswered = currentQ ? quiz.answers[currentQ.id] !== undefined : false;
-  const isCorrect = currentQ && quiz.answers[currentQ.id]?.toLowerCase() === currentQ.correctAnswer.toLowerCase();
+  const isCorrect = currentQ && quiz.answers[currentQ.id]?.toLowerCase() === answerFor(currentQ).toLowerCase();
 
   const resolveSourceArticle = useCallback((q: QuizQuestion): QuizArticle | null => {
     const idx = q.sourceIndices?.[0];
@@ -333,9 +344,9 @@ export function useQuizPage() {
           questionType: q.questionType || 'recall',
           questionText: q.question,
           userAnswer: answers[q.id] || '',
-          correctAnswer: q.correctAnswer,
+          correctAnswer: answerFor(q),
           gradingToken: q.gradingToken || '',
-          isCorrect: (answers[q.id] || '').toLowerCase() === q.correctAnswer.toLowerCase(),
+          isCorrect: (answers[q.id] || '').toLowerCase() === answerFor(q).toLowerCase(),
           sourceArticleUid: uid,
           sourceArticleTitle: resolvedSrc?.title || q.sourceArticle || undefined,
           decisionId: resolvedSrc?._decisionId ?? attribution?.decisionId,
@@ -398,11 +409,33 @@ export function useQuizPage() {
     }
   };
 
-  const handleAnswer = (answer: string) => {
+  const handleAnswer = async (answer: string) => {
     if (!currentQ || isAnswered) return;
     setSelected(answer);
     setConfidenceByQuestion((prev) => ({ ...prev, [currentQ.id]: answerConfidence }));
-    const correct = answer.toLowerCase() === currentQ.correctAnswer.toLowerCase();
+
+    // The server holds the answer key and is the authority on correctness.
+    let correct = false;
+    let correctAnswer = '';
+    try {
+      const graded = await api.ai.gradeQuizAnswer({
+        gradingToken: currentQ.gradingToken || '',
+        questionId: currentQ.id,
+        questionText: currentQ.question,
+        userAnswer: answer,
+      });
+      correct = graded.isCorrect;
+      correctAnswer = graded.correctAnswer;
+    } catch (err) {
+      // Never strand the learner on a network blip: record the choice, show the
+      // explanation, and leave correctness unresolved rather than scoring it
+      // wrong. The batch submit at the end is graded server-side regardless.
+      logAsyncError(err, 'useQuizPage/gradeQuizAnswer');
+    }
+
+    if (correctAnswer) {
+      setRevealedAnswers((prev) => ({ ...prev, [currentQ.id]: correctAnswer }));
+    }
     setQuiz((prev) => ({
       ...prev,
       answers: { ...prev.answers, [currentQ.id]: answer },
@@ -429,7 +462,7 @@ export function useQuizPage() {
       setQuiz((prev) => ({ ...prev, complete: true }));
       try {
         const weakTypes = quiz.questions
-          .filter((q) => quiz.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase())
+          .filter((q) => quiz.answers[q.id]?.toLowerCase() !== answerFor(q).toLowerCase())
           .map((q) => q.questionType || 'recall');
         sessionStorage.setItem('med_agent_session_feedback', JSON.stringify({
           topic: activeTopic,
@@ -452,9 +485,9 @@ export function useQuizPage() {
         const lastThree = recentAnswered.slice(-3);
         const lastTwo = recentAnswered.slice(-2);
         const easyCorrectStreak = lastThree.length === 3
-          && lastThree.every((q) => q.difficulty === 'easy' && prev.answers[q.id]?.toLowerCase() === q.correctAnswer.toLowerCase());
+          && lastThree.every((q) => q.difficulty === 'easy' && prev.answers[q.id]?.toLowerCase() === answerFor(q).toLowerCase());
         const hardWrongStreak = lastTwo.length === 2
-          && lastTwo.every((q) => q.difficulty === 'hard' && prev.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase());
+          && lastTwo.every((q) => q.difficulty === 'hard' && prev.answers[q.id]?.toLowerCase() !== answerFor(q).toLowerCase());
         const desired = easyCorrectStreak ? 'hard' : hardWrongStreak ? 'medium' : null;
         if (!desired) return { ...prev, currentIndex: nextIndex, showExplanation: false };
         const swapIndex = prev.questions.findIndex((q, index) => index >= nextIndex && q.difficulty === desired);
@@ -476,7 +509,7 @@ export function useQuizPage() {
     const kind = reflectionKind;
     const stamp = new Date().toISOString().split('T')[0];
     const weakTypes = quiz.questions
-      .filter((q) => quiz.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase())
+      .filter((q) => quiz.answers[q.id]?.toLowerCase() !== answerFor(q).toLowerCase())
       .map((q) => q.questionType || 'recall');
     const uniqueWeakTypes = [...new Set(weakTypes)];
     const evidenceTitles = evidenceSnippets
@@ -511,7 +544,7 @@ export function useQuizPage() {
     const stamp = new Date().toISOString().split('T')[0];
     const safeKind = kind.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const weakTypes = quiz.questions
-      .filter((q) => quiz.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase())
+      .filter((q) => quiz.answers[q.id]?.toLowerCase() !== answerFor(q).toLowerCase())
       .map((q) => q.questionType || 'recall');
     const uniqueWeakTypes = [...new Set(weakTypes)];
     const sections = [

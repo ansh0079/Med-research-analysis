@@ -85,6 +85,26 @@ export class AiApi extends BaseApiClient {
     return response.json();
   }
 
+  /**
+   * Grade one answer. Questions arrive without `correctAnswer` -- the server
+   * withholds it so it cannot be read before answering -- so this is how the UI
+   * learns whether the choice was right and what the answer was.
+   */
+  async gradeQuizAnswer(input: {
+    gradingToken: string;
+    questionId: string;
+    questionText: string;
+    userAnswer: string;
+  }): Promise<{ isCorrect: boolean; correctAnswer: string }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/quiz/grade`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(input),
+    });
+    if (!response.ok) throw new Error('Failed to grade answer');
+    return response.json();
+  }
+
   async analyzeWithAI(
     text: string,
     options: { type?: AnalysisType; provider?: string; model?: string } = {}
