@@ -4,6 +4,8 @@ const {
     teachingObjectsToQuizContext,
     buildEvidenceMap,
     buildKnowledgeGraphRelationships,
+    isPlaceholderAbstract,
+    evidenceQuoteFromArticle,
 } = require('../../server/services/teachingObjectService');
 
 describe('teachingObjectService', () => {
@@ -147,5 +149,87 @@ describe('teachingObjectService', () => {
         expect(map.freshness.volatility).toBe('high');
         expect(map.freshness.confidenceDecay).toBeGreaterThan(0.25);
         expect(map.alerts.stale).toBe(true);
+    });
+});
+
+describe('evidence quote placeholder-abstract guard', () => {
+    // Found while triaging the guideline_uncertain review queue: a claim's stored
+    // evidence_quote read exactly "International audience" -- HAL's audience-scope
+    // metadata tag, stored verbatim as the abstract for some HAL-indexed preprints
+    // that OpenAlex mirrors. The caveat claim itself was reasonable; its cited
+    // "evidence" was a repository artifact, not supporting text. 17 claims across
+    // 3 source articles carried this exact string in production.
+    describe('isPlaceholderAbstract', () => {
+        test('flags known repository metadata tags', () => {
+            expect(isPlaceholderAbstract('International audience')).toBe(true);
+            expect(isPlaceholderAbstract('international audience')).toBe(true);
+            expect(isPlaceholderAbstract('  International audience  ')).toBe(true);
+        });
+
+        test('flags common "no abstract" placeholders', () => {
+            expect(isPlaceholderAbstract('No abstract')).toBe(true);
+            expect(isPlaceholderAbstract('No abstract available')).toBe(true);
+            expect(isPlaceholderAbstract('N/A')).toBe(true);
+        });
+
+        test('does not flag a real abstract that happens to be short', () => {
+            expect(isPlaceholderAbstract('Aspirin reduced mortality by 12% at 30 days.')).toBe(false);
+        });
+
+        test('does not flag empty or missing input as placeholder text', () => {
+            // Absence is handled by the caller (falls through to fallback), not here.
+            expect(isPlaceholderAbstract('')).toBe(false);
+            expect(isPlaceholderAbstract(null)).toBe(false);
+            expect(isPlaceholderAbstract(undefined)).toBe(false);
+        });
+    });
+
+    describe('evidenceQuoteFromArticle', () => {
+        test('uses a real abstract when present', () => {
+            const quote = evidenceQuoteFromArticle({ abstract: 'Aspirin reduced 30-day mortality.' }, 'fallback');
+            expect(quote).toBe('Aspirin reduced 30-day mortality.');
+        });
+
+        test('falls through to the fallback when the abstract is a placeholder', () => {
+            const quote = evidenceQuoteFromArticle({ abstract: 'International audience' }, 'Real fallback claim text');
+            expect(quote).toBe('Real fallback claim text');
+        });
+
+        test('returns null rather than a placeholder when the fallback is also a placeholder', () => {
+            const quote = evidenceQuoteFromArticle({ abstract: 'International audience' }, 'No abstract available');
+            expect(quote).toBeNull();
+        });
+
+        test('returns null rather than a placeholder when neither abstract nor fallback is usable', () => {
+            expect(evidenceQuoteFromArticle({}, '')).toBeNull();
+        });
+    });
+
+    test('buildPaperTeachingObject never stores a placeholder as a claim evidence_quote', () => {
+        const object = buildPaperTeachingObject({
+            topic: 'inflammatory bowel disease',
+            article: {
+                uid: 'openalex-w4293217392',
+                title: 'IBD classification definitions',
+                abstract: 'International audience',
+                pmid: null,
+            },
+            synopsisResult: {
+                provider: 'gemini',
+                model: 'flash',
+                timestamp: '2026-05-18T00:00:00.000Z',
+                audit: { fullTextCoverageRatio: 1 },
+                synopsis: {
+                    bottomLine: 'Do not assume these definitions improve patient outcomes without validation.',
+                    trustRating: 'MODERATE',
+                    quizFocusPoints: ['Understand the scope of these classification definitions.'],
+                },
+            },
+        });
+
+        const quotes = (object.claims || []).map((c) => c.evidenceQuote).filter(Boolean);
+        for (const quote of quotes) {
+            expect(quote.toLowerCase()).not.toBe('international audience');
+        }
     });
 });

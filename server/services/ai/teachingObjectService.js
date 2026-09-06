@@ -62,10 +62,32 @@ function claimVerificationForPaper(article = {}, studyType = 'other', synopsisRe
     };
 }
 
+// Some source APIs (OpenAlex mirroring HAL-indexed preprints, in particular)
+// populate `abstract` with a repository metadata tag instead of real text --
+// "International audience" is HAL's audience-scope tag, stored verbatim as the
+// abstract when the actual abstract was never captured. Found via a claim
+// whose stored evidence_quote read exactly "International audience": the
+// caveat text was reasonable, but its cited "evidence" was a metadata artifact,
+// not supporting content. A short denylist match is cheap and precise here --
+// broader heuristics (e.g. "is this text too generic") risk false positives on
+// real short abstracts.
+const PLACEHOLDER_ABSTRACTS = new Set([
+    'international audience',
+    'no abstract',
+    'no abstract available',
+    'n/a',
+    'not available',
+]);
+
+function isPlaceholderAbstract(text) {
+    return PLACEHOLDER_ABSTRACTS.has(String(text || '').trim().toLowerCase());
+}
+
 function evidenceQuoteFromArticle(article = {}, fallback = '') {
     const abstract = safeString(article.abstract || '', 900);
-    if (abstract) return abstract;
-    return safeString(fallback, 900) || null;
+    if (abstract && !isPlaceholderAbstract(abstract)) return abstract;
+    const fallbackText = safeString(fallback, 900);
+    return (fallbackText && !isPlaceholderAbstract(fallbackText)) ? fallbackText : null;
 }
 
 const CONCEPT_RELATIONS = {
@@ -205,7 +227,14 @@ function buildClaimAnchors(seed, candidates, {
             claimKey,
             ordinal: out.length,
             claimText,
-            evidenceQuote: safeString(candidate.evidenceQuote || evidenceQuoteFromArticle(article, claimText), 900),
+            // candidate.evidenceQuote can itself echo a placeholder abstract when the
+            // model was handed one to work from, so it gets the same guard as the
+            // fallback path rather than being trusted outright.
+            evidenceQuote: safeString(
+                (!isPlaceholderAbstract(candidate.evidenceQuote) && candidate.evidenceQuote)
+                    || evidenceQuoteFromArticle(article, claimText),
+                900,
+            ),
             sourcePath: candidate.sourcePath || 'article.abstract',
             articleUid: article.uid || article.pmid || article.doi || null,
             topic,
@@ -530,4 +559,6 @@ module.exports = {
     persistConsensusTeachingObject,
     teachingObjectsToQuizContext,
     buildEvidenceMap,
+    isPlaceholderAbstract,
+    evidenceQuoteFromArticle,
 };
