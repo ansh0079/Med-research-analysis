@@ -4,7 +4,7 @@ import { useAuth } from '@contexts/AuthContext';
 import { useTheme } from '@hooks';
 import api from '@services/api';
 import { NotificationBell } from '@components/collaboration/NotificationBell';
-import { LEARNING_SURFACES, WORKSPACE_TOOLS, learningSurfacesByGroup, promotedSurfaces } from '@config/learningSurfaces';
+import { LEARNING_SURFACES, WORKSPACE_TOOLS, STAFF_TOOLS, learningSurfacesByGroup, promotedSurfaces } from '@config/learningSurfaces';
 
 // Primary nav — always visible. Search leads; Review trails the promoted
 // learning surfaces so the topic journey sits next to the dashboard.
@@ -29,7 +29,6 @@ const TOOLS_ROUTES = [
 const ACCOUNT_NAV = [
   { to: '/analytics',   label: 'Analytics',       icon: 'fa-chart-bar',   color: 'text-slate-400'  },
   { to: '/history',     label: 'Search history',  icon: 'fa-history',     color: 'text-slate-400'  },
-  { to: '/knowledge',   label: 'Knowledge review',icon: 'fa-book-medical',color: 'text-emerald-400'},
   { to: '/settings',    label: 'Settings',        icon: 'fa-cog',         color: 'text-slate-400'  },
   { to: '/billing',     label: 'Billing & Plans', icon: 'fa-credit-card', color: 'text-indigo-400' },
 ] as const;
@@ -261,6 +260,12 @@ export const TopNav: React.FC = () => {
                   {isStaff && (
                     <>
                       <div className="my-1 border-t border-slate-100 dark:border-slate-700" />
+                      {STAFF_TOOLS.map(({ route, label, icon, color }) => (
+                        <button key={route} type="button" role="menuitem" onClick={() => { navigate(route); setUserMenuOpen(false); }}
+                          className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
+                          <i className={`fas ${icon} w-3.5 ${color}`} /> {label}
+                        </button>
+                      ))}
                       <button type="button" role="menuitem" onClick={() => { navigate('/admin/quality'); setUserMenuOpen(false); }}
                         className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
                         <i className="fas fa-clipboard-check w-3.5 text-violet-400" /> Quality review
@@ -369,10 +374,18 @@ export const TopNav: React.FC = () => {
                 <i className="fas fa-cog text-[10px]" /> Settings
               </button>
               {isStaff && (
-                <button type="button" onClick={() => { navigate('/admin/observability'); setMobileMenuOpen(false); }}
-                  className="nav-link w-full text-left">
-                  <i className="fas fa-chart-pie text-[10px]" /> Admin
-                </button>
+                <>
+                  {STAFF_TOOLS.map(({ route, label, icon, color }) => (
+                    <button key={route} type="button" onClick={() => { navigate(route); setMobileMenuOpen(false); }}
+                      className="nav-link w-full text-left">
+                      <i className={`fas ${icon} text-[10px] ${color}`} /> {label}
+                    </button>
+                  ))}
+                  <button type="button" onClick={() => { navigate('/admin/observability'); setMobileMenuOpen(false); }}
+                    className="nav-link w-full text-left">
+                    <i className="fas fa-chart-pie text-[10px]" /> Admin
+                  </button>
+                </>
               )}
               <button type="button" onClick={() => { logout(); setMobileMenuOpen(false); }}
                 className="nav-link w-full text-left text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30">

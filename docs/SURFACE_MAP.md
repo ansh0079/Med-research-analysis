@@ -11,10 +11,23 @@
 | Practice | `/practice` | — | Spaced-rep practice pool |
 | Clinical | `/cases` | yes | Adaptive multi-turn cases |
 | Clinical | `/case` | — | Single-case analysis brief |
-| Curate | `/knowledge` | staff | Claim/guideline review queue |
+| Curate | `/knowledge` | staff | Topic knowledge review queue |
+| Curate | `/guidelines` | staff | Guideline extraction review/approve queue (edit, mark-reviewed, mark-stale) |
 | Topic | `/topic/:slug` | — | Deep-link topic page (from search) |
+| Browse | `/guideline-library` | — | Read-only searchable guideline browser (general users) |
 
 Canonical config: `src/config/learningSurfaces.ts` — use for nav grouping.
+
+`/knowledge` and `/guidelines` looked like general-user routes (`ProtectedRoute`)
+while every backend endpoint they call requires `admin`/`curator`
+(`server/routes/search/topicKnowledge.js`, `server/routes/guidelines.js`).
+A signed-in non-staff user could reach both pages and see edit/approve buttons
+that silently 403'd. Both are now `RoleRoute allowedRoles={['admin','curator']}`
+and moved out of `WORKSPACE_TOOLS`/`ACCOUNT_NAV` into `STAFF_TOOLS`
+(`src/components/layout/TopNav.tsx`), alongside Quality review and Admin
+observability. `/guideline-library` — the read-only browse view — took the
+general-nav slot `/guidelines` used to occupy, since that is the one a normal
+user can actually act on.
 
 ## Backend service pairs (complementary, not duplicates)
 

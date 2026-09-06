@@ -88,7 +88,21 @@ export const WORKSPACE_TOOLS = [
   { route: '/grant', label: 'Grant writing', icon: 'fa-file-alt', color: 'text-amber-500' },
   { route: '/saved', label: 'Saved articles', icon: 'fa-bookmark', color: 'text-indigo-500' },
   { route: '/team', label: 'Team workspace', icon: 'fa-users', color: 'text-sky-500' },
-  { route: '/guidelines', label: 'Guidelines', icon: 'fa-book-medical', color: 'text-slate-500' },
+  // /guidelines is the curator review/approve queue (edit, mark-reviewed, mark-stale),
+  // gated server-side to admin/curator -- an ordinary user landing here saw action
+  // buttons that silently 403'd. /guideline-library is the read-only browse view
+  // every user can actually use, so that is what belongs in general-user nav.
+  { route: '/guideline-library', label: 'Guideline library', icon: 'fa-book-medical', color: 'text-slate-500' },
+] as const;
+
+/**
+ * Staff-only tools: every backend endpoint these call requires admin/curator, so
+ * they are kept out of general-user nav entirely rather than shown with buttons
+ * that silently 403 for anyone else. Rendered only when `isStaff` in TopNav.
+ */
+export const STAFF_TOOLS = [
+  { route: '/knowledge', label: 'Knowledge review', icon: 'fa-book-medical', color: 'text-emerald-400' },
+  { route: '/guidelines', label: 'Guideline review', icon: 'fa-clipboard-list', color: 'text-violet-400' },
 ] as const;
 
 /**

@@ -196,9 +196,9 @@ const AppContent: React.FC = () => {
             <Route path="/case"      element={<RouteErrorBoundary><ProtectedRoute><CaseModePage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/cases"    element={<RouteErrorBoundary><ProtectedRoute><AdaptiveCasePage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/grant"     element={<RouteErrorBoundary><ProtectedRoute><GrantWritingPage /></ProtectedRoute></RouteErrorBoundary>} />
-            <Route path="/knowledge" element={<RouteErrorBoundary><ProtectedRoute><KnowledgeReviewPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/knowledge" element={<RouteErrorBoundary><RoleRoute allowedRoles={['admin', 'curator']}><KnowledgeReviewPage /></RoleRoute></RouteErrorBoundary>} />
             <Route path="/guideline-library" element={<RouteErrorBoundary><ProtectedRoute><GuidelineBrowserPage /></ProtectedRoute></RouteErrorBoundary>} />
-            <Route path="/guidelines" element={<RouteErrorBoundary><ProtectedRoute><GuidelineReviewPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/guidelines" element={<RouteErrorBoundary><RoleRoute allowedRoles={['admin', 'curator']}><GuidelineReviewPage /></RoleRoute></RouteErrorBoundary>} />
             <Route path="/dashboard" element={<RouteErrorBoundary><ProtectedRoute><DashboardPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/learning" element={<RouteErrorBoundary><ProtectedRoute><LearningDashboardPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/learning/:id" element={<RouteErrorBoundary><ProtectedRoute><StudyRunPage /></ProtectedRoute></RouteErrorBoundary>} />
