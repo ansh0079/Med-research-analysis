@@ -51,6 +51,48 @@ function synopsisStyleCacheSuffix(synopsisStyleArm) {
     return synopsisStyleArmCacheSuffix(synopsisStyleArm?.armId);
 }
 
+/**
+ * How long a stored synopsis stays reusable. A published paper does not change,
+ * so the ceiling exists to let improving models eventually resupersede an old
+ * synopsis, not because the underlying evidence went stale.
+ */
+const SYNOPSIS_REUSE_MAX_AGE_DAYS = Number(process.env.SYNOPSIS_REUSE_MAX_AGE_DAYS) > 0
+    ? Number(process.env.SYNOPSIS_REUSE_MAX_AGE_DAYS)
+    : 90;
+
+/**
+ * Return a stored synopsis that is still young enough to serve, else null.
+ *
+ * Synopses are deliberately not personalised: the same paper yields the same
+ * summary for every reader, so one stored copy serves everyone. Regenerating
+ * per training stage / explanation preference / style arm multiplied identical
+ * work across users and was the single largest source of avoidable LLM spend --
+ * 3,754 synopses sat permanently in teaching_objects while the generator only
+ * ever consulted a 7-day Redis cache holding 8 of them.
+ *
+ * @param {object} db
+ * @param {string} articleId
+ * @param {{ maxAgeDays?: number, now?: number }} [opts]
+ */
+async function findReusableStoredSynopsis(db, articleId, { maxAgeDays = SYNOPSIS_REUSE_MAX_AGE_DAYS, now = Date.now() } = {}) {
+    if (!db?.getTeachingObjectForArticle || !articleId) return null;
+    const existing = await db.getTeachingObjectForArticle(articleId).catch(() => null);
+    const synopsis = existing?.payload?.synopsis;
+    // Search persistence writes `paper` rows with no synopsis (provider pubmed /
+    // openalex); those must not count as a hit.
+    if (!synopsis || typeof synopsis !== 'object' || Object.keys(synopsis).length === 0) return null;
+
+    const stamp = existing.payload?.generatedAt || existing.generatedAt || existing.updatedAt || null;
+    const generatedMs = stamp ? Date.parse(stamp) : NaN;
+    // An unparseable or missing timestamp is treated as too old to trust rather
+    // than reused forever.
+    if (!Number.isFinite(generatedMs)) return null;
+    const ageDays = (now - generatedMs) / 86400000;
+    if (ageDays > maxAgeDays) return null;
+
+    return { existing, synopsis, ageDays };
+}
+
 function getPaperSynopsisCacheKey(article = {}, selectedModel = 'unknown', trainingStage = null, promptVersion = null, preferenceSuffix = '') {
     const articleId = getPaperSynopsisArticleId(article);
     const stage = normalizeTrainingStage(trainingStage) || 'default';
@@ -100,6 +142,7 @@ async function runPaperSynopsisGeneration({
     topic = '',
     trainingStage = null,
     userId = null,
+    refresh = false,
 }) {
     const articleId = getPaperSynopsisArticleId(article);
     return withSpan('synopsis.paper.generate', {
@@ -118,6 +161,7 @@ async function runPaperSynopsisGeneration({
         sessionId,
         log,
         jobKey,
+        refresh,
         topic,
         trainingStage,
         articleId,
@@ -139,6 +183,7 @@ async function runPaperSynopsisGenerationInner({
     trainingStage,
     articleId,
     userId = null,
+    refresh = false,
 }) {
     if (!article || typeof article !== 'object' || !article.title) {
         throw new Error('article with title is required');
@@ -175,6 +220,37 @@ async function runPaperSynopsisGenerationInner({
         for (const candidateCacheKey of candidateCacheKeys) {
             const memCached = await withSpan('synopsis.cache_get', { 'cache.key': candidateCacheKey }, () => cache.getAsync(candidateCacheKey));
             if (memCached) return { ...memCached, cached: true, jobKey: jobKey || memCached.jobKey };
+        }
+    }
+
+    // Redis is a 7-day cache; teaching_objects is the durable store. Only Redis
+    // was ever consulted, so once a key aged out the synopsis was regenerated
+    // even though a permanent copy already existed -- and because the Redis key
+    // varies by training stage, explanation preferences and style arm, each
+    // reader paid for their own copy of an identical summary. Read the durable
+    // store here, before any generation work, and warm Redis from it.
+    if (!refresh) {
+        const reusable = await withSpan('synopsis.store_read_through', { 'article.id': articleId }, () => (
+            findReusableStoredSynopsis(db, articleId)
+        ));
+        if (reusable) {
+            const result = {
+                synopsis: reusable.synopsis,
+                articleId,
+                teachingObject: reusable.existing,
+                provider: reusable.existing.provider || null,
+                model: reusable.existing.model || null,
+                timestamp: reusable.existing.payload?.generatedAt || reusable.existing.generatedAt || null,
+                disclaimer: AI_DISCLAIMER,
+                jobKey,
+                cached: true,
+                reusedFromStore: true,
+            };
+            if (cache?.setAsync) {
+                await cache.setAsync(candidateCacheKeys[0], result, 7 * 86400).catch(() => {});
+            }
+            logger.debug({ articleId, ageDays: Math.round(reusable.ageDays) }, 'synopsis reused from durable store');
+            return result;
         }
     }
 
@@ -385,6 +461,8 @@ async function runPaperSynopsisGenerationInner({
 
 module.exports = {
     runPaperSynopsisGeneration,
+    findReusableStoredSynopsis,
+    SYNOPSIS_REUSE_MAX_AGE_DAYS,
     getPaperSynopsisArticleId,
     getPaperSynopsisCacheKey,
     synopsisStyleCacheSuffix,

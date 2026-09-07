@@ -24,6 +24,7 @@ const {
     synopsisRegenerationTargets,
 } = require('../../services/learningLoopSignalService');
 const { getOrEnqueueFullSynthesis, getOrEnqueuePaperSynopsis } = require('../../services/aiGenerationJobService');
+const { findReusableStoredSynopsis } = require('../../services/paperSynopsisCore');
 const { persistPaperTeachingObject, stableArticleUid } = require('../../services/teachingObjectService');
 const { getHierarchicalSynthesis, setHierarchicalSynthesis, needsRegeneration } = require('../../services/hierarchicalCacheService');
 const { streamSynthesisGeneration } = require('../../services/progressiveStreamingService');
@@ -409,15 +410,19 @@ function registerSynthesisRoutes(app, {
             // though thousands of synopses were already persisted and never read.
             if (!refresh) {
                 const articleUid = stableArticleUid(article);
-                const existing = articleUid
-                    ? await db.getTeachingObjectForArticle(articleUid).catch(() => null)
+                // Same age ceiling the core generator applies, so a synopsis
+                // does not become reusable forever just because it is fetched
+                // through this route rather than generated.
+                const reusable = articleUid
+                    ? await findReusableStoredSynopsis(db, articleUid).catch(() => null)
                     : null;
-                if (existing?.payload?.synopsis) {
+                if (reusable) {
                     return res.json({
-                        synopsis: existing.payload.synopsis,
+                        synopsis: reusable.synopsis,
                         articleId: articleUid,
-                        teachingObject: existing,
+                        teachingObject: reusable.existing,
                         cached: true,
+                        reusedFromStore: true,
                     });
                 }
             }

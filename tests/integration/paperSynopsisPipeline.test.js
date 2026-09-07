@@ -273,6 +273,48 @@ describe('paper synopsis pipeline (real modules, stubbed network)', () => {
         }
     });
 
+    test('a stored synopsis is reused instead of paying for a new one', async () => {
+        // The whole point of the durable read-through: no provider call at all.
+        const { fetchImpl, calls } = makeFetch();
+        const db = makeDb({
+            getTeachingObjectForArticle: async () => ({
+                provider: 'gemini',
+                model: 'gemini-2.5-flash',
+                generatedAt: new Date().toISOString(),
+                payload: {
+                    generatedAt: new Date().toISOString(),
+                    synopsis: { bottomLine: 'Stored synopsis for septic shock [1].' },
+                },
+            }),
+        });
+
+        const result = await runPaperSynopsisGeneration({
+            article: ARTICLE, serverConfig: serverConfig(), fetchImpl, cache: makeCache(), db, topic: 'sepsis corticosteroids',
+        });
+
+        expect(result.reusedFromStore).toBe(true);
+        expect(result.synopsis.bottomLine).toContain('Stored synopsis');
+        expect(calls.filter((c) => c.url.includes('anthropic') || c.url.includes('generativelanguage'))).toHaveLength(0);
+    });
+
+    test('refresh: true bypasses the store and regenerates', async () => {
+        const { fetchImpl, calls } = makeFetch();
+        const db = makeDb({
+            getTeachingObjectForArticle: async () => ({
+                provider: 'gemini',
+                generatedAt: new Date().toISOString(),
+                payload: { generatedAt: new Date().toISOString(), synopsis: { bottomLine: 'Stale stored copy.' } },
+            }),
+        });
+
+        const result = await runPaperSynopsisGeneration({
+            article: ARTICLE, serverConfig: serverConfig(), fetchImpl, cache: makeCache(), db, topic: 'sepsis corticosteroids', refresh: true,
+        });
+
+        expect(result.reusedFromStore).toBeUndefined();
+        expect(calls.filter((c) => c.url.includes('anthropic') || c.url.includes('generativelanguage')).length).toBeGreaterThan(0);
+    });
+
     test('throws when no provider is configured rather than returning an empty synopsis', async () => {
         const { fetchImpl } = makeFetch();
 
