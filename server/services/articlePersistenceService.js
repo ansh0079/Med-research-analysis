@@ -15,8 +15,8 @@
 
 const logger = require('../config/logger');
 
-/** Maximum articles to persist per search (top-ranked only). */
-const MAX_PERSIST = 10;
+/** Persist every article returned to the user (matches the search-observed payload cap). */
+const MAX_PERSIST = 24;
 
 /**
  * Normalise a topic string to a stable lowercase slug.
