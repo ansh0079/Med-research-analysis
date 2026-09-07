@@ -4,7 +4,7 @@ const logger = require('../../config/logger');
 const crypto = require('crypto');
 const { createAiService, getSharedAiService, PINNED_MODELS, TEMPERATURE, AI_DISCLAIMER } = require('../aiService');
 const { buildSynopsisPrompt } = require('../../prompts');
-const { persistPaperTeachingObject } = require('../teachingObjectService');
+const { persistPaperTeachingObject, paperTeachingObjectKey, DEFAULT_SYNOPSIS_STYLE_ARM } = require('../teachingObjectService');
 const { getProviderCandidates } = require('../../utils/aiProvider');
 const { enrichWithCachedFullText, enqueuePdfPreindex } = require('../pdfPreindexService');
 const { validateAiOutput } = require('../aiOutputValidation');
@@ -74,9 +74,21 @@ const SYNOPSIS_REUSE_MAX_AGE_DAYS = Number(process.env.SYNOPSIS_REUSE_MAX_AGE_DA
  * @param {string} articleId
  * @param {{ maxAgeDays?: number, now?: number }} [opts]
  */
-async function findReusableStoredSynopsis(db, articleId, { maxAgeDays = SYNOPSIS_REUSE_MAX_AGE_DAYS, now = Date.now() } = {}) {
-    if (!db?.getTeachingObjectForArticle || !articleId) return null;
-    const existing = await db.getTeachingObjectForArticle(articleId).catch(() => null);
+async function findReusableStoredSynopsis(db, articleId, { maxAgeDays = SYNOPSIS_REUSE_MAX_AGE_DAYS, now = Date.now(), styleArm = null } = {}) {
+    if (!articleId) return null;
+    // The default arm keeps the historic `paper:<uid>` key, so it is fetched by
+    // article. Experiment arms live under their own key and must be fetched by
+    // it -- getTeachingObjectForArticle would otherwise return whichever arm was
+    // written most recently.
+    const arm = String(styleArm || '').trim();
+    const useArmKey = arm && arm !== DEFAULT_SYNOPSIS_STYLE_ARM;
+    const existing = useArmKey
+        ? (db?.getTeachingObjectByKey
+            ? await db.getTeachingObjectByKey(paperTeachingObjectKey(articleId, arm)).catch(() => null)
+            : null)
+        : (db?.getTeachingObjectForArticle
+            ? await db.getTeachingObjectForArticle(articleId).catch(() => null)
+            : null);
     const synopsis = existing?.payload?.synopsis;
     // Search persistence writes `paper` rows with no synopsis (provider pubmed /
     // openalex); those must not count as a hit.
@@ -231,7 +243,7 @@ async function runPaperSynopsisGenerationInner({
     // store here, before any generation work, and warm Redis from it.
     if (!refresh) {
         const reusable = await withSpan('synopsis.store_read_through', { 'article.id': articleId }, () => (
-            findReusableStoredSynopsis(db, articleId)
+            findReusableStoredSynopsis(db, articleId, { styleArm: synopsisStyleArm?.armId || null })
         ));
         if (reusable) {
             const result = {
@@ -245,11 +257,35 @@ async function runPaperSynopsisGenerationInner({
                 jobKey,
                 cached: true,
                 reusedFromStore: true,
+                banditMeta: synopsisStyleArm ? {
+                    policyType: POLICY_SYNOPSIS_STYLE,
+                    armId: synopsisStyleArm.armId,
+                    scopeKey: synopsisStyleArm.scopeKey,
+                } : null,
             };
             if (cache?.setAsync) {
                 await cache.setAsync(candidateCacheKeys[0], result, 7 * 86400).catch(() => {});
             }
-            logger.debug({ articleId, ageDays: Math.round(reusable.ageDays) }, 'synopsis reused from durable store');
+            // Record the pull even though nothing was generated. The style
+            // experiment needs 20 global pulls before it starts exploring, and
+            // reuse serves the overwhelming majority of views -- counting only
+            // generations would starve the bandit and it would never leave the
+            // default arm.
+            if (userId && db?.insertPersonalizationDecision && synopsisStyleArm?.armId) {
+                await db.insertPersonalizationDecision({
+                    userId,
+                    policyType: POLICY_SYNOPSIS_STYLE,
+                    armId: synopsisStyleArm.armId,
+                    topic,
+                    normalizedTopic: typeof db.normalizeTopic === 'function' ? db.normalizeTopic(topic) : String(topic || '').toLowerCase(),
+                    articleUid: articleId,
+                    propensity: synopsisStyleArm.propensity ?? null,
+                    scopeKey: synopsisStyleArm.scopeKey || 'global',
+                }).catch((err) => {
+                    logger.debug({ err, articleId }, 'insertPersonalizationDecision (reuse) failed');
+                });
+            }
+            logger.debug({ articleId, ageDays: Math.round(reusable.ageDays), armId: synopsisStyleArm?.armId || null }, 'synopsis reused from durable store');
             return result;
         }
     }
@@ -434,7 +470,7 @@ async function runPaperSynopsisGenerationInner({
         await db.logEvent('synopsis', sessionId, { articleId, userId: userId || undefined }).catch((err) => { logger.warn({ err }, 'logEvent failed'); return null; });
     }
     await withSpan('synopsis.persist_teaching_object', { 'article.id': articleId, 'synopsis.topic': topic }, () => (
-        persistPaperTeachingObject({ db, article, synopsisResult: result, topic }).catch((err) => {
+        persistPaperTeachingObject({ db, article, synopsisResult: result, topic, styleArm: synopsisStyleArm?.armId || null }).catch((err) => {
             log?.warn?.({ err, articleId }, 'Paper teaching object persistence skipped');
         })
     ));

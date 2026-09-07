@@ -287,13 +287,35 @@ function inferStudyType(article = {}, synopsis = {}) {
     return 'other';
 }
 
-function buildPaperTeachingObject({ article, synopsisResult, topic = '' }) {
+/**
+ * Default synopsis style arm. Its objects keep the historic `paper:<uid>` key so
+ * every existing row and every consumer of getTeachingObjectForArticle keeps
+ * working; only non-default experiment arms get a suffixed key of their own.
+ */
+const DEFAULT_SYNOPSIS_STYLE_ARM = 'bottom_line_first';
+
+/**
+ * Key a paper synopsis, scoped by style arm when the style bandit is exploring.
+ *
+ * One stored copy per (article, arm) rather than per (article, reader): the
+ * bandit only explores off the default arm ~10% of the time, so in practice
+ * almost every article stores a single object, while the experiment still sees
+ * genuine variation across users.
+ */
+function paperTeachingObjectKey(articleUid, styleArm = null) {
+    const arm = String(styleArm || '').trim();
+    return (!arm || arm === DEFAULT_SYNOPSIS_STYLE_ARM)
+        ? `paper:${articleUid}`
+        : `paper:${articleUid}:style:${arm}`;
+}
+
+function buildPaperTeachingObject({ article, synopsisResult, topic = '', styleArm = null }) {
     const synopsis = synopsisResult?.synopsis || {};
     const articleUid = stableArticleUid(article);
     const studyType = inferStudyType(article, synopsis);
     const title = article.title || synopsis.title || articleUid;
     const generatedAt = synopsisResult?.timestamp || new Date().toISOString();
-    const objectKey = `paper:${articleUid}`;
+    const objectKey = paperTeachingObjectKey(articleUid, styleArm || synopsisResult?.banditMeta?.armId || null);
     const confidence = synopsis.trustRating === 'HIGH' ? 0.85
         : synopsis.trustRating === 'MODERATE' ? 0.68
             : synopsis.trustRating === 'LOW' ? 0.45 : 0.3;
@@ -446,9 +468,9 @@ function buildConsensusTeachingObject({ topic, consensusSynopsis, articles = [] 
     };
 }
 
-async function persistPaperTeachingObject({ db, article, synopsisResult, topic = '' }) {
+async function persistPaperTeachingObject({ db, article, synopsisResult, topic = '', styleArm = null }) {
     if (!db?.upsertTeachingObject || !article || !synopsisResult?.synopsis) return null;
-    return db.upsertTeachingObject(buildPaperTeachingObject({ article, synopsisResult, topic }));
+    return db.upsertTeachingObject(buildPaperTeachingObject({ article, synopsisResult, topic, styleArm }));
 }
 
 async function persistConsensusTeachingObject({ db, topic, consensusSynopsis, articles = [] }) {
@@ -562,6 +584,8 @@ function buildEvidenceMap({ topic, topicKnowledge = null, articles = [], teachin
 
 module.exports = {
     CLAIM_VERIFICATION,
+    DEFAULT_SYNOPSIS_STYLE_ARM,
+    paperTeachingObjectKey,
     stableArticleUid,
     stableClaimKey,
     claimVerificationForPaper,

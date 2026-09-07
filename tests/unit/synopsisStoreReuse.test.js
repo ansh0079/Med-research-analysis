@@ -15,6 +15,10 @@ const {
     findReusableStoredSynopsis,
     SYNOPSIS_REUSE_MAX_AGE_DAYS,
 } = require('../../server/services/ai/paperSynopsisCore');
+const {
+    paperTeachingObjectKey,
+    DEFAULT_SYNOPSIS_STYLE_ARM,
+} = require('../../server/services/ai/teachingObjectService');
 
 const NOW = Date.parse('2026-09-07T12:00:00.000Z');
 const daysAgo = (n) => new Date(NOW - n * 86400000).toISOString();
@@ -115,5 +119,58 @@ describe('findReusableStoredSynopsis', () => {
     test('the ceiling is configurable and sane by default', () => {
         expect(SYNOPSIS_REUSE_MAX_AGE_DAYS).toBeGreaterThan(0);
         expect(Number.isFinite(SYNOPSIS_REUSE_MAX_AGE_DAYS)).toBe(true);
+    });
+});
+
+describe('per-style-arm storage', () => {
+    // The style A/B needs genuine variation across readers, but regenerating per
+    // reader is what made synopses expensive. One stored copy per (article, arm)
+    // gives the experiment real variance at ~1 extra generation per explored
+    // arm, not one per user. The bandit only explores off the default ~10% of
+    // the time, so most articles still store exactly one object.
+    test('the default arm keeps the historic key, so existing rows still resolve', () => {
+        expect(paperTeachingObjectKey('pmid-1')).toBe('paper:pmid-1');
+        expect(paperTeachingObjectKey('pmid-1', DEFAULT_SYNOPSIS_STYLE_ARM)).toBe('paper:pmid-1');
+        expect(paperTeachingObjectKey('pmid-1', null)).toBe('paper:pmid-1');
+    });
+
+    test('experiment arms get their own key', () => {
+        expect(paperTeachingObjectKey('pmid-1', 'narrative')).toBe('paper:pmid-1:style:narrative');
+        expect(paperTeachingObjectKey('pmid-1', 'pico_structured')).toBe('paper:pmid-1:style:pico_structured');
+    });
+
+    test('the default arm is fetched by article, not by arm key', async () => {
+        const db = {
+            getTeachingObjectForArticle: jest.fn().mockResolvedValue(storedSynopsis()),
+            getTeachingObjectByKey: jest.fn().mockResolvedValue(null),
+        };
+        const result = await findReusableStoredSynopsis(db, 'pmid-1', { now: NOW, styleArm: DEFAULT_SYNOPSIS_STYLE_ARM });
+        expect(result).toBeTruthy();
+        expect(db.getTeachingObjectForArticle).toHaveBeenCalledWith('pmid-1');
+        expect(db.getTeachingObjectByKey).not.toHaveBeenCalled();
+    });
+
+    test('an experiment arm is fetched by its own key', async () => {
+        // getTeachingObjectForArticle returns whichever arm was written most
+        // recently, so an experiment arm must not be looked up that way -- a
+        // reader assigned `narrative` would otherwise be served another arm.
+        const db = {
+            getTeachingObjectForArticle: jest.fn().mockResolvedValue(storedSynopsis()),
+            getTeachingObjectByKey: jest.fn().mockResolvedValue(storedSynopsis({
+                payload: { synopsis: { bottomLine: 'narrative variant' }, generatedAt: daysAgo(1) },
+            })),
+        };
+        const result = await findReusableStoredSynopsis(db, 'pmid-1', { now: NOW, styleArm: 'narrative' });
+        expect(db.getTeachingObjectByKey).toHaveBeenCalledWith('paper:pmid-1:style:narrative');
+        expect(db.getTeachingObjectForArticle).not.toHaveBeenCalled();
+        expect(result.synopsis.bottomLine).toBe('narrative variant');
+    });
+
+    test('a missing variant returns null so that arm gets generated once', async () => {
+        const db = {
+            getTeachingObjectForArticle: jest.fn().mockResolvedValue(storedSynopsis()),
+            getTeachingObjectByKey: jest.fn().mockResolvedValue(null),
+        };
+        expect(await findReusableStoredSynopsis(db, 'pmid-1', { now: NOW, styleArm: 'teaching_points' })).toBeNull();
     });
 });
