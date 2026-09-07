@@ -70,38 +70,48 @@ function buildConflictMatrixBlock(conflictMatrix = []) {
 }
 
 function buildSourceEvidenceBlock(articles = [], { max = 15, includeFullText = true, variant = 'default' } = {}) {
+    // Token budget: cap each article's contribution so a 15-study synthesis prompt
+    // stays within model limits. Abstracts and each full-text section are truncated;
+    // the per-article total is capped so one large full-text paper can't crowd out
+    // the rest of the bundle.
+    const isSynthesis = variant === 'synthesis';
+    const ABSTRACT_CAP = isSynthesis ? 1400 : 900;
+    const SECTION_CAP = isSynthesis ? 900 : 1200;
+    const FULLTEXT_TOTAL_CAP = isSynthesis ? 2400 : 4800;
     return (Array.isArray(articles) ? articles : []).slice(0, max).map((a, i) => {
         const year = a.pubdate?.split(' ')[0] || a.year || 'unknown';
         const journal = a.source || a.journal || 'unknown';
         let fullTextBlock = '';
         if (includeFullText && a._fullTextIndexed && a._fullTextSections) {
             const sections = a._fullTextSections;
-            const ordered = variant === 'synthesis'
-                ? ['methods', 'results', 'discussion', 'conclusion']
-                : ['methods', 'results', 'discussion', 'conclusion'];
+            const ordered = ['methods', 'results', 'discussion', 'conclusion'];
             const parts = [];
+            let fullTextChars = 0;
             for (const key of ordered) {
                 const text = sections[key];
-                if (text && String(text).trim().length > 20) {
-                    parts.push(`${key.toUpperCase()}: ${String(text).slice(0, 1200)}`);
+                if (text && String(text).trim().length > 20 && fullTextChars < FULLTEXT_TOTAL_CAP) {
+                    const room = Math.min(SECTION_CAP, FULLTEXT_TOTAL_CAP - fullTextChars);
+                    const excerpt = String(text).slice(0, room);
+                    parts.push(`${key.toUpperCase()}: ${excerpt}`);
+                    fullTextChars += excerpt.length;
                 }
             }
             if (parts.length) {
-                fullTextBlock = variant === 'synthesis'
+                fullTextBlock = isSynthesis
                     ? `\nFull-text excerpts (${a._fullTextWordCount || '?'} words total):\n${parts.join('\n')}`
                     : `\nFull-text excerpts:\n${parts.join('\n')}`;
             }
         }
-        const label = variant === 'synthesis' ? 'STUDY' : 'SOURCE';
-        if (variant === 'synthesis') {
+        const label = isSynthesis ? 'STUDY' : 'SOURCE';
+        if (isSynthesis) {
             const citations = a.pmcrefcount ?? a.citationCount ?? 'unknown';
             const studyType = a.pubtype?.[0] || 'Study';
             return `[${label} ${i + 1}]
-Title: ${a.title}
+Title: ${safeText(a.title, 300)}
 Journal: ${journal} (${year})
 Study type: ${studyType}
 Citations: ${citations}
-Abstract: ${a.abstract || 'No abstract provided.'}${fullTextBlock}`;
+Abstract: ${safeText(a.abstract, ABSTRACT_CAP) || 'No abstract provided.'}${fullTextBlock}`;
         }
         return `[${label} ${i + 1}]
 Title: ${safeText(a.title, 300)}
