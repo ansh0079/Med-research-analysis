@@ -262,7 +262,8 @@ function registerSynthesisRoutes(app, {
     // ─────────────────────────────────────────────────────────────────
     // POST /api/ai/synopsis
     // Single-article structured synopsis — returns the 13-field schema.
-    // Cached 24 hours. Both sync and async go through getOrEnqueuePaperSynopsis.
+    // Cached in Redis (7 days) and persisted to the durable job store. Both sync and
+    // async go through getOrEnqueuePaperSynopsis.
     // Use body.async=true to queue a durable job (poll GET /api/ai/jobs/:jobKey);
     // default/async=false runs forceSync inline and returns the result directly.
     // ─────────────────────────────────────────────────────────────────

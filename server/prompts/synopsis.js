@@ -133,17 +133,19 @@ function buildSynopsisPrompt(article, context = {}) {
     const explanationPreferencesText = formatExplanationPreferences(context.explanationPreferences);
     const styleInstruction = formatSynopsisStyleInstruction(context.synopsisStyle);
 
-    // Build full-text block when available (same section order as synthesis prompt)
+    // Build full-text block when available (same section order as synthesis prompt).
+    // Capped to bound token spend — results carry the numerical signal a synopsis needs,
+    // so they get the largest share; the rest are trimmed hard.
     let fullTextBlock = '';
     if (article._fullTextIndexed && article._fullTextSections) {
         const sections = article._fullTextSections;
         const ordered = ['methods', 'results', 'discussion', 'conclusion'];
         const parts = [];
-        const sectionLimits = { methods: 5000, results: 8000, discussion: 5000, conclusion: 3000 };
+        const sectionLimits = { methods: 1500, results: 2500, discussion: 1500, conclusion: 1000 };
         for (const key of ordered) {
             const text = sections[key];
             if (text && String(text).trim().length > 20) {
-                parts.push(`${key.toUpperCase()}: ${String(text).slice(0, sectionLimits[key] || 4000)}`);
+                parts.push(`${key.toUpperCase()}: ${String(text).slice(0, sectionLimits[key] || 1500)}`);
             }
         }
         if (parts.length > 0) {
@@ -169,7 +171,7 @@ Study type (pubtype): ${pubtypes}
 DOI: ${article.doi || 'Not available'}
 
 Abstract:
-${article.abstract || '[No abstract available — extract what you can from the title alone]'}${fullTextBlock}
+${String(article.abstract || '[No abstract available — extract what you can from the title alone]').slice(0, 2400)}${fullTextBlock}
 
 ${guidelines.length > 0 ? `Guideline context for orientation (do not treat as this paper's findings; use it only to frame applicability and practice implications):
 ${buildGuidelineContextBlock(guidelines, { variant: 'synopsis' })}` : ''}

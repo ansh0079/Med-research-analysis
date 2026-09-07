@@ -170,4 +170,23 @@ async function persistSearchedArticles(db, articles, query) {
     );
 }
 
-module.exports = { persistSearchedArticles };
+/**
+ * Persist externally fetched source papers (e.g. the PubMed guideline publications
+ * used during guideline discovery) into article_cache so the underlying evidence is
+ * retained, not just the extracted recommendations. Fire-and-forget safe.
+ *
+ * @param {object}   db
+ * @param {object[]} articles - raw fetched articles (uid/pmid, title, abstract, ...)
+ */
+async function persistSourceArticles(db, articles) {
+    if (!db?.run || !Array.isArray(articles) || !articles.length) return { persisted: 0 };
+    const toStore = articles.filter((a) => a && (a.uid || a.pmid)).slice(0, MAX_PERSIST);
+    await Promise.allSettled(toStore.map((article) => cacheArticle(db, {
+        ...article,
+        uid: article.uid || article.pmid,
+        _source: article._source || 'guideline_source',
+    })));
+    return { persisted: toStore.length };
+}
+
+module.exports = { persistSearchedArticles, persistSourceArticles };

@@ -240,6 +240,14 @@ async function discoverGuidelinesForTopic(topic, { db, serverConfig, aiService }
       }
       const pmids = summaries.map(s => s.uid).filter(Boolean);
       const articles = await fetchAbstracts(pmids, ncbiKey, ncbiEmail);
+      // Persist the raw guideline source papers so the underlying evidence is stored,
+      // not just the extracted recommendations.
+      try {
+        const { persistSourceArticles } = require('./articlePersistenceService');
+        void persistSourceArticles(db, articles.map(a => ({ ...a, _source: 'pubmed_guideline' })));
+      } catch (err) {
+        logger.debug({ err, topic }, '[GuidelineDiscovery] source article persistence skipped');
+      }
       const withAbstracts = articles.filter(a => a.abstract && a.abstract.length > 50);
       if (!withAbstracts.length) {
         logger.info({ topic }, '[GuidelineDiscovery] No abstracts available for guideline articles');

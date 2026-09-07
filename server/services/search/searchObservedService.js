@@ -24,6 +24,13 @@ function compactArticle(article = {}) {
         pubdate: article.pubdate || null,
         pubtype: Array.isArray(article.pubtype) ? article.pubtype.slice(0, 8) : [],
         authors: Array.isArray(article.authors) ? article.authors.slice(0, 12) : [],
+        mesh: Array.isArray(article.mesh) ? article.mesh.slice(0, 16)
+            : Array.isArray(article.meshTerms) ? article.meshTerms.slice(0, 16)
+            : Array.isArray(article.mesh_terms) ? article.mesh_terms.slice(0, 16)
+            : [],
+        citationCount: article.citationCount ?? article.citations ?? null,
+        openAccess: article.openAccess ?? null,
+        pmcid: article.pmcid ?? null,
         pmcrefcount: article.pmcrefcount ?? null,
         isFree: article.isFree ?? null,
         _quality: article._quality || null,

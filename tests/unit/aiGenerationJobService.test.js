@@ -185,7 +185,7 @@ describe('aiGenerationJobService', () => {
             audit: { provider: 'gemini', model: 'gemini-2.5-flash' },
         });
         const db = {
-            getAiGenerationJobByKey: jest.fn(),
+            getAiGenerationJobByKey: jest.fn().mockResolvedValue(null),
             createAiGenerationJob: jest.fn().mockResolvedValue({ inserted: true }),
             markAiGenerationJobRunning: jest.fn(),
             completeAiGenerationJob: jest.fn().mockResolvedValue({}),
@@ -219,6 +219,38 @@ describe('aiGenerationJobService', () => {
             jobType: 'paper_synopsis',
         }));
         expect(db.completeAiGenerationJob).toHaveBeenCalled();
+    });
+
+    test('forceSync serves a prior durable synopsis instead of re-calling the LLM', async () => {
+        const db = {
+            getAiGenerationJobByKey: jest.fn().mockResolvedValue({
+                status: 'completed',
+                resultPayload: { synopsis: { clinicalBottomLine: 'Cached answer' }, articleId: 'a-1' },
+            }),
+            createAiGenerationJob: jest.fn(),
+            markAiGenerationJobRunning: jest.fn(),
+            completeAiGenerationJob: jest.fn(),
+            failAiGenerationJob: jest.fn(),
+        };
+
+        const result = await getOrEnqueuePaperSynopsis({
+            db,
+            article: { uid: 'a-1', title: 'Paper' },
+            provider: 'auto',
+            serverConfig: { keys: { gemini: 'test' } },
+            fetchImpl: jest.fn(),
+            cache: {},
+            forceSync: true,
+            topic: 'sepsis',
+        });
+
+        expect(result).toMatchObject({
+            status: 'completed',
+            cached: true,
+            synopsis: { clinicalBottomLine: 'Cached answer' },
+        });
+        expect(runPaperSynopsisGeneration).not.toHaveBeenCalled();
+        expect(db.createAiGenerationJob).not.toHaveBeenCalled();
     });
 
     test('paper synopsis job keys include prompt version and preference suffix', () => {

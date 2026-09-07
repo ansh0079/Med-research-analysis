@@ -21,7 +21,7 @@ describe('article synopsis prompt', () => {
     });
 
     test('includes guideline and topic knowledge context and larger full-text excerpts', () => {
-        const longResults = 'mortality benefit '.repeat(600);
+        const longResults = 'mortality benefit '.repeat(600); // ~10800 chars, exceeds the 2500 results cap
         const prompt = buildSynopsisPrompt({
             title: 'Trial of intervention in COPD',
             abstract: 'Trial abstract.',
@@ -51,7 +51,9 @@ describe('article synopsis prompt', () => {
         expect(prompt).toContain('GOLD');
         expect(prompt).toContain('Curated topic knowledge');
         expect(prompt).toContain('NIV is a central context point');
-        expect(prompt).toContain(longResults.slice(0, 7000));
+        // Results excerpt is capped to bound token spend.
+        expect(prompt).toContain(longResults.slice(0, 2500));
+        expect(prompt).not.toContain(longResults.slice(0, 2501));
     });
 
     test('includes learner explanation preferences when provided', () => {

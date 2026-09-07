@@ -638,6 +638,14 @@ async function getOrEnqueuePaperSynopsis({
     // forceSync (or no durable job store): always run inline and return the result —
     // callers do not need to poll GET /api/ai/jobs/:jobKey.
     if (forceSync || !hasDurableJobStore(db)) {
+        // Durable read fallback: a prior inline/async synopsis for this exact key
+        // survives Redis eviction, so serve it instead of paying for another LLM call.
+        if (hasDurableJobStore(db)) {
+            const prior = await db.getAiGenerationJobByKey(jobKey).catch(() => null);
+            if (prior?.status === 'completed' && prior.resultPayload?.synopsis) {
+                return { status: 'completed', jobKey, ...prior.resultPayload, cached: true };
+            }
+        }
         try {
             const result = await runPaperSynopsisGeneration({
                 article,
