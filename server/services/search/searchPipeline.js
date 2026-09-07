@@ -466,7 +466,18 @@ function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMes
         if (isStrictMode) {
             const types = (Array.isArray(article.pubtype) ? article.pubtype : []).map((t) => (t || '').toLowerCase());
             const ebm = article._ebmScore ?? 0;
-            if (ebm < 5 && !types.some((t) => [...STRICT_PUB_TYPES].some((st) => t.includes(st)))) return false;
+            // Same rule as the citation-count check above: absent data is not
+            // negative evidence. Only PubMed supplies publication types --
+            // OpenAlex reports `type: 'article'` for literally everything,
+            // including EASL practice guidelines, so it is a document-format
+            // taxonomy, not an evidence one and is deliberately not mapped to
+            // pubtype. Excluding on missing types dropped *every* OpenAlex
+            // result in strict mode, so a user searching OpenAlex with strict
+            // on got a silent empty page -- including the practice guidelines a
+            // strict search is most meant to surface. Articles with no type
+            // data still have to clear every other filter above.
+            const hasTypeData = types.length > 0;
+            if (ebm < 5 && hasTypeData && !types.some((t) => [...STRICT_PUB_TYPES].some((st) => t.includes(st)))) return false;
         }
         return true;
     });

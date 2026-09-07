@@ -156,6 +156,68 @@ describe('searchPipeline helpers', () => {
         expect(filtered[0].title).toMatch(/SGLT2/i);
     });
 
+    describe('filterRelevantArticles strict mode and sources without publication types', () => {
+        // Reported by a user: searching "Hepatorenal syndrome diagnosis and
+        // management" with OpenAlex selected and specificity=strict returned a
+        // silent empty page. Strict required a matching pubtype, _ebmScore is
+        // never assigned in the search path (so it is always 0), and the
+        // OpenAlex mapper sets no pubtype -- OpenAlex reports type 'article'
+        // for everything, including EASL practice guidelines, so it is a
+        // document-format taxonomy and deliberately not mapped. Result: every
+        // OpenAlex article was dropped in strict mode, deterministically.
+        const openAlexArticle = (over = {}) => ({
+            title: 'Hepatorenal syndrome: pathophysiology, diagnosis, and management',
+            abstract: 'Review of hepatorenal syndrome diagnosis and management in cirrhosis.',
+            pubdate: '2023',
+            pmcrefcount: 120,
+            _source: 'openalex',
+            ...over,
+        });
+        const strictOpts = {
+            query: 'Hepatorenal syndrome diagnosis and management',
+            specificity: 'strict',
+        };
+
+        test('keeps articles from a source that publishes no publication types', () => {
+            const filtered = filterRelevantArticles([openAlexArticle()], strictOpts);
+            expect(filtered).toHaveLength(1);
+        });
+
+        test('an empty pubtype array counts as no type data, not a failed match', () => {
+            const filtered = filterRelevantArticles([openAlexArticle({ pubtype: [] })], strictOpts);
+            expect(filtered).toHaveLength(1);
+        });
+
+        test('still excludes weak publication types when the source does supply them', () => {
+            // The strict filter must keep working for PubMed, which does report
+            // publication types -- the fix is about absent data, not about
+            // weakening strict mode where the data exists.
+            const filtered = filterRelevantArticles(
+                [openAlexArticle({ pubtype: ['Editorial'], _source: 'pubmed' })],
+                strictOpts,
+            );
+            expect(filtered).toHaveLength(0);
+        });
+
+        test('still admits strong publication types when the source supplies them', () => {
+            const filtered = filterRelevantArticles(
+                [openAlexArticle({ pubtype: ['Randomized Controlled Trial'], _source: 'pubmed' })],
+                strictOpts,
+            );
+            expect(filtered).toHaveLength(1);
+        });
+
+        test('type-less articles still have to clear the other filters', () => {
+            // Admitting them for lack of type data must not make them immune to
+            // the off-topic check.
+            const filtered = filterRelevantArticles(
+                [openAlexArticle({ title: 'Zebrafish fin regeneration', abstract: 'In vitro model' })],
+                strictOpts,
+            );
+            expect(filtered).toHaveLength(0);
+        });
+    });
+
     test('filterRelevantArticles keeps trial-alias hits with historic title wording', () => {
         const articles = [
             {
