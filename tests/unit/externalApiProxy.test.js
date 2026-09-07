@@ -65,6 +65,34 @@ describe('externalApiProxy', () => {
               uids: ['12345', '67890'],
             },
           }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          text: async () => `
+            <PubmedArticleSet>
+              <PubmedArticle>
+                <MedlineCitation>
+                  <PMID>12345</PMID>
+                  <Article>
+                    <Abstract>
+                      <AbstractText>This is a sufficiently long abstract for article one about diabetes therapy outcomes in adults.</AbstractText>
+                    </Abstract>
+                  </Article>
+                </MedlineCitation>
+              </PubmedArticle>
+              <PubmedArticle>
+                <MedlineCitation>
+                  <PMID>67890</PMID>
+                  <Article>
+                    <Abstract>
+                      <AbstractText Label="BACKGROUND">Context for the second paper that is long enough to keep.</AbstractText>
+                      <AbstractText Label="CONCLUSIONS">A conclusion that is long enough to count as usable abstract text.</AbstractText>
+                    </Abstract>
+                  </Article>
+                </MedlineCitation>
+              </PubmedArticle>
+            </PubmedArticleSet>
+          `,
         });
 
       const articles = await proxy.pubmedSearch('diabetes therapy', { maxResults: 10 });
@@ -78,6 +106,7 @@ describe('externalApiProxy', () => {
         doi: '10.1234/test',
         _source: 'pubmed',
       });
+      expect(articles[0].abstract).toContain('diabetes therapy outcomes');
       expect(articles[1]).toMatchObject({
         uid: 'pubmed-67890',
         title: 'Test Article Two',
@@ -87,6 +116,33 @@ describe('externalApiProxy', () => {
         doi: '10.5678/other',
         _source: 'pubmed',
       });
+      expect(articles[1].abstract).toContain('BACKGROUND:');
+      expect(articles[1].abstract).toContain('CONCLUSIONS:');
+      expect(mockFetch.mock.calls[2][0]).toContain('efetch.fcgi');
+      expect(mockFetch.mock.calls[2][0]).toContain('retmode=xml');
+    });
+
+    test('still returns PubMed articles when abstract efetch fails', async () => {
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ esearchresult: { idlist: ['12345'] } }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            result: {
+              12345: { title: 'Title only paper', authors: [], pubdate: '2023', source: 'JAMA' },
+              uids: ['12345'],
+            },
+          }),
+        })
+        .mockResolvedValueOnce({ ok: false, status: 500, text: async () => '' });
+
+      const articles = await proxy.pubmedSearch('title only', { maxResults: 5 });
+      expect(articles).toHaveLength(1);
+      expect(articles[0].title).toBe('Title only paper');
+      expect(articles[0].abstract).toBeUndefined();
     });
 
     test('returns empty array when PubMed has no results', async () => {

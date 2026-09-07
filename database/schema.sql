@@ -704,6 +704,14 @@ CREATE TABLE IF NOT EXISTS policy_serving_state (
     created_at TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS bandit_shared_models (
+    cache_key TEXT PRIMARY KEY,
+    policy_type TEXT NOT NULL,
+    model_json TEXT NOT NULL,
+    fitted_at TEXT NOT NULL,
+    expires_at TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS pico_extractions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     article_id TEXT NOT NULL UNIQUE,

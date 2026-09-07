@@ -55,8 +55,8 @@ describe('personalizationBanditService', () => {
         const db = {
             ensurePersonalizationArms: jest.fn().mockResolvedValue(true),
             listPersonalizationArmStates: jest.fn().mockResolvedValue([
-                { arm_id: 'review', alpha: 4, beta: 1, pulls: 10 },
-                { arm_id: 'explore', alpha: 1, beta: 3, pulls: 10 },
+                { arm_id: 'review_due_first', alpha: 4, beta: 1, pulls: 12 },
+                { arm_id: 'explore_by_gap', alpha: 1, beta: 3, pulls: 12 },
             ]),
             insertPersonalizationDecision: jest.fn().mockResolvedValue({ id: 1 }),
         };
@@ -66,8 +66,36 @@ describe('personalizationBanditService', () => {
         ];
         const adjusted = await applyRecommendationBandit(db, 'u1', recs);
         expect(adjusted[0].banditArmId).toBeDefined();
-        expect(RECOMMENDATION_ARM_BY_TYPE.review).toBe('review');
+        expect(RECOMMENDATION_ARM_BY_TYPE.review).toBe('review_due_first');
         expect(db.insertPersonalizationDecision).toHaveBeenCalled();
+    });
+
+    test('due-review items never drop below slot 3 even with a low bandit sample', async () => {
+        const { applyDueReviewPriorityFloor } = require('../../server/services/personalizationBanditService');
+        const db = {
+            ensurePersonalizationArms: jest.fn().mockResolvedValue(true),
+            listPersonalizationArmStates: jest.fn().mockResolvedValue([
+                { arm_id: 'explore_by_gap', alpha: 1, beta: 8, pulls: 3 },
+            ]),
+        };
+        const recs = [
+            { type: 'explore', topic: 'ARDS', priority: 90 },
+            { type: 'discover', topic: 'COPD', priority: 88 },
+            { type: 'start', topic: 'Asthma', priority: 86 },
+            { type: 'calibrate', topic: 'Fluids', priority: 84 },
+            { type: 'review', topic: 'Sepsis', priority: 10, due: true },
+        ];
+        const adjusted = await applyRecommendationBandit(db, 'u1', recs);
+        const idx = adjusted.findIndex((r) => r.type === 'review');
+        expect(idx).toBeGreaterThanOrEqual(0);
+        expect(idx).toBeLessThan(3);
+        const floored = applyDueReviewPriorityFloor([
+            { type: 'explore', priority: 9 },
+            { type: 'discover', priority: 8 },
+            { type: 'start', priority: 7 },
+            { type: 'review', priority: 1, due: true },
+        ]);
+        expect(floored[2].type).toBe('review');
     });
 
     test('selectSynopsisStyleArm uses user scope only after cold-start and global density thresholds', async () => {

@@ -91,6 +91,7 @@ describe('P0 schema contracts', () => {
 describe('P0 source failure telemetry', () => {
     test('records pubmed failure on telemetry when PubMed throws', async () => {
         const telemetry = {};
+        const injectedLogger = { warn: jest.fn() };
         const articles = await fetchUnifiedEvidence({
             query: 'diabetes metformin',
             safeLimit: 5,
@@ -98,11 +99,20 @@ describe('P0 source failure telemetry', () => {
             serverConfig: { keys: {} },
             fetch: jest.fn().mockRejectedValue(new Error('PubMed down')),
             telemetry,
+            logger: injectedLogger,
         });
         expect(articles).toEqual([]);
         expect(telemetry.sourceFailures.pubmed.failed).toBe(true);
         expect(telemetry.sourceFailures.pubmed.error).toMatch(/PubMed down/);
         expect(telemetry.sourceFetches.pubmed.failed).toBe(true);
+        expect(injectedLogger.warn).toHaveBeenCalledWith(
+            expect.objectContaining({
+                event: 'unified_evidence_source_failed',
+                source: 'pubmed',
+                err: expect.objectContaining({ message: 'PubMed down' }),
+            }),
+            'unifiedEvidence source failed'
+        );
     });
 });
 

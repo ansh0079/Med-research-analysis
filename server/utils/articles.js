@@ -1,6 +1,7 @@
 const { escapeHtml } = require('./validation');
 const { computeQualityScore } = require('../services/qualityService');
 const { getEbmScore, isPreprint } = require('../services/unifiedEvidenceSearch');
+const { isOpenAccessArticle, annotateOpenAccess } = require('./articleAccess');
 
 const EBM_LABELS = [
     { min: 7, label: 'Meta-analysis / Systematic Review', short: 'Meta-analysis' },
@@ -153,7 +154,7 @@ function computeImpactScore(article) {
         factors.push('High-impact journal (curated tier)');
     }
 
-    const isFree = article.isFree || !!article.pmcid || article.openAccess;
+    const isFree = isOpenAccessArticle(article);
     if (isFree) {
         score += 5;
         factors.push('Open access');
@@ -170,8 +171,9 @@ function sanitizeArticleOutput(article) {
     if (!article || typeof article !== 'object') return article;
     const quality = computeQualityScore(article);
     const ebmScore = article._ebmScore ?? getEbmScore(article);
+    const access = annotateOpenAccess(article);
     return {
-        ...article,
+        ...access,
         title: article.title ? escapeHtml(article.title) : article.title,
         abstract: article.abstract ? escapeHtml(article.abstract) : article.abstract,
         source: article.source ? escapeHtml(article.source) : article.source,

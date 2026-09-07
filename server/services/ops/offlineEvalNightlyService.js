@@ -4,6 +4,7 @@ const logger = require('../../config/logger');
 const { runOfflinePolicyEval } = require('../offlinePolicyEvalService');
 const { SEARCH_RANKING_ARMS, POLICY_SEARCH_RANKING } = require('../bandit/constants');
 const { loadDecisionsForOfflineEval } = require('../policyReplayEvaluator');
+const { evaluateHoldoutLift, MIN_HOLDOUT_FOR_GATE } = require('../bandit/holdoutAssignment');
 
 /**
  * Nightly evaluator from real anonymized logs:
@@ -34,11 +35,26 @@ function recommendationFromEval(report) {
     const lift = bestScore - servingScore;
     const stderr = Math.max(Number(best.stderr || 0), Number(serving.stderr || 0), 0.02);
 
+    const holdout = report?.holdout || {};
+    if (
+        holdout.sufficient
+        && holdout.holdoutLift != null
+        && holdout.holdoutLift < -1.96 * Math.max(Number(holdout.stderr) || 0, 0.02)
+    ) {
+        return {
+            recommendation: 'hold',
+            reason: `Treated cohort underperforms holdout (holdoutLift=${Number(holdout.holdoutLift).toFixed(3)}) — do not promote`,
+            lift,
+            holdoutLift: holdout.holdoutLift,
+        };
+    }
+
     if (lift > 1.96 * stderr && best.candidateArmId !== serving.candidateArmId) {
         return {
             recommendation: 'promote',
             reason: `Shadow arm ${best.candidateArmId} beats serving ${serving.candidateArmId} by lift=${lift.toFixed(3)}`,
             lift,
+            holdoutLift: holdout.holdoutLift ?? null,
         };
     }
     if (lift < -1.96 * stderr) {
@@ -52,6 +68,7 @@ function recommendationFromEval(report) {
         recommendation: 'hold',
         reason: `No statistically meaningful lift (lift=${lift.toFixed(3)}, stderr≈${stderr.toFixed(3)})`,
         lift,
+        holdoutLift: holdout.holdoutLift ?? null,
     };
 }
 
@@ -130,9 +147,11 @@ async function runNightlyOfflineEval(db, {
     const servingArmId = servingMeta.servingArmId;
     const servingPolicy = (evalReport.constantPolicies || []).find((p) => p.candidateArmId === servingArmId)
         || { candidateArmId: servingArmId, snips: null, ips: null, stderr: null };
+    const holdout = evalReport.holdout || evaluateHoldoutLift(decisions);
 
     const enriched = {
         ...evalReport,
+        holdout,
         servingPolicy,
         servingArmId,
         shadowArms: Object.keys(SEARCH_RANKING_ARMS).filter((a) => a !== servingArmId),
@@ -151,6 +170,9 @@ async function runNightlyOfflineEval(db, {
         servingScore: servingPolicy.snips ?? servingPolicy.ips ?? null,
         bestShadowScore: best.snips ?? best.ips ?? null,
         lift: rec.lift ?? null,
+        holdoutLift: holdout.holdoutLift ?? rec.holdoutLift ?? null,
+        holdoutN: holdout.holdoutN ?? null,
+        treatedN: holdout.treatedN ?? null,
         recommendation: rec.recommendation,
         reason: rec.reason,
         report: enriched,
@@ -183,6 +205,7 @@ async function runNightlyOfflineEval(db, {
                     servingPolicy,
                     recommendation: rec,
                     servingSource: servingMeta.source,
+                    holdout,
                 }),
                 now,
             ]
@@ -241,4 +264,5 @@ module.exports = {
     resolveServingArmId,
     actuateServingRecommendation,
     POLICY_SEARCH_RANKING,
+    MIN_HOLDOUT_FOR_GATE,
 };

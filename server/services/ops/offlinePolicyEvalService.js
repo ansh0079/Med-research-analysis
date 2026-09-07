@@ -10,6 +10,7 @@
 
 const { SEARCH_RANKING_ARMS, POLICY_SEARCH_RANKING } = require('../personalizationBanditService');
 const { loadDecisionsForOfflineEval } = require('../policyReplayEvaluator');
+const { evaluateHoldoutLift } = require('../bandit/holdoutAssignment');
 
 const DEFAULT_DAYS = 30;
 const MIN_PROPENSITY = 0.02;
@@ -149,6 +150,7 @@ async function runOfflinePolicyEval(db, {
 } = {}) {
     const decisions = await loadDecisionsForOfflineEval(db, policyType, days);
     const density = offlineEvalDensityGate(decisions);
+    const holdout = evaluateHoldoutLift(decisions);
     const constantPolicies = evaluateConstantArmPolicies(decisions);
     let contextual = null;
     if (typeof contextualSelector === 'function') {
@@ -161,6 +163,7 @@ async function runOfflinePolicyEval(db, {
         policyType,
         days,
         density,
+        holdout,
         constantPolicies,
         contextual,
         bestConstant: constantPolicies.find((r) => r.snips != null || r.ips != null) || null,
@@ -178,4 +181,5 @@ module.exports = {
     evaluateContextualPolicy,
     offlineEvalDensityGate,
     runOfflinePolicyEval,
+    evaluateHoldoutLift,
 };

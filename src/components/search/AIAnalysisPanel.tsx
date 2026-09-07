@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from '@services/api';
 import { getArticleLinkInfo } from '@services/articleLinks';
+import { isOpenAccessArticle, resolveFreeFullTextUrl } from '@services/articleAccess';
 import { useCollaboration } from '@hooks/useCollaboration';
 import type { Article, AnalysisResult, AnalysisType, PicoExtraction } from '@types';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
@@ -583,13 +584,9 @@ export const AIAnalysisPanel: React.FC<Props> = ({ article, onClose }) => {
                 <i className="fas fa-external-link-alt" />
                 {primaryLabel}
               </a>
-              {(article.isFree || article.pmcid) && (
+              {isOpenAccessArticle(article) && resolveFreeFullTextUrl(article) && (
                 <a
-                  href={
-                    article.pmcid
-                      ? `https://www.ncbi.nlm.nih.gov/pmc/articles/${article.pmcid}/`
-                      : article.fullTextUrl!
-                  }
+                  href={resolveFreeFullTextUrl(article)!}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-600 py-2.5 text-sm font-bold text-white transition-colors hover:bg-emerald-700"

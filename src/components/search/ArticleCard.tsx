@@ -3,6 +3,7 @@ import { CollectionsPanel } from '@components/collaboration/CollectionsPanel';
 import { AnnotationPanel } from '@components/collaboration/AnnotationPanel';
 import { CitationExplorer } from '@components/search/CitationExplorer';
 import { getArticleLinkInfo } from '@services/articleLinks';
+import { isOpenAccessArticle, resolveFreeFullTextUrl } from '@services/articleAccess';
 import api from '@services/api';
 import type { Article } from '@types';
 import { logAsyncError } from '@utils/handleAsyncError';
@@ -68,10 +69,8 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
 
   const impact = article._impact;
   const quality = article._quality;
-  const isFree = article.isFree || !!article.pmcid;
-  const freeUrl = article.pmcid
-    ? `https://www.ncbi.nlm.nih.gov/pmc/articles/${article.pmcid}/`
-    : article.fullTextUrl || null;
+  const isFree = isOpenAccessArticle(article);
+  const freeUrl = resolveFreeFullTextUrl(article);
   const authors = article.authors?.slice(0, 3).map((a) => a.name).join(', ');
   const hasMoreAuthors = (article.authors?.length ?? 0) > 3;
   const { primaryUrl, sourceLabel } = getArticleLinkInfo(article);

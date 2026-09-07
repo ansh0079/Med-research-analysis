@@ -82,7 +82,7 @@ export function whySelected(a: Article, rank: number): string {
   if (ebm >= 5) return 'Controlled clinical trial';
   const year = parseInt((a.pubdate ?? '').slice(0, 4) || '0');
   if (year >= CURRENT_YEAR - 2) return 'Most recent high-quality evidence';
-  if (a.isFree || a.pmcid) return 'Open access — full text freely available';
+  if (a.isFree || a.openAccess || a.pmcid || a.openAccessUrl || a.fullTextUrl) return 'Open access — full text freely available';
   return `Ranked #${rank + 1} by multi-source evidence quality score`;
 }
 
@@ -116,7 +116,7 @@ export function buildBouquet(articles: Article[]): BouquetSection[] {
     .slice(0, 2).map(take);
 
   const openAccess = nonRetracted
-    .filter((a) => !seen.has(a.uid) && (a.isFree || !!a.pmcid))
+    .filter((a) => !seen.has(a.uid) && (a.isFree || a.openAccess || !!a.pmcid || !!a.openAccessUrl || !!a.fullTextUrl))
     .slice(0, 1).map(take);
 
   const sections: BouquetSection[] = [

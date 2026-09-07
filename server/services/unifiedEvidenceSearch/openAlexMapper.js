@@ -1,5 +1,6 @@
 const { normalizePmid } = require('../../utils/articleKeys');
 const { normalizeDoi } = require('./articleDedupe');
+const { extractPmcidFromIds } = require('../../utils/articleAccess');
 
 /** Map an OpenAlex work to our Article shape incl. citation-influence signals for ranking. */
 function articleFromOpenAlexWork(w) {
@@ -26,6 +27,9 @@ function articleFromOpenAlexWork(w) {
     const pmidRaw = ids.pmid || ids.PMID || null;
     const pmid = pmidRaw ? normalizePmid(String(pmidRaw).replace(/^https?:\/\/pubmed\.ncbi\.nlm\.nih\.gov\//i, '')) : null;
     const doi = normalizeDoi(w.doi || ids.doi || null);
+    const pmcid = extractPmcidFromIds(ids);
+    const isOa = Boolean(w.open_access?.is_oa || pmcid);
+    const oaUrl = w.open_access?.oa_url || null;
 
     return {
         uid: w.id,
@@ -35,10 +39,13 @@ function articleFromOpenAlexWork(w) {
         source: src?.display_name || 'OpenAlex',
         pmid: pmid || undefined,
         doi: doi || undefined,
+        pmcid: pmcid || undefined,
         pmcrefcount: w.cited_by_count,
         abstract: abstractPlain,
-        openAccess: w.open_access?.is_oa,
-        openAccessUrl: w.open_access?.oa_url,
+        isFree: isOa,
+        openAccess: isOa,
+        openAccessUrl: oaUrl,
+        fullTextUrl: oaUrl,
         _source: 'openalex',
         _openalexMetrics: {
             fwci,

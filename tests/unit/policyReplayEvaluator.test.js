@@ -103,10 +103,10 @@ describe('replayPolicy', () => {
         expect(result.coverage).toBeGreaterThan(0);
     });
 
-    test('coverage < 1 when some rows lack boost context', async () => {
+    test('coverage < 1 when some rows are off-policy and no model can be fit', async () => {
         const rows = [
             makeRow({ context_json: JSON.stringify({ boost: 1.0 }) }),
-            makeRow({ context_json: '{}' }), // no boost → not evaluable
+            makeRow({ arm_id: 'engagement_heavy', context_json: '{}' }),
         ];
         const db = makeDb(rows);
         const result = await replayPolicy(db, 'heuristic_default');
@@ -126,9 +126,29 @@ describe('replayPolicy', () => {
     test('liftVsBaseline is null when baseline is 0', async () => {
         const db = makeDb([makeRow({ total_reward: 0, context_json: JSON.stringify({ boost: 0 }) })]);
         const result = await replayPolicy(db, 'heuristic_default');
-        // boost=0 means no evaluable rows (loggedBoost=0 treated as scale=1 but reward=0)
-        // just ensure it doesn't throw
         expect(result).toBeDefined();
+    });
+
+    test('does not invent impossible lift from boost-ratio scaling', async () => {
+        const rows = Array.from({ length: 12 }, (_, i) => makeRow({
+            id: i + 1,
+            arm_id: 'heuristic_default',
+            total_reward: 0.8,
+            context_json: JSON.stringify({
+                boost: 0.05,
+                masteryBand: 'strong',
+                streakBand: 'active',
+                hasDangerousMisconception: false,
+            }),
+        }));
+        const db = makeDb(rows);
+        const result = await replayPolicy(db, 'engagement_heavy');
+        expect(result.rewardMethod).not.toBe('boost_scale');
+        if (result.liftVsBaseline != null) {
+            expect(Math.abs(result.liftVsBaseline)).toBeLessThanOrEqual(1);
+        }
+        expect(result.meanReward == null || Math.abs(result.meanReward) <= 1).toBe(true);
+        expect(result.promotionEligible).toBe(false);
     });
 });
 
@@ -195,5 +215,17 @@ describe('replayGatePasses', () => {
     test('passes when lift is null (baseline=0)', () => {
         const r = { n: 100, coverage: 0.9, safetyViolationRate: 0.05, liftVsBaseline: null };
         expect(replayGatePasses(r).pass).toBe(true);
+    });
+
+    test('rejects boost-scale replay as a promotion gate', () => {
+        const r = {
+            n: 100,
+            coverage: 0.9,
+            safetyViolationRate: 0.05,
+            liftVsBaseline: 4.2,
+            rewardMethod: 'boost_scale',
+        };
+        expect(replayGatePasses(r).pass).toBe(false);
+        expect(replayGatePasses(r).reason).toMatch(/diagnostic only/i);
     });
 });

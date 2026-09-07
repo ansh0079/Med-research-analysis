@@ -60,10 +60,11 @@ async function main() {
     }
 
     if (replay.length) {
-        console.log('\nBoost-replay ranking (legacy lite evaluator)');
+        console.log('\nModel-based counterfactual ranking (diagnostic only — not a promotion gate)');
         for (const row of replay.slice(0, 4)) {
             const gate = replayGatePasses(row);
-            console.log(`  ${row.candidateArmId.padEnd(22)} mean=${row.meanReward?.toFixed(3)} lift=${row.liftVsBaseline == null ? 'n/a' : (row.liftVsBaseline * 100).toFixed(1) + '%'} gate=${gate.pass ? 'PASS' : 'FAIL'}`);
+            const lift = row.liftVsBaseline == null ? 'n/a' : `${(row.liftVsBaseline * 100).toFixed(1)}%`;
+            console.log(`  ${row.candidateArmId.padEnd(22)} mean=${row.meanReward?.toFixed(3)} lift=${lift} method=${row.rewardMethod || 'n/a'} gate=${gate.pass ? 'PASS' : 'FAIL'}`);
         }
     }
 

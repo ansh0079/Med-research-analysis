@@ -69,6 +69,9 @@ function mockUnifiedSearchFetch({
     if (target.includes('esummary.fcgi')) {
       return Promise.resolve({ ok: true, json: async () => ({ result: summary }) });
     }
+    if (target.includes('efetch.fcgi')) {
+      return Promise.resolve({ ok: true, text: async () => '<PubmedArticleSet></PubmedArticleSet>' });
+    }
     return Promise.resolve({ ok: false, status: 404, json: async () => ({}) });
   });
 }
@@ -2612,6 +2615,9 @@ describe('API Endpoints', () => {
               },
             }),
           });
+        }
+        if (target.includes('efetch.fcgi')) {
+          return Promise.resolve({ ok: true, text: async () => '<PubmedArticleSet></PubmedArticleSet>' });
         }
         if (target.includes('semanticscholar') || target.includes('openalex')) {
           return Promise.resolve({ ok: true, json: async () => ({ data: [], results: [] }) });

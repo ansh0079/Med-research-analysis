@@ -20,6 +20,7 @@ Status today: **beta-ready, not commercial-launch-ready.**
 | **2** | RL control plane | Inspect decisions, backfill delayed rewards, nightly promote/hold/regress | Phase 1 signals |
 | **3** | Learning output quality | Fail-closed MCQs, claim-tier by stakes, synopsis grounding banners | Phase 1 trust |
 | **4** | Commercial launch | Paywall E2E, Precision@10 commercial target, alerts, PHI posture | Phases 1–3 |
+| **5** | Scale & operational readiness | Shared bandit store, A/B holdout, structured source logs, search latency budget | Phase 4 |
 
 ---
 
@@ -113,4 +114,22 @@ Status today: **beta-ready, not commercial-launch-ready.**
 | `cursor/rl-quality-pack-af23` (#39) | Upstream source for 1A / Phase 2 scaffolding |
 | `cursor/claim-bridge-case-bandit-af23` (#37) | Upstream source for 1B bandit |
 
-Prefer merge order: Phase 1+3 (#40) → Phase 2 (#41) → Phase 4.
+Prefer merge order: Phase 1+3 (#40) → Phase 2 (#41) → Phase 4 → Phase 5.
+
+---
+
+## Phase 5 — Scale & operational readiness
+
+**Goal:** Safe to run in production at multiple instances.
+
+- [x] Shared linear-value model cache (Redis / DB / memory) with deterministic per-hour keys
+- [x] A/B holdout assignment + nightly holdout lift in offline eval
+- [x] Recommendation strategy arms (explore-by-gap / explore-by-strength) + due-review floor at slot 3
+- [x] Replay evaluator uses model-based counterfactual (boost-scale lift removed from promotion)
+- [x] Ridge solver via Cholesky with regularization floor
+- [x] Centralized `buildFullTextExcerptsBlock` for synopsis/synthesis
+- [x] Structured source-failure logs (injected logger, not `console.warn`)
+- [x] Request-level search latency budget (skip vector / PICO when exceeded)
+- [x] Curated PubMed synthesis-trust integration corpus
+
+**Branch:** `cursor/scale-ops-readiness-af23`
