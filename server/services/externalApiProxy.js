@@ -470,7 +470,10 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     }
     const data = await res.json();
     if (data.promptFeedback?.blockReason) {
-      throw new Error(`Content blocked: ${data.promptFeedback.blockReason}`);
+      // Also deterministic -- resending identical content is blocked identically.
+      const err = new Error(`Content blocked: ${data.promptFeedback.blockReason}`);
+      err.deterministic = true;
+      throw err;
     }
     // Gemini 2.5 models return "thinking" parts (thought: true) before the actual response.
     // Filter them out so we only return the actual answer text.
@@ -483,10 +486,16 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     // hidden. Fail loudly instead -- the provider fallback can then try the next
     // candidate rather than retrying the same truncation.
     if (candidate?.finishReason && candidate.finishReason !== 'STOP') {
-      throw new Error(
+      const err = new Error(
         `Gemini stopped early (finishReason: ${candidate.finishReason}); `
         + `returned ${text.length} chars against maxOutputTokens ${generationConfig.maxOutputTokens}`,
       );
+      // Deterministic: the same prompt against the same budget fails the same
+      // way every time, so this says nothing about provider health. Without the
+      // flag it counted toward the shared circuit breaker and a single oversized
+      // prompt could open it, failing unrelated Gemini calls for 30s.
+      err.deterministic = true;
+      throw err;
     }
     return text || 'No response';
   }

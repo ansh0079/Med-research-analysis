@@ -107,3 +107,38 @@ describe('gemini truncation and thinking', () => {
         await expect(proxy.geminiGenerate('prompt')).resolves.toBe('answer');
     });
 });
+describe('deterministic error marking', () => {
+    function proxyReturning(payload) {
+        const fetchImpl = async () => ({
+            ok: true, status: 200, headers: new Map(),
+            json: async () => payload, text: async () => '',
+        });
+        return buildProxyService({ serverConfig: { keys: { gemini: 'g' } }, fetchImpl });
+    }
+
+    // These describe the request, not upstream health. Marking them keeps a
+    // single oversized prompt from opening the shared breaker and failing every
+    // other caller -- see circuitBreaker.test.js.
+    test('a truncated response is marked deterministic', async () => {
+        const proxy = proxyReturning({
+            candidates: [{ finishReason: 'MAX_TOKENS', content: { parts: [{ text: '{' }] } }],
+        });
+        await expect(proxy.geminiGenerate('prompt')).rejects.toMatchObject({ deterministic: true });
+    });
+
+    test('blocked content is marked deterministic', async () => {
+        const proxy = proxyReturning({ promptFeedback: { blockReason: 'SAFETY' } });
+        await expect(proxy.geminiGenerate('prompt')).rejects.toMatchObject({ deterministic: true });
+    });
+
+    test('an ordinary upstream error is NOT marked deterministic', async () => {
+        // A 503 is exactly what the breaker exists for; it must still count.
+        const fetchImpl = async () => ({
+            ok: false, status: 503, headers: new Map(),
+            json: async () => ({ error: { message: 'unavailable' } }), text: async () => '',
+        });
+        const proxy = buildProxyService({ serverConfig: { keys: { gemini: 'g' } }, fetchImpl });
+        await expect(proxy.geminiGenerate('prompt')).rejects.not.toMatchObject({ deterministic: true });
+    });
+});
+

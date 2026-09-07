@@ -64,6 +64,15 @@ class CircuitBreaker {
     }
 
     onFailure(error) {
+        // A deterministic failure -- an oversized prompt, blocked content -- is a
+        // property of the request, not of the upstream. Retrying identical input
+        // fails identically, so counting it toward the threshold would open the
+        // breaker on a healthy provider and fail every other caller sharing it.
+        // It is still rethrown; it just is not a health signal.
+        if (error?.deterministic) {
+            this.lastError = error;
+            return;
+        }
         this.failures++;
         this.lastError = error;
         if (this.state === 'HALF_OPEN') {

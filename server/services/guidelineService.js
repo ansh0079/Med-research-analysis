@@ -182,13 +182,27 @@ function parseAlignmentResponse(rawText, guidelinesFound) {
  * @param {string} label for logging
  * @returns {Promise<string>} raw model text
  */
+/**
+ * Guideline extraction returns a JSON array with one object per recommendation,
+ * and a single publication routinely yields several. Passing no budget left it
+ * on the provider default (2500 output tokens for a long prompt), so the array
+ * was cut mid-object, threw MAX_TOKENS, and -- because every failure counted
+ * toward the shared Gemini circuit breaker -- repeated attempts opened it and
+ * failed unrelated Gemini calls for 30s at a time.
+ */
+const GUIDELINE_MAX_OUTPUT_TOKENS = 8192;
+const GUIDELINE_TIMEOUT_MS = 120000;
+
 async function callFirstHealthyProvider(aiService, serverConfig, prompt, label) {
   const candidates = getProviderCandidates({}, serverConfig);
   if (!candidates.length) throw new Error(`No AI provider configured for ${label}`);
   let lastError = null;
   for (const candidate of candidates) {
     try {
-      return await aiService.callText(prompt, candidate.provider, candidate.model);
+      return await aiService.callText(prompt, candidate.provider, candidate.model, {
+        maxOutputTokens: GUIDELINE_MAX_OUTPUT_TOKENS,
+        timeoutMs: GUIDELINE_TIMEOUT_MS,
+      });
     } catch (err) {
       lastError = err;
       logger.warn(

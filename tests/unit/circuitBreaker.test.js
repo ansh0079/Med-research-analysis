@@ -151,4 +151,69 @@ describe('CircuitBreaker', () => {
             expect(h.lastError).toBeUndefined();
         });
     });
+
+    describe('deterministic failures', () => {
+        // A prompt that exceeds the output budget, or content the provider
+        // blocks, fails identically on every retry -- it describes the request,
+        // not the upstream. Counting it toward the threshold opened the shared
+        // Gemini breaker on a healthy provider and failed unrelated callers for
+        // 30s, which is what a single oversized guideline-extraction prompt did
+        // in production.
+        function deterministic(message) {
+            const err = new Error(message);
+            err.deterministic = true;
+            return err;
+        }
+
+        it('does not count toward the failure threshold', async () => {
+            const fn = jest.fn().mockRejectedValue(deterministic('finishReason: MAX_TOKENS'));
+            const cb = makeBreaker(fn, { failureThreshold: 3 });
+            for (let i = 0; i < 10; i++) {
+                await expect(cb.fire()).rejects.toThrow(/MAX_TOKENS/);
+            }
+            expect(cb.state).toBe('CLOSED');
+            expect(cb.health().failures).toBe(0);
+        });
+
+        it('is still rethrown to the caller', async () => {
+            const cb = makeBreaker(jest.fn().mockRejectedValue(deterministic('Content blocked: SAFETY')));
+            await expect(cb.fire()).rejects.toThrow(/Content blocked/);
+        });
+
+        it('is still recorded as the last error for diagnostics', async () => {
+            const cb = makeBreaker(jest.fn().mockRejectedValue(deterministic('boom')));
+            await expect(cb.fire()).rejects.toThrow();
+            expect(cb.health().lastError).toBeDefined();
+        });
+
+        it('does not mask genuine provider failures mixed in', async () => {
+            const fn = jest.fn()
+                .mockRejectedValueOnce(deterministic('MAX_TOKENS'))
+                .mockRejectedValueOnce(new Error('503 upstream'))
+                .mockRejectedValueOnce(deterministic('MAX_TOKENS'))
+                .mockRejectedValueOnce(new Error('503 upstream'))
+                .mockRejectedValueOnce(new Error('503 upstream'));
+            const cb = makeBreaker(fn, { failureThreshold: 3 });
+            for (let i = 0; i < 5; i++) {
+                await expect(cb.fire()).rejects.toThrow();
+            }
+            // Only the three real failures should count.
+            expect(cb.state).toBe('OPEN');
+        });
+
+        it('does not reset an existing failure count', async () => {
+            // A deterministic error passing through must neither add to nor
+            // clear progress toward opening on real failures.
+            const fn = jest.fn()
+                .mockRejectedValueOnce(new Error('503'))
+                .mockRejectedValueOnce(deterministic('MAX_TOKENS'))
+                .mockRejectedValueOnce(new Error('503'));
+            const cb = makeBreaker(fn, { failureThreshold: 2 });
+            await expect(cb.fire()).rejects.toThrow();
+            await expect(cb.fire()).rejects.toThrow();
+            expect(cb.state).toBe('CLOSED');
+            await expect(cb.fire()).rejects.toThrow();
+            expect(cb.state).toBe('OPEN');
+        });
+    });
 });
