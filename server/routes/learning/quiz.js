@@ -126,9 +126,17 @@ function registerQuizRoutes(app, deps) {
                 // scheduling is not meaningful for a session that may not persist
                 // past one sitting. That activates once the same questions are
                 // answered again as an authenticated user.
+                // `topic` must be passed explicitly, as the signed-in branch does: the
+                // graded attempt object does not carry it, and quiz_attempts.topic is
+                // NOT NULL. Without it every anonymous insert failed with
+                // "null value in column topic" -- swallowed by the catch below and
+                // logged at warn, while the response still said persisted: true, so
+                // reconcileAnonymousQuizAttempts had nothing to attach on sign-in.
+                // The route test mocks createQuizAttempt, which is why the missing
+                // column was never seen in the suite.
                 if (db.createQuizAttempt) {
                     for (const attempt of attemptsWithJudgement) {
-                        void db.createQuizAttempt({ ...attempt, userId: null, sessionId: req.sessionId })
+                        void db.createQuizAttempt({ ...attempt, userId: null, topic, sessionId: req.sessionId })
                             .catch((err) => { logger.warn({ err }, 'createQuizAttempt (beta) failed'); });
                     }
                 }
