@@ -653,6 +653,26 @@ async function getOrEnqueuePaperSynopsis({
                 sessionId,
                 log: log || logger,
             });
+            // Persist the inline synopsis to the durable job store too, so it survives
+            // Redis eviction and repeat requests for the same article/style hit the DB.
+            if (hasDurableJobStore(db)) {
+                await db.createAiGenerationJob({
+                    jobKey,
+                    jobType: 'paper_synopsis',
+                    topic: topic || null,
+                    inputHash: stableHash({ jobKey, title: article?.title, trainingStage }),
+                    inputPayload: { article, provider, topic, trainingStage, userId },
+                    userId: userId || null,
+                    provider: selectedProvider,
+                    model: selectedModel,
+                }).catch(() => null);
+                await completeJobAndClaims(db, jobKey, 'paper_synopsis', {
+                    resultPayload: { ...result, jobKey },
+                    provider: result.audit?.provider || null,
+                    model: result.audit?.model || null,
+                    auditPayload: { ...result.audit, humanReviewStatus: 'none' },
+                }).catch((err) => { logger?.warn?.({ err, jobKey }, 'inline synopsis durable persist failed'); });
+            }
             return { status: 'completed', jobKey, ...result };
         } catch (err) {
             return { status: 'failed', jobKey, errorMessage: err.message };

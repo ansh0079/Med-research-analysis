@@ -178,16 +178,17 @@ describe('aiGenerationJobService', () => {
         expect(result).toMatchObject({ skipped: true, reason: 'missing_teaching_object_store' });
     });
 
-    test('forceSync runs paper synopsis inline even when durable store exists', async () => {
+    test('forceSync runs paper synopsis inline and persists it to the durable store', async () => {
         runPaperSynopsisGeneration.mockResolvedValueOnce({
             synopsis: { clinicalBottomLine: 'Treat early' },
             articleId: 'a-1',
+            audit: { provider: 'gemini', model: 'gemini-2.5-flash' },
         });
         const db = {
             getAiGenerationJobByKey: jest.fn(),
-            createAiGenerationJob: jest.fn(),
+            createAiGenerationJob: jest.fn().mockResolvedValue({ inserted: true }),
             markAiGenerationJobRunning: jest.fn(),
-            completeAiGenerationJob: jest.fn(),
+            completeAiGenerationJob: jest.fn().mockResolvedValue({}),
             failAiGenerationJob: jest.fn(),
         };
 
@@ -213,8 +214,11 @@ describe('aiGenerationJobService', () => {
             topic: 'sepsis',
             trainingStage: 'resident',
         }));
-        expect(db.createAiGenerationJob).not.toHaveBeenCalled();
-        expect(db.getAiGenerationJobByKey).not.toHaveBeenCalled();
+        // Inline results are written to the durable job store so they survive cache eviction.
+        expect(db.createAiGenerationJob).toHaveBeenCalledWith(expect.objectContaining({
+            jobType: 'paper_synopsis',
+        }));
+        expect(db.completeAiGenerationJob).toHaveBeenCalled();
     });
 
     test('paper synopsis job keys include prompt version and preference suffix', () => {
