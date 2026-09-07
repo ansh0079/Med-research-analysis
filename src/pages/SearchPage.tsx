@@ -12,6 +12,7 @@ import { SkeletonCard } from '@components/search/SkeletonCard';
 import { SearchHero } from '@components/search/SearchHero';
 import { TopicIntelligenceStatusBanner } from '@components/search/TopicIntelligenceStatusBanner';
 import { SearchEmptyState } from '@components/search/SearchEmptyState';
+import { NoResultsState } from '@components/search/NoResultsState';
 import { LowRecallBanner } from '@components/search/LowRecallBanner';
 import { RelatedTopicsBar } from '@components/search/RelatedTopicsBar';
 import { VerifyEmailBanner } from '@components/search/VerifyEmailBanner';
@@ -436,7 +437,19 @@ export const SearchPage: React.FC = () => {
             searchCompletedAt={searchCompletedAt ?? undefined}
           />
         ) : !loading ? (
-          <SearchEmptyState onExampleClick={handleSearch} isAuthenticated={isAuthenticated} />
+          // A completed search that matched nothing is not the same as not
+          // having searched. Showing the cold-start suggestions panel for both
+          // made a working empty result look like the page had reset.
+          currentQuery && searchCompletedAt ? (
+            <NoResultsState
+              query={currentQuery}
+              filters={filters}
+              onRelax={(next) => { setFilters(next); handleSearch(currentQuery); }}
+              onRetry={handleSearch}
+            />
+          ) : (
+            <SearchEmptyState onExampleClick={handleSearch} isAuthenticated={isAuthenticated} />
+          )
         ) : null}
       </main>
 

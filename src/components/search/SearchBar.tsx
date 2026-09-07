@@ -166,9 +166,19 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     setQuery(nextQuery);
     onStudyTypesChange?.(template.studyTypes);
     onSpecificityChange?.(template.specificity);
-    trackSearch(nextQuery, { template: template.id, specificity: template.specificity, sources: sources.join(',') });
+
+    // Every template's studyTypes are PubMed publication-type syntax
+    // ('"Practice Guideline"[Publication Type]'), which no other source
+    // understands. Applying one with PubMed deselected narrowed the search --
+    // Guidelines also sets specificity to strict -- while being unable to apply
+    // the filter it narrowed for, which returned nothing at all. Selecting a
+    // template is an implicit request for the source that can honour it.
+    const nextSources: DataSource[] = sources.includes('pubmed') ? sources : [...sources, 'pubmed'];
+    if (nextSources !== sources) onSourcesChange?.(nextSources);
+
+    trackSearch(nextQuery, { template: template.id, specificity: template.specificity, sources: nextSources.join(',') });
     onSearch(nextQuery);
-  }, [onSearch, onSpecificityChange, onStudyTypesChange, query, setQuery, sources, trackSearch]);
+  }, [onSearch, onSourcesChange, onSpecificityChange, onStudyTypesChange, query, setQuery, sources, trackSearch]);
 
   return (
     <div className="w-full">
