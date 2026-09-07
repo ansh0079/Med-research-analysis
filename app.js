@@ -102,6 +102,18 @@ if (process.env.NODE_ENV === 'production') {
     }
 }
 
+// Wire LLM usage metering into the shared AI service so every provider call
+// (agent, synopsis, synthesis, guideline seeding, quiz) is tracked — not just
+// the routes that build a bespoke aiService with an onLlmCall hook.
+try {
+    const { setGlobalLlmUsageHook } = require('./server/services/aiService');
+    const { createLlmUsageLogger, buildUsageEntry } = require('./server/services/llmUsageService');
+    const logLlm = createLlmUsageLogger(db);
+    setGlobalLlmUsageHook((meta) => logLlm(buildUsageEntry(meta)));
+} catch (err) {
+    logger.warn({ err }, 'Global LLM usage hook not registered');
+}
+
 function resolveReleaseSha() {
     const configuredRelease =
         process.env.SENTRY_RELEASE ||

@@ -48,14 +48,26 @@ const { buildProxyService } = require('../externalApiProxy');
 const { getActiveLlmBudget } = require('../llmRequestBudget');
 const { parseStructuredOutput } = require('../../utils/parseJson');
 
+/**
+ * Module-level LLM usage hook. `getSharedAiService` is used by ~30 call sites
+ * that never pass `onLlmCall`, so without this their token spend is invisible.
+ * app.js registers the real DB-backed logger at startup; until then (or in
+ * tests) this is a no-op. Observability must never break a primary flow.
+ */
+let _globalLlmUsageHook = null;
+function setGlobalLlmUsageHook(fn) {
+    _globalLlmUsageHook = typeof fn === 'function' ? fn : null;
+}
+
 function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) {
     const f = fetchImpl;
     const proxy = buildProxyService({ serverConfig, fetchImpl: f });
 
     async function emitLlmCall(meta) {
-        if (typeof onLlmCall !== 'function') return;
+        const hook = typeof onLlmCall === 'function' ? onLlmCall : _globalLlmUsageHook;
+        if (typeof hook !== 'function') return;
         try {
-            await onLlmCall(meta);
+            await hook(meta);
         } catch (err) {
             logger.warn({ err }, 'LLM usage log callback failed');
         }
@@ -514,6 +526,7 @@ function getSharedAiService({ serverConfig, fetchImpl }) {
 module.exports = {
     createAiService,
     getSharedAiService,
+    setGlobalLlmUsageHook,
     ...prompts,
     AI_PROVIDERS,
     PINNED_MODELS,
