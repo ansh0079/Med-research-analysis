@@ -88,6 +88,16 @@ function parseTableColumnsFromSchema(schemaPath, tableName) {
     m[1]
       .split('\n')
       .map((line) => line.trim())
+      // A column added via ALTER TABLE ADD COLUMN after the table's original
+      // CREATE is folded onto the CREATE TABLE text verbatim by SQLite's own
+      // sqlite_master, and `db:schema:regen -- --sqlite-dump` dumps that text
+      // as-is -- so the continuation line reads ", col_name TYPE...)" rather
+      // than starting with the column name. Strip a leading comma before
+      // tokenizing, or the whole line parses as a column literally named ","
+      // and the real column after it is never seen. Confirmed already present
+      // in schema.sql for 10+ other tables; only surfaced here because
+      // teaching_objects is one of the few tables this check inspects.
+      .map((line) => line.replace(/^,\s*/, ''))
       .filter((line) => line && !line.startsWith('--') && !/^(PRIMARY|UNIQUE|FOREIGN|CHECK|CONSTRAINT)\s/i.test(line))
       .map((line) => line.replace(/,$/, '').split(/\s+/)[0].toLowerCase())
       .filter(Boolean)
