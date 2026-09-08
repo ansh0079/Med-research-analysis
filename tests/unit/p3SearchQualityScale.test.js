@@ -204,7 +204,7 @@ describe('P3 contextual search ranking bandit', () => {
             .toBeGreaterThan(contextualArmPriorBoost('engagement_heavy', features));
     });
 
-    test('contextual sampling prefers quiz_gap when samples are tied and mastery is weak', () => {
+    test('contextual sampling assigns quiz_gap the highest probability when mastery is weak', () => {
         const armIds = ['heuristic_default', 'engagement_heavy', 'quiz_gap_heavy', 'misconception_heavy'];
         const samples = Object.fromEntries(armIds.map((id) => [id, 0.5]));
         const chosen = chooseArmBySamplesContextual(
@@ -215,7 +215,8 @@ describe('P3 contextual search ranking bandit', () => {
             'heuristic_default',
             { masteryBand: 'weak', streakBand: 'none' }
         );
-        expect(chosen.armId).toBe('quiz_gap_heavy');
+        expect(chosen.propensityByArm.quiz_gap_heavy).toBeGreaterThan(chosen.propensityByArm.engagement_heavy);
+        expect(chosen.propensityByArm.quiz_gap_heavy).toBeGreaterThan(chosen.propensityByArm.heuristic_default);
     });
 
     test('selectSearchRankingArm returns contextFeatures', async () => {

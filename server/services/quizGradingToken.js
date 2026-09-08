@@ -2,7 +2,7 @@
 
 const crypto = require('crypto');
 
-const TOKEN_VERSION = 2;
+const TOKEN_VERSION = 3;
 const DEFAULT_TTL_SECONDS = 24 * 60 * 60;
 
 function gradingSecret() {
@@ -24,7 +24,8 @@ function encode(value) {
  * v1 carried the correct answer in clear text, which let a reader decode the
  * answer key before choosing. The answer is therefore sealed with AES-256-GCM
  * under a key derived from the grading secret; the server can still grade
- * statelessly, but the payload gives a reader nothing.
+ * statelessly, but the payload gives a reader nothing. v3 also signs reward
+ * lineage so clients cannot attach a valid answer to a different claim/source.
  */
 function answerKey() {
     return crypto.createHash('sha256').update(gradingSecret()).digest();
@@ -61,6 +62,32 @@ function signature(encodedPayload) {
     return crypto.createHmac('sha256', gradingSecret()).update(encodedPayload).digest('base64url');
 }
 
+function commitmentKey(token) {
+    const digest = crypto.createHash('sha256').update(String(token || '')).digest('hex');
+    return `quiz:commitment:${digest}`;
+}
+
+async function commitQuizAnswer(cache, token, userAnswer) {
+    const answer = String(userAnswer || '').trim().toLowerCase();
+    if (!cache?.setIfAbsent || !cache?.getAsync || !answer) return { valid: false, reason: 'commitment_unavailable' };
+    const key = commitmentKey(token);
+    const created = await cache.setIfAbsent(key, { answer }, DEFAULT_TTL_SECONDS);
+    const committed = created ? { answer } : await cache.getAsync(key);
+    if (!committed?.answer) return { valid: false, reason: 'commitment_unavailable' };
+    if (committed.answer !== answer) return { valid: false, reason: 'answer_already_committed' };
+    return { valid: true, answer };
+}
+
+async function verifyQuizAnswerCommitment(cache, token, userAnswer) {
+    if (!cache?.getAsync) return { valid: false, reason: 'commitment_unavailable' };
+    const committed = await cache.getAsync(commitmentKey(token));
+    const answer = String(userAnswer || '').trim().toLowerCase();
+    if (!committed?.answer) return { valid: false, reason: 'answer_not_committed' };
+    return committed.answer === answer
+        ? { valid: true }
+        : { valid: false, reason: 'answer_commitment_mismatch' };
+}
+
 function createQuizGradingToken(question, { now = Date.now(), ttlSeconds = DEFAULT_TTL_SECONDS } = {}) {
     if (!question?.id || !question?.correctAnswer) return null;
     const payload = {
@@ -68,6 +95,19 @@ function createQuizGradingToken(question, { now = Date.now(), ttlSeconds = DEFAU
         qid: String(question.id),
         answer: sealAnswer(question.correctAnswer),
         qh: questionHash(question.question || question.questionText),
+        lineage: {
+            questionType: question.questionType || null,
+            claimKey: question.claimKey || null,
+            claimDecisionId: question.claimDecisionId || null,
+            sourceArticleUid: question.sourceArticleUid || null,
+            sourceArticleTitle: question.sourceArticleTitle || null,
+            decisionId: question.decisionId || null,
+            banditArmId: question.banditArmId || null,
+            searchId: question.searchId || null,
+            outlineNodeId: question.outlineNodeId || null,
+            outlineLabel: question.outlineLabel || null,
+            promptVariant: question.promptVariant || null,
+        },
         exp: Math.floor(now / 1000) + Math.max(60, Number(ttlSeconds) || DEFAULT_TTL_SECONDS),
     };
     const encodedPayload = encode(JSON.stringify(payload));
@@ -90,7 +130,7 @@ function verifyQuizGradingToken(token, attempt, { now = Date.now() } = {}) {
         if (!payload.answer) return { valid: false, reason: 'answer' };
         const correctAnswer = openAnswer(payload.answer);
         if (correctAnswer == null) return { valid: false, reason: 'answer' };
-        return { valid: true, correctAnswer };
+        return { valid: true, correctAnswer, lineage: payload.lineage || {} };
     } catch (_error) {
         return { valid: false, reason: 'invalid' };
     }
@@ -141,4 +181,6 @@ module.exports = {
     verifyQuizGradingToken,
     attachQuizGradingTokens,
     attachLearningRoundGradingTokens,
+    commitQuizAnswer,
+    verifyQuizAnswerCommitment,
 };

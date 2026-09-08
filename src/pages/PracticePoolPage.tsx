@@ -9,7 +9,7 @@ interface PoolQuestion {
   questionType: 'recall' | 'clinical_application' | 'trial_interpretation' | 'guideline' | 'pitfall';
   question: string;
   options: string[];
-  correctAnswer: string;
+  correctAnswer?: string;
   gradingToken: string;
   explanation: string | null;
   guidelineRef: string | null;
@@ -64,13 +64,16 @@ export function PracticePoolPage() {
   const [complete, setComplete] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [syncError, setSyncError] = useState<string | null>(null);
+  const [revealedAnswers, setRevealedAnswers] = useState<Record<string, string>>({});
+  const [grading, setGrading] = useState(false);
 
   const started = questions.length > 0;
   const currentQ = questions[currentIdx];
   const userAnswer = currentQ ? answers[currentQ.id] : undefined;
   const isAnswered = !!userAnswer;
-  const isCorrect = currentQ && userAnswer?.toUpperCase() === currentQ.correctAnswer.toUpperCase();
-  const score = questions.filter(q => answers[q.id]?.toUpperCase() === q.correctAnswer.toUpperCase()).length;
+  const currentCorrectAnswer = currentQ ? revealedAnswers[currentQ.id] || '' : '';
+  const isCorrect = currentQ && Boolean(currentCorrectAnswer) && userAnswer?.toUpperCase() === currentCorrectAnswer.toUpperCase();
+  const score = questions.filter(q => Boolean(revealedAnswers[q.id]) && answers[q.id]?.toUpperCase() === revealedAnswers[q.id].toUpperCase()).length;
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -89,6 +92,7 @@ export function PracticePoolPage() {
       setQuestions(data.questions);
       setTotal(data.total);
       setAnswers({});
+      setRevealedAnswers({});
       setCurrentIdx(0);
       setShowExplanation(false);
       setComplete(false);
@@ -100,30 +104,35 @@ export function PracticePoolPage() {
     }
   }, [count, difficulty, qType]);
 
-  const handleAnswer = (letter: string) => {
-    if (isAnswered) return;
-    setAnswers(prev => ({ ...prev, [currentQ.id]: letter }));
-    setShowExplanation(true);
+  const handleAnswer = async (letter: string) => {
+    if (isAnswered || grading) return;
+    setGrading(true);
     setSyncError(null);
-    api.learning.submitQuizAttempt({
-      topic: currentQ.topic,
-      attempts: [{
+    try {
+      const graded = await api.ai.gradeQuizAnswer({
+        gradingToken: currentQ.gradingToken || '',
         questionId: currentQ.id,
-        questionType: currentQ.questionType,
         questionText: currentQ.question,
         userAnswer: letter,
-        correctAnswer: currentQ.correctAnswer,
-        gradingToken: currentQ.gradingToken || '',
-        isCorrect: letter.toUpperCase() === currentQ.correctAnswer.toUpperCase(),
-        sourceArticleUid: currentQ.sourceArticleUid || undefined,
-        sourceArticleTitle: currentQ.sourceArticleTitle || undefined,
-        outlineNodeId: currentQ.outlineNodeId || undefined,
-        outlineLabel: currentQ.outlineLabel || currentQ.question.slice(0, 120),
-        claimKey: currentQ.claimKey || undefined,
-      }],
-    }).catch(() => {
-      setSyncError('Answer saved locally, but learning memory did not sync. Try again if this persists.');
-    });
+      });
+      setRevealedAnswers(prev => ({ ...prev, [currentQ.id]: graded.correctAnswer }));
+      setAnswers(prev => ({ ...prev, [currentQ.id]: letter }));
+      setShowExplanation(true);
+      await api.learning.submitQuizAttempt({
+        topic: currentQ.topic,
+        attempts: [{
+          questionId: currentQ.id, questionType: currentQ.questionType, questionText: currentQ.question,
+          userAnswer: letter, correctAnswer: graded.correctAnswer, gradingToken: currentQ.gradingToken || '',
+          isCorrect: graded.isCorrect, sourceArticleUid: currentQ.sourceArticleUid || undefined,
+          sourceArticleTitle: currentQ.sourceArticleTitle || undefined, outlineNodeId: currentQ.outlineNodeId || undefined,
+          outlineLabel: currentQ.outlineLabel || currentQ.question.slice(0, 120), claimKey: currentQ.claimKey || undefined,
+        }],
+      });
+    } catch {
+      setSyncError('Could not check and save that answer. Please try again.');
+    } finally {
+      setGrading(false);
+    }
   };
 
   const handleNext = () => {
@@ -138,6 +147,7 @@ export function PracticePoolPage() {
   const handleRestart = () => {
     setQuestions([]);
     setAnswers({});
+    setRevealedAnswers({});
     setCurrentIdx(0);
     setShowExplanation(false);
     setComplete(false);
@@ -331,7 +341,7 @@ export function PracticePoolPage() {
             {currentQ.options.map((opt, i) => {
               const letter = optionLetters[i] || String.fromCharCode(65 + i);
               const chosen = userAnswer?.toUpperCase() === letter.toUpperCase();
-              const correct = currentQ.correctAnswer.toUpperCase() === letter.toUpperCase();
+              const correct = currentCorrectAnswer.toUpperCase() === letter.toUpperCase();
               let cls = 'border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20';
               if (isAnswered && correct) cls = 'border-emerald-400 bg-emerald-50 dark:bg-emerald-900/25 text-emerald-800 dark:text-emerald-200';
               else if (isAnswered && chosen) cls = 'border-red-400 bg-red-50 dark:bg-red-900/25 text-red-700 dark:text-red-300';
@@ -340,8 +350,8 @@ export function PracticePoolPage() {
                 <button
                   key={letter}
                   type="button"
-                  onClick={() => handleAnswer(letter)}
-                  disabled={isAnswered}
+                  onClick={() => { void handleAnswer(letter); }}
+                  disabled={isAnswered || grading}
                   className={`w-full text-left px-4 py-3 rounded-xl border text-sm transition-all ${cls}`}
                 >
                   {opt}
@@ -354,7 +364,7 @@ export function PracticePoolPage() {
           {showExplanation && (
             <div className={`rounded-xl p-4 text-sm space-y-2 ${isCorrect ? 'bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800' : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800'}`}>
               <p className={`font-semibold text-xs uppercase tracking-wider ${isCorrect ? 'text-emerald-700 dark:text-emerald-300' : 'text-red-700 dark:text-red-300'}`}>
-                {isCorrect ? '✓ Correct' : `✗ Incorrect — Answer: ${currentQ.correctAnswer}`}
+                {isCorrect ? 'Correct' : `Incorrect - Answer: ${currentCorrectAnswer}`}
               </p>
               {currentQ.explanation && (
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">{currentQ.explanation}</p>

@@ -153,6 +153,7 @@ export interface QuizQuestion {
   questionType?: QuestionType;
   question: string;
   options?: string[];
+  /** Empty until the server grades a committed answer. */
   correctAnswer: string;
   gradingToken?: string;
   explanation: string;

@@ -148,6 +148,18 @@ class CacheManager {
         return this.set(key, value, ttlSeconds);
     }
 
+    /** Atomically create a short-lived value. Redis keeps this safe across web workers. */
+    async setIfAbsent(key, value, ttlSeconds = 3600) {
+        if (this.redis) {
+            const fullKey = this.redisPrefix + key;
+            const result = await this.redis.set(fullKey, JSON.stringify(value), 'EX', ttlSeconds, 'NX');
+            if (result === 'OK') this.cache.set(key, value, ttlSeconds);
+            return result === 'OK';
+        }
+        if (this.cache.has(key)) return false;
+        return this.cache.set(key, value, ttlSeconds);
+    }
+
     async delAsync(key) {
         return this.del(key);
     }

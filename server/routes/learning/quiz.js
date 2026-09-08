@@ -15,7 +15,7 @@ const {
     attributeRecommendationFollowThrough,
 } = require('../../services/searchLearningOutcomeService');
 const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('../../services/learningSignalService');
-const { verifyQuizGradingToken } = require('../../services/quizGradingToken');
+const { verifyQuizGradingToken, verifyQuizAnswerCommitment } = require('../../services/quizGradingToken');
 const {
     calculateMastery, calculateMasteryWithBkt, nextReviewDate, updateStreak,
     buildOutline, initialCoverage, updateCoverage, summarizeRunGaps,
@@ -24,17 +24,26 @@ const {
 
 function gradeQuizAttempts(attempts = []) {
     const gradedAttempts = [];
+    const seenTokens = new Set();
     for (const attempt of attempts) {
+        if (seenTokens.has(attempt.gradingToken)) {
+            return { error: 'duplicate_attempt', attempts: [] };
+        }
+        seenTokens.add(attempt.gradingToken);
         const verification = verifyQuizGradingToken(attempt.gradingToken, attempt);
         if (!verification.valid) {
             return { error: verification.reason, attempts: [] };
         }
-        const claimKey = normalizeAttemptClaimKey(attempt);
+        const signedAttempt = {
+            ...attempt,
+            ...Object.fromEntries(Object.entries(verification.lineage || {}).filter(([, value]) => value != null)),
+        };
+        const claimKey = normalizeAttemptClaimKey(signedAttempt);
         const correctAnswer = verification.correctAnswer;
         const computedIsCorrect = String(attempt.userAnswer || '').trim().toLowerCase()
             === String(correctAnswer || '').trim().toLowerCase();
         gradedAttempts.push({
-            ...attempt,
+            ...signedAttempt,
             correctAnswer,
             claimKey,
             isCorrect: computedIsCorrect,
@@ -46,7 +55,7 @@ function gradeQuizAttempts(attempts = []) {
 }
 
 function registerQuizRoutes(app, deps) {
-    const { db, requireAuthJwt, requireAuthOrBeta, requireVerifiedEmail, rateLimit, serverConfig, fetch: fetchImpl } = deps;
+    const { db, cache, requireAuthJwt, requireAuthOrBeta, requireVerifiedEmail, rateLimit, serverConfig, fetch: fetchImpl } = deps;
     const { limitBodySize, requireJson, validateBody, schemas } = require('../../utils/validation');
     const requireQuizAuth = requireAuthOrBeta || requireAuthJwt;
 
@@ -84,6 +93,16 @@ function registerQuizRoutes(app, deps) {
     app.post('/api/learning/quiz-attempt', limitBodySize(256 * 1024), requireJson, requireQuizAuth, requireVerifiedEmail, rateLimit(60, 60), validateBody(schemas.quizAttempt), async (req, res) => {
         try {
             const { topic, attempts, studyRunId, curriculumTopicId } = req.body;
+            for (const attempt of attempts) {
+                const commitment = await verifyQuizAnswerCommitment(cache, attempt.gradingToken, attempt.userAnswer);
+                if (!commitment.valid) {
+                    return res.status(400).json({
+                        error: 'Submit the answer for grading before saving the quiz attempt.',
+                        code: 'QUIZ_ANSWER_NOT_COMMITTED',
+                        reason: commitment.reason,
+                    });
+                }
+            }
             const grading = gradeQuizAttempts(attempts);
             if (grading.error) {
                 return res.status(400).json({
@@ -96,6 +115,11 @@ function registerQuizRoutes(app, deps) {
 
             if (req.betaAnonymous) {
                 const normalizedTopic = db.normalizeTopic(topic);
+                if (db.createQuizAttempt) {
+                    await Promise.all(attemptsWithJudgement.map((attempt) => (
+                        db.createQuizAttempt({ ...attempt, userId: null, topic, sessionId: req.sessionId })
+                    )));
+                }
                 for (const attempt of attemptsWithJudgement) {
                     void recordLearningEventSafe({
                         userId: null,
@@ -134,12 +158,6 @@ function registerQuizRoutes(app, deps) {
                 // reconcileAnonymousQuizAttempts had nothing to attach on sign-in.
                 // The route test mocks createQuizAttempt, which is why the missing
                 // column was never seen in the suite.
-                if (db.createQuizAttempt) {
-                    for (const attempt of attemptsWithJudgement) {
-                        void db.createQuizAttempt({ ...attempt, userId: null, topic, sessionId: req.sessionId })
-                            .catch((err) => { logger.warn({ err }, 'createQuizAttempt (beta) failed'); });
-                    }
-                }
                 return res.json({
                     saved: attemptsWithJudgement.length,
                     persisted: true,

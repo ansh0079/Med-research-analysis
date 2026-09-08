@@ -136,19 +136,25 @@ function blendedArmSample(globalSample = 0.5, userSample = null, userPulls = 0) 
     return global * (1 - userWeight) + user * userWeight;
 }
 
-function chooseArmBySamples(armIds, globalSamples = {}, userSamples = {}, userPulls = 0, fallbackArm = armIds[0]) {
-    let bestArm = fallbackArm;
-    let bestSample = -1;
+function selectCategorical(armIds, probabilities, random = Math.random) {
+    let draw = Math.max(0, Math.min(1 - Number.EPSILON, Number(random()) || 0));
+    for (let i = 0; i < armIds.length; i += 1) {
+        draw -= probabilities[i] || 0;
+        if (draw < 0) return armIds[i];
+    }
+    return armIds.at(-1);
+}
+
+function chooseArmBySamples(armIds, globalSamples = {}, userSamples = {}, userPulls = 0, fallbackArm = armIds[0], random = Math.random) {
     const scores = [];
     for (const armId of armIds) {
         const sample = blendedArmSample(globalSamples[armId] ?? 0.5, userSamples[armId], userPulls);
         scores.push(sample);
-        if (sample > bestSample) {
-            bestSample = sample;
-            bestArm = armId;
-        }
     }
     const propensities = softmaxPropensities(scores);
+    const bestArm = selectCategorical(armIds, propensities, random) || fallbackArm;
+    const bestIndex = armIds.indexOf(bestArm);
+    const bestSample = scores[bestIndex] ?? null;
     const propensityByArm = {};
     armIds.forEach((armId, i) => {
         propensityByArm[armId] = propensities[i] ?? (1 / Math.max(armIds.length, 1));
@@ -225,25 +231,24 @@ function chooseArmBySamplesContextual(
     userSamples = {},
     userPulls = 0,
     fallbackArm = armIds[0],
-    contextFeatures = null
+    contextFeatures = null,
+    random = Math.random
 ) {
-    let bestArm = fallbackArm;
-    let bestSample = -1;
-    let bestRaw = null;
+    const rawScores = [];
     const boostedScores = [];
     for (const armId of armIds) {
         const raw = blendedArmSample(globalSamples[armId] ?? 0.5, userSamples[armId], userPulls);
         const boosted = contextFeatures
             ? raw * contextualArmPriorBoost(armId, contextFeatures)
             : raw;
+        rawScores.push(raw);
         boostedScores.push(boosted);
-        if (boosted > bestSample) {
-            bestSample = boosted;
-            bestArm = armId;
-            bestRaw = raw;
-        }
     }
     const propensities = softmaxPropensities(boostedScores);
+    const bestArm = selectCategorical(armIds, propensities, random) || fallbackArm;
+    const bestIndex = armIds.indexOf(bestArm);
+    const bestSample = boostedScores[bestIndex] ?? null;
+    const bestRaw = rawScores[bestIndex] ?? null;
     const propensityByArm = {};
     armIds.forEach((armId, i) => {
         propensityByArm[armId] = propensities[i] ?? (1 / Math.max(armIds.length, 1));
@@ -285,6 +290,7 @@ module.exports = {
     blendedArmSample,
     chooseArmBySamples,
     softmaxPropensities,
+    selectCategorical,
     chooseArmBySamplesContextual,
     searchRankingContextFeatures,
     contextualArmPriorBoost,

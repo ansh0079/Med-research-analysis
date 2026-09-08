@@ -31,7 +31,19 @@ jest.mock('../../server/services/searchLearningOutcomeService', () => ({
 const express = require('express');
 const request = require('supertest');
 const { registerQuizRoutes } = require('../../server/routes/learning/quiz');
-const { createQuizGradingToken } = require('../../server/services/quizGradingToken');
+const { createQuizGradingToken, commitQuizAnswer } = require('../../server/services/quizGradingToken');
+
+function makeCommitmentCache() {
+    const values = new Map();
+    return {
+        getAsync: async (key) => values.get(key),
+        setIfAbsent: async (key, value) => {
+            if (values.has(key)) return false;
+            values.set(key, value);
+            return true;
+        },
+    };
+}
 
 function signed(attempt) {
     return {
@@ -77,7 +89,7 @@ function makeEnforcingDb() {
     return { db, inserted, rejected };
 }
 
-function makeApp(db) {
+function makeApp(db, cache) {
     const app = express();
     app.use(express.json());
     // Stand in for the session middleware and for requireAuthOrBeta admitting an
@@ -87,6 +99,7 @@ function makeApp(db) {
     const requireAuthOrBeta = (req, _res, next) => { req.betaAnonymous = true; next(); };
     registerQuizRoutes(app, {
         db,
+        cache,
         requireAuthJwt: (_req, res) => res.status(401).json({ error: 'nope' }),
         requireAuthOrBeta,
         requireVerifiedEmail: (_req, _res, next) => next(),
@@ -105,16 +118,15 @@ const ATTEMPTS = [
 describe('POST /api/learning/quiz-attempt as an anonymous BETA_MODE session', () => {
     test('persists every attempt with the topic the table requires', async () => {
         const { db, inserted, rejected } = makeEnforcingDb();
-        const app = makeApp(db);
+        const cache = makeCommitmentCache();
+        const app = makeApp(db, cache);
+        await Promise.all(ATTEMPTS.map((attempt) => commitQuizAnswer(cache, attempt.gradingToken, attempt.userAnswer)));
 
         const res = await request(app)
             .post('/api/learning/quiz-attempt')
             .set('Content-Type', 'application/json')
             .send({ topic: 'ARDS', attempts: ATTEMPTS })
             .expect(200);
-
-        // Fire-and-forget: let the queued inserts settle before asserting.
-        await new Promise((r) => setImmediate(r));
 
         expect(res.body).toMatchObject({ saved: 2, persisted: true, betaAnonymous: true });
         expect(rejected).toHaveLength(0);
@@ -129,18 +141,31 @@ describe('POST /api/learning/quiz-attempt as an anonymous BETA_MODE session', ()
     test('the response reports what the server graded, not what the client claimed', async () => {
         // Both attempts claim isCorrect: true; q2 answered B against a correct C.
         const { db, inserted } = makeEnforcingDb();
-        const app = makeApp(db);
+        const cache = makeCommitmentCache();
+        const app = makeApp(db, cache);
+        await Promise.all(ATTEMPTS.map((attempt) => commitQuizAnswer(cache, attempt.gradingToken, attempt.userAnswer)));
 
         await request(app)
             .post('/api/learning/quiz-attempt')
             .send({ topic: 'ARDS', attempts: ATTEMPTS })
             .expect(200);
-        await new Promise((r) => setImmediate(r));
-
         const byId = Object.fromEntries(inserted.map((r) => [r.questionId, r]));
         expect(byId.q1.isCorrect).toBe(true);
         expect(byId.q2.isCorrect).toBe(false);
         expect(byId.q2.clientReportedIsCorrect).toBe(true);
+    });
+
+    test('does not report persisted when an insert fails', async () => {
+        const { db } = makeEnforcingDb();
+        db.createQuizAttempt = jest.fn().mockRejectedValue(new Error('database unavailable'));
+        const cache = makeCommitmentCache();
+        const app = makeApp(db, cache);
+        await Promise.all(ATTEMPTS.map((attempt) => commitQuizAnswer(cache, attempt.gradingToken, attempt.userAnswer)));
+
+        await request(app)
+            .post('/api/learning/quiz-attempt')
+            .send({ topic: 'ARDS', attempts: ATTEMPTS })
+            .expect(500);
     });
 
     test('the enforcing mock actually enforces (guards the guard)', async () => {

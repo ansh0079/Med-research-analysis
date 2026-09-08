@@ -19,6 +19,8 @@ const {
     attachLearningRoundGradingTokens,
     sealAnswer,
     openAnswer,
+    commitQuizAnswer,
+    verifyQuizAnswerCommitment,
     TOKEN_VERSION,
 } = require('../../server/services/quizGradingToken');
 
@@ -49,11 +51,15 @@ describe('quiz answer confidentiality', () => {
             const result = verifyQuizGradingToken(token, {
                 questionId: 'q1', questionText: QUESTION.question,
             });
-            expect(result).toEqual({ valid: true, correctAnswer: 'B' });
+            expect(result).toEqual({
+                valid: true,
+                correctAnswer: 'B',
+                lineage: expect.any(Object),
+            });
         });
 
-        test('is version 2, so v1 tokens that leaked the answer are refused', () => {
-            expect(TOKEN_VERSION).toBe(2);
+        test('is version 3, so earlier tokens without signed lineage are refused', () => {
+            expect(TOKEN_VERSION).toBe(3);
             const v1Payload = Buffer.from(JSON.stringify({
                 v: 1, qid: 'q1', answer: 'B', qh: 'x', exp: Math.floor(Date.now() / 1000) + 600,
             })).toString('base64url');
@@ -85,6 +91,30 @@ describe('quiz answer confidentiality', () => {
             // A fixed ciphertext would let someone group questions by answer
             // without ever decrypting one.
             expect(sealAnswer('B')).not.toBe(sealAnswer('B'));
+        });
+    });
+
+    describe('answer commitment', () => {
+        test('locks the first answer before revealing the key', async () => {
+            const values = new Map();
+            const cache = {
+                setIfAbsent: jest.fn(async (key, value) => {
+                    if (values.has(key)) return false;
+                    values.set(key, value);
+                    return true;
+                }),
+                getAsync: jest.fn(async (key) => values.get(key)),
+            };
+            const token = createQuizGradingToken(QUESTION);
+
+            await expect(commitQuizAnswer(cache, token, 'B')).resolves.toMatchObject({ valid: true });
+            await expect(commitQuizAnswer(cache, token, 'A')).resolves.toMatchObject({
+                valid: false, reason: 'answer_already_committed',
+            });
+            await expect(verifyQuizAnswerCommitment(cache, token, 'B')).resolves.toEqual({ valid: true });
+            await expect(verifyQuizAnswerCommitment(cache, token, 'A')).resolves.toMatchObject({
+                valid: false, reason: 'answer_commitment_mismatch',
+            });
         });
     });
 

@@ -85,6 +85,7 @@ services:
       REDIS_URL: redis://:${REDIS_PASSWORD:-changeme}@redis:6379
       DEV_DISABLE_AUTH: "false"
       BETA_MODE: ${BETA_MODE:-true}
+      BETA_OPEN_ACCESS: ${BETA_OPEN_ACCESS:-false}
       # Global daily ceiling on LLM spend, and the operator kill switch.
       # Without these passed through, the guard silently falls back to its
       # built-in default and the kill switch cannot be engaged at all.
@@ -163,6 +164,7 @@ services:
       REDIS_URL: redis://:${REDIS_PASSWORD:-changeme}@redis:6379
       DEV_DISABLE_AUTH: "false"
       BETA_MODE: ${BETA_MODE:-true}
+      BETA_OPEN_ACCESS: ${BETA_OPEN_ACCESS:-false}
       # Global daily ceiling on LLM spend, and the operator kill switch.
       # Without these passed through, the guard silently falls back to its
       # built-in default and the kill switch cannot be engaged at all.

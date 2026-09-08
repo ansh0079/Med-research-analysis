@@ -140,7 +140,8 @@ describe('phase 2 RL control plane', () => {
             { a: 0.9, b: 0.1 },
             {},
             0,
-            'a'
+            'a',
+            () => 0
         );
         expect(result.armId).toBe('a');
         expect(result.propensity).toBeGreaterThan(0.5);

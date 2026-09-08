@@ -106,6 +106,8 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
   const [attempts, setAttempts] = useState<AttemptRecord[]>([]);
   const [genError, setGenError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [grading, setGrading] = useState(false);
+  const [gradeError, setGradeError] = useState('');
   const [scheduleState, setScheduleState] = useState<'idle' | 'busy' | 'done'>('idle');
   const [runId, setRunId] = useState<number | null>(null);
 
@@ -141,17 +143,16 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
   }, [articles]);
 
   const handleSelect = useCallback(async (option: string) => {
-    if (selected !== null || !currentQ) return;
+    if (selected !== null || grading || !currentQ) return;
     const letter = option.trim().charAt(0).toUpperCase();
     const uid = resolveQuestionSourceUid(currentQ);
     const attribution = uid ? lookupArticleAttribution(uid) : null;
-    setSelected(letter);
+    setGrading(true);
+    setGradeError('');
 
     // Questions arrive without `correctAnswer` so it cannot be read ahead of
     // time; the server reveals it once a choice is committed. A failed grade
     // must not block the encounter -- the batch submit is graded server-side.
-    let revealed = '';
-    let isCorrect = false;
     try {
       const graded = await api.ai.gradeQuizAnswer({
         gradingToken: currentQ.gradingToken || '',
@@ -159,34 +160,25 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
         questionText: currentQ.question,
         userAnswer: letter,
       });
-      revealed = graded.correctAnswer;
-      isCorrect = graded.isCorrect;
       setRevealedAnswers((prev) => ({ ...prev, [currentQ.id]: graded.correctAnswer }));
+      setSelected(letter);
+      setAttempts((prev) => [
+        ...prev,
+        {
+          questionId: currentQ.id, questionType: currentQ.questionType, questionText: currentQ.question,
+          userAnswer: letter, correctAnswer: graded.correctAnswer, gradingToken: currentQ.gradingToken || '',
+          isCorrect: graded.isCorrect, explanation: currentQ.explanation, sourceArticleUid: uid,
+          decisionId: attribution?.decisionId, banditArmId: attribution?.banditArmId ?? null,
+          searchId: attribution?.searchId, claimKey: currentQ.claimKey ?? null,
+          claimDecisionId: currentQ.claimDecisionId ?? undefined,
+        },
+      ]);
     } catch {
-      /* leave correctness unresolved rather than scoring it wrong */
+      setGradeError('Could not check that answer. Please try again.');
+    } finally {
+      setGrading(false);
     }
-
-    // record attempt
-    setAttempts((prev) => [
-      ...prev,
-      {
-        questionId: currentQ.id,
-        questionType: currentQ.questionType,
-        questionText: currentQ.question,
-        userAnswer: letter,
-        correctAnswer: revealed,
-        gradingToken: currentQ.gradingToken || '',
-        isCorrect,
-        explanation: currentQ.explanation,
-        sourceArticleUid: uid,
-        decisionId: attribution?.decisionId,
-        banditArmId: attribution?.banditArmId ?? null,
-        searchId: attribution?.searchId,
-        claimKey: currentQ.claimKey ?? null,
-        claimDecisionId: currentQ.claimDecisionId ?? undefined,
-      },
-    ]);
-  }, [selected, currentQ, resolveQuestionSourceUid]);
+  }, [selected, grading, currentQ, resolveQuestionSourceUid]);
 
   const handleNext = useCallback(async () => {
     if (qIndex < questions.length - 1) {
@@ -313,6 +305,8 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
             />
           ))}
         </div>
+        {grading && <p className="text-xs text-slate-500 dark:text-slate-400">Checking answer...</p>}
+        {gradeError && <p className="text-xs text-rose-600 dark:text-rose-400">{gradeError}</p>}
 
         {isAnswered && (
           <div className={`rounded-xl px-3 py-2.5 text-xs leading-relaxed ${

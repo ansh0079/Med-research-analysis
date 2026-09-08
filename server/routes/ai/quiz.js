@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const { createBudgetForAction, runWithLlmBudget } = require('../../services/llmRequestBudget');
 const { createQuizGenerationService } = require('../../services/quizGenerationService');
 const { computeMcqClaimKey, GUIDELINE_BODY, hasSuspectFutureCitation } = require('../../utils/mcqClaimKey');
-const { attachQuizGradingTokens, verifyQuizGradingToken } = require('../../services/quizGradingToken');
+const { attachQuizGradingTokens, verifyQuizGradingToken, commitQuizAnswer } = require('../../services/quizGradingToken');
 
 function sendServiceResponse(res, result) {
     return res.status(result.status || 200).json(attachQuizGradingTokens(result.body));
@@ -25,6 +25,7 @@ function registerQuizRoutes(app, {
     validateBody,
     schemas,
     helpers,
+    cache,
 }) {
     const quizGenerationService = createQuizGenerationService({
         db,
@@ -48,9 +49,21 @@ function registerQuizRoutes(app, {
         async (req, res) => {
             try {
                 const { gradingToken, questionId, questionText, userAnswer } = req.body || {};
+                if (typeof userAnswer !== 'string' || !userAnswer.trim()) {
+                    return res.status(400).json({ error: 'userAnswer is required' });
+                }
                 const verification = verifyQuizGradingToken(gradingToken, { questionId, questionText });
                 if (!verification.valid) {
                     return res.status(400).json({ error: 'Invalid grading token', reason: verification.reason });
+                }
+                const commitment = await commitQuizAnswer(cache, gradingToken, userAnswer);
+                if (!commitment.valid) {
+                    return res.status(commitment.reason === 'answer_already_committed' ? 409 : 503).json({
+                        error: commitment.reason === 'answer_already_committed'
+                            ? 'An answer has already been committed for this question.'
+                            : 'Answer commitment storage is unavailable.',
+                        reason: commitment.reason,
+                    });
                 }
                 const correctAnswer = verification.correctAnswer;
                 const isCorrect = String(userAnswer || '').trim().toLowerCase()

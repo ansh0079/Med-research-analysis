@@ -5,7 +5,9 @@
 
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
-const { createQuizGradingToken } = require('../../server/services/quizGradingToken');
+const { createQuizGradingToken, commitQuizAnswer } = require('../../server/services/quizGradingToken');
+const mockQuizCommitments = new Map();
+const cache = require('../../cache');
 
 function signedQuizAttempt(attempt) {
   return {
@@ -227,8 +229,13 @@ jest.mock('../../cache', () => ({
   close: jest.fn().mockResolvedValue(true),
   get: jest.fn(),
   set: jest.fn(),
-  getAsync: jest.fn().mockResolvedValue(null),
+  getAsync: jest.fn(async (key) => mockQuizCommitments.get(key) ?? null),
   setAsync: jest.fn().mockResolvedValue(true),
+  setIfAbsent: jest.fn(async (key, value) => {
+    if (mockQuizCommitments.has(key)) return false;
+    mockQuizCommitments.set(key, value);
+    return true;
+  }),
   delAsync: jest.fn().mockResolvedValue(true),
   getSearchResults: jest.fn(),
   setSearchResults: jest.fn(),
@@ -2668,16 +2675,18 @@ describe('API Endpoints', () => {
         { question_type: 'recall', is_correct: 1 },
         { question_type: 'clinical_application', is_correct: 0 },
       ]);
+      const attempts = [
+        signedQuizAttempt({ questionId: 'q1', questionType: 'recall', questionText: 'What is PEEP?', userAnswer: 'A', correctAnswer: 'A', isCorrect: true }),
+        signedQuizAttempt({ questionId: 'q2', questionType: 'clinical_application', questionText: 'Case...', userAnswer: 'B', correctAnswer: 'C', isCorrect: false }),
+      ];
+      await Promise.all(attempts.map((attempt) => commitQuizAnswer(cache, attempt.gradingToken, attempt.userAnswer)));
       const response = await request(app)
         .post('/api/learning/quiz-attempt')
         .set('Cookie', `med_auth_token=${authToken()}`)
         .set('Content-Type', 'application/json')
         .send({
           topic: 'ARDS',
-          attempts: [
-            signedQuizAttempt({ questionId: 'q1', questionType: 'recall', questionText: 'What is PEEP?', userAnswer: 'A', correctAnswer: 'A', isCorrect: true }),
-            signedQuizAttempt({ questionId: 'q2', questionType: 'clinical_application', questionText: 'Case...', userAnswer: 'B', correctAnswer: 'C', isCorrect: false }),
-          ],
+          attempts,
         })
         .expect(200);
       expect(response.body).toHaveProperty('saved', 2);
@@ -2686,23 +2695,22 @@ describe('API Endpoints', () => {
 
     test('POST /api/learning/quiz-attempt records evidence judgement tags', async () => {
       db.getQuizAttemptStats.mockResolvedValue([{ question_type: 'trial_interpretation', is_correct: 0 }]);
-
+      const attempts = [signedQuizAttempt({
+        questionId: 'q-trial',
+        questionType: 'trial_interpretation',
+        questionText: 'This randomised trial used a composite primary outcome and subgroup analysis. What is the main limitation?',
+        userAnswer: 'It proves mortality benefit',
+        correctAnswer: 'Do not overclaim; assess outcome hierarchy and applicability',
+        isCorrect: false,
+      })];
+      await Promise.all(attempts.map((attempt) => commitQuizAnswer(cache, attempt.gradingToken, attempt.userAnswer)));
       await request(app)
         .post('/api/learning/quiz-attempt')
         .set('Cookie', `med_auth_token=${authToken()}`)
         .set('Content-Type', 'application/json')
         .send({
           topic: 'Sepsis',
-          attempts: [
-            signedQuizAttempt({
-              questionId: 'q-trial',
-              questionType: 'trial_interpretation',
-              questionText: 'This randomised trial used a composite primary outcome and subgroup analysis. What is the main limitation?',
-              userAnswer: 'It proves mortality benefit',
-              correctAnswer: 'Do not overclaim; assess outcome hierarchy and applicability',
-              isCorrect: false,
-            }),
-          ],
+          attempts,
         })
         .expect(200);
 
@@ -2885,7 +2893,10 @@ describe('API Endpoints', () => {
         },
       });
       db.getQuizAttemptStats.mockResolvedValueOnce([{ question_type: 'recall', is_correct: 1 }]);
-
+      const attempts = [
+        signedQuizAttempt({ questionId: 'q1', questionType: 'recall', questionText: 'ARDS?', userAnswer: 'A', correctAnswer: 'A', isCorrect: true, outlineNodeId: 'tp-1' }),
+      ];
+      await Promise.all(attempts.map((attempt) => commitQuizAnswer(cache, attempt.gradingToken, attempt.userAnswer)));
       await request(app)
         .post('/api/learning/quiz-attempt')
         .set('Cookie', `med_auth_token=${authToken()}`)
@@ -2893,9 +2904,7 @@ describe('API Endpoints', () => {
         .send({
           topic: 'ARDS',
           studyRunId: 99,
-          attempts: [
-            signedQuizAttempt({ questionId: 'q1', questionType: 'recall', questionText: 'ARDS?', userAnswer: 'A', correctAnswer: 'A', isCorrect: true, outlineNodeId: 'tp-1' }),
-          ],
+          attempts,
         })
         .expect(200);
 

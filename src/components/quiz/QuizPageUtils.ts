@@ -58,7 +58,7 @@ export function learningRoundItemsToQuestions(
       questionType: mapRoundItemType(String(item.itemType || 'claim_recall')),
       question: String(item.questionText || ''),
       options: Array.isArray(item.options) ? item.options : [],
-      correctAnswer: String(item.correctAnswer || item.options?.[0] || ''),
+      correctAnswer: String(item.correctAnswer || ''),
       explanation: String(item.explanation || ''),
       gradingToken: item.gradingToken || undefined,
       difficulty: 'medium' as const,

@@ -32,8 +32,10 @@ function evidenceSourceTrust(article = {}) {
     if (hasGuidelinePubtype(article)) {
         return { verificationStatus: 'guideline_supported', reviewState: 'machine_checked' };
     }
-    const fullTextWordCount = Number(article._fullTextWordCount || article.fullTextWordCount || 0);
-    if (article._fullTextIndexed || article._pdfIndexed || article.pdfIndexed || fullTextWordCount >= 200) {
+    const hasUsableSections = article.sections && typeof article.sections === 'object'
+        && Object.values(article.sections).some((value) => String(value || '').trim().split(/\s+/).length >= 40);
+    const hasUsableFullText = String(article.fullText || article.full_text || '').trim().split(/\s+/).length >= 200;
+    if (hasUsableSections || hasUsableFullText) {
         return { verificationStatus: 'full_text_available', reviewState: 'machine_checked' };
     }
     return { verificationStatus: 'abstract_only', reviewState: 'unreviewed' };
@@ -50,10 +52,17 @@ async function hydrateEvidenceArticles(db, articles = []) {
     return Promise.all(articles.map(async (article) => {
         const uid = article?.uid || article?.id || article?.pmid || null;
         if (!uid) return { article, trusted: null };
-        const cached = await db.getCachedArticle(String(uid)).catch(() => null);
-        const trusted = cached ? {
-            ...cached,
-            ...(retractions[String(uid)] ? { _retraction: retractions[String(uid)] } : {}),
+        const [cached, pdfSections] = await Promise.all([
+            db.getCachedArticle(String(uid)).catch(() => null),
+            typeof db.getPdfSections === 'function'
+                ? db.getPdfSections(String(uid)).catch(() => null)
+                : Promise.resolve(null),
+        ]);
+        const retraction = retractions[String(uid)] || null;
+        const trusted = (cached || pdfSections?.sections || retraction) ? {
+            ...(cached || {}),
+            ...(pdfSections?.sections ? { sections: pdfSections.sections } : {}),
+            ...(retraction ? { _retraction: retraction } : {}),
         } : null;
         return { article: trusted ? { ...article, ...trusted, uid: article.uid || trusted.uid || String(uid) } : article, trusted };
     }));
@@ -62,7 +71,6 @@ async function hydrateEvidenceArticles(db, articles = []) {
 function filterQuestionsByEvidenceTrust(questions = []) {
     const droppedHighStakes = [];
     const safeQuestions = questions.filter((question) => {
-        if (!isHighStakesQuestionType(question.questionType)) return true;
         const eligible = claimEligibleForQuestionType({
             verificationStatus: question.claimVerificationStatus,
             reviewState: question.claimReviewState,
@@ -486,7 +494,6 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             // Phase 3: high-stakes Q types only from verified / guideline-supported claims.
             const droppedHighStakes = [];
             const questions = mappedQuestions.filter((q) => {
-                if (!isHighStakesQuestionType(q.questionType)) return true;
                 const cmeta = q.claimKey && claimByKey ? claimByKey.get(q.claimKey) : null;
                 const ok = claimEligibleForQuestionType(cmeta || {
                     verificationStatus: q.claimVerificationStatus,

@@ -37,6 +37,7 @@ const PUBLIC_PATTERNS = [
     /^\/api\/analytics\/quality-feedback$/,
     /^\/api\/pdf\/find$/,
     /^\/api\/guidelines(?:\/|$)/,
+    /^\/api\/guideline-documents(?:\/[^/]+)?$/,
     /^\/api\/knowledge\/[^/]+$/,
     /^\/api\/trending$/,
     /^\/api\/articles\/[^/]+\/related$/,

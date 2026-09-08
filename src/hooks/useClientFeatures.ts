@@ -20,13 +20,11 @@ export function useClientFeatures(): ClientFeatures {
     let cancelled = false;
     void api.search.getClientConfig().then((config) => {
       if (cancelled) return;
-      const betaMode = Boolean(
-        (config as { betaMode?: boolean; betaOpenAccess?: boolean }).betaOpenAccess
-          ?? (config as { betaMode?: boolean }).betaMode,
-      );
+      const betaMode = Boolean((config as { betaMode?: boolean }).betaMode);
+      const betaOpenAccess = Boolean((config as { betaOpenAccess?: boolean }).betaOpenAccess);
       setFeatures({
         betaMode,
-        betaOpenAccess: betaMode,
+        betaOpenAccess,
         vectorSearch: Boolean(config.features?.vectorSearch),
       });
     });

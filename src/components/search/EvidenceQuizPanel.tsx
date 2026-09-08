@@ -35,6 +35,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
   const [completed, setCompleted] = useState(false);
   const [expanded, setExpanded] = useState(autoExpand);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [grading, setGrading] = useState(false);
 
   // Track per-question timing and answers for optional backend submission
   const questionStartRef = useRef<number>(0);
@@ -97,12 +98,12 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
   );
 
   const handleSelect = async (letter: string) => {
-    if (showExplanation || !currentQuestion) return;
+    if (showExplanation || grading || !currentQuestion) return;
     const timeMs = currentTimeMs() - questionStartRef.current;
+    setGrading(true);
 
     // Questions arrive without `correctAnswer` so it cannot be read before
     // answering; the server reveals it once a choice is committed.
-    let isCorrect = false;
     try {
       const graded = await api.ai.gradeQuizAnswer({
         gradingToken: currentQuestion.gradingToken || '',
@@ -110,23 +111,21 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
         questionText: currentQuestion.question,
         userAnswer: letter,
       });
-      isCorrect = graded.isCorrect;
       setRevealedAnswers((prev) => ({ ...prev, [currentQuestion.id || `${topic}-${currentIndex}`]: graded.correctAnswer }));
+      setSelectedAnswer(letter);
+      setShowExplanation(true);
+      if (graded.isCorrect) setScore((s) => s + 1);
+      answersRef.current.push({
+        questionId: currentQuestion.id || `${topic}-${currentIndex}`,
+        userAnswer: letter,
+        isCorrect: graded.isCorrect,
+        timeMs,
+      });
     } catch {
-      // A network blip must not score the learner wrong or block progress; the
-      // end-of-quiz submit is graded server-side regardless.
+      showToast('Could not check that answer. Please try again.', 'warning', 4000);
+    } finally {
+      setGrading(false);
     }
-    setSelectedAnswer(letter);
-    setShowExplanation(true);
-    if (isCorrect) {
-      setScore((s) => s + 1);
-    }
-    answersRef.current.push({
-      questionId: currentQuestion.id || `${topic}-${currentIndex}`,
-      userAnswer: letter,
-      isCorrect,
-      timeMs,
-    });
   };
 
   const submitToBackend = useCallback(async (finalScore: number, total: number) => {
@@ -307,7 +306,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
                       <button
                         key={letter}
                         type="button"
-                        disabled={showExplanation}
+                        disabled={showExplanation || grading}
                         onClick={() => handleSelect(letter)}
                         className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all border ${
                           showResult && isCorrect

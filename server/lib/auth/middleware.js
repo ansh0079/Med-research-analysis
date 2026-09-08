@@ -16,8 +16,10 @@ if (String(process.env.DEV_DISABLE_AUTH || '').toLowerCase() === 'true' && proce
     console.error('⚠️  WARNING: DEV_DISABLE_AUTH=true is ignored in production. Auth is enforced.');
 }
 
-/** Beta programme: anonymous session-based access to AI/quiz flows for learning signal collection. */
+/** Beta programme status and its separately controlled anonymous-access option. */
 const BETA_MODE = String(process.env.BETA_MODE || '').toLowerCase() === 'true';
+const BETA_OPEN_ACCESS = BETA_MODE
+    && String(process.env.BETA_OPEN_ACCESS || '').toLowerCase() === 'true';
 
 function isBetaMode() {
     return BETA_MODE;
@@ -29,7 +31,7 @@ function isBetaMode() {
  */
 function resolveLearningActorId(req) {
     if (req.user?.id) return req.user.id;
-    if (BETA_MODE && req.sessionId) return `session:${req.sessionId}`;
+    if (BETA_OPEN_ACCESS && req.sessionId) return `session:${req.sessionId}`;
     return null;
 }
 
@@ -110,7 +112,7 @@ async function requireAuthOrBeta(req, res, next) {
         }
     }
 
-    if (BETA_MODE && req.sessionId) {
+    if (BETA_OPEN_ACCESS && req.sessionId) {
         req.betaAnonymous = true;
         return next();
     }
@@ -207,6 +209,7 @@ function requirePaidFeature(featureName = 'premium_feature') {
 module.exports = {
     DEV_DISABLE_AUTH,
     BETA_MODE,
+    BETA_OPEN_ACCESS,
     isBetaMode,
     resolveLearningActorId,
     optionalAuth,

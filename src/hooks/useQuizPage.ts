@@ -331,6 +331,14 @@ export function useQuizPage() {
   }, [quizSourceArticles]);
 
   const scorePercent = quiz.questions.length > 0 ? Math.round((quiz.score / quiz.questions.length) * 100) : 0;
+  const quizForDisplay = useMemo<QuizState>(() => ({
+    ...quiz,
+    questions: quiz.questions.map((question) => ({
+      ...question,
+      correctAnswer: answerFor(question),
+    })),
+  }), [answerFor, quiz]);
+  const currentQuestionForDisplay = quizForDisplay.questions[quiz.currentIndex];
 
   const saveQuizAttempt = async (questions: QuizQuestion[], answers: Record<string, string>) => {
     setSaveStatus('saving');
@@ -411,8 +419,6 @@ export function useQuizPage() {
 
   const handleAnswer = async (answer: string) => {
     if (!currentQ || isAnswered) return;
-    setSelected(answer);
-    setConfidenceByQuestion((prev) => ({ ...prev, [currentQ.id]: answerConfidence }));
 
     // The server holds the answer key and is the authority on correctness.
     let correct = false;
@@ -427,12 +433,13 @@ export function useQuizPage() {
       correct = graded.isCorrect;
       correctAnswer = graded.correctAnswer;
     } catch (err) {
-      // Never strand the learner on a network blip: record the choice, show the
-      // explanation, and leave correctness unresolved rather than scoring it
-      // wrong. The batch submit at the end is graded server-side regardless.
       logAsyncError(err, 'useQuizPage/gradeQuizAnswer');
+      setSaveStatus('error');
+      return;
     }
 
+    setSelected(answer);
+    setConfidenceByQuestion((prev) => ({ ...prev, [currentQ.id]: answerConfidence }));
     if (correctAnswer) {
       setRevealedAnswers((prev) => ({ ...prev, [currentQ.id]: correctAnswer }));
     }
@@ -616,7 +623,7 @@ export function useQuizPage() {
     workflowContext,
     lockedArticles,
     evidenceSnippets,
-    quiz,
+    quiz: quizForDisplay,
     generating,
     genError,
     genErrorCode,
@@ -639,7 +646,7 @@ export function useQuizPage() {
     learningVelocity,
     effectiveExplanationDepth,
     trainingStage,
-    currentQ,
+    currentQ: currentQuestionForDisplay,
     isAnswered,
     isCorrect,
     scorePercent,

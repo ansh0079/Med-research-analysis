@@ -8,7 +8,7 @@ function createReviewRouteHelpers({ ai, serverConfig, logger, mcqValidator }) {
     async function validateCaseMcqs(topic, mcqs, articles = []) {
         const normalized = normalizeCaseMcqList(mcqs, { prefix: 'case' });
         if (!normalized.length) return normalized;
-        let validated = normalized;
+        let validated = [];
         try {
             const { provider: validationProvider, model: validationModel } = resolveProviderUtil({ provider: 'auto' }, serverConfig);
             const validation = await mcqValidator.validateBatch({
@@ -19,11 +19,11 @@ function createReviewRouteHelpers({ ai, serverConfig, logger, mcqValidator }) {
                 articles,
                 guidelines: [],
             });
-            if (validation?.validIndices?.size) {
+            if (validation?.validIndices instanceof Set) {
                 validated = normalized.filter((_, idx) => validation.validIndices.has(idx + 1));
             }
         } catch (err) {
-            logger.warn({ err }, 'case MCQ validation skipped');
+            logger.warn({ err }, 'case MCQ validation failed closed');
         }
         return attachQuizGradingTokens({ questions: validated }).questions;
     }

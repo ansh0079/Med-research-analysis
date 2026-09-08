@@ -119,9 +119,16 @@ function buildQuizPrompt(topic, articles = [], options = {}, guidelines = [], us
         : `Make every question ${difficulty} difficulty (still bounded by TRAINING LEVEL).`;
     const context = (articles || [])
         .slice(0, 5)
-        .map((a, i) => `[SOURCE ${i + 1}]
+        .map((a, i) => {
+            const sectionText = a.sections && typeof a.sections === 'object'
+                ? Object.values(a.sections).map((value) => String(value || '')).join('\n')
+                : '';
+            const evidenceText = String(a.fullText || a.full_text || sectionText || '').trim();
+            return `[SOURCE ${i + 1}]
 Title: ${String(a.title || '').slice(0, 240)}
-Abstract: ${String(a.abstract || '').slice(0, 900)}`)
+Abstract: ${String(a.abstract || '').slice(0, 900)}
+${evidenceText ? `Retrieved full-text evidence: ${evidenceText.slice(0, 1800)}` : 'Retrieved full-text evidence: unavailable'}`;
+        })
         .join('\n\n');
 
     const guidelineContext = guidelines.length > 0

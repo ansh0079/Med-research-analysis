@@ -80,10 +80,15 @@ const clientConfig = {
             enableCloudAI: serverConfig.features.enableCloudAI,
             enableSemanticRanking: serverConfig.features.enableSemanticRanking,
             betaMode: String(process.env.BETA_MODE || '').toLowerCase() === 'true',
+            betaOpenAccess: String(process.env.BETA_MODE || '').toLowerCase() === 'true'
+                && String(process.env.BETA_OPEN_ACCESS || '').toLowerCase() === 'true',
         };
     },
     get betaMode() {
         return String(process.env.BETA_MODE || '').toLowerCase() === 'true';
+    },
+    get betaOpenAccess() {
+        return this.betaMode && String(process.env.BETA_OPEN_ACCESS || '').toLowerCase() === 'true';
     },
     // API key availability flags
     get gemini() { return !!serverConfig.keys.gemini; },

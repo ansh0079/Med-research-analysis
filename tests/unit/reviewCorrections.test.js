@@ -5,11 +5,12 @@ const request = require('supertest');
 const { registerAiJobRoutes } = require('../../server/routes/ai/jobs');
 const { createQuizGradingToken } = require('../../server/services/quizGradingToken');
 const { gradeQuizAttempts } = require('../../server/routes/learning/quiz');
-const { evidenceSourceTrust, filterQuestionsByEvidenceTrust } = require('../../server/services/learning/quizGenerationService');
+const { evidenceSourceTrust, filterQuestionsByEvidenceTrust, hydrateEvidenceArticles } = require('../../server/services/learning/quizGenerationService');
 const { needsRegeneration, synthesisKey } = require('../../server/services/hierarchicalCacheService');
 const { selectBootstrapArm } = require('../../server/services/bandit/sampling');
 const { selectArmByLinearValue, ARM_IDS, featureDim } = require('../../server/services/contextualValueModel');
 const { paperSynopsisJobKey } = require('../../server/services/ai/aiGenerationJobService');
+const { createReviewRouteHelpers } = require('../../server/routes/review/shared');
 const { schemas } = require('../../server/utils/validation');
 
 describe('review corrections', () => {
@@ -34,6 +35,30 @@ describe('review corrections', () => {
         expect(result).toMatchObject({ error: 'question_text', attempts: [] });
     });
 
+    test('server grading preserves signed evidence lineage and rejects duplicate tokens', () => {
+        const gradingToken = createQuizGradingToken({
+            id: 'q1', question: 'Question?', correctAnswer: 'A', claimKey: 'signed-claim', sourceArticleUid: 'signed-paper',
+        });
+        const attempt = {
+            questionId: 'q1', questionText: 'Question?', userAnswer: 'A', gradingToken,
+            claimKey: 'changed-claim', sourceArticleUid: 'changed-paper',
+        };
+        const single = gradeQuizAttempts([attempt]);
+        expect(single.attempts[0]).toMatchObject({ claimKey: 'signed-claim', sourceArticleUid: 'signed-paper' });
+        expect(gradeQuizAttempts([attempt, attempt])).toMatchObject({ error: 'duplicate_attempt', attempts: [] });
+    });
+
+    test('case MCQ validation fails closed when all questions are rejected', async () => {
+        const helpers = createReviewRouteHelpers({
+            ai: {}, serverConfig: {}, logger: { warn: jest.fn() },
+            mcqValidator: { validateBatch: jest.fn().mockResolvedValue({ validIndices: new Set() }) },
+        });
+        const questions = await helpers.validateCaseMcqs('ARDS', [{
+            id: 'case-1', question: 'Question?', options: ['A: One', 'B: Two'], correctAnswer: 'A',
+        }]);
+        expect(questions).toEqual([]);
+    });
+
     test('AI job detail and claims are hidden from a different user', async () => {
         const db = {
             getAiGenerationJobByKey: jest.fn().mockResolvedValue({ jobKey: 'job-a', userId: 'user-a', status: 'completed' }),
@@ -56,7 +81,8 @@ describe('review corrections', () => {
 
     test('high-stakes evidence trust requires server-confirmed full text or a guideline', () => {
         expect(evidenceSourceTrust({ title: 'Abstract only' }).verificationStatus).toBe('abstract_only');
-        expect(evidenceSourceTrust({ _fullTextIndexed: true }).verificationStatus).toBe('full_text_available');
+        expect(evidenceSourceTrust({ _fullTextIndexed: true }).verificationStatus).toBe('abstract_only');
+        expect(evidenceSourceTrust({ fullText: Array(220).fill('evidence').join(' ') }).verificationStatus).toBe('full_text_available');
         expect(evidenceSourceTrust({ pubtype: ['Practice Guideline'] }).verificationStatus).toBe('guideline_supported');
         expect(evidenceSourceTrust({ _retraction: { isRetracted: true } }).reviewState).toBe('needs_revision');
     });
@@ -69,6 +95,25 @@ describe('review corrections', () => {
         ]);
         expect(filtered.questions.map((question) => question.id)).toEqual(['recall', 'guideline']);
         expect(filtered.droppedHighStakes).toHaveLength(1);
+    });
+
+    test('evidence quizzes drop questions in needs-revision state regardless of type', () => {
+        const filtered = filterQuestionsByEvidenceTrust([
+            { id: 'recall', questionType: 'recall', claimVerificationStatus: 'unverified', claimReviewState: 'needs_revision' },
+            { id: 'pitfall', questionType: 'pitfall', claimVerificationStatus: 'unverified', claimReviewState: 'needs_revision' },
+        ]);
+        expect(filtered.questions).toEqual([]);
+    });
+
+    test('evidence hydration retrieves the full-text sections used to establish trust', async () => {
+        const sections = { results: Array(60).fill('result').join(' ') };
+        const hydrated = await hydrateEvidenceArticles({
+            getCachedArticle: jest.fn().mockResolvedValue({ uid: 'p1', title: 'Paper' }),
+            getPdfSections: jest.fn().mockResolvedValue({ sections }),
+            getArticleRetractionBatch: jest.fn().mockResolvedValue({}),
+        }, [{ uid: 'p1', title: 'Paper', abstract: 'Abstract' }]);
+        expect(hydrated[0].trusted.sections).toEqual(sections);
+        expect(evidenceSourceTrust(hydrated[0].trusted).verificationStatus).toBe('full_text_available');
     });
 
     test('hierarchical synthesis cache is user-scoped and invalidates source removals', () => {

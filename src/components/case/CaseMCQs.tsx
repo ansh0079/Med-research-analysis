@@ -23,12 +23,16 @@ export function CaseMCQs({ mcqs, topic }: { mcqs: QuizQuestion[]; topic: string 
   const submittedRef = useRef(new Set<string>());
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [revealedAnswers, setRevealedAnswers] = useState<Record<string, string>>({});
+  const [gradingId, setGradingId] = useState<string | null>(null);
+  const [gradingError, setGradingError] = useState<string | null>(null);
   const [collapsed, setCollapsed] = useState(false);
 
   const q = mcqs[current];
   if (!q) return null;
   const isAnswered = answers[q.id] !== undefined;
-  const isCorrect = isAnswered && answers[q.id]?.toLowerCase() === q.correctAnswer.toLowerCase();
+  const correctAnswer = revealedAnswers[q.id] || '';
+  const isCorrect = isAnswered && Boolean(correctAnswer) && answers[q.id]?.toLowerCase() === correctAnswer.toLowerCase();
 
   const persistAttempt = async (question: QuizQuestion, letter: string) => {
     if ((!isAuthenticated && !betaOpenAccess) || !topic || submittedRef.current.has(question.id)) return;
@@ -41,9 +45,9 @@ export function CaseMCQs({ mcqs, topic }: { mcqs: QuizQuestion[]; topic: string 
           questionType: (question.questionType as QuestionType) || 'clinical_application',
           questionText: question.question,
           userAnswer: letter,
-          correctAnswer: question.correctAnswer,
+          correctAnswer: question.correctAnswer || '',
           gradingToken: question.gradingToken || '',
-          isCorrect: letter.toLowerCase() === question.correctAnswer.toLowerCase(),
+          isCorrect: letter.toLowerCase() === (question.correctAnswer || '').toLowerCase(),
           promptVariant: 'case_embedded',
         }],
       });
@@ -52,10 +56,25 @@ export function CaseMCQs({ mcqs, topic }: { mcqs: QuizQuestion[]; topic: string 
     }
   };
 
-  const handleAnswer = (letter: string) => {
-    if (isAnswered) return;
-    setAnswers((prev) => ({ ...prev, [q.id]: letter }));
-    void persistAttempt(q, letter);
+  const handleAnswer = async (letter: string) => {
+    if (isAnswered || gradingId) return;
+    setGradingId(q.id);
+    setGradingError(null);
+    try {
+      const graded = await api.ai.gradeQuizAnswer({
+        gradingToken: q.gradingToken || '',
+        questionId: q.id,
+        questionText: q.question,
+        userAnswer: letter,
+      });
+      setRevealedAnswers((prev) => ({ ...prev, [q.id]: graded.correctAnswer }));
+      setAnswers((prev) => ({ ...prev, [q.id]: letter }));
+      void persistAttempt({ ...q, correctAnswer: graded.correctAnswer }, letter);
+    } catch {
+      setGradingError('Could not check that answer. Please try again.');
+    } finally {
+      setGradingId(null);
+    }
   };
 
   return (
@@ -71,7 +90,7 @@ export function CaseMCQs({ mcqs, topic }: { mcqs: QuizQuestion[]; topic: string 
           <div className="flex gap-1 flex-wrap mb-3">
             {mcqs.map((mq, i) => {
               const done = answers[mq.id] !== undefined;
-              const correct = answers[mq.id]?.toLowerCase() === mq.correctAnswer.toLowerCase();
+              const correct = Boolean(revealedAnswers[mq.id]) && answers[mq.id]?.toLowerCase() === revealedAnswers[mq.id].toLowerCase();
               return (
                 <button key={mq.id} type="button" onClick={() => setCurrent(i)}
                   className={`w-8 h-8 rounded-lg text-xs font-bold transition-all border-2 ${
@@ -109,7 +128,7 @@ export function CaseMCQs({ mcqs, topic }: { mcqs: QuizQuestion[]; topic: string 
               <div className="space-y-2">
                 {q.options.map((opt) => {
                   const letter = opt.split(':')[0].trim();
-                  const isCorrectLetter = letter.toLowerCase() === q.correctAnswer.toLowerCase();
+                  const isCorrectLetter = letter.toLowerCase() === correctAnswer.toLowerCase();
                   const isSelected = answers[q.id] === letter;
                   let cls = 'w-full text-left px-3.5 py-2.5 rounded-xl border-2 text-sm font-medium transition-all duration-150 ';
                   if (!isAnswered) {
@@ -122,7 +141,7 @@ export function CaseMCQs({ mcqs, topic }: { mcqs: QuizQuestion[]; topic: string 
                     cls += 'border-slate-100 dark:border-slate-700 text-slate-400 dark:text-slate-500';
                   }
                   return (
-                    <button key={letter} type="button" className={cls} disabled={isAnswered} onClick={() => handleAnswer(letter)}>
+                    <button key={letter} type="button" className={cls} disabled={isAnswered || gradingId === q.id} onClick={() => { void handleAnswer(letter); }}>
                       <span className="flex items-center gap-2.5">
                         {isAnswered && isCorrectLetter && <i className="fas fa-check-circle text-emerald-500 shrink-0" />}
                         {isAnswered && isSelected && !isCorrectLetter && <i className="fas fa-times-circle text-red-500 shrink-0" />}
@@ -137,7 +156,7 @@ export function CaseMCQs({ mcqs, topic }: { mcqs: QuizQuestion[]; topic: string 
             {isAnswered && (
               <div className={`mt-4 rounded-xl p-3.5 border ${isCorrect ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800' : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800'}`}>
                 <p className={`text-xs font-bold mb-1 ${isCorrect ? 'text-emerald-700 dark:text-emerald-300' : 'text-amber-700 dark:text-amber-300'}`}>
-                  {isCorrect ? 'Correct!' : `Correct answer: ${q.correctAnswer}`}
+                  {isCorrect ? 'Correct!' : `Correct answer: ${correctAnswer}`}
                 </p>
                 <p className={`text-xs leading-relaxed ${isCorrect ? 'text-emerald-700 dark:text-emerald-400' : 'text-amber-700 dark:text-amber-400'}`}>
                   {q.explanation}
@@ -150,6 +169,7 @@ export function CaseMCQs({ mcqs, topic }: { mcqs: QuizQuestion[]; topic: string 
                 {q.sourceReference && <p className="text-[10px] text-slate-400 mt-1.5 italic">{q.sourceReference}</p>}
               </div>
             )}
+            {gradingError && <p className="mt-3 text-xs text-red-600 dark:text-red-400">{gradingError}</p>}
 
             {isAnswered && current < mcqs.length - 1 && (
               <button type="button" onClick={() => setCurrent((c) => c + 1)}

@@ -120,7 +120,7 @@ function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metr
             oauth: clientConfig.oauth,
             defaultProvider: clientConfig.defaultProvider,
             betaMode: clientConfig.betaMode,
-            betaOpenAccess: clientConfig.betaMode,
+            betaOpenAccess: clientConfig.betaOpenAccess,
         });
     });
 

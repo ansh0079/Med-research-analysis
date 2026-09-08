@@ -12,6 +12,7 @@ const {
     ensurePolicyArms,
     loadArmSamples,
     policyHasDenseGlobalData,
+    selectBootstrapArm,
     chooseArmBySamples,
 } = require('./sampling');
 
@@ -39,13 +40,15 @@ async function selectSynopsisStyleArm(db, userId) {
 
     const density = await policyHasDenseGlobalData(db, POLICY_SYNOPSIS_STYLE, 'bottom_line_first', armIds);
     if (!density.ok) {
+        const bootstrap = selectBootstrapArm(armIds, 'bottom_line_first', density);
         return {
-            armId: 'bottom_line_first',
-            style: SYNOPSIS_STYLE_ARMS.bottom_line_first,
+            armId: bootstrap.armId,
+            style: SYNOPSIS_STYLE_ARMS[bootstrap.armId],
             scopeKey: 'global',
             sampled: null,
-            propensity: 1,
-            selectionSource: 'density_gate',
+            propensity: bootstrap.propensity,
+            propensityByArm: bootstrap.propensityByArm,
+            selectionSource: bootstrap.selectionSource,
             densityGate: { globalPulls: density.globalPulls, minGlobalPulls: MIN_GLOBAL_PULLS_FOR_POLICY },
         };
     }
