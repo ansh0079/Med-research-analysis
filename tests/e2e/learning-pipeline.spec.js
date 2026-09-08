@@ -191,6 +191,22 @@ test.describe('learning pipeline: search → synopsis → quiz → mastery', () 
       });
     });
 
+    // Answers are graded server-side now: the question ships without
+    // correctAnswer and the UI calls /api/quiz/grade before it will reveal
+    // anything or offer "Next question". Without this the pipeline test hung on
+    // a button that never appeared, which looked like a UI regression rather
+    // than a missing mock.
+    await page.route('**/api/quiz/grade', async (route) => {
+      const body = JSON.parse(route.request().postData() || '{}');
+      const answers = { 'q-e2e-1': 'A', 'q-e2e-2': 'B' };
+      const correctAnswer = answers[body.questionId] || 'A';
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ isCorrect: body.userAnswer === correctAnswer, correctAnswer }),
+      });
+    });
+
     // Mock quiz attempt
     await page.route('**/api/learning/quiz-attempt', async (route) => {
       await route.fulfill({
