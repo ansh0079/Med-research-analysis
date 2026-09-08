@@ -450,7 +450,30 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 promptVariant,
                 questionIdPrefix: 'quiz',
             });
-            if (validation.error) return validation.error;
+            if (validation.error) {
+                // Every generated question was rejected by clinical validation --
+                // correct behaviour (the explanations were not grounded in the
+                // supplied sources), but a 502 leaves the learner with nothing on
+                // a topic we may already hold reviewed questions for. The
+                // provider-failure path below already falls back to the stored
+                // pool; a wholesale validation rejection deserves the same, since
+                // from the learner's side both mean "live generation produced
+                // nothing usable".
+                const coldStart = await serveColdStartMCQs(db, cleanTopic, effectiveQuizCount, user?.id);
+                if (coldStart) {
+                    log.warn({ topic: cleanTopic, validation: validation.validationSummary },
+                        'All generated MCQs rejected by validation; serving stored questions');
+                    return response({
+                        questions: coldStart,
+                        topic: cleanTopic,
+                        provider: 'cold_start_cache',
+                        model: null,
+                        disclaimer: AI_DISCLAIMER,
+                        warning: 'Freshly generated questions did not pass clinical validation; serving reviewed questions instead.',
+                    });
+                }
+                return validation.error;
+            }
 
             const validOutlineNodeIds = new Set(outlineNodes.map((node) => node.id));
             const validClaimKeys = claimAnchors ? new Set(claimAnchors.map((c) => c.claimKey)) : null;
