@@ -35,9 +35,15 @@ function resolveProvider(options = {}, serverConfig = {}) {
         // Preference order, minus any provider whose account is currently
         // unusable. Most callers take this single answer and never retry, so a
         // dead account here is a dead feature -- see providerHealth.
+        //
+        // Gemini Flash leads on cost: roughly 3x cheaper per input token and 2x
+        // cheaper per output token than Claude Haiku, for a workload that is
+        // overwhelmingly structured JSON grounded in text we supply (synopses,
+        // MCQs, synthesis) rather than open-ended reasoning. Claude stays as the
+        // fallback, which providerHealth now reaches automatically.
         const preferred = [
-            keys.anthropic ? { provider: 'claude' } : null,
             keys.gemini ? { provider: 'gemini' } : null,
+            keys.anthropic ? { provider: 'claude' } : null,
             keys.mistral ? { provider: 'mistral' } : null,
         ].filter(Boolean);
         selectedProvider = filterAvailableProviders(preferred)[0]?.provider || null;
@@ -62,8 +68,8 @@ function getProviderCandidates(options = {}, serverConfig = {}) {
     // Cooling-down providers move to the back rather than out: an explicit
     // fallback loop should still try them if the healthy ones fail.
     const all = [
-        keys.anthropic ? { provider: 'claude', model: resolvePinnedModel('claude', options.model) } : null,
         keys.gemini ? { provider: 'gemini', model: resolvePinnedModel('gemini', options.model) } : null,
+        keys.anthropic ? { provider: 'claude', model: resolvePinnedModel('claude', options.model) } : null,
         keys.mistral ? { provider: 'mistral', model: resolvePinnedModel('mistral', options.model) } : null,
     ].filter(Boolean);
     const healthy = filterAvailableProviders(all);

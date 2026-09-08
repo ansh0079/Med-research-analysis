@@ -24,22 +24,28 @@ function makeCaller(aiService, serverConfig) {
 const CREDIT_ERROR = new Error('Anthropic 400 — credit balance is too low');
 
 describe('guideline provider fallback', () => {
-    test('falls through to Gemini when Anthropic is out of credit', async () => {
+    test('falls through to the next provider when the first is out of credit', async () => {
+        // Asserted in terms of first/second rather than named providers: the
+        // preference order is a cost decision that has already changed once
+        // (Claude-first to Gemini-first), and this test is about the fallback
+        // existing at all.
+        const [first, second] = getProviderCandidates({}, { keys: { anthropic: 'k', gemini: 'k' } })
+            .map((c) => c.provider);
         const calls = [];
         const ai = { callText: jest.fn(async (_p, provider) => {
             calls.push(provider);
-            if (provider === 'claude') throw CREDIT_ERROR;
-            return 'gemini result';
+            if (provider === first) throw CREDIT_ERROR;
+            return 'second provider result';
         }) };
         const call = makeCaller(ai, { keys: { anthropic: 'k', gemini: 'k' } });
-        await expect(call('p', 'discovery')).resolves.toBe('gemini result');
-        expect(calls).toEqual(['claude', 'gemini']);
+        await expect(call('p', 'discovery')).resolves.toBe('second provider result');
+        expect(calls).toEqual([first, second]);
     });
 
     test('uses the first provider when it succeeds', async () => {
-        const ai = { callText: jest.fn(async () => 'claude result') };
+        const ai = { callText: jest.fn(async () => 'first result') };
         const call = makeCaller(ai, { keys: { anthropic: 'k', gemini: 'k' } });
-        await expect(call('p', 'discovery')).resolves.toBe('claude result');
+        await expect(call('p', 'discovery')).resolves.toBe('first result');
         expect(ai.callText).toHaveBeenCalledTimes(1);
     });
 

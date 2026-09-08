@@ -16,8 +16,8 @@ const AI_PROVIDERS = {
 
 // Pinned model versions for reproducibility and deterministic outputs.
 const PINNED_MODELS = {
-    claude: 'claude-haiku-4-5-20251001',  // Primary: reliable structured JSON, medical synthesis
-    gemini: 'gemini-2.5-flash',           // Fallback: Flash for clinical reasoning quality
+    claude: 'claude-haiku-4-5-20251001',  // Fallback: reliable structured JSON, medical synthesis
+    gemini: 'gemini-2.5-flash',           // Primary: same job at ~1/3 the input cost (see resolveProvider)
     geminiLite: 'gemini-2.5-flash-lite',  // Lite: agent memory, cheap conversational tasks only
     geminiQuality: 'gemini-2.5-flash',    // Quality tier (same as Flash; upgrade to Pro when needed)
     mistral: 'mistral-small-2603',

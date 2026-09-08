@@ -76,18 +76,18 @@ describe('cooldown lifecycle', () => {
 });
 
 describe('provider selection', () => {
-    test('auto picks Claude while the account is healthy', () => {
-        expect(resolveProvider({}, ALL_KEYS)).toMatchObject({ provider: 'claude' });
-    });
-
-    test('auto moves to Gemini once Claude is out of credit', () => {
-        recordProviderFailure('claude', CREDIT_ERROR);
+    test('auto picks Gemini, the cheaper primary, while it is healthy', () => {
         expect(resolveProvider({}, ALL_KEYS)).toMatchObject({ provider: 'gemini' });
     });
 
-    test('falls through to the last healthy provider', () => {
-        recordProviderFailure('claude', CREDIT_ERROR);
+    test('auto moves to Claude once Gemini is unusable', () => {
         recordProviderFailure('gemini', new Error('Gemini 400 — API key not valid'));
+        expect(resolveProvider({}, ALL_KEYS)).toMatchObject({ provider: 'claude' });
+    });
+
+    test('falls through to the last healthy provider', () => {
+        recordProviderFailure('gemini', new Error('Gemini 400 — API key not valid'));
+        recordProviderFailure('claude', CREDIT_ERROR);
         expect(resolveProvider({}, ALL_KEYS)).toMatchObject({ provider: 'mistral' });
     });
 
@@ -95,7 +95,7 @@ describe('provider selection', () => {
         // Attempting a call that may fail beats refusing to make one: the
         // cooldown is a heuristic and must never become an outage of its own.
         for (const p of ['claude', 'gemini', 'mistral']) recordProviderFailure(p, CREDIT_ERROR);
-        expect(resolveProvider({}, ALL_KEYS).provider).toBe('claude');
+        expect(resolveProvider({}, ALL_KEYS).provider).toBe('gemini');
     });
 
     test('an explicitly requested provider is still honoured', () => {
@@ -105,11 +105,16 @@ describe('provider selection', () => {
     });
 
     test('fallback loops try the healthy provider first but keep the rest', () => {
-        recordProviderFailure('claude', CREDIT_ERROR);
+        recordProviderFailure('gemini', new Error('Gemini 400 — API key not valid'));
         const candidates = getProviderCandidates({}, ALL_KEYS).map((c) => c.provider);
-        expect(candidates[0]).toBe('gemini');
+        expect(candidates[0]).toBe('claude');
         expect(candidates).toHaveLength(3);
-        expect(candidates).toContain('claude');
+        expect(candidates).toContain('gemini');
+    });
+
+    test('Gemini leads the candidate order when everything is healthy', () => {
+        expect(getProviderCandidates({}, ALL_KEYS).map((c) => c.provider))
+            .toEqual(['gemini', 'claude', 'mistral']);
     });
 });
 
@@ -118,6 +123,13 @@ describe('filterAvailableProviders', () => {
         recordProviderFailure('claude', CREDIT_ERROR);
         const out = filterAvailableProviders([{ provider: 'claude' }, { provider: 'gemini' }]);
         expect(out).toEqual([{ provider: 'gemini' }]);
+    });
+
+    test('an out-of-credit Claude no longer decides what the app can do', () => {
+        // The production failure this exists for: Anthropic at zero balance,
+        // Gemini funded and idle, every AI feature down.
+        recordProviderFailure('claude', CREDIT_ERROR);
+        expect(resolveProvider({}, ALL_KEYS).provider).toBe('gemini');
     });
 
     test('returns the original list rather than nothing', () => {

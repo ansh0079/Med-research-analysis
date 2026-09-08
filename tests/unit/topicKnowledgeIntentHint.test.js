@@ -80,9 +80,10 @@ describe('topic knowledge provider fallback', () => {
     // "Your credit balance is too low" instead of falling through to Gemini.
     const { getProviderCandidates } = require('../../server/utils/aiProvider');
 
-    test('offers Gemini as a fallback when both keys are present', () => {
+    test('offers both providers, cheapest first, when both keys are present', () => {
+        // Gemini leads on cost for this workload; Claude is the fallback.
         const candidates = getProviderCandidates({}, { keys: { anthropic: 'a', gemini: 'g' } });
-        expect(candidates.map((c) => c.provider)).toEqual(['claude', 'gemini']);
+        expect(candidates.map((c) => c.provider)).toEqual(['gemini', 'claude']);
     });
 
     test('still returns Gemini alone when Anthropic is unconfigured', () => {

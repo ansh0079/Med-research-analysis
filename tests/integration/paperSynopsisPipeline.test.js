@@ -55,7 +55,25 @@ const SYNOPSIS = {
  */
 const serverConfig = (keys = { gemini: 'test-gemini-key', anthropic: 'test-anthropic-key' }) => ({ keys });
 
-function makeFetch({ text = JSON.stringify(SYNOPSIS), finishReason = 'STOP', failAnthropic = false, onCall } = {}) {
+
+/**
+ * In jsonMode the Anthropic client prefills an assistant turn with "{" and
+ * prepends it to whatever comes back, so a mock that returns the whole JSON
+ * object yields "{{...}" and fails to parse. Return the body without its opening
+ * brace when the request used that prefill.
+ */
+function anthropicJsonBody(options, text) {
+    try {
+        const body = JSON.parse(String(options?.body || '{}'));
+        const last = (body.messages || [])[body.messages.length - 1];
+        if (last && last.role === 'assistant' && last.content === '{') {
+            return String(text).replace(/^\s*\{/, '');
+        }
+    } catch { /* fall through to the unmodified text */ }
+    return text;
+}
+
+function makeFetch({ text = JSON.stringify(SYNOPSIS), finishReason = 'STOP', failAnthropic = false, failGemini = false, onCall } = {}) {
     const calls = [];
     const fetchImpl = async (url, options = {}) => {
         const u = String(url);
@@ -73,9 +91,12 @@ function makeFetch({ text = JSON.stringify(SYNOPSIS), finishReason = 'STOP', fai
             if (failAnthropic) {
                 return res({ type: 'error', error: { type: 'invalid_request_error', message: 'Your credit balance is too low' } }, false, 400);
             }
-            return res({ content: [{ text }], stop_reason: 'end_turn' });
+            return res({ content: [{ text: anthropicJsonBody(options, text) }], stop_reason: 'end_turn' });
         }
         if (u.includes('generativelanguage.googleapis.com')) {
+            if (failGemini) {
+                return res({ error: { code: 400, message: 'API key not valid. Please pass a valid API key.' } }, false, 400);
+            }
             return res({ candidates: [{ finishReason, content: { parts: [{ text }] } }] });
         }
         return res({}, false, 503);
@@ -149,9 +170,12 @@ describe('paper synopsis pipeline (real modules, stubbed network)', () => {
     });
 
     test('falls back to the next provider when the first one fails', async () => {
-        // Prod ran with an out-of-credit Anthropic key and a funded Gemini key.
-        // Any path that resolves a single provider up front dies outright there.
-        const { fetchImpl, calls } = makeFetch({ failAnthropic: true });
+        // Prod ran with an out-of-credit Anthropic key and a funded Gemini key,
+        // and any path that resolves a single provider up front dies outright
+        // there. Gemini is the primary now, so failing it is what exercises the
+        // fallback; the point is that a dead first provider is survivable,
+        // whichever one currently leads.
+        const { fetchImpl, calls } = makeFetch({ failGemini: true });
 
         const result = await runPaperSynopsisGeneration({
             article: ARTICLE,

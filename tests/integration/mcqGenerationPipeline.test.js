@@ -255,11 +255,22 @@ describe('MCQ generation pipeline (real modules, stubbed network)', () => {
                 ok, status, headers: new Map(),
                 json: async () => body, text: async () => JSON.stringify(body),
             });
-            if (u.includes('api.anthropic.com')) {
-                return res({ error: { message: 'Your credit balance is too low' } }, false, 400);
-            }
+            // Gemini leads the candidate order, so failing it is what exercises
+            // the fallback. The requirement is that a dead first provider is
+            // survivable, not that any particular one is first.
             if (u.includes('generativelanguage.googleapis.com')) {
-                return res({ candidates: [{ finishReason: 'STOP', content: { parts: [{ text: JSON.stringify({ questions: QUESTIONS }) }] } }] });
+                return res({ error: { code: 400, message: 'API key not valid. Please pass a valid API key.' } }, false, 400);
+            }
+            if (u.includes('api.anthropic.com')) {
+                // jsonMode prefills an assistant "{" and prepends it to the
+                // reply, so the mock must not send one of its own.
+                const body = JSON.parse(String(options.body || '{}'));
+                const last = (body.messages || [])[body.messages.length - 1];
+                const full = JSON.stringify({ questions: QUESTIONS });
+                const text = last && last.role === 'assistant' && last.content === '{'
+                    ? full.replace(/^\s*\{/, '')
+                    : full;
+                return res({ content: [{ text }], stop_reason: 'end_turn' });
             }
             return res({}, false, 503);
         };
@@ -275,8 +286,8 @@ describe('MCQ generation pipeline (real modules, stubbed network)', () => {
         expect(calls.some((u) => u.includes('api.anthropic.com'))).toBe(true);
         expect(calls.some((u) => u.includes('generativelanguage'))).toBe(true);
         // The stored object must name the provider that actually answered.
-        expect(result.provider).toBe('gemini');
-        expect(db.upserts[0].provider).toBe('gemini');
+        expect(result.provider).toBe('claude');
+        expect(db.upserts[0].provider).toBe('claude');
     });
 
     test('still works without serverConfig, pinned to a single provider', async () => {
