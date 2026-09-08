@@ -88,16 +88,18 @@ export class BaseApiClient {
   } | null = null;
   private clientConfigFetchedAt = 0;
   private readonly clientConfigTtlMs = 60_000;
-  private refreshInFlight: Promise<boolean> | null = null;
   /**
-   * When the last refresh attempt failed. An anonymous visitor has no refresh
-   * cookie at all, so every 401 from the app shell (/api/auth/me,
-   * /api/user/saved, ...) kicked off its own doomed refresh: four failed
-   * requests and four red console errors on a first page load, before the
-   * visitor has done anything. One failure is enough to know there is no
-   * session to refresh.
+   * Refresh state is deliberately STATIC: eight subclasses (AuthApi, SearchApi,
+   * DocumentsApi, ...) each construct their own client, so per-instance state
+   * deduplicates nothing across them. An anonymous visitor has no refresh cookie
+   * at all, so every 401 from the app shell (/api/auth/me, /api/user/saved, ...)
+   * kicked off its own doomed refresh -- a burst of failed requests and red
+   * console errors on first paint, before the visitor has done anything. Sharing
+   * it means one attempt for the whole app, not one per client.
    */
-  private refreshFailedAt = 0;
+  private static refreshInFlight: Promise<boolean> | null = null;
+  /** When the last refresh attempt failed, shared for the same reason. */
+  private static refreshFailedAt = 0;
 
   constructor() {
     try {
@@ -147,7 +149,7 @@ export class BaseApiClient {
 
   private shouldAttemptRefresh(url: string, response: Response): boolean {
     if (response.status !== 401) return false;
-    if (Date.now() - this.refreshFailedAt < BaseApiClient.REFRESH_BACKOFF_MS) return false;
+    if (Date.now() - BaseApiClient.refreshFailedAt < BaseApiClient.REFRESH_BACKOFF_MS) return false;
     if (url.includes('/api/auth/login')
       || url.includes('/api/auth/register')
       || url.includes('/api/auth/refresh')
@@ -158,8 +160,8 @@ export class BaseApiClient {
   }
 
   private async refreshAccessToken(): Promise<boolean> {
-    if (this.refreshInFlight) return this.refreshInFlight;
-    this.refreshInFlight = (async () => {
+    if (BaseApiClient.refreshInFlight) return BaseApiClient.refreshInFlight;
+    BaseApiClient.refreshInFlight = (async () => {
       try {
         const response = await fetch(`${API_BASE}/api/auth/refresh`, {
           method: 'POST',
@@ -173,16 +175,16 @@ export class BaseApiClient {
         // A successful refresh clears the backoff so a later expiry is retried
         // immediately; a failure starts it, because the same call will keep
         // failing until the user signs in again.
-        this.refreshFailedAt = response.ok ? 0 : Date.now();
+        BaseApiClient.refreshFailedAt = response.ok ? 0 : Date.now();
         return response.ok;
       } catch {
-        this.refreshFailedAt = Date.now();
+        BaseApiClient.refreshFailedAt = Date.now();
         return false;
       } finally {
-        this.refreshInFlight = null;
+        BaseApiClient.refreshInFlight = null;
       }
     })();
-    return this.refreshInFlight;
+    return BaseApiClient.refreshInFlight;
   }
 
   protected async fetchWithSession(url: string, options: RequestInit = {}, signal?: AbortSignal): Promise<Response> {
