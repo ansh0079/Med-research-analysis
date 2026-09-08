@@ -78,7 +78,10 @@ function registerAiRoutes(app, deps) {
 
     registerWebpageInferenceRoutes(app, { db, cache, serverConfig, ai, limitBodySize, requireJson, requireAiAuth, requirePaidFeature, requireMonthlyLimit, aiUserLimit });
 
-    registerQuizRoutes(app, { db, serverConfig, ai, mcqValidator, logger, requireJson, requireAiAuth, requireAuthJwt, requirePaidFeature, rateLimit, aiUserLimit, validateBody, schemas, helpers });
+    // `cache` backs the answer-commitment store: POST /api/quiz/grade refuses to
+    // reveal an answer without one, so omitting it here made every grade return
+    // 503 and every subsequent submit 400 (QUIZ_ANSWER_NOT_COMMITTED).
+    registerQuizRoutes(app, { db, cache, serverConfig, ai, mcqValidator, logger, requireJson, requireAiAuth, requireAuthJwt, requirePaidFeature, rateLimit, aiUserLimit, validateBody, schemas, helpers });
 
     registerSynthesisRoutes(app, { db, cache, serverConfig, fetchImpl, ai, logger, limitBodySize, requireJson, requireAiAuth, requireAuthJwt, requireVerifiedEmail, requirePaidFeature, requireMonthlyLimit, rateLimit, aiUserLimit, synthesisLimit, validateBody, schemas, helpers, appendRagContext });
 
