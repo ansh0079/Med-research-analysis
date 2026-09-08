@@ -266,13 +266,24 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
   async function semanticScholarSearch(query, { limit = 20 } = {}) {
     return withSourceCache('semantic', { query, limit }, 1800, async () => {
       const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(query)}&limit=${limit}&fields=title,authors,year,citationCount,abstract,journal,openAccessPdf,publicationTypes,externalIds`;
-      const headers = keys.semantic ? { 'x-api-key': keys.semantic } : {};
+      // A key that the API rejects is worse than no key: an unactivated or
+      // wrong-plan key 403s every request while the anonymous pool still answers
+      // 200. Verified in production -- with the configured key both /paper/search
+      // and /paper/DOI 403'd, and both returned 200 unauthenticated. So drop the
+      // key for the remaining attempts rather than losing the source entirely.
+      let useKey = Boolean(keys.semantic);
       let lastErr;
       for (let attempt = 0; attempt < 3; attempt++) {
         if (attempt > 0) await new Promise((r) => setTimeout(r, attempt * 1000));
         try {
           await throttleSemanticScholar();
+          const headers = useKey ? { 'x-api-key': keys.semantic } : {};
           const res = await f(url, { headers, timeout: DEFAULT_TIMEOUTS.semantic });
+          if ((res.status === 401 || res.status === 403) && useKey) {
+            useKey = false;
+            lastErr = new Error(`Semantic Scholar ${res.status} (api key rejected; retrying unauthenticated)`);
+            continue;
+          }
           if (res.status === 429 || res.status === 503) { lastErr = new Error(`Semantic Scholar ${res.status}`); continue; }
           if (!res.ok) throw new Error(`Semantic Scholar ${res.status}`);
           const data = await res.json();

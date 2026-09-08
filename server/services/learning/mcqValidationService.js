@@ -1,5 +1,6 @@
 'use strict';
 
+const { filterAvailableProviders } = require('../ai/providerHealth');
 const { extractJsonObject } = require('../../utils/parseJson');
 
 function isCrossCheckEnabled() {
@@ -14,10 +15,31 @@ function isSafetyClassifierEnabled() {
 // review so a shared model blind spot doesn't pass its own mistakes. claude
 // cross-checks against gemini (falling back to mistral if no gemini key),
 // and gemini/mistral continue to cross-check each other as before.
+/**
+ * Pick a second, independent provider to cross-check the first one's review.
+ *
+ * This used to map gemini -> mistral unconditionally, without checking that a
+ * Mistral key existed. That was harmless only while Claude was the default
+ * primary (its alternate was Gemini, which is configured); the moment Gemini
+ * became primary, every cross-check asked for an unconfigured provider and
+ * threw "Mistral API key not configured".
+ *
+ * Returns null when there is no second configured provider, so the caller can
+ * skip the cross-check rather than fail. A cross-check is a second opinion --
+ * its absence should cost confidence, not the whole request.
+ */
 function alternateProvider(provider, serverConfig) {
-    if (provider === 'gemini') return 'mistral';
-    if (provider === 'mistral') return 'gemini';
-    return serverConfig?.keys?.gemini ? 'gemini' : 'mistral';
+    const keys = serverConfig?.keys || {};
+    const configured = [
+        keys.gemini ? 'gemini' : null,
+        keys.anthropic ? 'claude' : null,
+        keys.mistral ? 'mistral' : null,
+    ].filter(Boolean);
+    // Skip a provider that is already benched for an account failure -- calling
+    // it would just fail again and log noise on every generated quiz.
+    const usable = filterAvailableProviders(configured.map((p) => ({ provider: p })))
+        .map((c) => c.provider);
+    return usable.find((p) => p !== provider) || null;
 }
 
 function alternateModel(provider, PINNED_MODELS) {
@@ -311,8 +333,10 @@ ${JSON.stringify(compact)}`;
         }
 
         let secondary = null;
-        if (isCrossCheckEnabled()) {
-            const crossProvider = alternateProvider(primaryProvider, serverConfig);
+        const crossProvider = isCrossCheckEnabled()
+            ? alternateProvider(primaryProvider, serverConfig)
+            : null;
+        if (crossProvider) {
             try {
                 secondary = await runPrimaryReview({
                     topic,

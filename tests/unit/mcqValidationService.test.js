@@ -7,13 +7,26 @@ describe('mcqValidationService provider routing', () => {
         expect(alternateProvider('claude', { keys: { gemini: 'k' } })).toBe('gemini');
     });
 
-    test('alternateProvider falls back to mistral when claude primary and no gemini key', () => {
-        expect(alternateProvider('claude', { keys: {} })).toBe('mistral');
+    // alternateProvider used to map gemini -> mistral unconditionally, without
+    // checking a Mistral key existed. That stayed hidden while Claude was the
+    // default primary (its alternate was Gemini, which is configured); the day
+    // Gemini became primary, every cross-check asked for an unconfigured
+    // provider and threw "Mistral API key not configured" on each generated
+    // quiz. It must only ever name a provider that can actually be called.
+    test('alternateProvider never names a provider with no key', () => {
+        expect(alternateProvider('claude', { keys: {} })).toBeNull();
+        expect(alternateProvider('gemini', { keys: { gemini: 'g' } })).toBeNull();
     });
 
-    test('alternateProvider still swaps gemini/mistral as before', () => {
-        expect(alternateProvider('gemini')).toBe('mistral');
-        expect(alternateProvider('mistral')).toBe('gemini');
+    test('alternateProvider picks a different configured provider', () => {
+        expect(alternateProvider('gemini', { keys: { gemini: 'g', mistral: 'm' } })).toBe('mistral');
+        expect(alternateProvider('mistral', { keys: { gemini: 'g', mistral: 'm' } })).toBe('gemini');
+        expect(alternateProvider('gemini', { keys: { gemini: 'g', anthropic: 'a' } })).toBe('claude');
+    });
+
+    test('alternateProvider returns null rather than echoing the primary back', () => {
+        // A "cross-check" against the same model is not a second opinion.
+        expect(alternateProvider('mistral', { keys: { mistral: 'm' } })).toBeNull();
     });
 
     test('alternateModel resolves the pinned model for any provider including claude', () => {
