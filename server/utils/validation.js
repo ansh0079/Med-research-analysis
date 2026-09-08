@@ -2,6 +2,7 @@
 
 const { z } = require('zod');
 const { sanitizeUserInput, escapeHtml } = require('./sanitization');
+const { canonicalQuestionType, VALID_QUESTION_TYPES } = require('./questionType');
 
 function sanitizeInput(input) {
     if (typeof input !== 'string') return '';
@@ -203,7 +204,12 @@ const schemas = {
         curriculumTopicId: z.number().int().optional(),
         attempts: z.array(z.object({
             questionId: z.string(),
-            questionType: z.enum(['recall', 'clinical_application', 'trial_interpretation', 'guideline', 'pitfall']),
+            // Coerce rather than reject. zod fails the whole body on one bad member,
+            // so a single question typed "management decision" -- 27% of stored MCQs
+            // carry an out-of-enum type -- threw away every answer in the session with
+            // a 400. Quizzes already open in a browser still carry the old values, so
+            // this stays even now that the serve paths canonicalise.
+            questionType: z.preprocess((v) => canonicalQuestionType(v), z.enum(VALID_QUESTION_TYPES)),
             questionText: z.string().max(5000),
             userAnswer: z.string().max(500),
             correctAnswer: z.string().max(500).optional(),

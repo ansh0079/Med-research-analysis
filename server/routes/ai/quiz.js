@@ -3,6 +3,7 @@
 const crypto = require('crypto');
 const { createBudgetForAction, runWithLlmBudget } = require('../../services/llmRequestBudget');
 const { createQuizGenerationService } = require('../../services/quizGenerationService');
+const { canonicalQuestionType } = require('../../utils/questionType');
 const { computeMcqClaimKey, GUIDELINE_BODY, hasSuspectFutureCitation } = require('../../utils/mcqClaimKey');
 const { attachQuizGradingTokens, verifyQuizGradingToken, commitQuizAnswer } = require('../../services/quizGradingToken');
 
@@ -166,7 +167,7 @@ function registerQuizRoutes(app, {
                         topic: row.topic,
                         source: isRealGuideline ? 'guideline' : 'evidence',
                         type: q.type || 'multiple_choice',
-                        questionType: q.questionType || 'recall',
+                        questionType: canonicalQuestionType(q.questionType),
                         question: q.question,
                         options: q.options,
                         correctAnswer: q.correctAnswer,

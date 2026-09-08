@@ -7,6 +7,7 @@ const { parseJsonArrayStrict, parseStructuredQuizArray } = require('../../utils/
 const { validateAiOutput } = require('../../services/aiOutputValidation');
 const { buildEvidenceDeltaBrief } = require('../../services/evidenceDeltaBriefService');
 const { coldStartMcqKey, guidelineMcqKey, liveQuizMcqKey } = require('../../utils/teachingObjectKeys');
+const { canonicalQuestionType } = require('../../utils/questionType');
 const { computeConceptHash } = require('../../utils/conceptHash');
 const { computeMcqClaimKey, hasSuspectFutureCitation } = require('../../utils/mcqClaimKey');
 const { estimateAbility, selectAdaptiveItems } = require('../../services/adaptiveItemSelectionService');
@@ -54,7 +55,12 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
         return {
                     id: `${prefix}_${Date.now()}_${idx}`,
                     type: q.type || 'multiple_choice',
-                    questionType: q.questionType || 'recall',
+                    // Stored MCQ payloads predate the generation-time enum guard and
+                    // carry ~40 free-text spellings ("management decision",
+                    // "threshold/number"). Served verbatim they 400 the entire
+                    // quiz-attempt submit and orphan the item's concept hash --
+                    // see canonicalQuestionType.
+                    questionType: canonicalQuestionType(q.questionType),
                     question: q.question,
                     options: q.options,
                     correctAnswer: q.correctAnswer,
