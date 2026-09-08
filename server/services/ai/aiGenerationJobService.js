@@ -366,6 +366,9 @@ async function getOrEnqueueConsensusSynopsis({ db, topic, articles = [], serverC
         return { ...existing.resultPayload, jobKey: resolvedJobKey, cached: true };
     }
     if (existing?.status === 'running' || existing?.status === 'queued') {
+        if (existing.status === 'queued') {
+            reviveQueuedJob(() => enqueueConsensusJob({ db, jobKey: resolvedJobKey, serverConfig, fetchImpl, cache, logger }));
+        }
         return consensusPlaceholder({ topic, articles, jobKey: resolvedJobKey, status: existing.status });
     }
     if (existing?.status === 'failed') {
@@ -393,6 +396,29 @@ async function getOrEnqueueConsensusSynopsis({ db, topic, articles = [], serverC
     return consensusPlaceholder({ topic, articles, jobKey: resolvedJobKey, status: 'queued' });
 }
 
+/**
+ * Re-ask for a worker on a row that is already 'queued'.
+ *
+ * Finding an existing 'queued' row used to return the pending placeholder and
+ * stop there, on the assumption that a BullMQ job must already exist for it.
+ * When enqueueing was broken that assumption was false for every row, so
+ * ai_generation_jobs accumulated 3,394 permanently stuck jobs: each new request
+ * saw 'queued', returned "pending", and never scheduled anything. The row itself
+ * became the thing preventing its own execution.
+ *
+ * Re-enqueueing is cheap and idempotent -- enqueueAiGenerationJobIfClaimed takes
+ * a short Redis claim, and a duplicate delivery loses the conditional UPDATE in
+ * markAiGenerationJobRunning -- so asking again costs nothing when a job really
+ * is in flight, and unsticks the row when it is not.
+ */
+function reviveQueuedJob(enqueue) {
+    try {
+        enqueue();
+    } catch {
+        // Best-effort: the caller still returns its pending placeholder.
+    }
+}
+
 function hasDurableJobStore(db) {
     return typeof db.getAiGenerationJobByKey === 'function'
         && typeof db.createAiGenerationJob === 'function'
@@ -401,8 +427,14 @@ function hasDurableJobStore(db) {
         && typeof db.failAiGenerationJob === 'function';
 }
 
-function enqueueLiveClinicalAnswerJob({ db, topic, articles, guidelines = [], previousQueries = [], trainingStage = null, sessionDepth = 0, serverConfig, fetchImpl, cache, logger }) {
-    const jobKey = liveClinicalAnswerJobKey(topic, articles, { previousQueries, trainingStage, sessionDepth });
+// `jobKey` is required whenever the caller already created the row: search
+// enrichment stores it under liveClinicalAnswerEnrichmentJobKey(enrichKey), and
+// recomputing the key here instead produced a BullMQ job pointing at a row that
+// does not exist ("AI job not found: live-ca:<hash>" -- every recent worker
+// failure). Recompute only when no key was supplied.
+function enqueueLiveClinicalAnswerJob({ db, topic, articles, guidelines = [], previousQueries = [], trainingStage = null, sessionDepth = 0, serverConfig, fetchImpl, cache, logger, jobKey: providedJobKey = null }) {
+    const jobKey = providedJobKey
+        || liveClinicalAnswerJobKey(topic, articles, { previousQueries, trainingStage, sessionDepth });
     void enqueueAiGenerationJobIfClaimed({
         db,
         jobKey,
@@ -446,6 +478,9 @@ async function getOrEnqueueLiveClinicalAnswer({ db, topic, articles = [], guidel
         return { ...existing.resultPayload, jobKey: resolvedJobKey, cached: true };
     }
     if (existing?.status === 'running' || existing?.status === 'queued') {
+        if (existing.status === 'queued') {
+            reviveQueuedJob(() => enqueueLiveClinicalAnswerJob({ db, topic, articles, guidelines, previousQueries, trainingStage, sessionDepth, serverConfig, fetchImpl, cache, logger, jobKey: resolvedJobKey }));
+        }
         return { status: existing.status, jobKey: resolvedJobKey, clinicalAnswer: null };
     }
     if (existing?.status === 'failed') {
@@ -555,6 +590,9 @@ async function getOrEnqueueFullSynthesis({
         return { ...existing.resultPayload, jobKey, cached: true };
     }
     if (existing?.status === 'running' || existing?.status === 'queued') {
+        if (existing.status === 'queued') {
+            reviveQueuedJob(() => enqueueFullSynthesisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger }));
+        }
         return fullSynthesisPlaceholder({ topic, jobKey, status: existing.status });
     }
     if (existing?.status === 'failed') {
@@ -633,6 +671,9 @@ async function maybeEnqueueQuizPrefetch({
         return null;
     });
     if (existing?.status === 'completed' || existing?.status === 'running' || existing?.status === 'queued') {
+        if (existing.status === 'queued') {
+            reviveQueuedJob(() => enqueueQuizPrefetchJob({ db, jobKey, cache, logger }));
+        }
         return { skipped: true, reason: `already_${existing.status}`, jobKey };
     }
 
@@ -712,6 +753,9 @@ async function getOrEnqueuePaperSynopsis({
         return { ...existing.resultPayload, jobKey, cached: true };
     }
     if (existing?.status === 'running' || existing?.status === 'queued') {
+        if (existing.status === 'queued') {
+            reviveQueuedJob(() => enqueuePaperSynopsisJob({ db, jobKey, serverConfig, fetchImpl, cache, logger }));
+        }
         return { status: existing.status, jobKey, synopsis: null };
     }
     if (existing?.status === 'failed') {

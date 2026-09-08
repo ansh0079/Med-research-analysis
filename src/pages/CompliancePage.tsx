@@ -139,7 +139,7 @@ export const CompliancePage: React.FC = () => {
           </div>
           <div className="pt-1">
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              To request a BAA or discuss an institutional deployment, email <a href="mailto:compliance@medresearch.ai" className="text-indigo-600 dark:text-indigo-400 hover:underline">compliance@medresearch.ai</a> or contact us via the billing page.
+              To request a BAA or discuss an institutional deployment, email <a href="mailto:compliance@signalmd.co" className="text-indigo-600 dark:text-indigo-400 hover:underline">compliance@signalmd.co</a> or contact us via the billing page.
             </p>
           </div>
         </div>
@@ -199,7 +199,7 @@ export const CompliancePage: React.FC = () => {
         <div className="flex flex-wrap gap-4 text-sm">
           <Link to="/legal/privacy" className="text-indigo-600 dark:text-indigo-400 hover:underline">Privacy Policy</Link>
           <Link to="/legal/terms" className="text-indigo-600 dark:text-indigo-400 hover:underline">Terms of Service</Link>
-          <a href="mailto:compliance@medresearch.ai" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+          <a href="mailto:compliance@signalmd.co" className="text-indigo-600 dark:text-indigo-400 hover:underline">
             Contact for BAA / institutional queries
           </a>
         </div>

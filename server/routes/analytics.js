@@ -75,9 +75,13 @@ function registerAnalyticsRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
             metadata = {},
         } = req.body || {};
         const type = String(productType || '').trim();
-        const allowed = new Set(['synthesis', 'case', 'agent', 'search']);
+        // 'beta' is the catch-all channel for the in-app feedback widget: a bug
+        // report or a reaction that is not about one generated artefact. Beta
+        // testers had no way to tell us anything -- the only contact route in the
+        // whole app was a mailto: on the compliance page.
+        const allowed = new Set(['synthesis', 'case', 'agent', 'search', 'beta']);
         if (!allowed.has(type)) {
-            return res.status(400).json({ error: 'productType must be synthesis, case, agent, or search' });
+            return res.status(400).json({ error: 'productType must be synthesis, case, agent, search, or beta' });
         }
         const clampRating = (value) => {
             const n = Number(value);

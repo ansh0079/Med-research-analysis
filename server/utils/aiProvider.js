@@ -4,6 +4,7 @@
  */
 
 const { PINNED_MODELS } = require('../services/aiService');
+const { filterAvailableProviders } = require('../services/ai/providerHealth');
 
 const ALLOWED_MODELS = {
     claude: new Set([PINNED_MODELS.claude]),
@@ -31,10 +32,15 @@ function resolveProvider(options = {}, serverConfig = {}) {
 
     let selectedProvider = requestedProvider;
     if (requestedProvider === 'auto') {
-        if (keys.anthropic) selectedProvider = 'claude';
-        else if (keys.gemini) selectedProvider = 'gemini';
-        else if (keys.mistral) selectedProvider = 'mistral';
-        else selectedProvider = null;
+        // Preference order, minus any provider whose account is currently
+        // unusable. Most callers take this single answer and never retry, so a
+        // dead account here is a dead feature -- see providerHealth.
+        const preferred = [
+            keys.anthropic ? { provider: 'claude' } : null,
+            keys.gemini ? { provider: 'gemini' } : null,
+            keys.mistral ? { provider: 'mistral' } : null,
+        ].filter(Boolean);
+        selectedProvider = filterAvailableProviders(preferred)[0]?.provider || null;
     }
 
     if (!selectedProvider) {
@@ -53,11 +59,16 @@ function getProviderCandidates(options = {}, serverConfig = {}) {
     }
 
     const keys = serverConfig?.keys || {};
-    return [
+    // Cooling-down providers move to the back rather than out: an explicit
+    // fallback loop should still try them if the healthy ones fail.
+    const all = [
         keys.anthropic ? { provider: 'claude', model: resolvePinnedModel('claude', options.model) } : null,
         keys.gemini ? { provider: 'gemini', model: resolvePinnedModel('gemini', options.model) } : null,
         keys.mistral ? { provider: 'mistral', model: resolvePinnedModel('mistral', options.model) } : null,
     ].filter(Boolean);
+    const healthy = filterAvailableProviders(all);
+    const healthySet = new Set(healthy);
+    return [...healthy, ...all.filter((c) => !healthySet.has(c))];
 }
 
 module.exports = { resolveProvider, getProviderCandidates, resolvePinnedModel, PINNED_MODELS };

@@ -216,7 +216,7 @@ export class DocumentsApi extends BaseApiClient {
   }
 
   async submitQualityFeedback(payload: {
-    productType: 'synthesis' | 'case' | 'agent' | 'search';
+    productType: 'synthesis' | 'case' | 'agent' | 'search' | 'beta';
     topic?: string;
     factualAccuracy?: number;
     completeness?: number;

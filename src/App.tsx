@@ -13,6 +13,7 @@ import { GuestRoute } from './components/router/GuestRoute';
 import { RoleRoute } from './components/router/RoleRoute';
 import { RouteErrorBoundary } from './components/router/RouteErrorBoundary';
 import { PhiDataNotice } from './components/compliance/PhiDataNotice';
+import { BetaFeedbackWidget } from './components/feedback/BetaFeedbackWidget';
 import { CookieConsentBanner } from './components/compliance/CookieConsentBanner';
 import { getConsentChoice } from './services/consent';
 import { hasCompletedOnboarding } from './components/onboarding/onboardingState';
@@ -227,6 +228,7 @@ const AppContent: React.FC = () => {
         </Suspense>
       )}
 
+      <BetaFeedbackWidget />
       <CookieConsentBanner onDecided={() => setConsentDecided(true)} />
       {consentDecided && <PhiDataNotice />}
       <ToastContainer toasts={toasts} onRemove={removeToast} />

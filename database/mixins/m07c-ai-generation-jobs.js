@@ -146,15 +146,19 @@ async createAiGenerationJob({
     return row ? { ...row, inserted: changes === 1 } : null;
 }
 
+// The WHERE clause is the claim: only one caller can move a row out of
+// 'queued'/'failed'. That result was discarded, so a job delivered twice ran
+// twice and paid for the same generation twice. `claimed` reports it.
 async markAiGenerationJobRunning(jobKey) {
     const now = new Date().toISOString();
-    await this.run(
+    const result = await this.run(
         `UPDATE ai_generation_jobs
          SET status = 'running', attempts = attempts + 1, started_at = COALESCE(started_at, ?), updated_at = ?
          WHERE job_key = ? AND status IN ('queued', 'failed')`,
         [now, now, String(jobKey)]
     );
-    return this.getAiGenerationJobByKey(jobKey);
+    const row = await this.getAiGenerationJobByKey(jobKey);
+    return row ? { ...row, claimed: (result?.changes ?? 0) > 0 } : null;
 }
 
 async completeAiGenerationJob(jobKey, { resultPayload, provider = null, model = null, auditPayload = null } = {}) {

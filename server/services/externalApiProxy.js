@@ -240,6 +240,29 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     });
   }
 
+  // Semantic Scholar allows ONE request per second, cumulative across every
+  // endpoint -- an API key raises the quota but not this ceiling. A single
+  // search fans out to several sub-queries, so unthrottled we exceeded it on
+  // our own and every extra request came back 429 ("Some sources failed
+  // (semantic). Results may be incomplete."). Serialise the calls through one
+  // promise chain and space them out; the 30-minute source cache means repeat
+  // queries never reach here at all.
+  const S2_MIN_INTERVAL_MS = 1100;
+  let s2Gate = Promise.resolve();
+  let s2LastStartedAt = 0;
+
+  function throttleSemanticScholar() {
+    const ready = s2Gate.then(async () => {
+      const wait = s2LastStartedAt + S2_MIN_INTERVAL_MS - Date.now();
+      if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+      s2LastStartedAt = Date.now();
+    });
+    // The chain must not break on a rejected caller, or every later request
+    // inherits the rejection and the source goes dark until restart.
+    s2Gate = ready.catch(() => {});
+    return ready;
+  }
+
   async function semanticScholarSearch(query, { limit = 20 } = {}) {
     return withSourceCache('semantic', { query, limit }, 1800, async () => {
       const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(query)}&limit=${limit}&fields=title,authors,year,citationCount,abstract,journal,openAccessPdf,publicationTypes,externalIds`;
@@ -248,6 +271,7 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
       for (let attempt = 0; attempt < 3; attempt++) {
         if (attempt > 0) await new Promise((r) => setTimeout(r, attempt * 1000));
         try {
+          await throttleSemanticScholar();
           const res = await f(url, { headers, timeout: DEFAULT_TIMEOUTS.semantic });
           if (res.status === 429 || res.status === 503) { lastErr = new Error(`Semantic Scholar ${res.status}`); continue; }
           if (!res.ok) throw new Error(`Semantic Scholar ${res.status}`);
@@ -284,8 +308,14 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
       const email = keys.ncbiEmail && /@[^@]+\.[^@]+$/.test(keys.ncbiEmail) ? keys.ncbiEmail : null;
       const mailtoParam = email ? `&mailto=${encodeURIComponent(email)}` : '';
       const url = `https://api.openalex.org/works?search=${encodeURIComponent(query)}&per-page=${limit}${mailtoParam}`;
-      // OpenAlex free API is not authenticated with a Bearer token (that 401s); only
-      // send auth if an explicit key is configured for a future authenticated tier.
+      // Verified against the live API 2026-09-08: an OPENALEX_KEY sent as a Bearer
+      // token raises X-RateLimit-Limit from 1000 to 10000 (and the USD ceiling
+      // from 0.1 to 1), and an invalid key 401s -- so the key is genuinely
+      // honoured this way. OpenAlex documents an `api_key` query parameter that
+      // works identically; the header is preferred because it keeps the secret
+      // out of request URLs and error logs. Unauthenticated, bursts of parallel
+      // sub-queries exhausted the 1000-credit pool and returned 429s
+      // ("Some sources failed (openalex)").
       const headers = keys.openalex ? { Authorization: `Bearer ${keys.openalex}` } : {};
       // Retry transient rate-limit/unavailability so a single burst hiccup doesn't
       // drop OpenAlex entirely.

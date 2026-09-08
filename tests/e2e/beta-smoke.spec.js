@@ -72,9 +72,26 @@ test.describe('beta smoke', () => {
     await dismissChromeOverlays(page);
 
     await expect(page).toHaveTitle(/Signal MD/i);
-    await expect(page.getByRole('button', { name: /Start free/i }).first()).toBeVisible();
+    // The primary call to action is "Get started"; it was "Start free" when this
+    // was written, and the rename left the smoke test failing for weeks without
+    // anything being wrong with the app.
+    await expect(page.getByRole('button', { name: /Get started/i }).first()).toBeVisible();
     await expect(page.getByRole('button', { name: /Sign in/i }).first()).toBeVisible();
     await expect(page.getByRole('button', { name: /Try a search/i }).first()).toBeVisible();
+  });
+
+  test('Enter in the search box runs the search', async ({ page }) => {
+    // Implicit form submission is the way most people search, and it is invisible
+    // to unit tests: it depends on the input sitting inside a <form> that has an
+    // enabled submit button, which any layout refactor can quietly break.
+    await page.goto('/search');
+    await dismissChromeOverlays(page);
+
+    const box = page.getByPlaceholder(/SGLT2 inhibitors/i);
+    await box.fill('hepatorenal syndrome');
+    const search = page.waitForRequest((req) => req.url().includes('/api/search?'), { timeout: 15000 });
+    await box.press('Enter');
+    await expect(await search).toBeTruthy();
   });
 
   // KNOWN FAILING (2026-07-04): traced this end-to-end — search() and api.search()

@@ -470,7 +470,13 @@ all(sqlText, params = []) {
 }
 
 close() {
-    const v = this.pgVectorPool ? this.pgVectorPool.end() : Promise.resolve();
+    // Drop the reference as well as ending the pool. Worker shutdown calls
+    // close() and then closeVectorPool(), and pg throws "Called end on pool
+    // more than once" on the second -- 8 Sentry events per deploy, from a
+    // process that was already exiting cleanly.
+    const vectorPool = this.pgVectorPool;
+    this.pgVectorPool = null;
+    const v = vectorPool ? vectorPool.end() : Promise.resolve();
     if (this.isPostgres) {
         this.kysely = null;
         if (this.pool) {

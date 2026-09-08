@@ -31,12 +31,28 @@ async function releaseJobClaim(cache, jobKey) {
     }
 }
 
+/**
+ * Whether this job still needs a worker.
+ *
+ * `queued` means the row exists and nothing is processing it -- which is exactly
+ * when a BullMQ job is needed, not a reason to skip. Every caller inserts the row
+ * (status 'queued') and only then calls the enqueue helper, so treating 'queued'
+ * as "already handled" made every job block its own enqueue. Nothing had been
+ * processed since 2026-07-03; 3,394 rows sat queued with attempts = 0 while the
+ * BullMQ wait list stayed empty, and search enrichment polled a job that would
+ * never run.
+ *
+ * Only `running` (a worker holds it) and `completed` are terminal for enqueue
+ * purposes. Redundant deliveries are safe because markAiGenerationJobRunning
+ * claims the row conditionally -- see processAiGenerationJobByKey.
+ */
 async function shouldEnqueueAiGenerationJob(db, jobKey) {
     if (!jobKey || typeof db?.getAiGenerationJobByKey !== 'function') return true;
     const row = await db.getAiGenerationJobByKey(jobKey).catch(() => null);
     if (!row) return true;
     if (row.status === 'completed') return false;
-    if (row.status === 'running' || row.status === 'queued') return false;
+    if (row.status === 'running') return false;
+    if (row.status === 'queued') return true;
     if (row.status === 'failed') {
         const attempts = Number(row.attempts || 0);
         if (attempts < MAX_JOB_ATTEMPTS && typeof db.resetAiGenerationJobForRetry === 'function') {

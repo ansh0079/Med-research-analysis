@@ -101,6 +101,11 @@ export function useQuizPage() {
   const [answerConfidence, setAnswerConfidence] = useState(3);
   const [confidenceByQuestion, setConfidenceByQuestion] = useState<Record<string, number>>({});
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  // Grading is a network call, and the answer key lives on the server -- so when
+  // it fails there is nothing to show and the tap looks like a dead button.
+  // Holding the attempted answer lets the learner retry in one click.
+  const [gradeError, setGradeError] = useState<string | null>(null);
+  const [pendingAnswer, setPendingAnswer] = useState<string | null>(null);
   const { isAuthenticated } = useAuth();
   const [fromDataset, setFromDataset] = useState(false);
   const [disclaimer, setDisclaimer] = useState<string | null>(null);
@@ -419,6 +424,7 @@ export function useQuizPage() {
 
   const handleAnswer = async (answer: string) => {
     if (!currentQ || isAnswered) return;
+    setGradeError(null);
 
     // The server holds the answer key and is the authority on correctness.
     let correct = false;
@@ -435,8 +441,11 @@ export function useQuizPage() {
     } catch (err) {
       logAsyncError(err, 'useQuizPage/gradeQuizAnswer');
       setSaveStatus('error');
+      setPendingAnswer(answer);
+      setGradeError("We couldn't check that answer just now. Your progress is safe -- try again.");
       return;
     }
+    setPendingAnswer(null);
 
     setSelected(answer);
     setConfidenceByQuestion((prev) => ({ ...prev, [currentQ.id]: answerConfidence }));
@@ -657,6 +666,8 @@ export function useQuizPage() {
     loadQuiz,
     startManualQuiz,
     handleAnswer,
+    gradeError,
+    retryGrade: () => { if (pendingAnswer) void handleAnswer(pendingAnswer); },
     handleExplanationFeedback,
     handleNext,
     exportQuizReflection,

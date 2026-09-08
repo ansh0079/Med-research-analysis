@@ -89,6 +89,15 @@ export class BaseApiClient {
   private clientConfigFetchedAt = 0;
   private readonly clientConfigTtlMs = 60_000;
   private refreshInFlight: Promise<boolean> | null = null;
+  /**
+   * When the last refresh attempt failed. An anonymous visitor has no refresh
+   * cookie at all, so every 401 from the app shell (/api/auth/me,
+   * /api/user/saved, ...) kicked off its own doomed refresh: four failed
+   * requests and four red console errors on a first page load, before the
+   * visitor has done anything. One failure is enough to know there is no
+   * session to refresh.
+   */
+  private refreshFailedAt = 0;
 
   constructor() {
     try {
@@ -133,8 +142,12 @@ export class BaseApiClient {
     return data;
   }
 
+  /** How long to stop retrying a refresh that just failed. */
+  private static readonly REFRESH_BACKOFF_MS = 30_000;
+
   private shouldAttemptRefresh(url: string, response: Response): boolean {
     if (response.status !== 401) return false;
+    if (Date.now() - this.refreshFailedAt < BaseApiClient.REFRESH_BACKOFF_MS) return false;
     if (url.includes('/api/auth/login')
       || url.includes('/api/auth/register')
       || url.includes('/api/auth/refresh')
@@ -157,8 +170,13 @@ export class BaseApiClient {
           },
           credentials: 'include',
         });
+        // A successful refresh clears the backoff so a later expiry is retried
+        // immediately; a failure starts it, because the same call will keep
+        // failing until the user signs in again.
+        this.refreshFailedAt = response.ok ? 0 : Date.now();
         return response.ok;
       } catch {
+        this.refreshFailedAt = Date.now();
         return false;
       } finally {
         this.refreshInFlight = null;

@@ -33,7 +33,15 @@ const TEMPERATURE = {
 };
 
 const MAX_OUTPUT_TOKENS = {
-    synthesis: 2800,
+    // Raised from 2800 on 2026-09-08. Synthesis emits a multi-section structured
+    // body, and 2800 cut it off mid-object: production showed
+    // "Gemini stopped early (finishReason: MAX_TOKENS); returned 11482 chars
+    // against maxOutputTokens 2800", which surfaces one layer up as unparseable
+    // JSON and took out the nightly curriculum seeder. Truncation is a total
+    // loss of the call, so the ceiling has to sit above what the prompt actually
+    // asks for -- matching the 8192 already used for guidelines and topic
+    // knowledge. See the truncated-output failure class in the repo notes.
+    synthesis: 8192,
 };
 
 const { AI_DISCLAIMER } = require('../aiConstants');
@@ -43,6 +51,7 @@ const { AI_DISCLAIMER } = require('../aiConstants');
  * @param {import('../../config').serverConfig} options.serverConfig
  * @param {typeof fetch} [options.fetchImpl]
  */
+const { recordProviderFailure, recordProviderSuccess } = require('./providerHealth');
 const { CircuitBreaker } = require('../circuitBreaker');
 const { buildProxyService } = require('../externalApiProxy');
 const { getActiveLlmBudget } = require('../llmRequestBudget');
@@ -98,7 +107,21 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         }
     }
 
-    async function executeProviderCall({ provider, model, prompt, usage, budget, allowBudgetSkip, fn }) {
+    async function executeProviderCall({ provider, model, prompt, usage, budget, allowBudgetSkip, fn: rawFn }) {
+        // Every provider call reports back so selection can route around an
+        // account that is out of credit or using a rejected key -- see
+        // providerHealth. Wrapped here because this is the one place that knows
+        // both which provider is being called and whether it worked.
+        const fn = async (...args) => {
+            try {
+                const out = await rawFn(...args);
+                recordProviderSuccess(provider);
+                return out;
+            } catch (err) {
+                recordProviderFailure(provider, err, { logger });
+                throw err;
+            }
+        };
         const activeBudget = budget || getActiveLlmBudget();
         if (activeBudget && !activeBudget.canAffordCall({ prompt, model })) {
             if (allowBudgetSkip) return null;

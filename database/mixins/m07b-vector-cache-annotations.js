@@ -114,8 +114,11 @@ async searchSimilarArticlesCache(queryEmbedding, limit = 10, minSimilarity = 0.4
 }
 
 closeVectorPool() {
+    // Idempotent: close() may already have ended and cleared the pool.
     if (this.pgVectorPool) {
-        return this.pgVectorPool.end();
+        const pool = this.pgVectorPool;
+        this.pgVectorPool = null;
+        return pool.end();
     }
     return Promise.resolve();
 }

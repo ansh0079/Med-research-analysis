@@ -17,6 +17,8 @@ interface QuizActiveQuestionPanelProps {
   selected: string | null;
   answerConfidence: number;
   adaptiveNotice: string | null;
+  gradeError: string | null;
+  onRetryGrade: () => void;
   effectiveExplanationDepth: string;
   disclaimer: string | null;
   quizEvidenceAudit: EvidenceAuditSnapshot | null;
@@ -37,6 +39,8 @@ export const QuizActiveQuestionPanel: React.FC<QuizActiveQuestionPanelProps> = (
   selected,
   answerConfidence,
   adaptiveNotice,
+  gradeError,
+  onRetryGrade,
   effectiveExplanationDepth,
   disclaimer,
   quizEvidenceAudit,
@@ -106,6 +110,23 @@ export const QuizActiveQuestionPanel: React.FC<QuizActiveQuestionPanelProps> = (
             />
             <span className="text-sm font-black text-indigo-600 dark:text-indigo-400 w-6 text-center">{answerConfidence}</span>
           </div>
+        </div>
+      )}
+
+      {/* Grading happens server-side, so a failed call leaves the tap with
+          nothing to show. Say so where the learner is looking, and let them
+          retry the same answer without re-reading the question. */}
+      {gradeError && (
+        <div role="alert" className="mb-4 flex flex-wrap items-center gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200">
+          <i className="fas fa-triangle-exclamation shrink-0" aria-hidden />
+          <span className="min-w-0 flex-1">{gradeError}</span>
+          <button
+            type="button"
+            onClick={onRetryGrade}
+            className="shrink-0 rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-amber-500"
+          >
+            Try again
+          </button>
         </div>
       )}
 
