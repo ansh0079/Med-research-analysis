@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SearchBar } from '@components/search/SearchBar';
 import { ErrorBanner } from '@components/common/ErrorBanner';
 import { TopicIntelligenceStatusBanner } from '@components/search/TopicIntelligenceStatusBanner';
@@ -70,11 +70,22 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
   openGuidelineFromWorkflow,
   openCaseFromWorkflow,
 }) => {
+  // Once results exist the hero has done its job. Measured on production it was
+  // 3,292px tall and stayed that way after searching, so <main> -- and with it
+  // every piece of evidence -- began below y=3,250. A clinician scrolled three
+  // screens of branding before reaching a single paper. The pre-search
+  // affordances (title, strapline, the patient-presentation box) collapse; the
+  // search bar, trail and workflow actions stay.
+  const collapsed = results.length > 0;
+  const [shiftOpen, setShiftOpen] = useState(false);
+  const showShiftPanel = !collapsed || shiftOpen;
+
   return (
-    <header className={`w-full px-4 relative overflow-hidden ${showVerifyBanner ? 'pt-24 sm:pt-28' : 'pt-16 sm:pt-20'} pb-16 sm:pb-24`}>
+    <header className={`w-full px-4 relative overflow-hidden ${showVerifyBanner ? 'pt-24 sm:pt-28' : 'pt-16 sm:pt-20'} ${collapsed ? 'pb-4' : 'pb-16 sm:pb-24'}`}>
       <div className="max-w-4xl mx-auto">
 
         {/* Hero heading */}
+        {!collapsed && (
         <div className="text-center mb-7 sm:mb-10">
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white mb-3 leading-[1.08]">
             Medical Evidence,<br />
@@ -87,6 +98,7 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
             PubMed · Semantic Scholar · OpenAlex · Gemini 2.5 Flash
           </p>
         </div>
+        )}
 
         <SearchBar
           onSearch={onSearch}
@@ -130,6 +142,20 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
           </div>
         )}
 
+        {collapsed && !shiftOpen && (
+          <div className="mt-3 text-center">
+            <button
+              type="button"
+              onClick={() => setShiftOpen(true)}
+              className="inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-cyan-50/70 px-3 py-1.5 text-xs font-semibold text-cyan-800 transition-colors hover:bg-cyan-100 dark:border-cyan-900/60 dark:bg-cyan-950/20 dark:text-cyan-200"
+            >
+              <i className="fas fa-user-injured text-[11px]" aria-hidden />
+              I saw this patient today
+            </button>
+          </div>
+        )}
+
+        {showShiftPanel && (
         <div className="mt-5 max-w-3xl mx-auto rounded-2xl border border-cyan-200/80 dark:border-cyan-900/60 bg-cyan-50/70 dark:bg-cyan-950/20 p-3 sm:p-4 text-left shadow-sm shadow-cyan-100/50 dark:shadow-none">
           <div className="flex flex-col gap-3 md:flex-row md:items-start">
             <div className="min-w-0 flex-1">
@@ -212,8 +238,9 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
             </button>
           </div>
         </div>
+        )}
 
-        <div className="mt-8 max-w-3xl mx-auto space-y-3">
+        <div className={`${collapsed ? 'mt-3' : 'mt-8'} max-w-3xl mx-auto space-y-3`}>
           <div className="rounded-2xl border border-slate-200/90 dark:border-slate-700/90 bg-white/70 dark:bg-slate-900/45 px-4 py-3 text-left shadow-sm shadow-slate-200/30 dark:shadow-none">
             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Junior doctor workflow</p>
             <div className="mt-3 flex flex-wrap items-center gap-1.5 sm:gap-2">
