@@ -84,7 +84,7 @@ export function ArticleCardSynopsisPanel({
   citationOk,
   abstractOnly,
   fullTextCoverageRatio,
-  ownRecommendations,
+  issuingBodyRecommendations,
   relatedRecommendations,
   onClose,
 }: {
@@ -95,11 +95,12 @@ export function ArticleCardSynopsisPanel({
   abstractOnly?: boolean | null;
   fullTextCoverageRatio?: number | null;
   /**
-   * Recommendations attributed to THIS document's own issuing body, supplied
-   * when its full text could not be retrieved. These are the document's
-   * positions, so the synopsis fields above are built from them.
+   * Recommendations attributed to the organisation that issued this document,
+   * supplied when its full text could not be retrieved. Body-level, not
+   * document-level -- they may come from other editions by the same
+   * organisation, which is why each row shows its own year.
    */
-  ownRecommendations?: RelatedRecommendation[];
+  issuingBodyRecommendations?: RelatedRecommendation[];
   /**
    * Recommendations indexed for this topic from OTHER guideline bodies, supplied
    * only when this document's own text could not be retrieved. Rendered as a
@@ -162,15 +163,16 @@ export function ArticleCardSynopsisPanel({
           fullTextCoverageRatio={fullTextCoverageRatio}
         />
 
-        {(ownRecommendations?.length ?? 0) > 0 && (
+        {(issuingBodyRecommendations?.length ?? 0) > 0 && (
           <section className="rounded-lg border border-emerald-200 bg-emerald-50/70 px-3 py-2.5 dark:border-emerald-800/60 dark:bg-emerald-950/20">
             <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-300">
-              What this document recommends
+              Recommendations from this issuing body
             </p>
-            <p className="mt-1 text-[11px] leading-snug text-emerald-900/80 dark:text-emerald-100/70">
-              Extracted from this guideline rather than its full text, so it may be incomplete. Check the source before acting.
+            <p className="mt-1 text-[11px] leading-snug textate-emerald-900/80 dark:text-emerald-100/70">
+              This document&rsquo;s own text could not be retrieved. These are indexed recommendations from the same
+              organisation and may come from other publications by it &mdash; check each year against the source before acting.
             </p>
-            <RecommendationList items={ownRecommendations!} />
+            <RecommendationList items={issuingBodyRecommendations!} />
           </section>
         )}
 
@@ -180,7 +182,7 @@ export function ArticleCardSynopsisPanel({
               Guidance on this topic — from other documents
             </p>
             <p className="mt-1 text-[11px] leading-snug text-amber-900/80 dark:text-amber-100/70">
-              {(ownRecommendations?.length ?? 0) > 0
+              {(issuingBodyRecommendations?.length ?? 0) > 0
                 ? 'Issued by other organisations on the same topic. They are not this document’s positions.'
                 : 'This document’s own text could not be retrieved, so it is not summarised above. These recommendations are indexed for the same topic and each is attributed to the body that issued it.'}
             </p>

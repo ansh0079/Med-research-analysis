@@ -140,7 +140,7 @@ function buildSynopsisPrompt(article, context = {}) {
     // Recommendations the caller has already matched to this document's own
     // issuing body. They are the difference between "we could not retrieve this
     // guideline" and actually answering what it recommends.
-    const ownRecommendationsText = (Array.isArray(context.ownRecommendations) ? context.ownRecommendations : [])
+    const ownRecommendationsText = (Array.isArray(context.issuingBodyRecommendations) ? context.issuingBodyRecommendations : [])
         .slice(0, 12)
         .map((r) => {
             const strength = r.recommendationStrength ? ` [strength: ${r.recommendationStrength}]` : '';
@@ -181,19 +181,24 @@ ${context.guidelineTextMissing ? `
 NO USABLE TEXT WAS RETRIEVED FOR THIS DOCUMENT -- only its title and metadata.
 PubMed frequently carries no abstract for a practice guideline.
 ${ownRecommendationsText ? `
-However, the recommendations below were previously extracted from documents
-issued by ${context.documentBody || 'this same organisation'}, which is the body that issued this document.
-Treat them as this document's own positions and summarise them.
+However, the recommendations below were extracted from documents issued by
+${context.documentBody || 'this same organisation'} -- the organisation that issued this document. They may come
+from other publications by that organisation, including earlier editions, so
+each carries its own year.
 
 ${ownRecommendationsText}
 
 - mainFindings: state these recommendations, grouped sensibly, keeping any
   graded strength. This is the answer the reader opened the document for.
+- Attribute them to ${context.documentBody || 'the issuing organisation'}, not to this specific document. Where a
+  recommendation's year differs from this document's, say so rather than
+  implying this document is its source.
 - takeaway / bottomLine: the single most consequential of them.
 - Use ONLY the recommendations above. Do not add, extend or generalise them, and
   do not draw on the separate guideline context from other organisations.
 - Note in limitations that this summary is built from extracted recommendations
-  rather than the full text, so it may be incomplete.
+  attributed to the issuing organisation rather than from this document's own
+  text, so it may be incomplete or reflect a different edition.
 - Set every study-shaped field to null.
 - trustRating: judge the issuing body and the year.
 ` : `

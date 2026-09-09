@@ -365,7 +365,7 @@ async function runPaperSynopsisGenerationInner({
         documentBody,
         guidelines,
     });
-    const ownRecommendations = guidelineTextMissing
+    const issuingBodyRecommendations = guidelineTextMissing
         ? ownGuidelineRows.slice(0, 12).map(toRecommendation)
         : [];
 
@@ -374,7 +374,7 @@ async function runPaperSynopsisGenerationInner({
         guidelines,
         guidelineTextMissing,
         documentBody,
-        ownRecommendations,
+        issuingBodyRecommendations,
         topicKnowledge,
         trainingStage: effectiveTrainingStage,
         synopsisFeedbackStats,
@@ -474,9 +474,12 @@ async function runPaperSynopsisGenerationInner({
         // where guidelineTextMissing is derived. The UI must render these as
         // other bodies' guidance on the topic, never as this document's content.
         documentTextAvailable,
-        // What this document itself recommends, when its own text could not be
-        // retrieved but recommendations attributed to its issuing body were.
-        ownRecommendations,
+        // Recommendations attributed to the body that issued this document,
+        // used when the document's own text could not be retrieved. Body-level,
+        // not document-level: the corpus rarely identifies which document a
+        // recommendation came from, so these may be other editions by the same
+        // organisation and are labelled that way everywhere they surface.
+        issuingBodyRecommendations,
         relatedRecommendations: guidelineTextMissing
             ? relatedGuidelineRows.slice(0, 8).map(toRecommendation)
             : [],

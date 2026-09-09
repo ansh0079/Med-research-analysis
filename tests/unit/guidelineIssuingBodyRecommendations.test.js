@@ -24,7 +24,7 @@ const easl = {
     pubtype: ['Journal Article', 'Practice Guideline'],
 };
 
-const ownRecommendations = [
+const issuingBodyRecommendations = [
     {
         sourceBody: 'EASL',
         sourceYear: 2018,
@@ -37,7 +37,7 @@ const ownRecommendations = [
 const promptFor = (context) => buildSynopsisPrompt(easl, { guidelineTextMissing: true, ...context });
 
 describe('a guideline whose own recommendations are known', () => {
-    const prompt = promptFor({ documentBody: 'EASL', ownRecommendations });
+    const prompt = promptFor({ documentBody: 'EASL', issuingBodyRecommendations });
 
     test('carries the recommendations themselves', () => {
         expect(prompt).toContain('Terlipressin plus albumin is first-line for HRS-AKI.');
@@ -50,6 +50,14 @@ describe('a guideline whose own recommendations are known', () => {
 
     test('names the body they are attributed to', () => {
         expect(prompt).toContain('EASL');
+    });
+
+    test('attributes them to the organisation, not to this specific document', () => {
+        // Body-level matching cannot tell which of an organisation's documents a
+        // recommendation came from, so the prompt must not let the model imply
+        // this one is its source.
+        expect(prompt).toMatch(/Attribute them to EASL, not to this specific document/);
+        expect(prompt).toMatch(/year differs from this document/);
     });
 
     test('asks for them in mainFindings, which is what the reader came for', () => {
@@ -65,10 +73,11 @@ describe('a guideline whose own recommendations are known', () => {
         expect(prompt).toMatch(/do not draw on the separate guideline context from other organisations/);
     });
 
-    test('still says the summary may be incomplete', () => {
-        // Built from extracted rows, not the full text. Claiming completeness
-        // here is exactly the overreach this product cannot afford.
-        expect(prompt).toMatch(/may be incomplete/);
+    test('still says the summary may be incomplete or a different edition', () => {
+        // Built from extracted rows attributed to the body, not this document's
+        // full text. Claiming completeness here is exactly the overreach this
+        // product cannot afford.
+        expect(prompt).toMatch(/may be incomplete or reflect a different edition/);
     });
 
     test('still suppresses study-shaped fields', () => {
@@ -78,7 +87,7 @@ describe('a guideline whose own recommendations are known', () => {
 });
 
 describe('a guideline whose own recommendations are not known', () => {
-    const prompt = promptFor({ documentBody: 'EASL', ownRecommendations: [] });
+    const prompt = promptFor({ documentBody: 'EASL', issuingBodyRecommendations: [] });
 
     test('falls back to saying so plainly', () => {
         expect(prompt).toMatch(/recommendations are therefore not\s+summarised here/);
@@ -90,7 +99,7 @@ describe('a guideline whose own recommendations are not known', () => {
     });
 
     test.each([undefined, null, []])('treats %p as nothing known', (value) => {
-        expect(promptFor({ documentBody: 'EASL', ownRecommendations: value }))
+        expect(promptFor({ documentBody: 'EASL', issuingBodyRecommendations: value }))
             .toMatch(/Do NOT state or imply any recommendation as being from this document/);
     });
 });
@@ -100,7 +109,7 @@ describe('the framing only applies where it should', () => {
         const withText = buildSynopsisPrompt(easl, {
             guidelineTextMissing: false,
             documentBody: 'EASL',
-            ownRecommendations,
+            issuingBodyRecommendations,
         });
         expect(withText).toContain('NOT A STUDY');
         expect(withText).not.toContain('NO USABLE TEXT WAS RETRIEVED');
@@ -108,7 +117,7 @@ describe('the framing only applies where it should', () => {
 
     test('a trial never gets guideline framing, whatever context is passed', () => {
         const trial = { ...easl, title: 'Terlipressin versus placebo', pubtype: ['Randomized Controlled Trial'] };
-        const prompt = buildSynopsisPrompt(trial, { guidelineTextMissing: true, documentBody: 'EASL', ownRecommendations });
+        const prompt = buildSynopsisPrompt(trial, { guidelineTextMissing: true, documentBody: 'EASL', issuingBodyRecommendations });
         expect(prompt).not.toContain('NOT A STUDY');
         expect(prompt).not.toContain('Terlipressin plus albumin is first-line for HRS-AKI.');
     });

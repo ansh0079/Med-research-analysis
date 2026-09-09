@@ -198,11 +198,12 @@ export interface ArticleSynopsisResult {
   /** False when only the title/metadata could be retrieved (common for guidelines). */
   documentTextAvailable?: boolean;
   /**
-   * Recommendations attributed to this document's own issuing body, returned
-   * when its full text was unavailable. These are its positions, so `synopsis`
-   * is built from them.
+   * Recommendations attributed to the organisation that issued this document,
+   * returned when its full text was unavailable. Body-level, not document-level:
+   * they may come from other editions by the same organisation, so they are
+   * always shown with their own year.
    */
-  ownRecommendations?: Array<{
+  issuingBodyRecommendations?: Array<{
     sourceBody: string | null;
     sourceYear: number | null;
     sourceUrl: string | null;
