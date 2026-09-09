@@ -297,7 +297,7 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
 
     // Fetch a wider candidate pool so relevant rows beyond the recency-top are reachable.
     const fetchLimit = Math.min(safeLimit * 8, 400);
-    let rows = await this.all(
+    const rows = await this.all(
         `SELECT * FROM topic_guidelines
          WHERE normalized_topic IN (${stalePlaceholders})
            AND (? = '' OR status = ?)
@@ -321,19 +321,35 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
     // decide. That scoring already floors at score > 0, which is what keeps a
     // broad candidate pool from becoming cross-topic noise -- it simply never
     // got the chance to run.
-    if (!rows.length) {
-        const probeWords = topicContentWords(topic).slice(0, 4);
-        if (probeWords.length) {
-            const likeClauses = probeWords.map(() => 'normalized_topic LIKE ?').join(' OR ');
-            rows = await this.all(
-                `SELECT * FROM topic_guidelines
-                 WHERE (${likeClauses})
-                   AND (? = '' OR status = ?)
-                   AND superseded_by_id IS NULL
-                 ORDER BY source_year DESC, updated_at DESC
-                 LIMIT ?`,
-                [...probeWords.map((w) => `%${w}%`), statusFilter, statusFilter, fetchLimit]
-            );
+    // Widen the pool, always -- not only when the exact keys found nothing.
+    //
+    // Exact matching is on normalized_topic equality, so a guideline is only
+    // reachable when the query is worded like the stored topic. Measured on
+    // production, "hepatorenal syndrome terlipressin" returned two journal rows
+    // (Dig Dis Sci 2019, Vnitr Lek 2006) while four AGA Institute 2025
+    // recommendations sat under "hepatorenal syndrome diagnosis and
+    // management" -- one naming terlipressin directly. Gating the wider search
+    // on an empty result was not enough: two weak rows matched, so the strong
+    // ones were never looked for.
+    //
+    // The relevance scoring below already floors at score > 0 to keep a broad
+    // pool from becoming cross-topic noise, so the safe move is to give it
+    // everything plausible and let it rank. Duplicates are collapsed by id.
+    const probeWords = topicContentWords(topic).slice(0, 4);
+    if (probeWords.length) {
+        const likeClauses = probeWords.map(() => 'normalized_topic LIKE ?').join(' OR ');
+        const widened = await this.all(
+            `SELECT * FROM topic_guidelines
+             WHERE (${likeClauses})
+               AND (? = '' OR status = ?)
+               AND superseded_by_id IS NULL
+             ORDER BY source_year DESC, updated_at DESC
+             LIMIT ?`,
+            [...probeWords.map((w) => `%${w}%`), statusFilter, statusFilter, fetchLimit]
+        );
+        const seen = new Set(rows.map((r) => r.id));
+        for (const row of widened) {
+            if (!seen.has(row.id)) { seen.add(row.id); rows.push(row); }
         }
     }
 

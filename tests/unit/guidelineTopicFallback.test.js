@@ -44,6 +44,21 @@ const UNRELATED_ROW = {
  * normalized_topic is in the key list, the LIKE fallback returns rows whose
  * normalized_topic contains any probe word.
  */
+/**
+ * Matches the query wording exactly but says little about it -- the shape that
+ * masked the AGA recommendations in production.
+ */
+const WEAK_JOURNAL_ROW = {
+    id: 3,
+    normalized_topic: 'hepatorenal syndrome terlipressin',
+    topic: 'Hepatorenal syndrome terlipressin',
+    source_body: 'Dig Dis Sci',
+    source_year: 2019,
+    status: 'ai_extracted',
+    superseded_by_id: null,
+    recommendation_text: 'Recommendations on the diagnosis and initial management of acute variceal bleeding should be followed in cirrhosis.',
+};
+
 function makeDb(rows) {
     const Base = class {
         normalizeTopic(t) { return String(t || '').trim().toLowerCase(); }
@@ -94,11 +109,24 @@ describe('getGuidelinesByTopic', () => {
         expect(out).toEqual([]);
     });
 
-    test('does not run the wider search when exact matching already answered', async () => {
+    test('widens even when the exact match already returned something', async () => {
+        // The production case: two weak journal rows matched the query exactly,
+        // so gating the wider search on an empty result meant the four AGA
+        // Institute 2025 recommendations were never looked for at all.
+        const db = makeDb([WEAK_JOURNAL_ROW, AGA_ROW]);
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin');
+        expect(out.map((g) => g.sourceBody)).toContain('AGA Institute');
+    });
+
+    test('ranks the on-topic recommendation above a weakly matching one', async () => {
+        const db = makeDb([WEAK_JOURNAL_ROW, AGA_ROW]);
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin');
+        expect(out[0].sourceBody).toBe('AGA Institute');
+    });
+
+    test('does not return the same guideline twice when both pools match it', async () => {
         const db = makeDb([AGA_ROW]);
-        const spy = jest.spyOn(db, 'all');
-        await db.getGuidelinesByTopic('hepatorenal syndrome diagnosis and management');
-        const likeQueries = spy.mock.calls.filter(([sql]) => /normalized_topic LIKE/.test(sql));
-        expect(likeQueries).toHaveLength(0);
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome diagnosis and management');
+        expect(out).toHaveLength(1);
     });
 });
