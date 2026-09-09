@@ -25,25 +25,44 @@
 
 const { GUIDELINE_BODY } = require('./mcqClaimKey');
 
+/** Scanning copy. GUIDELINE_BODY is shared and must keep its own lastIndex. */
+const SCAN_BODY = new RegExp(GUIDELINE_BODY.source, 'gi');
+
+/** Short all-letter tokens are acronyms; longer names stand on their own. */
+const ACRONYM = /^[A-Za-z]{2,5}$/;
+
 /**
  * The issuing body named in any of `texts`, or null. Returns the matched token
  * itself ("AGA", "EASL") rather than the surrounding string, so that a document
  * titled "EASL clinical practice guidelines on ascites" and a row whose
  * source_body is "EASL" compare equal.
+ *
+ * An acronym only counts when it is actually capitalised. The curated list is
+ * matched case-insensitively and several of its entries are ordinary words --
+ * WHO, SIGN, GOLD, ASH -- so a case-blind match reads an issuing body out of
+ * "who should be treated" or "a sign of decompensation". It also reads "AGA"
+ * out of "Aga Khan University Hospital". Since the only thing this function
+ * feeds is the decision to present recommendations as a named organisation's
+ * own, a false match invents a claim by that organisation.
  */
 function detectIssuingBody(...texts) {
     for (const text of texts) {
         const value = String(text || '').trim();
         if (!value) continue;
-        const match = value.match(GUIDELINE_BODY);
-        if (match) return match[0];
+        SCAN_BODY.lastIndex = 0;
+        let match = SCAN_BODY.exec(value);
+        while (match) {
+            const token = match[0];
+            if (!ACRONYM.test(token) || token === token.toUpperCase()) return token;
+            match = SCAN_BODY.exec(value);
+        }
     }
     return null;
 }
 
 /** Whether a source_body names an organisation on the curated list. */
 function isIssuingBodyValue(sourceBody) {
-    return GUIDELINE_BODY.test(String(sourceBody || ''));
+    return detectIssuingBody(sourceBody) !== null;
 }
 
 function sameBody(a, b) {

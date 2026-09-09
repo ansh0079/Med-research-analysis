@@ -49,6 +49,38 @@ describe('detectIssuingBody', () => {
     ])('finds no body in %s', (text) => {
         expect(detectIssuingBody(text)).toBeNull();
     });
+
+    describe('an acronym only counts when it is capitalised', () => {
+        // The curated list is matched case-insensitively and several entries are
+        // ordinary English words. A false match here would present another
+        // organisation's recommendations as this document's own.
+        test.each([
+            ['Bone marrow examination findings at Aga Khan University Hospital', 'AGA'],
+            ['Deciding who should be treated for ascites', 'WHO'],
+            ['A sign of hepatic decompensation', 'SIGN'],
+            ['The gold standard for diagnosis', 'GOLD'],
+            ['Ash content of the sample', 'ASH'],
+        ])('%s does not name %s', (text) => {
+            expect(detectIssuingBody(text)).toBeNull();
+        });
+
+        test('keeps scanning past a lowercase near-miss to a real body', () => {
+            expect(detectIssuingBody('Deciding who to treat: the EASL position')).toBe('EASL');
+        });
+
+        test('multi-word names do not need capitals to be recognised', () => {
+            expect(detectIssuingBody('issued by the endocrine society')).toBe('endocrine society');
+        });
+
+        test('the shared regex is left usable by other callers', () => {
+            // SCAN_BODY carries /g and its own lastIndex; GUIDELINE_BODY must not.
+            const { GUIDELINE_BODY } = require('../../server/utils/mcqClaimKey');
+            detectIssuingBody('EASL guidance');
+            expect(GUIDELINE_BODY.lastIndex).toBe(0);
+            expect(GUIDELINE_BODY.test('NICE')).toBe(true);
+            expect(GUIDELINE_BODY.test('NICE')).toBe(true);
+        });
+    });
 });
 
 describe('isIssuingBodyValue', () => {
