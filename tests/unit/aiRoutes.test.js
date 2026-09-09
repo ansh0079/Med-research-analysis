@@ -103,6 +103,17 @@ jest.mock('../../server/utils/aiProvider', () => ({
         if (provider === 'mistral') return { provider: 'mistral', model: 'mistral-model' };
         return { provider: null, model: null };
     }),
+    // Gemini-first, matching the real preference order (see aiProvider.js) --
+    // routes fall back through this list on failure, so the mock has to expose
+    // more than one candidate for that path to be exercised at all.
+    getProviderCandidates: jest.fn().mockImplementation((_options = {}, serverConfig = {}) => {
+        const keys = serverConfig?.keys || {};
+        return [
+            keys.gemini ? { provider: 'gemini', model: 'gemini-model' } : null,
+            keys.anthropic ? { provider: 'claude', model: 'claude-haiku' } : null,
+            keys.mistral ? { provider: 'mistral', model: 'mistral-model' } : null,
+        ].filter(Boolean);
+    }),
 }));
 
 jest.mock('../../server/utils/parseJson', () => ({
@@ -210,8 +221,29 @@ describe('aiRoutes', () => {
                 .send({ text: 'Patient has diabetes.', analysisType: 'summary' });
             expect(res.status).toBe(200);
             expect(res.body.result).toBe('gemini result');
-            expect(res.body.provider).toBe('claude');
+            // Gemini leads the candidate order (cheaper, same job) -- see
+            // getProviderCandidates in aiProvider.js. This route used to pin
+            // 'claude' outright, so an out-of-credit Anthropic account took
+            // /api/ai/analyze down completely with a funded Gemini key unused.
+            expect(res.body.provider).toBe('gemini');
             expect(mockDb.cacheAnalysis).toHaveBeenCalled();
+        });
+
+        test('falls back to the next provider when the first one fails', async () => {
+            const { getSharedAiService } = require('../../server/services/aiService');
+            const ai = getSharedAiService();
+            ai.callText.mockRejectedValueOnce(new Error('Gemini 400 — API key not valid'));
+            ai.callText.mockResolvedValueOnce('claude result');
+
+            const res = await request(app)
+                .post('/api/ai/analyze')
+                .set('Authorization', `Bearer ${authToken()}`)
+                .send({ text: 'Patient has diabetes.', analysisType: 'summary' });
+
+            expect(res.status).toBe(200);
+            expect(res.body.result).toBe('claude result');
+            expect(res.body.provider).toBe('claude');
+            expect(ai.callText).toHaveBeenCalledTimes(2);
         });
     });
 

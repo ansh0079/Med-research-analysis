@@ -1171,17 +1171,46 @@ describe('API Endpoints', () => {
         expect(response.body.error).toContain('Validation error');
       });
 
-      test('Should return 503 when AI service not configured', async () => {
+      test('Should return 503 only when every provider is unconfigured', async () => {
+        // This route used to require Anthropic specifically, so an out-of-credit
+        // or unset ANTHROPIC_API_KEY took /api/ai/analyze down outright even
+        // with Gemini/Mistral configured. It now falls back across whatever is
+        // configured, and only 503s when nothing is.
         const config = require('../../config');
-        const originalAnthropic = config.serverConfig.keys.anthropic;
+        const original = { ...config.serverConfig.keys };
         config.serverConfig.keys.anthropic = null;
+        config.serverConfig.keys.gemini = null;
+        config.serverConfig.keys.mistral = null;
         try {
           const response = await request(app)
             .post('/api/ai/analyze')
             .set('Cookie', `med_auth_token=${authToken()}`)
             .send({ text: 'Test text', analysisType: 'quick' })
             .expect(503);
-          expect(response.body).toHaveProperty('error', 'No Anthropic API key configured. Add ANTHROPIC_API_KEY to .env');
+          expect(response.body.error).toContain('No AI provider configured');
+        } finally {
+          Object.assign(config.serverConfig.keys, original);
+        }
+      });
+
+      test('Should still succeed on Gemini when only Anthropic is missing', async () => {
+        const config = require('../../config');
+        const originalAnthropic = config.serverConfig.keys.anthropic;
+        config.serverConfig.keys.anthropic = null;
+        try {
+          db.getCachedAnalysis.mockResolvedValueOnce(null);
+          cache.getAsync.mockResolvedValueOnce(null);
+          mockFetch.mockResolvedValueOnce({
+            ok: true,
+            json: async () => ({ candidates: [{ finishReason: 'STOP', content: { parts: [{ text: 'gemini fallback result' }] } }] }),
+          });
+
+          const response = await request(app)
+            .post('/api/ai/analyze')
+            .set('Cookie', `med_auth_token=${authToken()}`)
+            .send({ text: 'Test text', analysisType: 'quick' })
+            .expect(200);
+          expect(response.body.provider).toBe('gemini');
         } finally {
           config.serverConfig.keys.anthropic = originalAnthropic;
         }
