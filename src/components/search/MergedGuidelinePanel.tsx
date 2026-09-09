@@ -40,14 +40,23 @@ const AGREEMENT_CHIP: Record<string, { label: string; cls: string }> = {
   },
 };
 
+/**
+ * Themes shown before the reader asks for the rest. Enough to answer the
+ * common question, few enough that a topic with a dozen themes does not add
+ * ~1,900px to a page that was deliberately cut to fit on a few screens.
+ */
+const THEMES_BEFORE_FOLD = 4;
+
 export const MergedGuidelinePanel: React.FC<{ topic: string }> = ({ topic }) => {
   const [view, setView] = React.useState<MergedGuidelineView | null>(null);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
+  const [expanded, setExpanded] = React.useState(false);
 
   React.useEffect(() => {
     if (!topic || topic.length < 3) return;
     let cancelled = false;
+    setExpanded(false);
     (async () => {
       try {
         setLoading(true);
@@ -73,6 +82,12 @@ export const MergedGuidelinePanel: React.FC<{ topic: string }> = ({ topic }) => 
   }
   if (error || !view?.available || view.themes.length === 0) return null;
 
+  const hiddenThemes = view.themes.length - THEMES_BEFORE_FOLD;
+  const visibleThemes = expanded ? view.themes : view.themes.slice(0, THEMES_BEFORE_FOLD);
+  const hiddenRecommendations = view.themes
+    .slice(THEMES_BEFORE_FOLD)
+    .reduce((sum, t) => sum + t.recommendations.length, 0);
+
   return (
     <section className="border-t border-slate-100 dark:border-slate-700/60">
       <div className="px-5 pt-4 pb-2">
@@ -86,7 +101,7 @@ export const MergedGuidelinePanel: React.FC<{ topic: string }> = ({ topic }) => 
       </div>
 
       <div className="px-5 pb-4 space-y-3">
-        {view.themes.map((theme, i) => {
+        {visibleThemes.map((theme, i) => {
           const chip = AGREEMENT_CHIP[theme.agreement] ?? AGREEMENT_CHIP.single;
           return (
             <div
@@ -141,6 +156,18 @@ export const MergedGuidelinePanel: React.FC<{ topic: string }> = ({ topic }) => 
             </div>
           );
         })}
+
+        {hiddenThemes > 0 && (
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            className="w-full rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-[11px] font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+          >
+            {expanded
+              ? 'Show fewer'
+              : `Show ${hiddenThemes} more decision${hiddenThemes === 1 ? '' : 's'} (${hiddenRecommendations} recommendation${hiddenRecommendations === 1 ? '' : 's'})`}
+          </button>
+        )}
 
         <p className="text-[10px] leading-snug text-slate-400 dark:text-slate-500">
           Recommendations are shown verbatim and individually attributed. Grouping is a reading aid — check each
