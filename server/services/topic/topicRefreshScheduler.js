@@ -15,6 +15,8 @@ const STARTUP_DELAY_MS = 45_000;
 const INTERVAL_MS = 60 * 60 * 1000;
 const STALE_TOPICS_PER_RUN = 5;
 const STRONG_MEMORY_TOPICS_PER_RUN = 3;
+// Each one is a full synopsis generation, so this is a direct LLM spend knob.
+const STALE_SYNOPSES_PER_RUN = 3;
 
 let refreshTimer = null;
 let startupTimer = null;
@@ -247,7 +249,81 @@ async function runStrongMemoryRefresh({ db, serverConfig, fetchImpl, logger }) {
     });
 }
 
-function scheduleTopicRefresh(db, serverConfig, fetchImpl, logger) {
+/**
+ * Regenerate paper synopses that have aged past the reuse ceiling.
+ *
+ * findReusableStoredSynopsis already refuses to serve anything older than
+ * SYNOPSIS_REUSE_MAX_AGE_DAYS, so nobody is shown a stale synopsis either way --
+ * what this changes is *who waits for the regeneration*. Without it the next
+ * reader of a 91-day-old synopsis pays for a full generation; with it the
+ * refresh happens on the scheduler and they get a stored answer.
+ *
+ * `refresh: true` is what makes the generator bypass its own reuse check --
+ * without it this would find the stale row, hand it straight back, and record a
+ * refresh that never happened.
+ */
+async function runStaleSynopsisRefresh({ db, serverConfig, fetchImpl, cache, logger }) {
+    if (typeof db.getStaleSynopsesForRefresh !== 'function') return;
+
+    const run = typeof db.createLearningSchedulerRun === 'function'
+        ? await db.createLearningSchedulerRun({ runType: 'synopsis_refresh' }).catch((err) => { logger?.warn?.({ err }, 'createLearningSchedulerRun failed'); return null; })
+        : null;
+    const details = { synopses: [] };
+    let refreshedCount = 0;
+    let errorCount = 0;
+
+    let stale;
+    try {
+        stale = await db.getStaleSynopsesForRefresh({ limit: STALE_SYNOPSES_PER_RUN });
+    } catch (e) {
+        logger?.warn?.({ err: e }, 'topicRefreshScheduler: failed to query stale synopses');
+        await _finishRun(db, run, { status: 'failed', candidatesCount: 0, refreshedCount: 0, skippedCount: 0, errorCount: 1, details });
+        return;
+    }
+
+    if (!stale?.length) {
+        await _finishRun(db, run, { status: 'completed', candidatesCount: 0, refreshedCount: 0, skippedCount: 0, errorCount: 0, details });
+        return;
+    }
+
+    logger?.info?.({ count: stale.length }, 'topicRefreshScheduler: refreshing stale synopses');
+    const { runPaperSynopsisGeneration } = require('../ai/paperSynopsisCore');
+
+    for (const candidate of stale) {
+        const detail = { articleUid: candidate.articleUid, topic: candidate.topic, generatedAt: candidate.generatedAt, status: 'pending' };
+        try {
+            await runPaperSynopsisGeneration({
+                article: { uid: candidate.articleUid },
+                serverConfig,
+                fetchImpl,
+                cache,
+                db,
+                topic: candidate.topic,
+                refresh: true,
+            });
+            refreshedCount += 1;
+            detail.status = 'refreshed';
+            logger?.info?.({ articleUid: candidate.articleUid, signals: candidate.totalSignals }, 'topicRefreshScheduler: synopsis refreshed');
+        } catch (e) {
+            errorCount += 1;
+            detail.status = 'error';
+            detail.error = e?.message || String(e);
+            logger?.warn?.({ err: e, articleUid: candidate.articleUid }, 'topicRefreshScheduler: synopsis refresh failed');
+        }
+        details.synopses.push(detail);
+    }
+
+    await _finishRun(db, run, {
+        status: errorCount > 0 ? 'completed_with_errors' : 'completed',
+        candidatesCount: stale.length,
+        refreshedCount,
+        skippedCount: 0,
+        errorCount,
+        details,
+    });
+}
+
+function scheduleTopicRefresh(db, serverConfig, fetchImpl, logger, cache = null) {
     const { withCronHeartbeat } = require('../cronHeartbeat');
     const tick = withCronHeartbeat('topic-refresh', async () => {
         const { isBackgroundAutomationPaused } = require('../backgroundAutomationService');
@@ -255,6 +331,7 @@ function scheduleTopicRefresh(db, serverConfig, fetchImpl, logger) {
         const errors = [];
         await runStaleTopicRefresh({ db, serverConfig, fetchImpl, logger }).catch((err) => { logger?.warn?.({ err }, 'runStaleTopicRefresh failed'); errors.push(err); });
         await runStrongMemoryRefresh({ db, serverConfig, fetchImpl, logger }).catch((err) => { logger?.warn?.({ err }, 'runStrongMemoryRefresh failed'); errors.push(err); });
+        await runStaleSynopsisRefresh({ db, serverConfig, fetchImpl, cache, logger }).catch((err) => { logger?.warn?.({ err }, 'runStaleSynopsisRefresh failed'); errors.push(err); });
         if (errors.length) throw errors[0];
     }, { db, logger });
     startupTimer = setTimeout(() => { void tick(); }, STARTUP_DELAY_MS);
@@ -266,4 +343,4 @@ function stopTopicRefresh() {
     if (refreshTimer) { clearInterval(refreshTimer); refreshTimer = null; }
 }
 
-module.exports = { scheduleTopicRefresh, stopTopicRefresh, runStaleTopicRefresh, runStrongMemoryRefresh };
+module.exports = { scheduleTopicRefresh, stopTopicRefresh, runStaleTopicRefresh, runStrongMemoryRefresh, runStaleSynopsisRefresh };

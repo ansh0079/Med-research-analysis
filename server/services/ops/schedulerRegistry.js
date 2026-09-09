@@ -95,7 +95,7 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
         },
         {
             task: 'topic-refresh',
-            start: () => scheduleTopicRefresh(db, serverConfig, fetchImpl, baseLogger.child({ task: 'topic-refresh' })),
+            start: () => scheduleTopicRefresh(db, serverConfig, fetchImpl, baseLogger.child({ task: 'topic-refresh' }), cache),
             stop: () => stopTopicRefresh(),
         },
         {

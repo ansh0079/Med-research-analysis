@@ -167,6 +167,52 @@ async getTeachingObjectForArticle(articleUid) {
     return this.mapTeachingObjectRow(row);
 }
 
+/**
+ * Paper synopses old enough that findReusableStoredSynopsis would refuse to
+ * serve them, restricted to articles people are actually still reading.
+ *
+ * The reuse ceiling (SYNOPSIS_REUSE_MAX_AGE_DAYS, 90) is enforced lazily: a
+ * stale synopsis is never *served*, it is regenerated when the next reader
+ * asks. That is correct but makes that reader wait for a full generation. This
+ * finds the same rows ahead of time so the scheduler can regenerate them in the
+ * background instead.
+ *
+ * Gated on recent bouquet signal for the same reason topic refresh is: there
+ * are ~6,000 stored paper rows and regenerating all of them on a timer would
+ * burn the daily LLM budget on articles nobody opens. `object_payload` is text
+ * on both engines, so the synopsis-presence check is a LIKE rather than a JSON
+ * accessor -- search persistence writes `paper` rows with no synopsis at all
+ * (provider pubmed/openalex), and those must not be treated as stale synopses.
+ */
+async getStaleSynopsesForRefresh({ maxAgeDays = 90, minSignalCount = 2, signalWindowDays = 30, limit = 5 } = {}) {
+    const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 5, 1), 25);
+    const staleCutoff = new Date(Date.now() - maxAgeDays * 24 * 60 * 60 * 1000).toISOString();
+    const signalCutoff = new Date(Date.now() - signalWindowDays * 24 * 60 * 60 * 1000).toISOString();
+    const rows = await this.all(
+        `SELECT t.article_uid, t.topic, t.normalized_topic, t.updated_at, t.generated_at,
+                SUM(s.signal_count) AS total_signals
+         FROM teaching_objects t
+         JOIN topic_bouquet_signals s ON s.article_uid = t.article_uid
+         WHERE t.object_type = 'paper'
+           AND t.article_uid IS NOT NULL
+           AND t.object_payload LIKE '%"synopsis"%'
+           AND COALESCE(t.generated_at, t.updated_at) < ?
+           AND s.last_seen_at > ?
+         GROUP BY t.article_uid, t.topic, t.normalized_topic, t.updated_at, t.generated_at
+         HAVING SUM(s.signal_count) >= ?
+         ORDER BY total_signals DESC
+         LIMIT ?`,
+        [staleCutoff, signalCutoff, minSignalCount, safeLimit]
+    ).catch(() => []);
+    return (rows || []).map((row) => ({
+        articleUid: row.article_uid,
+        topic: row.topic || row.normalized_topic || '',
+        normalizedTopic: row.normalized_topic || null,
+        totalSignals: Number(row.total_signals || 0),
+        generatedAt: row.generated_at || row.updated_at || null,
+    }));
+}
+
 async listTeachingObjectsForTopic(topic, { limit = 20, objectType = '' } = {}) {
     const normalized = this.normalizeTopic(topic);
     const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 20, 1), 100);
