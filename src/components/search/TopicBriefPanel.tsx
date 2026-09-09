@@ -84,7 +84,12 @@ const TopicBriefPanelComponent: React.FC<Props> = ({
 }) => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const [expanded, setExpanded] = React.useState(true);
+  // Measured on production this panel rendered 13,062px -- the single largest
+  // object on a ~59,000px page, roughly three screens on its own. The clinical
+  // answer stays open because it is the thing the reader came for; the long
+  // supporting material folds. The bouquet sections in particular repeat papers
+  // that are listed again immediately below the panel.
+  const [expanded, setExpanded] = React.useState(false);
   const [difficulty, setDifficulty] = React.useState<BriefDifficulty>('mixed');
   const [savedTopics, setSavedTopics] = React.useState<SavedTopic[]>(() => readStored<SavedTopic[]>(SAVED_TOPICS_KEY, []));
   const [recentTopics, setRecentTopics] = React.useState<SavedTopic[]>(() => readStored<SavedTopic[]>(RECENT_TOPICS_KEY, []));
@@ -178,7 +183,7 @@ const TopicBriefPanelComponent: React.FC<Props> = ({
         onQuiz={() => onQuiz('mixed')}
       />
 
-      {consensusSynopsis && <TopicBriefConsensusSynopsis consensusSynopsis={consensusSynopsis} />}
+      {expanded && consensusSynopsis && <TopicBriefConsensusSynopsis consensusSynopsis={consensusSynopsis} />}
 
       <TopicBriefBouquetSections
         sections={sections}
