@@ -8,6 +8,7 @@ const PROMPT_FILES = {
     synopsis: 'synopsis.js',
     synthesis: 'synthesis.js',
     quiz: 'quiz.js',
+    guideline_merge: 'guidelineMerge.js',
     knowledge: 'knowledge.js',
     analysis: 'analysis.js',
     case: 'case.js',

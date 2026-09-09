@@ -2,9 +2,10 @@ const { GUIDELINE_BODY } = require('../utils/mcqClaimKey');
 const { TRUSTED_GUIDELINE_SOURCES } = require('../config/trustedGuidelineSources');
 const { discoverGuidelinesForTopic, isDiscoveryInFlight, wasDiscoveryAttempted } = require('../services/guidelineService');
 const { getSharedAiService } = require('../services/aiService');
+const { buildMergedGuidelineView } = require('../services/ai/guidelineMergeService');
 const { safeFetch } = require('../utils/fetch');
 
-function registerGuidelineRoutes(app, { db, serverConfig, rateLimit, requireAuthJwt, requireRole, requireJson }) {
+function registerGuidelineRoutes(app, { db, serverConfig, cache, rateLimit, requireAuthJwt, requireRole, requireJson }) {
     const aiService = getSharedAiService({ serverConfig, fetchImpl: safeFetch });
     // Trusted sources registry (public). Keep before /api/guidelines/:id.
     app.get('/api/guidelines/sources', rateLimit(60, 60), (req, res) => {
@@ -137,6 +138,36 @@ function registerGuidelineRoutes(app, { db, serverConfig, rateLimit, requireAuth
             res.json({ topic, guidelines: [], discoveryStatus: 'pending' });
         } catch (error) {
             req.log.error({ err: error }, 'Get guidelines by topic error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    // Everything the guidelines say about a topic, grouped by clinical decision
+    // rather than listed by row, so agreement and disagreement between bodies
+    // are visible together. Must be declared before /api/guidelines/:id, which
+    // would otherwise capture "merged" as an id.
+    app.get('/api/guidelines/merged', rateLimit(30, 60), async (req, res) => {
+        try {
+            const { topic } = req.query;
+            if (!topic || typeof topic !== 'string') {
+                return res.status(400).json({ error: 'topic query parameter is required' });
+            }
+            const merged = await buildMergedGuidelineView({
+                db,
+                topic,
+                serverConfig,
+                fetchImpl: safeFetch,
+                cache,
+                log: req.log,
+            });
+            // Too little guidance to be worth merging is a normal answer, not an
+            // error: the flat list already reads fine at that size.
+            if (!merged) {
+                return res.json({ topic, themes: [], recommendationCount: 0, available: false });
+            }
+            res.json({ ...merged, available: true });
+        } catch (error) {
+            req.log.error({ err: error }, 'Merged guideline view error');
             res.status(500).json({ error: 'Internal server error' });
         }
     });

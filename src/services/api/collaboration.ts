@@ -460,6 +460,13 @@ export class CollaborationApi extends BaseApiClient {
     return response.json();
   }
 
+  /** Everything the guidelines say about a topic, grouped by clinical decision. */
+  async getMergedGuidelines(topic: string): Promise<import('@types').MergedGuidelineView> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/guidelines/merged?topic=${encodeURIComponent(topic)}`);
+    if (!response.ok) throw new Error('Failed to fetch merged guidelines');
+    return response.json();
+  }
+
   async getGuidelineSources(): Promise<{ sources: import('@types').GuidelineSource[] }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/guidelines/sources`);
     if (!response.ok) throw new Error('Failed to fetch guideline sources');

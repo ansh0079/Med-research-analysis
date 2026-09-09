@@ -101,6 +101,45 @@ export interface GuidelineListResponse {
   offset: number;
 }
 
+/** One clinical decision, and everything the guidelines say about it. */
+export interface MergedGuidelineTheme {
+  label: string;
+  /** 'conflict' when two bodies point different ways on the same decision. */
+  agreement: 'agree' | 'conflict' | 'single';
+  conflictNote: string | null;
+  bodies: string[];
+  recommendations: Array<{
+    id: string | number | null;
+    sourceBody: string | null;
+    sourceYear: number | null;
+    sourceUrl: string | null;
+    recommendationText: string;
+    recommendationStrength: string | null;
+    recommendationCertainty: string | null;
+    population: string | null;
+  }>;
+}
+
+export interface MergedGuidelineView {
+  topic: string;
+  available: boolean;
+  themes: MergedGuidelineTheme[];
+  recommendationCount: number;
+  bodyCount?: number;
+  bodies?: string[];
+  latestYear?: number | null;
+  /**
+   * Recommendations the grouping step never assigned, swept into a final theme.
+   * Surfaced rather than hidden: under "all the evidence on one page" a dropped
+   * recommendation is the product failing, and it fails invisibly.
+   */
+  unassignedCount?: number;
+  /** False when the recommendations are listed flat because grouping was unavailable. */
+  grouped?: boolean;
+  degradedReason?: string | null;
+  cached?: boolean;
+}
+
 export interface GuidelineContradiction {
   id: number;
   normalizedTopic: string;

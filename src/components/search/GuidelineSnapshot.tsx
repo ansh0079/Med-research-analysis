@@ -2,6 +2,7 @@ import React from 'react';
 import { api } from '@services/api';
 import type { GuidelineAlignment, GuidelineEntry, Article } from '@types';
 import { GuidelineContradictionPanel } from './GuidelineContradictionPanel';
+import { MergedGuidelinePanel } from './MergedGuidelinePanel';
 
 interface Props {
   query: string;
@@ -254,6 +255,11 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
         )}
 
         <GuidelineContradictionPanel query={query} />
+
+        {/* Everything the guidelines say, grouped by clinical decision. Sits
+            above the per-row list: the merged view is what a clinician reads,
+            the rows below are for checking an individual source. */}
+        <MergedGuidelinePanel topic={query} />
 
         {visible.map((g) => (
           <div key={g.id} className="rounded-xl border border-slate-100 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/40 p-3.5">
