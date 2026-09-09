@@ -94,6 +94,14 @@ async function findReusableStoredSynopsis(db, articleId, { maxAgeDays = SYNOPSIS
     // openalex); those must not count as a hit.
     if (!synopsis || typeof synopsis !== 'object' || Object.keys(synopsis).length === 0) return null;
 
+    // Reuse only what the current prompt would have produced. This store is read
+    // before any generation work and keeps rows for SYNOPSIS_REUSE_MAX_AGE_DAYS,
+    // so a prompt edit otherwise reaches only articles nobody has opened yet --
+    // which is how the guideline reframing shipped and changed nothing. Rows
+    // written before the version was recorded carry null and are regenerated
+    // once; that is the point, since their provenance is unknown.
+    if ((existing.payload?.promptVersion || null) !== getPromptVersion('synopsis')) return null;
+
     const stamp = existing.payload?.generatedAt || existing.generatedAt || existing.updatedAt || null;
     const generatedMs = stamp ? Date.parse(stamp) : NaN;
     // An unparseable or missing timestamp is treated as too old to trust rather

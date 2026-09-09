@@ -42,7 +42,11 @@ function buildSynthesisCacheKey(topic, articles = [], promptVersion = null, pers
 function buildFullSynthesisJobKey(topic, articles = [], personalization = {}) {
     const p = normalizePersonalization(personalization);
     const uids = [...articles].map((a) => a.uid).filter(Boolean).slice(0, 15).sort();
-    return `synth:${stableHash({ topic: String(topic || ''), uids, ...p }).slice(0, 40)}`;
+    // pv for the same reason buildSynthesisCacheKey above carries it: without it
+    // a prompt edit invalidates the cache but not the durable ai_generation_jobs
+    // row, and the stored row is what getOrEnqueueFullSynthesis returns first.
+    const pv = getPromptVersion('synthesis');
+    return `synth:${stableHash({ topic: String(topic || ''), uids, ...p, pv }).slice(0, 40)}:pv:${pv}`;
 }
 
 function buildEnrichmentCacheKey(query, articles = [], personalization = {}) {

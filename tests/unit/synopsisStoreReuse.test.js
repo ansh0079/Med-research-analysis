@@ -19,6 +19,7 @@ const {
     paperTeachingObjectKey,
     DEFAULT_SYNOPSIS_STYLE_ARM,
 } = require('../../server/services/ai/teachingObjectService');
+const { getPromptVersion } = require('../../server/prompts/promptVersions');
 
 const NOW = Date.parse('2026-09-07T12:00:00.000Z');
 const daysAgo = (n) => new Date(NOW - n * 86400000).toISOString();
@@ -36,6 +37,10 @@ function storedSynopsis(over = {}) {
         payload: {
             kind: 'paper_teaching_object',
             generatedAt: daysAgo(1),
+            // These cases are about the age ceiling and arm keying, so they hold
+            // the prompt version fixed at the current one. Provenance-driven
+            // rejection is covered in synopsisReusePromptVersion.test.js.
+            promptVersion: getPromptVersion('synopsis'),
             synopsis: { bottomLine: 'Consider steroids in vasopressor-dependent septic shock [1].' },
         },
         ...over,
@@ -61,7 +66,11 @@ describe('findReusableStoredSynopsis', () => {
     test('reuses one exactly at the ceiling boundary', async () => {
         const edge = storedSynopsis({
             generatedAt: daysAgo(SYNOPSIS_REUSE_MAX_AGE_DAYS),
-            payload: { synopsis: { bottomLine: 'edge' }, generatedAt: daysAgo(SYNOPSIS_REUSE_MAX_AGE_DAYS) },
+            payload: {
+                synopsis: { bottomLine: 'edge' },
+                generatedAt: daysAgo(SYNOPSIS_REUSE_MAX_AGE_DAYS),
+                promptVersion: getPromptVersion('synopsis'),
+            },
         });
         expect(await findReusableStoredSynopsis(dbWith(edge), 'pmid-1', { now: NOW })).toBeTruthy();
     });
@@ -69,7 +78,11 @@ describe('findReusableStoredSynopsis', () => {
     test('honours an explicit maxAgeDays override', async () => {
         const db = dbWith(storedSynopsis({
             generatedAt: daysAgo(10),
-            payload: { synopsis: { bottomLine: 'x' }, generatedAt: daysAgo(10) },
+            payload: {
+                synopsis: { bottomLine: 'x' },
+                generatedAt: daysAgo(10),
+                promptVersion: getPromptVersion('synopsis'),
+            },
         }));
         expect(await findReusableStoredSynopsis(db, 'pmid-1', { now: NOW, maxAgeDays: 5 })).toBeNull();
         expect(await findReusableStoredSynopsis(db, 'pmid-1', { now: NOW, maxAgeDays: 30 })).toBeTruthy();
@@ -157,7 +170,11 @@ describe('per-style-arm storage', () => {
         const db = {
             getTeachingObjectForArticle: jest.fn().mockResolvedValue(storedSynopsis()),
             getTeachingObjectByKey: jest.fn().mockResolvedValue(storedSynopsis({
-                payload: { synopsis: { bottomLine: 'narrative variant' }, generatedAt: daysAgo(1) },
+                payload: {
+                    synopsis: { bottomLine: 'narrative variant' },
+                    generatedAt: daysAgo(1),
+                    promptVersion: getPromptVersion('synopsis'),
+                },
             })),
         };
         const result = await findReusableStoredSynopsis(db, 'pmid-1', { now: NOW, styleArm: 'narrative' });

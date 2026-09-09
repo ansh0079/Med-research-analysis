@@ -16,9 +16,29 @@ const { resolveProvider } = require('../../utils/aiProvider');
 const { completeJobAndClaims } = require('../aiGenerationJobCompletion');
 const { enqueueAiGenerationJobIfClaimed, shouldEnqueueAiGenerationJob } = require('../aiGenerationJobEnqueue');
 const { buildFullSynthesisJobKey } = require('../synthesisPersonalization');
+const { getPromptVersion } = require('../../prompts/promptVersions');
 
 function stableHash(value) {
     return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
+}
+
+/**
+ * Durable job keys carry the version of the prompt that produced the result.
+ *
+ * Without this, editing a prompt template invalidates the in-memory cache but
+ * not the ai_generation_jobs store, and getOrEnqueue* returns the stored
+ * resultPayload before any prompt-version-aware code runs. The edit then looks
+ * like it worked -- newly seen articles get the new prompt -- while every
+ * already-generated one is frozen on the old one forever. That is how the
+ * guideline synopsis reframing shipped without changing a single existing
+ * synopsis.
+ *
+ * Appended in the clear as well as hashed so that "which prompt produced this
+ * row?" is answerable with a LIKE against job_key.
+ */
+function withPromptVersion(promptKey, digest, prefix) {
+    const pv = getPromptVersion(promptKey);
+    return `${prefix}:${stableHash({ digest, pv }).slice(0, 40)}:pv:${pv}`;
 }
 
 function consensusJobKey(topic, articles = []) {
@@ -26,7 +46,7 @@ function consensusJobKey(topic, articles = []) {
         .map((a) => a.uid || a.pmid || a.doi || a.title)
         .filter(Boolean)
         .slice(0, 8);
-    return `consensus:${stableHash({ topic, sourceIds }).slice(0, 40)}`;
+    return withPromptVersion('synopsis', { topic, sourceIds }, 'consensus');
 }
 
 function liveClinicalAnswerJobKey(topic, articles = [], { previousQueries = [], trainingStage = null, sessionDepth = 0 } = {}) {
@@ -34,7 +54,11 @@ function liveClinicalAnswerJobKey(topic, articles = [], { previousQueries = [], 
         .map((a) => a.uid || a.pmid || a.doi || a.title)
         .filter(Boolean)
         .slice(0, 8);
-    return `live-ca:${stableHash({ topic, sourceIds, previousQueries: previousQueries.slice(-5), trainingStage, sessionDepth }).slice(0, 40)}`;
+    return withPromptVersion(
+        'synthesis',
+        { topic, sourceIds, previousQueries: previousQueries.slice(-5), trainingStage, sessionDepth },
+        'live-ca',
+    );
 }
 
 /**
@@ -619,14 +643,18 @@ async function getOrEnqueueFullSynthesis({
 function paperSynopsisJobKey(article, selectedModel, trainingStage = null, userId = null) {
     const articleId = article?.uid || article?.pmid || article?.doi
         || crypto.createHash('md5').update(String(article?.title || '')).digest('hex').slice(0, 12);
-    return `synop:${stableHash({ articleId, selectedModel, trainingStage: trainingStage || 'default', userId: userId || 'shared' }).slice(0, 40)}`;
+    return withPromptVersion(
+        'synopsis',
+        { articleId, selectedModel, trainingStage: trainingStage || 'default', userId: userId || 'shared' },
+        'synop',
+    );
 }
 
 function quizPrefetchJobKey(topic, { sourceJobKey = null } = {}) {
-    return `quiz-prefetch:${stableHash({
+    return withPromptVersion('quiz', {
         topic: String(topic || '').trim().toLowerCase(),
         sourceJobKey: sourceJobKey || null,
-    }).slice(0, 40)}`;
+    }, 'quiz-prefetch');
 }
 
 function enqueueQuizPrefetchJob({ db, jobKey, cache, logger }) {

@@ -355,6 +355,11 @@ function buildPaperTeachingObject({ article, synopsisResult, topic = '', styleAr
             kind: 'paper_teaching_object',
             generatedAt,
             reviewState,
+            // Which prompt produced this. The store is read through before any
+            // generation work, so without a recorded version a synopsis written
+            // under a prompt that has since been rewritten is served forever --
+            // the edit only ever reaches articles nobody had opened yet.
+            promptVersion: synopsisResult?.audit?.promptVersion || null,
             sourceMode: abstractOnly ? 'abstract_only' : 'full_text_used',
             citationValidation: synopsisResult?.audit?.citationValidation || null,
             paper: {

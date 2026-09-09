@@ -19,6 +19,7 @@
 
 const { runPaperSynopsisGeneration, getPaperSynopsisCacheKey } = require('../../server/services/ai/paperSynopsisCore');
 const { clearInFlightRequests } = require('../../server/services/externalApiProxy');
+const { getPromptVersion } = require('../../server/prompts/promptVersions');
 
 const ARTICLE = {
     uid: '29490185',
@@ -307,6 +308,8 @@ describe('paper synopsis pipeline (real modules, stubbed network)', () => {
                 generatedAt: new Date().toISOString(),
                 payload: {
                     generatedAt: new Date().toISOString(),
+                    // Reuse requires the row to name the prompt that wrote it.
+                    promptVersion: getPromptVersion('synopsis'),
                     synopsis: { bottomLine: 'Stored synopsis for septic shock [1].' },
                 },
             }),
