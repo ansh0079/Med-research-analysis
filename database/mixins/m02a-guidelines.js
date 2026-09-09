@@ -1,5 +1,6 @@
 'use strict';
 
+const { assessGuidelineCandidate } = require('../../server/utils/guidelineQuality');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
 const { assessGuidelineQuality } = require('../../server/services/guidelineQualityService');
 
@@ -80,6 +81,11 @@ function guidelineTermScore(row, topicWords) {
 function isServableGuideline(row) {
     const text = String(row?.recommendation_text || '').trim();
     if (text.length < MIN_RECOMMENDATION_LENGTH) return false;
+    // Rows already in the corpus predate the ingestion guard, so the same check
+    // has to run on read. 2,399 production rows are trial results filed with
+    // source_body "Clinical trial"; serving those under a Guidelines heading
+    // tells a clinician a single trial's outcome is guidance.
+    if (!assessGuidelineCandidate({ sourceBody: row?.source_body, recommendationText: text }).ok) return false;
     return RECOMMENDATION_VERB_RE.test(text);
 }
 

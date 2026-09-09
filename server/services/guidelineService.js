@@ -3,6 +3,7 @@
 // Cross-references synthesized evidence against clinical guidelines
 // ==========================================
 
+const { assessGuidelineCandidate } = require('../utils/guidelineQuality');
 const { fetchWithTimeout: fetch } = require('../utils/fetch');
 const { PINNED_MODELS } = require('./aiService');
 const { z } = require('zod');
@@ -351,8 +352,20 @@ async function discoverGuidelinesForTopic(topic, { db, serverConfig, aiService }
       if (!Array.isArray(recommendations)) return [];
 
       const inserted = [];
+      let rejected = 0;
       for (const rec of recommendations) {
         if (!rec.recommendationText || !rec.sourceBody) continue;
+        // The model is asked to name the issuing body from a paper abstract and
+        // will happily answer "Clinical trial" for a trial, or hand back a
+        // structured-abstract fragment as the recommendation. Stored unchecked,
+        // that is how 2,399 trial results ended up filed as guidance.
+        const verdict = assessGuidelineCandidate(rec);
+        if (!verdict.ok) {
+          rejected += 1;
+          logger.debug({ topic, reason: verdict.reason, sourceBody: rec.sourceBody },
+            '[GuidelineDiscovery] Rejected non-guideline candidate');
+          continue;
+        }
         try {
           const guideline = await db.createGuideline({
             topic,
@@ -372,7 +385,7 @@ async function discoverGuidelinesForTopic(topic, { db, serverConfig, aiService }
           logger.warn({ err, rec }, '[GuidelineDiscovery] Failed to insert guideline');
         }
       }
-      logger.info({ topic, found: summaries.length, extracted: inserted.length }, '[GuidelineDiscovery] Complete');
+      logger.info({ topic, found: summaries.length, extracted: inserted.length, rejected }, '[GuidelineDiscovery] Complete');
       if (inserted.length === 0) _discoveryEmpty.set(normalized, Date.now());
       return inserted;
     } catch (err) {
