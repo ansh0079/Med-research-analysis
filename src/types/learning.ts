@@ -62,6 +62,8 @@ export interface GuidelineSource {
 
 export interface GuidelineEntry {
   id: number;
+  /** Server-set: source_body names a real guideline-issuing organisation, not a journal. */
+  isIssuingBody?: boolean;
   topic: string;
   normalizedTopic: string;
   sourceBody: string;

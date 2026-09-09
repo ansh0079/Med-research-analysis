@@ -73,15 +73,21 @@ export const EvidenceVerdictStrip: React.FC<EvidenceVerdictStripProps> = ({
         const rcts = countByPubtype(results, RCT_PATTERN);
         const reviews = countByPubtype(results, REVIEW_PATTERN);
         const guidelinePapers = countByPubtype(results, GUIDELINE_PATTERN);
-        const years = (guidelines || []).map((g) => g.sourceYear).filter((y): y is number => typeof y === 'number');
+        // source_body frequently holds a journal rather than an issuing
+        // organisation -- production returns "Dig Dis Sci" and "Vnitr Lek" as
+        // the guideline bodies for hepatorenal syndrome. Counting those as
+        // guidelines here would put a journal where a clinician expects EASL or
+        // NICE, at the top of the page. The server flags the real ones.
+        const issuing = (guidelines || []).filter((g) => g.isIssuingBody);
+        const years = issuing.map((g) => g.sourceYear).filter((y): y is number => typeof y === 'number');
         const newestGuideline = years.length ? Math.max(...years) : null;
-        const bodies = Array.from(new Set((guidelines || []).map((g) => g.sourceBody).filter(Boolean))).slice(0, 3);
-        return { rcts, reviews, guidelinePapers, newestGuideline, bodies };
+        const bodies = Array.from(new Set(issuing.map((g) => g.sourceBody).filter(Boolean))).slice(0, 3);
+        return { rcts, reviews, guidelinePapers, newestGuideline, bodies, issuingCount: issuing.length };
     }, [results, guidelines]);
 
     // "Thin" is deliberately generous: the honest failure here is implying
     // completeness we do not have, not under-selling a well-covered topic.
-    const guidelineCount = guidelines?.length ?? 0;
+    const guidelineCount = stats.issuingCount;
     const isThin = results.length < 5 || (guidelines !== null && guidelineCount === 0 && stats.reviews === 0);
 
     const copyCitations = async () => {

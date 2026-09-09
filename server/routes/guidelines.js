@@ -1,3 +1,4 @@
+const { GUIDELINE_BODY } = require('../utils/mcqClaimKey');
 const { TRUSTED_GUIDELINE_SOURCES } = require('../config/trustedGuidelineSources');
 const { discoverGuidelinesForTopic, isDiscoveryInFlight, wasDiscoveryAttempted } = require('../services/guidelineService');
 const { getSharedAiService } = require('../services/aiService');
@@ -92,6 +93,25 @@ function registerGuidelineRoutes(app, { db, serverConfig, rateLimit, requireAuth
 
     // List guidelines for a topic (public, rate-limited).
     // When no seeded guidelines exist, triggers live discovery from PubMed in the background.
+    /**
+     * Mark whether source_body actually names a guideline-issuing organisation.
+     *
+     * The field is populated from ingestion and frequently holds a journal
+     * instead -- production returns "Dig Dis Sci" and "Vnitr Lek" as the
+     * "guideline bodies" for hepatorenal syndrome. That was tolerable while
+     * guidelines were buried far down the page; it is not once a summary states
+     * a guideline count up front, where a journal masquerading as NICE or EASL
+     * directly misleads the clinical judgement the product exists to inform.
+     *
+     * GUIDELINE_BODY is the same curated list used to decide whether an MCQ may
+     * be labelled "guideline" -- reused rather than duplicated so the two cannot
+     * drift apart.
+     */
+    const withIssuingBodyFlag = (g) => ({
+        ...g,
+        isIssuingBody: GUIDELINE_BODY.test(String(g?.sourceBody || '')),
+    });
+
     app.get('/api/guidelines', rateLimit(60, 60), async (req, res) => {
         try {
             const { topic, status, limit } = req.query;
@@ -103,7 +123,7 @@ function registerGuidelineRoutes(app, { db, serverConfig, rateLimit, requireAuth
                 limit: parseInt(String(limit), 10) || 20,
             });
             if (guidelines.length > 0) {
-                return res.json({ topic, guidelines, discoveryStatus: 'complete' });
+                return res.json({ topic, guidelines: guidelines.map(withIssuingBodyFlag), discoveryStatus: 'complete' });
             }
             if (isDiscoveryInFlight(topic, db)) {
                 return res.json({ topic, guidelines: [], discoveryStatus: 'pending' });

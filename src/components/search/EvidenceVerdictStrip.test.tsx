@@ -62,8 +62,8 @@ describe('EvidenceVerdictStrip', () => {
         getGuidelinesForTopic.mockResolvedValue({
             topic: 't',
             guidelines: [
-                { id: 1, sourceBody: 'EASL', sourceYear: 2023 },
-                { id: 2, sourceBody: 'AASLD', sourceYear: 2025 },
+                { id: 1, sourceBody: 'EASL', sourceYear: 2023, isIssuingBody: true },
+                { id: 2, sourceBody: 'AASLD', sourceYear: 2025, isIssuingBody: true },
             ],
         });
         render(<EvidenceVerdictStrip query="hepatorenal syndrome" results={manyPapers(22)} />);
@@ -78,10 +78,45 @@ describe('EvidenceVerdictStrip', () => {
     });
 
     it('does not cry thin on a well-covered topic', async () => {
-        getGuidelinesForTopic.mockResolvedValue({ topic: 't', guidelines: [{ id: 1, sourceBody: 'EASL', sourceYear: 2024 }] });
+        getGuidelinesForTopic.mockResolvedValue({ topic: 't', guidelines: [{ id: 1, sourceBody: 'EASL', sourceYear: 2024, isIssuingBody: true }] });
         render(<EvidenceVerdictStrip query="sepsis" results={manyPapers(22)} />);
         await waitFor(() => expect(screen.getByText(/guidelines/)).toBeInTheDocument());
         expect(screen.queryByText(/Thin coverage/i)).not.toBeInTheDocument();
+    });
+
+    it('does not count a journal as a guideline body', async () => {
+        // Production returns "Dig Dis Sci" and "Vnitr Lek" as the guideline
+        // bodies for hepatorenal syndrome -- both journals. Showing those at the
+        // top of the page puts a journal where a clinician expects EASL, which
+        // is worse than showing nothing.
+        getGuidelinesForTopic.mockResolvedValue({
+            topic: 't',
+            guidelines: [
+                { id: 1, sourceBody: 'Dig Dis Sci', sourceYear: 2019, isIssuingBody: false },
+                { id: 2, sourceBody: 'Vnitr Lek', sourceYear: 2018, isIssuingBody: false },
+            ],
+        });
+        render(<EvidenceVerdictStrip query="hepatorenal syndrome" results={manyPapers(22)} />);
+
+        await waitFor(() => expect(screen.getByText('guidelines')).toBeInTheDocument());
+        expect(screen.queryByText(/Dig Dis Sci|Vnitr Lek/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/latest 2019/)).not.toBeInTheDocument();
+    });
+
+    it('counts only the real issuing bodies in a mixed set', async () => {
+        getGuidelinesForTopic.mockResolvedValue({
+            topic: 't',
+            guidelines: [
+                { id: 1, sourceBody: 'EASL', sourceYear: 2018, isIssuingBody: true },
+                { id: 2, sourceBody: 'Dig Dis Sci', sourceYear: 2023, isIssuingBody: false },
+            ],
+        });
+        render(<EvidenceVerdictStrip query="hepatorenal syndrome" results={manyPapers(22)} />);
+
+        // 2018 from EASL, not 2023 from the journal.
+        await waitFor(() => expect(screen.getByText(/guidelines \(latest 2018\)/)).toBeInTheDocument());
+        expect(screen.getByText(/EASL/)).toBeInTheDocument();
+        expect(screen.queryByText(/Dig Dis Sci/)).not.toBeInTheDocument();
     });
 
     it('surfaces trial-vs-guideline conflicts when there are any', () => {
