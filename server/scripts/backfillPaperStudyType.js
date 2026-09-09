@@ -147,12 +147,18 @@ async function backfillFromOpenAlex(rows, stats) {
         const key = id || (doi ? `doi:${String(doi).replace(/^https?:\/\/doi\.org\//, '')}` : null);
         if (key) byId.set(key, row);
     }
-    for (const batch of chunk([...byId.keys()], OPENALEX_BATCH)) {
-        const filter = `openalex_id:${batch.filter((k) => !k.startsWith('doi:')).join('|')}`;
-        const doiFilter = `doi:${batch.filter((k) => k.startsWith('doi:')).map((k) => k.slice(4)).join('|')}`;
-        const active = batch.some((k) => k.startsWith('doi:')) && batch.every((k) => k.startsWith('doi:'))
-            ? doiFilter
-            : filter;
+    // Partition by identifier kind BEFORE chunking. A mixed batch can only be
+    // queried by one filter, so the other kind would come back unmatched and be
+    // counted as unresolved -- a silent shortfall rather than an error.
+    const keys = [...byId.keys()];
+    const batches = [
+        ...chunk(keys.filter((k) => !k.startsWith('doi:')), OPENALEX_BATCH).map((b) => ({ kind: 'id', b })),
+        ...chunk(keys.filter((k) => k.startsWith('doi:')), OPENALEX_BATCH).map((b) => ({ kind: 'doi', b })),
+    ];
+    for (const { kind, b: batch } of batches) {
+        const active = kind === 'doi'
+            ? `doi:${batch.map((k) => k.slice(4)).join('|')}`
+            : `openalex_id:${batch.join('|')}`;
         const url = `https://api.openalex.org/works?filter=${encodeURIComponent(active)}&per-page=${OPENALEX_BATCH}&select=id,doi,title,type,type_crossref`;
         let works = [];
         try {
