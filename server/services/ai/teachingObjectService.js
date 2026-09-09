@@ -371,6 +371,12 @@ function buildPaperTeachingObject({ article, synopsisResult, topic = '', styleAr
                 journal: article.journal || article.source || null,
                 pubdate: article.pubdate || (article.year ? String(article.year) : null),
                 studyType,
+                // The raw publication types the study type was derived from.
+                // Keeping only the derived value meant 4,460 stored papers had
+                // to have their metadata refetched from PubMed/OpenAlex to be
+                // reclassified, because the input was thrown away. Persist what
+                // the classification was computed from, not just its answer.
+                pubtype: Array.isArray(article.pubtype) ? article.pubtype.slice(0, 12) : [],
                 isFree: Boolean(article.isFree || article.pmcid || article.openAccess || article.fullTextUrl || article.openAccessUrl),
                 fullTextUsed: Number.isFinite(fullTextCoverageRatio) && fullTextCoverageRatio > 0,
             },
