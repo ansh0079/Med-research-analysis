@@ -12,6 +12,11 @@ const { buildClaimGrounding, runSynopsisCritic } = require('../synopsisGrounding
 const { recordSynopsisGeneration } = require('../observabilityMetrics');
 const { annotateActiveSpan, withSpan } = require('../../utils/tracing');
 const { getPromptVersion } = require('../../prompts/promptVersions');
+const {
+    detectIssuingBody,
+    partitionGuidelinesForDocument,
+    toRecommendation,
+} = require('../../utils/guidelineAttribution');
 const { createBudgetForAction, runWithLlmBudget } = require('../llmRequestBudget');
 const { alignTopicClaimsWithGuidelines } = require('../claimGuidelineEngine');
 const {
@@ -348,10 +353,28 @@ async function runPaperSynopsisGenerationInner({
     const documentTextAvailable = hasFullText || abstractChars >= 200;
     const guidelineTextMissing = isGuidelineDocument && !documentTextAvailable;
 
+    // Recommendations extracted from *this* guideline are its own content and
+    // can answer "what does this document say" when its text cannot be
+    // retrieved. Everything else is another organisation's guidance and must
+    // stay labelled as such -- see guidelineAttribution for why the match is
+    // deliberately conservative.
+    const documentBody = isGuidelineDocument
+        ? detectIssuingBody(article.title, article.journal, article.source)
+        : null;
+    const { own: ownGuidelineRows, related: relatedGuidelineRows } = partitionGuidelinesForDocument({
+        documentBody,
+        guidelines,
+    });
+    const ownRecommendations = guidelineTextMissing
+        ? ownGuidelineRows.slice(0, 12).map(toRecommendation)
+        : [];
+
     const prompt = buildSynopsisPrompt(enriched, {
         topic,
         guidelines,
         guidelineTextMissing,
+        documentBody,
+        ownRecommendations,
         topicKnowledge,
         trainingStage: effectiveTrainingStage,
         synopsisFeedbackStats,
@@ -451,15 +474,11 @@ async function runPaperSynopsisGenerationInner({
         // where guidelineTextMissing is derived. The UI must render these as
         // other bodies' guidance on the topic, never as this document's content.
         documentTextAvailable,
+        // What this document itself recommends, when its own text could not be
+        // retrieved but recommendations attributed to its issuing body were.
+        ownRecommendations,
         relatedRecommendations: guidelineTextMissing
-            ? guidelines.slice(0, 8).map((g) => ({
-                sourceBody: g.sourceBody || null,
-                sourceYear: g.sourceYear ?? null,
-                sourceUrl: g.sourceUrl || null,
-                isIssuingBody: Boolean(g.isIssuingBody),
-                recommendationText: g.recommendationText || '',
-                recommendationStrength: g.recommendationStrength || null,
-            }))
+            ? relatedGuidelineRows.slice(0, 8).map(toRecommendation)
             : [],
         provider: selectedProvider,
         model: selectedModel,

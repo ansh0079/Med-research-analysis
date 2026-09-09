@@ -44,6 +44,9 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
 }) => {
   const [synopsisState, setSynopsisState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [synopsis, setSynopsis] = useState<ArticleSynopsisFields | null>(null);
+  // Recommendations attributed to this document's own issuing body, shown when
+  // its full text could not be retrieved.
+  const [ownRecommendations, setOwnRecommendations] = useState<NonNullable<ArticleSynopsisResult['ownRecommendations']>>([]);
   // Guidance from other documents on the same topic, shown only when this
   // document's own text could not be retrieved. Never merged into `synopsis`.
   const [relatedRecommendations, setRelatedRecommendations] = useState<NonNullable<ArticleSynopsisResult['relatedRecommendations']>>([]);
@@ -78,6 +81,7 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
             citationOk={synopsisAudit?.citationOk ?? null}
             abstractOnly={synopsisAudit?.fullTextCoverageRatio === 0}
             fullTextCoverageRatio={typeof synopsisAudit?.fullTextCoverageRatio === 'number' ? synopsisAudit.fullTextCoverageRatio : null}
+            ownRecommendations={ownRecommendations}
             relatedRecommendations={relatedRecommendations}
             onClose={() => { setSynopsisExpanded(false); setSynopsisAudit(null); }}
           />
@@ -119,6 +123,7 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
                   ? (au.humanReviewStatus as string)
                   : (typeof au?.reviewState === 'string' ? (au.reviewState as string) : 'unreviewed'),
               });
+              setOwnRecommendations(result.ownRecommendations || []);
               setRelatedRecommendations(result.relatedRecommendations || []);
               setSynopsis(result.synopsis);
               setSynopsisState('done');

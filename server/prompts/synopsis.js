@@ -137,6 +137,18 @@ function buildSynopsisPrompt(article, context = {}) {
     // asked to contain changes.
     const isGuidelineDocument = (article.pubtype || []).some((t) =>
         /practice guideline|^guideline$|consensus (statement|development)/i.test(String(t || '')));
+    // Recommendations the caller has already matched to this document's own
+    // issuing body. They are the difference between "we could not retrieve this
+    // guideline" and actually answering what it recommends.
+    const ownRecommendationsText = (Array.isArray(context.ownRecommendations) ? context.ownRecommendations : [])
+        .slice(0, 12)
+        .map((r) => {
+            const strength = r.recommendationStrength ? ` [strength: ${r.recommendationStrength}]` : '';
+            const year = r.sourceYear ? ` (${r.sourceYear})` : '';
+            return `- ${String(r.recommendationText || '').trim()}${strength}${year}`;
+        })
+        .filter((line) => line.length > 3)
+        .join('\n');
     const guidelineFraming = isGuidelineDocument ? `
 THIS DOCUMENT IS A CLINICAL GUIDELINE OR CONSENSUS STATEMENT, NOT A STUDY.
 It has no primary outcome, effect size, confidence interval, p-value or sample
@@ -167,10 +179,28 @@ What a clinician wants from a guideline is its recommendations, so lead with the
 - practiceImplication: what this guideline asks a clinician to actually do.
 ${context.guidelineTextMissing ? `
 NO USABLE TEXT WAS RETRIEVED FOR THIS DOCUMENT -- only its title and metadata.
-PubMed frequently carries no abstract for a practice guideline. You therefore
-cannot know what it recommends, and must not guess from the title or from the
-guideline context supplied elsewhere in this prompt, which comes from other
-organisations and is shown to the reader separately with its own attribution.
+PubMed frequently carries no abstract for a practice guideline.
+${ownRecommendationsText ? `
+However, the recommendations below were previously extracted from documents
+issued by ${context.documentBody || 'this same organisation'}, which is the body that issued this document.
+Treat them as this document's own positions and summarise them.
+
+${ownRecommendationsText}
+
+- mainFindings: state these recommendations, grouped sensibly, keeping any
+  graded strength. This is the answer the reader opened the document for.
+- takeaway / bottomLine: the single most consequential of them.
+- Use ONLY the recommendations above. Do not add, extend or generalise them, and
+  do not draw on the separate guideline context from other organisations.
+- Note in limitations that this summary is built from extracted recommendations
+  rather than the full text, so it may be incomplete.
+- Set every study-shaped field to null.
+- trustRating: judge the issuing body and the year.
+` : `
+You therefore cannot know what it recommends, and must not guess from the title
+or from the guideline context supplied elsewhere in this prompt, which comes from
+other organisations and is shown to the reader separately with its own
+attribution.
 
 - Do NOT state or imply any recommendation as being from this document.
 - takeaway / mainFindings / bottomLine: say plainly that the document's text
@@ -179,7 +209,7 @@ organisations and is shown to the reader separately with its own attribution.
   source. Do not pad this into something that sounds like a summary.
 - Set every study-shaped field to null rather than inferring it from the title.
 - trustRating: judge only what is knowable -- the issuing body and the year.
-` : ''}` : '';
+`}` : ''}` : '';
     const guidelines = Array.isArray(context.guidelines) ? context.guidelines.slice(0, 4) : [];
     const topicKnowledgeText = formatTopicKnowledge(context.topicKnowledge)
         || buildTopicKnowledgeBlock(context.topicKnowledge);

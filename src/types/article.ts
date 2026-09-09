@@ -198,6 +198,19 @@ export interface ArticleSynopsisResult {
   /** False when only the title/metadata could be retrieved (common for guidelines). */
   documentTextAvailable?: boolean;
   /**
+   * Recommendations attributed to this document's own issuing body, returned
+   * when its full text was unavailable. These are its positions, so `synopsis`
+   * is built from them.
+   */
+  ownRecommendations?: Array<{
+    sourceBody: string | null;
+    sourceYear: number | null;
+    sourceUrl: string | null;
+    isIssuingBody: boolean;
+    recommendationText: string;
+    recommendationStrength: string | null;
+  }>;
+  /**
    * Recommendations indexed for the same topic from other guideline documents,
    * returned only when this document's own text was unavailable. Kept separate
    * from `synopsis` so they are never presented as this document's content.

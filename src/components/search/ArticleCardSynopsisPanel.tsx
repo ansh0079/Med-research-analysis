@@ -18,6 +18,35 @@ interface SynopsisRow {
   value: string | null | undefined;
 }
 
+/**
+ * Recommendations render identically whether they are this document's or
+ * another body's -- the section around them carries the distinction, and every
+ * item stays attributed either way.
+ */
+function RecommendationList({ items }: { items: RelatedRecommendation[] }) {
+  return (
+    <ul className="mt-2 space-y-2">
+      {items.map((rec, i) => (
+        <li key={`${rec.sourceBody ?? 'unknown'}-${i}`} className="text-xs leading-snug text-slate-700 dark:text-slate-200">
+          <span className="font-semibold text-slate-900 dark:text-slate-100">
+            {rec.sourceBody || 'Unattributed'}{rec.sourceYear ? ` ${rec.sourceYear}` : ''}
+          </span>
+          {rec.recommendationStrength && (
+            <span className="ml-1.5 rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300">
+              {rec.recommendationStrength}
+            </span>
+          )}
+          <span className="ml-1">— {rec.recommendationText}</span>
+          {rec.sourceUrl && (
+            <a href={rec.sourceUrl} target="_blank" rel="noopener noreferrer"
+              className="ml-1 text-indigo-600 underline dark:text-indigo-400">source</a>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 const TRUST_BADGE: Record<string, { label: string; cls: string }> = {
   HIGH: { label: 'HIGH', cls: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' },
   MODERATE: { label: 'MODERATE', cls: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' },
@@ -55,6 +84,7 @@ export function ArticleCardSynopsisPanel({
   citationOk,
   abstractOnly,
   fullTextCoverageRatio,
+  ownRecommendations,
   relatedRecommendations,
   onClose,
 }: {
@@ -64,6 +94,12 @@ export function ArticleCardSynopsisPanel({
   citationOk?: boolean | null;
   abstractOnly?: boolean | null;
   fullTextCoverageRatio?: number | null;
+  /**
+   * Recommendations attributed to THIS document's own issuing body, supplied
+   * when its full text could not be retrieved. These are the document's
+   * positions, so the synopsis fields above are built from them.
+   */
+  ownRecommendations?: RelatedRecommendation[];
   /**
    * Recommendations indexed for this topic from OTHER guideline bodies, supplied
    * only when this document's own text could not be retrieved. Rendered as a
@@ -126,34 +162,29 @@ export function ArticleCardSynopsisPanel({
           fullTextCoverageRatio={fullTextCoverageRatio}
         />
 
+        {(ownRecommendations?.length ?? 0) > 0 && (
+          <section className="rounded-lg border border-emerald-200 bg-emerald-50/70 px-3 py-2.5 dark:border-emerald-800/60 dark:bg-emerald-950/20">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-300">
+              What this document recommends
+            </p>
+            <p className="mt-1 text-[11px] leading-snug text-emerald-900/80 dark:text-emerald-100/70">
+              Extracted from this guideline rather than its full text, so it may be incomplete. Check the source before acting.
+            </p>
+            <RecommendationList items={ownRecommendations!} />
+          </section>
+        )}
+
         {(relatedRecommendations?.length ?? 0) > 0 && (
           <section className="rounded-lg border border-amber-200 bg-amber-50/70 px-3 py-2.5 dark:border-amber-800/60 dark:bg-amber-950/20">
             <p className="text-[10px] font-bold uppercase tracking-widest text-amber-700 dark:text-amber-300">
               Guidance on this topic — from other documents
             </p>
             <p className="mt-1 text-[11px] leading-snug text-amber-900/80 dark:text-amber-100/70">
-              This document&rsquo;s own text could not be retrieved, so it is not summarised above.
-              These recommendations are indexed for the same topic and each is attributed to the body that issued it.
+              {(ownRecommendations?.length ?? 0) > 0
+                ? 'Issued by other organisations on the same topic. They are not this document’s positions.'
+                : 'This document’s own text could not be retrieved, so it is not summarised above. These recommendations are indexed for the same topic and each is attributed to the body that issued it.'}
             </p>
-            <ul className="mt-2 space-y-2">
-              {relatedRecommendations!.map((rec, i) => (
-                <li key={`${rec.sourceBody ?? 'unknown'}-${i}`} className="text-xs leading-snug text-slate-700 dark:text-slate-200">
-                  <span className="font-semibold text-slate-900 dark:text-slate-100">
-                    {rec.sourceBody || 'Unattributed'}{rec.sourceYear ? ` ${rec.sourceYear}` : ''}
-                  </span>
-                  {rec.recommendationStrength && (
-                    <span className="ml-1.5 rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300">
-                      {rec.recommendationStrength}
-                    </span>
-                  )}
-                  <span className="ml-1">— {rec.recommendationText}</span>
-                  {rec.sourceUrl && (
-                    <a href={rec.sourceUrl} target="_blank" rel="noopener noreferrer"
-                      className="ml-1 text-indigo-600 underline dark:text-indigo-400">source</a>
-                  )}
-                </li>
-              ))}
-            </ul>
+            <RecommendationList items={relatedRecommendations!} />
           </section>
         )}
 
