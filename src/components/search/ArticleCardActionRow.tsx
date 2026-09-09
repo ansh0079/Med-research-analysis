@@ -183,15 +183,15 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
 
         {onGenerateCase && (
           <Button variant="secondary" size="sm" onClick={() => onGenerateCase(article)}
-            leftIcon={<i className="fas fa-stethoscope text-[10px]" />}>
-            Use for case
+            aria-label="Use this paper for a case" title="Use this paper for a case">
+            <i className="fas fa-stethoscope text-[11px]" />
           </Button>
         )}
 
         {onQuizPaper && !article._isPreprint && !article._retraction?.isRetracted && (
           <Button variant="secondary" size="sm" onClick={() => onQuizPaper(article)}
-            leftIcon={<i className="fas fa-brain text-[10px]" />}>
-            Quiz this paper
+            aria-label="Quiz this paper" title="Quiz this paper">
+            <i className="fas fa-brain text-[11px]" />
           </Button>
         )}
 
@@ -202,15 +202,16 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
             }
             onSave(article);
           }}
-            leftIcon={<i className={`${isSaved ? 'fas' : 'far'} fa-bookmark text-[10px]`} />}>
-            {isSaved ? 'Saved' : 'Save'}
+            aria-label={isSaved ? 'Saved — remove from saved' : 'Save this paper'}
+            title={isSaved ? 'Saved — remove from saved' : 'Save this paper'}>
+            <i className={`${isSaved ? 'fas' : 'far'} fa-bookmark text-[11px]`} />
           </Button>
         )}
 
         {onViewDetails && (
           <Button variant="secondary" size="sm" onClick={() => onViewDetails(article)}
-            leftIcon={<i className="fas fa-layer-group text-[10px]" />}>
-            Details
+            aria-label="Open paper details" title="Open paper details">
+            <i className="fas fa-layer-group text-[11px]" />
           </Button>
         )}
 
