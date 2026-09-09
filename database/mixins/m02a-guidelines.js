@@ -297,7 +297,7 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
 
     // Fetch a wider candidate pool so relevant rows beyond the recency-top are reachable.
     const fetchLimit = Math.min(safeLimit * 8, 400);
-    const rows = await this.all(
+    let rows = await this.all(
         `SELECT * FROM topic_guidelines
          WHERE normalized_topic IN (${stalePlaceholders})
            AND (? = '' OR status = ?)
@@ -306,6 +306,36 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
          LIMIT ?`,
         [...keys, statusFilter, statusFilter, fetchLimit]
     );
+
+    // The keys above match normalized_topic by exact equality, so a query only
+    // finds guidelines if it is worded exactly like the stored topic (or hits a
+    // synonym group). Searching "hepatorenal syndrome terlipressin" returned
+    // nothing while the corpus held four AGA Institute 2025 recommendations
+    // under "hepatorenal syndrome diagnosis and management" -- one of them
+    // naming terlipressin directly. The page then reported "0 guidelines",
+    // which for a product whose promise is completeness is the worst possible
+    // failure: a silent under-report indistinguishable from genuine absence.
+    //
+    // So when exact matching finds nothing, widen to topics sharing a
+    // distinctive content word and let the existing relevance scoring below
+    // decide. That scoring already floors at score > 0, which is what keeps a
+    // broad candidate pool from becoming cross-topic noise -- it simply never
+    // got the chance to run.
+    if (!rows.length) {
+        const probeWords = topicContentWords(topic).slice(0, 4);
+        if (probeWords.length) {
+            const likeClauses = probeWords.map(() => 'normalized_topic LIKE ?').join(' OR ');
+            rows = await this.all(
+                `SELECT * FROM topic_guidelines
+                 WHERE (${likeClauses})
+                   AND (? = '' OR status = ?)
+                   AND superseded_by_id IS NULL
+                 ORDER BY source_year DESC, updated_at DESC
+                 LIMIT ?`,
+                [...probeWords.map((w) => `%${w}%`), statusFilter, statusFilter, fetchLimit]
+            );
+        }
+    }
 
     // Score by term overlap with the topic; floor at > 0 prevents cross-topic noise
     // (rows attributed to this topic via NICE page scrape but containing zero topic words).
