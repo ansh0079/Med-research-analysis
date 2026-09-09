@@ -123,6 +123,49 @@ function buildSynopsisPrompt(article, context = {}) {
     const year = article.pubdate ? article.pubdate.slice(0, 4) : 'unknown';
     const authors = (article.authors || []).slice(0, 3).map((a) => a.name).join(', ');
     const pubtypes = (article.pubtype || []).join(', ') || 'Not specified';
+    // A guideline is not a trial, and appraising it as one produces nothing
+    // useful. The schema below asks for a primary outcome, effect sizes,
+    // p-values, sample size and risk of bias -- a practice guideline has none of
+    // those, so the model satisfies the fields by paraphrasing the abstract.
+    // That is exactly what a reader got back for the EASL ascites guideline.
+    //
+    // PubMed labels these reliably: 7 of 15 results for a guideline-shaped
+    // hepatorenal query carry "Practice Guideline" or "Consensus Statement".
+    //
+    // Field names are deliberately unchanged, so rendering, citation validation,
+    // grounding and trust labelling all keep working -- only what each field is
+    // asked to contain changes.
+    const isGuidelineDocument = (article.pubtype || []).some((t) =>
+        /practice guideline|^guideline$|consensus (statement|development)/i.test(String(t || '')));
+    const guidelineFraming = isGuidelineDocument ? `
+THIS DOCUMENT IS A CLINICAL GUIDELINE OR CONSENSUS STATEMENT, NOT A STUDY.
+It has no primary outcome, effect size, confidence interval, p-value or sample
+size. Do not invent them -- use null where a study-shaped field does not apply.
+What a clinician wants from a guideline is its recommendations, so lead with them:
+
+- takeaway: the single most load-bearing recommendation, stated as an action.
+- mainFindings: THE RECOMMENDATIONS THEMSELVES -- what the guideline tells a
+  clinician to do. Give the 3-8 most clinically load-bearing ones in the
+  document's own clinical terms, each with any dose, threshold or timing it
+  specifies, and its graded strength where stated (strong / conditional /
+  Class I-III / not graded). This is the whole point of reading a guideline: a
+  reader who sees only this field should come away knowing what to do.
+- bottomLine: what a clinician should actually do differently -- not a
+  description of what the document is.
+- studyDesign: the document type and its evidence-grading system if stated
+  (e.g. "Practice guideline, GRADE").
+- population: the scope -- which patients and settings it covers.
+- intervention / comparator: the management options addressed; null if many.
+- primaryOutcome: the outcomes the recommendations aim to change.
+- authorsConclusion: the guideline's overall position.
+- strengths / weaknesses: rigour of the guideline itself -- systematic evidence
+  review, GRADE use, declared conflicts of interest, currency -- not trial
+  methodology.
+- limitations: populations or questions it explicitly does not cover.
+- trustRating / trustRationale: judge the issuing body, the evidence-review
+  method and how current it is; never sample size or risk of bias.
+- practiceImplication: what this guideline asks a clinician to actually do.
+` : '';
     const guidelines = Array.isArray(context.guidelines) ? context.guidelines.slice(0, 4) : [];
     const topicKnowledgeText = formatTopicKnowledge(context.topicKnowledge)
         || buildTopicKnowledgeBlock(context.topicKnowledge);
@@ -159,6 +202,7 @@ function buildSynopsisPrompt(article, context = {}) {
 Style target: a concise "The Bottom Line"-style appraisal, not a generic abstract summary.
 ${stageInstruction}${styleInstruction ? `${styleInstruction}\n` : ''}${sourceNote}
 If a field cannot be determined, use null or [].
+${guidelineFraming}
 
 Article metadata:
 Title: ${article.title}
