@@ -47,6 +47,11 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [pdfIndexed, setPdfIndexed] = useState(false);
   const [hoverPreview, setHoverPreview] = useState(false);
+  // The ranking explainer measured 389px of a 1,422px card -- the single
+  // largest block, above even the action row, and larger than title, journal
+  // and badges combined. It explains a ranking the reader has usually already
+  // accepted, so the score stays visible and the reasoning folds away.
+  const [showImpactDetail, setShowImpactDetail] = useState(false);
   const hoverTimerRef = React.useRef<number | null>(null);
   const dwellTimerRef = React.useRef<number | null>(null);
   const dwellStartedAtRef = React.useRef<number | null>(null);
@@ -288,14 +293,26 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
         {/* Impact bar */}
         {impact && (
           <div className="mb-4 rounded-xl border border-slate-100 bg-slate-50/70 p-3 dark:border-slate-800 dark:bg-slate-800/40">
-            <div className="mb-2 flex items-center justify-between gap-3">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Why this ranks here</span>
+            <button
+              type="button"
+              onClick={() => setShowImpactDetail((v) => !v)}
+              aria-expanded={showImpactDetail}
+              className="flex w-full items-center justify-between gap-3 text-left"
+            >
+              <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                <svg className={`h-2.5 w-2.5 transition-transform ${showImpactDetail ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" />
+                </svg>
+                Why this ranks here
+              </span>
               <span className="font-mono text-[11px] font-bold text-indigo-500">{impactPct}/100</span>
-            </div>
-            <div className="impact-bar mb-2">
+            </button>
+            {showImpactDetail && (
+            <div className="impact-bar mb-2 mt-2">
               <div className="impact-bar-fill" data-pct={String(Math.round(impactPct / 10) * 10)} />
             </div>
-            {(impactFactors.length > 0 || qualitySignals.length > 0) && (
+            )}
+            {showImpactDetail && (impactFactors.length > 0 || qualitySignals.length > 0) && (
               <div className="flex flex-wrap gap-1.5">
                 {impactFactors.map((factor) => (
                   <span key={factor} className="rounded-full bg-white px-2 py-0.5 text-[10px] font-medium text-slate-500 ring-1 ring-slate-200 dark:bg-slate-900 dark:text-slate-400 dark:ring-slate-700">
