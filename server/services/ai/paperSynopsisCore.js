@@ -294,12 +294,27 @@ async function runPaperSynopsisGenerationInner({
     const [enriched] = await withSpan('synopsis.full_text_enrichment', { 'article.id': articleId }, () => (
         enrichWithCachedFullText([article], cache, db).catch(() => [article])
     ));
+    // A practice guideline indexed in PubMed usually has no abstract at all --
+    // measured on production, the EASL ascites guideline and the AGA
+    // hepatorenal guideline both come back with zero abstract characters, no
+    // pmcid and no full-text URL. There is then nothing to summarise but the
+    // title, which is why appraising one returned a restatement of its scope.
+    //
+    // We do hold real extracted recommendations for these topics. They are NOT
+    // merged into the synopsis fields, because those assert what *this*
+    // document says and the recommendations we hold are frequently from another
+    // body (hepatorenal returns AGA Institute rows; the document a reader opens
+    // may be EASL). They are returned alongside instead, each keeping its own
+    // attribution, so the reader gets the guidance without being told the wrong
+    // organisation issued it.
+    const isGuidelineDocument = (article.pubtype || []).some((t) =>
+        /practice guideline|^guideline$|consensus (statement|development)/i.test(String(t || '')));
     let guidelines = [];
     let topicKnowledge = null;
     if (topic && db) {
         try {
             if (typeof db.getGuidelinesByTopic === 'function') {
-                guidelines = await withSpan('synopsis.guideline_context', { 'synopsis.topic': topic }, () => db.getGuidelinesByTopic(topic, { limit: 4 }));
+                guidelines = await withSpan('synopsis.guideline_context', { 'synopsis.topic': topic }, () => db.getGuidelinesByTopic(topic, { limit: isGuidelineDocument ? 12 : 4 }));
             }
         } catch (err) {
             logger.debug({ err, topic }, 'Failed to load guidelines for paper synopsis');
@@ -319,9 +334,16 @@ async function runPaperSynopsisGenerationInner({
             return null;
         });
     }
+    // "No usable text" means the model was handed a title and little else.
+    const abstractChars = String(enriched.abstract || '').trim().length;
+    const hasFullText = Boolean(enriched._fullTextIndexed);
+    const documentTextAvailable = hasFullText || abstractChars >= 200;
+    const guidelineTextMissing = isGuidelineDocument && !documentTextAvailable;
+
     const prompt = buildSynopsisPrompt(enriched, {
         topic,
         guidelines,
+        guidelineTextMissing,
         topicKnowledge,
         trainingStage: effectiveTrainingStage,
         synopsisFeedbackStats,
@@ -417,6 +439,20 @@ async function runPaperSynopsisGenerationInner({
         claimGrounding,
         critic,
         articleId,
+        // Attributed separately from `synopsis` on purpose -- see the comment
+        // where guidelineTextMissing is derived. The UI must render these as
+        // other bodies' guidance on the topic, never as this document's content.
+        documentTextAvailable,
+        relatedRecommendations: guidelineTextMissing
+            ? guidelines.slice(0, 8).map((g) => ({
+                sourceBody: g.sourceBody || null,
+                sourceYear: g.sourceYear ?? null,
+                sourceUrl: g.sourceUrl || null,
+                isIssuingBody: Boolean(g.isIssuingBody),
+                recommendationText: g.recommendationText || '',
+                recommendationStrength: g.recommendationStrength || null,
+            }))
+            : [],
         provider: selectedProvider,
         model: selectedModel,
         timestamp: new Date().toISOString(),

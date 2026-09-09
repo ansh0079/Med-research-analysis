@@ -4,6 +4,15 @@ import { SynopsisTrustBanner, type SynopsisSourceMode } from './SynopsisTrustBan
 
 export type { SynopsisSourceMode };
 
+export interface RelatedRecommendation {
+  sourceBody: string | null;
+  sourceYear: number | null;
+  sourceUrl: string | null;
+  isIssuingBody: boolean;
+  recommendationText: string;
+  recommendationStrength: string | null;
+}
+
 interface SynopsisRow {
   label: string;
   value: string | null | undefined;
@@ -46,6 +55,7 @@ export function ArticleCardSynopsisPanel({
   citationOk,
   abstractOnly,
   fullTextCoverageRatio,
+  relatedRecommendations,
   onClose,
 }: {
   synopsis: ArticleSynopsisFields;
@@ -54,6 +64,13 @@ export function ArticleCardSynopsisPanel({
   citationOk?: boolean | null;
   abstractOnly?: boolean | null;
   fullTextCoverageRatio?: number | null;
+  /**
+   * Recommendations indexed for this topic from OTHER guideline bodies, supplied
+   * only when this document's own text could not be retrieved. Rendered as a
+   * clearly separate, individually attributed block -- never merged into the
+   * synopsis fields, which assert what this document says.
+   */
+  relatedRecommendations?: RelatedRecommendation[];
   onClose: () => void;
 }) {
   const trust = TRUST_BADGE[synopsis.trustRating] ?? TRUST_BADGE.MODERATE;
@@ -108,6 +125,37 @@ export function ArticleCardSynopsisPanel({
           abstractOnly={abstractOnly ?? sourceMode === 'abstract_only'}
           fullTextCoverageRatio={fullTextCoverageRatio}
         />
+
+        {(relatedRecommendations?.length ?? 0) > 0 && (
+          <section className="rounded-lg border border-amber-200 bg-amber-50/70 px-3 py-2.5 dark:border-amber-800/60 dark:bg-amber-950/20">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-amber-700 dark:text-amber-300">
+              Guidance on this topic — from other documents
+            </p>
+            <p className="mt-1 text-[11px] leading-snug text-amber-900/80 dark:text-amber-100/70">
+              This document&rsquo;s own text could not be retrieved, so it is not summarised above.
+              These recommendations are indexed for the same topic and each is attributed to the body that issued it.
+            </p>
+            <ul className="mt-2 space-y-2">
+              {relatedRecommendations!.map((rec, i) => (
+                <li key={`${rec.sourceBody ?? 'unknown'}-${i}`} className="text-xs leading-snug text-slate-700 dark:text-slate-200">
+                  <span className="font-semibold text-slate-900 dark:text-slate-100">
+                    {rec.sourceBody || 'Unattributed'}{rec.sourceYear ? ` ${rec.sourceYear}` : ''}
+                  </span>
+                  {rec.recommendationStrength && (
+                    <span className="ml-1.5 rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300">
+                      {rec.recommendationStrength}
+                    </span>
+                  )}
+                  <span className="ml-1">— {rec.recommendationText}</span>
+                  {rec.sourceUrl && (
+                    <a href={rec.sourceUrl} target="_blank" rel="noopener noreferrer"
+                      className="ml-1 text-indigo-600 underline dark:text-indigo-400">source</a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {synopsis.takeaway && (
           <div className="rounded-lg bg-violet-100/70 dark:bg-violet-900/20 px-3 py-2.5">

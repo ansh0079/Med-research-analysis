@@ -165,7 +165,21 @@ What a clinician wants from a guideline is its recommendations, so lead with the
 - trustRating / trustRationale: judge the issuing body, the evidence-review
   method and how current it is; never sample size or risk of bias.
 - practiceImplication: what this guideline asks a clinician to actually do.
-` : '';
+${context.guidelineTextMissing ? `
+NO USABLE TEXT WAS RETRIEVED FOR THIS DOCUMENT -- only its title and metadata.
+PubMed frequently carries no abstract for a practice guideline. You therefore
+cannot know what it recommends, and must not guess from the title or from the
+guideline context supplied elsewhere in this prompt, which comes from other
+organisations and is shown to the reader separately with its own attribution.
+
+- Do NOT state or imply any recommendation as being from this document.
+- takeaway / mainFindings / bottomLine: say plainly that the document's text
+  could not be retrieved and that its recommendations are therefore not
+  summarised here, naming the issuing body and year so the reader can go to the
+  source. Do not pad this into something that sounds like a summary.
+- Set every study-shaped field to null rather than inferring it from the title.
+- trustRating: judge only what is knowable -- the issuing body and the year.
+` : ''}` : '';
     const guidelines = Array.isArray(context.guidelines) ? context.guidelines.slice(0, 4) : [];
     const topicKnowledgeText = formatTopicKnowledge(context.topicKnowledge)
         || buildTopicKnowledgeBlock(context.topicKnowledge);

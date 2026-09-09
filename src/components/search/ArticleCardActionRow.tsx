@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@components/ui/Button';
 import api from '@services/api';
-import type { Article, ArticleSynopsisFields, ConsortResult } from '@types';
+import type { Article, ArticleSynopsisFields, ArticleSynopsisResult, ConsortResult } from '@types';
 import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
 import { ArticleCardConsortPanel } from './ArticleCardConsortPanel';
 import { ArticleCardSynopsisPanel, type SynopsisSourceMode } from './ArticleCardSynopsisPanel';
@@ -44,6 +44,9 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
 }) => {
   const [synopsisState, setSynopsisState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [synopsis, setSynopsis] = useState<ArticleSynopsisFields | null>(null);
+  // Guidance from other documents on the same topic, shown only when this
+  // document's own text could not be retrieved. Never merged into `synopsis`.
+  const [relatedRecommendations, setRelatedRecommendations] = useState<NonNullable<ArticleSynopsisResult['relatedRecommendations']>>([]);
   const [synopsisExpanded, setSynopsisExpanded] = useState(false);
   const [synopsisAudit, setSynopsisAudit] = useState<EvidenceAuditSnapshot | null>(null);
   const [consortState, setConsortState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
@@ -75,6 +78,7 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
             citationOk={synopsisAudit?.citationOk ?? null}
             abstractOnly={synopsisAudit?.fullTextCoverageRatio === 0}
             fullTextCoverageRatio={typeof synopsisAudit?.fullTextCoverageRatio === 'number' ? synopsisAudit.fullTextCoverageRatio : null}
+            relatedRecommendations={relatedRecommendations}
             onClose={() => { setSynopsisExpanded(false); setSynopsisAudit(null); }}
           />
           {synopsisAudit && <EvidenceAuditPanel snapshot={synopsisAudit} />}
@@ -115,6 +119,7 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
                   ? (au.humanReviewStatus as string)
                   : (typeof au?.reviewState === 'string' ? (au.reviewState as string) : 'unreviewed'),
               });
+              setRelatedRecommendations(result.relatedRecommendations || []);
               setSynopsis(result.synopsis);
               setSynopsisState('done');
               setSynopsisExpanded(true);

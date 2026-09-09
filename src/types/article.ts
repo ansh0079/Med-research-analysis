@@ -195,6 +195,21 @@ export interface ArticleSynopsisResult {
   jobKey?: string | null;
   errorMessage?: string | null;
   audit?: Record<string, unknown>;
+  /** False when only the title/metadata could be retrieved (common for guidelines). */
+  documentTextAvailable?: boolean;
+  /**
+   * Recommendations indexed for the same topic from other guideline documents,
+   * returned only when this document's own text was unavailable. Kept separate
+   * from `synopsis` so they are never presented as this document's content.
+   */
+  relatedRecommendations?: Array<{
+    sourceBody: string | null;
+    sourceYear: number | null;
+    sourceUrl: string | null;
+    isIssuingBody: boolean;
+    recommendationText: string;
+    recommendationStrength: string | null;
+  }>;
   banditMeta?: BanditMeta | null;
   evidenceDelta?: {
     significantChange: boolean;
