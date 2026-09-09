@@ -4,7 +4,7 @@ jest.mock('../../server/utils/fetch', () => ({
 }));
 
 const { fetchWithTimeout: fetch } = require('../../server/utils/fetch');
-const { discoverGuidelinesForTopic } = require('../../server/services/guidelineService');
+const { discoverGuidelinesForTopic, wasDiscoveryAttempted } = require('../../server/services/guidelineService');
 
 function mockEsearchThenEfetch({ ids, efetchXml }) {
     fetch
@@ -128,5 +128,61 @@ describe('discoverGuidelinesForTopic JSON parsing', () => {
 
         expect(result).toEqual([]);
         expect(aiService.callText).not.toHaveBeenCalled();
+    });
+});
+
+describe('the empty-topic cache reflects what the model found, not what the DB write returned', () => {
+    // db.createGuideline can resolve falsy for a row that committed successfully
+    // -- that is exactly what a missing RETURNING clause did on Postgres for
+    // every insert across 7 of 10 pilot topics on 2026-09-09 (see
+    // guidelineWriteReturnValue.test.js). Gating the empty-cache on
+    // inserted.length would poison it for a topic that in fact has guidelines,
+    // suppressing re-discovery for EMPTY_CACHE_TTL. It must gate on whether
+    // anything was worth writing, independent of the write's return value.
+
+    test('a real candidate whose write returns falsy does not get the topic marked empty', async () => {
+        mockEsearchThenEfetch({ ids: ['216'], efetchXml: buildAbstractXml('216') });
+        const db = makeDb();
+        db.createGuideline = jest.fn().mockResolvedValue(undefined); // the exact bug
+        const aiService = {
+            callText: jest.fn().mockResolvedValue(JSON.stringify([
+                { sourceBody: 'IDSA', sourceYear: 2024, recommendationText: 'A real recommendation about treatment.' },
+            ])),
+        };
+
+        const topic = 'pilot topic returning undefined main';
+        const result = await discoverGuidelinesForTopic(topic, { db, serverConfig, aiService });
+
+        expect(db.createGuideline).toHaveBeenCalledTimes(1);
+        expect(result).toEqual([]); // the array is still empty -- that part of the bug is unavoidable without the DB fix
+        expect(wasDiscoveryAttempted(topic, db)).toBe(false); // but it must not be cached as "searched, found nothing"
+    });
+
+    test('genuinely nothing to write still marks the topic empty, so re-discovery does not thrash', async () => {
+        mockEsearchThenEfetch({ ids: ['217'], efetchXml: buildAbstractXml('217') });
+        const db = makeDb();
+        const aiService = { callText: jest.fn().mockResolvedValue('[]') };
+
+        const topic = 'pilot topic with nothing to extract main';
+        await discoverGuidelinesForTopic(topic, { db, serverConfig, aiService });
+
+        expect(db.createGuideline).not.toHaveBeenCalled();
+        expect(wasDiscoveryAttempted(topic, db)).toBe(true);
+    });
+
+    test('a candidate rejected by assessGuidelineCandidate (e.g. "Clinical trial") does not count as attempted', async () => {
+        mockEsearchThenEfetch({ ids: ['218'], efetchXml: buildAbstractXml('218') });
+        const db = makeDb();
+        const aiService = {
+            callText: jest.fn().mockResolvedValue(JSON.stringify([
+                { sourceBody: 'Clinical trial', recommendationText: 'The 90-day mortality rate was 14%.' },
+            ])),
+        };
+
+        const topic = 'pilot topic only trial rows main';
+        await discoverGuidelinesForTopic(topic, { db, serverConfig, aiService });
+
+        expect(db.createGuideline).not.toHaveBeenCalled();
+        expect(wasDiscoveryAttempted(topic, db)).toBe(true);
     });
 });

@@ -353,6 +353,16 @@ async function discoverGuidelinesForTopic(topic, { db, serverConfig, aiService }
 
       const inserted = [];
       let rejected = 0;
+      // Distinct from inserted.length: this counts every candidate that passed
+      // validation and was handed to the database, regardless of what
+      // createGuideline() happened to return. It exists because that return
+      // value is fragile plumbing -- a missing RETURNING clause made it resolve
+      // undefined on Postgres for every insert in this loop while the rows
+      // committed successfully (found running this against 10 pilot topics
+      // 2026-09-09: real rows in topic_guidelines, inserted.length reported 0
+      // for all of them). The emptiness cache below must reflect "the model
+      // found nothing to write", not "a write's return value was falsy".
+      let attempted = 0;
       for (const rec of recommendations) {
         if (!rec.recommendationText || !rec.sourceBody) continue;
         // The model is asked to name the issuing body from a paper abstract and
@@ -366,6 +376,7 @@ async function discoverGuidelinesForTopic(topic, { db, serverConfig, aiService }
             '[GuidelineDiscovery] Rejected non-guideline candidate');
           continue;
         }
+        attempted += 1;
         try {
           const guideline = await db.createGuideline({
             topic,
@@ -380,13 +391,21 @@ async function discoverGuidelinesForTopic(topic, { db, serverConfig, aiService }
             cautions: rec.cautions,
             status: 'ai_extracted',
           });
-          if (guideline) inserted.push(guideline);
+          if (guideline) {
+            inserted.push(guideline);
+          } else {
+            logger.warn({ topic, sourceBody: rec.sourceBody },
+              '[GuidelineDiscovery] createGuideline returned no row despite no error -- likely wrote but failed to read the row back');
+          }
         } catch (err) {
           logger.warn({ err, rec }, '[GuidelineDiscovery] Failed to insert guideline');
         }
       }
-      logger.info({ topic, found: summaries.length, extracted: inserted.length, rejected }, '[GuidelineDiscovery] Complete');
-      if (inserted.length === 0) _discoveryEmpty.set(normalized, Date.now());
+      logger.info({ topic, found: summaries.length, extracted: inserted.length, attempted, rejected }, '[GuidelineDiscovery] Complete');
+      // Gate on attempted, not inserted.length: nothing worth writing is real
+      // evidence a re-search will not help soon, but a write's return value
+      // being falsy is not -- see the comment on `attempted` above.
+      if (attempted === 0) _discoveryEmpty.set(normalized, Date.now());
       return inserted;
     } catch (err) {
       logger.error({ err, topic }, '[GuidelineDiscovery] Failed');

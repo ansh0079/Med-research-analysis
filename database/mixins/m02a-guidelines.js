@@ -154,6 +154,13 @@ mapGuidelineRow(row) {
  *
  * Dedup key is pmcid when present; otherwise a composite of source_body +
  * source_year + title (truncated). Caller should prefer pmcid.
+ *
+ * The INSERT carries `RETURNING id` -- without it, DatabaseCore.run() on
+ * Postgres gets back `rows: []` (a plain INSERT returns no rows), so
+ * `result.id` is undefined and this function returns undefined despite the
+ * row committing. better-sqlite3's .run() tolerates RETURNING in the SQL text
+ * fine (verified: it just ignores the returned row and still reports
+ * lastInsertRowid), so this is safe on both dialects.
  */
 async upsertGuidelineDocument(doc) {
     const now = new Date().toISOString();
@@ -189,7 +196,8 @@ async upsertGuidelineDocument(doc) {
             pmcid, pmid, doi, title, source_body, source_year, source_url,
             document_label, evidence_tier, full_text, full_text_source,
             word_count, fetched_at, created_at, updated_at
-         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         RETURNING id`,
         [
             doc.pmcid || null,
             doc.pmid || null,
@@ -258,6 +266,17 @@ async getGuidelineDocumentWithSynopsis(id, { includeFullText = false } = {}) {
 
 // ─── Recommendations ─────────────────────────────────────────────────────────
 
+/**
+ * Insert a recommendation row and return it, or undefined on Postgres if the
+ * INSERT lacks RETURNING id -- found 2026-09-09 running discoverGuidelinesForTopic
+ * against 10 pilot topics: real rows landed in topic_guidelines (confirmed by
+ * direct query) while the function returned undefined for every one of them, so
+ * discoverGuidelinesForTopic's own accounting (`extracted: inserted.length`) and
+ * its empty-result cache (`if (inserted.length === 0) _discoveryEmpty.set(...)`)
+ * were both wrong. The existing test for that caller mocks db.createGuideline
+ * wholesale, so it could not have caught this -- see the "mock hiding a 100%
+ * failure rate" entry in project memory; this is the same shape again.
+ */
 async createGuideline(guideline) {
     const now = new Date().toISOString();
     const normalized = this.normalizeTopic(guideline.topic);
@@ -276,7 +295,8 @@ async createGuideline(guideline) {
             recommendation_strength, recommendation_certainty, population,
             intervention, cautions, status, document_id,
             last_checked_at, created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        RETURNING id`,
         [
             String(guideline.topic || '').trim().slice(0, 240),
             normalized,
