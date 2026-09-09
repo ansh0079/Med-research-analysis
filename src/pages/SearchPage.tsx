@@ -8,6 +8,7 @@ import { ComparisonView } from '@components/search/ComparisonView';
 import { EvidenceProjectPanel } from '@components/search/EvidenceProjectPanel';
 import { ArticleDetailDrawer } from '@components/search/ArticleDetailDrawer';
 import { GuidelineSnapshot } from '@components/search/GuidelineSnapshot';
+import { EvidenceVerdictStrip } from '@components/search/EvidenceVerdictStrip';
 import { SkeletonCard } from '@components/search/SkeletonCard';
 import { SearchHero } from '@components/search/SearchHero';
 import { TopicIntelligenceStatusBanner } from '@components/search/TopicIntelligenceStatusBanner';
@@ -268,6 +269,15 @@ export const SearchPage: React.FC = () => {
           />
         )}
 
+        {results.length > 0 && (
+          <EvidenceVerdictStrip
+            query={currentQuery}
+            results={results}
+            conflictCount={synthesis?.conflictMatrix?.length ?? null}
+            onJumpToGuidelines={() => document.getElementById('guideline-snapshot')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+          />
+        )}
+
         {(newPaperNotice || results.length > 0) && (
           <SearchResultsFilterSection
             resultFilter={resultFilter}
@@ -403,7 +413,9 @@ export const SearchPage: React.FC = () => {
           </div>
         )}
 
-        <GuidelineSnapshot query={currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
+        <div id="guideline-snapshot">
+          <GuidelineSnapshot query={currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
+        </div>
 
         {loading && results.length === 0 && (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
