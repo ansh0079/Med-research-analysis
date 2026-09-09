@@ -41,7 +41,7 @@ export const TopicBriefHeader: React.FC<Props> = ({
           </span>
         )}
         <span className="text-[11px] text-white/60 font-mono hidden sm:block">
-          {topCount} top papers · {guidelineCount} guidelines · {totalCount} total
+          {topCount} top papers · {guidelineCount} guidelines in this brief · {totalCount} total
         </span>
         <button
           type="button"

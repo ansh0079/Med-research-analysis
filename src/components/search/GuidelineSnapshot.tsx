@@ -127,6 +127,7 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
 
   const visible = expanded ? guidelines : guidelines.slice(0, 2);
   const hasMore = guidelines.length > 2;
+  const issuingBodyCount = guidelines.filter((g) => g.isIssuingBody).length;
 
   return (
     <div id="workflow-guideline" className="neo-card overflow-hidden mb-6">
@@ -138,8 +139,14 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
           <div>
             <h3 className="text-sm font-bold text-slate-900 dark:text-white">Guideline Snapshot</h3>
             <p className="text-[11px] text-slate-400 dark:text-slate-500">
-              {guidelines.length > 0
-                ? `${guidelines.length} guideline${guidelines.length > 1 ? 's' : ''} found`
+              {/* Counts issuing-body guidelines only, matching the evidence
+                  summary at the top of the page. Reporting the raw row count
+                  here put "20 guidelines found" on the same screen as "15
+                  guidelines", and a page that answers "how many guidelines do
+                  you have?" three different ways is not one a clinician should
+                  trust. */}
+              {issuingBodyCount > 0
+                ? `${issuingBodyCount} guideline${issuingBodyCount > 1 ? 's' : ''} found`
                 : hasGuidelineArticles
                   ? 'Guideline-derived results in search'
                   : 'No stored guidelines for this topic'}
