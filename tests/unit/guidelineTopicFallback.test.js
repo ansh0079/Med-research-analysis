@@ -59,6 +59,22 @@ const WEAK_JOURNAL_ROW = {
     recommendation_text: 'Recommendations on the diagnosis and initial management of acute variceal bleeding should be followed in cirrhosis.',
 };
 
+/**
+ * The real AGA Institute shape: filed under the hepatorenal topic, but the
+ * recommendation sentence never says "hepatorenal" -- the source document
+ * supplied that context. 21 of 21 production rows look like this.
+ */
+const AGA_NO_DISEASE_WORD_ROW = {
+    id: 4,
+    normalized_topic: 'hepatorenal syndrome diagnosis and management',
+    topic: 'Hepatorenal syndrome diagnosis and management',
+    source_body: 'AGA Institute',
+    source_year: 2024,
+    status: 'ai_extracted',
+    superseded_by_id: null,
+    recommendation_text: 'IV albumin is the volume expander of choice in hospitalized patients with cirrhosis and should be given with vasoconstrictors.',
+};
+
 function makeDb(rows) {
     const Base = class {
         normalizeTopic(t) { return String(t || '').trim().toLowerCase(); }
@@ -128,5 +144,27 @@ describe('getGuidelinesByTopic', () => {
         const db = makeDb([AGA_ROW]);
         const out = await db.getGuidelinesByTopic('hepatorenal syndrome diagnosis and management');
         expect(out).toHaveLength(1);
+    });
+
+    test('keeps a recommendation filed under the topic that never restates it', async () => {
+        // "syndrome" is a stopword, so this query reduces to ["hepatorenal"] --
+        // a word that appears nowhere in the recommendation text. Scoring text
+        // alone discarded every AGA row in production.
+        const db = makeDb([AGA_NO_DISEASE_WORD_ROW]);
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome');
+        expect(out.map((g) => g.sourceBody)).toEqual(['AGA Institute']);
+    });
+
+    test('still ranks an on-topic recommendation above one that only shares a topic label', async () => {
+        const db = makeDb([AGA_NO_DISEASE_WORD_ROW, AGA_ROW]);
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin');
+        // AGA_ROW names terlipressin in its text; the other only matches by filing.
+        expect(out[0].id).toBe(AGA_ROW.id);
+    });
+
+    test('a genuinely unrelated topic is still excluded', async () => {
+        const db = makeDb([UNRELATED_ROW]);
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome');
+        expect(out).toEqual([]);
     });
 });

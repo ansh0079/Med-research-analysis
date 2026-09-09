@@ -39,13 +39,40 @@ function topicContentWords(topic) {
     return [...new Set(words.filter(w => !SCORE_STOP.has(w)))];
 }
 
-// Returns 0–1 fraction of topic content words found in recommendation text.
+/**
+ * Returns 0–1 relevance of a guideline row to the searched topic.
+ *
+ * Scoring only recommendation_text discarded correctly-filed guidance, because
+ * a recommendation sentence rarely restates the disease it is about -- the
+ * document it came from supplies that. Measured in production: of 21 AGA
+ * Institute rows filed under "hepatorenal syndrome diagnosis and management",
+ * *none* contain the word "hepatorenal" in their recommendation text
+ * ("IV albumin is the volume expander of choice in hospitalized patients...").
+ * With 'syndrome' in SCORE_STOP, the query "hepatorenal syndrome" reduces to
+ * the single word "hepatorenal", so every one of those rows scored 0 and was
+ * filtered out. Thirteen of them were unreachable by any query at all; the
+ * other eight surfaced only if the searcher happened to name the drug.
+ *
+ * So the row's own attribution counts too, at half weight. A row whose text is
+ * on-topic still outranks one that is merely filed under the topic, but a
+ * correctly-filed recommendation is no longer thrown away for failing to repeat
+ * its own subject.
+ *
+ * This does weaken the floor's original purpose (dropping rows swept into a
+ * topic by a page scrape without containing its words). That trade is
+ * deliberate: silently hiding two thirds of a real guideline set is the worse
+ * failure for a product whose promise is to surface the evidence it has, and
+ * mis-attribution is better fixed in the ingestion pipeline than by suppressing
+ * results at read time.
+ */
 function guidelineTermScore(row, topicWords) {
     if (!topicWords.length) return 0;
     const text = String(row.recommendation_text || '').toLowerCase();
+    const attribution = `${row.topic || ''} ${row.normalized_topic || ''}`.toLowerCase();
     let hits = 0;
     for (const w of topicWords) {
-        if (text.includes(w)) hits++;
+        if (text.includes(w)) hits += 1;
+        else if (attribution.includes(w)) hits += 0.5;
     }
     return hits / topicWords.length;
 }
