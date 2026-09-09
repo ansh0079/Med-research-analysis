@@ -350,12 +350,23 @@ module.exports = (Sup) => class extends Sup {
             claimCount: 'claim_count',
             reviewDueAt: 'review_due_at',
         };
+        // A topic marked seeded must carry the time it was seeded. 41 topics
+        // reached production as seed_status='seeded' with a null last_seeded_at,
+        // no claims and no synthesis -- the status was written without the
+        // pipeline having run, so it read as coverage that did not exist. Since
+        // seed_status is what you would gate beta topics on, a success state
+        // carrying no evidence of the work is worse than no state at all.
+        const effective = { ...patch };
+        const claimsSuccess = effective.seedStatus === 'seeded' || effective.seedStatus === 'seeded_with_warnings';
+        if (claimsSuccess && !effective.lastSeededAt) {
+            effective.lastSeededAt = new Date().toISOString();
+        }
         const sets = [];
         const params = [];
         for (const [key, col] of Object.entries(allowed)) {
-            if (Object.prototype.hasOwnProperty.call(patch, key)) {
+            if (Object.prototype.hasOwnProperty.call(effective, key)) {
                 sets.push(`${col} = ?`);
-                params.push(key === 'claimCount' ? Number(patch[key] || 0) : patch[key]);
+                params.push(key === 'claimCount' ? Number(effective[key] || 0) : effective[key]);
             }
         }
         if (!sets.length) return null;
