@@ -36,16 +36,28 @@ const crypto = require('crypto');
 // Real guideline-issuing bodies. A ref naming a journal only ("Seizure 2019")
 // does not qualify -- see docs/guideline-gap analysis for why that field is
 // unreliable on its own.
-const GUIDELINE_BODY = new RegExp([
-    'NICE', 'SIGN\b', 'WHO\b', 'World Health Organization', 'ESC\b', 'EACTS', 'ACC\b', 'AHA\b', 'ACCF',
-    'EULAR', 'ACR\b', 'IDSA', 'BTS\b', 'BSR\b', 'BASHH', 'RCOG', 'RCPCH', 'RCP\b', 'RCEM', 'GOLD\b', 'KDIGO',
-    'ADA\b', 'EASD', 'NCCN', 'ASCO', 'ESMO', 'CDC\b', 'ACIP', 'ERS\b', 'ATS\b', 'ESICM', 'SCCM', 'SSC\b',
-    'RCUK', 'ERC\b', 'JBDS', 'FSRH', 'BSACI', 'EAACI', 'BAP\b', 'NPUAP', 'EPUAP', 'ESRA', 'BSSH', 'GINA',
-    'ISTH', 'ASH\b', 'AASLD', 'EASL', 'ACG\b', 'BSG\b', 'AGA\b', 'ECCO', 'UEG', 'EAU\b', 'AUA\b', 'BAUS',
-    'AAN\b', 'ABN\b', 'EAN\b', 'ILAE', 'MDS\b', 'AAOS', 'BOA\b', 'SPILF', 'ESCMID', 'IDF\b', 'ISPAD',
-    'ATA\b', 'BTA\b', 'ESE\b', 'ESPEN', 'ASPEN', 'NIAAA', 'SAMHSA', 'APA\b', 'NIH\b', 'USPSTF', 'AAFP',
-    'AAP\b', 'SOGC', 'RANZCOG', 'CCS\b', 'ESH\b', 'ISH\b', 'JNC\b',
-].join('|'), 'i');
+// The word boundaries are anchored around the whole alternation, not written
+// into the individual entries. Two reasons, both learned the hard way:
+//   - `'WHO\b'` inside a single-quoted JS string is a literal backspace (U+0008),
+//     not a regex boundary. 39 entries were written that way, so WHO, ESC, AHA,
+//     ADA, AGA, CDC, ATS, NIH and ~30 others silently never matched -- their
+//     guidance was labelled ordinary evidence for as long as the list existed.
+//   - Anchoring only the end lets a short acronym match inside a longer word:
+//     `EAN\b` matches "Korean". Both ends are needed.
+const GUIDELINE_BODY = new RegExp(`\\b(?:${[
+    'NICE', 'SIGN', 'WHO', 'World Health Organization', 'ESC', 'EACTS', 'ACC', 'AHA', 'ACCF',
+    'EULAR', 'ACR', 'IDSA', 'BTS', 'BSR', 'BASHH', 'RCOG', 'RCPCH', 'RCP', 'RCEM', 'GOLD', 'KDIGO',
+    'ADA', 'EASD', 'NCCN', 'ASCO', 'ESMO', 'CDC', 'ACIP', 'ERS', 'ATS', 'ESICM', 'SCCM', 'SSC',
+    'RCUK', 'ERC', 'JBDS', 'FSRH', 'BSACI', 'EAACI', 'BAP', 'NPUAP', 'EPUAP', 'ESRA', 'BSSH', 'GINA',
+    'ISTH', 'ASH', 'AASLD', 'EASL', 'ACG', 'BSG', 'AGA', 'ECCO', 'UEG', 'EAU', 'AUA', 'BAUS',
+    'AAN', 'ABN', 'EAN', 'ILAE', 'MDS', 'AAOS', 'BOA', 'SPILF', 'ESCMID', 'IDF', 'ISPAD',
+    'ATA', 'BTA', 'ESE', 'ESPEN', 'ASPEN', 'NIAAA', 'SAMHSA', 'APA', 'NIH', 'USPSTF', 'AAFP',
+    'AAP', 'SOGC', 'RANZCOG', 'CCS', 'ESH', 'ISH', 'JNC',
+    // Bodies that appear in the corpus spelled out rather than as the acronym
+    // already listed above, plus IPNA which was missing entirely. Chosen from
+    // the actual distribution of topic_guidelines.source_body, not guessed.
+    'IPNA', 'Endocrine Society', 'European Academy of Neurology', 'American College of Radiology',
+].join('|')})\\b`, 'i');
 
 function hash(seed) {
     return crypto.createHash('sha256').update(seed).digest('hex').slice(0, 24);
