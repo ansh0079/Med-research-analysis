@@ -14,6 +14,10 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('AST IDCOP')).toBe(true);
         expect(isTrustedSource('EHRA')).toBe(true);
         expect(isTrustedSource('NCCN')).toBe(true);
+        expect(isTrustedSource('ASCO')).toBe(true);
+        expect(isTrustedSource('European Stroke Organisation')).toBe(true);
+        expect(isTrustedSource('ASGE')).toBe(true);
+        expect(isTrustedSource('European LeukemiaNet')).toBe(true);
         expect(isTrustedSource('Unknown Blog')).toBe(false);
     });
 

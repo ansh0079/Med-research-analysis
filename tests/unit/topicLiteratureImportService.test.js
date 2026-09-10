@@ -74,6 +74,7 @@ describe('topicLiteratureImportService', () => {
         expect(classifyFinding('Clinical Guideline: KDIGO recommends rituximab').kind).toBe('guideline');
         expect(classifyFinding('Meta-Analysis: dexamethasone does not reduce death').kind).toBe('paper');
         expect(classifyFinding('Appropriate Use Recommendations for lecanemab').kind).toBe('guideline');
+        expect(classifyFinding('Systematic Review/Guideline: First-line treatment for catatonia is lorazepam').kind).toBe('guideline');
     });
 
     test('expands a pack row into paired papers and guidelines', () => {
@@ -132,6 +133,30 @@ describe('topicLiteratureImportService', () => {
         expect(result.servableGuidelineCount).toBe(1);
         expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
             sourceBody: 'AST',
+        }));
+    });
+
+    test('loads the checked-in batch-3 literature pack', () => {
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-3.json');
+        expect(fs.existsSync(packPath)).toBe(true);
+        const rows = parseLiteratureFile(packPath);
+        expect(rows).toHaveLength(10);
+        expect(rows.map((row) => row.topic)).toEqual(expect.arrayContaining([
+            'catatonia benzodiazepines and ect',
+            'community acquired pneumonia',
+        ]));
+    });
+
+    test('imports ESO cerebral venous thrombosis guideline as trusted and servable', async () => {
+        const db = makeDb();
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-3.json');
+        const row = parseLiteratureFile(packPath).find((item) => /cerebral venous/i.test(item.topic));
+        const result = await importTopicLiterature(db, row);
+        expect(result.guidelineCount).toBe(1);
+        expect(result.trustedGuidelineCount).toBe(1);
+        expect(result.servableGuidelineCount).toBe(1);
+        expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
+            sourceBody: 'ESO',
         }));
     });
 

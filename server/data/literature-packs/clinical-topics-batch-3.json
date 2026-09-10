@@ -1,0 +1,69 @@
+{
+  "packId": "clinical-topics-batch-3",
+  "title": "Curated literature for guideline-gap topics 21-30",
+  "sourceFiles": [
+    "next_20-30.docx"
+  ],
+  "topics": [
+    {
+      "topic": "catatonia benzodiazepines and ect",
+      "findings": "• Systematic Review/Guideline: First-line treatment for catatonia is high-dose benzodiazepines (primarily lorazepam). If there is no response within several days, or for malignant catatonia (which can be life-threatening), Electroconvulsive Therapy (ECT) is highly recommended and efficacious (Sienaert et al., 2014).",
+      "links": "https://doi.org/10.3389/fpsyt.2014.00181",
+      "references": "Sienaert, P., Dhossche, D. M., Vancampfort, D., De Hert, M., & Gazdag, G. (2014). A clinical review of the treatment of catatonia. Frontiers in Psychiatry, 5, 181."
+    },
+    {
+      "topic": "cerebral venous thrombosis anticoagulation",
+      "findings": "• Clinical Guideline: The European Stroke Organisation (ESO) recommends treating patients with acute cerebral venous thrombosis (CVT) with therapeutic dosage of heparin (unfractionated or low molecular weight). Anticoagulation should be continued for 3-12 months, or indefinitely for severe recurrent prothrombotic states, utilizing vitamin K antagonists or DOACs (Ferro et al., 2017).",
+      "links": "https://doi.org/10.1177/2396987317719364",
+      "references": "Ferro, J. M., Bousser, M. G., Canhão, P., Coutinho, J. M., Crassard, I., Dentali, F., ... & ESO. (2017). European Stroke Organization guideline for the diagnosis and treatment of cerebral venous thrombosis. European Stroke Journal, 2(3), 195-221."
+    },
+    {
+      "topic": "chemotherapy induced nausea antiemetic prophylaxis",
+      "findings": "• Clinical Guideline: The ASCO guideline update recommends a multi-drug regimen for highly emetogenic chemotherapy, typically involving a combination of a neurokinin 1 (NK1) receptor antagonist, a 5-HT3 receptor antagonist, dexamethasone, and olanzapine (Hesketh et al., 2020).",
+      "links": "https://doi.org/10.1200/JCO.20.01296",
+      "references": "Hesketh, P. J., Kris, M. G., Basch, E., Bohlke, K., Barbour, S. Y., Clark-Snow, R. A., ... & Somerfield, M. R. (2020). Antiemetics: ASCO Guideline Update. Journal of Clinical Oncology, 38(24), 2782-2797."
+    },
+    {
+      "topic": "choledocholithiasis and acute cholangitis endoscopy",
+      "findings": "• Clinical Guideline: The ASGE guidelines strongly recommend endoscopic retrograde cholangiopancreatography (ERCP) for patients with high-risk criteria for choledocholithiasis or established acute cholangitis to achieve biliary drainage and stone extraction (Buxbaum et al., 2019).",
+      "links": "https://doi.org/10.1016/j.gie.2019.04.232",
+      "references": "Buxbaum, J. L., Abbas Fehmi, S. M., Sultan, S., Fishman, D. S., Qumseya, B. J., Cortessis, V. K., ... & ASGE Standards of Practice Committee. (2019). ASGE guideline on the role of endoscopy in the evaluation and management of choledocholithiasis. Gastrointestinal Endoscopy, 90(4), 514-537."
+    },
+    {
+      "topic": "chronic cough evaluation and empiric therapy",
+      "findings": "• Clinical Guideline: The ERS guidelines recommend structured evaluation for asthma/eosinophilic bronchitis, GERD, and upper airway cough syndrome. Empiric treatment algorithms should systematically address these most common causes before diagnosing unexplained chronic cough, for which neuromodulators (like gabapentin or pregabalin) may be trialed (Morice et al., 2020).",
+      "links": "https://doi.org/10.1183/13993003.01136-2019",
+      "references": "Morice, A. H., Millqvist, E., Bieksiene, K., Birring, S. S., Dicpinigaitis, P., Domingo, C., ... & ERS. (2020). ERS guidelines on the diagnosis and treatment of chronic cough in adults and children. European Respiratory Journal, 55(1)."
+    },
+    {
+      "topic": "chronic lymphocytic leukaemia chemoimmunotherapy with fcr",
+      "findings": "• Clinical Guideline: ESMO guidelines note that while targeted therapies are now broadly favored, FCR (fludarabine, cyclophosphamide, and rituximab) remains a potential first-line option specifically for young, fit patients with mutated IGHV status and lacking TP53 mutations, due to its potential for deep, long-lasting remissions in this cohort (Eichhorst et al., 2021).",
+      "links": "https://doi.org/10.1016/j.annonc.2020.09.019",
+      "references": "Eichhorst, B., Robak, T., Montserrat, E., Ghia, P., Niemann, C. U., Kater, A. P., ... & ESMO Guidelines Committee. (2021). Chronic lymphocytic leukaemia: ESMO Clinical Practice Guidelines for diagnosis, treatment and follow-up. Annals of Oncology, 32(1), 23-33."
+    },
+    {
+      "topic": "chronic lymphocytic leukaemia ibrutinib and venetoclax based targeted therapy",
+      "findings": "• Clinical Guideline: NCCN and ESMO guidelines heavily prioritize continuous BTK inhibitors (ibrutinib, acalabrutinib) or time-limited BCL2 inhibitor therapy (venetoclax) paired with anti-CD20 antibodies as the preferred first-line treatments for most CLL patients, and uniquely mandate these targeted approaches for patients with TP53 aberrations / del(17p) (Eichhorst et al., 2021).",
+      "links": "https://doi.org/10.1016/j.annonc.2020.09.019",
+      "references": "Eichhorst, B., Robak, T., Montserrat, E., Ghia, P., Niemann, C. U., Kater, A. P., ... & ESMO Guidelines Committee. (2021). Chronic lymphocytic leukaemia: ESMO Clinical Practice Guidelines for diagnosis, treatment and follow-up. Annals of Oncology, 32(1), 23-33."
+    },
+    {
+      "topic": "chronic myeloid leukaemia imatinib and second generation tki therapy",
+      "findings": "• Clinical Guideline: The European LeukemiaNet (ELN) 2020 recommendations state that treatment for chronic phase CML can be initiated with either the first-generation TKI imatinib or second-generation TKIs (nilotinib, dasatinib, bosutinib). Second-generation agents are preferred for intermediate or high-risk patients to achieve faster/deeper molecular responses (Hochhaus et al., 2020).",
+      "links": "https://doi.org/10.1038/s41375-020-0776-2",
+      "references": "Hochhaus, A., Baccarani, M., Silver, R. T., Schiffer, C., Apperley, J. F., Cervantes, F., ... & ELN. (2020). European LeukemiaNet 2020 recommendations for treating chronic myeloid leukemia. Leukemia, 34(4), 966-984."
+    },
+    {
+      "topic": "common variable immunodeficiency diagnosis and infection prevention",
+      "findings": "• Clinical Guideline: Diagnosis relies on reduced serum IgG alongside decreased IgA or IgM and poor specific antibody responses. Regular immunoglobulin (Ig) replacement therapy (intravenous or subcutaneous) is the standard of care to prevent severe and recurrent respiratory and systemic bacterial infections (Bonilla et al., 2015).",
+      "links": "https://doi.org/10.1016/j.jaci.2015.04.049",
+      "references": "Bonilla, F. A., Khan, D. A., Ballas, Z. K., Chinen, J., Frank, M. M., Hsu, J. T., ... & Joint Task Force on Practice Parameters. (2015). Practice parameter for the diagnosis and management of primary immunodeficiency. Journal of Allergy and Clinical Immunology, 136(5), 1186-1205.e78."
+    },
+    {
+      "topic": "community acquired pneumonia",
+      "findings": "• Clinical Guideline: The ATS/IDSA guidelines provide comprehensive algorithms for empiric antibiotic choices (e.g., macrolide/doxycycline for healthy outpatients; beta-lactam + macrolide or respiratory fluoroquinolone for inpatients), and distinctly recommend against routine use of procalcitonin for deciding initial antibacterial therapy (Metlay et al., 2019).",
+      "links": "https://doi.org/10.1164/rccm.201908-1581ST",
+      "references": "Metlay, J. P., Waterer, G. W., Long, A. C., Anzueto, A., Brozek, J., Crothers, K., ... & Whitney, C. G. (2019). Diagnosis and treatment of adults with community-acquired pneumonia. An official clinical practice guideline of the American Thoracic Society and Infectious Diseases Society of America. American Journal of Respiratory and Critical Care Medicine, 200(7), e45-e67."
+    }
+  ]
+}
