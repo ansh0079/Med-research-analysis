@@ -6,6 +6,11 @@ describe('guidelineQualityService', () => {
     test('recognizes trusted guideline sources', () => {
         expect(isTrustedSource('NICE')).toBe(true);
         expect(isTrustedSource('World Health Organization')).toBe(true);
+        expect(isTrustedSource('EASL')).toBe(true);
+        expect(isTrustedSource('European Association for the Study of the Liver')).toBe(true);
+        expect(isTrustedSource('KDIGO')).toBe(true);
+        expect(isTrustedSource('ACC/AHA')).toBe(true);
+        expect(isTrustedSource('ASAM')).toBe(true);
         expect(isTrustedSource('Unknown Blog')).toBe(false);
     });
 

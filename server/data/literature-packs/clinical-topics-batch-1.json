@@ -1,0 +1,100 @@
+{
+  "packId": "clinical-topics-batch-1",
+  "title": "Curated literature for the first 15 guideline-gap topics",
+  "sourceFiles": [
+    "next_10.docx",
+    "clinical_topics_literature_batch_1.xlsx"
+  ],
+  "topics": [
+    {
+      "topic": "Achalasia endoscopic and surgical therapy",
+      "findings": "• Meta-Analysis: Laparoscopic myotomy with fundoplication is highly effective and traditionally considered the operative procedure of choice compared to endoscopic balloon dilation (Campos et al., 2009).\n• Network Meta-Analysis: Recent comparisons show per-oral endoscopic myotomy (POEM) and laparoscopic Heller's myotomy (LHM) are currently the preferred primary treatments for idiopathic achalasia over pneumatic dilation (Mundre et al., 2021).",
+      "links": "https://doi.org/10.1097/sla.0b013e31818e43ab\nhttps://doi.org/10.1016/s2468-1253(20)30296-x",
+      "references": "Campos, G. M., et al. (2009). Endoscopic and Surgical Treatments for Achalasia. Annals of Surgery, 249(1), 45-57.\nMundre, P., et al. (2021). Efficacy of surgical or endoscopic treatment of idiopathic achalasia: a systematic review and network meta-analysis. The Lancet Gastroenterology & Hepatology, 6, 30-38."
+    },
+    {
+      "topic": "Acute bacterial meningitis adjunctive dexamethasone",
+      "findings": "• Meta-Analysis: While historically used to prevent sequelae, a broad meta-analysis of individual patient data found adjunctive dexamethasone does not significantly reduce overall death or severe neurological disability, though it appears to reduce hearing loss among survivors (van de Beek et al., 2010).",
+      "links": "https://doi.org/10.1016/s1474-4422(10)70023-5",
+      "references": "van de Beek, D., et al. (2010). Adjunctive dexamethasone in bacterial meningitis: a meta-analysis of individual patient data. The Lancet Neurology, 9, 254-263."
+    },
+    {
+      "topic": "Acute bacterial meningitis empiric therapy and dexamethasone",
+      "findings": "• Meta-Analysis: The use of empiric adjunctive dexamethasone alongside initial parenteral antibiotics shows no significant treatment effect differences across specific causative organisms, suggesting its primary benefit remains isolated to specific sequelae like hearing loss (van de Beek et al., 2010).",
+      "links": "https://doi.org/10.1016/s1474-4422(10)70023-5",
+      "references": "van de Beek, D., et al. (2010). Adjunctive dexamethasone in bacterial meningitis: a meta-analysis of individual patient data. The Lancet Neurology, 9, 254-263."
+    },
+    {
+      "topic": "Acute liver failure transplant referral",
+      "findings": "• Clinical Guidelines: The European Association for the Study of the Liver (EASL) details critical measures for hemodynamic stabilization and emergency transplant referral protocols for fulminant liver failure (Wendon et al., 2017).\n• Clinical Guidelines: Recent multi-society guidelines update etiology-specific approaches, ICU management of cerebral edema, and criteria for transplantation (Shingina et al., 2023).",
+      "links": "https://doi.org/10.1016/j.jhep.2016.12.003\nhttps://doi.org/10.14309/ajg.0000000000002340",
+      "references": "Wendon, J., et al. (2017). EASL Clinical Practical Guidelines on the management of acute (fulminant) liver failure. Journal of Hepatology, 66, 1047-1081.\nShingina, A., et al. (2023). Acute Liver Failure Guidelines. American Journal of Gastroenterology, 118, 1128-1153."
+    },
+    {
+      "topic": "Acute myeloid leukemia venetoclax azacitidine",
+      "findings": "• Systematic Review & Meta-Analysis: The combination therapy yields a high complete response rate (57.9% pooled), proving significantly more effective for newly diagnosed AML patients compared to relapsed/refractory cases, with grade 3-4 neutropenia being the primary adverse event (Du et al., 2023).\n• Meta-Analysis: Venetoclax paired with azacitidine is substantially more efficacious than azacitidine monotherapy (Xie et al., 2024).",
+      "links": "https://doi.org/10.1080/16078454.2023.2198098\nhttps://doi.org/10.3892/etm.2024.12452",
+      "references": "Du, Y., Li, C., & Yan, J. (2023). The efficacy and safety of venetoclax and azacytidine combination treatment in patients with acute myeloid leukemia and myelodysplastic syndrome: systematic review and meta-analysis. Hematology, 28.\nXie, Y., et al. (2024). Meta-analysis of the efficacy of venetoclax and azacitidine combination therapy and azacitidine monotherapy for treating acute myeloid leukemia. Experimental and Therapeutic Medicine, 27."
+    },
+    {
+      "topic": "alcohol use disorder naltrexone and acamprosate",
+      "findings": "• Clinical Guideline: The American Psychiatric Association (APA) strongly recommends naltrexone or acamprosate as first-line pharmacological treatments for patients with moderate to severe alcohol use disorder who have a goal of reducing alcohol consumption or achieving abstinence (Reus et al., 2018).",
+      "links": "https://doi.org/10.1176/appi.ajp.2017.17050509",
+      "references": "Reus, V. I., et al. (2018). The American Psychiatric Association Practice Guideline for the Pharmacological Treatment of Patients With Alcohol Use Disorder. American Journal of Psychiatry, 175(1), 86-90."
+    },
+    {
+      "topic": "alcohol withdrawal benzodiazepine treatment",
+      "findings": "• Clinical Guideline: The ASAM Clinical Practice Guideline on Alcohol Withdrawal Management identifies benzodiazepines as the first-line medication class for treating alcohol withdrawal to prevent severe complications like seizures and delirium tremens. Symptom-triggered dosing is generally preferred over fixed-schedule dosing (ASAM, 2020).",
+      "links": "https://doi.org/10.1097/ADM.0000000000000668",
+      "references": "American Society of Addiction Medicine (ASAM) (2020). ASAM Clinical Practice Guideline on Alcohol Withdrawal Management. Journal of Addiction Medicine, 14(3S)."
+    },
+    {
+      "topic": "alport syndrome and inherited collagen nephropathies",
+      "findings": "• Clinical Guideline: Expert guidelines recommend early initiation of ACE inhibitors to delay the onset of end-stage renal disease (ESRD) in patients with Alport syndrome, a disease caused by mutations in type IV collagen genes (Savige et al., 2013 / 2020 Update).",
+      "links": "https://doi.org/10.1007/s00467-020-04495-2",
+      "references": "Savige, J., et al. (2020). Clinical practice recommendations for the diagnosis and management of X-linked, autosomal recessive, and autosomal dominant Alport syndrome: an update. Pediatric Nephrology, 35, 2731–2745."
+    },
+    {
+      "topic": "alzheimer s disease anti amyloid immunotherapy",
+      "findings": "• Appropriate Use Recommendations (AUR): Recent AURs for monoclonal antibodies targeting amyloid-beta (like lecanemab and aducanumab) establish rigorous protocols for patient selection (MCI or mild dementia stage), amyloid confirmation via PET or CSF, and strict MRI monitoring for Amyloid-Related Imaging Abnormalities (ARIA) (Cummings et al., 2023).",
+      "links": "https://doi.org/10.14283/jpad.2023.30",
+      "references": "Cummings, J., et al. (2023). Lecanemab: Appropriate Use Recommendations. The Journal of Prevention of Alzheimer's Disease, 10, 362-377."
+    },
+    {
+      "topic": "anca associated vasculitis renal disease",
+      "findings": "• Clinical Guideline: The KDIGO 2024 Guidelines for ANCA-Associated Vasculitis recommend induction therapy with glucocorticoids in combination with cyclophosphamide or rituximab, and significantly reduced glucocorticoid dosing protocols to minimize toxicity compared to historical regimens (KDIGO, 2024).",
+      "links": "https://doi.org/10.1016/j.kint.2023.12.007",
+      "references": "Kidney Disease: Improving Global Outcomes (KDIGO) (2024). KDIGO 2024 Clinical Practice Guideline for the Management of Antineutrophil Cytoplasmic Antibody (ANCA)-Associated Vasculitis. Kidney International."
+    },
+    {
+      "topic": "angiotensin ii for catecholamine refractory vasodilatory shock",
+      "findings": "• Clinical Guideline / Meta-Analysis: The Surviving Sepsis Campaign guidelines suggest that for patients with septic shock requiring ongoing high-dose vasopressors, adding a second vasopressor like vasopressin is preferred, but synthetic Angiotensin II may be used as a rescue therapy based on the ATHOS-3 trial showing effective blood pressure restoration (Evans et al., 2021; Khanna et al., 2017).",
+      "links": "https://doi.org/10.1097/CCM.0000000000005337\nhttps://doi.org/10.1056/NEJMoa1704154",
+      "references": "Evans, L., et al. (2021). Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Critical Care Medicine, 49(11), e1063-e1143.\nKhanna, A., et al. (2017). Angiotensin II for the Treatment of Vasodilatory Shock (ATHOS-3). NEJM."
+    },
+    {
+      "topic": "antipsychotic metabolic monitoring",
+      "findings": "• Consensus Guidelines: The American Diabetes Association and APA consensus guidelines mandate baseline and routine monitoring of personal/family history, BMI, waist circumference, blood pressure, fasting plasma glucose, and fasting lipid profile due to the high risk of metabolic syndrome associated with second-generation antipsychotics (ADA/APA, 2004; updated in recent psychiatric guidelines).",
+      "links": "https://doi.org/10.2337/diacare.27.2.596",
+      "references": "American Diabetes Association, American Psychiatric Association, et al. (2004). Consensus Development Conference on Antipsychotic Drugs and Obesity and Diabetes. Diabetes Care, 27(2), 596-601."
+    },
+    {
+      "topic": "antithrombotic therapy after tavr",
+      "findings": "• Clinical Guideline: The ACC/AHA Valvular Heart Disease guidelines suggest aspirin alone (or combined with clopidogrel for 3-6 months) for patients post-TAVR lacking other indications for oral anticoagulation, noting that routine direct oral anticoagulants (DOACs) without an indication (like AFib) are associated with worse outcomes (Otto et al., 2021).",
+      "links": "https://doi.org/10.1161/CIR.0000000000000923",
+      "references": "Otto, C. M., et al. (2021). 2020 ACC/AHA Guideline for the Management of Patients With Valvular Heart Disease. Circulation, 143, e72–e227."
+    },
+    {
+      "topic": "benzodiazepine deprescribing in anxiety and insomnia",
+      "findings": "• Evidence-Based Guideline: Canadian clinical practice guidelines highly recommend deprescribing (tapering slowly) benzodiazepine receptor agonists in older adults, noting the significant risks of cognitive impairment, falls, and dependence, and suggest cognitive behavioral therapy (CBT) as the primary alternative (Pottie et al., 2018).",
+      "links": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5945347/",
+      "references": "Pottie, K., et al. (2018). Deprescribing benzodiazepine receptor agonists: Evidence-based clinical practice guideline. Canadian Family Physician, 64(5), 339-351."
+    },
+    {
+      "topic": "biologic therapy pre treatment infection screening",
+      "findings": "• Clinical Guideline: The ACR guidelines for the treatment of Rheumatoid Arthritis emphasize the necessity of screening for latent tuberculosis (via IGRA or TST) and Hepatitis B and C prior to the initiation of any biologic DMARD, given the significant risk of reactivation (Fraenkel et al., 2021).",
+      "links": "https://doi.org/10.1002/acr.24596",
+      "references": "Fraenkel, L., et al. (2021). 2021 American College of Rheumatology Guideline for the Treatment of Rheumatoid Arthritis. Arthritis Care & Research, 73(7), 924-939."
+    }
+  ]
+}

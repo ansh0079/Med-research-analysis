@@ -1,0 +1,177 @@
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const { rankGuidelinesForTopic } = require('../../server/utils/guidelineRelevance');
+const { isTrustedSource } = require('../../server/services/guidelineQualityService');
+const {
+    classifyFinding,
+    expandPackRow,
+    groundGuidelineForTopic,
+    parseLiteratureJson,
+    parseLiteratureFile,
+    parseGapCsv,
+    importTopicLiterature,
+    importLiteraturePack,
+} = require('../../server/services/topicLiteratureImportService');
+
+function makeDb() {
+    const guidelines = [];
+    const knowledge = new Map();
+    const runs = [];
+    return {
+        runs,
+        guidelines,
+        knowledge,
+        normalizeTopic: (topic) => String(topic || '').toLowerCase().replace(/[^a-z0-9\s-]/g, ' ').replace(/\s+/g, ' ').trim(),
+        run: jest.fn(async (sql, params) => {
+            runs.push({ sql, params });
+            return { changes: 1 };
+        }),
+        recordBouquetSignals: jest.fn(async () => ({})),
+        getGuidelinesByTopic: jest.fn(async (topic) => (
+            guidelines.filter((g) => g.topic.toLowerCase() === String(topic).toLowerCase())
+        )),
+        createGuideline: jest.fn(async (payload) => {
+            const row = { id: guidelines.length + 1, ...payload };
+            guidelines.push(row);
+            return row;
+        }),
+        getTopicKnowledge: jest.fn(async (topic) => knowledge.get(String(topic).toLowerCase()) || null),
+        upsertTopicKnowledge: jest.fn(async (topic, payload, sourceArticles, status) => {
+            const row = { topic, knowledge: payload, sourceArticles, status };
+            knowledge.set(String(topic).toLowerCase(), row);
+            return row;
+        }),
+    };
+}
+
+const ALF_ROW = {
+    topic: 'acute liver failure transplant referral',
+    findings: '• Clinical Guidelines: The European Association for the Study of the Liver (EASL) details emergency transplant referral protocols for fulminant liver failure (Wendon et al., 2017).',
+    links: 'https://doi.org/10.1016/j.jhep.2016.12.003',
+    references: 'Wendon, J., et al. (2017). EASL Clinical Practical Guidelines on the management of acute (fulminant) liver failure. Journal of Hepatology, 66, 1047-1081.',
+};
+
+const TAVR_ROW = {
+    topic: 'antithrombotic therapy after tavr',
+    findings: '• Clinical Guideline: The ACC/AHA Valvular Heart Disease guidelines suggest aspirin alone for patients post-TAVR lacking other indications for oral anticoagulation (Otto et al., 2021).',
+    links: 'https://doi.org/10.1161/CIR.0000000000000923',
+    references: 'Otto, C. M., et al. (2021). 2020 ACC/AHA Guideline for the Management of Patients With Valvular Heart Disease. Circulation, 143, e72-e227.',
+};
+
+const ACHALASIA_ROW = {
+    topic: 'Achalasia endoscopic and surgical therapy',
+    findings: '• Meta-Analysis: Laparoscopic myotomy with fundoplication is highly effective compared to endoscopic balloon dilation (Campos et al., 2009).\n• Network Meta-Analysis: POEM and LHM are preferred primary treatments for idiopathic achalasia (Mundre et al., 2021).',
+    links: 'https://doi.org/10.1097/sla.0b013e31818e43ab\nhttps://doi.org/10.1016/s2468-1253(20)30296-x',
+    references: 'Campos, G. M., et al. (2009). Endoscopic and Surgical Treatments for Achalasia. Annals of Surgery, 249(1), 45-57.\nMundre, P., et al. (2021). Efficacy of surgical or endoscopic treatment of idiopathic achalasia. The Lancet Gastroenterology & Hepatology, 6, 30-38.',
+};
+
+describe('topicLiteratureImportService', () => {
+    test('classifies guideline vs paper findings', () => {
+        expect(classifyFinding('Clinical Guideline: KDIGO recommends rituximab').kind).toBe('guideline');
+        expect(classifyFinding('Meta-Analysis: dexamethasone does not reduce death').kind).toBe('paper');
+        expect(classifyFinding('Appropriate Use Recommendations for lecanemab').kind).toBe('guideline');
+    });
+
+    test('expands a pack row into paired papers and guidelines', () => {
+        const items = expandPackRow(ACHALASIA_ROW);
+        expect(items).toHaveLength(2);
+        expect(items.every((item) => item.kind === 'paper')).toBe(true);
+        expect(items[0].doi).toMatch(/^10\./);
+        expect(items[1].title).toMatch(/achalasia/i);
+    });
+
+    test('grounds a TAVR guideline so it is servable for the topic', () => {
+        const ungrounded = {
+            sourceBody: 'AHA/ACC',
+            recommendationText: 'Aspirin alone is suggested after valve replacement when anticoagulation is not otherwise indicated.',
+        };
+        expect(rankGuidelinesForTopic('antithrombotic therapy after tavr', [ungrounded])).toHaveLength(0);
+
+        const grounded = groundGuidelineForTopic('antithrombotic therapy after tavr', ungrounded);
+        expect(rankGuidelinesForTopic('antithrombotic therapy after tavr', [grounded]).length).toBeGreaterThan(0);
+    });
+
+    test('loads the checked-in batch-1 literature pack', () => {
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-1.json');
+        expect(fs.existsSync(packPath)).toBe(true);
+        const rows = parseLiteratureFile(packPath);
+        expect(rows).toHaveLength(15);
+        expect(rows.map((row) => row.topic)).toEqual(expect.arrayContaining([
+            'Achalasia endoscopic and surgical therapy',
+            'Acute liver failure transplant referral',
+            'biologic therapy pre treatment infection screening',
+        ]));
+    });
+
+    test('parses gap CSV and literature JSON', () => {
+        const gaps = parseGapCsv('topic,normalized_topic\n"Acute liver failure transplant referral","acute liver failure transplant referral"\n');
+        expect(gaps).toEqual([{
+            topic: 'Acute liver failure transplant referral',
+            normalizedTopic: 'acute liver failure transplant referral',
+        }]);
+        const rows = parseLiteratureJson(JSON.stringify({ topics: [ALF_ROW] }));
+        expect(rows[0].topic).toMatch(/liver failure/i);
+    });
+
+    test('imports EASL guideline as trusted + servable and stores papers', async () => {
+        const db = makeDb();
+        const result = await importTopicLiterature(db, ALF_ROW);
+
+        expect(result.guidelineCount).toBe(1);
+        expect(result.articleCount).toBe(1);
+        expect(result.servableGuidelineCount).toBe(1);
+        expect(result.trustedGuidelineCount).toBe(1);
+        expect(isTrustedSource('EASL')).toBe(true);
+        expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
+            sourceBody: 'EASL',
+            sourceUrl: expect.stringContaining('10.1016/j.jhep'),
+        }));
+        expect(db.upsertTopicKnowledge).toHaveBeenCalledWith(
+            'acute liver failure transplant referral',
+            expect.objectContaining({ seededFrom: 'topicLiteratureImport' }),
+            expect.arrayContaining([expect.objectContaining({ doi: expect.stringContaining('10.1016') })]),
+            'ai_generated',
+            expect.any(Number)
+        );
+        const cacheWrites = db.runs.filter((r) => /INSERT INTO article_cache/i.test(r.sql));
+        expect(cacheWrites.length).toBeGreaterThan(0);
+    });
+
+    test('recognises ACC/AHA as the trusted AHA/ACC source', async () => {
+        const db = makeDb();
+        const result = await importTopicLiterature(db, TAVR_ROW);
+        expect(result.trustedGuidelineCount).toBe(1);
+        expect(result.servableGuidelineCount).toBe(1);
+        expect(db.createGuideline.mock.calls[0][0].sourceBody).toBe('AHA/ACC');
+    });
+
+    test('skips duplicate guidelines unless force is set', async () => {
+        const db = makeDb();
+        await importTopicLiterature(db, ALF_ROW);
+        const second = await importTopicLiterature(db, ALF_ROW);
+        expect(second.guidelineCount).toBe(0);
+        expect(second.skippedGuidelineCount).toBe(1);
+
+        const forced = await importTopicLiterature(db, ALF_ROW, { force: true });
+        expect(forced.guidelineCount).toBe(1);
+    });
+
+    test('dry-run does not write guidelines or knowledge', async () => {
+        const db = makeDb();
+        const result = await importTopicLiterature(db, ALF_ROW, { dryRun: true });
+        expect(result.guidelineCount).toBe(1);
+        expect(db.createGuideline).not.toHaveBeenCalled();
+        expect(db.upsertTopicKnowledge).not.toHaveBeenCalled();
+    });
+
+    test('imports a pack of paper-only topics without inventing guidelines', async () => {
+        const db = makeDb();
+        const pack = await importLiteraturePack(db, [ACHALASIA_ROW]);
+        expect(pack.articleCount).toBe(2);
+        expect(pack.guidelineCount).toBe(0);
+        expect(db.createGuideline).not.toHaveBeenCalled();
+        expect(db.upsertTopicKnowledge).toHaveBeenCalled();
+    });
+});
