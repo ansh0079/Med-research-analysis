@@ -26,6 +26,18 @@ const REAL_BODIES = [
     'NICE', 'WHO', 'ESC', 'AHA/ACC', 'ADA', 'EULAR', 'KDIGO', 'ESICM', 'IDSA', 'NCCN',
     'ESMO', 'ERS', 'CDC', 'ATS', 'NIH', 'ACG', 'SIGN', 'AASLD', 'EASL', 'AGA Institute',
     'IPNA', 'Endocrine Society', 'European Academy of Neurology', 'American College of Radiology',
+    // Added from the 2026-09-10 bulk discovery run across 174 previously
+    // zero-guideline topics. These are the spelled-out forms that actually
+    // appeared -- an acronym already on the list (AAP, SOGC, USPSTF, ATS,
+    // IDSA, ACR, AAN, ASCO, ERS) does not also match its own name in full.
+    'Surviving Sepsis Campaign', 'American College of Chest Physicians', 'American Thoracic Society',
+    'Infectious Diseases Society of America', 'American College of Rheumatology',
+    'American Academy of Neurology', 'International Society for Peritoneal Dialysis',
+    'Canadian Thoracic Society', 'American Thyroid Association', 'American Society of Nephrology',
+    'American College of Physicians', 'American Academy of Pediatrics',
+    'US Preventive Services Task Force', 'Society of Obstetricians and Gynaecologists of Canada',
+    'American Society for Gastrointestinal Endoscopy', 'European Stroke Organisation',
+    'European Respiratory Society', 'American Society of Clinical Oncology',
 ];
 
 // Also all real values from that column -- journals, labels and placeholders.
@@ -35,6 +47,14 @@ const NOT_BODIES = [
     'The Cochrane database of systematic reviews', 'British journal of haematology',
     'British journal of cancer', 'Critical care (London, England)',
     'Journal of neurology, neurosurgery, and psychiatry', 'Journal of personalized medicine',
+    // From the 2026-09-10 bulk run: journal titles the extraction prompt copied
+    // wholesale as source_body (see "if unclear, use the journal name" in
+    // guidelineService.js's extraction prompt) -- some embed a real society's
+    // name as their own subtitle, which is exactly why this must stay a
+    // literal-substring check on the whole value rather than "contains a real
+    // body's name somewhere in it".
+    'Nefrologia : publicacion oficial de la Sociedad Espanola Nefrologia',
+    'Infectious diseases now', 'Revue medicale de Liege', 'Acta medica portuguesa',
 ];
 
 describe('GUIDELINE_BODY', () => {

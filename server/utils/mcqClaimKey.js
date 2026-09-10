@@ -57,6 +57,22 @@ const GUIDELINE_BODY = new RegExp(`\\b(?:${[
     // already listed above, plus IPNA which was missing entirely. Chosen from
     // the actual distribution of topic_guidelines.source_body, not guessed.
     'IPNA', 'Endocrine Society', 'European Academy of Neurology', 'American College of Radiology',
+    // Added 2026-09-10 from a bulk guideline-discovery run across 174
+    // previously zero-guideline topics. Matching is literal-substring, so an
+    // acronym already on this list (AAP, SOGC, USPSTF, ATS, IDSA, ACR, AAN,
+    // ASCO, ERS) does not also match its own name spelled out in full -- these
+    // are the spelled-out forms that actually appeared, plus bodies with no
+    // form on the list at all (Surviving Sepsis Campaign, ACCP, the two
+    // thoracic/nephrology/rheumatology societies below). Each verified against
+    // the run's real source_body strings, not guessed.
+    'Surviving Sepsis Campaign', 'American College of Chest Physicians', 'American Thoracic Society',
+    'Infectious Diseases Society of America', 'American College of Rheumatology',
+    'American Academy of Neurology', 'International Society for Peritoneal Dialysis',
+    'Canadian Thoracic Society', 'American Thyroid Association', 'American Society of Nephrology',
+    'American College of Physicians', 'American Academy of Pediatrics',
+    'US Preventive Services Task Force', 'Society of Obstetricians and Gynaecologists of Canada',
+    'American Society for Gastrointestinal Endoscopy', 'European Stroke Organisation',
+    'European Respiratory Society', 'American Society of Clinical Oncology',
 ].join('|')})\\b`, 'i');
 
 function hash(seed) {

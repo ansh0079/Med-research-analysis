@@ -1,4 +1,4 @@
-const { GUIDELINE_BODY } = require('../utils/mcqClaimKey');
+const { isIssuingBodyValue } = require('../utils/guidelineAttribution');
 const { TRUSTED_GUIDELINE_SOURCES } = require('../config/trustedGuidelineSources');
 const { discoverGuidelinesForTopic, isDiscoveryInFlight, wasDiscoveryAttempted } = require('../services/guidelineService');
 const { getSharedAiService } = require('../services/aiService');
@@ -104,13 +104,18 @@ function registerGuidelineRoutes(app, { db, serverConfig, cache, rateLimit, requ
      * a guideline count up front, where a journal masquerading as NICE or EASL
      * directly misleads the clinical judgement the product exists to inform.
      *
-     * GUIDELINE_BODY is the same curated list used to decide whether an MCQ may
-     * be labelled "guideline" -- reused rather than duplicated so the two cannot
-     * drift apart.
+     * isIssuingBodyValue wraps the same curated GUIDELINE_BODY list used to
+     * decide whether an MCQ may be labelled "guideline" -- reused rather than
+     * duplicated so the two cannot drift apart. Go through the wrapper, not
+     * GUIDELINE_BODY.test() directly: GUIDELINE_BODY is matched case-insensitively
+     * and several entries are ordinary English words (WHO, SIGN, GOLD, ASH), so a
+     * raw case-blind test reads an issuing body out of "who should be treated" or
+     * out of "Aga Khan University Hospital" in a journal name. The wrapper only
+     * accepts a short acronym when it is actually capitalised.
      */
     const withIssuingBodyFlag = (g) => ({
         ...g,
-        isIssuingBody: GUIDELINE_BODY.test(String(g?.sourceBody || '')),
+        isIssuingBody: isIssuingBodyValue(g?.sourceBody),
     });
 
     app.get('/api/guidelines', rateLimit(60, 60), async (req, res) => {

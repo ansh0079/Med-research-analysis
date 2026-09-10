@@ -4,7 +4,8 @@ const crypto = require('crypto');
 const { createBudgetForAction, runWithLlmBudget } = require('../../services/llmRequestBudget');
 const { createQuizGenerationService } = require('../../services/quizGenerationService');
 const { canonicalQuestionType } = require('../../utils/questionType');
-const { computeMcqClaimKey, GUIDELINE_BODY, hasSuspectFutureCitation } = require('../../utils/mcqClaimKey');
+const { computeMcqClaimKey, hasSuspectFutureCitation } = require('../../utils/mcqClaimKey');
+const { isIssuingBodyValue } = require('../../utils/guidelineAttribution');
 const { attachQuizGradingTokens, verifyQuizGradingToken, commitQuizAnswer } = require('../../services/quizGradingToken');
 
 function sendServiceResponse(res, result) {
@@ -161,7 +162,7 @@ function registerQuizRoutes(app, {
                     // client renders this field as a trust badge the user reads
                     // literally ("Guideline" vs "Evidence").
                     const isRealGuideline = row.object_type === 'guideline_mcq'
-                        && GUIDELINE_BODY.test(String(q.guidelineRef || ''));
+                        && isIssuingBodyValue(q.guidelineRef);
                     allMcqs.push({
                         id: `pool_${stableHash}`,
                         topic: row.topic,
