@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "token-savior-recall": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "token-savior-recall[mcp]",
+        "token-savior"
+      ],
+      "env": {
+        "WORKSPACE_ROOTS": "/workspace",
+        "TOKEN_SAVIOR_CLIENT": "cursor",
+        "TOKEN_SAVIOR_PROFILE": "optimized",
+        "TS_BASH_COMPACT": "1",
+        "TS_BASH_REWRITE": "1"
+      }
+    }
+  }
+}
