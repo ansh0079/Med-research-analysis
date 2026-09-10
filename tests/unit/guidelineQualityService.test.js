@@ -11,6 +11,9 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('KDIGO')).toBe(true);
         expect(isTrustedSource('ACC/AHA')).toBe(true);
         expect(isTrustedSource('ASAM')).toBe(true);
+        expect(isTrustedSource('AST IDCOP')).toBe(true);
+        expect(isTrustedSource('EHRA')).toBe(true);
+        expect(isTrustedSource('NCCN')).toBe(true);
         expect(isTrustedSource('Unknown Blog')).toBe(false);
     });
 

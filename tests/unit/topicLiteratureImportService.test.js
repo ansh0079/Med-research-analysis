@@ -6,6 +6,8 @@ const { rankGuidelinesForTopic } = require('../../server/utils/guidelineRelevanc
 const { isTrustedSource } = require('../../server/services/guidelineQualityService');
 const {
     classifyFinding,
+    splitLinkField,
+    splitReferenceField,
     expandPackRow,
     groundGuidelineForTopic,
     parseLiteratureJson,
@@ -91,6 +93,46 @@ describe('topicLiteratureImportService', () => {
 
         const grounded = groundGuidelineForTopic('antithrombotic therapy after tavr', ungrounded);
         expect(rankGuidelinesForTopic('antithrombotic therapy after tavr', [grounded]).length).toBeGreaterThan(0);
+    });
+
+    test('splits jammed DOI links and mashed references from Word tables', () => {
+        expect(splitLinkField('https://doi.org/10.1056/NEJMoa1208410https://doi.org/10.1093/eurheartj/ehx393')).toEqual([
+            'https://doi.org/10.1056/NEJMoa1208410',
+            'https://doi.org/10.1093/eurheartj/ehx393',
+        ]);
+        const refs = splitReferenceField('Thiele, H., et al. (2012). Intraaortic Balloon Support. NEJM, 367, 1287-1296.Ibanez, B., et al. (2018). 2017 ESC Guidelines. European Heart Journal, 39(2), 119-177.');
+        expect(refs).toHaveLength(2);
+        expect(refs[1]).toMatch(/Ibanez/);
+    });
+
+    test('loads the checked-in batch-2 literature pack', () => {
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-2.json');
+        expect(fs.existsSync(packPath)).toBe(true);
+        const rows = parseLiteratureFile(packPath);
+        expect(rows).toHaveLength(10);
+        expect(rows.map((row) => row.topic)).toEqual(expect.arrayContaining([
+            'bk polyomavirus nephropathy in kidney transplant',
+            'cardiorenal syndrome ultrafiltration',
+        ]));
+        const shock = rows.find((row) => /cardiogenic shock/i.test(row.topic));
+        const items = expandPackRow(shock);
+        expect(items.length).toBeGreaterThanOrEqual(2);
+        expect(items.some((item) => item.kind === 'guideline')).toBe(true);
+        expect(items.some((item) => /10\.1056\/NEJMoa1208410/i.test(item.doi || item.url))).toBe(true);
+        expect(items.some((item) => /10\.1093\/eurheartj\/ehx393/i.test(item.doi || item.url))).toBe(true);
+    });
+
+    test('imports AST BK nephropathy guideline as trusted and servable', async () => {
+        const db = makeDb();
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-2.json');
+        const row = parseLiteratureFile(packPath).find((item) => /bk polyomavirus/i.test(item.topic));
+        const result = await importTopicLiterature(db, row);
+        expect(result.guidelineCount).toBe(1);
+        expect(result.trustedGuidelineCount).toBe(1);
+        expect(result.servableGuidelineCount).toBe(1);
+        expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
+            sourceBody: 'AST',
+        }));
     });
 
     test('loads the checked-in batch-1 literature pack', () => {

@@ -1,0 +1,69 @@
+{
+  "packId": "clinical-topics-batch-2",
+  "title": "Curated literature for guideline-gap topics 11-20",
+  "sourceFiles": [
+    "next_10-20.docx"
+  ],
+  "topics": [
+    {
+      "topic": "bk polyomavirus nephropathy in kidney transplant",
+      "findings": "• Clinical Guideline: The American Society of Transplantation Infectious Diseases Community of Practice (AST IDCOP) recommends routine screening for BK polyomavirus DNAemia in kidney transplant recipients. The cornerstone of therapy for BK polyomavirus-associated nephropathy (BKPyVAN) is the stepwise reduction of immunosuppression (Hirsch et al., 2019).",
+      "links": "https://doi.org/10.1111/ajt.15394",
+      "references": "Hirsch, H. H., et al. (2019). BK polyomavirus in solid organ transplantation. American Journal of Transplantation, 19(S2), 211-225."
+    },
+    {
+      "topic": "borderline personality disorder dialectical behavior therapy",
+      "findings": "• Cochrane Systematic Review: Dialectical behavior therapy (DBT) is recognized as one of the most effective psychotherapies for borderline personality disorder, specifically showing efficacy in reducing self-harm, suicidality, and improving general severity of BPD compared to treatment as usual (Storebø et al., 2020).",
+      "links": "https://doi.org/10.1002/14651858.CD012955.pub2",
+      "references": "Storebø, O. J., et al. (2020). Psychological therapies for people with borderline personality disorder. Cochrane Database of Systematic Reviews, (5)."
+    },
+    {
+      "topic": "c3 glomerulopathy and complement inhibition",
+      "findings": "• Clinical Guideline: The KDIGO 2021 Guidelines for Glomerular Diseases detail that C3 glomerulopathy is driven by alternative complement pathway dysregulation. While optimal therapy is still evolving, initial management involves supportive care (ACEi/ARB) and MMF. Complement inhibitors (e.g., eculizumab) may be considered in rapidly progressive or refractory cases, although evidence is currently based on case series and small trials (Rovin et al., 2021).",
+      "links": "https://doi.org/10.1016/j.kint.2021.05.021",
+      "references": "Rovin, B. H., et al. (2021). KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases. Kidney International, 100(4), S1-S276."
+    },
+    {
+      "topic": "cabg versus pci multivessel coronary disease",
+      "findings": "• Clinical Guideline: The 2021 ACC/AHA/SCAI Coronary Artery Revascularization guideline recommends CABG over PCI for patients with multivessel coronary artery disease and complex anatomy or diabetes, as CABG confers a survival advantage and reduces the need for repeat revascularization in these cohorts (Lawton et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001038",
+      "references": "Lawton, J. S., et al. (2022). 2021 ACC/AHA/SCAI Guideline for Coronary Artery Revascularization. Circulation, 145(3), e18-e114."
+    },
+    {
+      "topic": "car t therapy large b cell lymphoma",
+      "findings": "• Consensus Guidelines: The ASTCT and NCCN guidelines endorse CD19-directed CAR T-cell therapies (such as axicabtagene ciloleucel or tisagenlecleucel) for relapsed or refractory diffuse large B-cell lymphoma (DLBCL) after two or more lines of systemic therapy, and recently as second-line therapy for primary refractory disease (Locke et al., 2022; NCCN, 2023).",
+      "links": "https://doi.org/10.1056/NEJMoa2116596",
+      "references": "Locke, F. L., et al. (2022). Axicabtagene Ciloleucel as Second-Line Therapy for Large B-Cell Lymphoma. New England Journal of Medicine, 386(7), 640-654. (ZUMA-7 trial informing recent guidelines)."
+    },
+    {
+      "topic": "cardiac implantable electronic device infection",
+      "findings": "• International Consensus: The 2020 EHRA international consensus document provides strict guidelines on the management of CIED infections, emphasizing complete system extraction (both generator and leads) and prolonged targeted antimicrobial therapy as the standard of care for definitive pocket or systemic infections (Blomström-Lundqvist et al., 2020).",
+      "links": "https://doi.org/10.1093/europace/euaa010",
+      "references": "Blomström-Lundqvist, C., et al. (2020). European Heart Rhythm Association (EHRA) international consensus document on how to prevent, diagnose, and treat cardiac implantable electronic device infections. EP Europace, 22(4), 515-549."
+    },
+    {
+      "topic": "cardiac myosin activator therapy in hfref",
+      "findings": "• Clinical Guideline Update: The 2022 AHA/ACC/HFSA Heart Failure guidelines recognize the emerging role of omecamtiv mecarbil, a novel selective cardiac myosin activator. Based on the GALACTIC-HF trial, it may be considered to reduce heart failure hospitalizations in select HFrEF patients who remain symptomatic despite guideline-directed medical therapy (Heidenreich et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001063",
+      "references": "Heidenreich, P. A., et al. (2022). 2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure. Circulation, 145(18), e895-e1032."
+    },
+    {
+      "topic": "cardiac resynchronization therapy in heart failure",
+      "findings": "• Clinical Guideline: The 2021 ESC Guidelines strongly recommend Cardiac Resynchronization Therapy (CRT) for symptomatic heart failure patients in sinus rhythm with an LVEF ≤ 35%, QRS duration ≥ 150 ms, and LBBB morphology, as it significantly improves symptoms, reduces hospitalization, and increases survival (Glikson et al., 2021).",
+      "links": "https://doi.org/10.1093/eurheartj/ehab364",
+      "references": "Glikson, M., et al. (2021). 2021 ESC Guidelines on cardiac pacing and cardiac resynchronization therapy. European Heart Journal, 42(35), 3427-3520."
+    },
+    {
+      "topic": "cardiogenic shock intra aortic balloon pump and revascularization",
+      "findings": "• Clinical Guideline / RCT: Based heavily on the IABP-SHOCK II trial which showed no mortality benefit, major guidelines (e.g., ESC, ACC/AHA) now explicitly recommend against the routine use of intra-aortic balloon pump (IABP) counterpulsation in patients with cardiogenic shock complicating acute myocardial infarction undergoing early revascularization (Thiele et al., 2012; Ibanez et al., 2018).",
+      "links": "https://doi.org/10.1056/NEJMoa1208410https://doi.org/10.1093/eurheartj/ehx393",
+      "references": "Thiele, H., et al. (2012). Intraaortic Balloon Support for Myocardial Infarction with Cardiogenic Shock. NEJM, 367, 1287-1296.Ibanez, B., et al. (2018). 2017 ESC Guidelines for the management of acute myocardial infarction in patients presenting with ST-segment elevation. European Heart Journal, 39(2), 119-177."
+    },
+    {
+      "topic": "cardiorenal syndrome ultrafiltration",
+      "findings": "• Clinical Guideline / RCT: Ultrafiltration is considered a secondary therapy. The CARRESS-HF trial demonstrated that stepped pharmacologic therapy with diuretics is superior to ultrafiltration for preserving renal function and achieved similar weight loss in patients with acute decompensated heart failure and worsened renal function. Guidelines reserve ultrafiltration for cases of diuretic resistance (Bart et al., 2012; Heidenreich et al., 2022).",
+      "links": "https://doi.org/10.1056/NEJMoa1210357",
+      "references": "Bart, B. A., et al. (2012). Ultrafiltration in Decompensated Heart Failure with Cardiorenal Syndrome (CARRESS-HF). New England Journal of Medicine, 367, 2296-2304."
+    }
+  ]
+}

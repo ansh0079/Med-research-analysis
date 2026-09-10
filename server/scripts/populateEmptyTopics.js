@@ -34,11 +34,19 @@ const {
 } = require('../services/topicLiteratureImportService');
 
 const ROOT = path.join(__dirname, '../..');
-const DEFAULT_PACK = path.join(ROOT, 'server/data/literature-packs/clinical-topics-batch-1.json');
+const DEFAULT_PACK_DIR = path.join(ROOT, 'server/data/literature-packs');
 const DEFAULT_GAPS = [
     path.join(ROOT, 'server/data/topic-gaps/active-topics-no-guideline-no-paper.csv'),
     path.join(ROOT, 'server/data/topic-gaps/cohort-174-no-recognised-servable-guideline.csv'),
 ];
+
+function defaultLiteraturePacks() {
+    if (!fs.existsSync(DEFAULT_PACK_DIR)) return [];
+    return fs.readdirSync(DEFAULT_PACK_DIR)
+        .filter((name) => name.endsWith('.json'))
+        .sort()
+        .map((name) => path.join(DEFAULT_PACK_DIR, name));
+}
 
 function parseArgs(argv) {
     const opts = {
@@ -73,8 +81,8 @@ function parseArgs(argv) {
             opts.force = true;
         }
     }
-    if (!opts.literature.length && fs.existsSync(DEFAULT_PACK)) {
-        opts.literature.push(DEFAULT_PACK);
+    if (!opts.literature.length) {
+        opts.literature.push(...defaultLiteraturePacks());
     }
     if (!opts.gaps.length) {
         opts.gaps.push(...DEFAULT_GAPS.filter((file) => fs.existsSync(file)));
@@ -248,4 +256,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = { parseArgs, loadGapTopics, main };
+module.exports = { parseArgs, loadGapTopics, defaultLiteraturePacks, main };

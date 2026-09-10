@@ -17,7 +17,7 @@ const { mergeSourceArticles } = require('./flagshipTopicOps');
 const { resolveTrustedSource } = require('./guidelineQualityService');
 const { rankGuidelinesForTopic, scoreGuidelineForTopic } = require('../utils/guidelineRelevance');
 
-const GUIDELINE_KIND_RE = /\b(clinical guidelines?|practice guideline|consensus(?: guidelines?)?|evidence-based guideline|appropriate use recommendations?|aur)\b/i;
+const GUIDELINE_KIND_RE = /\b(clinical guidelines?|practice guideline|guideline update|international consensus|consensus(?: guidelines?)?|evidence-based guideline|appropriate use recommendations?|aur)\b/i;
 const PAPER_KIND_RE = /\b(meta-analysis|systematic review|network meta-analysis|randomi[sz]ed|rct|trial|cohort)\b/i;
 const DOI_RE = /10\.\d{4,9}\/[-._;()/:A-Z0-9]+/ig;
 const PMID_RE = /pubmed\.ncbi\.nlm\.nih\.gov\/(\d+)/i;
@@ -36,6 +36,19 @@ function splitLines(value) {
         .split(/\r?\n|•|▪|·/)
         .map((line) => line.replace(/^\s*[-*]\s*/, '').trim())
         .filter(Boolean);
+}
+
+function splitLinkField(value) {
+    const raw = String(value || '');
+    const urls = raw.split(/(?=https?:\/\/)/i).map((part) => part.trim()).filter((part) => /^https?:\/\//i.test(part));
+    if (urls.length) return urls;
+    return extractDois(raw).map((doi) => `https://doi.org/${doi}`);
+}
+
+function splitReferenceField(value) {
+    const raw = String(value || '')
+        .replace(/(\d)\.([A-Z][A-Za-zÀ-ÿ'’-]+,\s+[A-Z])/g, '$1.\n$2');
+    return splitLines(raw);
 }
 
 function parseCsv(text) {
@@ -196,8 +209,8 @@ function parseLiteratureFile(filePath) {
 
 function expandPackRow(row) {
     const findings = splitLines(row.findings).map(classifyFinding).filter(Boolean);
-    const links = splitLines(row.links);
-    const references = splitLines(row.references);
+    const links = splitLinkField(row.links);
+    const references = splitReferenceField(row.references);
     const dois = extractDois([row.links, row.references, row.findings].join('\n'));
     const items = [];
 
@@ -482,6 +495,8 @@ module.exports = {
     parseGapCsv,
     parseLiteratureFile,
     classifyFinding,
+    splitLinkField,
+    splitReferenceField,
     expandPackRow,
     groundGuidelineForTopic,
     isServableGuideline,
