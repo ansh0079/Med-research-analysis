@@ -27,6 +27,8 @@ const { createAiService, PINNED_MODELS } = require('../services/aiService');
 const { safeFetch } = require('../utils/fetch');
 const { loadFlagshipConfig } = require('../services/flagshipTopicOps');
 const { collectTopicReadiness } = require('../services/topicReadinessService');
+const { discoverGuidelinesForTopic } = require('../services/guidelineService');
+const { isIssuingBodyValue } = require('../utils/guidelineAttribution');
 
 const CLAUDE_MODEL = PINNED_MODELS.claude;
 
@@ -57,7 +59,6 @@ function normalizeTopic(t) {
 // ─── PubMed helpers ───────────────────────────────────────────────────────────
 
 const PUBMED_EFETCH = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi';
-const PUBMED_ESEARCH = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi';
 
 async function fetchAbstracts(pmids) {
     if (!pmids.length) return [];
@@ -83,15 +84,6 @@ async function fetchAbstracts(pmids) {
         if (pmid && (title || abstract)) papers.push({ pmid, title, abstract, journal, year });
     }
     return papers;
-}
-
-async function pubmedSearchGuidelines(query) {
-    const guidelineQuery = `(${query}) AND (practice guideline[pt] OR guideline[ti] OR systematic review[pt] OR meta-analysis[pt])`;
-    const url = `${PUBMED_ESEARCH}?db=pubmed&term=${encodeURIComponent(guidelineQuery)}&retmax=6&sort=relevance&retmode=json`;
-    const res = await safeFetch(url, { timeout: 15000 });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return data?.esearchresult?.idlist || [];
 }
 
 // ─── AI helpers ───────────────────────────────────────────────────────────────
@@ -144,7 +136,7 @@ Return ONLY the JSON array. No markdown fences.`;
 async function generateGuidelineMCQs({ callClaude }, topicName, guidelines) {
     if (!guidelines.length) return [];
     const guidelineSummary = guidelines.slice(0, 5).map((g, i) =>
-        `${i + 1}. ${g.title || topicName} (${g.year || ''}): ${(g.recommendations || []).slice(0, 2).map((r) => r.text || r).join('; ')}`
+        `${i + 1}. ${g.sourceBody} (${g.sourceYear || ''}, ${g.sourceUrl || ''}): ${g.recommendationText}`
     ).join('\n');
 
     const prompt = `You are a medical education expert. Generate 3 high-quality multiple-choice questions based on these guidelines for "${topicName}".
@@ -156,8 +148,8 @@ Return a JSON array of MCQ objects:
 [
   {
     "question": "Clinical question stem (1-2 sentences)",
-    "options": { "A": "option", "B": "option", "C": "option", "D": "option" },
-    "correct": "A",
+    "options": ["A: option", "B: option", "C: option", "D: option"],
+    "correctAnswer": "A",
     "explanation": "Why correct (≤200 chars, cite the guideline)"
   }
 ]
@@ -168,34 +160,20 @@ Return ONLY the JSON array.`;
         try {
             const text = await callClaude(prompt, CLAUDE_MODEL, { maxOutputTokens: 1200, temperature: 0.3, jsonMode: attempt === 2 });
             const parsed = parseJsonArray(text);
-            if (parsed && parsed.length) return parsed.filter((q) => q.question && q.options && q.correct).slice(0, 4);
+            if (parsed && parsed.length) {
+                return parsed.filter((q) =>
+                    typeof q.question === 'string' && q.question.trim() &&
+                    Array.isArray(q.options) && q.options.length === 4 &&
+                    q.options.every((opt, i) => typeof opt === 'string' && opt.startsWith(`${'ABCD'[i]}:`) && opt.slice(2).trim()) &&
+                    /^[A-D]$/.test(q.correctAnswer || '') && typeof q.explanation === 'string' && q.explanation.trim()
+                ).slice(0, 4);
+            }
         } catch (e) {
             if (attempt === 2) console.warn(`    ⚠ MCQ generation failed: ${e.message}`);
         }
         if (attempt < 2) await sleep(500);
     }
     return [];
-}
-
-async function extractGuidelineRecommendations({ callClaude }, papers, topicName) {
-    if (!papers.length) return [];
-    const text = papers.map((p) => `Title: ${p.title}\nAbstract: ${p.abstract}`).join('\n\n---\n\n');
-    const prompt = `Extract the key clinical practice recommendations for "${topicName}" from these papers.
-
-${text.slice(0, 3000)}
-
-Return JSON array:
-[{"recommendation": "Specific actionable recommendation", "strength": "strong|moderate|weak", "source": "paper title or PMID"}]
-
-Return ONLY the JSON array.`;
-
-    try {
-        const raw = await callClaude(prompt, CLAUDE_MODEL, { maxOutputTokens: 600, temperature: 0.2 });
-        const parsed = parseJsonArray(raw);
-        return (parsed || []).filter((r) => r.recommendation).slice(0, 6);
-    } catch {
-        return [];
-    }
 }
 
 // ─── JSON parser (lenient) ────────────────────────────────────────────────────
@@ -290,46 +268,19 @@ async function enrichTopic(aiService, flagship, currentTier) {
     // ── Step 2: Guideline enrichment (guidelines + MCQ teaching object) ────────
     const guidelineObjectKey = `guideline-mcq:${topicName.replace(/\s+/g, '-').slice(0, 60)}`;
     const existingGuideline = await db.getTeachingObjectByKey(guidelineObjectKey).catch(() => null);
-    const existingGuidelineRows = await db.getGuidelinesByTopic(topicName, { limit: 3 }).catch(() => []);
+    const existingGuidelineRows = (await db.getGuidelinesByTopic(topicName, { limit: 100 }))
+        .filter((g) => isIssuingBodyValue(g.sourceBody) && g.recommendationText);
 
     if (!FORCE && existingGuideline && existingGuidelineRows.length >= 1) {
         console.log(`  [skip] guideline MCQ TO already exists (${existingGuidelineRows.length} guidelines)`);
     } else {
-        // Search for guidelines
-        const coreQuery = QUERY_OVERRIDE || topicName.split(':')[0].trim();
-        console.log(`  Searching PubMed guidelines for: ${coreQuery}...`);
-        let guidelinePmids = [];
-        try {
-            guidelinePmids = await pubmedSearchGuidelines(coreQuery);
-        } catch (e) {
-            console.warn(`  ⚠ PubMed guideline search failed: ${e.message}`);
-        }
-
         let guidelines = existingGuidelineRows;
-        if (guidelinePmids.length && !DRY_RUN) {
-            const gPapers = await fetchAbstracts(guidelinePmids.slice(0, 5)).catch(() => []);
-            const recommendations = await extractGuidelineRecommendations(aiService, gPapers, topicName);
-
-            for (const gp of gPapers.slice(0, 6)) {
-                const recs = recommendations.filter((r) =>
-                    !r.source || r.source.includes(gp.pmid) || gp.title.toLowerCase().includes((r.source || '').toLowerCase().slice(0, 20))
-                );
-                try {
-                    await db.createGuideline({
-                        topic: topicName,
-                        normalizedTopic: normalized,
-                        title: gp.title,
-                        year: Number(gp.year) || null,
-                        source: gp.journal || 'PubMed',
-                        pmid: gp.pmid,
-                        recommendations: recs.length
-                            ? recs
-                            : [{ text: `Evidence-based guidance for ${topicName}`, strength: 'moderate', pmid: gp.pmid }],
-                        status: 'active',
-                    });
-                } catch { /* ignore dupes */ }
-            }
-            guidelines = await db.getGuidelinesByTopic(topicName, { limit: 10 }).catch(() => []);
+        if (!DRY_RUN && !guidelines.length) {
+            await discoverGuidelinesForTopic(topicName, {
+                db, serverConfig, aiService, searchQuery: QUERY_OVERRIDE || topicName.split(':')[0].trim(),
+            });
+            guidelines = (await db.getGuidelinesByTopic(topicName, { limit: 100 }))
+                .filter((g) => isIssuingBodyValue(g.sourceBody) && g.recommendationText);
         }
 
         await sleep(400);
@@ -434,4 +385,5 @@ async function main() {
     await db.close();
 }
 
-main().catch((e) => { console.error(e); process.exit(1); });
+if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
+module.exports = { generateGuidelineMCQs };

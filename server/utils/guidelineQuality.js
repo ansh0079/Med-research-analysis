@@ -94,8 +94,16 @@ function assessGuidelineCandidate({ sourceBody, recommendationText } = {}) {
 }
 
 module.exports = {
+    isServableGuideline,
     NON_BODY_VALUES,
     isRejectedSourceBody,
     looksLikeScrapedAbstract,
     assessGuidelineCandidate,
 };
+
+function isServableGuideline(row) {
+    const text = String(row?.recommendation_text || '').trim();
+    if (text.length < 25) return false;
+    if (!assessGuidelineCandidate({ sourceBody: row?.source_body, recommendationText: text }).ok) return false;
+    return /(should|should not|recommend|recommended|recommends|must|initiate|consider|offer|avoid|do not|start|titrate|discontinue|prescribe|screen|monitor|refer|first-line|second-line|indicated|contraindicated)/i.test(text);
+}

@@ -123,13 +123,8 @@ async function main() {
             }
         }
 
-        // Also add stub entries for any PMIDs that returned no abstract (so count is correct)
-        for (const pmid of missingPmids) {
-            if (!existingPmids.has(pmid)) {
-                merged.push({ pmid, title: `PMID ${pmid}`, abstract: '', journal: '', year: '' });
-                existingPmids.add(pmid);
-            }
-        }
+        // Missing metadata stays missing and retryable; placeholders inflate readiness.
+        if (merged.length === existing.length) { skipped++; continue; }
 
         // UPDATE topic_knowledge.source_articles
         await db.kysely

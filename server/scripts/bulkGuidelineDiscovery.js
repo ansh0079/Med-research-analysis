@@ -25,6 +25,7 @@ const logger = require('../config/logger');
 const { getSharedAiService } = require('../services/aiService');
 const { safeFetch } = require('../utils/fetch');
 const { discoverGuidelinesForTopic } = require('../services/guidelineService');
+const { isIssuingBodyValue } = require('../utils/guidelineAttribution');
 
 const PAUSE_MS = Number(process.env.PAUSE_MS) || 1200;
 
@@ -43,7 +44,7 @@ async function main() {
     let done = 0;
     for (const topic of topics) {
         done += 1;
-        const before = await db.getGuidelinesByTopic(topic, { limit: 100 }).catch(() => []);
+        const before = await db.getGuidelinesByTopic(topic, { limit: 100 });
         let ok = true;
         try {
             await discoverGuidelinesForTopic(topic, { db, serverConfig, aiService });
@@ -51,22 +52,23 @@ async function main() {
             ok = false;
             logger.error({ err, topic }, 'bulk discovery: topic failed');
         }
-        const after = await db.getGuidelinesByTopic(topic, { limit: 100 }).catch(() => []);
+        const after = await db.getGuidelinesByTopic(topic, { limit: 100 });
+        const displayable = after.filter((g) => isIssuingBodyValue(g.sourceBody));
         const bodies = [...new Set(after.map((g) => g.sourceBody).filter(Boolean))];
         const gained = after.length - before.length;
-        results.push({ topic, before: before.length, after: after.length, gained, bodies: bodies.length, ok });
+        results.push({ topic, before: before.length, after: after.length, displayable: displayable.length, gained, bodies: bodies.length, ok });
         console.log(`[${done}/${topics.length}] ${ok ? 'ok  ' : 'FAIL'} +${gained >= 0 ? gained : 0} rows (${bodies.length} bodies) :: ${topic}`);
         await new Promise((r) => setTimeout(r, PAUSE_MS));
     }
 
     const totalGained = results.reduce((s, r) => s + Math.max(0, r.gained), 0);
-    const withAny = results.filter((r) => r.after > 0).length;
-    const stillZero = results.filter((r) => r.after === 0);
+    const withAny = results.filter((r) => r.displayable > 0).length;
+    const stillZero = results.filter((r) => r.displayable === 0);
     const failed = results.filter((r) => !r.ok);
 
     console.log('\n=== SUMMARY ===');
     console.log(`topics processed: ${results.length}`);
-    console.log(`now have >=1 guideline row: ${withAny}`);
+    console.log(`now have >=1 displayable guideline: ${withAny}`);
     console.log(`still zero: ${stillZero.length}`);
     console.log(`total rows gained: ${totalGained}`);
     console.log(`topic-level failures (exception thrown): ${failed.length}`);

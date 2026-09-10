@@ -1,6 +1,6 @@
 'use strict';
 
-const { assessGuidelineCandidate } = require('../../server/utils/guidelineQuality');
+const { isServableGuideline } = require('../../server/utils/guidelineQuality');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
 const { assessGuidelineQuality } = require('../../server/services/guidelineQualityService');
 
@@ -18,11 +18,6 @@ const { assessGuidelineQuality } = require('../../server/services/guidelineQuali
  * This gate is deliberately at the serving layer rather than in extraction: it applies
  * to the rows already stored, and cannot be bypassed by a future write path.
  */
-const RECOMMENDATION_VERB_RE =
-    /(should|should not|recommend|recommended|recommends|must|initiate|consider|offer|avoid|do not|start|titrate|discontinue|prescribe|screen|monitor|refer|first-line|second-line|indicated|contraindicated)/i;
-
-const MIN_RECOMMENDATION_LENGTH = 25;
-
 // Stop words that carry no topic-discriminating signal.
 const SCORE_STOP = new Set([
     'and','the','of','in','for','with','to','a','an','or','on','at','by','from','as','is','are','be',
@@ -76,17 +71,6 @@ function guidelineTermScore(row, topicWords) {
         else if (attribution.includes(w)) hits += 0.5;
     }
     return hits / topicWords.length;
-}
-
-function isServableGuideline(row) {
-    const text = String(row?.recommendation_text || '').trim();
-    if (text.length < MIN_RECOMMENDATION_LENGTH) return false;
-    // Rows already in the corpus predate the ingestion guard, so the same check
-    // has to run on read. 2,399 production rows are trial results filed with
-    // source_body "Clinical trial"; serving those under a Guidelines heading
-    // tells a clinician a single trial's outcome is guidance.
-    if (!assessGuidelineCandidate({ sourceBody: row?.source_body, recommendationText: text }).ok) return false;
-    return RECOMMENDATION_VERB_RE.test(text);
 }
 
 module.exports = (Sup) => class extends Sup {

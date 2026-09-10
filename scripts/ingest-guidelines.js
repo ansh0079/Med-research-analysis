@@ -26,6 +26,7 @@ const { fetchWithTimeout: fetch } = require('../server/utils/fetch');
 const { serverConfig } = require('../config');
 const { createAiService } = require('../server/services/ai/aiService');
 const { getProviderCandidates } = require('../server/utils/aiProvider');
+const { validateExtractedGuideline } = require('../server/utils/guidelineExtraction');
 
 // Inline version — avoids dependency on guidelineService export order
 async function callFirstHealthyProvider(aiService, srvConfig, prompt, label) {
@@ -48,34 +49,6 @@ const TOPIC_FILTER = process.env.INGEST_TOPIC_FILTER
     : null;
 
 const RECOMMENDATION_RE = /\b(should|should not|recommend|recommends|recommended|must|initiate|consider|offer|avoid|do not|start|titrate|discontinue|prescribe|screen|monitor|refer|first-line|second-line|indicated|contraindicated)\b/i;
-
-// Known guideline-body → canonical name mapping (add more as needed)
-const JOURNAL_TO_BODY = {
-    'Circulation': 'AHA/ACC',
-    'J Am Coll Cardiol': 'AHA/ACC',
-    'JACC': 'AHA/ACC',
-    'Eur Heart J': 'ESC',
-    'Lancet': 'Lancet',
-    'BMJ': 'BMJ',
-    'NEJM': 'AHA/ACC',
-    'N Engl J Med': 'NEJM',
-    'Chest': 'CHEST/ATS',
-    'Am J Respir Crit Care Med': 'ATS',
-    'Kidney Int': 'KDIGO',
-    'Diabetes Care': 'ADA',
-    'J Clin Endocrinol Metab': 'Endocrine Society',
-    'Ann Intern Med': 'ACP',
-    'Clin Infect Dis': 'IDSA',
-    'Gastroenterology': 'AGA',
-    'Gut': 'BSG',
-    'Hepatology': 'AASLD',
-    'Neurology': 'AAN',
-    'Stroke': 'AHA/ASA',
-    'Blood': 'ASH',
-    'J Allergy Clin Immunol': 'AAAAI',
-    'Rheumatology (Oxford)': 'BSR',
-    'Ann Rheum Dis': 'EULAR',
-};
 
 async function sleep(ms) {
     return new Promise(r => setTimeout(r, ms));
@@ -169,19 +142,6 @@ async function fetchPmcFullText(pmcid, ncbiKey, ncbiEmail) {
     }
 }
 
-function resolveSourceBody(rec, article) {
-    if (rec.sourceBody && rec.sourceBody !== article?.journal && !rec.sourceBody.includes('unknown')) {
-        return rec.sourceBody;
-    }
-    if (article?.journal) {
-        for (const [key, val] of Object.entries(JOURNAL_TO_BODY)) {
-            if (article.journal.includes(key)) return val;
-        }
-        return article.journal;
-    }
-    return rec.sourceBody || 'Unknown';
-}
-
 function buildExtractionPrompt(topic, articles) {
     const sections = articles.map((a, i) => {
         const src = a.fullText
@@ -199,7 +159,7 @@ Rules:
 - Do NOT extract background statements, definitions, epidemiology, or study descriptions.
 - Each recommendation must be a complete actionable clinical statement.
 - One article may yield multiple distinct recommendations.
-- Use the journal name to infer the issuing organization (e.g. "Circulation" → "AHA/ACC", "Eur Heart J" → "ESC").
+- Copy the issuing organization's name exactly from the supplied title or text, only when it explicitly issues or endorses the recommendation. Never infer it from the journal or a passing citation. Skip uncertain attribution.
 
 Return a JSON array (no markdown fences). Each element:
 {
@@ -290,7 +250,9 @@ async function ingestTopic(topicName, { aiService }) {
 
     let inserted = 0;
     let skippedByVerb = 0;
-    for (const rec of recs) {
+    for (const candidate of recs) {
+        const rec = validateExtractedGuideline(candidate, usable);
+        if (!rec) continue;
         if (!rec.recommendationText || !rec.sourceBody) continue;
         if (!RECOMMENDATION_RE.test(rec.recommendationText)) {
             skippedByVerb++;
@@ -298,8 +260,7 @@ async function ingestTopic(topicName, { aiService }) {
         }
         if (rec.recommendationText.trim().length < 25) { skippedByVerb++; continue; }
 
-        const articleForRec = articles.find(a => a.pmid === String(rec.pmid));
-        const sourceBody = resolveSourceBody(rec, articleForRec);
+        const sourceBody = rec.sourceBody;
 
         if (DRY_RUN) {
             console.log(`  [DRY] Would insert: [${sourceBody}] ${rec.recommendationText.slice(0, 80)}...`);

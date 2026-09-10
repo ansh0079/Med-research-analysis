@@ -6,6 +6,10 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "${ROOT}"
 
+# Serialize manual and automated recreates of the same named containers.
+exec 9>/var/lock/medsearch-deploy.lock
+flock -w 480 9 || { echo "Another deployment still holds the lock"; exit 1; }
+
 if [[ ! -f .env ]]; then
   echo "Missing .env — copy deploy/hetzner/env.example to .env and configure DOMAIN + secrets."
   exit 1
@@ -55,6 +59,8 @@ web_ok=0
 worker_ok=0
 for i in 1 2 3 4 5 6 7 8 9 10; do
   sleep 5
+  web_ok=0
+  worker_ok=0
   if docker exec medsearch-web wget -qO- http://127.0.0.1:3002/health > /dev/null 2>&1 \
     || curl -fsS "https://${DOMAIN}/health" > /dev/null 2>&1; then
     web_ok=1

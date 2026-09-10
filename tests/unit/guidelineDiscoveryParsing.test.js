@@ -25,7 +25,7 @@ function mockEsearchThenEfetch({ ids, efetchXml }) {
 }
 
 function buildAbstractXml(pmid) {
-    return `<PubmedArticle><PMID>${pmid}</PMID><ArticleTitle>Title ${pmid}</ArticleTitle>` +
+    return `<PubmedArticle><PMID>${pmid}</PMID><ArticleTitle>AHA ESC IDSA joint guideline ${pmid}</ArticleTitle>` +
         `<Title>Journal</Title><PubDate><Year>2024</Year></PubDate>` +
         `<AbstractText>This is a long enough abstract to pass the 50 character minimum length filter applied by the service.</AbstractText>` +
         `</PubmedArticle>`;
@@ -50,7 +50,7 @@ describe('discoverGuidelinesForTopic JSON parsing', () => {
         const db = makeDb();
         const aiService = {
             callText: jest.fn().mockResolvedValue(JSON.stringify([
-                { sourceBody: 'AHA', sourceYear: 2024, recommendationText: 'Do the thing.' },
+                { pmid: '211', sourceBody: 'AHA', sourceYear: 2024, recommendationText: 'Do the thing.' },
             ])),
         };
 
@@ -65,7 +65,7 @@ describe('discoverGuidelinesForTopic JSON parsing', () => {
         const db = makeDb();
         const aiService = {
             callText: jest.fn().mockResolvedValue(
-                '```json\n[{"sourceBody":"ESC","sourceYear":2023,"recommendationText":"Do it."}]\n```'
+                '```json\n[{"pmid":"212","sourceBody":"ESC","sourceYear":2023,"recommendationText":"Do it."}]\n```'
             ),
         };
 
@@ -106,7 +106,7 @@ describe('discoverGuidelinesForTopic JSON parsing', () => {
             callText: jest.fn().mockResolvedValue(JSON.stringify([
                 { sourceBody: 'NICE' },
                 { recommendationText: 'No source body given.' },
-                { sourceBody: 'IDSA', recommendationText: 'Valid one.' },
+                { pmid: '215', sourceBody: 'IDSA', recommendationText: 'Valid one.' },
             ])),
         };
 
@@ -146,7 +146,7 @@ describe('the empty-topic cache reflects what the model found, not what the DB w
         db.createGuideline = jest.fn().mockResolvedValue(undefined); // the exact bug
         const aiService = {
             callText: jest.fn().mockResolvedValue(JSON.stringify([
-                { sourceBody: 'IDSA', sourceYear: 2024, recommendationText: 'A real recommendation about treatment.' },
+                { pmid: '216', sourceBody: 'IDSA', sourceYear: 2024, recommendationText: 'A real recommendation about treatment.' },
             ])),
         };
 

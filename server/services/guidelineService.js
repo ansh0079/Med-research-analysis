@@ -4,6 +4,7 @@
 // ==========================================
 
 const { assessGuidelineCandidate } = require('../utils/guidelineQuality');
+const { validateExtractedGuideline } = require('../utils/guidelineExtraction');
 const { fetchWithTimeout: fetch } = require('../utils/fetch');
 const { PINNED_MODELS } = require('./aiService');
 const { z } = require('zod');
@@ -286,9 +287,10 @@ GUIDELINE PUBLICATIONS:
 ${articlesText}
 
 For each distinct recommendation found, extract it as a JSON object. Return a JSON array of objects with these fields:
-- "sourceBody": the issuing organization (e.g., "AHA/ACC", "ESC", "WHO", "NICE", "IDSA"). Infer from the journal, title, or abstract. If unclear, use the journal name.
+- "sourceBody": the issuing organization explicitly identified as issuing or endorsing this recommendation in the title or abstract. Copy its name exactly as written. Never infer an organization from the journal or from a passing citation to another guideline. If attribution is unclear, skip the recommendation.
 - "sourceYear": publication year (integer or null)
-- "sourceUrl": construct as "https://pubmed.ncbi.nlm.nih.gov/PMID/" using the article PMID
+- "pmid": the numeric PMID of the supplied source article, as a string
+- "sourceUrl": the article's PubMed URL; for PMID 123456 use "https://pubmed.ncbi.nlm.nih.gov/123456/" (never include a literal "PMID" path segment)
 - "recommendationText": the specific clinical recommendation (1-3 sentences, faithful to the source)
 - "recommendationStrength": strength/class if stated (e.g., "Class I", "Strong", "Grade A"), or null
 - "recommendationCertainty": level of evidence if stated (e.g., "Level A", "Moderate", "High"), or null
@@ -297,7 +299,7 @@ For each distinct recommendation found, extract it as a JSON object. Return a JS
 - "cautions": any caveats, contraindications, or warnings, or null
 
 Rules:
-- Extract ONLY recommendations explicitly stated or clearly implied in the abstracts — do not invent recommendations
+- Extract ONLY recommendations explicitly stated in the abstracts — do not invent recommendations
 - One article may contain multiple distinct recommendations — extract each separately
 - If an abstract contains no extractable recommendations, skip it
 - Return an empty array [] if no recommendations can be extracted
@@ -305,7 +307,7 @@ Rules:
 Return ONLY the JSON array, no markdown fences or surrounding text.`;
 }
 
-async function discoverGuidelinesForTopic(topic, { db, serverConfig, aiService }) {
+async function discoverGuidelinesForTopic(topic, { db, serverConfig, aiService, searchQuery = topic }) {
   const normalized = db.normalizeTopic(topic);
   if (_discoveryInFlight.has(normalized)) return _discoveryInFlight.get(normalized);
   const emptyAt = _discoveryEmpty.get(normalized);
@@ -315,7 +317,7 @@ async function discoverGuidelinesForTopic(topic, { db, serverConfig, aiService }
     try {
       const ncbiKey = serverConfig.keys.ncbi;
       const ncbiEmail = serverConfig.keys.ncbiEmail;
-      const summaries = await searchGuidelines(topic, ncbiKey, ncbiEmail);
+      const summaries = await searchGuidelines(searchQuery, ncbiKey, ncbiEmail);
       if (!summaries.length) {
         logger.info({ topic }, '[GuidelineDiscovery] No guideline publications found on PubMed');
         _discoveryEmpty.set(normalized, Date.now());
@@ -363,7 +365,9 @@ async function discoverGuidelinesForTopic(topic, { db, serverConfig, aiService }
       // for all of them). The emptiness cache below must reflect "the model
       // found nothing to write", not "a write's return value was falsy".
       let attempted = 0;
-      for (const rec of recommendations) {
+      for (const candidate of recommendations) {
+        const rec = validateExtractedGuideline(candidate, withAbstracts);
+        if (!rec) { rejected += 1; continue; }
         if (!rec.recommendationText || !rec.sourceBody) continue;
         // The model is asked to name the issuing body from a paper abstract and
         // will happily answer "Clinical trial" for a trial, or hand back a
@@ -428,6 +432,8 @@ function wasDiscoveryAttempted(topic, db) {
 }
 
 module.exports = {
+  fetchAbstracts,
+  buildGuidelineExtractionPrompt,
   parseAlignmentResponse,
   searchGuidelines,
   buildAlignmentPrompt,

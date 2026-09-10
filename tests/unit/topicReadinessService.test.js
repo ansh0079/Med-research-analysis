@@ -30,6 +30,16 @@ function createMockDb() {
 }
 
 describe('topicReadinessService', () => {
+    test('journal rows and background text cannot satisfy guideline readiness', async () => {
+        const db = createMockDb().set('curriculum', [{ id: 1, display_name: 'Sepsis' }])
+            .set('guidelines', [
+                { normalized_topic: 'sepsis', source_body: 'Journal of Medicine', recommendation_text: 'Consider antibiotics for suspected sepsis.' },
+                { normalized_topic: 'sepsis', source_body: 'NICE', recommendation_text: 'Sepsis is a life-threatening illness.' },
+            ]);
+        const report = await collectTopicReadiness(db);
+        expect(report.topics[0].counts.guidelines).toBe(0);
+        expect(report.topics[0].missing).toContain('guidelines');
+    });
     test('assigns readiness tiers from content counts', () => {
         expect(readinessTier({
             topicKnowledge: { id: 1 },
@@ -99,7 +109,7 @@ describe('topicReadinessService', () => {
                     updated_at: '2026-01-02T00:00:00.000Z',
                 },
             ])
-            .set('guidelines', [{ normalized_topic: 'sepsis', count: 1 }])
+            .set('guidelines', [{ normalized_topic: 'sepsis', source_body: 'NICE', recommendation_text: 'Consider antibiotics for suspected sepsis.' }])
             .set('teachingObjects', [{ normalized_topic: 'sepsis', total: 3, papers: 2, mcqs: 1 }])
             .set('claims', [{ normalized_topic: 'sepsis', count: 8 }]);
 
@@ -147,7 +157,7 @@ describe('topicReadinessService', () => {
             ])
             .set('guidelines', [{
                 normalized_topic: 'guideline-directed medical therapy for hfref',
-                count: 4,
+                source_body: 'NICE', recommendation_text: 'Consider medical therapy for HFrEF.',
             }])
             .set('teachingObjects', [{
                 normalized_topic: 'guideline-directed medical therapy for hfref',
@@ -164,7 +174,7 @@ describe('topicReadinessService', () => {
         const row = report.topics.find((t) => t.displayName === 'Guideline-directed medical therapy for HFrEF');
         expect(row.topicKnowledge).toBeTruthy();
         expect(row.counts.sourceArticles).toBe(3);
-        expect(row.counts.guidelines).toBe(4);
+        expect(row.counts.guidelines).toBe(1);
         expect(row.tier).toBe('flagship');
     });
 });

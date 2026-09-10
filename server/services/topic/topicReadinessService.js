@@ -1,6 +1,8 @@
 'use strict';
 
 const { resolveCanonicalNormalized } = require('../../utils/topicSynonyms');
+const { isIssuingBodyValue } = require('../../utils/guidelineAttribution');
+const { isServableGuideline } = require('../../utils/guidelineQuality');
 
 function safeJsonParse(value, fallback) {
     try {
@@ -137,10 +139,9 @@ async function collectTopicReadiness(db, {
              ORDER BY updated_at DESC`
         ).catch(() => []),
         db.all(
-            `SELECT normalized_topic, COUNT(*) AS count
+            `SELECT normalized_topic, source_body, recommendation_text
              FROM topic_guidelines
-             WHERE status != 'stale' AND superseded_by_id IS NULL
-             GROUP BY normalized_topic`
+             WHERE status != 'stale' AND superseded_by_id IS NULL`
         ).catch(() => []),
         db.all(
             `SELECT normalized_topic,
@@ -164,7 +165,12 @@ async function collectTopicReadiness(db, {
         ]),
     ]);
 
-    const guidelineByTopic = new Map(guidelineRows.map((row) => [String(row.normalized_topic || ''), Number(row.count || 0)]));
+    const guidelineByTopic = new Map();
+    for (const row of guidelineRows) {
+        if (!isIssuingBodyValue(row.source_body) || !isServableGuideline(row)) continue;
+        const key = String(row.normalized_topic || '');
+        guidelineByTopic.set(key, (guidelineByTopic.get(key) || 0) + 1);
+    }
     const teachingByTopic = new Map(teachingRows.map((row) => [String(row.normalized_topic || ''), {
         teachingObjects: Number(row.total || 0),
         paperObjects: Number(row.papers || 0),
