@@ -21,19 +21,20 @@ function buildSearchResultCacheKey({
     specificity = 'moderate',
     vectorEnabled = false,
     userId = null,
-    previousQueries = [],
+    sessionId = null,
     parsedStudyTypes = [],
     parsedYearFilters = [],
     queryIntentProfile = null,
 } = {}) {
+    // previousQueries are conversational context, not retrieval inputs — omit from the
+    // key so repeat searches of the same query/sources/intent can hit cache.
     return `search:result:${stableHash({
         query: String(query || '').trim().toLowerCase(),
         sourceList: normalizeArray(sourceList),
         safeLimit: Number(safeLimit) || 20,
         specificity,
         vectorEnabled: Boolean(vectorEnabled),
-        actor: userId ? `user:${userId}` : 'anon',
-        previousQueries: normalizeArray(previousQueries).slice(-5),
+        session: sessionId ? `session:${sessionId}` : (userId ? `user:${userId}` : 'anon'),
         parsedStudyTypes: normalizeArray(parsedStudyTypes),
         parsedYearFilters: normalizeArray(parsedYearFilters),
         intent: queryIntentProfile?.primaryIntent || null,

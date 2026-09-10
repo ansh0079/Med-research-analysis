@@ -5,7 +5,7 @@
 
 const { normalizePmid } = require('../../utils/articleKeys');
 const { articleFromOpenAlexWork } = require('../unifiedEvidenceSearch/openAlexMapper');
-const { fetchUnifiedEvidence } = require('../unifiedEvidenceSearch/fetchOrchestrator');
+const { fetchUnifiedEvidence, shouldReformulateQuery } = require('../unifiedEvidenceSearch/fetchOrchestrator');
 const { mergeAndRank } = require('../unifiedEvidenceSearch/rrfFusion');
 const { getEbmScore, isPreprint } = require('../unifiedEvidenceSearch/ebmScoring');
 const {
@@ -31,6 +31,7 @@ const { decomposePico } = require('../unifiedEvidenceSearch/llmQueryIntelligence
 module.exports = {
     articleFromOpenAlexWork,
     fetchUnifiedEvidence,
+    shouldReformulateQuery,
     mergeAndRank,
     getEbmScore,
     isPreprint,

@@ -102,6 +102,28 @@ describe('externalApiProxy', () => {
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
 
+    test('retries PubMed 503 then succeeds', async () => {
+      mockFetch
+        .mockResolvedValueOnce({ ok: false, status: 503 })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ esearchresult: { idlist: ['111'] } }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            result: {
+              111: { title: 'Recovered after 503', authors: [], pubdate: '2024', source: 'JAMA', articleids: [], pubtype: [] },
+            },
+          }),
+        });
+
+      const articles = await proxy.pubmedSearch('sepsis retry', { maxResults: 5 });
+      expect(articles).toHaveLength(1);
+      expect(articles[0].title).toBe('Recovered after 503');
+      expect(mockFetch.mock.calls.length).toBeGreaterThanOrEqual(2);
+    });
+
     test('includes api_key and email in PubMed URLs', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,

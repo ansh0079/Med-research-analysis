@@ -6,6 +6,21 @@ const { articleFromOpenAlexWork } = require('./openAlexMapper');
 const { reformulateQueryForPubMed } = require('./llmQueryIntelligence');
 const { appendPubMedPublicationFilters } = require('./pubmedFilters');
 
+const QUESTION_RE = /\b(does|how|what|why|which|can|is|are|should|when|where)\b/i;
+const LOW_RECALL_THRESHOLD = 3;
+
+/**
+ * Reformulate conversational or low-recall queries. Medical terms no longer veto.
+ */
+function shouldReformulateQuery({ query, resultCount = null, alreadyReformulated = false } = {}) {
+    if (alreadyReformulated) return false;
+    if (resultCount != null && Number(resultCount) < LOW_RECALL_THRESHOLD) return true;
+    const text = String(query || '').trim();
+    if (!text) return false;
+    const words = text.split(/\s+/).filter(Boolean);
+    return QUESTION_RE.test(text) || words.length > 6;
+}
+
 /**
  * @param {object} opts
  * @param {string} opts.query
@@ -23,17 +38,14 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
     const proxy = buildProxyService({ serverConfig, fetchImpl: f, cache, telemetry });
     const overallStart = Date.now();
 
-    // Phase 0: LLM query reformulation — converts natural language into a structured
-    // PubMed Boolean query with MeSH terms. Runs in parallel with MeSH lookup.
-    // Only fires for conversational queries (>4 words, contains question-like patterns).
-    // Skip reformulation if query already contains medical terminology to preserve precision.
-    const hasMedicalTerms = /\b(syndrome|disease|treatment|therapy|diagnosis|cardiac|pulmonary|renal|diabetes|hypertension|infection|cancer|trial|study|efficacy|management|pathophysiology)\b/i.test(query);
-    const isNaturalLanguageQuery = !hasMedicalTerms &&
-        process.env.NODE_ENV !== 'test' && (
-        query.split(/\s+/).length > 4 ||
-        /\b(does|how|what|why|which|can|is|are|should)\b/i.test(query)
-    );
-    const llmReformulationPromise = (isNaturalLanguageQuery && sourceList.includes('pubmed'))
+    // Phase 0: LLM query reformulation. Gate on question/low-recall signals,
+    // not the presence of medical terms (those used to skip "how should I manage
+    // septic shock" and other NL clinical queries).
+    const llmReformulationPromise = (
+        shouldReformulateQuery({ query })
+        && process.env.NODE_ENV !== 'test'
+        && sourceList.includes('pubmed')
+    )
         ? reformulateQueryForPubMed(query, specificity, serverConfig, f, cache, telemetry).catch(() => null)
         : Promise.resolve(null);
 
@@ -133,6 +145,49 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
                     if (dk) seen.add(dk);
                     merged.push(a);
                 }
+                if (merged.length < LOW_RECALL_THRESHOLD
+                    && shouldReformulateQuery({
+                        query,
+                        resultCount: merged.length,
+                        alreadyReformulated: Boolean(reformulatedQuery),
+                    })) {
+                    const repaired = await reformulateQueryForPubMed(
+                        query,
+                        specificity,
+                        serverConfig,
+                        f,
+                        cache,
+                        telemetry
+                    ).catch(() => null);
+                    if (repaired && repaired !== pubmedQueryBase) {
+                        const repairedQuery = appendPubMedPublicationFilters(
+                            repaired,
+                            specificity,
+                            parsedStudyTypes,
+                            parsedYearFilters
+                        );
+                        const repairedHits = await proxy.pubmedSearch(repairedQuery, { maxResults: safeLimit }).catch(() => []);
+                        if (Array.isArray(repairedHits) && repairedHits.length > merged.length) {
+                            if (telemetry && typeof telemetry === 'object') {
+                                telemetry.usedReformulatedQuery = true;
+                                telemetry.reformulation = {
+                                    reason: 'low_recall',
+                                    originalCount: merged.length,
+                                    repairedCount: repairedHits.length,
+                                    reformulatedQuery: repaired,
+                                };
+                            }
+                            merged.length = 0;
+                            seen.clear();
+                            for (const a of repairedHits) {
+                                const dk = dedupeKey(a);
+                                if (dk && seen.has(dk)) continue;
+                                if (dk) seen.add(dk);
+                                merged.push(a);
+                            }
+                        }
+                    }
+                }
                 if (merged.length === 0 && telemetry && typeof telemetry === 'object') {
                     telemetry.lowRecallLearning = {
                         query,
@@ -219,4 +274,6 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
 
 module.exports = {
     fetchUnifiedEvidence,
+    shouldReformulateQuery,
+    LOW_RECALL_THRESHOLD,
 };

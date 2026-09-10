@@ -20,6 +20,8 @@
 import {
   selectTopRerankedArticles,
   computeHeuristicScore,
+  rerankArticlesByPico,
+  buildPicoRerankCacheKey,
 } from '../server/services/articleReranker.js';
 
 // =============================================================================
@@ -304,6 +306,22 @@ async function runBenchmark({ adversarial = false } = {}) {
   if (llmOracleLeak) {
     console.error('🚨 Oracle-leak guard failed: non-informative LLM ranking beat heuristic on ground-truth metrics.');
   }
+  const cacheStore = new Map();
+  const cache = {
+    get: async (key) => cacheStore.get(key) || null,
+    set: async (key, value) => { cacheStore.set(key, value); },
+  };
+  const sample = LABELLED_QUERIES[0];
+  const pico = picoFor(sample);
+  const sampleArticles = sample.articles.map(toArticle);
+  const t1 = Date.now();
+  await rerankArticlesByPico(sampleArticles, pico, { ai: null, cache, serverConfig: {} });
+  const missMs = Date.now() - t1;
+  const t2 = Date.now();
+  await rerankArticlesByPico(sampleArticles, pico, { ai: null, cache, serverConfig: {} });
+  const hitMs = Date.now() - t2;
+  console.log(`\nPICO rerank cache: miss ${missMs}ms, hit ${hitMs}ms, key ${buildPicoRerankCacheKey(pico, sampleArticles)}`);
+
   console.log(`\nBenchmark ${passed ? 'PASSED' : 'FAILED'}`);
   return passed;
 }

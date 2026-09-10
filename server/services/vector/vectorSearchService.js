@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const { generateEmbedding, articleToEmbedText } = require('../../embeddings');
 const { getEmbeddingOptions: getKeys } = require('../embeddingOptions');
 
@@ -8,6 +9,55 @@ const EMBEDDING_DIM = 384;
 // The unified search route historically used 0.25 while standalone routes
 // defaulted to 0.4 — 0.25 is the right value for recall in the main pipeline.
 const DEFAULT_MIN_SCORE = Math.min(0.99, Math.max(0, parseFloat(process.env.VECTOR_SEARCH_MIN_SCORE || '0.25')));
+const QUERY_EMBEDDING_TTL_MS = 24 * 60 * 60 * 1000;
+const queryEmbeddingMemory = new Map();
+
+function normalizeQueryText(query) {
+    return String(query || '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function buildQueryEmbeddingCacheKey(query) {
+    return `embed:query:${crypto.createHash('sha1').update(normalizeQueryText(query)).digest('hex').slice(0, 24)}`;
+}
+
+function rememberQueryEmbedding(key, value) {
+    queryEmbeddingMemory.set(key, { value, expiresAt: Date.now() + QUERY_EMBEDDING_TTL_MS });
+}
+
+async function getCachedQueryEmbedding(cache, query) {
+    const key = buildQueryEmbeddingCacheKey(query);
+    const mem = queryEmbeddingMemory.get(key);
+    if (mem && mem.expiresAt > Date.now() && Array.isArray(mem.value)) return mem.value;
+    if (cache && typeof cache.get === 'function') {
+        try {
+            const hit = await cache.get(key);
+            if (Array.isArray(hit)) {
+                rememberQueryEmbedding(key, hit);
+                return hit;
+            }
+        } catch {
+            // cache miss / backend error — generate fresh
+        }
+    }
+    return null;
+}
+
+async function setCachedQueryEmbedding(cache, query, embedding) {
+    const key = buildQueryEmbeddingCacheKey(query);
+    rememberQueryEmbedding(key, embedding);
+    if (cache && typeof cache.set === 'function') {
+        try {
+            await cache.set(key, embedding, Math.floor(QUERY_EMBEDDING_TTL_MS / 1000));
+        } catch {
+            // in-memory cache still holds the value
+        }
+    }
+    return key;
+}
+
+function clearQueryEmbeddingCache() {
+    queryEmbeddingMemory.clear();
+}
 
 function normalizeVector(vec) {
     if (!Array.isArray(vec) || vec.length !== EMBEDDING_DIM) {
@@ -37,7 +87,7 @@ function blendEmbeddings(queryEmbedding, userEmbedding = null, { queryWeight = 0
  * @param {import('../../database')} deps.db
  * @param {import('../../config').serverConfig} deps.serverConfig
  */
-function createVectorSearchService({ db, serverConfig }) {
+function createVectorSearchService({ db, serverConfig, cache = null }) {
     async function findSimilarPapers(embedding, { limit = 10, minScore = DEFAULT_MIN_SCORE } = {}) {
         if (!db.isVectorSearchAvailable()) {
             const err = new Error('UNAVAILABLE');
@@ -67,7 +117,11 @@ function createVectorSearchService({ db, serverConfig }) {
             throw new Error('query is required');
         }
         const keys = getKeys(serverConfig);
-        const queryEmbedding = await generateEmbedding(query, keys);
+        let queryEmbedding = await getCachedQueryEmbedding(cache, query);
+        if (!queryEmbedding) {
+            queryEmbedding = await generateEmbedding(query, keys);
+            await setCachedQueryEmbedding(cache, query, queryEmbedding);
+        }
         const profileEmbedding = userEmbedding || (userProfileText
             ? await generateEmbedding(userProfileText, keys)
             : null);
@@ -126,6 +180,12 @@ module.exports = {
     createVectorSearchService,
     DEFAULT_MIN_SCORE,
     EMBEDDING_DIM,
+    QUERY_EMBEDDING_TTL_MS,
     normalizeVector,
     blendEmbeddings,
+    normalizeQueryText,
+    buildQueryEmbeddingCacheKey,
+    getCachedQueryEmbedding,
+    setCachedQueryEmbedding,
+    clearQueryEmbeddingCache,
 };
