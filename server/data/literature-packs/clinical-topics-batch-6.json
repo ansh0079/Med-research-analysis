@@ -1,0 +1,159 @@
+{
+  "packId": "clinical-topics-batch-6",
+  "title": "Curated literature for guideline-gap topics 76-100",
+  "sourceFiles": [
+    "next_75-100.docx"
+  ],
+  "topics": [
+    {
+      "topic": "noninfectious uveitis biologic therapy",
+      "findings": "• Clinical Guideline / Trial Data: Based on the VISUAL I and II trials, international guidelines (e.g., EULAR, AAO) recommend the TNF-alpha inhibitor adalimumab as a corticosteroid-sparing first-line biologic therapy for sight-threatening, non-infectious intermediate, posterior, and panuveitis (Jaffe et al., 2016).",
+      "links": "https://doi.org/10.1056/NEJMoa1509852",
+      "references": "Jaffe, G. J., et al. (2016). Adalimumab in Patients with Active Noninfectious Uveitis. New England Journal of Medicine, 375(10), 932-943."
+    },
+    {
+      "topic": "obsessive compulsive disorder ssri and erp",
+      "findings": "• Clinical Guideline: The American Psychiatric Association (APA) guidelines state that the optimal first-line treatment for OCD is a combination of Exposure and Response Prevention (ERP) therapy (a specific form of CBT) and high-dose Selective Serotonin Reuptake Inhibitors (SSRIs) (Koran et al., 2007; updated APA consensus).",
+      "links": "https://doi.org/10.1176/appi.ajp.2007.07081216",
+      "references": "Koran, L. M., et al. (2007). Practice guideline for the treatment of patients with obsessive-compulsive disorder. American Journal of Psychiatry, 164(7 Suppl), 5-53."
+    },
+    {
+      "topic": "opioid use disorder buprenorphine and methadone",
+      "findings": "• Clinical Guideline: The ASAM National Practice Guideline emphatically supports medications for opioid use disorder (MOUD) as the gold standard of care. Buprenorphine and methadone significantly reduce overdose mortality, illicit opioid use, and infectious disease transmission compared to abstinence-only models (ASAM, 2020).",
+      "links": "https://doi.org/10.1097/ADM.0000000000000633",
+      "references": "American Society of Addiction Medicine (ASAM). (2020). The ASAM National Practice Guideline for the Treatment of Opioid Use Disorder: 2020 Focused Update. Journal of Addiction Medicine, 14(2S), 1-91."
+    },
+    {
+      "topic": "outpatient parenteral antimicrobial therapy program safety",
+      "findings": "• Clinical Guideline: IDSA guidelines on OPAT emphasize the necessity of a structured multidisciplinary team, strict patient selection, and weekly laboratory monitoring (for toxicity and efficacy) to ensure safety and prevent hospital readmissions for patients receiving long-term IV antibiotics at home (Norris et al., 2019).",
+      "links": "https://doi.org/10.1093/cid/ciy745",
+      "references": "Norris, A. H., et al. (2019). 2018 IDSA Clinical Practice Guideline for the Management of Outpatient Parenteral Antimicrobial Therapy. Clinical Infectious Diseases, 68(1), e1-e35."
+    },
+    {
+      "topic": "panic disorder pharmacotherapy and cbt",
+      "findings": "• Clinical Guideline: APA guidelines recommend SSRIs, SNRIs, or Cognitive Behavioral Therapy (CBT) as initial treatments for panic disorder. Combining CBT with pharmacotherapy may yield the most durable outcomes, especially in preventing relapse after medication discontinuation (Katzman et al., 2014).",
+      "links": "https://doi.org/10.1186/1471-244X-14-S1-S1",
+      "references": "Katzman, M. A., et al. (2014). Canadian clinical practice guidelines for the management of anxiety, posttraumatic stress and obsessive-compulsive disorders. BMC Psychiatry, 14(Suppl 1), S1."
+    },
+    {
+      "topic": "parkinson disease motor complications",
+      "findings": "• Clinical Guideline: The Movement Disorder Society (MDS) recommends adjusting levodopa dosing frequency, or adding COMT inhibitors (entacapone), MAO-B inhibitors (rasagiline), or dopamine agonists to manage \"wearing-off.\" Amantadine is recommended as the first-line medical therapy for levodopa-induced dyskinesias (Fox et al., 2018).",
+      "links": "https://doi.org/10.1002/mds.27372",
+      "references": "Fox, S. H., et al. (2018). International Parkinson and movement disorder society evidence-based medicine review: Update on treatments for the motor symptoms of Parkinson's disease. Movement Disorders, 33(8), 1248-1266."
+    },
+    {
+      "topic": "penicillin allergy evaluation and delabeling",
+      "findings": "• Clinical Guideline: AAAAI/IDSA guidelines strongly advocate for proactive \"delabeling\" of unverified penicillin allergies. For low-risk patients (e.g., childhood rash), direct oral amoxicillin challenge is safe and reduces reliance on suboptimal, broad-spectrum, and costly alternative antibiotics (Shenoy et al., 2019).",
+      "links": "https://doi.org/10.1001/jama.2018.19283",
+      "references": "Shenoy, E. S., et al. (2019). Evaluation and Management of Penicillin Allergy: A Review. JAMA, 321(2), 188-199."
+    },
+    {
+      "topic": "perioperative bridging anticoagulation",
+      "findings": "• Clinical Guideline / RCT: Based on the BRIDGE trial, ACC and CHEST guidelines advise against bridging with parenteral heparins for patients with atrial fibrillation at low-to-moderate stroke risk who are pausing warfarin. Bridging increases major bleeding without significantly reducing thromboembolism. Patients on DOACs do not require bridging (Douketis et al., 2015).",
+      "links": "https://doi.org/10.1056/NEJMoa1506961",
+      "references": "Douketis, J. D., et al. (2015). Perioperative Bridging Anticoagulation in Patients with Atrial Fibrillation. New England Journal of Medicine, 373(9), 823-833."
+    },
+    {
+      "topic": "physiology guided pci fractional flow reserve",
+      "findings": "• Clinical Guideline: ACC/AHA guidelines give a strong recommendation for using fractional flow reserve (FFR) or instantaneous wave-free ratio (iFR) to assess intermediate coronary stenoses (40-90%). PCI of functionally significant lesions improves outcomes, while deferring non-significant lesions is safe (Lawton et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001038",
+      "references": "Lawton, J. S., et al. (2022). 2021 ACC/AHA/SCAI Guideline for Coronary Artery Revascularization. Circulation, 145(3), e18-e114."
+    },
+    {
+      "topic": "polycythemia vera hematocrit targets aspirin and cardiovascular risk reduction",
+      "findings": "• Clinical Guideline / RCT: The ELN guidelines and CYTO-PV trial confirm that maintaining hematocrit levels rigidly below 45% using phlebotomy and/or cytoreductive therapy (hydroxyurea), combined with low-dose aspirin, significantly reduces the rate of cardiovascular death and major thrombosis in polycythemia vera (Marchioli et al., 2013).",
+      "links": "https://doi.org/10.1056/NEJMoa1208500",
+      "references": "Marchioli, R., et al. (2013). Cardiovascular Events and Intensity of Treatment in Polycythemia Vera. New England Journal of Medicine, 368(1), 22-33."
+    },
+    {
+      "topic": "polymyalgia rheumatica relapse prevention",
+      "findings": "• Clinical Guideline: 2015 EULAR/ACR guidelines recommend gradual glucocorticoid tapering to prevent relapse in PMR. For patients at high risk of relapse or those experiencing significant steroid-related adverse events, the early introduction of methotrexate is recommended as a steroid-sparing agent (Dejaco et al., 2015).",
+      "links": "https://doi.org/10.1136/annrheumdis-2015-207492",
+      "references": "Dejaco, C., et al. (2015). 2015 Recommendations for the management of polymyalgia rheumatica: a European League Against Rheumatism/American College of Rheumatology collaborative initiative. Annals of the Rheumatic Diseases, 74(10), 1799-1807."
+    },
+    {
+      "topic": "primary biliary cholangitis pharmacotherapy",
+      "findings": "• Clinical Guideline: EASL and AASLD guidelines assert ursodeoxycholic acid (UDCA) as the first-line therapy for all patients with PBC. For patients with an inadequate biochemical response or intolerance to UDCA, the farnesoid X receptor agonist obeticholic acid (OCA) is recommended as second-line therapy (Lindor et al., 2018).",
+      "links": "https://doi.org/10.1002/hep.30145",
+      "references": "Lindor, K. D., et al. (2018). Primary Biliary Cholangitis: 2018 Practice Guidance from the American Association for the Study of Liver Diseases. Hepatology, 69(1), 394-419."
+    },
+    {
+      "topic": "primary immunodeficiency immunoglobulin replacement",
+      "findings": "• Practice Parameter: AAAAI/ACAAI guidelines detail that regular immunoglobulin (Ig) replacement therapy (administered intravenously or subcutaneously) is indicated for primary immunodeficiencies characterized by absent or deficient antibody production, aiming to prevent end-organ damage from recurrent bacterial infections (Perez et al., 2017).",
+      "links": "https://doi.org/10.1016/j.jaci.2017.04.029",
+      "references": "Perez, E. E., et al. (2017). Update on the use of immunoglobulin in human disease: A review of evidence. Journal of Allergy and Clinical Immunology, 139(3), S1-S46."
+    },
+    {
+      "topic": "primary prevention icd sudden cardiac death",
+      "findings": "• Clinical Guideline: ACC/AHA/HRS guidelines strongly recommend prophylactic Implantable Cardioverter-Defibrillator (ICD) placement for primary prevention of sudden cardiac death in patients with ischemic or non-ischemic cardiomyopathy, an LVEF ≤35%, and NYHA class II or III symptoms despite optimal medical therapy (Al-Khatib et al., 2018).",
+      "links": "https://doi.org/10.1016/j.jacc.2017.10.054",
+      "references": "Al-Khatib, S. M., et al. (2018). 2017 AHA/ACC/HRS Guideline for Management of Patients With Ventricular Arrhythmias and the Prevention of Sudden Cardiac Death. Journal of the American College of Cardiology, 72(14), e91-e220."
+    },
+    {
+      "topic": "primary sclerosing cholangitis medical therapy and surveillance",
+      "findings": "• Clinical Guideline: AASLD guidelines note there is no proven medical therapy to halt disease progression in PSC. Management focuses on dominant stricture dilation via ERCP and strict surveillance: annual colonoscopy for associated IBD (high colorectal cancer risk) and annual MRCP/CA 19-9 for cholangiocarcinoma (Bowlus et al., 2023).",
+      "links": "https://doi.org/10.1002/hep.32771",
+      "references": "Bowlus, C. L., et al. (2023). AASLD practice guidance on primary sclerosing cholangitis and cholangiocarcinoma. Hepatology, 77(2), 659-702."
+    },
+    {
+      "topic": "procalcitonin guided antibiotic de escalation in icu",
+      "findings": "• Clinical Guideline: The Surviving Sepsis Campaign suggests using procalcitonin levels, in conjunction with clinical assessment, to support the decision to shorten the duration of antimicrobial therapy in critically ill patients, though it should not substitute for clinical judgment regarding initial antibiotic initiation (Evans et al., 2021).",
+      "links": "https://doi.org/10.1097/CCM.0000000000005337",
+      "references": "Evans, L., et al. (2021). Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Critical Care Medicine, 49(11), e1063-e1143."
+    },
+    {
+      "topic": "ptsd trauma focused psychotherapy and ssri",
+      "findings": "• Clinical Guideline: VA/DoD and APA clinical practice guidelines recommend trauma-focused psychotherapies (Prolonged Exposure, Cognitive Processing Therapy, EMDR) as first-line treatments for PTSD over pharmacotherapy. When medications are used, SSRIs (sertraline, paroxetine) or SNRIs (venlafaxine) are the first-line choices (VA/DoD, 2017).",
+      "links": "https://www.healthquality.va.gov/guidelines/MH/ptsd/",
+      "references": "Department of Veterans Affairs / Department of Defense (VA/DoD). (2017). Clinical Practice Guideline for the Management of Posttraumatic Stress Disorder and Acute Stress Disorder."
+    },
+    {
+      "topic": "pulmonary artery catheter utility in critically ill patients",
+      "findings": "• Clinical Guideline / Trial Data: Based on landmark trials (like PAC-Man), guidelines recommend against the routine use of pulmonary artery (Swan-Ganz) catheters in undifferentiated shock or sepsis due to lack of survival benefit. Its use is reserved for complex cases of cardiogenic shock, severe pulmonary hypertension, or mixed shock states (Hollenberg et al., 2004; current SSC).",
+      "links": "https://doi.org/10.1097/01.CCM.0000139939.06275.CD",
+      "references": "Hollenberg, S. M., et al. (2004). Practice parameters for hemodynamic support of sepsis in adult patients: 2004 update. Critical Care Medicine, 32(9), 1928-1948."
+    },
+    {
+      "topic": "pulmonary nodule evaluation and fleischner follow up",
+      "findings": "• Clinical Guideline: The Fleischner Society guidelines provide specific criteria for managing incidentally detected pulmonary nodules based on nodule size, multiplicity, and patient risk factors (e.g., smoking). It outlines standard intervals for serial CT surveillance to rule out malignancy while avoiding unnecessary biopsies (MacMahon et al., 2017).",
+      "links": "https://doi.org/10.1148/radiol.2017161659",
+      "references": "MacMahon, H., et al. (2017). Guidelines for Management of Incidental Pulmonary Nodules Detected on CT Images: From the Fleischner Society 2017. Radiology, 284(1), 228-243."
+    },
+    {
+      "topic": "radial versus femoral access for pci",
+      "findings": "• Clinical Guideline / RCT: Based on trials like MATRIX, ACC/AHA and ESC guidelines strongly recommend radial artery access as the default approach for coronary angiography and PCI in both stable ischemic heart disease and acute coronary syndromes due to significant reductions in major access-site bleeding and mortality compared to femoral access (Lawton et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001038",
+      "references": "Lawton, J. S., et al. (2022). 2021 ACC/AHA/SCAI Guideline for Coronary Artery Revascularization. Circulation, 145(3), e18-e114."
+    },
+    {
+      "topic": "reproductive health in rheumatic disease",
+      "findings": "• Clinical Guideline: The ACR guideline for reproductive health outlines safe use of immunosuppressants during pregnancy and lactation. Hydroxychloroquine, sulfasalazine, azathioprine, and certain TNF inhibitors (e.g., certolizumab) are deemed safe, whereas methotrexate and mycophenolate mofetil are strictly teratogenic and contraindicated (Sammaritano et al., 2020).",
+      "links": "https://doi.org/10.1002/art.41191",
+      "references": "Sammaritano, L. R., et al. (2020). 2020 American College of Rheumatology Guideline for the Management of Reproductive Health in Rheumatic and Musculoskeletal Diseases. Arthritis & Rheumatology, 72(4), 529-556."
+    },
+    {
+      "topic": "solid organ transplant induction immunosuppression",
+      "findings": "• Clinical Guideline: KDIGO guidelines recommend induction therapy with a biologic agent for all kidney transplant recipients. The interleukin-2 receptor antagonist basiliximab is standard for low-to-moderate immunological risk patients, while lymphocyte-depleting agents (like anti-thymocyte globulin, rATG) are recommended for high-risk patients (KDIGO, 2009).",
+      "links": "https://doi.org/10.1111/j.1600-6143.2009.02834.x",
+      "references": "Kidney Disease: Improving Global Outcomes (KDIGO) Transplant Work Group. (2009). KDIGO clinical practice guideline for the care of kidney transplant recipients. American Journal of Transplantation, 9(Suppl 3), S1-S155."
+    },
+    {
+      "topic": "spontaneous coronary artery dissection",
+      "findings": "• Scientific Statement: The AHA scientific statement notes that Spontaneous Coronary Artery Dissection (SCAD) primarily affects younger women. Unlike atherosclerotic ACS, conservative medical management (beta-blockers, aspirin) is the preferred initial strategy, as PCI is associated with higher rates of complications and dissection propagation (Hayes et al., 2018).",
+      "links": "https://doi.org/10.1161/CIR.0000000000000564",
+      "references": "Hayes, S. N., et al. (2018). Spontaneous Coronary Artery Dissection: Current State of the Science: A Scientific Statement From the American Heart Association. Circulation, 137(19), e523-e557."
+    },
+    {
+      "topic": "subclinical hypothyroidism treatment thresholds",
+      "findings": "• Clinical Guideline: ETA and ATA/AACE guidelines recommend considering levothyroxine therapy for subclinical hypothyroidism when the TSH is persistently >10 mIU/L. For TSH levels between 4.5 and 10 mIU/L, treatment is individualized based on patient age, symptoms, presence of TPO antibodies, or pregnancy planning (Pearce et al., 2013).",
+      "links": "https://doi.org/10.1159/000356507",
+      "references": "Pearce, S. H., et al. (2013). 2013 ETA Guideline: Management of Subclinical Hypothyroidism. European Thyroid Journal, 2(4), 215-228."
+    },
+    {
+      "topic": "surgical site infection prevention",
+      "findings": "• Clinical Guideline: WHO and CDC guidelines emphasize bundled strategies to prevent SSIs, highlighting the administration of prophylactic IV antibiotics within 60 minutes prior to incision, meticulous hair removal (clippers, not razors), chlorhexidine-alcohol skin preparation, and strict maintenance of perioperative normothermia and glycemic control (Berríos-Torres et al., 2017).",
+      "links": "https://doi.org/10.1001/jamasurg.2017.0904",
+      "references": "Berríos-Torres, S. I., et al. (2017). Centers for Disease Control and Prevention Guideline for the Prevention of Surgical Site Infection, 2017. JAMA Surgery, 152(8), 784-791."
+    }
+  ]
+}

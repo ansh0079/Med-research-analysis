@@ -80,6 +80,7 @@ describe('topicLiteratureImportService', () => {
         expect(classifyFinding('Meta-Analysis / Guideline: CROSS trial established neoadjuvant CRT').kind).toBe('guideline');
         expect(classifyFinding('Practice Parameter: AAAAI evaluation of perioperative anaphylaxis').kind).toBe('guideline');
         expect(classifyFinding('Landmark Trial/Guideline: UKPDS follow-up demonstrated a legacy effect').kind).toBe('guideline');
+        expect(classifyFinding('Scientific Statement: AHA notes that SCAD primarily affects younger women').kind).toBe('guideline');
     });
 
     test('expands a pack row into paired papers and guidelines', () => {
@@ -138,6 +139,30 @@ describe('topicLiteratureImportService', () => {
         expect(result.servableGuidelineCount).toBe(1);
         expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
             sourceBody: 'AST',
+        }));
+    });
+
+    test('loads the checked-in batch-6 literature pack', () => {
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-6.json');
+        expect(fs.existsSync(packPath)).toBe(true);
+        const rows = parseLiteratureFile(packPath);
+        expect(rows).toHaveLength(25);
+        expect(rows.map((row) => row.topic)).toEqual(expect.arrayContaining([
+            'noninfectious uveitis biologic therapy',
+            'surgical site infection prevention',
+        ]));
+    });
+
+    test('imports ASAM opioid use disorder guideline as trusted and servable', async () => {
+        const db = makeDb();
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-6.json');
+        const row = parseLiteratureFile(packPath).find((item) => /opioid use disorder/i.test(item.topic));
+        const result = await importTopicLiterature(db, row);
+        expect(result.guidelineCount).toBe(1);
+        expect(result.trustedGuidelineCount).toBe(1);
+        expect(result.servableGuidelineCount).toBe(1);
+        expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
+            sourceBody: 'ASAM',
         }));
     });
 

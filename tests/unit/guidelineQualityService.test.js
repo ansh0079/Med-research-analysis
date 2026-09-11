@@ -26,6 +26,9 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('CDC')).toBe(true);
         expect(isTrustedSource('CANMAT')).toBe(true);
         expect(isTrustedSource('NAMS')).toBe(true);
+        expect(isTrustedSource('AASLD')).toBe(true);
+        expect(isTrustedSource('VA/DoD')).toBe(true);
+        expect(isTrustedSource('Fleischner Society')).toBe(true);
         expect(isTrustedSource('Unknown Blog')).toBe(false);
     });
 
