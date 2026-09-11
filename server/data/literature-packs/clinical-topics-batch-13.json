@@ -1,0 +1,159 @@
+{
+  "packId": "clinical-topics-batch-13",
+  "title": "Curated literature for guideline-gap topics 326-350",
+  "sourceFiles": [
+    "next_325-350.docx"
+  ],
+  "topics": [
+    {
+      "topic": "management of HF with Reduced ejection fraction",
+      "findings": "• Clinical Guideline: ESC and ACC/AHA/HFSA guidelines recommend foundational guideline-directed medical therapy (GDMT) consisting of four drug classes (SGLT2 inhibitors, ARNI/ACEi, MRAs, and beta-blockers) initiated rapidly to reduce morbidity and mortality in HFrEF (Heidenreich et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001063",
+      "references": "Heidenreich, P. A., et al. (2022). 2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure. Circulation, 145(18), e895-e1032."
+    },
+    {
+      "topic": "management of PRESS",
+      "findings": "• Clinical Consensus: Management of Posterior Reversible Encephalopathy Syndrome (PRES) relies on prompt identification, aggressive control of severe hypertension (using IV agents like nicardipine or labetalol), immediate withdrawal or reduction of offending triggers (e.g., immunosuppressants), and seizure management (Hinchey et al., 1996).",
+      "links": "https://doi.org/10.1056/NEJM199602223340803",
+      "references": "Hinchey, J., et al. (1996). A reversible posterior leukoencephalopathy syndrome. New England Journal of Medicine, 334(8), 494-500."
+    },
+    {
+      "topic": "Mechanical low back pain: assessment, red flags and management",
+      "findings": "• Clinical Guideline: ACP guidelines recommend evaluating mechanical low back pain for red flags (cauda equina syndrome, fracture, malignancy, infection). Management prioritizes non-pharmacological therapies (heat, massage) and superficial NSAIDs, discouraging routine neuroimaging for non-specific pain (Qaseem et al., 2017).",
+      "links": "https://doi.org/10.7326/M16-2367",
+      "references": "Qaseem, A., et al. (2017). Noninvasive Treatments for Acute, Subacute, and Chronic Low Back Pain: A Clinical Practice Guideline From the American College of Physicians. Annals of Internal Medicine, 166(7), 514-530."
+    },
+    {
+      "topic": "Menopause and hormone replacement therapy: evidence and guidance",
+      "findings": "• Clinical Guideline: The NAMS 2022 position statement confirms that hormone therapy (HT) is the most effective treatment for vasomotor symptoms and bone loss in women aged <60 or within 10 years of menopause, provided the individual benefit-risk profile is favorable (NAMS, 2022).",
+      "links": "https://doi.org/10.1097/GME.0000000000002028",
+      "references": "The 2022 Hormone Therapy Position Statement of The North American Menopause Society. (2022). Menopause, 29(7), 767-794."
+    },
+    {
+      "topic": "Mental capacity, consent and best-interest decisions",
+      "findings": "• Clinical Guideline: Medical ethics and statutory guidelines dictate that capacity is decision-specific and presumed unless proven otherwise. When a patient lacks capacity, medical decisions must be made in their \"best interests,\" incorporating past values, wishes, and close family consultations (BMA, 2020).",
+      "links": "https://www.bma.org.uk/advice-and-support/ethics/capacity",
+      "references": "British Medical Association (BMA). (2020). Mental capacity and best interests: Guidance for doctors. BMA Ethics Department."
+    },
+    {
+      "topic": "meropenem versus piperacillin tazobactam sepsis MERINO trial",
+      "findings": "• Landmark Trial: The MERINO trial demonstrated that piperacillin-tazobactam is inferior to meropenem regarding 30-day mortality in patients with Escherichia coli or Klebsiella pneumoniae bloodstream infections resistant to third-generation cephalosporins, confirming meropenem as the preferred empiric choice for ESBL risk (Harris et al., 2018).",
+      "links": "https://doi.org/10.1016/S0140-6736(18)31307-8",
+      "references": "Harris, P. N., et al. (2018). Effect of piperacillin-tazobactam vs meropenem on 30-day mortality for patients with E coli or Klebsiella pneumoniae bloodstream infection and ceftriaxone resistance: the MERINO randomized clinical trial. JAMA, 320(10), 984-994."
+    },
+    {
+      "topic": "Metastatic colorectal cancer systemic therapy sequencing",
+      "findings": "• Clinical Guideline: ESMO guidelines recommend sequencing cytotoxic chemotherapy (FOLFOX, FOLFIRI) combined with targeted biologics (anti-EGFR agents like cetuximab for RAS wild-type left-sided tumors, or anti-VEGF agents like bevacizumab) tailored to molecular profiling and tumor sidedness (Argilés et al., 2020).",
+      "links": "https://doi.org/10.1016/j.annonc.2020.06.001",
+      "references": "Argilés, G., et al. (2020). Localised colon cancer: ESMO Clinical Practice Guidelines for diagnosis, treatment and follow-up. Annals of Oncology, 31(10), 1291-1305."
+    },
+    {
+      "topic": "Metastatic NSCLC EGFR and ALK targeted therapy",
+      "findings": "• Clinical Guideline: NCCN and ESMO guidelines mandate comprehensive molecular testing for metastatic non-small cell lung cancer (NSCLC). First-line targeted therapy utilizes third-generation EGFR tyrosine kinase inhibitors (such as osimertinib) for EGFR-mutated tumors, and next-generation ALK inhibitors (such as alectinib) for ALK-rearranged tumors (NCCN, 2023).",
+      "links": "https://www.nccn.org/professionals/physician_gls/pdf/nscl.pdf",
+      "references": "National Comprehensive Cancer Network (NCCN). (2023). NCCN Clinical Practice Guidelines in Oncology: Non-Small Cell Lung Cancer, Version 3.2023."
+    },
+    {
+      "topic": "Metformin and glycemic legacy in type 2 diabetes",
+      "findings": "• Landmark Trial: The UKPDS 10-year post-trial monitoring established a lasting \"legacy effect,\" showing that early intensive glycemic control and metformin therapy in newly diagnosed type 2 diabetes yields enduring reductions in myocardial infarction and death long after intervention cessation (Holman et al., 2008).",
+      "links": "https://doi.org/10.1056/NEJMoa0806470",
+      "references": "Holman, R. R., et al. (2008). 10-Year Follow-up of Intensive Glucose Control in Type 2 Diabetes. New England Journal of Medicine, 359(15), 1577-1589."
+    },
+    {
+      "topic": "metformin diabetes",
+      "findings": "• Clinical Guideline: ADA Standards of Care recommend metformin as the preferred initial pharmacological agent for type 2 diabetes, combined with lifestyle changes, owing to its high glycemic efficacy, low risk of hypoglycemia, favorable weight profile, and established cardiovascular safety (ADA, 2023).",
+      "links": "https://doi.org/10.2337/dc23-S009",
+      "references": "American Diabetes Association. (2023). 9. Pharmacologic Approaches to Glycemic Treatment: Standards of Care in Diabetes—2023. Diabetes Care, 46(Supplement_1), S140-S157."
+    },
+    {
+      "topic": "methotrexate early rheumatoid arthritis combination therapy TEAR",
+      "findings": "• Landmark Trial: The TEAR trial demonstrated that for early rheumatoid arthritis, initial aggressive combination therapy (methotrexate plus etanercept or multi-csDMARDs) provides faster clinical improvement and suppression of radiographic progression compared to sequential step-up monotherapy (Moreland et al., 2012).",
+      "links": "https://doi.org/10.1002/art.34398",
+      "references": "Moreland, L. W., et al. (2012). A randomized comparative effectiveness study of oral monotherapy, combination therapy, and biological therapy for initial treatment of rheumatoid arthritis: the TEAR trial. Arthritis & Rheumatism, 64(8), 2453-2460."
+    },
+    {
+      "topic": "methylene blue in vasoplegic shock",
+      "findings": "• Clinical Consensus: Methylene blue is recognized as an effective rescue therapy for refractory vasoplegic shock (frequently following cardiopulmonary bypass or severe septic shock), acting as a guanylate cyclase inhibitor to attenuate nitric oxide-mediated vasodilation and restore vascular tone (Levin et al., 2004).",
+      "links": "https://doi.org/10.1097/01.CCM.0000120054.27099.DE",
+      "references": "Levin, R. L., et al. (2004). Methylene blue reduces mortality and morbidity in vasoplegic patients after cardiac surgery. Critical Care Medicine, 32(3), 607-611."
+    },
+    {
+      "topic": "metoprolol succinate chronic heart failure mortality MERIT-HF",
+      "findings": "• Landmark Trial: The MERIT-HF trial established that selective beta-1 blocker therapy with extended-release metoprolol succinate significantly reduces all-cause mortality, sudden death, and heart failure hospitalizations in patients with chronic heart failure and reduced ejection fraction (MERIT-HF Study Group, 1999).",
+      "links": "https://doi.org/10.1016/S0140-6736(99)04440-2",
+      "references": "MERIT-HF Study Group. (1999). Effect of metoprolol CR/XL in chronic heart failure: Metoprolol CR/XL Randomised Intervention Trial in Congestive Heart Failure (MERIT-HF). The Lancet, 353(9169), 2001-2007."
+    },
+    {
+      "topic": "metylene blue in vasoplegic shock",
+      "findings": "• Clinical Consensus: Repeated entry reflecting clinical consensus that intravenous methylene blue serves as a second-line rescue agent for severe catecholamine-refractory vasoplegic shock by blocking the nitric oxide pathway (Levin et al., 2004).",
+      "links": "https://doi.org/10.1097/01.CCM.0000120054.27099.DE",
+      "references": "Levin, R. L., et al. (2004). Methylene blue reduces mortality and morbidity in vasoplegic patients after cardiac surgery. Critical Care Medicine, 32(3), 607-611."
+    },
+    {
+      "topic": "Mineralocorticoid receptor antagonists in heart failure",
+      "findings": "• Clinical Guideline: ESC and AHA/ACC guidelines give a Class I recommendation for mineralocorticoid receptor antagonists (spironolactone or eplerenone) for all symptomatic HFrEF patients with an LVEF ≤35% who are already on standard ACEi/ARNI and beta-blocker regimens, to reduce mortality and hospital admissions (Heidenreich et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001063",
+      "references": "Heidenreich, P. A., et al. (2022). 2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure. Circulation, 145(18), e895-e1032."
+    },
+    {
+      "topic": "Miscarriage: diagnosis, classification and management",
+      "findings": "• Clinical Guideline: ACOG guidelines outline that early pregnancy loss is diagnosed via transvaginal ultrasound or serial hCG trends. Management choices for first-trimester miscarriage include expectant management, medical evacuation (misoprostol), or surgical uterine evacuation (suction curettage) based on patient preference and stability (ACOG, 2018).",
+      "links": "https://www.acog.org/clinical/clinical-guidance/practice-bulletin/articles/2018/11/early-pregnancy-loss",
+      "references": "American College of Obstetricians and Gynecologists (ACOG). (2018). ACOG Practice Bulletin No. 200: Early Pregnancy Loss. Obstetrics & Gynecology, 132(5), e197-e207."
+    },
+    {
+      "topic": "Monocytosis and Lymphocytosis Diagnostic Algorithms",
+      "findings": "• Clinical Consensus: Evaluating absolute monocytosis (>1,000/µL) or absolute lymphocytosis (>5,000/µL) requires peripheral blood smear examination and flow cytometry to evaluate for underlying chronic leukemias (such as chronic lymphocytic leukemia or chronic myelomonocytic leukemia) vs. reactive processes (Check & Monabatik, 2011).",
+      "links": "https://doi.org/10.1309/AJCP2Q3UYYNYWWRF",
+      "references": "Check, I. J., & Monabatik, A. (2011). Laboratory evaluation of lymphocytosis and monocytosis. American Journal of Clinical Pathology, 135(5), 793-802."
+    },
+    {
+      "topic": "MSI-high metastatic colorectal cancer immunotherapy",
+      "findings": "• Landmark Trial / Guideline: NCCN and ASCO guidelines strongly recommend checkpoint inhibitors (such as pembrolizumab or nivolumab) as first-line therapy for metastatic colorectal cancer with microsatellite instability-high (MSI-H) or mismatch repair-deficient (dMMR) status, demonstrating superior survival and response rates over chemotherapy (Le et al., 2015).",
+      "links": "https://doi.org/10.1056/NEJMoa1500596",
+      "references": "Le, D. T., et al. (2015). PD-1 Blockade in Tumors with Mismatch-Repair Deficiency. New England Journal of Medicine, 372(26), 2509-2520."
+    },
+    {
+      "topic": "Multiple myeloma: daratumumab-based frontline therapy",
+      "findings": "• Landmark Trial / Guideline: Based on trials like MAIA and CASSIOPEIA, NCCN guidelines recommend incorporating the anti-CD38 monoclonal antibody daratumumab into frontline triplet or quadruplet regimens for newly diagnosed multiple myeloma, significantly improving progression-free survival and depth of response in both transplant-eligible and ineligible patients (Mateos et al., 2018).",
+      "links": "https://doi.org/10.1056/NEJMoa1805955",
+      "references": "Mateos, M. V., et al. (2018). Daratumumab plus Bortezomib, Melphalan, and Prednisone for Untreated Myeloma. New England Journal of Medicine, 379(6), 518-528."
+    },
+    {
+      "topic": "Multiple myeloma: VRd versus Rd for newly diagnosed disease",
+      "findings": "• Landmark Trial: The SWOG S0777 trial established that triplet therapy with bortezomib, lenalidomide, and dexamethasone (VRd) yields significantly superior progression-free survival and overall survival compared to doublet therapy with lenalidomide and dexamethasone (Rd) in newly diagnosed multiple myeloma (Durie et al., 2017).",
+      "links": "https://doi.org/10.1016/S0140-6736(17)31594-X",
+      "references": "Durie, B. G., et al. (2017). Bortezomib with lenalidomide and dexamethasone versus lenalidomide and dexamethasone alone in patients with newly diagnosed myeloma without intent for immediate autologous stem-cell transplant (SWOG S0777): a randomised, open-label phase 3 trial. The Lancet, 389(10087), 2389-2398."
+    },
+    {
+      "topic": "Myasthenia gravis targeted immunotherapy",
+      "findings": "• Clinical Guideline: International consensus guidance recommends early non-steroidal immunosuppressive therapy (such as azathioprine, mycophenolate) for generalized myasthenia gravis, and highlights novel targeted biological therapies (e.g., complement inhibitor eculizumab or neonatal Fc receptor antagonists) for refractory generalized AChR-positive disease (Sanders et al., 2016).",
+      "links": "https://doi.org/10.1212/WNL.0000000000002790",
+      "references": "Sanders, D. B., et al. (2016). International consensus guidance for management of myasthenia gravis: Executive summary. Neurology, 87(4), 419-425."
+    },
+    {
+      "topic": "Myelodysplastic syndrome: azacitidine hypomethylating therapy",
+      "findings": "• Landmark Trial / Guideline: NCCN guidelines and the AZA-001 trial established that the hypomethylating agent azacitidine significantly prolongs overall survival and delays transformation to acute myeloid leukemia compared to conventional care regimens in higher-risk myelodysplastic syndrome (Fenaux et al., 2009).",
+      "links": "https://doi.org/10.1016/S0140-6736(09)60329-7",
+      "references": "Fenaux, P., et al. (2009). Efficacy of azacitidine compared with that of conventional care regimens in the treatment of higher-risk myelodysplastic syndromes (AZA-001): a randomised open-label trial. The Lancet Oncology, 10(3), 223-232."
+    },
+    {
+      "topic": "Myelofibrosis: JAK inhibition with ruxolitinib",
+      "findings": "• Clinical Guideline: NCCN guidelines endorse the JAK1/2 inhibitor ruxolitinib as standard therapy for intermediate- or high-risk myelofibrosis, demonstrating robust reductions in splenomegaly, amelioration of severe constitutional symptoms, and improved overall survival (Verstovsek et al., 2012).",
+      "links": "https://doi.org/10.1056/NEJMoa1110557",
+      "references": "Verstovsek, S., et al. (2012). A Double-Blind, Placebo-Controlled Trial of Ruxolitinib for Myelofibrosis. New England Journal of Medicine, 366(9), 799-807."
+    },
+    {
+      "topic": "Neonatal jaundice: assessment, phototherapy and exchange transfusion",
+      "findings": "• Clinical Guideline: AAP clinical guidelines recommend universal pre-discharge bilirubin screening, risk stratification using specific hour-specific nomograms, and timely initiation of intensive phototherapy or exchange transfusion when total serum bilirubin exceeds defined thresholds to prevent bilirubin-induced encephalopathy/kernicterus (AAP, 2022).",
+      "links": "https://doi.org/10.1542/peds.2022-058859",
+      "references": "Kemper, A. R., et al. (2022). Clinical Practice Guideline Revision: Management of Hyperbilirubinemia in the Newborn Infant 35 or More Weeks of Gestation. Pediatrics, 150(3), e2022058859."
+    },
+    {
+      "topic": "Neuromuscular blockade in early ARDS",
+      "findings": "• Landmark Trial / Clinical Guideline: The ACURASYS trial demonstrated that a 48-hour continuous infusion of a neuromuscular blocking agent (cisatracurium) early in severe ARDS significantly improves 90-day survival and increases ventilator-free days without increasing muscle weakness, shaping subsequent critical care guidelines (Papazian et al., 2010).",
+      "links": "https://doi.org/10.1056/NEJMoa1005372",
+      "references": "Papazian, L., et al. (2010). Neuromuscular Blockades in Early Acute Respiratory Distress Syndrome. New England Journal of Medicine, 363(12), 1107-1116."
+    }
+  ]
+}

@@ -51,6 +51,9 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('AABB')).toBe(true);
         expect(isTrustedSource('ACP')).toBe(true);
         expect(isTrustedSource('ESPEN')).toBe(true);
+        expect(isTrustedSource('British Medical Association')).toBe(true);
+        expect(isTrustedSource('BMA Ethics')).toBe(true);
+        expect(isTrustedSource('International consensus guidance for management of myasthenia gravis')).toBe(true);
         expect(isTrustedSource('ACE inhibitor')).toBe(false);
         expect(isTrustedSource('automated external defibrillator (AED)')).toBe(false);
         expect(isTrustedSource('European Academy of Dermatology and Venereology')).toBe(true);

@@ -486,6 +486,7 @@ const TRUSTED_GUIDELINE_SOURCES = [
             'IDSA/AAN/ACR',
             'MOGAD Panel',
             'International consensus diagnostic criteria for neuromyelitis',
+            'International consensus guidance for management of myasthenia',
         ],
     },
     {
@@ -793,6 +794,16 @@ const TRUSTED_GUIDELINE_SOURCES = [
         domain: 'https://www.espen.org',
         urlPattern: 'https://www.espen.org/{id}',
         aliases: ['European Society for Clinical Nutrition and Metabolism'],
+    },
+    {
+        id: 'bma',
+        name: 'BMA',
+        fullName: 'British Medical Association',
+        region: 'UK',
+        specialty: 'Medical Ethics',
+        domain: 'https://www.bma.org.uk',
+        urlPattern: 'https://www.bma.org.uk/{id}',
+        aliases: ['British Medical Association', 'BMA Ethics'],
     },
 ];
 
