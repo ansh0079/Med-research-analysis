@@ -17,7 +17,7 @@ const { mergeSourceArticles } = require('./flagshipTopicOps');
 const { resolveTrustedSource } = require('./guidelineQualityService');
 const { rankGuidelinesForTopic, scoreGuidelineForTopic } = require('../utils/guidelineRelevance');
 
-const GUIDELINE_KIND_RE = /\b(clinical guidelines?|practice guideline|practice parameter|guideline update|who guideline|scientific statement|international consensus|expert consensus|clinical consensus|clinical review.{0,4}consensus|emerging guideline|consensus guidelines?|evidence-based guideline|appropriate use recommendations?|aur|systematic review.{0,4}guideline|meta-analysis.{0,4}guideline|landmark trial.{0,4}guideline|rct.{0,4}guideline)\b/i;
+const GUIDELINE_KIND_RE = /\b(clinical guidelines?|practice guideline|practice parameters?|guideline update|who guideline|scientific statement|international consensus|expert consensus|clinical consensus|clinical review.{0,4}consensus|emerging guideline|consensus guidelines?|evidence-based guideline|appropriate use recommendations?|aur|systematic review.{0,4}guideline|meta-analysis.{0,4}guideline|landmark trial.{0,4}guideline|rct.{0,4}guideline)\b/i;
 const PAPER_KIND_RE = /\b(meta-analysis|systematic review|network meta-analysis|randomi[sz]ed|rct|trial|cohort)\b/i;
 const DOI_RE = /10\.\d{4,9}\/[-._;()/:A-Z0-9]+/ig;
 const PMID_RE = /pubmed\.ncbi\.nlm\.nih\.gov\/(\d+)/i;

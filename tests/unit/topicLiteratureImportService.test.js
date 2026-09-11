@@ -79,6 +79,7 @@ describe('topicLiteratureImportService', () => {
         expect(classifyFinding('Meta-Analysis/Guideline: CROSS trial established neoadjuvant CRT').kind).toBe('guideline');
         expect(classifyFinding('Meta-Analysis / Guideline: CROSS trial established neoadjuvant CRT').kind).toBe('guideline');
         expect(classifyFinding('Practice Parameter: AAAAI evaluation of perioperative anaphylaxis').kind).toBe('guideline');
+        expect(classifyFinding('AAAAI practice parameters advise latex avoidance').kind).toBe('guideline');
         expect(classifyFinding('Landmark Trial/Guideline: UKPDS follow-up demonstrated a legacy effect').kind).toBe('guideline');
         expect(classifyFinding('Scientific Statement: AHA notes that SCAD primarily affects younger women').kind).toBe('guideline');
         expect(classifyFinding('Clinical Review / Consensus: First-line management for catatonia is lorazepam').kind).toBe('guideline');
