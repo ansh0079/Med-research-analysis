@@ -89,6 +89,77 @@ describe('literatureLinkFetchService', () => {
         expect(result.fetchSources).toContain('html');
     });
 
+    test('falls back to a title-matched PubMed abstract when the DOI has no abstract', async () => {
+        const fetchImpl = jest.fn(async (url) => {
+            if (/europepmc|crossref|unpaywall/.test(url)) {
+                return jsonResponse({ resultList: { result: [] }, is_oa: false, message: { title: [] } });
+            }
+            if (/esearch/.test(url)) {
+                return jsonResponse({ esearchresult: { idlist: ['26324720'] } });
+            }
+            if (/efetch/.test(url)) {
+                return {
+                    ok: true,
+                    headers: { get: () => 'application/xml' },
+                    json: async () => ({}),
+                    text: async () => `<PubmedArticle>
+                        <PMID>26324720</PMID>
+                        <ArticleTitle>Difficult Airway Society 2015 guidelines for management of unanticipated difficult intubation in adults</ArticleTitle>
+                        <Abstract><AbstractText>These guidelines describe videolaryngoscopy and front-of-neck access.</AbstractText></Abstract>
+                        <Title>Anaesthesia</Title>
+                        <PubDate><Year>2015</Year></PubDate>
+                    </PubmedArticle>`,
+                };
+            }
+            throw new Error(url);
+        });
+        const result = await fetchLiteratureLink({
+            doi: '10.1111/anae.14015',
+            title: 'Difficult Airway Society 2015 guidelines for management of unanticipated difficult intubation in adults',
+        }, { fetchImpl, serverConfig: { keys: { ncbiEmail: 't@x.com' } } });
+        expect(result.abstract).toMatch(/videolaryngoscopy/i);
+        expect(result.pmid).toBe('26324720');
+        expect(result.fetchSources).toContain('pubmed');
+    });
+
+    test('rejects a DOI that resolves to a different paper title', async () => {
+        const fetchImpl = jest.fn(async (url) => {
+            if (/europepmc/.test(url)) {
+                return jsonResponse({
+                    resultList: {
+                        result: [{
+                            title: 'Optimising triggers for patient-assisted remifentanil analgesia during labour',
+                            abstractText: 'Wrong paper abstract about remifentanil labour analgesia.',
+                            pmid: '28804880',
+                        }],
+                    },
+                });
+            }
+            if (/esearch/.test(url)) {
+                return jsonResponse({ esearchresult: { idlist: ['26324720'] } });
+            }
+            if (/efetch/.test(url)) {
+                return {
+                    ok: true,
+                    headers: { get: () => 'application/xml' },
+                    json: async () => ({}),
+                    text: async () => `<PubmedArticle>
+                        <PMID>26324720</PMID>
+                        <ArticleTitle>Difficult Airway Society 2015 guidelines for management of unanticipated difficult intubation in adults</ArticleTitle>
+                        <Abstract><AbstractText>Correct DAS abstract with videolaryngoscopy.</AbstractText></Abstract>
+                    </PubmedArticle>`,
+                };
+            }
+            return jsonResponse({ is_oa: false, message: { title: ['Optimising triggers'] } });
+        });
+        const result = await fetchLiteratureLink({
+            doi: '10.1111/anae.14015',
+            title: 'Difficult Airway Society 2015 guidelines for management of unanticipated difficult intubation in adults',
+        }, { fetchImpl, serverConfig: { keys: {} } });
+        expect(result.abstract).toMatch(/videolaryngoscopy/i);
+        expect(result.pmid).toBe('26324720');
+    });
+
     test('enrichPackItems writes fetchedAbstract onto pack items', async () => {
         const fetchImpl = jest.fn(async (url) => {
             if (/europepmc/.test(url)) {

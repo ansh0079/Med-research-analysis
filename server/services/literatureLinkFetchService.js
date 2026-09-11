@@ -33,6 +33,92 @@ function pickLonger(left, right) {
     return b.length > a.length ? b : a;
 }
 
+function tokenizeTitle(value) {
+    return new Set(
+        String(value || '')
+            .toLowerCase()
+            .replace(/[^a-z0-9\s]/g, ' ')
+            .split(/\s+/)
+            .filter((word) => word.length > 3)
+    );
+}
+
+function titleOverlap(left, right) {
+    const a = tokenizeTitle(left);
+    const b = tokenizeTitle(right);
+    if (!a.size || !b.size) return 0;
+    let hits = 0;
+    for (const token of a) {
+        if (b.has(token)) hits += 1;
+    }
+    return hits / Math.min(a.size, b.size);
+}
+
+function parsePubmedXmlArticles(xml) {
+    const papers = [];
+    const artPat = /<PubmedArticle>([\s\S]*?)<\/PubmedArticle>/g;
+    let match;
+    while ((match = artPat.exec(String(xml || ''))) !== null) {
+        const art = match[1];
+        const pmid = (art.match(/<PMID[^>]*>(\d+)<\/PMID>/) || [])[1] || '';
+        const title = stripTags((art.match(/<ArticleTitle>([\s\S]*?)<\/ArticleTitle>/) || [])[1] || '');
+        const absParts = [];
+        const absRe = /<AbstractText[^>]*>([\s\S]*?)<\/AbstractText>/g;
+        let absMatch;
+        while ((absMatch = absRe.exec(art)) !== null) {
+            absParts.push(stripTags(absMatch[1]));
+        }
+        const journal = stripTags((art.match(/<Title>([\s\S]*?)<\/Title>/) || [])[1] || '');
+        const year = Number((art.match(/<PubDate>[\s\S]*?<Year>(\d{4})<\/Year>/) || [])[1] || 0) || null;
+        const pmcid = (art.match(/<ArticleId IdType="pmc">(PMC\d+)<\/ArticleId>/i) || [])[1] || '';
+        const doi = (art.match(/<ArticleId IdType="doi">([^<]+)<\/ArticleId>/i) || [])[1] || '';
+        if (pmid && title) {
+            papers.push({
+                pmid,
+                pmcid,
+                doi,
+                title,
+                abstract: absParts.join(' ').trim().slice(0, ABSTRACT_MAX),
+                journal,
+                year,
+                source: 'pubmed',
+            });
+        }
+    }
+    return papers;
+}
+
+async function fetchPubmedByTitle(title, fetchImpl, serverConfig) {
+    if (!title || String(title).length < 24) return null;
+    const email = serverConfig?.keys?.ncbiEmail
+        ? `&email=${encodeURIComponent(serverConfig.keys.ncbiEmail)}`
+        : '';
+    const apiKey = serverConfig?.keys?.ncbi
+        ? `&api_key=${encodeURIComponent(serverConfig.keys.ncbi)}`
+        : '';
+    const searchUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&retmode=json&retmax=3&term=${encodeURIComponent(`${title}[Title]`)}${email}${apiKey}`;
+    const search = await jsonGet(fetchImpl, searchUrl, 12000);
+    const ids = search?.esearchresult?.idlist || [];
+    if (!ids.length) return null;
+    const fetchUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${ids.join(',')}&retmode=xml&rettype=abstract${email}${apiKey}`;
+    const res = await fetchImpl(fetchUrl, {
+        timeout: 15000,
+        headers: requestHeaders('application/xml'),
+    });
+    if (!res?.ok) return null;
+    const papers = parsePubmedXmlArticles(await res.text());
+    let best = null;
+    let bestScore = 0.45;
+    for (const paper of papers) {
+        const score = titleOverlap(title, paper.title);
+        if (score > bestScore) {
+            best = paper;
+            bestScore = score;
+        }
+    }
+    return best;
+}
+
 function requestHeaders(accept) {
     return {
         Accept: accept,
@@ -165,28 +251,35 @@ async function fetchLiteratureLink(item, {
                 fetchCrossrefWork(doi, fetchImpl).catch(() => null),
                 fetchUnpaywall(doi, email, fetchImpl).catch(() => null),
             ]);
-            if (epmc) {
-                sources.push('europepmc');
-                merged.title = pickLonger(merged.title, epmc.title);
-                merged.abstract = pickLonger(merged.abstract, epmc.abstract);
-                merged.pmid = epmc.pmid || merged.pmid;
-                merged.pmcid = epmc.pmcid || merged.pmcid;
-                merged.journal = epmc.journal || merged.journal;
-                merged.year = epmc.year || merged.year;
-                merged.isOpenAccess = merged.isOpenAccess || epmc.isOpenAccess;
-            }
-            if (xref) {
-                sources.push('crossref');
-                merged.title = pickLonger(merged.title, xref.title);
-                merged.abstract = pickLonger(merged.abstract, xref.abstract);
-                merged.journal = merged.journal || xref.journal;
-                merged.year = merged.year || xref.year;
-                if (xref.authors?.length) merged.authors = xref.authors;
-            }
+            const doiTitle = pickLonger(epmc?.title, xref?.title);
+            const packTitleLong = String(item.title || '').length >= 24;
+            const doiMismatch = packTitleLong
+                && doiTitle.length >= 24
+                && titleOverlap(item.title, doiTitle) < 0.4;
+            if (epmc) sources.push('europepmc');
+            if (xref) sources.push('crossref');
             if (oa) {
                 sources.push('unpaywall');
                 merged.isOpenAccess = merged.isOpenAccess || oa.isOpenAccess;
                 merged.oaPdfUrl = oa.oaPdfUrl || oa.oaUrl || null;
+            }
+            if (!doiMismatch) {
+                if (epmc) {
+                    merged.title = pickLonger(merged.title, epmc.title);
+                    merged.abstract = pickLonger(merged.abstract, epmc.abstract);
+                    merged.pmid = epmc.pmid || merged.pmid;
+                    merged.pmcid = epmc.pmcid || merged.pmcid;
+                    merged.journal = epmc.journal || merged.journal;
+                    merged.year = epmc.year || merged.year;
+                    merged.isOpenAccess = merged.isOpenAccess || epmc.isOpenAccess;
+                }
+                if (xref) {
+                    merged.title = pickLonger(merged.title, xref.title);
+                    merged.abstract = pickLonger(merged.abstract, xref.abstract);
+                    merged.journal = merged.journal || xref.journal;
+                    merged.year = merged.year || xref.year;
+                    if (xref.authors?.length) merged.authors = xref.authors;
+                }
             }
         }
 
@@ -196,6 +289,20 @@ async function fetchLiteratureLink(item, {
             if (html?.abstract) {
                 sources.push('html');
                 merged.abstract = html.abstract;
+            }
+        }
+
+        if (!merged.abstract && item.title) {
+            const pubmed = await fetchPubmedByTitle(item.title, fetchImpl, serverConfig).catch(() => null);
+            if (pubmed?.abstract) {
+                sources.push('pubmed');
+                merged.title = pickLonger(merged.title, pubmed.title);
+                merged.abstract = pubmed.abstract;
+                merged.pmid = pubmed.pmid || merged.pmid;
+                merged.pmcid = pubmed.pmcid || merged.pmcid;
+                merged.journal = pubmed.journal || merged.journal;
+                merged.year = pubmed.year || merged.year;
+                if (pubmed.doi && !doi) item.doi = pubmed.doi;
             }
         }
 
@@ -282,4 +389,6 @@ module.exports = {
     fetchHtmlExcerpt,
     fetchLiteratureLink,
     enrichPackItems,
+    titleOverlap,
+    fetchPubmedByTitle,
 };
