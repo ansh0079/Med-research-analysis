@@ -36,6 +36,15 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('AAOS')).toBe(true);
         expect(isTrustedSource('EAACI')).toBe(true);
         expect(isTrustedSource('Baveno VII')).toBe(true);
+        expect(isTrustedSource('Difficult Airway Society')).toBe(true);
+        expect(isTrustedSource('DAS')).toBe(true);
+        expect(isTrustedSource('Resuscitation Council UK')).toBe(true);
+        expect(isTrustedSource('ACOG')).toBe(true);
+        expect(isTrustedSource('Royal College of Psychiatrists')).toBe(true);
+        expect(isTrustedSource('ACE guidelines')).toBe(true);
+        expect(isTrustedSource('ACE inhibitor')).toBe(false);
+        expect(isTrustedSource('automated external defibrillator (AED)')).toBe(false);
+        expect(isTrustedSource('European Academy of Dermatology and Venereology')).toBe(true);
         expect(isTrustedSource('Unknown Blog')).toBe(false);
     });
 

@@ -1,0 +1,159 @@
+{
+  "packId": "clinical-topics-batch-9",
+  "title": "Curated literature for guideline-gap topics 201-225",
+  "sourceFiles": [
+    "next_200-225.docx"
+  ],
+  "topics": [
+    {
+      "topic": "Depression: diagnosis, pharmacotherapy and monitoring",
+      "findings": "• Clinical Guideline: APA and CANMAT guidelines recommend SSRIs, SNRIs, or modern atypical agents as first-line pharmacotherapy for major depressive disorder. Baseline evaluation and routine monitoring of clinical response and side effects are mandatory at 2 to 4 weeks after initiation.",
+      "links": "https://doi.org/10.1177/0706743716659417",
+      "references": "Kennedy, S. H., et al. (2016). CANMAT 2016 Clinical Guidelines for the Management of Adults with Major Depressive Disorder: Section 3. Pharmacological Treatments. The Canadian Journal of Psychiatry, 61(9), 540-560."
+    },
+    {
+      "topic": "Diabetic foot infection and osteomyelitis",
+      "findings": "• Clinical Guideline: IDSA guidelines recommend empirical antibiotic therapy targeting Staphylococcus aureus and Streptococci for mild-to-moderate infections. Bone biopsy for culture is strongly recommended for suspected diabetic foot osteomyelitis to guide targeted long-term (6 weeks) antibiotic therapy.",
+      "links": "https://doi.org/10.1086/524355",
+      "references": "Lipsky, B. A., et al. (2012). Infectious Diseases Society of America 2012 Clinical Practice Guideline for the Diagnosis and Treatment of Diabetic Foot Infections. Clinical Infectious Diseases, 54(12), e132-e173."
+    },
+    {
+      "topic": "Difficult airway management",
+      "findings": "• Clinical Guideline: The Difficult Airway Society (DAS) guidelines advocate for a structured, pre-planned strategy involving pre-oxygenation, minimization of intubation attempts, mandatory utilization of video laryngoscopy, and immediate identification and execution of rescue techniques (such as supraglottic airways or front-of-neck access).",
+      "links": "https://doi.org/10.1111/anae.14015",
+      "references": "Frerk, C., et al. (2015). Difficult Airway Society 2015 guidelines for management of unanticipated difficult intubation in adults. Anaesthesia, 70(11), 1272-1286."
+    },
+    {
+      "topic": "Diverticulitis classifications (Hinchey) and surgical indications",
+      "findings": "• Clinical Guideline: WSES guidelines recommend the modified Hinchey classification to grade acute diverticulitis. Uncomplicated cases are managed conservatively with outpatient observation or antibiotics, whereas Hinchey III and IV (peritonitis) mandate urgent surgical intervention (laparoscopic lavage or resection).",
+      "links": "https://doi.org/10.1186/s13017-020-00318-w",
+      "references": "Sartelli, M., et al. (2020). WSES guidelines for the management of acute diverticulitis in the emergency setting. World Journal of Emergency Surgery, 15, 37."
+    },
+    {
+      "topic": "DNACPR, treatment escalation planning and advance care planning",
+      "findings": "• Clinical Guideline: Resuscitation Council UK and international medical guidelines emphasize that Do Not Attempt Cardiopulmonary Resuscitation (DNACPR) decisions must be part of broader, documented Treatment Escalation Plans (TEP) made through transparent communication with patients and surrogates, focusing on overall goals of care.",
+      "links": "https://www.resus.org.uk/library/publications/decisions-cardiopulmonary-resuscitation",
+      "references": "Resuscitation Council UK. (2016). Decisions relating to cardiopulmonary resuscitation: A joint statement from the British Medical Association, Resuscitation Council (UK) and Royal College of Nursing."
+    },
+    {
+      "topic": "Drug allergy assessment and penicillin allergy de-labelling",
+      "findings": "• Clinical Guideline: AAAAI and IDSA guidelines emphasize penicillin allergy testing (via skin testing and/or direct oral challenge) as essential clinical practice. Over 90% of labeled patients are tolerant, and delabeling avoids the utilization of costly, broad-spectrum alternative antibiotics.",
+      "links": "https://doi.org/10.1001/jama.2018.19283",
+      "references": "Shenoy, E. S., et al. (2019). Evaluation and Management of Penicillin Allergy: A Review. JAMA, 321(2), 188-199."
+    },
+    {
+      "topic": "Drug eruptions and severe cutaneous adverse reactions (SCAR)",
+      "findings": "• Clinical Guideline: Management of severe cutaneous adverse reactions—such as Stevens-Johnson Syndrome (SJS) and Toxic Epidermal Necrolysis (TEN)—requires immediate cessation of the offending drug, specialized burn unit/ICU admission, supportive fluid/wound management, and multidisciplinary care.",
+      "links": "https://doi.org/10.1111/jdv.15301",
+      "references": "Torres, M. J., et al. (2019). Evaluation and management of severe cutaneous adverse reactions to drugs. Journal of the European Academy of Dermatology and Venereology, 33(8), 1416-1428."
+    },
+    {
+      "topic": "Drug reaction with eosinophilia and systemic symptoms",
+      "findings": "• Expert Consensus: DRESS syndrome requires immediate withdrawal of the culprit drug and initiation of systemic corticosteroids (e.g., tapering courses of prednisone) alongside supportive care to manage multi-organ involvement, particularly severe hepatitis and pneumonitis.",
+      "links": "https://doi.org/10.1111/jdv.15301",
+      "references": "Torres, M. J., et al. (2019). Evaluation and management of severe cutaneous adverse reactions to drugs. Journal of the European Academy of Dermatology and Venereology, 33(8), 1416-1428."
+    },
+    {
+      "topic": "Drug-Induced AKI and Nephrotoxins",
+      "findings": "• Clinical Guideline: KDIGO guidelines outline that prevention and management of drug-induced acute kidney injury (AKI) require identifying exposure to high-risk nephrotoxins (NSAIDs, aminoglycosides, IV contrast), monitoring serum creatinine and urine output, and promptly discontinuing offending agents.",
+      "links": "https://kdigo.org/guidelines/acute-kidney-injury/",
+      "references": "Kidney Disease: Improving Global Outcomes (KDIGO) AKI Work Group. (2012). KDIGO Clinical Practice Guideline for Acute Kidney Injury. Kidney International Supplements, 2(1), 1-138."
+    },
+    {
+      "topic": "Drug-resistant tuberculosis all-oral regimens",
+      "findings": "• WHO Guideline: The World Health Organization recommends long and shorter all-oral bedaquiline-containing regimens (including pretomanid, linezolid, and moxifloxacin) as the standard of care for multidrug- and rifampicin-resistant tuberculosis (MDR/RR-TB), replacing older injectable-containing regimens.",
+      "links": "https://www.who.int/publications/i/item/9789240007048",
+      "references": "World Health Organization. (2020). WHO consolidated guidelines on tuberculosis. Module 4: Treatment - drug-resistant tuberculosis treatment. WHO Press."
+    },
+    {
+      "topic": "Durable LVAD therapy for advanced heart failure",
+      "findings": "• Clinical Guideline: The 2022 AHA/ACC/HFSA Heart Failure guidelines recommend durable continuous-flow left ventricular assist devices (LVADs) as destination therapy or a bridge to transplant for eligible NYHA class IV patients with refractory symptoms, improving both survival and functional status.",
+      "links": "https://doi.org/10.1161/CIR.0000000000001063",
+      "references": "Heidenreich, P. A., et al. (2022). 2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure. Circulation, 145(18), e895-e1032."
+    },
+    {
+      "topic": "Dyslipidaemia and cardiovascular risk modification",
+      "findings": "• Clinical Guideline: ACC/AHA and ESC guidelines recommend risk-tailored statin therapy combined with lifestyle modifications. Non-statin agents (ezetimibe and PCSK9 inhibitors) are added sequentially to achieve strict LDL-C reduction targets based on the patient's absolute atherosclerotic cardiovascular disease risk.",
+      "links": "https://doi.org/10.1016/j.jacc.2018.11.003",
+      "references": "Grundy, S. M., et al. (2019). 2018 AHA/ACC/AACVPR/AAPA/ABC/ACPM/ADA/AGS/APhA/ASPC/NLA/PCNA Guideline on the Management of Blood Cholesterol. Journal of the American College of Cardiology, 73(24), e285-e350."
+    },
+    {
+      "topic": "Dyspepsia, H. pylori, and peptic ulcer disease",
+      "findings": "• Clinical Guideline: ACG and CAG guidelines recommend a \"test-and-treat\" strategy for non-investigated dyspepsia using non-invasive H. pylori testing (urea breath or stool antigen test). Confirmed H. pylori infection requires eradication therapy with bismuth quadruple therapy or concomitant therapy for 14 days.",
+      "links": "https://doi.org/10.14309/ajg.0000000000000422",
+      "references": "Moayyedi, P., et al. (2017). ACG and CAG Clinical Guideline: Management of Dyspepsia. American Journal of Gastroenterology, 112(7), 988-1013."
+    },
+    {
+      "topic": "early goal-directed therapy septic shock ProCESS trial",
+      "findings": "• Landmark Trial: The ProCESS trial demonstrated that protocolized early goal-directed therapy (EGDT) for septic shock did not confer a survival advantage over standard resuscitation protocols guided by clinical assessment and serial lactate measurements.",
+      "links": "https://doi.org/10.1056/NEJMoa1401602",
+      "references": "ProCESS Investigators. (2014). A Randomized Trial of Protocol-Based Care for Early Septic Shock. New England Journal of Medicine, 370(18), 1683-1693."
+    },
+    {
+      "topic": "Early pregnancy bleeding and ectopic pregnancy",
+      "findings": "• Clinical Guideline: ACOG guidelines state that evaluation of first-trimester bleeding and suspected ectopic pregnancy requires serial quantitative serum human chorionic gonadotropin (hCG) measurements and transvaginal ultrasonography to identify intrauterine pregnancy or locate extrauterine tissue.",
+      "links": "https://www.acog.org/clinical/clinical-guidance/practice-bulletin/articles/2018/03/ectopic-pregnancy",
+      "references": "American College of Obstetricians and Gynecologists (ACOG). (2018). ACOG Practice Bulletin No. 193: Ectopic Pregnancy. Obstetrics & Gynecology, 131(3), e65-e77."
+    },
+    {
+      "topic": "Eating disorder medical stabilization and refeeding",
+      "findings": "• Clinical Guideline: ACE guidelines for severe malnutrition in anorexia nervosa mandate cautious, gradual caloric initiation (refeeding) paired with strict electrolyte and phosphate monitoring to prevent life-threatening refeeding syndrome, combined with comprehensive inpatient medical stabilization.",
+      "links": "https://doi.org/10.1002/eat.22259",
+      "references": "Mehler, P. S., et al. (2010). Medical complications of anorexia nervosa. International Journal of Eating Disorders, 43(8), 672-679."
+    },
+    {
+      "topic": "Eating disorders and refeeding syndrome",
+      "findings": "• Clinical Guideline: Royal College of Psychiatrists guidelines recommend initial restriction of carbohydrate intake upon nutritional resuscitation in severely malnourished patients with eating disorders, accompanied by aggressive intravenous or oral thiamine and electrolyte supplementation to avoid fatal refeeding shifts.",
+      "links": "https://www.rcpsych.ac.uk/docs/default-source/improving-care/better-mh-policy/college-reports/cr189-college-report.pdf",
+      "references": "Royal College of Psychiatrists. (2014). MARSIPAN: Management of Really Sick Patients with Anorexia Nervosa. College Report CR189."
+    },
+    {
+      "topic": "ECG interpretation: common acute findings and life-threatening arrhythmias",
+      "findings": "• Clinical Consensus: Guidelines emphasize prompt ECG acquisition (within 10 minutes) for suspected acute coronary syndromes to detect ST-segment elevation or depression, alongside immediate recognition of lethal arrhythmias (such as ventricular fibrillation or polymorphic VT) requiring urgent defibrillation or advanced cardiac life support (ACLS).",
+      "links": "https://doi.org/10.1161/CIR.0000000000000316",
+      "references": "Link, M. S., et al. (2015). Part 6: Adult Basic Life Support and Automated External Defibrillation: 2015 American Heart Association Guidelines Update for Cardiopulmonary Resuscitation and Emergency Cardiovascular Care. Circulation, 132(18 Suppl 2), S444-S464."
+    },
+    {
+      "topic": "Ectopic pregnancy: diagnosis and management",
+      "findings": "• Clinical Guideline: ACOG guidelines state that stable ectopic pregnancies can be safely managed with single-dose or multi-dose systemic methotrexate. Surgical management (salpingostomy or salpingectomy via laparoscopy) is indicated for hemodynamic instability, ruptured pregnancies, or methotrexate contraindications.",
+      "links": "https://www.acog.org/clinical/clinical-guidance/practice-bulletin/articles/2018/03/ectopic-pregnancy",
+      "references": "American College of Obstetricians and Gynecologists (ACOG). (2018). ACOG Practice Bulletin No. 193: Ectopic Pregnancy. Obstetrics & Gynecology, 131(3), e65-e77."
+    },
+    {
+      "topic": "Emergency contraception: mechanisms, timing and clinical guidance",
+      "findings": "• Clinical Guideline: ACOG and WHO guidelines support oral emergency contraception (levonorgestrel within 72 hours, or ulipristal acetate up to 120 hours) and the copper intrauterine device (Cu-IUD inserted up to 5 days post-intercourse), which serves as the most effective form of emergency contraception.",
+      "links": "https://doi.org/10.1097/AOG.0000000000001815",
+      "references": "American College of Obstetricians and Gynecologists (ACOG). (2015, reaffirmed 2018). ACOG Practice Bulletin No. 152: Emergency Contraception. Obstetrics & Gynecology, 126(1), e1-e11."
+    },
+    {
+      "topic": "empagliflozin cardiovascular outcomes type 2 diabetes EMPA-REG",
+      "findings": "• Landmark Trial: The EMPA-REG OUTCOME trial demonstrated that the SGLT2 inhibitor empagliflozin significantly reduces the composite risk of cardiovascular death, nonfatal myocardial infarction, or nonfatal stroke, as well as all-cause mortality, in patients with type 2 diabetes and established cardiovascular disease.",
+      "links": "https://doi.org/10.1056/NEJMoa1504720",
+      "references": "Zinman, B., et al. (2015). Empagliflozin, Cardiovascular Outcomes, and Mortality in Type 2 Diabetes. New England Journal of Medicine, 373(22), 2117-2128."
+    },
+    {
+      "topic": "empagliflozin chronic kidney disease progression",
+      "findings": "• Landmark Trial: The EMPA-KIDNEY trial proved that empagliflozin significantly reduces the progression of kidney disease or death from cardiovascular causes across a broad range of patients with chronic kidney disease, regardless of the presence of diabetes.",
+      "links": "https://doi.org/10.1056/NEJMoa2204233",
+      "references": "EMPA-KIDNEY Collaborative Group. (2023). Empagliflozin in Patients with Chronic Kidney Disease. New England Journal of Medicine, 388(2), 117-127."
+    },
+    {
+      "topic": "enalapril ACE inhibitor survival reduced left ventricular ejection fraction",
+      "findings": "• Landmark Trial: The landmark CONSENSUS and SOLVD trials established that the ACE inhibitor enalapril significantly improves survival, slows heart failure progression, and reduces hospitalizations in patients with chronic heart failure and reduced left ventricular ejection fraction.",
+      "links": "https://doi.org/10.1056/NEJM199108013250501",
+      "references": "The SOLVD Investigators. (1991). Effect of Enalapril on Survival in Patients with Reduced Left Ventricular Ejection Fractions and Congestive Heart Failure. New England Journal of Medicine, 325(5), 293-302."
+    },
+    {
+      "topic": "Endocarditis and prophylaxis",
+      "findings": "• Clinical Guideline: AHA/ESC guidelines restrict antibiotic prophylaxis prior to dental procedures to patients at the highest risk of adverse outcomes from infective endocarditis (such as prosthetic heart valves, previous infective endocarditis, or uncorrected cyanotic congenital heart disease).",
+      "links": "https://doi.org/10.1093/eurheartj/ehz319",
+      "references": "Habib, G., et al. (2015). 2015 ESC Guidelines for the management of infective endocarditis. European Heart Journal, 36(44), 3075-3128."
+    },
+    {
+      "topic": "endovascular thrombectomy time to treatment ischemic stroke meta-analysis",
+      "findings": "• Meta-Analysis: A collaborative meta-analysis of landmark trials (such as HERMES) demonstrated that endovascular thrombectomy (EVT) combined with medical therapy significantly improves functional independence at 90 days for acute ischemic stroke due to large vessel occlusion, with greatest benefit when performed as early as possible.",
+      "links": "https://doi.org/10.1016/S0140-6736(16)30163-X",
+      "references": "Goyal, M., et al. (2016). Endovascular thrombectomy after large-vessel ischaemic stroke: a meta-analysis of individual patient data from five randomised trials. The Lancet, 387(10029), 1723-1731."
+    }
+  ]
+}
