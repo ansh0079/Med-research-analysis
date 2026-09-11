@@ -53,6 +53,10 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('ESPEN')).toBe(true);
         expect(isTrustedSource('British Medical Association')).toBe(true);
         expect(isTrustedSource('BMA Ethics')).toBe(true);
+        expect(isTrustedSource('USPSTF')).toBe(true);
+        expect(isTrustedSource('US Preventive Services Task Force')).toBe(true);
+        expect(isTrustedSource('National Osteoporosis Foundation')).toBe(true);
+        expect(isTrustedSource('AAP and AAO guidelines')).toBe(true);
         expect(isTrustedSource('International consensus guidance for management of myasthenia gravis')).toBe(true);
         expect(isTrustedSource('ACE inhibitor')).toBe(false);
         expect(isTrustedSource('automated external defibrillator (AED)')).toBe(false);

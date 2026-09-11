@@ -715,6 +715,7 @@ const TRUSTED_GUIDELINE_SOURCES = [
         urlPattern: 'https://www.entnet.org/{id}',
         aliases: [
             'AAO-HNS',
+            'AAP and AAO',
             'American Academy of Otolaryngology',
             'Otolaryngology-Head and Neck Surgery',
         ],
@@ -804,6 +805,32 @@ const TRUSTED_GUIDELINE_SOURCES = [
         domain: 'https://www.bma.org.uk',
         urlPattern: 'https://www.bma.org.uk/{id}',
         aliases: ['British Medical Association', 'BMA Ethics'],
+    },
+    {
+        id: 'uspstf',
+        name: 'USPSTF',
+        fullName: 'US Preventive Services Task Force',
+        region: 'USA',
+        specialty: 'Prevention / Screening',
+        domain: 'https://www.uspreventiveservicestaskforce.org',
+        urlPattern: 'https://www.uspreventiveservicestaskforce.org/{id}',
+        aliases: [
+            'U.S. Preventive Services Task Force',
+            'US Preventive Services Task Force',
+        ],
+    },
+    {
+        id: 'nof',
+        name: 'NOF',
+        fullName: 'National Osteoporosis Foundation',
+        region: 'USA',
+        specialty: 'Bone Health',
+        domain: 'https://www.bonehealthandosteoporosis.org',
+        urlPattern: 'https://www.bonehealthandosteoporosis.org/{id}',
+        aliases: [
+            'National Osteoporosis Foundation',
+            'Bone Health and Osteoporosis Foundation',
+        ],
     },
 ];
 

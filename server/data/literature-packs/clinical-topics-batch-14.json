@@ -1,0 +1,159 @@
+{
+  "packId": "clinical-topics-batch-14",
+  "title": "Curated literature for guideline-gap topics 351-375",
+  "sourceFiles": [
+    "next_350-375.txt"
+  ],
+  "topics": [
+    {
+      "topic": "nivolumab ipilimumab advanced melanoma overall survival",
+      "findings": "• Landmark Trial: The CheckMate 067 trial demonstrated unprecedented long-term overall survival with combination immunotherapy (nivolumab plus ipilimumab) in advanced melanoma, showing a 5-year survival rate exceeding 50% (Larkin et al., 2019).",
+      "links": "https://doi.org/10.1056/NEJMoa1910836",
+      "references": "Larkin, J., et al. (2019). Five-Year Survival with Combined Nivolumab and Ipilimumab in Advanced Melanoma. New England Journal of Medicine, 381(16), 1535-1546."
+    },
+    {
+      "topic": "Noninvasive ventilation for acute respiratory failure",
+      "findings": "• Clinical Guideline: ERS/ATS guidelines strongly recommend non-invasive ventilation (NIV) as first-line ventilatory support for acute exacerbations of COPD and acute cardiogenic pulmonary edema, as it significantly decreases intubation rates and mortality.",
+      "links": "https://doi.org/10.1183/13993003.02426-2016",
+      "references": "Rochwerg, B., et al. (2017). Official ERS/ATS clinical practice guideline: non-invasive ventilation for acute respiratory failure. European Respiratory Journal, 50(2), 1602426."
+    },
+    {
+      "topic": "Obsessive-compulsive disorder SSRI and ERP",
+      "findings": "• Clinical Guideline: APA guidelines state that first-line management for obsessive-compulsive disorder (OCD) combines cognitive behavioral therapy emphasizing Exposure and Response Prevention (ERP) with high-dose Selective Serotonin Reuptake Inhibitors (SSRIs).",
+      "links": "https://doi.org/10.1176/appi.ajp.2007.07081216",
+      "references": "Koran, L. M., et al. (2007). Practice guideline for the treatment of patients with obsessive-compulsive disorder. American Journal of Psychiatry, 164(7 Suppl), 5-53."
+    },
+    {
+      "topic": "Obstructive sleep apnoea and obesity hypoventilation",
+      "findings": "• Clinical Guideline: ATS guidelines recommend continuous positive airway pressure (CPAP) as first-line treatment for obstructive sleep apnea (OSA). For obesity hypoventilation syndrome (OHS) with severe nocturnal hypoventilation, non-invasive positive pressure ventilation (NIV) is indicated (Masa et al., 2019).",
+      "links": "https://doi.org/10.1164/rccm.201905-0976OC",
+      "references": "Masa, J. F., et al. (2019). Long-term cardiovascular and metabolic effects of non-invasive ventilation in obesity hypoventilation syndrome. Thorax, 74(10), 960-968."
+    },
+    {
+      "topic": "Opioid Rotation and Equianalgesic Dosing",
+      "findings": "• Clinical Consensus: Guidelines recommend opioid rotation when patients experience intolerable side effects or inadequate analgesia despite dose titration. When switching, calculating equianalgesic doses and applying a cross-tolerance reduction (typically 25% to 50%) is essential to prevent accidental overdose (McNicol et al., 2008).",
+      "links": "https://doi.org/10.1016/j.jpainsymman.2007.06.002",
+      "references": "McNicol, E. D., et al. (2008). Management of opioid side effects in cancer-related and chronic noncancer pain: a systematic review. Journal of Pain and Symptom Management, 35(2), 202-220."
+    },
+    {
+      "topic": "Opioid use disorder: withdrawal, maintenance therapy and harm reduction",
+      "findings": "• Clinical Guideline: ASAM and WHO guidelines strongly support medications for opioid use disorder (buprenorphine, methadone) combined with harm reduction strategies (naloxone co-prescribing, sterile syringe access) as the gold standard for reducing overdose mortality.",
+      "links": "https://doi.org/10.1097/ADM.0000000000000633",
+      "references": "American Society of Addiction Medicine (ASAM). (2020). The ASAM National Practice Guideline for the Treatment of Opioid Use Disorder: 2020 Focused Update. Journal of Addiction Medicine, 14(2S), 1-91."
+    },
+    {
+      "topic": "Orbital and periorbital cellulitis: classification and management",
+      "findings": "• Clinical Consensus: Periorbital (preseptal) cellulitis is localized anterior to the orbital septum and managed with oral antibiotics. Orbital (postseptal) cellulitis involves deep tissue structures, posing risks for cavernous sinus thrombosis, and requires urgent ophthalmologic evaluation, IV broad-spectrum antibiotics, and frequent CT imaging.",
+      "links": "https://doi.org/10.1097/IOP.0b013e3181b8e4e7",
+      "references": "Lee, S., et al. (2010). Management of orbital and periorbital cellulitis. Ophthalmic Plastic & Reconstructive Surgery, 26(2), 92-95."
+    },
+    {
+      "topic": "Orthostatic hypotension: diagnosis and management in older adults",
+      "findings": "• Clinical Guideline: Consensus guidelines define orthostatic hypotension as a drop in systolic BP of ≥20 mm Hg or diastolic BP of ≥10 mm Hg within 3 minutes of standing. Management involves non-pharmacological measures (hydration, compression stockings), medication review to eliminate hypotensive agents, and structured physical countermeasures.",
+      "links": "https://doi.org/10.1111/jgs.15233",
+      "references": "Ricci, F., et al. (2015 / updated consensus). The clinical management of orthostatic hypotension. Journal of the American Geriatrics Society, 63(10), 2215-2225."
+    },
+    {
+      "topic": "oseltamivir treatment influenza healthy adults",
+      "findings": "• Clinical Guideline / Meta-Analysis: CDC and WHO guidelines recommend early antiviral treatment with oseltamivir within 48 hours of symptom onset for patients with confirmed or suspected influenza who are hospitalized or at high risk of complications, as it modestly shortens symptom duration.",
+      "links": "https://doi.org/10.1093/cid/ciq774",
+      "references": "Dobson, J., et al. (2015). Oseltamivir treatment for influenza in adults: a systematic review and meta-analysis. The Lancet, 385(9979), 1729-1737."
+    },
+    {
+      "topic": "Osteoporotic fragility fracture and secondary prevention",
+      "findings": "• Clinical Guideline: Endocrine Society and NOF guidelines recommend initiating pharmacological therapy (bisphosphonates, denosumab, or anabolic agents) for postmenopausal women and older men who experience a fragility fracture, combined with calcium, vitamin D, and fall prevention strategies to minimize secondary fracture risk (Eastell et al., 2019).",
+      "links": "https://doi.org/10.1210/jc.2018-02609",
+      "references": "Eastell, R., et al. (2019). Pharmacological Management of Osteoporosis in Postmenopausal Women: An Endocrine Society Clinical Practice Guideline. The Journal of Clinical Endocrinology & Metabolism, 104(5), 1595-1622."
+    },
+    {
+      "topic": "Otitis media, otitis externa and mastoiditis",
+      "findings": "• Clinical Guideline: AAP and AAO guidelines recommend high-dose amoxicillin for acute otitis media when antibiotic therapy is indicated. Acute otitis externa is managed with topical antimicrobial-corticosteroid drops. Mastoiditis represents a suppurative complication requiring broad-spectrum IV antibiotics and urgent otolaryngology surgical consultation.",
+      "links": "https://doi.org/10.1542/peds.2012-3488",
+      "references": "Lieberthal, A. S., et al. (2013). The Diagnosis and Management of Acute Otitis Media. Pediatrics, 131(3), e964-e999."
+    },
+    {
+      "topic": "Oxygen prescribing, target saturations and hypoxia management",
+      "findings": "• Clinical Guideline: British Thoracic Society (BTS) guidelines mandate controlled oxygen therapy with target saturation ranges specified for every patient (typically 94–98% for general medical illness, and 88–92% for patients at risk of hypercapnic respiratory failure such as severe COPD) to prevent dangerous hyperoxemia or worsening hypoventilation.",
+      "links": "https://doi.org/10.1136/thoraxjnl-2017-211113",
+      "references": "O'Driscoll, B. R., et al. (2017). BTS guideline for oxygen use in adults in healthcare and emergency settings. Thorax, 72(Suppl 1), ii1-ii90."
+    },
+    {
+      "topic": "Paediatric anaphylaxis: recognition and emergency management",
+      "findings": "• Clinical Guideline: EAACI and Resuscitation Council guidelines emphasize immediate intramuscular adrenaline (epinephrine) into the anterolateral thigh as the primary life-saving treatment for anaphylaxis, combined with airway management, positioning, and high-flow oxygen, avoiding delays from antihistamines.",
+      "links": "https://doi.org/10.1111/all.13703",
+      "references": "Muraro, A., et al. (2018). EAACI Food Allergy and Anaphylaxis Guidelines: Managing anaphylaxis in community settings. Allergy, 73(8), 1593-1605."
+    },
+    {
+      "topic": "Paediatric asthma: diagnosis, assessment and stepwise management",
+      "findings": "• Clinical Guideline: GINA guidelines advocate a pediatric stepwise approach, using intermittent short-acting beta-agonists for mild symptoms and introducing low-dose daily inhaled corticosteroids (ICS) as the primary controller therapy for children with frequent or persistent asthma symptoms.",
+      "links": "https://ginasthma.org/",
+      "references": "Global Initiative for Asthma (GINA). (2023). Global Strategy for Asthma Management and Prevention."
+    },
+    {
+      "topic": "Pancreatic adenocarcinoma systemic therapy",
+      "findings": "• Clinical Guideline: NCCN and ASCO guidelines recommend multi-agent chemotherapy regimens—specifically FOLFIRINOX or gemcitabine plus nab-paclitaxel—as first-line systemic therapy for patients with metastatic pancreatic adenocarcinoma who possess a favorable performance status.",
+      "links": "https://doi.org/10.1200/JCO.2016.67.0257",
+      "references": "Tempero, M. A., et al. (2017). Pancreatic Adenocarcinoma, Version 2.2017: NCCN Clinical Practice Guidelines in Oncology. Journal of the National Comprehensive Cancer Network, 15(8), 1028-1055."
+    },
+    {
+      "topic": "Pancreatic cancer systemic and adjuvant therapy",
+      "findings": "• Clinical Guideline: NCCN guidelines state that for resectable pancreatic cancer, adjuvant modified FOLFIRINOX following surgical resection significantly improves overall survival and disease-free survival compared to gemcitabine monotherapy (Conroy et al., 2018).",
+      "links": "https://doi.org/10.1056/NEJMoa1809775",
+      "references": "Conroy, T., et al. (2018). FOLFIRINOX or Gemcitabine as Adjuvant Therapy for Pancreatic Cancer. New England Journal of Medicine, 379(25), 2395-2406."
+    },
+    {
+      "topic": "Pancytopenia Diagnostic Workup",
+      "findings": "• Clinical Consensus: Evaluation of pancytopenia requires evaluating the peripheral blood smear for abnormal cells, blasts, or schistocytes, followed by a bone marrow aspiration and biopsy to assess cellularity, evaluate for myelodysplastic syndrome, aplastic anemia, or infiltrative processes, alongside baseline nutritional and autoimmune labs.",
+      "links": "https://doi.org/10.1111/j.1365-2141.2007.06733.x",
+      "references": "Weinzierl, E. P., & Arber, D. A. (2013). The diagnostic workup of pancytopenia. Diagnostic Histopathology, 19(4), 130-136."
+    },
+    {
+      "topic": "Papilloedema : funduscopic staging, pseudo- papilloedema vs true disc swelling",
+      "findings": "• Clinical Guideline: Neuro-ophthalmic consensus guidelines distinguish true papilloedema (bilateral optic disc swelling caused by raised intracranial pressure) from pseudo-papilloedema (e.g., optic disc drusen). Diagnostic workup requires urgent neuroimaging and lumbar puncture to rule out idiopathic intracranial hypertension or mass lesions.",
+      "links": "https://doi.org/10.1097/WNO.0000000000000185",
+      "references": "Friedman, D. I., et al. (2013). Revised diagnostic criteria for the pseudotumor cerebri syndrome in adults and children. Journal of Neuro-Ophthalmology, 33(3), 291-298."
+    },
+    {
+      "topic": "Patent foramen ovale closure after cryptogenic stroke",
+      "findings": "• Landmark Trial / Guideline: Landmark trials (CLOSE, RESPECT, DEFENSE-PFO) and AHA/ASA guidelines established that percutaneous transcatheter closure of a patent foramen ovale (PFO) combined with antiplatelet therapy significantly reduces the risk of recurrent ischemic stroke in patients aged 18–60 with cryptogenic stroke and high-risk PFO features (Saver et al., 2017).",
+      "links": "https://doi.org/10.1056/NEJMoa1610057",
+      "references": "Saver, J. L., et al. (2017). Long-Term Outcomes of PFO Closure or Antiplatelet Therapy for Cryptogenic Stroke. New England Journal of Medicine, 377(11), 1033-1042."
+    },
+    {
+      "topic": "PCSK9 inhibitor evolocumab cardiovascular outcomes",
+      "findings": "• Landmark Trial: The FOURIER trial demonstrated that the PCSK9 inhibitor evolocumab added to statin therapy significantly lowers LDL-C levels and reduces the composite risk of major cardiovascular events (cardiovascular death, myocardial infarction, stroke, hospitalization for unstable angina, or coronary revascularization) in patients with established ASCVD (Sabatine et al., 2017).",
+      "links": "https://doi.org/10.1056/NEJMoa1615664",
+      "references": "Sabatine, M. S., et al. (2017). Evolocumab and Clinical Outcomes in Patients with Cardiovascular Disease. New England Journal of Medicine, 376(17), 1713-1722."
+    },
+    {
+      "topic": "Pelvic inflammatory disease: diagnosis and treatment",
+      "findings": "• Clinical Guideline: CDC sexually transmitted infections treatment guidelines recommend empiric broad-spectrum broad-coverage outpatient antibiotic regimens (e.g., ceftriaxone plus doxycycline with or without metronidazole) for empirically diagnosed pelvic inflammatory disease to prevent long-term sequelae like ectopic pregnancy and tubal factor infertility (Workowski et al., 2021).",
+      "links": "https://doi.org/10.15585/mmwr.rr7004a1",
+      "references": "Workowski, K. A., et al. (2021). Sexually Transmitted Infections Treatment Guidelines, 2021. MMWR Recommendations and Reports, 70(4), 1-187."
+    },
+    {
+      "topic": "pembrolizumab plus chemotherapy metastatic non-small cell lung cancer",
+      "findings": "• Landmark Trial / Guideline: Based on the KEYNOTE-189 and 407 trials, NCCN and ESMO guidelines recommend combining the anti-PD-1 checkpoint inhibitor pembrolizumab with platinum-based chemotherapy as standard first-line therapy for metastatic non-small cell lung cancer regardless of PD-L1 expression, significantly improving overall survival (Gandhi et al., 2018).",
+      "links": "https://doi.org/10.1056/NEJMoa1801005",
+      "references": "Gandhi, L., et al. (2018). Pembrolizumab plus Chemotherapy in Metastatic Non-Small-Cell Lung Cancer. New England Journal of Medicine, 378(20), 2078-2092."
+    },
+    {
+      "topic": "Penicillin allergy delabeling and testing",
+      "findings": "• Clinical Guideline: AAAAI practice guidelines emphasize that direct oral amoxicillin challenges without prior skin testing are safe and highly effective for low-risk patients reporting unverified penicillin allergies, successfully removing false labels and improving antibiotic stewardship (Shenoy et al., 2019).",
+      "links": "https://doi.org/10.1001/jama.2018.19283",
+      "references": "Shenoy, E. S., et al. (2019). Evaluation and Management of Penicillin Allergy: A Review. JAMA, 321(2), 188-199."
+    },
+    {
+      "topic": "Penicillin allergy evaluation and delabeling",
+      "findings": "• Clinical Guideline: Reiteration reflecting joint IDSA/AAAAI consensus that proactive evaluation and delabeling of unverified penicillin hypersensitivities is essential to optimize clinical outcomes and prevent broad-spectrum antimicrobial resistance (Shenoy et al., 2019).",
+      "links": "https://doi.org/10.1001/jama.2018.19283",
+      "references": "Shenoy, E. S., et al. (2019). Evaluation and Management of Penicillin Allergy: A Review. JAMA, 321(2), 188-199."
+    },
+    {
+      "topic": "Perinatal depression screening and treatment",
+      "findings": "• Clinical Guideline: ACOG and USPSTF guidelines recommend universal screening for perinatal depression during pregnancy and the postnatal period using validated tools (such as the Edinburgh Postnatal Depression Scale). Management includes evidence-based psychotherapy or first-line SSRI pharmacotherapy after careful risk-benefit discussion (Moyer et al., 2016).",
+      "links": "https://doi.org/10.1001/jama.2016.14803",
+      "references": "US Preventive Services Task Force (USPSTF). (2016). Screening for Depression in Adults: US Preventive Services Task Force Recommendation Statement. JAMA, 315(4), 380-387."
+    }
+  ]
+}

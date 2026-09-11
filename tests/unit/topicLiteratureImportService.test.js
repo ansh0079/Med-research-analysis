@@ -146,6 +146,31 @@ describe('topicLiteratureImportService', () => {
         }));
     });
 
+    test('loads the checked-in batch-14 literature pack', () => {
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-14.json');
+        expect(fs.existsSync(packPath)).toBe(true);
+        const rows = parseLiteratureFile(packPath);
+        expect(rows).toHaveLength(25);
+        expect(rows.map((row) => row.topic)).toEqual(expect.arrayContaining([
+            'nivolumab ipilimumab advanced melanoma overall survival',
+            'Pelvic inflammatory disease: diagnosis and treatment',
+            'Perinatal depression screening and treatment',
+        ]));
+    });
+
+    test('imports USPSTF perinatal depression guideline as trusted and servable', async () => {
+        const db = makeDb();
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-14.json');
+        const row = parseLiteratureFile(packPath).find((item) => /perinatal depression/i.test(item.topic));
+        const result = await importTopicLiterature(db, row);
+        expect(result.guidelineCount).toBe(1);
+        expect(result.trustedGuidelineCount).toBe(1);
+        expect(result.servableGuidelineCount).toBe(1);
+        expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
+            sourceBody: 'USPSTF',
+        }));
+    });
+
     test('loads the checked-in batch-13 literature pack', () => {
         const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-13.json');
         expect(fs.existsSync(packPath)).toBe(true);
