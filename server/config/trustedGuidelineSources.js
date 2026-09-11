@@ -754,6 +754,16 @@ const TRUSTED_GUIDELINE_SOURCES = [
             'European Society for Gastrointestinal Endoscopy',
         ],
     },
+    {
+        id: 'ash',
+        name: 'ASH',
+        fullName: 'American Society of Hematology',
+        region: 'USA',
+        specialty: 'Haematology',
+        domain: 'https://www.hematology.org',
+        urlPattern: 'https://www.hematology.org/{id}',
+        aliases: ['American Society of Hematology', 'Blood Advances'],
+    },
 ];
 
 module.exports = { TRUSTED_GUIDELINE_SOURCES };

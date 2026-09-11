@@ -145,6 +145,32 @@ describe('topicLiteratureImportService', () => {
         }));
     });
 
+    test('loads the checked-in batch-11 literature pack', () => {
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-11.json');
+        expect(fs.existsSync(packPath)).toBe(true);
+        const rows = parseLiteratureFile(packPath);
+        expect(rows).toHaveLength(25);
+        expect(rows.map((row) => row.topic)).toEqual(expect.arrayContaining([
+            'Helicobacter pylori eradication peptic ulcer bleeding recurrence',
+            'Infectious diarrhea and travelers diarrhea management',
+        ]));
+        const diarrhea = rows.find((row) => /infectious diarrhea/i.test(row.topic));
+        expect(diarrhea.references).toMatch(/Shane/);
+    });
+
+    test('imports ASH HIT guideline as trusted and servable', async () => {
+        const db = makeDb();
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-11.json');
+        const row = parseLiteratureFile(packPath).find((item) => /heparin-induced thrombocytopenia alternatives/i.test(item.topic));
+        const result = await importTopicLiterature(db, row);
+        expect(result.guidelineCount).toBe(1);
+        expect(result.trustedGuidelineCount).toBe(1);
+        expect(result.servableGuidelineCount).toBe(1);
+        expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
+            sourceBody: 'ASH',
+        }));
+    });
+
     test('loads the checked-in batch-10 literature pack', () => {
         const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-10.json');
         expect(fs.existsSync(packPath)).toBe(true);

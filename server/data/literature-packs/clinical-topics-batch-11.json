@@ -1,0 +1,159 @@
+{
+  "packId": "clinical-topics-batch-11",
+  "title": "Curated literature for guideline-gap topics 251-275",
+  "sourceFiles": [
+    "next_250-275.docx"
+  ],
+  "topics": [
+    {
+      "topic": "Helicobacter pylori eradication peptic ulcer bleeding recurrence",
+      "findings": "• Clinical Guideline: ACG guidelines state that testing for and eradicating Helicobacter pylori is mandatory in patients presenting with bleeding peptic ulcers. Successful eradication significantly reduces ulcer recurrence rates compared to acid suppression alone.",
+      "links": "https://doi.org/10.14309/ajg.0000000000000422",
+      "references": "Moayyedi, P., et al. (2017). ACG and CAG Clinical Guideline: Management of Dyspepsia. American Journal of Gastroenterology, 112(7), 988-1013."
+    },
+    {
+      "topic": "Hemophagocytic lymphohistiocytosis diagnosis and therapy",
+      "findings": "• Expert Consensus: HLH diagnosis relies on meeting specific criteria (fever, splenomegaly, cytopenias, hyperferritinemia, hypofibrinogenemia). Initial therapy utilizes the HLH-94 protocol (dexamethasone, etoposide) or targeted biologic therapy (such as emapalumab) followed by hematopoietic stem cell transplantation for refractory cases.",
+      "links": "https://doi.org/10.1182/blood-2013-11-534824",
+      "references": "La Rosée, P., et al. (2019). Recommendations for the management of HLH in adults. Blood, 133(23), 2465-2477."
+    },
+    {
+      "topic": "Heparin-induced thrombocytopenia alternatives: argatroban, fondaparinux, bivalirudin",
+      "findings": "• Clinical Guideline: ASH guidelines recommend immediate cessation of all heparin sources upon suspecting HIT and starting a non-heparin alternative anticoagulant (such as argatroban, bivalirudin, or fondaparinux) prior to confirming laboratory tests, continuing until therapeutic vitamin K antagonism is achieved.",
+      "links": "https://doi.org/10.1182/bloodadvances.2019000329",
+      "references": "Cuker, A., et al. (2018). American Society of Hematology 2018 guidelines for management of venous thromboembolism: heparin-induced thrombocytopenia. Blood Advances, 2(22), 3360-3392."
+    },
+    {
+      "topic": "Heparin-induced thrombocytopenia: diagnosis and management",
+      "findings": "• Clinical Guideline: Clinical probability is assessed via the 4Ts score. Confirmation requires functional assays (serotonin release assay) or immunoassay testing for anti-PF4/heparin antibodies, coupled with immediate non-heparin anticoagulation to prevent catastrophic thrombotic sequelae.",
+      "links": "https://doi.org/10.1182/bloodadvances.2019000329",
+      "references": "Cuker, A., et al. (2018). American Society of Hematology 2018 guidelines for management of venous thromboembolism: heparin-induced thrombocytopenia. Blood Advances, 2(22), 3360-3392."
+    },
+    {
+      "topic": "Hepatic encephalopathy recurrence prevention",
+      "findings": "• Clinical Guideline: AASLD and EASL guidelines recommend lactulose as first-line therapy for preventing recurrent hepatic encephalopathy episodes after an initial bout, with the addition of rifaximin as an add-on therapy for patients with recurrent episodes despite lactulose optimization.",
+      "links": "https://doi.org/10.1002/hep.27367",
+      "references": "Vilstrup, H., et al. (2014). Hepatic Encephalopathy in Chronic Liver Disease: 2014 Practice Guideline by the AASLD and EASL. Hepatology, 60(2), 715-735."
+    },
+    {
+      "topic": "hepatorenal",
+      "findings": "• Clinical Guideline: EASL/AASLD guidance outlines that management of hepatorenal syndrome involves identifying triggers (e.g., SBP), discontinuing diuretics, and providing targeted splanchnic vasoconstrictor therapy combined with albumin expansion.",
+      "links": "https://doi.org/10.1002/hep.31884",
+      "references": "Biggins, S. W., et al. (2021). Diagnosis, Evaluation, and Management of Ascites, Spontaneous Bacterial Peritonitis and Hepatorenal Syndrome: 2021 Practice Guidance by the AASLD. Hepatology, 74(2), 1014-1048."
+    },
+    {
+      "topic": "Hepatorenal syndrome vasoconstrictor therapy",
+      "findings": "• Clinical Guideline: AASLD guidelines recommend terlipressin (where available) combined with intravenous albumin as first-line medical therapy for hepatorenal syndrome-acute kidney injury (HRS-AKI) to reverse renal failure and serve as a bridge to liver transplantation.",
+      "links": "https://doi.org/10.1002/hep.31884",
+      "references": "Biggins, S. W., et al. (2021). Diagnosis, Evaluation, and Management of Ascites, Spontaneous Bacterial Peritonitis and Hepatorenal Syndrome: 2021 Practice Guidance by the AASLD. Hepatology, 74(2), 1014-1048."
+    },
+    {
+      "topic": "Herpes simplex, impetigo and common skin infections",
+      "findings": "• Clinical Guideline: IDSA and CDC guidelines recommend oral antivirals (valacyclovir, acyclovir) for HSV outbreaks, and topical mupirocin or oral beta-lactamase-resistant penicillins for localized impetigo to prevent transmission and accelerate lesion resolution.",
+      "links": "https://doi.org/10.1093/cid/ciu296",
+      "references": "Stevens, D. L., et al. (2014). Practice Guidelines for the Diagnosis and Management of Skin and Soft Tissue Infections: 2014 Update by the IDSA. Clinical Infectious Diseases, 59(2), e10-e52."
+    },
+    {
+      "topic": "HFref best treatment options",
+      "findings": "• Clinical Guideline: Modern heart failure guidelines establish the \"fantastic four\" guideline-directed medical therapy classes (SGLT2 inhibitors, ARNI, mineralocorticoid receptor antagonists, and beta-blockers) as essential pillars for improving survival and quality of life in HFrEF.",
+      "links": "https://doi.org/10.1161/CIR.0000000000001063",
+      "references": "Heidenreich, P. A., et al. (2022). 2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure. Circulation, 145(18), e895-e1032."
+    },
+    {
+      "topic": "Hidradenitis suppurativa: assessment and treatment",
+      "findings": "• Clinical Guideline: North American clinical guidelines recommend staging via Hurley staging. Management combines lifestyle modification, topical/oral antibiotics (clindamycin and rifampicin) for moderate disease, and biologic therapy (such as adalimumab or secukinumab) for severe, progressive hidradenitis suppurativa.",
+      "links": "https://doi.org/10.1016/j.jaad.2019.04.047",
+      "references": "Alikhan, A., et al. (2019). North American clinical guidelines for hidradenitis suppurativa. Journal of the American Academy of Dermatology, 81(1), 76-101."
+    },
+    {
+      "topic": "High-frequency oscillatory ventilation and lung recruitment in severe ARDS",
+      "findings": "• Clinical Guideline: ATS/ESICM/SCCM guidelines recommend against the routine use of high-frequency oscillatory ventilation (HFOV) in adults with severe ARDS, as landmark trials demonstrated increased mortality compared to conventional lung-protective mechanical ventilation.",
+      "links": "https://doi.org/10.1164/rccm.201703-0548ST",
+      "references": "Fan, E., et al. (2017). An Official American Thoracic Society/European Society of Intensive Care Medicine/Society of Critical Care Medicine Clinical Practice Guideline: Mechanical Ventilation in Adult Patients with Acute Respiratory Distress Syndrome. American Journal of Respiratory and Critical Care Medicine, 195(9), 1253-1263."
+    },
+    {
+      "topic": "Hip fracture management and perioperative optimisation",
+      "findings": "• Clinical Guideline: NICE guidelines recommend surgical repair of hip fractures on the day of admission or the day after at the latest. Perioperative care requires multidisciplinary orthogeriatric collaboration, early mobilization, and structured venous thromboembolism prophylaxis.",
+      "links": "https://www.nice.org.uk/guid/cg124",
+      "references": "National Institute for Health and Care Excellence (NICE). (2011, updated 2020). Hip fracture: management. Clinical guideline [CG124]."
+    },
+    {
+      "topic": "Hodgkin lymphoma: brentuximab vedotin frontline therapy",
+      "findings": "• Landmark Trial / Guideline: Based on the ECHELON-1 trial, NCCN guidelines recommend combining brentuximab vedotin with chemotherapy (AVD) as a frontline standard of care for advanced-stage classical Hodgkin lymphoma, offering superior progression-free survival over traditional ABVD regimens.",
+      "links": "https://doi.org/10.1056/NEJMoa1708970",
+      "references": "Ansell, S. M., et al. (2018). Brentuximab Vedotin with Chemotherapy for Advanced Hodgkin's Lymphoma. New England Journal of Medicine, 378(4), 330-344."
+    },
+    {
+      "topic": "how should I manage septic shock",
+      "findings": "• Clinical Guideline: Surviving Sepsis Campaign guidelines dictate immediate initiation of broad-spectrum IV antibiotics within 1 hour, coupled with rapid fluid resuscitation (30 mL/kg crystalloids) and norepinephrine as the first-line vasopressor to maintain a target mean arterial pressure of ≥65 mm Hg.",
+      "links": "https://doi.org/10.1097/CCM.0000000000005337",
+      "references": "Evans, L., et al. (2021). Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Critical Care Medicine, 49(11), e1063-e1143."
+    },
+    {
+      "topic": "HPV vaccination cervical intraepithelial neoplasia FUTURE II",
+      "findings": "• Landmark Trial: The FUTURE II trial demonstrated that quadrivalent human papillomavirus (Types 6, 11, 16, 18) vaccine is highly effective in preventing high-grade cervical intraepithelial neoplasia (CIN 2/3) related to HPV types 16 and 18, driving global vaccination guidelines.",
+      "links": "https://doi.org/10.1056/NEJMoa061741",
+      "references": "FUTURE II Study Group. (2007). Quadrivalent Vaccine against Human Papillomavirus to Prevent High-Grade Cervical Lesions. New England Journal of Medicine, 356(19), 1915-1927."
+    },
+    {
+      "topic": "HRS diagnosis",
+      "findings": "• Clinical Guideline: International consensus criteria define HRS-AKI as an acute kidney injury occurring in cirrhosis that fails to respond to a 2-day diuretic withdrawal and volume expansion with albumin, after excluding other structural and ischemic causes of renal failure.",
+      "links": "https://doi.org/10.1002/hep.31884",
+      "references": "Biggins, S. W., et al. (2021). Diagnosis, Evaluation, and Management of Ascites, Spontaneous Bacterial Peritonitis and Hepatorenal Syndrome: 2021 Practice Guidance by the AASLD. Hepatology, 74(2), 1014-1048."
+    },
+    {
+      "topic": "Hyperphosphataemia in CKD",
+      "findings": "• Clinical Guideline: KDIGO guidelines recommend a treat-to-target approach for hyperphosphatemia in advanced CKD, utilizing dietary phosphate restriction combined with oral phosphate-lowering binders (calcium-based or non-calcium-based binders like sevelamer) to prevent secondary hyperparathyroidism and vascular calcification.",
+      "links": "https://doi.org/10.1038/ki.2009.435",
+      "references": "Kidney Disease: Improving Global Outcomes (KDIGO) CKD-MBD Work Group. (2009). KDIGO clinical practice guideline for the diagnosis, evaluation, prevention, and treatment of Chronic Kidney Disease-Mineral and Bone Disorder (CKD-MBD). Kidney International, 76(Suppl 113), S1-S130."
+    },
+    {
+      "topic": "Hypersensitivity Pneumonitis variants by antigen",
+      "findings": "• Clinical Consensus: HP variants are categorized by offending exposure types (e.g., bird fancier's lung from avian proteins, farmer's lung from thermophilic actinomycetes). Identifying the specific antigen via detailed exposure history and precipitin testing is critical for guiding avoidance protocols.",
+      "links": "https://doi.org/10.1164/rccm.202005-2032ST",
+      "references": "Raghu, G., et al. (2020). Diagnosis of Hypersensitivity Pneumonitis in Adults. An Official ATS/JRS/ALAT Clinical Practice Guideline. American Journal of Respiratory and Critical Care Medicine, 202(3), e36-e69."
+    },
+    {
+      "topic": "hypertension treatment patients 80 years or older very elderly",
+      "findings": "• Landmark Trial / Guideline: The HYVET trial established that treating hypertension in very elderly patients (≥80 years) with a target blood pressure of <150/80 mm Hg significantly reduces the risk of fatal stroke, heart failure, and all-cause mortality, shaping modern geriatric hypertension guidelines.",
+      "links": "https://doi.org/10.1056/NEJMoa0805459",
+      "references": "Beckett, N. S., et al. (2008). Treatment of Hypertension in Patients 80 Years of Age or Older. New England Journal of Medicine, 358(18), 1887-1898."
+    },
+    {
+      "topic": "Hypertensive disorders of pregnancy and pre-eclampsia",
+      "findings": "• Clinical Guideline: ACOG guidelines recommend low-dose aspirin prophylaxis starting at 12–16 weeks for pregnant women at high risk of pre-eclampsia. Management of gestational hypertension or pre-eclampsia includes blood pressure control (labetalol, nifedipine) and magnesium sulfate for seizure prophylaxis in severe disease.",
+      "links": "https://doi.org/10.1097/AOG.0000000000003018",
+      "references": "American College of Obstetricians and Gynecologists (ACOG). (2020). Gestational Hypertension and Preeclampsia: ACOG Practice Bulletin, Number 222. Obstetrics & Gynecology, 135(6), e237-e260."
+    },
+    {
+      "topic": "Hypogranular APL Morphology Pitfalls",
+      "findings": "• Expert Consensus: The hypogranular variant of acute promyelocytic leukemia (APL, FAB M3v) features bilobed nuclei and lacks prominent cytoplasmic azurophilic granules, frequently causing diagnostic confusion with other myeloid leukemias. Flow cytometry and rapid genetic confirmation of PML-RARA are essential to prevent fatal coagulopathy.",
+      "links": "https://doi.org/10.1182/blood-2009-07-209841",
+      "references": "Sanz, M. A., et al. (2009). Management of acute promyelocytic leukemia: recommendations from an expert panel on behalf of the European LeukemiaNet. Blood, 113(9), 1875-1891."
+    },
+    {
+      "topic": "Hypoventilation from central CNS depressants",
+      "findings": "• Clinical Consensus: Central hypoventilation induced by CNS depressants (opioids, sedatives) is managed through airway positioning, supplemental oxygen, assisted ventilation if hypercapnia/apnea is severe, and specific reversal agents (such as naloxone for opioid overdose).",
+      "links": "https://doi.org/10.1056/NEJMra1003665",
+      "references": "Palkar, V. V., & Jelic, S. (2010). Respiratory physiology of drug overdose. Critical Care Clinics, 26(3), 431-447."
+    },
+    {
+      "topic": "ICU renal replacement therapy initiation timing",
+      "findings": "• Landmark Trial / Guideline: Major clinical trials (such as STARRT-AKI and AKIKI) demonstrated that an accelerated or early initiation of renal replacement therapy in critically ill patients with acute kidney injury does not improve survival compared to a delayed or conservative strategy, unless life-threatening metabolic emergencies develop.",
+      "links": "https://doi.org/10.1056/NEJMoa2006641",
+      "references": "STARRT-AKI Investigators. (2020). Timing of Initiation of Renal-Replacement Therapy in Acute Kidney Injury. New England Journal of Medicine, 383(3), 240-251."
+    },
+    {
+      "topic": "Idiopathic facial nerve palsy (Bell’s palsy): corticosteroid timing, eye care",
+      "findings": "• Clinical Guideline: AAN and ENT guidelines strongly recommend initiating oral corticosteroids (prednisolone) within 72 hours of symptom onset for Bell's palsy to maximize the chance of complete facial recovery. Adjunctive antiviral therapy alone is not recommended. Eye care (lubricant drops, taping shut at night) is mandatory to prevent exposure keratopathy.",
+      "links": "https://doi.org/10.1212/01.wnl.0000298227.78319.fa",
+      "references": "Baugh, R. F., et al. (2013). Clinical Practice Guideline: Bell's Palsy. Otolaryngology–Head and Neck Surgery, 149(3_suppl), S1-S27."
+    },
+    {
+      "topic": "Infectious diarrhea and travelers diarrhea management",
+      "findings": "• Clinical Guideline: ACG and IDSA guidelines recommend oral rehydration therapy as the cornerstone for infectious diarrhea. Empiric short-course antibiotics (such as azithromycin or fluoroquinolones) or single-dose azithromycin are recommended for moderate-to-severe travelers' diarrhea. Antimotility agents (loperamide) can be used adjunctively in non-dysenteric illness.",
+      "links": "https://doi.org/10.1093/cid/cis568",
+      "references": "Shane, A. L., et al. (2017). 2017 Infectious Diseases Society of America Clinical Practice Guidelines for the Diagnosis and Management of Infectious Diarrhea. Clinical Infectious Diseases, 65(12), e45-e80."
+    }
+  ]
+}
