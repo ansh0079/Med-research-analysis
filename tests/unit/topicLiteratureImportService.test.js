@@ -75,6 +75,9 @@ describe('topicLiteratureImportService', () => {
         expect(classifyFinding('Meta-Analysis: dexamethasone does not reduce death').kind).toBe('paper');
         expect(classifyFinding('Appropriate Use Recommendations for lecanemab').kind).toBe('guideline');
         expect(classifyFinding('Systematic Review/Guideline: First-line treatment for catatonia is lorazepam').kind).toBe('guideline');
+        expect(classifyFinding('WHO Guideline: monoclonal antibodies for Ebola').kind).toBe('guideline');
+        expect(classifyFinding('Meta-Analysis/Guideline: CROSS trial established neoadjuvant CRT').kind).toBe('guideline');
+        expect(classifyFinding('Meta-Analysis / Guideline: CROSS trial established neoadjuvant CRT').kind).toBe('guideline');
     });
 
     test('expands a pack row into paired papers and guidelines', () => {
@@ -133,6 +136,30 @@ describe('topicLiteratureImportService', () => {
         expect(result.servableGuidelineCount).toBe(1);
         expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
             sourceBody: 'AST',
+        }));
+    });
+
+    test('loads the checked-in batch-4 literature pack', () => {
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-4.json');
+        expect(fs.existsSync(packPath)).toBe(true);
+        const rows = parseLiteratureFile(packPath);
+        expect(rows).toHaveLength(20);
+        expect(rows.map((row) => row.topic)).toEqual(expect.arrayContaining([
+            'complement deficiency infection susceptibility',
+            'heart failure remote hemodynamic monitoring',
+        ]));
+    });
+
+    test('imports ADA continuous glucose monitoring guideline as trusted and servable', async () => {
+        const db = makeDb();
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-4.json');
+        const row = parseLiteratureFile(packPath).find((item) => /continuous glucose/i.test(item.topic));
+        const result = await importTopicLiterature(db, row);
+        expect(result.guidelineCount).toBe(1);
+        expect(result.trustedGuidelineCount).toBe(1);
+        expect(result.servableGuidelineCount).toBe(1);
+        expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
+            sourceBody: 'ADA',
         }));
     });
 

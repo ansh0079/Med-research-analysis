@@ -1,0 +1,129 @@
+{
+  "packId": "clinical-topics-batch-4",
+  "title": "Curated literature for guideline-gap topics 31-50",
+  "sourceFiles": [
+    "next_30-50.docx"
+  ],
+  "topics": [
+    {
+      "topic": "complement deficiency infection susceptibility",
+      "findings": "• Expert Consensus: Patients with late complement component deficiencies (C5-C9) have a highly increased susceptibility to Neisseria meningitidis. Guidelines mandate vaccination with both MenACWY and MenB vaccines, and sometimes daily prophylactic antibiotics (Brodszki et al., 2020).",
+      "links": "https://doi.org/10.1007/s10875-020-00754-x",
+      "references": "Brodszki, N., et al. (2020). European Society for Immunodeficiencies (ESID) guidelines for the management of complement deficiencies. Journal of Clinical Immunology, 40(4), 576-591."
+    },
+    {
+      "topic": "complicated intra abdominal infection source control and duration",
+      "findings": "• Clinical Guideline: The Surgical Infection Society (SIS) and STOP-IT trial confirm that for complicated intra-abdominal infections with adequate source control, a short course of antimicrobial therapy (4 days) is equally effective as longer courses (8 days) in preventing surgical site infections and mortality (Sawyer et al., 2015).",
+      "links": "https://doi.org/10.1056/NEJMoa1411162",
+      "references": "Sawyer, R. G., et al. (2015). Trial of short-course antimicrobial therapy for intraabdominal infection. New England Journal of Medicine, 372(21), 1996-2005."
+    },
+    {
+      "topic": "continuous glucose monitoring in diabetes",
+      "findings": "• Clinical Guideline: The American Diabetes Association (ADA) Standards of Care recommend CGM for all adults with diabetes taking multiple daily injections or continuous subcutaneous insulin infusion, and for many on basal insulin, noting significant reductions in A1C and hypoglycemia (ADA, 2023).",
+      "links": "https://doi.org/10.2337/dc23-S007",
+      "references": "American Diabetes Association. (2023). 7. Diabetes Technology: Standards of Care in Diabetes—2023. Diabetes Care, 46(Supplement_1), S111-S127."
+    },
+    {
+      "topic": "covid 19 critical care dexamethasone and immunomodulation",
+      "findings": "• Meta-Analysis/Guideline: Based on the RECOVERY trial, the WHO and NIH strongly recommend systemic corticosteroids (e.g., dexamethasone) for severe and critical COVID-19. IL-6 inhibitors (tocilizumab) or JAK inhibitors (baricitinib) are recommended as adjunctive immunomodulators for hospitalized patients with escalating oxygen needs (WHO, 2021).",
+      "links": "https://doi.org/10.1056/NEJMoa2021436",
+      "references": "RECOVERY Collaborative Group. (2021). Dexamethasone in Hospitalized Patients with Covid-19. New England Journal of Medicine, 384(8), 693-704."
+    },
+    {
+      "topic": "cushing syndrome medical therapy",
+      "findings": "• Clinical Guideline: The Endocrine Society recommends medical therapy (e.g., ketoconazole, metyrapone, osilodrostat, or mifepristone) for Cushing's syndrome as a second-line option when surgery is contraindicated, unsuccessful, or delayed, to normalize cortisol levels and improve clinical signs (Fleseriu et al., 2021).",
+      "links": "https://doi.org/10.1016/j.lanepe.2021.100274",
+      "references": "Fleseriu, M., et al. (2021). Consensus on diagnosis and management of Cushing's disease: a guideline update. The Lancet Diabetes & Endocrinology, 9(12), 847-875."
+    },
+    {
+      "topic": "cytomegalovirus prevention in transplant recipients",
+      "findings": "• Clinical Guideline: International consensus guidelines recommend routine CMV prevention in solid organ transplant recipients using either universal prophylaxis (e.g., valganciclovir for 3-6 months) or preemptive therapy based on routine CMV viral load monitoring, heavily dependent on donor/recipient serostatus (Kotton et al., 2018).",
+      "links": "https://doi.org/10.1097/TP.0000000000002192",
+      "references": "Kotton, C. N., et al. (2018). The Third International Consensus Guidelines on the Management of Cytomegalovirus in Solid-organ Transplantation. Transplantation, 102(6), 900-931."
+    },
+    {
+      "topic": "diabetic retinopathy anti vegf therapy",
+      "findings": "• Clinical Guideline: The American Academy of Ophthalmology (AAO) recognizes intravitreal anti-VEGF injections (e.g., aflibercept, ranibizumab, bevacizumab) as first-line therapy for center-involving diabetic macular edema with visual acuity loss, often demonstrating superiority over laser photocoagulation (Flaxel et al., 2020).",
+      "links": "https://doi.org/10.1016/j.ophtha.2019.09.025",
+      "references": "Flaxel, C. J., et al. (2020). Diabetic Retinopathy Preferred Practice Pattern®. Ophthalmology, 127(1), P66-P145."
+    },
+    {
+      "topic": "diffuse large b cell lymphoma car t cell therapy in relapsed refractory disease",
+      "findings": "• Clinical Guideline: NCCN and ASCO guidelines strongly endorse CD19-targeted CAR T-cell therapy (axicabtagene ciloleucel, tisagenlecleucel) for patients with DLBCL who are refractory to first-line chemoimmunotherapy or relapse within 12 months, based on superior event-free survival compared to standard autologous stem cell transplant pathways (Locke et al., 2022).",
+      "links": "https://doi.org/10.1056/NEJMoa2116596",
+      "references": "Locke, F. L., et al. (2022). Axicabtagene Ciloleucel as Second-Line Therapy for Large B-Cell Lymphoma. New England Journal of Medicine, 386(7), 640-654."
+    },
+    {
+      "topic": "dual antiplatelet therapy duration after pci",
+      "findings": "• Clinical Guideline: The 2021 ACC/AHA guidelines advise a default of 1-3 months of DAPT after PCI for high bleeding risk patients, and 6-12 months for standard risk, particularly after acute coronary syndromes. De-escalation strategies and P2Y12 inhibitor monotherapy are now favored for reducing bleeding without increasing ischemic risk (Lawton et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001038",
+      "references": "Lawton, J. S., et al. (2022). 2021 ACC/AHA/SCAI Guideline for Coronary Artery Revascularization. Circulation, 145(3), e18-e114."
+    },
+    {
+      "topic": "dupilumab il 4 il 13 inhibitor biologic therapy",
+      "findings": "• Clinical Guideline: Guidelines from the AAD and GINA strongly position dupilumab as highly effective and safe for moderate-to-severe atopic dermatitis and severe type 2 (eosinophilic) asthma, respectively, significantly reducing exacerbations and dependence on systemic corticosteroids (Wollenberg et al., 2022; GINA, 2023).",
+      "links": "https://doi.org/10.1111/jdv.18346",
+      "references": "Wollenberg, A., et al. (2022). European guideline (EuroGuiDerm) on atopic eczema. Journal of the European Academy of Dermatology and Venereology, 36(9), 1409-1431."
+    },
+    {
+      "topic": "durable lvad therapy for advanced heart failure",
+      "findings": "• Clinical Guideline: The 2022 AHA/ACC/HFSA Heart Failure guidelines support the use of durable continuous-flow LVADs (e.g., HeartMate 3) as a destination therapy or bridge to transplant in NYHA class IV patients with refractory symptoms, improving both survival and quality of life (Heidenreich et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001063",
+      "references": "Heidenreich, P. A., et al. (2022). 2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure. Circulation, 145(18), e895-e1032."
+    },
+    {
+      "topic": "ebola virus disease therapeutics and supportive care",
+      "findings": "• WHO Guideline: The World Health Organization recommends targeted monoclonal antibody therapies (anmazuvimab or atoltivimab/maftivimab/odesivimab) as standard specific therapeutics for Ebola virus disease, combined with optimized supportive care including aggressive fluid and electrolyte resuscitation (WHO, 2022).",
+      "links": "https://www.who.int/publications/i/item/9789240055172",
+      "references": "World Health Organization. (2022). Therapeutics for Ebola virus disease: WHO Guideline. WHO Press."
+    },
+    {
+      "topic": "esophageal cancer neoadjuvant chemoradiation",
+      "findings": "• Meta-Analysis / Guideline: The CROSS trial established standard-of-care for resectable esophageal or esophagogastric junction cancer: neoadjuvant chemoradiotherapy (carboplatin/paclitaxel) followed by surgery significantly improves overall survival and pathological complete response compared to surgery alone (Shapiro et al., 2015).",
+      "links": "https://doi.org/10.1016/S1470-2045(15)00040-6",
+      "references": "Shapiro, J., et al. (2015). Neoadjuvant chemoradiotherapy plus surgery versus surgery alone for oesophageal or junctional cancer (CROSS): long-term results of a randomised controlled trial. The Lancet Oncology, 16(9), 1090-1098."
+    },
+    {
+      "topic": "gerd refractory symptoms and antireflux surgery",
+      "findings": "• Clinical Guideline: The ACG guidelines suggest that for patients with objectively proven GERD (abnormal acid exposure) who are refractory to PPIs or wish to discontinue medical therapy, laparoscopic fundoplication or magnetic sphincter augmentation are effective surgical options (Katz et al., 2022).",
+      "links": "https://doi.org/10.14309/ajg.0000000000001538",
+      "references": "Katz, P. O., et al. (2022). ACG Clinical Guideline for the Diagnosis and Management of Gastroesophageal Reflux Disease. American Journal of Gastroenterology, 117(1), 27-56."
+    },
+    {
+      "topic": "glycemic control in critical illness",
+      "findings": "• Clinical Guideline: The Surviving Sepsis Campaign and critical care societies recommend initiating insulin therapy for consecutive blood glucose levels >180 mg/dL (10 mmol/L), targeting a moderate range of 144–180 mg/dL to avoid severe hypoglycemia, abandoning earlier strict targets (80-110 mg/dL) (Evans et al., 2021).",
+      "links": "https://doi.org/10.1097/CCM.0000000000005337",
+      "references": "Evans, L., et al. (2021). Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Critical Care Medicine, 49(11), e1063-e1143."
+    },
+    {
+      "topic": "graves disease antithyroid and radioiodine therapy",
+      "findings": "• Clinical Guideline: The ATA guidelines stipulate three primary options for Graves' hyperthyroidism: antithyroid drugs (methimazole preferred over PTU due to hepatotoxicity risk), radioactive iodine (RAI) therapy, or surgery. The choice depends on patient preference, goiter size, and presence of moderate-to-severe ophthalmopathy (which contraindicates RAI without steroids) (Ross et al., 2016).",
+      "links": "https://doi.org/10.1089/thy.2016.0229",
+      "references": "Ross, D. S., et al. (2016). 2016 American Thyroid Association Guidelines for Diagnosis and Management of Hyperthyroidism and Other Causes of Thyrotoxicosis. Thyroid, 26(10), 1343-1421."
+    },
+    {
+      "topic": "haemophilia a factor viii prophylaxis and emicizumab for inhibitor patients",
+      "findings": "• Clinical Guideline: WFH guidelines recommend regular replacement prophylaxis for severe Hemophilia A. For patients who develop Factor VIII inhibitors (or even non-inhibitor patients for convenience), the bispecific antibody emicizumab is strongly recommended for highly effective routine prophylaxis via subcutaneous injection (Srivastava et al., 2020).",
+      "links": "https://doi.org/10.1111/hae.14046",
+      "references": "Srivastava, A., et al. (2020). WFH Guidelines for the Management of Hemophilia, 3rd edition. Haemophilia, 26(S6), 1-158."
+    },
+    {
+      "topic": "head and neck squamous cell chemoradiation",
+      "findings": "• Clinical Guideline: ASCO/NCCN guidelines recommend definitive concurrent chemoradiotherapy (primarily high-dose cisplatin every 3 weeks) as the standard organ-preservation approach for locally advanced, unresectable head and neck squamous cell carcinomas (HNSCC) (Adelstein et al., 2017).",
+      "links": "https://doi.org/10.1200/JCO.2016.71.1275",
+      "references": "Adelstein, D., et al. (2017). Squamous Cell Carcinoma of the Head and Neck: ASCO Clinical Practice Guideline Endorsement. Journal of Clinical Oncology, 35(11), 1308-1312."
+    },
+    {
+      "topic": "healthcare associated mrsa decolonization and prevention",
+      "findings": "• Clinical Guideline: SHEA/IDSA practice recommendations endorse targeted decolonization (intranasal mupirocin and chlorhexidine bathing) for patients colonized with MRSA in high-risk units (e.g., ICU) or prior to high-risk surgeries (e.g., cardiothoracic/orthopedic) to prevent healthcare-associated infections (Popovich et al., 2023).",
+      "links": "https://doi.org/10.1017/ice.2023.103",
+      "references": "Popovich, K. J., et al. (2023). SHEA/IDSA/APIC Practice Recommendation: Strategies to prevent methicillin-resistant Staphylococcus aureus transmission and infection in acute-care hospitals. Infection Control & Hospital Epidemiology, 44(7), 1039-1067."
+    },
+    {
+      "topic": "heart failure remote hemodynamic monitoring",
+      "findings": "• Clinical Guideline: The 2022 AHA/ACC/HFSA guidelines give a Class IIa recommendation for wireless pulmonary artery pressure monitoring (e.g., CardioMEMS) in symptomatic (NYHA class III) heart failure patients with prior hospitalizations to guide medical therapy and reduce recurrent heart failure admissions (Heidenreich et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001063",
+      "references": "Heidenreich, P. A., et al. (2022). 2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure. Circulation, 145(18), e895-e1032."
+    }
+  ]
+}

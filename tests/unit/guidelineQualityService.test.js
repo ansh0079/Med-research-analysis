@@ -18,6 +18,10 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('European Stroke Organisation')).toBe(true);
         expect(isTrustedSource('ASGE')).toBe(true);
         expect(isTrustedSource('European LeukemiaNet')).toBe(true);
+        expect(isTrustedSource('ESID')).toBe(true);
+        expect(isTrustedSource('American Thyroid Association')).toBe(true);
+        expect(isTrustedSource('World Federation of Hemophilia')).toBe(true);
+        expect(isTrustedSource('SHEA/IDSA')).toBe(true);
         expect(isTrustedSource('Unknown Blog')).toBe(false);
     });
 
