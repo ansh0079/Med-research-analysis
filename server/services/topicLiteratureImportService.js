@@ -302,19 +302,26 @@ function isServableGuideline(topic, guideline) {
 
 function toArticle(item) {
     const uid = articleUid(item);
+    const authors = Array.isArray(item.authors)
+        ? item.authors
+        : (item.authors ? [item.authors] : []);
     return {
         uid,
         pmid: item.pmid || null,
         pmcid: item.pmcid || null,
         doi: item.doi || null,
         title: item.title || item.text.slice(0, 240),
-        abstract: item.text,
-        authors: [],
+        abstract: String(item.fetchedAbstract || item.abstract || item.text || '').slice(0, 4000),
+        authors,
         source: item.journal || 'curated',
         journal: item.journal || '',
         pubdate: item.year ? String(item.year) : '',
         year: item.year,
         url: item.url,
+        openAccess: item.isOpenAccess || item.isFree || Boolean(item.pmcid),
+        isFree: item.isFree || item.isOpenAccess || Boolean(item.pmcid),
+        openAccessUrl: item.openAccessUrl || item.oaPdfUrl || null,
+        fullTextUrl: item.oaPdfUrl || item.openAccessUrl || null,
         _source: 'curated_literature_pack',
         pubtype: item.kind === 'guideline' ? 'Practice Guideline' : 'Journal Article',
     };
@@ -328,12 +335,34 @@ function existingFingerprintSet(guidelines) {
     })));
 }
 
-async function importTopicLiterature(db, packRow, { force = false, dryRun = false } = {}) {
+async function importTopicLiterature(db, packRow, {
+    force = false,
+    dryRun = false,
+    fetchLinks = false,
+    fetchImpl = null,
+    serverConfig = null,
+    extractPdf = false,
+    cache = null,
+    fetchSleepMs = 0,
+} = {}) {
     const topic = String(packRow?.topic || '').trim();
     if (!topic) return { topic: '', skipped: true, reason: 'missing_topic' };
 
     const items = expandPackRow(packRow);
     if (!items.length) return { topic, skipped: true, reason: 'empty_pack_row' };
+
+    let fetchResults = [];
+    if (fetchLinks && fetchImpl) {
+        const { enrichPackItems } = require('./literatureLinkFetchService');
+        fetchResults = await enrichPackItems(items, {
+            fetchImpl,
+            serverConfig,
+            db: dryRun ? null : db,
+            cache,
+            extractPdf: extractPdf && !dryRun,
+            sleepMs: fetchSleepMs,
+        });
+    }
 
     const existing = typeof db.getGuidelinesByTopic === 'function'
         ? await db.getGuidelinesByTopic(topic, { limit: 100, skipRank: true }).catch(() => [])
@@ -441,6 +470,9 @@ async function importTopicLiterature(db, packRow, { force = false, dryRun = fals
         skippedGuidelineCount: skippedGuidelines.length,
         servableGuidelineCount: createdGuidelines.filter((g) => g.servable).length,
         trustedGuidelineCount: createdGuidelines.filter((g) => g.trusted).length,
+        fetchedAbstractCount: fetchResults.filter((row) => Number(row.abstractChars || 0) > 0).length,
+        pdfIndexedCount: fetchResults.filter((row) => row.pdfIndexed).length,
+        fetchResults,
         dryRun,
         createdGuidelines,
     };
@@ -456,6 +488,8 @@ async function importLiteraturePack(db, rows, options = {}) {
         articleCount: results.reduce((sum, row) => sum + (row.articleCount || 0), 0),
         guidelineCount: results.reduce((sum, row) => sum + (row.guidelineCount || 0), 0),
         servableGuidelineCount: results.reduce((sum, row) => sum + (row.servableGuidelineCount || 0), 0),
+        fetchedAbstractCount: results.reduce((sum, row) => sum + (row.fetchedAbstractCount || 0), 0),
+        pdfIndexedCount: results.reduce((sum, row) => sum + (row.pdfIndexedCount || 0), 0),
         results,
     };
 }

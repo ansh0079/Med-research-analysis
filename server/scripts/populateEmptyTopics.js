@@ -14,6 +14,9 @@
  *   node server/scripts/populateEmptyTopics.js --gaps server/data/topic-gaps/active-topics-no-guideline-no-paper.csv
  *   node server/scripts/populateEmptyTopics.js --discover --limit 20
  *   node server/scripts/populateEmptyTopics.js --dry-run
+ *   node server/scripts/populateEmptyTopics.js --fetch-links
+ *   node server/scripts/populateEmptyTopics.js --no-fetch-links
+ *   node server/scripts/populateEmptyTopics.js --extract-pdf
  */
 
 const fs = require('fs');
@@ -57,6 +60,9 @@ function parseArgs(argv) {
         force: false,
         limit: Infinity,
         sleepMs: 1200,
+        fetchLinks: null,
+        extractPdf: null,
+        fetchSleepMs: 250,
     };
     for (let i = 0; i < argv.length; i += 1) {
         const arg = argv[i];
@@ -73,12 +79,23 @@ function parseArgs(argv) {
         } else if (arg === '--sleep-ms' && next) {
             opts.sleepMs = Math.max(0, parseInt(next, 10) || 0);
             i += 1;
+        } else if (arg === '--fetch-sleep-ms' && next) {
+            opts.fetchSleepMs = Math.max(0, parseInt(next, 10) || 0);
+            i += 1;
         } else if (arg === '--discover') {
             opts.discover = true;
         } else if (arg === '--dry-run') {
             opts.dryRun = true;
         } else if (arg === '--force') {
             opts.force = true;
+        } else if (arg === '--fetch-links') {
+            opts.fetchLinks = true;
+        } else if (arg === '--no-fetch-links') {
+            opts.fetchLinks = false;
+        } else if (arg === '--extract-pdf') {
+            opts.extractPdf = true;
+        } else if (arg === '--no-extract-pdf') {
+            opts.extractPdf = false;
         }
     }
     if (!opts.literature.length) {
@@ -176,10 +193,12 @@ async function discoverTopic(topic, { dryRun }) {
 
 async function main() {
     const opts = parseArgs(process.argv.slice(2));
+    opts.fetchLinks = opts.fetchLinks == null ? !opts.dryRun : opts.fetchLinks;
+    opts.extractPdf = opts.extractPdf == null ? false : opts.extractPdf;
     console.log('Populate empty topics');
     console.log(`  literature: ${opts.literature.join(', ') || '(none)'}`);
     console.log(`  gaps: ${opts.gaps.join(', ') || '(none)'}`);
-    console.log(`  discover=${opts.discover} dryRun=${opts.dryRun} force=${opts.force} limit=${opts.limit}`);
+    console.log(`  discover=${opts.discover} dryRun=${opts.dryRun} force=${opts.force} limit=${opts.limit} fetchLinks=${opts.fetchLinks} extractPdf=${opts.extractPdf}`);
 
     await db.connect();
     if (typeof db.runMigrations === 'function') {
@@ -197,16 +216,24 @@ async function main() {
         ? await importLiteraturePack(db, packRows.slice(0, opts.limit), {
             dryRun: opts.dryRun,
             force: opts.force,
+            fetchLinks: opts.fetchLinks,
+            extractPdf: opts.extractPdf,
+            fetchImpl: safeFetch,
+            serverConfig,
+            fetchSleepMs: opts.fetchSleepMs,
         })
-        : { topicCount: 0, articleCount: 0, guidelineCount: 0, servableGuidelineCount: 0, results: [] };
+        : { topicCount: 0, articleCount: 0, guidelineCount: 0, servableGuidelineCount: 0, fetchedAbstractCount: 0, pdfIndexedCount: 0, results: [] };
 
-    console.log(`\nCurated import: topics=${imported.topicCount} articles=${imported.articleCount} guidelines=${imported.guidelineCount} servable=${imported.servableGuidelineCount}`);
+    console.log(`\nCurated import: topics=${imported.topicCount} articles=${imported.articleCount} guidelines=${imported.guidelineCount} servable=${imported.servableGuidelineCount} fetchedAbstracts=${imported.fetchedAbstractCount || 0} pdfIndexed=${imported.pdfIndexedCount || 0}`);
     for (const row of imported.results) {
         if (row.skipped) {
             console.log(`  · ${row.topic} skipped (${row.reason})`);
             continue;
         }
-        console.log(`  · ${row.topic}: papers=${row.articleCount} guidelines=${row.guidelineCount} servable=${row.servableGuidelineCount} trusted=${row.trustedGuidelineCount}`);
+        const fetchNote = (row.fetchResults || [])
+            .map((item) => `${item.sources.join('+') || 'none'}:${item.abstractChars}c`)
+            .join(',');
+        console.log(`  · ${row.topic}: papers=${row.articleCount} guidelines=${row.guidelineCount} servable=${row.servableGuidelineCount} trusted=${row.trustedGuidelineCount}${fetchNote ? ` fetch=${fetchNote}` : ''}`);
     }
 
     const gapTopics = loadGapTopics(opts.gaps).slice(0, Number.isFinite(opts.limit) ? opts.limit : undefined);

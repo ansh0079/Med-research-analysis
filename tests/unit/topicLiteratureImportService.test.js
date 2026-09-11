@@ -169,6 +169,43 @@ describe('topicLiteratureImportService', () => {
         }));
     });
 
+    test('fetchLinks stores the publisher abstract instead of only the curated bullet', async () => {
+        const db = makeDb();
+        const fetchImpl = jest.fn(async (url) => {
+            const body = /europepmc/.test(url)
+                ? {
+                    resultList: {
+                        result: [{
+                            title: 'Difficult Airway Society 2015 guidelines',
+                            abstractText: 'These guidelines describe a strategy for unanticipated difficult intubation including videolaryngoscopy and front-of-neck access.',
+                            pmid: '26324720',
+                            journalTitle: 'Anaesthesia',
+                            pubYear: '2015',
+                            isOpenAccess: 'Y',
+                        }],
+                    },
+                }
+                : { is_oa: true, best_oa_location: { url_for_pdf: 'https://example.org/das.pdf' }, message: { title: ['DAS'] } };
+            return {
+                ok: true,
+                headers: { get: () => 'application/json' },
+                json: async () => body,
+                text: async () => JSON.stringify(body),
+            };
+        });
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-9.json');
+        const row = parseLiteratureFile(packPath).find((item) => /difficult airway/i.test(item.topic));
+        const result = await importTopicLiterature(db, row, {
+            fetchLinks: true,
+            fetchImpl,
+            serverConfig: { keys: { ncbiEmail: 'test@example.com' } },
+        });
+        expect(result.fetchedAbstractCount).toBe(1);
+        const cacheWrite = db.runs.find((entry) => /INSERT INTO article_cache/i.test(entry.sql));
+        expect(String(cacheWrite.params[5])).toMatch(/videolaryngoscopy/i);
+        expect(String(cacheWrite.params[5])).not.toMatch(/^• Clinical Guideline/);
+    });
+
     test('loads the checked-in batch-8 literature pack', () => {
         const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-8.json');
         expect(fs.existsSync(packPath)).toBe(true);

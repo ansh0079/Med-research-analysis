@@ -31,6 +31,8 @@ describe('articlePersistenceService.persistSearchedArticles', () => {
         const objectWrites = db.runs.filter((r) => /INSERT INTO teaching_objects/i.test(r.sql));
         expect(cacheWrites).toHaveLength(24);
         expect(objectWrites).toHaveLength(24);
+        expect(cacheWrites[0].sql).toMatch(/length\(excluded\.abstract\)/);
+        expect(objectWrites[0].sql).toMatch(/ON CONFLICT\(object_key\) DO UPDATE SET/);
         expect(db.recordBouquetSignals).toHaveBeenCalled();
     });
 
