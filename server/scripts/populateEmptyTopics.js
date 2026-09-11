@@ -17,6 +17,7 @@
  *   node server/scripts/populateEmptyTopics.js --fetch-links
  *   node server/scripts/populateEmptyTopics.js --no-fetch-links
  *   node server/scripts/populateEmptyTopics.js --extract-pdf
+ *   node server/scripts/populateEmptyTopics.js --no-extract-pdf
  */
 
 const fs = require('fs');
@@ -194,7 +195,7 @@ async function discoverTopic(topic, { dryRun }) {
 async function main() {
     const opts = parseArgs(process.argv.slice(2));
     opts.fetchLinks = opts.fetchLinks == null ? !opts.dryRun : opts.fetchLinks;
-    opts.extractPdf = opts.extractPdf == null ? false : opts.extractPdf;
+    opts.extractPdf = opts.extractPdf == null ? opts.fetchLinks : opts.extractPdf;
     console.log('Populate empty topics');
     console.log(`  literature: ${opts.literature.join(', ') || '(none)'}`);
     console.log(`  gaps: ${opts.gaps.join(', ') || '(none)'}`);

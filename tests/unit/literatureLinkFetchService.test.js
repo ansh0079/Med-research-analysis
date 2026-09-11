@@ -188,4 +188,70 @@ describe('literatureLinkFetchService', () => {
         expect(stats[0].abstractChars).toBeGreaterThan(20);
         expect(stats[0].isOpenAccess).toBe(true);
     });
+
+    test('stores Europe PMC open-access full text when extractPdf is on', async () => {
+        const body = 'Open access guideline paragraph about carbapenem therapy for ESBL bacteremia. '.repeat(40);
+        const db = { savePdfSections: jest.fn(async () => undefined) };
+        const fetchImpl = jest.fn(async (url) => {
+            if (/europepmc.*search/.test(url)) {
+                return jsonResponse({
+                    resultList: {
+                        result: [{
+                            title: 'IDSA guidance on antimicrobial resistant gram-negative infections',
+                            abstractText: 'Carbapenems are first-line for ESBL bloodstream infection.',
+                            pmid: '34774528',
+                            pmcid: 'PMC8631171',
+                            isOpenAccess: 'Y',
+                        }],
+                    },
+                });
+            }
+            if (/fullTextXML/.test(url)) {
+                return {
+                    ok: true,
+                    headers: { get: () => 'application/xml' },
+                    json: async () => ({}),
+                    text: async () => `<fullText>${body}</fullText>`,
+                };
+            }
+            return { ok: false, headers: { get: () => '' }, json: async () => ({}), text: async () => '' };
+        });
+        const result = await fetchLiteratureLink(
+            { doi: '10.1093/cid/ciab1013', title: 'IDSA guidance on antimicrobial resistant gram-negative infections' },
+            {
+                fetchImpl,
+                serverConfig: { keys: { ncbiEmail: 't@x.com' } },
+                extractPdf: true,
+                db,
+            }
+        );
+        expect(result.pdfIndexed).toBe(true);
+        expect(result.fetchSources).toContain('europepmc_xml');
+        expect(db.savePdfSections).toHaveBeenCalledWith(
+            '10.1093/cid/ciab1013',
+            expect.objectContaining({
+                source: 'europepmc_xml',
+                wordCount: expect.any(Number),
+            })
+        );
+        expect(db.savePdfSections.mock.calls[0][1].wordCount).toBeGreaterThanOrEqual(200);
+    });
+
+    test('stores free society HTML as full text when extractPdf is on', async () => {
+        const db = { savePdfSections: jest.fn(async () => undefined) };
+        const fetchImpl = jest.fn(async () => htmlResponse(
+            '<html><body><h1>KDIGO AKI Guideline</h1><p>'
+            + 'Prevention of drug-induced AKI requires identifying nephrotoxins and monitoring creatinine. '.repeat(30)
+            + '</p></body></html>'
+        ));
+        const result = await fetchLiteratureLink(
+            { url: 'https://kdigo.org/guidelines/acute-kidney-injury/', title: 'KDIGO AKI' },
+            { fetchImpl, serverConfig: { keys: {} }, extractPdf: true, db }
+        );
+        expect(result.fetchSources).toEqual(expect.arrayContaining(['html', 'oa_html']));
+        expect(db.savePdfSections).toHaveBeenCalledWith(
+            expect.any(String),
+            expect.objectContaining({ source: 'oa_html' })
+        );
+    });
 });

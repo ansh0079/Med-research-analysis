@@ -11,6 +11,8 @@ const { validateFetchUrl } = require('../utils/ssrfGuard');
 
 const ABSTRACT_MAX = 4000;
 const HTML_EXCERPT_MAX = 3500;
+const FULLTEXT_MAX = 120000;
+const FREE_HTML_HOST_RE = /nice\.org\.uk|who\.int|kdigo\.org|bgs\.org\.uk|resus\.org\.uk|cdc\.gov|gov\.uk|hematology\.org|entnet\.org/i;
 const USER_AGENT = 'SignalMD/2.0 (literature-import; mailto:research@example.com)';
 
 function stripTags(value) {
@@ -203,13 +205,54 @@ async function fetchHtmlExcerpt(rawUrl, fetchImpl) {
     if (ctype.includes('pdf')) return { contentType: 'pdf', url: rawUrl };
     if (ctype && !/html|xml|text\/plain/.test(ctype)) return null;
     const html = await res.text();
-    const excerpt = stripTags(html).slice(0, HTML_EXCERPT_MAX);
+    const fullText = stripTags(html).slice(0, FULLTEXT_MAX);
+    const excerpt = fullText.slice(0, HTML_EXCERPT_MAX);
     if (excerpt.length < 200) return null;
     if (/please sign in|subscribe to (access|continue)|enable javascript to continue/i.test(excerpt)
         && excerpt.length < 800) {
         return null;
     }
-    return { abstract: excerpt, source: 'html', contentType: 'html' };
+    return { abstract: excerpt, fullText, source: 'html', contentType: 'html' };
+}
+
+async function fetchEuropePmcFullText(pmcid, fetchImpl) {
+    if (!pmcid) return null;
+    const id = String(pmcid).replace(/^PMC/i, '');
+    const url = `https://www.ebi.ac.uk/europepmc/webservices/rest/PMC${id}/fullTextXML`;
+    const res = await fetchImpl(url, {
+        timeout: 20000,
+        headers: requestHeaders('application/xml'),
+    });
+    if (!res?.ok) return null;
+    const text = stripTags(await res.text()).slice(0, FULLTEXT_MAX);
+    return text.length >= 800 ? text : null;
+}
+
+function articleFullTextId(item, merged = {}) {
+    return item.doi
+        || merged.pmid
+        || item.pmid
+        || merged.pmcid
+        || item.pmcid
+        || item.uid
+        || '';
+}
+
+async function persistFullText(db, articleUid, { text, url, source }) {
+    if (!db || typeof db.savePdfSections !== 'function' || !articleUid || !text) return 0;
+    const words = String(text).trim().split(/\s+/).filter(Boolean);
+    if (words.length < 200) return 0;
+    await db.savePdfSections(articleUid, {
+        sections: { fulltext: String(text).slice(0, FULLTEXT_MAX) },
+        orderedKeys: ['fulltext'],
+        tables: [],
+        wordCount: words.length,
+        url: url || null,
+        source: source || 'open_access',
+        numpages: 0,
+        extractionBackend: source || 'open_access',
+    });
+    return words.length;
 }
 
 function emptyCache() {
@@ -245,6 +288,8 @@ async function fetchLiteratureLink(item, {
     };
 
     try {
+        let pdfIndexed = false;
+        let pdfWordCount = 0;
         if (doi) {
             const [epmc, xref, oa] = await Promise.all([
                 fetchEuropePmcByDoi(doi, fetchImpl).catch(() => null),
@@ -284,11 +329,24 @@ async function fetchLiteratureLink(item, {
         }
 
         const skipHtml = /doi\.org\//i.test(url);
-        if (!merged.abstract && url && !skipHtml) {
+        const wantHtmlFullText = extractPdf && url && !skipHtml && FREE_HTML_HOST_RE.test(url);
+        if ((!merged.abstract && url && !skipHtml) || wantHtmlFullText) {
             const html = await fetchHtmlExcerpt(url, fetchImpl).catch(() => null);
             if (html?.abstract) {
                 sources.push('html');
-                merged.abstract = html.abstract;
+                if (!merged.abstract) merged.abstract = html.abstract;
+            }
+            if (extractPdf && html?.fullText) {
+                const stored = await persistFullText(db, articleFullTextId(item, merged) || url, {
+                    text: html.fullText,
+                    url,
+                    source: 'oa_html',
+                }).catch(() => 0);
+                if (stored >= 200) {
+                    sources.push('oa_html');
+                    pdfIndexed = true;
+                    pdfWordCount = Math.max(pdfWordCount, stored);
+                }
             }
         }
 
@@ -306,8 +364,21 @@ async function fetchLiteratureLink(item, {
             }
         }
 
-        let pdfIndexed = false;
-        let pdfWordCount = 0;
+        if (extractPdf && merged.pmcid && merged.isOpenAccess) {
+            const pmcText = await fetchEuropePmcFullText(merged.pmcid, fetchImpl).catch(() => null);
+            if (pmcText) {
+                const stored = await persistFullText(db, articleFullTextId(item, merged), {
+                    text: pmcText,
+                    url: `https://www.ncbi.nlm.nih.gov/pmc/articles/${merged.pmcid}/`,
+                    source: 'europepmc_xml',
+                }).catch(() => 0);
+                if (stored >= 200) {
+                    sources.push('europepmc_xml');
+                    pdfIndexed = true;
+                    pdfWordCount = stored;
+                }
+            }
+        }
         if (extractPdf && (doi || merged.pmcid)) {
             try {
                 const { runPdfPreindex } = require('./pdf/pdfPreindexRunner');
@@ -322,9 +393,9 @@ async function fetchLiteratureLink(item, {
                     fetchImpl,
                     db,
                 });
-                pdfIndexed = Boolean(pdf?.indexed);
-                pdfWordCount = Number(pdf?.wordCount || 0);
-                if (pdfIndexed || pdfWordCount >= 200) sources.push('oa_pdf');
+                pdfIndexed = pdfIndexed || Boolean(pdf?.indexed);
+                pdfWordCount = Math.max(pdfWordCount, Number(pdf?.wordCount || 0));
+                if (pdf?.indexed || Number(pdf?.wordCount || 0) >= 200) sources.push('oa_pdf');
             } catch (err) {
                 logger.debug({ err, doi }, 'literature link PDF extract skipped');
             }
@@ -391,4 +462,6 @@ module.exports = {
     enrichPackItems,
     titleOverlap,
     fetchPubmedByTitle,
+    fetchEuropePmcFullText,
+    persistFullText,
 };
