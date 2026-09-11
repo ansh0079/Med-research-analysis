@@ -82,6 +82,8 @@ describe('topicLiteratureImportService', () => {
         expect(classifyFinding('Landmark Trial/Guideline: UKPDS follow-up demonstrated a legacy effect').kind).toBe('guideline');
         expect(classifyFinding('Scientific Statement: AHA notes that SCAD primarily affects younger women').kind).toBe('guideline');
         expect(classifyFinding('Clinical Review / Consensus: First-line management for catatonia is lorazepam').kind).toBe('guideline');
+        expect(classifyFinding('Consensus Guidelines: ASTCT endorses CAR T-cell therapy').kind).toBe('guideline');
+        expect(classifyFinding('Landmark Trial: The landmark CONSENSUS and SOLVD trials established ACE inhibitors').kind).toBe('paper');
     });
 
     test('expands a pack row into paired papers and guidelines', () => {
