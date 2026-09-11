@@ -42,6 +42,10 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('ACOG')).toBe(true);
         expect(isTrustedSource('Royal College of Psychiatrists')).toBe(true);
         expect(isTrustedSource('ACE guidelines')).toBe(true);
+        expect(isTrustedSource('AAO-HNSF')).toBe(true);
+        expect(isTrustedSource('American Geriatrics Society')).toBe(true);
+        expect(isTrustedSource('British Geriatrics Society')).toBe(true);
+        expect(isTrustedSource('United European Gastroenterology')).toBe(true);
         expect(isTrustedSource('ACE inhibitor')).toBe(false);
         expect(isTrustedSource('automated external defibrillator (AED)')).toBe(false);
         expect(isTrustedSource('European Academy of Dermatology and Venereology')).toBe(true);

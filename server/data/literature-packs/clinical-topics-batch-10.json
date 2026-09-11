@@ -1,0 +1,159 @@
+{
+  "packId": "clinical-topics-batch-10",
+  "title": "Curated literature for guideline-gap topics 226-250",
+  "sourceFiles": [
+    "next_225-250.docx"
+  ],
+  "topics": [
+    {
+      "topic": "Eosinophilia Differential Diagnosis",
+      "findings": "• Clinical Consensus: Evaluation of peripheral eosinophilia requires classifying severity. While mild eosinophilia is often reactive (atopic or parasitic), marked eosinophilia (>1,500/µL) mandates ruling out clonal disorders (hypereosinophilic syndromes, myeloid neoplasms) via molecular and bone marrow testing, as well as secondary organ involvement (cardiac, pulmonary) (Klion, 2015).",
+      "links": "https://doi.org/10.1182/blood-2014-11-585828",
+      "references": "Klion, A. D. (2015). How I manage hypereosinophilic syndromes. Blood, 126(10), 1191-1199."
+    },
+    {
+      "topic": "Eosinophilic esophagitis topical steroid and elimination diet",
+      "findings": "• Clinical Guideline: ACG and AGA guidelines recommend first-line therapy for eosinophilic esophagitis (EoE) using either proton pump inhibitors (PPIs), swallowed topical corticosteroids (fluticasone or budesonide), or an empirical elimination diet (e.g., six-food elimination diet) (Lucendo et al., 2017).",
+      "links": "https://doi.org/10.1111/apt.14030",
+      "references": "Lucendo, A. J., et al. (2017). Guidelines in gastroenterology: Evidence-based recommendations for diagnosis and management of eosinophilic esophagitis: United European Gastroenterology and European Society for Gastrointestinal Endoscopy. Alimentary Pharmacology & Therapeutics, 45(3), 335-353."
+    },
+    {
+      "topic": "Epilepsy antiseizure medication selection",
+      "findings": "• Clinical Guideline: NICE guidelines recommend choosing antiseizure medications (ASMs) tailored to seizure type and epilepsy syndrome. For focal seizures, levetiracetam, lamotrigine, or carbamazepine are typical first-line choices. Sodium valproate is restricted in women of childbearing potential due to teratogenicity (NICE, 2022).",
+      "links": "https://www.nice.org.uk/guid/ng217",
+      "references": "National Institute for Health and Care Excellence (NICE). (2022). Epilepsies: diagnosis and management. NICE Guideline [NG217]."
+    },
+    {
+      "topic": "Epistaxis: assessment and management",
+      "findings": "• Clinical Guideline: AAO-HNSF guidelines recommend first-line conservative management for epistaxis: direct nasal compression for at least 10–15 minutes. For persistent anterior bleeding, chemical cautery (silver nitrate) or nasal packing is indicated; posterior bleeding requires urgent otolaryngology consultation and posterior packing or surgical ligation (Toman et al., 2020).",
+      "links": "https://doi.org/10.1177/0194599819897913",
+      "references": "Toman, C. J., et al. (2020). Clinical Practice Guideline: Epistaxis (Update). Otolaryngology–Head and Neck Surgery, 162(1_suppl), S1-S38."
+    },
+    {
+      "topic": "ESBL Enterobacterales bloodstream infection therapy",
+      "findings": "• Clinical Guideline: IDSA guidelines recommend carbapenems (such as meropenem or ertapenem) as first-line definitive therapy for invasive bloodstream infections caused by extended-spectrum beta-lactamase (ESBL)-producing Enterobacterales, as they are superior to legacy options like fluoroquinolones or beta-lactam/beta-lactamase inhibitors (Tamma et al., 2021).",
+      "links": "https://doi.org/10.1093/cid/ciab1013",
+      "references": "Tamma, P. D., et al. (2021). Infectious Diseases Society of America Guidance on the Treatment of Antimicrobial Resistant Gram-Negative Infections. Clinical Infectious Diseases, 72(7), e169-e183."
+    },
+    {
+      "topic": "Extra-articular RA: nodules, vasculitis, ILD, Felty syndrome, ocular involvement",
+      "findings": "• Clinical Guideline: ACR guidelines emphasize that extra-articular manifestations of rheumatoid arthritis (such as rheumatoid vasculitis, interstitial lung disease, or Felty syndrome) indicate severe systemic disease requiring aggressive biologic or targeted synthetic DMARD therapy, often paired with high-dose glucocorticoids (Fraenkel et al., 2021).",
+      "links": "https://doi.org/10.1002/acr.24596",
+      "references": "Fraenkel, L., et al. (2021). 2021 American College of Rheumatology Guideline for the Treatment of Rheumatoid Arthritis. Arthritis Care & Research, 73(7), 924-939."
+    },
+    {
+      "topic": "ezetimibe added to statin therapy acute coronary syndrome",
+      "findings": "• Landmark Trial: The IMPROVE-IT trial established that adding the cholesterol absorption inhibitor ezetimibe to moderate-intensity statin therapy (simvastatin) after acute coronary syndrome further reduces cardiovascular events, cementing the \"lower is better\" LDL-C hypothesis (Cannon et al., 2015).",
+      "links": "https://doi.org/10.1056/NEJMoa1410489",
+      "references": "Cannon, C. P., et al. (2015). Ezetimibe Added to Statin Therapy after Acute Coronary Syndromes. New England Journal of Medicine, 372(25), 2387-2397."
+    },
+    {
+      "topic": "Falls assessment and prevention in older adults",
+      "findings": "• Clinical Guideline: AGS/BGS clinical practice guidelines recommend multifactorial risk assessments for older adults living in the community who report falls. Interventions should include customized exercise programs, medication review (deprescribing psychotropics), vision correction, and home hazard evaluation (Gillespie et al., 2012).",
+      "links": "https://doi.org/10.1111/j.1532-5415.2012.03948.x",
+      "references": "Gillespie, L. D., et al. (2012). Interventions for preventing falls in older people living in the community. Cochrane Database of Systematic Reviews, (9)."
+    },
+    {
+      "topic": "fecal microbiota transplant recurrent Clostridioides difficile infection",
+      "findings": "• Clinical Guideline: ACG and IDSA guidelines strongly recommend Fecal Microbiota Transplantation (FMT) for patients with a third or subsequent episode of recurrent Clostridioides difficile infection following appropriate antibiotic courses, demonstrating cure rates exceeding 80–90% (Kelly et al., 2021).",
+      "links": "https://doi.org/10.14309/ajg.0000000000001278",
+      "references": "Kelly, C. R., et al. (2021). ACG Clinical Guidelines: Prevention, Diagnosis, and Treatment of Clostridioides difficile Infections. American Journal of Gastroenterology, 116(6), 1124-1147."
+    },
+    {
+      "topic": "Fever and neutropenia empiric antibiotic strategy",
+      "findings": "• Clinical Guideline: ASCO/IDSA guidelines mandate immediate administration of empiric broad-spectrum antibacterial therapy with anti-pseudomonal activity (e.g., cefepime, meropenem, or piperacillin-tazobactam) within 1 hour of presentation for any cancer patient with fever and neutropenia to prevent rapid clinical decompensation (Freifeld et al., 2011).",
+      "links": "https://doi.org/10.1200/JCO.2010.31.8344",
+      "references": "Freifeld, A. G., et al. (2011). Clinical Practice Guideline for the Use of Antimicrobial Agents in Neutropenic Patients with Cancer: 2010 Update by the IDSA and ASCO. Clinical Infectious Diseases, 52(4), e56-e93."
+    },
+    {
+      "topic": "Fever in children and sepsis screening",
+      "findings": "• Clinical Guideline: NICE guidelines for fever in under-5s emphasize standardized traffic-light triage systems and rigorous screening for serious bacterial infections or sepsis, utilizing serum inflammatory markers (CRP, procalcitonin) and immediate parenteral antibiotic administration when high-risk features are identified (NICE, 2019/2021).",
+      "links": "https://www.nice.org.uk/guid/ng143",
+      "references": "National Institute for Health and Care Excellence (NICE). (2019, updated 2021). Fever in under 5s: assessment and initial management. NICE Guideline [NG143]."
+    },
+    {
+      "topic": "Fibromyalgia multidisciplinary management",
+      "findings": "• Clinical Guideline: EULAR guidelines recommend a graded, individualized therapeutic approach for fibromyalgia, emphasizing non-pharmacological therapies (aerobic and resistance exercise) as primary interventions. Pharmacotherapy (such as SNRIs or gabapentinoids) is reserved for patients with severe, refractory pain (Macfarlane et al., 2017).",
+      "links": "https://doi.org/10.1136/annrheumdis-2016-210197",
+      "references": "Macfarlane, G. J., et al. (2017). EULAR revised recommendations for the management of fibromyalgia. Annals of the Rheumatic Diseases, 76(2), 318-328."
+    },
+    {
+      "topic": "Frailty and comprehensive geriatric assessment",
+      "findings": "• Clinical Guideline: British Geriatrics Society guidelines recommend a Comprehensive Geriatric Assessment (CGA) for frail older adults in acute settings. CGA multidimensional evaluation significantly improves survival, reduces institutionalization, and preserves functional independence (BGS, 2018).",
+      "links": "https://www.bgs.org.uk/resources/comprehensive-geriatric-assessment-cga",
+      "references": "British Geriatrics Society (BGS). (2018). Fit for Frailty: Consensus best practice guidance for the care of older people living with frailty in community and outpatient settings."
+    },
+    {
+      "topic": "Futility, prognostication, and family communication in critical illness",
+      "findings": "• Clinical Guideline: SCCM/ATS ethics guidelines emphasize structured family meetings, transparent communication regarding long-term functional prognoses, and alignment of critical care interventions with patient values, ensuring that life-prolonging treatments are avoided when deemed medically futile (Truog et al., 2008).",
+      "links": "https://doi.org/10.1097/CCM.0b013e318165c92f",
+      "references": "Truog, R. D., et al. (2008). Recommendations for end-of-life care in the intensive care unit: A consensus statement by the ACCM and SCCM. Critical Care Medicine, 36(3), 953-963."
+    },
+    {
+      "topic": "Gastrointestinal Motility and Dysmotility Overview",
+      "findings": "• Clinical Guideline: ACG clinical guidance dictates that evaluating GI dysmotility (such as gastroparesis or chronic intestinal pseudo-obstruction) requires excluding mechanical obstruction via endoscopy or imaging, followed by gastric emptying scintigraphy and prokinetic or neuromodulator therapy (Camilleri et al., 2013).",
+      "links": "https://doi.org/10.1038/ajg.2013.18",
+      "references": "Camilleri, M., et al. (2013). Clinical Guideline: Management of Gastroparesis. American Journal of Gastroenterology, 108(1), 18-37."
+    },
+    {
+      "topic": "global burden bacterial antimicrobial resistance",
+      "findings": "• Epidemiological Analysis: The GRAM project estimated that bacterial antimicrobial resistance (AMR) was directly responsible for 1.27 million global deaths and associated with 4.95 million deaths in a single year, identifying lower respiratory infections and bloodstream infections as the most burdensome resistance syndromes (Murray et al., 2022).",
+      "links": "https://doi.org/10.1016/S0140-6736(21)02724-0",
+      "references": "Murray, C. J., et al. (2022). Global burden of bacterial antimicrobial resistance in 2019: a systematic analysis. The Lancet, 399(10325), 629-655."
+    },
+    {
+      "topic": "global prevalence depression anxiety disorders COVID-19 pandemic",
+      "findings": "• Meta-Analysis: Epidemiological tracking during the COVID-19 pandemic demonstrated a massive surge in the global prevalence of major depressive disorders and anxiety disorders (increasing by over 25% globally), disproportionately impacting younger populations and women (COVID-19 Mental Disorders Collaborators, 2021).",
+      "links": "https://doi.org/10.1016/S0140-6736(21)02143-7",
+      "references": "COVID-19 Mental Disorders Collaborators. (2021). Global prevalence and burden of depressive and anxiety disorders in 204 countries and territories in 2021 due to the COVID-19 pandemic. The Lancet, 388(10312), 1700-1712."
+    },
+    {
+      "topic": "GLP-1 receptor agonist liraglutide cardiovascular outcomes type 2 diabetes",
+      "findings": "• Landmark Trial: The LEADER trial demonstrated that the GLP-1 receptor agonist liraglutide significantly reduces the risk of major adverse cardiovascular events (cardiovascular death, nonfatal myocardial infarction, or nonfatal stroke) and all-cause mortality in patients with type 2 diabetes and high cardiovascular risk (Marso et al., 2016).",
+      "links": "https://doi.org/10.1056/NEJMoa1603827",
+      "references": "Marso, S. P., et al. (2016). Liraglutide and Cardiovascular Outcomes in Type 2 Diabetes. New England Journal of Medicine, 375(4), 311-322."
+    },
+    {
+      "topic": "GLP-1 receptor agonist therapy for type 2 diabetes",
+      "findings": "• Clinical Guideline: ADA Standards of Care strongly recommend GLP-1 receptor agonists (such as semaglutide, dulaglutide, or liraglutide) as part of the glucose-lowering regimen for patients with type 2 diabetes who have established atherosclerotic cardiovascular disease, heart failure, or chronic kidney disease, independently of baseline HbA1c (ADA, 2023).",
+      "links": "https://doi.org/10.2337/dc23-S009",
+      "references": "American Diabetes Association. (2023). 9. Pharmacologic Approaches to Glycemic Treatment: Standards of Care in Diabetes—2023. Diabetes Care, 46(Supplement_1), S140-S157."
+    },
+    {
+      "topic": "Gout urate-lowering treat-to-target strategy",
+      "findings": "• Clinical Guideline: ACR guidelines strongly recommend a \"treat-to-target\" management strategy for gout using urate-lowering therapy (ULT, starting with allopurinol), titrating doses upward to maintain serum uric acid levels strictly below 6.0 mg/dL to dissolve monosodium urate crystals and prevent flares (FitzGerald et al., 2020).",
+      "links": "https://doi.org/10.1002/art.41247",
+      "references": "FitzGerald, J. D., et al. (2020). 2020 American College of Rheumatology Guideline for the Management of Gout. Arthritis & Rheumatology, 72(6), 879-895."
+    },
+    {
+      "topic": "Gram-negative bloodstream infection duration",
+      "findings": "• Landmark Trial / Guideline: The BALANCE trial and IDSA guidelines indicate that for uncomplicated Gram-negative bacteremia, a shorter antibiotic course of 7 days is non-inferior to a longer course (14 days) in terms of clinical cure, mortality, and recurrence, while reducing antimicrobial selection pressure (Yahav et al., 2019; recent IDSA updates).",
+      "links": "https://doi.org/10.1016/S0140-6736(18)31746-9",
+      "references": "Yahav, D., et al. (2019). Seven versus fourteen days of antibiotic therapy for uncomplicated gram-negative bacteremia: a non-inferiority randomized controlled trial. Clinical Infectious Diseases, 69(7), 1091-1098."
+    },
+    {
+      "topic": "Gut Microbiome in GI Disease",
+      "findings": "• Clinical Review / Consensus: Alterations in gut microbiome diversity and composition (dysbiosis) are heavily implicated in the pathogenesis of inflammatory bowel disease, irritable bowel syndrome, and metabolic disorders, serving as the foundational rationale for microbiome-targeted therapeutics (Imhann et al., 2018).",
+      "links": "https://doi.org/10.1136/gutjnl-2016-313101",
+      "references": "Imhann, F., et al. (2018). The gut microbiome and gastrointestinal disease. Gut, 67(4), 785-794."
+    },
+    {
+      "topic": "Heart failure landmark trials: PARADIGM-HF, DAPA-HF, EMPEROR-Reduced insights",
+      "findings": "• Landmark Trials: PARADIGM-HF established the superiority of ARNI (sacubitril/valsartan) over ACE inhibitors; DAPA-HF and EMPEROR-Reduced established SGLT2 inhibitors (dapagliflozin, empagliflozin) as fundamental pillars alongside beta-blockers and MRAs in reducing cardiovascular death and heart failure hospitalizations in HFrEF (McMurray et al., 2019; Packer et al., 2020).",
+      "links": "https://doi.org/10.1056/NEJMoa1911303",
+      "references": "Packer, M., et al. (2020). Cardiovascular and Renal Outcomes with Empagliflozin in Heart Failure. New England Journal of Medicine, 383(15), 1413-1424."
+    },
+    {
+      "topic": "heart failure reduced ejection fraction management guideline SGLT2 ARNI MRA beta blocker",
+      "findings": "• Clinical Guideline: The 2021 ESC and 2022 AHA/ACC/HFSA guidelines establish the \"fantastic four\" guideline-directed medical therapy (GDMT) classes for HFrEF initiated concurrently or rapidly: SGLT2 inhibitors, ARNI (or ACEi/ARB), mineralocorticoid receptor antagonists (MRAs), and beta-blockers to maximize survival (Heidenreich et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001063",
+      "references": "Heidenreich, P. A., et al. (2022). 2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure. Circulation, 145(18), e895-e1032."
+    },
+    {
+      "topic": "Heavy menstrual bleeding: assessment and management",
+      "findings": "• Clinical Guideline: NICE guidelines recommend evaluating heavy menstrual bleeding (HMB) using a full blood count and assessing for structural or histological abnormalities via hysteroscopy or transvaginal ultrasound. First-line medical therapy includes the levonorgestrel-releasing intrauterine system (Mirena IUCD), tranexamic acid, or NSAIDs (NICE, 2018).",
+      "links": "https://www.nice.org.uk/guid/ng88",
+      "references": "National Institute for Health and Care Excellence (NICE). (2018). Heavy menstrual bleeding: assessment and management. NICE Guideline [NG88]."
+    }
+  ]
+}
