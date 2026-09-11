@@ -1,0 +1,159 @@
+{
+  "packId": "clinical-topics-batch-5",
+  "title": "Curated literature for guideline-gap topics 51-75",
+  "sourceFiles": [
+    "next_50-75.docx"
+  ],
+  "topics": [
+    {
+      "topic": "hemodialysis adequacy and frequency",
+      "findings": "• Clinical Guideline: KDOQI guidelines recommend a target single-pool Kt/V of 1.4 for thrice-weekly hemodialysis. More frequent or longer duration hemodialysis may be considered for patients with poor volume control or left ventricular hypertrophy, though routine intensive hemodialysis lacks robust survival benefit in unselected cohorts (National Kidney Foundation, 2015).",
+      "links": "https://doi.org/10.1053/j.ajkd.2015.07.015",
+      "references": "National Kidney Foundation. (2015). KDOQI Clinical Practice Guideline for Hemodialysis Adequacy: 2015 Update. American Journal of Kidney Diseases, 66(5), 884-930."
+    },
+    {
+      "topic": "herpes simplex encephalitis antiviral therapy",
+      "findings": "• Clinical Guideline: IDSA guidelines dictate that intravenous acyclovir (10 mg/kg every 8 hours) for 14-21 days is the standard of care for suspected or proven HSE. Empiric therapy must be initiated immediately upon suspicion, as delays significantly worsen neurological outcomes and mortality (Tunkel et al., 2008).",
+      "links": "https://doi.org/10.1086/589747",
+      "references": "Tunkel, A. R., et al. (2008). The Management of Encephalitis: Clinical Practice Guidelines by the Infectious Diseases Society of America. Clinical Infectious Diseases, 47(3), 303-327."
+    },
+    {
+      "topic": "hiv pre exposure prophylaxis",
+      "findings": "• Clinical Guideline: The CDC and WHO strongly recommend PrEP (oral TDF/FTC, oral TAF/FTC, or long-acting injectable cabotegravir) for individuals at high risk of HIV acquisition. Adherence to daily oral or scheduled injectable regimens provides >99% protection against sexual HIV transmission (CDC, 2021).",
+      "links": "https://www.cdc.gov/hiv/pdf/risk/prep/cdc-hiv-prep-guidelines-2021.pdf",
+      "references": "Centers for Disease Control and Prevention (CDC). (2021). Preexposure Prophylaxis for the Prevention of HIV Infection in the United States—2021 Update: A Clinical Practice Guideline."
+    },
+    {
+      "topic": "home noninvasive ventilation for copd hypercapnia",
+      "findings": "• Clinical Guideline: The ERS guidelines suggest the use of long-term home non-invasive ventilation (NIV) for patients with severe stable COPD and chronic hypercapnic respiratory failure, as it has been shown to reduce hospital admissions and improve survival compared to standard care alone (Ergan et al., 2019).",
+      "links": "https://doi.org/10.1183/13993003.01003-2019",
+      "references": "Ergan, B., et al. (2019). European Respiratory Society guidelines on long-term home non-invasive ventilation for management of COPD. European Respiratory Journal, 54(3)."
+    },
+    {
+      "topic": "hospital acquired and ventilator associated pneumonia",
+      "findings": "• Clinical Guideline: IDSA/ATS guidelines recommend empiric broad-spectrum antibiotics covering S. aureus (including MRSA if risk factors exist) and Pseudomonas aeruginosa. The standard duration of therapy for HAP/VAP is 7 days, which reduces antibiotic pressure without increasing clinical failure rates compared to longer courses (Kalil et al., 2016).",
+      "links": "https://doi.org/10.1093/cid/ciw315",
+      "references": "Kalil, A. C., et al. (2016). Management of Adults with Hospital-acquired and Ventilator-associated Pneumonia: 2016 Clinical Practice Guidelines by the IDSA and ATS. Clinical Infectious Diseases, 63(5), e61-e111."
+    },
+    {
+      "topic": "hybrid closed loop insulin delivery in type 1 diabetes",
+      "findings": "• Clinical Guideline: ADA Standards of Care recommend automated insulin delivery (AID) / hybrid closed-loop systems for youth and adults with Type 1 diabetes. These systems significantly increase time in range (TIR) and reduce both A1C and the frequency of severe hypoglycemia compared to sensor-augmented pump therapy (ADA, 2023).",
+      "links": "https://doi.org/10.2337/dc23-S007",
+      "references": "American Diabetes Association. (2023). 7. Diabetes Technology: Standards of Care in Diabetes—2023. Diabetes Care, 46(Supplement_1), S111-S127."
+    },
+    {
+      "topic": "hyperkalemia in ckd and heart failure",
+      "findings": "• Clinical Guideline: KDIGO and ESC consensus documents advocate for the use of novel potassium binders (patiromer, sodium zirconium cyclosilicate) to manage chronic hyperkalemia, allowing patients with CKD or HFrEF to safely continue or optimize life-saving renin-angiotensin-aldosterone system (RAAS) inhibitors (Rosano et al., 2018).",
+      "links": "https://doi.org/10.1093/eurheartj/ehy222",
+      "references": "Rosano, G. M., et al. (2018). Expert consensus document on the management of hyperkalaemia in patients with cardiovascular disease treated with RAAS inhibitors. European Heart Journal, 39(29), 2741-2748."
+    },
+    {
+      "topic": "hypersensitivity pneumonitis diagnosis and antigen avoidance",
+      "findings": "• Clinical Guideline: ATS/JRS/ALAT guidelines classify HP into non-fibrotic and fibrotic phenotypes based on HRCT and histopathology. Complete environmental avoidance of the inciting antigen is the cornerstone of management. Corticosteroids or immunosuppressants are reserved for progressive or severe symptomatic disease (Raghu et al., 2020).",
+      "links": "https://doi.org/10.1164/rccm.202005-2032ST",
+      "references": "Raghu, G., et al. (2020). Diagnosis of Hypersensitivity Pneumonitis in Adults. An Official ATS/JRS/ALAT Clinical Practice Guideline. American Journal of Respiratory and Critical Care Medicine, 202(3), e36-e69."
+    },
+    {
+      "topic": "icosapent ethyl residual cardiovascular risk",
+      "findings": "• Clinical Guideline / RCT: Based on the REDUCE-IT trial, ACC/AHA and ADA guidelines recommend icosapent ethyl (high-dose highly purified EPA) for patients with established ASCVD or diabetes with additional risk factors, and elevated triglycerides (135-499 mg/dL) despite maximally tolerated statins, to reduce residual ischemic risk (Bhatt et al., 2019).",
+      "links": "https://doi.org/10.1056/NEJMoa1812792",
+      "references": "Bhatt, D. L., et al. (2019). Cardiovascular Risk Reduction with Icosapent Ethyl for Hypertriglyceridemia. New England Journal of Medicine, 380(1), 11-22."
+    },
+    {
+      "topic": "igg4 related disease diagnosis and b cell depletion",
+      "findings": "• International Consensus: The primary treatment for active IgG4-RD is glucocorticoids. However, B-cell depletion with rituximab is highly effective for inducing and maintaining remission in refractory, relapsing, or high-risk multi-organ disease, and is increasingly recommended as a steroid-sparing agent (Khosroshahi et al., 2015).",
+      "links": "https://doi.org/10.1002/art.39132",
+      "references": "Khosroshahi, A., et al. (2015). International Consensus Guidance Statement on the Management and Treatment of IgG4-Related Disease. Arthritis & Rheumatology, 67(7), 1688-1699."
+    },
+    {
+      "topic": "intensive glycemic targets in type 2 diabetes",
+      "findings": "• Clinical Guideline / RCT: The ADA recommends an A1C target of <7.0% for most non-pregnant adults. The ACCORD and ADVANCE trials demonstrated that more intensive targets (e.g., <6.0%) increase severe hypoglycemia and potentially mortality without significantly reducing macrovascular events in established T2D, leading to individualized target recommendations (ADA, 2023).",
+      "links": "https://doi.org/10.2337/dc23-S006",
+      "references": "American Diabetes Association. (2023). 6. Glycemic Targets: Standards of Care in Diabetes—2023. Diabetes Care, 46(Supplement_1), S97-S110."
+    },
+    {
+      "topic": "invasive aspergillosis antifungal therapy",
+      "findings": "• Clinical Guideline: IDSA guidelines recommend intravenous voriconazole as the primary targeted therapy for invasive pulmonary and extrapulmonary aspergillosis. Isavuconazole is recognized as a similarly effective alternative with potentially fewer adverse effects. Liposomal amphotericin B is reserved as salvage or alternative therapy (Patterson et al., 2016).",
+      "links": "https://doi.org/10.1093/cid/ciw326",
+      "references": "Patterson, T. F., et al. (2016). Practice Guidelines for the Diagnosis and Management of Aspergillosis: 2016 Update by the IDSA. Clinical Infectious Diseases, 63(4), e1-e60."
+    },
+    {
+      "topic": "invasive candidiasis and candidemia antifungal therapy",
+      "findings": "• Clinical Guideline: IDSA guidelines strongly recommend an echinocandin (caspofungin, micafungin, or anidulafungin) as initial therapy for candidemia and invasive candidiasis in both neutropenic and non-neutropenic adults. Transition to oral fluconazole is recommended once the patient is clinically stable and species susceptibility is confirmed (Pappas et al., 2016).",
+      "links": "https://doi.org/10.1093/cid/civ933",
+      "references": "Pappas, P. G., et al. (2016). Clinical Practice Guideline for the Management of Candidiasis: 2016 Update by the IDSA. Clinical Infectious Diseases, 62(4), e1-e50."
+    },
+    {
+      "topic": "kidney transplant antibody mediated rejection",
+      "findings": "• International Consensus: The Transplantation Society consensus indicates that standard-of-care for active antibody-mediated rejection (ABMR) involves multimodal therapy primarily including plasmapheresis and intravenous immunoglobulin (IVIG). Agents like rituximab or bortezomib may be used, though trial data for long-term efficacy remains mixed (Schinstock et al., 2020).",
+      "links": "https://doi.org/10.1097/TP.0000000000003020",
+      "references": "Schinstock, C. A., et al. (2020). The Transplantation Society Working Group Consensus Statement on Therapeutic Approaches to Antibody-Mediated Rejection in Kidney Transplant. Transplantation, 104(3), 423-441."
+    },
+    {
+      "topic": "latex and perioperative allergy evaluation",
+      "findings": "• Practice Parameter: AAAAI/ACAAI guidelines emphasize detailed clinical history and specific IgE testing (or skin prick testing) for evaluation of perioperative anaphylaxis. For true latex allergy, strict avoidance and the implementation of a latex-free perioperative environment are the only definitive preventative measures (Volcheck et al., 2020).",
+      "links": "https://doi.org/10.1016/j.anai.2020.08.017",
+      "references": "Volcheck, G. W., et al. (2020). Drug allergy: A 2020 practice parameter update. Annals of Allergy, Asthma & Immunology, 125(4), 393-410."
+    },
+    {
+      "topic": "lithium monitoring and toxicity prevention",
+      "findings": "• Clinical Guideline: Guidelines mandate therapeutic drug monitoring of serum lithium levels (target 0.6–1.0 mEq/L) alongside baseline and routine monitoring of renal (eGFR) and thyroid (TSH) function. Toxicity prevention requires cautious dosing during volume depletion, acute illness, and avoidance of drug interactions like NSAIDs and thiazide diuretics (Yatham et al., 2018).",
+      "links": "https://doi.org/10.1111/bdi.12609",
+      "references": "Yatham, L. N., et al. (2018). Canadian Network for Mood and Anxiety Treatments (CANMAT) and ISBD 2018 guidelines for the management of patients with bipolar disorder. Bipolar Disorders, 20(2), 97-170."
+    },
+    {
+      "topic": "lyme disease diagnosis and treatment",
+      "findings": "• Clinical Guideline: IDSA/AAN/ACR guidelines recommend oral doxycycline, amoxicillin, or cefuroxime for 10-14 days for early localized Lyme disease (erythema migrans). IV ceftriaxone is reserved for severe neurological involvement (Lyme encephalomyelitis) or late symptomatic cardiac complications. Prolonged antibiotic therapy for \"chronic Lyme\" is explicitly advised against (Lantos et al., 2021).",
+      "links": "https://doi.org/10.1093/cid/ciaa1215",
+      "references": "Lantos, P. M., et al. (2021). Clinical Practice Guidelines by the IDSA, AAN, and ACR: 2020 Guidelines for the Prevention, Diagnosis and Treatment of Lyme Disease. Clinical Infectious Diseases, 72(1), e1-e48."
+    },
+    {
+      "topic": "major depressive disorder pharmacotherapy",
+      "findings": "• Clinical Guideline: APA and CANMAT guidelines recommend SSRIs, SNRIs, agomelatine, bupropion, or mirtazapine as first-line pharmacotherapy for MDD. Selection should be tailored based on symptom profile (e.g., insomnia vs. hypersomnia) and side effect tolerability. Efficacy across first-line agents is generally comparable (Kennedy et al., 2016).",
+      "links": "https://doi.org/10.1177/0706743716659417",
+      "references": "Kennedy, S. H., et al. (2016). CANMAT 2016 Clinical Guidelines for the Management of Adults with Major Depressive Disorder: Section 3. Pharmacological Treatments. The Canadian Journal of Psychiatry, 61(9), 540-560."
+    },
+    {
+      "topic": "menopausal hormone therapy risks and benefits",
+      "findings": "• Clinical Guideline: The NAMS 2022 position statement affirms that for healthy symptomatic women aged <60 years or within 10 years of menopause onset, the benefits of hormone therapy (HT) for vasomotor symptoms generally outweigh the risks. Vaginal estrogen is preferred for isolated genitourinary syndrome of menopause (NAMS, 2022).",
+      "links": "https://doi.org/10.1097/GME.0000000000002028",
+      "references": "The 2022 Hormone Therapy Position Statement of The North American Menopause Society. (2022). Menopause, 29(7), 767-794."
+    },
+    {
+      "topic": "metformin and glycemic legacy in type 2 diabetes",
+      "findings": "• Landmark Trial/Guideline: The UK Prospective Diabetes Study (UKPDS) follow-up demonstrated a \"legacy effect,\" where early intensive glycemic control with metformin in newly diagnosed T2D yielded long-term reductions in myocardial infarction and all-cause mortality, reinforcing its historical position as foundational therapy (Holman et al., 2008; ADA 2023).",
+      "links": "https://doi.org/10.1056/NEJMoa0806470",
+      "references": "Holman, R. R., et al. (2008). 10-Year Follow-up of Intensive Glucose Control in Type 2 Diabetes. New England Journal of Medicine, 359(15), 1577-1589."
+    },
+    {
+      "topic": "mitral regurgitation teer mitraclip",
+      "findings": "• Clinical Guideline / RCT: ACC/AHA guidelines give a Class 2a recommendation for Transcatheter Edge-to-Edge Repair (TEER) using MitraClip for patients with severe secondary (functional) mitral regurgitation who remain severely symptomatic despite optimal GDMT and CRT, heavily based on the mortality and hospitalization benefits shown in the COAPT trial (Otto et al., 2021).",
+      "links": "https://doi.org/10.1161/CIR.0000000000000923",
+      "references": "Otto, C. M., et al. (2021). 2020 ACC/AHA Guideline for the Management of Patients With Valvular Heart Disease. Circulation, 143(5), e72-e227."
+    },
+    {
+      "topic": "mog antibody associated disease diagnosis and relapse prevention",
+      "findings": "• International Consensus: MOG-IgG associated disease (MOGAD) is distinct from MS and AQP4+ NMOSD. Acute attacks are treated with high-dose steroids or PLEX. For relapse prevention in patients with recurrent disease, maintenance therapy with IVIG, rituximab, or mycophenolate mofetil is recommended, though prospective trial data is still emerging (Banwell et al., 2023).",
+      "links": "https://doi.org/10.1016/S1474-4422(22)00431-8",
+      "references": "Banwell, B., et al. (2023). Diagnosis of myelin oligodendrocyte glycoprotein antibody-associated disease: International MOGAD Panel proposed criteria. The Lancet Neurology, 22(3), 268-282."
+    },
+    {
+      "topic": "myelofibrosis jak inhibition with ruxolitinib",
+      "findings": "• Clinical Guideline: NCCN guidelines state that the JAK1/2 inhibitor ruxolitinib is standard frontline therapy for patients with intermediate- or high-risk primary or secondary myelofibrosis. It provides robust reductions in splenomegaly and systemic constitutional symptoms, and improves overall survival compared to best available therapy (Gerds et al., 2022).",
+      "links": "https://www.nccn.org/professionals/physician_gls/pdf/mpn.pdf",
+      "references": "Gerds, A. T., et al. (2022). NCCN Clinical Practice Guidelines in Oncology: Myeloproliferative Neoplasms. National Comprehensive Cancer Network."
+    },
+    {
+      "topic": "neuromyelitis optica spectrum disorder biologic therapy",
+      "findings": "• Clinical Guideline / Trial Data: For AQP4-IgG positive NMOSD, recent guidelines and landmark trials highly recommend novel targeted biologics for relapse prevention, specifically eculizumab (complement C5 inhibitor), inebilizumab (anti-CD19), or satralizumab (anti-IL-6 receptor), demonstrating profound superiority over legacy immunosuppressants (Wingerchuk et al., 2015; recent FDA approvals).",
+      "links": "https://doi.org/10.1212/WNL.0000000000001818",
+      "references": "Wingerchuk, D. M., et al. (2015). International consensus diagnostic criteria for neuromyelitis optica spectrum disorders. Neurology, 85(2), 177-189."
+    },
+    {
+      "topic": "neuropathic pain pharmacotherapy",
+      "findings": "• Clinical Guideline: The NeuPSIG guidelines strongly recommend TCAs (amitriptyline), SNRIs (duloxetine, venlafaxine), and gabapentinoids (gabapentin, pregabalin) as first-line therapies for systemic neuropathic pain. Opioids and tramadol are relegated to second- or third-line options due to safety and dependency risks (Finnerup et al., 2015).",
+      "links": "https://doi.org/10.1016/S1474-4422(14)70251-0",
+      "references": "Finnerup, N. B., et al. (2015). Pharmacotherapy for neuropathic pain in adults: a systematic review and meta-analysis. The Lancet Neurology, 14(2), 162-173."
+    }
+  ]
+}

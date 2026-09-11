@@ -22,6 +22,10 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('American Thyroid Association')).toBe(true);
         expect(isTrustedSource('World Federation of Hemophilia')).toBe(true);
         expect(isTrustedSource('SHEA/IDSA')).toBe(true);
+        expect(isTrustedSource('KDOQI')).toBe(true);
+        expect(isTrustedSource('CDC')).toBe(true);
+        expect(isTrustedSource('CANMAT')).toBe(true);
+        expect(isTrustedSource('NAMS')).toBe(true);
         expect(isTrustedSource('Unknown Blog')).toBe(false);
     });
 
