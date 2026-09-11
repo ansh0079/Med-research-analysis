@@ -32,6 +32,10 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('ISTH')).toBe(true);
         expect(isTrustedSource('WSES')).toBe(true);
         expect(isTrustedSource('AGA')).toBe(true);
+        expect(isTrustedSource('AAP')).toBe(true);
+        expect(isTrustedSource('AAOS')).toBe(true);
+        expect(isTrustedSource('EAACI')).toBe(true);
+        expect(isTrustedSource('Baveno VII')).toBe(true);
         expect(isTrustedSource('Unknown Blog')).toBe(false);
     });
 

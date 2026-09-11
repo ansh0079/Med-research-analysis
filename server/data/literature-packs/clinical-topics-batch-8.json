@@ -1,0 +1,159 @@
+{
+  "packId": "clinical-topics-batch-8",
+  "title": "Curated literature for guideline-gap topics 176-200",
+  "sourceFiles": [
+    "next_175-200.docx"
+  ],
+  "topics": [
+    {
+      "topic": "Borderline personality disorder dialectical behavior therapy",
+      "findings": "• Cochrane Review: Dialectical behavior therapy (DBT) is recognized as one of the most effective psychotherapies for borderline personality disorder (BPD), demonstrating significant efficacy in reducing self-harm, suicidality, and improving general severity of BPD compared to treatment as usual (Storebø et al., 2020).",
+      "links": "https://doi.org/10.1002/14651858.CD012955.pub2",
+      "references": "Storebø, O. J., et al. (2020). Psychological therapies for people with borderline personality disorder. Cochrane Database of Systematic Reviews, (5)."
+    },
+    {
+      "topic": "Bronchiectasis and recurrent chest infections",
+      "findings": "• Clinical Guideline: The European Respiratory Society (ERS) recommends long-term macrolide antibiotics (e.g., azithromycin) and intensive airway clearance techniques to reduce exacerbation frequency in adult patients with bronchiectasis who suffer from ≥3 exacerbations per year (Polverino et al., 2017).",
+      "links": "https://doi.org/10.1183/13993003.00629-2017",
+      "references": "Polverino, E., et al. (2017). European Respiratory Society guidelines for the management of adult bronchiectasis. European Respiratory Journal, 50(3)."
+    },
+    {
+      "topic": "Bronchiolitis and viral wheeze",
+      "findings": "• Clinical Guideline: The AAP strongly recommends against the routine use of albuterol, epinephrine, or systemic corticosteroids for infants with a first episode of viral bronchiolitis, emphasizing that management should rely purely on supportive care (hydration and oxygenation) (Ralston et al., 2014).",
+      "links": "https://doi.org/10.1542/peds.2014-2742",
+      "references": "Ralston, S. L., et al. (2014). Clinical Practice Guideline: The Diagnosis, Management, and Prevention of Bronchiolitis. Pediatrics, 134(5), e1474-e1502."
+    },
+    {
+      "topic": "Bronchiolitis: assessment, risk stratification and management",
+      "findings": "• Clinical Guideline: NICE guidelines dictate hospital admission for infants with bronchiolitis displaying severe respiratory distress (e.g., grunting, marked retractions), apnea, or poor feeding (<50% usual intake), and reiterate that bronchodilators lack efficacy in this population (NICE, 2021).",
+      "links": "https://www.nice.org.uk/guid/ng9",
+      "references": "National Institute for Health and Care Excellence (NICE). (2021). Bronchiolitis in children: diagnosis and management. NICE Guideline [NG9]."
+    },
+    {
+      "topic": "CABG versus PCI multivessel coronary disease",
+      "findings": "• Clinical Guideline: The 2021 ACC/AHA Coronary Artery Revascularization guidelines state that CABG is preferred over PCI to improve survival in patients with multivessel CAD and diabetes, or those with highly complex coronary anatomy (Lawton et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001038",
+      "references": "Lawton, J. S., et al. (2022). 2021 ACC/AHA/SCAI Guideline for Coronary Artery Revascularization. Circulation, 145(3), e18-e114."
+    },
+    {
+      "topic": "canagliflozin renal outcomes type 2 diabetes nephropathy",
+      "findings": "• Landmark Trial: The CREDENCE trial demonstrated that the SGLT2 inhibitor canagliflozin significantly reduces the risk of end-stage kidney disease, doubling of serum creatinine, or renal/cardiovascular death in patients with type 2 diabetes and albuminuric chronic kidney disease (Perkovic et al., 2019).",
+      "links": "https://doi.org/10.1056/NEJMoa1811744",
+      "references": "Perkovic, V., et al. (2019). Canagliflozin and Renal Outcomes in Type 2 Diabetes and Nephropathy. New England Journal of Medicine, 380(24), 2295-2306."
+    },
+    {
+      "topic": "canakinumab anti-inflammatory therapy atherosclerotic disease",
+      "findings": "• Landmark Trial: The CANTOS trial established the \"inflammatory hypothesis\" of atherothrombosis by proving that interleukin-1β inhibition with canakinumab reduces recurrent cardiovascular events in patients with previous myocardial infarction and elevated CRP, independent of lipid lowering (Ridker et al., 2017).",
+      "links": "https://doi.org/10.1056/NEJMoa1707914",
+      "references": "Ridker, P. M., et al. (2017). Antiinflammatory Therapy with Canakinumab for Atherosclerotic Disease. New England Journal of Medicine, 377(12), 1119-1131."
+    },
+    {
+      "topic": "CAR-T cell therapy refractory large B-cell lymphoma axicabtagene",
+      "findings": "• Landmark Trial / Guideline: Based on the ZUMA-1 trial, axicabtagene ciloleucel (an anti-CD19 CAR T-cell therapy) is highly recommended for patients with refractory large B-cell lymphoma, achieving robust, durable complete responses in a population historically lacking effective treatments (Neelapu et al., 2017).",
+      "links": "https://doi.org/10.1056/NEJMoa1707447",
+      "references": "Neelapu, S. S., et al. (2017). Axicabtagene Ciloleucel CAR T-Cell Therapy in Refractory Large B-Cell Lymphoma. New England Journal of Medicine, 377(26), 2531-2544."
+    },
+    {
+      "topic": "Cardiac myosin activator therapy in HFrEF",
+      "findings": "• Landmark Trial / Guideline: The GALACTIC-HF trial showed that omecamtiv mecarbil, a selective cardiac myosin activator, safely reduces the risk of a composite of a heart failure event or cardiovascular death in patients with HFrEF, offering a novel non-inotropic mechanism to improve systolic function (Teerlink et al., 2021).",
+      "links": "https://doi.org/10.1056/NEJMoa2025797",
+      "references": "Teerlink, J. R., et al. (2021). Cardiac Myosin Activation with Omecamtiv Mecarbil in Systolic Heart Failure. New England Journal of Medicine, 384(2), 105-116."
+    },
+    {
+      "topic": "cardiac resynchronization therapy heart failure COMPANION trial",
+      "findings": "• Landmark Trial: The COMPANION trial proved that cardiac resynchronization therapy (CRT), both with and without an implantable defibrillator, significantly decreases combined all-cause mortality and heart failure hospitalizations in patients with advanced heart failure and prolonged QRS duration (Bristow et al., 2004).",
+      "links": "https://doi.org/10.1056/NEJMoa032423",
+      "references": "Bristow, M. R., et al. (2004). Cardiac-Resynchronization Therapy with or without an Implantable Defibrillator in Advanced Chronic Heart Failure. New England Journal of Medicine, 350(21), 2140-2150."
+    },
+    {
+      "topic": "Carpal tunnel syndrome: diagnosis and management",
+      "findings": "• Clinical Guideline: The AAOS guidelines recommend wrist splinting, corticosteroid injections, or oral NSAIDs for early or mild carpal tunnel syndrome. Surgical decompression (carpal tunnel release) is strongly recommended for severe cases characterized by continuous numbness, thenar atrophy, or failure of conservative therapy (AAOS, 2016).",
+      "links": "https://www.aaos.org/globalassets/quality-and-practice-resources/carpal-tunnel/cts-cpg_4-25-19.pdf",
+      "references": "American Academy of Orthopaedic Surgeons (AAOS). (2016). Management of Carpal Tunnel Syndrome Evidence-Based Clinical Practice Guideline."
+    },
+    {
+      "topic": "Catatonia benzodiazepines and ECT",
+      "findings": "• Clinical Review / Consensus: First-line management for catatonia of any etiology involves high-dose benzodiazepines (lorazepam test and taper). For medication-refractory, malignant, or life-threatening catatonia, electroconvulsive therapy (ECT) is the definitive and most rapidly effective treatment (Sienaert et al., 2014).",
+      "links": "https://doi.org/10.3389/fpsyt.2014.00181",
+      "references": "Sienaert, P., et al. (2014). A clinical review of the treatment of catatonia. Frontiers in Psychiatry, 5, 181."
+    },
+    {
+      "topic": "Cellulitis, erysipelas, and mimics",
+      "findings": "• Clinical Guideline: IDSA guidelines outline that typical non-purulent cellulitis and erysipelas should be treated with antibiotics targeting Streptococci (e.g., penicillin, cephalexin). Coverage for MRSA is only recommended for purulent presentations (abscesses) or patients with penetrating trauma/IV drug use (Stevens et al., 2014).",
+      "links": "https://doi.org/10.1093/cid/ciu296",
+      "references": "Stevens, D. L., et al. (2014). Practice Guidelines for the Diagnosis and Management of Skin and Soft Tissue Infections: 2014 Update by the IDSA. Clinical Infectious Diseases, 59(2), e10-e52."
+    },
+    {
+      "topic": "Chest pain assessment in the ED",
+      "findings": "• Clinical Guideline: The AHA/ACC guidelines mandate the use of clinical decision pathways (like the HEART score) integrated with high-sensitivity troponin assays to rapidly triage emergency department chest pain, allowing for the safe early discharge of low-risk patients without routine noninvasive testing (Gulati et al., 2021).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001029",
+      "references": "Gulati, M., et al. (2021). 2021 AHA/ACC/ASE/CHEST/SAEM/SCCT/SCMR Guideline for the Evaluation and Diagnosis of Chest Pain. Circulation, 144(22), e368-e454."
+    },
+    {
+      "topic": "Chikungunya and Zika Arthropathy",
+      "findings": "• Clinical Consensus: Post-Chikungunya chronic polyarthritis is managed similarly to seronegative rheumatoid arthritis. After acute supportive care, patients with chronic debilitating arthralgia (persisting >3 months) often require methotrexate as the first-line disease-modifying agent (Simon et al., 2015).",
+      "links": "https://doi.org/10.1016/j.lpm.2015.10.007",
+      "references": "Simon, F., et al. (2015). Joint consensus guidelines for the management of Chikungunya. La Presse Médicale, 44(11), 932-945."
+    },
+    {
+      "topic": "Childhood asthma and wheeze phenotypes",
+      "findings": "• Clinical Guideline: GINA guidelines emphasize that childhood wheezing encompasses multiple phenotypes (e.g., transient viral wheeze vs. atopic asthma). For children ≤5 years with recurrent wheezing indicative of asthma, daily low-dose inhaled corticosteroids (ICS) are the preferred controller therapy to reduce exacerbations (GINA, 2023).",
+      "links": "https://ginasthma.org/",
+      "references": "Global Initiative for Asthma (GINA). (2023). Global Strategy for Asthma Management and Prevention."
+    },
+    {
+      "topic": "Chronic hepatitis B antiviral therapy",
+      "findings": "• Clinical Guideline: AASLD guidelines recommend long-term antiviral therapy (entecavir, tenofovir disoproxil fumarate, or tenofovir alafenamide) for CHB patients with active inflammation (elevated ALT) and high viral load, or those with established cirrhosis, to prevent progression to hepatocellular carcinoma (Terrault et al., 2018).",
+      "links": "https://doi.org/10.1002/hep.29800",
+      "references": "Terrault, N. A., et al. (2018). Update on prevention, diagnosis, and treatment of chronic hepatitis B: AASLD 2018 hepatitis B guidance. Hepatology, 67(4), 1560-1599."
+    },
+    {
+      "topic": "Chronic lymphocytic leukaemia: chemoimmunotherapy with FCR",
+      "findings": "• Clinical Guideline: ESMO guidelines denote that while targeted therapies dominate modern CLL management, the FCR regimen (fludarabine, cyclophosphamide, rituximab) maintains a niche strictly for young, fit patients with mutated IGHV status, as it can achieve extremely long remissions and potential functional cures (Eichhorst et al., 2021).",
+      "links": "https://doi.org/10.1016/j.annonc.2020.09.019",
+      "references": "Eichhorst, B., et al. (2021). Chronic lymphocytic leukaemia: ESMO Clinical Practice Guidelines for diagnosis, treatment and follow-up. Annals of Oncology, 32(1), 23-33."
+    },
+    {
+      "topic": "Chronic spontaneous urticaria omalizumab",
+      "findings": "• Clinical Guideline: The EAACI/GA²LEN/EuroGuiDerm guidelines position omalizumab (anti-IgE) as the definitive third-line step-up therapy for chronic spontaneous urticaria that remains symptomatic despite up to 4-fold dosing of second-generation H1-antihistamines (Zuberbier et al., 2022).",
+      "links": "https://doi.org/10.1111/all.15090",
+      "references": "Zuberbier, T., et al. (2022). The international EAACI/GA²LEN/EuroGuiDerm/APAAACI guideline for the definition, classification, diagnosis, and management of urticaria. Allergy, 77(3), 734-766."
+    },
+    {
+      "topic": "Cirrhosis and portal hypertension",
+      "findings": "• Clinical Consensus: The Baveno VII consensus updates paradigms in portal hypertension, defining \"clinically significant portal hypertension\" (CSPH) via liver stiffness >25 kPa. Non-selective beta-blockers (carvedilol preferred) are mandated to prevent decompensation in compensated cirrhosis with CSPH (de Franchis et al., 2022).",
+      "links": "https://doi.org/10.1016/j.jhep.2021.12.022",
+      "references": "de Franchis, R., et al. (2022). Baveno VII – Renewing consensus in portal hypertension. Journal of Hepatology, 76(4), 959-974."
+    },
+    {
+      "topic": "Cirrhosis ascites and spontaneous bacterial peritonitis",
+      "findings": "• Clinical Guideline: AASLD guidance states that diagnostic paracentesis is mandatory for all cirrhotics with new ascites or clinical deterioration. SBP (PMN count ≥250/mm³) requires immediate empiric IV third-generation cephalosporins (cefotaxime) and IV albumin on days 1 and 3 to prevent hepatorenal syndrome (Biggins et al., 2021).",
+      "links": "https://doi.org/10.1002/hep.31884",
+      "references": "Biggins, S. W., et al. (2021). Diagnosis, Evaluation, and Management of Ascites, Spontaneous Bacterial Peritonitis and Hepatorenal Syndrome: 2021 Practice Guidance by the AASLD. Hepatology, 74(2), 1014-1048."
+    },
+    {
+      "topic": "CKD referral thresholds",
+      "findings": "• Clinical Guideline: KDIGO guidelines dictate nephrology referral for patients with an eGFR <30 mL/min/1.73 m² (Stage G4/G5), significant albuminuria (UACR ≥300 mg/g), unexplained hematuria, resistant hypertension, or a rapid decline in eGFR (>5 mL/min/year) to optimize transitions to kidney replacement therapy (KDIGO, 2012).",
+      "links": "https://kdigo.org/guidelines/ckd-evaluation-and-management/",
+      "references": "Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. (2013). KDIGO 2012 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney International Supplements, 3(1), 1-150."
+    },
+    {
+      "topic": "clopidogrel aspirin acute minor ischemic stroke CHANCE",
+      "findings": "• Landmark Trial / Guideline: The CHANCE trial demonstrated that early initiation (within 24 hours) of dual antiplatelet therapy (clopidogrel plus aspirin) for 21 days significantly reduces the 90-day risk of recurrent stroke in patients with acute minor ischemic stroke or high-risk TIA without increasing major bleeding (Wang et al., 2013).",
+      "links": "https://doi.org/10.1056/NEJMoa1215340",
+      "references": "Wang, Y., et al. (2013). Clopidogrel with Aspirin in Acute Minor Stroke or Transient Ischemic Attack. New England Journal of Medicine, 369(1), 11-19."
+    },
+    {
+      "topic": "Clozapine for treatment-resistant schizophrenia",
+      "findings": "• Clinical Guideline: APA guidelines assert that clopazine is the only evidence-based antipsychotic indicated for treatment-resistant schizophrenia (failure of ≥2 antipsychotic trials). It significantly reduces positive symptoms, hostility, and suicidality, but requires stringent blood monitoring for agranulocytosis (Keepers et al., 2020).",
+      "links": "https://doi.org/10.1176/appi.ajp.2020.177901",
+      "references": "Keepers, G. A., et al. (2020). The American Psychiatric Association Practice Guideline for the Treatment of Patients With Schizophrenia. American Journal of Psychiatry, 177(9), 868-872."
+    },
+    {
+      "topic": "Collapse, syncope, and cardiac arrest algorithms",
+      "findings": "• Clinical Guideline: ACC/AHA guidelines for syncope mandate a structured evaluation focusing on ECG and history to isolate high-risk cardiac features. Routine imaging (CT/MRI) is discouraged unless focal neurology exists, whereas targeted monitoring (Holter, implantable loop recorders) is advised for suspected arrhythmogenic collapse (Shen et al., 2017).",
+      "links": "https://doi.org/10.1161/CIR.0000000000000499",
+      "references": "Shen, W. K., et al. (2017). 2017 ACC/AHA/HRS Guideline for the Evaluation and Management of Patients With Syncope. Circulation, 136(11), e60-e122."
+    }
+  ]
+}

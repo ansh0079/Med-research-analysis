@@ -81,6 +81,7 @@ describe('topicLiteratureImportService', () => {
         expect(classifyFinding('Practice Parameter: AAAAI evaluation of perioperative anaphylaxis').kind).toBe('guideline');
         expect(classifyFinding('Landmark Trial/Guideline: UKPDS follow-up demonstrated a legacy effect').kind).toBe('guideline');
         expect(classifyFinding('Scientific Statement: AHA notes that SCAD primarily affects younger women').kind).toBe('guideline');
+        expect(classifyFinding('Clinical Review / Consensus: First-line management for catatonia is lorazepam').kind).toBe('guideline');
     });
 
     test('expands a pack row into paired papers and guidelines', () => {
@@ -139,6 +140,30 @@ describe('topicLiteratureImportService', () => {
         expect(result.servableGuidelineCount).toBe(1);
         expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
             sourceBody: 'AST',
+        }));
+    });
+
+    test('loads the checked-in batch-8 literature pack', () => {
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-8.json');
+        expect(fs.existsSync(packPath)).toBe(true);
+        const rows = parseLiteratureFile(packPath);
+        expect(rows).toHaveLength(25);
+        expect(rows.map((row) => row.topic)).toEqual(expect.arrayContaining([
+            'Borderline personality disorder dialectical behavior therapy',
+            'Collapse, syncope, and cardiac arrest algorithms',
+        ]));
+    });
+
+    test('imports ERS bronchiectasis guideline as trusted and servable', async () => {
+        const db = makeDb();
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-8.json');
+        const row = parseLiteratureFile(packPath).find((item) => /bronchiectasis/i.test(item.topic));
+        const result = await importTopicLiterature(db, row);
+        expect(result.guidelineCount).toBe(1);
+        expect(result.trustedGuidelineCount).toBe(1);
+        expect(result.servableGuidelineCount).toBe(1);
+        expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
+            sourceBody: 'ERS',
         }));
     });
 
