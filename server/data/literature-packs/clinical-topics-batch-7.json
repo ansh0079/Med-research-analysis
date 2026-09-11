@@ -1,0 +1,159 @@
+{
+  "packId": "clinical-topics-batch-7",
+  "title": "Curated literature for guideline-gap topics 101-125",
+  "sourceFiles": [
+    "next_100-125.docx"
+  ],
+  "topics": [
+    {
+      "topic": "takayasu arteritis biologic therapy",
+      "findings": "• Clinical Guideline: The 2021 ACR guidelines for large-vessel vasculitis conditionally recommend the addition of non-glucocorticoid immunosuppressive agents (including biologic DMARDs like tocilizumab or TNF inhibitors) to glucocorticoids for initial and relapse management of Takayasu arteritis to minimize steroid toxicity (Maz et al., 2021).",
+      "links": "https://doi.org/10.1002/art.41774",
+      "references": "Maz, M., et al. (2021). 2021 American College of Rheumatology/Vasculitis Foundation Guideline for the Management of Giant Cell Arteritis and Takayasu Arteritis. Arthritis & Rheumatology, 73(8), 1349-1365."
+    },
+    {
+      "topic": "thrombotic thrombocytopenic purpura caplacizumab and plasma exchange",
+      "findings": "• Clinical Guideline: ISTH guidelines strongly recommend the immediate initiation of therapeutic plasma exchange (TPE) and corticosteroids for acute immune TTP. The anti-vWF nanobody caplacizumab is conditionally recommended for first-line treatment alongside TPE to reduce time to platelet normalization and prevent exacerbations (Zheng et al., 2020).",
+      "links": "https://doi.org/10.1111/jth.15010",
+      "references": "Zheng, X. L., et al. (2020). ISTH guidelines for treatment of thrombotic thrombocytopenic purpura. Journal of Thrombosis and Haemostasis, 18(10), 2496-2502."
+    },
+    {
+      "topic": "thyroid nodule evaluation and fna",
+      "findings": "• Clinical Guideline: ATA guidelines stratify the risk of malignancy based on high-resolution ultrasound patterns. Fine-needle aspiration (FNA) is typically recommended for highly suspicious nodules ≥1 cm, and for low-to-intermediate suspicion nodules ≥1.5-2 cm, to guide surgical vs. observational management (Haugen et al., 2016).",
+      "links": "https://doi.org/10.1089/thy.2015.0020",
+      "references": "Haugen, B. R., et al. (2016). 2015 American Thyroid Association Management Guidelines for Adult Patients with Thyroid Nodules and Differentiated Thyroid Cancer. Thyroid, 26(1), 1-133."
+    },
+    {
+      "topic": "tick borne rickettsial disease empiric doxycycline",
+      "findings": "• Clinical Guideline: CDC guidelines mandate immediate empiric therapy with oral or intravenous doxycycline for all patients (including children of all ages) suspected of having Rocky Mountain spotted fever or other tick-borne rickettsial diseases; treatment should never be delayed pending laboratory confirmation (Biggs et al., 2016).",
+      "links": "https://doi.org/10.15585/mmwr.rr6502a1",
+      "references": "Biggs, H. M., et al. (2016). Diagnosis and Management of Tickborne Rickettsial Diseases: Rocky Mountain Spotted Fever and Other Spotted Fever Group Rickettsioses, Ehrlichioses, and Anaplasmosis — United States. MMWR Recommendations and Reports, 65(2), 1-44."
+    },
+    {
+      "topic": "transient ischemic attack rapid assessment",
+      "findings": "• Clinical Guideline: AHA/ASA guidelines emphasize that TIA is a medical emergency requiring rapid neurovascular evaluation (preferably MRI, vessel imaging, and cardiac monitoring) within 24 hours. Immediate initiation of secondary prevention (e.g., dual antiplatelet therapy for high-risk TIA) significantly curtails short-term stroke risk (Kleindorfer et al., 2021).",
+      "links": "https://doi.org/10.1161/STR.0000000000000375",
+      "references": "Kleindorfer, D. O., et al. (2021). 2021 Guideline for the Prevention of Stroke in Patients With Stroke and Transient Ischemic Attack: A Guideline From the AHA/ASA. Stroke, 52(7), e364-e467."
+    },
+    {
+      "topic": "tricuspid regurgitation teer",
+      "findings": "• RCT / Emerging Guideline: The TRILUMINATE trial demonstrated that Transcatheter Edge-to-Edge Repair (TEER) for severe, symptomatic tricuspid regurgitation is safe and significantly improves patient quality of life, although it did not yield a short-term reduction in heart failure hospitalizations or mortality compared to medical therapy (Sorajja et al., 2023).",
+      "links": "https://doi.org/10.1056/NEJMoa2300525",
+      "references": "Sorajja, P., et al. (2023). Transcatheter Repair for Patients with Tricuspid Regurgitation (TRILUMINATE). New England Journal of Medicine, 388(20), 1833-1842."
+    },
+    {
+      "topic": "type 1 diabetes intensive glycemic control",
+      "findings": "• Landmark Trial / Guideline: The seminal DCCT (Diabetes Control and Complications Trial) and EDIC follow-up established that intensive glycemic control (targeting near-normal HbA1c) significantly delays the onset and slows the progression of diabetic microvascular and macrovascular complications, remaining the foundation of ADA guidelines (Nathan et al., 2014; ADA, 2023).",
+      "links": "https://doi.org/10.2337/dc13-2141",
+      "references": "Nathan, D. M., et al. (2014). The Diabetes Control and Complications Trial/Epidemiology of Diabetes Interventions and Complications Study at 30 Years: Overview. Diabetes Care, 37(1), 9-16."
+    },
+    {
+      "topic": "vericiguat in worsening heart failure",
+      "findings": "• Clinical Guideline / RCT: Based on the VICTORIA trial, the 2022 AHA/ACC/HFSA guidelines give a Class 2b recommendation for vericiguat (a soluble guanylate cyclase stimulator) for high-risk patients with HFrEF and a recent heart failure hospitalization or need for IV diuretics, to reduce cardiovascular death and HF hospitalization (Heidenreich et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001063",
+      "references": "Heidenreich, P. A., et al. (2022). 2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure. Circulation, 145(18), e895-e1032."
+    },
+    {
+      "topic": "vte prophylaxis in mechanically ventilated icu patients",
+      "findings": "• Clinical Guideline: CHEST and Critical Care guidelines recommend routine pharmacologic VTE prophylaxis for critically ill, mechanically ventilated patients, typically utilizing low molecular weight heparin (LMWH) or unfractionated heparin, as these patients carry an exceptionally high baseline risk of deep vein thrombosis and pulmonary embolism (Kahn et al., 2012).",
+      "links": "https://doi.org/10.1378/chest.11-2296",
+      "references": "Kahn, S. R., et al. (2012). Prevention of VTE in nonsurgical patients: Antithrombotic Therapy and Prevention of Thrombosis, 9th ed: American College of Chest Physicians Evidence-Based Clinical Practice Guidelines. Chest, 141(2 Suppl), e195S-e226S."
+    },
+    {
+      "topic": "Acromegaly somatostatin analog therapy",
+      "findings": "• Clinical Guideline: The Endocrine Society recommends somatostatin receptor ligands (e.g., octreotide, lanreotide) as primary medical therapy for acromegaly patients who are poor surgical candidates, or as adjuvant therapy for those with persistent disease after transsphenoidal surgery (Katznelson et al., 2014).",
+      "links": "https://doi.org/10.1210/jc.2014-2700",
+      "references": "Katznelson, L., et al. (2014). Acromegaly: An Endocrine Society Clinical Practice Guideline. The Journal of Clinical Endocrinology & Metabolism, 99(11), 3933-3951."
+    },
+    {
+      "topic": "Acute abdomen and common surgical emergencies",
+      "findings": "• Clinical Guideline: The World Society of Emergency Surgery (WSES) provides comprehensive guidelines on intra-abdominal infections and acute abdomen, emphasizing early CT imaging, rapid source control, and short-course tailored antibiotics (Sartelli et al., 2017).",
+      "links": "https://doi.org/10.1186/s13017-017-0141-6",
+      "references": "Sartelli, M., et al. (2017). WSES guidelines for management of intra-abdominal infections. World Journal of Emergency Surgery, 12, 29."
+    },
+    {
+      "topic": "Acute and chronic pain assessment and opioid safety",
+      "findings": "• Clinical Guideline: The 2022 CDC Clinical Practice Guideline outlines strict thresholds for opioid prescribing, prioritizing non-opioid therapies, utilizing immediate-release formulations at the lowest effective dose, and deploying tools like naloxone coprescribing and PDMP checks to maximize safety (Dowell et al., 2022).",
+      "links": "https://doi.org/10.15585/mmwr.rr7103a1",
+      "references": "Dowell, D., et al. (2022). CDC Clinical Practice Guideline for Prescribing Opioids for Pain — United States, 2022. MMWR Recommendations and Reports, 71(3), 1-95."
+    },
+    {
+      "topic": "Acute asthma and COPD exacerbations",
+      "findings": "• Clinical Guidelines (GINA / GOLD): Standard management for acute exacerbations of both asthma and COPD involves short-acting bronchodilators and a short course of systemic corticosteroids (e.g., 5-7 days of prednisone). Antibiotics are indicated in COPD for purulent sputum or mechanical ventilation (Global Initiative for Asthma, 2023; GOLD, 2023).",
+      "links": "https://ginasthma.org/",
+      "references": "Global Initiative for Asthma (GINA). (2023). Global Strategy for Asthma Management and Prevention.Global Initiative for Chronic Obstructive Lung Disease (GOLD). (2023)."
+    },
+    {
+      "topic": "Acute confusion, agitation, and capacity",
+      "findings": "• Clinical Guideline: NICE guidelines on delirium mandate investigating underlying causes (infection, hypoxia, medications). Behavioral de-escalation is first-line for agitation; antipsychotics (e.g., haloperidol) are strictly reserved as a last resort for severe distress or imminent risk to safety, given side-effect profiles in the elderly (NICE, 2010/2019).",
+      "links": "https://www.nice.org.uk/guid/cg103",
+      "references": "National Institute for Health and Care Excellence (NICE). (2010, updated 2019). Delirium: prevention, diagnosis and management. Clinical guideline [CG103]."
+    },
+    {
+      "topic": "Acute decompensated heart failure decongestion",
+      "findings": "• Clinical Guideline: ESC guidelines recommend immediate intravenous loop diuretics as the cornerstone of decongestion. For diuretic resistance, sequential nephron blockade (adding a thiazide-like diuretic or acetazolamide) is recommended based on trials demonstrating enhanced diuresis without severe renal toxicity (McDonagh et al., 2021).",
+      "links": "https://doi.org/10.1093/eurheartj/ehab368",
+      "references": "McDonagh, T. A., et al. (2021). 2021 ESC Guidelines for the diagnosis and treatment of acute and chronic heart failure. European Heart Journal, 42(36), 3599-3726."
+    },
+    {
+      "topic": "acute liver failure transplant referral",
+      "findings": "• Clinical Guidelines: AASLD and EASL guidelines emphasize immediate ICU transfer for patients with acute liver failure. Prompt listing for liver transplantation is mandated for those meeting King’s College or Clichy criteria, characterized by severe coagulopathy, progressive encephalopathy, and renal failure (Shingina et al., 2023).",
+      "links": "https://doi.org/10.14309/ajg.0000000000002340",
+      "references": "Shingina, A., et al. (2023). Acute Liver Failure Guidelines. American Journal of Gastroenterology, 118, 1128-1153."
+    },
+    {
+      "topic": "Acute necrotising pancreatitis and step-up management approach",
+      "findings": "• Clinical Guideline / RCT: The landmark PANTER trial and AGA guidelines changed the paradigm from early open necrosectomy to a \"step-up\" approach. For infected necrosis, initial management relies on antibiotics and catheter drainage, progressing to minimally invasive endoscopic or surgical necrosectomy only if the patient fails to improve (van Santvoort et al., 2010; Crockett et al., 2018).",
+      "links": "https://doi.org/10.1056/NEJMoa0908821",
+      "references": "van Santvoort, H. C., et al. (2010). A Step-up Approach or Open Necrosectomy for Necrotizing Pancreatitis. New England Journal of Medicine, 362(16), 1491-1502."
+    },
+    {
+      "topic": "Acute pancreatitis fluid and nutrition strategy",
+      "findings": "• Clinical Guideline / RCT: The AGA recommends early goal-directed hydration with Ringer's lactate. The recent WATERFALL trial cautioned against overly aggressive fluid resuscitation, which increased volume overload without improving outcomes. Guidelines favor early oral feeding (within 24-48 hours) over NPO status in mild disease (Crockett et al., 2018; de-Madaria et al., 2022).",
+      "links": "https://doi.org/10.1056/NEJMoa2202884",
+      "references": "de-Madaria, E., et al. (2022). Aggressive or Moderate Fluid Resuscitation in Acute Pancreatitis. New England Journal of Medicine, 387, 989-1000."
+    },
+    {
+      "topic": "Acute psychosis: assessment, management and antipsychotic therapy",
+      "findings": "• Clinical Guideline: APA guidelines on schizophrenia dictate comprehensive medical clearance followed by second-generation antipsychotics (e.g., aripiprazole, risperidone) as first-line therapy. Clozapine is strictly reserved for treatment-resistant psychosis due to its monitoring burden (Keepers et al., 2020).",
+      "links": "https://doi.org/10.1176/appi.ajp.2020.177901",
+      "references": "Keepers, G. A., et al. (2020). The American Psychiatric Association Practice Guideline for the Treatment of Patients With Schizophrenia. American Journal of Psychiatry, 177(9), 868-872."
+    },
+    {
+      "topic": "Acute red eye: differential diagnosis and emergency management",
+      "findings": "• Clinical Guideline: The AAO Preferred Practice Patterns distinguish benign causes (viral/allergic conjunctivitis, managed with supportive care) from emergencies (acute angle-closure glaucoma, keratitis, uveitis) demanding immediate ophthalmologic referral. Corticosteroids should never be prescribed empirically by primary care due to corneal perforation risks (AAO, 2018).",
+      "links": "https://doi.org/10.1016/j.ophtha.2018.10.020",
+      "references": "Varu, V. N., et al. (2019). Conjunctivitis Preferred Practice Pattern®. Ophthalmology, 126(1), P94-P169."
+    },
+    {
+      "topic": "Adult-onset Still disease IL-1 and IL-6 blockade",
+      "findings": "• Clinical Consensus: While systemic glucocorticoids are initial therapy for Adult-onset Still's disease (AOSD), IL-1 inhibitors (anakinra) and IL-6 inhibitors (tocilizumab) have revolutionized management for refractory or highly inflammatory cases, achieving rapid clinical remission and durable steroid-sparing effects (Gerfaud-Valentin et al., 2014; Feist et al., 2018).",
+      "links": "https://doi.org/10.1016/j.autrev.2014.01.058",
+      "references": "Gerfaud-Valentin, M., et al. (2014). Adult-onset Still's disease. Autoimmunity Reviews, 13(7), 708-722."
+    },
+    {
+      "topic": "Alcohol use disorder, Wernicke encephalopathy and alcohol-related liver disease",
+      "findings": "• Clinical Guideline: EASL guidelines emphasize immediate parenteral thiamine administration to prevent or treat Wernicke encephalopathy in patients with alcohol-related liver disease (ALD). Complete abstinence is the absolute therapeutic cornerstone for halting ALD progression (EASL, 2018).",
+      "links": "https://doi.org/10.1016/j.jhep.2018.03.018",
+      "references": "European Association for the Study of the Liver (EASL). (2018). EASL Clinical Practice Guidelines: Management of alcohol-related liver disease. Journal of Hepatology, 69(1), 154-181."
+    },
+    {
+      "topic": "Alcohol-associated hepatitis corticosteroids",
+      "findings": "• Clinical Guideline / RCT: AASLD guidelines, heavily informed by the STOPAH trial, recommend a 28-day course of prednisolone for patients with severe alcohol-associated hepatitis (Maddrey's discriminant function ≥32) who lack contraindications (e.g., active infection), to improve 1-month short-term survival, though 6-month survival remains unchanged (Singal et al., 2019; Thursz et al., 2015).",
+      "links": "https://doi.org/10.1056/NEJMoa1412278",
+      "references": "Thursz, M. R., et al. (2015). Prednisolone or Pentoxifylline for Alcoholic Hepatitis. New England Journal of Medicine, 372(17), 1619-1628."
+    },
+    {
+      "topic": "Allergic rhinitis intranasal steroids and immunotherapy",
+      "findings": "• Clinical Guideline: AAAAI/ACAAI guidelines establish intranasal corticosteroids as the most effective monotherapy for symptomatic allergic rhinitis. Allergen immunotherapy (subcutaneous or sublingual) is the only disease-modifying treatment capable of long-term symptom remission post-discontinuation (Dykewicz et al., 2017).",
+      "links": "https://doi.org/10.1016/j.anai.2017.08.012",
+      "references": "Dykewicz, M. S., et al. (2017). Rhinitis 2020: A practice parameter update. Journal of Allergy and Clinical Immunology, 140(4), 882-901."
+    },
+    {
+      "topic": "AML Transformed from MPN",
+      "findings": "• Clinical Guideline: NCCN guidelines for Acute Myeloid Leukemia (AML) note that AML secondary to a myeloproliferative neoplasm (MPN) carries a poor prognosis. Liposomal cytarabine-daunorubicin (CPX-351) or venetoclax-hypomethylating agent combinations are commonly utilized, but allogeneic stem cell transplantation remains the only potential curative option (Pollyea et al., 2021).",
+      "links": "https://www.nccn.org/professionals/physician_gls/pdf/aml.pdf",
+      "references": "Pollyea, D. A., et al. (2021). Acute Myeloid Leukemia, Version 3.2021, NCCN Clinical Practice Guidelines in Oncology. Journal of the National Comprehensive Cancer Network, 19(1), 16-47."
+    }
+  ]
+}

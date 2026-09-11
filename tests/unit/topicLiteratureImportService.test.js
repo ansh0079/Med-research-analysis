@@ -142,6 +142,33 @@ describe('topicLiteratureImportService', () => {
         }));
     });
 
+    test('loads the checked-in batch-7 literature pack', () => {
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-7.json');
+        expect(fs.existsSync(packPath)).toBe(true);
+        const rows = parseLiteratureFile(packPath);
+        expect(rows).toHaveLength(25);
+        expect(rows.map((row) => row.topic)).toEqual(expect.arrayContaining([
+            'takayasu arteritis biologic therapy',
+            'AML Transformed from MPN',
+        ]));
+        const tia = rows.find((row) => /transient ischemic/i.test(row.topic));
+        expect(tia.links).toMatch(/0000000000000375$/);
+        expect(tia.references).toMatch(/Kleindorfer/);
+    });
+
+    test('imports ISTH TTP guideline as trusted and servable', async () => {
+        const db = makeDb();
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-7.json');
+        const row = parseLiteratureFile(packPath).find((item) => /thrombotic thrombocytopenic/i.test(item.topic));
+        const result = await importTopicLiterature(db, row);
+        expect(result.guidelineCount).toBe(1);
+        expect(result.trustedGuidelineCount).toBe(1);
+        expect(result.servableGuidelineCount).toBe(1);
+        expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
+            sourceBody: 'ISTH',
+        }));
+    });
+
     test('loads the checked-in batch-6 literature pack', () => {
         const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-6.json');
         expect(fs.existsSync(packPath)).toBe(true);

@@ -565,6 +565,36 @@ const TRUSTED_GUIDELINE_SOURCES = [
         urlPattern: 'https://www.sccm.org/{id}',
         aliases: ['Society of Critical Care Medicine', 'Practice parameters for hemodynamic support'],
     },
+    {
+        id: 'isth',
+        name: 'ISTH',
+        fullName: 'International Society on Thrombosis and Haemostasis',
+        region: 'Global',
+        specialty: 'Haematology',
+        domain: 'https://www.isth.org',
+        urlPattern: 'https://www.isth.org/{id}',
+        aliases: ['International Society on Thrombosis and Haemostasis'],
+    },
+    {
+        id: 'wses',
+        name: 'WSES',
+        fullName: 'World Society of Emergency Surgery',
+        region: 'Global',
+        specialty: 'Emergency Surgery',
+        domain: 'https://www.wses.org.uk',
+        urlPattern: 'https://www.wses.org.uk/{id}',
+        aliases: ['World Society of Emergency Surgery'],
+    },
+    {
+        id: 'aga',
+        name: 'AGA',
+        fullName: 'American Gastroenterological Association',
+        region: 'USA',
+        specialty: 'Gastroenterology',
+        domain: 'https://gastro.org',
+        urlPattern: 'https://gastro.org/{id}',
+        aliases: ['American Gastroenterological Association'],
+    },
 ];
 
 module.exports = { TRUSTED_GUIDELINE_SOURCES };

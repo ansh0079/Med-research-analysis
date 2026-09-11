@@ -29,6 +29,9 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('AASLD')).toBe(true);
         expect(isTrustedSource('VA/DoD')).toBe(true);
         expect(isTrustedSource('Fleischner Society')).toBe(true);
+        expect(isTrustedSource('ISTH')).toBe(true);
+        expect(isTrustedSource('WSES')).toBe(true);
+        expect(isTrustedSource('AGA')).toBe(true);
         expect(isTrustedSource('Unknown Blog')).toBe(false);
     });
 
