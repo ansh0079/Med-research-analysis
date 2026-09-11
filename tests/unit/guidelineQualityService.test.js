@@ -48,6 +48,9 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('United European Gastroenterology')).toBe(true);
         expect(isTrustedSource('ASH')).toBe(true);
         expect(isTrustedSource('American Society of Hematology')).toBe(true);
+        expect(isTrustedSource('AABB')).toBe(true);
+        expect(isTrustedSource('ACP')).toBe(true);
+        expect(isTrustedSource('ESPEN')).toBe(true);
         expect(isTrustedSource('ACE inhibitor')).toBe(false);
         expect(isTrustedSource('automated external defibrillator (AED)')).toBe(false);
         expect(isTrustedSource('European Academy of Dermatology and Venereology')).toBe(true);

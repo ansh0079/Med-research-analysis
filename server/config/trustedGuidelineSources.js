@@ -764,6 +764,36 @@ const TRUSTED_GUIDELINE_SOURCES = [
         urlPattern: 'https://www.hematology.org/{id}',
         aliases: ['American Society of Hematology', 'Blood Advances'],
     },
+    {
+        id: 'aabb',
+        name: 'AABB',
+        fullName: 'Association for the Advancement of Blood and Biotherapies',
+        region: 'USA',
+        specialty: 'Transfusion Medicine',
+        domain: 'https://www.aabb.org',
+        urlPattern: 'https://www.aabb.org/{id}',
+        aliases: ['American Association of Blood Banks'],
+    },
+    {
+        id: 'acp',
+        name: 'ACP',
+        fullName: 'American College of Physicians',
+        region: 'USA',
+        specialty: 'Internal Medicine',
+        domain: 'https://www.acponline.org',
+        urlPattern: 'https://www.acponline.org/{id}',
+        aliases: ['American College of Physicians'],
+    },
+    {
+        id: 'espen',
+        name: 'ESPEN',
+        fullName: 'European Society for Clinical Nutrition and Metabolism',
+        region: 'Europe',
+        specialty: 'Clinical Nutrition',
+        domain: 'https://www.espen.org',
+        urlPattern: 'https://www.espen.org/{id}',
+        aliases: ['European Society for Clinical Nutrition and Metabolism'],
+    },
 ];
 
 module.exports = { TRUSTED_GUIDELINE_SOURCES };

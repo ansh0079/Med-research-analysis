@@ -145,6 +145,30 @@ describe('topicLiteratureImportService', () => {
         }));
     });
 
+    test('loads the checked-in batch-12 literature pack', () => {
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-12.json');
+        expect(fs.existsSync(packPath)).toBe(true);
+        const rows = parseLiteratureFile(packPath);
+        expect(rows).toHaveLength(25);
+        expect(rows.map((row) => row.topic)).toEqual(expect.arrayContaining([
+            'Infective endocarditis antibiotic duration and surgery',
+            'management of HF eith Reduced ejection fraction',
+        ]));
+    });
+
+    test('imports AABB transfusion guideline as trusted and servable', async () => {
+        const db = makeDb();
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-12.json');
+        const row = parseLiteratureFile(packPath).find((item) => /irradiated/i.test(item.topic));
+        const result = await importTopicLiterature(db, row);
+        expect(result.guidelineCount).toBe(1);
+        expect(result.trustedGuidelineCount).toBe(1);
+        expect(result.servableGuidelineCount).toBe(1);
+        expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
+            sourceBody: 'AABB',
+        }));
+    });
+
     test('loads the checked-in batch-11 literature pack', () => {
         const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-11.json');
         expect(fs.existsSync(packPath)).toBe(true);

@@ -1,0 +1,159 @@
+{
+  "packId": "clinical-topics-batch-12",
+  "title": "Curated literature for guideline-gap topics 301-325",
+  "sourceFiles": [
+    "next_300-325.docx"
+  ],
+  "topics": [
+    {
+      "topic": "Infective endocarditis antibiotic duration and surgery",
+      "findings": "• Clinical Guideline: AHA and ESC guidelines recommend prolonged parenteral antibiotic therapy (typically 2 to 6 weeks depending on organism and valve type). Early surgical intervention is strongly indicated for acute heart failure, paravalvular extension, or persistent bacteremia.",
+      "links": "https://doi.org/10.1093/eurheartj/ehz319",
+      "references": "Habib, G., et al. (2015). 2015 ESC Guidelines for the management of infective endocarditis. European Heart Journal, 36(44), 3075-3128."
+    },
+    {
+      "topic": "Infective endocarditis antimicrobial and oral step-down strategy",
+      "findings": "• Landmark Trial / Guideline: The POET trial demonstrated that in stable patients with left-sided infective endocarditis, changing from intravenous to targeted oral antibiotic therapy after initial stabilization is non-inferior to continued IV therapy, changing modern guideline trajectories.",
+      "links": "https://doi.org/10.1056/NEJMoa1808312",
+      "references": "Iversen, K., et al. (2018). Partial Oral Treatment of Endocarditis. New England Journal of Medicine, 379(5), 415-424."
+    },
+    {
+      "topic": "initial invasive or conservative strategy stable coronary disease",
+      "findings": "• Landmark Trial: The ISCHEMIA trial demonstrated that among patients with stable coronary disease and moderate-to-severe ischemia, an initial invasive strategy (routine catheterization/revascularization) did not reduce the overall rate of ischemic events or death compared to an initial conservative medical therapy strategy.",
+      "links": "https://doi.org/10.1056/NEJMoa1915922",
+      "references": "Maron, D. J., et al. (2018 / 2020). Initial Invasive or Conservative Strategy for Stable Coronary Disease. New England Journal of Medicine, 382(15), 1395-1407."
+    },
+    {
+      "topic": "intensive blood glucose control sulphonylureas insulin type 2 diabetes UKPDS",
+      "findings": "• Landmark Trial: The UKPDS follow-up proved that intensive blood glucose control with sulfonylureas or insulin significantly reduces microvascular complications in type 2 diabetes, though aggressive initial lowering carries a higher risk of severe hypoglycemia and weight gain.",
+      "links": "https://doi.org/10.1016/S0140-6736(98)07019-6",
+      "references": "UK Prospective Diabetes Study (UKPDS) Group. (1998). Intensive blood-glucose control with sulphonylureas or insulin compared with conventional treatment and risk of complications in patients with type 2 diabetes (UKPDS 33). The Lancet, 352(9131), 837-853."
+    },
+    {
+      "topic": "intensive blood pressure control cardiovascular outcomes systolic",
+      "findings": "• Landmark Trial / Guideline: The SPRINT trial established that targeting a systolic blood pressure of <120 mm Hg (intensive control) compared to <140 mm Hg significantly reduces rates of fatal and non-fatal major cardiovascular events and all-cause mortality in high-risk patients.",
+      "links": "https://doi.org/10.1056/NEJMoa1511939",
+      "references": "SPRINT Research Group. (2015). A Randomized Trial of Intensive versus Standard Blood-Pressure Control. New England Journal of Medicine, 373(22), 2103-2116."
+    },
+    {
+      "topic": "Intensive care high yield clinical guidelines",
+      "findings": "• Clinical Guideline: International consensus recommendations (such as Surviving Sepsis and SCCM/ESICM bundles) emphasize protocolized care in critical care units, targeting lung-protective ventilation, conservative fluid strategies, early enteral nutrition, and strict glycemic control.",
+      "links": "https://doi.org/10.1097/CCM.0000000000005337",
+      "references": "Evans, L., et al. (2021). Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Critical Care Medicine, 49(11), e1063-e1143."
+    },
+    {
+      "topic": "intensive glucose lowering type 2 diabetes",
+      "findings": "• Landmark Trial: Landmark trials (ACCORD, ADVANCE, VADT) demonstrated that intensive glucose lowering strategies in long-standing type 2 diabetes do not significantly reduce major macrovascular events or mortality and increase severe hypoglycemic episodes, leading guidelines to recommend individualized A1C targets.",
+      "links": "https://doi.org/10.1056/NEJMoa0802743",
+      "references": "Gerstein, H. C., et al. (2008). Action to Control Cardiovascular Risk in Diabetes (ACCORD) Study Group. New England Journal of Medicine, 358(24), 2545-2559."
+    },
+    {
+      "topic": "intensive LDL cholesterol lowering statin meta-analysis",
+      "findings": "• Meta-Analysis: The Cholesterol Treatment Trialists' (CTT) Collaboration meta-analysis proved that more intensive statin regimens produce significant further reductions in major vascular events compared to less intensive regimens, reinforcing the safety and efficacy of aggressive LDL-C lowering.",
+      "links": "https://doi.org/10.1016/S0140-6736(10)61350-5",
+      "references": "Cholesterol Treatment Trialists' (CTT) Collaboration. (2010). Efficacy and safety of more intensive lowering of LDL cholesterol: a meta-analysis of data from 170,000 participants in 26 randomised trials. The Lancet, 376(9753), 1670-1681."
+    },
+    {
+      "topic": "Intracerebral hemorrhage acute management",
+      "findings": "• Clinical Guideline: AHA/ASA guidelines for spontaneous intracerebral hemorrhage recommend acute rapid blood pressure lowering (target systolic BP to 140 mm Hg) to limit hematoma expansion, reversal of coagulopathy, and early neurosurgical consultation for lobar hemorrhages or obstructive hydrocephalus.",
+      "links": "https://doi.org/10.1161/STR.0000000000000069",
+      "references": "Hemphill, J. C., et al. (2015). Guidelines for the Management of Spontaneous Intracerebral Hemorrhage: A Guideline for Healthcare Professionals From the AHA/ASA. Stroke, 46(7), 2032-2060."
+    },
+    {
+      "topic": "Intravenous fluid prescribing and fluid balance management",
+      "findings": "• Clinical Guideline: NICE guidelines dictate structured intravenous fluid therapy (the \"4 Rs\": Resuscitation, Routine maintenance, Replacement, and Redistribution). Balanced crystalloids (such as Hartmann's or Plasmalyte) are preferred for maintenance over 0.9% saline to avoid hyperchloremic metabolic acidosis.",
+      "links": "https://www.nice.org.uk/guid/cg174",
+      "references": "National Institute for Health and Care Excellence (NICE). (2013, updated 2017). Intravenous fluid therapy in adults in hospital. Clinical guideline [CG174]."
+    },
+    {
+      "topic": "Irradiated, Leukoreduced and Washed Blood Products",
+      "findings": "• Clinical Guideline: AABB guidelines recommend universal leukoreduction to reduce febrile non-hemolytic transfusion reactions and CMV transmission. Gamma-irradiated blood products are mandated for immunocompromised patients to prevent transfusion-associated graft-versus-host disease (TA-GVHD); washed products are reserved for patients with severe allergic plasma reactions (Carson et al., 2016).",
+      "links": "https://doi.org/10.1111/trf.13734",
+      "references": "Carson, J. L., et al. (2016). Clinical Practice Guidelines From the AABB: Red Blood Cell Transfusion Thresholds and Storage. JAMA, 316(19), 2025-2035."
+    },
+    {
+      "topic": "Ischaemic heart disease and acute coronary syndromes",
+      "findings": "• Clinical Guideline: ACC/AHA and ESC guidelines recommend immediate dual antiplatelet therapy (aspirin plus a P2Y12 inhibitor) and urgent coronary angiography with percutaneous revascularization for ACS presentations (STEMI and high-risk NSTE-ACS) to salvage myocardial tissue.",
+      "links": "https://doi.org/10.1161/CIR.0000000000001038",
+      "references": "Lawton, J. S., et al. (2022). 2021 ACC/AHA/SCAI Guideline for Coronary Artery Revascularization. Circulation, 145(3), e18-e114."
+    },
+    {
+      "topic": "Juvenile idiopathic arthritis biologic strategy",
+      "findings": "• Clinical Guideline: ACR guidelines for juvenile idiopathic arthritis (JIA) recommend starting conventional DMARDs (methotrexate) for systemic or polyarticular disease, and adding biologic DMARDs (such as TNF inhibitors like etanercept or adalimumab, or IL-6 inhibitors like tocilizumab) for active disease refractory to initial therapy (Ringold et al., 2019).",
+      "links": "https://doi.org/10.1002/art.40870",
+      "references": "Ringold, S., et al. (2019). 2019 American College of Rheumatology/Arthritis Foundation Guideline for the Treatment of Juvenile Idiopathic Arthritis. Arthritis & Rheumatology, 71(6), 846-863."
+    },
+    {
+      "topic": "Large bowel obstruction, volvulus, and pseudo-obstruction management",
+      "findings": "• Clinical Consensus: Management requires distinguishing mechanical obstruction from colonic pseudo-obstruction (Ogilvie's syndrome). Mechanical obstructions typically require urgent surgical decompression or stenting. Colonic pseudo-obstruction is initially managed conservatively, utilizing neostigmine for cases failing supportive care (Saunders & Kimmins, 2005).",
+      "links": "https://doi.org/10.1016/j.giec.2005.08.006",
+      "references": "Saunders, M. D., & Kimmins, M. H. (2005). Acute colonic pseudo-obstruction. Gastrointestinal Endoscopy Clinics of North America, 15(4), 671-684."
+    },
+    {
+      "topic": "Lateral epicondylitis (tennis elbow): assessment and management",
+      "findings": "• Clinical Guideline: Clinical diagnosis is based on localized lateral elbow tenderness and pain with resisted wrist extension. Initial management centers on relative rest, activity modification, physical therapy (eccentric strengthening), and short-term NSAIDs; corticosteroid injections provide short-term relief but worse long-term outcomes (Bisset et al., 2006).",
+      "links": "https://doi.org/10.1136/bmj.38875.498449.55",
+      "references": "Bisset, L., et al. (2006). Mobilisation with movement and exercise, corticosteroid injection, or wait and see for tennis elbow: randomised trial. BMJ, 333(7575), 939."
+    },
+    {
+      "topic": "Latex and perioperative allergy evaluation",
+      "findings": "• Clinical Guideline: AAAAI practice parameters advise that intraoperative anaphylaxis requires comprehensive post-operative allergy workup (skin testing, specific IgE). Confirming latex allergy mandates total elimination of latex exposure in all subsequent surgical and medical settings.",
+      "links": "https://doi.org/10.1016/j.anai.2020.08.017",
+      "references": "Volcheck, G. W., et al. (2020). Drug allergy: A 2020 practice parameter update. Annals of Allergy, Asthma & Immunology, 125(4), 393-410."
+    },
+    {
+      "topic": "Leflunomide, Sulfasalazine, and Hydroxychloroquine toxicities",
+      "findings": "• Clinical Guideline: ACR safety guidelines mandate routine laboratory monitoring (CBC and liver function tests) for patients on leflunomide and sulfasalazine due to hepatotoxicity and myelosuppression risks. Hydroxychloroquine requires baseline and annual ophthalmological screening for rare retinal toxicity.",
+      "links": "https://doi.org/10.1002/acr.24596",
+      "references": "Fraenkel, L., et al. (2021). 2021 American College of Rheumatology Guideline for the Treatment of Rheumatoid Arthritis. Arthritis Care & Research, 73(7), 924-939."
+    },
+    {
+      "topic": "Left atrial appendage occlusion for AF stroke prevention",
+      "findings": "• Clinical Guideline: ESC and ACC/AHA guidelines state that percutaneous left atrial appendage occlusion (LAAO) may be considered as an alternative stroke prevention strategy for patients with non-valvular atrial fibrillation and high stroke risk who have a contraindication to long-term oral anticoagulation (Hindricks et al., 2020).",
+      "links": "https://doi.org/10.1093/eurheartj/ehaa612",
+      "references": "Hindricks, G., et al. (2020). 2020 ESC Guidelines for the diagnosis and management of atrial fibrillation. European Heart Journal, 42(5), 373-498."
+    },
+    {
+      "topic": "Leukaostasis Syndrome",
+      "findings": "• Clinical Consensus: Leukostasis is an oncologic emergency characterized by extreme hyperleukocytosis (usually AML with blast counts >100,000/µL) causing microvascular sludging and tissue ischemia (pulmonary or cerebral). Management requires aggressive cytoreduction, hydration, and hydroxyurea or urgent leukapheresis (Stasi & Del Favero, 2004).",
+      "links": "https://doi.org/10.1080/10428190310001614917",
+      "references": "Stasi, R., & Del Favero, A. (2004). Management of hyperleukocytosis: when, how, and why? Leukemia & Lymphoma, 45(3), 433-440."
+    },
+    {
+      "topic": "Low back pain and sciatica",
+      "findings": "• Clinical Guideline: ACP guidelines recommend non-pharmacological management as first-line therapy for acute, subacute, and chronic low back pain, utilizing superficial heat, massage, or spinal manipulation. Pharmacotherapy should prioritize NSAIDs or muscle relaxants; systemic steroids are not recommended.",
+      "links": "https://doi.org/10.7326/M16-2367",
+      "references": "Qaseem, A., et al. (2017). Noninvasive Treatments for Acute, Subacute, and Chronic Low Back Pain: A Clinical Practice Guideline From the American College of Physicians. Annals of Internal Medicine, 166(7), 514-530."
+    },
+    {
+      "topic": "low tidal volume ventilation ARDS lung protective",
+      "findings": "• Landmark Trial / Guideline: The ARDSNet trial established that mechanical ventilation with a lower tidal volume (6 mL/kg of predicted body weight) and lower plateau pressures (≤30 cm H2O) significantly reduces mortality in patients with acute respiratory distress syndrome compared to traditional high tidal volumes (Brower et al., 2000).",
+      "links": "https://doi.org/10.1056/NEJM200005043421801",
+      "references": "Acute Respiratory Distress Syndrome Network. (2000). Ventilation with Lower Tidal Volumes as Compared with Traditional Tidal Volumes for Acute Lung Injury and the Acute Respiratory Distress Syndrome. New England Journal of Medicine, 342(18), 1301-1308."
+    },
+    {
+      "topic": "Lung-protective ventilation strategy in ARDS",
+      "findings": "• Clinical Guideline: ATS/ESICM/SCCM guidelines endorse lung-protective ventilation as standard of care in ARDS, emphasizing low tidal volumes, high positive end-expiratory pressure (PEEP) titration to prevent alveolar collapse, and limitation of inspiratory pressures to prevent ventilator-induced lung injury (Fan et al., 2017).",
+      "links": "https://doi.org/10.1164/rccm.201703-0548ST",
+      "references": "Fan, E., et al. (2017). An Official ATS/ESICM/SCCM Clinical Practice Guideline: Mechanical Ventilation in Adult Patients with ARDS. American Journal of Respiratory and Critical Care Medicine, 195(9), 1253-1263."
+    },
+    {
+      "topic": "Male hypogonadism testosterone replacement",
+      "findings": "• Clinical Guideline: The Endocrine Society recommends testosterone therapy for men with classic hypogonadism and consistently low morning total testosterone levels combined with characteristic symptoms, aiming to induce and maintain secondary sex characteristics and improve sexual function (Bhasin et al., 2018).",
+      "links": "https://doi.org/10.1210/jc.2018-00229",
+      "references": "Bhasin, S., et al. (2018). Testosterone Therapy in Men with Hypogonadism: An Endocrine Society Clinical Practice Guideline. The Journal of Clinical Endocrinology & Metabolism, 103(5), 1715-1744."
+    },
+    {
+      "topic": "Malnutrition screening: MUST, NRS-2002, and nutritional support",
+      "findings": "• Clinical Guideline: ESPEN guidelines recommend routine nutritional screening for all hospitalized patients upon admission using validated tools such as the Malnutritive Universal Screening Tool (MUST) or Nutritional Risk Screening (NRS-2002) to identify nutritional risk and prompt early nutritional support pathways (Weimann et al., 2017).",
+      "links": "https://doi.org/10.1016/j.clnu.2017.06.015",
+      "references": "Weimann, A., et al. (2017). ESPEN guideline: Clinical nutrition in surgery. Clinical Nutrition, 36(3), 623-650."
+    },
+    {
+      "topic": "management of HF eith Reduced ejection fraction",
+      "findings": "• Clinical Guideline: ESC and AHA/ACC/HFSA guidelines outline the comprehensive management of HFrEF, centering on guideline-directed medical therapy (SGLT2i, ARNI/ACEi, MRA, beta-blocker), device therapy (ICD, CRT) when indicated, lifestyle adjustments, and structured multidisciplinary follow-up (Heidenreich et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001063",
+      "references": "Heidenreich, P. A., et al. (2022). 2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure. Circulation, 145(18), e895-e1032."
+    }
+  ]
+}
