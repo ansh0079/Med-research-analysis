@@ -1,0 +1,424 @@
+pack,topic,kind,doi,guidelines,papers,abstract_chars,oa_words,complete
+clinical-topics-batch-1,"Achalasia endoscopic and surgical therapy",paper,paper,10.1097/sla.0b013e31818e43ab,0,4,3111,0,true
+clinical-topics-batch-1,"Acute bacterial meningitis adjunctive dexamethasone",paper,10.1016/s1474-4422(10)70023-5,0,2,1417,6776,true
+clinical-topics-batch-1,"Acute bacterial meningitis empiric therapy and dexamethasone",paper,10.1016/s1474-4422(10)70023-5,0,2,1417,6776,true
+clinical-topics-batch-1,"Acute liver failure transplant referral",guideline,guideline,10.1016/j.jhep.2016.12.003,2,4,933,0,true
+clinical-topics-batch-1,"Acute myeloid leukemia venetoclax azacitidine",paper,paper,10.1080/16078454.2023.2198098,0,4,2142,0,true
+clinical-topics-batch-1,"alcohol use disorder naltrexone and acamprosate",guideline,10.1176/appi.ajp.2017.17050509,1,2,300,0,true
+clinical-topics-batch-1,"alcohol withdrawal benzodiazepine treatment",guideline,10.1097/ADM.0000000000000668,1,2,340,0,true
+clinical-topics-batch-1,"alport syndrome and inherited collagen nephropathies",guideline,10.1007/s00467-020-04495-2,1,2,905,0,true
+clinical-topics-batch-1,"alzheimer s disease anti amyloid immunotherapy",guideline,10.14283/jpad.2023.30,1,2,2432,0,true
+clinical-topics-batch-1,"anca associated vasculitis renal disease",guideline,10.1016/j.kint.2023.12.007,1,2,691,0,true
+clinical-topics-batch-1,"angiotensin ii for catecholamine refractory vasodilatory shock",guideline,paper,10.1097/CCM.0000000000005337,1,4,1444,0,true
+clinical-topics-batch-1,"antipsychotic metabolic monitoring",guideline,10.2337/diacare.27.2.596,1,2,395,0,true
+clinical-topics-batch-1,"antithrombotic therapy after tavr",guideline,10.1161/CIR.0000000000000923,1,2,353,0,true
+clinical-topics-batch-1,"benzodiazepine deprescribing in anxiety and insomnia",guideline,,1,1,3500,9134,true
+clinical-topics-batch-1,"biologic therapy pre treatment infection screening",guideline,10.1002/acr.24596,1,2,1355,0,true
+clinical-topics-batch-2,"bk polyomavirus nephropathy in kidney transplant",guideline,10.1111/ajt.15394,1,2,1563,0,true
+clinical-topics-batch-2,"borderline personality disorder dialectical behavior therapy",paper,10.1002/14651858.CD012955.pub2,0,2,4000,0,true
+clinical-topics-batch-2,"c3 glomerulopathy and complement inhibition",guideline,10.1016/j.kint.2021.05.021,1,2,866,0,true
+clinical-topics-batch-2,"cabg versus pci multivessel coronary disease",guideline,10.1161/CIR.0000000000001038,1,2,324,0,true
+clinical-topics-batch-2,"car t therapy large b cell lymphoma",guideline,10.1056/NEJMoa2116596,1,2,2483,0,true
+clinical-topics-batch-2,"cardiac implantable electronic device infection",guideline,10.1093/europace/euaa010,1,2,1626,0,true
+clinical-topics-batch-2,"cardiac myosin activator therapy in hfref",guideline,10.1161/CIR.0000000000001063,2,4,1956,0,true
+clinical-topics-batch-2,"cardiac resynchronization therapy in heart failure",guideline,10.1093/eurheartj/ehab364,1,2,332,0,true
+clinical-topics-batch-2,"cardiogenic shock intra aortic balloon pump and revascularization",guideline,paper,10.1056/NEJMoa1208410,1,4,2176,0,true
+clinical-topics-batch-2,"cardiorenal syndrome ultrafiltration",guideline,10.1056/NEJMoa1210357,1,2,2247,0,true
+clinical-topics-batch-3,"catatonia benzodiazepines and ect",guideline,10.3389/fpsyt.2014.00181,1,2,826,11196,true
+clinical-topics-batch-3,"cerebral venous thrombosis anticoagulation",guideline,10.1177/2396987317719364,1,2,1917,0,true
+clinical-topics-batch-3,"chemotherapy induced nausea antiemetic prophylaxis",guideline,10.1200/JCO.20.01296,1,2,1944,0,true
+clinical-topics-batch-3,"choledocholithiasis and acute cholangitis endoscopy",guideline,10.1016/j.gie.2019.04.232,1,2,1990,0,true
+clinical-topics-batch-3,"chronic cough evaluation and empiric therapy",guideline,10.1183/13993003.01136-2019,1,2,1632,0,true
+clinical-topics-batch-3,"chronic lymphocytic leukaemia chemoimmunotherapy with fcr",guideline,10.1016/j.annonc.2020.09.019,1,2,370,0,true
+clinical-topics-batch-3,"chronic lymphocytic leukaemia ibrutinib and venetoclax based targeted therapy",guideline,10.1016/j.annonc.2020.09.019,1,2,382,0,true
+clinical-topics-batch-3,"chronic myeloid leukaemia imatinib and second generation tki therapy",guideline,10.1038/s41375-020-0776-2,1,2,1426,15395,true
+clinical-topics-batch-3,"common variable immunodeficiency diagnosis and infection prevention",guideline,10.1016/j.jaci.2015.04.049,1,2,1009,0,true
+clinical-topics-batch-3,"community acquired pneumonia",guideline,10.1164/rccm.201908-1581ST,1,2,1048,17729,true
+clinical-topics-batch-4,"complement deficiency infection susceptibility",guideline,10.1007/s10875-020-00754-x,1,1,282,0,true
+clinical-topics-batch-4,"complicated intra abdominal infection source control and duration",guideline,10.1056/NEJMoa1411162,1,2,1828,0,true
+clinical-topics-batch-4,"continuous glucose monitoring in diabetes",guideline,10.2337/dc23-S007,1,2,822,0,true
+clinical-topics-batch-4,"covid 19 critical care dexamethasone and immunomodulation",guideline,10.1056/NEJMoa2021436,1,2,1370,6573,true
+clinical-topics-batch-4,"cushing syndrome medical therapy",guideline,10.1016/j.lanepe.2021.100274,1,2,1119,0,true
+clinical-topics-batch-4,"cytomegalovirus prevention in transplant recipients",guideline,10.1097/TP.0000000000002192,1,2,1019,0,true
+clinical-topics-batch-4,"diabetic retinopathy anti vegf therapy",guideline,10.1016/j.ophtha.2019.09.025,1,2,328,0,true
+clinical-topics-batch-4,"diffuse large b cell lymphoma car t cell therapy in relapsed refractory disease",guideline,10.1056/NEJMoa2116596,1,2,2483,0,true
+clinical-topics-batch-4,"dual antiplatelet therapy duration after pci",guideline,10.1161/CIR.0000000000001038,1,2,360,0,true
+clinical-topics-batch-4,"dupilumab il 4 il 13 inhibitor biologic therapy",guideline,10.1111/jdv.18346,1,2,1209,19025,true
+clinical-topics-batch-4,"durable lvad therapy for advanced heart failure",guideline,10.1161/CIR.0000000000001063,1,2,1666,0,true
+clinical-topics-batch-4,"ebola virus disease therapeutics and supportive care",guideline,,1,1,314,0,true
+clinical-topics-batch-4,"esophageal cancer neoadjuvant chemoradiation",guideline,10.1016/S1470-2045(15)00040-6,1,2,3560,0,true
+clinical-topics-batch-4,"gerd refractory symptoms and antireflux surgery",guideline,10.14309/ajg.0000000000001538,1,2,1177,0,true
+clinical-topics-batch-4,"glycemic control in critical illness",guideline,10.1097/CCM.0000000000005337,1,2,320,0,true
+clinical-topics-batch-4,"graves disease antithyroid and radioiodine therapy",guideline,10.1089/thy.2016.0229,1,2,2367,0,true
+clinical-topics-batch-4,"haemophilia a factor viii prophylaxis and emicizumab for inhibitor patients",guideline,10.1111/hae.14046,1,2,353,0,true
+clinical-topics-batch-4,"head and neck squamous cell chemoradiation",guideline,10.1200/JCO.2016.71.1275,1,2,1928,0,true
+clinical-topics-batch-4,"healthcare associated mrsa decolonization and prevention",guideline,10.1017/ice.2023.103,1,2,1314,15158,true
+clinical-topics-batch-4,"heart failure remote hemodynamic monitoring",guideline,10.1161/CIR.0000000000001063,1,2,1666,0,true
+clinical-topics-batch-5,"hemodialysis adequacy and frequency",guideline,10.1053/j.ajkd.2015.07.015,1,2,1003,0,true
+clinical-topics-batch-5,"herpes simplex encephalitis antiviral therapy",guideline,10.1086/589747,1,2,565,0,true
+clinical-topics-batch-5,"hiv pre exposure prophylaxis",guideline,,1,1,304,0,true
+clinical-topics-batch-5,"home noninvasive ventilation for copd hypercapnia",guideline,10.1183/13993003.01003-2019,1,2,1871,0,true
+clinical-topics-batch-5,"hospital acquired and ventilator associated pneumonia",guideline,10.1093/cid/ciw315,1,2,585,0,true
+clinical-topics-batch-5,"hybrid closed loop insulin delivery in type 1 diabetes",guideline,10.2337/dc23-S007,1,2,822,0,true
+clinical-topics-batch-5,"hyperkalemia in ckd and heart failure",guideline,10.1093/eurheartj/ehy222,1,1,334,0,true
+clinical-topics-batch-5,"hypersensitivity pneumonitis diagnosis and antigen avoidance",guideline,10.1164/rccm.202005-2032ST,1,2,1755,17821,true
+clinical-topics-batch-5,"icosapent ethyl residual cardiovascular risk",guideline,10.1056/NEJMoa1812792,1,2,1813,0,true
+clinical-topics-batch-5,"igg4 related disease diagnosis and b cell depletion",guideline,10.1002/art.39132,1,2,332,0,true
+clinical-topics-batch-5,"intensive glycemic targets in type 2 diabetes",guideline,10.2337/dc23-S006,1,2,822,0,true
+clinical-topics-batch-5,"invasive aspergillosis antifungal therapy",guideline,10.1093/cid/ciw326,1,2,442,0,true
+clinical-topics-batch-5,"invasive candidiasis and candidemia antifungal therapy",guideline,10.1093/cid/civ933,1,2,442,0,true
+clinical-topics-batch-5,"kidney transplant antibody mediated rejection",guideline,10.1097/TP.0000000000003020,1,1,373,0,true
+clinical-topics-batch-5,"latex and perioperative allergy evaluation",guideline,10.1016/j.anai.2020.08.017,1,1,349,0,true
+clinical-topics-batch-5,"lithium monitoring and toxicity prevention",guideline,10.1111/bdi.12609,1,2,2753,17668,true
+clinical-topics-batch-5,"lyme disease diagnosis and treatment",guideline,10.1093/cid/ciaa1215,1,2,1124,0,true
+clinical-topics-batch-5,"major depressive disorder pharmacotherapy",guideline,10.1177/0706743716659417,1,2,1934,0,true
+clinical-topics-batch-5,"menopausal hormone therapy risks and benefits",guideline,10.1097/GME.0000000000002028,1,2,2131,0,true
+clinical-topics-batch-5,"metformin and glycemic legacy in type 2 diabetes",guideline,10.1056/NEJMoa0806470,1,2,2164,0,true
+clinical-topics-batch-5,"mitral regurgitation teer mitraclip",guideline,10.1161/CIR.0000000000000923,1,2,373,0,true
+clinical-topics-batch-5,"mog antibody associated disease diagnosis and relapse prevention",guideline,10.1016/S1474-4422(22)00431-8,1,2,1317,0,true
+clinical-topics-batch-5,"myelofibrosis jak inhibition with ruxolitinib",guideline,,2,2,3500,0,true
+clinical-topics-batch-5,"neuromyelitis optica spectrum disorder biologic therapy",guideline,10.1212/WNL.0000000000001818,1,1,395,0,true
+clinical-topics-batch-5,"neuropathic pain pharmacotherapy",guideline,10.1016/S1474-4422(14)70251-0,1,2,3154,0,true
+clinical-topics-batch-6,"noninfectious uveitis biologic therapy",guideline,10.1056/NEJMoa1509852,1,2,1868,0,true
+clinical-topics-batch-6,"obsessive compulsive disorder ssri and erp",guideline,10.1176/appi.ajp.2007.07081216,1,2,1732,0,true
+clinical-topics-batch-6,"opioid use disorder buprenorphine and methadone",guideline,10.1097/ADM.0000000000000633,1,2,325,0,true
+clinical-topics-batch-6,"outpatient parenteral antimicrobial therapy program safety",guideline,10.1093/cid/ciy745,1,2,610,0,true
+clinical-topics-batch-6,"panic disorder pharmacotherapy and cbt",guideline,10.1186/1471-244X-14-S1-S1,1,2,1589,19136,true
+clinical-topics-batch-6,"parkinson disease motor complications",guideline,10.1002/mds.27372,1,2,1976,17105,true
+clinical-topics-batch-6,"penicillin allergy evaluation and delabeling",guideline,10.1001/jama.2018.19283,1,2,2146,0,true
+clinical-topics-batch-6,"perioperative bridging anticoagulation",guideline,10.1056/NEJMoa1506961,1,2,1952,0,true
+clinical-topics-batch-6,"physiology guided pci fractional flow reserve",guideline,10.1161/CIR.0000000000001038,1,2,327,0,true
+clinical-topics-batch-6,"polycythemia vera hematocrit targets aspirin and cardiovascular risk reduction",guideline,10.1056/NEJMoa1208500,1,2,1622,7492,true
+clinical-topics-batch-6,"polymyalgia rheumatica relapse prevention",guideline,10.1136/annrheumdis-2015-207492,1,2,1456,0,true
+clinical-topics-batch-6,"primary biliary cholangitis pharmacotherapy",guideline,10.1002/hep.30145,1,2,327,0,true
+clinical-topics-batch-6,"primary immunodeficiency immunoglobulin replacement",guideline,10.1016/j.jaci.2017.04.029,1,1,344,0,true
+clinical-topics-batch-6,"primary prevention icd sudden cardiac death",guideline,10.1016/j.jacc.2017.10.054,1,2,557,0,true
+clinical-topics-batch-6,"primary sclerosing cholangitis medical therapy and surveillance",guideline,10.1002/hep.32771,1,2,334,0,true
+clinical-topics-batch-6,"procalcitonin guided antibiotic de escalation in icu",guideline,10.1097/CCM.0000000000005337,1,2,344,0,true
+clinical-topics-batch-6,"ptsd trauma focused psychotherapy and ssri",guideline,,1,1,3500,0,true
+clinical-topics-batch-6,"pulmonary artery catheter utility in critically ill patients",guideline,10.1097/01.CCM.0000139939.06275.CD,1,2,1407,0,true
+clinical-topics-batch-6,"pulmonary nodule evaluation and fleischner follow up",guideline,10.1148/radiol.2017161659,1,2,1421,0,true
+clinical-topics-batch-6,"radial versus femoral access for pci",guideline,10.1161/CIR.0000000000001038,1,2,369,0,true
+clinical-topics-batch-6,"reproductive health in rheumatic disease",guideline,10.1002/art.41191,1,2,2271,0,true
+clinical-topics-batch-6,"solid organ transplant induction immunosuppression",guideline,10.1111/j.1600-6143.2009.02834.x,1,2,1044,0,true
+clinical-topics-batch-6,"spontaneous coronary artery dissection",guideline,10.1161/CIR.0000000000000564,1,2,1113,0,true
+clinical-topics-batch-6,"subclinical hypothyroidism treatment thresholds",guideline,10.1159/000356507,1,2,1972,0,true
+clinical-topics-batch-6,"surgical site infection prevention",guideline,10.1001/jamasurg.2017.0904,1,2,2746,0,true
+clinical-topics-batch-7,"takayasu arteritis biologic therapy",guideline,10.1002/art.41774,1,2,1768,0,true
+clinical-topics-batch-7,"thrombotic thrombocytopenic purpura caplacizumab and plasma exchange",guideline,10.1111/jth.15010,1,2,1882,0,true
+clinical-topics-batch-7,"thyroid nodule evaluation and fna",guideline,10.1089/thy.2015.0020,1,2,2670,0,true
+clinical-topics-batch-7,"tick borne rickettsial disease empiric doxycycline",guideline,10.15585/mmwr.rr6502a1,1,2,1768,0,true
+clinical-topics-batch-7,"transient ischemic attack rapid assessment",guideline,10.1161/STR.0000000000000375,1,2,2041,3073,true
+clinical-topics-batch-7,"tricuspid regurgitation teer",guideline,10.1056/NEJMoa2300525,1,2,1995,0,true
+clinical-topics-batch-7,"type 1 diabetes intensive glycemic control",guideline,10.2337/dc13-2141,1,1,373,0,true
+clinical-topics-batch-7,"vericiguat in worsening heart failure",guideline,10.1161/CIR.0000000000001063,1,2,1666,0,true
+clinical-topics-batch-7,"vte prophylaxis in mechanically ventilated icu patients",guideline,10.1378/chest.11-2296,1,2,2093,0,true
+clinical-topics-batch-7,"Acromegaly somatostatin analog therapy",guideline,10.1210/jc.2014-2700,1,2,1259,0,true
+clinical-topics-batch-7,"Acute abdomen and common surgical emergencies",guideline,10.1186/s13017-017-0141-6,1,2,711,17496,true
+clinical-topics-batch-7,"Acute and chronic pain assessment and opioid safety",guideline,10.15585/mmwr.rr7103a1,1,2,2026,17342,true
+clinical-topics-batch-7,"Acute asthma and COPD exacerbations",guideline,,1,3,2714,0,true
+clinical-topics-batch-7,"Acute confusion, agitation, and capacity",guideline,,1,1,359,0,true
+clinical-topics-batch-7,"Acute decompensated heart failure decongestion",guideline,10.1093/eurheartj/ehab368,1,2,339,0,true
+clinical-topics-batch-7,"acute liver failure transplant referral",guideline,10.14309/ajg.0000000000002340,2,4,933,0,true
+clinical-topics-batch-7,"Acute necrotising pancreatitis and step-up management approach",guideline,10.1056/NEJMoa0908821,1,2,1847,0,true
+clinical-topics-batch-7,"Acute pancreatitis fluid and nutrition strategy",guideline,10.1056/NEJMoa2202884,1,2,2215,0,true
+clinical-topics-batch-7,"Acute psychosis: assessment, management and antipsychotic therapy",guideline,10.1176/appi.ajp.2020.177901,1,2,311,0,true
+clinical-topics-batch-7,"Acute red eye: differential diagnosis and emergency management",guideline,10.1016/j.ophtha.2018.10.020,1,2,373,0,true
+clinical-topics-batch-7,"Adult-onset Still disease IL-1 and IL-6 blockade",guideline,10.1016/j.autrev.2014.01.058,1,2,1782,0,true
+clinical-topics-batch-7,"Alcohol use disorder, Wernicke encephalopathy and alcohol-related liver disease",guideline,10.1016/j.jhep.2018.03.018,1,2,290,0,true
+clinical-topics-batch-7,"Alcohol-associated hepatitis corticosteroids",guideline,10.1056/NEJMoa1412278,1,2,2365,0,true
+clinical-topics-batch-7,"Allergic rhinitis intranasal steroids and immunotherapy",guideline,10.1016/j.anai.2017.08.012,1,2,1673,0,true
+clinical-topics-batch-7,"AML Transformed from MPN",guideline,,1,1,3500,0,true
+clinical-topics-batch-8,"Borderline personality disorder dialectical behavior therapy",paper,10.1002/14651858.CD012955.pub2,0,2,4000,0,true
+clinical-topics-batch-8,"Bronchiectasis and recurrent chest infections",guideline,10.1183/13993003.00629-2017,1,2,1376,0,true
+clinical-topics-batch-8,"Bronchiolitis and viral wheeze",guideline,10.1542/peds.2014-2742,1,2,410,0,true
+clinical-topics-batch-8,"Bronchiolitis: assessment, risk stratification and management",guideline,,1,2,1777,0,true
+clinical-topics-batch-8,"CABG versus PCI multivessel coronary disease",guideline,10.1161/CIR.0000000000001038,1,2,324,0,true
+clinical-topics-batch-8,"canagliflozin renal outcomes type 2 diabetes nephropathy",paper,10.1056/NEJMoa1811744,0,2,2065,0,true
+clinical-topics-batch-8,"canakinumab anti-inflammatory therapy atherosclerotic disease",paper,10.1056/NEJMoa1707914,0,2,2599,0,true
+clinical-topics-batch-8,"CAR-T cell therapy refractory large B-cell lymphoma axicabtagene",guideline,10.1056/NEJMoa1707447,1,2,2098,0,true
+clinical-topics-batch-8,"Cardiac myosin activator therapy in HFrEF",guideline,10.1056/NEJMoa2025797,2,4,1956,0,true
+clinical-topics-batch-8,"cardiac resynchronization therapy heart failure COMPANION trial",paper,10.1056/NEJMoa032423,0,2,1604,0,true
+clinical-topics-batch-8,"Carpal tunnel syndrome: diagnosis and management",guideline,,1,1,341,0,true
+clinical-topics-batch-8,"Catatonia benzodiazepines and ECT",guideline,10.3389/fpsyt.2014.00181,1,2,826,11196,true
+clinical-topics-batch-8,"Cellulitis, erysipelas, and mimics",guideline,10.1093/cid/ciu296,1,2,897,0,true
+clinical-topics-batch-8,"Chest pain assessment in the ED",guideline,10.1161/CIR.0000000000001029,1,2,1237,0,true
+clinical-topics-batch-8,"Chikungunya and Zika Arthropathy",guideline,10.1016/j.lpm.2015.10.007,1,1,306,0,true
+clinical-topics-batch-8,"Childhood asthma and wheeze phenotypes",guideline,,1,1,2714,0,true
+clinical-topics-batch-8,"Chronic hepatitis B antiviral therapy",guideline,10.1002/hep.29800,1,2,334,0,true
+clinical-topics-batch-8,"Chronic lymphocytic leukaemia: chemoimmunotherapy with FCR",guideline,10.1016/j.annonc.2020.09.019,1,2,370,0,true
+clinical-topics-batch-8,"Chronic spontaneous urticaria omalizumab",guideline,10.1111/all.15090,1,2,1424,0,true
+clinical-topics-batch-8,"Cirrhosis and portal hypertension",guideline,10.1016/j.jhep.2021.12.022,1,2,1431,0,true
+clinical-topics-batch-8,"Cirrhosis ascites and spontaneous bacterial peritonitis",guideline,10.1002/hep.31884,1,2,333,0,true
+clinical-topics-batch-8,"CKD referral thresholds",guideline,,1,2,3500,0,true
+clinical-topics-batch-8,"clopidogrel aspirin acute minor ischemic stroke CHANCE",guideline,10.1056/NEJMoa1215340,1,2,1667,0,true
+clinical-topics-batch-8,"Clozapine for treatment-resistant schizophrenia",guideline,10.1176/appi.ajp.2020.177901,1,2,339,0,true
+clinical-topics-batch-8,"Collapse, syncope, and cardiac arrest algorithms",guideline,10.1161/CIR.0000000000000499,1,2,355,0,true
+clinical-topics-batch-9,"Depression: diagnosis, pharmacotherapy and monitoring",guideline,10.1177/0706743716659417,1,2,1934,0,true
+clinical-topics-batch-9,"Diabetic foot infection and osteomyelitis",guideline,10.1086/524355,1,1,304,0,true
+clinical-topics-batch-9,"Difficult airway management",guideline,10.1111/anae.14015,1,2,342,0,true
+clinical-topics-batch-9,"Diverticulitis classifications (Hinchey) and surgical indications",guideline,10.1186/s13017-020-00318-w,1,2,605,0,true
+clinical-topics-batch-9,"DNACPR, treatment escalation planning and advance care planning",guideline,,1,1,333,0,true
+clinical-topics-batch-9,"Drug allergy assessment and penicillin allergy de-labelling",guideline,10.1001/jama.2018.19283,1,2,2146,0,true
+clinical-topics-batch-9,"Drug eruptions and severe cutaneous adverse reactions (SCAR)",guideline,10.1111/jdv.15301,1,3,1887,0,true
+clinical-topics-batch-9,"Drug reaction with eosinophilia and systemic symptoms",guideline,10.1111/jdv.15301,1,3,1887,0,true
+clinical-topics-batch-9,"Drug-Induced AKI and Nephrotoxins",guideline,,1,1,3500,0,true
+clinical-topics-batch-9,"Drug-resistant tuberculosis all-oral regimens",guideline,,1,1,3500,0,true
+clinical-topics-batch-9,"Durable LVAD therapy for advanced heart failure",guideline,10.1161/CIR.0000000000001063,1,2,1666,0,true
+clinical-topics-batch-9,"Dyslipidaemia and cardiovascular risk modification",guideline,10.1016/j.jacc.2018.11.003,1,2,317,0,true
+clinical-topics-batch-9,"Dyspepsia, H. pylori, and peptic ulcer disease",guideline,10.14309/ajg.0000000000000422,1,2,684,0,true
+clinical-topics-batch-9,"early goal-directed therapy septic shock ProCESS trial",paper,10.1056/NEJMoa1401602,0,2,2461,0,true
+clinical-topics-batch-9,"Early pregnancy bleeding and ectopic pregnancy",guideline,,1,1,3500,0,true
+clinical-topics-batch-9,"Eating disorder medical stabilization and refeeding",guideline,10.1002/eat.22259,1,3,1192,0,true
+clinical-topics-batch-9,"Eating disorders and refeeding syndrome",guideline,,1,2,605,0,true
+clinical-topics-batch-9,"ECG interpretation: common acute findings and life-threatening arrhythmias",guideline,10.1161/CIR.0000000000000316,1,1,348,0,true
+clinical-topics-batch-9,"Ectopic pregnancy: diagnosis and management",guideline,,1,1,3500,0,true
+clinical-topics-batch-9,"Emergency contraception: mechanisms, timing and clinical guidance",guideline,10.1097/AOG.0000000000001815,1,2,489,0,true
+clinical-topics-batch-9,"empagliflozin cardiovascular outcomes type 2 diabetes EMPA-REG",paper,10.1056/NEJMoa1504720,0,2,2054,0,true
+clinical-topics-batch-9,"empagliflozin chronic kidney disease progression",paper,10.1056/NEJMoa2204233,0,2,1754,5777,true
+clinical-topics-batch-9,"enalapril ACE inhibitor survival reduced left ventricular ejection fraction",paper,10.1056/NEJM199108013250501,0,2,1755,0,true
+clinical-topics-batch-9,"Endocarditis and prophylaxis",guideline,10.1093/eurheartj/ehz319,1,2,295,0,true
+clinical-topics-batch-9,"endovascular thrombectomy time to treatment ischemic stroke meta-analysis",paper,10.1016/S0140-6736(16)30163-X,0,2,3296,0,true
+clinical-topics-batch-10,"Eosinophilia Differential Diagnosis",guideline,10.1182/blood-2014-11-585828,1,1,385,0,true
+clinical-topics-batch-10,"Eosinophilic esophagitis topical steroid and elimination diet",guideline,10.1111/apt.14030,1,1,304,0,true
+clinical-topics-batch-10,"Epilepsy antiseizure medication selection",guideline,,1,1,1414,0,true
+clinical-topics-batch-10,"Epistaxis: assessment and management",guideline,10.1177/0194599819897913,1,1,379,0,true
+clinical-topics-batch-10,"ESBL Enterobacterales bloodstream infection therapy",guideline,10.1093/cid/ciab1013,1,1,2132,0,true
+clinical-topics-batch-10,"Extra-articular RA: nodules, vasculitis, ILD, Felty syndrome, ocular involvement",guideline,10.1002/acr.24596,1,1,1355,0,true
+clinical-topics-batch-10,"ezetimibe added to statin therapy acute coronary syndrome",paper,10.1056/NEJMoa1410489,0,1,1697,0,true
+clinical-topics-batch-10,"Falls assessment and prevention in older adults",guideline,10.1111/j.1532-5415.2012.03948.x,1,1,337,0,true
+clinical-topics-batch-10,"fecal microbiota transplant recurrent Clostridioides difficile infection",guideline,10.14309/ajg.0000000000001278,1,1,855,0,true
+clinical-topics-batch-10,"Fever and neutropenia empiric antibiotic strategy",guideline,10.1200/JCO.2010.31.8344,1,1,354,0,true
+clinical-topics-batch-10,"Fever in children and sepsis screening",guideline,,1,1,343,0,true
+clinical-topics-batch-10,"Fibromyalgia multidisciplinary management",guideline,10.1136/annrheumdis-2016-210197,1,1,343,0,true
+clinical-topics-batch-10,"Frailty and comprehensive geriatric assessment",guideline,,1,1,298,0,true
+clinical-topics-batch-10,"Futility, prognostication, and family communication in critical illness",guideline,10.1097/CCM.0b013e318165c92f,1,1,322,0,true
+clinical-topics-batch-10,"Gastrointestinal Motility and Dysmotility Overview",guideline,10.1038/ajg.2013.18,1,1,2089,0,true
+clinical-topics-batch-10,"global burden bacterial antimicrobial resistance",paper,10.1016/S0140-6736(21)02724-0,0,1,4000,0,true
+clinical-topics-batch-10,"global prevalence depression anxiety disorders COVID-19 pandemic",paper,10.1016/S0140-6736(21)02143-7,0,1,2937,10961,true
+clinical-topics-batch-10,"GLP-1 receptor agonist liraglutide cardiovascular outcomes type 2 diabetes",paper,10.1056/NEJMoa1603827,0,1,1484,0,true
+clinical-topics-batch-10,"GLP-1 receptor agonist therapy for type 2 diabetes",guideline,10.2337/dc23-S009,1,1,822,0,true
+clinical-topics-batch-10,"Gout urate-lowering treat-to-target strategy",guideline,10.1002/art.41247,1,1,1841,0,true
+clinical-topics-batch-10,"Gram-negative bloodstream infection duration",guideline,10.1016/S0140-6736(18)31746-9,1,1,351,0,true
+clinical-topics-batch-10,"Gut Microbiome in GI Disease",guideline,10.1136/gutjnl-2016-313101,1,1,1940,9677,true
+clinical-topics-batch-10,"Heart failure landmark trials: PARADIGM-HF, DAPA-HF, EMPEROR-Reduced insights",paper,10.1056/NEJMoa1911303,0,1,1500,0,true
+clinical-topics-batch-10,"heart failure reduced ejection fraction management guideline SGLT2 ARNI MRA beta blocker",guideline,10.1161/CIR.0000000000001063,1,1,1666,0,true
+clinical-topics-batch-10,"Heavy menstrual bleeding: assessment and management",guideline,,1,1,1434,0,true
+clinical-topics-batch-11,"Helicobacter pylori eradication peptic ulcer bleeding recurrence",guideline,10.14309/ajg.0000000000000422,1,1,262,0,true
+clinical-topics-batch-11,"Hemophagocytic lymphohistiocytosis diagnosis and therapy",guideline,10.1182/blood-2013-11-534824,1,1,1638,0,true
+clinical-topics-batch-11,"Heparin-induced thrombocytopenia alternatives: argatroban, fondaparinux, bivalirudin",guideline,10.1182/bloodadvances.2019000329,1,1,1835,0,true
+clinical-topics-batch-11,"Heparin-induced thrombocytopenia: diagnosis and management",guideline,10.1182/bloodadvances.2019000329,1,1,1835,0,true
+clinical-topics-batch-11,"Hepatic encephalopathy recurrence prevention",guideline,10.1002/hep.27367,1,1,288,0,true
+clinical-topics-batch-11,"hepatorenal",guideline,10.1002/hep.31884,1,1,247,0,true
+clinical-topics-batch-11,"Hepatorenal syndrome vasoconstrictor therapy",guideline,10.1002/hep.31884,1,1,269,0,true
+clinical-topics-batch-11,"Herpes simplex, impetigo and common skin infections",guideline,10.1093/cid/ciu296,1,1,897,0,true
+clinical-topics-batch-11,"HFref best treatment options",guideline,10.1161/CIR.0000000000001063,1,1,1666,0,true
+clinical-topics-batch-11,"Hidradenitis suppurativa: assessment and treatment",guideline,10.1016/j.jaad.2019.04.047,1,1,319,0,true
+clinical-topics-batch-11,"High-frequency oscillatory ventilation and lung recruitment in severe ARDS",guideline,10.1164/rccm.201703-0548ST,1,1,1630,0,true
+clinical-topics-batch-11,"Hip fracture management and perioperative optimisation",guideline,,1,1,281,0,true
+clinical-topics-batch-11,"Hodgkin lymphoma: brentuximab vedotin frontline therapy",guideline,10.1056/NEJMoa1708970,1,1,292,0,true
+clinical-topics-batch-11,"how should I manage septic shock",guideline,10.1097/CCM.0000000000005337,1,1,303,0,true
+clinical-topics-batch-11,"HPV vaccination cervical intraepithelial neoplasia FUTURE II",paper,10.1056/NEJMoa061741,0,1,1895,0,true
+clinical-topics-batch-11,"HRS diagnosis",guideline,10.1002/hep.31884,1,1,275,0,true
+clinical-topics-batch-11,"Hyperphosphataemia in CKD",guideline,10.1038/ki.2009.435,1,2,61,0,true
+clinical-topics-batch-11,"Hypersensitivity Pneumonitis variants by antigen",guideline,10.1164/rccm.202005-2032ST,1,1,1755,17821,true
+clinical-topics-batch-11,"hypertension treatment patients 80 years or older very elderly",guideline,10.1056/NEJMoa0805459,1,1,303,0,true
+clinical-topics-batch-11,"Hypertensive disorders of pregnancy and pre-eclampsia",guideline,10.1097/AOG.0000000000003018,1,1,1192,0,true
+clinical-topics-batch-11,"Hypogranular APL Morphology Pitfalls",guideline,10.1182/blood-2009-07-209841,1,1,340,0,true
+clinical-topics-batch-11,"Hypoventilation from central CNS depressants",guideline,10.1056/NEJMra1003665,1,1,2164,0,true
+clinical-topics-batch-11,"ICU renal replacement therapy initiation timing",guideline,10.1056/NEJMoa2006641,1,1,1941,0,true
+clinical-topics-batch-11,"Idiopathic facial nerve palsy (Bell’s palsy): corticosteroid timing, eye care",guideline,10.1212/01.wnl.0000298227.78319.fa,1,1,0,0,true
+clinical-topics-batch-11,"Infectious diarrhea and travelers diarrhea management",guideline,10.1093/cid/cis568,1,1,371,0,true
+clinical-topics-batch-12,"Infective endocarditis antibiotic duration and surgery",guideline,10.1093/eurheartj/ehz319,1,1,280,0,true
+clinical-topics-batch-12,"Infective endocarditis antimicrobial and oral step-down strategy",guideline,10.1056/NEJMoa1808312,1,1,2012,0,true
+clinical-topics-batch-12,"initial invasive or conservative strategy stable coronary disease",paper,10.1056/NEJMoa1915922,0,1,2220,0,true
+clinical-topics-batch-12,"intensive blood glucose control sulphonylureas insulin type 2 diabetes UKPDS",paper,10.1016/S0140-6736(98)07019-6,0,1,276,0,true
+clinical-topics-batch-12,"intensive blood pressure control cardiovascular outcomes systolic",guideline,10.1056/NEJMoa1511939,1,1,1579,0,true
+clinical-topics-batch-12,"Intensive care high yield clinical guidelines",guideline,10.1097/CCM.0000000000005337,1,1,285,0,true
+clinical-topics-batch-12,"intensive glucose lowering type 2 diabetes",paper,10.1056/NEJMoa0802743,0,1,1610,0,true
+clinical-topics-batch-12,"intensive LDL cholesterol lowering statin meta-analysis",paper,10.1016/S0140-6736(10)61350-5,0,1,1715,9211,true
+clinical-topics-batch-12,"Intracerebral hemorrhage acute management",guideline,10.1161/STR.0000000000000069,1,1,1361,0,true
+clinical-topics-batch-12,"Intravenous fluid prescribing and fluid balance management",guideline,,1,1,311,0,true
+clinical-topics-batch-12,"Irradiated, Leukoreduced and Washed Blood Products",guideline,10.1111/trf.13734,1,1,3322,0,true
+clinical-topics-batch-12,"Ischaemic heart disease and acute coronary syndromes",guideline,10.1161/CIR.0000000000001038,1,1,276,0,true
+clinical-topics-batch-12,"Juvenile idiopathic arthritis biologic strategy",guideline,10.1002/art.40870,1,1,2048,0,true
+clinical-topics-batch-12,"Large bowel obstruction, volvulus, and pseudo-obstruction management",guideline,10.1016/j.giec.2005.08.006,1,1,1928,0,true
+clinical-topics-batch-12,"Lateral epicondylitis (tennis elbow): assessment and management",guideline,10.1136/bmj.38875.498449.55,1,1,364,0,true
+clinical-topics-batch-12,"Latex and perioperative allergy evaluation",guideline,10.1016/j.anai.2020.08.017,1,1,349,0,true
+clinical-topics-batch-12,"Leflunomide, Sulfasalazine, and Hydroxychloroquine toxicities",guideline,10.1002/acr.24596,1,1,1355,0,true
+clinical-topics-batch-12,"Left atrial appendage occlusion for AF stroke prevention",guideline,10.1093/eurheartj/ehaa612,1,1,1371,0,true
+clinical-topics-batch-12,"Leukaostasis Syndrome",guideline,10.1080/10428190310001614917,1,1,345,0,true
+clinical-topics-batch-12,"Low back pain and sciatica",guideline,10.7326/M16-2367,1,1,2686,0,true
+clinical-topics-batch-12,"low tidal volume ventilation ARDS lung protective",guideline,10.1056/NEJM200005043421801,1,2,1913,0,true
+clinical-topics-batch-12,"Lung-protective ventilation strategy in ARDS",guideline,10.1164/rccm.201703-0548ST,1,1,1630,0,true
+clinical-topics-batch-12,"Male hypogonadism testosterone replacement",guideline,10.1210/jc.2018-00229,1,1,3285,0,true
+clinical-topics-batch-12,"Malnutrition screening: MUST, NRS-2002, and nutritional support",guideline,10.1016/j.clnu.2017.06.015,1,1,1730,0,true
+clinical-topics-batch-12,"management of HF eith Reduced ejection fraction",guideline,10.1161/CIR.0000000000001063,1,1,1666,0,true
+clinical-topics-batch-13,"management of HF with Reduced ejection fraction",guideline,10.1161/CIR.0000000000001063,1,1,1666,0,true
+clinical-topics-batch-13,"management of PRESS",guideline,10.1056/NEJM199602223340803,1,1,340,0,true
+clinical-topics-batch-13,"Mechanical low back pain: assessment, red flags and management",guideline,10.7326/M16-2367,1,1,2686,0,true
+clinical-topics-batch-13,"Menopause and hormone replacement therapy: evidence and guidance",guideline,10.1097/GME.0000000000002028,1,1,2131,0,true
+clinical-topics-batch-13,"Mental capacity, consent and best-interest decisions",guideline,,1,1,1593,0,true
+clinical-topics-batch-13,"meropenem versus piperacillin tazobactam sepsis MERINO trial",paper,10.1016/S0140-6736(18)31307-8,0,2,2648,0,true
+clinical-topics-batch-13,"Metastatic colorectal cancer systemic therapy sequencing",guideline,10.1016/j.annonc.2020.06.001,1,1,954,0,true
+clinical-topics-batch-13,"Metastatic NSCLC EGFR and ALK targeted therapy",guideline,,1,1,3500,0,true
+clinical-topics-batch-13,"Metformin and glycemic legacy in type 2 diabetes",paper,10.1056/NEJMoa0806470,1,2,2164,0,true
+clinical-topics-batch-13,"metformin diabetes",guideline,10.2337/dc23-S009,1,1,822,0,true
+clinical-topics-batch-13,"methotrexate early rheumatoid arthritis combination therapy TEAR",paper,10.1002/art.34398,0,1,317,0,true
+clinical-topics-batch-13,"methylene blue in vasoplegic shock",guideline,10.1097/01.CCM.0000120054.27099.DE,1,1,1697,0,true
+clinical-topics-batch-13,"metoprolol succinate chronic heart failure mortality MERIT-HF",paper,10.1016/S0140-6736(99)04440-2,0,1,1675,0,true
+clinical-topics-batch-13,"metylene blue in vasoplegic shock",guideline,10.1097/01.CCM.0000120054.27099.DE,1,1,1697,0,true
+clinical-topics-batch-13,"Mineralocorticoid receptor antagonists in heart failure",guideline,10.1161/CIR.0000000000001063,1,1,1666,0,true
+clinical-topics-batch-13,"Miscarriage: diagnosis, classification and management",guideline,,1,1,3500,0,true
+clinical-topics-batch-13,"Monocytosis and Lymphocytosis Diagnostic Algorithms",guideline,10.1309/AJCP2Q3UYYNYWWRF,1,1,333,0,true
+clinical-topics-batch-13,"MSI-high metastatic colorectal cancer immunotherapy",guideline,10.1056/NEJMoa1500596,1,1,1775,0,true
+clinical-topics-batch-13,"Multiple myeloma: daratumumab-based frontline therapy",guideline,10.1056/NEJMoa1805955,1,1,2466,0,true
+clinical-topics-batch-13,"Multiple myeloma: VRd versus Rd for newly diagnosed disease",paper,10.1016/S0140-6736(17)31594-X,0,1,3941,0,true
+clinical-topics-batch-13,"Myasthenia gravis targeted immunotherapy",guideline,10.1212/WNL.0000000000002790,1,1,1240,4925,true
+clinical-topics-batch-13,"Myelodysplastic syndrome: azacitidine hypomethylating therapy",guideline,10.1016/S0140-6736(09)60329-7,1,1,314,0,true
+clinical-topics-batch-13,"Myelofibrosis: JAK inhibition with ruxolitinib",guideline,10.1056/NEJMoa1110557,2,2,3500,0,true
+clinical-topics-batch-13,"Neonatal jaundice: assessment, phototherapy and exchange transfusion",guideline,10.1542/peds.2022-058859,1,1,353,0,true
+clinical-topics-batch-13,"Neuromuscular blockade in early ARDS",guideline,10.1056/NEJMoa1005372,1,2,2285,0,true
+clinical-topics-batch-14,"nivolumab ipilimumab advanced melanoma overall survival",paper,10.1056/NEJMoa1910836,0,1,2083,0,true
+clinical-topics-batch-14,"Noninvasive ventilation for acute respiratory failure",guideline,10.1183/13993003.02426-2016,1,1,1498,0,true
+clinical-topics-batch-14,"Obsessive-compulsive disorder SSRI and ERP",guideline,10.1176/appi.ajp.2007.07081216,1,1,1732,0,true
+clinical-topics-batch-14,"Obstructive sleep apnoea and obesity hypoventilation",guideline,10.1164/rccm.201905-0976OC,1,1,1794,0,true
+clinical-topics-batch-14,"Opioid Rotation and Equianalgesic Dosing",guideline,10.1016/j.jpainsymman.2007.06.002,1,1,1331,0,true
+clinical-topics-batch-14,"Opioid use disorder: withdrawal, maintenance therapy and harm reduction",guideline,10.1097/ADM.0000000000000633,1,1,267,0,true
+clinical-topics-batch-14,"Orbital and periorbital cellulitis: classification and management",guideline,10.1097/IOP.0b013e3181b8e4e7,1,1,996,0,true
+clinical-topics-batch-14,"Orthostatic hypotension: diagnosis and management in older adults",guideline,10.1111/jgs.15233,1,1,345,0,true
+clinical-topics-batch-14,"oseltamivir treatment influenza healthy adults",guideline,10.1093/cid/ciq774,1,1,2047,0,true
+clinical-topics-batch-14,"Osteoporotic fragility fracture and secondary prevention",guideline,10.1210/jc.2018-02609,1,1,351,0,true
+clinical-topics-batch-14,"Otitis media, otitis externa and mastoiditis",guideline,10.1542/peds.2012-3488,1,1,2007,0,true
+clinical-topics-batch-14,"Oxygen prescribing, target saturations and hypoxia management",guideline,10.1136/thoraxjnl-2017-211113,1,1,351,0,true
+clinical-topics-batch-14,"Paediatric anaphylaxis: recognition and emergency management",guideline,10.1111/all.13703,1,1,309,0,true
+clinical-topics-batch-14,"Paediatric asthma: diagnosis, assessment and stepwise management",guideline,,1,1,2714,0,true
+clinical-topics-batch-14,"Pancreatic adenocarcinoma systemic therapy",guideline,10.1200/JCO.2016.67.0257,1,1,651,0,true
+clinical-topics-batch-14,"Pancreatic cancer systemic and adjuvant therapy",guideline,10.1056/NEJMoa1809775,1,1,1601,0,true
+clinical-topics-batch-14,"Pancytopenia Diagnostic Workup",guideline,10.1111/j.1365-2141.2007.06733.x,1,1,1391,0,true
+clinical-topics-batch-14,"Papilloedema : funduscopic staging, pseudo- papilloedema vs true disc swelling",guideline,10.1097/WNO.0000000000000185,1,1,343,0,true
+clinical-topics-batch-14,"Patent foramen ovale closure after cryptogenic stroke",guideline,10.1056/NEJMoa1610057,1,1,2341,0,true
+clinical-topics-batch-14,"PCSK9 inhibitor evolocumab cardiovascular outcomes",paper,10.1056/NEJMoa1615664,0,1,1710,0,true
+clinical-topics-batch-14,"Pelvic inflammatory disease: diagnosis and treatment",guideline,10.15585/mmwr.rr7004a1,1,1,1100,17845,true
+clinical-topics-batch-14,"pembrolizumab plus chemotherapy metastatic non-small cell lung cancer",guideline,10.1056/NEJMoa1801005,1,1,1956,0,true
+clinical-topics-batch-14,"Penicillin allergy delabeling and testing",guideline,10.1001/jama.2018.19283,1,1,2146,0,true
+clinical-topics-batch-14,"Penicillin allergy evaluation and delabeling",guideline,10.1001/jama.2018.19283,1,2,2146,0,true
+clinical-topics-batch-14,"Perinatal depression screening and treatment",guideline,10.1001/jama.2016.14803,1,1,1484,0,true
+clinical-topics-batch-15,"Perioperative antiplatelet and anticoagulant management",guideline,10.1161/CIR.0000000000001038,1,1,219,0,true
+clinical-topics-batch-15,"Perioperative diabetes management",guideline,10.2337/dc23-S016,1,1,822,0,true
+clinical-topics-batch-15,"Perioperative management of common comorbidities",guideline,10.1016/j.jacc.2014.07.944,1,1,319,0,true
+clinical-topics-batch-15,"Perioperative risk assessment and optimisation",guideline,10.1093/eurheartj/ehx056,1,1,302,0,true
+clinical-topics-batch-15,"Peripheral arterial disease and claudication",guideline,10.1161/CIR.0000000000000095,1,1,307,0,true
+clinical-topics-batch-15,"Pleural effusion and parapneumonic effusion management",guideline,10.1136/thoraxjnl-2015-207018,1,1,348,0,true
+clinical-topics-batch-15,"pneumonia",guideline,10.1164/rccm.201908-1581ST,1,1,1048,17729,true
+clinical-topics-batch-15,"Polycystic ovary syndrome metabolic management",guideline,10.1210/clinem/dgab552,1,1,320,0,true
+clinical-topics-batch-15,"Polycythemia vera: hematocrit targets, aspirin, and cardiovascular risk reduction",guideline,10.1056/NEJMoa1208500,1,2,1622,7492,true
+clinical-topics-batch-15,"Polypharmacy and deprescribing: STOPP/START criteria",guideline,10.1093/ageing/afv094,1,1,0,0,true
+clinical-topics-batch-15,"Portal hypertension and variceal bleeding",guideline,10.1016/j.jhep.2021.12.022,1,1,1431,0,true
+clinical-topics-batch-15,"Postoperative ileus: prevention and management",guideline,10.1007/s00268-015-3051-4,1,1,1044,0,true
+clinical-topics-batch-15,"Postoperative nausea and vomiting: prevention and treatment",guideline,10.1213/ANE.0b013e31826f724a,1,1,2654,0,true
+clinical-topics-batch-15,"Postural Orthostatic Tachycardia Syndrome (POTS): tilt table test criteria, non-pharmacological methods",guideline,10.1016/j.autneu.2020.102661,1,1,358,0,true
+clinical-topics-batch-15,"Pressure ulcers: staging, prevention and wound management",guideline,10.1111/j.1742-481X.2010.00699.x,1,1,273,0,true
+clinical-topics-batch-15,"Primary aldosteronism diagnosis and treatment",guideline,10.1210/jc.2015-4061,1,1,2638,0,true
+clinical-topics-batch-15,"primary angioplasty versus thrombolytic therapy acute myocardial infarction",guideline,10.1016/S0140-6736(03)13348-1,1,1,1886,0,true
+clinical-topics-batch-15,"Primary membranous nephropathy immunosuppression",guideline,10.1016/j.kint.2021.05.021,1,1,866,0,true
+clinical-topics-batch-15,"Prolactinoma dopamine agonist therapy",guideline,10.1210/jc.2010-1698,1,1,1085,0,true
+clinical-topics-batch-15,"prone positioning ARDS",guideline,10.1056/NEJMoa1214103,1,3,1472,0,true
+clinical-topics-batch-15,"Prone positioning in severe ARDS",guideline,10.1164/rccm.201703-0548ST,1,1,1630,0,true
+clinical-topics-batch-15,"prone positioning severe acute respiratory distress syndrome",guideline,10.1056/NEJMoa1214103,1,1,1472,0,true
+clinical-topics-batch-15,"Prosthetic joint infection diagnosis and retention strategy",guideline,10.1093/cid/cis803,1,1,478,0,true
+clinical-topics-batch-15,"Prothrombin G20210A Mutation",guideline,10.1111/j.1538-7836.2009.03362.x,1,1,346,0,true
+clinical-topics-batch-15,"Psoriasis: diagnosis, severity assessment and systemic treatment",guideline,10.1016/j.jaad.2019.05.029,1,1,359,0,true
+clinical-topics-batch-16,"Psychosis and acute behavioural disturbance",guideline,10.1176/appi.ajp.2020.177901,1,1,86,0,true
+clinical-topics-batch-16,"PTSD trauma-focused psychotherapy and SSRI",guideline,,1,1,345,0,true
+clinical-topics-batch-16,"Pulmonary nodule evaluation and Fleischner follow-up",guideline,10.1148/radiol.2017161659,1,1,1421,0,true
+clinical-topics-batch-16,"Pulmonary sarcoidosis corticosteroid therapy",guideline,10.1183/09031936.00007608,1,1,350,0,true
+clinical-topics-batch-16,"Rabies pre- and post-exposure prophylaxis",guideline,10.15585/mmwr.rr7103a1,1,1,305,17342,true
+clinical-topics-batch-16,"Radial versus femoral access for PCI",guideline,10.1161/CIR.0000000000001038,1,2,369,0,true
+clinical-topics-batch-16,"Radiation necrosis vs tumour progression: perfusion MRI and PET scan utility",guideline,10.1093/neuonc/nox134,1,1,380,0,true
+clinical-topics-batch-16,"Rectal cancer: total mesorectal excision, neoadjuvant chemoradiotherapy",guideline,10.1016/j.annonc.2017.08.017,1,1,310,0,true
+clinical-topics-batch-16,"Rehabilitation after stroke: principles and evidence",guideline,10.1161/STR.0000000000000375,1,1,305,3073,true
+clinical-topics-batch-16,"Retinal detachment: presentation and emergency management",guideline,10.1016/j.ophtha.2019.09.030,1,1,364,0,true
+clinical-topics-batch-16,"Rh Alloimmunisation Management",guideline,,1,1,3500,0,true
+clinical-topics-batch-16,"rivaroxaban treatment acute deep vein thrombosis EINSTEIN",paper,10.1056/NEJMoa1007903,0,1,1750,0,true
+clinical-topics-batch-16,"rosuvastatin primary prevention elevated C-reactive protein",paper,10.1056/NEJMoa0807646,0,1,1545,0,true
+clinical-topics-batch-16,"sacubitril valsartan heart failure reduced ejection fraction mortality",paper,10.1056/NEJMoa1409055,0,1,2026,0,true
+clinical-topics-batch-16,"Sarcoidosis systemic immunosuppression",guideline,10.1183/09031936.00057013,1,1,314,0,true
+clinical-topics-batch-16,"Scabies: diagnosis, treatment and outbreak management",guideline,10.15585/mmwr.rr7004a1,1,1,1100,17845,true
+clinical-topics-batch-16,"Secondary immunodeficiency from biologics and steroids",guideline,10.1016/j.jaci.2017.04.029,1,1,353,0,true
+clinical-topics-batch-16,"Sedation outside theatres and procedural sedation safety",guideline,10.1097/ALN.0000000000001570,1,1,305,0,true
+clinical-topics-batch-16,"Self-harm, suicide risk assessment and safe management",guideline,,1,1,331,0,true
+clinical-topics-batch-16,"semaglutide once weekly obesity weight loss STEP 1",guideline,10.1056/NEJMoa2032183,1,1,1500,9439,true
+clinical-topics-batch-16,"sepsis bundle",guideline,10.1097/CCM.0000000000005337,1,2,368,0,true
+clinical-topics-batch-16,"sepsis corticosteroids",guideline,10.1097/CCM.0000000000005337,1,1,312,0,true
+clinical-topics-batch-16,"sepsis diagnosis qSOFA SOFA criteria Sepsis-3 definition",guideline,10.1001/jama.2016.0287,1,2,3116,0,true
+clinical-topics-batch-16,"sepsis early goal directed therapy",paper,10.1056/NEJMoa1401602,0,2,2461,0,true
+clinical-topics-batch-16,"sepsis septic shock management surviving sepsis campaign 2021 guideline antibiotics fluids vasopressors",guideline,10.1097/CCM.0000000000005337,1,2,326,0,true
+clinical-topics-batch-17,"Sepsis-3 definitions and clinical criteria",guideline,10.1001/jama.2016.0287,1,2,3116,0,true
+clinical-topics-batch-17,"Sepsis-3 definitions and early resuscitation bundles",guideline,10.1097/CCM.0000000000005337,1,2,308,0,true
+clinical-topics-batch-17,"Serotonin syndrome recognition and management",guideline,10.1056/NEJMra041867,1,1,344,0,true
+clinical-topics-batch-17,"Severe malaria artesunate therapy",guideline,10.1016/S0140-6736(10)61732-4,1,1,2658,0,true
+clinical-topics-batch-17,"SGLT-2 inhibitors in heart failure",guideline,10.1161/CIR.0000000000001063,1,1,1666,0,true
+clinical-topics-batch-17,"SGLT2 inhibitor therapy for type 2 diabetes",guideline,10.2337/dc23-S009,1,1,822,0,true
+clinical-topics-batch-17,"SGLT2 inhibitors heart failure",guideline,10.1056/NEJMoa2107038,1,1,1185,0,true
+clinical-topics-batch-17,"SGLT2 inhibitors heart failure reduced ejection fraction randomized trial",paper,10.1056/NEJMoa1911303,0,1,1500,0,true
+clinical-topics-batch-17,"Shortness of breath and acute respiratory failure",guideline,10.1136/thoraxjnl-2017-211113,1,1,337,0,true
+clinical-topics-batch-17,"Sickle cell disease: hydroxyurea therapy and crisis prevention",guideline,10.1182/blood-2013-09-518928,1,1,3214,0,true
+clinical-topics-batch-17,"Silo Filler's Disease",guideline,10.1136/thx.53.8.718,1,1,0,0,true
+clinical-topics-batch-17,"Sjogren syndrome systemic and topical therapy",guideline,10.1136/annrheumdis-2019-216570,1,1,2845,0,true
+clinical-topics-batch-17,"Skin and soft tissue infection antibiotic strategy",guideline,10.1093/cid/ciu296,1,1,897,0,true
+clinical-topics-batch-17,"Sleep-related hypoxemia in COPD",guideline,10.1183/09031936.04.00076604,1,1,1952,0,true
+clinical-topics-batch-17,"spironolactone mineralocorticoid antagonist severe heart failure survival",paper,10.1056/NEJM199909023411001,0,1,1065,0,true
+clinical-topics-batch-17,"Spontaneous bacterial peritonitis vs secondary surgical peritonitis",guideline,10.1002/hep.31884,1,1,395,0,true
+clinical-topics-batch-17,"Spontaneous bacterial peritonitis: diagnosis, prophylaxis, treatment",guideline,10.1002/hep.31884,1,1,395,0,true
+clinical-topics-batch-17,"Staphylococcus aureus bacteremia diagnostic workup and duration",guideline,10.1086/599051,1,1,395,0,true
+clinical-topics-batch-17,"Status epilepticus emergency treatment",guideline,10.1111/epi.13339,1,1,3268,0,true
+clinical-topics-batch-17,"Status epilepticus pharmacotherapy",guideline,10.1111/epi.13339,1,1,3268,0,true
+clinical-topics-batch-17,"STEMI primary PCI reperfusion",guideline,10.1161/CIR.0000000000001038,1,1,353,0,true
+clinical-topics-batch-17,"Steroids in community acquired pneumonia",guideline,10.1164/rccm.201908-1581ST,1,1,1048,17729,true
+clinical-topics-batch-17,"Steroids in pneumonia",guideline,10.1164/rccm.201908-1581ST,1,1,1048,17729,true
+clinical-topics-batch-17,"Stimulant use disorder contingency management",guideline,10.1016/S0140-6736(18)31358-3,1,1,385,0,true
+clinical-topics-batch-17,"Stroke and TIA",guideline,10.1161/STR.0000000000000375,1,1,2041,3073,true
+clinical-topics-batch-18,"Subclinical hypothyroidism treatment thresholds",guideline,10.1159/000356507,1,2,1972,0,true
+clinical-topics-batch-18,"Sudden sensorineural hearing loss: diagnosis and treatment",guideline,10.1177/0194599812455252,1,1,1005,0,true
+clinical-topics-batch-18,"Suicide risk assessment and self-harm",guideline,,1,1,327,0,true
+clinical-topics-batch-18,"Surgical site infection: prevention and management",guideline,10.1001/jamasurg.2017.0904,1,1,2746,0,true
+clinical-topics-batch-18,"Surviving Sepsis Campaign guidelines and care bundles",guideline,10.1097/CCM.0000000000005337,1,2,306,0,true
+clinical-topics-batch-18,"surviving sepsis campaign guidelines management sepsis septic shock",guideline,10.1097/CCM.0000000000005337,1,2,262,0,true
+clinical-topics-batch-18,"Suspected melanoma, non-melanoma skin cancer and urgent referral",guideline,10.1111/bjd.19835,1,1,299,0,true
+clinical-topics-batch-18,"suspected pulmonary embolism diagnosis YEARS algorithm D-dimer CT pulmonary angiography",guideline,10.1016/S0140-6736(17)30885-3,1,1,2966,0,true
+clinical-topics-batch-18,"Syncope and postural hypotension",guideline,10.1161/CIR.0000000000000499,1,1,295,0,true
+clinical-topics-batch-18,"tenecteplase alteplase acute ischemic stroke EXTEND-IA TNK",guideline,10.1056/NEJMoa1716405,1,1,2147,0,true
+clinical-topics-batch-18,"Testicular germ cell tumor chemotherapy",guideline,10.1093/annonc/mdv319,1,1,313,0,true
+clinical-topics-batch-18,"The febrile child: assessment, red flags and paediatric sepsis",guideline,,1,1,294,0,true
+clinical-topics-batch-18,"Thrombotic thrombocytopenic purpura: caplacizumab and plasma exchange",guideline,10.1111/jth.15010,1,2,1882,0,true
+clinical-topics-batch-18,"ticagrelor versus clopidogrel acute coronary syndromes",guideline,10.1056/NEJMoa0904327,1,1,1276,0,true
+clinical-topics-batch-18,"Tick-borne rickettsial disease empiric doxycycline",guideline,10.15585/mmwr.rr6502a1,1,1,1768,0,true
+clinical-topics-batch-18,"tocilizumab COVID-19 hospitalized patients",guideline,10.1056/NEJMoa2104330,1,1,2368,0,true
+clinical-topics-batch-18,"Tonsillitis, peritonsillar abscess and deep neck infection",guideline,10.1177/0194599818821327,1,1,334,0,true
+clinical-topics-batch-18,"Toxic and nutritional neuropathies: B12, B6 deficiency, chemotherapy-induced",guideline,10.1001/jamaneurol.2017.0345,1,1,734,0,true
+clinical-topics-batch-18,"tranexamic acid trauma hemorrhage CRASH-2",guideline,10.1016/S0140-6736(10)60835-5,1,1,1934,0,true
+clinical-topics-batch-18,"transcatheter aortic valve replacement balloon-expandable low-risk patients",guideline,10.1056/NEJMoa1814052,1,1,1605,0,true
+clinical-topics-batch-18,"trastuzumab adjuvant HER2 positive breast cancer BCIRG 006",paper,10.1200/JCO.2010.32.6588,0,1,2927,0,true
+clinical-topics-batch-18,"Trauma resuscitation and head injury",guideline,10.3171/2016.10.JNS161964,1,1,306,0,true
+clinical-topics-batch-18,"Traumatic brain injury intracranial pressure management",guideline,10.3171/2016.10.JNS161964,1,1,375,0,true
+clinical-topics-batch-18,"Treatment-resistant depression ketamine and ECT",guideline,10.1176/appi.ajp.2020.20010077,1,1,2034,0,true
+clinical-topics-batch-18,"triple inhaled therapy COPD moderate to severe exacerbation",guideline,10.1056/NEJMoa1916046,1,3,2339,0,true
+clinical-topics-batch-19,"Tuberculosis treatment regimens",guideline,,1,1,278,0,true
+clinical-topics-batch-19,"Type 1 and type 2 diabetes",guideline,10.2337/dc23-S002,1,1,822,0,true
+clinical-topics-batch-19,"Upper and lower GI bleeding",guideline,10.14309/ajg.0000000000000104,1,1,279,0,true
+clinical-topics-batch-19,"Urinary tract infections and pyelonephritis",guideline,10.1086/533035,1,1,257,0,true
+clinical-topics-batch-19,"Urticaria and angioedema: classification and management",guideline,10.1111/all.15090,1,1,1424,0,true
+clinical-topics-batch-19,"Vapor Gas Dust and Fume exposures",guideline,,1,1,342,0,true
+clinical-topics-batch-19,"Vasopressor and inotrope pharmacology: noradrenaline, vasopressin, dobutamine, milrinone",guideline,10.1097/CCM.0000000000005337,1,1,364,0,true
+clinical-topics-batch-19,"Vasopressors and inotropes in shock",guideline,10.1097/CCM.0000000000005337,1,1,289,0,true
+clinical-topics-batch-19,"Venous leg ulcers, lymphoedema and lower leg management",guideline,10.1111/j.1742-481X.2008.00496.x,1,1,279,0,true
+clinical-topics-batch-19,"Venous thromboembolism and anticoagulation management",guideline,10.1016/j.chest.2015.11.026,1,1,1721,0,true
+clinical-topics-batch-19,"Venovenous ECMO for severe ARDS",guideline,10.1056/NEJMoa1800385,1,1,2138,0,true
+clinical-topics-batch-19,"Viral encephalitis diagnostic and empiric acyclovir strategy",guideline,10.1086/589747,1,1,565,0,true
+clinical-topics-batch-19,"Viral haemorrhagic fevers and high-consequence infectious diseases in the ICU",guideline,,1,1,304,0,true
+clinical-topics-batch-19,"Viral-Induced Arthritides",guideline,10.1016/j.lpm.2015.10.007,1,1,338,0,true
+clinical-topics-batch-19,"vitamin K antagonist bridging atrial fibrillation perioperative BRIDGE trial",paper,10.1056/NEJMoa1506961,0,1,1952,0,true
+clinical-topics-batch-19,"Wellens syndrome and left main equivalent ECG patterns",guideline,10.1016/0002-8703(82)90434-8,1,1,412,0,true
+clinical-topics-batch-19,"Wolfram syndrome DIDMOAD: diabetes insipidus, DM, optic atrophy, deafness",guideline,10.1093/oxfordjournals.qjmed.a069030,1,1,389,0,true
+clinical-topics-batch-19,"Zollinger-Ellison Syndrome",guideline,10.1016/j.gie.2006.03.931,1,1,344,0,true
