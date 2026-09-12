@@ -74,6 +74,10 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('Brain Trauma Foundation')).toBe(true);
         expect(isTrustedSource('British Association of Dermatologists')).toBe(true);
         expect(isTrustedSource('BAD and AAD')).toBe(true);
+        expect(isTrustedSource('EWMA')).toBe(true);
+        expect(isTrustedSource('European Wound Management Association')).toBe(true);
+        expect(isTrustedSource('ELSO')).toBe(true);
+        expect(isTrustedSource('NIOSH')).toBe(true);
         expect(isTrustedSource('this is a bad outcome')).toBe(false);
         expect(isTrustedSource('aspirin (ASA)')).toBe(false);
         expect(isTrustedSource('ACE inhibitor')).toBe(false);

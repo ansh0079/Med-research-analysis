@@ -1,0 +1,117 @@
+{
+  "packId": "clinical-topics-batch-19",
+  "title": "Curated literature for remaining guideline-gap topics T–Z",
+  "sourceFiles": [
+    "next_cases.docx"
+  ],
+  "topics": [
+    {
+      "topic": "Tuberculosis treatment regimens",
+      "findings": "• WHO Guideline: WHO consolidated guidelines recommend the standard 6-month regimen for drug-susceptible tuberculosis (2 months of rifampicin, isoniazid, pyrazinamide, and ethambutol followed by 4 months of isoniazid and rifampicin) to achieve high cure rates and prevent relapse.",
+      "links": "https://www.who.int/publications/i/item/9789241550003",
+      "references": "World Health Organization. (2017 / updated guidelines). WHO guidelines for treatment of drug-susceptible tuberculosis and patient care. WHO Press."
+    },
+    {
+      "topic": "Type 1 and type 2 diabetes",
+      "findings": "• Clinical Guideline: ADA Standards of Care provide comprehensive diagnostic and management algorithms, emphasizing continuous glucose monitoring, individualized HbA1c targets, and early incorporation of organ-protective therapies (SGLT2 inhibitors and GLP-1 receptor agonists) for type 2 diabetes, alongside insulin pump/MDI therapy for type 1 diabetes (ADA, 2023).",
+      "links": "https://doi.org/10.2337/dc23-S002",
+      "references": "American Diabetes Association. (2023). 2. Diagnosis and Classification of Diabetes: Standards of Care in Diabetes—2023. Diabetes Care, 46(Supplement_1), S19-S40."
+    },
+    {
+      "topic": "Upper and lower GI bleeding",
+      "findings": "• Clinical Guideline: ACG and ESGE guidelines recommend prompt hemodynamic resuscitation, risk stratification (Glasgow-Blatchford score), early upper endoscopy (within 24 hours) for upper GI bleeding, and selective urgent colonoscopy or CT angiography for severe lower GI bleeding.",
+      "links": "https://doi.org/10.14309/ajg.0000000000000104",
+      "references": "Laine, L., et al. (2021). ACG Clinical Guideline: Upper Gastrointestinal and Ulcer Bleeding. American Journal of Gastroenterology, 116(5), 899-917."
+    },
+    {
+      "topic": "Urinary tract infections and pyelonephritis",
+      "findings": "• Clinical Guideline: IDSA guidelines recommend first-line empiric therapy for acute uncomplicated pyelonephritis using oral fluoroquinolones (ciprofloxacin) or trimethoprim-sulfamethoxazole (if local resistance is <20%), or an initial IV dose of ceftriaxone.",
+      "links": "https://doi.org/10.1086/533035",
+      "references": "Gupta, K., et al. (2011). International Clinical Practice Guidelines for the Treatment of Acute Uncomplicated Cystitis and Pyelonephritis in Women: A 2010 Update by the IDSA and ESM. Clinical Infectious Diseases, 52(5), e103-e120."
+    },
+    {
+      "topic": "Urticaria and angioedema: classification and management",
+      "findings": "• Clinical Guideline: EAACI/GA²LEN/EuroGuiDerm guidelines recommend second-generation H1-antihistamines as first-line therapy for chronic urticaria, up-dosing up to 4-fold if symptoms persist, and introducing omalizumab as third-line biologic therapy.",
+      "links": "https://doi.org/10.1111/all.15090",
+      "references": "Zuberbier, T., et al. (2022). The international EAACI/GA²LEN/EuroGuiDerm/APAAACI guideline for the definition, classification, diagnosis, and management of urticaria. Allergy, 77(3), 734-766."
+    },
+    {
+      "topic": "Vapor Gas Dust and Fume exposures",
+      "findings": "• Clinical Consensus: Occupational and environmental respiratory guidelines emphasize thorough exposure history-taking. Management of acute exposures focuses on immediate removal from the toxic environment, decontamination, supplemental oxygen, and monitoring for acute lung injury or reactive airways dysfunction syndrome (RADS) (NIOSH, 2018).",
+      "links": "https://www.cdc.gov/niosh/topics/aer/default.html",
+      "references": "National Institute for Occupational Safety and Health (NIOSH). (2018). Occupational Respiratory Diseases Guidelines. Centers for Disease Control and Prevention."
+    },
+    {
+      "topic": "Vasopressor and inotrope pharmacology: noradrenaline, vasopressin, dobutamine, milrinone",
+      "findings": "• Clinical Guideline: Surviving Sepsis Campaign guidelines detail vasoactive agent pharmacology: norepinephrine is the primary first-line vasopressor for septic shock, vasopressin is added as a second-line agent, and inotropes (dobutamine) are reserved for persistent myocardial dysfunction or hypoperfusion despite adequate volume and pressure (Evans et al., 2021).",
+      "links": "https://doi.org/10.1097/CCM.0000000000005337",
+      "references": "Evans, L., et al. (2021). Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Critical Care Medicine, 49(11), e1063-e1143."
+    },
+    {
+      "topic": "Vasopressors and inotropes in shock",
+      "findings": "• Clinical Guideline: Critical care guidelines mandate early vasopressor initiation (norepinephrine) via secure access to restore mean arterial pressure (65 mm Hg) in shock states, minimizing excessive fluid resuscitation while adding inotropic support when cardiac output remains depressed.",
+      "links": "https://doi.org/10.1097/CCM.0000000000005337",
+      "references": "Evans, L., et al. (2021). Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Critical Care Medicine, 49(11), e1063-e1143."
+    },
+    {
+      "topic": "Venous leg ulcers, lymphoedema and lower leg management",
+      "findings": "• Clinical Guideline: European Wound Management Association (EWMA) guidelines dictate that management of venous leg ulcers requires excluding arterial insufficiency via Ankle-Brachial Index (ABI) testing, followed by gold-standard multilayer compression therapy and wound bed care.",
+      "links": "https://doi.org/10.1111/j.1742-481X.2008.00496.x",
+      "references": "Moffatt, C., et al. (2008). European Wound Management Association (EWMA) Document: Understanding Compression Therapy. Journal of Wound Care, 17(Suppl)."
+    },
+    {
+      "topic": "Venous thromboembolism and anticoagulation management",
+      "findings": "• Clinical Guideline: CHEST guidelines recommend direct oral anticoagulants (DOACs: apixaban, rivaroxaban, dabigatran, edoxaban) over vitamin K antagonists (warfarin) for the initial and long-term treatment of acute venous thromboembolism (VTE) in non-cancer patients, with a minimum duration of 3 to 6 months (Kearon et al., 2016).",
+      "links": "https://doi.org/10.1016/j.chest.2015.11.026",
+      "references": "Kearon, C., et al. (2016). Antithrombotic Therapy for VTE Disease: CHEST Guideline and Expert Panel Report. Chest, 149(2), 315-352."
+    },
+    {
+      "topic": "Venovenous ECMO for severe ARDS",
+      "findings": "• Clinical Guideline / Landmark Trial: ELSO guidelines and the EOLIA trial support the use of venovenous extracorporeal membrane oxygenation (VV-ECMO) as a rescue therapy for patients with severe refractory ARDS who fail optimized mechanical ventilation, prone positioning, and neuromuscular blockade (Combes et al., 2018).",
+      "links": "https://doi.org/10.1056/NEJMoa1800385",
+      "references": "Combes, A., et al. (2018). Extracorporeal Membrane Oxygenation for Severe Acute Respiratory Distress Syndrome. New England Journal of Medicine, 378(21), 1965-1975."
+    },
+    {
+      "topic": "Viral encephalitis diagnostic and empiric acyclovir strategy",
+      "findings": "• Clinical Guideline: IDSA encephalitis guidelines recommend immediate intravenous acyclovir (10 mg/kg every 8 hours) initiated upon suspicion before lumbar puncture or neuroimaging results are finalized, as prompt antiviral treatment significantly reduces mortality and neurological morbidity in herpes simplex encephalitis (Tunkel et al., 2008).",
+      "links": "https://doi.org/10.1086/589747",
+      "references": "Tunkel, A. R., et al. (2008). The Management of Encephalitis: Clinical Practice Guidelines by the Infectious Diseases Society of America. Clinical Infectious Diseases, 47(3), 303-327."
+    },
+    {
+      "topic": "Viral haemorrhagic fevers and high-consequence infectious diseases in the ICU",
+      "findings": "• WHO Guideline: Management of high-consequence infectious diseases (such as Ebola or Marburg virus) in specialized ICU units demands rigorous barrier precautions, negative-pressure isolation, specific monoclonal antibody therapeutics, and aggressive supportive fluid/electrolyte resuscitation (WHO, 2022).",
+      "links": "https://www.who.int/publications/i/item/9789240055172",
+      "references": "World Health Organization. (2022). Therapeutics for Ebola virus disease: WHO Guideline. WHO Press."
+    },
+    {
+      "topic": "Viral-Induced Arthritides",
+      "findings": "• Clinical Consensus: Management of chronic viral arthritis (resulting from Chikungunya, Dengue, or Parvovirus B19) focuses on supportive care with NSAIDs during the acute phase. Persistent chronic arthralgia is treated with disease-modifying antirheumatic drugs (methotrexate) if symptoms mimic inflammatory arthritis (Simon et al., 2015).",
+      "links": "https://doi.org/10.1016/j.lpm.2015.10.007",
+      "references": "Simon, F., et al. (2015). Joint consensus guidelines for the management of Chikungunya. La Presse Médicale, 44(11), 932-945."
+    },
+    {
+      "topic": "vitamin K antagonist bridging atrial fibrillation perioperative BRIDGE trial",
+      "findings": "• Landmark Trial: The BRIDGE trial established that perioperative bridging anticoagulation with low-molecular-weight heparin is unnecessary for most patients with atrial fibrillation undergoing elective procedures, as it significantly increases major bleeding without reducing arterial thromboembolism (Douketis et al., 2015).",
+      "links": "https://doi.org/10.1056/NEJMoa1506961",
+      "references": "Douketis, J. D., et al. (2015). Perioperative Bridging Anticoagulation in Patients with Atrial Fibrillation. New England Journal of Medicine, 373(9), 823-833."
+    },
+    {
+      "topic": "Wellens syndrome and left main equivalent ECG patterns",
+      "findings": "• Clinical Consensus: ACC/AHA guidelines recognize Wellens syndrome (characterized by deeply inverted or biphasic T waves in leads V2–V3) as a pre-infarction stage of critical proximal left anterior descending (LAD) coronary artery stenosis. It constitutes an acute coronary syndrome mandating urgent invasive coronary angiography rather than routine stress testing (De Zwaan et al., 1982; current ACS guidelines).",
+      "links": "https://doi.org/10.1016/0002-8703(82)90434-8",
+      "references": "De Zwaan, C., et al. (1982). Angiographic and clinical characteristics of patients with unstable angina showing ECG T wave inversions in precordial leads. American Heart Journal, 103(4), 657-665."
+    },
+    {
+      "topic": "Wolfram syndrome DIDMOAD: diabetes insipidus, DM, optic atrophy, deafness",
+      "findings": "• Clinical Consensus: Wolfram syndrome (DIDMOAD) is a rare genetic neurodegenerative disorder. Management requires a multidisciplinary approach focusing on aggressive insulin therapy for diabetes mellitus, rigorous monitoring and treatment of central diabetes insipidus, ophthalmologic support for optic atrophy, and audiological management for sensorineural deafness (Barrett et al., 1995).",
+      "links": "https://doi.org/10.1093/oxfordjournals.qjmed.a069030",
+      "references": "Barrett, T. G., et al. (1995). Neurodegeneration and diabetes: UK nationwide study of Wolfram syndrome. QJM: An International Journal of Medicine, 88(12), 837-842."
+    },
+    {
+      "topic": "Zollinger-Ellison Syndrome",
+      "findings": "• Clinical Guideline: ACG and expert consensus guidelines recommend high-dose proton pump inhibitors (PPIs) to control gastric acid hypersecretion in Zollinger-Ellison syndrome, followed by localizing imaging (somatostatin receptor scintigraphy or endoscopic ultrasound) and surgical resection of gastrinomas when localized (Jensen et al., 2006).",
+      "links": "https://doi.org/10.1016/j.gie.2006.03.931",
+      "references": "Jensen, R. T., et al. (2006). Gastrinomas: current concepts and management. North American Clinics of Gastroenterology / consensus updates."
+    }
+  ]
+}

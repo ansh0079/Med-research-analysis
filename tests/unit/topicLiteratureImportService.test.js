@@ -146,6 +146,31 @@ describe('topicLiteratureImportService', () => {
         }));
     });
 
+    test('loads the checked-in batch-19 literature pack', () => {
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-19.json');
+        expect(fs.existsSync(packPath)).toBe(true);
+        const rows = parseLiteratureFile(packPath);
+        expect(rows).toHaveLength(18);
+        expect(rows.map((row) => row.topic)).toEqual(expect.arrayContaining([
+            'Tuberculosis treatment regimens',
+            'Venovenous ECMO for severe ARDS',
+            'Zollinger-Ellison Syndrome',
+        ]));
+    });
+
+    test('imports EWMA venous-ulcer guideline as trusted and servable', async () => {
+        const db = makeDb();
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-19.json');
+        const row = parseLiteratureFile(packPath).find((item) => /venous leg ulcers/i.test(item.topic));
+        const result = await importTopicLiterature(db, row);
+        expect(result.guidelineCount).toBe(1);
+        expect(result.trustedGuidelineCount).toBe(1);
+        expect(result.servableGuidelineCount).toBe(1);
+        expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
+            sourceBody: 'EWMA',
+        }));
+    });
+
     test('loads the checked-in batch-18 literature pack', () => {
         const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-18.json');
         expect(fs.existsSync(packPath)).toBe(true);

@@ -450,7 +450,11 @@ const TRUSTED_GUIDELINE_SOURCES = [
         specialty: 'Public Health',
         domain: 'https://www.cdc.gov',
         urlPattern: 'https://www.cdc.gov/{id}',
-        aliases: ['Centers for Disease Control and Prevention'],
+        aliases: [
+            'Centers for Disease Control and Prevention',
+            'NIOSH',
+            'National Institute for Occupational Safety and Health',
+        ],
     },
     {
         id: 'canmat',
@@ -939,6 +943,39 @@ const TRUSTED_GUIDELINE_SOURCES = [
         domain: 'https://www.bad.org.uk',
         urlPattern: 'https://www.bad.org.uk/{id}',
         aliases: ['BAD and AAD'],
+    },
+    {
+        id: 'ewma',
+        name: 'EWMA',
+        fullName: 'European Wound Management Association',
+        region: 'Europe',
+        specialty: 'Wound Care',
+        domain: 'https://ewma.org',
+        urlPattern: 'https://ewma.org/{id}',
+        aliases: ['European Wound Management Association'],
+    },
+    {
+        id: 'elso',
+        name: 'ELSO',
+        fullName: 'Extracorporeal Life Support Organization',
+        region: 'Global',
+        specialty: 'Critical Care / ECMO',
+        domain: 'https://www.elso.org',
+        urlPattern: 'https://www.elso.org/{id}',
+        aliases: ['Extracorporeal Life Support Organization'],
+    },
+    {
+        id: 'escmid',
+        name: 'ESCMID',
+        fullName: 'European Society of Clinical Microbiology and Infectious Diseases',
+        region: 'Europe',
+        specialty: 'Infectious Diseases',
+        domain: 'https://www.escmid.org',
+        urlPattern: 'https://www.escmid.org/{id}',
+        aliases: [
+            'European Society of Clinical Microbiology and Infectious Diseases',
+            'IDSA and ESM',
+        ],
     },
 ];
 
