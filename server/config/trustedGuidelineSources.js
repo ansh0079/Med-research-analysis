@@ -897,6 +897,29 @@ const TRUSTED_GUIDELINE_SOURCES = [
             'Practice Guidelines for Moderate Procedural Sedation',
         ],
     },
+    {
+        id: 'american_epilepsy_society',
+        name: 'American Epilepsy Society',
+        fullName: 'American Epilepsy Society',
+        region: 'USA',
+        specialty: 'Neurology / Epilepsy',
+        domain: 'https://www.aesnet.org',
+        urlPattern: 'https://www.aesnet.org/{id}',
+        aliases: [
+            'AES guidelines',
+            'Guideline Committee of the American Epilepsy Society',
+        ],
+    },
+    {
+        id: 'samhsa',
+        name: 'SAMHSA',
+        fullName: 'Substance Abuse and Mental Health Services Administration',
+        region: 'USA',
+        specialty: 'Addiction / Mental Health',
+        domain: 'https://www.samhsa.gov',
+        urlPattern: 'https://www.samhsa.gov/{id}',
+        aliases: ['Substance Abuse and Mental Health Services Administration'],
+    },
 ];
 
 module.exports = { TRUSTED_GUIDELINE_SOURCES };

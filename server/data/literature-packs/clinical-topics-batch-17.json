@@ -1,0 +1,159 @@
+{
+  "packId": "clinical-topics-batch-17",
+  "title": "Curated literature for guideline-gap topics 451-475",
+  "sourceFiles": [
+    "next_450-475.docx"
+  ],
+  "topics": [
+    {
+      "topic": "Sepsis-3 definitions and clinical criteria",
+      "findings": "• International Consensus: Sepsis-3 consensus definitions define sepsis as life-threatening organ dysfunction caused by a dysregulated host response to infection, diagnosed clinically by an acute increase of ≥2 points in the Sequential Organ Failure Assessment (SOFA) score (Singer et al., 2016).",
+      "links": "https://doi.org/10.1001/jama.2016.0287",
+      "references": "Singer, M., et al. (2016). The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA, 315(8), 801-810."
+    },
+    {
+      "topic": "Sepsis-3 definitions and early resuscitation bundles",
+      "findings": "• Clinical Guideline: Surviving Sepsis Campaign guidelines incorporate Sepsis-3 criteria and emphasize rapid hour-1 bundle execution: measuring lactate, blood cultures before antibiotics, broad-spectrum antimicrobials within 1 hour, and fluid resuscitation with 30 mL/kg for hypoperfusion (Evans et al., 2021).",
+      "links": "https://doi.org/10.1097/CCM.0000000000005337",
+      "references": "Evans, L., et al. (2021). Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Critical Care Medicine, 49(11), e1063-e1143."
+    },
+    {
+      "topic": "Serotonin syndrome recognition and management",
+      "findings": "• Clinical Consensus: Management of serotonin syndrome (characterized by neuromuscular hyperactivity, autonomic instability, and altered mental status) requires immediate cessation of serotonergic agents, supportive care, sedation with benzodiazepines, and administration of cyproheptadine for moderate-to-severe toxicity (Boyer & Shannon, 2005).",
+      "links": "https://doi.org/10.1056/NEJMra041867",
+      "references": "Boyer, E. W., & Shannon, M. (2005). The Serotonin Syndrome. New England Journal of Medicine, 352(11), 1112-1120."
+    },
+    {
+      "topic": "Severe malaria artesunate therapy",
+      "findings": "• WHO Guideline / Landmark Trial: WHO guidelines and the AQUAMAT trial established that intravenous artesunate is significantly superior to quinine in reducing mortality in both children and adults with severe malaria, establishing it as the absolute first-line anti-malarial treatment (Dondorp et al., 2010).",
+      "links": "https://doi.org/10.1016/S0140-6736(10)61732-4",
+      "references": "Dondorp, A. M., et al. (2010). Artesunate versus quinine in the treatment of severe falciparum malaria in African children (AQUAMAT): an open-label, randomised trial. The Lancet, 376(9753), 1647-1657."
+    },
+    {
+      "topic": "SGLT-2 inhibitors in heart failure",
+      "findings": "• Clinical Guideline: ESC and AHA/ACC/HFSA guidelines establish SGLT-2 inhibitors (dapagliflozin or empagliflozin) as a mandatory pillar of guideline-directed medical therapy for heart failure with reduced ejection fraction, significantly reducing cardiovascular mortality and heart failure hospitalizations (Heidenreich et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001063",
+      "references": "Heidenreich, P. A., et al. (2022). 2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure. Circulation, 145(18), e895-e1032."
+    },
+    {
+      "topic": "SGLT2 inhibitor therapy for type 2 diabetes",
+      "findings": "• Clinical Guideline: ADA Standards of Care recommend SGLT-2 inhibitors for patients with type 2 diabetes who have established atherosclerotic cardiovascular disease, heart failure, or chronic kidney disease, due to their profound cardiorenal protective benefits independently of glucose lowering (ADA, 2023).",
+      "links": "https://doi.org/10.2337/dc23-S009",
+      "references": "American Diabetes Association. (2023). 9. Pharmacologic Approaches to Glycemic Treatment: Standards of Care in Diabetes—2023. Diabetes Care, 46(Supplement_1), S140-S157."
+    },
+    {
+      "topic": "SGLT2 inhibitors heart failure",
+      "findings": "• Clinical Guideline: Reiteration reflecting broad consensus supporting the expansion of SGLT-2 inhibitor therapy across the entire heart failure spectrum, including heart failure with preserved ejection fraction (HFpEF) based on trials like EMPEROR-Preserved (Anker et al., 2021).",
+      "links": "https://doi.org/10.1056/NEJMoa2107038",
+      "references": "Anker, S. D., et al. (2021). Empagliflozin in Heart Failure with a Preserved Ejection Fraction. New England Journal of Medicine, 385(16), 1451-1461."
+    },
+    {
+      "topic": "SGLT2 inhibitors heart failure reduced ejection fraction randomized trial",
+      "findings": "• Landmark Trial: DAPA-HF and EMPEROR-Reduced landmark trials proved that dapagliflozin and empagliflozin reduce the risk of cardiovascular death or worsening heart failure in patients with HFrEF, regardless of the presence of type 2 diabetes (McMurray et al., 2019; Packer et al., 2020).",
+      "links": "https://doi.org/10.1056/NEJMoa1911303",
+      "references": "Packer, M., et al. (2020). Cardiovascular and Renal Outcomes with Empagliflozin in Heart Failure. New England Journal of Medicine, 383(15), 1413-1424."
+    },
+    {
+      "topic": "Shortness of breath and acute respiratory failure",
+      "findings": "• Clinical Guideline: Critical care and emergency guidelines mandate immediate assessment of airway, breathing, and circulation for acute dyspnea, applying non-invasive or invasive mechanical ventilation, supplemental oxygen targeting specific saturation windows, and etiology-specific therapy (bronchodilators, diuretics, or antibiotics).",
+      "links": "https://doi.org/10.1136/thoraxjnl-2017-211113",
+      "references": "O'Driscoll, B. R., et al. (2017). BTS guideline for oxygen use in adults in healthcare and emergency settings. Thorax, 72(Suppl 1), ii1-ii90."
+    },
+    {
+      "topic": "Sickle cell disease: hydroxyurea therapy and crisis prevention",
+      "findings": "• Clinical Guideline: ASH guidelines recommend hydroxyurea therapy for children and adults with sickle cell anemia who experience frequent painful vaso-occlusive crises, acute chest syndrome, or severe chronic anemia, as it increases fetal hemoglobin and significantly reduces morbidity and mortality (Yawn et al., 2014).",
+      "links": "https://doi.org/10.1182/blood-2013-09-518928",
+      "references": "Yawn, B. P., et al. (2014). Management of sickle cell disease: summary of the 2014 evidence-based report by expert panel members. JAMA, 312(10), 1033-1048."
+    },
+    {
+      "topic": "Silo Filler's Disease",
+      "findings": "• Clinical Consensus: Silo filler's disease is an acute respiratory illness caused by inhalation of nitrogen dioxide (NO2) gases produced in decomposing silage. Management involves immediate removal from exposure, supportive oxygen therapy, monitoring for delayed non-cardiogenic pulmonary edema, and short-term corticosteroids (Axelsson et al., 1998).",
+      "links": "https://doi.org/10.1136/thx.53.8.718",
+      "references": "Axelsson, G., et al. (1998). Silo-filler's disease: an account of a case and review of the literature. European Respiratory Journal / clinical consensus reviews."
+    },
+    {
+      "topic": "Sjogren syndrome systemic and topical therapy",
+      "findings": "• Clinical Guideline: EULAR guidelines recommend managing Sjögren's syndrome symptoms with topical therapies (artificial tears/saliva). Systemic extraglandular manifestations require conventional synthetic immunosuppressants or biologic therapies (rituximab) depending on organ involvement (Ramos-Casals et al., 2020).",
+      "links": "https://doi.org/10.1136/annrheumdis-2019-216570",
+      "references": "Ramos-Casals, M., et al. (2020). EULAR recommendations for the management of Sjögren's syndrome with topical and systemic therapies. Annals of the Rheumatic Diseases, 79(1), 3-18."
+    },
+    {
+      "topic": "Skin and soft tissue infection antibiotic strategy",
+      "findings": "• Clinical Guideline: IDSA guidelines recommend empiric therapy targeting beta-hemolytic Streptococci and Staphylococcus aureus (including MRSA coverage for purulent infections or systemic toxicity) for skin and soft tissue infections, tailoring duration based on clinical resolution (Stevens et al., 2014).",
+      "links": "https://doi.org/10.1093/cid/ciu296",
+      "references": "Stevens, D. L., et al. (2014). Practice Guidelines for the Diagnosis and Management of Skin and Soft Tissue Infections: 2014 Update by the IDSA. Clinical Infectious Diseases, 59(2), e10-e52."
+    },
+    {
+      "topic": "Sleep-related hypoxemia in COPD",
+      "findings": "• Clinical Guideline: ERS/ATS guidelines note that nocturnal oxygen desaturation in stable COPD patients without daytime hypercapnia generally does not benefit from long-term supplemental oxygen unless severe daytime pulmonary hypertension or heart failure coexists (Celli et al., 2004; updated ATS standards).",
+      "links": "https://doi.org/10.1183/09031936.04.00076604",
+      "references": "Celli, B. R., et al. (2004). Standards for the diagnosis and management of patients with COPD. European Respiratory Journal, 23(6), 932-946."
+    },
+    {
+      "topic": "spironolactone mineralocorticoid antagonist severe heart failure survival",
+      "findings": "• Landmark Trial: The RALES trial demonstrated that the mineralocorticoid receptor antagonist spironolactone significantly reduces all-cause mortality and heart failure hospitalizations when added to standard therapy in patients with severe heart failure and reduced ejection fraction (Pitt et al., 1999).",
+      "links": "https://doi.org/10.1056/NEJM199909023411001",
+      "references": "Pitt, B., et al. (1999). The Effect of Spironolactone on Morbidity and Mortality in Patients with Severe Heart Failure. New England Journal of Medicine, 341(10), 709-717."
+    },
+    {
+      "topic": "Spontaneous bacterial peritonitis vs secondary surgical peritonitis",
+      "findings": "• Clinical Guideline: AASLD guidance notes that differentiating spontaneous bacterial peritonitis (SBP) from secondary peritonitis (due to bowel perforation or abscess) is critical. Secondary peritonitis is suggested by multiple organisms on peritoneal fluid Gram stain or total protein >1 g/dL, glucose <50 mg/dL, and LDH elevation, mandating emergency surgical evaluation (Biggins et al., 2021).",
+      "links": "https://doi.org/10.1002/hep.31884",
+      "references": "Biggins, S. W., et al. (2021). Diagnosis, Evaluation, and Management of Ascites, Spontaneous Bacterial Peritonitis and Hepatorenal Syndrome: 2021 Practice Guidance by the AASLD. Hepatology, 74(2), 1014-1048."
+    },
+    {
+      "topic": "Spontaneous bacterial peritonitis: diagnosis, prophylaxis, treatment",
+      "findings": "• Clinical Guideline: AASLD guidelines mandate diagnostic paracentesis for cirrhotics with ascites upon hospital admission. SBP is diagnosed when ascitic fluid PMN count is ≥250 cells/mm³. Treatment requires IV cephalosporins and albumin; long-term antibiotic prophylaxis (norfloxacin or ciprofloxacin) is indicated for secondary prevention and high-risk primary prevention (Biggins et al., 2021).",
+      "links": "https://doi.org/10.1002/hep.31884",
+      "references": "Biggins, S. W., et al. (2021). Diagnosis, Evaluation, and Management of Ascites, Spontaneous Bacterial Peritonitis and Hepatorenal Syndrome: 2021 Practice Guidance by the AASLD. Hepatology, 74(2), 1014-1048."
+    },
+    {
+      "topic": "Staphylococcus aureus bacteremia diagnostic workup and duration",
+      "findings": "• Clinical Guideline: IDSA guidelines recommend repeat blood cultures (to document clearance), mandatory echocardiography (TTE or TEE) to rule out infective endocarditis, and source control (removal of intravascular catheters or drainage of foci). Uncomplicated S. aureus bacteremia requires at least 14 days of IV therapy, while complicated infections require 4 to 6 weeks (Boucher et al., 2009).",
+      "links": "https://doi.org/10.1086/599051",
+      "references": "Boucher, H. W., et al. (2009). Infectious Diseases Society of America Guidelines on the Treatment of Methicillin-Resistant Staphylococcus aureus Infections in Adults and Children. Clinical Infectious Diseases, 48(5), 535-554."
+    },
+    {
+      "topic": "Status epilepticus emergency treatment",
+      "findings": "• Clinical Guideline: AES guidelines recommend immediate emergency stabilization and benzodiazepines (such as IV lorazepam or IM midazolam) as first-line therapy for status epilepticus within the first 5 to 20 minutes, followed by second-line non-sedating antiseizure medications (levetiracetam, valproate, or fosphenytoin) for refractory episodes (Glauser et al., 2016).",
+      "links": "https://doi.org/10.1111/epi.13339",
+      "references": "Glauser, T., et al. (2016). Evidence-based guideline: Treatment of convulsive status epilepticus in children and adults: Report of the Guideline Committee of the American Epilepsy Society. Epilepsia, 57(1), 48-64."
+    },
+    {
+      "topic": "Status epilepticus pharmacotherapy",
+      "findings": "• Clinical Guideline: Reiteration confirming structured AES guidelines: first-line benzodiazepines, second-line IV antiseizure medications, and progression to continuous anesthetic infusions (propofol, midazolam) for refractory status epilepticus requiring ICU admission (Glauser et al., 2016).",
+      "links": "https://doi.org/10.1111/epi.13339",
+      "references": "Glauser, T., et al. (2016). Evidence-based guideline: Treatment of convulsive status epilepticus in children and adults: Report of the Guideline Committee of the American Epilepsy Society. Epilepsia, 57(1), 48-64."
+    },
+    {
+      "topic": "STEMI primary PCI reperfusion",
+      "findings": "• Clinical Guideline: ACC/AHA and ESC guidelines mandate primary percutaneous coronary intervention (PPCI) within 90 minutes of first medical contact (or within 120 minutes if transfer is required) as the preferred reperfusion strategy for patients presenting with ST-elevation myocardial infarction within 12 hours of symptom onset (Lawton et al., 2022).",
+      "links": "https://doi.org/10.1161/CIR.0000000000001038",
+      "references": "Lawton, J. S., et al. (2022). 2021 ACC/AHA/SCAI Guideline for Coronary Artery Revascularization. Circulation, 145(3), e18-e114."
+    },
+    {
+      "topic": "Steroids in community acquired pneumonia",
+      "findings": "• Clinical Guideline / Meta-Analysis: ATS/IDSA guidelines suggest against the routine use of systemic corticosteroids in community-acquired pneumonia unless refractory septic shock is present, as trials show variable impact on mortality despite reductions in time to clinical stability in specific severe subgroups (Metlay et al., 2019).",
+      "links": "https://doi.org/10.1164/rccm.201908-1581ST",
+      "references": "Metlay, J. P., et al. (2019). Diagnosis and treatment of adults with community-acquired pneumonia. An official clinical practice guideline of the ATS and IDSA. American Journal of Respiratory and Critical Care Medicine, 200(7), e45-e67."
+    },
+    {
+      "topic": "Steroids in pneumonia",
+      "findings": "• Clinical Guideline: Reiteration reflecting consensus that adjunctive corticosteroids are not routinely recommended for all pneumonias but can be considered in severe CAP complicated by a strong systemic inflammatory response or septic shock (Metlay et al., 2019).",
+      "links": "https://doi.org/10.1164/rccm.201908-1581ST",
+      "references": "Metlay, J. P., et al. (2019). Diagnosis and treatment of adults with community-acquired pneumonia. An official clinical practice guideline of the ATS and IDSA. American Journal of Respiratory and Critical Care Medicine, 200(7), e45-e67."
+    },
+    {
+      "topic": "Stimulant use disorder contingency management",
+      "findings": "• Clinical Guideline: SAMHSA and clinical practice guidelines indicate that contingency management (systematic positive reinforcement/incentives for verified abstinence) is currently the most empirically validated and effective behavioral intervention for treating stimulant use disorders (methamphetamine, cocaine), as pharmacotherapy options remain limited (De Crescenzo et al., 2018).",
+      "links": "https://doi.org/10.1016/S0140-6736(18)31358-3",
+      "references": "De Crescenzo, F., et al. (2018). Comparative efficacy and acceptability of psychosocial interventions for individuals with cocaine and amphetamine addiction: a systematic review and meta-analysis. The Lancet Psychiatry, 5(10), 808-817."
+    },
+    {
+      "topic": "Stroke and TIA",
+      "findings": "• Clinical Guideline: AHA/ASA guidelines emphasize rapid clinical and neuroimaging evaluation for acute ischemic stroke and TIA, urgent administration of intravenous thrombolysis (alteplase or tenecteplase) within eligible time windows (up to 4.5 hours), consideration of endovascular thrombectomy for large vessel occlusion, and aggressive secondary stroke prevention (Kleindorfer et al., 2021).",
+      "links": "https://doi.org/10.1161/STR.0000000000000375",
+      "references": "Kleindorfer, D. O., et al. (2021). 2021 Guideline for the Prevention of Stroke in Patients With Stroke and Transient Ischemic Attack: A Guideline From the AHA/ASA. Stroke, 52(7), e364-e467."
+    }
+  ]
+}

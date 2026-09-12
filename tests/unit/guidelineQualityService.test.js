@@ -68,6 +68,9 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('ASA Task Force on Sedation')).toBe(true);
         expect(isTrustedSource('Sepsis-3')).toBe(true);
         expect(isTrustedSource('WASOG')).toBe(true);
+        expect(isTrustedSource('American Epilepsy Society')).toBe(true);
+        expect(isTrustedSource('AES guidelines')).toBe(true);
+        expect(isTrustedSource('SAMHSA')).toBe(true);
         expect(isTrustedSource('aspirin (ASA)')).toBe(false);
         expect(isTrustedSource('ACE inhibitor')).toBe(false);
         expect(isTrustedSource('automated external defibrillator (AED)')).toBe(false);
