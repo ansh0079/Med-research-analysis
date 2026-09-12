@@ -57,6 +57,12 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('US Preventive Services Task Force')).toBe(true);
         expect(isTrustedSource('National Osteoporosis Foundation')).toBe(true);
         expect(isTrustedSource('AAP and AAO guidelines')).toBe(true);
+        expect(isTrustedSource('ERAS Society')).toBe(true);
+        expect(isTrustedSource('Enhanced Recovery After Surgery')).toBe(true);
+        expect(isTrustedSource('NPUAP/EPUAP')).toBe(true);
+        expect(isTrustedSource('National Pressure Ulcer Advisory Panel')).toBe(true);
+        expect(isTrustedSource('AAD/NPF')).toBe(true);
+        expect(isTrustedSource('international evidence-based guideline for the assessment and management of polycystic ovary syndrome')).toBe(true);
         expect(isTrustedSource('International consensus guidance for management of myasthenia gravis')).toBe(true);
         expect(isTrustedSource('ACE inhibitor')).toBe(false);
         expect(isTrustedSource('automated external defibrillator (AED)')).toBe(false);

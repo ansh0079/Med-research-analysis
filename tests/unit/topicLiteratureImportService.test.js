@@ -146,6 +146,31 @@ describe('topicLiteratureImportService', () => {
         }));
     });
 
+    test('loads the checked-in batch-15 literature pack', () => {
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-15.json');
+        expect(fs.existsSync(packPath)).toBe(true);
+        const rows = parseLiteratureFile(packPath);
+        expect(rows).toHaveLength(25);
+        expect(rows.map((row) => row.topic)).toEqual(expect.arrayContaining([
+            'Perioperative antiplatelet and anticoagulant management',
+            'prone positioning severe acute respiratory distress syndrome',
+            'Psoriasis: diagnosis, severity assessment and systemic treatment',
+        ]));
+    });
+
+    test('imports NPUAP pressure-ulcer guideline as trusted and servable', async () => {
+        const db = makeDb();
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-15.json');
+        const row = parseLiteratureFile(packPath).find((item) => /pressure ulcers/i.test(item.topic));
+        const result = await importTopicLiterature(db, row);
+        expect(result.guidelineCount).toBe(1);
+        expect(result.trustedGuidelineCount).toBe(1);
+        expect(result.servableGuidelineCount).toBe(1);
+        expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
+            sourceBody: 'NPUAP/EPUAP',
+        }));
+    });
+
     test('loads the checked-in batch-14 literature pack', () => {
         const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-14.json');
         expect(fs.existsSync(packPath)).toBe(true);

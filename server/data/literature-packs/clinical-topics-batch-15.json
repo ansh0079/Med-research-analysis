@@ -1,0 +1,159 @@
+{
+  "packId": "clinical-topics-batch-15",
+  "title": "Curated literature for guideline-gap topics 376-400",
+  "sourceFiles": [
+    "next_375-400.docx"
+  ],
+  "topics": [
+    {
+      "topic": "Perioperative antiplatelet and anticoagulant management",
+      "findings": "• Clinical Guideline: ACC/AHA guidelines recommend withholding P2Y12 inhibitors for 5–7 days prior to elective surgery and resuming them postoperatively, balancing bleeding risks against thrombotic stent thrombosis risks.",
+      "links": "https://doi.org/10.1161/CIR.0000000000001038",
+      "references": "Lawton, J. S., et al. (2022). 2021 ACC/AHA/SCAI Guideline for Coronary Artery Revascularization. Circulation, 145(3), e18-e114."
+    },
+    {
+      "topic": "Perioperative diabetes management",
+      "findings": "• Clinical Guideline: ADA Standards of Care recommend adjusting long-acting and short-acting insulin regimens during the perioperative period (typically holding oral hypoglycemic agents and reducing basal insulin doses) to prevent both diabetic ketoacidosis and severe hypoglycemia while targeting blood glucose levels between 140–180 mg/dL.",
+      "links": "https://doi.org/10.2337/dc23-S016",
+      "references": "American Diabetes Association. (2023). 16. Diabetes Care in the Hospital: Standards of Care in Diabetes—2023. Diabetes Care, 46(Supplement_1), S254-S267."
+    },
+    {
+      "topic": "Perioperative management of common comorbidities",
+      "findings": "• Clinical Guideline: AHA/ACC perioperative cardiovascular evaluation guidelines recommend risk stratification using validated tools (like the RCRI) for patients with chronic medical comorbidities undergoing noncardiac surgery, avoiding routine non-invasive testing unless it will directly alter perioperative management.",
+      "links": "https://doi.org/10.1016/j.jacc.2014.07.944",
+      "references": "Fleisher, L. A., et al. (2014). 2014 ACC/AHA Guideline on Perioperative Cardiovascular Evaluation and Management of Patients Undergoing Noncardiac Surgery. Journal of the American College of Cardiology, 64(22), e77-e137."
+    },
+    {
+      "topic": "Perioperative risk assessment and optimisation",
+      "findings": "• Clinical Guideline: ESA/ESC guidelines recommend a stepwise approach to perioperative risk assessment, incorporating functional capacity evaluation, clinical risk scores, and systematic optimization of chronic conditions (such as anemia, glycemic control, and smoking cessation) prior to major surgery.",
+      "links": "https://doi.org/10.1093/eurheartj/ehx056",
+      "references": "Kristensen, S. D., et al. (2014 / updated guidelines). 2014 ESC/ESA Guidelines on non-cardiac surgery: cardiovascular assessment and management. European Heart Journal, 35(35), 2383-2431."
+    },
+    {
+      "topic": "Peripheral arterial disease and claudication",
+      "findings": "• Clinical Guideline: AHA/ACC guidelines recommend supervised exercise therapy as the primary non-invasive initial treatment for intermittent claudication secondary to peripheral arterial disease, combined with guideline-directed medical therapy (antiplatelets, high-intensity statins, and smoking cessation).",
+      "links": "https://doi.org/10.1161/CIR.0000000000000095",
+      "references": "Gerhard-Herman, M. D., et al. (2017). 2016 AHA/ACC Guideline on the Management of Patients With Lower Extremity Peripheral Artery Disease. Circulation, 135(12), e726-e779."
+    },
+    {
+      "topic": "Pleural effusion and parapneumonic effusion management",
+      "findings": "• Clinical Guideline: BTS guidelines recommend immediate diagnostic thoracentesis for any new pleural effusion of unknown etiology. Parapneumonic effusions with complex features (loculations, positive Gram stain, pH < 7.20, or low glucose) require prompt chest tube drainage and intrapleural instillation of fibrinolytic/DNase therapy if complicated.",
+      "links": "https://doi.org/10.1136/thoraxjnl-2015-207018",
+      "references": "Rahman, N. M., et al. (2010 / updated BTS guidelines). Management of pleural infection in adults: British Thoracic Society Pleural Disease Guideline 2010. Thorax, 65(Suppl 2), ii1-ii41."
+    },
+    {
+      "topic": "pneumonia",
+      "findings": "• Clinical Guideline: ATS/IDSA community-acquired pneumonia guidelines recommend early empiric antibiotic therapy within 4 hours of arrival, supported by risk stratification (CURB-65 or PSI) to determine appropriate outpatient versus inpatient or ICU admission pathways.",
+      "links": "https://doi.org/10.1164/rccm.201908-1581ST",
+      "references": "Metlay, J. P., et al. (2019). Diagnosis and treatment of adults with community-acquired pneumonia. An official clinical practice guideline of the ATS and IDSA. American Journal of Respiratory and Critical Care Medicine, 200(7), e45-e67."
+    },
+    {
+      "topic": "Polycystic ovary syndrome metabolic management",
+      "findings": "• Clinical Guideline: International evidence-based guidelines recommend lifestyle intervention (diet, exercise) as primary therapy for metabolic management in polycystic ovary syndrome (PCOS). Metformin is recommended as an adjunct for women with PCOS and impaired glucose tolerance or obesity when lifestyle changes fail.",
+      "links": "https://doi.org/10.1210/clinem/dgab552",
+      "references": "Teede, H. J., et al. (2018 / updated 2023). Recommendations from the international evidence-based guideline for the assessment and management of polycystic ovary syndrome. The Journal of Clinical Endocrinology & Metabolism, 103(10), 3645-3662."
+    },
+    {
+      "topic": "Polycythemia vera: hematocrit targets, aspirin, and cardiovascular risk reduction",
+      "findings": "• Clinical Guideline / RCT: The CYTO-PV trial and ELN guidelines confirm that maintaining hematocrit levels rigidly below 45% using phlebotomy and/or cytoreductive agents, combined with daily low-dose aspirin, significantly reduces thrombosis and cardiovascular death in polycythemia vera.",
+      "links": "https://doi.org/10.1056/NEJMoa1208500",
+      "references": "Marchioli, R., et al. (2013). Cardiovascular Events and Intensity of Treatment in Polycythemia Vera. New England Journal of Medicine, 368(1), 22-33."
+    },
+    {
+      "topic": "Polypharmacy and deprescribing: STOPP/START criteria",
+      "findings": "• Clinical Consensus: Guidelines recommend utilizing the STOPP/START (Screening Tool of Older Persons' Prescriptions / Screening Tool to Alert to Right Treatment) criteria to systematically identify potentially inappropriate medications and reduce harmful polypharmacy in older adults.",
+      "links": "https://doi.org/10.1093/ageing/afv094",
+      "references": "O'Mahony, D., et al. (2015). STOPP/START criteria for potentially inappropriate medications use in older people: version 2. Age and Ageing, 44(2), 213-218."
+    },
+    {
+      "topic": "Portal hypertension and variceal bleeding",
+      "findings": "• Clinical Guideline: Baveno VII and AASLD guidelines recommend non-selective beta-blockers (such as carvedilol) to prevent variceal bleeding in patients with clinically significant portal hypertension. Acute variceal bleeding requires endoscopic band ligation combined with vasoactive drugs (terlipressin or somatostatin) and prophylactic antibiotics.",
+      "links": "https://doi.org/10.1016/j.jhep.2021.12.022",
+      "references": "de Franchis, R., et al. (2022). Baveno VII – Renewing consensus in portal hypertension. Journal of Hepatology, 76(4), 959-974."
+    },
+    {
+      "topic": "Postoperative ileus: prevention and management",
+      "findings": "• Clinical Consensus: Enhanced Recovery After Surgery (ERAS) guidelines recommend multimodal strategies to prevent postoperative ileus, including minimally invasive surgery, early oral nutrition, early mobilization, avoidance of routine nasogastric tubes, and minimizing opioid analgesia.",
+      "links": "https://doi.org/10.1007/s00268-015-3051-4",
+      "references": "Gustafsson, U. O., et al. (2019). Guidelines for Perioperative Care in Elective Colonic Surgery: Enhanced Recovery After Surgery (ERAS) Society Recommendations. World Journal of Surgery, 43(3), 659-695."
+    },
+    {
+      "topic": "Postoperative nausea and vomiting: prevention and treatment",
+      "findings": "• Clinical Guideline: Consensus guidelines recommend multimodal prophylaxis for postoperative nausea and vomiting (PONV) using antiemetic agents with different mechanisms of action (such as ondansetron, dexamethasone, or aprepitant) based on baseline patient risk stratification (Apfel's score).",
+      "links": "https://doi.org/10.1213/ANE.0b013e31826f724a",
+      "references": "Gan, T. J., et al. (2014). Consensus Guidelines for the Management of Postoperative Nausea and Vomiting. Anesthesia & Analgesia, 120(1), 65-86."
+    },
+    {
+      "topic": "Postural Orthostatic Tachycardia Syndrome (POTS): tilt table test criteria, non-pharmacological methods",
+      "findings": "• Clinical Consensus: Consensus criteria define POTS as an orthostatic heart rate increase of ≥30 beats/min within 10 minutes of standing (or ≥40 beats/min in adolescents) in the absence of orthostatic hypotension. Initial management emphasizes non-pharmacological interventions: high salt and fluid intake, physical counter-maneuvers, and graded conditioning.",
+      "links": "https://doi.org/10.1016/j.autneu.2020.102661",
+      "references": "Raj, S. R., et al. (2020). Postural orthostatic tachycardia syndrome (POTS): Priorities for 2020. Autonomic Neuroscience, 228, 102661."
+    },
+    {
+      "topic": "Pressure ulcers: staging, prevention and wound management",
+      "findings": "• Clinical Guideline: NPUAP/EPUAP guidelines recommend staging pressure injuries from Stage 1 to unstageable. Prevention requires structured risk assessment (Braden scale), regular repositioning every 2 hours, specialized support surfaces, and aggressive nutritional support.",
+      "links": "https://doi.org/10.1111/j.1742-481X.2010.00699.x",
+      "references": "National Pressure Ulcer Advisory Panel (NPUAP). (2014 / updated guidelines). Prevention and Treatment of Pressure Ulcers: Clinical Practice Guideline."
+    },
+    {
+      "topic": "Primary aldosteronism diagnosis and treatment",
+      "findings": "• Clinical Guideline: Endocrine Society guidelines recommend screening for primary aldosteronism in high-risk hypertensive patients using the plasma aldosterone-to-renin ratio. Confirmatory suppression testing is followed by adrenal venous sampling to differentiate unilateral adenoma (treated surgically via laparoscopic adrenalectomy) from bilateral hyperplasia (treated medically with mineralocorticoid receptor antagonists) (Funder et al., 2016).",
+      "links": "https://doi.org/10.1210/jc.2015-4061",
+      "references": "Funder, J. W., et al. (2016). The Management of Primary Aldosteronism: Case Detection, Diagnosis, and Treatment: An Endocrine Society Clinical Practice Guideline. The Journal of Clinical Endocrinology & Metabolism, 101(5), 1889-1916."
+    },
+    {
+      "topic": "primary angioplasty versus thrombolytic therapy acute myocardial infarction",
+      "findings": "• Landmark Trial / Guideline: Landmark trials and ACC/AHA guidelines establish primary percutaneous coronary intervention (PPCI) as vastly superior to fibrinolytic therapy for acute ST-elevation myocardial infarction when performed within recommended timeframes (first medical contact to balloon < 90 minutes) at an experienced center.",
+      "links": "https://doi.org/10.1016/S0140-6736(03)13348-1",
+      "references": "Keeley, E. C., et al. (2003). Primary angioplasty versus intravenous thrombolytic therapy for acute myocardial infarction: a quantitative review of 23 randomised trials. The Lancet, 361(9351), 13-20."
+    },
+    {
+      "topic": "Primary membranous nephropathy immunosuppression",
+      "findings": "• Clinical Guideline: KDIGO guidelines recommend risk-stratifying membranous nephropathy. Patients at high or very high risk of progressive loss of kidney function receive initial immunosuppression with a rituximab-based regimen or sequential cyclophosphamide and corticosteroids (Rovin et al., 2021).",
+      "links": "https://doi.org/10.1016/j.kint.2021.05.021",
+      "references": "Rovin, B. H., et al. (2021). KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases. Kidney International, 100(4), S1-S276."
+    },
+    {
+      "topic": "Prolactinoma dopamine agonist therapy",
+      "findings": "• Clinical Guideline: Endocrine Society guidelines recommend dopamine receptor agonists (cabergoline preferred over bromocriptine due to higher efficacy and tolerability) as the primary first-line therapy for prolactinomas to normalize prolactin levels, restore gonadal function, and reduce tumor size (Melmed et al., 2011).",
+      "links": "https://doi.org/10.1210/jc.2010-1698",
+      "references": "Melmed, S., et al. (2011). Diagnosis and Treatment of Hyperprolactinemia: An Endocrine Society Clinical Practice Guideline. The Journal of Clinical Endocrinology & Metabolism, 96(2), 273-288."
+    },
+    {
+      "topic": "prone positioning ARDS",
+      "findings": "• Landmark Trial / Guideline: ATS/ESICM/SCCM guidelines recommend early application of prone positioning for at least 16 hours per day in patients with severe ARDS, supported by evidence from the PROSEVA trial demonstrating significant mortality reduction (Guérin et al., 2013).",
+      "links": "https://doi.org/10.1056/NEJMoa1214103",
+      "references": "Guérin, C., et al. (2013). Prone Positioning in Severe Acute Respiratory Distress Syndrome. New England Journal of Medicine, 368(23), 2159-2168."
+    },
+    {
+      "topic": "Prone positioning in severe ARDS",
+      "findings": "• Clinical Guideline: Reiteration reflecting international critical care consensus that prolonged prone positioning sessions significantly improve ventilation-perfusion matching and survival in severe ARDS (Fan et al., 2017).",
+      "links": "https://doi.org/10.1164/rccm.201703-0548ST",
+      "references": "Fan, E., et al. (2017). An Official ATS/ESICM/SCCM Clinical Practice Guideline: Mechanical Ventilation in Adult Patients with ARDS. American Journal of Respiratory and Critical Care Medicine, 195(9), 1253-1263."
+    },
+    {
+      "topic": "prone positioning severe acute respiratory distress syndrome",
+      "findings": "• Clinical Guideline: Reiteration confirming that prone positioning is a cornerstone lung-protective intervention mandated for severe ARDS with a PaO2/FiO2 ratio < 150 mm Hg (Guérin et al., 2013).",
+      "links": "https://doi.org/10.1056/NEJMoa1214103",
+      "references": "Guérin, C., et al. (2013). Prone Positioning in Severe Acute Respiratory Distress Syndrome. New England Journal of Medicine, 368(23), 2159-2168."
+    },
+    {
+      "topic": "Prosthetic joint infection diagnosis and retention strategy",
+      "findings": "• Clinical Guideline: IDSA guidelines recommend thorough diagnostic evaluation including joint aspiration for synovial fluid cultures and tissue biopsies. For early or acute hematogenous prosthetic joint infections, debridement, antibiotics, and implant retention (DAIR) can be successfully utilized alongside targeted antimicrobial therapy (Osmon et al., 2013).",
+      "links": "https://doi.org/10.1093/cid/cis803",
+      "references": "Osmon, D. R., et al. (2013). Diagnosis and Management of Prosthetic Joint Infection: Clinical Practice Guidelines by the Infectious Diseases Society of America. Clinical Infectious Diseases, 56(1), e1-e25."
+    },
+    {
+      "topic": "Prothrombin G20210A Mutation",
+      "findings": "• Clinical Consensus: The Prothrombin G20210A mutation is an inherited genetic variant associated with an increased risk of venous thromboembolism. Testing is typically restricted to individuals with an unprovoked VTE with a strong family history or thrombosis in unusual sites; routine population screening is not recommended (Varga et al., 2009).",
+      "links": "https://doi.org/10.1111/j.1538-7836.2009.03362.x",
+      "references": "Varga, E. A., et al. (2009). Prothrombin 20210A mutation (factor II mutation): a review of the clinical and genetic aspects. Journal of Thrombosis and Haemostasis, 7(8), 1256-1264."
+    },
+    {
+      "topic": "Psoriasis: diagnosis, severity assessment and systemic treatment",
+      "findings": "• Clinical Guideline: AAD/NPF guidelines recommend assessing psoriasis severity via body surface area (BSA) and quality-of-life indices. Moderate-to-severe disease requires systemic therapy, moving from conventional agents (methotrexate, cyclosporine) to advanced biologic therapies (TNF inhibitors, IL-17 inhibitors, or IL-23 inhibitors) (Menter et al., 2019).",
+      "links": "https://doi.org/10.1016/j.jaad.2019.05.029",
+      "references": "Menter, A., et al. (2019). Joint AAD-NPF guidelines of care for the management and treatment of psoriasis with biologics. Journal of the American Academy of Dermatology, 80(4), 1029-1072."
+    }
+  ]
+}
