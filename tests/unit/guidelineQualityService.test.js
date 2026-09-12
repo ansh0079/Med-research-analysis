@@ -71,6 +71,10 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('American Epilepsy Society')).toBe(true);
         expect(isTrustedSource('AES guidelines')).toBe(true);
         expect(isTrustedSource('SAMHSA')).toBe(true);
+        expect(isTrustedSource('Brain Trauma Foundation')).toBe(true);
+        expect(isTrustedSource('British Association of Dermatologists')).toBe(true);
+        expect(isTrustedSource('BAD and AAD')).toBe(true);
+        expect(isTrustedSource('this is a bad outcome')).toBe(false);
         expect(isTrustedSource('aspirin (ASA)')).toBe(false);
         expect(isTrustedSource('ACE inhibitor')).toBe(false);
         expect(isTrustedSource('automated external defibrillator (AED)')).toBe(false);

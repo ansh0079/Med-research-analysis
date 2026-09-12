@@ -920,6 +920,26 @@ const TRUSTED_GUIDELINE_SOURCES = [
         urlPattern: 'https://www.samhsa.gov/{id}',
         aliases: ['Substance Abuse and Mental Health Services Administration'],
     },
+    {
+        id: 'brain_trauma_foundation',
+        name: 'Brain Trauma Foundation',
+        fullName: 'Brain Trauma Foundation',
+        region: 'USA',
+        specialty: 'Neurotrauma',
+        domain: 'https://braintrauma.org',
+        urlPattern: 'https://braintrauma.org/{id}',
+        aliases: ['Guidelines for the Management of Severe Traumatic Brain Injury'],
+    },
+    {
+        id: 'bad_dermatology',
+        name: 'British Association of Dermatologists',
+        fullName: 'British Association of Dermatologists',
+        region: 'UK',
+        specialty: 'Dermatology',
+        domain: 'https://www.bad.org.uk',
+        urlPattern: 'https://www.bad.org.uk/{id}',
+        aliases: ['BAD and AAD'],
+    },
 ];
 
 module.exports = { TRUSTED_GUIDELINE_SOURCES };

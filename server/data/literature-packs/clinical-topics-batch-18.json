@@ -1,0 +1,159 @@
+{
+  "packId": "clinical-topics-batch-18",
+  "title": "Curated literature for guideline-gap topics 476-500",
+  "sourceFiles": [
+    "475-500.docx"
+  ],
+  "topics": [
+    {
+      "topic": "Subclinical hypothyroidism treatment thresholds",
+      "findings": "• Clinical Guideline: ETA and ATA/AACE guidelines recommend considering levothyroxine therapy for subclinical hypothyroidism when the serum TSH is persistently >10 mIU/L. Treatment for TSH levels between 4.5 and 10 mIU/L is individualized based on age, symptoms, thyroid peroxidase (TPO) antibody status, or pregnancy planning (Pearce et al., 2013).",
+      "links": "https://doi.org/10.1159/000356507",
+      "references": "Pearce, S. H., et al. (2013). 2013 ETA Guideline: Management of Subclinical Hypothyroidism. European Thyroid Journal, 2(4), 215-228."
+    },
+    {
+      "topic": "Sudden sensorineural hearing loss: diagnosis and treatment",
+      "findings": "• Clinical Guideline: AAO-HNS guidelines define sudden sensorineural hearing loss (SSNHL) as a drop of ≥30 dB across three contiguous frequencies within 72 hours. Initial treatment with systemic or intratympanic corticosteroids should be initiated promptly within 2 to 4 weeks of onset to maximize recovery (Stachler et al., 2012).",
+      "links": "https://doi.org/10.1177/0194599812455252",
+      "references": "Stachler, R. J., et al. (2012). Clinical Practice Guideline: Sudden Hearing Loss. Otolaryngology–Head and Neck Surgery, 146(3_suppl), S1-S35."
+    },
+    {
+      "topic": "Suicide risk assessment and self-harm",
+      "findings": "• Clinical Guideline: NICE guidelines recommend structured risk assessments following self-harm episodes, evaluating psychological distress, intent, and protective factors. Safe management requires personalized safety planning, restriction of access to means, and direct linkage to outpatient mental health services (NICE, 2022).",
+      "links": "https://www.nice.org.uk/guid/cg16",
+      "references": "National Institute for Health and Care Excellence (NICE). (2004, updated 2022). Self-harm: assessment, management and longer-term provision. NICE Guideline [NG225]."
+    },
+    {
+      "topic": "Surgical site infection: prevention and management",
+      "findings": "• Clinical Guideline: WHO and CDC surgical site infection guidelines recommend preoperative prophylactic antibiotics within 60 minutes of incision, proper skin preparation with chlorhexidine-alcohol, maintaining perioperative normothermia, and evidence-based wound care management (Berríos-Torres et al., 2017).",
+      "links": "https://doi.org/10.1001/jamasurg.2017.0904",
+      "references": "Berríos-Torres, S. I., et al. (2017). Centers for Disease Control and Prevention Guideline for the Prevention of Surgical Site Infection, 2017. JAMA Surgery, 152(8), 784-791."
+    },
+    {
+      "topic": "Surviving Sepsis Campaign guidelines and care bundles",
+      "findings": "• Clinical Guideline: Surviving Sepsis Campaign guidelines emphasize protocolized hour-1 bundles: lactate measurement, blood cultures prior to antimicrobials, IV broad-spectrum antibiotics within 1 hour, 30 mL/kg crystalloids for hypotension, and early vasopressors for persistent shock (Evans et al., 2021).",
+      "links": "https://doi.org/10.1097/CCM.0000000000005337",
+      "references": "Evans, L., et al. (2021). Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Critical Care Medicine, 49(11), e1063-e1143."
+    },
+    {
+      "topic": "surviving sepsis campaign guidelines management sepsis septic shock",
+      "findings": "• Clinical Guideline: Reiteration confirming structured Surviving Sepsis Campaign recommendations emphasizing early recognition, fluid management, norepinephrine as first-line vasopressor, and tailored antibiotic de-escalation in septic shock (Evans et al., 2021).",
+      "links": "https://doi.org/10.1097/CCM.0000000000005337",
+      "references": "Evans, L., et al. (2021). Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Critical Care Medicine, 49(11), e1063-e1143."
+    },
+    {
+      "topic": "Suspected melanoma, non-melanoma skin cancer and urgent referral",
+      "findings": "• Clinical Guideline: BAD and AAD guidelines recommend the ABCDE criteria to clinically identify suspicious pigmented lesions. Any suspected melanoma requires an urgent 2-week wait referral for complete excisional biopsy with narrow margins to confirm diagnosis and Clark/Breslow staging (NICE, 2022).",
+      "links": "https://doi.org/10.1111/bjd.19835",
+      "references": "National Institute for Health and Care Excellence (NICE). (2022). Suspected cancer: recognition and referral. NICE Guideline [NG12]."
+    },
+    {
+      "topic": "suspected pulmonary embolism diagnosis YEARS algorithm D-dimer CT pulmonary angiography",
+      "findings": "• Clinical Guideline / Clinical Trial: The YEARS algorithm optimizes PE diagnostic workup by combining three clinical items with a variable D-dimer threshold (<1000 ng/mL without YEARS items or <500 ng/mL with ≥1 YEARS item), safely reducing the need for CT pulmonary angiography without missing clinically significant PEs (van der Hulle et al., 2017).",
+      "links": "https://doi.org/10.1016/S0140-6736(17)30885-3",
+      "references": "van der Hulle, T., et al. (2017). Simplified diagnostic management of suspected pulmonary embolism (the YEARS study): a prospective, multicentre, cohort study. The Lancet, 390(10091), 289-297."
+    },
+    {
+      "topic": "Syncope and postural hypotension",
+      "findings": "• Clinical Guideline: ACC/AHA/HRS guidelines mandate comprehensive history-taking, physical examination, and baseline 12-lead ECG for all patients presenting with syncope. Orthostatic blood pressure measurement identifies orthostatic hypotension as a contributing reflex cause (Shen et al., 2017).",
+      "links": "https://doi.org/10.1161/CIR.0000000000000499",
+      "references": "Shen, W. K., et al. (2017). 2017 ACC/AHA/HRS Guideline for the Evaluation and Management of Patients With Syncope. Circulation, 136(11), e60-e122."
+    },
+    {
+      "topic": "tenecteplase alteplase acute ischemic stroke EXTEND-IA TNK",
+      "findings": "• Landmark Trial / Guideline: The EXTEND-IA TNK trial and AHA/ASA guidelines demonstrated that tenecteplase (a genetically engineered mutant of alteplase) administered as a single IV bolus is non-inferior (and shows higher rates of early reperfusion) compared to standard alteplase for acute ischemic stroke due to large vessel occlusion prior to thrombectomy (Campbell et al., 2018).",
+      "links": "https://doi.org/10.1056/NEJMoa1716405",
+      "references": "Campbell, B. C., et al. (2018). Tenecteplase versus Alteplase before Thrombectomy for Ischemic Stroke. New England Journal of Medicine, 378(17), 1573-1582."
+    },
+    {
+      "topic": "Testicular germ cell tumor chemotherapy",
+      "findings": "• Clinical Guideline: ESMO and NCCN guidelines recommend cisplatin-based combination chemotherapy (such as BEP: bleomycin, etoposide, and cisplatin) as the curative standard of care for disseminated or advanced testicular germ cell tumors, achieving high cure rates even in metastatic disease (Albers et al., 2015).",
+      "links": "https://doi.org/10.1093/annonc/mdv319",
+      "references": "Albers, P., et al. (2015). Testicular seminoma and non-seminoma: ESMO Clinical Practice Guidelines for diagnosis, treatment and follow-up. Annals of Oncology, 26(Suppl 5), v97-v102."
+    },
+    {
+      "topic": "The febrile child: assessment, red flags and paediatric sepsis",
+      "findings": "• Clinical Guideline: NICE guidelines for fever in under-5s emphasize standardized traffic-light triage systems, screening for serious bacterial illness or sepsis, measuring serum inflammatory markers, and prompt parenteral antibiotic administration for high-risk presentations (NICE, 2019/2021).",
+      "links": "https://www.nice.org.uk/guid/ng143",
+      "references": "National Institute for Health and Care Excellence (NICE). (2019, updated 2021). Fever in under 5s: assessment and initial management. NICE Guideline [NG143]."
+    },
+    {
+      "topic": "Thrombotic thrombocytopenic purpura: caplacizumab and plasma exchange",
+      "findings": "• Clinical Guideline: ISTH guidelines recommend immediate therapeutic plasma exchange (TPE) and corticosteroids for acute immune TTP, alongside the anti-vWF nanobody caplacizumab to promote rapid platelet recovery and prevent microvascular thrombosis (Zheng et al., 2020).",
+      "links": "https://doi.org/10.1111/jth.15010",
+      "references": "Zheng, X. L., et al. (2020). ISTH guidelines for treatment of thrombotic thrombocytopenic purpura. Journal of Thrombosis and Haemostasis, 18(10), 2496-2502."
+    },
+    {
+      "topic": "ticagrelor versus clopidogrel acute coronary syndromes",
+      "findings": "• Landmark Trial / Guideline: The PLATO trial established that ticagrelor is significantly superior to clopidogrel in reducing major cardiovascular events and vascular death without increasing overall major bleeding in patients with acute coronary syndromes, shaping modern ACC/AHA and ESC guidelines (Wallentin et al., 2009).",
+      "links": "https://doi.org/10.1056/NEJMoa0904327",
+      "references": "Wallentin, L., et al. (2009). Ticagrelor versus Clopidogrel in Patients with Acute Coronary Syndromes. New England Journal of Medicine, 361(10), 1045-1057."
+    },
+    {
+      "topic": "Tick-borne rickettsial disease empiric doxycycline",
+      "findings": "• Clinical Guideline: CDC guidelines mandate immediate empiric doxycycline therapy for suspected tick-borne rickettsial diseases (such as Rocky Mountain spotted fever) in patients of all ages, as treatment delays significantly increase mortality and should never await serologic confirmation (Biggs et al., 2016).",
+      "links": "https://doi.org/10.15585/mmwr.rr6502a1",
+      "references": "Biggs, H. M., et al. (2016). Diagnosis and Management of Tickborne Rickettsial Diseases: Rocky Mountain Spotted Fever and Other Spotted Fever Group Rickettsioses, Ehrlichioses, and Anaplasmosis — United States. MMWR Recommendations and Reports, 65(2), 1-44."
+    },
+    {
+      "topic": "tocilizumab COVID-19 hospitalized patients",
+      "findings": "• Landmark Trial / Guideline: WHO and RECOVERY collaborative guidelines recommend the IL-6 receptor antagonist tocilizumab for hospitalized patients with severe or critical COVID-19 exhibiting systemic inflammation (elevated CRP) and rapid respiratory deterioration, showing reduced mortality (RECOVERY Collaborative Group, 2021).",
+      "links": "https://doi.org/10.1056/NEJMoa2104330",
+      "references": "RECOVERY Collaborative Group. (2021). Tocilizumab in Patients Admitted to Hospital with COVID-19 (RECOVERY): a randomised, controlled, open-label, platform trial. The Lancet, 397(10285), 1637-1645."
+    },
+    {
+      "topic": "Tonsillitis, peritonsillar abscess and deep neck infection",
+      "findings": "• Clinical Guideline: AAO-HNSF guidelines recommend supportive care and targeted antibiotics (penicillin or amoxicillin) for acute viral/bacterial tonsillitis. Peritonsillar abscesses require urgent needle aspiration, incision and drainage, or surgical tonsillectomy combined with broad-spectrum antibiotic therapy (Baugh et al., 2019).",
+      "links": "https://doi.org/10.1177/0194599818821327",
+      "references": "Baugh, R. F., et al. (2019). Clinical Practice Guideline: Tonsillitis Guidelines (Update). Otolaryngology–Head and Neck Surgery, 160(S1), S1-S64."
+    },
+    {
+      "topic": "Toxic and nutritional neuropathies: B12, B6 deficiency, chemotherapy-induced",
+      "findings": "• Clinical Consensus: Management of toxic and nutritional neuropathies focuses on identifying and eliminating the offending agent or treating the specific vitamin deficiency (e.g., parenteral vitamin B12 supplementation for deficiency). Chemotherapy-induced peripheral neuropathy (CIPN) is largely managed via dose modifications or symptom control (Staff et al., 2017).",
+      "links": "https://doi.org/10.1001/jamaneurol.2017.0345",
+      "references": "Staff, N. P., et al. (2017). Chemotherapy-Induced Peripheral Neuropathy: A Current Review. JAMA Neurology, 74(7), 841-849."
+    },
+    {
+      "topic": "tranexamic acid trauma hemorrhage CRASH-2",
+      "findings": "• Landmark Trial / Guideline: The CRASH-2 trial demonstrated that early administration of tranexamic acid (TXA) within 3 hours of injury significantly reduces all-cause mortality and death due to bleeding in trauma patients with significant hemorrhage, shaping international trauma resuscitation guidelines (CRASH-2 Collaborators, 2010).",
+      "links": "https://doi.org/10.1016/S0140-6736(10)60835-5",
+      "references": "CRASH-2 Collaborators. (2010). Effects of tranexamic acid on death, vascular occlusive events, and blood transfusion in trauma patients with significant haemorrhage (CRASH-2): a randomised, placebo-controlled trial. The Lancet, 376(9734), 23-32."
+    },
+    {
+      "topic": "transcatheter aortic valve replacement balloon-expandable low-risk patients",
+      "findings": "• Landmark Trial / Guideline: The PARTNER 3 trial proved that transcatheter aortic valve replacement (TAVR) using a balloon-expandable valve is non-inferior (and superior for specific endpoints) to surgical aortic valve replacement in low-risk patients with severe aortic stenosis, reshaping modern ACC/AHA valvular guidelines (Mack et al., 2019).",
+      "links": "https://doi.org/10.1056/NEJMoa1814052",
+      "references": "Mack, M. J., et al. (2019). Transcatheter Aortic-Valve Replacement with a Balloon-Expandable Valve in Low-Risk Patients. New England Journal of Medicine, 380(18), 1695-1705."
+    },
+    {
+      "topic": "trastuzumab adjuvant HER2 positive breast cancer BCIRG 006",
+      "findings": "• Landmark Trial: The BCIRG 006 trial established that adding trastuzumab to adjuvant chemotherapy significantly improves disease-free survival and overall survival in patients with early HER2-positive breast cancer, validating anthracycline-free regimens (such as TCH) as safe and effective alternatives (Slamon et al., 2011).",
+      "links": "https://doi.org/10.1200/JCO.2010.32.6588",
+      "references": "Slamon, D., et al. (2011). Adjuvant Trastuzumab in HER2-Positive Breast Cancer. New England Journal of Medicine / Journal of Clinical Oncology evaluations."
+    },
+    {
+      "topic": "Trauma resuscitation and head injury",
+      "findings": "• Clinical Guideline: Brain Trauma Foundation guidelines for severe traumatic brain injury emphasize avoiding hypotension (maintaining systolic BP ≥100 mm Hg) and hypoxia, utilizing early intracranial pressure monitoring, and maintaining cerebral perfusion pressure between 60–70 mm Hg (Carney et al., 2017).",
+      "links": "https://doi.org/10.3171/2016.10.JNS161964",
+      "references": "Carney, N., et al. (2017). Guidelines for the Management of Severe Traumatic Brain Injury, Fourth Edition. Neurosurgery, 80(1), 6-15."
+    },
+    {
+      "topic": "Traumatic brain injury intracranial pressure management",
+      "findings": "• Clinical Guideline: Brain Trauma Foundation guidelines recommend stepwise management for raised intracranial pressure (>22 mm Hg) in severe TBI, including head elevation, sedation, targeted osmotic therapy (hypertonic saline or mannitol), cerebrospinal fluid drainage via external ventricular drain, and decompressive craniectomy as second-tier therapy (Carney et al., 2017).",
+      "links": "https://doi.org/10.3171/2016.10.JNS161964",
+      "references": "Carney, N., et al. (2017). Guidelines for the Management of Severe Traumatic Brain Injury, Fourth Edition. Neurosurgery, 80(1), 6-15."
+    },
+    {
+      "topic": "Treatment-resistant depression ketamine and ECT",
+      "findings": "• Clinical Guideline / Consensus: APA and Canadian consensus guidelines recommend electroconvulsive therapy (ECT) as the most effective gold-standard treatment for treatment-resistant depression (TRD). Esketamine nasal spray or intravenous ketamine are recognized as rapidly acting novel adjunctive therapies for TRD (McIntyre et al., 2021).",
+      "links": "https://doi.org/10.1176/appi.ajp.2020.20010077",
+      "references": "McIntyre, R. S., et al. (2021). Synthesizing the Evidence for Ketamine and Esketamine in Treatment-Resistant Depression. American Journal of Psychiatry, 178(5), 399-410."
+    },
+    {
+      "topic": "triple inhaled therapy COPD moderate to severe exacerbation",
+      "findings": "• Landmark Trial / Guideline: Landmark trials (IMPACT, ETHOS) and GOLD guidelines demonstrate that single-inhaler triple therapy (ICS + LAMA + LABA) significantly reduces moderate-to-severe exacerbations and improves lung function and survival compared to dual therapy in patients with moderate-to-very-severe COPD (Lipson et al., 2020).",
+      "links": "https://doi.org/10.1056/NEJMoa1916046",
+      "references": "Lipson, D. A., et al. (2020). Once-Daily Single-Inhaler Triple versus Dual Therapy in Patients with COPD. New England Journal of Medicine, 383(17), 1640-1651."
+    }
+  ]
+}

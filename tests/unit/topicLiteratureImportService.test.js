@@ -146,6 +146,31 @@ describe('topicLiteratureImportService', () => {
         }));
     });
 
+    test('loads the checked-in batch-18 literature pack', () => {
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-18.json');
+        expect(fs.existsSync(packPath)).toBe(true);
+        const rows = parseLiteratureFile(packPath);
+        expect(rows).toHaveLength(25);
+        expect(rows.map((row) => row.topic)).toEqual(expect.arrayContaining([
+            'Subclinical hypothyroidism treatment thresholds',
+            'Trauma resuscitation and head injury',
+            'triple inhaled therapy COPD moderate to severe exacerbation',
+        ]));
+    });
+
+    test('imports Brain Trauma Foundation TBI guideline as trusted and servable', async () => {
+        const db = makeDb();
+        const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-18.json');
+        const row = parseLiteratureFile(packPath).find((item) => /intracranial pressure management/i.test(item.topic));
+        const result = await importTopicLiterature(db, row);
+        expect(result.guidelineCount).toBe(1);
+        expect(result.trustedGuidelineCount).toBe(1);
+        expect(result.servableGuidelineCount).toBe(1);
+        expect(db.createGuideline).toHaveBeenCalledWith(expect.objectContaining({
+            sourceBody: 'Brain Trauma Foundation',
+        }));
+    });
+
     test('loads the checked-in batch-17 literature pack', () => {
         const packPath = path.join(__dirname, '../../server/data/literature-packs/clinical-topics-batch-17.json');
         expect(fs.existsSync(packPath)).toBe(true);
