@@ -39,6 +39,7 @@ const TRUSTED_GUIDELINE_SOURCES = [
         specialty: 'Respiratory Medicine',
         domain: 'https://www.ersnet.org',
         urlPattern: 'https://www.ersnet.org/guidelines/{id}',
+        aliases: ['WASOG', 'World Association for Sarcoidosis and Other Granulomatous Disorders'],
     },
     {
         id: 'bts',
@@ -190,7 +191,12 @@ const TRUSTED_GUIDELINE_SOURCES = [
         specialty: 'Critical Care',
         domain: 'https://www.sccm.org',
         urlPattern: 'https://www.sccm.org/SurvivingSepsisCampaign/{id}',
-        aliases: ['SSC', 'Surviving Sepsis'],
+        aliases: [
+            'SSC',
+            'Surviving Sepsis',
+            'Sepsis-3',
+            'Third International Consensus Definitions for Sepsis',
+        ],
     },
     {
         id: 'cfpc',
@@ -876,6 +882,19 @@ const TRUSTED_GUIDELINE_SOURCES = [
         aliases: [
             'international evidence-based guideline for the assessment and management of polycystic ovary',
             'International evidence-based guidelines recommend lifestyle intervention',
+        ],
+    },
+    {
+        id: 'asa_anesthesiology',
+        name: 'American Society of Anesthesiologists',
+        fullName: 'American Society of Anesthesiologists',
+        region: 'USA',
+        specialty: 'Anaesthesia',
+        domain: 'https://www.asahq.org',
+        urlPattern: 'https://www.asahq.org/{id}',
+        aliases: [
+            'ASA Task Force on Sedation',
+            'Practice Guidelines for Moderate Procedural Sedation',
         ],
     },
 ];

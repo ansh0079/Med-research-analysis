@@ -64,6 +64,11 @@ describe('guidelineQualityService', () => {
         expect(isTrustedSource('AAD/NPF')).toBe(true);
         expect(isTrustedSource('international evidence-based guideline for the assessment and management of polycystic ovary syndrome')).toBe(true);
         expect(isTrustedSource('International consensus guidance for management of myasthenia gravis')).toBe(true);
+        expect(isTrustedSource('American Society of Anesthesiologists')).toBe(true);
+        expect(isTrustedSource('ASA Task Force on Sedation')).toBe(true);
+        expect(isTrustedSource('Sepsis-3')).toBe(true);
+        expect(isTrustedSource('WASOG')).toBe(true);
+        expect(isTrustedSource('aspirin (ASA)')).toBe(false);
         expect(isTrustedSource('ACE inhibitor')).toBe(false);
         expect(isTrustedSource('automated external defibrillator (AED)')).toBe(false);
         expect(isTrustedSource('European Academy of Dermatology and Venereology')).toBe(true);

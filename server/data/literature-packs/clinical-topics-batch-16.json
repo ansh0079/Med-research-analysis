@@ -1,0 +1,159 @@
+{
+  "packId": "clinical-topics-batch-16",
+  "title": "Curated literature for guideline-gap topics 426-450",
+  "sourceFiles": [
+    "next_425-450.docx"
+  ],
+  "topics": [
+    {
+      "topic": "Psychosis and acute behavioural disturbance",
+      "findings": "• Clinical Guideline: NICE and APA guidelines recommend verbal de-escalation as the first-line approach for acute behavioral disturbance. If pharmacological intervention is required, oral or intramuscular atypical antipsychotics (such as aripiprazole, olanzapine, or risperidone) or short-acting benzodiazepines are indicated while monitoring vital signs.",
+      "links": "https://doi.org/10.1176/appi.ajp.2020.177901",
+      "references": "Keepers, G. A., et al. (2020). The American Psychiatric Association Practice Guideline for the Treatment of Patients With Schizophrenia. American Journal of Psychiatry, 177(9), 868-872."
+    },
+    {
+      "topic": "PTSD trauma-focused psychotherapy and SSRI",
+      "findings": "• Clinical Guideline: VA/DoD and APA guidelines strongly recommend trauma-focused psychotherapies (Prolonged Exposure, Cognitive Processing Therapy, EMDR) as first-line treatments for post-traumatic stress disorder over pharmacotherapy. SSRIs (sertraline, fluoxetine) serve as first-line drug therapy when psychotherapy is unavailable or declined.",
+      "links": "https://www.healthquality.va.gov/guidelines/MH/ptsd/",
+      "references": "Department of Veterans Affairs / Department of Defense (VA/DoD). (2017). Clinical Practice Guideline for the Management of Posttraumatic Stress Disorder and Acute Stress Disorder."
+    },
+    {
+      "topic": "Pulmonary nodule evaluation and Fleischner follow-up",
+      "findings": "• Clinical Guideline: Fleischner Society guidelines outline specific criteria for managing incidentally detected pulmonary nodules on CT, using nodule size, morphology (solid vs. subsolid), and patient risk factors (smoking history) to dictate follow-up intervals or diagnostic evaluation.",
+      "links": "https://doi.org/10.1148/radiol.2017161659",
+      "references": "MacMahon, H., et al. (2017). Guidelines for Management of Incidental Pulmonary Nodules Detected on CT Images: From the Fleischner Society 2017. Radiology, 284(1), 228-243."
+    },
+    {
+      "topic": "Pulmonary sarcoidosis corticosteroid therapy",
+      "findings": "• Clinical Guideline: ERS/ATS guidelines recommend systemic oral corticosteroids as first-line therapy for symptomatic pulmonary sarcoidosis or progressive parenchymal disease (e.g., declining FVC or diffusion capacity). Cytotoxic agents (methotrexate, azathioprine) or biologic agents (anti-TNF) are reserved for refractory or steroid-dependent cases.",
+      "links": "https://doi.org/10.1183/09031936.00007608",
+      "references": "Baughman, R. P., et al. (2008 / updated ERS guidelines). Management of sarcoidosis. European Respiratory Journal, 32(3), 794-816."
+    },
+    {
+      "topic": "Rabies pre- and post-exposure prophylaxis",
+      "findings": "• Clinical Guideline: WHO and CDC guidelines recommend rabies pre-exposure prophylaxis for high-risk individuals. Post-exposure prophylaxis (PEP) for potential exposures requires immediate, thorough wound washing, administration of human rabies immune globulin (HRIG), and a 4-dose series of rabies vaccine.",
+      "links": "https://doi.org/10.15585/mmwr.rr7103a1",
+      "references": "Rupprecht, C. E., et al. (2016 / updated CDC guidelines). Use of a Reduced (4-Dose) Vaccine Schedule for Postexposure Prophylaxis to Prevent Human Rabies. MMWR Recommendations and Reports."
+    },
+    {
+      "topic": "Radial versus femoral access for PCI",
+      "findings": "• Clinical Guideline / RCT: ACC/AHA and ESC guidelines recommend radial artery access as the default approach for coronary angiography and percutaneous coronary intervention (PCI), supported by trials like MATRIX demonstrating significant reductions in access-site bleeding, vascular complications, and mortality compared to femoral access.",
+      "links": "https://doi.org/10.1161/CIR.0000000000001038",
+      "references": "Lawton, J. S., et al. (2022). 2021 ACC/AHA/SCAI Guideline for Coronary Artery Revascularization. Circulation, 145(3), e18-e114."
+    },
+    {
+      "topic": "Radiation necrosis vs tumour progression: perfusion MRI and PET scan utility",
+      "findings": "• Clinical Consensus: Neuro-oncology consensus guidelines highlight that distinguishing radiation necrosis from recurrent high-grade glioma is diagnostically challenging on conventional MRI. Advanced neuroimaging modalities—such as dynamic susceptibility contrast (DSC) perfusion MRI, amino acid PET, or FDG-PET—are vital to guide surgical resection versus conservative observation.",
+      "links": "https://doi.org/10.1093/neuonc/nox134",
+      "references": "Ellingson, B. M., et al. (2017). Consensus recommendations for the use of advanced neuroimaging biomarkers in the assessment of neuro-oncology clinical trials. Neuro-Oncology, 19(9), 1189-1201."
+    },
+    {
+      "topic": "Rectal cancer: total mesorectal excision, neoadjuvant chemoradiotherapy",
+      "findings": "• Clinical Guideline: NCCN and ESMO guidelines establish total mesorectal excision (TME) combined with neoadjuvant chemoradiotherapy (or short-course radiotherapy) as the gold standard treatment for locally advanced mid-to-low rectal cancers, significantly reducing local recurrence rates and improving survival.",
+      "links": "https://doi.org/10.1016/j.annonc.2017.08.017",
+      "references": "Glynne-Jones, R., et al. (2017). Rectal cancer: ESMO Clinical Practice Guidelines for diagnosis, treatment and follow-up. Annals of Oncology, 28(Suppl 4), iv22-iv40."
+    },
+    {
+      "topic": "Rehabilitation after stroke: principles and evidence",
+      "findings": "• Clinical Guideline: AHA/ASA guidelines state that stroke rehabilitation should be coordinated by an interdisciplinary team. Intensive, goal-directed physical, occupational, and speech therapy should be initiated as soon as medical stability is achieved to optimize functional recovery and neuroplasticity.",
+      "links": "https://doi.org/10.1161/STR.0000000000000375",
+      "references": "Winstein, C. J., et al. (2016 / updated 2021). Guidelines for Adult Stroke Rehabilitation and Recovery: A Guideline for Healthcare Professionals From the AHA/ASA. Stroke, 47(6), e98-e169."
+    },
+    {
+      "topic": "Retinal detachment: presentation and emergency management",
+      "findings": "• Clinical Guideline: AAO Preferred Practice Patterns dictate that rhegmatogenous retinal detachment is an ophthalmic emergency presenting with sudden flashing lights, new floaters, and a visual field \"curtain.\" Immediate referral to a retinal surgeon for prompt surgical repair (scleral buckling, vitrectomy, or pneumatic retinopexy) is required to preserve vision.",
+      "links": "https://doi.org/10.1016/j.ophtha.2019.09.030",
+      "references": "Flaxel, C. J., et al. (2020). Posterior Vitreous Detachment, Retinal Breaks, and Lattice Degeneration Preferred Practice Pattern®. Ophthalmology, 127(1), P146-P181."
+    },
+    {
+      "topic": "Rh Alloimmunisation Management",
+      "findings": "• Clinical Consensus: ACOG guidelines recommend screening all pregnant women for blood group, Rh status, and red blood cell antibodies at the first prenatal visit. For Rh-D negative unsensitized women, routine administration of anti-D immune globulin at 28 weeks gestation and postpartum (plus indications for fetomaternal hemorrhage) prevents maternal alloimmunisation.",
+      "links": "https://www.acog.org/clinical/clinical-guidance/practice-bulletin/articles/2017/11/management-of-alloimmunization-during-pregnancy",
+      "references": "American College of Obstetricians and Gynecologists (ACOG). (2017). ACOG Practice Bulletin No. 192: Management of Alloimmunization During Pregnancy. Obstetrics & Gynecology, 130(5), e82-e94."
+    },
+    {
+      "topic": "rivaroxaban treatment acute deep vein thrombosis EINSTEIN",
+      "findings": "• Landmark Trial: The EINSTEIN DVT trial demonstrated that single-drug oral rivaroxaban (without initial parenteral heparin) is non-inferior to standard enoxaparin/warfarin therapy in preventing recurrent venous thromboembolism while featuring a similar safety profile, transforming modern VTE management protocols.",
+      "links": "https://doi.org/10.1056/NEJMoa1007903",
+      "references": "EINSTEIN Investigators. (2010). Oral Rivaroxaban for Symptomatic Venous Thromboembolism. New England Journal of Medicine, 363(26), 2499-2510."
+    },
+    {
+      "topic": "rosuvastatin primary prevention elevated C-reactive protein",
+      "findings": "• Landmark Trial: The JUPITER trial proved that rosuvastatin significantly reduces major cardiovascular events in apparently healthy individuals with normal LDL-C levels but elevated high-sensitivity C-reactive protein (hs-CRP ≥2.0 mg/L), establishing the clinical benefit of statins in primary prevention based on inflammatory risk markers.",
+      "links": "https://doi.org/10.1056/NEJMoa0807646",
+      "references": "Ridker, P. M., et al. (2008). Rosuvastatin to Prevent Vascular Events in Men and Women with Elevated C-Reactive Protein. New England Journal of Medicine, 359(21), 2195-2207."
+    },
+    {
+      "topic": "sacubitril valsartan heart failure reduced ejection fraction mortality",
+      "findings": "• Landmark Trial: The PARADIGM-HF trial established that the angiotensin receptor-neprilysin inhibitor (ARNI) sacubitril/valsartan is significantly superior to enalapril in reducing the rates of cardiovascular death and heart failure hospitalization in HFrEF, shaping modern guideline recommendations.",
+      "links": "https://doi.org/10.1056/NEJMoa1409055",
+      "references": "McMurray, J. J., et al. (2014). Angiotensin-Neprilysin Inhibition versus Enalapril in Heart Failure. New England Journal of Medicine, 371(11), 993-1004."
+    },
+    {
+      "topic": "Sarcoidosis systemic immunosuppression",
+      "findings": "• Clinical Guideline: ERS/WASOG consensus guidelines indicate systemic immunosuppressive therapy (corticosteroids as first-line, followed by methotrexate, azathioprine, or infliximab as steroid-sparing agents) for organ-threatening sarcoidosis involving the heart, nervous system, eyes, or severe pulmonary fibrosis.",
+      "links": "https://doi.org/10.1183/09031936.00057013",
+      "references": "Judson, M. A., et al. (2014). ERS/WASOG statement on sarcoidosis. European Respiratory Journal, 43(5), 1269-1281."
+    },
+    {
+      "topic": "Scabies: diagnosis, treatment and outbreak management",
+      "findings": "• Clinical Guideline: CDC and dermatological guidelines recommend topical 5% permethrin cream applied from the neck down as the first-line treatment for scabies, or oral ivermectin as an effective alternative. Institutional outbreaks require simultaneous treatment of all contacts and thorough environmental laundering.",
+      "links": "https://doi.org/10.15585/mmwr.rr7004a1",
+      "references": "Workowski, K. A., et al. (2021). Sexually Transmitted Infections Treatment Guidelines, 2021. MMWR Recommendations and Reports, 70(4), 1-187."
+    },
+    {
+      "topic": "Secondary immunodeficiency from biologics and steroids",
+      "findings": "• Clinical Guideline: AAAAI consensus guidelines note that long-term systemic corticosteroids and B-cell depleting biologics (e.g., rituximab) frequently cause secondary hypogammaglobulinemia and impaired cell-mediated immunity, requiring vigilant infection monitoring, prophylactic antimicrobials, and consideration of immunoglobulin replacement therapy.",
+      "links": "https://doi.org/10.1016/j.jaci.2017.04.029",
+      "references": "Perez, E. E., et al. (2017). Update on the use of immunoglobulin in human disease: A review of evidence. Journal of Allergy and Clinical Immunology, 139(3), S1-S46."
+    },
+    {
+      "topic": "Sedation outside theatres and procedural sedation safety",
+      "findings": "• Clinical Guideline: ASA guidelines for procedural sedation outside the operating room mandate strict pre-procedural airway assessments, continuous monitoring of pulse oximetry, capnography, and blood pressure, and the mandatory presence of a qualified clinician dedicated solely to monitoring the patient.",
+      "links": "https://doi.org/10.1097/ALN.0000000000001570",
+      "references": "American Society of Anesthesiologists (ASA) Task Force on Sedation and Analgesia by Non-Anesthesiologists. (2018). Practice Guidelines for Moderate Procedural Sedation and Analgesia 2018. Anesthesiology, 128(3), 437-479."
+    },
+    {
+      "topic": "Self-harm, suicide risk assessment and safe management",
+      "findings": "• Clinical Guideline: NICE and APA guidelines recommend comprehensive suicide risk assessments following acts of self-harm, evaluating intent, ideation, and protective factors. Safe management entails collaborative safety planning, restriction of lethal means, and prompt linkage to evidence-based outpatient mental health treatment.",
+      "links": "https://www.nice.org.uk/guid/cg16",
+      "references": "National Institute for Health and Care Excellence (NICE). (2004, updated 2022). Self-harm: assessment, management and longer-term provision. NICE Guideline [NG225]."
+    },
+    {
+      "topic": "semaglutide once weekly obesity weight loss STEP 1",
+      "findings": "• Landmark Trial: The STEP 1 trial demonstrated that once-weekly subcutaneous semaglutide (2.4 mg) combined with lifestyle intervention achieved a substantial, sustained mean weight loss of ~14.9% at 68 weeks in adults with obesity, reshaping clinical guidelines for obesity management.",
+      "links": "https://doi.org/10.1056/NEJMoa2032183",
+      "references": "Wilding, J. P., et al. (2021). Once-Weekly Semaglutide in Adults with Overweight or Obesity. New England Journal of Medicine, 384(11), 989-1002."
+    },
+    {
+      "topic": "sepsis bundle",
+      "findings": "• Clinical Guideline: Surviving Sepsis Campaign guidelines emphasize protocolized \"hour-1 bundle\" implementation: measuring lactate levels, obtaining blood cultures prior to antibiotics, administering broad-spectrum antimicrobials within 1 hour, initiating rapid crystalloid fluid resuscitation (30 mL/kg) for hypotension, and applying vasopressors for persistent shock.",
+      "links": "https://doi.org/10.1097/CCM.0000000000005337",
+      "references": "Evans, L., et al. (2021). Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Critical Care Medicine, 49(11), e1063-e1143."
+    },
+    {
+      "topic": "sepsis corticosteroids",
+      "findings": "• Clinical Guideline: Surviving Sepsis Campaign guidelines suggest that low-dose intravenous corticosteroids (such as IV hydrocortisone at 200 mg/day) should be administered only for patients with septic shock whose blood pressure is poorly responsive to fluid resuscitation and moderate-to-high dose vasopressors.",
+      "links": "https://doi.org/10.1097/CCM.0000000000005337",
+      "references": "Evans, L., et al. (2021). Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Critical Care Medicine, 49(11), e1063-e1143."
+    },
+    {
+      "topic": "sepsis diagnosis qSOFA SOFA criteria Sepsis-3 definition",
+      "findings": "• International Consensus: The Sepsis-3 consensus definitions define sepsis as life-threatening organ dysfunction caused by a dysregulated host response to infection, identified clinically by an acute increase of ≥2 points in the Sequential Organ Failure Assessment (SOFA) score, while qSOFA serves as a bedside screening tool.",
+      "links": "https://doi.org/10.1001/jama.2016.0287",
+      "references": "Singer, M., et al. (2016). The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA, 315(8), 801-810."
+    },
+    {
+      "topic": "sepsis early goal directed therapy",
+      "findings": "• Landmark Trial: Landmark multicenter trials (ProCESS, ARISE, ProMISE) demonstrated that protocolized, invasive early goal-directed therapy (EGDT) targeting specific central venous pressure and oxygen saturation goals does not improve survival compared to standard resuscitation protocols guided by clinical assessment.",
+      "links": "https://doi.org/10.1056/NEJMoa1401602",
+      "references": "ProCESS Investigators. (2014). A Randomized Trial of Protocol-Based Care for Early Septic Shock. New England Journal of Medicine, 370(18), 1683-1693."
+    },
+    {
+      "topic": "sepsis septic shock management surviving sepsis campaign 2021 guideline antibiotics fluids vasopressors",
+      "findings": "• Clinical Guideline: The 2021 Surviving Sepsis Campaign guidelines provide updated recommendations, emphasizing early broad-spectrum antibiotics within 1 hour, cautious and tailored fluid administration, and early norepinephrine infusion via peripheral or central access to maintain a mean arterial pressure target of 65 mm Hg.",
+      "links": "https://doi.org/10.1097/CCM.0000000000005337",
+      "references": "Evans, L., et al. (2021). Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Critical Care Medicine, 49(11), e1063-e1143."
+    }
+  ]
+}
