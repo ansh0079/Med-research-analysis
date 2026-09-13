@@ -30,6 +30,15 @@ const mockSearchResponse = {
 };
 
 test.describe('beta smoke', () => {
+  test('page loads do not consume the fallback API quota', async ({ request }) => {
+    const page = await request.get('/');
+    expect(page.status()).toBe(200);
+    expect(page.headers()['x-ratelimit-limit']).toBeUndefined();
+    const missingApi = await request.get('/api/release-check-unknown-route');
+    expect(missingApi.status()).toBe(404);
+    expect(missingApi.headers()['x-ratelimit-limit']).toBe('200');
+  });
+
   test.beforeEach(async ({ page }) => {
     // Skip the cookie-consent banner — added after this suite was written and
     // otherwise intercepts clicks. Onboarding is left untouched: one test below
@@ -68,7 +77,7 @@ test.describe('beta smoke', () => {
   });
 
   test('serves the current app shell', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
     await dismissChromeOverlays(page);
 
     await expect(page).toHaveTitle(/Signal MD/i);
@@ -84,7 +93,7 @@ test.describe('beta smoke', () => {
     // Implicit form submission is the way most people search, and it is invisible
     // to unit tests: it depends on the input sitting inside a <form> that has an
     // enabled submit button, which any layout refactor can quietly break.
-    await page.goto('/search');
+    await page.goto('/search', { waitUntil: 'domcontentloaded' });
     await dismissChromeOverlays(page);
 
     const box = page.getByPlaceholder(/SGLT2 inhibitors/i);
@@ -95,7 +104,7 @@ test.describe('beta smoke', () => {
   });
 
   test('loads the search route and returns mocked results', async ({ page }) => {
-    await page.goto('/search');
+    await page.goto('/search', { waitUntil: 'domcontentloaded' });
     await dismissChromeOverlays(page);
 
     const searchBox = page.getByPlaceholder(/SGLT2 inhibitors/i);
@@ -113,7 +122,7 @@ test.describe('beta smoke', () => {
   });
 
   test('renders the compliance notice and legal routes', async ({ page }) => {
-    await page.goto('/search');
+    await page.goto('/search', { waitUntil: 'domcontentloaded' });
     await dismissChromeOverlays(page, { keepPhi: true });
 
     await expect(page.getByText(/not for protected health information/i)).toBeVisible();
@@ -151,7 +160,7 @@ test.describe('beta smoke', () => {
       });
     });
 
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
     // PHI notice sits at z-100; dismiss so mobile Next CTAs stay clickable even if z-index regresses.
     await dismissPhiNotice(page);
 

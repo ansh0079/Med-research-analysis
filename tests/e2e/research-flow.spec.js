@@ -134,7 +134,7 @@ test.describe('search → results → interaction flow', () => {
   });
 
   test('homepage loads with correct branding', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
     await dismissChromeOverlays(page);
     await expect(page).toHaveTitle(/Signal MD/i);
     // Authenticated storageState renders the app shell (SearchPage) at `/`, not marketing CTAs.
@@ -143,7 +143,7 @@ test.describe('search → results → interaction flow', () => {
   });
 
   test('search returns results and renders article cards', async ({ page }) => {
-    await page.goto('/search');
+    await page.goto('/search', { waitUntil: 'domcontentloaded' });
     await dismissChromeOverlays(page);
 
     const searchBox = page.getByPlaceholder(/SGLT2 inhibitors/i);
@@ -158,7 +158,7 @@ test.describe('search → results → interaction flow', () => {
   });
 
   test('result stats banner shows counts', async ({ page }) => {
-    await page.goto('/search');
+    await page.goto('/search', { waitUntil: 'domcontentloaded' });
     await dismissChromeOverlays(page);
 
     await page.getByPlaceholder(/SGLT2 inhibitors/i).fill('sglt2 heart failure');
@@ -170,7 +170,7 @@ test.describe('search → results → interaction flow', () => {
   });
 
   test('filter within results narrows list', async ({ page }) => {
-    await page.goto('/search');
+    await page.goto('/search', { waitUntil: 'domcontentloaded' });
     await dismissChromeOverlays(page);
 
     await page.getByPlaceholder(/SGLT2 inhibitors/i).fill('sglt2 heart failure');
@@ -237,7 +237,7 @@ test.describe('search → results → interaction flow', () => {
       });
     });
 
-    await page.goto('/search');
+    await page.goto('/search', { waitUntil: 'domcontentloaded' });
     await dismissChromeOverlays(page);
     await page.getByPlaceholder(/SGLT2 inhibitors/i).fill('sglt2 heart failure');
     await page.getByRole('banner').getByRole('button', { name: /^Search$/ }).click();
@@ -252,7 +252,7 @@ test.describe('search → results → interaction flow', () => {
   });
 
   test('legal routes work', async ({ page }) => {
-    await page.goto('/search');
+    await page.goto('/search', { waitUntil: 'domcontentloaded' });
     // Keep PHI notice — this test asserts the compliance chrome itself.
     await dismissChromeOverlays(page, { keepPhi: true });
     await expect(page.getByText(/not for protected health information/i)).toBeVisible();

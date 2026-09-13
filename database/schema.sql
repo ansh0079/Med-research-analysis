@@ -1111,7 +1111,7 @@ CREATE TABLE IF NOT EXISTS teaching_objects (
     generated_at TEXT DEFAULT (datetime('now')),
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now'))
-, curriculum_topic_id TEXT REFERENCES curriculum_topics(id));
+, curriculum_topic_id INTEGER REFERENCES curriculum_topics(id));
 
 CREATE TABLE IF NOT EXISTS team_activity (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -1214,7 +1214,7 @@ CREATE TABLE IF NOT EXISTS teams (
 CREATE TABLE IF NOT EXISTS topic_aliases (
     id                  TEXT PRIMARY KEY,
     alias_norm          TEXT NOT NULL UNIQUE,
-    curriculum_topic_id TEXT NOT NULL REFERENCES curriculum_topics(id) ON DELETE CASCADE,
+    curriculum_topic_id INTEGER NOT NULL REFERENCES curriculum_topics(id) ON DELETE CASCADE,
     
     resolution          TEXT NOT NULL DEFAULT 'manual',
     confidence          REAL NOT NULL DEFAULT 1.0,

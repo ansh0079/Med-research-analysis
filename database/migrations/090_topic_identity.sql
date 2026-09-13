@@ -16,7 +16,7 @@
 CREATE TABLE IF NOT EXISTS topic_aliases (
     id                  TEXT PRIMARY KEY,
     alias_norm          TEXT NOT NULL UNIQUE,
-    curriculum_topic_id TEXT NOT NULL REFERENCES curriculum_topics(id) ON DELETE CASCADE,
+    curriculum_topic_id INTEGER NOT NULL REFERENCES curriculum_topics(id) ON DELETE CASCADE,
     -- how the mapping was derived: exact | prefix | subset | jaccard | promoted | manual
     resolution          TEXT NOT NULL DEFAULT 'manual',
     confidence          REAL NOT NULL DEFAULT 1.0,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS topic_aliases (
 
 CREATE INDEX IF NOT EXISTS idx_topic_aliases_topic ON topic_aliases (curriculum_topic_id);
 
-ALTER TABLE teaching_objects ADD COLUMN curriculum_topic_id TEXT REFERENCES curriculum_topics(id);
+ALTER TABLE teaching_objects ADD COLUMN curriculum_topic_id INTEGER REFERENCES curriculum_topics(id);
 
 CREATE INDEX IF NOT EXISTS idx_teaching_objects_curriculum_topic
     ON teaching_objects (curriculum_topic_id);

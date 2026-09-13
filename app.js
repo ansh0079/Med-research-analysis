@@ -513,8 +513,9 @@ if (process.env.NODE_ENV !== 'production' || process.env.ENABLE_API_DOCS === 'tr
     }
 }
 
-// Global rate-limit fallback for any route not explicitly covered
-app.use(rateLimit(200, 60));
+// API fallback only: static chunks and page navigation must not consume the
+// shared API quota or a series of normal page loads starts returning 429.
+app.use('/api', rateLimit(200, 60));
 
 // Serve built frontend in production — placed after all API routes
 // so express.static never shadows an /api endpoint

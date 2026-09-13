@@ -1136,7 +1136,7 @@ CREATE TABLE IF NOT EXISTS teaching_objects (
     generated_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
     created_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')),
     updated_at TEXT DEFAULT (to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))
-, curriculum_topic_id TEXT REFERENCES curriculum_topics(id));
+, curriculum_topic_id INTEGER REFERENCES curriculum_topics(id));
 
 CREATE TABLE IF NOT EXISTS teams (
     id TEXT PRIMARY KEY,
@@ -1239,7 +1239,7 @@ CREATE TABLE IF NOT EXISTS team_saved_articles (
 CREATE TABLE IF NOT EXISTS topic_aliases (
     id                  TEXT PRIMARY KEY,
     alias_norm          TEXT NOT NULL UNIQUE,
-    curriculum_topic_id TEXT NOT NULL REFERENCES curriculum_topics(id) ON DELETE CASCADE,
+    curriculum_topic_id INTEGER NOT NULL REFERENCES curriculum_topics(id) ON DELETE CASCADE,
     
     resolution          TEXT NOT NULL DEFAULT 'manual',
     confidence          REAL NOT NULL DEFAULT 1.0,

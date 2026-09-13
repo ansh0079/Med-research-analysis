@@ -228,7 +228,7 @@ test.describe('learning pipeline: search → synopsis → quiz → mastery', () 
 
   test('full pipeline from search to mastery update', async ({ page }) => {
     // ── 1. Search ──
-    await page.goto('/search');
+    await page.goto('/search', { waitUntil: 'domcontentloaded' });
     await dismissChromeOverlays(page);
     const searchBox = page.getByPlaceholder(/SGLT2 inhibitors/i);
     await expect(searchBox).toBeVisible();

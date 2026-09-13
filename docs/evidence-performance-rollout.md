@@ -48,3 +48,18 @@ Read from production, before this release:
   fallback rates and LLM spend. Do not infer production speedup from unit tests.
 - Corpus-wide editorial verification, full-text acquisition for abstract-only
   sources, and a controlled learner trial remain separate data work.
+
+## Release checks
+
+- Fresh SQLite and PostgreSQL databases must both bootstrap and run migrations.
+  Topic references use INTEGER in baseline schemas; the existing PostgreSQL
+  adapter changes references to UUID where the live parent table uses UUIDs.
+- Docker builds use the committed lockfile, including Linux native bindings.
+  Dependency security findings fail the security job rather than being ignored.
+- Browser smoke tests assert rendered controls after DOM readiness. External
+  font loading is not the readiness signal. Page assets do not consume the
+  fallback API quota; unknown API routes remain rate limited.
+- Hetzner is the active deployment workflow. Docker Hub publishing is optional
+  and requires `DOCKERHUB_PUBLISH_ENABLED=true`, Docker Hub credentials, and
+  the environment required by `npm run beta:safety`. Do not enable it until
+  those prerequisites are configured. Publishing failures then fail the job.
