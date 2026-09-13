@@ -29,6 +29,28 @@ Audited against local SQLite (`database/app.db`) after batches 1–19.
 
 Numbering skipped **126–174** and **276–299**. `400-425.docx` was a duplicate of batch 15 and was not imported again.
 
+## Live app (signalmd.co) — not imported yet
+
+Checked the public guidelines/knowledge APIs on 13 Sep 2026. Production has a large existing guideline store (~18k rows from other pipelines), but **the curated literature-pack import has not been run there**.
+
+Distinctive pack topics that exist in local SQLite and are **missing on signalmd.co**:
+
+- Wolfram syndrome DIDMOAD
+- Silo Filler's Disease
+- Venovenous ECMO for severe ARDS
+- metylene blue
+- management of HF eith Reduced ejection fraction
+
+Overlapping titles such as Hyperphosphataemia in CKD exist on production from a different AI-extraction run (different recommendation text, not the pack import). Topic knowledge for Wolfram / Zollinger-Ellison returns `found: false`.
+
+After this branch is deployed, run on the production host:
+
+```bash
+npm run populate:empty-topics
+```
+
+That writes pack guidelines, paper teaching objects, and fetched abstracts/OA full text into the live database. This agent environment has no production `DATABASE_URL`, so the import was not run against signalmd.co from here.
+
 ## Completeness of imported topics
 
 - **423 / 423** pack topics have at least one paper (`teaching_objects` type `paper`).
