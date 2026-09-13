@@ -37,12 +37,14 @@ async function collectSearchLearningEvaluation(db, { days = 14 } = {}) {
         const rows = await db.all(
             `SELECT o.user_id, o.quiz_attempt_id, o.bandit_arm_id, q.is_correct
              FROM search_learning_outcomes o
-             JOIN quiz_attempts q ON q.id = o.quiz_attempt_id
+             JOIN quiz_attempts q ON CAST(q.id AS TEXT) = CAST(o.quiz_attempt_id AS TEXT)
                 AND CAST(q.user_id AS TEXT) = CAST(o.user_id AS TEXT)
              WHERE o.attributed_at >= ? AND q.claim_key IS NOT NULL
                AND NOT EXISTS (
                    SELECT 1 FROM quiz_attempts prior
-                   WHERE prior.user_id = q.user_id AND prior.claim_key = q.claim_key AND prior.id < q.id
+                   WHERE prior.user_id = q.user_id AND prior.claim_key = q.claim_key
+                     AND (prior.created_at < q.created_at OR
+                         (prior.created_at = q.created_at AND CAST(prior.id AS TEXT) < CAST(q.id AS TEXT)))
                )
              ORDER BY o.id DESC LIMIT 10000`, [since]);
         return { available: true, ...summarizeLearningOutcomes(rows) };

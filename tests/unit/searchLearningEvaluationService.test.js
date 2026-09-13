@@ -2,6 +2,20 @@
 
 const { summarizeLearningOutcomes, collectSearchLearningEvaluation, assessLearningPromotionSafety } = require('../../server/services/searchLearningEvaluationService');
 
+test('first attempts use chronological order instead of UUID lexical order', async () => {
+    const Sqlite = require('better-sqlite3');
+    const sqlite = new Sqlite(':memory:');
+    sqlite.exec(`CREATE TABLE quiz_attempts (id TEXT, user_id TEXT, claim_key TEXT, is_correct INTEGER, created_at TEXT);
+        CREATE TABLE search_learning_outcomes (id INTEGER, user_id TEXT, quiz_attempt_id TEXT, bandit_arm_id TEXT, attributed_at TEXT);
+        INSERT INTO quiz_attempts VALUES ('z-first', 'u', 'claim', 1, '2026-01-01'), ('a-repeat', 'u', 'claim', 0, '2026-01-02');
+        INSERT INTO search_learning_outcomes VALUES (1, 'u', 'z-first', 'arm', '2099-01-01'), (2, 'u', 'a-repeat', 'arm', '2099-01-01');`);
+    try {
+        const result = await collectSearchLearningEvaluation({ all: async (sql, params) => sqlite.prepare(sql).all(...params) });
+        expect(result.available).toBe(true);
+        expect(result.arms).toEqual([{ armId: 'arm', attempts: 1, learners: 1, correct: 1, accuracy: 1 }]);
+    } finally { sqlite.close(); }
+});
+
 test('counts each quiz attempt once and excludes conflicting arm attribution', () => {
     const row = { user_id: 'u', quiz_attempt_id: 1, bandit_arm_id: 'a', is_correct: 1 };
     const report = summarizeLearningOutcomes([row, row, { ...row, quiz_attempt_id: 2, is_correct: 0 }]);
