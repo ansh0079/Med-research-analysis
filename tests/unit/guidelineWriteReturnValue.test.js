@@ -167,4 +167,15 @@ describe('upsertGuidelineDocument on Postgres', () => {
         const second = await host.upsertGuidelineDocument({ pmcid: 'PMC123', title: 'A (dup)', sourceBody: 'NICE' });
         expect(second).toBe(first);
     });
+
+    test.each([
+        ['pmid', '12345678'],
+        ['doi', '10.1000/example'],
+        ['sourceUrl', 'https://example.test/guideline'],
+    ])('deduplicates documents by %s when no PMCID exists', async (field, value) => {
+        const host = buildHost({ isPostgres: true });
+        const first = await host.upsertGuidelineDocument({ [field]: value, title: 'A' });
+        const second = await host.upsertGuidelineDocument({ [field]: value, title: 'A duplicate' });
+        expect(second).toBe(first);
+    });
 });

@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "source": "outputs/five-topic-literature-links/clinical_topics_literature_5_with_links.xlsx",
+  "topics": [
+    {
+      "topic": "Achalasia endoscopic and surgical therapy",
+      "documents": [
+        { "title": "ACG Clinical Guidelines: Diagnosis and Management of Achalasia", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9896940/", "pmcid": "PMC9896940", "pmid": "32773454", "sourceBody": "American College of Gastroenterology", "year": 2020, "type": "clinical_practice_guideline" },
+        { "title": "Endoscopic or surgical myotomy in idiopathic achalasia", "url": "https://pubmed.ncbi.nlm.nih.gov/31800987/", "pmid": "31800987", "type": "randomized_controlled_trial" },
+        { "title": "Systematic review and network meta-analysis of achalasia treatments", "url": "https://doi.org/10.1016/S2468-1253(20)30296-X", "doi": "10.1016/S2468-1253(20)30296-X", "type": "systematic_review_meta_analysis" }
+      ]
+    },
+    {
+      "topic": "Acute bacterial meningitis adjunctive dexamethasone",
+      "documents": [
+        { "title": "WHO guidelines on meningitis diagnosis, treatment and care", "url": "https://www.who.int/publications/i/item/9789240108042", "sourceBody": "World Health Organization", "year": 2025, "type": "clinical_practice_guideline" },
+        { "title": "Adjunctive dexamethasone in bacterial meningitis: individual patient data meta-analysis", "url": "https://pubmed.ncbi.nlm.nih.gov/20138011/", "pmid": "20138011", "type": "meta_analysis" },
+        { "title": "Corticosteroids for acute bacterial meningitis", "url": "https://pubmed.ncbi.nlm.nih.gov/26362566/", "pmid": "26362566", "sourceBody": "Cochrane", "type": "systematic_review_meta_analysis" }
+      ]
+    },
+    {
+      "topic": "Acute bacterial meningitis empiric therapy and dexamethasone",
+      "documents": [
+        { "title": "NICE NG240: Meningitis (bacterial) and meningococcal disease", "url": "https://www.nice.org.uk/guidance/ng240", "sourceBody": "NICE", "year": 2024, "type": "clinical_practice_guideline" },
+        { "title": "Corticosteroids for acute bacterial meningitis", "url": "https://pubmed.ncbi.nlm.nih.gov/26362566/", "pmid": "26362566", "sourceBody": "Cochrane", "type": "systematic_review_meta_analysis" },
+        { "title": "Dexamethasone in adults with bacterial meningitis", "url": "https://pubmed.ncbi.nlm.nih.gov/12432041/", "pmid": "12432041", "type": "randomized_controlled_trial" }
+      ]
+    },
+    {
+      "topic": "Acute liver failure transplant referral",
+      "documents": [
+        { "title": "EASL Clinical Practical Guidelines on acute fulminant liver failure", "url": "https://pubmed.ncbi.nlm.nih.gov/28417882/", "pmid": "28417882", "sourceBody": "European Association for the Study of the Liver", "type": "clinical_practice_guideline" },
+        { "title": "Acute Liver Failure Guidelines", "url": "https://pubmed.ncbi.nlm.nih.gov/37306377/", "pmid": "37306377", "sourceBody": "American College of Gastroenterology", "type": "clinical_practice_guideline" },
+        { "title": "Acute liver failure: a practical update", "url": "https://www.jhep-reports.eu/article/S2589-5559(24)00158-0/fulltext", "doi": "10.1016/j.jhepr.2024.101131", "type": "review_article" }
+      ]
+    },
+    {
+      "topic": "Acute myeloid leukemia venetoclax azacitidine",
+      "documents": [
+        { "title": "Diagnosis and management of AML in adults: 2022 ELN recommendations", "url": "https://ashpublications.org/blood/article/140/12/1345/485817/Diagnosis-and-management-of-AML-in-adults-2022", "doi": "10.1182/blood.2022016867", "sourceBody": "European LeukemiaNet", "year": 2022, "type": "clinical_practice_guideline" },
+        { "title": "Azacitidine and venetoclax in previously untreated AML", "url": "https://pubmed.ncbi.nlm.nih.gov/32786187/", "pmid": "32786187", "type": "randomized_controlled_trial" },
+        { "title": "Venetoclax and azacitidine systematic review/meta-analysis", "url": "https://doi.org/10.1080/16078454.2023.2198098", "doi": "10.1080/16078454.2023.2198098", "type": "systematic_review_meta_analysis" }
+      ]
+    }
+  ]
+}

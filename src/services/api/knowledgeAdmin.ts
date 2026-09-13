@@ -79,9 +79,20 @@ export type SearchQualityDashboard = {
     zeroResultRate: number | null;
     resultSetCacheHitRate: number | null;
     p95LatencyMs: number | null;
+    p50LatencyMs: number | null;
     clickThroughRate: number | null;
   };
   sourceCache: Record<string, { hitRate?: number | null; requests?: number | null; [key: string]: unknown }>;
+  performance?: {
+    stages: Record<string, { samples: number; p50Ms: number | null; p95Ms: number | null }>;
+    providers: Record<string, { requests: number; failures: number; timeouts: number }>;
+  };
+  learning?: {
+    available: boolean;
+    totalAttempts: number;
+    limitation: string;
+    arms: Array<{ armId: string; attempts: number; learners: number; correct: number; accuracy: number }>;
+  };
   intentMix: Record<string, number>;
   shadowRanker: {
     sampleSize: number;
@@ -97,13 +108,13 @@ export type SearchQualityDashboard = {
 };
 
 export type SearchRankerPromotionGate = {
-  recommendation: 'promote' | 'hold';
+  recommendation: 'evaluate' | 'hold';
   reason: string;
   rolloutEnv: { currentMode: string };
   checks: Array<{
     id: string;
     label: string;
-    status: 'pass' | 'fail' | 'warn';
+    status: 'pass' | 'fail' | 'warn' | 'insufficient_data';
     value: unknown;
     threshold: string;
   }>;

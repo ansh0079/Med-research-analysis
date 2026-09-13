@@ -342,6 +342,7 @@ async function applyPicoRerankStage({
     serverConfig,
     fetchImpl,
     telemetry,
+    cache = null,
 }) {
     if (!shouldUsePicoReranker() || !pico || !Array.isArray(articles) || articles.length < 2) {
         return articles;
@@ -353,9 +354,12 @@ async function applyPicoRerankStage({
     const picoProfile = normalizePicoProfileForReranker(pico, query, queryIntent);
 
     try {
+        const rerankTelemetry = {};
         const reranked = await rerankArticlesByPico(articles, picoProfile, {
             ai,
             serverConfig,
+            cache,
+            telemetry: rerankTelemetry,
             logWarn: (meta, message) => {
                 const payload = typeof meta === 'object' && meta !== null ? meta : {};
                 // Keep this at debug-level semantics; the heuristic fallback is expected in local/dev.
@@ -368,7 +372,8 @@ async function applyPicoRerankStage({
         if (telemetry && typeof telemetry === 'object') {
             telemetry.picoRerank = {
                 used: true,
-                aiUsed: Boolean(ai),
+                aiUsed: false,
+                ...rerankTelemetry,
                 ms: Date.now() - started,
                 candidateCount: articles.length,
                 rerankedCount: Array.isArray(reranked) ? reranked.length : 0,
@@ -537,6 +542,7 @@ async function fetchAndRankSearchArticles({
         // PICO decomposition runs in parallel with evidence fetching
         const picoPromise = withSpan('search.pico_decomposition', { 'search.query': query }, () => (
             decomposePico(query, serverConfig, fetchImpl, cache).catch(() => null)
+                .finally(() => { timings.picoMs = Date.now() - started; })
         ));
 
         const fetchLimit = candidateFetchLimit(safeLimit);
@@ -558,8 +564,8 @@ async function fetchAndRankSearchArticles({
             parsedStudyTypes,
             parsedYearFilters,
         }));
-        const pico = await picoPromise;
         timings.fetchMs = Date.now() - started;
+        const pico = await picoPromise;
         _trace('raw', raw);
 
         // Post-retrieval study-type filter: PubMed is already filtered at the query level;
@@ -663,7 +669,9 @@ async function fetchAndRankSearchArticles({
             serverConfig,
             fetchImpl,
             telemetry,
+            cache,
         }));
+        timings.picoRerankMs = telemetry.picoRerank?.ms ?? 0;
         timings.rankMs = Date.now() - rankStarted;
         _trace('afterRerank', articles);
 

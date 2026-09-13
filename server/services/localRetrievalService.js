@@ -1,4 +1,5 @@
 'use strict';
+const { assessTopicRelevance, classifyImportedDocument } = require('../utils/importEvidenceQuality');
 
 function tokenize(text) {
     return String(text || '').toLowerCase().split(/[^a-z0-9]+/).filter((token) => token.length >= 3);
@@ -67,11 +68,23 @@ async function searchLocalArticleCache(db, {
     limit = 20,
     enabled = String(process.env.LOCAL_RETRIEVAL_ENABLED || 'true').toLowerCase() !== 'false',
 } = {}) {
-    if (!enabled || !db?.searchCachedArticlesLocal || !query) {
+    if (!enabled || (!db?.searchCachedArticlesLocal && !db?.getLocalTopicDocuments) || !query) {
         return { articles: [], used: false, available: Boolean(db?.searchCachedArticlesLocal) };
     }
     const fetchLimit = Math.min(Math.max(Number(limit) || 20, 1) * 4, 100);
-    const articles = await db.searchCachedArticlesLocal(query, { limit: fetchLimit }).catch(() => []);
+    const [cached, documents] = await Promise.all([
+        db.searchCachedArticlesLocal ? db.searchCachedArticlesLocal(query, { limit: fetchLimit }).catch(() => []) : [],
+        db.getLocalTopicDocuments ? db.getLocalTopicDocuments(query, { limit: 12 }).catch(() => []) : [],
+    ]);
+    const local = documents.map((doc) => ({
+        uid: doc.pmid || doc.pmcid || doc.doi,
+        pmid: doc.pmid, pmcid: doc.pmcid, doi: doc.doi, title: doc.title,
+        abstract: doc.text_excerpt, pubdate: String(doc.source_year || ''),
+        journal: doc.source_body, source: 'local', _source: 'local',
+        url: doc.source_url, documentId: doc.id, fullTextSource: doc.full_text_source,
+        pubtype: classifyImportedDocument({ title: doc.title }) === 'clinical_practice_guideline' ? ['Practice Guideline'] : [],
+    })).filter((article) => assessTopicRelevance(query, article).accepted);
+    const articles = [...new Map([...cached, ...local].map((article) => [String(article.pmid || article.uid || article.doi), article])).values()];
     const ranked = rankLocalArticlesHybrid(articles, query, limit);
     return {
         articles: ranked,

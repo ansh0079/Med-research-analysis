@@ -27,7 +27,15 @@ async function evaluateSearchRankerPromotionGate(db, {
         ? await db.getSearchGoldJudgmentStats(days).catch(() => ({ total: 0, positive: 0, negative: 0, byLabel: {} }))
         : { total: 0, positive: 0, negative: 0, byLabel: {} };
     const positiveGoldRate = gold.total ? gold.positive / gold.total : null;
+    const learning = dashboard.learning;
     const checks = [
+        {
+            id: 'learning_outcomes',
+            label: 'Attributed first-attempt learning outcomes',
+            value: learning.available ? learning.totalAttempts : null,
+            threshold: '>= 30',
+            ...pass(learning.available ? learning.totalAttempts : null, (value) => value >= 30),
+        },
         {
             id: 'search_volume',
             label: 'Search volume',
@@ -88,21 +96,22 @@ async function evaluateSearchRankerPromotionGate(db, {
 
     const failed = checks.filter((check) => check.status === 'fail');
     const insufficient = checks.filter((check) => check.status === 'insufficient_data');
-    const recommendation = failed.length === 0 && insufficient.length === 0 ? 'promote' : 'hold';
+    const recommendation = failed.length === 0 && insufficient.length === 0 ? 'evaluate' : 'hold';
     return {
         generatedAt: new Date().toISOString(),
         windowDays: dashboard.windowDays,
         recommendation,
-        reason: recommendation === 'promote'
-            ? 'Shadow ranker operating signals are within promotion thresholds.'
+        reason: recommendation === 'evaluate'
+            ? 'Operating checks pass. Run a controlled learning evaluation before promotion; observational accuracy is not causal evidence.'
             : 'Keep the ranker in shadow mode until failed or missing promotion checks are resolved.',
         checks,
         thresholds,
         dashboard,
         gold,
+        learning,
         rolloutEnv: {
             currentMode: String(process.env.SEARCH_SHADOW_RANKER_MODE || 'shadow').toLowerCase(),
-            promoteWith: 'SEARCH_SHADOW_RANKER_MODE=apply',
+            promoteWith: null,
         },
     };
 }

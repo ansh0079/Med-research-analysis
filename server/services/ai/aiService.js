@@ -166,8 +166,8 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
     const geminiBreaker = new CircuitBreaker(callGeminiRaw, { failureThreshold: 5, resetTimeoutMs: 30000 });
     const claudeBreaker = new CircuitBreaker(callClaudeRaw, { failureThreshold: 5, resetTimeoutMs: 30000 });
 
-    async function callMistralAIRaw(prompt, model = PINNED_MODELS.mistral, { temperature = TEMPERATURE.analysis, maxOutputTokens, jsonMode = false } = {}) {
-        return proxy.mistralChat(prompt, { model, temperature, maxOutputTokens, jsonMode });
+    async function callMistralAIRaw(prompt, model = PINNED_MODELS.mistral, { temperature = TEMPERATURE.analysis, maxOutputTokens, jsonMode = false, timeoutMs } = {}) {
+        return proxy.mistralChat(prompt, { model, temperature, maxOutputTokens, jsonMode, timeoutMs });
     }
 
 

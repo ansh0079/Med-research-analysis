@@ -280,8 +280,7 @@ function registerSynthesisRoutes(app, {
     // POST /api/ai/synopsis
     // Single-article structured synopsis — returns the 13-field schema.
     // Cached 24 hours. Both sync and async go through getOrEnqueuePaperSynopsis.
-    // Use body.async=true to queue a durable job (poll GET /api/ai/jobs/:jobKey);
-    // default/async=false runs forceSync inline and returns the result directly.
+    // Queue by default; explicit async=false retains the synchronous API contract.
     // ─────────────────────────────────────────────────────────────────
     app.post('/api/ai/synopsis', limitBodySize(512 * 1024), requireJson, requireAiAuth, requirePaidFeature('aiSynthesis'), rateLimit(20, 60), validateBody(schemas.synopsis), async (req, res) => {
         const { article, provider = 'auto', async: asyncJob, topic = '', trainingStage: requestedTrainingStage = null } = req.body;
@@ -294,7 +293,7 @@ function registerSynthesisRoutes(app, {
                 });
                 trainingStage = profile?.trainingStage || profile?.training_stage || null;
             }
-            const forceSync = asyncJob !== true;
+            const forceSync = asyncJob === false;
             const out = await getOrEnqueuePaperSynopsis({
                 db,
                 article,

@@ -53,12 +53,12 @@ function makeDb({ searches = 60, shadowSamples = 30, top1Changes = 0, gold = nul
 }
 
 describe('searchRankerPromotionGateService', () => {
-    test('promotes when search, shadow, gold, and safety checks pass', async () => {
+    test('holds without learning outcomes even when engagement checks pass', async () => {
         const gate = await evaluateSearchRankerPromotionGate(makeDb());
 
-        expect(gate.recommendation).toBe('promote');
-        expect(gate.checks.every((check) => check.status === 'pass')).toBe(true);
-        expect(gate.rolloutEnv.promoteWith).toBe('SEARCH_SHADOW_RANKER_MODE=apply');
+        expect(gate.recommendation).toBe('hold');
+        expect(gate.checks.find((check) => check.id === 'learning_outcomes').status).toBe('fail');
+        expect(gate.rolloutEnv.promoteWith).toBeNull();
     });
 
     test('holds when shadow ranker disagreement is too high', async () => {

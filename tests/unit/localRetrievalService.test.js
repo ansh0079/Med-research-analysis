@@ -6,6 +6,15 @@ const {
 } = require('../../server/services/localRetrievalService');
 
 describe('localRetrievalService', () => {
+    test('retrieves topic documents with stored text and rejects unrelated documents', async () => {
+        const db = { getLocalTopicDocuments: jest.fn(async () => [
+            { id: 1, pmid: '123', title: 'EASL guidelines on ascites', text_excerpt: 'Ascites management', full_text_source: 'jats' },
+            { id: 2, pmid: '456', title: 'Diabetes treatment', text_excerpt: 'Glucose control' },
+        ]) };
+        const result = await searchLocalArticleCache(db, { query: 'ascites management' });
+        expect(result.articles).toHaveLength(1);
+        expect(result.articles[0]).toMatchObject({ documentId: 1, pmid: '123', fullTextSource: 'jats' });
+    });
     test('hybrid reranking prefers title and abstract matches over weak cached rows', () => {
         const ranked = rankLocalArticlesHybrid([
             { uid: 'weak', title: 'Cell culture cytokine pathway', abstract: 'mouse model', pubdate: '1999' },

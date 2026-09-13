@@ -14,6 +14,7 @@ const crypto = require('crypto');
 const logger = require('../config/logger');
 const { parseJsonBlock, parseJsonArrayBlock } = require('../utils/parseJson');
 const { resolveProvider } = require('../utils/aiProvider');
+const { getCachedSearchResult, setCachedSearchResult, shareSearchComputation } = require('./searchResultCacheService');
 
 const RERANK_TEMPERATURE = 0.1;
 const PICO_CACHE_TTL_SECONDS = 3600; // 1 hour
@@ -297,7 +298,7 @@ function computeHeuristicScore(article, picoProfile) {
  * @param {Function} [options.logWarn]
  * @returns {Promise<object[]>} articles augmented with `_rerank` score object, sorted descending
  */
-async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, logWarn }) {
+async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, logWarn, cache = null, telemetry = null }) {
     if (!Array.isArray(articles) || articles.length === 0) {
         return [];
     }
@@ -307,6 +308,7 @@ async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, l
 
     // If no meaningful PICO profile, fall back to heuristic + study type sorting
     if (isEmptyProfile || !ai) {
+        if (telemetry) { telemetry.fallback = true; telemetry.aiUsed = false; }
         logWarn?.({ articleCount: safeArticles.length }, 'No PICO profile or AI service; using heuristic fallback');
         return safeArticles
             .map((article) => ({
@@ -321,17 +323,28 @@ async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, l
 
     let scores = null;
     const started = Date.now();
+    const cacheKey = `pico:scores:v1:${crypto.createHash('sha256').update(JSON.stringify({ prompt, provider, model })).digest('hex')}`;
+    const cached = await getCachedSearchResult(cache, cacheKey);
+    if (telemetry) telemetry.cacheHit = Boolean(cached);
     try {
         // callText routes to the resolved provider (claude/gemini/mistral). A bare
         // gemini/else split previously sent claude models to the Mistral endpoint.
-        const rawText = await ai.callText(prompt, provider, model, { temperature: RERANK_TEMPERATURE, maxOutputTokens: 2048 });
-        scores = parseBatchScores(rawText, safeArticles.length);
-        if (!scores || scores.length === 0) {
-            logWarn?.({ rawPreview: String(rawText).slice(0, 200) }, 'Reranker returned no parseable scores');
-        }
+        const result = cached || await shareSearchComputation(cacheKey, async () => {
+            const configured = Number(process.env.SEARCH_RERANK_TIMEOUT_MS || 4000);
+            const timeoutMs = Number.isFinite(configured) ? Math.min(15000, Math.max(500, configured)) : 4000;
+            const rawText = await ai.callText(prompt, provider, model, { temperature: RERANK_TEMPERATURE, maxOutputTokens: 2048, timeoutMs });
+            const parsed = parseBatchScores(rawText, safeArticles.length);
+            const value = { scores: parsed?.length ? parsed : null };
+            await setCachedSearchResult(cache, cacheKey, value, value.scores ? 3600 : 15);
+            return value;
+        });
+        scores = result.scores;
     } catch (err) {
+        await setCachedSearchResult(cache, cacheKey, { scores: null }, 15);
+        if (telemetry) telemetry.timedOut = /timeout|timed out|abort/i.test(String(err?.message));
         logWarn?.({ err, provider, model, durationMs: Date.now() - started }, 'Reranker LLM call failed; falling back to heuristic');
     }
+    if (telemetry) { telemetry.fallback = !scores; telemetry.aiUsed = Boolean(scores) && !cached; }
 
     // If LLM scoring failed, use heuristic fallback
     if (!scores) {

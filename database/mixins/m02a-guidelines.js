@@ -3,6 +3,7 @@
 const { isServableGuideline } = require('../../server/utils/guidelineQuality');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
 const { assessGuidelineQuality } = require('../../server/services/guidelineQualityService');
+const { normalizeStoredDocument } = require('../../server/utils/importEvidenceQuality');
 
 /**
  * A guideline row is only servable if its text actually reads as a recommendation.
@@ -152,27 +153,48 @@ async upsertGuidelineDocument(doc) {
         ? String(doc.fullText).trim().split(/\s+/).length
         : null;
 
-    // Try pmcid-keyed upsert first.
-    if (doc.pmcid) {
-        const existing = await this.get(
-            `SELECT id FROM guideline_documents WHERE pmcid = ?`, [doc.pmcid]
+    // Deduplicate every stable identifier. The original implementation only
+    // checked PMCID, so PubMed-, DOI-, and URL-only imports created a new local
+    // document every time a seed job was re-run.
+    const identities = [
+        ['pmcid', doc.pmcid],
+        ['pmid', doc.pmid],
+        ['doi', doc.doi ? String(doc.doi).trim().toLowerCase() : null],
+        ['source_url', doc.sourceUrl],
+    ].filter(([, value]) => value);
+    let existing = null;
+    for (const [column, value] of identities) {
+        existing = await this.get(`SELECT id FROM guideline_documents WHERE ${column} = ? LIMIT 1`, [value]);
+        if (existing) break;
+    }
+    if (existing) {
+        await this.run(
+            `UPDATE guideline_documents SET
+                pmcid = COALESCE(pmcid, ?), pmid = COALESCE(pmid, ?),
+                doi = COALESCE(doi, ?), title = COALESCE(title, ?),
+                source_body = COALESCE(source_body, ?), source_year = COALESCE(source_year, ?),
+                source_url = COALESCE(source_url, ?), document_label = COALESCE(document_label, ?),
+                evidence_tier = COALESCE(evidence_tier, ?),
+                full_text = CASE WHEN ? = 1 AND full_text_source = 'abstract' THEN ? ELSE COALESCE(full_text, ?) END,
+                full_text_source = CASE WHEN ? = 1 AND full_text_source = 'abstract' THEN ? ELSE COALESCE(full_text_source, ?) END,
+                word_count = CASE WHEN ? = 1 AND full_text_source = 'abstract' THEN ? ELSE COALESCE(word_count, ?) END,
+                fetched_at = COALESCE(fetched_at, ?), updated_at = ?
+             WHERE id = ?`,
+            [
+                doc.pmcid || null, doc.pmid || null,
+                doc.doi ? String(doc.doi).trim().toLowerCase() : null,
+                doc.title ? String(doc.title).trim().slice(0, 500) : null,
+                doc.sourceBody ? String(doc.sourceBody).trim() : null,
+                doc.sourceYear ? parseInt(doc.sourceYear, 10) : null,
+                doc.sourceUrl ? String(doc.sourceUrl).trim() : null,
+                doc.documentLabel || null, doc.evidenceTier || 'guideline',
+                Number(Boolean(doc.fullText && ['jats', 'pdf', 'manual'].includes(doc.fullTextSource))), doc.fullText || null, doc.fullText || null,
+                Number(Boolean(doc.fullText && ['jats', 'pdf', 'manual'].includes(doc.fullTextSource))), doc.fullTextSource || null, doc.fullTextSource || (doc.fullText ? 'manual' : null),
+                Number(Boolean(doc.fullText && ['jats', 'pdf', 'manual'].includes(doc.fullTextSource))), wordCount, wordCount,
+                doc.fetchedAt || now, now, existing.id,
+            ]
         );
-        if (existing) {
-            // Update full_text if we now have it and didn't before.
-            if (doc.fullText) {
-                await this.run(
-                    `UPDATE guideline_documents SET
-                        full_text = COALESCE(full_text, ?),
-                        full_text_source = COALESCE(full_text_source, ?),
-                        word_count = COALESCE(word_count, ?),
-                        fetched_at = COALESCE(fetched_at, ?),
-                        updated_at = ?
-                     WHERE id = ?`,
-                    [doc.fullText, doc.fullTextSource || 'jats', wordCount, now, now, existing.id]
-                );
-            }
-            return existing.id;
-        }
+        return existing.id;
     }
 
     const result = await this.run(
@@ -185,7 +207,7 @@ async upsertGuidelineDocument(doc) {
         [
             doc.pmcid || null,
             doc.pmid || null,
-            doc.doi || null,
+            doc.doi ? String(doc.doi).trim().toLowerCase() : null,
             doc.title ? String(doc.title).trim().slice(0, 500) : null,
             doc.sourceBody ? String(doc.sourceBody).trim() : null,
             doc.sourceYear ? parseInt(doc.sourceYear, 10) : null,
@@ -206,6 +228,28 @@ async getGuidelineDocument(id) {
     return this.get(`SELECT * FROM guideline_documents WHERE id = ?`, [id]);
 }
 
+async getLocalTopicDocuments(topic, { limit = 12 } = {}) {
+    const knowledge = await this.getTopicKnowledge(topic);
+    const references = (knowledge?.sourceArticles || []).slice(0, 40);
+    const clauses = [];
+    const params = [];
+    for (const [field, property] of [['pmid', 'pmid'], ['pmcid', 'pmcid'], ['doi', 'doi']]) {
+        const ids = [...new Set(references.map((row) => row[property]).filter(Boolean))];
+        if (!ids.length) continue;
+        clauses.push(`${field} IN (${ids.map(() => '?').join(',')})`);
+        params.push(...ids);
+    }
+    if (!clauses.length) return [];
+    return this.all(
+        `SELECT id, pmid, pmcid, doi, title, source_body, source_year, source_url,
+                document_label, full_text_source, SUBSTR(full_text, 1, 12000) AS text_excerpt
+         FROM guideline_documents
+         WHERE (${clauses.join(' OR ')}) AND full_text IS NOT NULL AND LENGTH(full_text) > 0
+         ORDER BY source_year DESC, id DESC LIMIT ?`,
+        [...params, Math.min(20, Math.max(1, Number(limit) || 12))]
+    );
+}
+
 async getGuidelineDocumentByPmcid(pmcid) {
     return this.get(`SELECT * FROM guideline_documents WHERE pmcid = ?`, [pmcid]);
 }
@@ -222,7 +266,7 @@ async listGuidelineDocuments({ limit = 50, offset = 0, hasSynopsis = null } = {}
     if (hasSynopsis === false) where.push('synopsis_json IS NULL');
     const rows = await this.all(
         `SELECT id, pmcid, pmid, doi, title, source_body, source_year, source_url,
-                document_label, evidence_tier, word_count, synopsis_generated_at,
+                document_label, evidence_tier, full_text_source, word_count, synopsis_generated_at,
                 (synopsis_json IS NOT NULL) AS has_synopsis
          FROM guideline_documents
          ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
@@ -233,7 +277,7 @@ async listGuidelineDocuments({ limit = 50, offset = 0, hasSynopsis = null } = {}
     const total = await this.get(
         `SELECT COUNT(*) AS c FROM guideline_documents ${where.length ? 'WHERE ' + where.join(' AND ') : ''}`
     );
-    return { rows, total: Number(total?.c || 0) };
+    return { rows: rows.map(normalizeStoredDocument), total: Number(total?.c || 0) };
 }
 
 /** Single document with its synopsis parsed, full_text omitted by default. */
@@ -245,7 +289,7 @@ async getGuidelineDocumentWithSynopsis(id, { includeFullText = false } = {}) {
     if (synopsis_json) {
         try { synopsis = JSON.parse(synopsis_json); } catch { synopsis = null; }
     }
-    return { ...rest, synopsis, fullText: includeFullText ? full_text : undefined };
+    return { ...normalizeStoredDocument(rest), synopsis, fullText: includeFullText ? full_text : undefined };
 }
 
 // ─── Recommendations ─────────────────────────────────────────────────────────

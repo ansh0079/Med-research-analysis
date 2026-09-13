@@ -229,7 +229,7 @@ export class AiApi extends BaseApiClient {
       synopsisStyleArmId?: string;
     }
   ): Promise<ArticleSynopsisResult> {
-    const useAsync = options?.async ?? false;
+    const useAsync = options?.async ?? true;
     const response = await this.fetchWithSession(`${API_BASE}/api/ai/synopsis`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

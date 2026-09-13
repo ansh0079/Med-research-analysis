@@ -7,7 +7,7 @@ export function SourcesPanel({ sourceArticles }: { sourceArticles: TopicKnowledg
   return (
     <div className="space-y-2">
       <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">
-        {sourceArticles.length} article{sourceArticles.length === 1 ? '' : 's'} used to build this knowledge
+        {sourceArticles.length} source{sourceArticles.length === 1 ? '' : 's'} linked to this topic
       </p>
       {sourceArticles.map((a, i) => (
         <div key={a.uid || i} className="rounded-xl border border-slate-100 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-800/40">

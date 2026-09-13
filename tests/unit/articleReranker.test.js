@@ -9,6 +9,32 @@ const {
 } = require('../../server/services/articleReranker');
 
 describe('articleReranker', () => {
+    test('reuses scores without reusing caller metadata and invalidates on evidence changes', async () => {
+        const values = new Map();
+        const cache = { get: (key) => values.get(key), set: (key, value) => values.set(key, value) };
+        const ai = makeMockAi(JSON.stringify([{ articleIndex: 1, overallScore: 0.9, exclusionFlags: [] }]));
+        const options = { ai, cache, serverConfig: { keys: { gemini: 'test' } } };
+        const article = { uid: '1', title: 'ARDS ventilation', abstract: 'Adults in ICU' };
+        const profile = { population: 'adults', intervention: 'ventilation' };
+        await rerankArticlesByPico([article], profile, options);
+        const rows = await rerankArticlesByPico([{ ...article, privateNote: 'current caller' }], profile, options);
+        expect(ai.callText).toHaveBeenCalledTimes(1);
+        expect(rows[0].privateNote).toBe('current caller');
+        await rerankArticlesByPico([{ ...article, abstract: 'Children in ICU' }], profile, options);
+        expect(ai.callText).toHaveBeenCalledTimes(2);
+        expect(ai.callText.mock.calls[0][3].timeoutMs).toBe(4000);
+    });
+
+    test('provider failure uses a short fallback cache rather than repeated calls', async () => {
+        const values = new Map();
+        const cache = { get: (key) => values.get(key), set: jest.fn((key, value) => values.set(key, value)) };
+        const ai = { callText: jest.fn(async () => { throw new Error('timed out'); }) };
+        const args = [[{ uid: '1', title: 'ARDS ventilation' }], { population: 'adults' }];
+        await rerankArticlesByPico(...args, { ai, cache, serverConfig: {} });
+        await rerankArticlesByPico(...args, { ai, cache, serverConfig: {} });
+        expect(ai.callText).toHaveBeenCalledTimes(1);
+        expect(cache.set.mock.calls[0][2]).toBe(15);
+    });
     // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------

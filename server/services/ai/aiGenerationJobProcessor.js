@@ -51,7 +51,13 @@ async function processAiGenerationJobByKey(jobKey, deps) {
     const { acquireAiJobSlot } = require('../aiGenerationConcurrency');
     const releaseSlot = await acquireAiJobSlot(jobType, { logger: deps.logger || logger });
 
-    const claim = await db.markAiGenerationJobRunning(jobKey);
+    let claim;
+    try {
+        claim = await db.markAiGenerationJobRunning(jobKey);
+    } catch (error) {
+        releaseSlot();
+        throw error;
+    }
     if (claim && claim.claimed === false) {
         // Another worker (or a duplicate delivery of this job) already took it.
         try { releaseSlot(); } catch (_e) { /* ignore */ }

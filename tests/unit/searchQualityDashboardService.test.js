@@ -16,7 +16,10 @@ describe('searchQualityDashboardService', () => {
                     return [
                         { metadata: JSON.stringify({
                             queryIntent: 'landmark',
-                            resultSetCacheHit: true,
+                            resultSetCacheHit: false,
+                            timings: { fetchMs: 1200, rankMs: 30 },
+                            sourceFetches: { pubmed: { failed: true } },
+                            sourceFailures: { pubmed: { error: 'Request timed out' } },
                             sourceCache: { pubmed: { hits: 2, misses: 1, shared: 0 } },
                             shadowRanker: { mode: 'shadow', applied: false, agreement: { meanAbsoluteRankDelta: 1.5, top1Changed: true } },
                         }) },
@@ -41,6 +44,8 @@ describe('searchQualityDashboardService', () => {
         expect(dashboard.summary.searches).toBe(2);
         expect(dashboard.summary.zeroResultRate).toBe(0.5);
         expect(dashboard.sourceCache.pubmed.hitRate).toBeCloseTo(2 / 3);
+        expect(dashboard.performance.stages.fetchMs.p95Ms).toBe(1200);
+        expect(dashboard.performance.providers.pubmed).toEqual({ requests: 1, failures: 1, timeouts: 1 });
         expect(dashboard.intentMix.landmark).toBe(1);
         expect(dashboard.shadowRanker.top1ChangeRate).toBe(1);
         expect(dashboard.lowRecallQueries[0].query).toBe('rare');

@@ -4,6 +4,7 @@ const logger = require('../../config/logger');
 const { runOfflinePolicyEval } = require('../offlinePolicyEvalService');
 const { SEARCH_RANKING_ARMS, POLICY_SEARCH_RANKING } = require('../bandit/constants');
 const { loadDecisionsForOfflineEval } = require('../policyReplayEvaluator');
+const { collectSearchLearningEvaluation, assessLearningPromotionSafety } = require('../searchLearningEvaluationService');
 
 /**
  * Nightly evaluator from real anonymized logs:
@@ -139,6 +140,14 @@ async function runNightlyOfflineEval(db, {
     };
     const rec = recommendationFromEval(enriched);
     const best = evalReport.bestConstant || {};
+    const learning = await collectSearchLearningEvaluation(db, { days });
+    const learningSafety = assessLearningPromotionSafety(learning, best.candidateArmId, servingArmId);
+    enriched.learning = learning;
+    enriched.learningSafety = learningSafety;
+    if (rec.recommendation === 'promote' && !learningSafety.pass) {
+        rec.recommendation = 'hold';
+        rec.reason = learningSafety.reason;
+    }
     const now = new Date().toISOString();
 
     const row = {
@@ -183,6 +192,8 @@ async function runNightlyOfflineEval(db, {
                     servingPolicy,
                     recommendation: rec,
                     servingSource: servingMeta.source,
+                    learning,
+                    learningSafety,
                 }),
                 now,
             ]

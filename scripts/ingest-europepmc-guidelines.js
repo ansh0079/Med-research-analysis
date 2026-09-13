@@ -60,6 +60,7 @@ const TOPIC_FILTER = process.env.INGEST_TOPIC_FILTER
 const MAX_TOPICS = Number(process.env.INGEST_MAX_TOPICS || 0);
 const ARTICLES_PER_TOPIC = Math.max(1, Number(process.env.INGEST_ARTICLES_PER_TOPIC || 2));
 const MIN_RECS = Number(process.env.INGEST_MIN_RECS || 1);
+const FORCE_TOPIC_LIST = process.env.INGEST_FORCE_TOPIC_LIST === '1';
 
 const EPMC = 'https://www.ebi.ac.uk/europepmc/webservices/rest';
 const UA = 'MedResearch/1.0 (academic-use; +https://signalmd.co)';
@@ -433,27 +434,10 @@ function chunkText(text, chunkSize = 11000, overlap = 500) {
 
 // ─── Source attribution ───────────────────────────────────────────────────────
 
-/**
- * Prefer a named issuing body from the title ("2025 European LeukemiaNet
- * recommendations..."), else fall back to the journal. Never invent a body.
- */
-const KNOWN_BODIES = [
-    'European LeukemiaNet', 'KDIGO', 'ERA', 'ESC', 'EULAR', 'ESMO', 'ASCO', 'ASH',
-    'IDSA', 'ATS', 'ERS', 'BTS', 'NICE', 'SIGN', 'WHO', 'AHA', 'ACC', 'ACR', 'ACG',
-    'AASLD', 'EASL', 'ECCO', 'ISPD', 'KDOQI', 'ENETS', 'NANETS', 'IWG', 'BSH',
-    'Endocrine Society', 'Thalassaemia International Federation', 'German Respiratory Society',
-    'Korean', 'Canadian Society of Nephrology', 'IPNA', 'WSES', 'ASFA', 'TIF',
-];
-
+// Attribution must name an issuing body; journal metadata is not authority.
 function attributeSource(article) {
-    const title = String(article.title || '');
-    for (const body of KNOWN_BODIES) {
-        if (new RegExp(`\\b${body.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(title)) {
-            return body;
-        }
-    }
-    const journal = article.journalInfo?.journal?.title || article.journalTitle;
-    return String(journal || 'Guideline (Europe PMC)').slice(0, 120);
+    const { detectIssuingBody } = require('../server/utils/guidelineAttribution');
+    return detectIssuingBody(article.title);
 }
 
 // ─── Per-topic ingestion ──────────────────────────────────────────────────────
@@ -461,7 +445,9 @@ function attributeSource(article) {
 async function ingestTopic(displayName, aiService) {
     const result = { topic: displayName, inserted: 0, articles: 0, rejected: 0, error: null };
 
-    const existing = await db.getGuidelinesByTopic(displayName, { limit: MIN_RECS }).catch(() => []);
+    const existing = FORCE_TOPIC_LIST && TOPIC_LIST.length
+        ? []
+        : await db.getGuidelinesByTopic(displayName, { limit: MIN_RECS }).catch(() => []);
     if (existing.length >= MIN_RECS) {
         console.log(`  "${displayName.slice(0, 62)}"... already covered, skipping`);
         return result;
@@ -489,6 +475,12 @@ async function ingestTopic(displayName, aiService) {
         result.articles++;
 
         const sourceBody = attributeSource(article);
+        const { classifyImportedDocument } = require('../server/utils/importEvidenceQuality');
+        if (!sourceBody || classifyImportedDocument(article) !== 'clinical_practice_guideline') {
+            result.rejected++;
+            console.log(`     ${article.pmcid}: issuing body unverified; skipping recommendations`);
+            continue;
+        }
         // Relaxing gate 2 is only safe for an actual guideline document. A case
         // report can carry the topic words in its title -- "...mimicking trochanteric
         // bursitis" -- and its management text is about the mimic, not the topic.
@@ -609,11 +601,17 @@ async function main() {
         }
     }
 
-    // Only topics with no servable guidelines today.
+    // Only topics with no servable guidelines today, unless an operator passes
+    // an explicit repair list and opts into processing it. This is needed for
+    // strict guideline-gap cohorts where noisy existing rows make the loose
+    // serving query look covered.
     const uncovered = [];
-    for (const name of candidates) {
-        const rows = await db.getGuidelinesByTopic(name, { limit: 1 }).catch(() => []);
-        if (!rows.length) uncovered.push(name);
+    if (FORCE_TOPIC_LIST && TOPIC_LIST.length) uncovered.push(...candidates);
+    else {
+        for (const name of candidates) {
+            const rows = await db.getGuidelinesByTopic(name, { limit: 1 }).catch(() => []);
+            if (!rows.length) uncovered.push(name);
+        }
     }
 
     const targets = MAX_TOPICS > 0 ? uncovered.slice(0, MAX_TOPICS) : uncovered;

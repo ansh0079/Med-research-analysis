@@ -17,6 +17,7 @@ const {
     buildSearchResultCacheKey,
     getCachedSearchResult,
     setCachedSearchResult,
+    shareSearchComputation,
 } = require('../../services/searchResultCacheService');
 const { searchLocalArticleCache } = require('../../services/localRetrievalService');
 const {
@@ -75,6 +76,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                 specificity: validSpecificity,
                 vectorEnabled: useVectorFusion,
                 userId: req.user?.id ?? null,
+                sessionId: req.sessionId ?? null,
                 previousQueries,
                 parsedStudyTypes,
                 parsedYearFilters,
@@ -99,18 +101,18 @@ function registerUnifiedSearchRoutes(app, deps) {
             }
 
             let localRetrieval = { articles: [], used: false, available: Boolean(db?.searchCachedArticlesLocal) };
-            if (!ranked && !useVectorFusion) {
+            if (!ranked) {
                 const localStarted = Date.now();
                 localRetrieval = await searchLocalArticleCache(db, {
                     query: queryValidation.sanitized,
                     limit: safeLimit,
                 });
-                vectorList = localRetrieval.articles;
+                vectorList = [...vectorList, ...localRetrieval.articles];
                 routeTimings.localRetrievalMs = Date.now() - localStarted;
             }
 
             if (!ranked) {
-                ranked = await fetchAndRankSearchArticles({
+                ranked = await shareSearchComputation(searchResultCacheKey, () => fetchAndRankSearchArticles({
                     db,
                     cache,
                     serverConfig,
@@ -126,7 +128,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                     userId: req.user?.id ?? null,
                     sessionId: req.sessionId ?? null,
                     queryIntentProfile,
-                });
+                }));
                 await setCachedSearchResult(cache, searchResultCacheKey, ranked);
             }
 
@@ -302,14 +304,16 @@ function registerUnifiedSearchRoutes(app, deps) {
                         queryIntent: queryIntentProfile.primaryIntent,
                         queryIntentProfile,
                     }, articles.length, executionTime, req.ip, logSessionMeta),
-                db.logEvent('search', req.sessionId, {
+                req.isSynthetic ? Promise.resolve(null) : db.logEvent('search', req.sessionId, {
                     query: queryValidation.sanitized,
                     sources: sourceList,
                     results: articles.length,
-                    timings: { ...telemetry.timings, ...routeTimings },
+                    timings: { ...(rankedCacheHit ? {} : telemetry.timings), ...routeTimings, requestMs: executionTime },
                     queryIntent: ranked.queryIntent,
                     queryIntentProfile: ranked.queryIntentProfile || queryIntentProfile,
                     sourceFetches: telemetry.sourceFetches || {},
+                    sourceFailures: rankedCacheHit ? {} : (telemetry.sourceFailures || {}),
+                    picoRerank: rankedCacheHit ? null : (telemetry.picoRerank || null),
                     sourceCache: telemetry.sourceCache || {},
                     resultSetCacheHit: rankedCacheHit,
                     vectorFusion,

@@ -54,6 +54,7 @@ class JobQueue {
         this.running = 0;
         this.queue = [];
         this.stats = { processed: 0, failed: 0 };
+        this.pendingIds = new Map();
         this.redis = cache.isRedisEnabled ? cache.redis : null;
 
         if (this.bullEnabled) {
@@ -109,11 +110,14 @@ class JobQueue {
         return this._enqueueNamed(jobType, data, opts);
     }
 
-    async _enqueueNamed(jobType, data, { priority = 0, label = jobType, requestId = null, wait = false } = {}) {
+    async _enqueueNamed(jobType, data, { priority = 0, label = jobType, requestId = null, wait = false, jobId = null } = {}) {
         const rid = requestId || getRequestId();
         const traceCarrier = injectTraceContext({});
         if (this.bullEnabled && this.bullQueue) {
-            const job = await this.bullQueue.add(jobType, { ...data, requestId: rid, traceCarrier }, { priority });
+            const job = await this.bullQueue.add(jobType, { ...data, requestId: rid, traceCarrier }, {
+                priority: priority < 0 ? 10 + Math.abs(priority) : priority,
+                ...(jobId ? { jobId, removeOnComplete: true, removeOnFail: true } : {}),
+            });
             logger.debug({ queue: this.name, label, jobId: job.id, requestId: rid }, 'BullMQ job enqueued');
             if (wait) {
                 const events = queueEvents.get(this.name);
@@ -126,7 +130,13 @@ class JobQueue {
         if (!handler) {
             return Promise.reject(new Error(`No handler registered for ${this.name}:${jobType}`));
         }
-        return this._enqueueMemory(() => context.with(contextFromCarrier(traceCarrier), () => handler(data, { requestId: rid })), { priority, label, requestId: rid });
+        if (jobId && this.pendingIds.has(jobId)) return this.pendingIds.get(jobId);
+        const task = this._enqueueMemory(() => context.with(contextFromCarrier(traceCarrier), () => handler(data, { requestId: rid })), { priority, label, requestId: rid });
+        if (jobId) {
+            this.pendingIds.set(jobId, task);
+            task.finally(() => this.pendingIds.delete(jobId)).catch(() => {});
+        }
+        return task;
     }
 
     _enqueueMemory(jobFn, { priority = 0, label = 'job', requestId = null } = {}) {

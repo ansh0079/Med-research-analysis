@@ -1,6 +1,7 @@
 'use strict';
 
 const { safeJsonParse } = require('../../database/lib/helpers');
+const { collectSearchLearningEvaluation } = require('./searchLearningEvaluationService');
 
 function safeRate(numerator, denominator) {
     const n = Number(numerator || 0);
@@ -31,6 +32,7 @@ function bucketCounts(values) {
 function summarizeSourceCache(events) {
     const bySource = {};
     for (const event of events) {
+        if (safeJsonParse(event.metadata, {})?.resultSetCacheHit) continue;
         const sourceCache = safeJsonParse(event.metadata, {})?.sourceCache || {};
         for (const [source, stats] of Object.entries(sourceCache)) {
             const row = bySource[source] || { hits: 0, misses: 0, shared: 0 };
@@ -47,6 +49,43 @@ function summarizeSourceCache(events) {
             hitRate: safeRate(stats.hits, stats.hits + stats.misses),
         },
     ]));
+}
+
+function summarizePerformance(events) {
+    const stages = {};
+    const providers = {};
+    const reranking = { samples: 0, cacheHits: 0, fallbacks: 0, timeouts: 0 };
+    for (const event of events) {
+        const meta = safeJsonParse(event.metadata, {});
+        for (const [stage, value] of Object.entries(meta.timings || {})) {
+            if (meta.resultSetCacheHit && stage !== 'requestMs') continue;
+            if (value == null || !Number.isFinite(Number(value)) || Number(value) < 0) continue;
+            (stages[stage] ||= []).push(Number(value));
+        }
+        if (meta.resultSetCacheHit) continue;
+        if (meta.picoRerank) {
+            reranking.samples++;
+            reranking.cacheHits += Number(Boolean(meta.picoRerank.cacheHit));
+            reranking.fallbacks += Number(Boolean(meta.picoRerank.fallback));
+            reranking.timeouts += Number(Boolean(meta.picoRerank.timedOut));
+        }
+        for (const source of new Set([...Object.keys(meta.sourceFetches || {}), ...Object.keys(meta.sourceFailures || {})])) {
+            const row = providers[source] ||= { requests: 0, failures: 0, timeouts: 0 };
+            row.requests++;
+            const failure = meta.sourceFailures?.[source];
+            if (failure) {
+                row.failures++;
+                if (/timeout|timed out|abort/i.test(JSON.stringify(failure))) row.timeouts++;
+            }
+        }
+    }
+    return {
+        stages: Object.fromEntries(Object.entries(stages).map(([stage, values]) => [stage, {
+            samples: values.length, p50Ms: percentile(values, 50), p95Ms: percentile(values, 95),
+        }])),
+        providers,
+        reranking,
+    };
 }
 
 function summarizeShadowRanker(events) {
@@ -92,6 +131,7 @@ async function collectSearchQualityDashboard(db, { days = 7, limit = 20 } = {}) 
         noClick,
         feedback,
         lowRecall,
+        learning,
     ] = await Promise.all([
         db.all(
             `SELECT id, query, normalized_topic, filters, sources, results_count, execution_time_ms, created_at
@@ -125,11 +165,12 @@ async function collectSearchQualityDashboard(db, { days = 7, limit = 20 } = {}) 
         typeof db.getLowRecallSearchStatsWindow === 'function'
             ? db.getLowRecallSearchStatsWindow(safeDays, safeLimit).catch(() => [])
             : Promise.resolve([]),
+        collectSearchLearningEvaluation(db, { days: safeDays }),
     ]);
 
     const searches = searchRows.length;
     const zeroResultSearches = searchRows.filter((row) => Number(row.results_count || 0) === 0).length;
-    const latencies = searchRows.map((row) => Number(row.execution_time_ms)).filter(Number.isFinite);
+    const latencies = searchRows.filter((row) => row.execution_time_ms != null).map((row) => Number(row.execution_time_ms)).filter(Number.isFinite);
     const clicked = impressionRows.filter((row) => Number(row.was_clicked || 0) === 1).length;
     const saved = impressionRows.filter((row) => Number(row.was_saved || 0) === 1).length;
     const meaningfulDwell = impressionRows.filter((row) => Number(row.dwell_time_ms || 0) >= 30000).length;
@@ -157,6 +198,8 @@ async function collectSearchQualityDashboard(db, { days = 7, limit = 20 } = {}) 
         },
         intentMix: summarizeIntentMix(searchRows, eventRows),
         sourceCache: summarizeSourceCache(eventRows),
+        learning,
+        performance: summarizePerformance(eventRows),
         shadowRanker: summarizeShadowRanker(eventRows),
         topQueries,
         lowRecallQueries: Array.isArray(lowRecall) ? lowRecall.slice(0, safeLimit).map((row) => ({

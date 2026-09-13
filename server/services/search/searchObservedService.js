@@ -1,6 +1,7 @@
 'use strict';
 
 const logger = require('../../config/logger');
+const crypto = require('crypto');
 const { searchQueue, registerJobHandler } = require('../jobQueue');
 const { shouldAutoSeedFromSearch } = require('../searchLearningConfig');
 
@@ -80,6 +81,7 @@ async function enqueueSearchObservedSideEffects(input = {}) {
     return searchQueue.enqueueNamed(JOB_TYPE, payload, {
         label: `search-observed:${payload.query.slice(0, 80)}`,
         priority: -2,
+        jobId: `search-observed-${crypto.createHash('sha256').update(JSON.stringify(payload)).digest('hex')}`,
     });
 }
 
@@ -101,6 +103,20 @@ async function processSearchObservedSideEffects(data = {}, deps = {}) {
     }
 
     const results = await Promise.allSettled([
+        (async () => {
+            if (typeof db.createAiGenerationJob !== 'function') return { skipped: true };
+            const { getOrEnqueuePaperSynopsis } = require('../aiGenerationJobService');
+            const configured = Number(process.env.SEARCH_PRECOMPUTE_SYNOPSES ?? 2);
+            const count = Number.isFinite(configured) ? Math.min(2, Math.max(0, Math.floor(configured))) : 2;
+            return Promise.all(articles.slice(0, count).map(async (article) => {
+                const result = await getOrEnqueuePaperSynopsis({
+                    db, article, topic: query, serverConfig, fetchImpl, cache, logger: log,
+                    userId: data.userId || null, trainingStage: data.trainingStage || null,
+                });
+                if (result.status === 'failed') throw new Error(result.errorMessage || 'Synopsis precomputation failed');
+                return result;
+            }));
+        })(),
         (async () => {
             const { enqueuePdfIndexForBouquetArticles } = require('../enrichmentJobService');
             return enqueuePdfIndexForBouquetArticles({
@@ -225,6 +241,7 @@ async function processSearchObservedSideEffects(data = {}, deps = {}) {
         .map(({ result, index }) => ({ index, message: result.reason?.message || String(result.reason) }));
     if (failed.length > 0) {
         log.warn({ query, failed }, 'search-observed side effects partially failed');
+        throw new Error(`search-observed failed steps: ${failed.map((item) => item.index).join(',')}`);
     }
 
     return {

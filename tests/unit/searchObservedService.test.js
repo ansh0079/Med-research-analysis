@@ -101,10 +101,10 @@ describe('searchObservedService', () => {
         );
     });
 
-    test('processes side effects and reports partial failures without throwing', async () => {
+    test('throws on partial failure so the durable queue retries', async () => {
         persistSearchedArticles.mockRejectedValueOnce(new Error('database locked'));
 
-        const result = await processSearchObservedSideEffects({
+        await expect(processSearchObservedSideEffects({
             query: 'heart failure sglt2',
             enrichKey: 'enrich-1',
             articles: [
@@ -119,11 +119,7 @@ describe('searchObservedService', () => {
             serverConfig: {},
             fetchImpl: jest.fn(),
             logger: { warn: jest.fn() },
-        });
-
-        expect(result.ok).toBe(false);
-        expect(result.attempted).toBeGreaterThan(1);
-        expect(result.failed[0].message).toMatch(/database locked/);
+        })).rejects.toThrow('search-observed failed steps: 3');
     });
 
     test('registers the queue handler', () => {
