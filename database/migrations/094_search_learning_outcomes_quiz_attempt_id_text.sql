@@ -1,0 +1,24 @@
+-- search_learning_outcomes.quiz_attempt_id cannot hold the key it references.
+--
+-- The column was declared INTEGER in 071 (and in both generated schema files),
+-- written when quiz_attempts.id was a SQLite INTEGER. Production Postgres has
+-- quiz_attempts.id as uuid, so:
+--
+--   * the writer coerced the uuid with Number(), producing NaN, and no row was
+--     ever inserted -- the table is empty in production;
+--   * the reader's JOIN could never match an integer against a uuid, so the
+--     learning evaluation reported "available: false" with zero attempts, which
+--     the nightly promotion gate then read as "no learning evidence".
+--
+-- TEXT rather than UUID is deliberate. It holds a Postgres uuid and a SQLite
+-- integer alike, matches user_id TEXT in this same table, and matches the
+-- normalizeEntityId strategy of storing ids as strings on both dialects. The
+-- reader already compares both sides CAST to TEXT.
+--
+-- Safe to run: the table holds zero rows in production, so the USING clause has
+-- nothing to convert. On SQLite this statement is skipped by
+-- applySqliteMigrationCompat -- column types there are advisory affinity, and a
+-- uuid string is not losslessly convertible to an integer, so SQLite already
+-- stores it as text without any rebuild.
+
+ALTER TABLE search_learning_outcomes ALTER COLUMN quiz_attempt_id TYPE TEXT USING quiz_attempt_id::text;

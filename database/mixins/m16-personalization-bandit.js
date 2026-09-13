@@ -1,7 +1,7 @@
 'use strict';
 
 const { safeJsonParse } = require('../lib/helpers');
-const { normalizeSearchId } = require('../../shared/searchId');
+const { normalizeSearchId, normalizeEntityId } = require('../../shared/searchId');
 
 module.exports = (Sup) => class extends Sup {
     async ensurePersonalizationArms(policyType, armIds = [], scopeKey = 'global') {
@@ -209,7 +209,9 @@ module.exports = (Sup) => class extends Sup {
                 claimKey ? String(claimKey).slice(0, 80) : null,
                 topic ? String(topic).slice(0, 240) : null,
                 normalizedTopic ? String(normalizedTopic).slice(0, 240) : null,
-                quizAttemptId != null ? Number(quizAttemptId) : null,
+                // Number() here turned every production uuid into NaN, so this table
+                // stayed empty and the learning evaluation had nothing to join.
+                normalizeEntityId(quizAttemptId),
                 firstAttemptCorrect ? 1 : 0,
                 Number(reward) || 0,
                 banditArmId ? String(banditArmId).slice(0, 80) : null,

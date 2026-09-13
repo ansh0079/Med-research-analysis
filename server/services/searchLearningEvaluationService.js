@@ -1,5 +1,7 @@
 'use strict';
 
+const logger = require('../config/logger');
+
 function summarizeLearningOutcomes(rows = []) {
     const attempts = new Map();
     for (const row of rows) {
@@ -47,9 +49,18 @@ async function collectSearchLearningEvaluation(db, { days = 14 } = {}) {
                          (prior.created_at = q.created_at AND CAST(prior.id AS TEXT) < CAST(q.id AS TEXT)))
                )
              ORDER BY o.id DESC LIMIT 10000`, [since]);
-        return { available: true, ...summarizeLearningOutcomes(rows) };
-    } catch {
-        return { available: false, ...summarizeLearningOutcomes([]) };
+        return { available: true, error: null, ...summarizeLearningOutcomes(rows) };
+    } catch (err) {
+        // A failing query and a genuinely empty table both block promotion, but
+        // only one of them is a bug. The previous bare `catch` collapsed them
+        // into the same unremarkable "available: false", which is how a join
+        // that could never match -- integer quiz_attempt_id against uuid
+        // quiz_attempts.id -- looked like "no learners have answered yet" for as
+        // long as the drift existed. Report the reason so the dashboard and the
+        // nightly audit show a broken pipeline as broken.
+        const error = String(err?.message || err).slice(0, 300);
+        logger.error?.({ err }, 'searchLearningEvaluation: outcome query failed');
+        return { available: false, error, ...summarizeLearningOutcomes([]) };
     }
 }
 

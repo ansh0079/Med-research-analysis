@@ -954,7 +954,7 @@ CREATE TABLE IF NOT EXISTS search_learning_outcomes (
     claim_key TEXT,
     topic TEXT,
     normalized_topic TEXT,
-    quiz_attempt_id INTEGER,
+    quiz_attempt_id TEXT,
     first_attempt_correct INTEGER NOT NULL DEFAULT 0,
     reward REAL NOT NULL,
     bandit_arm_id TEXT,

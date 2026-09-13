@@ -15,11 +15,23 @@
  * @param {unknown} value
  * @returns {string|null} the id as a string, or null when absent/blank
  */
-function normalizeSearchId(value) {
+function normalizeEntityId(value) {
     if (value == null) return null;
     const str = String(value).trim();
     if (!str || str === 'null' || str === 'undefined' || str === 'NaN') return null;
     return str;
 }
 
-module.exports = { normalizeSearchId };
+/**
+ * The same coercion for any other id that is uuid in production Postgres and
+ * INTEGER in local SQLite. `quiz_attempts.id` hit exactly the bug described
+ * above: `Number(uuid)` is NaN, so search_learning_outcomes.quiz_attempt_id was
+ * never written and the learning evaluation had nothing to join against.
+ *
+ * Exported under both names so existing search call sites keep reading naturally
+ * while non-search callers are not forced to import something called
+ * "normalizeSearchId" for a quiz attempt.
+ */
+const normalizeSearchId = normalizeEntityId;
+
+module.exports = { normalizeSearchId, normalizeEntityId };
