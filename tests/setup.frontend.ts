@@ -1,4 +1,8 @@
 import '@testing-library/jest-dom';
+import { TextEncoder, TextDecoder } from 'node:util';
+
+// jsdom lacks these browser APIs used by React Router 7.
+Object.assign(globalThis, { TextEncoder, TextDecoder });
 
 const originalConsoleError = console.error.bind(console);
 const originalConsoleWarn = console.warn.bind(console);

@@ -13,10 +13,9 @@
 --
 -- Note: SQLite does not support IF NOT EXISTS on ADD COLUMN, so this
 -- migration is idempotent on PostgreSQL (prod) but must run exactly once on
--- SQLite (dev). ALTER COLUMN ... DROP NOT NULL is supported natively by both
--- SQLite 3.35+ and PostgreSQL -- verified directly against better-sqlite3
--- rather than assumed, since SQLite's ALTER TABLE support is limited and
--- version-dependent for other operations.
+-- SQLite (dev). DROP NOT NULL below is PostgreSQL syntax. SQLite runners
+-- handle it through sqliteMigrationCompat, rebuilding older NOT NULL tables
+-- while preserving their records, indexes and triggers.
 
 ALTER TABLE quiz_attempts ALTER COLUMN user_id DROP NOT NULL;
 ALTER TABLE quiz_attempts ADD COLUMN session_id TEXT;

@@ -35,7 +35,7 @@ describe('SearchSelectionContext', () => {
 
   const renderWithContext = (element: React.ReactNode) => {
     return render(
-      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <MemoryRouter>
         <SearchQueryProvider>
           <SearchSelectionProvider>{element}</SearchSelectionProvider>
         </SearchQueryProvider>

@@ -16,7 +16,7 @@ const AuthPage = () => <div>Auth page</div>;
 describe('ProtectedRoute', () => {
   const renderWithRouter = (element: React.ReactNode, initialRoute = '/protected') => {
     return render(
-      <MemoryRouter initialEntries={[initialRoute]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <MemoryRouter initialEntries={[initialRoute]}>
         <Routes>
           <Route path="/protected" element={element} />
           <Route path="/auth" element={<AuthPage />} />

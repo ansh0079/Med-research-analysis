@@ -8,6 +8,7 @@ const path = require('path');
 const fs = require('fs');
 const { buildPgPoolConfig, buildPgVectorPoolConfig } = require('../server/utils/pgPoolOptions');
 const { runExternalSqliteMigrations } = require('./lib/helpers');
+const { applySqliteMigrationCompat } = require('./lib/sqliteMigrationCompat');
 const { AsyncLocalStorage } = require('async_hooks');
 
 // Carries the dedicated pg client for the duration of a withTransaction callback,
@@ -260,6 +261,7 @@ async runMigrations() {
 
         for (let statement of statements) {
             if (statement.trim()) {
+                if (!this.isPostgres && applySqliteMigrationCompat(this._bs, statement)) continue;
                 if (this.isPostgres) {
                     if (!this.pgUsersIdType) {
                         this.pgUsersIdType = await this.detectPgUsersIdType();

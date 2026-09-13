@@ -94,13 +94,6 @@ test.describe('beta smoke', () => {
     await expect(await search).toBeTruthy();
   });
 
-  // KNOWN FAILING (2026-07-04): traced this end-to-end — search() and api.search()
-  // both execute correctly and the mocked /api/search request resolves with a real
-  // 200, but the app never renders the result. Root cause not yet confirmed; the
-  // most likely culprit is something in fetchWithSession's post-fetch handling
-  // (core.ts, the response.clone() body-read path) not playing well with
-  // Playwright's route.fulfill() response objects specifically. Needs a dedicated
-  // follow-up session — do not delete/skip, this documents where tracing stopped.
   test('loads the search route and returns mocked results', async ({ page }) => {
     await page.goto('/search');
     await dismissChromeOverlays(page);
@@ -116,6 +109,7 @@ test.describe('beta smoke', () => {
     await expect(page.getByRole('link', { name: /SGLT2 inhibitors in heart/i })).toBeVisible();
     await expect(page.getByText(/Journal of Evidence Medicine/i)).toBeVisible();
     await expect(page.getByRole('link', { name: /View on PubMed/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /View on PubMed/i })).toHaveAttribute('href', 'https://pubmed.ncbi.nlm.nih.gov/123/');
   });
 
   test('renders the compliance notice and legal routes', async ({ page }) => {

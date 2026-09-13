@@ -4,7 +4,7 @@ import { PhiDataNotice } from './PhiDataNotice';
 
 function renderNotice() {
   return render(
-    <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <MemoryRouter>
       <PhiDataNotice />
     </MemoryRouter>
   );

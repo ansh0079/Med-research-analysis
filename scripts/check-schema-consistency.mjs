@@ -9,6 +9,7 @@ import { DatabaseSync } from 'node:sqlite';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import sqliteCompat from '../database/lib/sqliteMigrationCompat.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
@@ -29,6 +30,7 @@ function splitStatements(sqlRaw) {
 }
 
 function execStatement(db, statement) {
+  if (sqliteCompat.applySqliteMigrationCompat(db, statement)) return;
   try {
     db.exec(statement);
   } catch (err) {

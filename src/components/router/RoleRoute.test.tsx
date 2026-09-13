@@ -11,7 +11,7 @@ const FallbackContent = () => <div>Access denied</div>;
 describe('RoleRoute', () => {
   const renderWithRouter = (element: React.ReactNode, initialRoute = '/admin') => {
     return render(
-      <MemoryRouter initialEntries={[initialRoute]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <MemoryRouter initialEntries={[initialRoute]}>
         <AuthProvider>
           <Routes>
             <Route path="/admin" element={element} />

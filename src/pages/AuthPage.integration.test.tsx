@@ -46,7 +46,6 @@ describe('AuthPage Integration', () => {
     return render(
       <MemoryRouter
         initialEntries={['/']}
-        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
       >
         <AuthPage />
       </MemoryRouter>

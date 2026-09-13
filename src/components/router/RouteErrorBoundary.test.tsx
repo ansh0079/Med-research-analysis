@@ -20,7 +20,7 @@ describe('RouteErrorBoundary', () => {
 
   const renderWithRouter = (element: React.ReactNode, initialRoute = '/test') => {
     return render(
-      <MemoryRouter initialEntries={[initialRoute]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <MemoryRouter initialEntries={[initialRoute]}>
         <Routes>
           <Route path="/test" element={element} />
           <Route path="/" element={<HomePage />} />

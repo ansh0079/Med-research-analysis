@@ -41,8 +41,8 @@ const withProtocol = (value: string): string => {
 };
 
 const normalizePmid = (uid: string): string => {
-  if (uid.startsWith('pubmed-')) return uid.slice('pubmed-'.length);
-  return uid;
+  const value = uid.replace(/^(?:pubmed|pmid)[-:]/i, '');
+  return /^\d+$/.test(value) ? value : '';
 };
 
 export function getArticleLinkInfo(article: Article): ArticleLinkInfo {
@@ -51,9 +51,11 @@ export function getArticleLinkInfo(article: Article): ArticleLinkInfo {
   const doi = String(article.doi || '').trim();
 
   if (source === 'pubmed') {
-    const pmid = normalizePmid(safeUid);
+    const pmid = normalizePmid(String(article.pmid || '').trim()) || normalizePmid(safeUid);
     return {
-      primaryUrl: `https://pubmed.ncbi.nlm.nih.gov/${pmid}/`,
+      primaryUrl: pmid
+        ? `https://pubmed.ncbi.nlm.nih.gov/${pmid}/`
+        : `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(article.title || safeUid)}`,
       primaryLabel: 'PubMed',
       sourceLabel: 'PubMed',
     };

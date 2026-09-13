@@ -6,7 +6,7 @@ import { SearchMetaProvider, useSearchMeta } from './SearchContext';
 describe('SearchMetaContext', () => {
   const renderWithContext = (element: React.ReactNode) => {
     return render(
-      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <MemoryRouter>
         <SearchMetaProvider>{element}</SearchMetaProvider>
       </MemoryRouter>
     );

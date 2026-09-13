@@ -29,9 +29,8 @@ ENV VITE_APP_VERSION=$VITE_APP_VERSION
 ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 
 COPY package*.json ./
-# npm install (not ci) because Vite 8 pulls platform-specific native Rolldown
-# bindings (@emnapi) that differ between Windows dev machines and Linux Docker.
-RUN npm install --prefer-offline --no-audit --no-fund
+# The lockfile includes native bindings for both Windows and Linux.
+RUN npm ci --prefer-offline --no-audit --no-fund
 
 COPY . .
 RUN npm run build
@@ -42,7 +41,7 @@ FROM node:22-alpine AS dependencies
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install --prefer-offline --no-audit --no-fund --omit=dev && npm cache clean --force
+RUN npm ci --prefer-offline --no-audit --no-fund --omit=dev && npm cache clean --force
 
 # ---- Production stage ----
 FROM node:22-alpine AS app

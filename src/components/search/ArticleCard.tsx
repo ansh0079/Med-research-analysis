@@ -249,7 +249,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
 
         {/* Meta row */}
         <div className="flex items-center gap-2 text-[0.7rem] text-slate-400 dark:text-slate-500 mb-3 flex-wrap font-mono">
-          <span className="truncate max-w-[12rem]">{article.source || article.journal || 'Unknown Journal'}</span>
+          <span className="truncate max-w-[12rem]">{article.journal || article.source || 'Unknown Journal'}</span>
           <span className="opacity-40">·</span>
           <span>{article.pubdate?.split(' ')[0] || article.year}</span>
           {citations !== undefined && (

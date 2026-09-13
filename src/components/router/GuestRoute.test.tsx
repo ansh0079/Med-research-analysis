@@ -10,7 +10,7 @@ const HomePage = () => <div>Home page</div>;
 describe('GuestRoute', () => {
   const renderWithRouter = (element: React.ReactNode, initialRoute = '/auth') => {
     return render(
-      <MemoryRouter initialEntries={[initialRoute]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <MemoryRouter initialEntries={[initialRoute]}>
         <AuthProvider>
           <Routes>
             <Route path="/auth" element={element} />
@@ -118,7 +118,7 @@ describe('GuestRoute', () => {
     });
 
     const { rerender } = render(
-      <MemoryRouter initialEntries={['/auth']} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <MemoryRouter initialEntries={['/auth']}>
         <AuthProvider>
           <Routes>
             <Route path="/auth" element={<GuestRoute><AuthPageContent /></GuestRoute>} />

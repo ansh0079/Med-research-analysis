@@ -10,7 +10,7 @@ describe('SearchQueryContext', () => {
 
   const renderWithRouter = (element: React.ReactNode, initialRoute = '/search') => {
     return render(
-      <MemoryRouter initialEntries={[initialRoute]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <MemoryRouter initialEntries={[initialRoute]}>
         <SearchQueryProvider>
           <Routes>
             <Route path="/search" element={element} />
