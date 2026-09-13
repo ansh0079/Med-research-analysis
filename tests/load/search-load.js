@@ -227,6 +227,7 @@ function makeRequest(method, url, body = null) {
       'Accept': 'application/json',
       'Accept-Encoding': 'gzip, deflate',
       'Connection': 'keep-alive',
+      'X-Synthetic-Traffic': 'search-load-benchmark',
     },
     tags: {},
   };
@@ -304,10 +305,10 @@ function testHealth() {
 function testSearch() {
   group('Search Endpoint', () => {
     const query = getRandomQuery();
-    const response = makeRequest('GET', `${BASE_URL}/api/pubmed/search?query=${encodeURIComponent(query)}`);
+    const response = makeRequest('GET', `${BASE_URL}/api/search?query=${encodeURIComponent(query)}&intelligence=async`);
     
     const success = check(response, {
-      'search status is 200 or 404': (r) => r.status === 200 || r.status === 404,
+      'search returns an article result set': (r) => r.status === 200 && Array.isArray(r.json('articles')),
       'search response time < 2s': (r) => r.timings.duration < 2000,
     });
 
@@ -342,7 +343,7 @@ function testConfig() {
 function testAnalytics() {
   group('Analytics Endpoint', () => {
     const eventData = {
-      eventType: 'search',
+      eventType: 'load_test',
       metadata: {
         query: getRandomQuery(),
         timestamp: new Date().toISOString(),

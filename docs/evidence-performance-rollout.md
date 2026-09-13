@@ -63,3 +63,7 @@ Read from production, before this release:
   and requires `DOCKERHUB_PUBLISH_ENABLED=true`, Docker Hub credentials, and
   the environment required by `npm run beta:safety`. Do not enable it until
   those prerequisites are configured. Publishing failures then fail the job.
+- `npm run test:load:smoke` checks API availability and search-input validation
+  without external providers. It is a required CI gate, not a search performance
+  benchmark. The separate `npm run test:load:search-smoke` uses real providers and
+  must be run deliberately with appropriate provider credentials and quotas.
