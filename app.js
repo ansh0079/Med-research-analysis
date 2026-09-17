@@ -79,6 +79,7 @@ const { runQueueFailureDigest } = require('./server/services/queueFailureDigestS
 const { annotateActiveSpan } = require('./server/utils/tracing');
 const { syntheticTrafficMiddleware } = require('./server/utils/syntheticTraffic');
 const { enqueuePdfPreindex: _enqueuePdfPreindex } = require('./server/services/pdfPreindexService');
+const { registerCsrfRoutes, requireCsrfToken } = require('./server/middleware/csrf');
 
 // ==========================================
 // Production safety checks
@@ -266,7 +267,7 @@ app.use(
 app.use(cors({
     origin: allowedOrigins,
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Session-Id', 'X-Requested-With', 'traceparent', 'baggage'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Session-Id', 'X-Requested-With', 'X-CSRF-Token', 'traceparent', 'baggage'],
     exposedHeaders: [
         'X-Request-Id',
         'X-Session-Id',
@@ -391,6 +392,13 @@ app.use(async (req, res, next) => {
     }
     next();
 });
+
+// CSRF token issuance route (after sessions so tokens bind to sessionId)
+registerCsrfRoutes(app);
+// Enforce CSRF tokens on unsafe mutations (skip during tests to avoid breaking unit tests)
+if (process.env.NODE_ENV !== 'test') {
+    app.use(requireCsrfToken());
+}
 
 // Socket.IO broadcaster
 const server = http.createServer(app);
