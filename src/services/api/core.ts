@@ -192,7 +192,9 @@ export class BaseApiClient {
         try {
           const sid = localStorage.getItem('med_research_session');
           if (sid && sid !== this.sessionId) this.sessionId = sid;
-        } catch {}
+        } catch {
+          /* ignore storage errors */
+        }
         const headers: Record<string, string> = {
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest',
@@ -247,7 +249,9 @@ export class BaseApiClient {
       try {
         const sid = localStorage.getItem('med_research_session');
         if (sid && sid !== this.sessionId) this.sessionId = sid;
-      } catch {}
+      } catch {
+        /* ignore storage errors */
+      }
       if (this.sessionId) headers.set('X-Session-Id', this.sessionId);
       if (csrf) headers.set('X-CSRF-Token', csrf);
     } else {
@@ -260,7 +264,26 @@ export class BaseApiClient {
     if (this.shouldAttemptRefresh(url, response)) {
       const refreshed = await this.refreshAccessToken();
       if (refreshed) {
-        response = await fetch(url, fetchOpts);
+        // Rebuild headers after refresh to pick up rotated session/CSRF
+        const retryHeaders = new Headers(options.headers);
+        retryHeaders.set('X-Request-Id', this.ensureRequestId());
+        retryHeaders.set('X-Requested-With', 'XMLHttpRequest');
+        if (!['GET', 'HEAD', 'OPTIONS'].includes(method)) {
+          this.ensureClientSessionId();
+          const retryCsrf = await getCsrfToken();
+          try {
+            const sid = localStorage.getItem('med_research_session');
+            if (sid && sid !== this.sessionId) this.sessionId = sid;
+          } catch {
+            /* ignore storage errors */
+          }
+          if (this.sessionId) retryHeaders.set('X-Session-Id', this.sessionId);
+          if (retryCsrf) retryHeaders.set('X-CSRF-Token', retryCsrf);
+        } else if (this.sessionId) {
+          retryHeaders.set('X-Session-Id', this.sessionId);
+        }
+        const retryOpts = { ...options, headers: retryHeaders, credentials: 'include' as const, ...(signal ? { signal } : {}) };
+        response = await fetch(url, retryOpts);
       }
     }
     const clonedResponse = response.clone();
