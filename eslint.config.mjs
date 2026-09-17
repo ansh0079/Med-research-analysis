@@ -18,6 +18,11 @@ export default [
       'tests/load/**',
       'monitoring/**',
       'eval-results/**',
+      // Playwright's generated HTML report bundles minified vendor code.
+      // Linting it produced 4,891 errors from build output and made
+      // `npm run lint` (--max-warnings=0) fail on artefacts, not source.
+      'playwright-report/**',
+      'test-results/**',
       '**/*.d.ts',
     ],
   },
