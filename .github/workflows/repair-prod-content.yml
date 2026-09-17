@@ -1,0 +1,28 @@
+name: Repair Production Content
+
+on:
+  workflow_dispatch:
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Reconcile teaching topics and refresh guideline bodies
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 178.105.155.246
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 18m
+          script: |
+            set -e
+            cd /opt/medsearch
+            docker exec -e DRY_RUN=0 -e REGISTER_MISSING_TOPICS=1 medsearch-web \
+              node server/scripts/backfillTeachingObjectTopics.js
+            docker exec -e LIMIT=500 -e PAUSE_MS=300 medsearch-web \
+              node server/scripts/refreshGuidelineFullText.js
+            docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
+              "SELECT COUNT(*) AS orphaned_teaching_objects FROM teaching_objects WHERE curriculum_topic_id IS NULL;"
+            docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
+              "SELECT COALESCE(full_text_source, 'none') AS source, COUNT(*) FROM guideline_documents GROUP BY 1 ORDER BY 1;"

@@ -15,12 +15,14 @@
  * via its normalised topic, the alias is recorded so the same wording resolves
  * directly next time.
  *
- * Rows whose topic genuinely matches no curriculum topic are left alone and
- * reported: inventing a parent for them would make unreachable content look
- * reachable while serving it under the wrong topic.
+ * Rows whose topic genuinely matches no curriculum topic are left alone by
+ * default. REGISTER_MISSING_TOPICS=1 first maps configured flagship aliases,
+ * then registers only topics that already own generated teaching content.
+ * Plain search-result papers never create curriculum topics on their own.
  *
  *   DRY_RUN=0 node server/scripts/backfillTeachingObjectTopics.js
  *   DRY_RUN=0 LIMIT=500 node server/scripts/backfillTeachingObjectTopics.js
+ *   DRY_RUN=0 REGISTER_MISSING_TOPICS=1 node server/scripts/backfillTeachingObjectTopics.js
  */
 
 const path = require('path');
@@ -28,9 +30,15 @@ const { loadEnv } = require('../../config');
 loadEnv();
 
 const db = require('../../database');
+const { loadFlagshipConfig } = require('../services/flagshipTopicOps');
+const {
+    buildFlagshipMatcher,
+    resolveOrRegisterTopic,
+} = require('../services/teachingObjectTopicReconciliation');
 
 const DRY_RUN = process.env.DRY_RUN !== '0';
 const LIMIT = Number(process.env.LIMIT) > 0 ? Number(process.env.LIMIT) : Infinity;
+const REGISTER_MISSING_TOPICS = process.env.REGISTER_MISSING_TOPICS === '1';
 
 async function main() {
     await db.connect();
@@ -46,13 +54,33 @@ async function main() {
     console.log(`${DRY_RUN ? '[DRY RUN] ' : ''}orphaned teaching objects: ${orphans.length}` +
         (work.length !== orphans.length ? ` (processing ${work.length})` : ''));
 
-    const stats = { scanned: 0, resolved: 0, aliased: 0, unresolved: 0 };
+    const normalize = (value) => db.normalizeTopic(value);
+    const flagshipMatcher = buildFlagshipMatcher(loadFlagshipConfig().topics, normalize);
+    const typesByTopic = new Map();
+    for (const row of orphans) {
+        const topic = row.topic || row.normalized_topic || '';
+        if (!typesByTopic.has(topic)) typesByTopic.set(topic, new Set());
+        typesByTopic.get(topic).add(row.object_type);
+    }
+    const resolutionCache = new Map();
+    const stats = { scanned: 0, resolved: 0, aliased: 0, registeredTopics: 0, matchedFlagship: 0, unresolved: 0 };
     const unresolvedTopics = new Map();
 
     for (const row of work) {
         stats.scanned += 1;
         const topic = row.topic || row.normalized_topic || '';
-        const topicId = topic ? await db.resolveCurriculumTopicId(topic).catch(() => null) : null;
+        let resolution = resolutionCache.get(topic);
+        if (!resolution) {
+            resolution = topic
+                ? await resolveOrRegisterTopic(db, topic, typesByTopic.get(topic) || new Set(), flagshipMatcher, {
+                    registerMissing: REGISTER_MISSING_TOPICS && !DRY_RUN,
+                })
+                : { topicId: null, registered: false, matchedFlagship: false };
+            resolutionCache.set(topic, resolution);
+            if (resolution.registered) stats.registeredTopics += 1;
+            if (resolution.matchedFlagship) stats.matchedFlagship += 1;
+        }
+        const topicId = resolution.topicId;
         if (!topicId) {
             stats.unresolved += 1;
             const key = String(topic || '(null)').slice(0, 80);
@@ -78,6 +106,9 @@ async function main() {
         console.log('\n  Fix by adding a curriculum topic or a topic_aliases row, then re-run.');
     }
     if (DRY_RUN) console.log('\nDRY RUN -- nothing written. Re-run with DRY_RUN=0 to apply.');
+    else if (!REGISTER_MISSING_TOPICS && stats.unresolved > 0) {
+        console.log('\nSet REGISTER_MISSING_TOPICS=1 to map flagship aliases and register generated teaching topics.');
+    }
     process.exit(0);
 }
 

@@ -260,7 +260,7 @@ async getLocalTopicDocuments(topic, { limit = 12 } = {}) {
  * backlog instead of retrying the same rows.
  */
 async listGuidelineDocumentsNeedingFullText({ limit = 25 } = {}) {
-    const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 25, 1), 200);
+    const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 25, 1), 500);
     return this.all(
         `SELECT id, pmcid, pmid, doi, title, source_body, source_year, full_text_source
          FROM guideline_documents
