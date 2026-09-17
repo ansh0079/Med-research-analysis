@@ -117,7 +117,9 @@
     "docs:openapi:validate": "node server/docs/validateOpenApi.js",
     "docs:openapi:serve": "node -e \"console.log('Swagger UI available at /api/docs when server is running')\"",
     "verify:migration-numbers": "node tools/check-migration-numbers.js",
-    "verify:topic-orphans": "node tools/check-topic-orphans.js"
+    "verify:topic-orphans": "node tools/check-topic-orphans.js",
+    "backfill:teaching-object-topics": "node server/scripts/backfillTeachingObjectTopics.js",
+    "jobs:archive-failed": "node server/scripts/archiveFailedAiJobs.js"
   },
   "dependencies": {
     "@apidevtools/swagger-parser": "^12.1.0",

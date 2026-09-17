@@ -250,6 +250,43 @@ async getLocalTopicDocuments(topic, { limit = 12 } = {}) {
     );
 }
 
+/**
+ * Documents stored with only an abstract, which still have a PMC id to fetch
+ * full text with. Production held 440 of these against 807 full-text records,
+ * and an abstract of a guideline is scope and methodology rather than its
+ * recommendations -- the same gap that made guideline synopses useless.
+ *
+ * Ordered oldest-touched first so a bounded scheduled batch works through the
+ * backlog instead of retrying the same rows.
+ */
+async listGuidelineDocumentsNeedingFullText({ limit = 25 } = {}) {
+    const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 25, 1), 200);
+    return this.all(
+        `SELECT id, pmcid, pmid, doi, title, source_body, source_year
+         FROM guideline_documents
+         WHERE pmcid IS NOT NULL AND pmcid != ''
+           AND (full_text IS NULL OR LENGTH(full_text) = 0)
+         ORDER BY updated_at ASC NULLS FIRST, id ASC
+         LIMIT ?`,
+        [safeLimit]
+    );
+}
+
+/** Attach fetched full text to an existing document row. */
+async setGuidelineDocumentFullText(id, fullText, { source = 'jats' } = {}) {
+    const text = String(fullText || '');
+    if (!id || !text) return false;
+    const wordCount = text.trim().split(/\s+/).length;
+    await this.run(
+        `UPDATE guideline_documents
+            SET full_text = ?, full_text_source = ?, word_count = ?,
+                fetched_at = ?, updated_at = ?
+          WHERE id = ?`,
+        [text, source, wordCount, new Date().toISOString(), new Date().toISOString(), id]
+    );
+    return true;
+}
+
 async getGuidelineDocumentByPmcid(pmcid) {
     return this.get(`SELECT * FROM guideline_documents WHERE pmcid = ?`, [pmcid]);
 }

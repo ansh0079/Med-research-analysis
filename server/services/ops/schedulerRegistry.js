@@ -53,6 +53,10 @@ const {
     scheduleFlagshipEnrich, stopFlagshipEnrich,
 } = require('../flagshipEnrichScheduler');
 const {
+    scheduleGuidelineFullText,
+    stopGuidelineFullText,
+} = require('../guidelineFullTextScheduler');
+const {
     scheduleZombieSweep, stopZombieSweep,
 } = require('../zombieJobSweeper');
 const {
@@ -107,6 +111,11 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
             task: 'claim-regeneration',
             start: () => scheduleClaimRegeneration(db, { serverConfig, fetchImpl, cache }, baseLogger.child({ task: 'claim-regeneration' })),
             stop: () => stopClaimRegeneration(),
+        },
+        {
+            task: 'guideline-fulltext',
+            start: () => scheduleGuidelineFullText(db, baseLogger.child({ task: 'guideline-fulltext' })),
+            stop: () => stopGuidelineFullText(),
         },
         {
             task: 'guideline-watchtower',
