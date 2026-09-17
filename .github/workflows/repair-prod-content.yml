@@ -20,9 +20,11 @@ jobs:
             cd /opt/medsearch
             docker exec -e DRY_RUN=0 -e REGISTER_MISSING_TOPICS=1 medsearch-web \
               node server/scripts/backfillTeachingObjectTopics.js
-            docker exec -e LIMIT=500 -e PAUSE_MS=500 medsearch-web \
+            docker exec -e LIMIT=500 -e PAUSE_MS=500 -e LOG_LEVEL=debug medsearch-web \
               node server/scripts/refreshGuidelineFullText.js
             docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
               "SELECT COUNT(*) AS orphaned_teaching_objects FROM teaching_objects WHERE curriculum_topic_id IS NULL;"
             docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
               "SELECT COALESCE(full_text_source, 'none') AS source, COUNT(*) FROM guideline_documents GROUP BY 1 ORDER BY 1;"
+            docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
+              "SELECT full_text_source, COUNT(*) FILTER (WHERE pmcid IS NOT NULL AND pmcid <> '') AS with_pmcid, COUNT(*) FILTER (WHERE pmid IS NOT NULL AND pmid <> '') AS with_pmid, COUNT(*) FILTER (WHERE doi IS NOT NULL AND doi <> '') AS with_doi, COUNT(*) AS total FROM guideline_documents WHERE full_text_source = 'abstract' OR full_text IS NULL OR LENGTH(full_text) = 0 GROUP BY full_text_source ORDER BY full_text_source NULLS FIRST;"
