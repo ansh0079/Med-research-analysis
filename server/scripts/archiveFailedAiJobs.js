@@ -18,6 +18,12 @@
  * Recent failures are deliberately left alone: they are the ones still worth
  * looking at, and sweeping them would hide an outage in progress.
  *
+ * Age is taken from created_at, not updated_at. The zombie sweeper rewrites
+ * updated_at when it expires a stale queued job, so in production 3,442 jobs
+ * created as far back as June carried an updated_at from this week -- filtering
+ * on updated_at found only 86 of them and would have left the rest sitting in
+ * the live table indefinitely.
+ *
  *   DRY_RUN=0 node server/scripts/archiveFailedAiJobs.js
  *   DRY_RUN=0 OLDER_THAN_DAYS=14 node server/scripts/archiveFailedAiJobs.js
  */
@@ -28,7 +34,7 @@ loadEnv();
 const db = require('../../database');
 
 const DRY_RUN = process.env.DRY_RUN !== '0';
-const OLDER_THAN_DAYS = Number(process.env.OLDER_THAN_DAYS) > 0 ? Number(process.env.OLDER_THAN_DAYS) : 7;
+const OLDER_THAN_DAYS = Number(process.env.OLDER_THAN_DAYS) > 0 ? Number(process.env.OLDER_THAN_DAYS) : 30;
 const LIMIT = Number(process.env.LIMIT) > 0 ? Number(process.env.LIMIT) : 1000;
 
 async function main() {
@@ -39,13 +45,13 @@ async function main() {
     console.log('job status before:', JSON.stringify(before));
 
     const rows = await db.all(
-        `SELECT job_key, job_type, updated_at FROM ai_generation_jobs
-          WHERE status = 'failed' AND updated_at < ?
-          ORDER BY updated_at ASC
+        `SELECT job_key, job_type, created_at, updated_at FROM ai_generation_jobs
+          WHERE status = 'failed' AND created_at < ?
+          ORDER BY created_at ASC
           LIMIT ?`,
         [cutoff, LIMIT],
     );
-    console.log(`${DRY_RUN ? '[DRY RUN] ' : ''}failed jobs older than ${OLDER_THAN_DAYS}d: ${rows.length}`);
+    console.log(`${DRY_RUN ? '[DRY RUN] ' : ''}failed jobs created over ${OLDER_THAN_DAYS}d ago: ${rows.length}`);
 
     const byType = {};
     let archived = 0;
