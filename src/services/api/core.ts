@@ -127,6 +127,27 @@ export class BaseApiClient {
     return this.requestId;
   }
 
+  private ensureClientSessionId(): void {
+    if (this.sessionId && this.sessionId.trim()) return;
+    try {
+      const stored = localStorage.getItem('med_research_session');
+      if (stored && stored.trim()) {
+        this.sessionId = stored;
+        return;
+      }
+    } catch {
+      // ignore storage errors
+    }
+    // Mint a client session id for cold start to keep CSRF issuance and mutation in sync
+    const minted = crypto.randomUUID();
+    this.sessionId = minted;
+    try {
+      localStorage.setItem('med_research_session', minted);
+    } catch {
+      // ignore storage errors
+    }
+  }
+
   async getClientConfig(): Promise<{
     features?: { vectorSearch?: boolean; betaMode?: boolean };
     betaMode?: boolean;
@@ -164,16 +185,24 @@ export class BaseApiClient {
     if (BaseApiClient.refreshInFlight) return BaseApiClient.refreshInFlight;
     BaseApiClient.refreshInFlight = (async () => {
       try {
+        // Ensure we have a client session id before CSRF issuance
+        this.ensureClientSessionId();
         const csrf = await getCsrfToken();
+        // Re-sync from storage in case CSRF issuance rotated session id
+        try {
+          const sid = localStorage.getItem('med_research_session');
+          if (sid && sid !== this.sessionId) this.sessionId = sid;
+        } catch {}
+        const headers: Record<string, string> = {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-Request-Id': this.ensureRequestId(),
+        };
+        if (this.sessionId) headers['X-Session-Id'] = this.sessionId;
+        if (csrf) headers['X-CSRF-Token'] = csrf;
         const response = await fetch(`${API_BASE}/api/auth/refresh`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            ...(this.sessionId ? { 'X-Session-Id': this.sessionId } : {}),
-            ...(csrf ? { 'X-CSRF-Token': csrf } : {}),
-            'X-Request-Id': this.ensureRequestId(),
-          },
+          headers,
           credentials: 'include',
         });
         const serverRequestId = response.headers.get('X-Request-Id');
@@ -206,16 +235,24 @@ export class BaseApiClient {
 
   protected async fetchWithSession(url: string, options: RequestInit = {}, signal?: AbortSignal): Promise<Response> {
     const headers = new Headers(options.headers);
-    if (this.sessionId) {
-      headers.set('X-Session-Id', this.sessionId);
-    }
     headers.set('X-Request-Id', this.ensureRequestId());
     // Required by the server-side CSRF origin check on state-changing requests
     headers.set('X-Requested-With', 'XMLHttpRequest');
     const method = String((options.method || 'GET')).toUpperCase();
     if (!['GET', 'HEAD', 'OPTIONS'].includes(method)) {
+      // Ensure session consistency before issuing/fetching CSRF
+      this.ensureClientSessionId();
       const csrf = await getCsrfToken();
+      // Sync from storage after CSRF issuance (server may have rotated sid)
+      try {
+        const sid = localStorage.getItem('med_research_session');
+        if (sid && sid !== this.sessionId) this.sessionId = sid;
+      } catch {}
+      if (this.sessionId) headers.set('X-Session-Id', this.sessionId);
       if (csrf) headers.set('X-CSRF-Token', csrf);
+    } else {
+      // Safe methods still carry session id when available
+      if (this.sessionId) headers.set('X-Session-Id', this.sessionId);
     }
     const fetchOpts = { ...options, headers, credentials: 'include' as const, ...(signal ? { signal } : {}) };
     let response = await fetch(url, fetchOpts);
