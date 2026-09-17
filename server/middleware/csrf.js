@@ -1,5 +1,4 @@
 const crypto = require('crypto');
-const logger = require('../config/logger');
 
 const CSRF_COOKIE_NAME = 'csrf_token';
 const CSRF_HEADER_NAME = 'x-csrf-token';
@@ -78,7 +77,14 @@ function isValidCsrf(req) {
 
   const sessionId = req.sessionId || 'anon';
   const expected = sign(`${sessionId}.${parsed.nonce}.${parsed.exp}`, getSecret());
-  return crypto.timingSafeEqual(Buffer.from(parsed.sig), Buffer.from(expected));
+  const a = Buffer.from(parsed.sig);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length) return false;
+  try {
+    return crypto.timingSafeEqual(a, b);
+  } catch {
+    return false;
+  }
 }
 
 /**

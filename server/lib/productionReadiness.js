@@ -168,6 +168,12 @@ function checkRuntimeStripe(errors) {
     }
 }
 
+function checkRuntimeCsrf(errors) {
+    if (isProduction() && !env('CSRF_SECRET')) {
+        errors.push('CSRF_SECRET must be set in production');
+    }
+}
+
 /**
  * Validate production environment configuration.
  *
@@ -204,6 +210,7 @@ function validateProductionEnv({ mode = 'verify' } = {}) {
         }
 
         checkRuntimeStripe(errors);
+        checkRuntimeCsrf(errors);
 
         if (!env('REDIS_URL')) {
             errors.push('REDIS_URL must be set in production for cache, rate limits, sessions, and job queues.');

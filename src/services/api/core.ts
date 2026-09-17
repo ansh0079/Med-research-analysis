@@ -25,7 +25,7 @@ export interface AuthUser {
 }
 
 import { registerAnalyticsInitializer } from '../consent';
-import { getCsrfToken } from './csrf';
+import { getCsrfToken, clearCsrfToken } from './csrf';
 
 // Error tracking — only enabled once the user accepts the cookie consent banner.
 registerAnalyticsInitializer(() => {
@@ -170,18 +170,32 @@ export class BaseApiClient {
           headers: {
             'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
+            ...(this.sessionId ? { 'X-Session-Id': this.sessionId } : {}),
             ...(csrf ? { 'X-CSRF-Token': csrf } : {}),
             'X-Request-Id': this.ensureRequestId(),
           },
           credentials: 'include',
         });
+        const serverRequestId = response.headers.get('X-Request-Id');
+        if (serverRequestId && serverRequestId !== this.requestId) {
+          this.requestId = serverRequestId;
+          try { localStorage.setItem('med_research_request_id', serverRequestId); } catch {}
+        }
+        const serverSession = response.headers.get('X-Session-Id');
+        if (serverSession && serverSession !== this.sessionId) {
+          this.sessionId = serverSession;
+          try { localStorage.setItem('med_research_session', serverSession); } catch {}
+          clearCsrfToken();
+        }
         // A successful refresh clears the backoff so a later expiry is retried
         // immediately; a failure starts it, because the same call will keep
         // failing until the user signs in again.
         BaseApiClient.refreshFailedAt = response.ok ? 0 : Date.now();
+        if (response.status === 401) clearCsrfToken();
         return response.ok;
       } catch {
         BaseApiClient.refreshFailedAt = Date.now();
+        clearCsrfToken();
         return false;
       } finally {
         BaseApiClient.refreshInFlight = null;
@@ -232,6 +246,7 @@ export class BaseApiClient {
       } catch {
         // ignore storage errors
       }
+      clearCsrfToken();
     }
 
     this.emitUsageHeaderEvent(clonedResponse, url);
