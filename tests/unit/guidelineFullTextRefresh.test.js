@@ -19,6 +19,7 @@ const {
     refreshGuidelineFullText,
     resolvePmcid,
     fetchFullText,
+    getWithRetry,
     jatsToText,
     MIN_BODY_CHARS,
 } = require('../../server/services/guideline/guidelineFullTextRefresh');
@@ -74,6 +75,24 @@ describe('fetchFullText', () => {
     test('rejects a body too short to be a guideline', async () => {
         await expect(fetchFullText('PMC3', { get: async () => '<article><body><p>short</p></body></article>' }))
             .rejects.toThrow(/body too short/);
+    });
+});
+
+describe('getWithRetry', () => {
+    test('retries transient provider throttling with bounded backoff', async () => {
+        const get = jest.fn()
+            .mockRejectedValueOnce(Object.assign(new Error('HTTP 429'), { retryAfterMs: 2500 }))
+            .mockResolvedValue('ok');
+        const wait = jest.fn().mockResolvedValue(undefined);
+        await expect(getWithRetry('https://example.test', { get, wait })).resolves.toBe('ok');
+        expect(get).toHaveBeenCalledTimes(2);
+        expect(wait).toHaveBeenCalledWith(2500);
+    });
+
+    test('does not retry permanent missing-body responses', async () => {
+        const get = jest.fn().mockRejectedValue(new Error('HTTP 404'));
+        await expect(getWithRetry('https://example.test', { get, wait: jest.fn() })).rejects.toThrow('HTTP 404');
+        expect(get).toHaveBeenCalledTimes(1);
     });
 });
 

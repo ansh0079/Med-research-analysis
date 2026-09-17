@@ -36,8 +36,14 @@ function httpGet(url, { timeout = 60000 } = {}) {
                 return;
             }
             if (res.statusCode !== 200) {
+                const retryAfter = res.headers['retry-after'];
+                const retryAfterMs = /^\d+$/.test(String(retryAfter || ''))
+                    ? Number(retryAfter) * 1000
+                    : Math.max(0, Date.parse(String(retryAfter || '')) - Date.now());
                 res.resume();
-                reject(new Error(`HTTP ${res.statusCode}`));
+                const error = new Error(`HTTP ${res.statusCode}`);
+                error.retryAfterMs = Number.isFinite(retryAfterMs) ? retryAfterMs : 0;
+                reject(error);
                 return;
             }
             let body = '';
@@ -48,6 +54,23 @@ function httpGet(url, { timeout = 60000 } = {}) {
         req.on('timeout', () => req.destroy(new Error('timeout')));
         req.on('error', reject);
     });
+}
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function getWithRetry(url, { get = httpGet, wait = sleep, retries = 2 } = {}) {
+    let lastError;
+    for (let attempt = 0; attempt <= retries; attempt += 1) {
+        try {
+            return await get(url);
+        } catch (err) {
+            lastError = err;
+            if (!/HTTP (429|503)/.test(String(err?.message || err)) || attempt >= retries) throw err;
+            const backoffMs = Math.max(Number(err?.retryAfterMs || 0), 1000 * (2 ** attempt));
+            await wait(Math.min(backoffMs, 15000));
+        }
+    }
+    throw lastError;
 }
 
 /** Strip JATS markup to plain prose, dropping references, tables and figures. */
@@ -68,8 +91,8 @@ function jatsToText(xml) {
         .trim();
 }
 
-async function fetchFullText(pmcid, { get = httpGet } = {}) {
-    const xml = await get(`${EPMC}/${pmcid}/fullTextXML`);
+async function fetchFullText(pmcid, { get = httpGet, wait = sleep } = {}) {
+    const xml = await getWithRetry(`${EPMC}/${pmcid}/fullTextXML`, { get, wait });
     if (!/<body[^>]*>/i.test(xml)) throw new Error('no body element (abstract-only record)');
     const text = jatsToText(xml);
     if (text.length < MIN_BODY_CHARS) throw new Error(`body too short (${text.length} chars)`);
@@ -77,7 +100,7 @@ async function fetchFullText(pmcid, { get = httpGet } = {}) {
 }
 
 /** Resolve a PMC id when an older row only stored PMID or DOI metadata. */
-async function resolvePmcid(row, { get = httpGet } = {}) {
+async function resolvePmcid(row, { get = httpGet, wait = sleep } = {}) {
     const existing = String(row?.pmcid || '').trim();
     if (existing) return existing.toUpperCase().startsWith('PMC') ? existing : `PMC${existing}`;
 
@@ -86,7 +109,10 @@ async function resolvePmcid(row, { get = httpGet } = {}) {
     const query = pmid ? `EXT_ID:${pmid} AND SRC:MED` : (doi ? `DOI:${doi}` : '');
     if (!query) return null;
 
-    const raw = await get(`${EPMC}/search?query=${encodeURIComponent(query)}&format=json&resultType=core&pageSize=1`);
+    const raw = await getWithRetry(
+        `${EPMC}/search?query=${encodeURIComponent(query)}&format=json&resultType=core&pageSize=1`,
+        { get, wait },
+    );
     const result = JSON.parse(raw)?.resultList?.result?.[0];
     if (!result?.pmcid || String(result.inPMC || '').toUpperCase() !== 'Y') return null;
     return String(result.pmcid).trim();
@@ -101,6 +127,7 @@ async function refreshGuidelineFullText(db, {
     limit = Number(process.env.GUIDELINE_FULLTEXT_BATCH_LIMIT || 25),
     pauseMs = Number(process.env.GUIDELINE_FULLTEXT_PAUSE_MS || 400),
     get = httpGet,
+    wait = sleep,
     log = logger,
 } = {}) {
     const stats = { scanned: 0, upgraded: 0, stillAbstract: 0, failed: 0 };
@@ -114,11 +141,11 @@ async function refreshGuidelineFullText(db, {
     for (const row of rows) {
         stats.scanned += 1;
         try {
-            const pmcid = await resolvePmcid(row, { get });
+            const pmcid = await resolvePmcid(row, { get, wait });
             if (!pmcid) {
                 stats.stillAbstract += 1;
             } else {
-                const text = await fetchFullText(pmcid, { get });
+                const text = await fetchFullText(pmcid, { get, wait });
                 await db.setGuidelineDocumentFullText(row.id, text, { source: 'jats', pmcid });
                 stats.upgraded += 1;
             }
@@ -139,7 +166,7 @@ async function refreshGuidelineFullText(db, {
             await db.run('UPDATE guideline_documents SET updated_at = ? WHERE id = ?',
                 [new Date().toISOString(), row.id]).catch(() => {});
         }
-        if (pauseMs > 0) await new Promise((r) => setTimeout(r, pauseMs));
+        if (pauseMs > 0) await wait(pauseMs);
     }
 
     if (stats.scanned > 0) {
@@ -148,4 +175,4 @@ async function refreshGuidelineFullText(db, {
     return stats;
 }
 
-module.exports = { refreshGuidelineFullText, resolvePmcid, fetchFullText, jatsToText, MIN_BODY_CHARS };
+module.exports = { refreshGuidelineFullText, resolvePmcid, fetchFullText, getWithRetry, jatsToText, MIN_BODY_CHARS };
