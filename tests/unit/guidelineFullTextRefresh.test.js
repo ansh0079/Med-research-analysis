@@ -94,6 +94,14 @@ describe('getWithRetry', () => {
         await expect(getWithRetry('https://example.test', { get, wait: jest.fn() })).rejects.toThrow('HTTP 404');
         expect(get).toHaveBeenCalledTimes(1);
     });
+
+    test('retries transient server errors before surfacing them', async () => {
+        const get = jest.fn().mockRejectedValue(new Error('HTTP 500'));
+        const wait = jest.fn().mockResolvedValue(undefined);
+        await expect(getWithRetry('https://example.test', { get, wait })).rejects.toThrow('HTTP 500');
+        expect(get).toHaveBeenCalledTimes(3);
+        expect(wait).toHaveBeenCalledTimes(2);
+    });
 });
 
 describe('resolvePmcid', () => {
@@ -151,10 +159,13 @@ describe('refreshGuidelineFullText', () => {
         expect(db.touched).toEqual(['d1']);
     });
 
-    test('a network outage counts as failed, so it is visible', async () => {
-        const db = makeDb([{ id: 'd1', pmcid: 'PMC1' }]);
+    test('a metadata-service outage counts as failed, so it is visible', async () => {
+        const db = makeDb([{ id: 'd1', pmid: '1' }]);
         const stats = await refreshGuidelineFullText(db, {
-            get: async () => { throw new Error('HTTP 503'); }, pauseMs: 0, log: silentLog,
+            get: async () => { throw new Error('HTTP 503'); },
+            wait: async () => {},
+            pauseMs: 0,
+            log: silentLog,
         });
         expect(stats).toMatchObject({ scanned: 1, upgraded: 0, stillAbstract: 0, failed: 1 });
     });
@@ -163,6 +174,17 @@ describe('refreshGuidelineFullText', () => {
         const db = makeDb([{ id: 'd1', pmcid: 'PMC1' }]);
         const stats = await refreshGuidelineFullText(db, {
             get: async () => { throw new Error('HTTP 404'); }, pauseMs: 0, log: silentLog,
+        });
+        expect(stats).toMatchObject({ scanned: 1, upgraded: 0, stillAbstract: 1, failed: 0 });
+    });
+
+    test('a persistently unavailable PMC body is abstract-only, not an app failure', async () => {
+        const db = makeDb([{ id: 'd1', pmcid: 'PMC1' }]);
+        const stats = await refreshGuidelineFullText(db, {
+            get: async () => { throw new Error('HTTP 500'); },
+            wait: async () => {},
+            pauseMs: 0,
+            log: silentLog,
         });
         expect(stats).toMatchObject({ scanned: 1, upgraded: 0, stillAbstract: 1, failed: 0 });
     });

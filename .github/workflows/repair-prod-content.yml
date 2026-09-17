@@ -20,7 +20,7 @@ jobs:
             cd /opt/medsearch
             docker exec -e DRY_RUN=0 -e REGISTER_MISSING_TOPICS=1 medsearch-web \
               node server/scripts/backfillTeachingObjectTopics.js
-            docker exec -e LIMIT=500 -e PAUSE_MS=500 -e LOG_LEVEL=debug medsearch-web \
+            docker exec -e LIMIT=500 -e PAUSE_MS=500 medsearch-web \
               node server/scripts/refreshGuidelineFullText.js
             docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
               "SELECT COUNT(*) AS orphaned_teaching_objects FROM teaching_objects WHERE curriculum_topic_id IS NULL;"

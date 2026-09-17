@@ -65,7 +65,7 @@ async function getWithRetry(url, { get = httpGet, wait = sleep, retries = 2 } = 
             return await get(url);
         } catch (err) {
             lastError = err;
-            if (!/HTTP (429|503)/.test(String(err?.message || err)) || attempt >= retries) throw err;
+            if (!/HTTP (429|500|502|503|504)/.test(String(err?.message || err)) || attempt >= retries) throw err;
             const backoffMs = Math.max(Number(err?.retryAfterMs || 0), 1000 * (2 ** attempt));
             await wait(Math.min(backoffMs, 15000));
         }
@@ -92,7 +92,15 @@ function jatsToText(xml) {
 }
 
 async function fetchFullText(pmcid, { get = httpGet, wait = sleep } = {}) {
-    const xml = await getWithRetry(`${EPMC}/${pmcid}/fullTextXML`, { get, wait });
+    let xml;
+    try {
+        xml = await getWithRetry(`${EPMC}/${pmcid}/fullTextXML`, { get, wait });
+    } catch (err) {
+        if (/HTTP (500|502|503|504)/.test(String(err?.message || err))) {
+            throw new Error(`body unavailable (${err.message})`);
+        }
+        throw err;
+    }
     if (!/<body[^>]*>/i.test(xml)) throw new Error('no body element (abstract-only record)');
     const text = jatsToText(xml);
     if (text.length < MIN_BODY_CHARS) throw new Error(`body too short (${text.length} chars)`);
@@ -154,7 +162,7 @@ async function refreshGuidelineFullText(db, {
             // or abstract-only records, not an error worth alerting on. Counted
             // separately so a genuine outage is visible as `failed` climbing.
             const message = String(err?.message || err);
-            if (/HTTP 404|no body element|body too short/.test(message)) stats.stillAbstract += 1;
+            if (/HTTP 404|body unavailable|no body element|body too short/.test(message)) stats.stillAbstract += 1;
             else {
                 stats.failed += 1;
                 log.debug?.({ err, pmcid: row.pmcid }, 'guideline full-text fetch failed');
