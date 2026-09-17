@@ -25,6 +25,7 @@ export interface AuthUser {
 }
 
 import { registerAnalyticsInitializer } from '../consent';
+import { getCsrfToken } from './csrf';
 
 // Error tracking — only enabled once the user accepts the cookie consent banner.
 registerAnalyticsInitializer(() => {
@@ -163,11 +164,13 @@ export class BaseApiClient {
     if (BaseApiClient.refreshInFlight) return BaseApiClient.refreshInFlight;
     BaseApiClient.refreshInFlight = (async () => {
       try {
+        const csrf = await getCsrfToken();
         const response = await fetch(`${API_BASE}/api/auth/refresh`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
+            ...(csrf ? { 'X-CSRF-Token': csrf } : {}),
             'X-Request-Id': this.ensureRequestId(),
           },
           credentials: 'include',
@@ -195,6 +198,11 @@ export class BaseApiClient {
     headers.set('X-Request-Id', this.ensureRequestId());
     // Required by the server-side CSRF origin check on state-changing requests
     headers.set('X-Requested-With', 'XMLHttpRequest');
+    const method = String((options.method || 'GET')).toUpperCase();
+    if (!['GET', 'HEAD', 'OPTIONS'].includes(method)) {
+      const csrf = await getCsrfToken();
+      if (csrf) headers.set('X-CSRF-Token', csrf);
+    }
     const fetchOpts = { ...options, headers, credentials: 'include' as const, ...(signal ? { signal } : {}) };
     let response = await fetch(url, fetchOpts);
 
