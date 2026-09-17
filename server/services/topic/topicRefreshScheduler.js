@@ -293,7 +293,7 @@ async function runStaleSynopsisRefresh({ db, serverConfig, fetchImpl, cache, log
         const detail = { articleUid: candidate.articleUid, topic: candidate.topic, generatedAt: candidate.generatedAt, status: 'pending' };
         try {
             await runPaperSynopsisGeneration({
-                article: { uid: candidate.articleUid },
+                article: { uid: candidate.articleUid, title: candidate.title },
                 serverConfig,
                 fetchImpl,
                 cache,

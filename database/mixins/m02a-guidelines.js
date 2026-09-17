@@ -251,8 +251,8 @@ async getLocalTopicDocuments(topic, { limit = 12 } = {}) {
 }
 
 /**
- * Documents stored with only an abstract, which still have a PMC id to fetch
- * full text with. Production held 440 of these against 807 full-text records,
+ * Documents stored with only an abstract and at least one identifier that can
+ * be resolved through Europe PMC. Production held 440 of these against 807 full-text records,
  * and an abstract of a guideline is scope and methodology rather than its
  * recommendations -- the same gap that made guideline synopses useless.
  *
@@ -262,10 +262,14 @@ async getLocalTopicDocuments(topic, { limit = 12 } = {}) {
 async listGuidelineDocumentsNeedingFullText({ limit = 25 } = {}) {
     const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 25, 1), 200);
     return this.all(
-        `SELECT id, pmcid, pmid, doi, title, source_body, source_year
+        `SELECT id, pmcid, pmid, doi, title, source_body, source_year, full_text_source
          FROM guideline_documents
-         WHERE pmcid IS NOT NULL AND pmcid != ''
-           AND (full_text IS NULL OR LENGTH(full_text) = 0)
+         WHERE (full_text_source = 'abstract' OR full_text IS NULL OR LENGTH(full_text) = 0)
+           AND (
+                (pmcid IS NOT NULL AND pmcid != '')
+                OR (pmid IS NOT NULL AND pmid != '')
+                OR (doi IS NOT NULL AND doi != '')
+           )
          ORDER BY updated_at ASC NULLS FIRST, id ASC
          LIMIT ?`,
         [safeLimit]
@@ -273,16 +277,21 @@ async listGuidelineDocumentsNeedingFullText({ limit = 25 } = {}) {
 }
 
 /** Attach fetched full text to an existing document row. */
-async setGuidelineDocumentFullText(id, fullText, { source = 'jats' } = {}) {
+async setGuidelineDocumentFullText(id, fullText, { source = 'jats', pmcid = null } = {}) {
     const text = String(fullText || '');
     if (!id || !text) return false;
     const wordCount = text.trim().split(/\s+/).length;
+    const duplicate = pmcid
+        ? await this.get('SELECT id FROM guideline_documents WHERE pmcid = ? AND id != ?', [pmcid, id])
+        : null;
+    const pmcidToStore = duplicate ? null : pmcid;
     await this.run(
         `UPDATE guideline_documents
             SET full_text = ?, full_text_source = ?, word_count = ?,
+                pmcid = COALESCE(pmcid, ?),
                 fetched_at = ?, updated_at = ?
           WHERE id = ?`,
-        [text, source, wordCount, new Date().toISOString(), new Date().toISOString(), id]
+        [text, source, wordCount, pmcidToStore, new Date().toISOString(), new Date().toISOString(), id]
     );
     return true;
 }

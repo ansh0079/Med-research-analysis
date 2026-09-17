@@ -76,6 +76,22 @@ async function fetchFullText(pmcid, { get = httpGet } = {}) {
     return text;
 }
 
+/** Resolve a PMC id when an older row only stored PMID or DOI metadata. */
+async function resolvePmcid(row, { get = httpGet } = {}) {
+    const existing = String(row?.pmcid || '').trim();
+    if (existing) return existing.toUpperCase().startsWith('PMC') ? existing : `PMC${existing}`;
+
+    const pmid = String(row?.pmid || '').trim();
+    const doi = String(row?.doi || '').trim().toLowerCase();
+    const query = pmid ? `EXT_ID:${pmid} AND SRC:MED` : (doi ? `DOI:${doi}` : '');
+    if (!query) return null;
+
+    const raw = await get(`${EPMC}/search?query=${encodeURIComponent(query)}&format=json&resultType=core&pageSize=1`);
+    const result = JSON.parse(raw)?.resultList?.result?.[0];
+    if (!result?.pmcid || String(result.inPMC || '').toUpperCase() !== 'Y') return null;
+    return String(result.pmcid).trim();
+}
+
 /**
  * Upgrade one bounded batch.
  *
@@ -98,15 +114,20 @@ async function refreshGuidelineFullText(db, {
     for (const row of rows) {
         stats.scanned += 1;
         try {
-            const text = await fetchFullText(row.pmcid, { get });
-            await db.setGuidelineDocumentFullText(row.id, text, { source: 'jats' });
-            stats.upgraded += 1;
+            const pmcid = await resolvePmcid(row, { get });
+            if (!pmcid) {
+                stats.stillAbstract += 1;
+            } else {
+                const text = await fetchFullText(pmcid, { get });
+                await db.setGuidelineDocumentFullText(row.id, text, { source: 'jats', pmcid });
+                stats.upgraded += 1;
+            }
         } catch (err) {
             // "no body" / "too short" is the expected steady state for embargoed
             // or abstract-only records, not an error worth alerting on. Counted
             // separately so a genuine outage is visible as `failed` climbing.
             const message = String(err?.message || err);
-            if (/no body element|body too short/.test(message)) stats.stillAbstract += 1;
+            if (/HTTP 404|no body element|body too short/.test(message)) stats.stillAbstract += 1;
             else {
                 stats.failed += 1;
                 log.debug?.({ err, pmcid: row.pmcid }, 'guideline full-text fetch failed');
@@ -127,4 +148,4 @@ async function refreshGuidelineFullText(db, {
     return stats;
 }
 
-module.exports = { refreshGuidelineFullText, fetchFullText, jatsToText, MIN_BODY_CHARS };
+module.exports = { refreshGuidelineFullText, resolvePmcid, fetchFullText, jatsToText, MIN_BODY_CHARS };

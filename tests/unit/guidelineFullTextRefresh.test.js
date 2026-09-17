@@ -17,6 +17,7 @@
 
 const {
     refreshGuidelineFullText,
+    resolvePmcid,
     fetchFullText,
     jatsToText,
     MIN_BODY_CHARS,
@@ -76,6 +77,23 @@ describe('fetchFullText', () => {
     });
 });
 
+describe('resolvePmcid', () => {
+    test('discovers a PMC id from a stored PMID', async () => {
+        const get = jest.fn().mockResolvedValue(JSON.stringify({
+            resultList: { result: [{ pmcid: 'PMC123', inPMC: 'Y' }] },
+        }));
+        await expect(resolvePmcid({ pmid: '987' }, { get })).resolves.toBe('PMC123');
+        expect(get).toHaveBeenCalledWith(expect.stringContaining('EXT_ID%3A987'));
+    });
+
+    test('does not treat a metadata match without a PMC body as full text', async () => {
+        const get = jest.fn().mockResolvedValue(JSON.stringify({
+            resultList: { result: [{ pmcid: 'PMC123', inPMC: 'N' }] },
+        }));
+        await expect(resolvePmcid({ doi: '10.1/example' }, { get })).resolves.toBeNull();
+    });
+});
+
 describe('refreshGuidelineFullText', () => {
     test('upgrades a document and records the word count source', async () => {
         const db = makeDb([{ id: 'd1', pmcid: 'PMC1' }]);
@@ -83,7 +101,17 @@ describe('refreshGuidelineFullText', () => {
             get: async () => bodyXml(MIN_BODY_CHARS + 500), pauseMs: 0, log: silentLog,
         });
         expect(stats).toMatchObject({ scanned: 1, upgraded: 1, stillAbstract: 0, failed: 0 });
-        expect(db.updated[0]).toMatchObject({ id: 'd1', source: 'jats' });
+        expect(db.updated[0]).toMatchObject({ id: 'd1', source: 'jats', pmcid: 'PMC1' });
+    });
+
+    test('resolves and persists a missing PMC id before fetching the body', async () => {
+        const db = makeDb([{ id: 'd1', pmid: '12345' }]);
+        const get = jest.fn(async (url) => url.includes('/search?')
+            ? JSON.stringify({ resultList: { result: [{ pmcid: 'PMC9', inPMC: 'Y' }] } })
+            : bodyXml(MIN_BODY_CHARS + 500));
+        const stats = await refreshGuidelineFullText(db, { get, pauseMs: 0, log: silentLog });
+        expect(stats).toMatchObject({ scanned: 1, upgraded: 1, stillAbstract: 0, failed: 0 });
+        expect(db.updated[0]).toMatchObject({ id: 'd1', source: 'jats', pmcid: 'PMC9' });
     });
 
     test('an embargoed record counts as stillAbstract, not failed', async () => {
@@ -95,12 +123,29 @@ describe('refreshGuidelineFullText', () => {
         expect(db.updated).toHaveLength(0);
     });
 
+    test('touches a row when no PMC record can be discovered', async () => {
+        const db = makeDb([{ id: 'd1', pmid: '12345' }]);
+        const stats = await refreshGuidelineFullText(db, {
+            get: async () => JSON.stringify({ resultList: { result: [] } }), pauseMs: 0, log: silentLog,
+        });
+        expect(stats).toMatchObject({ scanned: 1, upgraded: 0, stillAbstract: 1, failed: 0 });
+        expect(db.touched).toEqual(['d1']);
+    });
+
     test('a network outage counts as failed, so it is visible', async () => {
         const db = makeDb([{ id: 'd1', pmcid: 'PMC1' }]);
         const stats = await refreshGuidelineFullText(db, {
             get: async () => { throw new Error('HTTP 503'); }, pauseMs: 0, log: silentLog,
         });
         expect(stats).toMatchObject({ scanned: 1, upgraded: 0, stillAbstract: 0, failed: 1 });
+    });
+
+    test('a missing Europe PMC body is an expected abstract-only result', async () => {
+        const db = makeDb([{ id: 'd1', pmcid: 'PMC1' }]);
+        const stats = await refreshGuidelineFullText(db, {
+            get: async () => { throw new Error('HTTP 404'); }, pauseMs: 0, log: silentLog,
+        });
+        expect(stats).toMatchObject({ scanned: 1, upgraded: 0, stillAbstract: 1, failed: 0 });
     });
 
     test('touches every row it scanned, so the next run advances past failures', async () => {
@@ -122,5 +167,20 @@ describe('refreshGuidelineFullText', () => {
     test('a database without the accessor is a no-op rather than a crash', async () => {
         await expect(refreshGuidelineFullText({}, { pauseMs: 0, log: silentLog }))
             .resolves.toMatchObject({ scanned: 0, upgraded: 0 });
+    });
+});
+
+describe('guideline full-text database selector', () => {
+    test('selects abstract rows that only have PMID or DOI identifiers', async () => {
+        const applyGuidelineMixin = require('../../database/mixins/m02a-guidelines');
+        class Base {
+            async all(sql, params) { this.query = { sql, params }; return []; }
+        }
+        const Db = applyGuidelineMixin(Base);
+        const db = new Db();
+        await db.listGuidelineDocumentsNeedingFullText({ limit: 10 });
+        expect(db.query.sql).toContain("full_text_source = 'abstract'");
+        expect(db.query.sql).toContain('pmid IS NOT NULL');
+        expect(db.query.sql).toContain('doi IS NOT NULL');
     });
 });

@@ -51,7 +51,8 @@ if ! docker compose -f docker-compose.hetzner.yml up -d --build --remove-orphans
 fi
 
 echo "Running Postgres migrations..."
-docker compose -f docker-compose.hetzner.yml exec -T web npm run db:migrate:postgres
+docker compose -f docker-compose.hetzner.yml exec -T -e USE_POSTGRES_MAIN=true web \
+  node -e "const db=require('./database');db.connect().then(()=>db.runMigrations()).then(r=>console.log(r)).finally(()=>db.close())"
 
 echo ""
 echo "Waiting for health (web + worker) ..."

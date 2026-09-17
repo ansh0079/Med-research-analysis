@@ -189,7 +189,7 @@ async getStaleSynopsesForRefresh({ maxAgeDays = 90, minSignalCount = 2, signalWi
     const staleCutoff = new Date(Date.now() - maxAgeDays * 24 * 60 * 60 * 1000).toISOString();
     const signalCutoff = new Date(Date.now() - signalWindowDays * 24 * 60 * 60 * 1000).toISOString();
     const rows = await this.all(
-        `SELECT t.article_uid, t.topic, t.normalized_topic, t.updated_at, t.generated_at,
+        `SELECT t.article_uid, t.topic, t.normalized_topic, t.title, t.updated_at, t.generated_at,
                 SUM(s.signal_count) AS total_signals
          FROM teaching_objects t
          JOIN topic_bouquet_signals s ON s.article_uid = t.article_uid
@@ -198,7 +198,7 @@ async getStaleSynopsesForRefresh({ maxAgeDays = 90, minSignalCount = 2, signalWi
            AND t.object_payload LIKE '%"synopsis"%'
            AND COALESCE(t.generated_at, t.updated_at) < ?
            AND s.last_seen_at > ?
-         GROUP BY t.article_uid, t.topic, t.normalized_topic, t.updated_at, t.generated_at
+         GROUP BY t.article_uid, t.topic, t.normalized_topic, t.title, t.updated_at, t.generated_at
          HAVING SUM(s.signal_count) >= ?
          ORDER BY total_signals DESC
          LIMIT ?`,
@@ -206,6 +206,7 @@ async getStaleSynopsesForRefresh({ maxAgeDays = 90, minSignalCount = 2, signalWi
     ).catch(() => []);
     return (rows || []).map((row) => ({
         articleUid: row.article_uid,
+        title: row.title || null,
         topic: row.topic || row.normalized_topic || '',
         normalizedTopic: row.normalized_topic || null,
         totalSignals: Number(row.total_signals || 0),
