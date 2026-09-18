@@ -75,6 +75,67 @@ function guidelineTermScore(row, topicWords) {
     return hits / topicWords.length;
 }
 
+/**
+ * Bodies are free text, so one organisation arrives under several spellings
+ * ("American Thoracic Society", "American Thoracic Society (ATS)"). Grouping on
+ * the raw string hands the same body two slots in a diversified list.
+ */
+function bodyKey(row) {
+    return String(row.source_body || '')
+        .toLowerCase()
+        .replace(/\([^)]*\)/g, ' ')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim() || 'unattributed';
+}
+
+/**
+ * Term score alone put twelve NICE 2014 rows in the top twelve for
+ * community-acquired pneumonia while ATS 2025/2026, ERS 2026 and BTS sat below
+ * them: the older text repeats the topic words slightly more often, and year was
+ * only a tiebreak between *identical* scores, so a 0.83 from 2014 beat a 0.80
+ * from 2026 outright.
+ *
+ * Quantising to tenths makes scores that differ by noise compare equal, and lets
+ * recency decide between them. A row that is genuinely more on-topic still wins:
+ * it lands in a higher bucket.
+ */
+const SCORE_BUCKET = 10;
+
+function rankKey({ score, year }) {
+    return { bucket: Math.round(score * SCORE_BUCKET), year };
+}
+
+/**
+ * Interleave by issuing body so one organisation cannot take every slot, keeping
+ * each body's own rows in rank order. A reader comparing guidance needs to see
+ * that ATS, ERS, BTS and NICE all cover the topic; twelve rows from one of them
+ * answers a different question than the one being asked.
+ */
+function diversifyByBody(sorted, limit) {
+    const byBody = new Map();
+    for (const item of sorted) {
+        const key = bodyKey(item.row);
+        if (!byBody.has(key)) byBody.set(key, []);
+        byBody.get(key).push(item);
+    }
+    // Bodies compete in the order their best row ranked, so diversification
+    // reorders within the result set without promoting a weak body above a
+    // strong one's first entry.
+    const queues = [...byBody.values()];
+    const out = [];
+    let progressed = true;
+    while (out.length < limit && progressed) {
+        progressed = false;
+        for (const queue of queues) {
+            if (!queue.length) continue;
+            out.push(queue.shift());
+            progressed = true;
+            if (out.length >= limit) break;
+        }
+    }
+    return out;
+}
+
 module.exports = (Sup) => class extends Sup {
 // Guideline Memory
 // ==========================================
@@ -407,18 +468,25 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
     const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 20, 1), 100);
     const statusFilter = String(status || '').trim();
     const staleThreshold = new Date(Date.now() - 365 * 86400000).toISOString();
+    // normalizeTopic keeps hyphens, so "iron-deficiency anaemia" and "iron
+    // deficiency anaemia" are different storage keys. 335 stored topics carry a
+    // hyphen (4,052 rows) and ten exist under both spellings, splitting 259 rows.
+    // Rewriting normalizeTopic would orphan every hyphenated key already written,
+    // so compare on a hyphen-insensitive form instead: replace() is portable and
+    // matches whatever mix of hyphens and spaces each side happens to use.
+    const dehyphenate = (value) => String(value || '').replace(/-/g, ' ');
     const keys = [...new Set([
         normalized,
         resolveCanonicalNormalized(String(topic || '').trim(), (s) => this.normalizeTopic(s)),
         ...expandNormalizedTopicKeys(normalized, (s) => this.normalizeTopic(s)),
-    ].filter(Boolean))];
+    ].filter(Boolean).map(dehyphenate))];
     if (!keys.length) return [];
 
     // Auto-flag stale guidelines on read (all synonym keys)
     const stalePlaceholders = keys.map(() => '?').join(', ');
     await this.run(
         `UPDATE topic_guidelines SET status = 'stale'
-         WHERE normalized_topic IN (${stalePlaceholders})
+         WHERE REPLACE(normalized_topic, '-', ' ') IN (${stalePlaceholders})
            AND status IN ('ai_extracted', 'human_reviewed')
            AND last_checked_at < ?
            AND superseded_by_id IS NULL`,
@@ -429,7 +497,7 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
     const fetchLimit = Math.min(safeLimit * 8, 400);
     const rows = await this.all(
         `SELECT * FROM topic_guidelines
-         WHERE normalized_topic IN (${stalePlaceholders})
+         WHERE REPLACE(normalized_topic, '-', ' ') IN (${stalePlaceholders})
            AND (? = '' OR status = ?)
            AND superseded_by_id IS NULL
          ORDER BY source_year DESC NULLS LAST, updated_at DESC
@@ -490,9 +558,13 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
         .filter(isServableGuideline)
         .map(row => ({ row, score: guidelineTermScore(row, topicWords), year: row.source_year || 0 }))
         .filter(({ score }) => topicWords.length === 0 || score > 0);
-    scored.sort((a, b) => b.score - a.score || b.year - a.year);
+    scored.sort((a, b) => {
+        const ka = rankKey(a);
+        const kb = rankKey(b);
+        return kb.bucket - ka.bucket || kb.year - ka.year || b.score - a.score;
+    });
 
-    return scored.slice(0, safeLimit).map(({ row }) => this.mapGuidelineRow(row));
+    return diversifyByBody(scored, safeLimit).map(({ row }) => this.mapGuidelineRow(row));
 }
 
 async listGuidelines({ query = '', status = '', sourceBody = '', limit = 50, offset = 0, onlyActive = false } = {}) {
