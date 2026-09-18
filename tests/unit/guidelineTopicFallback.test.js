@@ -15,6 +15,7 @@
  * from the evidence genuinely not existing.
  */
 
+const Sqlite = require('better-sqlite3');
 const GuidelinesMixin = require('../../database/mixins/m02a-guidelines');
 
 const AGA_ROW = {
@@ -39,11 +40,6 @@ const UNRELATED_ROW = {
     recommendation_text: 'Anticoagulation should be offered to patients with atrial fibrillation and elevated stroke risk.',
 };
 
-/**
- * Stands in for the SQL layer: the exact-equality query returns only rows whose
- * normalized_topic is in the key list, the LIKE fallback returns rows whose
- * normalized_topic contains any probe word.
- */
 /**
  * Matches the query wording exactly but says little about it -- the shape that
  * masked the AGA recommendations in production.
@@ -75,23 +71,37 @@ const AGA_NO_DISEASE_WORD_ROW = {
     recommendation_text: 'IV albumin is the volume expander of choice in hospitalized patients with cirrhosis and should be given with vasoconstrictors.',
 };
 
+/**
+ * Real SQLite, not a hand-written stand-in.
+ *
+ * This harness used to emulate the SQL layer by regex-matching the query text
+ * ("normalized_topic IN", "normalized_topic LIKE") and filtering rows in JS.
+ * When the real query changed shape -- REPLACE() for hyphen-insensitive keys,
+ * word-start anchored probes -- neither regex matched any more and the double
+ * silently returned no rows for every branch. The suite failed loudly here,
+ * but the same drift in the other direction would have passed while testing
+ * nothing. Running the statements the module actually issues removes the
+ * possibility.
+ */
 function makeDb(rows) {
+    const sqlite = new Sqlite(':memory:');
+    sqlite.exec(`CREATE TABLE topic_guidelines (
+        id INTEGER PRIMARY KEY, topic TEXT, normalized_topic TEXT, source_body TEXT,
+        source_year INTEGER, recommendation_text TEXT, status TEXT,
+        superseded_by_id INTEGER, last_checked_at TEXT, updated_at TEXT
+    )`);
+    const insert = sqlite.prepare(
+        `INSERT INTO topic_guidelines (id, topic, normalized_topic, source_body, source_year,
+             recommendation_text, status, superseded_by_id, last_checked_at)
+         VALUES (@id, @topic, @normalized_topic, @source_body, @source_year,
+             @recommendation_text, @status, @superseded_by_id, @last_checked_at)`
+    );
+    for (const row of rows) insert.run({ last_checked_at: new Date().toISOString(), ...row });
+
     const Base = class {
         normalizeTopic(t) { return String(t || '').trim().toLowerCase(); }
-        async run() { return { changes: 0 }; }
-        async all(sql, params) {
-            if (/normalized_topic IN/.test(sql)) {
-                const keys = params.slice(0, params.length - 3);
-                return rows.filter((r) => keys.includes(r.normalized_topic));
-            }
-            if (/normalized_topic LIKE/.test(sql)) {
-                const likes = params
-                    .filter((p) => typeof p === 'string' && p.startsWith('%') && p.endsWith('%'))
-                    .map((p) => p.slice(1, -1));
-                return rows.filter((r) => likes.some((w) => r.normalized_topic.includes(w)));
-            }
-            return [];
-        }
+        async run(sql, params) { return { changes: sqlite.prepare(sql).run(...(params || [])).changes }; }
+        async all(sql, params) { return sqlite.prepare(sql).all(...(params || [])); }
     };
     return new (GuidelinesMixin(Base))();
 }

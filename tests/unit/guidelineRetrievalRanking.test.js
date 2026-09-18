@@ -121,6 +121,60 @@ describe('getGuidelinesByTopic ranking', () => {
         } finally { sqlite.close(); }
     });
 
+    it('does not match a probe word inside a longer word', async () => {
+        const { db, sqlite, insert } = buildDb();
+        try {
+            insert({
+                topic: 'iron deficiency anaemia', normalized_topic: 'iron deficiency anaemia',
+                source_body: 'WHO', source_year: 2026,
+                recommendation_text: 'Offer oral iron in iron deficiency anaemia and monitor ferritin.',
+            });
+            // "iron" appears inside spironolactone and environmental; neither topic
+            // is about iron, and a bare %iron% probe reached both on production.
+            for (const decoy of [
+                'mineralocorticoid receptor antagonists spironolactone eplerenone',
+                'environmental emergencies heat stroke severe hypothermia drowning',
+            ]) {
+                insert({
+                    topic: decoy, normalized_topic: decoy, source_body: 'Endocrine Society',
+                    source_year: 2026,
+                    recommendation_text: 'Clinicians should monitor potassium and offer review.',
+                });
+            }
+
+            const rows = await db.getGuidelinesByTopic('iron deficiency anaemia', { limit: 8 });
+            expect(rows.map((r) => r.normalizedTopic)).toEqual(['iron deficiency anaemia']);
+        } finally { sqlite.close(); }
+    });
+
+    it('does not give a weakly matching body a slot ahead of the real ones', async () => {
+        const { db, sqlite, insert } = buildDb();
+        try {
+            for (let i = 0; i < 3; i += 1) {
+                insert({
+                    topic: 'iron deficiency anaemia', normalized_topic: 'iron deficiency anaemia',
+                    source_body: 'Anemia', source_year: 2025,
+                    recommendation_text: `Offer oral iron in iron deficiency anaemia; monitor ferritin, step ${i}.`,
+                });
+            }
+            // Reached only by the shared word "deficiency" -- a different disease.
+            for (const [body, decoy] of [
+                ['Canadian Thoracic Society (CTS)', 'alpha 1 antitrypsin deficiency augmentation therapy'],
+                ['WHO', 'vitamin b12 deficiency'],
+            ]) {
+                insert({
+                    topic: decoy, normalized_topic: decoy, source_body: body, source_year: 2026,
+                    recommendation_text: 'Clinicians should offer replacement and monitor the response.',
+                });
+            }
+
+            const rows = await db.getGuidelinesByTopic('iron deficiency anaemia', { limit: 3 });
+            // Real iron rows led on production at positions 1, 5 and 7 before the floor.
+            expect(rows.map((r) => r.normalizedTopic))
+                .toEqual(['iron deficiency anaemia', 'iron deficiency anaemia', 'iron deficiency anaemia']);
+        } finally { sqlite.close(); }
+    });
+
     it('prefers the newer guideline when term scores differ only by noise', async () => {
         const { db, sqlite, insert } = buildDb();
         try {
