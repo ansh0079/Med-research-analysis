@@ -90,6 +90,37 @@ describe('getGuidelinesByTopic ranking', () => {
         } finally { sqlite.close(); }
     });
 
+    it('does not hand a journal name its own slot alongside real bodies', async () => {
+        const { db, sqlite, insert } = buildDb();
+        try {
+            // source_body is free text and a large minority of it is journal names.
+            // Giving every distinct value a slot led "iron deficiency anaemia" with
+            // PLoS One, Gut and Anemia ahead of the bodies that issued guidance.
+            for (const journal of ['PloS one', 'Gut', 'Anemia', 'Przeglad gastroenterologiczny']) {
+                insert({
+                    topic: 'iron deficiency anaemia', normalized_topic: 'iron deficiency anaemia',
+                    source_body: journal, source_year: 2025,
+                    recommendation_text: 'Consider oral iron in iron deficiency anaemia and monitor the response.',
+                });
+            }
+            for (const body of ['NICE', 'WHO']) {
+                insert({
+                    topic: 'iron deficiency anaemia', normalized_topic: 'iron deficiency anaemia',
+                    source_body: body, source_year: 2025,
+                    recommendation_text: 'Consider oral iron in iron deficiency anaemia and monitor the response.',
+                });
+            }
+
+            const rows = await db.getGuidelinesByTopic('iron deficiency anaemia', { limit: 3 });
+            const bodies = rows.map((r) => r.sourceBody);
+            expect(bodies).toContain('NICE');
+            expect(bodies).toContain('WHO');
+            // The four journals collectively compete for one body's worth of slots.
+            expect(bodies.filter((b) => ['PloS one', 'Gut', 'Anemia', 'Przeglad gastroenterologiczny'].includes(b)))
+                .toHaveLength(1);
+        } finally { sqlite.close(); }
+    });
+
     it('prefers the newer guideline when term scores differ only by noise', async () => {
         const { db, sqlite, insert } = buildDb();
         try {
