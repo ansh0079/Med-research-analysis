@@ -175,6 +175,30 @@ describe('getGuidelinesByTopic ranking', () => {
         } finally { sqlite.close(); }
     });
 
+    it('shows a repeated recommendation once', async () => {
+        const { db, sqlite, insert } = buildDb();
+        try {
+            // Re-ingesting a document creates a second copy rather than matching the
+            // existing row: 512 rows across 195 groups on production.
+            for (let i = 0; i < 3; i += 1) {
+                insert({
+                    topic: 'iron deficiency anaemia', normalized_topic: 'iron deficiency anaemia',
+                    source_body: 'Anemia', source_year: 2025,
+                    recommendation_text: 'Strategies to address iron deficiency and anaemia should be integrated.',
+                });
+            }
+            insert({
+                topic: 'iron deficiency anaemia', normalized_topic: 'iron deficiency anaemia',
+                source_body: 'Anemia', source_year: 2025,
+                recommendation_text: 'Universal screening should consider risk factors for iron deficiency.',
+            });
+
+            const rows = await db.getGuidelinesByTopic('iron deficiency anaemia', { limit: 5 });
+            expect(rows).toHaveLength(2);
+            expect(new Set(rows.map((r) => r.recommendationText)).size).toBe(2);
+        } finally { sqlite.close(); }
+    });
+
     it('prefers the newer guideline when term scores differ only by noise', async () => {
         const { db, sqlite, insert } = buildDb();
         try {
