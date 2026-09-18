@@ -3,19 +3,18 @@
 /**
  * Upgrade stored guideline documents from abstract-only to full text.
  *
- * Production held 807 full-text documents against 440 abstract-only ones, and
- * none of those 440 had a synopsis. That matters more than the ratio suggests:
- * the abstract of a practice guideline is its scope and methodology, not its
- * recommendations, so a document stored abstract-only cannot answer the
- * question a clinician opens it to ask. The ingestion scripts already fetch
- * JATS full text from Europe PMC, but only for documents they import -- nothing
- * ever revisited the rows already stored without it.
+ * The remaining 422 abstract-only records are an external-content ceiling, not
+ * an application backlog: Europe PMC has no body for most of them, while 62 PMC
+ * body endpoints consistently return HTTP 500 after retries. Those rows stay
+ * `stillAbstract` so the scheduler can revisit them as embargoes lift without
+ * misreporting them as application failures. A genuine outage (for example the
+ * metadata search endpoint returning 503) still increments `failed`.
  *
  * This is deliberately a bounded, resumable sweep rather than a one-off
  * backfill script: Europe PMC rate-limits, records gain full text over time as
  * embargoes lift, and a document that has no body today may have one next
  * month. Rows are ordered oldest-touched first so each run advances the
- * backlog instead of retrying the same failures.
+ * ceiling instead of retrying the same records forever.
  */
 
 const https = require('https');
@@ -177,10 +176,31 @@ async function refreshGuidelineFullText(db, {
         if (pauseMs > 0) await wait(pauseMs);
     }
 
-    if (stats.scanned > 0) {
-        log.info?.(stats, '[GuidelineFullText] refresh batch complete');
-    }
+    logRefreshBatch(stats, log);
     return stats;
 }
 
-module.exports = { refreshGuidelineFullText, resolvePmcid, fetchFullText, getWithRetry, jatsToText, MIN_BODY_CHARS };
+function logRefreshBatch(stats, log) {
+    if (!stats?.scanned) return;
+    if (stats.failed > 0) {
+        log.warn?.(stats, '[GuidelineFullText] refresh batch had unexpected provider or application errors');
+        return;
+    }
+    if (stats.upgraded > 0) {
+        log.info?.(stats, '[GuidelineFullText] refresh batch complete');
+        return;
+    }
+    if (stats.stillAbstract > 0) {
+        log.info?.(stats, '[GuidelineFullText] remaining records are an external-content ceiling; will revisit');
+    }
+}
+
+module.exports = {
+    refreshGuidelineFullText,
+    resolvePmcid,
+    fetchFullText,
+    getWithRetry,
+    jatsToText,
+    logRefreshBatch,
+    MIN_BODY_CHARS,
+};

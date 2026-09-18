@@ -1,18 +1,16 @@
 'use strict';
 
 /**
- * 440 stored guideline documents held only an abstract, and none of them had a
- * synopsis. The abstract of a practice guideline is its scope and methodology,
- * not its recommendations, so an abstract-only document cannot answer the
- * question a clinician opens it to ask -- the same gap that made guideline
+ * Remaining 422 abstract-only guideline documents are an external-content
+ * ceiling: Europe PMC has no body for most, while 62 PMC body endpoints
+ * consistently return HTTP 500. The scheduler must revisit them without
+ * counting that as an application failure -- the same gap that made guideline
  * synopses report "the text could not be retrieved".
  *
- * The ingestion scripts already fetched JATS full text, but only for documents
- * they were importing. Nothing ever revisited rows already stored without it.
- *
- * The distinction these tests protect: an embargoed or genuinely abstract-only
- * Europe PMC record is the expected steady state, not a failure. Counting it as
- * one would make a healthy sweep look broken and bury a real outage.
+ * The distinction these tests protect: an embargoed, genuinely abstract-only,
+ * or persistently-500 PMC record is the expected steady state, not a failure.
+ * Counting it as one would make a healthy sweep look broken and bury a real
+ * outage.
  */
 
 const {
@@ -21,6 +19,7 @@ const {
     fetchFullText,
     getWithRetry,
     jatsToText,
+    logRefreshBatch,
     MIN_BODY_CHARS,
 } = require('../../server/services/guideline/guidelineFullTextRefresh');
 
@@ -179,14 +178,18 @@ describe('refreshGuidelineFullText', () => {
     });
 
     test('a persistently unavailable PMC body is abstract-only, not an app failure', async () => {
+        const logs = { info: [], warn: [] };
+        const log = { info: (...a) => logs.info.push(a), warn: (...a) => logs.warn.push(a), debug() {} };
         const db = makeDb([{ id: 'd1', pmcid: 'PMC1' }]);
         const stats = await refreshGuidelineFullText(db, {
             get: async () => { throw new Error('HTTP 500'); },
             wait: async () => {},
             pauseMs: 0,
-            log: silentLog,
+            log,
         });
         expect(stats).toMatchObject({ scanned: 1, upgraded: 0, stillAbstract: 1, failed: 0 });
+        expect(logs.warn).toHaveLength(0);
+        expect(logs.info.some((args) => /external-content ceiling/.test(String(args[1] || '')))).toBe(true);
     });
 
     test('touches every row it scanned, so the next run advances past failures', async () => {
@@ -208,6 +211,24 @@ describe('refreshGuidelineFullText', () => {
     test('a database without the accessor is a no-op rather than a crash', async () => {
         await expect(refreshGuidelineFullText({}, { pauseMs: 0, log: silentLog }))
             .resolves.toMatchObject({ scanned: 0, upgraded: 0 });
+    });
+});
+
+describe('logRefreshBatch', () => {
+    test('does not warn when the batch is only an external-content ceiling', () => {
+        const logs = { info: [], warn: [] };
+        const log = { info: (...a) => logs.info.push(a), warn: (...a) => logs.warn.push(a) };
+        logRefreshBatch({ scanned: 25, upgraded: 0, stillAbstract: 25, failed: 0 }, log);
+        expect(logs.warn).toHaveLength(0);
+        expect(logs.info[0][1]).toMatch(/external-content ceiling/);
+    });
+
+    test('warns only when unexpected failures occurred', () => {
+        const logs = { info: [], warn: [] };
+        const log = { info: (...a) => logs.info.push(a), warn: (...a) => logs.warn.push(a) };
+        logRefreshBatch({ scanned: 2, upgraded: 0, stillAbstract: 1, failed: 1 }, log);
+        expect(logs.warn).toHaveLength(1);
+        expect(logs.info).toHaveLength(0);
     });
 });
 

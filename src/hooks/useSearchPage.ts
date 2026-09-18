@@ -85,6 +85,19 @@ export function useSearchPage() {
     const q = sessionStorage.getItem('med_onboarding_query');
     return q || '';
   });
+  /**
+   * The query the articles on screen actually came from.
+   *
+   * `currentQuery` is set the moment a search is submitted, but results arrive
+   * seconds later and are deliberately NOT cleared in the meantime (useSearch
+   * only empties them for a blank query). Panels keyed on `currentQuery` --
+   * the evidence summary and the guideline snapshot -- therefore re-fetched for
+   * the new topic while the article list still showed the previous one, so the
+   * page read e.g. "0 guidelines" above a list of sepsis papers for as long as
+   * the fetch took. Keying those panels on the query that produced the visible
+   * results keeps the two halves of the page describing the same search.
+   */
+  const [resultsQuery, setResultsQuery] = useState('');
   const [requestGuidelineAlignment, setRequestGuidelineAlignment] = useState(false);
   const [anchorVerifyKey, setAnchorVerifyKey] = useState<string | null>(null);
   const canVerifyTeachingAnchor = ['admin', 'curator', 'specialist'].includes(String(user?.role || ''));
@@ -172,6 +185,7 @@ export function useSearchPage() {
       setCurrentQuery(trimmed);
       resetForNewSearch();
       const found = await searchRef.current(trimmed, filtersRef.current);
+      setResultsQuery(trimmed);
       try {
         const savedCounts = JSON.parse(localStorage.getItem(SAVED_SEARCH_COUNTS_KEY) || '{}') as Record<string, number>;
         const previous = savedCounts[trimmed.toLowerCase()];
@@ -462,6 +476,7 @@ export function useSearchPage() {
     topicGuideRefreshState,
     topicGuideRefreshError,
     currentQuery,
+    resultsQuery,
     setCurrentQuery,
     requestGuidelineAlignment,
     anchorVerifyKey,

@@ -252,12 +252,14 @@ async getLocalTopicDocuments(topic, { limit = 12 } = {}) {
 
 /**
  * Documents stored with only an abstract and at least one identifier that can
- * be resolved through Europe PMC. Production held 440 of these against 807 full-text records,
- * and an abstract of a guideline is scope and methodology rather than its
- * recommendations -- the same gap that made guideline synopses useless.
+ * be resolved through Europe PMC. Remaining abstract-only rows are an
+ * external-content ceiling (no Europe PMC body for most; persistent PMC HTTP
+ * 500s for a subset), not an application failure queue. An abstract of a
+ * guideline is scope and methodology rather than its recommendations -- the
+ * same gap that made guideline synopses useless.
  *
- * Ordered oldest-touched first so a bounded scheduled batch works through the
- * backlog instead of retrying the same rows.
+ * Ordered oldest-touched first so a bounded scheduled batch revisits the
+ * ceiling instead of retrying the same rows every tick.
  */
 async listGuidelineDocumentsNeedingFullText({ limit = 25 } = {}) {
     const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 25, 1), 500);

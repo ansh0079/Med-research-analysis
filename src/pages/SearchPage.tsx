@@ -94,6 +94,7 @@ export const SearchPage: React.FC = () => {
     topicGuideRefreshState,
     topicGuideRefreshError,
     currentQuery,
+    resultsQuery,
     setCurrentQuery,
     requestGuidelineAlignment,
     anchorVerifyKey,
@@ -208,7 +209,7 @@ export const SearchPage: React.FC = () => {
       <main className="max-w-7xl mx-auto px-3 sm:px-4 -mt-10 sm:-mt-16 pb-24">
         {results.length > 0 && (
           <EvidenceVerdictStrip
-            query={currentQuery}
+            query={resultsQuery || currentQuery}
             results={results}
             conflictCount={synthesis?.conflictMatrix?.length ?? null}
             onJumpToGuidelines={() => document.getElementById('guideline-snapshot')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
@@ -414,7 +415,7 @@ export const SearchPage: React.FC = () => {
         )}
 
         <div id="guideline-snapshot">
-          <GuidelineSnapshot query={currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
+          <GuidelineSnapshot query={resultsQuery || currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
         </div>
 
         {loading && results.length === 0 && (

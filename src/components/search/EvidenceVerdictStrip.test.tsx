@@ -67,7 +67,7 @@ describe('EvidenceVerdictStrip', () => {
             ],
         });
         render(<EvidenceVerdictStrip query="hepatorenal syndrome" results={manyPapers(22)} />);
-        await waitFor(() => expect(screen.getByText(/guidelines \(latest 2025\)/)).toBeInTheDocument());
+        await waitFor(() => expect(screen.getByText(/guideline recommendations \(latest 2025\)/)).toBeInTheDocument());
         expect(screen.getByText(/EASL, AASLD/)).toBeInTheDocument();
     });
 
@@ -80,8 +80,25 @@ describe('EvidenceVerdictStrip', () => {
     it('does not cry thin on a well-covered topic', async () => {
         getGuidelinesForTopic.mockResolvedValue({ topic: 't', guidelines: [{ id: 1, sourceBody: 'EASL', sourceYear: 2024, isIssuingBody: true }] });
         render(<EvidenceVerdictStrip query="sepsis" results={manyPapers(22)} />);
-        await waitFor(() => expect(screen.getByText(/guidelines/)).toBeInTheDocument());
+        await waitFor(() => expect(screen.getByText(/guideline recommendations/)).toBeInTheDocument());
         expect(screen.queryByText(/Thin coverage/i)).not.toBeInTheDocument();
+    });
+
+    it('names a guideline paper in the results separately from stored recommendations', async () => {
+        // A catatonia search reported "0 guidelines" while the BAP consensus
+        // guideline sat second in the result list. The two numbers measure
+        // different things -- recommendations attributed to an issuing body
+        // versus a paper PubMed types as a guideline -- and showing only the
+        // first read as a flat contradiction of what was on screen.
+        getGuidelinesForTopic.mockResolvedValue({ topic: 't', guidelines: [] });
+        const results = [
+            ...manyPapers(6),
+            paper({ uid: 'g1', pmid: '99', pubtype: ['Practice Guideline'] }),
+        ];
+        render(<EvidenceVerdictStrip query="catatonia" results={results} />);
+
+        await waitFor(() => expect(screen.getByText('guideline recommendations')).toBeInTheDocument());
+        expect(screen.getByText('guideline paper in results')).toBeInTheDocument();
     });
 
     it('does not count a journal as a guideline body', async () => {
@@ -98,7 +115,7 @@ describe('EvidenceVerdictStrip', () => {
         });
         render(<EvidenceVerdictStrip query="hepatorenal syndrome" results={manyPapers(22)} />);
 
-        await waitFor(() => expect(screen.getByText('guidelines')).toBeInTheDocument());
+        await waitFor(() => expect(screen.getByText('guideline recommendations')).toBeInTheDocument());
         expect(screen.queryByText(/Dig Dis Sci|Vnitr Lek/)).not.toBeInTheDocument();
         expect(screen.queryByText(/latest 2019/)).not.toBeInTheDocument();
     });
@@ -114,7 +131,7 @@ describe('EvidenceVerdictStrip', () => {
         render(<EvidenceVerdictStrip query="hepatorenal syndrome" results={manyPapers(22)} />);
 
         // 2018 from EASL, not 2023 from the journal.
-        await waitFor(() => expect(screen.getByText(/guidelines \(latest 2018\)/)).toBeInTheDocument());
+        await waitFor(() => expect(screen.getByText(/guideline recommendations \(latest 2018\)/)).toBeInTheDocument());
         expect(screen.getByText(/EASL/)).toBeInTheDocument();
         expect(screen.queryByText(/Dig Dis Sci/)).not.toBeInTheDocument();
     });

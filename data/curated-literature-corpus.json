@@ -66,7 +66,10 @@
         {
           "title": "Management of Achalasia (Gastroenterology 2020)",
           "type": "review_article",
-          "year": 2020
+          "year": 2020,
+          "pmid": "39585375",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39585375/",
+          "pmcid": "PMC12069126"
         }
       ]
     },
@@ -89,7 +92,9 @@
         },
         {
           "title": "Medical management of acromegaly (Nat Rev Endocrinol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "30657362",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30657362/"
         }
       ]
     },
@@ -136,7 +141,9 @@
         },
         {
           "title": "Multimodal pain management strategies",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "12150675",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12150675/"
         }
       ]
     },
@@ -182,7 +189,9 @@
         },
         {
           "title": "Adjunctive therapies for bacterial meningitis",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "16159083",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/16159083/"
         }
       ]
     },
@@ -239,7 +248,10 @@
         },
         {
           "title": "Diuretic strategies in acute heart failure",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "40929381",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40929381/",
+          "pmcid": "PMC12862974"
         },
         {
           "title": "DOSE Trial: Diuretic Optimization Strategies Evaluation (NEJM 2011)",
@@ -248,7 +260,9 @@
         },
         {
           "title": "Decongestion strategies in acute heart failure (Eur Heart J)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41712066",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41712066/"
         }
       ]
     },
@@ -273,7 +287,9 @@
           "title": "Acute liver failure: a practical update",
           "url": "https://www.jhep-reports.eu/article/S2589-5559(24)00158-0/fulltext",
           "doi": "10.1016/j.jhepr.2024.101131",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "39170946",
+          "pmcid": "PMC11337735"
         },
         {
           "title": "AASLD Position Paper: The Management of Acute Liver Failure",
@@ -334,7 +350,10 @@
         },
         {
           "title": "Venetoclax-based therapies in AML (Blood)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "34389272",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34389272/",
+          "pmcid": "PMC12148621"
         }
       ]
     },
@@ -363,7 +382,9 @@
         },
         {
           "title": "Management of necrotizing pancreatitis (Gastroenterology)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "39880532",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39880532/"
         }
       ]
     },
@@ -406,7 +427,10 @@
         },
         {
           "title": "Management of first-episode psychosis (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "40353586",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40353586/",
+          "pmcid": "PMC12236326"
         }
       ]
     },
@@ -421,7 +445,9 @@
         },
         {
           "title": "Pharmacotherapy for Alcohol Use Disorder (JAMA)",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "41151669",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41151669/"
         },
         {
           "title": "COMBINE Study: Naltrexone and Acamprosate (JAMA 2006)",
@@ -430,7 +456,10 @@
         },
         {
           "title": "Medical management of alcohol use disorder (BMJ)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "36232646",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36232646/",
+          "pmcid": "PMC9569745"
         }
       ]
     },
@@ -504,7 +533,9 @@
         },
         {
           "title": "Anti-amyloid therapies for Alzheimer's disease (Nat Rev Neurol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41760397",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41760397/"
         }
       ]
     },
@@ -568,7 +599,10 @@
         },
         {
           "title": "Multimodal analgesia for acute pain (JAMA)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "39840150",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39840150/",
+          "pmcid": "PMC11749086"
         }
       ]
     },
@@ -596,7 +630,10 @@
         },
         {
           "title": "ANCA-associated vasculitis management (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41159410",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41159410/",
+          "pmcid": "PMC12783592"
         }
       ]
     },
@@ -641,7 +678,9 @@
         },
         {
           "title": "Vasopressors in shock (Chest)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "39471847",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39471847/"
         }
       ]
     },
@@ -662,7 +701,10 @@
         },
         {
           "title": "B-cell depletion therapies in autoimmune diseases (Nat Rev Rheumatol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "36855629",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36855629/",
+          "pmcid": "PMC9968396"
         }
       ]
     },
@@ -708,7 +750,10 @@
         },
         {
           "title": "Invasive fungal infections in the ICU (Intensive Care Med)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "24445340",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/24445340/",
+          "pmcid": "PMC6271196"
         }
       ]
     },
@@ -756,7 +801,10 @@
         },
         {
           "title": "Aspirin in primary prevention in the elderly (Circulation)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "31492828",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31492828/",
+          "pmcid": "PMC6756914"
         }
       ]
     },
@@ -802,7 +850,10 @@
         },
         {
           "title": "Biologic therapies for severe asthma (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41904357",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41904357/",
+          "pmcid": "PMC13179240"
         }
       ]
     },
@@ -815,7 +866,9 @@
         },
         {
           "title": "Comparative efficacy of systemic treatments for atopic dermatitis",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "38037822",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38037822/"
         },
         {
           "title": "SOLO 1 and SOLO 2 trials (Dupilumab, NEJM)",
@@ -823,7 +876,9 @@
         },
         {
           "title": "Targeted therapies for atopic dermatitis (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42667317",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42667317/"
         }
       ]
     },
@@ -854,7 +909,10 @@
         },
         {
           "title": "Contemporary management of atrial fibrillation (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41709819",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41709819/",
+          "pmcid": "PMC12917238"
         }
       ]
     },
@@ -881,7 +939,10 @@
         },
         {
           "title": "Management of ADPKD (Nat Rev Nephrol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "27921039",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/27921039/",
+          "pmcid": "PMC5123001"
         }
       ]
     },
@@ -894,7 +955,10 @@
         },
         {
           "title": "Corticosteroids for acute bacterial meningitis (Cochrane)",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "26362566",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/26362566/",
+          "pmcid": "PMC6491272"
         },
         {
           "title": "Dexamethasone in Adults with Bacterial Meningitis (de Gans, NEJM)",
@@ -965,7 +1029,9 @@
         },
         {
           "title": "Pathology of myeloproliferative neoplasms (Blood)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "39231708",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39231708/"
         }
       ]
     },
@@ -1020,7 +1086,9 @@
         },
         {
           "title": "Hypertonic saline for bronchiolitis (Cochrane)",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "37507135",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37507135/"
         },
         {
           "title": "BIDS trial (bronchodilators in bronchiolitis)",
@@ -1028,7 +1096,9 @@
         },
         {
           "title": "Viral bronchiolitis in children (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "26735994",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/26735994/"
         }
       ]
     },
@@ -1049,7 +1119,9 @@
         },
         {
           "title": "Evidence-based management of bronchiolitis (Pediatrics)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "28697266",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/28697266/"
         }
       ]
     },
@@ -1092,7 +1164,9 @@
         },
         {
           "title": "SGLT2 inhibitors and renal outcomes in type 2 diabetes",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "29482993",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/29482993/"
         },
         {
           "title": "CREDENCE Trial (NEJM 2019)",
@@ -1101,7 +1175,9 @@
         },
         {
           "title": "SGLT2 inhibitors in diabetic kidney disease (Nat Rev Nephrol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "37904562",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37904562/"
         }
       ]
     },
@@ -1123,7 +1199,10 @@
         },
         {
           "title": "Inflammation in atherosclerosis (Circulation)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42592126",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42592126/",
+          "pmcid": "PMC13464104"
         }
       ]
     },
@@ -1145,7 +1224,10 @@
         },
         {
           "title": "CAR T-cell therapy for lymphoma (Blood)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42528814",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42528814/",
+          "pmcid": "PMC13415359"
         }
       ]
     },
@@ -1171,7 +1253,10 @@
         },
         {
           "title": "Cardiac resynchronization therapy (Circulation)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42043915",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42043915/",
+          "pmcid": "PMC13225021"
         }
       ]
     },
@@ -1184,7 +1269,9 @@
         },
         {
           "title": "Mechanical circulatory support in cardiogenic shock",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "42743344",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42743344/"
         },
         {
           "title": "IABP-SHOCK II Trial (NEJM 2012)",
@@ -1197,7 +1284,9 @@
         },
         {
           "title": "Management of cardiogenic shock (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42743347",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42743347/"
         }
       ]
     },
@@ -1218,7 +1307,9 @@
         },
         {
           "title": "Carpal tunnel syndrome review (BMJ)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "16706688",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/16706688/"
         }
       ]
     },
@@ -1239,7 +1330,9 @@
         },
         {
           "title": "Catatonia: diagnosis and treatment (Am J Psychiatry)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41557595",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41557595/"
         }
       ]
     },
@@ -1260,7 +1353,9 @@
         },
         {
           "title": "Cellulitis and pseudocellulitis (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "31626887",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31626887/"
         }
       ]
     },
@@ -1281,7 +1376,9 @@
         },
         {
           "title": "Prevention of chemotherapy-induced nausea and vomiting (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "40797063",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40797063/"
         }
       ]
     },
@@ -1311,7 +1408,9 @@
         },
         {
           "title": "Evaluation of acute chest pain in the emergency department (JAMA)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "21464639",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21464639/"
         }
       ]
     },
@@ -1371,7 +1470,9 @@
         },
         {
           "title": "Chronic cough: Evaluation and management (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "29094873",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/29094873/"
         }
       ]
     },
@@ -1395,7 +1496,9 @@
         },
         {
           "title": "Management of chronic hepatitis B (Lancet Gastroenterol Hepatol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41190920",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41190920/"
         }
       ]
     },
@@ -1426,7 +1529,10 @@
         },
         {
           "title": "Targeted therapies in chronic lymphocytic leukemia (Blood)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "40555733",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40555733/",
+          "pmcid": "PMC12380600"
         }
       ]
     },
@@ -1458,12 +1564,14 @@
       "topic": "Chronic spontaneous urticaria omalizumab",
       "documents": [
         {
-          "title": "EAACI/GA\u00b2LEN/EDF/WAO guideline for the definition, classification, diagnosis and management of urticaria",
+          "title": "EAACI/GA²LEN/EDF/WAO guideline for the definition, classification, diagnosis and management of urticaria",
           "type": "clinical_practice_guideline"
         },
         {
           "title": "Efficacy and safety of omalizumab in chronic spontaneous urticaria",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "32427616",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/32427616/"
         },
         {
           "title": "ASTERIA I and II, GLACIAL Trials (Omalizumab)",
@@ -1487,7 +1595,10 @@
         },
         {
           "title": "Non-selective beta-blockers for prevention of variceal bleeding",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "34675632",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34675632/",
+          "pmcid": "PMC8520848"
         },
         {
           "title": "PREDESCI Trial (beta-blockers in compensated cirrhosis)",
@@ -1495,7 +1606,10 @@
         },
         {
           "title": "Portal hypertension and variceal bleeding (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "39911662",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39911662/",
+          "pmcid": "PMC11794003"
         }
       ]
     },
@@ -1520,7 +1634,10 @@
         },
         {
           "title": "Management of ascites in patients with cirrhosis (Gastroenterology)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "34830508",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34830508/",
+          "pmcid": "PMC8621554"
         }
       ]
     },
@@ -1566,7 +1683,10 @@
         },
         {
           "title": "Corticosteroids in severe community-acquired pneumonia",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "41639918",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41639918/",
+          "pmcid": "PMC12874727"
         },
         {
           "title": "CAPE COD Trial (Hydrocortisone in severe CAP, NEJM 2023)",
@@ -1574,7 +1694,9 @@
         },
         {
           "title": "Empiric antibiotics for community-acquired pneumonia (JAMA)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "33723019",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/33723019/"
         }
       ]
     },
@@ -1601,7 +1723,9 @@
         },
         {
           "title": "Hospital-acquired and ventilator-associated pneumonia (Lancet Infect Dis)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42203422",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42203422/"
         }
       ]
     },
@@ -1614,7 +1738,10 @@
         },
         {
           "title": "Intracompartmental pressure monitoring in acute compartment syndrome",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "30881744",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30881744/",
+          "pmcid": "PMC6407949"
         },
         {
           "title": "McQueen et al. (continuous pressure monitoring vs clinical observation)",
@@ -1625,7 +1752,9 @@
         },
         {
           "title": "Acute compartment syndrome of the limb (BMJ)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "32468951",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/32468951/"
         }
       ]
     },
@@ -1670,7 +1799,9 @@
         },
         {
           "title": "Allergic and irritant contact dermatitis (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "36458568",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36458568/"
         }
       ]
     },
@@ -1744,7 +1875,10 @@
         },
         {
           "title": "Pathophysiology and treatment of COVID-19 (Nature Medicine)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "34097193",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34097193/",
+          "pmcid": "PMC8181544"
         }
       ]
     },
@@ -1795,7 +1929,9 @@
         },
         {
           "title": "Diagnosis and management of croup (Pediatrics in Review)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "8139876",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/8139876/"
         }
       ]
     },
@@ -1808,7 +1944,9 @@
         },
         {
           "title": "Diagnostic accuracy of inferior petrosal sinus sampling (IPSS)",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "9661597",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/9661597/"
         },
         {
           "title": "Oldfield et al. (IPSS validation studies)",
@@ -1832,7 +1970,9 @@
         },
         {
           "title": "Accuracy of diagnostic tests (UFC, DST, late-night salivary cortisol) in Cushing's",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "39933645",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39933645/"
         },
         {
           "title": "Studies validating the 1-mg overnight dexamethasone suppression test",
@@ -1840,7 +1980,9 @@
         },
         {
           "title": "Diagnosis of Cushing's Syndrome (Lancet Diabetes Endocrinol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "38253221",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38253221/"
         }
       ]
     },
@@ -1867,7 +2009,9 @@
         },
         {
           "title": "Highly effective modulator therapies in cystic fibrosis (Am J Respir Crit Care Med)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "37914566",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37914566/"
         }
       ]
     },
@@ -1894,7 +2038,9 @@
         },
         {
           "title": "CMV infection in transplant recipients (Clin Infect Dis)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "30358016",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30358016/"
         }
       ]
     },
@@ -1924,7 +2070,9 @@
         },
         {
           "title": "Direct oral anticoagulants in atrial fibrillation (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "40560486",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40560486/"
         }
       ]
     },
@@ -1948,7 +2096,9 @@
         },
         {
           "title": "Delayed hemolytic transfusion reactions (Blood)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "30837199",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30837199/"
         }
       ]
     },
@@ -2831,7 +2981,9 @@
         },
         {
           "title": "Hospital-acquired and ventilator-associated pneumonia (Lancet Infect Dis)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42203422",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42203422/"
         }
       ]
     },
@@ -2861,7 +3013,9 @@
         },
         {
           "title": "Prophylactic human papillomavirus vaccines (J Clin Invest)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "25943066",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25943066/"
         }
       ]
     },
@@ -2895,7 +3049,10 @@
         },
         {
           "title": "Automated insulin delivery in type 1 diabetes (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "40243921",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40243921/",
+          "pmcid": "PMC12006117"
         }
       ]
     },
@@ -2919,7 +3076,10 @@
         },
         {
           "title": "Hypersensitivity pneumonitis (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42556849",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42556849/",
+          "pmcid": "PMC13439357"
         }
       ]
     },
@@ -2935,7 +3095,9 @@
         },
         {
           "title": "Aspirin for the prevention of pre-eclampsia (US Preventive Services Task Force)",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "34806161",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34806161/"
         },
         {
           "title": "ASPRE Trial (Aspirin vs Placebo in High-Risk Pregnancies, NEJM 2017)",
@@ -2970,7 +3132,10 @@
         },
         {
           "title": "Diagnosis and management of acute promyelocytic leukemia (Blood)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "38890097",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38890097/",
+          "pmcid": "PMC11451342"
         }
       ]
     },
@@ -3011,7 +3176,9 @@
         },
         {
           "title": "Renal replacement therapy in the ICU (Intensive Care Med)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "30768442",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30768442/"
         }
       ]
     },
@@ -3041,7 +3208,9 @@
         },
         {
           "title": "IgG4-related disease (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42096015",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42096015/"
         }
       ]
     },
@@ -3068,7 +3237,10 @@
         },
         {
           "title": "Surgical management of infective endocarditis (JACC)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41040762",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41040762/",
+          "pmcid": "PMC12488291"
         }
       ]
     },
@@ -3095,7 +3267,9 @@
         },
         {
           "title": "Antibiotic management of infective endocarditis (Lancet Infect Dis)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "8853134",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/8853134/"
         }
       ]
     },
@@ -3111,7 +3285,9 @@
         },
         {
           "title": "Blood pressure-lowering treatment trialists' collaboration (BPLTTC) analyses",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "19694219",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/19694219/"
         },
         {
           "title": "SPRINT Trial (Systolic Blood Pressure Intervention Trial, NEJM 2015)",
@@ -3122,7 +3298,9 @@
         },
         {
           "title": "Intensive blood pressure control in older adults (JAMA)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "39937510",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39937510/"
         }
       ]
     },
@@ -3152,7 +3330,9 @@
         },
         {
           "title": "Glycemic control and cardiovascular outcomes in type 2 diabetes (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "26332556",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/26332556/"
         }
       ]
     },
@@ -3198,7 +3378,9 @@
         },
         {
           "title": "Intensive blood pressure lowering in acute intracerebral hemorrhage",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "26948991",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/26948991/"
         },
         {
           "title": "INTERACT2, ATACH-2 (Blood pressure targets, NEJM)",
@@ -3209,7 +3391,9 @@
         },
         {
           "title": "Acute intracerebral hemorrhage (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42484370",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42484370/"
         }
       ]
     },
@@ -3273,7 +3457,9 @@
         },
         {
           "title": "Modifications of blood components (Blood)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "27113002",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/27113002/"
         }
       ]
     },
@@ -3311,7 +3497,10 @@
         },
         {
           "title": "Acute coronary syndromes (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42185527",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42185527/",
+          "pmcid": "PMC13201728"
         }
       ]
     },
@@ -3335,7 +3524,10 @@
         },
         {
           "title": "Management of juvenile idiopathic arthritis (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42256795",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42256795/",
+          "pmcid": "PMC13235788"
         }
       ]
     },
@@ -3389,7 +3581,10 @@
         },
         {
           "title": "Acute colonic pseudo-obstruction (Ogilvie's syndrome) (Am J Gastroenterol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42074616",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42074616/",
+          "pmcid": "PMC13116141"
         }
       ]
     },
@@ -3416,7 +3611,9 @@
         },
         {
           "title": "Lateral epicondylitis (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42563697",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42563697/"
         }
       ]
     },
@@ -3440,7 +3637,9 @@
         },
         {
           "title": "Perioperative hypersensitivity and anaphylaxis (BJA)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "30916022",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30916022/"
         }
       ]
     },
@@ -3464,7 +3663,9 @@
         },
         {
           "title": "Toxicity of disease-modifying antirheumatic drugs (Rheumatology)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "8452574",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/8452574/"
         }
       ]
     },
@@ -3579,7 +3780,10 @@
         },
         {
           "title": "Diagnosis and management of testosterone deficiency (JAMA)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "25532575",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25532575/",
+          "pmcid": "PMC4650468"
         }
       ]
     },
@@ -3647,7 +3851,10 @@
         },
         {
           "title": "Medical therapy for heart failure with reduced ejection fraction (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42016211",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42016211/",
+          "pmcid": "PMC13094103"
         }
       ]
     },
@@ -3674,7 +3881,9 @@
         },
         {
           "title": "Low back pain (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42295944",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42295944/"
         }
       ]
     },
@@ -3732,7 +3941,10 @@
         },
         {
           "title": "Management of menopause (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41827664",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41827664/",
+          "pmcid": "PMC12984732"
         }
       ]
     },
@@ -3745,7 +3957,10 @@
         },
         {
           "title": "Interventions to improve surrogate decision making",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "21532046",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21532046/",
+          "pmcid": "PMC3530846"
         },
         {
           "title": "Studies validating the MacArthur Competence Assessment Tool for Treatment (MacCAT-T)",
@@ -3811,7 +4026,9 @@
         },
         {
           "title": "Management of early rheumatoid arthritis (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "32504239",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/32504239/"
         }
       ]
     },
@@ -3894,7 +4111,10 @@
         },
         {
           "title": "Mineralocorticoid receptor antagonists in cardiovascular disease (Nat Rev Cardiol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "36768246",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36768246/",
+          "pmcid": "PMC9915890"
         }
       ]
     },
@@ -3918,7 +4138,9 @@
         },
         {
           "title": "Early pregnancy loss (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42360809",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42360809/"
         }
       ]
     },
@@ -3931,7 +4153,10 @@
         },
         {
           "title": "Transcatheter edge-to-edge repair (TEER) in secondary mitral regurgitation",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "42292594",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42292594/",
+          "pmcid": "PMC13263422"
         },
         {
           "title": "COAPT Trial (NEJM 2018)",
@@ -3949,7 +4174,9 @@
         },
         {
           "title": "Transcatheter mitral valve interventions (JACC)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42711717",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42711717/"
         }
       ]
     },
@@ -3987,7 +4214,10 @@
         },
         {
           "title": "Newly diagnosed multiple myeloma (Blood)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42014580",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42014580/",
+          "pmcid": "PMC13461682"
         }
       ]
     },
@@ -4011,7 +4241,10 @@
         },
         {
           "title": "Treatment paradigms in multiple myeloma (Nat Rev Clin Oncol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "36807775",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36807775/",
+          "pmcid": "PMC10166961"
         }
       ]
     },
@@ -4066,7 +4299,10 @@
         },
         {
           "title": "Management of myelofibrosis (Blood)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "38983933",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38983933/",
+          "pmcid": "PMC11231182"
         }
       ]
     },
@@ -4090,7 +4326,10 @@
         },
         {
           "title": "Neonatal hyperbilirubinemia (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42680665",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42680665/",
+          "pmcid": "PMC13564048"
         }
       ]
     },
@@ -4128,7 +4367,9 @@
         },
         {
           "title": "Neuromyelitis optica spectrum disorder (Nat Rev Neurol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41925501",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41925501/"
         }
       ]
     },
@@ -4152,7 +4393,9 @@
         },
         {
           "title": "Immunotherapy for advanced melanoma (JCO)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "38193381",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38193381/"
         }
       ]
     },
@@ -4210,7 +4453,9 @@
         },
         {
           "title": "Noninvasive ventilation in acute respiratory failure (Lancet Respir Med)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "39166964",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39166964/"
         }
       ]
     },
@@ -4258,7 +4503,9 @@
         },
         {
           "title": "Medications for opioid use disorder (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42735757",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42735757/"
         }
       ]
     },
@@ -4282,7 +4529,9 @@
         },
         {
           "title": "Treatment of opioid use disorder (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42636272",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42636272/"
         }
       ]
     },
@@ -4306,7 +4555,9 @@
         },
         {
           "title": "Orbital infections (Ophthalmology)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "40675722",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40675722/"
         }
       ]
     },
@@ -4327,7 +4578,9 @@
         },
         {
           "title": "Orthostatic hypotension in older adults (JAMA)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41980511",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41980511/"
         }
       ]
     },
@@ -4340,7 +4593,10 @@
         },
         {
           "title": "Neuraminidase inhibitors for preventing and treating influenza in healthy adults and children (Cochrane)",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "25055075",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25055075/",
+          "pmcid": "PMC10496739"
         },
         {
           "title": "Treanor et al. (Oseltamivir for acute influenza, JAMA)",
@@ -4351,7 +4607,10 @@
         },
         {
           "title": "Influenza therapeutics (Lancet Infect Dis)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "38328274",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38328274/",
+          "pmcid": "PMC10848012"
         }
       ]
     },
@@ -4367,7 +4626,10 @@
         },
         {
           "title": "Antibiotics for acute otitis media in children (Cochrane)",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "37965923",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37965923/",
+          "pmcid": "PMC10646935"
         },
         {
           "title": "Hoberman et al. (Treatment of acute otitis media in children under 2 years, NEJM)",
@@ -4378,7 +4640,9 @@
         },
         {
           "title": "Acute otitis media (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42342311",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42342311/"
         }
       ]
     },
@@ -4402,7 +4666,10 @@
         },
         {
           "title": "Outpatient parenteral antimicrobial therapy (OPAT) (Clin Infect Dis)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42505652",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42505652/",
+          "pmcid": "PMC13403625"
         }
       ]
     },
@@ -4426,7 +4693,10 @@
         },
         {
           "title": "Pancreatic adenocarcinoma (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42076160",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42076160/",
+          "pmcid": "PMC13118951"
         }
       ]
     },
@@ -4475,7 +4745,9 @@
         },
         {
           "title": "Management of motor complications in Parkinson's disease (Lancet Neurol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "30905034",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30905034/"
         }
       ]
     },
@@ -4513,7 +4785,9 @@
         },
         {
           "title": "Patent foramen ovale and cryptogenic stroke (JACC)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42667236",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42667236/"
         }
       ]
     },
@@ -4526,7 +4800,10 @@
         },
         {
           "title": "PCSK9 inhibitors and cardiovascular events",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "30209099",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30209099/",
+          "pmcid": "PMC6135138"
         },
         {
           "title": "FOURIER Trial (Evolocumab and Clinical Outcomes in Patients with Cardiovascular Disease, NEJM 2017)",
@@ -4537,7 +4814,10 @@
         },
         {
           "title": "PCSK9 inhibitors in lipid management (Circulation)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "29934421",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/29934421/",
+          "pmcid": "PMC6064883"
         }
       ]
     },
@@ -4558,7 +4838,10 @@
         },
         {
           "title": "Pelvic inflammatory disease (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42666412",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42666412/",
+          "pmcid": "PMC13522406"
         }
       ]
     },
@@ -4582,7 +4865,9 @@
         },
         {
           "title": "Immunotherapy for non-small cell lung cancer (JCO)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42367815",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42367815/"
         }
       ]
     },
@@ -4609,7 +4894,10 @@
         },
         {
           "title": "Penicillin allergy testing and delabeling (BMJ)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "38696031",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38696031/",
+          "pmcid": "PMC11193836"
         }
       ]
     },
@@ -4706,7 +4994,10 @@
         },
         {
           "title": "Perioperative management of diabetes (BJA)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "39099754",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39099754/",
+          "pmcid": "PMC11293569"
         }
       ]
     },
@@ -4719,7 +5010,9 @@
         },
         {
           "title": "Beta-blocker therapy in non-cardiac surgery",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "18926265",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/18926265/"
         },
         {
           "title": "POISE-1 and POISE-2 Trials (Perioperative Ischemic Evaluation)",
@@ -4743,7 +5036,9 @@
         },
         {
           "title": "Frailty as a predictor of surgical outcomes",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "35428419",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35428419/"
         },
         {
           "title": "VISION Study (Vascular events In noncardiac Surgery patIents cOhort evaluatioN)",
@@ -4751,7 +5046,10 @@
         },
         {
           "title": "Preoperative assessment and optimization (BMJ)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "37113285",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37113285/",
+          "pmcid": "PMC10125295"
         }
       ]
     },
@@ -4785,7 +5083,10 @@
         },
         {
           "title": "Peripheral artery disease (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42148516",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42148516/",
+          "pmcid": "PMC13199177"
         }
       ]
     },
@@ -4801,7 +5102,10 @@
         },
         {
           "title": "Biomarker-guided (Procalcitonin) antibiotic duration in pneumonia",
-          "type": "systematic_review_meta_analysis"
+          "type": "systematic_review_meta_analysis",
+          "pmid": "41923737",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41923737/",
+          "pmcid": "PMC13036551"
         },
         {
           "title": "CAPE COD Trial",
@@ -4816,7 +5120,9 @@
         },
         {
           "title": "Community-acquired pneumonia (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42664981",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42664981/"
         }
       ]
     },
@@ -4840,7 +5146,10 @@
         },
         {
           "title": "Polycystic ovary syndrome (Nature Reviews Endocrinology)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42708062",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42708062/",
+          "pmcid": "PMC13549205"
         }
       ]
     },
@@ -4864,7 +5173,9 @@
         },
         {
           "title": "Management of polycythemia vera (Blood)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "39882590",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39882590/"
         }
       ]
     },
@@ -4891,7 +5202,10 @@
         },
         {
           "title": "Polymyalgia rheumatica (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42671550",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42671550/",
+          "pmcid": "PMC13558289"
         }
       ]
     },
@@ -4918,7 +5232,10 @@
         },
         {
           "title": "Portal hypertension and variceal bleeding (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "39911662",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39911662/",
+          "pmcid": "PMC11794003"
         }
       ]
     },
@@ -4939,7 +5256,9 @@
         },
         {
           "title": "Postoperative ileus: pathophysiology, incidence, and prevention (BMJ)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "27666979",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/27666979/"
         }
       ]
     },
@@ -4966,7 +5285,10 @@
         },
         {
           "title": "Management of postoperative nausea and vomiting (BJA)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41929930",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41929930/",
+          "pmcid": "PMC13001765"
         }
       ]
     },
@@ -4993,7 +5315,9 @@
         },
         {
           "title": "Postural tachycardia syndrome (Nature Reviews Cardiology)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42369281",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42369281/"
         }
       ]
     },
@@ -5014,7 +5338,9 @@
         },
         {
           "title": "Pressure injuries (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42585463",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42585463/"
         }
       ]
     },
@@ -5041,7 +5367,9 @@
         },
         {
           "title": "Primary aldosteronism (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42350437",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42350437/"
         }
       ]
     },
@@ -5068,7 +5396,10 @@
         },
         {
           "title": "Membranous nephropathy: a modern view (JASN)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "23813556",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/23813556/",
+          "pmcid": "PMC3944756"
         }
       ]
     },
@@ -5099,7 +5430,10 @@
         },
         {
           "title": "Primary prevention of sudden cardiac death (JACC)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42039769",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42039769/",
+          "pmcid": "PMC13106878"
         }
       ]
     },
@@ -5126,7 +5460,9 @@
         },
         {
           "title": "Prolactinomas (Lancet Diabetes Endocrinol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41904067",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41904067/"
         }
       ]
     },
@@ -5150,7 +5486,9 @@
         },
         {
           "title": "Management of acute respiratory distress syndrome (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41428205",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41428205/"
         }
       ]
     },
@@ -5177,7 +5515,9 @@
         },
         {
           "title": "Prosthetic joint infection (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42664113",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42664113/"
         }
       ]
     },
@@ -5284,7 +5624,10 @@
         },
         {
           "title": "Posttraumatic stress disorder (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42284478",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42284478/",
+          "pmcid": "PMC13267020"
         }
       ]
     },
@@ -5311,7 +5654,10 @@
         },
         {
           "title": "Treatment of posttraumatic stress disorder (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42284478",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42284478/",
+          "pmcid": "PMC13267020"
         }
       ]
     },
@@ -5345,7 +5691,10 @@
         },
         {
           "title": "Evaluation of pulmonary nodules (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "33282401",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/33282401/",
+          "pmcid": "PMC7711413"
         }
       ]
     },
@@ -5424,7 +5773,9 @@
         },
         {
           "title": "Radial artery access for cardiac catheterization (JACC)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "38432334",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38432334/"
         }
       ]
     },
@@ -5445,7 +5796,9 @@
         },
         {
           "title": "Distinguishing radiation necrosis from tumor progression in brain metastases (Neuro-Oncology)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41723023",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41723023/"
         }
       ]
     },
@@ -5472,7 +5825,9 @@
         },
         {
           "title": "Stroke rehabilitation (Lancet Neurology)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42460690",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42460690/"
         }
       ]
     },
@@ -5514,7 +5869,10 @@
         },
         {
           "title": "Rhegmatogenous retinal detachment (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42644893",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42644893/",
+          "pmcid": "PMC13512895"
         }
       ]
     },
@@ -5541,7 +5899,9 @@
         },
         {
           "title": "Evaluation and management of syncope (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "21135810",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21135810/"
         }
       ]
     },
@@ -5568,7 +5928,9 @@
         },
         {
           "title": "Takayasu arteritis (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41860699",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41860699/"
         }
       ]
     },
@@ -5602,7 +5964,9 @@
         },
         {
           "title": "Thrombolysis for acute ischemic stroke (JACC)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42525907",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42525907/"
         }
       ]
     },
@@ -5623,7 +5987,9 @@
         },
         {
           "title": "Testicular cancer (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42133890",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42133890/"
         }
       ]
     },
@@ -5644,7 +6010,9 @@
         },
         {
           "title": "Thyroid nodules (Lancet Diabetes Endocrinol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42671965",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42671965/"
         }
       ]
     },
@@ -5668,7 +6036,10 @@
         },
         {
           "title": "Antiplatelet therapy in acute coronary syndromes (JACC)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "38612792",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38612792/",
+          "pmcid": "PMC11011739"
         }
       ]
     },
@@ -5716,7 +6087,9 @@
         },
         {
           "title": "Rickettsial infections (Clin Infect Dis)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "39234792",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39234792/"
         }
       ]
     },
@@ -5747,7 +6120,10 @@
         },
         {
           "title": "Immunomodulatory therapy for COVID-19 (Nature Medicine)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "38543908",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38543908/",
+          "pmcid": "PMC10974321"
         }
       ]
     },
@@ -5768,7 +6144,9 @@
         },
         {
           "title": "Deep neck space infections (Head & Neck)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42570612",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42570612/"
         }
       ]
     },
@@ -5816,7 +6194,10 @@
         },
         {
           "title": "Transcatheter aortic valve implantation (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42675518",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42675518/",
+          "pmcid": "PMC13531935"
         }
       ]
     },
@@ -5850,7 +6231,9 @@
         },
         {
           "title": "Transient ischemic attack (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42385279",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42385279/"
         }
       ]
     },
@@ -5884,7 +6267,10 @@
         },
         {
           "title": "Management of traumatic brain injury (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42147858",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42147858/",
+          "pmcid": "PMC13171402"
         }
       ]
     },
@@ -5908,7 +6294,9 @@
         },
         {
           "title": "Tuberculosis treatment (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42526491",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42526491/"
         }
       ]
     },
@@ -5932,7 +6320,9 @@
         },
         {
           "title": "Diabetes mellitus: diagnosis and management (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "39320186",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39320186/"
         }
       ]
     },
@@ -5956,7 +6346,10 @@
         },
         {
           "title": "Intensive management of type 1 diabetes (Lancet Diabetes Endocrinol)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "29264550",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/29264550/",
+          "pmcid": "PMC5686679"
         }
       ]
     },
@@ -5980,7 +6373,9 @@
         },
         {
           "title": "Acute gastrointestinal bleeding (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42360342",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42360342/"
         }
       ]
     },
@@ -6004,7 +6399,10 @@
         },
         {
           "title": "Upper gastrointestinal bleeding (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42316521",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42316521/",
+          "pmcid": "PMC13284575"
         }
       ]
     },
@@ -6025,7 +6423,9 @@
         },
         {
           "title": "Management of acute upper GI bleeding (Gastroenterology)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "28411763",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/28411763/"
         }
       ]
     },
@@ -6049,7 +6449,9 @@
         },
         {
           "title": "Urinary tract infections in adults (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "39605223",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39605223/"
         }
       ]
     },
@@ -6057,7 +6459,7 @@
       "topic": "Urticaria and angioedema: classification and management",
       "documents": [
         {
-          "title": "EAACI/GA\u00b2LEN/EDF/WAO Guideline for Urticaria and Angioedema",
+          "title": "EAACI/GA²LEN/EDF/WAO Guideline for Urticaria and Angioedema",
           "type": "clinical_practice_guideline"
         },
         {
@@ -6070,7 +6472,9 @@
         },
         {
           "title": "Urticaria and angioedema (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42705809",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42705809/"
         }
       ]
     },
@@ -6091,7 +6495,9 @@
         },
         {
           "title": "Occupational and environmental lung diseases (Chest)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "25575364",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25575364/"
         }
       ]
     },
@@ -6125,7 +6531,9 @@
         },
         {
           "title": "Vasopressors in septic shock (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42509294",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42509294/"
         }
       ]
     },
@@ -6173,7 +6581,9 @@
         },
         {
           "title": "Venous leg ulcers (Lancet)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42301961",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42301961/"
         }
       ]
     },
@@ -6200,7 +6610,10 @@
         },
         {
           "title": "Management of venous thromboembolism (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "42163826",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42163826/",
+          "pmcid": "PMC13195231"
         }
       ]
     },
@@ -6272,7 +6685,10 @@
         },
         {
           "title": "Perioperative management of antithrombotic therapy (JAMA)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "37047909",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37047909/",
+          "pmcid": "PMC10093975"
         }
       ]
     },
@@ -6314,9 +6730,13 @@
         },
         {
           "title": "Zollinger-Ellison syndrome (NEJM)",
-          "type": "review_article"
+          "type": "review_article",
+          "pmid": "41463062",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41463062/",
+          "pmcid": "PMC12730841"
         }
       ]
     }
-  ]
+  ],
+  "updatedAt": "2026-09-18T00:56:54.348Z"
 }
