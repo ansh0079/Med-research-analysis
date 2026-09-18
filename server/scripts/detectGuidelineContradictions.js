@@ -140,7 +140,7 @@ async function main() {
              FROM topic_guidelines
              WHERE normalized_topic = ?
                AND superseded_by_id IS NULL AND status != 'superseded'
-             ORDER BY source_body, source_year DESC`,
+             ORDER BY source_body, source_year DESC NULLS LAST`,
             [normalized_topic]
         );
 

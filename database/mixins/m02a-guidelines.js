@@ -4,6 +4,7 @@ const { isServableGuideline } = require('../../server/utils/guidelineQuality');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
 const { assessGuidelineQuality } = require('../../server/services/guidelineQualityService');
 const { normalizeStoredDocument } = require('../../server/utils/importEvidenceQuality');
+const { sanitizePublicationYear } = require('../../server/utils/publicationYear');
 
 /**
  * A guideline row is only servable if its text actually reads as a recommendation.
@@ -185,7 +186,7 @@ async upsertGuidelineDocument(doc) {
                 doc.doi ? String(doc.doi).trim().toLowerCase() : null,
                 doc.title ? String(doc.title).trim().slice(0, 500) : null,
                 doc.sourceBody ? String(doc.sourceBody).trim() : null,
-                doc.sourceYear ? parseInt(doc.sourceYear, 10) : null,
+                sanitizePublicationYear(doc.sourceYear),
                 doc.sourceUrl ? String(doc.sourceUrl).trim() : null,
                 doc.documentLabel || null, doc.evidenceTier || 'guideline',
                 Number(Boolean(doc.fullText && ['jats', 'pdf', 'manual'].includes(doc.fullTextSource))), doc.fullText || null, doc.fullText || null,
@@ -210,7 +211,7 @@ async upsertGuidelineDocument(doc) {
             doc.doi ? String(doc.doi).trim().toLowerCase() : null,
             doc.title ? String(doc.title).trim().slice(0, 500) : null,
             doc.sourceBody ? String(doc.sourceBody).trim() : null,
-            doc.sourceYear ? parseInt(doc.sourceYear, 10) : null,
+            sanitizePublicationYear(doc.sourceYear),
             doc.sourceUrl ? String(doc.sourceUrl).trim() : null,
             doc.documentLabel || null,
             doc.evidenceTier || 'guideline',
@@ -245,7 +246,7 @@ async getLocalTopicDocuments(topic, { limit = 12 } = {}) {
                 document_label, full_text_source, SUBSTR(full_text, 1, 12000) AS text_excerpt
          FROM guideline_documents
          WHERE (${clauses.join(' OR ')}) AND full_text IS NOT NULL AND LENGTH(full_text) > 0
-         ORDER BY source_year DESC, id DESC LIMIT ?`,
+         ORDER BY source_year DESC NULLS LAST, id DESC LIMIT ?`,
         [...params, Math.min(20, Math.max(1, Number(limit) || 12))]
     );
 }
@@ -378,7 +379,7 @@ async createGuideline(guideline) {
             normalized,
             String(guideline.sourceBody || '').trim(),
             guideline.sourceRegion ? String(guideline.sourceRegion).trim() : null,
-            guideline.sourceYear ? parseInt(guideline.sourceYear, 10) : null,
+            sanitizePublicationYear(guideline.sourceYear),
             guideline.sourceUrl ? String(guideline.sourceUrl).trim() : null,
             guideline.sourceSpecialty ? String(guideline.sourceSpecialty).trim() : null,
             guideline.sourceDomain ? String(guideline.sourceDomain).trim() : null,
@@ -431,7 +432,7 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
          WHERE normalized_topic IN (${stalePlaceholders})
            AND (? = '' OR status = ?)
            AND superseded_by_id IS NULL
-         ORDER BY source_year DESC, updated_at DESC
+         ORDER BY source_year DESC NULLS LAST, updated_at DESC
          LIMIT ?`,
         [...keys, statusFilter, statusFilter, fetchLimit]
     );
@@ -472,7 +473,7 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20 } = {}) {
              WHERE (${likeClauses})
                AND (? = '' OR status = ?)
                AND superseded_by_id IS NULL
-             ORDER BY source_year DESC, updated_at DESC
+             ORDER BY source_year DESC NULLS LAST, updated_at DESC
              LIMIT ?`,
             [...probeWords.map((w) => `%${w}%`), statusFilter, statusFilter, fetchLimit]
         );
@@ -543,7 +544,7 @@ async updateGuideline(id, patch) {
     add('normalized_topic', patch.topic !== undefined ? this.normalizeTopic(patch.topic) : undefined);
     add('source_body', patch.sourceBody !== undefined ? String(patch.sourceBody).trim() : undefined);
     add('source_region', patch.sourceRegion !== undefined ? (patch.sourceRegion ? String(patch.sourceRegion).trim() : null) : undefined);
-    add('source_year', patch.sourceYear !== undefined ? (patch.sourceYear ? parseInt(patch.sourceYear, 10) : null) : undefined);
+    add('source_year', patch.sourceYear !== undefined ? sanitizePublicationYear(patch.sourceYear) : undefined);
     add('source_url', patch.sourceUrl !== undefined ? (patch.sourceUrl ? String(patch.sourceUrl).trim() : null) : undefined);
     add('source_specialty', patch.sourceSpecialty !== undefined ? (patch.sourceSpecialty ? String(patch.sourceSpecialty).trim() : null) : undefined);
     add('source_domain', patch.sourceDomain !== undefined ? (patch.sourceDomain ? String(patch.sourceDomain).trim() : null) : undefined);
