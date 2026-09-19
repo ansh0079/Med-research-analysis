@@ -121,8 +121,11 @@ export function paperSynopsisToHtml(exportData: PaperSynopsisExport) {
       ? '<p><strong style="color:#b45309">⚠ ABSTRACT-ONLY SYNOPSIS</strong> — full text was not used.</p>'
       : '',
     exportData.reviewState ? `<p><strong>Review:</strong> ${clean(exportData.reviewState.replace(/_/g, ' '))}</p>` : '',
-    exportData.citationOk === false ? '<p><strong>Citation validation:</strong> issues detected</p>' : '',
-    exportData.citationOk === true ? '<p><strong>Citation validation:</strong> pass</p>' : '',
+    // Reference integrity only: the markers resolve to sources in the bundle.
+    // It is not a check that those sources support the claims, and this text
+    // leaves the app, so the weaker claim is the only honest one to print.
+    exportData.citationOk === false ? '<p><strong>Citation refs:</strong> issues detected</p>' : '',
+    exportData.citationOk === true ? '<p><strong>Citation refs:</strong> all resolve to a cited source</p>' : '',
   ].filter(Boolean).join('\n');
   return `<!doctype html><html><head><meta charset="utf-8"><title>${clean(exportData.title)} Synopsis</title></head><body>
     <h1>${clean(exportData.title)}</h1>
