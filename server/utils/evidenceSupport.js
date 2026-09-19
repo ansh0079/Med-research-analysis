@@ -76,6 +76,46 @@ function claimStructureFindings({ claimText, evidenceQuote } = {}) {
     return findings;
 }
 
+/**
+ * Which stored claim kinds are assertions drawn from their passage, and which
+ * are not.
+ *
+ * Only an assertion can be judged for entailment. A `synopsis.limitations` entry
+ * says what the study could not establish, and `whatNotToOverclaim` says what
+ * the evidence must not be read as showing -- a passage that fails to state
+ * either is the normal case, not a defect. `quizFocusPoints` are study prompts
+ * and are not claims at all. Running the judge over them and counting the
+ * "unsupported" answers would have reported roughly half the corpus as
+ * unsupported on a category error.
+ *
+ * Unknown provenance is judged, because refusing to look is the worse failure,
+ * but reported apart from the kinds we can name.
+ */
+const ASSERTION_SOURCE_PATHS = new Set([
+    'synopsis.bottomLine',
+    'synopsis.mainFindings',
+    'consensus.statement',
+    'consensus.areasOfAgreement',
+    'consensus.clinicalBottomLine',
+]);
+
+const NON_ASSERTION_SOURCE_PATHS = new Set([
+    'synopsis.limitations',
+    'synopsis.whatNotToOverclaim',
+    'consensus.whatNotToOverclaim',
+    'consensus.areasOfUncertainty',
+    'synopsis.quizFocusPoints',
+]);
+
+/** @returns {'assertion'|'meta'|'unknown'} */
+function claimKind(sourcePath) {
+    const path = String(sourcePath || '').trim();
+    if (!path) return 'unknown';
+    if (ASSERTION_SOURCE_PATHS.has(path)) return 'assertion';
+    if (NON_ASSERTION_SOURCE_PATHS.has(path)) return 'meta';
+    return 'unknown';
+}
+
 /** Leading label of an option string, e.g. "B: Give oxygen" -> "B". */
 function optionLabel(option) {
     const match = String(option || '').match(/^\s*([A-Za-z])\s*[.:)]/);
@@ -150,6 +190,9 @@ function expectedLongestIsKeyRate(optionCounts) {
 }
 
 module.exports = {
+    claimKind,
+    ASSERTION_SOURCE_PATHS,
+    NON_ASSERTION_SOURCE_PATHS,
     claimStructureFindings,
     mcqFormFindings,
     lexicalOverlap,

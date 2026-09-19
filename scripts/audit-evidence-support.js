@@ -29,7 +29,7 @@ const fs = require('fs');
 const path = require('path');
 const db = require('../database');
 const { auditEvidenceSupport } = require('../server/services/evidenceSupportAuditService');
-const { claimStructureFindings } = require('../server/utils/evidenceSupport');
+const { claimStructureFindings, claimKind } = require('../server/utils/evidenceSupport');
 const { judgeClaim, buildJudgeReport, reweightToCorpus } = require('../server/services/evidenceSupportJudge');
 const { serverConfig } = require('../config');
 
@@ -134,12 +134,18 @@ function stratifiedSample(rows, count) {
 }
 
 async function runJudgedPass(database, count) {
-    const rows = await database.all(
-        `SELECT claim_key, claim_text, evidence_quote FROM teaching_object_claims
+    const all = await database.all(
+        `SELECT claim_key, claim_text, evidence_quote, source_path FROM teaching_object_claims
          WHERE evidence_quote IS NOT NULL AND length(trim(evidence_quote)) >= 40`,
         []
     );
+    // Only assertions can be judged for entailment. A limitations entry or a
+    // whatNotToOverclaim line is not supposed to be stated by the passage.
+    const rows = all.filter((row) => claimKind(row.source_path) !== 'meta');
+    const excludedMeta = all.length - rows.length;
     const picked = stratifiedSample(rows, count);
+    console.error(`  judging ${picked.length} of ${rows.length} judgeable claims`
+        + ` (${excludedMeta} excluded as not passage assertions)`);
     const judged = [];
     for (const [index, row] of picked.entries()) {
         const verdict = await judgeClaim(
@@ -148,6 +154,8 @@ async function runJudgedPass(database, count) {
         );
         judged.push({
             claimKey: row.claim_key,
+            claimKind: claimKind(row.source_path),
+            sourcePath: row.source_path || null,
             stratum: row.stratum,
             samplingWeight: row.samplingWeight,
             claimText: row.claim_text,

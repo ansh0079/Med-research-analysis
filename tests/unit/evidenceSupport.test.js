@@ -1,7 +1,7 @@
 'use strict';
 
 const {
-    claimStructureFindings, mcqFormFindings, lexicalOverlap, expectedLongestIsKeyRate,
+    claimStructureFindings, mcqFormFindings, lexicalOverlap, expectedLongestIsKeyRate, claimKind,
 } = require('../../server/utils/evidenceSupport');
 
 const codes = (findings) => findings.map((f) => f.code);
@@ -117,5 +117,29 @@ describe('expectedLongestIsKeyRate', () => {
 
     it('is null when there is nothing to compare', () => {
         expect(expectedLongestIsKeyRate([])).toBeNull();
+    });
+});
+
+describe('claimKind', () => {
+    it('treats findings and bottom lines as assertions the passage must support', () => {
+        expect(claimKind('synopsis.bottomLine')).toBe('assertion');
+        expect(claimKind('synopsis.mainFindings')).toBe('assertion');
+        expect(claimKind('consensus.statement')).toBe('assertion');
+    });
+
+    it('excludes kinds a passage is not supposed to state', () => {
+        // A limitation says what the study could NOT establish, and
+        // whatNotToOverclaim says what the evidence must not be read as showing.
+        // A passage failing to state either is the normal case, not a defect.
+        expect(claimKind('synopsis.limitations')).toBe('meta');
+        expect(claimKind('synopsis.whatNotToOverclaim')).toBe('meta');
+        expect(claimKind('consensus.areasOfUncertainty')).toBe('meta');
+        // Study prompts, not claims at all — 8,281 of them in production.
+        expect(claimKind('synopsis.quizFocusPoints')).toBe('meta');
+    });
+
+    it('judges unknown provenance rather than skipping it', () => {
+        expect(claimKind(null)).toBe('unknown');
+        expect(claimKind('some.future.path')).toBe('unknown');
     });
 });
