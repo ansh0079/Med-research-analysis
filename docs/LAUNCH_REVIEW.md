@@ -44,7 +44,7 @@ The 3.0.0 release is **NOT ready for production deployment**. Claims in previous
 - [x] **Input Validation** — Joi schemas added for all major endpoints (`/api/ai/*`, `/api/user/save`, `/api/alerts`, `/api/quiz/generate`, `/api/ai/synthesize`)
 - [x] **Authentication** — `/api/ai/*` routes now gated behind `requireAuthJwt`
 - [ ] **Authorization** — Role-based access control not yet implemented
-- [ ] **CSRF Protection** — Not yet implemented
+- [x] **CSRF Protection** — Token-based CSRF added on high-risk state-changing routes
 - [ ] **XSS Output Encoding** — Partial (CSP + input sanitization); output encoding pending
 
 ### Privacy
@@ -97,7 +97,7 @@ Status:      Playwright configured but not actively maintained
 | Input validation | ✅ | Joi on all major POST/PUT bodies |
 | SQL injection prevention | ✅ | Parameterized queries via Kysely + better-sqlite3 |
 | XSS protection | 🟡 | CSP + input sanitization; output encoding pending |
-| CSRF protection | ❌ | Not implemented |
+| CSRF protection | ✅ | Token-based CSRF on unsafe mutations (webhooks exempt with signature) |
 | npm audit | 🟡 | 11 vulnerabilities (5 moderate, 6 high) — run `npm audit fix` |
 
 ---

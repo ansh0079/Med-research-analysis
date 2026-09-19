@@ -2,6 +2,7 @@ import type { QuizQuestion, LearningProfile } from '@types';
 import type { EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
+import { getCsrfToken } from './api/csrf';
 
 export interface QuizArticle {
   uid?: string;
@@ -93,9 +94,10 @@ export async function generateQuizFromEvidence(
   disclaimer?: string;
   sourceArticles: QuizArticle[];
 }> {
+  const csrf = await getCsrfToken();
   const res = await fetch(`${API_BASE}/api/quiz/from-evidence`, {
     method: 'POST',
-    headers: sessionHeaders(),
+    headers: { ...sessionHeaders(), ...(csrf ? { 'X-CSRF-Token': csrf } : {}) },
     credentials: 'include',
     body: JSON.stringify({ topic, articles, difficulty, count }),
   });
@@ -144,9 +146,10 @@ export async function generateQuiz(
   if (opts?.teachingPoints?.length) body.teachingPoints = opts.teachingPoints;
   if (opts?.mcqAngles?.length) body.mcqAngles = opts.mcqAngles;
 
+  const csrf = await getCsrfToken();
   const res = await fetch(`${API_BASE}/api/quiz/generate`, {
     method: 'POST',
-    headers: sessionHeaders(),
+    headers: { ...sessionHeaders(), ...(csrf ? { 'X-CSRF-Token': csrf } : {}) },
     credentials: 'include',
     body: JSON.stringify(body),
   });
