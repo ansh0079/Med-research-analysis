@@ -115,6 +115,39 @@ function cohensKappa(pairs) {
 }
 
 /**
+ * Corpus-wide rate from a stratified sample.
+ *
+ * The calibration sample deliberately over-samples structurally flagged claims,
+ * so counting verdicts in it answers a question nobody asked: the unsupported
+ * rate *in a sample built to contain unsupported claims*. Each item carries the
+ * sampling weight of its stratum (population / sampled), and the corpus rate is
+ * the weighted share — every sampled item standing for `samplingWeight` real
+ * ones.
+ *
+ * Items the judge could not answer are excluded from the denominator rather
+ * than counted as supported, and returned separately so a large unjudged
+ * fraction is visible instead of silently improving the rate.
+ *
+ * @param {Array<{verdict: string, samplingWeight: number}>} items
+ * @returns {{rates: Record<string, number>, weightJudged: number, unjudged: number}|null}
+ */
+function reweightToCorpus(items = []) {
+    const usable = items.filter((i) => i && VERDICTS.includes(i.verdict) && Number(i.samplingWeight) > 0);
+    const unjudged = items.length - usable.length;
+    if (!usable.length) return null;
+
+    const totalWeight = usable.reduce((sum, i) => sum + Number(i.samplingWeight), 0);
+    const rates = {};
+    for (const verdict of VERDICTS) {
+        const weight = usable
+            .filter((i) => i.verdict === verdict)
+            .reduce((sum, i) => sum + Number(i.samplingWeight), 0);
+        rates[verdict] = weight / totalWeight;
+    }
+    return { rates, weightJudged: totalWeight, unjudged };
+}
+
+/**
  * Refuses to report a judged rate without calibration evidence beside it.
  *
  * @param {{judged: Array<{verdict: string}>, calibration: Array<{judge: string, human: string}>}} input
@@ -143,5 +176,6 @@ function buildJudgeReport({ judged = [], calibration = [] } = {}) {
 }
 
 module.exports = {
-    judgeClaim, buildJudgePrompt, parseVerdict, cohensKappa, buildJudgeReport, VERDICTS,
+    judgeClaim, buildJudgePrompt, parseVerdict, cohensKappa, buildJudgeReport,
+    reweightToCorpus, VERDICTS,
 };

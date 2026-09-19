@@ -209,6 +209,13 @@ function renderMarkdown(report) {
 }
 
 (async () => {
+    // Created before any work: a judged pass costs a model call per claim, and
+    // discovering the output directory is missing after 200 of them throws the
+    // whole run away.
+    const outDir = path.resolve(process.cwd(), 'eval-results');
+    fs.mkdirSync(outDir, { recursive: true });
+    if (calibrationOut) fs.mkdirSync(path.dirname(path.resolve(calibrationOut)), { recursive: true });
+
     await db.connect();
     const report = await auditEvidenceSupport(db, { limit });
 
@@ -228,6 +235,10 @@ function renderMarkdown(report) {
         }
         report.judged = buildJudgeReport({ judged, calibration });
         report.judgedItems = judged;
+
+        // Written before anything else can fail: these verdicts cost one model
+        // call each and cannot be recovered from a crashed process.
+        fs.writeFileSync(path.join(outDir, `judged-raw-${Date.now()}.json`), JSON.stringify(judged, null, 2));
 
         if (calibrationOut) {
             // Blank "human" field for a clinician to fill in. The judge's own
@@ -252,8 +263,6 @@ function renderMarkdown(report) {
         }
     }
 
-    const outDir = path.resolve(process.cwd(), 'eval-results');
-    fs.mkdirSync(outDir, { recursive: true });
     const jsonPath = path.join(outDir, `evidence-support-${Date.now()}.json`);
     fs.writeFileSync(jsonPath, JSON.stringify(report, null, 2));
 

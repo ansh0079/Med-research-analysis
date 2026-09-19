@@ -1,7 +1,7 @@
 'use strict';
 
 const {
-    parseVerdict, cohensKappa, buildJudgeReport, buildJudgePrompt, VERDICTS,
+    parseVerdict, cohensKappa, buildJudgeReport, buildJudgePrompt, reweightToCorpus, VERDICTS,
 } = require('../../server/services/evidenceSupportJudge');
 
 describe('buildJudgePrompt', () => {
@@ -96,5 +96,38 @@ describe('buildJudgeReport', () => {
         const report = buildJudgeReport({ judged: [{ verdict: 'nonsense' }, null], calibration: [] });
         expect(report.noVerdict).toBe(2);
         expect(report.counts.unsupported).toBe(0);
+    });
+});
+
+describe('reweightToCorpus', () => {
+    it('undoes the over-sampling rather than reading the rate off the sample', () => {
+        // 60 drawn from 1,300 flagged claims (weight ~21.7), 140 from 24,900
+        // clean ones (weight ~177.9). Unsupported concentrates in the flagged
+        // stratum, so the raw sample rate is far above the corpus rate.
+        const items = [
+            ...Array.from({ length: 60 }, () => ({ verdict: 'unsupported', samplingWeight: 1300 / 60 })),
+            ...Array.from({ length: 140 }, () => ({ verdict: 'supported', samplingWeight: 24900 / 140 })),
+        ];
+        const rawRate = 60 / 200;
+        const { rates } = reweightToCorpus(items);
+        expect(rawRate).toBeCloseTo(0.30, 2);
+        expect(rates.unsupported).toBeCloseTo(1300 / 26200, 3);
+        expect(rates.unsupported).toBeLessThan(rawRate / 5);
+    });
+
+    it('excludes unjudged items from the denominator and surfaces the count', () => {
+        const items = [
+            { verdict: 'supported', samplingWeight: 10 },
+            { verdict: null, samplingWeight: 10 },
+            { verdict: 'nonsense', samplingWeight: 10 },
+        ];
+        const result = reweightToCorpus(items);
+        expect(result.unjudged).toBe(2);
+        expect(result.rates.supported).toBeCloseTo(1, 5);
+    });
+
+    it('returns null when nothing is usable', () => {
+        expect(reweightToCorpus([])).toBeNull();
+        expect(reweightToCorpus([{ verdict: 'supported', samplingWeight: 0 }])).toBeNull();
     });
 });
