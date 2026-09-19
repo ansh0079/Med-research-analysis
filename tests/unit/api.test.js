@@ -1951,7 +1951,7 @@ describe('API Endpoints', () => {
                   {
                     questionType: 'pitfall',
                     question: 'What is the key applicability issue for prone positioning?',
-                    options: ['A: It is most relevant in severe persistent hypoxaemia', 'B: It applies to all mild cases', 'C: It replaces ventilation strategy', 'D: It is unrelated to severity'],
+                    options: ['A: It is most relevant in severe persistent hypoxaemia', 'B: It applies to every mild case regardless of oxygenation', 'C: It replaces lung-protective ventilation entirely', 'D: It is unrelated to baseline severity or duration'],
                     correctAnswer: 'A',
                     explanation: 'Severity and persistent hypoxaemia matter for applicability. [Trial]',
                     distractorRationale: { A: 'Correct - keyed answer.', B: 'Overapplies the claim.', C: 'Incorrect.', D: 'Incorrect.' },
