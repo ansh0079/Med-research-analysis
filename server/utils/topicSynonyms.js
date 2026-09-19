@@ -19,6 +19,12 @@ const TOPIC_SYNONYM_GROUPS = [
     ['pe', 'pulmonary embolism', 'pulmonary embolism diagnosis'],
     ['cap', 'community acquired pneumonia'],
     ['hap', 'hospital acquired pneumonia'],
+    // Ambiguous clinician abbreviations — primary sense only. Competing senses
+    // (ACS = American Cancer Society / acute compartment syndrome) are rejected
+    // at ranking time, not merged into the topic key.
+    ['acs', 'acute coronary syndrome', 'acute coronary syndromes'],
+    ['ms', 'multiple sclerosis'],
+    ['ra', 'rheumatoid arthritis'],
     ['sirs', 'systemic inflammatory response syndrome'],
     ['sepsis', 'septic shock', 'sepsis and septic shock', 'sepsis-3', 'surviving sepsis campaign'],
     ['ohca', 'out of hospital cardiac arrest'],

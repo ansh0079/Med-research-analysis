@@ -1,10 +1,12 @@
 const { STOPWORDS } = require('./constants');
-
-// Common clinical abbreviations that are ≤3 chars but must not be filtered out
-const CLINICAL_ABBREVIATIONS = new Set([
-    'mi', 'hf', 'pe', 'ckd', 'aki', 'dvt', 'afib', 'af', 'dka', 'htn',
-    'dm', 't2d', 'copd', 'uti', 'acs', 'cad', 'chf', 'pad', 'ild',
-]);
+const { isClinicalAbbreviation } = require('../../utils/clinicalAbbreviations');
+const {
+    originalConditionTerms,
+    originalGenericTerms,
+    articleMatchesConditionTerm,
+    isCompetingAbbreviationSense,
+    textHasTerm,
+} = require('../../utils/conditionQuery');
 
 function matchesPopulationFilter(article, query) {
     const q = String(query || '').toLowerCase();
@@ -53,22 +55,51 @@ function meshRelevanceRatio(searchText, queryMeshTerms = []) {
     return matchCount / terms.length;
 }
 
+function termInText(text, term) {
+    if (articleMatchesConditionTerm(text, term)) return true;
+    const stem = stemTerm(term);
+    return stem.length > 3 && textHasTerm(text, stem);
+}
+
 function queryMatchScore(article, query) {
-    const q = String(query || '').toLowerCase();
     const title = String(article?.title || '').toLowerCase();
     const abstract = String(article?.abstract || '').toLowerCase();
     const searchText = `${title} ${abstract}`;
-    const queryTerms = q.split(/\s+/).filter((t) => (t.length > 3 || CLINICAL_ABBREVIATIONS.has(t)) && !STOPWORDS.has(t));
-    if (queryTerms.length === 0) return 0;
-    const weighted = queryTerms.reduce((sum, term) => {
-        const stem = stemTerm(term);
-        const inTitle = title.includes(term) || (stem.length > 3 && title.includes(stem));
-        const inText = searchText.includes(term) || (stem.length > 3 && searchText.includes(stem));
-        if (inTitle) return sum + 1.5;
-        if (inText) return sum + 1;
+    if (isCompetingAbbreviationSense(article, query)) return 0;
+
+    const conditionTerms = originalConditionTerms(query);
+    const genericTerms = originalGenericTerms(query);
+    if (conditionTerms.length === 0 && genericTerms.length === 0) {
+        const q = String(query || '').toLowerCase();
+        const queryTerms = q.split(/\s+/).filter((t) => (t.length > 3 || isClinicalAbbreviation(t)) && !STOPWORDS.has(t));
+        if (queryTerms.length === 0) return 0;
+        const weighted = queryTerms.reduce((sum, term) => {
+            const inTitle = termInText(title, term);
+            const inText = termInText(searchText, term);
+            if (inTitle) return sum + 1.5;
+            if (inText) return sum + 1;
+            return sum;
+        }, 0);
+        return Math.min(1, weighted / queryTerms.length);
+    }
+
+    const conditionWeighted = conditionTerms.reduce((sum, term) => {
+        if (termInText(title, term)) return sum + 1.5;
+        if (termInText(searchText, term)) return sum + 1;
         return sum;
     }, 0);
-    return Math.min(1, weighted / queryTerms.length);
+    // Task words ("diagnosis", "management") must not saturate relevance.
+    const genericWeighted = genericTerms.reduce((sum, term) => {
+        if (title.includes(term)) return sum + 0.2;
+        if (searchText.includes(term)) return sum + 0.1;
+        return sum;
+    }, 0);
+
+    if (conditionTerms.length > 0) {
+        if (conditionWeighted === 0) return 0;
+        return Math.min(1, (conditionWeighted / conditionTerms.length) + Math.min(0.08, genericWeighted));
+    }
+    return Math.min(0.4, genericWeighted / Math.max(1, genericTerms.length));
 }
 
 function normalizeAliasText(value) {
@@ -112,19 +143,22 @@ function isOffTopic(article, query, options = {}) {
     const abstract = String(article.abstract || '').toLowerCase();
     const searchText = `${title} ${abstract}`;
 
-    const queryTerms = q.split(/\s+/).filter((t) => (t.length > 3 || CLINICAL_ABBREVIATIONS.has(t)) && !STOPWORDS.has(t));
+    if (isCompetingAbbreviationSense(article, query)) return true;
+
+    const conditionTerms = originalConditionTerms(query);
+    const queryTerms = conditionTerms.length > 0
+        ? conditionTerms
+        : q.split(/\s+/).filter((t) => (t.length > 3 || isClinicalAbbreviation(t)) && !STOPWORDS.has(t));
     if (queryTerms.length === 0) return false;
 
-    const matchCount = queryTerms.filter((t) => {
-        if (searchText.includes(t)) return true;
-        const stem = stemTerm(t);
-        return stem.length > 3 && searchText.includes(stem);
-    }).length;
+    const matchCount = queryTerms.filter((t) => termInText(searchText, t)).length;
 
     const matchRatio = matchCount / queryTerms.length;
     const meshRatio = meshRelevanceRatio(searchText, queryMeshTerms);
 
-    // Scale threshold by number of key terms:
+    // Scale threshold by number of *condition* terms. Generic task words are
+    // ignored, so "ACS management" requires ACS (or "acute coronary"), not
+    // "management". A 1-term condition query must actually match that term.
     //   1–2 concepts → need 75 % (both must appear — rounding means 2/2 required for a 2-term query)
     //   3–5 concepts → need 50 % (at least half)
     //   6+  concepts → need 35 % (long free-text queries allow more synonym drift)

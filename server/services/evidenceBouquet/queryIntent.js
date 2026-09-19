@@ -155,9 +155,11 @@ function intentArchetypeBias(intent, archetype) {
 
 function topicalMatchWeight(specificity) {
     // Raised so query/alias fit beats citation mass for Precision@5.
-    if (specificity === 'strict') return 20;
-    if (specificity === 'broad') return 4;
-    return 22; // moderate default
+    // Prestige is also scaled by queryMatchScore; this is the residual lever
+    // so a perfect topical hit can still outrun a weakly matched famous paper.
+    if (specificity === 'strict') return 36;
+    if (specificity === 'broad') return 8;
+    return 40; // moderate default
 }
 
 module.exports = {

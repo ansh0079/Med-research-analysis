@@ -12,6 +12,7 @@ const {
     queryMatchScore,
     queryAliasMatchScore,
     scorePicoRelevance,
+    isOffTopic,
 } = require('./queryRelevance');
 const {
     classifyQueryIntent,
@@ -78,6 +79,10 @@ function buildEvidenceBouquet(articles, query, options = {}) {
     const filtered = articles.filter((a) => {
         if (a._retraction?.isRetracted) return false;
         if (!matchesPopulationFilter(a, query)) return false;
+        if (a._pinnedLandmark) return true;
+        const aliasMatched = queryAliasMatchScore(a, options.queryAliases) > 0;
+        if (aliasMatched) return true;
+        if (isOffTopic(a, query)) return false;
         return true;
     });
 
@@ -92,9 +97,9 @@ function buildEvidenceBouquet(articles, query, options = {}) {
     const aliasWeight = 28;
 
     const scored = filtered.map((a) => {
-        let score = computeCompositeScore(a);
-        score += intentRecencyAdjustment(a, queryIntent, query);
         const matchScore = queryMatchScore(a, query);
+        let score = computeCompositeScore(a, { queryMatchScore: matchScore, query });
+        score += intentRecencyAdjustment(a, queryIntent, query);
         const aliasMatchScore = queryAliasMatchScore(a, options.queryAliases);
         const archetype = classifyArchetype(a);
         score += matchScore * matchWeight;

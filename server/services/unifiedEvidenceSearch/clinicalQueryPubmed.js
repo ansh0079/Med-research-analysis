@@ -2,6 +2,7 @@
 // touching fetch/RRF code). See server/config/clinicalQueryAliasRules.json and
 // clinicalQueryAliasSeeds.json. Older trials often omit their own acronym in
 // title/abstract — pinned PMIDs bypass esearch relevance ranking.
+const { conditionExpansionAliases } = require('../../utils/conditionQuery');
 const {
     loadClinicalQueryAliasRules,
     loadClinicalQueryAliasSeeds,
@@ -20,7 +21,11 @@ function clinicalQueryAliases(query) {
             rule.aliases.forEach((alias) => out.add(alias));
         }
     }
-    return [...out].slice(0, 8);
+    // Expand clinician abbreviations so PubMed sees the spelled-out condition
+    // ("ACS" → "acute coronary syndrome") instead of every issuing body that
+    // shares those letters.
+    conditionExpansionAliases(query).forEach((alias) => out.add(alias));
+    return [...out].slice(0, 12);
 }
 
 function clinicalQueryPinnedPmids(query) {
