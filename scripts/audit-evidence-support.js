@@ -18,12 +18,20 @@
  *   node scripts/audit-evidence-support.js
  *   node scripts/audit-evidence-support.js --limit 2000
  *   node scripts/audit-evidence-support.js --format markdown > report.md
+ *
+ * Judged pass (costs one model call per sampled claim):
+ *   node scripts/audit-evidence-support.js --judge 200 --calibration-out labels.json
+ *   # a human fills in the "human" field of each row in labels.json, then
+ *   node scripts/audit-evidence-support.js --judge 200 --calibration-in labels.json
  */
 
 const fs = require('fs');
 const path = require('path');
 const db = require('../database');
 const { auditEvidenceSupport } = require('../server/services/evidenceSupportAuditService');
+const { claimStructureFindings } = require('../server/utils/evidenceSupport');
+const { judgeClaim, buildJudgeReport } = require('../server/services/evidenceSupportJudge');
+const { serverConfig } = require('../config');
 
 const args = process.argv.slice(2);
 const flag = (name, fallback = null) => {
@@ -32,6 +40,86 @@ const flag = (name, fallback = null) => {
 };
 const limit = Number(flag('--limit', '0')) || 0;
 const format = flag('--format', 'table');
+const judgeCount = Number(flag('--judge', '0')) || 0;
+const calibrationOut = flag('--calibration-out');
+const calibrationIn = flag('--calibration-in');
+const negativeControl = Number(flag('--negative-control', '0')) || 0;
+
+/**
+ * Random sample, never the first N rows. A contiguous block of this table is a
+ * single generation run over adjacent topics, so its defect rate says nothing
+ * about the corpus.
+ */
+function sample(rows, n) {
+    const pool = [...rows];
+    for (let i = pool.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    return pool.slice(0, n);
+}
+
+/**
+ * Runs the judge over claims the structural pass already proved unsupportable,
+ * and reports how many it catches.
+ *
+ * A judge that returns "supported" for everything agrees with most of a corpus
+ * that is mostly fine, and looks convincing until it is asked about a claim
+ * whose passage shares no vocabulary with it at all. This is the cheap standing
+ * check that the judge discriminates; re-run it whenever the model changes.
+ * It is a floor, not a validation: these cases are obvious, and a judge can
+ * pass this and still miss a claim that quietly overstates its passage. Only
+ * human labels settle that.
+ */
+async function runNegativeControl(database, count) {
+    const rows = await database.all(
+        `SELECT claim_text, evidence_quote FROM teaching_object_claims
+         WHERE evidence_quote IS NOT NULL AND length(trim(evidence_quote)) >= 40`,
+        []
+    );
+    const known = rows.filter((row) => claimStructureFindings({
+        claimText: row.claim_text, evidenceQuote: row.evidence_quote,
+    }).some((f) => f.code === 'quote_shares_no_vocabulary'));
+
+    const picked = sample(known, count);
+    let caught = 0;
+    const missed = [];
+    for (const row of picked) {
+        const verdict = await judgeClaim(
+            { claimText: row.claim_text, evidenceQuote: row.evidence_quote },
+            { serverConfig }
+        );
+        const value = verdict ? verdict.verdict : null;
+        if (value && value !== 'supported') caught += 1;
+        else missed.push({ claim: String(row.claim_text).slice(0, 120), verdict: value });
+    }
+    return { tested: picked.length, caught, missed };
+}
+
+async function runJudgedPass(database, count) {
+    const rows = await database.all(
+        `SELECT claim_key, claim_text, evidence_quote FROM teaching_object_claims
+         WHERE evidence_quote IS NOT NULL AND length(trim(evidence_quote)) >= 40`,
+        []
+    );
+    const picked = sample(rows, count);
+    const judged = [];
+    for (const [index, row] of picked.entries()) {
+        const verdict = await judgeClaim(
+            { claimText: row.claim_text, evidenceQuote: row.evidence_quote },
+            { serverConfig }
+        );
+        judged.push({
+            claimKey: row.claim_key,
+            claimText: row.claim_text,
+            evidenceQuote: row.evidence_quote,
+            verdict: verdict ? verdict.verdict : null,
+            reason: verdict ? verdict.reason : null,
+        });
+        if ((index + 1) % 25 === 0) console.error(`  judged ${index + 1}/${picked.length}`);
+    }
+    return judged;
+}
 
 const pct = (value) => (value === null || value === undefined ? 'n/a' : `${(value * 100).toFixed(1)}%`);
 
@@ -85,12 +173,59 @@ function renderMarkdown(report) {
     await db.connect();
     const report = await auditEvidenceSupport(db, { limit });
 
+    if (negativeControl > 0) {
+        report.negativeControl = await runNegativeControl(db, negativeControl);
+    }
+
+    if (judgeCount > 0) {
+        const judged = await runJudgedPass(db, judgeCount);
+        let calibration = [];
+        if (calibrationIn) {
+            // Rows a human has labelled; unlabelled rows are dropped, not assumed.
+            calibration = JSON.parse(fs.readFileSync(calibrationIn, 'utf8'))
+                .filter((row) => row && row.human && row.judge)
+                .map((row) => ({ judge: row.judge, human: row.human }));
+        }
+        report.judged = buildJudgeReport({ judged, calibration });
+        report.judgedItems = judged;
+
+        if (calibrationOut) {
+            // Blank "human" field for a clinician to fill in. The judge's own
+            // verdict is included so disagreements can be reviewed, which does
+            // risk anchoring the labeller -- worth it only because the
+            // alternative is labelling 200 claims with no way to spot-check.
+            fs.writeFileSync(calibrationOut, JSON.stringify(
+                judged.map((row) => ({ ...row, human: '' })), null, 2
+            ));
+            console.error(`Calibration sheet written to ${calibrationOut}`);
+        }
+    }
+
     const outDir = path.resolve(process.cwd(), 'eval-results');
     fs.mkdirSync(outDir, { recursive: true });
     const jsonPath = path.join(outDir, `evidence-support-${Date.now()}.json`);
     fs.writeFileSync(jsonPath, JSON.stringify(report, null, 2));
 
     console.log(format === 'markdown' ? renderMarkdown(report) : renderTable(report));
+    if (report.negativeControl) {
+        const nc = report.negativeControl;
+        console.log('');
+        console.log(`Judge negative control: caught ${nc.caught}/${nc.tested} claims already known unsupportable`);
+        for (const miss of nc.missed.slice(0, 5)) {
+            console.log(`  MISSED (${miss.verdict || 'no verdict'}): ${miss.claim}`);
+        }
+    }
+    if (report.judged) {
+        const j = report.judged;
+        console.log('');
+        console.log(`Judged sample: ${j.judged} claims (${j.noVerdict} with no usable verdict)`);
+        for (const [verdict, count] of Object.entries(j.counts)) {
+            console.log(`  ${String(count).padStart(6)}  ${verdict}`);
+        }
+        console.log(j.reportable
+            ? `  judge/human agreement: kappa ${j.calibration.kappa.toFixed(2)} over n=${j.calibration.n}`
+            : `  NOT REPORTABLE — ${j.caveat}`);
+    }
     console.log(`\nFull report: ${path.relative(process.cwd(), jsonPath)}`);
     process.exit(0);
 })().catch((error) => {
