@@ -1,38 +1,10 @@
 const { STOPWORDS } = require('./constants');
-const { CLINICAL_ABBREVIATIONS } = require('../../utils/clinicalAbbreviations');
 
-/**
- * Clinical scaffolding: words that appear in the title of a guideline on any
- * subject. They are not stopwords — a query is entitled to contain them — but
- * they carry no information about WHICH condition is being asked about.
- *
- * Treating them as equal to the condition itself is what put "Management of
- * toxicities from immunotherapy: ESMO Clinical Practice Guideline for
- * diagnosis, treatment and follow-up" first for "AKI diagnosis and management".
- * It matched "diagnosis" and "management" in its title, which at 1.5x title
- * weight saturated the relevance score to a perfect 1.00 with "aki" absent
- * entirely, and cleared the 50% off-topic threshold on those two words alone.
- */
-const GENERIC_QUERY_TERMS = new Set([
-    'diagnosis', 'diagnostic', 'diagnose', 'management', 'managing', 'treatment',
-    'treat', 'therapy', 'therapies', 'therapeutic', 'prevention', 'preventing',
-    'prophylaxis', 'guideline', 'guidelines', 'recommendation', 'recommendations',
-    'approach', 'workup', 'work-up', 'assessment', 'evaluation', 'investigation',
-    'monitoring', 'follow-up', 'followup', 'outcome', 'outcomes', 'complication',
-    'complications', 'cause', 'causes', 'aetiology', 'etiology', 'pathophysiology',
-    'presentation', 'features', 'criteria', 'review', 'update', 'overview',
-    'practice', 'clinical', 'patient', 'patients', 'adult', 'adults',
+// Common clinical abbreviations that are ≤3 chars but must not be filtered out
+const CLINICAL_ABBREVIATIONS = new Set([
+    'mi', 'hf', 'pe', 'ckd', 'aki', 'dvt', 'afib', 'af', 'dka', 'htn',
+    'dm', 't2d', 'copd', 'uti', 'acs', 'cad', 'chf', 'pad', 'ild',
 ]);
-
-/**
- * The terms that say which condition the query is about.
- *
- * @returns {string[]} query terms with the scaffolding removed. Empty when the
- *   query is nothing but scaffolding, in which case no anchor can be required.
- */
-function queryAnchorTerms(queryTerms) {
-    return queryTerms.filter((term) => !GENERIC_QUERY_TERMS.has(term));
-}
 
 function matchesPopulationFilter(article, query) {
     const q = String(query || '').toLowerCase();
@@ -88,25 +60,15 @@ function queryMatchScore(article, query) {
     const searchText = `${title} ${abstract}`;
     const queryTerms = q.split(/\s+/).filter((t) => (t.length > 3 || CLINICAL_ABBREVIATIONS.has(t)) && !STOPWORDS.has(t));
     if (queryTerms.length === 0) return 0;
-    const anchors = queryAnchorTerms(queryTerms);
-    const hit = (term) => {
+    const weighted = queryTerms.reduce((sum, term) => {
         const stem = stemTerm(term);
         const inTitle = title.includes(term) || (stem.length > 3 && title.includes(stem));
-        if (inTitle) return 1.5;
         const inText = searchText.includes(term) || (stem.length > 3 && searchText.includes(stem));
-        return inText ? 1 : 0;
-    };
-
-    // A paper that matches none of the terms naming the condition is not a
-    // partial match on this query, it is about something else.
-    if (anchors.length > 0 && !anchors.some((term) => hit(term) > 0)) return 0;
-
-    // Scaffolding counts for a quarter: "management" in a title should not
-    // approach the weight of the condition the query is actually about.
-    const weightOf = (term) => (GENERIC_QUERY_TERMS.has(term) ? 0.25 : 1);
-    const weighted = queryTerms.reduce((sum, term) => sum + hit(term) * weightOf(term), 0);
-    const possible = queryTerms.reduce((sum, term) => sum + 1.5 * weightOf(term), 0);
-    return possible > 0 ? Math.min(1, weighted / possible) : 0;
+        if (inTitle) return sum + 1.5;
+        if (inText) return sum + 1;
+        return sum;
+    }, 0);
+    return Math.min(1, weighted / queryTerms.length);
 }
 
 function normalizeAliasText(value) {
@@ -159,17 +121,6 @@ function isOffTopic(article, query, options = {}) {
         return stem.length > 3 && searchText.includes(stem);
     }).length;
 
-    // The ratio alone cleared 50% on "diagnosis" + "management" for a query
-    // about AKI. Whatever the ratio, a paper matching none of the terms that
-    // name the condition is off topic.
-    const anchors = queryAnchorTerms(queryTerms);
-    const anchorMatched = anchors.length === 0 || anchors.some((t) => {
-        if (searchText.includes(t)) return true;
-        const stem = stemTerm(t);
-        return stem.length > 3 && searchText.includes(stem);
-    });
-    if (!anchorMatched && meshRelevanceRatio(searchText, queryMeshTerms) < 0.34) return true;
-
     const matchRatio = matchCount / queryTerms.length;
     const meshRatio = meshRelevanceRatio(searchText, queryMeshTerms);
 
@@ -214,8 +165,6 @@ function scorePicoRelevance(article, pico) {
 }
 
 module.exports = {
-    GENERIC_QUERY_TERMS,
-    queryAnchorTerms,
     matchesPopulationFilter,
     meshRelevanceRatio,
     queryMatchScore,
