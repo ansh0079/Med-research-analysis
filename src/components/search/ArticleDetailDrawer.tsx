@@ -191,9 +191,19 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
       const topic = inference.displayTopic?.trim();
       if (!topic) { setGuidelineState('empty'); return; }
       setInferredTopic({ display: topic, source: inference.source, confidence: inference.confidence });
-      const result = await fetch(`/api/guidelines?topic=${encodeURIComponent(topic)}&limit=4`);
-      if (!result.ok) throw new Error('failed');
-      const data = await result.json() as { guidelines: GuidelineEntry[] };
+      const fetchGuidelines = async () => {
+        const result = await fetch(`/api/guidelines?topic=${encodeURIComponent(topic)}&limit=4`);
+        if (!result.ok) throw new Error('failed');
+        return result.json() as Promise<{ guidelines: GuidelineEntry[]; discoveryStatus?: string }>;
+      };
+      let data = await fetchGuidelines();
+      if (!data.guidelines?.length && data.discoveryStatus === 'pending') {
+        for (let attempt = 0; attempt < 4; attempt += 1) {
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+          data = await fetchGuidelines();
+          if (data.guidelines?.length || data.discoveryStatus !== 'pending') break;
+        }
+      }
       setGuidelines(data.guidelines ?? []);
       setGuidelineState(data.guidelines?.length ? 'done' : 'empty');
     } catch {
