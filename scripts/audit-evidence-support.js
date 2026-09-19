@@ -30,7 +30,7 @@ const path = require('path');
 const db = require('../database');
 const { auditEvidenceSupport } = require('../server/services/evidenceSupportAuditService');
 const { claimStructureFindings } = require('../server/utils/evidenceSupport');
-const { judgeClaim, buildJudgeReport } = require('../server/services/evidenceSupportJudge');
+const { judgeClaim, buildJudgeReport, reweightToCorpus } = require('../server/services/evidenceSupportJudge');
 const { serverConfig } = require('../config');
 
 const args = process.argv.slice(2);
@@ -235,6 +235,7 @@ function renderMarkdown(report) {
         }
         report.judged = buildJudgeReport({ judged, calibration });
         report.judgedItems = judged;
+        report.corpusEstimate = reweightToCorpus(judged);
 
         // Written before anything else can fail: these verdicts cost one model
         // call each and cannot be recovered from a crashed process.
@@ -285,6 +286,22 @@ function renderMarkdown(report) {
         console.log(j.reportable
             ? `  judge/human agreement: kappa ${j.calibration.kappa.toFixed(2)} over n=${j.calibration.n}`
             : `  NOT REPORTABLE — ${j.caveat}`);
+
+        const corpus = report.corpusEstimate;
+        if (corpus) {
+            console.log('');
+            console.log('Corpus estimate, reweighted from the stratified sample');
+            if (!j.reportable) {
+                // Printing a number here before the judge is calibrated is how a
+                // judged guess becomes a quoted statistic, so withhold the figures.
+                console.log('  withheld — the judge is not calibrated, so these would be a guess');
+            } else {
+                for (const [verdict, rate] of Object.entries(corpus.rates)) {
+                    console.log(`  ${verdict.padEnd(22)} ${pct(rate)}`);
+                }
+                console.log(`  (${corpus.unjudged} sampled claims had no usable verdict and are excluded)`);
+            }
+        }
     }
     console.log(`\nFull report: ${path.relative(process.cwd(), jsonPath)}`);
     process.exit(0);
