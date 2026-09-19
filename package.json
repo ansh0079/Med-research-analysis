@@ -44,6 +44,7 @@
     "audit:mega-files": "node scripts/audit-mega-files.mjs",
     "audit:flagship-topics": "node scripts/audit-flagship-program.mjs",
     "audit:flagship-topics:launch": "node scripts/audit-flagship-program.mjs --launch-cohort",
+    "audit:flagship-live-20": "node scripts/validate-flagship-live.mjs --count 20",
     "audit:flagship-readiness": "node server/scripts/auditFlagshipReadiness.js",
     "enrich:flagship-knowledge": "node server/scripts/enrichFlagshipKnowledge.js",
     "sync:flagship-sources": "node server/scripts/syncSourceArticles.js",
@@ -119,7 +120,8 @@
     "verify:migration-numbers": "node tools/check-migration-numbers.js",
     "verify:topic-orphans": "node tools/check-topic-orphans.js",
     "backfill:teaching-object-topics": "node server/scripts/backfillTeachingObjectTopics.js",
-    "jobs:archive-failed": "node server/scripts/archiveFailedAiJobs.js"
+    "jobs:archive-failed": "node server/scripts/archiveFailedAiJobs.js",
+    "audit:evidence-support": "node scripts/audit-evidence-support.js"
   },
   "dependencies": {
     "@apidevtools/swagger-parser": "^12.1.0",
