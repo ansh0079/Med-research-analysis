@@ -105,7 +105,12 @@ async upsertTeachingObject(object = {}) {
 async resolveCurriculumTopicId(topic) {
     const alias = this.normalizeTopic(topic);
     if (!alias) return null;
-    const hit = await this.get('SELECT curriculum_topic_id FROM topic_aliases WHERE alias_norm = ?', [alias]);
+    const hit = await this.get(
+        `SELECT curriculum_topic_id FROM topic_aliases
+         WHERE alias_norm = ?
+           AND NOT (resolution = 'orphan_reconciliation' AND confidence < 0.95)`,
+        [alias],
+    );
     if (hit) return hit.curriculum_topic_id;
     // Fall back to the display name so a topic added after the last backfill still resolves.
     const direct = await this.get('SELECT id FROM curriculum_topics WHERE LOWER(display_name) = ?', [String(topic || '').trim().toLowerCase()]);
@@ -117,8 +122,14 @@ async recordTopicAlias(topic, curriculumTopicId, resolution = 'runtime', confide
     const alias = this.normalizeTopic(topic);
     if (!alias || !curriculumTopicId) return false;
     await this.run(
-        'INSERT INTO topic_aliases (id, alias_norm, curriculum_topic_id, resolution, confidence) ' +
-        'VALUES (?, ?, ?, ?, ?) ON CONFLICT (alias_norm) DO NOTHING',
+        `INSERT INTO topic_aliases (id, alias_norm, curriculum_topic_id, resolution, confidence)
+         VALUES (?, ?, ?, ?, ?)
+         ON CONFLICT (alias_norm) DO UPDATE SET
+            curriculum_topic_id = excluded.curriculum_topic_id,
+            resolution = excluded.resolution,
+            confidence = excluded.confidence
+         WHERE topic_aliases.resolution = 'orphan_reconciliation'
+           AND topic_aliases.confidence < excluded.confidence`,
         [require('crypto').randomUUID(), alias, curriculumTopicId, resolution, confidence]
     );
     return true;

@@ -1,6 +1,9 @@
 const { buildTeachingSignalBoosts } = require('../../services/searchRankingConstants');
 const { mergeCuratedWithLiveEvidence } = require('../../services/searchEvidenceMergeService');
 const { buildEvidenceMap } = require('../../services/teachingObjectService');
+const { kickGuidelineDiscoveryIfEmpty } = require('../../services/guidelineService');
+const { getSharedAiService } = require('../../services/aiService');
+const { safeFetch } = require('../../utils/fetch');
 
 function createSearchTopicHelpers({ db, logger, serverConfig }) {
     function buildAgentGuidance(topicKnowledge) {
@@ -133,6 +136,14 @@ function createSearchTopicHelpers({ db, logger, serverConfig }) {
                 guidelines: guidelineSnapshot,
                 count: guidelineSnapshot.length,
                 hasReviewedGuidelines: guidelineSnapshot.some((g) => g.status === 'human_reviewed'),
+                discoveryStatus: guidelineSnapshot.length > 0
+                    ? 'complete'
+                    : kickGuidelineDiscoveryIfEmpty(topic, {
+                        db,
+                        serverConfig,
+                        aiService: getSharedAiService({ serverConfig, fetchImpl: safeFetch }),
+                        log: logger,
+                    }),
             },
             evidenceMap,
             agentGuidance,

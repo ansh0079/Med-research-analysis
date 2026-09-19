@@ -1,0 +1,35 @@
+Topics with a downloaded full practice-guideline body (local app database)
+=========================================================================
+
+1. Acute and chronic pain assessment and opioid safety
+2. hypersensitivity pneumonitis diagnosis and antigen avoidance
+3. community acquired pneumonia
+4. community acquired pneumonia diagnosis empiric antibiotic management guideline adult
+5. pneumonia
+6. Large bowel obstruction, volvulus, and pseudo-obstruction management
+7. Peripheral arterial disease and claudication
+
+Notes
+-----
+- Topics 3-5 share the same ATS/IDSA community-acquired pneumonia guideline.
+- This list is from the local database (21 JATS full texts). Production has additional full-text JATS documents.
+
+Topics with a downloaded full paper that is not a society guideline
+==================================================================
+
+acromegaly somatostatin analog therapy
+acute bacterial meningitis adjunctive dexamethasone
+acute liver failure transplant referral
+covid
+delirium and acute confusional states
+depression diagnosis pharmacotherapy and monitoring
+diffuse large b cell lymphoma car t cell therapy in relapsed refractory disease
+dyslipidaemia and cardiovascular risk modification
+empagliflozin chronic kidney disease progression
+endocarditis and prophylaxis
+esophageal cancer neoadjuvant chemoradiation
+intensive ldl cholesterol lowering statin meta-analysis
+miscarriage diagnosis classification and management
+primary aldosteronism diagnosis and treatment
+takayasu arteritis biologic therapy
+tocilizumab covid-19 hospitalized patients

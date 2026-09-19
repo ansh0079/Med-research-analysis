@@ -1,0 +1,2090 @@
+[
+  {
+    "id": 1,
+    "topic": "Acute and chronic pain assessment and opioid safety",
+    "specialty": "Pain Management & Opioids",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9639433/",
+    "guidelineTitle": "CDC Clinical Practice Guideline for Prescribing Opioids for Pain - United States, 2022.",
+    "status": "full_jats",
+    "fullDownloaded": "yes"
+  },
+  {
+    "id": 2,
+    "topic": "Community acquired pneumonia",
+    "specialty": "Infectious Diseases",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6812437/",
+    "guidelineTitle": "Diagnosis and Treatment of Adults with Community-acquired Pneumonia. An Official Clinical Practice Guideline of the American Thoracic Society and Infectious Diseases Society of America.",
+    "status": "full_jats",
+    "fullDownloaded": "yes"
+  },
+  {
+    "id": 3,
+    "topic": "Community acquired pneumonia diagnosis empiric antibiotic management guideline adult",
+    "specialty": "Infectious Diseases",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6812437/",
+    "guidelineTitle": "Diagnosis and Treatment of Adults with Community-acquired Pneumonia. An Official Clinical Practice Guideline of the American Thoracic Society and Infectious Diseases Society of America.",
+    "status": "full_jats",
+    "fullDownloaded": "yes"
+  },
+  {
+    "id": 4,
+    "topic": "Hypersensitivity pneumonitis diagnosis and antigen avoidance",
+    "specialty": "Respiratory Medicine",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7397797/",
+    "guidelineTitle": "Diagnosis of Hypersensitivity Pneumonitis in Adults. An Official ATS/JRS/ALAT Clinical Practice Guideline.",
+    "status": "full_jats",
+    "fullDownloaded": "yes"
+  },
+  {
+    "id": 5,
+    "topic": "Large bowel obstruction, volvulus, and pseudo-obstruction management",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6090779/",
+    "guidelineTitle": "2017 WSES guidelines on colon and rectal cancer emergencies: obstruction and perforation.",
+    "status": "full_jats",
+    "fullDownloaded": "yes"
+  },
+  {
+    "id": 6,
+    "topic": "Peripheral arterial disease and claudication",
+    "specialty": "Cardiovascular Medicine",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5477786/",
+    "guidelineTitle": "2016 AHA/ACC Guideline on the Management of Patients With Lower Extremity Peripheral Artery Disease: A Report of the American College of Cardiology/American Heart Association Task Force on Clinical Practice Guidelines.",
+    "status": "full_jats",
+    "fullDownloaded": "yes"
+  },
+  {
+    "id": 7,
+    "topic": "Pneumonia",
+    "specialty": "Infectious Diseases",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6812437/",
+    "guidelineTitle": "Diagnosis and Treatment of Adults with Community-acquired Pneumonia. An Official Clinical Practice Guideline of the American Thoracic Society and Infectious Diseases Society of America.",
+    "status": "full_jats",
+    "fullDownloaded": "yes"
+  },
+  {
+    "id": 8,
+    "topic": "Achalasia endoscopic and surgical therapy",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9896940/",
+    "guidelineTitle": "ACG Clinical Guidelines: Diagnosis and Management of Achalasia",
+    "status": "verified_oa_page",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 9,
+    "topic": "Acromegaly somatostatin analog therapy",
+    "specialty": "Endocrinology & Metabolism",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/25356972/",
+    "guidelineTitle": "Endocrine Society Clinical Practice Guideline",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 10,
+    "topic": "Acute abdomen and common surgical emergencies",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/26868012/",
+    "guidelineTitle": "WSES guidelines for acute abdomen",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 11,
+    "topic": "Acute bacterial meningitis adjunctive dexamethasone",
+    "specialty": "Infectious Diseases",
+    "url": "https://www.who.int/publications/i/item/9789240108042",
+    "guidelineTitle": "WHO guidelines on meningitis diagnosis, treatment and care",
+    "status": "verified_oa_page",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 12,
+    "topic": "Acute bacterial meningitis empiric therapy and dexamethasone",
+    "specialty": "Infectious Diseases",
+    "url": "https://www.nice.org.uk/guidance/ng240",
+    "guidelineTitle": "NICE NG240: Meningitis (bacterial) and meningococcal disease",
+    "status": "verified_oa_page",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 13,
+    "topic": "Acute decompensated heart failure decongestion",
+    "specialty": "Cardiovascular Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35363499/",
+    "guidelineTitle": "AHA/ACC/HFSA Heart Failure Guideline 2022",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 14,
+    "topic": "Acute liver failure transplant referral",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28417882/",
+    "guidelineTitle": "EASL Clinical Practical Guidelines on acute fulminant liver failure",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 15,
+    "topic": "Acute myeloid leukemia venetoclax azacitidine",
+    "specialty": "Hematology & Oncology",
+    "url": "https://ashpublications.org/blood/article/140/12/1345/485817/Diagnosis-and-management-of-AML-in-adults-2022",
+    "guidelineTitle": "European LeukemiaNet 2022 AML recommendations",
+    "status": "verified_oa_page",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 16,
+    "topic": "Acute necrotising pancreatitis and step-up management approach",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23896955/",
+    "guidelineTitle": "ACG Clinical Guideline: Acute Pancreatitis",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 17,
+    "topic": "Acute pancreatitis fluid and nutrition strategy",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": null,
+    "guidelineTitle": "AGA Clinical Practice Update on Management of Acute Pancreatitis",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 18,
+    "topic": "Acute psychosis: assessment, management and antipsychotic therapy",
+    "specialty": "Psychiatry & Mental Health",
+    "url": null,
+    "guidelineTitle": "APA Practice Guideline for the Treatment of Patients With Schizophrenia",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 19,
+    "topic": "Alcohol use disorder naltrexone and acamprosate",
+    "specialty": "Psychiatry & Mental Health",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29385375/",
+    "guidelineTitle": "APA Guideline for Pharmacological Treatment of Alcohol Use Disorder",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 20,
+    "topic": "Alcohol use disorder, Wernicke encephalopathy and alcohol-related liver disease",
+    "specialty": "Psychiatry & Mental Health",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29653741/",
+    "guidelineTitle": "EASL Clinical Practice Guidelines: Management of alcohol-related liver disease",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 21,
+    "topic": "Alcohol-associated hepatitis corticosteroids",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31628886/",
+    "guidelineTitle": "AASLD Guideline on Alcohol-Associated Liver Disease",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 22,
+    "topic": "Alzheimer's disease anti amyloid immunotherapy",
+    "specialty": "Neurology & Neurosurgery",
+    "url": null,
+    "guidelineTitle": "Alzheimer's Association Appropriate Use Recommendations",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 23,
+    "topic": "AML Transformed from MPN",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "ELN recommendations for diagnosis and management of AML",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 24,
+    "topic": "Anaemia",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "KDIGO Clinical Practice Guideline for Anemia in CKD",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 25,
+    "topic": "Analgesia strategies",
+    "specialty": "Pain Management & Opioids",
+    "url": null,
+    "guidelineTitle": "ASA Task Force on Acute Pain Management",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 26,
+    "topic": "ANCA associated vasculitis renal disease",
+    "specialty": "Nephrology & Urology",
+    "url": null,
+    "guidelineTitle": "KDIGO 2024 Glomerular Diseases Guideline",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 27,
+    "topic": "Aneurysmal subarachnoid hemorrhage management",
+    "specialty": "Neurology & Neurosurgery",
+    "url": null,
+    "guidelineTitle": "AHA/ASA Guidelines for the Management of Aneurysmal Subarachnoid Hemorrhage",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 28,
+    "topic": "Angiotensin ii for catecholamine refractory vasodilatory shock",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": null,
+    "guidelineTitle": "Surviving Sepsis Campaign Guidelines 2021",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 29,
+    "topic": "Anti-CD20 Therapy in Rheumatology",
+    "specialty": "Rheumatology & Immunology",
+    "url": null,
+    "guidelineTitle": "ACR Guidelines for Rheumatoid Arthritis",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 30,
+    "topic": "Antidepressant sequential treatment steps depressed outpatients outcomes",
+    "specialty": "Psychiatry & Mental Health",
+    "url": null,
+    "guidelineTitle": "APA Clinical Practice Guideline for the Treatment of Depression",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 31,
+    "topic": "Antifungals in ICU",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/26679628/",
+    "guidelineTitle": "IDSA Clinical Practice Guideline for the Management of Candidiasis",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 32,
+    "topic": "Antipsychotic metabolic monitoring",
+    "specialty": "Psychiatry & Mental Health",
+    "url": null,
+    "guidelineTitle": "ADA/APA Consensus Development Conference on Antipsychotic Drugs and Obesity/Diabetes",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 33,
+    "topic": "Aspirin cardiovascular events bleeding healthy elderly primary prevention",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "USPSTF guidelines for aspirin in primary prevention",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 34,
+    "topic": "Aspirin-exacerbated respiratory disease management",
+    "specialty": "Respiratory Medicine",
+    "url": null,
+    "guidelineTitle": "EAACI position paper on aspirin-exacerbated respiratory disease",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 35,
+    "topic": "Asthma biologics",
+    "specialty": "Respiratory Medicine",
+    "url": null,
+    "guidelineTitle": "GINA Strategy for Asthma Management and Prevention",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 36,
+    "topic": "Atopic dermatitis: diagnosis, stepwise treatment and biologics",
+    "specialty": "Dermatology & Allergy",
+    "url": null,
+    "guidelineTitle": "AAD Guidelines of care for the management of atopic dermatitis",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 37,
+    "topic": "Atrial fibrillation diagnosis and management guideline",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "AHA/ACC/HRS Guideline for the Management of Atrial Fibrillation (2023)",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 38,
+    "topic": "Autosomal dominant polycystic kidney disease tolvaptan",
+    "specialty": "Nephrology & Urology",
+    "url": null,
+    "guidelineTitle": "KDIGO Controversies Conference on ADPKD",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 39,
+    "topic": "Bacterial meningitis: empirical antibiotics, dexamethasone, LP contraindications, CSF interpretation",
+    "specialty": "Infectious Diseases",
+    "url": null,
+    "guidelineTitle": "IDSA Guidelines for Management of Bacterial Meningitis",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 40,
+    "topic": "Benzodiazepine deprescribing in anxiety and insomnia",
+    "specialty": "Psychiatry & Mental Health",
+    "url": null,
+    "guidelineTitle": "Canadian Deprescribing Network (CaDeN) guideline for benzodiazepines",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 41,
+    "topic": "Biologic therapy pre treatment infection screening",
+    "specialty": "Rheumatology & Immunology",
+    "url": null,
+    "guidelineTitle": "ACR guidelines for infection screening prior to biologic DMARDs",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 42,
+    "topic": "Bone Marrow Fibrosis Grading",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "WHO Classification of Tumours of Haematopoietic and Lymphoid Tissues",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 43,
+    "topic": "Bone metastases denosumab and zoledronic acid",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "ASCO Clinical Practice Guideline for Bone-Modifying Agents in Metastatic Cancer",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 44,
+    "topic": "Borderline personality disorder dialectical behavior therapy",
+    "specialty": "Psychiatry & Mental Health",
+    "url": null,
+    "guidelineTitle": "APA Guideline for the Treatment of Patients With Borderline Personality Disorder",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 45,
+    "topic": "Bronchiolitis and viral wheeze",
+    "specialty": "Pediatrics & Neonatology",
+    "url": null,
+    "guidelineTitle": "AAP Clinical Practice Guideline: Diagnosis and Management of Bronchiolitis",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 46,
+    "topic": "Bronchiolitis: assessment, risk stratification and management",
+    "specialty": "Pediatrics & Neonatology",
+    "url": null,
+    "guidelineTitle": "NICE Guidelines: Bronchiolitis in children",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 47,
+    "topic": "CABG versus PCI multivessel coronary disease",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "ACC/AHA/SCAI Guideline for Coronary Artery Revascularization",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 48,
+    "topic": "Canagliflozin renal outcomes type 2 diabetes nephropathy",
+    "specialty": "Nephrology & Urology",
+    "url": null,
+    "guidelineTitle": "KDIGO Clinical Practice Guideline for Diabetes Management in CKD",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 49,
+    "topic": "Canakinumab anti-inflammatory therapy atherosclerotic disease",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "AHA/ACC Guidelines on primary/secondary cardiovascular prevention",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 50,
+    "topic": "CAR-T cell therapy refractory large B-cell lymphoma axicabtagene",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "NCCN Guidelines for B-Cell Lymphomas",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 51,
+    "topic": "Cardiac resynchronization therapy heart failure COMPANION trial",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "ESC/AHA/ACC Guidelines for the Diagnosis and Treatment of Heart Failure",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 52,
+    "topic": "Cardiogenic shock intra aortic balloon pump and revascularization",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "AHA Scientific Statement on Cardiogenic Shock",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 53,
+    "topic": "Carpal tunnel syndrome: diagnosis and management",
+    "specialty": "Orthopedics & Rheumatology",
+    "url": null,
+    "guidelineTitle": "AAOS Clinical Practice Guideline for Carpal Tunnel Syndrome",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 54,
+    "topic": "Catatonia benzodiazepines and ECT",
+    "specialty": "Psychiatry & Mental Health",
+    "url": null,
+    "guidelineTitle": "WFSBP Guidelines for the biological treatment of schizophrenia",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 55,
+    "topic": "Cellulitis, erysipelas, and mimics",
+    "specialty": "Infectious Diseases",
+    "url": null,
+    "guidelineTitle": "IDSA Practice Guidelines for Skin and Soft Tissue Infections",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 56,
+    "topic": "Chemotherapy induced nausea antiemetic prophylaxis",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "ASCO and MASCC/ESMO Antiemetic Guidelines",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 57,
+    "topic": "Chest pain assessment in the ED",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34709879/",
+    "guidelineTitle": "AHA/ACC/ASE/CHEST/SAEM Guideline for the Evaluation and Diagnosis of Chest Pain",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 58,
+    "topic": "Childhood asthma and wheeze phenotypes",
+    "specialty": "Pediatrics & Neonatology",
+    "url": null,
+    "guidelineTitle": "GINA Strategy for Asthma Management and Prevention (Pediatric section)",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 59,
+    "topic": "Chronic cough evaluation and empiric therapy",
+    "specialty": "Respiratory Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29080708/",
+    "guidelineTitle": "CHEST Guideline and Expert Panel Report on Chronic Cough",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 60,
+    "topic": "Chronic hepatitis B antiviral therapy",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29405329/",
+    "guidelineTitle": "AASLD Guidelines for Treatment of Chronic Hepatitis B",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 61,
+    "topic": "Chronic lymphocytic leukaemia ibrutinib and venetoclax based targeted therapy",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "NCCN Clinical Practice Guidelines: Chronic Lymphocytic Leukemia",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 62,
+    "topic": "Chronic lymphocytic leukaemia: chemoimmunotherapy with FCR",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "ESMO Clinical Practice Guidelines for CLL",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 63,
+    "topic": "Chronic spontaneous urticaria omalizumab",
+    "specialty": "Dermatology & Allergy",
+    "url": null,
+    "guidelineTitle": "EAACI/GA\u00b2LEN/EDF/WAO guideline for the definition, classification, diagnosis and management of urticaria",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 64,
+    "topic": "Cirrhosis and portal hypertension",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35120736/",
+    "guidelineTitle": "Baveno VII consensus workshop on portal hypertension",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 65,
+    "topic": "Cirrhosis ascites and spontaneous bacterial peritonitis",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": null,
+    "guidelineTitle": "AASLD Guidance on the Management of Ascites and SBP",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 66,
+    "topic": "Community- and hospital-acquired pneumonia",
+    "specialty": "Infectious Diseases",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27925784/",
+    "guidelineTitle": "ATS/IDSA HAP and VAP Guidelines",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 67,
+    "topic": "Compartment syndrome: diagnosis and emergency management",
+    "specialty": "Orthopedics & Rheumatology",
+    "url": null,
+    "guidelineTitle": "BOA Standards for Trauma (BOAST) - Diagnosis and Management of Compartment Syndrome",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 68,
+    "topic": "Complement deficiency infection susceptibility",
+    "specialty": "Rheumatology & Immunology",
+    "url": null,
+    "guidelineTitle": "ESID (European Society for Immunodeficiencies) guidelines for primary immunodeficiencies",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 69,
+    "topic": "Contact dermatitis: irritant vs allergic, patch testing and management",
+    "specialty": "Dermatology & Allergy",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/25965350/",
+    "guidelineTitle": "American Academy of Dermatology (AAD) guidelines for contact dermatitis",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 70,
+    "topic": "Coronary CT angiography for stable chest pain",
+    "specialty": "Cardiovascular Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23166211/",
+    "guidelineTitle": "ACC/AHA Guideline for the Evaluation of Patients With Stable Ischemic Heart Disease",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 71,
+    "topic": "COVID",
+    "specialty": "Infectious Diseases",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32678530/",
+    "guidelineTitle": "NIH COVID-19 Treatment Guidelines, IDSA Guidelines on the Treatment and Management of Patients with COVID-19",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 72,
+    "topic": "CRISPR-Cas9 gene editing sickle cell disease beta-thalassemia",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "ASH Guidelines for Sickle Cell Disease",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 73,
+    "topic": "Croup: assessment, severity scoring and management",
+    "specialty": "Pediatrics & Neonatology",
+    "url": null,
+    "guidelineTitle": "Toward Optimized Practice (TOP) Clinical Practice Guideline on Croup",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 74,
+    "topic": "Cushings disease: pituitary source, inferior petrosal sinus sampling, transsphenoidal surgery",
+    "specialty": "Endocrinology & Metabolism",
+    "url": null,
+    "guidelineTitle": "Endocrine Society Clinical Practice Guideline on the Treatment of Cushing's Syndrome",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 75,
+    "topic": "Cushings syndrome: ACTH-dependent vs independent, screening, dexamethasone suppression",
+    "specialty": "Endocrinology & Metabolism",
+    "url": null,
+    "guidelineTitle": "Endocrine Society Clinical Practice Guideline on Diagnosis of Cushing's Syndrome",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 76,
+    "topic": "Cystic fibrosis CFTR modulator therapy",
+    "specialty": "Respiratory Medicine",
+    "url": null,
+    "guidelineTitle": "Cystic Fibrosis Foundation (CFF) Clinical Practice Guidelines",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 77,
+    "topic": "Cytomegalovirus prevention in transplant recipients",
+    "specialty": "Infectious Diseases",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23896556/",
+    "guidelineTitle": "International Consensus Guidelines on the Management of Cytomegalovirus in Solid Organ Transplantation",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 78,
+    "topic": "Dabigatran versus warfarin atrial fibrillation stroke prevention",
+    "specialty": "Cardiovascular Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38033089/",
+    "guidelineTitle": "AHA/ACC/HRS Guideline for the Management of Atrial Fibrillation",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 79,
+    "topic": "Delayed Haemolytic Transfusion Reactions",
+    "specialty": "Hematology & Oncology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/22928769/",
+    "guidelineTitle": "BSH Guidelines on the investigation and management of acute and delayed transfusion reactions",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 80,
+    "topic": "Delirium and acute confusional states",
+    "specialty": "Geriatrics & Neurology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/30725639/",
+    "guidelineTitle": "NICE Guideline [CG103]: Delirium: prevention, diagnosis and management",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 81,
+    "topic": "Delirium: recognition, risk factors, prevention and management",
+    "specialty": "Geriatrics & Neurology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/25834944/",
+    "guidelineTitle": "American Geriatrics Society (AGS) Clinical Practice Guideline for Postoperative Delirium",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 82,
+    "topic": "Dementia: behavioural and psychological symptoms management",
+    "specialty": "Geriatrics & Neurology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/26717525/",
+    "guidelineTitle": "APA Guideline on the Use of Antipsychotics to Treat Agitation or Psychosis in Patients with Dementia",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 83,
+    "topic": "Depression and anxiety disorders",
+    "specialty": "Psychiatry & Mental Health",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31857432/",
+    "guidelineTitle": "NICE Guidelines for Depression in Adults and Generalised Anxiety Disorder",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 84,
+    "topic": "Depression: diagnosis, pharmacotherapy and monitoring",
+    "specialty": "Psychiatry & Mental Health",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31857432/",
+    "guidelineTitle": "APA Clinical Practice Guideline for the Treatment of Depression",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 85,
+    "topic": "Difficult airway management",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34762729/",
+    "guidelineTitle": "ASA Practice Guidelines for Management of the Difficult Airway (2022)",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 86,
+    "topic": "Diffuse large b cell lymphoma car t cell therapy in relapsed refractory disease",
+    "specialty": "Hematology & Oncology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34921021/",
+    "guidelineTitle": "NCCN Guidelines: B-Cell Lymphomas",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 87,
+    "topic": "DNACPR, treatment escalation planning and advance care planning",
+    "specialty": "Medical Ethics & Palliative Care",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27534952/",
+    "guidelineTitle": "Resuscitation Council UK / BMA / RCN: Decisions relating to cardiopulmonary resuscitation",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 88,
+    "topic": "Drug eruptions and severe cutaneous adverse reactions (SCAR)",
+    "specialty": "Dermatology & Allergy",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27539863/",
+    "guidelineTitle": "British Association of Dermatologists (BAD) guidelines for the management of SJS/TEN",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 89,
+    "topic": "Dupilumab il 4 il 13 inhibitor biologic therapy",
+    "specialty": "Dermatology & Allergy",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34904722/",
+    "guidelineTitle": "AAD Guidelines for Atopic Dermatitis, GINA for Asthma",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 90,
+    "topic": "Durable LVAD therapy for advanced heart failure",
+    "specialty": "Cardiovascular Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31983666/",
+    "guidelineTitle": "ISHLT Guidelines for the care of patients with LVADs",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 91,
+    "topic": "Dyslipidaemia and cardiovascular risk modification",
+    "specialty": "Cardiovascular Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/30423393/",
+    "guidelineTitle": "AHA/ACC/Multisociety Blood Cholesterol Guideline (2018)",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 92,
+    "topic": "Eating disorders and refeeding syndrome",
+    "specialty": "Psychiatry & Mental Health",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23772060/",
+    "guidelineTitle": "MARSIPAN Guidelines (Management of Really Sick Patients with Anorexia Nervosa)",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 93,
+    "topic": "Ebola virus disease therapeutics and supportive care",
+    "specialty": "Infectious Diseases",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31774950/",
+    "guidelineTitle": "WHO Therapeutics for Ebola virus disease",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 94,
+    "topic": "Ectopic pregnancy: diagnosis and management",
+    "specialty": "Obstetrics & Gynaecology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31812915/",
+    "guidelineTitle": "ACOG Practice Bulletin on Tubal Ectopic Pregnancy",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 95,
+    "topic": "Emergency contraception: mechanisms, timing and clinical guidance",
+    "specialty": "Obstetrics & Gynaecology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/33077526/",
+    "guidelineTitle": "FSRH Clinical Guideline: Emergency Contraception",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 96,
+    "topic": "Empagliflozin cardiovascular outcomes type 2 diabetes EMPA-REG",
+    "specialty": "Endocrinology & Metabolism",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36507646/",
+    "guidelineTitle": "ADA Standards of Medical Care in Diabetes",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 97,
+    "topic": "Empagliflozin chronic kidney disease progression",
+    "specialty": "Nephrology & Urology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36272729/",
+    "guidelineTitle": "KDIGO Clinical Practice Guideline for Diabetes Management in CKD",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 98,
+    "topic": "Endocarditis and prophylaxis",
+    "specialty": "Infectious Diseases",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32573316/",
+    "guidelineTitle": "AHA Scientific Statement on Infective Endocarditis / ESC Guidelines",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 99,
+    "topic": "Endovascular thrombectomy time to treatment ischemic stroke meta-analysis",
+    "specialty": "Neurology & Neurosurgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31662037/",
+    "guidelineTitle": "AHA/ASA Guidelines for the Early Management of Patients with Acute Ischemic Stroke",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 100,
+    "topic": "Eosinophilia Differential Diagnosis",
+    "specialty": "Hematology & Oncology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28112388/",
+    "guidelineTitle": "British Committee for Standards in Haematology (BCSH) guidelines for eosinophilia",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 101,
+    "topic": "Eosinophilic esophagitis topical steroid and elimination diet",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/33648790/",
+    "guidelineTitle": "ACG Clinical Guideline for Eosinophilic Esophagitis",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 102,
+    "topic": "Epilepsy antiseizure medication selection",
+    "specialty": "Neurology & Neurosurgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34931602/",
+    "guidelineTitle": "ILAE and AAN/AES Guidelines on Efficacy and Tolerability of Antiseizure Medications",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 103,
+    "topic": "Epistaxis: assessment and management",
+    "specialty": "Otolaryngology (ENT)",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31913762/",
+    "guidelineTitle": "AAO-HNSF Clinical Practice Guideline on Epistaxis",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 104,
+    "topic": "Esophageal cancer neoadjuvant chemoradiation",
+    "specialty": "Hematology & Oncology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34921021/",
+    "guidelineTitle": "NCCN Guidelines: Esophageal and Esophagogastric Junction Cancers",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 105,
+    "topic": "Hospital acquired and ventilator associated pneumonia",
+    "specialty": "Infectious Diseases",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27418577/",
+    "guidelineTitle": "ATS/IDSA Guidelines for the Management of Adults with HAP and VAP",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 106,
+    "topic": "HPV vaccination cervical intraepithelial neoplasia FUTURE II",
+    "specialty": "Obstetrics & Gynaecology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32639044/",
+    "guidelineTitle": "ASCO/ACS Guidelines for HPV Vaccination",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 107,
+    "topic": "Hybrid closed loop insulin delivery in type 1 diabetes",
+    "specialty": "Endocrinology & Metabolism",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36507646/",
+    "guidelineTitle": "ADA Standards of Medical Care in Diabetes (Diabetes Technology section)",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 108,
+    "topic": "Hypertensive disorders of pregnancy and pre-eclampsia",
+    "specialty": "Obstetrics & Gynaecology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32443077/",
+    "guidelineTitle": "ACOG Practice Bulletin No. 222: Gestational Hypertension and Preeclampsia",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 109,
+    "topic": "Hypogranular APL Morphology Pitfalls",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "NCCN/ELN Guidelines for the Management of Acute Promyelocytic Leukemia",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 110,
+    "topic": "ICU renal replacement therapy initiation timing",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": null,
+    "guidelineTitle": "KDIGO Clinical Practice Guideline for Acute Kidney Injury",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 111,
+    "topic": "Igg4 related disease diagnosis and b cell depletion",
+    "specialty": "Rheumatology & Immunology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31793250/",
+    "guidelineTitle": "ACR/EULAR Classification Criteria for IgG4-Related Disease",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 112,
+    "topic": "Infective endocarditis antibiotic duration and surgery",
+    "specialty": "Infectious Diseases",
+    "url": null,
+    "guidelineTitle": "AHA Scientific Statement / ESC Guidelines on Infective Endocarditis",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 113,
+    "topic": "Infective endocarditis antimicrobial and oral step-down strategy",
+    "specialty": "Infectious Diseases",
+    "url": null,
+    "guidelineTitle": "AHA/ESC guidelines for infective endocarditis management",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 114,
+    "topic": "Intensive blood pressure control cardiovascular outcomes systolic",
+    "specialty": "Cardiovascular Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/30354654/",
+    "guidelineTitle": "ACC/AHA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 115,
+    "topic": "Intensive glycemic targets in type 2 diabetes",
+    "specialty": "Endocrinology & Metabolism",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36507646/",
+    "guidelineTitle": "ADA Standards of Medical Care in Diabetes",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 116,
+    "topic": "Intensive LDL cholesterol lowering statin meta-analysis",
+    "specialty": "Cardiovascular Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/30423393/",
+    "guidelineTitle": "AHA/ACC Multisociety Guideline on the Management of Blood Cholesterol",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 117,
+    "topic": "Intracerebral hemorrhage acute management",
+    "specialty": "Neurology & Neurosurgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35579034/",
+    "guidelineTitle": "AHA/ASA Guideline for the Management of Spontaneous Intracerebral Hemorrhage",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 118,
+    "topic": "Invasive aspergillosis antifungal therapy",
+    "specialty": "Infectious Diseases",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27365388/",
+    "guidelineTitle": "IDSA Practice Guidelines for the Diagnosis and Management of Aspergillosis",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 119,
+    "topic": "Irradiated, Leukoreduced and Washed Blood Products",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "AABB (Association for the Advancement of Blood & Biotherapies) Guidelines",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 120,
+    "topic": "Ischaemic heart disease and acute coronary syndromes",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "ESC / ACC/AHA Guidelines for the Management of Acute Coronary Syndromes",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 121,
+    "topic": "Juvenile idiopathic arthritis biologic strategy",
+    "specialty": "Pediatrics & Neonatology",
+    "url": null,
+    "guidelineTitle": "ACR Guidelines for the Treatment of Juvenile Idiopathic Arthritis",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 122,
+    "topic": "Kidney transplant antibody mediated rejection",
+    "specialty": "Nephrology & Urology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/19845597/",
+    "guidelineTitle": "KDIGO Clinical Practice Guideline for the Care of Kidney Transplant Recipients",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 123,
+    "topic": "Lateral epicondylitis (tennis elbow): assessment and management",
+    "specialty": "Orthopedics & Rheumatology",
+    "url": null,
+    "guidelineTitle": "AAOS Clinical Practice Guideline for Tennis Elbow",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 124,
+    "topic": "Latex and perioperative allergy evaluation",
+    "specialty": "Dermatology & Allergy",
+    "url": null,
+    "guidelineTitle": "WAO/EAACI Guidelines for the management of perioperative anaphylaxis",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 125,
+    "topic": "Leflunomide, Sulfasalazine, and Hydroxychloroquine toxicities",
+    "specialty": "Rheumatology & Immunology",
+    "url": null,
+    "guidelineTitle": "ACR/EULAR Guidelines for Rheumatoid Arthritis Management",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 126,
+    "topic": "Leukaostasis Syndrome",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "NCCN Guidelines: Acute Myeloid Leukemia (Management of Hyperleukocytosis)",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 127,
+    "topic": "Lithium monitoring and toxicity prevention",
+    "specialty": "Psychiatry & Mental Health",
+    "url": null,
+    "guidelineTitle": "NICE Guideline on Bipolar Disorder (Lithium Monitoring section)",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 128,
+    "topic": "Lyme disease diagnosis and treatment",
+    "specialty": "Infectious Diseases",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/33558404/",
+    "guidelineTitle": "IDSA/AAN/ACR Guidelines for the Prevention, Diagnosis, and Treatment of Lyme Disease",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 129,
+    "topic": "Male hypogonadism testosterone replacement",
+    "specialty": "Endocrinology & Metabolism",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29562364/",
+    "guidelineTitle": "Endocrine Society Clinical Practice Guideline for Testosterone Therapy in Men",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 130,
+    "topic": "Malnutrition screening: MUST, NRS-2002, and nutritional support",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27642056/",
+    "guidelineTitle": "ESPEN guidelines on definitions and terminology of clinical nutrition / ASPEN Guidelines",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 131,
+    "topic": "Management of HF with Reduced ejection fraction",
+    "specialty": "Cardiovascular Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35378257/",
+    "guidelineTitle": "AHA/ACC/HFSA Guideline for the Management of Heart Failure",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 132,
+    "topic": "Mechanical low back pain: assessment, red flags and management",
+    "specialty": "Orthopedics & Rheumatology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28192789/",
+    "guidelineTitle": "ACP Clinical Practice Guideline for Noninvasive Treatments for Acute, Subacute, and Chronic Low Back Pain",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 133,
+    "topic": "Menopausal hormone therapy risks and benefits",
+    "specialty": "Obstetrics & Gynaecology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35797481/",
+    "guidelineTitle": "NAMS (North American Menopause Society) Hormone Therapy Position Statement",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 134,
+    "topic": "Menopause and hormone replacement therapy: evidence and guidance",
+    "specialty": "Obstetrics & Gynaecology",
+    "url": null,
+    "guidelineTitle": "NICE Guideline: Menopause: diagnosis and management",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 135,
+    "topic": "Mental capacity, consent and best-interest decisions",
+    "specialty": "Medical Ethics & Palliative Care",
+    "url": null,
+    "guidelineTitle": "BMA and GMC guidelines on Consent and Assessing Mental Capacity",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 136,
+    "topic": "Metformin diabetes",
+    "specialty": "Endocrinology & Metabolism",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36507646/",
+    "guidelineTitle": "ADA Standards of Medical Care in Diabetes, EASD consensus",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 137,
+    "topic": "Methotrexate early rheumatoid arthritis combination therapy TEAR",
+    "specialty": "Rheumatology & Immunology",
+    "url": null,
+    "guidelineTitle": "ACR and EULAR guidelines for management of rheumatoid arthritis",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 138,
+    "topic": "Methylene blue in vasoplegic shock",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": null,
+    "guidelineTitle": "Surviving Sepsis Campaign Guidelines (Mentioned as rescue therapy)",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 139,
+    "topic": "Metylene blue in vasoplegic shock",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": null,
+    "guidelineTitle": "European Society of Intensive Care Medicine (ESICM) recommendations",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 140,
+    "topic": "Mineralocorticoid receptor antagonists in heart failure",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "AHA/ACC/HFSA Heart Failure Guidelines",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 141,
+    "topic": "Miscarriage: diagnosis, classification and management",
+    "specialty": "Obstetrics & Gynaecology",
+    "url": null,
+    "guidelineTitle": "ACOG Practice Bulletin on Early Pregnancy Loss / RCOG Green-top Guideline",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 142,
+    "topic": "Mitral regurgitation teer mitraclip",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "AHA/ACC Guideline for the Management of Patients with Valvular Heart Disease",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 143,
+    "topic": "Multiple myeloma: daratumumab-based frontline therapy",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "NCCN Guidelines: Multiple Myeloma / IMWG Recommendations",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 144,
+    "topic": "Multiple myeloma: VRd versus Rd for newly diagnosed disease",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "ASCO and NCCN Guidelines for Multiple Myeloma",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 145,
+    "topic": "Myasthenia gravis targeted immunotherapy",
+    "specialty": "Neurology & Neurosurgery",
+    "url": null,
+    "guidelineTitle": "International Consensus Guidance for Management of Myasthenia Gravis",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 146,
+    "topic": "Myelofibrosis: JAK inhibition with ruxolitinib",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "ELN/NCCN Guidelines for Myeloproliferative Neoplasms",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 147,
+    "topic": "Neonatal jaundice: assessment, phototherapy and exchange transfusion",
+    "specialty": "Pediatrics & Neonatology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35927462/",
+    "guidelineTitle": "AAP Clinical Practice Guideline Revision: Management of Hyperbilirubinemia in the Newborn Infant 35 or More Weeks of Gestation",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 148,
+    "topic": "Neuromyelitis optica spectrum disorder biologic therapy",
+    "specialty": "Neurology & Neurosurgery",
+    "url": null,
+    "guidelineTitle": "AAN/EAN Guidelines for treatment of NMOSD",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 149,
+    "topic": "Nivolumab ipilimumab advanced melanoma overall survival",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "ASCO/NCCN Guidelines for Cutaneous Melanoma",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 150,
+    "topic": "Noninfectious uveitis biologic therapy",
+    "specialty": "Ophthalmology",
+    "url": null,
+    "guidelineTitle": "ACR/AAO Guidelines for the use of immunosuppressives in uveitis",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 151,
+    "topic": "Noninvasive ventilation for acute respiratory failure",
+    "specialty": "Respiratory Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28860265/",
+    "guidelineTitle": "ERS/ATS Official Clinical Practice Guideline: Noninvasive Ventilation for Acute Respiratory Failure",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 152,
+    "topic": "Opioid Rotation and Equianalgesic Dosing",
+    "specialty": "Pain Management & Opioids",
+    "url": null,
+    "guidelineTitle": "NCCN Clinical Practice Guidelines in Oncology: Adult Cancer Pain",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 153,
+    "topic": "Opioid use disorder buprenorphine and methadone",
+    "specialty": "Psychiatry & Mental Health",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32511106/",
+    "guidelineTitle": "ASAM National Practice Guideline for the Treatment of Opioid Use Disorder",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 154,
+    "topic": "Opioid use disorder: withdrawal, maintenance therapy and harm reduction",
+    "specialty": "Psychiatry & Mental Health",
+    "url": null,
+    "guidelineTitle": "WHO Guidelines for the Psychosocially Assisted Pharmacological Treatment of OUD",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 155,
+    "topic": "Orbital and periorbital cellulitis: classification and management",
+    "specialty": "Ophthalmology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/24973422/",
+    "guidelineTitle": "IDSA Guidelines on Skin and Soft Tissue Infections",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 156,
+    "topic": "Orthostatic hypotension: diagnosis and management in older adults",
+    "specialty": "Geriatrics & Neurology",
+    "url": null,
+    "guidelineTitle": "AHA/ACC Scientific Statement on Orthostatic Hypotension",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 157,
+    "topic": "Oseltamivir treatment influenza healthy adults",
+    "specialty": "Infectious Diseases",
+    "url": null,
+    "guidelineTitle": "IDSA Guidelines on the Diagnosis, Treatment, Chemoprophylaxis, and Institutional Outbreak Management of Seasonal Influenza",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 158,
+    "topic": "Otitis media, otitis externa and mastoiditis",
+    "specialty": "Otolaryngology (ENT)",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23439909/",
+    "guidelineTitle": "AAP Clinical Practice Guideline: The Diagnosis and Management of Acute Otitis Media",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 159,
+    "topic": "Outpatient parenteral antimicrobial therapy program safety",
+    "specialty": "Infectious Diseases",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/30423035/",
+    "guidelineTitle": "IDSA Guidelines for the Management of Outpatient Parenteral Antimicrobial Therapy",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 160,
+    "topic": "Pancreatic cancer systemic and adjuvant therapy",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "ASCO Clinical Practice Guideline: Potentially Curable Pancreatic Cancer",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 161,
+    "topic": "Pancytopenia Diagnostic Workup",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "British Society for Haematology (BSH) Guidelines on Pancytopenia",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 162,
+    "topic": "Parkinson disease motor complications",
+    "specialty": "Neurology & Neurosurgery",
+    "url": null,
+    "guidelineTitle": "AAN/MDS Guidelines on the Treatment of Parkinson's Disease",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 163,
+    "topic": "Patent foramen ovale closure after cryptogenic stroke",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "AHA/ASA/AAN Practice Advisory on PFO and Stroke",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 164,
+    "topic": "PCSK9 inhibitor evolocumab cardiovascular outcomes",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "AHA/ACC Blood Cholesterol Guidelines (PCSK9i update)",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 165,
+    "topic": "Pelvic inflammatory disease: diagnosis and treatment",
+    "specialty": "Obstetrics & Gynaecology",
+    "url": null,
+    "guidelineTitle": "CDC Sexually Transmitted Infections Treatment Guidelines (PID section)",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 166,
+    "topic": "Pembrolizumab plus chemotherapy metastatic non-small cell lung cancer",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "NCCN/ASCO Guidelines for Non-Small Cell Lung Cancer",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 167,
+    "topic": "Penicillin allergy delabeling and testing",
+    "specialty": "Dermatology & Allergy",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/20934625/",
+    "guidelineTitle": "AAAAI/ACAAI Practice Parameter for Drug Allergy",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 168,
+    "topic": "Penicillin allergy evaluation and delabeling",
+    "specialty": "Dermatology & Allergy",
+    "url": null,
+    "guidelineTitle": "Infectious Diseases Society of America (IDSA) Guidelines on Antimicrobial Stewardship",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 169,
+    "topic": "Perinatal depression screening and treatment",
+    "specialty": "Psychiatry & Mental Health",
+    "url": null,
+    "guidelineTitle": "ACOG Clinical Practice Guideline on Screening and Diagnosis of Mental Health Conditions During Pregnancy and Postpartum",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 170,
+    "topic": "Perioperative antiplatelet and anticoagulant management",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": null,
+    "guidelineTitle": "ACCP/CHEST Guidelines on Perioperative Management of Antithrombotic Therapy",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 171,
+    "topic": "Perioperative diabetes management",
+    "specialty": "Endocrinology & Metabolism",
+    "url": null,
+    "guidelineTitle": "AAGBI/Diabetes UK Guidelines on Perioperative Management of the Surgical Patient with Diabetes",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 172,
+    "topic": "Perioperative management of common comorbidities",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": null,
+    "guidelineTitle": "AHA/ACC Guideline on Perioperative Cardiovascular Evaluation and Management",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 173,
+    "topic": "Perioperative risk assessment and optimisation",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": null,
+    "guidelineTitle": "ESAIC (European Society of Anaesthesiology and Intensive Care) Guidelines on Pre-operative Evaluation",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 174,
+    "topic": "Polycystic ovary syndrome metabolic management",
+    "specialty": "Endocrinology & Metabolism",
+    "url": null,
+    "guidelineTitle": "International Evidence-based Guideline for the Assessment and Management of PCOS",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 175,
+    "topic": "Polycythemia vera: hematocrit targets, aspirin, and cardiovascular risk reduction",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "ELN/NCCN Guidelines for Myeloproliferative Neoplasms",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 176,
+    "topic": "Polymyalgia rheumatica relapse prevention",
+    "specialty": "Rheumatology & Immunology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/26359488/",
+    "guidelineTitle": "EULAR/ACR Recommendations for the Management of Polymyalgia Rheumatica",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 177,
+    "topic": "Portal hypertension and variceal bleeding",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35120736/",
+    "guidelineTitle": "Baveno VII Consensus Workshop on Portal Hypertension / AASLD Practice Guidance",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 178,
+    "topic": "Postoperative ileus: prevention and management",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": null,
+    "guidelineTitle": "Enhanced Recovery After Surgery (ERAS) Society Guidelines",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 179,
+    "topic": "Postoperative nausea and vomiting: prevention and treatment",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32467512/",
+    "guidelineTitle": "Consensus Guidelines for the Management of Postoperative Nausea and Vomiting (Anesthesia & Analgesia)",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 180,
+    "topic": "Postural Orthostatic Tachycardia Syndrome (POTS): tilt table test criteria, non-pharmacological methods",
+    "specialty": "Cardiovascular Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/25980576/",
+    "guidelineTitle": "HRS Expert Consensus Statement on the Diagnosis and Treatment of POTS",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 181,
+    "topic": "Pressure ulcers: staging, prevention and wound management",
+    "specialty": "Dermatology & Allergy",
+    "url": null,
+    "guidelineTitle": "NPUAP/EPUAP/PPPIA International Clinical Practice Guideline for Pressure Injury Prevention and Treatment",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 182,
+    "topic": "Primary aldosteronism diagnosis and treatment",
+    "specialty": "Endocrinology & Metabolism",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/26934393/",
+    "guidelineTitle": "Endocrine Society Clinical Practice Guideline on the Management of Primary Aldosteronism",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 183,
+    "topic": "Primary membranous nephropathy immunosuppression",
+    "specialty": "Nephrology & Urology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34556256/",
+    "guidelineTitle": "KDIGO Clinical Practice Guideline for Glomerular Diseases",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 184,
+    "topic": "Primary prevention icd sudden cardiac death",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "AHA/ACC/HRS Guideline for Management of Patients With Ventricular Arrhythmias and the Prevention of Sudden Cardiac Death",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 185,
+    "topic": "Prolactinoma dopamine agonist therapy",
+    "specialty": "Endocrinology & Metabolism",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/21296991/",
+    "guidelineTitle": "Endocrine Society Clinical Practice Guideline on Diagnosis and Treatment of Hyperprolactinemia",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 186,
+    "topic": "Prone positioning severe acute respiratory distress syndrome",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": null,
+    "guidelineTitle": "Surviving Sepsis Campaign Guidelines / ESICM ARDS Guidelines",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 187,
+    "topic": "Prosthetic joint infection diagnosis and retention strategy",
+    "specialty": "Infectious Diseases",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23223583/",
+    "guidelineTitle": "IDSA Guidelines for the Diagnosis and Management of Prosthetic Joint Infections",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 188,
+    "topic": "Prothrombin G20210A Mutation",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "ASH (American Society of Hematology) Guidelines for Venous Thromboembolism",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 189,
+    "topic": "Psoriasis: diagnosis, severity assessment and systemic treatment",
+    "specialty": "Dermatology & Allergy",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/30772098/",
+    "guidelineTitle": "AAD-NPF Guidelines of care for the management of psoriasis with biologics",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 190,
+    "topic": "Psychosis and acute behavioural disturbance",
+    "specialty": "Psychiatry & Mental Health",
+    "url": null,
+    "guidelineTitle": "NICE Guideline [NG10]: Violence and aggression: short-term management in mental health, health and community settings",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 191,
+    "topic": "Ptsd trauma focused psychotherapy and ssri",
+    "specialty": "Psychiatry & Mental Health",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32021581/",
+    "guidelineTitle": "VA/DoD Clinical Practice Guideline for Management of Posttraumatic Stress Disorder",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 192,
+    "topic": "PTSD trauma-focused psychotherapy and SSRI",
+    "specialty": "Psychiatry & Mental Health",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32021581/",
+    "guidelineTitle": "VA/DoD Clinical Practice Guideline for Management of Posttraumatic Stress Disorder",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 193,
+    "topic": "Pulmonary nodule evaluation and fleischner follow up",
+    "specialty": "Respiratory Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28240562/",
+    "guidelineTitle": "Fleischner Society Guidelines for Incidental Pulmonary Nodules / ACCP Guidelines",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 194,
+    "topic": "Pulmonary sarcoidosis corticosteroid therapy",
+    "specialty": "Respiratory Medicine",
+    "url": null,
+    "guidelineTitle": "ATS Clinical Practice Guideline: Treatment of Sarcoidosis",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 195,
+    "topic": "Rabies pre- and post-exposure prophylaxis",
+    "specialty": "Infectious Diseases",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/18496505/",
+    "guidelineTitle": "WHO Expert Consultation on Rabies / CDC Advisory Committee on Immunization Practices (ACIP)",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 196,
+    "topic": "Radial versus femoral access for PCI",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "ACC/AHA/SCAI Guidelines for Coronary Artery Revascularization",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 197,
+    "topic": "Radiation necrosis vs tumour progression: perfusion MRI and PET scan utility",
+    "specialty": "Neurology & Neurosurgery",
+    "url": null,
+    "guidelineTitle": "RANO (Response Assessment in Neuro-Oncology) Working Group Criteria",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 198,
+    "topic": "Rehabilitation after stroke: principles and evidence",
+    "specialty": "Neurology & Neurosurgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27145936/",
+    "guidelineTitle": "AHA/ASA Adult Stroke Rehabilitation Care Guidelines",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 199,
+    "topic": "Reproductive health in rheumatic disease",
+    "specialty": "Rheumatology & Immunology",
+    "url": null,
+    "guidelineTitle": "EULAR Recommendations for a Women's Health and Family Planning in Rheumatic Diseases",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 200,
+    "topic": "Retinal detachment: presentation and emergency management",
+    "specialty": "Ophthalmology",
+    "url": null,
+    "guidelineTitle": "RCOphth (Royal College of Ophthalmologists) Guidelines for Retinal Detachment Repair",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 201,
+    "topic": "Syncope and postural hypotension",
+    "specialty": "Cardiovascular Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29562304/",
+    "guidelineTitle": "ESC Guidelines for the Diagnosis and Management of Syncope",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 202,
+    "topic": "Takayasu arteritis biologic therapy",
+    "specialty": "Rheumatology & Immunology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31270110/",
+    "guidelineTitle": "EULAR Recommendations for the Management of Large Vessel Vasculitis",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 203,
+    "topic": "Tenecteplase alteplase acute ischemic stroke EXTEND-IA TNK",
+    "specialty": "Neurology & Neurosurgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31662117/",
+    "guidelineTitle": "AHA/ASA Guidelines for the Early Management of Patients with Acute Ischemic Stroke",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 204,
+    "topic": "Testicular germ cell tumor chemotherapy",
+    "specialty": "Hematology & Oncology",
+    "url": null,
+    "guidelineTitle": "NCCN Guidelines: Testicular Cancer / ESMO Clinical Practice Guidelines",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 205,
+    "topic": "Thyroid nodule evaluation and fna",
+    "specialty": "Endocrinology & Metabolism",
+    "url": null,
+    "guidelineTitle": "ATA (American Thyroid Association) Guidelines for Thyroid Nodules and Differentiated Thyroid Cancer",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 206,
+    "topic": "Ticagrelor versus clopidogrel acute coronary syndromes",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "AHA/ACC and ESC Guidelines for the Management of Acute Coronary Syndromes",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 207,
+    "topic": "Tick borne rickettsial disease empiric doxycycline",
+    "specialty": "Infectious Diseases",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27172113/",
+    "guidelineTitle": "IDSA and CDC Recommendations on Tick-Borne Infections",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 208,
+    "topic": "Tick-borne rickettsial disease empiric doxycycline",
+    "specialty": "Infectious Diseases",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27172113/",
+    "guidelineTitle": "IDSA and CDC Recommendations on Tick-Borne Infections",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 209,
+    "topic": "Tocilizumab COVID-19 hospitalized patients",
+    "specialty": "Infectious Diseases",
+    "url": null,
+    "guidelineTitle": "NIH COVID-19 Treatment Guidelines / WHO Therapeutics and COVID-19",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 210,
+    "topic": "Tonsillitis, peritonsillar abscess and deep neck infection",
+    "specialty": "Otolaryngology (ENT)",
+    "url": null,
+    "guidelineTitle": "AAO-HNSF Clinical Practice Guideline: Tonsillectomy / IDSA Head and Neck Infections",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 211,
+    "topic": "Toxic and nutritional neuropathies: B12, B6 deficiency, chemotherapy-induced",
+    "specialty": "Neurology & Neurosurgery",
+    "url": null,
+    "guidelineTitle": "AAN Practice Parameter: Evaluation and management of distal symmetrical polyneuropathy",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 212,
+    "topic": "Transcatheter aortic valve replacement balloon-expandable low-risk patients",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "AHA/ACC Guideline for the Management of Valvular Heart Disease",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 213,
+    "topic": "Transient ischemic attack rapid assessment",
+    "specialty": "Neurology & Neurosurgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31662117/",
+    "guidelineTitle": "AHA/ASA Guidelines for the Early Management of Patients with Acute Ischemic Stroke / NICE TIA guidelines",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 214,
+    "topic": "Traumatic brain injury intracranial pressure management",
+    "specialty": "Neurology & Neurosurgery",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27654000/",
+    "guidelineTitle": "Brain Trauma Foundation Guidelines for the Management of Severe Traumatic Brain Injury (4th Edition)",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 215,
+    "topic": "Tuberculosis treatment regimens",
+    "specialty": "Infectious Diseases",
+    "url": null,
+    "guidelineTitle": "WHO Consolidated Guidelines on Tuberculosis: Module 4: Treatment - Drug-Susceptible TB",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 216,
+    "topic": "Type 1 and type 2 diabetes",
+    "specialty": "Endocrinology & Metabolism",
+    "url": null,
+    "guidelineTitle": "ADA Standards of Care in Diabetes / EASD Guidelines",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 217,
+    "topic": "Type 1 diabetes intensive glycemic control",
+    "specialty": "Endocrinology & Metabolism",
+    "url": null,
+    "guidelineTitle": "ADA Standards of Care in Diabetes (Type 1 section)",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 218,
+    "topic": "Upper and lower GI bleeding",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": null,
+    "guidelineTitle": "ACG Clinical Guideline: Management of Patients with Ulcerative Upper Gastrointestinal Bleeding / ESGE Guidelines",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 219,
+    "topic": "Upper gi bleed",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": null,
+    "guidelineTitle": "BSG / ESGE Guidelines on Acute Upper Gastrointestinal Bleeding",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 220,
+    "topic": "Upper GI bleeding",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": null,
+    "guidelineTitle": "ACG and European Society of Gastrointestinal Endoscopy Guidelines",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 221,
+    "topic": "Urinary tract infections and pyelonephritis",
+    "specialty": "Infectious Diseases",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/21292654/",
+    "guidelineTitle": "IDSA/ESCMID Clinical Practice Guidelines for Acute Uncomplicated Cystitis and Pyelonephritis",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 222,
+    "topic": "Urticaria and angioedema: classification and management",
+    "specialty": "Dermatology & Allergy",
+    "url": null,
+    "guidelineTitle": "EAACI/GA\u00b2LEN/EDF/WAO Guideline for Urticaria and Angioedema",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 223,
+    "topic": "Vapor Gas Dust and Fume exposures",
+    "specialty": "Respiratory Medicine",
+    "url": null,
+    "guidelineTitle": "ATS/ERS Guidelines on Occupational Respiratory Disorders",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 224,
+    "topic": "Vasopressor use septic shock",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34605781/",
+    "guidelineTitle": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 225,
+    "topic": "Vasopressors and inotropes in shock",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": null,
+    "guidelineTitle": "ESICM / SCCM Guidelines on Hemodynamic Support in Shock",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 226,
+    "topic": "Venous leg ulcers, lymphoedema and lower leg management",
+    "specialty": "Dermatology & Allergy",
+    "url": null,
+    "guidelineTitle": "NICE Clinical Guideline [CG168]: Leg ulcer - venous / SIGN guidelines",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 227,
+    "topic": "Venous thromboembolism and anticoagulation management",
+    "specialty": "Hematology & Oncology",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/26867832/",
+    "guidelineTitle": "CHEST Guideline and Expert Panel Report on Antithrombotic Therapy for VTE Disease",
+    "status": "pubmed",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 228,
+    "topic": "Viral haemorrhagic fevers and high-consequence infectious diseases in the ICU",
+    "specialty": "Critical Care & Emergency Medicine",
+    "url": null,
+    "guidelineTitle": "WHO / CDC Guidelines for Managing Patients with Viral Hemorrhagic Fevers in Critical Care",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 229,
+    "topic": "Viral wheeze",
+    "specialty": "Pediatrics & Neonatology",
+    "url": null,
+    "guidelineTitle": "AAP / British Thoracic Society (BTS) Guidelines on Managing Wheeze in Young Children",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 230,
+    "topic": "Vitamin K antagonist bridging atrial fibrillation perioperative BRIDGE trial",
+    "specialty": "Cardiovascular Medicine",
+    "url": null,
+    "guidelineTitle": "CHEST Guidelines on Perioperative Management of Antithrombotic Therapy",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 231,
+    "topic": "Wolfram syndrome DIDMOAD: diabetes insipidus, DM, optic atrophy, deafness",
+    "specialty": "Endocrinology & Metabolism",
+    "url": null,
+    "guidelineTitle": "Rare Disease Clinical Research Network Guidelines for Wolfram Syndrome",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  },
+  {
+    "id": 232,
+    "topic": "Zollinger-Ellison Syndrome",
+    "specialty": "Gastroenterology & General Surgery",
+    "url": null,
+    "guidelineTitle": "ACG Clinical Guideline: Diagnosis and Management of Peptic Ulcer Disease / NANETS Guidelines",
+    "status": "title_only",
+    "fullDownloaded": "no"
+  }
+]

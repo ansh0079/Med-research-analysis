@@ -6,6 +6,7 @@ const { assessGuidelineQuality } = require('../../server/services/guidelineQuali
 const { normalizeStoredDocument } = require('../../server/utils/importEvidenceQuality');
 const { isIssuingBodyValue } = require('../../server/utils/guidelineAttribution');
 const { isClinicalAbbreviation } = require('../../server/utils/clinicalAbbreviations');
+const { synonymExpansionsForToken } = require('../../server/utils/conditionQuery');
 const { sanitizePublicationYear } = require('../../server/utils/publicationYear');
 
 /**
@@ -28,7 +29,7 @@ const SCORE_STOP = new Set([
     'was','were','been','being','have','has','had','do','does','did','will','would','shall','should',
     'may','might','must','can','could','not','no','nor','but','yet','so',
     'vs','versus','management','therapy','treatment','disease','syndrome','acute','chronic',
-    'criteria','guidelines','guideline','patient','patients','clinical','care','use','used',
+    'diagnosis','diagnostic','criteria','guidelines','guideline','patient','patients','clinical','care','use','used',
     'based','associated','related','including','following','due','new','first','also','than',
     'other','more','risk','high','low','type','level','dose','daily','per','each','all',
     'when','which','that','this','these','those','who','whom','what','where','how',
@@ -86,10 +87,14 @@ function guidelineTermScore(row, topicWords) {
     const attribution = `${row.topic || ''} ${row.normalized_topic || ''}`.toLowerCase();
     let hits = 0;
     for (const w of topicWords) {
-        if (text.includes(w)) hits += 1;
-        else if (attribution.includes(w)) hits += 0.5;
+        if (text.includes(w) || expansionHitsText(w, text)) hits += 1;
+        else if (attribution.includes(w) || expansionHitsText(w, attribution)) hits += 0.5;
     }
     return hits / topicWords.length;
+}
+
+function expansionHitsText(word, haystack) {
+    return synonymExpansionsForToken(word).some((phrase) => haystack.includes(phrase));
 }
 
 /**
@@ -519,7 +524,7 @@ async getGuidelineById(id) {
     return this.mapGuidelineRow(row);
 }
 
-async getGuidelinesByTopic(topic, { status = '', limit = 20, includeRelated = false } = {}) {
+async getGuidelinesByTopic(topic, { status = '', limit = 20, includeRelated = true } = {}) {
     const normalized = this.normalizeTopic(topic);
     const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 20, 1), 100);
     const statusFilter = String(status || '').trim();
@@ -575,9 +580,12 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20, includeRelated = fa
     // decide. That scoring already floors at score > 0, which is what keeps a
     // broad candidate pool from becoming cross-topic noise -- it simply never
     // got the chance to run.
-    // Related-topic discovery is deliberately opt-in. The main guideline panel
-    // must contain only exact canonical/synonym matches; otherwise one shared
-    // word can make guidance for another disease look attributable to this one.
+    // Related-topic discovery is on by default for condition-anchored probes.
+    // Topics are filed finer than people search (~80 servable AKI recs sit under
+    // rhabdomyolysis-AKI, RRT timing, contrast-induced). Exact-name lookup
+    // alone leaves the panel empty. Probe words already drop generic task terms
+    // (diagnosis, management), so a shared condition token is what widens —
+    // not "diagnosis" matching 411 unrelated rows.
     //
     // Exact matching is on normalized_topic equality, so a guideline is only
     // reachable when the query is worded like the stored topic. Measured on
@@ -604,6 +612,9 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20, includeRelated = fa
         const perWord = Math.max(20, Math.ceil(fetchLimit / probeWords.length));
         const seen = new Set(rows.map((r) => r.id));
         for (const word of probeWords) {
+            // Two-letter abbreviations ("ra", "ms") must be whole tokens or they
+            // prefix-match "raas", "stems", etc.
+            const like = word.length <= 2 ? `% ${word} %` : `% ${word}%`;
             const widened = await this.all(
                 `SELECT * FROM topic_guidelines
                  WHERE (' ' || REPLACE(normalized_topic, '-', ' ') || ' ') LIKE ?
@@ -611,9 +622,36 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20, includeRelated = fa
                    AND superseded_by_id IS NULL
                  ORDER BY source_year DESC NULLS LAST, updated_at DESC
                  LIMIT ?`,
-                [`% ${word}%`, statusFilter, statusFilter, perWord]
+                [like, statusFilter, statusFilter, perWord]
             );
             for (const row of widened) {
+                if (!seen.has(row.id)) { seen.add(row.id); rows.push(row); }
+            }
+        }
+        // Condition mention in the recommendation itself — rows ingested under a
+        // sibling or parent topic (KDIGO CKD) that still talk about this condition
+        // (AKI). Do not invent filing; only surface text that already names it.
+        const textProbes = [];
+        for (const word of probeWords.slice(0, 2)) {
+            textProbes.push(word);
+            const expansion = synonymExpansionsForToken(word)[0];
+            if (expansion) textProbes.push(expansion);
+        }
+        const perText = Math.max(20, Math.ceil(fetchLimit / Math.max(1, textProbes.length)));
+        for (const phrase of [...new Set(textProbes)]) {
+            const like = /\s/.test(phrase) || phrase.length <= 3
+                ? `% ${phrase} %`
+                : `% ${phrase}%`;
+            const textHits = await this.all(
+                `SELECT * FROM topic_guidelines
+                 WHERE (' ' || lower(REPLACE(coalesce(recommendation_text, ''), '-', ' ')) || ' ') LIKE ?
+                   AND (? = '' OR status = ?)
+                   AND superseded_by_id IS NULL
+                 ORDER BY source_year DESC NULLS LAST, updated_at DESC
+                 LIMIT ?`,
+                [like, statusFilter, statusFilter, perText]
+            );
+            for (const row of textHits) {
                 if (!seen.has(row.id)) { seen.add(row.id); rows.push(row); }
             }
         }

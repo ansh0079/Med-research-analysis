@@ -1,6 +1,6 @@
 const { isIssuingBodyValue } = require('../utils/guidelineAttribution');
 const { TRUSTED_GUIDELINE_SOURCES } = require('../config/trustedGuidelineSources');
-const { discoverGuidelinesForTopic, isDiscoveryInFlight, wasDiscoveryAttempted } = require('../services/guidelineService');
+const { kickGuidelineDiscoveryIfEmpty } = require('../services/guidelineService');
 const { getSharedAiService } = require('../services/aiService');
 const { buildMergedGuidelineView } = require('../services/ai/guidelineMergeService');
 const { safeFetch } = require('../utils/fetch');
@@ -131,16 +131,13 @@ function registerGuidelineRoutes(app, { db, serverConfig, cache, rateLimit, requ
             if (guidelines.length > 0) {
                 return res.json({ topic, guidelines: guidelines.map(withIssuingBodyFlag), discoveryStatus: 'complete' });
             }
-            if (isDiscoveryInFlight(topic, db)) {
-                return res.json({ topic, guidelines: [], discoveryStatus: 'pending' });
-            }
-            if (wasDiscoveryAttempted(topic, db)) {
-                return res.json({ topic, guidelines: [], discoveryStatus: 'complete' });
-            }
-            discoverGuidelinesForTopic(topic, { db, serverConfig, aiService }).catch((err) => {
-                req.log.warn({ err, topic }, 'Background guideline discovery failed; topic stays undiscovered');
+            const discoveryStatus = kickGuidelineDiscoveryIfEmpty(topic, {
+                db,
+                serverConfig,
+                aiService,
+                log: req.log,
             });
-            res.json({ topic, guidelines: [], discoveryStatus: 'pending' });
+            return res.json({ topic, guidelines: [], discoveryStatus });
         } catch (error) {
             req.log.error({ err: error }, 'Get guidelines by topic error');
             res.status(500).json({ error: 'Internal server error' });

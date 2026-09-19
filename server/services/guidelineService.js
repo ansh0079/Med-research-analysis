@@ -431,6 +431,39 @@ function wasDiscoveryAttempted(topic, db) {
   return _discoveryEmpty.has(db.normalizeTopic(topic));
 }
 
+function canRunGuidelineDiscovery(serverConfig) {
+  const keys = serverConfig?.keys || {};
+  return Boolean(keys.ncbi || keys.gemini || keys.openai || keys.anthropic);
+}
+
+/**
+ * First search on a new topic used to return an empty guideline panel while
+ * discovery ran in the background (or never started from the search path).
+ * Kick it with the spelled-out condition so "MS treatment" looks for
+ * multiple sclerosis, and tell the caller to keep the panel in a pending state
+ * rather than "none found".
+ */
+function kickGuidelineDiscoveryIfEmpty(topic, { db, serverConfig, aiService, log } = {}) {
+  if (!topic || !db || typeof db.normalizeTopic !== 'function') return 'complete';
+  if (isDiscoveryInFlight(topic, db)) return 'pending';
+  if (wasDiscoveryAttempted(topic, db)) return 'complete';
+  if (!canRunGuidelineDiscovery(serverConfig)) return 'complete';
+  const { discoverySearchQuery } = require('../utils/conditionQuery');
+  discoverGuidelinesForTopic(topic, {
+    db,
+    serverConfig,
+    aiService,
+    searchQuery: discoverySearchQuery(topic),
+  }).catch((err) => {
+    if (log && typeof log.warn === 'function') {
+      log.warn({ err, topic }, 'Background guideline discovery failed; topic stays undiscovered');
+    } else {
+      logger.warn({ err, topic }, 'Background guideline discovery failed; topic stays undiscovered');
+    }
+  });
+  return 'pending';
+}
+
 module.exports = {
   fetchAbstracts,
   buildGuidelineExtractionPrompt,
@@ -442,4 +475,5 @@ module.exports = {
   discoverGuidelinesForTopic,
   isDiscoveryInFlight,
   wasDiscoveryAttempted,
+  kickGuidelineDiscoveryIfEmpty,
 };

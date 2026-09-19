@@ -1,0 +1,236 @@
+{
+  "version": 1,
+  "reviewPolicy": "Sources are curated and recommendations are source-grounded paraphrases. Records remain ai_extracted until a clinician reviews them.",
+  "topics": [
+    {
+      "topic": "ARDS",
+      "document": {
+        "title": "An Update on Management of Adult Patients with Acute Respiratory Distress Syndrome: An Official American Thoracic Society Clinical Practice Guideline",
+        "sourceBody": "American Thoracic Society",
+        "year": 2024,
+        "pmid": "38032683",
+        "pmcid": "PMC10870893",
+        "doi": "10.1164/rccm.202311-2011st",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10870893/"
+      },
+      "recommendations": [
+        {
+          "text": "Use lung-protective ventilation with tidal volumes of 4-8 mL/kg predicted body weight and keep plateau pressure below 30 cm H2O in adults with ARDS.",
+          "strength": "strong",
+          "certainty": "moderate",
+          "population": "Adults with ARDS",
+          "intervention": "Lung-protective mechanical ventilation"
+        },
+        {
+          "text": "Consider systemic corticosteroids for adults with ARDS after assessing contraindications and individual risks.",
+          "strength": "conditional",
+          "certainty": "moderate",
+          "population": "Adults with ARDS",
+          "intervention": "Systemic corticosteroids"
+        }
+      ]
+    },
+    {
+      "topic": "Asthma reliever controller strategy",
+      "document": {
+        "title": "Global Strategy for Asthma Management and Prevention, 2026",
+        "sourceBody": "Global Initiative for Asthma (GINA)",
+        "year": 2026,
+        "url": "https://ginasthma.org/reports/",
+        "allowFullTextFetch": false
+      },
+      "recommendations": [
+        {
+          "text": "Use an inhaled-corticosteroid-containing regimen for adults and adolescents with asthma rather than treating with a short-acting beta2-agonist alone.",
+          "population": "Adults and adolescents with asthma",
+          "intervention": "ICS-containing treatment"
+        },
+        {
+          "text": "When suitable, use low-dose ICS-formoterol as the preferred reliever strategy because it reduces severe exacerbation risk compared with a SABA reliever.",
+          "population": "Adults and adolescents with asthma",
+          "intervention": "Low-dose ICS-formoterol reliever"
+        }
+      ]
+    },
+    {
+      "topic": "Type 2 diabetes cardiovascular outcomes",
+      "document": {
+        "title": "Cardiovascular Disease and Risk Management: Standards of Care in Diabetes-2026",
+        "sourceBody": "American Diabetes Association",
+        "year": 2026,
+        "pmid": "41358899",
+        "pmcid": "PMC12690187",
+        "doi": "10.2337/dc26-s010",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12690187/"
+      },
+      "recommendations": [
+        {
+          "text": "For type 2 diabetes with established cardiovascular disease or high cardiovascular risk, include an SGLT2 inhibitor or GLP-1 receptor agonist with demonstrated cardiovascular benefit as clinically appropriate.",
+          "population": "People with type 2 diabetes and established or high cardiovascular risk",
+          "intervention": "SGLT2 inhibitor or GLP-1 receptor agonist with cardiovascular benefit"
+        }
+      ]
+    },
+    {
+      "topic": "Acute ischemic stroke reperfusion",
+      "document": {
+        "title": "2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke",
+        "sourceBody": "American Heart Association/American Stroke Association",
+        "year": 2026,
+        "pmid": "41582814",
+        "doi": "10.1161/str.0000000000000513",
+        "url": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513"
+      },
+      "recommendations": [
+        {
+          "text": "Use either alteplase or tenecteplase for eligible patients receiving intravenous thrombolysis within the 4.5-hour treatment window.",
+          "population": "Eligible patients with acute ischemic stroke",
+          "intervention": "Intravenous alteplase or tenecteplase"
+        },
+        {
+          "text": "Do not delay endovascular thrombectomy after thrombolysis to wait for clinical improvement in an otherwise eligible patient.",
+          "population": "Patients eligible for endovascular thrombectomy",
+          "intervention": "Timely endovascular thrombectomy"
+        }
+      ]
+    },
+    {
+      "topic": "Pulmonary embolism diagnosis",
+      "document": {
+        "title": "2019 ESC Guidelines for the diagnosis and management of acute pulmonary embolism",
+        "sourceBody": "European Society of Cardiology/European Respiratory Society",
+        "year": 2019,
+        "pmid": "31504429",
+        "doi": "10.1093/eurheartj/ehz405",
+        "url": "https://www.escardio.org/guidelines/clinical-practice-guidelines/all-esc-practice-guidelines/acute-pulmonary-embolism/"
+      },
+      "recommendations": [
+        {
+          "text": "Base diagnostic testing for suspected pulmonary embolism on validated clinical pre-test probability, using D-dimer testing and imaging in the appropriate sequence.",
+          "population": "Patients with suspected acute pulmonary embolism",
+          "intervention": "Risk-adapted D-dimer testing and diagnostic imaging"
+        }
+      ]
+    },
+    {
+      "topic": "Hypertension treatment intensity",
+      "document": {
+        "title": "2024 ESC Guidelines for the management of elevated blood pressure and hypertension",
+        "sourceBody": "European Society of Cardiology",
+        "year": 2024,
+        "pmid": "39210715",
+        "doi": "10.1093/eurheartj/ehae178",
+        "url": "https://www.escardio.org/guidelines/clinical-practice-guidelines/all-esc-practice-guidelines/elevated-blood-pressure-and-hypertension/"
+      },
+      "recommendations": [
+        {
+          "text": "For most adults receiving antihypertensive treatment, aim for systolic blood pressure of 120-129 mm Hg when tolerated and individualize the target when treatment is poorly tolerated.",
+          "population": "Adults receiving blood-pressure-lowering treatment",
+          "intervention": "Individualized systolic blood pressure target"
+        }
+      ]
+    },
+    {
+      "topic": "Acute coronary syndrome antiplatelet strategy",
+      "document": {
+        "title": "2025 ACC/AHA/ACEP/NAEMSP/SCAI Guideline for the Management of Patients With Acute Coronary Syndromes",
+        "sourceBody": "American College of Cardiology/American Heart Association",
+        "year": 2025,
+        "pmid": "40013746",
+        "doi": "10.1016/j.jacc.2024.11.009",
+        "url": "https://www.jacc.org/doi/10.1016/j.jacc.2024.11.009"
+      },
+      "recommendations": [
+        {
+          "text": "Use aspirin plus an oral P2Y12 inhibitor for at least 12 months as the default after acute coronary syndrome when bleeding risk is not high.",
+          "population": "Patients with acute coronary syndrome without high bleeding risk",
+          "intervention": "Dual antiplatelet therapy"
+        },
+        {
+          "text": "Prefer ticagrelor or prasugrel over clopidogrel for patients with ACS undergoing PCI when there is no contraindication.",
+          "population": "Patients with acute coronary syndrome undergoing PCI",
+          "intervention": "Ticagrelor or prasugrel"
+        }
+      ]
+    },
+    {
+      "topic": "Stable coronary disease invasive strategy",
+      "document": {
+        "title": "2024 ESC Guidelines for the management of chronic coronary syndromes",
+        "sourceBody": "European Society of Cardiology",
+        "year": 2024,
+        "pmid": "39210710",
+        "doi": "10.1093/eurheartj/ehae177",
+        "url": "https://www.escardio.org/guidelines/clinical-practice-guidelines/all-esc-practice-guidelines/chronic-coronary-syndromes/"
+      },
+      "recommendations": [
+        {
+          "text": "Use invasive coronary angiography when obstructive disease is very likely, symptoms remain severe despite guideline-directed therapy, angina occurs at low exertion, or event risk is high.",
+          "population": "Patients with suspected or established chronic coronary syndrome",
+          "intervention": "Risk-directed invasive coronary angiography"
+        }
+      ]
+    },
+    {
+      "topic": "Aortic stenosis TAVR",
+      "document": {
+        "title": "2025 ESC/EACTS Guidelines for the management of valvular heart disease",
+        "sourceBody": "European Society of Cardiology/European Association for Cardio-Thoracic Surgery",
+        "year": 2025,
+        "pmid": "40878295",
+        "doi": "10.1093/eurheartj/ehaf194",
+        "url": "https://www.escardio.org/topics/valvular-heart-disease"
+      },
+      "recommendations": [
+        {
+          "text": "Use a Heart Team assessment to select transcatheter or surgical aortic valve replacement, considering age, life expectancy, comorbidity, anatomy, access, patient preference, and likely future procedures.",
+          "population": "Patients with severe aortic stenosis being considered for valve replacement",
+          "intervention": "Heart Team selection of TAVI or surgical valve replacement"
+        }
+      ]
+    },
+    {
+      "topic": "Antimicrobial resistance burden",
+      "document": {
+        "title": "Implementing an Antibiotic Stewardship Program: Guidelines by IDSA and SHEA",
+        "sourceBody": "Infectious Diseases Society of America/Society for Healthcare Epidemiology of America",
+        "year": 2016,
+        "pmid": "27080992",
+        "pmcid": "PMC5006285",
+        "doi": "10.1093/cid/ciw118",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5006285/"
+      },
+      "recommendations": [
+        {
+          "text": "Implement preauthorization, prospective audit with feedback, or both as core interventions in an antibiotic stewardship programme.",
+          "population": "Healthcare organisations implementing antimicrobial stewardship",
+          "intervention": "Preauthorization and prospective audit with feedback"
+        }
+      ]
+    },
+    {
+      "topic": "Influenza antiviral treatment",
+      "document": {
+        "title": "IDSA 2018 Clinical Practice Guideline Update for Seasonal Influenza",
+        "sourceBody": "Infectious Diseases Society of America",
+        "year": 2019,
+        "pmid": "30566567",
+        "pmcid": "PMC6653685",
+        "doi": "10.1093/cid/ciy866",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6653685/"
+      },
+      "recommendations": [
+        {
+          "text": "Start antiviral treatment promptly for people hospitalized with influenza, those with severe or progressive illness, and outpatients at high risk of complications.",
+          "population": "Patients hospitalized with influenza or at increased risk of complications",
+          "intervention": "Prompt antiviral treatment"
+        },
+        {
+          "text": "For otherwise healthy ambulatory patients with uncomplicated influenza, use five days of oral oseltamivir or inhaled zanamivir, or one intravenous dose of peramivir.",
+          "population": "Otherwise healthy ambulatory patients with uncomplicated influenza",
+          "intervention": "Standard-duration neuraminidase inhibitor treatment"
+        }
+      ]
+    }
+  ]
+}

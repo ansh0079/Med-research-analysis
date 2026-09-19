@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "sourceAudit": "flagship-live-20-2026-09-18",
+  "description": "Topics in the measured 20-topic cohort with no persisted grounded claims. Nine also had no teaching objects.",
+  "topics": [
+    "Atrial fibrillation anticoagulation",
+    "ARDS",
+    "Sepsis and septic shock",
+    "COPD exacerbation",
+    "Asthma reliever controller strategy",
+    "Chronic kidney disease SGLT2 inhibitors",
+    "Acute ischemic stroke reperfusion",
+    "Pulmonary embolism diagnosis",
+    "Community-acquired pneumonia",
+    "Venous thromboembolism anticoagulation",
+    "Influenza antiviral treatment"
+  ]
+}

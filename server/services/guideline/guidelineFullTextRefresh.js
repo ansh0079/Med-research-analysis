@@ -3,12 +3,11 @@
 /**
  * Upgrade stored guideline documents from abstract-only to full text.
  *
- * The remaining 422 abstract-only records are an external-content ceiling, not
- * an application backlog: Europe PMC has no body for most of them, while 62 PMC
- * body endpoints consistently return HTTP 500 after retries. Those rows stay
- * `stillAbstract` so the scheduler can revisit them as embargoes lift without
- * misreporting them as application failures. A genuine outage (for example the
- * metadata search endpoint returning 503) still increments `failed`.
+ * Outcomes are deliberately kept distinct. A confirmed missing/short body is
+ * abstract-only, an unresolved identifier is inconclusive, and exhausted
+ * provider throttling or 5xx responses are temporary retrieval failures. This
+ * prevents an upstream outage from being reported as a content-availability
+ * ceiling while keeping genuine application failures visible.
  *
  * This is deliberately a bounded, resumable sweep rather than a one-off
  * backfill script: Europe PMC rate-limits, records gain full text over time as
@@ -91,19 +90,20 @@ function jatsToText(xml) {
 }
 
 async function fetchFullText(pmcid, { get = httpGet, wait = sleep } = {}) {
-    let xml;
-    try {
-        xml = await getWithRetry(`${EPMC}/${pmcid}/fullTextXML`, { get, wait });
-    } catch (err) {
-        if (/HTTP (500|502|503|504)/.test(String(err?.message || err))) {
-            throw new Error(`body unavailable (${err.message})`);
-        }
-        throw err;
-    }
+    const xml = await getWithRetry(`${EPMC}/${pmcid}/fullTextXML`, { get, wait });
     if (!/<body[^>]*>/i.test(xml)) throw new Error('no body element (abstract-only record)');
     const text = jatsToText(xml);
     if (text.length < MIN_BODY_CHARS) throw new Error(`body too short (${text.length} chars)`);
     return text;
+}
+
+function classifyFullTextError(error) {
+    const message = String(error?.message || error);
+    if (/HTTP 404|no body element|body too short/i.test(message)) return 'confirmed_unavailable';
+    if (/HTTP (429|500|502|503|504)|timeout|ECONN(?:RESET|REFUSED)|EAI_AGAIN/i.test(message)) {
+        return 'temporarily_unavailable';
+    }
+    return 'failed';
 }
 
 /** Resolve a PMC id when an older row only stored PMID or DOI metadata. */
@@ -128,7 +128,8 @@ async function resolvePmcid(row, { get = httpGet, wait = sleep } = {}) {
 /**
  * Upgrade one bounded batch.
  *
- * @returns {Promise<{scanned:number, upgraded:number, stillAbstract:number, failed:number}>}
+ * `stillAbstract` is retained for compatibility and now means confirmed unavailable only.
+ * @returns {Promise<{scanned:number, upgraded:number,stillAbstract:number,confirmedUnavailable:number,temporarilyUnavailable:number,unresolvedIdentifiers:number,failed:number}>}
  */
 async function refreshGuidelineFullText(db, {
     limit = Number(process.env.GUIDELINE_FULLTEXT_BATCH_LIMIT || 25),
@@ -137,7 +138,15 @@ async function refreshGuidelineFullText(db, {
     wait = sleep,
     log = logger,
 } = {}) {
-    const stats = { scanned: 0, upgraded: 0, stillAbstract: 0, failed: 0 };
+    const stats = {
+        scanned: 0,
+        upgraded: 0,
+        stillAbstract: 0,
+        confirmedUnavailable: 0,
+        temporarilyUnavailable: 0,
+        unresolvedIdentifiers: 0,
+        failed: 0,
+    };
     if (typeof db?.listGuidelineDocumentsNeedingFullText !== 'function') return stats;
 
     const rows = await db.listGuidelineDocumentsNeedingFullText({ limit }).catch((err) => {
@@ -150,19 +159,21 @@ async function refreshGuidelineFullText(db, {
         try {
             const pmcid = await resolvePmcid(row, { get, wait });
             if (!pmcid) {
-                stats.stillAbstract += 1;
+                stats.unresolvedIdentifiers += 1;
             } else {
                 const text = await fetchFullText(pmcid, { get, wait });
                 await db.setGuidelineDocumentFullText(row.id, text, { source: 'jats', pmcid });
                 stats.upgraded += 1;
             }
         } catch (err) {
-            // "no body" / "too short" is the expected steady state for embargoed
-            // or abstract-only records, not an error worth alerting on. Counted
-            // separately so a genuine outage is visible as `failed` climbing.
-            const message = String(err?.message || err);
-            if (/HTTP 404|body unavailable|no body element|body too short/.test(message)) stats.stillAbstract += 1;
-            else {
+            const classification = classifyFullTextError(err);
+            if (classification === 'confirmed_unavailable') {
+                stats.stillAbstract += 1;
+                stats.confirmedUnavailable += 1;
+            } else if (classification === 'temporarily_unavailable') {
+                stats.temporarilyUnavailable += 1;
+                log.debug?.({ err, pmcid: row.pmcid }, 'guideline full-text provider temporarily unavailable');
+            } else {
                 stats.failed += 1;
                 log.debug?.({ err, pmcid: row.pmcid }, 'guideline full-text fetch failed');
             }
@@ -183,15 +194,19 @@ async function refreshGuidelineFullText(db, {
 function logRefreshBatch(stats, log) {
     if (!stats?.scanned) return;
     if (stats.failed > 0) {
-        log.warn?.(stats, '[GuidelineFullText] refresh batch had unexpected provider or application errors');
+        log.warn?.(stats, '[GuidelineFullText] refresh batch had application or unclassified errors');
+        return;
+    }
+    if (stats.temporarilyUnavailable > 0) {
+        log.warn?.(stats, '[GuidelineFullText] provider temporarily unavailable; records remain unresolved');
         return;
     }
     if (stats.upgraded > 0) {
         log.info?.(stats, '[GuidelineFullText] refresh batch complete');
         return;
     }
-    if (stats.stillAbstract > 0) {
-        log.info?.(stats, '[GuidelineFullText] remaining records are an external-content ceiling; will revisit');
+    if (stats.stillAbstract > 0 || stats.unresolvedIdentifiers > 0) {
+        log.info?.(stats, '[GuidelineFullText] refresh completed with confirmed abstract-only or unresolved records');
     }
 }
 
@@ -202,5 +217,6 @@ module.exports = {
     getWithRetry,
     jatsToText,
     logRefreshBatch,
+    classifyFullTextError,
     MIN_BODY_CHARS,
 };

@@ -1,0 +1,243 @@
+Curated topics without a downloaded full practice-guideline body
+Generated: 2026-09-18
+Corpus topics: 232
+With full CPG JATS: 7
+Without full CPG JATS: 225
+
+Topics with full practice guideline (excluded from the list below)
+---------------------------------------------------------------
+1. Acute and chronic pain assessment and opioid safety
+2. community acquired pneumonia
+3. community acquired pneumonia diagnosis empiric antibiotic management guideline adult
+4. hypersensitivity pneumonitis diagnosis and antigen avoidance
+5. Large bowel obstruction, volvulus, and pseudo-obstruction management
+6. Peripheral arterial disease and claudication
+7. pneumonia
+
+Topics without a downloaded full practice guideline
+--------------------------------------------------
+1. Achalasia endoscopic and surgical therapy
+2. Acromegaly somatostatin analog therapy
+3. Acute abdomen and common surgical emergencies
+4. Acute bacterial meningitis adjunctive dexamethasone
+5. Acute bacterial meningitis empiric therapy and dexamethasone
+6. Acute decompensated heart failure decongestion
+7. Acute liver failure transplant referral
+8. Acute myeloid leukemia venetoclax azacitidine
+9. Acute necrotising pancreatitis and step-up management approach
+10. Acute pancreatitis fluid and nutrition strategy
+11. Acute psychosis: assessment, management and antipsychotic therapy
+12. alcohol use disorder naltrexone and acamprosate
+13. Alcohol use disorder, Wernicke encephalopathy and alcohol-related liver disease
+14. Alcohol-associated hepatitis corticosteroids
+15. alzheimer s disease anti amyloid immunotherapy
+16. AML Transformed from MPN
+17. Anaemia
+18. Analgesia strategies
+19. anca associated vasculitis renal disease
+20. Aneurysmal subarachnoid hemorrhage management
+21. angiotensin ii for catecholamine refractory vasodilatory shock
+22. Anti-CD20 Therapy in Rheumatology
+23. antidepressant sequential treatment steps depressed outpatients outcomes
+24. antifungals in ICU
+25. antipsychotic metabolic monitoring
+26. aspirin cardiovascular events bleeding healthy elderly primary prevention
+27. Aspirin-exacerbated respiratory disease management
+28. asthma biologics
+29. Atopic dermatitis: diagnosis, stepwise treatment and biologics
+30. atrial fibrillation diagnosis and management guideline
+31. Autosomal dominant polycystic kidney disease tolvaptan
+32. Bacterial meningitis: empirical antibiotics, dexamethasone, LP contraindications, CSF interpretation
+33. benzodiazepine deprescribing in anxiety and insomnia
+34. biologic therapy pre treatment infection screening
+35. Bone Marrow Fibrosis Grading
+36. Bone metastases denosumab and zoledronic acid
+37. Borderline personality disorder dialectical behavior therapy
+38. Bronchiolitis and viral wheeze
+39. Bronchiolitis: assessment, risk stratification and management
+40. CABG versus PCI multivessel coronary disease
+41. canagliflozin renal outcomes type 2 diabetes nephropathy
+42. canakinumab anti-inflammatory therapy atherosclerotic disease
+43. CAR-T cell therapy refractory large B-cell lymphoma axicabtagene
+44. cardiac resynchronization therapy heart failure COMPANION trial
+45. cardiogenic shock intra aortic balloon pump and revascularization
+46. Carpal tunnel syndrome: diagnosis and management
+47. Catatonia benzodiazepines and ECT
+48. Cellulitis, erysipelas, and mimics
+49. chemotherapy induced nausea antiemetic prophylaxis
+50. Chest pain assessment in the ED
+51. Childhood asthma and wheeze phenotypes
+52. chronic cough evaluation and empiric therapy
+53. Chronic hepatitis B antiviral therapy
+54. chronic lymphocytic leukaemia ibrutinib and venetoclax based targeted therapy
+55. Chronic lymphocytic leukaemia: chemoimmunotherapy with FCR
+56. Chronic spontaneous urticaria omalizumab
+57. Cirrhosis and portal hypertension
+58. Cirrhosis ascites and spontaneous bacterial peritonitis
+59. Community- and hospital-acquired pneumonia
+60. Compartment syndrome: diagnosis and emergency management
+61. complement deficiency infection susceptibility
+62. Contact dermatitis: irritant vs allergic, patch testing and management
+63. Coronary CT angiography for stable chest pain
+64. covid
+65. CRISPR-Cas9 gene editing sickle cell disease beta-thalassemia
+66. Croup: assessment, severity scoring and management
+67. Cushings disease: pituitary source, inferior petrosal sinus sampling, transsphenoidal surgery
+68. Cushings syndrome: ACTH-dependent vs independent, screening, dexamethasone suppression
+69. Cystic fibrosis CFTR modulator therapy
+70. cytomegalovirus prevention in transplant recipients
+71. dabigatran versus warfarin atrial fibrillation stroke prevention
+72. Delayed Haemolytic Transfusion Reactions
+73. Delirium and acute confusional states
+74. Delirium: recognition, risk factors, prevention and management
+75. Dementia: behavioural and psychological symptoms management
+76. Depression and anxiety disorders
+77. Depression: diagnosis, pharmacotherapy and monitoring
+78. Difficult airway management
+79. diffuse large b cell lymphoma car t cell therapy in relapsed refractory disease
+80. DNACPR, treatment escalation planning and advance care planning
+81. Drug eruptions and severe cutaneous adverse reactions (SCAR)
+82. dupilumab il 4 il 13 inhibitor biologic therapy
+83. Durable LVAD therapy for advanced heart failure
+84. Dyslipidaemia and cardiovascular risk modification
+85. Eating disorders and refeeding syndrome
+86. ebola virus disease therapeutics and supportive care
+87. Ectopic pregnancy: diagnosis and management
+88. Emergency contraception: mechanisms, timing and clinical guidance
+89. empagliflozin cardiovascular outcomes type 2 diabetes EMPA-REG
+90. empagliflozin chronic kidney disease progression
+91. Endocarditis and prophylaxis
+92. endovascular thrombectomy time to treatment ischemic stroke meta-analysis
+93. Eosinophilia Differential Diagnosis
+94. Eosinophilic esophagitis topical steroid and elimination diet
+95. Epilepsy antiseizure medication selection
+96. Epistaxis: assessment and management
+97. esophageal cancer neoadjuvant chemoradiation
+98. hospital acquired and ventilator associated pneumonia
+99. HPV vaccination cervical intraepithelial neoplasia FUTURE II
+100. hybrid closed loop insulin delivery in type 1 diabetes
+101. Hypertensive disorders of pregnancy and pre-eclampsia
+102. Hypogranular APL Morphology Pitfalls
+103. ICU renal replacement therapy initiation timing
+104. igg4 related disease diagnosis and b cell depletion
+105. Infective endocarditis antibiotic duration and surgery
+106. Infective endocarditis antimicrobial and oral step-down strategy
+107. intensive blood pressure control cardiovascular outcomes systolic
+108. intensive glycemic targets in type 2 diabetes
+109. intensive LDL cholesterol lowering statin meta-analysis
+110. Intracerebral hemorrhage acute management
+111. invasive aspergillosis antifungal therapy
+112. Irradiated, Leukoreduced and Washed Blood Products
+113. Ischaemic heart disease and acute coronary syndromes
+114. Juvenile idiopathic arthritis biologic strategy
+115. kidney transplant antibody mediated rejection
+116. Lateral epicondylitis (tennis elbow): assessment and management
+117. Latex and perioperative allergy evaluation
+118. Leflunomide, Sulfasalazine, and Hydroxychloroquine toxicities
+119. Leukaostasis Syndrome
+120. lithium monitoring and toxicity prevention
+121. lyme disease diagnosis and treatment
+122. Male hypogonadism testosterone replacement
+123. Malnutrition screening: MUST, NRS-2002, and nutritional support
+124. management of HF with Reduced ejection fraction
+125. Mechanical low back pain: assessment, red flags and management
+126. menopausal hormone therapy risks and benefits
+127. Menopause and hormone replacement therapy: evidence and guidance
+128. Mental capacity, consent and best-interest decisions
+129. metformin diabetes
+130. methotrexate early rheumatoid arthritis combination therapy TEAR
+131. methylene blue in vasoplegic shock
+132. metylene blue in vasoplegic shock
+133. Mineralocorticoid receptor antagonists in heart failure
+134. Miscarriage: diagnosis, classification and management
+135. mitral regurgitation teer mitraclip
+136. Multiple myeloma: daratumumab-based frontline therapy
+137. Multiple myeloma: VRd versus Rd for newly diagnosed disease
+138. Myasthenia gravis targeted immunotherapy
+139. Myelofibrosis: JAK inhibition with ruxolitinib
+140. Neonatal jaundice: assessment, phototherapy and exchange transfusion
+141. neuromyelitis optica spectrum disorder biologic therapy
+142. nivolumab ipilimumab advanced melanoma overall survival
+143. noninfectious uveitis biologic therapy
+144. Noninvasive ventilation for acute respiratory failure
+145. Opioid Rotation and Equianalgesic Dosing
+146. opioid use disorder buprenorphine and methadone
+147. Opioid use disorder: withdrawal, maintenance therapy and harm reduction
+148. Orbital and periorbital cellulitis: classification and management
+149. Orthostatic hypotension: diagnosis and management in older adults
+150. oseltamivir treatment influenza healthy adults
+151. Otitis media, otitis externa and mastoiditis
+152. outpatient parenteral antimicrobial therapy program safety
+153. Pancreatic cancer systemic and adjuvant therapy
+154. Pancytopenia Diagnostic Workup
+155. parkinson disease motor complications
+156. Patent foramen ovale closure after cryptogenic stroke
+157. PCSK9 inhibitor evolocumab cardiovascular outcomes
+158. Pelvic inflammatory disease: diagnosis and treatment
+159. pembrolizumab plus chemotherapy metastatic non-small cell lung cancer
+160. Penicillin allergy delabeling and testing
+161. Penicillin allergy evaluation and delabeling
+162. Perinatal depression screening and treatment
+163. Perioperative antiplatelet and anticoagulant management
+164. Perioperative diabetes management
+165. Perioperative management of common comorbidities
+166. Perioperative risk assessment and optimisation
+167. Polycystic ovary syndrome metabolic management
+168. Polycythemia vera: hematocrit targets, aspirin, and cardiovascular risk reduction
+169. polymyalgia rheumatica relapse prevention
+170. Portal hypertension and variceal bleeding
+171. Postoperative ileus: prevention and management
+172. Postoperative nausea and vomiting: prevention and treatment
+173. Postural Orthostatic Tachycardia Syndrome (POTS): tilt table test criteria, non-pharmacological methods
+174. Pressure ulcers: staging, prevention and wound management
+175. Primary aldosteronism diagnosis and treatment
+176. Primary membranous nephropathy immunosuppression
+177. primary prevention icd sudden cardiac death
+178. Prolactinoma dopamine agonist therapy
+179. prone positioning severe acute respiratory distress syndrome
+180. Prosthetic joint infection diagnosis and retention strategy
+181. Prothrombin G20210A Mutation
+182. Psoriasis: diagnosis, severity assessment and systemic treatment
+183. Psychosis and acute behavioural disturbance
+184. ptsd trauma focused psychotherapy and ssri
+185. PTSD trauma-focused psychotherapy and SSRI
+186. pulmonary nodule evaluation and fleischner follow up
+187. Pulmonary sarcoidosis corticosteroid therapy
+188. Rabies pre- and post-exposure prophylaxis
+189. Radial versus femoral access for PCI
+190. Radiation necrosis vs tumour progression: perfusion MRI and PET scan utility
+191. Rehabilitation after stroke: principles and evidence
+192. reproductive health in rheumatic disease
+193. Retinal detachment: presentation and emergency management
+194. Syncope and postural hypotension
+195. takayasu arteritis biologic therapy
+196. tenecteplase alteplase acute ischemic stroke EXTEND-IA TNK
+197. Testicular germ cell tumor chemotherapy
+198. thyroid nodule evaluation and fna
+199. ticagrelor versus clopidogrel acute coronary syndromes
+200. tick borne rickettsial disease empiric doxycycline
+201. Tick-borne rickettsial disease empiric doxycycline
+202. tocilizumab COVID-19 hospitalized patients
+203. Tonsillitis, peritonsillar abscess and deep neck infection
+204. Toxic and nutritional neuropathies: B12, B6 deficiency, chemotherapy-induced
+205. transcatheter aortic valve replacement balloon-expandable low-risk patients
+206. transient ischemic attack rapid assessment
+207. Traumatic brain injury intracranial pressure management
+208. Tuberculosis treatment regimens
+209. Type 1 and type 2 diabetes
+210. type 1 diabetes intensive glycemic control
+211. Upper and lower GI bleeding
+212. upper gi bleed
+213. upper GI bleeding
+214. Urinary tract infections and pyelonephritis
+215. Urticaria and angioedema: classification and management
+216. Vapor Gas Dust and Fume exposures
+217. vasopressor use septic shock
+218. Vasopressors and inotropes in shock
+219. Venous leg ulcers, lymphoedema and lower leg management
+220. Venous thromboembolism and anticoagulation management
+221. Viral haemorrhagic fevers and high-consequence infectious diseases in the ICU
+222. viral wheeze
+223. vitamin K antagonist bridging atrial fibrillation perioperative BRIDGE trial
+224. Wolfram syndrome DIDMOAD: diabetes insipidus, DM, optic atrophy, deafness
+225. Zollinger-Ellison Syndrome

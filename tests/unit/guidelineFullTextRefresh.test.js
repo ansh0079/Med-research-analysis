@@ -1,16 +1,8 @@
 'use strict';
 
 /**
- * Remaining 422 abstract-only guideline documents are an external-content
- * ceiling: Europe PMC has no body for most, while 62 PMC body endpoints
- * consistently return HTTP 500. The scheduler must revisit them without
- * counting that as an application failure -- the same gap that made guideline
- * synopses report "the text could not be retrieved".
- *
- * The distinction these tests protect: an embargoed, genuinely abstract-only,
- * or persistently-500 PMC record is the expected steady state, not a failure.
- * Counting it as one would make a healthy sweep look broken and bury a real
- * outage.
+ * Keep confirmed abstract-only records, unresolved identifiers and temporary
+ * provider failures distinct so production coverage reports stay honest.
  */
 
 const {
@@ -149,16 +141,18 @@ describe('refreshGuidelineFullText', () => {
         expect(db.updated).toHaveLength(0);
     });
 
-    test('touches a row when no PMC record can be discovered', async () => {
+    test('records an unresolved identifier when no PMC record can be discovered', async () => {
         const db = makeDb([{ id: 'd1', pmid: '12345' }]);
         const stats = await refreshGuidelineFullText(db, {
             get: async () => JSON.stringify({ resultList: { result: [] } }), pauseMs: 0, log: silentLog,
         });
-        expect(stats).toMatchObject({ scanned: 1, upgraded: 0, stillAbstract: 1, failed: 0 });
+        expect(stats).toMatchObject({
+            scanned: 1, upgraded: 0, stillAbstract: 0, unresolvedIdentifiers: 1, failed: 0,
+        });
         expect(db.touched).toEqual(['d1']);
     });
 
-    test('a metadata-service outage counts as failed, so it is visible', async () => {
+    test('a metadata-service outage is reported as temporarily unavailable', async () => {
         const db = makeDb([{ id: 'd1', pmid: '1' }]);
         const stats = await refreshGuidelineFullText(db, {
             get: async () => { throw new Error('HTTP 503'); },
@@ -166,7 +160,9 @@ describe('refreshGuidelineFullText', () => {
             pauseMs: 0,
             log: silentLog,
         });
-        expect(stats).toMatchObject({ scanned: 1, upgraded: 0, stillAbstract: 0, failed: 1 });
+        expect(stats).toMatchObject({
+            scanned: 1, upgraded: 0, stillAbstract: 0, temporarilyUnavailable: 1, failed: 0,
+        });
     });
 
     test('a missing Europe PMC body is an expected abstract-only result', async () => {
@@ -174,10 +170,12 @@ describe('refreshGuidelineFullText', () => {
         const stats = await refreshGuidelineFullText(db, {
             get: async () => { throw new Error('HTTP 404'); }, pauseMs: 0, log: silentLog,
         });
-        expect(stats).toMatchObject({ scanned: 1, upgraded: 0, stillAbstract: 1, failed: 0 });
+        expect(stats).toMatchObject({
+            scanned: 1, upgraded: 0, stillAbstract: 1, confirmedUnavailable: 1, failed: 0,
+        });
     });
 
-    test('a persistently unavailable PMC body is abstract-only, not an app failure', async () => {
+    test('a persistently unavailable PMC body remains a visible temporary failure', async () => {
         const logs = { info: [], warn: [] };
         const log = { info: (...a) => logs.info.push(a), warn: (...a) => logs.warn.push(a), debug() {} };
         const db = makeDb([{ id: 'd1', pmcid: 'PMC1' }]);
@@ -187,9 +185,11 @@ describe('refreshGuidelineFullText', () => {
             pauseMs: 0,
             log,
         });
-        expect(stats).toMatchObject({ scanned: 1, upgraded: 0, stillAbstract: 1, failed: 0 });
-        expect(logs.warn).toHaveLength(0);
-        expect(logs.info.some((args) => /external-content ceiling/.test(String(args[1] || '')))).toBe(true);
+        expect(stats).toMatchObject({
+            scanned: 1, upgraded: 0, stillAbstract: 0, temporarilyUnavailable: 1, failed: 0,
+        });
+        expect(logs.warn).toHaveLength(1);
+        expect(logs.warn.some((args) => /temporarily unavailable/.test(String(args[1] || '')))).toBe(true);
     });
 
     test('touches every row it scanned, so the next run advances past failures', async () => {
@@ -215,12 +215,12 @@ describe('refreshGuidelineFullText', () => {
 });
 
 describe('logRefreshBatch', () => {
-    test('does not warn when the batch is only an external-content ceiling', () => {
+    test('does not warn when the batch contains only confirmed abstract-only records', () => {
         const logs = { info: [], warn: [] };
         const log = { info: (...a) => logs.info.push(a), warn: (...a) => logs.warn.push(a) };
         logRefreshBatch({ scanned: 25, upgraded: 0, stillAbstract: 25, failed: 0 }, log);
         expect(logs.warn).toHaveLength(0);
-        expect(logs.info[0][1]).toMatch(/external-content ceiling/);
+        expect(logs.info[0][1]).toMatch(/confirmed abstract-only/);
     });
 
     test('warns only when unexpected failures occurred', () => {
@@ -229,6 +229,17 @@ describe('logRefreshBatch', () => {
         logRefreshBatch({ scanned: 2, upgraded: 0, stillAbstract: 1, failed: 1 }, log);
         expect(logs.warn).toHaveLength(1);
         expect(logs.info).toHaveLength(0);
+    });
+
+    test('warns when the provider remains temporarily unavailable', () => {
+        const logs = { info: [], warn: [] };
+        const log = { info: (...a) => logs.info.push(a), warn: (...a) => logs.warn.push(a) };
+        logRefreshBatch({
+            scanned: 2, upgraded: 0, stillAbstract: 0, temporarilyUnavailable: 2,
+            unresolvedIdentifiers: 0, failed: 0,
+        }, log);
+        expect(logs.warn).toHaveLength(1);
+        expect(logs.warn[0][1]).toMatch(/temporarily unavailable/);
     });
 });
 

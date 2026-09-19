@@ -12,6 +12,7 @@
  *
  * Usage:
  *   node server/scripts/enrichFlagshipKnowledge.js [--dry-run] [--topic "Name"] [--force]
+ *   node server/scripts/enrichFlagshipKnowledge.js --topics-file data/flagship-learning-repair-cohort.json
  *   node server/scripts/enrichFlagshipKnowledge.js --limit 5
  *   node server/scripts/enrichFlagshipKnowledge.js --priority=high --limit=10
  */
@@ -24,6 +25,7 @@ loadEnv();
 
 const db = require('../../database');
 const { createAiService, PINNED_MODELS } = require('../services/aiService');
+const { getProviderCandidates } = require('../utils/aiProvider');
 const { safeFetch } = require('../utils/fetch');
 const { loadFlagshipConfig } = require('../services/flagshipTopicOps');
 const { collectTopicReadiness } = require('../services/topicReadinessService');
@@ -46,6 +48,7 @@ function argValue(flag) {
 const DRY_RUN = process.argv.includes('--dry-run');
 const FORCE   = process.argv.includes('--force');
 const TOPIC_FILTER = argValue('--topic');
+const TOPICS_FILE = argValue('--topics-file');
 const QUERY_OVERRIDE = argValue('--query');
 const PRIORITY = (argValue('--priority') || '').toLowerCase().trim();
 const LIMIT = Number(argValue('--limit') || 50) || 50;
@@ -54,6 +57,31 @@ function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
 function normalizeTopic(t) {
     return String(t || '').toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, ' ').trim();
+}
+
+function normalizedEvidenceText(value) {
+    return String(value || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9.%<>=+\-/]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function isExactEvidenceQuote(quote, passage) {
+    const needle = normalizedEvidenceText(quote);
+    const haystack = normalizedEvidenceText(passage);
+    return needle.length >= 20 && haystack.includes(needle);
+}
+
+function readTopicFile(filePath) {
+    if (!filePath) return null;
+    const resolved = path.resolve(process.cwd(), filePath);
+    const parsed = JSON.parse(require('fs').readFileSync(resolved, 'utf8'));
+    const topics = Array.isArray(parsed) ? parsed : parsed.topics;
+    if (!Array.isArray(topics) || !topics.every((topic) => typeof topic === 'string' && topic.trim())) {
+        throw new Error(`Topic file must contain a topics string array: ${resolved}`);
+    }
+    return new Set(topics.map((topic) => topic.trim().toLowerCase()));
 }
 
 // ─── PubMed helpers ───────────────────────────────────────────────────────────
@@ -88,7 +116,34 @@ async function fetchAbstracts(pmids) {
 
 // ─── AI helpers ───────────────────────────────────────────────────────────────
 
-async function extractClaimsFromPaper({ callClaude }, paper, topicName) {
+async function callStructuredWithFallback(aiService, prompt, options, label) {
+    if (typeof aiService.callStructured === 'function') {
+        const candidates = getProviderCandidates({}, serverConfig);
+        let lastError = null;
+        for (const candidate of candidates) {
+            try {
+                const raw = await aiService.callStructured(
+                    prompt,
+                    candidate.provider,
+                    candidate.model,
+                    options
+                );
+                if (raw !== null && raw !== undefined) return { raw, ...candidate };
+            } catch (error) {
+                lastError = error;
+                console.warn(`    ${candidate.provider} ${label} failed: ${error.message}`);
+            }
+        }
+        if (lastError) throw lastError;
+        throw new Error(`No AI provider configured for ${label}`);
+    }
+
+    // Small injected test doubles and older callers expose only callClaude.
+    const raw = await aiService.callClaude(prompt, CLAUDE_MODEL, { ...options, jsonMode: true });
+    return { raw, provider: 'claude', model: CLAUDE_MODEL };
+}
+
+async function extractClaimsFromPaper(aiService, paper, topicName) {
     const prompt = `You are a medical education expert. Extract the 3-4 most important, specific, evidence-based clinical claims from this landmark paper about "${topicName}".
 
 Paper: ${paper.title}
@@ -108,7 +163,7 @@ Format:
   {
     "claimKey": "short-kebab-claim-key-max-60-chars",
     "claimText": "Specific clinical claim with evidence (1-2 sentences, ≤200 chars)",
-    "evidenceQuote": "Relevant quote or stat from abstract (≤150 chars)"
+    "evidenceQuote": "Exact verbatim span copied from the abstract (20-150 chars; no ellipses)"
   }
 ]
 
@@ -116,25 +171,34 @@ Return ONLY the JSON array. No markdown fences.`;
 
     for (let attempt = 1; attempt <= 2; attempt++) {
         try {
-            const text = await callClaude(prompt, CLAUDE_MODEL, {
+            const generated = await callStructuredWithFallback(aiService, prompt, {
                 maxOutputTokens: 800,
                 temperature: 0.2,
-                jsonMode: attempt === 2,
-            });
-            const parsed = parseJsonArray(text);
+            }, 'claim extraction');
+            const parsed = parseJsonArray(generated.raw);
             if (parsed && parsed.length) {
-                return parsed.filter((c) => c.claimKey && c.claimText).slice(0, 4);
+                const grounded = parsed
+                    .filter((c) => c.claimKey && c.claimText && isExactEvidenceQuote(c.evidenceQuote, paper.abstract))
+                    .map((c) => ({
+                        ...c,
+                        sourcePath: 'abstract',
+                        confidence: 0.7,
+                        verificationStatus: 'abstract_only',
+                        reviewState: 'unreviewed',
+                    }))
+                    .slice(0, 4);
+                if (grounded.length) return { items: grounded, provider: generated.provider, model: generated.model };
             }
         } catch (e) {
             if (attempt === 2) console.warn(`    ⚠ claim extraction failed: ${e.message}`);
         }
         if (attempt < 2) await sleep(500);
     }
-    return [];
+    return { items: [], provider: null, model: null };
 }
 
-async function generateGuidelineMCQs({ callClaude }, topicName, guidelines) {
-    if (!guidelines.length) return [];
+async function generateGuidelineMCQs(aiService, topicName, guidelines) {
+    if (!guidelines.length) return { items: [], provider: null, model: null };
     const guidelineSummary = guidelines.slice(0, 5).map((g, i) =>
         `${i + 1}. ${g.sourceBody} (${g.sourceYear || ''}, ${g.sourceUrl || ''}): ${g.recommendationText}`
     ).join('\n');
@@ -158,22 +222,26 @@ Return ONLY the JSON array.`;
 
     for (let attempt = 1; attempt <= 2; attempt++) {
         try {
-            const text = await callClaude(prompt, CLAUDE_MODEL, { maxOutputTokens: 1200, temperature: 0.3, jsonMode: attempt === 2 });
-            const parsed = parseJsonArray(text);
+            const generated = await callStructuredWithFallback(aiService, prompt, {
+                maxOutputTokens: 1200,
+                temperature: 0.3,
+            }, 'MCQ generation');
+            const parsed = parseJsonArray(generated.raw);
             if (parsed && parsed.length) {
-                return parsed.filter((q) =>
+                const items = parsed.filter((q) =>
                     typeof q.question === 'string' && q.question.trim() &&
                     Array.isArray(q.options) && q.options.length === 4 &&
                     q.options.every((opt, i) => typeof opt === 'string' && opt.startsWith(`${'ABCD'[i]}:`) && opt.slice(2).trim()) &&
                     /^[A-D]$/.test(q.correctAnswer || '') && typeof q.explanation === 'string' && q.explanation.trim()
                 ).slice(0, 4);
+                if (items.length) return { items, provider: generated.provider, model: generated.model };
             }
         } catch (e) {
             if (attempt === 2) console.warn(`    ⚠ MCQ generation failed: ${e.message}`);
         }
         if (attempt < 2) await sleep(500);
     }
-    return [];
+    return { items: [], provider: null, model: null };
 }
 
 // ─── JSON parser (lenient) ────────────────────────────────────────────────────
@@ -181,6 +249,12 @@ Return ONLY the JSON array.`;
 function parseJsonArray(raw) {
     if (!raw) return null;
     if (Array.isArray(raw)) return raw;
+    if (typeof raw === 'object') {
+        for (const value of Object.values(raw)) {
+            if (Array.isArray(value) && value.length > 0) return value;
+        }
+        return null;
+    }
     const text = String(raw).trim();
     try {
         const r = JSON.parse(text);
@@ -212,11 +286,18 @@ async function enrichTopic(aiService, flagship, currentTier) {
 
         if (!FORCE) {
             const existing = await db.getTeachingObjectByKey(objectKey).catch(() => null);
-            if (existing) {
-                console.log(`  [skip] PMID ${pmid} — paper TO already exists`);
+            const claimCount = existing
+                ? Number((await db.get(
+                    'SELECT COUNT(*) AS count FROM teaching_object_claims WHERE object_key = ?',
+                    [objectKey]
+                ).catch(() => null))?.count || 0)
+                : 0;
+            if (existing && claimCount > 0) {
+                console.log(`  [skip] PMID ${pmid} — paper TO already has ${claimCount} claims`);
                 paperTOsCreated++;
                 continue;
             }
+            if (existing) console.log(`  [repair] PMID ${pmid} — paper TO has no persisted claims`);
         }
 
         console.log(`  Fetching PMID ${pmid}...`);
@@ -231,10 +312,13 @@ async function enrichTopic(aiService, flagship, currentTier) {
         if (!papers.length) { console.warn(`  ⚠ No abstract for PMID ${pmid}`); continue; }
         const paper = papers[0];
 
-        const claims = DRY_RUN ? [] : await extractClaimsFromPaper(aiService, paper, topicName);
+        const claimResult = DRY_RUN
+            ? { items: [], provider: null, model: null }
+            : await extractClaimsFromPaper(aiService, paper, topicName);
+        const claims = claimResult.items;
         console.log(`  PMID ${pmid}: "${paper.title.slice(0, 60)}…" → ${claims.length} claims`);
 
-        if (!DRY_RUN) {
+        if (!DRY_RUN && claims.length) {
             await db.upsertTeachingObject({
                 objectKey,
                 objectType: 'paper',
@@ -252,14 +336,16 @@ async function enrichTopic(aiService, flagship, currentTier) {
                     generatedAt: new Date().toISOString(),
                     generationSource: 'enrichFlagshipKnowledge',
                 },
-                provider: 'claude',
-                model: CLAUDE_MODEL,
+                provider: claimResult.provider,
+                model: claimResult.model,
                 confidence: 0.85,
             });
             paperTOsCreated++;
             totalClaimsWritten += claims.length;
-        } else {
+        } else if (DRY_RUN) {
             console.log(`  [DRY] Would write paper TO for PMID ${pmid} with ${claims.length} claims`);
+        } else {
+            console.warn(`  [skip] PMID ${pmid} — no verbatim-grounded claims returned; existing object left unchanged`);
         }
 
         await sleep(800);
@@ -286,7 +372,10 @@ async function enrichTopic(aiService, flagship, currentTier) {
         await sleep(400);
 
         // Generate MCQs from guidelines
-        const mcqs = DRY_RUN ? [] : await generateGuidelineMCQs(aiService, topicName, guidelines);
+        const mcqResult = DRY_RUN
+            ? { items: [], provider: null, model: null }
+            : await generateGuidelineMCQs(aiService, topicName, guidelines);
+        const mcqs = mcqResult.items;
         console.log(`  Guideline MCQs: ${mcqs.length} (from ${guidelines.length} guidelines)`);
 
         if (!DRY_RUN && mcqs.length) {
@@ -302,8 +391,8 @@ async function enrichTopic(aiService, flagship, currentTier) {
                     generatedAt: new Date().toISOString(),
                     generationSource: 'enrichFlagshipKnowledge',
                 },
-                provider: 'claude',
-                model: CLAUDE_MODEL,
+                provider: mcqResult.provider,
+                model: mcqResult.model,
                 confidence: 0.80,
             });
         } else if (DRY_RUN) {
@@ -327,9 +416,10 @@ async function main() {
     console.log(`  Force:    ${FORCE}`);
     console.log(`  Limit:    ${LIMIT}`);
     if (TOPIC_FILTER) console.log(`  Filter:   ${TOPIC_FILTER}`);
+    if (TOPICS_FILE) console.log(`  Topics:   ${TOPICS_FILE}`);
 
-    if (!serverConfig.keys?.anthropic) {
-        console.error('❌  ANTHROPIC_API_KEY not set.');
+    if (!DRY_RUN && !getProviderCandidates({}, serverConfig).length) {
+        console.error('❌  No AI provider key is configured.');
         process.exit(1);
     }
 
@@ -346,12 +436,19 @@ async function main() {
     const aiService = createAiService({ serverConfig, fetchImpl });
 
     let flagships = cfg.topics.filter((t) => t.priority === 'high' || t.priority === 'medium');
+    const topicSet = readTopicFile(TOPICS_FILE);
     if (PRIORITY) {
         flagships = cfg.topics.filter((t) => String(t.priority || '').toLowerCase() === PRIORITY);
     }
     if (TOPIC_FILTER) {
         const f = TOPIC_FILTER.toLowerCase();
         flagships = flagships.filter((t) => t.topic.toLowerCase().includes(f));
+    }
+    if (topicSet) {
+        flagships = flagships.filter((t) => topicSet.has(t.topic.toLowerCase().trim()));
+        const found = new Set(flagships.map((t) => t.topic.toLowerCase().trim()));
+        const missing = [...topicSet].filter((topic) => !found.has(topic));
+        if (missing.length) throw new Error(`Topics not found in flagship config: ${missing.join(', ')}`);
     }
 
     // Filter to below-flagship topics (skip already-flagship unless --force)
@@ -386,4 +483,4 @@ async function main() {
 }
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
-module.exports = { generateGuidelineMCQs };
+module.exports = { generateGuidelineMCQs, isExactEvidenceQuote, normalizedEvidenceText, readTopicFile };

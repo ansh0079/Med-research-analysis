@@ -23,10 +23,34 @@ describe('teaching-object topic reconciliation', () => {
             .toBe('Atrial fibrillation anticoagulation');
     });
 
-    test('maps a focused query through a contained flagship alias', () => {
+    test('keeps a fuzzy flagship match as a review suggestion', () => {
         const match = buildFlagshipMatcher(topics, normalize);
-        expect(match('hepatorenal syndrome terlipressin')?.topic)
+        expect(match('hepatorenal syndrome terlipressin')).toBeNull();
+        expect(match.classify('hepatorenal syndrome terlipressin')).toMatchObject({
+            item: { topic: 'Hepatorenal syndrome vasoconstrictor therapy' },
+            matchType: 'fuzzy_suggestion',
+            reviewRequired: true,
+        });
+    });
+
+    test('automatically accepts an exact configured alias', () => {
+        const match = buildFlagshipMatcher(topics, normalize);
+        expect(match('HRS terlipressin')?.topic)
             .toBe('Hepatorenal syndrome vasoconstrictor therapy');
+        expect(match.classify('HRS terlipressin')).toMatchObject({
+            matchType: 'alias_exact', reviewRequired: false,
+        });
+    });
+
+    test('rejects an exact alias shared by multiple clinical topics', () => {
+        const match = buildFlagshipMatcher([
+            { topic: 'Condition A', aliases: ['shared syndrome'] },
+            { topic: 'Condition B', aliases: ['shared syndrome'] },
+        ], normalize);
+        expect(match('shared syndrome')).toBeNull();
+        expect(match.classify('shared syndrome')).toMatchObject({
+            item: null, matchType: 'ambiguous_exact', reviewRequired: true,
+        });
     });
 
     test('normalises possessive fragments for catalogue matching', () => {
@@ -60,9 +84,35 @@ describe('teaching-object topic reconciliation', () => {
         expect(result).toMatchObject({ topicId: 42, registered: true, matchedFlagship: false });
         expect(db.upsertCurriculumSeedTopic).toHaveBeenCalledWith(expect.objectContaining({
             displayName: 'Acute asthma treatment',
-            seedStatus: 'seeded_with_warnings',
+            seedStatus: 'not_seeded',
         }));
-        expect(db.recordTopicAlias).toHaveBeenCalledWith('Acute asthma treatment', 42, 'orphan_reconciliation', 0.75);
+        expect(db.recordTopicAlias).toHaveBeenCalledWith(
+            'Acute asthma treatment', 42, 'orphan_reconciliation_identity', 1,
+        );
+    });
+
+    test('does not attach a fuzzy clinical match without review', async () => {
+        const db = {
+            normalizeTopic: normalize,
+            resolveCurriculumTopicId: jest.fn().mockResolvedValue(null),
+            upsertCurriculumSeedTopic: jest.fn(),
+            recordTopicAlias: jest.fn(),
+        };
+        const matcher = buildFlagshipMatcher(topics, normalize);
+        const result = await resolveOrRegisterTopic(
+            db,
+            'hepatorenal syndrome terlipressin',
+            new Set(['guideline_mcq']),
+            matcher,
+            { registerMissing: true },
+        );
+        expect(result).toMatchObject({
+            topicId: null,
+            reviewRequired: true,
+            suggestedTopic: 'Hepatorenal syndrome vasoconstrictor therapy',
+        });
+        expect(db.upsertCurriculumSeedTopic).not.toHaveBeenCalled();
+        expect(db.recordTopicAlias).not.toHaveBeenCalled();
     });
 
     test('does not create a curriculum topic for an unmatched paper-only search', async () => {
