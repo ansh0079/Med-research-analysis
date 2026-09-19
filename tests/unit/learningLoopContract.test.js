@@ -102,4 +102,26 @@ describe('learningLoop contract', () => {
             payload: expect.objectContaining({ searchId: uuid }),
         }));
     });
+
+    test('recordLearningSignal annotates contract errors without dropping the event', async () => {
+        const db = {
+            recordLearningEvent: jest.fn().mockResolvedValue({ id: 1 }),
+        };
+
+        await recordLearningSignal(db, {
+            eventType: 'search_impression',
+            articleUid: 'pubmed-1',
+            payload: { position: 1 },
+        });
+
+        expect(db.recordLearningEvent).toHaveBeenCalledWith(expect.objectContaining({
+            eventType: 'search_impression',
+            payload: expect.objectContaining({
+                learningLoopContractErrors: expect.arrayContaining([
+                    'searchId is required for exposure events',
+                    'userId or sessionId is required for attribution',
+                ]),
+            }),
+        }));
+    });
 });

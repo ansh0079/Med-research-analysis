@@ -168,7 +168,6 @@ async function recordSearchRankingDecisions(db, {
         const uid = article?.uid || article?.pmid || article?.doi;
         if (!uid) continue;
         const boost = Number(article._learningBoost || 0);
-        if (!boost && !banditMeta.forceLog) continue;
         const inserted = await db.insertPersonalizationDecision({
             userId,
             policyType: POLICY_SEARCH_RANKING,

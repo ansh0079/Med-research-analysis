@@ -106,8 +106,7 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
             });
             let banditReward = null;
             const banditUserId = req.user?.id ?? null;
-            const canAttributeBandit = Boolean(banditUserId || decisionId != null);
-            if (canAttributeBandit) {
+            if (banditUserId || decisionId != null || req.sessionId) {
                 banditReward = await attributeSearchInteractionReward(db, banditUserId, {
                     searchId: sid,
                     articleUid: uid,
@@ -190,8 +189,7 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
             });
             let banditReward = null;
             const banditUserId = req.user?.id ?? null;
-            const canAttributeBandit = Boolean(banditUserId || decisionId != null);
-            if (canAttributeBandit) {
+            if (banditUserId || decisionId != null || req.sessionId) {
                 banditReward = await attributeSearchInteractionReward(db, banditUserId, {
                     searchId: normalizeSearchId(searchId),
                     articleUid: uid,

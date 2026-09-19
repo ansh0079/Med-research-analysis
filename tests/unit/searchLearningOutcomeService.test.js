@@ -376,4 +376,25 @@ describe('searchLearningOutcomeService', () => {
             eventType: 'agent_quiz_reward_attributed',
         }));
     });
+
+    test('anonymous session click still attributes when no userId is present', async () => {
+        const db = {
+            all: jest.fn().mockResolvedValue([{ id: 9, arm_id: 'engagement_heavy', delayed_reward: null }]),
+            updatePersonalizationDecisionReward: jest.fn().mockResolvedValue(true),
+            recordPersonalizationArmPull: jest.fn().mockResolvedValue(true),
+            recordLearningEvent: jest.fn().mockResolvedValue({ id: 1 }),
+        };
+
+        const result = await attributeSearchInteractionReward(db, null, {
+            searchId: 42,
+            articleUid: 'pmid-1',
+            interactionType: 'click',
+            wasClicked: true,
+            sessionId: 'sess-anon-1',
+        });
+
+        expect(result).toMatchObject({ rewarded: true, armPullRecorded: true });
+        expect(db.all.mock.calls[0][0]).toContain('JOIN searches');
+        expect(db.all.mock.calls[0][1]).toContain('sess-anon-1');
+    });
 });
