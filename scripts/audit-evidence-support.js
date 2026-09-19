@@ -96,13 +96,50 @@ async function runNegativeControl(database, count) {
     return { tested: picked.length, caught, missed };
 }
 
+/**
+ * Stratified sample for calibration.
+ *
+ * A uniform sample of this corpus is roughly 95% supported, so 200 claims yield
+ * ~10 unsupported ones and kappa computed on them swings wildly. Over-sampling
+ * the structurally flagged stratum gives the labeller both classes to separate.
+ *
+ * The cost is that the sample is no longer representative, so a prevalence read
+ * straight off it would be badly wrong. Each row therefore carries its stratum
+ * and that stratum's sampling weight (population / sampled), which is what any
+ * later corpus-wide rate must be reweighted by. Agreement — the thing
+ * calibration is for — is unaffected by stratification.
+ */
+function stratifiedSample(rows, count) {
+    const flagged = [];
+    const clean = [];
+    for (const row of rows) {
+        const hasFinding = claimStructureFindings({
+            claimText: row.claim_text, evidenceQuote: row.evidence_quote,
+        }).length > 0;
+        (hasFinding ? flagged : clean).push(row);
+    }
+
+    const wantFlagged = Math.min(flagged.length, Math.round(count * 0.3));
+    const wantClean = Math.min(clean.length, count - wantFlagged);
+    const weight = (population, sampled) => (sampled ? population / sampled : null);
+
+    return [
+        ...sample(flagged, wantFlagged).map((row) => ({
+            ...row, stratum: 'structurally_flagged', samplingWeight: weight(flagged.length, wantFlagged),
+        })),
+        ...sample(clean, wantClean).map((row) => ({
+            ...row, stratum: 'no_structural_finding', samplingWeight: weight(clean.length, wantClean),
+        })),
+    ];
+}
+
 async function runJudgedPass(database, count) {
     const rows = await database.all(
         `SELECT claim_key, claim_text, evidence_quote FROM teaching_object_claims
          WHERE evidence_quote IS NOT NULL AND length(trim(evidence_quote)) >= 40`,
         []
     );
-    const picked = sample(rows, count);
+    const picked = stratifiedSample(rows, count);
     const judged = [];
     for (const [index, row] of picked.entries()) {
         const verdict = await judgeClaim(
@@ -111,6 +148,8 @@ async function runJudgedPass(database, count) {
         );
         judged.push({
             claimKey: row.claim_key,
+            stratum: row.stratum,
+            samplingWeight: row.samplingWeight,
             claimText: row.claim_text,
             evidenceQuote: row.evidence_quote,
             verdict: verdict ? verdict.verdict : null,
@@ -182,9 +221,10 @@ function renderMarkdown(report) {
         let calibration = [];
         if (calibrationIn) {
             // Rows a human has labelled; unlabelled rows are dropped, not assumed.
-            calibration = JSON.parse(fs.readFileSync(calibrationIn, 'utf8'))
-                .filter((row) => row && row.human && row.judge)
-                .map((row) => ({ judge: row.judge, human: row.human }));
+            const loaded = JSON.parse(fs.readFileSync(calibrationIn, 'utf8'));
+            calibration = (Array.isArray(loaded) ? loaded : loaded.rows || [])
+                .filter((row) => row && row.human && row.verdict)
+                .map((row) => ({ judge: row.verdict, human: row.human }));
         }
         report.judged = buildJudgeReport({ judged, calibration });
         report.judgedItems = judged;
@@ -194,10 +234,21 @@ function renderMarkdown(report) {
             // verdict is included so disagreements can be reviewed, which does
             // risk anchoring the labeller -- worth it only because the
             // alternative is labelling 200 claims with no way to spot-check.
-            fs.writeFileSync(calibrationOut, JSON.stringify(
-                judged.map((row) => ({ ...row, human: '' })), null, 2
-            ));
-            console.error(`Calibration sheet written to ${calibrationOut}`);
+            fs.writeFileSync(calibrationOut, JSON.stringify({
+                instructions: {
+                    task: 'For each row set "human" to one of: supported, partially_supported, '
+                        + 'unsupported, passage_unusable.',
+                    rule: 'Judge only whether the passage states or entails the claim. A claim can '
+                        + 'be true in medicine and still be unsupported by this passage.',
+                    stratified: 'This sample over-samples structurally flagged claims so both '
+                        + 'classes are present. Do not read a corpus-wide rate off it without '
+                        + 'reweighting by samplingWeight.',
+                    note: 'The judge verdict is shown so disagreements can be reviewed. It may '
+                        + 'anchor you — decide from the passage first, then look.',
+                },
+                rows: judged.map((row) => ({ ...row, human: '' })),
+            }, null, 2));
+            console.error(`Calibration sheet written to ${calibrationOut} (${judged.length} rows)`);
         }
     }
 
