@@ -21,7 +21,7 @@ jest.mock('../../server/prompts/promptVersions', () => {
 });
 
 const { getPromptVersion } = require('../../server/prompts/promptVersions');
-const { findReusableStoredSynopsis } = require('../../server/services/ai/paperSynopsisCore');
+const { findReusableStoredSynopsis, invalidateStoredPaperSynopsis } = require('../../server/services/ai/paperSynopsisCore');
 const { buildPaperTeachingObject } = require('../../server/services/ai/teachingObjectService');
 
 const storeReturning = (payload) => ({
@@ -73,6 +73,25 @@ describe('stored synopsis reuse is scoped to the prompt that wrote it', () => {
         const noStamp = storedRow({ generatedAt: null });
         await expect(findReusableStoredSynopsis(storeReturning(noStamp), 'pmid:1')).resolves.toBeNull();
     });
+
+    test('does not reuse a synopsis marked invalidated after not-helpful feedback', async () => {
+        const invalidated = storedRow({ invalidatedAt: new Date().toISOString() });
+        await expect(findReusableStoredSynopsis(storeReturning(invalidated), 'pmid:1')).resolves.toBeNull();
+    });
+
+    test('does not reuse an abstract-only synopsis once full text is available', async () => {
+        const abstractOnly = storedRow({ sourceMode: 'abstract_only' });
+        await expect(findReusableStoredSynopsis(storeReturning(abstractOnly), 'pmid:1', {
+            articleHasFullText: true,
+        })).resolves.toBeNull();
+    });
+
+    test('still reuses a full-text synopsis after full text is available', async () => {
+        const fullText = storedRow({ sourceMode: 'full_text_used' });
+        await expect(findReusableStoredSynopsis(storeReturning(fullText), 'pmid:1', {
+            articleHasFullText: true,
+        })).resolves.not.toBeNull();
+    });
 });
 
 describe('what gets written carries its own provenance', () => {
@@ -104,5 +123,37 @@ describe('what gets written carries its own provenance', () => {
         const { payload } = built({ promptVersion: 'pv-current' });
         await expect(findReusableStoredSynopsis(storeReturning(payload), 'pmid:34274300'))
             .resolves.not.toBeNull();
+    });
+});
+
+describe('not-helpful feedback kills the durable synopsis', () => {
+    test('upserts the stored row with synopsis null and invalidatedAt', async () => {
+        const existing = {
+            objectKey: 'paper:pmid:1',
+            objectType: 'paper',
+            articleUid: 'pmid:1',
+            payload: storedRow(),
+            generatedAt: new Date().toISOString(),
+        };
+        const db = {
+            getTeachingObjectForArticle: jest.fn(async () => existing),
+            getTeachingObjectByKey: jest.fn(async () => existing),
+            upsertTeachingObject: jest.fn(async () => true),
+        };
+
+        await expect(invalidateStoredPaperSynopsis(db, 'pmid:1')).resolves.toBe(true);
+        expect(db.upsertTeachingObject).toHaveBeenCalledWith(expect.objectContaining({
+            objectKey: 'paper:pmid:1',
+            reviewState: 'needs_revision',
+            payload: expect.objectContaining({
+                synopsis: null,
+                invalidationReason: 'user_not_helpful',
+                invalidatedAt: expect.any(String),
+            }),
+        }));
+        const nextPayload = db.upsertTeachingObject.mock.calls[0][0].payload;
+        await expect(findReusableStoredSynopsis({
+            getTeachingObjectForArticle: async () => ({ payload: nextPayload }),
+        }, 'pmid:1')).resolves.toBeNull();
     });
 });

@@ -8,7 +8,7 @@ const { persistPaperTeachingObject, paperTeachingObjectKey, DEFAULT_SYNOPSIS_STY
 const { getProviderCandidates } = require('../../utils/aiProvider');
 const { enrichWithCachedFullText, enqueuePdfPreindex } = require('../pdfPreindexService');
 const { validateAiOutput } = require('../aiOutputValidation');
-const { buildClaimGrounding, runSynopsisCritic } = require('../synopsisGroundingService');
+const { buildClaimGrounding, runSynopsisCritic, failClosedGroundingFindings } = require('../synopsisGroundingService');
 const { recordSynopsisGeneration } = require('../observabilityMetrics');
 const { annotateActiveSpan, withSpan } = require('../../utils/tracing');
 const { getPromptVersion } = require('../../prompts/promptVersions');
@@ -77,9 +77,9 @@ const SYNOPSIS_REUSE_MAX_AGE_DAYS = Number(process.env.SYNOPSIS_REUSE_MAX_AGE_DA
  *
  * @param {object} db
  * @param {string} articleId
- * @param {{ maxAgeDays?: number, now?: number }} [opts]
+ * @param {{ maxAgeDays?: number, now?: number, styleArm?: string|null, articleHasFullText?: boolean }} [opts]
  */
-async function findReusableStoredSynopsis(db, articleId, { maxAgeDays = SYNOPSIS_REUSE_MAX_AGE_DAYS, now = Date.now(), styleArm = null } = {}) {
+async function findReusableStoredSynopsis(db, articleId, { maxAgeDays = SYNOPSIS_REUSE_MAX_AGE_DAYS, now = Date.now(), styleArm = null, articleHasFullText = false } = {}) {
     if (!articleId) return null;
     // The default arm keeps the historic `paper:<uid>` key, so it is fetched by
     // article. Experiment arms live under their own key and must be fetched by
@@ -106,6 +106,11 @@ async function findReusableStoredSynopsis(db, articleId, { maxAgeDays = SYNOPSIS
     // written before the version was recorded carry null and are regenerated
     // once; that is the point, since their provenance is unknown.
     if ((existing.payload?.promptVersion || null) !== getPromptVersion('synopsis')) return null;
+    if (existing.payload?.invalidatedAt) return null;
+
+    const storedUsedFullText = existing.payload?.sourceMode === 'full_text_used'
+        || Boolean(existing.payload?.paper?.fullTextUsed);
+    if (articleHasFullText && !storedUsedFullText) return null;
 
     const stamp = existing.payload?.generatedAt || existing.generatedAt || existing.updatedAt || null;
     const generatedMs = stamp ? Date.parse(stamp) : NaN;
@@ -151,6 +156,47 @@ async function invalidatePaperSynopsisCache({
     await Promise.all([...new Set(keys)].map((key) => (
         del.call(cache, key).catch?.(() => false)
     )));
+    return true;
+}
+
+async function invalidateStoredPaperSynopsis(db, articleId, { styleArmId = null } = {}) {
+    if (!db || !articleId) return false;
+    const objects = [];
+    if (typeof db.getTeachingObjectForArticle === 'function') {
+        const byArticle = await db.getTeachingObjectForArticle(articleId).catch(() => null);
+        if (byArticle?.objectKey) objects.push(byArticle);
+    }
+    if (typeof db.getTeachingObjectByKey === 'function') {
+        const defaultKeyed = await db.getTeachingObjectByKey(paperTeachingObjectKey(articleId)).catch(() => null);
+        if (defaultKeyed?.objectKey && !objects.some((row) => row.objectKey === defaultKeyed.objectKey)) {
+            objects.push(defaultKeyed);
+        }
+        if (styleArmId) {
+            const keyed = await db.getTeachingObjectByKey(paperTeachingObjectKey(articleId, styleArmId)).catch(() => null);
+            if (keyed?.objectKey && !objects.some((row) => row.objectKey === keyed.objectKey)) objects.push(keyed);
+        }
+    }
+    if (!objects.length || typeof db.upsertTeachingObject !== 'function') return false;
+    const invalidatedAt = new Date().toISOString();
+    await Promise.all(objects.map((object) => db.upsertTeachingObject({
+        objectKey: object.objectKey,
+        objectType: object.objectType || 'paper',
+        articleUid: object.articleUid || articleId,
+        topic: object.topic || null,
+        title: object.title || null,
+        provider: object.provider || null,
+        model: object.model || null,
+        confidence: object.confidence,
+        reviewState: 'needs_revision',
+        generatedAt: object.generatedAt || invalidatedAt,
+        payload: {
+            ...(object.payload && typeof object.payload === 'object' ? object.payload : {}),
+            synopsis: null,
+            invalidatedAt,
+            invalidationReason: 'user_not_helpful',
+            reviewState: 'needs_revision',
+        },
+    })));
     return true;
 }
 
@@ -241,10 +287,22 @@ async function runPaperSynopsisGenerationInner({
         ))
         .concat(getPaperSynopsisCacheKey(article, selectedModelForCache, effectiveTrainingStage, null, preferenceSuffix)))];
 
+    const [enriched] = await withSpan('synopsis.full_text_enrichment', { 'article.id': articleId }, () => (
+        enrichWithCachedFullText([article], cache, db).catch(() => [article])
+    ));
+    const hasFullTextNow = Boolean(
+        enriched._fullTextIndexed
+        || article._fullTextIndexed
+        || Number(enriched._fullTextWordCount || article._fullTextWordCount || 0) >= 200
+    );
+
     if (cache?.getAsync) {
         for (const candidateCacheKey of candidateCacheKeys) {
             const memCached = await withSpan('synopsis.cache_get', { 'cache.key': candidateCacheKey }, () => cache.getAsync(candidateCacheKey));
-            if (memCached) return { ...memCached, cached: true, jobKey: jobKey || memCached.jobKey };
+            if (!memCached) continue;
+            const cachedAbstractOnly = !(Number(memCached.audit?.fullTextCoverageRatio) > 0);
+            if (hasFullTextNow && cachedAbstractOnly) continue;
+            return { ...memCached, cached: true, jobKey: jobKey || memCached.jobKey };
         }
     }
 
@@ -256,7 +314,10 @@ async function runPaperSynopsisGenerationInner({
     // store here, before any generation work, and warm Redis from it.
     if (!refresh) {
         const reusable = await withSpan('synopsis.store_read_through', { 'article.id': articleId }, () => (
-            findReusableStoredSynopsis(db, articleId, { styleArm: synopsisStyleArm?.armId || null })
+            findReusableStoredSynopsis(db, articleId, {
+                styleArm: synopsisStyleArm?.armId || null,
+                articleHasFullText: hasFullTextNow,
+            })
         ));
         if (reusable) {
             const result = {
@@ -303,10 +364,8 @@ async function runPaperSynopsisGenerationInner({
         }
     }
 
-    // Enrich with full-text sections when cached — improves numerical result extraction
-    const [enriched] = await withSpan('synopsis.full_text_enrichment', { 'article.id': articleId }, () => (
-        enrichWithCachedFullText([article], cache, db).catch(() => [article])
-    ));
+    // Enrich ran before reuse so an abstract-only store hit cannot outlive a
+    // later PDF index.
     // A practice guideline indexed in PubMed usually has no abstract at all --
     // measured on production, the EASL ascites guideline and the AGA
     // hepatorenal guideline both come back with zero abstract characters, no
@@ -451,17 +510,15 @@ async function runPaperSynopsisGenerationInner({
         claimGrounding,
         abstractOnly: fullTextCoverageRatio === 0,
     });
-    const ungroundedNumbers = (critic.findings || []).filter(
-        (f) => f.severity === 'error' && f.code === 'ungrounded_number'
-    );
-    if (ungroundedNumbers.length) {
+    const failClosed = failClosedGroundingFindings(critic);
+    if (failClosed.length) {
         recordSynopsisGeneration({ ok: false, provider: selectedProvider, model: selectedModel });
         logger.warn(
-            { articleId, provider: selectedProvider, model: selectedModel, findings: ungroundedNumbers },
-            'Synopsis rejected: numeric claims not grounded in source text'
+            { articleId, provider: selectedProvider, model: selectedModel, findings: failClosed },
+            'Synopsis rejected: claims not grounded in source text'
         );
         throw new Error(
-            `AI synopsis grounding failed: ${ungroundedNumbers.map((f) => f.message).join('; ')}`
+            `AI synopsis grounding failed: ${failClosed.map((f) => f.message).join('; ')}`
         );
     }
 
@@ -569,4 +626,5 @@ module.exports = {
     getPaperSynopsisCacheKey,
     synopsisStyleCacheSuffix,
     invalidatePaperSynopsisCache,
+    invalidateStoredPaperSynopsis,
 };

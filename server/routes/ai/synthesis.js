@@ -17,6 +17,8 @@ const {
 const {
     getPaperSynopsisArticleId,
     invalidatePaperSynopsisCache,
+    invalidateStoredPaperSynopsis,
+    findReusableStoredSynopsis,
 } = require('../../services/paperSynopsisCore');
 const { recordBanditReward } = require('../../services/personalizationBanditService');
 const {
@@ -24,7 +26,6 @@ const {
     synopsisRegenerationTargets,
 } = require('../../services/learningLoopSignalService');
 const { getOrEnqueueFullSynthesis, getOrEnqueuePaperSynopsis } = require('../../services/aiGenerationJobService');
-const { findReusableStoredSynopsis } = require('../../services/paperSynopsisCore');
 const { persistPaperTeachingObject, stableArticleUid } = require('../../services/teachingObjectService');
 const { getHierarchicalSynthesis, setHierarchicalSynthesis, needsRegeneration } = require('../../services/hierarchicalCacheService');
 const { streamSynthesisGeneration } = require('../../services/progressiveStreamingService');
@@ -359,15 +360,23 @@ function registerSynthesisRoutes(app, {
                     metadata: { cached, regenerationTargets },
                 });
             }
-            if (type === 'not_helpful' && article) {
-                await invalidatePaperSynopsisCache({
-                    cache,
-                    article,
-                    selectedModel: model,
-                    trainingStage,
-                    synopsisStyleArmId: banditMeta?.policyType === 'synopsis_style' ? banditMeta.armId : null,
+            if (type === 'not_helpful') {
+                if (article) {
+                    await invalidatePaperSynopsisCache({
+                        cache,
+                        article,
+                        selectedModel: model,
+                        trainingStage,
+                        synopsisStyleArmId: banditMeta?.policyType === 'synopsis_style' ? banditMeta.armId : null,
+                    }).catch((err) => {
+                        logger.warn({ err, articleUid: uid }, 'synopsis cache invalidation failed');
+                        return false;
+                    });
+                }
+                await invalidateStoredPaperSynopsis(db, uid, {
+                    styleArmId: banditMeta?.policyType === 'synopsis_style' ? banditMeta.armId : null,
                 }).catch((err) => {
-                    logger.warn({ err, articleUid: uid }, 'synopsis cache invalidation failed');
+                    logger.warn({ err, articleUid: uid }, 'stored synopsis invalidation failed');
                     return false;
                 });
             }
@@ -392,7 +401,7 @@ function registerSynthesisRoutes(app, {
             return res.json({
                 ok: true,
                 feedbackType: type,
-                cacheInvalidated: type === 'not_helpful' && Boolean(article),
+                cacheInvalidated: type === 'not_helpful',
                 regenerationTargets,
             });
         } catch (error) {

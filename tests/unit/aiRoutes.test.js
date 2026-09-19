@@ -73,6 +73,8 @@ jest.mock('../../server/services/synthesisGenerationCore', () => ({
 jest.mock('../../server/services/paperSynopsisCore', () => ({
     getPaperSynopsisArticleId: jest.fn((article) => article.uid || article.pmid || article.doi || 'hashed'),
     invalidatePaperSynopsisCache: jest.fn().mockResolvedValue(true),
+    invalidateStoredPaperSynopsis: jest.fn().mockResolvedValue(true),
+    findReusableStoredSynopsis: jest.fn().mockResolvedValue(null),
 }));
 
 jest.mock('../../server/services/aiGenerationJobService', () => ({
@@ -344,6 +346,12 @@ describe('aiRoutes', () => {
                 trainingStage: 'finals',
                 synopsisStyleArmId: 'pico_structured',
             }));
+            const { invalidateStoredPaperSynopsis } = require('../../server/services/paperSynopsisCore');
+            expect(invalidateStoredPaperSynopsis).toHaveBeenCalledWith(
+                expect.anything(),
+                'a1',
+                expect.objectContaining({ styleArmId: 'pico_structured' }),
+            );
         });
     });
 
