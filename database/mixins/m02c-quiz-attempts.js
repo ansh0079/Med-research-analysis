@@ -22,9 +22,14 @@ async createQuizAttempt(attempt) {
     // userId is null for an anonymous BETA_MODE session; sessionId is what makes the
     // row findable later so reconcileAnonymousQuizAttempts can attach it once the
     // visitor signs in. See migration 092.
+    // Lineage columns (migration 101) are written only when the attempt carries lineage.
+    const hasLineage = attempt.evidenceSnapshotId != null || attempt.contentVersion != null;
+    const lineageColumns = hasLineage ? ', evidence_snapshot_id, content_version' : '';
+    const lineagePlaceholders = hasLineage ? ', ?, ?' : '';
+    const lineageValues = hasLineage ? [attempt.evidenceSnapshotId || null, attempt.contentVersion || null] : [];
     const result = await this.run(
-        `INSERT INTO quiz_attempts (user_id, topic, normalized_topic, question_id, question_type, question_text, user_answer, correct_answer, is_correct, time_ms, confidence, source_article_uid, study_run_id, outline_node_id, concept_hash, claim_key, reasoning_tags, reasoning_note, prompt_variant, session_id, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+        `INSERT INTO quiz_attempts (user_id, topic, normalized_topic, question_id, question_type, question_text, user_answer, correct_answer, is_correct, time_ms, confidence, source_article_uid, study_run_id, outline_node_id, concept_hash, claim_key, reasoning_tags, reasoning_note, prompt_variant, session_id, created_at${lineageColumns})
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now')${lineagePlaceholders})`,
         [
             attempt.userId || null,
             attempt.topic,
@@ -46,6 +51,7 @@ async createQuizAttempt(attempt) {
             attempt.reasoningNote ? String(attempt.reasoningNote).slice(0, 500) : null,
             promptVariant,
             attempt.sessionId || null,
+            ...lineageValues,
         ]
     );
     return { id: result.id, conceptHash, ...attempt };

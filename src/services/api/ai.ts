@@ -1,4 +1,5 @@
 import { API_BASE, BaseApiClient } from './core';
+import { evidenceSnapshotIdFor } from '../evidenceSnapshotStore';
 import type { WebpageExtractionPayload } from '@utils/webpageExtraction';
 import type {
   Article,
@@ -79,7 +80,7 @@ export class AiApi extends BaseApiClient {
     const response = await this.fetchWithSession(`${API_BASE}/api/quiz/from-evidence`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic, articles, difficulty, count }),
+      body: JSON.stringify({ topic, articles, difficulty, count, evidenceSnapshotId: evidenceSnapshotIdFor(articles) }),
     });
     if (!response.ok) throw new Error('Failed to generate quiz from evidence');
     return response.json();
@@ -239,6 +240,7 @@ export class AiApi extends BaseApiClient {
         topic: options?.topic,
         trainingStage: options?.trainingStage,
         synopsisStyleArmId: options?.synopsisStyleArmId,
+        evidenceSnapshotId: evidenceSnapshotIdFor([article]),
       }),
     });
     if (!response.ok) await this.parseErrorResponse(response);

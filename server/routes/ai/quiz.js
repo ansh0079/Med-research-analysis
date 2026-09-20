@@ -90,6 +90,7 @@ function registerQuizRoutes(app, {
                 const result = await quizGenerationService.generateQuiz({
                     body: req.body,
                     user: req.user,
+                    sessionId: req.sessionId || null,
                     log: req.log,
                 });
                 return sendServiceResponse(res, result);
@@ -108,6 +109,7 @@ function registerQuizRoutes(app, {
                 const result = await quizGenerationService.generateFromEvidence({
                     body: req.body,
                     user: req.user,
+                    sessionId: req.sessionId || null,
                     log: req.log,
                 });
                 return sendServiceResponse(res, result);

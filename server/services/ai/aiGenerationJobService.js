@@ -746,7 +746,7 @@ function enqueuePaperSynopsisJob({ db, jobKey, serverConfig, fetchImpl, cache, l
 async function getOrEnqueuePaperSynopsis({
     db, article, provider = 'auto', serverConfig, fetchImpl, cache, logger,
     topic = '', trainingStage = null, userId = null,
-    forceSync = false, sessionId = null, log = null,
+    forceSync = false, sessionId = null, log = null, lineage = null,
 }) {
     const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider }, serverConfig);
     if (!selectedProvider) {
@@ -770,6 +770,7 @@ async function getOrEnqueuePaperSynopsis({
                 userId,
                 sessionId,
                 log: log || logger,
+                lineage,
             });
             return { status: 'completed', jobKey, ...result };
         } catch (err) {
@@ -794,7 +795,7 @@ async function getOrEnqueuePaperSynopsis({
         jobType: 'paper_synopsis',
         topic: topic || null,
         inputHash: stableHash({ jobKey, title: article?.title, trainingStage }),
-        inputPayload: { article, provider, topic, trainingStage, userId },
+        inputPayload: { article, provider, topic, trainingStage, userId, lineage },
         userId: userId || null,
         provider: selectedProvider,
         model: selectedModel,

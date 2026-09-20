@@ -214,6 +214,7 @@ async function runPaperSynopsisGeneration({
     trainingStage = null,
     userId = null,
     refresh = false,
+    lineage = null,
 }) {
     const articleId = getPaperSynopsisArticleId(article);
     return withSpan('synopsis.paper.generate', {
@@ -237,6 +238,7 @@ async function runPaperSynopsisGeneration({
         trainingStage,
         articleId,
         userId,
+        lineage,
     })));
 }
 
@@ -255,6 +257,7 @@ async function runPaperSynopsisGenerationInner({
     articleId,
     userId = null,
     refresh = false,
+    lineage = null,
 }) {
     if (!article || typeof article !== 'object' || !article.title) {
         throw new Error('article with title is required');
@@ -593,7 +596,7 @@ async function runPaperSynopsisGenerationInner({
         await db.logEvent('synopsis', sessionId, { articleId, userId: userId || undefined }).catch((err) => { logger.warn({ err }, 'logEvent failed'); return null; });
     }
     await withSpan('synopsis.persist_teaching_object', { 'article.id': articleId, 'synopsis.topic': topic }, () => (
-        persistPaperTeachingObject({ db, article, synopsisResult: result, topic, styleArm: synopsisStyleArm?.armId || null }).catch((err) => {
+        persistPaperTeachingObject({ db, article, synopsisResult: result, topic, styleArm: synopsisStyleArm?.armId || null, lineage }).catch((err) => {
             log?.warn?.({ err, articleId }, 'Paper teaching object persistence skipped');
         })
     ));

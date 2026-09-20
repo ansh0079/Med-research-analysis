@@ -191,12 +191,18 @@ async function generateCaseScenario(ai, { topic, difficulty, userProfile, provid
 
 async function saveCaseScenario(db, userId, caseScenario) {
     const caseId = `case_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+    // The lineage column (migration 101) is written only when the case carries lineage, so a
+    // caller without it never depends on the column existing.
+    const hasLineage = caseScenario.evidenceSnapshotId !== undefined;
+    const lineageColumns = hasLineage ? ', evidence_snapshot_id' : '';
+    const lineagePlaceholders = hasLineage ? ', ?' : '';
+    const lineageValues = hasLineage ? [caseScenario.evidenceSnapshotId || null] : [];
 
     await db.run(
         `INSERT INTO case_scenarios (
             case_id, user_id, topic, difficulty, vignette, decision_tree, outcomes,
-            current_node, choices_made, created_at, provider, model
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            current_node, choices_made, created_at, provider, model${lineageColumns}
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?${lineagePlaceholders})`,
         [
             caseId,
             userId,
@@ -209,7 +215,8 @@ async function saveCaseScenario(db, userId, caseScenario) {
             JSON.stringify([]),
             new Date().toISOString(),
             caseScenario.provider,
-            caseScenario.model
+            caseScenario.model,
+            ...lineageValues,
         ]
     );
 

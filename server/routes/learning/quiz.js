@@ -16,6 +16,7 @@ const {
 } = require('../../services/searchLearningOutcomeService');
 const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('../../services/learningSignalService');
 const { verifyQuizGradingToken, verifyQuizAnswerCommitment } = require('../../services/quizGradingToken');
+const { getEvidenceSnapshot } = require('../../services/search/searchEvidenceSnapshot');
 const {
     calculateMastery, calculateMasteryWithBkt, nextReviewDate, updateStreak,
     buildOutline, initialCoverage, updateCoverage, summarizeRunGaps,
@@ -112,6 +113,24 @@ function registerQuizRoutes(app, deps) {
                 });
             }
             const attemptsWithJudgement = grading.attempts;
+            // The snapshot id arrives inside the signed grading token, so it cannot be forged, but a
+            // token can be submitted by someone other than the learner it was issued to. Keep the id
+            // only when this submitter owns the snapshot; otherwise record the attempt as unlinked.
+            const lineageCache = new Map();
+            for (const attempt of attemptsWithJudgement) {
+                if (!attempt.evidenceSnapshotId) continue;
+                if (!lineageCache.has(attempt.evidenceSnapshotId)) {
+                    lineageCache.set(attempt.evidenceSnapshotId, await getEvidenceSnapshot(db, attempt.evidenceSnapshotId, {
+                        userId: req.user?.id || null,
+                        sessionId: req.sessionId || null,
+                        withSources: false,
+                    }).then((r) => r.ok).catch(() => false));
+                }
+                if (!lineageCache.get(attempt.evidenceSnapshotId)) {
+                    attempt.evidenceSnapshotId = null;
+                    attempt.evidenceLineageStatus = 'invalid';
+                }
+            }
 
             if (req.betaAnonymous) {
                 const normalizedTopic = db.normalizeTopic(topic);

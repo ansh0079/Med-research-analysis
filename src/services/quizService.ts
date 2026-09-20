@@ -1,4 +1,5 @@
 import type { QuizQuestion, LearningProfile } from '@types';
+import { evidenceSnapshotIdFor } from './evidenceSnapshotStore';
 import type { EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
@@ -97,7 +98,7 @@ export async function generateQuizFromEvidence(
     method: 'POST',
     headers: sessionHeaders(),
     credentials: 'include',
-    body: JSON.stringify({ topic, articles, difficulty, count }),
+    body: JSON.stringify({ topic, articles, difficulty, count, evidenceSnapshotId: evidenceSnapshotIdFor(articles as never[]) }),
   });
   if (!res.ok) await parseQuizError(res);
   const data = await res.json();
@@ -136,6 +137,8 @@ export async function generateQuiz(
   adaptiveClaimCount?: number;
 }> {
   const body: Record<string, unknown> = { topic, articles, count, difficulty, studyRunId };
+  const snapshotId = evidenceSnapshotIdFor(articles as never[]);
+  if (snapshotId) body.evidenceSnapshotId = snapshotId;
   if (opts?.trainingStage) body.trainingStage = opts.trainingStage;
   if (opts?.explanationDepth) body.explanationDepth = opts.explanationDepth;
   if (opts?.targetNodeIds?.length) body.explicitTargetNodeIds = opts.targetNodeIds;

@@ -479,9 +479,37 @@ function buildConsensusTeachingObject({ topic, consensusSynopsis, articles = [] 
     };
 }
 
-async function persistPaperTeachingObject({ db, article, synopsisResult, topic = '', styleArm = null }) {
+/**
+ * Attach evidence lineage to a generated object. The snapshot id and status are stored as columns
+ * (so they can be queried) and in the payload with the source version the synopsis was generated
+ * from. Provenance-asserting claim labels are capped when lineage does not back them and
+ * EVIDENCE_LINEAGE_ENFORCEMENT=enforce; in the default shadow mode labels are unchanged.
+ */
+function withLineage(object, lineage, article) {
+    const { capVerificationForLineage, publicLineage, LINEAGE_STATUS } = require('../search/generationEvidenceContext');
+    const effective = lineage || { snapshotId: null, status: LINEAGE_STATUS.UNLINKED };
+    const claimAnchors = Array.isArray(object.payload?.claimAnchors)
+        ? object.payload.claimAnchors.map((claim) => ({
+            ...claim,
+            verificationStatus: capVerificationForLineage(claim.verificationStatus, effective),
+        }))
+        : object.payload?.claimAnchors;
+    const withPayload = {
+        ...object,
+        payload: {
+            ...object.payload,
+            ...(claimAnchors ? { claimAnchors } : {}),
+            ...(lineage ? { lineage: { ...publicLineage(lineage), sourceVersionId: article?._snapshotVersionId || lineage.sourceVersions?.[String(article?.uid || article?.pmid || article?.id || '')] || null } } : {}),
+        },
+    };
+    if (!lineage) return withPayload;
+    return { ...withPayload, evidenceSnapshotId: lineage.snapshotId || null, lineageStatus: lineage.status };
+}
+
+async function persistPaperTeachingObject({ db, article, synopsisResult, topic = '', styleArm = null, lineage = null }) {
     if (!db?.upsertTeachingObject || !article || !synopsisResult?.synopsis) return null;
-    return db.upsertTeachingObject(buildPaperTeachingObject({ article, synopsisResult, topic, styleArm }));
+    const object = buildPaperTeachingObject({ article, synopsisResult, topic, styleArm });
+    return db.upsertTeachingObject(withLineage(object, lineage, article));
 }
 
 async function persistConsensusTeachingObject({ db, topic, consensusSynopsis, articles = [] }) {

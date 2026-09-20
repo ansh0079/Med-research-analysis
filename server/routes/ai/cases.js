@@ -7,6 +7,7 @@
  */
 
 const { generateCaseScenario, saveCaseScenario, getCaseScenario, recordCaseChoice } = require('../../services/caseScenarioService');
+const { snapshotTopicEvidence, guidelineToEvidenceArticle, publicLineage } = require('../../services/search/generationEvidenceContext');
 const { resolveProvider } = require('../../utils/aiProvider');
 const { AI_DISCLAIMER } = require('../../services/aiService');
 const {
@@ -94,6 +95,16 @@ function registerCaseRoutes(app, {
                 const guidelines = await db.getGuidelinesByTopic(topic.trim(), { limit: 5 })
                     .catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; });
 
+                // A topic-based case has no search to link to, so it snapshots the evidence it is
+                // actually built from (the stored guidelines) and records that as its lineage.
+                const evidenceLineage = await snapshotTopicEvidence(db, {
+                    topic: topic.trim(),
+                    articles: guidelines.map(guidelineToEvidenceArticle),
+                    userId: req.user.id,
+                    sessionId: req.sessionId || null,
+                    origin: 'case_generation',
+                });
+
                 // Generate case scenario
                 const caseScenario = await generateCaseScenario(ai, {
                     topic,
@@ -105,6 +116,7 @@ function registerCaseRoutes(app, {
                 });
                 caseScenario.topic = caseScenario.topic || topic.trim();
                 caseScenario.difficulty = difficulty;
+                caseScenario.evidenceSnapshotId = evidenceLineage.snapshotId;
 
                 // Save to database
                 const savedCase = await saveCaseScenario(db, req.user.id, caseScenario);
@@ -152,6 +164,7 @@ function registerCaseRoutes(app, {
                         decisionId: decision?.id || null,
                         selectedBy: difficultyBandit ? 'bandit' : 'client',
                     },
+                    evidenceLineage: publicLineage(evidenceLineage),
                     disclaimer: AI_DISCLAIMER
                 });
             } catch (error) {

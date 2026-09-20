@@ -23,6 +23,8 @@ mapTeachingObjectRow(row) {
         confidence: Number(row.confidence || 0),
         generatedAt: row.generated_at || null,
         reviewState: row.review_state || 'unreviewed',
+        evidenceSnapshotId: row.evidence_snapshot_id || null,
+        lineageStatus: row.lineage_status || null,
         createdAt: row.created_at || null,
         updatedAt: row.updated_at || null,
     };
@@ -48,13 +50,26 @@ async upsertTeachingObject(object = {}) {
     const curriculumTopicId = topic
         ? await this.resolveCurriculumTopicId(topic).catch(() => null)
         : null;
+    // Lineage columns (migration 101) are written only when the caller supplies lineage, so a
+    // caller with no snapshot never overwrites lineage recorded by an earlier generation.
+    const hasLineage = object.evidenceSnapshotId !== undefined || object.lineageStatus !== undefined;
+    const lineageColumns = hasLineage ? ', evidence_snapshot_id, lineage_status' : '';
+    const lineagePlaceholders = hasLineage ? ', ?, ?' : '';
+    const lineageUpdate = hasLineage
+        ? `,
+            evidence_snapshot_id = excluded.evidence_snapshot_id,
+            lineage_status = excluded.lineage_status`
+        : '';
+    const lineageValues = hasLineage
+        ? [object.evidenceSnapshotId || null, object.lineageStatus ? String(object.lineageStatus).slice(0, 40) : null]
+        : [];
     // review_state below: 'withdrawn' (a retracted source) is terminal, so regeneration never restores it.
     await this.run(
         `INSERT INTO teaching_objects (
             object_key, object_type, article_uid, normalized_topic, topic, title,
             object_payload, provider, model, confidence, review_state, generated_at, created_at, updated_at,
-            curriculum_topic_id
-         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            curriculum_topic_id${lineageColumns}
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?${lineagePlaceholders})
          ON CONFLICT(object_key) DO UPDATE SET
             object_type = excluded.object_type,
             article_uid = excluded.article_uid,
@@ -74,7 +89,7 @@ async upsertTeachingObject(object = {}) {
             END,
             generated_at = excluded.generated_at,
             updated_at = excluded.updated_at,
-            curriculum_topic_id = COALESCE(excluded.curriculum_topic_id, teaching_objects.curriculum_topic_id)`,
+            curriculum_topic_id = COALESCE(excluded.curriculum_topic_id, teaching_objects.curriculum_topic_id)${lineageUpdate}`,
         [
             objectKey,
             String(object.objectType || 'paper').slice(0, 40),
@@ -91,6 +106,7 @@ async upsertTeachingObject(object = {}) {
             now,
             now,
             curriculumTopicId,
+            ...lineageValues,
         ]
     );
     await this.replaceTeachingObjectClaims({

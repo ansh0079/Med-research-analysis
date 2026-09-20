@@ -1,5 +1,6 @@
 import { useCallback, useRef, useEffect, useState } from 'react';
 import { api } from '@services/api';
+import { setCurrentEvidenceSnapshot } from '@services/evidenceSnapshotStore';
 import { handleAsyncError } from '@utils/handleAsyncError';
 import { useSearchMeta, useSearchQuery } from '@contexts/SearchContext';
 import type { AgentGuidance, Article, LearnerContextSummary, LowRecallLearning, ProactiveAlert, EvidenceSnapshotRef, ProactiveEvidenceAlert, QueryResolution, SearchFilters, SearchPack } from '@types';
@@ -289,6 +290,7 @@ export function useSearch() {
         if (thisRequestId !== requestIdRef.current) return articles;
         trackSearch(query, { filters, resultsCount: articles.length });
         setResults(articles);
+        setCurrentEvidenceSnapshot(data.evidenceSnapshot, articles);
         setLastSearchId(searchId ?? null);
         setSearchCompletedAt(Date.now());
         if (searchId && articles.length > 0) {
