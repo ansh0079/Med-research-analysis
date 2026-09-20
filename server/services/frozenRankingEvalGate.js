@@ -11,7 +11,8 @@
  *
  * Runs the same suites as `npm run eval:search-ranking`
  * (searchAbbreviationRanking | searchRankingTune | guidelineTopicFallback |
- * queryAnchorRelevance | guidelineEmbeddingRefiling) in a child process.
+ * searchPhase0Ranking | queryAnchorRelevance | guidelineEmbeddingRefiling |
+ * evidenceLanes) in a child process.
  * Fail-closed: if the suite cannot run at all, the gate fails — an unchecked
  * promotion is the dangerous outcome, not a blocked one.
  */
@@ -20,7 +21,7 @@ const { spawnSync } = require('child_process');
 const path = require('path');
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
-const RANKING_TEST_PATTERN = 'searchAbbreviationRanking|searchRankingTune|guidelineTopicFallback|queryAnchorRelevance|guidelineEmbeddingRefiling';
+const RANKING_TEST_PATTERN = 'searchAbbreviationRanking|searchRankingTune|guidelineTopicFallback|queryAnchorRelevance|guidelineEmbeddingRefiling|searchPhase0Ranking|evidenceLanes';
 
 /**
  * @param {object} [deps]

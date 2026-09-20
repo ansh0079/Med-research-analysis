@@ -2,7 +2,7 @@ import { useCallback, useRef, useEffect, useState } from 'react';
 import { api } from '@services/api';
 import { handleAsyncError } from '@utils/handleAsyncError';
 import { useSearchMeta, useSearchQuery } from '@contexts/SearchContext';
-import type { AgentGuidance, Article, LearnerContextSummary, LowRecallLearning, ProactiveAlert, ProactiveEvidenceAlert, SearchFilters } from '@types';
+import type { AgentGuidance, Article, LearnerContextSummary, LowRecallLearning, ProactiveAlert, ProactiveEvidenceAlert, SearchFilters, SearchPack } from '@types';
 import { useAuth } from '@contexts/AuthContext';
 import { useAnalytics } from './useAnalytics';
 import { usePolling } from './usePolling';
@@ -62,6 +62,7 @@ export function useSearch() {
   const [intelligenceLoading, setIntelligenceLoading] = useState(false);
   const [lowRecallLearning, setLowRecallLearning] = useState<LowRecallLearning | null>(null);
   const [searchTelemetry, setSearchTelemetry] = useState<import('@types').SearchResponse['searchTelemetry'] | null>(null);
+  const [searchPack, setSearchPack] = useState<SearchPack | null>(null);
   const [queryIntent, setQueryIntent] = useState<string | null>(null);
   const requestIdRef = useRef(0);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -301,6 +302,7 @@ export function useSearch() {
         setLearnerContext(nextLearnerContext || null);
         setLowRecallLearning(nextLowRecallLearning || null);
         setSearchTelemetry(data.searchTelemetry ?? null);
+        setSearchPack(data.searchPack ?? null);
         setQueryIntent(typeof data.queryIntent === 'string' ? data.queryIntent : null);
         addToSearchHistory(query.trim());
         refreshKnowledgeDriftAlerts();
@@ -385,6 +387,7 @@ export function useSearch() {
         setLowRecallLearning(null);
         setQueryIntent(null);
         setSearchTelemetry(null);
+        setSearchPack(null);
         return [];
       } finally {
         if (thisRequestId === requestIdRef.current) setLoading(false);
@@ -407,6 +410,7 @@ export function useSearch() {
     setLowRecallLearning(null);
     setQueryIntent(null);
     setSearchTelemetry(null);
+    setSearchPack(null);
     setTopicGuideStatus('idle');
     setLastSearchId(null);
     setAiEnrichmentLoading(false);
@@ -431,6 +435,7 @@ export function useSearch() {
     dismissKnowledgeDriftAlert,
     lowRecallLearning,
     searchTelemetry,
+    searchPack,
     queryIntent,
   };
 }

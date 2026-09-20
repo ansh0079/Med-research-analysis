@@ -134,6 +134,8 @@ function registerUnifiedSearchRoutes(app, deps) {
 
             let { articles } = ranked;
             let { telemetry, banditMeta } = ranked;
+            let searchPack = ranked.searchPack || null;
+            let learningOrder = Array.isArray(ranked.learningOrder) ? ranked.learningOrder : [];
             const {
                 teachingObjects: boostedObjects,
                 teachingClaims: boostedClaims,
@@ -255,6 +257,10 @@ function registerUnifiedSearchRoutes(app, deps) {
                             });
                             if (Array.isArray(repairedRanked.articles) && repairedRanked.articles.length > articles.length) {
                                 articles = repairedRanked.articles;
+                                searchPack = repairedRanked.searchPack || searchPack;
+                                learningOrder = Array.isArray(repairedRanked.learningOrder)
+                                    ? repairedRanked.learningOrder
+                                    : learningOrder;
                                 banditMeta = repairedRanked.banditMeta || banditMeta;
                                 telemetry = {
                                     ...(repairedRanked.telemetry || telemetry),
@@ -420,6 +426,8 @@ function registerUnifiedSearchRoutes(app, deps) {
                 queryIntent: ranked.queryIntent,
                 queryIntentProfile: ranked.queryIntentProfile || queryIntentProfile,
                 ranking: ranked.bouquetRanking,
+                searchPack,
+                learningOrder,
                 searchTelemetry: {
                     timings: { ...telemetry.timings, ...routeTimings },
                     sources: telemetry.sourceFetches || {},

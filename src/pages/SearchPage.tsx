@@ -71,6 +71,7 @@ export const SearchPage: React.FC = () => {
     dismissKnowledgeDriftAlert,
     lowRecallLearning,
     searchTelemetry,
+    searchPack,
     queryIntent,
     recentSearches,
     pdfViewer,
@@ -109,6 +110,8 @@ export const SearchPage: React.FC = () => {
     resultFilter,
     setResultFilter,
     resultLens,
+    evidenceLane,
+    setEvidenceLane,
     setResultLens,
     visibleResults,
     renderedResults,
@@ -242,6 +245,9 @@ export const SearchPage: React.FC = () => {
             sourceTelemetry={searchTelemetry?.sources}
             sourceFailures={searchTelemetry?.sourceFailures}
             queryIntent={queryIntent}
+            searchPack={searchPack}
+            evidenceLane={evidenceLane}
+            onLaneChange={setEvidenceLane}
             activeFilters={{
               specificity: filters.specificity,
               studyTypeLabels: (filters.studyTypes || [])
@@ -432,6 +438,8 @@ export const SearchPage: React.FC = () => {
             onClosePdf={closePdf}
             activePdf={activePdf}
             renderedResults={renderedResults}
+            evidenceLane={evidenceLane}
+            searchPack={searchPack}
             activeResultIndex={activeResultIndex}
             visibleCount={visibleCount}
             visibleResultsLength={visibleResults.length}

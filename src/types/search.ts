@@ -85,6 +85,22 @@ export interface LowRecallLearning {
   reason?: 'pubmed_zero_hit' | 'sparse_ranked_results' | string;
 }
 
+export type EvidenceLaneKey = 'guidelines' | 'landmark_trials' | 'reviews' | 'supporting';
+
+export interface SearchPackLane {
+  key: EvidenceLaneKey;
+  label: string;
+  count: number;
+  uids: string[];
+  emptyState: string;
+}
+
+export interface SearchPack {
+  primaryLane: EvidenceLaneKey | null;
+  cascadeNote: string;
+  lanes: Record<EvidenceLaneKey, SearchPackLane>;
+}
+
 export interface SearchResponse {
   articles: Article[];
   count: number;
@@ -149,6 +165,8 @@ export interface SearchResponse {
       key?: string;
     };
   };
+  searchPack?: SearchPack | null;
+  learningOrder?: string[];
   ranking?: Array<{
     uid?: string;
     compositeScore?: number;

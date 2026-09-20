@@ -6,16 +6,13 @@ const {
     buildEvidenceBouquet,
     classifyQueryIntent,
     intentToPreferredArchetypes,
-    isOffTopic,
     getCitationCount,
     hasCitationData,
     getYear,
     isPreclinical,
     isGroundbreakingBasicScience,
     isPredatoryJournal,
-    matchesPopulationFilter,
     MECHANISM_QUERY_PATTERNS,
-    queryAliasMatchScore,
 } = require('../evidenceBouquetService');
 const { fetchUnifiedEvidence, collapseNearDuplicateTitles, decomposePico } = require('../unifiedEvidenceSearch');
 const { sanitizeArticleOutput } = require('../../utils/articles');
@@ -30,6 +27,13 @@ const {
 const { annotateArticlesWithRankingTraces } = require('../searchRankingTrace');
 const { withSpan, annotateActiveSpan } = require('../../utils/tracing');
 const { buildTeachingSignalBoosts } = require('../searchRankingConstants');
+const {
+    evaluateEligibility,
+    classifyEvidenceLane,
+    annotateEvidenceMetadata,
+    buildSearchPack,
+    orderArticlesByEvidenceRank,
+} = require('./evidenceLanes');
 
 const STRICT_PUB_TYPES = new Set([
     'systematic review', 'meta-analysis', 'meta analysis',
@@ -446,45 +450,47 @@ function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMes
     const isStrictMode = specificity === 'strict';
     const meshTerms = Array.isArray(queryMeshTerms) ? queryMeshTerms : [];
 
-    return (Array.isArray(raw) ? raw : []).filter((article) => {
-        // Retracted papers must never appear in results
-        if (article._retraction?.isRetracted) return false;
+    const eligibilityCtx = { query, queryMeshTerms: meshTerms, queryAliases };
+    return (Array.isArray(raw) ? raw : []).flatMap((article) => {
+        const eligibility = evaluateEligibility(article, eligibilityCtx);
+        if (!eligibility.eligible) return [];
         // Curated PMID pins bypass relevance/age filters — titles often lack the
         // modern query phrasing (e.g. van Nood 2013: "duodenal infusion of donor feces"
         // vs query "fecal microbiota transplant"), which would otherwise look off-topic.
-        if (article._pinnedLandmark) return true;
-        // Population mismatch (e.g. adult-only article for a pediatric query)
-        if (!matchesPopulationFilter(article, query)) return false;
-        const aliasMatched = queryAliasMatchScore(article, queryAliases) > 0;
-        if (!aliasMatched && isOffTopic(article, query, { queryMeshTerms: meshTerms })) return false;
-        if (!yearInFilters(article, parsedYearFilters)) return false;
-        if (!matchesPicoInterventionComparator(article, pico, query)) return false;
-        const age = currentYear - getYear(article);
-        // Only drop old papers we KNOW are uncited. Missing citation data must not be
-        // treated as zero: PubMed results carry no citation counts, so coercing missing
-        // → 0 here silently dropped every PubMed article older than 2 years — including
-        // decades-old landmark trials (RALES, SOLVD, ARDSNet, etc.).
-        if (hasCitationData(article) && getCitationCount(article) === 0 && age > 2) return false;
-        // Allow groundbreaking basic science through even for clinical queries
-        if (!queryWantsMechanisms && isPreclinical(article) && !isGroundbreakingBasicScience(article)) return false;
-        if (isPredatoryJournal(article)) return false;
-        if (isStrictMode) {
-            const types = (Array.isArray(article.pubtype) ? article.pubtype : []).map((t) => (t || '').toLowerCase());
-            const ebm = article._ebmScore ?? 0;
-            // Same rule as the citation-count check above: absent data is not
-            // negative evidence. Only PubMed supplies publication types --
-            // OpenAlex reports `type: 'article'` for literally everything,
-            // including EASL practice guidelines, so it is a document-format
-            // taxonomy, not an evidence one and is deliberately not mapped to
-            // pubtype. Excluding on missing types dropped *every* OpenAlex
-            // result in strict mode, so a user searching OpenAlex with strict
-            // on got a silent empty page -- including the practice guidelines a
-            // strict search is most meant to surface. Articles with no type
-            // data still have to clear every other filter above.
-            const hasTypeData = types.length > 0;
-            if (ebm < 5 && hasTypeData && !types.some((t) => [...STRICT_PUB_TYPES].some((st) => t.includes(st)))) return false;
+        if (!article._pinnedLandmark) {
+            if (!yearInFilters(article, parsedYearFilters)) return [];
+            if (!matchesPicoInterventionComparator(article, pico, query)) return [];
+            const age = currentYear - getYear(article);
+            // Only drop old papers we KNOW are uncited. Missing citation data must not be
+            // treated as zero: PubMed results carry no citation counts, so coercing missing
+            // → 0 here silently dropped every PubMed article older than 2 years — including
+            // decades-old landmark trials (RALES, SOLVD, ARDSNet, etc.).
+            if (hasCitationData(article) && getCitationCount(article) === 0 && age > 2) return [];
+            // Allow groundbreaking basic science through even for clinical queries
+            if (!queryWantsMechanisms && isPreclinical(article) && !isGroundbreakingBasicScience(article)) return [];
+            if (isPredatoryJournal(article)) return [];
+            if (isStrictMode) {
+                const types = (Array.isArray(article.pubtype) ? article.pubtype : []).map((t) => (t || '').toLowerCase());
+                const ebm = article._ebmScore ?? 0;
+                // Same rule as the citation-count check above: absent data is not
+                // negative evidence. Only PubMed supplies publication types --
+                // OpenAlex reports `type: 'article'` for literally everything,
+                // including EASL practice guidelines, so it is a document-format
+                // taxonomy, not an evidence one and is deliberately not mapped to
+                // pubtype. Excluding on missing types dropped *every* OpenAlex
+                // result in strict mode, so a user searching OpenAlex with strict
+                // on got a silent empty page -- including the practice guidelines a
+                // strict search is most meant to surface. Articles with no type
+                // data still have to clear every other filter above.
+                const hasTypeData = types.length > 0;
+                if (ebm < 5 && hasTypeData && !types.some((t) => [...STRICT_PUB_TYPES].some((st) => t.includes(st)))) return [];
+            }
         }
-        return true;
+        return [{
+            ...article,
+            _eligibilityRoute: eligibility.route,
+            _evidenceLane: classifyEvidenceLane(article),
+        }];
     });
 }
 
@@ -627,7 +633,7 @@ async function fetchAndRankSearchArticles({
         _trace('relevant', relevant);
 
         const teachingStarted = Date.now();
-        const { objects: teachingObjects, claims: teachingClaims, signalBoosts } = await withSpan('search.prefetch_teaching_artifacts', {
+        const { objects: teachingObjects, claims: teachingClaims } = await withSpan('search.prefetch_teaching_artifacts', {
             'search.topic': query,
         }, () => prefetchTeachingArtifacts(db, query));
         timings.teachingArtifactMs = Date.now() - teachingStarted;
@@ -643,7 +649,8 @@ async function fetchAndRankSearchArticles({
                 queryIntent,
                 preferredArchetypes: intentToPreferredArchetypes(queryIntent),
                 previousQueries,
-                articleSignalBoosts: signalBoosts,
+                // Teaching-object boosts stay off evidence rank. Learning order is a
+                // separate list computed after this bouquet.
                 specificity,
                 pico,
                 queryAliases: telemetry.clinicalAliases,
@@ -689,6 +696,14 @@ async function fetchAndRankSearchArticles({
         articles = applySearchLearningBoost(articles, learningContextFull, bouquet.ranking);
         articles = annotateArticlesWithRankingTraces(articles, bouquet.ranking, learningContextFull);
         articles = annotateSearchRankMetadata(articles, bouquet.ranking);
+        const learningOrder = articles.map((article) => article.uid).filter(Boolean);
+        articles = orderArticlesByEvidenceRank(articles);
+        articles = annotateEvidenceMetadata(articles, {
+            query,
+            queryMeshTerms,
+            queryAliases: telemetry.clinicalAliases,
+        });
+        const searchPack = buildSearchPack(articles);
 
         // Refresh durable memory from the fully filtered and ranked result set.
         try {
@@ -719,6 +734,8 @@ async function fetchAndRankSearchArticles({
             teachingClaims,
             learningContext: publicLearningContext(learningContextFull),
             banditMeta: learningContextFull?._banditMeta || null,
+            searchPack,
+            learningOrder,
         };
     });
 }

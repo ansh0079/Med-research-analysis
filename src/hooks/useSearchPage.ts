@@ -67,7 +67,7 @@ export function useSearchPage() {
     search, loading, error, lastSearchId, searchCompletedAt, proactiveAlert, learnerContext,
     aiEnrichmentLoading, intelligenceLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert,
     aiEnrichmentFailed,
-    lowRecallLearning, searchTelemetry, queryIntent,
+    lowRecallLearning, searchTelemetry, searchPack, queryIntent,
   } = useSearch();
   const recentSearches = useSearchRecents(searchHistory, isAuthenticated);
   const pdfViewer = usePdfViewer();
@@ -136,6 +136,7 @@ export function useSearchPage() {
   const {
     resultFilter, setResultFilter,
     resultLens, setResultLens,
+    evidenceLane, setEvidenceLane,
     visibleResults, renderedResults,
     visibleCount, setVisibleCount,
     activeResultIndex, setActiveResultIndex,
@@ -453,6 +454,7 @@ export function useSearchPage() {
     dismissKnowledgeDriftAlert,
     lowRecallLearning,
     searchTelemetry,
+    searchPack,
     queryIntent,
     recentSearches,
     pdfViewer,
@@ -492,6 +494,8 @@ export function useSearchPage() {
     setResultFilter,
     resultLens,
     setResultLens,
+    evidenceLane,
+    setEvidenceLane,
     visibleResults,
     renderedResults,
     visibleCount,

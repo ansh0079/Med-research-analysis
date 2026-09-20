@@ -18,7 +18,7 @@ const result = spawnSync(
     process.execPath,
     [
         require.resolve('jest/bin/jest'),
-        '--testPathPatterns=searchAbbreviationRanking|searchRankingTune|guidelineTopicFallback|searchPhase0Ranking|queryAnchorRelevance',
+        '--testPathPatterns=searchAbbreviationRanking|searchRankingTune|guidelineTopicFallback|searchPhase0Ranking|queryAnchorRelevance|evidenceLanes',
         '--no-coverage',
     ],
     {
