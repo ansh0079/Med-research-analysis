@@ -63,18 +63,29 @@ function resolveRelevance(testCase, { requireTwoLabelers = true } = {}) {
         resolutions.set(String(r.candidateUid), r);
     }
     const out = new Map();
+    // Applicability and edition come from the adjudication when present, otherwise only when the labelers
+    // who stated one agree; a disagreement leaves it unknown rather than picking a side.
+    const settled = (judgments, resolution, field, override) => {
+        if (resolution && resolution[override]) return resolution[override];
+        const values = new Set(judgments.map((j) => j[field]).filter(Boolean));
+        return values.size === 1 ? [...values][0] : null;
+    };
     for (const [uid, judgments] of byCandidate) {
         const labelers = new Set(judgments.map((j) => String(j.labelledBy || '').trim()));
         const stances = new Set(judgments.map((j) => j.relevance));
         const resolution = resolutions.get(uid);
+        const meta = {
+            applicability: settled(judgments, resolution, 'applicability', 'finalApplicability'),
+            edition: settled(judgments, resolution, 'edition', 'finalEdition'),
+        };
         if (resolution && RELEVENCE_CLASSES.includes(resolution.finalRelevance)) {
-            out.set(uid, { relevance: resolution.finalRelevance, source: 'adjudicated', labelers: labelers.size });
+            out.set(uid, { relevance: resolution.finalRelevance, source: 'adjudicated', labelers: labelers.size, ...meta });
         } else if (stances.size > 1) {
-            out.set(uid, { relevance: null, source: 'unresolved', labelers: labelers.size });
+            out.set(uid, { relevance: null, source: 'unresolved', labelers: labelers.size, ...meta });
         } else if (labelers.size < 2 && requireTwoLabelers) {
-            out.set(uid, { relevance: judgments[0].relevance, source: 'single_labeler', labelers: labelers.size });
+            out.set(uid, { relevance: judgments[0].relevance, source: 'single_labeler', labelers: labelers.size, ...meta });
         } else {
-            out.set(uid, { relevance: judgments[0].relevance, source: 'agreed', labelers: labelers.size });
+            out.set(uid, { relevance: judgments[0].relevance, source: 'agreed', labelers: labelers.size, ...meta });
         }
     }
     return out;
@@ -158,7 +169,7 @@ function meanWithInterval(values, { resamples = 2000, seed = 1 } = {}) {
  * Run the real eligibility -> bouquet -> lane path on a case's frozen candidates. Nothing is
  * fetched. `rejected` lists candidates eligibility removed, with the reason.
  */
-function rankFrozenCandidates(testCase, deps = {}) {
+function rankFrozenCandidates(testCase, deps = {}, { laneRanking } = {}) {
     const {
         filterRelevantArticles,
     } = deps.searchPipeline || require('./search/searchPipeline');
@@ -184,7 +195,12 @@ function rankFrozenCandidates(testCase, deps = {}) {
         count: Math.max(candidates.length, 1), selectionMode: 'relevance', queryAliases, queryIntent: intent,
     });
     const annotated = annotateEvidenceMetadata(bouquet.topPapers, { query, queryMeshTerms, queryAliases });
-    const ranked = rankArticlesWithinLanes(annotated, { intent });
+    const representation = (deps.representation || require('./search/queryRepresentation').buildQueryRepresentation)(query, { intent });
+    const ranked = rankArticlesWithinLanes(annotated, {
+        intent,
+        ...(laneRanking ? { laneRanking } : {}),
+        queryContext: { query, population: representation.population || null, jurisdiction: representation.jurisdiction || null },
+    });
     return { ranked: ranked.map((a) => a.uid), rejected };
 }
 
@@ -207,6 +223,17 @@ function scoreCase(testCase, { ranked, rejected }, relevance, { k = DEFAULT_K } 
 
     const offTopicServed = servedTopK.filter((uid) => rel(uid) === 'off-topic');
     const rejectedOnTopic = rejected.filter((r) => rel(r.uid) === 'on-topic');
+
+    // Population correctness: a served result the labelers judged not applicable to the queried
+    // population. Only cases with an applicability judgement can be measured.
+    const meta = (uid) => relevance.get(uid) || {};
+    const applicabilityJudged = judged.some(([, v]) => v.applicability);
+    const populationError = applicabilityJudged && servedTopK.some((uid) => meta(uid).applicability === 'not-applicable');
+    // Edition correctness: a superseded edition served above an edition in force for the same question.
+    const currentRanks = ranked.map((uid, i) => (meta(uid).edition === 'current' ? i : -1)).filter((i) => i >= 0);
+    const supersededRanks = ranked.map((uid, i) => (meta(uid).edition === 'superseded' ? i : -1)).filter((i) => i >= 0);
+    const editionJudged = currentRanks.length > 0 && supersededRanks.length > 0;
+    const editionError = editionJudged && Math.min(...supersededRanks) < Math.min(...currentRanks);
     const base = {
         scenarioId: testCase.scenarioId || null,
         query: testCase.query,
@@ -221,6 +248,10 @@ function scoreCase(testCase, { ranked, rejected }, relevance, { k = DEFAULT_K } 
         offTopicShare: servedTopK.length ? offTopicServed.length / servedTopK.length : 0,
         rejectedOnTopic: rejectedOnTopic.length,
         rejections: rejected,
+        applicabilityJudged,
+        populationError,
+        editionJudged,
+        editionError,
     };
     if (base.retrievalGap) return { ...base, ndcg: null, mrr: null, recall: null };
 
@@ -254,6 +285,9 @@ function aggregateMetrics(scored, { seed = 1, resamples = 2000 } = {}) {
         recall10: meanWithInterval(rankable.map((s) => s.recall), { seed: seed + 2, resamples }),
         contaminationRate: wilson(contaminated, scored.length),
         falseRejectionRate: wilson(rejectedOnTopic, onTopicTotal),
+        // Measured separately, and only over cases whose labels can answer the question.
+        populationErrorRate: wilson(scored.filter((s) => s.populationError).length, scored.filter((s) => s.applicabilityJudged).length),
+        editionErrorRate: wilson(scored.filter((s) => s.editionError).length, scored.filter((s) => s.editionJudged).length),
     };
 }
 
@@ -311,6 +345,10 @@ function judgeAgainstThresholds(metrics, thresholds) {
     check('recall10', metrics.recall10.mean, metrics.recall10.lo, metrics.recall10.hi, 'min', t.recall10.min);
     check('contaminationRate', metrics.contaminationRate.rate, metrics.contaminationRate.lo, metrics.contaminationRate.hi, 'max', t.contaminationRate.max);
     check('falseRejectionRate', metrics.falseRejectionRate.rate, metrics.falseRejectionRate.lo, metrics.falseRejectionRate.hi, 'max', t.falseRejectionRate.max);
+    // Population and edition correctness are gated only when the agreed thresholds name them.
+    for (const name of ['populationErrorRate', 'editionErrorRate']) {
+        if (Number.isFinite(t[name]?.max)) check(name, metrics[name].rate, metrics[name].lo, metrics[name].hi, 'max', t[name].max);
+    }
     return failures;
 }
 
@@ -339,12 +377,13 @@ function datasetVersions(files) {
  * @param {string} [options.heldoutDir] @param {string} [options.fixtureDir] @param {string} [options.thresholdsFile]
  */
 function evaluateHeldout(options = {}) {
-    const { heldoutDir, fixtureDir, thresholdsFile, deps, k = DEFAULT_K, seed = 1 } = options;
+    const { heldoutDir, fixtureDir, thresholdsFile, deps, k = DEFAULT_K, seed = 1, laneRanking = null } = options;
     const provenance = {
         baselineCommit: gitSha(),
         metricDefinitionsVersion: METRIC_DEFINITIONS_VERSION,
         k,
         providerConfig: { mode: 'frozen_candidates', providersCalled: [] },
+        laneRanking: laneRanking || String(process.env.LANE_RANKING || 'v1'),
         flags: {
             laneRetrieval: String(process.env.SEARCH_LANE_RETRIEVAL || 'off'),
             lineageEnforcement: String(process.env.EVIDENCE_LINEAGE_ENFORCEMENT || 'shadow'),
@@ -383,6 +422,7 @@ function evaluateHeldout(options = {}) {
 
     const scored = [];
     const unresolved = [];
+    let rankingNs = 0n;
     for (const testCase of loaded.cases) {
         const label = `case "${testCase.query}"`;
         if (!Array.isArray(testCase.candidates) || testCase.candidates.length < 3) {
@@ -397,7 +437,10 @@ function evaluateHeldout(options = {}) {
         if ([...relevance.values()].some((v) => v.source === 'unresolved')) unresolved.push(testCase.query);
         const unjudged = [...candidateUids].filter((uid) => !judgedUids.has(uid));
         if (unjudged.length) problems.push(`${label}: ${unjudged.length} candidate(s) have no judgment`);
-        scored.push(scoreCase(testCase, rankFrozenCandidates(testCase, deps), relevance, { k }));
+        const startedAt = process.hrtime.bigint();
+        const ranking = rankFrozenCandidates(testCase, deps, { laneRanking });
+        rankingNs += process.hrtime.bigint() - startedAt;
+        scored.push(scoreCase(testCase, ranking, relevance, { k }));
     }
     for (const q of unresolved) problems.push(`case "${q}" has disagreeing labels without adjudication`);
     if (problems.length) return report('invalid', { problems: [...new Set(problems)], labelledCases: loaded.cases.length });
@@ -406,6 +449,8 @@ function evaluateHeldout(options = {}) {
     const agreement = interRaterAgreement(loaded.cases);
     const detail = {
         labelledCases: loaded.cases.length,
+        // Cost of the ranking path itself. No provider is called, so the provider-call budget is zero by construction.
+        performance: { rankingMsPerCase: round(Number(rankingNs) / 1e6 / Math.max(1, scored.length)), providerCalls: 0 },
         metrics,
         agreement,
         subgroups: {
@@ -430,8 +475,53 @@ function evaluateHeldout(options = {}) {
     return report(failures.length ? 'failed' : 'passed', { ...detail, failures });
 }
 
+/**
+ * Compare two lane rankers on the same held-out cases. The candidate is not adopted on the strength of a
+ * higher headline number: any regression in recall, contamination, false rejection, population or edition
+ * correctness beyond `tolerance` makes it 'regresses', whatever it does to nDCG.
+ *
+ *   no_labels / invalid / ...   the evaluation itself is not usable, so nothing can be concluded
+ *   regresses                   a guarded metric is worse for the candidate
+ *   improves                    nDCG is higher, MRR is not lower, and nothing regressed
+ *   no_difference               nothing regressed and nDCG did not improve
+ */
+function compareLaneRankings({ baseline = 'v1', candidate = 'v2', tolerance = 0, ...options } = {}) {
+    const base = evaluateHeldout({ ...options, laneRanking: baseline });
+    const cand = evaluateHeldout({ ...options, laneRanking: candidate });
+    const usable = (r) => Boolean(r.metrics);
+    if (!usable(base) || !usable(cand)) {
+        return { verdict: base.status === cand.status ? base.status : 'invalid', baseline: base, candidate: cand, deltas: null, regressions: [] };
+    }
+    const higherIsBetter = { ndcg10: 'mean', mrr: 'mean', recall10: 'mean' };
+    const lowerIsBetter = { contaminationRate: 'rate', falseRejectionRate: 'rate', populationErrorRate: 'rate', editionErrorRate: 'rate' };
+    const deltas = {};
+    const regressions = [];
+    for (const [name, key] of Object.entries(higherIsBetter)) {
+        deltas[name] = round(cand.metrics[name][key] - base.metrics[name][key]);
+        if (name !== 'ndcg10' && deltas[name] < -tolerance) regressions.push({ metric: name, delta: deltas[name] });
+    }
+    for (const [name, key] of Object.entries(lowerIsBetter)) {
+        const a = base.metrics[name][key];
+        const b = cand.metrics[name][key];
+        if (a == null || b == null) { deltas[name] = null; continue; }
+        deltas[name] = round(b - a);
+        if (deltas[name] > tolerance) regressions.push({ metric: name, delta: deltas[name] });
+    }
+    let verdict = 'no_difference';
+    if (regressions.length) verdict = 'regresses';
+    else if (deltas.ndcg10 > 0 && deltas.mrr >= 0) verdict = 'improves';
+    return {
+        verdict,
+        baseline: { laneRanking: baseline, status: base.status, metrics: base.metrics, performance: base.performance },
+        candidate: { laneRanking: candidate, status: cand.status, metrics: cand.metrics, performance: cand.performance },
+        deltas,
+        regressions,
+    };
+}
+
 module.exports = {
     METRIC_DEFINITIONS_VERSION,
+    compareLaneRankings,
     GAIN,
     THRESHOLDS_FILE,
     resolveRelevance,

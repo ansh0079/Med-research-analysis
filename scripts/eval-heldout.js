@@ -15,6 +15,21 @@ const path = require('path');
 const { evaluateHeldout } = require('../server/services/heldoutEval');
 
 const gate = process.argv.includes('--gate');
+
+if (process.argv.includes('--compare-lanes')) {
+    const { compareLaneRankings } = require('../server/services/heldoutEval');
+    const cmp = compareLaneRankings();
+    console.log(`Lane ranking v1 -> v2: ${String(cmp.verdict).toUpperCase()}`);
+    if (!cmp.deltas) {
+        console.log('The held-out evaluation is not usable, so nothing can be concluded (see npm run eval:datasets).');
+    } else {
+        for (const [name, delta] of Object.entries(cmp.deltas)) console.log(`  ${name.padEnd(20)} ${delta > 0 ? '+' : ''}${delta}`);
+        for (const r of cmp.regressions) console.log(`  REGRESSION ${r.metric}: ${r.delta}`);
+        console.log(`  ranking cost: v1 ${cmp.baseline.performance.rankingMsPerCase} ms/case, v2 ${cmp.candidate.performance.rankingMsPerCase} ms/case, provider calls 0`);
+    }
+    process.exit(cmp.verdict === 'improves' || cmp.verdict === 'no_difference' ? 0 : 1);
+}
+
 const report = evaluateHeldout();
 
 function pct(x) { return x == null ? 'n/a' : `${(x * 100).toFixed(1)}%`; }

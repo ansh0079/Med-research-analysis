@@ -33,6 +33,7 @@ const {
     buildSearchPack,
     orderArticlesByEvidenceRank,
     rankArticlesWithinLanes,
+    laneShadowSummary,
 } = require('./evidenceLanes');
 const { buildQueryRepresentation } = require('./queryRepresentation');
 const { persistSearchEvidenceSnapshot } = require('./searchEvidenceSnapshot');
@@ -709,13 +710,22 @@ async function fetchAndRankSearchArticles({
             queryMeshTerms,
             queryAliases: telemetry.clinicalAliases,
         });
-        articles = rankArticlesWithinLanes(articles, { intent: queryIntent });
-        const searchPack = buildSearchPack(articles, { intent: queryIntent });
         const queryRepresentation = buildQueryRepresentation(query, {
             intent: queryIntent,
             aliases: telemetry.clinicalAliases,
             pico,
         });
+        articles = rankArticlesWithinLanes(articles, {
+            intent: queryIntent,
+            queryContext: {
+                query,
+                population: queryRepresentation.population || null,
+                jurisdiction: queryRepresentation.jurisdiction || null,
+            },
+        });
+        const laneShadow = laneShadowSummary(articles);
+        if (laneShadow) telemetry.laneRankingShadow = laneShadow;
+        const searchPack = buildSearchPack(articles, { intent: queryIntent });
         // Awaited: generation needs a durable evidence context, so the outcome (persisted, disabled
         // or failed) must be known and reported, not fired and forgotten. It never throws.
         const evidenceSnapshot = await persistSearchEvidenceSnapshot(db, {

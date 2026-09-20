@@ -33,6 +33,8 @@ const RELEVENCE_CLASSES = Object.freeze(['on-topic', 'adjacent', 'off-topic']);
 const APPLICABILITY_CLASSES = Object.freeze(['applicable', 'partial', 'not-applicable']);
 const EVIDENCE_TYPES = Object.freeze(['guideline', 'trial', 'review', 'other']);
 const SUPPORT_LEVELS = Object.freeze(['passage', 'abstract-only', 'metadata-only', 'unsupported']);
+// Whether a guideline candidate is the edition in force, judged by the labeler; used to measure edition correctness.
+const EDITION_STATES = Object.freeze(['current', 'superseded']);
 
 class WorksheetError extends Error {
     constructor(message, details = {}) {
@@ -138,6 +140,9 @@ function validateJudgments(testCase, label = 'case') {
         if (j.support && !SUPPORT_LEVELS.includes(j.support)) {
             problems.push(`${label}: candidate ${uid} has invalid support "${j.support}"`);
         }
+        if (j.edition && !EDITION_STATES.includes(j.edition)) {
+            problems.push(`${label}: candidate ${uid} has invalid edition "${j.edition}"`);
+        }
         const list = byCandidate.get(uid) || [];
         list.push(j);
         byCandidate.set(uid, list);
@@ -211,6 +216,7 @@ module.exports = {
     APPLICABILITY_CLASSES,
     EVIDENCE_TYPES,
     SUPPORT_LEVELS,
+    EDITION_STATES,
     WorksheetError,
     loadWorksheet,
     validateWorksheet,

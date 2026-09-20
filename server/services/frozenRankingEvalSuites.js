@@ -18,6 +18,13 @@ const FROZEN_RANKING_SUITES = Object.freeze([
     'guidelineRegistry',
     'laneRetrieval',
     'heldoutEval',
+    'evidenceSnapshot',
+    'sourceInvalidation',
+    'quizLineageService',
+    'evidenceLineage',
+    'synopsisClaimSupportIntegration',
+    'synopsisClaimSupport',
+    'laneScoring',
     'queryContract',
 ]);
 

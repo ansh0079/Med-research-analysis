@@ -331,7 +331,8 @@ describe('evaluateHeldout: missing or unsuitable labels are never a pass', () =>
 
     test('the same input gives the same report every time', () => {
         const dirs = makeDirs({ cases: goodCases(), thresholds: LENIENT });
-        const strip = (r) => ({ ...r, provenance: { ...r.provenance, baselineCommit: null } });
+        // Everything but the measurements that are timings by nature (commit, ranking cost).
+        const strip = (r) => ({ ...r, performance: null, provenance: { ...r.provenance, baselineCommit: null } });
         expect(strip(evaluateHeldout(dirs))).toEqual(strip(evaluateHeldout(dirs)));
     });
 

@@ -13,6 +13,8 @@ const {
 } = require('../evidenceBouquet/queryRelevance');
 
 const EVIDENCE_LANES = Object.freeze(['guidelines', 'landmark_trials', 'reviews', 'supporting']);
+const { rankLaneV2 } = require('./laneScoring');
+
 const SEMANTIC_RESCUE_CAP = 2;
 
 /** Lane display order follows query intent rather than one fixed hierarchy. */
@@ -221,8 +223,40 @@ function orderArticlesByEvidenceRank(articles) {
     });
 }
 
+/**
+ * LANE_RANKING selects the within-lane scorer:
+ *   v1      the original score: global evidence rank plus fixed bonuses (default)
+ *   shadow  serve v1, compute v2 alongside and attach it as _laneShadow so the two can be compared
+ *   v2      serve the lane-specific scorer in laneScoring.js
+ * v2 is not the default because its effect on relevance has to be measured on independently labelled
+ * held-out cases first (npm run eval:heldout compares them).
+ */
+function laneRankingMode(env = process.env) {
+    const mode = String(env.LANE_RANKING || 'v1').toLowerCase();
+    return mode === 'v2' || mode === 'shadow' ? mode : 'v1';
+}
+
+/**
+ * Compare v2 to what was served for one lane: how far each article moves, and how many change place.
+ * Reported in telemetry, never used to change the served order.
+ */
+function laneShadowSummary(articles = []) {
+    const shadowed = (Array.isArray(articles) ? articles : []).filter((a) => a?._laneShadow);
+    if (!shadowed.length) return null;
+    const moved = shadowed.filter((a) => a._laneShadow.rankDelta !== 0);
+    return {
+        compared: shadowed.length,
+        moved: moved.length,
+        maxDisplacement: Math.max(0, ...shadowed.map((a) => Math.abs(a._laneShadow.rankDelta))),
+        topChanged: EVIDENCE_LANES.filter((lane) => {
+            const inLane = shadowed.filter((a) => a._evidenceLane === lane);
+            return inLane.some((a) => a._laneShadow.servedRank === 1 && a._laneShadow.v2Rank !== 1);
+        }),
+    };
+}
+
 /** Rank independently inside each lane with lane-specific scores, then concatenate in intent order. */
-function rankArticlesWithinLanes(articles = [], { intent = 'general' } = {}) {
+function rankArticlesWithinLanes(articles = [], { intent = 'general', laneRanking = laneRankingMode(), queryContext = {} } = {}) {
     const groups = {
         guidelines: [],
         landmark_trials: [],
@@ -235,10 +269,22 @@ function rankArticlesWithinLanes(articles = [], { intent = 'general' } = {}) {
     }
     const out = [];
     for (const key of laneOrderForIntent(intent)) {
+        if (laneRanking === 'v2') {
+            out.push(...rankLaneV2(groups[key], key, queryContext));
+            continue;
+        }
         const ranked = groups[key]
             .map((article) => ({ article, score: scoreArticleInLane(article, key) }))
             .sort((a, b) => b.score - a.score || (Number(a.article._evidenceRank) || 9999) - (Number(b.article._evidenceRank) || 9999))
             .map(({ article, score }) => ({ ...article, _laneScore: score }));
+        if (laneRanking === 'shadow') {
+            const v2 = rankLaneV2(groups[key], key, queryContext);
+            const v2Rank = new Map(v2.map((a, i) => [articleUid(a) || `#${i}`, { rank: i + 1, score: a._laneScore, trace: a._laneTrace }]));
+            ranked.forEach((article, i) => {
+                const other = v2Rank.get(articleUid(article));
+                if (other) article._laneShadow = { servedRank: i + 1, v2Rank: other.rank, rankDelta: other.rank - (i + 1), v2Score: other.score, trace: other.trace };
+            });
+        }
         out.push(...ranked);
     }
     return out;
@@ -257,6 +303,8 @@ module.exports = {
     annotateEvidenceMetadata,
     orderArticlesByEvidenceRank,
     rankArticlesWithinLanes,
+    laneRankingMode,
+    laneShadowSummary,
     laneOrderForIntent,
     scoreArticleInLane,
     capSemanticRescue,
