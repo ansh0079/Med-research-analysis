@@ -1,5 +1,6 @@
 {
   "version": 4,
+  "split": "tuning",
   "k": 10,
   "description": "Curated gold-standard relevance set for offline search-quality evaluation (Phase 2). Base fixture contains 40 core queries; tests/fixtures/search-quality-gold-expansion.json adds 20 more plus off-topic/category overrides for a 60-query eval set. Metrics: MRR, NDCG@10, Precision@5, recall proxy, off-topic rate, landmark/guideline hit rate. Run with: npm run eval:search-quality:gold",
   "queries": [

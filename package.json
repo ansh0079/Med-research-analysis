@@ -94,6 +94,7 @@
     "eval:search-quality:report": "node scripts/eval-search-quality.js --base http://localhost:3002",
     "eval:search-quality:suggest-aliases": "node scripts/suggest-landmark-aliases.js",
     "eval:search-ranking": "node scripts/eval-search-ranking.js",
+    "eval:datasets": "node scripts/eval-dataset-check.js",
     "test:search-quality-gate": "npx jest --testPathPatterns=\"p3SearchQualityScale|clinicalQueryAliasRulesFile|searchRankingTune|searchAbbreviationRanking\" --no-coverage",
     "test:search-pipeline-integration": "npx jest --testPathPatterns=searchPipeline.integration --no-coverage",
     "eval:offline-policy": "node scripts/eval-offline-policy.js",

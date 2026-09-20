@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "split": "tuning",
   "description": "Natural-language clinical queries (management / guideline / diagnostic) with graded relevance labels (0–3). Complements the landmark-RCT-heavy base gold set so ranking weights are not overfit to trial-name queries.",
   "queries": [
     {

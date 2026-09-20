@@ -13,12 +13,13 @@
 
 const { spawnSync } = require('child_process');
 const path = require('path');
+const { RANKING_TEST_PATTERN } = require('../server/services/frozenRankingEvalSuites');
 
 const result = spawnSync(
     process.execPath,
     [
         require.resolve('jest/bin/jest'),
-        '--testPathPatterns=searchAbbreviationRanking|searchRankingTune|guidelineTopicFallback|searchPhase0Ranking|queryAnchorRelevance|evidenceLanes',
+        `--testPathPatterns=${RANKING_TEST_PATTERN}`,
         '--no-coverage',
     ],
     {
