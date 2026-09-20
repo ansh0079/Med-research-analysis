@@ -52,7 +52,9 @@ describe('features are weighted explicitly, and missing ones are renormalised aw
     });
 
     test('an article with no metadata at all scores on relevance alone, not zero', () => {
-        const bare = scoreArticleInLaneV2({ uid: 'x', _evidenceRank: 1 }, 'supporting', ctx(), { maxRank: 4, citationPool: [] });
+        const bare = scoreArticleInLaneV2(
+            { uid: 'x', title: 'Treatment of heart failure', _evidenceRank: 1 }, 'supporting', ctx(), { maxRank: 4, citationPool: [] },
+        );
         expect(bare.trace.features.topical).toBe(1);
         expect(bare.score).toBeGreaterThan(0);
         expect(bare.trace.missing).toEqual(expect.arrayContaining(['design', 'freshness', 'citation_prominence']));
@@ -194,15 +196,34 @@ describe('scores are a function of the article and the query only', () => {
         expect(pool).toEqual({ citationPool: [10, 100] });
     });
 
-    test('relevance decays with rank by a half-life, so lane size does not decide how much it counts', () => {
-        const at = (rank) => scoreArticleInLaneV2(article({ _evidenceRank: rank }), 'supporting', ctx(), { citationPool: [] }).trace.features.topical;
+    test('topical relevance measures the query, not the composite ranker output', () => {
+        // Same rank, different topicality: the article that is actually about the query wins.
+        const onTopic = score({ uid: 'a', title: 'Treatment of heart failure', _evidenceRank: 5 });
+        const offTopic = score({ uid: 'b', title: 'Management of psoriasis', _evidenceRank: 5 });
+        expect(onTopic.trace.features.topical).toBeGreaterThan(offTopic.trace.features.topical);
+
+        // And the composite rank does not override it: a worse-ranked on-topic paper still reads
+        // as more relevant than a better-ranked off-topic one.
+        const wellRanked = score({ uid: 'c', title: 'Management of psoriasis', _evidenceRank: 1 });
+        expect(onTopic.trace.features.topical).toBeGreaterThan(wellRanked.trace.features.topical);
+    });
+
+    test('a named trial counts as topical even when the query terms are absent from the text', () => {
+        const c = ctx({ aliases: ['DAPA-HF'] });
+        const byName = scoreArticleInLaneV2({ uid: 'a', title: 'DAPA-HF: primary results', _evidenceRank: 9 }, 'supporting', c, { citationPool: [] });
+        expect(byName.trace.features.topical).toBe(1);
+    });
+
+    test('without a query, relevance falls back to rank decay, and lane size does not decide it', () => {
+        const noQuery = { now: NOW };
+        const at = (rank) => scoreArticleInLaneV2(article({ _evidenceRank: rank }), 'supporting', noQuery, { citationPool: [] }).trace.features.topical;
         expect(at(1)).toBe(1);
         expect(at(2)).toBeCloseTo(0.909, 3); // one position apart is nearly the same relevance
         expect(at(11)).toBe(0.5);
         expect(at(21)).toBeCloseTo(0.333, 3);
         // The same rank scores the same whether the lane holds two articles or twenty.
-        const small = rankLaneV2([article({ uid: 'a', _evidenceRank: 1 }), article({ uid: 'b', _evidenceRank: 2 })], 'supporting', ctx());
-        const large = rankLaneV2(Array.from({ length: 20 }, (_, i) => article({ uid: `x${i}`, _evidenceRank: i + 1 })), 'supporting', ctx());
+        const small = rankLaneV2([article({ uid: 'a', _evidenceRank: 1 }), article({ uid: 'b', _evidenceRank: 2 })], 'supporting', noQuery);
+        const large = rankLaneV2(Array.from({ length: 20 }, (_, i) => article({ uid: `x${i}`, _evidenceRank: i + 1 })), 'supporting', noQuery);
         expect(small[0]._laneTrace.features.topical).toBe(large[0]._laneTrace.features.topical);
     });
 });

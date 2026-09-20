@@ -721,6 +721,9 @@ async function fetchAndRankSearchArticles({
                 query,
                 population: queryRepresentation.population || null,
                 jurisdiction: queryRepresentation.jurisdiction || null,
+                // Lane scoring measures topicality against the query itself, so it needs the same
+                // high-signal aliases (trial names, cohorts) the bouquet had.
+                aliases: telemetry.clinicalAliases || [],
             },
         });
         const laneShadow = laneShadowSummary(articles);

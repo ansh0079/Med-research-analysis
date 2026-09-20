@@ -24,6 +24,7 @@
 
 const { getYear, getCitationCount, hasCitationData } = require('../evidenceBouquet/articleClassifiers');
 const { originalConditionTerms } = require('../../utils/conditionQuery');
+const { queryMatchScore, queryAliasMatchScore } = require('../evidenceBouquet/queryRelevance');
 const { clinicalFacts, populationCovers, queryFacts, toCanonicalPopulation } = require('../clinical/clinicalFacts');
 
 const LANE_SCORING_VERSION = 2;
@@ -153,20 +154,38 @@ function laneCandidateContext(articles) {
 }
 
 /**
- * Relevance from the global evidence rank.
+ * Topical relevance: how well this article answers THIS query.
  *
- * Not normalised across the lane: min-max scaling would make two adjacent ranks 1 and 0 in a
- * two-article lane, so lane size would decide how much relevance counts. Instead it decays with a
- * half-life in ranks, which says what the rank actually means: one position apart is nearly the same
- * relevance, ten apart is materially less. Rank 1 scores 1, rank 2 ~0.91, rank 11 0.5, rank 21 ~0.33,
- * whatever else is in the lane.
+ * It is measured against the query directly, not taken from the global evidence rank. That rank is
+ * the composite ranker's output, and the composite already contains design, citations, recency and a
+ * guideline bonus - the same things scored again as lane features. Feeding it in as `topical` counted
+ * them twice, with weights nobody chose, and made the composite the real ranking authority while the
+ * lane weights only decorated it. Now the two rankers are not stacked: the composite decides which
+ * articles enter a lane, and the lane decides their order from features that are written down.
+ *
+ * `aliases` lets a high-signal name (a named trial, a cohort) count as topical when the query's own
+ * terms do not appear in the text.
+ *
+ * The rank decay below is a fallback for callers that score without a query. Not normalised across
+ * the lane: min-max scaling would make two adjacent ranks 1 and 0 in a two-article lane, so lane size
+ * would decide how much relevance counts. Half-life in ranks says what the rank means instead - rank
+ * 1 scores 1, rank 11 0.5, rank 21 ~0.33, whatever else is in the lane.
  */
 const TOPICAL_HALF_LIFE_RANKS = 10;
 
-function topical(article) {
+function topicalFromRank(article) {
     const rank = Number(article?._evidenceRank);
     if (!Number.isFinite(rank) || rank <= 0) return null;
     return round(1 / (1 + (rank - 1) / TOPICAL_HALF_LIFE_RANKS));
+}
+
+function topical(article, ctx) {
+    const query = String(ctx?.query || '').trim();
+    if (!query) return topicalFromRank(article);
+    const direct = queryMatchScore(article, query);
+    const aliases = Array.isArray(ctx?.aliases) ? ctx.aliases : [];
+    const alias = aliases.length ? queryAliasMatchScore(article, aliases) : 0;
+    return round(Math.max(0, Math.min(1, Math.max(direct, alias))));
 }
 
 function reasonsFor(lane, features) {
@@ -195,7 +214,7 @@ function scoreArticleInLaneV2(article, lane, ctx = {}, pool = { citationPool: []
     const weights = LANE_FEATURE_WEIGHTS[lane] || LANE_FEATURE_WEIGHTS.supporting;
     const facts = clinicalFacts(article);
     const raw = {
-        topical: topical(article),
+        topical: topical(article, ctx),
         registry_verified: lane === 'guidelines' ? (article?._guidelineRegistryMatch ? 1 : 0) : undefined,
         edition_freshness: lane === 'guidelines' ? freshness(article, lane, now) : undefined,
         population_fit: lane === 'guidelines' ? populationFit(article, ctx) : undefined,
