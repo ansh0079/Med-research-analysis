@@ -35,16 +35,32 @@ test('older quiz attempts retain records, references, indexes and triggers', () 
     } finally { db.close(); }
 });
 
+function runMigratorOnce(dbPath) {
+    for (let attempt = 1; attempt <= 2; attempt++) {
+        const result = spawnSync(process.execPath, ['scripts/sqlite-migrate.mjs'], {
+            cwd: path.resolve(__dirname, '../..'),
+            env: { ...process.env, SQLITE_PATH: dbPath },
+            // Budget generous enough for a full-suite parallel run: the child was
+            // observed hitting ETIMEDOUT under worker load while passing in ~6s solo.
+            encoding: 'utf8', timeout: 90000,
+        });
+        if (result.status === 0) return;
+        const starved = result.error?.code === 'ETIMEDOUT';
+        if (starved && attempt === 1) {
+            // Transient CPU starvation under parallel workers, not a migration defect.
+            // One bounded retry keeps the signal; a real failure fails on the retry.
+            console.warn('sqlite-migrate child timed out under load; retrying once');
+            continue;
+        }
+        throw new Error(result.stderr || result.error?.message || result.stdout);
+    }
+}
+
 test('fresh SQLite migration runner succeeds and can be rerun', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'signalmd-migration-'));
     try {
-        for (let run = 0; run < 2; run++) {
-            const result = spawnSync(process.execPath, ['scripts/sqlite-migrate.mjs'], {
-                cwd: path.resolve(__dirname, '../..'),
-                env: { ...process.env, SQLITE_PATH: path.join(dir, 'test.db') },
-                encoding: 'utf8', timeout: 20000,
-            });
-            if (result.status !== 0) throw new Error(result.stderr || result.error?.message || result.stdout);
-        }
+        const dbPath = path.join(dir, 'test.db');
+        runMigratorOnce(dbPath);
+        runMigratorOnce(dbPath); // rerun exercises idempotency
     } finally { fs.rmSync(dir, { recursive: true, force: true }); }
-}, 45000);
+}, 210000);
