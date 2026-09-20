@@ -101,6 +101,26 @@ export interface SearchPack {
   lanes: Record<EvidenceLaneKey, SearchPackLane>;
 }
 
+/**
+ * Handle to the evidence a search showed. Pass `id` to synopsis / quiz / case generation so the
+ * result keeps its lineage. `status` other than 'persisted' means there is no replayable
+ * evidence context for this search, and anything generated from it is unlinked.
+ */
+export interface EvidenceSnapshotRef {
+  id: string | null;
+  status: 'persisted' | 'disabled' | 'failed';
+  articleCount: number;
+  articleTotal: number;
+  truncated: boolean;
+}
+
+export type EvidenceLineageStatus = 'linked' | 'linked_with_additions' | 'unlinked' | 'invalid';
+
+export interface EvidenceLineage {
+  snapshotId: string | null;
+  status: EvidenceLineageStatus;
+}
+
 export interface QuerySenseAlternative {
   label: string;
   query: string;
@@ -185,6 +205,7 @@ export interface SearchResponse {
   };
   searchPack?: SearchPack | null;
   queryResolution?: QueryResolution | null;
+  evidenceSnapshot?: EvidenceSnapshotRef | null;
   learningOrder?: string[];
   ranking?: Array<{
     uid?: string;

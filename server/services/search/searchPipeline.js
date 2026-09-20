@@ -716,13 +716,16 @@ async function fetchAndRankSearchArticles({
             aliases: telemetry.clinicalAliases,
             pico,
         });
-        persistSearchEvidenceSnapshot(db, {
+        // Awaited: generation needs a durable evidence context, so the outcome (persisted, disabled
+        // or failed) must be known and reported, not fired and forgotten. It never throws.
+        const evidenceSnapshot = await persistSearchEvidenceSnapshot(db, {
             query,
             queryRepresentation,
             articles,
             userId,
             sessionId,
-        }).catch(() => null);
+        });
+        if (evidenceSnapshot.status === 'failed') telemetry.evidenceSnapshotError = evidenceSnapshot.error || 'unknown';
 
         // Refresh durable memory from the fully filtered and ranked result set.
         try {
@@ -756,6 +759,7 @@ async function fetchAndRankSearchArticles({
             searchPack,
             learningOrder,
             queryRepresentation,
+            evidenceSnapshot,
         };
     });
 }

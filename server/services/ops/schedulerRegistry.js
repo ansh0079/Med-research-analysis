@@ -75,6 +75,9 @@ const {
 const {
     scheduleSourceInvalidation, stopSourceInvalidation,
 } = require('../registry/sourceInvalidationScheduler');
+const {
+    scheduleSnapshotRetention, stopSnapshotRetention,
+} = require('../search/snapshotRetentionScheduler');
 
 /**
  * @typedef {Object} SchedulerEntry
@@ -143,6 +146,11 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
             task: 'source-invalidation',
             start: () => scheduleSourceInvalidation(db, baseLogger.child({ task: 'source-invalidation' })),
             stop: () => stopSourceInvalidation(),
+        },
+        {
+            task: 'evidence-snapshot-retention',
+            start: () => scheduleSnapshotRetention(db, baseLogger.child({ task: 'evidence-snapshot-retention' })),
+            stop: () => stopSnapshotRetention(),
         },
         {
             task: 'curriculum-seed',

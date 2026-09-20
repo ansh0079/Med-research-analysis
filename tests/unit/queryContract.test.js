@@ -25,7 +25,9 @@ describe('versioned query representation', () => {
 });
 
 describe('search evidence snapshots', () => {
-    test('persist the eligible uid set and eligibility routes', async () => {
+    // Persistence, ordering, replay, ownership and retention are covered on real SQLite in
+    // evidenceSnapshot.test.js; this pins the contract the search pipeline relies on.
+    test('persist the eligible uid set and eligibility routes, and report the outcome', async () => {
         const inserts = [];
         const db = {
             run: async (sql, params) => {
@@ -37,14 +39,21 @@ describe('search evidence snapshots', () => {
             query: 'AKI diagnosis',
             queryRepresentation: { intent: 'diagnostic' },
             articles: [
-                { uid: 'g1', _eligibilityRoute: 'registry', _evidenceLane: 'guidelines', _evidenceRank: 1 },
+                { uid: 'g1', title: 'KDIGO', abstract: 'Stage AKI.', _eligibilityRoute: 'registry', _evidenceLane: 'guidelines', _evidenceRank: 1 },
             ],
             userId: 'u1',
         });
-        expect(saved.articleCount).toBe(1);
-        expect(inserts[0].sql).toMatch(/search_evidence_snapshots/);
-        expect(JSON.parse(inserts[0].params[3])).toEqual(['g1']);
-        expect(JSON.parse(inserts[0].params[4]).g1).toMatchObject({ route: 'registry', lane: 'guidelines' });
+        expect(saved).toMatchObject({ status: 'persisted', articleCount: 1, articleTotal: 1, truncated: false });
+        expect(saved.id).toBeTruthy();
+        const snapshotInsert = inserts.find((row) => /INSERT INTO search_evidence_snapshots/.test(row.sql));
+        expect(snapshotInsert.params).toContain(JSON.stringify(['g1']));
+        expect(inserts.some((row) => /INSERT INTO evidence_source_versions/.test(row.sql))).toBe(true);
+    });
+
+    test('a persistence failure is reported, never returned as a snapshot id', async () => {
+        const db = { run: async () => { throw new Error('boom'); } };
+        const saved = await persistSearchEvidenceSnapshot(db, { query: 'q', articles: [{ uid: 'g1' }], userId: 'u1' });
+        expect(saved).toMatchObject({ id: null, status: 'failed' });
     });
 });
 
