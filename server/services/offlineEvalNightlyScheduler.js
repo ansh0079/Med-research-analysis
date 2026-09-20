@@ -20,6 +20,7 @@ function scheduleOfflineEvalNightly(db, logger = console) {
             labelledCount: result.labelledCount,
             servingArmId: result.servingArmId,
             bestShadowArmId: result.bestShadowArmId,
+            frozenGate: result.report?.frozenGate || null,
         }, 'Offline eval nightly complete');
     }, { db, logger }), {
         timezone: process.env.TZ || 'UTC',

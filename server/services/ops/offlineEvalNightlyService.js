@@ -5,6 +5,7 @@ const { runOfflinePolicyEval } = require('../offlinePolicyEvalService');
 const { SEARCH_RANKING_ARMS, POLICY_SEARCH_RANKING } = require('../bandit/constants');
 const { loadDecisionsForOfflineEval } = require('../policyReplayEvaluator');
 const { collectSearchLearningEvaluation, assessLearningPromotionSafety } = require('../searchLearningEvaluationService');
+const { runFrozenRankingEvalGate, applyFrozenRankingGate } = require('../frozenRankingEvalGate');
 
 /**
  * Nightly evaluator from real anonymized logs:
@@ -123,6 +124,7 @@ async function runNightlyOfflineEval(db, {
     policyType = 'search_ranking',
     days = 30,
     actuate = true,
+    frozenGate = true,
 } = {}) {
     const evalReport = await runOfflinePolicyEval(db, { policyType, days });
 
@@ -148,6 +150,24 @@ async function runNightlyOfflineEval(db, {
         rec.recommendation = 'hold';
         rec.reason = learningSafety.reason;
     }
+
+    // Promotion and regression change what every user sees; they require the
+    // frozen-candidate ranking eval to be green in addition to replay lift.
+    // A red frozen eval means ranking itself is broken -- bandit lift on
+    // broken ranking must not ship. Fail-closed: an unrunnable gate blocks.
+    let frozenGateResult = { checked: false, passed: null, detail: 'not_checked' };
+    if (frozenGate && (rec.recommendation === 'promote' || rec.recommendation === 'regress')) {
+        frozenGateResult = await runFrozenRankingEvalGate().catch((err) => ({
+            checked: true, passed: false, detail: `gate error: ${err.message}`,
+        }));
+        const gated = applyFrozenRankingGate(rec, frozenGateResult);
+        if (gated.recommendation !== rec.recommendation) {
+            logger.warn({ gate: frozenGateResult }, 'nightly offline eval: frozen ranking gate blocked promotion');
+        }
+        rec.recommendation = gated.recommendation;
+        rec.reason = gated.reason;
+    }
+    enriched.frozenGate = frozenGateResult;
     const now = new Date().toISOString();
 
     const row = {
@@ -194,6 +214,7 @@ async function runNightlyOfflineEval(db, {
                     servingSource: servingMeta.source,
                     learning,
                     learningSafety,
+                    frozenGate: frozenGateResult,
                 }),
                 now,
             ]
