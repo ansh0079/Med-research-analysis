@@ -123,12 +123,22 @@ function describeDatasets({ heldoutDir = HELDOUT_DIR, fixtureDir = FIXTURE_DIR }
     return { tuning, heldout };
 }
 
+/**
+ * Would this query leak tuning data into the held-out split? Asked before a labelled scenario is
+ * exported, so leakage is refused at the point it is created rather than at the gate.
+ */
+function isHeldoutLeakage(query, fixtureDir = FIXTURE_DIR) {
+    const key = normalizeQuery(query);
+    return Boolean(key) && tuningQueryKeys(fixtureDir).has(key);
+}
+
 module.exports = {
     EvalSplitViolation,
     REQUIRED_PROVENANCE,
     HELDOUT_DIR,
     normalizeQuery,
     tuningFixtureFiles,
+    isHeldoutLeakage,
     loadReleaseGateCases,
     describeDatasets,
 };
