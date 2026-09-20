@@ -2,6 +2,7 @@ const { STOPWORDS } = require('./constants');
 const { isClinicalAbbreviation } = require('../../utils/clinicalAbbreviations');
 const {
     originalConditionTerms,
+    originalWeakAnchorTerms,
     originalGenericTerms,
     articleMatchesConditionTerm,
     isCompetingAbbreviationSense,
@@ -55,8 +56,8 @@ function meshRelevanceRatio(searchText, queryMeshTerms = []) {
     return matchCount / terms.length;
 }
 
-function termInText(text, term) {
-    if (articleMatchesConditionTerm(text, term)) return true;
+function termInText(text, term, companionTerms = []) {
+    if (articleMatchesConditionTerm(text, term, { companionTerms })) return true;
     const stem = stemTerm(term);
     return stem.length > 3 && textHasTerm(text, stem);
 }
@@ -68,8 +69,9 @@ function queryMatchScore(article, query) {
     if (isCompetingAbbreviationSense(article, query)) return 0;
 
     const conditionTerms = originalConditionTerms(query);
+    const weakAnchors = originalWeakAnchorTerms(query);
     const genericTerms = originalGenericTerms(query);
-    if (conditionTerms.length === 0 && genericTerms.length === 0) {
+    if (conditionTerms.length === 0 && genericTerms.length === 0 && weakAnchors.length === 0) {
         const q = String(query || '').toLowerCase();
         const queryTerms = q.split(/\s+/).filter((t) => (t.length > 3 || isClinicalAbbreviation(t)) && !STOPWORDS.has(t));
         if (queryTerms.length === 0) return 0;
@@ -84,8 +86,13 @@ function queryMatchScore(article, query) {
     }
 
     const conditionWeighted = conditionTerms.reduce((sum, term) => {
-        if (termInText(title, term)) return sum + 1.5;
-        if (termInText(searchText, term)) return sum + 1;
+        if (termInText(title, term, conditionTerms)) return sum + 1.5;
+        if (termInText(searchText, term, conditionTerms)) return sum + 1;
+        return sum;
+    }, 0);
+    const weakWeighted = weakAnchors.reduce((sum, term) => {
+        if (termInText(title, term, weakAnchors)) return sum + 0.45;
+        if (termInText(searchText, term, weakAnchors)) return sum + 0.3;
         return sum;
     }, 0);
     // Task words ("diagnosis", "management") must not saturate relevance.
@@ -96,8 +103,13 @@ function queryMatchScore(article, query) {
     }, 0);
 
     if (conditionTerms.length > 0) {
-        if (conditionWeighted === 0) return 0;
-        return Math.min(1, (conditionWeighted / conditionTerms.length) + Math.min(0.08, genericWeighted));
+        if (conditionWeighted === 0 && weakWeighted === 0) return 0;
+        if (conditionWeighted === 0) return Math.min(0.45, weakWeighted);
+        return Math.min(1, (conditionWeighted / conditionTerms.length) + Math.min(0.08, genericWeighted) + Math.min(0.12, weakWeighted));
+    }
+    if (weakAnchors.length > 0) {
+        if (weakWeighted === 0) return 0;
+        return Math.min(0.55, weakWeighted / weakAnchors.length);
     }
     return Math.min(0.4, genericWeighted / Math.max(1, genericTerms.length));
 }
@@ -146,12 +158,17 @@ function isOffTopic(article, query, options = {}) {
     if (isCompetingAbbreviationSense(article, query)) return true;
 
     const conditionTerms = originalConditionTerms(query);
+    const weakAnchors = originalWeakAnchorTerms(query);
     const queryTerms = conditionTerms.length > 0
         ? conditionTerms
         : q.split(/\s+/).filter((t) => (t.length > 3 || isClinicalAbbreviation(t)) && !STOPWORDS.has(t));
-    if (queryTerms.length === 0) return false;
+    const weakMatch = weakAnchors.some((t) => termInText(searchText, t, weakAnchors));
+    if (queryTerms.length === 0) {
+        if (weakAnchors.length > 0) return !weakMatch;
+        return false;
+    }
 
-    const matchCount = queryTerms.filter((t) => termInText(searchText, t)).length;
+    const matchCount = queryTerms.filter((t) => termInText(searchText, t, queryTerms)).length;
 
     const matchRatio = matchCount / queryTerms.length;
     const meshRatio = meshRelevanceRatio(searchText, queryMeshTerms);
@@ -171,6 +188,7 @@ function isOffTopic(article, query, options = {}) {
     // Child MeSH labels from NLM "contains" (e.g. "Burkholderia cepacia Sepsis" for q=sepsis)
     // must not pull a perfect query-term hit below threshold and wipe the result set.
     if (matchRatio >= threshold) return false;
+    if (weakMatch) return false;
 
     if (queryMeshTerms.length > 0) {
         const blended = (matchRatio * 0.6) + (meshRatio * 0.4);

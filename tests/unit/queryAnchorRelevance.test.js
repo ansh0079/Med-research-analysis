@@ -58,6 +58,8 @@ describe('condition-term anchoring', () => {
         }
         expect(GENERIC_CLINICAL_TERMS.has('aki')).toBe(false);
         expect(GENERIC_CLINICAL_TERMS.has('sepsis')).toBe(false);
+        expect(GENERIC_CLINICAL_TERMS.has('acute')).toBe(false);
+        expect(GENERIC_CLINICAL_TERMS.has('chronic')).toBe(false);
     });
 });
 

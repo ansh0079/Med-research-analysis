@@ -16,8 +16,28 @@ const GENERIC_CLINICAL_TERMS = new Set([
     'guideline', 'guidelines', 'recommendation', 'recommendations',
     'clinical', 'review', 'update', 'approach', 'care',
     'patient', 'patients', 'disease', 'syndrome',
-    'acute', 'chronic', 'use', 'used', 'based',
+    'use', 'used', 'based',
 ]);
+
+/**
+ * 2–3 letter tokens that are not curated abbreviations. They must never be
+ * discarded (that gated out "AS severity"), but they are too weak to require
+ * as a hard match — an ankylosing-spondylitis paper often never writes "as".
+ */
+const WEAK_SHORT_EXPANSIONS = {
+    as: ['ankylosing spondylitis', 'aortic stenosis', 'axial spondyloarthritis'],
+    gi: ['gastrointestinal', 'gastroenterology'],
+    ca: ['cancer', 'carcinoma'],
+};
+
+/**
+ * Curated abbreviations that are also ordinary English. A title that contains
+ * "all patients" must not score 0.75 on "ALL induction".
+ */
+const ENGLISH_AMBIGUOUS_ABBREVIATIONS = {
+    all: ['lymphoblastic', 'leukaemia', 'leukemia', 'hyper-cvad'],
+    ed: ['emergency department', 'emergency dept', 'accident and emergency'],
+};
 
 /**
  * Abbreviations with more than one clinical meaning. The primary sense is what a
@@ -130,20 +150,52 @@ function discoverySearchQuery(topic) {
     return `${raw} ${aliases[0]}`.trim();
 }
 
+function isStrongConditionToken(token) {
+    const t = String(token || '').toLowerCase();
+    if (!t || GENERIC_CLINICAL_TERMS.has(t)) return false;
+    return t.length > 3 || isClinicalAbbreviation(t);
+}
+
+function isWeakShortAnchor(token) {
+    const t = String(token || '').toLowerCase();
+    if (!t || GENERIC_CLINICAL_TERMS.has(t)) return false;
+    if (t.length > 3 || isClinicalAbbreviation(t)) return false;
+    return t.length >= 2 && /[a-z]/.test(t);
+}
+
 function originalConditionTerms(query) {
-    return tokenizeQuery(query).filter((t) => {
-        if (GENERIC_CLINICAL_TERMS.has(t)) return false;
-        return t.length > 3 || isClinicalAbbreviation(t);
-    });
+    return tokenizeQuery(query).filter(isStrongConditionToken);
+}
+
+function originalWeakAnchorTerms(query) {
+    return tokenizeQuery(query).filter(isWeakShortAnchor);
 }
 
 function originalGenericTerms(query) {
     return tokenizeQuery(query).filter((t) => GENERIC_CLINICAL_TERMS.has(t) && t.length > 3);
 }
 
-function articleMatchesConditionTerm(text, term) {
-    if (textHasTerm(text, term)) return true;
-    return synonymExpansionsForToken(term).some((phrase) => text.includes(phrase));
+function articleMatchesConditionTerm(text, term, { companionTerms = [] } = {}) {
+    const haystack = String(text || '').toLowerCase();
+    const token = String(term || '').toLowerCase();
+    if (!token || !haystack) return false;
+
+    const lexicalHit = textHasTerm(haystack, token)
+        || synonymExpansionsForToken(token).some((phrase) => haystack.includes(phrase))
+        || (WEAK_SHORT_EXPANSIONS[token] || []).some((phrase) => haystack.includes(phrase));
+
+    const englishCues = ENGLISH_AMBIGUOUS_ABBREVIATIONS[token];
+    if (englishCues) {
+        const companionHit = (companionTerms || []).some((other) => {
+            if (!other || other === token) return false;
+            return textHasTerm(haystack, other)
+                || synonymExpansionsForToken(other).some((phrase) => haystack.includes(phrase));
+        });
+        const cueHit = englishCues.some((cue) => haystack.includes(cue));
+        return cueHit || (lexicalHit && companionHit);
+    }
+
+    return lexicalHit;
 }
 
 function isCompetingAbbreviationSense(article, query) {
@@ -166,12 +218,15 @@ function isCompetingAbbreviationSense(article, query) {
 module.exports = {
     GENERIC_CLINICAL_TERMS,
     AMBIGUOUS_ABBREVIATIONS,
+    WEAK_SHORT_EXPANSIONS,
+    ENGLISH_AMBIGUOUS_ABBREVIATIONS,
     tokenizeQuery,
     textHasTerm,
     synonymExpansionsForToken,
     conditionExpansionAliases,
     discoverySearchQuery,
     originalConditionTerms,
+    originalWeakAnchorTerms,
     originalGenericTerms,
     articleMatchesConditionTerm,
     isCompetingAbbreviationSense,
