@@ -1,7 +1,7 @@
 'use strict';
 
 const { isServableGuideline } = require('../../server/utils/guidelineQuality');
-const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
+const { expandNormalizedTopicKeys, resolveCanonicalNormalized, resolveConditionGroupForTopic } = require('../../server/utils/topicSynonyms');
 const { assessGuidelineQuality } = require('../../server/services/guidelineQualityService');
 const { normalizeStoredDocument } = require('../../server/utils/importEvidenceQuality');
 const { isIssuingBodyValue } = require('../../server/utils/guidelineAttribution');
@@ -608,6 +608,7 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20, includeRelated = tr
     // 82 servable AKI recommendations in the table. A per-word share means the
     // discriminating term always contributes, whatever it is paired with.
     const probeWords = topicContentWords(topic).slice(0, 4);
+    const refiledIds = new Set();
     if (includeRelated && probeWords.length) {
         const perWord = Math.max(20, Math.ceil(fetchLimit / probeWords.length));
         const seen = new Set(rows.map((r) => r.id));
@@ -655,15 +656,54 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20, includeRelated = tr
                 if (!seen.has(row.id)) { seen.add(row.id); rows.push(row); }
             }
         }
+
+        // Embedding-based re-filing (migration 096). The text probes above only
+        // surface rows that already name the condition — 52 KDIGO recs sat in the
+        // corpus with none under any AKI topic because retrieval cannot surface
+        // what no text names. The backfill embeds each recommendation and files
+        // it under its canonical condition cluster; here we simply join that
+        // side table for the query's condition group. No vector math at query
+        // time. Refiled rows bypass the score>0 floor below (their whole point
+        // is not naming the condition literally) but keep their slot in the
+        // same ranking, so a weak refiled rec still loses to a strong literal one.
+        const conditionGroup = resolveConditionGroupForTopic(topic, (s) => this.normalizeTopic(s));
+        if (conditionGroup) {
+            // A missing side table (pre-migration test harnesses, degraded
+            // environments) means "no refiled rows", not an error — same
+            // posture as the guideline_contradictions route.
+            try {
+                const refiled = await this.all(
+                    `SELECT g.* FROM topic_guidelines g
+                     JOIN topic_guideline_refiling r ON r.guideline_id = g.id
+                     WHERE r.canonical_normalized = ?
+                       AND (? = '' OR g.status = ?)
+                       AND g.superseded_by_id IS NULL
+                     ORDER BY r.similarity DESC
+                     LIMIT ?`,
+                    [conditionGroup.canonicalNormalized, statusFilter, statusFilter, fetchLimit]
+                );
+                for (const row of refiled) {
+                    if (!seen.has(row.id)) {
+                        seen.add(row.id);
+                        rows.push(row);
+                        refiledIds.add(row.id);
+                    }
+                }
+            } catch (err) {
+                if (!/no such table/i.test(String(err?.message || ''))) throw err;
+            }
+        }
     }
 
     // Score by term overlap with the topic; floor at > 0 prevents cross-topic noise
     // (rows attributed to this topic via NICE page scrape but containing zero topic words).
+    // Embedding-refiled rows (migration 096) are the exception: they were filed under
+    // this condition precisely because the text does NOT name it literally.
     const topicWords = topicContentWords(topic);
     const scored = rows
         .filter(isServableGuideline)
         .map(row => ({ row, score: guidelineTermScore(row, topicWords), year: row.source_year || 0 }))
-        .filter(({ score }) => topicWords.length === 0 || score > 0);
+        .filter(({ row, score }) => topicWords.length === 0 || score > 0 || refiledIds.has(row.id));
     scored.sort((a, b) => {
         const ka = rankKey(a);
         const kb = rankKey(b);
@@ -784,7 +824,55 @@ async markGuidelineSuperseded(id, supersededById) {
 }
 
 async deleteGuideline(id) {
+    await this.run(`DELETE FROM topic_guideline_refiling WHERE guideline_id = ?`, [id]);
     await this.run(`DELETE FROM topic_guidelines WHERE id = ?`, [id]);
     return { deleted: true };
+}
+
+// ─── Embedding re-filing (migration 096) ─────────────────────────────────────
+
+/**
+ * Bounded batch of recommendation rows for the embedding backfill, with the
+ * existing re-filing hash so unchanged rows can be skipped. LEFT JOIN keeps
+ * never-processed rows; the service compares embedded_text_hash per row.
+ */
+async listGuidelineRefilingCandidates({ limit = 200, offset = 0 } = {}) {
+    const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 200, 1), 1000);
+    const safeOffset = Math.max(parseInt(String(offset), 10) || 0, 0);
+    return this.all(
+        `SELECT g.id, g.topic, g.normalized_topic, g.source_body, g.recommendation_text,
+                r.embedded_text_hash AS refiling_hash
+         FROM topic_guidelines g
+         LEFT JOIN topic_guideline_refiling r ON r.guideline_id = g.id
+         WHERE g.superseded_by_id IS NULL
+         ORDER BY g.id
+         LIMIT ? OFFSET ?`,
+        [safeLimit, safeOffset]
+    );
+}
+
+/** One row per guideline: the single best-matching canonical condition. */
+async upsertGuidelineRefiling({ guidelineId, canonicalNormalized, similarity, sourceTopicNormalized, textHash }) {
+    if (!guidelineId || !canonicalNormalized) return false;
+    await this.run(
+        `INSERT INTO topic_guideline_refiling
+            (guideline_id, canonical_normalized, similarity, source_topic_normalized, embedded_text_hash, created_at)
+         VALUES (?, ?, ?, ?, ?, ?)
+         ON CONFLICT (guideline_id) DO UPDATE SET
+            canonical_normalized = EXCLUDED.canonical_normalized,
+            similarity = EXCLUDED.similarity,
+            source_topic_normalized = EXCLUDED.source_topic_normalized,
+            embedded_text_hash = EXCLUDED.embedded_text_hash,
+            created_at = EXCLUDED.created_at`,
+        [
+            guidelineId,
+            String(canonicalNormalized),
+            Number(similarity) || 0,
+            String(sourceTopicNormalized || ''),
+            String(textHash || ''),
+            new Date().toISOString(),
+        ]
+    );
+    return true;
 }
 };
