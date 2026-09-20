@@ -30,5 +30,8 @@ describe('clinicalQueryAliasRules JSON', () => {
         expect(clinicalQueryPinnedPmids(
             'sacubitril valsartan heart failure reduced ejection fraction mortality'
         )).toEqual(expect.arrayContaining(['25176015']));
+        expect(clinicalQueryPinnedPmids('SGLT2 inhibitors type 2 diabetes')).not.toEqual(
+            expect.arrayContaining(['31535829'])
+        );
     });
 });

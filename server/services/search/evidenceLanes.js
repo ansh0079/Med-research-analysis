@@ -15,6 +15,21 @@ const {
 const EVIDENCE_LANES = Object.freeze(['guidelines', 'landmark_trials', 'reviews', 'supporting']);
 const SEMANTIC_RESCUE_CAP = 2;
 
+/** Lane display order follows query intent rather than one fixed hierarchy. */
+const LANE_ORDER_BY_INTENT = Object.freeze({
+    guideline: ['guidelines', 'reviews', 'landmark_trials', 'supporting'],
+    therapeutic: ['guidelines', 'landmark_trials', 'reviews', 'supporting'],
+    diagnostic: ['guidelines', 'reviews', 'landmark_trials', 'supporting'],
+    prognostic: ['reviews', 'landmark_trials', 'supporting', 'guidelines'],
+    epidemiological: ['reviews', 'supporting', 'guidelines', 'landmark_trials'],
+    mechanistic: ['supporting', 'reviews', 'landmark_trials', 'guidelines'],
+    general: ['guidelines', 'landmark_trials', 'reviews', 'supporting'],
+});
+
+function laneOrderForIntent(intent) {
+    return LANE_ORDER_BY_INTENT[intent] || LANE_ORDER_BY_INTENT.general;
+}
+
 const LANE_LABELS = Object.freeze({
     guidelines: 'Guidelines',
     landmark_trials: 'Landmark trials',
@@ -23,10 +38,10 @@ const LANE_LABELS = Object.freeze({
 });
 
 const EMPTY_LANE_COPY = Object.freeze({
-    guidelines: 'No verified current guideline is registered for this condition.',
-    landmark_trials: 'No landmark trial is confirmed for this condition.',
-    reviews: 'No systematic review or meta-analysis is available.',
-    supporting: 'No additional eligible papers.',
+    guidelines: 'No verified current guideline is registered for this scope.',
+    landmark_trials: 'No defining trial is recorded for this topic.',
+    reviews: 'No eligible systematic review or meta-analysis was found.',
+    supporting: 'No additional eligible evidence was found.',
 });
 
 function pubtypesOf(article) {
@@ -80,11 +95,11 @@ function evaluateEligibility(article, { query, queryMeshTerms = [], queryAliases
     if (article?._retraction?.isRetracted) {
         return { eligible: false, route: null, rejectionReason: 'retracted' };
     }
-    if (article?._pinnedLandmark) {
-        return { eligible: true, route: 'curated_landmark', rejectionReason: null };
-    }
     if (!matchesPopulationFilter(article, query)) {
         return { eligible: false, route: null, rejectionReason: 'population_mismatch' };
+    }
+    if (article?._pinnedLandmark) {
+        return { eligible: true, route: 'curated_landmark', rejectionReason: null };
     }
     if (article?._fromTopicEvidenceMemory) {
         return { eligible: true, route: 'verified_topic_link', rejectionReason: null };
@@ -119,7 +134,8 @@ function capSemanticRescue(articles = [], max = SEMANTIC_RESCUE_CAP) {
     });
 }
 
-function buildSearchPack(articles = []) {
+function buildSearchPack(articles = [], { intent = 'general' } = {}) {
+    const displayOrder = laneOrderForIntent(intent);
     const lanes = {};
     for (const key of EVIDENCE_LANES) {
         lanes[key] = {
@@ -139,9 +155,9 @@ function buildSearchPack(articles = []) {
         const uid = articleUid(article);
         if (uid) bucket.uids.push(uid);
     }
-    const primaryLane = EVIDENCE_LANES.find((key) => lanes[key].count > 0) || null;
+    const primaryLane = displayOrder.find((key) => lanes[key].count > 0) || null;
     const missingBefore = [];
-    for (const key of EVIDENCE_LANES) {
+    for (const key of displayOrder) {
         if (key === primaryLane) break;
         if (lanes[key].count === 0) missingBefore.push(EMPTY_LANE_COPY[key]);
     }
@@ -149,11 +165,11 @@ function buildSearchPack(articles = []) {
     if (!primaryLane) {
         cascadeNote = 'No eligible evidence for this condition.';
     } else if (missingBefore.length === 0) {
-        cascadeNote = 'Verified guidelines first.';
+        cascadeNote = `${LANE_LABELS[primaryLane]} first for this query.`;
     } else {
         cascadeNote = `${missingBefore.join(' ')} ${LANE_LABELS[primaryLane]} next.`;
     }
-    return { primaryLane, cascadeNote, lanes };
+    return { primaryLane, cascadeNote, lanes, displayOrder };
 }
 
 function annotateEvidenceMetadata(articles, ctx = {}) {
@@ -172,6 +188,31 @@ function annotateEvidenceMetadata(articles, ctx = {}) {
     return capSemanticRescue(annotated);
 }
 
+function scoreArticleInLane(article, lane) {
+    const rank = Number(article?._evidenceRank) || 9999;
+    const inverted = 10000 - rank;
+    const year = Number(article?.year || article?.pubdate) || 0;
+    if (lane === 'guidelines') {
+        let score = inverted;
+        if (article?._guidelineRegistryMatch) score += 80;
+        if (year >= 2020) score += 12;
+        else if (year >= 2015) score += 4;
+        return score;
+    }
+    if (lane === 'landmark_trials') {
+        let score = inverted;
+        if (article?._pinnedLandmark) score += 60;
+        if (isRCT(article)) score += 8;
+        return score;
+    }
+    if (lane === 'reviews') {
+        let score = inverted;
+        if (year >= 2020) score += 10;
+        return score;
+    }
+    return inverted;
+}
+
 function orderArticlesByEvidenceRank(articles) {
     return [...(Array.isArray(articles) ? articles : [])].sort((a, b) => {
         const ea = Number(a?._evidenceRank) || 9999;
@@ -180,8 +221,8 @@ function orderArticlesByEvidenceRank(articles) {
     });
 }
 
-/** Rank independently inside each lane, then concatenate in display order. */
-function rankArticlesWithinLanes(articles = []) {
+/** Rank independently inside each lane with lane-specific scores, then concatenate in intent order. */
+function rankArticlesWithinLanes(articles = [], { intent = 'general' } = {}) {
     const groups = {
         guidelines: [],
         landmark_trials: [],
@@ -193,8 +234,12 @@ function rankArticlesWithinLanes(articles = []) {
         groups[lane].push(article);
     }
     const out = [];
-    for (const key of EVIDENCE_LANES) {
-        out.push(...orderArticlesByEvidenceRank(groups[key]));
+    for (const key of laneOrderForIntent(intent)) {
+        const ranked = groups[key]
+            .map((article) => ({ article, score: scoreArticleInLane(article, key) }))
+            .sort((a, b) => b.score - a.score || (Number(a.article._evidenceRank) || 9999) - (Number(b.article._evidenceRank) || 9999))
+            .map(({ article, score }) => ({ ...article, _laneScore: score }));
+        out.push(...ranked);
     }
     return out;
 }
@@ -204,6 +249,7 @@ module.exports = {
     LANE_LABELS,
     EMPTY_LANE_COPY,
     SEMANTIC_RESCUE_CAP,
+    LANE_ORDER_BY_INTENT,
     classifyEvidenceLane,
     landmarkCitationCutoff,
     evaluateEligibility,
@@ -211,6 +257,8 @@ module.exports = {
     annotateEvidenceMetadata,
     orderArticlesByEvidenceRank,
     rankArticlesWithinLanes,
+    laneOrderForIntent,
+    scoreArticleInLane,
     capSemanticRescue,
     isSystematicReviewOrMetaAnalysis,
 };

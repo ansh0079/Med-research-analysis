@@ -98,6 +98,12 @@ const WRITE_PATHS = Object.freeze([
         policyRequired: false,
     },
     {
+        id: 'persistSearchEvidenceSnapshot',
+        family: 'search_snapshot',
+        owners: ['server/services/search/searchEvidenceSnapshot.js'],
+        policyRequired: false,
+    },
+    {
         id: 'recordPersonalizationArmPull',
         family: 'bandit',
         owners: ['server/services/bandit/rewards.js'],

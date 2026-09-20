@@ -429,6 +429,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                 ranking: ranked.bouquetRanking,
                 searchPack,
                 learningOrder,
+                queryRepresentation: ranked.queryRepresentation || null,
                 queryResolution: resolveQuerySenses(query),
                 searchTelemetry: {
                     timings: { ...telemetry.timings, ...routeTimings },

@@ -17,6 +17,7 @@ const FROZEN_RANKING_SUITES = Object.freeze([
     'evalDatasetPolicy',
     'guidelineRegistry',
     'laneRetrieval',
+    'queryContract',
 ]);
 
 const RANKING_TEST_PATTERN = FROZEN_RANKING_SUITES.join('|');

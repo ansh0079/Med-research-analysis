@@ -80,6 +80,13 @@ describe('evidence lanes', () => {
             _retraction: { isRetracted: true },
         }, { query: 'ACS management' });
         expect(retracted).toMatchObject({ eligible: false, rejectionReason: 'retracted' });
+
+        const pediatricPin = evaluateEligibility({
+            title: 'Pediatric ACS trial in children',
+            abstract: 'Infants and children only.',
+            _pinnedLandmark: true,
+        }, { query: 'ACS management in adults' });
+        expect(pediatricPin).toMatchObject({ eligible: false, rejectionReason: 'population_mismatch' });
     });
 
     test('semantic rescue needs a MeSH phrase in the title and is capped at two papers', () => {
@@ -135,5 +142,11 @@ describe('evidence lanes', () => {
             { uid: 'guide-hi', _evidenceLane: 'guidelines', _evidenceRank: 2 },
         ]);
         expect(laned.map((row) => row.uid)).toEqual(['guide-hi', 'guide-lo', 'support-hi']);
+
+        const diagnostic = rankArticlesWithinLanes([
+            { uid: 'trial', _evidenceLane: 'landmark_trials', _evidenceRank: 1 },
+            { uid: 'review', _evidenceLane: 'reviews', _evidenceRank: 2 },
+        ], { intent: 'diagnostic' });
+        expect(diagnostic.map((row) => row.uid)).toEqual(['review', 'trial']);
     });
 });

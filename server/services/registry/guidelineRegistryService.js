@@ -14,6 +14,7 @@
  */
 
 const { expandNormalizedTopicKeys } = require('../../utils/topicSynonyms');
+const { queryPopulationCue, queryJurisdictionCue } = require('../../utils/queryScopeCues');
 const COHORT = require('../../config/registryCohort.json');
 
 const CONCEPT_CACHE_TTL_MS = 60 * 1000;
@@ -49,22 +50,6 @@ function containsPhrase(haystack, phrase) {
 
 function phrasesForConcept(name) {
     return COHORT_ALIAS_PHRASES.get(name) || [name];
-}
-
-function queryPopulationCue(query) {
-    const q = String(query || '').toLowerCase();
-    if (/\b(pregnan\w*|antenatal|obstetric|pre-eclampsia|preeclampsia)\b/.test(q)) return 'pregnancy';
-    if (/\b(pediatric|paediatric|children?|infant|neonate|adolescent)\b/.test(q)) return 'paediatric';
-    if (/\b(adults?|elderly|geriatric)\b/.test(q)) return 'adult';
-    return null;
-}
-
-function queryJurisdictionCue(query) {
-    const q = String(query || '').toLowerCase();
-    if (/\b(uk|nice|nhs|britain|british|sign)\b/.test(q)) return 'uk';
-    if (/\b(usa|american college|aha|acc guideline)\b/.test(q) || /\bus guideline\b/.test(q)) return 'us';
-    if (/\b(europe|european|esc|ers|easl)\b/.test(q)) return 'europe';
-    return null;
 }
 
 function entryMatchesQueryScope(entry, query) {

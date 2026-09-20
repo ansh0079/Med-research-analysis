@@ -34,6 +34,8 @@ const {
     orderArticlesByEvidenceRank,
     rankArticlesWithinLanes,
 } = require('./evidenceLanes');
+const { buildQueryRepresentation } = require('./queryRepresentation');
+const { persistSearchEvidenceSnapshot } = require('./searchEvidenceSnapshot');
 
 const STRICT_PUB_TYPES = new Set([
     'systematic review', 'meta-analysis', 'meta analysis',
@@ -707,8 +709,20 @@ async function fetchAndRankSearchArticles({
             queryMeshTerms,
             queryAliases: telemetry.clinicalAliases,
         });
-        articles = rankArticlesWithinLanes(articles);
-        const searchPack = buildSearchPack(articles);
+        articles = rankArticlesWithinLanes(articles, { intent: queryIntent });
+        const searchPack = buildSearchPack(articles, { intent: queryIntent });
+        const queryRepresentation = buildQueryRepresentation(query, {
+            intent: queryIntent,
+            aliases: telemetry.clinicalAliases,
+            pico,
+        });
+        persistSearchEvidenceSnapshot(db, {
+            query,
+            queryRepresentation,
+            articles,
+            userId,
+            sessionId,
+        }).catch(() => null);
 
         // Refresh durable memory from the fully filtered and ranked result set.
         try {
@@ -741,6 +755,7 @@ async function fetchAndRankSearchArticles({
             banditMeta: learningContextFull?._banditMeta || null,
             searchPack,
             learningOrder,
+            queryRepresentation,
         };
     });
 }
