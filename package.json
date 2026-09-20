@@ -98,6 +98,7 @@
     "eval:datasets": "node scripts/eval-dataset-check.js",
     "eval:heldout": "node scripts/eval-heldout.js",
     "eval:worksheet": "node scripts/heldout-worksheet.js",
+    "eval:heldout:import": "node scripts/heldout-import-judgements.js",
     "test:search-quality-gate": "npx jest --testPathPatterns=\"p3SearchQualityScale|clinicalQueryAliasRulesFile|searchRankingTune|searchAbbreviationRanking\" --no-coverage",
     "test:search-pipeline-integration": "npx jest --testPathPatterns=searchPipeline.integration --no-coverage",
     "eval:offline-policy": "node scripts/eval-offline-policy.js",

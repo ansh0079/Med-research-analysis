@@ -228,3 +228,24 @@ describe('the review queue shows what was actually served', () => {
         expect(await pendingCandidates(db, { reviewerId: 'clinician-a' })).toEqual([]);
     });
 });
+
+describe('an exported fixture is one the release gate will actually load', () => {
+    const os = require('os');
+    const { loadReleaseGateCases } = require('../../server/services/evalDatasetPolicy');
+
+    test('the export round-trips through the gate loader with its provenance intact', async () => {
+        const db = makeDb();
+        await labelAScenario(db);
+        const fixture = await buildHeldoutFixture(db, { labelledBy: 'reviewer@example.com' });
+
+        // Written where the gate looks, exactly as the import script writes it.
+        const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'heldout-'));
+        fs.writeFileSync(path.join(dir, 'reviewed.json'), JSON.stringify(fixture, null, 2));
+
+        const loaded = loadReleaseGateCases({ heldoutDir: dir });
+        expect(loaded.cases).toHaveLength(1);
+        expect(loaded.cases[0].query).toBe(QUERY);
+        expect(loaded.cases[0].relevantUids).toEqual(['pubmed-1']);
+        fs.rmSync(dir, { recursive: true, force: true });
+    });
+});
