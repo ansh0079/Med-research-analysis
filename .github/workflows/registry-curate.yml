@@ -1,0 +1,74 @@
+name: Registry Curate
+
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: coverage, propose first 5, or list candidates
+        required: true
+        default: propose
+        type: choice
+        options:
+          - coverage
+          - propose
+          - list
+
+jobs:
+  curate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Run registryCurate on production
+        uses: appleboy/ssh-action@v1
+        env:
+          CURATE_CMD: ${{ github.event.inputs.command }}
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 12m
+          envs: CURATE_CMD
+          script: |
+            set -e
+            cd /opt/medsearch
+
+            echo "=== git HEAD ==="
+            git rev-parse --short HEAD
+            git log -1 --oneline
+
+            echo "=== topic_guidelines.id type ==="
+            docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
+              "SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_name IN ('topic_guidelines','guideline_registry_recommendations','search_evidence_snapshots') AND column_name IN ('id','guideline_id') ORDER BY 1,2;"
+
+            echo "=== registry + snapshot tables ==="
+            docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
+              "SELECT to_regclass('public.guideline_registry_entries') AS entries, to_regclass('public.search_evidence_snapshots') AS snapshots;"
+            docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
+              "SELECT COALESCE(status, '(none)') AS status, COUNT(*) FROM guideline_registry_entries GROUP BY status ORDER BY 1;"
+
+            case "$CURATE_CMD" in
+              coverage)
+                docker exec -w /app medsearch-web node server/scripts/registryCurate.js coverage
+                ;;
+              list)
+                docker exec -w /app medsearch-web node server/scripts/registryCurate.js list --status candidate
+                ;;
+              propose)
+                for concept in \
+                  "Heart failure" \
+                  "Atrial fibrillation" \
+                  "Acute coronary syndrome" \
+                  "Hypertension" \
+                  "Atherosclerotic cardiovascular disease"
+                do
+                  echo "=== propose: $concept ==="
+                  docker exec -w /app medsearch-web node server/scripts/registryCurate.js propose --concept "$concept"
+                done
+                echo "=== candidate list ==="
+                docker exec -w /app medsearch-web node server/scripts/registryCurate.js list --status candidate
+                ;;
+              *)
+                echo "unsupported command: $CURATE_CMD"
+                exit 1
+                ;;
+            esac
