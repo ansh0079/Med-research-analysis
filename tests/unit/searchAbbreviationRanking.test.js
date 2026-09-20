@@ -184,6 +184,63 @@ describe('abbreviation search ranking', () => {
         expect(isOffTopic(systolic, 'SBP management')).toBe(true);
         expect(isOffTopic(sbpPeritonitis, 'SBP management')).toBe(false);
     });
+
+    test('AF, CAP and MI reject competing English-language senses', () => {
+        const afib = {
+            uid: 'af-real',
+            title: 'ESC guidelines for the diagnosis and management of atrial fibrillation',
+            abstract: 'Anticoagulation and CHA2DS2-VASc in atrial fibrillation.',
+            pubdate: '2024',
+            pubtype: ['Practice Guideline'],
+        };
+        const amniotic = {
+            uid: 'af-fluid',
+            title: 'Amniotic fluid index in late pregnancy',
+            abstract: 'Amniotic fluid volume and perinatal outcomes.',
+            pubdate: '2021',
+            pubtype: ['Review'],
+            pmcrefcount: 300,
+        };
+        expect(isCompetingAbbreviationSense(amniotic, 'AF management')).toBe(true);
+        expect(isOffTopic(amniotic, 'AF management')).toBe(true);
+        expect(isOffTopic(afib, 'AF management')).toBe(false);
+
+        const cap = {
+            uid: 'cap-real',
+            title: 'ATS guidelines for community-acquired pneumonia',
+            abstract: 'CURB-65 and pneumococcal therapy in community-acquired pneumonia.',
+            pubdate: '2019',
+            pubtype: ['Practice Guideline'],
+        };
+        const pathologists = {
+            uid: 'cap-org',
+            title: 'College of American Pathologists laboratory accreditation checklist',
+            abstract: 'CAP accreditation for anatomic pathology laboratories.',
+            pubdate: '2022',
+            pubtype: ['Guideline'],
+            pmcrefcount: 400,
+        };
+        expect(isOffTopic(pathologists, 'CAP treatment')).toBe(true);
+        expect(isOffTopic(cap, 'CAP treatment')).toBe(false);
+
+        const mi = {
+            uid: 'mi-real',
+            title: 'Fourth universal definition of myocardial infarction',
+            abstract: 'Troponin and STEMI criteria for myocardial infarction.',
+            pubdate: '2018',
+            pubtype: ['Practice Guideline'],
+        };
+        const interviewing = {
+            uid: 'mi-talk',
+            title: 'Motivational interviewing for behaviour change in clinic',
+            abstract: 'Motivational interviewing techniques in primary care.',
+            pubdate: '2020',
+            pubtype: ['Review'],
+            pmcrefcount: 500,
+        };
+        expect(isOffTopic(interviewing, 'MI management')).toBe(true);
+        expect(isOffTopic(mi, 'MI management')).toBe(false);
+    });
 });
 
 describe('resolveQuerySenses (abstention)', () => {

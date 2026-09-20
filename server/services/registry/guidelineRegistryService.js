@@ -14,6 +14,7 @@
  */
 
 const { expandNormalizedTopicKeys } = require('../../utils/topicSynonyms');
+const COHORT = require('../../config/registryCohort.json');
 
 const CONCEPT_CACHE_TTL_MS = 60 * 1000;
 let conceptCache = { at: 0, names: [] };
@@ -21,6 +22,21 @@ let conceptCache = { at: 0, names: [] };
 function normalizeText(value) {
     return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
 }
+
+const COHORT_ALIAS_PHRASES = (() => {
+    const map = new Map();
+    for (const condition of COHORT.conditions || []) {
+        const name = normalizeText(condition.conceptName);
+        if (!name) continue;
+        const phrases = new Set([name]);
+        for (const alias of condition.aliases || []) {
+            const phrase = normalizeText(alias);
+            if (phrase) phrases.add(phrase);
+        }
+        map.set(name, [...phrases]);
+    }
+    return map;
+})();
 
 function clearRegistryConceptCache() {
     conceptCache = { at: 0, names: [] };
@@ -31,11 +47,73 @@ function containsPhrase(haystack, phrase) {
     return ` ${haystack} `.includes(` ${phrase} `);
 }
 
+function phrasesForConcept(name) {
+    return COHORT_ALIAS_PHRASES.get(name) || [name];
+}
+
+function queryPopulationCue(query) {
+    const q = String(query || '').toLowerCase();
+    if (/\b(pregnan\w*|antenatal|obstetric|pre-eclampsia|preeclampsia)\b/.test(q)) return 'pregnancy';
+    if (/\b(pediatric|paediatric|children?|infant|neonate|adolescent)\b/.test(q)) return 'paediatric';
+    if (/\b(adults?|elderly|geriatric)\b/.test(q)) return 'adult';
+    return null;
+}
+
+function queryJurisdictionCue(query) {
+    const q = String(query || '').toLowerCase();
+    if (/\b(uk|nice|nhs|britain|british|sign)\b/.test(q)) return 'uk';
+    if (/\b(usa|american college|aha|acc guideline)\b/.test(q) || /\bus guideline\b/.test(q)) return 'us';
+    if (/\b(europe|european|esc|ers|easl)\b/.test(q)) return 'europe';
+    return null;
+}
+
+function entryMatchesQueryScope(entry, query) {
+    const popCue = queryPopulationCue(query);
+    const jurCue = queryJurisdictionCue(query);
+    const pop = String(entry.population || '').toLowerCase();
+    const scope = String(entry.scope || '').toLowerCase();
+    const jur = String(entry.jurisdiction || '').toLowerCase();
+    const popScope = `${pop} ${scope}`;
+
+    if (popCue === 'pregnancy') {
+        const pregnancyish = /pregnan|obstetric|antenatal/.test(popScope);
+        if (!pregnancyish && (/adult/.test(popScope) || /paediatric|pediatric|child/.test(popScope))) {
+            return false;
+        }
+    }
+    if (popCue === 'paediatric') {
+        if (/adult/.test(popScope) && !/paediatric|pediatric|child/.test(popScope)) return false;
+        if (/pregnan/.test(popScope) && !/paediatric|pediatric|child/.test(popScope)) return false;
+    }
+    if (popCue === 'adult') {
+        if (/paediatric|pediatric|child|pregnan/.test(popScope) && !/adult/.test(popScope)) return false;
+    }
+    if (jurCue && jur && jur !== 'unspecified' && jur !== jurCue) return false;
+    return true;
+}
+
+function inferJurisdiction({ sourceRegion, issuer } = {}) {
+    const region = String(sourceRegion || '').trim().toLowerCase();
+    if (region && region !== 'unspecified') return region;
+    const body = String(issuer || '').toLowerCase();
+    if (/\bnice\b|\bnhs\b|\bsign\b/.test(body)) return 'uk';
+    if (/\baha\b|\bacc\b|\bacp\b|\bidsa\b|\bcdc\b/.test(body)) return 'us';
+    if (/\besc\b|\bers\b|\beasl\b|\besmo\b/.test(body)) return 'europe';
+    if (/\bkdigo\b|\bwho\b/.test(body)) return 'international';
+    return 'unspecified';
+}
+
+function inferScope({ population, topic, recommendationText } = {}) {
+    const text = `${population || ''} ${topic || ''} ${recommendationText || ''}`.toLowerCase();
+    if (/\bpregnan|antenatal|obstetric|pre-eclampsia|preeclampsia/.test(text)) return 'pregnancy';
+    if (/\bpaediatric|pediatric|children|neonat|infant/.test(text)) return 'paediatric';
+    if (/\badult/.test(text)) return 'adult';
+    return 'unspecified';
+}
+
 /**
  * Which verified registry concepts does this query name? Matches the concept's
- * normalized name as a whole phrase in the query or in any synonym expansion of it,
- * so "AKI management" reaches "acute kidney injury" and "diagnosis of acute kidney
- * injury" does too.
+ * normalized name, cohort aliases (HFrEF, AF, …), or synonym expansions.
  */
 async function resolveRegistryConcepts(db, query, { now = Date.now() } = {}) {
     if (!db || typeof db.listVerifiedRegistryConcepts !== 'function') return [];
@@ -46,7 +124,13 @@ async function resolveRegistryConcepts(db, query, { now = Date.now() } = {}) {
     const normalized = normalizeText(query);
     if (!normalized) return [];
     const haystacks = new Set([normalized, ...expandNormalizedTopicKeys(normalized, normalizeText)]);
-    return conceptCache.names.filter((name) => [...haystacks].some((h) => containsPhrase(h, name)));
+    const matched = conceptCache.names.filter((name) => {
+        const phrases = phrasesForConcept(name);
+        return [...haystacks].some((h) => phrases.some((p) => containsPhrase(h, p)));
+    });
+    return matched.filter((name) => !matched.some((other) => (
+        other !== name && other.includes(name) && [...haystacks].some((h) => containsPhrase(h, other))
+    )));
 }
 
 function registryEntryToArticle(entry) {
@@ -90,7 +174,9 @@ async function registryArticlesForQuery(db, query, options = {}) {
         const concepts = await resolveRegistryConcepts(db, query, options);
         if (!concepts.length) return [];
         const entries = await db.getVerifiedRegistryForConcepts(concepts);
-        return entries.map(registryEntryToArticle);
+        return entries
+            .filter((entry) => entryMatchesQueryScope(entry, query))
+            .map(registryEntryToArticle);
     } catch {
         return [];
     }
@@ -110,12 +196,12 @@ function mergeRegistryArticles(articles, registryArticles) {
  *
  * @returns {{ proposed: object[], skipped: { reason: string, guidelineId: number }[] }}
  */
-async function proposeRegistryCandidates(db, { conceptName, topicKeys = [], jurisdiction = 'unspecified' } = {}) {
+async function proposeRegistryCandidates(db, { conceptName, topicKeys = [], jurisdiction = null } = {}) {
     const keys = [...new Set([normalizeText(conceptName), ...topicKeys.map(normalizeText)].filter(Boolean))];
     if (!keys.length) return { proposed: [], skipped: [] };
     const placeholders = keys.map(() => '?').join(',');
     const rows = await db.all(
-        `SELECT id, source_body, source_year, source_url, population
+        `SELECT id, topic, source_body, source_region, source_year, source_url, population, recommendation_text
          FROM topic_guidelines
          WHERE normalized_topic IN (${placeholders}) AND superseded_by_id IS NULL`,
         keys
@@ -127,13 +213,31 @@ async function proposeRegistryCandidates(db, { conceptName, topicKeys = [], juri
         if (!row.source_year) { skipped.push({ reason: 'no_year', guidelineId: row.id }); continue; }
         if (!String(row.source_url || '').trim()) { skipped.push({ reason: 'no_source_url', guidelineId: row.id }); continue; }
         const population = String(row.population || '').trim() || 'unspecified';
-        const key = [normalizeText(row.source_body), row.source_year, normalizeText(population), row.source_url].join('|');
+        const inferredJurisdiction = jurisdiction || inferJurisdiction({
+            sourceRegion: row.source_region,
+            issuer: row.source_body,
+        });
+        const scope = inferScope({
+            population,
+            topic: row.topic,
+            recommendationText: row.recommendation_text,
+        });
+        const key = [
+            normalizeText(row.source_body),
+            row.source_year,
+            normalizeText(population),
+            inferredJurisdiction,
+            scope,
+            row.source_url,
+        ].join('|');
         if (!groups.has(key)) {
             groups.set(key, {
                 issuer: String(row.source_body).trim(),
                 year: Number(row.source_year),
                 sourceUrl: String(row.source_url).trim(),
                 population,
+                jurisdiction: inferredJurisdiction,
+                scope,
                 guidelineIds: [],
             });
         }
@@ -144,8 +248,9 @@ async function proposeRegistryCandidates(db, { conceptName, topicKeys = [], juri
         const entry = await db.upsertRegistryEntry({
             conceptName,
             issuer: group.issuer,
-            jurisdiction,
+            jurisdiction: group.jurisdiction,
             population: group.population,
+            scope: group.scope,
             year: group.year,
             sourceUrl: group.sourceUrl,
             guidelineIds: group.guidelineIds,
@@ -163,4 +268,7 @@ module.exports = {
     registryArticlesForQuery,
     mergeRegistryArticles,
     proposeRegistryCandidates,
+    inferJurisdiction,
+    inferScope,
+    entryMatchesQueryScope,
 };

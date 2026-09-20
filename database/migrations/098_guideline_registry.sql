@@ -31,7 +31,7 @@ CREATE INDEX IF NOT EXISTS idx_guideline_registry_entries_concept_status
 
 CREATE TABLE IF NOT EXISTS guideline_registry_recommendations (
     entry_id TEXT NOT NULL REFERENCES guideline_registry_entries(id),
-    guideline_id INTEGER NOT NULL,
+    guideline_id TEXT NOT NULL,
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (entry_id, guideline_id)
 );

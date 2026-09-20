@@ -48,8 +48,10 @@ beforeEach(() => {
 });
 
 describe('lane query construction', () => {
+    const on = { SEARCH_LANE_RETRIEVAL: 'on' };
+
     test('one type-filtered query per lane, sharing the base query', () => {
-        const queries = buildLaneQueries('acute kidney injury', {});
+        const queries = buildLaneQueries('acute kidney injury', { env: on });
         expect(queries.map((q) => q.lane)).toEqual(['guidelines', 'reviews', 'landmark_trials']);
         expect(queries[0].query).toContain('"Practice Guideline"[Publication Type]');
         expect(queries[1].query).toContain('"Meta-Analysis"[Publication Type]');
@@ -58,20 +60,22 @@ describe('lane query construction', () => {
     });
 
     test('year filters carry through to every lane', () => {
-        for (const q of buildLaneQueries('aki', { parsedYearFilters: ['2020:2024[PDAT]'] })) {
+        for (const q of buildLaneQueries('aki', { parsedYearFilters: ['2020:2024[PDAT]'], env: on })) {
             expect(q.query).toContain('2020:2024[PDAT]');
         }
     });
 
     test('an explicit study-type filter or strict specificity already constrains type: no lane queries', () => {
-        expect(buildLaneQueries('aki', { parsedStudyTypes: ['Randomized Controlled Trial'] })).toEqual([]);
-        expect(buildLaneQueries('aki', { specificity: 'strict' })).toEqual([]);
-        expect(buildLaneQueries('  ', {})).toEqual([]);
+        expect(buildLaneQueries('aki', { parsedStudyTypes: ['Randomized Controlled Trial'], env: on })).toEqual([]);
+        expect(buildLaneQueries('aki', { specificity: 'strict', env: on })).toEqual([]);
+        expect(buildLaneQueries('  ', { env: on })).toEqual([]);
     });
 
-    test('the kill switch disables lane retrieval', () => {
+    test('lane retrieval is off unless SEARCH_LANE_RETRIEVAL=on', () => {
         expect(laneRetrievalEnabled({ SEARCH_LANE_RETRIEVAL: 'off' })).toBe(false);
-        expect(laneRetrievalEnabled({})).toBe(true);
+        expect(laneRetrievalEnabled({})).toBe(false);
+        expect(laneRetrievalEnabled({ SEARCH_LANE_RETRIEVAL: 'on' })).toBe(true);
+        expect(buildLaneQueries('aki', {})).toEqual([]);
         expect(buildLaneQueries('aki', { env: { SEARCH_LANE_RETRIEVAL: 'OFF' } })).toEqual([]);
     });
 
@@ -82,6 +86,10 @@ describe('lane query construction', () => {
 });
 
 describe('fetchUnifiedEvidence with lane retrieval', () => {
+    beforeEach(() => {
+        process.env.SEARCH_LANE_RETRIEVAL = 'on';
+    });
+
     test('lane hits join the pool, de-duplicated against the broad query, tagged with their lane', async () => {
         stubByQuery();
         const { articles, telemetry } = await run();
@@ -124,7 +132,7 @@ describe('fetchUnifiedEvidence with lane retrieval', () => {
         expect(mockPubmedSearch.mock.calls.every(([q]) => !q.includes('Practice Guideline'))).toBe(true);
 
         mockPubmedSearch.mockClear();
-        delete process.env.SEARCH_LANE_RETRIEVAL;
+        process.env.SEARCH_LANE_RETRIEVAL = 'on';
         const { telemetry } = await run({ parsedStudyTypes: ['Randomized Controlled Trial'] });
         expect(telemetry.laneRetrieval).toBeUndefined();
     });

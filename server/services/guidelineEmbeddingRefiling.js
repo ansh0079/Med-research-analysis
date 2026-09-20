@@ -205,6 +205,7 @@ async function backfillGuidelineRefiling({ db, serverConfig, options = {}, log =
                     similarity: 0,
                     sourceTopicNormalized: row.normalized_topic || '',
                     textHash: hash,
+                    belowThreshold: true,
                 }).catch(() => false);
                 continue;
             }

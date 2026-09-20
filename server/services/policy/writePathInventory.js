@@ -55,12 +55,14 @@ const WRITE_PATHS = Object.freeze([
         family: 'guideline_refiling',
         owners: ['server/services/guidelineEmbeddingRefiling.js'],
         policyRequired: true,
+        logAccepts: false,
     },
     {
         id: 'recordTopicAlias',
         family: 'topic_alias',
         owners: ['server/services/teachingObjectTopicReconciliation.js'],
         policyRequired: true,
+        logAccepts: false,
     },
     {
         id: 'upsertCurriculumSeedTopic',

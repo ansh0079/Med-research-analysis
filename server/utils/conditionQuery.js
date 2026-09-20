@@ -101,6 +101,27 @@ const AMBIGUOUS_ABBREVIATIONS = {
             { label: 'systolic blood pressure', cues: ['systolic blood pressure', 'systolic bp'] },
         ],
     },
+    af: {
+        primary: ['atrial fibrillation'],
+        distinctive: ['anticoag', 'cha2ds2', 'doac', 'warfarin', 'afib'],
+        competitors: [
+            { label: 'amniotic fluid', cues: ['amniotic fluid'] },
+        ],
+    },
+    cap: {
+        primary: ['community acquired pneumonia', 'community-acquired pneumonia'],
+        distinctive: ['pneumonia', 'curb-65', 'curb65', 'pneumococcal'],
+        competitors: [
+            { label: 'college of american pathologists', cues: ['college of american pathologists'] },
+        ],
+    },
+    mi: {
+        primary: ['myocardial infarction'],
+        distinctive: ['troponin', 'stemi', 'nstemi', 'infarction'],
+        competitors: [
+            { label: 'motivational interviewing', cues: ['motivational interviewing'] },
+        ],
+    },
 };
 
 function tokenizeQuery(query) {

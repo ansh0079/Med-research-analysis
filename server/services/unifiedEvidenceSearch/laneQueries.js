@@ -8,7 +8,7 @@
  *
  * Skipped when the caller already constrains publication type: an explicit study-type
  * filter or 'strict' specificity already narrows every query to those types.
- * `SEARCH_LANE_RETRIEVAL=off` is the kill switch (extra provider calls per search).
+ * `SEARCH_LANE_RETRIEVAL=on` enables the extra provider calls (off by default).
  */
 
 const { appendPubMedPublicationFilters } = require('./pubmedFilters');
@@ -22,7 +22,9 @@ const LANE_PUBLICATION_TYPES = Object.freeze({
 const MAX_LANE_RESULTS = 8;
 
 function laneRetrievalEnabled(env = process.env) {
-    return String(env.SEARCH_LANE_RETRIEVAL || 'on').toLowerCase() !== 'off';
+    // Default off: three extra PubMed esearch calls per search. Production
+    // throttling is documented; enable with SEARCH_LANE_RETRIEVAL=on and compare.
+    return String(env.SEARCH_LANE_RETRIEVAL || 'off').toLowerCase() === 'on';
 }
 
 function laneResultLimit(safeLimit) {

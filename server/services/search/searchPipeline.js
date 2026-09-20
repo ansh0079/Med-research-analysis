@@ -29,10 +29,10 @@ const { annotateArticlesWithRankingTraces } = require('../searchRankingTrace');
 const { withSpan, annotateActiveSpan } = require('../../utils/tracing');
 const {
     evaluateEligibility,
-    classifyEvidenceLane,
     annotateEvidenceMetadata,
     buildSearchPack,
     orderArticlesByEvidenceRank,
+    rankArticlesWithinLanes,
 } = require('./evidenceLanes');
 
 const STRICT_PUB_TYPES = new Set([
@@ -489,7 +489,6 @@ function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMes
         return [{
             ...article,
             _eligibilityRoute: eligibility.route,
-            _evidenceLane: classifyEvidenceLane(article),
         }];
     });
 }
@@ -708,6 +707,7 @@ async function fetchAndRankSearchArticles({
             queryMeshTerms,
             queryAliases: telemetry.clinicalAliases,
         });
+        articles = rankArticlesWithinLanes(articles);
         const searchPack = buildSearchPack(articles);
 
         // Refresh durable memory from the fully filtered and ranked result set.

@@ -233,8 +233,8 @@ describe('searchPipeline helpers', () => {
             queryAliases: ['PARADIGM-HF'],
         });
         expect(filtered).toHaveLength(1);
-        expect(filtered[0]._eligibilityRoute).toBe('curated_landmark');
-        expect(filtered[0]._evidenceLane).toBe('landmark_trials');
+        expect(filtered[0]._eligibilityRoute).toBe('trial_alias');
+        expect(filtered[0]._evidenceLane).toBeUndefined();
     });
 
     test('filterRelevantArticles keeps curated pinned landmarks despite historic title wording', () => {
@@ -256,7 +256,7 @@ describe('searchPipeline helpers', () => {
         expect(filtered).toHaveLength(1);
         expect(filtered[0].pmid).toBe('23323867');
         expect(filtered[0]._eligibilityRoute).toBe('curated_landmark');
-        expect(filtered[0]._evidenceLane).toBe('landmark_trials');
+        expect(filtered[0]._evidenceLane).toBeUndefined();
     });
 });
 

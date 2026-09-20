@@ -860,14 +860,22 @@ async listGuidelineRefilingCandidates({ limit = 200, offset = 0 } = {}) {
 }
 
 /** One row per guideline: the single best-matching canonical condition. */
-async upsertGuidelineRefiling({ guidelineId, canonicalNormalized, similarity, sourceTopicNormalized, textHash }) {
-    // Below-threshold results arrive with an empty canonical; that is not a policy event.
-    if (!guidelineId || !canonicalNormalized) return false;
+async upsertGuidelineRefiling({ guidelineId, canonicalNormalized, similarity, sourceTopicNormalized, textHash, belowThreshold = false }) {
+    if (!guidelineId) return false;
+    const canonical = String(canonicalNormalized || '');
+    const isNegative = belowThreshold || !canonical.trim();
     const verdict = await applyWritePolicy(this, {
         writer: 'upsertGuidelineRefiling',
         entityType: 'guideline_refiling',
         entityId: guidelineId != null ? String(guidelineId) : null,
-        payload: { guidelineId, canonicalNormalized, similarity, sourceTopicNormalized, textHash },
+        payload: {
+            guidelineId,
+            canonicalNormalized: canonical,
+            similarity,
+            sourceTopicNormalized,
+            textHash,
+            belowThreshold: isNegative,
+        },
     });
     if (!verdict.allowed) return false;
     await this.run(
@@ -882,7 +890,7 @@ async upsertGuidelineRefiling({ guidelineId, canonicalNormalized, similarity, so
             created_at = EXCLUDED.created_at`,
         [
             guidelineId,
-            String(canonicalNormalized),
+            canonical,
             Number(similarity) || 0,
             String(sourceTopicNormalized || ''),
             String(textHash || ''),

@@ -17,6 +17,25 @@ function lineageKey({ conceptId, issuer, jurisdiction, population, scope }) {
         .join('|');
 }
 
+/** Year first, then dotted/numeric version so a version-only edition is comparable. */
+function editionRank(row = {}) {
+    const year = Number(row.year);
+    const y = Number.isFinite(year) && year > 0 ? year : 0;
+    const nums = String(row.version || '').match(/\d+/g) || [];
+    const a = Number(nums[0] || 0);
+    const b = Number(nums[1] || 0);
+    const c = Number(nums[2] || 0);
+    return (y * 1e12) + (a * 1e8) + (b * 1e4) + c;
+}
+
+function bustRegistryConceptCache() {
+    try {
+        require('../../server/services/registry/guidelineRegistryService').clearRegistryConceptCache();
+    } catch {
+        // Service may be unavailable in isolated mixin tests.
+    }
+}
+
 module.exports = (Sup) => class extends Sup {
     async upsertClinicalConcept({ canonicalName, meshId = null, status = 'active' } = {}) {
         const name = String(canonicalName || '').trim();
@@ -135,7 +154,8 @@ module.exports = (Sup) => class extends Sup {
         proposedFrom = 'manual',
     } = {}) {
         const ids = [...new Set((Array.isArray(guidelineIds) ? guidelineIds : [])
-            .map((id) => Number(id)).filter((id) => Number.isInteger(id) && id > 0))];
+            .map((id) => String(id).trim())
+            .filter((id) => id && id !== '0' && id !== 'undefined' && id !== 'null'))];
         const verdict = await applyWritePolicy(this, {
             writer: 'upsertRegistryEntry',
             entityType: 'registry_entry',
@@ -149,7 +169,7 @@ module.exports = (Sup) => class extends Sup {
         const lineage = await this.upsertGuidelineLineage({
             // Edition is part of identity: without a version, two years would share one lineage row.
             conceptId, issuer, jurisdiction, population, scope, year,
-            version: version ?? (year == null ? null : String(year)),
+            version: version ?? (sourceUrl ? `${year == null ? 'na' : year}:${sourceUrl}` : (year == null ? null : String(year))),
         });
         if (!lineage) return null;
 
@@ -217,12 +237,14 @@ module.exports = (Sup) => class extends Sup {
                AND l.issuer = ? AND l.jurisdiction = ? AND l.population = ? AND l.scope = ?`,
             [entry.concept_id, entry.id, entry.issuer, entry.jurisdiction, entry.population, entry.scope]
         );
-        const editionOf = (row) => Number(row.year) || 0;
-        const newest = Math.max(editionOf(entry), ...siblings.map(editionOf));
-        if (editionOf(entry) < newest) {
+        const entryRank = editionRank(entry);
+        const siblingRanks = siblings.map(editionRank);
+        const newest = Math.max(entryRank, ...siblingRanks);
+        if (entryRank < newest) {
             return { id: entry.id, status: 'candidate', blocked: 'newer_verified_edition_exists' };
         }
-        for (const old of siblings) {
+        const older = siblings.filter((row) => editionRank(row) < entryRank);
+        for (const old of older) {
             await this.run(
                 `UPDATE guideline_registry_entries
                  SET status = 'superseded', superseded_by_entry_id = ?, updated_at = ? WHERE id = ?`,
@@ -234,11 +256,12 @@ module.exports = (Sup) => class extends Sup {
              SET status = 'verified', verified_by = ?, verified_at = ?, updated_at = ? WHERE id = ?`,
             [String(reviewer).trim(), now, now, entry.id]
         );
-        // Supersession is the invalidation trigger: anything generated from the old edition
-        // is now stale. Emit one event per superseded entry for downstream consumers.
-        if (siblings.length && typeof this.insertGuidelineWatchEvent === 'function') {
-            const concept = await this.get('SELECT normalized_name FROM clinical_concepts WHERE id = ?', [entry.concept_id]);
-            for (const old of siblings) {
+        bustRegistryConceptCache();
+        const concept = older.length
+            ? await this.get('SELECT normalized_name FROM clinical_concepts WHERE id = ?', [entry.concept_id])
+            : null;
+        if (older.length && typeof this.insertGuidelineWatchEvent === 'function') {
+            for (const old of older) {
                 await this.insertGuidelineWatchEvent({
                     normalizedTopic: concept?.normalized_name || null,
                     eventType: 'registry_edition_superseded',
@@ -248,7 +271,17 @@ module.exports = (Sup) => class extends Sup {
                 }).catch(() => null);
             }
         }
-        return { id: entry.id, status: 'verified', supersededCount: siblings.length };
+        if (older.length) {
+            try {
+                const { invalidateArtifactsForSupersededConcept } = require('../../server/services/registry/registryInvalidation');
+                await invalidateArtifactsForSupersededConcept(this, {
+                    normalizedTopic: concept?.normalized_name || null,
+                });
+            } catch {
+                // Table may be absent in isolated registry tests.
+            }
+        }
+        return { id: entry.id, status: 'verified', supersededCount: older.length };
     }
 
     /** Verified entries for any of the given normalized concept names, newest edition first. */
@@ -273,7 +306,7 @@ module.exports = (Sup) => class extends Sup {
                 `SELECT g.id, g.recommendation_text, g.recommendation_strength, g.recommendation_certainty,
                         g.population, g.source_url
                  FROM guideline_registry_recommendations r
-                 JOIN topic_guidelines g ON g.id = r.guideline_id
+                 JOIN topic_guidelines g ON CAST(g.id AS TEXT) = r.guideline_id
                  WHERE r.entry_id = ?`,
                 [entry.id]
             );

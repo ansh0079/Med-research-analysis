@@ -258,6 +258,10 @@ describe('backfillGuidelineRefiling', () => {
         });
         expect(outcome.refiled).toBe(0);
         expect(outcome.skippedBelowThreshold).toBe(1);
+        const recorded = await db.get(
+            'SELECT guideline_id, canonical_normalized, similarity FROM topic_guideline_refiling WHERE guideline_id = 30'
+        );
+        expect(recorded).toEqual({ guideline_id: 30, canonical_normalized: '', similarity: 0 });
         // Below-threshold markers never surface for any query.
         const results = await db.getGuidelinesByTopic('aki diagnosis and management');
         expect(results.map((g) => g.id)).not.toContain(30);

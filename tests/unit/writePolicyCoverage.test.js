@@ -40,6 +40,10 @@ describe('write-policy coverage', () => {
             .toBe(REASON_CODES.BRIDGE_SIMILARITY_INVALID);
         expect(evaluateWrite({ writer: 'upsertGuidelineRefiling', payload: { ...base, similarity: 1.4 } }).allowed).toBe(false);
         expect(evaluateWrite({ writer: 'upsertGuidelineRefiling', payload: { ...base, similarity: 1.0000000000000002 } }).allowed).toBe(true);
+        expect(evaluateWrite({
+            writer: 'upsertGuidelineRefiling',
+            payload: { guidelineId: 12, canonicalNormalized: '', similarity: 0, belowThreshold: true },
+        }).allowed).toBe(true);
     });
 
     test('topic alias rejects a task-word alias and a missing target', () => {

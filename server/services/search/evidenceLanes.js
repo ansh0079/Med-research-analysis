@@ -1,6 +1,11 @@
 'use strict';
 
-const { isGuideline, isRCT } = require('../evidenceBouquet/articleClassifiers');
+const {
+    isGuideline,
+    isRCT,
+    getCitationCount,
+    hasCitationData,
+} = require('../evidenceBouquet/articleClassifiers');
 const {
     isOffTopic,
     queryAliasMatchScore,
@@ -8,6 +13,7 @@ const {
 } = require('../evidenceBouquet/queryRelevance');
 
 const EVIDENCE_LANES = Object.freeze(['guidelines', 'landmark_trials', 'reviews', 'supporting']);
+const SEMANTIC_RESCUE_CAP = 2;
 
 const LANE_LABELS = Object.freeze({
     guidelines: 'Guidelines',
@@ -37,11 +43,37 @@ function isSystematicReviewOrMetaAnalysis(article) {
     return (article?._ebmScore ?? 0) >= 7;
 }
 
-function classifyEvidenceLane(article) {
+/**
+ * Landmark = curated pin, or an RCT in the top citation quintile of this
+ * result set. Missing citation data is not a global citation count of zero:
+ * those RCTs stay out of the landmark lane until a pin or within-topic count exists.
+ */
+function landmarkCitationCutoff(articles = []) {
+    const cited = (Array.isArray(articles) ? articles : [])
+        .filter((article) => isRCT(article) && !isGuideline(article) && hasCitationData(article))
+        .map((article) => getCitationCount(article))
+        .filter((n) => n > 0)
+        .sort((a, b) => a - b);
+    if (cited.length < 3) return Number.POSITIVE_INFINITY;
+    return cited[Math.floor((cited.length - 1) * 0.8)];
+}
+
+function classifyEvidenceLane(article, { landmarkCutoff = Number.POSITIVE_INFINITY } = {}) {
     if (isGuideline(article)) return 'guidelines';
-    if (article?._pinnedLandmark || isRCT(article)) return 'landmark_trials';
+    if (article?._pinnedLandmark) return 'landmark_trials';
+    if (isRCT(article) && hasCitationData(article) && getCitationCount(article) >= landmarkCutoff) {
+        return 'landmark_trials';
+    }
     if (isSystematicReviewOrMetaAnalysis(article)) return 'reviews';
     return 'supporting';
+}
+
+function meshTitleCorroboration(article, queryMeshTerms = []) {
+    const title = String(article?.title || '').toLowerCase();
+    return (Array.isArray(queryMeshTerms) ? queryMeshTerms : []).some((term) => {
+        const phrase = String(term || '').toLowerCase().trim();
+        return phrase.length >= 4 && title.includes(phrase);
+    });
 }
 
 function evaluateEligibility(article, { query, queryMeshTerms = [], queryAliases = [] } = {}) {
@@ -61,15 +93,14 @@ function evaluateEligibility(article, { query, queryMeshTerms = [], queryAliases
         return { eligible: true, route: 'registry', rejectionReason: null };
     }
     if (queryAliasMatchScore(article, queryAliases) > 0) {
-        return { eligible: true, route: 'curated_landmark', rejectionReason: null };
+        return { eligible: true, route: 'trial_alias', rejectionReason: null };
     }
     const meshTerms = Array.isArray(queryMeshTerms) ? queryMeshTerms : [];
     const offWithoutMesh = isOffTopic(article, query, { queryMeshTerms: [] });
-    const offWithMesh = isOffTopic(article, query, { queryMeshTerms: meshTerms });
     if (!offWithoutMesh) {
         return { eligible: true, route: 'concept', rejectionReason: null };
     }
-    if (meshTerms.length > 0 && !offWithMesh) {
+    if (meshTerms.length > 0 && meshTitleCorroboration(article, meshTerms)) {
         return { eligible: true, route: 'semantic_rescue', rejectionReason: null };
     }
     return { eligible: false, route: null, rejectionReason: 'off_topic' };
@@ -77,6 +108,15 @@ function evaluateEligibility(article, { query, queryMeshTerms = [], queryAliases
 
 function articleUid(article) {
     return String(article?.uid || article?.pmid || '').trim();
+}
+
+function capSemanticRescue(articles = [], max = SEMANTIC_RESCUE_CAP) {
+    let kept = 0;
+    return (Array.isArray(articles) ? articles : []).filter((article) => {
+        if (article?._eligibilityRoute !== 'semantic_rescue') return true;
+        kept += 1;
+        return kept <= max;
+    });
 }
 
 function buildSearchPack(articles = []) {
@@ -117,16 +157,19 @@ function buildSearchPack(articles = []) {
 }
 
 function annotateEvidenceMetadata(articles, ctx = {}) {
-    return (Array.isArray(articles) ? articles : []).map((article) => {
+    const list = Array.isArray(articles) ? articles : [];
+    const landmarkCutoff = ctx.landmarkCutoff ?? landmarkCitationCutoff(list);
+    const annotated = list.map((article) => {
         const eligibility = article._eligibilityRoute
             ? { route: article._eligibilityRoute }
             : evaluateEligibility(article, ctx);
         return {
             ...article,
             _eligibilityRoute: eligibility.route || article._eligibilityRoute || null,
-            _evidenceLane: article._evidenceLane || classifyEvidenceLane(article),
+            _evidenceLane: classifyEvidenceLane(article, { landmarkCutoff }),
         };
     });
+    return capSemanticRescue(annotated);
 }
 
 function orderArticlesByEvidenceRank(articles) {
@@ -137,14 +180,37 @@ function orderArticlesByEvidenceRank(articles) {
     });
 }
 
+/** Rank independently inside each lane, then concatenate in display order. */
+function rankArticlesWithinLanes(articles = []) {
+    const groups = {
+        guidelines: [],
+        landmark_trials: [],
+        reviews: [],
+        supporting: [],
+    };
+    for (const article of Array.isArray(articles) ? articles : []) {
+        const lane = groups[article?._evidenceLane] ? article._evidenceLane : 'supporting';
+        groups[lane].push(article);
+    }
+    const out = [];
+    for (const key of EVIDENCE_LANES) {
+        out.push(...orderArticlesByEvidenceRank(groups[key]));
+    }
+    return out;
+}
+
 module.exports = {
     EVIDENCE_LANES,
     LANE_LABELS,
     EMPTY_LANE_COPY,
+    SEMANTIC_RESCUE_CAP,
     classifyEvidenceLane,
+    landmarkCitationCutoff,
     evaluateEligibility,
     buildSearchPack,
     annotateEvidenceMetadata,
     orderArticlesByEvidenceRank,
+    rankArticlesWithinLanes,
+    capSemanticRescue,
     isSystematicReviewOrMetaAnalysis,
 };

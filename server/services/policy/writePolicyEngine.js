@@ -140,14 +140,24 @@ function evaluateTeachingObject(payload = {}) {
 
 function evaluateGuidelineRefiling(payload = {}) {
     const blocking = [];
-    if (!payload.guidelineId || !String(payload.canonicalNormalized || '').trim()) {
+    if (!payload.guidelineId) {
         blocking.push(reason(REASON_CODES.IDENTITY_MISSING_SOURCE, 'guidelineId+canonicalNormalized'));
         return { blocking, shadow: [] };
     }
-    if (isTaskWordKey(payload.canonicalNormalized)) {
-        blocking.push(reason(REASON_CODES.CONCEPT_TASK_WORD_KEY, String(payload.canonicalNormalized)));
-    }
+    const canonical = String(payload.canonicalNormalized || '').trim();
     const similarity = Number(payload.similarity);
+    if (!canonical) {
+        // Empty canonical + similarity 0 is the below-threshold marker so the
+        // row is not re-embedded every batch. That is not a policy event.
+        if (payload.belowThreshold === true || similarity === 0) {
+            return { blocking, shadow: [] };
+        }
+        blocking.push(reason(REASON_CODES.IDENTITY_MISSING_SOURCE, 'guidelineId+canonicalNormalized'));
+        return { blocking, shadow: [] };
+    }
+    if (isTaskWordKey(canonical)) {
+        blocking.push(reason(REASON_CODES.CONCEPT_TASK_WORD_KEY, canonical));
+    }
     // Cosine of near-identical vectors can land a float error above 1.
     if (!Number.isFinite(similarity) || similarity <= 0 || similarity > 1.0001) {
         blocking.push(reason(REASON_CODES.BRIDGE_SIMILARITY_INVALID, String(payload.similarity)));
@@ -272,8 +282,15 @@ function evaluateWrite(input = {}) {
     };
 }
 
+function shouldLogDecision(verdict) {
+    if (verdict.action !== 'accept') return true;
+    const path = findWritePath(verdict.writer);
+    return path?.logAccepts !== false;
+}
+
 async function applyWritePolicy(db, input = {}) {
     const verdict = evaluateWrite(input);
+    if (!shouldLogDecision(verdict)) return verdict;
     const reasonText = [
         ...verdict.reasons.map((row) => row.code),
         ...verdict.shadow.map((row) => `shadow:${row.code}`),

@@ -23,9 +23,18 @@ function makeDb(guidelineRows = [], refilingRows = []) {
     const sqlite = new Sqlite(':memory:');
     sqlite.exec(`CREATE TABLE topic_guidelines (
         id INTEGER PRIMARY KEY, topic TEXT, normalized_topic TEXT, source_body TEXT,
-        source_year INTEGER, source_url TEXT, recommendation_text TEXT,
+        source_region TEXT, source_year INTEGER, source_url TEXT, recommendation_text TEXT,
         recommendation_strength TEXT, recommendation_certainty TEXT, population TEXT,
         superseded_by_id INTEGER
+    )`);
+    sqlite.exec(`CREATE TABLE teaching_objects (
+        id INTEGER PRIMARY KEY, object_key TEXT, topic TEXT, normalized_topic TEXT,
+        review_state TEXT NOT NULL DEFAULT 'unreviewed', updated_at TEXT
+    )`);
+    sqlite.exec(`CREATE TABLE teaching_object_claims (
+        id INTEGER PRIMARY KEY, claim_key TEXT, object_key TEXT, claim_text TEXT,
+        normalized_topic TEXT, verification_status TEXT DEFAULT 'unverified',
+        review_state TEXT NOT NULL DEFAULT 'unreviewed', updated_at TEXT
     )`);
     sqlite.exec(fs.readFileSync(path.join(MIGRATIONS, '096_topic_guideline_refiling.sql'), 'utf8'));
     sqlite.exec(fs.readFileSync(path.join(MIGRATIONS, '097_clinical_concepts_policy.sql'), 'utf8'));
@@ -144,6 +153,16 @@ describe('guideline registry lifecycle', () => {
 
         await db.verifyRegistryEntry(e2012.id, 'dr.reviewer');
         expect(events).toEqual([]); // first verification supersedes nothing
+        await db.run(
+            `INSERT INTO teaching_objects (object_key, topic, normalized_topic, review_state)
+             VALUES (?, ?, ?, ?)`,
+            ['to-aki', 'Acute kidney injury', 'acute kidney injury', 'machine_checked']
+        );
+        await db.run(
+            `INSERT INTO teaching_object_claims (claim_key, object_key, claim_text, normalized_topic, review_state)
+             VALUES (?, ?, ?, ?, ?)`,
+            ['c-aki', 'to-aki', 'Stage AKI using creatinine.', 'acute kidney injury', 'machine_checked']
+        );
         await db.verifyRegistryEntry(e2024.id, 'dr.reviewer');
         expect(events).toHaveLength(1);
         expect(events[0]).toMatchObject({
@@ -151,6 +170,10 @@ describe('guideline registry lifecycle', () => {
             eventType: 'registry_edition_superseded',
             payload: { supersededEntryId: e2012.id, supersededByEntryId: e2024.id },
         });
+        expect(await db.get('SELECT review_state FROM teaching_objects WHERE object_key = ?', ['to-aki']))
+            .toEqual({ review_state: 'needs_revision' });
+        expect(await db.get('SELECT review_state FROM teaching_object_claims WHERE claim_key = ?', ['c-aki']))
+            .toEqual({ review_state: 'needs_revision' });
     });
 
     test('adult and paediatric editions from one issuer coexist instead of overwriting', async () => {
@@ -209,6 +232,56 @@ describe('guideline registry lifecycle', () => {
         cov = await db.getRegistryCoverage({ conceptNames: names });
         expect(cov.find((c) => c.concept === 'acute kidney injury')).toMatchObject({ verified: 1, registryComplete: true, bridgeDependent: false });
         expect(cov.find((c) => c.concept === 'sepsis').bridgeDependent).toBe(true);
+    });
+
+    test('a version-only newer edition supersedes; an older version cannot displace it', async () => {
+        const db = makeDb([KDIGO_2012]);
+        const v1 = await db.upsertRegistryEntry({
+            conceptName: 'Acute kidney injury', issuer: 'KDIGO', version: '1.0',
+            sourceUrl: 'https://kdigo.org/v1', guidelineIds: ['1'],
+        });
+        const v2 = await db.upsertRegistryEntry({
+            conceptName: 'Acute kidney injury', issuer: 'KDIGO', version: '2.0',
+            sourceUrl: 'https://kdigo.org/v2', guidelineIds: ['1'],
+        });
+        await db.verifyRegistryEntry(v1.id, 'dr.reviewer');
+        expect(await db.verifyRegistryEntry(v2.id, 'dr.reviewer')).toMatchObject({ status: 'verified', supersededCount: 1 });
+        expect(await db.verifyRegistryEntry(v1.id, 'dr.reviewer')).toMatchObject({
+            status: 'candidate',
+            blocked: 'newer_verified_edition_exists',
+        });
+    });
+
+    test('uuid guideline ids are stored and joined as text', async () => {
+        const db = makeDb([KDIGO_2012]);
+        const uuid = '550e8400-e29b-41d4-a716-446655440000';
+        const entry = await db.upsertRegistryEntry({
+            conceptName: 'Acute kidney injury', issuer: 'KDIGO', year: 2012,
+            sourceUrl: 'https://kdigo.org/uuid', guidelineIds: [uuid, 1],
+        });
+        const recs = await db.all(
+            'SELECT guideline_id FROM guideline_registry_recommendations WHERE entry_id = ? ORDER BY guideline_id',
+            [entry.id]
+        );
+        expect(recs.map((r) => String(r.guideline_id))).toEqual(['1', uuid]);
+    });
+
+    test('HFrEF and AF aliases resolve to verified concepts; adult guidelines are not served for pregnancy queries', async () => {
+        const db = makeDb([
+            {
+                id: 10, topic: 'heart failure', normalized_topic: 'heart failure',
+                source_body: 'ESC', source_year: 2021, source_url: 'https://escardio.org/hf',
+                recommendation_text: 'SGLT2 inhibitors in HFrEF.', population: 'adults',
+            },
+        ]);
+        const { proposed } = await proposeRegistryCandidates(db, { conceptName: 'Heart failure' });
+        await db.verifyRegistryEntry(proposed[0].id, 'dr.reviewer');
+        clearRegistryConceptCache();
+        expect(await registryArticlesForQuery(db, 'HFrEF management')).toHaveLength(1);
+        clearRegistryConceptCache();
+        expect(await registryArticlesForQuery(db, 'heart failure in pregnancy')).toEqual([]);
+        clearRegistryConceptCache();
+        expect(await registryArticlesForQuery(db, 'heart failure in adults')).toHaveLength(1);
     });
 });
 

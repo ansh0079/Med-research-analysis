@@ -27,6 +27,11 @@ function matchesPopulationFilter(article, query) {
             return false;
         }
     }
+    if (/\b(pregnan\w*|antenatal|obstetric)\b/.test(q)) {
+        if (/\b(adults?|elderly|geriatric)\b/.test(text) && !/\b(pregnan|antenatal|obstetric|maternal)\b/.test(text)) {
+            return false;
+        }
+    }
     return true;
 }
 
