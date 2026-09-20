@@ -366,16 +366,48 @@ function applyServingPolicy(synopsis, assessments, { mode = servingMode() } = {}
     if (mode !== 'withhold' || !flagged.length) return { synopsis, servingPolicy: summary };
 
     const drop = new Set(flagged.map((a) => a.claimText));
+    // Conservative: if ANY clause of a sentence is flagged, withhold the whole sentence.
+    // The previous rule required every clause to be flagged, so a two-clause sentence whose
+    // second clause was unsupported was served intact. Partially removing clauses would risk
+    // joining fragments into new, unsourced claims.
+    const filterText = (text) => {
+        const sentences = splitSentences(text);
+        const kept = sentences.filter((sentence) => {
+            const clauses = splitClauses(sentence).map(stripCitations);
+            if (!clauses.length) return true;
+            return !clauses.some((c) => drop.has(c));
+        });
+        return { kept, removed: sentences.length - kept.length };
+    };
     const next = { ...synopsis };
     for (const field of MATERIAL_FIELDS) {
-        if (typeof next[field] !== 'string') continue;
-        const kept = splitSentences(next[field]).filter((sentence) => {
-            const clauses = splitClauses(sentence).map(stripCitations);
-            return !clauses.every((c) => drop.has(c)) || clauses.length === 0;
-        });
-        if (kept.length !== splitSentences(next[field]).length) {
-            summary.withheld.push(field);
-            next[field] = kept.join(' ');
+        const value = next[field];
+        if (typeof value === 'string') {
+            const { kept, removed } = filterText(value);
+            if (removed > 0) {
+                summary.withheld.push(field);
+                next[field] = kept.join(' ');
+            }
+            continue;
+        }
+        // Extraction reads arrays too (fieldText joins them), so withholding must as well:
+        // filter each string entry and drop entries left without a single sentence.
+        if (Array.isArray(value)) {
+            let removed = 0;
+            const keptItems = [];
+            for (const item of value) {
+                if (typeof item !== 'string') {
+                    keptItems.push(item);
+                    continue;
+                }
+                const r = filterText(item);
+                removed += r.removed;
+                if (r.kept.length) keptItems.push(r.kept.join(' '));
+            }
+            if (removed > 0) {
+                summary.withheld.push(field);
+                next[field] = keptItems;
+            }
         }
     }
     return { synopsis: next, servingPolicy: summary };

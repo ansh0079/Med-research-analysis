@@ -70,6 +70,21 @@ describe('source versions are content-addressed and immutable', () => {
         expect(accessStateOf({ abstract: 'a', sections: { Results: 'word '.repeat(50) } })).toBe('full_text');
         expect(accessStateOf({ fullText: 'word '.repeat(250) })).toBe('full_text');
     });
+
+    test('the enriched _fullTextSections shape the synopsis prompt consumes is snapshotted as section passages', () => {
+        const enriched = {
+            uid: 'pubmed-1', title: 'Trial 1', abstract: 'An abstract with results.',
+            _fullTextIndexed: true,
+            _fullTextSections: { methods: 'word '.repeat(60), results: 'word '.repeat(80) },
+        };
+        expect(accessStateOf(enriched)).toBe('full_text'); // was abstract_only before: snapshots stored less than the model read
+        const v = buildSourceVersion(enriched);
+        expect(v.accessState).toBe('full_text');
+        const sectionKinds = v.passages.filter((p) => p.kind === 'section').map((p) => p.section).sort();
+        expect(sectionKinds).toEqual(['methods', 'results']);
+        expect(v.truncated).toBe(false);
+        expect(buildSourceVersion({ ...enriched, _fullTextSections: { results: 'x '.repeat(3000) } }).truncated).toBe(true);
+    });
 });
 
 describe('persisting a snapshot', () => {

@@ -169,3 +169,49 @@ describe('quiz from evidence with an evidence snapshot', () => {
         });
     });
 });
+
+describe('hydration must not replace the evidence the lineage points at', () => {
+    const { hydrateEvidenceArticles } = require('../../server/services/quizGenerationService');
+
+    const snapshotResolved = {
+        uid: 'pubmed-1',
+        title: 'Snapshot title',
+        abstract: 'Dapagliflozin reduced the primary outcome, as shown at search time.',
+        sections: {},
+        fullText: '',
+        _snapshotVersionId: 'version-abc',
+        _snapshotAccessState: 'abstract_only',
+    };
+    const currentCaches = {
+        getCachedArticle: async () => ({
+            uid: 'pubmed-1', title: 'Title edited since', abstract: 'Abstract rewritten since the search.',
+            _fullTextSections: { Results: 'Full text that was never snapshotted.' },
+        }),
+        getPdfSections: async () => ({ sections: { Methods: 'PDF text that was never snapshotted.' } }),
+        getArticleRetractionBatch: async () => ({}),
+    };
+
+    test('a snapshot-resolved article keeps its stored text through hydration', async () => {
+        const [{ article }] = await hydrateEvidenceArticles(currentCaches, [snapshotResolved]);
+        expect(article.title).toBe('Snapshot title');
+        expect(article.abstract).toContain('as shown at search time');
+        expect(article.abstract).not.toContain('rewritten');
+        // Evidence the snapshot never held cannot arrive through the caches.
+        expect(article.sections).toEqual({});
+        expect(article._fullTextSections).toBeUndefined();
+        expect(article._snapshotVersionId).toBe('version-abc');
+    });
+
+    test('retraction status is still taken from current data: that must not be frozen', async () => {
+        const retracted = { ...currentCaches, getArticleRetractionBatch: async () => ({ 'pubmed-1': { isRetracted: true, reason: 'Retracted publication' } }) };
+        const [{ article }] = await hydrateEvidenceArticles(retracted, [snapshotResolved]);
+        expect(article._retraction.isRetracted).toBe(true);
+        expect(article.abstract).toContain('as shown at search time');
+    });
+
+    test('an article with no snapshot lineage is still hydrated from the caches as before', async () => {
+        const [{ article }] = await hydrateEvidenceArticles(currentCaches, [{ uid: 'pubmed-1', title: 'Client title' }]);
+        expect(article.title).toBe('Title edited since');
+        expect(article._fullTextSections).toBeDefined();
+    });
+});

@@ -17,10 +17,14 @@ let intervalId = null;
 let startupTimer = null;
 
 async function runInvalidationTick(db, { limit = 25, maxLagSeconds = DEFAULT_MAX_LAG_SECONDS, now = new Date() } = {}) {
-    await enqueueExistingRetractions(db).catch(() => null); // picks up cached retractions that never had an event
+    let backfillError = null;
+    // Picks up cached retractions that never had an event. A backfill failure must be
+    // visible: silently swallowing it would skip the very sources the queue exists for.
+    await enqueueExistingRetractions(db).catch((err) => { backfillError = err; });
     const outcome = await processInvalidationQueue(db, { limit, now });
     const stats = await getInvalidationStats(db, { now });
     const problems = [];
+    if (backfillError) problems.push(`retraction backfill failed: ${String(backfillError?.message || backfillError)}`);
     if (stats.failed > 0) problems.push(`${stats.failed} invalidation event(s) exhausted retries`);
     if (stats.oldestPendingAgeSeconds > maxLagSeconds) {
         problems.push(`oldest pending invalidation is ${stats.oldestPendingAgeSeconds}s old (budget ${maxLagSeconds}s)`);

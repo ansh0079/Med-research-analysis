@@ -33,6 +33,7 @@ const {
 } = require('../agentSelfImprovementService');
 const { processPaperSynopsisTrust } = require('../paperSynopsisTrust');
 const { selectSynopsisStyleArm, recordBanditReward, POLICY_SYNOPSIS_STYLE } = require('../personalizationBanditService');
+const { buildSourceVersion, upsertSourceVersion } = require('../search/searchEvidenceSnapshot');
 
 function getPaperSynopsisArticleId(article = {}) {
     return article.uid || article.pmid || article.doi
@@ -106,6 +107,9 @@ async function findReusableStoredSynopsis(db, articleId, { maxAgeDays = SYNOPSIS
     // Search persistence writes `paper` rows with no synopsis (provider pubmed /
     // openalex); those must not count as a hit.
     if (!synopsis || typeof synopsis !== 'object' || Object.keys(synopsis).length === 0) return null;
+    // Withdrawn content is never reused, whatever cache or arm-specific key reached here:
+    // retraction processing owns this decision and it lives in the durable store.
+    if (String(existing?.reviewState || '') === 'withdrawn') return null;
 
     // Reuse only what the current prompt would have produced. This store is read
     // before any generation work and keeps rows for SYNOPSIS_REUSE_MAX_AGE_DAYS,
@@ -301,13 +305,34 @@ async function runPaperSynopsisGenerationInner({
     const [enriched] = await withSpan('synopsis.full_text_enrichment', { 'article.id': articleId }, () => (
         enrichWithCachedFullText([article], cache, db).catch(() => [article])
     ));
+    // Persist the exact post-enrichment source version generation runs against, so claim
+    // support passage ids (built from `enriched` below) resolve to a stored row and a
+    // synopsis can be replayed against the text its assertions actually rested on - not
+    // against an abstract-only version captured before enrichment ran.
+    if (db && typeof db.run === 'function') {
+        try {
+            await upsertSourceVersion(db, buildSourceVersion(enriched), new Date().toISOString());
+        } catch (err) {
+            logger.warn({ err, articleId }, 'persisting post-enrichment source version failed');
+        }
+    }
     const hasFullTextNow = Boolean(
         enriched._fullTextIndexed
         || article._fullTextIndexed
         || Number(enriched._fullTextWordCount || article._fullTextWordCount || 0) >= 200
     );
 
-    if (cache?.getAsync) {
+    // Withdrawal is decided in the durable store; caches (Redis and style-arm variants) must
+    // never override it. A withdrawn synopsis whose Redis key is still warm would otherwise
+    // be served for up to 7 days after retraction processing withdrew it.
+    let storedReviewState = null;
+    if (db?.getTeachingObjectForArticle) {
+        const stored = await db.getTeachingObjectForArticle(articleId).catch(() => null);
+        storedReviewState = stored?.reviewState || null;
+    }
+    const withdrawn = String(storedReviewState || '') === 'withdrawn';
+
+    if (cache?.getAsync && !withdrawn) {
         for (const candidateCacheKey of candidateCacheKeys) {
             const memCached = await withSpan('synopsis.cache_get', { 'cache.key': candidateCacheKey }, () => cache.getAsync(candidateCacheKey));
             if (!memCached) continue;
@@ -315,6 +340,15 @@ async function runPaperSynopsisGenerationInner({
             if (hasFullTextNow && cachedAbstractOnly) continue;
             return { ...memCached, cached: true, jobKey: jobKey || memCached.jobKey };
         }
+    }
+    if (withdrawn && cache) {
+        // A warm cache entry for withdrawn content keeps being a serving risk; drop it.
+        await invalidatePaperSynopsisCache({
+            cache, article,
+            selectedModel: selectedModelForCache,
+            trainingStage: effectiveTrainingStage,
+            synopsisStyleArmId: synopsisStyleArm?.armId || null,
+        }).catch(() => false);
     }
 
     // Redis is a 7-day cache; teaching_objects is the durable store. Only Redis

@@ -27,9 +27,12 @@ const { hasGuidelinePubtype } = require('../../utils/articles');
 const { computeMcqClaimKey } = require('../../utils/mcqClaimKey');
 const {
     resolveGenerationEvidence,
+    preserveSnapshotEvidence,
     capVerificationForLineage,
     publicLineage,
+    guidelineToEvidenceArticle,
 } = require('../search/generationEvidenceContext');
+const { addEvidenceToSnapshot } = require('../search/searchEvidenceSnapshot');
 
 function evidenceSourceTrust(article = {}) {
     const retracted = Boolean(article?._retraction?.isRetracted || article?.isRetracted || article?.is_retracted);
@@ -69,7 +72,10 @@ async function hydrateEvidenceArticles(db, articles = []) {
             ...(pdfSections?.sections ? { sections: pdfSections.sections } : {}),
             ...(retraction ? { _retraction: retraction } : {}),
         } : null;
-        return { article: trusted ? { ...article, ...trusted, uid: article.uid || trusted.uid || String(uid) } : article, trusted };
+        if (!trusted) return { article, trusted: null };
+        const merged = { ...article, ...trusted, uid: article.uid || trusted.uid || String(uid) };
+        // Retraction status from the merge is kept (it must be current); the evidence text is not.
+        return { article: preserveSnapshotEvidence(article, merged), trusted };
     }));
 }
 
@@ -628,6 +634,14 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         const evidenceArticles = hydratedSources.map((source) => source.article);
         const guidelines = await db.getGuidelinesByTopic(cleanTopic, { limit: 3 })
             .catch((err) => { logger.warn({ err }, 'operation failed'); return []; });
+        // Guidelines go into the prompt as evidence, so they belong in the lineage too: a snapshot
+        // that lists only the articles cannot replay what the model actually read.
+        if (evidenceLineage.snapshotId && guidelines.length) {
+            await addEvidenceToSnapshot(
+                db, evidenceLineage.snapshotId, guidelines.map(guidelineToEvidenceArticle),
+                { userId: user?.id || null, sessionId, reason: 'quiz_guideline_context' },
+            ).catch((err) => logger.warn({ err }, 'recording guideline context on the snapshot failed'));
+        }
 
         let userContext = null;
         if (user?.id) {

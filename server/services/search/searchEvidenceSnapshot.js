@@ -55,14 +55,28 @@ function wordCount(value) {
 
 /**
  * What the reader could actually see of this source. Anything stronger than abstract_only
- * means passages beyond the abstract were available to support a claim.
+ * means passages beyond the abstract were available to support a claim. Both the plain
+ * `sections` shape and the enrichment pipeline's `_fullTextSections` shape count: synopsis
+ * prompts consume the latter, so a snapshot that ignored it would store abstract_only while
+ * the model read full text.
  */
 function accessStateOf(article) {
-    const sections = article?.sections && typeof article.sections === 'object' ? article.sections : null;
-    const hasSections = sections && Object.values(sections).some((v) => wordCount(v) >= 40);
+    const sections = sectionEntries(article);
+    const hasSections = sections.some(([, text]) => wordCount(text) >= 40);
     if (hasSections || wordCount(article?.fullText || article?.full_text) >= 200) return 'full_text';
     if (cleanText(article?.abstract)) return 'abstract_only';
     return 'metadata_only';
+}
+
+/** Section text in every shape the pipelines produce: {name: text} from sections or _fullTextSections. */
+function sectionEntries(article) {
+    for (const key of ['sections', '_fullTextSections']) {
+        const value = article?.[key];
+        if (value && typeof value === 'object' && !Array.isArray(value)) {
+            return Object.entries(value).map(([name, text]) => [String(name), cleanText(text)]).filter(([, text]) => text);
+        }
+    }
+    return [];
 }
 
 /**
@@ -74,9 +88,7 @@ function buildSourceVersion(article) {
     const uid = articleUid(article);
     const title = cleanText(article?.title);
     const abstract = cleanText(article?.abstract);
-    const sections = article?.sections && typeof article.sections === 'object'
-        ? Object.entries(article.sections).map(([name, text]) => [String(name), cleanText(text)]).filter(([, text]) => text)
-        : [];
+    const sections = sectionEntries(article);
     const fullText = cleanText(article?.fullText || article?.full_text);
     const canonical = JSON.stringify({ uid, title, abstract, sections, fullText: fullText.slice(0, MAX_PASSAGE_CHARS * 4) });
     const id = sha256(canonical);
@@ -94,6 +106,10 @@ function buildSourceVersion(article) {
     if (!sections.length && fullText) {
         passages.push({ id: `${prefix}:fulltext`, kind: 'fulltext', text: fullText.slice(0, MAX_PASSAGE_CHARS) });
     }
+    // Explicit truncation report: consumers (and the review of a replay) must be able to
+    // tell that the stored passages are a cap, not the whole source.
+    const truncated = passages.length > MAX_PASSAGES_PER_SOURCE
+        || passages.some((p) => p.text.length >= MAX_PASSAGE_CHARS);
 
     return {
         id,
@@ -102,6 +118,7 @@ function buildSourceVersion(article) {
         doi: article?.doi ? String(article.doi) : null,
         title,
         passages: passages.slice(0, MAX_PASSAGES_PER_SOURCE),
+        truncated,
         accessState: accessStateOf(article),
         source: article?.source ? String(article.source).slice(0, 60) : null,
     };
@@ -120,17 +137,42 @@ function policyVersions(queryRepresentation, env = process.env) {
     };
 }
 
+function sourceVersionRow(version, now) {
+    return [
+        version.id, version.uid, version.pmid, version.doi, version.title.slice(0, 1000),
+        JSON.stringify(version.passages), version.accessState, version.source, now,
+    ];
+}
+
+/**
+ * Write source versions in batches rather than one statement each.
+ *
+ * Snapshot persistence is awaited on the search path, so one round trip per article put ~20 of them
+ * (up to MAX_SNAPSHOT_ARTICLES) in series in front of every response: negligible on local SQLite,
+ * real latency against a networked Postgres. Multi-row INSERT ... ON CONFLICT DO NOTHING is portable
+ * across both engines. The chunk keeps the statement under parameter limits.
+ */
+const SOURCE_VERSION_COLUMNS = 9;
+const SOURCE_VERSION_CHUNK = 50;
+
+async function upsertSourceVersions(db, versions, now) {
+    const list = Array.isArray(versions) ? versions : [versions];
+    for (let i = 0; i < list.length; i += SOURCE_VERSION_CHUNK) {
+        const chunk = list.slice(i, i + SOURCE_VERSION_CHUNK);
+        const tuples = chunk.map(() => `(${new Array(SOURCE_VERSION_COLUMNS).fill('?').join(', ')})`).join(', ');
+        await db.run(
+            `INSERT INTO evidence_source_versions
+                (id, article_uid, pmid, doi, title, passages, access_state, source, first_seen_at)
+             VALUES ${tuples}
+             ON CONFLICT (id) DO NOTHING`,
+            chunk.flatMap((version) => sourceVersionRow(version, now))
+        );
+    }
+}
+
+/** Single-version convenience for callers outside the search path. */
 async function upsertSourceVersion(db, version, now) {
-    await db.run(
-        `INSERT INTO evidence_source_versions
-            (id, article_uid, pmid, doi, title, passages, access_state, source, first_seen_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-         ON CONFLICT (id) DO NOTHING`,
-        [
-            version.id, version.uid, version.pmid, version.doi, version.title.slice(0, 1000),
-            JSON.stringify(version.passages), version.accessState, version.source, now,
-        ]
-    );
+    return upsertSourceVersions(db, [version], now);
 }
 
 /**
@@ -170,7 +212,7 @@ async function persistSearchEvidenceSnapshot(db, {
     const id = crypto.randomUUID();
     const now = new Date().toISOString();
     const write = async () => {
-        for (const { version } of versions) await upsertSourceVersion(db, version, now);
+        await upsertSourceVersions(db, versions.map((v) => v.version), now);
         await db.run(
             `INSERT INTO search_evidence_snapshots
                 (id, query_text, query_representation, article_uids, eligibility_routes,
@@ -367,6 +409,8 @@ module.exports = {
     snapshotEnabled,
     accessStateOf,
     buildSourceVersion,
+    upsertSourceVersion,
+    upsertSourceVersions,
     persistSearchEvidenceSnapshot,
     getEvidenceSnapshot,
     addEvidenceToSnapshot,

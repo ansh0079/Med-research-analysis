@@ -294,6 +294,15 @@ describe('out-of-order and repeated events', () => {
         expect((await states(db)).objects['syn-a']).toBe('withdrawn');
     });
 
+    test('supersession after a correction strips the verification a correction intentionally kept', async () => {
+        const db = makeDb();
+        await seedObject(db, { key: 'g-mcq', uid: 'pubmed-1234567', topic: 'acute kidney injury', type: 'guideline_mcq', claims: [claim('c-g')] });
+        await invalidateArtifactsForCorrectedSource(db, { articleUid: 'pubmed-1234567' });
+        expect((await states(db)).claims['c-g']).toBe('needs_revision/source_verified'); // correction keeps verification
+        await invalidateArtifactsForSupersededConcept(db, { normalizedTopic: 'acute kidney injury' });
+        expect((await states(db)).claims['c-g']).toBe('needs_revision/unverified'); // superseded source: verification cannot stand
+    });
+
     test('duplicate events collapse to one and a processed event is not applied twice', async () => {
         const db = makeDb();
         await seedObject(db, { key: 'syn-a', uid: 'pubmed-1234567', topic: 't' });
@@ -407,9 +416,37 @@ describe('the retraction producer', () => {
         await seedObject(db, { key: 'syn-a', uid: 'pubmed-1234567', topic: 'heart failure' });
         await db.run(`INSERT INTO article_cache (id, source, data, is_retracted, created_at) VALUES ('pubmed-1234567', 'x', '{}', 1, 'now')`);
         expect(await enqueueExistingRetractions(db)).toEqual({ scanned: 1, created: 1 });
-        expect(await enqueueExistingRetractions(db)).toEqual({ scanned: 1, created: 0 });
+        expect(await enqueueExistingRetractions(db)).toEqual({ scanned: 0, created: 0 }); // already has an event
         await processInvalidationQueue(db);
         expect(await db.listTeachingObjectsForTopic('heart failure')).toHaveLength(0);
+    });
+
+    test('backfill advances past the first batch: more retractions than the per-tick limit all get events', async () => {
+        const db = makeDb();
+        for (let i = 0; i < 501; i++) {
+            await db.run(
+                `INSERT INTO article_cache (id, source, data, is_retracted, created_at) VALUES (?, 'x', '{}', 1, 'now')`,
+                [`pubmed-batch-${i}`]
+            );
+        }
+        const first = await enqueueExistingRetractions(db); // limit 500
+        expect(first.created).toBe(500);
+        const second = await enqueueExistingRetractions(db);
+        expect(second.created).toBe(1); // the row past the first batch, previously starved forever
+        const third = await enqueueExistingRetractions(db);
+        expect(third).toEqual({ scanned: 0, created: 0 });
+        expect((await db.get('SELECT COUNT(*) AS n FROM source_invalidation_events')).n).toBe(501);
+    });
+
+    test('a backfill failure surfaces as a tick problem instead of being swallowed', async () => {
+        const db = makeDb();
+        const realAll = db.all.bind(db);
+        db.all = async (sql, params) => {
+            if (/FROM article_cache/.test(sql)) throw new Error('table locked');
+            return realAll(sql, params);
+        };
+        const { problems } = await runInvalidationTick(db);
+        expect(problems.join('; ')).toContain('retraction backfill failed: table locked');
     });
 });
 

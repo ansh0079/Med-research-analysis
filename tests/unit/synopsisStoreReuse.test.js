@@ -117,6 +117,20 @@ describe('findReusableStoredSynopsis', () => {
             const db = { getTeachingObjectForArticle: jest.fn().mockRejectedValue(new Error('db down')) };
             expect(await findReusableStoredSynopsis(db, 'pmid-1', { now: NOW })).toBeNull();
         });
+
+        test('a withdrawn synopsis is never reused, however warm the cache or keying', async () => {
+            const withdrawn = storedSynopsis({ reviewState: 'withdrawn' });
+            expect(await findReusableStoredSynopsis(dbWith(withdrawn), 'pmid-1', { now: NOW })).toBeNull();
+            // Non-default style arms resolve through getTeachingObjectByKey, which returns
+            // withdrawn records; the reuse decision must reject the review state itself.
+            const armDb = {
+                getTeachingObjectForArticle: jest.fn().mockResolvedValue(null),
+                getTeachingObjectByKey: jest.fn().mockResolvedValue(withdrawn),
+            };
+            expect(await findReusableStoredSynopsis(armDb, 'pmid-1', {
+                now: NOW, styleArm: 'narrative',
+            })).toBeNull();
+        });
     });
 
     describe('guards against being called wrong', () => {

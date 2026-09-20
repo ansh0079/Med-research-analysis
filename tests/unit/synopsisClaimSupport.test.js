@@ -224,7 +224,32 @@ describe('verification labels and serving', () => {
         expect(served.servingPolicy.withheld).toEqual(['mainFindings']);
         expect(synopsis.mainFindings).toContain('increased'); // the input is not mutated
     });
+
+    test('withhold drops a sentence when ANY clause is unsupported, not only when every clause is', () => {
+        const synopsis = { mainFindings: 'Dapagliflozin reduced cardiovascular death, but it increased amputation risk in older adults.' };
+        const assessments = [
+            { claimId: 'mainFindings:1', field: 'mainFindings', status: STATUS.UNSUPPORTED, claimText: 'it increased amputation risk in older adults.' },
+        ];
+        const served = applyServingPolicy(synopsis, assessments, { mode: 'withhold' });
+        expect(served.synopsis.mainFindings).toBe('');
+        expect(served.servingPolicy.withheld).toEqual(['mainFindings']);
+    });
+
+    test('withhold applies to array-valued material fields and drops entries left unsupported', () => {
+        const kept = 'Dapagliflozin reduced cardiovascular death in adults with heart failure.';
+        const synopsis = { mainFindings: [
+            kept,
+            'Dapagliflozin increased the risk of worsening heart failure or cardiovascular death (hazard ratio 0.74).',
+        ] };
+        const assessments = [
+            { claimId: 'mainFindings:2', field: 'mainFindings', status: STATUS.UNSUPPORTED, claimText: 'Dapagliflozin increased the risk of worsening heart failure or cardiovascular death (hazard ratio 0.74).' },
+        ];
+        const served = applyServingPolicy(synopsis, assessments, { mode: 'withhold' });
+        expect(served.synopsis.mainFindings).toEqual([kept]);
+        expect(served.servingPolicy.withheld).toEqual(['mainFindings']);
+    });
 });
+
 
 describe('asking the judge', () => {
     const { judgeClaimSupport, judgeEnabled, loadJudgeCalibration } = require('../../server/services/synopsisClaimSupport');

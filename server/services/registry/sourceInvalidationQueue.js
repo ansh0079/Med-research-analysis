@@ -168,8 +168,18 @@ async function processInvalidationQueue(db, { limit = 20, now = new Date(), appl
  * idempotency key makes this safe to run on every tick.
  */
 async function enqueueExistingRetractions(db, { limit = 500 } = {}) {
+    // Exclude retractions that already have an event of any status: the previous
+    // version of this query re-selected the same first N rows on every tick, so a
+    // cache with more than `limit` retractions starved past its first batch.
     const rows = await db.all(
-        'SELECT id FROM article_cache WHERE is_retracted = 1 LIMIT ?',
+        `SELECT ac.id FROM article_cache ac
+         WHERE ac.is_retracted = 1
+           AND NOT EXISTS (
+               SELECT 1 FROM source_invalidation_events e
+               WHERE e.event_type = 'retraction'
+                 AND LOWER(TRIM(e.article_uid)) = LOWER(TRIM(ac.id))
+           )
+         LIMIT ?`,
         [Math.max(1, Math.min(5000, Number(limit) || 500))]
     );
     let created = 0;

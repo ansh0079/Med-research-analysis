@@ -119,6 +119,38 @@ describe('resolving the evidence a generation request used', () => {
         expect(r.articles[0]._snapshotVersionId).toBe(r.lineage.sourceVersions['pubmed-1']);
     });
 
+    test('a metadata-only stored source wins over client-only full text: linked means snapshot text only', async () => {
+        const db = makeDb();
+        const id = await searchSnapshot(db, { articles: [article(1, { abstract: '' })] }); // title only -> metadata_only
+        const client = article(1, {
+            abstract: 'Client-supplied abstract the snapshot never stored.',
+            _fullTextIndexed: true,
+            _fullTextSections: { results: 'Client-supplied full text the snapshot never stored.'.repeat(10) },
+        });
+        const r = await resolveGenerationEvidence(db, { snapshotId: id, userId: 'u1', articles: [client] });
+        expect(r.lineage.status).toBe(LINEAGE_STATUS.LINKED);
+        expect(r.articles[0].abstract).toBe('');
+        expect(r.articles[0]._fullTextSections).toBeUndefined();
+        expect(r.articles[0]._fullTextIndexed).toBeUndefined();
+        expect(r.articles[0]._snapshotAccessState).toBe('metadata_only');
+    });
+
+    test('additional evidence is resolved through the server article cache, not the client copy', async () => {
+        const db = makeDb();
+        db.getCachedArticle = async (uid) => uid === 'pubmed-9'
+            ? { title: 'Server cached title', abstract: 'Server cached abstract with the real numbers.' }
+            : null;
+        const id = await searchSnapshot(db);
+        const client = article(9, { title: 'Client title', abstract: 'Client abstract.' });
+        const r = await resolveGenerationEvidence(db, { snapshotId: id, userId: 'u1', articles: [article(1), client], reason: 'quiz_generation' });
+        expect(r.lineage.status).toBe(LINEAGE_STATUS.LINKED_WITH_ADDITIONS);
+        const added = r.articles[1];
+        expect(added.title).toBe('Server cached title');
+        expect(added.abstract).toBe('Server cached abstract with the real numbers.');
+        const snap = (await getEvidenceSnapshot(db, id, { userId: 'u1' })).snapshot;
+        expect(snap.additionalEvidence[0].source.passages.some((p) => /real numbers/.test(p.text))).toBe(true);
+    });
+
     test('evidence the search did not show is recorded as an addition, not silently merged', async () => {
         const db = makeDb();
         const id = await searchSnapshot(db);

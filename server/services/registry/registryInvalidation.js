@@ -230,10 +230,14 @@ async function invalidateArtifactsForSupersededConcept(db, { normalizedTopic } =
     ));
     report.teachingObjects += changeCount(objects);
 
+    // Claims already in needs_revision keep that state, but their verification must NOT
+    // survive a source change: a correction may keep verification while a claim awaits
+    // review, yet a superseded edition means the verified-against source itself is stale.
+    // Only terminal withdrawal is excluded.
     const claims = await step(report, 'teaching_object_claims', () => db.run(
         `UPDATE teaching_object_claims
          SET review_state = '${NEEDS_REVISION}', verification_status = 'unverified', updated_at = ?
-         WHERE review_state NOT IN ('${WITHDRAWN}', '${NEEDS_REVISION}')
+         WHERE review_state != '${WITHDRAWN}'
            AND object_key IN (${guidelineObjects})`,
         [now, ...keys]
     ));

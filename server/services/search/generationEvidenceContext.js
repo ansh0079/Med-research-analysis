@@ -49,18 +49,41 @@ function articleKey(article) {
     return String(article?.uid || article?.pmid || article?.id || '').trim();
 }
 
-/** Rebuild the text fields of an article from the immutable source version it was snapshotted as. */
+/**
+ * Fields a client may attach that carry evidence text the snapshot never stored. When a
+ * stored source version is authoritative, these must not survive: 'linked' lineage must
+ * mean the snapshot's text is exactly what generation can use.
+ */
+const CLIENT_EVIDENCE_FIELDS = [
+    '_fullTextSections', '_fullTextIndexed', '_fullTextWordCount',
+    '_pdfIndexed', 'pdfIndexed', 'fullTextSource', '_fullTextSource', 'extractedFullText',
+];
+
+/** Rebuild every evidence-bearing field of an article from the immutable stored version. */
 function applySourceVersion(article, source) {
     if (!source) return article;
-    const title = source.passages.find((p) => p.kind === 'title')?.text;
-    const abstract = source.passages.filter((p) => p.kind === 'abstract').map((p) => p.text).join(' ');
-    return {
+    const passages = Array.isArray(source.passages) ? source.passages : [];
+    const title = passages.find((p) => p.kind === 'title')?.text || '';
+    const abstract = passages.filter((p) => p.kind === 'abstract').map((p) => p.text).join(' ');
+    const sections = {};
+    let fullText = '';
+    for (const p of passages) {
+        if (p.kind === 'section' && p.section) sections[p.section] = p.text;
+        else if (p.kind === 'fulltext') fullText = p.text;
+    }
+    const next = {
         ...article,
-        title: title || article.title,
-        abstract: abstract || article.abstract,
+        // Explicit empty values: a metadata-only stored source means generation gets
+        // no text, never the client's copy of it.
+        title,
+        abstract,
+        sections,
+        fullText,
         _snapshotVersionId: source.id,
         _snapshotAccessState: source.accessState,
     };
+    for (const field of CLIENT_EVIDENCE_FIELDS) delete next[field];
+    return next;
 }
 
 /**
@@ -101,21 +124,51 @@ async function resolveGenerationEvidence(db, {
     const resolved = [];
     const additions = [];
     const sourceVersions = {};
-    for (const article of requested) {
+    for (let i = 0; i < requested.length; i++) {
+        const article = requested[i];
         const key = articleKey(article);
         const source = byKey.get(key);
         if (source) {
-            resolved.push(applySourceVersion(article, source));
+            resolved[i] = applySourceVersion(article, source);
             sourceVersions[key] = source.id;
         } else {
-            resolved.push(article);
-            additions.push(article);
+            additions.push({ article, index: i });
         }
     }
     if (additions.length) {
+        // Newly introduced evidence must be resolved through a trusted server path
+        // (the article cache) before it is recorded or used - the client cannot be
+        // the source of text its own lineage claim rests on.
+        const trusted = [];
+        for (const { article } of additions) {
+            let trustedArticle = article;
+            if (db && typeof db.getCachedArticle === 'function') {
+                try {
+                    const cached = await db.getCachedArticle(articleKey(article));
+                    if (cached) {
+                        trustedArticle = {
+                            ...article,
+                            title: cached.title ?? article.title,
+                            abstract: cached.abstract ?? article.abstract,
+                            sections: cached.sections || article.sections,
+                            fullText: cached.fullText || cached.full_text || article.fullText,
+                        };
+                    }
+                } catch (err) {
+                    logger.warn({ err, uid: articleKey(article) }, 'trusted article retrieval failed; recording client text');
+                }
+            }
+            trusted.push(trustedArticle);
+        }
         try {
-            const added = await addEvidenceToSnapshot(db, id, additions, { userId, sessionId, reason });
-            for (const entry of added.added || []) sourceVersions[entry.uid] = entry.versionId;
+            const added = await addEvidenceToSnapshot(db, id, trusted, { userId, sessionId, reason });
+            const versionByUid = new Map((added.added || []).map((e) => [e.uid, e.versionId]));
+            for (let k = 0; k < additions.length; k++) {
+                const { article, index } = additions[k];
+                resolved[index] = trusted[k];
+                const key = articleKey(article);
+                if (versionByUid.has(key)) sourceVersions[key] = versionByUid.get(key);
+            }
         } catch (err) {
             logger.warn({ err }, 'recording additional generation evidence failed');
             return unlinked(LINEAGE_STATUS.INVALID, { reason: 'addition_failed' });
@@ -128,8 +181,30 @@ async function resolveGenerationEvidence(db, {
             sourceVersions,
         },
         articles: resolved,
-        additions,
+        additions: additions.map(({ article }) => article),
     };
+}
+
+/**
+ * Re-assert snapshot-resolved evidence over an article that has since been merged with current data.
+ *
+ * Hydrating from the article and PDF caches is legitimate for freshness signals (retraction status
+ * above all), but it must not replace the text the lineage points at: a generation that kept the
+ * snapshot id while reading newer text records a replay that never happened.
+ */
+function preserveSnapshotEvidence(snapshotResolved, merged) {
+    if (!snapshotResolved?._snapshotVersionId) return merged;
+    const next = {
+        ...merged,
+        title: snapshotResolved.title,
+        abstract: snapshotResolved.abstract,
+        sections: snapshotResolved.sections,
+        fullText: snapshotResolved.fullText,
+        _snapshotVersionId: snapshotResolved._snapshotVersionId,
+        _snapshotAccessState: snapshotResolved._snapshotAccessState,
+    };
+    for (const field of CLIENT_EVIDENCE_FIELDS) delete next[field];
+    return next;
 }
 
 /**
@@ -185,6 +260,7 @@ module.exports = {
     lineageEnforcementMode,
     isLinked,
     resolveGenerationEvidence,
+    preserveSnapshotEvidence,
     snapshotTopicEvidence,
     guidelineToEvidenceArticle,
     capVerificationForLineage,
