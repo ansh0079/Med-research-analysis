@@ -13,6 +13,8 @@ function parseCuratorMetadata(raw) {
     };
 }
 
+const { applyWritePolicy } = require('../../server/services/policy/writePolicyEngine');
+
 module.exports = (Sup) => class extends Sup {
 async updateTeachingClaimCuratorMetadata(claimKey, metadata = {}, reviewerId = null) {
     const key = String(claimKey || '').trim();
@@ -213,6 +215,12 @@ async completeLearningRound(roundId, userId) {
 }
 
 async insertGuidelineWatchEvent(event = {}) {
+    const verdict = await applyWritePolicy(this, {
+        writer: 'insertGuidelineWatchEvent',
+        entityType: 'guideline_watch',
+        payload: event,
+    });
+    if (!verdict.allowed) return null;
     const now = new Date().toISOString();
     await this.run(
         `INSERT INTO guideline_watch_events (

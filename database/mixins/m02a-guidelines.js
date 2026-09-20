@@ -861,7 +861,15 @@ async listGuidelineRefilingCandidates({ limit = 200, offset = 0 } = {}) {
 
 /** One row per guideline: the single best-matching canonical condition. */
 async upsertGuidelineRefiling({ guidelineId, canonicalNormalized, similarity, sourceTopicNormalized, textHash }) {
+    // Below-threshold results arrive with an empty canonical; that is not a policy event.
     if (!guidelineId || !canonicalNormalized) return false;
+    const verdict = await applyWritePolicy(this, {
+        writer: 'upsertGuidelineRefiling',
+        entityType: 'guideline_refiling',
+        entityId: guidelineId != null ? String(guidelineId) : null,
+        payload: { guidelineId, canonicalNormalized, similarity, sourceTopicNormalized, textHash },
+    });
+    if (!verdict.allowed) return false;
     await this.run(
         `INSERT INTO topic_guideline_refiling
             (guideline_id, canonical_normalized, similarity, source_topic_normalized, embedded_text_hash, created_at)

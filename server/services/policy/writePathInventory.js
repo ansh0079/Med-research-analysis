@@ -39,6 +39,18 @@ const WRITE_PATHS = Object.freeze([
         policyRequired: true,
     },
     {
+        id: 'upsertRegistryEntry',
+        family: 'registry_entry',
+        owners: ['server/services/registry/guidelineRegistryService.js'],
+        policyRequired: true,
+    },
+    {
+        id: 'verifyRegistryEntry',
+        family: 'registry_verification',
+        owners: ['server/scripts/registryCurate.js'],
+        policyRequired: true,
+    },
+    {
         id: 'upsertGuidelineRefiling',
         family: 'guideline_refiling',
         owners: ['server/services/guidelineEmbeddingRefiling.js'],

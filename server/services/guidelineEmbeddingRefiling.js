@@ -65,6 +65,11 @@ function dehyphenate(value) {
     return String(value || '').replace(/-/g, ' ');
 }
 
+/** Same normalization the registry uses for concept names, so the two sides compare equal. */
+function normalizeCoveredName(value) {
+    return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
+}
+
 /**
  * One entry per condition cluster: the canonical (longest) normalized phrase
  * plus every synonym-group key, for reachable-under checks.
@@ -163,6 +168,18 @@ async function backfillGuidelineRefiling({ db, serverConfig, options = {}, log =
         log.warn({ err }, 'guideline refiling: condition index embeddings failed');
         outcome.skipped = 'condition_index_failed';
         return outcome;
+    }
+
+    // A condition with a verified registry entry is served from the registry; the bridge must
+    // not keep filing rows under it, or demolition would be undone on the next backfill.
+    if (typeof db.listVerifiedRegistryConcepts === 'function') {
+        const covered = new Set((await db.listVerifiedRegistryConcepts().catch(() => []))
+            .map((name) => normalizeCoveredName(name)));
+        if (covered.size) {
+            const before = conditionIndex.length;
+            conditionIndex = conditionIndex.filter((c) => !covered.has(normalizeCoveredName(c.canonicalNormalized)));
+            outcome.skippedRegistryCovered = before - conditionIndex.length;
+        }
     }
 
     const candidates = await db.listGuidelineRefilingCandidates({ limit, offset });

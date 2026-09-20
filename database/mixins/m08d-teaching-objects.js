@@ -129,6 +129,13 @@ async resolveCurriculumTopicId(topic) {
 async recordTopicAlias(topic, curriculumTopicId, resolution = 'runtime', confidence = 0.8) {
     const alias = this.normalizeTopic(topic);
     if (!alias || !curriculumTopicId) return false;
+    const verdict = await applyWritePolicy(this, {
+        writer: 'recordTopicAlias',
+        entityType: 'topic_alias',
+        entityId: alias,
+        payload: { topic, curriculumTopicId },
+    });
+    if (!verdict.allowed) return false;
     await this.run(
         `INSERT INTO topic_aliases (id, alias_norm, curriculum_topic_id, resolution, confidence)
          VALUES (?, ?, ?, ?, ?)

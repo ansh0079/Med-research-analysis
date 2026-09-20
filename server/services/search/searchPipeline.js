@@ -16,6 +16,7 @@ const {
 } = require('../evidenceBouquetService');
 const { fetchUnifiedEvidence, collapseNearDuplicateTitles, decomposePico } = require('../unifiedEvidenceSearch');
 const { sanitizeArticleOutput } = require('../../utils/articles');
+const { registryArticlesForQuery, mergeRegistryArticles } = require('../registry/guidelineRegistryService');
 const logger = require('../../config/logger');
 const { createAiService, getSharedAiService } = require('../aiService');
 const { rerankArticlesByPico, selectTopRerankedArticles } = require('../articleReranker');
@@ -26,7 +27,6 @@ const {
 } = require('../searchLearningService');
 const { annotateArticlesWithRankingTraces } = require('../searchRankingTrace');
 const { withSpan, annotateActiveSpan } = require('../../utils/tracing');
-const { buildTeachingSignalBoosts } = require('../searchRankingConstants');
 const {
     evaluateEligibility,
     classifyEvidenceLane,
@@ -496,7 +496,7 @@ function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMes
 
 async function prefetchTeachingArtifacts(db, topic) {
     if (!db || !topic) {
-        return { objects: [], claims: [], signalBoosts: new Map() };
+        return { objects: [], claims: [] };
     }
 
     const [teachingObjects, claims] = await Promise.all([
@@ -508,9 +508,7 @@ async function prefetchTeachingArtifacts(db, topic) {
             : [],
     ]);
 
-    const signalBoosts = buildTeachingSignalBoosts(teachingObjects, claims);
-
-    return { objects: teachingObjects, claims, signalBoosts };
+    return { objects: teachingObjects, claims };
 }
 
 /**
@@ -628,6 +626,13 @@ async function fetchAndRankSearchArticles({
             };
         } catch (err) {
             telemetry.topicEvidenceMemoryError = err?.message || 'topic_evidence_memory_failed';
+        }
+        // Verified registry guidelines for the resolved condition: served as a lookup, not
+        // left to whatever general retrieval happened to return. Eligible by route 'registry'.
+        const registryArticles = (await registryArticlesForQuery(db, query)).map(sanitizeArticleOutput);
+        if (registryArticles.length) {
+            sanitized = mergeRegistryArticles(sanitized, registryArticles);
+            telemetry.registry = { used: true, entries: registryArticles.length };
         }
         timings.filterMs = Date.now() - filterStarted;
         _trace('relevant', relevant);

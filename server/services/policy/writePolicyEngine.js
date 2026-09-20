@@ -138,6 +138,93 @@ function evaluateTeachingObject(payload = {}) {
     return { blocking, shadow };
 }
 
+function evaluateGuidelineRefiling(payload = {}) {
+    const blocking = [];
+    if (!payload.guidelineId || !String(payload.canonicalNormalized || '').trim()) {
+        blocking.push(reason(REASON_CODES.IDENTITY_MISSING_SOURCE, 'guidelineId+canonicalNormalized'));
+        return { blocking, shadow: [] };
+    }
+    if (isTaskWordKey(payload.canonicalNormalized)) {
+        blocking.push(reason(REASON_CODES.CONCEPT_TASK_WORD_KEY, String(payload.canonicalNormalized)));
+    }
+    const similarity = Number(payload.similarity);
+    // Cosine of near-identical vectors can land a float error above 1.
+    if (!Number.isFinite(similarity) || similarity <= 0 || similarity > 1.0001) {
+        blocking.push(reason(REASON_CODES.BRIDGE_SIMILARITY_INVALID, String(payload.similarity)));
+    }
+    return { blocking, shadow: [] };
+}
+
+function evaluateTopicAlias(payload = {}) {
+    const blocking = [];
+    if (!String(payload.topic || '').trim() || !payload.curriculumTopicId) {
+        blocking.push(reason(REASON_CODES.IDENTITY_MISSING_SOURCE, 'topic+curriculumTopicId'));
+        return { blocking, shadow: [] };
+    }
+    if (isTaskWordKey(payload.topic)) {
+        blocking.push(reason(REASON_CODES.CONCEPT_TASK_WORD_KEY, String(payload.topic)));
+    }
+    return { blocking, shadow: [] };
+}
+
+function evaluateCurriculumTopic(payload = {}) {
+    const blocking = [];
+    const name = String(payload.displayName || payload.topic || '').trim();
+    if (!name) {
+        blocking.push(reason(REASON_CODES.CONCEPT_UNRESOLVED, '(empty)'));
+    } else if (isTaskWordKey(name)) {
+        blocking.push(reason(REASON_CODES.CONCEPT_TASK_WORD_KEY, name));
+    }
+    return { blocking, shadow: [] };
+}
+
+function evaluateGuidelineConflict(payload = {}) {
+    const blocking = [];
+    if (!String(payload.conflictHash || '').trim()) {
+        blocking.push(reason(REASON_CODES.IDENTITY_MISSING_SOURCE, 'conflictHash'));
+    }
+    if (!String(payload.trialClaim || '').trim() || !String(payload.guidelineClaim || '').trim()) {
+        blocking.push(reason(REASON_CODES.SCHEMA_MISSING_PROVENANCE, 'trialClaim+guidelineClaim'));
+    }
+    evaluateConceptKey({ topic: payload.normalizedTopic }, blocking);
+    return { blocking, shadow: [] };
+}
+
+function evaluateGuidelineWatch(payload = {}) {
+    const blocking = [];
+    // Topic-level events (e.g. regional divergence) carry only a topic; that is a valid identity.
+    const hasTopic = Boolean(String(payload.normalizedTopic || '').trim());
+    if (!payload.guidelineId && !String(payload.claimKey || '').trim() && !hasTopic) {
+        blocking.push(reason(REASON_CODES.IDENTITY_MISSING_SOURCE, 'guidelineId|claimKey|normalizedTopic'));
+    }
+    if (hasTopic) evaluateConceptKey({ topic: payload.normalizedTopic }, blocking);
+    return { blocking, shadow: [] };
+}
+
+function evaluateRegistryEntry(payload = {}) {
+    const blocking = [];
+    evaluateConceptKey({ topic: payload.conceptName }, blocking);
+    if (!String(payload.issuer || '').trim()) blocking.push(reason(REASON_CODES.SCHEMA_MISSING_ISSUER));
+    const edition = payload.year ?? payload.version;
+    if (edition == null || String(edition).trim() === '') blocking.push(reason(REASON_CODES.SCHEMA_MISSING_EDITION));
+    if (!String(payload.sourceUrl || '').trim()) blocking.push(reason(REASON_CODES.SCHEMA_MISSING_PROVENANCE, 'sourceUrl'));
+    if (!Array.isArray(payload.guidelineIds) || payload.guidelineIds.length === 0) {
+        blocking.push(reason(REASON_CODES.IDENTITY_MISSING_SOURCE, 'guidelineIds'));
+    }
+    return { blocking, shadow: [] };
+}
+
+function evaluateRegistryVerification(payload = {}) {
+    const blocking = [];
+    if (!String(payload.reviewer || '').trim()) {
+        blocking.push(reason(REASON_CODES.IDENTITY_MISSING_SOURCE, 'reviewer'));
+    }
+    if (!(Number(payload.recommendationCount) > 0)) {
+        blocking.push(reason(REASON_CODES.SCHEMA_MISSING_PROVENANCE, 'no linked recommendations'));
+    }
+    return { blocking, shadow: [] };
+}
+
 function evaluateWrite(input = {}) {
     const writer = String(input.writer || '').trim();
     const path = findWritePath(writer);
@@ -152,6 +239,20 @@ function evaluateWrite(input = {}) {
         ({ blocking, shadow } = evaluateTopicKnowledge(payload));
     } else if (family === 'teaching_object') {
         ({ blocking, shadow } = evaluateTeachingObject(payload));
+    } else if (family === 'guideline_refiling') {
+        ({ blocking, shadow } = evaluateGuidelineRefiling(payload));
+    } else if (family === 'topic_alias') {
+        ({ blocking, shadow } = evaluateTopicAlias(payload));
+    } else if (family === 'curriculum') {
+        ({ blocking, shadow } = evaluateCurriculumTopic(payload));
+    } else if (family === 'guideline_conflict') {
+        ({ blocking, shadow } = evaluateGuidelineConflict(payload));
+    } else if (family === 'guideline_watch') {
+        ({ blocking, shadow } = evaluateGuidelineWatch(payload));
+    } else if (family === 'registry_entry') {
+        ({ blocking, shadow } = evaluateRegistryEntry(payload));
+    } else if (family === 'registry_verification') {
+        ({ blocking, shadow } = evaluateRegistryVerification(payload));
     }
 
     if (entailmentMode() === 'block' && shadow.length) {
