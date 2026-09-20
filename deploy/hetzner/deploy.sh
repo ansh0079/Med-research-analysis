@@ -43,6 +43,9 @@ if [[ -n "${stale}" ]]; then
 fi
 
 echo "Building and starting stack for https://${DOMAIN} ..."
+# Stamp the deploying commit into the image so /health can report it.
+export GIT_SHA="$(git rev-parse HEAD 2>/dev/null || echo unknown)"
+echo "Deploying commit: ${GIT_SHA}"
 docker compose -f docker-compose.hetzner.yml pull --ignore-buildable || true
 if ! docker compose -f docker-compose.hetzner.yml up -d --build --remove-orphans; then
   echo "compose up failed; clearing stale containers and retrying once ..."

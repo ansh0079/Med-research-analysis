@@ -70,6 +70,8 @@ function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metr
             res.status(statusCode).json({
                 status: healthy ? 'ok' : 'degraded',
                 version: APP_VERSION,
+                // Stamped at image build time from the deploying commit (GIT_SHA build arg).
+                gitSha: process.env.GIT_SHA || 'unknown',
                 timestamp: new Date().toISOString(),
                 features: {
                     localAI: !!serverConfig.features.enableLocalAI,

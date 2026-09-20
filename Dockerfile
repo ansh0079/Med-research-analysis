@@ -88,6 +88,10 @@ USER nodejs
 ENV NODE_ENV=production
 ENV PORT=3002
 ENV DEV_DISABLE_AUTH=false
+# Deployed commit SHA, stamped at image build time via compose build arg
+# (deploy.sh exports GIT_SHA from the checked-out repo before compose up).
+ARG GIT_SHA=unknown
+ENV GIT_SHA=$GIT_SHA
 
 # Health check (web role on :3002; worker overrides in compose)
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
