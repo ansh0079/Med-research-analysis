@@ -104,6 +104,7 @@ const COMMANDS = { coverage: cmdCoverage, propose: cmdPropose, list: cmdList, ve
         process.exit(2);
     }
     try {
+        if (typeof db.connect === 'function') await db.connect();
         await COMMANDS[command]();
     } catch (err) {
         console.error(err.message);
