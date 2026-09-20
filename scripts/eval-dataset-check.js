@@ -21,3 +21,21 @@ if (report.heldout.cases === 0) {
     console.log('  No held-out labels exist: ranking has no validation beyond tuning fixtures.');
     console.log('  See tests/fixtures/heldout/README.md.');
 }
+
+// Progress against the labeling worksheet, and whether what exists is fit to gate on.
+const { loadWorksheet, summarizeCoverage } = require('../server/services/heldoutWorksheet');
+const { evaluateHeldout } = require('../server/services/heldoutEval');
+
+const sheet = summarizeCoverage(loadWorksheet());
+const evaluation = evaluateHeldout();
+console.log(`\nLabeling worksheet: ${sheet.total} scenarios defined (target 100-200 labelled scenarios)`);
+console.log(`Labelled scenarios: ${evaluation.labelledCases ?? 0}`);
+if (evaluation.agreement?.pairs) {
+    console.log(`Labeler agreement: kappa ${evaluation.agreement.kappa} over ${evaluation.agreement.pairs} double-labelled candidate(s)`);
+}
+console.log(`Release evaluation status: ${evaluation.status}`);
+for (const p of (evaluation.problems || []).slice(0, 10)) console.log(`  ${p}`);
+if (process.argv.includes('--require-labels') && !evaluation.passed) {
+    console.log('\n--require-labels: the held-out evaluation has not passed.');
+    process.exit(1);
+}

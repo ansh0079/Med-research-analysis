@@ -17,6 +17,7 @@ const FROZEN_RANKING_SUITES = Object.freeze([
     'evalDatasetPolicy',
     'guidelineRegistry',
     'laneRetrieval',
+    'heldoutEval',
     'queryContract',
 ]);
 

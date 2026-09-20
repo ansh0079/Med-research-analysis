@@ -18,8 +18,13 @@ const {
 describe('runFrozenRankingEvalGate', () => {
     it('passes when the eval exits zero', async () => {
         const spawnImpl = jest.fn(async () => ({ status: 0, stdout: 'PASS', stderr: '' }));
-        const result = await runFrozenRankingEvalGate({ spawnImpl });
-        expect(result).toEqual({ checked: true, passed: true, detail: 'frozen ranking eval passed' });
+        const result = await runFrozenRankingEvalGate({ spawnImpl, heldoutImpl: () => ({ status: 'no_labels', labelledCases: 0, problems: ['none'] }) });
+        expect(result).toEqual({
+            checked: true,
+            passed: true,
+            detail: 'frozen ranking eval passed',
+            heldout: { status: 'no_labels', labelledCases: 0, problems: ['none'] },
+        });
         const [cmd, args, opts] = spawnImpl.mock.calls[0];
         expect(cmd).toBe(process.execPath);
         expect(args.join(' ')).toContain('--testPathPatterns=');
@@ -58,12 +63,41 @@ describe('runFrozenRankingEvalGate', () => {
 });
 
 describe('applyFrozenRankingGate', () => {
-    it('lets a promote through when the gate passed', () => {
+    it('lets a promote through when the frozen gate passed and the held-out evaluation passed', () => {
         const out = applyFrozenRankingGate(
             { recommendation: 'promote', reason: 'lift=0.05' },
-            { checked: true, passed: true },
+            { checked: true, passed: true, heldout: { status: 'passed' } },
         );
         expect(out).toEqual({ recommendation: 'promote', reason: 'lift=0.05', gated: true });
+    });
+
+    it.each(['no_labels', 'insufficient_labels', 'thresholds_not_agreed', 'invalid', 'failed', 'error', undefined])(
+        'holds a promote when the held-out evaluation is %s: missing labels are not a pass',
+        (status) => {
+            const out = applyFrozenRankingGate(
+                { recommendation: 'promote', reason: 'lift=0.05' },
+                { checked: true, passed: true, heldout: status ? { status } : undefined },
+            );
+            expect(out.recommendation).toBe('hold');
+            expect(out.reason).toBe(`heldout_evaluation_${status || 'unavailable'}`);
+        },
+    );
+
+    it('does not hold a regress for want of held-out labels: rolling back to a safer arm is not a quality promotion', () => {
+        const out = applyFrozenRankingGate(
+            { recommendation: 'regress', reason: 'harm' },
+            { checked: true, passed: true, heldout: { status: 'no_labels' } },
+        );
+        expect(out.recommendation).toBe('regress');
+    });
+
+    it('advisory mode lets a promote through without held-out labels (an explicit, visible choice)', () => {
+        const out = applyFrozenRankingGate(
+            { recommendation: 'promote' },
+            { checked: true, passed: true, heldout: { status: 'no_labels' } },
+            { env: { HELDOUT_GATE_MODE: 'advisory' } },
+        );
+        expect(out.recommendation).toBe('promote');
     });
 
     it('holds a promote when the gate failed', () => {

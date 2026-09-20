@@ -87,3 +87,52 @@ here shaped as above, with `split: "heldout"` and full provenance. Before commit
 run the fixture through `heldoutWorksheet.validateGraduatedFixture` (structural checks)
 and `checkAggregateDiversity` (family/intent stratification across the whole graduated
 set). The release gate then applies its existing leakage and provenance rules on top.
+
+## Running the evaluation and the promotion gate
+
+```bash
+npm run eval:datasets            # counts, worksheet progress, labeler agreement, status
+npm run eval:heldout             # metrics with intervals; writes eval-results/heldout-<ts>.json
+npm run eval:heldout -- --gate   # exit 1 unless the evaluation PASSED
+```
+
+A graduated case must carry its **frozen `candidates`** (uid, title, abstract, pubtype, year, ...)
+as well as `judgments` and `scenarioId`. The evaluation ranks those candidates through the real
+eligibility, bouquet and lane path with no provider call, so a metric cannot move because a
+provider was throttled. A scenario with no on-topic candidate is counted as **missing evidence**
+and reported separately; it is never scored as a ranking failure.
+
+Status is one of `no_labels`, `invalid`, `insufficient_labels`, `thresholds_not_agreed`,
+`failed`, `passed`. **Only `passed` permits a bandit promotion** (`HELDOUT_GATE_MODE=advisory`
+is an explicit, visible opt-out). Missing labels are never a pass.
+
+### Thresholds are set before candidates are evaluated
+
+`config/thresholds.json` (deliberately outside the directory the gate loads labels from) holds
+the pass bar. It must name who agreed it and when; its hash is recorded in every report, so an
+edit made after seeing results is visible.
+
+```json
+{
+  "agreedBy": "reviewer or committee",
+  "agreedAt": "YYYY-MM-DD",
+  "rationale": "why these bars",
+  "minCases": 100,
+  "useConfidenceBound": true,
+  "metrics": {
+    "ndcg10": { "min": 0.0 },
+    "mrr": { "min": 0.0 },
+    "recall10": { "min": 0.0 },
+    "contaminationRate": { "max": 0.0 },
+    "falseRejectionRate": { "max": 0.0 }
+  }
+}
+```
+
+The numbers above are placeholders for the format only: they must come from the people who
+own the clinical risk, not from the engineer running the evaluation. With
+`useConfidenceBound` (the default) the safe end of each interval must clear its bar, so a small
+lucky sample cannot pass.
+
+Every report includes the baseline commit, dataset versions and hashes, provider configuration
+(`frozen_candidates`, none called), flags, and the metric-definitions version.
