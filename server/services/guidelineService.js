@@ -443,7 +443,7 @@ function canRunGuidelineDiscovery(serverConfig) {
  * multiple sclerosis, and tell the caller to keep the panel in a pending state
  * rather than "none found".
  */
-function kickGuidelineDiscoveryIfEmpty(topic, { db, serverConfig, aiService, log } = {}) {
+function kickGuidelineDiscoveryIfEmpty(topic, { db, serverConfig, aiService, log, searchQuery } = {}) {
   if (!topic || !db || typeof db.normalizeTopic !== 'function') return 'complete';
   if (isDiscoveryInFlight(topic, db)) return 'pending';
   if (wasDiscoveryAttempted(topic, db)) return 'complete';
@@ -453,7 +453,7 @@ function kickGuidelineDiscoveryIfEmpty(topic, { db, serverConfig, aiService, log
     db,
     serverConfig,
     aiService,
-    searchQuery: discoverySearchQuery(topic),
+    searchQuery: searchQuery || discoverySearchQuery(topic),
   }).catch((err) => {
     if (log && typeof log.warn === 'function') {
       log.warn({ err, topic }, 'Background guideline discovery failed; topic stays undiscovered');
@@ -476,4 +476,5 @@ module.exports = {
   isDiscoveryInFlight,
   wasDiscoveryAttempted,
   kickGuidelineDiscoveryIfEmpty,
+  canRunGuidelineDiscovery,
 };

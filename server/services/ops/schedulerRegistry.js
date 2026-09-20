@@ -15,6 +15,7 @@
  */
 
 const logger = require('../../config/logger');
+const { getSharedAiService } = require('../aiService');
 
 const {
     scheduleDigests, stopDigests,
@@ -68,6 +69,9 @@ const {
 const {
     scheduleOfflineEvalNightly, stopOfflineEvalNightly,
 } = require('../offlineEvalNightlyScheduler');
+const {
+    scheduleGuidelineDiscoveryWarmStart, stopGuidelineDiscoveryWarmStart,
+} = require('../guidelineDiscoveryWarmStartScheduler');
 
 /**
  * @typedef {Object} SchedulerEntry
@@ -121,6 +125,16 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
             task: 'guideline-watchtower',
             start: () => scheduleGuidelineWatchtower(db, baseLogger.child({ task: 'guideline-watchtower' })),
             stop: () => stopGuidelineWatchtower(),
+        },
+        {
+            task: 'guideline-discovery-warm-start',
+            start: () => scheduleGuidelineDiscoveryWarmStart({
+                db,
+                serverConfig,
+                aiService: getSharedAiService({ serverConfig, fetchImpl }),
+                log: baseLogger.child({ task: 'guideline-discovery-warm-start' }),
+            }),
+            stop: () => stopGuidelineDiscoveryWarmStart(),
         },
         {
             task: 'curriculum-seed',

@@ -140,13 +140,60 @@ export function useSearch() {
     }, [setAiEnrichmentLoading]),
   });
 
+  // Guideline-discovery polling ----------------------------------------------
+  // A first search on a new topic returns discoveryStatus 'pending' with an
+  // empty panel while the server discovers guidelines in the background. Poll
+  // the guidelines endpoint and fill the panel in place when discovery lands,
+  // so the first impression is "filling in" rather than "nothing found".
+  const [pendingGuidelineTopic, setPendingGuidelineTopic] = useState<string | null>(null);
+  const guidelinePollRequestIdRef = useRef(0);
+
+  const guidelinePoll = usePolling({
+    delays: POLL_DELAYS,
+    fetcher: useCallback(async () => {
+      if (!pendingGuidelineTopic) throw new Error('no topic');
+      return api.search.getGuidelines(pendingGuidelineTopic);
+    }, [pendingGuidelineTopic]),
+    isComplete: useCallback((result: Awaited<ReturnType<typeof api.search.getGuidelines>>) => {
+      return Array.isArray(result.guidelines) && result.guidelines.length > 0;
+    }, []),
+    onSuccess: useCallback((result: Awaited<ReturnType<typeof api.search.getGuidelines>>) => {
+      if (guidelinePollRequestIdRef.current !== requestIdRef.current) return;
+      setTopicIntelligence((prev) =>
+        prev
+          ? {
+              ...prev,
+              guidelineSnapshot: {
+                ...prev.guidelineSnapshot,
+                guidelines: result.guidelines,
+                count: result.guidelines.length,
+                hasReviewedGuidelines:
+                  prev.guidelineSnapshot.hasReviewedGuidelines
+                  || result.guidelines.some((g) => g.status === 'human_reviewed'),
+                discoveryStatus: 'complete',
+              },
+            }
+          : prev
+      );
+      trackFeatureUsage('guideline_panel_filled', { topic: (pendingGuidelineTopic || '').slice(0, 200) });
+    }, [setTopicIntelligence, trackFeatureUsage, pendingGuidelineTopic]),
+    onTimeout: useCallback(() => {
+      if (guidelinePollRequestIdRef.current !== requestIdRef.current) return;
+      // Leave the panel in its pending state; the server keeps the discovery
+      // result for the next visit even if this session's polls ran out.
+      trackFeatureUsage('guideline_panel_pending', { topic: (pendingGuidelineTopic || '').slice(0, 200) });
+    }, [trackFeatureUsage, pendingGuidelineTopic]),
+  });
+
   // Cancel all polling when a new search starts or on unmount
   const cancelPoll = useCallback(() => {
     topicPoll.stop();
     enrichmentPoll.stop();
+    guidelinePoll.stop();
     setPollTopic(null);
     setEnrichKey(null);
-  }, [topicPoll, enrichmentPoll]);
+    setPendingGuidelineTopic(null);
+  }, [topicPoll, enrichmentPoll, guidelinePoll]);
 
   const cancelPollRef = useRef(cancelPoll);
   cancelPollRef.current = cancelPoll;
@@ -156,6 +203,18 @@ export function useSearch() {
   topicPollRef.current = topicPoll;
   const enrichmentPollRef = useRef(enrichmentPoll);
   enrichmentPollRef.current = enrichmentPoll;
+  const guidelinePollRef = useRef(guidelinePoll);
+  guidelinePollRef.current = guidelinePoll;
+
+  // Start polling the guidelines endpoint when the topic intelligence snapshot
+  // reports background discovery in flight. No-op once the panel is populated.
+  const startGuidelinePollIfPending = useCallback((intel: import('@types').TopicIntelligence | null | undefined, requestId: number) => {
+    if (!intel?.guidelineSnapshot || intel.guidelineSnapshot.count > 0) return;
+    if (intel.guidelineSnapshot.discoveryStatus !== 'pending') return;
+    guidelinePollRequestIdRef.current = requestId;
+    setPendingGuidelineTopic(intel.topic);
+    guidelinePollRef.current.start();
+  }, []);
 
   const recordSearchView = useCallback((searchId: number | null | undefined, articles: Article[]) => {
     if (!searchId || articles.length === 0) return;
@@ -261,6 +320,7 @@ export function useSearch() {
               if (thisRequestId !== requestIdRef.current) return;
               setAgentGuidance(intel.agentGuidance || null);
               setTopicIntelligence(intel.topicIntelligence || null);
+              startGuidelinePollIfPending(intel.topicIntelligence, thisRequestId);
               if (intel.learnerContext) setLearnerContext(intel.learnerContext);
               if (intel.agentGuidance) {
                 setTopicGuideStatus('ready');
@@ -281,6 +341,7 @@ export function useSearch() {
         } else {
           setAgentGuidance(agentGuidance || null);
           setTopicIntelligence(topicIntelligence || null);
+          startGuidelinePollIfPending(topicIntelligence, thisRequestId);
           if (agentGuidance) {
             setTopicGuideStatus('ready');
             trackFeatureUsage('topic_guide_ready', { source: 'search', query: query.slice(0, 200) });
@@ -330,7 +391,7 @@ export function useSearch() {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [setResults, setLoading, setError, setDetectedTopic, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, trackFeatureUsage, trackSearch, addToSearchHistory, refreshKnowledgeDriftAlerts]
+    [setResults, setLoading, setError, setDetectedTopic, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, trackFeatureUsage, trackSearch, addToSearchHistory, refreshKnowledgeDriftAlerts, startGuidelinePollIfPending]
   );
 
   const clearResults = useCallback(() => {
