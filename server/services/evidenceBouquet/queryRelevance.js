@@ -8,31 +8,30 @@ const {
     isCompetingAbbreviationSense,
     textHasTerm,
 } = require('../../utils/conditionQuery');
+const { clinicalFacts, populationCovers, queryFacts } = require('../clinical/clinicalFacts');
 
+/**
+ * Hard eligibility: drop an article whose stated population cannot answer the question asked.
+ *
+ * Scope containment, from the canonical vocabulary - not tag equality. A study in children is
+ * eligible for a question about adolescents, and a study in older adults is eligible for a question
+ * about adults; only genuinely disjoint scopes are dropped. An article that states no population is
+ * never dropped: silence is not a mismatch.
+ */
 function matchesPopulationFilter(article, query) {
-    const q = String(query || '').toLowerCase();
-    const text = `${String(article.title || '')} ${String(article.abstract || '')}`.toLowerCase();
+    const wanted = queryFacts(query).population;
+    if (!wanted) return true;
+    const { populations } = clinicalFacts(article);
+    if (!populations.length) return true;
 
-    // If query explicitly mentions pediatric/children
-    if (/\b(pediatric|children?|infant|neonate|adolescent)\b/.test(q)) {
-        // Penalize if article is clearly adult-only
-        if (/\b(adults?|elderly|geriatric|aged)\b/.test(text) && !/\b(pediatric|children?|infant|adolescent)\b/.test(text)) {
-            return false;
-        }
-    }
-    // If query explicitly mentions adult
-    if (/\b(adults?|elderly|geriatric)\b/.test(q)) {
-        // Penalize if article is clearly pediatric-only
-        if (/\b(pediatric|children?|infant|neonate|adolescent)\b/.test(text) && !/\b(adults?|elderly|geriatric|aged)\b/.test(text)) {
-            return false;
-        }
-    }
-    if (/\b(pregnan\w*|antenatal|obstetric)\b/.test(q)) {
-        if (/\b(adults?|elderly|geriatric)\b/.test(text) && !/\b(pregnan|antenatal|obstetric|maternal)\b/.test(text)) {
-            return false;
-        }
-    }
-    return true;
+    // Eligible if the article covers the question's population, or is a narrower group inside it.
+    const overlaps = populationCovers(populations, wanted)
+        || populations.some((tag) => populationCovers([wanted], tag));
+    if (overlaps) return true;
+    // Pregnancy sits outside the age hierarchy. A pregnancy study still answers a general adult
+    // question; only a pregnancy question rejects on its absence.
+    if (wanted !== 'pregnancy' && populations.includes('pregnancy')) return true;
+    return false;
 }
 
 // Strip common suffixes to get a root form for fuzzy matching

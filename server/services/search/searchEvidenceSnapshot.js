@@ -17,6 +17,7 @@
  */
 
 const crypto = require('crypto');
+const { sectionEntries } = require('../clinical/clinicalFacts');
 const logger = require('../../config/logger');
 
 const SNAPSHOT_CONTRACT_VERSION = 2;
@@ -68,16 +69,10 @@ function accessStateOf(article) {
     return 'metadata_only';
 }
 
-/** Section text in every shape the pipelines produce: {name: text} from sections or _fullTextSections. */
-function sectionEntries(article) {
-    for (const key of ['sections', '_fullTextSections']) {
-        const value = article?.[key];
-        if (value && typeof value === 'object' && !Array.isArray(value)) {
-            return Object.entries(value).map(([name, text]) => [String(name), cleanText(text)]).filter(([, text]) => text);
-        }
-    }
-    return [];
-}
+/*
+ * Section text comes from the canonical clinical-facts layer, so what the snapshot stores is exactly
+ * what every other consumer reads out of an article.
+ */
 
 /**
  * Build the immutable source version for an article. The id hashes the text the version

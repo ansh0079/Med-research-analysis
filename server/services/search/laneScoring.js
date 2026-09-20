@@ -22,16 +22,9 @@
  * explained, and replayed offline.
  */
 
-const {
-    isRCT,
-    isGuideline,
-    isCohort,
-    getYear,
-    getCitationCount,
-    hasCitationData,
-} = require('../evidenceBouquet/articleClassifiers');
+const { getYear, getCitationCount, hasCitationData } = require('../evidenceBouquet/articleClassifiers');
 const { originalConditionTerms } = require('../../utils/conditionQuery');
-const { queryJurisdictionCue } = require('../../utils/queryScopeCues');
+const { clinicalFacts, populationCovers, queryFacts, toCanonicalPopulation } = require('../clinical/clinicalFacts');
 
 const LANE_SCORING_VERSION = 2;
 
@@ -63,7 +56,6 @@ const FRESHNESS_RULES = Object.freeze({
     supporting: Object.freeze({ fullYears: 5, zeroYears: 20, floor: 0.4 }),
 });
 
-const AUTHORITY = /\b(who|world health organization|nice|national institute for health and care excellence|uspstf|cdc|acc|american college of cardiology|aha|american heart association|esc|european society of cardiology|idsa|ats|ers|aasld|easl|kdigo|ada|american diabetes association|easd|asco|nccn|acr|acp|acg|aga|surviving sepsis|gina|gold|kdoqi|eular|endocrine society|national kidney foundation)\b/i;
 
 function round(value) {
     return Math.round(value * 10000) / 10000;
@@ -85,23 +77,32 @@ function freshness(article, lane, now) {
     return round(1 - t * (1 - floor));
 }
 
+/**
+ * How much a study design is worth in a lane. The design itself comes from clinicalFacts (one
+ * derivation); what it is worth is ranking policy and stays here.
+ *
+ * A review lane asks "how well was this synthesised", so a systematic review with meta-analysis
+ * leads and a narrative review trails. Every other lane asks "how strong is this study".
+ */
+const DESIGN_STRENGTH = Object.freeze({
+    reviews: { meta_analysis: 1, systematic_review: 0.9, narrative_review: 0.5, guideline: 0.5, other: 0.5 },
+    default: {
+        rct: 1, clinical_trial: 0.8, meta_analysis: 0.95, systematic_review: 0.9, guideline: 0.9,
+        cohort: 0.6, case_control: 0.5, cross_sectional: 0.45, case_report: 0.25, narrative_review: 0.4, other: 0.4,
+    },
+});
+
 function design(article, lane) {
-    const types = pubtypes(article);
-    const title = String(article?.title || '').toLowerCase();
-    if (lane === 'reviews') {
-        const meta = types.some((t) => t.includes('meta-analysis') || t.includes('meta analysis')) || /\bmeta-analys/.test(title);
-        const sr = types.some((t) => t.includes('systematic review')) || /\bsystematic review\b/.test(title);
-        if (meta && sr) return 1;
-        if (sr || meta) return 0.9;
-        return types.length || title ? 0.5 : null; // an unlabelled review is narrative, not unknown
+    const canonical = clinicalFacts(article).design;
+    if (!canonical) return null; // untyped and untitled: unknown, not weak
+    const table = lane === 'reviews' ? DESIGN_STRENGTH.reviews : DESIGN_STRENGTH.default;
+    // A meta-analysis that is also a systematic review is the strongest review evidence there is.
+    if (lane === 'reviews' && canonical === 'meta_analysis') {
+        const sr = pubtypes(article).some((t) => t.includes('systematic review'))
+            || /\bsystematic review\b/i.test(String(article?.title || ''));
+        return sr ? 1 : 0.9;
     }
-    if (!types.length && !title) return null;
-    if (isRCT(article)) return 1;
-    if (types.some((t) => t.includes('clinical trial'))) return 0.8;
-    if (isCohort(article)) return 0.6;
-    if (types.some((t) => t.includes('case-control') || t.includes('case control'))) return 0.5;
-    if (types.some((t) => t.includes('case report'))) return 0.25;
-    return types.length ? 0.4 : null; // typed but not a recognised design; untyped is missing
+    return table[canonical] ?? (lane === 'reviews' ? 0.5 : 0.4);
 }
 
 /** Share of the query's condition terms found in the title: how directly the paper is about the question. */
@@ -113,30 +114,24 @@ function directness(article, ctx) {
     return round(terms.filter((t) => title.includes(t)).length / terms.length);
 }
 
-const POPULATION_TEXT = [
-    ['pregnancy', /\b(pregnan\w*|antenatal|obstetric|maternal|peripartum)\b/i],
-    ['paediatric', /\b(pediatric|paediatric|children|child|infants?|neonat\w*|adolescents?)\b/i],
-    ['adult', /\b(adults?|elderly|geriatric|older)\b/i],
-];
-
-function articlePopulations(article) {
-    const text = `${article?.title || ''} ${article?.abstract || ''}`;
-    return POPULATION_TEXT.filter(([, re]) => re.test(text)).map(([name]) => name);
-}
-
-/** 1 when the article studies the queried population, 0 when it studies only others; missing when either is unstated. */
+/**
+ * 1 when the article's evidence covers the queried population, 0 when it studies only another one,
+ * missing when either side is unstated. Scope containment, not string equality: a guideline about
+ * children covers an adolescent question, which flat tag matching called a mismatch.
+ */
 function populationFit(article, ctx) {
-    if (!ctx.population) return null;
-    const populations = articlePopulations(article);
+    // Accepts the canonical tag, a legacy name ('paediatric') or nothing; never a silent miss.
+    const wanted = ctx.populationTag || toCanonicalPopulation(ctx.population);
+    if (!wanted) return null;
+    const { populations } = clinicalFacts(article);
     if (!populations.length) return null;
-    return populations.includes(ctx.population) ? 1 : 0;
+    return populationCovers(populations, wanted) ? 1 : 0;
 }
 
 function jurisdictionFit(article, ctx) {
     if (!ctx.jurisdiction) return null;
-    const own = article?._registry?.jurisdiction
-        || queryJurisdictionCue(`${article?.title || ''} ${article?.journal || ''} ${article?.source || ''} ${article?._registry?.issuer || ''}`);
-    if (!own || own === 'unspecified') return null;
+    const own = clinicalFacts(article).jurisdiction;
+    if (!own) return null;
     return own === ctx.jurisdiction ? 1 : 0;
 }
 
@@ -198,14 +193,17 @@ function reasonsFor(lane, features) {
 function scoreArticleInLaneV2(article, lane, ctx = {}, pool = { citationPool: [] }) {
     const now = ctx.now || new Date();
     const weights = LANE_FEATURE_WEIGHTS[lane] || LANE_FEATURE_WEIGHTS.supporting;
+    const facts = clinicalFacts(article);
     const raw = {
         topical: topical(article),
         registry_verified: lane === 'guidelines' ? (article?._guidelineRegistryMatch ? 1 : 0) : undefined,
         edition_freshness: lane === 'guidelines' ? freshness(article, lane, now) : undefined,
         population_fit: lane === 'guidelines' ? populationFit(article, ctx) : undefined,
         jurisdiction_fit: lane === 'guidelines' ? jurisdictionFit(article, ctx) : undefined,
+        // A recognised issuing body scores 1; a guideline from an unrecognised body still counts,
+        // at half. Not a guideline at all: the feature does not apply.
         authority: lane === 'guidelines'
-            ? (isGuideline(article) ? (AUTHORITY.test(`${article?.title || ''} ${article?.journal || ''} ${article?.source || ''} ${article?._registry?.issuer || ''}`) ? 1 : 0.5) : null)
+            ? (facts.isGuideline ? (facts.issuer ? 1 : 0.5) : null)
             : undefined,
         design: design(article, lane),
         pinned_landmark: lane === 'landmark_trials' ? (article?._pinnedLandmark ? 1 : 0) : undefined,
@@ -251,9 +249,17 @@ function scoreArticleInLaneV2(article, lane, ctx = {}, pool = { citationPool: []
  * result is deterministic.
  */
 function rankLaneV2(articles, lane, ctx = {}) {
+    // The query's canonical population tag, derived once for the lane. Callers pass query text and
+    // do not have to know the vocabulary; an explicit populationTag wins when one is supplied.
+    const resolved = {
+        ...ctx,
+        populationTag: ctx.populationTag
+            || toCanonicalPopulation(ctx.population)
+            || queryFacts(ctx.query || '').population,
+    };
     const pool = laneCandidateContext(articles);
     return articles
-        .map((article, index) => ({ article, index, ...scoreArticleInLaneV2(article, lane, ctx, pool) }))
+        .map((article, index) => ({ article, index, ...scoreArticleInLaneV2(article, lane, resolved, pool) }))
         .sort((a, b) => b.score - a.score
             || (Number(a.article._evidenceRank) || 9999) - (Number(b.article._evidenceRank) || 9999)
             || a.index - b.index)

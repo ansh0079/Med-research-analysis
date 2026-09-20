@@ -24,6 +24,7 @@
  */
 
 const { extractNumericTokens } = require('./aiOutputValidation');
+const { populationsIn, sexIn, populationCovers } = require('./clinical/clinicalFacts');
 const { buildSourceVersion } = require('./search/searchEvidenceSnapshot');
 
 const MATERIAL_FIELDS = Object.freeze(['bottomLine', 'mainFindings', 'clinicalMeaning', 'practiceImplication']);
@@ -121,21 +122,17 @@ const HEDGE = /\b(may|might|could|possibl\w*|suggest\w*|trend\w*|exploratory|pre
 const CERTAINTY = /\b(proves?|proven|demonstrates?|demonstrated|establishes?|established|definitively|conclusively|confirms?|confirmed|clearly|unequivocally|guarantees?|shown to)\b/i;
 const RECOMMENDS = /\b(should|must|recommend\w*|first[- ]line|standard of care|ought to)\b/i;
 
-const POPULATION_TERMS = [
-    ['children', /\b(children|child|pediatric|paediatric|infants?|neonat\w*|toddlers?)\b/i],
-    ['adolescents', /\b(adolescents?|teenagers?)\b/i],
-    ['older_adults', /\b(older adults?|elderly|geriatric|aged\s*(?:>=|≥|over)?\s*6[05]|(?:>=|≥)\s*6[05]\s*years|frail)\b/i],
-    ['pregnancy', /\b(pregnan\w*|gestation\w*|antenatal|peripartum|postpartum|maternal)\b/i],
-    ['women', /\b(women|female patients?)\b/i],
-    ['men', /\b(men|male patients?)\b/i],
-];
 
 function directions(text) {
     return { up: UP.test(text), down: DOWN.test(text) };
 }
 
-function populations(text) {
-    return new Set(POPULATION_TERMS.filter(([, re]) => re.test(text)).map(([name]) => name));
+/**
+ * The claim's population and sex, from the canonical clinical vocabulary. Nothing here re-derives
+ * either: `clinicalFacts` is the single place those patterns live.
+ */
+function populationsOf(text) {
+    return { ages: populationsIn(text), sexes: sexIn(text) };
 }
 
 /* ─────────────────────────────── passage matching ─────────────────────────────── */
@@ -218,10 +215,21 @@ function assessClaim(claim, version, { isGuideline = false } = {}) {
         if (RECOMMENDS.test(claim.text) && !isGuideline) flags.push('recommendation_strength_unsupported');
     }
 
-    const claimPops = populations(claim.text);
-    if (claimPops.size) {
-        const sourcePops = populations(allSourceText);
-        if ([...claimPops].some((p) => !sourcePops.has(p))) flags.push('population_mismatch');
+    // Scope containment, not tag equality: a source about children does support a claim about
+    // adolescents, which flat matching called a mismatch. Sex is checked separately, as its own axis.
+    const claimPops = populationsOf(claim.text);
+    if (claimPops.ages.length || claimPops.sexes.length) {
+        const sourcePops = populationsOf(allSourceText);
+        const ageMismatch = claimPops.ages.length
+            && sourcePops.ages.length
+            && !claimPops.ages.every((tag) => populationCovers(sourcePops.ages, tag));
+        const sexMismatch = claimPops.sexes.length
+            && sourcePops.sexes.length
+            && !claimPops.sexes.every((tag) => sourcePops.sexes.includes(tag));
+        // A source that states no population at all is silent, not contradictory - but a claim that
+        // narrows to a population the source never mentions is still an unsupported narrowing.
+        const claimNarrowsSilentSource = !sourcePops.ages.length && !sourcePops.sexes.length;
+        if (ageMismatch || sexMismatch || claimNarrowsSilentSource) flags.push('population_mismatch');
     }
     if (claim.compound) flags.push('compound_claim');
 

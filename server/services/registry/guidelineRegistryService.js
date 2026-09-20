@@ -14,7 +14,8 @@
  */
 
 const { expandNormalizedTopicKeys } = require('../../utils/topicSynonyms');
-const { queryPopulationCue, queryJurisdictionCue } = require('../../utils/queryScopeCues');
+const { populationsIn, populationCovers, queryFacts, jurisdictionOf } = require('../clinical/clinicalFacts');
+const { queryJurisdictionCue } = require('../../utils/queryScopeCues');
 const COHORT = require('../../config/registryCohort.json');
 
 const CONCEPT_CACHE_TTL_MS = 60 * 1000;
@@ -52,47 +53,53 @@ function phrasesForConcept(name) {
     return COHORT_ALIAS_PHRASES.get(name) || [name];
 }
 
+/**
+ * Does this registry entry's population scope admit the question's?
+ *
+ * Scope containment from the canonical vocabulary, not tag equality: an entry scoped to children
+ * admits an adolescent question, one scoped to older adults admits an adult question. An entry that
+ * states no population admits everything - silence is not a mismatch. Pregnancy sits outside the age
+ * hierarchy, so only a pregnancy question rejects on its absence.
+ */
 function entryMatchesQueryScope(entry, query) {
-    const popCue = queryPopulationCue(query);
     const jurCue = queryJurisdictionCue(query);
-    const pop = String(entry.population || '').toLowerCase();
-    const scope = String(entry.scope || '').toLowerCase();
     const jur = String(entry.jurisdiction || '').toLowerCase();
-    const popScope = `${pop} ${scope}`;
-
-    if (popCue === 'pregnancy') {
-        const pregnancyish = /pregnan|obstetric|antenatal/.test(popScope);
-        if (!pregnancyish && (/adult/.test(popScope) || /paediatric|pediatric|child/.test(popScope))) {
-            return false;
-        }
-    }
-    if (popCue === 'paediatric') {
-        if (/adult/.test(popScope) && !/paediatric|pediatric|child/.test(popScope)) return false;
-        if (/pregnan/.test(popScope) && !/paediatric|pediatric|child/.test(popScope)) return false;
-    }
-    if (popCue === 'adult') {
-        if (/paediatric|pediatric|child|pregnan/.test(popScope) && !/adult/.test(popScope)) return false;
-    }
     if (jurCue && jur && jur !== 'unspecified' && jur !== jurCue) return false;
-    return true;
+
+    const wanted = queryFacts(query).population;
+    if (!wanted) return true;
+    const entryTags = populationsIn(`${entry.population || ''} ${entry.scope || ''}`);
+    if (!entryTags.length) return true;
+
+    const overlaps = populationCovers(entryTags, wanted)
+        || entryTags.some((tag) => populationCovers([wanted], tag));
+    if (overlaps) return true;
+    if (wanted !== 'pregnancy' && entryTags.includes('pregnancy')) return true;
+    return false;
 }
 
 function inferJurisdiction({ sourceRegion, issuer } = {}) {
     const region = String(sourceRegion || '').trim().toLowerCase();
     if (region && region !== 'unspecified') return region;
-    const body = String(issuer || '').toLowerCase();
-    if (/\bnice\b|\bnhs\b|\bsign\b/.test(body)) return 'uk';
-    if (/\baha\b|\bacc\b|\bacp\b|\bidsa\b|\bcdc\b/.test(body)) return 'us';
-    if (/\besc\b|\bers\b|\beasl\b|\besmo\b/.test(body)) return 'europe';
-    if (/\bkdigo\b|\bwho\b/.test(body)) return 'international';
-    return 'unspecified';
+    // One issuer list, in the clinical-facts layer: adding a body there fixes every consumer at once.
+    return jurisdictionOf({ _registry: { issuer } }) || 'unspecified';
 }
 
+/**
+ * The stored scope vocabulary ('pregnancy' | 'paediatric' | 'adult' | 'unspecified') is kept as-is
+ * because rows already hold it; only the derivation moves to the canonical patterns.
+ */
+const SCOPE_FOR_TAG = Object.freeze({
+    pregnancy: 'pregnancy',
+    neonatal: 'paediatric', infant: 'paediatric', child: 'paediatric', adolescent: 'paediatric',
+    adult: 'adult', older_adult: 'adult',
+});
+
 function inferScope({ population, topic, recommendationText } = {}) {
-    const text = `${population || ''} ${topic || ''} ${recommendationText || ''}`.toLowerCase();
-    if (/\bpregnan|antenatal|obstetric|pre-eclampsia|preeclampsia/.test(text)) return 'pregnancy';
-    if (/\bpaediatric|pediatric|children|neonat|infant/.test(text)) return 'paediatric';
-    if (/\badult/.test(text)) return 'adult';
+    const tags = populationsIn(`${population || ''} ${topic || ''} ${recommendationText || ''}`);
+    for (const preferred of ['pregnancy', 'paediatric', 'adult']) {
+        if (tags.some((tag) => SCOPE_FOR_TAG[tag] === preferred)) return preferred;
+    }
     return 'unspecified';
 }
 
