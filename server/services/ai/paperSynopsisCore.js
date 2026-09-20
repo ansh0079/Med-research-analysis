@@ -9,6 +9,14 @@ const { getProviderCandidates } = require('../../utils/aiProvider');
 const { enrichWithCachedFullText, enqueuePdfPreindex } = require('../pdfPreindexService');
 const { validateAiOutput } = require('../aiOutputValidation');
 const { buildClaimGrounding, runSynopsisCritic, failClosedGroundingFindings } = require('../synopsisGroundingService');
+const {
+    buildClaimSupport,
+    applyServingPolicy,
+    applyJudgeVerdicts,
+    loadJudgeCalibration,
+    judgeEnabled,
+    judgeClaimSupport,
+} = require('../synopsisClaimSupport');
 const { recordSynopsisGeneration } = require('../observabilityMetrics');
 const { annotateActiveSpan, withSpan } = require('../../utils/tracing');
 const { getPromptVersion } = require('../../prompts/promptVersions');
@@ -525,9 +533,32 @@ async function runPaperSynopsisGenerationInner({
         );
     }
 
+    // Claim-level support: each material assertion is traced to a passage of an immutable source version
+    // and checked for reversed meaning, negation, population, dropped uncertainty and out-of-context
+    // numbers. A deterministic pass is 'unjudged' (consistent, not verified); only a calibrated judge can
+    // say 'supported'. Failure here is reported on the result, never silently turned into a pass.
+    let claimSupport;
+    try {
+        claimSupport = buildClaimSupport(synopsis, enriched, { calibration: loadJudgeCalibration() });
+        if (judgeEnabled()) {
+            const verdicts = await judgeClaimSupport(claimSupport.claims, { serverConfig, fetchImpl });
+            claimSupport = {
+                ...claimSupport,
+                claims: applyJudgeVerdicts(claimSupport.claims, verdicts, loadJudgeCalibration()),
+            };
+        }
+        const served = applyServingPolicy(synopsis, claimSupport.claims);
+        synopsis = served.synopsis;
+        claimSupport = { ...claimSupport, servingPolicy: served.servingPolicy };
+    } catch (err) {
+        logger.warn({ err, articleId }, 'synopsis claim support check failed');
+        claimSupport = { checked: false, error: String(err?.message || err).slice(0, 200), claims: [] };
+    }
+
     const result = {
         synopsis,
         claimGrounding,
+        claimSupport,
         critic,
         articleId,
         // Attributed separately from `synopsis` on purpose -- see the comment

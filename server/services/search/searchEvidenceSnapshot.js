@@ -326,6 +326,24 @@ async function addEvidenceToSnapshot(db, id, articles, { userId = null, sessionI
 }
 
 /**
+ * The exact passages of one immutable source version, by id: what a claim rests on. Source
+ * versions hold public bibliographic text (title, abstract, sections), not query or user data.
+ * @returns {Promise<{ version: object|null, passages: object[] }>}
+ */
+async function getSourcePassages(db, versionId, passageIds = []) {
+    const id = String(versionId || '').trim();
+    if (!id) return { version: null, passages: [] };
+    const row = await db.get('SELECT * FROM evidence_source_versions WHERE id = ?', [id]);
+    if (!row) return { version: null, passages: [] };
+    const all = parseJson(row.passages, []);
+    const wanted = new Set((Array.isArray(passageIds) ? passageIds : []).map(String));
+    return {
+        version: { id: row.id, uid: row.article_uid, title: row.title, accessState: row.access_state, firstSeenAt: row.first_seen_at },
+        passages: wanted.size ? all.filter((p) => wanted.has(p.id)) : all,
+    };
+}
+
+/**
  * Retention. Query text is personal data: after `queryRetentionDays` it is redacted (the row,
  * ordering and source versions stay so historical attempts remain replayable). Source versions
  * are never deleted here: a snapshot, generated object or attempt may still point at one.
@@ -352,6 +370,7 @@ module.exports = {
     persistSearchEvidenceSnapshot,
     getEvidenceSnapshot,
     addEvidenceToSnapshot,
+    getSourcePassages,
     redactExpiredSnapshotQueries,
     canAccessSnapshot,
 };
