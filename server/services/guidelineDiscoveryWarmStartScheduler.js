@@ -8,7 +8,8 @@
  * a topic was "nothing found" while discovery ran (or had never been kicked
  * from the search path at all).
  *
- * This scheduler walks the flagship topic catalog and kicks discovery for every
+ * This scheduler walks the in-scope topics (the registry cohort's conditions by default;
+ * the whole flagship catalog only when WARM_START_SCOPE=flagship) and kicks discovery for every
  * topic whose guideline panel is still empty, so by the time a user first
  * asks, the panel is far more likely to be populated. It uses each flagship
  * entry's curated `guidelineQueries[0]` as the PubMed search string — a better
@@ -28,6 +29,8 @@ const {
     kickGuidelineDiscoveryIfEmpty,
     canRunGuidelineDiscovery,
 } = require('./guidelineService');
+
+const { resolveWarmStartScope, selectWarmStartTopics } = require('./warmStartScope');
 
 const DEFAULT_STARTUP_DELAY_MS = 90_000;
 const DEFAULT_INTERVAL_MS = 6 * 60 * 60 * 1000;
@@ -58,7 +61,7 @@ function loadFlagshipTopics(configPath = FLAGSHIP_CONFIG_PATH) {
  * @returns {Promise<{scanned: number, served: number, kicked: number, skipped: string|null}>}
  */
 async function runGuidelineDiscoveryWarmStart({ db, serverConfig, aiService, options = {}, log = logger }) {
-    const outcome = { scanned: 0, served: 0, kicked: 0, skipped: null };
+    const outcome = { scanned: 0, served: 0, kicked: 0, skipped: null, scope: 'cohort', inScope: 0 };
     if (!db || typeof db.getGuidelinesByTopic !== 'function') {
         outcome.skipped = 'no_db';
         return outcome;
@@ -77,7 +80,13 @@ async function runGuidelineDiscoveryWarmStart({ db, serverConfig, aiService, opt
         outcome.skipped = 'config_unavailable';
         return outcome;
     }
-    outcome.scanned = topics.length;
+    // Warming amplifies what it touches, so it starts with the registry cohort's conditions and
+    // widens to the whole flagship catalogue only by explicit choice (see warmStartScope.js).
+    outcome.scope = resolveWarmStartScope(options.scope);
+    const flagshipTotal = topics.length;
+    topics = selectWarmStartTopics(topics, { scope: outcome.scope });
+    outcome.scanned = flagshipTotal;
+    outcome.inScope = topics.length;
 
     for (const entry of topics) {
         if (outcome.kicked >= maxKicks) break;

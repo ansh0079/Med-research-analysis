@@ -45,7 +45,7 @@ describe('guideline discovery warm-start', () => {
 
     it('skips the cycle when no db is available', async () => {
         const outcome = await runGuidelineDiscoveryWarmStart({ db: null, serverConfig: { keys: { ncbi: 'x' } } });
-        expect(outcome).toEqual({ scanned: 0, served: 0, kicked: 0, skipped: 'no_db' });
+        expect(outcome).toMatchObject({ scanned: 0, served: 0, kicked: 0, skipped: 'no_db' });
         expect(mockKick).not.toHaveBeenCalled();
     });
 
@@ -123,6 +123,61 @@ describe('guideline discovery warm-start', () => {
             expect.objectContaining({ topic: 'Multiple sclerosis' }),
             expect.stringContaining('skipping'),
         );
+    });
+
+    describe('scope', () => {
+        const MIXED = [
+            ...TOPICS,
+            { topic: 'Cutaneous melanoma adjuvant therapy', guidelineQueries: ['melanoma guideline'] },
+            { topic: 'Gout urate lowering', guidelineQueries: ['gout guideline'] },
+        ];
+        const run = (options) => runGuidelineDiscoveryWarmStart({
+            db: makeDb(),
+            serverConfig: { keys: { ncbi: 'x' } },
+            options: { flagshipConfigPath: writeFlagshipConfig(MIXED), maxKicksPerCycle: 50, ...options },
+            log: { warn: jest.fn() },
+        });
+
+        it('warms only the registry cohort conditions by default', async () => {
+            const outcome = await run({});
+            expect(outcome).toMatchObject({ scope: 'cohort', scanned: 6, inScope: 4, kicked: 4 });
+            const warmed = mockKick.mock.calls.map(([topic]) => topic);
+            expect(warmed).not.toContain('Cutaneous melanoma adjuvant therapy');
+            expect(warmed).not.toContain('Gout urate lowering');
+        });
+
+        it('widens to the whole flagship catalogue only when asked', async () => {
+            const outcome = await run({ scope: 'flagship' });
+            expect(outcome).toMatchObject({ scope: 'flagship', inScope: 6, kicked: 6 });
+        });
+
+        it('honours WARM_START_SCOPE from the environment', async () => {
+            process.env.WARM_START_SCOPE = 'flagship';
+            try {
+                expect((await run({})).scope).toBe('flagship');
+            } finally {
+                delete process.env.WARM_START_SCOPE;
+            }
+        });
+
+        it('orders topics by the cohort list, not catalogue order', async () => {
+            await runGuidelineDiscoveryWarmStart({
+                db: makeDb(),
+                serverConfig: { keys: { ncbi: 'x' } },
+                options: {
+                    flagshipConfigPath: writeFlagshipConfig([
+                        { topic: 'Rheumatoid arthritis', guidelineQueries: ['ra'] },
+                        { topic: 'Heart failure with reduced ejection fraction', guidelineQueries: ['hf'] },
+                    ]),
+                    maxKicksPerCycle: 10,
+                },
+                log: { warn: jest.fn() },
+            });
+            expect(mockKick.mock.calls.map(([topic]) => topic)).toEqual([
+                'Heart failure with reduced ejection fraction',
+                'Rheumatoid arthritis',
+            ]);
+        });
     });
 
     it('reports a missing config instead of throwing', async () => {
