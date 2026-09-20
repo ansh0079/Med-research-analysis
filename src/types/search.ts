@@ -101,6 +101,24 @@ export interface SearchPack {
   lanes: Record<EvidenceLaneKey, SearchPackLane>;
 }
 
+export interface QuerySenseAlternative {
+  label: string;
+  query: string;
+}
+
+export interface QuerySenseAmbiguity {
+  token: string;
+  assumed: string;
+  assumedQuery: string;
+  alternatives: QuerySenseAlternative[];
+}
+
+export interface QueryResolution {
+  status: 'clear' | 'resolved' | 'ambiguous';
+  ambiguities: QuerySenseAmbiguity[];
+  resolved: { token: string; sense: string }[];
+}
+
 export interface SearchResponse {
   articles: Article[];
   count: number;
@@ -166,6 +184,7 @@ export interface SearchResponse {
     };
   };
   searchPack?: SearchPack | null;
+  queryResolution?: QueryResolution | null;
   learningOrder?: string[];
   ranking?: Array<{
     uid?: string;

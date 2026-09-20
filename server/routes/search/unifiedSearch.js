@@ -13,6 +13,7 @@ const { buildEnrichmentCacheKey } = require('../../services/synthesisPersonaliza
 const { enqueueSearchObservedSideEffects } = require('../../services/searchObservedService');
 const { captureLowRecallSearch } = require('../../services/lowRecallLearningService');
 const { clampLimit, setNoStoreSearchHeaders, attachApiKeyUser } = require('./searchHelpers');
+const { resolveQuerySenses } = require('../../utils/conditionQuery');
 const {
     buildSearchResultCacheKey,
     getCachedSearchResult,
@@ -428,6 +429,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                 ranking: ranked.bouquetRanking,
                 searchPack,
                 learningOrder,
+                queryResolution: resolveQuerySenses(query),
                 searchTelemetry: {
                     timings: { ...telemetry.timings, ...routeTimings },
                     sources: telemetry.sourceFetches || {},

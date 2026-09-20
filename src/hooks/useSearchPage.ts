@@ -67,7 +67,7 @@ export function useSearchPage() {
     search, loading, error, lastSearchId, searchCompletedAt, proactiveAlert, learnerContext,
     aiEnrichmentLoading, intelligenceLoading, knowledgeDriftAlerts, dismissKnowledgeDriftAlert,
     aiEnrichmentFailed,
-    lowRecallLearning, searchTelemetry, searchPack, queryIntent,
+    lowRecallLearning, searchTelemetry, searchPack, queryResolution, queryIntent,
   } = useSearch();
   const recentSearches = useSearchRecents(searchHistory, isAuthenticated);
   const pdfViewer = usePdfViewer();
@@ -455,6 +455,7 @@ export function useSearchPage() {
     lowRecallLearning,
     searchTelemetry,
     searchPack,
+    queryResolution,
     queryIntent,
     recentSearches,
     pdfViewer,

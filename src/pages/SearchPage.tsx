@@ -15,6 +15,7 @@ import { TopicIntelligenceStatusBanner } from '@components/search/TopicIntellige
 import { SearchEmptyState } from '@components/search/SearchEmptyState';
 import { NoResultsState } from '@components/search/NoResultsState';
 import { LowRecallBanner } from '@components/search/LowRecallBanner';
+import { QuerySenseBanner } from '@components/search/QuerySenseBanner';
 import { RelatedTopicsBar } from '@components/search/RelatedTopicsBar';
 import { VerifyEmailBanner } from '@components/search/VerifyEmailBanner';
 import { SearchResultsStats } from '@components/search/SearchResultsStats';
@@ -72,6 +73,7 @@ export const SearchPage: React.FC = () => {
     lowRecallLearning,
     searchTelemetry,
     searchPack,
+    queryResolution,
     queryIntent,
     recentSearches,
     pdfViewer,
@@ -225,7 +227,10 @@ export const SearchPage: React.FC = () => {
         />
 
         {currentQuery && (
-          <LowRecallBanner lowRecall={lowRecallLearning} onTryQuery={handleSearch} />
+          <>
+            <QuerySenseBanner resolution={queryResolution} onTryQuery={handleSearch} />
+            <LowRecallBanner lowRecall={lowRecallLearning} onTryQuery={handleSearch} />
+          </>
         )}
 
         {currentQuery && results.length > 0 && (

@@ -157,6 +157,60 @@ function conditionExpansionAliases(query) {
     return out.slice(0, 6);
 }
 
+/**
+ * Abstention: name the abbreviation senses a query leaves open. Search still runs
+ * on the primary sense (a clinician typing "ACS management" almost always means
+ * acute coronary syndrome), but the assumption is reported so the UI can say so
+ * and offer the alternatives instead of silently choosing a specialty.
+ *
+ * status: 'clear'     no ambiguous abbreviation
+ *         'resolved'  the query itself names a sense (competitor cue or primary/distinctive term)
+ *         'ambiguous' the query leaves the sense open
+ */
+function rewriteQueryWithSense(query, token, label) {
+    const pattern = new RegExp(`(^|[^a-z0-9])${escapeRegex(token)}(?![a-z0-9])`, 'i');
+    return String(query || '').replace(pattern, (_, lead) => `${lead}${label}`).replace(/\s+/g, ' ').trim();
+}
+
+function resolveQuerySenses(query) {
+    const tokens = tokenizeQuery(query);
+    const joined = tokens.join(' ');
+    const seen = new Set();
+    const open = [];
+    const resolved = [];
+    for (const token of tokens) {
+        const amb = AMBIGUOUS_ABBREVIATIONS[token];
+        if (!amb || seen.has(token)) continue;
+        seen.add(token);
+        const namedCompetitor = amb.competitors.find((c) => (c.cues || []).some((cue) => joined.includes(cue)));
+        if (namedCompetitor) {
+            resolved.push({ token, sense: namedCompetitor.label });
+            continue;
+        }
+        // A distinctive cue that itself contains the abbreviation ("pe diagnosis") is the
+        // ambiguous query restated, not evidence for a sense.
+        const independentCues = amb.distinctive.filter((d) => !d.split(/[^a-z0-9]+/).includes(token));
+        const namesPrimary = amb.primary.some((p) => joined.includes(p))
+            || independentCues.some((d) => joined.includes(d));
+        if (namesPrimary) {
+            resolved.push({ token, sense: amb.primary[0] });
+            continue;
+        }
+        open.push({
+            token,
+            assumed: amb.primary[0],
+            alternatives: amb.competitors.map((c) => ({
+                label: c.label,
+                query: rewriteQueryWithSense(query, token, c.label),
+            })),
+            assumedQuery: rewriteQueryWithSense(query, token, amb.primary[0]),
+        });
+    }
+    if (open.length) return { status: 'ambiguous', ambiguities: open, resolved };
+    if (resolved.length) return { status: 'resolved', ambiguities: [], resolved };
+    return { status: 'clear', ambiguities: [], resolved: [] };
+}
+
 function discoverySearchQuery(topic) {
     const raw = String(topic || '').trim();
     const aliases = conditionExpansionAliases(raw);
@@ -238,6 +292,7 @@ module.exports = {
     textHasTerm,
     synonymExpansionsForToken,
     conditionExpansionAliases,
+    resolveQuerySenses,
     discoverySearchQuery,
     originalConditionTerms,
     originalWeakAnchorTerms,

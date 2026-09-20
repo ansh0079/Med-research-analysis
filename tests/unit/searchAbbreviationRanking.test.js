@@ -185,3 +185,30 @@ describe('abbreviation search ranking', () => {
         expect(isOffTopic(sbpPeritonitis, 'SBP management')).toBe(false);
     });
 });
+
+describe('resolveQuerySenses (abstention)', () => {
+    const { resolveQuerySenses } = require('../../server/utils/conditionQuery');
+
+    test('bare acronym reports the assumed sense and the alternatives instead of guessing silently', () => {
+        const r = resolveQuerySenses('ACS management');
+        expect(r.status).toBe('ambiguous');
+        expect(r.ambiguities[0]).toMatchObject({ token: 'acs', assumed: 'acute coronary syndrome' });
+        expect(r.ambiguities[0].alternatives.map((a) => a.label)).toEqual(['american cancer society', 'acute compartment syndrome']);
+        expect(r.ambiguities[0].alternatives[0].query).toBe('american cancer society management');
+    });
+
+    test('a query that restates the abbreviation ("PE diagnosis") is still ambiguous', () => {
+        expect(resolveQuerySenses('PE diagnosis').status).toBe('ambiguous');
+    });
+
+    test('an independent cue resolves the sense without a banner', () => {
+        expect(resolveQuerySenses('ACS troponin').status).toBe('resolved');
+        expect(resolveQuerySenses('PE d-dimer').status).toBe('resolved');
+        expect(resolveQuerySenses('ACS cancer screening').resolved[0].sense).toBe('american cancer society');
+    });
+
+    test('queries with no ambiguous abbreviation are clear', () => {
+        expect(resolveQuerySenses('acute kidney injury management').status).toBe('clear');
+        expect(resolveQuerySenses('').status).toBe('clear');
+    });
+});
