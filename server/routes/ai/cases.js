@@ -117,6 +117,7 @@ function registerCaseRoutes(app, {
                 caseScenario.topic = caseScenario.topic || topic.trim();
                 caseScenario.difficulty = difficulty;
                 caseScenario.evidenceSnapshotId = evidenceLineage.snapshotId;
+                caseScenario.evidenceRefs = evidenceLineage.sourceVersions || null;
 
                 // Save to database
                 const savedCase = await saveCaseScenario(db, req.user.id, caseScenario);

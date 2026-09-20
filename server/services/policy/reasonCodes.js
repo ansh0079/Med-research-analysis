@@ -12,6 +12,8 @@ const REASON_CODES = Object.freeze({
     CONCEPT_TASK_WORD_KEY: 'concept.task_word_key.v1',
     ITEM_FORM_CUED: 'item_form.cued_longest_option.v1',
     ITEM_FORM_NO_ANSWER: 'item_form.no_defensible_answer.v1',
+    ITEM_FORM_MALFORMED: 'item_form.malformed_options.v1',
+    EVIDENCE_REFERENCE_MISSING: 'evidence.reference_missing.v1',
     ENTAILMENT_UNSUPPORTED: 'entailment.unsupported.v1',
     IDENTITY_MISSING_SOURCE: 'identity.missing_source.v1',
     BRIDGE_SIMILARITY_INVALID: 'bridge.similarity_invalid.v1',

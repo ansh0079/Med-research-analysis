@@ -189,14 +189,28 @@ async function generateCaseScenario(ai, { topic, difficulty, userProfile, provid
     });
 }
 
+/** Hash of the case as generated, so an attempt can always be read against what was shown. */
+function caseContentVersion(caseScenario) {
+    return require('crypto').createHash('sha256')
+        .update(JSON.stringify({ v: caseScenario.vignette, d: caseScenario.decisionTree, o: caseScenario.outcomes }))
+        .digest('hex')
+        .slice(0, 16);
+}
+
 async function saveCaseScenario(db, userId, caseScenario) {
     const caseId = `case_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
     // The lineage column (migration 101) is written only when the case carries lineage, so a
     // caller without it never depends on the column existing.
     const hasLineage = caseScenario.evidenceSnapshotId !== undefined;
-    const lineageColumns = hasLineage ? ', evidence_snapshot_id' : '';
-    const lineagePlaceholders = hasLineage ? ', ?' : '';
-    const lineageValues = hasLineage ? [caseScenario.evidenceSnapshotId || null] : [];
+    const lineageColumns = hasLineage ? ', evidence_snapshot_id, content_version, evidence_refs' : '';
+    const lineagePlaceholders = hasLineage ? ', ?, ?, ?' : '';
+    const lineageValues = hasLineage
+        ? [
+            caseScenario.evidenceSnapshotId || null,
+            caseContentVersion(caseScenario),
+            caseScenario.evidenceRefs ? JSON.stringify(caseScenario.evidenceRefs) : null,
+        ]
+        : [];
 
     await db.run(
         `INSERT INTO case_scenarios (

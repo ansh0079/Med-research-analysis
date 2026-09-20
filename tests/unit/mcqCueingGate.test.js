@@ -54,6 +54,19 @@ describe('MCQ cueing gate', () => {
         expect(result.validationSummary.cuedRejected).toBe(1);
     });
 
+    it('MCQ_CUE_HANDLING=flag keeps a correct cued item and marks it for review instead of dropping it', async () => {
+        process.env.MCQ_CUE_HANDLING = 'flag';
+        try {
+            const result = await run([balanced('A'), cued()], reviewer());
+            expect(result.validatedRaw).toHaveLength(2);
+            expect(result.validatedRaw.find((q) => q.correctAnswer === 'B').reviewSignals).toEqual(['key_is_longest_option']);
+            expect(result.validatedRaw.find((q) => q.correctAnswer === 'A').reviewSignals).toBeUndefined();
+            expect(result.validationSummary).toMatchObject({ cuedRejected: 0, cueSignals: 1 });
+        } finally {
+            delete process.env.MCQ_CUE_HANDLING;
+        }
+    });
+
     it('never sends a cued question to the clinical reviewer', async () => {
         // The reviewer reads for clinical correctness and a cued question is
         // clinically correct, so it cannot catch this.

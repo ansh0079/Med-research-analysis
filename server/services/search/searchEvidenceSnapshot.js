@@ -200,7 +200,15 @@ async function persistSearchEvidenceSnapshot(db, {
     try {
         if (typeof db.withTransaction === 'function') await db.withTransaction(write);
         else await write();
-        return { id, status: 'persisted', articleCount: items.length, articleTotal, truncated, sourceVersionCount: new Set(versions.map((v) => v.version.id)).size };
+        return {
+            id,
+            status: 'persisted',
+            articleCount: items.length,
+            articleTotal,
+            truncated,
+            sourceVersionCount: new Set(versions.map((v) => v.version.id)).size,
+            sourceVersions: Object.fromEntries(items.map((i) => [i.uid, i.versionId])),
+        };
     } catch (err) {
         logger.warn({ err, origin }, 'evidence snapshot persistence failed');
         return { ...base, status: 'failed', error: String(err?.message || err).slice(0, 200) };

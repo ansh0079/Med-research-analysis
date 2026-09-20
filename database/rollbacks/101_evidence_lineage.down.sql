@@ -1,6 +1,8 @@
 -- Drops the lineage tables and columns. Columns are dropped last; on SQLite (3.35+) and
 -- Postgres DROP COLUMN is supported. Historical attempts lose their snapshot link.
 DROP TABLE IF EXISTS evidence_source_versions;
+ALTER TABLE case_scenarios DROP COLUMN evidence_refs;
+ALTER TABLE case_scenarios DROP COLUMN content_version;
 ALTER TABLE case_scenarios DROP COLUMN evidence_snapshot_id;
 ALTER TABLE quiz_attempts DROP COLUMN content_version;
 ALTER TABLE quiz_attempts DROP COLUMN evidence_snapshot_id;

@@ -22,6 +22,26 @@ describe('write-policy coverage', () => {
         expect(unwired).toEqual([]);
     });
 
+    test('no code writes teaching objects with a raw INSERT except the documented exemptions', () => {
+        const { RAW_TEACHING_OBJECT_INSERT_EXEMPTIONS } = require('../../server/services/policy/writePathInventory');
+        const root = path.join(__dirname, '../..');
+        const offenders = [];
+        const walk = (dir) => {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+                if (entry.name === 'node_modules' || entry.name.startsWith('.')) continue;
+                const full = path.join(dir, entry.name);
+                if (entry.isDirectory()) walk(full);
+                else if (entry.name.endsWith('.js') && /INSERT\s+(OR\s+\w+\s+)?INTO\s+teaching_objects\b/i.test(fs.readFileSync(full, 'utf8'))) {
+                    offenders.push(path.relative(root, full).split(path.sep).join('/'));
+                }
+            }
+        };
+        for (const dir of ['server', 'database', 'scripts']) walk(path.join(root, dir));
+        const allowed = RAW_TEACHING_OBJECT_INSERT_EXEMPTIONS.map((row) => row.file).sort();
+        expect(offenders.sort()).toEqual(allowed);
+        for (const row of RAW_TEACHING_OBJECT_INSERT_EXEMPTIONS) expect(row.reason.length).toBeGreaterThan(20);
+    });
+
     test('inventory is not padded: every writer has an owner and a family', () => {
         for (const row of WRITE_PATHS) {
             expect(row.family).toBeTruthy();

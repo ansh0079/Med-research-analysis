@@ -40,3 +40,7 @@ ALTER TABLE quiz_attempts ADD COLUMN evidence_snapshot_id TEXT;
 ALTER TABLE quiz_attempts ADD COLUMN content_version TEXT;
 
 ALTER TABLE case_scenarios ADD COLUMN evidence_snapshot_id TEXT;
+-- content_version: hash of the vignette, decision tree and outcomes as generated, so an attempt can be
+-- read against the exact case shown. evidence_refs: {article uid: source version id} the case was built from.
+ALTER TABLE case_scenarios ADD COLUMN content_version TEXT;
+ALTER TABLE case_scenarios ADD COLUMN evidence_refs TEXT;

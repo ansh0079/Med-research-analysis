@@ -21,7 +21,29 @@ const { mcqFormFindings } = require('../../utils/evidenceSupport');
  * outright: an empty batch turns a quality defect into an outage, and one
  * imperfect question serves the learner better than none.
  */
+/**
+ * MCQ_CUE_HANDLING=flag keeps cued questions and marks them (reviewSignals) for a reviewer instead of
+ * dropping them. The default stays 'drop': a cued item is not wrong, but measured on the stored bank the
+ * key was the longest option 53.9% of the time against a 24.6% chance rate, so serving them unmarked
+ * measures test-taking. The write policy (writePolicyEngine) treats the same cue as a review signal only.
+ */
+function cueHandling(env = process.env) {
+    return String(env.MCQ_CUE_HANDLING || 'drop').toLowerCase() === 'flag' ? 'flag' : 'drop';
+}
+
+function flagCuedQuestions(raw, logger) {
+    let cuedCount = 0;
+    const flagged = raw.map((mcq) => {
+        if (mcqFormFindings(mcq).every((f) => f.code !== 'key_is_longest_option')) return mcq;
+        cuedCount += 1;
+        return { ...mcq, reviewSignals: [...new Set([...(mcq.reviewSignals || []), 'key_is_longest_option'])] };
+    });
+    if (cuedCount > 0) logger.warn({ cued: cuedCount, of: raw.length }, 'mcq option cueing: questions flagged for review, not dropped');
+    return { kept: flagged, cuedCount: 0, cueSignals: cuedCount };
+}
+
 function dropCuedQuestions(raw, logger) {
+    if (cueHandling() === 'flag') return flagCuedQuestions(raw, logger);
     const verdicts = raw.map((mcq) => ({
         mcq,
         findings: mcqFormFindings(mcq).filter((f) => f.code === 'key_is_longest_option'),
@@ -87,8 +109,9 @@ async function validateMcqBatch({
     allowSkipOnFailure = process.env.NODE_ENV === 'test',
 }) {
     let validationSummary = { reviewed: 0, rejected: 0, rejections: [], skipped: false };
+    const withCueSignals = (summary) => (cueSignals ? { ...summary, cueSignals } : summary);
     // Structural rejection first: it costs nothing and the reviewer cannot see it.
-    const { kept: structurallyClean, cuedCount } = dropCuedQuestions(raw, logger);
+    const { kept: structurallyClean, cuedCount, cueSignals = 0 } = dropCuedQuestions(raw, logger);
     raw = structurallyClean;
     let validatedRaw = raw;
     const batchTs = Date.now();
@@ -105,7 +128,7 @@ async function validateMcqBatch({
         if (!validation) {
             if (allowSkipOnFailure) {
                 logger.warn('MCQ validation returned empty result; allowSkipOnFailure=true');
-                validationSummary = { cuedRejected: cuedCount, reviewed: 0, rejected: 0, rejections: [], skipped: true };
+                validationSummary = withCueSignals({ cuedRejected: cuedCount, reviewed: 0, rejected: 0, rejections: [], skipped: true });
                 return { batchTs, validatedRaw, validationSummary };
             }
             return failClosedValidation({
@@ -131,7 +154,7 @@ async function validateMcqBatch({
             });
         }
         validatedRaw = raw.filter((_, idx) => validation.validIndices.has(idx + 1));
-        validationSummary = {
+        validationSummary = withCueSignals({
             cuedRejected: cuedCount,
             reviewed: validation.reviewed,
             rejected: validation.rejections.length,
@@ -140,7 +163,7 @@ async function validateMcqBatch({
             modelsUsed: validation.modelsUsed || [],
             safetyFlags: validation.safetyFlags || [],
             crossCheckAgreement: validation.crossCheckAgreement || null,
-        };
+        });
         if (validatedRaw.length === 0) {
             return {
                 error: response({
@@ -153,7 +176,7 @@ async function validateMcqBatch({
     } catch (validationErr) {
         if (allowSkipOnFailure) {
             logger.warn({ err: validationErr }, 'MCQ validation skipped after reviewer failure');
-            validationSummary = { cuedRejected: cuedCount, reviewed: 0, rejected: 0, rejections: [], skipped: true };
+            validationSummary = withCueSignals({ cuedRejected: cuedCount, reviewed: 0, rejected: 0, rejections: [], skipped: true });
             return { batchTs, validatedRaw, validationSummary };
         }
         return failClosedValidation({

@@ -69,19 +69,95 @@ describe('write-policy engine', () => {
         expect(verdict.action).toBe('accept');
     });
 
-    test('rejects a cued MCQ and an MCQ with no answer', () => {
+    test('a longest-answer cue is a review signal, not a rejection: a correct item is not rejected for being longest', () => {
         const cued = evaluateWrite({
             writer: 'upsertTeachingObject',
             payload: { objectType: 'guideline_mcq', payload: { mcqs: [cuedMcq] } },
         });
-        expect(cued.allowed).toBe(false);
-        expect(cued.reasons.map((r) => r.code)).toContain(REASON_CODES.ITEM_FORM_CUED);
+        expect(cued.allowed).toBe(true);
+        expect(cued.reasons).toEqual([]);
+        expect(cued.review.map((r) => r.code)).toEqual([REASON_CODES.ITEM_FORM_CUED]);
+    });
 
-        const empty = evaluateWrite({
+    test('the cue blocks only when POLICY_ITEM_CUE_MODE=block is set', () => {
+        process.env.POLICY_ITEM_CUE_MODE = 'block';
+        try {
+            const cued = evaluateWrite({
+                writer: 'upsertTeachingObject',
+                payload: { objectType: 'guideline_mcq', payload: { mcqs: [cuedMcq] } },
+            });
+            expect(cued.allowed).toBe(false);
+            expect(cued.reasons.map((r) => r.code)).toContain(REASON_CODES.ITEM_FORM_CUED);
+        } finally {
+            delete process.env.POLICY_ITEM_CUE_MODE;
+        }
+    });
+
+    test('deterministic item failures still block: no key, key not among options, duplicate options, too few options', () => {
+        const blocks = (mcq) => evaluateWrite({
             writer: 'upsertTeachingObject',
-            payload: { objectType: 'guideline_mcq', payload: { mcqs: [{ options: ['A: one', 'B: two'] }] } },
+            payload: { objectType: 'guideline_mcq', payload: { mcqs: [mcq] } },
         });
-        expect(empty.reasons.map((r) => r.code)).toContain(REASON_CODES.ITEM_FORM_NO_ANSWER);
+        expect(blocks({ options: ['A: one', 'B: two'] }).reasons.map((r) => r.code)).toContain(REASON_CODES.ITEM_FORM_NO_ANSWER);
+        expect(blocks({ correctAnswer: 'E', options: ['A: one', 'B: two'] }).reasons.map((r) => r.code)).toContain(REASON_CODES.ITEM_FORM_NO_ANSWER);
+        expect(blocks({ correctAnswer: 'A', options: ['A: one'] }).reasons.map((r) => r.code)).toContain(REASON_CODES.ITEM_FORM_NO_ANSWER);
+        const dup = blocks({ correctAnswer: 'A', options: ['A: Same answer', 'B: Same answer', 'C: Other thing'] });
+        expect(dup.allowed).toBe(false);
+        expect(dup.reasons.map((r) => r.code)).toContain(REASON_CODES.ITEM_FORM_MALFORMED);
+    });
+
+    describe('verified serving needs an evidence reference on every question', () => {
+        const write = (extra, mcq = balancedMcq) => evaluateWrite({
+            writer: 'upsertTeachingObject',
+            payload: { objectType: 'guideline_mcq', topic: 'heart failure', ...extra, payload: { mcqs: [mcq] } },
+        });
+
+        test('an object that claims to be verified while a question points at nothing is rejected', () => {
+            for (const claim of [{ reviewState: 'machine_checked' }, { reviewState: 'human_reviewed' }]) {
+                const verdict = write(claim);
+                expect(verdict.allowed).toBe(false);
+                expect(verdict.reasons.map((r) => r.code)).toContain(REASON_CODES.EVIDENCE_REFERENCE_MISSING);
+                expect(verdict.verifiedEligible).toBe(false);
+            }
+            const labelled = write({}, { ...balancedMcq, claimVerificationStatus: 'guideline_supported' });
+            expect(labelled.allowed).toBe(false);
+        });
+
+        test('an absent claims array does not make an unanchored question verifiable', () => {
+            const verdict = write({ reviewState: 'machine_checked' });
+            expect(verdict.verifiedEligible).toBe(false);
+            expect(verdict.allowed).toBe(false);
+        });
+
+        test('an unverified object with no references is stored, and is marked not verified-eligible', () => {
+            const verdict = write({});
+            expect(verdict.allowed).toBe(true);
+            expect(verdict.verifiedEligible).toBe(false);
+        });
+
+        test.each([
+            ['a source article uid', { sourceArticleUid: 'pubmed-1' }],
+            ['source indices', { sourceIndices: [1] }],
+            ['a claim key', { claimKey: 'c-1' }],
+            ['a source reference', { sourceReference: 'KDIGO 2012 s2.1' }],
+        ])('an anchored question (%s) may be verified, and the missing claim check is recorded, not hidden', (_label, ref) => {
+            const verdict = write({ reviewState: 'machine_checked' }, { ...balancedMcq, ...ref });
+            expect(verdict.allowed).toBe(true);
+            expect(verdict.verifiedEligible).toBe(true);
+            expect(verdict.shadow.map((r) => r.detail)).toContain('not_checked:no_claims_array');
+        });
+
+        test('every question in the object must be anchored, not just one', () => {
+            const verdict = evaluateWrite({
+                writer: 'upsertTeachingObject',
+                payload: {
+                    objectType: 'guideline_mcq', topic: 'heart failure', reviewState: 'machine_checked',
+                    payload: { mcqs: [{ ...balancedMcq, claimKey: 'c-1' }, balancedMcq] },
+                },
+            });
+            expect(verdict.allowed).toBe(false);
+            expect(verdict.reasons[0].detail).toMatch(/1 of 2/);
+        });
     });
 
     test('accepts a balanced MCQ', () => {

@@ -247,6 +247,26 @@ describe('topic-based case generation', () => {
         });
         expect((await db.get('SELECT evidence_snapshot_id FROM case_scenarios WHERE case_id = ?', [saved.caseId])).evidence_snapshot_id).toBe(lineage.snapshotId);
     });
+
+    test('the case records a content version and the exact source versions it was built from', async () => {
+        const db = makeDb();
+        const lineage = await snapshotTopicEvidence(db, {
+            topic: 'aki', articles: [guidelineToEvidenceArticle({ id: 1, topic: 'aki', source_body: 'KDIGO', recommendation_text: 'Stage AKI.' })], userId: 'u1', origin: 'case_generation',
+        });
+        expect(lineage.sourceVersions['guideline:1']).toMatch(/^[0-9a-f]{64}$/);
+
+        const scenario = (vignette) => ({
+            topic: 'aki', difficulty: 'medium', vignette, decisionTree: { initial: {} }, outcomes: {}, provider: 'p', model: 'm',
+            evidenceSnapshotId: lineage.snapshotId, evidenceRefs: lineage.sourceVersions,
+        });
+        const a = await saveCaseScenario(db, 'u1', scenario({ text: 'A 60-year-old man...' }));
+        const b = await saveCaseScenario(db, 'u1', scenario({ text: 'A 30-year-old woman...' }));
+        const rowA = await db.get('SELECT content_version, evidence_refs FROM case_scenarios WHERE case_id = ?', [a.caseId]);
+        const rowB = await db.get('SELECT content_version FROM case_scenarios WHERE case_id = ?', [b.caseId]);
+        expect(rowA.content_version).toMatch(/^[0-9a-f]{16}$/);
+        expect(rowA.content_version).not.toBe(rowB.content_version); // different case, different version
+        expect(JSON.parse(rowA.evidence_refs)).toEqual(lineage.sourceVersions);
+    });
 });
 
 describe('quiz attempts keep the lineage of the question that was answered', () => {

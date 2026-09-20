@@ -149,7 +149,7 @@ async function snapshotTopicEvidence(db, { topic, articles, userId = null, sessi
     if (result.status !== 'persisted') {
         return { snapshotId: null, status: LINEAGE_STATUS.INVALID, sourceVersions: {}, reason: result.status };
     }
-    return { snapshotId: result.id, status: LINEAGE_STATUS.LINKED, sourceVersions: {} };
+    return { snapshotId: result.id, status: LINEAGE_STATUS.LINKED, sourceVersions: result.sourceVersions || {} };
 }
 
 /** Cap a provenance-asserting label when lineage does not back it and enforcement is on. */

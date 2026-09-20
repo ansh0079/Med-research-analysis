@@ -120,6 +120,26 @@ const WRITE_PATHS = Object.freeze([
     },
 ]);
 
+/**
+ * The only places allowed to write the teaching_objects table with a raw SQL insert instead of
+ * db.upsertTeachingObject (and therefore the write policy). tests/unit/writePolicyCoverage.test.js
+ * fails when a raw INSERT appears anywhere else, so a new bypass is a decision, not an accident.
+ */
+const RAW_TEACHING_OBJECT_INSERT_EXEMPTIONS = Object.freeze([
+    {
+        file: 'server/services/articlePersistenceService.js',
+        reason: 'Bibliographic record of a search hit (title, abstract, ids): no generated claim, MCQ or synopsis. Runs on every search, so a policy decision row per hit would swamp policy_decisions.',
+    },
+    {
+        file: 'server/scripts/migrateFromSqlite.js',
+        reason: 'One-off copy of rows that already passed the policy in the source database.',
+    },
+    {
+        file: 'database/mixins/m08d-teaching-objects.js',
+        reason: 'The policy-gated writer itself (upsertTeachingObject).',
+    },
+]);
+
 function writersRequiringPolicy() {
     return WRITE_PATHS.filter((row) => row.policyRequired);
 }
@@ -130,6 +150,7 @@ function findWritePath(id) {
 
 module.exports = {
     WRITE_PATHS,
+    RAW_TEACHING_OBJECT_INSERT_EXEMPTIONS,
     writersRequiringPolicy,
     findWritePath,
 };
