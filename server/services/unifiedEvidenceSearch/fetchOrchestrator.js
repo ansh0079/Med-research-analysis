@@ -5,6 +5,7 @@ const { mergeAndRank } = require('./rrfFusion');
 const { articleFromOpenAlexWork } = require('./openAlexMapper');
 const { reformulateQueryForPubMed } = require('./llmQueryIntelligence');
 const { appendPubMedPublicationFilters } = require('./pubmedFilters');
+const { buildLaneQueries, laneResultLimit } = require('./laneQueries');
 
 /**
  * @param {object} opts
@@ -112,9 +113,14 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
         // a trial whose abstract lacks its acronym) is always a candidate, and merge it in
         // first so PubMed's precise rank-1 result leads the fused list.
         const preciseQuery = appendPubMedPublicationFilters(pubmedQueryBase, specificity, parsedStudyTypes, parsedYearFilters);
+        // Each evidence lane gets its own type-filtered query, in parallel with the broad one,
+        // so a lane is filled by retrieval rather than by whatever the broad query returned.
+        const laneQueries = buildLaneQueries(pubmedQueryBase, { specificity, parsedStudyTypes, parsedYearFilters });
+        const laneLimit = laneResultLimit(safeLimit);
         sourceFetches.push((async () => {
             try {
-                const [broad, precise, pinned] = await Promise.all([
+                const laneStarted = Date.now();
+                const [broad, precise, pinned, laneLists] = await Promise.all([
                     proxy.pubmedSearch(pubmedQuery, { maxResults: safeLimit }),
                     preciseQuery !== pubmedQuery
                         ? proxy.pubmedSearch(preciseQuery, { maxResults: Math.ceil(safeLimit / 2) }).catch(() => [])
@@ -122,6 +128,11 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
                     pinnedPmids.length && typeof proxy.pubmedFetchByIds === 'function'
                         ? proxy.pubmedFetchByIds(pinnedPmids).catch(() => [])
                         : Promise.resolve([]),
+                    // A lane failure must never fail the search: it only forgoes that lane's extra recall.
+                    Promise.all(laneQueries.map(async ({ lane, query: laneQuery }) => ({
+                        lane,
+                        articles: await proxy.pubmedSearch(laneQuery, { maxResults: laneLimit }).catch(() => null),
+                    }))),
                 ]);
                 const seen = new Set();
                 const merged = [];
@@ -132,6 +143,20 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
                     if (dk && seen.has(dk)) continue;
                     if (dk) seen.add(dk);
                     merged.push(a);
+                }
+                if (laneQueries.length && telemetry && typeof telemetry === 'object') {
+                    telemetry.laneRetrieval = { ms: Date.now() - laneStarted, calls: laneQueries.length, lanes: {} };
+                }
+                for (const { lane, articles: laneArticles } of laneLists) {
+                    const stats = { fetched: Array.isArray(laneArticles) ? laneArticles.length : 0, added: 0, failed: laneArticles === null };
+                    for (const a of Array.isArray(laneArticles) ? laneArticles : []) {
+                        const dk = dedupeKey(a);
+                        if (dk && seen.has(dk)) continue;
+                        if (dk) seen.add(dk);
+                        merged.push({ ...a, _retrievedVia: lane });
+                        stats.added += 1;
+                    }
+                    if (telemetry?.laneRetrieval) telemetry.laneRetrieval.lanes[lane] = stats;
                 }
                 if (merged.length === 0 && telemetry && typeof telemetry === 'object') {
                     telemetry.lowRecallLearning = {
