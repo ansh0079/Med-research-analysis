@@ -137,4 +137,51 @@ describe('abbreviation search ranking', () => {
         );
         expect(bouquet.topPapers[0].uid).toBe('acs-real');
     });
+
+    test('PE diagnosis rejects a physical-examination paper', () => {
+        const peGuideline = {
+            uid: 'pe-real',
+            title: 'ESC guidelines on the diagnosis and management of acute pulmonary embolism',
+            abstract: 'CTPA, D-dimer and Wells score for pulmonary embolism.',
+            pubdate: '2019',
+            pubtype: ['Practice Guideline'],
+        };
+        const physicalExam = {
+            uid: 'pe-exam',
+            title: 'Physical examination in the diagnosis of chest pain in primary care',
+            abstract: 'Physical exam manoeuvres for musculoskeletal chest wall pain.',
+            pubdate: '2020',
+            pubtype: ['Review'],
+            pmcrefcount: 400,
+        };
+        expect(isCompetingAbbreviationSense(physicalExam, 'PE diagnosis')).toBe(true);
+        expect(isOffTopic(physicalExam, 'PE diagnosis')).toBe(true);
+        expect(isOffTopic(peGuideline, 'PE diagnosis')).toBe(false);
+        const bouquet = buildEvidenceBouquet(
+            [physicalExam, peGuideline],
+            'PE diagnosis',
+            { count: 5, specificity: 'moderate', selectionMode: 'relevance' }
+        );
+        expect(bouquet.topPapers.map((a) => a.uid)).toEqual(['pe-real']);
+    });
+
+    test('SBP management rejects a systolic blood-pressure paper', () => {
+        const sbpPeritonitis = {
+            uid: 'sbp-real',
+            title: 'Diagnosis and treatment of spontaneous bacterial peritonitis',
+            abstract: 'Paracentesis and albumin in cirrhosis with ascites.',
+            pubdate: '2021',
+            pubtype: ['Practice Guideline'],
+        };
+        const systolic = {
+            uid: 'sbp-bp',
+            title: 'Systolic blood pressure targets in hypertension management',
+            abstract: 'Intensive systolic BP lowering in adults with hypertension.',
+            pubdate: '2022',
+            pubtype: ['Review'],
+            pmcrefcount: 900,
+        };
+        expect(isOffTopic(systolic, 'SBP management')).toBe(true);
+        expect(isOffTopic(sbpPeritonitis, 'SBP management')).toBe(false);
+    });
 });

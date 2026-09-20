@@ -87,6 +87,20 @@ const AMBIGUOUS_ABBREVIATIONS = {
             { label: 'right atrium', cues: ['right atrium', 'right atrial'] },
         ],
     },
+    pe: {
+        primary: ['pulmonary embolism', 'pulmonary embolus', 'pulmonary emboli'],
+        distinctive: ['thromboemboli', 'd-dimer', 'd dimer', 'wells score', 'ctpa', 'v/q', 'pe diagnosis'],
+        competitors: [
+            { label: 'physical examination', cues: ['physical examination', 'physical exam'] },
+        ],
+    },
+    sbp: {
+        primary: ['spontaneous bacterial peritonitis'],
+        distinctive: ['peritonitis', 'ascites', 'cirrhosis', 'paracentesis'],
+        competitors: [
+            { label: 'systolic blood pressure', cues: ['systolic blood pressure', 'systolic bp'] },
+        ],
+    },
 };
 
 function tokenizeQuery(query) {
