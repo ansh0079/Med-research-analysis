@@ -8,6 +8,7 @@ const { isIssuingBodyValue } = require('../../server/utils/guidelineAttribution'
 const { isClinicalAbbreviation } = require('../../server/utils/clinicalAbbreviations');
 const { synonymExpansionsForToken } = require('../../server/utils/conditionQuery');
 const { sanitizePublicationYear } = require('../../server/utils/publicationYear');
+const { applyWritePolicy } = require('../../server/services/policy/writePolicyEngine');
 
 /**
  * A guideline row is only servable if its text actually reads as a recommendation.
@@ -477,6 +478,13 @@ async getGuidelineDocumentWithSynopsis(id, { includeFullText = false } = {}) {
  * failure rate" entry in project memory; this is the same shape again.
  */
 async createGuideline(guideline) {
+    const verdict = await applyWritePolicy(this, {
+        writer: 'createGuideline',
+        entityType: 'guideline',
+        payload: guideline || {},
+    });
+    if (!verdict.allowed) return null;
+
     const now = new Date().toISOString();
     const normalized = this.normalizeTopic(guideline.topic);
 

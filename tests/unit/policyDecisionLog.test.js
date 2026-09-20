@@ -13,6 +13,7 @@ describe('write-path inventory and policy log', () => {
             'upsertGuidelineRefiling',
         ]));
         expect(findWritePath('createGuideline').family).toBe('guideline');
+        expect(findWritePath('upsertTeachingObject').policyRequired).toBe(true);
     });
 
     test('rejects incomplete policy rows', () => {

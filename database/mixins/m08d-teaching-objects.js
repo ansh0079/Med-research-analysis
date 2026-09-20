@@ -1,6 +1,7 @@
 'use strict';
 
 const { safeJsonParse } = require('../lib/helpers');
+const { applyWritePolicy } = require('../../server/services/policy/writePolicyEngine');
 
 module.exports = (Sup) => class extends Sup {
 // Teaching objects & claims CRUD
@@ -29,6 +30,13 @@ mapTeachingObjectRow(row) {
 
 async upsertTeachingObject(object = {}) {
     if (!this.kysely) return null;
+    const verdict = await applyWritePolicy(this, {
+        writer: 'upsertTeachingObject',
+        entityType: 'teaching_object',
+        entityId: object.objectKey || null,
+        payload: object,
+    });
+    if (!verdict.allowed) return null;
     const objectKey = String(object.objectKey || '').trim().slice(0, 240);
     if (!objectKey) return null;
     const now = new Date().toISOString();
