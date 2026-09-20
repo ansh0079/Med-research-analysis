@@ -28,7 +28,7 @@ function makeDb(guidelineRows = [], refilingRows = []) {
         superseded_by_id INTEGER
     )`);
     sqlite.exec(`CREATE TABLE teaching_objects (
-        id INTEGER PRIMARY KEY, object_key TEXT, topic TEXT, normalized_topic TEXT,
+        id INTEGER PRIMARY KEY, object_key TEXT, object_type TEXT, topic TEXT, normalized_topic TEXT,
         review_state TEXT NOT NULL DEFAULT 'unreviewed', updated_at TEXT
     )`);
     sqlite.exec(`CREATE TABLE teaching_object_claims (
@@ -38,6 +38,7 @@ function makeDb(guidelineRows = [], refilingRows = []) {
     )`);
     sqlite.exec(fs.readFileSync(path.join(MIGRATIONS, '096_topic_guideline_refiling.sql'), 'utf8'));
     sqlite.exec(fs.readFileSync(path.join(MIGRATIONS, '097_clinical_concepts_policy.sql'), 'utf8'));
+    sqlite.exec(fs.readFileSync(path.join(MIGRATIONS, '100_source_invalidation_events.sql'), 'utf8'));
     sqlite.exec(fs.readFileSync(path.join(MIGRATIONS, '098_guideline_registry.sql'), 'utf8'));
     const insert = sqlite.prepare(
         `INSERT INTO topic_guidelines (id, topic, normalized_topic, source_body, source_year, source_url,
@@ -154,16 +155,17 @@ describe('guideline registry lifecycle', () => {
         await db.verifyRegistryEntry(e2012.id, 'dr.reviewer');
         expect(events).toEqual([]); // first verification supersedes nothing
         await db.run(
-            `INSERT INTO teaching_objects (object_key, topic, normalized_topic, review_state)
-             VALUES (?, ?, ?, ?)`,
-            ['to-aki', 'Acute kidney injury', 'acute kidney injury', 'machine_checked']
+            `INSERT INTO teaching_objects (object_key, object_type, topic, normalized_topic, review_state)
+             VALUES (?, ?, ?, ?, ?)`,
+            ['to-aki', 'guideline_summary', 'Acute kidney injury', 'acute kidney injury', 'machine_checked']
         );
         await db.run(
             `INSERT INTO teaching_object_claims (claim_key, object_key, claim_text, normalized_topic, review_state)
              VALUES (?, ?, ?, ?, ?)`,
             ['c-aki', 'to-aki', 'Stage AKI using creatinine.', 'acute kidney injury', 'machine_checked']
         );
-        await db.verifyRegistryEntry(e2024.id, 'dr.reviewer');
+        const superseding = await db.verifyRegistryEntry(e2024.id, 'dr.reviewer');
+        expect(superseding.invalidation).toEqual({ enqueued: 1, failed: false });
         expect(events).toHaveLength(1);
         expect(events[0]).toMatchObject({
             normalizedTopic: 'acute kidney injury',

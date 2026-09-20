@@ -66,6 +66,6 @@ describe('invalidation consumer', () => {
             eventType: 'registry_edition_superseded',
             normalizedTopic: 'acute kidney injury',
         });
-        expect(sql.some((row) => row.params.includes('needs_revision') && row.params.includes('acute kidney injury'))).toBe(true);
+        expect(sql.some((row) => /needs_revision/.test(row.statement) && row.params.includes('acute kidney injury'))).toBe(true);
     });
 });

@@ -29,6 +29,7 @@ async getUserClaimMastery(userId, topic, { limit = 80, gapDays = 90 } = {}) {
             GROUP BY claim_key
          ) gap ON gap.claim_key = c.claim_key
          WHERE (? = '' OR c.normalized_topic = ?)
+           AND c.review_state != 'withdrawn'
          GROUP BY c.id, c.object_key, c.claim_key, c.ordinal, c.claim_text,
                   c.evidence_quote, c.source_path, c.article_uid, c.normalized_topic,
                   c.concept_key, c.confidence, c.created_at, c.updated_at,

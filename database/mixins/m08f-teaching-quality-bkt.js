@@ -275,6 +275,7 @@ async listPracticeChangingTeachingObjects({ topic = '', limit = 20 } = {}) {
          FROM teaching_object_claims c
          LEFT JOIN teaching_objects o ON o.object_key = c.object_key
          WHERE (? = '' OR c.normalized_topic = ?)
+           AND c.review_state != 'withdrawn'
            AND c.concept_key IN ('clinical_bottom_line', 'practice_changing', 'guideline_recommendation')
            AND c.verification_status NOT IN ('stale_needs_refresh', 'guideline_conflict')
          ORDER BY

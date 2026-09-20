@@ -48,6 +48,7 @@ async upsertTeachingObject(object = {}) {
     const curriculumTopicId = topic
         ? await this.resolveCurriculumTopicId(topic).catch(() => null)
         : null;
+    // review_state below: 'withdrawn' (a retracted source) is terminal, so regeneration never restores it.
     await this.run(
         `INSERT INTO teaching_objects (
             object_key, object_type, article_uid, normalized_topic, topic, title,
@@ -65,6 +66,7 @@ async upsertTeachingObject(object = {}) {
             model = excluded.model,
             confidence = excluded.confidence,
             review_state = CASE
+                WHEN teaching_objects.review_state = 'withdrawn' THEN 'withdrawn'
                 WHEN teaching_objects.review_state = 'human_reviewed'
                     AND (excluded.review_state IS NULL OR excluded.review_state != 'needs_revision')
                 THEN teaching_objects.review_state
@@ -158,7 +160,7 @@ async getTeachingObjectsByTopicId(curriculumTopicId, types = []) {
     if (!curriculumTopicId) return [];
     const list = Array.isArray(types) ? types.filter(Boolean) : [];
     const params = [curriculumTopicId];
-    let sql = 'SELECT * FROM teaching_objects WHERE curriculum_topic_id = ?';
+    let sql = `SELECT * FROM teaching_objects WHERE curriculum_topic_id = ? AND review_state != 'withdrawn'`;
     if (list.length) {
         sql += ` AND object_type IN (${list.map(() => '?').join(',')})`;
         params.push(...list);
@@ -185,7 +187,7 @@ async getTeachingObjectForArticle(articleUid) {
     if (!uid) return null;
     const row = await this.get(
         `SELECT * FROM teaching_objects
-         WHERE article_uid = ? AND object_type = 'paper'
+         WHERE article_uid = ? AND object_type = 'paper' AND review_state != 'withdrawn'
          ORDER BY updated_at DESC
          LIMIT 1`,
         [uid]
@@ -248,6 +250,7 @@ async listTeachingObjectsForTopic(topic, { limit = 20, objectType = '' } = {}) {
         `SELECT * FROM teaching_objects
          WHERE (? = '' OR normalized_topic = ?)
            AND (? = '' OR object_type = ?)
+           AND review_state != 'withdrawn'
          ORDER BY updated_at DESC
          LIMIT ?`,
         [normalized, normalized, type, type, safeLimit]
@@ -285,6 +288,12 @@ async replaceTeachingObjectClaims({ objectKey, articleUid = null, normalizedTopi
     if (!objectKey) return [];
     const now = new Date().toISOString();
     await this.withTransaction(async () => {
+        // The claim rows are rebuilt below; remember which were withdrawn so regeneration
+        // cannot bring back a claim whose source was retracted.
+        const withdrawnBefore = (await this.all(
+            `SELECT claim_key FROM teaching_object_claims WHERE object_key = ? AND review_state = 'withdrawn'`,
+            [objectKey]
+        )).map((r) => r.claim_key);
         await this.run(`DELETE FROM teaching_object_claims WHERE object_key = ?`, [objectKey]);
         let ordinal = 0;
         for (const claim of Array.isArray(claims) ? claims : []) {
@@ -333,6 +342,20 @@ async replaceTeachingObjectClaims({ objectKey, articleUid = null, normalizedTopi
             );
             ordinal += 1;
         }
+        const parent = await this.get(`SELECT review_state FROM teaching_objects WHERE object_key = ?`, [objectKey]);
+        if (parent?.review_state === 'withdrawn') {
+            await this.run(
+                `UPDATE teaching_object_claims SET review_state = 'withdrawn', verification_status = 'unverified'
+                 WHERE object_key = ?`,
+                [objectKey]
+            );
+        } else if (withdrawnBefore.length) {
+            await this.run(
+                `UPDATE teaching_object_claims SET review_state = 'withdrawn', verification_status = 'unverified'
+                 WHERE object_key = ? AND claim_key IN (${withdrawnBefore.map(() => '?').join(',')})`,
+                [objectKey, ...withdrawnBefore]
+            );
+        }
     });
     return this.listTeachingObjectClaimsByObjectKey(objectKey);
 }
@@ -371,6 +394,7 @@ async listTeachingObjectClaimsForTopic(topic, { limit = 50 } = {}) {
     const rows = await this.all(
         `SELECT * FROM teaching_object_claims
          WHERE (? = '' OR normalized_topic = ?)
+           AND review_state != 'withdrawn'
          ORDER BY
             CASE verification_status
                 WHEN 'human_reviewed' THEN 0

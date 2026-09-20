@@ -271,17 +271,30 @@ module.exports = (Sup) => class extends Sup {
                 }).catch(() => null);
             }
         }
+        // Supersession is a durable event, not an inline best-effort update: it is recorded first,
+        // applied by the queue (retried, dead-lettered and counted on failure), and one event per
+        // superseded edition keeps it idempotent if verification is re-run.
+        const invalidation = { enqueued: 0, failed: false };
         if (older.length) {
-            try {
-                const { invalidateArtifactsForSupersededConcept } = require('../../server/services/registry/registryInvalidation');
-                await invalidateArtifactsForSupersededConcept(this, {
-                    normalizedTopic: concept?.normalized_name || null,
-                });
-            } catch {
-                // Table may be absent in isolated registry tests.
+            const { enqueueSourceInvalidation, processInvalidationQueue } = require('../../server/services/registry/sourceInvalidationQueue');
+            for (const old of older) {
+                try {
+                    await enqueueSourceInvalidation(this, {
+                        eventType: 'supersession',
+                        normalizedTopic: concept?.normalized_name || null,
+                        sourceRef: `${old.id}>${entry.id}`,
+                        payload: { supersededEntryId: old.id, supersededByEntryId: entry.id },
+                    });
+                    invalidation.enqueued += 1;
+                } catch (err) {
+                    invalidation.failed = true;
+                    require('../../server/config/logger').error({ err, supersededEntryId: old.id }, 'supersession invalidation could not be enqueued');
+                }
             }
+            // Apply now so the common case is immediate; anything that fails stays queued.
+            await processInvalidationQueue(this, { limit: older.length + 5 }).catch(() => null);
         }
-        return { id: entry.id, status: 'verified', supersededCount: older.length };
+        return { id: entry.id, status: 'verified', supersededCount: older.length, invalidation };
     }
 
     /** Verified entries for any of the given normalized concept names, newest edition first. */

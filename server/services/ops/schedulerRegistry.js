@@ -72,6 +72,9 @@ const {
 const {
     scheduleGuidelineDiscoveryWarmStart, stopGuidelineDiscoveryWarmStart,
 } = require('../guidelineDiscoveryWarmStartScheduler');
+const {
+    scheduleSourceInvalidation, stopSourceInvalidation,
+} = require('../registry/sourceInvalidationScheduler');
 
 /**
  * @typedef {Object} SchedulerEntry
@@ -135,6 +138,11 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
                 log: baseLogger.child({ task: 'guideline-discovery-warm-start' }),
             }),
             stop: () => stopGuidelineDiscoveryWarmStart(),
+        },
+        {
+            task: 'source-invalidation',
+            start: () => scheduleSourceInvalidation(db, baseLogger.child({ task: 'source-invalidation' })),
+            stop: () => stopSourceInvalidation(),
         },
         {
             task: 'curriculum-seed',

@@ -124,6 +124,19 @@ async getArticleRetractionBatch(ids = []) {
 // Write retraction check result back to article_cache for future lookups.
 async setArticleRetractionData(articleId, data) {
     if (!this.kysely || !articleId || !data) return;
+    // A confirmed retraction must reach generated content. Record the durable invalidation
+    // event BEFORE caching the status: once is_retracted is cached, later searches read the
+    // cache and never call this again, so an event lost after the cache write is lost for good.
+    // A failure here propagates; the status stays uncached and the next check retries.
+    if (data.isRetracted) {
+        const { enqueueSourceInvalidation } = require('../../server/services/registry/sourceInvalidationQueue');
+        await enqueueSourceInvalidation(this, {
+            eventType: 'retraction',
+            articleUid: String(articleId),
+            // One event per article however many sources report it (PubMed and CrossRef both may).
+            payload: { source: data.source || null, retractionDate: data.retractionDate || null, reason: data.reason || null },
+        });
+    }
     const now = new Date().toISOString();
     await this.run(
         `UPDATE article_cache
