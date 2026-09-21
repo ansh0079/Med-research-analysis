@@ -43,10 +43,15 @@ const EXPECTED_COLUMNS = {
     case_scenarios: ['evidence_snapshot_id', 'content_version', 'evidence_refs'],
 };
 
-// FK targets of 098: if any of these drifted to a non-TEXT id type in the real
-// schema, CREATE TABLE ... REFERENCES would fail on Postgres. We assert the
-// assumption explicitly so the failure is a clear message, not a cryptic FK error.
-const ID_TYPE_TABLES = ['guideline_lineage', 'clinical_concepts', 'topic_guidelines', 'teaching_objects', 'quiz_attempts'];
+// FK targets of 098: if either of these drifted to a non-TEXT id type in the
+// real schema, CREATE TABLE ... REFERENCES would fail on Postgres. We assert
+// the assumption explicitly so the failure is a clear message, not a cryptic
+// FK error. Note we deliberately do NOT assert the id types of topic_guidelines,
+// teaching_objects or quiz_attempts here: 098 references none of them
+// (guideline_registry_recommendations.guideline_id is TEXT and FK-free, on
+// purpose — those tables' id types differ by install path, see migration 094),
+// so their types are not a migration-098 precondition.
+const ID_TYPE_TABLES = ['guideline_lineage', 'clinical_concepts'];
 
 async function main() {
     const url = String(process.env.DATABASE_URL || '');
@@ -107,7 +112,9 @@ async function main() {
         }
 
         // Smoke-write the new queue table: 100 promises an idempotency key that
-        // actually enforces uniqueness, on Postgres.
+        // actually enforces uniqueness, on Postgres. Clean up first so the
+        // script is re-runnable against a database it has touched before.
+        await db.run(`DELETE FROM source_invalidation_events WHERE id IN ('pg-verify-1', 'pg-verify-2')`);
         await db.run(
             `INSERT INTO source_invalidation_events
                  (id, idempotency_key, event_type, status, next_attempt_at, created_at, updated_at)
