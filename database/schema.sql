@@ -243,7 +243,7 @@ CREATE TABLE IF NOT EXISTS case_scenarios (
     completed_at TEXT,
     provider TEXT,
     model TEXT
-);
+, evidence_snapshot_id TEXT, content_version TEXT, evidence_refs TEXT, evidence_status TEXT NOT NULL DEFAULT 'current', evidence_invalidated_at TEXT);
 
 CREATE TABLE IF NOT EXISTS case_sessions (
     id TEXT PRIMARY KEY,
@@ -295,6 +295,16 @@ CREATE TABLE IF NOT EXISTS claim_status_history (
     to_status TEXT NOT NULL,
     reason TEXT,
     created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS clinical_concepts (
+    id TEXT PRIMARY KEY,
+    canonical_name TEXT NOT NULL,
+    normalized_name TEXT NOT NULL UNIQUE,
+    mesh_id TEXT,
+    status TEXT NOT NULL DEFAULT 'active',
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS collab_activities (
@@ -517,6 +527,18 @@ CREATE TABLE IF NOT EXISTS delayed_reward_backfill_log (
     UNIQUE(decision_id, horizon_days)
 );
 
+CREATE TABLE IF NOT EXISTS evidence_source_versions (
+    id TEXT PRIMARY KEY,
+    article_uid TEXT NOT NULL,
+    pmid TEXT,
+    doi TEXT,
+    title TEXT NOT NULL DEFAULT '',
+    passages TEXT NOT NULL DEFAULT '[]',
+    access_state TEXT NOT NULL DEFAULT 'metadata_only',
+    source TEXT,
+    first_seen_at TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS guideline_contradictions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     normalized_topic TEXT NOT NULL,
@@ -563,6 +585,42 @@ CREATE TABLE IF NOT EXISTS guideline_documents (
     created_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at      DATETIME DEFAULT CURRENT_TIMESTAMP
 , synopsis_json TEXT, synopsis_generated_at DATETIME, synopsis_model TEXT);
+
+CREATE TABLE IF NOT EXISTS guideline_lineage (
+    id TEXT PRIMARY KEY,
+    concept_id TEXT NOT NULL REFERENCES clinical_concepts(id),
+    issuer TEXT NOT NULL,
+    jurisdiction TEXT NOT NULL DEFAULT 'unspecified',
+    population TEXT NOT NULL DEFAULT 'unspecified',
+    scope TEXT NOT NULL DEFAULT 'unspecified',
+    lineage_key TEXT NOT NULL,
+    version TEXT NOT NULL DEFAULT '',
+    year INTEGER,
+    document_uid TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS guideline_registry_entries (
+    id TEXT PRIMARY KEY,
+    lineage_id TEXT NOT NULL REFERENCES guideline_lineage(id),
+    concept_id TEXT NOT NULL REFERENCES clinical_concepts(id),
+    status TEXT NOT NULL DEFAULT 'candidate',
+    source_url TEXT,
+    proposed_from TEXT NOT NULL DEFAULT 'manual',
+    verified_by TEXT,
+    verified_at TEXT,
+    superseded_by_entry_id TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS guideline_registry_recommendations (
+    entry_id TEXT NOT NULL REFERENCES guideline_registry_entries(id),
+    guideline_id TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (entry_id, guideline_id)
+);
 
 CREATE TABLE IF NOT EXISTS guideline_watch_events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -741,6 +799,19 @@ CREATE TABLE IF NOT EXISTS pico_extractions (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS policy_decisions (
+    id TEXT PRIMARY KEY,
+    writer TEXT NOT NULL,
+    family TEXT,
+    action TEXT NOT NULL,
+    reason TEXT,
+    entity_type TEXT,
+    entity_id TEXT,
+    concept_id TEXT,
+    payload_json TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS policy_serving_state (
     policy_type TEXT PRIMARY KEY,
     serving_arm_id TEXT NOT NULL,
@@ -832,7 +903,7 @@ CREATE TABLE IF NOT EXISTS quiz_attempts (
     study_run_id INTEGER,
     outline_node_id TEXT,
     created_at TEXT DEFAULT (datetime('now'))
-, concept_hash TEXT, claim_key TEXT, reasoning_tags TEXT DEFAULT '[]', reasoning_note TEXT, prompt_variant TEXT, session_id TEXT);
+, concept_hash TEXT, claim_key TEXT, reasoning_tags TEXT DEFAULT '[]', reasoning_note TEXT, prompt_variant TEXT, session_id TEXT, evidence_snapshot_id TEXT, content_version TEXT);
 
 CREATE TABLE IF NOT EXISTS quiz_validation_results (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -859,6 +930,40 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
     revoked_at DATETIME,
     replaced_by TEXT,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS relevance_adjudications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    query_key TEXT NOT NULL,
+    article_uid TEXT NOT NULL,
+    final_label TEXT NOT NULL CHECK (final_label IN ('on_topic', 'adjacent', 'off_topic')),
+    rationale TEXT,
+    adjudicator_id TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS relevance_judgements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    
+    query_key TEXT NOT NULL,
+    query_text TEXT NOT NULL,
+    scenario_id TEXT,
+    intended_sense TEXT,
+    article_uid TEXT NOT NULL,
+    article_title TEXT,
+    
+    
+    label TEXT NOT NULL CHECK (label IN ('on_topic', 'adjacent', 'off_topic')),
+    reason TEXT,
+    reviewer_id TEXT NOT NULL,
+    
+    reviewer_role TEXT NOT NULL DEFAULT 'clinician',
+    
+    search_id TEXT,
+    served_rank INTEGER,
+    lane TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS review_articles (
@@ -915,6 +1020,17 @@ CREATE TABLE IF NOT EXISTS search_alerts (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP, unsubscribe_token TEXT, digest_enabled INTEGER DEFAULT 1, author_filter TEXT DEFAULT NULL, journal_filter TEXT DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS search_evidence_snapshots (
+    id TEXT PRIMARY KEY,
+    query_text TEXT NOT NULL,
+    query_representation TEXT NOT NULL DEFAULT '{}',
+    article_uids TEXT NOT NULL DEFAULT '[]',
+    eligibility_routes TEXT NOT NULL DEFAULT '{}',
+    user_id TEXT,
+    session_id TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+, contract_version INTEGER NOT NULL DEFAULT 1, origin TEXT NOT NULL DEFAULT 'search', selected_order TEXT NOT NULL DEFAULT '[]', evidence_items TEXT NOT NULL DEFAULT '[]', policy_versions TEXT NOT NULL DEFAULT '{}', article_total INTEGER NOT NULL DEFAULT 0, truncated INTEGER NOT NULL DEFAULT 0, additional_evidence TEXT NOT NULL DEFAULT '[]', query_redacted_at TEXT);
 
 CREATE TABLE IF NOT EXISTS search_gold_judgments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -1007,6 +1123,26 @@ CREATE TABLE IF NOT EXISTS sessions (
     preferences TEXT, 
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     last_active DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS source_invalidation_events (
+    id TEXT PRIMARY KEY,
+    idempotency_key TEXT NOT NULL UNIQUE,
+    event_type TEXT NOT NULL,
+    article_uid TEXT,
+    normalized_topic TEXT,
+    source_ref TEXT,
+    payload_json TEXT,
+    status TEXT NOT NULL DEFAULT 'pending',
+    attempts INTEGER NOT NULL DEFAULT 0,
+    max_attempts INTEGER NOT NULL DEFAULT 5,
+    last_error TEXT,
+    next_attempt_at TEXT NOT NULL,
+    locked_at TEXT,
+    result_json TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    completed_at TEXT
 );
 
 CREATE TABLE IF NOT EXISTS spaced_rep_cards (
@@ -1111,7 +1247,7 @@ CREATE TABLE IF NOT EXISTS teaching_objects (
     generated_at TEXT DEFAULT (datetime('now')),
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now'))
-, curriculum_topic_id INTEGER REFERENCES curriculum_topics(id));
+, curriculum_topic_id INTEGER REFERENCES curriculum_topics(id), evidence_snapshot_id TEXT, lineage_status TEXT);
 
 CREATE TABLE IF NOT EXISTS team_activity (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -1272,6 +1408,15 @@ CREATE TABLE IF NOT EXISTS topic_evidence_memory (
     source TEXT NOT NULL DEFAULT 'search_blend',
     updated_at TEXT NOT NULL,
     created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS topic_guideline_refiling (
+    guideline_id INTEGER PRIMARY KEY,
+    canonical_normalized TEXT NOT NULL,
+    similarity REAL NOT NULL,
+    source_topic_normalized TEXT NOT NULL,
+    embedded_text_hash TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS topic_guidelines (
@@ -1634,6 +1779,9 @@ CREATE INDEX IF NOT EXISTS idx_demand_signals_recent ON topic_demand_signals(las
 
 CREATE INDEX IF NOT EXISTS idx_demand_signals_topic ON topic_demand_signals(normalized_topic, search_count DESC);
 
+CREATE INDEX IF NOT EXISTS idx_evidence_source_versions_uid
+    ON evidence_source_versions (article_uid);
+
 CREATE INDEX IF NOT EXISTS idx_gc_severity ON guideline_contradictions(severity);
 
 CREATE INDEX IF NOT EXISTS idx_gc_status ON guideline_contradictions(status);
@@ -1648,6 +1796,21 @@ CREATE INDEX IF NOT EXISTS idx_guideline_documents_synopsis_pending
     ON guideline_documents (id) WHERE synopsis_json IS NULL;
 
 CREATE INDEX IF NOT EXISTS idx_guideline_documents_tier  ON guideline_documents (evidence_tier);
+
+CREATE INDEX IF NOT EXISTS idx_guideline_lineage_concept
+    ON guideline_lineage (concept_id);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_guideline_lineage_identity
+    ON guideline_lineage (lineage_key, version);
+
+CREATE INDEX IF NOT EXISTS idx_guideline_registry_entries_concept_status
+    ON guideline_registry_entries (concept_id, status);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_guideline_registry_entries_lineage
+    ON guideline_registry_entries (lineage_id);
+
+CREATE INDEX IF NOT EXISTS idx_guideline_registry_recommendations_guideline
+    ON guideline_registry_recommendations (guideline_id);
 
 CREATE INDEX IF NOT EXISTS idx_guideline_watch_topic ON guideline_watch_events(normalized_topic, created_at DESC);
 
@@ -1713,6 +1876,12 @@ CREATE INDEX IF NOT EXISTS idx_personalization_decisions_user
 
 CREATE INDEX IF NOT EXISTS idx_pico_extractions_article ON pico_extractions(article_id);
 
+CREATE INDEX IF NOT EXISTS idx_policy_decisions_concept
+    ON policy_decisions (concept_id, created_at);
+
+CREATE INDEX IF NOT EXISTS idx_policy_decisions_writer
+    ON policy_decisions (writer, created_at);
+
 CREATE INDEX IF NOT EXISTS idx_portfolio_reflections_topic ON portfolio_reflections(user_id, normalized_topic);
 
 CREATE INDEX IF NOT EXISTS idx_portfolio_reflections_user ON portfolio_reflections(user_id, updated_at);
@@ -1766,6 +1935,16 @@ CREATE INDEX IF NOT EXISTS idx_refresh_tokens_hash ON refresh_tokens(token_hash)
 
 CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user ON refresh_tokens(user_id, expires_at);
 
+CREATE UNIQUE INDEX IF NOT EXISTS idx_relevance_adjudications_unique
+    ON relevance_adjudications (query_key, article_uid);
+
+CREATE INDEX IF NOT EXISTS idx_relevance_judgements_query ON relevance_judgements (query_key);
+
+CREATE INDEX IF NOT EXISTS idx_relevance_judgements_reviewer ON relevance_judgements (reviewer_id, created_at);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_relevance_judgements_unique
+    ON relevance_judgements (query_key, article_uid, reviewer_id);
+
 CREATE INDEX IF NOT EXISTS idx_review_articles_review ON review_articles(review_id);
 
 CREATE INDEX IF NOT EXISTS idx_review_articles_status ON review_articles(screening_status);
@@ -1779,6 +1958,12 @@ CREATE INDEX IF NOT EXISTS idx_revoked_tokens_jti ON revoked_tokens(token_jti);
 CREATE INDEX IF NOT EXISTS idx_saved_articles_session ON saved_articles(session_id);
 
 CREATE INDEX IF NOT EXISTS idx_search_alerts_active ON search_alerts(active, frequency, last_sent);
+
+CREATE INDEX IF NOT EXISTS idx_search_evidence_snapshots_created
+    ON search_evidence_snapshots (created_at);
+
+CREATE INDEX IF NOT EXISTS idx_search_evidence_snapshots_user
+    ON search_evidence_snapshots (user_id, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_search_feedback_search ON search_result_feedback(search_id);
 
@@ -1813,6 +1998,12 @@ CREATE INDEX IF NOT EXISTS idx_searches_query ON searches(query);
 CREATE INDEX IF NOT EXISTS idx_searches_session ON searches(session_id);
 
 CREATE INDEX IF NOT EXISTS idx_searches_session_sequence ON searches(session_id, session_sequence_index);
+
+CREATE INDEX IF NOT EXISTS idx_source_invalidation_events_article
+    ON source_invalidation_events (article_uid);
+
+CREATE INDEX IF NOT EXISTS idx_source_invalidation_events_due
+    ON source_invalidation_events (status, next_attempt_at);
 
 CREATE INDEX IF NOT EXISTS idx_src_user_due ON spaced_rep_cards(user_id, due_at);
 
@@ -1887,6 +2078,9 @@ CREATE INDEX IF NOT EXISTS idx_topic_aliases_topic ON topic_aliases (curriculum_
 CREATE INDEX IF NOT EXISTS idx_topic_evidence_memory_updated
     ON topic_evidence_memory(updated_at DESC);
 
+CREATE INDEX IF NOT EXISTS idx_topic_guideline_refiling_canonical
+    ON topic_guideline_refiling (canonical_normalized);
+
 CREATE INDEX IF NOT EXISTS idx_topic_guidelines_checked ON topic_guidelines(last_checked_at);
 
 CREATE INDEX IF NOT EXISTS idx_topic_guidelines_document ON topic_guidelines (document_id);
@@ -1895,6 +2089,9 @@ CREATE INDEX IF NOT EXISTS idx_topic_guidelines_intervention
     ON topic_guidelines (normalized_topic, rec_direction);
 
 CREATE INDEX IF NOT EXISTS idx_topic_guidelines_normalized ON topic_guidelines(normalized_topic);
+
+CREATE INDEX IF NOT EXISTS idx_topic_guidelines_normalized_dehyphenated
+    ON topic_guidelines (REPLACE(normalized_topic, '-', ' '));
 
 CREATE INDEX IF NOT EXISTS idx_topic_guidelines_source ON topic_guidelines(source_body);
 
