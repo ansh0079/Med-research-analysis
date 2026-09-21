@@ -60,7 +60,12 @@ function makeDb() {
         CREATE TABLE topic_aliases (id TEXT, alias_norm TEXT UNIQUE, curriculum_topic_id INTEGER, resolution TEXT, confidence REAL);
         CREATE TABLE curriculum_topics (id INTEGER PRIMARY KEY, display_name TEXT);
         CREATE TABLE analysis_cache (id INTEGER PRIMARY KEY AUTOINCREMENT, article_id TEXT NOT NULL, analysis_type TEXT, result TEXT);
+        CREATE TABLE case_scenarios (
+            case_id TEXT PRIMARY KEY, user_id TEXT, topic TEXT, evidence_refs TEXT,
+            vignette TEXT, decision_tree TEXT, outcomes TEXT
+        );
     `);
+    sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/103_case_evidence_status.sql'), 'utf8'));
     sqlite.exec(fs.readFileSync(MIGRATION, 'utf8'));
     const Base = class {
         constructor() { this.kysely = {}; this.sqlite = sqlite; }
@@ -106,6 +111,22 @@ async function states(db) {
 }
 
 describe('retraction', () => {
+    test('case lineage is withdrawn but its historical content remains readable', async () => {
+        const db = makeDb();
+        await db.run(
+            `INSERT INTO case_scenarios (case_id, user_id, topic, evidence_refs, vignette, decision_tree, outcomes)
+             VALUES (?, ?, ?, ?, '{}', '{}', '{}'), (?, ?, ?, ?, '{}', '{}', '{}')`,
+            ['case-a', 'u1', 'heart failure', JSON.stringify({ 'pubmed-31535829': 'v1' }),
+                'case-b', 'u1', 'heart failure', JSON.stringify({ 'pubmed-99999999': 'v2' })]
+        );
+        const report = await invalidateArtifactsForRetractedSource(db, { articleUid: '31535829' });
+        expect(report).toMatchObject({ ok: true, cases: 1 });
+        expect(await db.all('SELECT case_id, evidence_status FROM case_scenarios ORDER BY case_id')).toEqual([
+            { case_id: 'case-a', evidence_status: 'withdrawn' },
+            { case_id: 'case-b', evidence_status: 'current' },
+        ]);
+        expect((await db.get('SELECT vignette FROM case_scenarios WHERE case_id = ?', ['case-a'])).vignette).toBe('{}');
+    });
     test('withdraws only artefacts derived from that article, across every id format', async () => {
         const db = makeDb();
         await seedObject(db, { key: 'syn-a', uid: 'pubmed-31535829', topic: 'heart failure', claims: [claim('c-a')] });
@@ -327,6 +348,21 @@ describe('out-of-order and repeated events', () => {
 });
 
 describe('separate policies', () => {
+    test('corrections and supersession flag affected cases for revision', async () => {
+        const db = makeDb();
+        await db.run(
+            `INSERT INTO case_scenarios (case_id, user_id, topic, evidence_refs)
+             VALUES (?, ?, ?, ?), (?, ?, ?, ?)`,
+            ['case-paper', 'u1', 'heart failure', JSON.stringify({ 'pubmed-1234567': 'v1' }),
+                'case-guideline', 'u1', 'acute kidney injury', JSON.stringify({ 'guideline:1': 'v2' })]
+        );
+        expect((await invalidateArtifactsForCorrectedSource(db, { articleUid: 'pubmed-1234567' })).cases).toBe(1);
+        expect((await invalidateArtifactsForSupersededConcept(db, { normalizedTopic: 'acute kidney injury' })).cases).toBe(1);
+        expect(await db.all('SELECT case_id, evidence_status FROM case_scenarios ORDER BY case_id')).toEqual([
+            { case_id: 'case-guideline', evidence_status: 'needs_revision' },
+            { case_id: 'case-paper', evidence_status: 'needs_revision' },
+        ]);
+    });
     test('correction revises but keeps verification and stays servable', async () => {
         const db = makeDb();
         await seedObject(db, { key: 'syn-a', uid: 'pubmed-1234567', topic: 'hf', claims: [claim('c-a')] });

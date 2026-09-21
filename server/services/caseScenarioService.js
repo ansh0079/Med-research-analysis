@@ -255,7 +255,12 @@ async function getCaseScenario(db, caseId, userId) {
         currentNode: row.current_node,
         choicesMade: JSON.parse(row.choices_made || '[]'),
         createdAt: row.created_at,
-        completedAt: row.completed_at
+        completedAt: row.completed_at,
+        evidenceStatus: row.evidence_status || 'current',
+        evidenceInvalidatedAt: row.evidence_invalidated_at || null,
+        evidenceSnapshotId: row.evidence_snapshot_id || null,
+        contentVersion: row.content_version || null,
+        evidenceRefs: row.evidence_refs ? JSON.parse(row.evidence_refs) : null,
     };
 }
 

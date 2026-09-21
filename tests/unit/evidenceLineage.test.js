@@ -33,7 +33,7 @@ const { persistPaperTeachingObject } = require('../../server/services/teachingOb
 const { createQuizGradingToken, verifyQuizGradingToken, commitQuizAnswer, contentVersionOf } = require('../../server/services/quizGradingToken');
 const { registerQuizRoutes } = require('../../server/routes/learning/quiz');
 const { schemas } = require('../../server/utils/validation');
-const { saveCaseScenario } = require('../../server/services/caseScenarioService');
+const { saveCaseScenario, getCaseScenario } = require('../../server/services/caseScenarioService');
 
 const MIGRATIONS = path.join(__dirname, '../../database/migrations');
 
@@ -70,6 +70,7 @@ function makeDb() {
         CREATE TABLE curriculum_topics (id INTEGER PRIMARY KEY, display_name TEXT);
     `);
     sqlite.exec(fs.readFileSync(path.join(MIGRATIONS, '101_evidence_lineage.sql'), 'utf8'));
+    sqlite.exec(fs.readFileSync(path.join(MIGRATIONS, '103_case_evidence_status.sql'), 'utf8'));
     const Base = class {
         constructor() { this.kysely = {}; this.sqlite = sqlite; }
         normalizeTopic(t) { return String(t || '').trim().toLowerCase(); }
@@ -126,12 +127,16 @@ describe('resolving the evidence a generation request used', () => {
             abstract: 'Client-supplied abstract the snapshot never stored.',
             _fullTextIndexed: true,
             _fullTextSections: { results: 'Client-supplied full text the snapshot never stored.'.repeat(10) },
+            full_text: 'Client-only full text',
+            _fullTextText: 'Client-only extracted text',
         });
         const r = await resolveGenerationEvidence(db, { snapshotId: id, userId: 'u1', articles: [client] });
         expect(r.lineage.status).toBe(LINEAGE_STATUS.LINKED);
         expect(r.articles[0].abstract).toBe('');
         expect(r.articles[0]._fullTextSections).toBeUndefined();
         expect(r.articles[0]._fullTextIndexed).toBeUndefined();
+        expect(r.articles[0].full_text).toBeUndefined();
+        expect(r.articles[0]._fullTextText).toBeUndefined();
         expect(r.articles[0]._snapshotAccessState).toBe('metadata_only');
     });
 
@@ -141,25 +146,24 @@ describe('resolving the evidence a generation request used', () => {
             ? { title: 'Server cached title', abstract: 'Server cached abstract with the real numbers.' }
             : null;
         const id = await searchSnapshot(db);
-        const client = article(9, { title: 'Client title', abstract: 'Client abstract.' });
+        const client = article(9, { title: 'Client title', abstract: 'Client abstract.', full_text: 'Client-only body' });
         const r = await resolveGenerationEvidence(db, { snapshotId: id, userId: 'u1', articles: [article(1), client], reason: 'quiz_generation' });
         expect(r.lineage.status).toBe(LINEAGE_STATUS.LINKED_WITH_ADDITIONS);
         const added = r.articles[1];
         expect(added.title).toBe('Server cached title');
         expect(added.abstract).toBe('Server cached abstract with the real numbers.');
+        expect(added.full_text).toBeUndefined();
         const snap = (await getEvidenceSnapshot(db, id, { userId: 'u1' })).snapshot;
         expect(snap.additionalEvidence[0].source.passages.some((p) => /real numbers/.test(p.text))).toBe(true);
     });
 
-    test('evidence the search did not show is recorded as an addition, not silently merged', async () => {
+    test('an uncached addition cannot be recorded as trusted evidence', async () => {
         const db = makeDb();
         const id = await searchSnapshot(db);
         const r = await resolveGenerationEvidence(db, { snapshotId: id, userId: 'u1', articles: [article(1), article(9)], reason: 'quiz_generation' });
-        expect(r.lineage.status).toBe(LINEAGE_STATUS.LINKED_WITH_ADDITIONS);
-        expect(r.additions.map((a) => a.uid)).toEqual(['pubmed-9']);
+        expect(r.lineage).toMatchObject({ status: LINEAGE_STATUS.INVALID, reason: 'addition_not_trusted' });
         const snap = (await getEvidenceSnapshot(db, id, { userId: 'u1' })).snapshot;
-        expect(snap.items.map((i) => i.uid)).toEqual(['pubmed-1', 'pubmed-2']);
-        expect(snap.additionalEvidence).toMatchObject([{ uid: 'pubmed-9', reason: 'quiz_generation' }]);
+        expect(snap.additionalEvidence).toEqual([]);
     });
 
     test("another user's snapshot, an unknown id and a legacy snapshot are invalid, never linked", async () => {
@@ -278,6 +282,8 @@ describe('topic-based case generation', () => {
             evidenceSnapshotId: lineage.snapshotId,
         });
         expect((await db.get('SELECT evidence_snapshot_id FROM case_scenarios WHERE case_id = ?', [saved.caseId])).evidence_snapshot_id).toBe(lineage.snapshotId);
+        const retrieved = await getCaseScenario(db, saved.caseId, 'u1');
+        expect(retrieved).toMatchObject({ evidenceSnapshotId: lineage.snapshotId, evidenceStatus: 'current' });
     });
 
     test('the case records a content version and the exact source versions it was built from', async () => {

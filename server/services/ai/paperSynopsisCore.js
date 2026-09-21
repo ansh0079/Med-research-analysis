@@ -325,12 +325,16 @@ async function runPaperSynopsisGenerationInner({
     // Withdrawal is decided in the durable store; caches (Redis and style-arm variants) must
     // never override it. A withdrawn synopsis whose Redis key is still warm would otherwise
     // be served for up to 7 days after retraction processing withdrew it.
-    let storedReviewState = null;
-    if (db?.getTeachingObjectForArticle) {
-        const stored = await db.getTeachingObjectForArticle(articleId).catch(() => null);
-        storedReviewState = stored?.reviewState || null;
-    }
-    const withdrawn = String(storedReviewState || '') === 'withdrawn';
+    // The normal teaching-object reader intentionally hides withdrawn rows.
+    // Check the durable review state directly before consulting Redis.
+    const withdrawnRow = db?.get
+        ? await db.get(
+            `SELECT 1 AS withdrawn FROM teaching_objects
+             WHERE article_uid = ? AND object_type = 'paper' AND review_state = 'withdrawn'
+             LIMIT 1`, [articleId]
+        )
+        : null;
+    const withdrawn = Boolean(withdrawnRow);
 
     if (cache?.getAsync && !withdrawn) {
         for (const candidateCacheKey of candidateCacheKeys) {
@@ -350,6 +354,7 @@ async function runPaperSynopsisGenerationInner({
             synopsisStyleArmId: synopsisStyleArm?.armId || null,
         }).catch(() => false);
     }
+    if (withdrawn) throw new Error('Synopsis unavailable: source teaching object was withdrawn');
 
     // Redis is a 7-day cache; teaching_objects is the durable store. Only Redis
     // was ever consulted, so once a key aged out the synopsis was regenerated

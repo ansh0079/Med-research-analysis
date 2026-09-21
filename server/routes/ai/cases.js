@@ -104,6 +104,9 @@ function registerCaseRoutes(app, {
                     sessionId: req.sessionId || null,
                     origin: 'case_generation',
                 });
+                if (evidenceLineage.status === 'invalid') {
+                    return res.status(503).json({ error: 'Case evidence could not be recorded. Please retry.', code: 'EVIDENCE_SNAPSHOT_FAILED' });
+                }
 
                 // Generate case scenario
                 const caseScenario = await generateCaseScenario(ai, {
@@ -207,6 +210,12 @@ function registerCaseRoutes(app, {
 
                 if (!nodeId || !choiceId) {
                     return res.status(400).json({ error: 'nodeId and choiceId are required' });
+                }
+
+                const existing = await getCaseScenario(db, caseId, req.user.id);
+                if (!existing) return res.status(404).json({ error: 'Case scenario not found' });
+                if (existing.evidenceStatus === 'withdrawn') {
+                    return res.status(409).json({ error: 'This case uses withdrawn evidence and cannot be continued.', code: 'CASE_EVIDENCE_WITHDRAWN' });
                 }
 
                 const result = await recordCaseChoice(db, caseId, req.user.id, nodeId, choiceId);

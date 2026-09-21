@@ -95,6 +95,7 @@ function newReport(eventType, extra = {}) {
         teachingObjects: 0,
         claims: 0,
         topicKnowledge: 0,
+        cases: 0,
         errors: [],
         ...extra,
     };
@@ -168,6 +169,20 @@ async function markTopicKnowledgeCiting(db, report, uids) {
     }
 }
 
+async function markCasesCiting(db, report, uids, targetState) {
+    const now = new Date().toISOString();
+    for (const uid of uids) {
+        const result = await step(report, 'case_scenarios', () => db.run(
+            `UPDATE case_scenarios
+             SET evidence_status = ?, evidence_invalidated_at = ?
+             WHERE evidence_status NOT IN ('withdrawn', ?)
+               AND lower(COALESCE(evidence_refs, '')) LIKE ? ESCAPE '\\'`,
+            [targetState, now, targetState, `%"${escapeLike(uid)}":%`]
+        ));
+        report.cases += changeCount(result);
+    }
+}
+
 async function invalidateArtifactsForRetractedSource(db, { articleUid } = {}) {
     requireDb(db);
     const report = newReport(EVENT_TYPES.RETRACTION, { articleUid: articleUid || null });
@@ -178,6 +193,7 @@ async function invalidateArtifactsForRetractedSource(db, { articleUid } = {}) {
     }
     await markArticleArtifacts(db, report, { uids, targetState: WITHDRAWN, unverifyClaims: true });
     await markTopicKnowledgeCiting(db, report, uids);
+    await markCasesCiting(db, report, uids, WITHDRAWN);
     // Cached AI analyses of this article are a cache, not history: drop them so a stale summary
     // of a retracted paper is not replayed. (Search-result caching lives 120s and re-checks
     // retraction status on each search, so it needs no purge.)
@@ -199,6 +215,7 @@ async function invalidateArtifactsForCorrectedSource(db, { articleUid } = {}) {
     }
     // Verification is kept: a correction may not touch the cited claim. Review decides.
     await markArticleArtifacts(db, report, { uids, targetState: NEEDS_REVISION, unverifyClaims: false });
+    await markCasesCiting(db, report, uids, NEEDS_REVISION);
     return finish(report);
 }
 
@@ -242,6 +259,13 @@ async function invalidateArtifactsForSupersededConcept(db, { normalizedTopic } =
         [now, ...keys]
     ));
     report.claims += changeCount(claims);
+    const cases = await step(report, 'case_scenarios', () => db.run(
+        `UPDATE case_scenarios
+         SET evidence_status = '${NEEDS_REVISION}', evidence_invalidated_at = ?
+         WHERE evidence_status = 'current' AND lower(COALESCE(topic, '')) IN (${inList})`,
+        [now, ...keys]
+    ));
+    report.cases += changeCount(cases);
     return finish(report);
 }
 
@@ -292,6 +316,14 @@ async function reinstateWithdrawnArtifacts(db, { articleUid, reviewer } = {}) {
         [now, ...uids, ...uids]
     ));
     report.claims += changeCount(claims);
+    for (const uid of uids) {
+        const cases = await step(report, 'case_scenarios', () => db.run(
+            `UPDATE case_scenarios SET evidence_status = '${NEEDS_REVISION}', evidence_invalidated_at = ?
+             WHERE evidence_status = '${WITHDRAWN}' AND lower(COALESCE(evidence_refs, '')) LIKE ? ESCAPE '\\'`,
+            [now, `%"${escapeLike(uid)}":%`]
+        ));
+        report.cases += changeCount(cases);
+    }
     logger.warn({ articleUid, reviewer, ...report }, 'withdrawn artefacts reinstated for re-verification');
     return finish(report);
 }

@@ -296,6 +296,9 @@ function registerSynthesisRoutes(app, {
                 articles: [requestedArticle],
                 reason: 'synopsis',
             });
+            if (evidence.lineage.status === 'invalid') {
+                return res.status(409).json({ error: 'Search evidence is unavailable; run the search again.', code: 'EVIDENCE_SNAPSHOT_INVALID' });
+            }
             const article = evidence.articles[0] || requestedArticle;
             const evidenceLineage = publicLineage(evidence.lineage);
             const lineage = evidence.lineage;
@@ -434,6 +437,9 @@ function registerSynthesisRoutes(app, {
                 articles: [requestedArticle],
                 reason: 'synopsis',
             });
+            if (evidence.lineage.status === 'invalid') {
+                return res.status(409).json({ error: 'Search evidence is unavailable; run the search again.', code: 'EVIDENCE_SNAPSHOT_INVALID' });
+            }
             const article = evidence.articles[0] || requestedArticle;
             const evidenceLineage = publicLineage(evidence.lineage);
             const lineage = evidence.lineage;

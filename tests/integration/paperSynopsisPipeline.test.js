@@ -240,6 +240,21 @@ describe('paper synopsis pipeline (real modules, stubbed network)', () => {
         expect(secondLlmCalls).toBe(0);
     });
 
+    test('withdrawn teaching object blocks a warm synopsis cache', async () => {
+        const cache = makeCache();
+        const db = makeDb();
+        const first = makeFetch();
+        await runPaperSynopsisGeneration({
+            article: ARTICLE, serverConfig: serverConfig(), fetchImpl: first.fetchImpl, cache, db, topic: 'sepsis corticosteroids',
+        });
+        db.get = async () => ({ withdrawn: 1 });
+        const second = makeFetch();
+        await expect(runPaperSynopsisGeneration({
+            article: ARTICLE, serverConfig: serverConfig(), fetchImpl: second.fetchImpl, cache, db, topic: 'sepsis corticosteroids',
+        })).rejects.toThrow(/withdrawn/);
+        expect(second.calls.some((c) => c.url.includes('generativelanguage') || c.url.includes('anthropic'))).toBe(false);
+    });
+
     test('cache key changes with the model, so a model switch cannot serve stale synopses', () => {
         const a = getPaperSynopsisCacheKey(ARTICLE, 'model-a', null, null, '');
         const b = getPaperSynopsisCacheKey(ARTICLE, 'model-b', null, null, '');

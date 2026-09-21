@@ -57,6 +57,7 @@ function articleKey(article) {
 const CLIENT_EVIDENCE_FIELDS = [
     '_fullTextSections', '_fullTextIndexed', '_fullTextWordCount',
     '_pdfIndexed', 'pdfIndexed', 'fullTextSource', '_fullTextSource', 'extractedFullText',
+    'full_text', '_fullTextText', '_fullTextContent', 'fullTextSections',
 ];
 
 /** Rebuild every evidence-bearing field of an article from the immutable stored version. */
@@ -141,33 +142,34 @@ async function resolveGenerationEvidence(db, {
         // the source of text its own lineage claim rests on.
         const trusted = [];
         for (const { article } of additions) {
-            let trustedArticle = article;
-            if (db && typeof db.getCachedArticle === 'function') {
-                try {
-                    const cached = await db.getCachedArticle(articleKey(article));
-                    if (cached) {
-                        trustedArticle = {
-                            ...article,
-                            title: cached.title ?? article.title,
-                            abstract: cached.abstract ?? article.abstract,
-                            sections: cached.sections || article.sections,
-                            fullText: cached.fullText || cached.full_text || article.fullText,
-                        };
-                    }
-                } catch (err) {
-                    logger.warn({ err, uid: articleKey(article) }, 'trusted article retrieval failed; recording client text');
-                }
+            let cached;
+            try {
+                cached = await db?.getCachedArticle?.(articleKey(article));
+            } catch (err) {
+                logger.warn({ err, uid: articleKey(article) }, 'trusted article retrieval failed');
             }
+            if (!cached) return unlinked(LINEAGE_STATUS.INVALID, { reason: 'addition_not_trusted' });
+            const trustedArticle = {
+                ...article,
+                title: cached.title || '',
+                abstract: cached.abstract || '',
+                sections: cached.sections || {},
+                fullText: cached.fullText || cached.full_text || '',
+            };
+            for (const field of CLIENT_EVIDENCE_FIELDS) delete trustedArticle[field];
             trusted.push(trustedArticle);
         }
         try {
             const added = await addEvidenceToSnapshot(db, id, trusted, { userId, sessionId, reason });
+            if (!added.ok) return unlinked(LINEAGE_STATUS.INVALID, { reason: 'addition_failed' });
             const versionByUid = new Map((added.added || []).map((e) => [e.uid, e.versionId]));
             for (let k = 0; k < additions.length; k++) {
                 const { article, index } = additions[k];
-                resolved[index] = trusted[k];
                 const key = articleKey(article);
-                if (versionByUid.has(key)) sourceVersions[key] = versionByUid.get(key);
+                const versionId = versionByUid.get(key);
+                if (!versionId) return unlinked(LINEAGE_STATUS.INVALID, { reason: 'addition_not_recorded' });
+                resolved[index] = { ...trusted[k], _snapshotVersionId: versionId };
+                sourceVersions[key] = versionId;
             }
         } catch (err) {
             logger.warn({ err }, 'recording additional generation evidence failed');

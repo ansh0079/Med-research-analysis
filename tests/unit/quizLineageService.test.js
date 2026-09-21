@@ -123,14 +123,13 @@ describe('quiz from evidence with an evidence snapshot', () => {
         expect(verified.lineage).toMatchObject({ evidenceSnapshotId: saved.id, evidenceLineageStatus: 'linked' });
     });
 
-    test("another session's snapshot is invalid: generation proceeds unlinked and says so", async () => {
+    test("another session's snapshot cannot be used to generate", async () => {
         const db = makeSnapshotDb();
         const saved = await persistSearchEvidenceSnapshot(db, { query: 'hf', articles: [article(1)], sessionId: 's1' });
         const { service } = makeService(db);
         const result = await run(service, { articles: [article(1)], evidenceSnapshotId: saved.id }, { sessionId: 'intruder' });
-        expect(result.status).toBe(200);
-        expect(result.body.evidenceLineage).toEqual({ snapshotId: null, status: 'invalid' });
-        expect(result.body.questions[0]).toMatchObject({ evidenceSnapshotId: null, evidenceLineageStatus: 'invalid' });
+        expect(result.status).toBe(409);
+        expect(result.body).toMatchObject({ code: 'EVIDENCE_SNAPSHOT_INVALID' });
     });
 
     test('no snapshot id is unlinked, as before', async () => {

@@ -130,6 +130,9 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             articles: requestedArticles,
             reason: 'quiz_generation',
         });
+        if (evidence.lineage.status === 'invalid') {
+            return response({ error: 'Search evidence is unavailable; run the search again.', code: 'EVIDENCE_SNAPSHOT_INVALID' }, 409);
+        }
         const articles = evidence.articles;
         const lineage = evidence.lineage;
         const evidenceLineage = publicLineage(lineage);
@@ -623,6 +626,9 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             articles: requestedArticles.slice(0, 5),
             reason: 'quiz_from_evidence',
         });
+        if (evidence.lineage.status === 'invalid') {
+            return response({ error: 'Search evidence is unavailable; run the search again.', code: 'EVIDENCE_SNAPSHOT_INVALID' }, 409);
+        }
         const articles = evidence.articles;
         const lineage = evidence.lineage;
         const evidenceLineage = publicLineage(lineage);
