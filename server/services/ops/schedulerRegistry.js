@@ -78,6 +78,7 @@ const {
 const {
     scheduleSnapshotRetention, stopSnapshotRetention,
 } = require('../search/snapshotRetentionScheduler');
+const { scheduleDataRetention } = require('./dataRetention');
 
 /**
  * @typedef {Object} SchedulerEntry
@@ -150,6 +151,10 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
         {
             task: 'evidence-snapshot-retention',
             start: () => scheduleSnapshotRetention(db, baseLogger.child({ task: 'evidence-snapshot-retention' })),
+        },
+        {
+            task: 'data-retention',
+            start: () => scheduleDataRetention(db, baseLogger.child({ task: 'data-retention' })),
             stop: () => stopSnapshotRetention(),
         },
         {
