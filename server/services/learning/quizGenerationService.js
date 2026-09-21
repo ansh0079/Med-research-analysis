@@ -33,6 +33,11 @@ const {
     guidelineToEvidenceArticle,
 } = require('../search/generationEvidenceContext');
 const { addEvidenceToSnapshot } = require('../search/searchEvidenceSnapshot');
+const {
+    recordGenerationInputs,
+    capVerificationForManifest,
+    publicManifest,
+} = require('../search/generationEvidenceManifest');
 
 function evidenceSourceTrust(article = {}) {
     const retracted = Boolean(article?._retraction?.isRetracted || article?.isRetracted || article?.is_retracted);
@@ -389,6 +394,18 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         const communityTopPicks = await db.getGlobalEngagedArticles?.(db.normalizeTopic(cleanTopic), 3)
             .catch((err) => { logger.warn({ err }, 'operation failed'); return []; }) || [];
         const teachingObjectContext = teachingObjectsToQuizContext(teachingObjects);
+        // The topic path builds the same guideline and teaching-object context into its prompt, so it
+        // owes the same manifest: what the model read has to be recorded before it reads it.
+        const manifest = await recordGenerationInputs(db, {
+            snapshotId: evidenceLineage.snapshotId,
+            userId: user?.id || null,
+            sessionId,
+            guidelines,
+            teachingObjects,
+            teachingObjectContext,
+            guidelineToEvidenceArticle,
+            reason: 'quiz_topic_context',
+        });
         const promptVariant = assignQuizPromptVariant(user?.id, cleanTopic);
 
         const prompt = buildQuizPrompt(
@@ -538,11 +555,12 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                     validationStatus: validation.validationSummary.skipped ? 'validation_skipped' : 'llm_validated',
                     outlineLabel: cmeta ? String(cmeta.claimText || '').slice(0, 200) : null,
                     claimVerificationStatus: cmeta?.verificationStatus
-                        ? capVerificationForLineage(cmeta.verificationStatus, lineage)
+                        ? capVerificationForManifest(capVerificationForLineage(cmeta.verificationStatus, lineage), manifest)
                         : null,
                     // Returned with the question so the attempt can carry the same lineage back.
                     evidenceSnapshotId: evidenceLineage.snapshotId,
                     evidenceLineageStatus: evidenceLineage.status,
+                    evidenceManifestComplete: manifest.complete,
                 };
             });
 
@@ -551,7 +569,8 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             const questions = mappedQuestions.filter((q) => {
                 const cmeta = q.claimKey && claimByKey ? claimByKey.get(q.claimKey) : null;
                 const ok = claimEligibleForQuestionType(cmeta
-                    ? { ...cmeta, verificationStatus: capVerificationForLineage(cmeta.verificationStatus, lineage) }
+                    ? { ...cmeta, verificationStatus: capVerificationForManifest(
+                        capVerificationForLineage(cmeta.verificationStatus, lineage), manifest) }
                     : { verificationStatus: q.claimVerificationStatus }, q.questionType);
                 if (!ok) {
                     droppedHighStakes.push({
@@ -584,6 +603,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 confidence: validation.validationSummary.skipped ? 0.5 : 0.8,
                 evidenceSnapshotId: evidenceLineage.snapshotId,
                 lineageStatus: evidenceLineage.status,
+                manifestComplete: manifest.complete,
             }).catch((err) => log.warn({ err }, 'Failed to cache live quiz MCQs'));
 
             return response({
@@ -601,6 +621,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 adaptiveClaimCount: claimAnchorMode.startsWith('adaptive_teaching_object') ? claimAnchors.length : undefined,
                 evidenceAudit: buildEvidenceAudit(claimSourceJob, claimAnchors),
                 evidenceLineage,
+                evidenceManifest: publicManifest(manifest),
                 effectiveDifficulty,
                 abilityEstimate,
                 droppedHighStakes: droppedHighStakes.length ? droppedHighStakes : undefined,
@@ -640,14 +661,6 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         const evidenceArticles = hydratedSources.map((source) => source.article);
         const guidelines = await db.getGuidelinesByTopic(cleanTopic, { limit: 3 })
             .catch((err) => { logger.warn({ err }, 'operation failed'); return []; });
-        // Guidelines go into the prompt as evidence, so they belong in the lineage too: a snapshot
-        // that lists only the articles cannot replay what the model actually read.
-        if (evidenceLineage.snapshotId && guidelines.length) {
-            await addEvidenceToSnapshot(
-                db, evidenceLineage.snapshotId, guidelines.map(guidelineToEvidenceArticle),
-                { userId: user?.id || null, sessionId, reason: 'quiz_guideline_context' },
-            ).catch((err) => logger.warn({ err }, 'recording guideline context on the snapshot failed'));
-        }
 
         let userContext = null;
         if (user?.id) {
@@ -665,6 +678,20 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         const teachingObjects = await db.listTeachingObjectsForTopic(cleanTopic, { limit: 8 })
             .catch((err) => { logger.warn({ err }, 'operation failed'); return []; });
         const teachingObjectContext = teachingObjectsToQuizContext(teachingObjects);
+        // Everything the prompt will carry beyond the searched articles - guideline recommendations
+        // and teaching-object text - is recorded as immutable versions BEFORE generation. A recording
+        // failure is not a warning: it makes the manifest incomplete, which caps what the questions
+        // may later claim about their provenance.
+        const manifest = await recordGenerationInputs(db, {
+            snapshotId: evidenceLineage.snapshotId,
+            userId: user?.id || null,
+            sessionId,
+            guidelines,
+            teachingObjects,
+            teachingObjectContext,
+            guidelineToEvidenceArticle,
+            reason: 'quiz_generation_context',
+        });
         const promptVariant = assignQuizPromptVariant(user?.id, cleanTopic);
 
         const prompt = buildQuizPrompt(
@@ -739,10 +766,13 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                     claimKey,
                     promptVariant,
                     validationStatus: validation.validationSummary.skipped ? 'validation_skipped' : 'llm_validated',
-                    claimVerificationStatus: capVerificationForLineage(trust.verificationStatus, lineage),
+                    claimVerificationStatus: capVerificationForManifest(
+                        capVerificationForLineage(trust.verificationStatus, lineage), manifest,
+                    ),
                     claimReviewState: trust.reviewState,
                     evidenceSnapshotId: evidenceLineage.snapshotId,
                     evidenceLineageStatus: evidenceLineage.status,
+                    evidenceManifestComplete: manifest.complete,
                 };
             });
 
@@ -766,6 +796,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 validation: validation.validationSummary,
                 disclaimer: AI_DISCLAIMER,
                 evidenceLineage,
+                evidenceManifest: publicManifest(manifest),
                 droppedHighStakes: droppedHighStakes.length ? droppedHighStakes : undefined,
             });
         } catch (error) {

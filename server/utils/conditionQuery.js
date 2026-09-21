@@ -252,16 +252,35 @@ function isWeakShortAnchor(token) {
     return t.length >= 2 && /[a-z]/.test(t);
 }
 
+/**
+ * Term extraction is a pure function of the query, and ranking asks for it once per ARTICLE - a
+ * 40-article lane re-tokenised and re-filtered the same query 40 times. Cached per query string,
+ * bounded so a long-running process cannot grow one entry per distinct search ever run.
+ */
+const TERM_CACHE_LIMIT = 256;
+const termCache = new Map();
+
+function cachedTerms(query, kind, compute) {
+    const key = `${kind}::${query}`;
+    const hit = termCache.get(key);
+    if (hit) return hit;
+    const value = Object.freeze(compute());
+    // Oldest-first eviction: Map preserves insertion order, so the first key is the coldest.
+    if (termCache.size >= TERM_CACHE_LIMIT) termCache.delete(termCache.keys().next().value);
+    termCache.set(key, value);
+    return value;
+}
+
 function originalConditionTerms(query) {
-    return tokenizeQuery(query).filter(isStrongConditionToken);
+    return cachedTerms(query, 'condition', () => tokenizeQuery(query).filter(isStrongConditionToken));
 }
 
 function originalWeakAnchorTerms(query) {
-    return tokenizeQuery(query).filter(isWeakShortAnchor);
+    return cachedTerms(query, 'weak', () => tokenizeQuery(query).filter(isWeakShortAnchor));
 }
 
 function originalGenericTerms(query) {
-    return tokenizeQuery(query).filter((t) => GENERIC_CLINICAL_TERMS.has(t) && t.length > 3);
+    return cachedTerms(query, 'generic', () => tokenizeQuery(query).filter((t) => GENERIC_CLINICAL_TERMS.has(t) && t.length > 3));
 }
 
 function articleMatchesConditionTerm(text, term, { companionTerms = [] } = {}) {
