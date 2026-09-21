@@ -56,14 +56,6 @@ module.exports = {
             restoreMocks: true,
             testTimeout: 10000,
             detectOpenHandles: true,
-            coverageThreshold: {
-                global: {
-                    branches: 40,
-                    functions: 45,
-                    lines: 50,
-                    statements: 50,
-                },
-            },
         },
         {
             displayName: 'frontend',
@@ -79,17 +71,26 @@ module.exports = {
             clearMocks: true,
             restoreMocks: true,
             testTimeout: 10000,
-            coverageThreshold: {
-                global: {
-                    branches: 30,
-                    functions: 35,
-                    lines: 40,
-                    statements: 40,
-                },
-            },
         },
     ],
     verbose: true,
     coverageDirectory: 'coverage',
     coverageReporters: ['text', 'lcov', 'html'],
+    // Jest only honours coverageThreshold at the ROOT of the config. It was declared inside each
+    // project, where Jest ignores it and prints "Option coverageThreshold is not supported in an
+    // individual project configuration" - so for as long as those numbers existed, nothing enforced
+    // them and coverage could fall to zero without failing a build.
+    //
+    // Set as a ratchet just under what the suite actually covers today (statements 60.4, branches
+    // 47.0, functions 59.5, lines 62.9 across both projects), not at an aspirational number that
+    // would fail the first run. The point of the gate is to stop coverage sliding backwards; raising
+    // it is a deliberate act once the real figure has moved.
+    coverageThreshold: {
+        global: {
+            branches: 45,
+            functions: 57,
+            lines: 60,
+            statements: 58,
+        },
+    },
 };

@@ -107,3 +107,54 @@ describe('claimTrustOverlayService', () => {
         expect(runs[0].params[1]).toBe(9);
     });
 });
+
+describe('candidate lookups do not run one round trip at a time', () => {
+    const { overlayTeachingClaimTrust } = require('../../server/services/claimTrustOverlayService');
+
+    /** Records how many lookups were in flight at once, and in what order results were applied. */
+    function trackingDb({ delayMs = 5 } = {}) {
+        let inFlight = 0;
+        const state = { maxConcurrent: 0, calls: 0 };
+        const slow = (value) => new Promise((resolve) => {
+            inFlight += 1;
+            state.calls += 1;
+            state.maxConcurrent = Math.max(state.maxConcurrent, inFlight);
+            setTimeout(() => { inFlight -= 1; resolve(value); }, delayMs);
+        });
+        return {
+            state,
+            getTeachingClaimByKey: (key) => slow({ claimKey: key, verificationStatus: 'guideline_supported' }),
+            listTeachingObjectClaimsForTopic: async () => [],
+            getTeachingObjectForArticle: () => slow(null),
+        };
+    }
+
+    const claims = (n) => Array.from({ length: n }, (_, i) => ({ claimKey: `claim-${i}`, sourceIds: [] }));
+
+    test('independent claim lookups overlap instead of queueing behind each other', async () => {
+        const db = trackingDb();
+        await overlayTeachingClaimTrust(db, claims(8), { topic: 'heart failure' });
+
+        expect(db.state.calls).toBe(8);
+        // Sequential awaits would never exceed one in flight; this is the regression that mattered.
+        expect(db.state.maxConcurrent).toBeGreaterThan(1);
+    });
+
+    test('concurrency stays bounded rather than opening one connection per claim', async () => {
+        const db = trackingDb();
+        await overlayTeachingClaimTrust(db, claims(40), { topic: 'heart failure' });
+
+        expect(db.state.calls).toBe(40);
+        expect(db.state.maxConcurrent).toBeLessThanOrEqual(8);
+    });
+
+    test('a failing lookup still leaves the other claims overlaid', async () => {
+        const db = trackingDb();
+        db.getTeachingClaimByKey = (key) => (key === 'claim-1'
+            ? Promise.reject(new Error('db down'))
+            : Promise.resolve({ claimKey: key, verificationStatus: 'guideline_supported' }));
+
+        const result = await overlayTeachingClaimTrust(db, claims(3), { topic: 'heart failure' });
+        expect(result).toHaveLength(3);
+    });
+});

@@ -79,13 +79,34 @@ function matchTeachingClaim(aiClaim, teachingClaims) {
     return null;
 }
 
+/**
+ * Run per-item lookups concurrently, in bounded batches, preserving input order.
+ *
+ * These lookups are independent of each other but were awaited one at a time. On local SQLite a
+ * round trip is free and the loop looks fine; against a networked Postgres each one is real latency,
+ * so twenty claims meant twenty sequential round trips in front of a user-facing overlay. The bound
+ * keeps a large claim set from opening the connection pool all at once.
+ */
+async function mapWithLimit(items, limit, fn) {
+    const out = [];
+    for (let i = 0; i < items.length; i += limit) {
+        out.push(...await Promise.all(items.slice(i, i + limit).map(fn)));
+    }
+    return out;
+}
+
+const LOOKUP_CONCURRENCY = 8;
+
 async function loadCandidateTeachingClaims(db, aiClaims, topic) {
     const byKey = new Map();
 
-    for (const c of aiClaims) {
-        if (!c?.claimKey || typeof db.getTeachingClaimByKey !== 'function') continue;
-        const tc = await db.getTeachingClaimByKey(c.claimKey).catch(() => null);
-        if (tc?.claimKey) byKey.set(tc.claimKey, tc);
+    if (typeof db.getTeachingClaimByKey === 'function') {
+        const keys = aiClaims.map((c) => c?.claimKey).filter(Boolean);
+        const found = await mapWithLimit(keys, LOOKUP_CONCURRENCY, (key) => db.getTeachingClaimByKey(key).catch(() => null));
+        // Applied in input order, so a later claim still overwrites an earlier one exactly as before.
+        for (const tc of found) {
+            if (tc?.claimKey) byKey.set(tc.claimKey, tc);
+        }
     }
 
     if (topic && typeof db.listTeachingObjectClaimsForTopic === 'function') {
@@ -101,13 +122,18 @@ async function loadCandidateTeachingClaims(db, aiClaims, topic) {
             if (sid) uids.add(String(sid));
         }
     }
-    for (const uid of [...uids].slice(0, 12)) {
-        if (typeof db.getTeachingObjectForArticle !== 'function') break;
-        const obj = await db.getTeachingObjectForArticle(uid).catch(() => null);
-        if (!obj?.objectKey || typeof db.listTeachingObjectClaimsByObjectKey !== 'function') continue;
-        const claims = await db.listTeachingObjectClaimsByObjectKey(obj.objectKey).catch(() => []);
-        for (const tc of claims || []) {
-            if (tc?.claimKey) byKey.set(tc.claimKey, tc);
+    if (typeof db.getTeachingObjectForArticle === 'function') {
+        // Two dependent queries per uid (object, then its claims) - those stay sequential with each
+        // other, but the uids run alongside one another instead of one after the next.
+        const perUid = await mapWithLimit([...uids].slice(0, 12), LOOKUP_CONCURRENCY, async (uid) => {
+            const obj = await db.getTeachingObjectForArticle(uid).catch(() => null);
+            if (!obj?.objectKey || typeof db.listTeachingObjectClaimsByObjectKey !== 'function') return [];
+            return db.listTeachingObjectClaimsByObjectKey(obj.objectKey).catch(() => []);
+        });
+        for (const claims of perUid) {
+            for (const tc of claims || []) {
+                if (tc?.claimKey) byKey.set(tc.claimKey, tc);
+            }
         }
     }
 
