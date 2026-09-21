@@ -9,6 +9,12 @@
  *   npm run eval:heldout:ingest -- labeler-handoff/submissions/reviewer-a.json
  *   npm run eval:heldout:ingest -- --dir labeler-handoff/submissions
  *   npm run eval:heldout:ingest -- file.json --write     (default is dry-run)
+ *   npm run eval:heldout:ingest -- file.json --write --reviewer-role tuner
+ *
+ * --reviewer-role matters: anyone who tuned the ranker must be marked 'tuner'
+ * (their verdicts are recorded but can never graduate into the held-out set).
+ * The default 'clinician' is for independent labelers; do not use it for
+ * yourself if you have touched ranking code or weights.
  *
  * Input file shape (one per labeler; matches tests/fixtures/heldout/README.md):
  *
@@ -64,6 +70,7 @@ function loadFiles() {
 
 async function main() {
     const write = process.argv.includes('--write');
+    const reviewerRole = argValue('--reviewer-role', 'clinician');
     const files = loadFiles();
     if (!files.length) {
         console.error('usage: node scripts/heldout-ingest-judgements.js <file.json>... | --dir <dir> [--write]');
@@ -125,7 +132,7 @@ async function main() {
                         articleUid: uid,
                         label,
                         reviewerId: reviewer,
-                        reviewerRole: 'clinician',
+                        reviewerRole,
                         reason: j.reason || j.applicability || null,
                         scenarioId: j.scenarioId || null,
                         intendedSense: j.intendedSense || null,
