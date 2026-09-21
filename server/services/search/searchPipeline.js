@@ -15,6 +15,7 @@ const {
     MECHANISM_QUERY_PATTERNS,
 } = require('../evidenceBouquetService');
 const { fetchUnifiedEvidence, collapseNearDuplicateTitles, decomposePico } = require('../unifiedEvidenceSearch');
+const { recordSearchLatency } = require('../ops/observabilityMetrics');
 const { sanitizeArticleOutput } = require('../../utils/articles');
 const { registryArticlesForQuery, mergeRegistryArticles } = require('../registry/guidelineRegistryService');
 const logger = require('../../config/logger');
@@ -757,6 +758,10 @@ async function fetchAndRankSearchArticles({
             'search.fetch_ms': timings.fetchMs,
             'search.rank_ms': timings.rankMs,
         });
+
+        // Per-request stage timings become aggregate latency: the search_latency_p95 SLO has existed
+        // since the start with nothing feeding it, so neither the dashboard nor its alert could work.
+        recordSearchLatency(timings);
 
         return {
             articles,

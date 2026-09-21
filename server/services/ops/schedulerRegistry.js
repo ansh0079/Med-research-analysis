@@ -79,6 +79,8 @@ const {
     scheduleSnapshotRetention, stopSnapshotRetention,
 } = require('../search/snapshotRetentionScheduler');
 const { scheduleDataRetention } = require('./dataRetention');
+const { scheduleQualityAlerts } = require('./qualityAlerts');
+const { sendEmail } = require('../emailService');
 
 /**
  * @typedef {Object} SchedulerEntry
@@ -155,6 +157,10 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
         {
             task: 'data-retention',
             start: () => scheduleDataRetention(db, baseLogger.child({ task: 'data-retention' })),
+        },
+        {
+            task: 'quality-alerts',
+            start: () => scheduleQualityAlerts(db, baseLogger.child({ task: 'quality-alerts' }), { sendEmail }),
             stop: () => stopSnapshotRetention(),
         },
         {
