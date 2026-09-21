@@ -99,6 +99,8 @@
     "eval:heldout": "node scripts/eval-heldout.js",
     "eval:worksheet": "node scripts/heldout-worksheet.js",
     "eval:heldout:import": "node scripts/heldout-import-judgements.js",
+    "audit:legacy-content": "node scripts/audit-legacy-content.js",
+    "ops:metrics": "node scripts/ops-metrics.js",
     "eval:heldout:ingest": "node scripts/heldout-ingest-judgements.js",
     "test:search-quality-gate": "npx jest --testPathPatterns=\"p3SearchQualityScale|clinicalQueryAliasRulesFile|searchRankingTune|searchAbbreviationRanking\" --no-coverage",
     "test:search-pipeline-integration": "npx jest --testPathPatterns=searchPipeline.integration --no-coverage",
