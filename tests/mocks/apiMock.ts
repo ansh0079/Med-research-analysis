@@ -146,4 +146,11 @@ export const api = {
     recordTopicReview: jest.fn().mockResolvedValue(undefined),
     createLearningRound: jest.fn().mockResolvedValue({ round: { id: 1 } }),
   },
+  relevanceReview: {
+    getQueue: jest.fn().mockResolvedValue({ labels: ['on_topic', 'adjacent', 'off_topic'], queue: [] }),
+    getScenarios: jest.fn().mockResolvedValue({ labels: [], scenarios: [], summary: { total: 0, graduatable: 0 } }),
+    recordJudgement: jest.fn().mockResolvedValue({ ok: true }),
+    adjudicate: jest.fn().mockResolvedValue({ ok: true }),
+    exportFixture: jest.fn().mockResolvedValue({ queries: [], skipped: [], agreement: null }),
+  },
 };

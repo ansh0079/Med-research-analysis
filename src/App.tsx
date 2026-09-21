@@ -60,6 +60,7 @@ const CompliancePage      = lazyDefault(() => import('./pages/CompliancePage'), 
 const NotFoundPage        = lazyDefault(() => import('./pages/NotFoundPage'), 'NotFoundPage');
 const AdminObservabilityPage = lazyDefault(() => import('./pages/AdminObservabilityPage'), 'AdminObservabilityPage');
 const ClinicalQualityQueuePage = lazyDefault(() => import('./pages/ClinicalQualityQueuePage'), 'ClinicalQualityQueuePage');
+const RelevanceReviewPage = lazyDefault(() => import('./pages/RelevanceReviewPage'), 'RelevanceReviewPage');
 const PracticePoolPage = lazyDefault(() => import('./pages/PracticePoolPage'), 'PracticePoolPage');
 const AdaptiveCasePage = lazyDefault(() => import('./pages/AdaptiveCasePage'), 'AdaptiveCasePage');
 
@@ -213,6 +214,7 @@ const AppContent: React.FC = () => {
             <Route path="/team"      element={<RouteErrorBoundary><ProtectedRoute><TeamWorkspacePage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/billing"   element={<RouteErrorBoundary><ProtectedRoute><BillingPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/admin/observability" element={<RouteErrorBoundary><RoleRoute allowedRoles={['admin', 'curator']}><AdminObservabilityPage /></RoleRoute></RouteErrorBoundary>} />
+            <Route path="/admin/relevance" element={<RouteErrorBoundary><RoleRoute allowedRoles={['admin', 'curator']}><RelevanceReviewPage /></RoleRoute></RouteErrorBoundary>} />
             <Route path="/admin/quality" element={<RouteErrorBoundary><RoleRoute allowedRoles={['admin', 'curator']}><ClinicalQualityQueuePage /></RoleRoute></RouteErrorBoundary>} />
             <Route path="/legal/terms"      element={<RouteErrorBoundary><LegalTermsPage /></RouteErrorBoundary>} />
             <Route path="/legal/privacy"    element={<RouteErrorBoundary><LegalPrivacyPage /></RouteErrorBoundary>} />
