@@ -38,7 +38,7 @@ const {
     capVerificationForManifest,
     publicManifest,
 } = require('../search/generationEvidenceManifest');
-const { capVerificationForContext } = require('../content/legacyContentPolicy');
+const { capVerificationForContext, usableAsContext } = require('../content/legacyContentPolicy');
 
 function evidenceSourceTrust(article = {}) {
     const retracted = Boolean(article?._retraction?.isRetracted || article?.isRetracted || article?.is_retracted);
@@ -394,6 +394,8 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
 
         const communityTopPicks = await db.getGlobalEngagedArticles?.(db.normalizeTopic(cleanTopic), 3)
             .catch((err) => { logger.warn({ err }, 'operation failed'); return []; }) || [];
+        // Retired content stays readable but does not seed new clinical material.
+        teachingObjects = usableAsContext(teachingObjects);
         const teachingObjectContext = teachingObjectsToQuizContext(teachingObjects);
         // The topic path builds the same guideline and teaching-object context into its prompt, so it
         // owes the same manifest: what the model read has to be recorded before it reads it.
@@ -681,8 +683,9 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
 
         const communityTopPicks = await db.getGlobalEngagedArticles?.(db.normalizeTopic(cleanTopic), 3)
             .catch((err) => { logger.warn({ err }, 'operation failed'); return []; }) || [];
-        const teachingObjects = await db.listTeachingObjectsForTopic(cleanTopic, { limit: 8 })
-            .catch((err) => { logger.warn({ err }, 'operation failed'); return []; });
+        // Retired content stays readable but does not seed new clinical material.
+        const teachingObjects = usableAsContext(await db.listTeachingObjectsForTopic(cleanTopic, { limit: 8 })
+            .catch((err) => { logger.warn({ err }, 'operation failed'); return []; }));
         const teachingObjectContext = teachingObjectsToQuizContext(teachingObjects);
         // Everything the prompt will carry beyond the searched articles - guideline recommendations
         // and teaching-object text - is recorded as immutable versions BEFORE generation. A recording

@@ -22,14 +22,30 @@
  */
 
 const { PROVENANCE_ASSERTING, lineageEnforcementMode } = require('../search/generationEvidenceContext');
+const { recordProvenanceShadowCap } = require('../ops/observabilityMetrics');
 
 /** Written before lineage existed and never linked to a snapshot. */
 const LEGACY_UNLINKED = 'legacy_unlinked';
+/**
+ * Legacy content nobody can reach through the curriculum, which we have decided not to regenerate.
+ * Retired is not deleted: it stays readable if something links to it directly, and the marker can be
+ * cleared. What it stops is the content seeding NEW clinical material - building on sources we
+ * cannot produce, for a topic no reader opens, is how an unprovable corpus grows itself.
+ */
+const LEGACY_RETIRED = 'legacy_retired';
+
+function lineageStatusOf(object) {
+    return String(object?.lineageStatus || object?.lineage_status || '').toLowerCase();
+}
+
+function isRetired(object) {
+    return lineageStatusOf(object) === LEGACY_RETIRED;
+}
 
 function isLegacyUnlinked(object) {
     if (!object) return false;
-    const status = String(object.lineageStatus || object.lineage_status || '').toLowerCase();
-    if (status === LEGACY_UNLINKED) return true;
+    const status = lineageStatusOf(object);
+    if (status === LEGACY_UNLINKED || status === LEGACY_RETIRED) return true;
     // A row predating the audit carries neither a snapshot nor a marker; it is legacy all the same.
     const snapshot = object.evidenceSnapshotId ?? object.evidence_snapshot_id;
     return !status && !snapshot;
@@ -49,6 +65,13 @@ function isProvable(object) {
  */
 function describeProvenance(object) {
     if (!object) return { lineage: null, provable: false, reason: 'no_object' };
+    if (isRetired(object)) {
+        return {
+            lineage: LEGACY_RETIRED,
+            provable: false,
+            reason: 'unprovable and outside the curriculum; retired rather than regenerated',
+        };
+    }
     if (isLegacyUnlinked(object)) {
         return {
             lineage: LEGACY_UNLINKED,
@@ -77,8 +100,14 @@ function annotateProvenance(object) {
  */
 function capVerificationForLegacy(verificationStatus, object, env = process.env) {
     if (isProvable(object)) return verificationStatus;
-    if (lineageEnforcementMode(env) !== 'enforce') return verificationStatus;
-    return PROVENANCE_ASSERTING.has(verificationStatus) ? 'unverified' : verificationStatus;
+    if (!PROVENANCE_ASSERTING.has(verificationStatus)) return verificationStatus;
+    if (lineageEnforcementMode(env) !== 'enforce') {
+        // Shadow: the label stands, but the near-miss is counted so the cost of enforcing is known
+        // before it is paid.
+        recordProvenanceShadowCap('legacy_object', verificationStatus);
+        return verificationStatus;
+    }
+    return 'unverified';
 }
 
 /**
@@ -100,6 +129,16 @@ function contextIsUnprovable(objects = []) {
 }
 
 /**
+ * Context a new generation may build on. Retired content is excluded: it is still readable, but it
+ * does not get to seed fresh clinical material. Everything else - including ordinary legacy content -
+ * stays, because withholding the only material a topic has would degrade the product to improve a
+ * metric; the ceiling handles what the result may claim.
+ */
+function usableAsContext(objects = []) {
+    return (Array.isArray(objects) ? objects : []).filter((o) => !isRetired(o));
+}
+
+/**
  * Cap a label on content GENERATED FROM the given context objects.
  *
  * The manifest records that the model read this text; this decides what the result may assert about
@@ -108,13 +147,20 @@ function contextIsUnprovable(objects = []) {
  */
 function capVerificationForContext(verificationStatus, contextObjects, env = process.env) {
     if (!contextIsUnprovable(contextObjects)) return verificationStatus;
-    if (lineageEnforcementMode(env) !== 'enforce') return verificationStatus;
-    return PROVENANCE_ASSERTING.has(verificationStatus) ? 'unverified' : verificationStatus;
+    if (!PROVENANCE_ASSERTING.has(verificationStatus)) return verificationStatus;
+    if (lineageEnforcementMode(env) !== 'enforce') {
+        recordProvenanceShadowCap('legacy_context', verificationStatus);
+        return verificationStatus;
+    }
+    return 'unverified';
 }
 
 module.exports = {
     LEGACY_UNLINKED,
+    LEGACY_RETIRED,
     isLegacyUnlinked,
+    isRetired,
+    usableAsContext,
     isProvable,
     describeProvenance,
     annotateProvenance,

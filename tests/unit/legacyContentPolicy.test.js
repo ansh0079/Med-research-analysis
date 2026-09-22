@@ -102,3 +102,33 @@ describe('a generation inherits the ceiling of what it read', () => {
         expect(unprovable).toHaveLength(2);
     });
 });
+
+describe('retired content: kept, but not built upon', () => {
+    const { LEGACY_RETIRED, isRetired, usableAsContext } = require('../../server/services/content/legacyContentPolicy');
+    const retired = (over = {}) => ({ objectKey: 'to-r', lineageStatus: LEGACY_RETIRED, ...over });
+
+    test('retired content is recognised and is still unprovable', () => {
+        expect(isRetired(retired())).toBe(true);
+        expect(isProvable(retired())).toBe(false);
+        expect(isLegacyUnlinked(retired())).toBe(true);
+    });
+
+    test('it says why it was retired, rather than just disappearing', () => {
+        const described = describeProvenance(retired());
+        expect(described.lineage).toBe(LEGACY_RETIRED);
+        expect(described.reason).toMatch(/outside the curriculum/);
+    });
+
+    test('it is excluded from seeding new generations', () => {
+        const usable = usableAsContext([linked(), legacy(), retired()]);
+        expect(usable.map((o) => o.objectKey)).toEqual(['to-2', 'to-1']);
+    });
+
+    test('ordinary legacy content is still usable as context, because it is often all there is', () => {
+        expect(usableAsContext([legacy()])).toHaveLength(1);
+    });
+
+    test('retired content still carries the provenance ceiling under enforcement', () => {
+        expect(capVerificationForLegacy('guideline_supported', retired(), ENFORCE)).toBe('unverified');
+    });
+});

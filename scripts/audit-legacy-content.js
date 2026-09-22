@@ -5,6 +5,8 @@
  *   npm run audit:legacy-content              report only
  *   npm run audit:legacy-content -- --write   downgrade unprovable claims and mark legacy lineage
  *   npm run audit:legacy-content -- --json    machine-readable report
+ *   npm run audit:legacy-content -- --write --retire-unreachable
+ *                                             mark legacy content outside the curriculum as retired
  *
  * Every provenance gate added over the last months applies at WRITE time. Rows written before those
  * gates existed were never re-examined, so the corpus can still contain claims labelled
@@ -30,6 +32,9 @@ const ASSERTING = [...PROVENANCE_ASSERTING];
 const DOWNGRADE_REASON = 'legacy_provenance_unprovable';
 
 const write = process.argv.includes('--write');
+// Retiring is its own opt-in, separate from --write: marking content as never-to-be-regenerated is
+// a product decision, not a side effect of running an audit.
+const retire = process.argv.includes('--retire-unreachable');
 const asJson = process.argv.includes('--json');
 
 function placeholders(values) {
@@ -198,6 +203,51 @@ async function auditReachability() {
     };
 }
 
+/**
+ * Mark legacy content nobody can reach as retired.
+ *
+ * Reachable legacy content gets regenerated; this is the other half of that decision. Retired is not
+ * deleted and not hidden - it stays readable and the marker can be cleared - but it stops seeding new
+ * clinical material, because building fresh content on sources we cannot produce, for topics no
+ * reader opens, is how an unprovable corpus grows itself.
+ */
+async function retireUnreachable(reach) {
+    if (!reach || !await tableExists('teaching_objects')) return { retired: 0, skipped: 'unavailable' };
+    const flagship = require('../server/config/flagshipTopics.json');
+    const topics = [...new Set((flagship.topics || [])
+        .flatMap((t) => [t.topic, ...(t.aliases || [])])
+        .filter(Boolean)
+        .map((t) => String(t).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()))].filter(Boolean);
+    if (!topics.length) return { retired: 0, skipped: 'no flagship topics configured' };
+
+    // Reachability has to be decided against the WHOLE topic list at once - a row reachable via any
+    // topic must not be retired - but the list is far too long for one IN (...) of bind parameters.
+    // So it goes into a temp table and the update joins against that. Works on SQLite and Postgres.
+    await db.run('DROP TABLE IF EXISTS tmp_reachable_topics').catch(() => {});
+    await db.run('CREATE TEMPORARY TABLE tmp_reachable_topics (topic TEXT PRIMARY KEY)');
+    for (let i = 0; i < topics.length; i += 200) {
+        const chunk = topics.slice(i, i + 200);
+        await db.run(
+            `INSERT INTO tmp_reachable_topics (topic) VALUES ${chunk.map(() => '(?)').join(', ')}
+             ON CONFLICT DO NOTHING`,
+            chunk,
+        );
+    }
+
+    // Retire only what is BOTH unprovable and unreachable; never re-retire, never touch linked rows.
+    const result = await db.run(
+        `UPDATE teaching_objects
+            SET lineage_status = 'legacy_retired'
+          WHERE (evidence_snapshot_id IS NULL OR evidence_snapshot_id = '')
+            AND lineage_status = 'legacy_unlinked'
+            AND (normalized_topic IS NULL
+                 OR LOWER(normalized_topic) NOT IN (SELECT topic FROM tmp_reachable_topics))`,
+    ).catch((err) => ({ error: String(err?.message || err) }));
+    if (result?.error) return { retired: 0, error: result.error };
+    await db.run('DROP TABLE IF EXISTS tmp_reachable_topics').catch(() => {});
+    return { retired: Number(result?.changes ?? result?.rowCount ?? 0) };
+}
+
 function printReport(report) {
     if (asJson) {
         console.log(JSON.stringify(report, null, 2));
@@ -223,6 +273,14 @@ function printReport(report) {
         console.log(`Paper objects with stored source candidates for regeneration: ${report.teachingRecovery.paperSourceCandidates}`);
         if (write) console.log(`Legacy unlinked rows annotated: ${report.teachingRecovery.annotated}`);
     }
+    if (report.retirement) {
+        const r = report.retirement;
+        console.log('');
+        if (r.error) console.log(`Retirement failed: ${r.error}`);
+        else if (r.skipped) console.log(`Retirement: ${r.skipped}`);
+        else console.log(`Retired ${r.retired} unreachable legacy object(s): still readable, no longer seeds new content.`);
+    }
+
     const reach = report.reachability;
     if (reach) {
         console.log('');
@@ -254,6 +312,8 @@ async function main() {
         teachingRecovery: await auditTeachingRecovery(),
         reachability: await auditReachability(),
     };
+    if (retire && write) report.retirement = await retireUnreachable(report.reachability);
+    else if (retire) report.retirement = { retired: 0, skipped: 'add --write to apply' };
     printReport(report);
     const unprovable = report.claims?.unprovable || 0;
     // Non-zero only when there is unprovable content left behind after this run.

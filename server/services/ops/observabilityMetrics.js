@@ -102,6 +102,20 @@ function recordSearchLatency(timings = {}) {
     recordSloEvent('search_latency_p95', totalMs / 1000 <= SLO_DEFINITIONS.search_latency_p95.thresholdSeconds, totalMs);
 }
 
+/**
+ * A provenance cap that WOULD have applied, had enforcement been on.
+ *
+ * The lineage, manifest and legacy ceilings all default to shadow, which means they change nothing
+ * and report nothing - so "what happens if we enforce" has been unanswerable except by enforcing and
+ * finding out on real readers. Counting the near-misses turns that into a number you can look at
+ * first: if this is zero for a week, enforcement is free; if it is thousands, it is a product
+ * decision about what the corpus can honestly claim.
+ */
+function recordProvenanceShadowCap(kind, from) {
+    if (!metrics) return;
+    metrics.provenanceShadowCaps.inc({ kind: kind || 'unknown', from: from || 'unknown' });
+}
+
 function registerObservabilityMetrics(registry, client) {
     if (metrics || !registry || !client) return metrics;
     metrics = {
@@ -133,6 +147,12 @@ function registerObservabilityMetrics(registry, client) {
             name: 'medsearch_synopsis_generation_total',
             help: 'Synopsis generation attempts by provider/model/outcome',
             labelNames: ['provider', 'model', 'outcome'],
+            registers: [registry],
+        }),
+        provenanceShadowCaps: new client.Counter({
+            name: 'medsearch_provenance_shadow_caps_total',
+            help: 'Labels that would have been capped if provenance enforcement were on',
+            labelNames: ['kind', 'from'],
             registers: [registry],
         }),
         searchLatency: new client.Histogram({
@@ -285,6 +305,7 @@ module.exports = {
     recordExternalApiCall,
     recordSearchQuality,
     recordSearchLatency,
+    recordProvenanceShadowCap,
     recordSloEvent,
     recordSynopsisGeneration,
     registerObservabilityMetrics,
