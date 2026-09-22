@@ -160,6 +160,36 @@ async function searchVolume() {
 }
 
 /**
+ * Why provider calls are failing, in the provider's own words.
+ *
+ * A failure RATE tells you something is wrong; it never tells you what. The rate has been visible
+ * since ops-metrics existed and the messages behind it were still a shell session away, so the first
+ * production report showed a 53% failure rate with no way to act on it. Grouped by operation,
+ * provider and message so a single broken integration does not hide behind an aggregate.
+ */
+async function providerFailures() {
+    const rows = await query(
+        `SELECT operation, provider, error_message, COUNT(*) AS n
+           FROM llm_usage_log
+          WHERE created_at >= ? AND success = 0 AND error_message IS NOT NULL
+          GROUP BY operation, provider, error_message
+          ORDER BY n DESC`,
+        [SINCE],
+    );
+    if (rows === null) return ABSENT;
+    if (!rows.length) return { failures: 0 };
+    return {
+        failures: rows.reduce((sum, r) => sum + Number(r.n || 0), 0),
+        top: rows.slice(0, 8).map((r) => ({
+            operation: r.operation || 'unknown',
+            provider: r.provider || 'unknown',
+            count: Number(r.n || 0),
+            message: String(r.error_message || '').slice(0, 220),
+        })),
+    };
+}
+
+/**
  * What the retention job would delete if it were switched on.
  *
  * The job runs daily in report-only mode and writes its counts to the log, which needs shell access
@@ -226,6 +256,17 @@ function printReport(report) {
         line('needed a retry', report.invalidation.retriedEvents);
     }
 
+    console.log('\nWhy provider calls failed');
+    const fail = report.failures;
+    if (!fail || fail.absent) line('table', 'absent on this database');
+    else if (!fail.failures) line('failures', '0');
+    else {
+        line('failed calls', fail.failures);
+        for (const f of fail.top) {
+            console.log(`    ${String(f.count).padStart(5)}x  ${f.operation} / ${f.provider}: ${f.message}`);
+        }
+    }
+
     console.log('\nData retention (report only; nothing deleted)');
     const ret = report.retention;
     if (!ret || ret.error) line('preview', ret?.error || 'unavailable');
@@ -250,6 +291,7 @@ async function main() {
         providers: await providerMetrics(),
         snapshots: await snapshotGrowth(),
         invalidation: await invalidationLag(),
+        failures: await providerFailures(),
         retention: await retentionPreview(),
     };
     printReport(report);
