@@ -1,0 +1,57 @@
+name: Prod Ops Report
+
+# The operational numbers, from production, without needing shell access.
+#
+# Provider latency and spend, snapshot growth, invalidation lag and the retention preview all live in
+# the production database. Reading them meant SSHing to the VPS and grepping logs, which means in
+# practice nobody read them. This runs the same report the repo ships and prints it to the run log.
+#
+# Read-only: ops-metrics only counts rows, and the retention preview is always a dry run - it passes
+# an empty env so it cannot delete whatever RETENTION_ENABLED is set to on the server.
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Window in days'
+        required: false
+        default: '7'
+      format:
+        description: 'Output format'
+        required: false
+        default: 'text'
+        type: choice
+        options: [text, json]
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/prod-ops-report.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    name: Operational metrics from production
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Run the ops report in the production app container
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 8m
+          script: |
+            set -e
+            DAYS="${{ inputs.days }}"
+            case "$DAYS" in ''|*[!0-9]*) DAYS=7 ;; esac
+            FLAG=""
+            if [ "${{ inputs.format }}" = "json" ]; then FLAG="--json"; fi
+            echo "=== effective policy (what production is actually enforcing) ==="
+            docker exec medsearch-web wget -qO- http://127.0.0.1:3002/health \
+              | tr ',' '\n' | grep -iE 'gitSha|provenanceEnforcement|laneRanking|laneRetrieval|retentionDeleting' || true
+            echo
+            echo "=== ops metrics, last ${DAYS} day(s) ==="
+            docker exec medsearch-web node /app/scripts/ops-metrics.js --days "$DAYS" $FLAG

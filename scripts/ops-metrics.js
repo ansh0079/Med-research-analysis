@@ -24,6 +24,7 @@ const { loadEnv } = require('../config');
 loadEnv();
 
 const db = require('../database');
+const { runRetention } = require('../server/services/ops/dataRetention');
 
 const asJson = process.argv.includes('--json');
 const daysArg = process.argv.indexOf('--days');
@@ -158,6 +159,26 @@ async function searchVolume() {
     return { searches: rows[0]?.n || 0, perDay: Number(((rows[0]?.n || 0) / DAYS).toFixed(2)) };
 }
 
+/**
+ * What the retention job would delete if it were switched on.
+ *
+ * The job runs daily in report-only mode and writes its counts to the log, which needs shell access
+ * on the server to read. This surfaces the same numbers here, so setting RETENTION_ENABLED can be
+ * decided from a report rather than a log grep. Always a dry run: it passes an env with no
+ * RETENTION_ENABLED regardless of how this process is configured.
+ */
+async function retentionPreview() {
+    try {
+        const report = await runRetention(db, { env: {} });
+        return {
+            eligibleNow: report.totalEligible,
+            classes: report.classes.map((c) => ({ name: c.name, eligible: c.eligible ?? 0, days: c.days ?? null, absent: Boolean(c.absent) })),
+        };
+    } catch (err) {
+        return { error: String(err?.message || err).slice(0, 200) };
+    }
+}
+
 function line(label, value) {
     console.log(`  ${String(label).padEnd(26)} ${value ?? 'n/a'}`);
 }
@@ -205,6 +226,17 @@ function printReport(report) {
         line('needed a retry', report.invalidation.retriedEvents);
     }
 
+    console.log('\nData retention (report only; nothing deleted)');
+    const ret = report.retention;
+    if (!ret || ret.error) line('preview', ret?.error || 'unavailable');
+    else {
+        line('rows eligible now', ret.eligibleNow);
+        for (const c of ret.classes) {
+            line(`  ${c.name}`, c.absent ? 'table absent' : `${c.eligible} older than ${c.days}d`);
+        }
+        if (ret.eligibleNow > 0) console.log('  set RETENTION_ENABLED=true to start deleting these');
+    }
+
     console.log('\nNumbers describe the database this ran against. For production numbers, run it there.');
 }
 
@@ -218,6 +250,7 @@ async function main() {
         providers: await providerMetrics(),
         snapshots: await snapshotGrowth(),
         invalidation: await invalidationLag(),
+        retention: await retentionPreview(),
     };
     printReport(report);
     return 0;
