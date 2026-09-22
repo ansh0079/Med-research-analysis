@@ -8,7 +8,7 @@
  */
 
 const Sqlite = require('better-sqlite3');
-const { purgeClass, runRetention, daysFor, RETENTION_CLASSES } = require('../../server/services/ops/dataRetention');
+const { purgeClass, runRetention, daysFor, deletionEnabled, RETENTION_CLASSES } = require('../../server/services/ops/dataRetention');
 
 const NOW = new Date('2026-09-21T00:00:00.000Z');
 const daysAgo = (n) => new Date(NOW.getTime() - n * 86400000).toISOString();
@@ -36,6 +36,9 @@ function makeDb() {
     return db;
 }
 
+/** Deleting is opt-in, so the tests that assert deletion must switch it on explicitly. */
+const DELETING = { RETENTION_ENABLED: 'true' };
+
 const classOf = (name) => RETENTION_CLASSES.find((c) => c.name === name);
 
 describe('the policy that is written down is the policy that runs', () => {
@@ -43,7 +46,7 @@ describe('the policy that is written down is the policy that runs', () => {
         const db = makeDb();
         db.seed('search_result_impressions', [600, 560, 500, 10]);
 
-        const result = await purgeClass(db, classOf('search_result_impressions'), { now: NOW, env: {} });
+        const result = await purgeClass(db, classOf('search_result_impressions'), { now: NOW, env: DELETING });
 
         expect(result.deleted).toBe(2); // 600 and 560 days old
         expect(db.count('search_result_impressions')).toBe(2);
@@ -54,7 +57,7 @@ describe('the policy that is written down is the policy that runs', () => {
         db.seed('audit_logs', [800, 600, 100]);
         db.seed('search_result_impressions', [800, 600, 100]);
 
-        await runRetention(db, { now: NOW, env: {} });
+        await runRetention(db, { now: NOW, env: DELETING });
 
         // 600 days is past the 18-month search window but inside the 24-month audit window.
         expect(db.count('search_result_impressions')).toBe(1);
@@ -66,7 +69,7 @@ describe('the policy that is written down is the policy that runs', () => {
         db.seed('teaching_objects', [2000, 1000]);
         db.seed('user_interactions', [2000]);
 
-        await runRetention(db, { now: NOW, env: {} });
+        await runRetention(db, { now: NOW, env: DELETING });
 
         expect(db.count('teaching_objects')).toBe(2);
         expect(db.count('user_interactions')).toBe(0);
@@ -76,7 +79,7 @@ describe('the policy that is written down is the policy that runs', () => {
         const db = makeDb();
         db.seed('user_interactions', Array.from({ length: 250 }, () => 900));
 
-        const result = await purgeClass(db, classOf('user_interactions'), { now: NOW, env: {}, batchSize: 100 });
+        const result = await purgeClass(db, classOf('user_interactions'), { now: NOW, env: DELETING, batchSize: 100 });
 
         expect(result.deleted).toBe(250);
         expect(db.count('user_interactions')).toBe(0);
@@ -86,7 +89,7 @@ describe('the policy that is written down is the policy that runs', () => {
         const db = makeDb();
         db.__sqlite.exec('DROP TABLE billing_audit_log');
 
-        const report = await runRetention(db, { now: NOW, env: {} });
+        const report = await runRetention(db, { now: NOW, env: DELETING });
         const billing = report.classes.find((c) => c.name === 'billing_audit_log');
         expect(billing).toMatchObject({ absent: true, deleted: 0 });
     });
@@ -100,7 +103,7 @@ describe('the policy that is written down is the policy that runs', () => {
             return original.call(db, sql, params);
         };
 
-        const report = await runRetention(db, { now: NOW, env: {}, logger: { warn() {} } });
+        const report = await runRetention(db, { now: NOW, env: DELETING, logger: { warn() {} } });
 
         expect(report.classes.find((c) => c.name === 'search_result_impressions').error).toMatch(/locked/);
         expect(db.count('audit_logs')).toBe(0); // the later class still ran
@@ -117,5 +120,39 @@ describe('operators can tighten retention without a deploy', () => {
         expect(daysFor(classOf('audit_logs'), { RETENTION_DAYS_AUDIT: '0' })).toBe(730);
         expect(daysFor(classOf('audit_logs'), { RETENTION_DAYS_AUDIT: 'soon' })).toBe(730);
         expect(daysFor(classOf('audit_logs'), { RETENTION_DAYS_AUDIT: '-5' })).toBe(730);
+    });
+});
+
+describe('a deploy does not start deleting production rows', () => {
+    test('without RETENTION_ENABLED it reports what it would remove and removes nothing', async () => {
+        const db = makeDb();
+        db.seed('user_interactions', [900, 900, 10]);
+
+        const report = await runRetention(db, { now: NOW, env: {} });
+
+        expect(report.dryRun).toBe(true);
+        expect(report.totalDeleted).toBe(0);
+        expect(report.totalEligible).toBe(2);
+        expect(db.count('user_interactions')).toBe(3);
+    });
+
+    test('only an explicit true enables deletion', () => {
+        expect(deletionEnabled({})).toBe(false);
+        expect(deletionEnabled({ RETENTION_ENABLED: 'false' })).toBe(false);
+        expect(deletionEnabled({ RETENTION_ENABLED: '1' })).toBe(false);
+        expect(deletionEnabled({ RETENTION_ENABLED: 'yes' })).toBe(false);
+        expect(deletionEnabled({ RETENTION_ENABLED: 'true' })).toBe(true);
+        expect(deletionEnabled({ RETENTION_ENABLED: 'TRUE' })).toBe(true);
+    });
+
+    test('the dry run counts each class against its own window', async () => {
+        const db = makeDb();
+        db.seed('user_interactions', [600]);   // past the 18-month window (548 days)
+        db.seed('audit_logs', [600]);          // still inside the 24-month window (730 days)
+        const report = await runRetention(db, { now: NOW, env: {} });
+
+        const byName = Object.fromEntries(report.classes.map((c) => [c.name, c]));
+        expect(byName.user_interactions.eligible).toBe(1);
+        expect(byName.audit_logs.eligible).toBe(0);
     });
 });

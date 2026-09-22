@@ -72,6 +72,16 @@ function daysFor(entry, env = process.env) {
     return Number.isFinite(raw) && raw >= 1 ? raw : entry.days;
 }
 
+/**
+ * Deleting is opt-in. A deploy should never be the thing that starts destroying production rows:
+ * the first run on a real database happens because an operator read the dry-run counts and decided,
+ * not because a release went out. With RETENTION_ENABLED unset the job still runs and reports
+ * exactly what it WOULD remove, which is also the only honest way to size the first real run.
+ */
+function deletionEnabled(env = process.env) {
+    return String(env.RETENTION_ENABLED || 'false').toLowerCase() === 'true';
+}
+
 async function tableExists(db, table) {
     try {
         await db.get(`SELECT 1 FROM ${table} LIMIT 1`);
@@ -92,6 +102,14 @@ async function purgeClass(db, entry, { now = new Date(), batchSize = DEFAULT_BAT
     if (!await tableExists(db, entry.table)) return { name: entry.name, absent: true, deleted: 0 };
     const days = daysFor(entry, env);
     const cutoff = new Date(now.getTime() - days * DAY_MS).toISOString();
+
+    if (!deletionEnabled(env)) {
+        const row = await db.get(
+            `SELECT COUNT(*) AS n FROM ${entry.table} WHERE ${entry.column} < ?`, [cutoff],
+        ).catch(() => null);
+        const eligible = Number(row ? Object.values(row)[0] : 0) || 0;
+        return { name: entry.name, dryRun: true, eligible, deleted: 0, cutoff, days, absent: false };
+    }
 
     let deleted = 0;
     for (let batch = 0; batch < maxBatches; batch++) {
@@ -129,9 +147,12 @@ async function runRetention(db, { now = new Date(), env = process.env, logger = 
             results.push({ name: entry.name, error: String(err?.message || err), deleted: 0 });
         }
     }
+    const dryRun = !deletionEnabled(env);
     return {
         ranAt: now.toISOString(),
+        dryRun,
         totalDeleted: results.reduce((sum, r) => sum + (r.deleted || 0), 0),
+        totalEligible: results.reduce((sum, r) => sum + (r.eligible || 0), 0),
         classes: results,
     };
 }
@@ -145,6 +166,12 @@ function scheduleDataRetention(db, logger) {
     if (intervalId) return;
     const tick = withCronHeartbeat('data-retention', async () => {
         const report = await runRetention(db, { logger });
+        if (report.dryRun) {
+            if (report.totalEligible > 0) {
+                logger.warn(report, 'data retention is reporting only; set RETENTION_ENABLED=true to delete');
+            }
+            return;
+        }
         if (report.totalDeleted > 0) logger.info(report, 'data retention purge completed');
     }, { db, logger });
     intervalId = setInterval(tick, DAY_MS);
@@ -153,7 +180,7 @@ function scheduleDataRetention(db, logger) {
     startupTimer = setTimeout(tick, 10 * 60 * 1000);
     if (typeof startupTimer.unref === 'function') startupTimer.unref();
     logger.info(
-        { classes: RETENTION_CLASSES.map((c) => ({ name: c.name, days: daysFor(c) })) },
+        { deleting: deletionEnabled(), classes: RETENTION_CLASSES.map((c) => ({ name: c.name, days: daysFor(c) })) },
         'Data retention scheduler started',
     );
 }
@@ -168,6 +195,7 @@ function stopDataRetention() {
 module.exports = {
     RETENTION_CLASSES,
     daysFor,
+    deletionEnabled,
     purgeClass,
     runRetention,
     scheduleDataRetention,
