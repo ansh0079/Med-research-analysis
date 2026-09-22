@@ -118,7 +118,11 @@ If a component is unclear or absent, set it to an empty string. Do not include a
 
     const ai = getSharedAiService({ serverConfig, fetchImpl });
     try {
-        const parsed = await ai.callStructured(prompt, provider, model, { temperature: 0.0, maxOutputTokens: 300, timeoutMs: 4000 });
+        // Labelled so it is attributable in the ops report. Unlabelled, this call and the intent
+        // classifier both landed in 'unspecified' and their timeouts hid every other failure.
+        const parsed = await ai.callStructured(prompt, provider, model, {
+            temperature: 0.0, maxOutputTokens: 300, timeoutMs: 4000, usage: { operation: 'pico_extraction' },
+        });
         if (parsed && typeof parsed === 'object' && parsed.confidence != null) {
             if (cache && typeof cache.set === 'function') {
                 await Promise.resolve(cache.set(cacheKey, parsed, 86400)).catch((err) => {

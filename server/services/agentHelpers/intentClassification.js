@@ -23,7 +23,7 @@ async function inferDemandIntent(message, ai, provider, model) {
             `Classify this medical learner message into exactly one category.\nCategories: quiz, case, guideline, appraisal, synopsis, agent_chat\n\nRules:\n- quiz: user wants MCQs, test questions, "quiz me", "test my knowledge"\n- case: user wants a clinical case, vignette, or scenario\n- guideline: user asks about clinical guidelines, recommendations from bodies (NICE, AHA, ESC, WHO)\n- appraisal: user wants to critique methodology, discuss bias, limitations, validity, study design\n- synopsis: user wants a summary, bottom line, or overview\n- agent_chat: general discussion, explanation request, anything else\n\nMessage: "${String(message || '').slice(0, 300)}"\n\nRespond with ONLY the category name, nothing else.`,
             provider,
             model,
-            { temperature: 0.0, maxOutputTokens: 20, timeoutMs: 4000 }
+            { temperature: 0.0, maxOutputTokens: 20, timeoutMs: 4000, usage: { operation: 'intent_classification' } }
         );
         const intent = String(raw || '').trim().toLowerCase().replace(/[^a-z_]/g, '');
         return VALID_INTENTS.has(intent) ? intent : regexResult;
