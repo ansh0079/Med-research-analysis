@@ -82,19 +82,40 @@ async function selectTargets() {
             [key, limit],
         );
     }
-    const keys = flagshipTopicKeys();
+    // Reachable means either route a reader has. On production 2,443 legacy objects are reachable
+    // through a flagship topic and 5,722 back a stored claim, and those sets differ - targeting
+    // topics alone would leave the larger group unrepaired.
     const out = [];
+    const seen = new Set();
+    const take = (rows) => {
+        for (const row of rows) {
+            if (out.length >= limit || seen.has(row.object_key)) continue;
+            seen.add(row.object_key);
+            out.push(row);
+        }
+    };
+
+    // Claim-backed first: a reader can open these directly, so they are the most exposed.
+    take(await db.all(
+        `SELECT o.object_key, o.article_uid, o.topic, o.normalized_topic, o.updated_at
+           FROM teaching_objects o
+          WHERE ${legacyWhere} AND o.object_type = 'paper' AND o.article_uid IS NOT NULL
+            AND EXISTS (SELECT 1 FROM teaching_object_claims c WHERE c.object_key = o.object_key)
+          ORDER BY o.updated_at DESC LIMIT ?`,
+        [limit],
+    ).catch(() => []));
+
+    const keys = flagshipTopicKeys();
     for (let i = 0; i < keys.length && out.length < limit; i += 400) {
         const chunk = keys.slice(i, i + 400);
-        const rows = await db.all(
+        take(await db.all(
             `SELECT o.object_key, o.article_uid, o.topic, o.normalized_topic, o.updated_at
                FROM teaching_objects o
               WHERE ${legacyWhere} AND o.object_type = 'paper' AND o.article_uid IS NOT NULL
                 AND LOWER(o.normalized_topic) IN (${chunk.map(() => '?').join(', ')})
               ORDER BY o.updated_at DESC LIMIT ?`,
             [...chunk, limit - out.length],
-        ).catch(() => []);
-        out.push(...rows);
+        ).catch(() => []));
     }
     return out.slice(0, limit);
 }
@@ -145,7 +166,7 @@ async function regenerateOne(row) {
 function print(report) {
     if (asJson) { console.log(JSON.stringify(report, null, 2)); return; }
     console.log(`Legacy teaching object regeneration${write ? '' : ' (dry run)'}\n`);
-    console.log(`  targets selected     ${report.targets.length}${topicFilter ? ` (topic: ${topicFilter})` : ' (flagship topics)'}`);
+    console.log(`  targets selected     ${report.targets.length}${topicFilter ? ` (topic: ${topicFilter})` : ' (claim-backed first, then flagship topics)'}`);
     if (!write) {
         for (const t of report.targets.slice(0, 20)) console.log(`   - ${t.object_key}  ${t.normalized_topic || ''}`);
         console.log(`\nDry run. Nothing generated, nothing written, nothing charged.`);

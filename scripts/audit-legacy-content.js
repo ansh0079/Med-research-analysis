@@ -194,12 +194,38 @@ async function auditReachability() {
          WHERE o.evidence_snapshot_id IS NULL OR o.evidence_snapshot_id = ''`,
     ).catch(() => null))?.n ?? null;
 
+    // The two routes overlap by an unknown amount, so "unreachable" has to be counted directly
+    // rather than subtracted - otherwise claim-backed objects get filed as unread.
+    let unreachable = null;
+    try {
+        await db.run('DROP TABLE IF EXISTS tmp_reach_topics').catch(() => {});
+        await db.run('CREATE TEMPORARY TABLE tmp_reach_topics (topic TEXT PRIMARY KEY)');
+        for (let i = 0; i < unique.length; i += 200) {
+            const chunk = unique.slice(i, i + 200);
+            await db.run(
+                `INSERT INTO tmp_reach_topics (topic) VALUES ${chunk.map(() => '(?)').join(', ')} ON CONFLICT DO NOTHING`,
+                chunk,
+            );
+        }
+        const row = await db.get(
+            `SELECT COUNT(*) AS n FROM teaching_objects o
+              WHERE ${legacyWhere}
+                AND (o.normalized_topic IS NULL OR LOWER(o.normalized_topic) NOT IN (SELECT topic FROM tmp_reach_topics))
+                AND NOT EXISTS (SELECT 1 FROM teaching_object_claims c WHERE c.object_key = o.object_key)`,
+        );
+        unreachable = Number(row ? Object.values(row)[0] : 0) || 0;
+        await db.run('DROP TABLE IF EXISTS tmp_reach_topics').catch(() => {});
+    } catch {
+        unreachable = null;
+    }
+
     return {
         totalLegacy,
         flagshipTopics: unique.length,
         reachableViaFlagshipTopic: flagshipReach,
         reachableViaExistingClaims: claimBacked,
-        meaning: 'regeneration should be scoped to reachable objects; the remainder is unread content that can wait or be retired',
+        unreachableByAnyRoute: unreachable,
+        meaning: 'regeneration should be scoped to reachable objects; only unreachableByAnyRoute can be retired',
     };
 }
 
@@ -234,14 +260,22 @@ async function retireUnreachable(reach) {
         );
     }
 
-    // Retire only what is BOTH unprovable and unreachable; never re-retire, never touch linked rows.
+    // Retire only what is unreachable by EVERY route a reader has.
+    //
+    // Production made this necessary: 2,443 legacy objects are reachable through a flagship topic but
+    // 5,722 back a stored claim, and those sets are not the same. Retiring on topic reach alone would
+    // have retired thousands of objects a reader can open through a claim. Both routes are excluded
+    // here; never re-retire, never touch linked rows.
     const result = await db.run(
         `UPDATE teaching_objects
             SET lineage_status = 'legacy_retired'
           WHERE (evidence_snapshot_id IS NULL OR evidence_snapshot_id = '')
             AND lineage_status = 'legacy_unlinked'
             AND (normalized_topic IS NULL
-                 OR LOWER(normalized_topic) NOT IN (SELECT topic FROM tmp_reachable_topics))`,
+                 OR LOWER(normalized_topic) NOT IN (SELECT topic FROM tmp_reachable_topics))
+            AND NOT EXISTS (
+                SELECT 1 FROM teaching_object_claims c WHERE c.object_key = teaching_objects.object_key
+            )`,
     ).catch((err) => ({ error: String(err?.message || err) }));
     if (result?.error) return { retired: 0, error: result.error };
     await db.run('DROP TABLE IF EXISTS tmp_reachable_topics').catch(() => {});
@@ -288,8 +322,8 @@ function printReport(report) {
         console.log(`  legacy teaching objects            ${reach.totalLegacy}`);
         console.log(`  reachable via a flagship topic     ${reach.reachableViaFlagshipTopic}`);
         console.log(`  already backing a stored claim     ${reach.reachableViaExistingClaims ?? 'n/a'}`);
-        const rest = reach.totalLegacy - reach.reachableViaFlagshipTopic;
-        console.log(`  outside the curriculum             ${rest} (unread; can wait or be retired)`);
+        console.log(`  unreachable by either route        ${reach.unreachableByAnyRoute ?? 'n/a'} (the only rows --retire-unreachable touches)`);
+        console.log('  (topic reach and claim backing overlap, so these do not sum)');
     }
 
     if (report.coverage.some((r) => r && r.unlinked > 0)) {
