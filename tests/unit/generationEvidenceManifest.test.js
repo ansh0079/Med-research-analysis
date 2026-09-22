@@ -10,8 +10,10 @@
 // The module under test destructures its dependency at load, and this project's jest does not
 // hoist jest.mock above requires, so the mock is registered before the require below.
 jest.mock('../../server/services/search/searchEvidenceSnapshot', () => ({
+    ...jest.requireActual('../../server/services/search/searchEvidenceSnapshot'),
     addEvidenceToSnapshot: jest.fn(async (db, id, articles) => {
         if (db.__fail) throw new Error('snapshot write failed');
+        if (db.__forbidden) return { ok: false, reason: 'forbidden' };
         const added = articles
             .filter((a) => !(db.__dropUids || []).includes(a.uid))
             .map((a, i) => ({ uid: a.uid, versionId: `v-${i}-${a.uid}` }));
@@ -102,6 +104,24 @@ describe('an input that cannot be recorded makes the manifest incomplete', () =>
         expect(manifest.reason).toBe('partially_recorded');
         expect(manifest.missing).toEqual([{ kind: 'teaching_object', uid: 'teaching_object:to-1', reason: 'not_recorded' }]);
         expect(manifest.inputs.map((i) => i.kind)).toEqual(['guideline']);
+    });
+
+    test('a rejected snapshot write cannot be reported as complete', async () => {
+        const db = okDb(); db.__forbidden = true;
+        const manifest = await record(db);
+        expect(manifest).toMatchObject({ complete: false, reason: 'record_failed' });
+    });
+
+    test('community and topic evidence are versioned, while truncated evidence is incomplete', async () => {
+        const manifest = await record(okDb(), {
+            communityTopPicks: [{ uid: 'pubmed-8', title: 'Picked paper' }],
+            topicKnowledge: { teachingPoints: ['Treat early'] },
+        });
+        expect(manifest.complete).toBe(true);
+        expect(manifest.inputs.map((item) => item.kind)).toEqual(expect.arrayContaining(['community', 'topic_knowledge']));
+        const oversized = await record(okDb(), { teachingObjectContext: 'x'.repeat(5000) });
+        expect(oversized.complete).toBe(false);
+        expect(oversized.missing).toEqual(expect.arrayContaining([expect.objectContaining({ kind: 'teaching_object', reason: 'truncated_source' })]));
     });
 });
 

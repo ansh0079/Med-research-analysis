@@ -403,6 +403,9 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             guidelines,
             teachingObjects,
             teachingObjectContext,
+            communityTopPicks,
+            topicKnowledge: mergedTopicKnowledge,
+            claimAnchors,
             guidelineToEvidenceArticle,
             reason: 'quiz_topic_context',
         });
@@ -689,6 +692,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             guidelines,
             teachingObjects,
             teachingObjectContext,
+            communityTopPicks,
             guidelineToEvidenceArticle,
             reason: 'quiz_generation_context',
         });

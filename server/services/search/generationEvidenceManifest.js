@@ -16,14 +16,21 @@
  */
 
 const logger = require('../../config/logger');
-const { addEvidenceToSnapshot } = require('./searchEvidenceSnapshot');
+const crypto = require('crypto');
+const { addEvidenceToSnapshot, getEvidenceSnapshot, buildSourceVersion } = require('./searchEvidenceSnapshot');
 const { PROVENANCE_ASSERTING, lineageEnforcementMode } = require('./generationEvidenceContext');
 
 /** Input kinds a generation can read, beyond the searched articles themselves. */
 const INPUT_KINDS = Object.freeze({ GUIDELINE: 'guideline', TEACHING_OBJECT: 'teaching_object' });
 
-function text(value, limit = 4000) {
+function text(value, limit = Infinity) {
     return String(value ?? '').replace(/\s+/g, ' ').trim().slice(0, limit);
+}
+
+function contextToEvidenceArticle(kind, value) {
+    const body = text(JSON.stringify(value));
+    const hash = crypto.createHash('sha256').update(body).digest('hex');
+    return { uid: `quiz_context:${kind}:${hash}`, title: `Quiz ${kind} context`, abstract: body, source: 'quiz_context' };
 }
 
 /**
@@ -54,6 +61,9 @@ async function recordGenerationInputs(db, {
     guidelines = [],
     teachingObjects = [],
     teachingObjectContext = '',
+    communityTopPicks = [],
+    topicKnowledge = null,
+    claimAnchors = [],
     guidelineToEvidenceArticle,
     reason = 'generation_context',
 } = {}) {
@@ -71,6 +81,13 @@ async function recordGenerationInputs(db, {
             });
         }
     }
+    for (const [kind, value] of [
+        ['community', communityTopPicks], ['topic_knowledge', topicKnowledge], ['claim_anchors', claimAnchors],
+    ]) {
+        if (value != null && (!Array.isArray(value) || value.length)) {
+            wanted.push({ kind, article: contextToEvidenceArticle(kind, value) });
+        }
+    }
 
     if (!wanted.length) return { complete: true, inputs: [], missing: [], reason: null };
     if (!snapshotId) {
@@ -83,12 +100,27 @@ async function recordGenerationInputs(db, {
         };
     }
 
+    const tooLong = wanted.filter((w) => buildSourceVersion(w.article).truncated);
+    const recordable = wanted.filter((w) => !tooLong.includes(w));
     try {
-        const added = await addEvidenceToSnapshot(db, snapshotId, wanted.map((w) => w.article), { userId, sessionId, reason });
+        const added = recordable.length
+            ? await addEvidenceToSnapshot(db, snapshotId, recordable.map((w) => w.article), { userId, sessionId, reason })
+            : { ok: true, added: [] };
+        if (added?.ok === false) throw new Error(`snapshot addition rejected: ${added.reason || 'unknown'}`);
         const versionByUid = new Map((added?.added || []).map((entry) => [entry.uid, entry.versionId]));
+        if (versionByUid.size < recordable.length) {
+            try {
+                const found = await getEvidenceSnapshot(db, snapshotId, { userId, sessionId, withSources: false });
+                if (found.ok) {
+                    for (const entry of found.snapshot.additionalEvidence) versionByUid.set(entry.uid, entry.versionId);
+                }
+            } catch (err) {
+                logger.warn({ err, snapshotId }, 'checking existing generation inputs failed');
+            }
+        }
         const inputs = [];
-        const missing = [];
-        for (const { kind, article } of wanted) {
+        const missing = tooLong.map((w) => ({ kind: w.kind, uid: w.article.uid, reason: 'truncated_source' }));
+        for (const { kind, article } of recordable) {
             const versionId = versionByUid.get(article.uid);
             if (versionId) inputs.push({ kind, uid: article.uid, versionId });
             else missing.push({ kind, uid: article.uid, reason: 'not_recorded' });

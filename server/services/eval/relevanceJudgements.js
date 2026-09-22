@@ -22,6 +22,8 @@
 
 const logger = require('../../config/logger');
 const { isHeldoutLeakage } = require('../evalDatasetPolicy');
+const { getEvidenceSnapshot } = require('../search/searchEvidenceSnapshot');
+const { loadWorksheet, validateGraduatedFixture } = require('../heldoutWorksheet');
 
 const LABELS = Object.freeze(['on_topic', 'adjacent', 'off_topic']);
 
@@ -91,6 +93,9 @@ async function recordJudgement(db, {
             scenario_id = COALESCE(excluded.scenario_id, relevance_judgements.scenario_id),
             intended_sense = COALESCE(excluded.intended_sense, relevance_judgements.intended_sense),
             article_title = COALESCE(excluded.article_title, relevance_judgements.article_title),
+            search_id = COALESCE(excluded.search_id, relevance_judgements.search_id),
+            served_rank = COALESCE(excluded.served_rank, relevance_judgements.served_rank),
+            lane = COALESCE(excluded.lane, relevance_judgements.lane),
             updated_at = CURRENT_TIMESTAMP`,
         [queryKey, queryText, scenarioId, intendedSense, uid, articleTitle,
             label, reason, reviewer, reviewerRole, searchId, servedRank, lane],
@@ -166,23 +171,26 @@ function interRaterAgreement(candidates) {
 }
 
 /** Every judged scenario with its candidates resolved: the state of the labelling effort. */
-async function scenarioStatus(db, { queryKey = null } = {}) {
+async function scenarioStatus(db, { queryKey = null, independentReviewerIds = null } = {}) {
+    const eligibleIds = independentReviewerIds == null ? null
+        : new Set(Array.isArray(independentReviewerIds) ? independentReviewerIds.map(String)
+            : String(independentReviewerIds).split(',').map((value) => value.trim()).filter(Boolean));
     const params = [];
     let where = '';
     if (queryKey) { where = 'WHERE query_key = ?'; params.push(normalizeQuery(queryKey)); }
     const rows = await db.all(
         `SELECT query_key, query_text, scenario_id, intended_sense, article_uid, article_title,
-                label, reason, reviewer_id, reviewer_role, served_rank, lane
+                label, reason, reviewer_id, reviewer_role, served_rank, lane, search_id, updated_at
          FROM relevance_judgements ${where} ORDER BY query_key, article_uid, created_at`,
         params,
     );
     const adjRows = await db.all(
-        `SELECT query_key, article_uid, final_label, rationale, adjudicator_id
+        `SELECT query_key, article_uid, final_label, rationale, adjudicator_id, created_at
          FROM relevance_adjudications ${where}`,
         params,
     );
     const adjudications = new Map(adjRows.map((r) => [`${r.query_key} ${r.article_uid}`, {
-        finalLabel: r.final_label, rationale: r.rationale, adjudicatorId: r.adjudicator_id,
+        finalLabel: r.final_label, rationale: r.rationale, adjudicatorId: r.adjudicator_id, adjudicatedAt: r.created_at,
     }]));
 
     const scenarios = new Map();
@@ -203,20 +211,23 @@ async function scenarioStatus(db, { queryKey = null } = {}) {
         if (!scenario.candidates.has(row.article_uid)) {
             scenario.candidates.set(row.article_uid, {
                 articleUid: row.article_uid, title: row.article_title || null,
-                servedRank: row.served_rank ?? null, lane: row.lane || null, votes: [],
+                servedRank: row.served_rank ?? null, lane: row.lane || null,
+                searchId: row.search_id || null, votes: [],
             });
         }
+        const reviewerRole = eligibleIds && !eligibleIds.has(String(row.reviewer_id)) ? 'tuner' : row.reviewer_role;
         scenario.candidates.get(row.article_uid).votes.push({
-            label: row.label, reviewerId: row.reviewer_id, reviewerRole: row.reviewer_role, reason: row.reason,
+            label: row.label, reviewerId: row.reviewer_id, reviewerRole,
+            reason: row.reason, labelledAt: row.updated_at, searchId: row.search_id || null,
         });
-        if (row.reviewer_role !== 'tuner') scenario.reviewers.add(row.reviewer_id);
+        if (reviewerRole !== 'tuner') scenario.reviewers.add(row.reviewer_id);
     }
 
     return [...scenarios.values()].map((scenario) => {
-        const candidates = [...scenario.candidates.values()].map((candidate) => ({
-            ...candidate,
-            ...resolveCandidate(candidate.votes, adjudications.get(`${scenario.queryKey} ${candidate.articleUid}`)),
-        }));
+        const candidates = [...scenario.candidates.values()].map((candidate) => {
+            const resolution = adjudications.get(`${scenario.queryKey} ${candidate.articleUid}`) || null;
+            return { ...candidate, ...resolveCandidate(candidate.votes, resolution), adjudication: resolution };
+        });
         const resolved = candidates.filter((c) => c.label);
         const unresolved = candidates.filter((c) => !c.label);
         const blockers = [];
@@ -224,6 +235,14 @@ async function scenarioStatus(db, { queryKey = null } = {}) {
             blockers.push(`needs ${MIN_CANDIDATES_PER_SCENARIO} resolved candidates, has ${resolved.length}`);
         }
         if (unresolved.some((c) => c.state === 'disagreed')) blockers.push('unadjudicated disagreement');
+        if (candidates.some((c) => new Set(c.votes.filter((v) => v.reviewerRole !== 'tuner').map((v) => v.reviewerId)).size < 2)) {
+            blockers.push('each candidate needs two independent reviewers');
+        }
+        const eligibleVotes = candidates.flatMap((c) => c.votes.filter((v) => v.reviewerRole !== 'tuner'));
+        if (eligibleVotes.some((vote) => !vote.searchId)) blockers.push('every eligible vote needs a frozen search snapshot');
+        if (new Set(eligibleVotes.map((vote) => vote.searchId).filter(Boolean)).size > 1) {
+            blockers.push('votes must refer to one frozen search snapshot');
+        }
         if (scenario.reviewers.size < 2) blockers.push('needs a second reviewer');
         if (!scenario.intendedSense) blockers.push('intendedSense not recorded');
         return {
@@ -294,6 +313,50 @@ async function pendingCandidates(db, { reviewerId = null, limit = 25, perQuery =
 
 /* ─────────────────────────────── export ─────────────────────────────── */
 
+function frozenCandidate(item) {
+    const source = item.source;
+    if (!source) return null;
+    const passages = Array.isArray(source.passages) ? source.passages : [];
+    const sections = {};
+    for (const passage of passages) {
+        if (passage.kind === 'section' && passage.section) sections[passage.section] = passage.text;
+    }
+    return {
+        uid: item.uid,
+        pmid: source.pmid || null,
+        doi: source.doi || null,
+        title: source.title || passages.find((p) => p.kind === 'title')?.text || '',
+        abstract: passages.filter((p) => p.kind === 'abstract').map((p) => p.text).join(' '),
+        sections,
+        fullText: passages.filter((p) => p.kind === 'fulltext').map((p) => p.text).join('\n'),
+        source: source.source || null,
+        _evidenceLane: item.lane || null,
+        _snapshotVersionId: source.id,
+    };
+}
+
+async function frozenScenarioCandidates(db, scenario) {
+    const votes = scenario.candidates.flatMap((c) => c.votes.filter((v) => v.reviewerRole !== 'tuner'));
+    if (votes.some((vote) => !vote.searchId)) return { reason: 'every eligible vote needs a frozen search snapshot' };
+    const searchIds = new Set(votes.map((vote) => vote.searchId));
+    if (searchIds.size !== 1) return { reason: 'one frozen search snapshot is required for all votes' };
+    const searchId = [...searchIds][0];
+    const found = await getEvidenceSnapshot(db, searchId, { isAdmin: true });
+    if (!found.ok || !found.snapshot.replayable || found.snapshot.queryRedactedAt) {
+        return { reason: 'frozen search snapshot is unavailable or not replayable' };
+    }
+    if (normalizeQuery(found.snapshot.query) !== scenario.queryKey) {
+        return { reason: 'review query does not match the frozen search' };
+    }
+    const selected = found.snapshot.items.slice(0, 5);
+    if (selected.length < MIN_CANDIDATES_PER_SCENARIO) return { reason: 'frozen search has fewer than three candidates' };
+    const byUid = new Map(scenario.candidates.map((c) => [c.articleUid, c]));
+    if (selected.some((item) => !byUid.has(item.uid))) return { reason: 'top frozen candidates have not all been reviewed' };
+    const candidates = selected.map(frozenCandidate);
+    if (candidates.some((candidate) => !candidate)) return { reason: 'frozen candidate source version is missing' };
+    return { candidates, reviewed: selected.map((item) => byUid.get(item.uid)) };
+}
+
 /**
  * Turn graduatable scenarios into a held-out fixture document.
  *
@@ -301,9 +364,14 @@ async function pendingCandidates(db, { reviewerId = null, limit = 25, perQuery =
  * ranker should be neither rewarded nor punished, and folding them either way would manufacture a
  * result. Scenarios that are not graduatable are returned as skipped, with the reason.
  */
-async function buildHeldoutFixture(db, { labelledBy, source = 'clinician review queue', now = new Date() } = {}) {
+async function buildHeldoutFixture(db, {
+    labelledBy, source = 'clinician review queue', now = new Date(),
+    independentReviewerIds = process.env.INDEPENDENT_RELEVANCE_REVIEWER_IDS || '',
+} = {}) {
     if (!labelledBy) throw new JudgementRejected('labelledBy is required for provenance', 'provenance_required');
-    const scenarios = await scenarioStatus(db);
+    const scenarios = await scenarioStatus(db, { independentReviewerIds });
+    const worksheet = loadWorksheet();
+    const worksheetByQuery = new Map(worksheet.scenarios.map((s) => [normalizeQuery(s.query), s]));
     const queries = [];
     const skipped = [];
     for (const scenario of scenarios) {
@@ -315,11 +383,38 @@ async function buildHeldoutFixture(db, { labelledBy, source = 'clinician review 
             skipped.push({ query: scenario.query, reasons: ['appears in a tuning fixture (leakage)'] });
             continue;
         }
-        queries.push({
+        const worksheetScenario = worksheetByQuery.get(scenario.queryKey);
+        if (!worksheetScenario || (scenario.scenarioId && scenario.scenarioId !== worksheetScenario.id)) {
+            skipped.push({ query: scenario.query, reasons: ['query or scenario id is not in the held-out worksheet'] });
+            continue;
+        }
+        const frozen = await frozenScenarioCandidates(db, scenario);
+        if (frozen.reason) {
+            skipped.push({ query: scenario.query, reasons: [frozen.reason] });
+            continue;
+        }
+        const resolutions = frozen.reviewed.filter((c) => c.adjudication).map((c) => ({
+            candidateUid: c.articleUid,
+            finalRelevance: c.adjudication.finalLabel.replaceAll('_', '-'),
+            note: c.adjudication.rationale || '',
+        }));
+        const adjudications = frozen.reviewed.map((c) => c.adjudication).filter(Boolean);
+        const exported = {
+            scenarioId: worksheetScenario.id,
             query: scenario.query,
-            relevantUids: scenario.candidates.filter((c) => c.label === 'on_topic').map((c) => c.articleUid),
-            adjacentUids: scenario.candidates.filter((c) => c.label === 'adjacent').map((c) => c.articleUid),
-            offTopicUids: scenario.candidates.filter((c) => c.label === 'off_topic').map((c) => c.articleUid),
+            candidates: frozen.candidates,
+            judgments: frozen.reviewed.flatMap((c) => c.votes
+                .filter((v) => v.reviewerRole !== 'tuner')
+                .map((v) => ({ candidateUid: c.articleUid, labelledBy: v.reviewerId,
+                    labelledAt: v.labelledAt, relevance: v.label.replaceAll('_', '-') }))),
+            adjudication: resolutions.length ? {
+                adjudicatedBy: [...new Set(adjudications.map((a) => a.adjudicatorId))].join(', '),
+                adjudicatedAt: adjudications.map((a) => a.adjudicatedAt).sort().at(-1),
+                resolutions,
+            } : undefined,
+            relevantUids: frozen.reviewed.filter((c) => c.label === 'on_topic').map((c) => c.articleUid),
+            adjacentUids: frozen.reviewed.filter((c) => c.label === 'adjacent').map((c) => c.articleUid),
+            offTopicUids: frozen.reviewed.filter((c) => c.label === 'off_topic').map((c) => c.articleUid),
             provenance: {
                 labelledBy: scenario.reviewers.join(', ') || labelledBy,
                 labelledAt: now.toISOString().slice(0, 10),
@@ -327,7 +422,13 @@ async function buildHeldoutFixture(db, { labelledBy, source = 'clinician review 
                 intendedSense: scenario.intendedSense,
             },
             agreement: scenario.agreement,
-        });
+        };
+        const problems = validateGraduatedFixture({ queries: [exported] }, worksheet);
+        if (problems.length) {
+            skipped.push({ query: scenario.query, reasons: problems });
+            continue;
+        }
+        queries.push(exported);
     }
     const agreement = interRaterAgreement(scenarios.flatMap((s) => s.candidates));
     if (queries.length && !agreement.reportable) {

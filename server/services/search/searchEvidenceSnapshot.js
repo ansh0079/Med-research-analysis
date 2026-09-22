@@ -345,10 +345,13 @@ async function addEvidenceToSnapshot(db, id, articles, { userId = null, sessionI
     const row = await db.get('SELECT additional_evidence FROM search_evidence_snapshots WHERE id = ?', [id]);
     const existing = parseJson(row?.additional_evidence, []);
     const known = new Set(existing.map((a) => a.versionId));
+    const versions = list.map(buildSourceVersion).filter((version) => !known.has(version.id));
+    if (existing.length + new Set(versions.map((version) => version.id)).size > 200) {
+        return { ok: false, reason: 'additional_evidence_limit' };
+    }
     const now = new Date().toISOString();
     const added = [];
-    for (const article of list) {
-        const version = buildSourceVersion(article);
+    for (const version of versions) {
         if (known.has(version.id)) continue;
         await upsertSourceVersion(db, version, now);
         const entry = { uid: version.uid, versionId: version.id, reason: String(reason).slice(0, 60), addedAt: now, accessState: version.accessState };
@@ -357,7 +360,7 @@ async function addEvidenceToSnapshot(db, id, articles, { userId = null, sessionI
         added.push(entry);
     }
     if (added.length) {
-        await db.run('UPDATE search_evidence_snapshots SET additional_evidence = ? WHERE id = ?', [JSON.stringify(existing.slice(0, 200)), id]);
+        await db.run('UPDATE search_evidence_snapshots SET additional_evidence = ? WHERE id = ?', [JSON.stringify(existing), id]);
     }
     return { ok: true, added };
 }

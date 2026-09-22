@@ -26,6 +26,8 @@ const test = base.extend({
 
 test.describe('Real auth flows', () => {
   test.beforeEach(async ({ page }) => {
+    page.on('pageerror', (error) => console.error('Browser error:', error.stack || error.message));
+    page.on('console', (message) => { if (message.type() === 'error') console.error('Browser console:', message.text()); });
     // Mock quiz generation so we don't need real AI calls
     await page.route('**/api/quiz/generate', async (route) => {
       await route.fulfill({
@@ -54,7 +56,7 @@ test.describe('Real auth flows', () => {
     await page.goto('/');
     // The auth context should hydrate and show the user is logged in.
     // We look for a logout button or user menu rather than exact text.
-    await expect(page.locator('text=Logout, button, a').or(page.locator('[data-testid="user-menu"]'))).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole('button', { name: /E2E Test User/ })).toBeVisible({ timeout: 10000 });
   });
 
   test('full quiz flow submits attempts and updates dashboard', async ({ page }) => {

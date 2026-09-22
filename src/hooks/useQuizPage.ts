@@ -289,8 +289,8 @@ export function useQuizPage() {
     urlRoundId,
     urlCount,
     isAuthenticated,
-    quizPrefill.mcqAngles,
-    quizPrefill.teachingPoints,
+    quizPrefill?.mcqAngles,
+    quizPrefill?.teachingPoints,
   ]);
 
   const loadQuiz = useCallback(() => fetchQuiz(() => false), [fetchQuiz]);

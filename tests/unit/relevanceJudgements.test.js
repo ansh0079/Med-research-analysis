@@ -9,6 +9,10 @@
 const fs = require('fs');
 const path = require('path');
 const Sqlite = require('better-sqlite3');
+const { persistSearchEvidenceSnapshot } = require('../../server/services/search/searchEvidenceSnapshot');
+const { validateGraduatedFixture } = require('../../server/services/heldoutWorksheet');
+const { reviewerRoleFor } = require('../../server/routes/review/relevance');
+const { rankFrozenCandidates } = require('../../server/services/heldoutEval');
 const {
     recordJudgement, adjudicate, scenarioStatus, buildHeldoutFixture,
     interRaterAgreement, JudgementRejected, MIN_CANDIDATES_PER_SCENARIO,
@@ -18,6 +22,11 @@ const MIGRATION = path.join(__dirname, '../../database/migrations/102_relevance_
 
 function makeDb() {
     const sqlite = new Sqlite(':memory:');
+    sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/099_search_evidence_snapshots.sql'), 'utf8'));
+    sqlite.exec(`CREATE TABLE teaching_objects (id INTEGER PRIMARY KEY);
+                 CREATE TABLE quiz_attempts (id INTEGER PRIMARY KEY);
+                 CREATE TABLE case_scenarios (case_id TEXT PRIMARY KEY);`);
+    sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/101_evidence_lineage.sql'), 'utf8'));
     sqlite.exec(fs.readFileSync(MIGRATION, 'utf8'));
     return {
         async run(sql, params) { return { changes: sqlite.prepare(sql).run(...(params || [])).changes }; },
@@ -35,9 +44,17 @@ const judge = (db, over = {}) => recordJudgement(db, {
 /** Two reviewers agreeing on three candidates: the minimum shape that can graduate. */
 async function labelAScenario(db, over = {}) {
     const labels = ['on_topic', 'adjacent', 'off_topic'];
+    const saved = await persistSearchEvidenceSnapshot(db, {
+        query: QUERY,
+        articles: labels.map((_, i) => ({ uid: `pubmed-${i + 1}`, title: `Paper ${i + 1}`,
+            abstract: `Abstract for paper ${i + 1} about septic shock corticosteroids.`, source: 'pubmed' })),
+        userId: 'review-source',
+    });
+    expect(saved.error).toBeUndefined();
+    expect(saved.status).toBe('persisted');
     for (let i = 0; i < MIN_CANDIDATES_PER_SCENARIO; i++) {
         for (const reviewerId of ['clinician-a', 'clinician-b']) {
-            await judge(db, { articleUid: `pubmed-${i + 1}`, label: labels[i], reviewerId, ...over });
+            await judge(db, { articleUid: `pubmed-${i + 1}`, label: labels[i], reviewerId, searchId: saved.id, ...over });
         }
     }
 }
@@ -97,6 +114,11 @@ describe('disagreement is visible, not averaged away', () => {
 });
 
 describe('the ranker’s author cannot label its output', () => {
+    test('reviewer independence defaults closed and is granted only by server configuration', () => {
+        expect(reviewerRoleFor({ id: 'alice', isRankerTuner: false }, {})).toBe('tuner');
+        expect(reviewerRoleFor({ id: 'alice' }, { INDEPENDENT_RELEVANCE_REVIEWER_IDS: 'alice,bob' })).toBe('clinician');
+        expect(reviewerRoleFor({ id: 'mallory' }, { INDEPENDENT_RELEVANCE_REVIEWER_IDS: 'alice,bob' })).toBe('tuner');
+    });
     test('a tuner’s verdict neither decides a candidate nor forces adjudication', async () => {
         const db = makeDb();
         await judge(db, { reviewerId: 'tuner-x', reviewerRole: 'tuner', label: 'on_topic' });
@@ -131,14 +153,20 @@ describe('graduation into a held-out fixture', () => {
     test('a complete scenario exports as a fixture case with provenance and the three label sets', async () => {
         const db = makeDb();
         await labelAScenario(db);
-        const fixture = await buildHeldoutFixture(db, { labelledBy: 'reviewer@example.com', now: new Date('2026-09-20T00:00:00Z') });
+        const fixture = await buildHeldoutFixture(db, { labelledBy: 'reviewer@example.com', now: new Date('2026-09-20T00:00:00Z'), independentReviewerIds: ['clinician-a', 'clinician-b'] });
 
         expect(fixture.split).toBe('heldout');
+        expect(fixture.skipped).toEqual([]);
         expect(fixture.queries).toHaveLength(1);
         const [exported] = fixture.queries;
         expect(exported.relevantUids).toEqual(['pubmed-1']);
         expect(exported.adjacentUids).toEqual(['pubmed-2']);
         expect(exported.offTopicUids).toEqual(['pubmed-3']);
+        expect(exported.candidates).toHaveLength(3);
+        expect(exported.judgments).toHaveLength(6);
+        expect(exported.scenarioId).toBeTruthy();
+        expect(validateGraduatedFixture(fixture)).toEqual([]);
+        expect(() => rankFrozenCandidates(exported)).not.toThrow();
         expect(exported.provenance).toEqual({
             labelledBy: 'clinician-a, clinician-b',
             labelledAt: '2026-09-20',
@@ -151,7 +179,7 @@ describe('graduation into a held-out fixture', () => {
         const db = makeDb();
         await labelAScenario(db);
         await judge(db, { query: 'half done question', articleUid: 'pubmed-9', reviewerId: 'clinician-a' });
-        const fixture = await buildHeldoutFixture(db, { labelledBy: 'reviewer@example.com' });
+        const fixture = await buildHeldoutFixture(db, { labelledBy: 'reviewer@example.com', independentReviewerIds: ['clinician-a', 'clinician-b'] });
         expect(fixture.queries).toHaveLength(1);
         expect(fixture.skipped).toEqual([expect.objectContaining({ query: 'half done question' })]);
     });
@@ -160,13 +188,32 @@ describe('graduation into a held-out fixture', () => {
         await expect(buildHeldoutFixture(makeDb(), {})).rejects.toThrow(JudgementRejected);
     });
 
+    test('previously stored clinician roles do not graduate without current eligibility', async () => {
+        const db = makeDb();
+        await labelAScenario(db);
+        const fixture = await buildHeldoutFixture(db, { labelledBy: 'operator', independentReviewerIds: [] });
+        expect(fixture.queries).toEqual([]);
+        expect(fixture.skipped[0].reasons).toContain('each candidate needs two independent reviewers');
+    });
+
+    test('a vote without its frozen search is not exportable', async () => {
+        const db = makeDb();
+        await labelAScenario(db);
+        await db.run('UPDATE relevance_judgements SET search_id = NULL WHERE article_uid = ?', ['pubmed-2']);
+        const fixture = await buildHeldoutFixture(db, {
+            labelledBy: 'operator', independentReviewerIds: ['clinician-a', 'clinician-b'],
+        });
+        expect(fixture.queries).toEqual([]);
+        expect(fixture.skipped[0].reasons.join(' ')).toMatch(/frozen search snapshot/);
+    });
+
     test('a query that exists in a tuning fixture is refused as leakage', async () => {
         jest.resetModules();
         jest.doMock('../../server/services/evalDatasetPolicy', () => ({ isHeldoutLeakage: () => true }));
         const { buildHeldoutFixture: build } = require('../../server/services/eval/relevanceJudgements');
         const db = makeDb();
         await labelAScenario(db);
-        const fixture = await build(db, { labelledBy: 'reviewer@example.com' });
+        const fixture = await build(db, { labelledBy: 'reviewer@example.com', independentReviewerIds: ['clinician-a', 'clinician-b'] });
         expect(fixture.queries).toHaveLength(0);
         expect(fixture.skipped[0].reasons[0]).toMatch(/leakage/);
         jest.dontMock('../../server/services/evalDatasetPolicy');
@@ -236,7 +283,7 @@ describe('an exported fixture is one the release gate will actually load', () =>
     test('the export round-trips through the gate loader with its provenance intact', async () => {
         const db = makeDb();
         await labelAScenario(db);
-        const fixture = await buildHeldoutFixture(db, { labelledBy: 'reviewer@example.com' });
+        const fixture = await buildHeldoutFixture(db, { labelledBy: 'reviewer@example.com', independentReviewerIds: ['clinician-a', 'clinician-b'] });
 
         // Written where the gate looks, exactly as the import script writes it.
         const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'heldout-'));
@@ -247,5 +294,15 @@ describe('an exported fixture is one the release gate will actually load', () =>
         expect(loaded.cases[0].query).toBe(QUERY);
         expect(loaded.cases[0].relevantUids).toEqual(['pubmed-1']);
         fs.rmSync(dir, { recursive: true, force: true });
+    });
+
+    test('two reviewers somewhere in a scenario do not replace two votes per candidate', async () => {
+        const db = makeDb();
+        await labelAScenario(db);
+        await db.run(`DELETE FROM relevance_judgements WHERE reviewer_id = ? AND article_uid IN (?, ?)`,
+            ['clinician-b', 'pubmed-2', 'pubmed-3']);
+        const [scenario] = await scenarioStatus(db);
+        expect(scenario.graduatable).toBe(false);
+        expect(scenario.blockers).toContain('each candidate needs two independent reviewers');
     });
 });

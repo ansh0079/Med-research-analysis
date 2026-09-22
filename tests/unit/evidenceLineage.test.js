@@ -20,7 +20,7 @@ const request = require('supertest');
 const Sqlite = require('better-sqlite3');
 const TeachingObjects = require('../../database/mixins/m08d-teaching-objects');
 const QuizAttempts = require('../../database/mixins/m02c-quiz-attempts');
-const { persistSearchEvidenceSnapshot, getEvidenceSnapshot } = require('../../server/services/search/searchEvidenceSnapshot');
+const { persistSearchEvidenceSnapshot, getEvidenceSnapshot, addEvidenceToSnapshot } = require('../../server/services/search/searchEvidenceSnapshot');
 const {
     resolveGenerationEvidence,
     snapshotTopicEvidence,
@@ -164,6 +164,17 @@ describe('resolving the evidence a generation request used', () => {
         expect(r.lineage).toMatchObject({ status: LINEAGE_STATUS.INVALID, reason: 'addition_not_trusted' });
         const snap = (await getEvidenceSnapshot(db, id, { userId: 'u1' })).snapshot;
         expect(snap.additionalEvidence).toEqual([]);
+    });
+
+    test('an addition beyond the snapshot cap is rejected before being claimed as recorded', async () => {
+        const db = makeDb();
+        const id = await searchSnapshot(db);
+        const existing = Array.from({ length: 200 }, (_, i) => ({ uid: `old-${i}`, versionId: `v-${i}` }));
+        await db.run('UPDATE search_evidence_snapshots SET additional_evidence = ? WHERE id = ?', [JSON.stringify(existing), id]);
+        const result = await addEvidenceToSnapshot(db, id, [article(9)], { userId: 'u1' });
+        expect(result).toMatchObject({ ok: false, reason: 'additional_evidence_limit' });
+        const row = await db.get('SELECT additional_evidence FROM search_evidence_snapshots WHERE id = ?', [id]);
+        expect(JSON.parse(row.additional_evidence)).toHaveLength(200);
     });
 
     test("another user's snapshot, an unknown id and a legacy snapshot are invalid, never linked", async () => {

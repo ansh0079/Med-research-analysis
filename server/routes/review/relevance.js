@@ -31,8 +31,11 @@ function sendRejection(res, err, log) {
  * A reviewer who tuned the ranker may label, but their verdict is marked and never graduates.
  * The role comes from the account, not the request body, so it cannot be claimed away.
  */
-function reviewerRoleFor(user) {
-    return user?.isRankerTuner ? 'tuner' : 'clinician';
+function reviewerRoleFor(user, env = process.env) {
+    const id = String(user?.id || '').trim();
+    const independentIds = new Set(String(env.INDEPENDENT_RELEVANCE_REVIEWER_IDS || '')
+        .split(',').map((value) => value.trim()).filter(Boolean));
+    return id && independentIds.has(id) ? 'clinician' : 'tuner';
 }
 
 function registerRelevanceReviewRoutes(app, { db, requireJson, requireAuthJwt, requireRole, rateLimit }) {
@@ -54,7 +57,10 @@ function registerRelevanceReviewRoutes(app, { db, requireJson, requireAuthJwt, r
 
     app.get('/api/review/relevance/scenarios', ...requireReviewer, rateLimit(60, 60), async (req, res) => {
         try {
-            const scenarios = await scenarioStatus(db, { queryKey: req.query.query || null });
+            const scenarios = await scenarioStatus(db, {
+                queryKey: req.query.query || null,
+                independentReviewerIds: process.env.INDEPENDENT_RELEVANCE_REVIEWER_IDS || '',
+            });
             return res.json({
                 labels: LABELS,
                 scenarios,
@@ -72,7 +78,7 @@ function registerRelevanceReviewRoutes(app, { db, requireJson, requireAuthJwt, r
         try {
             const saved = await recordJudgement(db, {
                 ...req.body,
-                reviewerId: String(req.user?.id ?? req.body?.reviewerId ?? '').trim(),
+                reviewerId: String(req.user?.id || '').trim(),
                 reviewerRole: reviewerRoleFor(req.user),
             });
             return res.json({ ok: true, ...saved });
