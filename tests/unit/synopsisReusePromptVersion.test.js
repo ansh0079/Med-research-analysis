@@ -25,7 +25,12 @@ const { findReusableStoredSynopsis, invalidateStoredPaperSynopsis } = require('.
 const { buildPaperTeachingObject } = require('../../server/services/ai/teachingObjectService');
 
 const storeReturning = (payload) => ({
-    getTeachingObjectForArticle: jest.fn(async () => (payload ? { payload } : null)),
+    getTeachingObjectForArticle: jest.fn(async () => (payload ? {
+        payload,
+        lineageStatus: 'linked',
+        evidenceSnapshotId: 'snap-1',
+    } : null)),
+    get: jest.fn(async () => ({ contract_version: 2 })),
 });
 
 const storedRow = (overrides = {}) => ({

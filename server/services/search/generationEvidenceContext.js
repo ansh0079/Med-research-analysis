@@ -15,9 +15,8 @@
  *                           or the lookup failed. Never treated as linked.
  *
  * Verification labels are only as strong as the lineage behind them. With
- * EVIDENCE_LINEAGE_ENFORCEMENT=enforce, a provenance label stronger than abstract_only cannot be
- * issued for content whose lineage is not linked. The default is shadow: the state is recorded and
- * reported, labels are unchanged, so turning enforcement on is a measured decision.
+ * A provenance label stronger than abstract_only cannot be issued for content whose lineage is not
+ * linked. Enforcement is the default; explicit shadow mode is available for measured rollback.
  */
 
 const logger = require('../../config/logger');
@@ -38,11 +37,12 @@ const LINEAGE_STATUS = Object.freeze({
 const PROVENANCE_ASSERTING = new Set(['guideline_supported', 'source_verified', 'full_text_available']);
 
 function lineageEnforcementMode(env = process.env) {
-    return String(env.EVIDENCE_LINEAGE_ENFORCEMENT || 'shadow').toLowerCase() === 'enforce' ? 'enforce' : 'shadow';
+    return String(env.EVIDENCE_LINEAGE_ENFORCEMENT || 'enforce').toLowerCase() === 'shadow' ? 'shadow' : 'enforce';
 }
 
 function isLinked(lineage) {
-    return lineage?.status === LINEAGE_STATUS.LINKED || lineage?.status === LINEAGE_STATUS.LINKED_WITH_ADDITIONS;
+    return Boolean(lineage?.snapshotId)
+        && (lineage.status === LINEAGE_STATUS.LINKED || lineage.status === LINEAGE_STATUS.LINKED_WITH_ADDITIONS);
 }
 
 function articleKey(article) {

@@ -1,6 +1,8 @@
 const { sanitizeArticleOutput } = require('../utils/articles');
 const { fetchUnifiedEvidence } = require('./unifiedEvidenceSearch');
 const { createVectorSearchService } = require('./vectorSearchService');
+const { getEvidenceSnapshot } = require('./search/searchEvidenceSnapshot');
+const { batchCheckRetractions } = require('./qualityService');
 
 const DEFAULT_SOURCES = ['pubmed', 'semantic', 'openalex'];
 
@@ -38,8 +40,84 @@ function heuristicSearchQuery(caseText) {
     return parts.join(' ').slice(0, 380);
 }
 
+async function loadTrustedSeeds(db, seedArticles, { evidenceSnapshotId, userId, sessionId } = {}) {
+    const requested = (Array.isArray(seedArticles) ? seedArticles : [])
+        .slice(0, 12).map((article) => String(article?.uid || article?.pmid || '').trim()).filter(Boolean);
+    if (!requested.length) return [];
+
+    if (evidenceSnapshotId) {
+        const found = await getEvidenceSnapshot(db, evidenceSnapshotId, { userId, sessionId });
+        if (!found.ok || !found.snapshot.replayable) {
+            const error = new Error('Evidence snapshot is unavailable for this user');
+            error.code = 'INVALID_EVIDENCE_SNAPSHOT';
+            throw error;
+        }
+        const byUid = new Map(found.snapshot.items.map((item) => [item.uid, item.source]));
+        return requested.flatMap((uid) => {
+            const source = byUid.get(uid);
+            if (!source) return [];
+            const passages = Array.isArray(source.passages) ? source.passages : [];
+            return [sanitizeArticleOutput({
+                uid,
+                pmid: source.pmid,
+                doi: source.doi,
+                title: passages.find((p) => p.kind === 'title')?.text || source.title || '',
+                abstract: passages.filter((p) => p.kind === 'abstract').map((p) => p.text).join(' '),
+                sections: Object.fromEntries(passages.filter((p) => p.kind === 'section' && p.section).map((p) => [p.section, p.text])),
+                fullText: passages.find((p) => p.kind === 'fulltext')?.text || '',
+                source: source.source,
+                _snapshotVersionId: source.id,
+            })];
+        });
+    }
+
+    if (typeof db?.getCachedArticle !== 'function') return [];
+    const cached = await Promise.all(requested.map(async (uid) => {
+        const stored = await db.getCachedArticle(uid).catch(() => null);
+        return stored?.title ? sanitizeArticleOutput({ ...stored, uid }) : null;
+    }));
+    return cached.filter(Boolean);
+}
+
+async function screenCaseRetractions(db, selected, logWarn) {
+    const keys = selected.flatMap((a) => [a.uid, a.pmid, a.doi]).filter(Boolean).map(String);
+    const cachedRetractions = typeof db?.getArticleRetractionBatch === 'function'
+        ? await db.getArticleRetractionBatch(keys).catch(() => ({}))
+        : {};
+    const unchecked = selected.filter((a) => ![a.uid, a.pmid, a.doi].some((key) => cachedRetractions[String(key)]));
+    let liveRetractions = {};
+    let retractionScreening = selected.some((a) => !a.pmid && !a.doi
+        && ![a.uid].some((key) => cachedRetractions[String(key)])) ? 'partial' : 'complete';
+    try {
+        liveRetractions = await batchCheckRetractions(unchecked.filter((a) => a.pmid || a.doi));
+    } catch (err) {
+        retractionScreening = 'partial';
+        logWarn?.({ err }, 'Case evidence retraction screening incomplete');
+    }
+    const articles = selected.filter((a) => {
+        const result = [a._retraction, ...[a.uid, a.pmid, a.doi].map((key) => cachedRetractions[String(key)] || liveRetractions[String(key)])]
+            .find((status) => status?.isRetracted);
+        return !result;
+    });
+    return { articles, retractionScreening };
+}
+
+async function hasKnownCaseRetraction(db, articles = []) {
+    const list = Array.isArray(articles) ? articles : [];
+    if (list.some((article) => article?._retraction?.isRetracted)) return true;
+    if (typeof db?.getArticleRetractionBatch !== 'function') return false;
+    const keys = list.flatMap((article) => [article?.uid, article?.pmid, article?.doi]).filter(Boolean).map(String);
+    if (!keys.length) return false;
+    try {
+        const statuses = await db.getArticleRetractionBatch(keys);
+        return keys.some((key) => statuses?.[key]?.isRetracted);
+    } catch {
+        return true;
+    }
+}
+
 /**
- * Pull literature for case-analysis: optional client seed set (same “top evidence” as search workspace),
+ * Pull literature for case-analysis: optional server-resolved seed set from the search workspace,
  * then optional vector hits, then unified multi-source search. Seeds are merged first in order, then deduped fills.
  *
  * @param {object} opts
@@ -49,7 +127,7 @@ function heuristicSearchQuery(caseText) {
  * @param {object} opts.db
  * @param {Function} opts.fetch
  * @param {Function} [opts.logWarn]
- * @param {object[]} [opts.seedArticles] — optional articles from Topic workspace (e.g. top 5)
+ * @param {object[]} [opts.seedArticles] - identifiers from Topic workspace, never trusted text
  */
 async function gatherEvidenceArticlesForCase({
     searchQuery,
@@ -59,13 +137,12 @@ async function gatherEvidenceArticlesForCase({
     fetch: fetchImpl,
     logWarn,
     seedArticles = [],
+    evidenceSnapshotId = null,
+    userId = null,
+    sessionId = null,
 }) {
     const safeLimit = Math.min(100, Math.max(6, Number(limit) || 14));
-
-    const seeds = (Array.isArray(seedArticles) ? seedArticles : [])
-        .slice(0, 12)
-        .map((row) => sanitizeArticleOutput(typeof row === 'object' && row ? row : {}))
-        .filter((a) => dedupeArticleKey(a));
+    const seeds = await loadTrustedSeeds(db, seedArticles, { evidenceSnapshotId, userId, sessionId });
 
     let vectorHits = [];
     if (db.isVectorSearchAvailable()) {
@@ -113,23 +190,21 @@ async function gatherEvidenceArticlesForCase({
         Math.max(seeds.length || 0, vectorHits.length || 8, safeLimit)
     );
 
-    // TODO: Add retraction screening here, matching the pattern in synthesisGenerationCore.js.
-    // After assembling `ordered`, call batchCheckRetractions(ordered) and filter out or flag
-    // retracted articles before returning. Example:
-    //   const retractionResults = await batchCheckRetractions(ordered).catch(() => ({}));
-    //   const retractedUids = Object.entries(retractionResults)
-    //       .filter(([, v]) => v?.isRetracted).map(([uid]) => uid);
-    //   const screened = ordered.filter(a => !retractedUids.includes(a.uid));
-    // Return retractionResults alongside articles so callers can surface a warning to users.
+    const selected = ordered.slice(0, maxArticles);
+    const { articles, retractionScreening } = await screenCaseRetractions(db, selected, logWarn);
 
     return {
-        articles: ordered.slice(0, maxArticles),
+        articles,
         vectorUsed: vectorHits.length > 0,
         sourcesTried: DEFAULT_SOURCES,
+        retractionScreening,
     };
 }
 
 module.exports = {
     gatherEvidenceArticlesForCase,
     heuristicSearchQuery,
+    loadTrustedSeeds,
+    screenCaseRetractions,
+    hasKnownCaseRetraction,
 };

@@ -127,7 +127,7 @@ function policyVersions(queryRepresentation, env = process.env) {
         flags: {
             laneRetrieval: String(env.SEARCH_LANE_RETRIEVAL || 'off').toLowerCase(),
             entailmentMode: String(env.POLICY_ENTAILMENT_MODE || 'shadow').toLowerCase(),
-            lineageEnforcement: String(env.EVIDENCE_LINEAGE_ENFORCEMENT || 'shadow').toLowerCase(),
+            lineageEnforcement: String(env.EVIDENCE_LINEAGE_ENFORCEMENT || 'enforce').toLowerCase(),
         },
     };
 }

@@ -386,7 +386,7 @@ function evaluateHeldout(options = {}) {
         laneRanking: laneRanking || String(process.env.LANE_RANKING || 'v1'),
         flags: {
             laneRetrieval: String(process.env.SEARCH_LANE_RETRIEVAL || 'off'),
-            lineageEnforcement: String(process.env.EVIDENCE_LINEAGE_ENFORCEMENT || 'shadow'),
+            lineageEnforcement: String(process.env.EVIDENCE_LINEAGE_ENFORCEMENT || 'enforce'),
         },
     };
     const report = (status, extra = {}) => ({ status, passed: status === 'passed', provenance, ...extra });

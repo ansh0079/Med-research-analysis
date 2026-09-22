@@ -277,7 +277,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         if (!claimAnchors && !resolvedClaimJobKey) {
             claimMastery = userContext?.claimMastery || [];
             [teachingObjects, teachingClaims] = await Promise.all([
-                db.listTeachingObjectsForTopic(cleanTopic, { limit: 8 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectsForTopic failed'); return []; }),
+                db.listTeachingObjectsForTopic(cleanTopic, { limit: 8, excludeRetired: true }).catch((err) => { logger.warn({ err }, 'listTeachingObjectsForTopic failed'); return []; }),
                 db.listTeachingObjectClaimsForTopic(cleanTopic, { limit: 40 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectClaimsForTopic failed'); return []; }),
             ]);
             const candidatePool = selectAdaptiveClaimAnchors({
@@ -684,7 +684,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         const communityTopPicks = await db.getGlobalEngagedArticles?.(db.normalizeTopic(cleanTopic), 3)
             .catch((err) => { logger.warn({ err }, 'operation failed'); return []; }) || [];
         // Retired content stays readable but does not seed new clinical material.
-        const teachingObjects = usableAsContext(await db.listTeachingObjectsForTopic(cleanTopic, { limit: 8 })
+        const teachingObjects = usableAsContext(await db.listTeachingObjectsForTopic(cleanTopic, { limit: 8, excludeRetired: true })
             .catch((err) => { logger.warn({ err }, 'operation failed'); return []; }));
         const teachingObjectContext = teachingObjectsToQuizContext(teachingObjects);
         // Everything the prompt will carry beyond the searched articles - guideline recommendations

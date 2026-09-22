@@ -653,7 +653,11 @@ async function fetchAndRankSearchArticles({
             'search.candidate_count': sanitized.length,
         }, async (span) => {
             const ranked = buildEvidenceBouquet(sanitized, query, {
-                count: safeLimit,
+                // PICO needs headroom to promote a relevant candidate that the first-pass
+                // evidence score would otherwise leave just below the display cutoff.
+                count: pico && shouldUsePicoReranker()
+                    ? Math.min(50, Math.max(safeLimit, safeLimit * 3))
+                    : safeLimit,
                 queryIntent,
                 preferredArchetypes: intentToPreferredArchetypes(queryIntent),
                 previousQueries,
@@ -687,6 +691,7 @@ async function fetchAndRankSearchArticles({
             cache,
         }));
         timings.picoRerankMs = telemetry.picoRerank?.ms ?? 0;
+        articles = articles.slice(0, safeLimit);
         timings.rankMs = Date.now() - rankStarted;
         _trace('afterRerank', articles);
 

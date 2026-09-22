@@ -6,7 +6,11 @@ const {
     buildTeachingVignettePrompt,
 } = require('../../prompts');
 const { buildCaseInitPrompt, buildCaseStepPrompt, STEP_SEQUENCE } = require('../../prompts/adaptiveCase');
-const { gatherEvidenceArticlesForCase, heuristicSearchQuery } = require('../../services/caseEvidenceService');
+const { gatherEvidenceArticlesForCase, heuristicSearchQuery, loadTrustedSeeds, screenCaseRetractions, hasKnownCaseRetraction } = require('../../services/caseEvidenceService');
+const { persistSearchEvidenceSnapshot } = require('../../services/search/searchEvidenceSnapshot');
+const { guidelineToEvidenceArticle } = require('../../services/search/generationEvidenceContext');
+const { recordGenerationInputs, publicManifest } = require('../../services/search/generationEvidenceManifest');
+const { stripPii } = require('../../utils/piiStripper');
 const { extractTrialGuidelineConflicts } = require('../../services/conflictExtractionService');
 const {
     extractPicoProfile,
@@ -61,6 +65,7 @@ function registerReviewCaseRoutes(app, {
             const topic = String(req.body.topic || '').trim();
             const learningMode = normalizeLearningMode(req.body.learningMode);
             const seedArticles = Array.isArray(req.body.seedArticles) ? req.body.seedArticles : [];
+            const evidenceSnapshotId = req.body.evidenceSnapshotId || null;
 
             let literatureQuery = heuristicSearchQuery(topic ? `${topic}\n${caseText}` : caseText);
             let queryHints = null;
@@ -116,11 +121,13 @@ function registerReviewCaseRoutes(app, {
             }
 
             const userLevel = userContext?.mastery?.tier || userContext?.profile?.effectiveDifficulty || 'unknown';
-            const cacheKey = `case:${learningMode}:${userLevel}:${topic.toLowerCase()}:${literatureQuery.slice(0, 220).toLowerCase()}:s:${seedKey}:tk:${tkSig}`;
+            const cacheKey = `case:${req.user?.id || req.sessionId || 'anon'}:${learningMode}:${userLevel}:${topic.toLowerCase()}:${literatureQuery.slice(0, 220).toLowerCase()}:s:${seedKey}:es:${evidenceSnapshotId || ''}:tk:${tkSig}`;
             const cached = await Promise.resolve(cache.get(cacheKey)).catch(() => null);
-            if (cached) return res.json({ ...cached, cached: true });
+            if (cached && !(await hasKnownCaseRetraction(db, cached.citations || []))) {
+                return res.json({ ...cached, cached: true });
+            }
 
-            const { articles: baseArticles, vectorUsed, sourcesTried } = await gatherEvidenceArticlesForCase({
+            const { articles: baseArticles, vectorUsed, sourcesTried, retractionScreening } = await gatherEvidenceArticlesForCase({
                 searchQuery: literatureQuery,
                 limit: 30,
                 serverConfig,
@@ -128,6 +135,9 @@ function registerReviewCaseRoutes(app, {
                 fetch: fetchImpl,
                 logWarn: req.log?.warn ? (...args) => req.log.warn(...args) : undefined,
                 seedArticles,
+                evidenceSnapshotId,
+                userId: req.user?.id || null,
+                sessionId: req.sessionId || null,
             });
 
             // ── Hybrid Reranking: score articles against patient PICO ───────────
@@ -152,6 +162,29 @@ function registerReviewCaseRoutes(app, {
             }
 
             const guidelines = await db.getGuidelinesByTopic((topic || knowledgeTopic || '').trim(), { limit: 5 }).catch((err) => { logger.warn({ err }, 'operation failed'); return []; });
+            const snapshot = await persistSearchEvidenceSnapshot(db, {
+                query: stripPii(literatureQuery),
+                queryRepresentation: { version: 1, origin: 'case_analyze' },
+                articles: topArticles,
+                userId: req.user?.id || null,
+                sessionId: req.sessionId || null,
+                origin: 'case_analyze',
+            });
+            const manifest = await recordGenerationInputs(db, {
+                snapshotId: snapshot.id,
+                userId: req.user?.id || null,
+                sessionId: req.sessionId || null,
+                guidelines,
+                topicKnowledge: topicKnowledgeRow,
+                guidelineToEvidenceArticle,
+                reason: 'case_analyze_context',
+            });
+            const evidenceProvenance = {
+                snapshotId: snapshot.id,
+                status: snapshot.status === 'persisted' && manifest.complete ? 'source_replayable' : 'unverified',
+                manifest: publicManifest(manifest),
+                retractionScreening,
+            };
 
             const conflictTopic = (topic || knowledgeTopic || '').trim();
             const { conflictMatrix, guidelineAlignment } = await extractTrialGuidelineConflicts(
@@ -201,6 +234,7 @@ function registerReviewCaseRoutes(app, {
                         'Research-assistant output only. Verify with full guidelines and local protocols before clinical use.'
                 ),
                 citations: topArticles,
+                evidenceProvenance,
                 justInTimeReminder: userContext?.justInTimeReminder || null,
                 rerankMeta: {
                     totalFetched: baseArticles.length,
@@ -224,7 +258,7 @@ function registerReviewCaseRoutes(app, {
             });
             res.json(result);
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(error.code === 'INVALID_EVIDENCE_SNAPSHOT' ? 400 : 500).json({ error: error.message });
         }
         }
     );
@@ -243,8 +277,16 @@ function registerReviewCaseRoutes(app, {
                 const topic = String(req.body.topic || '').trim();
                 if (!topic) return res.status(400).json({ error: 'topic is required' });
 
-                const seedArticles = Array.isArray(req.body.seedArticles) ? req.body.seedArticles.slice(0, 8) : [];
-                if (!seedArticles.length) return res.status(400).json({ error: 'seedArticles is required (at least 1)' });
+                const requestedSeeds = Array.isArray(req.body.seedArticles) ? req.body.seedArticles.slice(0, 8) : [];
+                if (!requestedSeeds.length) return res.status(400).json({ error: 'seedArticles is required (at least 1)' });
+                const evidenceSnapshotId = req.body.evidenceSnapshotId || null;
+                const trustedSeeds = await loadTrustedSeeds(db, requestedSeeds, {
+                    evidenceSnapshotId,
+                    userId: req.user?.id || null,
+                    sessionId: req.sessionId || null,
+                });
+                const { articles: seedArticles, retractionScreening } = await screenCaseRetractions(db, trustedSeeds, req.log?.warn?.bind(req.log));
+                if (!seedArticles.length) return res.status(409).json({ error: 'No usable server-held seed articles remain' });
 
                 const learningMode = normalizeLearningMode(req.body.learningMode);
                 const provider = req.body.provider || 'auto';
@@ -257,11 +299,31 @@ function registerReviewCaseRoutes(app, {
                 const tkSig = topicKnowledgeRow?.updatedAt
                     ? String(topicKnowledgeRow.updatedAt).slice(0, 24)
                     : 'none';
-                const cacheKey = `teaching:${learningMode}:${topic.toLowerCase().slice(0, 80)}:${seedKey}:tk:${tkSig}`;
+                const cacheKey = `teaching:${req.user?.id || req.sessionId || 'anon'}:${learningMode}:${topic.toLowerCase().slice(0, 80)}:${seedKey}:es:${evidenceSnapshotId || ''}:tk:${tkSig}`;
                 const cached = await Promise.resolve(cache.get(cacheKey)).catch(() => null);
-                if (cached) return res.json({ ...cached, cached: true });
+                if (cached?.evidenceProvenance?.sourceUids?.length
+                    && !(await hasKnownCaseRetraction(db, cached.evidenceProvenance.sourceUids.map((uid) => ({ uid }))))) {
+                    return res.json({ ...cached, cached: true });
+                }
 
                 const guidelines = await db.getGuidelinesByTopic(topic || '', { limit: 5 }).catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; });
+                const snapshot = await persistSearchEvidenceSnapshot(db, {
+                    query: topic,
+                    queryRepresentation: { version: 1, origin: 'teaching_vignette' },
+                    articles: seedArticles,
+                    userId: req.user?.id || null,
+                    sessionId: req.sessionId || null,
+                    origin: 'teaching_vignette',
+                });
+                const manifest = await recordGenerationInputs(db, {
+                    snapshotId: snapshot.id,
+                    userId: req.user?.id || null,
+                    sessionId: req.sessionId || null,
+                    guidelines,
+                    topicKnowledge: topicKnowledgeRow,
+                    guidelineToEvidenceArticle,
+                    reason: 'teaching_vignette_context',
+                });
 
                 let userContext = null;
                 if (req.user && req.user.id) {
@@ -300,6 +362,13 @@ function registerReviewCaseRoutes(app, {
                     topic,
                     learningMode,
                     seedCount: seedArticles.length,
+                    evidenceProvenance: {
+                        snapshotId: snapshot.id,
+                        status: snapshot.status === 'persisted' && manifest.complete ? 'source_replayable' : 'unverified',
+                        manifest: publicManifest(manifest),
+                        retractionScreening,
+                        sourceUids: seedArticles.map((article) => article.uid).filter(Boolean),
+                    },
                     presentingComplaint: useText(parsed.presentingComplaint, fallback.presentingComplaint),
                     history: useText(parsed.history, fallback.history),
                     examination: useText(parsed.examination, fallback.examination),
@@ -327,7 +396,7 @@ function registerReviewCaseRoutes(app, {
                 });
                 res.json(result);
             } catch (error) {
-                res.status(500).json({ error: error.message });
+                res.status(error.code === 'INVALID_EVIDENCE_SNAPSHOT' ? 400 : 500).json({ error: error.message });
             }
         }
     );

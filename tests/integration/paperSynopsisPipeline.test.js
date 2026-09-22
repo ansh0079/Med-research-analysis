@@ -113,6 +113,7 @@ function makeDb(overrides = {}) {
         getGuidelinesByTopic: async () => [],
         getTopicKnowledge: async () => null,
         getTeachingObjectForArticle: async () => null,
+        get: async (sql) => String(sql).includes('search_evidence_snapshots') ? { contract_version: 2 } : null,
         getSynopsisFeedbackStats: async () => null,
         insertPersonalizationDecision: async () => ({}),
         logEvent: async (name, sessionId, payload) => { events.push({ name, sessionId, payload }); },
@@ -222,17 +223,18 @@ describe('paper synopsis pipeline (real modules, stubbed network)', () => {
     test('serves a repeat request from cache instead of calling the model again', async () => {
         const cache = makeCache();
         const db = makeDb();
+        const lineage = { snapshotId: 'synopsis-snapshot', status: 'linked' };
 
         const first = makeFetch();
         await runPaperSynopsisGeneration({
-            article: ARTICLE, serverConfig: serverConfig(), fetchImpl: first.fetchImpl, cache, db, topic: 'sepsis corticosteroids',
+            article: ARTICLE, serverConfig: serverConfig(), fetchImpl: first.fetchImpl, cache, db, topic: 'sepsis corticosteroids', lineage,
         });
         const firstLlmCalls = first.calls.filter((c) => c.url.includes('anthropic') || c.url.includes('generativelanguage')).length;
         expect(firstLlmCalls).toBeGreaterThan(0);
 
         const second = makeFetch();
         const cached = await runPaperSynopsisGeneration({
-            article: ARTICLE, serverConfig: serverConfig(), fetchImpl: second.fetchImpl, cache, db, topic: 'sepsis corticosteroids',
+            article: ARTICLE, serverConfig: serverConfig(), fetchImpl: second.fetchImpl, cache, db, topic: 'sepsis corticosteroids', lineage,
         });
 
         expect(cached.cached).toBe(true);
@@ -320,6 +322,8 @@ describe('paper synopsis pipeline (real modules, stubbed network)', () => {
             getTeachingObjectForArticle: async () => ({
                 provider: 'gemini',
                 model: 'gemini-2.5-flash',
+                lineageStatus: 'linked',
+                evidenceSnapshotId: 'synopsis-snapshot',
                 generatedAt: new Date().toISOString(),
                 payload: {
                     generatedAt: new Date().toISOString(),

@@ -25,7 +25,10 @@ const NOW = Date.parse('2026-09-07T12:00:00.000Z');
 const daysAgo = (n) => new Date(NOW - n * 86400000).toISOString();
 
 function dbWith(object) {
-    return { getTeachingObjectForArticle: jest.fn().mockResolvedValue(object) };
+    return {
+        getTeachingObjectForArticle: jest.fn().mockResolvedValue(object),
+        get: jest.fn().mockResolvedValue({ contract_version: 2 }),
+    };
 }
 
 function storedSynopsis(over = {}) {
@@ -34,6 +37,8 @@ function storedSynopsis(over = {}) {
         model: 'gemini-2.5-flash',
         generatedAt: daysAgo(1),
         updatedAt: daysAgo(1),
+        lineageStatus: 'linked',
+        evidenceSnapshotId: 'snap-1',
         payload: {
             kind: 'paper_teaching_object',
             generatedAt: daysAgo(1),
@@ -53,6 +58,22 @@ describe('findReusableStoredSynopsis', () => {
         expect(result).toBeTruthy();
         expect(result.synopsis.bottomLine).toMatch(/septic shock/);
         expect(result.ageDays).toBeCloseTo(1, 0);
+    });
+
+    test('refuses unlinked, invalid, missing, and non-replayable snapshots', async () => {
+        for (const object of [
+            storedSynopsis({ lineageStatus: 'legacy_unlinked', evidenceSnapshotId: null }),
+            storedSynopsis({ lineageStatus: 'invalid' }),
+            storedSynopsis({ evidenceSnapshotId: null }),
+        ]) {
+            expect(await findReusableStoredSynopsis(dbWith(object), 'pmid-1', { now: NOW })).toBeNull();
+        }
+        const missing = dbWith(storedSynopsis());
+        missing.get.mockResolvedValue(null);
+        expect(await findReusableStoredSynopsis(missing, 'pmid-1', { now: NOW })).toBeNull();
+        const oldContract = dbWith(storedSynopsis());
+        oldContract.get.mockResolvedValue({ contract_version: 1 });
+        expect(await findReusableStoredSynopsis(oldContract, 'pmid-1', { now: NOW })).toBeNull();
     });
 
     test('refuses one past the age ceiling', async () => {
@@ -168,6 +189,7 @@ describe('per-style-arm storage', () => {
 
     test('the default arm is fetched by article, not by arm key', async () => {
         const db = {
+            get: jest.fn().mockResolvedValue({ contract_version: 2 }),
             getTeachingObjectForArticle: jest.fn().mockResolvedValue(storedSynopsis()),
             getTeachingObjectByKey: jest.fn().mockResolvedValue(null),
         };
@@ -182,6 +204,7 @@ describe('per-style-arm storage', () => {
         // recently, so an experiment arm must not be looked up that way -- a
         // reader assigned `narrative` would otherwise be served another arm.
         const db = {
+            get: jest.fn().mockResolvedValue({ contract_version: 2 }),
             getTeachingObjectForArticle: jest.fn().mockResolvedValue(storedSynopsis()),
             getTeachingObjectByKey: jest.fn().mockResolvedValue(storedSynopsis({
                 payload: {
@@ -199,6 +222,7 @@ describe('per-style-arm storage', () => {
 
     test('a missing variant returns null so that arm gets generated once', async () => {
         const db = {
+            get: jest.fn().mockResolvedValue({ contract_version: 2 }),
             getTeachingObjectForArticle: jest.fn().mockResolvedValue(storedSynopsis()),
             getTeachingObjectByKey: jest.fn().mockResolvedValue(null),
         };

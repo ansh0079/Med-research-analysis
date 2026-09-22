@@ -138,8 +138,8 @@ describe('what an incomplete manifest is allowed to claim', () => {
         expect(capVerificationForManifest('guideline_supported', complete, env)).toBe('guideline_supported');
     });
 
-    test('in shadow (the default) the state is recorded and labels are unchanged', () => {
-        expect(capVerificationForManifest('guideline_supported', incomplete, {})).toBe('guideline_supported');
+    test('in explicit shadow mode the state is recorded and labels are unchanged', () => {
+        expect(capVerificationForManifest('guideline_supported', incomplete, { EVIDENCE_LINEAGE_ENFORCEMENT: 'shadow' })).toBe('guideline_supported');
     });
 
     test('the public form counts inputs and names missing kinds without leaking ids', () => {

@@ -258,15 +258,17 @@ async getStaleSynopsesForRefresh({ maxAgeDays = 90, minSignalCount = 2, signalWi
     }));
 }
 
-async listTeachingObjectsForTopic(topic, { limit = 20, objectType = '' } = {}) {
+async listTeachingObjectsForTopic(topic, { limit = 20, objectType = '', excludeRetired = false } = {}) {
     const normalized = this.normalizeTopic(topic);
     const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 20, 1), 100);
     const type = String(objectType || '').trim();
+    const retiredFilter = excludeRetired ? "AND COALESCE(lineage_status, '') != 'legacy_retired'" : '';
     const rows = await this.all(
         `SELECT * FROM teaching_objects
          WHERE (? = '' OR normalized_topic = ?)
            AND (? = '' OR object_type = ?)
            AND review_state != 'withdrawn'
+           ${retiredFilter}
          ORDER BY updated_at DESC
          LIMIT ?`,
         [normalized, normalized, type, type, safeLimit]

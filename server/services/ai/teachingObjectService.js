@@ -549,7 +549,7 @@ function buildConsensusTeachingObject({ topic, consensusSynopsis, articles = [] 
  * Attach evidence lineage to a generated object. The snapshot id and status are stored as columns
  * (so they can be queried) and in the payload with the source version the synopsis was generated
  * from. Provenance-asserting claim labels are capped when lineage does not back them and
- * EVIDENCE_LINEAGE_ENFORCEMENT=enforce; in the default shadow mode labels are unchanged.
+ * EVIDENCE_LINEAGE_ENFORCEMENT=enforce by default; explicit shadow mode leaves labels unchanged.
  */
 function withLineage(object, lineage, article) {
     const { capVerificationForLineage, publicLineage, LINEAGE_STATUS } = require('../search/generationEvidenceContext');

@@ -1,5 +1,6 @@
 import { API_BASE } from './core';
 import type { Article } from '@types';
+import { evidenceSnapshotIdFor } from '../evidenceSnapshotStore';
 import { KnowledgeAdminApi } from './knowledgeAdmin';
 
 export class KnowledgeLearningApi extends KnowledgeAdminApi {
@@ -224,11 +225,12 @@ export class KnowledgeLearningApi extends KnowledgeAdminApi {
     articles: Article[];
     guidelines: unknown[];
     relatedClaims: unknown[];
+    evidenceProvenance?: { snapshotId: string | null; status: 'source_replayable' | 'unverified'; retractionScreening?: string };
   }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/learning/case-to-evidence`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ clinicalQuestion, topic, seedArticles }),
+      body: JSON.stringify({ clinicalQuestion, topic, seedArticles, evidenceSnapshotId: evidenceSnapshotIdFor(seedArticles) }),
     });
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();

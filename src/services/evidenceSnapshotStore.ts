@@ -17,7 +17,7 @@ interface CurrentSnapshot {
 
 let current: CurrentSnapshot | null = null;
 
-function uidOf(article: Pick<Article, 'uid'> & Partial<Article>): string {
+function uidOf(article: Partial<Article>): string {
   return String(article.uid || article.pmid || '').trim();
 }
 
@@ -37,7 +37,7 @@ export function clearCurrentEvidenceSnapshot(): void {
 }
 
 /** The snapshot id to send with a generation request for these articles, or undefined. */
-export function evidenceSnapshotIdFor(articles: Array<Pick<Article, 'uid'> & Partial<Article>>): string | undefined {
+export function evidenceSnapshotIdFor(articles: Partial<Article>[]): string | undefined {
   if (!current) return undefined;
   return articles.some((article) => current!.uids.has(uidOf(article))) ? current.id : undefined;
 }

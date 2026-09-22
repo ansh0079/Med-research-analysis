@@ -15,7 +15,7 @@
  *    so nothing here hides or deletes it.
  *  - It IS a provenance ceiling. Content whose sources cannot be produced may not carry a label that
  *    asserts identifiable source text, under the same enforcement flag as the rest of the lineage
- *    rules (shadow by default: the state is reported, labels are unchanged).
+ *    rules (enforced by default, with explicit shadow mode for rollback).
  *  - A generation that reads legacy content inherits the ceiling. A quiz built on teaching-object
  *    text nobody can trace cannot claim guideline support, even though the manifest truthfully
  *    records that it read that text. The manifest says what was read; this says what may be claimed.
@@ -56,7 +56,9 @@ function isLegacyUnlinked(object) {
  * Unprovable is the honest default: a caller that cannot say yes must not get a yes.
  */
 function isProvable(object) {
-    return Boolean(object) && !isLegacyUnlinked(object);
+    const status = lineageStatusOf(object);
+    const snapshot = object?.evidenceSnapshotId ?? object?.evidence_snapshot_id;
+    return Boolean(snapshot) && (status === 'linked' || status === 'linked_with_additions');
 }
 
 /**
@@ -77,6 +79,13 @@ function describeProvenance(object) {
             lineage: LEGACY_UNLINKED,
             provable: false,
             reason: 'generated before evidence snapshots existed; original sources were never recorded',
+        };
+    }
+    if (!isProvable(object)) {
+        return {
+            lineage: lineageStatusOf(object) || 'unlinked',
+            provable: false,
+            reason: 'no linked, replayable evidence snapshot is recorded for this object',
         };
     }
     return {

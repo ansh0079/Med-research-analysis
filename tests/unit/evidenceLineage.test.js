@@ -223,9 +223,13 @@ describe('verification labels are only as strong as the lineage behind them', ()
     const linked = { snapshotId: 's', status: LINEAGE_STATUS.LINKED };
     const unlinked = { snapshotId: null, status: LINEAGE_STATUS.UNLINKED };
 
-    test('shadow mode (the default) never changes a label', () => {
-        expect(capVerificationForLineage('guideline_supported', unlinked, {})).toBe('guideline_supported');
+    test('explicit shadow mode never changes a label', () => {
         expect(capVerificationForLineage('source_verified', { status: 'invalid' }, { EVIDENCE_LINEAGE_ENFORCEMENT: 'shadow' })).toBe('source_verified');
+    });
+
+    test('enforcement is the default and linked status needs a snapshot id', () => {
+        expect(capVerificationForLineage('guideline_supported', unlinked, {})).toBe('unverified');
+        expect(capVerificationForLineage('guideline_supported', { status: 'linked' }, {})).toBe('unverified');
     });
 
     test('enforce mode caps provenance-asserting labels for unlinked and invalid lineage only', () => {
@@ -234,7 +238,7 @@ describe('verification labels are only as strong as the lineage behind them', ()
         expect(capVerificationForLineage('source_verified', { status: 'invalid' }, env)).toBe('unverified');
         expect(capVerificationForLineage('full_text_available', unlinked, env)).toBe('unverified');
         expect(capVerificationForLineage('guideline_supported', linked, env)).toBe('guideline_supported');
-        expect(capVerificationForLineage('guideline_supported', { status: LINEAGE_STATUS.LINKED_WITH_ADDITIONS }, env)).toBe('guideline_supported');
+        expect(capVerificationForLineage('guideline_supported', { snapshotId: 's', status: LINEAGE_STATUS.LINKED_WITH_ADDITIONS }, env)).toBe('guideline_supported');
         // Already-weak labels and human review are not touched.
         expect(capVerificationForLineage('abstract_only', unlinked, env)).toBe('abstract_only');
         expect(capVerificationForLineage('human_reviewed', unlinked, env)).toBe('human_reviewed');

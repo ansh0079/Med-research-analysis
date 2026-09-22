@@ -417,7 +417,7 @@ export class AiApi extends BaseApiClient {
     const response = await this.fetchWithSession(`${API_BASE}/api/cases/analyze`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ caseText, provider, ...options }),
+      body: JSON.stringify({ caseText, provider, ...options, evidenceSnapshotId: evidenceSnapshotIdFor(options.seedArticles || []) }),
     });
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
@@ -526,7 +526,7 @@ export class AiApi extends BaseApiClient {
     const response = await this.fetchWithSession(`${API_BASE}/api/cases/teaching-vignette`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic, seedArticles, learningMode, provider }),
+      body: JSON.stringify({ topic, seedArticles, learningMode, provider, evidenceSnapshotId: evidenceSnapshotIdFor(seedArticles) }),
     });
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();

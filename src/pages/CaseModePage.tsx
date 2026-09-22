@@ -338,6 +338,7 @@ export const CaseModePage: React.FC = () => {
         articles: response.articles || [],
         brief: (response.brief || {}) as CaseEvidenceBrief,
         relatedClaims: (response.relatedClaims || []) as CaseToEvidenceResult['relatedClaims'],
+        evidenceProvenance: response.evidenceProvenance,
       });
       recordCaseAttempt('analysis', payload);
     } catch (err) {

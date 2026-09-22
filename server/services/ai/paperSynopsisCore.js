@@ -34,6 +34,17 @@ const {
 const { processPaperSynopsisTrust } = require('../paperSynopsisTrust');
 const { selectSynopsisStyleArm, recordBanditReward, POLICY_SYNOPSIS_STYLE } = require('../personalizationBanditService');
 const { buildSourceVersion, upsertSourceVersion } = require('../search/searchEvidenceSnapshot');
+const { isProvable } = require('../content/legacyContentPolicy');
+const { publicLineage } = require('../search/generationEvidenceContext');
+
+async function hasReplayableLineage(db, object) {
+    if (!isProvable(object) || typeof db?.get !== 'function') return false;
+    const id = object.evidenceSnapshotId ?? object.evidence_snapshot_id;
+    const row = await db.get(
+        'SELECT contract_version FROM search_evidence_snapshots WHERE id = ?', [id]
+    ).catch(() => null);
+    return Number(row?.contract_version || 0) >= 2;
+}
 
 function getPaperSynopsisArticleId(article = {}) {
     return article.uid || article.pmid || article.doi
@@ -110,6 +121,7 @@ async function findReusableStoredSynopsis(db, articleId, { maxAgeDays = SYNOPSIS
     // Withdrawn content is never reused, whatever cache or arm-specific key reached here:
     // retraction processing owns this decision and it lives in the durable store.
     if (String(existing?.reviewState || '') === 'withdrawn') return null;
+    if (!(await hasReplayableLineage(db, existing))) return null;
 
     // Reuse only what the current prompt would have produced. This store is read
     // before any generation work and keeps rows for SYNOPSIS_REUSE_MAX_AGE_DAYS,
@@ -342,6 +354,10 @@ async function runPaperSynopsisGenerationInner({
             if (!memCached) continue;
             const cachedAbstractOnly = !(Number(memCached.audit?.fullTextCoverageRatio) > 0);
             if (hasFullTextNow && cachedAbstractOnly) continue;
+            if (!(await hasReplayableLineage(db, {
+                evidenceSnapshotId: memCached.evidenceLineage?.snapshotId,
+                lineageStatus: memCached.evidenceLineage?.status,
+            }))) continue;
             return { ...memCached, cached: true, jobKey: jobKey || memCached.jobKey };
         }
     }
@@ -381,6 +397,10 @@ async function runPaperSynopsisGenerationInner({
                 jobKey,
                 cached: true,
                 reusedFromStore: true,
+                evidenceLineage: publicLineage({
+                    snapshotId: reusable.existing.evidenceSnapshotId,
+                    status: reusable.existing.lineageStatus,
+                }),
                 banditMeta: synopsisStyleArm ? {
                     policyType: POLICY_SYNOPSIS_STYLE,
                     armId: synopsisStyleArm.armId,
@@ -618,6 +638,7 @@ async function runPaperSynopsisGenerationInner({
         timestamp: new Date().toISOString(),
         disclaimer: AI_DISCLAIMER,
         jobKey,
+        evidenceLineage: publicLineage(lineage),
         banditMeta: synopsisStyleArm ? {
             policyType: POLICY_SYNOPSIS_STYLE,
             armId: synopsisStyleArm.armId,

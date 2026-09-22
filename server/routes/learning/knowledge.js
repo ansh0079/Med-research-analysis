@@ -146,19 +146,21 @@ function registerKnowledgeRoutes(app, deps) {
             if (clinicalQuestion.length < 12) {
                 return res.status(400).json({ error: 'clinicalQuestion is required (min 12 chars)' });
             }
-            const { buildCaseToEvidenceBrief } = require('../services/caseToEvidenceService');
+            const { buildCaseToEvidenceBrief } = require('../../services/caseToEvidenceService');
             const result = await buildCaseToEvidenceBrief(db, {
                 clinicalQuestion,
                 topic,
                 serverConfig,
                 fetchImpl,
                 seedArticles: req.body?.seedArticles || [],
+                evidenceSnapshotId: req.body?.evidenceSnapshotId || null,
                 userId: req.user.id,
             });
             res.json(result);
         } catch (error) {
             req.log.error({ err: error }, 'Case-to-evidence error');
-            res.status(500).json({ error: error.message || 'Internal Server Error' });
+            res.status(error.code === 'INVALID_EVIDENCE_SNAPSHOT' ? 400 : 500)
+                .json({ error: error.message || 'Internal Server Error' });
         }
     });
 

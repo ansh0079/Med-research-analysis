@@ -22,7 +22,7 @@ const {
 } = require('../../server/services/content/legacyContentPolicy');
 
 const ENFORCE = { EVIDENCE_LINEAGE_ENFORCEMENT: 'enforce' };
-const SHADOW = {};
+const SHADOW = { EVIDENCE_LINEAGE_ENFORCEMENT: 'shadow' };
 
 const legacy = (over = {}) => ({ objectKey: 'to-1', lineageStatus: LEGACY_UNLINKED, ...over });
 const linked = (over = {}) => ({ objectKey: 'to-2', lineageStatus: 'linked', evidenceSnapshotId: 'snap-1', ...over });
@@ -42,6 +42,19 @@ describe('recognising content whose sources cannot be produced', () => {
     test('content with a snapshot is provable', () => {
         expect(isLegacyUnlinked(linked())).toBe(false);
         expect(isProvable(linked())).toBe(true);
+    });
+
+    test('status alone or a snapshot alone cannot prove provenance', () => {
+        for (const object of [
+            linked({ evidenceSnapshotId: null }),
+            linked({ lineageStatus: 'unlinked' }),
+            linked({ lineageStatus: 'invalid' }),
+            { evidenceSnapshotId: 'snap-1' },
+        ]) {
+            expect(isProvable(object)).toBe(false);
+            expect(describeProvenance(object).provable).toBe(false);
+            expect(capVerificationForLegacy('source_verified', object, ENFORCE)).toBe('unverified');
+        }
     });
 });
 
@@ -75,8 +88,12 @@ describe('the provenance ceiling', () => {
         expect(capVerificationForLegacy('guideline_supported', linked(), ENFORCE)).toBe('guideline_supported');
     });
 
-    test('in shadow, the default, nothing is capped', () => {
+    test('shadow mode can be selected explicitly', () => {
         expect(capVerificationForLegacy('guideline_supported', legacy(), SHADOW)).toBe('guideline_supported');
+    });
+
+    test('enforcement is the default', () => {
+        expect(capVerificationForLegacy('guideline_supported', legacy(), {})).toBe('unverified');
     });
 });
 

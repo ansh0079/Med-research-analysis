@@ -87,7 +87,10 @@ const synopsisResult = () => ({
 const claimsOf = (db, key) => db.all('SELECT claim_key, claim_text, evidence_quote, verification_status, verification_reason FROM teaching_object_claims WHERE object_key = ? ORDER BY ordinal', [key]);
 
 describe('synopsis claims carry their passage and a label no stronger than their support', () => {
-    afterEach(() => { delete process.env.SYNOPSIS_CLAIM_SUPPORT; });
+    afterEach(() => {
+        delete process.env.SYNOPSIS_CLAIM_SUPPORT;
+        delete process.env.EVIDENCE_LINEAGE_ENFORCEMENT;
+    });
 
     test('each material sentence becomes its own claim with the exact passage as its evidence', async () => {
         const db = makeDb();
@@ -99,7 +102,8 @@ describe('synopsis claims carry their passage and a label no stronger than their
         expect(claims.length).toBeGreaterThanOrEqual(3);
     });
 
-    test('shadow (default): the paper-level label is unchanged, and the support is recorded in the reason', async () => {
+    test('explicit shadow mode leaves the paper-level label and records support in the reason', async () => {
+        process.env.EVIDENCE_LINEAGE_ENFORCEMENT = 'shadow';
         const db = makeDb();
         const saved = await persistPaperTeachingObject({ db, article: ARTICLE, synopsisResult: synopsisResult(), topic: 'heart failure' });
         const reversed = (await claimsOf(db, saved.objectKey)).find((c) => /increased the risk/.test(c.claim_text));

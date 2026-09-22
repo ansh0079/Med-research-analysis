@@ -144,7 +144,8 @@ describe('quiz from evidence with an evidence snapshot', () => {
         const label = async (service, body) => (await run(service, body)).body.questions?.[0]?.claimVerificationStatus;
         afterEach(() => { delete process.env.EVIDENCE_LINEAGE_ENFORCEMENT; });
 
-        test('shadow (default): an unlinked guideline question keeps guideline_supported', async () => {
+        test('explicit shadow mode keeps an unlinked guideline label', async () => {
+            process.env.EVIDENCE_LINEAGE_ENFORCEMENT = 'shadow';
             const { service } = makeService(makeSnapshotDb());
             expect(await label(service, { articles: [guideline()] })).toBe('guideline_supported');
         });
