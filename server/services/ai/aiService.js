@@ -61,11 +61,16 @@ const { parseStructuredOutput } = require('../../utils/parseJson');
 function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) {
     const f = fetchImpl;
     const proxy = buildProxyService({ serverConfig, fetchImpl: f });
+    const usageCallback = onLlmCall || (process.env.NODE_ENV === 'test' ? null : async (meta) => {
+        const db = require('../../../database');
+        const { createLlmUsageLogger, buildUsageEntry } = require('./llmUsageService');
+        await createLlmUsageLogger(db)(buildUsageEntry(meta));
+    });
 
     async function emitLlmCall(meta) {
-        if (typeof onLlmCall !== 'function') return;
+        if (typeof usageCallback !== 'function') return;
         try {
-            await onLlmCall(meta);
+            await usageCallback(meta);
         } catch (err) {
             logger.warn({ err }, 'LLM usage log callback failed');
         }
@@ -135,24 +140,13 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         const recordGlobalSpend = (response) => {
             void recordSpend({ prompt, response, model });
         };
-        if (usage?.operation) {
-            const logged = await withUsageLog(
-                { operation: usage.operation, provider, model, prompt, topic: usage.topic, userId: usage.userId, budget: activeBudget },
-                fn
-            );
-            recordGlobalSpend(logged);
-            return logged;
-        }
-        if (activeBudget) {
-            activeBudget.assertCanCall({ prompt, model });
-            const text = await fn();
-            activeBudget.recordCall({ prompt, response: text, model });
-            recordGlobalSpend(text);
-            return text;
-        }
-        const text = await fn();
-        recordGlobalSpend(text);
-        return text;
+        const logged = await withUsageLog(
+            { operation: usage?.operation || 'unspecified', provider, model, prompt,
+                topic: usage?.topic, userId: usage?.userId, budget: activeBudget },
+            fn
+        );
+        recordGlobalSpend(logged);
+        return logged;
     }
 
     // Circuit breakers protect against cascading failures when LLM APIs degrade.
@@ -444,7 +438,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
      * fails. The accumulated response text is used for the cost estimate.
      */
     async function* callTextStream(prompt, provider, model, options = {}) {
-        const { budget, ...providerOptions } = options;
+        const { budget, usage, ...providerOptions } = options;
         const activeBudget = budget || getActiveLlmBudget();
         if (activeBudget) {
             activeBudget.assertCanCall({ prompt, model });
@@ -461,16 +455,26 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
                 : callMistralStreamRaw(prompt, model, providerOptions);
 
         let response = '';
-        for await (const chunk of generator) {
-            response += chunk;
-            yield chunk;
+        let completed = false;
+        let errorMessage = 'stream_incomplete';
+        const started = Date.now();
+        try {
+            for await (const chunk of generator) {
+                response += chunk;
+                yield chunk;
+            }
+            completed = true;
+            if (activeBudget) activeBudget.recordCall({ prompt, response, model });
+            void recordSpend({ prompt, response, model });
+        } catch (err) {
+            errorMessage = err?.message || 'stream_failed';
+            throw err;
+        } finally {
+            await emitLlmCall({ operation: usage?.operation || 'unspecified_stream', provider, model,
+                topic: usage?.topic, userId: usage?.userId, prompt, response,
+                success: completed, errorMessage: completed ? null : errorMessage,
+                durationMs: Date.now() - started });
         }
-        // Budget is only recorded on successful stream completion. A failed
-        // stream is not charged, so retries remain within the budget.
-        if (activeBudget) {
-            activeBudget.recordCall({ prompt, response, model });
-        }
-        void recordSpend({ prompt, response, model });
     }
 
     return {

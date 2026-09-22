@@ -11,6 +11,27 @@
 const { test: base, expect } = require('@playwright/test');
 const { sepsisEasy } = require('./fixtures/mock-quiz-questions');
 const path = require('path');
+const { createQuizGradingToken } = require('../../server/services/quizGradingToken');
+
+function signedQuestions() {
+  return sepsisEasy.map(({ correctAnswer, ...question }) => ({
+    ...question,
+    gradingToken: createQuizGradingToken({ ...question, correctAnswer }),
+  }));
+}
+
+async function openQuiz(page) {
+  await page.goto('/quiz?topic=Sepsis');
+  const skip = page.getByRole('button', { name: 'Skip setup' });
+  if (await skip.waitFor({ state: 'visible', timeout: 5000 }).then(() => true).catch(() => false)) await skip.click();
+  await expect(page.getByText('Sepsis', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: /^B: Norepinephrine/ })).toBeVisible();
+}
+
+async function answerQuestion(page, choice, last = false) {
+  await page.getByRole('button', { name: new RegExp(`^${choice}:`) }).first().click();
+  await page.getByRole('button', { name: last ? 'See results' : 'Next question' }).click();
+}
 
 // All tests in this file use the authenticated storage state
 const test = base.extend({
@@ -27,14 +48,13 @@ const test = base.extend({
 test.describe('Real auth flows', () => {
   test.beforeEach(async ({ page }) => {
     page.on('pageerror', (error) => console.error('Browser error:', error.stack || error.message));
-    page.on('console', (message) => { if (message.type() === 'error') console.error('Browser console:', message.text()); });
     // Mock quiz generation so we don't need real AI calls
     await page.route('**/api/quiz/generate', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({
-          questions: sepsisEasy,
+          questions: signedQuestions(),
           topic: 'Sepsis',
           provider: 'mock',
           model: null,
@@ -44,12 +64,6 @@ test.describe('Real auth flows', () => {
       });
     });
 
-    // Let all other API calls pass through to the real backend
-    await page.route('**/api/**', async (route) => {
-      if (!route.request().url().includes('/api/quiz/generate')) {
-        await route.continue();
-      }
-    });
   });
 
   test('user appears authenticated on page load', async ({ page }) => {
@@ -61,36 +75,18 @@ test.describe('Real auth flows', () => {
 
   test('full quiz flow submits attempts and updates dashboard', async ({ page }) => {
     // 1. Navigate to quiz
-    await page.goto('/quiz?topic=Sepsis');
-    await expect(page.locator('text=Sepsis')).toBeVisible({ timeout: 15000 });
+    await openQuiz(page);
 
     // 2. Answer all questions (we know the correct answers from mock data)
-    const answers = ['B', 'C', 'C'];
-    for (let i = 0; i < answers.length; i++) {
-      // Wait for the question to render
-      await page.waitForSelector('[data-testid="quiz-option"], button', { timeout: 10000 });
-
-      // Select the answer option
-      const optionLabel = answers[i];
-      const optionButton = page.locator(`button:has-text("${optionLabel}:")`).first();
-      await expect(optionButton).toBeVisible({ timeout: 5000 });
-      await optionButton.click();
-
-      // Click "Next" or "Submit" if present
-      const nextButton = page.locator('button:has-text("Next"), button:has-text("Submit")').first();
-      if (await nextButton.isVisible().catch(() => false)) {
-        await nextButton.click();
-      }
-    }
+    await answerQuestion(page, 'B');
+    await answerQuestion(page, 'C');
+    await answerQuestion(page, 'C', true);
 
     // 3. Assert score/completion card appears
-    await expect(page.locator('text=Score, text=Completed, [data-testid="quiz-complete"]').first()).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText('3/3', { exact: true })).toBeVisible();
+    await expect(page.getByText('Progress saved')).toBeVisible();
 
-    // 4. Navigate to history and assert attempts were saved
-    await page.goto('/history');
-    await expect(page.locator('text=Sepsis').first()).toBeVisible({ timeout: 10000 });
-
-    // 5. Navigate to learning dashboard and assert mastery updated
+    // Navigate to learning dashboard after the backend confirms persistence.
     await page.goto('/learning');
     await expect(page.locator('text=Sepsis').first()).toBeVisible({ timeout: 10000 });
   });
@@ -98,37 +94,16 @@ test.describe('Real auth flows', () => {
   test('quiz attempt correctness is verified server-side', async ({ page }) => {
     // This test intentionally sends a wrong answer and verifies the server
     // records it as wrong (asserted via history).
-    await page.goto('/quiz?topic=Sepsis');
-    await expect(page.locator('text=Sepsis')).toBeVisible({ timeout: 15000 });
+    await openQuiz(page);
 
     // Answer the first question deliberately wrong
-    const wrongOption = page.locator('button:has-text("A:")').first();
-    await expect(wrongOption).toBeVisible({ timeout: 5000 });
-    await wrongOption.click();
+    await answerQuestion(page, 'A');
+    await answerQuestion(page, 'C');
+    await answerQuestion(page, 'C', true);
+    await expect(page.getByText('2/3', { exact: true })).toBeVisible();
+    await expect(page.getByText('Progress saved')).toBeVisible();
 
-    // Complete the quiz with any answers for remaining questions
-    const remainingAnswers = ['C', 'C'];
-    for (const ans of remainingAnswers) {
-      const nextButton = page.locator('button:has-text("Next"), button:has-text("Submit")').first();
-      if (await nextButton.isVisible().catch(() => false)) {
-        await nextButton.click();
-      }
-      const opt = page.locator(`button:has-text("${ans}:")`).first();
-      await expect(opt).toBeVisible({ timeout: 5000 });
-      await opt.click();
-    }
-    const finalNext = page.locator('button:has-text("Next"), button:has-text("Submit")').first();
-    if (await finalNext.isVisible().catch(() => false)) {
-      await finalNext.click();
-    }
-
-    await expect(page.locator('text=Score, text=Completed, [data-testid="quiz-complete"]').first()).toBeVisible({ timeout: 10000 });
-
-    // Check history shows a wrong attempt
-    await page.goto('/history');
-    await expect(page.locator('text=Sepsis').first()).toBeVisible({ timeout: 10000 });
-    // Look for an incorrect indicator (this is UI-dependent; adjust selector as needed)
-    await expect(page.locator('text=Incorrect, [data-testid="incorrect-badge"]').first()).toBeVisible({ timeout: 5000 });
+    // The 2/3 result is built from the server's committed grading responses.
   });
 });
 

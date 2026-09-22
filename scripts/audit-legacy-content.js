@@ -3,7 +3,7 @@
  * Audit stored generated content against the provenance policy in force today.
  *
  *   npm run audit:legacy-content              report only
- *   npm run audit:legacy-content -- --write   downgrade labels that cannot be shown to be true
+ *   npm run audit:legacy-content -- --write   downgrade unprovable claims and mark legacy lineage
  *   npm run audit:legacy-content -- --json    machine-readable report
  *
  * Every provenance gate added over the last months applies at WRITE time. Rows written before those
@@ -101,6 +101,51 @@ async function auditLineageCoverage(table, column = 'evidence_snapshot_id') {
     return { table, total, linked, unlinked: total - linked, coverage: total ? Number((linked / total).toFixed(4)) : null };
 }
 
+async function auditTeachingRecovery() {
+    if (!await tableExists('teaching_objects')) return null;
+    const byType = await db.all(
+        `SELECT object_type, COUNT(*) AS total
+           FROM teaching_objects
+          WHERE evidence_snapshot_id IS NULL OR evidence_snapshot_id = ''
+          GROUP BY object_type ORDER BY total DESC`,
+    );
+    const sourceVersionsAvailable = await tableExists('evidence_source_versions');
+    const articleCacheAvailable = await tableExists('article_cache');
+    const versionMatch = sourceVersionsAvailable
+        ? `EXISTS (SELECT 1 FROM evidence_source_versions v
+                    WHERE v.article_uid = o.article_uid AND v.passages IS NOT NULL AND v.passages != '')`
+        : '0 = 1';
+    const cacheMatch = articleCacheAvailable
+        ? `EXISTS (SELECT 1 FROM article_cache a
+                    WHERE CAST(a.id AS TEXT) = o.article_uid AND a.abstract IS NOT NULL AND a.abstract != '')`
+        : '0 = 1';
+    const sourceCandidates = await db.get(
+        `SELECT COUNT(*) AS n FROM teaching_objects o
+          WHERE (o.evidence_snapshot_id IS NULL OR o.evidence_snapshot_id = '')
+            AND o.object_type = 'paper'
+            AND (${versionMatch} OR ${cacheMatch})`,
+    );
+    let annotated = 0;
+    if (write) {
+        annotated = (await db.get(
+            `SELECT COUNT(*) AS n FROM teaching_objects
+              WHERE (evidence_snapshot_id IS NULL OR evidence_snapshot_id = '')
+                AND lineage_status IS NULL`,
+        ))?.n || 0;
+        await db.run(
+            `UPDATE teaching_objects SET lineage_status = 'legacy_unlinked'
+              WHERE (evidence_snapshot_id IS NULL OR evidence_snapshot_id = '')
+                AND lineage_status IS NULL`,
+        );
+    }
+    return {
+        byType,
+        paperSourceCandidates: sourceCandidates?.n || 0,
+        sourceCandidateMeaning: 'stored text is available for possible regeneration; this does not prove it was used originally',
+        annotated,
+    };
+}
+
 function printReport(report) {
     if (asJson) {
         console.log(JSON.stringify(report, null, 2));
@@ -122,6 +167,10 @@ function printReport(report) {
         const pct = row.coverage == null ? 'n/a' : `${(row.coverage * 100).toFixed(1)}%`;
         console.log(`${row.table}: ${row.total} rows, ${row.linked} with lineage (${pct}), ${row.unlinked} without`);
     }
+    if (report.teachingRecovery) {
+        console.log(`Paper objects with stored source candidates for regeneration: ${report.teachingRecovery.paperSourceCandidates}`);
+        if (write) console.log(`Legacy unlinked rows annotated: ${report.teachingRecovery.annotated}`);
+    }
     if (report.coverage.some((r) => r && r.unlinked > 0)) {
         console.log('\nRows without lineage predate evidence snapshots. They are not rewritten: there is no');
         console.log('evidence to attach retrospectively. Treat them as unverifiable, or regenerate them.');
@@ -139,6 +188,7 @@ async function main() {
             await auditLineageCoverage('case_scenarios'),
             await auditLineageCoverage('quiz_attempts'),
         ],
+        teachingRecovery: await auditTeachingRecovery(),
     };
     printReport(report);
     const unprovable = report.claims?.unprovable || 0;

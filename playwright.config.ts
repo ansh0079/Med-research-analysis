@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const baseURL = process.env.BASE_URL || 'http://localhost:3002';
+process.env.QUIZ_GRADING_SECRET ||= 'signal-md-e2e-grading-secret-only';
 
 export default defineConfig({
   testDir: './tests/e2e',
