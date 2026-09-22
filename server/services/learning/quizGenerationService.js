@@ -38,6 +38,7 @@ const {
     capVerificationForManifest,
     publicManifest,
 } = require('../search/generationEvidenceManifest');
+const { capVerificationForContext } = require('../content/legacyContentPolicy');
 
 function evidenceSourceTrust(article = {}) {
     const retracted = Boolean(article?._retraction?.isRetracted || article?.isRetracted || article?.is_retracted);
@@ -558,7 +559,9 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                     validationStatus: validation.validationSummary.skipped ? 'validation_skipped' : 'llm_validated',
                     outlineLabel: cmeta ? String(cmeta.claimText || '').slice(0, 200) : null,
                     claimVerificationStatus: cmeta?.verificationStatus
-                        ? capVerificationForManifest(capVerificationForLineage(cmeta.verificationStatus, lineage), manifest)
+                        ? capVerificationForContext(
+                            capVerificationForManifest(capVerificationForLineage(cmeta.verificationStatus, lineage), manifest),
+                            teachingObjects)
                         : null,
                     // Returned with the question so the attempt can carry the same lineage back.
                     evidenceSnapshotId: evidenceLineage.snapshotId,
@@ -572,8 +575,8 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             const questions = mappedQuestions.filter((q) => {
                 const cmeta = q.claimKey && claimByKey ? claimByKey.get(q.claimKey) : null;
                 const ok = claimEligibleForQuestionType(cmeta
-                    ? { ...cmeta, verificationStatus: capVerificationForManifest(
-                        capVerificationForLineage(cmeta.verificationStatus, lineage), manifest) }
+                    ? { ...cmeta, verificationStatus: capVerificationForContext(capVerificationForManifest(
+                        capVerificationForLineage(cmeta.verificationStatus, lineage), manifest), teachingObjects) }
                     : { verificationStatus: q.claimVerificationStatus }, q.questionType);
                 if (!ok) {
                     droppedHighStakes.push({
@@ -770,9 +773,9 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                     claimKey,
                     promptVariant,
                     validationStatus: validation.validationSummary.skipped ? 'validation_skipped' : 'llm_validated',
-                    claimVerificationStatus: capVerificationForManifest(
+                    claimVerificationStatus: capVerificationForContext(capVerificationForManifest(
                         capVerificationForLineage(trust.verificationStatus, lineage), manifest,
-                    ),
+                    ), teachingObjects),
                     claimReviewState: trust.reviewState,
                     evidenceSnapshotId: evidenceLineage.snapshotId,
                     evidenceLineageStatus: evidenceLineage.status,

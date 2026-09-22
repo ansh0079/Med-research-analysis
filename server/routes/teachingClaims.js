@@ -1,6 +1,7 @@
 'use strict';
 
 const { findContradictionsForClaim } = require('../services/contradictionFinderService');
+const { describeProvenance, capVerificationForLegacy } = require('../services/content/legacyContentPolicy');
 const { getSourcePassages } = require('../services/search/searchEvidenceSnapshot');
 
 function registerTeachingClaimRoutes(app, deps) {
@@ -38,6 +39,8 @@ function registerTeachingClaimRoutes(app, deps) {
                     claimText: claim.claimText,
                     verificationStatus: claim.verificationStatus,
                     verificationReason: claim.verificationReason,
+                    // Capped when the object behind it cannot produce its sources (enforce mode only).
+                    effectiveVerificationStatus: capVerificationForLegacy(claim.verificationStatus, object),
                     reviewState: claim.reviewState,
                 },
                 support,
@@ -50,6 +53,9 @@ function registerTeachingClaimRoutes(app, deps) {
                     accessState: claimSupport?.accessState || null,
                 },
                 lineage: object ? { snapshotId: object.evidenceSnapshotId || null, status: object.lineageStatus || null } : null,
+                // Kept separate from `lineage`, which states the stored facts. This states what they
+                // mean: whether the sources behind this claim can still be produced on demand.
+                provenance: object ? describeProvenance(object) : null,
             });
         } catch (error) {
             req.log.error({ err: error }, 'Get teaching claim evidence error');

@@ -146,6 +146,58 @@ async function auditTeachingRecovery() {
     };
 }
 
+/**
+ * How much of the legacy corpus is actually reachable.
+ *
+ * "11,703 unprovable teaching objects" is a number to panic at; it is not a regeneration plan.
+ * Regenerating all of them means thousands of clinical generations, most for topics no reader has
+ * ever opened. This sizes the subset that a reader can actually reach - flagship curriculum topics,
+ * and objects a quiz or claim already depends on - so regeneration can be scoped by what is served
+ * rather than by what exists.
+ *
+ * Nothing here regenerates or rewrites anything. It answers "how big is the real problem".
+ */
+async function auditReachability() {
+    if (!await tableExists('teaching_objects')) return null;
+
+    const flagship = require('../server/config/flagshipTopics.json');
+    const topics = (flagship.topics || [])
+        .flatMap((t) => [t.topic, ...(t.aliases || [])])
+        .filter(Boolean)
+        .map((t) => String(t).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim());
+    const unique = [...new Set(topics)].filter(Boolean);
+
+    const legacyWhere = `(evidence_snapshot_id IS NULL OR evidence_snapshot_id = '')`;
+    const totalLegacy = (await db.get(`SELECT COUNT(*) AS n FROM teaching_objects WHERE ${legacyWhere}`))?.n || 0;
+
+    // Flagship reach, in chunks: the topic list is long and a single IN () can exceed parameter limits.
+    let flagshipReach = 0;
+    for (let i = 0; i < unique.length; i += 400) {
+        const chunk = unique.slice(i, i + 400);
+        const row = await db.get(
+            `SELECT COUNT(*) AS n FROM teaching_objects
+              WHERE ${legacyWhere} AND LOWER(normalized_topic) IN (${placeholders(chunk)})`,
+            chunk,
+        ).catch(() => null);
+        flagshipReach += Number(row?.n || 0);
+    }
+
+    // Objects something already depends on: a claim the reader can open, or a quiz already built.
+    const claimBacked = (await db.get(
+        `SELECT COUNT(DISTINCT o.object_key) AS n FROM teaching_objects o
+          JOIN teaching_object_claims c ON c.object_key = o.object_key
+         WHERE o.evidence_snapshot_id IS NULL OR o.evidence_snapshot_id = ''`,
+    ).catch(() => null))?.n ?? null;
+
+    return {
+        totalLegacy,
+        flagshipTopics: unique.length,
+        reachableViaFlagshipTopic: flagshipReach,
+        reachableViaExistingClaims: claimBacked,
+        meaning: 'regeneration should be scoped to reachable objects; the remainder is unread content that can wait or be retired',
+    };
+}
+
 function printReport(report) {
     if (asJson) {
         console.log(JSON.stringify(report, null, 2));
@@ -171,6 +223,17 @@ function printReport(report) {
         console.log(`Paper objects with stored source candidates for regeneration: ${report.teachingRecovery.paperSourceCandidates}`);
         if (write) console.log(`Legacy unlinked rows annotated: ${report.teachingRecovery.annotated}`);
     }
+    const reach = report.reachability;
+    if (reach) {
+        console.log('');
+        console.log(`Reachable legacy content (what regeneration should actually target):`);
+        console.log(`  legacy teaching objects            ${reach.totalLegacy}`);
+        console.log(`  reachable via a flagship topic     ${reach.reachableViaFlagshipTopic}`);
+        console.log(`  already backing a stored claim     ${reach.reachableViaExistingClaims ?? 'n/a'}`);
+        const rest = reach.totalLegacy - reach.reachableViaFlagshipTopic;
+        console.log(`  outside the curriculum             ${rest} (unread; can wait or be retired)`);
+    }
+
     if (report.coverage.some((r) => r && r.unlinked > 0)) {
         console.log('\nRows without lineage predate evidence snapshots. They are not rewritten: there is no');
         console.log('evidence to attach retrospectively. Treat them as unverifiable, or regenerate them.');
@@ -189,6 +252,7 @@ async function main() {
             await auditLineageCoverage('quiz_attempts'),
         ],
         teachingRecovery: await auditTeachingRecovery(),
+        reachability: await auditReachability(),
     };
     printReport(report);
     const unprovable = report.claims?.unprovable || 0;
