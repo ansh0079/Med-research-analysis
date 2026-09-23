@@ -354,3 +354,22 @@ describe('articleReranker', () => {
         expect(caseReportsInTop.length).toBe(0);
     });
 });
+
+describe('output budget is sized to what the call emits', () => {
+    test('the rerank asks for enough tokens to return parseable JSON', async () => {
+        // At 2048 the model hit MAX_TOKENS and returned ~6,800 characters of truncated JSON, so
+        // every rerank was discarded after being paid for. The budget must clear that, not sit on it.
+        const values = new Map();
+        const cache = { get: (key) => values.get(key), set: (key, value) => values.set(key, value) };
+        const ai = {
+            callText: jest.fn().mockResolvedValue(JSON.stringify([{ articleIndex: 1, overallScore: 0.9, exclusionFlags: [] }])),
+        };
+        const options = { ai, cache, serverConfig: { keys: { gemini: 'test' } } };
+        await rerankArticlesByPico(
+            [{ uid: 'b1', title: 'ARDS ventilation', abstract: 'Adults in ICU' }],
+            { population: 'adults', intervention: 'ventilation' },
+            options,
+        );
+        expect(ai.callText.mock.calls[0][3].maxOutputTokens).toBeGreaterThanOrEqual(4096);
+    });
+});

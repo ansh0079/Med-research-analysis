@@ -176,6 +176,10 @@ async function generateLiveClinicalAnswer({
     }
     const synthesisRaw = await ai.callStructured(prompt, provider, model, {
         temperature: 0.2,
+        // Its own budget rather than the shared long-prompt default of 2500, which this answer
+        // routinely overran: production returned 9,000-11,000 characters and was cut off at
+        // MAX_TOKENS every time, so the answer was truncated mid-JSON and thrown away.
+        maxOutputTokens: 4096,
         allowBudgetSkip: true,
         usage: { operation: 'live_clinical_answer', topic },
     });

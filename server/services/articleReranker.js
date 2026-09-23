@@ -341,8 +341,12 @@ async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, l
             const timeoutMs = Number.isFinite(configured) ? Math.min(15000, Math.max(500, configured)) : 12000;
             // Labelled, so this stops hiding inside 'unspecified' where its timeouts buried every
             // other provider failure in the aggregate.
+            // 4096, from what this call actually emits. At 2048 the model hit MAX_TOKENS and the
+            // JSON came back truncated - unparseable, so the whole rerank was discarded after being
+            // paid for. Observed output was ~6,800 characters, which is right at a 2048-token
+            // ceiling; 4096 clears it with room for a larger batch.
             const rawText = await ai.callText(prompt, provider, model, {
-                temperature: RERANK_TEMPERATURE, maxOutputTokens: 2048, timeoutMs, usage: { operation: 'pico_rerank' },
+                temperature: RERANK_TEMPERATURE, maxOutputTokens: 4096, timeoutMs, usage: { operation: 'pico_rerank' },
             });
             const parsed = parseBatchScores(rawText, safeArticles.length);
             const value = { scores: parsed?.length ? parsed : null };
