@@ -273,6 +273,15 @@ const TRUSTED_GUIDELINE_SOURCES = [
         domain: 'https://www.asco.org',
         urlPattern: 'https://www.asco.org/practice-patients/guidelines/{id}',
     },
+    {
+        id: 'cvit-japan',
+        name: 'CVIT',
+        fullName: 'Japanese Association of Cardiovascular Intervention and Therapeutics',
+        region: 'Japan',
+        specialty: 'Interventional Cardiology',
+        domain: 'https://www.cvit.jp',
+        urlPattern: 'https://www.cvit.jp/guideline/{id}',
+    },
 ];
 
 module.exports = { TRUSTED_GUIDELINE_SOURCES };

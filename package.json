@@ -51,6 +51,7 @@
     "sync:flagship-sources": "node server/scripts/syncSourceArticles.js",
     "ingest:curated-literature": "node scripts/ingest-curated-literature.js",
     "ingest:flagship-guidelines": "node scripts/ingest-flagship-guideline-seeds.js",
+    "ingest:uploaded-guidelines": "node scripts/ingest-flagship-guideline-seeds.js --catalog server/config/uploadedGuidelines.json",
     "ingest:gap-source-articles": "node scripts/ingest-gap-source-articles.js",
     "audit:evidence-performance": "node scripts/audit-evidence-performance.js",
     "backfill:pdf-flagship": "node server/scripts/backfillPdfBouquet.js",

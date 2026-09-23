@@ -1,0 +1,46 @@
+{
+  "topics": [
+    {
+      "topic": "STEMI primary PCI reperfusion",
+      "document": {
+        "title": "CVIT expert consensus document on primary percutaneous coronary intervention (PCI) for acute myocardial infarction (AMI) update 2022",
+        "sourceBody": "CVIT",
+        "sourceRegion": "Japan",
+        "sourceSpecialty": "Interventional Cardiology",
+        "sourceDomain": "https://www.cvit.jp",
+        "year": 2022,
+        "pmid": "35018605",
+        "pmcid": "PMC8789715",
+        "doi": "10.1007/s12928-021-00829-9",
+        "url": "https://link.springer.com/article/10.1007/s12928-021-00829-9",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "uploadedFileName": "s12928-021-00829-9.pdf",
+        "uploadedFileSha256": "E6A7367B3ED19485B526BD5E17091AFBD02FF8048C28DF7AFA85B7B24A8DAF0A"
+      },
+      "recommendations": [
+        {
+          "text": "Primary PCI is recommended as the standard reperfusion strategy for patients with ST-segment elevation myocardial infarction.",
+          "strength": "consensus",
+          "population": "Patients with ST-segment elevation myocardial infarction",
+          "intervention": "Primary percutaneous coronary intervention",
+          "cautions": "This procedural consensus is written for Japanese practice; confirm current local systems, devices, drug doses, and jurisdiction-specific guidance."
+        },
+        {
+          "text": "Prefer radial arterial access and drug-eluting stents over bare-metal stents when performing primary PCI for STEMI.",
+          "strength": "Class I",
+          "population": "Patients with STEMI undergoing primary PCI",
+          "intervention": "Radial access and drug-eluting stents",
+          "cautions": "This procedural consensus is written for Japanese practice; confirm current local systems, devices, drug doses, and jurisdiction-specific guidance."
+        },
+        {
+          "text": "For STEMI with multivessel coronary disease, consider complete revascularization before hospital discharge, either during the index procedure or as a staged procedure.",
+          "strength": "Class IIa",
+          "population": "Patients with STEMI and multivessel coronary disease",
+          "intervention": "Complete revascularization before discharge",
+          "cautions": "The document separately discusses cardiogenic shock and jurisdiction-specific practice; apply current local guidance and individual clinical assessment."
+        }
+      ]
+    }
+  ]
+}

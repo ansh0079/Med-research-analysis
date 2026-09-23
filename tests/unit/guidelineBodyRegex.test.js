@@ -23,7 +23,7 @@ const { GUIDELINE_BODY } = require('../../server/utils/mcqClaimKey');
 
 // Every one of these appears in production topic_guidelines.source_body.
 const REAL_BODIES = [
-    'NICE', 'WHO', 'ESC', 'AHA/ACC', 'ADA', 'EULAR', 'KDIGO', 'ESICM', 'IDSA', 'NCCN',
+    'NICE', 'WHO', 'ESC', 'AHA/ACC', 'ADA', 'EULAR', 'KDIGO', 'ESICM', 'IDSA', 'NCCN', 'CVIT',
     'ESMO', 'ERS', 'CDC', 'ATS', 'NIH', 'ACG', 'SIGN', 'AASLD', 'EASL', 'AGA Institute',
     'IPNA', 'Endocrine Society', 'European Academy of Neurology', 'American College of Radiology',
     // Added from the 2026-09-10 bulk discovery run across 174 previously

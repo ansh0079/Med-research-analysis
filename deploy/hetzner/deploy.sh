@@ -57,6 +57,10 @@ echo "Running Postgres migrations..."
 docker compose -f docker-compose.hetzner.yml exec -T -e USE_POSTGRES_MAIN=true web \
   node -e "const db=require('./database');db.connect().then(()=>db.runMigrations()).then(r=>console.log(r)).finally(()=>db.close())"
 
+echo "Ingesting uploaded open-access guidelines..."
+docker compose -f docker-compose.hetzner.yml exec -T -e USE_POSTGRES_MAIN=true web \
+  node scripts/ingest-flagship-guideline-seeds.js --catalog server/config/uploadedGuidelines.json
+
 echo ""
 echo "Waiting for health (web + worker) ..."
 web_ok=0

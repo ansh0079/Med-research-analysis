@@ -6,6 +6,8 @@ const {
     sameDocument,
     xmlText,
 } = require('../../scripts/ingest-flagship-guideline-seeds');
+const uploadedGuidelines = require('../../server/config/uploadedGuidelines.json');
+const { isServableGuideline } = require('../../server/utils/guidelineQuality');
 
 function makeDatabase() {
     const state = { documents: [], guidelines: [], knowledge: new Map() };
@@ -37,10 +39,10 @@ function makeDatabase() {
             return row ? { id: row.id, document_id: row.documentId || null } : null;
         },
         async run(sql, params) {
-            if (/UPDATE topic_guidelines SET document_id/.test(sql)) {
-                const [documentId, id] = params;
+            if (/UPDATE topic_guidelines SET/.test(sql)) {
+                const [documentId, sourceRegion, sourceSpecialty, sourceDomain, , id] = params;
                 const row = state.guidelines.find((guideline) => guideline.id === id);
-                if (row) row.documentId = documentId;
+                if (row) Object.assign(row, { documentId, sourceRegion, sourceSpecialty, sourceDomain });
             }
         },
         async createGuideline(guideline) {
@@ -57,6 +59,13 @@ const CATALOG = {
         document: {
             title: 'Test guideline', sourceBody: 'Test Society', year: 2026,
             pmid: '123', url: 'https://example.test/guideline',
+            sourceRegion: 'Test region',
+            sourceSpecialty: 'Test specialty',
+            sourceDomain: 'https://example.test',
+            license: 'CC BY 4.0',
+            licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
+            uploadedFileName: 'test-guideline.pdf',
+            uploadedFileSha256: 'abc123',
         },
         recommendations: [{
             text: 'Use the tested treatment for eligible patients.',
@@ -66,6 +75,22 @@ const CATALOG = {
 };
 
 describe('flagship guideline ingestion', () => {
+    test('uploaded guideline recommendations are attributable and servable', () => {
+        const [entry] = uploadedGuidelines.topics;
+        expect(entry.topic).toBe('STEMI primary PCI reperfusion');
+        expect(entry.document).toMatchObject({
+            sourceBody: 'CVIT',
+            pmcid: 'PMC8789715',
+            license: 'CC BY 4.0',
+        });
+        for (const recommendation of entry.recommendations) {
+            expect(isServableGuideline({
+                source_body: entry.document.sourceBody,
+                recommendation_text: recommendation.text,
+            })).toBe(true);
+        }
+    });
+
     test('stores documents, topic links, and recommendations idempotently', async () => {
         const database = makeDatabase();
         const enrich = jest.fn(async (document) => ({
@@ -87,9 +112,22 @@ describe('flagship guideline ingestion', () => {
         });
         expect(database.state.documents).toHaveLength(1);
         expect(database.state.guidelines).toHaveLength(1);
-        expect(database.state.guidelines[0]).toMatchObject({ status: 'ai_extracted', documentId: 1 });
+        expect(database.state.guidelines[0]).toMatchObject({
+            status: 'ai_extracted',
+            documentId: 1,
+            sourceRegion: 'Test region',
+            sourceSpecialty: 'Test specialty',
+            sourceDomain: 'https://example.test',
+        });
         expect(database.state.knowledge.get('Test condition').sourceArticles).toEqual([
-            expect.objectContaining({ documentId: 1, bodyStored: true, locallyStored: true }),
+            expect.objectContaining({
+                documentId: 1,
+                bodyStored: true,
+                locallyStored: true,
+                license: 'CC BY 4.0',
+                uploadedFileName: 'test-guideline.pdf',
+                uploadedFileSha256: 'abc123',
+            }),
         ]);
     });
 

@@ -6,7 +6,7 @@ const https = require('https');
 const path = require('path');
 const db = require('../database');
 
-const CATALOG = path.join(__dirname, '../data/flagship-clinical-guideline-seeds.json');
+const DEFAULT_CATALOG = path.join(__dirname, '../data/flagship-clinical-guideline-seeds.json');
 const EPMC = 'https://www.ebi.ac.uk/europepmc/webservices/rest';
 const PUBMED_EFETCH = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi';
 const PMC_BIOC = 'https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_xml';
@@ -180,6 +180,10 @@ function sourceArticle(document, documentId) {
         evidenceType: 'clinical_practice_guideline',
         locallyStored: true,
         bodyStored: Boolean(document.fullText),
+        license: document.license || null,
+        licenseUrl: document.licenseUrl || null,
+        uploadedFileName: document.uploadedFileName || null,
+        uploadedFileSha256: document.uploadedFileSha256 || null,
     };
 }
 
@@ -252,17 +256,29 @@ async function ingestCatalog(catalog, {
             for (const recommendation of entry.recommendations) {
                 const existing = await recommendationExists(database, entry.topic, recommendation.text);
                 if (existing) {
-                    if (!existing.document_id && documentId) {
-                        await database.run('UPDATE topic_guidelines SET document_id = ? WHERE id = ?', [documentId, existing.id]);
-                    }
+                    await database.run(
+                        `UPDATE topic_guidelines SET
+                            document_id = COALESCE(document_id, ?),
+                            source_region = COALESCE(source_region, ?),
+                            source_specialty = COALESCE(source_specialty, ?),
+                            source_domain = COALESCE(source_domain, ?),
+                            updated_at = ?
+                         WHERE id = ?`,
+                        [documentId || null, document.sourceRegion || null,
+                            document.sourceSpecialty || null, document.sourceDomain || null,
+                            new Date().toISOString(), existing.id]
+                    );
                     totals.recommendationsExisting += 1;
                     continue;
                 }
                 await database.createGuideline({
                     topic: entry.topic,
                     sourceBody: document.sourceBody,
+                    sourceRegion: document.sourceRegion,
                     sourceYear: document.year,
                     sourceUrl: document.url,
+                    sourceSpecialty: document.sourceSpecialty,
+                    sourceDomain: document.sourceDomain,
                     recommendationText: recommendation.text,
                     recommendationStrength: recommendation.strength,
                     recommendationCertainty: recommendation.certainty,
@@ -287,12 +303,15 @@ async function main() {
     const dryRun = argv.includes('--dry-run');
     const skipNetwork = argv.includes('--skip-network');
     const topicFilter = argValue('--topic', argv) || '';
-    const catalog = JSON.parse(fs.readFileSync(CATALOG, 'utf8'));
+    const catalogArg = argValue('--catalog', argv);
+    const catalogPath = catalogArg ? path.resolve(process.cwd(), catalogArg) : DEFAULT_CATALOG;
+    const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
     const selected = catalog.topics.filter((entry) =>
         !topicFilter || entry.topic.toLowerCase().includes(topicFilter.toLowerCase()));
 
     if (dryRun) {
         console.log(JSON.stringify({
+            catalog: catalogPath,
             topics: selected.length,
             documents: selected.length,
             recommendations: selected.reduce((count, entry) => count + entry.recommendations.length, 0),
@@ -305,7 +324,7 @@ async function main() {
     await db.runMigrations();
     try {
         const result = await ingestCatalog(catalog, { database: db, topicFilter, skipNetwork });
-        console.log(JSON.stringify(result, null, 2));
+        console.log(JSON.stringify({ catalog: catalogPath, ...result }, null, 2));
         if (result.errors.length) process.exitCode = 1;
     } finally {
         await db.close();
