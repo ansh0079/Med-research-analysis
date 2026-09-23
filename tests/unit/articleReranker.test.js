@@ -22,7 +22,11 @@ describe('articleReranker', () => {
         expect(rows[0].privateNote).toBe('current caller');
         await rerankArticlesByPico([{ ...article, abstract: 'Children in ICU' }], profile, options);
         expect(ai.callText).toHaveBeenCalledTimes(2);
-        expect(ai.callText.mock.calls[0][3].timeoutMs).toBe(4000);
+        // 6000: the 4s default aborted 55% of production calls mid-flight, on a model whose
+        // comparable calls answer in about six seconds.
+        expect(ai.callText.mock.calls[0][3].timeoutMs).toBe(6000);
+        // Labelled, so its timeouts stop hiding inside 'unspecified' in the ops report.
+        expect(ai.callText.mock.calls[0][3].usage).toEqual({ operation: 'pico_rerank' });
     });
 
     test('provider failure uses a short fallback cache rather than repeated calls', async () => {

@@ -330,9 +330,18 @@ async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, l
         // callText routes to the resolved provider (claude/gemini/mistral). A bare
         // gemini/else split previously sent claude models to the Mistral endpoint.
         const result = cached || await shareSearchComputation(cacheKey, async () => {
-            const configured = Number(process.env.SEARCH_RERANK_TIMEOUT_MS || 4000);
-            const timeoutMs = Number.isFinite(configured) ? Math.min(15000, Math.max(500, configured)) : 4000;
-            const rawText = await ai.callText(prompt, provider, model, { temperature: RERANK_TEMPERATURE, maxOutputTokens: 2048, timeoutMs });
+            // 6000, not 4000. Production ran this at 4s against gemini-2.5-flash and 55% of calls
+            // were aborted mid-flight - 415 a day, every one of them a search that silently dropped
+            // to heuristic reranking. The model's comparable calls answer in about six seconds, so
+            // the old deadline was below its normal response time; the provider was never at fault.
+            // Still clamped, because a hung provider must not hold a search open.
+            const configured = Number(process.env.SEARCH_RERANK_TIMEOUT_MS || 6000);
+            const timeoutMs = Number.isFinite(configured) ? Math.min(15000, Math.max(500, configured)) : 6000;
+            // Labelled, so this stops hiding inside 'unspecified' where its timeouts buried every
+            // other provider failure in the aggregate.
+            const rawText = await ai.callText(prompt, provider, model, {
+                temperature: RERANK_TEMPERATURE, maxOutputTokens: 2048, timeoutMs, usage: { operation: 'pico_rerank' },
+            });
             const parsed = parseBatchScores(rawText, safeArticles.length);
             const value = { scores: parsed?.length ? parsed : null };
             await setCachedSearchResult(cache, cacheKey, value, value.scores ? 3600 : 15);
