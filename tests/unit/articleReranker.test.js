@@ -22,9 +22,9 @@ describe('articleReranker', () => {
         expect(rows[0].privateNote).toBe('current caller');
         await rerankArticlesByPico([{ ...article, abstract: 'Children in ICU' }], profile, options);
         expect(ai.callText).toHaveBeenCalledTimes(2);
-        // 12000: at 4s this failed 55% of the time and at 6s it failed outright, so the step had
-        // never completed in production. It requests 2048 tokens over a batch of articles.
-        expect(ai.callText.mock.calls[0][3].timeoutMs).toBe(12000);
+        // Production responses clustered around 8-12s after truncation was fixed, so the deadline
+        // needs margin above that measured boundary.
+        expect(ai.callText.mock.calls[0][3].timeoutMs).toBe(15000);
         // Labelled, so its timeouts stop hiding inside 'unspecified' in the ops report.
         expect(ai.callText.mock.calls[0][3].usage).toEqual({ operation: 'pico_rerank' });
     });
@@ -371,5 +371,7 @@ describe('output budget is sized to what the call emits', () => {
             options,
         );
         expect(ai.callText.mock.calls[0][3].maxOutputTokens).toBeGreaterThanOrEqual(4096);
+        expect(ai.callText.mock.calls[0][3].jsonMode).toBe(true);
+        expect(ai.callText.mock.calls[0][0]).not.toContain('- rationale:');
     });
 });

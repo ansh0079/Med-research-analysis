@@ -199,9 +199,8 @@ For each article, return a JSON object with these exact fields:
 - studyDesignScore: number 0.0–1.0 (RCTs/meta-analyses score higher for management queries; case reports score lower)
 - overallScore: number 0.0–1.0 (composite relevance)
 - exclusionFlags: array of strings. Possible values: "population_mismatch" (age/severity/setting diverges significantly), "outcome_mismatch" (outcomes are irrelevant), "design_too_weak" (case report/expert opinion for a management query). Empty array if no exclusions.
-- rationale: one sentence explaining the score.
 
-Return ONLY a JSON array. No markdown, no explanation outside the JSON.
+Return ONLY a compact JSON array with those exact fields. Do not include rationale, markdown, or explanation.
 
 ${articleBlocks}`;
 }
@@ -330,15 +329,11 @@ async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, l
         // callText routes to the resolved provider (claude/gemini/mistral). A bare
         // gemini/else split previously sent claude models to the Mistral endpoint.
         const result = cached || await shareSearchComputation(cacheKey, async () => {
-            // 12000. Sized from what this call actually is, not from a smaller one: it asks for up
-            // to 2048 output tokens scoring a batch of articles, which is closer to the synthesis
-            // call (17s p50) than to a short classification. Production evidence: at 4000ms it failed
-            // 55% of the time, and at 6000ms it failed outright - so this step has never once
-            // completed in production, and every search has silently used heuristic reranking.
-            // Still clamped to 15s, because a hung provider must not hold a search open, and still
-            // overridable so the figure can follow measured latency without a deploy.
-            const configured = Number(process.env.SEARCH_RERANK_TIMEOUT_MS || 12000);
-            const timeoutMs = Number.isFinite(configured) ? Math.min(15000, Math.max(500, configured)) : 12000;
+            // Production measurements put successful batch responses around 8-12s. The old 12s
+            // deadline remained a hard boundary once the output budget was corrected, so allow a
+            // small measured margin while keeping a finite ceiling and an operator override.
+            const configured = Number(process.env.SEARCH_RERANK_TIMEOUT_MS || 15000);
+            const timeoutMs = Number.isFinite(configured) ? Math.min(20000, Math.max(500, configured)) : 15000;
             // Labelled, so this stops hiding inside 'unspecified' where its timeouts buried every
             // other provider failure in the aggregate.
             // 4096, from what this call actually emits. At 2048 the model hit MAX_TOKENS and the
@@ -346,7 +341,11 @@ async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, l
             // paid for. Observed output was ~6,800 characters, which is right at a 2048-token
             // ceiling; 4096 clears it with room for a larger batch.
             const rawText = await ai.callText(prompt, provider, model, {
-                temperature: RERANK_TEMPERATURE, maxOutputTokens: 4096, timeoutMs, usage: { operation: 'pico_rerank' },
+                temperature: RERANK_TEMPERATURE,
+                maxOutputTokens: 4096,
+                timeoutMs,
+                jsonMode: true,
+                usage: { operation: 'pico_rerank' },
             });
             const parsed = parseBatchScores(rawText, safeArticles.length);
             const value = { scores: parsed?.length ? parsed : null };
