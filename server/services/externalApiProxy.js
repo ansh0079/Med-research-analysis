@@ -40,6 +40,22 @@ async function getVertexAccessToken() {
   return tokenResponse.token;
 }
 
+/**
+ * The only Claude models this application may call at runtime.
+ *
+ * Operator scripts under server/scripts/ deliberately reach for larger models by hand; the running
+ * app does not, and must not be able to drift into doing so through a stray `model` argument.
+ */
+const CLAUDE_DEFAULT_MODEL = 'claude-haiku-4-5-20251001';
+const CLAUDE_ALLOWED_MODELS = new Set([CLAUDE_DEFAULT_MODEL, 'claude-haiku-4-5']);
+
+function claudeModelOrDefault(model, log = console) {
+    const requested = String(model || '').trim();
+    if (!requested || CLAUDE_ALLOWED_MODELS.has(requested)) return requested || CLAUDE_DEFAULT_MODEL;
+    log.warn?.(`[externalApiProxy] Claude model ${requested} is not permitted at runtime; using ${CLAUDE_DEFAULT_MODEL}`);
+    return CLAUDE_DEFAULT_MODEL;
+}
+
 const DEFAULT_TIMEOUTS = {
   pubmed: 15000,
   semantic: 15000,
@@ -386,8 +402,14 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     });
   }
 
-  async function claudeMessages(prompt, { model = 'claude-haiku-4-5-20251001', temperature = 0.7, maxOutputTokens = 2048, timeoutMs = DEFAULT_TIMEOUTS.claude, jsonMode = false } = {}) {
+  async function claudeMessages(prompt, { model = CLAUDE_DEFAULT_MODEL, temperature = 0.7, maxOutputTokens = 2048, timeoutMs = DEFAULT_TIMEOUTS.claude, jsonMode = false } = {}) {
     if (!keys.anthropic) throw new Error('Anthropic API key not configured');
+    // Haiku only, enforced at the one place every Claude call passes through. Sonnet is 20x the
+    // input cost and Opus 33x, and a single caller passing a model string was all it would take to
+    // spend at that rate unnoticed - the usage table already prices all three. Anything else is
+    // coerced back to Haiku and logged rather than refused, because a cost guard should not be able
+    // to take a clinical feature down.
+    model = claudeModelOrDefault(model);
     const messages = [{ role: 'user', content: prompt }];
     const body = { model, max_tokens: maxOutputTokens, temperature, messages };
     if (jsonMode) {
@@ -557,4 +579,10 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
   };
 }
 
-module.exports = { buildProxyService, clearInFlightRequests: () => inFlight.clear() };
+module.exports = {
+  buildProxyService,
+  clearInFlightRequests: () => inFlight.clear(),
+  CLAUDE_DEFAULT_MODEL,
+  CLAUDE_ALLOWED_MODELS,
+  claudeModelOrDefault,
+};

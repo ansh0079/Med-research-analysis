@@ -89,6 +89,23 @@ function picoCacheKey(query) {
     return `llm:pico-decomposition:${hash}:pv:${pv}`;
 }
 
+/**
+ * How long to wait for PICO decomposition before giving up and using the deterministic parser.
+ *
+ * This ran at 4000ms against gemini-2.5-flash, whose comparable calls answer in roughly 6 seconds, so
+ * 220 of 386 attempts were aborted mid-flight and every one of those searches fell back to the
+ * simpler query parser. The deadline was below the model's normal response time.
+ *
+ * Raising it is close to free here: the call is started in parallel with the multi-source evidence
+ * fetch and only awaited once that fetch returns, so it adds wall-clock time only when three
+ * external APIs answer faster than the model does. It stays bounded - a hung provider must not hold
+ * a search open - and is overridable so the figure can follow the measured latency without a deploy.
+ */
+function picoTimeoutMs(env = process.env) {
+    const raw = Number(env.SEARCH_PICO_TIMEOUT_MS);
+    return Number.isFinite(raw) && raw >= 1000 ? raw : 6000;
+}
+
 async function decomposePico(query, serverConfig, fetchImpl, cache = null) {
     const { getSharedAiService } = require('../aiService');
     const { resolveProvider } = require('../../utils/aiProvider');
@@ -121,7 +138,7 @@ If a component is unclear or absent, set it to an empty string. Do not include a
         // Labelled so it is attributable in the ops report. Unlabelled, this call and the intent
         // classifier both landed in 'unspecified' and their timeouts hid every other failure.
         const parsed = await ai.callStructured(prompt, provider, model, {
-            temperature: 0.0, maxOutputTokens: 300, timeoutMs: 4000, usage: { operation: 'pico_extraction' },
+            temperature: 0.0, maxOutputTokens: 300, timeoutMs: picoTimeoutMs(), usage: { operation: 'pico_extraction' },
         });
         if (parsed && typeof parsed === 'object' && parsed.confidence != null) {
             if (cache && typeof cache.set === 'function') {
@@ -138,6 +155,7 @@ If a component is unclear or absent, set it to an empty string. Do not include a
 }
 
 module.exports = {
+    picoTimeoutMs,
     reformulationCacheKey,
     reformulateQueryForPubMed,
     picoCacheKey,
