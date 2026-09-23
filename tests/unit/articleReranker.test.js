@@ -22,9 +22,9 @@ describe('articleReranker', () => {
         expect(rows[0].privateNote).toBe('current caller');
         await rerankArticlesByPico([{ ...article, abstract: 'Children in ICU' }], profile, options);
         expect(ai.callText).toHaveBeenCalledTimes(2);
-        // 6000: the 4s default aborted 55% of production calls mid-flight, on a model whose
-        // comparable calls answer in about six seconds.
-        expect(ai.callText.mock.calls[0][3].timeoutMs).toBe(6000);
+        // 12000: at 4s this failed 55% of the time and at 6s it failed outright, so the step had
+        // never completed in production. It requests 2048 tokens over a batch of articles.
+        expect(ai.callText.mock.calls[0][3].timeoutMs).toBe(12000);
         // Labelled, so its timeouts stop hiding inside 'unspecified' in the ops report.
         expect(ai.callText.mock.calls[0][3].usage).toEqual({ operation: 'pico_rerank' });
     });

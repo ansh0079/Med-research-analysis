@@ -330,13 +330,15 @@ async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, l
         // callText routes to the resolved provider (claude/gemini/mistral). A bare
         // gemini/else split previously sent claude models to the Mistral endpoint.
         const result = cached || await shareSearchComputation(cacheKey, async () => {
-            // 6000, not 4000. Production ran this at 4s against gemini-2.5-flash and 55% of calls
-            // were aborted mid-flight - 415 a day, every one of them a search that silently dropped
-            // to heuristic reranking. The model's comparable calls answer in about six seconds, so
-            // the old deadline was below its normal response time; the provider was never at fault.
-            // Still clamped, because a hung provider must not hold a search open.
-            const configured = Number(process.env.SEARCH_RERANK_TIMEOUT_MS || 6000);
-            const timeoutMs = Number.isFinite(configured) ? Math.min(15000, Math.max(500, configured)) : 6000;
+            // 12000. Sized from what this call actually is, not from a smaller one: it asks for up
+            // to 2048 output tokens scoring a batch of articles, which is closer to the synthesis
+            // call (17s p50) than to a short classification. Production evidence: at 4000ms it failed
+            // 55% of the time, and at 6000ms it failed outright - so this step has never once
+            // completed in production, and every search has silently used heuristic reranking.
+            // Still clamped to 15s, because a hung provider must not hold a search open, and still
+            // overridable so the figure can follow measured latency without a deploy.
+            const configured = Number(process.env.SEARCH_RERANK_TIMEOUT_MS || 12000);
+            const timeoutMs = Number.isFinite(configured) ? Math.min(15000, Math.max(500, configured)) : 12000;
             // Labelled, so this stops hiding inside 'unspecified' where its timeouts buried every
             // other provider failure in the aggregate.
             const rawText = await ai.callText(prompt, provider, model, {
