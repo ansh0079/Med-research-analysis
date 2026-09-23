@@ -682,7 +682,7 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20, includeRelated = tr
             try {
                 const refiled = await this.all(
                     `SELECT g.* FROM topic_guidelines g
-                     JOIN topic_guideline_refiling r ON r.guideline_id = g.id
+                     JOIN topic_guideline_refiling r ON CAST(r.guideline_id AS TEXT) = CAST(g.id AS TEXT)
                      WHERE r.canonical_normalized = ?
                        AND (? = '' OR g.status = ?)
                        AND g.superseded_by_id IS NULL
@@ -851,7 +851,7 @@ async listGuidelineRefilingCandidates({ limit = 200, offset = 0 } = {}) {
         `SELECT g.id, g.topic, g.normalized_topic, g.source_body, g.recommendation_text,
                 r.embedded_text_hash AS refiling_hash
          FROM topic_guidelines g
-         LEFT JOIN topic_guideline_refiling r ON r.guideline_id = g.id
+         LEFT JOIN topic_guideline_refiling r ON CAST(r.guideline_id AS TEXT) = CAST(g.id AS TEXT)
          WHERE g.superseded_by_id IS NULL
          ORDER BY g.id
          LIMIT ? OFFSET ?`,

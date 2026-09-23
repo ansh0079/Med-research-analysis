@@ -1436,7 +1436,7 @@ CREATE TABLE IF NOT EXISTS topic_evidence_memory (
 );
 
 CREATE TABLE IF NOT EXISTS topic_guideline_refiling (
-    guideline_id INTEGER PRIMARY KEY,
+    guideline_id TEXT PRIMARY KEY,
     canonical_normalized TEXT NOT NULL,
     similarity REAL NOT NULL,
     source_topic_normalized TEXT NOT NULL,

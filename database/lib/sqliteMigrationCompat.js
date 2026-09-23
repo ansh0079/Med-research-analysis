@@ -8,6 +8,7 @@ function applySqliteMigrationCompat(db, statement) {
     // a genuine no-op here rather than a syntax error -- SQLite has no
     // ALTER COLUMN ... TYPE.
     if (/^ALTER TABLE search_learning_outcomes ALTER COLUMN quiz_attempt_id TYPE TEXT\b/i.test(statement.trim())) return true;
+    if (/^ALTER TABLE topic_guideline_refiling\s+ALTER COLUMN guideline_id TYPE TEXT\b/i.test(statement.trim())) return true;
     if (!/^ALTER TABLE quiz_attempts ALTER COLUMN user_id DROP NOT NULL\s*;?$/i.test(statement.trim())) return false;
     const columns = db.prepare('PRAGMA table_info(quiz_attempts)').all();
     const userColumn = columns.find(column => column.name === 'user_id');
