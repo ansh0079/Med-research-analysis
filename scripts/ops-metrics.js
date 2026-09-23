@@ -180,7 +180,9 @@ async function providerFailures() {
     if (!rows.length) return { failures: 0 };
     return {
         failures: rows.reduce((sum, r) => sum + Number(r.n || 0), 0),
-        top: rows.slice(0, 8).map((r) => ({
+        // 25, not 8. The list filled to exactly eight and hid whether a just-changed timeout had
+        // started succeeding - the diagnosis this report exists for was the thing being truncated.
+        top: rows.slice(0, 25).map((r) => ({
             operation: r.operation || 'unknown',
             provider: r.provider || 'unknown',
             count: Number(r.n || 0),
