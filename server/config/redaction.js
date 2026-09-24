@@ -52,6 +52,7 @@ const REDACT_PATHS = [
   'freeText',
   'scenario',
   'input',
+  'nested.email',
   // Generic fallbacks anywhere in structured logs
   '**.authorization',
   '**.apiKey',
