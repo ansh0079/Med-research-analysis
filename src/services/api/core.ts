@@ -6,7 +6,6 @@ import { buildUsageLimitError, type UsageLimitInfo } from '@utils/usageErrors';
 // Vite at runtime provides import.meta.env; Jest/Node may not. Avoid direct `import.meta` syntax.
 function readViteApiUrl(): string {
   try {
-    // eslint-disable-next-line no-eval
     const im: any = eval('import.meta');
     return im?.env?.VITE_API_URL || '';
   } catch {
