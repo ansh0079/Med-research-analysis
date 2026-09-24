@@ -4,9 +4,9 @@ import { AppError, parseApiErrorBody } from '@utils/appErrors';
 import { buildUsageLimitError, type UsageLimitInfo } from '@utils/usageErrors';
 
 // Vite at runtime provides import.meta.env; Jest/Node may not. Avoid direct `import.meta` syntax.
-/* eslint-disable no-eval */
 function readViteApiUrl(): string {
   try {
+    // eslint-disable-next-line no-eval
     const im: any = eval('import.meta');
     return im?.env?.VITE_API_URL || '';
   } catch {
@@ -14,7 +14,6 @@ function readViteApiUrl(): string {
     return '';
   }
 }
-/* eslint-enable no-eval */
 export const API_BASE =
   readViteApiUrl() ||
   (typeof process !== 'undefined' ? (process.env?.VITE_API_URL || '') : '');
