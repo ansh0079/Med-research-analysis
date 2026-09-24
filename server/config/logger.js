@@ -1,6 +1,7 @@
 const pino = require('pino');
 const { getRequestId } = require('../utils/requestContext');
 const { activeTraceContext } = require('../utils/tracing');
+const { REDACT_PATHS } = require('./redaction');
 
 const logger = pino({
     level:
@@ -10,6 +11,10 @@ const logger = pino({
             : process.env.NODE_ENV === 'production'
             ? 'info'
             : 'debug'),
+    redact: {
+        paths: REDACT_PATHS,
+        censor: '[REDACTED]',
+    },
     mixin() {
         const requestId = getRequestId();
         return {
@@ -20,3 +25,4 @@ const logger = pino({
 });
 
 module.exports = logger;
+module.exports.redactPaths = REDACT_PATHS;

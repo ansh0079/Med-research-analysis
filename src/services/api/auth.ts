@@ -1,4 +1,5 @@
 import { API_BASE, BaseApiClient } from './core';
+import { clearCsrfToken } from './csrf';
 import type { AuthUser } from './core';
 
 export class AuthApi extends BaseApiClient {
@@ -115,6 +116,8 @@ export class AuthApi extends BaseApiClient {
       await this.fetchWithSession(`${API_BASE}/api/auth/logout`, { method: 'POST' });
     } catch {
       // Best-effort server logout
+    } finally {
+      clearCsrfToken();
     }
   }
 

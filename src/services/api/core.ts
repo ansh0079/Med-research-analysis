@@ -3,8 +3,30 @@ import type { Scope } from '@sentry/react';
 import { AppError, parseApiErrorBody } from '@utils/appErrors';
 import { buildUsageLimitError, type UsageLimitInfo } from '@utils/usageErrors';
 
-export const API_BASE = import.meta.env.VITE_API_URL || '';
+// Vite at runtime provides import.meta.env; Jest/Node may not. Avoid direct `import.meta` syntax.
+function readViteApiUrl(): string {
+  try {
+    const im: any = eval('import.meta');
+    return im?.env?.VITE_API_URL || '';
+  } catch {
+    /* ignore */
+    return '';
+  }
+}
+export const API_BASE =
+  readViteApiUrl() ||
+  (typeof process !== 'undefined' ? (process.env?.VITE_API_URL || '') : '');
 export const USAGE_HEADER_EVENT = 'medsearch:usage-headers';
+
+function readViteEnv(name: string): string {
+  try {
+    const im: any = eval('import.meta');
+    return im?.env?.[name] || '';
+  } catch {
+    /* ignore */
+    return (typeof process !== 'undefined' ? (process.env?.[name] as string) || '' : '');
+  }
+}
 
 export interface UsageHeaderDetail {
   kind: 'usage' | 'search';
@@ -25,14 +47,16 @@ export interface AuthUser {
 }
 
 import { registerAnalyticsInitializer } from '../consent';
+import { getCsrfToken, clearCsrfToken } from './csrf';
 
 // Error tracking — only enabled once the user accepts the cookie consent banner.
 registerAnalyticsInitializer(() => {
-  if (import.meta.env.VITE_SENTRY_DSN) {
-    const tracesSampleRate = Number(import.meta.env.VITE_SENTRY_TRACES_SAMPLE_RATE ?? 0.1);
+  const viteDsn = readViteEnv('VITE_SENTRY_DSN');
+  if (viteDsn) {
+    const tracesSampleRate = Number(readViteEnv('VITE_SENTRY_TRACES_SAMPLE_RATE') ?? 0.1);
     Sentry.init({
-      dsn: import.meta.env.VITE_SENTRY_DSN,
-      environment: import.meta.env.MODE,
+      dsn: viteDsn,
+      environment: readViteEnv('MODE'),
       tracesSampleRate: Number.isFinite(tracesSampleRate) ? tracesSampleRate : 0.1,
     });
   }
@@ -126,6 +150,27 @@ export class BaseApiClient {
     return this.requestId;
   }
 
+  private ensureClientSessionId(): void {
+    if (this.sessionId && this.sessionId.trim()) return;
+    try {
+      const stored = localStorage.getItem('med_research_session');
+      if (stored && stored.trim()) {
+        this.sessionId = stored;
+        return;
+      }
+    } catch {
+      // ignore storage errors
+    }
+    // Mint a client session id for cold start to keep CSRF issuance and mutation in sync
+    const minted = crypto.randomUUID();
+    this.sessionId = minted;
+    try {
+      localStorage.setItem('med_research_session', minted);
+    } catch {
+      // ignore storage errors
+    }
+  }
+
   async getClientConfig(): Promise<{
     features?: { vectorSearch?: boolean; betaMode?: boolean };
     betaMode?: boolean;
@@ -163,22 +208,52 @@ export class BaseApiClient {
     if (BaseApiClient.refreshInFlight) return BaseApiClient.refreshInFlight;
     BaseApiClient.refreshInFlight = (async () => {
       try {
+        // Ensure we have a client session id before CSRF issuance
+        this.ensureClientSessionId();
+        const csrf = await getCsrfToken();
+        // Re-sync from storage in case CSRF issuance rotated session id
+        try {
+          const sid = localStorage.getItem('med_research_session');
+          if (sid && sid !== this.sessionId) this.sessionId = sid;
+        } catch {
+          /* ignore storage errors */
+        }
+        const headers: Record<string, string> = {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-Request-Id': this.ensureRequestId(),
+        };
+        if (this.sessionId) headers['X-Session-Id'] = this.sessionId;
+        if (csrf) headers['X-CSRF-Token'] = csrf;
         const response = await fetch(`${API_BASE}/api/auth/refresh`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-Request-Id': this.ensureRequestId(),
-          },
+          headers,
           credentials: 'include',
         });
+        const serverRequestId = response.headers.get('X-Request-Id');
+        if (serverRequestId && serverRequestId !== this.requestId) {
+          this.requestId = serverRequestId;
+          try { localStorage.setItem('med_research_request_id', serverRequestId); } catch {
+            /* ignore storage errors */
+          }
+        }
+        const serverSession = response.headers.get('X-Session-Id');
+        if (serverSession && serverSession !== this.sessionId) {
+          this.sessionId = serverSession;
+          try { localStorage.setItem('med_research_session', serverSession); } catch {
+            /* ignore storage errors */
+          }
+          clearCsrfToken();
+        }
         // A successful refresh clears the backoff so a later expiry is retried
         // immediately; a failure starts it, because the same call will keep
         // failing until the user signs in again.
         BaseApiClient.refreshFailedAt = response.ok ? 0 : Date.now();
+        if (response.status === 401) clearCsrfToken();
         return response.ok;
       } catch {
         BaseApiClient.refreshFailedAt = Date.now();
+        clearCsrfToken();
         return false;
       } finally {
         BaseApiClient.refreshInFlight = null;
@@ -189,19 +264,53 @@ export class BaseApiClient {
 
   protected async fetchWithSession(url: string, options: RequestInit = {}, signal?: AbortSignal): Promise<Response> {
     const headers = new Headers(options.headers);
-    if (this.sessionId) {
-      headers.set('X-Session-Id', this.sessionId);
-    }
     headers.set('X-Request-Id', this.ensureRequestId());
     // Required by the server-side CSRF origin check on state-changing requests
     headers.set('X-Requested-With', 'XMLHttpRequest');
+    const method = String((options.method || 'GET')).toUpperCase();
+    if (!['GET', 'HEAD', 'OPTIONS'].includes(method)) {
+      // Ensure session consistency before issuing/fetching CSRF
+      this.ensureClientSessionId();
+      const csrf = await getCsrfToken();
+      // Sync from storage after CSRF issuance (server may have rotated sid)
+      try {
+        const sid = localStorage.getItem('med_research_session');
+        if (sid && sid !== this.sessionId) this.sessionId = sid;
+      } catch {
+        /* ignore storage errors */
+      }
+      if (this.sessionId) headers.set('X-Session-Id', this.sessionId);
+      if (csrf) headers.set('X-CSRF-Token', csrf);
+    } else {
+      // Safe methods still carry session id when available
+      if (this.sessionId) headers.set('X-Session-Id', this.sessionId);
+    }
     const fetchOpts = { ...options, headers, credentials: 'include' as const, ...(signal ? { signal } : {}) };
     let response = await fetch(url, fetchOpts);
 
     if (this.shouldAttemptRefresh(url, response)) {
       const refreshed = await this.refreshAccessToken();
       if (refreshed) {
-        response = await fetch(url, fetchOpts);
+        // Rebuild headers after refresh to pick up rotated session/CSRF
+        const retryHeaders = new Headers(options.headers);
+        retryHeaders.set('X-Request-Id', this.ensureRequestId());
+        retryHeaders.set('X-Requested-With', 'XMLHttpRequest');
+        if (!['GET', 'HEAD', 'OPTIONS'].includes(method)) {
+          this.ensureClientSessionId();
+          const retryCsrf = await getCsrfToken();
+          try {
+            const sid = localStorage.getItem('med_research_session');
+            if (sid && sid !== this.sessionId) this.sessionId = sid;
+          } catch {
+            /* ignore storage errors */
+          }
+          if (this.sessionId) retryHeaders.set('X-Session-Id', this.sessionId);
+          if (retryCsrf) retryHeaders.set('X-CSRF-Token', retryCsrf);
+        } else if (this.sessionId) {
+          retryHeaders.set('X-Session-Id', this.sessionId);
+        }
+        const retryOpts = { ...options, headers: retryHeaders, credentials: 'include' as const, ...(signal ? { signal } : {}) };
+        response = await fetch(url, retryOpts);
       }
     }
     const clonedResponse = response.clone();
@@ -224,6 +333,7 @@ export class BaseApiClient {
       } catch {
         // ignore storage errors
       }
+      clearCsrfToken();
     }
 
     this.emitUsageHeaderEvent(clonedResponse, url);
@@ -321,7 +431,7 @@ export class BaseApiClient {
     try {
       return await fn();
     } catch (error) {
-      if (import.meta.env.VITE_SENTRY_DSN) {
+      if (readViteEnv('VITE_SENTRY_DSN')) {
         Sentry.withScope((scope: Scope) => {
           scope.setExtra('retryCount', retries);
           scope.setExtra('delay', delay);
