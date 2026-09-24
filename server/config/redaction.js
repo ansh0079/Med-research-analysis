@@ -40,6 +40,8 @@ const REDACT_PATHS = [
   'prompt',
   'query',
   'presentation',
+  'notes',
+  'note',
   'caseText',
   'symptoms',
   'labs',
