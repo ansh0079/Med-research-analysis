@@ -100,11 +100,26 @@ function evaluateEligibility(article, { query, queryMeshTerms = [], queryAliases
     if (!matchesPopulationFilter(article, query)) {
         return { eligible: false, route: null, rejectionReason: 'population_mismatch' };
     }
+    // Curated pins (trial PMIDs fetched directly) should still be on-topic.
+    // Allow them to bypass brittle year/PICO wording filters, but require topicality
+    // via either a high-signal trial alias hit or passing the off-topic check.
     if (article?._pinnedLandmark) {
-        return { eligible: true, route: 'curated_landmark', rejectionReason: null };
+        const aliasHit = queryAliasMatchScore(article, queryAliases) > 0;
+        const off = isOffTopic(article, query, { queryMeshTerms });
+        if (aliasHit || !off) {
+            return { eligible: true, route: 'curated_landmark', rejectionReason: null };
+        }
+        return { eligible: false, route: null, rejectionReason: 'off_topic_pinned' };
     }
     if (article?._fromTopicEvidenceMemory) {
-        return { eligible: true, route: 'verified_topic_link', rejectionReason: null };
+        // Durable topic memory must also be topically relevant to the current query.
+        // Accept if it passes the off-topic check (or matches a high-signal alias).
+        const aliasHit = queryAliasMatchScore(article, queryAliases) > 0;
+        const off = isOffTopic(article, query, { queryMeshTerms });
+        if (aliasHit || !off) {
+            return { eligible: true, route: 'verified_topic_link', rejectionReason: null };
+        }
+        return { eligible: false, route: null, rejectionReason: 'off_topic_memory' };
     }
     if (article?._guidelineRegistryMatch) {
         return { eligible: true, route: 'registry', rejectionReason: null };
