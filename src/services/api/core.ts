@@ -3,7 +3,21 @@ import type { Scope } from '@sentry/react';
 import { AppError, parseApiErrorBody } from '@utils/appErrors';
 import { buildUsageLimitError, type UsageLimitInfo } from '@utils/usageErrors';
 
-export const API_BASE = import.meta.env.VITE_API_URL || '';
+// Vite at runtime provides import.meta.env; Jest/Node may not. Avoid direct `import.meta` syntax.
+/* eslint-disable no-eval */
+function readViteApiUrl(): string {
+  try {
+    const im: any = eval('import.meta');
+    return im?.env?.VITE_API_URL || '';
+  } catch {
+    /* ignore */
+    return '';
+  }
+}
+/* eslint-enable no-eval */
+export const API_BASE =
+  readViteApiUrl() ||
+  (typeof process !== 'undefined' ? (process.env?.VITE_API_URL || '') : '');
 export const USAGE_HEADER_EVENT = 'medsearch:usage-headers';
 
 export interface UsageHeaderDetail {
@@ -210,12 +224,16 @@ export class BaseApiClient {
         const serverRequestId = response.headers.get('X-Request-Id');
         if (serverRequestId && serverRequestId !== this.requestId) {
           this.requestId = serverRequestId;
-          try { localStorage.setItem('med_research_request_id', serverRequestId); } catch {}
+          try { localStorage.setItem('med_research_request_id', serverRequestId); } catch {
+            /* ignore storage errors */
+          }
         }
         const serverSession = response.headers.get('X-Session-Id');
         if (serverSession && serverSession !== this.sessionId) {
           this.sessionId = serverSession;
-          try { localStorage.setItem('med_research_session', serverSession); } catch {}
+          try { localStorage.setItem('med_research_session', serverSession); } catch {
+            /* ignore storage errors */
+          }
           clearCsrfToken();
         }
         // A successful refresh clears the backoff so a later expiry is retried

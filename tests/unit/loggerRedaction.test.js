@@ -1,6 +1,6 @@
 const pino = require('pino');
 const { Writable } = require('stream');
-const baseLogger = require('../../server/config/logger');
+const { REDACT_PATHS } = require('../../server/config/redaction');
 
 function makeCaptureStream() {
   let buf = '';
@@ -18,7 +18,7 @@ describe('logger redaction', () => {
     const { stream, read } = makeCaptureStream();
     const log = pino({
       level: 'info',
-      redact: { paths: baseLogger.redactPaths, censor: '[REDACTED]' },
+      redact: { paths: REDACT_PATHS, censor: '[REDACTED]' },
     }, stream);
 
     log.info({
