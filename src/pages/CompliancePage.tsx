@@ -10,7 +10,7 @@ type ChecklistStatus = true | false | 'partial';
 const CHECKLIST: Array<{ done: ChecklistStatus; label: string }> = [
   { done: true,  label: 'End-to-end HTTPS / TLS 1.2+ enforced' },
   { done: true,  label: 'JWT-based auth with httpOnly cookies (XSS-hardened)' },
-  { done: true,  label: 'CSRF protection on all state-changing endpoints' },
+  { done: true,  label: 'CSRF tokens on high-risk state-changing endpoints' },
   { done: true,  label: 'SSRF guard blocks private-IP fetches' },
   { done: true,  label: 'Parameterised SQL via Kysely ORM (no injection surface)' },
   { done: true,  label: 'Audit log: every auth event, data change, and admin action recorded' },

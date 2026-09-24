@@ -13,7 +13,7 @@
 ### 🟡 High (Fix This Week)
 7. **Restrict CORS to specific origins** — ✅ Fixed: Production fails fast if `CORS_ORIGINS` unset; dev origins explicitly listed
 8. **Implement input validation on all endpoints** — ✅ Fixed: Joi schemas added for `/api/ai/*`, `/api/user/save`, `/api/alerts`, `/api/quiz/generate`, `/api/ai/synthesize`
-9. **Add CSRF protection** — ❌ Pending: Not yet implemented
+9. **Add CSRF protection** — ✅ Fixed: Token-based CSRF on unsafe mutations
 10. **Authentication/Authorization gaps** — 🟡 Partial: `/api/ai/*` routes now require JWT; role-based access not yet implemented
 
 ### 🟢 Medium (Fix This Month)
@@ -100,7 +100,7 @@ npm test
 - [ ] Set up reverse proxy (Nginx)
 - [x] Install Helmet security headers
 - [ ] Enable database backups
-- [ ] Configure structured logging (Winston/Pino)
+- [x] Configure structured logging (Pino with centralized redaction)
 - [ ] Set up monitoring (Sentry)
 - [ ] Enable firewall rules
 - [ ] Run security scans regularly

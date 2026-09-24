@@ -74,9 +74,29 @@ async function globalSetup() {
     const testEmail = `e2e-${runId}@test.local`;
     const testPassword = 'TestPass123!';
 
+    // CSRF issuance (double-submit cookie and header) with a stable session id
+    const sid = `e2e-${runId}-${Math.random().toString(36).slice(2)}`;
+    let csrfToken = null;
+    try {
+      const csrfRes = await fetch(`${baseURL}/api/csrf-token`, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json', 'X-Session-Id': sid },
+      });
+      const body = await csrfRes.json().catch(() => ({}));
+      csrfToken = typeof body?.csrfToken === 'string' ? body.csrfToken : null;
+    } catch {
+      csrfToken = null;
+    }
+    const commonHeaders = {
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+      'X-Session-Id': sid,
+      ...(csrfToken ? { 'X-CSRF-Token': csrfToken, 'Cookie': `csrf_token=${encodeURIComponent(csrfToken)}` } : {}),
+    };
+
     const registerRes = await fetch(`${baseURL}/api/auth/register`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: commonHeaders,
       body: JSON.stringify({ name: 'E2E Test User', email: testEmail, password: testPassword }),
     });
 
@@ -95,7 +115,7 @@ async function globalSetup() {
 
     const loginRes = await fetch(`${baseURL}/api/auth/login`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: commonHeaders,
       body: JSON.stringify({ email: testEmail, password: testPassword }),
     });
 
