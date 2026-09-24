@@ -5,6 +5,20 @@
  * - Mutation includes the same X-Session-Id and X-CSRF-Token
  */
 
+// Frontend alias shims for backend Jest project
+jest.mock('@utils/appErrors', () => ({
+  AppError: class AppError extends Error { constructor(message) { super(message); this.name = 'AppError'; } },
+  parseApiErrorBody: jest.fn(() => new Error('Internal')),
+}), { virtual: true });
+jest.mock('@utils/usageErrors', () => ({
+  buildUsageLimitError: jest.fn(() => 'USAGE_LIMITED'),
+}), { virtual: true });
+jest.mock('@sentry/react', () => ({
+  init: jest.fn(),
+  withScope: (fn) => fn({ setExtra: jest.fn() }),
+  captureException: jest.fn(),
+}), { virtual: true });
+
 const { BaseApiClient } = require('../../src/services/api/core');
 
 describe('BaseApiClient — cold-start session sync for CSRF', () => {
