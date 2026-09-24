@@ -267,18 +267,24 @@ async function main() {
                 crossCheckFlags: 0,
             };
 
-            await db.run(
-                `INSERT INTO teaching_objects (id, object_key, object_type, topic, normalized_topic, title, object_payload, provider, model, confidence, created_at, updated_at)
-                 VALUES (?, ?, 'paper_mcq', ?, ?, ?, ?, 'google', 'gemini-2.5-flash', 0.85, datetime('now'), datetime('now'))`,
-                [
-                    require('crypto').randomUUID(),
-                    key,
-                    topic,
-                    topicSlug(topic).replace(/-/g, ' '),
-                    'Paper MCQs: ' + topic,
-                    JSON.stringify(payload),
-                ]
-            );
+            // Through the mixin, not a raw INSERT: the write policy checks item form and evidence
+            // references, and a rejected item must not be stored. A null result is a rejection.
+            const stored = await db.upsertTeachingObject({
+                objectKey: key,
+                objectType: 'paper_mcq',
+                topic,
+                normalizedTopic: topicSlug(topic).replace(/-/g, ' '),
+                title: 'Paper MCQs: ' + topic,
+                payload,
+                provider: 'google',
+                model: 'gemini-2.5-flash',
+                confidence: 0.85,
+            });
+            if (!stored) {
+                console.log('REJECTED by write policy (see policy_decisions)');
+                errors++;
+                continue;
+            }
 
             generated++;
             clean++;

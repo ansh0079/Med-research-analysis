@@ -2,6 +2,7 @@ import { API_BASE, BaseApiClient } from './core';
 import { yearRangeToPubMedFilter } from '@utils/searchStudyFilters';
 import type {
   Article,
+  GuidelineEntry,
   SearchFilters,
   SearchResponse,
 } from '@types';
@@ -110,6 +111,24 @@ export class SearchApi extends BaseApiClient {
   }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/search/ai-enrichment/${encodeURIComponent(key)}`);
     if (!response.ok) return { status: 'failed' };
+    return response.json();
+  }
+
+  /**
+   * Guideline panel for a topic. When the panel is empty the server kicks
+   * background discovery and reports discoveryStatus 'pending' — the client
+   * polls this endpoint to fill the panel asynchronously instead of leaving
+   * the first impression blank.
+   */
+  async getGuidelines(topic: string): Promise<{
+    topic: string;
+    guidelines: GuidelineEntry[];
+    discoveryStatus?: 'complete' | 'pending';
+  }> {
+    const response = await this.fetchWithSession(
+      `${API_BASE}/api/guidelines?topic=${encodeURIComponent(topic)}&limit=5`
+    );
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
 

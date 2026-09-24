@@ -1,6 +1,7 @@
 const { formatStoredTopicKnowledgeForPrompt } = require('./_helpers');
 const { formatLearnerPromptSupplement } = require('../services/learnerContextService');
 const { TRAINING_STAGES, normaliseTrainingStage } = require('./trainingStages');
+const { OPTION_PARITY_RULE } = require('./optionParity');
 
 function formatGuidelineFreshness(g, now = new Date()) {
     const year = Number(g?.source_year || g?.publication_year || g?.year || 0);
@@ -334,6 +335,9 @@ Rules:
 - outlineNodeId must be one of the listed target/outline node IDs when the question maps to one.
 - Do not create true/false questions.
 - correctAnswer must be the option letter only: "A", "B", "C", or "D".
+
+${OPTION_PARITY_RULE}
+
 - sourceIndices must be 1-based integers referencing SOURCE blocks above.
 - For mechanistic explanationDepth, explanationDeep must be a non-empty string on every item.${claimAnchors.length > 0 ? '\n- CLAIM MODE: claimKey is REQUIRED on every object and must match one of the listed keys exactly; one question per claimKey.' : ''}`;
 }

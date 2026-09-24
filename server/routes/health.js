@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const { lineageEnforcementMode } = require('../services/search/generationEvidenceContext');
 const { requireAuthJwt, requireRole } = require('../middleware/auth');
 const { checkDbContract } = require('../services/dbContract');
 const { getQueueStatus } = require('../services/jobQueue');
@@ -70,6 +71,8 @@ function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metr
             res.status(statusCode).json({
                 status: healthy ? 'ok' : 'degraded',
                 version: APP_VERSION,
+                // Stamped at image build time from the deploying commit (GIT_SHA build arg).
+                gitSha: process.env.GIT_SHA || 'unknown',
                 timestamp: new Date().toISOString(),
                 features: {
                     localAI: !!serverConfig.features.enableLocalAI,
@@ -78,6 +81,16 @@ function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metr
                     openAlex: true, // Free open API — no key required; always available
                     database: true,
                     caching: true,
+                },
+                // The behaviour flags that decide what production actually does. A default flipped
+                // from shadow to enforce with no way to see which mode was live; posture you cannot
+                // read is posture you cannot verify after a deploy. Names and modes only - these say
+                // what the rules are, never a credential or a threshold worth probing.
+                policy: {
+                    provenanceEnforcement: lineageEnforcementMode(),
+                    laneRanking: String(process.env.LANE_RANKING || 'v1').toLowerCase(),
+                    laneRetrieval: String(process.env.SEARCH_LANE_RETRIEVAL || 'off').toLowerCase(),
+                    retentionDeleting: String(process.env.RETENTION_ENABLED || 'false').toLowerCase() === 'true',
                 },
                 cache: {
                     keys: cacheStats.keys,

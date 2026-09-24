@@ -46,6 +46,10 @@ export interface Article {
   _ebmScore?: number;
   _ebmLabel?: { label: string; short: string };
   _isPreprint?: boolean;
+  /** Eligibility route that admitted this article to the result set. */
+  _eligibilityRoute?: 'concept' | 'registry' | 'curated_landmark' | 'verified_topic_link' | 'semantic_rescue' | null;
+  /** Desk lane for cascade display. */
+  _evidenceLane?: 'guidelines' | 'landmark_trials' | 'reviews' | 'supporting';
   /** Rank before personalization, based on evidence/relevance signals. */
   _evidenceRank?: number;
   /** Rank after learner personalization has been applied. */

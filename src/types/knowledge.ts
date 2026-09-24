@@ -24,6 +24,7 @@ export interface TopicIntelligence {
     guidelines: GuidelineEntry[];
     count: number;
     hasReviewedGuidelines: boolean;
+    discoveryStatus?: 'complete' | 'pending';
   };
   evidenceMap?: {
     generatedAt: string;

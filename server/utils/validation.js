@@ -94,6 +94,8 @@ const schemas = {
         claimJobKey: z.string().max(160).nullable().optional(),
         teachingPoints: z.array(z.record(z.string(), z.unknown())).max(20).optional(),
         mcqAngles: z.array(z.string().max(500)).max(15).optional(),
+        // Search snapshot the articles came from; makes the snapshot's stored text authoritative.
+        evidenceSnapshotId: z.string().max(64).nullable().optional(),
     }),
 
     synopsis: z.object({
@@ -105,6 +107,7 @@ const schemas = {
         synopsisStyleArmId: z.enum(['bottom_line_first', 'pico_structured', 'narrative', 'teaching_points']).optional(),
         // Bypass the stored-synopsis read-through and regenerate.
         refresh: z.boolean().optional(),
+        evidenceSnapshotId: z.string().max(64).nullable().optional(),
     }),
 
     synthesize: z.object({
@@ -227,6 +230,8 @@ const schemas = {
             claimKey: z.string().max(80).nullable().optional(),
             claimDecisionId: z.number().int().nullable().optional(),
             promptVariant: z.string().max(80).nullable().optional(),
+            // No evidenceSnapshotId / contentVersion here on purpose: they come from the signed
+            // grading token, never from the client's copy of the attempt.
             reasoningTags: z.array(z.string().max(80)).max(20).optional(),
             reasoningNote: z.string().max(1000).nullable().optional(),
         })).min(1),

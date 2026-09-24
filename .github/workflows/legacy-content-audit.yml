@@ -1,0 +1,46 @@
+name: Legacy Content Audit
+
+# Answers "how big is the legacy provenance problem, really" against production.
+#
+# The audit needs the production database, which is not reachable from a laptop, so it runs on the
+# VPS inside the app container that already has the credentials. Read-only by default: this
+# workflow never passes --write, so it cannot downgrade a claim, mark a row legacy, or retire
+# anything. Those are deliberate acts run by an operator, not something a workflow does on a whim.
+
+on:
+  workflow_dispatch:
+    inputs:
+      format:
+        description: 'Output format'
+        required: false
+        default: 'text'
+        type: choice
+        options: [text, json]
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/legacy-content-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Legacy provenance and reachability, against production
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Run the audit in the production app container
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 8m
+          script: |
+            set -e
+            FLAG=""
+            if [ "${{ inputs.format }}" = "json" ]; then FLAG="--json"; fi
+            echo "=== legacy content audit (read-only) ==="
+            # No --write and no --retire-unreachable: reporting only, by design.
+            docker exec medsearch-web node /app/scripts/audit-legacy-content.js $FLAG

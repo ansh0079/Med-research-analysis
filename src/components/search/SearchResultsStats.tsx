@@ -1,4 +1,5 @@
 import React from 'react';
+import type { EvidenceLaneKey, SearchPack } from '@types';
 
 type SourceEntry = {
   ms?: number;
@@ -29,6 +30,9 @@ interface SearchResultsStatsProps {
   sourceTelemetry?: Record<string, SourceEntry> | null;
   sourceFailures?: Record<string, { failed?: boolean; error?: string }> | null;
   queryIntent?: string | null;
+  searchPack?: SearchPack | null;
+  evidenceLane?: EvidenceLaneKey | 'all';
+  onLaneChange?: (lane: EvidenceLaneKey | 'all') => void;
   activeFilters?: {
     specificity?: string;
     studyTypeLabels?: string[];
@@ -44,6 +48,9 @@ export const SearchResultsStats: React.FC<SearchResultsStatsProps> = ({
   sourceTelemetry,
   sourceFailures,
   queryIntent = null,
+  searchPack = null,
+  evidenceLane = 'all',
+  onLaneChange,
   activeFilters = null,
 }) => {
   const sourceEntries = sourceTelemetry ? Object.entries(sourceTelemetry) : [];
@@ -60,8 +67,47 @@ export const SearchResultsStats: React.FC<SearchResultsStatsProps> = ({
     || activeFilters?.yearRange
   );
 
+  const laneEntries = searchPack
+    ? (['guidelines', 'landmark_trials', 'reviews', 'supporting'] as EvidenceLaneKey[])
+      .map((key) => searchPack.lanes[key])
+      .filter(Boolean)
+    : [];
+
   return (
     <div className="mb-4">
+      {searchPack?.cascadeNote && (
+        <p className="mb-2 text-[12px] font-medium text-slate-600 dark:text-slate-300" role="status">
+          {searchPack.cascadeNote}
+        </p>
+      )}
+      {laneEntries.length > 0 && (
+        <div className="mb-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {laneEntries.map((lane) => {
+            const selected = evidenceLane === lane.key;
+            const empty = lane.count === 0;
+            return (
+              <button
+                key={lane.key}
+                type="button"
+                onClick={() => onLaneChange?.(selected ? 'all' : lane.key)}
+                className={`rounded-xl border px-3 py-2 text-left transition-colors ${
+                  selected
+                    ? 'border-indigo-300 bg-indigo-50 dark:border-indigo-800 dark:bg-indigo-950/40'
+                    : 'border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900'
+                }`}
+              >
+                <p className="font-mono text-base font-black text-slate-900 dark:text-white">{lane.count}</p>
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{lane.label}</p>
+                {empty && (
+                  <p className="mt-1 text-[11px] leading-snug text-amber-700 dark:text-amber-300">
+                    {lane.emptyState}
+                  </p>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      )}
       {(intentLabel || hasActiveFilters) && (
         <div className="mb-2 flex flex-wrap items-center gap-1.5">
           {intentLabel && (

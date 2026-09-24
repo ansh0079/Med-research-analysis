@@ -12,6 +12,7 @@ const {
     queryMatchScore,
     queryAliasMatchScore,
     scorePicoRelevance,
+    isOffTopic,
 } = require('./queryRelevance');
 const {
     classifyQueryIntent,
@@ -63,11 +64,6 @@ function buildEvidenceBouquet(articles, query, options = {}) {
     const count = Math.min(Math.max(parseInt(String(options.count || 5), 10) || 5, 1), 50);
     const previousQueries = Array.isArray(options.previousQueries) ? options.previousQueries : [];
     const queryIntent = options.queryIntent || classifyQueryIntent(query);
-    const signalBoosts = options.articleSignalBoosts instanceof Map
-        ? options.articleSignalBoosts
-        : (typeof options.articleSignalBoosts === 'object' && options.articleSignalBoosts !== null
-            ? new Map(Object.entries(options.articleSignalBoosts))
-            : new Map());
     // relevance = search results list (topical + intent score, no diversity slotting)
     // diversity = teaching bouquet (archetype coverage for mentor / MCQ seeding)
     const selectionMode = options.selectionMode === 'diversity' ? 'diversity' : 'relevance';
@@ -78,6 +74,12 @@ function buildEvidenceBouquet(articles, query, options = {}) {
     const filtered = articles.filter((a) => {
         if (a._retraction?.isRetracted) return false;
         if (!matchesPopulationFilter(a, query)) return false;
+        if (a._pinnedLandmark) return true;
+        // Resolved from the query by concept name, so topical relevance is already established.
+        if (a._guidelineRegistryMatch) return true;
+        const aliasMatched = queryAliasMatchScore(a, options.queryAliases) > 0;
+        if (aliasMatched) return true;
+        if (isOffTopic(a, query)) return false;
         return true;
     });
 
@@ -92,9 +94,9 @@ function buildEvidenceBouquet(articles, query, options = {}) {
     const aliasWeight = 28;
 
     const scored = filtered.map((a) => {
-        let score = computeCompositeScore(a);
-        score += intentRecencyAdjustment(a, queryIntent, query);
         const matchScore = queryMatchScore(a, query);
+        let score = computeCompositeScore(a, { queryMatchScore: matchScore, query });
+        score += intentRecencyAdjustment(a, queryIntent, query);
         const aliasMatchScore = queryAliasMatchScore(a, options.queryAliases);
         const archetype = classifyArchetype(a);
         score += matchScore * matchWeight;
@@ -115,20 +117,9 @@ function buildEvidenceBouquet(articles, query, options = {}) {
             score += scorePicoRelevance(a, options.pico);
         }
 
-        // Signal boost from user impressions (dwell / save / click feedback)
-        const uid = String(a.uid || '').trim().toLowerCase();
-        const pmid = String(a.pmid || '').trim().toLowerCase();
-        const doi = String(a.doi || '').trim().toLowerCase();
-        let signalWeight = signalBoosts.get(uid) || 0;
-        if (!signalWeight && pmid) signalWeight = signalBoosts.get(pmid) || 0;
-        if (!signalWeight && doi) {
-            const doiClean = doi.replace(/^https?:\/\/(dx\.)?doi\.org\//i, '');
-            signalWeight = signalBoosts.get(doiClean) || 0;
-        }
-        if (signalWeight !== 0) {
-            // Scale signal weight into composite score: max ±8 pts
-            score += Math.max(-8, Math.min(8, signalWeight * 4));
-        }
+        // Evidence rank is a function of the query and the article only. User
+        // signals (dwell, saves, teaching-object presence) never enter this score;
+        // they reorder a separate learningOrder list in searchLearningService.
         return {
             article: a,
             compositeScore: score,

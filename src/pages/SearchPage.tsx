@@ -15,6 +15,7 @@ import { TopicIntelligenceStatusBanner } from '@components/search/TopicIntellige
 import { SearchEmptyState } from '@components/search/SearchEmptyState';
 import { NoResultsState } from '@components/search/NoResultsState';
 import { LowRecallBanner } from '@components/search/LowRecallBanner';
+import { QuerySenseBanner } from '@components/search/QuerySenseBanner';
 import { RelatedTopicsBar } from '@components/search/RelatedTopicsBar';
 import { VerifyEmailBanner } from '@components/search/VerifyEmailBanner';
 import { SearchResultsStats } from '@components/search/SearchResultsStats';
@@ -71,6 +72,8 @@ export const SearchPage: React.FC = () => {
     dismissKnowledgeDriftAlert,
     lowRecallLearning,
     searchTelemetry,
+    searchPack,
+    queryResolution,
     queryIntent,
     recentSearches,
     pdfViewer,
@@ -94,6 +97,7 @@ export const SearchPage: React.FC = () => {
     topicGuideRefreshState,
     topicGuideRefreshError,
     currentQuery,
+    resultsQuery,
     setCurrentQuery,
     requestGuidelineAlignment,
     anchorVerifyKey,
@@ -108,6 +112,8 @@ export const SearchPage: React.FC = () => {
     resultFilter,
     setResultFilter,
     resultLens,
+    evidenceLane,
+    setEvidenceLane,
     setResultLens,
     visibleResults,
     renderedResults,
@@ -208,7 +214,7 @@ export const SearchPage: React.FC = () => {
       <main className="max-w-7xl mx-auto px-3 sm:px-4 -mt-10 sm:-mt-16 pb-24">
         {results.length > 0 && (
           <EvidenceVerdictStrip
-            query={currentQuery}
+            query={resultsQuery || currentQuery}
             results={results}
             conflictCount={synthesis?.conflictMatrix?.length ?? null}
             onJumpToGuidelines={() => document.getElementById('guideline-snapshot')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
@@ -221,7 +227,10 @@ export const SearchPage: React.FC = () => {
         />
 
         {currentQuery && (
-          <LowRecallBanner lowRecall={lowRecallLearning} onTryQuery={handleSearch} />
+          <>
+            <QuerySenseBanner resolution={queryResolution} onTryQuery={handleSearch} />
+            <LowRecallBanner lowRecall={lowRecallLearning} onTryQuery={handleSearch} />
+          </>
         )}
 
         {currentQuery && results.length > 0 && (
@@ -241,6 +250,9 @@ export const SearchPage: React.FC = () => {
             sourceTelemetry={searchTelemetry?.sources}
             sourceFailures={searchTelemetry?.sourceFailures}
             queryIntent={queryIntent}
+            searchPack={searchPack}
+            evidenceLane={evidenceLane}
+            onLaneChange={setEvidenceLane}
             activeFilters={{
               specificity: filters.specificity,
               studyTypeLabels: (filters.studyTypes || [])
@@ -414,7 +426,7 @@ export const SearchPage: React.FC = () => {
         )}
 
         <div id="guideline-snapshot">
-          <GuidelineSnapshot query={currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
+          <GuidelineSnapshot query={resultsQuery || currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
         </div>
 
         {loading && results.length === 0 && (
@@ -431,6 +443,8 @@ export const SearchPage: React.FC = () => {
             onClosePdf={closePdf}
             activePdf={activePdf}
             renderedResults={renderedResults}
+            evidenceLane={evidenceLane}
+            searchPack={searchPack}
             activeResultIndex={activeResultIndex}
             visibleCount={visibleCount}
             visibleResultsLength={visibleResults.length}

@@ -172,6 +172,7 @@ const TopicBriefPanelComponent: React.FC<Props> = ({
         agentGuidance={agentGuidance}
         guidelineCount={guidelineCount}
         hasReviewedGuidelines={hasReviewedGuidelines}
+        discoveryStatus={topicIntelligence?.guidelineSnapshot.discoveryStatus}
       />
 
       <TopicBriefClinicalAnswerBlock

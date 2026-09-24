@@ -1,30 +1,37 @@
 const { STOPWORDS } = require('./constants');
+const { isClinicalAbbreviation } = require('../../utils/clinicalAbbreviations');
+const {
+    originalConditionTerms,
+    originalWeakAnchorTerms,
+    originalGenericTerms,
+    articleMatchesConditionTerm,
+    isCompetingAbbreviationSense,
+    textHasTerm,
+} = require('../../utils/conditionQuery');
+const { clinicalFacts, populationCovers, queryFacts } = require('../clinical/clinicalFacts');
 
-// Common clinical abbreviations that are ≤3 chars but must not be filtered out
-const CLINICAL_ABBREVIATIONS = new Set([
-    'mi', 'hf', 'pe', 'ckd', 'aki', 'dvt', 'afib', 'af', 'dka', 'htn',
-    'dm', 't2d', 'copd', 'uti', 'acs', 'cad', 'chf', 'pad', 'ild',
-]);
-
+/**
+ * Hard eligibility: drop an article whose stated population cannot answer the question asked.
+ *
+ * Scope containment, from the canonical vocabulary - not tag equality. A study in children is
+ * eligible for a question about adolescents, and a study in older adults is eligible for a question
+ * about adults; only genuinely disjoint scopes are dropped. An article that states no population is
+ * never dropped: silence is not a mismatch.
+ */
 function matchesPopulationFilter(article, query) {
-    const q = String(query || '').toLowerCase();
-    const text = `${String(article.title || '')} ${String(article.abstract || '')}`.toLowerCase();
+    const wanted = queryFacts(query).population;
+    if (!wanted) return true;
+    const { populations } = clinicalFacts(article);
+    if (!populations.length) return true;
 
-    // If query explicitly mentions pediatric/children
-    if (/\b(pediatric|children?|infant|neonate|adolescent)\b/.test(q)) {
-        // Penalize if article is clearly adult-only
-        if (/\b(adults?|elderly|geriatric|aged)\b/.test(text) && !/\b(pediatric|children?|infant|adolescent)\b/.test(text)) {
-            return false;
-        }
-    }
-    // If query explicitly mentions adult
-    if (/\b(adults?|elderly|geriatric)\b/.test(q)) {
-        // Penalize if article is clearly pediatric-only
-        if (/\b(pediatric|children?|infant|neonate|adolescent)\b/.test(text) && !/\b(adults?|elderly|geriatric|aged)\b/.test(text)) {
-            return false;
-        }
-    }
-    return true;
+    // Eligible if the article covers the question's population, or is a narrower group inside it.
+    const overlaps = populationCovers(populations, wanted)
+        || populations.some((tag) => populationCovers([wanted], tag));
+    if (overlaps) return true;
+    // Pregnancy sits outside the age hierarchy. A pregnancy study still answers a general adult
+    // question; only a pregnancy question rejects on its absence.
+    if (wanted !== 'pregnancy' && populations.includes('pregnancy')) return true;
+    return false;
 }
 
 // Strip common suffixes to get a root form for fuzzy matching
@@ -53,22 +60,62 @@ function meshRelevanceRatio(searchText, queryMeshTerms = []) {
     return matchCount / terms.length;
 }
 
+function termInText(text, term, companionTerms = []) {
+    if (articleMatchesConditionTerm(text, term, { companionTerms })) return true;
+    const stem = stemTerm(term);
+    return stem.length > 3 && textHasTerm(text, stem);
+}
+
 function queryMatchScore(article, query) {
-    const q = String(query || '').toLowerCase();
     const title = String(article?.title || '').toLowerCase();
     const abstract = String(article?.abstract || '').toLowerCase();
     const searchText = `${title} ${abstract}`;
-    const queryTerms = q.split(/\s+/).filter((t) => (t.length > 3 || CLINICAL_ABBREVIATIONS.has(t)) && !STOPWORDS.has(t));
-    if (queryTerms.length === 0) return 0;
-    const weighted = queryTerms.reduce((sum, term) => {
-        const stem = stemTerm(term);
-        const inTitle = title.includes(term) || (stem.length > 3 && title.includes(stem));
-        const inText = searchText.includes(term) || (stem.length > 3 && searchText.includes(stem));
-        if (inTitle) return sum + 1.5;
-        if (inText) return sum + 1;
+    if (isCompetingAbbreviationSense(article, query)) return 0;
+
+    const conditionTerms = originalConditionTerms(query);
+    const weakAnchors = originalWeakAnchorTerms(query);
+    const genericTerms = originalGenericTerms(query);
+    if (conditionTerms.length === 0 && genericTerms.length === 0 && weakAnchors.length === 0) {
+        const q = String(query || '').toLowerCase();
+        const queryTerms = q.split(/\s+/).filter((t) => (t.length > 3 || isClinicalAbbreviation(t)) && !STOPWORDS.has(t));
+        if (queryTerms.length === 0) return 0;
+        const weighted = queryTerms.reduce((sum, term) => {
+            const inTitle = termInText(title, term);
+            const inText = termInText(searchText, term);
+            if (inTitle) return sum + 1.5;
+            if (inText) return sum + 1;
+            return sum;
+        }, 0);
+        return Math.min(1, weighted / queryTerms.length);
+    }
+
+    const conditionWeighted = conditionTerms.reduce((sum, term) => {
+        if (termInText(title, term, conditionTerms)) return sum + 1.5;
+        if (termInText(searchText, term, conditionTerms)) return sum + 1;
         return sum;
     }, 0);
-    return Math.min(1, weighted / queryTerms.length);
+    const weakWeighted = weakAnchors.reduce((sum, term) => {
+        if (termInText(title, term, weakAnchors)) return sum + 0.45;
+        if (termInText(searchText, term, weakAnchors)) return sum + 0.3;
+        return sum;
+    }, 0);
+    // Task words ("diagnosis", "management") must not saturate relevance.
+    const genericWeighted = genericTerms.reduce((sum, term) => {
+        if (title.includes(term)) return sum + 0.2;
+        if (searchText.includes(term)) return sum + 0.1;
+        return sum;
+    }, 0);
+
+    if (conditionTerms.length > 0) {
+        if (conditionWeighted === 0 && weakWeighted === 0) return 0;
+        if (conditionWeighted === 0) return Math.min(0.45, weakWeighted);
+        return Math.min(1, (conditionWeighted / conditionTerms.length) + Math.min(0.08, genericWeighted) + Math.min(0.12, weakWeighted));
+    }
+    if (weakAnchors.length > 0) {
+        if (weakWeighted === 0) return 0;
+        return Math.min(0.55, weakWeighted / weakAnchors.length);
+    }
+    return Math.min(0.4, genericWeighted / Math.max(1, genericTerms.length));
 }
 
 function normalizeAliasText(value) {
@@ -112,19 +159,27 @@ function isOffTopic(article, query, options = {}) {
     const abstract = String(article.abstract || '').toLowerCase();
     const searchText = `${title} ${abstract}`;
 
-    const queryTerms = q.split(/\s+/).filter((t) => (t.length > 3 || CLINICAL_ABBREVIATIONS.has(t)) && !STOPWORDS.has(t));
-    if (queryTerms.length === 0) return false;
+    if (isCompetingAbbreviationSense(article, query)) return true;
 
-    const matchCount = queryTerms.filter((t) => {
-        if (searchText.includes(t)) return true;
-        const stem = stemTerm(t);
-        return stem.length > 3 && searchText.includes(stem);
-    }).length;
+    const conditionTerms = originalConditionTerms(query);
+    const weakAnchors = originalWeakAnchorTerms(query);
+    const queryTerms = conditionTerms.length > 0
+        ? conditionTerms
+        : q.split(/\s+/).filter((t) => (t.length > 3 || isClinicalAbbreviation(t)) && !STOPWORDS.has(t));
+    const weakMatch = weakAnchors.some((t) => termInText(searchText, t, weakAnchors));
+    if (queryTerms.length === 0) {
+        if (weakAnchors.length > 0) return !weakMatch;
+        return false;
+    }
+
+    const matchCount = queryTerms.filter((t) => termInText(searchText, t, queryTerms)).length;
 
     const matchRatio = matchCount / queryTerms.length;
     const meshRatio = meshRelevanceRatio(searchText, queryMeshTerms);
 
-    // Scale threshold by number of key terms:
+    // Scale threshold by number of *condition* terms. Generic task words are
+    // ignored, so "ACS management" requires ACS (or "acute coronary"), not
+    // "management". A 1-term condition query must actually match that term.
     //   1–2 concepts → need 75 % (both must appear — rounding means 2/2 required for a 2-term query)
     //   3–5 concepts → need 50 % (at least half)
     //   6+  concepts → need 35 % (long free-text queries allow more synonym drift)
@@ -137,6 +192,7 @@ function isOffTopic(article, query, options = {}) {
     // Child MeSH labels from NLM "contains" (e.g. "Burkholderia cepacia Sepsis" for q=sepsis)
     // must not pull a perfect query-term hit below threshold and wipe the result set.
     if (matchRatio >= threshold) return false;
+    if (weakMatch) return false;
 
     if (queryMeshTerms.length > 0) {
         const blended = (matchRatio * 0.6) + (meshRatio * 0.4);

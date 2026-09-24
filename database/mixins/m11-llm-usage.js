@@ -17,7 +17,7 @@ module.exports = function applyM11LlmUsage(Sup) {
                     entry.provider ? String(entry.provider).slice(0, 40) : null,
                     entry.model ? String(entry.model).slice(0, 80) : null,
                     topic,
-                    entry.userId != null ? Number(entry.userId) : null,
+                    entry.userId != null ? String(entry.userId) : null,
                     Number(entry.promptChars || 0),
                     Number(entry.responseChars || 0),
                     Number(entry.estimatedInputTokens || 0),

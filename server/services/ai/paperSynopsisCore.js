@@ -8,7 +8,15 @@ const { persistPaperTeachingObject, paperTeachingObjectKey, DEFAULT_SYNOPSIS_STY
 const { getProviderCandidates } = require('../../utils/aiProvider');
 const { enrichWithCachedFullText, enqueuePdfPreindex } = require('../pdfPreindexService');
 const { validateAiOutput } = require('../aiOutputValidation');
-const { buildClaimGrounding, runSynopsisCritic } = require('../synopsisGroundingService');
+const { buildClaimGrounding, runSynopsisCritic, failClosedGroundingFindings } = require('../synopsisGroundingService');
+const {
+    buildClaimSupport,
+    applyServingPolicy,
+    applyJudgeVerdicts,
+    loadJudgeCalibration,
+    judgeEnabled,
+    judgeClaimSupport,
+} = require('../synopsisClaimSupport');
 const { recordSynopsisGeneration } = require('../observabilityMetrics');
 const { annotateActiveSpan, withSpan } = require('../../utils/tracing');
 const { getPromptVersion } = require('../../prompts/promptVersions');
@@ -25,6 +33,18 @@ const {
 } = require('../agentSelfImprovementService');
 const { processPaperSynopsisTrust } = require('../paperSynopsisTrust');
 const { selectSynopsisStyleArm, recordBanditReward, POLICY_SYNOPSIS_STYLE } = require('../personalizationBanditService');
+const { buildSourceVersion, upsertSourceVersion } = require('../search/searchEvidenceSnapshot');
+const { isProvable } = require('../content/legacyContentPolicy');
+const { publicLineage } = require('../search/generationEvidenceContext');
+
+async function hasReplayableLineage(db, object) {
+    if (!isProvable(object) || typeof db?.get !== 'function') return false;
+    const id = object.evidenceSnapshotId ?? object.evidence_snapshot_id;
+    const row = await db.get(
+        'SELECT contract_version FROM search_evidence_snapshots WHERE id = ?', [id]
+    ).catch(() => null);
+    return Number(row?.contract_version || 0) >= 2;
+}
 
 function getPaperSynopsisArticleId(article = {}) {
     return article.uid || article.pmid || article.doi
@@ -77,9 +97,9 @@ const SYNOPSIS_REUSE_MAX_AGE_DAYS = Number(process.env.SYNOPSIS_REUSE_MAX_AGE_DA
  *
  * @param {object} db
  * @param {string} articleId
- * @param {{ maxAgeDays?: number, now?: number }} [opts]
+ * @param {{ maxAgeDays?: number, now?: number, styleArm?: string|null, articleHasFullText?: boolean }} [opts]
  */
-async function findReusableStoredSynopsis(db, articleId, { maxAgeDays = SYNOPSIS_REUSE_MAX_AGE_DAYS, now = Date.now(), styleArm = null } = {}) {
+async function findReusableStoredSynopsis(db, articleId, { maxAgeDays = SYNOPSIS_REUSE_MAX_AGE_DAYS, now = Date.now(), styleArm = null, articleHasFullText = false } = {}) {
     if (!articleId) return null;
     // The default arm keeps the historic `paper:<uid>` key, so it is fetched by
     // article. Experiment arms live under their own key and must be fetched by
@@ -98,6 +118,10 @@ async function findReusableStoredSynopsis(db, articleId, { maxAgeDays = SYNOPSIS
     // Search persistence writes `paper` rows with no synopsis (provider pubmed /
     // openalex); those must not count as a hit.
     if (!synopsis || typeof synopsis !== 'object' || Object.keys(synopsis).length === 0) return null;
+    // Withdrawn content is never reused, whatever cache or arm-specific key reached here:
+    // retraction processing owns this decision and it lives in the durable store.
+    if (String(existing?.reviewState || '') === 'withdrawn') return null;
+    if (!(await hasReplayableLineage(db, existing))) return null;
 
     // Reuse only what the current prompt would have produced. This store is read
     // before any generation work and keeps rows for SYNOPSIS_REUSE_MAX_AGE_DAYS,
@@ -106,6 +130,11 @@ async function findReusableStoredSynopsis(db, articleId, { maxAgeDays = SYNOPSIS
     // written before the version was recorded carry null and are regenerated
     // once; that is the point, since their provenance is unknown.
     if ((existing.payload?.promptVersion || null) !== getPromptVersion('synopsis')) return null;
+    if (existing.payload?.invalidatedAt) return null;
+
+    const storedUsedFullText = existing.payload?.sourceMode === 'full_text_used'
+        || Boolean(existing.payload?.paper?.fullTextUsed);
+    if (articleHasFullText && !storedUsedFullText) return null;
 
     const stamp = existing.payload?.generatedAt || existing.generatedAt || existing.updatedAt || null;
     const generatedMs = stamp ? Date.parse(stamp) : NaN;
@@ -154,6 +183,47 @@ async function invalidatePaperSynopsisCache({
     return true;
 }
 
+async function invalidateStoredPaperSynopsis(db, articleId, { styleArmId = null } = {}) {
+    if (!db || !articleId) return false;
+    const objects = [];
+    if (typeof db.getTeachingObjectForArticle === 'function') {
+        const byArticle = await db.getTeachingObjectForArticle(articleId).catch(() => null);
+        if (byArticle?.objectKey) objects.push(byArticle);
+    }
+    if (typeof db.getTeachingObjectByKey === 'function') {
+        const defaultKeyed = await db.getTeachingObjectByKey(paperTeachingObjectKey(articleId)).catch(() => null);
+        if (defaultKeyed?.objectKey && !objects.some((row) => row.objectKey === defaultKeyed.objectKey)) {
+            objects.push(defaultKeyed);
+        }
+        if (styleArmId) {
+            const keyed = await db.getTeachingObjectByKey(paperTeachingObjectKey(articleId, styleArmId)).catch(() => null);
+            if (keyed?.objectKey && !objects.some((row) => row.objectKey === keyed.objectKey)) objects.push(keyed);
+        }
+    }
+    if (!objects.length || typeof db.upsertTeachingObject !== 'function') return false;
+    const invalidatedAt = new Date().toISOString();
+    await Promise.all(objects.map((object) => db.upsertTeachingObject({
+        objectKey: object.objectKey,
+        objectType: object.objectType || 'paper',
+        articleUid: object.articleUid || articleId,
+        topic: object.topic || null,
+        title: object.title || null,
+        provider: object.provider || null,
+        model: object.model || null,
+        confidence: object.confidence,
+        reviewState: 'needs_revision',
+        generatedAt: object.generatedAt || invalidatedAt,
+        payload: {
+            ...(object.payload && typeof object.payload === 'object' ? object.payload : {}),
+            synopsis: null,
+            invalidatedAt,
+            invalidationReason: 'user_not_helpful',
+            reviewState: 'needs_revision',
+        },
+    })));
+    return true;
+}
+
 async function runPaperSynopsisGeneration({
     article,
     provider = 'auto',
@@ -168,6 +238,7 @@ async function runPaperSynopsisGeneration({
     trainingStage = null,
     userId = null,
     refresh = false,
+    lineage = null,
 }) {
     const articleId = getPaperSynopsisArticleId(article);
     return withSpan('synopsis.paper.generate', {
@@ -191,6 +262,7 @@ async function runPaperSynopsisGeneration({
         trainingStage,
         articleId,
         userId,
+        lineage,
     })));
 }
 
@@ -209,6 +281,7 @@ async function runPaperSynopsisGenerationInner({
     articleId,
     userId = null,
     refresh = false,
+    lineage = null,
 }) {
     if (!article || typeof article !== 'object' || !article.title) {
         throw new Error('article with title is required');
@@ -241,12 +314,63 @@ async function runPaperSynopsisGenerationInner({
         ))
         .concat(getPaperSynopsisCacheKey(article, selectedModelForCache, effectiveTrainingStage, null, preferenceSuffix)))];
 
-    if (cache?.getAsync) {
-        for (const candidateCacheKey of candidateCacheKeys) {
-            const memCached = await withSpan('synopsis.cache_get', { 'cache.key': candidateCacheKey }, () => cache.getAsync(candidateCacheKey));
-            if (memCached) return { ...memCached, cached: true, jobKey: jobKey || memCached.jobKey };
+    const [enriched] = await withSpan('synopsis.full_text_enrichment', { 'article.id': articleId }, () => (
+        enrichWithCachedFullText([article], cache, db).catch(() => [article])
+    ));
+    // Persist the exact post-enrichment source version generation runs against, so claim
+    // support passage ids (built from `enriched` below) resolve to a stored row and a
+    // synopsis can be replayed against the text its assertions actually rested on - not
+    // against an abstract-only version captured before enrichment ran.
+    if (db && typeof db.run === 'function') {
+        try {
+            await upsertSourceVersion(db, buildSourceVersion(enriched), new Date().toISOString());
+        } catch (err) {
+            logger.warn({ err, articleId }, 'persisting post-enrichment source version failed');
         }
     }
+    const hasFullTextNow = Boolean(
+        enriched._fullTextIndexed
+        || article._fullTextIndexed
+        || Number(enriched._fullTextWordCount || article._fullTextWordCount || 0) >= 200
+    );
+
+    // Withdrawal is decided in the durable store; caches (Redis and style-arm variants) must
+    // never override it. A withdrawn synopsis whose Redis key is still warm would otherwise
+    // be served for up to 7 days after retraction processing withdrew it.
+    // The normal teaching-object reader intentionally hides withdrawn rows.
+    // Check the durable review state directly before consulting Redis.
+    const withdrawnRow = db?.get
+        ? await db.get(
+            `SELECT 1 AS withdrawn FROM teaching_objects
+             WHERE article_uid = ? AND object_type = 'paper' AND review_state = 'withdrawn'
+             LIMIT 1`, [articleId]
+        )
+        : null;
+    const withdrawn = Boolean(withdrawnRow);
+
+    if (cache?.getAsync && !withdrawn) {
+        for (const candidateCacheKey of candidateCacheKeys) {
+            const memCached = await withSpan('synopsis.cache_get', { 'cache.key': candidateCacheKey }, () => cache.getAsync(candidateCacheKey));
+            if (!memCached) continue;
+            const cachedAbstractOnly = !(Number(memCached.audit?.fullTextCoverageRatio) > 0);
+            if (hasFullTextNow && cachedAbstractOnly) continue;
+            if (!(await hasReplayableLineage(db, {
+                evidenceSnapshotId: memCached.evidenceLineage?.snapshotId,
+                lineageStatus: memCached.evidenceLineage?.status,
+            }))) continue;
+            return { ...memCached, cached: true, jobKey: jobKey || memCached.jobKey };
+        }
+    }
+    if (withdrawn && cache) {
+        // A warm cache entry for withdrawn content keeps being a serving risk; drop it.
+        await invalidatePaperSynopsisCache({
+            cache, article,
+            selectedModel: selectedModelForCache,
+            trainingStage: effectiveTrainingStage,
+            synopsisStyleArmId: synopsisStyleArm?.armId || null,
+        }).catch(() => false);
+    }
+    if (withdrawn) throw new Error('Synopsis unavailable: source teaching object was withdrawn');
 
     // Redis is a 7-day cache; teaching_objects is the durable store. Only Redis
     // was ever consulted, so once a key aged out the synopsis was regenerated
@@ -256,7 +380,10 @@ async function runPaperSynopsisGenerationInner({
     // store here, before any generation work, and warm Redis from it.
     if (!refresh) {
         const reusable = await withSpan('synopsis.store_read_through', { 'article.id': articleId }, () => (
-            findReusableStoredSynopsis(db, articleId, { styleArm: synopsisStyleArm?.armId || null })
+            findReusableStoredSynopsis(db, articleId, {
+                styleArm: synopsisStyleArm?.armId || null,
+                articleHasFullText: hasFullTextNow,
+            })
         ));
         if (reusable) {
             const result = {
@@ -270,6 +397,10 @@ async function runPaperSynopsisGenerationInner({
                 jobKey,
                 cached: true,
                 reusedFromStore: true,
+                evidenceLineage: publicLineage({
+                    snapshotId: reusable.existing.evidenceSnapshotId,
+                    status: reusable.existing.lineageStatus,
+                }),
                 banditMeta: synopsisStyleArm ? {
                     policyType: POLICY_SYNOPSIS_STYLE,
                     armId: synopsisStyleArm.armId,
@@ -303,10 +434,8 @@ async function runPaperSynopsisGenerationInner({
         }
     }
 
-    // Enrich with full-text sections when cached — improves numerical result extraction
-    const [enriched] = await withSpan('synopsis.full_text_enrichment', { 'article.id': articleId }, () => (
-        enrichWithCachedFullText([article], cache, db).catch(() => [article])
-    ));
+    // Enrich ran before reuse so an abstract-only store hit cannot outlive a
+    // later PDF index.
     // A practice guideline indexed in PubMed usually has no abstract at all --
     // measured on production, the EASL ascites guideline and the AGA
     // hepatorenal guideline both come back with zero abstract characters, no
@@ -451,23 +580,44 @@ async function runPaperSynopsisGenerationInner({
         claimGrounding,
         abstractOnly: fullTextCoverageRatio === 0,
     });
-    const ungroundedNumbers = (critic.findings || []).filter(
-        (f) => f.severity === 'error' && f.code === 'ungrounded_number'
-    );
-    if (ungroundedNumbers.length) {
+    const failClosed = failClosedGroundingFindings(critic);
+    if (failClosed.length) {
         recordSynopsisGeneration({ ok: false, provider: selectedProvider, model: selectedModel });
         logger.warn(
-            { articleId, provider: selectedProvider, model: selectedModel, findings: ungroundedNumbers },
-            'Synopsis rejected: numeric claims not grounded in source text'
+            { articleId, provider: selectedProvider, model: selectedModel, findings: failClosed },
+            'Synopsis rejected: claims not grounded in source text'
         );
         throw new Error(
-            `AI synopsis grounding failed: ${ungroundedNumbers.map((f) => f.message).join('; ')}`
+            `AI synopsis grounding failed: ${failClosed.map((f) => f.message).join('; ')}`
         );
+    }
+
+    // Claim-level support: each material assertion is traced to a passage of an immutable source version
+    // and checked for reversed meaning, negation, population, dropped uncertainty and out-of-context
+    // numbers. A deterministic pass is 'unjudged' (consistent, not verified); only a calibrated judge can
+    // say 'supported'. Failure here is reported on the result, never silently turned into a pass.
+    let claimSupport;
+    try {
+        claimSupport = buildClaimSupport(synopsis, enriched, { calibration: loadJudgeCalibration() });
+        if (judgeEnabled()) {
+            const verdicts = await judgeClaimSupport(claimSupport.claims, { serverConfig, fetchImpl });
+            claimSupport = {
+                ...claimSupport,
+                claims: applyJudgeVerdicts(claimSupport.claims, verdicts, loadJudgeCalibration()),
+            };
+        }
+        const served = applyServingPolicy(synopsis, claimSupport.claims);
+        synopsis = served.synopsis;
+        claimSupport = { ...claimSupport, servingPolicy: served.servingPolicy };
+    } catch (err) {
+        logger.warn({ err, articleId }, 'synopsis claim support check failed');
+        claimSupport = { checked: false, error: String(err?.message || err).slice(0, 200), claims: [] };
     }
 
     const result = {
         synopsis,
         claimGrounding,
+        claimSupport,
         critic,
         articleId,
         // Attributed separately from `synopsis` on purpose -- see the comment
@@ -488,6 +638,7 @@ async function runPaperSynopsisGenerationInner({
         timestamp: new Date().toISOString(),
         disclaimer: AI_DISCLAIMER,
         jobKey,
+        evidenceLineage: publicLineage(lineage),
         banditMeta: synopsisStyleArm ? {
             policyType: POLICY_SYNOPSIS_STYLE,
             armId: synopsisStyleArm.armId,
@@ -536,7 +687,7 @@ async function runPaperSynopsisGenerationInner({
         await db.logEvent('synopsis', sessionId, { articleId, userId: userId || undefined }).catch((err) => { logger.warn({ err }, 'logEvent failed'); return null; });
     }
     await withSpan('synopsis.persist_teaching_object', { 'article.id': articleId, 'synopsis.topic': topic }, () => (
-        persistPaperTeachingObject({ db, article, synopsisResult: result, topic, styleArm: synopsisStyleArm?.armId || null }).catch((err) => {
+        persistPaperTeachingObject({ db, article, synopsisResult: result, topic, styleArm: synopsisStyleArm?.armId || null, lineage }).catch((err) => {
             log?.warn?.({ err, articleId }, 'Paper teaching object persistence skipped');
         })
     ));
@@ -569,4 +720,5 @@ module.exports = {
     getPaperSynopsisCacheKey,
     synopsisStyleCacheSuffix,
     invalidatePaperSynopsisCache,
+    invalidateStoredPaperSynopsis,
 };

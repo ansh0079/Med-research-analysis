@@ -1,6 +1,7 @@
 'use strict';
 
 const { safeJsonParse } = require('../lib/helpers');
+const { applyWritePolicy } = require('../../server/services/policy/writePolicyEngine');
 
 module.exports = (Sup) => class extends Sup {
 // Curriculum catalog & seed-topic admin
@@ -129,6 +130,12 @@ async ensureCurriculumBlock(curriculumId, name, sortOrder = 0) {
 }
 
 async upsertCurriculumSeedTopic(topic, options = {}) {
+    const verdict = await applyWritePolicy(this, {
+        writer: 'upsertCurriculumSeedTopic',
+        entityType: 'curriculum',
+        payload: { displayName: topic?.displayName || topic?.display_name, topic: topic?.topic },
+    });
+    if (!verdict.allowed) return null;
     const curriculum = await this.ensureCurriculum(
         options.curriculumSlug || 'specialty-clinical-topics',
         options.curriculumName || 'Core Clinical Topics',

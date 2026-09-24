@@ -52,7 +52,7 @@ const GUIDELINE_BODY = new RegExp(`\\b(?:${[
     'ISTH', 'ASH', 'AASLD', 'EASL', 'ACG', 'BSG', 'AGA', 'ECCO', 'UEG', 'EAU', 'AUA', 'BAUS',
     'AAN', 'ABN', 'EAN', 'ILAE', 'MDS', 'AAOS', 'BOA', 'SPILF', 'ESCMID', 'IDF', 'ISPAD',
     'ATA', 'BTA', 'ESE', 'ESPEN', 'ASPEN', 'NIAAA', 'SAMHSA', 'APA', 'NIH', 'USPSTF', 'AAFP',
-    'AAP', 'SOGC', 'RANZCOG', 'CCS', 'ESH', 'ISH', 'JNC',
+    'AAP', 'SOGC', 'RANZCOG', 'CCS', 'ESH', 'ISH', 'JNC', 'CVIT',
     // Bodies that appear in the corpus spelled out rather than as the acronym
     // already listed above, plus IPNA which was missing entirely. Chosen from
     // the actual distribution of topic_guidelines.source_body, not guessed.
@@ -73,6 +73,7 @@ const GUIDELINE_BODY = new RegExp(`\\b(?:${[
     'US Preventive Services Task Force', 'Society of Obstetricians and Gynaecologists of Canada',
     'American Society for Gastrointestinal Endoscopy', 'European Stroke Organisation',
     'European Respiratory Society', 'American Society of Clinical Oncology',
+    'Japanese Association of Cardiovascular Intervention and Therapeutics',
 ].join('|')})\\b`, 'i');
 
 function hash(seed) {

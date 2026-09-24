@@ -103,6 +103,7 @@ async function processAiGenerationJobByKey(jobKey, deps) {
                 topic: input.topic || '',
                 trainingStage: input.trainingStage || null,
                 userId: input.userId || null,
+                lineage: input.lineage || null,
             });
             await completeJobAndClaims(db, jobKey, 'paper_synopsis', {
                 resultPayload: { ...result, jobKey },

@@ -1,11 +1,12 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import type { Article } from '@types';
+import type { Article, EvidenceLaneKey } from '@types';
 
 export type ResultLens = 'all' | 'open_access' | 'high_quality' | 'recent' | 'practice_changing';
 
 export function useResultsFilter(results: Article[]) {
   const [resultFilter, setResultFilter] = useState('');
   const [resultLens, setResultLens] = useState<ResultLens>('all');
+  const [evidenceLane, setEvidenceLane] = useState<EvidenceLaneKey | 'all'>('all');
   const [visibleCount, setVisibleCount] = useState(30);
   const [activeResultIndex, setActiveResultIndex] = useState(0);
 
@@ -45,6 +46,7 @@ export function useResultsFilter(results: Article[]) {
         const citations = article.pmcrefcount ?? article.citationCount ?? 0;
         if (!Number.isFinite(year) || year < currentYear - 3 || citations < 100) return false;
       }
+      if (evidenceLane !== 'all' && article._evidenceLane !== evidenceLane) return false;
       if (!q) return true;
       return [
         article.title,
@@ -54,14 +56,14 @@ export function useResultsFilter(results: Article[]) {
         article.authors?.map((author) => author.name).join(' '),
       ].filter(Boolean).join(' ').toLowerCase().includes(q);
     });
-  }, [currentYear, results, resultFilter, resultLens]);
+  }, [currentYear, results, resultFilter, resultLens, evidenceLane]);
 
   const renderedResults = useMemo(() => visibleResults.slice(0, visibleCount), [visibleCount, visibleResults]);
 
   useEffect(() => {
     setActiveResultIndex(0);
     setVisibleCount(30);
-  }, [resultFilter, resultLens, results.length]);
+  }, [resultFilter, resultLens, evidenceLane, results.length]);
 
   // Infinite scroll
   useEffect(() => {
@@ -77,6 +79,7 @@ export function useResultsFilter(results: Article[]) {
   const resetForNewSearch = React.useCallback(() => {
     setResultFilter('');
     setResultLens('all');
+    setEvidenceLane('all');
     setVisibleCount(30);
   }, []);
 
@@ -85,6 +88,8 @@ export function useResultsFilter(results: Article[]) {
     setResultFilter,
     resultLens,
     setResultLens,
+    evidenceLane,
+    setEvidenceLane,
     visibleResults,
     renderedResults,
     visibleCount,

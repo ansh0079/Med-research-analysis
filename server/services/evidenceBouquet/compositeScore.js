@@ -15,7 +15,15 @@ const {
 } = require('./articleClassifiers');
 const { classifyArchetype } = require('./archetype');
 
-function computeCompositeScore(article) {
+function computeCompositeScore(article, options = {}) {
+    const match = Number.isFinite(options.queryMatchScore)
+        ? Math.max(0, Math.min(1, options.queryMatchScore))
+        : 1;
+    // Citation mass, journal prestige, and "famous guideline" bonuses do not
+    // see the query on their own. Scale them by topical match so Surviving
+    // Sepsis (~160 on 5,314 citations) cannot outrun an on-topic ACS paper
+    // whose relevance was previously capped at +22.
+    const prestigeScale = 0.12 + 0.88 * match;
     let score = 0;
 
     // 1. EBM score (0-7) → up to 35 points (increased weight — evidence pyramid is primary signal)
@@ -30,7 +38,7 @@ function computeCompositeScore(article) {
     //    Cap lowered from 25 so topical match can win Precision@5 against
     //    famous-but-less-relevant highly-cited papers.
     const citations = getCitationCount(article);
-    score += Math.min(18, Math.log10(Math.max(1, citations)) * 4.2);
+    score += Math.min(18, Math.log10(Math.max(1, citations)) * 4.2) * prestigeScale;
 
     // 4. Recency → up to 18 points
     const year = getYear(article);
@@ -44,13 +52,13 @@ function computeCompositeScore(article) {
 
     // 4b. Recency × citations synergy → up to 6 points
     const recencyCitationScore = (recencyScore > 0 && citations > 0)
-        ? Math.min(6, (Math.log10(citations + 1) * recencyScore) / 10)
+        ? Math.min(6, (Math.log10(citations + 1) * recencyScore) / 10) * prestigeScale
         : 0;
     score += recencyCitationScore;
 
     // 5. Guideline bonus → up to 20 points, plus up to 10 for authoritative /
     //    widely-endorsed issuing bodies (WHO, NICE, AASLD, ACC/AHA, KDIGO, …).
-    if (isGuideline(article)) score += 20 + guidelineAuthorityBonus(article);
+    if (isGuideline(article)) score += (20 + guidelineAuthorityBonus(article)) * prestigeScale;
 
     // 6. Open access → 5 points
     if (article.isFree || article.pmcid) score += 5;
@@ -62,16 +70,16 @@ function computeCompositeScore(article) {
     //    papers that happen to carry an OpenAlex citation count. Also treat a top-tier
     //    evidence study (RCT/SR/MA) in a flagship journal as a landmark candidate.
     const flagshipEvidence = (article._ebmScore ?? 0) >= 6 && getJournalBonus(article) >= 12;
-    if (citations >= LANDMARK_CITATION_THRESHOLD || flagshipEvidence) score += 15;
+    if (citations >= LANDMARK_CITATION_THRESHOLD || flagshipEvidence) score += 15 * prestigeScale;
 
     // 8. Journal prestige bonus (tiered whitelist: +6 / +12 / +18)
-    score += getJournalBonus(article);
+    score += getJournalBonus(article) * prestigeScale;
 
     // 9. Core journal bonus (from OpenAlex — catches journals not in our whitelist)
-    if (article._openalexMetrics?.sourceIsCore) score += 5;
+    if (article._openalexMetrics?.sourceIsCore) score += 5 * prestigeScale;
 
     // 10. Top citation percentile bonus
-    if (article._openalexMetrics?.isTopCitationPercentile) score += 5;
+    if (article._openalexMetrics?.isTopCitationPercentile) score += 5 * prestigeScale;
 
     // Clinical signal bonus — reward patient-facing research
     const fullText = `${String(article.title || '')} ${String(article.abstract || '')}`;

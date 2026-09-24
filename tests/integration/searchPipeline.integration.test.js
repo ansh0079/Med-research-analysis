@@ -11,14 +11,19 @@ jest.mock('../../server/services/unifiedEvidenceSearch', () => {
     return {
         ...actual,
         fetchUnifiedEvidence: jest.fn(),
+        decomposePico: jest.fn(async () => null),
     };
 });
 
 jest.mock('../../server/services/articleReranker', () => ({
-    rerankArticlesWithPico: jest.fn(async (articles) => articles),
+    rerankArticlesByPico: jest.fn(async (articles) => articles.map((article) => ({
+        ...article,
+        _rerank: { overallScore: article.uid === 'pubmed-3' ? 1 : 0 },
+    })).sort((a, b) => b._rerank.overallScore - a._rerank.overallScore)),
+    selectTopRerankedArticles: jest.fn((articles) => articles.slice(0, 10)),
 }));
 
-const { fetchUnifiedEvidence } = require('../../server/services/unifiedEvidenceSearch');
+const { fetchUnifiedEvidence, decomposePico } = require('../../server/services/unifiedEvidenceSearch');
 const { fetchAndRankSearchArticles } = require('../../server/services/searchPipeline');
 
 function article({ uid, title, pmid, ebm = 6, pubtype = ['Randomized Controlled Trial'], journal = 'N Engl J Med', citations = 200 }) {
@@ -126,5 +131,28 @@ describe('searchPipeline integration (mocked APIs)', () => {
         });
 
         expect(result.articles).toEqual([]);
+    });
+
+    test('PICO can promote a candidate outside the first-pass display cutoff', async () => {
+        process.env.SEARCH_PICO_RERANK_ENABLED = 'true';
+        decomposePico.mockResolvedValue({ population: 'heart failure', intervention: '', confidence: 0.9 });
+        fetchUnifiedEvidence.mockResolvedValue([
+            article({ uid: '1', title: 'SGLT2 therapy for heart failure outcomes', citations: 1000 }),
+            article({ uid: '2', title: 'ARNI treatment for chronic heart failure', citations: 500 }),
+            article({ uid: '3', title: 'Mechanical support therapy in advanced heart failure', citations: 1 }),
+        ]);
+        const result = await fetchAndRankSearchArticles({
+            query: 'heart failure therapy', safeLimit: 2, sourceList: ['pubmed'],
+            serverConfig: { keys: {} }, fetchImpl: jest.fn(),
+            db: {
+                listTeachingObjectsForTopic: jest.fn(async () => []),
+                listTeachingObjectClaimsForTopic: jest.fn(async () => []),
+                listPersonalizationArmStates: jest.fn(async () => []),
+            },
+            userId: null, sessionId: null, previousQueries: [], specificity: 'moderate',
+        });
+        expect(result.telemetry.picoRerank.candidateCount).toBe(3);
+        expect(result.articles).toHaveLength(2);
+        expect(result.articles.map((row) => row.uid)).toContain('pubmed-3');
     });
 });

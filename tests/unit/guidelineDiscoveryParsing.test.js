@@ -4,7 +4,7 @@ jest.mock('../../server/utils/fetch', () => ({
 }));
 
 const { fetchWithTimeout: fetch } = require('../../server/utils/fetch');
-const { discoverGuidelinesForTopic, wasDiscoveryAttempted } = require('../../server/services/guidelineService');
+const { discoverGuidelinesForTopic, wasDiscoveryAttempted, kickGuidelineDiscoveryIfEmpty } = require('../../server/services/guidelineService');
 
 function mockEsearchThenEfetch({ ids, efetchXml }) {
     fetch
@@ -184,5 +184,31 @@ describe('the empty-topic cache reflects what the model found, not what the DB w
 
         expect(db.createGuideline).not.toHaveBeenCalled();
         expect(wasDiscoveryAttempted(topic, db)).toBe(true);
+    });
+});
+
+describe('kickGuidelineDiscoveryIfEmpty', () => {
+    test('does not start live discovery without provider keys', () => {
+        const db = makeDb();
+        const status = kickGuidelineDiscoveryIfEmpty('MS treatment', {
+            db,
+            serverConfig: { keys: {} },
+        });
+        expect(status).toBe('complete');
+        expect(fetch).not.toHaveBeenCalled();
+    });
+
+    test('marks a new topic pending when discovery can run', () => {
+        const db = makeDb();
+        fetch.mockImplementation(async () => ({
+            ok: true,
+            json: async () => ({ esearchresult: { idlist: [] } }),
+        }));
+        const status = kickGuidelineDiscoveryIfEmpty('MS treatment', {
+            db,
+            serverConfig: { keys: { ncbi: 'k', ncbiEmail: 'a@b.c' } },
+            aiService: { callText: jest.fn() },
+        });
+        expect(status).toBe('pending');
     });
 });

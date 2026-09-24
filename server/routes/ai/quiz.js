@@ -90,6 +90,7 @@ function registerQuizRoutes(app, {
                 const result = await quizGenerationService.generateQuiz({
                     body: req.body,
                     user: req.user,
+                    sessionId: req.sessionId || null,
                     log: req.log,
                 });
                 return sendServiceResponse(res, result);
@@ -108,6 +109,7 @@ function registerQuizRoutes(app, {
                 const result = await quizGenerationService.generateFromEvidence({
                     body: req.body,
                     user: req.user,
+                    sessionId: req.sessionId || null,
                     log: req.log,
                 });
                 return sendServiceResponse(res, result);
@@ -125,6 +127,7 @@ function registerQuizRoutes(app, {
             const rows = await db.all(
                 `SELECT topic, object_type, object_payload FROM teaching_objects
                  WHERE object_type IN ('cold_start_mcq', 'guideline_mcq', 'paper_mcq')
+                   AND review_state != 'withdrawn'
                  ORDER BY RANDOM()`
             );
 

@@ -58,12 +58,16 @@ export const EvidenceAuditPanel: React.FC<{
     { k: 'Sources', v: sourceCount != null ? String(sourceCount) : '—' },
     { k: 'Full-text coverage', v: pct(fullTextCoverageRatio ?? null) },
     {
-      k: 'Citation validation',
+      // This checks that every [1] / [G2] marker points at a source that exists
+      // in the bundle. It does not check that the source supports the claim.
+      // Labelling it "Citation validation: Pass" invited the stronger reading,
+      // which is the one a clinician would act on.
+      k: 'Citation refs resolve',
       v:
         citationOk == null
           ? '—'
           : citationOk
-            ? 'Pass'
+            ? 'All in range'
             : `Issues${citationIssueCount != null ? ` (${citationIssueCount})` : ''}`,
     },
     {

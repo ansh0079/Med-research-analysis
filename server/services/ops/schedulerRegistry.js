@@ -15,6 +15,7 @@
  */
 
 const logger = require('../../config/logger');
+const { getSharedAiService } = require('../aiService');
 
 const {
     scheduleDigests, stopDigests,
@@ -53,6 +54,10 @@ const {
     scheduleFlagshipEnrich, stopFlagshipEnrich,
 } = require('../flagshipEnrichScheduler');
 const {
+    scheduleGuidelineFullText,
+    stopGuidelineFullText,
+} = require('../guidelineFullTextScheduler');
+const {
     scheduleZombieSweep, stopZombieSweep,
 } = require('../zombieJobSweeper');
 const {
@@ -64,6 +69,18 @@ const {
 const {
     scheduleOfflineEvalNightly, stopOfflineEvalNightly,
 } = require('../offlineEvalNightlyScheduler');
+const {
+    scheduleGuidelineDiscoveryWarmStart, stopGuidelineDiscoveryWarmStart,
+} = require('../guidelineDiscoveryWarmStartScheduler');
+const {
+    scheduleSourceInvalidation, stopSourceInvalidation,
+} = require('../registry/sourceInvalidationScheduler');
+const {
+    scheduleSnapshotRetention, stopSnapshotRetention,
+} = require('../search/snapshotRetentionScheduler');
+const { scheduleDataRetention } = require('./dataRetention');
+const { scheduleQualityAlerts } = require('./qualityAlerts');
+const { sendEmail } = require('../emailService');
 
 /**
  * @typedef {Object} SchedulerEntry
@@ -109,9 +126,42 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
             stop: () => stopClaimRegeneration(),
         },
         {
+            task: 'guideline-fulltext',
+            start: () => scheduleGuidelineFullText(db, baseLogger.child({ task: 'guideline-fulltext' })),
+            stop: () => stopGuidelineFullText(),
+        },
+        {
             task: 'guideline-watchtower',
             start: () => scheduleGuidelineWatchtower(db, baseLogger.child({ task: 'guideline-watchtower' })),
             stop: () => stopGuidelineWatchtower(),
+        },
+        {
+            task: 'guideline-discovery-warm-start',
+            start: () => scheduleGuidelineDiscoveryWarmStart({
+                db,
+                serverConfig,
+                aiService: getSharedAiService({ serverConfig, fetchImpl }),
+                log: baseLogger.child({ task: 'guideline-discovery-warm-start' }),
+            }),
+            stop: () => stopGuidelineDiscoveryWarmStart(),
+        },
+        {
+            task: 'source-invalidation',
+            start: () => scheduleSourceInvalidation(db, baseLogger.child({ task: 'source-invalidation' })),
+            stop: () => stopSourceInvalidation(),
+        },
+        {
+            task: 'evidence-snapshot-retention',
+            start: () => scheduleSnapshotRetention(db, baseLogger.child({ task: 'evidence-snapshot-retention' })),
+        },
+        {
+            task: 'data-retention',
+            start: () => scheduleDataRetention(db, baseLogger.child({ task: 'data-retention' })),
+        },
+        {
+            task: 'quality-alerts',
+            start: () => scheduleQualityAlerts(db, baseLogger.child({ task: 'quality-alerts' }), { sendEmail }),
+            stop: () => stopSnapshotRetention(),
         },
         {
             task: 'curriculum-seed',

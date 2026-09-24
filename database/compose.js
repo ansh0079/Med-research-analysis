@@ -35,6 +35,7 @@ const MIXIN_LAYERS = [
     ['m17-guideline-contradictions', require('./mixins/m17-guideline-contradictions')],
     ['m18-case-sessions', require('./mixins/m18-case-sessions')],
     ['m19-account-privacy', require('./mixins/m19-account-privacy')],
+    ['m20-policy-concepts', require('./mixins/m20-policy-concepts')],
 ];
 
 const ALLOWED_REPLACEMENTS = {

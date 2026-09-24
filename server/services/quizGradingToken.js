@@ -88,6 +88,20 @@ async function verifyQuizAnswerCommitment(cache, token, userAnswer) {
         : { valid: false, reason: 'answer_commitment_mismatch' };
 }
 
+/**
+ * Identifies the exact question a learner answered: wording, options and answer. Two generations
+ * that happen to share an id but differ in any of these are different content versions, so an
+ * attempt can always be read against what was actually shown.
+ */
+function contentVersionOf(question) {
+    const canonical = JSON.stringify({
+        q: String(question?.question || question?.questionText || '').trim(),
+        options: Array.isArray(question?.options) ? question.options.map((o) => String(o).trim()) : null,
+        a: String(question?.correctAnswer ?? '').trim(),
+    });
+    return crypto.createHash('sha256').update(canonical).digest('hex').slice(0, 16);
+}
+
 function createQuizGradingToken(question, { now = Date.now(), ttlSeconds = DEFAULT_TTL_SECONDS } = {}) {
     if (!question?.id || !question?.correctAnswer) return null;
     const payload = {
@@ -107,6 +121,10 @@ function createQuizGradingToken(question, { now = Date.now(), ttlSeconds = DEFAU
             outlineNodeId: question.outlineNodeId || null,
             outlineLabel: question.outlineLabel || null,
             promptVariant: question.promptVariant || null,
+            // Signed, so an attempt cannot claim a different evidence context than the question had.
+            evidenceSnapshotId: question.evidenceSnapshotId || null,
+            evidenceLineageStatus: question.evidenceLineageStatus || null,
+            contentVersion: contentVersionOf(question),
         },
         exp: Math.floor(now / 1000) + Math.max(60, Number(ttlSeconds) || DEFAULT_TTL_SECONDS),
     };
@@ -177,6 +195,7 @@ module.exports = {
     sealAnswer,
     openAnswer,
     questionHash,
+    contentVersionOf,
     createQuizGradingToken,
     verifyQuizGradingToken,
     attachQuizGradingTokens,

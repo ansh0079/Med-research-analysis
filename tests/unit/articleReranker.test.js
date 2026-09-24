@@ -22,7 +22,11 @@ describe('articleReranker', () => {
         expect(rows[0].privateNote).toBe('current caller');
         await rerankArticlesByPico([{ ...article, abstract: 'Children in ICU' }], profile, options);
         expect(ai.callText).toHaveBeenCalledTimes(2);
-        expect(ai.callText.mock.calls[0][3].timeoutMs).toBe(4000);
+        // Production responses clustered around 8-12s after truncation was fixed, so the deadline
+        // needs margin above that measured boundary.
+        expect(ai.callText.mock.calls[0][3].timeoutMs).toBe(15000);
+        // Labelled, so its timeouts stop hiding inside 'unspecified' in the ops report.
+        expect(ai.callText.mock.calls[0][3].usage).toEqual({ operation: 'pico_rerank' });
     });
 
     test('provider failure uses a short fallback cache rather than repeated calls', async () => {
@@ -348,5 +352,26 @@ describe('articleReranker', () => {
         // Case reports should be filtered out or at the bottom
         const caseReportsInTop = top10.filter((a) => a.pubtype.includes('Case Report'));
         expect(caseReportsInTop.length).toBe(0);
+    });
+});
+
+describe('output budget is sized to what the call emits', () => {
+    test('the rerank asks for enough tokens to return parseable JSON', async () => {
+        // At 2048 the model hit MAX_TOKENS and returned ~6,800 characters of truncated JSON, so
+        // every rerank was discarded after being paid for. The budget must clear that, not sit on it.
+        const values = new Map();
+        const cache = { get: (key) => values.get(key), set: (key, value) => values.set(key, value) };
+        const ai = {
+            callText: jest.fn().mockResolvedValue(JSON.stringify([{ articleIndex: 1, overallScore: 0.9, exclusionFlags: [] }])),
+        };
+        const options = { ai, cache, serverConfig: { keys: { gemini: 'test' } } };
+        await rerankArticlesByPico(
+            [{ uid: 'b1', title: 'ARDS ventilation', abstract: 'Adults in ICU' }],
+            { population: 'adults', intervention: 'ventilation' },
+            options,
+        );
+        expect(ai.callText.mock.calls[0][3].maxOutputTokens).toBeGreaterThanOrEqual(4096);
+        expect(ai.callText.mock.calls[0][3].jsonMode).toBe(true);
+        expect(ai.callText.mock.calls[0][0]).not.toContain('- rationale:');
     });
 });

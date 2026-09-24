@@ -309,6 +309,30 @@ function paperTeachingObjectKey(articleUid, styleArm = null) {
         : `paper:${articleUid}:style:${arm}`;
 }
 
+const SUPPORT_CONCEPT_KEYS = {
+    bottomLine: 'clinical_bottom_line',
+    mainFindings: 'main_findings',
+    clinicalMeaning: 'clinical_bottom_line',
+    practiceImplication: 'practice_changing',
+};
+
+/** Claim candidates from claim-support assessments: the sentence, its passage, and a support-capped label. */
+function claimSupportCandidates(support, verification) {
+    const { capVerificationForSupport } = require('../synopsisClaimSupport');
+    return (support.claims || []).map((a) => ({
+        claimText: a.claimText,
+        sourcePath: `synopsis.${a.field}`,
+        conceptKey: SUPPORT_CONCEPT_KEYS[a.field] || 'main_findings',
+        evidenceQuote: a.evidenceSpan || null,
+        verificationStatus: capVerificationForSupport(
+            verification.verificationStatus || CLAIM_VERIFICATION.UNVERIFIED,
+            a,
+        ),
+        verificationReason: `Support: ${a.status} (${a.basis})${a.flags?.length ? `; flags: ${a.flags.join(', ')}` : ''}.`,
+        _supportClaimId: a.claimId,
+    }));
+}
+
 function buildPaperTeachingObject({ article, synopsisResult, topic = '', styleArm = null }) {
     const synopsis = synopsisResult?.synopsis || {};
     const articleUid = stableArticleUid(article);
@@ -326,13 +350,34 @@ function buildPaperTeachingObject({ article, synopsisResult, topic = '', styleAr
     const objectConfidence = abstractOnly
         ? Math.min(confidence, 0.42)
         : confidence;
+    // With claim support available, each material sentence is its own claim carrying the passage it
+    // rests on and a label no stronger than its support; otherwise the field-level claims as before.
+    const support = synopsisResult?.claimSupport?.checked ? synopsisResult.claimSupport : null;
+    const supportCandidates = support ? claimSupportCandidates(support, verification) : null;
     const claimAnchors = buildClaimAnchors(objectKey, [
-        { claimText: synopsis.bottomLine || synopsis.clinicalMeaning || synopsis.practiceImplication, sourcePath: 'synopsis.bottomLine', conceptKey: 'clinical_bottom_line' },
-        { claimText: synopsis.mainFindings, sourcePath: 'synopsis.mainFindings', conceptKey: 'main_findings' },
+        ...(supportCandidates || [
+            { claimText: synopsis.bottomLine || synopsis.clinicalMeaning || synopsis.practiceImplication, sourcePath: 'synopsis.bottomLine', conceptKey: 'clinical_bottom_line' },
+            { claimText: synopsis.mainFindings, sourcePath: 'synopsis.mainFindings', conceptKey: 'main_findings' },
+        ]),
         { claimText: synopsis.limitations, sourcePath: 'synopsis.limitations', conceptKey: 'limitations' },
         ...safeArray(synopsis.quizFocusPoints, 5).map((item) => ({ claimText: item, sourcePath: 'synopsis.quizFocusPoints', conceptKey: 'quiz_focus' })),
         ...safeArray(synopsis.whatNotToOverclaim, 5).map((item) => ({ claimText: item, sourcePath: 'synopsis.whatNotToOverclaim', conceptKey: 'misconception_trap' })),
-    ], { article, topic, confidence: objectConfidence, verification, abstractOnly, reviewState });
+    ], {
+        article,
+        topic,
+        confidence: objectConfidence,
+        // A claim that was not assessed (limitations, quiz focus points, or every claim when the check
+        // did not run) carries no support, so under enforcement it cannot hold a provenance-asserting label.
+        verification: {
+            ...verification,
+            verificationStatus: require('../synopsisClaimSupport').capVerificationForSupport(
+                verification.verificationStatus,
+                { status: 'unjudged' },
+            ),
+        },
+        abstractOnly,
+        reviewState,
+    });
     const knowledgeGraph = buildKnowledgeGraphRelationships({
         objectKey,
         objectType: 'paper',
@@ -360,6 +405,27 @@ function buildPaperTeachingObject({ article, synopsisResult, topic = '', styleAr
             // under a prompt that has since been rewritten is served forever --
             // the edit only ever reaches articles nobody had opened yet.
             promptVersion: synopsisResult?.audit?.promptVersion || null,
+            // Which passages back which claims, so the UI can show the evidence behind each one.
+            claimSupport: support ? {
+                sourceVersionId: support.sourceVersionId,
+                accessState: support.accessState,
+                mode: support.mode,
+                judgeCalibrated: support.judgeCalibrated,
+                counts: support.counts,
+                servingPolicy: support.servingPolicy || null,
+                claims: support.claims.map((a) => {
+                    const anchor = claimAnchors.find((c) => c.claimText === safeString(a.claimText, 700));
+                    return {
+                        claimId: a.claimId,
+                        claimKey: anchor?.claimKey || null,
+                        field: a.field,
+                        status: a.status,
+                        basis: a.basis,
+                        flags: a.flags,
+                        passageIds: a.passageIds,
+                    };
+                }),
+            } : null,
             sourceMode: abstractOnly ? 'abstract_only' : 'full_text_used',
             citationValidation: synopsisResult?.audit?.citationValidation || null,
             paper: {
@@ -479,9 +545,37 @@ function buildConsensusTeachingObject({ topic, consensusSynopsis, articles = [] 
     };
 }
 
-async function persistPaperTeachingObject({ db, article, synopsisResult, topic = '', styleArm = null }) {
+/**
+ * Attach evidence lineage to a generated object. The snapshot id and status are stored as columns
+ * (so they can be queried) and in the payload with the source version the synopsis was generated
+ * from. Provenance-asserting claim labels are capped when lineage does not back them and
+ * EVIDENCE_LINEAGE_ENFORCEMENT=enforce by default; explicit shadow mode leaves labels unchanged.
+ */
+function withLineage(object, lineage, article) {
+    const { capVerificationForLineage, publicLineage, LINEAGE_STATUS } = require('../search/generationEvidenceContext');
+    const effective = lineage || { snapshotId: null, status: LINEAGE_STATUS.UNLINKED };
+    const claimAnchors = Array.isArray(object.payload?.claimAnchors)
+        ? object.payload.claimAnchors.map((claim) => ({
+            ...claim,
+            verificationStatus: capVerificationForLineage(claim.verificationStatus, effective),
+        }))
+        : object.payload?.claimAnchors;
+    const withPayload = {
+        ...object,
+        payload: {
+            ...object.payload,
+            ...(claimAnchors ? { claimAnchors } : {}),
+            ...(lineage ? { lineage: { ...publicLineage(lineage), sourceVersionId: article?._snapshotVersionId || lineage.sourceVersions?.[String(article?.uid || article?.pmid || article?.id || '')] || null } } : {}),
+        },
+    };
+    if (!lineage) return withPayload;
+    return { ...withPayload, evidenceSnapshotId: lineage.snapshotId || null, lineageStatus: lineage.status };
+}
+
+async function persistPaperTeachingObject({ db, article, synopsisResult, topic = '', styleArm = null, lineage = null }) {
     if (!db?.upsertTeachingObject || !article || !synopsisResult?.synopsis) return null;
-    return db.upsertTeachingObject(buildPaperTeachingObject({ article, synopsisResult, topic, styleArm }));
+    const object = buildPaperTeachingObject({ article, synopsisResult, topic, styleArm });
+    return db.upsertTeachingObject(withLineage(object, lineage, article));
 }
 
 async function persistConsensusTeachingObject({ db, topic, consensusSynopsis, articles = [] }) {

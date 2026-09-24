@@ -1,0 +1,50 @@
+1. Achalasia endoscopic and surgical therapy
+2. Acromegaly somatostatin analog therapy
+3. Acute abdomen and common surgical emergencies
+4. Acute and chronic pain assessment and opioid safety
+5. acute bacterial meningitis adjunctive dexamethasone
+6. Acute bacterial meningitis empiric therapy and dexamethasone
+7. Acute decompensated heart failure decongestion
+8. Acute liver failure transplant referral
+9. Acute myeloid leukemia venetoclax azacitidine
+10. Acute necrotising pancreatitis and step-up management approach
+11. Acute pancreatitis fluid and nutrition strategy
+12. Acute psychosis: assessment, management and antipsychotic therapy
+13. alcohol use disorder naltrexone and acamprosate
+14. Alcohol use disorder, Wernicke encephalopathy and alcohol-related liver disease
+15. Alcohol-associated hepatitis corticosteroids
+16. alzheimer s disease anti amyloid immunotherapy
+17. AML Transformed from MPN
+18. Anaemia
+19. Analgesia strategies
+20. anca associated vasculitis renal disease
+21. Aneurysmal subarachnoid hemorrhage management
+22. angiotensin ii for catecholamine refractory vasodilatory shock
+23. Anti-CD20 Therapy in Rheumatology
+24. antidepressant sequential treatment steps depressed outpatients outcomes
+25. antifungals in ICU
+26. antipsychotic metabolic monitoring
+27. aspirin cardiovascular events bleeding healthy elderly primary prevention
+28. Aspirin-exacerbated respiratory disease management
+29. asthma biologics
+30. Atopic dermatitis: diagnosis, stepwise treatment and biologics
+31. atrial fibrillation diagnosis and management guideline
+32. Autosomal dominant polycystic kidney disease tolvaptan
+33. Bacterial meningitis: empirical antibiotics, dexamethasone, LP contraindications, CSF interpretation
+34. benzodiazepine deprescribing in anxiety and insomnia
+35. biologic therapy pre treatment infection screening
+36. Bone Marrow Fibrosis Grading
+37. Bone metastases denosumab and zoledronic acid
+38. Borderline personality disorder dialectical behavior therapy
+39. Bronchiolitis and viral wheeze
+40. Bronchiolitis: assessment, risk stratification and management
+41. CABG versus PCI multivessel coronary disease
+42. canagliflozin renal outcomes type 2 diabetes nephropathy
+43. canakinumab anti-inflammatory therapy atherosclerotic disease
+44. CAR-T cell therapy refractory large B-cell lymphoma axicabtagene
+45. cardiac resynchronization therapy heart failure COMPANION trial
+46. cardiogenic shock intra aortic balloon pump and revascularization
+47. Carpal tunnel syndrome: diagnosis and management
+48. Catatonia benzodiazepines and ECT
+49. Cellulitis, erysipelas, and mimics
+50. chemotherapy induced nausea antiemetic prophylaxis

@@ -2,14 +2,18 @@
 
 const { createAiService, getSharedAiService, PINNED_MODELS, TEMPERATURE } = require('./aiService');
 const { resolveProvider } = require('../utils/aiProvider');
-const { gatherEvidenceArticlesForCase } = require('./caseEvidenceService');
+const { gatherEvidenceArticlesForCase, hasKnownCaseRetraction } = require('./caseEvidenceService');
 const { classifyClaimGuidelineAlignment } = require('./claimGuidelineAlignmentService');
 const { stripPii } = require('../utils/piiStripper');
+const { persistSearchEvidenceSnapshot } = require('./search/searchEvidenceSnapshot');
+const { guidelineToEvidenceArticle } = require('./search/generationEvidenceContext');
+const { recordGenerationInputs, publicManifest } = require('./search/generationEvidenceManifest');
+const { capVerificationForLegacy } = require('./content/legacyContentPolicy');
 
 const MAX_QUESTION_LENGTH = 3000;
 const MAX_BRIEF_AGE_DAYS = 7;
 
-async function findRecentBrief(db, userId, clinicalQuestion) {
+async function findRecentBrief(db, userId, clinicalQuestion, requestKey) {
     if (!db || !userId) return null;
     const normalized = String(clinicalQuestion || '').trim().toLowerCase().replace(/\s+/g, ' ').slice(0, 300);
     // Cutoff computed in JS: SQLite date-modifier syntax does not exist on Postgres.
@@ -17,26 +21,33 @@ async function findRecentBrief(db, userId, clinicalQuestion) {
     // timestamps and Postgres TIMESTAMPTZ columns.
     const cutoff = new Date(Date.now() - MAX_BRIEF_AGE_DAYS * 86400000)
         .toISOString().slice(0, 19).replace('T', ' ');
-    const row = await db.get(
+    const rows = await db.all(
         `SELECT * FROM case_evidence_briefs
          WHERE user_id = ? AND lower(clinical_question) = ?
            AND created_at > ?
-         ORDER BY created_at DESC LIMIT 1`,
+         ORDER BY created_at DESC LIMIT 10`,
         [userId, normalized, cutoff]
     );
-    if (!row) return null;
-    try {
-        return {
-            topic: row.topic,
-            clinicalQuestion: row.clinical_question,
-            brief: JSON.parse(row.brief_json || '{}'),
-            articles: JSON.parse(row.articles_json || '[]'),
-            relatedClaims: JSON.parse(row.related_claims_json || '[]'),
-            fromCache: true,
-        };
-    } catch {
-        return null;
+    for (const row of rows) {
+        try {
+            const brief = JSON.parse(row.brief_json || '{}');
+            if (brief.evidenceProvenance?.requestKey !== requestKey) continue;
+            const articles = JSON.parse(row.articles_json || '[]');
+            if (await hasKnownCaseRetraction(db, articles)) continue;
+            return {
+                topic: row.topic,
+                clinicalQuestion: row.clinical_question,
+                brief,
+                articles,
+                relatedClaims: JSON.parse(row.related_claims_json || '[]'),
+                evidenceProvenance: brief.evidenceProvenance,
+                fromCache: true,
+            };
+        } catch {
+            continue;
+        }
     }
+    return null;
 }
 
 async function persistBrief(db, userId, result) {
@@ -66,6 +77,7 @@ async function buildCaseToEvidenceBrief(db, {
     serverConfig,
     fetchImpl,
     seedArticles = [],
+    evidenceSnapshotId = null,
     limit = 12,
     userId = null,
 } = {}) {
@@ -77,8 +89,13 @@ async function buildCaseToEvidenceBrief(db, {
         throw new Error(`clinicalQuestion must be no more than ${MAX_QUESTION_LENGTH} characters`);
     }
 
-    // Check for recent cached brief
-    const cached = userId ? await findRecentBrief(db, userId, rawQuestion) : null;
+    const requestedSeeds = (Array.isArray(seedArticles) ? seedArticles : []).slice(0, 12);
+    const requestKey = JSON.stringify({
+        topic: String(topic || '').trim().toLowerCase(),
+        snapshotId: String(evidenceSnapshotId || ''),
+        seedUids: requestedSeeds.map((a) => String(a?.uid || a?.pmid || '')).filter(Boolean),
+    });
+    const cached = userId ? await findRecentBrief(db, userId, rawQuestion, requestKey) : null;
     if (cached) return cached;
 
     // Strip PII before sending to AI
@@ -86,31 +103,65 @@ async function buildCaseToEvidenceBrief(db, {
     const topicLabel = String(topic || '').trim() || question.split(/[,.]/)[0].trim().slice(0, 80);
     const searchQuery = question.replace(/\s+/g, ' ').slice(0, 380);
 
-    const [articles, guidelines, topicKnowledge, claims] = await Promise.all([
+    const [retrieval, guidelines, topicKnowledge, claims] = await Promise.all([
         gatherEvidenceArticlesForCase({
             searchQuery,
             limit,
             serverConfig,
             db,
             fetch: fetchImpl,
-            seedArticles,
+            seedArticles: requestedSeeds,
+            evidenceSnapshotId,
+            userId,
         }),
         db.getGuidelinesByTopic(topicLabel, { limit: 6 }).catch(() => []),
         db.getTopicKnowledge(topicLabel).catch(() => null),
         db.listTeachingObjectClaimsForTopic(topicLabel, { limit: 15 }).catch(() => []),
     ]);
+    const articles = retrieval.articles.slice(0, 8);
 
-    const topClaims = claims.slice(0, 5).map((c) => {
+    const topClaims = await Promise.all(claims.slice(0, 5).map(async (c) => {
         const alignment = guidelines.length
             ? classifyClaimGuidelineAlignment(c, guidelines)
+            : null;
+        const parent = c.objectKey && typeof db.get === 'function'
+            ? await db.get(
+                'SELECT lineage_status, evidence_snapshot_id FROM teaching_objects WHERE object_key = ?',
+                [c.objectKey]
+            ).catch(() => null)
             : null;
         return {
             claimKey: c.claimKey,
             claimText: c.claimText,
-            verificationStatus: c.verificationStatus,
+            verificationStatus: capVerificationForLegacy(c.verificationStatus, parent),
             guidelineAlignment: alignment?.recommendedVerificationStatus || null,
         };
+    }));
+
+    const snapshot = await persistSearchEvidenceSnapshot(db, {
+        query: searchQuery,
+        queryRepresentation: { version: 1, origin: 'case_to_evidence' },
+        articles,
+        userId,
+        origin: 'case_to_evidence',
     });
+    const manifest = await recordGenerationInputs(db, {
+        snapshotId: snapshot.id,
+        userId,
+        guidelines: guidelines.slice(0, 4),
+        claimAnchors: topClaims,
+        guidelineToEvidenceArticle,
+        reason: 'case_to_evidence_context',
+    });
+    const evidenceProvenance = {
+        requestKey,
+        snapshotId: snapshot.id,
+        status: snapshot.status === 'persisted' && manifest.complete
+            && topClaims.every((claim) => claim.verificationStatus !== 'unverified')
+            ? 'source_replayable' : 'unverified',
+        manifest: publicManifest(manifest),
+        retractionScreening: retrieval.retractionScreening,
+    };
 
     const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
     const ai = getSharedAiService({ serverConfig, fetchImpl });
@@ -133,8 +184,8 @@ ${evidenceList || 'None retrieved.'}
 Guidelines:
 ${guidelineList || 'None stored.'}
 
-Stored teaching claims:
-${topClaims.map((c) => `- ${c.claimText}`).join('\n') || 'None.'}
+Stored teaching claims (unverified claims are context, not source proof):
+${topClaims.map((c) => `- [${c.verificationStatus || 'unverified'}] ${c.claimText}`).join('\n') || 'None.'}
 
 Return JSON only:
 {
@@ -157,10 +208,11 @@ Return JSON only:
     const result = {
         topic: topicLabel,
         clinicalQuestion: rawQuestion,
-        articles: articles.slice(0, 10),
+        articles,
         guidelines: guidelines.slice(0, 6),
         relatedClaims: topClaims,
-        brief: structured,
+        brief: { ...structured, evidenceProvenance },
+        evidenceProvenance,
         teachingPoints: topicKnowledge?.knowledge?.teachingPoints?.slice(0, 5) || [],
     };
 

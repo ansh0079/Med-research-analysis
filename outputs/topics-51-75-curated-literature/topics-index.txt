@@ -1,0 +1,25 @@
+51. Chest pain assessment in the ED
+52. Childhood asthma and wheeze phenotypes
+53. chronic cough evaluation and empiric therapy
+54. Chronic hepatitis B antiviral therapy
+55. chronic lymphocytic leukaemia ibrutinib and venetoclax based targeted therapy
+56. Chronic lymphocytic leukaemia: chemoimmunotherapy with FCR
+57. Chronic spontaneous urticaria omalizumab
+58. Cirrhosis and portal hypertension
+59. Cirrhosis ascites and spontaneous bacterial peritonitis
+60. community acquired pneumonia
+61. community acquired pneumonia diagnosis empiric antibiotic management guideline adult
+62. Community- and hospital-acquired pneumonia
+63. Compartment syndrome: diagnosis and emergency management
+64. complement deficiency infection susceptibility
+65. Contact dermatitis: irritant vs allergic, patch testing and management
+66. Coronary CT angiography for stable chest pain
+67. covid
+68. CRISPR-Cas9 gene editing sickle cell disease beta-thalassemia
+69. Croup: assessment, severity scoring and management
+70. Cushings disease: pituitary source, inferior petrosal sinus sampling, transsphenoidal surgery
+71. Cushings syndrome: ACTH-dependent vs independent, screening, dexamethasone suppression
+72. Cystic fibrosis CFTR modulator therapy
+73. cytomegalovirus prevention in transplant recipients
+74. dabigatran versus warfarin atrial fibrillation stroke prevention
+75. Delayed Haemolytic Transfusion Reactions

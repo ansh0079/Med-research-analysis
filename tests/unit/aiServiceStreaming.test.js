@@ -66,12 +66,31 @@ describe('aiService streaming', () => {
             'data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"claude-chunk"}}\n',
         ]);
         const fetchImpl = fakeFetch(body);
-        const ai = createAiService({ serverConfig: { keys: { anthropic: 'k' } }, fetchImpl });
+        const onLlmCall = jest.fn();
+        const ai = createAiService({ serverConfig: { keys: { anthropic: 'k' } }, fetchImpl, onLlmCall });
 
         const chunks = [];
         for await (const chunk of ai.callTextStream('prompt', 'claude', 'claude-model')) {
             chunks.push(chunk);
         }
         expect(chunks.join('')).toBe('claude-chunk');
+        expect(onLlmCall).toHaveBeenCalledWith(expect.objectContaining({
+            operation: 'unspecified_stream', provider: 'claude', success: true, response: 'claude-chunk',
+        }));
+    });
+
+    test('failed streams are measured as failures', async () => {
+        const onLlmCall = jest.fn();
+        const ai = createAiService({
+            serverConfig: { keys: { anthropic: 'k' } },
+            fetchImpl: fakeFetch(null, { ok: false, status: 429 }),
+            onLlmCall,
+        });
+        await expect(async () => {
+            for await (const chunk of ai.callTextStream('prompt', 'claude', 'model')) { void chunk; }
+        }).rejects.toThrow('Claude stream error: 429');
+        expect(onLlmCall).toHaveBeenCalledWith(expect.objectContaining({
+            operation: 'unspecified_stream', provider: 'claude', success: false,
+        }));
     });
 });

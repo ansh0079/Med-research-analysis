@@ -1951,7 +1951,7 @@ describe('API Endpoints', () => {
                   {
                     questionType: 'pitfall',
                     question: 'What is the key applicability issue for prone positioning?',
-                    options: ['A: It is most relevant in severe persistent hypoxaemia', 'B: It applies to all mild cases', 'C: It replaces ventilation strategy', 'D: It is unrelated to severity'],
+                    options: ['A: It is most relevant in severe persistent hypoxaemia', 'B: It applies to every mild case regardless of oxygenation', 'C: It replaces lung-protective ventilation entirely', 'D: It is unrelated to baseline severity or duration'],
                     correctAnswer: 'A',
                     explanation: 'Severity and persistent hypoxaemia matter for applicability. [Trial]',
                     distractorRationale: { A: 'Correct - keyed answer.', B: 'Overapplies the claim.', C: 'Incorrect.', D: 'Incorrect.' },
@@ -1980,12 +1980,12 @@ describe('API Endpoints', () => {
 
       expect(response.body.claimAnchorMode).toBe('adaptive_teaching_object_bandit');
       expect(response.body.adaptiveClaimCount).toBe(2);
-      // Claim selection is Thompson-sampled now, so ordering is not deterministic —
-      // assert both adaptive anchors are present, not their order.
-      expect(response.body.questions.map((q) => q.claimKey).sort()).toEqual([
-        'untestedclaim1234567890ab',
-        'weakclaim1234567890abcdef',
-      ]);
+      // Without a replayable snapshot the clinical-application item loses its
+      // verified floor; the lower-stakes pitfall item may still be served.
+      expect(response.body.questions.map((q) => q.claimKey)).toEqual(['untestedclaim1234567890ab']);
+      expect(response.body.droppedHighStakes).toEqual(expect.arrayContaining([
+        expect.objectContaining({ claimKey: 'weakclaim1234567890abcdef' }),
+      ]));
       const promptBody = JSON.parse(mockFetch.mock.calls[0][1].body);
       const prompt = promptBody.contents[0].parts[0].text;
       expect(prompt).toContain('CLAIM-ANCHORED MODE');

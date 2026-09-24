@@ -75,6 +75,47 @@ function recordSearchQuality({ offTopicRateAt10 = null } = {}) {
     recordSloEvent('search_off_topic_rate_at_10', rate <= SLO_DEFINITIONS.search_off_topic_rate_at_10.threshold, rate);
 }
 
+/**
+ * Search latency, whole request and per stage.
+ *
+ * search_latency_p95 was defined as an SLO from the beginning and nothing ever recorded it, so the
+ * alert on it could not fire and "search latency p95: unknown" stayed true through several reviews.
+ * The pipeline already measures each stage; this is where those numbers stop being per-request
+ * debug detail and become something a dashboard and an alert can read.
+ *
+ * Stage names come from the pipeline's own timings object, so a new stage appears here the moment it
+ * is measured, without a second list to keep in step.
+ */
+function recordSearchLatency(timings = {}) {
+    const totalMs = Number(timings.totalMs);
+    if (!Number.isFinite(totalMs) || totalMs < 0) return;
+
+    if (metrics) {
+        metrics.searchLatency.observe(totalMs / 1000);
+        for (const [key, value] of Object.entries(timings)) {
+            if (key === 'totalMs' || !key.endsWith('Ms')) continue;
+            const ms = Number(value);
+            if (!Number.isFinite(ms) || ms < 0) continue;
+            metrics.searchStageLatency.observe({ stage: key.slice(0, -2) }, ms / 1000);
+        }
+    }
+    recordSloEvent('search_latency_p95', totalMs / 1000 <= SLO_DEFINITIONS.search_latency_p95.thresholdSeconds, totalMs);
+}
+
+/**
+ * A provenance cap that WOULD have applied, had enforcement been on.
+ *
+ * The lineage, manifest and legacy ceilings all default to shadow, which means they change nothing
+ * and report nothing - so "what happens if we enforce" has been unanswerable except by enforcing and
+ * finding out on real readers. Counting the near-misses turns that into a number you can look at
+ * first: if this is zero for a week, enforcement is free; if it is thousands, it is a product
+ * decision about what the corpus can honestly claim.
+ */
+function recordProvenanceShadowCap(kind, from) {
+    if (!metrics) return;
+    metrics.provenanceShadowCaps.inc({ kind: kind || 'unknown', from: from || 'unknown' });
+}
+
 function registerObservabilityMetrics(registry, client) {
     if (metrics || !registry || !client) return metrics;
     metrics = {
@@ -106,6 +147,26 @@ function registerObservabilityMetrics(registry, client) {
             name: 'medsearch_synopsis_generation_total',
             help: 'Synopsis generation attempts by provider/model/outcome',
             labelNames: ['provider', 'model', 'outcome'],
+            registers: [registry],
+        }),
+        provenanceShadowCaps: new client.Counter({
+            name: 'medsearch_provenance_shadow_caps_total',
+            help: 'Labels that would have been capped if provenance enforcement were on',
+            labelNames: ['kind', 'from'],
+            registers: [registry],
+        }),
+        searchLatency: new client.Histogram({
+            name: 'medsearch_search_latency_seconds',
+            help: 'End-to-end search request latency',
+            // Buckets span the range that matters here: a fast cached answer to well past the 3s SLO.
+            buckets: [0.1, 0.25, 0.5, 1, 2, 3, 5, 8, 13],
+            registers: [registry],
+        }),
+        searchStageLatency: new client.Histogram({
+            name: 'medsearch_search_stage_latency_seconds',
+            help: 'Search latency broken down by pipeline stage',
+            labelNames: ['stage'],
+            buckets: [0.01, 0.05, 0.1, 0.25, 0.5, 1, 2, 3, 5],
             registers: [registry],
         }),
         searchOffTopicRate: new client.Gauge({
@@ -243,6 +304,8 @@ module.exports = {
     getSloStatus,
     recordExternalApiCall,
     recordSearchQuality,
+    recordSearchLatency,
+    recordProvenanceShadowCap,
     recordSloEvent,
     recordSynopsisGeneration,
     registerObservabilityMetrics,

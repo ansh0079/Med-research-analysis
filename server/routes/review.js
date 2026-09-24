@@ -5,6 +5,7 @@ const { createMcqValidationService } = require('../services/mcqValidationService
 const { createReviewRouteHelpers } = require('./review/shared');
 const { registerReviewCaseRoutes } = require('./review/cases');
 const { registerReviewMethodologyRoutes } = require('./review/methodology');
+const { registerRelevanceReviewRoutes } = require('./review/relevance');
 
 /**
  * @param {import('express').Application} app
@@ -203,6 +204,15 @@ function registerReviewRoutes(app, deps) {
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
+    });
+
+    // The clinician relevance queue: the labels that make a ranking change measurable.
+    registerRelevanceReviewRoutes(app, {
+        db,
+        requireJson,
+        requireAuthJwt,
+        requireRole: deps.requireRole,
+        rateLimit,
     });
 
     registerReviewMethodologyRoutes(app, {

@@ -7,6 +7,7 @@
  */
 
 const { generateCaseScenario, saveCaseScenario, getCaseScenario, recordCaseChoice } = require('../../services/caseScenarioService');
+const { snapshotTopicEvidence, guidelineToEvidenceArticle, publicLineage } = require('../../services/search/generationEvidenceContext');
 const { resolveProvider } = require('../../utils/aiProvider');
 const { AI_DISCLAIMER } = require('../../services/aiService');
 const {
@@ -94,6 +95,19 @@ function registerCaseRoutes(app, {
                 const guidelines = await db.getGuidelinesByTopic(topic.trim(), { limit: 5 })
                     .catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; });
 
+                // A topic-based case has no search to link to, so it snapshots the evidence it is
+                // actually built from (the stored guidelines) and records that as its lineage.
+                const evidenceLineage = await snapshotTopicEvidence(db, {
+                    topic: topic.trim(),
+                    articles: guidelines.map(guidelineToEvidenceArticle),
+                    userId: req.user.id,
+                    sessionId: req.sessionId || null,
+                    origin: 'case_generation',
+                });
+                if (evidenceLineage.status === 'invalid') {
+                    return res.status(503).json({ error: 'Case evidence could not be recorded. Please retry.', code: 'EVIDENCE_SNAPSHOT_FAILED' });
+                }
+
                 // Generate case scenario
                 const caseScenario = await generateCaseScenario(ai, {
                     topic,
@@ -105,6 +119,8 @@ function registerCaseRoutes(app, {
                 });
                 caseScenario.topic = caseScenario.topic || topic.trim();
                 caseScenario.difficulty = difficulty;
+                caseScenario.evidenceSnapshotId = evidenceLineage.snapshotId;
+                caseScenario.evidenceRefs = evidenceLineage.sourceVersions || null;
 
                 // Save to database
                 const savedCase = await saveCaseScenario(db, req.user.id, caseScenario);
@@ -152,6 +168,7 @@ function registerCaseRoutes(app, {
                         decisionId: decision?.id || null,
                         selectedBy: difficultyBandit ? 'bandit' : 'client',
                     },
+                    evidenceLineage: publicLineage(evidenceLineage),
                     disclaimer: AI_DISCLAIMER
                 });
             } catch (error) {
@@ -193,6 +210,12 @@ function registerCaseRoutes(app, {
 
                 if (!nodeId || !choiceId) {
                     return res.status(400).json({ error: 'nodeId and choiceId are required' });
+                }
+
+                const existing = await getCaseScenario(db, caseId, req.user.id);
+                if (!existing) return res.status(404).json({ error: 'Case scenario not found' });
+                if (existing.evidenceStatus === 'withdrawn') {
+                    return res.status(409).json({ error: 'This case uses withdrawn evidence and cannot be continued.', code: 'CASE_EVIDENCE_WITHDRAWN' });
                 }
 
                 const result = await recordCaseChoice(db, caseId, req.user.id, nodeId, choiceId);

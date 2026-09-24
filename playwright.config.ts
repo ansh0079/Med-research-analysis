@@ -1,10 +1,16 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const baseURL = process.env.BASE_URL || 'http://localhost:3002';
+process.env.QUIZ_GRADING_SECRET ||= 'signal-md-e2e-grading-secret-only';
 
 export default defineConfig({
   testDir: './tests/e2e',
   testMatch: '**/*.spec.js',
+  // real-auth-flows needs the storageState that only the chromium-auth project
+  // supplies. Without this, `npm run test:e2e` (--project=chromium) picked those
+  // specs up unauthenticated and could never pass -- 3 guaranteed failures that
+  // made the E2E gate useless as a signal.
+  testIgnore: '**/real-auth-flows.spec.js',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -64,6 +70,9 @@ export default defineConfig({
     // Authenticated project — reuses real login state from globalSetup
     {
       name: 'chromium-auth',
+      // Opts back in to the specs the top-level testIgnore excludes.
+      testIgnore: [],
+      testMatch: '**/real-auth-flows.spec.js',
       use: {
         ...devices['Desktop Chrome'],
         storageState: './tests/e2e/.auth/user.json',

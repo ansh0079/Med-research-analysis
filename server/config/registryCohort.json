@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "description": "First guideline-registry cohort: 25 conditions. Names are canonical condition concepts (not treatment questions). This file holds NO guideline content: editions, sources and recommendations enter only as candidates proposed from topic_guidelines and are served only after a named reviewer verifies them (server/scripts/registryCurate.js). Expand to 100, then 200, only when coverage and freshness hold.",
+  "scope": "Widen only after registry quality, retrieval recall, contamination, provenance and invalidation are proven together.",
+  "conditions": [
+    { "conceptName": "Heart failure", "specialty": "Cardiology", "aliases": ["HFrEF", "HFpEF", "heart failure with reduced ejection fraction", "heart failure with preserved ejection fraction", "acute decompensated heart failure"] },
+    { "conceptName": "Atrial fibrillation", "specialty": "Cardiology", "aliases": ["AF", "AFib"] },
+    { "conceptName": "Acute coronary syndrome", "specialty": "Cardiology", "aliases": ["ACS", "NSTEMI", "STEMI", "unstable angina"] },
+    { "conceptName": "Hypertension", "specialty": "Cardiology", "aliases": ["high blood pressure"] },
+    { "conceptName": "Atherosclerotic cardiovascular disease", "specialty": "Cardiology", "aliases": ["ASCVD", "hyperlipidemia", "LDL cholesterol lowering"] },
+    { "conceptName": "Pulmonary embolism", "specialty": "Respiratory", "aliases": ["PE", "pulmonary embolus"] },
+    { "conceptName": "Venous thromboembolism", "specialty": "Haematology", "aliases": ["VTE", "deep vein thrombosis", "DVT"] },
+    { "conceptName": "Acute respiratory distress syndrome", "specialty": "Critical Care", "aliases": ["ARDS"] },
+    { "conceptName": "Sepsis", "specialty": "Critical Care", "aliases": ["septic shock", "sepsis and septic shock"] },
+    { "conceptName": "Chronic obstructive pulmonary disease", "specialty": "Respiratory", "aliases": ["COPD", "COPD exacerbation"] },
+    { "conceptName": "Asthma", "specialty": "Respiratory", "aliases": [] },
+    { "conceptName": "Community-acquired pneumonia", "specialty": "Respiratory", "aliases": ["CAP"] },
+    { "conceptName": "Type 2 diabetes mellitus", "specialty": "Endocrinology", "aliases": ["T2DM", "type 2 diabetes"] },
+    { "conceptName": "Acute kidney injury", "specialty": "Renal", "aliases": ["AKI"] },
+    { "conceptName": "Chronic kidney disease", "specialty": "Renal", "aliases": ["CKD"] },
+    { "conceptName": "Acute ischemic stroke", "specialty": "Neurology", "aliases": ["ischaemic stroke", "stroke"] },
+    { "conceptName": "Multiple sclerosis", "specialty": "Neurology", "aliases": ["MS"] },
+    { "conceptName": "Rheumatoid arthritis", "specialty": "Rheumatology", "aliases": ["RA"] },
+    { "conceptName": "Osteoporosis", "specialty": "Rheumatology", "aliases": [] },
+    { "conceptName": "Spontaneous bacterial peritonitis", "specialty": "Gastroenterology", "aliases": ["SBP"] },
+    { "conceptName": "Inflammatory bowel disease", "specialty": "Gastroenterology", "aliases": ["IBD", "Crohn's disease", "ulcerative colitis"] },
+    { "conceptName": "Upper gastrointestinal bleeding", "specialty": "Gastroenterology", "aliases": ["UGIB"] },
+    { "conceptName": "Major depressive disorder", "specialty": "Psychiatry", "aliases": ["MDD", "depression"] },
+    { "conceptName": "HIV infection", "specialty": "Infectious Diseases", "aliases": ["HIV", "antiretroviral therapy"] },
+    { "conceptName": "Preeclampsia", "specialty": "Obstetrics", "aliases": ["pre-eclampsia"] }
+  ]
+}

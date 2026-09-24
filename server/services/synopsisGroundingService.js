@@ -107,6 +107,13 @@ function buildClaimGrounding(synopsis = {}, article = {}) {
     };
 }
 
+function failClosedGroundingFindings(critic) {
+    return (critic?.findings || []).filter((finding) => (
+        finding.severity === 'error'
+        && (finding.code === 'ungrounded_number' || finding.code === 'no_source_span')
+    ));
+}
+
 function runSynopsisCritic(synopsis = {}, { claimGrounding = null, abstractOnly = false } = {}) {
     const findings = [];
     const add = (severity, code, message, field = null) => {
@@ -144,5 +151,6 @@ module.exports = {
     MAJOR_CLAIM_FIELDS,
     buildClaimGrounding,
     runSynopsisCritic,
+    failClosedGroundingFindings,
     bestEvidenceSpan,
 };

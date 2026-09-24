@@ -257,13 +257,23 @@ async function extractTrialGuidelineConflicts(evidenceRows, guidelines, options 
 
     if (serverConfig && (serverConfig.keys?.anthropic || serverConfig.keys?.gemini || serverConfig.keys?.mistral)) {
         try {
-            const { createAiService, getSharedAiService, PINNED_MODELS, TEMPERATURE: T } = getAiService();
+            const { createAiService, getSharedAiService, TEMPERATURE: T } = getAiService();
             const ai = getSharedAiService({ serverConfig, fetchImpl });
             const prompt = buildConflictExtractionPrompt(rows, guides, topic);
-            const provider = serverConfig.keys?.anthropic ? 'claude'
-                : serverConfig.keys?.gemini ? 'gemini' : 'mistral';
-            const model = provider === 'claude' ? PINNED_MODELS.claude
-                : provider === 'gemini' ? PINNED_MODELS.gemini : PINNED_MODELS.mistral;
+            // Pick a provider whose account actually works, not merely one with a key configured.
+            // This chose Claude whenever ANTHROPIC_API_KEY was present, so an Anthropic balance of
+            // zero took conflict extraction to a 100% failure rate in production while a healthy
+            // Gemini sat unused behind it. resolveProvider consults providerHealth, which already
+            // recognises "credit balance is too low" and puts that provider in cooldown.
+            // Required lazily, like getAiService above: aiProvider reads PINNED_MODELS from
+            // aiService, and aiService loads prompts, which load this file. A top-level require
+            // closes that cycle and PINNED_MODELS is still undefined when aiProvider reads it.
+            const { resolveProvider } = require('../utils/aiProvider');
+            const { provider, model } = resolveProvider({ provider: options.provider || 'auto' }, serverConfig);
+            if (!provider) {
+                options.logger?.warn?.('conflict extraction skipped: no usable AI provider');
+                return null;
+            }
             const parsed = await ai.callStructured(prompt, provider, model, {
                 temperature: T.analysis ?? 0.2,
                 maxOutputTokens: 2048,

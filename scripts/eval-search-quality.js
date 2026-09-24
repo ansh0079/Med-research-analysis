@@ -250,6 +250,9 @@ async function runGoldEval(goldPath) {
 
     console.log(`\nLabelled Search Quality Eval (Phase 2)`);
     console.log(`Base: ${BASE}   Fixture: ${goldPath}   Queries: ${queries.length}   K: ${k}`);
+    console.log('NOTE: This still fetches live PubMed/OpenAlex. Landmark hit-rate is not a ranking');
+    console.log('regression signal (it has swung 1.000 → 0.426 on identical code). Use');
+    console.log('`npm run eval:search-ranking` to test ranking changes against frozen candidates.\n');
     if (fixture.expansionQueryCount) {
         console.log(`Expansion queries: ${fixture.expansionQueryCount}   Overrides: ${fixture.overrideCount || 0}`);
     }
@@ -403,6 +406,8 @@ async function main() {
     console.log(`\nPhase 1 Search Quality Eval`);
     console.log(`Base: ${BASE}   Sources: ${SOURCES}   Limit: ${LIMIT}`);
     console.log(`Queries: ${QUERIES.length}\n`);
+    console.log('NOTE: Live provider eval is not a ranking regression signal. Throttle and empty');
+    console.log('pages move landmark hit-rate independently of code. Use `npm run eval:search-ranking`.\n');
     console.log('Running queries...\n');
 
     const results = [];

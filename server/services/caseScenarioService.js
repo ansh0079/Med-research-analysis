@@ -189,14 +189,34 @@ async function generateCaseScenario(ai, { topic, difficulty, userProfile, provid
     });
 }
 
+/** Hash of the case as generated, so an attempt can always be read against what was shown. */
+function caseContentVersion(caseScenario) {
+    return require('crypto').createHash('sha256')
+        .update(JSON.stringify({ v: caseScenario.vignette, d: caseScenario.decisionTree, o: caseScenario.outcomes }))
+        .digest('hex')
+        .slice(0, 16);
+}
+
 async function saveCaseScenario(db, userId, caseScenario) {
     const caseId = `case_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+    // The lineage column (migration 101) is written only when the case carries lineage, so a
+    // caller without it never depends on the column existing.
+    const hasLineage = caseScenario.evidenceSnapshotId !== undefined;
+    const lineageColumns = hasLineage ? ', evidence_snapshot_id, content_version, evidence_refs' : '';
+    const lineagePlaceholders = hasLineage ? ', ?, ?, ?' : '';
+    const lineageValues = hasLineage
+        ? [
+            caseScenario.evidenceSnapshotId || null,
+            caseContentVersion(caseScenario),
+            caseScenario.evidenceRefs ? JSON.stringify(caseScenario.evidenceRefs) : null,
+        ]
+        : [];
 
     await db.run(
         `INSERT INTO case_scenarios (
             case_id, user_id, topic, difficulty, vignette, decision_tree, outcomes,
-            current_node, choices_made, created_at, provider, model
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            current_node, choices_made, created_at, provider, model${lineageColumns}
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?${lineagePlaceholders})`,
         [
             caseId,
             userId,
@@ -209,7 +229,8 @@ async function saveCaseScenario(db, userId, caseScenario) {
             JSON.stringify([]),
             new Date().toISOString(),
             caseScenario.provider,
-            caseScenario.model
+            caseScenario.model,
+            ...lineageValues,
         ]
     );
 
@@ -234,7 +255,12 @@ async function getCaseScenario(db, caseId, userId) {
         currentNode: row.current_node,
         choicesMade: JSON.parse(row.choices_made || '[]'),
         createdAt: row.created_at,
-        completedAt: row.completed_at
+        completedAt: row.completed_at,
+        evidenceStatus: row.evidence_status || 'current',
+        evidenceInvalidatedAt: row.evidence_invalidated_at || null,
+        evidenceSnapshotId: row.evidence_snapshot_id || null,
+        contentVersion: row.content_version || null,
+        evidenceRefs: row.evidence_refs ? JSON.parse(row.evidence_refs) : null,
     };
 }
 

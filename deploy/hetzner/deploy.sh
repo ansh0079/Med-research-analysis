@@ -43,6 +43,9 @@ if [[ -n "${stale}" ]]; then
 fi
 
 echo "Building and starting stack for https://${DOMAIN} ..."
+# Stamp the deploying commit into the image so /health can report it.
+export GIT_SHA="$(git rev-parse HEAD 2>/dev/null || echo unknown)"
+echo "Deploying commit: ${GIT_SHA}"
 docker compose -f docker-compose.hetzner.yml pull --ignore-buildable || true
 if ! docker compose -f docker-compose.hetzner.yml up -d --build --remove-orphans; then
   echo "compose up failed; clearing stale containers and retrying once ..."
@@ -51,7 +54,12 @@ if ! docker compose -f docker-compose.hetzner.yml up -d --build --remove-orphans
 fi
 
 echo "Running Postgres migrations..."
-docker compose -f docker-compose.hetzner.yml exec -T web npm run db:migrate:postgres
+docker compose -f docker-compose.hetzner.yml exec -T -e USE_POSTGRES_MAIN=true web \
+  node -e "const db=require('./database');db.connect().then(()=>db.runMigrations()).then(r=>console.log(r)).finally(()=>db.close())"
+
+echo "Ingesting uploaded open-access guidelines..."
+docker compose -f docker-compose.hetzner.yml exec -T -e USE_POSTGRES_MAIN=true web \
+  node scripts/ingest-flagship-guideline-seeds.js --catalog server/config/uploadedGuidelines.json
 
 echo ""
 echo "Waiting for health (web + worker) ..."

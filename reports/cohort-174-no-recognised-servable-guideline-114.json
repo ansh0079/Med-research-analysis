@@ -1,0 +1,461 @@
+{
+  "count": 114,
+  "rows": [
+    {
+      "topic": "achalasia endoscopic and surgical therapy",
+      "normalizedTopic": "achalasia endoscopic and surgical therapy"
+    },
+    {
+      "topic": "acute bacterial meningitis adjunctive dexamethasone",
+      "normalizedTopic": "acute bacterial meningitis adjunctive dexamethasone"
+    },
+    {
+      "topic": "acute bacterial meningitis empiric therapy and dexamethasone",
+      "normalizedTopic": "acute bacterial meningitis empiric therapy and dexamethasone"
+    },
+    {
+      "topic": "acute liver failure transplant referral",
+      "normalizedTopic": "acute liver failure transplant referral"
+    },
+    {
+      "topic": "acute myeloid leukemia venetoclax azacitidine",
+      "normalizedTopic": "acute myeloid leukemia venetoclax azacitidine"
+    },
+    {
+      "topic": "alcohol use disorder naltrexone and acamprosate",
+      "normalizedTopic": "alcohol use disorder naltrexone and acamprosate"
+    },
+    {
+      "topic": "alcohol withdrawal benzodiazepine treatment",
+      "normalizedTopic": "alcohol withdrawal benzodiazepine treatment"
+    },
+    {
+      "topic": "alport syndrome and inherited collagen nephropathies",
+      "normalizedTopic": "alport syndrome and inherited collagen nephropathies"
+    },
+    {
+      "topic": "alzheimer s disease anti amyloid immunotherapy",
+      "normalizedTopic": "alzheimer s disease anti amyloid immunotherapy"
+    },
+    {
+      "topic": "anca associated vasculitis renal disease",
+      "normalizedTopic": "anca associated vasculitis renal disease"
+    },
+    {
+      "topic": "angiotensin ii for catecholamine refractory vasodilatory shock",
+      "normalizedTopic": "angiotensin ii for catecholamine refractory vasodilatory shock"
+    },
+    {
+      "topic": "antipsychotic metabolic monitoring",
+      "normalizedTopic": "antipsychotic metabolic monitoring"
+    },
+    {
+      "topic": "antithrombotic therapy after tavr",
+      "normalizedTopic": "antithrombotic therapy after tavr"
+    },
+    {
+      "topic": "benzodiazepine deprescribing in anxiety and insomnia",
+      "normalizedTopic": "benzodiazepine deprescribing in anxiety and insomnia"
+    },
+    {
+      "topic": "biologic therapy pre treatment infection screening",
+      "normalizedTopic": "biologic therapy pre treatment infection screening"
+    },
+    {
+      "topic": "bk polyomavirus nephropathy in kidney transplant",
+      "normalizedTopic": "bk polyomavirus nephropathy in kidney transplant"
+    },
+    {
+      "topic": "borderline personality disorder dialectical behavior therapy",
+      "normalizedTopic": "borderline personality disorder dialectical behavior therapy"
+    },
+    {
+      "topic": "c3 glomerulopathy and complement inhibition",
+      "normalizedTopic": "c3 glomerulopathy and complement inhibition"
+    },
+    {
+      "topic": "cabg versus pci multivessel coronary disease",
+      "normalizedTopic": "cabg versus pci multivessel coronary disease"
+    },
+    {
+      "topic": "car t therapy large b cell lymphoma",
+      "normalizedTopic": "car t therapy large b cell lymphoma"
+    },
+    {
+      "topic": "cardiac implantable electronic device infection",
+      "normalizedTopic": "cardiac implantable electronic device infection"
+    },
+    {
+      "topic": "cardiac myosin activator therapy in hfref",
+      "normalizedTopic": "cardiac myosin activator therapy in hfref"
+    },
+    {
+      "topic": "cardiac resynchronization therapy in heart failure",
+      "normalizedTopic": "cardiac resynchronization therapy in heart failure"
+    },
+    {
+      "topic": "cardiogenic shock intra aortic balloon pump and revascularization",
+      "normalizedTopic": "cardiogenic shock intra aortic balloon pump and revascularization"
+    },
+    {
+      "topic": "cardiorenal syndrome ultrafiltration",
+      "normalizedTopic": "cardiorenal syndrome ultrafiltration"
+    },
+    {
+      "topic": "catatonia benzodiazepines and ect",
+      "normalizedTopic": "catatonia benzodiazepines and ect"
+    },
+    {
+      "topic": "cerebral venous thrombosis anticoagulation",
+      "normalizedTopic": "cerebral venous thrombosis anticoagulation"
+    },
+    {
+      "topic": "chemotherapy induced nausea antiemetic prophylaxis",
+      "normalizedTopic": "chemotherapy induced nausea antiemetic prophylaxis"
+    },
+    {
+      "topic": "choledocholithiasis and acute cholangitis endoscopy",
+      "normalizedTopic": "choledocholithiasis and acute cholangitis endoscopy"
+    },
+    {
+      "topic": "chronic cough evaluation and empiric therapy",
+      "normalizedTopic": "chronic cough evaluation and empiric therapy"
+    },
+    {
+      "topic": "chronic lymphocytic leukaemia chemoimmunotherapy with fcr",
+      "normalizedTopic": "chronic lymphocytic leukaemia chemoimmunotherapy with fcr"
+    },
+    {
+      "topic": "chronic lymphocytic leukaemia ibrutinib and venetoclax based targeted therapy",
+      "normalizedTopic": "chronic lymphocytic leukaemia ibrutinib and venetoclax based targeted therapy"
+    },
+    {
+      "topic": "chronic myeloid leukaemia imatinib and second generation tki therapy",
+      "normalizedTopic": "chronic myeloid leukaemia imatinib and second generation tki therapy"
+    },
+    {
+      "topic": "common variable immunodeficiency diagnosis and infection prevention",
+      "normalizedTopic": "common variable immunodeficiency diagnosis and infection prevention"
+    },
+    {
+      "topic": "community acquired pneumonia",
+      "normalizedTopic": "community acquired pneumonia"
+    },
+    {
+      "topic": "complement deficiency infection susceptibility",
+      "normalizedTopic": "complement deficiency infection susceptibility"
+    },
+    {
+      "topic": "complicated intra abdominal infection source control and duration",
+      "normalizedTopic": "complicated intra abdominal infection source control and duration"
+    },
+    {
+      "topic": "continuous glucose monitoring in diabetes",
+      "normalizedTopic": "continuous glucose monitoring in diabetes"
+    },
+    {
+      "topic": "covid 19 critical care dexamethasone and immunomodulation",
+      "normalizedTopic": "covid 19 critical care dexamethasone and immunomodulation"
+    },
+    {
+      "topic": "cushing syndrome medical therapy",
+      "normalizedTopic": "cushing syndrome medical therapy"
+    },
+    {
+      "topic": "cytomegalovirus prevention in transplant recipients",
+      "normalizedTopic": "cytomegalovirus prevention in transplant recipients"
+    },
+    {
+      "topic": "diabetic retinopathy anti vegf therapy",
+      "normalizedTopic": "diabetic retinopathy anti vegf therapy"
+    },
+    {
+      "topic": "diffuse large b cell lymphoma car t cell therapy in relapsed refractory disease",
+      "normalizedTopic": "diffuse large b cell lymphoma car t cell therapy in relapsed refractory disease"
+    },
+    {
+      "topic": "dual antiplatelet therapy duration after pci",
+      "normalizedTopic": "dual antiplatelet therapy duration after pci"
+    },
+    {
+      "topic": "dupilumab il 4 il 13 inhibitor biologic therapy",
+      "normalizedTopic": "dupilumab il 4 il 13 inhibitor biologic therapy"
+    },
+    {
+      "topic": "durable lvad therapy for advanced heart failure",
+      "normalizedTopic": "durable lvad therapy for advanced heart failure"
+    },
+    {
+      "topic": "ebola virus disease therapeutics and supportive care",
+      "normalizedTopic": "ebola virus disease therapeutics and supportive care"
+    },
+    {
+      "topic": "esophageal cancer neoadjuvant chemoradiation",
+      "normalizedTopic": "esophageal cancer neoadjuvant chemoradiation"
+    },
+    {
+      "topic": "gerd refractory symptoms and antireflux surgery",
+      "normalizedTopic": "gerd refractory symptoms and antireflux surgery"
+    },
+    {
+      "topic": "glycemic control in critical illness",
+      "normalizedTopic": "glycemic control in critical illness"
+    },
+    {
+      "topic": "graves disease antithyroid and radioiodine therapy",
+      "normalizedTopic": "graves disease antithyroid and radioiodine therapy"
+    },
+    {
+      "topic": "haemophilia a factor viii prophylaxis and emicizumab for inhibitor patients",
+      "normalizedTopic": "haemophilia a factor viii prophylaxis and emicizumab for inhibitor patients"
+    },
+    {
+      "topic": "head and neck squamous cell chemoradiation",
+      "normalizedTopic": "head and neck squamous cell chemoradiation"
+    },
+    {
+      "topic": "healthcare associated mrsa decolonization and prevention",
+      "normalizedTopic": "healthcare associated mrsa decolonization and prevention"
+    },
+    {
+      "topic": "heart failure remote hemodynamic monitoring",
+      "normalizedTopic": "heart failure remote hemodynamic monitoring"
+    },
+    {
+      "topic": "hemodialysis adequacy and frequency",
+      "normalizedTopic": "hemodialysis adequacy and frequency"
+    },
+    {
+      "topic": "herpes simplex encephalitis antiviral therapy",
+      "normalizedTopic": "herpes simplex encephalitis antiviral therapy"
+    },
+    {
+      "topic": "hiv pre exposure prophylaxis",
+      "normalizedTopic": "hiv pre exposure prophylaxis"
+    },
+    {
+      "topic": "home noninvasive ventilation for copd hypercapnia",
+      "normalizedTopic": "home noninvasive ventilation for copd hypercapnia"
+    },
+    {
+      "topic": "hospital acquired and ventilator associated pneumonia",
+      "normalizedTopic": "hospital acquired and ventilator associated pneumonia"
+    },
+    {
+      "topic": "hybrid closed loop insulin delivery in type 1 diabetes",
+      "normalizedTopic": "hybrid closed loop insulin delivery in type 1 diabetes"
+    },
+    {
+      "topic": "hyperkalemia in ckd and heart failure",
+      "normalizedTopic": "hyperkalemia in ckd and heart failure"
+    },
+    {
+      "topic": "hypersensitivity pneumonitis diagnosis and antigen avoidance",
+      "normalizedTopic": "hypersensitivity pneumonitis diagnosis and antigen avoidance"
+    },
+    {
+      "topic": "icosapent ethyl residual cardiovascular risk",
+      "normalizedTopic": "icosapent ethyl residual cardiovascular risk"
+    },
+    {
+      "topic": "igg4 related disease diagnosis and b cell depletion",
+      "normalizedTopic": "igg4 related disease diagnosis and b cell depletion"
+    },
+    {
+      "topic": "intensive glycemic targets in type 2 diabetes",
+      "normalizedTopic": "intensive glycemic targets in type 2 diabetes"
+    },
+    {
+      "topic": "invasive aspergillosis antifungal therapy",
+      "normalizedTopic": "invasive aspergillosis antifungal therapy"
+    },
+    {
+      "topic": "invasive candidiasis and candidemia antifungal therapy",
+      "normalizedTopic": "invasive candidiasis and candidemia antifungal therapy"
+    },
+    {
+      "topic": "kidney transplant antibody mediated rejection",
+      "normalizedTopic": "kidney transplant antibody mediated rejection"
+    },
+    {
+      "topic": "latex and perioperative allergy evaluation",
+      "normalizedTopic": "latex and perioperative allergy evaluation"
+    },
+    {
+      "topic": "lithium monitoring and toxicity prevention",
+      "normalizedTopic": "lithium monitoring and toxicity prevention"
+    },
+    {
+      "topic": "lyme disease diagnosis and treatment",
+      "normalizedTopic": "lyme disease diagnosis and treatment"
+    },
+    {
+      "topic": "major depressive disorder pharmacotherapy",
+      "normalizedTopic": "major depressive disorder pharmacotherapy"
+    },
+    {
+      "topic": "menopausal hormone therapy risks and benefits",
+      "normalizedTopic": "menopausal hormone therapy risks and benefits"
+    },
+    {
+      "topic": "metformin and glycemic legacy in type 2 diabetes",
+      "normalizedTopic": "metformin and glycemic legacy in type 2 diabetes"
+    },
+    {
+      "topic": "mitral regurgitation teer mitraclip",
+      "normalizedTopic": "mitral regurgitation teer mitraclip"
+    },
+    {
+      "topic": "mog antibody associated disease diagnosis and relapse prevention",
+      "normalizedTopic": "mog antibody associated disease diagnosis and relapse prevention"
+    },
+    {
+      "topic": "myelofibrosis jak inhibition with ruxolitinib",
+      "normalizedTopic": "myelofibrosis jak inhibition with ruxolitinib"
+    },
+    {
+      "topic": "neuromyelitis optica spectrum disorder biologic therapy",
+      "normalizedTopic": "neuromyelitis optica spectrum disorder biologic therapy"
+    },
+    {
+      "topic": "neuropathic pain pharmacotherapy",
+      "normalizedTopic": "neuropathic pain pharmacotherapy"
+    },
+    {
+      "topic": "noninfectious uveitis biologic therapy",
+      "normalizedTopic": "noninfectious uveitis biologic therapy"
+    },
+    {
+      "topic": "obsessive compulsive disorder ssri and erp",
+      "normalizedTopic": "obsessive compulsive disorder ssri and erp"
+    },
+    {
+      "topic": "opioid use disorder buprenorphine and methadone",
+      "normalizedTopic": "opioid use disorder buprenorphine and methadone"
+    },
+    {
+      "topic": "outpatient parenteral antimicrobial therapy program safety",
+      "normalizedTopic": "outpatient parenteral antimicrobial therapy program safety"
+    },
+    {
+      "topic": "panic disorder pharmacotherapy and cbt",
+      "normalizedTopic": "panic disorder pharmacotherapy and cbt"
+    },
+    {
+      "topic": "parkinson disease motor complications",
+      "normalizedTopic": "parkinson disease motor complications"
+    },
+    {
+      "topic": "penicillin allergy evaluation and delabeling",
+      "normalizedTopic": "penicillin allergy evaluation and delabeling"
+    },
+    {
+      "topic": "perioperative bridging anticoagulation",
+      "normalizedTopic": "perioperative bridging anticoagulation"
+    },
+    {
+      "topic": "physiology guided pci fractional flow reserve",
+      "normalizedTopic": "physiology guided pci fractional flow reserve"
+    },
+    {
+      "topic": "polycythemia vera hematocrit targets aspirin and cardiovascular risk reduction",
+      "normalizedTopic": "polycythemia vera hematocrit targets aspirin and cardiovascular risk reduction"
+    },
+    {
+      "topic": "polymyalgia rheumatica relapse prevention",
+      "normalizedTopic": "polymyalgia rheumatica relapse prevention"
+    },
+    {
+      "topic": "primary biliary cholangitis pharmacotherapy",
+      "normalizedTopic": "primary biliary cholangitis pharmacotherapy"
+    },
+    {
+      "topic": "primary immunodeficiency immunoglobulin replacement",
+      "normalizedTopic": "primary immunodeficiency immunoglobulin replacement"
+    },
+    {
+      "topic": "primary prevention icd sudden cardiac death",
+      "normalizedTopic": "primary prevention icd sudden cardiac death"
+    },
+    {
+      "topic": "primary sclerosing cholangitis medical therapy and surveillance",
+      "normalizedTopic": "primary sclerosing cholangitis medical therapy and surveillance"
+    },
+    {
+      "topic": "procalcitonin guided antibiotic de escalation in icu",
+      "normalizedTopic": "procalcitonin guided antibiotic de escalation in icu"
+    },
+    {
+      "topic": "ptsd trauma focused psychotherapy and ssri",
+      "normalizedTopic": "ptsd trauma focused psychotherapy and ssri"
+    },
+    {
+      "topic": "pulmonary artery catheter utility in critically ill patients",
+      "normalizedTopic": "pulmonary artery catheter utility in critically ill patients"
+    },
+    {
+      "topic": "pulmonary nodule evaluation and fleischner follow up",
+      "normalizedTopic": "pulmonary nodule evaluation and fleischner follow up"
+    },
+    {
+      "topic": "radial versus femoral access for pci",
+      "normalizedTopic": "radial versus femoral access for pci"
+    },
+    {
+      "topic": "reproductive health in rheumatic disease",
+      "normalizedTopic": "reproductive health in rheumatic disease"
+    },
+    {
+      "topic": "solid organ transplant induction immunosuppression",
+      "normalizedTopic": "solid organ transplant induction immunosuppression"
+    },
+    {
+      "topic": "spontaneous coronary artery dissection",
+      "normalizedTopic": "spontaneous coronary artery dissection"
+    },
+    {
+      "topic": "subclinical hypothyroidism treatment thresholds",
+      "normalizedTopic": "subclinical hypothyroidism treatment thresholds"
+    },
+    {
+      "topic": "surgical site infection prevention",
+      "normalizedTopic": "surgical site infection prevention"
+    },
+    {
+      "topic": "takayasu arteritis biologic therapy",
+      "normalizedTopic": "takayasu arteritis biologic therapy"
+    },
+    {
+      "topic": "thrombotic thrombocytopenic purpura caplacizumab and plasma exchange",
+      "normalizedTopic": "thrombotic thrombocytopenic purpura caplacizumab and plasma exchange"
+    },
+    {
+      "topic": "thyroid nodule evaluation and fna",
+      "normalizedTopic": "thyroid nodule evaluation and fna"
+    },
+    {
+      "topic": "tick borne rickettsial disease empiric doxycycline",
+      "normalizedTopic": "tick borne rickettsial disease empiric doxycycline"
+    },
+    {
+      "topic": "transient ischemic attack rapid assessment",
+      "normalizedTopic": "transient ischemic attack rapid assessment"
+    },
+    {
+      "topic": "tricuspid regurgitation teer",
+      "normalizedTopic": "tricuspid regurgitation teer"
+    },
+    {
+      "topic": "type 1 diabetes intensive glycemic control",
+      "normalizedTopic": "type 1 diabetes intensive glycemic control"
+    },
+    {
+      "topic": "vericiguat in worsening heart failure",
+      "normalizedTopic": "vericiguat in worsening heart failure"
+    },
+    {
+      "topic": "vte prophylaxis in mechanically ventilated icu patients",
+      "normalizedTopic": "vte prophylaxis in mechanically ventilated icu patients"
+    }
+  ]
+}

@@ -10,6 +10,7 @@ interface Props {
   agentGuidance?: AgentGuidance | null;
   guidelineCount: number;
   hasReviewedGuidelines: boolean;
+  discoveryStatus?: 'complete' | 'pending';
 }
 
 export const TopicBriefStatusBands: React.FC<Props> = ({
@@ -21,6 +22,7 @@ export const TopicBriefStatusBands: React.FC<Props> = ({
   agentGuidance,
   guidelineCount,
   hasReviewedGuidelines,
+  discoveryStatus,
 }) => (
   <>
     {(retractedCount > 0 || preprintCount > 0) && (
@@ -127,12 +129,24 @@ export const TopicBriefStatusBands: React.FC<Props> = ({
         <span className="text-blue-600 dark:text-blue-400">
           {guidelineCount} stored recommendation{guidelineCount === 1 ? '' : 's'}
         </span>
-        <span className={`ml-auto rounded-full px-2 py-0.5 font-bold uppercase tracking-wider ${
+        <span className={`ml-auto rounded-full px-2.5 py-0.5 font-bold uppercase tracking-wider ${
           hasReviewedGuidelines
             ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
             : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'
         }`}>
           {hasReviewedGuidelines ? 'Reviewed guidance present' : 'Needs curator review'}
+        </span>
+      </div>
+    )}
+
+    {guidelineCount === 0 && discoveryStatus === 'pending' && (
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 px-5 py-2 bg-blue-50/70 dark:bg-blue-950/20 border-b border-blue-100 dark:border-blue-900/40 text-[11px]">
+        <span className="flex items-center gap-1.5 font-bold text-blue-700 dark:text-blue-300 shrink-0">
+          <i className="fas fa-spinner fa-spin text-[10px]" />
+          Finding guidelines…
+        </span>
+        <span className="text-blue-600 dark:text-blue-400">
+          Looking up stored recommendations for this topic
         </span>
       </div>
     )}

@@ -81,7 +81,7 @@ Verified restore (2026-07-18 dump): curriculum_topics=1139, topic_knowledge=273,
 
 ## Cohort size
 
-`server/config/flagshipTopics.json` currently lists **466** curated topics (priorities: high / medium), including expanded **Cardiology**, **Critical Care**, **Endocrinology**, **Gastroenterology**, **Haematology**, **Infectious Diseases**, **Nephrology**, **Neurology**, **Rheumatology**, **Respiratory**, **Psychiatry**, **Oncology**, and **Immunology** blocks. Infectious Diseases currently has **50** flagship topics. Readiness and ops scripts should target this list — do not mass-merge or backfill the full ~1,385 curriculum catalog.
+`server/config/flagshipTopics.json` currently lists **483** curated topics (priorities: high / medium), including expanded **Cardiology**, **Critical Care**, **Endocrinology**, **Gastroenterology**, **Haematology**, **Infectious Diseases**, **Nephrology**, **Neurology**, and **Rheumatology** blocks, plus curated-literature cohorts **Topics 51–75**, **Topics 76–100**, **Topics 126–150**, **Topics 151–175**, **Topics 176–200**, **Topics 201–225**, and **Topics 251–282**. Readiness and ops scripts should target this list — do not mass-merge or backfill the full ~1,385 curriculum catalog.
 
 ## Synopsis enrichment path
 
@@ -121,4 +121,4 @@ Missed quiz items write `quiz_miss_for_search` learning events and already boost
 
 ## First Cohort (historical)
 
-The program started with 12 high-impact topics, then grew through 30 → 50 → 75 → 100 → 125 → 150 → 175 → 200 → 225 → 272 → 297 → 322 → 352 → 452 → **466** (including Respiratory, Psychiatry, Oncology, and Immunology expansion cohorts plus earlier Cardiology/Critical Care and other specialty blocks). Current block sizes include Cardiology **64**, Infectious Diseases **50**, Endocrinology **28**, Respiratory **30**, Psychiatry **28**, Oncology **39**, and Immunology **25**. Keep promoting only topics that pass readiness + search-eval gates.
+The program started with 12 high-impact topics, then grew through 30 → 50 → 75 → 100 → 125 → 150 → 175 → 200 → 225 → 272 → 297 → 322 → 352 → 390 → 409 → 421 → 441 → 457 → **483** (including multiple Cardiology and Critical Care expansion cohorts plus Nephrology, Neurology, Gastroenterology, Haematology, Endocrinology, Rheumatology, Infectious Diseases, and curated-literature batches 51–75, 76–100, 126–150, 151–175, 176–200, 201–225, and 251–282). Cardiology currently has **81** flagship topics; Endocrinology has **38**. Keep promoting only topics that pass readiness + search-eval gates.

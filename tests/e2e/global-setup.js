@@ -32,6 +32,9 @@ async function globalSetup() {
 
   // Verify test server is accessible
   const baseURL = process.env.BASE_URL || 'http://localhost:3002';
+  if (!['localhost', '127.0.0.1'].includes(new URL(baseURL).hostname)) {
+    throw new Error('Authenticated E2E setup may only run against a local test server');
+  }
   console.log(`  ℹ️  Testing server at ${baseURL}...`);
 
   let browser;
@@ -100,6 +103,14 @@ async function globalSetup() {
     if (!registerRes.ok && registerRes.status !== 409) {
       const body = await registerRes.text().catch(() => '');
       console.log(`  ⚠️  Registration warning: ${registerRes.status} ${body}`);
+    }
+
+    const Database = require('better-sqlite3');
+    const fixtureDb = new Database(path.join(process.cwd(), 'database', 'app.db'));
+    try {
+      fixtureDb.prepare('UPDATE users SET email_verified = 1 WHERE email = ?').run(testEmail);
+    } finally {
+      fixtureDb.close();
     }
 
     const loginRes = await fetch(`${baseURL}/api/auth/login`, {

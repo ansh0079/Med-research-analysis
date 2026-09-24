@@ -87,23 +87,44 @@ function parseTableColumnsFromSchema(schemaPath, tableName) {
   const m = sql.match(re);
   if (!m) return new Set();
   return new Set(
-    m[1]
-      .split('\n')
-      .map((line) => line.trim())
-      // A column added via ALTER TABLE ADD COLUMN after the table's original
-      // CREATE is folded onto the CREATE TABLE text verbatim by SQLite's own
-      // sqlite_master, and `db:schema:regen -- --sqlite-dump` dumps that text
-      // as-is -- so the continuation line reads ", col_name TYPE...)" rather
-      // than starting with the column name. Strip a leading comma before
-      // tokenizing, or the whole line parses as a column literally named ","
-      // and the real column after it is never seen. Confirmed already present
-      // in schema.sql for 10+ other tables; only surfaced here because
-      // teaching_objects is one of the few tables this check inspects.
-      .map((line) => line.replace(/^,\s*/, ''))
-      .filter((line) => line && !line.startsWith('--') && !/^(PRIMARY|UNIQUE|FOREIGN|CHECK|CONSTRAINT)\s/i.test(line))
-      .map((line) => line.replace(/,$/, '').split(/\s+/)[0].toLowerCase())
+    splitColumnDefinitions(m[1])
+      .map((part) => part.trim())
+      .filter((part) => part && !part.startsWith('--') && !/^(PRIMARY|UNIQUE|FOREIGN|CHECK|CONSTRAINT)\s/i.test(part))
+      .map((part) => part.split(/\s+/)[0].toLowerCase())
       .filter(Boolean)
   );
+}
+
+/**
+ * Split a CREATE TABLE body into one entry per column definition.
+ *
+ * Splitting on newlines is wrong here. A column added by ALTER TABLE ADD COLUMN is folded back into
+ * the CREATE TABLE text by SQLite's own sqlite_master, and `db:schema:regen -- --sqlite-dump` writes
+ * that text verbatim - so several columns end up on ONE line:
+ *
+ *     , curriculum_topic_id INTEGER REFERENCES curriculum_topics(id), evidence_snapshot_id TEXT, lineage_status TEXT
+ *
+ * A line-based parser sees only `curriculum_topic_id` and reports every column after it as missing
+ * from the schema file, which is how a correctly regenerated schema still failed the consistency
+ * check. Split on commas at bracket depth zero instead, so `REFERENCES t(id)` and `DECIMAL(10,2)`
+ * stay intact.
+ */
+function splitColumnDefinitions(body) {
+  const parts = [];
+  let depth = 0;
+  let current = '';
+  for (const char of body) {
+    if (char === '(') depth += 1;
+    else if (char === ')') depth -= 1;
+    if (char === ',' && depth === 0) {
+      parts.push(current);
+      current = '';
+      continue;
+    }
+    current += char;
+  }
+  parts.push(current);
+  return parts;
 }
 
 function ensureSqliteBaseline(db) {

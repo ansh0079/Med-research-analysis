@@ -13,6 +13,8 @@ const { buildEnrichmentCacheKey } = require('../../services/synthesisPersonaliza
 const { enqueueSearchObservedSideEffects } = require('../../services/searchObservedService');
 const { captureLowRecallSearch } = require('../../services/lowRecallLearningService');
 const { clampLimit, setNoStoreSearchHeaders, attachApiKeyUser } = require('./searchHelpers');
+const { resolveQuerySenses } = require('../../utils/conditionQuery');
+const { getEvidenceSnapshot } = require('../../services/search/searchEvidenceSnapshot');
 const {
     buildSearchResultCacheKey,
     getCachedSearchResult,
@@ -42,6 +44,24 @@ function registerUnifiedSearchRoutes(app, deps) {
         ? requireDailySearchLimit()
         : ((_req, _res, next) => next());
     const f = fetchImpl || safeFetch;
+
+    // Replay the exact evidence a search showed, including the source text versions it used.
+    // A snapshot is private to the user (or anonymous session) that produced it; a snapshot
+    // that exists but belongs to someone else is indistinguishable from one that does not.
+    app.get('/api/search/snapshots/:id', rateLimit(60, 60), attachApiKeyUser, async (req, res) => {
+        setNoStoreSearchHeaders(res);
+        try {
+            const found = await getEvidenceSnapshot(db, req.params.id, {
+                userId: req.user?.id || null,
+                sessionId: req.sessionId || null,
+            });
+            if (!found.ok) return res.status(404).json({ error: 'Evidence snapshot not found' });
+            return res.json({ snapshot: found.snapshot });
+        } catch (err) {
+            logger.error({ err }, 'evidence snapshot read failed');
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    });
 
     app.get('/api/search', rateLimit(30, 60), attachApiKeyUser, dailySearchLimit, async (req, res) => {
         const { q, query: queryParam, sources = 'pubmed,openalex', limit = 20, vector, specificity = 'moderate' } = req.query;
@@ -134,6 +154,9 @@ function registerUnifiedSearchRoutes(app, deps) {
 
             let { articles } = ranked;
             let { telemetry, banditMeta } = ranked;
+            let searchPack = ranked.searchPack || null;
+            let evidenceSnapshot = ranked.evidenceSnapshot || null;
+            let learningOrder = Array.isArray(ranked.learningOrder) ? ranked.learningOrder : [];
             const {
                 teachingObjects: boostedObjects,
                 teachingClaims: boostedClaims,
@@ -255,6 +278,11 @@ function registerUnifiedSearchRoutes(app, deps) {
                             });
                             if (Array.isArray(repairedRanked.articles) && repairedRanked.articles.length > articles.length) {
                                 articles = repairedRanked.articles;
+                                searchPack = repairedRanked.searchPack || searchPack;
+                                evidenceSnapshot = repairedRanked.evidenceSnapshot || evidenceSnapshot;
+                                learningOrder = Array.isArray(repairedRanked.learningOrder)
+                                    ? repairedRanked.learningOrder
+                                    : learningOrder;
                                 banditMeta = repairedRanked.banditMeta || banditMeta;
                                 telemetry = {
                                     ...(repairedRanked.telemetry || telemetry),
@@ -420,6 +448,19 @@ function registerUnifiedSearchRoutes(app, deps) {
                 queryIntent: ranked.queryIntent,
                 queryIntentProfile: ranked.queryIntentProfile || queryIntentProfile,
                 ranking: ranked.bouquetRanking,
+                searchPack,
+                learningOrder,
+                queryRepresentation: ranked.queryRepresentation || null,
+                queryResolution: resolveQuerySenses(query),
+                // Lineage handle for synopsis / quiz / case generation. status says whether it is durable:
+                // 'failed' or 'disabled' means generation from this search has no replayable evidence context.
+                evidenceSnapshot: evidenceSnapshot ? {
+                    id: evidenceSnapshot.id,
+                    status: evidenceSnapshot.status,
+                    articleCount: evidenceSnapshot.articleCount,
+                    articleTotal: evidenceSnapshot.articleTotal,
+                    truncated: evidenceSnapshot.truncated,
+                } : { id: null, status: 'failed', articleCount: 0, articleTotal: 0, truncated: false },
                 searchTelemetry: {
                     timings: { ...telemetry.timings, ...routeTimings },
                     sources: telemetry.sourceFetches || {},

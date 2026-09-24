@@ -25,6 +25,20 @@ const { getLimit } = require('../../config/entitlements');
 const { userCanAccessAiJob } = require('../aiJobAccess');
 const { hasGuidelinePubtype } = require('../../utils/articles');
 const { computeMcqClaimKey } = require('../../utils/mcqClaimKey');
+const {
+    resolveGenerationEvidence,
+    preserveSnapshotEvidence,
+    capVerificationForLineage,
+    publicLineage,
+    guidelineToEvidenceArticle,
+} = require('../search/generationEvidenceContext');
+const { addEvidenceToSnapshot } = require('../search/searchEvidenceSnapshot');
+const {
+    recordGenerationInputs,
+    capVerificationForManifest,
+    publicManifest,
+} = require('../search/generationEvidenceManifest');
+const { capVerificationForContext, usableAsContext } = require('../content/legacyContentPolicy');
 
 function evidenceSourceTrust(article = {}) {
     const retracted = Boolean(article?._retraction?.isRetracted || article?.isRetracted || article?.is_retracted);
@@ -64,7 +78,10 @@ async function hydrateEvidenceArticles(db, articles = []) {
             ...(pdfSections?.sections ? { sections: pdfSections.sections } : {}),
             ...(retraction ? { _retraction: retraction } : {}),
         } : null;
-        return { article: trusted ? { ...article, ...trusted, uid: article.uid || trusted.uid || String(uid) } : article, trusted };
+        if (!trusted) return { article, trusted: null };
+        const merged = { ...article, ...trusted, uid: article.uid || trusted.uid || String(uid) };
+        // Retraction status from the merge is kept (it must be current); the evidence text is not.
+        return { article: preserveSnapshotEvidence(article, merged), trusted };
     }));
 }
 
@@ -101,14 +118,30 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         selectAdaptiveClaimAnchors,
     } = helpers;
 
-    async function generateQuiz({ body, user = {}, log = logger }) {
+    async function generateQuiz({ body, user = {}, sessionId = null, log = logger }) {
         const {
-            topic, articles = [], count = 5, difficulty = 'mixed', studyRunId, trainingStage, explanationDepth, explicitTargetNodeIds, mode, claimJobKey,
+            topic, articles: requestedArticles = [], count = 5, difficulty = 'mixed', studyRunId, trainingStage, explanationDepth, explicitTargetNodeIds, mode, claimJobKey,
+            evidenceSnapshotId = null,
         } = body || {};
 
         if (!topic || typeof topic !== 'string' || topic.trim().length < 2) {
             return response({ error: 'topic is required' }, 400);
         }
+        // Evidence lineage: a valid snapshot id makes the snapshot's stored text authoritative over
+        // the client's articles; evidence the search never showed is recorded as an addition.
+        const evidence = await resolveGenerationEvidence(db, {
+            snapshotId: evidenceSnapshotId,
+            userId: user?.id || null,
+            sessionId,
+            articles: requestedArticles,
+            reason: 'quiz_generation',
+        });
+        if (evidence.lineage.status === 'invalid') {
+            return response({ error: 'Search evidence is unavailable; run the search again.', code: 'EVIDENCE_SNAPSHOT_INVALID' }, 409);
+        }
+        const articles = evidence.articles;
+        const lineage = evidence.lineage;
+        const evidenceLineage = publicLineage(lineage);
 
         let claimAnchors = null;
         let resolvedClaimJobKey = null;
@@ -244,7 +277,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         if (!claimAnchors && !resolvedClaimJobKey) {
             claimMastery = userContext?.claimMastery || [];
             [teachingObjects, teachingClaims] = await Promise.all([
-                db.listTeachingObjectsForTopic(cleanTopic, { limit: 8 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectsForTopic failed'); return []; }),
+                db.listTeachingObjectsForTopic(cleanTopic, { limit: 8, excludeRetired: true }).catch((err) => { logger.warn({ err }, 'listTeachingObjectsForTopic failed'); return []; }),
                 db.listTeachingObjectClaimsForTopic(cleanTopic, { limit: 40 }).catch((err) => { logger.warn({ err }, 'listTeachingObjectClaimsForTopic failed'); return []; }),
             ]);
             const candidatePool = selectAdaptiveClaimAnchors({
@@ -361,7 +394,24 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
 
         const communityTopPicks = await db.getGlobalEngagedArticles?.(db.normalizeTopic(cleanTopic), 3)
             .catch((err) => { logger.warn({ err }, 'operation failed'); return []; }) || [];
+        // Retired content stays readable but does not seed new clinical material.
+        teachingObjects = usableAsContext(teachingObjects);
         const teachingObjectContext = teachingObjectsToQuizContext(teachingObjects);
+        // The topic path builds the same guideline and teaching-object context into its prompt, so it
+        // owes the same manifest: what the model read has to be recorded before it reads it.
+        const manifest = await recordGenerationInputs(db, {
+            snapshotId: evidenceLineage.snapshotId,
+            userId: user?.id || null,
+            sessionId,
+            guidelines,
+            teachingObjects,
+            teachingObjectContext,
+            communityTopPicks,
+            topicKnowledge: mergedTopicKnowledge,
+            claimAnchors,
+            guidelineToEvidenceArticle,
+            reason: 'quiz_topic_context',
+        });
         const promptVariant = assignQuizPromptVariant(user?.id, cleanTopic);
 
         const prompt = buildQuizPrompt(
@@ -510,7 +560,15 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                     promptVariant,
                     validationStatus: validation.validationSummary.skipped ? 'validation_skipped' : 'llm_validated',
                     outlineLabel: cmeta ? String(cmeta.claimText || '').slice(0, 200) : null,
-                    claimVerificationStatus: cmeta?.verificationStatus || null,
+                    claimVerificationStatus: cmeta?.verificationStatus
+                        ? capVerificationForContext(
+                            capVerificationForManifest(capVerificationForLineage(cmeta.verificationStatus, lineage), manifest),
+                            teachingObjects)
+                        : null,
+                    // Returned with the question so the attempt can carry the same lineage back.
+                    evidenceSnapshotId: evidenceLineage.snapshotId,
+                    evidenceLineageStatus: evidenceLineage.status,
+                    evidenceManifestComplete: manifest.complete,
                 };
             });
 
@@ -518,9 +576,10 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             const droppedHighStakes = [];
             const questions = mappedQuestions.filter((q) => {
                 const cmeta = q.claimKey && claimByKey ? claimByKey.get(q.claimKey) : null;
-                const ok = claimEligibleForQuestionType(cmeta || {
-                    verificationStatus: q.claimVerificationStatus,
-                }, q.questionType);
+                const ok = claimEligibleForQuestionType(cmeta
+                    ? { ...cmeta, verificationStatus: capVerificationForContext(capVerificationForManifest(
+                        capVerificationForLineage(cmeta.verificationStatus, lineage), manifest), teachingObjects) }
+                    : { verificationStatus: q.claimVerificationStatus }, q.questionType);
                 if (!ok) {
                     droppedHighStakes.push({
                         questionType: q.questionType,
@@ -546,10 +605,13 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 normalizedTopic: db.normalizeTopic(cleanTopic),
                 topic: cleanTopic,
                 title: `Live quiz MCQs: ${cleanTopic}`,
-                payload: { mcqs: questions, generatedAt: new Date().toISOString() },
+                payload: { mcqs: questions, generatedAt: new Date().toISOString(), lineage: evidenceLineage },
                 provider: usedProvider,
                 model: quizModel,
                 confidence: validation.validationSummary.skipped ? 0.5 : 0.8,
+                evidenceSnapshotId: evidenceLineage.snapshotId,
+                lineageStatus: evidenceLineage.status,
+                manifestComplete: manifest.complete,
             }).catch((err) => log.warn({ err }, 'Failed to cache live quiz MCQs'));
 
             return response({
@@ -566,6 +628,8 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 claimAnchorMode,
                 adaptiveClaimCount: claimAnchorMode.startsWith('adaptive_teaching_object') ? claimAnchors.length : undefined,
                 evidenceAudit: buildEvidenceAudit(claimSourceJob, claimAnchors),
+                evidenceLineage,
+                evidenceManifest: publicManifest(manifest),
                 effectiveDifficulty,
                 abilityEstimate,
                 droppedHighStakes: droppedHighStakes.length ? droppedHighStakes : undefined,
@@ -576,14 +640,27 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         }
     }
 
-    async function generateFromEvidence({ body, user = {}, log = logger }) {
-        const { topic, articles = [], count = 3, difficulty = 'mixed' } = body || {};
+    async function generateFromEvidence({ body, user = {}, sessionId = null, log = logger }) {
+        const { topic, articles: requestedArticles = [], count = 3, difficulty = 'mixed', evidenceSnapshotId = null } = body || {};
         if (!topic || typeof topic !== 'string' || topic.trim().length < 2) {
             return response({ error: 'topic is required' }, 400);
         }
-        if (!Array.isArray(articles) || articles.length === 0) {
+        if (!Array.isArray(requestedArticles) || requestedArticles.length === 0) {
             return response({ error: 'At least one article is required' }, 400);
         }
+        const evidence = await resolveGenerationEvidence(db, {
+            snapshotId: evidenceSnapshotId,
+            userId: user?.id || null,
+            sessionId,
+            articles: requestedArticles.slice(0, 5),
+            reason: 'quiz_from_evidence',
+        });
+        if (evidence.lineage.status === 'invalid') {
+            return response({ error: 'Search evidence is unavailable; run the search again.', code: 'EVIDENCE_SNAPSHOT_INVALID' }, 409);
+        }
+        const articles = evidence.articles;
+        const lineage = evidence.lineage;
+        const evidenceLineage = publicLineage(lineage);
 
         const cleanTopic = topic.trim();
         const planLimit = getLimit(user, 'quizQuestionsPerGeneration') || 3;
@@ -606,9 +683,25 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
 
         const communityTopPicks = await db.getGlobalEngagedArticles?.(db.normalizeTopic(cleanTopic), 3)
             .catch((err) => { logger.warn({ err }, 'operation failed'); return []; }) || [];
-        const teachingObjects = await db.listTeachingObjectsForTopic(cleanTopic, { limit: 8 })
-            .catch((err) => { logger.warn({ err }, 'operation failed'); return []; });
+        // Retired content stays readable but does not seed new clinical material.
+        const teachingObjects = usableAsContext(await db.listTeachingObjectsForTopic(cleanTopic, { limit: 8, excludeRetired: true })
+            .catch((err) => { logger.warn({ err }, 'operation failed'); return []; }));
         const teachingObjectContext = teachingObjectsToQuizContext(teachingObjects);
+        // Everything the prompt will carry beyond the searched articles - guideline recommendations
+        // and teaching-object text - is recorded as immutable versions BEFORE generation. A recording
+        // failure is not a warning: it makes the manifest incomplete, which caps what the questions
+        // may later claim about their provenance.
+        const manifest = await recordGenerationInputs(db, {
+            snapshotId: evidenceLineage.snapshotId,
+            userId: user?.id || null,
+            sessionId,
+            guidelines,
+            teachingObjects,
+            teachingObjectContext,
+            communityTopPicks,
+            guidelineToEvidenceArticle,
+            reason: 'quiz_generation_context',
+        });
         const promptVariant = assignQuizPromptVariant(user?.id, cleanTopic);
 
         const prompt = buildQuizPrompt(
@@ -683,8 +776,13 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                     claimKey,
                     promptVariant,
                     validationStatus: validation.validationSummary.skipped ? 'validation_skipped' : 'llm_validated',
-                    claimVerificationStatus: trust.verificationStatus,
+                    claimVerificationStatus: capVerificationForContext(capVerificationForManifest(
+                        capVerificationForLineage(trust.verificationStatus, lineage), manifest,
+                    ), teachingObjects),
                     claimReviewState: trust.reviewState,
+                    evidenceSnapshotId: evidenceLineage.snapshotId,
+                    evidenceLineageStatus: evidenceLineage.status,
+                    evidenceManifestComplete: manifest.complete,
                 };
             });
 
@@ -707,6 +805,8 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 promptVariant,
                 validation: validation.validationSummary,
                 disclaimer: AI_DISCLAIMER,
+                evidenceLineage,
+                evidenceManifest: publicManifest(manifest),
                 droppedHighStakes: droppedHighStakes.length ? droppedHighStakes : undefined,
             });
         } catch (error) {

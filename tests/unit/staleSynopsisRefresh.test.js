@@ -38,8 +38,8 @@ function makeDb(stale) {
 }
 
 const CANDIDATES = [
-    { articleUid: 'pmid:1', topic: 'hepatorenal syndrome', totalSignals: 9, generatedAt: '2026-01-01T00:00:00Z' },
-    { articleUid: 'pmid:2', topic: 'septic shock', totalSignals: 4, generatedAt: '2026-01-02T00:00:00Z' },
+    { articleUid: 'pmid:1', title: 'Terlipressin in hepatorenal syndrome', topic: 'hepatorenal syndrome', totalSignals: 9, generatedAt: '2026-01-01T00:00:00Z' },
+    { articleUid: 'pmid:2', title: 'Vasopressors in septic shock', topic: 'septic shock', totalSignals: 4, generatedAt: '2026-01-02T00:00:00Z' },
 ];
 
 beforeEach(() => { mockRunPaperSynopsisGeneration.mockClear(); });
@@ -51,6 +51,10 @@ describe('runStaleSynopsisRefresh', () => {
 
         expect(mockRunPaperSynopsisGeneration).toHaveBeenCalledTimes(2);
         expect(mockRunPaperSynopsisGeneration.mock.calls.map((c) => c[0].article.uid)).toEqual(['pmid:1', 'pmid:2']);
+        expect(mockRunPaperSynopsisGeneration.mock.calls.map((c) => c[0].article.title)).toEqual([
+            'Terlipressin in hepatorenal syndrome',
+            'Vasopressors in septic shock',
+        ]);
     });
 
     test('passes refresh: true, or the generator would hand back the stale row it just found', async () => {

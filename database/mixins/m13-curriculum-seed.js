@@ -2,6 +2,8 @@
 
 const { safeJsonParse } = require('../lib/helpers');
 
+const { applyWritePolicy } = require('../../server/services/policy/writePolicyEngine');
+
 module.exports = (Sup) => class extends Sup {
 
     mapCurriculumSeedTopicRow(row) {
@@ -54,6 +56,12 @@ module.exports = (Sup) => class extends Sup {
     }
 
     async upsertCurriculumSeedTopic(topic, options = {}) {
+        const verdict = await applyWritePolicy(this, {
+            writer: 'upsertCurriculumSeedTopic',
+            entityType: 'curriculum',
+            payload: { displayName: topic?.displayName, topic: topic?.topic },
+        });
+        if (!verdict.allowed) return null;
         const curriculum = await this.ensureCurriculum(
             options.curriculumSlug || 'specialty-clinical-topics',
             options.curriculumName || 'Core Clinical Topics',
@@ -119,11 +127,12 @@ module.exports = (Sup) => class extends Sup {
         for (const topic of Array.isArray(topics) ? topics : []) {
             const block = String(topic.block || 'General Medicine').trim();
             if (!seenBlocks.has(block)) seenBlocks.set(block, seenBlocks.size + 1);
-            imported.push(await this.upsertCurriculumSeedTopic({
+            const row = await this.upsertCurriculumSeedTopic({
                 ...topic,
                 blockSortOrder: seenBlocks.get(block),
                 sortOrder: topic.sortOrder || imported.filter((t) => t.block === block).length + 1,
-            }, options));
+            }, options);
+            if (row) imported.push(row);
         }
         return { importedCount: imported.length, topics: imported };
     }

@@ -1,7 +1,7 @@
 'use strict';
 
 const logger = require('../../config/logger');
-const { normalizeLearningLoopPayload } = require('../../../shared/contracts/learningLoop');
+const { normalizeLearningLoopPayload, validateLearningLoopSignal } = require('../../../shared/contracts/learningLoop');
 const { normalizeSearchId } = require('../../../shared/searchId');
 
 const LEARNING_SIGNAL_TYPES = Object.freeze({
@@ -43,7 +43,26 @@ async function recordLearningSignal(db, {
         ...(decisionId != null ? { decisionId: Number(decisionId) } : {}),
         ...(articleUid ? { articleUid: String(articleUid) } : {}),
     };
-    const safePayload = normalizeLearningLoopPayload({ eventType, payload: basePayload });
+    const safePayload = normalizeLearningLoopPayload({
+        eventType,
+        payload: basePayload,
+        userId,
+        sessionId,
+        articleUid,
+        decisionId,
+    });
+    const validation = validateLearningLoopSignal({
+        eventType,
+        userId,
+        sessionId,
+        searchId: searchId != null ? normalizeSearchId(searchId) : null,
+        decisionId,
+        articleUid,
+        payload: safePayload,
+    });
+    if (!validation.ok) {
+        safePayload.learningLoopContractErrors = validation.errors;
+    }
 
     return db.recordLearningEvent({
         userId: userId || null,

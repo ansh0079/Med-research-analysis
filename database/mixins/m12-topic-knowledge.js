@@ -2,6 +2,7 @@
 
 const { safeJsonParse } = require('../lib/helpers');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
+const { applyWritePolicy } = require('../../server/services/policy/writePolicyEngine');
 
 module.exports = (Sup) => class extends Sup {
 
@@ -227,6 +228,12 @@ module.exports = (Sup) => class extends Sup {
 
     async upsertTopicKnowledge(topic, knowledge, sourceArticles = [], status = 'ai_generated', confidence = 0.6) {
         if (!this.kysely) return null;
+        const verdict = await applyWritePolicy(this, {
+            writer: 'upsertTopicKnowledge',
+            entityType: 'topic_knowledge',
+            payload: { topic, knowledge, sourceArticles, status, confidence },
+        });
+        if (!verdict.allowed) return null;
         const trimmed = String(topic || '').trim().slice(0, 240);
         const normalized = this.normalizeTopic(trimmed);
         if (!normalized) return null;

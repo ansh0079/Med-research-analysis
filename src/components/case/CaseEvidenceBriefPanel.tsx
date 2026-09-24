@@ -23,6 +23,11 @@ export type CaseToEvidenceResult = {
   clinicalQuestion: string;
   articles: Article[];
   brief: CaseEvidenceBrief;
+  evidenceProvenance?: {
+    snapshotId: string | null;
+    status: 'source_replayable' | 'unverified';
+    retractionScreening?: string;
+  };
   relatedClaims?: Array<{
     claimKey?: string;
     claimText?: string;
@@ -47,7 +52,14 @@ export function CaseEvidenceBriefPanel({
           <p className="text-[10px] font-bold uppercase tracking-widest text-teal-600 dark:text-teal-400">Case-to-evidence brief</p>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{result.topic}</p>
         </div>
-        <ClinicalSafetyNotice status="synthesis_inferred" showDisclaimer={false} />
+        <div className="text-right">
+          <ClinicalSafetyNotice status="synthesis_inferred" showDisclaimer={false} />
+          {result.evidenceProvenance && (
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+              {result.evidenceProvenance.status === 'source_replayable' ? 'Evidence inputs recorded' : 'Source record incomplete'}
+            </p>
+          )}
+        </div>
       </div>
 
       {result.brief.bestEvidence && (

@@ -17,6 +17,8 @@ const {
 const {
     getPaperSynopsisArticleId,
     invalidatePaperSynopsisCache,
+    invalidateStoredPaperSynopsis,
+    findReusableStoredSynopsis,
 } = require('../../services/paperSynopsisCore');
 const { recordBanditReward } = require('../../services/personalizationBanditService');
 const {
@@ -24,8 +26,8 @@ const {
     synopsisRegenerationTargets,
 } = require('../../services/learningLoopSignalService');
 const { getOrEnqueueFullSynthesis, getOrEnqueuePaperSynopsis } = require('../../services/aiGenerationJobService');
-const { findReusableStoredSynopsis } = require('../../services/paperSynopsisCore');
 const { persistPaperTeachingObject, stableArticleUid } = require('../../services/teachingObjectService');
+const { resolveGenerationEvidence, publicLineage } = require('../../services/search/generationEvidenceContext');
 const { getHierarchicalSynthesis, setHierarchicalSynthesis, needsRegeneration } = require('../../services/hierarchicalCacheService');
 const { streamSynthesisGeneration } = require('../../services/progressiveStreamingService');
 
@@ -283,8 +285,23 @@ function registerSynthesisRoutes(app, {
     // Queue by default; explicit async=false retains the synchronous API contract.
     // ─────────────────────────────────────────────────────────────────
     app.post('/api/ai/synopsis', limitBodySize(512 * 1024), requireJson, requireAiAuth, requirePaidFeature('aiSynthesis'), rateLimit(20, 60), validateBody(schemas.synopsis), async (req, res) => {
-        const { article, provider = 'auto', async: asyncJob, topic = '', trainingStage: requestedTrainingStage = null } = req.body;
+        const { article: requestedArticle, provider = 'auto', async: asyncJob, topic = '', trainingStage: requestedTrainingStage = null, evidenceSnapshotId = null } = req.body;
         try {
+            // Lineage: when the request names a search snapshot, its stored text is authoritative
+            // over the client's copy. No snapshot is 'unlinked'; a bad one is 'invalid', never linked.
+            const evidence = await resolveGenerationEvidence(db, {
+                snapshotId: evidenceSnapshotId,
+                userId: req.user?.id || null,
+                sessionId: req.sessionId || null,
+                articles: [requestedArticle],
+                reason: 'synopsis',
+            });
+            if (evidence.lineage.status === 'invalid') {
+                return res.status(409).json({ error: 'Search evidence is unavailable; run the search again.', code: 'EVIDENCE_SNAPSHOT_INVALID' });
+            }
+            const article = evidence.articles[0] || requestedArticle;
+            const evidenceLineage = publicLineage(evidence.lineage);
+            const lineage = evidence.lineage;
             let trainingStage = requestedTrainingStage;
             if (!trainingStage && req.user?.id && db?.getLearningProfile) {
                 const profile = await db.getLearningProfile(req.user.id).catch((err) => {
@@ -308,6 +325,7 @@ function registerSynthesisRoutes(app, {
                 forceSync,
                 sessionId: req.sessionId,
                 log: req.log,
+                lineage,
             });
             if (out.status === 'failed') {
                 const status = /No AI service|No AI provider/.test(out.errorMessage || '') ? 503 : 500;
@@ -317,7 +335,7 @@ function registerSynthesisRoutes(app, {
             const withDelta = code === 200
                 ? await attachEvidenceDeltaIfAvailable(out, topic, req.user?.id || null)
                 : out;
-            return res.status(code).json(withDelta);
+            return res.status(code).json({ ...withDelta, evidenceLineage });
         } catch (error) {
             req.log.error({ err: error }, 'Synopsis generation error');
             const status = /No AI service|No AI provider/.test(error.message) ? 503 : 500;
@@ -359,15 +377,23 @@ function registerSynthesisRoutes(app, {
                     metadata: { cached, regenerationTargets },
                 });
             }
-            if (type === 'not_helpful' && article) {
-                await invalidatePaperSynopsisCache({
-                    cache,
-                    article,
-                    selectedModel: model,
-                    trainingStage,
-                    synopsisStyleArmId: banditMeta?.policyType === 'synopsis_style' ? banditMeta.armId : null,
+            if (type === 'not_helpful') {
+                if (article) {
+                    await invalidatePaperSynopsisCache({
+                        cache,
+                        article,
+                        selectedModel: model,
+                        trainingStage,
+                        synopsisStyleArmId: banditMeta?.policyType === 'synopsis_style' ? banditMeta.armId : null,
+                    }).catch((err) => {
+                        logger.warn({ err, articleUid: uid }, 'synopsis cache invalidation failed');
+                        return false;
+                    });
+                }
+                await invalidateStoredPaperSynopsis(db, uid, {
+                    styleArmId: banditMeta?.policyType === 'synopsis_style' ? banditMeta.armId : null,
                 }).catch((err) => {
-                    logger.warn({ err, articleUid: uid }, 'synopsis cache invalidation failed');
+                    logger.warn({ err, articleUid: uid }, 'stored synopsis invalidation failed');
                     return false;
                 });
             }
@@ -392,7 +418,7 @@ function registerSynthesisRoutes(app, {
             return res.json({
                 ok: true,
                 feedbackType: type,
-                cacheInvalidated: type === 'not_helpful' && Boolean(article),
+                cacheInvalidated: type === 'not_helpful',
                 regenerationTargets,
             });
         } catch (error) {
@@ -402,8 +428,21 @@ function registerSynthesisRoutes(app, {
     });
 
     app.post('/api/teaching-objects/paper', limitBodySize(512 * 1024), requireJson, requireAiAuth, requirePaidFeature('aiSynthesis'), rateLimit(20, 60), validateBody(schemas.synopsis), async (req, res) => {
-        const { article, provider = 'auto', topic = '', refresh = false } = req.body;
+        const { article: requestedArticle, provider = 'auto', topic = '', refresh = false, evidenceSnapshotId = null } = req.body;
         try {
+            const evidence = await resolveGenerationEvidence(db, {
+                snapshotId: evidenceSnapshotId,
+                userId: req.user?.id || null,
+                sessionId: req.sessionId || null,
+                articles: [requestedArticle],
+                reason: 'synopsis',
+            });
+            if (evidence.lineage.status === 'invalid') {
+                return res.status(409).json({ error: 'Search evidence is unavailable; run the search again.', code: 'EVIDENCE_SNAPSHOT_INVALID' });
+            }
+            const article = evidence.articles[0] || requestedArticle;
+            const evidenceLineage = publicLineage(evidence.lineage);
+            const lineage = evidence.lineage;
             // Read through to the stored teaching object first. Generation was
             // unconditional, so every view of a paper re-billed an LLM call even
             // though thousands of synopses were already persisted and never read.
@@ -422,6 +461,9 @@ function registerSynthesisRoutes(app, {
                         teachingObject: reusable.existing,
                         cached: true,
                         reusedFromStore: true,
+                        // The reused synopsis keeps the lineage it was generated with (in its own
+                        // teaching object); this is the lineage of the current request.
+                        evidenceLineage,
                     });
                 }
             }
@@ -439,13 +481,14 @@ function registerSynthesisRoutes(app, {
                 forceSync: true,
                 sessionId: req.sessionId,
                 log: req.log,
+                lineage,
             });
             if (synopsisResult.status === 'failed') {
                 const status = /No AI service|No AI provider/.test(synopsisResult.errorMessage || '') ? 503 : 500;
                 return res.status(status).json({ error: synopsisResult.errorMessage || 'Synopsis generation failed' });
             }
-            const teachingObject = await persistPaperTeachingObject({ db, article, synopsisResult, topic });
-            res.json({ synopsis: synopsisResult.synopsis, articleId: synopsisResult.articleId, teachingObject });
+            const teachingObject = await persistPaperTeachingObject({ db, article, synopsisResult, topic, lineage });
+            res.json({ synopsis: synopsisResult.synopsis, articleId: synopsisResult.articleId, teachingObject, evidenceLineage });
         } catch (error) {
             req.log.error({ err: error }, 'Teaching object generation error');
             const status = /No AI service|No AI provider/.test(error.message) ? 503 : 500;

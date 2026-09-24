@@ -1,0 +1,824 @@
+{
+  "runAt": "2026-09-18T00:33:10.064Z",
+  "attempted": 105,
+  "alreadyFull": 12,
+  "storedFull": 2,
+  "storedAbstract": 68,
+  "storedMetadata": 22,
+  "errors": 1,
+  "results": [
+    {
+      "topic": "Acute and chronic pain assessment and opioid safety",
+      "action": "already_full",
+      "source": "jats",
+      "words": 58208
+    },
+    {
+      "topic": "Community acquired pneumonia",
+      "action": "already_full",
+      "source": "jats",
+      "words": 13659
+    },
+    {
+      "topic": "Community acquired pneumonia diagnosis empiric antibiotic management guideline adult",
+      "action": "already_full",
+      "source": "jats",
+      "words": 13659
+    },
+    {
+      "topic": "Hypersensitivity pneumonitis diagnosis and antigen avoidance",
+      "action": "already_full",
+      "source": "jats",
+      "words": 14227
+    },
+    {
+      "topic": "Large bowel obstruction, volvulus, and pseudo-obstruction management",
+      "action": "already_full",
+      "source": "jats",
+      "words": 13579
+    },
+    {
+      "topic": "Peripheral arterial disease and claudication",
+      "action": "already_full",
+      "source": "jats",
+      "words": 6290
+    },
+    {
+      "topic": "Pneumonia",
+      "action": "already_full",
+      "source": "jats",
+      "words": 13659
+    },
+    {
+      "topic": "Achalasia endoscopic and surgical therapy",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 109,
+      "documentId": 1,
+      "recs": 0
+    },
+    {
+      "topic": "Acromegaly somatostatin analog therapy",
+      "action": "already_full",
+      "source": "jats",
+      "words": 4939
+    },
+    {
+      "topic": "Acute abdomen and common surgical emergencies",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 204,
+      "documentId": 23,
+      "recs": 0
+    },
+    {
+      "topic": "Acute bacterial meningitis adjunctive dexamethasone",
+      "action": "stored_full",
+      "source": "manual",
+      "words": 569,
+      "documentId": 4,
+      "recs": 0
+    },
+    {
+      "topic": "Acute bacterial meningitis empiric therapy and dexamethasone",
+      "action": "stored_full",
+      "source": "manual",
+      "words": 9953,
+      "documentId": 7,
+      "recs": 40
+    },
+    {
+      "topic": "Acute decompensated heart failure decongestion",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 224,
+      "documentId": 39,
+      "recs": 0
+    },
+    {
+      "topic": "Acute liver failure transplant referral",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 112,
+      "documentId": 9,
+      "recs": 0
+    },
+    {
+      "topic": "Acute myeloid leukemia venetoclax azacitidine",
+      "action": "error",
+      "error": "HTTP 403 for https://ashpublications.org/blood/article/140/12/1345/485817/Diagnosis-and-management-of-AML-in-adults-2022"
+    },
+    {
+      "topic": "Acute necrotising pancreatitis and step-up management approach",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 311,
+      "documentId": 51,
+      "recs": 0
+    },
+    {
+      "topic": "Alcohol use disorder naltrexone and acamprosate",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 64,
+      "recs": 0
+    },
+    {
+      "topic": "Alcohol use disorder, Wernicke encephalopathy and alcohol-related liver disease",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 68,
+      "recs": 0
+    },
+    {
+      "topic": "Alcohol-associated hepatitis corticosteroids",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 233,
+      "documentId": 72,
+      "recs": 0
+    },
+    {
+      "topic": "Antifungals in ICU",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 62,
+      "documentId": 114,
+      "recs": 0
+    },
+    {
+      "topic": "Chest pain assessment in the ED",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 163,
+      "documentId": 227,
+      "recs": 0
+    },
+    {
+      "topic": "Chronic cough evaluation and empiric therapy",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 368,
+      "documentId": 234,
+      "recs": 0
+    },
+    {
+      "topic": "Chronic hepatitis B antiviral therapy",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 237,
+      "recs": 0
+    },
+    {
+      "topic": "Cirrhosis and portal hypertension",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 211,
+      "documentId": 254,
+      "recs": 0
+    },
+    {
+      "topic": "Community- and hospital-acquired pneumonia",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 270,
+      "recs": 0
+    },
+    {
+      "topic": "Contact dermatitis: irritant vs allergic, patch testing and management",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 194,
+      "documentId": 282,
+      "recs": 0
+    },
+    {
+      "topic": "Coronary CT angiography for stable chest pain",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 286,
+      "recs": 0
+    },
+    {
+      "topic": "COVID",
+      "action": "already_full",
+      "source": "jats",
+      "words": 4649
+    },
+    {
+      "topic": "Cytomegalovirus prevention in transplant recipients",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 90,
+      "documentId": 313,
+      "recs": 0
+    },
+    {
+      "topic": "Dabigatran versus warfarin atrial fibrillation stroke prevention",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 196,
+      "documentId": 317,
+      "recs": 0
+    },
+    {
+      "topic": "Delayed Haemolytic Transfusion Reactions",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 188,
+      "documentId": 321,
+      "recs": 0
+    },
+    {
+      "topic": "Delirium and acute confusional states",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 248,
+      "documentId": 325,
+      "recs": 0
+    },
+    {
+      "topic": "Delirium: recognition, risk factors, prevention and management",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 146,
+      "documentId": 329,
+      "recs": 0
+    },
+    {
+      "topic": "Dementia: behavioural and psychological symptoms management",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 102,
+      "documentId": 333,
+      "recs": 0
+    },
+    {
+      "topic": "Depression and anxiety disorders",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 241,
+      "documentId": 336,
+      "recs": 0
+    },
+    {
+      "topic": "Depression: diagnosis, pharmacotherapy and monitoring",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 241,
+      "documentId": 336,
+      "recs": 0
+    },
+    {
+      "topic": "Difficult airway management",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 79,
+      "documentId": 342,
+      "recs": 0
+    },
+    {
+      "topic": "Diffuse large b cell lymphoma car t cell therapy in relapsed refractory disease",
+      "action": "already_full",
+      "source": "jats",
+      "words": 5483
+    },
+    {
+      "topic": "DNACPR, treatment escalation planning and advance care planning",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 179,
+      "documentId": 350,
+      "recs": 0
+    },
+    {
+      "topic": "Drug eruptions and severe cutaneous adverse reactions (SCAR)",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 50,
+      "documentId": 353,
+      "recs": 0
+    },
+    {
+      "topic": "Dupilumab il 4 il 13 inhibitor biologic therapy",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 166,
+      "documentId": 357,
+      "recs": 0
+    },
+    {
+      "topic": "Durable LVAD therapy for advanced heart failure",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 360,
+      "recs": 0
+    },
+    {
+      "topic": "Dyslipidaemia and cardiovascular risk modification",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 363,
+      "recs": 0
+    },
+    {
+      "topic": "Eating disorders and refeeding syndrome",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 172,
+      "documentId": 366,
+      "recs": 0
+    },
+    {
+      "topic": "Ebola virus disease therapeutics and supportive care",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 372,
+      "documentId": 370,
+      "recs": 0
+    },
+    {
+      "topic": "Ectopic pregnancy: diagnosis and management",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 143,
+      "documentId": 371,
+      "recs": 0
+    },
+    {
+      "topic": "Emergency contraception: mechanisms, timing and clinical guidance",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 373,
+      "recs": 0
+    },
+    {
+      "topic": "Empagliflozin cardiovascular outcomes type 2 diabetes EMPA-REG",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 117,
+      "documentId": 375,
+      "recs": 0
+    },
+    {
+      "topic": "Empagliflozin chronic kidney disease progression",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 256,
+      "documentId": 377,
+      "recs": 0
+    },
+    {
+      "topic": "Endocarditis and prophylaxis",
+      "action": "already_full",
+      "source": "jats",
+      "words": 4160
+    },
+    {
+      "topic": "Endovascular thrombectomy time to treatment ischemic stroke meta-analysis",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 372,
+      "documentId": 381,
+      "recs": 0
+    },
+    {
+      "topic": "Eosinophilia Differential Diagnosis",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 384,
+      "recs": 0
+    },
+    {
+      "topic": "Eosinophilic esophagitis topical steroid and elimination diet",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 387,
+      "recs": 0
+    },
+    {
+      "topic": "Epilepsy antiseizure medication selection",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 790,
+      "documentId": 389,
+      "recs": 0
+    },
+    {
+      "topic": "Epistaxis: assessment and management",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 264,
+      "documentId": 392,
+      "recs": 0
+    },
+    {
+      "topic": "Esophageal cancer neoadjuvant chemoradiation",
+      "action": "already_full",
+      "source": "jats",
+      "words": 5483
+    },
+    {
+      "topic": "Hospital acquired and ventilator associated pneumonia",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 132,
+      "documentId": 396,
+      "recs": 0
+    },
+    {
+      "topic": "HPV vaccination cervical intraepithelial neoplasia FUTURE II",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 201,
+      "documentId": 399,
+      "recs": 0
+    },
+    {
+      "topic": "Hybrid closed loop insulin delivery in type 1 diabetes",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 117,
+      "documentId": 375,
+      "recs": 0
+    },
+    {
+      "topic": "Hypertensive disorders of pregnancy and pre-eclampsia",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 180,
+      "documentId": 410,
+      "recs": 0
+    },
+    {
+      "topic": "Igg4 related disease diagnosis and b cell depletion",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 271,
+      "documentId": 423,
+      "recs": 0
+    },
+    {
+      "topic": "Intensive blood pressure control cardiovascular outcomes systolic",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 432,
+      "recs": 0
+    },
+    {
+      "topic": "Intensive glycemic targets in type 2 diabetes",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 117,
+      "documentId": 375,
+      "recs": 0
+    },
+    {
+      "topic": "Intensive LDL cholesterol lowering statin meta-analysis",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 363,
+      "recs": 0
+    },
+    {
+      "topic": "Intracerebral hemorrhage acute management",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 440,
+      "recs": 0
+    },
+    {
+      "topic": "Invasive aspergillosis antifungal therapy",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 62,
+      "documentId": 444,
+      "recs": 0
+    },
+    {
+      "topic": "Kidney transplant antibody mediated rejection",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 135,
+      "documentId": 461,
+      "recs": 0
+    },
+    {
+      "topic": "Lyme disease diagnosis and treatment",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 488,
+      "recs": 0
+    },
+    {
+      "topic": "Male hypogonadism testosterone replacement",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 445,
+      "documentId": 492,
+      "recs": 0
+    },
+    {
+      "topic": "Malnutrition screening: MUST, NRS-2002, and nutritional support",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 263,
+      "documentId": 496,
+      "recs": 0
+    },
+    {
+      "topic": "Management of HF with Reduced ejection fraction",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 222,
+      "documentId": 500,
+      "recs": 0
+    },
+    {
+      "topic": "Mechanical low back pain: assessment, red flags and management",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 330,
+      "documentId": 506,
+      "recs": 0
+    },
+    {
+      "topic": "Menopausal hormone therapy risks and benefits",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 308,
+      "documentId": 510,
+      "recs": 0
+    },
+    {
+      "topic": "Metformin diabetes",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 117,
+      "documentId": 375,
+      "recs": 0
+    },
+    {
+      "topic": "Neonatal jaundice: assessment, phototherapy and exchange transfusion",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 572,
+      "recs": 0
+    },
+    {
+      "topic": "Noninvasive ventilation for acute respiratory failure",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 188,
+      "documentId": 590,
+      "recs": 0
+    },
+    {
+      "topic": "Opioid use disorder buprenorphine and methadone",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 599,
+      "recs": 0
+    },
+    {
+      "topic": "Orbital and periorbital cellulitis: classification and management",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 125,
+      "documentId": 607,
+      "recs": 0
+    },
+    {
+      "topic": "Otitis media, otitis externa and mastoiditis",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 294,
+      "documentId": 619,
+      "recs": 0
+    },
+    {
+      "topic": "Outpatient parenteral antimicrobial therapy program safety",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 83,
+      "documentId": 623,
+      "recs": 0
+    },
+    {
+      "topic": "Penicillin allergy delabeling and testing",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 114,
+      "documentId": 658,
+      "recs": 0
+    },
+    {
+      "topic": "Polymyalgia rheumatica relapse prevention",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 194,
+      "documentId": 704,
+      "recs": 0
+    },
+    {
+      "topic": "Portal hypertension and variceal bleeding",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 211,
+      "documentId": 254,
+      "recs": 0
+    },
+    {
+      "topic": "Postoperative nausea and vomiting: prevention and treatment",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 414,
+      "documentId": 715,
+      "recs": 0
+    },
+    {
+      "topic": "Postural Orthostatic Tachycardia Syndrome (POTS): tilt table test criteria, non-pharmacological methods",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 719,
+      "recs": 0
+    },
+    {
+      "topic": "Primary aldosteronism diagnosis and treatment",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 336,
+      "documentId": 727,
+      "recs": 0
+    },
+    {
+      "topic": "Primary membranous nephropathy immunosuppression",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 731,
+      "recs": 0
+    },
+    {
+      "topic": "Prolactinoma dopamine agonist therapy",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 137,
+      "documentId": 740,
+      "recs": 0
+    },
+    {
+      "topic": "Prosthetic joint infection diagnosis and retention strategy",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 59,
+      "documentId": 748,
+      "recs": 0
+    },
+    {
+      "topic": "Psoriasis: diagnosis, severity assessment and systemic treatment",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 67,
+      "documentId": 756,
+      "recs": 0
+    },
+    {
+      "topic": "Ptsd trauma focused psychotherapy and ssri",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 7,
+      "documentId": 770,
+      "recs": 0
+    },
+    {
+      "topic": "PTSD trauma-focused psychotherapy and SSRI",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 7,
+      "documentId": 770,
+      "recs": 0
+    },
+    {
+      "topic": "Pulmonary nodule evaluation and fleischner follow up",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 201,
+      "documentId": 774,
+      "recs": 0
+    },
+    {
+      "topic": "Rabies pre- and post-exposure prophylaxis",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 460,
+      "documentId": 783,
+      "recs": 0
+    },
+    {
+      "topic": "Rehabilitation after stroke: principles and evidence",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 318,
+      "documentId": 796,
+      "recs": 0
+    },
+    {
+      "topic": "Syncope and postural hypotension",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 808,
+      "recs": 0
+    },
+    {
+      "topic": "Takayasu arteritis biologic therapy",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 243,
+      "documentId": 812,
+      "recs": 0
+    },
+    {
+      "topic": "Tenecteplase alteplase acute ischemic stroke EXTEND-IA TNK",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 816,
+      "recs": 0
+    },
+    {
+      "topic": "Tick borne rickettsial disease empiric doxycycline",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 238,
+      "documentId": 832,
+      "recs": 0
+    },
+    {
+      "topic": "Tick-borne rickettsial disease empiric doxycycline",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 238,
+      "documentId": 832,
+      "recs": 0
+    },
+    {
+      "topic": "Transient ischemic attack rapid assessment",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 816,
+      "recs": 0
+    },
+    {
+      "topic": "Traumatic brain injury intracranial pressure management",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 167,
+      "documentId": 860,
+      "recs": 0
+    },
+    {
+      "topic": "Urinary tract infections and pyelonephritis",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 133,
+      "documentId": 889,
+      "recs": 0
+    },
+    {
+      "topic": "Vasopressor use septic shock",
+      "action": "stored_metadata",
+      "source": null,
+      "words": 0,
+      "documentId": 901,
+      "recs": 0
+    },
+    {
+      "topic": "Venous thromboembolism and anticoagulation management",
+      "action": "stored_abstract",
+      "source": "abstract",
+      "words": 253,
+      "documentId": 914,
+      "recs": 0
+    }
+  ]
+}

@@ -3,6 +3,8 @@
 const { safeJsonParse, toPgVectorLiteral } = require('../lib/helpers');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
 
+const { applyWritePolicy } = require('../../server/services/policy/writePolicyEngine');
+
 module.exports = (Sup) => class extends Sup {
 // ==========================================
 // Durable AI generation jobs
@@ -354,6 +356,13 @@ async upsertTrialGuidelineConflictReview({
     detectionMethod = 'llm',
 } = {}) {
     if (!normalizedTopic || !conflictHash || !trialClaim || !guidelineClaim) return false;
+    const verdict = await applyWritePolicy(this, {
+        writer: 'upsertTrialGuidelineConflictReview',
+        entityType: 'guideline_conflict',
+        entityId: String(conflictHash),
+        payload: { normalizedTopic, conflictHash, trialClaim, guidelineClaim },
+    });
+    if (!verdict.allowed) return false;
     const now = new Date().toISOString();
     try {
         await this.run(

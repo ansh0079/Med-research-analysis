@@ -10,6 +10,7 @@ const {
     reconcileImpressionRewards,
     hierarchicalUserWeight,
     blendedArmSample,
+    recordSearchRankingDecisions,
 } = require('../../server/services/personalizationBanditService');
 
 describe('personalizationBanditService', () => {
@@ -168,5 +169,27 @@ describe('personalizationBanditService', () => {
         expect(db.recordPersonalizationArmPull).toHaveBeenCalledTimes(2);
         expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith('search_ranking', 'heuristic_default', 0.5, 'user:u1');
         expect(db.recordPersonalizationArmPull).toHaveBeenCalledWith('search_ranking', 'heuristic_default', 0.5, 'global');
+    });
+
+    test('recordSearchRankingDecisions logs top results even with no learning boost', async () => {
+        const db = {
+            insertPersonalizationDecision: jest.fn().mockResolvedValue({ id: 11 }),
+        };
+        const logged = await recordSearchRankingDecisions(db, {
+            userId: null,
+            searchId: 'search-1',
+            topic: 'ARDS',
+            normalizedTopic: 'ards',
+            articles: [{ uid: 'pmid-1', title: 'Prone positioning', _learningBoost: 0 }],
+            banditMeta: { armId: 'heuristic_default' },
+        });
+        expect(logged.decisions).toEqual([
+            { articleUid: 'pmid-1', decisionId: 11, banditArmId: 'heuristic_default' },
+        ]);
+        expect(db.insertPersonalizationDecision).toHaveBeenCalledWith(expect.objectContaining({
+            userId: null,
+            articleUid: 'pmid-1',
+            context: expect.objectContaining({ boost: 0 }),
+        }));
     });
 });

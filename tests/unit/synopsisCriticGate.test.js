@@ -1,6 +1,6 @@
 'use strict';
 
-const { buildClaimGrounding, runSynopsisCritic } = require('../../server/services/synopsisGroundingService');
+const { buildClaimGrounding, runSynopsisCritic, failClosedGroundingFindings } = require('../../server/services/synopsisGroundingService');
 
 const ARTICLE = {
     uid: 'pubmed-1',
@@ -9,14 +9,13 @@ const ARTICLE = {
         + 'and 32.8% in the supine group. The difference was statistically significant.',
 };
 
-// Mirrors the gate now applied in paperSynopsisCore: error-severity ungrounded_number
-// findings reject the synopsis rather than being surfaced as a soft warning.
+// Mirrors the gate now applied in paperSynopsisCore: error-severity
+// ungrounded_number or no_source_span findings reject the synopsis rather than
+// being surfaced as a soft warning.
 function gate(synopsis, article = ARTICLE, abstractOnly = false) {
     const claimGrounding = buildClaimGrounding(synopsis, article);
     const critic = runSynopsisCritic(synopsis, { claimGrounding, abstractOnly });
-    const ungrounded = (critic.findings || [])
-        .filter((f) => f.severity === 'error' && f.code === 'ungrounded_number');
-    return { critic, rejected: ungrounded.length > 0 };
+    return { critic, rejected: failClosedGroundingFindings(critic).length > 0 };
 }
 
 describe('synopsis grounding gate', () => {
@@ -40,11 +39,34 @@ describe('synopsis grounding gate', () => {
         expect(critic.errorCount).toBeGreaterThan(0);
     });
 
+    test('rejects a synopsis whose claims have no span in the source', () => {
+        const tinySource = { uid: 'tiny', title: 'ARDS', abstract: 'Yes. No.' };
+        const { rejected, critic } = gate({
+            bottomLine: 'Early antibiotics improve sepsis outcomes in hospital care [1].',
+            mainFindings: 'Sepsis protocols reduce length of stay for adults [1].',
+            clinicalMeaning: 'Start antibiotics immediately in suspected sepsis [1].',
+        }, tinySource);
+        expect(rejected).toBe(true);
+        expect(critic.findings.some((f) => f.code === 'no_source_span')).toBe(true);
+    });
+
+    test('failClosedGroundingFindings treats ungrounded numbers and missing spans as fatal', () => {
+        expect(failClosedGroundingFindings({
+            findings: [
+                { severity: 'error', code: 'no_source_span' },
+                { severity: 'warning', code: 'possible_overclaim' },
+            ],
+        }).map((f) => f.code)).toEqual(['no_source_span']);
+        expect(failClosedGroundingFindings({
+            findings: [{ severity: 'info', code: 'abstract_only' }],
+        })).toEqual([]);
+    });
+
     test('flags overclaiming language as a warning, not a rejection', () => {
         const { rejected, critic } = gate({
-            bottomLine: 'This proves proning should always be standard of care [1].',
-            mainFindings: 'Mortality was 16.0% with proning [1].',
-            clinicalMeaning: 'Use proning [1].',
+            bottomLine: 'This proves prone positioning should always be standard of care for severe ARDS [1].',
+            mainFindings: 'Mortality was 16.0% with proning in the prone group [1].',
+            clinicalMeaning: 'Consider proning in severe ARDS [1].',
         });
         expect(rejected).toBe(false);
         expect(critic.findings.some((f) => f.code === 'possible_overclaim')).toBe(true);

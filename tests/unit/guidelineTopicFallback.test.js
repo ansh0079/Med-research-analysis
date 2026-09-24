@@ -15,6 +15,7 @@
  * from the evidence genuinely not existing.
  */
 
+const Sqlite = require('better-sqlite3');
 const GuidelinesMixin = require('../../database/mixins/m02a-guidelines');
 
 const AGA_ROW = {
@@ -39,11 +40,6 @@ const UNRELATED_ROW = {
     recommendation_text: 'Anticoagulation should be offered to patients with atrial fibrillation and elevated stroke risk.',
 };
 
-/**
- * Stands in for the SQL layer: the exact-equality query returns only rows whose
- * normalized_topic is in the key list, the LIKE fallback returns rows whose
- * normalized_topic contains any probe word.
- */
 /**
  * Matches the query wording exactly but says little about it -- the shape that
  * masked the AGA recommendations in production.
@@ -75,23 +71,37 @@ const AGA_NO_DISEASE_WORD_ROW = {
     recommendation_text: 'IV albumin is the volume expander of choice in hospitalized patients with cirrhosis and should be given with vasoconstrictors.',
 };
 
+/**
+ * Real SQLite, not a hand-written stand-in.
+ *
+ * This harness used to emulate the SQL layer by regex-matching the query text
+ * ("normalized_topic IN", "normalized_topic LIKE") and filtering rows in JS.
+ * When the real query changed shape -- REPLACE() for hyphen-insensitive keys,
+ * word-start anchored probes -- neither regex matched any more and the double
+ * silently returned no rows for every branch. The suite failed loudly here,
+ * but the same drift in the other direction would have passed while testing
+ * nothing. Running the statements the module actually issues removes the
+ * possibility.
+ */
 function makeDb(rows) {
+    const sqlite = new Sqlite(':memory:');
+    sqlite.exec(`CREATE TABLE topic_guidelines (
+        id INTEGER PRIMARY KEY, topic TEXT, normalized_topic TEXT, source_body TEXT,
+        source_year INTEGER, recommendation_text TEXT, status TEXT,
+        superseded_by_id INTEGER, last_checked_at TEXT, updated_at TEXT
+    )`);
+    const insert = sqlite.prepare(
+        `INSERT INTO topic_guidelines (id, topic, normalized_topic, source_body, source_year,
+             recommendation_text, status, superseded_by_id, last_checked_at)
+         VALUES (@id, @topic, @normalized_topic, @source_body, @source_year,
+             @recommendation_text, @status, @superseded_by_id, @last_checked_at)`
+    );
+    for (const row of rows) insert.run({ last_checked_at: new Date().toISOString(), ...row });
+
     const Base = class {
         normalizeTopic(t) { return String(t || '').trim().toLowerCase(); }
-        async run() { return { changes: 0 }; }
-        async all(sql, params) {
-            if (/normalized_topic IN/.test(sql)) {
-                const keys = params.slice(0, params.length - 3);
-                return rows.filter((r) => keys.includes(r.normalized_topic));
-            }
-            if (/normalized_topic LIKE/.test(sql)) {
-                const likes = params
-                    .filter((p) => typeof p === 'string' && p.startsWith('%') && p.endsWith('%'))
-                    .map((p) => p.slice(1, -1));
-                return rows.filter((r) => likes.some((w) => r.normalized_topic.includes(w)));
-            }
-            return [];
-        }
+        async run(sql, params) { return { changes: sqlite.prepare(sql).run(...(params || [])).changes }; }
+        async all(sql, params) { return sqlite.prepare(sql).all(...(params || [])); }
     };
     return new (GuidelinesMixin(Base))();
 }
@@ -106,7 +116,7 @@ describe('getGuidelinesByTopic', () => {
     test('finds the guideline when the query is worded differently', async () => {
         // The production miss, exactly.
         const db = makeDb([AGA_ROW]);
-        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin');
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin', { includeRelated: true });
         expect(out).toHaveLength(1);
         expect(out[0].sourceBody).toBe('AGA Institute');
     });
@@ -115,13 +125,13 @@ describe('getGuidelinesByTopic', () => {
         // The relevance floor is what makes a wider net safe; without it this
         // would return atrial fibrillation guidance for a liver query.
         const db = makeDb([AGA_ROW, UNRELATED_ROW]);
-        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin');
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin', { includeRelated: true });
         expect(out.map((g) => g.sourceBody)).toEqual(['AGA Institute']);
     });
 
     test('returns nothing when the corpus genuinely has nothing on the topic', async () => {
         const db = makeDb([UNRELATED_ROW]);
-        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin');
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin', { includeRelated: true });
         expect(out).toEqual([]);
     });
 
@@ -130,13 +140,13 @@ describe('getGuidelinesByTopic', () => {
         // so gating the wider search on an empty result meant the four AGA
         // Institute 2025 recommendations were never looked for at all.
         const db = makeDb([WEAK_JOURNAL_ROW, AGA_ROW]);
-        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin');
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin', { includeRelated: true });
         expect(out.map((g) => g.sourceBody)).toContain('AGA Institute');
     });
 
     test('ranks the on-topic recommendation above a weakly matching one', async () => {
         const db = makeDb([WEAK_JOURNAL_ROW, AGA_ROW]);
-        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin');
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin', { includeRelated: true });
         expect(out[0].sourceBody).toBe('AGA Institute');
     });
 
@@ -151,20 +161,96 @@ describe('getGuidelinesByTopic', () => {
         // a word that appears nowhere in the recommendation text. Scoring text
         // alone discarded every AGA row in production.
         const db = makeDb([AGA_NO_DISEASE_WORD_ROW]);
-        const out = await db.getGuidelinesByTopic('hepatorenal syndrome');
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome', { includeRelated: true });
         expect(out.map((g) => g.sourceBody)).toEqual(['AGA Institute']);
     });
 
     test('still ranks an on-topic recommendation above one that only shares a topic label', async () => {
         const db = makeDb([AGA_NO_DISEASE_WORD_ROW, AGA_ROW]);
-        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin');
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin', { includeRelated: true });
         // AGA_ROW names terlipressin in its text; the other only matches by filing.
         expect(out[0].id).toBe(AGA_ROW.id);
     });
 
     test('a genuinely unrelated topic is still excluded', async () => {
         const db = makeDb([UNRELATED_ROW]);
-        const out = await db.getGuidelinesByTopic('hepatorenal syndrome');
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome', { includeRelated: true });
         expect(out).toEqual([]);
+    });
+
+    test('includeRelated false keeps the exact-topic panel', async () => {
+        const db = makeDb([AGA_ROW]);
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin', { includeRelated: false });
+        expect(out).toEqual([]);
+    });
+
+    test('default panel retrieves condition-sibling topics', async () => {
+        const db = makeDb([AGA_ROW]);
+        const out = await db.getGuidelinesByTopic('hepatorenal syndrome terlipressin');
+        expect(out.map((g) => g.sourceBody)).toEqual(['AGA Institute']);
+    });
+
+    test('AKI reaches sibling topics filed under a finer name', async () => {
+        const db = makeDb([
+            {
+                id: 10,
+                normalized_topic: 'rhabdomyolysis aki',
+                topic: 'Rhabdomyolysis AKI',
+                source_body: 'KDIGO',
+                source_year: 2024,
+                status: 'ai_extracted',
+                superseded_by_id: null,
+                recommendation_text: 'Patients with rhabdomyolysis-associated AKI should receive early volume resuscitation.',
+            },
+            UNRELATED_ROW,
+        ]);
+        const out = await db.getGuidelinesByTopic('AKI');
+        expect(out).toHaveLength(1);
+        expect(out[0].topic).toMatch(/rhabdomyolysis/i);
+    });
+
+    test('MS treatment finds guidelines filed under multiple sclerosis', async () => {
+        const db = makeDb([
+            {
+                id: 11,
+                normalized_topic: 'multiple sclerosis',
+                topic: 'Multiple sclerosis',
+                source_body: 'AAN',
+                source_year: 2025,
+                status: 'ai_extracted',
+                superseded_by_id: null,
+                recommendation_text: 'Disease-modifying therapy should be offered to patients with relapsing multiple sclerosis.',
+            },
+        ]);
+        const out = await db.getGuidelinesByTopic('MS treatment');
+        expect(out.map((g) => g.sourceBody)).toEqual(['AAN']);
+    });
+
+    test('AKI surfaces a KDIGO rec filed under CKD when the text names AKI', async () => {
+        const db = makeDb([
+            {
+                id: 12,
+                normalized_topic: 'chronic kidney disease',
+                topic: 'Chronic kidney disease',
+                source_body: 'KDIGO',
+                source_year: 2012,
+                status: 'ai_extracted',
+                superseded_by_id: null,
+                recommendation_text: 'AKI should be staged using creatinine and urine output criteria.',
+            },
+            {
+                id: 13,
+                normalized_topic: 'chronic kidney disease',
+                topic: 'Chronic kidney disease',
+                source_body: 'KDIGO',
+                source_year: 2024,
+                status: 'ai_extracted',
+                superseded_by_id: null,
+                recommendation_text: 'SGLT2 inhibitors should be offered to adults with CKD and type 2 diabetes.',
+            },
+        ]);
+        const out = await db.getGuidelinesByTopic('AKI');
+        expect(out).toHaveLength(1);
+        expect(out[0].recommendationText).toMatch(/AKI should be staged/i);
     });
 });

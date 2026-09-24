@@ -67,6 +67,7 @@ services:
         VITE_SENTRY_PROJECT: ${VITE_SENTRY_PROJECT:-signal-md-frontend}
         VITE_APP_VERSION: ${VITE_APP_VERSION:-2.0.0}
         SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN:-}
+        GIT_SHA: ${GIT_SHA:-unknown}
     container_name: medsearch-web
     depends_on:
       postgres:
@@ -149,6 +150,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        GIT_SHA: ${GIT_SHA:-unknown}
     container_name: medsearch-worker
     depends_on:
       postgres:

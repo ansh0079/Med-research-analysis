@@ -25,6 +25,7 @@ describe('detectIssuingBody', () => {
         ['AGA Institute', 'AGA'],
         ['2021 AASLD practice guidance on ascites', 'AASLD'],
         ['NICE guideline NG15', 'NICE'],
+        ['CVIT expert consensus on primary PCI', 'CVIT'],
     ])('reads the body out of %s', (text, expected) => {
         expect(detectIssuingBody(text)).toBe(expected);
     });

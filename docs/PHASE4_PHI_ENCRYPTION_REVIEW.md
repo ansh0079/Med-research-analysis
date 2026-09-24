@@ -1,6 +1,6 @@
 # Phase 4 — PHI retention & encryption posture review
 
-Last updated: 2026-08-21  
+Last updated: 2026-09-21  
 Status: **review notes for commercial launch** (not a full HIPAA/BAA certification)
 
 ## Product posture
@@ -21,7 +21,21 @@ Signal MD is an evidence + learning product. It is **not** an EHR and must not b
 | Audit / billing_audit_log | 24 months | Paywall denials + webhook linkage |
 | Support exports | 90 days after ticket close | Manual purge |
 
-Implement via scheduled purge jobs before claiming HIPAA readiness; until then document “best-effort beta retention.”
+**Implemented 2026-09-21** (`server/services/ops/dataRetention.js`, scheduled as `data-retention`).
+The table above is now enforced in code rather than described: search events and article interactions
+are deleted after 18 months, audit and billing audit rows after 24 months, in bounded batches, with
+per-class environment overrides that can tighten a window but not silently loosen one. Teaching
+objects, claims, evidence snapshots and source versions are deliberately untouched - they are the
+product corpus and the provenance chain, and deleting them would break replay of attempts that still
+reference them. Evidence snapshot query text was already redacted after its own window
+(`evidence-snapshot-retention`).
+
+Erasure on request is a separate, existing path (`database/mixins/m19-account-privacy.js`), which
+deletes a named user's rows across these same tables. Retention is time-based and applies to
+everyone; erasure is identity-based and applies on demand. Both are needed; neither substitutes for
+the other.
+
+Still best-effort until a purge run has been observed on production.
 
 ## Encryption posture
 
@@ -38,9 +52,9 @@ Implement via scheduled purge jobs before claiming HIPAA readiness; until then d
 ## Commercial gate checklist
 
 - [ ] Confirm production volume encryption with hoster
-- [ ] Confirm Stripe webhook signing + `billing_audit_log` on activate/cancel
+- [x] Stripe webhook signing verified in code (`server/routes/billing.js`): production rejects all events when `STRIPE_WEBHOOK_SECRET` is unset, and signature verification is skipped only in development. `billing_audit_log` has a writer (`database/mixins/m08b-audit-billing.js`)
 - [ ] Confirm privacy copy: no PHI, educational use only
-- [ ] Confirm `/metrics` scrape uses `METRICS_SCRAPE_TOKEN` (not public)
+- [x] `/metrics` is gated (`server/routes/health.js`): `METRICS_SCRAPE_TOKEN` compared in constant time via `X-Metrics-Token` or bearer, otherwise admin JWT. Never public
 - [ ] Institution / BAA customers: do not sell until DPA + encryption review signed
 
 ## Out of scope for Phase 4 code

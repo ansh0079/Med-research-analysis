@@ -113,11 +113,28 @@ export const EvidenceVerdictStrip: React.FC<EvidenceVerdictStripProps> = ({
                 <Stat label="papers" value={results.length} />
                 {stats.rcts > 0 && <Stat label="RCTs" value={stats.rcts} />}
                 {stats.reviews > 0 && <Stat label="reviews / meta-analyses" value={stats.reviews} />}
+                {/*
+                  * Two different things, and conflating them read as a
+                  * contradiction: this counts stored recommendations attributed
+                  * to an issuing body, while the result list can separately
+                  * contain a paper PubMed types as a guideline. A search for
+                  * catatonia showed "0 guidelines" with the BAP consensus
+                  * guideline sitting second in the results. Both are now named
+                  * for what they are.
+                  */}
                 <Stat
-                    label={stats.newestGuideline ? `guidelines (latest ${stats.newestGuideline})` : 'guidelines'}
+                    label={stats.newestGuideline
+                        ? `guideline recommendations (latest ${stats.newestGuideline})`
+                        : 'guideline recommendations'}
                     value={guidelines === null ? '…' : guidelineCount}
                     onClick={guidelineCount > 0 ? onJumpToGuidelines : undefined}
                 />
+                {stats.guidelinePapers > 0 && (
+                    <Stat
+                        label={stats.guidelinePapers === 1 ? 'guideline paper in results' : 'guideline papers in results'}
+                        value={stats.guidelinePapers}
+                    />
+                )}
                 {typeof conflictCount === 'number' && conflictCount > 0 && (
                     <Stat label="trial vs guideline conflicts" value={conflictCount} tone="warn" />
                 )}

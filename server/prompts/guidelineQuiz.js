@@ -1,5 +1,7 @@
 'use strict';
 
+const { OPTION_PARITY_RULE } = require('./optionParity');
+
 /**
  * Prompt builder for the auto-generated guideline-anchored MCQ teaching
  * objects that the search route seeds when a topic has fresh guideline
@@ -34,6 +36,8 @@ Rules:
 - 4 options (A-D), exactly one correct
 - Mix difficulty: 2 medium, 2 hard, 1 easy
 - Mix types: guideline, clinical_application, pitfall
+
+${OPTION_PARITY_RULE}
 
 Start your response with [ and end with ]. No markdown.
 [{"type":"multiple_choice","questionType":"guideline|clinical_application|pitfall","question":"...","options":["A: ...","B: ...","C: ...","D: ..."],"correctAnswer":"A","explanation":"2-3 sentences citing the guideline","guidelineRef":"source — recommendation","difficulty":"easy|medium|hard"}]`;

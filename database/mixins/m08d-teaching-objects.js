@@ -1,6 +1,7 @@
 'use strict';
 
 const { safeJsonParse } = require('../lib/helpers');
+const { applyWritePolicy } = require('../../server/services/policy/writePolicyEngine');
 
 module.exports = (Sup) => class extends Sup {
 // Teaching objects & claims CRUD
@@ -22,6 +23,8 @@ mapTeachingObjectRow(row) {
         confidence: Number(row.confidence || 0),
         generatedAt: row.generated_at || null,
         reviewState: row.review_state || 'unreviewed',
+        evidenceSnapshotId: row.evidence_snapshot_id || null,
+        lineageStatus: row.lineage_status || null,
         createdAt: row.created_at || null,
         updatedAt: row.updated_at || null,
     };
@@ -29,6 +32,13 @@ mapTeachingObjectRow(row) {
 
 async upsertTeachingObject(object = {}) {
     if (!this.kysely) return null;
+    const verdict = await applyWritePolicy(this, {
+        writer: 'upsertTeachingObject',
+        entityType: 'teaching_object',
+        entityId: object.objectKey || null,
+        payload: object,
+    });
+    if (!verdict.allowed) return null;
     const objectKey = String(object.objectKey || '').trim().slice(0, 240);
     if (!objectKey) return null;
     const now = new Date().toISOString();
@@ -40,12 +50,26 @@ async upsertTeachingObject(object = {}) {
     const curriculumTopicId = topic
         ? await this.resolveCurriculumTopicId(topic).catch(() => null)
         : null;
+    // Lineage columns (migration 101) are written only when the caller supplies lineage, so a
+    // caller with no snapshot never overwrites lineage recorded by an earlier generation.
+    const hasLineage = object.evidenceSnapshotId !== undefined || object.lineageStatus !== undefined;
+    const lineageColumns = hasLineage ? ', evidence_snapshot_id, lineage_status' : '';
+    const lineagePlaceholders = hasLineage ? ', ?, ?' : '';
+    const lineageUpdate = hasLineage
+        ? `,
+            evidence_snapshot_id = excluded.evidence_snapshot_id,
+            lineage_status = excluded.lineage_status`
+        : '';
+    const lineageValues = hasLineage
+        ? [object.evidenceSnapshotId || null, object.lineageStatus ? String(object.lineageStatus).slice(0, 40) : null]
+        : [];
+    // review_state below: 'withdrawn' (a retracted source) is terminal, so regeneration never restores it.
     await this.run(
         `INSERT INTO teaching_objects (
             object_key, object_type, article_uid, normalized_topic, topic, title,
             object_payload, provider, model, confidence, review_state, generated_at, created_at, updated_at,
-            curriculum_topic_id
-         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            curriculum_topic_id${lineageColumns}
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?${lineagePlaceholders})
          ON CONFLICT(object_key) DO UPDATE SET
             object_type = excluded.object_type,
             article_uid = excluded.article_uid,
@@ -57,6 +81,7 @@ async upsertTeachingObject(object = {}) {
             model = excluded.model,
             confidence = excluded.confidence,
             review_state = CASE
+                WHEN teaching_objects.review_state = 'withdrawn' THEN 'withdrawn'
                 WHEN teaching_objects.review_state = 'human_reviewed'
                     AND (excluded.review_state IS NULL OR excluded.review_state != 'needs_revision')
                 THEN teaching_objects.review_state
@@ -64,7 +89,7 @@ async upsertTeachingObject(object = {}) {
             END,
             generated_at = excluded.generated_at,
             updated_at = excluded.updated_at,
-            curriculum_topic_id = COALESCE(excluded.curriculum_topic_id, teaching_objects.curriculum_topic_id)`,
+            curriculum_topic_id = COALESCE(excluded.curriculum_topic_id, teaching_objects.curriculum_topic_id)${lineageUpdate}`,
         [
             objectKey,
             String(object.objectType || 'paper').slice(0, 40),
@@ -81,6 +106,7 @@ async upsertTeachingObject(object = {}) {
             now,
             now,
             curriculumTopicId,
+            ...lineageValues,
         ]
     );
     await this.replaceTeachingObjectClaims({
@@ -105,7 +131,12 @@ async upsertTeachingObject(object = {}) {
 async resolveCurriculumTopicId(topic) {
     const alias = this.normalizeTopic(topic);
     if (!alias) return null;
-    const hit = await this.get('SELECT curriculum_topic_id FROM topic_aliases WHERE alias_norm = ?', [alias]);
+    const hit = await this.get(
+        `SELECT curriculum_topic_id FROM topic_aliases
+         WHERE alias_norm = ?
+           AND NOT (resolution = 'orphan_reconciliation' AND confidence < 0.95)`,
+        [alias],
+    );
     if (hit) return hit.curriculum_topic_id;
     // Fall back to the display name so a topic added after the last backfill still resolves.
     const direct = await this.get('SELECT id FROM curriculum_topics WHERE LOWER(display_name) = ?', [String(topic || '').trim().toLowerCase()]);
@@ -116,9 +147,22 @@ async resolveCurriculumTopicId(topic) {
 async recordTopicAlias(topic, curriculumTopicId, resolution = 'runtime', confidence = 0.8) {
     const alias = this.normalizeTopic(topic);
     if (!alias || !curriculumTopicId) return false;
+    const verdict = await applyWritePolicy(this, {
+        writer: 'recordTopicAlias',
+        entityType: 'topic_alias',
+        entityId: alias,
+        payload: { topic, curriculumTopicId },
+    });
+    if (!verdict.allowed) return false;
     await this.run(
-        'INSERT INTO topic_aliases (id, alias_norm, curriculum_topic_id, resolution, confidence) ' +
-        'VALUES (?, ?, ?, ?, ?) ON CONFLICT (alias_norm) DO NOTHING',
+        `INSERT INTO topic_aliases (id, alias_norm, curriculum_topic_id, resolution, confidence)
+         VALUES (?, ?, ?, ?, ?)
+         ON CONFLICT (alias_norm) DO UPDATE SET
+            curriculum_topic_id = excluded.curriculum_topic_id,
+            resolution = excluded.resolution,
+            confidence = excluded.confidence
+         WHERE topic_aliases.resolution = 'orphan_reconciliation'
+           AND topic_aliases.confidence < excluded.confidence`,
         [require('crypto').randomUUID(), alias, curriculumTopicId, resolution, confidence]
     );
     return true;
@@ -132,7 +176,7 @@ async getTeachingObjectsByTopicId(curriculumTopicId, types = []) {
     if (!curriculumTopicId) return [];
     const list = Array.isArray(types) ? types.filter(Boolean) : [];
     const params = [curriculumTopicId];
-    let sql = 'SELECT * FROM teaching_objects WHERE curriculum_topic_id = ?';
+    let sql = `SELECT * FROM teaching_objects WHERE curriculum_topic_id = ? AND review_state != 'withdrawn'`;
     if (list.length) {
         sql += ` AND object_type IN (${list.map(() => '?').join(',')})`;
         params.push(...list);
@@ -159,7 +203,7 @@ async getTeachingObjectForArticle(articleUid) {
     if (!uid) return null;
     const row = await this.get(
         `SELECT * FROM teaching_objects
-         WHERE article_uid = ? AND object_type = 'paper'
+         WHERE article_uid = ? AND object_type = 'paper' AND review_state != 'withdrawn'
          ORDER BY updated_at DESC
          LIMIT 1`,
         [uid]
@@ -189,7 +233,7 @@ async getStaleSynopsesForRefresh({ maxAgeDays = 90, minSignalCount = 2, signalWi
     const staleCutoff = new Date(Date.now() - maxAgeDays * 24 * 60 * 60 * 1000).toISOString();
     const signalCutoff = new Date(Date.now() - signalWindowDays * 24 * 60 * 60 * 1000).toISOString();
     const rows = await this.all(
-        `SELECT t.article_uid, t.topic, t.normalized_topic, t.updated_at, t.generated_at,
+        `SELECT t.article_uid, t.topic, t.normalized_topic, t.title, t.updated_at, t.generated_at,
                 SUM(s.signal_count) AS total_signals
          FROM teaching_objects t
          JOIN topic_bouquet_signals s ON s.article_uid = t.article_uid
@@ -198,7 +242,7 @@ async getStaleSynopsesForRefresh({ maxAgeDays = 90, minSignalCount = 2, signalWi
            AND t.object_payload LIKE '%"synopsis"%'
            AND COALESCE(t.generated_at, t.updated_at) < ?
            AND s.last_seen_at > ?
-         GROUP BY t.article_uid, t.topic, t.normalized_topic, t.updated_at, t.generated_at
+         GROUP BY t.article_uid, t.topic, t.normalized_topic, t.title, t.updated_at, t.generated_at
          HAVING SUM(s.signal_count) >= ?
          ORDER BY total_signals DESC
          LIMIT ?`,
@@ -206,6 +250,7 @@ async getStaleSynopsesForRefresh({ maxAgeDays = 90, minSignalCount = 2, signalWi
     ).catch(() => []);
     return (rows || []).map((row) => ({
         articleUid: row.article_uid,
+        title: row.title || null,
         topic: row.topic || row.normalized_topic || '',
         normalizedTopic: row.normalized_topic || null,
         totalSignals: Number(row.total_signals || 0),
@@ -213,14 +258,17 @@ async getStaleSynopsesForRefresh({ maxAgeDays = 90, minSignalCount = 2, signalWi
     }));
 }
 
-async listTeachingObjectsForTopic(topic, { limit = 20, objectType = '' } = {}) {
+async listTeachingObjectsForTopic(topic, { limit = 20, objectType = '', excludeRetired = false } = {}) {
     const normalized = this.normalizeTopic(topic);
     const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 20, 1), 100);
     const type = String(objectType || '').trim();
+    const retiredFilter = excludeRetired ? "AND COALESCE(lineage_status, '') != 'legacy_retired'" : '';
     const rows = await this.all(
         `SELECT * FROM teaching_objects
          WHERE (? = '' OR normalized_topic = ?)
            AND (? = '' OR object_type = ?)
+           AND review_state != 'withdrawn'
+           ${retiredFilter}
          ORDER BY updated_at DESC
          LIMIT ?`,
         [normalized, normalized, type, type, safeLimit]
@@ -258,6 +306,12 @@ async replaceTeachingObjectClaims({ objectKey, articleUid = null, normalizedTopi
     if (!objectKey) return [];
     const now = new Date().toISOString();
     await this.withTransaction(async () => {
+        // The claim rows are rebuilt below; remember which were withdrawn so regeneration
+        // cannot bring back a claim whose source was retracted.
+        const withdrawnBefore = (await this.all(
+            `SELECT claim_key FROM teaching_object_claims WHERE object_key = ? AND review_state = 'withdrawn'`,
+            [objectKey]
+        )).map((r) => r.claim_key);
         await this.run(`DELETE FROM teaching_object_claims WHERE object_key = ?`, [objectKey]);
         let ordinal = 0;
         for (const claim of Array.isArray(claims) ? claims : []) {
@@ -306,6 +360,20 @@ async replaceTeachingObjectClaims({ objectKey, articleUid = null, normalizedTopi
             );
             ordinal += 1;
         }
+        const parent = await this.get(`SELECT review_state FROM teaching_objects WHERE object_key = ?`, [objectKey]);
+        if (parent?.review_state === 'withdrawn') {
+            await this.run(
+                `UPDATE teaching_object_claims SET review_state = 'withdrawn', verification_status = 'unverified'
+                 WHERE object_key = ?`,
+                [objectKey]
+            );
+        } else if (withdrawnBefore.length) {
+            await this.run(
+                `UPDATE teaching_object_claims SET review_state = 'withdrawn', verification_status = 'unverified'
+                 WHERE object_key = ? AND claim_key IN (${withdrawnBefore.map(() => '?').join(',')})`,
+                [objectKey, ...withdrawnBefore]
+            );
+        }
     });
     return this.listTeachingObjectClaimsByObjectKey(objectKey);
 }
@@ -344,6 +412,7 @@ async listTeachingObjectClaimsForTopic(topic, { limit = 50 } = {}) {
     const rows = await this.all(
         `SELECT * FROM teaching_object_claims
          WHERE (? = '' OR normalized_topic = ?)
+           AND review_state != 'withdrawn'
          ORDER BY
             CASE verification_status
                 WHEN 'human_reviewed' THEN 0

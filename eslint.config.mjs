@@ -18,6 +18,15 @@ export default [
       'tests/load/**',
       'monitoring/**',
       'eval-results/**',
+      // Standalone preview tool for the architecture diagram, not application code -
+      // same category as scripts/ and monitoring/. It was failing `npm run lint`
+      // (--max-warnings=0) on a prefer-const nit in a file the app never loads.
+      'architecture-diagram/**',
+      // Playwright's generated HTML report bundles minified vendor code.
+      // Linting it produced 4,891 errors from build output and made
+      // `npm run lint` (--max-warnings=0) fail on artefacts, not source.
+      'playwright-report/**',
+      'test-results/**',
       '**/*.d.ts',
     ],
   },

@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "split": "tuning",
   "description": "Phase 2 expansion: 20 additional labelled queries plus off-topic/category overrides for base gold queries.",
   "queryOverrides": [
     {
