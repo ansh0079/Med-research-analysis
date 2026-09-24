@@ -18,6 +18,16 @@ export const API_BASE =
   (typeof process !== 'undefined' ? (process.env?.VITE_API_URL || '') : '');
 export const USAGE_HEADER_EVENT = 'medsearch:usage-headers';
 
+function readViteEnv(name: string): string {
+  try {
+    const im: any = eval('import.meta');
+    return im?.env?.[name] || '';
+  } catch {
+    /* ignore */
+    return (typeof process !== 'undefined' ? (process.env?.[name] as string) || '' : '');
+  }
+}
+
 export interface UsageHeaderDetail {
   kind: 'usage' | 'search';
   limitKey: string;
@@ -41,11 +51,12 @@ import { getCsrfToken, clearCsrfToken } from './csrf';
 
 // Error tracking — only enabled once the user accepts the cookie consent banner.
 registerAnalyticsInitializer(() => {
-  if (import.meta.env.VITE_SENTRY_DSN) {
-    const tracesSampleRate = Number(import.meta.env.VITE_SENTRY_TRACES_SAMPLE_RATE ?? 0.1);
+  const viteDsn = readViteEnv('VITE_SENTRY_DSN');
+  if (viteDsn) {
+    const tracesSampleRate = Number(readViteEnv('VITE_SENTRY_TRACES_SAMPLE_RATE') ?? 0.1);
     Sentry.init({
-      dsn: import.meta.env.VITE_SENTRY_DSN,
-      environment: import.meta.env.MODE,
+      dsn: viteDsn,
+      environment: readViteEnv('MODE'),
       tracesSampleRate: Number.isFinite(tracesSampleRate) ? tracesSampleRate : 0.1,
     });
   }
@@ -420,7 +431,7 @@ export class BaseApiClient {
     try {
       return await fn();
     } catch (error) {
-      if (import.meta.env.VITE_SENTRY_DSN) {
+      if (readViteEnv('VITE_SENTRY_DSN')) {
         Sentry.withScope((scope: Scope) => {
           scope.setExtra('retryCount', retries);
           scope.setExtra('delay', delay);
