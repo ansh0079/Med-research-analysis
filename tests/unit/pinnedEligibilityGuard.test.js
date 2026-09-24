@@ -84,5 +84,59 @@ describe('Pinned landmark topicality guard', () => {
     expect(filtered[0].uid).toBe('pubmed-26551272');
     expect(filtered[0]._eligibilityRoute).toBe('curated_landmark');
   });
+
+  test('Cardiometabolic pins are rejected for ectopic/early pregnancy bleeding', () => {
+    const credence = pinnedArticle({
+      uid: 'pubmed-30990260',
+      title: 'Canagliflozin and Renal Outcomes in Type 2 Diabetes (CREDENCE)',
+      pubtype: ['Randomized Controlled Trial'],
+    });
+    const reliance = pinnedArticle({
+      uid: 'pubmed-19717844',
+      title: 'Dabigatran versus warfarin in atrial fibrillation (RE-LY)',
+      pubtype: ['Randomized Controlled Trial'],
+    });
+    const aristotle = pinnedArticle({
+      uid: 'pubmed-21870978',
+      title: 'Apixaban versus warfarin in atrial fibrillation (ARISTOTLE)',
+      pubtype: ['Randomized Controlled Trial'],
+    });
+    const sprint = pinnedArticle({
+      uid: 'pubmed-26551272',
+      title: 'A randomized trial of intensive versus standard blood-pressure control (SPRINT)',
+      pubtype: ['Randomized Controlled Trial'],
+    });
+    const filtered = filterRelevantArticles([credence, reliance, aristotle, sprint], {
+      query: 'early pregnancy bleeding ectopic pregnancy',
+      specificity: 'moderate',
+      queryMeshTerms: ['Pregnancy, Ectopic'],
+      parsedYearFilters: [],
+      pico: null,
+      queryAliases: [],
+    });
+    expect(filtered).toHaveLength(0);
+  });
+
+  test('SPRINT/AHA HF prevention are rejected for pre‑eclampsia queries', () => {
+    const sprint = pinnedArticle({
+      uid: 'pubmed-26551272',
+      title: 'SPRINT: intensive blood pressure control',
+      pubtype: ['Randomized Controlled Trial'],
+    });
+    const ahaPrevention = pinnedArticle({
+      uid: 'pubmed-32776619',
+      title: 'AHA Scientific Statement: Primary Prevention of Heart Failure',
+      pubtype: ['Practice Guideline'],
+    });
+    const filtered = filterRelevantArticles([sprint, ahaPrevention], {
+      query: 'pre‑eclampsia hypertensive disorders of pregnancy',
+      specificity: 'moderate',
+      queryMeshTerms: ['Pre-Eclampsia'],
+      parsedYearFilters: [],
+      pico: null,
+      queryAliases: [],
+    });
+    expect(filtered).toHaveLength(0);
+  });
 });
 
