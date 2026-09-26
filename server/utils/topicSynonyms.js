@@ -40,6 +40,30 @@ const TOPIC_SYNONYM_GROUPS = [
         'management of press',
         'management of pres',
     ],
+    // Clostridioides/Clostridium difficile naming change — keep landmark FMT paper on-topic
+    [
+        'clostridioides',
+        'clostridium',
+        'clostridioides difficile',
+        'clostridium difficile',
+        'clostridioides difficile infection',
+        'clostridium difficile infection',
+        'c difficile',
+        'c. difficile',
+        'c diff',
+    ],
+    // Fecal/faecal wording variants and FMT phrasing
+    [
+        'fecal',
+        'faecal',
+        'feces',
+        'faeces',
+        'fecal microbiota transplant',
+        'faecal microbiota transplant',
+        'donor feces',
+        'donor faeces',
+        'fmt',
+    ],
 ];
 
 /**
