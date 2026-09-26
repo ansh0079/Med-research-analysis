@@ -11,6 +11,10 @@ const {
     queryAliasMatchScore,
     matchesPopulationFilter,
 } = require('../evidenceBouquet/queryRelevance');
+const {
+    originalConditionTerms,
+    articleMatchesConditionTerm,
+} = require('../../utils/conditionQuery');
 
 const EVIDENCE_LANES = Object.freeze(['guidelines', 'landmark_trials', 'reviews', 'supporting']);
 const { rankLaneV2 } = require('./laneScoring');
@@ -107,6 +111,14 @@ function evaluateEligibility(article, { query, queryMeshTerms = [], queryAliases
         const aliasHit = queryAliasMatchScore(article, queryAliases) > 0;
         const off = isOffTopic(article, query, { queryMeshTerms });
         if (aliasHit || !off) {
+            return { eligible: true, route: 'curated_landmark', rejectionReason: null };
+        }
+        // Weaker fallback for historic-title landmarks: accept if ANY expanded
+        // condition term from the query appears in title/abstract.
+        const terms = originalConditionTerms(query);
+        const text = `${String(article.title || '')} ${String(article.abstract || '')}`.toLowerCase();
+        const anyExpandedHit = terms.some((t) => articleMatchesConditionTerm(text, t, { companionTerms: terms }));
+        if (anyExpandedHit) {
             return { eligible: true, route: 'curated_landmark', rejectionReason: null };
         }
         return { eligible: false, route: null, rejectionReason: 'off_topic_pinned' };
