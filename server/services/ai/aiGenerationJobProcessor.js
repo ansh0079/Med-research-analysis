@@ -319,7 +319,10 @@ async function processAiGenerationJobByKey(jobKey, deps) {
 
         if (jobType === 'pdf_index') {
             const article = input.article || {};
-            const result = await runPdfPreindex(article, { db, cache, serverConfig, fetch: fetchImpl, logger });
+            // fetchImpl, not fetch: runPdfPreindex reads deps.fetchImpl. Passed as `fetch`, it built the
+            // PDF service with no fetch at all, every lookup threw, and each throw was recorded as
+            // "no_open_access_pdf" - 1,503 jobs, none ever succeeded, including open-access trials.
+            const result = await runPdfPreindex(article, { db, cache, serverConfig, fetchImpl, logger });
             // Only mark completed when full text is actually indexed. Empty OA misses used to
             // complete forever and block flagship retries via getOrEnqueuePdfIndex.
             if (result?.indexed) {

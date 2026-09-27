@@ -18,7 +18,13 @@ function cacheKey(article) {
  * @returns {Promise<{ indexed: boolean, reason?: string, wordCount?: number, id?: string, cached?: boolean }>}
  */
 async function runPdfPreindex(article, deps) {
-    const { cache, serverConfig, fetchImpl, db = null } = deps;
+    const { cache, serverConfig, db = null } = deps;
+    const fetchImpl = deps.fetchImpl || deps.fetch;
+    // Without a fetch every source lookup throws inside a catch that returns null, which is
+    // indistinguishable from "this paper has no open-access PDF". Fail as what it is.
+    if (typeof fetchImpl !== 'function') {
+        throw new Error('pdf preindex: no fetch implementation supplied (deps.fetchImpl)');
+    }
     if (!article || (!article.doi && !article.pmid && !article.pmcid)) {
         return { indexed: false, reason: 'missing_identifiers' };
     }
