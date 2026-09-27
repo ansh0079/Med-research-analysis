@@ -11,6 +11,7 @@ const logger = require('../../config/logger');
 const { getSharedAiService } = require('../aiService');
 const { resolveProvider } = require('../../utils/aiProvider');
 const { buildTopicKnowledgePrompt } = require('../../prompts');
+const { TOPIC_KNOWLEDGE_MAX_OUTPUT_TOKENS, TOPIC_KNOWLEDGE_TIMEOUT_MS } = require('./topicKnowledgeExtraction');
 const { validateAiOutput } = require('../aiOutputValidation');
 const { parseJsonBlock } = require('../../utils/parseJson');
 const { generateAndStoreMCQs } = require('../mcqGeneratorService');
@@ -204,8 +205,16 @@ async function evolveTopicKnowledge({
         prior?.knowledge || null,
         { guidelines }
     );
-    const maxOutputTokens = provider === 'claude' ? 8192 : undefined;
-    const raw = await ai.callText(prompt, provider, model, { temperature: 0.25, maxOutputTokens });
+    // Same prompt, same output size, as topic knowledge extraction, so the same budget for every
+    // provider. This used to give 8192 to Claude only; Gemini - the provider that actually runs -
+    // got the 2500 long-prompt default, and every nightly evolution run (~21 calls at 03:20 UTC)
+    // came back cut off at MAX_TOKENS and was thrown away.
+    const raw = await ai.callText(prompt, provider, model, {
+        temperature: 0.25,
+        maxOutputTokens: TOPIC_KNOWLEDGE_MAX_OUTPUT_TOKENS,
+        timeoutMs: TOPIC_KNOWLEDGE_TIMEOUT_MS,
+        usage: { operation: 'topic_evolution', topic: seedQuery },
+    });
 
     let knowledgeRaw = parseJsonBlock(raw);
     if (!knowledgeRaw) {

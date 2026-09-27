@@ -142,6 +142,36 @@ describe('topicEvolutionService', () => {
         expect(policies).not.toContain('recommendation_strategy');
     });
 
+    it('gives Gemini the same output budget as Claude, so the knowledge JSON is not cut off', async () => {
+        // Production: Claude got 8192, Gemini fell through to the 2500 long-prompt default, and
+        // every nightly run on Gemini ended at MAX_TOKENS with its output discarded.
+        const { resolveProvider } = require('../../server/utils/aiProvider');
+        resolveProvider.mockReturnValueOnce({ provider: 'gemini', model: 'gemini-test' });
+        const db = {
+            getGuidelinesByTopic: jest.fn(async () => []),
+            getTopicKnowledge: jest.fn(async () => null),
+            upsertTopicKnowledge: jest.fn(),
+            createTopicKnowledgeProposal: jest.fn(async () => ({ id: 1, status: 'pending_review' })),
+            recordLearningEvent: jest.fn(async () => ({ id: 1 })),
+        };
+        await evolveTopicKnowledge({
+            topic: 'rare topic',
+            articles: [
+                { uid: '1', title: 'A', abstract: 'enough text for paper A abstract content here' },
+                { uid: '2', title: 'B', abstract: 'enough text for paper B abstract content here' },
+                { uid: '3', title: 'C', abstract: 'enough text for paper C abstract content here' },
+            ],
+            serverConfig: { keys: { gemini: 'x' } },
+            fetchImpl: jest.fn(),
+            db,
+            forceProposal: true,
+        });
+        const [, provider, , options] = getSharedAiService.mock.results[0].value.callText.mock.calls[0];
+        expect(provider).toBe('gemini');
+        expect(options.maxOutputTokens).toBe(8192);
+        expect(options.usage).toMatchObject({ operation: 'topic_evolution' });
+    });
+
     it('creates a proposal when forceProposal is set', async () => {
         const db = {
             getGuidelinesByTopic: jest.fn(async () => []),

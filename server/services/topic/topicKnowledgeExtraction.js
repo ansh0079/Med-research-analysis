@@ -231,4 +231,10 @@ async function extractAndUpsertTopicKnowledge({
     return db.getTopicKnowledge(queryValidation.sanitized);
 }
 
-module.exports = { extractAndUpsertTopicKnowledge, intentHintFromDistribution, stripCodeFence };
+module.exports = {
+    extractAndUpsertTopicKnowledge,
+    intentHintFromDistribution,
+    stripCodeFence,
+    TOPIC_KNOWLEDGE_MAX_OUTPUT_TOKENS,
+    TOPIC_KNOWLEDGE_TIMEOUT_MS,
+};

@@ -1,6 +1,30 @@
 const { collectQualityMetrics } = require('../services/qualityMetricsService');
 const { getSloStatus } = require('../services/observabilityMetrics');
 
+async function notifyFeedback({ type, topic, comment, rating, req }, {
+    loadRecipients = () => require('../services/ops/qualityAlerts').loadAlertConfig().recipients,
+    sendEmail = (message) => require('../services/emailService').sendEmail(message),
+} = {}) {
+    const recipients = loadRecipients();
+    if (!recipients?.length) return false;
+    const who = req.user?.email || `anonymous session ${String(req.sessionId || '').slice(0, 8)}`;
+    const text = [
+        `From: ${who}`,
+        `Type: ${type}${topic ? `  |  Topic: ${String(topic).slice(0, 240)}` : ''}${rating ? `  |  Usefulness: ${rating}/5` : ''}`,
+        `Page: ${String(req.get?.('referer') || 'unknown').slice(0, 300)}`,
+        '',
+        String(comment).slice(0, 4000),
+    ].join('\n');
+    const { escapeHtml } = require('../utils/sanitization');
+    await sendEmail({
+        to: recipients,
+        subject: `[Signal MD feedback] ${type}${topic ? `: ${String(topic).slice(0, 60)}` : ''}`,
+        text,
+        html: `<pre style="font-family:inherit;white-space:pre-wrap">${escapeHtml(text)}</pre>`,
+    });
+    return true;
+}
+
 function registerAnalyticsRoutes(app, { db, rateLimit, requireAuthJwt, requireRole, requireJson }) {
     // Aggregate stats are admin-only — individual users should not see org-wide search volumes
     app.get('/api/analytics/summary', requireAuthJwt, requireRole('admin'), rateLimit(30, 60), async (req, res) => {
@@ -109,6 +133,13 @@ function registerAnalyticsRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
             }).catch((err) => {
                 req.log.warn({ err, productType: type }, 'quality_feedback event not recorded');
             });
+            // A written comment is a tester telling us something. It was stored and never read:
+            // nothing in the app selects the comment column. Send it to the people who get the
+            // ops alerts. Fire-and-forget: a mail failure must not fail the tester's submission.
+            if (comment && String(comment).trim()) {
+                notifyFeedback({ type, topic, comment, rating: clampRating(clinicalUsefulness), req })
+                    .catch((err) => req.log.warn({ err }, 'feedback notification not sent'));
+            }
             res.json({ ok: true });
         } catch (error) {
             req.log.error({ err: error }, 'Quality feedback error');
@@ -117,4 +148,4 @@ function registerAnalyticsRoutes(app, { db, rateLimit, requireAuthJwt, requireRo
     });
 }
 
-module.exports = { registerAnalyticsRoutes };
+module.exports = { registerAnalyticsRoutes, notifyFeedback };
