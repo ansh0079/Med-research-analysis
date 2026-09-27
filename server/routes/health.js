@@ -91,6 +91,8 @@ function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metr
                     laneRanking: String(process.env.LANE_RANKING || 'v1').toLowerCase(),
                     laneRetrieval: String(process.env.SEARCH_LANE_RETRIEVAL || 'off').toLowerCase(),
                     retentionDeleting: String(process.env.RETENTION_ENABLED || 'false').toLowerCase() === 'true',
+                    schedulersPaused: [...require('../services/ops/schedulerPause').pausedSchedulers()],
+                    picoRerankMode: String(process.env.SEARCH_PICO_RERANK_MODE || 'specific').toLowerCase(),
                 },
                 cache: {
                     keys: cacheStats.keys,

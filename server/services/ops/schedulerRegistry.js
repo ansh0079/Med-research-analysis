@@ -78,8 +78,9 @@ const {
 const {
     scheduleSnapshotRetention, stopSnapshotRetention,
 } = require('../search/snapshotRetentionScheduler');
-const { scheduleDataRetention } = require('./dataRetention');
-const { scheduleQualityAlerts } = require('./qualityAlerts');
+const { scheduleDataRetention, stopDataRetention } = require('./dataRetention');
+const { scheduleQualityAlerts, stopQualityAlerts } = require('./qualityAlerts');
+const { DEFAULT_PAUSED, pausedSchedulers } = require('./schedulerPause');
 const { sendEmail } = require('../emailService');
 
 /**
@@ -153,15 +154,18 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
         {
             task: 'evidence-snapshot-retention',
             start: () => scheduleSnapshotRetention(db, baseLogger.child({ task: 'evidence-snapshot-retention' })),
+            stop: () => stopSnapshotRetention(),
         },
         {
             task: 'data-retention',
             start: () => scheduleDataRetention(db, baseLogger.child({ task: 'data-retention' })),
+            stop: () => stopDataRetention(),
         },
         {
             task: 'quality-alerts',
             start: () => scheduleQualityAlerts(db, baseLogger.child({ task: 'quality-alerts' }), { sendEmail }),
-            stop: () => stopSnapshotRetention(),
+            // Was stopSnapshotRetention: shutdown stopped the wrong job and left this one running.
+            stop: () => stopQualityAlerts(),
         },
         {
             task: 'curriculum-seed',
@@ -225,14 +229,22 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
  * Start all registered schedulers.
  * @param {SchedulerEntry[]} registry
  */
-function startAllSchedulers(registry) {
+function startAllSchedulers(registry, { env = process.env } = {}) {
+    const paused = pausedSchedulers(env);
+    const skipped = [];
     for (const entry of registry) {
+        if (paused.has(entry.task)) {
+            skipped.push(entry.task);
+            continue;
+        }
         try {
             entry.start();
         } catch (err) {
             logger.error({ err, task: entry.task }, 'Failed to start scheduler');
         }
     }
+    if (skipped.length) logger.info({ paused: skipped }, 'Schedulers paused (SCHEDULERS_PAUSED)');
+    return { paused: skipped };
 }
 
 /**
@@ -242,6 +254,7 @@ function startAllSchedulers(registry) {
  */
 function stopAllSchedulers(registry) {
     for (const entry of registry) {
+        if (typeof entry.stop !== 'function') continue;
         try {
             entry.stop();
         } catch (err) {
@@ -251,6 +264,8 @@ function stopAllSchedulers(registry) {
 }
 
 module.exports = {
+    DEFAULT_PAUSED,
+    pausedSchedulers,
     buildSchedulerRegistry,
     startAllSchedulers,
     stopAllSchedulers,
