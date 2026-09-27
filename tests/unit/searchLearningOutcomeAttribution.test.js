@@ -60,6 +60,12 @@ describe('the writer stores a uuid quiz attempt id', () => {
         class Base {
             constructor() { this.kysely = true; }
             async run(sql, params) { const r = sqlite.prepare(sql).run(...params); return { lastInsertRowid: r.lastInsertRowid }; }
+            // Mirrors DatabaseCore.runInsert: INSERT ... RETURNING id, same on both dialects.
+            async runInsert(sql, params) {
+                const row = sqlite.prepare(`${sql.trim()} RETURNING id`).get(...params);
+                const id = row?.id ?? null;
+                return { id, lastID: id, lastInsertRowid: id, changes: id == null ? 0 : 1 };
+            }
         }
         return { host: new (mixin(Base))(), sqlite };
     }
