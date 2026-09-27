@@ -34,6 +34,7 @@
     "test:e2e:install-deps": "playwright install --with-deps",
     "test:e2e:report": "playwright show-report",
     "test:watch": "jest --watch",
+    "test:pg": "jest --testPathPatterns=\"DatabaseCore|db[.]integration|redisClient|claimMasteryBkt|conceptHashPValues|learningObservability|lowRecallDb|personalizationArmPullFractional|searchGoldJudgmentsDb|topicBouquetGraph|topicMemory|dbContract|dbComposition\" --coverage=false --runInBand",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "secrets:generate": "node scripts/generate-secrets.mjs",

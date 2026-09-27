@@ -125,9 +125,13 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - name: Run backend tests against Postgres + Redis
-        # runInBand: these suites bootstrap the same Postgres database; parallel
-        # workers race on CREATE TABLE (pg_type_typname_nsp_index errors).
-        run: npm test -- --testPathPatterns="DatabaseCore|db\\.integration|redisClient" --coverage=false --runInBand
+        # Every suite that exercises the real database layer, not just the smoke tests. The main
+        # suite runs these on SQLite; production is Postgres, and the two differ in ways that have
+        # shipped bugs (NULL ordering, text timestamps, LEAST/GREATEST, non-atomic transactions).
+        # The list lives in package.json "test:pg" - add a suite there when it uses the real db.
+        # runInBand: these suites share one Postgres database; parallel workers race on CREATE
+        # TABLE (pg_type_typname_nsp_index errors).
+        run: npm run test:pg
         env:
           NODE_ENV: test
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
