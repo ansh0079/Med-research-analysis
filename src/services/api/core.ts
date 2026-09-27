@@ -313,6 +313,24 @@ export class BaseApiClient {
         response = await fetch(url, retryOpts);
       }
     }
+
+    // A rejected CSRF token (expired, or signed with a secret the server has since rotated) is not
+    // the user's fault and is fixed by fetching a new one. Retry once; a second 403 is real.
+    if (response.status === 403 && !['GET', 'HEAD', 'OPTIONS'].includes(method)) {
+      const body = await response.clone().json().catch(() => null) as { error?: string } | null;
+      if (body?.error === 'CSRF token missing or invalid') {
+        clearCsrfToken();
+        const csrfRetryHeaders = new Headers(fetchOpts.headers);
+        csrfRetryHeaders.set('X-CSRF-Token', await getCsrfToken());
+        try {
+          const sid = localStorage.getItem('med_research_session');
+          if (sid) csrfRetryHeaders.set('X-Session-Id', sid);
+        } catch {
+          /* ignore storage errors */
+        }
+        response = await fetch(url, { ...fetchOpts, headers: csrfRetryHeaders });
+      }
+    }
     const clonedResponse = response.clone();
 
     const serverRequestId = response.headers.get('X-Request-Id');

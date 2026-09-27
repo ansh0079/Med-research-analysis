@@ -21,9 +21,19 @@ function setStoredSessionId(id: string): void {
   }
 }
 
+// The server signs tokens as <nonce>.<exp>.<sig> and rejects them after exp (2h). A tab left open
+// longer than that kept presenting the dead token, so every mutation - search included - got 403
+// until the page was reloaded. Refetch a minute before expiry instead.
+const EXPIRY_MARGIN_MS = 60 * 1000;
+
+function isFresh(token: string): boolean {
+  const exp = Number(token.split('.')[1]);
+  return Number.isFinite(exp) && Date.now() < exp - EXPIRY_MARGIN_MS;
+}
+
 export async function getCsrfToken(): Promise<string> {
   const sid = getStoredSessionId();
-  if (cachedToken && cachedForSession === sid) return cachedToken;
+  if (cachedToken && cachedForSession === sid && isFresh(cachedToken)) return cachedToken;
   if (fetching) return fetching;
   fetching = (async () => {
     try {
