@@ -448,13 +448,13 @@ function annotateSearchRankMetadata(articles, bouquetRanking = []) {
     });
 }
 
-function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMeshTerms = [], parsedYearFilters = [], pico = null, queryAliases = [] }) {
+function filterRelevantArticles(raw, { query, specificity = 'moderate', queryMeshTerms = [], parsedYearFilters = [], pico = null, queryAliases = [], hardZeroHitGuard = false }) {
     const currentYear = new Date().getFullYear();
     const queryWantsMechanisms = MECHANISM_QUERY_PATTERNS.test(String(query || ''));
     const isStrictMode = specificity === 'strict';
     const meshTerms = Array.isArray(queryMeshTerms) ? queryMeshTerms : [];
 
-    const eligibilityCtx = { query, queryMeshTerms: meshTerms, queryAliases };
+    const eligibilityCtx = { query, queryMeshTerms: meshTerms, queryAliases, hardZeroHitGuard };
     return (Array.isArray(raw) ? raw : []).flatMap((article) => {
         const eligibility = evaluateEligibility(article, eligibilityCtx);
         if (!eligibility.eligible) return [];
@@ -592,6 +592,7 @@ async function fetchAndRankSearchArticles({
                 parsedYearFilters,
                 pico,
                 queryAliases: telemetry.clinicalAliases,
+                hardZeroHitGuard: Boolean(telemetry.lowRecallLearning),
             });
             span.setAttribute('search.relevant_count', rows.length);
             return rows;
@@ -615,6 +616,7 @@ async function fetchAndRankSearchArticles({
                 parsedYearFilters,
                 pico,
                 queryAliases: telemetry.clinicalAliases,
+                hardZeroHitGuard: Boolean(telemetry.lowRecallLearning),
             }).map(sanitizeArticleOutput);
             const blended = blendLiveWithEvidenceMemory(sanitized, topicEvidenceMemory, {
                 memoryArticles: memoryRelevant,
