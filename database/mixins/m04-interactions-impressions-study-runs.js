@@ -543,7 +543,7 @@ mapLearningSchedulerRunRow(row) {
 async createLearningSchedulerRun({ runType = 'topic_refresh', details = {} } = {}) {
     if (!this.kysely) return null;
     const now = new Date().toISOString();
-    const result = await this.run(
+    const result = await this.runInsert(
         `INSERT INTO learning_scheduler_runs (run_type, status, started_at, details)
          VALUES (?, 'running', ?, ?)`,
         [String(runType || 'topic_refresh'), now, JSON.stringify(details || {})]

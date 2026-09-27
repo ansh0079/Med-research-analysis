@@ -9,7 +9,7 @@ module.exports = (Sup) => class extends Sup {
 // ==========================================
 
 async createCpdSession(userId, { activityType, topic = '', durationMinutes = 0, questionCount = 0, accuracyPct = null, notes = '', source = 'auto' }) {
-    const result = await this.run(
+    const result = await this.runInsert(
         `INSERT INTO cpd_sessions (user_id, activity_type, topic, duration_minutes, question_count, accuracy_pct, notes, source, created_at)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
         [userId, activityType, String(topic || '').slice(0, 200), Number(durationMinutes) || 0,
@@ -116,7 +116,7 @@ mapPortfolioReflectionRow(row) {
 async createPortfolioReflection(userId, data = {}) {
     const topic = String(data.topic || '').slice(0, 240);
     const now = new Date().toISOString();
-    const result = await this.run(
+    const result = await this.runInsert(
         `INSERT INTO portfolio_reflections (
             user_id, reflection_type, source_type, topic, normalized_topic,
             what_happened, what_i_learned, what_i_will_change, evidence_used,

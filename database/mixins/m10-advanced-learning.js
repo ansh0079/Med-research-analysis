@@ -60,7 +60,7 @@ async createLearningRound({ userId, topic, items = [] } = {}) {
     if (!uid || !normalized) return null;
     const now = new Date().toISOString();
     return this.withTransaction(async () => {
-        const result = await this.run(
+        const result = await this.runInsert(
             `INSERT INTO learning_rounds (user_id, topic, normalized_topic, status, item_count, created_at)
              VALUES (?, ?, ?, 'active', ?, ?)`,
             [uid, topicLabel, normalized, items.length, now]
@@ -108,7 +108,7 @@ async recordLearningEvent({
     const normalized = topicLabel ? this.normalizeTopic(topicLabel) : null;
     const now = occurredAt || new Date().toISOString();
     const safePayload = payload && typeof payload === 'object' ? payload : { value: payload };
-    const result = await this.run(
+    const result = await this.runInsert(
         `INSERT INTO learning_events (
             user_id, event_type, topic, normalized_topic, claim_key,
             source_type, source_id, payload_json, occurred_at, created_at

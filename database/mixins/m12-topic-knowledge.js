@@ -337,8 +337,11 @@ module.exports = (Sup) => class extends Sup {
                 created_at: now,
                 updated_at: now,
             })
+            .returning('id')
             .executeTakeFirst();
-        const id = Number(result?.insertId || result?.numInsertedOrUpdatedRows || 0);
+        // RETURNING, not insertId/numInsertedOrUpdatedRows: Postgres has no insertId, so this read the
+        // row count (1) as the id. Proposal ids are uuids in production, so no Number() either.
+        const id = result?.id ?? null;
         if (id) return this.getTopicKnowledgeProposal(id);
         return this.listTopicKnowledgeProposals({ topic, status: 'pending_review', limit: 1 })
             .then((rows) => rows.proposals[0] || null);

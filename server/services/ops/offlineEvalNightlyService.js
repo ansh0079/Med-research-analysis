@@ -188,7 +188,9 @@ async function runNightlyOfflineEval(db, {
 
     let evalRunId = null;
     if (db?.run) {
-        const insert = await db.run(
+        // runInsert returns the new id on both dialects; plain run() gave lastID to neither.
+        const insertFn = typeof db.runInsert === 'function' ? db.runInsert.bind(db) : db.run.bind(db);
+        const insert = await insertFn(
             `INSERT INTO offline_eval_runs (
                 policy_type, days, labelled_count, propensity_coverage, serving_arm_id,
                 best_shadow_arm_id, serving_score, best_shadow_score, lift,
@@ -222,7 +224,7 @@ async function runNightlyOfflineEval(db, {
             logger.warn({ err }, 'offline_eval_runs insert failed');
             return null;
         });
-        evalRunId = insert?.lastID ?? insert?.lastInsertRowid ?? null;
+        evalRunId = insert?.id ?? insert?.lastID ?? insert?.lastInsertRowid ?? null;
     }
 
     let actuation = { actuated: false };

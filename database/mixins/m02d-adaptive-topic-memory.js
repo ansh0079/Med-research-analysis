@@ -357,7 +357,7 @@ async insertProactiveEvidenceAlert({
     if (!this.kysely || !userId || !normalizedTopic || !title) return null;
     const now = new Date().toISOString();
     const payloadJson = payload && typeof payload === 'object' ? JSON.stringify(payload) : null;
-    const result = await this.run(
+    const result = await this.runInsert(
         `INSERT INTO proactive_evidence_alerts (
             user_id, normalized_topic, display_topic, alert_kind, title, summary, payload_json, landmark_article_uid, created_at
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
