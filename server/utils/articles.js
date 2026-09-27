@@ -1,4 +1,4 @@
-const { escapeHtml } = require('./validation');
+const { decodeHtmlEntities, sanitizeUserInput } = require('./sanitization');
 const { computeQualityScore } = require('../services/qualityService');
 const { getEbmScore, isPreprint } = require('../services/unifiedEvidenceSearch');
 
@@ -170,11 +170,14 @@ function sanitizeArticleOutput(article) {
     if (!article || typeof article !== 'object') return article;
     const quality = computeQualityScore(article);
     const ebmScore = article._ebmScore ?? getEbmScore(article);
+    // Plain text out: the client renders these as React text, which escapes them. HTML-escaping
+    // here showed readers "Crohn&#039;s" and "P &lt; .001", doubled to "&amp;#039;" on paths that
+    // sanitised twice. Decoding also cleans titles already stored escaped, and source entities.
     return {
         ...article,
-        title: article.title ? escapeHtml(article.title) : article.title,
-        abstract: article.abstract ? escapeHtml(article.abstract) : article.abstract,
-        source: article.source ? escapeHtml(article.source) : article.source,
+        title: decodeHtmlEntities(article.title),
+        abstract: decodeHtmlEntities(article.abstract),
+        source: decodeHtmlEntities(article.source),
         _impact: computeImpactScore(article),
         _quality: quality,
         _ebmScore: ebmScore,
@@ -187,15 +190,21 @@ function validateQuery(query) {
     if (!query || typeof query !== 'string') {
         return { valid: false, error: 'Query is required' };
     }
-    const trimmed = query.trim();
+    // Decode first so the pattern check sees what will actually be used.
+    const trimmed = decodeHtmlEntities(query).trim();
     if (trimmed.length === 0) return { valid: false, error: 'Query cannot be empty' };
     if (trimmed.length > 500) return { valid: false, error: 'Query too long (max 500 characters)' };
     const dangerousPatterns = [/<script/i, /javascript:/i, /onerror\s*=/i, /eval\s*\(/i];
     for (const pattern of dangerousPatterns) {
         if (pattern.test(trimmed)) return { valid: false, error: 'Query contains invalid characters' };
     }
-    const { sanitizeInput } = require('./validation');
-    return { valid: true, sanitized: sanitizeInput(trimmed) };
+    // Not HTML-escaped: the query goes to PubMed, OpenAlex, the model and parameterised SQL, none of
+    // which want HTML. Escaping sent "crohn&#039;s disease" to retrieval (1 result against 10 for
+    // the same query without the apostrophe). Anything rendering it as HTML escapes at that point.
+    return {
+        valid: true,
+        sanitized: sanitizeUserInput(trimmed, { maxLength: 500, escapeHtml: false }),
+    };
 }
 
 function validatePagination(page, limit) {

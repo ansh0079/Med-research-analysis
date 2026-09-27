@@ -29,6 +29,34 @@ function escapeHtml(text) {
         .replace(/'/g, '&#039;');
 }
 
+const NAMED_ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+
+/**
+ * Turn HTML-escaped text back into plain text.
+ *
+ * For values that go out as JSON and are rendered by React, which escapes on render. Escaping them
+ * on the server as well showed users literal entities ("Crohn&#039;s", "P &lt; .001"), and because
+ * escaping is not idempotent, a value escaped on two paths reached them as "Crohn&amp;#039;s".
+ * Decodes repeatedly, up to three layers, so text already stored double-escaped comes back clean.
+ */
+function decodeHtmlEntities(text) {
+    if (typeof text !== 'string' || !text.includes('&')) return text;
+    let out = text;
+    for (let i = 0; i < 3; i += 1) {
+        const next = out.replace(/&(#x[0-9a-f]+|#[0-9]+|[a-z]+);/gi, (match, body) => {
+            if (body[0] === '#') {
+                const code = body[1] === 'x' || body[1] === 'X' ? parseInt(body.slice(2), 16) : parseInt(body.slice(1), 10);
+                return Number.isFinite(code) && code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : match;
+            }
+            const named = NAMED_ENTITIES[body.toLowerCase()];
+            return named === undefined ? match : named;
+        });
+        if (next === out) break;
+        out = next;
+    }
+    return out;
+}
+
 function stripControlChars(text) {
     return String(text)
         .replace(/\0/g, '')
@@ -219,6 +247,8 @@ module.exports = {
     sanitizeUserInput,
     sanitizeMarkdown,
     escapeHtml,
+    decodeHtmlEntities,
+    stripControlChars,
     sanitizeTopicName,
     sanitizeMedicalQuery,
     sanitizeJsonInput,
