@@ -274,6 +274,45 @@ function shouldUsePicoReranker() {
     return String(process.env.SEARCH_PICO_RERANK_ENABLED || 'true').toLowerCase() !== 'false';
 }
 
+// Words that narrow WHO a question is about. Evidence ranking sees keywords, citations and study
+// type; it cannot tell an adult trial from a paediatric one, so these are where reading the
+// abstracts changes the answer.
+const RERANK_POPULATION_TERMS = new RegExp(String.raw`\b(child(ren)?|paediatric|pediatric|neonat\w*|newborn\w*|infant\w*|preterm|adolescen\w*|teen\w*|elderly|older (adults?|people|patients)|geriatric|frail\w*|pregnan\w*|postpartum|antenatal|obstetric|lactat\w*|breastfeed\w*|wom[ae]n|m[ae]n|male|female|over \d+|under \d+|aged? \d+|\d+ ?(years?|yo|y\/o))\b`, 'i');
+const RERANK_SETTING_TERMS = /\b(icu|intensive care|critically ill|critical care|emergency|ed|prehospital|primary care|general practice|outpatients?|inpatients?|ambulatory|community[- ](setting|care|dwelling|based)|nursing home|care home|perioperative|postoperative|post-?op|intraoperative|low[- ]income|resource[- ]limited)\b/i;
+// Not "acute"/"chronic"/"early": they are inside disease and therapy names (acute kidney injury,
+// chronic kidney disease, early goal-directed therapy) and would mark nearly every query specific.
+const RERANK_SEVERITY_TERMS = /\b(severe|mild|moderate|refractory|resistant|recurrent|advanced|end[- ]stage|metastatic|decompensated|high[- ]risk|low[- ]risk)\b/i;
+const RERANK_COMPARISON_TERMS = /\b(vs\.?|versus|compared (with|to)|comparison|or)\b/i;
+// "AF with CKD", "HF with preserved EF": a second condition that defines the population.
+// "patients with sepsis" is just the topic, so a bare "patients/people with" does not count.
+const RERANK_COMORBIDITY = /\b(?<!patients |people |adults |those |individuals )with\b/i;
+
+/**
+ * Does this query carry a constraint that only reading the abstracts can check?
+ *
+ * The model rerank costs ~9s, most of an uncached search. For a broad topic ("sepsis fluid
+ * resuscitation") evidence ranking is already a reasonable order and the rerank only reshuffles
+ * it; for a specific question ("fluids in children with septic shock") it is what keeps the adult
+ * guideline with 4,000 citations from outranking the paediatric trial. Deterministic on the query
+ * text, because the PICO extractor fills `population` with the disease even for a bare topic.
+ *
+ * SEARCH_PICO_RERANK_MODE=always restores reranking every query.
+ */
+function queryNeedsModelRerank(query, pico = null) {
+    if (String(process.env.SEARCH_PICO_RERANK_MODE || 'specific').toLowerCase() === 'always') {
+        return { needed: true, reason: 'mode_always' };
+    }
+    const text = String(query || '');
+    if (String(pico?.comparison || pico?.comparator || '').trim() || RERANK_COMPARISON_TERMS.test(text)) {
+        return { needed: true, reason: 'comparison' };
+    }
+    if (RERANK_POPULATION_TERMS.test(text)) return { needed: true, reason: 'population' };
+    if (RERANK_SETTING_TERMS.test(text)) return { needed: true, reason: 'setting' };
+    if (RERANK_SEVERITY_TERMS.test(text)) return { needed: true, reason: 'severity' };
+    if (RERANK_COMORBIDITY.test(text)) return { needed: true, reason: 'comorbidity' };
+    return { needed: false, reason: 'broad_query' };
+}
+
 function normalizePicoProfileForReranker(pico, query, queryIntent) {
     const safe = pico && typeof pico === 'object' ? pico : {};
     return {
@@ -358,7 +397,13 @@ async function applyPicoRerankStage({
 
     const started = Date.now();
     const keys = serverConfig?.keys || {};
-    const ai = (keys.anthropic || keys.gemini || keys.mistral) ? getSharedAiService({ serverConfig, fetchImpl }) : null;
+    // A broad query skips only the model call. Without `ai` the reranker applies its keyword and
+    // study-design ordering, which is what every search got for months while the model call was
+    // failing, so broad results keep the order they had rather than losing the stage entirely.
+    const gate = queryNeedsModelRerank(query, pico);
+    const ai = gate.needed && (keys.anthropic || keys.gemini || keys.mistral)
+        ? getSharedAiService({ serverConfig, fetchImpl })
+        : null;
     const picoProfile = normalizePicoProfileForReranker(pico, query, queryIntent);
 
     try {
@@ -381,6 +426,7 @@ async function applyPicoRerankStage({
             telemetry.picoRerank = {
                 used: true,
                 aiUsed: false,
+                modelGate: gate.reason,
                 ...rerankTelemetry,
                 ms: Date.now() - started,
                 candidateCount: articles.length,
@@ -800,6 +846,7 @@ module.exports = {
     annotateSearchRankMetadata,
     articleRankKeyCandidates,
     normalizePicoProfileForReranker,
+    queryNeedsModelRerank,
     mergeRerankedWithRemainder,
     blendPicoWithEvidenceOrder,
     applyPicoRerankStage,
