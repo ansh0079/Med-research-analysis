@@ -448,7 +448,12 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
                 ? buildDeltaKnowledgeExtractionPrompt(cleanTopic, synthesis, articlesToAnalyze, existingKnowledge, interactionStats)
                 : buildSeminalKnowledgeExtractionPrompt(cleanTopic, synthesis, articlesToAnalyze, existingKnowledge, interactionStats);
 
-            const raw = await ai.callText(prompt, provider, model || PINNED_MODELS[provider] || PINNED_MODELS.gemini, { temperature: 0.15 });
+            const raw = await ai.callText(prompt, provider, model || PINNED_MODELS[provider] || PINNED_MODELS.gemini, {
+                temperature: 0.15,
+                // Same knowledge object as topic extraction (8192). With no budget it got the 2500
+                // long-prompt default and was cut off.
+                usage: { operation: 'seminal_knowledge_extraction', topic: cleanTopic },
+            });
             const knowledge = extractJsonObject(raw);
 
             // Merge incremental updates with existing knowledge

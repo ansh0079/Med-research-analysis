@@ -59,7 +59,7 @@ Example output: ("Metformin"[MeSH Terms]) AND ("Polycystic Ovary Syndrome"[MeSH 
     const ai = getSharedAiService({ serverConfig, fetchImpl });
     const started = Date.now();
     try {
-        const raw = await ai.callText(prompt, provider, model, { temperature: 0.1, maxOutputTokens: 200, timeoutMs: 8000 });
+        const raw = await ai.callText(prompt, provider, model, { temperature: 0.1, maxOutputTokens: 200, timeoutMs: 8000, usage: { operation: 'query_reformulation' } });
         const cleaned = String(raw || '').trim().replace(/^```[\s\S]*?\n/, '').replace(/\n```$/, '').trim();
         if (cleaned.length < 5 || cleaned.length > 400) return null;
         if (cache && typeof cache.set === 'function') {

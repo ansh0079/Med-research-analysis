@@ -69,7 +69,7 @@ Abstract (trimmed): ${String(article.abstract || '').slice(0, 1200)}
 In ≤3 short sentences, explain why this may matter for practice and what a clinician should verify before changing management. No bullet symbols. Plain text only.`;
 
     try {
-        const raw = await ai.callText(prompt, provider, model, { temperature: TEMPERATURE.synopsis });
+        const raw = await ai.callText(prompt, provider, model, { temperature: TEMPERATURE.synopsis, usage: { operation: 'knowledge_drift_note' } });
         const t = String(raw || '').trim();
         return t.length > 40 ? t.slice(0, 2000) : null;
     } catch (err) {

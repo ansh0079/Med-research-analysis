@@ -169,6 +169,7 @@ function registerArticleToolRoutes(app, {
                 let extraction = await ai.callStructured(prompt, selectedProvider, selectedModel, {
                     temperature: TEMPERATURE.synthesis,
                     maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis,
+                    usage: { operation: 'article_pico' },
                 });
                 if (!extraction || typeof extraction !== 'object') {
                     return res.status(502).json({ error: 'AI returned malformed PICO data. Please retry.' });
@@ -213,7 +214,7 @@ function registerArticleToolRoutes(app, {
                 const memCached = await cache.getAsync(cacheKey);
                 if (memCached) return res.json({ ...memCached, cached: true });
 
-                const rawText = await ai.callText(buildConsortPrompt(article), selectedProvider, selectedModel);
+                const rawText = await ai.callText(buildConsortPrompt(article), selectedProvider, selectedModel, { usage: { operation: 'article_consort' } });
 
                 const jsonMatch = rawText.match(/\{[\s\S]*\}/);
                 let parsed;
@@ -279,7 +280,7 @@ function registerArticleToolRoutes(app, {
                 const memCached = await cache.getAsync(cacheKey);
                 if (memCached) return res.json({ ...memCached, cached: true });
 
-                const rawText = await ai.callText(buildComparePrompt(articleA, articleB, topic), selectedProvider, selectedModel);
+                const rawText = await ai.callText(buildComparePrompt(articleA, articleB, topic), selectedProvider, selectedModel, { usage: { operation: 'article_compare' } });
 
                 const jsonMatch = rawText.match(/\{[\s\S]*\}/);
                 let parsed;

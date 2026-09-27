@@ -76,6 +76,7 @@ async function judgeClaim({ claimText, evidenceQuote }, { serverConfig = {}, fet
             const raw = await ai.callStructured(prompt, provider, model, {
                 temperature: TEMPERATURE?.analysis ?? 0.2,
                 maxOutputTokens: 512,
+                usage: { operation: 'evidence_support_judge' },
             });
             const parsed = parseVerdict(raw);
             if (parsed) return { ...parsed, provider, model };

@@ -45,6 +45,8 @@ const MAX_OUTPUT_TOKENS = {
 };
 
 const { AI_DISCLAIMER } = require('../aiConstants');
+// Budgets and deadlines per named operation; see aiOperations.js for why this is one table.
+const { withOperationDefaults } = require('./aiOperations');
 
 /**
  * @param {object} options
@@ -415,13 +417,15 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         return parseStructuredOutput(text);
     }
 
-    async function callStructured(prompt, provider, model, options = {}) {
+    async function callStructured(prompt, provider, model, rawOptions = {}) {
+        const options = withOperationDefaults(rawOptions, logger);
         if (provider === 'claude') return callClaudeStructured(prompt, model, options);
         if (provider === 'gemini') return callGeminiStructured(prompt, model, options);
         return callMistralStructured(prompt, model, options);
     }
 
-    async function callText(prompt, provider, model, options = {}) {
+    async function callText(prompt, provider, model, rawOptions = {}) {
+        const options = withOperationDefaults(rawOptions, logger);
         if (provider === 'claude') return callClaude(prompt, model, options);
         if (provider === 'gemini') return callGemini(prompt, model, options);
         return callMistralAI(prompt, model, options);
@@ -437,7 +441,8 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
      * is checked before the first chunk and recorded after the stream completes or
      * fails. The accumulated response text is used for the cost estimate.
      */
-    async function* callTextStream(prompt, provider, model, options = {}) {
+    async function* callTextStream(prompt, provider, model, rawOptions = {}) {
+        const options = withOperationDefaults(rawOptions, logger);
         const { budget, usage, ...providerOptions } = options;
         const activeBudget = budget || getActiveLlmBudget();
         if (activeBudget) {

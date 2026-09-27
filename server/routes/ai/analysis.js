@@ -121,7 +121,7 @@ function registerAnalysisRoutes(app, {
 
                 const prompt = buildAnalysisPrompt(text, analysisType);
                 const { text: generatedText, provider: usedProvider, model: usedModel } =
-                    await callTextWithFallback(ai, candidates, prompt, { temperature: TEMPERATURE.analysis }, { logger: req.log });
+                    await callTextWithFallback(ai, candidates, prompt, { temperature: TEMPERATURE.analysis, usage: { operation: 'article_analysis' } }, { logger: req.log });
                 selectedModel = usedModel;
 
                 const result = {
@@ -193,7 +193,7 @@ function registerAnalysisRoutes(app, {
                 let fullText = '';
                 let usedProvider = candidates[0].provider;
                 let usedModel = selectedModel;
-                for await (const part of streamTextWithFallback(ai, candidates, prompt, { temperature: TEMPERATURE.analysis }, { logger: req.log })) {
+                for await (const part of streamTextWithFallback(ai, candidates, prompt, { temperature: TEMPERATURE.analysis, usage: { operation: 'article_analysis' } }, { logger: req.log })) {
                     fullText += part.chunk;
                     usedProvider = part.provider;
                     usedModel = part.model;
@@ -264,7 +264,7 @@ function registerAnalysisRoutes(app, {
 
                 const prompt = `Explain this medical research in simple terms that a patient could understand:\n\n${text}`;
                 const { text: generatedText, provider: usedProvider, model: usedModel } =
-                    await callTextWithFallback(ai, candidates, prompt, { temperature: TEMPERATURE.explain }, { logger: req.log });
+                    await callTextWithFallback(ai, candidates, prompt, { temperature: TEMPERATURE.explain, usage: { operation: 'plain_language_explain' } }, { logger: req.log });
 
                 const result = {
                     result: generatedText,

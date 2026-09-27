@@ -76,7 +76,11 @@ async function refineSeminalKnowledgeFromCommunity({
 
     const ai = getSharedAiService({ serverConfig, fetchImpl });
     const prompt = buildSeminalKnowledgeExtractionPrompt(displayTopic, synthesisResult, evidenceArticles, existingKnowledge);
-    const rawAi = await ai.callText(prompt, provider, model, { temperature: TEMPERATURE.synopsis });
+    // Same knowledge object as topic extraction; with no budget it got the 2500 default and truncated.
+    const rawAi = await ai.callText(prompt, provider, model, {
+        temperature: TEMPERATURE.synopsis,
+        usage: { operation: 'community_seminal_refinement', topic: displayTopic },
+    });
     const knowledge = extractJsonObject(rawAi);
 
     const sourceArticles = evidenceArticles.map((article, index) => ({

@@ -127,7 +127,7 @@ async function extractPicoProfile(caseText, { ai, cache, serverConfig, logWarn }
     try {
         // callText routes to the resolved provider (claude/gemini/mistral). A bare
         // gemini/else split previously sent claude models to the Mistral endpoint.
-        rawText = await ai.callText(prompt, provider, model, { temperature: RERANK_TEMPERATURE, maxOutputTokens: 512 });
+        rawText = await ai.callText(prompt, provider, model, { temperature: RERANK_TEMPERATURE, maxOutputTokens: 512, usage: { operation: 'case_pico_extraction' } });
     } catch (err) {
         logWarn?.({ err, provider, model, durationMs: Date.now() - started }, 'PICO extraction LLM call failed');
         return {};

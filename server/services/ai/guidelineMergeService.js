@@ -212,6 +212,7 @@ async function buildMergedGuidelineView({
             const text = await ai.callText(prompt, candidate.provider, candidate.model, {
                 temperature: 0.1,
                 maxOutputTokens: 2000,
+                usage: { operation: 'guideline_merge', topic },
             });
             parsed = parseThemesJson(typeof text === 'string' ? text : text?.text);
             if (parsed?.themes) break;

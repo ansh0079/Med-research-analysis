@@ -87,7 +87,7 @@ async function summarizeOlderMessages(ai, conversationHistory, recentCount = 4, 
             `Summarise this medical education conversation into 3-5 bullet points. Focus on: topics discussed, key conclusions reached, questions still open, and areas the learner struggled with.\n\n${olderText}`,
             provider,
             model,
-            { temperature: 0.0, maxOutputTokens: 300, timeoutMs: 6000 }
+            { temperature: 0.0, maxOutputTokens: 300, timeoutMs: 6000, usage: { operation: 'agent_history_summary' } }
         );
         return String(summary || '').trim() || null;
     } catch (err) {

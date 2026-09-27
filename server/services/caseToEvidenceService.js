@@ -197,7 +197,7 @@ Return JSON only:
   "quizQuestion": { "question": "...", "options": ["A","B","C","D"], "correctAnswer": "...", "explanation": "..." }
 }`;
 
-    const raw = await ai.callText(prompt, provider, model, { temperature: TEMPERATURE.synopsis });
+    const raw = await ai.callText(prompt, provider, model, { temperature: TEMPERATURE.synopsis, usage: { operation: 'case_to_evidence' } });
     const start = raw.indexOf('{');
     const end = raw.lastIndexOf('}');
     let structured = {};

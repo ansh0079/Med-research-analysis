@@ -189,7 +189,7 @@ function registerSynthesisRoutes(app, {
             }
 
             let rawText = '';
-            for await (const chunk of ai.callTextStream(context.prompt, selectedProvider, selectedModel, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis })) {
+            for await (const chunk of ai.callTextStream(context.prompt, selectedProvider, selectedModel, { temperature: TEMPERATURE.synthesis, maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis, usage: { operation: 'synthesis_stream' } })) {
                 rawText += chunk;
                 sendSSE(res, 'chunk', { text: chunk });
             }

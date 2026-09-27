@@ -181,6 +181,7 @@ async function extractAndUpsertTopicKnowledge({
                 // Generating that much JSON runs past the per-provider default.
                 // This is a background refresh, so latency costs nothing here.
                 timeoutMs: TOPIC_KNOWLEDGE_TIMEOUT_MS,
+                usage: { operation: 'topic_knowledge_extraction', topic: queryValidation.sanitized },
             });
             selectedProvider = candidate.provider;
             break;

@@ -33,7 +33,7 @@ function createReviewRouteHelpers({ ai, serverConfig, logger, mcqValidator }) {
         if (!selectedProvider) {
             throw new Error('No AI provider configured for review assistant');
         }
-        const text = await ai.callText(prompt, selectedProvider, model);
+        const text = await ai.callText(prompt, selectedProvider, model, { usage: { operation: 'review_assistant' } });
         return { text, provider: selectedProvider, model };
     }
 

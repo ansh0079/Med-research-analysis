@@ -134,7 +134,7 @@ Return ONLY valid JSON:
             if (!selectedProvider) {
                 return res.status(503).json({ error: 'No AI provider configured' });
             }
-            const rawText = await ai.callText(prompt, selectedProvider, selectedModel, { temperature: 0.5 });
+            const rawText = await ai.callText(prompt, selectedProvider, selectedModel, { temperature: 0.5, usage: { operation: 'reflection_draft' } });
             let draft;
             try {
                 const match = rawText.match(/\{[\s\S]*\}/);

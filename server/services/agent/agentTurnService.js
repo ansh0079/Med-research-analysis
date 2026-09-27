@@ -296,6 +296,7 @@ async function executeAgentTurn(
                     temperature: TEMPERATURE.explain,
                     maxOutputTokens: maxTokens,
                     budget: activeBudget,
+                    usage: { operation: 'agent_turn' },
                 });
                 for await (const chunk of streamIter) {
                     chunksSent = true;

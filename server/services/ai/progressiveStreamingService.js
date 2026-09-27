@@ -68,6 +68,7 @@ async function streamSynthesisGeneration(res, {
         const synthesisPayload = await ai.callStructured(context.prompt, selectedProvider, selectedModel, {
             temperature: TEMPERATURE.synthesis,
             maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis,
+            usage: { operation: 'synthesis_stream' },
             onToken: (token) => {
                 tokenCount++;
                 if (tokenCount % 20 === 0) {  // Update every 20 tokens

@@ -100,7 +100,44 @@ async function collectMetrics(db, { now = Date.now(), windowDays = 7 } = {}) {
         ? null
         : heartbeats.reduce((max, row) => Math.max(max, Number(row.consecutive_failures) || 0), 0);
 
+    Object.assign(out, await collectLlmOperationMetrics(db, { now }));
     return out;
+}
+
+/**
+ * Model calls by operation over the last day. Every silent loss found in production so far was a
+ * single operation failing every time while the aggregate failure rate looked tolerable, so the
+ * alert is on the WORST operation, and on calls that reach production with no registered name.
+ */
+async function collectLlmOperationMetrics(db, { now = Date.now(), minCalls = 5 } = {}) {
+    const { getOperation } = require('../ai/aiOperations');
+    const since = new Date(now - 24 * 60 * 60 * 1000).toISOString();
+    const rows = await safeRows(db,
+        `SELECT operation, COUNT(*) AS calls, SUM(CASE WHEN success = 1 THEN 0 ELSE 1 END) AS failures
+           FROM llm_usage_log WHERE created_at >= ? GROUP BY operation`, [since]);
+    if (rows == null) return { 'llm.worstOperationFailureRate': null, 'llm.unregisteredCallCount': null };
+
+    let worst = null;
+    let unregistered = 0;
+    const unregisteredNames = [];
+    for (const row of rows) {
+        const calls = Number(row.calls) || 0;
+        const failures = Number(row.failures) || 0;
+        if (!getOperation(row.operation)) {
+            unregistered += calls;
+            unregisteredNames.push(`${row.operation || '(none)'} x${calls}`);
+        }
+        if (calls < minCalls) continue;
+        const rate = failures / calls;
+        if (!worst || rate > worst.rate) worst = { operation: row.operation, rate, calls, failures };
+    }
+    return {
+        // No operation with enough calls to judge is unknown, not a pass.
+        'llm.worstOperationFailureRate': worst ? Math.round(worst.rate * 1000) / 1000 : null,
+        'llm.worstOperationFailureRate.detail': worst ? `${worst.operation}: ${worst.failures}/${worst.calls} failed in 24h` : null,
+        'llm.unregisteredCallCount': unregistered,
+        'llm.unregisteredCallCount.detail': unregisteredNames.length ? unregisteredNames.join(', ') : null,
+    };
 }
 
 function safeCall(fn) {
@@ -126,16 +163,26 @@ function evaluateAlert(alert, metrics) {
     if (value == null) {
         return { name: alert.name, metric: alert.metric, status: 'unknown', value: null, threshold: alert.threshold };
     }
-    // The config's comparison direction: 'below' alerts when the value falls under the threshold
-    // (coverage-style metrics), everything else alerts when it rises above.
-    const below = String(alert.comparison || '').toLowerCase() === 'below' || /low|coverage|rate low/i.test(alert.name || '');
-    const breached = below ? value < Number(alert.threshold) : value > Number(alert.threshold);
+    // The config states direction as `comparator` (lt/lte/gt/gte). This used to ignore it and guess
+    // from the alert's name, so "Commercial Precision@10 Watch" (lt 0.75) would have fired when
+    // precision was GOOD, and gte thresholds were evaluated as gt.
+    const threshold = Number(alert.threshold);
+    const comparator = String(alert.comparator || '').toLowerCase()
+        || (String(alert.comparison || '').toLowerCase() === 'below' || /low|coverage|rate low/i.test(alert.name || '') ? 'lt' : 'gt');
+    const breached = {
+        lt: value < threshold,
+        lte: value <= threshold,
+        gte: value >= threshold,
+        gt: value > threshold,
+    }[comparator] ?? value > threshold;
     return {
         name: alert.name,
         metric: alert.metric,
         status: breached ? 'breached' : 'ok',
         value,
-        threshold: Number(alert.threshold),
+        threshold,
+        comparator,
+        detail: metrics[`${alert.metric}.detail`] || null,
         severity: alert.severity || 'warning',
     };
 }
@@ -176,7 +223,7 @@ function clearRecovered(results) {
 }
 
 function formatNotification(due, report) {
-    const lines = due.map((r) => `- ${r.name}: ${r.metric} = ${r.value} (threshold ${r.threshold}, ${r.severity})`);
+    const lines = due.map((r) => `- ${r.name}: ${r.metric} = ${r.value} (threshold ${r.threshold}${r.comparator ? ` ${r.comparator}` : ''}, ${r.severity})${r.detail ? `\n    ${r.detail}` : ''}`);
     const unknownNote = report.unknown.length
         ? `\n\nNot measured this run (treated as unknown, not passing): ${report.unknown.map((u) => u.metric).join(', ')}`
         : '';
@@ -240,6 +287,7 @@ module.exports = {
     DEFAULT_CRON_STALE_MS,
     loadAlertConfig,
     collectMetrics,
+    collectLlmOperationMetrics,
     evaluateAlert,
     evaluateQualityAlerts,
     dueForNotification,

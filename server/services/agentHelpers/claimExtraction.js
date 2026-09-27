@@ -42,7 +42,7 @@ Rules:
 - If no grounded claims exist, return {"claims":[]}`,
             provider,
             model,
-            { temperature: 0.0, maxOutputTokens: 600, timeoutMs: 10000 }
+            { temperature: 0.0, maxOutputTokens: 600, timeoutMs: 10000, usage: { operation: 'agent_claim_extraction', topic } }
         );
         const claims = Array.isArray(parsed?.claims) ? parsed.claims : [];
         return claims

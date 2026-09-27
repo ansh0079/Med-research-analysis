@@ -175,8 +175,8 @@ async function inferWebpageContent({ ai, provider, model, page }) {
     }
     const prompt = buildWebpageInferencePrompt(normalizedPage);
     const raw = ai.callStructured
-        ? await ai.callStructured(prompt, provider, model, { temperature: 0.1, jsonMode: true, maxOutputTokens: 1400 })
-        : parseJsonObject(await ai.callText(prompt, provider, model, { temperature: 0.1, maxOutputTokens: 1400 }));
+        ? await ai.callStructured(prompt, provider, model, { temperature: 0.1, jsonMode: true, maxOutputTokens: 1400, usage: { operation: 'webpage_inference' } })
+        : parseJsonObject(await ai.callText(prompt, provider, model, { temperature: 0.1, maxOutputTokens: 1400, usage: { operation: 'webpage_inference' } }));
     return {
         inference: normalizeInference(raw, normalizedPage),
         page: {

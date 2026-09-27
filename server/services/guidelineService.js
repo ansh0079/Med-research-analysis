@@ -204,6 +204,7 @@ async function callFirstHealthyProvider(aiService, serverConfig, prompt, label) 
       return await aiService.callText(prompt, candidate.provider, candidate.model, {
         maxOutputTokens: GUIDELINE_MAX_OUTPUT_TOKENS,
         timeoutMs: GUIDELINE_TIMEOUT_MS,
+        usage: { operation: 'guideline_synthesis' },
       });
     } catch (err) {
       lastError = err;

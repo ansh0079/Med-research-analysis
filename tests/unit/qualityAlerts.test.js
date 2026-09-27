@@ -190,3 +190,57 @@ describe('the collectors this reuses report empty tables as zero, which must not
 
     afterEach(() => jest.restoreAllMocks());
 });
+
+describe('alert direction comes from the comparator field', () => {
+    test('lt alerts when the value is under the threshold, not over it', () => {
+        const alert = { name: 'Commercial Precision@10 Watch', metric: 'p', threshold: 0.75, comparator: 'lt' };
+        expect(evaluateAlert(alert, { p: 0.9 }).status).toBe('ok');
+        expect(evaluateAlert(alert, { p: 0.5 }).status).toBe('breached');
+    });
+
+    test('gte includes the threshold itself', () => {
+        const alert = { name: 'Dead letters', metric: 'd', threshold: 25, comparator: 'gte' };
+        expect(evaluateAlert(alert, { d: 25 }).status).toBe('breached');
+        expect(evaluateAlert(alert, { d: 24 }).status).toBe('ok');
+    });
+
+    test('a detail line travels with the result', () => {
+        const alert = { name: 'AI Operation Failing', metric: 'm', threshold: 0.5, comparator: 'gt' };
+        const r = evaluateAlert(alert, { m: 1, 'm.detail': 'topic_evolution: 21/21 failed in 24h' });
+        expect(r.detail).toBe('topic_evolution: 21/21 failed in 24h');
+    });
+});
+
+describe('model operations are watched one at a time', () => {
+    const { collectLlmOperationMetrics } = require('../../server/services/ops/qualityAlerts');
+    const dbWith = (rows) => ({ all: jest.fn(async () => rows) });
+
+    test('one operation failing every time is reported even when the aggregate looks fine', async () => {
+        const m = await collectLlmOperationMetrics(dbWith([
+            { operation: 'synopsis', calls: 200, failures: 0 },
+            { operation: 'topic_evolution', calls: 21, failures: 21 },
+        ]));
+        expect(m['llm.worstOperationFailureRate']).toBe(1);
+        expect(m['llm.worstOperationFailureRate.detail']).toMatch(/topic_evolution: 21\/21/);
+    });
+
+    test('calls with no registered operation are counted and named', async () => {
+        const m = await collectLlmOperationMetrics(dbWith([
+            { operation: 'unspecified', calls: 63, failures: 21 },
+            { operation: 'synopsis', calls: 10, failures: 0 },
+        ]));
+        expect(m['llm.unregisteredCallCount']).toBe(63);
+        expect(m['llm.unregisteredCallCount.detail']).toBe('unspecified x63');
+    });
+
+    test('too few calls to judge is unknown, not a pass', async () => {
+        const m = await collectLlmOperationMetrics(dbWith([{ operation: 'synopsis', calls: 2, failures: 2 }]));
+        expect(m['llm.worstOperationFailureRate']).toBeNull();
+    });
+
+    test('an unreadable usage table is unknown', async () => {
+        const m = await collectLlmOperationMetrics({ all: jest.fn(async () => { throw new Error('no table'); }) });
+        expect(m['llm.worstOperationFailureRate']).toBeNull();
+        expect(m['llm.unregisteredCallCount']).toBeNull();
+    });
+});

@@ -167,6 +167,7 @@ Return bullets only.`;
         const raw = await ai.callText(prompt, provider, model, {
             temperature: 0.0,
             maxOutputTokens: 320,
+            usage: { operation: 'agent_memory_summary' },
             timeoutMs: 8000,
         });
         const text = String(raw || '').trim();
@@ -206,6 +207,7 @@ Assistant: ${String(assistantReply || '').slice(0, 700)}`;
         const raw = await ai.callText(prompt, provider, model, {
             temperature: 0.0,
             maxOutputTokens: 280,
+            usage: { operation: 'agent_memory_extract' },
             timeoutMs: 6000,
         });
         const { parseJsonBlock } = require('../utils/parseJson');
@@ -384,6 +386,7 @@ Return ONLY valid JSON:
             const raw = await ai.callText(prompt, provider, model, {
                 temperature: 0.1,
                 maxOutputTokens: 420,
+                usage: { operation: 'agent_memory_consolidate' },
                 timeoutMs: 9000,
             });
             const { parseJsonBlock } = require('../utils/parseJson');

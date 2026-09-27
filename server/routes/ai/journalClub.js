@@ -57,7 +57,7 @@ function registerJournalClubRoutes(app, {
                     return res.status(503).json({ error: 'No AI provider configured' });
                 }
 
-                const rawText = await ai.callText(prompt, selectedProvider, selectedModel, { temperature: 0.25 });
+                const rawText = await ai.callText(prompt, selectedProvider, selectedModel, { temperature: 0.25, usage: { operation: 'journal_club' } });
                 let pack;
                 try {
                     const jsonMatch = String(rawText || '').match(/\{[\s\S]*\}/);

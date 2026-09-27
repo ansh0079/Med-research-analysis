@@ -126,7 +126,7 @@ async function callStructuredWithFallback(aiService, prompt, options, label) {
                     prompt,
                     candidate.provider,
                     candidate.model,
-                    options
+                    { ...options, usage: options?.usage || { operation: 'flagship_knowledge_script' } }
                 );
                 if (raw !== null && raw !== undefined) return { raw, ...candidate };
             } catch (error) {

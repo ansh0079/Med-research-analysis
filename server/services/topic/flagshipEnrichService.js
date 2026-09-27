@@ -177,7 +177,7 @@ Return ONLY the JSON array.`;
 
     for (let attempt = 1; attempt <= 2; attempt++) {
         try {
-            const text = await ai.callText(prompt, provider, model, { maxOutputTokens: 800, temperature: 0.2 });
+            const text = await ai.callText(prompt, provider, model, { maxOutputTokens: 800, temperature: 0.2, usage: { operation: 'flagship_enrich_claims', topic: topicName } });
             const parsed = parseJsonArray(text);
             if (parsed?.length) return parsed.filter((c) => c.claimKey && c.claimText).slice(0, 4);
         } catch (e) {
@@ -201,7 +201,7 @@ Return JSON array:
 Return ONLY the JSON array.`;
 
     try {
-        const raw = await ai.callText(prompt, provider, model, { maxOutputTokens: 600, temperature: 0.2 });
+        const raw = await ai.callText(prompt, provider, model, { maxOutputTokens: 600, temperature: 0.2, usage: { operation: 'flagship_enrich_recommendations', topic: topicName } });
         const parsed = parseJsonArray(raw);
         return (parsed || []).filter((r) => r.recommendation).slice(0, 6);
     } catch { return []; }
@@ -225,7 +225,7 @@ Return ONLY the JSON array.`;
 
     for (let attempt = 1; attempt <= 2; attempt++) {
         try {
-            const text = await ai.callText(prompt, provider, model, { maxOutputTokens: 1200, temperature: 0.3 });
+            const text = await ai.callText(prompt, provider, model, { maxOutputTokens: 1200, temperature: 0.3, usage: { operation: 'flagship_enrich_mcq', topic: topicName } });
             const parsed = parseJsonArray(text);
             if (parsed?.length) return parsed.filter((q) => q.question && q.options && q.correct).slice(0, 4);
         } catch (e) {
