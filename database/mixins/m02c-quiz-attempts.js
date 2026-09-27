@@ -118,13 +118,17 @@ async getQuizAttemptsForClaimKey(userId, claimKey, { limit = 40 } = {}) {
 
 async getRepeatedMisconceptions(userId, { limit = 10, minAttempts = 2 } = {}) {
     const rows = await this.all(
-        `SELECT concept_hash, question_type, question_text, normalized_topic,
+        // Postgres rejects both ungrouped select columns and select aliases in HAVING; SQLite allows
+        // both, so this only ever worked in tests. Aggregate the descriptive columns and repeat the
+        // expressions in HAVING.
+        `SELECT concept_hash, MAX(question_type) AS question_type, MAX(question_text) AS question_text,
+                MAX(normalized_topic) AS normalized_topic,
                 COUNT(*) AS total_attempts,
                 SUM(CASE WHEN is_correct = 0 THEN 1 ELSE 0 END) AS wrong_count
          FROM quiz_attempts
          WHERE user_id = ? AND concept_hash IS NOT NULL
          GROUP BY concept_hash
-         HAVING total_attempts >= ? AND wrong_count > 0
+         HAVING COUNT(*) >= ? AND SUM(CASE WHEN is_correct = 0 THEN 1 ELSE 0 END) > 0
          ORDER BY wrong_count DESC, total_attempts DESC
          LIMIT ?`,
         [userId, minAttempts, limit]
@@ -157,7 +161,8 @@ async getConceptHashPValues(normalizedTopic, conceptHashes) {
          FROM quiz_attempts
          WHERE normalized_topic = ? AND concept_hash IN (${placeholders})
          GROUP BY concept_hash
-         HAVING total >= 3`,
+         HAVING COUNT(*) >= 3`, // not the alias: Postgres has no select aliases in HAVING, so this
+        // failed on every call in production and adaptive item selection fell back to storage order
         [normalizedTopic, ...hashes]
     );
     return new Map(rows.map((r) => [r.concept_hash, {

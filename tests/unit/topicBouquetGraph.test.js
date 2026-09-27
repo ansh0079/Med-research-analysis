@@ -124,9 +124,9 @@ describe('Topic bouquet graph (real SQLite)', () => {
         );
 
         // Insert a search and impressions (clicks + saves = community engagement)
-        const searchRes = await db.run(
+        const searchRes = await db.get(
             `INSERT INTO searches (query, normalized_topic, session_id, session_sequence_index, created_at)
-             VALUES (?, ?, ?, ?, ?)`,
+             VALUES (?, ?, ?, ?, ?) RETURNING id`,
             ['ARDS ventilation', normalized, 'sess-1', 1, now]
         );
         const searchId = searchRes.id;
@@ -167,9 +167,9 @@ describe('Topic bouquet graph (real SQLite)', () => {
             ['sepsis bundles', normalized, normalized, JSON.stringify({ mentorMessage: 'Sepsis guide' }), old, old, old]
         );
 
-        const searchRes = await db.run(
+        const searchRes = await db.get(
             `INSERT INTO searches (query, normalized_topic, session_id, session_sequence_index, created_at)
-             VALUES (?, ?, ?, ?, ?)`,
+             VALUES (?, ?, ?, ?, ?) RETURNING id`,
             ['sepsis bundles', normalized, 'sess-2', 1, now]
         );
         const searchId = searchRes.id;
@@ -203,9 +203,9 @@ describe('Topic bouquet graph (real SQLite)', () => {
             ['pneumonia guidelines', normalized, normalized, JSON.stringify({ mentorMessage: 'Pneumonia guide' }), now, now, recent]
         );
 
-        const searchRes = await db.run(
+        const searchRes = await db.get(
             `INSERT INTO searches (query, normalized_topic, session_id, session_sequence_index, created_at)
-             VALUES (?, ?, ?, ?, ?)`,
+             VALUES (?, ?, ?, ?, ?) RETURNING id`,
             ['pneumonia guidelines', normalized, 'sess-3', 1, now]
         );
         const searchId = searchRes.id;
@@ -229,9 +229,9 @@ describe('Topic bouquet graph (real SQLite)', () => {
         const now = new Date().toISOString();
         const normalized = db.normalizeTopic('heart failure');
 
-        const searchRes = await db.run(
+        const searchRes = await db.get(
             `INSERT INTO searches (query, normalized_topic, session_id, session_sequence_index, created_at)
-             VALUES (?, ?, ?, ?, ?)`,
+             VALUES (?, ?, ?, ?, ?) RETURNING id`,
             ['heart failure', normalized, 'sess-4', 1, now]
         );
         const searchId = searchRes.id;

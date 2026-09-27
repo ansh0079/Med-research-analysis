@@ -43,7 +43,7 @@ async function loadInteractionsForDecision(db, decision) {
             `SELECT id, reward, first_attempt_correct, quiz_attempt_id, attributed_at, created_at
              FROM search_learning_outcomes
              WHERE user_id = ? AND LOWER(article_uid) = LOWER(?)
-               AND (? IS NULL OR search_id = ?)
+               AND (CAST(? AS TEXT) IS NULL OR search_id = ?)
              ORDER BY created_at DESC LIMIT 8`,
             [
                 String(userId),

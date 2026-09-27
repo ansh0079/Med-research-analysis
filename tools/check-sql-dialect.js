@@ -46,6 +46,16 @@ const BANNED = [
     { pattern: /strftime\s*\(/i, name: 'strftime() (dialect-branch or compute in JS)' },
     { pattern: /julianday\s*\(/i, name: 'julianday() (dialect-branch or compute in JS)' },
     { pattern: /\bAUTOINCREMENT\b/i, name: 'AUTOINCREMENT (SQLite-only DDL)' },
+    // Found by running the real-database suites on Postgres (2026-10): each of these failed on
+    // every call in production while passing on SQLite, and every caller swallowed the error.
+    {
+        pattern: /[^A-Za-z_)]\?\s+IS\s+(NOT\s+)?NULL/i,
+        name: 'untyped "? IS NULL" (Postgres cannot infer the parameter type; write CAST(? AS TEXT) IS NULL)',
+    },
+    {
+        pattern: /\bHAVING\s+(?!COUNT\b|SUM\b|MAX\b|MIN\b|AVG\b|NOT\b|\()[a-z_]+\s*(>=|<=|<>|!=|=|>|<)/i,
+        name: 'HAVING on a select alias (Postgres has no aliases in HAVING; repeat the aggregate)',
+    },
 ];
 
 const NULLABLE_SORT_COLUMNS = ['source_year'];

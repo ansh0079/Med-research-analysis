@@ -95,7 +95,7 @@ async function collectDelayedSignals(db, decision, { now = Date.now() } = {}) {
         const repeats = await db.get(
             `SELECT COUNT(*) AS cnt FROM searches
              WHERE user_id = ? AND normalized_topic = ? AND created_at > ?
-               AND (? IS NULL OR id != ?)`,
+               AND (CAST(? AS TEXT) IS NULL OR id != ?)`, // typed: Postgres cannot infer an untyped null test
             [
                 String(userId),
                 String(topic),

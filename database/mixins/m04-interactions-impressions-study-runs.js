@@ -207,7 +207,7 @@ async recordSearchGoldJudgment({
     );
     const row = await this.get(
         `SELECT * FROM search_gold_judgments
-         WHERE normalized_topic = ? AND article_uid = ? AND label = ? AND (judged_by = ? OR (? IS NULL AND judged_by IS NULL))
+         WHERE normalized_topic = ? AND article_uid = ? AND label = ? AND (judged_by = ? OR (CAST(? AS TEXT) IS NULL AND judged_by IS NULL))
          ORDER BY updated_at DESC
          LIMIT 1`,
         [normalizedTopic, String(articleUid).trim().slice(0, 160), normalizedLabel, judgedBy || null, judgedBy || null]
