@@ -110,10 +110,11 @@ function evaluateEligibility(article, { query, queryMeshTerms = [], queryAliases
     if (article?._pinnedLandmark) {
         const aliasHit = queryAliasMatchScore(article, queryAliases) > 0;
         const off = isOffTopic(article, query, { queryMeshTerms });
-        // In zero-hit PubMed fallbacks, be stricter: only admit curated landmarks
-        // on an explicit high-signal alias hit (e.g. RE-LY, EMPA-REG).
+        // In zero-hit PubMed fallbacks, be stricter: admit curated landmarks only if
+        // clearly on-topic (alias hit OR not off-topic). Do NOT use the historical
+        // single-term expansion fallback in this mode.
         if (hardZeroHitGuard) {
-            if (aliasHit) return { eligible: true, route: 'curated_landmark', rejectionReason: null };
+            if (aliasHit || !off) return { eligible: true, route: 'curated_landmark', rejectionReason: null };
             return { eligible: false, route: null, rejectionReason: 'off_topic_pinned_zero_hit' };
         }
         if (aliasHit || !off) {
@@ -134,12 +135,6 @@ function evaluateEligibility(article, { query, queryMeshTerms = [], queryAliases
         // Accept if it passes the off-topic check (or matches a high-signal alias).
         const aliasHit = queryAliasMatchScore(article, queryAliases) > 0;
         const off = isOffTopic(article, query, { queryMeshTerms });
-        // When PubMed returned zero hits, do not allow landmark memory to refill
-        // unrelated specialties unless there is an explicit alias match.
-        if (hardZeroHitGuard && (String(article?._memoryRole || '').toLowerCase() === 'landmark')) {
-            if (aliasHit) return { eligible: true, route: 'verified_topic_link', rejectionReason: null };
-            return { eligible: false, route: null, rejectionReason: 'off_topic_memory_zero_hit' };
-        }
         if (aliasHit || !off) {
             return { eligible: true, route: 'verified_topic_link', rejectionReason: null };
         }
