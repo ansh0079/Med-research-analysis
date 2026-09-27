@@ -191,22 +191,49 @@ PATIENT CASE PROFILE:
 - Setting: ${picoProfile.setting || 'Not specified'}
 - Query intent: ${picoProfile.queryIntent || 'management'}
 
-For each article, return a JSON object with these exact fields:
-- articleIndex: integer (1-based)
-- populationMatch: number 0.0–1.0 (does the study population match the case?)
-- interventionMatch: number 0.0–1.0 (does the intervention match?)
-- outcomeMatch: number 0.0–1.0 (are the outcomes aligned?)
-- studyDesignScore: number 0.0–1.0 (RCTs/meta-analyses score higher for management queries; case reports score lower)
-- overallScore: number 0.0–1.0 (composite relevance)
-- exclusionFlags: array of strings. Possible values: "population_mismatch" (age/severity/setting diverges significantly), "outcome_mismatch" (outcomes are irrelevant), "design_too_weak" (case report/expert opinion for a management query). Empty array if no exclusions.
+For each article, score in this order:
+1. article index (1-based integer)
+2. population match 0.0-1.0 (does the study population match the case?)
+3. intervention match 0.0-1.0 (does the intervention match?)
+4. outcome match 0.0-1.0 (are the outcomes aligned?)
+5. study design 0.0-1.0 (RCTs/meta-analyses score higher for management queries; case reports lower)
+6. overall relevance 0.0-1.0 (composite)
+7. exclusion flags, an array of zero or more codes: "P" population mismatch (age/severity/setting diverges significantly), "O" outcome mismatch (outcomes irrelevant), "D" design too weak (case report/expert opinion for a management query)
 
-Return ONLY a compact JSON array with those exact fields. Do not include rationale, markdown, or explanation.
+Return ONLY a JSON array with one row per article, each row an array in exactly that order, e.g.
+[[1,0.9,0.8,0.7,0.9,0.85,[]],[2,0.2,0.6,0.5,0.4,0.3,["P"]]]
+No object keys, no rationale, no markdown.
 
 ${articleBlocks}`;
 }
 
+const FLAG_CODES = { P: 'population_mismatch', O: 'outcome_mismatch', D: 'design_too_weak' };
+
 /**
- * Parse the LLM batch-scoring response into structured score objects.
+ * One positional row -> the object shape the rest of the pipeline uses.
+ *
+ * The model used to return an object per article with long key names: ~150 characters of which
+ * most were keys, ~6k characters for 30 articles, and output length is what made this step take
+ * ~9s of a ~12s search. The same seven values as a row are ~30 characters. Nothing is dropped - the
+ * per-dimension scores stay because scoring them first is what the overall score rests on.
+ */
+function rowToScoreObject(row) {
+    if (!Array.isArray(row)) return row;
+    const [articleIndex, populationMatch, interventionMatch, outcomeMatch, studyDesignScore, overallScore, flags] = row;
+    return {
+        articleIndex,
+        populationMatch,
+        interventionMatch,
+        outcomeMatch,
+        studyDesignScore,
+        overallScore,
+        exclusionFlags: (Array.isArray(flags) ? flags : []).map((f) => FLAG_CODES[f] || f),
+    };
+}
+
+/**
+ * Parse the LLM batch-scoring response into structured score objects. Accepts the positional rows
+ * the prompt asks for, and the older object form, so a provider that answers the long way still parses.
  */
 function parseBatchScores(rawText, articleCount) {
     const parsed = parseJsonArrayBlock(rawText);
@@ -215,7 +242,8 @@ function parseBatchScores(rawText, articleCount) {
     }
 
     const scores = [];
-    for (const item of parsed) {
+    for (const raw of parsed) {
+        const item = rowToScoreObject(raw);
         if (!item || typeof item !== 'object') continue;
         const idx = Number(item.articleIndex);
         if (!Number.isInteger(idx) || idx < 1 || idx > articleCount) continue;
@@ -423,6 +451,8 @@ module.exports = {
     computeHeuristicScore,
     rankForStudyType,
     buildPicoCacheKey,
+    buildBatchScoringPrompt,
+    parseBatchScores,
     // Constants for testing / tuning
     MAX_ARTICLES_TO_RERANK,
     MAX_ARTICLES_TO_RETURN,

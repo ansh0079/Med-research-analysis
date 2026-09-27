@@ -5,6 +5,7 @@ const {
     computeHeuristicScore,
     rankForStudyType,
     buildPicoCacheKey,
+    buildBatchScoringPrompt,
     MAX_ARTICLES_TO_RERANK,
 } = require('../../server/services/articleReranker');
 
@@ -207,6 +208,28 @@ describe('articleReranker', () => {
         expect(result[0]._rerank.overallScore).toBe(0.9);
         expect(result[1].title).toBe('Medium relevance cohort');
         expect(result[2].title).toBe('Low relevance case report');
+    });
+
+    test('positional rows parse to the same scores, with flag codes expanded', async () => {
+        // The compact form the prompt now asks for: ~30 chars per article instead of ~150, because
+        // output length was most of this step's ~9s.
+        const articles = [
+            makeArticle({ title: 'Adult trial', pubtype: ['Randomized Controlled Trial'] }),
+            makeArticle({ title: 'Paediatric trial', pubtype: ['Randomized Controlled Trial'] }),
+        ];
+        const ai = makeMockAi('[[1,0.2,0.8,0.7,0.9,0.3,["P"]],[2,0.95,0.9,0.8,0.9,0.92,[]]]');
+        const pico = { population: 'children with septic shock', intervention: 'fluids', queryIntent: 'management' };
+        const result = await rerankArticlesByPico(articles, pico, { ai, serverConfig: { keys: { gemini: 'key' } } });
+
+        expect(result[0].title).toBe('Paediatric trial');
+        expect(result[0]._rerank).toMatchObject({ populationMatch: 0.95, overallScore: 0.92, exclusionFlags: [] });
+        expect(result[1]._rerank.exclusionFlags).toEqual(['population_mismatch']);
+    });
+
+    test('the prompt asks for rows, not keyed objects', () => {
+        const prompt = buildBatchScoringPrompt({ population: 'adults' }, [makeArticle({ title: 'x' })]);
+        expect(prompt).toContain('[[1,0.9,0.8,0.7,0.9,0.85,[]]');
+        expect(prompt).not.toContain('articleIndex:');
     });
 
     test('rerankArticlesByPico falls back to heuristic when AI fails', async () => {
