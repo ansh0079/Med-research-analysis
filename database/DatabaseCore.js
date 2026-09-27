@@ -157,6 +157,16 @@ async initialize() {
                 if (code === '42P07' || code === '42710' || msg.includes('already exists')) {
                     continue;
                 }
+                // The snapshot describes a fresh install, while an existing database can
+                // still be one or more migrations behind it. In that case CREATE TABLE IF
+                // NOT EXISTS does not add the snapshot's newer column, and its matching
+                // index must wait until the migration below adds that column. Migration
+                // execution already applies the same rule. Limit this exception to index
+                // creation so missing columns in tables or other DDL still fail startup.
+                if (code === '42703' && /^CREATE\s+(?:UNIQUE\s+)?INDEX\b/i.test(statement)) {
+                    console.log(`   ⚠️  Deferred schema index until migrations: ${statement.split(/\s+/).slice(0, 8).join(' ')}...`);
+                    continue;
+                }
                 // Dependency-ordered generation should make FK errors impossible on a
                 // fresh database. Log the statement and rethrow so startup fails fast.
                 console.error(`Schema bootstrap statement failed (${code}): ${msg}\n   ${statement.trim().slice(0, 200)}`);
