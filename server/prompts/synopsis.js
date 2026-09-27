@@ -26,6 +26,7 @@ const {
     buildTopicKnowledgeBlock,
     safeText,
 } = require('./contextBuilders');
+const { quotesPromptSection } = require('../services/ai/synopsisEvidenceQuotes');
 
 function formatCollectiveMemoryBlock(topicKnowledge) {
     const collective = topicKnowledge?.knowledge?.collective_memory;
@@ -262,7 +263,7 @@ Study type (pubtype): ${pubtypes}
 DOI: ${article.doi || 'Not available'}
 
 Abstract:
-${article.abstract || '[No abstract available — extract what you can from the title alone]'}${fullTextBlock}
+${article.abstract || '[No abstract available — extract what you can from the title alone]'}${fullTextBlock}${quotesPromptSection(context.evidenceQuotes)}
 
 ${guidelines.length > 0 ? `Guideline context for orientation (do not treat as this paper's findings; use it only to frame applicability and practice implications):
 ${buildGuidelineContextBlock(guidelines, { variant: 'synopsis' })}` : ''}

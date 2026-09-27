@@ -37,6 +37,7 @@ const OPERATIONS = Object.freeze({
 
     // --- synopsis / synthesis ---
     synopsis: { kind: 'interactive', maxOutputTokens: 2200 }, // measured 1.6-7.2k chars
+    synopsis_quotes: { kind: 'interactive', maxOutputTokens: 2048, timeoutMs: 20000 }, // <=12 verbatim quotes
     consensus_synopsis: { kind: 'interactive', maxOutputTokens: 2200 },
     synthesis: { kind: 'interactive', maxOutputTokens: LONG_JSON }, // measured 13-20k chars
     synthesis_stream: { kind: 'interactive', maxOutputTokens: LONG_JSON },

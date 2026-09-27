@@ -51,7 +51,7 @@ describe('policy switches actually reach the containers', () => {
     // app - which had silently been true of every one of these.
     const POLICY = ['SCHEDULERS_PAUSED', 'SEARCH_PICO_RERANK_ENABLED', 'SEARCH_PICO_RERANK_MODE',
         'SEARCH_RERANK_TIMEOUT_MS', 'LANE_RANKING', 'SEARCH_LANE_RETRIEVAL', 'RETENTION_ENABLED',
-        'EVIDENCE_LINEAGE_ENFORCEMENT'];
+        'EVIDENCE_LINEAGE_ENFORCEMENT', 'SYNOPSIS_QUOTE_FIRST'];
     const compose = yaml.load(fs.readFileSync(path.join(__dirname, '../../docker-compose.hetzner.yml'), 'utf8'));
 
     test.each(['web', 'worker'])('%s forwards every policy switch', (service) => {

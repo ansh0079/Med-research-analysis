@@ -36,6 +36,19 @@ const { selectSynopsisStyleArm, recordBanditReward, POLICY_SYNOPSIS_STYLE } = re
 const { buildSourceVersion, upsertSourceVersion } = require('../search/searchEvidenceSnapshot');
 const { isProvable } = require('../content/legacyContentPolicy');
 const { publicLineage } = require('../search/generationEvidenceContext');
+const { extractEvidenceQuotes } = require('./synopsisEvidenceQuotes');
+
+/**
+ * SYNOPSIS_QUOTE_FIRST=on writes synopses from verified quotes (one extra, short model call).
+ *
+ * Off by default because it measured no better: on 30 cached articles (scripts/eval-synopsis-
+ * grounding.js, seed 42, gemini-2.5-flash) the ordinary prompt and quote-first were both served 60%
+ * of the time once the critic's false rejections were fixed, and quote-first added ~2.8s. The
+ * rejections were mostly the critic's, not the model's. Kept switchable to re-test with other models.
+ */
+function synopsisQuoteFirstEnabled(env = process.env) {
+    return String(env.SYNOPSIS_QUOTE_FIRST || 'off').toLowerCase() === 'on';
+}
 
 async function hasReplayableLineage(db, object) {
     if (!isProvable(object) || typeof db?.get !== 'function') return false;
@@ -498,8 +511,23 @@ async function runPaperSynopsisGenerationInner({
         ? ownGuidelineRows.slice(0, 12).map(toRecommendation)
         : [];
 
+    // Quote-first: extract verbatim evidence, verify it in code, and write from it, so a number the
+    // critic would reject is not produced in the first place. Only with real document text, and only
+    // when enough quotes verify; otherwise the ordinary prompt runs. See synopsisEvidenceQuotes.js.
+    let evidenceQuotes = { quotes: [], dropped: 0, used: false, reason: 'disabled' };
+    if (synopsisQuoteFirstEnabled() && documentTextAvailable && providerCandidates[0]) {
+        evidenceQuotes = await withSpan('synopsis.evidence_quotes', { 'article.id': articleId }, () => extractEvidenceQuotes({
+            article: enriched,
+            ai,
+            provider: providerCandidates[0].provider,
+            model: providerCandidates[0].model,
+            topic,
+        }));
+    }
+
     const prompt = buildSynopsisPrompt(enriched, {
         topic,
+        evidenceQuotes: evidenceQuotes.used ? evidenceQuotes.quotes : null,
         guidelines,
         guidelineTextMissing,
         documentBody,
@@ -619,6 +647,11 @@ async function runPaperSynopsisGenerationInner({
         claimGrounding,
         claimSupport,
         critic,
+        // Which quotes the synopsis was written from, if any - the audit trail for "every number
+        // came from a verified quote". Absent quotes means the ordinary prompt ran.
+        evidenceQuotes: evidenceQuotes.used
+            ? { used: true, quotes: evidenceQuotes.quotes, dropped: evidenceQuotes.dropped }
+            : { used: false, reason: evidenceQuotes.reason },
         articleId,
         // Attributed separately from `synopsis` on purpose -- see the comment
         // where guidelineTextMissing is derived. The UI must render these as
