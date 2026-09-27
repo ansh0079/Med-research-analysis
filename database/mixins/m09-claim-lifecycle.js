@@ -36,7 +36,7 @@ async enqueueClaimRegeneration({ claimKey, articleUid = null, topic = '', trigge
 
     const now = new Date().toISOString();
     const normalized = topic ? this.normalizeTopic(topic) : null;
-    const result = await this.run(
+    const result = await this.runInsert(
         `INSERT INTO claim_regeneration_queue (
             claim_key, article_uid, normalized_topic, trigger_reason, status, created_at, updated_at
          ) VALUES (?, ?, ?, ?, 'queued', ?, ?)`,

@@ -9,6 +9,9 @@ function applySqliteMigrationCompat(db, statement) {
     // ALTER COLUMN ... TYPE.
     if (/^ALTER TABLE search_learning_outcomes ALTER COLUMN quiz_attempt_id TYPE TEXT\b/i.test(statement.trim())) return true;
     if (/^ALTER TABLE topic_guideline_refiling\s+ALTER COLUMN guideline_id TYPE TEXT\b/i.test(statement.trim())) return true;
+    // Migration 106 makes aliases_normalized jsonb on Postgres. SQLite stores it as JSON text and
+    // reads it with json_each, so all three statements (drop default, type, set default) are no-ops.
+    if (/^ALTER TABLE topic_knowledge ALTER COLUMN aliases_normalized\b/i.test(statement.trim())) return true;
     if (!/^ALTER TABLE quiz_attempts ALTER COLUMN user_id DROP NOT NULL\s*;?$/i.test(statement.trim())) return false;
     const columns = db.prepare('PRAGMA table_info(quiz_attempts)').all();
     const userColumn = columns.find(column => column.name === 'user_id');

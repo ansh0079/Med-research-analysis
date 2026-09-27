@@ -157,7 +157,7 @@ module.exports = (Sup) => class extends Sup {
     }) {
         if (!this.kysely || !policyType || !armId) return null;
         const now = new Date().toISOString();
-        const result = await this.run(
+        const result = await this.runInsert(
             `INSERT INTO personalization_decisions (
                 user_id, policy_type, arm_id, search_id, topic, normalized_topic, article_uid,
                 context_json, immediate_reward, delayed_reward, total_reward, reward_computed_at, created_at
@@ -196,7 +196,7 @@ module.exports = (Sup) => class extends Sup {
     }) {
         if (!this.kysely || !userId || !articleUid) return null;
         const now = new Date().toISOString();
-        const result = await this.run(
+        const result = await this.runInsert(
             `INSERT INTO search_learning_outcomes (
                 user_id, search_id, impression_id, article_uid, claim_key, topic, normalized_topic,
                 quiz_attempt_id, first_attempt_correct, reward, bandit_arm_id, attributed_at, created_at

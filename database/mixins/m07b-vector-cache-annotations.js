@@ -156,8 +156,9 @@ async createAnnotation(articleId, userId, userName, text, position) {
             position: position ? JSON.stringify(position) : null,
             created_at: new Date().toISOString()
         })
+        .returning('id')
         .executeTakeFirst();
-    return { id: Number(result.insertId) };
+    return { id: result?.id ?? null }; // Postgres has no insertId
 }
 
 // ==========================================

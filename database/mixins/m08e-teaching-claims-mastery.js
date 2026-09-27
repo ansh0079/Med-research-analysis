@@ -35,7 +35,10 @@ async getUserClaimMastery(userId, topic, { limit = 80, gapDays = 90 } = {}) {
                   c.concept_key, c.confidence, c.created_at, c.updated_at,
                   c.verification_status, c.verification_reason, c.verified_at, c.curator_metadata
          ORDER BY
-            CASE WHEN COALESCE(gap.gap_signals, 0) > 0 THEN 0 ELSE 1 END ASC,
+            -- Aggregated, not gap.gap_signals: Postgres rejects an ungrouped column here, and this
+            -- threw on every call in production while SQLite accepted it. Every caller caught the
+            -- error, so BKT claim mastery silently returned nothing. tests run this on Postgres now.
+            CASE WHEN COALESCE(MAX(gap.gap_signals), 0) > 0 THEN 0 ELSE 1 END ASC,
             CASE WHEN COUNT(q.id) = 0 THEN 0 ELSE 1 END ASC,
             CASE c.verification_status
                 WHEN 'human_reviewed' THEN 0

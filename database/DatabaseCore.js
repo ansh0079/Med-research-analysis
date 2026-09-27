@@ -440,6 +440,33 @@ async withTransaction(fn) {
     }
 }
 
+/**
+ * Run an INSERT and return the new row's id, on either dialect.
+ *
+ * run() cannot do this portably: SQLite reports lastInsertRowid (as `id`), Postgres reports nothing
+ * unless the statement says RETURNING, and several call sites read `lastID`, which neither returns.
+ * Fifteen inserts were found returning undefined, null or a row count of 1 as their id - bandit
+ * decisions, scheduler runs, learning rounds among them. Both dialects support INSERT ... RETURNING
+ * (SQLite 3.35+), so ask for the id explicitly. Null means no row was inserted (e.g. ON CONFLICT DO
+ * NOTHING hit an existing row).
+ */
+async insertReturningId(sqlText, params = []) {
+    const sql = /\bRETURNING\b/i.test(sqlText)
+        ? sqlText
+        : `${String(sqlText).trim().replace(/;\s*$/, '')} RETURNING id`;
+    const row = await this.get(sql, params);
+    return row?.id ?? null;
+}
+
+/**
+ * run() for an INSERT whose id the caller needs. Same result shape as run(), plus the spellings
+ * existing callers read (lastID, lastInsertRowid), all carrying the real id on both dialects.
+ */
+async runInsert(sqlText, params = []) {
+    const id = await this.insertReturningId(sqlText, params);
+    return { id, lastID: id, lastInsertRowid: id, changes: id == null ? 0 : 1 };
+}
+
 get(sqlText, params = []) {
     if (this.isPostgres) {
         const pgSql = this.toPgQuery(sqlText);

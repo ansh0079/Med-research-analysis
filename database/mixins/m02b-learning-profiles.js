@@ -120,7 +120,7 @@ async upsertUserClaimMisconception(userId, {
             misconceptionCategory: existing.misconception_category || misconceptionCategory || null,
         };
     }
-    const result = await this.run(
+    const result = await this.runInsert(
         `INSERT INTO user_claim_misconceptions (user_id, claim_key, wrong_option_text, correct_option_text, topic, normalized_topic, misconception_category, count, last_seen_at, created_at)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [userId, claimKey, wrongOptionText, correctOptionText || null, topic, normalizedTopic, misconceptionCategory || null, 1, now, now]
@@ -157,7 +157,7 @@ async recordTopicMasterySnapshot(userId, {
 } = {}) {
     const normalizedTopic = this.normalizeTopic(topic);
     const now = new Date().toISOString();
-    const result = await this.run(
+    const result = await this.runInsert(
         `INSERT INTO user_topic_mastery_snapshots (user_id, topic, normalized_topic, overall_score, session_score, snapshot_reason, created_at)
          VALUES (?, ?, ?, ?, ?, ?, ?)`,
         [
