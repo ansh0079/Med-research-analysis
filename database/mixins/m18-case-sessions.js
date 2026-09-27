@@ -21,20 +21,23 @@ mapCaseSessionRow(row) {
         totalScore: row.total_score,
         generationMode: row.generation_mode || 'legacy',
         armId: row.arm_id || null,
+        evidenceRefs: safeJsonParse(row.evidence_refs, {}),
+        evidenceStatus: row.evidence_status || 'current',
+        evidenceInvalidatedAt: row.evidence_invalidated_at || null,
         createdAt: row.created_at,
         completedAt: row.completed_at,
     };
 }
 
-async createCaseSession({ userId, topic, learningMode, difficulty, caseData, targetedWeaknesses, evidenceContext, generationMode, armId }) {
+async createCaseSession({ userId, topic, learningMode, difficulty, caseData, targetedWeaknesses, evidenceContext, evidenceRefs, generationMode, armId }) {
     const normalized = this.normalizeTopic(topic);
     const id = require('crypto').randomUUID();
     await this.run(
-        `INSERT INTO case_sessions (id, user_id, topic, normalized_topic, learning_mode, difficulty, case_data, targeted_weaknesses, evidence_context, generation_mode, arm_id, status, current_step, responses)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'in_progress', 0, '[]')`,
+        `INSERT INTO case_sessions (id, user_id, topic, normalized_topic, learning_mode, difficulty, case_data, targeted_weaknesses, evidence_context, evidence_refs, generation_mode, arm_id, status, current_step, responses)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'in_progress', 0, '[]')`,
         [id, userId, topic, normalized, learningMode || 'student', difficulty || 'medium',
          JSON.stringify(caseData), JSON.stringify(targetedWeaknesses || []),
-         evidenceContext ? JSON.stringify(evidenceContext) : null,
+         evidenceContext ? JSON.stringify(evidenceContext) : null, JSON.stringify(evidenceRefs || {}),
          generationMode || 'legacy', armId || null]
     );
     return this.getCaseSession(id);
@@ -96,21 +99,40 @@ async finalizeCaseData(sessionId, { caseSummary, keyLearningPoints, guidelinesAp
     return this.getCaseSession(sessionId);
 }
 
-async submitCaseStepResponse(sessionId, stepIndex, response) {
+async submitCaseStepResponse(sessionId, stepIndex, response, { nextStep = null } = {}) {
     return this.withTransaction(async () => {
         const session = await this.getCaseSession(sessionId);
         if (!session) return null;
+        if (session.status !== 'in_progress' || Number(session.currentStep) !== Number(stepIndex)) {
+            const error = new Error('This case step has already been answered or is out of order.');
+            error.code = 'CASE_STEP_CONFLICT';
+            error.statusCode = 409;
+            throw error;
+        }
         const responses = session.responses || [];
         responses[stepIndex] = response;
-        const nextStep = stepIndex + 1;
+        const caseData = session.caseData || {};
+        if (nextStep) {
+            const steps = Array.isArray(caseData.steps) ? [...caseData.steps] : [];
+            if (!steps[stepIndex + 1]) steps.push(nextStep);
+            caseData.steps = steps;
+        }
+        const nextStepIndex = stepIndex + 1;
         const totalSteps = session.caseData?.steps?.length || 0;
         const isBranching = session.generationMode === 'branching';
-        const isComplete = !isBranching && nextStep >= totalSteps;
-        await this.run(
-            `UPDATE case_sessions SET responses = ?, current_step = ?, status = ?, completed_at = ? WHERE id = ?`,
-            [JSON.stringify(responses), nextStep, isComplete ? 'completed' : 'in_progress',
-             isComplete ? new Date().toISOString() : null, sessionId]
+        const isComplete = !isBranching && nextStepIndex >= totalSteps;
+        const updated = await this.run(
+            `UPDATE case_sessions SET responses = ?, case_data = ?, current_step = ?, status = ?, completed_at = ?
+             WHERE id = ? AND status = 'in_progress' AND current_step = ?`,
+            [JSON.stringify(responses), JSON.stringify(caseData), nextStepIndex, isComplete ? 'completed' : 'in_progress',
+             isComplete ? new Date().toISOString() : null, sessionId, stepIndex]
         );
+        if (Number(updated?.changes ?? updated?.rowCount ?? 0) !== 1) {
+            const error = new Error('This case step has already been answered or is out of order.');
+            error.code = 'CASE_STEP_CONFLICT';
+            error.statusCode = 409;
+            throw error;
+        }
         return this.getCaseSession(sessionId);
     });
 }

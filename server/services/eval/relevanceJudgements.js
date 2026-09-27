@@ -50,6 +50,60 @@ function round(value, places = 4) {
     return Math.round(value * f) / f;
 }
 
+/** Parse the env allowlist of independent reviewer ids (a bootstrap/override source). */
+function parseIndependentReviewerIds(value) {
+    return new Set(String(value || '')
+        .split(',').map((entry) => entry.trim()).filter(Boolean));
+}
+
+/**
+ * Independence from data the caller already holds: the env allowlist, or the signed token claim
+ * populated by auth from users.independent_reviewer. A missing flag means "not independent",
+ * never the reverse.
+ */
+function reviewerRoleFor(user, env = process.env) {
+    const id = String(user?.id || '').trim();
+    if (!id) return 'tuner';
+    if (parseIndependentReviewerIds(env.INDEPENDENT_RELEVANCE_REVIEWER_IDS).has(id)) return 'clinician';
+    return user?.independentReviewer === true ? 'clinician' : 'tuner';
+}
+
+/**
+ * Write-time classification, resolved from trusted account data. The env allowlist is a
+ * bootstrap override; the authoritative source is the users row, re-read on every judgement so
+ * revoking independence takes effect immediately rather than at the reviewer's next login.
+ * If the account lookup fails the reviewer is a tuner: a role that cannot be verified must not
+ * be able to graduate labels.
+ */
+async function resolveReviewerRole(db, user, env = process.env) {
+    const id = String(user?.id || '').trim();
+    if (!id) return 'tuner';
+    if (parseIndependentReviewerIds(env.INDEPENDENT_RELEVANCE_REVIEWER_IDS).has(id)) return 'clinician';
+    try {
+        const row = await db.get('SELECT independent_reviewer FROM users WHERE id = ?', [id]);
+        return Number(row?.independent_reviewer) === 1 ? 'clinician' : 'tuner';
+    } catch (err) {
+        logger.warn({ err, reviewerId: id }, 'reviewer independence lookup failed; treating reviewer as tuner');
+        return 'tuner';
+    }
+}
+
+/**
+ * The independence set used when resolving stored votes: the env allowlist union the account
+ * flags. Read fresh every time, so revoking a reviewer reclassifies their stored votes too.
+ */
+async function loadIndependentReviewerIds(db, independentReviewerIds) {
+    const ids = parseIndependentReviewerIds(
+        Array.isArray(independentReviewerIds) ? independentReviewerIds.join(',') : independentReviewerIds);
+    try {
+        const rows = await db.all('SELECT id FROM users WHERE independent_reviewer = 1');
+        for (const row of rows || []) ids.add(String(row.id));
+    } catch (err) {
+        logger.warn({ err }, 'could not load account reviewer independence; using the env allowlist only');
+    }
+    return ids;
+}
+
 /* ─────────────────────────────── recording ─────────────────────────────── */
 
 /**
@@ -173,8 +227,7 @@ function interRaterAgreement(candidates) {
 /** Every judged scenario with its candidates resolved: the state of the labelling effort. */
 async function scenarioStatus(db, { queryKey = null, independentReviewerIds = null } = {}) {
     const eligibleIds = independentReviewerIds == null ? null
-        : new Set(Array.isArray(independentReviewerIds) ? independentReviewerIds.map(String)
-            : String(independentReviewerIds).split(',').map((value) => value.trim()).filter(Boolean));
+        : await loadIndependentReviewerIds(db, independentReviewerIds);
     const params = [];
     let where = '';
     if (queryKey) { where = 'WHERE query_key = ?'; params.push(normalizeQuery(queryKey)); }
@@ -286,23 +339,69 @@ async function pendingCandidates(db, { reviewerId = null, limit = 25, perQuery =
             reviewerId ? [reviewerId] : [],
         )).map((r) => `${r.query_key} ${r.article_uid}`),
     );
+    // Once a query has entered review, every later reviewer must see the same frozen
+    // snapshot. A repeated user search may create a newer snapshot for the same query;
+    // selecting that newer row would split the votes across two candidate sets.
+    const anchoredRows = await db.all(
+        `SELECT query_key, search_id FROM relevance_judgements
+         WHERE search_id IS NOT NULL ORDER BY created_at ASC`,
+    );
+    const anchoredSnapshotByQuery = new Map();
+    for (const row of anchoredRows) {
+        if (!anchoredSnapshotByQuery.has(row.query_key)) anchoredSnapshotByQuery.set(row.query_key, row.search_id);
+    }
+    const loadedSnapshotIds = new Set(snapshots.map((row) => String(row.id)));
+    const missingAnchors = [...new Set([...anchoredSnapshotByQuery.values()].map(String))]
+        .filter((id) => !loadedSnapshotIds.has(id));
+    if (missingAnchors.length) {
+        const anchoredSnapshots = await db.all(
+            `SELECT id, query_text, evidence_items, created_at
+             FROM search_evidence_snapshots
+             WHERE id IN (${missingAnchors.map(() => '?').join(', ')})`,
+            missingAnchors,
+        );
+        snapshots.push(...anchoredSnapshots);
+    }
 
     const out = [];
     const seenQueries = new Set();
     for (const row of snapshots) {
         const queryKey = normalizeQuery(row.query_text);
         if (!queryKey || seenQueries.has(queryKey)) continue;
+        const anchoredSnapshot = anchoredSnapshotByQuery.get(queryKey);
+        if (anchoredSnapshot && String(anchoredSnapshot) !== String(row.id)) continue;
         let items = [];
         try { items = JSON.parse(row.evidence_items || '[]'); } catch { items = []; }
+        const versionIds = items.map((item) => item?.versionId).filter(Boolean);
+        const versions = versionIds.length
+            ? await db.all(
+                `SELECT id, title, passages, source FROM evidence_source_versions
+                 WHERE id IN (${versionIds.map(() => '?').join(', ')})`,
+                versionIds,
+            )
+            : [];
+        const versionById = new Map(versions.map((version) => [version.id, version]));
         const candidates = items
             .filter((item) => item?.uid && !judged.has(`${queryKey} ${item.uid}`))
             .slice(0, perQuery)
-            .map((item) => ({
-                articleUid: item.uid,
-                servedRank: item.rank ?? null,
-                lane: item.lane || null,
-                retracted: Boolean(item.retracted),
-            }));
+            .map((item) => {
+                const source = item.source || versionById.get(item.versionId) || {};
+                let passages = source.passages || [];
+                if (typeof passages === 'string') {
+                    try { passages = JSON.parse(passages); } catch { passages = []; }
+                }
+                if (!Array.isArray(passages)) passages = [];
+                return {
+                    articleUid: item.uid,
+                    title: source.title || passages.find((p) => p.kind === 'title')?.text || null,
+                    abstract: passages.filter((p) => p.kind === 'abstract').map((p) => p.text).join(' ') || null,
+                    journal: source.journal || null,
+                    publicationDate: source.pubdate || source.publicationDate || null,
+                    servedRank: item.rank ?? null,
+                    lane: item.lane || null,
+                    retracted: Boolean(item.retracted),
+                };
+            });
         if (!candidates.length) continue;
         seenQueries.add(queryKey);
         out.push({ queryKey, query: row.query_text, searchId: row.id, servedAt: row.created_at, candidates });
@@ -457,4 +556,7 @@ module.exports = {
     scenarioStatus,
     pendingCandidates,
     buildHeldoutFixture,
+    reviewerRoleFor,
+    resolveReviewerRole,
+    loadIndependentReviewerIds,
 };

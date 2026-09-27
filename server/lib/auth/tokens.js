@@ -64,6 +64,9 @@ function buildAccessToken(user) {
             role: user.role || 'user',
             emailVerified,
             subscriptionPlan: user.subscription_plan || user.subscriptionPlan || 'free',
+            // Reviewer independence for the held-out labelling gate. Signed from account data at
+            // login; a missing claim means "not independent" (a tuner), never the reverse.
+            independentReviewer: Boolean(user.independent_reviewer ?? user.independentReviewer),
             tokenVersion: getUserAccessTokenVersion(user),
         },
         JWT_SECRET,

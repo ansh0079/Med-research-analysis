@@ -153,6 +153,6 @@ describe('searchPipeline integration (mocked APIs)', () => {
         });
         expect(result.telemetry.picoRerank.candidateCount).toBe(3);
         expect(result.articles).toHaveLength(2);
-        expect(result.articles.map((row) => row.uid)).toContain('pubmed-3');
+        expect(result.articles[0]).toMatchObject({ uid: 'pubmed-3', _evidenceRank: 1 });
     });
 });

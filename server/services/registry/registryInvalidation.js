@@ -180,6 +180,14 @@ async function markCasesCiting(db, report, uids, targetState) {
             [targetState, now, targetState, `%"${escapeLike(uid)}":%`]
         ));
         report.cases += changeCount(result);
+        const sessions = await step(report, 'case_sessions', () => db.run(
+            `UPDATE case_sessions
+             SET evidence_status = ?, evidence_invalidated_at = ?
+             WHERE evidence_status NOT IN ('withdrawn', ?)
+               AND lower(COALESCE(evidence_refs, '')) LIKE ? ESCAPE '\\'`,
+            [targetState, now, targetState, `%"${escapeLike(uid)}":%`]
+        ));
+        report.cases += changeCount(sessions);
     }
 }
 
@@ -266,6 +274,13 @@ async function invalidateArtifactsForSupersededConcept(db, { normalizedTopic } =
         [now, ...keys]
     ));
     report.cases += changeCount(cases);
+    const sessions = await step(report, 'case_sessions', () => db.run(
+        `UPDATE case_sessions
+         SET evidence_status = '${NEEDS_REVISION}', evidence_invalidated_at = ?
+         WHERE evidence_status = 'current' AND lower(COALESCE(topic, '')) IN (${inList})`,
+        [now, ...keys]
+    ));
+    report.cases += changeCount(sessions);
     return finish(report);
 }
 
@@ -323,6 +338,12 @@ async function reinstateWithdrawnArtifacts(db, { articleUid, reviewer } = {}) {
             [now, `%"${escapeLike(uid)}":%`]
         ));
         report.cases += changeCount(cases);
+        const sessions = await step(report, 'case_sessions', () => db.run(
+            `UPDATE case_sessions SET evidence_status = '${NEEDS_REVISION}', evidence_invalidated_at = ?
+             WHERE evidence_status = '${WITHDRAWN}' AND lower(COALESCE(evidence_refs, '')) LIKE ? ESCAPE '\\'`,
+            [now, `%"${escapeLike(uid)}":%`]
+        ));
+        report.cases += changeCount(sessions);
     }
     logger.warn({ articleUid, reviewer, ...report }, 'withdrawn artefacts reinstated for re-verification');
     return finish(report);

@@ -7,6 +7,7 @@ import { RetractionBadge } from './RetractionBadge';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
 import { SynopsisTrustBanner } from '@components/search/SynopsisTrustBanner';
 import { EvidenceAuditPanel } from '@components/search/EvidenceAuditPanel';
+import { ClaimSupportNotice } from '@components/search/ArticleCardSynopsisPanel';
 
 interface Props {
   article: Article | null;
@@ -480,6 +481,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
             )}
             {synopsisState === 'done' && synopsis && (
               <>
+                <ClaimSupportNotice claimSupport={synopsisResult?.claimSupport} />
                 <div className="flex items-center gap-2 flex-wrap">
                   {synopsis.trustRating && (() => {
                     const trust = TRUST_BADGE[synopsis.trustRating] ?? TRUST_BADGE.MODERATE;

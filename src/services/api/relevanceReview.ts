@@ -8,6 +8,9 @@ export interface RelevanceCandidate {
   lane: string | null;
   retracted?: boolean;
   title?: string | null;
+  abstract?: string | null;
+  journal?: string | null;
+  publicationDate?: string | null;
 }
 
 export interface RelevanceQueueEntry {

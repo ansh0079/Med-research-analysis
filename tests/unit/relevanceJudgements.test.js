@@ -16,6 +16,7 @@ const { rankFrozenCandidates } = require('../../server/services/heldoutEval');
 const {
     recordJudgement, adjudicate, scenarioStatus, buildHeldoutFixture,
     interRaterAgreement, JudgementRejected, MIN_CANDIDATES_PER_SCENARIO,
+    resolveReviewerRole,
 } = require('../../server/services/eval/relevanceJudgements');
 
 const MIGRATION = path.join(__dirname, '../../database/migrations/102_relevance_judgements.sql');
@@ -25,7 +26,8 @@ function makeDb() {
     sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/099_search_evidence_snapshots.sql'), 'utf8'));
     sqlite.exec(`CREATE TABLE teaching_objects (id INTEGER PRIMARY KEY);
                  CREATE TABLE quiz_attempts (id INTEGER PRIMARY KEY);
-                 CREATE TABLE case_scenarios (case_id TEXT PRIMARY KEY);`);
+                 CREATE TABLE case_scenarios (case_id TEXT PRIMARY KEY);
+                 CREATE TABLE users (id TEXT PRIMARY KEY, independent_reviewer INTEGER NOT NULL DEFAULT 0);`);
     sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/101_evidence_lineage.sql'), 'utf8'));
     sqlite.exec(fs.readFileSync(MIGRATION, 'utf8'));
     return {
@@ -118,6 +120,38 @@ describe('the ranker’s author cannot label its output', () => {
         expect(reviewerRoleFor({ id: 'alice', isRankerTuner: false }, {})).toBe('tuner');
         expect(reviewerRoleFor({ id: 'alice' }, { INDEPENDENT_RELEVANCE_REVIEWER_IDS: 'alice,bob' })).toBe('clinician');
         expect(reviewerRoleFor({ id: 'mallory' }, { INDEPENDENT_RELEVANCE_REVIEWER_IDS: 'alice,bob' })).toBe('tuner');
+    });
+    test('the signed account claim marks independence; its absence never does', () => {
+        expect(reviewerRoleFor({ id: 'carol', independentReviewer: true }, {})).toBe('clinician');
+        expect(reviewerRoleFor({ id: 'dave', independentReviewer: false }, {})).toBe('tuner');
+        expect(reviewerRoleFor({ id: 'dave' }, {})).toBe('tuner');
+        expect(reviewerRoleFor(null, {})).toBe('tuner');
+    });
+    test('write-time resolution reads the users table, so revocation applies immediately', async () => {
+        const db = makeDb();
+        await db.run("INSERT INTO users (id, independent_reviewer) VALUES ('erin', 1), ('fred', 0)");
+        await expect(resolveReviewerRole(db, { id: 'erin' }, {})).resolves.toBe('clinician');
+        await expect(resolveReviewerRole(db, { id: 'fred' }, {})).resolves.toBe('tuner');
+        await expect(resolveReviewerRole(db, { id: 'ghost' }, {})).resolves.toBe('tuner');
+        await expect(resolveReviewerRole(db, { id: 'mallory' }, { INDEPENDENT_RELEVANCE_REVIEWER_IDS: 'mallory' })).resolves.toBe('clinician');
+        // Revocation: the next judgement resolves against the updated row, not the old token.
+        await db.run("UPDATE users SET independent_reviewer = 0 WHERE id = 'erin'");
+        await expect(resolveReviewerRole(db, { id: 'erin', independentReviewer: true }, {})).resolves.toBe('tuner');
+        // A lookup failure defaults to tuner: an unverifiable role cannot graduate labels.
+        const broken = { async get() { throw new Error('db down'); } };
+        await expect(resolveReviewerRole(broken, { id: 'erin', independentReviewer: true }, {})).resolves.toBe('tuner');
+    });
+    test('resolution reclassifies stored votes from account flags, not only the env allowlist', async () => {
+        const db = makeDb();
+        await db.run("INSERT INTO users (id, independent_reviewer) VALUES ('clinician-a', 1), ('clinician-b', 1)");
+        await judge(db, { reviewerId: 'clinician-a', reviewerRole: 'clinician', label: 'on_topic' });
+        await judge(db, { reviewerId: 'clinician-b', reviewerRole: 'clinician', label: 'on_topic' });
+        const [scenario] = await scenarioStatus(db, { independentReviewerIds: '' });
+        expect(scenario.candidates[0]).toMatchObject({ state: 'agreed', label: 'on_topic', reviewers: 2 });
+        // Revoke one reviewer and the same stored votes stop counting.
+        await db.run("UPDATE users SET independent_reviewer = 0 WHERE id = 'clinician-b'");
+        const [after] = await scenarioStatus(db, { independentReviewerIds: '' });
+        expect(after.candidates[0]).toMatchObject({ state: 'single_reviewer', reviewers: 1 });
     });
     test('a tuner’s verdict neither decides a candidate nor forces adjudication', async () => {
         const db = makeDb();
@@ -266,6 +300,28 @@ describe('the review queue shows what was actually served', () => {
         // Another reviewer still sees it: a second opinion is the point.
         const theirs = await pendingCandidates(db, { reviewerId: 'clinician-b' });
         expect(theirs[0].candidates.map((c) => c.articleUid)).toEqual(['pubmed-1', 'pubmed-2']);
+    });
+
+    test('later reviewers stay on the first frozen snapshot and receive its title and abstract', async () => {
+        const db = makeDbWithSnapshots();
+        const first = await persistSearchEvidenceSnapshot(db, {
+            query: QUERY,
+            articles: [{ uid: 'pubmed-1', title: 'Original served paper', abstract: 'Frozen abstract text.', source: 'pubmed' }],
+        });
+        await judge(db, { articleUid: 'pubmed-1', reviewerId: 'clinician-a', searchId: first.id });
+        await persistSearchEvidenceSnapshot(db, {
+            query: QUERY,
+            articles: [{ uid: 'pubmed-99', title: 'Later search paper', abstract: 'Different result set.', source: 'pubmed' }],
+        });
+
+        const queue = await pendingCandidates(db, { reviewerId: 'clinician-b' });
+        expect(queue).toHaveLength(1);
+        expect(queue[0]).toMatchObject({ searchId: first.id });
+        expect(queue[0].candidates[0]).toMatchObject({
+            articleUid: 'pubmed-1',
+            title: 'Original served paper',
+            abstract: 'Frozen abstract text.',
+        });
     });
 
     test('a fully judged query disappears from the queue rather than appearing empty', async () => {

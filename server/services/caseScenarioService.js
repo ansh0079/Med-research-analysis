@@ -267,6 +267,12 @@ async function getCaseScenario(db, caseId, userId) {
 async function recordCaseChoice(db, caseId, userId, nodeId, choiceId) {
     const caseScenario = await getCaseScenario(db, caseId, userId);
     if (!caseScenario) throw new Error('Case scenario not found');
+    if (caseScenario.completedAt || caseScenario.currentNode !== nodeId) {
+        const error = new Error('This case choice has already been recorded or is out of order.');
+        error.code = 'CASE_CHOICE_CONFLICT';
+        error.statusCode = 409;
+        throw error;
+    }
 
     const currentNode = caseScenario.decisionTree[nodeId];
     if (!currentNode) throw new Error('Invalid node ID');
@@ -288,19 +294,26 @@ async function recordCaseChoice(db, caseId, userId, nodeId, choiceId) {
     const isTerminal = nextNode.startsWith('outcome_');
 
     // Update case state
-    await db.run(
+    const stateUpdate = await db.run(
         `UPDATE case_scenarios 
          SET current_node = ?, choices_made = ?, completed_at = ?, updated_at = ?
-         WHERE case_id = ? AND user_id = ?`,
+         WHERE case_id = ? AND user_id = ? AND current_node = ? AND completed_at IS NULL`,
         [
             nextNode,
             JSON.stringify(choicesMade),
             isTerminal ? new Date().toISOString() : null,
             new Date().toISOString(),
             caseId,
-            userId
+            userId,
+            nodeId,
         ]
     );
+    if (Number(stateUpdate?.changes ?? stateUpdate?.rowCount ?? 0) !== 1) {
+        const error = new Error('This case choice has already been recorded or is out of order.');
+        error.code = 'CASE_CHOICE_CONFLICT';
+        error.statusCode = 409;
+        throw error;
+    }
 
     // Record attempt for mastery tracking
     if (isTerminal) {
@@ -355,7 +368,10 @@ async function recordCaseChoice(db, caseId, userId, nodeId, choiceId) {
                 lastAttemptAt: new Date().toISOString(),
                 nextReviewAt: new Date(Date.now() + (scorePercentage >= 70 ? 14 : 3) * 86400000).toISOString(),
             }),
-            recordBanditReward(db, POLICY_CASE_DIFFICULTY, armId, reward, userId),
+            recordBanditReward(db, POLICY_CASE_DIFFICULTY, armId, reward, userId, {
+                applicationKey: `case-scenario:${caseId}:completion`,
+                source: 'case_scenario_completion',
+            }),
             (async () => {
                 if (!db?.all || !db?.updatePersonalizationDecisionReward) return;
                 const rows = await db.all(

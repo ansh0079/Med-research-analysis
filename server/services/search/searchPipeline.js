@@ -741,6 +741,15 @@ async function fetchAndRankSearchArticles({
         timings.rankMs = Date.now() - rankStarted;
         _trace('afterRerank', articles);
 
+        // PICO is the final evidence/relevance stage. Freeze its order as the
+        // evidence baseline before learner adaptation so later metadata sorting
+        // cannot silently restore the earlier bouquet order.
+        const postPicoEvidenceRanking = articles.map((article) => {
+            const keys = new Set(articleRankKeyCandidates(article));
+            const bouquetRow = bouquet.ranking.find((row) => articleRankKeyCandidates(row).some((key) => keys.has(key)));
+            return { ...(bouquetRow || {}), ...article };
+        });
+
         const learningStarted = Date.now();
         const learningContextFull = await withSpan('search.personalization', {
             'search.result_count': articles.length,
@@ -752,9 +761,9 @@ async function fetchAndRankSearchArticles({
             sessionId,
             previousQueries,
         }));
-        articles = applySearchLearningBoost(articles, learningContextFull, bouquet.ranking);
-        articles = annotateArticlesWithRankingTraces(articles, bouquet.ranking, learningContextFull);
-        articles = annotateSearchRankMetadata(articles, bouquet.ranking);
+        articles = applySearchLearningBoost(articles, learningContextFull, postPicoEvidenceRanking);
+        articles = annotateArticlesWithRankingTraces(articles, postPicoEvidenceRanking, learningContextFull);
+        articles = annotateSearchRankMetadata(articles, postPicoEvidenceRanking);
         const learningOrder = articles.map((article) => article.uid).filter(Boolean);
         articles = orderArticlesByEvidenceRank(articles);
         articles = annotateEvidenceMetadata(articles, {

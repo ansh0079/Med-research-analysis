@@ -185,11 +185,12 @@ export interface CaseStep {
   question: string;
   questionType: QuestionType;
   options: string[];
-  correctAnswer: string;
-  explanation: string;
-  whyOthersWrong: string;
-  teachingPoint: string;
-  evidenceSource: string | null;
+  /** Present only after this step has been answered. */
+  correctAnswer?: string;
+  explanation?: string;
+  whyOthersWrong?: string;
+  teachingPoint?: string;
+  evidenceSource?: string | null;
   branchingNote?: string | null;
 }
 
@@ -226,6 +227,8 @@ export interface CaseSession {
   responses: CaseStepResponse[];
   totalScore: number | null;
   generationMode: 'branching' | 'legacy';
+  evidenceStatus?: 'current' | 'needs_revision' | 'withdrawn';
+  evidenceInvalidatedAt?: string | null;
   createdAt: string;
   completedAt: string | null;
 }

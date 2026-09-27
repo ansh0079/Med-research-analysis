@@ -17,6 +17,8 @@ const {
     scenarioStatus,
     pendingCandidates,
     buildHeldoutFixture,
+    reviewerRoleFor,
+    resolveReviewerRole,
 } = require('../../services/eval/relevanceJudgements');
 
 function sendRejection(res, err, log) {
@@ -25,17 +27,6 @@ function sendRejection(res, err, log) {
     }
     log?.error?.({ err }, 'relevance judgement failed');
     return res.status(500).json({ error: 'Failed to record judgement' });
-}
-
-/**
- * A reviewer who tuned the ranker may label, but their verdict is marked and never graduates.
- * The role comes from the account, not the request body, so it cannot be claimed away.
- */
-function reviewerRoleFor(user, env = process.env) {
-    const id = String(user?.id || '').trim();
-    const independentIds = new Set(String(env.INDEPENDENT_RELEVANCE_REVIEWER_IDS || '')
-        .split(',').map((value) => value.trim()).filter(Boolean));
-    return id && independentIds.has(id) ? 'clinician' : 'tuner';
 }
 
 function registerRelevanceReviewRoutes(app, { db, requireJson, requireAuthJwt, requireRole, rateLimit }) {
@@ -79,7 +70,7 @@ function registerRelevanceReviewRoutes(app, { db, requireJson, requireAuthJwt, r
             const saved = await recordJudgement(db, {
                 ...req.body,
                 reviewerId: String(req.user?.id || '').trim(),
-                reviewerRole: reviewerRoleFor(req.user),
+                reviewerRole: await resolveReviewerRole(db, req.user),
             });
             return res.json({ ok: true, ...saved });
         } catch (err) {
@@ -94,6 +85,32 @@ function registerRelevanceReviewRoutes(app, { db, requireJson, requireAuthJwt, r
                 adjudicatorId: String(req.user?.id ?? req.body?.adjudicatorId ?? '').trim(),
             });
             return res.json({ ok: true, ...saved });
+        } catch (err) {
+            return sendRejection(res, err, req.log);
+        }
+    });
+
+    /**
+     * Grant or revoke a reviewer's independence. Persisted on the account, so the fact survives
+     * redeploys, is signed into the reviewer's next token, and is re-read on every judgement
+     * write and resolution - revocation applies immediately, not at the next login.
+     */
+    app.post('/api/review/relevance/reviewers/:reviewerId/independence', requireJson, ...requireAdmin, rateLimit(30, 60), async (req, res) => {
+        try {
+            const reviewerId = String(req.params.reviewerId || '').trim();
+            if (!reviewerId) {
+                return res.status(400).json({ error: 'reviewer id is required', code: 'reviewer_required' });
+            }
+            const independent = req.body?.independent === true;
+            const result = await db.run(
+                'UPDATE users SET independent_reviewer = ? WHERE id = ?',
+                [independent ? 1 : 0, reviewerId],
+            );
+            const changes = Number(result?.changes ?? result?.rowCount ?? 0);
+            if (!changes) {
+                return res.status(404).json({ error: 'user not found', code: 'user_not_found' });
+            }
+            return res.json({ ok: true, reviewerId, independent });
         } catch (err) {
             return sendRejection(res, err, req.log);
         }

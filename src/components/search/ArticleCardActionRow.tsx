@@ -44,6 +44,7 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
 }) => {
   const [synopsisState, setSynopsisState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [synopsis, setSynopsis] = useState<ArticleSynopsisFields | null>(null);
+  const [claimSupport, setClaimSupport] = useState<ArticleSynopsisResult['claimSupport'] | null>(null);
   // Recommendations attributed to the organisation that issued this document,
   // shown when its full text could not be retrieved.
   const [issuingBodyRecommendations, setIssuingBodyRecommendations] = useState<NonNullable<ArticleSynopsisResult['issuingBodyRecommendations']>>([]);
@@ -83,6 +84,7 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
             fullTextCoverageRatio={typeof synopsisAudit?.fullTextCoverageRatio === 'number' ? synopsisAudit.fullTextCoverageRatio : null}
             issuingBodyRecommendations={issuingBodyRecommendations}
             relatedRecommendations={relatedRecommendations}
+            claimSupport={claimSupport}
             onClose={() => { setSynopsisExpanded(false); setSynopsisAudit(null); }}
           />
           {synopsisAudit && <EvidenceAuditPanel snapshot={synopsisAudit} />}
@@ -125,6 +127,7 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
               });
               setIssuingBodyRecommendations(result.issuingBodyRecommendations || []);
               setRelatedRecommendations(result.relatedRecommendations || []);
+              setClaimSupport(result.claimSupport || null);
               setSynopsis(result.synopsis);
               setSynopsisState('done');
               setSynopsisExpanded(true);

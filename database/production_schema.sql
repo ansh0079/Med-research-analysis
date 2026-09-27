@@ -19,8 +19,9 @@ CREATE TABLE IF NOT EXISTS users (
     preferences TEXT, 
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMPTZ
-, email_verified INTEGER DEFAULT 0, email_verification_token TEXT, email_verification_expires TIMESTAMPTZ, updated_at TIMESTAMPTZ, stripe_customer_id TEXT, stripe_subscription_id TEXT, subscription_status TEXT DEFAULT 'free', subscription_plan TEXT DEFAULT 'free', subscription_current_period_end TEXT, subscription_cancel_at_period_end INTEGER DEFAULT 0, trial_started_at TEXT, trial_ends_at TEXT, has_used_trial INTEGER NOT NULL DEFAULT 0, access_token_version INTEGER NOT NULL DEFAULT 0);
+, email_verified INTEGER DEFAULT 0, email_verification_token TEXT, email_verification_expires TIMESTAMPTZ, updated_at TIMESTAMPTZ, stripe_customer_id TEXT, stripe_subscription_id TEXT, subscription_status TEXT DEFAULT 'free', subscription_plan TEXT DEFAULT 'free', subscription_current_period_end TEXT, subscription_cancel_at_period_end INTEGER DEFAULT 0, trial_started_at TEXT, trial_ends_at TEXT, has_used_trial INTEGER NOT NULL DEFAULT 0, access_token_version INTEGER NOT NULL DEFAULT 0, independent_reviewer INTEGER NOT NULL DEFAULT 0);
 
+CREATE INDEX IF NOT EXISTS idx_users_independent_reviewer ON users (independent_reviewer);
 CREATE TABLE IF NOT EXISTS agent_conversations (
     id SERIAL PRIMARY KEY,
     user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,

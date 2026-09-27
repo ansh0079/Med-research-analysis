@@ -29,6 +29,36 @@ const {
     generateCaseStepWithRetry,
 } = require('../../services/caseStepTrustService');
 
+function publicCaseSession(session) {
+    if (!session) return session;
+    const responses = Array.isArray(session.responses) ? session.responses : [];
+    const caseData = session.caseData ? { ...session.caseData } : null;
+    if (caseData && Array.isArray(caseData.steps)) {
+        caseData.steps = caseData.steps.map((step, index) => {
+            if (responses[index]) return { ...step };
+            const safe = { ...step };
+            delete safe.correctAnswer;
+            delete safe.explanation;
+            delete safe.whyOthersWrong;
+            delete safe.teachingPoint;
+            delete safe.evidenceSource;
+            return safe;
+        });
+    }
+    const safe = { ...session, caseData };
+    delete safe.evidenceContext;
+    return safe;
+}
+
+function caseEvidenceRefs(topicKnowledge) {
+    const refs = {};
+    for (const source of topicKnowledge?.sourceArticles || []) {
+        const uid = String(source?.uid || source?.articleUid || source?.pmid || source?.doi || '').trim().toLowerCase();
+        if (uid) refs[uid] = source?.sourceVersionId || source?.versionId || true;
+    }
+    return refs;
+}
+
 function registerReviewCaseRoutes(app, {
     db,
     cache,
@@ -534,6 +564,7 @@ function registerReviewCaseRoutes(app, {
                 caseData,
                 targetedWeaknesses: weaknesses,
                 evidenceContext,
+                evidenceRefs: caseEvidenceRefs(topicKnowledge),
                 generationMode: 'branching',
             });
 
@@ -568,7 +599,7 @@ function registerReviewCaseRoutes(app, {
                 difficultySelectedBy: difficultyBandit ? 'bandit' : 'client',
             });
             res.json({
-                session,
+                session: publicCaseSession(session),
                 evidenceWarning,
                 difficulty,
                 banditMeta: {
@@ -589,7 +620,7 @@ function registerReviewCaseRoutes(app, {
         try {
             const session = await db.getCaseSession(req.params.id);
             if (!session || session.userId !== req.user.id) return res.status(404).json({ error: 'Session not found' });
-            res.json({ session });
+            res.json({ session: publicCaseSession(session) });
         } catch {
             res.status(500).json({ error: 'Internal server error' });
         }
@@ -600,7 +631,7 @@ function registerReviewCaseRoutes(app, {
         try {
             const status = req.query.status || '';
             const sessions = await db.getCaseSessionsForUser(req.user.id, { status, limit: 20 });
-            res.json({ sessions });
+            res.json({ sessions: sessions.map(publicCaseSession) });
         } catch {
             res.status(500).json({ error: 'Internal server error' });
         }
@@ -612,16 +643,24 @@ function registerReviewCaseRoutes(app, {
             const session = await db.getCaseSessionWithEvidence(req.params.id);
             if (!session || session.userId !== req.user.id) return res.status(404).json({ error: 'Session not found' });
             if (session.status === 'completed') return res.status(400).json({ error: 'Session already completed' });
+            if (session.evidenceStatus !== 'current') {
+                return res.status(409).json({
+                    error: 'The evidence used by this case has changed. Start a new case from current evidence.',
+                    code: session.evidenceStatus === 'withdrawn' ? 'CASE_EVIDENCE_WITHDRAWN' : 'CASE_EVIDENCE_NEEDS_REVISION',
+                });
+            }
 
             const { stepIndex, selectedAnswer, timeMs } = req.body;
             if (stepIndex == null || !selectedAnswer) return res.status(400).json({ error: 'stepIndex and selectedAnswer required' });
+            if (Number(stepIndex) !== Number(session.currentStep)) {
+                return res.status(409).json({ error: 'This case step has already been answered or is out of order.', code: 'CASE_STEP_CONFLICT' });
+            }
 
             const step = session.caseData?.steps?.[stepIndex];
             if (!step) return res.status(400).json({ error: 'Invalid step index' });
 
             const isCorrect = selectedAnswer === step.correctAnswer;
             const response = { selectedAnswer, isCorrect, timeMs: timeMs || 0, answeredAt: new Date().toISOString() };
-            await db.submitCaseStepResponse(session.id, stepIndex, response);
 
             const stepFeedback = {
                 isCorrect,
@@ -634,6 +673,7 @@ function registerReviewCaseRoutes(app, {
 
             const nextStepIndex = stepIndex + 1;
             const isFinalStep = nextStepIndex >= 5;
+            let generatedNextStep = null;
 
             // For branching mode, generate the next step based on the user's answer
             if (session.generationMode === 'branching' && !isFinalStep) {
@@ -666,19 +706,21 @@ function registerReviewCaseRoutes(app, {
                 });
 
                 if (!stepGen.step) {
-                    // Do not invent keyed answers — return recoverable error; prior step response already saved.
+                    // No state has changed yet, so retrying this request is safe.
                     return res.status(503).json({
-                        error: 'Could not generate the next evidence-grounded step. Your answer was saved — please retry.',
+                        error: 'Could not generate the next evidence-grounded step. Please retry.',
                         code: 'CASE_STEP_GENERATION_FAILED',
                         reason: stepGen.error,
                         stepFeedback,
-                        session: await db.getCaseSession(session.id),
+                        session: publicCaseSession(session),
                     });
                 }
 
-                await db.appendCaseStep(session.id, stepGen.step);
+                generatedNextStep = stepGen.step;
                 stepFeedback.branchingNote = stepGen.step.branchingNote || null;
             }
+
+            await db.submitCaseStepResponse(session.id, stepIndex, response, { nextStep: generatedNextStep });
 
             // If this was the last step (step 5 answered), finalize
             if (isFinalStep || (session.generationMode !== 'branching' && nextStepIndex >= (session.caseData?.steps?.length || 5))) {
@@ -768,7 +810,7 @@ function registerReviewCaseRoutes(app, {
                 try {
                     const reward = Math.max(-0.25, Math.min(1, (totalScore - 50) / 50));
                     const armId = caseDifficultyArmId(session.difficulty);
-                    await recordBanditReward(db, POLICY_CASE_DIFFICULTY, armId, reward, req.user.id);
+                    let decisionId = null;
                     if (db?.all && db?.updatePersonalizationDecisionReward) {
                         const rows = await db.all(
                             `SELECT id FROM personalization_decisions
@@ -783,7 +825,7 @@ function registerReviewCaseRoutes(app, {
                                 String(session.topic || ''),
                             ]
                         ).catch(() => []);
-                        const decisionId = rows?.[0]?.id;
+                        decisionId = rows?.[0]?.id || null;
                         if (decisionId) {
                             await db.updatePersonalizationDecisionReward(decisionId, {
                                 immediateReward: 0,
@@ -792,6 +834,11 @@ function registerReviewCaseRoutes(app, {
                             });
                         }
                     }
+                    await recordBanditReward(db, POLICY_CASE_DIFFICULTY, armId, reward, req.user.id, {
+                        applicationKey: `case-session:${session.id}:completion`,
+                        decisionId,
+                        source: 'case_session_completion',
+                    });
                 } catch (err) {
                     req.log?.warn?.({ err, sessionId: session.id }, 'adaptive case bandit reward failed');
                 }
@@ -838,16 +885,16 @@ function registerReviewCaseRoutes(app, {
                     }
                 } catch { /* non-critical */ }
 
-                return res.json({ session: final, stepFeedback, crossLearningRecommendation, suggestedDifficulty });
+                return res.json({ session: publicCaseSession(final), stepFeedback, crossLearningRecommendation, suggestedDifficulty });
             }
 
             const updated = await db.getCaseSession(session.id);
-            res.json({ session: updated, stepFeedback, generatingNextStep: session.generationMode === 'branching' });
+            res.json({ session: publicCaseSession(updated), stepFeedback, generatingNextStep: session.generationMode === 'branching' });
         } catch (error) {
             req.log?.error?.({ err: error }, 'Case step respond error');
-            res.status(500).json({ error: 'Internal server error' });
+            res.status(error.statusCode || 500).json({ error: error.statusCode ? error.message : 'Internal server error', code: error.code });
         }
     });
 }
 
-module.exports = { registerReviewCaseRoutes };
+module.exports = { registerReviewCaseRoutes, publicCaseSession, caseEvidenceRefs };

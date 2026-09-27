@@ -199,6 +199,17 @@ export interface ArticleSynopsisResult {
   jobKey?: string | null;
   errorMessage?: string | null;
   audit?: Record<string, unknown>;
+  claimSupport?: {
+    checked: boolean;
+    error?: string;
+    claims?: Array<{ claimId?: string; field?: string; status: string; flags?: string[] }>;
+    servingPolicy?: {
+      mode: 'annotate' | 'withhold';
+      unsupported: Array<{ claimId?: string; field?: string; status: string; flags?: string[] }>;
+      uncertain: Array<{ claimId?: string; field?: string; status: string; flags?: string[] }>;
+      withheld: string[];
+    };
+  };
   /** False when only the title/metadata could be retrieved (common for guidelines). */
   documentTextAvailable?: boolean;
   /**

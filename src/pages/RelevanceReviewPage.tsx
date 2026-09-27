@@ -225,10 +225,19 @@ export function RelevanceReviewPage() {
                 </div>
                 <div className="font-medium text-slate-900 dark:text-slate-100">{candidate.title || candidate.articleUid}</div>
                 <div className="text-xs text-slate-500 dark:text-slate-400">{candidate.articleUid}</div>
+                {(candidate.journal || candidate.publicationDate) && (
+                  <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                    {[candidate.journal, candidate.publicationDate].filter(Boolean).join(' · ')}
+                  </div>
+                )}
               </div>
               {candidate.retracted && (
                 <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-800 dark:bg-rose-950/50 dark:text-rose-200">retracted</span>
               )}
+            </div>
+
+            <div className="mt-3 rounded-lg bg-slate-50 p-3 text-sm leading-relaxed text-slate-700 dark:bg-slate-800/50 dark:text-slate-200">
+              {candidate.abstract || 'No abstract was available in the frozen search snapshot.'}
             </div>
 
             <label className="mt-3 block text-sm">

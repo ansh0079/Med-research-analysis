@@ -44,7 +44,7 @@ async function optionalAuth(req, _res, next) {
     if (token && !(await isTokenRevoked(token))) {
         const decoded = verifyToken(token);
         if (decoded && await isAccessTokenVersionCurrent(decoded)) {
-            req.user = { id: decoded.id, name: decoded.name, email: decoded.email, role: decoded.role || 'user', emailVerified: decoded.emailVerified || false };
+            req.user = { id: decoded.id, name: decoded.name, email: decoded.email, role: decoded.role || 'user', emailVerified: decoded.emailVerified || false, independentReviewer: decoded.independentReviewer === true };
             req.token = token;
         }
     }
@@ -83,7 +83,7 @@ async function requireAuthJwt(req, res, next) {
         });
     }
 
-    req.user = { id: decoded.id, name: decoded.name, email: decoded.email, role: decoded.role || 'user', emailVerified: decoded.emailVerified || false, subscriptionPlan: decoded.subscriptionPlan || 'free' };
+    req.user = { id: decoded.id, name: decoded.name, email: decoded.email, role: decoded.role || 'user', emailVerified: decoded.emailVerified || false, subscriptionPlan: decoded.subscriptionPlan || 'free', independentReviewer: decoded.independentReviewer === true };
     req.token = token;
     next();
 }
@@ -106,6 +106,7 @@ async function requireAuthOrBeta(req, res, next) {
                 role: decoded.role || 'user',
                 emailVerified: decoded.emailVerified || false,
                 subscriptionPlan: decoded.subscriptionPlan || 'free',
+                independentReviewer: decoded.independentReviewer === true,
             };
             req.token = token;
             return next();

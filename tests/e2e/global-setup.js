@@ -69,6 +69,12 @@ async function globalSetup() {
     if (!fs.existsSync(authDir)) {
       fs.mkdirSync(authDir, { recursive: true });
     }
+    // Mocked browser suites intercept /api/auth/me and only require a valid
+    // Playwright storage-state document. Keep them runnable when a reused local
+    // server has invite-only registration enabled; real-auth suites will still
+    // fail their actual login assertions if account setup did not succeed.
+    const storageStatePath = path.join(authDir, 'user.json');
+    fs.writeFileSync(storageStatePath, JSON.stringify({ cookies: [], origins: [] }, null, 2));
 
     const runId = Date.now();
     const testEmail = `e2e-${runId}@test.local`;
@@ -139,7 +145,7 @@ async function globalSetup() {
           ],
           origins: [],
         };
-        fs.writeFileSync(path.join(authDir, 'user.json'), JSON.stringify(storageState, null, 2));
+        fs.writeFileSync(storageStatePath, JSON.stringify(storageState, null, 2));
         fs.writeFileSync(path.join(authDir, 'test-user-meta.json'), JSON.stringify({ email: testEmail, runId }, null, 2));
         console.log('  ✓ Auth state saved\n');
       }

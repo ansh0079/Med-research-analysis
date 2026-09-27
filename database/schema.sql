@@ -1630,8 +1630,9 @@ CREATE TABLE IF NOT EXISTS users (
     preferences TEXT, 
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     last_login DATETIME
-, email_verified INTEGER DEFAULT 0, email_verification_token TEXT, email_verification_expires DATETIME, updated_at DATETIME, stripe_customer_id TEXT, stripe_subscription_id TEXT, subscription_status TEXT DEFAULT 'free', subscription_plan TEXT DEFAULT 'free', subscription_current_period_end TEXT, subscription_cancel_at_period_end INTEGER DEFAULT 0, trial_started_at TEXT, trial_ends_at TEXT, has_used_trial INTEGER NOT NULL DEFAULT 0, access_token_version INTEGER NOT NULL DEFAULT 0);
+, email_verified INTEGER DEFAULT 0, email_verification_token TEXT, email_verification_expires DATETIME, updated_at DATETIME, stripe_customer_id TEXT, stripe_subscription_id TEXT, subscription_status TEXT DEFAULT 'free', subscription_plan TEXT DEFAULT 'free', subscription_current_period_end TEXT, subscription_cancel_at_period_end INTEGER DEFAULT 0, trial_started_at TEXT, trial_ends_at TEXT, has_used_trial INTEGER NOT NULL DEFAULT 0, access_token_version INTEGER NOT NULL DEFAULT 0, independent_reviewer INTEGER NOT NULL DEFAULT 0);
 
+CREATE INDEX IF NOT EXISTS idx_users_independent_reviewer ON users (independent_reviewer);
 CREATE INDEX IF NOT EXISTS idx_agent_conv_last_message ON agent_conversations(user_id, last_message_at);
 
 CREATE INDEX IF NOT EXISTS idx_agent_conv_topic ON agent_conversations(normalized_topic);

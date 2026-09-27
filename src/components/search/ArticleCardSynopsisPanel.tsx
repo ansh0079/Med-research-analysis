@@ -1,4 +1,4 @@
-import type { ArticleSynopsisFields } from '@types';
+import type { ArticleSynopsisFields, ArticleSynopsisResult } from '@types';
 import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
 import { SynopsisTrustBanner, type SynopsisSourceMode } from './SynopsisTrustBanner';
 
@@ -77,6 +77,27 @@ function SynopsisList({ label, items }: { label: string; items?: string[] }) {
   );
 }
 
+export function ClaimSupportNotice({ claimSupport }: { claimSupport?: ArticleSynopsisResult['claimSupport'] | null }) {
+  if (!claimSupport) return null;
+  if (!claimSupport.checked) {
+    return <div className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200">Claim support could not be checked. Treat the synopsis as unverified.</div>;
+  }
+  const policy = claimSupport.servingPolicy;
+  const unsupported = policy?.unsupported?.length || 0;
+  const uncertain = policy?.uncertain?.length || 0;
+  if (!unsupported && !uncertain) return null;
+  return (
+    <div className={`rounded-lg border p-3 text-xs ${unsupported ? 'border-rose-300 bg-rose-50 text-rose-900 dark:border-rose-800 dark:bg-rose-950/30 dark:text-rose-200' : 'border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200'}`}>
+      <div className="font-semibold">Automated source-support check found {unsupported} unsupported and {uncertain} uncertain claim{unsupported + uncertain === 1 ? '' : 's'}.</div>
+      <div className="mt-1">
+        {policy?.mode === 'withhold'
+          ? `Unsupported text was withheld${policy.withheld?.length ? ` from: ${policy.withheld.join(', ')}` : ''}.`
+          : 'Unsupported text remains visible for review and must not be treated as source-verified.'}
+      </div>
+    </div>
+  );
+}
+
 export function ArticleCardSynopsisPanel({
   synopsis,
   sourceMode,
@@ -86,6 +107,7 @@ export function ArticleCardSynopsisPanel({
   fullTextCoverageRatio,
   issuingBodyRecommendations,
   relatedRecommendations,
+  claimSupport,
   onClose,
 }: {
   synopsis: ArticleSynopsisFields;
@@ -108,6 +130,7 @@ export function ArticleCardSynopsisPanel({
    * synopsis fields, which assert what this document says.
    */
   relatedRecommendations?: RelatedRecommendation[];
+  claimSupport?: ArticleSynopsisResult['claimSupport'] | null;
   onClose: () => void;
 }) {
   const trust = TRUST_BADGE[synopsis.trustRating] ?? TRUST_BADGE.MODERATE;
@@ -155,6 +178,7 @@ export function ArticleCardSynopsisPanel({
       </div>
 
       <div className="px-4 py-3 space-y-3">
+        <ClaimSupportNotice claimSupport={claimSupport} />
         <SynopsisTrustBanner
           sourceMode={sourceMode}
           reviewState={reviewState}

@@ -64,8 +64,13 @@ function makeDb() {
             case_id TEXT PRIMARY KEY, user_id TEXT, topic TEXT, evidence_refs TEXT,
             vignette TEXT, decision_tree TEXT, outcomes TEXT
         );
+        CREATE TABLE case_sessions (
+            id TEXT PRIMARY KEY, user_id TEXT, topic TEXT, normalized_topic TEXT,
+            status TEXT NOT NULL DEFAULT 'in_progress'
+        );
     `);
     sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/103_case_evidence_status.sql'), 'utf8'));
+    sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/107_adaptive_case_evidence_lineage.sql'), 'utf8'));
     sqlite.exec(fs.readFileSync(MIGRATION, 'utf8'));
     const Base = class {
         constructor() { this.kysely = {}; this.sqlite = sqlite; }
@@ -119,12 +124,19 @@ describe('retraction', () => {
             ['case-a', 'u1', 'heart failure', JSON.stringify({ 'pubmed-31535829': 'v1' }),
                 'case-b', 'u1', 'heart failure', JSON.stringify({ 'pubmed-99999999': 'v2' })]
         );
+        await db.run(
+            `INSERT INTO case_sessions (id, user_id, topic, normalized_topic, evidence_refs)
+             VALUES (?, ?, ?, ?, ?)` ,
+            ['adaptive-a', 'u1', 'heart failure', 'heart failure', JSON.stringify({ 'pubmed-31535829': 'v1' })]
+        );
         const report = await invalidateArtifactsForRetractedSource(db, { articleUid: '31535829' });
-        expect(report).toMatchObject({ ok: true, cases: 1 });
+        expect(report).toMatchObject({ ok: true, cases: 2 });
         expect(await db.all('SELECT case_id, evidence_status FROM case_scenarios ORDER BY case_id')).toEqual([
             { case_id: 'case-a', evidence_status: 'withdrawn' },
             { case_id: 'case-b', evidence_status: 'current' },
         ]);
+        expect(await db.get('SELECT evidence_status FROM case_sessions WHERE id = ?', ['adaptive-a']))
+            .toEqual({ evidence_status: 'withdrawn' });
         expect((await db.get('SELECT vignette FROM case_scenarios WHERE case_id = ?', ['case-a'])).vignette).toBe('{}');
     });
     test('withdraws only artefacts derived from that article, across every id format', async () => {

@@ -217,6 +217,9 @@ function registerCaseRoutes(app, {
                 if (existing.evidenceStatus === 'withdrawn') {
                     return res.status(409).json({ error: 'This case uses withdrawn evidence and cannot be continued.', code: 'CASE_EVIDENCE_WITHDRAWN' });
                 }
+                if (existing.evidenceStatus === 'needs_revision') {
+                    return res.status(409).json({ error: 'This case uses evidence that has changed. Start a new case.', code: 'CASE_EVIDENCE_NEEDS_REVISION' });
+                }
 
                 const result = await recordCaseChoice(db, caseId, req.user.id, nodeId, choiceId);
 
@@ -232,7 +235,7 @@ function registerCaseRoutes(app, {
                 res.json(result);
             } catch (error) {
                 req.log.error({ err: error, caseId: req.params.caseId }, 'Case response error');
-                res.status(500).json({ error: error.message || 'Internal Server Error' });
+                res.status(error.statusCode || 500).json({ error: error.message || 'Internal Server Error', code: error.code });
             }
         }
     );
