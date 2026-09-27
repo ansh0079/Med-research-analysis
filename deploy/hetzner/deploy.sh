@@ -47,10 +47,68 @@ echo "Building and starting stack for https://${DOMAIN} ..."
 export GIT_SHA="$(git rev-parse HEAD 2>/dev/null || echo unknown)"
 echo "Deploying commit: ${GIT_SHA}"
 docker compose -f docker-compose.hetzner.yml pull --ignore-buildable || true
-if ! docker compose -f docker-compose.hetzner.yml up -d --build --remove-orphans; then
+
+# Keep the images that are serving right now, so a deploy that fails health can put them back.
+# Without this a failed deploy left the site down until someone fixed forward (2026-09-26: 11h of
+# 502 because a new required env var was never set).
+ROLLBACK_READY=0
+if docker image inspect medsearch-web:latest > /dev/null 2>&1 \
+  && docker image inspect medsearch-worker:latest > /dev/null 2>&1; then
+  docker tag medsearch-web:latest medsearch-web:rollback
+  docker tag medsearch-worker:latest medsearch-worker:rollback
+  ROLLBACK_READY=1
+fi
+
+docker compose -f docker-compose.hetzner.yml build web worker
+
+# Run the app's own startup readiness check inside the NEW image with the real environment,
+# before any live container is replaced. The shell check above only knows four variables; the
+# app refuses to boot on more than that, and finding out after the swap means an outage.
+echo "Preflight: production readiness in the new image ..."
+if ! docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T web node -e "
+const { validateProductionEnv } = require('./server/lib/productionReadiness');
+const { errors } = validateProductionEnv({ mode: 'runtime' });
+if (errors.length) { console.error(errors.map((e) => '  - ' + e).join('\n')); process.exit(1); }
+console.log('  readiness OK');
+"; then
+  echo "Preflight failed: the new build would not boot with this .env. Live containers untouched."
+  exit 1
+fi
+
+# From here on live containers are being replaced. Any failure -- compose up, a migration exec into
+# a crash-looping container, or the health wait -- must end in the rollback, not a bare `set -e`
+# exit that leaves the broken build serving 502.
+fail_and_roll_back() {
+  trap - ERR
+  set +e
+  echo "Public endpoint check: $(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "https://${DOMAIN}/health" || echo unreachable)"
+  echo "web logs (last 20):"
+  docker logs --tail 20 medsearch-web 2>&1 | sed 's/^/  /'
+
+  if [[ "$ROLLBACK_READY" = "1" ]]; then
+    # Migrations may already have run; they are additive, so the previous code runs on the new schema.
+    echo "Rolling back web + worker to the images that were serving before this deploy ..."
+    docker tag medsearch-web:rollback medsearch-web:latest
+    docker tag medsearch-worker:rollback medsearch-worker:latest
+    docker compose -f docker-compose.hetzner.yml up -d --no-build web worker
+    for i in 1 2 3 4 5 6 7 8 9 10 11 12; do
+      sleep 5
+      if curl -fsS --max-time 15 "https://${DOMAIN}/health" > /dev/null 2>&1; then
+        echo "Rollback serving on attempt $i. Deploy of ${GIT_SHA} FAILED and was reverted; fix forward."
+        exit 1
+      fi
+    done
+    echo "Rollback did not restore https://${DOMAIN}/health either -- the site is down."
+  fi
+  echo "Try: docker compose -f docker-compose.hetzner.yml logs caddy web worker --tail 50"
+  exit 1
+}
+trap fail_and_roll_back ERR
+
+if ! docker compose -f docker-compose.hetzner.yml up -d --no-build --remove-orphans; then
   echo "compose up failed; clearing stale containers and retrying once ..."
   docker ps -a --format '{{.Names}}'     | grep -E '^[0-9a-f]{12}_medsearch-(web|worker)$'     | xargs -r docker rm -f >/dev/null || true
-  docker compose -f docker-compose.hetzner.yml up -d --build --remove-orphans
+  docker compose -f docker-compose.hetzner.yml up -d --no-build --remove-orphans
 fi
 
 echo "Running Postgres migrations..."
@@ -96,6 +154,4 @@ for i in 1 2 3 4 5 6 7 8 9 10; do
 done
 
 echo "Health check failed after 10 attempts (web=$web_ok worker=$worker_ok)"
-echo "Public endpoint check: $(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "https://${DOMAIN}/health" || echo unreachable)"
-echo "Try: docker compose -f docker-compose.hetzner.yml logs caddy web worker --tail 50"
-exit 1
+fail_and_roll_back
