@@ -26,7 +26,7 @@ function registerAnnotationRoutes(app, { db, requireJson, requireAuthJwt, rateLi
             if (!text || typeof text !== 'string' || !text.trim()) {
                 return res.status(400).json({ error: 'text is required' });
             }
-            const sanitizedText = sanitizeUserInput(text, { maxLength: 5000, escapeHtml: true, normalizeWhitespace: false });
+            const sanitizedText = sanitizeUserInput(text, { maxLength: 5000, escapeHtml: false, normalizeWhitespace: false });
             if (!sanitizedText) {
                 return res.status(400).json({ error: 'text is required' });
             }
@@ -34,7 +34,7 @@ function registerAnnotationRoutes(app, { db, requireJson, requireAuthJwt, rateLi
                 const userId = req.user.id;
                 const userName = sanitizeUserInput(
                     (req.user.name && String(req.user.name).trim()) || 'Researcher',
-                    { maxLength: 100, escapeHtml: true }
+                    { maxLength: 100, escapeHtml: false }
                 ) || 'Researcher';
                 const ins = await db.createAnnotation(
                     articleId,

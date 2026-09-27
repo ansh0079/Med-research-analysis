@@ -55,7 +55,7 @@ function registerCommentRoutes(router, ctx) {
     if ((!articleId && !collectionId)) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
-    const sanitizedContent = sanitizeUserInput(content, { maxLength: 5000, escapeHtml: true, normalizeWhitespace: false });
+    const sanitizedContent = sanitizeUserInput(content, { maxLength: 5000, escapeHtml: false, normalizeWhitespace: false });
     if (!sanitizedContent) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
@@ -130,7 +130,7 @@ function registerCommentRoutes(router, ctx) {
 
     if (content !== undefined) {
       setClauses.push(`${COLS.content} = ?`);
-      params.push(sanitizeUserInput(content, { maxLength: 5000, escapeHtml: true, normalizeWhitespace: false }) || '');
+      params.push(sanitizeUserInput(content, { maxLength: 5000, escapeHtml: false, normalizeWhitespace: false }) || '');
     }
     if (isResolved !== undefined) { setClauses.push(`${COLS.isResolved} = ?`); params.push(isResolved ? 1 : 0); }
 

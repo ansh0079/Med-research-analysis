@@ -132,22 +132,33 @@ describe('collaborationRoutes', () => {
     });
 
     describe('POST /comments — sanitization', () => {
-        test('script content is escaped, not stored raw', async () => {
+        // Comments are stored as the text the user typed and escaped where they are rendered: React
+        // renders them as text, and no client path renders comment HTML (no markdown/innerHTML).
+        // Escaping on input showed users "patient&#039;s" for "patient's".
+        test("an apostrophe is stored as typed, not as an HTML entity", async () => {
             mockDb.get.mockImplementation((sql) => {
                 if (sql.includes('FROM collab_comments WHERE id')) {
-                    return Promise.resolve({ id: 'new-id', article_id: 'art1', content: '&lt;script&gt;alert(1)&lt;/script&gt;', user_id: 'u1' });
+                    return Promise.resolve({ id: 'new-id', article_id: 'art1', content: "patient's", user_id: 'u1' });
                 }
                 return Promise.resolve(null);
             });
 
             const res = await request(app)
                 .post('/api/collaboration/comments')
-                .send({ articleId: 'art1', content: '<script>alert(1)</script>' });
+                .send({ articleId: 'art1', content: "The patient's creatinine rose" });
 
             expect(res.status).toBe(201);
             const insertCall = mockDb.run.mock.calls.find(([sql]) => sql.includes('INSERT INTO collab_comments'));
-            const insertedContent = insertCall[1][6]; // content param position in the VALUES list
-            expect(insertedContent).not.toContain('<script>');
+            expect(insertCall[1][6]).toBe("The patient's creatinine rose"); // content param position
+        });
+
+        test('dangerous URL schemes are still neutralised', async () => {
+            mockDb.get.mockImplementation(() => Promise.resolve({ id: 'new-id', article_id: 'art1', content: 'x', user_id: 'u1' }));
+            await request(app)
+                .post('/api/collaboration/comments')
+                .send({ articleId: 'art1', content: 'see javascript:alert(1)' });
+            const insertCall = mockDb.run.mock.calls.find(([sql]) => sql.includes('INSERT INTO collab_comments'));
+            expect(insertCall[1][6]).not.toMatch(/javascript:/i);
         });
 
         test('POST with only collectionId (no articleId) succeeds via the sentinel placeholder', async () => {

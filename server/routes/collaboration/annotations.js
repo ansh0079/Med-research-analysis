@@ -40,13 +40,13 @@ function registerAnnotationRoutes(router, ctx) {
 
     const id = randomUUID();
     const now = new Date().toISOString();
-    const sanitizedText = sanitizeUserInput(text, { maxLength: 5000, escapeHtml: true, normalizeWhitespace: false });
+    const sanitizedText = sanitizeUserInput(text, { maxLength: 5000, escapeHtml: false, normalizeWhitespace: false });
     if (!sanitizedText) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
-    const sanitizedUserName = sanitizeUserInput(req.user.name || 'Researcher', { maxLength: 100, escapeHtml: true }) || 'Researcher';
+    const sanitizedUserName = sanitizeUserInput(req.user.name || 'Researcher', { maxLength: 100, escapeHtml: false }) || 'Researcher';
     const sanitizedNote = note !== undefined
-      ? sanitizeUserInput(note, { maxLength: 5000, escapeHtml: true, normalizeWhitespace: false }) || null
+      ? sanitizeUserInput(note, { maxLength: 5000, escapeHtml: false, normalizeWhitespace: false }) || null
       : null;
     const sanitizedTags = Array.isArray(tags)
       ? tags.slice(0, 20).map((tag) => sanitizeTopicName(tag)).filter(Boolean)
@@ -84,7 +84,7 @@ function registerAnnotationRoutes(router, ctx) {
 
     if (note !== undefined) {
       fields.push(`${COLS.note} = ?`);
-      params.push(sanitizeUserInput(note, { maxLength: 5000, escapeHtml: true, normalizeWhitespace: false }) || null);
+      params.push(sanitizeUserInput(note, { maxLength: 5000, escapeHtml: false, normalizeWhitespace: false }) || null);
     }
     if (color !== undefined) { fields.push(`${COLS.color} = ?`); params.push(color); }
     if (isPrivate !== undefined) { fields.push(`${COLS.isPrivate} = ?`); params.push(isPrivate ? 1 : 0); }
