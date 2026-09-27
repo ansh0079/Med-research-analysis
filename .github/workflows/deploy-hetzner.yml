@@ -1,11 +1,29 @@
 name: Deploy to Hetzner
 
+# Deploys only a commit that passed CI. It used to fire on every push to main, in parallel with
+# CI, so a red build could reach production - and on 2026-09-24 a commit that could not boot did,
+# for 49 hours. deploy.sh now preflights and rolls back; this makes sure it only ever gets tested code.
+
 on:
-  push:
+  workflow_run:
+    workflows: ['CI/CD Pipeline']
+    types: [completed]
     branches: [main]
+  # Escape hatch for when CI itself is broken. Deploys the current origin/main, untested - that is
+  # the point of it, so it has to be chosen deliberately.
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "deploy untested main" to deploy without a passing CI run'
+        required: true
 
 jobs:
   deploy:
+    if: >-
+      (github.event_name == 'workflow_run'
+        && github.event.workflow_run.conclusion == 'success'
+        && github.event.workflow_run.event == 'push')
+      || (github.event_name == 'workflow_dispatch' && inputs.confirm == 'deploy untested main')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     concurrency:
@@ -14,6 +32,8 @@ jobs:
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
+        env:
+          TESTED_SHA: ${{ github.event.workflow_run.head_sha || '' }}
         with:
           # Prefer repository/org secret HETZNER_HOST. Fallback keeps deploy working
           # until the secret is configured; remove the literal once secret is set.
@@ -21,9 +41,22 @@ jobs:
           username: root
           key: ${{ secrets.HETZNER_SSH_KEY }}
           command_timeout: 8m
+          envs: TESTED_SHA
           script: |
             set -e
             cd /opt/medsearch
             git fetch origin main
-            git reset --hard origin/main
+            HEAD_SHA="$(git rev-parse origin/main)"
+            if [ -n "$TESTED_SHA" ]; then
+              # Deploy exactly what CI tested. If main has moved on, a newer CI run is coming and will
+              # deploy that; deploying this one now would roll production back behind it.
+              if [ "$TESTED_SHA" != "$HEAD_SHA" ]; then
+                echo "Tested ${TESTED_SHA} but main is at ${HEAD_SHA}; skipping, the newer run will deploy."
+                exit 0
+              fi
+              git reset --hard "$TESTED_SHA"
+            else
+              echo "Manual deploy of untested origin/main (${HEAD_SHA})"
+              git reset --hard origin/main
+            fi
             bash deploy/hetzner/deploy.sh
