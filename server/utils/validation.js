@@ -96,6 +96,8 @@ const schemas = {
         mcqAngles: z.array(z.string().max(500)).max(15).optional(),
         // Search snapshot the articles came from; makes the snapshot's stored text authoritative.
         evidenceSnapshotId: z.string().max(64).nullable().optional(),
+        // Explicitly request a new batch instead of reusing a matching stored batch.
+        refresh: z.boolean().optional(),
     }),
 
     synopsis: z.object({

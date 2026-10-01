@@ -6,7 +6,6 @@ const { validateSourceIndices } = require('../citationValidator');
 const { teachingObjectsToQuizContext } = require('../teachingObjectService');
 const { resolveProvider } = require('../../utils/aiProvider');
 const { enrichLearnerContextForQuiz } = require('../learnerContextService');
-const { liveQuizMcqKey } = require('../../utils/teachingObjectKeys');
 const { applyQuizClaimSelectionBandit } = require('../personalizationBanditService');
 const {
     response,
@@ -39,6 +38,11 @@ const {
     publicManifest,
 } = require('../search/generationEvidenceManifest');
 const { capVerificationForContext, usableAsContext } = require('../content/legacyContentPolicy');
+const {
+    buildQuizBatchDescriptor,
+    findReusableQuizBatch,
+    persistQuizBatch,
+} = require('./quizBatchReuseService');
 
 function evidenceSourceTrust(article = {}) {
     const retracted = Boolean(article?._retraction?.isRetracted || article?.isRetracted || article?.is_retracted);
@@ -121,7 +125,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
     async function generateQuiz({ body, user = {}, sessionId = null, log = logger }) {
         const {
             topic, articles: requestedArticles = [], count = 5, difficulty = 'mixed', studyRunId, trainingStage, explanationDepth, explicitTargetNodeIds, mode, claimJobKey,
-            evidenceSnapshotId = null,
+            evidenceSnapshotId = null, refresh = false,
         } = body || {};
 
         if (!topic || typeof topic !== 'string' || topic.trim().length < 2) {
@@ -444,9 +448,24 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             }, 503);
         }
 
+        const initialQuizModel = PINNED_MODELS[selectedProvider] || PINNED_MODELS.claude;
+        const batchDescriptor = buildQuizBatchDescriptor({
+            db,
+            topic: cleanTopic,
+            flow: 'topic',
+            prompt,
+            provider: selectedProvider,
+            model: initialQuizModel,
+            userId: user?.id || null,
+        });
+        if (!refresh) {
+            const reusableBatch = await findReusableQuizBatch(db, batchDescriptor);
+            if (reusableBatch) return response(reusableBatch);
+        }
+
         try {
             let usedProvider = selectedProvider;
-            let quizModel = PINNED_MODELS[usedProvider] || PINNED_MODELS.claude;
+            let quizModel = initialQuizModel;
             let raw;
             try {
                 const generated = await generateQuizQuestions(ai, {
@@ -599,22 +618,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 }, 422);
             }
 
-            db.upsertTeachingObject({
-                objectKey: liveQuizMcqKey(db, cleanTopic),
-                objectType: 'live_quiz_mcq',
-                normalizedTopic: db.normalizeTopic(cleanTopic),
-                topic: cleanTopic,
-                title: `Live quiz MCQs: ${cleanTopic}`,
-                payload: { mcqs: questions, generatedAt: new Date().toISOString(), lineage: evidenceLineage },
-                provider: usedProvider,
-                model: quizModel,
-                confidence: validation.validationSummary.skipped ? 0.5 : 0.8,
-                evidenceSnapshotId: evidenceLineage.snapshotId,
-                lineageStatus: evidenceLineage.status,
-                manifestComplete: manifest.complete,
-            }).catch((err) => log.warn({ err }, 'Failed to cache live quiz MCQs'));
-
-            return response({
+            const responseBody = {
                 questions,
                 topic: cleanTopic,
                 provider: usedProvider,
@@ -633,7 +637,18 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 effectiveDifficulty,
                 abilityEstimate,
                 droppedHighStakes: droppedHighStakes.length ? droppedHighStakes : undefined,
-            });
+            };
+            await persistQuizBatch(db, batchDescriptor, {
+                topic: cleanTopic,
+                responseBody,
+                provider: usedProvider,
+                model: quizModel,
+                confidence: validation.validationSummary.skipped ? 0.5 : 0.8,
+                evidenceLineage,
+                manifestComplete: manifest.complete,
+            }).catch((err) => log.warn({ err }, 'Failed to persist reusable quiz batch'));
+
+            return response(responseBody);
         } catch (error) {
             log.error({ err: error }, 'Quiz generation error');
             return response({ error: 'Internal Server Error' }, 500);
@@ -641,7 +656,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
     }
 
     async function generateFromEvidence({ body, user = {}, sessionId = null, log = logger }) {
-        const { topic, articles: requestedArticles = [], count = 3, difficulty = 'mixed', evidenceSnapshotId = null } = body || {};
+        const { topic, articles: requestedArticles = [], count = 3, difficulty = 'mixed', evidenceSnapshotId = null, refresh = false } = body || {};
         if (!topic || typeof topic !== 'string' || topic.trim().length < 2) {
             return response({ error: 'topic is required' }, 400);
         }
@@ -715,6 +730,20 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         const { provider: selectedProvider, model: initialQuizModel } = resolveProvider({}, serverConfig);
         if (!selectedProvider) {
             return response({ error: 'No AI provider configured. Add GEMINI_API_KEY or MISTRAL_API_KEY to .env' }, 503);
+        }
+
+        const batchDescriptor = buildQuizBatchDescriptor({
+            db,
+            topic: cleanTopic,
+            flow: 'evidence',
+            prompt,
+            provider: selectedProvider,
+            model: initialQuizModel,
+            userId: user?.id || null,
+        });
+        if (!refresh) {
+            const reusableBatch = await findReusableQuizBatch(db, batchDescriptor);
+            if (reusableBatch) return response(reusableBatch);
         }
 
         try {
@@ -797,7 +826,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 }, 422);
             }
 
-            return response({
+            const responseBody = {
                 questions,
                 topic: cleanTopic,
                 provider: usedProvider,
@@ -808,7 +837,18 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 evidenceLineage,
                 evidenceManifest: publicManifest(manifest),
                 droppedHighStakes: droppedHighStakes.length ? droppedHighStakes : undefined,
-            });
+            };
+            await persistQuizBatch(db, batchDescriptor, {
+                topic: cleanTopic,
+                responseBody,
+                provider: usedProvider,
+                model: quizModel,
+                confidence: validation.validationSummary.skipped ? 0.5 : 0.8,
+                evidenceLineage,
+                manifestComplete: manifest.complete,
+            }).catch((err) => log.warn({ err }, 'Failed to persist reusable evidence quiz batch'));
+
+            return response(responseBody);
         } catch (error) {
             log.error({ err: error }, 'Quiz-from-evidence error');
             return response({ error: 'Internal Server Error' }, 500);

@@ -5,9 +5,14 @@ const {
     getCachedSearchResult,
     setCachedSearchResult,
     shareSearchComputation,
+    DEFAULT_SEARCH_RESULT_TTL_SECONDS,
 } = require('../../server/services/searchResultCacheService');
 
 describe('searchResultCacheService', () => {
+    test('keeps an exact ranked result for a normal 15-minute study session', () => {
+        expect(DEFAULT_SEARCH_RESULT_TTL_SECONDS).toBe(900);
+    });
+
     test('concurrent callers share computation but cannot mutate each other', async () => {
         const compute = jest.fn(async () => ({ articles: [{ title: 'original' }] }));
         const [a, b] = await Promise.all([shareSearchComputation('shared', compute), shareSearchComputation('shared', compute)]);

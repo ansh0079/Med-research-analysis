@@ -44,6 +44,7 @@ function makeSnapshotDb() {
 }
 
 function makeService(db) {
+    const storedBatches = new Map();
     const withStubs = Object.assign(db, {
         // Provenance trust comes from the cached (server-side) copy of the article, not the client's.
         getCachedArticle: async (uid) => (uid === 'pubmed-5' ? { uid, pubtype: ['Practice Guideline'] } : null),
@@ -53,6 +54,16 @@ function makeService(db) {
         listTeachingObjectsForTopic: async () => [],
         getGlobalEngagedArticles: async () => [],
         normalizeTopic: (t) => String(t || '').toLowerCase().trim(),
+        getTeachingObjectByKey: async (objectKey) => storedBatches.get(objectKey) || null,
+        upsertTeachingObject: async (object) => {
+            const stored = {
+                ...object,
+                reviewState: 'machine_checked',
+                generatedAt: new Date().toISOString(),
+            };
+            storedBatches.set(object.objectKey, stored);
+            return stored;
+        },
     });
     const generateQuizQuestions = jest.fn(async () => ({
         questions: [{
@@ -121,6 +132,29 @@ describe('quiz from evidence with an evidence snapshot', () => {
         expect(served.correctAnswer).toBeUndefined(); // the answer never travels
         const verified = verifyQuizGradingToken(served.gradingToken, { questionId: served.id, questionText: served.question });
         expect(verified.lineage).toMatchObject({ evidenceSnapshotId: saved.id, evidenceLineageStatus: 'linked' });
+    });
+
+    test('an identical linked request reuses its validated batch; refresh explicitly regenerates it', async () => {
+        const db = makeSnapshotDb();
+        const saved = await persistSearchEvidenceSnapshot(db, { query: 'hf', articles: [article(1)], sessionId: 's1' });
+        const { service, generateQuizQuestions } = makeService(db);
+        const body = { articles: [article(1)], evidenceSnapshotId: saved.id };
+
+        const first = await run(service, body, { sessionId: 's1' });
+        const second = await run(service, body, { sessionId: 's1' });
+
+        expect(first.status).toBe(200);
+        expect(second.status).toBe(200);
+        expect(generateQuizQuestions).toHaveBeenCalledTimes(1);
+        expect(second.body).toMatchObject({
+            provider: 'stored_quiz_cache',
+            cached: true,
+            reusedFromStore: true,
+            evidenceLineage: { snapshotId: saved.id, status: 'linked' },
+        });
+
+        await run(service, { ...body, refresh: true }, { sessionId: 's1' });
+        expect(generateQuizQuestions).toHaveBeenCalledTimes(2);
     });
 
     test("another session's snapshot cannot be used to generate", async () => {

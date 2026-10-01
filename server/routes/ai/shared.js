@@ -116,12 +116,16 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
                     .catch((err) => { logger?.warn?.({ err, topic }, 'getTeachingObjectsForTopicString failed; falling back to key lookup'); return []; })
                 : [];
             const firstOfType = (type) => byTopic.find((o) => o.objectType === type) || null;
+            const reusableLiveForUser = byTopic.find((o) =>
+                o.objectType === 'live_quiz_mcq'
+                && (!o.payload?.cacheScopeUserId || o.payload.cacheScopeUserId === (userId || null))
+            ) || null;
 
             // Key lookup remains as a fallback for objects written before the backfill.
             const [coldObj, guidelineObj, liveObj] = await Promise.all([
                 firstOfType('cold_start_mcq') || database.getTeachingObjectByKey(coldStartMcqKey(database, topic)),
                 firstOfType('guideline_mcq') || database.getTeachingObjectByKey(guidelineMcqKey(database, topic)),
-                firstOfType('live_quiz_mcq') || database.getTeachingObjectByKey(liveQuizMcqKey(database, topic)),
+                reusableLiveForUser || database.getTeachingObjectByKey(liveQuizMcqKey(database, topic)),
             ]);
             const paperObjs = byTopic.filter((o) => o.objectType === 'paper_mcq');
             const claimTopicKey = database.normalizeTopic(topic);

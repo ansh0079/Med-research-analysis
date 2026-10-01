@@ -2,7 +2,10 @@
 
 const crypto = require('crypto');
 
-const DEFAULT_SEARCH_RESULT_TTL_SECONDS = Number(process.env.SEARCH_RESULT_CACHE_TTL_SECONDS || 120) || 120;
+// Source calls are already cached for 30 minutes. Keep the fully ranked,
+// actor-specific response long enough to avoid repeating ranking and enrichment
+// during a normal study session while preserving a shorter freshness window.
+const DEFAULT_SEARCH_RESULT_TTL_SECONDS = Number(process.env.SEARCH_RESULT_CACHE_TTL_SECONDS || 900) || 900;
 const pending = new Map();
 
 async function shareSearchComputation(key, compute) {

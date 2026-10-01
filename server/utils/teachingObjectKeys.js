@@ -1,5 +1,7 @@
 'use strict';
 
+const crypto = require('crypto');
+
 function teachingObjectTopicSlug(db, topic) {
     const normalized = typeof db?.normalizeTopic === 'function'
         ? db.normalizeTopic(topic)
@@ -19,9 +21,16 @@ function liveQuizMcqKey(db, topic) {
     return `live-quiz-mcq:${teachingObjectTopicSlug(db, topic)}`;
 }
 
+function liveQuizMcqBatchKey(db, topic, flow = 'topic', userId = null) {
+    const scope = userId ? `user:${userId}` : 'shared';
+    const scopeHash = crypto.createHash('sha256').update(scope).digest('hex').slice(0, 16);
+    return `live-quiz-mcq:${teachingObjectTopicSlug(db, topic)}:${flow}:${scopeHash}`.slice(0, 240);
+}
+
 module.exports = {
     teachingObjectTopicSlug,
     coldStartMcqKey,
     guidelineMcqKey,
     liveQuizMcqKey,
+    liveQuizMcqBatchKey,
 };

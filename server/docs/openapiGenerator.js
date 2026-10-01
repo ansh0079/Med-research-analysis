@@ -79,6 +79,8 @@ const COMPONENT_SCHEMAS = {
             claimJobKey: { type: 'string', maxLength: 160, nullable: true },
             teachingPoints: { type: 'array', items: { type: 'object' }, maxItems: 20 },
             mcqAngles: { type: 'array', items: { type: 'string', maxLength: 500 }, maxItems: 15 },
+            evidenceSnapshotId: { type: 'string', maxLength: 64, nullable: true },
+            refresh: { type: 'boolean' },
         },
     },
     synopsis: {
