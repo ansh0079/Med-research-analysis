@@ -22,6 +22,8 @@
 const db = require('../database');
 
 const EXPECTED_TABLES = [
+    // Beta registration is required on a clean PostgreSQL install.
+    'beta_invites',
     // 098_guideline_registry.sql
     'guideline_registry_entries',
     'guideline_registry_recommendations',

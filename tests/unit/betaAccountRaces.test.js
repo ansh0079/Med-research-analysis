@@ -129,10 +129,6 @@ test('two invited accounts verify, log in, reset one password and reject reset r
     const db = new Database(':memory:');
     try {
         await db.connect();
-        await db.run(`CREATE TABLE beta_invites (
-            id TEXT PRIMARY KEY, code TEXT UNIQUE NOT NULL, specialty TEXT, max_uses INTEGER NOT NULL,
-            use_count INTEGER NOT NULL DEFAULT 0, expires_at TEXT
-        )`);
         await db.run(
             'INSERT INTO beta_invites (id, code, max_uses, use_count) VALUES (?, ?, ?, ?)',
             ['pilot-invite', 'PILOT', 2, 0]

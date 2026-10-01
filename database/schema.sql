@@ -735,6 +735,20 @@ CREATE TABLE IF NOT EXISTS offline_eval_runs (
     created_at TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS beta_invites (
+  id TEXT PRIMARY KEY,
+  code TEXT UNIQUE NOT NULL,
+  label TEXT,
+  specialty TEXT,
+  max_uses INTEGER NOT NULL DEFAULT 1,
+  use_count INTEGER NOT NULL DEFAULT 0,
+  created_by TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  expires_at TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_beta_invites_code ON beta_invites(code);
+
 CREATE TABLE IF NOT EXISTS password_reset_tokens (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id TEXT NOT NULL,
