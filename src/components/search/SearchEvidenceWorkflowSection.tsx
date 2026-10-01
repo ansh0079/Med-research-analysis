@@ -4,6 +4,7 @@ import { EvidenceMapPanel } from '@components/search/EvidenceMapPanel';
 import { EvidenceQuizPanel } from '@components/search/EvidenceQuizPanel';
 import { TopicKnowledgeDiscovery } from '@components/search/TopicKnowledgeDiscovery';
 import { AgentMentorPanel } from '@components/search/AgentMentorPanel';
+import { CollapsibleRow } from '@components/search/CollapsibleRow';
 import { api } from '@services/api';
 import type { AgentGuidance, Article, ClinicalAnswer, CommunityInsight, ProactiveAlert, ProactiveEvidenceAlert, SynthesisResult, TopicEvidenceMemory, TopicGuideStatus, TopicIntelligence } from '@types';
 import type { BriefDifficulty } from '@components/search/TopicBriefPanel';
@@ -98,7 +99,12 @@ export const SearchEvidenceWorkflowSection: React.FC<SearchEvidenceWorkflowSecti
   onViewDetails,
   onDismissKnowledgeDrift,
 }) => part === 'brief' ? (
-  <div id="workflow-evidence" className="mb-4 scroll-mt-28">
+  <CollapsibleRow
+    id="workflow-evidence"
+    icon="fa-wand-magic-sparkles"
+    title="Topic tools"
+    summary="Synopsis, synthesise, MCQs, case, save and export"
+  >
     <TopicBriefPanel
       query={currentQuery}
       top5={top5Articles}
@@ -123,7 +129,7 @@ export const SearchEvidenceWorkflowSection: React.FC<SearchEvidenceWorkflowSecti
       evidenceMemory={topicEvidenceMemory}
       onDismissKnowledgeDrift={onDismissKnowledgeDrift}
     />
-  </div>
+  </CollapsibleRow>
 ) : (
   <>
     <div id="evidence-quiz" className="mb-4 scroll-mt-28">

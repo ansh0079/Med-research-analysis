@@ -24,7 +24,7 @@ export const ShiftReviewBar: React.FC<ShiftReviewBarProps> = ({
       <div className="grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap sm:items-center">
         <button
           type="button"
-          onClick={() => document.getElementById('workflow-evidence')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+          onClick={() => document.getElementById('search-results')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
           className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-2.5 sm:px-3 text-xs font-bold text-white hover:bg-indigo-500"
         >
           <i className="fas fa-layer-group text-[10px]" /> Evidence

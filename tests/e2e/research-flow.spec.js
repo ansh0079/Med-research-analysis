@@ -244,8 +244,9 @@ test.describe('search → results → interaction flow', () => {
 
     await expect(page.getByRole('link', { name: /SGLT2 inhibitors in heart failure/i }).first()).toBeVisible();
     await expect(page.getByText(/Personalizing topic intelligence/i).first()).toBeVisible();
+    await page.getByRole('button', { name: /Your learning gaps/i }).click();
     await expect(page.getByText(/Personalized remediation/i)).toBeVisible();
-    await expect(page.getByText(/1 weak claim/i)).toBeVisible();
+    await expect(page.getByText(/1 weak claim from your learning history/i)).toBeVisible();
     const mentorNotes = page.getByRole('button', { name: /Mentor notes/i });
     await expect(mentorNotes).toBeVisible({ timeout: 10000 });
     await mentorNotes.click();

@@ -16,6 +16,7 @@ import { QuerySenseBanner } from '@components/search/QuerySenseBanner';
 import { RelatedTopicsBar } from '@components/search/RelatedTopicsBar';
 import { VerifyEmailBanner } from '@components/search/VerifyEmailBanner';
 import { SearchDetails, SourceFailureNotice, hasSearchDetails } from '@components/search/SearchDetails';
+import { CollapsibleRow } from '@components/search/CollapsibleRow';
 import { STUDY_TYPE_FILTER_OPTIONS } from '@utils/searchStudyFilters';
 import { PersonalizedRemediationBanner } from '@components/search/PersonalizedRemediationBanner';
 import { ShiftReviewBar } from '@components/search/ShiftReviewBar';
@@ -289,22 +290,6 @@ export const SearchPage: React.FC = () => {
           </>
         )}
 
-        {currentQuery && results.length > 0 && (
-          <RelatedTopicsBar
-            topic={currentQuery}
-            evidenceRelatedTopics={evidenceRelatedTopics}
-            onOpenTopic={handleSearch}
-          />
-        )}
-
-        {results.length > 0 && learnerContext?.hasPersonalization && (learnerContext.weakClaimCount > 0 || learnerContext.hasTrajectory || learnerContext.weakTopicCount > 0) && (
-          <PersonalizedRemediationBanner
-            learnerContext={learnerContext}
-            onOpenQuiz={openInPlaceQuiz}
-            agentGuidance={agentGuidance}
-          />
-        )}
-
         {results.length > 0 && (
           <ShiftReviewBar
             currentQuery={currentQuery}
@@ -315,13 +300,89 @@ export const SearchPage: React.FC = () => {
           />
         )}
 
-        {(newPaperNotice || recentAnalyses.length > 0) && (
-          <SearchResultsFilterSection
-            newPaperNotice={newPaperNotice}
-            recentAnalyses={recentAnalyses}
-            onOpenAnalysis={openAnalysis}
-          />
-        )}
+        <div id="search-results" className="scroll-mt-28">
+          {results.length > 0 && (
+            <ResultLensToolbar
+              resultsCount={results.length}
+              openAccessCount={openAccessCount}
+              highQualityCount={highQualityCount}
+              recentCount={recentCount}
+              practiceChangingCount={practiceChangingCount}
+              resultLens={resultLens}
+              resultFilter={resultFilter}
+              onResultFilterChange={setResultFilter}
+              searchPack={searchPack}
+              evidenceLane={evidenceLane}
+              onLaneChange={setEvidenceLane}
+              selectedArticles={selectedArticles}
+              savedArticles={savedArticles}
+              onLensChange={(lens) => {
+                setResultLens(lens);
+                setVisibleCount(30);
+              }}
+              onClearLens={() => {
+                setResultLens('all');
+                setResultFilter('');
+                setEvidenceLane('all');
+                setVisibleCount(30);
+              }}
+              onCompare={() => setIsComparing(true)}
+              onNavigate={setCurrentPage}
+              onClearSelection={clearSelection}
+              onExport={exportResults}
+              trackFeatureUsage={trackFeatureUsage}
+            />
+          )}
+
+          {loading && results.length === 0 && (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
+              {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
+            </div>
+          )}
+
+          {results.length > 0 ? (
+            <SearchResultsGrid
+              layout={layout}
+              isPdfOpen={isOpen}
+              onToggleLayout={toggleLayout}
+              onClosePdf={closePdf}
+              activePdf={activePdf}
+              renderedResults={renderedResults}
+              evidenceLane={evidenceLane}
+              searchPack={searchPack}
+              activeResultIndex={activeResultIndex}
+              visibleCount={visibleCount}
+              visibleResultsLength={visibleResults.length}
+              onLoadMore={() => setVisibleCount((count) => Math.min(visibleResults.length, count + 20))}
+              isSaved={isSaved}
+              isSelected={isSelected}
+              onSave={toggleSaveArticle}
+              onSelect={toggleSelectArticle}
+              onAnalyze={openAnalysis}
+              onGenerateCase={openArticleCase}
+              onQuizPaper={openArticleQuiz}
+              onOpenTopic={handleSearch}
+              onOpenInWorkspace={openPdf}
+              onViewDetails={setDetailArticle}
+              searchId={lastSearchId ?? undefined}
+              searchCompletedAt={searchCompletedAt ?? undefined}
+            />
+          ) : !loading ? (
+            // A completed search that matched nothing is not the same as not
+            // having searched. Showing the cold-start suggestions panel for both
+            // made a working empty result look like the page had reset.
+            currentQuery && searchCompletedAt ? (
+              <NoResultsState
+                query={currentQuery}
+                filters={filters}
+                onRelax={(next) => { setFilters(next); handleSearch(currentQuery); }}
+                onRetry={handleSearch}
+              />
+            ) : (
+              <SearchEmptyState onExampleClick={handleSearch} isAuthenticated={isAuthenticated} />
+            )
+          ) : null}
+        </div>
 
         {results.length > 0 && <SearchEvidenceWorkflowSection part="brief" {...workflowSectionProps} />}
 
@@ -346,91 +407,39 @@ export const SearchPage: React.FC = () => {
         )}
 
         {results.length > 0 && (
-          <ResultLensToolbar
-            resultsCount={results.length}
-            openAccessCount={openAccessCount}
-            highQualityCount={highQualityCount}
-            recentCount={recentCount}
-            practiceChangingCount={practiceChangingCount}
-            resultLens={resultLens}
-            resultFilter={resultFilter}
-            onResultFilterChange={setResultFilter}
-            searchPack={searchPack}
-            evidenceLane={evidenceLane}
-            onLaneChange={setEvidenceLane}
-            selectedArticles={selectedArticles}
-            savedArticles={savedArticles}
-            onLensChange={(lens) => {
-              setResultLens(lens);
-              setVisibleCount(30);
-            }}
-            onClearLens={() => {
-              setResultLens('all');
-              setResultFilter('');
-              setEvidenceLane('all');
-              setVisibleCount(30);
-            }}
-            onCompare={() => setIsComparing(true)}
-            onNavigate={setCurrentPage}
-            onClearSelection={clearSelection}
-            onExport={exportResults}
-            trackFeatureUsage={trackFeatureUsage}
-          />
-        )}
-
-        {loading && results.length === 0 && (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
-            {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
-          </div>
-        )}
-
-        {results.length > 0 ? (
-          <SearchResultsGrid
-            layout={layout}
-            isPdfOpen={isOpen}
-            onToggleLayout={toggleLayout}
-            onClosePdf={closePdf}
-            activePdf={activePdf}
-            renderedResults={renderedResults}
-            evidenceLane={evidenceLane}
-            searchPack={searchPack}
-            activeResultIndex={activeResultIndex}
-            visibleCount={visibleCount}
-            visibleResultsLength={visibleResults.length}
-            onLoadMore={() => setVisibleCount((count) => Math.min(visibleResults.length, count + 20))}
-            isSaved={isSaved}
-            isSelected={isSelected}
-            onSave={toggleSaveArticle}
-            onSelect={toggleSelectArticle}
-            onAnalyze={openAnalysis}
-            onGenerateCase={openArticleCase}
-            onQuizPaper={openArticleQuiz}
-            onOpenTopic={handleSearch}
-            onOpenInWorkspace={openPdf}
-            onViewDetails={setDetailArticle}
-            searchId={lastSearchId ?? undefined}
-            searchCompletedAt={searchCompletedAt ?? undefined}
-          />
-        ) : !loading ? (
-          // A completed search that matched nothing is not the same as not
-          // having searched. Showing the cold-start suggestions panel for both
-          // made a working empty result look like the page had reset.
-          currentQuery && searchCompletedAt ? (
-            <NoResultsState
-              query={currentQuery}
-              filters={filters}
-              onRelax={(next) => { setFilters(next); handleSearch(currentQuery); }}
-              onRetry={handleSearch}
-            />
-          ) : (
-            <SearchEmptyState onExampleClick={handleSearch} isAuthenticated={isAuthenticated} />
-          )
-        ) : null}
-
-        {results.length > 0 && (
           <div className="mt-6">
             <SearchEvidenceWorkflowSection part="tools" {...workflowSectionProps} />
           </div>
+        )}
+
+        {results.length > 0 && learnerContext?.hasPersonalization && (learnerContext.weakClaimCount > 0 || learnerContext.hasTrajectory || learnerContext.weakTopicCount > 0) && (
+          <CollapsibleRow
+            icon="fa-bullseye"
+            title="Your learning gaps"
+            summary={learnerContext.weakClaimCount > 0 ? `${learnerContext.weakClaimCount} weak claim${learnerContext.weakClaimCount === 1 ? '' : 's'} on this topic` : 'Linked to your recent learning'}
+          >
+            <PersonalizedRemediationBanner
+              learnerContext={learnerContext}
+              onOpenQuiz={openInPlaceQuiz}
+              agentGuidance={agentGuidance}
+            />
+          </CollapsibleRow>
+        )}
+
+        {currentQuery && results.length > 0 && (
+          <RelatedTopicsBar
+            topic={currentQuery}
+            evidenceRelatedTopics={evidenceRelatedTopics}
+            onOpenTopic={handleSearch}
+          />
+        )}
+
+        {(newPaperNotice || recentAnalyses.length > 0) && (
+          <SearchResultsFilterSection
+            newPaperNotice={newPaperNotice}
+            recentAnalyses={recentAnalyses}
+            onOpenAnalysis={openAnalysis}
+          />
         )}
 
         {currentQuery && results.length > 0 && isAuthenticated && (
