@@ -4,7 +4,6 @@ import { ErrorBanner } from '@components/common/ErrorBanner';
 import { TopicIntelligenceStatusBanner } from '@components/search/TopicIntelligenceStatusBanner';
 import type { Article, SearchFilters, TopicGuideStatus } from '@types';
 import type { SearchRecentEntry } from '@utils/searchRecents';
-import type { BriefDifficulty } from './TopicBriefPanel';
 import type { ClinicalScenarioExtract } from '../../utils/extractClinicalScenario';
 
 interface SearchHeroProps {
@@ -32,11 +31,6 @@ interface SearchHeroProps {
   isAuthenticated: boolean;
   error: Error | null;
   results: Article[];
-  inPlaceQuizExpanded: boolean;
-  setInPlaceQuizExpanded: React.Dispatch<React.SetStateAction<boolean>>;
-  trackFeatureUsage: (feature: string, metadata?: Record<string, unknown>) => void;
-  openGuidelineFromWorkflow: () => void;
-  openCaseFromWorkflow: (difficulty?: BriefDifficulty) => void;
 }
 
 export const SearchHero: React.FC<SearchHeroProps> = ({
@@ -64,18 +58,13 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
   isAuthenticated,
   error,
   results,
-  inPlaceQuizExpanded,
-  setInPlaceQuizExpanded,
-  trackFeatureUsage,
-  openGuidelineFromWorkflow,
-  openCaseFromWorkflow,
 }) => {
   // Once results exist the hero has done its job. Measured on production it was
   // 3,292px tall and stayed that way after searching, so <main> -- and with it
   // every piece of evidence -- began below y=3,250. A clinician scrolled three
   // screens of branding before reaching a single paper. The pre-search
   // affordances (title, strapline, the patient-presentation box) collapse; the
-  // search bar, trail and workflow actions stay.
+  // search bar and trail stay; topic actions live in the sticky ShiftReviewBar.
   const collapsed = results.length > 0;
   const [shiftOpen, setShiftOpen] = useState(false);
   const showShiftPanel = !collapsed || shiftOpen;
@@ -241,41 +230,6 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
         )}
 
         <div className={`${collapsed ? 'mt-3' : 'mt-8'} max-w-3xl mx-auto space-y-3`}>
-          <div className="rounded-2xl border border-slate-200/90 dark:border-slate-700/90 bg-white/70 dark:bg-slate-900/45 px-4 py-3 text-left shadow-sm shadow-slate-200/30 dark:shadow-none">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Junior doctor workflow</p>
-            <div className="mt-3 flex flex-wrap items-center gap-1.5 sm:gap-2">
-              {[
-                { id: 'evidence', label: 'Evidence', icon: 'fa-layer-group', color: 'bg-indigo-600 text-white hover:bg-indigo-500', scrollTo: 'workflow-evidence' },
-                { id: 'guideline', label: 'Guideline check', icon: 'fa-book-medical', color: 'border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-950/40', action: openGuidelineFromWorkflow },
-                { id: 'case', label: 'Case mode', icon: 'fa-stethoscope', color: 'border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40', action: () => openCaseFromWorkflow('mixed') },
-                { id: 'quiz', label: 'Quiz', icon: 'fa-brain', color: inPlaceQuizExpanded ? 'bg-violet-600 text-white hover:bg-violet-500' : 'border border-violet-200 dark:border-violet-800 text-violet-700 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-950/40', action: () => setInPlaceQuizExpanded((v) => !v) },
-                { id: 'export', label: 'CBD export', icon: 'fa-file-export', color: 'border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/40', action: () => openCaseFromWorkflow('mixed') },
-              ].map((step, idx, arr) => (
-                <React.Fragment key={step.id}>
-                  <button
-                    type="button"
-                    disabled={results.length === 0}
-                    onClick={() => {
-                      trackFeatureUsage(`workflow_${step.id}_click`, { resultsCount: results.length });
-                      if (step.action) {
-                        step.action();
-                      } else if (step.scrollTo) {
-                        document.getElementById(step.scrollTo)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      }
-                    }}
-                    className={`inline-flex min-h-9 flex-1 basis-[8.5rem] items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold disabled:opacity-40 disabled:pointer-events-none transition-colors sm:flex-none sm:basis-auto sm:px-3 ${step.color}`}
-                  >
-                    <span className="flex items-center justify-center w-4 h-4 rounded-full bg-white/20 text-[9px] font-black">{idx + 1}</span>
-                    <i className={`fas ${step.icon} text-[10px]`} />
-                    {step.label}
-                  </button>
-                  {idx < arr.length - 1 && (
-                    <i className="fas fa-chevron-right hidden sm:inline text-[10px] text-slate-300 dark:text-slate-600" />
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
           {currentQuery && (intelligenceLoading || topicGuideStatus === 'building' || topicGuideStatus === 'pending') && (
             <TopicIntelligenceStatusBanner
               intelligenceLoading={intelligenceLoading}

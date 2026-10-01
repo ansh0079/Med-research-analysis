@@ -47,11 +47,6 @@ const baseProps = {
     isAuthenticated: false,
     error: null,
     results: [],
-    inPlaceQuizExpanded: false,
-    setInPlaceQuizExpanded: jest.fn(),
-    trackFeatureUsage: jest.fn(),
-    openGuidelineFromWorkflow: jest.fn(),
-    openCaseFromWorkflow: jest.fn(),
 } as unknown as React.ComponentProps<typeof SearchHero>;
 
 const renderHero = (results: Article[]) => render(<SearchHero {...baseProps} results={results} />);
@@ -84,9 +79,9 @@ describe('SearchHero once results exist', () => {
         expect(screen.getByLabelText(/I saw this patient today/i)).toBeInTheDocument();
     });
 
-    it('keeps the workflow actions reachable', () => {
+    it('leaves topic actions to the sticky ShiftReviewBar instead of repeating them', () => {
         renderHero([paper(1)]);
-        expect(screen.getByRole('button', { name: /Guideline check/i })).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: /Guideline check/i })).not.toBeInTheDocument();
     });
 
     it('collapses on the first result, not only on a full page of them', () => {

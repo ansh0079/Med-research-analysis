@@ -182,8 +182,6 @@ export const SearchEvidenceWorkflowSection: React.FC<SearchEvidenceWorkflowSecti
             topic={agentGuidance.topic}
             agentGuidance={agentGuidance}
             currentArticles={results}
-            onGenerateCase={() => onOpenCase('mixed')}
-            onGenerateMcqs={() => onOpenQuiz('mixed')}
           />
         </React.Suspense>
       </div>

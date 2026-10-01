@@ -61,6 +61,14 @@ export const ShiftReviewBar: React.FC<ShiftReviewBarProps> = ({
         >
           <i className="fas fa-file-export text-[10px]" /> Reflection
         </button>
+        <a
+          href={`https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(currentQuery)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border border-slate-200 px-2.5 sm:px-3 text-xs font-bold text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800/40"
+        >
+          <i className="fas fa-book-open text-[10px]" /> PubMed
+        </a>
       </div>
     </div>
   </div>

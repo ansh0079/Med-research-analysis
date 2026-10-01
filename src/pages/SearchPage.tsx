@@ -2,7 +2,6 @@ import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 const AIAnalysisPanel = React.lazy(() => import('@components/search/AIAnalysisPanel').then(m => ({ default: m.AIAnalysisPanel })));
 import { SynthesisPanel } from '@components/search/SynthesisPanel';
-import { TopicActionBanner } from '@components/quiz/TopicActionBanner';
 import { SelectionBasket } from '@components/search/SelectionBasket';
 import { ComparisonView } from '@components/search/ComparisonView';
 import { EvidenceProjectPanel } from '@components/search/EvidenceProjectPanel';
@@ -259,14 +258,10 @@ export const SearchPage: React.FC = () => {
         isAuthenticated={isAuthenticated}
         error={error}
         results={results}
-        inPlaceQuizExpanded={inPlaceQuizExpanded}
-        setInPlaceQuizExpanded={setInPlaceQuizExpanded}
-        trackFeatureUsage={trackFeatureUsage}
-        openGuidelineFromWorkflow={openGuidelineFromWorkflow}
-        openCaseFromWorkflow={openCaseFromWorkflow}
       />
 
-      <main className="max-w-7xl mx-auto px-3 sm:px-4 -mt-10 sm:-mt-16 pb-24">
+      {/* The pull-up only works against the tall empty-state hero; with results the hero is compact and the workflow bar would sit underneath. */}
+      <main className={`max-w-7xl mx-auto px-3 sm:px-4 pb-24 ${results.length > 0 ? 'mt-2' : '-mt-10 sm:-mt-16'}`}>
         {results.length > 0 && (
           <EvidenceVerdictStrip
             query={resultsQuery || currentQuery}
@@ -275,11 +270,6 @@ export const SearchPage: React.FC = () => {
             onJumpToGuidelines={() => document.getElementById('guideline-snapshot')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
           />
         )}
-
-        <WebpageCapturePanel
-          onSearch={handleSearch}
-          onUseAsCaseContext={(context) => setShiftPresentation(context)}
-        />
 
         {currentQuery && (
           <>
@@ -460,15 +450,6 @@ export const SearchPage: React.FC = () => {
           </div>
         )}
 
-        <TopicActionBanner
-          onTestYourself={() => openQuizFromWorkflow('mixed')}
-          onCaseScenario={openCaseFromWorkflow}
-          onReadDeeper={() => {
-            const q = encodeURIComponent(currentQuery);
-            window.open(`https://pubmed.ncbi.nlm.nih.gov/?term=${q}`, '_blank', 'noopener');
-          }}
-        />
-
         {currentQuery && results.length > 0 && isAuthenticated && (
           <div className="mb-4 flex justify-end">
             <button
@@ -485,6 +466,11 @@ export const SearchPage: React.FC = () => {
         <div id="guideline-snapshot">
           <GuidelineSnapshot query={resultsQuery || currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
         </div>
+
+        <WebpageCapturePanel
+          onSearch={handleSearch}
+          onUseAsCaseContext={(context) => setShiftPresentation(context)}
+        />
 
         {results.length > 0 && (
           <div className="mt-6">

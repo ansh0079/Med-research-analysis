@@ -60,6 +60,7 @@ function compactCaseContext(payload: WebpageExtractionPayload): string {
 
 export const WebpageCapturePanel: React.FC<WebpageCapturePanelProps> = ({ onSearch, onUseAsCaseContext }) => {
   const { showToast } = useToast();
+  const [open, setOpen] = useState(false);
   const [payload, setPayload] = useState<WebpageExtractionPayload | null>(null);
   const [inference, setInference] = useState<WebpageInferenceResult | null>(null);
   const [pasteText, setPasteText] = useState('');
@@ -219,15 +220,24 @@ export const WebpageCapturePanel: React.FC<WebpageCapturePanelProps> = ({ onSear
         : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
 
   return (
-    <section className="mb-4 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950/85">
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div className="min-w-0">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Live webpage capture</p>
-          <h2 className="mt-1 text-base font-black text-slate-900 dark:text-white">Extract current page evidence</h2>
-          <p className="mt-1 max-w-3xl text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-            Capture readable text, clinical signals, and safety markers from a browser tab, then turn it into evidence search or case context.
-          </p>
-        </div>
+    <section className="mb-4 rounded-2xl border border-slate-200 bg-white/95 shadow-sm dark:border-slate-800 dark:bg-slate-950/85">
+      <button
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        aria-expanded={open}
+        className="flex w-full items-center justify-between gap-2 rounded-2xl px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-slate-900"
+      >
+        <span className="flex items-center gap-2">
+          <i className="fas fa-globe text-[11px] text-slate-400" />
+          <span className="text-sm font-bold text-slate-800 dark:text-slate-100">Capture evidence from a webpage</span>
+          <span className="hidden text-xs text-slate-400 sm:inline">Paste a page or passage to search or use as case context</span>
+        </span>
+        <i className={`fas fa-chevron-down text-[11px] text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+      <div className="border-t border-slate-100 p-4 dark:border-slate-800">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-end">
         <div className="flex flex-wrap gap-2">
           <Button
             type="button"
@@ -394,6 +404,8 @@ export const WebpageCapturePanel: React.FC<WebpageCapturePanelProps> = ({ onSear
           )}
         </div>
       </div>
+      </div>
+      )}
     </section>
   );
 };
