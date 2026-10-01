@@ -28,7 +28,11 @@ const {
 const APPLY = process.env.REPAIR_APPLY === '1';
 const FETCH_DELAY_MS = 700;
 
-const norm = (s) => String(s || '').replace(/\s+/g, ' ').trim();
+const norm = (s) => String(s || '')
+    .replace(/[‐-―]/g, '-') // unicode dashes → hyphen
+    .replace(/ /g, ' ')           // non-breaking space → space
+    .replace(/\s+/g, ' ')
+    .trim();
 
 async function sleep(ms) {
     return new Promise((r) => setTimeout(r, ms));
@@ -79,7 +83,13 @@ async function main() {
 
         for (const row of refRows) {
             const truncated = norm(row.recommendation_text);
-            const full = fullRecs.find((r) => r.startsWith(truncated) && r.length > truncated.length);
+            let full = fullRecs.find((r) => r.startsWith(truncated) && r.length > truncated.length);
+            if (!full) {
+                // Fallback: fragments captured mid-paragraph won't prefix-match;
+                // accept a contains-match only when it is unambiguous.
+                const candidates = fullRecs.filter((r) => r.includes(truncated) && r.length > truncated.length);
+                if (candidates.length === 1) full = candidates[0];
+            }
             if (!full) {
                 unmatched += 1;
                 console.log(`  UNMATCHED ${ref} ${row.id} :: ${truncated.slice(0, 90)}`);
