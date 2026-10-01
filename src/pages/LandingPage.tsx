@@ -67,13 +67,6 @@ export const LandingPage: React.FC = () => {
             >
               Sign in
             </button>
-            <button
-              type="button"
-              onClick={() => navigate('/auth')}
-              className="rounded-lg bg-[#0f3d34] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#164f43]"
-            >
-              Get started
-            </button>
           </div>
         </div>
       </nav>
@@ -97,10 +90,7 @@ export const LandingPage: React.FC = () => {
 
         <div className="relative mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-center px-5 pb-20 pt-28 lg:flex-row lg:items-end lg:gap-16 lg:pb-28">
           <div className="lp-rise max-w-xl space-y-6 lg:pb-8" style={{ animationDelay: '0.05s' }}>
-            <p className="lp-display text-5xl font-semibold leading-[1.05] tracking-tight text-[#0f3d34] sm:text-6xl md:text-7xl">
-              Signal MD
-            </p>
-            <h1 className="lp-display text-2xl font-medium leading-snug text-slate-800 sm:text-3xl">
+            <h1 className="lp-display text-4xl font-semibold leading-[1.12] tracking-tight text-[#0f3d34] sm:text-5xl md:text-6xl">
               Search a topic. Get landmark trials, guidelines, and a mentor who can teach it.
             </h1>
             <p className="max-w-md text-base leading-relaxed text-slate-600 sm:text-lg">
@@ -214,13 +204,6 @@ export const LandingPage: React.FC = () => {
               className="rounded-lg bg-white px-7 py-3.5 text-sm font-semibold text-[#0f3d34] transition-transform hover:scale-[1.02] active:scale-[0.99]"
             >
               Redeem invite code
-            </button>
-            <button
-              type="button"
-              onClick={() => navigate('/search')}
-              className="rounded-lg px-7 py-3.5 text-sm font-semibold text-[#a8cfc3] underline-offset-4 transition-colors hover:text-white hover:underline"
-            >
-              Try a search first
             </button>
           </div>
         </div>
