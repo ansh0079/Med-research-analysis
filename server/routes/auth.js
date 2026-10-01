@@ -95,14 +95,37 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
                 email_verification_expires: verificationExpires,
                 created_at: new Date().toISOString(),
             };
-            await db.createUser(user);
-
-            // Consume the invite slot
-            if (invite) {
-                await db.run(
-                    `UPDATE beta_invites SET use_count = use_count + 1 WHERE id = ?`,
-                    [invite.id]
+            // Use db.run for both writes: createUser uses Kysely's pool and would
+            // escape the transaction-scoped PostgreSQL connection.
+            const registration = await db.withTransaction(async () => {
+                if (invite) {
+                    const reserved = await db.run(
+                        `UPDATE beta_invites SET use_count = use_count + 1
+                         WHERE id = ? AND use_count < max_uses
+                           AND (expires_at IS NULL OR expires_at > ?)`,
+                        [invite.id, new Date().toISOString()]
+                    );
+                    if (!reserved.changes) return 'invite_unavailable';
+                }
+                const inserted = await db.run(
+                    `INSERT INTO users (id, name, email, password, role, email_verified,
+                        email_verification_token, email_verification_expires, created_at)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                     ON CONFLICT (email) DO NOTHING`,
+                    [user.id, user.name, user.email, user.password, user.role,
+                        user.email_verified, user.email_verification_token,
+                        user.email_verification_expires, user.created_at]
                 );
+                if (!inserted.changes) {
+                    // Throw so a reserved invite is rolled back with the failed insert.
+                    const conflict = new Error('Account already exists');
+                    conflict.code = 'account_exists';
+                    throw conflict;
+                }
+                return 'created';
+            });
+            if (registration === 'invite_unavailable') {
+                return res.status(403).json({ error: 'This invite code is no longer available.' });
             }
 
             // Start 14-day Pro trial automatically (no credit card)
@@ -131,6 +154,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
                 message: 'Account created. Your 14-day Pro trial has started — no credit card required.',
             });
         } catch (error) {
+            if (error.code === 'account_exists') return res.status(409).json({ error: 'User already exists' });
             req.log.error({ err: error }, 'Registration error');
             res.status(500).json({ error: 'Internal Server Error' });
         }
@@ -589,10 +613,16 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
 
             const hashedPassword = await bcrypt.hash(password, 12);
 
-            await db.withTransaction(async () => {
+            const tokenClaimed = await db.withTransaction(async () => {
+                const claimed = await db.run(
+                    'UPDATE password_reset_tokens SET used = 1 WHERE token = ? AND used = 0 AND expires_at > ?',
+                    [token, new Date().toISOString()]
+                );
+                if (!claimed.changes) return false;
                 await db.run('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, row.user_id]);
-                await db.run('UPDATE password_reset_tokens SET used = 1 WHERE token = ?', [token]);
+                return true;
             });
+            if (!tokenClaimed) return res.status(400).json({ error: 'Invalid or expired reset link' });
 
             await revokeUserAccessTokens(db, row.user_id);
             await revokeAllUserRefreshTokens(db, row.user_id);

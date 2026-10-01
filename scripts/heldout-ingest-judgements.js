@@ -55,22 +55,41 @@ const CANONICAL = { 'on-topic': 'on_topic', on_topic: 'on_topic', adjacent: 'adj
 
 function argValue(flag, fallback = null) {
     const i = process.argv.indexOf(flag);
-    return i >= 0 && process.argv[i + 1] ? process.argv[i + 1] : fallback;
+    if (i < 0) return fallback;
+    if (!process.argv[i + 1] || process.argv[i + 1].startsWith('--')) {
+        throw new Error(`${flag} requires a value`);
+    }
+    return process.argv[i + 1];
 }
 
-function loadFiles() {
-    const dir = argValue('--dir');
+function loadFiles(args = process.argv.slice(2)) {
+    const dirIndex = args.indexOf('--dir');
+    const dir = dirIndex >= 0 ? args[dirIndex + 1] : null;
+    if (dirIndex >= 0 && (!dir || dir.startsWith('--'))) throw new Error('--dir requires a directory');
     if (dir) {
         return fs.readdirSync(dir)
             .filter((f) => f.endsWith('.json'))
             .map((f) => path.join(dir, f));
     }
-    return process.argv.slice(2).filter((a) => !a.startsWith('--'));
+    const files = [];
+    for (let i = 0; i < args.length; i += 1) {
+        if (args[i] === '--write') continue;
+        if (args[i] === '--reviewer-role' || args[i] === '--dir') {
+            i += 1;
+            continue;
+        }
+        if (args[i].startsWith('--')) throw new Error(`Unknown option: ${args[i]}`);
+        files.push(args[i]);
+    }
+    return files;
 }
 
 async function main() {
     const write = process.argv.includes('--write');
     const reviewerRole = argValue('--reviewer-role', 'clinician');
+    if (!['clinician', 'tuner'].includes(reviewerRole)) {
+        throw new Error('--reviewer-role must be clinician or tuner');
+    }
     const files = loadFiles();
     if (!files.length) {
         console.error('usage: node scripts/heldout-ingest-judgements.js <file.json>... | --dir <dir> [--write]');
@@ -82,6 +101,7 @@ async function main() {
     let ingested = 0;
     let skipped = 0;
     let failed = 0;
+    const validFiles = [];
     try {
         for (const file of files) {
             const raw = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -117,6 +137,15 @@ async function main() {
                 continue;
             }
 
+            validFiles.push({ file, reviewer, normalized });
+        }
+
+        if (failed) {
+            console.error(`\nValidation failed for ${failed} file(s); no judgments ingested.`);
+            return 1;
+        }
+
+        for (const { file, reviewer, normalized } of validFiles) {
             for (const j of normalized) {
                 const label = CANONICAL[String(j.relevance || '').trim().toLowerCase()];
                 const uid = String(j.candidateUid || j.pmid || '').trim();
@@ -152,7 +181,7 @@ async function main() {
         }
 
         if (!write) {
-            console.log(`\nDry run: ${files.length} file(s), structurally valid. Re-run with --write to ingest.`);
+            console.log(`\nDry run: ${validFiles.length} file(s), structurally valid. Re-run with --write to ingest.`);
             return 0;
         }
         console.log(`\nIngested ${ingested} judgment(s); skipped ${skipped}.`);
@@ -162,7 +191,11 @@ async function main() {
     }
 }
 
-main().then((code) => process.exit(code)).catch((err) => {
-    console.error('heldout-ingest-judgements: crashed:', err);
-    process.exit(1);
-});
+if (require.main === module) {
+    main().then((code) => process.exit(code)).catch((err) => {
+        console.error('heldout-ingest-judgements: crashed:', err);
+        process.exit(1);
+    });
+}
+
+module.exports = { loadFiles, main };

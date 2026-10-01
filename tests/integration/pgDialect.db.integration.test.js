@@ -35,6 +35,71 @@ describePg('Postgres dialect smoke (real cron queries, empty tables)', () => {
     // No afterAll close: tests/setup.js already closes the db singleton, and
     // pg-pool throws "Called end on pool more than once" on a double end().
 
+    test('a single invite slot is claimed once across concurrent PostgreSQL transactions', async () => {
+        const { randomUUID } = require('crypto');
+        const inviteId = randomUUID();
+        const users = [randomUUID(), randomUUID()];
+        await db.run(
+            'INSERT INTO beta_invites (id, code, max_uses, use_count) VALUES (?, ?, 1, 0)',
+            [inviteId, `PG-${inviteId}`]
+        );
+        try {
+            const register = (id) => db.withTransaction(async () => {
+                const reserved = await db.run(
+                    `UPDATE beta_invites SET use_count = use_count + 1
+                     WHERE id = ? AND use_count < max_uses
+                       AND (expires_at IS NULL OR expires_at > ?)`,
+                    [inviteId, new Date().toISOString()]
+                );
+                if (!reserved.changes) return false;
+                const inserted = await db.run(
+                    `INSERT INTO users (id, email, password, role)
+                     VALUES (?, ?, ?, ?) ON CONFLICT (email) DO NOTHING`,
+                    [id, `pg-beta-${id}@example.test`, 'hash', 'user']
+                );
+                return inserted.changes === 1;
+            });
+            expect((await Promise.all(users.map(register))).sort()).toEqual([false, true]);
+            expect((await db.get('SELECT use_count FROM beta_invites WHERE id = ?', [inviteId])).use_count).toBe(1);
+            const rows = await db.all('SELECT id FROM users WHERE id IN (?, ?)', users);
+            expect(rows).toHaveLength(1);
+        } finally {
+            await db.run('DELETE FROM users WHERE id IN (?, ?)', users);
+            await db.run('DELETE FROM beta_invites WHERE id = ?', [inviteId]);
+        }
+    });
+
+    test('a reset token changes a password only once across concurrent PostgreSQL transactions', async () => {
+        const { randomUUID } = require('crypto');
+        const userId = randomUUID();
+        const token = `pg-beta-reset-${randomUUID()}`;
+        await db.run(
+            'INSERT INTO users (id, email, password, role) VALUES (?, ?, ?, ?)',
+            [userId, `pg-reset-${userId}@example.test`, 'original', 'user']
+        );
+        await db.run(
+            'INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES (?, ?, ?)',
+            [userId, token, new Date(Date.now() + 60000).toISOString()]
+        );
+        try {
+            const reset = (password) => db.withTransaction(async () => {
+                const claimed = await db.run(
+                    'UPDATE password_reset_tokens SET used = 1 WHERE token = ? AND used = 0 AND expires_at > ?',
+                    [token, new Date().toISOString()]
+                );
+                if (!claimed.changes) return false;
+                await db.run('UPDATE users SET password = ? WHERE id = ?', [password, userId]);
+                return true;
+            });
+            expect((await Promise.all([reset('first'), reset('second')])).sort()).toEqual([false, true]);
+            const row = await db.get('SELECT password FROM users WHERE id = ?', [userId]);
+            expect(['first', 'second']).toContain(row.password);
+        } finally {
+            await db.run('DELETE FROM password_reset_tokens WHERE token = ?', [token]);
+            await db.run('DELETE FROM users WHERE id = ?', [userId]);
+        }
+    });
+
     test('collective-memory aggregation parses on Postgres', async () => {
         const { aggregateCollectiveMemory } = require('../../server/services/collectiveMemoryService');
         await expect(aggregateCollectiveMemory(db)).resolves.toMatchObject({ topics: 0 });

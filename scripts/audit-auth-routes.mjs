@@ -16,6 +16,7 @@ const AUTH_MARKERS = [
     'requireQuizAuth',
     'requireCaseAuth',
     'requireAdmin',
+    'requireReviewer',
 ];
 const PUBLIC_PATTERNS = [
     /^\/health$/,
