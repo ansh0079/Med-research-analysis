@@ -10,9 +10,6 @@ import { ArticleCardAccessPanel } from './ArticleCardAccessPanel';
 import { ArticleCardBadgesRow } from './ArticleCardBadgesRow';
 import { ArticleCardActionRow } from './ArticleCardActionRow';
 import {
-  CURRENT_YEAR,
-  EVIDENCE_TYPE_LABEL,
-  quickSignalClass,
   isLikelyPreprint,
   isPotentialPredatoryJournal,
 } from './articleCardUtils';
@@ -47,11 +44,6 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [pdfIndexed, setPdfIndexed] = useState(false);
   const [hoverPreview, setHoverPreview] = useState(false);
-  // The ranking explainer measured 389px of a 1,422px card -- the single
-  // largest block, above even the action row, and larger than title, journal
-  // and badges combined. It explains a ranking the reader has usually already
-  // accepted, so the score stays visible and the reasoning folds away.
-  const [showImpactDetail, setShowImpactDetail] = useState(false);
   const hoverTimerRef = React.useRef<number | null>(null);
   const dwellTimerRef = React.useRef<number | null>(null);
   const dwellStartedAtRef = React.useRef<number | null>(null);
@@ -71,38 +63,16 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
 
   const closeAllPanels = () => { setShowCollections(false); setShowAnnotations(false); setShowCitations(false); };
 
-  const impact = article._impact;
-  const quality = article._quality;
   const isFree = article.isFree || !!article.pmcid;
   const freeUrl = article.pmcid
     ? `https://www.ncbi.nlm.nih.gov/pmc/articles/${article.pmcid}/`
     : article.fullTextUrl || null;
   const authors = article.authors?.slice(0, 3).map((a) => a.name).join(', ');
   const hasMoreAuthors = (article.authors?.length ?? 0) > 3;
-  const { primaryUrl, sourceLabel } = getArticleLinkInfo(article);
-  const impactPct = Math.min(100, Math.round((impact?.score ?? 0) * 100));
+  const { primaryUrl } = getArticleLinkInfo(article);
   const citations = article.pmcrefcount ?? article.citationCount;
-  const qualitySignals = quality?.signals?.slice(0, 2) ?? [];
-  const impactFactors = impact?.factors?.slice(0, 3) ?? [];
-  const pubYear = parseInt((article.pubdate || '').slice(0, 4), 10);
   const isPreprint = isLikelyPreprint(article);
   const predatoryFlag = isPotentialPredatoryJournal(article);
-  const isPracticeChanging = !isNaN(pubYear) && pubYear >= (CURRENT_YEAR - 3) && (citations ?? 0) >= 100;
-  const quickSignals = [
-    impact?.evidenceType && {
-      label: EVIDENCE_TYPE_LABEL[impact.evidenceType] ?? impact.evidenceType,
-      icon: impact.evidenceType === 'rct' ? 'fa-flask' : impact.evidenceType === 'meta' ? 'fa-layer-group' : 'fa-file-lines',
-      tone: impact.evidenceType === 'rct' || impact.evidenceType === 'meta' ? 'good' : 'neutral',
-    },
-    quality?.grade && {
-      label: `Grade ${quality.grade}`,
-      icon: 'fa-shield-halved',
-      tone: quality.grade === 'A' || quality.grade === 'B' ? 'good' : 'warn',
-    },
-    isFree && { label: 'Open access', icon: 'fa-unlock', tone: 'good' },
-    isPracticeChanging && { label: 'Practice-changing', icon: 'fa-bolt', tone: 'info' },
-    article._retraction?.isRetracted && { label: 'Retracted', icon: 'fa-ban', tone: 'danger' },
-  ].filter(Boolean) as Array<{ label: string; icon: string; tone: 'good' | 'info' | 'warn' | 'danger' | 'neutral' }>;
 
   const prefetchArticle = React.useCallback(() => {
     if (PREFETCHED_ARTICLES.has(article.uid)) return;
@@ -266,66 +236,12 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
           )}
         </div>
 
-        {/* Quick signal pills */}
-        {quickSignals.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-3">
-            {quickSignals.slice(0, 5).map((signal) => (
-              <span
-                key={signal.label}
-                className={`inline-flex min-h-6 items-center gap-1 rounded-md border px-2 py-0.5 text-[10px] font-bold ${quickSignalClass(signal.tone)}`}
-              >
-                <i className={`fas ${signal.icon} text-[9px]`} />
-                {signal.label}
-              </span>
-            ))}
-          </div>
-        )}
-
         {/* Hover abstract preview */}
         {hoverPreview && !showAbstract && article.abstract && (
           <div className="mb-3 px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 animate-fade-in">
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3">
               {article.abstract}
             </p>
-          </div>
-        )}
-
-        {/* Impact bar */}
-        {impact && (
-          <div className="mb-4 rounded-xl border border-slate-100 bg-slate-50/70 p-3 dark:border-slate-800 dark:bg-slate-800/40">
-            <button
-              type="button"
-              onClick={() => setShowImpactDetail((v) => !v)}
-              aria-expanded={showImpactDetail}
-              className="flex w-full items-center justify-between gap-3 text-left"
-            >
-              <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                <svg className={`h-2.5 w-2.5 transition-transform ${showImpactDetail ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" />
-                </svg>
-                Why this ranks here
-              </span>
-              <span className="font-mono text-[11px] font-bold text-indigo-500">{impactPct}/100</span>
-            </button>
-            {showImpactDetail && (
-            <div className="impact-bar mb-2 mt-2">
-              <div className="impact-bar-fill" data-pct={String(Math.round(impactPct / 10) * 10)} />
-            </div>
-            )}
-            {showImpactDetail && (impactFactors.length > 0 || qualitySignals.length > 0) && (
-              <div className="flex flex-wrap gap-1.5">
-                {impactFactors.map((factor) => (
-                  <span key={factor} className="rounded-full bg-white px-2 py-0.5 text-[10px] font-medium text-slate-500 ring-1 ring-slate-200 dark:bg-slate-900 dark:text-slate-400 dark:ring-slate-700">
-                    {factor}
-                  </span>
-                ))}
-                {qualitySignals.map((signal) => (
-                  <span key={signal} className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-700 ring-1 ring-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-300 dark:ring-emerald-800">
-                    {signal}
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
         )}
 
@@ -353,8 +269,6 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
           article={article}
           isFree={isFree}
           freeUrl={freeUrl}
-          primaryUrl={primaryUrl}
-          sourceLabel={sourceLabel}
           pdfLookup={pdfLookup}
           setPdfLookup={setPdfLookup}
           pdfUrl={pdfUrl}
@@ -369,7 +283,6 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
           searchId={searchId}
           searchCompletedAt={searchCompletedAt}
           primaryUrl={primaryUrl}
-          sourceLabel={sourceLabel}
           onAnalyze={onAnalyze}
           onGenerateCase={onGenerateCase}
           onQuizPaper={onQuizPaper}

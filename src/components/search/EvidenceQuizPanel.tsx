@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { api } from '@services/api';
 import { Button } from '@components/ui/Button';
 import { useAuth } from '@contexts/AuthContext';
+import { useClientFeatures } from '@hooks/useClientFeatures';
 import { useToast } from '@components/ui/Toast';
 import type { Article, QuizQuestion } from '@types';
 import { lookupArticleAttribution } from '@utils/searchAttribution';
@@ -24,7 +26,11 @@ function currentTimeMs(): number {
 
 export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete, onAuthSubmit, autoExpand = false }) => {
   const { isAuthenticated } = useAuth();
+  const { betaOpenAccess } = useClientFeatures();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { showToast } = useToast();
+  const canGenerate = isAuthenticated || betaOpenAccess;
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -62,10 +68,10 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
   }, [autoExpand]);
 
   useEffect(() => {
-    if (expanded && questions.length === 0 && !loading && !error) {
+    if (canGenerate && expanded && questions.length === 0 && !loading && !error) {
       fetchQuestions();
     }
-  }, [expanded, questions.length, loading, error, fetchQuestions]);
+  }, [canGenerate, expanded, questions.length, loading, error, fetchQuestions]);
 
   const currentQuestion = questions[currentIndex];
 
@@ -244,25 +250,35 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
 
       {expanded && (
         <div className="px-5 py-4">
-          {loading && (
+          {!canGenerate && (
+            <div className="flex flex-col items-start gap-3 py-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm font-bold text-slate-800 dark:text-slate-100">Sign in to generate this evidence quiz</p>
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Your answers can then be saved to your learning profile.</p>
+              </div>
+              <Button variant="primary" size="sm" onClick={() => navigate('/auth', { state: { from: location } })}>Sign in</Button>
+            </div>
+          )}
+
+          {canGenerate && loading && (
             <div className="flex items-center gap-2 text-sm text-slate-500 py-4">
               <div className="spinner w-4 h-4" />
               Generating citation-grounded questions…
             </div>
           )}
 
-          {error && (
+          {canGenerate && error && (
             <div className="flex flex-col gap-3 py-2">
               <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
               <Button variant="secondary" size="sm" onClick={handleRetry}>Retry</Button>
             </div>
           )}
 
-          {!loading && !error && questions.length === 0 && (
+          {canGenerate && !loading && !error && questions.length === 0 && (
             <p className="text-sm text-slate-500 py-2">No questions available.</p>
           )}
 
-          {completed && (
+          {canGenerate && completed && (
             <div className="space-y-3">
               <div className={`rounded-xl px-4 py-3 ${score === questions.length ? 'bg-emerald-50 dark:bg-emerald-950/20' : 'bg-amber-50 dark:bg-amber-950/20'}`}>
                 <p className={`text-sm font-bold ${score === questions.length ? 'text-emerald-700 dark:text-emerald-300' : 'text-amber-700 dark:text-amber-300'}`}>
@@ -280,7 +296,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
             </div>
           )}
 
-          {!completed && currentQuestion && (
+          {canGenerate && !completed && currentQuestion && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">

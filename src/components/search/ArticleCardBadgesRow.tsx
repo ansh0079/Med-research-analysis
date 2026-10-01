@@ -1,11 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Article } from '@types';
-import { RankingTraceBadge } from '@components/search/RankingTraceBadge';
 import { getArticleSourceBadgeInfo } from '@services/articleLinks';
 import {
   EVIDENCE_TYPE_LABEL,
-  GRADE_CLASS,
   isLikelyPreprint,
   isPotentialPredatoryJournal,
 } from './articleCardUtils';
@@ -29,7 +27,6 @@ export const ArticleCardBadgesRow: React.FC<ArticleCardBadgesRowProps> = ({
 }) => {
   const navigate = useNavigate();
   const impact = article._impact;
-  const quality = article._quality;
   const sourceBadge = getArticleSourceBadgeInfo(article);
   const isPreprint = isLikelyPreprint(article);
   const predatoryFlag = isPotentialPredatoryJournal(article);
@@ -51,12 +48,6 @@ export const ArticleCardBadgesRow: React.FC<ArticleCardBadgesRowProps> = ({
           <span className="badge badge-paywall">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block" />
             Paywall
-          </span>
-        )}
-
-        {impact?.level && (
-          <span className={`badge ${impact.level === 'high' ? 'badge-impact-high' : 'badge-source'}`}>
-            {impact.level === 'high' ? '↑ High Impact' : impact.level === 'medium' ? '~ Mid Impact' : 'Low Impact'}
           </span>
         )}
 
@@ -147,26 +138,6 @@ export const ArticleCardBadgesRow: React.FC<ArticleCardBadgesRowProps> = ({
           </span>
         )}
 
-        {(article._rankingTrace || article._learnerAdaptationReason || article._rankMovedByLearning) && (
-          <RankingTraceBadge
-            trace={article._rankingTrace || {
-              articleUid: String(article.uid || article.pmid || 'unknown'),
-              baseEvidenceScore: 0,
-              deterministicPenalties: [],
-              teachingObjectBoost: 0,
-              learnerBoost: Number(article._learningBoost || 0),
-              finalScore: 0,
-              evidenceRank: article._evidenceRank,
-              learningRank: article._learningRank,
-              banditArm: article._banditArmId || null,
-              reasons: article._rankReasons || [],
-            }}
-            movedByLearning={article._rankMovedByLearning}
-            compactReasons={article._rankReasons}
-            adaptationReason={article._learnerAdaptationReason}
-          />
-        )}
-
         {article._synapseTopics && article._synapseTopics.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {article._synapseTopics.map((synTopic) => (
@@ -189,14 +160,6 @@ export const ArticleCardBadgesRow: React.FC<ArticleCardBadgesRowProps> = ({
       </div>
 
       <div className="flex items-center gap-2 shrink-0">
-        {quality && (
-          <div
-            className={`grade-ring ${GRADE_CLASS[quality.grade] ?? 'grade-D'}`}
-            title={`Quality ${quality.grade} · ${quality.score}/100\n${quality.factors.slice(0, 3).join(' · ')}`}
-          >
-            {quality.grade}
-          </div>
-        )}
         {onSelect && (
           <button
             type="button"

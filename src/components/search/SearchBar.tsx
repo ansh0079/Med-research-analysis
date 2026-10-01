@@ -97,6 +97,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     else setInternalQuery(next);
   }, [isControlled, onChange]);
   const [focused, setFocused] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [meshSuggestions, setMeshSuggestions] = useState<Array<{ label: string; resource: string }>>([]);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { trackSearch } = useAnalytics();
@@ -143,6 +144,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   }, [onSearch, setQuery, specificity, sources, trackSearch]);
 
   const showRecentDropdown = focused && !query.trim() && recentSearches.length > 0 && meshSuggestions.length === 0;
+  const activeFilterCount = studyTypes.length
+    + (yearRange ? 1 : 0)
+    + (specificity !== 'moderate' ? 1 : 0);
 
   const toggleSource = useCallback((source: DataSource) => {
     if (!onSourcesChange) return;
@@ -231,13 +235,30 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               )}
             </div>
 
-            <button
-              type="submit"
-              disabled={!query.trim() || loading}
-              className="w-full shrink-0 rounded-xl bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-500/25 transition-all hover:bg-indigo-500 hover:shadow-indigo-500/40 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
-            >
-              {loading ? 'Searching…' : 'Search'}
-            </button>
+            <div className="flex w-full shrink-0 gap-2 sm:w-auto">
+              <button
+                type="button"
+                aria-expanded={filtersOpen}
+                aria-controls="search-advanced-filters"
+                onClick={() => setFiltersOpen((open) => !open)}
+                className="flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:border-indigo-200 hover:text-indigo-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-indigo-700 dark:hover:text-indigo-300 sm:flex-none"
+              >
+                <i className="fas fa-sliders text-xs" aria-hidden />
+                Filters
+                {activeFilterCount > 0 && (
+                  <span className="rounded-full bg-indigo-100 px-1.5 py-0.5 text-[10px] font-bold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                    {activeFilterCount}
+                  </span>
+                )}
+              </button>
+              <button
+                type="submit"
+                disabled={!query.trim() || loading}
+                className="min-h-10 flex-1 rounded-xl bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-500/25 transition-all hover:bg-indigo-500 hover:shadow-indigo-500/40 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 sm:flex-none"
+              >
+                {loading ? 'Searching…' : 'Search'}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -283,7 +304,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           </div>
         )}
 
-        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        {filtersOpen && (
+        <div id="search-advanced-filters" className="mt-3 rounded-2xl border border-slate-200/80 bg-white/80 p-3 shadow-sm dark:border-slate-700/70 dark:bg-slate-900/75">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           {/* Source + vector toggles */}
           <div className="flex flex-wrap items-center gap-2">
             {SOURCE_OPTIONS.map((src) => {
@@ -481,6 +504,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               </div>
             )}
           </div>
+        )}
+        </div>
         )}
       </form>
     </div>

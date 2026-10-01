@@ -34,6 +34,7 @@ function renderBar(sources: DataSource[]) {
             onSpecificityChange={onSpecificityChange}
         />,
     );
+    fireEvent.click(screen.getByRole('button', { name: /Filters/i }));
     return { onSourcesChange, onSearch, onStudyTypesChange, onSpecificityChange };
 }
 

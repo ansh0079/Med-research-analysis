@@ -253,7 +253,8 @@ test.describe('learning pipeline: search → synopsis → quiz → mastery', () 
       });
     });
 
-    await page.getByRole('button', { name: /Quiz this paper/i }).first().click();
+    await page.getByRole('button', { name: /Open article actions menu/i }).first().click();
+    await page.getByRole('menuitem', { name: /Quiz this paper/i }).click();
     await expect(page).toHaveURL(/\/quiz/, { timeout: 10000 });
     await expect(page.getByText(/What is the primary mechanism of metformin/i)).toBeVisible({ timeout: 15000 });
 

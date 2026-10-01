@@ -19,9 +19,9 @@ import { SearchDetails, SourceFailureNotice, hasSearchDetails } from '@component
 import { CollapsibleRow } from '@components/search/CollapsibleRow';
 import { STUDY_TYPE_FILTER_OPTIONS } from '@utils/searchStudyFilters';
 import { PersonalizedRemediationBanner } from '@components/search/PersonalizedRemediationBanner';
-import { ShiftReviewBar } from '@components/search/ShiftReviewBar';
 import { SearchResultsFilterSection } from '@components/search/SearchResultsFilterSection';
 import { SearchEvidenceWorkflowSection } from '@components/search/SearchEvidenceWorkflowSection';
+import { LearningWorkspacePanel } from '@components/search/LearningWorkspacePanel';
 import { ResultLensToolbar } from '@components/search/ResultLensToolbar';
 import { SynthesisStatusSection } from '@components/search/SynthesisStatusSection';
 import { SearchResultsGrid } from '@components/search/SearchResultsGrid';
@@ -152,6 +152,7 @@ export const SearchPage: React.FC = () => {
   // they cannot be sent there, but they can still see the evidence for that topic.
   // Only fires once per query so it does not re-run on every render.
   const [searchParams, setSearchParams] = useSearchParams();
+  const [workspaceTab, setWorkspaceTab] = React.useState<'evidence' | 'guidelines' | 'learn'>('evidence');
   const urlQuery = searchParams.get('q')?.trim() || '';
   const consumedQueryRef = React.useRef<string | null>(null);
   React.useEffect(() => {
@@ -163,6 +164,10 @@ export const SearchPage: React.FC = () => {
     searchParams.delete('q');
     setSearchParams(searchParams, { replace: true });
   }, [urlQuery, handleSearch, searchParams, setSearchParams]);
+
+  React.useEffect(() => {
+    setWorkspaceTab('evidence');
+  }, [resultsQuery]);
 
   const activeFilters = {
     specificity: filters.specificity,
@@ -215,16 +220,25 @@ export const SearchPage: React.FC = () => {
     onDismissKnowledgeDrift: (id: number) => { void dismissKnowledgeDriftAlert(id); },
   };
 
-  // The quiz now sits below the paper list, so expanding it must bring it into view.
+  const openWorkspaceTab = (tab: 'evidence' | 'guidelines' | 'learn') => {
+    setWorkspaceTab(tab);
+    requestAnimationFrame(() => {
+      document.getElementById(`workspace-${tab}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
+
+  // Generated learning content lives in the Learn tab. Opening a quiz must
+  // reveal that workspace before scrolling to the in-place quiz panel.
   const openInPlaceQuiz = () => {
+    if (!isAuthenticated) {
+      openQuizFromWorkflow('mixed');
+      return;
+    }
+    setWorkspaceTab('learn');
     setInPlaceQuizExpanded(true);
     requestAnimationFrame(() => {
       document.getElementById('evidence-quiz')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
-  };
-  const toggleInPlaceQuiz = () => {
-    if (inPlaceQuizExpanded) setInPlaceQuizExpanded(false);
-    else openInPlaceQuiz();
   };
 
   return (
@@ -269,195 +283,219 @@ export const SearchPage: React.FC = () => {
       {/* The pull-up only works against the tall empty-state hero; with results the hero is compact and the workflow bar would sit underneath. */}
       <main className={`max-w-7xl mx-auto px-3 sm:px-4 pb-24 ${results.length > 0 ? 'mt-2' : '-mt-10 sm:-mt-16'}`}>
         {results.length > 0 && (
-          <EvidenceVerdictStrip
-            query={resultsQuery || currentQuery}
-            results={results}
-            conflictCount={synthesis?.conflictMatrix?.length ?? null}
-            onJumpToGuidelines={() => document.getElementById('guideline-snapshot')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-            openAccessCount={openAccessCount}
-            retractedCount={retractedCount}
-            notice={<SourceFailureNotice sourceTelemetry={searchTelemetry?.sources} sourceFailures={searchTelemetry?.sourceFailures} />}
-            details={hasSearchDetails({ sourceTelemetry: searchTelemetry?.sources, queryIntent, searchPack, activeFilters }) ? (
-              <SearchDetails sourceTelemetry={searchTelemetry?.sources} queryIntent={queryIntent} searchPack={searchPack} activeFilters={activeFilters} />
-            ) : undefined}
-          />
-        )}
-
-        {currentQuery && (
           <>
-            <QuerySenseBanner resolution={queryResolution} onTryQuery={handleSearch} />
-            <LowRecallBanner lowRecall={lowRecallLearning} onTryQuery={handleSearch} />
+            <section className="mb-3" aria-labelledby="evidence-workspace-title">
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-500">Evidence workspace</p>
+              <h1 id="evidence-workspace-title" className="mt-1 text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+                {resultsQuery || currentQuery}
+              </h1>
+            </section>
+
+            <EvidenceVerdictStrip
+              query={resultsQuery || currentQuery}
+              results={results}
+              conflictCount={synthesis?.conflictMatrix?.length ?? null}
+              onJumpToGuidelines={() => openWorkspaceTab('guidelines')}
+              openAccessCount={openAccessCount}
+              retractedCount={retractedCount}
+              notice={<SourceFailureNotice sourceTelemetry={searchTelemetry?.sources} sourceFailures={searchTelemetry?.sourceFailures} />}
+              details={hasSearchDetails({ sourceTelemetry: searchTelemetry?.sources, queryIntent, searchPack, activeFilters }) ? (
+                <SearchDetails sourceTelemetry={searchTelemetry?.sources} queryIntent={queryIntent} searchPack={searchPack} activeFilters={activeFilters} />
+              ) : undefined}
+            />
+
+            <nav className="mb-5 flex gap-6 border-b border-slate-200 dark:border-slate-700" aria-label="Evidence workspace sections" role="tablist">
+              {(['evidence', 'guidelines', 'learn'] as const).map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  role="tab"
+                  aria-selected={workspaceTab === tab}
+                  aria-controls={`workspace-${tab}`}
+                  onClick={() => openWorkspaceTab(tab)}
+                  className={`border-b-2 px-0.5 pb-3 text-sm font-bold capitalize transition-colors ${
+                    workspaceTab === tab
+                      ? 'border-indigo-600 text-indigo-700 dark:border-indigo-400 dark:text-indigo-300'
+                      : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200'
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </nav>
           </>
         )}
 
-        {results.length > 0 && (
-          <ShiftReviewBar
-            currentQuery={currentQuery}
-            inPlaceQuizExpanded={inPlaceQuizExpanded}
-            onOpenGuideline={openGuidelineFromWorkflow}
-            onOpenCase={() => openCaseFromWorkflow('mixed')}
-            onToggleQuiz={toggleInPlaceQuiz}
-          />
-        )}
-
-        <div id="search-results" className="scroll-mt-28">
-          {results.length > 0 && (
-            <ResultLensToolbar
-              resultsCount={results.length}
-              openAccessCount={openAccessCount}
-              highQualityCount={highQualityCount}
-              recentCount={recentCount}
-              practiceChangingCount={practiceChangingCount}
-              resultLens={resultLens}
-              resultFilter={resultFilter}
-              onResultFilterChange={setResultFilter}
-              searchPack={searchPack}
-              evidenceLane={evidenceLane}
-              onLaneChange={setEvidenceLane}
-              selectedArticles={selectedArticles}
-              savedArticles={savedArticles}
-              onLensChange={(lens) => {
-                setResultLens(lens);
-                setVisibleCount(30);
-              }}
-              onClearLens={() => {
-                setResultLens('all');
-                setResultFilter('');
-                setEvidenceLane('all');
-                setVisibleCount(30);
-              }}
-              onCompare={() => setIsComparing(true)}
-              onNavigate={setCurrentPage}
-              onClearSelection={clearSelection}
-              onExport={exportResults}
-              trackFeatureUsage={trackFeatureUsage}
-            />
+        <section id="workspace-evidence" role="tabpanel" hidden={results.length > 0 && workspaceTab !== 'evidence'} className="scroll-mt-28">
+          {currentQuery && (
+            <>
+              <QuerySenseBanner resolution={queryResolution} onTryQuery={handleSearch} />
+              <LowRecallBanner lowRecall={lowRecallLearning} onTryQuery={handleSearch} />
+            </>
           )}
 
-          {loading && results.length === 0 && (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
-              {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
-            </div>
-          )}
-
-          {results.length > 0 ? (
-            <SearchResultsGrid
-              layout={layout}
-              isPdfOpen={isOpen}
-              onToggleLayout={toggleLayout}
-              onClosePdf={closePdf}
-              activePdf={activePdf}
-              renderedResults={renderedResults}
-              evidenceLane={evidenceLane}
-              searchPack={searchPack}
-              activeResultIndex={activeResultIndex}
-              visibleCount={visibleCount}
-              visibleResultsLength={visibleResults.length}
-              onLoadMore={() => setVisibleCount((count) => Math.min(visibleResults.length, count + 20))}
-              isSaved={isSaved}
-              isSelected={isSelected}
-              onSave={toggleSaveArticle}
-              onSelect={toggleSelectArticle}
-              onAnalyze={openAnalysis}
-              onGenerateCase={openArticleCase}
-              onQuizPaper={openArticleQuiz}
-              onOpenTopic={handleSearch}
-              onOpenInWorkspace={openPdf}
-              onViewDetails={setDetailArticle}
-              searchId={lastSearchId ?? undefined}
-              searchCompletedAt={searchCompletedAt ?? undefined}
-            />
-          ) : !loading ? (
-            // A completed search that matched nothing is not the same as not
-            // having searched. Showing the cold-start suggestions panel for both
-            // made a working empty result look like the page had reset.
-            currentQuery && searchCompletedAt ? (
-              <NoResultsState
-                query={currentQuery}
-                filters={filters}
-                onRelax={(next) => { setFilters(next); handleSearch(currentQuery); }}
-                onRetry={handleSearch}
+          <div id="search-results" className="scroll-mt-28">
+            {results.length > 0 && (
+              <ResultLensToolbar
+                resultsCount={results.length}
+                openAccessCount={openAccessCount}
+                highQualityCount={highQualityCount}
+                recentCount={recentCount}
+                practiceChangingCount={practiceChangingCount}
+                resultLens={resultLens}
+                resultFilter={resultFilter}
+                onResultFilterChange={setResultFilter}
+                searchPack={searchPack}
+                evidenceLane={evidenceLane}
+                onLaneChange={setEvidenceLane}
+                selectedArticles={selectedArticles}
+                savedArticles={savedArticles}
+                onLensChange={(lens) => {
+                  setResultLens(lens);
+                  setVisibleCount(30);
+                }}
+                onClearLens={() => {
+                  setResultLens('all');
+                  setResultFilter('');
+                  setEvidenceLane('all');
+                  setVisibleCount(30);
+                }}
+                onCompare={() => setIsComparing(true)}
+                onNavigate={setCurrentPage}
+                onClearSelection={clearSelection}
+                onExport={exportResults}
+                trackFeatureUsage={trackFeatureUsage}
               />
-            ) : (
-              <SearchEmptyState onExampleClick={handleSearch} isAuthenticated={isAuthenticated} />
-            )
-          ) : null}
-        </div>
+            )}
 
-        {results.length > 0 && <SearchEvidenceWorkflowSection part="brief" {...workflowSectionProps} />}
+            {loading && results.length === 0 && (
+              <div className="mb-8 grid grid-cols-1 gap-4">
+                {Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)}
+              </div>
+            )}
 
-        <SynthesisStatusSection
-          synthesisError={synthesisError}
-          synthesisLoading={synthesisLoading}
-          synthesisLiveText={synthesisLiveText}
-          stalenessBanner={stalenessBanner}
-          onDismissStaleness={() => setStalenessBanner(null)}
-        />
-
-        {synthesis && (
-          <div className="mb-8" data-synthesis-panel>
-            <SynthesisPanel
-              result={synthesis}
-              articles={top5Articles}
-              onClose={() => setSynthesis(null)}
-              onGenerateCase={openSynthesisCase}
-              onSearch={handleSearch}
-            />
+            {results.length > 0 ? (
+              <SearchResultsGrid
+                layout={layout}
+                isPdfOpen={isOpen}
+                onToggleLayout={toggleLayout}
+                onClosePdf={closePdf}
+                activePdf={activePdf}
+                renderedResults={renderedResults}
+                evidenceLane={evidenceLane}
+                searchPack={searchPack}
+                activeResultIndex={activeResultIndex}
+                visibleCount={visibleCount}
+                visibleResultsLength={visibleResults.length}
+                onLoadMore={() => setVisibleCount((count) => Math.min(visibleResults.length, count + 20))}
+                isSaved={isSaved}
+                isSelected={isSelected}
+                onSave={toggleSaveArticle}
+                onSelect={toggleSelectArticle}
+                onAnalyze={openAnalysis}
+                onGenerateCase={openArticleCase}
+                onQuizPaper={openArticleQuiz}
+                onOpenTopic={handleSearch}
+                onOpenInWorkspace={openPdf}
+                onViewDetails={setDetailArticle}
+                searchId={lastSearchId ?? undefined}
+                searchCompletedAt={searchCompletedAt ?? undefined}
+              />
+            ) : !loading ? (
+              currentQuery && searchCompletedAt ? (
+                <NoResultsState
+                  query={currentQuery}
+                  filters={filters}
+                  onRelax={(next) => { setFilters(next); handleSearch(currentQuery); }}
+                  onRetry={handleSearch}
+                />
+              ) : (
+                <SearchEmptyState onExampleClick={handleSearch} isAuthenticated={isAuthenticated} />
+              )
+            ) : null}
           </div>
+
+          {currentQuery && results.length > 0 && (
+            <RelatedTopicsBar topic={currentQuery} evidenceRelatedTopics={evidenceRelatedTopics} onOpenTopic={handleSearch} />
+          )}
+
+          {(newPaperNotice || recentAnalyses.length > 0) && (
+            <SearchResultsFilterSection newPaperNotice={newPaperNotice} recentAnalyses={recentAnalyses} onOpenAnalysis={openAnalysis} />
+          )}
+        </section>
+
+        {results.length > 0 && (
+          <section id="workspace-guidelines" role="tabpanel" hidden={workspaceTab !== 'guidelines'} className="scroll-mt-28">
+            <GuidelineSnapshot query={resultsQuery || currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
+          </section>
         )}
 
         {results.length > 0 && (
-          <div className="mt-6">
-            <SearchEvidenceWorkflowSection part="tools" {...workflowSectionProps} />
-          </div>
-        )}
-
-        {results.length > 0 && learnerContext?.hasPersonalization && (learnerContext.weakClaimCount > 0 || learnerContext.hasTrajectory || learnerContext.weakTopicCount > 0) && (
-          <CollapsibleRow
-            icon="fa-bullseye"
-            title="Your learning gaps"
-            summary={learnerContext.weakClaimCount > 0 ? `${learnerContext.weakClaimCount} weak claim${learnerContext.weakClaimCount === 1 ? '' : 's'} on this topic` : 'Linked to your recent learning'}
-          >
-            <PersonalizedRemediationBanner
-              learnerContext={learnerContext}
+          <section id="workspace-learn" role="tabpanel" hidden={workspaceTab !== 'learn'} className="scroll-mt-28 space-y-5">
+            <LearningWorkspacePanel
+              query={resultsQuery || currentQuery}
+              results={results}
+              topicIntelligence={topicIntelligence}
+              synthesisLoading={synthesisLoading}
+              isAuthenticated={isAuthenticated}
+              onGenerateSynopsis={() => {
+                if (!isAuthenticated) {
+                  navigate('/auth', { state: { from: { pathname: '/search', search: '', hash: '' } } });
+                  return;
+                }
+                void handleSynthesize();
+              }}
               onOpenQuiz={openInPlaceQuiz}
-              agentGuidance={agentGuidance}
+              onOpenCase={() => openCaseFromWorkflow('mixed')}
+              onChooseSources={() => openWorkspaceTab('evidence')}
             />
-          </CollapsibleRow>
-        )}
 
-        {currentQuery && results.length > 0 && (
-          <RelatedTopicsBar
-            topic={currentQuery}
-            evidenceRelatedTopics={evidenceRelatedTopics}
-            onOpenTopic={handleSearch}
-          />
-        )}
+            <SynthesisStatusSection
+              synthesisError={synthesisError}
+              synthesisLoading={synthesisLoading}
+              synthesisLiveText={synthesisLiveText}
+              stalenessBanner={stalenessBanner}
+              onDismissStaleness={() => setStalenessBanner(null)}
+            />
 
-        {(newPaperNotice || recentAnalyses.length > 0) && (
-          <SearchResultsFilterSection
-            newPaperNotice={newPaperNotice}
-            recentAnalyses={recentAnalyses}
-            onOpenAnalysis={openAnalysis}
-          />
-        )}
+            {synthesis && (
+              <div data-synthesis-panel>
+                <SynthesisPanel
+                  result={synthesis}
+                  articles={top5Articles}
+                  onClose={() => setSynthesis(null)}
+                  onGenerateCase={openSynthesisCase}
+                  onSearch={handleSearch}
+                />
+              </div>
+            )}
 
-        {currentQuery && results.length > 0 && isAuthenticated && (
-          <div className="mb-4 flex justify-end">
-            <button
-              type="button"
-              onClick={() => navigate(`/topic/${encodeURIComponent(currentQuery)}`)}
-              className="flex items-center gap-2 rounded-xl border border-indigo-200 dark:border-indigo-800/50 bg-indigo-50/60 dark:bg-indigo-950/20 text-indigo-700 dark:text-indigo-300 text-xs font-bold px-4 py-2 hover:bg-indigo-100 dark:hover:bg-indigo-950/40 transition-colors"
-            >
-              <i className="fas fa-graduation-cap text-[11px]" />
-              Open topic workspace
-            </button>
-          </div>
-        )}
+            <SearchEvidenceWorkflowSection part="tools" {...workflowSectionProps} />
 
-        <div id="guideline-snapshot">
-          <GuidelineSnapshot query={resultsQuery || currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
-        </div>
+            {learnerContext?.hasPersonalization && (learnerContext.weakClaimCount > 0 || learnerContext.hasTrajectory || learnerContext.weakTopicCount > 0) && (
+              <CollapsibleRow
+                icon="fa-bullseye"
+                title="Your learning gaps"
+                summary={learnerContext.weakClaimCount > 0 ? `${learnerContext.weakClaimCount} weak claim${learnerContext.weakClaimCount === 1 ? '' : 's'} on this topic` : 'Linked to your recent learning'}
+              >
+                <PersonalizedRemediationBanner learnerContext={learnerContext} onOpenQuiz={openInPlaceQuiz} agentGuidance={agentGuidance} />
+              </CollapsibleRow>
+            )}
+
+            {currentQuery && isAuthenticated && (
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => navigate(`/topic/${encodeURIComponent(currentQuery)}`)}
+                  className="flex items-center gap-2 rounded-xl border border-indigo-200 bg-indigo-50/60 px-4 py-2 text-xs font-bold text-indigo-700 transition-colors hover:bg-indigo-100 dark:border-indigo-800/50 dark:bg-indigo-950/20 dark:text-indigo-300 dark:hover:bg-indigo-950/40"
+                >
+                  <i className="fas fa-graduation-cap text-[11px]" />
+                  Open topic workspace
+                </button>
+              </div>
+            )}
+          </section>
+        )}
       </main>
 
       <React.Suspense fallback={null}>

@@ -13,7 +13,6 @@ interface ArticleCardActionRowProps {
   searchId?: number;
   searchCompletedAt?: number | null;
   primaryUrl: string;
-  sourceLabel: string;
   onAnalyze?: (article: Article) => void;
   onGenerateCase?: (article: Article) => void;
   onQuizPaper?: (article: Article) => void;
@@ -31,7 +30,6 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
   isRct,
   searchId,
   primaryUrl,
-  sourceLabel,
   onAnalyze,
   onGenerateCase,
   onQuizPaper,
@@ -98,6 +96,15 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
       )}
 
       <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+        <a
+          href={primaryUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-8 items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-indigo-500"
+        >
+          <i className="fas fa-arrow-up-right-from-square text-[10px]" aria-hidden />
+          Open paper
+        </a>
         <button
           type="button"
           onClick={async () => {
@@ -187,27 +194,6 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
           </button>
         )}
 
-        {onAnalyze && (
-          <Button variant="gradient" size="sm" onClick={() => onAnalyze(article)}
-            leftIcon={<i className="fas fa-robot text-[10px]" />}>
-            AI Analysis
-          </Button>
-        )}
-
-        {onGenerateCase && (
-          <Button variant="secondary" size="sm" onClick={() => onGenerateCase(article)}
-            aria-label="Use this paper for a case" title="Use this paper for a case">
-            <i className="fas fa-stethoscope text-[11px]" />
-          </Button>
-        )}
-
-        {onQuizPaper && !article._isPreprint && !article._retraction?.isRetracted && (
-          <Button variant="secondary" size="sm" onClick={() => onQuizPaper(article)}
-            aria-label="Quiz this paper" title="Quiz this paper">
-            <i className="fas fa-brain text-[11px]" />
-          </Button>
-        )}
-
         {onSave && (
           <Button variant={isSaved ? 'primary' : 'secondary'} size="sm" onClick={() => {
             if (searchId) {
@@ -220,71 +206,6 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
             <i className={`${isSaved ? 'fas' : 'far'} fa-bookmark text-[11px]`} />
           </Button>
         )}
-
-        {onViewDetails && (
-          <Button variant="secondary" size="sm" onClick={() => onViewDetails(article)}
-            aria-label="Open paper details" title="Open paper details">
-            <i className="fas fa-layer-group text-[11px]" />
-          </Button>
-        )}
-
-        {/* Feedback buttons */}
-        <div className="flex items-center gap-0.5">
-          <button
-            type="button"
-            disabled={feedbackPending}
-            aria-label="Mark this result as helpful"
-            onClick={async () => {
-              if (userFeedback === 'helpful') return;
-              const previousFeedback = userFeedback;
-              setUserFeedback('helpful');
-              onFeedback?.(article, 'helpful');
-              setFeedbackPending(true);
-              try {
-                await api.search.recordSearchFeedback(article.uid, 'helpful', undefined, searchId, article._decisionId ?? undefined);
-              } catch {
-                setUserFeedback(previousFeedback);
-              } finally {
-                setFeedbackPending(false);
-              }
-            }}
-            className={`px-2 py-1.5 rounded-lg text-xs transition-colors ${
-              userFeedback === 'helpful'
-                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'
-                : 'text-slate-400 dark:text-slate-500 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800'
-            }`}
-            title="This result was helpful"
-          >
-            <i className={`${userFeedback === 'helpful' ? 'fas' : 'far'} fa-thumbs-up`} />
-          </button>
-          <button
-            type="button"
-            disabled={feedbackPending}
-            aria-label="Mark this result as not helpful"
-            onClick={async () => {
-              if (userFeedback === 'not_helpful') return;
-              const previousFeedback = userFeedback;
-              setUserFeedback('not_helpful');
-              onFeedback?.(article, 'not_helpful');
-              setFeedbackPending(true);
-              try {
-                await api.search.recordSearchFeedback(article.uid, 'not_helpful', feedbackReason || undefined, searchId, article._decisionId ?? undefined);
-              } catch {
-                setUserFeedback(previousFeedback);
-              } finally {
-                setFeedbackPending(false);
-              }
-            }}
-            className={`px-2 py-1.5 rounded-lg text-xs transition-colors ${
-              userFeedback === 'not_helpful'
-                ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
-                : 'text-slate-400 dark:text-slate-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-slate-50 dark:hover:bg-slate-800'
-            }`}
-            title="This result was not helpful"
-          >
-            <i className={`${userFeedback === 'not_helpful' ? 'fas' : 'far'} fa-thumbs-down`} />
-          </button>
-        </div>
 
         {userFeedback === 'not_helpful' && (
           <select
@@ -330,7 +251,67 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
             <i className="fas fa-ellipsis-h" />
           </button>
           {showMoreMenu && (
-            <div role="menu" className="absolute right-0 bottom-full mb-1.5 w-44 bg-white dark:bg-slate-800 rounded-xl shadow-lg shadow-slate-200/60 dark:shadow-slate-900/60 border border-slate-100 dark:border-slate-700 py-1 z-20 animate-fade-in">
+            <div role="menu" className="absolute right-0 bottom-full mb-1.5 w-52 bg-white dark:bg-slate-800 rounded-xl shadow-lg shadow-slate-200/60 dark:shadow-slate-900/60 border border-slate-100 dark:border-slate-700 py-1 z-20 animate-fade-in">
+              {onAnalyze && (
+                <button type="button" role="menuitem" onClick={() => { onAnalyze(article); setShowMoreMenu(false); }} className="flex w-full items-center gap-2.5 px-3.5 py-2 text-xs text-slate-600 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700/60">
+                  <i className="fas fa-robot w-3.5 text-violet-400" /> AI analysis
+                </button>
+              )}
+              {onGenerateCase && (
+                <button type="button" role="menuitem" onClick={() => { onGenerateCase(article); setShowMoreMenu(false); }} className="flex w-full items-center gap-2.5 px-3.5 py-2 text-xs text-slate-600 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700/60">
+                  <i className="fas fa-stethoscope w-3.5 text-emerald-400" /> Use for a case
+                </button>
+              )}
+              {onQuizPaper && !article._isPreprint && !article._retraction?.isRetracted && (
+                <button type="button" role="menuitem" onClick={() => { onQuizPaper(article); setShowMoreMenu(false); }} className="flex w-full items-center gap-2.5 px-3.5 py-2 text-xs text-slate-600 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700/60">
+                  <i className="fas fa-brain w-3.5 text-indigo-400" /> Quiz this paper
+                </button>
+              )}
+              {onViewDetails && (
+                <button type="button" role="menuitem" onClick={() => { onViewDetails(article); setShowMoreMenu(false); }} className="flex w-full items-center gap-2.5 px-3.5 py-2 text-xs text-slate-600 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700/60">
+                  <i className="fas fa-layer-group w-3.5 text-slate-400" /> Paper details
+                </button>
+              )}
+              <div className="my-1 border-t border-slate-100 dark:border-slate-700" />
+              <button
+                type="button"
+                role="menuitem"
+                disabled={feedbackPending}
+                onClick={async () => {
+                  const previousFeedback = userFeedback;
+                  setUserFeedback('helpful');
+                  setShowMoreMenu(false);
+                  onFeedback?.(article, 'helpful');
+                  setFeedbackPending(true);
+                  try {
+                    await api.search.recordSearchFeedback(article.uid, 'helpful', undefined, searchId, article._decisionId ?? undefined);
+                  } catch { setUserFeedback(previousFeedback); }
+                  finally { setFeedbackPending(false); }
+                }}
+                className="flex w-full items-center gap-2.5 px-3.5 py-2 text-xs text-slate-600 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700/60"
+              >
+                <i className="far fa-thumbs-up w-3.5 text-emerald-400" /> Helpful result
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                disabled={feedbackPending}
+                onClick={async () => {
+                  const previousFeedback = userFeedback;
+                  setUserFeedback('not_helpful');
+                  setShowMoreMenu(false);
+                  onFeedback?.(article, 'not_helpful');
+                  setFeedbackPending(true);
+                  try {
+                    await api.search.recordSearchFeedback(article.uid, 'not_helpful', feedbackReason || undefined, searchId, article._decisionId ?? undefined);
+                  } catch { setUserFeedback(previousFeedback); }
+                  finally { setFeedbackPending(false); }
+                }}
+                className="flex w-full items-center gap-2.5 px-3.5 py-2 text-xs text-slate-600 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700/60"
+              >
+                <i className="far fa-thumbs-down w-3.5 text-rose-400" /> Not relevant
+              </button>
+              <div className="my-1 border-t border-slate-100 dark:border-slate-700" />
               <button type="button"
                 role="menuitem"
                 onClick={() => { onToggleCollections(); setShowMoreMenu(false); }}
@@ -351,11 +332,6 @@ export const ArticleCardActionRow: React.FC<ArticleCardActionRowProps> = ({
                   <i className="fas fa-project-diagram w-3.5 text-violet-400" /> Citation network
                 </button>
               )}
-              <div className="my-1 border-t border-slate-100 dark:border-slate-700" />
-              <a href={primaryUrl} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors">
-                <i className="fas fa-external-link-alt w-3.5 text-slate-400" /> Open on {sourceLabel}
-              </a>
             </div>
           )}
         </div>
