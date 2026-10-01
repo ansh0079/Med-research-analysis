@@ -101,3 +101,37 @@ describe('a single-concept query', () => {
         expect(isOffTopic(AKI, 'sepsis')).toBe(true);
     });
 });
+
+describe('negated and compound forms are not condition hits', () => {
+    // Production, 2026-10-01: "diagnosis and management of alcoholic hepatitis"
+    // returned the NAFLD practice guidance and NAFLD reviews — "alcoholic" was
+    // substring-matching "nonalcoholic" and "hepatitis" was matching
+    // "steatohepatitis", so the off-topic gate saw two condition hits.
+    const NAFLD_GUIDANCE = {
+        title: 'The diagnosis and management of nonalcoholic fatty liver disease: Practice guidance from the AASLD',
+        abstract: 'Nonalcoholic fatty liver disease (NAFLD) and its progressive form nonalcoholic steatohepatitis (NASH) are leading causes of chronic liver disease.',
+    };
+    const AH_GUIDANCE = {
+        title: 'Diagnosis and Treatment of Alcohol-Associated Liver Diseases: 2019 Practice Guidance',
+        abstract: 'Alcoholic hepatitis is a clinical syndrome of jaundice and liver failure in patients with heavy alcohol use.',
+    };
+
+    it('does not match a term inside its negation or a compound word', () => {
+        const { textHasTerm } = require('../../server/utils/conditionQuery');
+        expect(textHasTerm(NAFLD_GUIDANCE.title.toLowerCase(), 'alcoholic')).toBe(false);
+        expect(textHasTerm('non-alcoholic fatty liver disease', 'alcoholic')).toBe(false);
+        expect(textHasTerm('nonalcoholic steatohepatitis (nash)', 'hepatitis')).toBe(false);
+        expect(textHasTerm('alcoholic hepatitis is a clinical syndrome', 'alcoholic')).toBe(true);
+        expect(textHasTerm('patients with chronic hepatitis b', 'hepatitis')).toBe(true);
+        // Suffixes still match: the anchor is the word start, not the word end.
+        expect(textHasTerm('antibiotics should be given early', 'antibiotic')).toBe(true);
+    });
+
+    it('gates NAFLD out of an alcoholic-hepatitis search', () => {
+        expect(isOffTopic(NAFLD_GUIDANCE, 'diagnosis and management of alcoholic hepatitis')).toBe(true);
+    });
+
+    it('keeps the actual alcoholic-hepatitis guidance', () => {
+        expect(isOffTopic(AH_GUIDANCE, 'diagnosis and management of alcoholic hepatitis')).toBe(false);
+    });
+});

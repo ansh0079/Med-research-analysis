@@ -138,7 +138,25 @@ function textHasTerm(text, term) {
     if (t.length <= 4 || isClinicalAbbreviation(t)) {
         return new RegExp(`(?:^|[^a-z0-9])${escapeRegex(t)}(?:[^a-z0-9]|$)`).test(text);
     }
-    return text.includes(t);
+    // Longer terms must start at a word boundary but may run into a suffix:
+    // "antibiotics" matches "antibiotic", while "nonalcoholic" must not match
+    // "alcoholic" and "steatohepatitis" must not match "hepatitis" — a negated
+    // or compound form names a different condition, not evidence for the one
+    // asked about. Measured on production 2026-10-01: "diagnosis and management
+    // of alcoholic hepatitis" returned the NAFLD practice guidance because both
+    // its "alcoholic" (inside "nonalcoholic") and "hepatitis" (inside
+    // "steatohepatitis") substring-matched and the off-topic gate passed it.
+    const re = new RegExp(`(?:^|[^a-z0-9])${escapeRegex(t)}`, 'g');
+    let m;
+    while ((m = re.exec(text)) !== null) {
+        const start = m.index + (m[0].length - t.length);
+        // Hyphenated/spaced negation still anchors at a boundary: "non-alcoholic",
+        // "non alcoholic". Treat those as the antonym, not a hit.
+        const before = text.slice(Math.max(0, start - 4), start);
+        if (/(?:non-|non )$/.test(before)) continue;
+        return true;
+    }
+    return false;
 }
 
 function synonymExpansionsForToken(token) {
