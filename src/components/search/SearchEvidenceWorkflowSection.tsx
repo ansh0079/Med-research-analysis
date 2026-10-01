@@ -11,6 +11,8 @@ import type { BriefDifficulty } from '@components/search/TopicBriefPanel';
 const AgentChatPanel = React.lazy(() => import('@components/search/AgentChatPanel').then(m => ({ default: m.AgentChatPanel })));
 
 interface SearchEvidenceWorkflowSectionProps {
+  /** 'brief' renders the topic synopsis that sits above the papers; 'tools' renders the mentor, map, and quiz below them. */
+  part: 'brief' | 'tools';
   currentQuery: string;
   results: Article[];
   agentGuidance: AgentGuidance | null;
@@ -54,6 +56,7 @@ interface SearchEvidenceWorkflowSectionProps {
 }
 
 export const SearchEvidenceWorkflowSection: React.FC<SearchEvidenceWorkflowSectionProps> = ({
+  part,
   currentQuery,
   results,
   agentGuidance,
@@ -94,8 +97,48 @@ export const SearchEvidenceWorkflowSection: React.FC<SearchEvidenceWorkflowSecti
   onOpenAnalysis,
   onViewDetails,
   onDismissKnowledgeDrift,
-}) => (
+}) => part === 'brief' ? (
+  <div id="workflow-evidence" className="mb-4 scroll-mt-28">
+    <TopicBriefPanel
+      query={currentQuery}
+      top5={top5Articles}
+      allResults={results}
+      topicIntelligence={topicIntelligence}
+      synthesis={synthesis}
+      synthesisLoading={synthesisLoading}
+      onSynthesize={onSynthesize}
+      onSummarizePaper={onOpenAnalysis}
+      onArticleClick={onViewDetails}
+      onQuiz={onOpenQuiz}
+      onCase={onOpenCase}
+      onOpenTopic={onSearch}
+      onGuidelineCompare={onOpenGuideline}
+      agentGuidance={agentGuidance}
+      liveClinicalAnswer={clinicalAnswer}
+      aiEnrichmentLoading={aiEnrichmentLoading}
+      aiEnrichmentFailed={aiEnrichmentFailed}
+      communityInsight={communityInsight}
+      proactiveAlert={proactiveAlert}
+      knowledgeDriftAlerts={knowledgeDriftAlerts}
+      evidenceMemory={topicEvidenceMemory}
+      onDismissKnowledgeDrift={onDismissKnowledgeDrift}
+    />
+  </div>
+) : (
   <>
+    <div id="evidence-quiz" className="mb-4 scroll-mt-28">
+      <EvidenceQuizPanel
+        topic={currentQuery}
+        articles={top5Articles.length > 0 ? top5Articles : results.slice(0, 5)}
+        autoExpand={inPlaceQuizExpanded}
+        onAuthSubmit={async (attempts) => {
+          await api.learning.submitQuizAttempt({ topic: currentQuery, attempts });
+        }}
+      />
+    </div>
+
+    <EvidenceMapPanel evidenceMap={topicIntelligence?.evidenceMap} onOpenTopic={onSearch} />
+
     {!agentGuidance && (
       <TopicKnowledgeDiscovery
         currentQuery={currentQuery}
@@ -145,43 +188,5 @@ export const SearchEvidenceWorkflowSection: React.FC<SearchEvidenceWorkflowSecti
         </React.Suspense>
       </div>
     )}
-
-    <div id="workflow-evidence" className="mb-4 scroll-mt-28">
-      <TopicBriefPanel
-        query={currentQuery}
-        top5={top5Articles}
-        allResults={results}
-        topicIntelligence={topicIntelligence}
-        synthesis={synthesis}
-        synthesisLoading={synthesisLoading}
-        onSynthesize={onSynthesize}
-        onSummarizePaper={onOpenAnalysis}
-        onArticleClick={onViewDetails}
-        onQuiz={onOpenQuiz}
-        onCase={onOpenCase}
-        onOpenTopic={onSearch}
-        onGuidelineCompare={onOpenGuideline}
-        agentGuidance={agentGuidance}
-        liveClinicalAnswer={clinicalAnswer}
-        aiEnrichmentLoading={aiEnrichmentLoading}
-        aiEnrichmentFailed={aiEnrichmentFailed}
-        communityInsight={communityInsight}
-        proactiveAlert={proactiveAlert}
-        knowledgeDriftAlerts={knowledgeDriftAlerts}
-        evidenceMemory={topicEvidenceMemory}
-        onDismissKnowledgeDrift={onDismissKnowledgeDrift}
-      />
-      <EvidenceMapPanel evidenceMap={topicIntelligence?.evidenceMap} onOpenTopic={onSearch} />
-      <div className="mb-4">
-        <EvidenceQuizPanel
-          topic={currentQuery}
-          articles={top5Articles.length > 0 ? top5Articles : results.slice(0, 5)}
-          autoExpand={inPlaceQuizExpanded}
-          onAuthSubmit={async (attempts) => {
-            await api.learning.submitQuizAttempt({ topic: currentQuery, attempts });
-          }}
-        />
-      </div>
-    </div>
   </>
 );

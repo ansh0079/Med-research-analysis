@@ -59,6 +59,7 @@ export const EvidenceProjectPanel: React.FC<EvidenceProjectPanelProps> = ({
   onStartReview,
 }) => {
   const [project, setProject] = React.useState<ProjectState>(loadProject);
+  const [open, setOpen] = React.useState(false);
   const evidenceSet = selectedArticles.length > 0 ? selectedArticles : results;
   const includedCount = evidenceSet.length;
   const openCount = evidenceSet.filter((article) => article.isFree || article.pmcid).length;
@@ -150,12 +151,24 @@ export const EvidenceProjectPanel: React.FC<EvidenceProjectPanelProps> = ({
 
   return (
     <section className="neo-card mb-6 overflow-hidden">
-      <div className="border-b border-slate-100 px-4 py-3 dark:border-slate-800">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-indigo-500">Evidence Project</p>
-            <h2 className="text-base font-black text-slate-900 dark:text-white">Turn this search into a defensible review</h2>
-          </div>
+      <button
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        aria-expanded={open}
+        className="flex w-full items-center justify-between gap-2 px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-slate-900"
+      >
+        <span className="flex items-center gap-2">
+          <i className="fas fa-clipboard-list text-[11px] text-slate-400" />
+          <span className="text-sm font-bold text-slate-800 dark:text-slate-100">Turn this search into a systematic review</span>
+          <span className="hidden text-xs text-slate-400 sm:inline">PICO, criteria, and review handoff</span>
+        </span>
+        <i className={`fas fa-chevron-down text-[11px] text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+      <>
+      <div className="border-y border-slate-100 px-4 py-3 dark:border-slate-800">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
           <div className="flex flex-wrap gap-2">
             <Button variant="secondary" size="sm" onClick={exportEvidenceTable} disabled={includedCount === 0}>
               Export table
@@ -244,6 +257,8 @@ export const EvidenceProjectPanel: React.FC<EvidenceProjectPanelProps> = ({
           </p>
         </div>
       </div>
+      </>
+      )}
     </section>
   );
 };

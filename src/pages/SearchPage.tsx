@@ -167,6 +167,61 @@ export const SearchPage: React.FC = () => {
     setSearchParams(searchParams, { replace: true });
   }, [urlQuery, handleSearch, searchParams, setSearchParams]);
 
+  const workflowSectionProps = {
+    currentQuery,
+    results,
+    agentGuidance,
+    proposedGuidance,
+    top5Articles,
+    topicIntelligence,
+    synthesis,
+    synthesisLoading,
+    intelligenceLoading,
+    topicGuideStatus,
+    proposeError,
+    proposingKnowledge,
+    isFlagshipTopic,
+    isAuthenticated,
+    topicGuideRefreshState,
+    knowledgeReviewStatus,
+    topicGuideRefreshError,
+    canVerifyTeachingAnchor,
+    anchorVerifyKey,
+    inPlaceQuizExpanded,
+    clinicalAnswer,
+    aiEnrichmentLoading,
+    aiEnrichmentFailed,
+    communityInsight,
+    proactiveAlert,
+    knowledgeDriftAlerts,
+    topicEvidenceMemory,
+    onProposeKnowledge: handleProposeKnowledge,
+    onRefreshTopicGuide: runTopicGuideRefresh,
+    onReviewTopicKnowledge: handleReviewTopicKnowledge,
+    onAnchorVerifyKeyChange: setAnchorVerifyKey,
+    onAgentGuidanceChange: setAgentGuidance,
+    onOpenCase: openCaseFromWorkflow,
+    onOpenQuiz: openQuizFromWorkflow,
+    onSynthesize: handleSynthesize,
+    onSearch: handleSearch,
+    onOpenGuideline: openGuidelineFromWorkflow,
+    onOpenAnalysis: openAnalysis,
+    onViewDetails: setDetailArticle,
+    onDismissKnowledgeDrift: (id: number) => { void dismissKnowledgeDriftAlert(id); },
+  };
+
+  // The quiz now sits below the paper list, so expanding it must bring it into view.
+  const openInPlaceQuiz = () => {
+    setInPlaceQuizExpanded(true);
+    requestAnimationFrame(() => {
+      document.getElementById('evidence-quiz')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
+  const toggleInPlaceQuiz = () => {
+    if (inPlaceQuizExpanded) setInPlaceQuizExpanded(false);
+    else openInPlaceQuiz();
+  };
+
   return (
     <div className="min-h-screen aurora-bg mesh-bg">
       <div className="aurora-content">
@@ -275,7 +330,7 @@ export const SearchPage: React.FC = () => {
         {results.length > 0 && learnerContext?.hasPersonalization && (learnerContext.weakClaimCount > 0 || learnerContext.hasTrajectory || learnerContext.weakTopicCount > 0) && (
           <PersonalizedRemediationBanner
             learnerContext={learnerContext}
-            onOpenQuiz={() => setInPlaceQuizExpanded(true)}
+            onOpenQuiz={openInPlaceQuiz}
             agentGuidance={agentGuidance}
           />
         )}
@@ -286,7 +341,7 @@ export const SearchPage: React.FC = () => {
             inPlaceQuizExpanded={inPlaceQuizExpanded}
             onOpenGuideline={openGuidelineFromWorkflow}
             onOpenCase={() => openCaseFromWorkflow('mixed')}
-            onToggleQuiz={() => setInPlaceQuizExpanded((v) => !v)}
+            onToggleQuiz={toggleInPlaceQuiz}
           />
         )}
 
@@ -300,88 +355,7 @@ export const SearchPage: React.FC = () => {
           />
         )}
 
-        {results.length > 0 && (
-          <SearchEvidenceWorkflowSection
-            currentQuery={currentQuery}
-            results={results}
-            agentGuidance={agentGuidance}
-            proposedGuidance={proposedGuidance}
-            top5Articles={top5Articles}
-            topicIntelligence={topicIntelligence}
-            synthesis={synthesis}
-            synthesisLoading={synthesisLoading}
-            intelligenceLoading={intelligenceLoading}
-            topicGuideStatus={topicGuideStatus}
-            proposeError={proposeError}
-            proposingKnowledge={proposingKnowledge}
-            isFlagshipTopic={isFlagshipTopic}
-            isAuthenticated={isAuthenticated}
-            topicGuideRefreshState={topicGuideRefreshState}
-            knowledgeReviewStatus={knowledgeReviewStatus}
-            topicGuideRefreshError={topicGuideRefreshError}
-            canVerifyTeachingAnchor={canVerifyTeachingAnchor}
-            anchorVerifyKey={anchorVerifyKey}
-            inPlaceQuizExpanded={inPlaceQuizExpanded}
-            clinicalAnswer={clinicalAnswer}
-            aiEnrichmentLoading={aiEnrichmentLoading}
-            aiEnrichmentFailed={aiEnrichmentFailed}
-            communityInsight={communityInsight}
-            proactiveAlert={proactiveAlert}
-            knowledgeDriftAlerts={knowledgeDriftAlerts}
-            topicEvidenceMemory={topicEvidenceMemory}
-            onProposeKnowledge={handleProposeKnowledge}
-            onRefreshTopicGuide={runTopicGuideRefresh}
-            onReviewTopicKnowledge={handleReviewTopicKnowledge}
-            onAnchorVerifyKeyChange={setAnchorVerifyKey}
-            onAgentGuidanceChange={setAgentGuidance}
-            onOpenCase={openCaseFromWorkflow}
-            onOpenQuiz={openQuizFromWorkflow}
-            onSynthesize={handleSynthesize}
-            onSearch={handleSearch}
-            onOpenGuideline={openGuidelineFromWorkflow}
-            onOpenAnalysis={openAnalysis}
-            onViewDetails={setDetailArticle}
-            onDismissKnowledgeDrift={(id) => { void dismissKnowledgeDriftAlert(id); }}
-          />
-        )}
-
-        {results.length > 0 && (
-          <ResultLensToolbar
-            resultsCount={results.length}
-            openAccessCount={openAccessCount}
-            highQualityCount={highQualityCount}
-            recentCount={recentCount}
-            practiceChangingCount={practiceChangingCount}
-            resultLens={resultLens}
-            resultFilter={resultFilter}
-            selectedArticles={selectedArticles}
-            savedArticles={savedArticles}
-            isAuthenticated={isAuthenticated}
-            onLensChange={(lens) => {
-              setResultLens(lens);
-              setVisibleCount(30);
-            }}
-            onClearLens={() => {
-              setResultLens('all');
-              setResultFilter('');
-              setVisibleCount(30);
-            }}
-            onCompare={() => setIsComparing(true)}
-            onNavigate={setCurrentPage}
-            onClearSelection={clearSelection}
-            onExport={exportResults}
-            trackFeatureUsage={trackFeatureUsage}
-          />
-        )}
-
-        {results.length > 0 && (
-          <EvidenceProjectPanel
-            currentQuery={currentQuery}
-            results={results}
-            selectedArticles={selectedArticles}
-            onStartReview={() => setCurrentPage('review')}
-          />
-        )}
+        {results.length > 0 && <SearchEvidenceWorkflowSection part="brief" {...workflowSectionProps} />}
 
         <SynthesisStatusSection
           synthesisError={synthesisError}
@@ -403,31 +377,33 @@ export const SearchPage: React.FC = () => {
           </div>
         )}
 
-        <TopicActionBanner
-          onTestYourself={() => openQuizFromWorkflow('mixed')}
-          onCaseScenario={openCaseFromWorkflow}
-          onReadDeeper={() => {
-            const q = encodeURIComponent(currentQuery);
-            window.open(`https://pubmed.ncbi.nlm.nih.gov/?term=${q}`, '_blank', 'noopener');
-          }}
-        />
-
-        {currentQuery && results.length > 0 && isAuthenticated && (
-          <div className="mb-4 flex justify-end">
-            <button
-              type="button"
-              onClick={() => navigate(`/topic/${encodeURIComponent(currentQuery)}`)}
-              className="flex items-center gap-2 rounded-xl border border-indigo-200 dark:border-indigo-800/50 bg-indigo-50/60 dark:bg-indigo-950/20 text-indigo-700 dark:text-indigo-300 text-xs font-bold px-4 py-2 hover:bg-indigo-100 dark:hover:bg-indigo-950/40 transition-colors"
-            >
-              <i className="fas fa-graduation-cap text-[11px]" />
-              Open topic workspace
-            </button>
-          </div>
+        {results.length > 0 && (
+          <ResultLensToolbar
+            resultsCount={results.length}
+            openAccessCount={openAccessCount}
+            highQualityCount={highQualityCount}
+            recentCount={recentCount}
+            practiceChangingCount={practiceChangingCount}
+            resultLens={resultLens}
+            resultFilter={resultFilter}
+            selectedArticles={selectedArticles}
+            savedArticles={savedArticles}
+            onLensChange={(lens) => {
+              setResultLens(lens);
+              setVisibleCount(30);
+            }}
+            onClearLens={() => {
+              setResultLens('all');
+              setResultFilter('');
+              setVisibleCount(30);
+            }}
+            onCompare={() => setIsComparing(true)}
+            onNavigate={setCurrentPage}
+            onClearSelection={clearSelection}
+            onExport={exportResults}
+            trackFeatureUsage={trackFeatureUsage}
+          />
         )}
-
-        <div id="guideline-snapshot">
-          <GuidelineSnapshot query={resultsQuery || currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
-        </div>
 
         {loading && results.length === 0 && (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
@@ -477,6 +453,49 @@ export const SearchPage: React.FC = () => {
             <SearchEmptyState onExampleClick={handleSearch} isAuthenticated={isAuthenticated} />
           )
         ) : null}
+
+        {results.length > 0 && (
+          <div className="mt-6">
+            <SearchEvidenceWorkflowSection part="tools" {...workflowSectionProps} />
+          </div>
+        )}
+
+        <TopicActionBanner
+          onTestYourself={() => openQuizFromWorkflow('mixed')}
+          onCaseScenario={openCaseFromWorkflow}
+          onReadDeeper={() => {
+            const q = encodeURIComponent(currentQuery);
+            window.open(`https://pubmed.ncbi.nlm.nih.gov/?term=${q}`, '_blank', 'noopener');
+          }}
+        />
+
+        {currentQuery && results.length > 0 && isAuthenticated && (
+          <div className="mb-4 flex justify-end">
+            <button
+              type="button"
+              onClick={() => navigate(`/topic/${encodeURIComponent(currentQuery)}`)}
+              className="flex items-center gap-2 rounded-xl border border-indigo-200 dark:border-indigo-800/50 bg-indigo-50/60 dark:bg-indigo-950/20 text-indigo-700 dark:text-indigo-300 text-xs font-bold px-4 py-2 hover:bg-indigo-100 dark:hover:bg-indigo-950/40 transition-colors"
+            >
+              <i className="fas fa-graduation-cap text-[11px]" />
+              Open topic workspace
+            </button>
+          </div>
+        )}
+
+        <div id="guideline-snapshot">
+          <GuidelineSnapshot query={resultsQuery || currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
+        </div>
+
+        {results.length > 0 && (
+          <div className="mt-6">
+            <EvidenceProjectPanel
+              currentQuery={currentQuery}
+              results={results}
+              selectedArticles={selectedArticles}
+              onStartReview={() => setCurrentPage('review')}
+            />
+          </div>
+        )}
       </main>
 
       <React.Suspense fallback={null}>

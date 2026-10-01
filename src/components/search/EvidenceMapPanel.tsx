@@ -26,6 +26,7 @@ function claimBadgeLabel(status?: string | null) {
 }
 
 export const EvidenceMapPanel: React.FC<Props> = ({ evidenceMap, onOpenTopic }) => {
+  const [open, setOpen] = React.useState(false);
   if (!evidenceMap) return null;
   const nodes = evidenceMap.nodes || {};
   const freshness = evidenceMap.freshness || {};
@@ -35,28 +36,40 @@ export const EvidenceMapPanel: React.FC<Props> = ({ evidenceMap, onOpenTopic }) 
   const liveEvidence = nodes.liveEvidence || [];
   const teachingPoints = nodes.teachingPoints || [];
 
+  const itemCount = teachingObjects.length + groundedClaims.length + teachingPoints.length
+    + liveEvidence.length + relatedTopics.length;
+  if (itemCount === 0) return null;
+
   return (
     <section className="mb-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 overflow-hidden">
-      <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 flex flex-wrap items-center gap-2 justify-between">
-        <div>
-          <h2 className="text-sm font-black text-slate-900 dark:text-slate-100">Evidence map</h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            Teaching objects, topic memory, related clusters, and freshness in one view
-          </p>
-        </div>
-        <div className="flex gap-1.5 text-[10px] font-bold uppercase">
-          <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-1 text-slate-600 dark:text-slate-300">
-            Confidence {pct(freshness.effectiveConfidence)}
+      <button
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        aria-expanded={open}
+        className="w-full px-4 py-3 flex items-center gap-2 justify-between text-left hover:bg-slate-50 dark:hover:bg-slate-900"
+      >
+        <span className="flex items-center gap-2">
+          <i className="fas fa-diagram-project text-[11px] text-slate-400" />
+          <span className="text-sm font-bold text-slate-800 dark:text-slate-100">Evidence map</span>
+          <span className="text-xs text-slate-400">Teaching objects, claims, and related topics</span>
+        </span>
+        <i className={`fas fa-chevron-down text-[11px] text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+      <div className="border-t border-slate-100 dark:border-slate-800">
+      <div className="px-4 py-2 flex gap-1.5 text-[10px] font-bold uppercase">
+        <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-1 text-slate-600 dark:text-slate-300">
+          Confidence {pct(freshness.effectiveConfidence)}
+        </span>
+        <span className="rounded-full bg-amber-100 dark:bg-amber-950/40 px-2 py-1 text-amber-700 dark:text-amber-300">
+          Decay {pct(freshness.confidenceDecay)}
+        </span>
+        {freshness.volatility && (
+          <span className="rounded-full bg-blue-100 dark:bg-blue-950/40 px-2 py-1 text-blue-700 dark:text-blue-300">
+            {freshness.volatility}
           </span>
-          <span className="rounded-full bg-amber-100 dark:bg-amber-950/40 px-2 py-1 text-amber-700 dark:text-amber-300">
-            Decay {pct(freshness.confidenceDecay)}
-          </span>
-          {freshness.volatility && (
-            <span className="rounded-full bg-blue-100 dark:bg-blue-950/40 px-2 py-1 text-blue-700 dark:text-blue-300">
-              {freshness.volatility}
-            </span>
-          )}
-        </div>
+        )}
       </div>
 
       {evidenceMap.alerts?.stale && evidenceMap.alerts.message && (
@@ -130,6 +143,8 @@ export const EvidenceMapPanel: React.FC<Props> = ({ evidenceMap, onOpenTopic }) 
           </div>
         </div>
       </div>
+      </div>
+      )}
     </section>
   );
 };
