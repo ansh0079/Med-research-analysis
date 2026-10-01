@@ -152,7 +152,7 @@ export const SearchPage: React.FC = () => {
   // they cannot be sent there, but they can still see the evidence for that topic.
   // Only fires once per query so it does not re-run on every render.
   const [searchParams, setSearchParams] = useSearchParams();
-  const [workspaceTab, setWorkspaceTab] = React.useState<'evidence' | 'guidelines' | 'learn'>('evidence');
+  const [workspaceTab, setWorkspaceTab] = React.useState<'evidence' | 'guidelines' | 'learn'>('guidelines');
   const urlQuery = searchParams.get('q')?.trim() || '';
   const consumedQueryRef = React.useRef<string | null>(null);
   React.useEffect(() => {
@@ -166,7 +166,7 @@ export const SearchPage: React.FC = () => {
   }, [urlQuery, handleSearch, searchParams, setSearchParams]);
 
   React.useEffect(() => {
-    setWorkspaceTab('evidence');
+    setWorkspaceTab('guidelines');
   }, [resultsQuery]);
 
   const activeFilters = {
@@ -305,7 +305,7 @@ export const SearchPage: React.FC = () => {
             />
 
             <nav className="mb-5 flex gap-6 border-b border-slate-200 dark:border-slate-700" aria-label="Evidence workspace sections" role="tablist">
-              {(['evidence', 'guidelines', 'learn'] as const).map((tab) => (
+              {(['guidelines', 'evidence', 'learn'] as const).map((tab) => (
                 <button
                   key={tab}
                   type="button"
