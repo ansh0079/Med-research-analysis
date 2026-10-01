@@ -117,8 +117,8 @@ test.describe('beta smoke', () => {
 
     await expect(page.getByRole('link', { name: /SGLT2 inhibitors in heart/i })).toBeVisible();
     await expect(page.getByText(/Journal of Evidence Medicine/i)).toBeVisible();
-    await expect(page.getByRole('link', { name: /View on PubMed/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /View on PubMed/i })).toHaveAttribute('href', 'https://pubmed.ncbi.nlm.nih.gov/123/');
+    await expect(page.getByRole('link', { name: /Open paper/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Open paper/i })).toHaveAttribute('href', 'https://pubmed.ncbi.nlm.nih.gov/123/');
   });
 
   test('renders the compliance notice and legal routes', async ({ page }) => {
