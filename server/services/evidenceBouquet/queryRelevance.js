@@ -203,6 +203,40 @@ function isOffTopic(article, query, options = {}) {
     return matchRatio < threshold;
 }
 
+/**
+ * Title anchoring for the final ordering. Eligibility (isOffTopic) deliberately
+ * lets through papers that mention the condition only in passing — an etiology
+ * list in a hepatocellular-carcinoma guideline, a global burden-of-disease
+ * review ("alcoholic liver disease" in a list of causes). Those are legitimate
+ * members of the result set, but for a condition-named query they must not
+ * outrank papers whose titles actually name the condition. Measured on
+ * production 2026-10-01 for "diagnosis and management of alcoholic hepatitis":
+ * "Management of Hepatocellular Carcinoma" at #10 and "The global burden of
+ * liver disease" at #9, above five papers with alcoholic hepatitis in the title.
+ *
+ * Stable partition: title-matching papers keep their relative order and move
+ * above non-matching ones; all-match or no-match leaves the order untouched.
+ * Curated landmark pins are exempt from demotion — their titles are often
+ * trial acronyms and their topicality was gated when they were pinned.
+ */
+function prioritizeTitleAnchoredResults(articles, query) {
+    if (!Array.isArray(articles)) return [];
+    const conditionTerms = originalConditionTerms(query);
+    if (!conditionTerms.length) return articles;
+    const anchored = [];
+    const rest = [];
+    for (const article of articles) {
+        const title = String(article?.title || '').toLowerCase();
+        const titleHit = conditionTerms.some(
+            (t) => articleMatchesConditionTerm(title, t, { companionTerms: conditionTerms }),
+        );
+        if (titleHit || article?._pinnedLandmark) anchored.push(article);
+        else rest.push(article);
+    }
+    if (!anchored.length || !rest.length) return articles;
+    return [...anchored, ...rest];
+}
+
 function scorePicoRelevance(article, pico) {
     if (!pico || pico.confidence < 0.3) return 0;
     const text = `${String(article.title || '')} ${String(article.abstract || '')}`.toLowerCase();
@@ -226,5 +260,6 @@ module.exports = {
     queryMatchScore,
     queryAliasMatchScore,
     isOffTopic,
+    prioritizeTitleAnchoredResults,
     scorePicoRelevance,
 };

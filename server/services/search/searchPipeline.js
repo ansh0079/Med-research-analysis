@@ -27,6 +27,7 @@ const {
     publicLearningContext,
 } = require('../searchLearningService');
 const { annotateArticlesWithRankingTraces } = require('../searchRankingTrace');
+const { prioritizeTitleAnchoredResults } = require('../evidenceBouquet/queryRelevance');
 const { withSpan, annotateActiveSpan } = require('../../utils/tracing');
 const {
     evaluateEligibility,
@@ -737,6 +738,9 @@ async function fetchAndRankSearchArticles({
             cache,
         }));
         timings.picoRerankMs = telemetry.picoRerank?.ms ?? 0;
+        // PICO order stands; only re-partition so papers whose titles never name the
+        // condition (etiology-list mentions) sit below those whose titles do.
+        articles = prioritizeTitleAnchoredResults(articles, query);
         articles = articles.slice(0, safeLimit);
         timings.rankMs = Date.now() - rankStarted;
         _trace('afterRerank', articles);

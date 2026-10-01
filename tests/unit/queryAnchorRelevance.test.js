@@ -135,3 +135,45 @@ describe('negated and compound forms are not condition hits', () => {
         expect(isOffTopic(AH_GUIDANCE, 'diagnosis and management of alcoholic hepatitis')).toBe(false);
     });
 });
+
+describe('title anchoring in the final order', () => {
+    // Production, 2026-10-01: "diagnosis and management of alcoholic hepatitis"
+    // ranked "Management of Hepatocellular Carcinoma" and "The global burden of
+    // liver disease" above five papers with alcoholic hepatitis in the title —
+    // legitimate abstract mentions, wrong prominence.
+    const { prioritizeTitleAnchoredResults } = require('../../server/services/evidenceBouquet/queryRelevance');
+    const Q = 'diagnosis and management of alcoholic hepatitis';
+    const TITLED = { uid: 'titled', title: 'Alcoholic Hepatitis: Diagnosis and Management', abstract: 'Review.' };
+    const TITLED_2 = { uid: 'titled2', title: 'Diagnosis and Treatment of Alcohol-Associated Liver Diseases', abstract: 'Guidance.' };
+    const PASSING_MENTION = { uid: 'hcc', title: 'Management of Hepatocellular Carcinoma', abstract: 'Risk factors include hepatitis B, hepatitis C and alcoholic liver disease.' };
+    const BURDEN = { uid: 'burden', title: 'The global burden of liver disease: The major impact of China', abstract: 'Causes include viral hepatitis, nonalcoholic fatty liver disease and alcoholic liver disease.' };
+
+    it('moves passing mentions below papers whose titles name the condition', () => {
+        const out = prioritizeTitleAnchoredResults([PASSING_MENTION, TITLED, BURDEN, TITLED_2], Q);
+        expect(out.map((a) => a.uid)).toEqual(['titled', 'titled2', 'hcc', 'burden']);
+    });
+
+    it('is a stable partition: relative order inside each group is preserved', () => {
+        const out = prioritizeTitleAnchoredResults([BURDEN, PASSING_MENTION, TITLED_2, TITLED], Q);
+        expect(out.map((a) => a.uid)).toEqual(['titled2', 'titled', 'burden', 'hcc']);
+    });
+
+    it('never demotes a curated landmark pin whose title is a trial acronym', () => {
+        const PIN = { uid: 'pin', title: 'STEROIDS AH trial', abstract: 'Randomized.', _pinnedLandmark: true };
+        const out = prioritizeTitleAnchoredResults([PIN, TITLED], Q);
+        expect(out[0].uid).toBe('pin');
+    });
+
+    it('leaves the order untouched when nothing or everything title-matches, or there is no condition term', () => {
+        const allTitled = [TITLED, TITLED_2];
+        expect(prioritizeTitleAnchoredResults(allTitled, Q).map((a) => a.uid)).toEqual(['titled', 'titled2']);
+        const scaffolding = [PASSING_MENTION, TITLED];
+        expect(prioritizeTitleAnchoredResults(scaffolding, 'diagnosis and management').map((a) => a.uid)).toEqual(['hcc', 'titled']);
+    });
+
+    it('non-alcoholic in the title does not count as naming the condition', () => {
+        const NAFLD_TITLED = { uid: 'nafld', title: 'Nutritional assessments of patients with non-alcoholic fatty liver disease', abstract: 'Also discusses alcoholic liver disease.' };
+        const out = prioritizeTitleAnchoredResults([NAFLD_TITLED, TITLED], Q);
+        expect(out.map((a) => a.uid)).toEqual(['titled', 'nafld']);
+    });
+});
