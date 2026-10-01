@@ -40,6 +40,7 @@ function refFromUrl(url) {
 }
 
 async function main() {
+    await db.connect();
     const rows = await db.all(
         `SELECT id, topic, normalized_topic, source_url, recommendation_text
          FROM topic_guidelines
