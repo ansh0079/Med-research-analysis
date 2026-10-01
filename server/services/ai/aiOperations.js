@@ -55,7 +55,6 @@ const OPERATIONS = Object.freeze({
     article_compare: { kind: 'interactive', maxOutputTokens: JSON_OBJECT },
     journal_club: { kind: 'interactive', maxOutputTokens: LONG_JSON },
     review_assistant: { kind: 'interactive', maxOutputTokens: JSON_OBJECT },
-    webpage_inference: { kind: 'interactive', maxOutputTokens: 1400 },
 
     // --- learning ---
     quiz: { kind: 'interactive', maxOutputTokens: JSON_OBJECT },

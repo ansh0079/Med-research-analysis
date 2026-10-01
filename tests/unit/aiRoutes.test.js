@@ -249,35 +249,6 @@ describe('aiRoutes', () => {
         });
     });
 
-    describe('POST /api/ai/webpage/infer', () => {
-        test('returns structured webpage inference', async () => {
-            const res = await request(app)
-                .post('/api/ai/webpage/infer')
-                .set('Authorization', `Bearer ${authToken()}`)
-                .send({
-                    page: {
-                        url: 'https://example.org/ards',
-                        title: 'ARDS ventilation article',
-                        text: 'Adults with ARDS receive lung protective ventilation. Mortality is a key outcome in trials and guidelines.',
-                        keywords: ['ards', 'ventilation'],
-                        safetySignals: { hasForms: false, hasPasswordField: false, hasPaymentField: false, externalLinkCount: 2 },
-                    },
-                });
-
-            expect(res.status).toBe(200);
-            expect(res.body.inference).toMatchObject({
-                pageType: 'research_article',
-                clinicalTopic: 'ARDS ventilation',
-                searchQuery: 'ARDS ventilation mortality',
-            });
-            expect(mockDb.logEvent).toHaveBeenCalledWith(
-                'webpage_inference',
-                's1',
-                expect.objectContaining({ pageType: 'research_article', riskLevel: 'low' })
-            );
-        });
-    });
-
     describe('POST /api/ai/synthesize', () => {
         test('defaults to async and returns 202', async () => {
             const { getOrEnqueueFullSynthesis } = require('../../server/services/aiGenerationJobService');

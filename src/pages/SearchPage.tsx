@@ -4,7 +4,6 @@ const AIAnalysisPanel = React.lazy(() => import('@components/search/AIAnalysisPa
 import { SynthesisPanel } from '@components/search/SynthesisPanel';
 import { SelectionBasket } from '@components/search/SelectionBasket';
 import { ComparisonView } from '@components/search/ComparisonView';
-import { EvidenceProjectPanel } from '@components/search/EvidenceProjectPanel';
 import { ArticleDetailDrawer } from '@components/search/ArticleDetailDrawer';
 import { GuidelineSnapshot } from '@components/search/GuidelineSnapshot';
 import { EvidenceVerdictStrip } from '@components/search/EvidenceVerdictStrip';
@@ -27,7 +26,6 @@ import { ResultLensToolbar } from '@components/search/ResultLensToolbar';
 import { SynthesisStatusSection } from '@components/search/SynthesisStatusSection';
 import { SearchResultsGrid } from '@components/search/SearchResultsGrid';
 import { SearchPageFooter } from '@components/search/SearchPageFooter';
-import { WebpageCapturePanel } from '@components/search/WebpageCapturePanel';
 import { useSearchPage } from '@hooks/useSearchPage';
 
 export const SearchPage: React.FC = () => {
@@ -466,22 +464,6 @@ export const SearchPage: React.FC = () => {
         <div id="guideline-snapshot">
           <GuidelineSnapshot query={resultsQuery || currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
         </div>
-
-        <WebpageCapturePanel
-          onSearch={handleSearch}
-          onUseAsCaseContext={(context) => setShiftPresentation(context)}
-        />
-
-        {results.length > 0 && (
-          <div className="mt-6">
-            <EvidenceProjectPanel
-              currentQuery={currentQuery}
-              results={results}
-              selectedArticles={selectedArticles}
-              onStartReview={() => setCurrentPage('review')}
-            />
-          </div>
-        )}
       </main>
 
       <React.Suspense fallback={null}>

@@ -12,7 +12,6 @@ const { registerAnalysisRoutes } = require('./ai/analysis');
 const { registerArticleToolRoutes } = require('./ai/articleTools');
 const { registerJournalClubRoutes } = require('./ai/journalClub');
 const { registerAiUtilRoutes } = require('./ai/util');
-const { registerWebpageInferenceRoutes } = require('./ai/webpage');
 
 /**
  * @param {import('express').Application} app
@@ -76,7 +75,6 @@ function registerAiRoutes(app, deps) {
 
     registerAiJobRoutes(app, { db, requireAuthJwt, rateLimit });
 
-    registerWebpageInferenceRoutes(app, { db, cache, serverConfig, ai, limitBodySize, requireJson, requireAiAuth, requirePaidFeature, requireMonthlyLimit, aiUserLimit });
 
     // `cache` backs the answer-commitment store: POST /api/quiz/grade refuses to
     // reveal an answer without one, so omitting it here made every grade return
