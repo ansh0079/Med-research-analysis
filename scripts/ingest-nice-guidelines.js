@@ -24,31 +24,19 @@
 
 const db = require('../database');
 const { fetchWithTimeout: fetch } = require('../server/utils/fetch');
+const {
+    NICE_BASE,
+    UA,
+    MIN_LENGTH,
+    fetchNiceRecommendations,
+    parseNiceRecommendations,
+} = require('./lib/niceRecommendations');
 
 const SKIP_IF_GTE = Number(process.env.INGEST_SKIP_COVERED || 2);
 const DRY_RUN = process.env.INGEST_DRY_RUN === '1';
 const TOPIC_FILTER = process.env.INGEST_TOPIC_FILTER
     ? new Set(process.env.INGEST_TOPIC_FILTER.split(',').map(s => s.trim().toLowerCase()))
     : null;
-
-const NICE_BASE = 'https://www.nice.org.uk';
-const UA = 'Mozilla/5.0 (compatible; MedResearch/1.0; +https://signalmd.co)';
-
-const RECOMMENDATION_RE = /\b(should|should not|recommend|must|offer|consider|avoid|do not|initiate|start|prescribe|screen|monitor|refer|first-line|second-line|indicated|contraindicated|titrate|discontinue)\b/i;
-const MIN_LENGTH = 30;
-
-// Remove HTML tags, decode entities
-function stripHtml(s) {
-    return (s || '')
-        .replace(/<[^>]+>/g, ' ')
-        .replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&quot;/g, '"')
-        .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
-        .replace(/\s+/g, ' ')
-        .trim();
-}
 
 // Extract first 6 words before first colon/dash as search term
 function searchTermFor(topicName) {
@@ -73,47 +61,6 @@ async function searchNice(term) {
     } catch {
         return [];
     }
-}
-
-// Fetch recommendations chapter for a NICE guideline ref
-async function fetchNiceRecommendations(ref) {
-    // Try /chapter/Recommendations first, then /chapter/1-recommendations
-    const urls = [
-        `${NICE_BASE}/guidance/${ref}/chapter/Recommendations`,
-        `${NICE_BASE}/guidance/${ref}/chapter/1-recommendations`,
-        `${NICE_BASE}/guidance/${ref}/chapter/1-Recommendations`,
-    ];
-    for (const url of urls) {
-        try {
-            const res = await fetch(url, { timeout: 20000, headers: { 'User-Agent': UA } });
-            if (!res.ok) continue;
-            const html = await res.text();
-            if (html.length < 500) continue;
-            return { html, url };
-        } catch {
-            continue;
-        }
-    }
-    return null;
-}
-
-// Parse recommendation items from NICE recommendations HTML
-function parseNiceRecommendations(html, ref) {
-    const recs = [];
-    // Extract all <p> and <li> content between tags (no nested tags approach)
-    const itemRe = /<(?:p|li)([^>]*)>((?:[^<]|<(?!\/(?:p|li)>))*?)<\/(?:p|li)>/gi;
-    let m;
-    while ((m = itemRe.exec(html)) !== null) {
-        const text = stripHtml(m[2]);
-        if (text.length < MIN_LENGTH) continue;
-        if (!RECOMMENDATION_RE.test(text)) continue;
-        // Skip meta-commentary
-        if (/\bthis guideline\b|\bmore information\b|\bsee also\b|\bappendix\b|\bfull guideline\b/i.test(text) && text.length < 100) continue;
-        // Skip JavaScript/tracking noise
-        if (/function\s*\(|window\[|gtm\.start|dataLayer|googletag|addEventListener/i.test(text)) continue;
-        recs.push(text);
-    }
-    return [...new Set(recs)]; // deduplicate
 }
 
 // Get publication year from a NICE guideline page
