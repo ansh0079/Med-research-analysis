@@ -43,23 +43,11 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
   const [pdfLookup, setPdfLookup] = useState<'idle' | 'loading' | 'found' | 'not-found'>('idle');
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [pdfIndexed, setPdfIndexed] = useState(false);
-  const [hoverPreview, setHoverPreview] = useState(false);
-  const hoverTimerRef = React.useRef<number | null>(null);
   const dwellTimerRef = React.useRef<number | null>(null);
   const dwellStartedAtRef = React.useRef<number | null>(null);
   const maxLoggedDwellMsRef = React.useRef(0);
 
   const isRct = article._impact?.evidenceType === 'rct' || (article.pubtype ?? []).some((t) => /randomized|randomised|rct/i.test(t));
-
-  const showHoverPreview = React.useCallback(() => {
-    if (hoverTimerRef.current !== null) clearTimeout(hoverTimerRef.current);
-    hoverTimerRef.current = window.setTimeout(() => setHoverPreview(true), 350);
-  }, []);
-
-  const hideHoverPreview = React.useCallback(() => {
-    if (hoverTimerRef.current !== null) { clearTimeout(hoverTimerRef.current); hoverTimerRef.current = null; }
-    setHoverPreview(false);
-  }, []);
 
   const closeAllPanels = () => { setShowCollections(false); setShowAnnotations(false); setShowCitations(false); };
 
@@ -144,10 +132,10 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
 
   return (
     <article
-      onMouseEnter={() => { startDwell(); showHoverPreview(); }}
-      onMouseLeave={() => { flushDwell(); hideHoverPreview(); }}
+      onMouseEnter={startDwell}
+      onMouseLeave={flushDwell}
       onFocus={startDwell}
-      onBlur={() => { flushDwell(); hideHoverPreview(); }}
+      onBlur={flushDwell}
       className={`relative neo-card overflow-hidden animate-fade-up ${
         article._retraction?.isRetracted
           ? 'ring-2 ring-red-600 ring-offset-2 ring-offset-white dark:ring-offset-slate-900'
@@ -236,32 +224,23 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
           )}
         </div>
 
-        {/* Hover abstract preview */}
-        {hoverPreview && !showAbstract && article.abstract && (
-          <div className="mb-3 px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 animate-fade-in">
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3">
+        {/* Abstract: two-line snippet by default, expands in place */}
+        {article.abstract && (
+          <div className="mb-3">
+            <p className={`text-xs text-slate-600 dark:text-slate-300 leading-relaxed ${showAbstract ? '' : 'line-clamp-2'}`}>
               {article.abstract}
             </p>
-          </div>
-        )}
-
-        {/* Abstract toggle */}
-        {article.abstract && (
-          <button
-            type="button"
-            onClick={() => setShowAbstract(!showAbstract)}
-            className="text-[0.72rem] text-indigo-500 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center gap-1 mb-2 transition-colors"
-          >
-            <svg className={`w-3 h-3 transition-transform ${showAbstract ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-            </svg>
-            {showAbstract ? 'Hide abstract' : 'Abstract'}
-          </button>
-        )}
-
-        {showAbstract && article.abstract && (
-          <div className="mb-3 px-4 py-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl text-xs text-slate-600 dark:text-slate-300 leading-relaxed animate-fade-in border border-slate-100 dark:border-slate-700/50">
-            {article.abstract}
+            <button
+              type="button"
+              onClick={() => setShowAbstract(!showAbstract)}
+              aria-expanded={showAbstract}
+              className="mt-1 text-[0.72rem] text-indigo-500 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center gap-1 transition-colors"
+            >
+              <svg className={`w-3 h-3 transition-transform ${showAbstract ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+              </svg>
+              {showAbstract ? 'Show less' : 'Full abstract'}
+            </button>
           </div>
         )}
 

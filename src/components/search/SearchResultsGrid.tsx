@@ -157,6 +157,8 @@ export const SearchResultsGrid: React.FC<SearchResultsGridProps> = ({
         <div className="space-y-8">
           {LANE_ORDER.map((laneKey) => {
             const laneArticles = renderedResults.filter((article) => (article._evidenceLane || 'supporting') === laneKey);
+            // Empty lanes add noise without information — hide them entirely.
+            if (laneArticles.length === 0) return null;
             const laneMeta = searchPack?.lanes?.[laneKey];
             return (
               <section key={laneKey}>
@@ -164,18 +166,12 @@ export const SearchResultsGrid: React.FC<SearchResultsGridProps> = ({
                   {laneMeta?.label || laneKey.replace('_', ' ')}
                   <span className="ml-2 font-mono text-[11px] opacity-70">{laneArticles.length}</span>
                 </h2>
-                {laneArticles.length > 0 ? (
-                  <ArticleGrid
-                    articles={laneArticles}
-                    activeResultIndex={activeResultIndex}
-                    offset={renderedResults.indexOf(laneArticles[0])}
-                    {...cardProps}
-                  />
-                ) : (
-                  <p className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-[12px] text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-200">
-                    {laneMeta?.emptyState || 'No papers in this lane.'}
-                  </p>
-                )}
+                <ArticleGrid
+                  articles={laneArticles}
+                  activeResultIndex={activeResultIndex}
+                  offset={renderedResults.indexOf(laneArticles[0])}
+                  {...cardProps}
+                />
               </section>
             );
           })}

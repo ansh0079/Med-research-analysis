@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Article } from '@types';
-import { getArticleSourceBadgeInfo } from '@services/articleLinks';
 import {
   EVIDENCE_TYPE_LABEL,
   isLikelyPreprint,
@@ -27,7 +26,6 @@ export const ArticleCardBadgesRow: React.FC<ArticleCardBadgesRowProps> = ({
 }) => {
   const navigate = useNavigate();
   const impact = article._impact;
-  const sourceBadge = getArticleSourceBadgeInfo(article);
   const isPreprint = isLikelyPreprint(article);
   const predatoryFlag = isPotentialPredatoryJournal(article);
   const pubYear = parseInt((article.pubdate || '').slice(0, 4), 10);
@@ -56,10 +54,6 @@ export const ArticleCardBadgesRow: React.FC<ArticleCardBadgesRowProps> = ({
             {EVIDENCE_TYPE_LABEL[impact.evidenceType] ?? impact.evidenceType}
           </span>
         )}
-
-        <span className={`badge border ${sourceBadge.className}`} title={`Source: ${sourceBadge.label}`}>
-          {sourceBadge.label}
-        </span>
 
         {article._retraction?.isRetracted && (
           <span className="badge badge-retracted">Warning: Retracted</span>
