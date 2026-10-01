@@ -12,6 +12,7 @@ on:
     paths:
       - 'database/**'
       - 'scripts/verify-pg-migrations.js'
+      - 'package-lock.json'
       - '.github/workflows/pg-migrations.yml'
 
 permissions:
