@@ -6,7 +6,7 @@ const { assessGuidelineQuality } = require('../../server/services/guidelineQuali
 const { normalizeStoredDocument } = require('../../server/utils/importEvidenceQuality');
 const { isIssuingBodyValue } = require('../../server/utils/guidelineAttribution');
 const { isClinicalAbbreviation } = require('../../server/utils/clinicalAbbreviations');
-const { synonymExpansionsForToken } = require('../../server/utils/conditionQuery');
+const { synonymExpansionsForToken, textHasTerm } = require('../../server/utils/conditionQuery');
 const { sanitizePublicationYear } = require('../../server/utils/publicationYear');
 const { applyWritePolicy } = require('../../server/services/policy/writePolicyEngine');
 
@@ -48,12 +48,25 @@ const SCORE_STOP = new Set([
  * so the floor still keeps function words out.
  */
 function topicContentWords(topic) {
-    const tokens = String(topic || '').toLowerCase().match(/[a-z0-9]{2,}/g) || [];
-    const kept = tokens.filter((word) => {
+    const raw = String(topic || '').toLowerCase().match(/[a-z0-9]+/g) || [];
+    const kept = raw.filter((word, i) => {
         if (SCORE_STOP.has(word)) return false;
-        return word.length >= 4 || isClinicalAbbreviation(word);
+        if (word.length >= 4 || isClinicalAbbreviation(word)) return true;
+        // Serotype letters carry the whole meaning of a hepatitis query:
+        // "hepatitis b" vs "hepatitis c" are different diseases. The 2+ regex
+        // used to drop the letter, reducing both to ["hepatitis"] and letting
+        // alcoholic-hepatitis rows into a hepatitis B panel.
+        if (/^[a-e]$/.test(word) && raw[i - 1] === 'hepatitis') return true;
+        return false;
     });
     return [...new Set(kept)];
+}
+
+/** Short tokens are meaningless as substrings ("b" is inside "hbv"); match them whole. */
+function wordHitsHaystack(word, haystack) {
+    if (!haystack) return false;
+    if (word.length <= 2) return textHasTerm(haystack, word);
+    return haystack.includes(word);
 }
 
 /**
@@ -88,14 +101,38 @@ function guidelineTermScore(row, topicWords) {
     const attribution = `${row.topic || ''} ${row.normalized_topic || ''}`.toLowerCase();
     let hits = 0;
     for (const w of topicWords) {
-        if (text.includes(w) || expansionHitsText(w, text)) hits += 1;
-        else if (attribution.includes(w) || expansionHitsText(w, attribution)) hits += 0.5;
+        if (wordHitsHaystack(w, text) || expansionHitsText(w, text)) hits += 1;
+        else if (wordHitsHaystack(w, attribution) || expansionHitsText(w, attribution)) hits += 0.5;
     }
     return hits / topicWords.length;
 }
 
 function expansionHitsText(word, haystack) {
     return synonymExpansionsForToken(word).some((phrase) => haystack.includes(phrase));
+}
+
+/**
+ * Did each content word of the query contribute to this row at all -- in the
+ * recommendation text, a synonym of it, or the topic the row is filed under?
+ *
+ * "diagnosis and management of alcoholic hepatitis" returned twelve guidelines
+ * about hepatitis B, C, D and A on production (2026-10-01): every one matched
+ * the shared organ word "hepatitis", none contained anything about alcohol,
+ * and the score > 0 floor passed them at 0.5. A broad organ-system word must
+ * not carry a row on its own when the query also named what distinguishes the
+ * condition. So for multi-word topics every content word must contribute; a
+ * single-word topic keeps the score > 0 floor, because correctly filed
+ * recommendations often never restate their subject (the hepatorenal AGA rows).
+ * Rows filed exactly under the queried topic pass naturally, since their filing
+ * covers the condition words.
+ */
+function guidelineWordCoverage(row, topicWords) {
+    const text = String(row.recommendation_text || '').toLowerCase();
+    const attribution = `${row.topic || ''} ${row.normalized_topic || ''}`.toLowerCase();
+    return topicWords.map((w) => (
+        wordHitsHaystack(w, text) || expansionHitsText(w, text)
+        || wordHitsHaystack(w, attribution) || expansionHitsText(w, attribution)
+    ));
 }
 
 /**
@@ -708,10 +745,18 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20, includeRelated = tr
     // Embedding-refiled rows (migration 096) are the exception: they were filed under
     // this condition precisely because the text does NOT name it literally.
     const topicWords = topicContentWords(topic);
+    const requireFullCoverage = topicWords.length >= 2;
     const scored = rows
         .filter(isServableGuideline)
         .map(row => ({ row, score: guidelineTermScore(row, topicWords), year: row.source_year || 0 }))
-        .filter(({ row, score }) => topicWords.length === 0 || score > 0 || refiledIds.has(row.id));
+        .filter(({ row, score }) => {
+            if (topicWords.length === 0 || refiledIds.has(row.id)) return true;
+            if (score <= 0) return false;
+            // Multi-word topics: one shared organ word is not enough ("alcoholic
+            // hepatitis" must not serve hepatitis B guidance). See guidelineWordCoverage.
+            if (requireFullCoverage && guidelineWordCoverage(row, topicWords).some((hit) => !hit)) return false;
+            return true;
+        });
     scored.sort((a, b) => {
         const ka = rankKey(a);
         const kb = rankKey(b);

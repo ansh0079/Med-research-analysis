@@ -251,4 +251,68 @@ describe('getGuidelinesByTopic ranking', () => {
             expect(rows[0].sourceBody).toBe('WHO');
         } finally { sqlite.close(); }
     });
+
+    describe('multi-word queries require every content word to contribute', () => {
+        // Production, 2026-10-01: "diagnosis and management of alcoholic hepatitis"
+        // served twelve guidelines about hepatitis B, C, D and hepatitis-A vaccination.
+        const ALD_ROW = {
+            topic: 'Alcohol-associated liver disease', normalized_topic: 'alcohol-associated liver disease',
+            source_body: 'World journal of transplantation', source_year: 2025,
+            recommendation_text: 'Psychosocial domains should be assessed in acute alcoholic hepatitis (AH) transplant candidates.',
+        };
+        const HBV_ROW = {
+            topic: 'Hepatitis B: natural history, HBeAg, HBsAg, HBV DNA, antiviral indications, tenofovir',
+            normalized_topic: 'hepatitis b natural history hbeag hbsag hbv dna antiviral indications tenofovir',
+            source_body: 'AASLD ISDA', source_year: 2026,
+            recommendation_text: 'The AASLD ISDA Practice Guideline provides updated recommendations for the treatment of chronic hepatitis B (CHB).',
+        };
+        const HCV_ROW = {
+            topic: 'Hepatitis C: DAA therapy, pangenotypic regimens, SVR12, HCV cure, screening',
+            normalized_topic: 'hepatitis c daa therapy pangenotypic regimens svr12 hcv cure screening',
+            source_body: 'EASL', source_year: 2025,
+            recommendation_text: 'Accumulating data related to prevention, surveillance and treatment of chronic hepatitis B (CHB) provided the impetus for this updated guideline.',
+        };
+        const HEPA_ROW = {
+            topic: 'Hepa', normalized_topic: 'hepa',
+            source_body: 'ACIP', source_year: 2024,
+            recommendation_text: 'HepA vaccine should be administered to infants aged 6-11 months travelling to countries with endemic hepatitis A.',
+        };
+
+        it('does not serve viral-hepatitis guidance for alcoholic hepatitis', async () => {
+            const { db, sqlite, insert } = buildDb();
+            try {
+                insert(ALD_ROW); insert(HBV_ROW); insert(HCV_ROW); insert(HEPA_ROW);
+                const rows = await db.getGuidelinesByTopic('diagnosis and management of alcoholic hepatitis', { limit: 12 });
+                const bodies = rows.map((r) => r.sourceBody);
+                expect(bodies).toContain('World journal of transplantation');
+                expect(bodies).not.toContain('AASLD ISDA');
+                expect(bodies).not.toContain('EASL');
+                expect(bodies).not.toContain('ACIP');
+            } finally { sqlite.close(); }
+        });
+
+        it('keeps guidance worded "alcohol-associated" when the query says "alcoholic"', async () => {
+            const { db, sqlite, insert } = buildDb();
+            try {
+                // The corpus's own canonical wording: no literal "alcoholic" anywhere.
+                insert({
+                    topic: 'Alcohol-associated liver disease', normalized_topic: 'alcohol-associated liver disease',
+                    source_body: 'AASLD', source_year: 2024,
+                    recommendation_text: 'Corticosteroids are recommended for severe alcohol-associated hepatitis.',
+                });
+                const rows = await db.getGuidelinesByTopic('diagnosis and management of alcoholic hepatitis', { limit: 12 });
+                expect(rows.map((r) => r.sourceBody)).toContain('AASLD');
+            } finally { sqlite.close(); }
+        });
+
+        it('still answers the viral query when viral hepatitis is what was asked', async () => {
+            const { db, sqlite, insert } = buildDb();
+            try {
+                insert(ALD_ROW); insert(HBV_ROW);
+                const rows = await db.getGuidelinesByTopic('hepatitis b treatment', { limit: 12 });
+                expect(rows.map((r) => r.sourceBody)).toContain('AASLD ISDA');
+                expect(rows.map((r) => r.sourceBody)).not.toContain('World journal of transplantation');
+            } finally { sqlite.close(); }
+        });
+    });
 });
