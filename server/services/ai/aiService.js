@@ -114,7 +114,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         }
     }
 
-    async function executeProviderCall({ provider, model, prompt, usage, budget, allowBudgetSkip, fn: rawFn }) {
+    async function executeProviderCall({ provider, model, prompt, usage, budget, allowBudgetSkip, maxOutputTokens, fn: rawFn }) {
         // Every provider call reports back so selection can route around an
         // account that is out of credit or using a rejected key -- see
         // providerHealth. Wrapped here because this is the one place that knows
@@ -138,7 +138,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         // caller. Without it, public endpoints (/api/search reformulation, and
         // the AI routes while BETA_MODE admits anonymous sessions) had no upper
         // bound on spend at all.
-        await assertUnderDailyCap({ prompt, model });
+        await assertUnderDailyCap({ prompt, model, maxOutputTokens });
         const recordGlobalSpend = (response) => {
             void recordSpend({ prompt, response, model });
         };
@@ -370,6 +370,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
             usage,
             budget,
             allowBudgetSkip,
+            maxOutputTokens: rest.maxOutputTokens,
             fn: () => claudeBreaker.fire(prompt, model, rest),
         });
     }
@@ -389,6 +390,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
             usage,
             budget,
             allowBudgetSkip,
+            maxOutputTokens: rest.maxOutputTokens,
             fn: () => mistralBreaker.fire(prompt, model, rest),
         });
     }
@@ -401,6 +403,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
             usage,
             budget,
             allowBudgetSkip,
+            maxOutputTokens: rest.maxOutputTokens,
             fn: () => geminiBreaker.fire(prompt, model, rest),
         });
     }
@@ -451,7 +454,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         // Streaming bypasses executeProviderCall, so the daily ceiling has to be
         // enforced here too -- /api/ai/synthesize/stream is one of the endpoints
         // anonymous callers can reach.
-        await assertUnderDailyCap({ prompt, model });
+        await assertUnderDailyCap({ prompt, model, maxOutputTokens: providerOptions.maxOutputTokens });
 
         const generator = provider === 'claude'
             ? callClaudeStreamRaw(prompt, model, providerOptions)

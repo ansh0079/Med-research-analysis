@@ -90,4 +90,28 @@ describe('mcqValidationService provider routing', () => {
         const geminiCalls = callStructured.mock.calls.filter((call) => call[1] === 'gemini');
         expect(geminiCalls.length).toBe(0);
     });
+
+    test('Gemini validation and safety checks use Flash-Lite', async () => {
+        const callStructured = jest.fn().mockResolvedValue({ results: [{ mcqIndex: 1, valid: true, safe: true }] });
+        const service = createMcqValidationService({
+            ai: { callStructured },
+            db: {},
+            logger: { warn: jest.fn() },
+            PINNED_MODELS,
+            serverConfig: { keys: { gemini: 'g' } },
+        });
+
+        await service.validateBatch({
+            topic: 'test topic',
+            questions: buildQuestions(1),
+            provider: 'gemini',
+            model: PINNED_MODELS.gemini,
+        });
+
+        expect(callStructured).toHaveBeenCalled();
+        for (const call of callStructured.mock.calls) {
+            expect(call[1]).toBe('gemini');
+            expect(call[2]).toBe('gemini-2.5-flash-lite');
+        }
+    });
 });

@@ -5,15 +5,20 @@
 
 const { PINNED_MODELS } = require('../services/aiService');
 const { filterAvailableProviders } = require('../services/ai/providerHealth');
+const { getOperation } = require('../services/ai/aiOperations');
+
+const GEMINI_LITE_MODEL = PINNED_MODELS.geminiLite || PINNED_MODELS.gemini;
 
 const ALLOWED_MODELS = {
     claude: new Set([PINNED_MODELS.claude]),
-    gemini: new Set([PINNED_MODELS.gemini, PINNED_MODELS.geminiQuality]),
+    gemini: new Set([PINNED_MODELS.gemini, GEMINI_LITE_MODEL, PINNED_MODELS.geminiQuality].filter(Boolean)),
     mistral: new Set([PINNED_MODELS.mistral]),
 };
 
-function resolvePinnedModel(provider, requestedModel) {
-    const fallback = PINNED_MODELS[provider] || null;
+function resolvePinnedModel(provider, requestedModel, operation = null) {
+    const fallback = provider === 'gemini' && getOperation(operation)?.modelTier === 'lite'
+        ? GEMINI_LITE_MODEL
+        : PINNED_MODELS[provider] || null;
     if (!requestedModel) return fallback;
     return ALLOWED_MODELS[provider]?.has(requestedModel) ? requestedModel : fallback;
 }
@@ -53,7 +58,7 @@ function resolveProvider(options = {}, serverConfig = {}) {
         return { provider: null, model: null };
     }
 
-    const selectedModel = resolvePinnedModel(selectedProvider, options.model);
+    const selectedModel = resolvePinnedModel(selectedProvider, options.model, options.operation);
     return { provider: selectedProvider, model: selectedModel };
 }
 
@@ -68,9 +73,9 @@ function getProviderCandidates(options = {}, serverConfig = {}) {
     // Cooling-down providers move to the back rather than out: an explicit
     // fallback loop should still try them if the healthy ones fail.
     const all = [
-        keys.gemini ? { provider: 'gemini', model: resolvePinnedModel('gemini', options.model) } : null,
-        keys.anthropic ? { provider: 'claude', model: resolvePinnedModel('claude', options.model) } : null,
-        keys.mistral ? { provider: 'mistral', model: resolvePinnedModel('mistral', options.model) } : null,
+        keys.gemini ? { provider: 'gemini', model: resolvePinnedModel('gemini', options.model, options.operation) } : null,
+        keys.anthropic ? { provider: 'claude', model: resolvePinnedModel('claude', options.model, options.operation) } : null,
+        keys.mistral ? { provider: 'mistral', model: resolvePinnedModel('mistral', options.model, options.operation) } : null,
     ].filter(Boolean);
     const healthy = filterAvailableProviders(all);
     const healthySet = new Set(healthy);

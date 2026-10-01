@@ -21,6 +21,8 @@
  * operation that is failing.
  *
  * kind: 'interactive' - a person is waiting; 'background' - a job is.
+ * modelTier: 'lite' - safe extraction/classification work routed to Flash-Lite.
+ * Operations without a tier keep the standard clinical generation model.
  */
 
 const LONG_JSON = 8192; // multi-section knowledge/synthesis objects; measured 9-20k chars
@@ -28,12 +30,12 @@ const JSON_OBJECT = 4096; // one structured object or a scored batch
 
 const OPERATIONS = Object.freeze({
     // --- search ---
-    pico_extraction: { kind: 'interactive', maxOutputTokens: 300, timeoutMs: 8000 },
-    query_reformulation: { kind: 'interactive', maxOutputTokens: 200, timeoutMs: 8000 },
-    intent_classification: { kind: 'interactive', maxOutputTokens: 20, timeoutMs: 4000 },
+    pico_extraction: { kind: 'interactive', modelTier: 'lite', maxOutputTokens: 300, timeoutMs: 8000 },
+    query_reformulation: { kind: 'interactive', modelTier: 'lite', maxOutputTokens: 200, timeoutMs: 8000 },
+    intent_classification: { kind: 'interactive', modelTier: 'lite', maxOutputTokens: 20, timeoutMs: 4000 },
     // measured ~6k chars for 30 articles; 12s deadline failed at the tail, see articleReranker
     pico_rerank: { kind: 'interactive', maxOutputTokens: JSON_OBJECT, timeoutMs: 15000 },
-    case_pico_extraction: { kind: 'interactive', maxOutputTokens: 512 },
+    case_pico_extraction: { kind: 'interactive', modelTier: 'lite', maxOutputTokens: 512 },
 
     // --- synopsis / synthesis ---
     synopsis: { kind: 'interactive', maxOutputTokens: 2200 }, // measured 1.6-7.2k chars
@@ -48,19 +50,19 @@ const OPERATIONS = Object.freeze({
     evidence_support_judge: { kind: 'background', maxOutputTokens: 512 },
 
     // --- article tools ---
-    article_analysis: { kind: 'interactive', maxOutputTokens: JSON_OBJECT },
-    plain_language_explain: { kind: 'interactive', maxOutputTokens: 2048 },
-    article_pico: { kind: 'interactive', maxOutputTokens: LONG_JSON },
-    article_consort: { kind: 'interactive', maxOutputTokens: JSON_OBJECT },
-    article_compare: { kind: 'interactive', maxOutputTokens: JSON_OBJECT },
+    article_analysis: { kind: 'interactive', maxOutputTokens: 1600 },
+    plain_language_explain: { kind: 'interactive', maxOutputTokens: 700 },
+    article_pico: { kind: 'interactive', modelTier: 'lite', maxOutputTokens: 1000 },
+    article_consort: { kind: 'interactive', modelTier: 'lite', maxOutputTokens: 2200 },
+    article_compare: { kind: 'interactive', maxOutputTokens: 2200 },
     journal_club: { kind: 'interactive', maxOutputTokens: LONG_JSON },
     review_assistant: { kind: 'interactive', maxOutputTokens: JSON_OBJECT },
 
     // --- learning ---
     quiz: { kind: 'interactive', maxOutputTokens: JSON_OBJECT },
     cold_start_mcq: { kind: 'background', maxOutputTokens: 3000 },
-    quiz_validation: { kind: 'background', maxOutputTokens: 1600 },
-    quiz_safety_classifier: { kind: 'background', maxOutputTokens: 1600 },
+    quiz_validation: { kind: 'background', modelTier: 'lite', maxOutputTokens: 1600 },
+    quiz_safety_classifier: { kind: 'background', modelTier: 'lite', maxOutputTokens: 1600 },
     case_generation: { kind: 'interactive', maxOutputTokens: 3500 },
     case_to_evidence: { kind: 'interactive', maxOutputTokens: 3000 },
     reflection_draft: { kind: 'interactive', maxOutputTokens: 1500 },
@@ -70,19 +72,19 @@ const OPERATIONS = Object.freeze({
     topic_evolution: { kind: 'background', maxOutputTokens: LONG_JSON, timeoutMs: 120000 },
     seminal_knowledge_extraction: { kind: 'interactive', maxOutputTokens: LONG_JSON, timeoutMs: 120000 },
     community_seminal_refinement: { kind: 'background', maxOutputTokens: LONG_JSON, timeoutMs: 120000 },
-    flagship_enrich_claims: { kind: 'background', maxOutputTokens: 800 },
-    flagship_enrich_recommendations: { kind: 'background', maxOutputTokens: 600 },
+    flagship_enrich_claims: { kind: 'background', modelTier: 'lite', maxOutputTokens: 800 },
+    flagship_enrich_recommendations: { kind: 'background', modelTier: 'lite', maxOutputTokens: 600 },
     flagship_enrich_mcq: { kind: 'background', maxOutputTokens: 1200 },
     flagship_knowledge_script: { kind: 'background', maxOutputTokens: LONG_JSON, timeoutMs: 120000 },
-    knowledge_drift_note: { kind: 'background', maxOutputTokens: 400 },
+    knowledge_drift_note: { kind: 'background', modelTier: 'lite', maxOutputTokens: 400 },
 
     // --- agent ---
     agent_turn: { kind: 'interactive', maxOutputTokens: JSON_OBJECT },
     agent_claim_extraction: { kind: 'interactive', maxOutputTokens: 600, timeoutMs: 10000 },
-    agent_history_summary: { kind: 'interactive', maxOutputTokens: 300, timeoutMs: 6000 },
-    agent_memory_summary: { kind: 'background', maxOutputTokens: 320, timeoutMs: 8000 },
-    agent_memory_extract: { kind: 'background', maxOutputTokens: 280, timeoutMs: 6000 },
-    agent_memory_consolidate: { kind: 'background', maxOutputTokens: 420, timeoutMs: 9000 },
+    agent_history_summary: { kind: 'interactive', modelTier: 'lite', maxOutputTokens: 300, timeoutMs: 6000 },
+    agent_memory_summary: { kind: 'background', modelTier: 'lite', maxOutputTokens: 320, timeoutMs: 8000 },
+    agent_memory_extract: { kind: 'background', modelTier: 'lite', maxOutputTokens: 280, timeoutMs: 6000 },
+    agent_memory_consolidate: { kind: 'background', modelTier: 'lite', maxOutputTokens: 420, timeoutMs: 9000 },
 });
 
 function getOperation(name) {

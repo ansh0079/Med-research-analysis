@@ -53,7 +53,7 @@ function collectKnownUidSet({ userRow, topicKnowledge }) {
 }
 
 async function buildWhatsNewSummary({ serverConfig, fetchImpl, displayTopic, article }) {
-    const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
+    const { provider, model } = resolveProvider({ provider: 'auto', operation: 'knowledge_drift_note' }, serverConfig);
     if (!provider) {
         return `New evidence surfaced for "${displayTopic}": ${article.title || 'Recent study'}. Open the topic to review context and seminal papers.`;
     }

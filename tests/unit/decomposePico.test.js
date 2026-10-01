@@ -32,6 +32,7 @@ describe('decomposePico provider routing', () => {
 
         expect(result).not.toBeNull();
         expect(callStructured.mock.calls[0][1]).toBe('gemini');
+        expect(callStructured.mock.calls[0][2]).toBe('gemini-2.5-flash-lite');
     });
 
     test('returns null when no provider keys are configured at all', async () => {

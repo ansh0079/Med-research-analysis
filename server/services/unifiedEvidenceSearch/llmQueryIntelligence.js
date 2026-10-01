@@ -20,7 +20,7 @@ function reformulationCacheKey(query, specificity) {
 async function reformulateQueryForPubMed(query, specificity, serverConfig, fetchImpl, cache = null, telemetry = null) {
     const { getSharedAiService } = require('../aiService');
     const { resolveProvider } = require('../../utils/aiProvider');
-    const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
+    const { provider, model } = resolveProvider({ provider: 'auto', operation: 'query_reformulation' }, serverConfig);
     if (!provider) return null;
 
     const cacheKey = reformulationCacheKey(query, specificity);
@@ -63,7 +63,7 @@ Example output: ("Metformin"[MeSH Terms]) AND ("Polycystic Ovary Syndrome"[MeSH 
         const cleaned = String(raw || '').trim().replace(/^```[\s\S]*?\n/, '').replace(/\n```$/, '').trim();
         if (cleaned.length < 5 || cleaned.length > 400) return null;
         if (cache && typeof cache.set === 'function') {
-            await Promise.resolve(cache.set(cacheKey, cleaned, 86400)).catch((err) => {
+            await Promise.resolve(cache.set(cacheKey, cleaned, 30 * 86400)).catch((err) => {
                 logger.debug({ err, cacheKey }, 'query reformulation cache write failed; will re-ask the model');
             });
         }
@@ -109,7 +109,7 @@ function picoTimeoutMs(env = process.env) {
 async function decomposePico(query, serverConfig, fetchImpl, cache = null) {
     const { getSharedAiService } = require('../aiService');
     const { resolveProvider } = require('../../utils/aiProvider');
-    const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
+    const { provider, model } = resolveProvider({ provider: 'auto', operation: 'pico_extraction' }, serverConfig);
     if (!provider) return null;
 
     const cacheKey = picoCacheKey(query);
@@ -142,7 +142,7 @@ If a component is unclear or absent, set it to an empty string. Do not include a
         });
         if (parsed && typeof parsed === 'object' && parsed.confidence != null) {
             if (cache && typeof cache.set === 'function') {
-                await Promise.resolve(cache.set(cacheKey, parsed, 86400)).catch((err) => {
+                await Promise.resolve(cache.set(cacheKey, parsed, 30 * 86400)).catch((err) => {
                     logger.debug({ err, cacheKey }, 'intent classification cache write failed; will re-ask the model');
                 });
             }

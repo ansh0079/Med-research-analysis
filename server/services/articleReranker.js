@@ -115,7 +115,7 @@ async function extractPicoProfile(caseText, { ai, cache, serverConfig, logWarn }
     }
 
     const prompt = buildPicoExtractionPrompt(caseText);
-    const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
+    const { provider, model } = resolveProvider({ provider: 'auto', operation: 'case_pico_extraction' }, serverConfig);
 
     if (!provider || !ai) {
         logWarn?.({ provider }, 'No AI provider available for PICO extraction; returning empty profile');
@@ -346,7 +346,7 @@ async function rerankArticlesByPico(articles, picoProfile, { ai, serverConfig, l
     }
 
     const prompt = buildBatchScoringPrompt(picoProfile, safeArticles);
-    const { provider, model } = resolveProvider({ provider: 'auto' }, serverConfig);
+    const { provider, model } = resolveProvider({ provider: 'auto', operation: 'pico_rerank' }, serverConfig);
 
     let scores = null;
     const started = Date.now();

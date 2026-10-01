@@ -2,6 +2,7 @@
 
 const { filterAvailableProviders } = require('../ai/providerHealth');
 const { extractJsonObject } = require('../../utils/parseJson');
+const { resolvePinnedModel } = require('../../utils/aiProvider');
 
 function isCrossCheckEnabled() {
     return String(process.env.MCQ_VALIDATION_CROSS_CHECK || 'true').toLowerCase() !== 'false';
@@ -117,7 +118,9 @@ function createMcqValidationService({ ai, db, logger, PINNED_MODELS, serverConfi
         // provider has no pinned model — that would send a Gemini model string to a
         // Claude/Mistral endpoint and silently misroute the request. Callers must
         // pick a different provider via alternateProvider() instead.
-        const resolvedModel = model || PINNED_MODELS[provider];
+        const resolvedModel = provider === 'gemini'
+            ? resolvePinnedModel(provider, null, operation)
+            : (model || PINNED_MODELS[provider]);
         if (!resolvedModel) {
             throw new Error(`No pinned model configured for provider "${provider}" and no explicit model supplied`);
         }

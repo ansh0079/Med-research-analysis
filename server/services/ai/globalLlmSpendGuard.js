@@ -27,7 +27,9 @@
 const logger = require('../../config/logger');
 const { estimateTokensFromChars, estimateCostUsd } = require('../llmUsageService');
 
-const DEFAULT_DAILY_CAP_USD = 25;
+// A missing environment override must still be safe for a public beta. At the
+// previous $25/day default, the guard still allowed roughly $750/month.
+const DEFAULT_DAILY_CAP_USD = 10;
 
 /** In-process fallback, used only when Redis is unreachable. */
 const localSpend = { day: null, usd: 0 };

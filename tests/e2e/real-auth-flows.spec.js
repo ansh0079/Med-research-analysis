@@ -109,6 +109,10 @@ test.describe('Real auth flows', () => {
 
 test.describe('Real LLM suite @real-llm', () => {
   test('generates a real quiz with live AI', async ({ page }) => {
+    test.skip(
+      String(process.env.ALLOW_PAID_LLM_TESTS || '').toLowerCase() !== 'true',
+      'Skipping paid LLM test: set ALLOW_PAID_LLM_TESTS=true to opt in'
+    );
     test.skip(!process.env.GEMINI_API_KEY && !process.env.MISTRAL_API_KEY, 'Skipping: no LLM API key configured');
     test.setTimeout(120000);
 

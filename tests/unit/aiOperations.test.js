@@ -127,6 +127,15 @@ describe('withOperationDefaults', () => {
         expect(out).toMatchObject({ maxOutputTokens: 100, timeoutMs: 5 });
     });
 
+    test('only low-risk operations opt into the lite model tier', () => {
+        expect(getOperation('query_reformulation').modelTier).toBe('lite');
+        expect(getOperation('article_pico').modelTier).toBe('lite');
+        expect(getOperation('synthesis').modelTier).toBeUndefined();
+        expect(getOperation('synopsis').modelTier).toBeUndefined();
+        expect(getOperation('quiz').modelTier).toBeUndefined();
+        expect(getOperation('case_generation').modelTier).toBeUndefined();
+    });
+
     test('an unregistered call still runs, unchanged, and is reported once', () => {
         const logger = { warn: jest.fn() };
         const opts = { temperature: 0.1, usage: { operation: 'not_a_real_op_xyz' } };

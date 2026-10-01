@@ -6,6 +6,14 @@ const { buildAnalysisPrompt } = require('../../prompts');
 const { getProviderCandidates } = require('../../utils/aiProvider');
 const { recordProviderFailure, recordProviderSuccess } = require('../../services/ai/providerHealth');
 const { setupSSE, sendSSE } = require('../../utils/sse');
+const { getPromptVersion } = require('../../prompts/promptVersions');
+
+const ANALYSIS_CACHE_TTL_SECONDS = 30 * 86400;
+const ANALYSIS_CACHE_TTL_HOURS = 30 * 24;
+
+function versionedAnalysisType(analysisType) {
+    return `${analysisType}:pv:${getPromptVersion('analysis')}`;
+}
 
 /**
  * Call ai.callText across every configured provider in order, stopping at the
@@ -106,14 +114,15 @@ function registerAnalysisRoutes(app, {
             let selectedModel = candidates[0].model;
 
             const textHash = crypto.createHash('md5').update(text).digest('hex');
+            const cacheType = versionedAnalysisType(analysisType);
             try {
-                const cached = await db.getCachedAnalysis(textHash, analysisType, selectedModel);
+                const cached = await db.getCachedAnalysis(textHash, cacheType, selectedModel);
                 if (cached) {
                     req.log.debug({ hash: textHash.substring(0, 8) }, 'Analysis DB cache hit');
                     return res.json({ ...cached, cached: true });
                 }
 
-                const analysisCacheKey = `analysis:${textHash}:${analysisType}:${selectedModel}`;
+                const analysisCacheKey = `analysis:${textHash}:${cacheType}:${selectedModel}`;
                 const memCached = await cache.getAsync(analysisCacheKey);
                 if (memCached) {
                     return res.json({ result: memCached.result, cached: true });
@@ -133,8 +142,8 @@ function registerAnalysisRoutes(app, {
                     disclaimer: AI_DISCLAIMER,
                 };
 
-                await cache.setAsync(analysisCacheKey, result, 3600);
-                await db.cacheAnalysis(textHash, analysisType, usedModel, result, 0, 0);
+                await cache.setAsync(analysisCacheKey, result, ANALYSIS_CACHE_TTL_SECONDS);
+                await db.cacheAnalysis(textHash, cacheType, usedModel, result, 0, 0, ANALYSIS_CACHE_TTL_HOURS);
                 await db.logEvent('analyze', req.sessionId, { type: analysisType, model: usedModel, provider: usedProvider });
 
                 res.json(result);
@@ -168,9 +177,10 @@ function registerAnalysisRoutes(app, {
             let selectedModel = candidates[0].model;
 
             const textHash = crypto.createHash('md5').update(text).digest('hex');
+            const cacheType = versionedAnalysisType(analysisType);
 
             try {
-                const cached = await db.getCachedAnalysis(textHash, analysisType, selectedModel);
+                const cached = await db.getCachedAnalysis(textHash, cacheType, selectedModel);
                 if (cached) {
                     setupSSE(res);
                     sendSSE(res, 'result', { ...cached, cached: true });
@@ -178,7 +188,7 @@ function registerAnalysisRoutes(app, {
                     return res.end();
                 }
 
-                const streamCacheKey = `analysis:${textHash}:${analysisType}:${selectedModel}`;
+                const streamCacheKey = `analysis:${textHash}:${cacheType}:${selectedModel}`;
                 const memCached = await cache.getAsync(streamCacheKey);
                 if (memCached) {
                     setupSSE(res);
@@ -210,8 +220,8 @@ function registerAnalysisRoutes(app, {
                     disclaimer: AI_DISCLAIMER,
                 };
 
-                await cache.setAsync(streamCacheKey, result, 3600);
-                await db.cacheAnalysis(textHash, analysisType, usedModel, result, 0, 0);
+                await cache.setAsync(streamCacheKey, result, ANALYSIS_CACHE_TTL_SECONDS);
+                await db.cacheAnalysis(textHash, cacheType, usedModel, result, 0, 0, ANALYSIS_CACHE_TTL_HOURS);
                 await db.logEvent('analyze', req.sessionId, { type: analysisType, model: usedModel, provider: usedProvider });
 
                 sendSSE(res, 'result', result);
@@ -249,20 +259,21 @@ function registerAnalysisRoutes(app, {
 
             const textHash = crypto.createHash('md5').update(text).digest('hex');
             const analysisType = 'layperson';
+            const cacheType = versionedAnalysisType(analysisType);
 
             try {
-                const cached = await db.getCachedAnalysis(textHash, analysisType, candidates[0].model);
+                const cached = await db.getCachedAnalysis(textHash, cacheType, candidates[0].model);
                 if (cached) {
                     return res.json({ ...cached, cached: true });
                 }
 
-                const explainCacheKey = `analysis:${textHash}:${analysisType}:${candidates[0].model}`;
+                const explainCacheKey = `analysis:${textHash}:${cacheType}:${candidates[0].model}`;
                 const memCached = await cache.getAsync(explainCacheKey);
                 if (memCached) {
                     return res.json({ result: memCached.result, cached: true });
                 }
 
-                const prompt = `Explain this medical research in simple terms that a patient could understand:\n\n${text}`;
+                const prompt = `Explain this medical research in simple terms that a patient could understand. Use no more than 250 words. Keep the main finding, uncertainty, and practical meaning; omit repetition.\n\n${text}`;
                 const { text: generatedText, provider: usedProvider, model: usedModel } =
                     await callTextWithFallback(ai, candidates, prompt, { temperature: TEMPERATURE.explain, usage: { operation: 'plain_language_explain' } }, { logger: req.log });
 
@@ -275,8 +286,8 @@ function registerAnalysisRoutes(app, {
                     disclaimer: AI_DISCLAIMER,
                 };
 
-                await cache.setAsync(explainCacheKey, result, 3600);
-                await db.cacheAnalysis(textHash, analysisType, usedModel, result, 0, 0);
+                await cache.setAsync(explainCacheKey, result, ANALYSIS_CACHE_TTL_SECONDS);
+                await db.cacheAnalysis(textHash, cacheType, usedModel, result, 0, 0, ANALYSIS_CACHE_TTL_HOURS);
                 await db.logEvent('explain', req.sessionId, { provider: usedProvider, model: usedModel });
 
                 res.json(result);

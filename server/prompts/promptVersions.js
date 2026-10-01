@@ -11,6 +11,7 @@ const PROMPT_FILES = {
     guideline_merge: 'guidelineMerge.js',
     knowledge: 'knowledge.js',
     analysis: 'analysis.js',
+    article_tools: '../routes/ai/articleTools.js',
     case: 'case.js',
     teaching: 'teaching.js',
     pubmed_reformulation: '../services/unifiedEvidenceSearch.js',

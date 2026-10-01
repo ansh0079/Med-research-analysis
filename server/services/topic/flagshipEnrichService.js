@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const logger = require('../../config/logger');
 const { getSharedAiService, PINNED_MODELS } = require('../aiService');
-const { resolveProvider } = require('../../utils/aiProvider');
+const { resolveProvider, resolvePinnedModel } = require('../../utils/aiProvider');
 const { safeFetch } = require('../../utils/fetch');
 
 // ── Flagship config cache (5-min TTL) ────────────────────────────────────────
@@ -264,6 +264,10 @@ async function runFlagshipEnrichForTopic({ db, topic, flagship, serverConfig, fe
 
     if (!provider) return { status: 'skipped', reason: 'no_ai_provider', topicName };
 
+    const claimModel = resolvePinnedModel(provider, null, 'flagship_enrich_claims') || model;
+    const recommendationModel = resolvePinnedModel(provider, null, 'flagship_enrich_recommendations') || model;
+    const mcqModel = resolvePinnedModel(provider, null, 'flagship_enrich_mcq') || model;
+
     let paperTOsCreated = 0;
     let totalClaimsWritten = 0;
 
@@ -286,7 +290,7 @@ async function runFlagshipEnrichForTopic({ db, topic, flagship, serverConfig, fe
         if (!papers.length) continue;
         const paper = papers[0];
 
-        const claims = await extractClaimsFromPaper(ai, provider, model, paper, topicName);
+        const claims = await extractClaimsFromPaper(ai, provider, claimModel, paper, topicName);
         logger.info({ pmid, topicName, claimCount: claims.length }, 'flagship_enrich: paper claims extracted');
 
         // upsertTeachingObject automatically persists claimAnchors → teaching_object_claims
@@ -308,7 +312,7 @@ async function runFlagshipEnrichForTopic({ db, topic, flagship, serverConfig, fe
                 generationSource: curatedPmids.length ? 'flagship_enrich_job' : 'auto_discovery',
             },
             provider,
-            model,
+            model: claimModel,
             confidence: curatedPmids.length ? 0.85 : 0.70,
         });
         paperTOsCreated++;
@@ -328,7 +332,7 @@ async function runFlagshipEnrichForTopic({ db, topic, flagship, serverConfig, fe
 
         if (guidelinePmids.length) {
             const gPapers = await fetchAbstracts(guidelinePmids.slice(0, 5), f).catch(() => []);
-            const recs = await extractGuidelineRecommendations(ai, provider, model, gPapers, topicName);
+            const recs = await extractGuidelineRecommendations(ai, provider, recommendationModel, gPapers, topicName);
             for (const gp of gPapers.slice(0, 6)) {
                 const gpRecs = recs.filter((r) =>
                     !r.source || r.source.includes(gp.pmid) || gp.title.toLowerCase().includes((r.source || '').toLowerCase().slice(0, 20))
@@ -351,7 +355,7 @@ async function runFlagshipEnrichForTopic({ db, topic, flagship, serverConfig, fe
             guidelines = await db.getGuidelinesByTopic(topicName, { limit: 10 }).catch(() => []);
         }
 
-        const mcqs = await generateGuidelineMCQs(ai, provider, model, topicName, guidelines);
+        const mcqs = await generateGuidelineMCQs(ai, provider, mcqModel, topicName, guidelines);
         if (mcqs.length) {
             await db.upsertTeachingObject({
                 objectKey: guidelineObjectKey,
@@ -366,7 +370,7 @@ async function runFlagshipEnrichForTopic({ db, topic, flagship, serverConfig, fe
                     generationSource: 'flagship_enrich_job',
                 },
                 provider,
-                model,
+                model: mcqModel,
                 confidence: 0.80,
             });
         }

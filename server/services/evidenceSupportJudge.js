@@ -65,7 +65,7 @@ function parseVerdict(raw) {
  *   must not collapse into the same value.
  */
 async function judgeClaim({ claimText, evidenceQuote }, { serverConfig = {}, fetchImpl } = {}) {
-    const candidates = getProviderCandidates({}, serverConfig);
+    const candidates = getProviderCandidates({ operation: 'evidence_support_judge' }, serverConfig);
     if (!candidates.length) return null;
 
     const ai = getSharedAiService({ serverConfig, fetchImpl });

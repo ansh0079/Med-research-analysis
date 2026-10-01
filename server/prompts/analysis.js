@@ -5,22 +5,22 @@ function buildAnalysisPrompt(text, type) {
         : 'This is an article abstract.';
 
     const prompts = {
-        quick: `Provide a brief summary of this medical research in 2-3 sentences. ${fullTextContext}\n\nCONTENT:\n${text}`,
+        quick: `Provide a brief summary of this medical research in 2-3 sentences and no more than 100 words. ${fullTextContext}\n\nCONTENT:\n${text}`,
 
         comprehensive: `Analyze this medical research comprehensively. ${fullTextContext}
-Structure your response with these sections:
-1) EXECUTIVE SUMMARY
-2) DETAILED METHODOLOGY (assess randomization, blinding, and sample size)
-3) KEY FINDINGS (include specific p-values or confidence intervals if available)
-4) CLINICAL IMPLICATIONS (how should a doctor change their practice based on this?)
-5) STUDY LIMITATIONS
+Use no more than 500 words total. Avoid repeating a finding across sections. Structure your response with these sections:
+1) EXECUTIVE SUMMARY (maximum 80 words)
+2) DETAILED METHODOLOGY (maximum 120 words; assess randomization, blinding, and sample size)
+3) KEY FINDINGS (maximum 120 words; include specific p-values or confidence intervals if available)
+4) CLINICAL IMPLICATIONS (maximum 100 words; state whether practice should change)
+5) STUDY LIMITATIONS (maximum 80 words)
 
 CONTENT:\n${text}`,
 
-        critical: `Perform a rigorous critical appraisal. ${fullTextContext} Evaluate: 1) Study quality, 2) Potential biases (selection, performance, detection), 3) Evidence strength using GRADE criteria if possible.\n\nCONTENT:\n${text}`,
-        biomedical: `Extract biomedical entities from this text (drugs, diseases, genes, proteins) and explain their physiological relationships based on the findings. ${fullTextContext}\n\nCONTENT:\n${text}`,
-        layperson: `Explain this medical research in simple terms that a patient could understand. Avoid jargon and use analogies where helpful. ${fullTextContext}\n\nCONTENT:\n${text}`,
-        methodology: `Critically review the study methodology. ${fullTextContext} Address design, power, confounding, and whether conclusions follow from the data.\n\nCONTENT:\n${text}`,
+        critical: `Perform a rigorous critical appraisal in no more than 350 words. ${fullTextContext} Evaluate: 1) Study quality, 2) Potential biases (selection, performance, detection), 3) Evidence strength using GRADE criteria if possible. Avoid repetition.\n\nCONTENT:\n${text}`,
+        biomedical: `In no more than 350 words, extract the important biomedical entities from this text (drugs, diseases, genes, proteins) and explain only the physiological relationships supported by the findings. ${fullTextContext}\n\nCONTENT:\n${text}`,
+        layperson: `Explain this medical research in simple terms that a patient could understand, in no more than 250 words. Avoid jargon, repetition, and unnecessary background. ${fullTextContext}\n\nCONTENT:\n${text}`,
+        methodology: `Critically review the study methodology in no more than 350 words. ${fullTextContext} Address design, power, confounding, and whether conclusions follow from the data. Avoid repetition.\n\nCONTENT:\n${text}`,
     };
     return prompts[type] || prompts.comprehensive;
 }

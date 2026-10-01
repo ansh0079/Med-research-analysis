@@ -1,7 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
-const { TEMPERATURE, MAX_OUTPUT_TOKENS } = require('../../services/aiService');
+const { TEMPERATURE } = require('../../services/aiService');
 const { buildPicoExtractionPrompt } = require('../../prompts');
 const { resolveProvider } = require('../../utils/aiProvider');
 const { getPromptVersion } = require('../../prompts/promptVersions');
@@ -52,7 +52,7 @@ Return ONLY valid JSON:
   "overallAdherence": "high" | "moderate" | "low",
   "overallSummary": "1-2 sentence assessment of overall CONSORT adherence",
   "domains": {
-    "title_abstract":       {"adherence": "adequate|partial|not_reported", "rationale": "..."},
+    "title_abstract":       {"adherence": "adequate|partial|not_reported", "rationale": "one sentence, maximum 25 words"},
     "eligibility_criteria": {"adherence": "adequate|partial|not_reported", "rationale": "..."},
     "interventions":        {"adherence": "adequate|partial|not_reported", "rationale": "..."},
     "outcomes":             {"adherence": "adequate|partial|not_reported", "rationale": "..."},
@@ -63,7 +63,9 @@ Return ONLY valid JSON:
     "harms":                {"adherence": "adequate|partial|not_reported", "rationale": "..."},
     "trial_registration":   {"adherence": "adequate|partial|not_reported", "rationale": "..."}
   }
-}`;
+}
+
+Keep every domain rationale to one sentence and at most 25 words. Do not repeat the abstract.`;
 }
 
 function buildComparePrompt(articleA, articleB, topic) {
@@ -80,7 +82,7 @@ ${summarise(articleA)}
 STUDY B:
 ${summarise(articleB)}
 
-Compare these two studies across every dimension below. Be precise and clinically useful.
+Compare these two studies across every dimension below. Be precise and clinically useful. Keep every narrative field to one sentence and the whole response under 700 words.
 
 Return ONLY valid JSON:
 {
@@ -153,7 +155,7 @@ function registerArticleToolRoutes(app, {
                 return res.status(400).json({ error: 'article with title is required' });
             }
 
-            const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider, model }, serverConfig);
+            const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider, model, operation: 'article_pico' }, serverConfig);
             if (!selectedProvider) {
                 return res.status(503).json({ error: 'No AI service configured' });
             }
@@ -168,7 +170,7 @@ function registerArticleToolRoutes(app, {
                 const prompt = buildPicoExtractionPrompt(article);
                 let extraction = await ai.callStructured(prompt, selectedProvider, selectedModel, {
                     temperature: TEMPERATURE.synthesis,
-                    maxOutputTokens: MAX_OUTPUT_TOKENS.synthesis,
+                    maxOutputTokens: 1000,
                     usage: { operation: 'article_pico' },
                 });
                 if (!extraction || typeof extraction !== 'object') {
@@ -182,7 +184,7 @@ function registerArticleToolRoutes(app, {
                 extraction = validated.data || validated.degraded;
 
                 const result = { extraction, articleId: id, cached: false };
-                await cache.setAsync(cacheKey, result, 7200);
+                await cache.setAsync(cacheKey, result, 30 * 86400);
                 await db.logEvent('pico_extract', req.sessionId, { articleId: id, provider: selectedProvider });
 
                 res.json(result);
@@ -202,13 +204,13 @@ function registerArticleToolRoutes(app, {
                 return res.status(400).json({ error: 'article with title is required' });
             }
 
-            const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider, model }, serverConfig);
+            const { provider: selectedProvider, model: selectedModel } = resolveProvider({ provider, model, operation: 'article_consort' }, serverConfig);
             if (!selectedProvider) {
                 return res.status(503).json({ error: 'No AI service configured' });
             }
 
             const id = articleId(article);
-            const cacheKey = `consort:${id}:${selectedModel}`;
+            const cacheKey = `consort:${id}:${selectedModel}:pv:${getPromptVersion('article_tools')}`;
 
             try {
                 const memCached = await cache.getAsync(cacheKey);
@@ -248,7 +250,7 @@ function registerArticleToolRoutes(app, {
                 };
 
                 const result = { consort, articleId: id, provider: selectedProvider, model: selectedModel };
-                await cache.setAsync(cacheKey, result, 7200);
+                await cache.setAsync(cacheKey, result, 30 * 86400);
                 await db.logEvent('consort_assessment', req.sessionId, { articleId: id, provider: selectedProvider });
                 res.json(result);
             } catch (error) {
@@ -274,7 +276,8 @@ function registerArticleToolRoutes(app, {
 
             const idA = articleA.uid || articleA.pmid || crypto.createHash('md5').update(articleA.title).digest('hex').slice(0, 10);
             const idB = articleB.uid || articleB.pmid || crypto.createHash('md5').update(articleB.title).digest('hex').slice(0, 10);
-            const cacheKey = `compare:${[idA, idB].sort().join(':')}:${selectedModel}`;
+            const topicKey = crypto.createHash('sha256').update(String(topic || '')).digest('hex').slice(0, 12);
+            const cacheKey = `compare:${[idA, idB].sort().join(':')}:${topicKey}:${selectedModel}:pv:${getPromptVersion('article_tools')}`;
 
             try {
                 const memCached = await cache.getAsync(cacheKey);
@@ -291,7 +294,7 @@ function registerArticleToolRoutes(app, {
                 }
 
                 const result = { comparison: parsed, articleIdA: idA, articleIdB: idB, provider: selectedProvider, model: selectedModel };
-                await cache.setAsync(cacheKey, result, 7200);
+                await cache.setAsync(cacheKey, result, 30 * 86400);
                 await db.logEvent('article_comparison', req.sessionId, { articleIdA: idA, articleIdB: idB, provider: selectedProvider });
                 res.json(result);
             } catch (error) {
