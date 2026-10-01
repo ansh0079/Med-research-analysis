@@ -23,6 +23,12 @@ export interface EvidenceVerdictStripProps {
     /** Trial-vs-guideline conflicts already computed for the synthesis, if any. */
     conflictCount?: number | null;
     onJumpToGuidelines?: () => void;
+    openAccessCount?: number;
+    retractedCount?: number;
+    /** Search provenance (cascade note, intent, source timings), revealed on demand. */
+    details?: React.ReactNode;
+    /** Always-visible notices, e.g. a source that failed. */
+    notice?: React.ReactNode;
 }
 
 const RCT_PATTERN = /randomized controlled trial|randomised controlled trial|clinical trial, phase/i;
@@ -56,7 +62,12 @@ export const EvidenceVerdictStrip: React.FC<EvidenceVerdictStripProps> = ({
     results,
     conflictCount = null,
     onJumpToGuidelines,
+    openAccessCount,
+    retractedCount = 0,
+    details,
+    notice,
 }) => {
+    const [showDetails, setShowDetails] = useState(false);
     const [guidelines, setGuidelines] = useState<GuidelineEntry[] | null>(null);
     const [copied, setCopied] = useState(false);
 
@@ -135,11 +146,26 @@ export const EvidenceVerdictStrip: React.FC<EvidenceVerdictStripProps> = ({
                         value={stats.guidelinePapers}
                     />
                 )}
+                {typeof openAccessCount === 'number' && openAccessCount > 0 && (
+                    <Stat label="open access" value={openAccessCount} />
+                )}
+                {retractedCount > 0 && <Stat label="retracted" value={retractedCount} tone="warn" />}
                 {typeof conflictCount === 'number' && conflictCount > 0 && (
                     <Stat label="trial vs guideline conflicts" value={conflictCount} tone="warn" />
                 )}
 
                 <div className="ml-auto flex items-center gap-2">
+                    {details && (
+                        <button
+                            type="button"
+                            onClick={() => setShowDetails((value) => !value)}
+                            aria-expanded={showDetails}
+                            className="inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                        >
+                            Search details
+                            <i className={`fas fa-chevron-down text-[9px] transition-transform ${showDetails ? 'rotate-180' : ''}`} />
+                        </button>
+                    )}
                     <button
                         type="button"
                         onClick={copyCitations}
@@ -149,6 +175,12 @@ export const EvidenceVerdictStrip: React.FC<EvidenceVerdictStripProps> = ({
                     </button>
                 </div>
             </div>
+
+            {notice}
+
+            {showDetails && details && (
+                <div className="mt-3 border-t border-slate-100 pt-3 dark:border-slate-800">{details}</div>
+            )}
 
             {stats.bodies.length > 0 && (
                 <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">

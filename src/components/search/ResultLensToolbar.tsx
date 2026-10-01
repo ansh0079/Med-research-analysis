@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@components/ui/Button';
 import type { AppPage } from '@contexts/SearchContext';
-import type { Article } from '@types';
+import type { Article, EvidenceLaneKey, SearchPack } from '@types';
 import type { ResultLens } from '@hooks/useResultsFilter';
 
 type ExportFormat = 'ris' | 'bibtex' | 'csl' | 'doc';
@@ -14,6 +14,10 @@ interface ResultLensToolbarProps {
   practiceChangingCount: number;
   resultLens: ResultLens;
   resultFilter: string;
+  onResultFilterChange: (value: string) => void;
+  searchPack?: SearchPack | null;
+  evidenceLane: EvidenceLaneKey | 'all';
+  onLaneChange: (lane: EvidenceLaneKey | 'all') => void;
   selectedArticles: Article[];
   savedArticles: Article[];
   onLensChange: (lens: ResultLens) => void;
@@ -40,6 +44,10 @@ export const ResultLensToolbar: React.FC<ResultLensToolbarProps> = ({
   practiceChangingCount,
   resultLens,
   resultFilter,
+  onResultFilterChange,
+  searchPack,
+  evidenceLane,
+  onLaneChange,
   selectedArticles,
   savedArticles,
   onLensChange,
@@ -77,8 +85,30 @@ export const ResultLensToolbar: React.FC<ResultLensToolbarProps> = ({
     { id: 'practice_changing' as ResultLens, label: 'Practice-changing', count: practiceChangingCount, icon: 'fa-bolt' },
   ].filter((lens) => lens.id === 'all' || lens.count > 0 || lens.id === resultLens);
 
+  const lanes = searchPack
+    ? (['guidelines', 'landmark_trials', 'reviews', 'supporting'] as EvidenceLaneKey[])
+      .map((key) => searchPack.lanes[key])
+      .filter((lane) => lane && (lane.count > 0 || lane.key === evidenceLane))
+    : [];
+
+  const pillClass = (active: boolean) => `inline-flex min-h-8 items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-bold transition-colors ${
+    active
+      ? 'border-indigo-300 bg-indigo-50 text-indigo-700 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300'
+      : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
+  }`;
+
   return (
     <div className="mb-4 flex flex-wrap items-center gap-1.5">
+      <label className="relative">
+        <span className="sr-only">Filter results</span>
+        <i className="fas fa-magnifying-glass pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-400" />
+        <input
+          value={resultFilter}
+          onChange={(event) => onResultFilterChange(event.target.value)}
+          placeholder="Filter results"
+          className="h-8 w-40 rounded-full border border-slate-200 bg-white pl-7 pr-3 text-[11px] text-slate-900 outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white sm:w-48"
+        />
+      </label>
       {lenses.map((lens) => (
         <button
           key={lens.id}
@@ -87,18 +117,27 @@ export const ResultLensToolbar: React.FC<ResultLensToolbarProps> = ({
             onLensChange(lens.id);
             trackFeatureUsage('result_lens_click', { lens: lens.id, count: lens.count });
           }}
-          className={`inline-flex min-h-8 items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-bold transition-colors ${
-            resultLens === lens.id
-              ? 'border-indigo-300 bg-indigo-50 text-indigo-700 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300'
-              : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
-          }`}
+          className={pillClass(resultLens === lens.id)}
         >
           <i className={`fas ${lens.icon} text-[10px]`} />
           {lens.label}
           <span className="font-mono text-[10px] opacity-70">{lens.count}</span>
         </button>
       ))}
-      {(resultLens !== 'all' || resultFilter.trim()) && (
+      {lanes.length > 0 && <span className="mx-1 h-5 w-px bg-slate-200 dark:bg-slate-700" aria-hidden />}
+      {lanes.map((lane) => (
+        <button
+          key={lane.key}
+          type="button"
+          aria-pressed={evidenceLane === lane.key}
+          onClick={() => onLaneChange(evidenceLane === lane.key ? 'all' : lane.key)}
+          className={pillClass(evidenceLane === lane.key)}
+        >
+          {lane.label}
+          <span className="font-mono text-[10px] opacity-70">{lane.count}</span>
+        </button>
+      ))}
+      {(resultLens !== 'all' || resultFilter.trim() || evidenceLane !== 'all') && (
         <button
           type="button"
           onClick={onClearLens}

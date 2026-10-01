@@ -164,9 +164,9 @@ test.describe('search → results → interaction flow', () => {
     await page.getByPlaceholder(/SGLT2 inhibitors/i).fill('sglt2 heart failure');
     await page.getByRole('banner').getByRole('button', { name: /^Search$/ }).click();
 
-    await expect(page.getByText(/Evidence found/i)).toBeVisible();
-    // "Open access" appears in the stats banner, filters, and article chips — pin to the banner label.
-    await expect(page.getByRole('paragraph').filter({ hasText: /^Open access$/i })).toBeVisible();
+    const summary = page.getByRole('region', { name: 'Evidence summary' });
+    await expect(summary.getByText(/^papers$/)).toBeVisible();
+    await expect(summary.getByText(/^open access$/)).toBeVisible();
   });
 
   test('filter within results narrows list', async ({ page }) => {
@@ -176,7 +176,7 @@ test.describe('search → results → interaction flow', () => {
     await page.getByPlaceholder(/SGLT2 inhibitors/i).fill('sglt2 heart failure');
     await page.getByRole('banner').getByRole('button', { name: /^Search$/ }).click();
 
-    const filterInput = page.getByPlaceholder(/Filter titles/i);
+    const filterInput = page.getByPlaceholder(/Filter results/i);
     await filterInput.fill('empagliflozin');
 
     await expect(page.getByRole('link', { name: /Empagliflozin/i })).toBeVisible();
@@ -246,8 +246,10 @@ test.describe('search → results → interaction flow', () => {
     await expect(page.getByText(/Personalizing topic intelligence/i).first()).toBeVisible();
     await expect(page.getByText(/Personalized remediation/i)).toBeVisible();
     await expect(page.getByText(/1 weak claim/i)).toBeVisible();
-    await expect(page.getByText(/Mentor Message/i)).toBeVisible({ timeout: 10000 });
-    await expect(page.getByText(/Start with outcome trials/i)).toBeVisible();
+    const mentorNotes = page.getByRole('button', { name: /Mentor notes/i });
+    await expect(mentorNotes).toBeVisible({ timeout: 10000 });
+    await mentorNotes.click();
+    await expect(page.getByText(/DAPA-HF/).first()).toBeVisible();
     await expect(page.getByText(/Personalizing topic intelligence/i)).toHaveCount(0);
   });
 

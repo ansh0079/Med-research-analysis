@@ -35,7 +35,7 @@ export const PersonalizedRemediationBanner: React.FC<PersonalizedRemediationBann
         {agentGuidance && (
           <button
             type="button"
-            onClick={() => document.getElementById('agent-mentor-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            onClick={() => document.getElementById('agent-mentor-chat')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
             className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-violet-300 px-3 text-xs font-bold text-violet-700 hover:bg-white dark:border-violet-800 dark:text-violet-200 dark:hover:bg-violet-900/40"
           >
             <i className="fas fa-comments text-[10px]" /> Ask mentor

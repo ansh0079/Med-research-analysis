@@ -9,14 +9,13 @@ import { GuidelineSnapshot } from '@components/search/GuidelineSnapshot';
 import { EvidenceVerdictStrip } from '@components/search/EvidenceVerdictStrip';
 import { SkeletonCard } from '@components/search/SkeletonCard';
 import { SearchHero } from '@components/search/SearchHero';
-import { TopicIntelligenceStatusBanner } from '@components/search/TopicIntelligenceStatusBanner';
 import { SearchEmptyState } from '@components/search/SearchEmptyState';
 import { NoResultsState } from '@components/search/NoResultsState';
 import { LowRecallBanner } from '@components/search/LowRecallBanner';
 import { QuerySenseBanner } from '@components/search/QuerySenseBanner';
 import { RelatedTopicsBar } from '@components/search/RelatedTopicsBar';
 import { VerifyEmailBanner } from '@components/search/VerifyEmailBanner';
-import { SearchResultsStats } from '@components/search/SearchResultsStats';
+import { SearchDetails, SourceFailureNotice, hasSearchDetails } from '@components/search/SearchDetails';
 import { STUDY_TYPE_FILTER_OPTIONS } from '@utils/searchStudyFilters';
 import { PersonalizedRemediationBanner } from '@components/search/PersonalizedRemediationBanner';
 import { ShiftReviewBar } from '@components/search/ShiftReviewBar';
@@ -164,6 +163,14 @@ export const SearchPage: React.FC = () => {
     setSearchParams(searchParams, { replace: true });
   }, [urlQuery, handleSearch, searchParams, setSearchParams]);
 
+  const activeFilters = {
+    specificity: filters.specificity,
+    studyTypeLabels: (filters.studyTypes || [])
+      .map((clause) => STUDY_TYPE_FILTER_OPTIONS.find((o) => o.clause === clause)?.label)
+      .filter(Boolean) as string[],
+    yearRange: filters.yearRange,
+  };
+
   const workflowSectionProps = {
     currentQuery,
     results,
@@ -266,6 +273,12 @@ export const SearchPage: React.FC = () => {
             results={results}
             conflictCount={synthesis?.conflictMatrix?.length ?? null}
             onJumpToGuidelines={() => document.getElementById('guideline-snapshot')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            openAccessCount={openAccessCount}
+            retractedCount={retractedCount}
+            notice={<SourceFailureNotice sourceTelemetry={searchTelemetry?.sources} sourceFailures={searchTelemetry?.sourceFailures} />}
+            details={hasSearchDetails({ sourceTelemetry: searchTelemetry?.sources, queryIntent, searchPack, activeFilters }) ? (
+              <SearchDetails sourceTelemetry={searchTelemetry?.sources} queryIntent={queryIntent} searchPack={searchPack} activeFilters={activeFilters} />
+            ) : undefined}
           />
         )}
 
@@ -281,37 +294,6 @@ export const SearchPage: React.FC = () => {
             topic={currentQuery}
             evidenceRelatedTopics={evidenceRelatedTopics}
             onOpenTopic={handleSearch}
-          />
-        )}
-
-        {results.length > 0 && (
-          <SearchResultsStats
-            totalCount={results.length}
-            openAccessCount={openAccessCount}
-            highQualityCount={highQualityCount}
-            retractedCount={retractedCount}
-            sourceTelemetry={searchTelemetry?.sources}
-            sourceFailures={searchTelemetry?.sourceFailures}
-            queryIntent={queryIntent}
-            searchPack={searchPack}
-            evidenceLane={evidenceLane}
-            onLaneChange={setEvidenceLane}
-            activeFilters={{
-              specificity: filters.specificity,
-              studyTypeLabels: (filters.studyTypes || [])
-                .map((clause) => STUDY_TYPE_FILTER_OPTIONS.find((o) => o.clause === clause)?.label)
-                .filter(Boolean) as string[],
-              yearRange: filters.yearRange,
-            }}
-          />
-        )}
-
-        {results.length > 0 && (intelligenceLoading || (!agentGuidance && (topicGuideStatus === 'building' || topicGuideStatus === 'pending'))) && (
-          <TopicIntelligenceStatusBanner
-            intelligenceLoading={intelligenceLoading}
-            topicGuideStatus={agentGuidance ? 'idle' : topicGuideStatus}
-            variant="card"
-            className="mb-4"
           />
         )}
 
@@ -333,10 +315,8 @@ export const SearchPage: React.FC = () => {
           />
         )}
 
-        {(newPaperNotice || results.length > 0) && (
+        {(newPaperNotice || recentAnalyses.length > 0) && (
           <SearchResultsFilterSection
-            resultFilter={resultFilter}
-            onResultFilterChange={setResultFilter}
             newPaperNotice={newPaperNotice}
             recentAnalyses={recentAnalyses}
             onOpenAnalysis={openAnalysis}
@@ -374,6 +354,10 @@ export const SearchPage: React.FC = () => {
             practiceChangingCount={practiceChangingCount}
             resultLens={resultLens}
             resultFilter={resultFilter}
+            onResultFilterChange={setResultFilter}
+            searchPack={searchPack}
+            evidenceLane={evidenceLane}
+            onLaneChange={setEvidenceLane}
             selectedArticles={selectedArticles}
             savedArticles={savedArticles}
             onLensChange={(lens) => {
@@ -383,6 +367,7 @@ export const SearchPage: React.FC = () => {
             onClearLens={() => {
               setResultLens('all');
               setResultFilter('');
+              setEvidenceLane('all');
               setVisibleCount(30);
             }}
             onCompare={() => setIsComparing(true)}

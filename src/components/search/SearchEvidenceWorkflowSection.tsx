@@ -169,14 +169,11 @@ export const SearchEvidenceWorkflowSection: React.FC<SearchEvidenceWorkflowSecti
         onAnchorVerifyKeyChange={onAnchorVerifyKeyChange}
         currentQuery={currentQuery}
         onAgentGuidanceChange={onAgentGuidanceChange}
-        onOpenCase={onOpenCase}
-        onOpenQuiz={onOpenQuiz}
-        onSynthesize={() => void onSynthesize()}
       />
     )}
 
     {agentGuidance && (
-      <div className="mb-4">
+      <div id="agent-mentor-chat" className="mb-4 scroll-mt-28">
         <React.Suspense fallback={null}>
           <AgentChatPanel
             topic={agentGuidance.topic}

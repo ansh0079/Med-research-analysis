@@ -3,7 +3,6 @@ import { Button } from '@components/ui/Button';
 import { api } from '@services/api';
 import type { AgentGuidance } from '@types';
 import { isLandmarkSeedKnowledge } from '@utils/topicKnowledgeTrust';
-import type { BriefDifficulty } from './TopicBriefPanel';
 
 interface AgentMentorPanelProps {
   agentGuidance: AgentGuidance;
@@ -19,9 +18,6 @@ interface AgentMentorPanelProps {
   onAnchorVerifyKeyChange: (key: string | null) => void;
   currentQuery: string;
   onAgentGuidanceChange: (guidance: AgentGuidance) => void;
-  onOpenCase: (difficulty?: BriefDifficulty) => void;
-  onOpenQuiz: (difficulty?: BriefDifficulty) => void;
-  onSynthesize: () => void;
 }
 
 export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
@@ -38,10 +34,8 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
   onAnchorVerifyKeyChange,
   currentQuery,
   onAgentGuidanceChange,
-  onOpenCase,
-  onOpenQuiz,
-  onSynthesize,
 }) => {
+  const [open, setOpen] = React.useState(false);
   const [memoryFeedback, setMemoryFeedback] = React.useState<'helpful' | 'not_helpful' | null>(null);
   const [feedbackBusy, setFeedbackBusy] = React.useState(false);
 
@@ -67,20 +61,39 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
   };
 
   return (
-  <div id="agent-mentor-panel" className="mb-4 neo-card overflow-hidden border border-emerald-100 dark:border-emerald-900/40">
-    <div className="bg-emerald-600 px-5 py-3 flex items-center justify-between gap-3">
-      <div className="flex items-center gap-3 min-w-0">
-        <div className="w-8 h-8 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
-          <i className="fas fa-user-graduate text-white text-sm" />
-        </div>
-        <div className="min-w-0">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-white/70">
-            {isFlagshipTopic ? 'Flagship Topic · Evidence Mentor Ready' : 'Mentor Message'}
-          </p>
-          <p className="text-sm font-black text-white truncate">{agentGuidance.topic}</p>
-        </div>
-      </div>
-      <div className="hidden sm:flex items-center gap-2">
+  <section id="agent-mentor-panel" className="mb-4 neo-card overflow-hidden">
+    <button
+      type="button"
+      onClick={() => setOpen((value) => !value)}
+      aria-expanded={open}
+      className="flex w-full items-center justify-between gap-2 px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-slate-900"
+    >
+      <span className="flex min-w-0 items-center gap-2">
+        <i className="fas fa-user-graduate text-[11px] text-slate-400" />
+        <span className="text-sm font-bold text-slate-800 dark:text-slate-100">Mentor notes</span>
+        <span className="hidden truncate text-xs text-slate-400 sm:inline">
+          {agentGuidance.teachingPoints.length > 0
+            ? `${agentGuidance.teachingPoints.length} teaching point${agentGuidance.teachingPoints.length === 1 ? '' : 's'}`
+            : 'Seminal papers'}
+          {' · '}
+          {agentGuidance.status === 'human_reviewed' ? 'clinician reviewed' : 'AI generated'}
+        </span>
+      </span>
+      <i className={`fas fa-chevron-down text-[11px] text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+    </button>
+    {open && (
+    <div className="border-t border-slate-100 p-5 space-y-4 dark:border-slate-800">
+      <div className="flex flex-wrap items-center gap-2">
+        {isFlagshipTopic && (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
+            <i className="fas fa-award text-[9px]" /> Flagship
+          </span>
+        )}
+        {agentGuidance.lastRefreshedAt && (
+          <span className="text-[11px] text-slate-400">
+            refreshed {new Date(agentGuidance.lastRefreshedAt).toLocaleDateString()}
+          </span>
+        )}
         {isAuthenticated && (
           <Button
             variant="ghost"
@@ -92,21 +105,7 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
             {topicGuideRefreshState === 'loading' ? 'Refreshing…' : 'Refresh'}
           </Button>
         )}
-        {isFlagshipTopic && (
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white">
-            <i className="fas fa-award text-[9px]" />
-            Flagship
-          </span>
-        )}
-        {agentGuidance.lastRefreshedAt && (
-          <span className="text-[10px] font-mono text-white/70">
-            refreshed {new Date(agentGuidance.lastRefreshedAt).toLocaleDateString()}
-          </span>
-        )}
       </div>
-    </div>
-    <div className="p-5 space-y-4">
-      <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">{agentGuidance.mentorMessage}</p>
       <div className="flex flex-wrap items-center gap-2">
         {isLandmarkSeedKnowledge(agentGuidance) && (
           <span
@@ -231,15 +230,8 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
           </ul>
         </div>
       )}
-      <div className="flex flex-wrap gap-2">
-        <Button variant="gradient" size="sm" onClick={() => onOpenCase('mixed')}
-          leftIcon={<i className="fas fa-stethoscope text-[10px]" />}>Generate Case</Button>
-        <Button variant="secondary" size="sm" onClick={() => onOpenQuiz('mixed')}
-          leftIcon={<i className="fas fa-brain text-[10px]" />}>Generate MCQs</Button>
-        <Button variant="ghost" size="sm" onClick={onSynthesize}
-          leftIcon={<i className="fas fa-layer-group text-[10px]" />}>Review Seminal Evidence</Button>
-      </div>
     </div>
-  </div>
+    )}
+  </section>
   );
 };
