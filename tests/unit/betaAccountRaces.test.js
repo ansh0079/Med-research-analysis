@@ -168,6 +168,12 @@ test('two invited accounts verify, log in, reset one password and reject reset r
             .send({ email: 'a@example.test', password: 'NewPass123!' }).expect(200);
         await request(app).post('/api/auth/login')
             .send({ email: 'b@example.test', password: 'InitialPass123!' }).expect(200);
+        // Autofill capitalisation and trailing spaces must not turn a correct password into "Invalid credentials".
+        await request(app).post('/api/auth/login')
+            .send({ email: ' B@Example.TEST ', password: 'InitialPass123!' }).expect(200);
+        await request(app).post('/api/auth/register')
+            .send({ name: 'Dup', email: 'A@EXAMPLE.test', password: 'AnotherPass123!', inviteCode: 'PILOT' })
+            .expect((res) => expect(res.status).not.toBe(201));
         expect((await db.get('SELECT use_count FROM beta_invites WHERE id = ?', ['pilot-invite'])).use_count).toBe(2);
     } finally {
         await db.close();

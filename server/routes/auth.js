@@ -36,6 +36,11 @@ const {
     recordResetAttempt,
 } = require('../middleware/auth');
 const { registerAuthOauthRoutes } = require('./auth/oauth');
+
+// Lookups are exact matches on Postgres, so "Name@x.com" or a trailing space from autofill
+// failed sign-in with "Invalid credentials" against a stored "name@x.com".
+const normalizeEmail = (email) => (typeof email === 'string' ? email.trim().toLowerCase() : '');
+
 function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     const authRateLimit = rateLimit ? rateLimit(5, 60) : (req, res, next) => next();
     const appUrl = process.env.APP_URL || 'http://localhost:3002';
@@ -46,7 +51,8 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // Register
     // ==========================================
     app.post('/api/auth/register', authRateLimit, auditLog('auth.register'), async (req, res) => {
-        const { name, email, password, inviteCode } = req.body;
+        const { name, password, inviteCode } = req.body;
+        const email = normalizeEmail(req.body.email);
         if (!email || !password) {
             return res.status(400).json({ error: 'email and password are required' });
         }
@@ -164,7 +170,8 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // Login
     // ==========================================
     app.post('/api/auth/login', authRateLimit, auditLog('auth.login'), async (req, res) => {
-        const { email, password } = req.body;
+        const { password } = req.body;
+        const email = normalizeEmail(req.body.email);
         if (!email || !password) {
             return res.status(400).json({ error: 'email and password are required' });
         }
@@ -543,7 +550,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // Forgot password — generate reset token
     // ==========================================
     app.post('/api/auth/forgot-password', authRateLimit, async (req, res) => {
-        const { email } = req.body;
+        const email = normalizeEmail(req.body.email);
         if (!email) return res.status(400).json({ error: 'email is required' });
 
         // Always return the same response to prevent email enumeration
