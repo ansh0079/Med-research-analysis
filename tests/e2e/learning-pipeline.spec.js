@@ -237,6 +237,7 @@ test.describe('learning pipeline: search → synopsis → quiz → mastery', () 
 
     const submitButton = page.getByRole('banner').getByRole('button', { name: /^Search$/ });
     await submitButton.click();
+    await page.getByRole('tab', { name: /^Evidence$/i }).click();
 
     await expect(page.getByRole('link', { name: /Metformin and cardiovascular outcomes/i })).toBeVisible();
 

@@ -114,6 +114,7 @@ test.describe('beta smoke', () => {
 
     await searchBox.fill('sglt2 hfpef');
     await submitButton.click();
+    await page.getByRole('tab', { name: /^Evidence$/i }).click();
 
     await expect(page.getByRole('link', { name: /SGLT2 inhibitors in heart/i })).toBeVisible();
     await expect(page.getByText(/Journal of Evidence Medicine/i)).toBeVisible();

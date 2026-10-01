@@ -151,6 +151,7 @@ test.describe('search → results → interaction flow', () => {
 
     const submitButton = page.getByRole('banner').getByRole('button', { name: /^Search$/ });
     await submitButton.click();
+    await page.getByRole('tab', { name: /^Evidence$/i }).click();
 
     await expect(page.getByRole('link', { name: /SGLT2 inhibitors in heart failure/i })).toBeVisible();
     await expect(page.getByText(/Journal of Evidence Medicine/i)).toBeVisible();
@@ -175,6 +176,7 @@ test.describe('search → results → interaction flow', () => {
 
     await page.getByPlaceholder(/SGLT2 inhibitors/i).fill('sglt2 heart failure');
     await page.getByRole('banner').getByRole('button', { name: /^Search$/ }).click();
+    await page.getByRole('tab', { name: /^Evidence$/i }).click();
 
     const filterInput = page.getByPlaceholder(/Filter results/i);
     await filterInput.fill('empagliflozin');
@@ -241,6 +243,7 @@ test.describe('search → results → interaction flow', () => {
     await dismissChromeOverlays(page);
     await page.getByPlaceholder(/SGLT2 inhibitors/i).fill('sglt2 heart failure');
     await page.getByRole('banner').getByRole('button', { name: /^Search$/ }).click();
+    await page.getByRole('tab', { name: /^Evidence$/i }).click();
 
     await expect(page.getByRole('link', { name: /SGLT2 inhibitors in heart failure/i }).first()).toBeVisible();
     await expect(page.getByText(/Personalizing topic intelligence/i).first()).toBeVisible();
