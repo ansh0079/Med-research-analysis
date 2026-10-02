@@ -31,6 +31,7 @@ const {
 } = require('../claimRegenerationScheduler');
 const {
     scheduleGuidelineWatchtower, stopGuidelineWatchtower,
+    scheduleGuidelineStaleFlag, stopGuidelineStaleFlag,
 } = require('../guidelineWatchtowerScheduler');
 const {
     scheduleCurriculumSeed, stopCurriculumSeed,
@@ -133,6 +134,11 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
             task: 'guideline-fulltext',
             start: () => scheduleGuidelineFullText(db, baseLogger.child({ task: 'guideline-fulltext' })),
             stop: () => stopGuidelineFullText(),
+        },
+        {
+            task: 'guideline-stale-flag',
+            start: () => scheduleGuidelineStaleFlag(db, baseLogger.child({ task: 'guideline-stale-flag' })),
+            stop: () => stopGuidelineStaleFlag(),
         },
         {
             task: 'guideline-watchtower',

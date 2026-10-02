@@ -155,7 +155,7 @@ if (process.env.SENTRY_DSN) {
             },
             beforeSend(event) {
                 if (event.exception?.values?.[0]?.value?.includes('Rate limit')) return null;
-                return event;
+                return require('./server/lib/sentryScrub').scrubSentryEvent(event);
             },
         });
         logger.info('Sentry monitoring enabled');

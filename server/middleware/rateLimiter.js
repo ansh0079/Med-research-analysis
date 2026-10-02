@@ -178,4 +178,58 @@ function createSlowDown(windowSeconds, delayAfter, baseDelayMs) {
     }
 }
 
-module.exports = { rateLimit, userRateLimit, setMetricsRegistry, createSlowDown };
+/**
+ * Limit by an explicit key (account email, refresh token) and, separately,
+ * by IP. A hospital NAT shares one public address; a per-account bucket
+ * keeps one clinician's retries from locking the ward out. The IP bucket
+ * stays, wider, so one address cannot rotate accounts without a ceiling.
+ */
+function keyedRateLimit(maxRequests, windowSeconds, keyFn) {
+    const resolveKey = (req) => {
+        try {
+            const key = keyFn(req);
+            return key ? String(key) : `ip:${ipKeyGenerator(req.ip)}`;
+        } catch {
+            return `ip:${ipKeyGenerator(req.ip)}`;
+        }
+    };
+
+    if (process.env.NODE_ENV === 'test') {
+        const cache = require('../../cache');
+        return async (req, res, next) => {
+            const result = await cache.checkRateLimit(`rl:${resolveKey(req)}`, maxRequests, windowSeconds);
+            if (!result.allowed) {
+                const retryAfter = result.retryAfter || Math.ceil((result.resetTime - Date.now()) / 1000) || windowSeconds;
+                res.set('Retry-After', String(retryAfter));
+                return res.status(429).json({ error: 'Rate limit exceeded', retryAfter });
+            }
+            next();
+        };
+    }
+
+    return createExpressRateLimit({
+        windowMs: windowSeconds * 1000,
+        limit: maxRequests,
+        standardHeaders: false,
+        legacyHeaders: true,
+        store: getRateLimitStore(),
+        keyGenerator: (req) => resolveKey(req),
+        handler: (req, res) => {
+            recordHit(req.path, 'keyed');
+            recordRejection(req.path, 'keyed', 429);
+            res.status(429).json({
+                error: 'Rate limit exceeded',
+                retryAfter: req.rateLimit?.resetTime
+                    ? Math.ceil((req.rateLimit.resetTime.getTime() - Date.now()) / 1000)
+                    : windowSeconds,
+            });
+        },
+    });
+}
+
+function accountKey(req) {
+    const email = String(req.body?.email || '').trim().toLowerCase();
+    return email ? `acct:${email}:${req.path}` : '';
+}
+
+module.exports = { rateLimit, userRateLimit, keyedRateLimit, accountKey, setMetricsRegistry, createSlowDown };

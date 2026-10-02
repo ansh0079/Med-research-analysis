@@ -69,4 +69,20 @@ describe('searchRankerPromotionGateService', () => {
             status: 'fail',
         });
     });
+
+    test('a measured quality miss blocks, and a short sample is not a pass', () => {
+        const { rankerGateVerdict } = require('../../server/services/searchRankerPromotionGateService');
+        expect(rankerGateVerdict({
+            recommendation: 'hold',
+            checks: [{ id: 'top1_disagreement', status: 'fail' }, { id: 'search_volume', status: 'fail' }],
+        })).toMatchObject({ code: 1, verdict: 'fail' });
+        expect(rankerGateVerdict({
+            recommendation: 'hold',
+            checks: [{ id: 'search_volume', status: 'fail' }, { id: 'gold_coverage', status: 'insufficient_data' }],
+        })).toMatchObject({ code: 0, verdict: 'not_proven' });
+        expect(rankerGateVerdict({
+            recommendation: 'evaluate',
+            checks: [{ id: 'latency', status: 'pass' }],
+        })).toMatchObject({ code: 0, verdict: 'proven' });
+    });
 });

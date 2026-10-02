@@ -21,6 +21,9 @@ if (process.env.SENTRY_DSN) {
             environment: process.env.NODE_ENV || 'development',
             release: process.env.SENTRY_RELEASE || undefined,
             initialScope: { tags: { app_role: 'worker' } },
+            beforeSend(event) {
+                return require('./lib/sentryScrub').scrubSentryEvent(event);
+            },
         });
         logger.info('Sentry monitoring enabled (worker)');
     } catch (err) {

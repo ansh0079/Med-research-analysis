@@ -122,6 +122,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Ranker promotion gate
+        run: npm run check:ranker-gate
+        env:
+          NODE_ENV: test
+
       - name: Run offline search-quality CI gates
         run: npm run test:search-quality-gate
         env:

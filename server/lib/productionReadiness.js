@@ -107,10 +107,7 @@ function checkLlm(errors) {
     }
 }
 
-function checkBilling(errors) {
-    if (env('PAYWALL_ENABLED') !== 'true') {
-        errors.push('PAYWALL_ENABLED=true is required for production billing readiness');
-    }
+function checkBilling(errors, warnings) {
     const required = [
         'STRIPE_SECRET_KEY',
         'STRIPE_WEBHOOK_SECRET',
@@ -118,8 +115,14 @@ function checkBilling(errors) {
         'STRIPE_PRO_PRICE_ID',
         'STRIPE_TEAM_PRICE_ID',
     ];
+    // Beta decision: paid checkout stays off. The five Stripe values are required
+    // only once PAYWALL_ENABLED=true. Until then a missing key is not a cohort blocker.
+    if (env('PAYWALL_ENABLED') !== 'true') {
+        warnings.push('Paid billing is deferred. Stripe is unset and checkout stays unavailable until PAYWALL_ENABLED=true.');
+        return;
+    }
     for (const key of required) {
-        if (!env(key)) errors.push(`${key} is required for production billing readiness`);
+        if (!env(key)) errors.push(`${key} is required when PAYWALL_ENABLED=true`);
     }
 }
 
@@ -225,7 +228,7 @@ function validateProductionEnv({ mode = 'verify' } = {}) {
         checkUrls(errors, warnings);
         checkPgSsl(warnings);
         checkLlm(errors);
-        checkBilling(errors);
+        checkBilling(errors, warnings);
         checkTelemetry(errors);
         checkEmail(errors);
     }

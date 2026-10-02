@@ -64,11 +64,21 @@ describe('synthesis shared (prompt-hash) cache', () => {
         expect(sharedValue.jobKey).toBeNull();
     });
 
-    test("a prompt that really differs is not served someone else's answer", async () => {
+    test('session depth does not split the shared generation', async () => {
         const cache = memoryCache();
         const base = { articles, topic: 'alcoholic hepatitis', db, cache, serverConfig: { keys: { gemini: 'k' } }, fetchImpl: jest.fn() };
         await runFullSynthesisGeneration({ ...base, sessionDepth: 0 });
-        await runFullSynthesisGeneration({ ...base, sessionDepth: 4 });
-        expect(mockCallGemini).toHaveBeenCalledTimes(2);
+        const second = await runFullSynthesisGeneration({ ...base, sessionDepth: 4, userId: 'other-clinician' });
+        expect(mockCallGemini).toHaveBeenCalledTimes(1);
+        expect(second.cached).toBe(true);
+    });
+
+    test('AKI and acute kidney injury share one synthesis', async () => {
+        const cache = memoryCache();
+        const base = { articles, db, cache, serverConfig: { keys: { gemini: 'k' } }, fetchImpl: jest.fn() };
+        await runFullSynthesisGeneration({ ...base, topic: 'AKI' });
+        const second = await runFullSynthesisGeneration({ ...base, topic: 'acute kidney injury', userId: 'ward-colleague' });
+        expect(mockCallGemini).toHaveBeenCalledTimes(1);
+        expect(second.cached).toBe(true);
     });
 });

@@ -132,6 +132,7 @@ async function collectSearchQualityDashboard(db, { days = 7, limit = 20 } = {}) 
         feedback,
         lowRecall,
         learning,
+        cacheLayers,
     ] = await Promise.all([
         db.all(
             `SELECT id, query, normalized_topic, filters, sources, results_count, execution_time_ms, created_at
@@ -166,6 +167,7 @@ async function collectSearchQualityDashboard(db, { days = 7, limit = 20 } = {}) 
             ? db.getLowRecallSearchStatsWindow(safeDays, safeLimit).catch(() => [])
             : Promise.resolve([]),
         collectSearchLearningEvaluation(db, { days: safeDays }),
+        require('./ops/cacheLayerMetrics').cacheLayerSnapshot(),
     ]);
 
     const searches = searchRows.length;
@@ -199,6 +201,7 @@ async function collectSearchQualityDashboard(db, { days = 7, limit = 20 } = {}) 
         intentMix: summarizeIntentMix(searchRows, eventRows),
         sourceCache: summarizeSourceCache(eventRows),
         learning,
+        cacheLayers,
         performance: summarizePerformance(eventRows),
         shadowRanker: summarizeShadowRanker(eventRows),
         topQueries,

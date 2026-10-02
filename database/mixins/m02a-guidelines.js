@@ -10,11 +10,7 @@ const { synonymExpansionsForToken, textHasTerm } = require('../../server/utils/c
 const { sanitizePublicationYear } = require('../../server/utils/publicationYear');
 const { applyWritePolicy } = require('../../server/services/policy/writePolicyEngine');
 
-// The 365-day stale threshold does not need per-read precision. getGuidelinesByTopic
-// is on the hot search path and ran this UPDATE on every call, so the sweep is
-// throttled: at most once per hour per process, whichever topic asks first.
-const STALE_SWEEP_INTERVAL_MS = 60 * 60 * 1000;
-let lastGuidelineStaleSweepAt = 0;
+// Stale rows are flagged by the guideline watchtower, not on this read path.
 
 /**
  * A guideline row is only servable if its text actually reads as a recommendation.
@@ -579,7 +575,6 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20, includeRelated = tr
     const normalized = this.normalizeTopic(topic);
     const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 20, 1), 100);
     const statusFilter = String(status || '').trim();
-    const staleThreshold = new Date(Date.now() - 365 * 86400000).toISOString();
     // normalizeTopic keeps hyphens, so "iron-deficiency anaemia" and "iron
     // deficiency anaemia" are different storage keys. 335 stored topics carry a
     // hyphen (4,052 rows) and ten exist under both spellings, splitting 259 rows.
@@ -594,19 +589,7 @@ async getGuidelinesByTopic(topic, { status = '', limit = 20, includeRelated = tr
     ].filter(Boolean).map(dehyphenate))];
     if (!keys.length) return [];
 
-    // Auto-flag stale guidelines (all synonym keys), throttled — see above.
     const stalePlaceholders = keys.map(() => '?').join(', ');
-    if (Date.now() - lastGuidelineStaleSweepAt >= STALE_SWEEP_INTERVAL_MS) {
-        lastGuidelineStaleSweepAt = Date.now();
-        await this.run(
-            `UPDATE topic_guidelines SET status = 'stale'
-             WHERE REPLACE(normalized_topic, '-', ' ') IN (${stalePlaceholders})
-               AND status IN ('ai_extracted', 'human_reviewed')
-               AND last_checked_at < ?
-               AND superseded_by_id IS NULL`,
-            [...keys, staleThreshold]
-        );
-    }
 
     // Fetch a wider candidate pool so relevant rows beyond the recency-top are reachable.
     const fetchLimit = Math.min(safeLimit * 8, 400);
@@ -953,8 +936,17 @@ async upsertGuidelineRefiling({ guidelineId, canonicalNormalized, similarity, so
     );
     return true;
 }
+
+async flagStaleGuidelines() {
+    const staleThreshold = new Date(Date.now() - 365 * 86400000).toISOString();
+    await this.run(
+        `UPDATE topic_guidelines SET status = 'stale'
+         WHERE status IN ('ai_extracted', 'human_reviewed')
+           AND last_checked_at < ?
+           AND superseded_by_id IS NULL`,
+        [staleThreshold]
+    );
+}
 };
 
-// Test hook: the sweep throttle is process-global by design; suites exercising
-// the sweep itself reset it rather than waiting an hour.
-module.exports.__resetGuidelineStaleSweepForTests = () => { lastGuidelineStaleSweepAt = 0; };
+module.exports.__resetGuidelineStaleSweepForTests = () => {};

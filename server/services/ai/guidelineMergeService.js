@@ -196,6 +196,7 @@ async function buildMergedGuidelineView({
     const key = cacheKey(topic, recommendations.length);
     if (cache?.getAsync) {
         const hit = await cache.getAsync(key).catch(() => null);
+        require('../ops/cacheLayerMetrics').recordCacheLayer('guidelines', Boolean(hit));
         if (hit) return { ...hit, cached: true };
     }
 

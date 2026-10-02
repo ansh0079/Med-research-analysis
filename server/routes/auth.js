@@ -36,13 +36,27 @@ const {
     recordResetAttempt,
 } = require('../middleware/auth');
 const { registerAuthOauthRoutes } = require('./auth/oauth');
+const { ipKeyGenerator } = require('express-rate-limit');
+const { keyedRateLimit, accountKey, userRateLimit } = require('../middleware/rateLimiter');
 
 // Lookups are exact matches on Postgres, so "Name@x.com" or a trailing space from autofill
 // failed sign-in with "Invalid credentials" against a stored "name@x.com".
 const normalizeEmail = (email) => (typeof email === 'string' ? email.trim().toLowerCase() : '');
 
+function refreshAccountKey(req) {
+    const raw = req.body?.refreshToken || req.cookies?.[REFRESH_COOKIE_NAME] || '';
+    const token = String(raw || '').trim();
+    if (!token) return '';
+    return `refresh:${crypto.createHash('sha256').update(token).digest('hex').slice(0, 24)}`;
+}
+
 function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
-    const authRateLimit = rateLimit ? rateLimit(5, 60) : (req, res, next) => next();
+    // Login and refresh sit in front of a shared hospital address. Five tries
+    // per account stay tight; the address itself gets a wider ceiling.
+    const authIpLimit = keyedRateLimit(40, 60, (req) => `ip:${ipKeyGenerator(req.ip)}:${req.path}`);
+    const authAccountLimit = keyedRateLimit(5, 60, accountKey);
+    const refreshAccountLimit = keyedRateLimit(20, 60, refreshAccountKey);
+    const sessionAccountLimit = userRateLimit(20, 60);
     const appUrl = process.env.APP_URL || 'http://localhost:3002';
 
     registerAuthOauthRoutes(app, { db, rateLimit });
@@ -50,7 +64,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // ==========================================
     // Register
     // ==========================================
-    app.post('/api/auth/register', authRateLimit, auditLog('auth.register'), async (req, res) => {
+    app.post('/api/auth/register', authIpLimit, authAccountLimit, auditLog('auth.register'), async (req, res) => {
         const { name, password, inviteCode } = req.body;
         const email = normalizeEmail(req.body.email);
         if (!email || !password) {
@@ -169,7 +183,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // ==========================================
     // Login
     // ==========================================
-    app.post('/api/auth/login', authRateLimit, auditLog('auth.login'), async (req, res) => {
+    app.post('/api/auth/login', authIpLimit, authAccountLimit, auditLog('auth.login'), async (req, res) => {
         const { password } = req.body;
         const email = normalizeEmail(req.body.email);
         if (!email || !password) {
@@ -237,7 +251,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // ==========================================
     // Refresh session (rotating refresh token)
     // ==========================================
-    app.post('/api/auth/refresh', authRateLimit, async (req, res) => {
+    app.post('/api/auth/refresh', authIpLimit, refreshAccountLimit, async (req, res) => {
         const rawRefresh = req.cookies?.[REFRESH_COOKIE_NAME];
         if (!rawRefresh) {
             return res.status(401).json({ error: 'Refresh token required', tokenExpired: true });
@@ -349,7 +363,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // ==========================================
     // Change password (authenticated)
     // ==========================================
-    app.post('/api/auth/change-password', requireAuthJwt, authRateLimit, async (req, res) => {
+    app.post('/api/auth/change-password', requireAuthJwt, sessionAccountLimit, async (req, res) => {
         const { currentPassword, newPassword } = req.body;
         if (!currentPassword || !newPassword) {
             return res.status(400).json({ error: 'currentPassword and newPassword are required' });
@@ -381,7 +395,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // ==========================================
     // Change email (authenticated, requires password + email verification)
     // ==========================================
-    app.post('/api/auth/change-email', requireAuthJwt, authRateLimit, async (req, res) => {
+    app.post('/api/auth/change-email', requireAuthJwt, sessionAccountLimit, async (req, res) => {
         const { newEmail, password } = req.body;
         if (!newEmail || typeof newEmail !== 'string') {
             return res.status(400).json({ error: 'newEmail is required' });
@@ -520,7 +534,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // ==========================================
     // Resend verification email
     // ==========================================
-    app.post('/api/auth/resend-verification', authRateLimit, requireAuthJwt, async (req, res) => {
+    app.post('/api/auth/resend-verification', requireAuthJwt, sessionAccountLimit, async (req, res) => {
         try {
             const user = await db.get('SELECT id, name, email, email_verified FROM users WHERE id = ?', [req.user.id]);
 
@@ -549,7 +563,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // ==========================================
     // Forgot password — generate reset token
     // ==========================================
-    app.post('/api/auth/forgot-password', authRateLimit, async (req, res) => {
+    app.post('/api/auth/forgot-password', authIpLimit, authAccountLimit, async (req, res) => {
         const email = normalizeEmail(req.body.email);
         if (!email) return res.status(400).json({ error: 'email is required' });
 
@@ -601,7 +615,7 @@ function registerAuthRoutes(app, { db, auditLog, rateLimit }) {
     // ==========================================
     // Reset password — consume token, update password
     // ==========================================
-    app.post('/api/auth/reset-password', authRateLimit, async (req, res) => {
+    app.post('/api/auth/reset-password', authIpLimit, async (req, res) => {
         const { token, password } = req.body;
         if (!token || !password) return res.status(400).json({ error: 'token and password are required' });
         if (password.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters' });

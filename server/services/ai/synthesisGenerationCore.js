@@ -4,7 +4,7 @@ const logger = require('../../config/logger');
 const crypto = require('crypto');
 const { createAiService, getSharedAiService, TEMPERATURE, MAX_OUTPUT_TOKENS, AI_DISCLAIMER } = require('../aiService');
 const { buildSynthesisPrompt } = require('../../prompts');
-const { buildLearnerContext } = require('../learnerContextService');
+const { canonicalQueryForCache } = require('../../utils/topicKey');
 const { batchCheckRetractions } = require('../qualityService');
 const { validateMedicalOutputCitations } = require('../citationValidator');
 const { enrichWithCachedFullText } = require('../pdfPreindexService');
@@ -261,30 +261,14 @@ async function prepareSynthesisContext({
     const enrichedArticles = await enrichWithCachedFullText(topArticles, cache, db).catch((err) => { logger.warn({ err }, 'enrichWithCachedFullText failed'); return topArticles; });
     const guidelines = await db.getGuidelinesByTopic(topic || '', { limit: 5 }).catch((err) => { logger.warn({ err }, 'getGuidelinesByTopic failed'); return []; });
 
-    let personalMisconceptions = [];
-    let inferredMisconceptions = [];
     let qualityHints = null;
-    if (userId && db) {
-        const learnerCtx = await buildLearnerContext(db, { userId, topic: topic || '' })
-            .catch((err) => { logger.warn({ err, userId, topic }, 'buildLearnerContext for synthesis failed'); return null; });
-        if (learnerCtx) {
-            personalMisconceptions = learnerCtx.personalMisconceptions || [];
-            inferredMisconceptions = learnerCtx.inferredMisconceptions || [];
-        }
-    }
     if (db && topic && typeof db.getSynthesisQualityHintsForTopic === 'function') {
         qualityHints = await db.getSynthesisQualityHintsForTopic(topic, { days: 90, limit: 15 })
             .catch((err) => { logger.warn({ err, topic }, 'getSynthesisQualityHintsForTopic failed'); return null; });
     }
 
-    let prompt = buildSynthesisPrompt(enrichedArticles, topic || 'General Medical Inquiry', guidelines, {
-        personalMisconceptions,
-        inferredMisconceptions,
-        qualityHints,
-        trainingStage: personalization.trainingStage,
-        previousQueries: personalization.previousQueries,
-        sessionDepth: personalization.sessionDepth,
-    });
+    const sharedTopic = canonicalQueryForCache(topic) || topic || 'General Medical Inquiry';
+    let prompt = buildSynthesisPrompt(enrichedArticles, sharedTopic, guidelines, { qualityHints });
     if (typeof appendRagContext === 'function' && sessionId && db) {
         try {
             prompt = await appendRagContext(prompt, {
@@ -331,12 +315,12 @@ async function prepareSynthesisContext({
 // Conflicts depend only on the topic, the papers and the guidelines -- not on who
 // asked -- yet ran again on every uncached synthesis. Bump the version when the
 // extraction prompt changes.
-const CONFLICT_CACHE_VERSION = 1;
+const CONFLICT_CACHE_VERSION = 2;
 const CONFLICT_CACHE_TTL_SECONDS = 7 * 24 * 3600;
 
 function conflictCacheKey(topic, topArticles, guidelines) {
     const digest = crypto.createHash('sha256').update(JSON.stringify({
-        topic: String(topic || '').trim().toLowerCase(),
+        topic: canonicalQueryForCache(topic),
         uids: (topArticles || []).map((a) => String(a.uid || '')).filter(Boolean).sort(),
         guidelines: (guidelines || []).map((g) => String(g.id ?? g.guidelineId ?? g.title ?? '')).filter(Boolean).sort(),
     })).digest('hex').slice(0, 40);

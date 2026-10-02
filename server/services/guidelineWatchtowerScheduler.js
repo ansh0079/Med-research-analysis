@@ -26,4 +26,33 @@ function stopGuidelineWatchtower() {
     }
 }
 
-module.exports = { scheduleGuidelineWatchtower, stopGuidelineWatchtower };
+// The watchtower itself stays paused: it proposes content changes. Marking a
+// guideline stale is maintenance and has to run while that proposer is off.
+let staleFlagIntervalId = null;
+
+function scheduleGuidelineStaleFlag(db, logger, { intervalMs = 24 * 60 * 60 * 1000 } = {}) {
+    if (staleFlagIntervalId) return;
+    const tick = withCronHeartbeat('guideline-stale-flag', async () => {
+        if (typeof db.flagStaleGuidelines !== 'function') return;
+        await db.flagStaleGuidelines();
+        logger.info('Guideline stale rows flagged');
+    }, { db, logger });
+    staleFlagIntervalId = setInterval(tick, intervalMs);
+    if (typeof staleFlagIntervalId.unref === 'function') staleFlagIntervalId.unref();
+    setTimeout(tick, 90_000);
+    logger.info({ intervalMs }, 'Guideline stale-flag scheduler started');
+}
+
+function stopGuidelineStaleFlag() {
+    if (staleFlagIntervalId) {
+        clearInterval(staleFlagIntervalId);
+        staleFlagIntervalId = null;
+    }
+}
+
+module.exports = {
+    scheduleGuidelineWatchtower,
+    stopGuidelineWatchtower,
+    scheduleGuidelineStaleFlag,
+    stopGuidelineStaleFlag,
+};

@@ -17,6 +17,7 @@ const { completeJobAndClaims } = require('../aiGenerationJobCompletion');
 const { enqueueAiGenerationJobIfClaimed, shouldEnqueueAiGenerationJob } = require('../aiGenerationJobEnqueue');
 const { buildFullSynthesisJobKey } = require('../synthesisPersonalization');
 const { getPromptVersion } = require('../../prompts/promptVersions');
+const { canonicalQueryForCache } = require('../../utils/topicKey');
 const { selectTopEvidence } = require('../../utils/selectTopEvidence');
 
 function stableHash(value) {
@@ -42,24 +43,26 @@ function withPromptVersion(promptKey, digest, prefix) {
     return `${prefix}:${stableHash({ digest, pv }).slice(0, 40)}:pv:${pv}`;
 }
 
-function consensusJobKey(topic, articles = []) {
-    const sourceIds = (articles || [])
+function evidenceIds(articles, limit) {
+    return (articles || [])
         .map((a) => a.uid || a.pmid || a.doi || a.title)
         .filter(Boolean)
-        .slice(0, 8);
-    return withPromptVersion('synopsis', { topic, sourceIds }, 'consensus');
+        .sort()
+        .slice(0, limit);
 }
 
-function liveClinicalAnswerJobKey(topic, articles = [], { previousQueries = [], trainingStage = null, sessionDepth = 0 } = {}) {
-    const sourceIds = (articles || [])
-        .map((a) => a.uid || a.pmid || a.doi || a.title)
-        .filter(Boolean)
-        .slice(0, 8);
-    return withPromptVersion(
-        'synthesis',
-        { topic, sourceIds, previousQueries: previousQueries.slice(-5), trainingStage, sessionDepth },
-        'live-ca',
-    );
+function consensusJobKey(topic, articles = []) {
+    return withPromptVersion('synopsis', {
+        topic: canonicalQueryForCache(topic),
+        sourceIds: evidenceIds(articles, 8),
+    }, 'consensus');
+}
+
+function liveClinicalAnswerJobKey(topic, articles = []) {
+    return withPromptVersion('synthesis', {
+        topic: canonicalQueryForCache(topic),
+        sourceIds: evidenceIds(articles, 8),
+    }, 'live-ca');
 }
 
 /**
@@ -130,9 +133,6 @@ async function generateLiveClinicalAnswer({
     topic,
     articles = [],
     guidelines = [],
-    previousQueries = [],
-    trainingStage = null,
-    sessionDepth = 0,
     serverConfig,
     fetchImpl,
     cache = null,
@@ -170,7 +170,8 @@ async function generateLiveClinicalAnswer({
     }
 
     const ai = getSharedAiService({ serverConfig, fetchImpl });
-    const prompt = buildSynthesisPrompt(topArticles, topic, guidelines, { previousQueries, trainingStage, sessionDepth });
+    const sharedTopic = canonicalQueryForCache(topic) || topic;
+    const prompt = buildSynthesisPrompt(topArticles, sharedTopic, guidelines, {});
     const { provider, model } = resolveProvider({ provider: 'auto', model: PINNED_MODELS.geminiQuality }, serverConfig);
     if (!provider) {
         return { clinicalAnswer: null, synthesis: null, provider: null, model: null };
@@ -534,6 +535,7 @@ async function getOrEnqueueLiveClinicalAnswer({ db, topic, articles = [], guidel
     const existing = await db.getAiGenerationJobByKey(resolvedJobKey).catch((err) => { logger.warn({ err }, 'getAiGenerationJobByKey failed'); return null; });
     const enqueueAnswer = () => enqueueLiveClinicalAnswerJob({ db, topic, articles, guidelines, previousQueries, trainingStage, sessionDepth, serverConfig, fetchImpl, cache, logger, jobKey: resolvedJobKey });
     if (existing?.status === 'completed' && existing.resultPayload) {
+        require('../ops/cacheLayerMetrics').recordCacheLayer('live-answer', true);
         await refreshIfStale({ db, job: existing, jobKey: resolvedJobKey, jobType: 'live_clinical_answer', enqueue: enqueueAnswer, logger });
         return { ...existing.resultPayload, jobKey: resolvedJobKey, cached: true };
     }
@@ -550,6 +552,7 @@ async function getOrEnqueueLiveClinicalAnswer({ db, topic, articles = [], guidel
         return { status: 'failed', jobKey: resolvedJobKey, clinicalAnswer: null, errorMessage: existing.errorMessage };
     }
 
+    require('../ops/cacheLayerMetrics').recordCacheLayer('live-answer', false);
     const createdLca = await db.createAiGenerationJob({
         jobKey: resolvedJobKey,
         jobType: 'live_clinical_answer',

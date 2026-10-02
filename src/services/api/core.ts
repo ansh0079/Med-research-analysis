@@ -58,6 +58,15 @@ registerAnalyticsInitializer(() => {
       dsn: viteDsn,
       environment: readViteEnv('MODE'),
       tracesSampleRate: Number.isFinite(tracesSampleRate) ? tracesSampleRate : 0.1,
+      beforeSend(event) {
+        const request = event.request;
+        if (request) {
+          const url = typeof request.url === 'string' ? request.url.split('?')[0] : request.url;
+          event.request = { method: request.method, url };
+        }
+        if (event.user) event.user = event.user.id ? { id: event.user.id } : {};
+        return event;
+      },
     });
   }
 });

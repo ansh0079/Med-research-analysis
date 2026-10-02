@@ -30,6 +30,21 @@ BETA_BASE_URL=https://staging.example.com npm run beta:safety
 
 The script wraps `verify:production-env`, checks rollback coverage for the newest migration, checks legal/privacy copy, checks telemetry sanitization keys, and optionally probes `/health`.
 
+## Status, 2 October 2026
+
+Ships with the shared synthesis cache: canonical topic keys, per-account login limits, the ranker gate in CI, and a daily guideline stale-flag that runs while the watchtower stays paused.
+
+Still not a commercial clearance:
+
+- Account journeys (verify email, reset replay, two-account isolation, logout, deletion) are manual checks against production. They are not done from this workspace.
+- Backup restore uses `scripts/backup-restore-drill.sh` into an isolated database. It is not a restore over the live database.
+- `/health` reports `cache.persistence.appendonly` after this deploy. Confirm it is `yes`.
+- Sentry events drop request bodies, query strings, prompts, and email. A live test error still has to be sent from production.
+- The ranker gate stays `NOT PROVEN` while learning outcomes, shadow samples, and gold labels are zero. Lane retrieval stays off.
+- 42 evaluation scenarios have no independent clinician labels. Automated tests do not fill that gap.
+- Collective-memory, topic-evolution, knowledge-drift, guideline-watchtower, and enrichment stay paused. Interaction capture is on. That is not a claim that reinforcement learning is improving production results.
+- Cache hit rate on `/health` `cache.layers` starts empty on the new process and is the number to watch after deploy.
+
 ## Manual Smoke Tests
 
 Run these against staging before cohort 0:
@@ -51,3 +66,7 @@ Run these against staging before cohort 0:
 
 - SOC 2, HITRUST, SAML, public paid billing, formal HIPAA-hosted service claims, external pentest, and full offline mode.
 - Do not defer privacy copy, no-PHI warnings, staging backups, restore drill, or live health monitoring.
+
+## Paid billing
+
+Deferred for the beta cohort. `PAYWALL_ENABLED` stays off, and these five values stay unset: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_RESEARCHER_PRICE_ID`, `STRIPE_PRO_PRICE_ID`, `STRIPE_TEAM_PRICE_ID`. Checkout reports that Stripe is not configured. `beta:safety` does not fail the cohort for their absence. Set `PAYWALL_ENABLED=true` only when all five are real; the production check then requires them.

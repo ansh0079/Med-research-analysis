@@ -116,7 +116,45 @@ async function evaluateSearchRankerPromotionGate(db, {
     };
 }
 
+const COVERAGE_CHECK_IDS = new Set([
+    'learning_outcomes',
+    'search_volume',
+    'shadow_samples',
+    'gold_coverage',
+    'database',
+]);
+
+/**
+ * Pre-deploy reading of a gate result.
+ * A measured quality miss blocks. A sample that is too small to judge is
+ * "not proven", never a pass, and does not by itself stop an unrelated deploy.
+ */
+function rankerGateVerdict(result, { strict = false } = {}) {
+    const checks = Array.isArray(result?.checks) ? result.checks : [];
+    const regressions = checks.filter((check) => check.status === 'fail' && !COVERAGE_CHECK_IDS.has(check.id));
+    const unproven = checks.filter((check) => check.status === 'insufficient_data' || (check.status === 'fail' && COVERAGE_CHECK_IDS.has(check.id)));
+    if (regressions.length > 0) {
+        return {
+            code: 1,
+            verdict: 'fail',
+            failed: regressions.map((check) => check.id),
+            insufficient: unproven.map((check) => check.id),
+        };
+    }
+    if (unproven.length > 0 || result?.recommendation !== 'evaluate') {
+        return {
+            code: strict ? 2 : 0,
+            verdict: 'not_proven',
+            failed: [],
+            insufficient: unproven.map((check) => check.id),
+        };
+    }
+    return { code: 0, verdict: 'proven', failed: [], insufficient: [] };
+}
+
 module.exports = {
     DEFAULT_THRESHOLDS,
+    COVERAGE_CHECK_IDS,
     evaluateSearchRankerPromotionGate,
+    rankerGateVerdict,
 };

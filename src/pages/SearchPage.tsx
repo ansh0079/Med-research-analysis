@@ -617,8 +617,8 @@ export const SearchPage: React.FC = () => {
           )}
         </section>
 
-        {results.length > 0 && (
-          <section id="workspace-guidelines" role="tabpanel" hidden={workspaceTab !== 'guidelines'} className="scroll-mt-28">
+        {results.length > 0 && workspaceTab === 'guidelines' && (
+          <section id="workspace-guidelines" role="tabpanel" className="scroll-mt-28">
             <GuidelineSnapshot query={resultsQuery || currentQuery} articles={results} workspace={guidelineWorkspace} autoRunAlignment={requestGuidelineAlignment} />
           </section>
         )}

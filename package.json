@@ -99,6 +99,8 @@
     "eval:search-ranking": "node scripts/eval-search-ranking.js",
     "eval:datasets": "node scripts/eval-dataset-check.js",
     "eval:heldout": "node scripts/eval-heldout.js",
+    "check:ranker-gate": "node scripts/check-ranker-gate.js",
+    "check:redis-aof": "node scripts/check-redis-aof.js",
     "eval:worksheet": "node scripts/heldout-worksheet.js",
     "eval:heldout:import": "node scripts/heldout-import-judgements.js",
     "audit:legacy-content": "node scripts/audit-legacy-content.js",

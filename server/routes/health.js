@@ -60,6 +60,20 @@ async function checkDatabaseHealth(db) {
     }
 }
 
+async function readRedisPersistence(cache) {
+    const redis = cache?.redis;
+    if (!redis || typeof redis.config !== 'function') {
+        return { configured: false, appendonly: null };
+    }
+    try {
+        const reply = await redis.config('GET', 'appendonly');
+        const value = Array.isArray(reply) ? String(reply[1] || '') : '';
+        return { configured: true, appendonly: value || 'unknown' };
+    } catch {
+        return { configured: true, appendonly: 'unreadable' };
+    }
+}
+
 function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metricsRegistry }) {
     app.get('/health', async (req, res) => {
         try {
@@ -97,6 +111,8 @@ function registerHealthRoutes(app, { serverConfig, clientConfig, cache, db, metr
                 cache: {
                     keys: cacheStats.keys,
                     hitRate: cacheStats.hitRate,
+                    layers: await require('../services/ops/cacheLayerMetrics').cacheLayerSnapshot(),
+                    persistence: await readRedisPersistence(cache),
                 },
                 databaseContract: {
                     ok: databaseContract.ok,

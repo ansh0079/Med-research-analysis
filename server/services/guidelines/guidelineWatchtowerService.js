@@ -116,6 +116,11 @@ async function runGuidelineWatchtowerScan(db, topic, { limit = 40, cache = null 
 }
 
 async function runGuidelineWatchtowerBatch(db, { topicLimit = 8, cache = null } = {}) {
+    if (typeof db.flagStaleGuidelines === 'function') {
+        await db.flagStaleGuidelines().catch((err) => {
+            logger.warn({ err }, 'guideline stale flag failed');
+        });
+    }
     const rows = await db.all?.(
         `SELECT DISTINCT normalized_topic AS topic FROM teaching_object_claims
          WHERE normalized_topic IS NOT NULL AND normalized_topic != ''

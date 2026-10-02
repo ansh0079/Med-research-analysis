@@ -222,11 +222,9 @@ describe('getGuidelinesByTopic ranking', () => {
         } finally { sqlite.close(); }
     });
 
-    it('matches the hyphenated storage key itself, not just the fuzzy widening', async () => {
+    it('does not write stale status on read; the watchtower job does', async () => {
         const { db, sqlite, insert } = buildDb();
         try {
-            // The stale-flag UPDATE runs only against the exact topic keys, never the
-            // widened LIKE probe, so its effect proves which path matched the row.
             insert({
                 topic: 'iron-deficiency anaemia', normalized_topic: 'iron-deficiency anaemia',
                 source_body: 'WHO', source_year: 2026,
@@ -235,9 +233,10 @@ describe('getGuidelinesByTopic ranking', () => {
             sqlite.prepare("UPDATE topic_guidelines SET last_checked_at = '2019-01-01T00:00:00.000Z'").run();
 
             await db.getGuidelinesByTopic('iron deficiency anaemia', { limit: 5 });
+            expect(sqlite.prepare('SELECT status FROM topic_guidelines').get().status).toBe('human_reviewed');
 
-            const status = sqlite.prepare('SELECT status FROM topic_guidelines').get().status;
-            expect(status).toBe('stale');
+            await db.flagStaleGuidelines();
+            expect(sqlite.prepare('SELECT status FROM topic_guidelines').get().status).toBe('stale');
         } finally { sqlite.close(); }
     });
 
