@@ -3,6 +3,10 @@
 const Sqlite = require('better-sqlite3');
 const mixin = require('../../database/mixins/m02a-guidelines');
 
+// The stale-flag sweep is throttled to once per hour per process; reset it
+// before each test so every test sees the sweep regardless of run order.
+beforeEach(() => mixin.__resetGuidelineStaleSweepForTests());
+
 function buildDb() {
     const sqlite = new Sqlite(':memory:');
     sqlite.exec(`CREATE TABLE topic_guidelines (
