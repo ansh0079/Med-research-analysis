@@ -197,6 +197,10 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
                     maxOutputTokens: maxOutputTokens ?? (prompt.length > 5000 ? 2500 : 1024),
                     topP: 0.95,
                     topK: 40,
+                    // Same as the non-streaming path (externalApiProxy): 2.5 Flash thinks by
+                    // default, bills those tokens as output, and they eat into maxOutputTokens.
+                    // Pro models reject a zero budget.
+                    ...(/pro/i.test(modelName) ? {} : { thinkingConfig: { thinkingBudget: 0 } }),
                 },
             }),
         });

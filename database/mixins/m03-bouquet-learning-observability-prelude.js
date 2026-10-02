@@ -148,17 +148,40 @@ async getStaleTopicsForRefresh({ minSignalCount = 3, maxAgeDays = 90, minPriorit
     );
     if (!signalRows.length) return [];
 
-    const normalizedTopics = signalRows.map((r) => r.normalized_topic);
-    const placeholders = normalizedTopics.map(() => '?').join(',');
-    const knowledgeRows = await this.all(
-        `SELECT id, normalized_topic, topic, knowledge, confidence, last_refreshed_at, status
-         FROM topic_knowledge
-         WHERE normalized_topic IN (${placeholders})`,
-        normalizedTopics
-    );
-    const knowledgeByTopic = new Map(knowledgeRows.map((k) => [k.normalized_topic, k]));
+    // upsertTopicKnowledge saves "AKI diagnosis" onto the canonical row ("acute kidney
+    // injury"), so looking rows up by the literal normalized_topic never found it: the
+    // topic stayed "never refreshed" and was regenerated every hourly run (~46 Gemini
+    // calls/day each for AKI and PE). Resolve the same way the writer does, canonical
+    // first, and refresh each canonical topic at most once per run.
+    const canonOf = (row) => resolveCanonicalNormalized(row.display_topic || row.normalized_topic, (s) => this.normalizeTopic(s));
+    const seenCanon = new Set();
+    const uniqueRows = signalRows.filter((row) => {
+        const key = canonOf(row) || row.normalized_topic;
+        if (seenCanon.has(key)) return false;
+        seenCanon.add(key);
+        return true;
+    });
 
-    return signalRows
+    const normalizedTopics = uniqueRows.map((r) => r.normalized_topic);
+    const canonTopics = [...new Set(uniqueRows.map(canonOf).filter(Boolean))];
+    const keys = [...normalizedTopics, ...canonTopics];
+    const normPlaceholders = normalizedTopics.map(() => '?').join(',');
+    const canonClause = canonTopics.length ? ` OR canonical_normalized IN (${canonTopics.map(() => '?').join(',')})` : '';
+    const knowledgeRows = await this.all(
+        `SELECT id, normalized_topic, canonical_normalized, topic, knowledge, confidence, last_refreshed_at, status
+         FROM topic_knowledge
+         WHERE normalized_topic IN (${normPlaceholders})${canonClause}`,
+        keys
+    );
+    const byNorm = new Map(knowledgeRows.map((k) => [k.normalized_topic, k]));
+    const byCanon = new Map(knowledgeRows.filter((k) => k.canonical_normalized).map((k) => [k.canonical_normalized, k]));
+    const knowledgeFor = (row) => {
+        const canon = canonOf(row);
+        return (canon && byCanon.get(canon)) || byNorm.get(row.normalized_topic) || null;
+    };
+    const knowledgeByTopic = new Map(uniqueRows.map((r) => [r.normalized_topic, knowledgeFor(r)]));
+
+    return uniqueRows
         .filter((s) => {
             const tk = knowledgeByTopic.get(s.normalized_topic);
             if (!tk) return true;

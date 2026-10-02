@@ -22,6 +22,10 @@ const cache = require('../../cache');
 const { safeFetch } = require('../utils/fetch');
 
 const args = process.argv.slice(2);
+if (!args.includes('--limit') && !args.includes('--dry-run')) {
+    console.error('Refusing to run without --limit <n>: each item is a paid Gemini call. Use --dry-run to preview.');
+    process.exit(1);
+}
 const LIMIT = args.includes('--limit') ? parseInt(args[args.indexOf('--limit') + 1]) : 9999;
 const DRY_RUN = args.includes('--dry-run');
 const FORCE = args.includes('--force');
@@ -124,7 +128,7 @@ async function callGemini(prompt) {
             headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
             body: JSON.stringify({
                 contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                generationConfig: { temperature: 0.4, maxOutputTokens: 8192 },
+                generationConfig: { temperature: 0.4, maxOutputTokens: 8192, thinkingConfig: { thinkingBudget: 0 } },
             }),
         }
     );

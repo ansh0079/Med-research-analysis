@@ -90,7 +90,7 @@ services:
       # Global daily ceiling on LLM spend, and the operator kill switch.
       # Without these passed through, the guard silently falls back to its
       # built-in default and the kill switch cannot be engaged at all.
-      LLM_DAILY_COST_CAP_USD: ${LLM_DAILY_COST_CAP_USD:-25}
+      LLM_DAILY_COST_CAP_USD: ${LLM_DAILY_COST_CAP_USD:-10}
       LLM_SPEND_KILL_SWITCH: ${LLM_SPEND_KILL_SWITCH:-false}
       JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
       # Production readiness refuses to boot without it. Fail at compose time, not in a restart loop.
@@ -186,7 +186,7 @@ services:
       # Global daily ceiling on LLM spend, and the operator kill switch.
       # Without these passed through, the guard silently falls back to its
       # built-in default and the kill switch cannot be engaged at all.
-      LLM_DAILY_COST_CAP_USD: ${LLM_DAILY_COST_CAP_USD:-25}
+      LLM_DAILY_COST_CAP_USD: ${LLM_DAILY_COST_CAP_USD:-10}
       LLM_SPEND_KILL_SWITCH: ${LLM_SPEND_KILL_SWITCH:-false}
       JWT_SECRET: ${JWT_SECRET}
       # Behaviour switches - keep identical to the web service block.

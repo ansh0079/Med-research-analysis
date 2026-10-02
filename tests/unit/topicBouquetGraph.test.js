@@ -110,6 +110,27 @@ describe('Topic bouquet graph (real SQLite)', () => {
         expect(stale[0].priorityScore).toBeGreaterThan(stale[1].priorityScore);
     });
 
+    test('getStaleTopicsForRefresh sees knowledge saved under the canonical topic (no hourly re-extraction)', async () => {
+        const papers = [
+            { uid: 'aki-1', archetype: 'guideline', compositeScore: 0.9 },
+            { uid: 'aki-2', archetype: 'review', compositeScore: 0.8 },
+            { uid: 'aki-3', archetype: 'rct', compositeScore: 0.7 },
+        ];
+        await db.recordBouquetSignals('AKI diagnosis', papers);
+        // As on production: the canonical topic already has a row, so the write updates it in place.
+        await db.upsertTopicKnowledge('Acute kidney injury', { mentorMessage: 'Existing AKI guide' }, [], 'ai_generated', 0.65);
+        const old = '2025-01-01T00:00:00.000Z';
+        await db.run('UPDATE topic_knowledge SET last_refreshed_at = ?, updated_at = ?', [old, old]);
+        const before = await db.getStaleTopicsForRefresh({ minSignalCount: 3, maxAgeDays: 90, minPriorityScore: 0, limit: 5 });
+        expect(before.map((t) => t.normalizedTopic)).toContain(db.normalizeTopic('AKI diagnosis'));
+
+        // The writer resolves "AKI diagnosis" to the canonical "acute kidney injury" row.
+        await db.upsertTopicKnowledge('AKI diagnosis', { mentorMessage: 'AKI guide' }, [], 'ai_generated', 0.65);
+
+        const after = await db.getStaleTopicsForRefresh({ minSignalCount: 3, maxAgeDays: 90, minPriorityScore: 0, limit: 5 });
+        expect(after.map((t) => t.normalizedTopic)).not.toContain(db.normalizeTopic('AKI diagnosis'));
+    });
+
     test('getStrongMemoryTopicsForRefresh finds high-confidence topics with community engagement', async () => {
         const now = new Date().toISOString();
         const old = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
