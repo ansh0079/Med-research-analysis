@@ -44,8 +44,10 @@ export function AdminObservabilityPage() {
   }> | null>(null);
   const [togglingAutomation, setTogglingAutomation] = useState(false);
   const [costDashboard, setCostDashboard] = useState<{
-    totals: { llmCalls: number; estimatedCostUsd: number; synopsesGenerated: number; failedCalls: number };
-    byOperation: Array<{ operation: string; callCount: number; estimatedCostUsd: number }>;
+    totals: { llmCalls: number; estimatedCostUsd: number; estimatedInputTokens: number; estimatedOutputTokens: number; avgDurationMs: number; avgCostPerSuccessfulCallUsd: number; synopsesGenerated: number; failedCalls: number };
+    byOperation: Array<{ operation: string; callCount: number; estimatedCostUsd: number; estimatedInputTokens: number; estimatedOutputTokens: number; avgDurationMs: number }>;
+    synopsisReuse: { cached: number; generated: number; unknown: number; reuseRate: number };
+    dailySpend: { day: string; spentUsd: number; capUsd: number; remainingUsd: number; pctUsed: number; killSwitch: boolean; shared: boolean };
     highCostTopics: Array<{ normalizedTopic: string; estimatedCostUsd: number; callCount: number }>;
     failedLlmCalls: Array<{ operation: string; errorMessage: string | null; createdAt: string }>;
     failedGenerationJobs: Array<{ jobKey: string; jobType: string; errorMessage: string | null }>;
@@ -292,8 +294,13 @@ export function AdminObservabilityPage() {
 
             {costDashboard && (
               <section className="neo-card p-4 space-y-4">
-                <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">LLM cost (30 days)</h2>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">LLM cost and reliability (30 days)</h2>
+                  <span className={`rounded-full px-3 py-1 text-[10px] font-bold ${costDashboard.dailySpend.killSwitch || costDashboard.dailySpend.pctUsed >= 90 ? 'bg-rose-100 text-rose-700' : costDashboard.dailySpend.pctUsed >= 70 ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
+                    Today ${costDashboard.dailySpend.spentUsd.toFixed(2)} / ${costDashboard.dailySpend.capUsd.toFixed(2)} ({costDashboard.dailySpend.pctUsed.toFixed(1)}%){costDashboard.dailySpend.killSwitch ? ' · paused' : ''}
+                  </span>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
                   <div className="rounded-lg border border-slate-200 dark:border-slate-700 p-3">
                     <p className="text-[10px] text-slate-500">LLM calls</p>
                     <p className="text-xl font-black text-slate-900 dark:text-white">{costDashboard.totals.llmCalls}</p>
@@ -310,7 +317,30 @@ export function AdminObservabilityPage() {
                     <p className="text-[10px] text-slate-500">Failed AI calls</p>
                     <p className="text-xl font-black text-rose-600">{costDashboard.totals.failedCalls}</p>
                   </div>
+                  <div className="rounded-lg border border-slate-200 dark:border-slate-700 p-3">
+                    <p className="text-[10px] text-slate-500">Output / input tokens</p>
+                    <p className="text-xl font-black text-slate-900 dark:text-white">{costDashboard.totals.estimatedOutputTokens.toLocaleString()}</p>
+                    <p className="text-[10px] text-slate-400">{costDashboard.totals.estimatedInputTokens.toLocaleString()} input</p>
+                  </div>
+                  <div className="rounded-lg border border-slate-200 dark:border-slate-700 p-3">
+                    <p className="text-[10px] text-slate-500">Synopsis cache reuse</p>
+                    <p className="text-xl font-black text-indigo-600">{costDashboard.synopsisReuse.reuseRate.toFixed(1)}%</p>
+                    <p className="text-[10px] text-slate-400">{costDashboard.synopsisReuse.cached} reused · {costDashboard.synopsisReuse.generated} fresh</p>
+                  </div>
                 </div>
+                {costDashboard.byOperation.length > 0 && (
+                  <div className="overflow-x-auto">
+                    <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">Cost by operation</p>
+                    <table className="w-full text-xs">
+                      <thead><tr className="text-left text-slate-400"><th className="py-1 pr-3">Operation</th><th className="py-1 pr-3">Calls</th><th className="py-1 pr-3">Output tokens</th><th className="py-1 pr-3">Average latency</th><th className="py-1 text-right">Cost</th></tr></thead>
+                      <tbody>{costDashboard.byOperation.map((op) => (
+                        <tr key={op.operation} className="border-t border-slate-100 dark:border-slate-800">
+                          <td className="py-1.5 pr-3 font-mono">{op.operation}</td><td className="py-1.5 pr-3">{op.callCount}</td><td className="py-1.5 pr-3">{op.estimatedOutputTokens.toLocaleString()}</td><td className="py-1.5 pr-3">{(op.avgDurationMs / 1000).toFixed(1)}s</td><td className="py-1.5 text-right font-mono">${op.estimatedCostUsd.toFixed(4)}</td>
+                        </tr>
+                      ))}</tbody>
+                    </table>
+                  </div>
+                )}
                 {costDashboard.highCostTopics.length > 0 && (
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">High-cost topics</p>

@@ -7,6 +7,7 @@ interface Props {
   contribution?: NonNullable<SynthesisResult['synthesis']['paperContributions']>[number];
   includedCount: number;
   retrievedCount: number;
+  onSourceOpen?: () => void;
 }
 
 export const SynthesisFeaturedEvidence: React.FC<Props> = ({
@@ -14,6 +15,7 @@ export const SynthesisFeaturedEvidence: React.FC<Props> = ({
   contribution,
   includedCount,
   retrievedCount,
+  onSourceOpen,
 }) => {
   const evidenceType = getEvidenceTypeDisplay(article);
   const year = article.year || (article.pubdate ? String(article.pubdate).slice(0, 4) : null);
@@ -38,6 +40,11 @@ export const SynthesisFeaturedEvidence: React.FC<Props> = ({
       <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
         {evidenceType.label}{year ? ` · ${year}` : ''}{article.journal || article.source ? ` · ${article.journal || article.source}` : ''}
       </p>
+      {typeof article._rerank?.overallScore === 'number' && (
+        <p className="mt-2 inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
+          Clinical match {Math.round(article._rerank.overallScore * 100)}%
+        </p>
+      )}
       {contribution?.mainContribution && (
         <p className="mt-3 text-xs leading-relaxed text-slate-700 dark:text-slate-300">
           {contribution.mainContribution}
@@ -48,6 +55,7 @@ export const SynthesisFeaturedEvidence: React.FC<Props> = ({
           href={sourceHref}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={onSourceOpen}
           className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-indigo-700 hover:text-indigo-500 dark:text-indigo-300"
         >
           Open source <i className="fas fa-arrow-up-right-from-square text-[9px]" aria-hidden />

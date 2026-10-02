@@ -37,9 +37,10 @@ interface SynthesisPanelProps {
   onClose: () => void;
   onGenerateCase?: () => void;
   onSearch?: (query: string) => void;
+  onSourceOpen?: (article: Article, index: number) => void;
 }
 
-const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articles, onClose, onGenerateCase, onSearch }) => {
+const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articles, onClose, onGenerateCase, onSearch, onSourceOpen }) => {
   const {
     s,
     grade,
@@ -182,6 +183,7 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
             contribution={s.paperContributions?.find((item) => item.studyIndex === 1)}
             includedCount={result.articleCount}
             retrievedCount={result.retrievedArticleCount || result.articleCount}
+            onSourceOpen={() => onSourceOpen?.(articles[0], 0)}
           />
         )}
 
@@ -378,7 +380,7 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
           onCheck={checkAlignment}
         />
 
-        <SynthesisSourcePapers articles={articles} />
+        <SynthesisSourcePapers articles={articles} onSourceOpen={onSourceOpen} />
 
         <SynthesisQualityFeedback topic={result.topic} />
 

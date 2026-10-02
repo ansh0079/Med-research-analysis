@@ -21,6 +21,24 @@ describe('selectTopEvidence (server)', () => {
         const top = selectTopEvidence(articles, 3).map((a) => a.title);
         expect(top).toEqual(['winner', 'second', 'best preprint']);
     });
+
+    it('does not feature a known population mismatch when enough direct evidence exists', () => {
+        const articles = [
+            { title: 'Adult meta-analysis for a paediatric query', _ebmScore: 10, _quality: { grade: 'A' }, _rerank: { overallScore: 0.9, exclusionFlags: ['population_mismatch'] } },
+            { title: 'Direct trial', _ebmScore: 8, _quality: { grade: 'A' }, _rerank: { overallScore: 0.9, exclusionFlags: [] } },
+            { title: 'Direct review', _ebmScore: 7, _quality: { grade: 'B' }, _rerank: { overallScore: 0.8, exclusionFlags: [] } },
+            { title: 'Direct cohort', _ebmScore: 5, _quality: { grade: 'B' }, _rerank: { overallScore: 0.7, exclusionFlags: [] } },
+        ];
+        expect(selectTopEvidence(articles, 3).map((a) => a.title)).toEqual(['Direct trial', 'Direct review', 'Direct cohort']);
+    });
+
+    it('uses clinical match to break ties within the same evidence tier', () => {
+        const articles = [
+            { title: 'Less direct', _ebmScore: 8, _quality: { grade: 'A' }, _rerank: { overallScore: 0.55, exclusionFlags: [] } },
+            { title: 'More direct', _ebmScore: 8, _quality: { grade: 'A' }, _rerank: { overallScore: 0.92, exclusionFlags: [] } },
+        ];
+        expect(selectTopEvidence(articles, 2).map((a) => a.title)).toEqual(['More direct', 'Less direct']);
+    });
 });
 
 describe('expandNormalizedTopicKeys', () => {

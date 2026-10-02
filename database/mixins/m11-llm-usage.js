@@ -42,6 +42,8 @@ module.exports = function applyM11LlmUsage(Sup) {
                 failedCalls,
                 highCostTopics,
                 synopsisCount,
+                dailyUsage,
+                synopsisEvents,
             ] = await Promise.all([
                 this.get(
                     `SELECT
@@ -49,7 +51,9 @@ module.exports = function applyM11LlmUsage(Sup) {
                         SUM(CASE WHEN success = 1 THEN 1 ELSE 0 END) AS success_count,
                         SUM(CASE WHEN success = 0 THEN 1 ELSE 0 END) AS failed_count,
                         SUM(COALESCE(estimated_cost_usd, 0)) AS estimated_cost_usd,
-                        SUM(COALESCE(estimated_input_tokens, 0) + COALESCE(estimated_output_tokens, 0)) AS estimated_tokens
+                        SUM(COALESCE(estimated_input_tokens, 0)) AS estimated_input_tokens,
+                        SUM(COALESCE(estimated_output_tokens, 0)) AS estimated_output_tokens,
+                        AVG(CASE WHEN success = 1 THEN duration_ms ELSE NULL END) AS avg_duration_ms
                      FROM llm_usage_log
                      WHERE created_at >= ?`,
                     [since]
@@ -57,6 +61,9 @@ module.exports = function applyM11LlmUsage(Sup) {
                 this.all(
                     `SELECT operation, COUNT(*) AS call_count,
                             SUM(COALESCE(estimated_cost_usd, 0)) AS estimated_cost_usd,
+                            SUM(COALESCE(estimated_input_tokens, 0)) AS estimated_input_tokens,
+                            SUM(COALESCE(estimated_output_tokens, 0)) AS estimated_output_tokens,
+                            AVG(CASE WHEN success = 1 THEN duration_ms ELSE NULL END) AS avg_duration_ms,
                             SUM(CASE WHEN success = 0 THEN 1 ELSE 0 END) AS failed_count
                      FROM llm_usage_log
                      WHERE created_at >= ?
@@ -89,7 +96,39 @@ module.exports = function applyM11LlmUsage(Sup) {
                      WHERE created_at >= ? AND operation IN ('synopsis', 'paper_synopsis', 'consensus_synopsis', 'synthesis')`,
                     [since]
                 ).catch(() => ({ count: 0 })),
+                this.all(
+                    `SELECT DATE(created_at) AS usage_day,
+                            COUNT(*) AS call_count,
+                            SUM(COALESCE(estimated_cost_usd, 0)) AS estimated_cost_usd,
+                            SUM(COALESCE(estimated_input_tokens, 0)) AS estimated_input_tokens,
+                            SUM(COALESCE(estimated_output_tokens, 0)) AS estimated_output_tokens
+                     FROM llm_usage_log
+                     WHERE created_at >= ?
+                     GROUP BY DATE(created_at)
+                     ORDER BY usage_day ASC`,
+                    [since]
+                ).catch(() => []),
+                this.all(
+                    `SELECT payload_json FROM learning_events
+                     WHERE occurred_at >= ? AND event_type = 'synopsis_presented'`,
+                    [since]
+                ).catch(() => []),
             ]);
+
+            const reuse = synopsisEvents.reduce((acc, row) => {
+                try {
+                    const payload = JSON.parse(row.payload_json || '{}');
+                    if (payload.cached === true) acc.cached += 1;
+                    else acc.generated += 1;
+                } catch {
+                    acc.unknown += 1;
+                }
+                return acc;
+            }, { cached: 0, generated: 0, unknown: 0 });
+            const totalInputTokens = Number(totals?.estimated_input_tokens || 0);
+            const totalOutputTokens = Number(totals?.estimated_output_tokens || 0);
+            const successCalls = Number(totals?.success_count || 0);
+            const totalCost = Number(totals?.estimated_cost_usd || 0);
 
             const failedJobs = await this.all(
                 `SELECT job_key, job_type, status, error_message, updated_at
@@ -105,18 +144,38 @@ module.exports = function applyM11LlmUsage(Sup) {
                 windowDays: safeDays,
                 totals: {
                     llmCalls: Number(totals?.call_count || 0),
-                    successCalls: Number(totals?.success_count || 0),
+                    successCalls,
                     failedCalls: Number(totals?.failed_count || 0),
-                    estimatedCostUsd: Math.round(Number(totals?.estimated_cost_usd || 0) * 10000) / 10000,
-                    estimatedTokens: Number(totals?.estimated_tokens || 0),
+                    estimatedCostUsd: Math.round(totalCost * 10000) / 10000,
+                    estimatedInputTokens: totalInputTokens,
+                    estimatedOutputTokens: totalOutputTokens,
+                    estimatedTokens: totalInputTokens + totalOutputTokens,
+                    avgDurationMs: Math.round(Number(totals?.avg_duration_ms || 0)),
+                    avgCostPerSuccessfulCallUsd: successCalls > 0 ? Math.round((totalCost / successCalls) * 1000000) / 1000000 : 0,
                     synopsesGenerated: Number(synopsisCount?.count || 0),
                 },
                 byOperation: byOperation.map((r) => ({
                     operation: r.operation,
                     callCount: Number(r.call_count || 0),
                     estimatedCostUsd: Math.round(Number(r.estimated_cost_usd || 0) * 10000) / 10000,
+                    estimatedInputTokens: Number(r.estimated_input_tokens || 0),
+                    estimatedOutputTokens: Number(r.estimated_output_tokens || 0),
+                    avgDurationMs: Math.round(Number(r.avg_duration_ms || 0)),
                     failedCount: Number(r.failed_count || 0),
                 })),
+                dailyUsage: dailyUsage.map((r) => ({
+                    day: r.usage_day,
+                    callCount: Number(r.call_count || 0),
+                    estimatedCostUsd: Math.round(Number(r.estimated_cost_usd || 0) * 10000) / 10000,
+                    estimatedInputTokens: Number(r.estimated_input_tokens || 0),
+                    estimatedOutputTokens: Number(r.estimated_output_tokens || 0),
+                })),
+                synopsisReuse: {
+                    ...reuse,
+                    reuseRate: reuse.cached + reuse.generated > 0
+                        ? Math.round((reuse.cached / (reuse.cached + reuse.generated)) * 1000) / 10
+                        : 0,
+                },
                 failedLlmCalls: failedCalls.map((r) => ({
                     operation: r.operation,
                     provider: r.provider,

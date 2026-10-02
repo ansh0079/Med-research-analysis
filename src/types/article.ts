@@ -45,6 +45,17 @@ export interface Article {
   _retraction?: RetractionStatus;
   _ebmScore?: number;
   _ebmLabel?: { label: string; short: string };
+  /** Clinical applicability scores from PICO reranking. */
+  _rerank?: {
+    populationMatch?: number;
+    interventionMatch?: number;
+    outcomeMatch?: number;
+    studyDesignScore?: number;
+    overallScore?: number;
+    blendedScore?: number;
+    exclusionFlags?: string[];
+    rationale?: string;
+  };
   _isPreprint?: boolean;
   /** Eligibility route that admitted this article to the result set. */
   _eligibilityRoute?: 'concept' | 'registry' | 'curated_landmark' | 'verified_topic_link' | 'semantic_rescue' | null;

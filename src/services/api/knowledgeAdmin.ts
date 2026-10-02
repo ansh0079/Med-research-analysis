@@ -309,10 +309,17 @@ export class KnowledgeAdminApi extends KnowledgeCoreApi {
         successCalls: number;
         failedCalls: number;
         estimatedCostUsd: number;
+        estimatedInputTokens: number;
+        estimatedOutputTokens: number;
         estimatedTokens: number;
+        avgDurationMs: number;
+        avgCostPerSuccessfulCallUsd: number;
         synopsesGenerated: number;
       };
-      byOperation: Array<{ operation: string; callCount: number; estimatedCostUsd: number; failedCount: number }>;
+      byOperation: Array<{ operation: string; callCount: number; estimatedCostUsd: number; estimatedInputTokens: number; estimatedOutputTokens: number; avgDurationMs: number; failedCount: number }>;
+      dailyUsage: Array<{ day: string; callCount: number; estimatedCostUsd: number; estimatedInputTokens: number; estimatedOutputTokens: number }>;
+      synopsisReuse: { cached: number; generated: number; unknown: number; reuseRate: number };
+      dailySpend: { day: string; spentUsd: number; capUsd: number; remainingUsd: number; pctUsed: number; killSwitch: boolean; shared: boolean };
       failedLlmCalls: Array<{ operation: string; provider: string | null; model: string | null; normalizedTopic: string | null; errorMessage: string | null; createdAt: string }>;
       failedGenerationJobs: Array<{ jobKey: string; jobType: string; errorMessage: string | null; updatedAt: string | null }>;
       highCostTopics: Array<{ normalizedTopic: string; callCount: number; estimatedCostUsd: number }>;

@@ -29,6 +29,8 @@ import { SearchResultsGrid } from '@components/search/SearchResultsGrid';
 import { SearchPageFooter } from '@components/search/SearchPageFooter';
 import { useSearchPage } from '@hooks/useSearchPage';
 import { useGuidelineWorkspaceSummary } from '@hooks/useGuidelineWorkspaceSummary';
+import { api } from '@services/api';
+import type { BriefDifficulty } from '@components/search/TopicBriefPanel';
 import {
   buildSearchWorkspaceParams,
   chooseDefaultWorkspaceTab,
@@ -201,6 +203,73 @@ export const SearchPage: React.FC = () => {
 
   const workspaceQuery = results.length > 0 ? (resultsQuery || currentQuery) : '';
   const guidelineWorkspace = useGuidelineWorkspaceSummary(workspaceQuery, results);
+  const learningTopic = resultsQuery || currentQuery;
+  const synopsisViewRef = React.useRef<{ key: string; startedAt: number } | null>(null);
+
+  const logSearchLearningEvent = React.useCallback((
+    eventType: string,
+    payload: Record<string, unknown> = {},
+    sourceType = 'search',
+    sourceId?: string | number,
+  ) => {
+    if (!isAuthenticated || !learningTopic.trim()) return;
+    void api.learning.logLearningEvent({
+      eventType,
+      topic: learningTopic,
+      sourceType,
+      sourceId,
+      payload: {
+        searchId: lastSearchId ?? null,
+        resultCount: results.length,
+        ...payload,
+      },
+    }).catch(() => {
+      // Measurement must never interrupt the evidence workflow.
+    });
+  }, [isAuthenticated, lastSearchId, learningTopic, results.length]);
+
+  React.useEffect(() => {
+    if (!isAuthenticated || !resultsQuery || results.length === 0) return;
+    logSearchLearningEvent('search_workspace_viewed', {
+      defaultTab: workspaceTab,
+      queryIntent: queryIntent ?? null,
+    });
+  // One impression per completed result set. Tab changes are recorded separately.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, resultsQuery, searchCompletedAt]);
+
+  React.useEffect(() => {
+    if (workspaceTab !== 'learn') return;
+    logSearchLearningEvent('learning_workspace_opened', {
+      hasSynopsis: Boolean(synthesis),
+      selectedSourceCount: selectedArticles.length,
+    });
+  // Log the transition into the learning workspace, not every state change inside it.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workspaceTab, resultsQuery]);
+
+  React.useEffect(() => {
+    if (!synthesis || !isAuthenticated) return;
+    const key = String(synthesis.jobKey || synthesis.timestamp || `${learningTopic}:${synthesis.articleCount}`);
+    if (synopsisViewRef.current?.key === key) return;
+    synopsisViewRef.current = { key, startedAt: Date.now() };
+    logSearchLearningEvent('synopsis_presented', {
+      jobKey: synthesis.jobKey ?? null,
+      cached: Boolean(synthesis.cached),
+      sourceCount: synthesis.articleCount,
+      retrievedSourceCount: synthesis.retrievedArticleCount ?? synthesis.articleCount,
+    }, 'synthesis', synthesis.jobKey ?? key);
+    return () => {
+      const active = synopsisViewRef.current;
+      if (!active || active.key !== key) return;
+      synopsisViewRef.current = null;
+      logSearchLearningEvent('synopsis_view_ended', {
+        jobKey: synthesis.jobKey ?? null,
+        dwellMs: Math.max(0, Date.now() - active.startedAt),
+        cached: Boolean(synthesis.cached),
+      }, 'synthesis', synthesis.jobKey ?? key);
+    };
+  }, [isAuthenticated, learningTopic, logSearchLearningEvent, synthesis]);
 
   React.useEffect(() => {
     if (!resultsQuery || guidelineWorkspace.query !== resultsQuery || guidelineWorkspace.loading) return;
@@ -264,8 +333,14 @@ export const SearchPage: React.FC = () => {
     onReviewTopicKnowledge: handleReviewTopicKnowledge,
     onAnchorVerifyKeyChange: setAnchorVerifyKey,
     onAgentGuidanceChange: setAgentGuidance,
-    onOpenCase: openCaseFromWorkflow,
-    onOpenQuiz: openQuizFromWorkflow,
+    onOpenCase: (difficulty?: BriefDifficulty) => {
+      logSearchLearningEvent('case_opened', { difficulty: difficulty ?? 'mixed', entryPoint: 'workflow' }, 'case');
+      openCaseFromWorkflow(difficulty);
+    },
+    onOpenQuiz: (difficulty?: BriefDifficulty) => {
+      logSearchLearningEvent('quiz_opened', { difficulty: difficulty ?? 'mixed', entryPoint: 'workflow' }, 'quiz');
+      openQuizFromWorkflow(difficulty);
+    },
     onSynthesize: handleSynthesize,
     onSearch: handleSearch,
     onOpenGuideline: openGuidelineFromWorkflow,
@@ -341,6 +416,7 @@ export const SearchPage: React.FC = () => {
       openQuizFromWorkflow('mixed');
       return;
     }
+    logSearchLearningEvent('quiz_opened', { difficulty: 'mixed', entryPoint: 'learning_workspace' }, 'quiz');
     setWorkspaceTab('learn');
     setInPlaceQuizExpanded(true);
     requestAnimationFrame(() => {
@@ -504,8 +580,14 @@ export const SearchPage: React.FC = () => {
                 onSave={toggleSaveArticle}
                 onSelect={toggleSelectArticle}
                 onAnalyze={openAnalysis}
-                onGenerateCase={openArticleCase}
-                onQuizPaper={openArticleQuiz}
+                onGenerateCase={(article) => {
+                  logSearchLearningEvent('case_opened', { entryPoint: 'article', articleUid: article.uid }, 'article', article.uid);
+                  openArticleCase(article);
+                }}
+                onQuizPaper={(article) => {
+                  logSearchLearningEvent('quiz_opened', { entryPoint: 'article', articleUid: article.uid }, 'article', article.uid);
+                  openArticleQuiz(article);
+                }}
                 onOpenTopic={handleSearch}
                 onOpenInWorkspace={openPdf}
                 onViewDetails={setDetailArticle}
@@ -554,10 +636,17 @@ export const SearchPage: React.FC = () => {
                   continueAfterAuth('synopsis');
                   return;
                 }
+                logSearchLearningEvent('synopsis_requested', {
+                  selectedSourceCount: selectedArticles.length,
+                  availableSourceCount: results.length,
+                }, 'synthesis');
                 void handleSynthesize();
               }}
               onOpenQuiz={openInPlaceQuiz}
-              onOpenCase={() => openCaseFromWorkflow('mixed')}
+              onOpenCase={() => {
+                logSearchLearningEvent('case_opened', { difficulty: 'mixed', entryPoint: 'learning_workspace' }, 'case');
+                openCaseFromWorkflow('mixed');
+              }}
               onChooseSources={() => openWorkspaceTab('evidence')}
             />
 
@@ -575,7 +664,17 @@ export const SearchPage: React.FC = () => {
                   result={synthesis}
                   articles={synthesisArticles}
                   onClose={() => setSynthesis(null)}
-                  onGenerateCase={openSynthesisCase}
+                  onGenerateCase={() => {
+                    logSearchLearningEvent('case_opened', { entryPoint: 'synthesis', jobKey: synthesis.jobKey ?? null }, 'synthesis', synthesis.jobKey ?? undefined);
+                    openSynthesisCase();
+                  }}
+                  onSourceOpen={(article, index) => {
+                    logSearchLearningEvent('synopsis_source_opened', {
+                      articleUid: article.uid,
+                      sourceIndex: index + 1,
+                      jobKey: synthesis.jobKey ?? null,
+                    }, 'article', article.uid);
+                  }}
                   onSearch={handleSearch}
                 />
               </div>

@@ -553,6 +553,7 @@ async function runFullSynthesisGenerationInner({
     if (cache?.getAsync) {
         const cached = await cache.getAsync(cacheKey);
         if (cached) {
+            require('../ops/cacheLayerMetrics').recordCacheLayer('synthesis', true);
             const promptHash = cached.audit?.promptHash;
             const derivedJobKey = jobKey || cached.jobKey || (promptHash ? `syn:${promptHash}` : null);
             return {
@@ -587,14 +588,30 @@ async function runFullSynthesisGenerationInner({
     const promptCacheKey = `synthesis:prompt:${crypto.createHash('sha256').update(context.prompt).digest('hex').slice(0, 40)}`;
     if (cache?.getAsync) {
         const sharedHit = await cache.getAsync(promptCacheKey).catch(() => null);
+        require('../ops/cacheLayerMetrics').recordCacheLayer('synthesis', Boolean(sharedHit));
         if (sharedHit) {
-            if (cache.setAsync) await cache.setAsync(context.cacheKey, sharedHit, 7 * 24 * 3600).catch(() => {});
-            return {
+            const derivedJobKey = jobKey || (sharedHit.audit?.promptHash ? `syn:${sharedHit.audit.promptHash}` : null);
+            const reusedResult = {
                 ...sharedHit,
                 cached: true,
                 retrievedArticleCount: Math.max(Number(sharedHit.retrievedArticleCount) || 0, Number(retrievedArticleCount) || articles.length),
-                jobKey: jobKey || sharedHit.jobKey,
+                jobKey: derivedJobKey,
             };
+            // Reuse the model output, but persist ownership-sensitive artefacts
+            // (job key, claim map and quiz prefetch) for the current request.
+            await persistSynthesisResult({
+                db,
+                cache,
+                cacheKey: context.cacheKey,
+                result: reusedResult,
+                topic,
+                synthesis: reusedResult.synthesis,
+                topArticles: context.topArticles,
+                serverConfig,
+                userId,
+                provider: reusedResult.audit?.provider || provider,
+            });
+            return reusedResult;
         }
     }
 
@@ -689,7 +706,9 @@ async function runFullSynthesisGenerationInner({
         userId,
         provider: selectedProvider,
     });
-    if (cache?.setAsync) await cache.setAsync(promptCacheKey, result, 7 * 24 * 3600).catch(() => {});
+    // Prompt-level entries are shared across users, so never retain a request's
+    // job identity in the shared value.
+    if (cache?.setAsync) await cache.setAsync(promptCacheKey, { ...result, jobKey: null }, 7 * 24 * 3600).catch(() => {});
 
     return result;
 }

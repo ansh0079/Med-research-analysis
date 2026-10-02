@@ -4,9 +4,10 @@ import { SectionLabel } from './SectionLabel';
 
 interface Props {
   articles: Article[];
+  onSourceOpen?: (article: Article, index: number) => void;
 }
 
-export const SynthesisSourcePapers: React.FC<Props> = ({ articles }) => (
+export const SynthesisSourcePapers: React.FC<Props> = ({ articles, onSourceOpen }) => (
   <div>
     <SectionLabel>Papers Analysed</SectionLabel>
     <div className="space-y-1">
@@ -21,7 +22,7 @@ export const SynthesisSourcePapers: React.FC<Props> = ({ articles }) => (
             <div className="flex gap-2 items-baseline">
               <span className="font-mono font-bold text-indigo-500 shrink-0 w-5">{i + 1}.</span>
               {href ? (
-                <a href={href} target="_blank" rel="noopener noreferrer"
+                <a href={href} target="_blank" rel="noopener noreferrer" onClick={() => onSourceOpen?.(a, i)}
                   className="line-clamp-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                   {a.title}
                 </a>

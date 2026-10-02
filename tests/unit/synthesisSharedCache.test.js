@@ -59,6 +59,9 @@ describe('synthesis shared (prompt-hash) cache', () => {
         const second = await runFullSynthesisGeneration({ ...base, sessionDepth: 1 });
         expect(mockCallGemini).toHaveBeenCalledTimes(1);
         expect(second.cached).toBe(true);
+        expect(second.jobKey).toMatch(/^syn:/);
+        const sharedValue = [...cache.store.entries()].find(([key]) => key.startsWith('synthesis:prompt:'))?.[1];
+        expect(sharedValue.jobKey).toBeNull();
     });
 
     test("a prompt that really differs is not served someone else's answer", async () => {
