@@ -229,6 +229,13 @@ async function runAccountJourney(label, inviteCode) {
 
 async function runIsolation(a, b, inviteForB) {
     section('Cross-account isolation (B must not see A)');
+    // The auth endpoints share a 5-requests-per-60s limiter, and account A's
+    // tail (forgot-password, reset, login, logout) lands just before B
+    // registers -- from one IP that trips the limiter and B fails with 429,
+    // which is the app working as intended, not an isolation breach. Let the
+    // window close before B starts.
+    console.log('  (waiting 65s for the auth rate-limit window to close before B registers)');
+    await new Promise((resolve) => setTimeout(resolve, 65000));
     const clientB = makeClient();
     await clientB.fetchCsrf();
     let inboxB;
