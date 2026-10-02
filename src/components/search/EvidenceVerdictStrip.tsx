@@ -69,14 +69,23 @@ export const EvidenceVerdictStrip: React.FC<EvidenceVerdictStripProps> = ({
 }) => {
     const [showDetails, setShowDetails] = useState(false);
     const [guidelines, setGuidelines] = useState<GuidelineEntry[] | null>(null);
+    const [guidelineSummary, setGuidelineSummary] = useState<{ issuingBodyCount: number; newestYear: number | null; bodies: string[] } | null>(null);
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
         if (!query) return;
         let cancelled = false;
         api.collaboration.getGuidelinesForTopic(query)
-            .then((r) => { if (!cancelled) setGuidelines(r.guidelines || []); })
-            .catch(() => { if (!cancelled) setGuidelines([]); });
+            .then((r) => {
+                if (cancelled) return;
+                setGuidelines(r.guidelines || []);
+                setGuidelineSummary(r.guidelineSummary || null);
+            })
+            .catch(() => {
+                if (cancelled) return;
+                setGuidelines([]);
+                setGuidelineSummary(null);
+            });
         return () => { cancelled = true; };
     }, [query]);
 
@@ -91,10 +100,20 @@ export const EvidenceVerdictStrip: React.FC<EvidenceVerdictStripProps> = ({
         // NICE, at the top of the page. The server flags the real ones.
         const issuing = (guidelines || []).filter((g) => g.isIssuingBody);
         const years = issuing.map((g) => g.sourceYear).filter((y): y is number => typeof y === 'number');
-        const newestGuideline = years.length ? Math.max(...years) : null;
-        const bodies = Array.from(new Set(issuing.map((g) => g.sourceBody).filter(Boolean))).slice(0, 3);
-        return { rcts, reviews, guidelinePapers, newestGuideline, bodies, issuingCount: issuing.length };
-    }, [results, guidelines]);
+        // Prefer the server's pool-wide summary: the returned page is capped,
+        // and older issuing-body rows can fall outside it -- "alcoholic
+        // hepatitis" counted NICE as zero here while the snapshot below listed
+        // three NICE recommendations. Fall back to counting the page when the
+        // summary is absent (older server, unit tests).
+        const newestGuideline = guidelineSummary
+            ? guidelineSummary.newestYear
+            : (years.length ? Math.max(...years) : null);
+        const bodies = guidelineSummary?.bodies?.length
+            ? guidelineSummary.bodies
+            : Array.from(new Set(issuing.map((g) => g.sourceBody).filter(Boolean))).slice(0, 3);
+        const issuingCount = guidelineSummary ? guidelineSummary.issuingBodyCount : issuing.length;
+        return { rcts, reviews, guidelinePapers, newestGuideline, bodies, issuingCount };
+    }, [results, guidelines, guidelineSummary]);
 
     // "Thin" is deliberately generous: the honest failure here is implying
     // completeness we do not have, not under-selling a well-covered topic.

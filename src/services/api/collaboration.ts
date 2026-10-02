@@ -454,7 +454,13 @@ export class CollaborationApi extends BaseApiClient {
     if (!response.ok) throw new Error('Failed to update member role');
   }
 
-  async getGuidelinesForTopic(topic: string): Promise<{ topic: string; guidelines: import('@types').GuidelineEntry[] }> {
+  async getGuidelinesForTopic(topic: string): Promise<{
+    topic: string;
+    guidelines: import('@types').GuidelineEntry[];
+    /** Pool-wide counts: the returned page is capped, so issuing-body rows can
+     * fall outside it. Prefer this over counting the guidelines array. */
+    guidelineSummary?: { issuingBodyCount: number; newestYear: number | null; bodies: string[] };
+  }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/guidelines?topic=${encodeURIComponent(topic)}`);
     if (!response.ok) throw new Error('Failed to fetch guidelines');
     return response.json();

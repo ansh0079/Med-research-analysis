@@ -71,6 +71,27 @@ describe('EvidenceVerdictStrip', () => {
         expect(screen.getByText(/EASL, AASLD/)).toBeInTheDocument();
     });
 
+    it('trusts the pool-wide summary over the capped page', async () => {
+        // "diagnosis and management of alcoholic hepatitis" returned a page of
+        // journal rows while three NICE recommendations sat outside the cap --
+        // the strip said "0 guideline recommendations" directly above a panel
+        // listing them. The server's guidelineSummary counts the full pool, so
+        // it leads when present.
+        getGuidelinesForTopic.mockResolvedValue({
+            topic: 't',
+            guidelines: [
+                { id: 1, sourceBody: 'World journal of transplantation', sourceYear: 2025, isIssuingBody: false },
+            ],
+            guidelineSummary: { issuingBodyCount: 3, newestYear: null, bodies: ['NICE'] },
+        });
+        render(<EvidenceVerdictStrip query="diagnosis and management of alcoholic hepatitis" results={manyPapers(20)} />);
+
+        await waitFor(() => expect(screen.getByText('guideline recommendations')).toBeInTheDocument());
+        expect(screen.getByText('3')).toBeInTheDocument();
+        expect(screen.getByText(/NICE/)).toBeInTheDocument();
+        expect(screen.queryByText(/World journal of transplantation/)).not.toBeInTheDocument();
+    });
+
     it('says so plainly when coverage is thin, rather than implying completeness', async () => {
         render(<EvidenceVerdictStrip query="rare disease" results={manyPapers(2)} />);
         await waitFor(() => expect(screen.getByText(/Thin coverage/i)).toBeInTheDocument());

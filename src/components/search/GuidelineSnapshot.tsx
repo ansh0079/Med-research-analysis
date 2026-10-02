@@ -60,6 +60,7 @@ function qualityBadge(level?: string) {
 
 export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAlignment = false }) => {
   const [guidelines, setGuidelines] = React.useState<GuidelineEntry[]>([]);
+  const [summaryCount, setSummaryCount] = React.useState<number | null>(null);
   const [loading, setLoading] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
   const [error, setError] = React.useState('');
@@ -81,7 +82,10 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
         setLoading(true);
         setError('');
         const res = await api.collaboration.getGuidelinesForTopic(query);
-        if (!cancelled) setGuidelines(res.guidelines);
+        if (!cancelled) {
+          setGuidelines(res.guidelines);
+          setSummaryCount(res.guidelineSummary?.issuingBodyCount ?? null);
+        }
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load guidelines');
       } finally {
@@ -128,7 +132,10 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
 
   const visible = expanded ? guidelines : guidelines.slice(0, 2);
   const hasMore = guidelines.length > 2;
-  const issuingBodyCount = guidelines.filter((g) => g.isIssuingBody).length;
+  // The pool-wide server count leads when present: the returned page is
+  // capped, and issuing-body rows can fall outside it (the same undercount
+  // the evidence summary strip had). Count the page only as a fallback.
+  const issuingBodyCount = summaryCount ?? guidelines.filter((g) => g.isIssuingBody).length;
 
   return (
     <div id="workflow-guideline" className="neo-card overflow-hidden mb-6">

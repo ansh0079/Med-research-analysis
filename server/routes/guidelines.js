@@ -2,7 +2,7 @@ const { isIssuingBodyValue } = require('../utils/guidelineAttribution');
 const { TRUSTED_GUIDELINE_SOURCES } = require('../config/trustedGuidelineSources');
 const { kickGuidelineDiscoveryIfEmpty } = require('../services/guidelineService');
 const { getSharedAiService } = require('../services/aiService');
-const { buildMergedGuidelineView } = require('../services/ai/guidelineMergeService');
+const { buildMergedGuidelineView, MAX_RECOMMENDATIONS: MERGE_POOL_LIMIT } = require('../services/ai/guidelineMergeService');
 const { safeFetch } = require('../utils/fetch');
 
 function registerGuidelineRoutes(app, { db, serverConfig, cache, rateLimit, requireAuthJwt, requireRole, requireJson }) {
@@ -124,12 +124,34 @@ function registerGuidelineRoutes(app, { db, serverConfig, cache, rateLimit, requ
             if (!topic || typeof topic !== 'string') {
                 return res.status(400).json({ error: 'topic query parameter is required' });
             }
-            const guidelines = await db.getGuidelinesByTopic(topic, {
+            const requestedLimit = parseInt(String(limit), 10) || 20;
+            // Retrieval widens its candidate pool with the requested limit
+            // (year-ordered, one share per probe word), so a 20-row request can
+            // silently miss older issuing-body rows a wider request finds:
+            // "diagnosis and management of alcoholic hepatitis" returned zero
+            // NICE recommendations at limit 20 while the merged view (pool of
+            // MAX_RECOMMENDATIONS) found three -- the page reported "0
+            // guideline recommendations" directly above a panel listing them.
+            // Fetch at the merged view's pool width, count from the wide set,
+            // and slice the returned list to what was asked for.
+            const wide = await db.getGuidelinesByTopic(topic, {
                 status: String(status || ''),
-                limit: parseInt(String(limit), 10) || 20,
+                limit: Math.max(requestedLimit, MERGE_POOL_LIMIT),
             });
-            if (guidelines.length > 0) {
-                return res.json({ topic, guidelines: guidelines.map(withIssuingBodyFlag), discoveryStatus: 'complete' });
+            const issuing = wide.filter((g) => isIssuingBodyValue(g?.sourceBody));
+            const issuingYears = issuing.map((g) => Number(g?.sourceYear)).filter((y) => Number.isFinite(y) && y > 0);
+            const guidelineSummary = {
+                issuingBodyCount: issuing.length,
+                newestYear: issuingYears.length ? Math.max(...issuingYears) : null,
+                bodies: [...new Set(issuing.map((g) => g?.sourceBody).filter(Boolean))].slice(0, 3),
+            };
+            if (wide.length > 0) {
+                return res.json({
+                    topic,
+                    guidelines: wide.slice(0, requestedLimit).map(withIssuingBodyFlag),
+                    guidelineSummary,
+                    discoveryStatus: 'complete',
+                });
             }
             const discoveryStatus = kickGuidelineDiscoveryIfEmpty(topic, {
                 db,
@@ -137,7 +159,7 @@ function registerGuidelineRoutes(app, { db, serverConfig, cache, rateLimit, requ
                 aiService,
                 log: req.log,
             });
-            return res.json({ topic, guidelines: [], discoveryStatus });
+            return res.json({ topic, guidelines: [], guidelineSummary, discoveryStatus });
         } catch (error) {
             req.log.error({ err: error }, 'Get guidelines by topic error');
             res.status(500).json({ error: 'Internal server error' });
