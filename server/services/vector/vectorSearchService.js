@@ -1,4 +1,4 @@
-const { generateEmbedding, articleToEmbedText } = require('../../embeddings');
+const { generateEmbedding, articleToEmbedText, articleVectorId } = require('../../embeddings');
 const { getEmbeddingOptions: getKeys } = require('../embeddingOptions');
 
 const EMBEDDING_DIM = 384;
@@ -96,13 +96,18 @@ function createVectorSearchService({ db, serverConfig }) {
         const keys = getKeys(serverConfig);
         const max = Math.min(50, articles.length);
         let indexed = 0;
+        let skipped = 0;
         const errors = [];
         for (let i = 0; i < max; i++) {
             const article = articles[i];
-            const externalId = String(article.uid ?? article.pmid ?? article.doi ?? `idx-${i}`);
+            const externalId = articleVectorId(article) || `idx-${i}`;
             const source = String(article._source || 'search');
             const text = articleToEmbedText(article);
             try {
+                if (typeof db.hasArticleCacheVector === 'function' && await db.hasArticleCacheVector(externalId, article.doi || null)) {
+                    skipped++;
+                    continue;
+                }
                 const emb = await generateEmbedding(text, keys);
                 await db.upsertArticleCacheVector(
                     externalId,
@@ -116,7 +121,7 @@ function createVectorSearchService({ db, serverConfig }) {
                 errors.push({ externalId, message: e.message });
             }
         }
-        return { indexed, attempted: max, errors };
+        return { indexed, skipped, attempted: max, errors };
     }
 
     return { searchVector, semanticSearch, findSimilarPapers, indexArticles, articleToEmbedText };

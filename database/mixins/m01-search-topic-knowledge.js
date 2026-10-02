@@ -2,6 +2,7 @@
 
 const { safeJsonParse, toPgVectorLiteral } = require('../lib/helpers');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
+const { normalizeTopic: normalizeTopicKey } = require('../../server/utils/topicKey');
 
 module.exports = (Sup) => class extends Sup {
 // ==========================================
@@ -54,12 +55,7 @@ async getPreviousSearchInSession(sessionId, currentSequenceIndex) {
 }
 
 normalizeTopic(topic) {
-    return String(topic || '')
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim()
-        .slice(0, 180);
+    return normalizeTopicKey(topic);
 }
 
 /**

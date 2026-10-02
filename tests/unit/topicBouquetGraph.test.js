@@ -176,6 +176,43 @@ describe('Topic bouquet graph (real SQLite)', () => {
         expect(strong[0].totalDwellMs).toBe(165000);
     });
 
+    test('synonym searches count toward the canonical topic (strong memory, bouquet, intent)', async () => {
+        const now = new Date().toISOString();
+        const old = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+        const canonical = db.normalizeTopic('acute kidney injury');
+        await db.run(
+            `INSERT INTO topic_knowledge
+             (topic, normalized_topic, canonical_normalized, knowledge, source_articles, aliases_normalized, status, confidence, created_at, updated_at, last_refreshed_at)
+             VALUES (?, ?, ?, ?, '[]', '[]', 'ai_generated', 0.85, ?, ?, ?)`,
+            ['Acute kidney injury', canonical, canonical, JSON.stringify({ mentorMessage: 'AKI guide' }), old, old, old]
+        );
+        // Engagement and signals are recorded under the acronym query, not the canonical name.
+        const search = await db.get(
+            `INSERT INTO searches (query, normalized_topic, session_id, session_sequence_index, created_at)
+             VALUES (?, ?, ?, ?, ?) RETURNING id`,
+            ['AKI', db.normalizeTopic('AKI'), 'sess-aki', 1, now]
+        );
+        await db.run(
+            `INSERT INTO search_result_impressions (search_id, session_id, article_uid, position, was_clicked, was_saved, dwell_time_ms, created_at)
+             VALUES (?, ?, ?, ?, 1, 1, 60000, ?)`,
+            [search.id, 'sess-aki', 'pmid-kdigo', 1, now]
+        );
+        await db.recordBouquetSignals('AKI', [{ uid: 'pmid-kdigo', archetype: 'guideline', compositeScore: 0.9 }]);
+        await db.recordTopicDemandSignal('AKI', 'AKI', 'diagnosis');
+
+        const strong = await db.getStrongMemoryTopicsForRefresh({ minEngagementScore: 5, minRefreshAgeDays: 1, limit: 5 });
+        expect(strong.map((t) => t.normalizedTopic)).toContain(canonical);
+
+        const top = await db.getTopBouquetArticlesForTopic(canonical, 5);
+        expect(top.map((a) => a.uid)).toContain('pmid-kdigo');
+
+        const engaged = await db.getCommunityEngagedArticlesForTopic(canonical, 5);
+        expect(engaged.map((a) => a.uid)).toContain('pmid-kdigo');
+
+        const intents = await db.getTopicIntentDistribution(canonical);
+        expect(intents[0]).toMatchObject({ intent: 'diagnosis', count: 1 });
+    });
+
     test('getStrongMemoryTopicsForRefresh respects human_reviewed status', async () => {
         const now = new Date().toISOString();
         const old = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();

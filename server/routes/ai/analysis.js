@@ -11,6 +11,17 @@ const { getPromptVersion } = require('../../prompts/promptVersions');
 const ANALYSIS_CACHE_TTL_SECONDS = 30 * 86400;
 const ANALYSIS_CACHE_TTL_HOURS = 30 * 24;
 
+// The DB row is written under the model that actually answered, which is a fallback
+// whenever the first provider fails. Looking up only candidates[0] meant a fallback
+// answer could never be found again, so check every model that could have produced it.
+async function getCachedAnalysisForCandidates(db, textHash, cacheType, candidates) {
+    for (const model of [...new Set(candidates.map((c) => c.model).filter(Boolean))]) {
+        const cached = await db.getCachedAnalysis(textHash, cacheType, model);
+        if (cached) return cached;
+    }
+    return null;
+}
+
 function versionedAnalysisType(analysisType) {
     return `${analysisType}:pv:${getPromptVersion('analysis')}`;
 }
@@ -116,7 +127,7 @@ function registerAnalysisRoutes(app, {
             const textHash = crypto.createHash('md5').update(text).digest('hex');
             const cacheType = versionedAnalysisType(analysisType);
             try {
-                const cached = await db.getCachedAnalysis(textHash, cacheType, selectedModel);
+                const cached = await getCachedAnalysisForCandidates(db, textHash, cacheType, candidates);
                 if (cached) {
                     req.log.debug({ hash: textHash.substring(0, 8) }, 'Analysis DB cache hit');
                     return res.json({ ...cached, cached: true });
@@ -180,7 +191,7 @@ function registerAnalysisRoutes(app, {
             const cacheType = versionedAnalysisType(analysisType);
 
             try {
-                const cached = await db.getCachedAnalysis(textHash, cacheType, selectedModel);
+                const cached = await getCachedAnalysisForCandidates(db, textHash, cacheType, candidates);
                 if (cached) {
                     setupSSE(res);
                     sendSSE(res, 'result', { ...cached, cached: true });
@@ -262,7 +273,7 @@ function registerAnalysisRoutes(app, {
             const cacheType = versionedAnalysisType(analysisType);
 
             try {
-                const cached = await db.getCachedAnalysis(textHash, cacheType, candidates[0].model);
+                const cached = await getCachedAnalysisForCandidates(db, textHash, cacheType, candidates);
                 if (cached) {
                     return res.json({ ...cached, cached: true });
                 }

@@ -24,6 +24,7 @@ jest.mock('../../server/services/pdfPreindexRunner', () => ({
 jest.mock('../../server/embeddings', () => ({
     generateEmbedding: jest.fn(),
     articleToEmbedText: jest.fn(),
+    articleVectorId: jest.requireActual('../../server/embeddings').articleVectorId,
 }));
 
 jest.mock('../../server/services/digestService', () => ({
@@ -152,6 +153,21 @@ describe('registerAllJobHandlers', () => {
 
             expect(generateEmbedding).not.toHaveBeenCalled();
             expect(deps.db.upsertArticleCacheVector).not.toHaveBeenCalled();
+        });
+
+        test('does not re-embed a paper that already has a stored vector', async () => {
+            articleToEmbedText.mockReturnValue('long enough article text here');
+            const localDeps = {
+                ...deps,
+                db: { ...deps.db, hasArticleCacheVector: jest.fn().mockResolvedValue(true), upsertArticleCacheVector: jest.fn() },
+            };
+
+            registerAllJobHandlers(localDeps);
+            await handlers.get('embedding:article')({ article: { doi: '10.1/ABC', uid: 'pubmed:1' } }, {});
+
+            expect(localDeps.db.hasArticleCacheVector).toHaveBeenCalledWith('10.1/abc', '10.1/ABC');
+            expect(generateEmbedding).not.toHaveBeenCalled();
+            expect(localDeps.db.upsertArticleCacheVector).not.toHaveBeenCalled();
         });
 
         test('falls back to uid then title for vector id', async () => {

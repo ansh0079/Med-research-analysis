@@ -216,6 +216,23 @@ describe('aiRoutes', () => {
             expect(res.status).toBe(400);
         });
 
+        test('serves a result cached under the fallback model', async () => {
+            const ai = require('../../server/services/aiService').getSharedAiService();
+            const cachedRow = { result: 'cached claude result', model: 'claude-haiku' };
+            mockDb.getCachedAnalysis.mockImplementation(async (_hash, _type, model) => (model === 'claude-haiku' ? cachedRow : null));
+            try {
+                const res = await request(app)
+                    .post('/api/ai/analyze')
+                    .set('Authorization', `Bearer ${authToken()}`)
+                    .send({ text: 'Patient has diabetes.', analysisType: 'summary' });
+                expect(res.status).toBe(200);
+                expect(res.body).toMatchObject({ result: 'cached claude result', cached: true });
+                expect(ai.callText).not.toHaveBeenCalled();
+            } finally {
+                mockDb.getCachedAnalysis.mockResolvedValue(null);
+            }
+        });
+
         test('returns 200 with analysis result', async () => {
             const res = await request(app)
                 .post('/api/ai/analyze')

@@ -3,16 +3,12 @@
 const { safeJsonParse } = require('../lib/helpers');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
 const { applyWritePolicy } = require('../../server/services/policy/writePolicyEngine');
+const { normalizeTopic: normalizeTopicKey } = require('../../server/utils/topicKey');
 
 module.exports = (Sup) => class extends Sup {
 
     normalizeTopic(topic) {
-        return String(topic || '')
-            .toLowerCase()
-            .replace(/[^a-z0-9\s-]/g, ' ')
-            .replace(/\s+/g, ' ')
-            .trim()
-            .slice(0, 180);
+        return normalizeTopicKey(topic);
     }
 
     /**

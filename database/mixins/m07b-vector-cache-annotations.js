@@ -77,6 +77,19 @@ async upsertArticleCacheVector(externalId, source, data, embedding, doi = null) 
     return { changes: res.rowCount };
 }
 
+/** True when this paper already has a stored vector, matched by id or DOI. */
+async hasArticleCacheVector(externalId, doi = null) {
+    if (!this.pgVectorPool || (!externalId && !doi)) return false;
+    const res = await this.pgVectorPool.query(
+        `SELECT 1 FROM articles_cache
+         WHERE embedding IS NOT NULL
+           AND (external_id = $1 OR ($2::text IS NOT NULL AND lower(doi) = lower($2::text)))
+         LIMIT 1`,
+        [externalId || null, doi || null]
+    );
+    return res.rowCount > 0;
+}
+
 /**
  * @param {number[]} queryEmbedding
  * @param {number} limit

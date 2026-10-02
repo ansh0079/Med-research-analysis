@@ -115,8 +115,17 @@ function articleToEmbedText(article) {
     return t.slice(0, 8000);
 }
 
+// One id for every articles_cache writer. Search indexing keyed uid-first and the
+// embedding job doi-first, so the same paper could be embedded and stored twice.
+// DOI first: it is stable across PubMed/OpenAlex/S2 and keys most existing rows.
+function articleVectorId(article) {
+    const doi = article?.doi ? String(article.doi).trim().toLowerCase() : '';
+    return doi || String(article?.uid ?? article?.pmid ?? article?.title ?? '').trim() || null;
+}
+
 module.exports = {
     generateEmbedding,
     articleToEmbedText,
+    articleVectorId,
     EMBEDDING_DIM,
 };

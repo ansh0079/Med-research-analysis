@@ -2,6 +2,12 @@
 
 const { safeJsonParse, toPgVectorLiteral, sqlAuthorityWeightedImpressionScore } = require('../lib/helpers');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
+const { canonicalTopic, topicGroupKeys } = require('../../server/utils/topicKey');
+
+// Signals are recorded under the literal query topic; a topic's readers must
+// gather every synonym it may have been searched as ("aki", "aki diagnosis",
+// "acute kidney injury"), or synonym searches never count toward it.
+const inList = (keys) => keys.map(() => '?').join(',');
 
 module.exports = (Sup) => class extends Sup {
 // Cross-user bouquet signals (topic learning)
@@ -39,13 +45,17 @@ async recordBouquetSignals(displayTopic, papers = []) {
 async getTopBouquetArticlesForTopic(normalizedTopic, limit = 8) {
     if (!this.kysely || !normalizedTopic) return [];
     const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 8, 1), 30);
+    const keys = topicGroupKeys(normalizedTopic);
     const rows = await this.all(
-        `SELECT article_uid AS uid, archetype, composite_score, signal_count
+        `SELECT article_uid AS uid, MAX(archetype) AS archetype,
+                SUM(composite_score * signal_count) / SUM(signal_count) AS composite_score,
+                SUM(signal_count) AS signal_count
          FROM topic_bouquet_signals
-         WHERE normalized_topic = ?
+         WHERE normalized_topic IN (${inList(keys)})
+         GROUP BY article_uid
          ORDER BY signal_count DESC, composite_score DESC
          LIMIT ?`,
-        [normalizedTopic, safeLimit]
+        [...keys, safeLimit]
     );
     return rows.map((r) => ({
         uid: r.uid,
@@ -153,7 +163,7 @@ async getStaleTopicsForRefresh({ minSignalCount = 3, maxAgeDays = 90, minPriorit
     // topic stayed "never refreshed" and was regenerated every hourly run (~46 Gemini
     // calls/day each for AKI and PE). Resolve the same way the writer does, canonical
     // first, and refresh each canonical topic at most once per run.
-    const canonOf = (row) => resolveCanonicalNormalized(row.display_topic || row.normalized_topic, (s) => this.normalizeTopic(s));
+    const canonOf = (row) => canonicalTopic(row.display_topic || row.normalized_topic);
     const seenCanon = new Set();
     const uniqueRows = signalRows.filter((row) => {
         const key = canonOf(row) || row.normalized_topic;
@@ -242,32 +252,65 @@ async getStrongMemoryTopicsForRefresh({ minEngagementScore = 5, minRefreshAgeDay
     const refreshCutoff = new Date(Date.now() - minRefreshAgeDays * 24 * 60 * 60 * 1000).toISOString();
 
     const weightExpr = sqlAuthorityWeightedImpressionScore('i');
-    const rows = await this.all(
+    // Engagement is recorded per search topic; topic knowledge lives on the canonical
+    // row. Joining on the literal name dropped every synonym search ("AKI diagnosis"
+    // never counted toward "acute kidney injury"), so aggregate per search topic and
+    // fold onto the canonical row here.
+    const engagementRows = await this.all(
         `SELECT
-            tk.normalized_topic,
-            tk.topic AS display_topic,
-            tk.knowledge,
-            tk.confidence,
-            tk.status,
-            tk.last_refreshed_at,
+            s.normalized_topic,
             COUNT(DISTINCT s.id) AS search_count,
             COUNT(DISTINCT i.article_uid) AS engaged_article_count,
             SUM(${weightExpr}) AS community_engagement_score,
             COALESCE(SUM(i.dwell_time_ms), 0) AS total_dwell_ms
-         FROM topic_knowledge tk
-         JOIN searches s ON s.normalized_topic = tk.normalized_topic
+         FROM searches s
          JOIN search_result_impressions i ON i.search_id = s.id
          LEFT JOIN users u ON u.id = i.user_id
-         WHERE (tk.confidence >= 0.8 OR tk.status = 'human_reviewed')
-           AND s.created_at > ?
-           AND (tk.last_refreshed_at IS NULL OR tk.last_refreshed_at < ?)
-           AND (tk.status IS NULL OR tk.status NOT IN ('locked'))
-         GROUP BY tk.normalized_topic, tk.topic, tk.knowledge, tk.confidence, tk.status, tk.last_refreshed_at
-         HAVING SUM(${weightExpr}) >= ?
-         ORDER BY community_engagement_score DESC, total_dwell_ms DESC
-         LIMIT ?`,
-        [engagementCutoff, refreshCutoff, minEngagementScore, safeLimit]
+         WHERE s.created_at > ? AND s.normalized_topic IS NOT NULL
+         GROUP BY s.normalized_topic`,
+        [engagementCutoff]
     );
+    if (!engagementRows.length) return [];
+
+    const byCanon = new Map();
+    for (const e of engagementRows) {
+        const canon = canonicalTopic(e.normalized_topic);
+        const agg = byCanon.get(canon) || { topics: new Set(), searchCount: 0, engaged: 0, score: 0, dwell: 0 };
+        agg.topics.add(e.normalized_topic);
+        agg.searchCount += Number(e.search_count || 0);
+        agg.engaged += Number(e.engaged_article_count || 0);
+        agg.score += Number(e.community_engagement_score || 0);
+        agg.dwell += Number(e.total_dwell_ms || 0);
+        byCanon.set(canon, agg);
+    }
+
+    const canons = [...byCanon.keys()];
+    const literalTopics = [...new Set(engagementRows.map((e) => e.normalized_topic))];
+    const knowledgeRows = await this.all(
+        `SELECT normalized_topic, canonical_normalized, topic AS display_topic, confidence, status, last_refreshed_at
+         FROM topic_knowledge
+         WHERE (canonical_normalized IN (${inList(canons)}) OR normalized_topic IN (${inList(literalTopics)}))
+           AND (confidence >= 0.8 OR status = 'human_reviewed')
+           AND (last_refreshed_at IS NULL OR last_refreshed_at < ?)
+           AND (status IS NULL OR status NOT IN ('locked'))`,
+        [...canons, ...literalTopics, refreshCutoff]
+    );
+
+    const rows = knowledgeRows
+        .map((tk) => {
+            const agg = byCanon.get(tk.canonical_normalized) || byCanon.get(canonicalTopic(tk.normalized_topic));
+            if (!agg) return null;
+            return {
+                ...tk,
+                search_count: agg.searchCount,
+                engaged_article_count: agg.engaged,
+                community_engagement_score: agg.score,
+                total_dwell_ms: agg.dwell,
+            };
+        })
+        .filter((r) => r && r.community_engagement_score >= minEngagementScore)
+        .sort((a, b) => b.community_engagement_score - a.community_engagement_score || b.total_dwell_ms - a.total_dwell_ms)
+        .slice(0, safeLimit);
 
     return rows.map((r) => ({
         normalizedTopic: r.normalized_topic,
@@ -300,12 +343,12 @@ async getCommunityEngagedArticlesForTopic(normalizedTopic, limit = 12) {
          FROM search_result_impressions i
          JOIN searches s ON s.id = i.search_id
          LEFT JOIN users u ON u.id = i.user_id
-         WHERE s.normalized_topic = ?
+         WHERE s.normalized_topic IN (${inList(topicGroupKeys(normalizedTopic))})
            AND (i.was_clicked = 1 OR i.was_saved = 1 OR i.dwell_time_ms >= 30000)
          GROUP BY i.article_uid
          ORDER BY engagement_score DESC, total_dwell_ms DESC, impression_count DESC
          LIMIT ?`,
-        [normalizedTopic, limit]
+        [...topicGroupKeys(normalizedTopic), limit]
     );
 }
 
@@ -333,9 +376,11 @@ async recordTopicDemandSignal(sanitizedTopic, displayTopic, intent = 'general') 
 // Used by the refresh scheduler to emphasise the right archetype types in AI extraction.
 async getTopicIntentDistribution(normalizedTopic) {
     if (!this.kysely || !normalizedTopic) return [];
+    const keys = topicGroupKeys(normalizedTopic);
     const rows = await this.all(
-        `SELECT intent, search_count FROM topic_demand_signals WHERE normalized_topic = ? ORDER BY search_count DESC`,
-        [normalizedTopic]
+        `SELECT intent, SUM(search_count) AS search_count FROM topic_demand_signals
+         WHERE normalized_topic IN (${inList(keys)}) GROUP BY intent ORDER BY search_count DESC`,
+        keys
     );
     return rows.map((r) => ({ intent: r.intent, count: Number(r.search_count || 0) }));
 }

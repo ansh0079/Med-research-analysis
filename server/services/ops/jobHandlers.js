@@ -20,13 +20,15 @@ function registerAllJobHandlers(deps) {
     });
 
     registerJobHandler('embedding', 'article', async ({ article }, _ctx) => {
-        const { generateEmbedding, articleToEmbedText } = require('../../embeddings');
+        const { generateEmbedding, articleToEmbedText, articleVectorId } = require('../../embeddings');
         const db = deps.db;
         if (!db || typeof db.isVectorSearchAvailable !== 'function' || !db.isVectorSearchAvailable()) return;
         const text = articleToEmbedText(article);
         if (!text || text.length < 20) return;
+        const id = articleVectorId(article);
+        if (!id) return;
+        if (typeof db.hasArticleCacheVector === 'function' && await db.hasArticleCacheVector(id, article.doi || null)) return;
         const emb = await generateEmbedding(text, deps.embeddingKeys || {});
-        const id = (article.doi || article.uid || article.title || '').toString() || 'unknown';
         await db.upsertArticleCacheVector(
             id,
             String(article._source || article.source || 'saved'),

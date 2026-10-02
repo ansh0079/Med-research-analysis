@@ -448,11 +448,10 @@ function buildSynthesisResult({
     };
 }
 
-async function persistSynthesisResult({ db, cache, cacheKey, result, topic, synthesis, topArticles, model, serverConfig = null, userId = null, provider = 'auto' }) {
+async function persistSynthesisResult({ db, cache, cacheKey, result, topic, synthesis, topArticles, serverConfig = null, userId = null, provider = 'auto' }) {
     if (cache?.setAsync) {
         await cache.setAsync(cacheKey, result, 7 * 24 * 3600);
     }
-    await db.cacheAnalysis(`synthesis:${result.audit.promptHash}`, 'synthesis', model, result, 0, 0, 720);
     await claimMapService.persistClaimsForJob(db, result.jobKey, 'full_synthesis', result).catch((err) => { logger.warn({ err }, 'persistClaimsForJob failed'); });
     await (db.saveSynthesisSnapshot?.(topic, synthesis, topArticles.map((a) => a.uid)) ?? Promise.resolve())
         .catch((err) => { logger.warn({ err }, 'saveSynthesisSnapshot failed'); });
