@@ -63,7 +63,6 @@ const QUERY_TEMPLATES = [
 
 const SOURCE_OPTIONS: { value: DataSource; label: string; dot: string }[] = [
   { value: 'pubmed',   label: 'PubMed',            dot: 'bg-blue-500' },
-  { value: 'semantic', label: 'Semantic Scholar',   dot: 'bg-violet-500' },
   { value: 'openalex', label: 'OpenAlex',           dot: 'bg-cyan-500' },
 ];
 

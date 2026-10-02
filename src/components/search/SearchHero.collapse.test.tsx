@@ -63,7 +63,7 @@ describe('SearchHero once results exist', () => {
     it('drops the branding that pushed the evidence off-screen', () => {
         renderHero([paper(1)]);
         expect(screen.queryByText(/Synthesised by AI/i)).not.toBeInTheDocument();
-        expect(screen.queryByText(/PubMed · Semantic Scholar/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/PubMed · OpenAlex/i)).not.toBeInTheDocument();
     });
 
     it('keeps the search box, so the next question can still be asked', () => {

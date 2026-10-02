@@ -176,20 +176,6 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
         })());
     }
 
-    if (sourceList.includes('semantic') || sourceList.includes('semantic-scholar')) {
-        sourceFetches.push((async () => {
-            try {
-                const results = await proxy.semanticScholarSearch(query, { limit: safeLimit });
-                recordSourceOk('semantic', Array.isArray(results) ? results.length : 0);
-                return results;
-            } catch (err) {
-                console.warn('[unifiedEvidence] Semantic Scholar failed', err.message);
-                recordSourceFailure('semantic', err);
-                return [];
-            }
-        })());
-    }
-
     if (sourceList.includes('openalex')) {
         sourceFetches.push((async () => {
             try {

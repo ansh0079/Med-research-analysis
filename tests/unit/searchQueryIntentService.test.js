@@ -16,8 +16,29 @@ describe('searchQueryIntentService', () => {
     test('augments default sources but respects explicit source selection', () => {
         const profile = deriveSearchIntentProfile('mechanism of cytokine storm');
         expect(routeSearchSources(['pubmed', 'openalex'], profile, { explicitSources: false }))
-            .toEqual(['semantic', 'openalex', 'pubmed']);
+            .toEqual(['openalex', 'pubmed']);
         expect(routeSearchSources(['pubmed'], profile, { explicitSources: true }))
             .toEqual(['pubmed']);
+    });
+
+    test('Semantic Scholar is retired: never routed in, whether requested or added by intent', () => {
+        const intents = [
+            'mechanism of cytokine storm', 'latest evidence sepsis 2025', 'landmark trial ARDS',
+            'guideline for heart failure', 'apixaban safety', 'sepsis',
+        ];
+        for (const query of intents) {
+            const profile = deriveSearchIntentProfile(query);
+            for (const explicitSources of [true, false]) {
+                const routed = routeSearchSources(['pubmed', 'openalex', 'semantic', 'semantic-scholar'], profile, { explicitSources });
+                expect(routed).not.toContain('semantic');
+                expect(routed).not.toContain('semantic-scholar');
+                expect(routed).toEqual(expect.arrayContaining(['pubmed', 'openalex']));
+            }
+        }
+    });
+
+    test('falls back to PubMed and OpenAlex when only the retired source was requested', () => {
+        const profile = deriveSearchIntentProfile('sepsis');
+        expect(routeSearchSources(['semantic'], profile, { explicitSources: true })).toEqual(['pubmed', 'openalex']);
     });
 });

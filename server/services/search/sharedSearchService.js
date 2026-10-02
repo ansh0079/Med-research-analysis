@@ -76,8 +76,8 @@ function deriveSharedSearchParams({
     return params;
 }
 
-// PubMed and OpenAlex carry a search; a source outside this set (Semantic Scholar,
-// which is unauthenticated here and routinely rate-limited) only adds to it.
+// PubMed and OpenAlex carry a search; a source outside this set only adds to it, and a
+// source that is rate-limited or down reports zero results rather than a failure.
 const CORE_SOURCES = ['pubmed', 'openalex'];
 
 /**

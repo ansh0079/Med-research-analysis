@@ -19,10 +19,10 @@ const resultWith = (counts, extra = {}) => ({
     articles: [{ uid: 'a1', title: 'Trial' }],
     telemetry: { sourceFailures: {}, sourceFetches: fetched(counts), ...extra },
 });
-const cleanResult = () => resultWith({ pubmed: 80, openalex: 50, semantic: 40 });
-// Semantic Scholar rate-limited: recorded as an empty source, NOT as a failure.
-const semanticThrottled = () => resultWith({ pubmed: 80, openalex: 50, semantic: 0 });
-const degradedResult = () => resultWith({ pubmed: 80, openalex: 0, semantic: 40 });
+const cleanResult = () => resultWith({ pubmed: 80, openalex: 50, europepmc: 40 });
+// An optional source rate-limited: recorded as an empty source, NOT as a failure.
+const europepmcThrottled = () => resultWith({ pubmed: 80, openalex: 50, europepmc: 0 });
+const degradedResult = () => resultWith({ pubmed: 80, openalex: 0, europepmc: 40 });
 
 function memoryCache(initial = {}) {
     const store = new Map(Object.entries(initial));
@@ -63,6 +63,11 @@ describe('search prewarm', () => {
         expect(opts.cache.store.has(real.sharedCacheKey)).toBe(true);
     });
 
+    test('a client still sending the retired source shares one cache key with everyone else', () => {
+        const key = (sources) => deriveSharedSearchParams({ db, query: 'ARDS', sources, explicitSources: true, limit: 20, specificity: 'moderate', vector: '1' }).sharedCacheKey;
+        expect(key('pubmed,openalex,semantic')).toBe(key('pubmed,openalex'));
+    });
+
     test('stores for the configured ttl, and skips topics that are already cached', async () => {
         const opts = base();
         const first = await runSearchPrewarm(db, { ...opts, topics: ['ARDS', 'COPD exacerbation'], ttlSeconds: 259200 });
@@ -75,15 +80,15 @@ describe('search prewarm', () => {
         expect(mockFetchShared).not.toHaveBeenCalled();
     });
 
-    test('a rate-limited Semantic Scholar is kept only for the normal short ttl, not for days', async () => {
-        mockFetchShared.mockResolvedValue(semanticThrottled());
+    test('a missing optional source is kept only for the normal short ttl, not for days', async () => {
+        mockFetchShared.mockResolvedValue(europepmcThrottled());
         const opts = base();
-        const summary = await runSearchPrewarm(db, { ...opts, topics: ['ARDS'], ttlSeconds: 259200, sources: 'pubmed,openalex,semantic' });
+        const summary = await runSearchPrewarm(db, { ...opts, topics: ['ARDS'], ttlSeconds: 259200, sources: 'pubmed,openalex,europepmc' });
         expect(summary).toMatchObject({ warmed: 0, warmedPartial: 1, skippedUnclean: 0 });
         expect([...opts.cache.ttls.values()]).toEqual([SHARED_SEARCH_RESULT_TTL_SECONDS]);
     });
 
-    test('with the default sources (no Semantic Scholar), a healthy result is complete and kept for the long ttl', async () => {
+    test('with the default sources (PubMed and OpenAlex only), a healthy result is complete and kept for the long ttl', async () => {
         mockFetchShared.mockResolvedValue(resultWith({ pubmed: 80, openalex: 50 }));
         const opts = base();
         const summary = await runSearchPrewarm(db, { ...opts, topics: ['ARDS'], ttlSeconds: 259200 });
@@ -92,9 +97,9 @@ describe('search prewarm', () => {
     });
 
     test('assessSharedResult grades by core source health', () => {
-        const sources = ['pubmed', 'openalex', 'semantic'];
+        const sources = ['pubmed', 'openalex', 'europepmc'];
         expect(assessSharedResult(cleanResult(), sources)).toBe('complete');
-        expect(assessSharedResult(semanticThrottled(), sources)).toBe('core_only');
+        expect(assessSharedResult(europepmcThrottled(), sources)).toBe('core_only');
         expect(assessSharedResult(degradedResult(), sources)).toBe('degraded');
         expect(assessSharedResult({ articles: [] }, sources)).toBe('degraded');
         expect(assessSharedResult(resultWith({ pubmed: 80, openalex: 50 }, { sourceFailures: { pubmed: { failed: true } } }), sources)).toBe('degraded');

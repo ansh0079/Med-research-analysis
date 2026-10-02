@@ -88,7 +88,7 @@ export const SearchEmptyState: React.FC<Props> = ({ onExampleClick, isAuthentica
             Ready for Query
           </p>
           <p className="text-sm text-slate-300 dark:text-slate-600 max-w-xs mx-auto">
-            Search PubMed, Semantic Scholar & OpenAlex simultaneously
+            Search PubMed & OpenAlex simultaneously
           </p>
         </div>
 

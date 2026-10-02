@@ -20,56 +20,56 @@ const INTENT_ROUTE_POLICY = {
     landmark: {
         bouquetIntent: 'therapeutic',
         ensureSources: ['pubmed', 'openalex'],
-        sourceOrder: ['pubmed', 'openalex', 'semantic', 'crossref'],
+        sourceOrder: ['pubmed', 'openalex', 'crossref'],
         preferredArchetypes: ['landmark_rct', 'guideline', 'recent_review', 'management_trial'],
         candidateMultiplier: 5,
     },
     guideline: {
         bouquetIntent: 'guideline',
         ensureSources: ['pubmed', 'openalex'],
-        sourceOrder: ['pubmed', 'openalex', 'semantic', 'crossref'],
+        sourceOrder: ['pubmed', 'openalex', 'crossref'],
         preferredArchetypes: ['guideline', 'definition', 'recent_review', 'landmark_rct'],
         candidateMultiplier: 4,
     },
     recent_evidence: {
         bouquetIntent: 'therapeutic',
-        ensureSources: ['pubmed', 'openalex', 'semantic'],
-        sourceOrder: ['pubmed', 'openalex', 'semantic', 'crossref'],
+        ensureSources: ['pubmed', 'openalex'],
+        sourceOrder: ['pubmed', 'openalex', 'crossref'],
         preferredArchetypes: ['guideline', 'recent_review', 'management_trial', 'rct'],
         candidateMultiplier: 4,
     },
     safety: {
         bouquetIntent: 'therapeutic',
         ensureSources: ['pubmed', 'openalex'],
-        sourceOrder: ['pubmed', 'openalex', 'semantic', 'crossref'],
+        sourceOrder: ['pubmed', 'openalex', 'crossref'],
         preferredArchetypes: ['guideline', 'recent_review', 'cohort', 'review'],
         candidateMultiplier: 4,
     },
     diagnostic: {
         bouquetIntent: 'diagnostic',
         ensureSources: ['pubmed', 'openalex'],
-        sourceOrder: ['pubmed', 'openalex', 'semantic', 'crossref'],
+        sourceOrder: ['pubmed', 'openalex', 'crossref'],
         preferredArchetypes: ['definition', 'guideline', 'recent_review', 'review'],
         candidateMultiplier: 4,
     },
     mechanistic: {
         bouquetIntent: 'mechanistic',
-        ensureSources: ['pubmed', 'openalex', 'semantic'],
-        sourceOrder: ['semantic', 'openalex', 'pubmed', 'crossref'],
+        ensureSources: ['pubmed', 'openalex'],
+        sourceOrder: ['openalex', 'pubmed', 'crossref'],
         preferredArchetypes: ['landmark_basic_science', 'mechanism', 'recent_review'],
         candidateMultiplier: 3,
     },
     therapeutic: {
         bouquetIntent: 'therapeutic',
         ensureSources: ['pubmed', 'openalex'],
-        sourceOrder: ['pubmed', 'openalex', 'semantic', 'crossref'],
+        sourceOrder: ['pubmed', 'openalex', 'crossref'],
         preferredArchetypes: ['guideline', 'recent_review', 'management_trial', 'landmark_rct'],
         candidateMultiplier: 4,
     },
     general: {
         bouquetIntent: 'general',
         ensureSources: [],
-        sourceOrder: ['pubmed', 'openalex', 'semantic', 'crossref'],
+        sourceOrder: ['pubmed', 'openalex', 'crossref'],
         preferredArchetypes: intentToPreferredArchetypes('general'),
         candidateMultiplier: 3,
     },
@@ -120,11 +120,18 @@ function deriveSearchIntentProfile(query, { specificity = 'moderate' } = {}) {
     };
 }
 
+// Semantic Scholar is no longer a search source: without a working API key the anonymous
+// pool rate-limits most requests and a throttled source silently returns nothing. Dropping it
+// here (not only in the UI) also covers browsers that still send it from saved settings and
+// API clients, and keeps their cache keys identical to everyone else's.
+const RETIRED_SOURCES = new Set(['semantic', 'semantic-scholar']);
+const withoutRetired = (sources) => unique(sources).filter((source) => !RETIRED_SOURCES.has(source));
+
 function routeSearchSources(requestedSources = [], profile = {}, { explicitSources = false } = {}) {
-    const requested = unique(requestedSources);
+    const requested = withoutRetired(requestedSources);
     const sourcePolicy = profile?.sourcePolicy || {};
-    const sourceOrder = unique(sourcePolicy.sourceOrder || INTENT_ROUTE_POLICY.general.sourceOrder);
-    const ensureSources = explicitSources ? [] : unique(sourcePolicy.ensureSources || []);
+    const sourceOrder = withoutRetired(sourcePolicy.sourceOrder || INTENT_ROUTE_POLICY.general.sourceOrder);
+    const ensureSources = explicitSources ? [] : withoutRetired(sourcePolicy.ensureSources || []);
     const pool = unique([...requested, ...ensureSources]);
     const ordered = [
         ...sourceOrder.filter((source) => pool.includes(source)),

@@ -11,7 +11,7 @@
 // Politeness matters: the search sources throttle bursts, and a throttled
 // result cached for days would be worse than no warming. Runs are paced,
 // stop after repeated failures, and never store a result whose core sources failed.
-// A result missing only Semantic Scholar (unauthenticated, often rate-limited) is kept
+// A result missing only an optional source (anything outside PubMed and OpenAlex) is kept
 // for the normal short TTL, exactly as an ordinary search would be, not for days.
 
 const { loadFlagshipConfig } = require('../flagshipTopicOps');

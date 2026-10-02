@@ -84,7 +84,7 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
               server/services/ai/aiService.js -- this claimed Flash-Lite while the
               app actually ran Flash. */}
           <p className="text-xs sm:text-sm text-slate-400 dark:text-slate-500 font-mono tracking-wide break-words">
-            PubMed · Semantic Scholar · OpenAlex · Gemini 2.5 Flash
+            PubMed · OpenAlex · Gemini 2.5 Flash
           </p>
         </div>
         )}
