@@ -60,6 +60,7 @@ const {
 const {
     scheduleZombieSweep, stopZombieSweep,
 } = require('../zombieJobSweeper');
+const { scheduleLlmAnomalyCheck, stopLlmAnomalyCheck } = require('../llmAnomalyScheduler');
 const {
     scheduleTopicEvolution, stopTopicEvolution,
 } = require('../topicEvolutionScheduler');
@@ -201,6 +202,11 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
             task: 'flagship-enrich',
             start: () => scheduleFlagshipEnrich(db, { cache }, baseLogger.child({ task: 'flagship-enrich' })),
             stop: () => stopFlagshipEnrich(),
+        },
+        {
+            task: 'llm-anomaly',
+            start: () => scheduleLlmAnomalyCheck(db, baseLogger.child({ task: 'llm-anomaly' })),
+            stop: () => stopLlmAnomalyCheck(),
         },
         {
             task: 'zombie-job-sweep',
