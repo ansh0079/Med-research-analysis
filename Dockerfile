@@ -13,6 +13,13 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
+# better-sqlite3 (a devDependency — tests and the sqlite-migration script only)
+# carries a binding.gyp, so this stage's full `npm ci` compiles it from source;
+# older npm does that even though the package bundles prebuilt binaries.
+# Alpine has no toolchain by default, and the build failed here (2026-10-02).
+# The production stage installs with --omit=dev, so this never ships.
+RUN apk add --no-cache python3 make g++
+
 # Build-time args for VITE_ vars (baked into the frontend bundle by Vite)
 ARG VITE_SENTRY_DSN
 ARG VITE_SENTRY_ENV=production
