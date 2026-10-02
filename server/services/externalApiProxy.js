@@ -15,6 +15,7 @@ const logger = require('../config/logger');
 const crypto = require('crypto');
 const { reportProviderUsage } = require('./ai/llmUsageContext');
 const { articleFromEuropePmcRecord } = require('./unifiedEvidenceSearch/europePmcMapper');
+const { semanticScholarFetch } = require('./semanticScholarThrottle');
 const { recordExternalApiCall } = require('./observabilityMetrics');
 
 // Lazily-loaded GoogleAuth instance for Vertex AI OAuth2 token caching.
@@ -259,73 +260,45 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     });
   }
 
-  // Semantic Scholar allows ONE request per second, cumulative across every
-  // endpoint -- an API key raises the quota but not this ceiling. A single
-  // search fans out to several sub-queries, so unthrottled we exceeded it on
-  // our own and every extra request came back 429 ("Some sources failed
-  // (semantic). Results may be incomplete."). Serialise the calls through one
-  // promise chain and space them out; the 30-minute source cache means repeat
-  // queries never reach here at all.
-  const S2_MIN_INTERVAL_MS = 1100;
-  let s2Gate = Promise.resolve();
-  let s2LastStartedAt = 0;
-
-  function throttleSemanticScholar() {
-    const ready = s2Gate.then(async () => {
-      const wait = s2LastStartedAt + S2_MIN_INTERVAL_MS - Date.now();
-      if (wait > 0) await new Promise((r) => setTimeout(r, wait));
-      s2LastStartedAt = Date.now();
-    });
-    // The chain must not break on a rejected caller, or every later request
-    // inherits the rejection and the source goes dark until restart.
-    s2Gate = ready.catch(() => {});
-    return ready;
-  }
-
+  // Semantic Scholar allows ONE request per second in total, across every endpoint. Spacing,
+  // retries and the rejected-key fallback live in semanticScholarThrottle, shared with the
+  // citations, PDF and digest callers and (through the cache) with the other container. The
+  // 30-minute source cache means repeat queries never reach here at all.
   async function semanticScholarSearch(query, { limit = 20 } = {}) {
     return withSourceCache('semantic', { query, limit }, 1800, async () => {
       const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(query)}&limit=${limit}&fields=title,authors,year,citationCount,abstract,journal,openAccessPdf,publicationTypes,externalIds`;
-      // A key that the API rejects is worse than no key: an unactivated or
-      // wrong-plan key 403s every request while the anonymous pool still answers
-      // 200. Verified in production -- with the configured key both /paper/search
-      // and /paper/DOI 403'd, and both returned 200 unauthenticated. So drop the
-      // key for the remaining attempts rather than losing the source entirely.
-      let useKey = Boolean(keys.semantic);
-      let lastErr;
-      for (let attempt = 0; attempt < 3; attempt++) {
-        if (attempt > 0) await new Promise((r) => setTimeout(r, attempt * 1000));
-        try {
-          await throttleSemanticScholar();
-          const headers = useKey ? { 'x-api-key': keys.semantic } : {};
-          const res = await f(url, { headers, timeout: DEFAULT_TIMEOUTS.semantic });
-          if ((res.status === 401 || res.status === 403) && useKey) {
-            useKey = false;
-            lastErr = new Error(`Semantic Scholar ${res.status} (api key rejected; retrying unauthenticated)`);
-            continue;
-          }
-          if (res.status === 429 || res.status === 503) { lastErr = new Error(`Semantic Scholar ${res.status}`); continue; }
-          if (!res.ok) throw new Error(`Semantic Scholar ${res.status}`);
-          const data = await res.json();
-          return (data.data || []).map((p) => ({
-            uid: p.paperId,
-            title: p.title,
-            authors: p.authors?.map((a) => ({ name: a.name })),
-            pubdate: p.year?.toString(),
-            source: p.journal?.name || 'Semantic Scholar',
-            pmcrefcount: p.citationCount,
-            abstract: p.abstract,
-            isFree: !!p.openAccessPdf,
-            fullTextUrl: p.openAccessPdf?.url || null,
-            pubtype: p.publicationTypes || [],
-            doi: p.externalIds?.DOI || null,
-            _source: 'semantic',
-          }));
-        } catch (err) {
-          lastErr = err;
-        }
+      let res;
+      try {
+        res = await semanticScholarFetch(url, {
+          fetchImpl: f,
+          key: keys.semantic,
+          cache,
+          log: logger,
+          makeOptions: (headers) => ({ headers, timeout: DEFAULT_TIMEOUTS.semantic }),
+        });
+      } catch (err) {
+        logger.warn({ err, query }, 'Semantic Scholar request failed after retries');
+        return [];
       }
-      logger.warn({ err: lastErr, query }, 'Semantic Scholar request failed after retries');
-      return [];
+      if (!res.ok) {
+        logger.warn({ err: new Error(`Semantic Scholar ${res.status}`), query }, 'Semantic Scholar request failed after retries');
+        return [];
+      }
+      const data = await res.json();
+      return (data.data || []).map((p) => ({
+        uid: p.paperId,
+        title: p.title,
+        authors: p.authors?.map((a) => ({ name: a.name })),
+        pubdate: p.year?.toString(),
+        source: p.journal?.name || 'Semantic Scholar',
+        pmcrefcount: p.citationCount,
+        abstract: p.abstract,
+        isFree: !!p.openAccessPdf,
+        fullTextUrl: p.openAccessPdf?.url || null,
+        pubtype: p.publicationTypes || [],
+        doi: p.externalIds?.DOI || null,
+        _source: 'semantic',
+      }));
     });
   }
 

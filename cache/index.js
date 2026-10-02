@@ -25,6 +25,7 @@ class CacheManager {
 
         this.redis = null;
         this.redisPrefix = options.redisPrefix || 'medsearch:';
+        this.slots = new Map();
 
         // Listen for cache events
         this.cache.on('expired', (key) => {
@@ -158,6 +159,30 @@ class CacheManager {
         }
         if (this.cache.has(key)) return false;
         return this.cache.set(key, value, ttlSeconds);
+    }
+
+    /**
+     * Take a rate-limit slot that stays closed for `intervalMs`, with millisecond precision
+     * (setIfAbsent only has whole seconds). Returns { acquired, waitMs }. With Redis the slot is
+     * shared by the web and worker containers, so a limit that applies to the whole app, such as
+     * Semantic Scholar's one request per second, holds across both; without Redis it is per process.
+     */
+    async tryAcquireSlot(key, intervalMs) {
+        const ms = Math.max(1, Math.ceil(Number(intervalMs) || 0));
+        if (this.redis) {
+            const fullKey = `${this.redisPrefix}slot:${key}`;
+            const result = await this.redis.set(fullKey, '1', 'PX', ms, 'NX');
+            if (result === 'OK') return { acquired: true, waitMs: 0 };
+            const ttl = await this.redis.pttl(fullKey);
+            return { acquired: false, waitMs: ttl > 0 ? ttl : 25 };
+        }
+        const now = Date.now();
+        const until = this.slots.get(key) || 0;
+        if (until <= now) {
+            this.slots.set(key, now + ms);
+            return { acquired: true, waitMs: 0 };
+        }
+        return { acquired: false, waitMs: until - now };
     }
 
     async delAsync(key) {

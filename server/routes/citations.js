@@ -1,5 +1,6 @@
 const { sanitizeArticleOutput } = require('../utils/articles');
 const { safeFetch } = require('../utils/fetch');
+const { semanticScholarFetch } = require('../services/semanticScholarThrottle');
 
 function registerCitationRoutes(app, { serverConfig, cache, fetch: fetchImpl, requireAuthJwt }) {
     const f = fetchImpl || safeFetch;
@@ -12,16 +13,17 @@ function registerCitationRoutes(app, { serverConfig, cache, fetch: fetchImpl, re
         if (cached) return res.json({ ...cached, cached: true });
 
         try {
-            const headers = serverConfig.keys.semantic
-                ? { 'x-api-key': serverConfig.keys.semantic }
-                : {};
             const paperFields = 'title,authors,year,citationCount,abstract,openAccessPdf,externalIds';
             const fields = `contexts,intents,isInfluential,${paperFields}`;
 
-            const [citRes, refRes] = await Promise.all([
-                f(`https://api.semanticscholar.org/graph/v1/paper/${paperId}/citations?fields=${fields}&limit=${limit}`, { headers, timeout: 15000 }),
-                f(`https://api.semanticscholar.org/graph/v1/paper/${paperId}/references?fields=${fields}&limit=${limit}`, { headers, timeout: 15000 }),
-            ]);
+            // Semantic Scholar allows one request per second in total, so these two go out one
+            // after the other (never together), each waiting for its slot.
+            const s2 = (path) => semanticScholarFetch(
+                `https://api.semanticscholar.org/graph/v1/paper/${paperId}/${path}?fields=${fields}&limit=${limit}`,
+                { fetchImpl: f, key: serverConfig.keys.semantic, cache, makeOptions: (headers) => ({ headers, timeout: 15000 }) },
+            );
+            const citRes = await s2('citations');
+            const refRes = await s2('references');
 
             const mapPaper = (p) => ({
                 uid: p.paperId,

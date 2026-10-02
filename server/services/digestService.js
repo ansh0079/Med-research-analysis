@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const { buildDigestHtml, sendDigestEmail } = require('./emailService');
 const { digestQueue } = require('./jobQueue');
 const spacedRep = require('./spacedRepService');
+const { semanticScholarFetch } = require('./semanticScholarThrottle');
 
 let scheduledJob = null;
 
@@ -60,9 +61,12 @@ async function runSearchForAlert(query, sources, serverConfig, fetchImpl) {
         const url =
           `https://api.semanticscholar.org/graph/v1/paper/search` +
           `?query=${genericQuery}&limit=10&fields=title,authors,year,abstract,journal,influentialCitationCount&sort=relevance`;
-        const headers = {};
-        if (serverConfig?.keys?.semantic) headers['x-api-key'] = serverConfig.keys.semantic;
-        const res = await fetchImpl(url, { headers, signal: AbortSignal.timeout(10000) });
+        // Alerts run in parallel, but Semantic Scholar allows one request per second in total.
+        const res = await semanticScholarFetch(url, {
+          fetchImpl,
+          key: serverConfig?.keys?.semantic,
+          makeOptions: (headers) => ({ headers, signal: AbortSignal.timeout(10000) }),
+        });
         if (!res.ok) return;
         const data = await res.json();
         for (const p of data.data || []) {

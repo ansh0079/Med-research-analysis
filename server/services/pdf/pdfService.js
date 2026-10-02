@@ -1,6 +1,7 @@
 const { extractPdfInWorker } = require('../../pdf-extract-pooled');
 const { safeServerFetch } = require('../../utils/ssrfGuard');
 const logger = require('../../config/logger');
+const { semanticScholarFetch } = require('../semanticScholarThrottle');
 
 /**
  * Ordered cascade of open-access PDF sources.
@@ -63,10 +64,16 @@ async function tryUnpaywall(doi, email, fetch) {
 async function trySemanticScholar(doi, apiKey, fetch) {
     if (!doi) return null;
     try {
-        const headers = apiKey ? { 'x-api-key': apiKey } : {};
-        const resp = await fetch(
+        // One request per second across the whole app: go through the shared throttle. The timeout
+        // is built per attempt so it starts when the request is sent, not while it waits in line.
+        const resp = await semanticScholarFetch(
             `https://api.semanticscholar.org/graph/v1/paper/DOI:${encodeURIComponent(doi)}?fields=openAccessPdf`,
-            { headers, signal: AbortSignal.timeout(CASCADE_TIMEOUT_MS) }
+            {
+                fetchImpl: fetch,
+                key: apiKey,
+                maxAttempts: 2,
+                makeOptions: (headers) => ({ headers, signal: AbortSignal.timeout(CASCADE_TIMEOUT_MS) }),
+            }
         );
         if (!resp.ok) return null;
         const data = await resp.json();
