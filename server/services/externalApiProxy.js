@@ -14,6 +14,7 @@
 const logger = require('../config/logger');
 const crypto = require('crypto');
 const { reportProviderUsage } = require('./ai/llmUsageContext');
+const { articleFromEuropePmcRecord } = require('./unifiedEvidenceSearch/europePmcMapper');
 const { recordExternalApiCall } = require('./observabilityMetrics');
 
 // Lazily-loaded GoogleAuth instance for Vertex AI OAuth2 token caching.
@@ -62,6 +63,7 @@ const DEFAULT_TIMEOUTS = {
   semantic: 15000,
   openalex: 15000,
   crossref: 15000,
+  europepmc: 15000,
   mesh: 8000,
   claude: 45000,
   mistral: 30000,
@@ -384,6 +386,27 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     });
   }
 
+  // Europe PMC: free, no key. Preprints are excluded unless EUROPEPMC_INCLUDE_PREPRINTS=true,
+  // because the evidence and synthesis steps do not filter them and they are not peer reviewed.
+  async function europePmcSearch(query, { limit = 20 } = {}) {
+    return withSourceCache('europepmc', { query, limit }, 1800, async () => {
+      const includePreprints = process.env.EUROPEPMC_INCLUDE_PREPRINTS === 'true';
+      const q = includePreprints ? query : `(${query}) NOT SRC:PPR`;
+      const url = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${encodeURIComponent(q)}`
+        + `&format=json&resultType=core&pageSize=${Math.min(Math.max(Number(limit) || 20, 1), 100)}`;
+      let lastErr;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        if (attempt > 0) await new Promise((r) => setTimeout(r, 1000));
+        const res = await f(url, { timeout: DEFAULT_TIMEOUTS.europepmc, headers: { Accept: 'application/json' } });
+        if (res.status === 429 || res.status === 503) { lastErr = new Error(`Europe PMC ${res.status}`); continue; }
+        if (!res.ok) throw new Error(`Europe PMC ${res.status}`);
+        const data = await res.json();
+        return (data.resultList?.result || []).map(articleFromEuropePmcRecord).filter(Boolean);
+      }
+      throw lastErr;
+    });
+  }
+
   async function meshSuggest(query, { limit = 6 } = {}) {
     return withSourceCache('mesh', { query, limit }, 86400, async () => {
       const url = `https://id.nlm.nih.gov/mesh/lookup/term?label=${encodeURIComponent(query.trim())}&match=contains&limit=${limit}`;
@@ -580,6 +603,7 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     semanticScholarSearch,
     openAlexSearch,
     crossrefSearch,
+    europePmcSearch,
     meshSuggest,
     claudeMessages,
     mistralChat,

@@ -191,6 +191,20 @@ async function fetchUnifiedEvidence({ query, safeLimit, sourceList, serverConfig
         })());
     }
 
+    if (sourceList.includes('europepmc')) {
+        sourceFetches.push((async () => {
+            try {
+                const results = await proxy.europePmcSearch(query, { limit: safeLimit });
+                recordSourceOk('europepmc', Array.isArray(results) ? results.length : 0);
+                return results;
+            } catch (err) {
+                console.warn('[unifiedEvidence] Europe PMC failed', err.message);
+                recordSourceFailure('europepmc', err);
+                return [];
+            }
+        })());
+    }
+
     if (sourceList.includes('crossref')) {
         sourceFetches.push((async () => {
             try {

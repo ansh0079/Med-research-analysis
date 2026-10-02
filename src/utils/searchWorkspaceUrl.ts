@@ -17,7 +17,7 @@ const TABS = new Set<SearchWorkspaceTab>(['evidence', 'guidelines', 'learn']);
 const LENSES = new Set<ResultLens>(['all', 'open_access', 'high_quality', 'recent', 'practice_changing']);
 const LANES = new Set<EvidenceLaneKey | 'all'>(['all', 'guidelines', 'landmark_trials', 'reviews', 'supporting']);
 const SORTS = new Set<ResultSort>(['relevance', 'newest', 'citations', 'quality']);
-const SOURCES = new Set<DataSource>(['pubmed', 'crossref', 'openalex']);
+const SOURCES = new Set<DataSource>(['pubmed', 'crossref', 'openalex', 'europepmc']);
 
 function member<T extends string>(value: string | null, values: Set<T>, fallback: T): T {
   return value && values.has(value as T) ? value as T : fallback;

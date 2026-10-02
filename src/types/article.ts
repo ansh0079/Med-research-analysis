@@ -83,7 +83,7 @@ export interface Article {
   _missedQuizCount?: number;
 }
 
-export type DataSource = 'pubmed' | 'semantic' | 'crossref' | 'openalex';
+export type DataSource = 'pubmed' | 'semantic' | 'crossref' | 'openalex' | 'europepmc';
 
 export interface ImpactScore {
   score: number;

@@ -28,6 +28,11 @@ const SOURCE_BADGES: Record<string, ArticleSourceBadgeInfo> = {
     label: 'OpenAlex',
     className: 'bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950/30 dark:text-teal-300 dark:border-teal-800',
   },
+  europepmc: {
+    key: 'europepmc',
+    label: 'Europe PMC',
+    className: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-300 dark:border-emerald-800',
+  },
   crossref: {
     key: 'crossref',
     label: 'Crossref',
@@ -78,6 +83,19 @@ export function getArticleLinkInfo(article: Article): ArticleLinkInfo {
     };
   }
 
+  if (source === 'europepmc') {
+    const pmid = normalizePmid(String(article.pmid || '').trim()) || normalizePmid(safeUid);
+    const pmcid = String(article.pmcid || '').trim();
+    const primaryUrl = pmid
+      ? `https://europepmc.org/article/MED/${pmid}`
+      : pmcid
+        ? `https://europepmc.org/article/PMC/${pmcid.replace(/^PMC/i, 'PMC')}`
+        : doi
+          ? `https://doi.org/${encodeURIComponent(doi)}`
+          : `https://europepmc.org/search?query=${encodeURIComponent(article.title || safeUid)}`;
+    return { primaryUrl, primaryLabel: 'Europe PMC', sourceLabel: 'Europe PMC' };
+  }
+
   if (source === 'crossref') {
     const crossrefDoi = doi || safeUid;
     return {
@@ -103,6 +121,7 @@ export function getArticleSourceBadgeInfo(article: Article): ArticleSourceBadgeI
   if (sourceText.includes('pubmed') || /\bpmid\b/.test(sourceText) || article.pmid) return SOURCE_BADGES.pubmed;
   if (sourceText.includes('semantic')) return SOURCE_BADGES.semantic;
   if (sourceText.includes('openalex')) return SOURCE_BADGES.openalex;
+  if (sourceText.includes('europepmc') || sourceText.includes('europe pmc')) return SOURCE_BADGES.europepmc;
   if (sourceText.includes('crossref')) return SOURCE_BADGES.crossref;
 
   return {

@@ -1,0 +1,136 @@
+{
+  "med": {
+    "id": "42456804",
+    "source": "MED",
+    "pmid": "42456804",
+    "pmcid": "PMC13545711",
+    "doi": "10.1016/j.jhepr.2026.101961",
+    "title": "Corticosteroids in severe alcohol-related hepatitis: A multicenter randomized clinical trial.",
+    "authorString": "Moreno C, Deltenre P, Marot A, Njimi H, Lasser L, Degré D, Hittelet A, Delwaide J, Geerts A, François S, Bastens B, Gustot T, Trépo E, CORTISAVE study investigators.",
+    "authorList": {
+      "author": [
+        {
+          "fullName": "Moreno C",
+          "firstName": "Christophe",
+          "lastName": "Moreno"
+        },
+        {
+          "fullName": "Deltenre P",
+          "firstName": "Pierre",
+          "lastName": "Deltenre"
+        },
+        {
+          "fullName": "Marot A",
+          "firstName": "Astrid",
+          "lastName": "Marot"
+        }
+      ]
+    },
+    "journalInfo": {
+      "issue": "10",
+      "volume": "8",
+      "journalIssueId": 4250588,
+      "dateOfPublication": "2026 Jul",
+      "monthOfPublication": 7,
+      "yearOfPublication": 2026,
+      "journal": {
+        "medlineAbbreviation": "JHEP Rep",
+        "title": "JHEP reports : innovation in hepatology",
+        "essn": "2589-5559",
+        "issn": "2589-5559",
+        "isoabbreviation": "JHEP Rep",
+        "nlmid": "101761237"
+      },
+      "printPublicationDate": "2026-07-01"
+    },
+    "pubYear": "2026",
+    "firstPublicationDate": "2026-07-16",
+    "abstractText": "<h4>Background & aims</h4>Severe alcohol-related hepatitis (AH) has high short-term mortality, and corticosteroid therapy is recommended in the absence of contraindications. However, its benefit in patients with early spontaneous bilirubin improvement remains unknown. We aim at determining whether corticosteroid therapy improves survival compared with placebo in this specific population.<h4>Method",
+    "citedByCount": 0,
+    "isOpenAccess": "Y",
+    "inEPMC": "Y",
+    "pubTypeList": {
+      "pubType": [
+        "research-article",
+        "Journal Article"
+      ]
+    },
+    "fullTextUrlList": {
+      "fullTextUrl": [
+        {
+          "availability": "Subscription required",
+          "availabilityCode": "S",
+          "documentStyle": "doi",
+          "site": "DOI",
+          "url": "https://doi.org/10.1016/j.jhepr.2026.101961"
+        },
+        {
+          "availability": "Open access",
+          "availabilityCode": "OA",
+          "documentStyle": "html",
+          "site": "Europe_PMC",
+          "url": "https://europepmc.org/articles/PMC13545711"
+        },
+        {
+          "availability": "Open access",
+          "availabilityCode": "OA",
+          "documentStyle": "pdf",
+          "site": "Europe_PMC",
+          "url": "https://europepmc.org/articles/PMC13545711?pdf=render"
+        }
+      ]
+    }
+  },
+  "ppr": {
+    "id": "PPR1152929",
+    "source": "PPR",
+    "doi": "10.21203/rs.3.rs-8800971/v1",
+    "title": "The Cessation Paradox: Recognizing Delayed Alcoholic Hepatitis in Clinical Practice",
+    "authorString": "Edusa S, Fashugba MA, Mitra A.",
+    "authorList": {
+      "author": [
+        {
+          "fullName": "Edusa S",
+          "firstName": "Samuel",
+          "lastName": "Edusa"
+        },
+        {
+          "fullName": "Fashugba MA",
+          "firstName": "Moriamo",
+          "lastName": "Fashugba"
+        },
+        {
+          "fullName": "Mitra A",
+          "firstName": "Anamika",
+          "lastName": "Mitra"
+        }
+      ]
+    },
+    "bookOrReportDetails": {
+      "publisher": "Research Square",
+      "yearOfPublication": 2026
+    },
+    "pubYear": "2026",
+    "firstPublicationDate": "2026-02-09",
+    "abstractText": "<title>Abstract</title>  <p>  <bold>Background:</bold>  Alcoholic hepatitis presenting weeks after alcohol cessation represents a well- documented but underappreciated clinical phenomenon with distinct immunologic mechanisms. Recognition of delayed presentations is crucial for appropriate management and outcomes.  <bold>Case Presentation:</bold>  A man in his mid-50s with military service history ",
+    "citedByCount": 0,
+    "isOpenAccess": "N",
+    "inEPMC": "N",
+    "pubTypeList": {
+      "pubType": [
+        "Preprint"
+      ]
+    },
+    "fullTextUrlList": {
+      "fullTextUrl": [
+        {
+          "availability": "Free",
+          "availabilityCode": "F",
+          "documentStyle": "doi",
+          "site": "DOI",
+          "url": "https://doi.org/10.21203/rs.3.rs-8800971/v1"
+        }
+      ]
+    }
+  }
+}

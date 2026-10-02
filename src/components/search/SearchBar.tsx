@@ -64,6 +64,7 @@ const QUERY_TEMPLATES = [
 const SOURCE_OPTIONS: { value: DataSource; label: string; dot: string }[] = [
   { value: 'pubmed',   label: 'PubMed',            dot: 'bg-blue-500' },
   { value: 'openalex', label: 'OpenAlex',           dot: 'bg-cyan-500' },
+  { value: 'europepmc', label: 'Europe PMC',         dot: 'bg-emerald-500' },
 ];
 
 const SPECIFICITY_OPTIONS: { value: SpecificityLevel; label: string; title: string }[] = [
