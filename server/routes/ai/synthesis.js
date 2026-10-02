@@ -227,6 +227,7 @@ function registerSynthesisRoutes(app, {
                 fetchImpl,
                 provider: selectedProvider,
                 db,
+                cache,
                 log: req.log,
             });
             const result = buildSynthesisResult({

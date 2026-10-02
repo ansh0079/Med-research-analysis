@@ -116,4 +116,22 @@ describe('P0 synthesis conflict helper', () => {
         expect(out.conflictMatrix).toEqual([]);
         expect(out.guidelineAlignment).toBeTruthy();
     });
+
+    test('reuses a stored extraction for the same topic, papers and guidelines', async () => {
+        const store = new Map();
+        const cache = {
+            getAsync: jest.fn(async (k) => store.get(k) ?? null),
+            setAsync: jest.fn(async (k, v) => { store.set(k, v); return true; }),
+        };
+        const args = { topArticles: [{ uid: '1', title: 'Trial', abstract: 'A' }], guidelines: [], topic: 'ARDS', cache };
+        await runSynthesisConflictExtraction(args);
+        expect(cache.setAsync).toHaveBeenCalledTimes(1);
+        const [[key]] = cache.setAsync.mock.calls;
+        store.set(key, { conflictMatrix: ['from-cache'], guidelineAlignment: null });
+
+        const again = await runSynthesisConflictExtraction({ ...args, topic: ' ards ' });
+        expect(again.conflictMatrix).toEqual(['from-cache']);
+        const otherPapers = await runSynthesisConflictExtraction({ ...args, topArticles: [{ uid: '2', title: 'Other', abstract: 'B' }] });
+        expect(otherPapers.conflictMatrix).toEqual([]);
+    });
 });

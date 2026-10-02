@@ -49,6 +49,47 @@ describe('aiGenerationJobService', () => {
         expect(result).toMatchObject({ status: 'generated', cached: true, jobKey });
     });
 
+    describe('ageing and retry', () => {
+        const daysAgo = (n) => new Date(Date.now() - n * 86400000).toISOString();
+        const jobDb = (job) => ({
+            getAiGenerationJobByKey: jest.fn(async () => job),
+            createAiGenerationJob: jest.fn(),
+            markAiGenerationJobRunning: jest.fn(),
+            completeAiGenerationJob: jest.fn(),
+            failAiGenerationJob: jest.fn(),
+            requeueStaleAiGenerationJob: jest.fn(async () => ({ ...job, status: 'queued' })),
+            resetAiGenerationJobForRetry: jest.fn(async () => ({ ...job, status: 'queued' })),
+        });
+        const call = (db) => getOrEnqueueConsensusSynopsis({
+            db, topic: 'sepsis', articles, serverConfig: { keys: {} }, fetchImpl: jest.fn(), cache: { getAsync: jest.fn() },
+        });
+
+        test('serves an aged-out consensus but queues a refresh', async () => {
+            const db = jobDb({ status: 'completed', completedAt: daysAgo(120), resultPayload: { status: 'generated', statement: 'Old [1].' } });
+            const result = await call(db);
+            expect(result).toMatchObject({ statement: 'Old [1].', cached: true });
+            expect(db.requeueStaleAiGenerationJob).toHaveBeenCalledTimes(1);
+        });
+
+        test('leaves a fresh consensus alone', async () => {
+            const db = jobDb({ status: 'completed', completedAt: daysAgo(5), resultPayload: { status: 'generated', statement: 'New [1].' } });
+            await call(db);
+            expect(db.requeueStaleAiGenerationJob).not.toHaveBeenCalled();
+        });
+
+        test('retries a failure after a day instead of failing forever', async () => {
+            const db = jobDb({ status: 'failed', updatedAt: daysAgo(2), errorMessage: 'timeout' });
+            const result = await call(db);
+            expect(db.resetAiGenerationJobForRetry).toHaveBeenCalled();
+            expect(result.status).toBe('queued');
+
+            const recent = jobDb({ status: 'failed', updatedAt: new Date().toISOString(), errorMessage: 'timeout' });
+            const stillFailed = await call(recent);
+            expect(recent.resetAiGenerationJobForRetry).not.toHaveBeenCalled();
+            expect(stillFailed.status).toBe('failed');
+        });
+    });
+
     test('creates a queued durable job and returns a pending placeholder', async () => {
         const jobs = new Map();
         const db = {

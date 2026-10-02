@@ -204,6 +204,18 @@ async resetAiGenerationJobForRetry(jobKey) {
     return this.getAiGenerationJobByKey(jobKey);
 }
 
+/** Re-queue a completed job whose answer has aged out; the old payload stays until the refresh lands. */
+async requeueStaleAiGenerationJob(jobKey) {
+    const now = new Date().toISOString();
+    await this.run(
+        `UPDATE ai_generation_jobs
+         SET status = 'queued', error_message = NULL, updated_at = ?
+         WHERE job_key = ? AND status = 'completed'`,
+        [now, String(jobKey)]
+    );
+    return this.getAiGenerationJobByKey(jobKey);
+}
+
 async moveAiGenerationJobToDeadLetter(jobKey) {
     const row = await this.getAiGenerationJobByKey(jobKey);
     if (!row) return null;

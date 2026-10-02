@@ -2,6 +2,8 @@
 
 const {
     buildSearchResultCacheKey,
+    buildSharedSearchCacheKey,
+    SHARED_SEARCH_RESULT_TTL_SECONDS,
     getCachedSearchResult,
     setCachedSearchResult,
     shareSearchComputation,
@@ -40,6 +42,17 @@ describe('searchResultCacheService', () => {
             .not.toBe(buildSearchResultCacheKey({ ...base, userId: 'u2', vectorEnabled: true }));
         expect(buildSearchResultCacheKey({ ...base, userId: 'u1', vectorEnabled: true }))
             .not.toBe(buildSearchResultCacheKey({ ...base, userId: 'u1', vectorEnabled: false }));
+    });
+
+    test('shared key ignores who searched, so the expensive stage is reused across users', () => {
+        const base = { query: 'ARDS low tidal volume', sourceList: ['pubmed', 'openalex'], safeLimit: 20, specificity: 'moderate' };
+        const shared = buildSharedSearchCacheKey(base);
+        expect(shared.startsWith('search:shared:')).toBe(true);
+        expect(buildSharedSearchCacheKey({ ...base, userId: 'u1', sessionId: 's1', previousQueries: ['sepsis'] })).toBe(shared);
+        expect(buildSharedSearchCacheKey({ ...base, query: '  ARDS   low tidal volume ', sourceList: ['openalex', 'pubmed'] })).toBe(shared);
+        expect(buildSharedSearchCacheKey({ ...base, parsedStudyTypes: ['rct'] })).not.toBe(shared);
+        expect(buildSharedSearchCacheKey({ ...base, specificity: 'strict' })).not.toBe(shared);
+        expect(SHARED_SEARCH_RESULT_TTL_SECONDS).toBeGreaterThan(DEFAULT_SEARCH_RESULT_TTL_SECONDS);
     });
 
     test('reads and writes through async cache API', async () => {

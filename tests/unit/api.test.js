@@ -721,6 +721,39 @@ describe('API Endpoints', () => {
         );
       });
 
+      test('a second user reuses the shared fetch and rank instead of re-querying sources', async () => {
+        const store = new Map();
+        cache.getAsync.mockImplementation(async (key) => (store.has(key) ? store.get(key) : null));
+        cache.setAsync.mockImplementation(async (key, value) => { store.set(key, value); return true; });
+        mockUnifiedSearchFetch({
+          pmids: ['333'],
+          summary: {
+            '333': { title: 'Sepsis fluid resuscitation trial', pubdate: '2024', source: 'NEJM', pmcrefcount: 10, pubtype: ['Journal Article'] },
+          },
+        });
+        const pubmedCalls = () => mockFetch.mock.calls.filter(([url]) => String(url).includes('eutils')).length;
+        try {
+          const first = await request(app)
+            .get('/api/search?q=sepsis%20fluid%20resuscitation&limit=5&sources=pubmed&vector=0&intelligence=async')
+            .set('X-Session-Id', 'session-one')
+            .expect(200);
+          const callsAfterFirst = pubmedCalls();
+          expect(callsAfterFirst).toBeGreaterThan(0);
+          expect(first.body.searchTelemetry.resultSetCache).toMatchObject({ hit: false, sharedHit: false });
+
+          const second = await request(app)
+            .get('/api/search?q=sepsis%20fluid%20resuscitation&limit=5&sources=pubmed&vector=0&intelligence=async')
+            .set('X-Session-Id', 'session-two')
+            .expect(200);
+          expect(second.body.searchTelemetry.resultSetCache).toMatchObject({ hit: false, sharedHit: true });
+          expect(pubmedCalls()).toBe(callsAfterFirst);
+          expect(second.body.articles.map((a) => a.uid)).toEqual(first.body.articles.map((a) => a.uid));
+        } finally {
+          cache.getAsync.mockImplementation(async (key) => mockQuizCommitments.get(key) ?? null);
+          cache.setAsync.mockResolvedValue(true);
+        }
+      });
+
       test('Should allow explicit vector=0 opt-out', async () => {
         db.isVectorSearchAvailable.mockReturnValueOnce(true);
         mockUnifiedSearchFetch({

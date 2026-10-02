@@ -328,6 +328,21 @@ async function prepareSynthesisContext({
 /**
  * Shared conflict / guideline alignment step used by async and stream synthesis paths.
  */
+// Conflicts depend only on the topic, the papers and the guidelines -- not on who
+// asked -- yet ran again on every uncached synthesis. Bump the version when the
+// extraction prompt changes.
+const CONFLICT_CACHE_VERSION = 1;
+const CONFLICT_CACHE_TTL_SECONDS = 7 * 24 * 3600;
+
+function conflictCacheKey(topic, topArticles, guidelines) {
+    const digest = crypto.createHash('sha256').update(JSON.stringify({
+        topic: String(topic || '').trim().toLowerCase(),
+        uids: (topArticles || []).map((a) => String(a.uid || '')).filter(Boolean).sort(),
+        guidelines: (guidelines || []).map((g) => String(g.id ?? g.guidelineId ?? g.title ?? '')).filter(Boolean).sort(),
+    })).digest('hex').slice(0, 40);
+    return `conflicts:v${CONFLICT_CACHE_VERSION}:${digest}`;
+}
+
 async function runSynthesisConflictExtraction({
     topArticles,
     guidelines,
@@ -336,12 +351,18 @@ async function runSynthesisConflictExtraction({
     fetchImpl,
     provider = 'auto',
     db = null,
+    cache = null,
     jobKey = null,
     log = logger,
 }) {
     const evidenceRows = (topArticles || []).map((article) => ({ article, pico: article._pico || null }));
+    const key = cache?.getAsync ? conflictCacheKey(topic, topArticles, guidelines) : null;
+    if (key) {
+        const hit = await cache.getAsync(key).catch(() => null);
+        if (hit) return hit;
+    }
     try {
-        return await extractTrialGuidelineConflicts(
+        const extracted = await extractTrialGuidelineConflicts(
             evidenceRows,
             guidelines || [],
             {
@@ -355,6 +376,10 @@ async function runSynthesisConflictExtraction({
                 jobKey,
             }
         );
+        if (key && extracted && !extracted.budgetSkipped && cache?.setAsync) {
+            await cache.setAsync(key, extracted, CONFLICT_CACHE_TTL_SECONDS).catch(() => {});
+        }
+        return extracted;
     } catch (err) {
         if (err instanceof LlmBudgetExceededError) {
             log.info({ budget: err.snapshot }, 'Skipping conflict extraction — LLM budget exhausted');
@@ -556,6 +581,23 @@ async function runFullSynthesisGenerationInner({
         appendRagContext,
         ragKeys: serverConfig?.keys || null,
     });
+    // Shared layer: the personal key above includes user and session, but two people
+    // whose prompts come out identical (same papers, stage and context) get the same
+    // answer. Keying on the exact prompt shares only what is genuinely identical.
+    const promptCacheKey = `synthesis:prompt:${crypto.createHash('sha256').update(context.prompt).digest('hex').slice(0, 40)}`;
+    if (cache?.getAsync) {
+        const sharedHit = await cache.getAsync(promptCacheKey).catch(() => null);
+        if (sharedHit) {
+            if (cache.setAsync) await cache.setAsync(context.cacheKey, sharedHit, 7 * 24 * 3600).catch(() => {});
+            return {
+                ...sharedHit,
+                cached: true,
+                retrievedArticleCount: Math.max(Number(sharedHit.retrievedArticleCount) || 0, Number(retrievedArticleCount) || articles.length),
+                jobKey: jobKey || sharedHit.jobKey,
+            };
+        }
+    }
+
     const providerCandidates = getProviderCandidates({ provider }, serverConfig);
     if (!providerCandidates.length) {
         throw new Error('No AI provider configured. Add ANTHROPIC_API_KEY, GEMINI_API_KEY, or MISTRAL_API_KEY to .env');
@@ -613,6 +655,7 @@ async function runFullSynthesisGenerationInner({
         fetchImpl,
         provider,
         db,
+        cache,
         jobKey,
     });
     const result = buildSynthesisResult({
@@ -642,11 +685,11 @@ async function runFullSynthesisGenerationInner({
         topic,
         synthesis,
         topArticles: context.topArticles,
-        model: selectedModel,
         serverConfig,
         userId,
         provider: selectedProvider,
     });
+    if (cache?.setAsync) await cache.setAsync(promptCacheKey, result, 7 * 24 * 3600).catch(() => {});
 
     return result;
 }

@@ -562,9 +562,12 @@ async function prefetchTeachingArtifacts(db, topic) {
 }
 
 /**
- * Fetch multi-source evidence, filter for relevance, rank with Evidence Bouquet, personalize.
+ * Shared stage: fetch multi-source evidence, filter, bouquet rank, PICO rerank.
+ * Depends only on the query and its filters -- never on who asked -- so its result
+ * can be cached and reused across users (see unifiedSearch). This is the expensive
+ * part: upstream API calls plus the model-backed rerank.
  */
-async function fetchAndRankSearchArticles({
+async function fetchSharedSearchEvidence({
     db,
     cache = null,
     serverConfig,
@@ -575,17 +578,13 @@ async function fetchAndRankSearchArticles({
     specificity = 'moderate',
     parsedStudyTypes = [],
     parsedYearFilters = [],
-    previousQueries = [],
     vectorList = [],
-    userId = null,
-    sessionId = null,
 }) {
-    return withSpan('search.pipeline', {
+    return withSpan('search.pipeline.shared', {
         'search.query': query,
         'search.sources': sourceList,
         'search.limit': safeLimit,
         'search.specificity': specificity,
-        'user.id_present': Boolean(userId),
     }, async () => {
         const telemetry = {};
         const timings = {};
@@ -707,7 +706,8 @@ async function fetchAndRankSearchArticles({
                     : safeLimit,
                 queryIntent,
                 preferredArchetypes: intentToPreferredArchetypes(queryIntent),
-                previousQueries,
+                // Session trajectory is applied in the personal stage
+                // (buildSearchLearningContext), keeping this stage user-independent.
                 // Teaching-object boosts stay off evidence rank. Learning order is a
                 // separate list computed after this bouquet.
                 specificity,
@@ -753,7 +753,44 @@ async function fetchAndRankSearchArticles({
             const bouquetRow = bouquet.ranking.find((row) => articleRankKeyCandidates(row).some((key) => keys.has(key)));
             return { ...(bouquetRow || {}), ...article };
         });
+        timings.sharedMs = Date.now() - started;
 
+        return {
+            articles,
+            postPicoEvidenceRanking,
+            telemetry: { ...telemetry, topicEvidenceMemory: topicEvidenceMemoryMeta },
+            timings,
+            queryMeshTerms,
+            queryIntent,
+            pico,
+            bouquetRanking: bouquet.ranking,
+            archetypesCovered: bouquet.archetypesCovered,
+            teachingObjects,
+            teachingClaims,
+        };
+    });
+}
+
+/**
+ * Personal stage: learner boost, lane ranking, evidence snapshot. Cheap (DB only),
+ * so it runs on top of a shared result for each person.
+ */
+async function personalizeSearchEvidence(shared, {
+    db,
+    query,
+    userId = null,
+    sessionId = null,
+    previousQueries = [],
+    recordLatency = true,
+}) {
+    return withSpan('search.pipeline.personal', {
+        'search.query': query,
+        'user.id_present': Boolean(userId),
+    }, async () => {
+        let articles = shared.articles;
+        const { postPicoEvidenceRanking, queryMeshTerms, queryIntent, pico, teachingObjects, teachingClaims } = shared;
+        const telemetry = { ...shared.telemetry };
+        const timings = { ...shared.timings };
         const learningStarted = Date.now();
         const learningContextFull = await withSpan('search.personalization', {
             'search.result_count': articles.length,
@@ -814,7 +851,7 @@ async function fetchAndRankSearchArticles({
         }
 
         timings.learningMs = Date.now() - learningStarted;
-        timings.totalMs = Date.now() - started;
+        timings.totalMs = (timings.sharedMs || 0) + timings.learningMs;
 
         annotateActiveSpan({
             'search.result_count': articles.length,
@@ -825,15 +862,17 @@ async function fetchAndRankSearchArticles({
 
         // Per-request stage timings become aggregate latency: the search_latency_p95 SLO has existed
         // since the start with nothing feeding it, so neither the dashboard nor its alert could work.
-        recordSearchLatency(timings);
+        // Only when the shared stage actually ran: a reused shared result would
+        // otherwise report its old fetch/rank timings as if they happened again.
+        if (recordLatency) recordSearchLatency(timings);
 
         return {
             articles,
-            telemetry: { ...telemetry, timings, topicEvidenceMemory: topicEvidenceMemoryMeta },
+            telemetry: { ...telemetry, timings },
             queryMeshTerms,
             queryIntent,
-            bouquetRanking: bouquet.ranking,
-            archetypesCovered: bouquet.archetypesCovered,
+            bouquetRanking: shared.bouquetRanking,
+            archetypesCovered: shared.archetypesCovered,
             teachingObjects,
             teachingClaims,
             learningContext: publicLearningContext(learningContextFull),
@@ -843,6 +882,18 @@ async function fetchAndRankSearchArticles({
             queryRepresentation,
             evidenceSnapshot,
         };
+    });
+}
+
+/** Both stages in one call, for callers that do not cache between them. */
+async function fetchAndRankSearchArticles({ previousQueries = [], userId = null, sessionId = null, ...sharedArgs }) {
+    const shared = await fetchSharedSearchEvidence(sharedArgs);
+    return personalizeSearchEvidence(shared, {
+        db: sharedArgs.db,
+        query: sharedArgs.query,
+        userId,
+        sessionId,
+        previousQueries,
     });
 }
 
@@ -867,4 +918,6 @@ module.exports = {
     filterByStudyType,
     prefetchTeachingArtifacts,
     fetchAndRankSearchArticles,
+    fetchSharedSearchEvidence,
+    personalizeSearchEvidence,
 };

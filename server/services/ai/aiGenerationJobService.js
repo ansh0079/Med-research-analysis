@@ -391,17 +391,20 @@ async function getOrEnqueueConsensusSynopsis({ db, topic, articles = [], serverC
         ? await db.getAiGenerationJobByKey(resolvedJobKey).catch((err) => { logger.warn({ err }, 'getAiGenerationJobByKey failed'); return null; })
         : null;
 
+    const enqueueConsensus = () => enqueueConsensusJob({ db, jobKey: resolvedJobKey, serverConfig, fetchImpl, cache, logger });
     if (existing?.status === 'completed' && existing.resultPayload) {
+        await refreshIfStale({ db, job: existing, jobKey: resolvedJobKey, jobType: 'consensus_synopsis', enqueue: enqueueConsensus, logger });
         return { ...existing.resultPayload, jobKey: resolvedJobKey, cached: true };
     }
     if (existing?.status === 'running' || existing?.status === 'queued') {
         if (existing.status === 'queued') {
-            reviveQueuedJob(() => enqueueConsensusJob({ db, jobKey: resolvedJobKey, serverConfig, fetchImpl, cache, logger }));
+            reviveQueuedJob(enqueueConsensus);
         }
         return consensusPlaceholder({ topic, articles, jobKey: resolvedJobKey, status: existing.status });
     }
     if (existing?.status === 'failed') {
-        return consensusPlaceholder({ topic, articles, jobKey: resolvedJobKey, status: 'failed', errorMessage: existing.errorMessage });
+        const retrying = await retryIfCooledDown({ db, job: existing, jobKey: resolvedJobKey, enqueue: enqueueConsensus, logger });
+        return consensusPlaceholder({ topic, articles, jobKey: resolvedJobKey, status: retrying ? 'queued' : 'failed', errorMessage: retrying ? undefined : existing.errorMessage });
     }
 
     if (typeof db.createAiGenerationJob === 'function') {
@@ -440,6 +443,32 @@ async function getOrEnqueueConsensusSynopsis({ db, topic, articles = [], serverC
  * markAiGenerationJobRunning -- so asking again costs nothing when a job really
  * is in flight, and unsticks the row when it is not.
  */
+// Completed answers used to be reused forever and failed ones never retried. Serve a
+// completed answer until it ages out (then refresh in the background, still serving the
+// old one), and give a failed job another attempt once it has cooled down.
+const STALE_AFTER_DAYS = { consensus_synopsis: 90, live_clinical_answer: 30 };
+const FAILED_RETRY_AFTER_HOURS = 24;
+
+function olderThan(job, ms) {
+    const at = Date.parse(job?.completedAt || job?.updatedAt || '');
+    return Number.isFinite(at) && Date.now() - at > ms;
+}
+
+async function refreshIfStale({ db, job, jobKey, jobType, enqueue, logger }) {
+    const days = STALE_AFTER_DAYS[jobType];
+    if (!days || !olderThan(job, days * 86400000) || typeof db.requeueStaleAiGenerationJob !== 'function') return;
+    const requeued = await db.requeueStaleAiGenerationJob(jobKey).catch((err) => { logger?.warn?.({ err, jobKey }, 'requeueStaleAiGenerationJob failed'); return null; });
+    if (requeued?.status === 'queued') reviveQueuedJob(enqueue);
+}
+
+async function retryIfCooledDown({ db, job, jobKey, enqueue, logger }) {
+    if (!olderThan(job, FAILED_RETRY_AFTER_HOURS * 3600000) || typeof db.resetAiGenerationJobForRetry !== 'function') return false;
+    const reset = await db.resetAiGenerationJobForRetry(jobKey).catch((err) => { logger?.warn?.({ err, jobKey }, 'resetAiGenerationJobForRetry failed'); return null; });
+    if (reset?.status !== 'queued') return false;
+    reviveQueuedJob(enqueue);
+    return true;
+}
+
 function reviveQueuedJob(enqueue) {
     try {
         enqueue();
@@ -503,16 +532,21 @@ async function getOrEnqueueLiveClinicalAnswer({ db, topic, articles = [], guidel
     }
 
     const existing = await db.getAiGenerationJobByKey(resolvedJobKey).catch((err) => { logger.warn({ err }, 'getAiGenerationJobByKey failed'); return null; });
+    const enqueueAnswer = () => enqueueLiveClinicalAnswerJob({ db, topic, articles, guidelines, previousQueries, trainingStage, sessionDepth, serverConfig, fetchImpl, cache, logger, jobKey: resolvedJobKey });
     if (existing?.status === 'completed' && existing.resultPayload) {
+        await refreshIfStale({ db, job: existing, jobKey: resolvedJobKey, jobType: 'live_clinical_answer', enqueue: enqueueAnswer, logger });
         return { ...existing.resultPayload, jobKey: resolvedJobKey, cached: true };
     }
     if (existing?.status === 'running' || existing?.status === 'queued') {
         if (existing.status === 'queued') {
-            reviveQueuedJob(() => enqueueLiveClinicalAnswerJob({ db, topic, articles, guidelines, previousQueries, trainingStage, sessionDepth, serverConfig, fetchImpl, cache, logger, jobKey: resolvedJobKey }));
+            reviveQueuedJob(enqueueAnswer);
         }
         return { status: existing.status, jobKey: resolvedJobKey, clinicalAnswer: null };
     }
     if (existing?.status === 'failed') {
+        if (await retryIfCooledDown({ db, job: existing, jobKey: resolvedJobKey, enqueue: enqueueAnswer, logger })) {
+            return { status: 'queued', jobKey: resolvedJobKey, clinicalAnswer: null };
+        }
         return { status: 'failed', jobKey: resolvedJobKey, clinicalAnswer: null, errorMessage: existing.errorMessage };
     }
 

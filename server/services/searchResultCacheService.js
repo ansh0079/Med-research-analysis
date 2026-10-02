@@ -59,6 +59,37 @@ function buildSearchResultCacheKey({
     })}`;
 }
 
+// The shared stage (fetch, filter, bouquet + model rerank) does not depend on who
+// searched, so it is keyed without user, session or trajectory and reused across
+// everyone. Evidence for a query moves on the scale of days, not minutes.
+const SHARED_SEARCH_RESULT_TTL_SECONDS = Number(process.env.SEARCH_SHARED_CACHE_TTL_SECONDS || 6 * 3600) || 6 * 3600;
+
+function buildSharedSearchCacheKey({
+    query,
+    sourceList = [],
+    safeLimit,
+    specificity = 'moderate',
+    vectorEnabled = false,
+    parsedStudyTypes = [],
+    parsedYearFilters = [],
+    queryIntentProfile = null,
+} = {}) {
+    return `search:shared:${stableHash({
+        query: String(query || '').trim().toLowerCase().replace(/\s+/g, ' '),
+        sourceList: normalizeArray(sourceList).sort(),
+        safeLimit: Number(safeLimit) || 20,
+        specificity,
+        vectorEnabled: Boolean(vectorEnabled),
+        rankerMode: process.env.SEARCH_SHADOW_RANKER_MODE || 'shadow',
+        version: 1,
+        parsedStudyTypes: normalizeArray(parsedStudyTypes).sort(),
+        parsedYearFilters: normalizeArray(parsedYearFilters).sort(),
+        intent: queryIntentProfile?.primaryIntent || null,
+        bouquetIntent: queryIntentProfile?.bouquetIntent || null,
+        facets: normalizeArray(queryIntentProfile?.facets).sort(),
+    })}`;
+}
+
 async function getCachedSearchResult(cache, key) {
     if (!cache || !key) return null;
     const getter = typeof cache.getAsync === 'function' ? cache.getAsync.bind(cache)
@@ -85,7 +116,9 @@ async function setCachedSearchResult(cache, key, value, ttlSeconds = DEFAULT_SEA
 module.exports = {
     shareSearchComputation,
     DEFAULT_SEARCH_RESULT_TTL_SECONDS,
+    SHARED_SEARCH_RESULT_TTL_SECONDS,
     buildSearchResultCacheKey,
+    buildSharedSearchCacheKey,
     getCachedSearchResult,
     setCachedSearchResult,
 };

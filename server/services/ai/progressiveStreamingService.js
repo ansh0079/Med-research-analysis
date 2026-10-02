@@ -111,6 +111,7 @@ async function streamSynthesisGeneration(res, {
             fetchImpl,
             provider: selectedProvider,
             db,
+            cache,
         });
 
         sendEvent('validating', {

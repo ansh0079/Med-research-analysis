@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const logger = require('../../config/logger');
 const { validateQuery } = require('../../utils/articles');
 const { safeFetch } = require('../../utils/fetch');
-const { parseSearchRequestQuery, fetchAndRankSearchArticles } = require('../../services/searchPipeline');
+const { parseSearchRequestQuery, fetchAndRankSearchArticles, fetchSharedSearchEvidence, personalizeSearchEvidence } = require('../../services/searchPipeline');
 const { buildSearchLearningContext, publicLearningContext } = require('../../services/searchLearningService');
 const { recordSearchRankingDecisions } = require('../../services/personalizationBanditService');
 const { buildLearnerContext, publicLearnerContextSummary } = require('../../services/learnerContextService');
@@ -17,6 +17,8 @@ const { resolveQuerySenses } = require('../../utils/conditionQuery');
 const { getEvidenceSnapshot } = require('../../services/search/searchEvidenceSnapshot');
 const {
     buildSearchResultCacheKey,
+    buildSharedSearchCacheKey,
+    SHARED_SEARCH_RESULT_TTL_SECONDS,
     getCachedSearchResult,
     setCachedSearchResult,
     shareSearchComputation,
@@ -102,11 +104,26 @@ function registerUnifiedSearchRoutes(app, deps) {
                 parsedYearFilters,
                 queryIntentProfile,
             });
+            // Two layers: the per-person result (cheap personal stage already applied), and
+            // underneath it the shared fetch + rank + model rerank that anyone's search can reuse.
             let ranked = await getCachedSearchResult(cache, searchResultCacheKey);
             const rankedCacheHit = Boolean(ranked);
+            const sharedCacheKey = buildSharedSearchCacheKey({
+                query: queryValidation.sanitized,
+                sourceList,
+                safeLimit,
+                specificity: validSpecificity,
+                vectorEnabled: useVectorFusion,
+                parsedStudyTypes,
+                parsedYearFilters,
+                queryIntentProfile,
+            });
+            let shared = ranked ? null : await getCachedSearchResult(cache, sharedCacheKey);
+            const sharedCacheHit = Boolean(shared);
+            const needsSharedCompute = !ranked && !shared;
 
             let vectorList = [];
-            if (!ranked && useVectorFusion) {
+            if (needsSharedCompute && useVectorFusion) {
                 try {
                     const vectorStarted = Date.now();
                     const { createVectorSearchService } = require('../../services/vectorSearchService');
@@ -121,7 +138,7 @@ function registerUnifiedSearchRoutes(app, deps) {
             }
 
             let localRetrieval = { articles: [], used: false, available: Boolean(db?.searchCachedArticlesLocal) };
-            if (!ranked) {
+            if (needsSharedCompute) {
                 const localStarted = Date.now();
                 localRetrieval = await searchLocalArticleCache(db, {
                     query: queryValidation.sanitized,
@@ -131,8 +148,8 @@ function registerUnifiedSearchRoutes(app, deps) {
                 routeTimings.localRetrievalMs = Date.now() - localStarted;
             }
 
-            if (!ranked) {
-                ranked = await shareSearchComputation(searchResultCacheKey, () => fetchAndRankSearchArticles({
+            if (needsSharedCompute) {
+                shared = await shareSearchComputation(sharedCacheKey, () => fetchSharedSearchEvidence({
                     db,
                     cache,
                     serverConfig,
@@ -143,12 +160,19 @@ function registerUnifiedSearchRoutes(app, deps) {
                     specificity: validSpecificity,
                     parsedStudyTypes,
                     parsedYearFilters,
-                    previousQueries,
                     vectorList,
+                }));
+                await setCachedSearchResult(cache, sharedCacheKey, shared, SHARED_SEARCH_RESULT_TTL_SECONDS);
+            }
+            if (!ranked) {
+                ranked = await personalizeSearchEvidence(shared, {
+                    db,
+                    query: queryValidation.sanitized,
                     userId: req.user?.id ?? null,
                     sessionId: req.sessionId ?? null,
-                    queryIntentProfile,
-                }));
+                    previousQueries,
+                    recordLatency: !sharedCacheHit,
+                });
                 await setCachedSearchResult(cache, searchResultCacheKey, ranked);
             }
 
@@ -344,6 +368,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                     picoRerank: rankedCacheHit ? null : (telemetry.picoRerank || null),
                     sourceCache: telemetry.sourceCache || {},
                     resultSetCacheHit: rankedCacheHit,
+                    sharedResultCacheHit: !rankedCacheHit && sharedCacheHit,
                     vectorFusion,
                     shadowRanker: ranked.shadowRanker || null,
                 }),
@@ -475,6 +500,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                     },
                     resultSetCache: {
                         hit: rankedCacheHit,
+                        sharedHit: !rankedCacheHit && sharedCacheHit,
                         key: isDev ? searchResultCacheKey : undefined,
                     },
                 },
