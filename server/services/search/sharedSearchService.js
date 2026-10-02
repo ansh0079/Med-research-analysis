@@ -76,18 +76,39 @@ function deriveSharedSearchParams({
     return params;
 }
 
-/** A shared result is only worth keeping for a day if it is complete and non-empty. */
-function isCleanSharedResult(shared) {
-    if (!shared || !Array.isArray(shared.articles) || shared.articles.length === 0) return false;
+// PubMed and OpenAlex carry a search; a source outside this set (Semantic Scholar,
+// which is unauthenticated here and routinely rate-limited) only adds to it.
+const CORE_SOURCES = ['pubmed', 'openalex'];
+
+/**
+ * How trustworthy a shared result is for long-lived storage.
+ *   complete  - every requested source answered with results
+ *   core_only - PubMed/OpenAlex are healthy but an optional source is missing
+ *   degraded  - a core source failed or came back empty, or nothing was found
+ *
+ * A rate-limited source is recorded as { failed: false, resultCount: 0 }, not as a
+ * failure, so an empty requested source has to be treated as missing too.
+ */
+function assessSharedResult(shared, requestedSources = []) {
+    if (!shared || !Array.isArray(shared.articles) || shared.articles.length === 0) return 'degraded';
     const failures = shared.telemetry?.sourceFailures || {};
-    return !Object.values(failures).some((f) => f && f.failed !== false);
+    if (Object.values(failures).some((f) => f && f.failed !== false)) return 'degraded';
+    const fetches = shared.telemetry?.sourceFetches || {};
+    const missing = (source) => {
+        const info = fetches[source];
+        return !info || info.failed === true || !(Number(info.resultCount) > 0);
+    };
+    const requested = requestedSources.map((s) => String(s).toLowerCase());
+    if (requested.some((s) => CORE_SOURCES.includes(s) && missing(s))) return 'degraded';
+    if (requested.some((s) => !CORE_SOURCES.includes(s) && missing(s))) return 'core_only';
+    return 'complete';
 }
 
 /**
  * Reads the shared layer, computing and storing it on a miss.
  *   forceFresh: skip the read (used when refreshing deliberately)
- *   ttlSeconds: how long to keep a fresh result
- *   keepOnlyClean: do not store a result with failed sources or no articles
+ *   ttlFor: (shared, params) => seconds to keep a fresh result; 0 means do not store.
+ *           Defaults to the normal shared TTL for everything, as the route wants.
  */
 async function getOrComputeSharedSearch({
     db,
@@ -97,8 +118,7 @@ async function getOrComputeSharedSearch({
     params,
     log = null,
     forceFresh = false,
-    ttlSeconds = SHARED_SEARCH_RESULT_TTL_SECONDS,
-    keepOnlyClean = false,
+    ttlFor = () => SHARED_SEARCH_RESULT_TTL_SECONDS,
 }) {
     let shared = forceFresh ? null : await getCachedSearchResult(cache, params.sharedCacheKey);
     if (shared) {
@@ -139,10 +159,11 @@ async function getOrComputeSharedSearch({
         parsedYearFilters: params.parsedYearFilters,
         vectorList,
     }));
-    if (!keepOnlyClean || isCleanSharedResult(shared)) {
+    const ttlSeconds = ttlFor(shared, params);
+    if (ttlSeconds > 0) {
         await setCachedSearchResult(cache, params.sharedCacheKey, shared, ttlSeconds);
     }
     return { shared, sharedCacheHit: false, vectorList, localRetrieval, timings };
 }
 
-module.exports = { deriveSharedSearchParams, getOrComputeSharedSearch, isCleanSharedResult };
+module.exports = { CORE_SOURCES, deriveSharedSearchParams, getOrComputeSharedSearch, assessSharedResult };

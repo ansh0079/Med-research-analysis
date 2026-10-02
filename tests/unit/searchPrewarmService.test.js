@@ -11,10 +11,18 @@ jest.mock('../../server/services/localRetrievalService', () => ({
 }));
 
 const { runSearchPrewarm, selectPrewarmTopics } = require('../../server/services/search/searchPrewarmService');
-const { deriveSharedSearchParams } = require('../../server/services/search/sharedSearchService');
+const { deriveSharedSearchParams, assessSharedResult } = require('../../server/services/search/sharedSearchService');
+const { SHARED_SEARCH_RESULT_TTL_SECONDS } = require('../../server/services/searchResultCacheService');
 
-const cleanResult = (title = 'Trial') => ({ articles: [{ uid: 'a1', title }], telemetry: { sourceFailures: {} } });
-const degradedResult = () => ({ articles: [{ uid: 'a1', title: 'Trial' }], telemetry: { sourceFailures: { pubmed: { failed: true } } } });
+const fetched = (counts) => Object.fromEntries(Object.entries(counts).map(([k, n]) => [k, { failed: false, resultCount: n }]));
+const resultWith = (counts, extra = {}) => ({
+    articles: [{ uid: 'a1', title: 'Trial' }],
+    telemetry: { sourceFailures: {}, sourceFetches: fetched(counts), ...extra },
+});
+const cleanResult = () => resultWith({ pubmed: 80, openalex: 50, semantic: 40 });
+// Semantic Scholar rate-limited: recorded as an empty source, NOT as a failure.
+const semanticThrottled = () => resultWith({ pubmed: 80, openalex: 50, semantic: 0 });
+const degradedResult = () => resultWith({ pubmed: 80, openalex: 0, semantic: 40 });
 
 function memoryCache(initial = {}) {
     const store = new Map(Object.entries(initial));
@@ -65,6 +73,25 @@ describe('search prewarm', () => {
         const second = await runSearchPrewarm(db, { ...opts, topics: ['ARDS', 'COPD exacerbation'] });
         expect(second).toMatchObject({ warmed: 0, alreadyCached: 2 });
         expect(mockFetchShared).not.toHaveBeenCalled();
+    });
+
+    test('a rate-limited Semantic Scholar is kept only for the normal short ttl, not for days', async () => {
+        mockFetchShared.mockResolvedValue(semanticThrottled());
+        const opts = base();
+        const summary = await runSearchPrewarm(db, { ...opts, topics: ['ARDS'], ttlSeconds: 259200 });
+        expect(summary).toMatchObject({ warmed: 0, warmedPartial: 1, skippedUnclean: 0 });
+        expect([...opts.cache.ttls.values()]).toEqual([SHARED_SEARCH_RESULT_TTL_SECONDS]);
+    });
+
+    test('assessSharedResult grades by core source health', () => {
+        const sources = ['pubmed', 'openalex', 'semantic'];
+        expect(assessSharedResult(cleanResult(), sources)).toBe('complete');
+        expect(assessSharedResult(semanticThrottled(), sources)).toBe('core_only');
+        expect(assessSharedResult(degradedResult(), sources)).toBe('degraded');
+        expect(assessSharedResult({ articles: [] }, sources)).toBe('degraded');
+        expect(assessSharedResult(resultWith({ pubmed: 80, openalex: 50 }, { sourceFailures: { pubmed: { failed: true } } }), sources)).toBe('degraded');
+        // Only sources that were asked for are held to account.
+        expect(assessSharedResult(resultWith({ pubmed: 80, openalex: 50 }), ['pubmed', 'openalex'])).toBe('complete');
     });
 
     test('does not store a degraded result, and backs off when sources keep degrading', async () => {

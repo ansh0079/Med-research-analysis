@@ -10,11 +10,13 @@
 //
 // Politeness matters: the search sources throttle bursts, and a throttled
 // result cached for days would be worse than no warming. Runs are paced,
-// stop after repeated failures, and never store a result with failed sources.
+// stop after repeated failures, and never store a result whose core sources failed.
+// A result missing only Semantic Scholar (unauthenticated, often rate-limited) is kept
+// for the normal short TTL, exactly as an ordinary search would be, not for days.
 
 const { loadFlagshipConfig } = require('../flagshipTopicOps');
-const { deriveSharedSearchParams, getOrComputeSharedSearch, isCleanSharedResult } = require('./sharedSearchService');
-const { getCachedSearchResult } = require('../searchResultCacheService');
+const { deriveSharedSearchParams, getOrComputeSharedSearch, assessSharedResult } = require('./sharedSearchService');
+const { getCachedSearchResult, SHARED_SEARCH_RESULT_TTL_SECONDS } = require('../searchResultCacheService');
 
 // What the web client sends for an unmodified search (sources toggle defaults,
 // 20 results, balanced focus, vector fusion on). A warmed entry only helps
@@ -55,7 +57,7 @@ async function runSearchPrewarm(db, {
     getSpendSnapshot = () => require('../ai/globalLlmSpendGuard').getSpendSnapshot(),
     sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
 } = {}) {
-    const summary = { considered: 0, warmed: 0, alreadyCached: 0, skippedUnclean: 0, failed: 0, stoppedReason: null };
+    const summary = { considered: 0, warmed: 0, warmedPartial: 0, alreadyCached: 0, skippedUnclean: 0, failed: 0, stoppedReason: null };
     const list = topics || selectPrewarmTopics(loadFlagshipConfig());
 
     try {
@@ -73,7 +75,7 @@ async function runSearchPrewarm(db, {
     let consecutiveFailures = 0;
 
     for (const topic of list) {
-        if (summary.warmed >= limit) { summary.stoppedReason = 'limit'; break; }
+        if (summary.warmed + summary.warmedPartial >= limit) { summary.stoppedReason = 'limit'; break; }
         summary.considered += 1;
 
         const params = deriveSharedSearchParams({
@@ -94,11 +96,17 @@ async function runSearchPrewarm(db, {
         }
 
         try {
-            const { shared } = await getOrComputeSharedSearch({
-                db, cache, serverConfig, fetchImpl, params, log: logger, ttlSeconds, keepOnlyClean: true,
+            let quality = 'degraded';
+            await getOrComputeSharedSearch({
+                db, cache, serverConfig, fetchImpl, params, log: logger,
+                ttlFor: (shared) => {
+                    quality = assessSharedResult(shared, params.sourceList);
+                    if (quality === 'complete') return ttlSeconds;
+                    return quality === 'core_only' ? SHARED_SEARCH_RESULT_TTL_SECONDS : 0;
+                },
             });
-            if (isCleanSharedResult(shared)) {
-                summary.warmed += 1;
+            if (quality !== 'degraded') {
+                if (quality === 'complete') summary.warmed += 1; else summary.warmedPartial += 1;
                 consecutiveFailures = 0;
             } else {
                 // Failed sources or no articles: not stored. A run of these usually
