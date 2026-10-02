@@ -4,7 +4,8 @@ const crypto = require('crypto');
 const logger = require('../../config/logger');
 const { validateQuery } = require('../../utils/articles');
 const { safeFetch } = require('../../utils/fetch');
-const { parseSearchRequestQuery, fetchAndRankSearchArticles, fetchSharedSearchEvidence, personalizeSearchEvidence } = require('../../services/searchPipeline');
+const { parseSearchRequestQuery, fetchAndRankSearchArticles, personalizeSearchEvidence } = require('../../services/searchPipeline');
+const { deriveSharedSearchParams, getOrComputeSharedSearch } = require('../../services/search/sharedSearchService');
 const { buildSearchLearningContext, publicLearningContext } = require('../../services/searchLearningService');
 const { recordSearchRankingDecisions } = require('../../services/personalizationBanditService');
 const { buildLearnerContext, publicLearnerContextSummary } = require('../../services/learnerContextService');
@@ -17,13 +18,9 @@ const { resolveQuerySenses } = require('../../utils/conditionQuery');
 const { getEvidenceSnapshot } = require('../../services/search/searchEvidenceSnapshot');
 const {
     buildSearchResultCacheKey,
-    buildSharedSearchCacheKey,
-    SHARED_SEARCH_RESULT_TTL_SECONDS,
     getCachedSearchResult,
     setCachedSearchResult,
-    shareSearchComputation,
 } = require('../../services/searchResultCacheService');
-const { searchLocalArticleCache } = require('../../services/localRetrievalService');
 const {
     deriveSearchIntentProfile,
     routeSearchSources,
@@ -108,63 +105,30 @@ function registerUnifiedSearchRoutes(app, deps) {
             // underneath it the shared fetch + rank + model rerank that anyone's search can reuse.
             let ranked = await getCachedSearchResult(cache, searchResultCacheKey);
             const rankedCacheHit = Boolean(ranked);
-            const sharedCacheKey = buildSharedSearchCacheKey({
+            const sharedParams = deriveSharedSearchParams({
+                db,
                 query: queryValidation.sanitized,
-                sourceList,
-                safeLimit,
+                sources,
+                explicitSources,
+                limit: safeLimit,
                 specificity: validSpecificity,
-                vectorEnabled: useVectorFusion,
+                vector: vectorParam,
+                vectorAvailable,
                 parsedStudyTypes,
                 parsedYearFilters,
-                queryIntentProfile,
             });
-            let shared = ranked ? null : await getCachedSearchResult(cache, sharedCacheKey);
-            const sharedCacheHit = Boolean(shared);
-            const needsSharedCompute = !ranked && !shared;
-            require('../../services/ops/cacheLayerMetrics').recordCacheLayer('search', rankedCacheHit || sharedCacheHit);
-
+            let shared = null;
+            let sharedCacheHit = false;
             let vectorList = [];
-            if (needsSharedCompute && useVectorFusion) {
-                try {
-                    const vectorStarted = Date.now();
-                    const { createVectorSearchService } = require('../../services/vectorSearchService');
-                    const vs = createVectorSearchService({ db, serverConfig });
-                    const vr = await vs.searchVector({ query: queryValidation.sanitized, limit: safeLimit });
-                    vectorList = Array.isArray(vr.articles) ? vr.articles : [];
-                    routeTimings.vectorMs = Date.now() - vectorStarted;
-                } catch (e) {
-                    routeTimings.vectorMs = routeTimings.vectorMs ?? 0;
-                    req.log.warn({ err: e }, 'Vector fusion skipped');
-                }
-            }
-
             let localRetrieval = { articles: [], used: false, available: Boolean(db?.searchCachedArticlesLocal) };
-            if (needsSharedCompute) {
-                const localStarted = Date.now();
-                localRetrieval = await searchLocalArticleCache(db, {
-                    query: queryValidation.sanitized,
-                    limit: safeLimit,
+            if (!ranked) {
+                const resolved = await getOrComputeSharedSearch({
+                    db, cache, serverConfig, fetchImpl: f, params: sharedParams, log: req.log,
                 });
-                vectorList = [...vectorList, ...localRetrieval.articles];
-                routeTimings.localRetrievalMs = Date.now() - localStarted;
+                ({ shared, sharedCacheHit, vectorList, localRetrieval } = resolved);
+                Object.assign(routeTimings, resolved.timings);
             }
-
-            if (needsSharedCompute) {
-                shared = await shareSearchComputation(sharedCacheKey, () => fetchSharedSearchEvidence({
-                    db,
-                    cache,
-                    serverConfig,
-                    fetchImpl: f,
-                    query: queryValidation.sanitized,
-                    safeLimit,
-                    sourceList,
-                    specificity: validSpecificity,
-                    parsedStudyTypes,
-                    parsedYearFilters,
-                    vectorList,
-                }));
-                await setCachedSearchResult(cache, sharedCacheKey, shared, SHARED_SEARCH_RESULT_TTL_SECONDS);
-            }
+            require('../../services/ops/cacheLayerMetrics').recordCacheLayer('search', rankedCacheHit || sharedCacheHit);
             if (!ranked) {
                 ranked = await personalizeSearchEvidence(shared, {
                     db,

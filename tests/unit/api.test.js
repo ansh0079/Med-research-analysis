@@ -754,6 +754,39 @@ describe('API Endpoints', () => {
         }
       });
 
+      test('a topic warmed by the nightly job is a shared hit for a real default search', async () => {
+        const store = new Map();
+        cache.getAsync.mockImplementation(async (key) => (store.has(key) ? store.get(key) : null));
+        cache.setAsync.mockImplementation(async (key, value) => { store.set(key, value); return true; });
+        mockUnifiedSearchFetch({
+          pmids: ['444'],
+          summary: {
+            '444': { title: 'Septic shock vasopressor timing trial', pubdate: '2024', source: 'Lancet', pmcrefcount: 10, pubtype: ['Journal Article'] },
+          },
+        });
+        const { runSearchPrewarm } = require('../../server/services/search/searchPrewarmService');
+        const pubmedCalls = () => mockFetch.mock.calls.filter(([url]) => String(url).includes('eutils')).length;
+        try {
+          const summary = await runSearchPrewarm(db, {
+            cache, serverConfig: {}, fetchImpl: mockFetch, logger: { info: jest.fn(), warn: jest.fn() },
+            topics: ['septic shock vasopressor timing'], sources: 'pubmed', paceMs: 0,
+            getSpendSnapshot: async () => ({ pctUsed: 0, killSwitch: false }),
+          });
+          expect(summary.warmed).toBe(1);
+          const callsAfterWarm = pubmedCalls();
+
+          const res = await request(app)
+            .get('/api/search?q=septic%20shock%20vasopressor%20timing&limit=20&sources=pubmed&vector=1&specificity=moderate&intelligence=async')
+            .expect(200);
+          expect(res.body.searchTelemetry.resultSetCache).toMatchObject({ hit: false, sharedHit: true });
+          expect(pubmedCalls()).toBe(callsAfterWarm);
+          expect(res.body.articles.length).toBeGreaterThan(0);
+        } finally {
+          cache.getAsync.mockImplementation(async (key) => mockQuizCommitments.get(key) ?? null);
+          cache.setAsync.mockResolvedValue(true);
+        }
+      });
+
       test('Should allow explicit vector=0 opt-out', async () => {
         db.isVectorSearchAvailable.mockReturnValueOnce(true);
         mockUnifiedSearchFetch({
