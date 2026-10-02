@@ -52,11 +52,14 @@ function buildUsageEntry({
     success = true,
     errorMessage = null,
     durationMs = null,
+    usage = null,
 }) {
     const promptChars = String(prompt || '').length;
     const responseChars = String(response || '').length;
-    const estimatedInputTokens = estimateTokensFromChars(promptChars);
-    const estimatedOutputTokens = estimateTokensFromChars(responseChars);
+    // Columns keep their historical names; they hold provider-reported counts
+    // whenever the provider returned them, which includes thinking tokens.
+    const estimatedInputTokens = usage?.inputTokens ?? estimateTokensFromChars(promptChars);
+    const estimatedOutputTokens = usage?.outputTokens ?? estimateTokensFromChars(responseChars);
     const estimatedCostUsd = estimateCostUsd(model, estimatedInputTokens, estimatedOutputTokens);
     return {
         operation,

@@ -13,6 +13,7 @@
 
 const logger = require('../config/logger');
 const crypto = require('crypto');
+const { reportProviderUsage } = require('./ai/llmUsageContext');
 const { recordExternalApiCall } = require('./observabilityMetrics');
 
 // Lazily-loaded GoogleAuth instance for Vertex AI OAuth2 token caching.
@@ -431,6 +432,7 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
       throw new Error(`Anthropic ${res.status} — ${text.slice(0, 200)}`);
     }
     const data = await res.json();
+    reportProviderUsage({ inputTokens: data.usage?.input_tokens, outputTokens: data.usage?.output_tokens });
     const text = data.content?.[0]?.text || '';
     return jsonMode ? '{' + text : (text || 'No response');
   }
@@ -465,6 +467,7 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
       throw new Error(`Mistral ${res.status} — ${text.slice(0, 200)}`);
     }
     const data = await res.json();
+    reportProviderUsage({ inputTokens: data.usage?.prompt_tokens, outputTokens: data.usage?.completion_tokens });
     return data.choices?.[0]?.message?.content || 'No response';
   }
 
@@ -532,6 +535,11 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
       throw new Error(`Gemini ${res.status} — ${data.error?.message || 'unknown'}`);
     }
     const data = await res.json();
+    reportProviderUsage({
+      inputTokens: data.usageMetadata?.promptTokenCount,
+      outputTokens: data.usageMetadata?.candidatesTokenCount,
+      thoughtsTokens: data.usageMetadata?.thoughtsTokenCount,
+    });
     if (data.promptFeedback?.blockReason) {
       // Also deterministic -- resending identical content is blocked identically.
       const err = new Error(`Content blocked: ${data.promptFeedback.blockReason}`);

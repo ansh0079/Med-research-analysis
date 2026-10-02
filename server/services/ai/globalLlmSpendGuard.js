@@ -164,10 +164,12 @@ async function assertUnderDailyCap({ prompt, model, maxOutputTokens } = {}) {
 }
 
 /** Record what a completed call actually cost. Never throws. */
-async function recordSpend({ prompt, response, model }) {
+async function recordSpend({ prompt, response, model, usage = null }) {
     try {
-        const inputTokens = estimateTokensFromChars(String(prompt || '').length);
-        const outputTokens = estimateTokensFromChars(String(response || '').length);
+        // Provider-reported counts when available (they include thinking tokens);
+        // the character estimate is only a fallback.
+        const inputTokens = usage?.inputTokens ?? estimateTokensFromChars(String(prompt || '').length);
+        const outputTokens = usage?.outputTokens ?? estimateTokensFromChars(String(response || '').length);
         await addSpendUsd(estimateCostUsd(model, inputTokens, outputTokens));
     } catch (err) {
         logger.warn({ err }, 'globalLlmSpendGuard: failed to record spend');

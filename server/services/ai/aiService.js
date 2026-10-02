@@ -58,6 +58,7 @@ const { CircuitBreaker } = require('../circuitBreaker');
 const { buildProxyService } = require('../externalApiProxy');
 const { getActiveLlmBudget } = require('../llmRequestBudget');
 const { assertUnderDailyCap, recordSpend } = require('./globalLlmSpendGuard');
+const { captureProviderUsage } = require('./llmUsageContext');
 const { parseStructuredOutput } = require('../../utils/parseJson');
 
 function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) {
@@ -78,12 +79,13 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         }
     }
 
-    async function withUsageLog({ operation, provider, model, prompt, topic, userId, budget }, fn) {
+    async function withUsageLog({ operation, provider, model, prompt, topic, userId, budget, onUsage }, fn) {
         const started = Date.now();
         const activeBudget = budget || getActiveLlmBudget();
         if (activeBudget) activeBudget.assertCanCall({ prompt, model });
         try {
-            const text = await fn();
+            const { value: text, usage } = await captureProviderUsage(fn);
+            if (onUsage) onUsage(usage);
             if (activeBudget) activeBudget.recordCall({ prompt, response: text, model });
             await emitLlmCall({
                 operation,
@@ -95,6 +97,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
                 response: text,
                 success: true,
                 durationMs: Date.now() - started,
+                usage,
             });
             return text;
         } catch (err) {
@@ -139,15 +142,14 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         // the AI routes while BETA_MODE admits anonymous sessions) had no upper
         // bound on spend at all.
         await assertUnderDailyCap({ prompt, model, maxOutputTokens });
-        const recordGlobalSpend = (response) => {
-            void recordSpend({ prompt, response, model });
-        };
+        let providerUsage = null;
         const logged = await withUsageLog(
             { operation: usage?.operation || 'unspecified', provider, model, prompt,
-                topic: usage?.topic, userId: usage?.userId, budget: activeBudget },
+                topic: usage?.topic, userId: usage?.userId, budget: activeBudget,
+                onUsage: (reported) => { providerUsage = reported; } },
             fn
         );
-        recordGlobalSpend(logged);
+        void recordSpend({ prompt, response: logged, model, usage: providerUsage });
         return logged;
     }
 
@@ -175,7 +177,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
     /**
      * Stream Gemini response as an async generator of text chunks.
      */
-    async function* callGeminiStreamRaw(prompt, model = PINNED_MODELS.gemini, { temperature = TEMPERATURE.analysis, maxOutputTokens } = {}) {
+    async function* callGeminiStreamRaw(prompt, model = PINNED_MODELS.gemini, { temperature = TEMPERATURE.analysis, maxOutputTokens, onUsage = null } = {}) {
         const apiKey = serverConfig.keys.gemini;
         if (!apiKey) throw new Error('Gemini API key not configured');
 
@@ -226,6 +228,15 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
                     if (payload === '[DONE]') return;
                     try {
                         const data = JSON.parse(payload);
+                        // Cumulative on each chunk; the last one seen is the bill.
+                        if (data.usageMetadata && onUsage) {
+                            const m = data.usageMetadata;
+                            onUsage({
+                                inputTokens: Number(m.promptTokenCount) || 0,
+                                outputTokens: (Number(m.candidatesTokenCount) || 0) + (Number(m.thoughtsTokenCount) || 0),
+                                thoughtsTokens: Number(m.thoughtsTokenCount) || 0,
+                            });
+                        }
                         const textChunk = data.candidates?.[0]?.content?.parts?.[0]?.text;
                         if (textChunk) yield textChunk;
                         if (data.promptFeedback?.blockReason) {
@@ -460,10 +471,11 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         // anonymous callers can reach.
         await assertUnderDailyCap({ prompt, model, maxOutputTokens: providerOptions.maxOutputTokens });
 
+        let streamUsage = null;
         const generator = provider === 'claude'
             ? callClaudeStreamRaw(prompt, model, providerOptions)
             : provider === 'gemini'
-                ? callGeminiStreamRaw(prompt, model, providerOptions)
+                ? callGeminiStreamRaw(prompt, model, { ...providerOptions, onUsage: (u) => { streamUsage = u; } })
                 : callMistralStreamRaw(prompt, model, providerOptions);
 
         let response = '';
@@ -477,7 +489,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
             }
             completed = true;
             if (activeBudget) activeBudget.recordCall({ prompt, response, model });
-            void recordSpend({ prompt, response, model });
+            void recordSpend({ prompt, response, model, usage: streamUsage });
         } catch (err) {
             errorMessage = err?.message || 'stream_failed';
             throw err;
@@ -485,7 +497,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
             await emitLlmCall({ operation: usage?.operation || 'unspecified_stream', provider, model,
                 topic: usage?.topic, userId: usage?.userId, prompt, response,
                 success: completed, errorMessage: completed ? null : errorMessage,
-                durationMs: Date.now() - started });
+                durationMs: Date.now() - started, usage: streamUsage });
         }
     }
 
