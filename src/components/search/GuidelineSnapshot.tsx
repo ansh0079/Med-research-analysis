@@ -1,12 +1,13 @@
 import React from 'react';
 import { api } from '@services/api';
-import type { GuidelineAlignment, GuidelineEntry, Article } from '@types';
+import type { GuidelineAlignment, GuidelineWorkspaceSummary, Article } from '@types';
 import { GuidelineContradictionPanel } from './GuidelineContradictionPanel';
 import { MergedGuidelinePanel } from './MergedGuidelinePanel';
 
 interface Props {
   query: string;
   articles: Article[];
+  workspace: GuidelineWorkspaceSummary;
   autoRunAlignment?: boolean;
 }
 
@@ -58,12 +59,9 @@ function qualityBadge(level?: string) {
   return map[level || ''] || 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300';
 }
 
-export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAlignment = false }) => {
-  const [guidelines, setGuidelines] = React.useState<GuidelineEntry[]>([]);
-  const [summaryCount, setSummaryCount] = React.useState<number | null>(null);
-  const [loading, setLoading] = React.useState(false);
+export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, workspace, autoRunAlignment = false }) => {
+  const { guidelines, loading, error, recommendationCount: issuingBodyCount } = workspace;
   const [expanded, setExpanded] = React.useState(false);
-  const [error, setError] = React.useState('');
   const [alignment, setAlignment] = React.useState<GuidelineAlignment | null>(null);
   const [alignmentLoading, setAlignmentLoading] = React.useState(false);
   const [alignmentError, setAlignmentError] = React.useState('');
@@ -73,27 +71,6 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
     [articles]
   );
   const evidenceForAlignment = React.useMemo(() => articles.slice(0, 8), [articles]);
-
-  React.useEffect(() => {
-    if (!query || query.length < 3) return;
-    let cancelled = false;
-    (async () => {
-      try {
-        setLoading(true);
-        setError('');
-        const res = await api.collaboration.getGuidelinesForTopic(query);
-        if (!cancelled) {
-          setGuidelines(res.guidelines);
-          setSummaryCount(res.guidelineSummary?.issuingBodyCount ?? null);
-        }
-      } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load guidelines');
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-    return () => { cancelled = true; };
-  }, [query]);
 
   const runAlignment = React.useCallback(async () => {
     if (!query || evidenceForAlignment.length === 0) return;
@@ -132,11 +109,6 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
 
   const visible = expanded ? guidelines : guidelines.slice(0, 2);
   const hasMore = guidelines.length > 2;
-  // The pool-wide server count leads when present: the returned page is
-  // capped, and issuing-body rows can fall outside it (the same undercount
-  // the evidence summary strip had). Count the page only as a fallback.
-  const issuingBodyCount = summaryCount ?? guidelines.filter((g) => g.isIssuingBody).length;
-
   return (
     <div id="workflow-guideline" className="neo-card overflow-hidden mb-6">
       <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-700/60 flex items-center justify-between gap-3">
@@ -154,10 +126,10 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
                   you have?" three different ways is not one a clinician should
                   trust. */}
               {issuingBodyCount > 0
-                ? `${issuingBodyCount} guideline${issuingBodyCount > 1 ? 's' : ''} found`
+                ? `${issuingBodyCount} recommendation${issuingBodyCount > 1 ? 's' : ''} from recognised guideline bodies`
                 : hasGuidelineArticles
-                  ? 'Guideline-derived results in search'
-                  : 'No stored guidelines for this topic'}
+                  ? `${workspace.documentCount} guideline document${workspace.documentCount === 1 ? '' : 's'} in search; no stored recommendations`
+                  : 'No stored guideline recommendations for this topic'}
             </p>
           </div>
         </div>
@@ -359,7 +331,7 @@ export const GuidelineSnapshot: React.FC<Props> = ({ query, articles, autoRunAli
 
         {!loading && guidelines.length === 0 && !error && (
           <div className="rounded-xl border border-slate-100 bg-slate-50 px-3.5 py-3 text-xs text-slate-600 dark:border-slate-700 dark:bg-slate-800/40 dark:text-slate-300">
-            <p className="font-bold text-slate-800 dark:text-slate-100">No stored guideline found for this topic.</p>
+            <p className="font-bold text-slate-800 dark:text-slate-100">No stored guideline recommendation found for this topic.</p>
             <p className="mt-1 leading-relaxed">
               Use the evidence comparison as a prompt, then verify local policy, national guidance, and formulary advice before applying it clinically.
             </p>

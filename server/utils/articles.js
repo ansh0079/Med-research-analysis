@@ -14,6 +14,9 @@ const EBM_LABELS = [
 ];
 
 function ebmLabel(score) {
+    if (!Number.isFinite(score) || score < 0) {
+        return { label: 'Study type unverified', short: 'Type unverified' };
+    }
     for (const tier of EBM_LABELS) {
         if (score >= tier.min) return { label: tier.label, short: tier.short };
     }
@@ -231,4 +234,5 @@ module.exports = {
     validateQuery,
     validatePagination,
     sanitizeArticleIdParam,
+    ebmLabel,
 };

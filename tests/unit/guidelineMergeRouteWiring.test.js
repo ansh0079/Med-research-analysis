@@ -183,13 +183,27 @@ describe('GET /api/guidelines summary counts the full pool, not the returned pag
 
         expect(out.code).toBe(200);
         expect(out.body.guidelines).toHaveLength(2);
-        expect(out.body.guidelineSummary).toEqual({ issuingBodyCount: 3, newestYear: null, bodies: ['NICE'] });
+        expect(out.body.guidelineSummary).toEqual({
+            issuingBodyCount: 3,
+            reviewedRecommendationCount: 0,
+            aiExtractedRecommendationCount: 0,
+            newestYear: null,
+            bodies: ['NICE'],
+            lastCheckedAt: null,
+        });
     });
 
     test('the summary travels with an empty result so discovery still reports zero, not undefined', async () => {
         const out = await call(register(), req('a topic with nothing stored'));
         expect(out.code).toBe(200);
         expect(out.body.guidelines).toEqual([]);
-        expect(out.body.guidelineSummary).toEqual({ issuingBodyCount: 0, newestYear: null, bodies: [] });
+        expect(out.body.guidelineSummary).toEqual({
+            issuingBodyCount: 0,
+            reviewedRecommendationCount: 0,
+            aiExtractedRecommendationCount: 0,
+            newestYear: null,
+            bodies: [],
+            lastCheckedAt: null,
+        });
     });
 });

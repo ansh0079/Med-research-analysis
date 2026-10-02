@@ -113,7 +113,7 @@ export function useSynthesisPanel(
     setAlignmentLoading(true);
     setAlignmentError(null);
     try {
-      const data = await api.ai.checkGuidelineAlignment(result.topic, s.consensus, articles.slice(0, 15));
+      const data = await api.ai.checkGuidelineAlignment(result.topic, s.consensus, articles.slice(0, 20));
       setAlignment(data);
     } catch (err: unknown) {
       setAlignmentError(err instanceof Error ? err.message : 'Failed to check guidelines');

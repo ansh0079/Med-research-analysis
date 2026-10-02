@@ -86,6 +86,8 @@ export interface SynthesisResult {
     followUpQuestions?: FollowUpQuestion[];
   };
   articleCount: number;
+  /** Total eligible papers retrieved before the synthesis evidence cap. */
+  retrievedArticleCount?: number;
   topic: string;
   timestamp: string;
   cached?: boolean;

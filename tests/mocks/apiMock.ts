@@ -107,6 +107,11 @@ export const api = {
     getSpacedRepTopics: jest.fn().mockResolvedValue({ topics: [] }),
   },
   collaboration: {
+    getGuidelinesForTopic: jest.fn().mockResolvedValue({
+      topic: '', guidelines: [],
+      guidelineSummary: { issuingBodyCount: 0, reviewedRecommendationCount: 0, aiExtractedRecommendationCount: 0, newestYear: null, bodies: [], lastCheckedAt: null },
+      discoveryStatus: 'complete',
+    }),
     getCollections: jest.fn().mockResolvedValue({ collections: [] }),
     createCollection: jest.fn().mockResolvedValue({ collection: {} }),
     getCollection: jest.fn().mockResolvedValue({ collection: {} }),

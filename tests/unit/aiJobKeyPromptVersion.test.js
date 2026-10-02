@@ -89,6 +89,12 @@ describe('durable job keys track the prompt that produced the result', () => {
             .not.toBe(fullSynthesisJobKey('hepatorenal syndrome', articles));
     });
 
+    test('full synthesis keys include every source in the 20-paper synopsis set', () => {
+        const firstNineteen = Array.from({ length: 19 }, (_, index) => ({ uid: `pmid:${index + 1}` }));
+        expect(fullSynthesisJobKey('ascites', [...firstNineteen, { uid: 'pmid:20a' }]))
+            .not.toBe(fullSynthesisJobKey('ascites', [...firstNineteen, { uid: 'pmid:20b' }]));
+    });
+
     test('each job type stays in its own namespace', () => {
         const keys = [
             paperSynopsisJobKey(guideline, 'gemini-2.5-flash'),

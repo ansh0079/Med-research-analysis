@@ -15,10 +15,12 @@ describe('useSearchSynthesis', () => {
       return cancel;
     });
 
-    const article = { uid: 'p1', title: 'Paper' } as Article;
+    const articles = [
+      { uid: 'p1', title: 'Paper one' },
+      { uid: 'p2', title: 'Paper two' },
+    ] as Article[];
     const { result } = renderHook(() => useSearchSynthesis({
-      results: [article],
-      topArticles: [article],
+      results: articles,
       currentQuery: 'ARDS',
       isAuthenticated: true,
       betaOpenAccess: false,
@@ -28,6 +30,11 @@ describe('useSearchSynthesis', () => {
     act(() => {
       request = result.current.handleSynthesize();
     });
+    expect(api.ai.synthesizeEvidenceStream).toHaveBeenCalledWith(
+      'ARDS',
+      articles,
+      expect.any(Object),
+    );
     act(() => {
       result.current.resetSynthesis();
       streams[0].onResult?.({ topic: 'ARDS', synthesis: { clinicalBottomLine: 'Stale result' } } as unknown as SynthesisResult);

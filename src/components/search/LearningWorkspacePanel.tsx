@@ -1,10 +1,10 @@
 import React from 'react';
-import type { Article, TopicIntelligence } from '@types';
+import type { Article, GuidelineWorkspaceSummary } from '@types';
 
 interface LearningWorkspacePanelProps {
   query: string;
   results: Article[];
-  topicIntelligence?: TopicIntelligence | null;
+  guidelineWorkspace: GuidelineWorkspaceSummary;
   synthesisLoading: boolean;
   isAuthenticated: boolean;
   onGenerateSynopsis: () => void;
@@ -18,7 +18,7 @@ const REVIEW_PATTERN = /systematic review|meta-analysis/i;
 export const LearningWorkspacePanel: React.FC<LearningWorkspacePanelProps> = ({
   query,
   results,
-  topicIntelligence,
+  guidelineWorkspace,
   synthesisLoading,
   isAuthenticated,
   onGenerateSynopsis,
@@ -26,7 +26,7 @@ export const LearningWorkspacePanel: React.FC<LearningWorkspacePanelProps> = ({
   onOpenCase,
   onChooseSources,
 }) => {
-  const guidelineCount = topicIntelligence?.guidelineSnapshot?.count ?? 0;
+  const guidelineCount = guidelineWorkspace.recommendationCount;
   const reviewCount = results.filter((article) =>
     (article.pubtype || []).some((type) => REVIEW_PATTERN.test(String(type || '')))
   ).length;
@@ -39,7 +39,7 @@ export const LearningWorkspacePanel: React.FC<LearningWorkspacePanelProps> = ({
             Generate from this evidence set
           </h2>
           <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-            Uses {results.length} papers, {guidelineCount} guideline recommendation{guidelineCount === 1 ? '' : 's'} and {reviewCount} systematic review{reviewCount === 1 ? '' : 's'} for {query}.
+            Uses {results.length} papers, {guidelineCount} stored guideline recommendation{guidelineCount === 1 ? '' : 's'} and {reviewCount} systematic review{reviewCount === 1 ? '' : 's'} for {query}.
           </p>
         </div>
         <button

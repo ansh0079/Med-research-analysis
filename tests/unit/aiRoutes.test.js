@@ -67,7 +67,7 @@ jest.mock('../../server/services/synthesisGenerationCore', () => ({
     buildSynthesisResult: jest.fn().mockReturnValue({ summary: 'test', citations: [] }),
     persistSynthesisResult: jest.fn().mockResolvedValue(true),
     getSynthesisCacheKey: jest.fn().mockReturnValue('cache-key'),
-    selectTopSynthesisArticles: jest.fn().mockImplementation((arts) => arts.slice(0, 15)),
+    selectTopSynthesisArticles: jest.fn().mockImplementation((arts) => arts.slice(0, 20)),
 }));
 
 jest.mock('../../server/services/paperSynopsisCore', () => ({

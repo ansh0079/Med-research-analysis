@@ -8,6 +8,7 @@ import { ClinicalSafetyNotice } from '@components/ui/ClinicalSafetyNotice';
 import { SynopsisTrustBanner } from '@components/search/SynopsisTrustBanner';
 import { EvidenceAuditPanel } from '@components/search/EvidenceAuditPanel';
 import { ClaimSupportNotice } from '@components/search/ArticleCardSynopsisPanel';
+import { getEvidenceTypeDisplay } from '@utils/evidenceTypeDisplay';
 
 interface Props {
   article: Article | null;
@@ -418,9 +419,7 @@ export const ArticleDetailDrawer: React.FC<Props> = ({ article, onClose, onOpenI
                       {article._impact.level} impact
                     </span>
                   )}
-                  {article._ebmLabel && (
-                    <span className="badge badge-source font-semibold">{article._ebmLabel.label}</span>
-                  )}
+                  <span className="badge badge-source font-semibold">{getEvidenceTypeDisplay(article).label}</span>
                   {article.isFree && <span className="badge badge-free">Open Access</span>}
                   {article._isPreprint && <span className="badge" style={{ background: 'rgba(251,191,36,0.15)', color: '#b45309', border: '1px solid rgba(251,191,36,0.4)' }}>Preprint</span>}
                 </div>

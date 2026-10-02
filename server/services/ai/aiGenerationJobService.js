@@ -17,6 +17,7 @@ const { completeJobAndClaims } = require('../aiGenerationJobCompletion');
 const { enqueueAiGenerationJobIfClaimed, shouldEnqueueAiGenerationJob } = require('../aiGenerationJobEnqueue');
 const { buildFullSynthesisJobKey } = require('../synthesisPersonalization');
 const { getPromptVersion } = require('../../prompts/promptVersions');
+const { selectTopEvidence } = require('../../utils/selectTopEvidence');
 
 function stableHash(value) {
     return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
@@ -585,11 +586,10 @@ function enqueueFullSynthesisJob({ db, jobKey, serverConfig, fetchImpl, cache, l
 
 async function getOrEnqueueFullSynthesis({
     db, topic, articles = [], provider = 'auto', serverConfig, fetchImpl, cache, logger, userId = null,
-    trainingStage = null, previousQueries = [], sessionDepth = 0,
+    trainingStage = null, previousQueries = [], sessionDepth = 0, retrievedArticleCount = null,
 }) {
-    const topArticles = [...articles]
-        .sort((a, b) => (b._impact?.score ?? 0) - (a._impact?.score ?? 0))
-        .slice(0, 15);
+    const topArticles = selectTopEvidence(articles, 20);
+    const totalRetrieved = Math.max(topArticles.length, Number(retrievedArticleCount) || articles.length);
     const personalization = { userId, trainingStage, previousQueries, sessionDepth };
     const jobKey = fullSynthesisJobKey(topic, topArticles, personalization);
     if (!hasDurableJobStore(db)) {
@@ -607,6 +607,7 @@ async function getOrEnqueueFullSynthesis({
                 trainingStage,
                 previousQueries,
                 sessionDepth,
+                retrievedArticleCount: totalRetrieved,
             });
             return { status: 'completed', jobKey, ...result };
         } catch (err) {
@@ -615,7 +616,12 @@ async function getOrEnqueueFullSynthesis({
     }
     const existing = await db.getAiGenerationJobByKey(jobKey).catch((err) => { logger.warn({ err }, 'getAiGenerationJobByKey failed'); return null; });
     if (existing?.status === 'completed' && existing.resultPayload) {
-        return { ...existing.resultPayload, jobKey, cached: true };
+        return {
+            ...existing.resultPayload,
+            retrievedArticleCount: Math.max(Number(existing.resultPayload.retrievedArticleCount) || 0, totalRetrieved),
+            jobKey,
+            cached: true,
+        };
     }
     if (existing?.status === 'running' || existing?.status === 'queued') {
         if (existing.status === 'queued') {
@@ -636,7 +642,16 @@ async function getOrEnqueueFullSynthesis({
         jobType: 'full_synthesis',
         topic,
         inputHash: stableHash({ topic, uids: topArticles.map((a) => a.uid).filter(Boolean), ...personalization }),
-        inputPayload: { topic, provider, articles: topArticles, userId, trainingStage, previousQueries, sessionDepth },
+        inputPayload: {
+            topic,
+            provider,
+            articles: topArticles,
+            retrievedArticleCount: totalRetrieved,
+            userId,
+            trainingStage,
+            previousQueries,
+            sessionDepth,
+        },
         userId: userId || null,
         provider: serverConfig?.keys?.gemini ? 'gemini' : serverConfig?.keys?.mistral ? 'mistral' : null,
     }).catch((err) => { logger.warn({ err }, 'createAiGenerationJob failed'); return null; });

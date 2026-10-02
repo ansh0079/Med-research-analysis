@@ -10,7 +10,7 @@ export const SynthesisSourcePapers: React.FC<Props> = ({ articles }) => (
   <div>
     <SectionLabel>Papers Analysed</SectionLabel>
     <div className="space-y-1">
-      {articles.slice(0, 15).map((a, i) => {
+      {articles.slice(0, 20).map((a, i) => {
         const href = a.doi
           ? `https://doi.org/${a.doi}`
           : a.pmid

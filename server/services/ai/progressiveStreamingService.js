@@ -137,6 +137,7 @@ async function streamSynthesisGeneration(res, {
             fullTextCoverageRatio: context.fullTextCoverageRatio,
             conflictMatrix: conflictExtraction.conflictMatrix,
             guidelineAlignment: conflictExtraction.guidelineAlignment,
+            retrievedArticleCount: articles.length,
         });
 
         sendEvent('finalizing', { progress: 95, message: 'Saving to cache...' });

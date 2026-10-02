@@ -79,6 +79,7 @@ async function processAiGenerationJobByKey(jobKey, deps) {
                 trainingStage: input.trainingStage || null,
                 previousQueries: input.previousQueries || [],
                 sessionDepth: input.sessionDepth || 0,
+                retrievedArticleCount: input.retrievedArticleCount || input.articles?.length || 0,
             });
             await completeJobAndClaims(db, jobKey, 'full_synthesis', {
                 resultPayload: { ...result, jobKey },

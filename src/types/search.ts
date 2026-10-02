@@ -99,6 +99,8 @@ export interface SearchPack {
   primaryLane: EvidenceLaneKey | null;
   cascadeNote: string;
   lanes: Record<EvidenceLaneKey, SearchPackLane>;
+  /** Lane sequence the server ranked for this query. First entry is the best lane available. */
+  displayOrder?: EvidenceLaneKey[];
 }
 
 /**

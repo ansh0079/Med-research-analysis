@@ -140,10 +140,16 @@ function registerGuidelineRoutes(app, { db, serverConfig, cache, rateLimit, requ
             });
             const issuing = wide.filter((g) => isIssuingBodyValue(g?.sourceBody));
             const issuingYears = issuing.map((g) => Number(g?.sourceYear)).filter((y) => Number.isFinite(y) && y > 0);
+            const checkedTimes = issuing
+                .map((g) => Date.parse(g?.lastCheckedAt || g?.last_checked_at || ''))
+                .filter(Number.isFinite);
             const guidelineSummary = {
                 issuingBodyCount: issuing.length,
+                reviewedRecommendationCount: issuing.filter((g) => g?.status === 'human_reviewed').length,
+                aiExtractedRecommendationCount: issuing.filter((g) => g?.status === 'ai_extracted').length,
                 newestYear: issuingYears.length ? Math.max(...issuingYears) : null,
                 bodies: [...new Set(issuing.map((g) => g?.sourceBody).filter(Boolean))].slice(0, 3),
+                lastCheckedAt: checkedTimes.length ? new Date(Math.max(...checkedTimes)).toISOString() : null,
             };
             if (wide.length > 0) {
                 return res.json({

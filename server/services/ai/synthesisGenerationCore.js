@@ -16,6 +16,7 @@ const { parseStructuredOutput } = require('../../utils/parseJson');
 const { validateAiOutput } = require('../aiOutputValidation');
 const { createBudgetForAction, runWithLlmBudget, LlmBudgetExceededError, getActiveLlmBudget } = require('../llmRequestBudget');
 const { buildSynthesisCacheKey, normalizePersonalization } = require('../synthesisPersonalization');
+const { selectTopEvidence } = require('../../utils/selectTopEvidence');
 
 const {
     scoreClaimSourceRelevanceSync,
@@ -94,9 +95,10 @@ const CITATION_REQUIRED_PATHS = [
 ];
 
 function selectTopSynthesisArticles(articles = []) {
-    return [...articles]
-        .sort((a, b) => (b._impact?.score ?? 0) - (a._impact?.score ?? 0))
-        .slice(0, 15);
+    // Lead with evidence strength, not popularity/recency. The shared selector
+    // uses EBM design, quality grade and publication status, then preserves
+    // search relevance order as the final tie-breaker.
+    return selectTopEvidence(articles, 20);
 }
 
 function getSynthesisCacheKey(topic, articles = [], promptVersion = null, personalization = {}) {
@@ -379,6 +381,7 @@ function buildSynthesisResult({
     jobKey = null,
     conflictMatrix = [],
     guidelineAlignment = null,
+    retrievedArticleCount = null,
 }) {
     const promptHashDigest = crypto.createHash('md5').update(prompt).digest('hex');
     const claimsJobKey = jobKey || `syn:${promptHashDigest}`;
@@ -411,6 +414,7 @@ function buildSynthesisResult({
     return {
         synthesis,
         articleCount: topArticles.length,
+        retrievedArticleCount: Math.max(topArticles.length, Number(retrievedArticleCount) || 0),
         topic,
         timestamp: new Date().toISOString(),
         sources: sourceMap,
@@ -481,6 +485,7 @@ async function runFullSynthesisGeneration({
     sessionDepth = 0,
     sessionId = null,
     appendRagContext = null,
+    retrievedArticleCount = null,
 }) {
     return runWithLlmBudget(createBudgetForAction('synthesis'), () => runFullSynthesisGenerationInner({
         articles,
@@ -497,6 +502,7 @@ async function runFullSynthesisGeneration({
         sessionDepth,
         sessionId,
         appendRagContext,
+        retrievedArticleCount,
     }));
 }
 
@@ -515,6 +521,7 @@ async function runFullSynthesisGenerationInner({
     sessionDepth = 0,
     sessionId = null,
     appendRagContext = null,
+    retrievedArticleCount = null,
 }) {
     const topArticles = selectTopSynthesisArticles(articles);
     const personalization = normalizePersonalization({ userId, trainingStage, previousQueries, sessionDepth });
@@ -524,7 +531,15 @@ async function runFullSynthesisGenerationInner({
         if (cached) {
             const promptHash = cached.audit?.promptHash;
             const derivedJobKey = jobKey || cached.jobKey || (promptHash ? `syn:${promptHash}` : null);
-            return { ...cached, cached: true, jobKey: derivedJobKey || cached.jobKey };
+            return {
+                ...cached,
+                cached: true,
+                retrievedArticleCount: Math.max(
+                    Number(cached.retrievedArticleCount) || 0,
+                    Number(retrievedArticleCount) || articles.length,
+                ),
+                jobKey: derivedJobKey || cached.jobKey,
+            };
         }
     }
 
@@ -617,6 +632,7 @@ async function runFullSynthesisGenerationInner({
         jobKey,
         conflictMatrix: conflictExtraction.conflictMatrix,
         guidelineAlignment: conflictExtraction.guidelineAlignment,
+        retrievedArticleCount: Math.max(articles.length, Number(retrievedArticleCount) || 0),
     });
 
     await persistSynthesisResult({

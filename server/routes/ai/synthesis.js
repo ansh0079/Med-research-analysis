@@ -62,9 +62,7 @@ function registerSynthesisRoutes(app, {
             return res.status(400).json({ error: 'At least one article is required for synthesis' });
         }
 
-        const topArticles = [...articles]
-            .sort((a, b) => (b._impact?.score ?? 0) - (a._impact?.score ?? 0))
-            .slice(0, 15);
+        const topArticles = selectTopSynthesisArticles(articles);
 
         // Default to async background job to avoid request timeouts on long synthesis.
         // Clients can pass async: false to opt into the legacy inline (blocking) path.
@@ -80,6 +78,7 @@ function registerSynthesisRoutes(app, {
                     cache,
                     logger: req.log,
                     userId: req.user?.id || null,
+                    retrievedArticleCount: articles.length,
                 });
                 const code = out.status === 'queued' || out.status === 'running' ? 202 : 200;
                 return res.status(code).json(out);
@@ -95,7 +94,11 @@ function registerSynthesisRoutes(app, {
             const cacheScope = { userId: req.user?.id || null };
             const cached = await getHierarchicalSynthesis(cache, topic || '', topArticles, cacheScope);
             if (cached?.hit && cached.level === 3 && cached.data && !needsRegeneration(cached.data, topArticles)) {
-                return res.json({ ...cached.data, _source: 'hierarchical_cache' });
+                return res.json({
+                    ...cached.data,
+                    retrievedArticleCount: Math.max(Number(cached.data.retrievedArticleCount) || 0, articles.length),
+                    _source: 'hierarchical_cache',
+                });
             }
 
             const result = await runFullSynthesisGeneration({
@@ -109,6 +112,7 @@ function registerSynthesisRoutes(app, {
                 userId: req.user?.id || null,
                 sessionId: req.sessionId || null,
                 appendRagContext,
+                retrievedArticleCount: articles.length,
             });
             void maybeStoreTopicKnowledge({
                 topic,
@@ -163,7 +167,12 @@ function registerSynthesisRoutes(app, {
             setupSSE(res);
             const promptHash = cached.audit?.promptHash;
             const derivedJobKey = cached.jobKey || (promptHash ? `syn:${promptHash}` : null);
-            sendSSE(res, 'result', { ...cached, cached: true, jobKey: derivedJobKey || cached.jobKey });
+            sendSSE(res, 'result', {
+                ...cached,
+                cached: true,
+                retrievedArticleCount: Math.max(Number(cached.retrievedArticleCount) || 0, articles.length),
+                jobKey: derivedJobKey || cached.jobKey,
+            });
             sendSSE(res, 'done', {});
             return res.end();
         }
@@ -235,6 +244,7 @@ function registerSynthesisRoutes(app, {
                 fullTextCoverageRatio: context.fullTextCoverageRatio,
                 conflictMatrix: conflictExtraction.conflictMatrix,
                 guidelineAlignment: conflictExtraction.guidelineAlignment,
+                retrievedArticleCount: articles.length,
             });
 
             await persistSynthesisResult({

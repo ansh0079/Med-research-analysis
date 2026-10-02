@@ -137,6 +137,7 @@ export function useSearchPage() {
     resultFilter, setResultFilter,
     resultLens, setResultLens,
     evidenceLane, setEvidenceLane,
+    resultSort, setResultSort,
     visibleResults, renderedResults,
     visibleCount, setVisibleCount,
     activeResultIndex, setActiveResultIndex,
@@ -171,21 +172,25 @@ export function useSearchPage() {
     handleSynthesize,
   } = useSearchSynthesis({
     results,
-    topArticles: top5Articles,
     currentQuery,
     isAuthenticated,
     betaOpenAccess,
   });
 
   const handleSearch = React.useCallback(
-    async (query: string) => {
+    async (query: string, filterOverride?: typeof filters) => {
       const trimmed = query.trim();
       if (!trimmed) return [];
       resetSynthesis();
       setTopicGuideRefreshError(null);
       setCurrentQuery(trimmed);
       resetForNewSearch();
-      const found = await searchRef.current(trimmed, filtersRef.current);
+      const searchFilters = filterOverride ?? filtersRef.current;
+      if (filterOverride) {
+        filtersRef.current = filterOverride;
+        setFilters(filterOverride);
+      }
+      const found = await searchRef.current(trimmed, searchFilters);
       setResultsQuery(trimmed);
       try {
         const savedCounts = JSON.parse(localStorage.getItem(SAVED_SEARCH_COUNTS_KEY) || '{}') as Record<string, number>;
@@ -202,7 +207,7 @@ export function useSearchPage() {
       }
       return found;
     },
-    [resetForNewSearch, resetSynthesis]
+    [resetForNewSearch, resetSynthesis, setFilters]
   );
 
   const evidenceRelatedTopics = React.useMemo(
@@ -498,6 +503,8 @@ export function useSearchPage() {
     setResultLens,
     evidenceLane,
     setEvidenceLane,
+    resultSort,
+    setResultSort,
     visibleResults,
     renderedResults,
     visibleCount,

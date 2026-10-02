@@ -18,6 +18,7 @@ import { VerifyEmailBanner } from '@components/search/VerifyEmailBanner';
 import { SearchDetails, SourceFailureNotice, hasSearchDetails } from '@components/search/SearchDetails';
 import { CollapsibleRow } from '@components/search/CollapsibleRow';
 import { STUDY_TYPE_FILTER_OPTIONS } from '@utils/searchStudyFilters';
+import { resolveSynthesisArticles } from '@utils/synthesisSources';
 import { PersonalizedRemediationBanner } from '@components/search/PersonalizedRemediationBanner';
 import { SearchResultsFilterSection } from '@components/search/SearchResultsFilterSection';
 import { SearchEvidenceWorkflowSection } from '@components/search/SearchEvidenceWorkflowSection';
@@ -27,6 +28,15 @@ import { SynthesisStatusSection } from '@components/search/SynthesisStatusSectio
 import { SearchResultsGrid } from '@components/search/SearchResultsGrid';
 import { SearchPageFooter } from '@components/search/SearchPageFooter';
 import { useSearchPage } from '@hooks/useSearchPage';
+import { useGuidelineWorkspaceSummary } from '@hooks/useGuidelineWorkspaceSummary';
+import {
+  buildSearchWorkspaceParams,
+  chooseDefaultWorkspaceTab,
+  parseSearchWorkspaceParams,
+  type SearchWorkspaceTab,
+} from '@utils/searchWorkspaceUrl';
+
+const AUTH_WORKSPACE_KEY = 'signalmd_search_workspace_after_auth';
 
 export const SearchPage: React.FC = () => {
   const page = useSearchPage();
@@ -112,6 +122,8 @@ export const SearchPage: React.FC = () => {
     evidenceLane,
     setEvidenceLane,
     setResultLens,
+    resultSort,
+    setResultSort,
     visibleResults,
     renderedResults,
     visibleCount,
@@ -147,27 +159,69 @@ export const SearchPage: React.FC = () => {
 
   const { activePdf, isOpen, layout, openPdf, closePdf, toggleLayout } = pdfViewer;
 
-  // Run a search supplied in the URL (?q=...). This is how a shared /topic/:topic
-  // link degrades for a visitor who is not signed in: TopicPage is protected, so
-  // they cannot be sent there, but they can still see the evidence for that topic.
-  // Only fires once per query so it does not re-run on every render.
   const [searchParams, setSearchParams] = useSearchParams();
-  const [workspaceTab, setWorkspaceTab] = React.useState<'evidence' | 'guidelines' | 'learn'>('guidelines');
+  const initialUrlState = React.useRef(parseSearchWorkspaceParams(searchParams));
+  const [workspaceTab, setWorkspaceTab] = React.useState<SearchWorkspaceTab>(initialUrlState.current.tab);
   const urlQuery = searchParams.get('q')?.trim() || '';
   const consumedQueryRef = React.useRef<string | null>(null);
+  const pendingRequestedTabRef = React.useRef<SearchWorkspaceTab | undefined>(
+    searchParams.has('tab') ? initialUrlState.current.tab : undefined,
+  );
+  const manuallySelectedTabForQueryRef = React.useRef('');
+  const resolvedDefaultTabForQueryRef = React.useRef('');
+
+  // A shared URL restores the actual workspace: retrieval filters, result view,
+  // tab and ordering. Keeping q in the address also makes refresh and support
+  // reproduction deterministic.
   React.useEffect(() => {
     if (!urlQuery || consumedQueryRef.current === urlQuery) return;
+    if (urlQuery === resultsQuery) {
+      consumedQueryRef.current = urlQuery;
+      return;
+    }
     consumedQueryRef.current = urlQuery;
-    handleSearch(urlQuery);
-    // Drop the param once consumed so a refresh does not silently re-run a
-    // search the visitor may have since navigated away from.
-    searchParams.delete('q');
-    setSearchParams(searchParams, { replace: true });
-  }, [urlQuery, handleSearch, searchParams, setSearchParams]);
+    const restored = parseSearchWorkspaceParams(searchParams);
+    pendingRequestedTabRef.current = searchParams.has('tab') ? restored.tab : undefined;
+    const restoredFilters = { ...filters, ...restored.filters };
+    void handleSearch(urlQuery, restoredFilters).then(() => {
+      setResultLens(restored.lens);
+      setEvidenceLane(restored.lane);
+      setResultSort(restored.sort);
+      setResultFilter(restored.resultFilter);
+    });
+  }, [filters, handleSearch, resultsQuery, searchParams, setEvidenceLane, setResultFilter, setResultLens, setResultSort, urlQuery]);
 
   React.useEffect(() => {
-    setWorkspaceTab('guidelines');
+    const requested = pendingRequestedTabRef.current;
+    setWorkspaceTab(requested || 'evidence');
+    manuallySelectedTabForQueryRef.current = '';
+    resolvedDefaultTabForQueryRef.current = requested ? resultsQuery : '';
+    pendingRequestedTabRef.current = undefined;
   }, [resultsQuery]);
+
+  const workspaceQuery = results.length > 0 ? (resultsQuery || currentQuery) : '';
+  const guidelineWorkspace = useGuidelineWorkspaceSummary(workspaceQuery, results);
+
+  React.useEffect(() => {
+    if (!resultsQuery || guidelineWorkspace.query !== resultsQuery || guidelineWorkspace.loading) return;
+    if (resolvedDefaultTabForQueryRef.current === resultsQuery || manuallySelectedTabForQueryRef.current === resultsQuery) return;
+    setWorkspaceTab(chooseDefaultWorkspaceTab());
+    resolvedDefaultTabForQueryRef.current = resultsQuery;
+  }, [guidelineWorkspace.loading, guidelineWorkspace.query, resultsQuery]);
+
+  React.useEffect(() => {
+    if (!resultsQuery) return;
+    const next = buildSearchWorkspaceParams({
+      query: resultsQuery,
+      tab: workspaceTab,
+      lens: resultLens,
+      lane: evidenceLane,
+      sort: resultSort,
+      resultFilter,
+      filters,
+    });
+    if (next.toString() !== searchParams.toString()) setSearchParams(next, { replace: true });
+  }, [evidenceLane, filters, resultFilter, resultLens, resultSort, resultsQuery, searchParams, setSearchParams, workspaceTab]);
 
   const activeFilters = {
     specificity: filters.specificity,
@@ -220,12 +274,65 @@ export const SearchPage: React.FC = () => {
     onDismissKnowledgeDrift: (id: number) => { void dismissKnowledgeDriftAlert(id); },
   };
 
-  const openWorkspaceTab = (tab: 'evidence' | 'guidelines' | 'learn') => {
+  const synthesisArticles = React.useMemo(
+    () => synthesis ? resolveSynthesisArticles(synthesis, results) : top5Articles,
+    [results, synthesis, top5Articles],
+  );
+
+  const openWorkspaceTab = (tab: SearchWorkspaceTab) => {
+    manuallySelectedTabForQueryRef.current = resultsQuery;
+    resolvedDefaultTabForQueryRef.current = resultsQuery;
     setWorkspaceTab(tab);
     requestAnimationFrame(() => {
       document.getElementById(`workspace-${tab}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   };
+
+  const currentWorkspaceParams = React.useMemo(() => buildSearchWorkspaceParams({
+    query: resultsQuery || currentQuery,
+    tab: workspaceTab,
+    lens: resultLens,
+    lane: evidenceLane,
+    sort: resultSort,
+    resultFilter,
+    filters,
+  }), [currentQuery, evidenceLane, filters, resultFilter, resultLens, resultSort, resultsQuery, workspaceTab]);
+
+  const continueAfterAuth = React.useCallback((pendingAction: 'synopsis') => {
+    try {
+      sessionStorage.setItem(AUTH_WORKSPACE_KEY, JSON.stringify({
+        query: resultsQuery || currentQuery,
+        selectedUids: selectedArticles.map((article) => article.uid),
+        pendingAction,
+      }));
+    } catch {
+      // The shareable URL still restores the search when storage is unavailable.
+    }
+    navigate('/auth', {
+      state: { from: { pathname: '/search', search: `?${currentWorkspaceParams.toString()}`, hash: '' } },
+    });
+  }, [currentQuery, currentWorkspaceParams, navigate, resultsQuery, selectedArticles]);
+
+  React.useEffect(() => {
+    if (!isAuthenticated || !resultsQuery || results.length === 0) return;
+    let pending: { query?: string; selectedUids?: string[]; pendingAction?: string } | null = null;
+    try {
+      pending = JSON.parse(sessionStorage.getItem(AUTH_WORKSPACE_KEY) || 'null');
+    } catch {
+      pending = null;
+    }
+    if (!pending || pending.query !== resultsQuery) return;
+    sessionStorage.removeItem(AUTH_WORKSPACE_KEY);
+    for (const uid of (pending.selectedUids || []).slice(0, 3)) {
+      const article = results.find((candidate) => candidate.uid === uid);
+      if (article && !isSelected(uid)) toggleSelectArticle(article);
+    }
+    if (pending.pendingAction === 'synopsis') {
+      setWorkspaceTab('learn');
+      resolvedDefaultTabForQueryRef.current = resultsQuery;
+      void handleSynthesize();
+    }
+  }, [handleSynthesize, isAuthenticated, isSelected, results, resultsQuery, toggleSelectArticle]);
 
   // Generated learning content lives in the Learn tab. Opening a quiz must
   // reveal that workspace before scrolling to the in-place quiz panel.
@@ -298,6 +405,7 @@ export const SearchPage: React.FC = () => {
               onJumpToGuidelines={() => openWorkspaceTab('guidelines')}
               openAccessCount={openAccessCount}
               retractedCount={retractedCount}
+              guidelineWorkspace={guidelineWorkspace}
               notice={<SourceFailureNotice sourceTelemetry={searchTelemetry?.sources} sourceFailures={searchTelemetry?.sourceFailures} />}
               details={hasSearchDetails({ sourceTelemetry: searchTelemetry?.sources, queryIntent, searchPack, activeFilters }) ? (
                 <SearchDetails sourceTelemetry={searchTelemetry?.sources} queryIntent={queryIntent} searchPack={searchPack} activeFilters={activeFilters} />
@@ -344,7 +452,9 @@ export const SearchPage: React.FC = () => {
                 practiceChangingCount={practiceChangingCount}
                 resultLens={resultLens}
                 resultFilter={resultFilter}
+                resultSort={resultSort}
                 onResultFilterChange={setResultFilter}
+                onSortChange={setResultSort}
                 searchPack={searchPack}
                 evidenceLane={evidenceLane}
                 onLaneChange={setEvidenceLane}
@@ -358,6 +468,7 @@ export const SearchPage: React.FC = () => {
                   setResultLens('all');
                   setResultFilter('');
                   setEvidenceLane('all');
+                  setResultSort('relevance');
                   setVisibleCount(30);
                 }}
                 onCompare={() => setIsComparing(true)}
@@ -426,7 +537,7 @@ export const SearchPage: React.FC = () => {
 
         {results.length > 0 && (
           <section id="workspace-guidelines" role="tabpanel" hidden={workspaceTab !== 'guidelines'} className="scroll-mt-28">
-            <GuidelineSnapshot query={resultsQuery || currentQuery} articles={results} autoRunAlignment={requestGuidelineAlignment} />
+            <GuidelineSnapshot query={resultsQuery || currentQuery} articles={results} workspace={guidelineWorkspace} autoRunAlignment={requestGuidelineAlignment} />
           </section>
         )}
 
@@ -435,12 +546,12 @@ export const SearchPage: React.FC = () => {
             <LearningWorkspacePanel
               query={resultsQuery || currentQuery}
               results={results}
-              topicIntelligence={topicIntelligence}
+              guidelineWorkspace={guidelineWorkspace}
               synthesisLoading={synthesisLoading}
               isAuthenticated={isAuthenticated}
               onGenerateSynopsis={() => {
                 if (!isAuthenticated) {
-                  navigate('/auth', { state: { from: { pathname: '/search', search: '', hash: '' } } });
+                  continueAfterAuth('synopsis');
                   return;
                 }
                 void handleSynthesize();
@@ -462,7 +573,7 @@ export const SearchPage: React.FC = () => {
               <div data-synthesis-panel>
                 <SynthesisPanel
                   result={synthesis}
-                  articles={top5Articles}
+                  articles={synthesisArticles}
                   onClose={() => setSynthesis(null)}
                   onGenerateCase={openSynthesisCase}
                   onSearch={handleSearch}

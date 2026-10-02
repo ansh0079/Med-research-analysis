@@ -125,9 +125,9 @@ describe('unifiedEvidenceSearch helpers', () => {
         expect(getEbmScore({ pubtype: [], studyDesign: 'rct' })).toBe(6);
     });
 
-    test('getEbmScore defaults to cross-sectional tier for unknown types', () => {
-        expect(getEbmScore({ pubtype: ['Something Weird'] })).toBe(2);
-        expect(getEbmScore({})).toBe(2);
+    test('getEbmScore preserves unknown study types instead of inventing cross-sectional evidence', () => {
+        expect(getEbmScore({ pubtype: ['Something Weird'] })).toBe(-1);
+        expect(getEbmScore({})).toBe(-1);
     });
 
     test('isPreprint detects preprint sources', () => {

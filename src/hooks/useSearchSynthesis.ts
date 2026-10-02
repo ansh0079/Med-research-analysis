@@ -5,7 +5,6 @@ import type { Article, SynthesisResult } from '@types';
 
 interface UseSearchSynthesisInput {
   results: Article[];
-  topArticles: Article[];
   currentQuery: string;
   isAuthenticated: boolean;
   betaOpenAccess: boolean;
@@ -13,7 +12,6 @@ interface UseSearchSynthesisInput {
 
 export function useSearchSynthesis({
   results,
-  topArticles,
   currentQuery,
   isAuthenticated,
   betaOpenAccess,
@@ -66,7 +64,7 @@ export function useSearchSynthesis({
           settled = true;
           resolve();
         };
-        const cancel = api.ai.synthesizeEvidenceStream(currentQuery, topArticles, {
+        const cancel = api.ai.synthesizeEvidenceStream(currentQuery, results, {
           onChunk: (chunk) => {
             if (requestId !== requestIdRef.current) return;
             liveText += chunk;
@@ -121,7 +119,7 @@ export function useSearchSynthesis({
       }
     }
     return null;
-  }, [results.length, currentQuery, topArticles, isAuthenticated, betaOpenAccess, cancelActiveStream]);
+  }, [results, currentQuery, isAuthenticated, betaOpenAccess, cancelActiveStream]);
 
   return {
     synthesis,

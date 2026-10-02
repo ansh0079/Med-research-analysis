@@ -49,6 +49,12 @@ describe('search queries are not HTML-escaped', () => {
 });
 
 describe('article output is plain text', () => {
+    test('unknown publication metadata is labelled unverified rather than cross-sectional', () => {
+        const out = sanitizeArticleOutput({ uid: 'unknown', title: 'Sparse provider record' });
+        expect(out._ebmScore).toBe(-1);
+        expect(out._ebmLabel).toEqual({ label: 'Study type unverified', short: 'Type unverified' });
+    });
+
     test('title, abstract and source come back decoded, whatever state they were stored in', () => {
         const out = sanitizeArticleOutput({
             uid: 'x',

@@ -35,7 +35,11 @@ function getEbmScore(article) {
     for (const [keyword, score] of Object.entries(EBM_SCORES)) {
         if (types.some((t) => t.includes(keyword))) best = Math.max(best, score);
     }
-    return best >= 0 ? best : 2; // default to cross-sectional tier
+    // Missing metadata is not evidence of a cross-sectional design. Keeping an
+    // explicit unknown tier prevents guideline documents and sparse provider
+    // records from being presented (and ranked) as a study design they do not
+    // claim to use.
+    return best;
 }
 
 function isPreprint(article) {

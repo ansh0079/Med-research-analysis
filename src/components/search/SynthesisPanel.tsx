@@ -29,6 +29,7 @@ import { SynthesisSourcePapers } from './synthesis/SynthesisSourcePapers';
 import { SynthesisStatistics } from './synthesis/SynthesisStatistics';
 import { SynthesisStudyDesigns } from './synthesis/SynthesisStudyDesigns';
 import { SynthesisUncertainties } from './synthesis/SynthesisUncertainties';
+import { SynthesisFeaturedEvidence } from './synthesis/SynthesisFeaturedEvidence';
 
 interface SynthesisPanelProps {
   result: SynthesisResult;
@@ -77,7 +78,9 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
             </div>
             <h2 className="font-black text-slate-900 dark:text-white text-lg leading-tight truncate">{result.topic}</h2>
             <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5 font-mono">
-              {result.articleCount} papers · {new Date(result.timestamp).toLocaleDateString()}
+              {result.retrievedArticleCount && result.retrievedArticleCount > result.articleCount
+                ? `${result.articleCount} strongest of ${result.retrievedArticleCount} retrieved papers`
+                : `${result.articleCount} papers`} · {new Date(result.timestamp).toLocaleDateString()}
             </p>
           </div>
           <button
@@ -171,6 +174,15 @@ const SynthesisPanelComponent: React.FC<SynthesisPanelProps> = ({ result, articl
               </div>
             ))}
           </div>
+        )}
+
+        {articles[0] && (
+          <SynthesisFeaturedEvidence
+            article={articles[0]}
+            contribution={s.paperContributions?.find((item) => item.studyIndex === 1)}
+            includedCount={result.articleCount}
+            retrievedCount={result.retrievedArticleCount || result.articleCount}
+          />
         )}
 
         <EvidenceAuditPanel

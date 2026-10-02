@@ -6,6 +6,7 @@ import {
   isLikelyPreprint,
   isPotentialPredatoryJournal,
 } from './articleCardUtils';
+import { getEvidenceTypeDisplay } from '@utils/evidenceTypeDisplay';
 
 interface ArticleCardBadgesRowProps {
   article: Article;
@@ -33,6 +34,7 @@ export const ArticleCardBadgesRow: React.FC<ArticleCardBadgesRowProps> = ({
   const CURRENT_YEAR = new Date().getFullYear();
   const isOutdated = !isNaN(pubYear) && pubYear < (CURRENT_YEAR - 9);
   const isPracticeChanging = !isNaN(pubYear) && pubYear >= (CURRENT_YEAR - 3) && (citations ?? 0) >= 100;
+  const evidenceType = getEvidenceTypeDisplay(article);
 
   return (
     <div className="flex items-start justify-between gap-2 mb-3">
@@ -80,10 +82,10 @@ export const ArticleCardBadgesRow: React.FC<ArticleCardBadgesRowProps> = ({
           </span>
         )}
 
-        {article._ebmLabel && (
+        {(
           <span
             className="badge badge-source font-semibold"
-            title={`Evidence tier: ${article._ebmLabel.label}`}
+            title={`Evidence type: ${evidenceType.label}`}
             style={{
               background: article._ebmScore !== undefined && article._ebmScore >= 6
                 ? 'rgba(16,185,129,0.12)'
@@ -97,7 +99,7 @@ export const ArticleCardBadgesRow: React.FC<ArticleCardBadgesRowProps> = ({
                   : undefined,
             }}
           >
-            {article._ebmLabel.short}
+            {evidenceType.short}
           </span>
         )}
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@components/ui/Button';
 import type { AppPage } from '@contexts/SearchContext';
 import type { Article, EvidenceLaneKey, SearchPack } from '@types';
-import type { ResultLens } from '@hooks/useResultsFilter';
+import type { ResultLens, ResultSort } from '@hooks/useResultsFilter';
 
 type ExportFormat = 'ris' | 'bibtex' | 'csl' | 'doc';
 
@@ -14,7 +14,9 @@ interface ResultLensToolbarProps {
   practiceChangingCount: number;
   resultLens: ResultLens;
   resultFilter: string;
+  resultSort: ResultSort;
   onResultFilterChange: (value: string) => void;
+  onSortChange: (sort: ResultSort) => void;
   searchPack?: SearchPack | null;
   evidenceLane: EvidenceLaneKey | 'all';
   onLaneChange: (lane: EvidenceLaneKey | 'all') => void;
@@ -44,7 +46,9 @@ export const ResultLensToolbar: React.FC<ResultLensToolbarProps> = ({
   practiceChangingCount,
   resultLens,
   resultFilter,
+  resultSort,
   onResultFilterChange,
+  onSortChange,
   searchPack,
   evidenceLane,
   onLaneChange,
@@ -85,8 +89,11 @@ export const ResultLensToolbar: React.FC<ResultLensToolbarProps> = ({
     { id: 'practice_changing' as ResultLens, label: 'Practice-changing', count: practiceChangingCount, icon: 'fa-bolt' },
   ].filter((lens) => lens.id === 'all' || lens.count > 0 || lens.id === resultLens);
 
+  const laneOrder: EvidenceLaneKey[] = searchPack?.displayOrder?.length
+    ? searchPack.displayOrder
+    : ['guidelines', 'landmark_trials', 'reviews', 'supporting'];
   const lanes = searchPack
-    ? (['guidelines', 'landmark_trials', 'reviews', 'supporting'] as EvidenceLaneKey[])
+    ? laneOrder
       .map((key) => searchPack.lanes[key])
       .filter((lane) => lane && (lane.count > 0 || lane.key === evidenceLane))
     : [];
@@ -108,6 +115,19 @@ export const ResultLensToolbar: React.FC<ResultLensToolbarProps> = ({
           placeholder="Filter results"
           className="h-8 w-40 rounded-full border border-slate-200 bg-white pl-7 pr-3 text-[11px] text-slate-900 outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white sm:w-48"
         />
+      </label>
+      <label className="relative">
+        <span className="sr-only">Sort results</span>
+        <select
+          value={resultSort}
+          onChange={(event) => onSortChange(event.target.value as ResultSort)}
+          className="h-8 rounded-full border border-slate-200 bg-white px-3 text-[11px] font-bold text-slate-600 outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+        >
+          <option value="relevance">Ranked by relevance</option>
+          <option value="newest">Newest first</option>
+          <option value="citations">Most cited</option>
+          <option value="quality">Highest quality</option>
+        </select>
       </label>
       {lenses.map((lens) => (
         <button
@@ -137,7 +157,7 @@ export const ResultLensToolbar: React.FC<ResultLensToolbarProps> = ({
           <span className="font-mono text-[10px] opacity-70">{lane.count}</span>
         </button>
       ))}
-      {(resultLens !== 'all' || resultFilter.trim() || evidenceLane !== 'all') && (
+      {(resultLens !== 'all' || resultFilter.trim() || evidenceLane !== 'all' || resultSort !== 'relevance') && (
         <button
           type="button"
           onClick={onClearLens}

@@ -60,7 +60,10 @@ Do not repeat basic definitions if the user is deep into a research dive. Bridge
 
 `
         : depthModeInstruction;
-    const context = buildSourceEvidenceBlock(articles, { variant: 'synthesis' });
+    // Keep the prompt context aligned with the synthesis selector and source map.
+    // The context builder defaults to 15, while search synopsis deliberately
+    // considers up to 20 retrieved papers.
+    const context = buildSourceEvidenceBlock(articles, { variant: 'synthesis', max: 20 });
     const guidelineContext = buildGuidelineContextBlock(guidelines, { variant: 'synthesis' });
     const misconceptionBlock = buildMisconceptionContextBlock({
         personalMisconceptions: options.personalMisconceptions,
@@ -78,6 +81,8 @@ Critical provenance rule:
 - When guidelines and studies agree or conflict, explicitly note this and cite both with labels like "Study [1]" or "Guideline [G1]".
 
 Evidence judgement (doctor-specific):
+- The studies are ordered by evidence design, quality, publication status, then search relevance. STUDY 1 is the highest-priority included source. Feature it early when it directly answers the question; if it does not, explicitly identify and cite the strongest directly applicable study instead.
+- This is a synopsis of the supplied evidence set, not a synopsis of one paper. Weigh all supplied studies, show consensus and disagreement, and do not let the featured source erase conflicting or more applicable evidence.
 - Many apps hide tension between trials and guidelines. Do not smooth over real conflict — surface honest disagreement when the bundle supports it.
 - Populate evidenceDisagreement and practiceImpact even when evidence is broadly aligned (use hasMaterialDisagreement=false and explain why discordance is limited).
 - practiceImpact answers "should this change what I do on Monday morning?" for the bundle as a whole.

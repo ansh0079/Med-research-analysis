@@ -5,7 +5,33 @@ import { Button } from '@components/ui/Button';
 import type { PdfLayout } from '@hooks/usePdfViewer';
 import type { Article, EvidenceLaneKey, SearchPack } from '@types';
 
-const LANE_ORDER: EvidenceLaneKey[] = ['guidelines', 'landmark_trials', 'reviews', 'supporting'];
+const LANE_LABELS: Record<EvidenceLaneKey, string> = {
+  guidelines: 'Guidelines',
+  landmark_trials: 'Landmark trials',
+  reviews: 'Reviews / meta-analyses',
+  supporting: 'Supporting evidence',
+};
+
+/** Keep the server's ranked order. A heading starts only when the lane changes. */
+export function sectionsInServedOrder(articles: Article[], searchPack?: SearchPack | null) {
+  const sections: { key: string; lane: EvidenceLaneKey; label: string; articles: Article[]; startIndex: number }[] = [];
+  articles.forEach((article, index) => {
+    const lane = (article._evidenceLane || 'supporting') as EvidenceLaneKey;
+    const current = sections[sections.length - 1];
+    if (current && current.lane === lane) {
+      current.articles.push(article);
+      return;
+    }
+    sections.push({
+      key: `${lane}:${index}`,
+      lane,
+      label: searchPack?.lanes?.[lane]?.label || LANE_LABELS[lane] || lane.replace(/_/g, ' '),
+      articles: [article],
+      startIndex: index,
+    });
+  });
+  return sections;
+}
 
 interface SearchResultsGridProps {
   layout: PdfLayout;
@@ -155,26 +181,20 @@ export const SearchResultsGrid: React.FC<SearchResultsGridProps> = ({
     >
       {grouped ? (
         <div className="space-y-8">
-          {LANE_ORDER.map((laneKey) => {
-            const laneArticles = renderedResults.filter((article) => (article._evidenceLane || 'supporting') === laneKey);
-            // Empty lanes add noise without information — hide them entirely.
-            if (laneArticles.length === 0) return null;
-            const laneMeta = searchPack?.lanes?.[laneKey];
-            return (
-              <section key={laneKey}>
-                <h2 className="mb-3 text-sm font-black uppercase tracking-wider text-slate-500">
-                  {laneMeta?.label || laneKey.replace('_', ' ')}
-                  <span className="ml-2 font-mono text-[11px] opacity-70">{laneArticles.length}</span>
-                </h2>
-                <ArticleGrid
-                  articles={laneArticles}
-                  activeResultIndex={activeResultIndex}
-                  offset={renderedResults.indexOf(laneArticles[0])}
-                  {...cardProps}
-                />
-              </section>
-            );
-          })}
+          {sectionsInServedOrder(renderedResults, searchPack).map((section) => (
+            <section key={section.key}>
+              <h2 className="mb-3 text-sm font-black uppercase tracking-wider text-slate-500">
+                {section.label}
+                <span className="ml-2 font-mono text-[11px] opacity-70">{section.articles.length}</span>
+              </h2>
+              <ArticleGrid
+                articles={section.articles}
+                activeResultIndex={activeResultIndex}
+                offset={section.startIndex}
+                {...cardProps}
+              />
+            </section>
+          ))}
         </div>
       ) : (
         <ArticleGrid

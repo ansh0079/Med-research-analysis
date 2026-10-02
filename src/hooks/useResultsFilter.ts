@@ -2,11 +2,13 @@ import React, { useState, useMemo, useEffect } from 'react';
 import type { Article, EvidenceLaneKey } from '@types';
 
 export type ResultLens = 'all' | 'open_access' | 'high_quality' | 'recent' | 'practice_changing';
+export type ResultSort = 'relevance' | 'newest' | 'citations' | 'quality';
 
 export function useResultsFilter(results: Article[]) {
   const [resultFilter, setResultFilter] = useState('');
   const [resultLens, setResultLens] = useState<ResultLens>('all');
   const [evidenceLane, setEvidenceLane] = useState<EvidenceLaneKey | 'all'>('all');
+  const [resultSort, setResultSort] = useState<ResultSort>('relevance');
   const [visibleCount, setVisibleCount] = useState(30);
   const [activeResultIndex, setActiveResultIndex] = useState(0);
 
@@ -34,7 +36,7 @@ export function useResultsFilter(results: Article[]) {
 
   const visibleResults = useMemo(() => {
     const q = resultFilter.trim().toLowerCase();
-    return results.filter((article) => {
+    const filtered = results.filter((article) => {
       if (resultLens === 'open_access' && !(article.isFree || article.pmcid)) return false;
       if (resultLens === 'high_quality' && !(article._quality?.grade === 'A' || article._quality?.grade === 'B')) return false;
       if (resultLens === 'recent') {
@@ -56,14 +58,27 @@ export function useResultsFilter(results: Article[]) {
         article.authors?.map((author) => author.name).join(' '),
       ].filter(Boolean).join(' ').toLowerCase().includes(q);
     });
-  }, [currentYear, results, resultFilter, resultLens, evidenceLane]);
+    if (resultSort === 'relevance') return filtered;
+    const qualityRank: Record<string, number> = { A: 4, B: 3, C: 2, D: 1 };
+    return [...filtered].sort((a, b) => {
+      if (resultSort === 'newest') {
+        return (Number(b.year || String(b.pubdate || '').slice(0, 4)) || 0)
+          - (Number(a.year || String(a.pubdate || '').slice(0, 4)) || 0);
+      }
+      if (resultSort === 'citations') {
+        return (b.pmcrefcount ?? b.citationCount ?? -1) - (a.pmcrefcount ?? a.citationCount ?? -1);
+      }
+      return (qualityRank[b._quality?.grade || ''] || 0) - (qualityRank[a._quality?.grade || ''] || 0)
+        || (b._ebmScore ?? -1) - (a._ebmScore ?? -1);
+    });
+  }, [currentYear, results, resultFilter, resultLens, evidenceLane, resultSort]);
 
   const renderedResults = useMemo(() => visibleResults.slice(0, visibleCount), [visibleCount, visibleResults]);
 
   useEffect(() => {
     setActiveResultIndex(0);
     setVisibleCount(30);
-  }, [resultFilter, resultLens, evidenceLane, results.length]);
+  }, [resultFilter, resultLens, evidenceLane, resultSort, results.length]);
 
   // Infinite scroll
   useEffect(() => {
@@ -80,6 +95,7 @@ export function useResultsFilter(results: Article[]) {
     setResultFilter('');
     setResultLens('all');
     setEvidenceLane('all');
+    setResultSort('relevance');
     setVisibleCount(30);
   }, []);
 
@@ -90,6 +106,8 @@ export function useResultsFilter(results: Article[]) {
     setResultLens,
     evidenceLane,
     setEvidenceLane,
+    resultSort,
+    setResultSort,
     visibleResults,
     renderedResults,
     visibleCount,

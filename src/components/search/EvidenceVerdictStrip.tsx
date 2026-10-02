@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { api } from '@services/api';
-import type { Article, GuidelineEntry } from '@types';
+import React, { useMemo, useState } from 'react';
+import type { Article, GuidelineWorkspaceSummary } from '@types';
 
 /**
  * What the clinician sees before scrolling: how much evidence there is, how
@@ -25,6 +24,7 @@ export interface EvidenceVerdictStripProps {
     onJumpToGuidelines?: () => void;
     openAccessCount?: number;
     retractedCount?: number;
+    guidelineWorkspace: GuidelineWorkspaceSummary;
     /** Search provenance (cascade note, intent, source timings), revealed on demand. */
     details?: React.ReactNode;
     /** Always-visible notices, e.g. a source that failed. */
@@ -33,8 +33,6 @@ export interface EvidenceVerdictStripProps {
 
 const RCT_PATTERN = /randomized controlled trial|randomised controlled trial|clinical trial, phase/i;
 const REVIEW_PATTERN = /systematic review|meta-analysis/i;
-const GUIDELINE_PATTERN = /practice guideline|guideline/i;
-
 function countByPubtype(results: Article[], pattern: RegExp): number {
     return results.filter((a) => (a.pubtype || []).some((t) => pattern.test(String(t || '')))).length;
 }
@@ -64,61 +62,23 @@ export const EvidenceVerdictStrip: React.FC<EvidenceVerdictStripProps> = ({
     onJumpToGuidelines,
     openAccessCount,
     retractedCount = 0,
+    guidelineWorkspace,
     details,
     notice,
 }) => {
     const [showDetails, setShowDetails] = useState(false);
-    const [guidelines, setGuidelines] = useState<GuidelineEntry[] | null>(null);
-    const [guidelineSummary, setGuidelineSummary] = useState<{ issuingBodyCount: number; newestYear: number | null; bodies: string[] } | null>(null);
     const [copied, setCopied] = useState(false);
-
-    useEffect(() => {
-        if (!query) return;
-        let cancelled = false;
-        api.collaboration.getGuidelinesForTopic(query)
-            .then((r) => {
-                if (cancelled) return;
-                setGuidelines(r.guidelines || []);
-                setGuidelineSummary(r.guidelineSummary || null);
-            })
-            .catch(() => {
-                if (cancelled) return;
-                setGuidelines([]);
-                setGuidelineSummary(null);
-            });
-        return () => { cancelled = true; };
-    }, [query]);
 
     const stats = useMemo(() => {
         const rcts = countByPubtype(results, RCT_PATTERN);
         const reviews = countByPubtype(results, REVIEW_PATTERN);
-        const guidelinePapers = countByPubtype(results, GUIDELINE_PATTERN);
-        // source_body frequently holds a journal rather than an issuing
-        // organisation -- production returns "Dig Dis Sci" and "Vnitr Lek" as
-        // the guideline bodies for hepatorenal syndrome. Counting those as
-        // guidelines here would put a journal where a clinician expects EASL or
-        // NICE, at the top of the page. The server flags the real ones.
-        const issuing = (guidelines || []).filter((g) => g.isIssuingBody);
-        const years = issuing.map((g) => g.sourceYear).filter((y): y is number => typeof y === 'number');
-        // Prefer the server's pool-wide summary: the returned page is capped,
-        // and older issuing-body rows can fall outside it -- "alcoholic
-        // hepatitis" counted NICE as zero here while the snapshot below listed
-        // three NICE recommendations. Fall back to counting the page when the
-        // summary is absent (older server, unit tests).
-        const newestGuideline = guidelineSummary
-            ? guidelineSummary.newestYear
-            : (years.length ? Math.max(...years) : null);
-        const bodies = guidelineSummary?.bodies?.length
-            ? guidelineSummary.bodies
-            : Array.from(new Set(issuing.map((g) => g.sourceBody).filter(Boolean))).slice(0, 3);
-        const issuingCount = guidelineSummary ? guidelineSummary.issuingBodyCount : issuing.length;
-        return { rcts, reviews, guidelinePapers, newestGuideline, bodies, issuingCount };
-    }, [results, guidelines, guidelineSummary]);
+        return { rcts, reviews };
+    }, [results]);
 
     // "Thin" is deliberately generous: the honest failure here is implying
     // completeness we do not have, not under-selling a well-covered topic.
-    const guidelineCount = stats.issuingCount;
-    const isThin = results.length < 5 || (guidelines !== null && guidelineCount === 0 && stats.reviews === 0);
+    const guidelineCount = guidelineWorkspace.recommendationCount;
+    const isThin = results.length < 5 || (!guidelineWorkspace.loading && guidelineCount === 0 && stats.reviews === 0);
 
     const copyCitations = async () => {
         const lines = results.slice(0, 10).map((a, i) => `${i + 1}. ${formatCitation(a)}`);
@@ -153,16 +113,16 @@ export const EvidenceVerdictStrip: React.FC<EvidenceVerdictStripProps> = ({
                   * for what they are.
                   */}
                 <Stat
-                    label={stats.newestGuideline
-                        ? `guideline recommendations (latest ${stats.newestGuideline})`
+                    label={guidelineWorkspace.newestYear
+                        ? `guideline recommendations (latest ${guidelineWorkspace.newestYear})`
                         : 'guideline recommendations'}
-                    value={guidelines === null ? '…' : guidelineCount}
+                    value={guidelineWorkspace.loading ? '…' : guidelineCount}
                     onClick={guidelineCount > 0 ? onJumpToGuidelines : undefined}
                 />
-                {stats.guidelinePapers > 0 && (
+                {guidelineWorkspace.documentCount > 0 && (
                     <Stat
-                        label={stats.guidelinePapers === 1 ? 'guideline paper in results' : 'guideline papers in results'}
-                        value={stats.guidelinePapers}
+                        label={guidelineWorkspace.documentCount === 1 ? 'guideline document in results' : 'guideline documents in results'}
+                        value={guidelineWorkspace.documentCount}
                     />
                 )}
                 {typeof openAccessCount === 'number' && openAccessCount > 0 && (
@@ -201,9 +161,12 @@ export const EvidenceVerdictStrip: React.FC<EvidenceVerdictStripProps> = ({
                 <div className="mt-3 border-t border-slate-100 pt-3 dark:border-slate-800">{details}</div>
             )}
 
-            {stats.bodies.length > 0 && (
+            {guidelineWorkspace.bodies.length > 0 && (
                 <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                    Guideline bodies: {stats.bodies.join(', ')}
+                    Guideline bodies: {guidelineWorkspace.bodies.join(', ')}
+                    {guidelineWorkspace.reviewedRecommendationCount > 0
+                        ? ` · ${guidelineWorkspace.reviewedRecommendationCount} clinician reviewed`
+                        : ''}
                 </p>
             )}
 

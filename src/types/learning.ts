@@ -94,6 +94,24 @@ export interface GuidelineEntry {
   };
 }
 
+/** One canonical account of guideline coverage for a rendered search. */
+export interface GuidelineWorkspaceSummary {
+  query: string;
+  guidelines: GuidelineEntry[];
+  loading: boolean;
+  error: string | null;
+  discoveryStatus: 'complete' | 'pending';
+  /** Guideline or consensus documents in the current ranked result set. */
+  documentCount: number;
+  /** Stored recommendation rows attributed to recognised issuing bodies. */
+  recommendationCount: number;
+  reviewedRecommendationCount: number;
+  aiExtractedRecommendationCount: number;
+  newestYear: number | null;
+  bodies: string[];
+  lastCheckedAt: string | null;
+}
+
 export interface GuidelineListResponse {
   guidelines: GuidelineEntry[];
   total: number;
