@@ -22,7 +22,7 @@ const { getCachedSearchResult, SHARED_SEARCH_RESULT_TTL_SECONDS } = require('../
 // 20 results, balanced focus, vector fusion on). A warmed entry only helps
 // searches whose key matches, so these are the values worth warming.
 const DEFAULTS = {
-    sources: 'pubmed,openalex,semantic',
+    sources: 'pubmed,openalex',
     limit: 20,
     specificity: 'moderate',
     vector: '1',

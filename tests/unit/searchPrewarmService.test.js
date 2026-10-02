@@ -57,7 +57,7 @@ describe('search prewarm', () => {
         await runSearchPrewarm(db, { ...opts, topics: ['Sepsis and septic shock'] });
 
         const real = deriveSharedSearchParams({
-            db, query: 'Sepsis and septic shock', sources: 'pubmed,openalex,semantic', explicitSources: true,
+            db, query: 'Sepsis and septic shock', sources: 'pubmed,openalex', explicitSources: true,
             limit: 20, specificity: 'moderate', vector: '1',
         });
         expect(opts.cache.store.has(real.sharedCacheKey)).toBe(true);
@@ -78,9 +78,17 @@ describe('search prewarm', () => {
     test('a rate-limited Semantic Scholar is kept only for the normal short ttl, not for days', async () => {
         mockFetchShared.mockResolvedValue(semanticThrottled());
         const opts = base();
-        const summary = await runSearchPrewarm(db, { ...opts, topics: ['ARDS'], ttlSeconds: 259200 });
+        const summary = await runSearchPrewarm(db, { ...opts, topics: ['ARDS'], ttlSeconds: 259200, sources: 'pubmed,openalex,semantic' });
         expect(summary).toMatchObject({ warmed: 0, warmedPartial: 1, skippedUnclean: 0 });
         expect([...opts.cache.ttls.values()]).toEqual([SHARED_SEARCH_RESULT_TTL_SECONDS]);
+    });
+
+    test('with the default sources (no Semantic Scholar), a healthy result is complete and kept for the long ttl', async () => {
+        mockFetchShared.mockResolvedValue(resultWith({ pubmed: 80, openalex: 50 }));
+        const opts = base();
+        const summary = await runSearchPrewarm(db, { ...opts, topics: ['ARDS'], ttlSeconds: 259200 });
+        expect(summary).toMatchObject({ warmed: 1, warmedPartial: 0 });
+        expect([...opts.cache.ttls.values()]).toEqual([259200]);
     });
 
     test('assessSharedResult grades by core source health', () => {
