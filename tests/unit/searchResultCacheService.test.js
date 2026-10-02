@@ -55,6 +55,15 @@ describe('searchResultCacheService', () => {
         expect(SHARED_SEARCH_RESULT_TTL_SECONDS).toBeGreaterThan(DEFAULT_SEARCH_RESULT_TTL_SECONDS);
     });
 
+    test('AKI and acute kidney injury share one fetched result, and a different question does not', () => {
+        const base = { sourceList: ['pubmed'], safeLimit: 20, specificity: 'moderate' };
+        const aki = buildSharedSearchCacheKey({ ...base, query: 'AKI' });
+        expect(buildSharedSearchCacheKey({ ...base, query: 'acute kidney injury', userId: 'u2' })).toBe(aki);
+        expect(buildSharedSearchCacheKey({ ...base, query: 'AKI dialysis' })).not.toBe(aki);
+        expect(buildSharedSearchCacheKey({ ...base, query: 'AKI dialysis' }))
+            .toBe(buildSharedSearchCacheKey({ ...base, query: 'acute kidney injury dialysis' }));
+    });
+
     test('reads and writes through async cache API', async () => {
         const cache = {
             getAsync: jest.fn().mockResolvedValue({ articles: [] }),

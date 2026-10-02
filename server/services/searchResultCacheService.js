@@ -1,6 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
+const { canonicalQueryForCache } = require('../utils/topicKey');
 
 // Source calls are already cached for 30 minutes. Keep the fully ranked,
 // actor-specific response long enough to avoid repeating ranking and enrichment
@@ -75,13 +76,13 @@ function buildSharedSearchCacheKey({
     queryIntentProfile = null,
 } = {}) {
     return `search:shared:${stableHash({
-        query: String(query || '').trim().toLowerCase().replace(/\s+/g, ' '),
+        query: canonicalQueryForCache(query),
         sourceList: normalizeArray(sourceList).sort(),
         safeLimit: Number(safeLimit) || 20,
         specificity,
         vectorEnabled: Boolean(vectorEnabled),
         rankerMode: process.env.SEARCH_SHADOW_RANKER_MODE || 'shadow',
-        version: 1,
+        version: 2,
         parsedStudyTypes: normalizeArray(parsedStudyTypes).sort(),
         parsedYearFilters: normalizeArray(parsedYearFilters).sort(),
         intent: queryIntentProfile?.primaryIntent || null,

@@ -121,6 +121,7 @@ function registerUnifiedSearchRoutes(app, deps) {
             let shared = ranked ? null : await getCachedSearchResult(cache, sharedCacheKey);
             const sharedCacheHit = Boolean(shared);
             const needsSharedCompute = !ranked && !shared;
+            require('../../services/ops/cacheLayerMetrics').recordCacheLayer('search', rankedCacheHit || sharedCacheHit);
 
             let vectorList = [];
             if (needsSharedCompute && useVectorFusion) {

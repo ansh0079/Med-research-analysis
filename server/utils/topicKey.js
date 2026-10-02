@@ -6,7 +6,7 @@
 // found, and regenerated every hour. Anything that stores or reads by topic
 // should go through these helpers.
 
-const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('./topicSynonyms');
+const { expandNormalizedTopicKeys, resolveCanonicalNormalized, resolveConditionGroupForTopic } = require('./topicSynonyms');
 
 /** Case/punctuation-insensitive form. Safe for exact-query keys (search caches). */
 function normalizeTopic(topic) {
@@ -27,6 +27,22 @@ function canonicalTopic(topic) {
     return resolveCanonicalNormalized(topic, normalizeTopic) || normalizeTopic(topic);
 }
 
+/**
+ * Cache key for a search or a generated answer.
+ *
+ * Synonym phrases are rewritten to the cluster's canonical form ("AKI" and
+ * "acute kidney injury" share one key) and every other token is kept, so
+ * "AKI dialysis" does not collide with "AKI steroids".
+ */
+function canonicalQueryForCache(topic) {
+    const normalized = normalizeTopic(topic);
+    if (!normalized) return '';
+    const group = resolveConditionGroupForTopic(topic, normalizeTopic);
+    if (!group?.matchedPhrase || !group.canonicalNormalized) return normalized;
+    if (group.matchedPhrase === group.canonicalNormalized) return normalized;
+    return normalizeTopic(normalized.split(group.matchedPhrase).join(group.canonicalNormalized));
+}
+
 /** Every normalized key a topic's signals may have been recorded under, itself first. */
 function topicGroupKeys(topic) {
     const normalized = normalizeTopic(topic);
@@ -34,4 +50,4 @@ function topicGroupKeys(topic) {
     return [...new Set([normalized, ...expandNormalizedTopicKeys(normalized, normalizeTopic)])].filter(Boolean);
 }
 
-module.exports = { normalizeTopic, canonicalTopic, topicGroupKeys };
+module.exports = { normalizeTopic, canonicalTopic, canonicalQueryForCache, topicGroupKeys };

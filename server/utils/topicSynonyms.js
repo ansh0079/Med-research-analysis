@@ -148,7 +148,11 @@ function resolveConditionGroupForTopic(rawTopic, normalizeFn) {
         }
     }
     if (!best) return null;
-    return { canonicalNormalized: best.canonicalNormalized, keys: best.keys };
+    return {
+        canonicalNormalized: best.canonicalNormalized,
+        keys: best.keys,
+        matchedPhrase: best.matchedPhrase,
+    };
 }
 
 module.exports = {
