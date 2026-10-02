@@ -62,6 +62,7 @@ const {
 } = require('../zombieJobSweeper');
 const { scheduleLlmAnomalyCheck, stopLlmAnomalyCheck } = require('../llmAnomalyScheduler');
 const { scheduleSearchPrewarm, stopSearchPrewarm } = require('../searchPrewarmScheduler');
+const { scheduleDiskSpaceMonitor, stopDiskSpaceMonitor } = require('../diskSpaceMonitor');
 const {
     scheduleTopicEvolution, stopTopicEvolution,
 } = require('../topicEvolutionScheduler');
@@ -203,6 +204,11 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
             task: 'flagship-enrich',
             start: () => scheduleFlagshipEnrich(db, { cache }, baseLogger.child({ task: 'flagship-enrich' })),
             stop: () => stopFlagshipEnrich(),
+        },
+        {
+            task: 'disk-space',
+            start: () => scheduleDiskSpaceMonitor(db, baseLogger.child({ task: 'disk-space' })),
+            stop: () => stopDiskSpaceMonitor(),
         },
         {
             task: 'search-prewarm',

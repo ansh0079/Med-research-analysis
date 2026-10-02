@@ -59,6 +59,25 @@ if docker image inspect medsearch-web:latest > /dev/null 2>&1 \
   ROLLBACK_READY=1
 fi
 
+# Every deploy builds a ~1.2 GB image and its layers; the superseded image is left untagged
+# and nothing ever removed it. On 2026-10-02 that filled the 150 GB disk (95 untagged images,
+# 78 GB of build cache), Postgres could not write its checkpoint, and the site was down for
+# ~26 minutes. Rollback only needs the :latest and :rollback tags, which this never touches.
+echo "Cleaning Docker leftovers (untagged images, build cache older than 48h) ..."
+docker image prune -f > /dev/null || true
+docker builder prune -f --filter "until=48h" > /dev/null || true
+free_gb() { df -BG --output=avail / | tail -1 | tr -dc 0-9; }
+if [ "$(free_gb)" -lt 10 ]; then
+  echo "Only $(free_gb)G free; clearing all build cache ..."
+  docker builder prune -f > /dev/null || true
+fi
+# A build needs several GB. Deploying into a nearly full disk can crash Postgres, which is
+# worse than not deploying, so stop here with live containers untouched.
+if [ "$(free_gb)" -lt 6 ]; then
+  echo "Refusing to deploy: only $(free_gb)G free on / after cleanup. Free disk space, then re-run."
+  exit 1
+fi
+
 docker compose -f docker-compose.hetzner.yml build web worker
 
 # Run the app's own startup readiness check inside the NEW image with the real environment,
