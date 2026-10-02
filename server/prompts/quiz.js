@@ -145,7 +145,21 @@ ${formatGuidelineFreshness(g)}`).join('\n\n')
     const communityTopPicks = Array.isArray(options.communityTopPicks) ? options.communityTopPicks : [];
     const claimAnchors = Array.isArray(options.claimAnchors) ? options.claimAnchors : [];
     const teachingObjectContext = String(options.teachingObjectContext || '').trim();
+    const allowedQuestionTypes = Array.isArray(options.allowedQuestionTypes)
+        ? options.allowedQuestionTypes.filter((type) => [
+            'recall', 'clinical_application', 'trial_interpretation', 'guideline', 'pitfall',
+        ].includes(type))
+        : [];
     const questionCount = claimAnchors.length > 0 ? Math.min(safeCount, claimAnchors.length) : safeCount;
+
+    // A search can legitimately contain only abstracts. In that state, a
+    // clinician-level rubric would otherwise ask the model for management or
+    // trial-interpretation questions which the trust filter must then reject.
+    // Make the evidence ceiling explicit in the prompt so the paid call returns
+    // usable lower-stakes questions on the first attempt.
+    const evidenceQuestionTypeInstruction = allowedQuestionTypes.length > 0
+        ? `\nEVIDENCE ACCESS OVERRIDE (supersedes the TRAINING LEVEL question-type mix):\n- The available source text supports ONLY these questionType values: ${allowedQuestionTypes.join(', ')}.\n- Do not generate management recommendations, guideline questions, or trial-interpretation questions beyond the available evidence.\n- Test what the supplied source text explicitly states; keep explanations within that evidence.\n`
+        : '';
 
     // Build outline node list so AI can tag questions with outlineNodeId
     let outlineContext = '';
@@ -280,7 +294,7 @@ ${EXPLAIN_RUBRIC[explanationDepth] || EXPLAIN_RUBRIC.exam_focus}
 
 ${variantInstruction}
 
-${topicBaseline ? `${topicBaseline}\n` : ''}${teachingObjectContext ? `REUSABLE PAPER TEACHING OBJECTS:\n${teachingObjectContext}\n\nINSTRUCTION: Treat these as the preferred quiz seed for bottom line, misconception traps, and paper-specific appraisal angles. Still ground source-specific claims in RESEARCH CONTEXT indices.\n\n` : ''}${outlineContext}${targetContext}${communityContext}${claimAnchorContext}${collectiveMisconceptionContext}${psychometricContext}${personalMisconceptionContext}${confusingNodeContext}EVIDENCE PRIORITY: When grounding questions, prefer (1) Clinical Guidelines — use for "guideline" questionType; then (2) landmark/practice-defining trials in the research context — use for "trial_interpretation"; then (3) supporting evidence for clinical_application and recall.
+${topicBaseline ? `${topicBaseline}\n` : ''}${teachingObjectContext ? `REUSABLE PAPER TEACHING OBJECTS:\n${teachingObjectContext}\n\nINSTRUCTION: Treat these as the preferred quiz seed for bottom line, misconception traps, and paper-specific appraisal angles. Still ground source-specific claims in RESEARCH CONTEXT indices.\n\n` : ''}${outlineContext}${targetContext}${communityContext}${claimAnchorContext}${collectiveMisconceptionContext}${psychometricContext}${personalMisconceptionContext}${confusingNodeContext}${evidenceQuestionTypeInstruction}EVIDENCE PRIORITY: When grounding questions, prefer (1) Clinical Guidelines — use for "guideline" questionType; then (2) landmark/practice-defining trials in the research context — use for "trial_interpretation"; then (3) supporting evidence for clinical_application and recall.
 
 GUIDELINE CONTEXT (primary authority):
 ${guidelineContext}

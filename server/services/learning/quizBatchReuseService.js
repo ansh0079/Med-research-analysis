@@ -64,6 +64,42 @@ async function findReusableQuizBatch(db, descriptor, { now = Date.now(), maxAgeD
     };
 }
 
+/**
+ * Last-resort replay when live generation is unavailable. This deliberately
+ * ignores the prompt hash/provider/model (which can change with learner state
+ * or a model rollout), but it never crosses user scope, prompt-version, flow,
+ * or evidence-snapshot boundaries.
+ */
+async function findReusableQuizBatchForSnapshot(db, descriptor, snapshotId, {
+    now = Date.now(),
+    maxAgeDays = QUIZ_BATCH_REUSE_MAX_AGE_DAYS,
+} = {}) {
+    if (!snapshotId || !db?.getTeachingObjectByKey || !descriptor?.objectKey) return null;
+    const object = await db.getTeachingObjectByKey(descriptor.objectKey).catch(() => null);
+    const payload = object?.payload;
+    if (!object || object.reviewState === 'withdrawn' || !payload) return null;
+    if (payload.promptVersion !== descriptor.promptVersion) return null;
+    if (payload.flow !== descriptor.flow) return null;
+    if ((payload.cacheScopeUserId || null) !== descriptor.userId) return null;
+    if (String(object.evidenceSnapshotId ?? object.evidence_snapshot_id ?? '') !== String(snapshotId)) return null;
+    if (!Array.isArray(payload.response?.questions) || payload.response.questions.length === 0) return null;
+    if (!(await hasReplayableLineage(db, object))) return null;
+
+    const generatedMs = Date.parse(payload.generatedAt || object.generatedAt || object.updatedAt || '');
+    if (!Number.isFinite(generatedMs)) return null;
+    if ((now - generatedMs) / 86400000 > maxAgeDays) return null;
+
+    return {
+        ...payload.response,
+        provider: 'stored_quiz_cache',
+        sourceProvider: object.provider || payload.response.provider || null,
+        sourceModel: object.model || payload.response.model || null,
+        cached: true,
+        reusedFromStore: true,
+        reuseReason: 'live_generation_unavailable',
+    };
+}
+
 async function persistQuizBatch(db, descriptor, {
     topic,
     responseBody,
@@ -104,5 +140,6 @@ module.exports = {
     QUIZ_BATCH_REUSE_MAX_AGE_DAYS,
     buildQuizBatchDescriptor,
     findReusableQuizBatch,
+    findReusableQuizBatchForSnapshot,
     persistQuizBatch,
 };

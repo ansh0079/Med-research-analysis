@@ -7,6 +7,7 @@ import { useClientFeatures } from '@hooks/useClientFeatures';
 import { useToast } from '@components/ui/Toast';
 import type { Article, QuizQuestion } from '@types';
 import { lookupArticleAttribution } from '@utils/searchAttribution';
+import { getRecoveryHint } from '@utils/appErrors';
 
 interface Props {
   topic: string;
@@ -34,6 +35,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorRecovery, setErrorRecovery] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
@@ -42,6 +44,8 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
   const [expanded, setExpanded] = useState(autoExpand);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [grading, setGrading] = useState(false);
+  const [quizNotice, setQuizNotice] = useState<string | null>(null);
+  const [questionScope, setQuestionScope] = useState<'evidence' | 'topic'>('evidence');
 
   // Track per-question timing and answers for optional backend submission
   const questionStartRef = useRef<number>(0);
@@ -50,14 +54,20 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
   const fetchQuestions = useCallback(async () => {
     setLoading(true);
     setError(null);
+    setErrorRecovery(null);
+    setQuizNotice(null);
+    setQuestionScope('evidence');
     setSaveStatus('idle');
     answersRef.current = [];
     try {
       const result = await api.ai.generateQuizFromEvidence(topic, articles, 'mixed', 3);
       setQuestions(result.questions);
+      setQuizNotice(result.warning || null);
+      setQuestionScope(result.questionScope || 'evidence');
       questionStartRef.current = currentTimeMs();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load quiz');
+      setErrorRecovery(getRecoveryHint(err));
     } finally {
       setLoading(false);
     }
@@ -217,6 +227,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
     setScore(0);
     setCompleted(false);
     setError(null);
+    setErrorRecovery(null);
     setSaveStatus('idle');
     answersRef.current = [];
     fetchQuestions();
@@ -232,7 +243,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
         <div className="flex items-center gap-2.5">
           <i className="fas fa-brain text-violet-500 text-sm" />
           <span className="text-sm font-bold text-slate-800 dark:text-slate-100">
-            {completed ? 'Quiz completed' : 'Test yourself on this evidence'}
+            {completed ? 'Quiz completed' : questionScope === 'topic' ? 'Test yourself on this topic' : 'Test yourself on this evidence'}
           </span>
           {completed && (
             <span className={`text-xs font-bold rounded-full px-2 py-0.5 ${score === questions.length ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
@@ -270,12 +281,21 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
           {canGenerate && error && (
             <div className="flex flex-col gap-3 py-2">
               <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+              {errorRecovery && (
+                <p className="text-xs text-slate-600 dark:text-slate-300">{errorRecovery}</p>
+              )}
               <Button variant="secondary" size="sm" onClick={handleRetry}>Retry</Button>
             </div>
           )}
 
           {canGenerate && !loading && !error && questions.length === 0 && (
             <p className="text-sm text-slate-500 py-2">No questions available.</p>
+          )}
+
+          {canGenerate && !loading && !error && quizNotice && questions.length > 0 && (
+            <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-3.5 py-2.5 text-xs leading-relaxed text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/20 dark:text-amber-200">
+              {quizNotice}
+            </div>
           )}
 
           {canGenerate && completed && (

@@ -4,6 +4,7 @@ const {
     QUIZ_BATCH_REUSE_MAX_AGE_DAYS,
     buildQuizBatchDescriptor,
     findReusableQuizBatch,
+    findReusableQuizBatchForSnapshot,
     persistQuizBatch,
 } = require('../../server/services/learning/quizBatchReuseService');
 
@@ -87,6 +88,38 @@ describe('quizBatchReuseService', () => {
             payload: { ...base.payload, generatedAt: '2020-01-01T00:00:00.000Z' },
         });
         await expect(findReusableQuizBatch(database, descriptor)).resolves.toBeNull();
+    });
+
+    test('replays a same-snapshot batch when only the prompt hash or model changed', async () => {
+        const descriptor = buildQuizBatchDescriptor({
+            db, topic: 'Sepsis', flow: 'evidence', prompt: 'new personalised prompt', provider: 'gemini', model: 'new-model', userId: 'u1',
+        });
+        const stored = {
+            reviewState: 'machine_checked',
+            evidenceSnapshotId: 'snap-1',
+            lineageStatus: 'linked',
+            provider: 'gemini',
+            model: 'old-model',
+            payload: {
+                quizCacheKey: 'an older prompt hash',
+                promptVersion: descriptor.promptVersion,
+                cacheScopeUserId: 'u1',
+                flow: 'evidence',
+                generatedAt: new Date().toISOString(),
+                response: { questions: [{ question: 'Q1' }], topic: 'Sepsis' },
+            },
+        };
+        const database = {
+            getTeachingObjectByKey: jest.fn().mockResolvedValue(stored),
+            get: jest.fn().mockResolvedValue({ contract_version: 2 }),
+        };
+
+        await expect(findReusableQuizBatchForSnapshot(database, descriptor, 'snap-1')).resolves.toMatchObject({
+            questions: [{ question: 'Q1' }],
+            provider: 'stored_quiz_cache',
+            reuseReason: 'live_generation_unavailable',
+        });
+        await expect(findReusableQuizBatchForSnapshot(database, descriptor, 'another-snapshot')).resolves.toBeNull();
     });
 
     test('persists the complete validated response and its reuse contract', async () => {

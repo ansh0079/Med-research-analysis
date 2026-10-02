@@ -398,6 +398,9 @@ export class BaseApiClient {
         resetsAt?: string;
         upgradeRequired?: boolean;
         error?: string;
+        code?: string;
+        recovery?: string;
+        details?: unknown;
       };
       if (typeof data.limitKey === 'string' && typeof data.cap === 'number' && typeof data.used === 'number') {
         const info: UsageLimitInfo = {
@@ -411,6 +414,9 @@ export class BaseApiClient {
         };
         throw new Error(buildUsageLimitError(info));
       }
+      if (data.error && (data.code || data.recovery)) {
+        throw parseApiErrorBody(data, response.status);
+      }
       const secs = data.retryAfter ?? 60;
       throw new Error(`RATE_LIMITED:${secs}`);
     }
@@ -419,6 +425,15 @@ export class BaseApiClient {
       throw new Error(`UPGRADE_REQUIRED:${data.feature ?? 'premium'}`);
     }
     if (response.status === 503) {
+      const data = await response.json().catch(() => ({})) as {
+        error?: string;
+        code?: string;
+        recovery?: string;
+        details?: unknown;
+      };
+      if (data.error && (data.code || data.recovery)) {
+        throw parseApiErrorBody(data, response.status);
+      }
       throw new Error('AI_UNAVAILABLE');
     }
     const err = await response.json().catch(() => ({})) as {

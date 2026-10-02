@@ -36,13 +36,22 @@ export class AiApi extends BaseApiClient {
     articles: Article[],
     difficulty: 'easy' | 'medium' | 'hard' | 'mixed' = 'mixed',
     count = 3
-  ): Promise<{ questions: import('@types').QuizQuestion[]; topic: string; provider: string; disclaimer: string }> {
+  ): Promise<{
+    questions: import('@types').QuizQuestion[];
+    topic: string;
+    provider: string;
+    disclaimer: string;
+    questionScope?: 'evidence' | 'topic';
+    warning?: string;
+    cached?: boolean;
+    reusedFromStore?: boolean;
+  }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/quiz/from-evidence`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ topic, articles, difficulty, count, evidenceSnapshotId: evidenceSnapshotIdFor(articles) }),
     });
-    if (!response.ok) throw new Error('Failed to generate quiz from evidence');
+    if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }
 

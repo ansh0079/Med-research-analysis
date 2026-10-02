@@ -1,6 +1,10 @@
 'use strict';
 
-const { createQuizGenerationService, normalizeDistractorRationale } = require('../../server/services/quizGenerationService');
+const {
+    createQuizGenerationService,
+    normalizeDistractorRationale,
+    quizGenerationErrorResponse,
+} = require('../../server/services/quizGenerationService');
 
 function createService({ coldStartMcqs = null, teachingClaims = [] } = {}) {
     const db = {
@@ -71,5 +75,18 @@ describe('quizGenerationService', () => {
             A: 'Wrong',
             B: 'Also wrong',
         });
+    });
+
+    test('reports the daily safety stop as a recoverable 429 instead of a generic 500', () => {
+        const error = Object.assign(new Error('cap'), { name: 'LlmDailyCapExceededError' });
+        const result = quizGenerationErrorResponse(error);
+
+        expect(result.status).toBe(429);
+        expect(result.body).toMatchObject({
+            code: 'RATE_LIMITED',
+            details: { reason: 'daily_ai_budget' },
+        });
+        expect(result.body.error).toContain('safety budget');
+        expect(result.body.retryAfter).toBeGreaterThanOrEqual(60);
     });
 });

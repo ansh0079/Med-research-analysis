@@ -62,4 +62,20 @@ describe('buildQuizPrompt psychometric feedback', () => {
         expect(prompt).toContain('fewer than 30 attempts');
         expect(prompt).toContain('preliminary estimates');
     });
+
+    test('lets the evidence ceiling override a clinician-level question mix', () => {
+        const prompt = buildQuizPrompt('alcoholic hepatitis', [{
+            title: 'Abstract-only review',
+            abstract: 'The abstract reports the study findings.',
+        }], {
+            count: 3,
+            allowedQuestionTypes: ['recall', 'pitfall'],
+        }, [], {
+            profile: { trainingStage: 'clinician' },
+        });
+
+        expect(prompt).toContain('EVIDENCE ACCESS OVERRIDE');
+        expect(prompt).toContain('ONLY these questionType values: recall, pitfall');
+        expect(prompt).toContain('supersedes the TRAINING LEVEL question-type mix');
+    });
 });

@@ -43,7 +43,7 @@ function makeSnapshotDb() {
     };
 }
 
-function makeService(db) {
+function makeService(db, { generateError = null, storedTopicQuestions = null } = {}) {
     const storedBatches = new Map();
     const withStubs = Object.assign(db, {
         // Provenance trust comes from the cached (server-side) copy of the article, not the client's.
@@ -65,15 +65,18 @@ function makeService(db) {
             return stored;
         },
     });
-    const generateQuizQuestions = jest.fn(async () => ({
-        questions: [{
-            question: 'Which drug class reduces heart failure hospitalisation?',
-            options: ['A: SGLT2 inhibitors', 'B: Digoxin', 'C: Amiodarone', 'D: Verapamil'],
-            correctAnswer: 0, questionType: 'recall', sourceIndices: [1],
-            explanation: 'Trial 1 showed a reduction.',
-        }],
-        usedProvider: 'gemini', quizModel: 'test-model',
-    }));
+    const generateQuizQuestions = jest.fn(async () => {
+        if (generateError) throw generateError;
+        return {
+            questions: [{
+                question: 'Which drug class reduces heart failure hospitalisation?',
+                options: ['A: SGLT2 inhibitors', 'B: Digoxin', 'C: Amiodarone', 'D: Verapamil'],
+                correctAnswer: 0, questionType: 'recall', sourceIndices: [1],
+                explanation: 'Trial 1 showed a reduction.',
+            }],
+            usedProvider: 'gemini', quizModel: 'test-model',
+        };
+    });
     const noop = jest.fn();
     const service = createQuizGenerationService({
         db: withStubs,
@@ -83,6 +86,7 @@ function makeService(db) {
         logger: { info: noop, warn: noop, error: noop, debug: noop },
         helpers: {
             generateQuizQuestions,
+            serveColdStartMCQs: jest.fn().mockResolvedValue(storedTopicQuestions),
             assignQuizPromptVariant: () => 'control',
             normalizeVisualExplanation: () => null,
         },
@@ -171,6 +175,39 @@ describe('quiz from evidence with an evidence snapshot', () => {
         const result = await run(service, { articles: [article(1)] });
         expect(result.status).toBe(200);
         expect(result.body.evidenceLineage).toEqual({ snapshotId: null, status: 'unlinked' });
+    });
+
+    test('abstract-only evidence asks for lower-stakes question types before paying for generation', async () => {
+        const db = makeSnapshotDb();
+        const saved = await persistSearchEvidenceSnapshot(db, { query: 'hf', articles: [article(1)], sessionId: 's1' });
+        const { service, generateQuizQuestions } = makeService(db);
+
+        const result = await run(service, { articles: [article(1)], evidenceSnapshotId: saved.id }, { sessionId: 's1' });
+
+        expect(result.status).toBe(200);
+        expect(generateQuizQuestions.mock.calls[0][1].prompt).toContain('ONLY these questionType values: recall, pitfall');
+    });
+
+    test('provider failure serves clearly labelled stored topic questions when no snapshot batch exists', async () => {
+        const db = makeSnapshotDb();
+        const saved = await persistSearchEvidenceSnapshot(db, { query: 'hf', articles: [article(1)], sessionId: 's1' });
+        const storedTopicQuestions = [{
+            id: 'stored-1', question: 'Stored question', options: ['A: One', 'B: Two'], correctAnswer: 'A',
+        }];
+        const { service } = makeService(db, {
+            generateError: Object.assign(new Error('daily cap'), { name: 'LlmDailyCapExceededError' }),
+            storedTopicQuestions,
+        });
+
+        const result = await run(service, { articles: [article(1)], evidenceSnapshotId: saved.id }, { sessionId: 's1' });
+
+        expect(result.status).toBe(200);
+        expect(result.body).toMatchObject({
+            provider: 'stored_topic_cache',
+            questionScope: 'topic',
+            questions: storedTopicQuestions,
+        });
+        expect(result.body.warning).toContain('same topic');
     });
 
     describe('provenance labels under lineage enforcement', () => {

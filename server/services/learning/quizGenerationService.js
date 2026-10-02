@@ -41,8 +41,41 @@ const { capVerificationForContext, usableAsContext } = require('../content/legac
 const {
     buildQuizBatchDescriptor,
     findReusableQuizBatch,
+    findReusableQuizBatchForSnapshot,
     persistQuizBatch,
 } = require('./quizBatchReuseService');
+
+function secondsUntilUtcMidnight(now = new Date()) {
+    const next = new Date(now);
+    next.setUTCHours(24, 0, 0, 0);
+    return Math.max(60, Math.ceil((next.getTime() - now.getTime()) / 1000));
+}
+
+function quizGenerationErrorResponse(error) {
+    if (error?.name === 'LlmDailyCapExceededError') {
+        return response({
+            error: 'Fresh AI generation is paused because today\'s safety budget has been reached.',
+            code: 'RATE_LIMITED',
+            recovery: 'Previously generated quizzes remain available. Try again after the daily budget resets at 00:00 UTC.',
+            retryAfter: secondsUntilUtcMidnight(),
+            details: { reason: 'daily_ai_budget' },
+        }, 429);
+    }
+    if (error?.name === 'LlmBudgetExceededError') {
+        return response({
+            error: 'This quiz could not be completed within the generation safety limit.',
+            code: 'RATE_LIMITED',
+            recovery: 'Retry once. If this continues, use the saved topic questions shown by the app.',
+            retryAfter: 60,
+            details: { reason: 'request_ai_budget' },
+        }, 429);
+    }
+    return response({
+        error: 'Fresh quiz generation is temporarily unavailable.',
+        code: 'AI_UNAVAILABLE',
+        recovery: 'Retry shortly. Saved topic questions will be used automatically when available.',
+    }, 503);
+}
 
 function evidenceSourceTrust(article = {}) {
     const retracted = Boolean(article?._retraction?.isRetracted || article?.isRetracted || article?.is_retracted);
@@ -682,6 +715,10 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         const safeCount = Math.min(Math.max(parseInt(String(count), 10) || 3, 1), planLimit);
         const hydratedSources = await hydrateEvidenceArticles(db, articles.slice(0, 5));
         const evidenceArticles = hydratedSources.map((source) => source.article);
+        const availableSourceTrust = hydratedSources.map((source) => evidenceSourceTrust(source.trusted || {}));
+        const hasHighStakesSource = availableSourceTrust.some((trust) => [
+            'full_text_available', 'guideline_supported', 'source_verified', 'human_reviewed',
+        ].includes(trust.verificationStatus));
         const guidelines = await db.getGuidelinesByTopic(cleanTopic, { limit: 3 })
             .catch((err) => { logger.warn({ err }, 'operation failed'); return []; });
 
@@ -722,7 +759,16 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         const prompt = buildQuizPrompt(
             cleanTopic,
             evidenceArticles,
-            { count: safeCount, difficulty, communityTopPicks, teachingObjectContext, promptVariant },
+            {
+                count: safeCount,
+                difficulty,
+                communityTopPicks,
+                teachingObjectContext,
+                promptVariant,
+                // Abstract-only evidence can safely support recall/pitfall items,
+                // but not management, guideline, or trial-interpretation claims.
+                allowedQuestionTypes: hasHighStakesSource ? undefined : ['recall', 'pitfall'],
+            },
             guidelines,
             userContext
         );
@@ -746,13 +792,49 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             if (reusableBatch) return response(reusableBatch);
         }
 
-        try {
-            const generated = await generateQuizQuestions(ai, {
-                prompt,
-                provider: selectedProvider,
-                model: initialQuizModel,
-                usage: { operation: 'quiz', topic: cleanTopic, userId: user?.id || null },
+        const storedTopicFallback = async (warning) => {
+            if (typeof serveColdStartMCQs !== 'function') return null;
+            const storedQuestions = await serveColdStartMCQs(db, cleanTopic, safeCount, user?.id);
+            if (!storedQuestions?.length) return null;
+            return response({
+                questions: storedQuestions,
+                topic: cleanTopic,
+                provider: 'stored_topic_cache',
+                model: null,
+                questionScope: 'topic',
+                warning,
+                disclaimer: AI_DISCLAIMER,
             });
+        };
+
+        try {
+            let generated;
+            try {
+                generated = await generateQuizQuestions(ai, {
+                    prompt,
+                    provider: selectedProvider,
+                    model: initialQuizModel,
+                    usage: { operation: 'quiz', topic: cleanTopic, userId: user?.id || null },
+                });
+            } catch (providerError) {
+                const snapshotBatch = await findReusableQuizBatchForSnapshot(
+                    db,
+                    batchDescriptor,
+                    evidenceLineage.snapshotId,
+                );
+                if (snapshotBatch) {
+                    log.warn({ err: providerError, topic: cleanTopic }, 'Live evidence quiz failed; replaying snapshot-matched quiz');
+                    return response(snapshotBatch);
+                }
+                const stored = await storedTopicFallback(
+                    'Fresh evidence-specific questions are unavailable, so these saved questions cover the same topic instead.',
+                );
+                if (stored) {
+                    log.warn({ err: providerError, topic: cleanTopic }, 'Live evidence quiz failed; serving stored topic questions');
+                    return stored;
+                }
+                throw providerError;
+            }
             const raw = generated.questions;
             const usedProvider = generated.usedProvider;
             const quizModel = generated.quizModel;
@@ -774,7 +856,12 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 promptVariant,
                 questionIdPrefix: 'quiz',
             });
-            if (validation.error) return validation.error;
+            if (validation.error) {
+                const stored = await storedTopicFallback(
+                    'Fresh evidence-specific questions did not pass clinical validation, so these saved questions cover the same topic instead.',
+                );
+                return stored || validation.error;
+            }
 
             const mappedQuestions = validation.validatedRaw.map((q, idx) => {
                 const sourceIndices = validateSourceIndices(q.sourceIndices, evidenceArticles.length);
@@ -818,6 +905,10 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             const { questions, droppedHighStakes } = filterQuestionsByEvidenceTrust(mappedQuestions);
 
             if (questions.length === 0) {
+                const stored = await storedTopicFallback(
+                    'The selected evidence only supports lower-certainty learning points, so these saved questions cover the same topic instead.',
+                );
+                if (stored) return stored;
                 return response({
                     error: 'No questions could be safely anchored to the selected evidence. Add indexed full text or choose lower-stakes recall questions.',
                     code: 'HIGH_STAKES_CLAIMS_UNAVAILABLE',
@@ -851,7 +942,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             return response(responseBody);
         } catch (error) {
             log.error({ err: error }, 'Quiz-from-evidence error');
-            return response({ error: 'Internal Server Error' }, 500);
+            return quizGenerationErrorResponse(error);
         }
     }
 
@@ -864,4 +955,5 @@ module.exports = {
     evidenceSourceTrust,
     hydrateEvidenceArticles,
     filterQuestionsByEvidenceTrust,
+    quizGenerationErrorResponse,
 };
