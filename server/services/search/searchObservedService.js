@@ -59,6 +59,7 @@ function buildSearchObservedPayload({
     enrichKey = null,
     trainingStage = null,
     sessionDepth = 0,
+    intent = null,
 } = {}) {
     return {
         query: safeString(query, 300),
@@ -70,6 +71,7 @@ function buildSearchObservedPayload({
         enrichKey: enrichKey || null,
         trainingStage: trainingStage || null,
         sessionDepth: Number(sessionDepth || 0),
+        intent: intent ? safeString(intent, 40) : null,
     };
 }
 
@@ -232,6 +234,14 @@ async function processSearchObservedSideEffects(data = {}, deps = {}) {
                 }),
             ]);
             return { enqueued: true };
+        })(),
+        // Topic demand: which intents people search each topic with. The refresh
+        // scheduler weights teaching points by it, but only mentor chat recorded it,
+        // so for searched topics the distribution was always empty.
+        (async () => {
+            if (typeof db.recordTopicDemandSignal !== 'function') return { skipped: true };
+            return db.recordTopicDemandSignal(query, query, data.intent || 'general')
+                .catch((err) => { log.warn({ err, query }, 'recordTopicDemandSignal failed'); return { skipped: true }; });
         })(),
     ]);
 

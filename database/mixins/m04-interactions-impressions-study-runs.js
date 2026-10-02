@@ -39,38 +39,6 @@ async getUserInteractions(userId, { limit = 50, days = 30 } = {}) {
         .execute();
 }
 
-/**
- * Returns aggregate interaction counts (view, save, click) for a list of article IDs.
- * Result shape: Map<articleId, { viewCount, saveCount, clickCount }>
- */
-async getArticleInteractionCounts(articleIds) {
-    if (!this.kysely || !Array.isArray(articleIds) || articleIds.length === 0) {
-        return new Map();
-    }
-    const placeholders = articleIds.map(() => '?').join(',');
-    const rows = await this.all(
-        `SELECT article_id, interaction_type, COUNT(*) as count
-         FROM user_interactions
-         WHERE article_id IN (${placeholders})
-         GROUP BY article_id, interaction_type`,
-        articleIds
-    );
-    const map = new Map();
-    for (const row of rows) {
-        const id = row.article_id;
-        if (!map.has(id)) {
-            map.set(id, { viewCount: 0, saveCount: 0, clickCount: 0 });
-        }
-        const counts = map.get(id);
-        const type = String(row.interaction_type).toLowerCase();
-        const count = Number(row.count) || 0;
-        if (type === 'view') counts.viewCount = count;
-        else if (type === 'save') counts.saveCount = count;
-        else if (type === 'click') counts.clickCount = count;
-    }
-    return map;
-}
-
 // ==========================================
 // Search Result Feedback
 // ==========================================
@@ -107,18 +75,6 @@ async recordSearchResultFeedback({ userId, sessionId, searchId, articleUid, feed
         }
     }
     return result;
-}
-
-async getSearchResultFeedbackForUser(userId, articleUid) {
-    if (!this.kysely || !userId || !articleUid) return null;
-    return this.kysely
-        .selectFrom('search_result_feedback')
-        .selectAll()
-        .where('user_id', '=', userId)
-        .where('article_uid', '=', String(articleUid))
-        .orderBy('created_at', 'desc')
-        .limit(1)
-        .executeTakeFirst();
 }
 
 async listSearchResultFeedbackForUser(userId, { limit = 200, days = 90 } = {}) {
@@ -348,24 +304,6 @@ async getRecentImpressions(sessionId, { days = 30, limit = 200 } = {}) {
         .orderBy('created_at', 'desc')
         .limit(Math.min(Number(limit) || 200, 500))
         .execute();
-}
-
-async getSearchResultFeedbackStats(articleUid, { days = 90 } = {}) {
-    if (!this.kysely || !articleUid) return { helpful: 0, notHelpful: 0 };
-    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
-    const rows = await this.kysely
-        .selectFrom('search_result_feedback')
-        .select(({ fn }) => ['feedback_type', fn.count('id').as('count')])
-        .where('article_uid', '=', String(articleUid))
-        .where('created_at', '>=', since)
-        .groupBy('feedback_type')
-        .execute();
-    const stats = { helpful: 0, notHelpful: 0 };
-    for (const row of rows) {
-        if (row.feedback_type === 'helpful') stats.helpful = Number(row.count);
-        if (row.feedback_type === 'not_helpful') stats.notHelpful = Number(row.count);
-    }
-    return stats;
 }
 
 // ==========================================

@@ -438,14 +438,8 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             }
 
             // Align live extraction with background service by injecting engagement weights
-            const storedCounts = existingKnowledge?.knowledge?.articleInteractionCounts || {};
-            const interactionStats = {};
-            for (const [uid, counts] of Object.entries(storedCounts)) {
-                interactionStats[uid] = {
-                    saves: Number(counts.saves || 0),
-                    highDwellTime: Number(counts.highDwellCount || 0) > 0,
-                };
-            }
+            const { buildInteractionStats } = require('../../services/topic/topicKnowledgeExtraction');
+            const interactionStats = await buildInteractionStats(db, cleanTopic);
 
             const promptType = updateMode === 'incremental' ? 'delta' : 'full';
             const prompt = promptType === 'delta'

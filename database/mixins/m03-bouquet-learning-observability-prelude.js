@@ -339,7 +339,9 @@ async getCommunityEngagedArticlesForTopic(normalizedTopic, limit = 12) {
             i.article_uid AS uid,
             SUM(${weightExpr}) AS engagement_score,
             COUNT(*) AS impression_count,
-            COALESCE(SUM(i.dwell_time_ms), 0) AS total_dwell_ms
+            COALESCE(SUM(i.dwell_time_ms), 0) AS total_dwell_ms,
+            SUM(CASE WHEN i.was_saved = 1 THEN 1 ELSE 0 END) AS save_count,
+            SUM(CASE WHEN i.dwell_time_ms >= 30000 THEN 1 ELSE 0 END) AS high_dwell_count
          FROM search_result_impressions i
          JOIN searches s ON s.id = i.search_id
          LEFT JOIN users u ON u.id = i.user_id

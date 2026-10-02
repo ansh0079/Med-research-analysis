@@ -12,6 +12,28 @@ const VALID_EVIDENCE_GRADES = new Set([
     'CONFLICTING', 'LOW_CERTAINTY', 'PRACTICE_CHANGING_RECENT', 'EXPERT_OPINION',
 ]);
 
+/**
+ * Which papers people actually save or read closely for this topic (synonyms included),
+ * keyed by uid, for the extraction prompt's engagement weighting. This used to read
+ * knowledge.articleInteractionCounts, which nothing ever wrote, so the prompt never
+ * saw any engagement at all.
+ */
+async function buildInteractionStats(db, topic) {
+    if (!db || typeof db.getCommunityEngagedArticlesForTopic !== 'function' || !topic) return {};
+    const normalized = typeof db.normalizeTopic === 'function' ? db.normalizeTopic(topic) : String(topic).toLowerCase();
+    const rows = await db.getCommunityEngagedArticlesForTopic(normalized, 30).catch((err) => {
+        logger.warn({ err, topic }, 'getCommunityEngagedArticlesForTopic failed');
+        return [];
+    });
+    const stats = {};
+    for (const row of rows || []) {
+        if (!row?.uid) continue;
+        const highDwellCount = Number(row.high_dwell_count || 0);
+        stats[row.uid] = { saves: Number(row.save_count || 0), highDwellCount, highDwellTime: highDwellCount > 0 };
+    }
+    return stats;
+}
+
 function validateTopicKnowledgeShape(k) {
     if (!k || typeof k !== 'object') throw new Error('Topic knowledge is not an object');
     if (typeof k.mentorMessage !== 'string' || k.mentorMessage.trim().length < 10)
@@ -140,15 +162,8 @@ async function extractAndUpsertTopicKnowledge({
     const existingKnowledge = typeof db.getTopicKnowledge === 'function'
         ? await db.getTopicKnowledge(queryValidation.sanitized).catch((err) => { logger.warn({ err }, 'getTopicKnowledge failed'); return null; })
         : null;
-    const storedCounts = existingKnowledge?.knowledge?.articleInteractionCounts || {};
     const intentHint = intentHintFromDistribution(intentDistribution);
-    const interactionStats = {};
-    for (const [uid, counts] of Object.entries(storedCounts)) {
-        interactionStats[uid] = {
-            saves: Number(counts.saves || 0),
-            highDwellTime: Number(counts.highDwellCount || 0) > 0,
-        };
-    }
+    const interactionStats = await buildInteractionStats(db, queryValidation.sanitized);
 
     const ai = getSharedAiService({ serverConfig, fetchImpl });
     let guidelines = [];
@@ -233,6 +248,7 @@ async function extractAndUpsertTopicKnowledge({
 }
 
 module.exports = {
+    buildInteractionStats,
     extractAndUpsertTopicKnowledge,
     intentHintFromDistribution,
     stripCodeFence,

@@ -122,6 +122,22 @@ describe('searchObservedService', () => {
         })).rejects.toThrow('search-observed failed steps: 3');
     });
 
+    test('records topic demand with the search intent, and a failure there does not fail the job', async () => {
+        const db = { recordTopicDemandSignal: jest.fn().mockResolvedValue(undefined) };
+        await processSearchObservedSideEffects({
+            query: 'aki diagnosis',
+            intent: 'diagnosis',
+            articles: [{ uid: 'a1', pmid: '1', title: 'Paper 1' }],
+        }, { db, cache: { get: jest.fn(() => null) }, logger: { warn: jest.fn(), info: jest.fn() } });
+        expect(db.recordTopicDemandSignal).toHaveBeenCalledWith('aki diagnosis', 'aki diagnosis', 'diagnosis');
+
+        db.recordTopicDemandSignal.mockRejectedValueOnce(new Error('db down'));
+        await expect(processSearchObservedSideEffects({
+            query: 'aki diagnosis',
+            articles: [{ uid: 'a1', pmid: '1', title: 'Paper 1' }],
+        }, { db, cache: { get: jest.fn(() => null) }, logger: { warn: jest.fn(), info: jest.fn() } })).resolves.toMatchObject({ ok: true });
+    });
+
     test('registers the queue handler', () => {
         const deps = { db: {} };
         registerSearchObservedHandler(deps);

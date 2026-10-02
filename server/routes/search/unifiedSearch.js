@@ -530,6 +530,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                 enrichKey,
                 trainingStage: enrichTrainingStage,
                 sessionDepth: enrichSessionDepth,
+                intent: queryIntentProfile?.primaryIntent || null,
             }).catch((err) => {
                 logger.warn({ err, query: queryValidation.sanitized }, 'search-observed enqueue failed');
             });

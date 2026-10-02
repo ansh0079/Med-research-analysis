@@ -211,6 +211,11 @@ describe('Topic bouquet graph (real SQLite)', () => {
 
         const intents = await db.getTopicIntentDistribution(canonical);
         expect(intents[0]).toMatchObject({ intent: 'diagnosis', count: 1 });
+
+        // The extraction prompt's engagement weighting now reads these real impressions.
+        const { buildInteractionStats } = require('../../server/services/topicKnowledgeExtraction');
+        const stats = await buildInteractionStats(db, 'Acute kidney injury');
+        expect(stats['pmid-kdigo']).toMatchObject({ saves: 1, highDwellCount: 1, highDwellTime: true });
     });
 
     test('getStrongMemoryTopicsForRefresh respects human_reviewed status', async () => {
