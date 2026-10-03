@@ -1,5 +1,7 @@
 'use strict';
 
+// Curated MCQs routes — read-only listing and per-topic retrieval
+
 const { attachQuizGradingTokens } = require('../services/quizGradingToken');
 const { canonicalQuestionType } = require('../utils/questionType');
 const { expandNormalizedTopicKeys } = require('../utils/topicSynonyms');
