@@ -179,7 +179,8 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             reason: 'quiz_generation',
         });
         if (evidence.lineage.status === 'invalid') {
-            return response({ error: 'Search evidence is unavailable; run the search again.', code: 'EVIDENCE_SNAPSHOT_INVALID' }, 409);
+            log.warn({ reason: evidence.lineage.reason || null, snapshotId: body?.evidenceSnapshotId || null }, 'Quiz refused: snapshot invalid');
+            return response({ error: 'Search evidence is unavailable; run the search again.', code: 'EVIDENCE_SNAPSHOT_INVALID', reason: evidence.lineage.reason || null }, 409);
         }
         const articles = evidence.articles;
         const lineage = evidence.lineage;
@@ -712,7 +713,9 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             reason: 'quiz_from_evidence',
         });
         if (evidence.lineage.status === 'invalid') {
-            return response({ error: 'Search evidence is unavailable; run the search again.', code: 'EVIDENCE_SNAPSHOT_INVALID' }, 409);
+            // The reason (not_found, forbidden, addition_not_trusted...) is what tells a stale snapshot from a bug.
+            log.warn({ reason: evidence.lineage.reason || null, snapshotId: evidenceSnapshotId, articles: requestedArticles.length }, 'Evidence quiz refused: snapshot invalid');
+            return response({ error: 'Search evidence is unavailable; run the search again.', code: 'EVIDENCE_SNAPSHOT_INVALID', reason: evidence.lineage.reason || null }, 409);
         }
         const articles = evidence.articles;
         const lineage = evidence.lineage;
