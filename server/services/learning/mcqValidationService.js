@@ -105,10 +105,11 @@ return { ok: issues.length === 0, issues };
 }
 
 function createMcqValidationService({ ai, db, logger, PINNED_MODELS, serverConfig }) {
-    async function callModelStructured(prompt, provider, model, topic, operation, { allowBudgetSkip = false } = {}) {
+    async function callModelStructured(prompt, provider, model, topic, operation, { allowBudgetSkip = false, itemCount = 0 } = {}) {
         const opts = {
             temperature: 0.05,
-            maxOutputTokens: 1600,
+            // A verdict per question with reasons; a fixed 1600 truncated the JSON once quizzes asked for 7-12 questions.
+            maxOutputTokens: Math.min(1600 + Math.max(0, itemCount - 5) * 300, 8000),
             usage: { operation, topic },
             jsonMode: true,
             allowBudgetSkip,
@@ -277,7 +278,7 @@ ${JSON.stringify(compact)}`;
 
     async function runPrimaryReview({ topic, compact, sourceContext, guidelineContext, provider, model, allowBudgetSkip = false }) {
         const prompt = buildReviewPrompt(topic, compact, sourceContext, guidelineContext);
-        const parsed = await callModelStructured(prompt, provider, model, topic, 'quiz_validation', { allowBudgetSkip });
+        const parsed = await callModelStructured(prompt, provider, model, topic, 'quiz_validation', { allowBudgetSkip, itemCount: compact.length });
         if (parsed === null) return null;
         const review = parseReviewResults(parsed, compact.length);
         return { ...review, provider };
@@ -285,7 +286,7 @@ ${JSON.stringify(compact)}`;
 
     async function runSafetyReview({ topic, compact, provider, model, allowBudgetSkip = false }) {
         const prompt = buildSafetyPrompt(topic, compact);
-        const parsed = await callModelStructured(prompt, provider, model, topic, 'quiz_safety_classifier', { allowBudgetSkip });
+        const parsed = await callModelStructured(prompt, provider, model, topic, 'quiz_safety_classifier', { allowBudgetSkip, itemCount: compact.length });
         if (parsed === null) return null;
         const safety = parseSafetyResults(parsed, compact.length);
         return { ...safety, provider };

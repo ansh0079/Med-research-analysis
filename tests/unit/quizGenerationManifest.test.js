@@ -289,6 +289,28 @@ describe('an evidence quiz has at least five questions and can grow to twenty', 
         expect(result.body.warning).toMatch(/3 of these questions come from saved questions/);
     });
 
+    test('a clinical-validator failure does not collapse the quiz to the few stored questions already shown', async () => {
+        const { validateMcqBatch } = require('../../server/services/quizGeneration/mcqValidation');
+        validateMcqBatch.mockImplementationOnce(async () => ({ error: { status: 503, body: { code: 'MCQ_VALIDATION_EMPTY' } } }));
+        const generate = jest.fn()
+            .mockResolvedValueOnce({ questions: Array.from({ length: 7 }, (_, i) => stem(i)), usedProvider: 'gemini', quizModel: 'm' })
+            .mockResolvedValueOnce({ questions: [stem(20), stem(21)], usedProvider: 'gemini', quizModel: 'm' });
+        const shown = [stem(50), stem(51)];
+        const saved = [...shown, ...Array.from({ length: 6 }, (_, i) => stem(60 + i))].map((q, i) => ({ ...q, id: `stored_${i}`, correctAnswer: 'A' }));
+        const db = makeDb();
+        const snapshot = await persistSearchEvidenceSnapshot(db, { query: 'hf', articles: [article()], sessionId: 's1' });
+        const service = makeService(db, generate, { serveColdStartMCQs: jest.fn().mockResolvedValue(saved) });
+        const result = await service.generateFromEvidence({
+            body: { topic: 'heart failure', articles: [article()], evidenceSnapshotId: snapshot.id, count: 5, avoidQuestions: shown.map((q) => q.question) },
+            user: {}, sessionId: 's1', log: { warn() {}, error() {}, info() {} },
+        });
+        expect(result.status).toBe(200);
+        expect(generate).toHaveBeenCalledTimes(2);
+        const served = result.body.questions.map((q) => q.question);
+        expect(served).toHaveLength(5);
+        for (const q of shown) expect(served).not.toContain(q.question);
+    });
+
     test('a full first round makes no top-up call', async () => {
         const generate = generator(8);
         await ask({ count: 5 }, generate);

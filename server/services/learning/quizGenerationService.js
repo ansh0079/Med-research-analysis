@@ -897,10 +897,16 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                     questionIdPrefix: 'quiz',
                 });
                 if (validation.error) {
-                    const stored = await storedTopicFallback(
-                        'Fresh evidence-specific questions did not pass clinical validation, so these saved questions cover the same topic instead.',
-                    );
-                    return { early: stored || validation.error };
+                    // The reviewer failed (e.g. returned broken JSON): nothing from this round can be served, but the
+                    // quiz carries on to the top-up and the saved-question fill instead of giving up on two stored items.
+                    log.warn({ topic: cleanTopic, generated: raw.length }, 'Evidence quiz round discarded: clinical validation unavailable');
+                    return {
+                        trusted: [],
+                        droppedHighStakes: [],
+                        validation: { validationSummary: { reviewed: 0, rejected: 0, rejections: [], skipped: false, failed: true } },
+                        usedProvider,
+                        quizModel,
+                    };
                 }
 
                 const mappedQuestions = validation.validatedRaw.map((q, idx) => {
@@ -1013,7 +1019,7 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             // Minimum per quiz: if live generation still fell short, fill the remaining places from the topic's saved,
             // validated questions (guideline and topic MCQs) the learner has not seen, and say so.
             let toppedUpFromStore = 0;
-            if (questions.length > 0 && questions.length < safeCount && typeof serveColdStartMCQs === 'function') {
+            if (questions.length < safeCount && typeof serveColdStartMCQs === 'function') {
                 const stored = await serveColdStartMCQs(db, cleanTopic, safeCount * 3, user?.id).catch(() => null) || [];
                 const have = new Set(questions.map((q) => quizPool.questionFingerprint(q.question)));
                 for (const q of stored) {
@@ -1063,9 +1069,12 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                     generated: freshQuestions.length,
                     fromStore: toppedUpFromStore,
                 },
-                warning: toppedUpFromStore > 0
-                    ? `${toppedUpFromStore} of these questions come from saved questions on this topic, not from the papers in this search.`
-                    : undefined,
+                questionScope: toppedUpFromStore === questions.length ? 'topic' : 'evidence',
+                warning: toppedUpFromStore === questions.length
+                    ? 'Fresh evidence-specific questions could not be checked this time, so these are saved questions on the same topic.'
+                    : toppedUpFromStore > 0
+                        ? `${toppedUpFromStore} of these questions come from saved questions on this topic, not from the papers in this search.`
+                        : undefined,
             };
             await persistQuizBatch(db, batchDescriptor, {
                 topic: cleanTopic,

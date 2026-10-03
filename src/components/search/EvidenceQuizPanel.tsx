@@ -245,6 +245,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
       }
       const firstNew = questions.length;
       setQuestions((prev) => [...prev, ...fresh]);
+      if (result.warning) setQuizNotice(result.warning);
       setCurrentIndex(firstNew);
       setSelectedAnswer(null);
       setShowExplanation(false);
