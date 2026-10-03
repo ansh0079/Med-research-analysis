@@ -99,6 +99,8 @@ services:
       # but missing from this list never reaches the app. Empty means the code default. Keep this
       # block identical in the worker service.
       SCHEDULERS_PAUSED: ${SCHEDULERS_PAUSED:-}
+      # Serve stored quiz questions by the question-to-topic index (migration 109); off unless set to "on".
+      QUESTION_INDEX_SERVING: ${QUESTION_INDEX_SERVING:-}
       SEARCH_PICO_RERANK_ENABLED: ${SEARCH_PICO_RERANK_ENABLED:-}
       SEARCH_PICO_RERANK_MODE: ${SEARCH_PICO_RERANK_MODE:-}
       SEARCH_RERANK_TIMEOUT_MS: ${SEARCH_RERANK_TIMEOUT_MS:-}
@@ -197,6 +199,8 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       # Behaviour switches - keep identical to the web service block.
       SCHEDULERS_PAUSED: ${SCHEDULERS_PAUSED:-}
+      # Serve stored quiz questions by the question-to-topic index (migration 109); off unless set to "on".
+      QUESTION_INDEX_SERVING: ${QUESTION_INDEX_SERVING:-}
       SEARCH_PICO_RERANK_ENABLED: ${SEARCH_PICO_RERANK_ENABLED:-}
       SEARCH_PICO_RERANK_MODE: ${SEARCH_PICO_RERANK_MODE:-}
       SEARCH_RERANK_TIMEOUT_MS: ${SEARCH_RERANK_TIMEOUT_MS:-}
