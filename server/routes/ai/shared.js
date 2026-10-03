@@ -1,6 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
+const questionIndex = require('../../services/questionIndex/questionIndexReader');
 const { PINNED_MODELS, TEMPERATURE } = require('../../services/aiService');
 const { buildSeminalKnowledgeExtractionPrompt } = require('../../prompts');
 const { parseJsonArrayStrict, parseStructuredQuizArray } = require('../../utils/parseJson');
@@ -143,6 +144,30 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
                 .filter(notFabricated)
                 .map((q, i) => mapColdStartMcq(q, i, 'paper', 'paper_mcq', claimTopicKey));
             coldMcqs = coldMcqs.concat(paperMcqs);
+
+            // Question-to-topic index (QUESTION_INDEX_SERVING=on): drop questions the index places on a different
+            // subject or on none, and add the aligned ones it places on this subject from wherever they were filed.
+            if (questionIndex.servingEnabled()) {
+                const topicId = await database.resolveCurriculumTopicId(topic).catch(() => null);
+                const clusterId = await questionIndex.getTopicClusterId(database, topicId);
+                if (clusterId) {
+                    const everything = [...liveMcqs, ...coldMcqs, ...guidelineMcqs];
+                    const assignments = await questionIndex.loadAssignments(database, everything.map((m) => questionIndex.questionHash(m)));
+                    const belongs = (m) => questionIndex.belongsHere(assignments.get(questionIndex.questionHash(m)), clusterId);
+                    liveMcqs = liveMcqs.filter(belongs);
+                    coldMcqs = coldMcqs.filter(belongs);
+                    guidelineMcqs = guidelineMcqs.filter(belongs);
+                    const have = new Set(everything.map((m) => questionIndex.questionHash(m)));
+                    const added = await questionIndex.loadAlignedForCluster(database, clusterId);
+                    added.forEach((entry, i) => {
+                        const hash = questionIndex.questionHash(entry.question);
+                        if (have.has(hash) || !notFabricated(entry.question)) return;
+                        have.add(hash);
+                        const mapped = mapColdStartMcq(entry.question, i, 'indexed', entry.objectType, claimTopicKey);
+                        (entry.objectType === 'guideline_mcq' ? guidelineMcqs : coldMcqs).push(mapped);
+                    });
+                }
+            }
 
             if (userId) {
                 const normalizedTopic = database.normalizeTopic(topic);

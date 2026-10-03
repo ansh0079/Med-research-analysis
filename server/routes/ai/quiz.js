@@ -6,6 +6,7 @@ const { createQuizGenerationService } = require('../../services/quizGenerationSe
 const { canonicalQuestionType } = require('../../utils/questionType');
 const { computeMcqClaimKey, hasSuspectFutureCitation } = require('../../utils/mcqClaimKey');
 const { isIssuingBodyValue } = require('../../utils/guidelineAttribution');
+const questionIndex = require('../../services/questionIndex/questionIndexReader');
 const { attachQuizGradingTokens, verifyQuizGradingToken, commitQuizAnswer } = require('../../services/quizGradingToken');
 
 function sendServiceResponse(res, result) {
@@ -131,6 +132,13 @@ function registerQuizRoutes(app, {
                  ORDER BY RANDOM()`
             );
 
+            // Question-to-topic index (QUESTION_INDEX_SERVING=on): a pool question is labelled with the topic it
+            // belongs to rather than the one it was filed under, and one that is not about any topic is held out.
+            const indexed = questionIndex.servingEnabled()
+                ? await questionIndex.loadAssignments(db, rows.flatMap((row) => {
+                    try { return (JSON.parse(row.object_payload || '{}').mcqs || []).map((q) => questionIndex.questionHash(q)); } catch { return []; }
+                }))
+                : new Map();
             const allMcqs = [];
             for (const row of rows) {
                 let payload;
@@ -144,6 +152,8 @@ function registerQuizRoutes(app, {
                     // citation-mcqs.js. This stops any that slip back in from a future seeding
                     // run reaching a user before the next cleanup pass catches them.
                     if (hasSuspectFutureCitation(q)) continue;
+                    const assignment = indexed.get(questionIndex.questionHash(q));
+                    if (assignment?.category === 'unassignable') continue;
                     if (difficulty !== 'all' && q.difficulty !== difficulty) continue;
                     if (questionType !== 'all' && q.questionType !== questionType) continue;
                     const stableHash = crypto
@@ -168,7 +178,7 @@ function registerQuizRoutes(app, {
                         && isIssuingBodyValue(q.guidelineRef);
                     allMcqs.push({
                         id: `pool_${stableHash}`,
-                        topic: row.topic,
+                        topic: assignment?.category === 'aligned' && assignment.topicName ? assignment.topicName : row.topic,
                         source: isRealGuideline ? 'guideline' : 'evidence',
                         type: q.type || 'multiple_choice',
                         questionType: canonicalQuestionType(q.questionType),
