@@ -249,6 +249,34 @@ describe('an evidence quiz has at least five questions and can grow to twenty', 
         });
     });
 
+    test('when filtering leaves fewer than five, one top-up fills the gap instead of returning a short quiz', async () => {
+        const generate = jest.fn()
+            .mockResolvedValueOnce({ questions: [stem(1), stem(2)], usedProvider: 'gemini', quizModel: 'm' })
+            .mockResolvedValueOnce({ questions: Array.from({ length: 6 }, (_, i) => stem(10 + i)), usedProvider: 'gemini', quizModel: 'm' });
+        const result = await ask({ count: 5 }, generate);
+        expect(generate).toHaveBeenCalledTimes(2);
+        expect(result.body.questions).toHaveLength(5);
+        const topUpPrompt = generate.mock.calls[1][1].prompt;
+        expect(topUpPrompt).toMatch(/earlier attempt was rejected/);
+        // The top-up must not repeat what the first round already produced.
+        expect(topUpPrompt).toContain(stem(1).question);
+    });
+
+    test('a failed top-up still serves what the first round produced', async () => {
+        const generate = jest.fn()
+            .mockResolvedValueOnce({ questions: [stem(1), stem(2)], usedProvider: 'gemini', quizModel: 'm' })
+            .mockRejectedValueOnce(new Error('provider down'));
+        const result = await ask({ count: 5 }, generate);
+        expect(result.status).toBe(200);
+        expect(result.body.questions).toHaveLength(2);
+    });
+
+    test('a full first round makes no top-up call', async () => {
+        const generate = generator(8);
+        await ask({ count: 5 }, generate);
+        expect(generate).toHaveBeenCalledTimes(1);
+    });
+
     test('questions already shown are passed to the model so more are new', async () => {
         const generate = generator(8);
         await ask({ count: 5, avoidQuestions: ['What did the trial show about mortality?'], refresh: true }, generate);

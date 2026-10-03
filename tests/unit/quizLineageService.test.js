@@ -68,12 +68,15 @@ function makeService(db, { generateError = null, storedTopicQuestions = null } =
     const generateQuizQuestions = jest.fn(async () => {
         if (generateError) throw generateError;
         return {
-            questions: [{
-                question: 'Which drug class reduces heart failure hospitalisation?',
+            // An evidence quiz is never smaller than five, so the stub writes enough distinct questions to need no top-up.
+            questions: Array.from({ length: 6 }, (_, i) => ({
+                question: i === 0
+                    ? 'Which drug class reduces heart failure hospitalisation?'
+                    : 'Which finding number ' + i + ' supports first-line heart failure therapy?',
                 options: ['A: SGLT2 inhibitors', 'B: Digoxin', 'C: Amiodarone', 'D: Verapamil'],
                 correctAnswer: 0, questionType: 'recall', sourceIndices: [1],
                 explanation: 'Trial 1 showed a reduction.',
-            }],
+            })),
             usedProvider: 'gemini', quizModel: 'test-model',
         };
     });

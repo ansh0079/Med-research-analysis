@@ -167,6 +167,8 @@ const schemas = {
         topic: z.string().max(240).nullable().optional(),
         learningMode: z.enum(['student', 'resident', 'specialist', 'exam']).default('student'),
         seedArticles: z.array(z.record(z.string(), z.unknown())).max(8).optional(),
+        // Without this the schema stripped the id and every case lost its link to the search's evidence.
+        evidenceSnapshotId: z.string().max(64).nullable().optional(),
     }),
 
     caseStepRespond: z.object({

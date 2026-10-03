@@ -372,7 +372,8 @@ export class AiApi extends BaseApiClient {
       seedArticles?: Partial<Article>[];
     } = {}
   ): Promise<CaseModeResult> {
-    const searched = articlesCoveredBySnapshot(options.seedArticles || []);
+    // The server takes at most 8 seed papers; the top-papers list holds up to 12.
+    const searched = articlesCoveredBySnapshot(options.seedArticles || []).slice(0, 8);
     const response = await this.fetchWithSession(`${API_BASE}/api/cases/analyze`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

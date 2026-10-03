@@ -466,7 +466,10 @@ export class BaseApiClient {
     if (err.code || err.recovery) {
       throw parseApiErrorBody(err, response.status);
     }
-    throw new AppError(err.error || err.message || `Request failed (${response.status})`, 'INTERNAL_ERROR');
+    // A bare "Validation error" tells nobody anything; the server lists what failed in `details`.
+    const details = Array.isArray(err.details) ? err.details.filter((d) => typeof d === 'string') : [];
+    const message = err.error || err.message || `Request failed (${response.status})`;
+    throw new AppError(details.length ? `${message}: ${details.slice(0, 3).join('; ')}` : message, 'INTERNAL_ERROR');
   }
 
   protected async withRetry<T>(fn: () => Promise<T>, retries = 2, delay = 1000): Promise<T> {

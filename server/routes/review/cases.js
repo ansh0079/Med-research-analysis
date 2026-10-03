@@ -376,8 +376,13 @@ function registerReviewCaseRoutes(app, {
                     Array.isArray(value) && value.length ? value : fallbackValue
                 );
 
-                // Post-check: flag management text referencing drug names not found in any seed abstract.
-                const seedText = seedArticles.map((a) => (a.abstract || '') + ' ' + (a.title || '')).join(' ').toLowerCase();
+                // Post-check: flag management text referencing drug names not found in any source the case was given.
+                // The guidelines are sources too: NICE's antibiotic choices were flagged as unsupported because only
+                // the paper abstracts were read.
+                const seedText = [
+                    ...seedArticles.map((a) => `${a.abstract || ''} ${a.title || ''}`),
+                    ...(guidelines || []).map((g) => `${g.recommendationText || g.recommendation_text || ''} ${g.summary || ''} ${g.title || ''}`),
+                ].join(' ').toLowerCase();
                 const managementText = useText(parsed.managementReasoning, fallback.managementReasoning);
                 const drugPattern = /\b([a-z]{4,}(?:mab|nib|mycin|cillin|olol|pril|sartan|statin|tidine|oxacin|cycline|azole|vir|umab))\b/gi;
                 const flaggedDrugs = [];

@@ -844,120 +844,170 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         };
 
         try {
-            let generated;
-            try {
-                generated = await generateQuizQuestions(ai, {
-                    prompt,
-                    provider: selectedProvider,
-                    model: initialQuizModel,
-                    usage: { operation: 'quiz', topic: cleanTopic, userId: user?.id || null },
-                    // About 900 tokens a question with explanations and distractor rationale; the 4096 default truncates past four.
-                    maxOutputTokens: Math.min(1200 + askCount * 900, 24000),
-                });
-            } catch (providerError) {
-                const snapshotBatch = await findReusableQuizBatchForSnapshot(
-                    db,
-                    batchDescriptor,
-                    evidenceLineage.snapshotId,
-                );
-                if (snapshotBatch) {
-                    log.warn({ err: providerError, topic: cleanTopic }, 'Live evidence quiz failed; replaying snapshot-matched quiz');
-                    return response(snapshotBatch);
+            // One generate -> validate -> map -> trust-filter pass. A returned `early` is a response to send as is.
+            const runRound = async (askN, roundPrompt) => {
+                let generated;
+                try {
+                    generated = await generateQuizQuestions(ai, {
+                        prompt: roundPrompt,
+                        provider: selectedProvider,
+                        model: initialQuizModel,
+                        usage: { operation: 'quiz', topic: cleanTopic, userId: user?.id || null },
+                        // About 900 tokens a question with explanations and distractor rationale; the 4096 default truncates past four.
+                        maxOutputTokens: Math.min(1200 + askN * 900, 24000),
+                    });
+                } catch (providerError) {
+                    const snapshotBatch = await findReusableQuizBatchForSnapshot(
+                        db,
+                        batchDescriptor,
+                        evidenceLineage.snapshotId,
+                    );
+                    if (snapshotBatch) {
+                        log.warn({ err: providerError, topic: cleanTopic }, 'Live evidence quiz failed; replaying snapshot-matched quiz');
+                        return { early: response(snapshotBatch) };
+                    }
+                    const stored = await storedTopicFallback(
+                        'Fresh evidence-specific questions are unavailable, so these saved questions cover the same topic instead.',
+                    );
+                    if (stored) {
+                        log.warn({ err: providerError, topic: cleanTopic }, 'Live evidence quiz failed; serving stored topic questions');
+                        return { early: stored };
+                    }
+                    throw providerError;
                 }
-                const stored = await storedTopicFallback(
-                    'Fresh evidence-specific questions are unavailable, so these saved questions cover the same topic instead.',
-                );
-                if (stored) {
-                    log.warn({ err: providerError, topic: cleanTopic }, 'Live evidence quiz failed; serving stored topic questions');
-                    return stored;
+                const raw = generated.questions;
+                const usedProvider = generated.usedProvider;
+                const quizModel = generated.quizModel;
+
+                if (!Array.isArray(raw)) {
+                    return { early: response({ error: 'AI returned non-array quiz data. Please retry.' }, 502) };
                 }
-                throw providerError;
-            }
-            const raw = generated.questions;
-            const usedProvider = generated.usedProvider;
-            const quizModel = generated.quizModel;
 
-            if (!Array.isArray(raw)) {
-                return response({ error: 'AI returned non-array quiz data. Please retry.' }, 502);
-            }
-
-            const validation = await validateMcqBatch({
-                mcqValidator,
-                logger: log,
-                topic: cleanTopic,
-                normalizedTopic: db.normalizeTopic(cleanTopic),
-                raw,
-                provider: usedProvider,
-                model: quizModel,
-                articles: evidenceArticles,
-                guidelines,
-                promptVariant,
-                questionIdPrefix: 'quiz',
-            });
-            if (validation.error) {
-                const stored = await storedTopicFallback(
-                    'Fresh evidence-specific questions did not pass clinical validation, so these saved questions cover the same topic instead.',
-                );
-                return stored || validation.error;
-            }
-
-            const mappedQuestions = validation.validatedRaw.map((q, idx) => {
-                const sourceIndices = validateSourceIndices(q.sourceIndices, evidenceArticles.length);
-                const sourceOffset = sourceIndices?.[0] ? sourceIndices[0] - 1 : -1;
-                const source = sourceOffset >= 0 ? hydratedSources[sourceOffset] : null;
-                const resolvedSourceUid = source?.article?.uid || null;
-                const claimKey = computeMcqClaimKey(q, 'evidence_quiz', cleanTopic);
-                const trust = evidenceSourceTrust(source?.trusted || {});
-                return {
-                    id: `evq_${validation.batchTs}_${idx}`,
-                    type: 'multiple_choice',
-                    questionType: VALID_QTYPES.includes(q.questionType) ? q.questionType : 'clinical_application',
-                    question: String(q.question || ''),
-                    options: Array.isArray(q.options) ? q.options : null,
-                    correctAnswer: Number.isInteger(q.correctAnswer) ? (LETTERS[q.correctAnswer] || 'A') : String(q.correctAnswer || ''),
-                    explanation: String(q.explanation || ''),
-                    explanationDeep: q.explanationDeep ? String(q.explanationDeep) : null,
-                    whyOthersWrong: q.whyOthersWrong ? String(q.whyOthersWrong) : null,
-                    distractorRationale: normalizeDistractorRationale(q.distractorRationale),
-                    visualExplanation: normalizeVisualExplanation(q.visualExplanation),
-                    difficulty: difficulty !== 'mixed' ? difficulty : (['easy', 'medium', 'hard'].includes(q.difficulty) ? q.difficulty : 'medium'),
-                    sourceArticle: q.sourceArticle || null,
-                    sourceReference: q.sourceReference || null,
-                    sourceArticleUid: resolvedSourceUid,
-                    sourceIndices,
-                    outlineNodeId: null,
+                const validation = await validateMcqBatch({
+                    mcqValidator,
+                    logger: log,
                     topic: cleanTopic,
-                    claimKey,
-                    promptVariant,
-                    validationStatus: validation.validationSummary.skipped ? 'validation_skipped' : 'llm_validated',
-                    claimVerificationStatus: capVerificationForContext(capVerificationForManifest(
-                        capVerificationForLineage(trust.verificationStatus, lineage), manifest,
-                    ), teachingObjects),
-                    claimReviewState: trust.reviewState,
-                    evidenceSnapshotId: evidenceLineage.snapshotId,
-                    evidenceLineageStatus: evidenceLineage.status,
-                    evidenceManifestComplete: manifest.complete,
-                };
-            });
-
-            const { questions: trusted, droppedHighStakes } = filterQuestionsByEvidenceTrust(mappedQuestions);
-            // Unvalidated questions (reviewer unavailable) are for this learner only, never for the pool.
-            if (!validation.validationSummary.skipped) {
-                await quizPool.addToPool(db, sharedPoolKey, {
-                    topic: cleanTopic,
-                    questions: trusted,
+                    normalizedTopic: db.normalizeTopic(cleanTopic),
+                    raw,
                     provider: usedProvider,
                     model: quizModel,
-                    confidence: 0.8,
-                    evidenceLineage,
-                    manifestComplete: manifest.complete,
-                }).catch((err) => log.warn({ err }, 'Failed to add to shared quiz pool'));
+                    articles: evidenceArticles,
+                    guidelines,
+                    promptVariant,
+                    questionIdPrefix: 'quiz',
+                });
+                if (validation.error) {
+                    const stored = await storedTopicFallback(
+                        'Fresh evidence-specific questions did not pass clinical validation, so these saved questions cover the same topic instead.',
+                    );
+                    return { early: stored || validation.error };
+                }
+
+                const mappedQuestions = validation.validatedRaw.map((q, idx) => {
+                    const sourceIndices = validateSourceIndices(q.sourceIndices, evidenceArticles.length);
+                    const sourceOffset = sourceIndices?.[0] ? sourceIndices[0] - 1 : -1;
+                    const source = sourceOffset >= 0 ? hydratedSources[sourceOffset] : null;
+                    const resolvedSourceUid = source?.article?.uid || null;
+                    const claimKey = computeMcqClaimKey(q, 'evidence_quiz', cleanTopic);
+                    const trust = evidenceSourceTrust(source?.trusted || {});
+                    return {
+                        id: `evq_${validation.batchTs}_${idx}`,
+                        type: 'multiple_choice',
+                        questionType: VALID_QTYPES.includes(q.questionType) ? q.questionType : 'clinical_application',
+                        question: String(q.question || ''),
+                        options: Array.isArray(q.options) ? q.options : null,
+                        correctAnswer: Number.isInteger(q.correctAnswer) ? (LETTERS[q.correctAnswer] || 'A') : String(q.correctAnswer || ''),
+                        explanation: String(q.explanation || ''),
+                        explanationDeep: q.explanationDeep ? String(q.explanationDeep) : null,
+                        whyOthersWrong: q.whyOthersWrong ? String(q.whyOthersWrong) : null,
+                        distractorRationale: normalizeDistractorRationale(q.distractorRationale),
+                        visualExplanation: normalizeVisualExplanation(q.visualExplanation),
+                        difficulty: difficulty !== 'mixed' ? difficulty : (['easy', 'medium', 'hard'].includes(q.difficulty) ? q.difficulty : 'medium'),
+                        sourceArticle: q.sourceArticle || null,
+                        sourceReference: q.sourceReference || null,
+                        sourceArticleUid: resolvedSourceUid,
+                        sourceIndices,
+                        outlineNodeId: null,
+                        topic: cleanTopic,
+                        claimKey,
+                        promptVariant,
+                        validationStatus: validation.validationSummary.skipped ? 'validation_skipped' : 'llm_validated',
+                        claimVerificationStatus: capVerificationForContext(capVerificationForManifest(
+                            capVerificationForLineage(trust.verificationStatus, lineage), manifest,
+                        ), teachingObjects),
+                        claimReviewState: trust.reviewState,
+                        evidenceSnapshotId: evidenceLineage.snapshotId,
+                        evidenceLineageStatus: evidenceLineage.status,
+                        evidenceManifestComplete: manifest.complete,
+                    };
+                });
+
+                const { questions: trusted, droppedHighStakes } = filterQuestionsByEvidenceTrust(mappedQuestions);
+                // Unvalidated questions (reviewer unavailable) are for this learner only, never for the pool.
+                if (!validation.validationSummary.skipped) {
+                    await quizPool.addToPool(db, sharedPoolKey, {
+                        topic: cleanTopic,
+                        questions: trusted,
+                        provider: usedProvider,
+                        model: quizModel,
+                        confidence: 0.8,
+                        evidenceLineage,
+                        manifestComplete: manifest.complete,
+                    }).catch((err) => log.warn({ err }, 'Failed to add to shared quiz pool'));
+                }
+                return { trusted, droppedHighStakes, validation, usedProvider, quizModel };
+            };
+
+            const poolFingerprints = new Set(poolUnseen.map((p) => quizPool.questionFingerprint(p.question)));
+            // Questions this learner has not seen and the pool is not already serving, each once, with the pool's stable id.
+            const newToLearner = (round) => {
+                const out = [];
+                for (const q of round.trusted) {
+                    const fingerprint = quizPool.questionFingerprint(q.question);
+                    if (!fingerprint || seen.has(fingerprint) || poolFingerprints.has(fingerprint)) continue;
+                    poolFingerprints.add(fingerprint);
+                    out.push(round.validation.validationSummary.skipped ? q : quizPool.asPoolQuestion(q));
+                }
+                return out;
+            };
+
+            const first = await runRound(askCount, prompt);
+            if (first.early) return first.early;
+            const { validation, usedProvider, quizModel } = first;
+            let droppedHighStakes = first.droppedHighStakes;
+            let freshQuestions = newToLearner(first);
+
+            // The answer-length, validation and trust filters can leave fewer than asked for. Top up once for the
+            // gap rather than hand back a two-question quiz.
+            const stillNeeded = safeCount - poolUnseen.length - freshQuestions.length;
+            if (stillNeeded > 0) {
+                log.warn({ topic: cleanTopic, wanted: safeCount, have: poolUnseen.length + freshQuestions.length }, 'Evidence quiz short after filtering; generating a top-up');
+                const topUpCount = Math.min(stillNeeded * 2 + 1, EVIDENCE_QUIZ_MAX + 4);
+                const topUpPrompt = `${buildQuizPrompt(
+                    cleanTopic,
+                    evidenceArticles,
+                    {
+                        count: topUpCount,
+                        difficulty,
+                        communityTopPicks,
+                        teachingObjectContext,
+                        promptVariant,
+                        avoidQuestions: [...promptAvoid, ...first.trusted.map((q) => q.question)],
+                        allowedQuestionTypes: hasHighStakesSource ? undefined : ['recall', 'pitfall'],
+                    },
+                    guidelines,
+                    userContext,
+                )}\n\nIMPORTANT: an earlier attempt was rejected because the correct option was the longest in most questions. Write the correct option shorter than at least one wrong option in every question, and keep all four options close to the same length.`;
+                try {
+                    const second = await runRound(topUpCount, topUpPrompt);
+                    if (!second.early) {
+                        freshQuestions = [...freshQuestions, ...newToLearner(second)];
+                        droppedHighStakes = [...droppedHighStakes, ...second.droppedHighStakes];
+                    }
+                } catch (err) {
+                    log.warn({ err, topic: cleanTopic }, 'Evidence quiz top-up failed; serving what was generated');
+                }
             }
-            const freshQuestions = trusted
-                .filter((q) => !seen.has(quizPool.questionFingerprint(q.question)))
-                .filter((q) => !poolUnseen.some((p) => quizPool.questionFingerprint(p.question) === quizPool.questionFingerprint(q.question)))
-                // Pooled questions carry the pool's stable id, so every learner's attempt on one question joins up.
-                .map((q) => (validation.validationSummary.skipped ? q : quizPool.asPoolQuestion(q)));
             const questions = [...poolUnseen, ...freshQuestions].slice(0, safeCount);
 
             if (questions.length === 0) {
