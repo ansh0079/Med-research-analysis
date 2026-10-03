@@ -428,6 +428,18 @@ export const SearchPage: React.FC = () => {
     });
   };
 
+  // Curated MCQs resolution for search query
+  const [curatedMcqInfo, setCuratedMcqInfo] = React.useState<{ topicKey: string; displayName: string; count: number } | null>(null);
+  React.useEffect(() => {
+    let cancelled = false;
+    const q = resultsQuery || currentQuery || '';
+    if (!isAuthenticated || !q.trim()) { setCuratedMcqInfo(null); return; }
+    api.mcqs.getCuratedTopic(q.trim())
+      .then((r) => { if (!cancelled) setCuratedMcqInfo({ topicKey: r.topicKey, displayName: r.displayName, count: r.count }); })
+      .catch(() => { if (!cancelled) setCuratedMcqInfo(null); });
+    return () => { cancelled = true; };
+  }, [isAuthenticated, resultsQuery, currentQuery]);
+
   return (
     <div className="min-h-screen aurora-bg mesh-bg">
       <div className="aurora-content">
@@ -477,6 +489,30 @@ export const SearchPage: React.FC = () => {
                 {resultsQuery || currentQuery}
               </h1>
             </section>
+
+            {/* Practice MCQs card when the query matches a curated topic */}
+            {isAuthenticated && curatedMcqInfo && (
+              <div className="mb-4 rounded-2xl border border-indigo-200 dark:border-indigo-800/50 bg-indigo-50/60 dark:bg-indigo-950/20 p-4 flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center shrink-0">
+                  <i className="fas fa-list-check text-indigo-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                    Practice MCQs — {curatedMcqInfo.displayName}
+                  </p>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                    {curatedMcqInfo.count} curated questions available
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => navigate(`/mcqs/${encodeURIComponent(curatedMcqInfo.topicKey)}`)}
+                  className="shrink-0 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-2 transition-colors"
+                >
+                  Start
+                </button>
+              </div>
+            )}
 
             <EvidenceVerdictStrip
               query={resultsQuery || currentQuery}

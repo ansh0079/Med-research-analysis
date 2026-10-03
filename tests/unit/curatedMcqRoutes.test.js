@@ -47,6 +47,7 @@ describe('curatedMcqRoutes', () => {
         object_payload: JSON.stringify({
           topicKey: 'ards-management',
           topicDisplayName: 'ARDS management',
+          aliases: ['acute respiratory distress syndrome', 'ards'],
           mcqs: [{ id: 'q1', question: 'q', options: ['A: a','B: b','C: c','D: d','E: e'], correctAnswer: 'A', explanation: 'x', difficulty: 'easy' }],
         }),
       },
@@ -64,6 +65,32 @@ describe('curatedMcqRoutes', () => {
       .get('/api/topics/unknown-topic/mcqs')
       .set('Authorization', `Bearer ${authToken()}`);
     expect(res.status).toBe(404);
+  });
+
+  test('GET /api/topics/:topic/mcqs resolves via aliases', async () => {
+    mockDb.get.mockResolvedValueOnce(null);
+    mockDb.resolveCurriculumTopicId.mockResolvedValueOnce(null);
+    mockDb.all.mockResolvedValueOnce([
+      {
+        object_key: 'curated-mcq:tuberculosis',
+        topic: 'Tuberculosis',
+        object_payload: JSON.stringify({
+          topicKey: 'tuberculosis',
+          topicDisplayName: 'Tuberculosis',
+          aliases: ['tb', 'latent tb'],
+          mcqs: [{
+            id: 'q1', question: 'LTBI treatment?', options: ['A: a','B: b','C: c','D: d','E: e'],
+            correctAnswer: 'A', explanation: 'x', difficulty: 'easy'
+          }],
+        }),
+      },
+    ]);
+    const res = await request(app)
+      .get('/api/topics/tb/mcqs')
+      .set('Authorization', `Bearer ${authToken()}`);
+    expect(res.status).toBe(200);
+    expect(res.body.displayName).toBe('Tuberculosis');
+    expect(res.body.questions[0].gradingToken).toBeDefined();
   });
 
   test('GET /api/topics/:topic/mcqs returns signed questions with source refs', async () => {

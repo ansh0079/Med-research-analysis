@@ -2,6 +2,7 @@
 
 const { attachQuizGradingTokens } = require('../services/quizGradingToken');
 const { canonicalQuestionType } = require('../utils/questionType');
+const { expandNormalizedTopicKeys } = require('../utils/topicSynonyms');
 const { isIssuingBodyValue } = require('../utils/guidelineAttribution');
 const { normalizeTopic } = require('../utils/topicKey');
 
@@ -64,6 +65,27 @@ function registerCuratedMcqRoutes(app, deps) {
             `SELECT * FROM teaching_objects WHERE object_type = 'curated_topic_mcq' AND curriculum_topic_id = ? ORDER BY updated_at DESC LIMIT 1`,
             [id]
           );
+        }
+      }
+
+      // Final fallback: curated alias + synonym match against query
+      if (!row) {
+        const queryNorm = normalizeTopic(raw);
+        const queryKeys = new Set([queryNorm, ...expandNormalizedTopicKeys(queryNorm, normalizeTopic)]);
+        const candidates = await db.all(
+          `SELECT object_key, topic, object_payload
+           FROM teaching_objects
+           WHERE object_type = 'curated_topic_mcq' AND review_state != 'withdrawn'`
+        );
+        for (const cand of candidates) {
+          let p = {};
+          try { p = JSON.parse(cand.object_payload || '{}'); } catch { /* ignore */ }
+          const keys = new Set([
+            normalizeTopic(p.topicDisplayName || cand.topic || ''),
+            ...(Array.isArray(p.aliases) ? p.aliases.map((a) => normalizeTopic(a || '')) : []),
+          ].filter(Boolean));
+          const intersects = [...keys].some((k) => queryKeys.has(k));
+          if (intersects) { row = { ...cand, object_payload: cand.object_payload }; break; }
         }
       }
 

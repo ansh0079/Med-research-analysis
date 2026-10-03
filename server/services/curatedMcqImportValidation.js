@@ -85,6 +85,10 @@ function validateCuratedTopicBlock(block) {
   if (!block || typeof block !== 'object') { errors.push('topic block must be an object'); return { ok: false, errors }; }
   if (!block.topicKey || typeof block.topicKey !== 'string' || !block.topicKey.trim()) errors.push('topicKey is required');
   if (!block.topicDisplayName || typeof block.topicDisplayName !== 'string' || !block.topicDisplayName.trim()) errors.push('topicDisplayName is required');
+  if (block.aliases != null) {
+    if (!Array.isArray(block.aliases)) errors.push('aliases must be an array when present');
+    else if (!block.aliases.every((a) => typeof a === 'string' && a.trim())) errors.push('aliases must contain non-empty strings');
+  }
   if (!Array.isArray(block.mcqs) || block.mcqs.length === 0) errors.push('mcqs[] is required and must be non-empty');
   (block.mcqs || []).forEach((q, i) => validateCuratedQuestion(q, i, errors));
   return { ok: errors.length === 0, errors };

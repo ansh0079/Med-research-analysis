@@ -69,6 +69,7 @@ async function run({ apply = false } = {}) {
         batch: batchNo,
         topicKey: t.topicKey,
         topicDisplayName: t.topicDisplayName,
+        aliases: Array.isArray(t.aliases) ? t.aliases.filter((s) => typeof s === 'string' && s.trim()).slice(0, 50) : [],
         storedRowCount: Number(t.storedRowCount || 0),
         coverageNote: t.coverageNote || null,
         source: json.source || null,
