@@ -6,11 +6,19 @@ jest.mock('../../server/services/search/searchPipeline', () => ({
     ...jest.requireActual('../../server/services/search/searchPipeline'),
     fetchSharedSearchEvidence: (...args) => mockFetchShared(...args),
 }));
+// The month-long review store, in memory: key -> { shared, ttlSeconds, topic }.
+const mockReviews = new Map();
+jest.mock('../../server/services/search/topicReviewStore', () => ({
+    ...jest.requireActual('../../server/services/search/topicReviewStore'),
+    getReviewedSearch: jest.fn(async (_db, key) => (mockReviews.has(key) ? { shared: mockReviews.get(key).shared, reviewedAt: 'x' } : null)),
+    putReviewedSearch: jest.fn(async (_db, { cacheKey, shared, ttlSeconds, topic }) => { mockReviews.set(cacheKey, { shared, ttlSeconds, topic }); return true; }),
+}));
 jest.mock('../../server/services/localRetrievalService', () => ({
     searchLocalArticleCache: jest.fn(async () => ({ articles: [], used: false, available: false })),
 }));
 
-const { runSearchPrewarm, selectPrewarmTopics } = require('../../server/services/search/searchPrewarmService');
+const { runSearchPrewarm, selectPrewarmTopics, nightlyQuota } = require('../../server/services/search/searchPrewarmService');
+const { REVIEW_TTL_SECONDS } = require('../../server/services/search/topicReviewStore');
 const { deriveSharedSearchParams, assessSharedResult } = require('../../server/services/search/sharedSearchService');
 const { SHARED_SEARCH_RESULT_TTL_SECONDS } = require('../../server/services/searchResultCacheService');
 
@@ -48,6 +56,7 @@ const base = (over = {}) => ({
 
 describe('search prewarm', () => {
     beforeEach(() => {
+        mockReviews.clear();
         mockFetchShared.mockReset();
         mockFetchShared.mockResolvedValue(cleanResult());
     });
@@ -68,14 +77,17 @@ describe('search prewarm', () => {
         expect(key('pubmed,openalex,semantic')).toBe(key('pubmed,openalex'));
     });
 
-    test('stores for the configured ttl, and skips topics that are already cached', async () => {
+    test('a reviewed topic is kept for the review period in the store, Redis holds only a short hot copy, and it is not fetched again', async () => {
         const opts = base();
-        const first = await runSearchPrewarm(db, { ...opts, topics: ['ARDS', 'COPD exacerbation'], ttlSeconds: 259200 });
+        const first = await runSearchPrewarm(db, { ...opts, limit: 10, topics: ['ARDS', 'COPD exacerbation'] });
         expect(first).toMatchObject({ warmed: 2, alreadyCached: 0 });
-        expect([...opts.cache.ttls.values()]).toEqual([259200, 259200]);
+        expect([...opts.cache.ttls.values()]).toEqual([SHARED_SEARCH_RESULT_TTL_SECONDS, SHARED_SEARCH_RESULT_TTL_SECONDS]);
+        expect([...mockReviews.values()].map((r) => r.ttlSeconds)).toEqual([REVIEW_TTL_SECONDS, REVIEW_TTL_SECONDS]);
 
+        // Redis copy gone (hours later): the stored review still means the topic is not due.
+        opts.cache.store.clear();
         mockFetchShared.mockClear();
-        const second = await runSearchPrewarm(db, { ...opts, topics: ['ARDS', 'COPD exacerbation'] });
+        const second = await runSearchPrewarm(db, { ...opts, limit: 10, topics: ['ARDS', 'COPD exacerbation'] });
         expect(second).toMatchObject({ warmed: 0, alreadyCached: 2 });
         expect(mockFetchShared).not.toHaveBeenCalled();
     });
@@ -83,17 +95,18 @@ describe('search prewarm', () => {
     test('a missing optional source is kept only for the normal short ttl, not for days', async () => {
         mockFetchShared.mockResolvedValue(europepmcThrottled());
         const opts = base();
-        const summary = await runSearchPrewarm(db, { ...opts, topics: ['ARDS'], ttlSeconds: 259200, sources: 'pubmed,openalex,europepmc' });
+        const summary = await runSearchPrewarm(db, { ...opts, topics: ['ARDS'], sources: 'pubmed,openalex,europepmc' });
         expect(summary).toMatchObject({ warmed: 0, warmedPartial: 1, skippedUnclean: 0 });
         expect([...opts.cache.ttls.values()]).toEqual([SHARED_SEARCH_RESULT_TTL_SECONDS]);
+        expect(mockReviews.size).toBe(0);
     });
 
     test('with the default sources (PubMed and OpenAlex only), a healthy result is complete and kept for the long ttl', async () => {
         mockFetchShared.mockResolvedValue(resultWith({ pubmed: 80, openalex: 50 }));
         const opts = base();
-        const summary = await runSearchPrewarm(db, { ...opts, topics: ['ARDS'], ttlSeconds: 259200 });
+        const summary = await runSearchPrewarm(db, { ...opts, topics: ['ARDS'] });
         expect(summary).toMatchObject({ warmed: 1, warmedPartial: 0 });
-        expect([...opts.cache.ttls.values()]).toEqual([259200]);
+        expect([...mockReviews.values()].map((r) => r.ttlSeconds)).toEqual([REVIEW_TTL_SECONDS]);
     });
 
     test('assessSharedResult grades by core source health', () => {
@@ -111,23 +124,42 @@ describe('search prewarm', () => {
         mockFetchShared.mockResolvedValue(degradedResult());
         const opts = base();
         const summary = await runSearchPrewarm(db, {
-            ...opts, maxConsecutiveFailures: 3,
+            ...opts, maxConsecutiveFailures: 3, limit: 10,
             topics: ['t1 heart', 't2 kidney', 't3 liver', 't4 lung', 't5 brain'],
         });
         expect(summary).toMatchObject({ warmed: 0, skippedUnclean: 3, stoppedReason: 'degraded_sources' });
         expect(opts.cache.store.size).toBe(0);
+        expect(mockReviews.size).toBe(0);
         expect(mockFetchShared).toHaveBeenCalledTimes(3);
     });
 
-    test('stops at the per-run limit', async () => {
+    test('stops at the nightly quota', async () => {
         const summary = await runSearchPrewarm(db, { ...base(), limit: 2, topics: ['t1 heart', 't2 kidney', 't3 liver', 't4 lung'] });
-        expect(summary).toMatchObject({ warmed: 2, stoppedReason: 'limit' });
+        expect(summary).toMatchObject({ warmed: 2, stoppedReason: 'quota' });
+    });
+
+    test('the default quota covers every topic once per review period, a slice a night', () => {
+        expect(nightlyQuota(692, 30)).toBe(24);
+        expect(nightlyQuota(10, 30)).toBe(1);
+        expect(nightlyQuota(0, 30)).toBe(1);
+    });
+
+    test('night after night the slices move on through the list instead of repeating the same topics', async () => {
+        const topics = ['t1 heart', 't2 kidney', 't3 liver', 't4 lung'];
+        const nights = [];
+        for (let n = 0; n < 2; n += 1) {
+            mockFetchShared.mockClear();
+            await runSearchPrewarm(db, { ...base(), limit: 2, topics });
+            nights.push(mockFetchShared.mock.calls.map((c) => c[0].query));
+        }
+        expect(nights[0]).toEqual(['t1 heart', 't2 kidney']);
+        expect(nights[1]).toEqual(['t3 liver', 't4 lung']);
     });
 
     test('stops when the daily spend cap is reached mid-run', async () => {
         const capError = Object.assign(new Error('cap'), { name: 'LlmDailyCapExceededError', status: 429 });
         mockFetchShared.mockResolvedValueOnce(cleanResult()).mockRejectedValueOnce(capError);
-        const summary = await runSearchPrewarm(db, { ...base(), topics: ['t1 heart', 't2 kidney', 't3 liver'] });
+        const summary = await runSearchPrewarm(db, { ...base(), limit: 10, topics: ['t1 heart', 't2 kidney', 't3 liver'] });
         expect(summary).toMatchObject({ warmed: 1, failed: 1, stoppedReason: 'spend_cap' });
         expect(mockFetchShared).toHaveBeenCalledTimes(2);
     });
@@ -138,11 +170,12 @@ describe('search prewarm', () => {
         expect(mockFetchShared).not.toHaveBeenCalled();
     });
 
-    test('only high-priority flagship topics are selected by default', () => {
+    test('every topic is selected by default; a priority narrows it', () => {
         const config = { topics: [
             { topic: 'A', priority: 'high' }, { topic: 'B', priority: 'medium' }, { topic: ' C ', priority: 'high' },
         ] };
         expect(selectPrewarmTopics(config, { priority: 'high' })).toEqual(['A', 'C']);
         expect(selectPrewarmTopics(config, { priority: 'all' })).toEqual(['A', 'B', 'C']);
+        expect(selectPrewarmTopics(config)).toEqual(['A', 'B', 'C']);
     });
 });

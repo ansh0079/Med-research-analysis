@@ -16,6 +16,7 @@ const {
     setCachedSearchResult,
     shareSearchComputation,
 } = require('../searchResultCacheService');
+const { REVIEW_TTL_SECONDS, getReviewedSearch, putReviewedSearch } = require('./topicReviewStore');
 
 // Same rule as routes/search/searchHelpers.clampLimit; kept local so this service does
 // not depend on the route layer (which pulls in API-key and entitlement modules).
@@ -105,10 +106,24 @@ function assessSharedResult(shared, requestedSources = []) {
 }
 
 /**
+ * How long to keep a freshly computed result: a complete one is a reviewed topic and is kept for the
+ * review period (a month); one missing an optional source, or degraded, only for the short hot TTL so
+ * the next search tries again.
+ */
+function defaultTtlFor(shared, params) {
+    return assessSharedResult(shared, params?.sourceList || []) === 'complete'
+        ? REVIEW_TTL_SECONDS
+        : SHARED_SEARCH_RESULT_TTL_SECONDS;
+}
+
+/**
  * Reads the shared layer, computing and storing it on a miss.
- *   forceFresh: skip the read (used when refreshing deliberately)
+ *   forceFresh: skip the reads (used when refreshing deliberately)
  *   ttlFor: (shared, params) => seconds to keep a fresh result; 0 means do not store.
- *           Defaults to the normal shared TTL for everything, as the route wants.
+ *
+ * Two layers: Redis holds a hot copy for at most the short shared TTL, and anything kept longer (a
+ * reviewed topic) lives in the topic review store, from which a Redis miss is refilled. Redis is small
+ * and never evicts, so a month of results must not live there.
  */
 async function getOrComputeSharedSearch({
     db,
@@ -118,11 +133,19 @@ async function getOrComputeSharedSearch({
     params,
     log = null,
     forceFresh = false,
-    ttlFor = () => SHARED_SEARCH_RESULT_TTL_SECONDS,
+    ttlFor = defaultTtlFor,
 }) {
+    const cacheHit = (shared, extra = {}) => ({
+        shared, sharedCacheHit: true, vectorList: [], localRetrieval: { articles: [], used: false, available: Boolean(db?.searchCachedArticlesLocal) }, timings: {}, ...extra,
+    });
     let shared = forceFresh ? null : await getCachedSearchResult(cache, params.sharedCacheKey);
-    if (shared) {
-        return { shared, sharedCacheHit: true, vectorList: [], localRetrieval: { articles: [], used: false, available: Boolean(db?.searchCachedArticlesLocal) }, timings: {} };
+    if (shared) return cacheHit(shared);
+    if (!forceFresh) {
+        const reviewed = await getReviewedSearch(db, params.sharedCacheKey);
+        if (reviewed) {
+            await Promise.resolve(setCachedSearchResult(cache, params.sharedCacheKey, reviewed.shared, SHARED_SEARCH_RESULT_TTL_SECONDS)).catch(() => {});
+            return cacheHit(reviewed.shared, { reviewedAt: reviewed.reviewedAt });
+        }
     }
 
     const timings = {};
@@ -161,9 +184,18 @@ async function getOrComputeSharedSearch({
     }));
     const ttlSeconds = ttlFor(shared, params);
     if (ttlSeconds > 0) {
-        await setCachedSearchResult(cache, params.sharedCacheKey, shared, ttlSeconds);
+        await setCachedSearchResult(cache, params.sharedCacheKey, shared, Math.min(ttlSeconds, SHARED_SEARCH_RESULT_TTL_SECONDS));
+        if (ttlSeconds > SHARED_SEARCH_RESULT_TTL_SECONDS) {
+            await putReviewedSearch(db, {
+                cacheKey: params.sharedCacheKey,
+                topic: params.query,
+                quality: assessSharedResult(shared, params.sourceList || []),
+                shared,
+                ttlSeconds,
+            });
+        }
     }
     return { shared, sharedCacheHit: false, vectorList, localRetrieval, timings };
 }
 
-module.exports = { CORE_SOURCES, deriveSharedSearchParams, getOrComputeSharedSearch, assessSharedResult };
+module.exports = { CORE_SOURCES, deriveSharedSearchParams, getOrComputeSharedSearch, assessSharedResult, defaultTtlFor };

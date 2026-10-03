@@ -6,9 +6,14 @@
  * failing every night, and nothing surfaced it. Paused, not deleted - the code and data stay, and
  * SCHEDULERS_PAUSED turns any of them back on.
  *
- * Not paused: jobs that serve users directly (digests, topic/claim refresh, curriculum seed), keep
- * data correct (invalidation, retention, zombie sweep), or MEASURE rather than generate
- * (offline-eval-nightly, learning-quality-eval) - measurement is what the learning loop lacks.
+ * Also paused: the jobs that spend on AI on a timer whether or not anyone is using the app. Topics are
+ * reviewed about once a month (search-prewarm) and their AI content is made when someone opens it, so
+ * hourly topic-knowledge refresh, claim regeneration every 90 seconds, curriculum seeding every 6 hours
+ * and the nightly search evaluation (~40 live queries, plus model reranks) were mostly paying for
+ * content nobody read: with one user they were most of the daily AI bill.
+ *
+ * Not paused: jobs that keep data correct (invalidation, retention, zombie sweep), cost nothing on AI
+ * (digests, rollups, disk and anomaly checks), the monthly topic review, and learning-quality-eval.
  *
  * Kept apart from the registry so /health can report it without loading every scheduler.
  */
@@ -19,6 +24,10 @@ const DEFAULT_PAUSED = Object.freeze([
     'guideline-watchtower',
     'guideline-discovery-warm-start',
     'flagship-enrich',
+    'topic-refresh',
+    'claim-regeneration',
+    'curriculum-seed',
+    'offline-eval-nightly',
 ]);
 
 /**

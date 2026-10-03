@@ -6,11 +6,14 @@ const yaml = require('js-yaml');
 const { DEFAULT_PAUSED, pausedSchedulers } = require('../../server/services/ops/schedulerPause');
 
 describe('which background jobs run', () => {
-    test('unset pauses the off-loop content generators and nothing that serves or measures', () => {
+    test('unset pauses the timed AI generators and nothing that keeps data correct or costs nothing', () => {
         const paused = pausedSchedulers({});
         expect([...paused].sort()).toEqual([...DEFAULT_PAUSED].sort());
-        for (const kept of ['digest-scheduler', 'topic-refresh', 'claim-regeneration', 'curriculum-seed',
-            'source-invalidation', 'data-retention', 'offline-eval-nightly', 'learning-quality-eval']) {
+        for (const stopped of ['topic-refresh', 'claim-regeneration', 'curriculum-seed', 'offline-eval-nightly', 'topic-evolution']) {
+            expect(paused.has(stopped)).toBe(true);
+        }
+        for (const kept of ['digest-scheduler', 'search-prewarm', 'source-invalidation', 'data-retention',
+            'zombie-job-sweep', 'learning-quality-eval', 'llm-anomaly', 'disk-space']) {
             expect(paused.has(kept)).toBe(false);
         }
     });
@@ -34,7 +37,7 @@ describe('the registry honours pauses and stops the right job', () => {
     const entry = (task) => ({ task, start: jest.fn(), stop: jest.fn() });
 
     test('paused entries are not started', () => {
-        const registry = [entry('topic-evolution'), entry('topic-refresh')];
+        const registry = [entry('topic-evolution'), entry('digest-scheduler')];
         const result = startAllSchedulers(registry, { env: {} });
         expect(registry[0].start).not.toHaveBeenCalled();
         expect(registry[1].start).toHaveBeenCalled();
