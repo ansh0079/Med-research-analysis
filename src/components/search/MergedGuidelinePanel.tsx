@@ -25,6 +25,10 @@ function strengthClass(strength: string | null) {
   return match ? STRENGTH_STYLE[match] : 'bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300';
 }
 
+function attributionOf(rec: { sourceBody?: string | null; sourceYear?: number | string | null }): string {
+  return `${rec.sourceBody || 'Unattributed'}${rec.sourceYear ? ` ${rec.sourceYear}` : ''}`;
+}
+
 const AGREEMENT_CHIP: Record<string, { label: string; cls: string }> = {
   conflict: {
     label: 'Bodies differ',
@@ -103,6 +107,9 @@ export const MergedGuidelinePanel: React.FC<{ topic: string }> = ({ topic }) => 
       <div className="px-5 pb-4 space-y-3">
         {visibleThemes.map((theme, i) => {
           const chip = AGREEMENT_CHIP[theme.agreement] ?? AGREEMENT_CHIP.single;
+          // One issuer for every line: name it once in the header instead of on each recommendation.
+          const labels = new Set(theme.recommendations.map(attributionOf));
+          const sharedLabel = labels.size === 1 && theme.recommendations.length > 1 ? [...labels][0] : null;
           return (
             <div
               key={`${theme.label}-${i}`}
@@ -118,7 +125,7 @@ export const MergedGuidelinePanel: React.FC<{ topic: string }> = ({ topic }) => 
                   {chip.label}
                 </span>
                 <span className="text-[10px] text-slate-400 dark:text-slate-500">
-                  {theme.bodies.join(' · ')}
+                  {sharedLabel ? sharedLabel : theme.bodies.join(' · ')}
                 </span>
               </div>
 
@@ -131,15 +138,16 @@ export const MergedGuidelinePanel: React.FC<{ topic: string }> = ({ topic }) => 
               <ul className="mt-2 space-y-1.5">
                 {theme.recommendations.map((rec, j) => (
                   <li key={`${rec.id ?? j}`} className="text-xs leading-snug text-slate-700 dark:text-slate-200">
-                    <span className="font-semibold text-slate-900 dark:text-slate-100">
-                      {rec.sourceBody || 'Unattributed'}{rec.sourceYear ? ` ${rec.sourceYear}` : ''}
-                    </span>
+                    {/* The issuer is named once per group; a line repeats it only when it changes. */}
+                    {!sharedLabel && attributionOf(rec) !== (j > 0 ? attributionOf(theme.recommendations[j - 1]) : null) && (
+                      <span className="mr-1.5 font-semibold text-slate-900 dark:text-slate-100">{attributionOf(rec)} —</span>
+                    )}
                     {rec.recommendationStrength && (
                       <span className={`ml-1.5 rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${strengthClass(rec.recommendationStrength)}`}>
                         {rec.recommendationStrength}
                       </span>
                     )}
-                    <span className="ml-1">— {rec.recommendationText}</span>
+                    <span className="ml-1">{rec.recommendationText}</span>
                     {rec.sourceUrl && (
                       <a
                         href={rec.sourceUrl}
@@ -170,7 +178,7 @@ export const MergedGuidelinePanel: React.FC<{ topic: string }> = ({ topic }) => 
         )}
 
         <p className="text-[10px] leading-snug text-slate-400 dark:text-slate-500">
-          Recommendations are shown verbatim and individually attributed. Grouping is a reading aid — check each
+          Recommendations are shown verbatim, each under its issuing body. Grouping is a reading aid — check each
           source before acting.
         </p>
       </div>
