@@ -21,6 +21,10 @@ type ArticleWithSearchProvenance = Article & {
   _searchId?: number | null;
 };
 
+// A first quiz has five questions; each "add more" brings five more, up to twenty.
+const QUIZ_BATCH = 5;
+const QUIZ_MAX = 20;
+
 function currentTimeMs(): number {
   return Date.now();
 }
@@ -50,6 +54,9 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
   // Track per-question timing and answers for optional backend submission
   const questionStartRef = useRef<number>(0);
   const answersRef = useRef<Array<{ questionId: string; userAnswer: string; isCorrect: boolean; timeMs: number }>>([]);
+  // Questions already saved to the profile, so adding more does not save the first batch again.
+  const savedCountRef = useRef(0);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   const fetchQuestions = useCallback(async () => {
     setLoading(true);
@@ -59,8 +66,9 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
     setQuestionScope('evidence');
     setSaveStatus('idle');
     answersRef.current = [];
+    savedCountRef.current = 0;
     try {
-      const result = await api.ai.generateQuizFromEvidence(topic, articles, 'mixed', 3);
+      const result = await api.ai.generateQuizFromEvidence(topic, articles, 'mixed', QUIZ_BATCH);
       setQuestions(result.questions);
       setQuizNotice(result.warning || null);
       setQuestionScope(result.questionScope || 'evidence');
@@ -148,7 +156,8 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
     if (!isAuthenticated || answersRef.current.length === 0) return;
     setSaveStatus('saving');
     try {
-      const attempts = questions.map((q, idx) => {
+      const firstUnsaved = savedCountRef.current;
+      const attempts = questions.map((q, idx) => ({ q, idx })).slice(firstUnsaved).map(({ q, idx }) => {
         const ans = answersRef.current[idx];
         const sourceArticle = getSourceArticle(q);
         const sourceUid = getSourceUid(q);
@@ -186,6 +195,7 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
         // to save them "to" yet -- say that, not either extreme.
         hasProfile = result.mastery != null;
       }
+      savedCountRef.current = questions.length;
       setSaveStatus('saved');
       showToast(
         hasProfile
@@ -216,6 +226,35 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
       setSelectedAnswer(null);
       setShowExplanation(false);
       questionStartRef.current = Date.now();
+    }
+  };
+
+  const handleMore = async () => {
+    if (loadingMore || questions.length >= QUIZ_MAX) return;
+    setLoadingMore(true);
+    try {
+      const batch = Math.min(QUIZ_BATCH, QUIZ_MAX - questions.length);
+      const result = await api.ai.generateQuizFromEvidence(topic, articles, 'mixed', batch, {
+        avoidQuestions: questions.map((q) => q.question),
+      });
+      const seen = new Set(questions.map((q) => q.question));
+      const fresh = result.questions.filter((q) => !seen.has(q.question));
+      if (fresh.length === 0) {
+        showToast('No further distinct questions could be made from this evidence', 'info', 4000);
+        return;
+      }
+      const firstNew = questions.length;
+      setQuestions((prev) => [...prev, ...fresh]);
+      setCurrentIndex(firstNew);
+      setSelectedAnswer(null);
+      setShowExplanation(false);
+      setCompleted(false);
+      setSaveStatus('idle');
+      questionStartRef.current = currentTimeMs();
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Could not add more questions', 'warning', 4000);
+    } finally {
+      setLoadingMore(false);
     }
   };
 
@@ -312,6 +351,11 @@ export const EvidenceQuizPanel: React.FC<Props> = ({ topic, articles, onComplete
               </div>
               <div className="flex gap-2">
                 <Button variant="secondary" size="sm" onClick={handleRetry}>Retake</Button>
+                {questions.length < QUIZ_MAX && (
+                  <Button variant="primary" size="sm" onClick={handleMore} disabled={loadingMore}>
+                    {loadingMore ? 'Adding…' : `Add ${Math.min(QUIZ_BATCH, QUIZ_MAX - questions.length)} more questions`}
+                  </Button>
+                )}
               </div>
             </div>
           )}

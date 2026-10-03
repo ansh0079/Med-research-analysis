@@ -35,7 +35,8 @@ export class AiApi extends BaseApiClient {
     topic: string,
     articles: Article[],
     difficulty: 'easy' | 'medium' | 'hard' | 'mixed' = 'mixed',
-    count = 3
+    count = 5,
+    more?: { avoidQuestions: string[] }
   ): Promise<{
     questions: import('@types').QuizQuestion[];
     topic: string;
@@ -49,7 +50,11 @@ export class AiApi extends BaseApiClient {
     const response = await this.fetchWithSession(`${API_BASE}/api/quiz/from-evidence`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic, articles, difficulty, count, evidenceSnapshotId: evidenceSnapshotIdFor(articles) }),
+      body: JSON.stringify({
+        topic, articles, difficulty, count, evidenceSnapshotId: evidenceSnapshotIdFor(articles),
+        // A follow-on batch must be new questions, not the stored batch for the same evidence.
+        ...(more ? { avoidQuestions: more.avoidQuestions, refresh: true } : {}),
+      }),
     });
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();

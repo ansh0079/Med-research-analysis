@@ -151,6 +151,10 @@ ${formatGuidelineFreshness(g)}`).join('\n\n')
         ].includes(type))
         : [];
     const questionCount = claimAnchors.length > 0 ? Math.min(safeCount, claimAnchors.length) : safeCount;
+    const avoidQuestions = (Array.isArray(options.avoidQuestions) ? options.avoidQuestions : [])
+        .map((q) => String(q || '').replace(/\s+/g, ' ').trim().slice(0, 200))
+        .filter(Boolean)
+        .slice(0, 20);
 
     // A search can legitimately contain only abstracts. In that state, a
     // clinician-level rubric would otherwise ask the model for management or
@@ -347,7 +351,7 @@ Rules:
 - Questions must be answerable using the provided RESEARCH CONTEXT when article context exists.
 - If TARGET STUDY-RUN GAPS are provided, prioritize those nodes over broad topic coverage.
 - outlineNodeId must be one of the listed target/outline node IDs when the question maps to one.
-- Do not create true/false questions.
+- Do not create true/false questions.${avoidQuestions.length > 0 ? `\n- The learner has already seen the questions below. Do NOT repeat or paraphrase them; test different findings, sources or decision points:\n${avoidQuestions.map((q, i) => `  ${i + 1}. ${q}`).join('\n')}` : ''}
 - correctAnswer must be the option letter only: "A", "B", "C", or "D".
 
 ${OPTION_PARITY_RULE}

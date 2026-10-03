@@ -19,8 +19,8 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
         return parseJsonArrayStrict(String(text || ''));
     }
 
-    async function generateQuizQuestions(ai, { prompt, provider, model, usage }) {
-        const opts = { temperature: TEMPERATURE.quiz, jsonMode: true, maxOutputTokens: 4096, usage };
+    async function generateQuizQuestions(ai, { prompt, provider, model, usage, maxOutputTokens = 4096 }) {
+        const opts = { temperature: TEMPERATURE.quiz, jsonMode: true, maxOutputTokens, usage };
         let usedProvider = provider;
         let quizModel = model;
         const runStructured = async (p, m) => {

@@ -122,6 +122,11 @@ async function hydrateEvidenceArticles(db, articles = []) {
     }));
 }
 
+const quizPool = require('./quizPoolService');
+
+const EVIDENCE_QUIZ_MIN = 5;
+const EVIDENCE_QUIZ_MAX = 20;
+
 function filterQuestionsByEvidenceTrust(questions = []) {
     const droppedHighStakes = [];
     const safeQuestions = questions.filter((question) => {
@@ -689,7 +694,10 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
     }
 
     async function generateFromEvidence({ body, user = {}, sessionId = null, log = logger }) {
-        const { topic, articles: requestedArticles = [], count = 3, difficulty = 'mixed', evidenceSnapshotId = null, refresh = false } = body || {};
+        const { topic, articles: requestedArticles = [], count = EVIDENCE_QUIZ_MIN, difficulty = 'mixed', evidenceSnapshotId = null, refresh = false } = body || {};
+        const avoidQuestions = Array.isArray(body?.avoidQuestions)
+            ? body.avoidQuestions.filter((q) => typeof q === 'string').slice(0, EVIDENCE_QUIZ_MAX)
+            : [];
         if (!topic || typeof topic !== 'string' || topic.trim().length < 2) {
             return response({ error: 'topic is required' }, 400);
         }
@@ -711,10 +719,33 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
         const evidenceLineage = publicLineage(lineage);
 
         const cleanTopic = topic.trim();
-        const planLimit = getLimit(user, 'quizQuestionsPerGeneration') || 3;
-        const safeCount = Math.min(Math.max(parseInt(String(count), 10) || 3, 1), planLimit);
+        // An evidence quiz is never smaller than the minimum, whatever the plan says, and can grow to the maximum on request.
+        const planLimit = Math.min(Math.max(getLimit(user, 'quizQuestionsPerGeneration') || 0, EVIDENCE_QUIZ_MIN), EVIDENCE_QUIZ_MAX);
+        const safeCount = Math.min(Math.max(parseInt(String(count), 10) || EVIDENCE_QUIZ_MIN, EVIDENCE_QUIZ_MIN), planLimit);
         const hydratedSources = await hydrateEvidenceArticles(db, articles.slice(0, 5));
         const evidenceArticles = hydratedSources.map((source) => source.article);
+
+        // Questions written for anyone on these same papers are shared. Serve the ones this learner has
+        // not answered, and only ask the model for what is missing.
+        const sharedPoolKey = quizPool.poolKey(db, cleanTopic, evidenceArticles);
+        const sharedPool = await quizPool.loadPool(db, sharedPoolKey);
+        const seen = await quizPool.seenFingerprints(db, { userId: user?.id || null, topic: cleanTopic, shown: avoidQuestions });
+        const poolUnseen = quizPool.unseenQuestions(sharedPool, seen);
+        if (poolUnseen.length >= safeCount) {
+            return response({
+                questions: poolUnseen.slice(0, safeCount),
+                topic: cleanTopic,
+                provider: 'shared_quiz_pool',
+                model: null,
+                sharedPool: { served: safeCount, generated: 0 },
+                disclaimer: AI_DISCLAIMER,
+                evidenceLineage,
+            });
+        }
+        const shortfall = safeCount - poolUnseen.length;
+        // Ask for extra: cue, clinical-validation and evidence-trust filters each drop some, and the learner should still get the rest.
+        const askCount = Math.min(shortfall + Math.ceil(shortfall * 0.4), EVIDENCE_QUIZ_MAX + 4);
+        const promptAvoid = [...new Set([...avoidQuestions, ...sharedPool.map((q) => q.question)])];
         const availableSourceTrust = hydratedSources.map((source) => evidenceSourceTrust(source.trusted || {}));
         const hasHighStakesSource = availableSourceTrust.some((trust) => [
             'full_text_available', 'guideline_supported', 'source_verified', 'human_reviewed',
@@ -760,11 +791,12 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             cleanTopic,
             evidenceArticles,
             {
-                count: safeCount,
+                count: askCount,
                 difficulty,
                 communityTopPicks,
                 teachingObjectContext,
                 promptVariant,
+                avoidQuestions: promptAvoid,
                 // Abstract-only evidence can safely support recall/pitfall items,
                 // but not management, guideline, or trial-interpretation claims.
                 allowedQuestionTypes: hasHighStakesSource ? undefined : ['recall', 'pitfall'],
@@ -787,7 +819,8 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             model: initialQuizModel,
             userId: user?.id || null,
         });
-        if (!refresh) {
+        // A pool that exists knows more than this learner's single stored batch, so it takes precedence.
+        if (!refresh && sharedPool.length === 0) {
             const reusableBatch = await findReusableQuizBatch(db, batchDescriptor);
             if (reusableBatch) return response(reusableBatch);
         }
@@ -815,6 +848,8 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                     provider: selectedProvider,
                     model: initialQuizModel,
                     usage: { operation: 'quiz', topic: cleanTopic, userId: user?.id || null },
+                    // About 900 tokens a question with explanations and distractor rationale; the 4096 default truncates past four.
+                    maxOutputTokens: Math.min(1200 + askCount * 900, 24000),
                 });
             } catch (providerError) {
                 const snapshotBatch = await findReusableQuizBatchForSnapshot(
@@ -902,7 +937,25 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 };
             });
 
-            const { questions, droppedHighStakes } = filterQuestionsByEvidenceTrust(mappedQuestions);
+            const { questions: trusted, droppedHighStakes } = filterQuestionsByEvidenceTrust(mappedQuestions);
+            // Unvalidated questions (reviewer unavailable) are for this learner only, never for the pool.
+            if (!validation.validationSummary.skipped) {
+                await quizPool.addToPool(db, sharedPoolKey, {
+                    topic: cleanTopic,
+                    questions: trusted,
+                    provider: usedProvider,
+                    model: quizModel,
+                    confidence: 0.8,
+                    evidenceLineage,
+                    manifestComplete: manifest.complete,
+                }).catch((err) => log.warn({ err }, 'Failed to add to shared quiz pool'));
+            }
+            const freshQuestions = trusted
+                .filter((q) => !seen.has(quizPool.questionFingerprint(q.question)))
+                .filter((q) => !poolUnseen.some((p) => quizPool.questionFingerprint(p.question) === quizPool.questionFingerprint(q.question)))
+                // Pooled questions carry the pool's stable id, so every learner's attempt on one question joins up.
+                .map((q) => (validation.validationSummary.skipped ? q : quizPool.asPoolQuestion(q)));
+            const questions = [...poolUnseen, ...freshQuestions].slice(0, safeCount);
 
             if (questions.length === 0) {
                 const stored = await storedTopicFallback(
@@ -928,6 +981,10 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 evidenceLineage,
                 evidenceManifest: publicManifest(manifest),
                 droppedHighStakes: droppedHighStakes.length ? droppedHighStakes : undefined,
+                sharedPool: {
+                    served: Math.min(poolUnseen.length, questions.length),
+                    generated: Math.max(0, questions.length - poolUnseen.length),
+                },
             };
             await persistQuizBatch(db, batchDescriptor, {
                 topic: cleanTopic,

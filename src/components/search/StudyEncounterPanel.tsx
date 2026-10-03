@@ -115,7 +115,7 @@ export function StudyEncounterPanel({ topic, articles, jobClaims, guidelineConfl
     setPhase('generating');
     setGenError('');
     try {
-      const { questions: qs } = await api.ai.generateQuizFromEvidence(topic, articles, 'mixed', 3);
+      const { questions: qs } = await api.ai.generateQuizFromEvidence(topic, articles, 'mixed', 5);
       setQuestions(qs);
       setQIndex(0);
       setSelected(null);
