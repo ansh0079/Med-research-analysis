@@ -488,7 +488,13 @@ function registerUnifiedSearchRoutes(app, deps) {
             if (existingEnrich?.status === 'ready') {
                 aiEnrichmentStatus = 'ready';
             } else if (!shouldPrecomputeAiExtras()) {
-                aiEnrichmentStatus = 'not_requested';
+                // Already made for this exact search earlier (its jobs outlive the cache entry): let the client
+                // poll, which returns it at once, rather than offer to generate what exists.
+                const { liveClinicalAnswerEnrichmentJobKey } = require('../../services/searchEnrichmentKeys');
+                const existingJob = await Promise.resolve(db.getAiGenerationJobByKey?.(liveClinicalAnswerEnrichmentJobKey(enrichKey))).catch(() => null);
+                aiEnrichmentStatus = existingJob ? 'pending' : 'not_requested';
+            }
+            if (aiEnrichmentStatus === 'not_requested') {
                 await Promise.resolve(cache.set(`${ENRICHMENT_REQUEST_PREFIX}${enrichKey}`, {
                     query: queryValidation.sanitized,
                     articles: articles.slice(0, 8),
