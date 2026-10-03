@@ -69,7 +69,7 @@ function makeDb({ guidelines = [], teachingObjects = [], attempts = [] } = {}) {
     };
 }
 
-function makeService(db, generate = null) {
+function makeService(db, generate = null, extraHelpers = {}) {
     const noop = jest.fn();
     return createQuizGenerationService({
         db,
@@ -89,6 +89,7 @@ function makeService(db, generate = null) {
             })),
             assignQuizPromptVariant: () => 'control',
             normalizeVisualExplanation: () => null,
+            ...extraHelpers,
         },
     });
 }
@@ -269,6 +270,23 @@ describe('an evidence quiz has at least five questions and can grow to twenty', 
         const result = await ask({ count: 5 }, generate);
         expect(result.status).toBe(200);
         expect(result.body.questions).toHaveLength(2);
+    });
+
+    test('if generation still falls short, saved topic questions fill the quiz to five, and the response says so', async () => {
+        const generate = jest.fn()
+            .mockResolvedValueOnce({ questions: [stem(1), stem(2)], usedProvider: 'gemini', quizModel: 'm' })
+            .mockResolvedValueOnce({ questions: [stem(1)], usedProvider: 'gemini', quizModel: 'm' });
+        const saved = Array.from({ length: 6 }, (_, i) => ({ ...stem(50 + i), id: `stored_${i}`, correctAnswer: 'A' }));
+        const db = makeDb();
+        const snapshot = await persistSearchEvidenceSnapshot(db, { query: 'hf', articles: [article()], sessionId: 's1' });
+        const service = makeService(db, generate, { serveColdStartMCQs: jest.fn().mockResolvedValue(saved) });
+        const result = await service.generateFromEvidence({
+            body: { topic: 'heart failure', articles: [article()], evidenceSnapshotId: snapshot.id, count: 5 },
+            user: {}, sessionId: 's1', log: { warn() {}, error() {}, info() {} },
+        });
+        expect(result.body.questions).toHaveLength(5);
+        expect(result.body.sharedPool).toMatchObject({ generated: 2, fromStore: 3 });
+        expect(result.body.warning).toMatch(/3 of these questions come from saved questions/);
     });
 
     test('a full first round makes no top-up call', async () => {

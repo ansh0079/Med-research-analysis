@@ -1010,6 +1010,30 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
             }
             const questions = [...poolUnseen, ...freshQuestions].slice(0, safeCount);
 
+            // Minimum per quiz: if live generation still fell short, fill the remaining places from the topic's saved,
+            // validated questions (guideline and topic MCQs) the learner has not seen, and say so.
+            let toppedUpFromStore = 0;
+            if (questions.length > 0 && questions.length < safeCount && typeof serveColdStartMCQs === 'function') {
+                const stored = await serveColdStartMCQs(db, cleanTopic, safeCount * 3, user?.id).catch(() => null) || [];
+                const have = new Set(questions.map((q) => quizPool.questionFingerprint(q.question)));
+                for (const q of stored) {
+                    if (questions.length >= safeCount) break;
+                    const fingerprint = quizPool.questionFingerprint(q.question);
+                    if (!fingerprint || have.has(fingerprint) || seen.has(fingerprint)) continue;
+                    have.add(fingerprint);
+                    questions.push(q);
+                    toppedUpFromStore += 1;
+                }
+            }
+            log.info({
+                topic: cleanTopic,
+                wanted: safeCount,
+                fromPool: Math.min(poolUnseen.length, safeCount),
+                generated: freshQuestions.length,
+                fromStore: toppedUpFromStore,
+                served: questions.length,
+            }, 'Evidence quiz assembled');
+
             if (questions.length === 0) {
                 const stored = await storedTopicFallback(
                     'The selected evidence only supports lower-certainty learning points, so these saved questions cover the same topic instead.',
@@ -1036,8 +1060,12 @@ function createQuizGenerationService({ db, serverConfig, ai, mcqValidator, logge
                 droppedHighStakes: droppedHighStakes.length ? droppedHighStakes : undefined,
                 sharedPool: {
                     served: Math.min(poolUnseen.length, questions.length),
-                    generated: Math.max(0, questions.length - poolUnseen.length),
+                    generated: freshQuestions.length,
+                    fromStore: toppedUpFromStore,
                 },
+                warning: toppedUpFromStore > 0
+                    ? `${toppedUpFromStore} of these questions come from saved questions on this topic, not from the papers in this search.`
+                    : undefined,
             };
             await persistQuizBatch(db, batchDescriptor, {
                 topic: cleanTopic,
