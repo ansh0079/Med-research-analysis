@@ -33,6 +33,26 @@ describe('placing vectors on topics', () => {
     });
 });
 
+describe('canonical topic naming', () => {
+    test('uses one concise full clinical name for acronym and qualified duplicates', () => {
+        const topics = [
+            { display_name: 'TBI' },
+            { display_name: 'Traumatic brain injury' },
+            { display_name: 'Traumatic brain injury management' },
+        ];
+        expect(service.canonicalTopicIndex([0, 1, 2], topics)).toBe(1);
+    });
+
+    test('works for any topic rather than a curated example', () => {
+        const topics = [
+            { display_name: 'Community acquired pneumonia treatment' },
+            { display_name: 'CAP' },
+            { display_name: 'Community acquired pneumonia' },
+        ];
+        expect(service.canonicalTopicIndex([0, 1, 2], topics)).toBe(2);
+    });
+});
+
 describe('classifying a question', () => {
     const supportOf = (...sims) => sims.map((similarity, recIndex) => ({ recIndex, similarity }));
     const placement = (over = {}) => ({ topicIndex: 0, similarity: 0.9, runnerUpIndex: 1, runnerUpSimilarity: 0.3, margin: 0.6, ...over });

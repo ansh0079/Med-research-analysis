@@ -73,6 +73,25 @@ function recommendationText(rec) {
     return clean(`${rec.source_body || ''}. ${rec.recommendation_text || ''}`).slice(0, 800);
 }
 
+/** Choose one stable display topic for every semantic cluster. Prefer a concise
+ * descriptive clinical name over an acronym or a longer task-specific duplicate. */
+function canonicalTopicIndex(indices, topics) {
+    const acronym = (name) => {
+        const compact = String(name || '').replace(/[^A-Za-z]/g, '');
+        return compact.length >= 2 && compact.length <= 8 && compact === compact.toUpperCase();
+    };
+    return [...indices].sort((a, b) => {
+        const left = String(topics[a]?.display_name || '').trim();
+        const right = String(topics[b]?.display_name || '').trim();
+        const acronymDifference = Number(acronym(left)) - Number(acronym(right));
+        if (acronymDifference) return acronymDifference;
+        const wordDifference = left.split(/\s+/).length - right.split(/\s+/).length;
+        if (wordDifference) return wordDifference;
+        const lengthDifference = left.length - right.length;
+        return lengthDifference || left.localeCompare(right);
+    })[0];
+}
+
 async function loadSources(db) {
     const placeholders = MCQ_TYPES.map(() => '?').join(',');
     const [objects, topics, recs, papers] = await Promise.all([
@@ -112,10 +131,14 @@ async function buildIndex({ sources, embed, thresholds = classify.DEFAULT_THRESH
 
     // Near-duplicate topics are one subject: margins and guideline support are measured across the cluster.
     const clusterOf = classify.clusterTopics(topicVecs, thresholds.clusterSimilarity);
-    // A cluster is named by its first topic's id, so the name does not change when other topics are added.
-    const clusterSeedId = new Map();
-    topics.forEach((t, i) => { if (!clusterSeedId.has(clusterOf[i])) clusterSeedId.set(clusterOf[i], t.id); });
-    const clusterIdOfTopic = (i) => clusterSeedId.get(clusterOf[i]);
+    const membersByCluster = new Map();
+    topics.forEach((_, i) => {
+        if (!membersByCluster.has(clusterOf[i])) membersByCluster.set(clusterOf[i], []);
+        membersByCluster.get(clusterOf[i]).push(i);
+    });
+    const canonicalIndexByCluster = new Map([...membersByCluster].map(([cluster, indices]) => [cluster, canonicalTopicIndex(indices, topics)]));
+    const canonicalIndexOfTopic = (i) => canonicalIndexByCluster.get(clusterOf[i]);
+    const clusterIdOfTopic = (i) => topics[canonicalIndexOfTopic(i)].id;
     const recPlacements = classify.placeRecommendations(recVecs, topicVecs, clusterOf);
     const recsByCluster = classify.groupRecommendationsByTopic(recPlacements, thresholds.minTopicSimilarity, clusterOf);
     const topicIndexById = new Map(topics.map((t, i) => [t.id, i]));
@@ -133,8 +156,8 @@ async function buildIndex({ sources, embed, thresholds = classify.DEFAULT_THRESH
         return {
             guidelineId: String(rec.id),
             originalTopic: rec.normalized_topic || null,
-            assignedCurriculumTopicId: assigned ? topics[p.topicIndex].id : null,
-            assignedTopicName: assigned ? topics[p.topicIndex].display_name : null,
+            assignedCurriculumTopicId: assigned ? topics[canonicalIndexOfTopic(p.topicIndex)].id : null,
+            assignedTopicName: assigned ? topics[canonicalIndexOfTopic(p.topicIndex)].display_name : null,
             assignedClusterId: assigned ? clusterIdOfTopic(p.topicIndex) : null,
             topicSimilarity: p.similarity,
             runnerUpSimilarity: p.runnerUpSimilarity,
@@ -187,8 +210,8 @@ async function buildIndex({ sources, embed, thresholds = classify.DEFAULT_THRESH
             stem: q.stem,
             originalTopic: q.originalTopic,
             originalCurriculumTopicId: q.originalCurriculumTopicId,
-            assignedCurriculumTopicId: assigned ? topics[placement.topicIndex].id : null,
-            assignedTopicName: assigned ? topics[placement.topicIndex].display_name : null,
+            assignedCurriculumTopicId: assigned ? topics[canonicalIndexOfTopic(placement.topicIndex)].id : null,
+            assignedTopicName: assigned ? topics[canonicalIndexOfTopic(placement.topicIndex)].display_name : null,
             assignedClusterId: assigned ? clusterIdOfTopic(placement.topicIndex) : null,
             topicSimilarity: placement.similarity,
             runnerUpCurriculumTopicId: placement.runnerUpIndex >= 0 ? topics[placement.runnerUpIndex].id : null,
@@ -328,4 +351,5 @@ module.exports = {
     buildIndex,
     writeIndex,
     summarise,
+    canonicalTopicIndex,
 };
