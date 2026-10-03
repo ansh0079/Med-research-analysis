@@ -29,6 +29,20 @@ function attributionOf(rec: { sourceBody?: string | null; sourceYear?: number | 
   return `${rec.sourceBody || 'Unattributed'}${rec.sourceYear ? ` ${rec.sourceYear}` : ''}`;
 }
 
+const COMMUNITY = /community[- ]acquired/i;
+const HOSPITAL = /hospital[- ]acquired|ventilator[- ]associated|nosocomial/i;
+
+/**
+ * A guideline can cover two settings in one document (NICE NG250 does community- and hospital-acquired
+ * pneumonia), so a search for one returns the other's near-identical recommendations. Where a
+ * recommendation is only about the other setting, say so rather than let it read as a duplicate.
+ */
+function otherSetting(topic: string, text: string): string | null {
+  if (COMMUNITY.test(topic) && !HOSPITAL.test(topic) && HOSPITAL.test(text) && !COMMUNITY.test(text)) return 'Hospital-acquired';
+  if (HOSPITAL.test(topic) && !COMMUNITY.test(topic) && COMMUNITY.test(text) && !HOSPITAL.test(text)) return 'Community-acquired';
+  return null;
+}
+
 const AGREEMENT_CHIP: Record<string, { label: string; cls: string }> = {
   conflict: {
     label: 'Bodies differ',
@@ -107,9 +121,15 @@ export const MergedGuidelinePanel: React.FC<{ topic: string }> = ({ topic }) => 
       <div className="px-5 pb-4 space-y-3">
         {visibleThemes.map((theme, i) => {
           const chip = AGREEMENT_CHIP[theme.agreement] ?? AGREEMENT_CHIP.single;
-          // One issuer for every line: name it once in the header instead of on each recommendation.
-          const labels = new Set(theme.recommendations.map(attributionOf));
-          const sharedLabel = labels.size === 1 && theme.recommendations.length > 1 ? [...labels][0] : null;
+          // One issuer for every line: name it once in the header instead of on each recommendation. When its
+          // recommendations come from different years, the year becomes a small tag on each line.
+          const issuers = new Set(theme.recommendations.map((r) => r.sourceBody || 'Unattributed'));
+          const years = new Set(theme.recommendations.map((r) => r.sourceYear ?? null));
+          const sameIssuer = issuers.size === 1 && theme.recommendations.length > 1;
+          const yearsVary = years.size > 1;
+          const sharedLabel = sameIssuer
+            ? (yearsVary ? [...issuers][0] : attributionOf(theme.recommendations[0]))
+            : null;
           return (
             <div
               key={`${theme.label}-${i}`}
@@ -138,9 +158,20 @@ export const MergedGuidelinePanel: React.FC<{ topic: string }> = ({ topic }) => 
               <ul className="mt-2 space-y-1.5">
                 {theme.recommendations.map((rec, j) => (
                   <li key={`${rec.id ?? j}`} className="text-xs leading-snug text-slate-700 dark:text-slate-200">
-                    {/* The issuer is named once per group; a line repeats it only when it changes. */}
-                    {!sharedLabel && attributionOf(rec) !== (j > 0 ? attributionOf(theme.recommendations[j - 1]) : null) && (
+                    {/* One issuer: named once in the header. Several issuers: every line names its own, so no line reads as unattributed. */}
+                    {sameIssuer && yearsVary && rec.sourceYear && (
+                      <span className="mr-1.5 rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold text-slate-600 dark:bg-slate-700 dark:text-slate-300">{rec.sourceYear}</span>
+                    )}
+                    {!sameIssuer && (
                       <span className="mr-1.5 font-semibold text-slate-900 dark:text-slate-100">{attributionOf(rec)} —</span>
+                    )}
+                    {otherSetting(topic, rec.recommendationText) && (
+                      <span
+                        className="mr-1.5 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-800 dark:bg-amber-900/30 dark:text-amber-200"
+                        title="This recommendation is about a different setting from the one you searched"
+                      >
+                        {otherSetting(topic, rec.recommendationText)}
+                      </span>
                     )}
                     {rec.recommendationStrength && (
                       <span className={`ml-1.5 rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${strengthClass(rec.recommendationStrength)}`}>
