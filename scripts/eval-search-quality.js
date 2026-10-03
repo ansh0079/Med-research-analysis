@@ -237,21 +237,7 @@ async function fetchNew(query) {
     // New path: unified RRF endpoint with multi-source fusion
     const url = `${BASE}/api/search?q=${encodeURIComponent(query)}&sources=${SOURCES}&limit=${LIMIT}`;
     const data = await fetchJSON(url);
-    const articles = Array.isArray(data.articles) ? data.articles : [];
-    if (articles.length > 0) return articles;
-    // Fallback 1: PubMed-only when multi-source returns empty (provider throttling)
-    try {
-        const urlPubmed = `${BASE}/api/search?q=${encodeURIComponent(query)}&sources=pubmed&limit=${LIMIT}`;
-        const d2 = await fetchJSON(urlPubmed);
-        const a2 = Array.isArray(d2.articles) ? d2.articles : [];
-        if (a2.length > 0) return a2;
-    } catch { /* ignore */ }
-    // Fallback 2: legacy PubMed path as a last resort for live-API flakiness
-    try {
-        const legacy = await fetchOld(query);
-        return legacy;
-    } catch { /* ignore */ }
-    return articles;
+    return Array.isArray(data.articles) ? data.articles : [];
 }
 
 async function runGoldEval(goldPath) {
