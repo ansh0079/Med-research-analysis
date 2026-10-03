@@ -234,6 +234,10 @@ function registerSearchFeedbackRoutes(app, { db, cache, rateLimit, requireJson }
                     db.getAiGenerationJobByKey(liveClinicalAnswerEnrichmentJobKey(key)).catch(() => null),
                 ]);
 
+                // Nothing started and nothing precomputes it: the reader has not asked yet.
+                if (!consensusJob && !clinicalAnswerJob && !require('../../services/searchLearningConfig').shouldPrecomputeAiExtras()) {
+                    return res.json({ status: 'not_requested' });
+                }
                 const consensusStatus = consensusJob?.status || 'pending';
                 const caStatus = clinicalAnswerJob?.status || 'pending';
                 const status = consensusStatus === 'failed' && caStatus === 'failed'

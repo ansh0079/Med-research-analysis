@@ -60,6 +60,8 @@ export function useSearch() {
   const [learnerContext, setLearnerContext] = useState<LearnerContextSummary | null>(null);
   const [aiEnrichmentLoading, setAiEnrichmentLoading] = useState(false);
   const [aiEnrichmentFailed, setAiEnrichmentFailed] = useState(false);
+  // Set when the clinical answer is made on demand: the key to send when the reader asks for it.
+  const [aiEnrichmentRequestKey, setAiEnrichmentRequestKey] = useState<string | null>(null);
   const [intelligenceLoading, setIntelligenceLoading] = useState(false);
   const [lowRecallLearning, setLowRecallLearning] = useState<LowRecallLearning | null>(null);
   const [searchTelemetry, setSearchTelemetry] = useState<import('@types').SearchResponse['searchTelemetry'] | null>(null);
@@ -107,10 +109,10 @@ export function useSearch() {
       return api.search.getAiEnrichment(enrichKey);
     }, [enrichKey]),
     isComplete: useCallback((enrichment: Awaited<ReturnType<typeof api.search.getAiEnrichment>>) => {
-      return enrichment.status === 'ready' || enrichment.status === 'failed';
+      return enrichment.status === 'ready' || enrichment.status === 'failed' || enrichment.status === 'not_requested';
     }, []),
     onSuccess: useCallback((enrichment: {
-      status: 'pending' | 'ready' | 'failed';
+      status: 'pending' | 'ready' | 'failed' | 'not_requested';
       clinicalAnswer?: import('@types').ClinicalAnswer | null;
       consensusSynopsis?: import('@types').TopicIntelligence['consensusSynopsis'] | null;
     }) => {
@@ -196,6 +198,7 @@ export function useSearch() {
     guidelinePoll.stop();
     setPollTopic(null);
     setEnrichKey(null);
+    setAiEnrichmentRequestKey(null);
     setPendingGuidelineTopic(null);
   }, [topicPoll, enrichmentPoll, guidelinePoll]);
 
@@ -369,7 +372,11 @@ export function useSearch() {
         }
 
         // Poll for AI enrichment (consensus synopsis + clinical answer) if still pending
-        if (aiEnrichmentKey && aiEnrichmentStatus === 'pending') {
+        if (aiEnrichmentKey && aiEnrichmentStatus === 'not_requested') {
+          setAiEnrichmentLoading(false);
+          setAiEnrichmentFailed(false);
+          setAiEnrichmentRequestKey(aiEnrichmentKey);
+        } else if (aiEnrichmentKey && aiEnrichmentStatus === 'pending') {
           setAiEnrichmentLoading(true);
           setAiEnrichmentFailed(false);
           enrichPollRequestIdRef.current = thisRequestId;
@@ -428,6 +435,24 @@ export function useSearch() {
     setIntelligenceLoading(false);
   }, [setResults, setError, setAgentGuidance, setTopicIntelligence, setClinicalAnswer, setCommunityInsight, setTopicGuideStatus, cancelPoll]);
 
+  // The reader asked for the clinical answer: start it on the server, then poll as a precomputed one would be.
+  const requestAiEnrichment = useCallback(async () => {
+    const key = aiEnrichmentRequestKey;
+    if (!key) return;
+    setAiEnrichmentRequestKey(null);
+    setAiEnrichmentLoading(true);
+    setAiEnrichmentFailed(false);
+    try {
+      await api.search.requestAiEnrichment(key);
+      enrichPollRequestIdRef.current = requestIdRef.current;
+      setEnrichKey(key);
+      enrichmentPollRef.current.start();
+    } catch {
+      setAiEnrichmentLoading(false);
+      setAiEnrichmentFailed(true);
+    }
+  }, [aiEnrichmentRequestKey]);
+
   return {
     search,
     loading,
@@ -440,6 +465,8 @@ export function useSearch() {
     learnerContext,
     aiEnrichmentLoading,
     aiEnrichmentFailed,
+    aiEnrichmentRequestable: aiEnrichmentRequestKey !== null,
+    requestAiEnrichment,
     intelligenceLoading,
     knowledgeDriftAlerts,
     dismissKnowledgeDriftAlert,

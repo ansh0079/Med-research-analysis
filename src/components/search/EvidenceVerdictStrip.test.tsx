@@ -208,6 +208,26 @@ describe('EvidenceVerdictStrip', () => {
         expect(copied).toContain('PMID:');
         expect(copied).toMatch(/^1\. /m);
     });
+
+    test('"Report outdated" sends once and says what happens next', async () => {
+        const onReportOutdated = jest.fn(async () => {});
+        renderStrip({ query: 'sepsis', results: manyPapers(6), onReportOutdated });
+        fireEvent.click(screen.getByRole('button', { name: 'Report outdated' }));
+        await screen.findByText('Thanks: refreshed on next search');
+        fireEvent.click(screen.getByRole('button', { name: 'Thanks: refreshed on next search' }));
+        expect(onReportOutdated).toHaveBeenCalledTimes(1);
+    });
+
+    test('a failed report can be retried, and without a handler there is no button', async () => {
+        const onReportOutdated = jest.fn().mockRejectedValueOnce(new Error('down')).mockResolvedValueOnce(undefined);
+        const { unmount } = renderStrip({ query: 'sepsis', results: manyPapers(6), onReportOutdated });
+        fireEvent.click(screen.getByRole('button', { name: 'Report outdated' }));
+        fireEvent.click(await screen.findByRole('button', { name: 'Could not report; try again' }));
+        await screen.findByText('Thanks: refreshed on next search');
+        unmount();
+        renderStrip({ query: 'sepsis', results: manyPapers(6) });
+        expect(screen.queryByRole('button', { name: 'Report outdated' })).toBeNull();
+    });
 });
 
 describe('formatCitation', () => {

@@ -104,8 +104,29 @@ export class SearchApi extends BaseApiClient {
     return response.json();
   }
 
+  /** Report a topic's evidence as out of date: its stored review ends and the next search fetches fresh. */
+  async reportTopicOutdated(topic: string): Promise<{ ok: boolean; refreshed: boolean }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/search/topic-outdated`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic }),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  /** Start the consensus summary and clinical answer for a search; poll getAiEnrichment for the result. */
+  async requestAiEnrichment(key: string): Promise<void> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/search/ai-enrichment/${encodeURIComponent(key)}/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+  }
+
   async getAiEnrichment(key: string): Promise<{
-    status: 'pending' | 'ready' | 'failed';
+    status: 'pending' | 'ready' | 'failed' | 'not_requested';
     clinicalAnswer?: import('@types').ClinicalAnswer | null;
     consensusSynopsis?: import('@types').TopicIntelligence['consensusSynopsis'] | null;
   }> {

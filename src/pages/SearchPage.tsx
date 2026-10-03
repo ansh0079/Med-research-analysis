@@ -76,6 +76,8 @@ export const SearchPage: React.FC = () => {
     learnerContext,
     aiEnrichmentLoading,
     aiEnrichmentFailed,
+    aiEnrichmentRequestable,
+    requestAiEnrichment,
     intelligenceLoading,
     knowledgeDriftAlerts,
     dismissKnowledgeDriftAlert,
@@ -324,6 +326,8 @@ export const SearchPage: React.FC = () => {
     clinicalAnswer,
     aiEnrichmentLoading,
     aiEnrichmentFailed,
+    aiEnrichmentRequestable,
+    onRequestAiEnrichment: requestAiEnrichment,
     communityInsight,
     proactiveAlert,
     knowledgeDriftAlerts,
@@ -482,6 +486,7 @@ export const SearchPage: React.FC = () => {
               openAccessCount={openAccessCount}
               retractedCount={retractedCount}
               guidelineWorkspace={guidelineWorkspace}
+              onReportOutdated={async () => { await api.search.reportTopicOutdated(resultsQuery || currentQuery); }}
               notice={<SourceFailureNotice sourceTelemetry={searchTelemetry?.sources} sourceFailures={searchTelemetry?.sourceFailures} />}
               details={hasSearchDetails({ sourceTelemetry: searchTelemetry?.sources, queryIntent, searchPack, activeFilters }) ? (
                 <SearchDetails sourceTelemetry={searchTelemetry?.sources} queryIntent={queryIntent} searchPack={searchPack} activeFilters={activeFilters} />

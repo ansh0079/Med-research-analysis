@@ -27,6 +27,11 @@ const {
 } = require('../../services/searchQueryIntentService');
 
 const isDev = process.env.NODE_ENV === 'development';
+const { shouldPrecomputeAiExtras } = require('../../services/searchLearningConfig');
+
+// What an on-demand clinical answer needs, kept for as long as a search page is realistically open.
+const ENRICHMENT_REQUEST_PREFIX = 'enrichment-request:';
+const ENRICHMENT_REQUEST_TTL_SECONDS = 6 * 3600;
 
 function registerUnifiedSearchRoutes(app, deps) {
     const {
@@ -43,6 +48,66 @@ function registerUnifiedSearchRoutes(app, deps) {
         ? requireDailySearchLimit()
         : ((_req, _res, next) => next());
     const f = fetchImpl || safeFetch;
+
+    // The consensus summary and live clinical answer for a search, made when the reader asks for them
+    // (see shouldPrecomputeAiExtras). The search stored what they need under its enrichment key; this
+    // starts the two jobs, and the existing poll endpoint reports them as they finish.
+    app.post('/api/search/ai-enrichment/:key/generate', rateLimit(6, 60), async (req, res) => {
+        const key = String(req.params.key || '');
+        if (!/^[0-9a-f]{32}$/.test(key)) return res.status(400).json({ error: 'Invalid enrichment key' });
+        try {
+            const request = await Promise.resolve(cache.get(`${ENRICHMENT_REQUEST_PREFIX}${key}`)).catch(() => null);
+            if (!request?.query || !Array.isArray(request.articles) || request.articles.length === 0) {
+                return res.status(410).json({ error: 'This search has expired. Run it again to generate the clinical answer.', code: 'ENRICHMENT_REQUEST_EXPIRED' });
+            }
+            const { getOrEnqueueConsensusSynopsis, getOrEnqueueLiveClinicalAnswer } = require('../../services/aiGenerationJobService');
+            const { consensusEnrichmentJobKey, liveClinicalAnswerEnrichmentJobKey } = require('../../services/searchEnrichmentKeys');
+            await Promise.all([
+                getOrEnqueueConsensusSynopsis({
+                    db, topic: request.query, articles: request.articles, serverConfig, fetchImpl: f, cache, logger,
+                    jobKey: consensusEnrichmentJobKey(key),
+                }),
+                getOrEnqueueLiveClinicalAnswer({
+                    db, topic: request.query, articles: request.articles, guidelines: [],
+                    previousQueries: request.previousQueries || [], trainingStage: request.trainingStage || null,
+                    sessionDepth: Number(request.sessionDepth || 0), serverConfig, fetchImpl: f, cache, logger,
+                    jobKey: liveClinicalAnswerEnrichmentJobKey(key),
+                }),
+            ]);
+            return res.status(202).json({ status: 'pending' });
+        } catch (err) {
+            req.log?.warn?.({ err }, 'On-demand enrichment failed to start');
+            return res.status(500).json({ error: 'Could not start the clinical answer. Please try again.' });
+        }
+    });
+
+    // A reader says a topic's evidence is out of date. Its monthly review ends now, so the next search
+    // fetches fresh, and the report is logged where curators see guideline watch events. Fetching again
+    // costs no AI, so one report is enough; the rate limit stops it being used as a refresh loop.
+    app.post('/api/search/topic-outdated', rateLimit(5, 3600), async (req, res) => {
+        const topic = String(req.body?.topic || '').trim().slice(0, 300);
+        const validation = validateQuery(topic);
+        if (!validation.valid) return res.status(400).json({ error: 'topic is required' });
+        try {
+            const { invalidateTopicReviews } = require('../../services/search/topicReviewStore');
+            const ended = await invalidateTopicReviews(db, validation.sanitized);
+            // Drop the short hot copy of the default search too, so the very next search is fresh.
+            const params = deriveSharedSearchParams({ db, query: validation.sanitized, sources: 'pubmed,openalex', explicitSources: true, limit: 20, specificity: 'moderate', vector: '1' });
+            if (!params.error) await Promise.resolve(cache.del?.(params.sharedCacheKey)).catch(() => {});
+            await Promise.resolve(db.insertGuidelineWatchEvent?.({
+                normalizedTopic: db.normalizeTopic ? db.normalizeTopic(validation.sanitized) : validation.sanitized.toLowerCase(),
+                eventType: 'user_reported_outdated',
+                severity: 'warning',
+                message: `A reader reported the evidence for "${validation.sanitized.slice(0, 120)}" as out of date.`,
+                payload: { note: String(req.body?.note || '').slice(0, 500) || null, userId: req.user?.id || null },
+            })).catch((err) => req.log?.warn?.({ err }, 'recording outdated report failed'));
+            req.log?.info?.({ topic: validation.sanitized, ended }, 'topic reported outdated');
+            return res.json({ ok: true, refreshed: ended > 0 });
+        } catch (err) {
+            req.log?.warn?.({ err }, 'topic outdated report failed');
+            return res.status(500).json({ error: 'Could not record the report. Please try again.' });
+        }
+    });
 
     // Replay the exact evidence a search showed, including the source text versions it used.
     // A snapshot is private to the user (or anonymous session) that produced it; a snapshot
@@ -417,7 +482,21 @@ function registerUnifiedSearchRoutes(app, deps) {
             });
             const enrichCacheKey = `enrichment:${enrichKey}`;
             const existingEnrich = await Promise.resolve(cache.get(enrichCacheKey)).catch((err) => { logger.warn({ err }, 'cache get failed'); return null; });
-            const aiEnrichmentStatus = existingEnrich?.status === 'ready' ? 'ready' : 'pending';
+            // Precomputing: the background job starts it, so the client polls. On demand: keep what the
+            // generate endpoint needs and tell the client to offer a button instead of polling.
+            let aiEnrichmentStatus = 'pending';
+            if (existingEnrich?.status === 'ready') {
+                aiEnrichmentStatus = 'ready';
+            } else if (!shouldPrecomputeAiExtras()) {
+                aiEnrichmentStatus = 'not_requested';
+                await Promise.resolve(cache.set(`${ENRICHMENT_REQUEST_PREFIX}${enrichKey}`, {
+                    query: queryValidation.sanitized,
+                    articles: articles.slice(0, 8),
+                    previousQueries: enrichPreviousQueries,
+                    trainingStage: enrichTrainingStage,
+                    sessionDepth: enrichSessionDepth,
+                }, ENRICHMENT_REQUEST_TTL_SECONDS)).catch((err) => logger.warn({ err }, 'storing enrichment request failed'));
+            }
 
             res.json({
                 articles,

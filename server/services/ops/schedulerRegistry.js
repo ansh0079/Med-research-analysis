@@ -63,6 +63,7 @@ const {
 } = require('../zombieJobSweeper');
 const { scheduleLlmAnomalyCheck, stopLlmAnomalyCheck } = require('../llmAnomalyScheduler');
 const { scheduleSearchPrewarm, stopSearchPrewarm } = require('../searchPrewarmScheduler');
+const { scheduleTopicUpdateCheck, stopTopicUpdateCheck } = require('../topicUpdateCheckScheduler');
 const { scheduleDiskSpaceMonitor, stopDiskSpaceMonitor } = require('../diskSpaceMonitor');
 const {
     scheduleTopicEvolution, stopTopicEvolution,
@@ -220,6 +221,11 @@ function buildSchedulerRegistry({ db, serverConfig, fetchImpl, cache, appUrl, pa
             task: 'search-prewarm',
             start: () => scheduleSearchPrewarm(db, { serverConfig, fetchImpl, cache }, baseLogger.child({ task: 'search-prewarm' })),
             stop: () => stopSearchPrewarm(),
+        },
+        {
+            task: 'topic-update-check',
+            start: () => scheduleTopicUpdateCheck(db, { serverConfig, fetchImpl }, baseLogger.child({ task: 'topic-update-check' })),
+            stop: () => stopTopicUpdateCheck(),
         },
         {
             task: 'llm-anomaly',

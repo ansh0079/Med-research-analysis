@@ -3,7 +3,7 @@
 const logger = require('../../config/logger');
 const crypto = require('crypto');
 const { searchQueue, registerJobHandler } = require('../jobQueue');
-const { shouldAutoSeedFromSearch } = require('../searchLearningConfig');
+const { shouldAutoSeedFromSearch, shouldPrecomputeAiExtras } = require('../searchLearningConfig');
 
 const JOB_TYPE = 'search-observed';
 
@@ -108,7 +108,8 @@ async function processSearchObservedSideEffects(data = {}, deps = {}) {
         (async () => {
             if (typeof db.createAiGenerationJob !== 'function') return { skipped: true };
             const { getOrEnqueuePaperSynopsis } = require('../aiGenerationJobService');
-            const configured = Number(process.env.SEARCH_PRECOMPUTE_SYNOPSES ?? 2);
+            // Synopses are made when a paper is opened unless precomputation is on (see searchLearningConfig).
+            const configured = Number(process.env.SEARCH_PRECOMPUTE_SYNOPSES ?? (shouldPrecomputeAiExtras() ? 2 : 0));
             const count = Number.isFinite(configured) ? Math.min(2, Math.max(0, Math.floor(configured))) : 2;
             return Promise.all(articles.slice(0, count).map(async (article) => {
                 const result = await getOrEnqueuePaperSynopsis({
@@ -166,6 +167,7 @@ async function processSearchObservedSideEffects(data = {}, deps = {}) {
             });
         })(),
         (async () => {
+            if (!shouldPrecomputeAiExtras()) return { skipped: true, reason: 'ai_extras_on_demand' };
             const { getOrEnqueueFlagshipEnrich } = require('../enrichmentJobService');
             const { matchFlagshipTopic } = require('../flagshipEnrichService');
             const match = matchFlagshipTopic(query);
@@ -194,6 +196,8 @@ async function processSearchObservedSideEffects(data = {}, deps = {}) {
         })(),
         (async () => {
             if (!data.enrichKey) return { skipped: true, reason: 'missing_enrich_key' };
+            // On demand: the search route stored the request; POST /api/search/ai-enrichment/:key/generate runs it.
+            if (!shouldPrecomputeAiExtras()) return { skipped: true, reason: 'ai_extras_on_demand' };
             const existingEnrich = await Promise.resolve(cache?.get?.(`enrichment:${data.enrichKey}`)).catch(() => null);
             if (existingEnrich?.status === 'ready') return { skipped: true, reason: 'enrichment_ready' };
 

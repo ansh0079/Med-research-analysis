@@ -10,6 +10,8 @@ jest.mock('../../server/services/jobQueue', () => ({
 
 jest.mock('../../server/services/searchLearningConfig', () => ({
     shouldAutoSeedFromSearch: jest.fn(() => true),
+    // These tests cover what a search starts when precomputation is on; on-demand is tested in searchAiExtrasOnDemand.test.js.
+    shouldPrecomputeAiExtras: jest.fn(() => true),
 }));
 
 jest.mock('../../server/services/enrichmentJobService', () => ({

@@ -975,10 +975,11 @@ describe('API Endpoints', () => {
           score: 48,
           level: 'low',
         });
-        // consensusSynopsis is now populated via background enrichment polling, not in the sync response
+        // The consensus summary and clinical answer are made on demand (SEARCH_PRECOMPUTE_AI_EXTRAS off by default):
+        // the search returns the key to request them with, and says they have not been asked for yet.
         expect(response.body.topicIntelligence.consensusSynopsis).toBeNull();
         expect(response.body.aiEnrichmentKey).toBeDefined();
-        expect(response.body.aiEnrichmentStatus).toBe('pending');
+        expect(response.body.aiEnrichmentStatus).toBe('not_requested');
         expect(response.body.topicIntelligence.actions).toMatchObject({
           canSynthesizeTop5: true,
           canGenerateConsensusSynopsis: true,

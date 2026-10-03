@@ -165,7 +165,8 @@ export interface SearchResponse {
   communityInsight?: CommunityInsight | null;
   proactiveAlert?: ProactiveAlert | null;
   aiEnrichmentKey?: string | null;
-  aiEnrichmentStatus?: 'pending' | 'ready' | 'failed';
+  /** 'not_requested': made on demand; the page offers a button (POST /api/search/ai-enrichment/:key/generate). */
+  aiEnrichmentStatus?: 'pending' | 'ready' | 'failed' | 'not_requested';
   intelligenceStatus?: 'sync' | 'deferred';
   queryIntent?: string;
   queryIntentProfile?: {

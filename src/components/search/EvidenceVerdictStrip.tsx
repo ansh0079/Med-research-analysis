@@ -29,6 +29,8 @@ export interface EvidenceVerdictStripProps {
     details?: React.ReactNode;
     /** Always-visible notices, e.g. a source that failed. */
     notice?: React.ReactNode;
+    /** Report the topic as out of date; its stored monthly review ends and the next search fetches fresh. */
+    onReportOutdated?: () => Promise<void>;
 }
 
 const RCT_PATTERN = /randomized controlled trial|randomised controlled trial|clinical trial, phase/i;
@@ -65,9 +67,22 @@ export const EvidenceVerdictStrip: React.FC<EvidenceVerdictStripProps> = ({
     guidelineWorkspace,
     details,
     notice,
+    onReportOutdated,
 }) => {
     const [showDetails, setShowDetails] = useState(false);
     const [copied, setCopied] = useState(false);
+    const [outdated, setOutdated] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+
+    const reportOutdated = async () => {
+        if (!onReportOutdated || outdated === 'sending' || outdated === 'sent') return;
+        setOutdated('sending');
+        try {
+            await onReportOutdated();
+            setOutdated('sent');
+        } catch {
+            setOutdated('error');
+        }
+    };
 
     const stats = useMemo(() => {
         const rcts = countByPubtype(results, RCT_PATTERN);
@@ -152,6 +167,17 @@ export const EvidenceVerdictStrip: React.FC<EvidenceVerdictStripProps> = ({
                     >
                         {copied ? 'Copied' : 'Copy citations'}
                     </button>
+                    {onReportOutdated && (
+                        <button
+                            type="button"
+                            onClick={reportOutdated}
+                            disabled={outdated === 'sending' || outdated === 'sent'}
+                            title="Evidence or guidance has changed since this topic was last reviewed"
+                            className="rounded-lg px-2 py-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-amber-700 disabled:cursor-default dark:text-slate-400 dark:hover:text-amber-300"
+                        >
+                            {outdated === 'sent' ? 'Thanks: refreshed on next search' : outdated === 'sending' ? 'Reporting…' : outdated === 'error' ? 'Could not report; try again' : 'Report outdated'}
+                        </button>
+                    )}
                 </div>
             </div>
 

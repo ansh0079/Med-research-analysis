@@ -37,6 +37,8 @@ interface SearchEvidenceWorkflowSectionProps {
   clinicalAnswer: ClinicalAnswer | null | undefined;
   aiEnrichmentLoading: boolean;
   aiEnrichmentFailed?: boolean;
+  aiEnrichmentRequestable?: boolean;
+  onRequestAiEnrichment?: () => void;
   communityInsight: CommunityInsight | null | undefined;
   proactiveAlert: ProactiveAlert | null | undefined;
   knowledgeDriftAlerts: ProactiveEvidenceAlert[];
@@ -81,6 +83,8 @@ export const SearchEvidenceWorkflowSection: React.FC<SearchEvidenceWorkflowSecti
   clinicalAnswer,
   aiEnrichmentLoading,
   aiEnrichmentFailed,
+  aiEnrichmentRequestable,
+  onRequestAiEnrichment,
   communityInsight,
   proactiveAlert,
   knowledgeDriftAlerts,
@@ -123,6 +127,8 @@ export const SearchEvidenceWorkflowSection: React.FC<SearchEvidenceWorkflowSecti
       liveClinicalAnswer={clinicalAnswer}
       aiEnrichmentLoading={aiEnrichmentLoading}
       aiEnrichmentFailed={aiEnrichmentFailed}
+      aiEnrichmentRequestable={aiEnrichmentRequestable}
+      onRequestAiEnrichment={onRequestAiEnrichment}
       communityInsight={communityInsight}
       proactiveAlert={proactiveAlert}
       knowledgeDriftAlerts={knowledgeDriftAlerts}

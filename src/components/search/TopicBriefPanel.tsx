@@ -51,6 +51,8 @@ interface Props {
   liveClinicalAnswer?: import('@types').ClinicalAnswer | null;
   aiEnrichmentLoading?: boolean;
   aiEnrichmentFailed?: boolean;
+  aiEnrichmentRequestable?: boolean;
+  onRequestAiEnrichment?: () => void;
   communityInsight?: CommunityInsight | null;
   proactiveAlert?: ProactiveAlert | null;
   knowledgeDriftAlerts?: ProactiveEvidenceAlert[];
@@ -76,6 +78,8 @@ const TopicBriefPanelComponent: React.FC<Props> = ({
   liveClinicalAnswer,
   aiEnrichmentLoading,
   aiEnrichmentFailed,
+  aiEnrichmentRequestable,
+  onRequestAiEnrichment,
   communityInsight,
   proactiveAlert,
   knowledgeDriftAlerts,
@@ -180,6 +184,8 @@ const TopicBriefPanelComponent: React.FC<Props> = ({
         agentGuidance={agentGuidance}
         aiEnrichmentLoading={aiEnrichmentLoading}
         aiEnrichmentFailed={aiEnrichmentFailed}
+        aiEnrichmentRequestable={aiEnrichmentRequestable}
+        onRequestAiEnrichment={onRequestAiEnrichment}
         proactiveAlert={proactiveAlert}
         onQuiz={() => onQuiz('mixed')}
       />

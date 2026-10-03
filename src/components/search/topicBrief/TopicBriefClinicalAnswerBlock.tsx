@@ -7,6 +7,9 @@ interface Props {
   agentGuidance?: AgentGuidance | null;
   aiEnrichmentLoading?: boolean;
   aiEnrichmentFailed?: boolean;
+  /** The clinical answer is made on demand and has not been asked for yet. */
+  aiEnrichmentRequestable?: boolean;
+  onRequestAiEnrichment?: () => void;
   proactiveAlert?: ProactiveAlert | null;
   onQuiz: () => void;
 }
@@ -16,6 +19,8 @@ export const TopicBriefClinicalAnswerBlock: React.FC<Props> = ({
   agentGuidance,
   aiEnrichmentLoading,
   aiEnrichmentFailed,
+  aiEnrichmentRequestable,
+  onRequestAiEnrichment,
   proactiveAlert,
   onQuiz,
 }) => (
@@ -25,6 +30,22 @@ export const TopicBriefClinicalAnswerBlock: React.FC<Props> = ({
     )}
     {!liveClinicalAnswer && agentGuidance?.clinicalAnswer && (
       <TopicBriefClinicalAnswerPanel ca={agentGuidance.clinicalAnswer} proactiveAlert={proactiveAlert} onQuizUpdate={onQuiz} />
+    )}
+    {!liveClinicalAnswer && !agentGuidance?.clinicalAnswer && aiEnrichmentRequestable && onRequestAiEnrichment && (
+      <div className="border-b border-slate-100 dark:border-slate-800 px-5 py-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-[12px] text-slate-600 dark:text-slate-300">
+            A clinical answer drawn from the top papers is made when you ask for it.
+          </p>
+          <button
+            type="button"
+            onClick={onRequestAiEnrichment}
+            className="rounded-lg bg-indigo-600 px-3 py-1.5 text-[12px] font-semibold text-white hover:bg-indigo-700"
+          >
+            Generate clinical answer
+          </button>
+        </div>
+      </div>
     )}
     {!liveClinicalAnswer && !agentGuidance?.clinicalAnswer && aiEnrichmentFailed && (
       <div className="border-b border-slate-100 dark:border-slate-800 px-5 py-4">
