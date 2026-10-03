@@ -1,0 +1,3279 @@
+{
+ "generatedAt": "2026-10-03T16:54:29+01:00",
+ "source": "Signal MD stored topic_guidelines (read-only dump via /api/guidelines/browse, 2026-10-03)",
+ "method": "Hand-written single-best-answer MCQs grounded only in stored rows judged relevant to the topic (misfiled rows excluded). Each question cites stored row ids.",
+ "reviewState": "unreviewed - needs clinician review before publishing",
+ "batch": "batch-07",
+ "topics": [
+  {
+   "topicKey": "cluster headache high-flow oxygen triptan rescue verapamil prophylaxis",
+   "topicDisplayName": "Cluster headache: high-flow oxygen, triptan rescue, verapamil prophylaxis",
+   "aliases": [
+    "cluster headache",
+    "CH",
+    "trigeminal autonomic cephalalgia",
+    "TAC",
+    "high-flow oxygen",
+    "verapamil"
+   ],
+   "mergedTopicKeys": [],
+   "storedRelevantDistinctItems": 30,
+   "newestSourceYear": 2023,
+   "outdated": false,
+   "coverageNote": "FLAGGED SHORT (14 Qs): cluster headache-specific rows are EAN 2023, NICE CG150 (2012) and 4 trials. The rest of the pool is migraine/TTH/MOH, which was excluded. Missing: prednisolone transitional therapy, greater occipital nerve block, lithium, galcanezumab, and neuromodulation.",
+   "mcqs": [
+    {
+     "id": "cluster-headache-high-flow-oxygen-triptan-rescue-verapamil-p-01",
+     "question": "Which acute treatments does NICE recommend for a cluster headache attack?",
+     "options": {
+      "A": "Oxygen and/or a subcutaneous or nasal triptan",
+      "B": "IM opioid analgesia",
+      "C": "Oral sumatriptan with paracetamol at attack onset, repeated hourly",
+      "D": "Ergotamine suppositories",
+      "E": "High-dose ibuprofen"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Oxygen and/or a subcutaneous or nasal triptan",
+     "explanation": "NICE: offer oxygen and/or a subcutaneous or nasal triptan for acute cluster headache.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "587fda6a-e2b0-4fe4-8793-c5dc2bd22c92",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg150",
+       "excerpt": "Offer oxygen and/or a subcutaneous or nasal triptan for the acute treatment of cluster headache. [2012] In June 2025, nasal triptans did not have a UK marketing authorisation for this indication. This was also an off-label use of subcutaneous triptans in under 18s. See NICE's information on prescribing medicines ."
+      }
+     ]
+    },
+    {
+     "id": "cluster-headache-high-flow-oxygen-triptan-rescue-verapamil-p-02",
+     "question": "What oxygen flow does the EAN (2023) recommend for acute cluster headache?",
+     "options": {
+      "A": "4 L/min via Venturi mask",
+      "B": "10–15 L/min via non-rebreather mask",
+      "C": "24% oxygen",
+      "D": "1 L/min overnight",
+      "E": "2 L/min via nasal cannulae for 2 hours per attack"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "10–15 L/min via non-rebreather mask",
+     "explanation": "EAN 2023: high-flow oxygen at 10–15 L/min via a non-rebreather mask is recommended for acute attacks.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "18bef694-9e93-43e7-aa75-1e55476d2264",
+       "sourceBody": "European Academy of Neurology",
+       "sourceYear": 2023,
+       "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/37515405/",
+       "excerpt": "High-flow oxygen (10-15 L/min via non-rebreather mask) is recommended as an acute treatment for cluster headache attacks."
+      }
+     ]
+    },
+    {
+     "id": "cluster-headache-high-flow-oxygen-triptan-rescue-verapamil-p-03",
+     "question": "Which triptan formulations does the EAN (2023) recommend for acute cluster headache?",
+     "options": {
+      "A": "SC sumatriptan and intranasal zolmitriptan",
+      "B": "Oral rizatriptan",
+      "C": "Rectal sumatriptan",
+      "D": "Oral naratriptan",
+      "E": "Oral frovatriptan"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "SC sumatriptan and intranasal zolmitriptan",
+     "explanation": "EAN 2023: subcutaneous sumatriptan and intranasal zolmitriptan are recommended.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "1d9d8f26-870f-43d4-91cc-37bdb892399d",
+       "sourceBody": "European Academy of Neurology",
+       "sourceYear": 2023,
+       "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/37515405/",
+       "excerpt": "Subcutaneous sumatriptan and intranasal zolmitriptan are recommended for the acute treatment of cluster headache attacks."
+      }
+     ]
+    },
+    {
+     "id": "cluster-headache-high-flow-oxygen-triptan-rescue-verapamil-p-04",
+     "question": "Which treatments does NICE advise against for acute cluster headache?",
+     "options": {
+      "A": "Specialist referral",
+      "B": "High-flow oxygen",
+      "C": "SC sumatriptan",
+      "D": "Paracetamol, NSAIDs, opioids, ergots, oral triptans",
+      "E": "Nasal zolmitriptan"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Paracetamol, NSAIDs, opioids, ergots, oral triptans",
+     "explanation": "NICE: do not offer paracetamol, NSAIDs, opioids, ergots or oral triptans for acute cluster headache.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "24b3984d-895d-40a8-9156-132bc46699f3",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg150",
+       "excerpt": "Do not offer paracetamol, NSAIDS, opioids, ergots or oral triptans for the acute treatment of cluster headache. [2012]"
+      }
+     ]
+    },
+    {
+     "id": "cluster-headache-high-flow-oxygen-triptan-rescue-verapamil-p-05",
+     "question": "Which first-line prophylactic drug does the EAN (2023) recommend for cluster headache, and what monitoring does it need?",
+     "options": {
+      "A": "Amitriptyline with weight checks",
+      "B": "Verapamil, titrated with ECG monitoring",
+      "C": "Pizotifen with LFTs",
+      "D": "Topiramate with renal monitoring",
+      "E": "Propranolol, titrated with blood pressure monitoring"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Verapamil, titrated with ECG monitoring",
+     "explanation": "EAN 2023: verapamil is first-line prophylaxis, with dose titration and regular ECG monitoring.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "230dfe5e-c7d6-4ef7-976b-ad2c0a31562d",
+       "sourceBody": "European Academy of Neurology",
+       "sourceYear": 2023,
+       "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/37515405/",
+       "excerpt": "Verapamil is recommended as a first-line prophylactic treatment for cluster headache, with dose titration and regular ECG monitoring required."
+      }
+     ]
+    },
+    {
+     "id": "cluster-headache-high-flow-oxygen-triptan-rescue-verapamil-p-06",
+     "question": "A GP is unfamiliar with verapamil for cluster headache. What does NICE advise before starting it?",
+     "options": {
+      "A": "Seek specialist advice, including on ECGs",
+      "B": "Use it only between bouts",
+      "C": "Avoid verapamil entirely",
+      "D": "Start it without monitoring",
+      "E": "Start a high dose straight away without ECG checks"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Seek specialist advice, including on ECGs",
+     "explanation": "NICE: consider verapamil during a bout. If unfamiliar with its use, seek specialist advice before starting, including on ECG monitoring.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "599faff5-c906-4b9a-a839-ad13695cdd66",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg150",
+       "excerpt": "Consider verapamil for prophylactic treatment during a bout of cluster headache. If unfamiliar with its use for cluster headache, seek specialist advice before starting verapamil, including advice on electrocardiogram monitoring. [2012] In June 2025, this was an off-label use of verapamil. See NICE's information on prescribing medicines ."
+      }
+     ]
+    },
+    {
+     "id": "cluster-headache-high-flow-oxygen-triptan-rescue-verapamil-p-07",
+     "question": "What was the result of the 2009 randomised crossover trial in 109 adults with cluster headache?",
+     "options": {
+      "A": "Oral triptans beat oxygen",
+      "B": "Oxygen was no better than air in any attack",
+      "C": "High-flow oxygen beat placebo",
+      "D": "Oxygen worsened attacks",
+      "E": "Only low-flow oxygen worked"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "High-flow oxygen beat placebo",
+     "explanation": "The double-blind, randomised, placebo-controlled crossover trial tested whether high-flow inhaled oxygen was superior to placebo, and found that it was.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "584f994d-456f-46ac-b33b-8f2639ffa781",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2009,
+       "sourceUrl": "https://doi.org/10.1001/jama.2009.1855",
+       "excerpt": "The current licensed treatment for acute attacks is subcutaneous sumatriptan. Objective To ascertain whether high-flow inhaled oxygen was superior to placebo in the acute treatment of cluster headache. Design, setting, and patients A double-blind, randomized, placebo-controlled crossover trial of 109 adults (aged 18-70 years) with cluster headache as defined by the International Head"
+      }
+     ]
+    },
+    {
+     "id": "cluster-headache-high-flow-oxygen-triptan-rescue-verapamil-p-08",
+     "question": "In the 2009 oxygen trial, what's stated as the then-licensed acute treatment for cluster headache?",
+     "options": {
+      "A": "Oral zolmitriptan at attack onset",
+      "B": "Verapamil",
+      "C": "Lithium",
+      "D": "Subcutaneous sumatriptan",
+      "E": "Prednisolone"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Subcutaneous sumatriptan",
+     "explanation": "The trial background states that the current licensed treatment for acute attacks is subcutaneous sumatriptan.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "584f994d-456f-46ac-b33b-8f2639ffa781",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2009,
+       "sourceUrl": "https://doi.org/10.1001/jama.2009.1855",
+       "excerpt": "The current licensed treatment for acute attacks is subcutaneous sumatriptan. Objective To ascertain whether high-flow inhaled oxygen was superior to placebo in the acute treatment of cluster headache. Design, setting, and patients A double-blind, randomized, placebo-controlled crossover trial of 109 adults (aged 18-70 years) with cluster headache as defined by the International Head"
+      }
+     ]
+    },
+    {
+     "id": "cluster-headache-high-flow-oxygen-triptan-rescue-verapamil-p-09",
+     "question": "What did the 2000 trial conclude about oral zolmitriptan in episodic cluster headache?",
+     "options": {
+      "A": "Ineffective at any dose",
+      "B": "Effective only in chronic cluster",
+      "C": "Inferior to paracetamol",
+      "D": "Efficacious and well tolerated",
+      "E": "Poorly tolerated at 5 mg"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Efficacious and well tolerated",
+     "explanation": "Oral zolmitriptan (5 and 10 mg) was efficacious in episodic cluster headache and well tolerated. NICE still advises against oral triptans.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "05907280-74ed-4d7f-bdcc-06c02042d5b2",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2000,
+       "sourceUrl": "https://doi.org/10.1212/wnl.54.9.1832",
+       "excerpt": "For all other secondary endpoints, zolmitriptan 10 mg was significantly superior to placebo in episodic cluster headache patients, whereas zolmitriptan 5 mg was significantly superior to placebo for three of the four secondary endpoints. Zolmitriptan 5 mg and 10 mg were well tolerated. Conclusion Oral zolmitriptan is efficacious in episodic cluster headache."
+      },
+      {
+       "guidelineId": "24b3984d-895d-40a8-9156-132bc46699f3",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg150",
+       "excerpt": "Do not offer paracetamol, NSAIDS, opioids, ergots or oral triptans for the acute treatment of cluster headache. [2012]"
+      }
+     ]
+    },
+    {
+     "id": "cluster-headache-high-flow-oxygen-triptan-rescue-verapamil-p-10",
+     "question": "Which aspect of cluster headache did the 2019 multicentre study of 193 patients investigate?",
+     "options": {
+      "A": "Imaging findings",
+      "B": "Response to oxygen and other acute treatments",
+      "C": "Suicidality and associated factors",
+      "D": "Verapamil cardiac effects",
+      "E": "Genetic markers"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Suicidality and associated factors",
+     "explanation": "The 2019 study investigated suicidality related to cluster headache and factors associated with increased suicidality.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "7ef61055-610c-4145-b482-43cbb20d4a1e",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2019,
+       "sourceUrl": "https://doi.org/10.1177/0333102419845660",
+       "excerpt": "Objective To investigate suicidality related to cluster headache and factors associated with increased suicidality in cluster headache patients. Methods In this multicenter study, 193 cluster headache patients were recruited between September 2016 and August 2018."
+      }
+     ]
+    },
+    {
+     "id": "cluster-headache-high-flow-oxygen-triptan-rescue-verapamil-p-11",
+     "question": "Which short-lasting unilateral headache syndromes did the 2006 phenotype study describe?",
+     "options": {
+      "A": "Migraine with aura",
+      "B": "Medication overuse headache",
+      "C": "SUNCT and SUNA",
+      "D": "Hemicrania continua only",
+      "E": "Tension-type headache"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "SUNCT and SUNA",
+     "explanation": "The study characterised SUNCT and SUNA (the latter rarely reported).",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "8980193d-1e3d-47c2-a999-0cfb8104074c",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2006,
+       "sourceUrl": "https://doi.org/10.1093/brain/awl202",
+       "excerpt": "Short-lasting unilateral neuralgiform headache attacks with conjunctival injection and tearing (SUNCT) and short-lasting unilateral neuralgiform headache attacks with cranial autonomic features (SUNA) are described, although SUNA is rarely reported. The phenotype of SUNCT and SUNA was characterized"
+      }
+     ]
+    },
+    {
+     "id": "cluster-headache-high-flow-oxygen-triptan-rescue-verapamil-p-12",
+     "question": "A patient with an established cluster headache diagnosis asks for a brain scan for reassurance. What does NICE advise?",
+     "options": {
+      "A": "Arrange EEG",
+      "B": "Arrange CT head",
+      "C": "Don't refer solely for reassurance",
+      "D": "Arrange urgent MRI to reassure the patient",
+      "E": "Arrange an annual MRI"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Don't refer solely for reassurance",
+     "explanation": "NICE: do not refer people with cluster headache (or TTH, migraine, MOH) for neuroimaging solely for reassurance.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "cda3ad14-6828-456b-8101-98557670d8a0",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg150",
+       "excerpt": "Do not refer people diagnosed with tension‑type headache, migraine, cluster headache or medication overuse headache for neuroimaging solely for reassurance. [2012]"
+      }
+     ]
+    },
+    {
+     "id": "cluster-headache-high-flow-oxygen-triptan-rescue-verapamil-p-13",
+     "question": "What does NICE suggest using to aid diagnosis of primary headaches such as cluster headache?",
+     "options": {
+      "A": "Lumbar puncture",
+      "B": "EEG",
+      "C": "Routine MRI",
+      "D": "An overnight sleep study",
+      "E": "A headache diary"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "A headache diary",
+     "explanation": "NICE: consider using a headache diary to aid the diagnosis of primary headaches.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "f665f1cb-50d2-4182-9312-bfd721c188b7",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg150",
+       "excerpt": "Consider using a headache diary to aid the diagnosis of primary headaches. [2012]"
+      },
+      {
+       "guidelineId": "9091d9fa-ae10-4e42-a532-87fe2305bbc2",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg150",
+       "excerpt": "Consider using a headache diary: to record the frequency, duration and severity of headaches; to monitor the effectiveness of headache interventions; as a basis for discussion with the person about their headache disorder and its impact. [2012]"
+      }
+     ]
+    },
+    {
+     "id": "cluster-headache-high-flow-oxygen-triptan-rescue-verapamil-p-14",
+     "question": "A patient with known cluster headache develops a new neurological deficit. What does NICE advise?",
+     "options": {
+      "A": "Increase oxygen flow",
+      "B": "Evaluate and consider investigation/referral",
+      "C": "Increase verapamil",
+      "D": "Add an oral triptan",
+      "E": "Reassure only"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Evaluate and consider investigation/referral",
+     "explanation": "NICE: consider further investigation and/or referral if someone with a headache disorder develops red-flag features such as a new neurological deficit.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "7d64615e-3b4c-4a33-b4fb-9e7033cf1b48",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg150",
+       "excerpt": "Consider further investigations and/or referral if a person diagnosed with a headache disorder develops any of the features listed in recommendation 1.1.1. [2012]"
+      },
+      {
+       "guidelineId": "42d91611-ce5c-4675-9f91-7a737a218270",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg150",
+       "excerpt": "Evaluate people who present with headache and any of the following features, and consider the need for further investigations and/or referral: worsening headache with fever; sudden‑onset headache reaching maximum intensity within 5 minutes; new‑onset neurological deficit; new‑onset cognitive dysfunction; change in personality; impaired level of consciousness; recent (typically within the past 3 months) head trauma; headache triggered by cough, valsalva (trying to breathe out with nose and mouth "
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "topicKey": "gout hyperuricaemia pathophysiology acute attack management colchicine dosing",
+   "topicDisplayName": "Gout: hyperuricaemia pathophysiology, acute attack management, colchicine dosing",
+   "aliases": [
+    "gout",
+    "acute gout",
+    "hyperuricaemia",
+    "urate",
+    "allopurinol",
+    "colchicine",
+    "gouty arthritis"
+   ],
+   "mergedTopicKeys": [],
+   "storedRelevantDistinctItems": 28,
+   "newestSourceYear": 2020,
+   "outdated": false,
+   "coverageNote": "Pool: NICE NG219 gout (no stored year; 2022), ACR 2020, EULAR 2016, and trials (febuxostat 2005, CARES 2018, lesinurad 2017, febuxostat titration 2018). There are no stored rows on colchicine flare doses (500 µg bd–qds) or allopurinol titration steps. Pathophysiology content is minimal.",
+   "mcqs": [
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--01",
+     "question": "What first-line options does NICE recommend for a gout flare?",
+     "options": {
+      "A": "IL-1 inhibitor",
+      "B": "Allopurinol started during the flare",
+      "C": "NSAID, colchicine or a short oral steroid course",
+      "D": "Opioid analgesia alone",
+      "E": "Febuxostat"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "NSAID, colchicine or a short oral steroid course",
+     "explanation": "NICE: offer an NSAID, colchicine or a short course of oral corticosteroid first-line, considering comorbidities and preference.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "691a2f94-80dd-43fb-a733-69b1d93dca0d",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+       "excerpt": "Offer a non-steroidal anti-inflammatory drug (NSAID), colchicine or a short course of an oral corticosteroid for first-line treatment of a gout flare, taking into account the person's comorbidities, co-prescriptions and preferences. In June 2022, this was an off-label use of oral corticosteroids. See NICE's information on prescribing medicines ."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--02",
+     "question": "How soon does ACR (2020) say treatment for an acute gout flare should start?",
+     "options": {
+      "A": "Within 1 week, once the joint has been aspirated",
+      "B": "Within 24 hours of onset",
+      "C": "After joint aspiration",
+      "D": "After the flare settles",
+      "E": "After urate is measured"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Within 24 hours of onset",
+     "explanation": "ACR 2020: start treatment within 24 hours of symptom onset.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "9221ce46-5b2d-4c22-9d7e-8449ed907d73",
+       "sourceBody": "ACR 2020",
+       "sourceYear": 2020,
+       "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/32391934/",
+       "excerpt": "For patients with an acute gout flare, treatment should be initiated within 24 hours of symptom onset."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--03",
+     "question": "In which patients does ACR (2020) say colchicine is contraindicated?",
+     "options": {
+      "A": "Diabetes",
+      "B": "Hypertension controlled on an ACE inhibitor",
+      "C": "Asthma",
+      "D": "Previous gout flare",
+      "E": "Severe renal or hepatic impairment"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "Severe renal or hepatic impairment",
+     "explanation": "ACR 2020: colchicine is contraindicated in severe renal or hepatic impairment.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "95be93d2-cd77-4995-bda9-ad6624fc22d7",
+       "sourceBody": "ACR 2020",
+       "sourceYear": 2020,
+       "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/32391934/",
+       "excerpt": "Colchicine is contraindicated in patients with severe renal or hepatic impairment."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--04",
+     "question": "NSAIDs and colchicine are contraindicated in a flare. What does NICE suggest considering?",
+     "options": {
+      "A": "Opioid infusion",
+      "B": "An IL-1 inhibitor first, before any corticosteroid",
+      "C": "Allopurinol",
+      "D": "Febuxostat",
+      "E": "Intra-articular or IM corticosteroid"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "Intra-articular or IM corticosteroid",
+     "explanation": "NICE: consider an intra-articular or intramuscular corticosteroid if NSAIDs and colchicine are contraindicated, not tolerated or ineffective.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "8f425e4c-5ddf-428e-83a5-01cc9d790e7f",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+       "excerpt": "Consider an intra-articular or intramuscular corticosteroid injection to treat a gout flare if NSAIDs and colchicine are contraindicated, not tolerated or ineffective. In June 2022, this was an off-label use of corticosteroid injections. See NICE's information on prescribing medicines ."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--05",
+     "question": "When does NICE allow an IL-1 inhibitor to treat a gout flare?",
+     "options": {
+      "A": "As first-line for all flares, before NSAIDs or colchicine",
+      "B": "For any first flare",
+      "C": "NSAIDs, colchicine and steroids all unsuitable",
+      "D": "In place of ULT",
+      "E": "Whenever urate exceeds 600"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "NSAIDs, colchicine and steroids all unsuitable",
+     "explanation": "NICE: don't offer an IL-1 inhibitor unless NSAIDs, colchicine and corticosteroids are contraindicated, not tolerated or ineffective; refer to rheumatology.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "eff1d22f-8a2a-4cd8-bd4b-bd9a49910645",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+       "excerpt": "Do not offer an interleukin-1 (IL-1) inhibitor to treat a gout flare unless NSAIDs, colchicine and corticosteroids are contraindicated, not tolerated or ineffective. Refer the person to a rheumatology service before prescribing an IL-1 inhibitor."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--06",
+     "question": "Which patients does NICE say should be offered urate-lowering therapy?",
+     "options": {
+      "A": "Any raised urate without symptoms",
+      "B": "Only those with kidney stones",
+      "C": "Only those under 40",
+      "D": "All patients after a first flare",
+      "E": "Multiple flares, CKD 3–5, diuretics, tophi or chronic arthritis"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "Multiple flares, CKD 3–5, diuretics, tophi or chronic arthritis",
+     "explanation": "NICE: offer ULT with treat-to-target to people with multiple or troublesome flares, CKD 3–5, diuretic therapy, tophi or chronic gouty arthritis.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "cdce191b-cf72-40e9-b2ee-6c45597a5254",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+       "excerpt": "Offer ULT, using a treat-to-target strategy , to people with gout who have: multiple or troublesome flares; CKD stages 3 to 5 (glomerular filtration rate [GFR] categories G3 to G5); diuretic therapy; tophi; chronic gouty arthritis."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--07",
+     "question": "What serum urate target does ACR (2020) recommend for treat-to-target?",
+     "options": {
+      "A": "Below 3 mg/dL",
+      "B": "No target",
+      "C": "Below 10 mg/dL",
+      "D": "Below 8 mg/dL (480 µmol/L) for most people",
+      "E": "Below 6 mg/dL (360 µmol/L)"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "Below 6 mg/dL (360 µmol/L)",
+     "explanation": "ACR 2020: treat-to-target with serum urate under 6 mg/dL (360 µmol/L).",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "c3eadf78-9ce2-49ff-976f-99f0b4185541",
+       "sourceBody": "ACR 2020",
+       "sourceYear": 2020,
+       "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/32391934/",
+       "excerpt": "For patients with gout, a treat-to-target strategy should be used to achieve and maintain a serum urate (SU) level of <6 mg/dL (360 µmol/L)."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--08",
+     "question": "When does NICE suggest a lower serum urate target below 300 µmol/L?",
+     "options": {
+      "A": "Only if over 80",
+      "B": "Only in CKD stage 5",
+      "C": "All patients at diagnosis, before any flare recurs or tophi appear",
+      "D": "Tophi, chronic arthritis or flares despite <360",
+      "E": "After a first flare"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Tophi, chronic arthritis or flares despite <360",
+     "explanation": "NICE: consider a target under 300 µmol/L with tophi, chronic gouty arthritis, or ongoing frequent flares despite urate under 360.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "f46f8b89-4308-41d3-ae5b-94b432b292be",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+       "excerpt": "Consider a lower target serum urate level below 300 micromol/litre (5 mg/dl) for people with gout who: have tophi or chronic gouty arthritis; continue to have ongoing frequent flares despite having a serum urate level below 360 micromol/litre (6 mg/dl)."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--09",
+     "question": "When does NICE say ULT should be started after a gout flare?",
+     "options": {
+      "A": "Never during or after flares",
+      "B": "1 day after onset",
+      "C": "At least 2–4 weeks after it settles",
+      "D": "During every flare, starting on the first day of symptoms",
+      "E": "Only after 6 months"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "At least 2–4 weeks after it settles",
+     "explanation": "NICE: start ULT at least 2–4 weeks after a flare has settled. If flares are frequent, ULT can be started during a flare.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "ee0704cb-090e-426f-b1ce-5a8bc8611bac",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+       "excerpt": "Start ULT at least 2 to 4 weeks after a gout flare has settled. If flares are more frequent, ULT can be started during a flare (see the section on preventing flares when starting or titrating ULT )."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--10",
+     "question": "What does NICE offer to prevent flares when starting or titrating ULT, for people who choose prophylaxis?",
+     "options": {
+      "A": "Long-term opioids",
+      "B": "No prophylaxis",
+      "C": "Intra-articular steroid monthly",
+      "D": "Colchicine until the target is reached",
+      "E": "An IL-1 inhibitor for all patients starting ULT"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Colchicine until the target is reached",
+     "explanation": "NICE: offer colchicine while reaching target urate. If unsuitable, consider a low-dose NSAID or low-dose oral corticosteroid.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "b0899a2f-dec0-4d94-929e-3a608a9afc1c",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+       "excerpt": "For people who choose to have treatment to prevent gout flares when starting or titrating ULT, offer colchicine while the target serum urate level is being reached. If colchicine is contraindicated, not tolerated or ineffective, consider a low-dose NSAID or low-dose oral corticosteroid. In June 2022, this was an off-label use of NSAIDs and oral corticosteroids. See NICE's information on prescribing medicines ."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--11",
+     "question": "What colchicine dose does EULAR (2016) recommend for flare prophylaxis when starting ULT?",
+     "options": {
+      "A": "3 mg weekly",
+      "B": "1 mg every hour",
+      "C": "2 mg loading dose, then 1 mg hourly",
+      "D": "0.5 mg once or twice daily",
+      "E": "0.5 mg every 2 hours"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "0.5 mg once or twice daily",
+     "explanation": "EULAR 2016: low-dose colchicine (0.5 mg once or twice daily) for prophylaxis during ULT initiation.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "7f4b87f0-26e9-4745-8c35-68f90909ade9",
+       "sourceBody": "EULAR 2016",
+       "sourceYear": 2017,
+       "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/32391934/",
+       "excerpt": "Low-dose colchicine (0.5 mg once or twice daily) is recommended for prophylaxis against gout flares during the initiation of urate-lowering therapy."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--12",
+     "question": "A gout patient has had a previous myocardial infarction. Which first-line ULT does NICE recommend?",
+     "options": {
+      "A": "Pegloticase",
+      "B": "Lesinurad monotherapy",
+      "C": "Allopurinol",
+      "D": "Febuxostat",
+      "E": "Probenecid"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Allopurinol",
+     "explanation": "NICE: offer allopurinol first-line to people with gout and major cardiovascular disease (e.g. previous MI, stroke, unstable angina).",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "f45b43a7-1617-4f30-a246-b93b6cbb449a",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+       "excerpt": "Offer allopurinol as first-line treatment to people with gout who have major cardiovascular disease (for example, previous myocardial infarction or stroke, or unstable angina)."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--13",
+     "question": "Which population did the 2018 CARES trial of febuxostat versus allopurinol study?",
+     "options": {
+      "A": "Gout with CKD 5 only",
+      "B": "Children with gout",
+      "C": "Pregnant women",
+      "D": "Asymptomatic hyperuricaemia without any gout flares",
+      "E": "Gout with major cardiovascular disease"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "Gout with major cardiovascular disease",
+     "explanation": "The trial studied patients with gout and major cardiovascular coexisting conditions, in whom CV risk is increased.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "58ad0341-97a3-4386-851e-318caf94c933",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2018,
+       "sourceUrl": "https://doi.org/10.1056/nejmoa1710895",
+       "excerpt": "Background Cardiovascular risk is increased in patients with gout. The results with regard to the primary end point and all-cause and cardiovascular mortality in the analysis of events that occurred while patients were being treated were similar to the results in the modified intention-to-treat analysis. Conclusions In patients with gout and major cardiovascular coexisting condition"
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--14",
+     "question": "In the 2017 lesinurad trial, what proportion of patients reached target urate at month 6 with lesinurad 400 mg plus allopurinol, compared with allopurinol alone?",
+     "options": {
+      "A": "90% vs 10%",
+      "B": "No difference",
+      "C": "59.2% vs 27.9%",
+      "D": "27.9% vs 59.2% (reversed)",
+      "E": "15% vs 5%"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "59.2% vs 27.9%",
+     "explanation": "Lesinurad 200/400 mg plus allopurinol: 54.2%/59.2% at target vs 27.9% with allopurinol alone. Flare rates weren't significantly reduced.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "d62fdd2a-ec9d-42a6-8bcb-089ebce4f85c",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2017,
+       "sourceUrl": "https://doi.org/10.1002/art.39840",
+       "excerpt": "Lesinurad at doses of 200 mg or 400 mg added to allopurinol therapy significantly increased the proportions of patients who achieved serum UA target levels by month 6 as compared with those receiving allopurinol alone (54.2%, 59.2%, and 27.9%, respectively, P < 0.0001). Lesinurad was not significantly superior to allopurinol alone in terms of the secondary end points: rates of gout flares and comp"
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--15",
+     "question": "What did the 2018 febuxostat titration study show?",
+     "options": {
+      "A": "Titration raised urate",
+      "B": "There were no flares in any group",
+      "C": "Stepwise dose plus low-dose colchicine reduced flares",
+      "D": "Colchicine increased flares",
+      "E": "Fixed-dose febuxostat was best"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Stepwise dose plus low-dose colchicine reduced flares",
+     "explanation": "Stepwise febuxostat dose increase with low-dose colchicine prophylaxis effectively reduced flares compared with fixed-dose febuxostat alone.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "78c0b16e-ae82-4c98-9b82-18f6f1b4c21b",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2018,
+       "sourceUrl": "https://doi.org/10.1136/annrheumdis-2017-211574",
+       "excerpt": "No significant difference was noted between the incidence of gout flare in groups A and B. Conclusions Our data suggested that stepwise dose increase of febuxostat and low-dose colchicine prophylaxis effectively reduced gout flares in comparison with fixed-dose febuxostat alone."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--16",
+     "question": "How was febuxostat described in the 2005 randomised trial?",
+     "options": {
+      "A": "Recombinant uricase",
+      "B": "Non-purine selective xanthine oxidase inhibitor",
+      "C": "IL-1 antagonist",
+      "D": "Uricosuric agent acting on the renal URAT1 transporter",
+      "E": "Purine analogue like allopurinol"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Non-purine selective xanthine oxidase inhibitor",
+     "explanation": "Febuxostat is a novel non-purine selective inhibitor of xanthine oxidase, a potential alternative to allopurinol.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "522df0f1-661e-4494-87a8-4c6afb6f25f5",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2005,
+       "sourceUrl": "https://doi.org/10.1056/nejmoa050373",
+       "excerpt": "Background Febuxostat, a novel nonpurine selective inhibitor of xanthine oxidase, is a potential alternative to allopurinol for patients with hyperuricemia and gout. Methods We randomly assigned 762 patients with gout and with serum urate concentrations of at least 8.0 mg per decilite"
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--17",
+     "question": "The diagnosis of gout remains uncertain. What does NICE suggest considering first?",
+     "options": {
+      "A": "Joint aspiration and synovial fluid microscopy",
+      "B": "Serum urate only",
+      "C": "Empirical IL-1 inhibitor",
+      "D": "MRI of all joints",
+      "E": "Starting allopurinol"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Joint aspiration and synovial fluid microscopy",
+     "explanation": "NICE: consider joint aspiration and synovial fluid microscopy. If that isn't possible, consider X-ray, ultrasound or dual-energy CT.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "01ff9028-4b12-40f2-8c59-7a1cb8a979f8",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+       "excerpt": "Consider joint aspiration and microscopy of synovial fluid if a diagnosis of gout remains uncertain or unconfirmed."
+      },
+      {
+       "guidelineId": "5f6497f5-f5a7-4c92-8df2-a03cb1913dbc",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+       "excerpt": "If joint aspiration cannot be carried out or the diagnosis of gout remains uncertain, consider imaging the affected joints with X-ray, ultrasound or dual-energy CT."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--18",
+     "question": "Which presentation does NICE say should prompt consideration of gout outside the first MTP joint?",
+     "options": {
+      "A": "Back pain on waking",
+      "B": "Bilateral shoulder ache",
+      "C": "Symmetrical small joint swelling",
+      "D": "Rapid onset of severe pain and redness in another joint",
+      "E": "Gradual morning stiffness over months"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Rapid onset of severe pain and redness in another joint",
+     "explanation": "NICE: consider gout with rapid onset (often overnight) of severe pain, redness or swelling in joints other than the first MTP, e.g. midfoot, ankle, knee, hand or wrist.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "4c1c6702-96c0-4530-bcb5-363504d44660",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+       "excerpt": "Consider gout in people presenting with rapid onset (often overnight) of severe pain, redness or swelling in joints other than the first MTP joints (for example, midfoot, ankle, knee, hand, wrist, elbow)."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--19",
+     "question": "Once target urate is reached on ULT, what monitoring does NICE suggest?",
+     "options": {
+      "A": "Monthly urate",
+      "B": "No further monitoring",
+      "C": "Weekly urate",
+      "D": "Annual serum urate",
+      "E": "Urate only during flares"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Annual serum urate",
+     "explanation": "NICE: consider annual monitoring of serum urate in people continuing ULT after reaching target.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "0efb35f3-2c38-4a65-8ed5-063b8f91bf6b",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+       "excerpt": "Consider annual monitoring of serum urate level in people with gout who are continuing ULT after reaching their target serum urate level."
+      }
+     ]
+    },
+    {
+     "id": "gout-hyperuricaemia-pathophysiology-acute-attack-management--20",
+     "question": "When does NICE suggest referring a person with gout to rheumatology?",
+     "options": {
+      "A": "Uncertain diagnosis, failed treatment, CKD 3b–5 or transplant",
+      "B": "Only if urate is above 600",
+      "C": "After every flare",
+      "D": "At diagnosis for all",
+      "E": "Never"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Uncertain diagnosis, failed treatment, CKD 3b–5 or transplant",
+     "explanation": "NICE: consider referral if diagnosis is uncertain, treatment is contraindicated, not tolerated or ineffective, CKD 3b–5, or after an organ transplant.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "78864f4e-4550-4524-8e90-5497e5b58403",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+       "excerpt": "Consider referring a person with gout to a rheumatology service if: the diagnosis of gout is uncertain; treatment is contraindicated, not tolerated or ineffective; they have CKD stages 3b to 5 (GFR categories G3b to G5); they have had an organ transplant."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "topicKey": "oligodendroglioma and low-grade glioma",
+   "topicDisplayName": "Oligodendroglioma and Low-Grade Glioma",
+   "aliases": [
+    "LGG",
+    "low-grade glioma",
+    "oligodendroglioma",
+    "IDH-mutant glioma",
+    "1p/19q codeleted",
+    "astrocytoma"
+   ],
+   "mergedTopicKeys": [],
+   "storedRelevantDistinctItems": 29,
+   "newestSourceYear": 2021,
+   "outdated": false,
+   "coverageNote": "Pool: NICE NG99 brain tumours (no stored year; 2018/2021), J Neuro-Oncol 2015 (AANS/CNS LGG), and CATNON 2021. Oligodendroglioma-specific (1p/19q-codeleted) management is limited: there's no stored row on PCV for oligodendroglioma (RTOG 9402/EORTC 26951). High-grade rows were included sparingly where relevant to glioma management. 18 Qs.",
+   "mcqs": [
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-01",
+     "question": "What does J Neuro-Oncol (2015) recommend for diffuse low-grade glioma to improve overall survival?",
+     "options": {
+      "A": "Surgical resection over observation",
+      "B": "Observation over surgery until progression",
+      "C": "Biopsy alone",
+      "D": "Chemotherapy alone",
+      "E": "Radiotherapy alone without surgery"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Surgical resection over observation",
+     "explanation": "Surgical resection is recommended over observation to improve overall survival in diffuse LGG.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "25433735-6d14-44ff-aefa-752ec927b10e",
+       "sourceBody": "Journal of neuro-oncology",
+       "sourceYear": 2015,
+       "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/41168559/",
+       "excerpt": "Surgical resection is recommended over observation to improve overall survival for patients with diffuse low-grade glioma (LGG)."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-02",
+     "question": "Why does J Neuro-Oncol (2015) recommend determining IDH status in recurrent low-grade glioma?",
+     "options": {
+      "A": "IDH predicts seizure risk only",
+      "B": "IDH guides steroid dosing",
+      "C": "IDH has no prognostic role",
+      "D": "IDH-mutant LGGs have a shorter time to recurrence",
+      "E": "IDH determines surgical approach"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "IDH-mutant LGGs have a shorter time to recurrence",
+     "explanation": "IDH mutation status should be determined in recurrent LGG because IDH-mutant LGGs have a shortened time to recurrence.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "53c53923-d862-477f-a8c4-4e74c1bdc4f9",
+       "sourceBody": "Journal of neuro-oncology",
+       "sourceYear": 2015,
+       "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/41168559/",
+       "excerpt": "IDH mutation status should be determined in adult patients with recurrent low-grade glioma (LGG) as LGGs with IDH mutations have a shortened time to recurrence."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-03",
+     "question": "A 35-year-old has an IDH-mutated low-grade glioma with no residual tumour on postoperative MRI. What does NICE suggest considering?",
+     "options": {
+      "A": "Re-resection",
+      "B": "Immediate radiotherapy",
+      "C": "Temozolomide",
+      "D": "Active monitoring",
+      "E": "PCV chemotherapy"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Active monitoring",
+     "explanation": "NICE: consider active monitoring for people aged around 40 or under with IDH-mutated LGG and no residual tumour on postoperative MRI.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "4b20f66f-ce14-44f1-8ee4-519ab1302257",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Consider active monitoring for people who are aged around 40 or under with an IDH‑mutated low‑grade glioma and have no residual tumour on postoperative MRI."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-04",
+     "question": "A patient with IDH-mutated LGG hasn't had radiotherapy and has radiological progression or intractable seizures. What does NICE suggest?",
+     "options": {
+      "A": "Temozolomide alone for 12 cycles without radiotherapy",
+      "B": "Observation",
+      "C": "Tumour-treating fields",
+      "D": "Bevacizumab",
+      "E": "Radiotherapy then up to 6 cycles of PCV"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "Radiotherapy then up to 6 cycles of PCV",
+     "explanation": "NICE: consider radiotherapy followed by up to 6 cycles of PCV for IDH-mutated LGG with progressive disease or intractable seizures.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "45d0f38f-516b-4d31-ae1b-03b19842ad0a",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Consider radiotherapy followed by up to 6 cycles of PCV chemotherapy for people with an IDH‑mutated low‑grade glioma who have not had radiotherapy before if they have: progressive disease on radiological follow‑up or intractable seizures."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-05",
+     "question": "What's the maximum radiotherapy dose NICE allows for IDH-mutated low-grade glioma?",
+     "options": {
+      "A": "No limit",
+      "B": "70 Gy in 35 fractions",
+      "C": "40 Gy in 15 fractions",
+      "D": "60 Gy in 30 fractions of 2 Gy",
+      "E": "54 Gy at 1.8 Gy per fraction"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "54 Gy at 1.8 Gy per fraction",
+     "explanation": "NICE: don't use more than 54 Gy at 1.8 Gy per fraction for IDH-mutated LGG.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "84cc579a-e322-4872-9d4b-dd40a87110eb",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "When delivering radiotherapy for people with IDH-mutated low-grade glioma, do not use a treatment dose of more than 54 Gy at 1.8 Gy per fraction."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-06",
+     "question": "What's the initial diagnostic test NICE recommends for suspected glioma?",
+     "options": {
+      "A": "Lumbar puncture",
+      "B": "EEG",
+      "C": "PET-CT",
+      "D": "Standard structural MRI",
+      "E": "CT head with and without contrast"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Standard structural MRI",
+     "explanation": "NICE: offer standard structural MRI (T2, FLAIR, DWI, T1 pre- and post-contrast) as the initial test unless contraindicated.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "d620893e-0919-4c94-ab83-bd0a881ec9a9",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Offer standard structural MRI (defined as T2 weighted, FLAIR, DWI series and T1 pre- and post-contrast volume) as the initial diagnostic test for suspected glioma, unless MRI is contraindicated."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-07",
+     "question": "A tumour looks low grade on structural MRI, but transformation is suspected. What does NICE suggest?",
+     "options": {
+      "A": "Surveillance only",
+      "B": "Repeat CT with contrast at 3 months",
+      "C": "MR perfusion and spectroscopy",
+      "D": "Plain skull X-ray",
+      "E": "EEG"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "MR perfusion and spectroscopy",
+     "explanation": "NICE: consider advanced MRI (MR perfusion and spectroscopy) to assess for potential high-grade transformation.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "66770016-fb6a-4827-b3f5-5d0056f13379",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Consider advanced MRI techniques, such as MR perfusion and MR spectroscopy, to assess the potential of a high-grade transformation in a tumour appearing to be low grade on standard structural MRI."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-08",
+     "question": "For lesions with radiological features typical of very low-grade tumours such as DNET, what does NICE suggest?",
+     "options": {
+      "A": "Immediate resection in all patients with suspected LGG",
+      "B": "Active monitoring without histology",
+      "C": "Chemotherapy",
+      "D": "Biopsy for all",
+      "E": "Immediate radiotherapy"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Active monitoring without histology",
+     "explanation": "NICE: consider active monitoring without histological diagnosis for lesions typical of very low-grade tumours, e.g. DNET or optic pathway glioma.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "7d4c1e25-834a-45cf-b2d4-dc10bb075eba",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Consider active monitoring without a histological diagnosis, for lesions with radiological features typical of very low-grade tumours, for example, DNET (dysembryoplastic neuroepithelial tumour) or optic pathway glioma."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-09",
+     "question": "Which surgical technique does NICE suggest considering to preserve function in low- or high-grade glioma surgery?",
+     "options": {
+      "A": "Awake craniotomy",
+      "B": "Craniectomy without resection",
+      "C": "Delayed surgery",
+      "D": "Biopsy only for all",
+      "E": "Hemispherectomy"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Awake craniotomy",
+     "explanation": "NICE: consider awake craniotomy to help preserve neurological function.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "90058c8b-82bb-4900-83db-0275a6a37d5c",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Consider awake craniotomy for people with low-grade or high-grade glioma to help preserve neurological function."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-10",
+     "question": "Which intraoperative imaging does NICE suggest considering to help glioma resection while preserving function?",
+     "options": {
+      "A": "Fluoroscopy",
+      "B": "Intraoperative MRI",
+      "C": "Intraoperative X-ray",
+      "D": "Angiography",
+      "E": "Intraoperative PET"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Intraoperative MRI",
+     "explanation": "NICE: consider intraoperative MRI (unless contraindicated) and intraoperative ultrasound to help achieve resection.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "4bee84b3-e4ac-4501-adba-ca4a505c83d8",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Consider intraoperative MRI to help achieve surgical resection of both low-grade and high-grade glioma while preserving neurological function, unless MRI is contraindicated."
+      },
+      {
+       "guidelineId": "8197e82f-eb6f-4de4-a530-b14c086709f0",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Consider intraoperative ultrasound to help achieve surgical resection of both low-grade and high-grade glioma."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-11",
+     "question": "When does NICE suggest a baseline MRI after surgical resection of glioma?",
+     "options": {
+      "A": "At 1 year",
+      "B": "At 6 weeks",
+      "C": "At 3 months",
+      "D": "Within 72 hours",
+      "E": "Only if symptoms recur"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Within 72 hours",
+     "explanation": "NICE: consider a baseline MRI within 72 hours of surgical resection for all glioma types.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "2dd99bbd-c18c-4d6d-9940-c15958a497f9",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Consider a baseline MRI scan within 72 hours of surgical resection for all types of glioma."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-12",
+     "question": "After radiotherapy for glioma, when does NICE suggest a baseline MRI?",
+     "options": {
+      "A": "At 12 months",
+      "B": "Not needed",
+      "C": "At 2 weeks",
+      "D": "Immediately after completion",
+      "E": "3 months after completion"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "3 months after completion",
+     "explanation": "NICE: consider a baseline MRI 3 months after completing radiotherapy for all glioma types.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "0e525974-e543-41d6-a6aa-ac093d15f059",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Consider a baseline MRI scan 3 months after the completion of radiotherapy for all types of glioma."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-13",
+     "question": "What did the CATNON trial (2021) investigate?",
+     "options": {
+      "A": "Tumour-treating fields",
+      "B": "Temozolomide with RT in non-codeleted anaplastic glioma",
+      "C": "PCV in oligodendroglioma",
+      "D": "Bevacizumab in glioblastoma",
+      "E": "Surgery versus biopsy"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Temozolomide with RT in non-codeleted anaplastic glioma",
+     "explanation": "CATNON investigated adding concurrent and/or adjuvant temozolomide to radiotherapy in newly diagnosed 1p/19q non-codeleted anaplastic gliomas.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "f1d7f733-00ea-4d59-bd32-de25f44ab744",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2021,
+       "sourceUrl": "https://doi.org/10.1016/s1470-2045(21)00090-5",
+       "excerpt": "Background The CATNON trial investigated the addition of concurrent, adjuvant, and both current and adjuvant temozolomide to radiotherapy in adults with newly diagnosed 1p/19q non-co-deleted anaplastic gliomas. The benefit of concurrent temozolomide chemotherapy and relevance of mutations in"
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-14",
+     "question": "Which molecular test does NICE suggest considering in IDH-wildtype glioma to inform prognosis?",
+     "options": {
+      "A": "TERT promoter mutation",
+      "B": "BRAF V600E only",
+      "C": "HER2",
+      "D": "KRAS",
+      "E": "EGFR amplification only"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "TERT promoter mutation",
+     "explanation": "NICE: consider testing IDH-wildtype glioma specimens for TERT promoter mutations to inform prognosis.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "5a9e804d-03f4-42e9-abaa-80b4d9ce64e6",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Consider testing IDH-wildtype glioma specimens for TERT promoter mutations to inform prognosis."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-15",
+     "question": "For newly diagnosed grade 3 glioma, which concurrent therapy does NICE advise against?",
+     "options": {
+      "A": "Adjuvant PCV",
+      "B": "Surgery",
+      "C": "Nitrosoureas (e.g. CCNU) with radiotherapy",
+      "D": "Best supportive care",
+      "E": "Radiotherapy alone"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Nitrosoureas (e.g. CCNU) with radiotherapy",
+     "explanation": "NICE: do not offer nitrosoureas such as CCNU (lomustine) concurrently with radiotherapy for newly diagnosed grade 3 glioma.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "820b3b90-cea4-4e1a-9769-7d58e07d0a42",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Do not offer nitrosoureas (for example, CCNU [lomustine]) concurrently with radiotherapy to people with newly diagnosed grade 3 glioma."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-16",
+     "question": "What does NICE recommend for regular review of people with glioma?",
+     "options": {
+      "A": "Review only by the GP",
+      "B": "Review only when symptoms recur",
+      "C": "Annual CT only, with no other follow-up review",
+      "D": "Physical, psychological and cognitive review",
+      "E": "No review after treatment"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Physical, psychological and cognitive review",
+     "explanation": "NICE: offer regular clinical review to assess changes in physical, psychological and cognitive wellbeing.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "7d422063-7ec3-4758-b423-8c31ee4e6321",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Offer regular clinical review for people with glioma to assess changes in their physical, psychological and cognitive wellbeing."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-17",
+     "question": "Which alternatives to temozolomide does NICE suggest for recurrent high-grade glioma?",
+     "options": {
+      "A": "Tumour-treating fields",
+      "B": "Cediranib",
+      "C": "Bevacizumab with irinotecan",
+      "D": "Erlotinib",
+      "E": "PCV or single-agent CCNU"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "PCV or single-agent CCNU",
+     "explanation": "NICE: consider PCV or single-agent CCNU (lomustine) as an alternative to temozolomide.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "34fa80d0-dd29-44ff-b32f-2d8cce7bf6dc",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Consider PCV or single agent CCNU (lomustine) as an alternative to temozolomide for people with recurrent high-grade glioma."
+      }
+     ]
+    },
+    {
+     "id": "oligodendroglioma-and-low-grade-glioma-18",
+     "question": "Which treatments does NICE advise against for recurrent high-grade glioma?",
+     "options": {
+      "A": "Bevacizumab, erlotinib or cediranib",
+      "B": "Further radiotherapy",
+      "C": "Best supportive care",
+      "D": "PCV",
+      "E": "Further surgery with radiotherapy in all cases"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Bevacizumab, erlotinib or cediranib",
+     "explanation": "NICE: do not offer bevacizumab, erlotinib or cediranib, alone or with chemotherapy, for recurrent high-grade glioma.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "a176f36f-97e4-4413-aeb0-a6383e737071",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng99",
+       "excerpt": "Do not offer bevacizumab, erlotinib or cediranib, either alone or in combination with chemotherapy, as part of management of recurrent high-grade glioma."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "topicKey": "resistant hypertension aldosterone antagonism renal denervation workup",
+   "topicDisplayName": "Resistant hypertension: aldosterone antagonism, renal denervation, workup",
+   "aliases": [
+    "resistant HTN",
+    "refractory hypertension",
+    "spironolactone hypertension",
+    "renal denervation",
+    "primary aldosteronism"
+   ],
+   "mergedTopicKeys": [],
+   "storedRelevantDistinctItems": 31,
+   "newestSourceYear": 2021,
+   "outdated": false,
+   "coverageNote": "Pool: NICE NG136 hypertension (no stored year; 2019), and trials (Symplicity HTN-2 2010, DENERHTN 2015, PATHWAY-2 2015, AMBER 2019, RADIANCE/SPYRAL-type sham trial 2021). Workup content is limited: there's no stored row on aldosterone:renin ratio screening or adherence testing. 16 Qs.",
+   "mcqs": [
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-01",
+     "question": "An adult with resistant hypertension starting step 4 has potassium 4.2 mmol/L. What does NICE suggest?",
+     "options": {
+      "A": "An alpha-blocker",
+      "B": "Low-dose spironolactone",
+      "C": "Stop the CCB",
+      "D": "Bendroflumethiazide at high dose",
+      "E": "Add an ARB to the ACE inhibitor"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Low-dose spironolactone",
+     "explanation": "NICE: consider low-dose spironolactone for step 4 if potassium is 4.5 mmol/L or less, with caution in reduced eGFR.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "6af77be5-4c72-4af2-a2b3-00d7a8165412",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "Consider further diuretic therapy with low-dose spironolactone for adults with resistant hypertension starting step 4 treatment who have a blood potassium level of 4.5 mmol/l or less. Use particular caution in people with a reduced estimated glomerular filtration rate because they have an increased risk of hyperkalaemia. [2019] In March 2019, this was an off-label use of some preparations of spironolactone. See NICE's information on prescribing medicines ."
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-02",
+     "question": "At step 4 of resistant hypertension, potassium is 4.9 mmol/L. What does NICE suggest considering?",
+     "options": {
+      "A": "Potassium supplements",
+      "B": "An alpha-blocker or beta-blocker",
+      "C": "Amiloride with potassium",
+      "D": "Spironolactone at a low dose of 25 mg daily",
+      "E": "An ACE inhibitor plus an ARB"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "An alpha-blocker or beta-blocker",
+     "explanation": "NICE: consider an alpha-blocker or beta-blocker at step 4 if potassium is above 4.5 mmol/L.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "93c7f034-33fd-4c07-8539-dad83db1c2aa",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "Consider an alpha-blocker or beta-blocker for adults with resistant hypertension starting step 4 treatment who have a blood potassium level of more than 4.5 mmol/l. [2019]"
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-03",
+     "question": "After starting further diuretic therapy at step 4, when does NICE recommend checking electrolytes and renal function?",
+     "options": {
+      "A": "After 6 months",
+      "B": "Never",
+      "C": "Within 1 month",
+      "D": "Only if symptomatic",
+      "E": "After 1 year"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Within 1 month",
+     "explanation": "NICE: monitor sodium, potassium and renal function within 1 month of starting and repeat as needed.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "c9071729-9e8a-4006-a37e-b25af571f807",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "When using further diuretic therapy for step 4 treatment of resistant hypertension, monitor blood sodium and potassium and renal function within 1 month of starting treatment and repeat as needed thereafter. [2019]"
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-04",
+     "question": "Which antihypertensive combination does NICE advise against?",
+     "options": {
+      "A": "ARB with a CCB",
+      "B": "CCB with a thiazide-like diuretic",
+      "C": "ACE inhibitor with a CCB",
+      "D": "ACE inhibitor with a thiazide-like diuretic",
+      "E": "ACE inhibitor with an ARB"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "ACE inhibitor with an ARB",
+     "explanation": "NICE: do not combine an ACE inhibitor with an ARB to treat hypertension.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "fa4a681f-a4d1-415f-96b0-3fb44113ab94",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "Do not combine an ACE inhibitor with an ARB to treat hypertension. [2019]"
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-05",
+     "question": "For confirmed resistant hypertension, what does NICE recommend?",
+     "options": {
+      "A": "Renal denervation for all",
+      "B": "A fourth drug or specialist advice",
+      "C": "Stop all drugs and retest after 3 months",
+      "D": "A fifth drug before a fourth",
+      "E": "Increase salt intake"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "A fourth drug or specialist advice",
+     "explanation": "NICE: consider adding a fourth antihypertensive drug as step 4, or seeking specialist advice.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "02f97b2e-fd01-4c2d-b9bb-0abd3a482f9b",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "For people with confirmed resistant hypertension, consider adding a fourth antihypertensive drug as step 4 treatment or seeking specialist advice. [2019] Follow the MHRA safety advice on ACE inhibitors and angiotensin II receptor antagonists: not for use in pregnancy , how to use for breastfeeding and clarification on breastfeeding ."
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-06",
+     "question": "Which diuretic type does NICE prefer when starting or changing diuretic treatment for hypertension?",
+     "options": {
+      "A": "Thiazide-like, e.g. indapamide",
+      "B": "Acetazolamide",
+      "C": "Bendroflumethiazide at high dose",
+      "D": "Amiloride alone",
+      "E": "Furosemide"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Thiazide-like, e.g. indapamide",
+     "explanation": "NICE: offer a thiazide-like diuretic such as indapamide in preference to a conventional thiazide.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "eeb4f3da-8a56-414d-a421-c48f93376f54",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "If starting or changing diuretic treatment for hypertension, offer a thiazide-like diuretic, such as indapamide in preference to a conventional thiazide diuretic such as bendroflumethiazide or hydrochlorothiazide. [2019]"
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-07",
+     "question": "Hypertension isn't controlled on step 2 treatment. What does NICE offer at step 3?",
+     "options": {
+      "A": "ACE inhibitor/ARB + CCB + thiazide-like diuretic",
+      "B": "Spironolactone alone",
+      "C": "Beta-blocker alone",
+      "D": "Two ARBs",
+      "E": "Alpha-blocker plus ACE inhibitor"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "ACE inhibitor/ARB + CCB + thiazide-like diuretic",
+     "explanation": "NICE: at step 3, offer a combination of an ACE inhibitor or ARB, a CCB and a thiazide-like diuretic.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "3f2c2356-d908-4ff2-a1e5-a1e46a342b5e",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "If hypertension is not controlled in adults taking step 2 treatment, offer a combination of: an ACE inhibitor or ARB (see also recommendation 1.4.30 for people of Black African or African–Caribbean family origin) and a CCB and a thiazide-like diuretic. [2019]"
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-08",
+     "question": "When does NICE suggest specialist evaluation for secondary causes of hypertension?",
+     "options": {
+      "A": "White-coat hypertension",
+      "B": "Isolated systolic hypertension",
+      "C": "All patients on one drug",
+      "D": "Age over 80 with isolated systolic BP",
+      "E": "Age under 40 with hypertension"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "Age under 40 with hypertension",
+     "explanation": "NICE: for adults under 40 with hypertension, consider specialist evaluation of secondary causes. Also consider specialist investigation where features suggest a secondary cause.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "032fc7b9-804b-45cd-80e4-1799e90daee6",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "For adults aged under 40 with hypertension, consider seeking specialist evaluation of secondary causes of hypertension and a more detailed assessment of the long-term balance of treatment benefit and risks. [2019]"
+      },
+      {
+       "guidelineId": "0c14c6a7-1d07-4605-a70c-e7ffb5a9e8d2",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "Consider the need for specialist investigations in people with signs and symptoms suggesting a secondary cause of hypertension. [2004, amended 2011]"
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-09",
+     "question": "Which investigations does NICE offer to all people with hypertension to assess target organ damage, among others?",
+     "options": {
+      "A": "Plasma metanephrines for all",
+      "B": "Urine ACR and haematuria dipstick",
+      "C": "Renal biopsy in all people with hypertension",
+      "D": "Captopril renogram",
+      "E": "Renal angiography"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Urine ACR and haematuria dipstick",
+     "explanation": "NICE: test urine albumin:creatinine ratio and haematuria with a reagent strip (among other tests).",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "545a8ffc-f6bc-498b-ab12-d9ac5f020030",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "For all people with hypertension offer to: test for the presence of protein in the urine by sending a urine sample for estimation of the albumin:creatinine ratio and test for haematuria using a reagent strip; take a blood sample to measure glycated haemoglobin (HbA1C), electrolytes, creatinine, estimated glomerular filtration rate, total cholesterol and HDL cholesterol; examine the fundi for the presence of hypertensive retinopathy; arrange for a 12‑lead electrocardiograph to be performed. [2011"
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-10",
+     "question": "What office BP reduction did renal denervation achieve in the 2010 randomised trial (Symplicity HTN-2)?",
+     "options": {
+      "A": "Increase of 10 mmHg",
+      "B": "32/12 mmHg from 178/96",
+      "C": "No change",
+      "D": "5/2 mmHg",
+      "E": "60/30 mmHg from a baseline of 178/96"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "32/12 mmHg from 178/96",
+     "explanation": "Office BP fell by 32/12 mmHg (baseline 178/96) with denervation versus no change in controls.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "21246420-2a19-4b18-b4d7-94aeff49a84a",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2010,
+       "sourceUrl": "https://doi.org/10.1016/s0140-6736(10)62039-9",
+       "excerpt": "Office-based blood pressure measurements in the renal denervation group reduced by 32/12 mm Hg (SD 23/11, baseline of 178/96 mm Hg, p<0·0001), whereas they did not differ from baseline in the control group (change of 1/0 mm Hg [21/10], baseline of 178/97 mm Hg, p=0·77 systolic and p=0·83 diastolic)."
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-11",
+     "question": "In the 2021 sham-controlled renal denervation trial, what was the median between-group difference in daytime ambulatory systolic BP?",
+     "options": {
+      "A": "-32 mmHg",
+      "B": "-20 mmHg",
+      "C": "+4.5 mmHg favouring sham procedure",
+      "D": "-4.5 mmHg favouring denervation",
+      "E": "No difference"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "-4.5 mmHg favouring denervation",
+     "explanation": "Denervation reduced daytime ambulatory SBP more than sham (-8.0 vs -3.0 mmHg; median difference -4.5 mmHg, p=0.022).",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "36fccbfd-e631-4ff8-9542-b7e69b23d521",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2021,
+       "sourceUrl": "https://doi.org/10.1016/s0140-6736(21)00788-1",
+       "excerpt": "Renal denervation reduced daytime ambulatory systolic blood pressure more than the sham procedure (-8·0 mm Hg [IQR -16·4 to 0·0] vs -3·0 mm Hg [-10·3 to 1·8]; median between-group difference -4·5 mm Hg [95% CI -8·5 to -0·3]; adjusted p=0·022); the median between-group difference was -5·8 mm Hg (95% CI -9·7 to -1·6; adjusted p=0·0051) among patients with complete ambulatory blood pressure data. The"
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-12",
+     "question": "What hypothesis did the 2015 PATHWAY-2 crossover trial test?",
+     "options": {
+      "A": "Salt loading lowers BP",
+      "B": "ACE plus ARB is superior",
+      "C": "Beta-blockers are best add-on",
+      "D": "Renal denervation beats drugs",
+      "E": "Resistant HTN is mainly sodium retention; spironolactone best"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "Resistant HTN is mainly sodium retention; spironolactone best",
+     "explanation": "PATHWAY-2 tested whether resistant hypertension is most often due to sodium retention, making spironolactone superior to non-diuretic add-ons.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "a39acc4a-4485-4e29-92f5-04a3a8136be1",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2015,
+       "sourceUrl": "https://doi.org/10.1016/s0140-6736(15)00257-3",
+       "excerpt": "We aimed to test the hypotheses that resistant hypertension is most often caused by excessive sodium retention, and that spironolactone would therefore be superior to non-diuretic add-on drugs at lowering blood pressure. Methods In this double-blind, placebo-controlled, crossover trial, we enrolled patients aged 18-79 years with seated clinic systolic blood pressure 140 mm Hg or greater (or"
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-13",
+     "question": "What problem with spironolactone in CKD did the 2019 AMBER trial address?",
+     "options": {
+      "A": "Hypomagnesaemia",
+      "B": "Hyponatraemia, managed using tolvaptan",
+      "C": "Gynaecomastia",
+      "D": "Hyperkalaemia, using patiromer",
+      "E": "Hypotension"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Hyperkalaemia, using patiromer",
+     "explanation": "Spironolactone use in CKD can be restricted by hyperkalaemia. AMBER evaluated patiromer to allow continued spironolactone.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "74fc291a-343f-45fe-976f-258563c390fb",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2019,
+       "sourceUrl": "https://doi.org/10.1016/s0140-6736(19)32135-x",
+       "excerpt": "Background Spironolactone is effective at reducing blood pressure in patients with uncontrolled resistant hypertension. However, the use of spironolactone in patients with chronic kidney disease can be restricted by hyperkalaemia. We evaluated use of the potassium binder patiromer to allow m"
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-14",
+     "question": "What did the 2015 DENERHTN trial compare?",
+     "options": {
+      "A": "Two different ARBs",
+      "B": "Salt restriction vs none",
+      "C": "Denervation vs sham only",
+      "D": "Denervation added to standardised therapy vs therapy alone",
+      "E": "Spironolactone vs placebo"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Denervation added to standardised therapy vs therapy alone",
+     "explanation": "DENERHTN compared ambulatory BP lowering with radiofrequency denervation added to standardised antihypertensive treatment.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "301ad834-082e-4cee-bd6a-f73004c38440",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2015,
+       "sourceUrl": "https://doi.org/10.1016/s0140-6736(14)61942-5",
+       "excerpt": "Background Conflicting blood pressure-lowering effects of catheter-based renal artery denervation have been reported in patients with resistant hypertension. We compared the ambulatory blood pressure-lowering efficacy and safety of radiofrequency-based renal denervation added to a standardis"
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-15",
+     "question": "An ACE inhibitor causes cough. What does NICE recommend?",
+     "options": {
+      "A": "Switch to a beta-blocker",
+      "B": "Add an ARB",
+      "C": "Switch to an ARB",
+      "D": "Stop all treatment",
+      "E": "Add codeine"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Switch to an ARB",
+     "explanation": "NICE: if an ACE inhibitor isn't tolerated (e.g. cough), offer an ARB.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "6154d606-6710-4865-af49-a46dd648dfd6",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "If an ACE inhibitor is not tolerated, for example because of cough, offer an ARB to treat hypertension. [2019] Follow the MHRA safety advice on ACE inhibitors and angiotensin II receptor antagonists: not for use in pregnancy , how to use for breastfeeding and clarification on breastfeeding ."
+      }
+     ]
+    },
+    {
+     "id": "resistant-hypertension-aldosterone-antagonism-renal-denervat-16",
+     "question": "Which BP measurements does NICE recommend for monitoring response to treatment?",
+     "options": {
+      "A": "Clinic BP measurements",
+      "B": "Self-reported symptoms",
+      "C": "Central aortic pressure",
+      "D": "24-hour urine sodium",
+      "E": "Ankle-brachial index"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Clinic BP measurements",
+     "explanation": "NICE: use clinic BP to monitor response to lifestyle changes or drugs. Use ABPM/HBPM for white-coat or masked hypertension.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "43bd3df0-3305-4c8f-81aa-41c1b04a97e9",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "Use clinic blood pressure measurements to monitor the response to lifestyle changes or drug treatment in people with hypertension. [2019]"
+      },
+      {
+       "guidelineId": "c0261a39-6343-41fc-9d48-acfde8238a04",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "Consider ABPM or HBPM, in addition to clinic blood pressure measurements, for people with hypertension identified as having a white-coat effect or masked hypertension (in which clinic and non-clinic blood pressure results are conflicting). Be aware that the corresponding measurements for ABPM and HBPM are 5 mmHg lower than for clinic measurements (see recommendation 1.2.8 for diagnostic thresholds ). [2019]"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "topicKey": "diabetic retinopathy screening intervals laser photocoagulation anti-vegf therapy",
+   "topicDisplayName": "Diabetic retinopathy: screening intervals, laser photocoagulation, anti-VEGF therapy",
+   "aliases": [
+    "DR",
+    "diabetic retinopathy",
+    "diabetic macular oedema",
+    "DMO",
+    "anti-VEGF",
+    "retinal screening",
+    "PRP"
+   ],
+   "mergedTopicKeys": [],
+   "storedRelevantDistinctItems": 29,
+   "newestSourceYear": 2004,
+   "outdated": true,
+   "coverageNote": "OUTDATED: no stored source for this topic is dated after 2015 (or flagged by review); check against current guidance. OUTDATED-flagged: the newest stored year is 2004 (telemedicine). The NICE NG242 diabetic retinopathy rows (2024) and NG3 diabetes in pregnancy rows are stored without a year, so the content is largely current; the flag reflects a data quirk. There are no stored rows on NHS DESP screening intervals for the general population (annual vs 2-yearly).",
+   "mcqs": [
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-01",
+     "question": "A person is newly diagnosed with proliferative diabetic retinopathy. What does NICE recommend offering?",
+     "options": {
+      "A": "Cataract surgery",
+      "B": "Observation with review at 6 months",
+      "C": "Fenofibrate alone",
+      "D": "Topical steroids",
+      "E": "Panretinal photocoagulation"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "Panretinal photocoagulation",
+     "explanation": "NICE: offer panretinal photocoagulation when PDR is first diagnosed.",
+     "difficulty": "easy",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "0bdb73e2-655c-4d03-83c7-a5a61910449c",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "Offer panretinal photocoagulation to people when they are first diagnosed with proliferative diabetic retinopathy."
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-02",
+     "question": "Proliferative diabetic retinopathy remains active after complete PRP. What does NICE recommend?",
+     "options": {
+      "A": "Anti-VEGF treatment",
+      "B": "Discharge",
+      "C": "Repeat PRP indefinitely",
+      "D": "Observation",
+      "E": "Oral steroids"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Anti-VEGF treatment",
+     "explanation": "NICE: offer anti-VEGF for PDR that remains active after complete PRP.",
+     "difficulty": "medium",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "d48c0f63-1605-4f9b-ae63-535804354cce",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "Offer anti-VEGF treatment for people whose proliferative diabetic retinopathy remains active after complete panretinal photocoagulation and discuss the advantages and disadvantages of the available anti-VEGFs with the person. If the person has vitreoretinal traction or tractional retinal detachment, monitor them closely in collaboration with a vitreoretinal specialist (see also the section on vitrectomy for people with proliferative diabetic retinopathy ). In August 2024, the only anti-VEGF trea"
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-03",
+     "question": "A person with PDR has high-risk characteristics or has difficulty attending. What does NICE suggest?",
+     "options": {
+      "A": "Start fenofibrate",
+      "B": "Offer same-day PRP",
+      "C": "Defer PRP for 3 months",
+      "D": "Refer to the GP",
+      "E": "Observe only"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Offer same-day PRP",
+     "explanation": "NICE: offer to start panretinal photocoagulation on the same day for high-risk characteristics or difficulty attending.",
+     "difficulty": "medium",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "cd104c47-8a30-445b-abdc-b6144d9a2805",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "For people with high-risk characteristics or who have difficulty attending appointments, offer to start panretinal photocoagulation on the same day. For example, offer this to people who have neovascularisation which meets the criteria for high-risk characteristics, or those who have difficulty accessing transport to be able to attend hospital appointments."
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-04",
+     "question": "Which patients with centre-involving diabetic macular oedema does NICE say should be offered anti-VEGF?",
+     "options": {
+      "A": "Non-centre-involving oedema",
+      "B": "Visual impairment and CRT ≥400 µm",
+      "C": "Good vision (79+ letters) and any CRT",
+      "D": "No oedema",
+      "E": "Any CRT with normal vision"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Visual impairment and CRT ≥400 µm",
+     "explanation": "NICE: offer anti-VEGF for centre-involving DMO with visual impairment and central retinal thickness of 400 micrometres or more.",
+     "difficulty": "medium",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "032aef84-265a-49e1-852a-f2a3c9d06686",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "For people with centre-involving diabetic macular oedema, visual impairment and central retinal thickness of 400 micrometres or more, offer anti-VEGF treatment. Discuss with the person the advantages and disadvantages of the available anti-VEGFs. In August 2024, NICE technology appraisal guidance recommended ranibizumab, brolucizumab, faricimab and aflibercept as options for treating visual impairment in eyes with central retinal thickness of 400 micrometres or more (see NICE technology appraisa"
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-05",
+     "question": "Centre-involving DMO with good vision (79 letters or better): what does NICE suggest?",
+     "options": {
+      "A": "Steroid implant",
+      "B": "Anti-VEGF for all, regardless of vision",
+      "C": "Vitrectomy",
+      "D": "Macular laser or observation",
+      "E": "PRP"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Macular laser or observation",
+     "explanation": "NICE: consider macular laser or observation, discussing both options.",
+     "difficulty": "medium",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "55ee2f89-2193-40f7-907f-904cd47097c2",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "For people with centre-involving diabetic macular oedema and good vision (79 letters or better) consider either macular laser treatment or observation. Discuss these 2 options with the person with macular oedema."
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-06",
+     "question": "What's NICE's treatment for non-centre-involving clinically significant macular oedema?",
+     "options": {
+      "A": "Observation only",
+      "B": "Vitrectomy",
+      "C": "Macular laser",
+      "D": "Steroid implant",
+      "E": "Anti-VEGF"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Macular laser",
+     "explanation": "NICE: offer macular laser treatment to people with non-centre-involving clinically significant macular oedema.",
+     "difficulty": "medium",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "69af12c8-7358-46fd-b6e4-51119c327044",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "Offer macular laser treatment to people with non-centre-involving clinically significant macular oedema ."
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-07",
+     "question": "Twelve months after starting anti-VEGF for DMO, the response is suboptimal. What does NICE suggest?",
+     "options": {
+      "A": "Consider an intravitreal steroid implant",
+      "B": "Double the anti-VEGF dose",
+      "C": "Vitrectomy for all",
+      "D": "Stop all treatment and discharge to screening",
+      "E": "PRP"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Consider an intravitreal steroid implant",
+     "explanation": "NICE: assess response at 12 months and consider switching to an intravitreal steroid implant if suboptimal.",
+     "difficulty": "hard",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "b042d970-bd27-47df-bb0c-ce1a107fb971",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "Twelve months after starting anti-VEGF treatment, assess response to treatment. Consider switching to an intravitreal steroid implant if the response is suboptimal."
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-08",
+     "question": "A person with PDR has vitreous haemorrhage that hasn't cleared within 3 months. What does NICE suggest?",
+     "options": {
+      "A": "Laser to the macula",
+      "B": "Oral fenofibrate",
+      "C": "Observe for a further year before any surgery",
+      "D": "Repeat PRP only",
+      "E": "Consider vitrectomy within 3 months"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "Consider vitrectomy within 3 months",
+     "explanation": "NICE: consider vitrectomy for non-clearing vitreous haemorrhage, performed within 3 months of offering it.",
+     "difficulty": "medium",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "83ab16ff-a9b1-4c9e-adb7-fed1ccc320ad",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "Consider vitrectomy for people with proliferative diabetic retinopathy and vitreous haemorrhage that has not cleared within 3 months (often called 'non-clearing vitreous haemorrhage' in clinical practice). Perform vitrectomy within 3 months of offering it."
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-09",
+     "question": "A person with PDR has macula-involving retinal detachment. What does NICE recommend?",
+     "options": {
+      "A": "Observation",
+      "B": "Anti-VEGF alone",
+      "C": "Vitrectomy",
+      "D": "Macular laser",
+      "E": "PRP alone"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Vitrectomy",
+     "explanation": "NICE: offer vitrectomy for PDR with macula-involving or macula-threatening retinal detachment.",
+     "difficulty": "easy",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "61de2500-3439-4d7f-b162-1e62e69d3cee",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "Offer vitrectomy to people with proliferative diabetic retinopathy and macula-involving or macula-threatening retinal detachment."
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-10",
+     "question": "Which drug does NICE suggest ophthalmologists consider for people with type 2 diabetes and non-proliferative retinopathy?",
+     "options": {
+      "A": "Ramipril without hypertension",
+      "B": "Atorvastatin 80 mg",
+      "C": "Fenofibrate",
+      "D": "Aspirin",
+      "E": "Metformin"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Fenofibrate",
+     "explanation": "NICE: ophthalmologists should consider fenofibrate to reduce progression of DR in type 2 diabetes with non-proliferative retinopathy.",
+     "difficulty": "medium",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "88e74da5-491d-47a8-8de4-f336fb430f24",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "Ophthalmologists should consider fenofibrate for people with non-proliferative retinopathy and type 2 diabetes to reduce the progression of diabetic retinopathy . In August 2024, this was an off-label use of fenofibrate. See NICE's information on prescribing medicines ."
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-11",
+     "question": "What does NICE say about BP medicines in people without hypertension, to prevent progression of non-proliferative DR?",
+     "options": {
+      "A": "Offer an ACE inhibitor to everyone with DR",
+      "B": "Don't offer them for that purpose",
+      "C": "Offer a beta-blocker",
+      "D": "Offer a CCB",
+      "E": "Offer an ARB to all"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Don't offer them for that purpose",
+     "explanation": "NICE: do not offer BP medicines to people without hypertension solely to prevent progression of non-proliferative DR.",
+     "difficulty": "medium",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "a407b1cc-c30f-49c9-8d1e-5c3fa7c45381",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "Do not offer blood pressure management medicines to people without hypertension for the sole purpose of preventing the progression of non-proliferative diabetic retinopathy."
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-12",
+     "question": "After PDR has regressed with treatment, how does NICE suggest monitoring?",
+     "options": {
+      "A": "Hospital eye service for 12 months",
+      "B": "Discharge to screening straight away",
+      "C": "No monitoring",
+      "D": "Lifelong monthly review",
+      "E": "Annual GP review only"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Hospital eye service for 12 months",
+     "explanation": "NICE: monitor under hospital eye services for 12 months after the end of treatment, using individualised frequency.",
+     "difficulty": "medium",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "eb9b4616-7cbb-4f1d-afae-dfa0c7444dae",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "For people whose disease has regressed after treatment for proliferative diabetic retinopathy, monitor under the care of hospital eye services for 12 months after the end of treatment, using an individualised monitoring frequency."
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-13",
+     "question": "A pregnant woman with pre-existing diabetes has retinopathy at her first antenatal visit. When does NICE recommend another retinal assessment?",
+     "options": {
+      "A": "Monthly throughout",
+      "B": "At 16–20 weeks",
+      "C": "Only after delivery",
+      "D": "Not needed",
+      "E": "At 36 weeks only"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "At 16–20 weeks",
+     "explanation": "NICE: offer retinal assessment at 16 to 20 weeks to women with pre-existing diabetes who had DR at the first antenatal visit.",
+     "difficulty": "medium",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "49a4551d-4a80-423e-a6ea-624195527074",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng3",
+       "excerpt": "Offer retinal assessment at 16 to 20 weeks to women with pre‑existing diabetes who had diabetic retinopathy at their first antenatal clinic visit."
+      },
+      {
+       "guidelineId": "a1dcd58e-a812-431b-b72e-b84189f69b1a",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng3",
+       "excerpt": "if they have diabetic retinopathy, offer an additional retinal assessment at 16 to 20 weeks"
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-14",
+     "question": "What does NICE say about diabetic retinopathy and the mode of birth?",
+     "options": {
+      "A": "DR requires induction at 34 weeks",
+      "B": "DR requires a planned caesarean section at term",
+      "C": "DR requires general anaesthesia",
+      "D": "DR requires assisted delivery",
+      "E": "DR isn't a contraindication to vaginal birth"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "DR isn't a contraindication to vaginal birth",
+     "explanation": "NICE: diabetic retinopathy should not be considered a contraindication to vaginal birth.",
+     "difficulty": "medium",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "b7d4b241-4ee7-46c5-be0e-eb3be40cbbe7",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng3",
+       "excerpt": "Diabetic retinopathy should not be considered a contraindication to vaginal birth. [2008]"
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-15",
+     "question": "A woman presents early in pregnancy with a high HbA1c and diabetic retinopathy. What does NICE say about rapid glucose optimisation?",
+     "options": {
+      "A": "DR isn't a contraindication to it",
+      "B": "Optimise only after laser",
+      "C": "Optimise only if DR is absent",
+      "D": "Delay until after delivery",
+      "E": "DR contraindicates rapid optimisation"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "DR isn't a contraindication to it",
+     "explanation": "NICE: DR should not be considered a contraindication to rapid optimisation of blood glucose in women with high HbA1c in early pregnancy.",
+     "difficulty": "hard",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "39e780bf-10c4-46c7-aae5-b15619307156",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng3",
+       "excerpt": "Diabetic retinopathy should not be considered a contraindication to rapid optimisation of blood glucose control in women who present with a high HbA1c in early pregnancy. [2008]"
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-16",
+     "question": "Which imaging does NICE suggest alongside clinical examination when assessing for PDR?",
+     "options": {
+      "A": "CT orbits",
+      "B": "B-scan ultrasound for all",
+      "C": "Ultrawide-field fundus imaging",
+      "D": "Corneal topography and keratometry",
+      "E": "Plain orbital X-ray"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Ultrawide-field fundus imaging",
+     "explanation": "NICE: consider ultrawide-field fundus imaging alongside clinical examination when assessing for PDR.",
+     "difficulty": "medium",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "493127a9-d47a-4369-bcc3-2f48ad686c25",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "Consider using ultrawide-field fundus imaging alongside clinical examination when assessing eyes for the presence of proliferative diabetic retinopathy."
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-17",
+     "question": "Before cataract surgery in a person with diabetes, what does NICE say the surgeon should do?",
+     "options": {
+      "A": "Find out the current diabetic eye disease status",
+      "B": "Defer surgery for 1 year",
+      "C": "Give PRP to all first",
+      "D": "Proceed without eye history",
+      "E": "Stop all diabetes drugs"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Find out the current diabetic eye disease status",
+     "explanation": "NICE: obtain information about current diabetic eye disease status to tailor surgery, postoperative medication and follow-up.",
+     "difficulty": "easy",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "e156c249-9363-4bac-9408-3f8f166d061a",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "Before cataract surgery for a person with diabetes, the surgeon should obtain information about the person's current diabetic eye disease status. The surgeon can then use this information to tailor the surgery, post-operation medication and follow-up to the person's condition and needs."
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-18",
+     "question": "A person on regular anti-VEGF injections for DMO doesn't want to continue. What does NICE suggest?",
+     "options": {
+      "A": "Oral steroids",
+      "B": "Vitrectomy",
+      "C": "Stop treatment and discharge to routine screening",
+      "D": "Consider an intravitreal steroid implant",
+      "E": "PRP"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Consider an intravitreal steroid implant",
+     "explanation": "NICE: at any time, if a person doesn't want to continue regular anti-VEGF, consider switching to an intravitreal steroid implant.",
+     "difficulty": "medium",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "8b552f61-3bd7-48e9-a788-e7d0d2ed292e",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "At any time after the start of treatment, if a person does not want to continue with regular anti-VEGF injections, consider switching treatment to an intravitreal steroid implant."
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-19",
+     "question": "What do telehealth programmes for diabetic retinopathy aim to achieve, according to Telemed J E Health (2004)?",
+     "options": {
+      "A": "Diagnose cataract only",
+      "B": "Preserve vision and improve access",
+      "C": "Reduce screening frequency",
+      "D": "Prescribe anti-VEGF remotely",
+      "E": "Replace all ophthalmologists with remote graders"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Preserve vision and improve access",
+     "explanation": "Telehealth DR programmes should aim to preserve vision, reduce vision loss and provide better access to care.",
+     "difficulty": "easy",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "936ef8f9-bb2a-445a-93b2-ee8bde7ca6d7",
+       "sourceBody": "Telemedicine journal and e-health 2004",
+       "sourceYear": 2004,
+       "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/35963508/",
+       "excerpt": "Telehealth programs for diabetic retinopathy should aim to preserve vision, reduce vision loss, and provide better access to medicine."
+      }
+     ]
+    },
+    {
+     "id": "diabetic-retinopathy-screening-intervals-laser-photocoagulat-20",
+     "question": "How does NICE say eyes with diabetic retinopathy should be treated and monitored?",
+     "options": {
+      "A": "According to the worse eye only",
+      "B": "According to patient age",
+      "C": "Each eye separately, by its pathology",
+      "D": "Both eyes identically",
+      "E": "According to HbA1c only, with both eyes treated"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Each eye separately, by its pathology",
+     "explanation": "NICE: treat and monitor each eye separately based on that eye's active pathologies.",
+     "difficulty": "easy",
+     "outdatedSources": true,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "d2bcbfe5-56ea-44be-a524-d10e5dd284a3",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng242",
+       "excerpt": "After assessing eyes with diabetic retinopathy , treat and monitor each eye separately based on the eye's active pathologies. Depending on the eye's stage of retinopathy, see the recommendations on: non-proliferative diabetic retinopathy or proliferative diabetic retinopathy or diabetic macular oedema ."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "topicKey": "dystonia classification focal blepharospasm torticollis and botulinum toxin therapy",
+   "topicDisplayName": "Dystonia classification: focal (blepharospasm, torticollis) and botulinum toxin therapy",
+   "aliases": [
+    "dystonia",
+    "cervical dystonia",
+    "torticollis",
+    "blepharospasm",
+    "botulinum toxin",
+    "focal dystonia"
+   ],
+   "mergedTopicKeys": [],
+   "storedRelevantDistinctItems": 27,
+   "newestSourceYear": 2025,
+   "outdated": false,
+   "coverageNote": "FLAGGED SHORT (14 Qs): no stored rows on dystonia classification or focal adult dystonias (blepharospasm, cervical dystonia/torticollis). The AAN/EFNS botulinum toxin dystonia guidance is missing. Pool: NICE CG145/NG119 cerebral palsy spasticity/dystonia (2012/2019), EAN 2010 BoNT, and a 2025 pallidal DBS trial. Questions focus on CP-related dystonia and botulinum toxin use.",
+   "mcqs": [
+    {
+     "id": "dystonia-classification-focal-blepharospasm-torticollis-and--01",
+     "question": "What did the 2025 trial evaluate in isolated generalised or segmental dystonia?",
+     "options": {
+      "A": "Oral trihexyphenidyl at high dose for 5 years",
+      "B": "Long-term pallidal neurostimulation",
+      "C": "Thalamotomy",
+      "D": "Intrathecal baclofen",
+      "E": "Botulinum toxin"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Long-term pallidal neurostimulation",
+     "explanation": "The trial evaluated long-term efficacy and safety of pallidal neurostimulation (GPi DBS), an effective treatment for severe isolated dystonia.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "e798195a-b21a-4db7-927f-082af8751ed7",
+       "sourceBody": "Clinical trial",
+       "sourceYear": 2025,
+       "sourceUrl": "https://doi.org/10.1002/mds.30130",
+       "excerpt": "Background Pallidal neurostimulation is an effective treatment for severe isolated dystonia, but long-term data from clinical trials are lacking. Objectives To evaluate long-term efficacy and safety of pallidal neurostimulation in patients with isolated generalized or segmental dyston"
+      }
+     ]
+    },
+    {
+     "id": "dystonia-classification-focal-blepharospasm-torticollis-and--02",
+     "question": "An adult with cerebral palsy has problematic dystonia affecting function. Where does NICE suggest referral?",
+     "options": {
+      "A": "The GP alone",
+      "B": "Psychiatry",
+      "C": "A tone or spasticity management service",
+      "D": "Palliative care",
+      "E": "A general orthopaedic clinic for surgery"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "A tone or spasticity management service",
+     "explanation": "NICE: refer adults with CP and problematic dystonia to a tone or spasticity management service.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "e86ee0fd-8172-4f0f-8cb9-d7d765731e3f",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng119",
+       "excerpt": "Refer adults with cerebral palsy and problematic dystonia (for example, causing problems with function, pain or participation) to a tone or spasticity management service to consider treatment options."
+      }
+     ]
+    },
+    {
+     "id": "dystonia-classification-focal-blepharospasm-torticollis-and--03",
+     "question": "When does NICE say botulinum toxin A should be considered for focal dystonia in adults with cerebral palsy?",
+     "options": {
+      "A": "As stand-alone treatment in primary care",
+      "B": "Before any assessment",
+      "C": "Under a tone service, within a wider therapy programme",
+      "D": "Only with levodopa",
+      "E": "For generalised dystonia only"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Under a tone service, within a wider therapy programme",
+     "explanation": "NICE: only consider BoNT-A for focal dystonia in adults with CP under a tone/spasticity service as part of a wider therapy programme with focused goals.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "4c34f08f-a911-4c29-93a2-1adbdbe6ccbd",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng119",
+       "excerpt": "Only consider botulinum toxin type A treatment for focal dystonia in adults with cerebral palsy when: the person is under the supervision of a tone or spasticity management service, and it is part of a wider programme of therapy and focal dystonia is: affecting their care (such as hygiene or dressing) or causing pain or impairing activity and participation."
+      }
+     ]
+    },
+    {
+     "id": "dystonia-classification-focal-blepharospasm-torticollis-and--04",
+     "question": "What does NICE say about levodopa for dystonia in adults with cerebral palsy?",
+     "options": {
+      "A": "Only as a trial for dopa-responsive dystonia",
+      "B": "First-line for all adults with CP and dystonia",
+      "C": "Use at high dose",
+      "D": "Combine with BoNT always",
+      "E": "Use for spasticity"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Only as a trial for dopa-responsive dystonia",
+     "explanation": "NICE: do not prescribe levodopa for dystonia in adults with CP, except as a therapeutic trial to identify dopa-responsive dystonia.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "f46b44a9-65e2-444b-bb6a-180019efd480",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng119",
+       "excerpt": "Do not prescribe levodopa to manage dystonia in adults with cerebral palsy, except in the rare situation when it is used as a therapeutic trial to identify dopa-responsive dystonia. In January 2019, this was an off-label use of levodopa. See NICE's information on prescribing medicines ."
+      }
+     ]
+    },
+    {
+     "id": "dystonia-classification-focal-blepharospasm-torticollis-and--05",
+     "question": "How does NICE advise stopping enteral anti-dystonic drugs in adults with cerebral palsy taken long-term or at high dose?",
+     "options": {
+      "A": "Switch overnight",
+      "B": "Reduce gradually",
+      "C": "Stop and start BoNT",
+      "D": "Halve daily",
+      "E": "Stop abruptly"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Reduce gradually",
+     "explanation": "NICE: don't withdraw rapidly, particularly after more than 2 months or at high dosage; reduce gradually.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "d033ede3-92b1-42e0-9982-d1c8f23ae0ee",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng119",
+       "excerpt": "Do not rapidly withdraw enteral drugs for treating dystonia, particularly if adults with cerebral palsy have taken them for more than 2 months or at a high dosage. Reduce the dosage gradually to avoid withdrawal symptoms. In January 2019, giving anti-dystonic drugs via an enteral feeding tube was an off-label use. See NICE's information on prescribing medicines ."
+      }
+     ]
+    },
+    {
+     "id": "dystonia-classification-focal-blepharospasm-torticollis-and--06",
+     "question": "Severe painful dystonia in adults with cerebral palsy persists despite enteral drugs or BoNT. What does NICE suggest?",
+     "options": {
+      "A": "Repeat BoNT fortnightly",
+      "B": "Orthopaedic fusion",
+      "C": "Increase enteral drugs indefinitely at higher doses",
+      "D": "Stop all treatment",
+      "E": "Referral to a specialised DBS centre"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "Referral to a specialised DBS centre",
+     "explanation": "NICE: consider referral to a specialised centre experienced in deep brain stimulation.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "d4d3df39-3600-444f-bee5-c31be52b88ea",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng119",
+       "excerpt": "If adults with cerebral palsy continue to have severe and painful dystonia, despite having enteral anti-dystonic drug treatment or botulinum toxin type A treatment, consider referring them to a specialised centre with experience in providing deep brain stimulation. See also NICE interventional procedures guidance on deep brain stimulation for tremor and dystonia (excluding Parkinson's disease) ."
+      }
+     ]
+    },
+    {
+     "id": "dystonia-classification-focal-blepharospasm-torticollis-and--07",
+     "question": "When does NICE suggest continuous intrathecal baclofen for dystonia in cerebral palsy?",
+     "options": {
+      "A": "As first-line",
+      "B": "For mild dystonia",
+      "C": "Dystonia persists despite enteral drugs or BoNT",
+      "D": "Before oral drugs",
+      "E": "Only in under-4s"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Dystonia persists despite enteral drugs or BoNT",
+     "explanation": "NICE: only consider pump-administered intrathecal baclofen if difficulties with dystonia persist despite enteral drugs or BoNT-A.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "76daf056-0578-4553-8eb3-02c6f734a6fd",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng119",
+       "excerpt": "Only consider continuous pump-administered intrathecal baclofen if people with cerebral palsy still have difficulties with dystonia, despite having enteral anti-dystonic drug treatment or botulinum toxin type A treatment. Provide information and discuss the procedure, including intrathecal baclofen testing, with the person (and their family or carer, if agreed) as described in recommendations 1.3.13 to 1.3.16 . In January 2019, this was an off-label use for intrathecal baclofen and botulinum tox"
+      }
+     ]
+    },
+    {
+     "id": "dystonia-classification-focal-blepharospasm-torticollis-and--08",
+     "question": "Which oral drugs does NICE suggest trialling when dystonia contributes to problems in children with spasticity?",
+     "options": {
+      "A": "Diazepam only",
+      "B": "Carbamazepine",
+      "C": "Propranolol",
+      "D": "Trihexyphenidyl, levodopa or baclofen",
+      "E": "Haloperidol, carbamazepine or diazepam"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Trihexyphenidyl, levodopa or baclofen",
+     "explanation": "NICE: consider a trial of oral drug treatment, for example trihexyphenidyl, levodopa or baclofen.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "21f468f0-f676-4edc-a61f-dd2b072f4c63",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg145",
+       "excerpt": "In children and young people with spasticity in whom dystonia is considered to contribute significantly to problems with posture, function and pain, consider a trial of oral drug treatment, for example with trihexyphenidyl, levodopa or baclofen. At the time of publication (July 2012), trihexyphenidyl, levodopa (which is always marketed in combination with an extra-cerebral dopa-decarboxylase inhibitor) and baclofen did not have UK marketing authorisation for use in the treatment of dystonia asso"
+      }
+     ]
+    },
+    {
+     "id": "dystonia-classification-focal-blepharospasm-torticollis-and--09",
+     "question": "When does NICE suggest a trial of botulinum toxin A in children with spasticity and focal dystonia?",
+     "options": {
+      "A": "Only after surgery",
+      "B": "Only cosmetic concerns",
+      "C": "Any dystonia, however mild",
+      "D": "Serious postural or functional problems, or pain",
+      "E": "Only in adults"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Serious postural or functional problems, or pain",
+     "explanation": "NICE: consider a BoNT-A trial in children with spasticity in whom focal dystonia causes serious problems such as postural or functional difficulties or pain.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "88d8a1fc-8392-49d1-977d-8e8bb8578b1b",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg145",
+       "excerpt": "Consider a trial of botulinum toxin type A treatment in children and young people with spasticity in whom focal dystonia is causing serious problems, such as postural or functional difficulties or pain."
+      }
+     ]
+    },
+    {
+     "id": "dystonia-classification-focal-blepharospasm-torticollis-and--10",
+     "question": "Which situations does NICE say rule out botulinum toxin A in a child?",
+     "options": {
+      "A": "Previous physiotherapy",
+      "B": "Mild spasticity",
+      "C": "Age over 5",
+      "D": "Severe weakness, prior reaction, or aminoglycosides",
+      "E": "Use of an orthosis"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Severe weakness, prior reaction, or aminoglycosides",
+     "explanation": "NICE: do not offer BoNT-A with severe muscle weakness, previous adverse reaction or allergy, or current aminoglycoside treatment.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "3e0ec0ba-e1f6-4a17-98ad-210ca75e8d3f",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg145",
+       "excerpt": "Do not offer botulinum toxin type A treatment if the child or young person: has severe muscle weakness; had a previous adverse reaction or allergy to botulinum toxin type A; is receiving aminoglycoside treatment."
+      }
+     ]
+    },
+    {
+     "id": "dystonia-classification-focal-blepharospasm-torticollis-and--11",
+     "question": "Which guidance methods does NICE suggest for injecting botulinum toxin A?",
+     "options": {
+      "A": "Fluoroscopy only",
+      "B": "Ultrasound or electrical muscle stimulation",
+      "C": "Blind landmark technique only, without guidance",
+      "D": "CT guidance",
+      "E": "MRI guidance"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Ultrasound or electrical muscle stimulation",
+     "explanation": "NICE: consider ultrasound or electrical muscle stimulation to guide BoNT-A injection.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "dab0fd8a-4063-4022-b54d-8e1703c57eb0",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg145",
+       "excerpt": "Consider ultrasound or electrical muscle stimulation to guide the injection of botulinum toxin type A."
+      }
+     ]
+    },
+    {
+     "id": "dystonia-classification-focal-blepharospasm-torticollis-and--12",
+     "question": "When does NICE suggest repeat botulinum toxin A injections?",
+     "options": {
+      "A": "Only if the first dose failed",
+      "B": "Only after surgery",
+      "C": "Good response that has worn off, or new goals",
+      "D": "Every 2 weeks, regardless of response or treatment goals",
+      "E": "Never repeat"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Good response that has worn off, or new goals",
+     "explanation": "NICE: consider repeat injections if the response to the treatment goal was satisfactory and has worn off, or new goals are agreed.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "46bb5273-1371-4497-918d-87c55b9e30bc",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg145",
+       "excerpt": "Consider repeat injections of botulinum toxin type A if: the response in relation to the child or young person's treatment goal was satisfactory, and the treatment effect has worn off; new goals amenable to this treatment are identified."
+      }
+     ]
+    },
+    {
+     "id": "dystonia-classification-focal-blepharospasm-torticollis-and--13",
+     "question": "Which upper limb indications does the EAN (2010) say botulinum toxin A should be offered for?",
+     "options": {
+      "A": "Rheumatoid arthritis",
+      "B": "Carpal tunnel syndrome",
+      "C": "Spasticity of elbow, wrist and finger flexors",
+      "D": "Writer's cramp only",
+      "E": "Essential tremor of the hands, head and voice"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Spasticity of elbow, wrist and finger flexors",
+     "explanation": "EAN 2010: BoNT-A injections should be offered for upper limb spasticity affecting elbow, wrist and finger flexors, reducing pain and deformity.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "ec82e75e-28e2-4ff8-9b0c-2e50f1f4cba6",
+       "sourceBody": "European Academy of Neurology",
+       "sourceYear": 2010,
+       "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/20633180/",
+       "excerpt": "Botulinum toxin type-A injections should be offered for upper limb spasticity affecting elbow, wrist, and finger flexors, with demonstrated safety and efficacy for reduction in pain and deformity, improvement in washing and dressing, and reduction in caregiver burden."
+      }
+     ]
+    },
+    {
+     "id": "dystonia-classification-focal-blepharospasm-torticollis-and--14",
+     "question": "After botulinum toxin A, what does NICE suggest to enhance stretching of the weakened muscle?",
+     "options": {
+      "A": "An orthosis",
+      "B": "Bed rest",
+      "C": "Repeat injection the next day",
+      "D": "Immobilisation in plaster for 6 months",
+      "E": "No further therapy"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "An orthosis",
+     "explanation": "NICE: consider an orthosis after BoNT-A to enhance stretching and enable practice of functional skills; serial casting first if range is limited.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "94e2abfd-3964-43e0-bdf2-b8eeecb0c3eb",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg145",
+       "excerpt": "After treatment with botulinum toxin type A, consider an orthosis to: enhance stretching of the temporarily weakened muscle and enable the child or young person to practice functional skills."
+      },
+      {
+       "guidelineId": "e3f16e9b-40ee-40ac-bde2-f2b32c8cc167",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/cg145",
+       "excerpt": "If an orthosis is indicated after botulinum toxin type A, but limited passive range of movement would make this difficult, consider first using serial casting to stretch the muscle. To improve the child or young person's ability to tolerate the cast, and to improve muscle stretching, delay casting until 2 to 4 weeks after the botulinum toxin type A treatment."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "topicKey": "pregnancy and the kidney",
+   "topicDisplayName": "Pregnancy and the Kidney",
+   "aliases": [
+    "renal disease in pregnancy",
+    "CKD pregnancy",
+    "AKI in pregnancy",
+    "pregnancy kidney",
+    "kidney transplant pregnancy"
+   ],
+   "mergedTopicKeys": [
+    "pregnancy in chronic kidney disease"
+   ],
+   "storedRelevantDistinctItems": 28,
+   "newestSourceYear": null,
+   "outdated": false,
+   "coverageNote": "Pool: NICE NG133 hypertension in pregnancy and NG3 diabetes in pregnancy (no stored year), and NICE CKD-related rows. There are no stored rows on pregnancy in dialysis, kidney transplant pregnancy, or AKI in pregnancy, and none from RA/UKKA pregnancy-in-CKD guidance. Some overlap with #52; questions use different rows. 16 Qs.",
+   "mcqs": [
+    {
+     "id": "pregnancy-and-the-kidney-01",
+     "question": "What does NICE say about using eGFR to measure kidney function in pregnancy?",
+     "options": {
+      "A": "eGFR is the preferred measure",
+      "B": "Use eGFR only postpartum",
+      "C": "Use eGFR only in the first trimester",
+      "D": "Don't use eGFR in pregnancy",
+      "E": "Use eGFR with a pregnancy correction"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Don't use eGFR in pregnancy",
+     "explanation": "NICE: do not use eGFR to measure kidney function in pregnant women.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "d0d73d8f-8430-48af-981e-f50ec4f61a50",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng3",
+       "excerpt": "Do not use eGFR to measure kidney function in pregnant women. [2008, amended 2015]"
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-02",
+     "question": "A woman's kidney function assessment is abnormal at 3 months after a pregnancy with pre-eclampsia. What does NICE suggest?",
+     "options": {
+      "A": "Start dialysis",
+      "B": "Renal biopsy for all",
+      "C": "Discharge",
+      "D": "Specialist kidney assessment per the CKD guideline",
+      "E": "Repeat in 5 years"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Specialist kidney assessment per the CKD guideline",
+     "explanation": "NICE: consider referral for specialist kidney assessment in line with the CKD guideline.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "34b02143-0a73-48a8-97cf-c1301cea85e9",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng133",
+       "excerpt": "Consider referring women with an abnormal kidney function assessment at 3 months for a specialist kidney assessment in line with the NICE guideline on chronic kidney disease . [2010, amended 2019]"
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-03",
+     "question": "A woman taking an ACE inhibitor for renal disease becomes pregnant. What does NICE advise?",
+     "options": {
+      "A": "Stop within 2 working days; offer alternatives",
+      "B": "Add an ARB",
+      "C": "Continue throughout pregnancy at the same daily dose",
+      "D": "Halve the dose",
+      "E": "Stop in the third trimester only"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Stop within 2 working days; offer alternatives",
+     "explanation": "NICE: stop ACE inhibitors or ARBs if pregnant (preferably within 2 working days of notification) and offer alternatives.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "d56a4d96-ff88-4b60-91d5-ed7652258f70",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng133",
+       "excerpt": "Stop antihypertensive treatment in women taking ACE inhibitors or ARBs if they become pregnant (preferably within 2 working days of notification of pregnancy) and offer alternatives. [2010]"
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-04",
+     "question": "A woman with renal disease on an ARB is planning pregnancy. What does NICE advise?",
+     "options": {
+      "A": "Discuss alternatives with the managing clinician",
+      "B": "Continue unchanged until a positive pregnancy test",
+      "C": "Stop without discussion",
+      "D": "Add an ACE inhibitor",
+      "E": "Double the dose"
+     },
+     "correctAnswer": "A",
+     "correctAnswerText": "Discuss alternatives with the managing clinician",
+     "explanation": "NICE: if ACE inhibitors or ARBs are taken for conditions such as renal disease, discuss alternative treatment with the responsible healthcare professional.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "76763c93-d684-4bff-bdc4-a3ff2fcb8460",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng133",
+       "excerpt": "to discuss alternative treatment with the healthcare professional responsible for managing their condition, if ACE inhibitors or ARBs are being taken for other conditions such as renal disease. [2010, amended 2019] In 2014, the Medicines and Healthcare products Regulatory Agency (MHRA) issued a drug safety update on ACE inhibitors and angiotensin II receptor antagonists: not for use in pregnancy , which states 'Use in women who are planning pregnancy should be avoided unless absolutely necessary"
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-05",
+     "question": "Which interventions does NICE say shouldn't be used to prevent hypertensive disorders of pregnancy?",
+     "options": {
+      "A": "Aspirin in high-risk women",
+      "B": "Nitric oxide donors, progesterone, diuretics, LMWH",
+      "C": "Antenatal BP monitoring",
+      "D": "Calcium-rich diet advice",
+      "E": "Urine protein testing"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Nitric oxide donors, progesterone, diuretics, LMWH",
+     "explanation": "NICE: do not use nitric oxide donors, progesterone, diuretics or LMWH to prevent hypertensive disorders in pregnancy.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "bb0fc660-0933-46a8-8b90-fcd495962ace",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng133",
+       "excerpt": "Do not use the following to prevent hypertensive disorders during pregnancy: nitric oxide donors; progesterone; diuretics; low molecular weight heparin. [2010]"
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-06",
+     "question": "Which supplements does NICE advise against recommending solely to prevent hypertensive disorders in pregnancy?",
+     "options": {
+      "A": "Vitamin D",
+      "B": "Magnesium, folic acid, vitamins C/E, fish oils",
+      "C": "Iron for anaemia",
+      "D": "Iodine",
+      "E": "Calcium for low intake"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Magnesium, folic acid, vitamins C/E, fish oils",
+     "explanation": "NICE: don't recommend magnesium, folic acid, antioxidants (vitamins C and E), or fish/algal oils solely to prevent hypertensive disorders.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "23ef0bcd-df18-4bc1-92fa-2b451209d12a",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng133",
+       "excerpt": "Do not recommend the following supplements solely with the aim of preventing hypertensive disorders during pregnancy: magnesium; folic acid; antioxidants (vitamins C and E); fish oils or algal oils; garlic. [2010]"
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-07",
+     "question": "What does NICE recommend for women with chronic hypertension in pregnancy?",
+     "options": {
+      "A": "No referral",
+      "B": "Referral to a specialist in hypertensive disorders",
+      "C": "Diuretic therapy",
+      "D": "Stop all antihypertensives",
+      "E": "Routine admission"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Referral to a specialist in hypertensive disorders",
+     "explanation": "NICE: offer referral to a specialist in hypertensive disorders of pregnancy to discuss the risks and benefits of treatment.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "08dbb74b-46c6-4133-82e3-7cb465a35203",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng133",
+       "excerpt": "Offer women with chronic hypertension referral to a specialist in hypertensive disorders of pregnancy to discuss the risks and benefits of treatment. [2010, amended 2019]"
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-08",
+     "question": "Recurrent eclamptic fits occur on magnesium sulfate. What further dose does NICE recommend?",
+     "options": {
+      "A": "1 g orally",
+      "B": "Phenytoin loading",
+      "C": "10 g IM given into each buttock",
+      "D": "2–4 g IV over 5–15 minutes",
+      "E": "Diazepam 10 mg"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "2–4 g IV over 5–15 minutes",
+     "explanation": "NICE: treat recurrent fits with a further 2 g to 4 g IV over 5 to 15 minutes.",
+     "difficulty": "hard",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "0b14fb43-4c02-4295-b982-48e1f0900f37",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng133",
+       "excerpt": "Recurrent fits should be treated with a further dose of 2 g to 4 g given intravenously over 5 to 15 minutes. [2010, amended 2019] The MHRA has issued a warning about the risk of skeletal adverse effects in the neonate following prolonged or repeated use of magnesium sulfate in pregnancy . Maternal administration of magnesium sulfate for longer than 5 to 7 days in pregnancy has been associated with skeletal adverse effects and hypocalcaemia and hypermagnesemia in neonates. If use of magnesium sul"
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-09",
+     "question": "Which drug does NICE recommend first-line for hypertension in pre-eclampsia?",
+     "options": {
+      "A": "Atenolol",
+      "B": "Furosemide",
+      "C": "Ramipril",
+      "D": "Losartan",
+      "E": "Labetalol"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "Labetalol",
+     "explanation": "NICE: offer labetalol; nifedipine if unsuitable; methyldopa if neither is suitable.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "0b143a40-fc7e-470a-9cf6-3240db8650c1",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng133",
+       "excerpt": "Offer labetalol to treat hypertension in pregnant women with pre-eclampsia. Offer nifedipine for women in whom labetalol is not suitable, and methyldopa if labetalol or nifedipine are not suitable. Base the choice on any pre-existing treatment, side-effect profiles, risks (including fetal effects) and the woman's preference. [2010, amended 2019] At the time of publication (June 2019), some brands of nifedipine were specifically contraindicated during pregnancy by the manufacturer in its summary "
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-10",
+     "question": "What does NICE say about ACE inhibitors and ARBs in pregnant or breastfeeding women or those planning pregnancy?",
+     "options": {
+      "A": "Required in CKD pregnancy",
+      "B": "Avoid unless absolutely necessary",
+      "C": "Safe in all trimesters",
+      "D": "Preferred agents in all trimesters",
+      "E": "Safe if renal function is normal"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Avoid unless absolutely necessary",
+     "explanation": "NICE: ACE inhibitors and ARBs should not be used in pregnant or breastfeeding women or those planning pregnancy unless absolutely necessary.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "13e11c7c-0556-49f6-86ae-c01e9b3bb964",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "Note that ACE inhibitors and angiotensin II receptor antagonists should not be used in pregnant or breastfeeding women or women planning pregnancy unless absolutely necessary, in which case the potential risks and benefits should be discussed. Follow the MHRA safety advice on ACE inhibitors and angiotensin II receptor antagonists: not for use in pregnancy , recommendations on how to use for breastfeeding and the related clarification on breastfeeding ."
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-11",
+     "question": "Which guideline does NICE point to for choosing antihypertensives in people with chronic kidney disease?",
+     "options": {
+      "A": "The epilepsy guideline",
+      "B": "The NICE CKD guideline",
+      "C": "The obesity guideline",
+      "D": "The NICE diabetes guideline",
+      "E": "The dementia guideline"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "The NICE CKD guideline",
+     "explanation": "NICE: for choice of antihypertensive in CKD, see NICE's guideline on chronic kidney disease, using once-daily drugs where possible.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "28a45a9a-03c4-435e-b9de-f4c33f019c42",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng136",
+       "excerpt": "For guidance on choice of antihypertensive medicine in people with chronic kidney disease, see NICE's guideline on chronic kidney disease . If possible, offer treatment with drugs taken only once a day. [2004]"
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-12",
+     "question": "Which pregnant women does NICE say should receive aspirin 75–150 mg from 12 weeks?",
+     "options": {
+      "A": "Only women over 40",
+      "B": "All primigravidae regardless of risk",
+      "C": "Only those with anaemia",
+      "D": "Those with chronic hypertension",
+      "E": "None"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Those with chronic hypertension",
+     "explanation": "NICE: offer pregnant women with chronic hypertension aspirin 75–150 mg once daily from 12 weeks.",
+     "difficulty": "easy",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "81f2be30-5230-4952-bb75-97b2034fc4cb",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng133",
+       "excerpt": "Offer pregnant women with chronic hypertension aspirin 75 mg to 150 mg once daily from 12 weeks. [2019] Although its use is common in UK clinical practice, at the time of publication (June 2019), aspirin did not have a UK marketing authorisation for this indication. Community pharmacies cannot legally sell aspirin as a pharmacy medicine for prevention of pre-eclampsia in pregnancy in England. Aspirin for this indication must be prescribed. The prescriber should see the summary of product charact"
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-13",
+     "question": "What advice does NICE give about salt restriction in pregnancy?",
+     "options": {
+      "A": "Restrict salt after 20 weeks",
+      "B": "Restrict salt to 2 g/day in every pregnant woman with CKD",
+      "C": "Don't recommend it solely to prevent pre-eclampsia",
+      "D": "Increase salt intake",
+      "E": "Restrict salt in all CKD pregnancies"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Don't recommend it solely to prevent pre-eclampsia",
+     "explanation": "NICE: do not recommend salt restriction during pregnancy solely to prevent gestational hypertension or pre-eclampsia.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "bb5b63ac-2735-4dff-af89-c13c60d0e705",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng133",
+       "excerpt": "Do not recommend salt restriction during pregnancy solely to prevent gestational hypertension or pre-eclampsia. [2010]"
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-14",
+     "question": "Who should assess women with gestational hypertension, according to NICE?",
+     "options": {
+      "A": "The GP alone, without a hospital assessment",
+      "B": "A community pharmacist",
+      "C": "A health visitor",
+      "D": "A trained professional in secondary care",
+      "E": "No formal assessment"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "A trained professional in secondary care",
+     "explanation": "NICE: a full assessment in secondary care by a healthcare professional trained in managing hypertensive disorders of pregnancy.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "b11dbd71-691b-4515-ba34-00d8baecb245",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng133",
+       "excerpt": "In women with gestational hypertension, a full assessment should be carried out in a secondary care setting by a healthcare professional who is trained in the management of hypertensive disorders of pregnancy. [2010, amended 2019]"
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-15",
+     "question": "A woman had pre-eclampsia with birth before 34 weeks. What does NICE suggest before a future pregnancy?",
+     "options": {
+      "A": "No counselling unless she has another pregnancy",
+      "B": "Contraception for 5 years",
+      "C": "Pre-pregnancy counselling about recurrence",
+      "D": "Thrombophilia screening",
+      "E": "Routine renal biopsy"
+     },
+     "correctAnswer": "C",
+     "correctAnswerText": "Pre-pregnancy counselling about recurrence",
+     "explanation": "NICE: consider pre-pregnancy counselling to discuss risks of recurrent hypertensive disorders and how to lower them.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "325f58dd-1ffa-4436-b7fe-465724760466",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng133",
+       "excerpt": "In women who have had pre-eclampsia or hypertension with early birth before 34 weeks, consider pre-pregnancy counselling to discuss possible risks of recurrent hypertensive disorders of pregnancy, and how to lower them for any future pregnancies. [2019]"
+      }
+     ]
+    },
+    {
+     "id": "pregnancy-and-the-kidney-16",
+     "question": "Which insulin type does NICE suggest considering for pregnant women with diabetes?",
+     "options": {
+      "A": "Only soluble human insulin throughout pregnancy",
+      "B": "Only long-acting insulin",
+      "C": "Insulin is contraindicated",
+      "D": "Rapid-acting analogues (aspart, lispro)",
+      "E": "Inhaled insulin"
+     },
+     "correctAnswer": "D",
+     "correctAnswerText": "Rapid-acting analogues (aspart, lispro)",
+     "explanation": "NICE: consider rapid-acting insulin analogues (aspart and lispro), which have advantages over soluble human insulin in pregnancy.",
+     "difficulty": "medium",
+     "outdatedSources": false,
+     "reviewState": "unreviewed",
+     "sourceRefs": [
+      {
+       "guidelineId": "cab096f0-9c1c-405e-adf7-a58781b95f9c",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng3",
+       "excerpt": "Consider rapid‑acting insulin analogues (aspart and lispro) for pregnant women with diabetes. Be aware that these insulin analogues have advantages over soluble human insulin during pregnancy. [2008]"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "counts": {
+  "topics": 7,
+  "mcqs": 118
+ }
+}

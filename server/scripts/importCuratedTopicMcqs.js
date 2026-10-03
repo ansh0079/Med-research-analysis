@@ -20,8 +20,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const db = require('../../database');
-const logger = require('../config/logger');
 const { validateCuratedTopicBlock, transformCuratedQuestionToStored } = require('../services/curatedMcqImportValidation');
 
 function findBatchFiles(rootDir) {
@@ -39,6 +37,7 @@ function readJsonFile(filePath) {
 }
 
 async function run({ apply = false } = {}) {
+  let db = null;
   const root = path.join(__dirname, '..', '..', 'data', 'curated-topic-mcqs');
   const files = findBatchFiles(root);
   if (!files.length) {
@@ -46,10 +45,12 @@ async function run({ apply = false } = {}) {
     return { files: 0, topics: 0, questions: 0, written: 0 };
   }
 
-  await db.connect();
-  let totalTopics = 0;
-  let totalQuestions = 0;
+  if (apply) {
+    db = require('../../database');
+    await db.connect();
+  }
   let written = 0;
+  const aggregated = new Map(); // topicKey -> merged topic payload
 
   for (const file of files) {
     const json = readJsonFile(file);
@@ -63,56 +64,75 @@ async function run({ apply = false } = {}) {
         console.log(`  - ${t?.topicKey || '(unknown)'}: INVALID — ${errors.join('; ')}`);
         continue;
       }
-      const storedMcqs = t.mcqs.map(transformCuratedQuestionToStored);
-      const objectKey = `curated-mcq:${t.topicKey.trim().toLowerCase()}`;
-      const payload = {
-        batch: batchNo,
-        topicKey: t.topicKey,
+      const key = String(t.topicKey || '').trim().toLowerCase();
+      if (!key) continue;
+      const current = aggregated.get(key) || {
+        batch: null,
+        topicKey: key,
         topicDisplayName: t.topicDisplayName,
-        aliases: Array.isArray(t.aliases) ? t.aliases.filter((s) => typeof s === 'string' && s.trim()).slice(0, 50) : [],
-        storedRowCount: Number(t.storedRowCount || 0),
+        aliases: [],
+        storedRowCount: 0,
         coverageNote: t.coverageNote || null,
         source: json.source || null,
         method: json.method || null,
         generatedAt: json.generatedAt || null,
         reviewState: json.reviewState || 'unreviewed',
-        mcqs: storedMcqs,
+        mcqs: [],
       };
-      totalTopics += 1;
-      totalQuestions += storedMcqs.length;
-      if (apply) {
-        await db.upsertTeachingObject({
-          objectKey,
-          objectType: 'curated_topic_mcq',
-          topic: t.topicDisplayName,
-          // normalizedTopic resolved inside upsertTeachingObject as needed
-          provider: 'manual',
-          confidence: 0.9,
-          payload,
-          reviewState: 'unreviewed',
-          generatedAt: json.generatedAt || new Date().toISOString(),
-        });
-        written += 1;
-        console.log(`  - ${t.topicDisplayName} (${storedMcqs.length} MCQs) — upserted as ${objectKey}`);
-      } else {
-        console.log(`  - ${t.topicDisplayName} (${storedMcqs.length} MCQs) — DRY RUN`);
-      }
+      // Merge aliases (unique)
+      const aliasSet = new Set(current.aliases);
+      (Array.isArray(t.aliases) ? t.aliases : []).forEach((a) => {
+        if (typeof a === 'string' && a.trim()) aliasSet.add(a.trim());
+      });
+      current.aliases = Array.from(aliasSet).slice(0, 50);
+      // Merge counts
+      current.storedRowCount += Number(t.storedRowCount || 0);
+      // Keep first non-null coverage note
+      if (!current.coverageNote && t.coverageNote) current.coverageNote = t.coverageNote;
+      // Append questions
+      const transformed = t.mcqs.map(transformCuratedQuestionToStored);
+      current.mcqs.push(...transformed);
+      aggregated.set(key, current);
+      console.log(`  - ${t.topicDisplayName} (${transformed.length} MCQs) — queued`);
     }
   }
 
-  await db.close();
+  if (apply && db) await db.close();
+  // Apply all aggregated topics
+  if (apply) {
+    db = require('../../database');
+    await db.connect();
+    for (const [, payload] of aggregated) {
+      const objectKey = `curated-mcq:${payload.topicKey}`;
+      await db.upsertTeachingObject({
+        objectKey,
+        objectType: 'curated_topic_mcq',
+        topic: payload.topicDisplayName,
+        provider: 'manual',
+        confidence: 0.9,
+        payload,
+        reviewState: 'unreviewed',
+        generatedAt: payload.generatedAt || new Date().toISOString(),
+      });
+      written += 1;
+    }
+    await db.close();
+  }
+  // Aggregated summary
+  const topicsCount = aggregated.size;
+  const questionsCount = Array.from(aggregated.values()).reduce((sum, t) => sum + t.mcqs.length, 0);
   console.log('\nSummary:');
   console.log(`  Files:     ${files.length}`);
-  console.log(`  Topics:    ${totalTopics}`);
-  console.log(`  Questions: ${totalQuestions}`);
+  console.log(`  Topics:    ${topicsCount}`);
+  console.log(`  Questions: ${questionsCount}`);
   console.log(`  Written:   ${apply ? written : 0} ${apply ? '(applied)' : '(dry-run)'}`);
-  return { files: files.length, topics: totalTopics, questions: totalQuestions, written: apply ? written : 0 };
+  return { files: files.length, topics: topicsCount, questions: questionsCount, written: apply ? written : 0 };
 }
 
 if (require.main === module) {
   const apply = process.argv.includes('--apply');
   run({ apply }).catch((err) => {
-    logger.error({ err }, 'Curated MCQ import failed');
+    console.error('Curated MCQ import failed', err);
     process.exit(1);
   });
 }

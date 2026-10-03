@@ -90,8 +90,8 @@ function validateCuratedTopicBlock(block) {
     if (!Array.isArray(block.aliases)) errors.push('aliases must be an array when present');
     else if (!block.aliases.every((a) => typeof a === 'string' && a.trim())) errors.push('aliases must contain non-empty strings');
   }
-  if (!Array.isArray(block.mcqs) || block.mcqs.length === 0) errors.push('mcqs[] is required and must be non-empty');
-  (block.mcqs || []).forEach((q, i) => validateCuratedQuestion(q, i, errors));
+  if (!Array.isArray(block.mcqs)) errors.push('mcqs[] array is required');
+  (Array.isArray(block.mcqs) ? block.mcqs : []).forEach((q, i) => validateCuratedQuestion(q, i, errors));
   return { ok: errors.length === 0, errors };
 }
 

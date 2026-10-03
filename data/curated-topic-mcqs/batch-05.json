@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T16:49:32+01:00",
+ "generatedAt": "2026-10-03T16:54:29+01:00",
  "source": "Signal MD stored topic_guidelines (read-only dump via /api/guidelines/browse, 2026-10-03)",
  "method": "Hand-written single-best-answer MCQs grounded only in stored rows judged relevant to the topic (misfiled rows excluded). Each question cites stored row ids.",
  "reviewState": "unreviewed - needs clinician review before publishing",
