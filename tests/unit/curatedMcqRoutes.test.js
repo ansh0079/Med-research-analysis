@@ -51,6 +51,16 @@ describe('curatedMcqRoutes', () => {
           mcqs: [{ id: 'q1', question: 'q', options: ['A: a','B: b','C: c','D: d','E: e'], correctAnswer: 'A', explanation: 'x', difficulty: 'easy' }],
         }),
       },
+      {
+        object_key: 'curated-mcq:empty-topic',
+        topic: 'Empty Topic',
+        object_payload: JSON.stringify({
+          topicKey: 'empty-topic',
+          topicDisplayName: 'Empty Topic',
+          aliases: ['alias'],
+          mcqs: [],
+        }),
+      },
     ]);
     const res = await request(app)
       .get('/api/mcqs/topics')
@@ -58,6 +68,8 @@ describe('curatedMcqRoutes', () => {
     expect(res.status).toBe(200);
     expect(res.body.topics[0].topicKey).toBe('ards-management');
     expect(res.body.topics[0].count).toBe(1);
+    // Empty topics should be filtered out
+    expect(res.body.topics.find((t) => t.topicKey === 'empty-topic')).toBeUndefined();
   });
 
   test('GET /api/topics/:topic/mcqs 404 when missing', async () => {
@@ -123,6 +135,22 @@ describe('curatedMcqRoutes', () => {
     expect(res.body.questions[0].sourceRefs[0].sourceBody).toBe('NICE');
     expect(res.body.questions[0].outdatedSources).toBe(true);
     expect(res.body.coverageNote).toMatch(/partial/);
+  });
+
+  test('GET /api/topics/:topic/mcqs returns 404 when topic has zero MCQs', async () => {
+    mockDb.get.mockResolvedValueOnce({
+      object_key: 'curated-mcq:no-quiz',
+      topic: 'No Quiz',
+      object_payload: JSON.stringify({
+        topicKey: 'no-quiz',
+        topicDisplayName: 'No Quiz',
+        mcqs: [],
+      }),
+    });
+    const res = await request(app)
+      .get('/api/topics/no-quiz/mcqs')
+      .set('Authorization', `Bearer ${authToken()}`);
+    expect(res.status).toBe(404);
   });
 });
 

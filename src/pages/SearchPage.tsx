@@ -491,7 +491,7 @@ export const SearchPage: React.FC = () => {
             </section>
 
             {/* Practice MCQs card when the query matches a curated topic */}
-            {isAuthenticated && curatedMcqInfo && (
+            {isAuthenticated && curatedMcqInfo && curatedMcqInfo.count > 0 && (
               <div className="mb-4 rounded-2xl border border-indigo-200 dark:border-indigo-800/50 bg-indigo-50/60 dark:bg-indigo-950/20 p-4 flex items-center gap-4">
                 <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center shrink-0">
                   <i className="fas fa-list-check text-indigo-600" />

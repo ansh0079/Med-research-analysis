@@ -25,8 +25,9 @@ export const McqsTopicsPage: React.FC = () => {
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return topics;
-    return topics.filter(t =>
+    const base = topics.filter((t) => t.count > 0);
+    if (!q) return base;
+    return base.filter(t =>
       t.displayName.toLowerCase().includes(q) || t.topicKey.toLowerCase().includes(q)
     );
   }, [topics, query]);

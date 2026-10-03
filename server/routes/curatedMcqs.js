@@ -31,6 +31,7 @@ function registerCuratedMcqRoutes(app, deps) {
         let payload;
         try { payload = JSON.parse(row.object_payload || '{}'); } catch { payload = {}; }
         const mcqCount = Array.isArray(payload.mcqs) ? payload.mcqs.length : 0;
+        if (mcqCount <= 0) continue; // hide empty topics from listing
         const topicKey = String(payload.topicKey || row.object_key.replace(/^curated-mcq:/, '') || '').trim();
         topics.push({
           topicKey,
@@ -112,6 +113,11 @@ function registerCuratedMcqRoutes(app, deps) {
           // Surface citations for UI — array with body/year/url/excerpt
           sourceRefs: Array.isArray(q.sourceRefs) ? q.sourceRefs : [],
         }));
+
+      // If no questions, do not expose an empty quiz
+      if (questions.length === 0) {
+        return res.status(404).json({ error: 'No curated MCQs for this topic' });
+      }
 
       // Sign and withhold answers
       const signed = attachQuizGradingTokens({ questions });
