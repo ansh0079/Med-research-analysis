@@ -116,6 +116,14 @@ async upsertTeachingObject(object = {}) {
         normalizedTopic: normalizedTopic || null,
         claims: object.payload?.claimAnchors || [],
     });
+    if (['guideline_mcq', 'cold_start_mcq', 'paper_mcq', 'live_quiz_mcq', 'paper'].includes(String(object.objectType || ''))) {
+        await this.run(
+            `INSERT INTO question_index_dirty (entity_type, entity_key, reason, queued_at, processed_at)
+             VALUES (?, ?, ?, ?, NULL)
+             ON CONFLICT (entity_type, entity_key) DO UPDATE SET reason = excluded.reason, queued_at = excluded.queued_at, processed_at = NULL`,
+            ['teaching_object', objectKey, 'teaching_object_changed', now],
+        ).catch(() => null);
+    }
     return this.getTeachingObjectByKey(objectKey);
 }
 

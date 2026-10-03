@@ -2,6 +2,21 @@
 import type { LearningHealthResponse } from '@types';
 import { KnowledgeCoreApi } from './knowledgeCore';
 
+export type QuestionTopicReviewItem = {
+  object_key: string;
+  question_index: number;
+  original_topic?: string | null;
+  assigned_curriculum_topic_id?: string | null;
+  assigned_topic_name?: string | null;
+  topic_similarity: number;
+  guideline_support: number;
+  paper_support: number;
+  evidence_support: 'guideline' | 'paper' | 'both' | 'none';
+  category: 'aligned' | 'unclear' | 'unassignable';
+  reasons: string[];
+  question?: { question?: string; explanation?: string } | null;
+};
+
 export type ProductionObservabilityStatus = 'healthy' | 'watch' | 'degraded' | 'insufficient_data';
 
 export type ProductionObservability = {
@@ -421,6 +436,25 @@ export class KnowledgeAdminApi extends KnowledgeCoreApi {
     if (options.limit) params.set('limit', String(options.limit));
     if (options.offset) params.set('offset', String(options.offset));
     const response = await this.fetchWithSession(`${API_BASE}/api/admin/clinical-quality-queue?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async getQuestionTopicReview(options: { category?: string; reason?: string; topic?: string; limit?: number; offset?: number } = {}): Promise<{
+    items: QuestionTopicReviewItem[];
+    counts: Array<{ category: string; review_state: string; count: number }>;
+  }> {
+    const params = new URLSearchParams();
+    Object.entries(options).forEach(([key, value]) => { if (value !== undefined && value !== '') params.set(key, String(value)); });
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/question-topic-review?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async reviewQuestionTopic(input: { objectKey: string; questionIndex: number; decision: 'approved' | 'needs_revision' | 'retired'; assignedCurriculumTopicId?: string; notes?: string }): Promise<{ assignment: unknown }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/question-topic-review`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input),
+    });
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
   }

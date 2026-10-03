@@ -59,6 +59,8 @@
     "backfill:pdf-flagship:high": "node server/scripts/backfillPdfBouquet.js --priority=high --force-retry",
     "seed:curated-mcqs": "node server/scripts/importCuratedTopicMcqs.js",
     "backfill:guideline-refiling": "node scripts/backfill-guideline-refiling.js",
+    "review:question-index": "node server/scripts/buildQuestionTopicIndex.js",
+    "apply:approved-guideline-refiling": "node server/scripts/applyApprovedGuidelineRefiling.js",
     "compose:hetzner:config": "docker compose -f docker-compose.hetzner.yml config",
     "verify:db-contract": "node tools/check-db-guards.js",
     "verify:sql-dialect": "node tools/check-sql-dialect.js",

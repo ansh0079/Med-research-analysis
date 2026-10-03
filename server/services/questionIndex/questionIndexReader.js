@@ -42,7 +42,7 @@ async function loadAssignments(db, hashes) {
     try {
         for (const part of chunks(unique)) {
             const rows = await db.all(
-                `SELECT question_hash, category, assigned_cluster_id, assigned_curriculum_topic_id, assigned_topic_name
+                `SELECT *
                  FROM question_topic_index WHERE question_hash IN (${part.map(() => '?').join(',')})`,
                 part,
             );
@@ -52,6 +52,8 @@ async function loadAssignments(db, hashes) {
                 if (existing && existing.category === 'aligned' && row.category !== 'aligned') continue;
                 out.set(row.question_hash, {
                     category: row.category,
+                    reviewState: row.review_state,
+                    evidenceSupport: row.evidence_support,
                     clusterId: row.assigned_cluster_id,
                     topicId: row.assigned_curriculum_topic_id,
                     topicName: row.assigned_topic_name,
@@ -70,6 +72,7 @@ async function loadAssignments(db, hashes) {
  */
 function belongsHere(assignment, clusterId) {
     if (!assignment) return true;
+    if (assignment.reviewState === 'retired') return false;
     if (assignment.category === 'unassignable') return false;
     if (assignment.category === 'aligned') return !clusterId || !assignment.clusterId || assignment.clusterId === clusterId;
     return true;
@@ -80,12 +83,13 @@ async function loadAlignedForCluster(db, clusterId, { limit = 60 } = {}) {
     if (!clusterId) return [];
     try {
         const rows = await db.all(
-            `SELECT object_key, question_index, object_type FROM question_topic_index
+            `SELECT * FROM question_topic_index
              WHERE assigned_cluster_id = ? AND category = 'aligned' LIMIT ?`,
             [clusterId, limit],
         );
         const byObject = new Map();
         for (const r of rows) {
+            if (r.review_state === 'retired') continue;
             if (!byObject.has(r.object_key)) byObject.set(r.object_key, []);
             byObject.get(r.object_key).push(r);
         }
@@ -98,7 +102,11 @@ async function loadAlignedForCluster(db, clusterId, { limit = 60 } = {}) {
             if (!Array.isArray(mcqs)) continue;
             for (const r of wanted) {
                 const q = mcqs[r.question_index];
-                if (q?.question && questionHash(q) ) out.push({ question: q, objectType: r.object_type, objectKey });
+                if (q?.question && questionHash(q)) {
+                    // Do not present a paper-only match as guideline-derived merely because the old batch was named guideline_mcq.
+                    const objectType = r.evidence_support === 'paper' ? 'paper_mcq' : r.object_type;
+                    out.push({ question: q, objectType, objectKey });
+                }
             }
         }
         return out;

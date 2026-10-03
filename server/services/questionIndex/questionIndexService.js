@@ -10,7 +10,7 @@
 const crypto = require('crypto');
 const classify = require('./classify');
 
-const CLASSIFIER_VERSION = 'embed-v1';
+const CLASSIFIER_VERSION = 'embed-v2';
 const MCQ_TYPES = ['guideline_mcq', 'cold_start_mcq', 'paper_mcq', 'live_quiz_mcq'];
 
 const sha = (text) => crypto.createHash('sha256').update(String(text)).digest('hex');
@@ -166,16 +166,18 @@ async function buildIndex({ sources, embed, thresholds = classify.DEFAULT_THRESH
                 }
             }
         }
-        const support = placement.topicIndex >= 0 ? classify.supportFor(vec, clusterOf[placement.topicIndex], recsByCluster, recVecs, 3) : [];
-        const decision = classify.classifyQuestion({ placement, support, originalTopicIndex, thresholds });
-
         let paperLinks = [];
-        if (decision.category === 'aligned') {
+        let paperSupport = 0;
+        if (placement.topicIndex >= 0) {
             const candidates = papersByCluster.get(clusterOf[placement.topicIndex]) || [];
             const scored = new Float32Array(candidates.length);
             for (let i = 0; i < candidates.length; i += 1) scored[i] = classify.dot(vec, paperVecs[candidates[i]]);
-            paperLinks = classify.topK(scored, 3).map((hit) => papers[candidates[hit.index]].article_uid);
+            const hits = classify.topK(scored, 3);
+            paperSupport = hits[0]?.score || 0;
+            paperLinks = hits.filter((hit) => hit.score >= thresholds.minPaperSupport).map((hit) => papers[candidates[hit.index]].article_uid);
         }
+        const support = placement.topicIndex >= 0 ? classify.supportFor(vec, clusterOf[placement.topicIndex], recsByCluster, recVecs, 3) : [];
+        const decision = classify.classifyQuestion({ placement, support, paperSupport, originalTopicIndex, thresholds });
         const assigned = placement.topicIndex >= 0 && placement.similarity >= thresholds.minTopicSimilarity;
         return {
             objectKey: q.objectKey,
@@ -192,11 +194,14 @@ async function buildIndex({ sources, embed, thresholds = classify.DEFAULT_THRESH
             runnerUpCurriculumTopicId: placement.runnerUpIndex >= 0 ? topics[placement.runnerUpIndex].id : null,
             runnerUpSimilarity: placement.runnerUpSimilarity,
             guidelineSupport: decision.bestSupport,
+            paperSupport: decision.paperSupport,
+            topicCategory: decision.topicCategory,
+            evidenceSupport: decision.evidenceSupport,
             category: decision.category,
             reasons: decision.reasons,
             sameAsFiled: decision.sameAsFiled,
-            evidenceGuidelineIds: decision.category === 'aligned' ? support.map((s) => String(recs[s.recIndex].id)) : [],
-            evidencePaperUids: paperLinks,
+            evidenceGuidelineIds: decision.bestSupport >= thresholds.minSupport ? support.map((s) => String(recs[s.recIndex].id)) : [],
+            evidencePaperUids: decision.paperSupport >= thresholds.minPaperSupport ? paperLinks : [],
         };
     });
 
@@ -262,9 +267,9 @@ async function writeIndex(db, built, { now = new Date().toISOString() } = {}) {
     const upsertQuestion = `INSERT INTO question_topic_index (
             object_key, question_index, question_hash, object_type, original_topic, original_curriculum_topic_id,
             assigned_curriculum_topic_id, assigned_topic_name, assigned_cluster_id, topic_similarity, runner_up_curriculum_topic_id,
-            runner_up_similarity, guideline_support, category, reasons, evidence_guideline_ids, evidence_paper_uids,
-            classifier_version, classified_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            runner_up_similarity, guideline_support, paper_support, topic_category, evidence_support, category, reasons,
+            evidence_guideline_ids, evidence_paper_uids, classifier_version, classified_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT (object_key, question_index) DO UPDATE SET
             question_hash = excluded.question_hash, object_type = excluded.object_type,
             original_topic = excluded.original_topic, original_curriculum_topic_id = excluded.original_curriculum_topic_id,
@@ -272,6 +277,8 @@ async function writeIndex(db, built, { now = new Date().toISOString() } = {}) {
             assigned_cluster_id = excluded.assigned_cluster_id,
             topic_similarity = excluded.topic_similarity, runner_up_curriculum_topic_id = excluded.runner_up_curriculum_topic_id,
             runner_up_similarity = excluded.runner_up_similarity, guideline_support = excluded.guideline_support,
+            paper_support = excluded.paper_support, topic_category = excluded.topic_category,
+            evidence_support = excluded.evidence_support,
             category = excluded.category, reasons = excluded.reasons, evidence_guideline_ids = excluded.evidence_guideline_ids,
             evidence_paper_uids = excluded.evidence_paper_uids, classifier_version = excluded.classifier_version,
             classified_at = excluded.classified_at`;
@@ -279,7 +286,7 @@ async function writeIndex(db, built, { now = new Date().toISOString() } = {}) {
         await db.run(upsertQuestion, [
             q.objectKey, q.questionIndex, q.questionHash, q.objectType, q.originalTopic, q.originalCurriculumTopicId,
             q.assignedCurriculumTopicId, q.assignedTopicName, q.assignedClusterId, q.topicSimilarity, q.runnerUpCurriculumTopicId,
-            q.runnerUpSimilarity, q.guidelineSupport, q.category, JSON.stringify(q.reasons),
+            q.runnerUpSimilarity, q.guidelineSupport, q.paperSupport, q.topicCategory, q.evidenceSupport, q.category, JSON.stringify(q.reasons),
             JSON.stringify(q.evidenceGuidelineIds), JSON.stringify(q.evidencePaperUids), CLASSIFIER_VERSION, now,
         ]);
     }
@@ -306,6 +313,7 @@ async function writeIndex(db, built, { now = new Date().toISOString() } = {}) {
             [c.curriculumTopicId, c.clusterId, CLASSIFIER_VERSION, now],
         );
     }
+    await db.run('UPDATE question_index_dirty SET processed_at = ? WHERE processed_at IS NULL', [now]).catch(() => null);
     return { questions: built.questions.length, guidelines: built.guidelines.length, topics: (built.topicClusters || []).length };
 }
 

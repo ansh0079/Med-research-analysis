@@ -19,6 +19,8 @@ const DEFAULT_THRESHOLDS = Object.freeze({
     // Support from the topic's guideline recommendations.
     alignedSupport: 0.65,           // a recommendation of that topic says what the question asks
     minSupport: 0.55,               // below this no guideline of the topic supports it
+    alignedPaperSupport: 0.65,      // a paper filed to the topic directly supports the question
+    minPaperSupport: 0.55,
     // The embedding and the filed topic are two independent signals. When they agree, or the filed topic is
     // within this much of the best match, the question stays where it was filed and needs no margin.
     keepFiledTolerance: 0.03,
@@ -118,14 +120,14 @@ function supportFor(qVec, topicIndex, recsByTopic, recVecs, n = 3) {
  *   unclear       - about a topic, but the match is close, or nothing of that topic's guidelines backs it
  *   unassignable  - not recognisably about any topic
  */
-function classifyQuestion({ placement, support, originalTopicIndex = -1, thresholds = DEFAULT_THRESHOLDS }) {
+function classifyQuestion({ placement, support, paperSupport = 0, originalTopicIndex = -1, thresholds = DEFAULT_THRESHOLDS }) {
     const t = thresholds;
     const reasons = [];
     const sameAsFiled = placement.topicIndex === originalTopicIndex;
     const bestSupport = support.length ? support[0].similarity : 0;
 
     if (placement.topicIndex < 0 || placement.similarity < t.minTopicSimilarity) {
-        return { category: 'unassignable', reasons: ['not_recognisably_about_a_topic'], sameAsFiled, bestSupport };
+        return { category: 'unassignable', topicCategory: 'unassignable', evidenceSupport: 'none', reasons: ['not_recognisably_about_a_topic'], sameAsFiled, bestSupport, paperSupport };
     }
 
     // Moving a question off the topic it was filed under needs more proof than leaving it.
@@ -133,16 +135,25 @@ function classifyQuestion({ placement, support, originalTopicIndex = -1, thresho
     const clearMatch = placement.similarity >= t.alignedTopicSimilarity + need;
     // Staying needs no margin (the filing already agrees); moving needs a clear lead over the best other subject.
     const clearMargin = sameAsFiled || placement.margin >= t.alignedMargin + need / 2;
-    const supported = bestSupport >= t.alignedSupport;
+    const guidelineSupported = bestSupport >= t.alignedSupport;
+    const paperSupported = paperSupport >= t.alignedPaperSupport;
+    const supported = guidelineSupported || paperSupported;
+    const evidenceSupport = guidelineSupported && paperSupported
+        ? 'both'
+        : (guidelineSupported ? 'guideline' : (paperSupported ? 'paper' : 'none'));
 
     if (!clearMatch) reasons.push(sameAsFiled ? 'weak_topic_match' : 'weak_match_for_a_move');
     if (!clearMargin) reasons.push('close_runner_up');
-    if (!supported) reasons.push(bestSupport >= t.minSupport ? 'weak_guideline_support' : 'no_guideline_support');
+    if (!supported) {
+        const hasWeakEvidence = bestSupport >= t.minSupport || paperSupport >= t.minPaperSupport;
+        reasons.push(hasWeakEvidence ? 'weak_evidence_support' : 'no_evidence_support');
+    }
 
     if (clearMatch && clearMargin && supported) {
-        return { category: 'aligned', reasons: [sameAsFiled ? 'confirmed_filed_topic' : 'moved_to_better_topic'], sameAsFiled, bestSupport };
+        return { category: 'aligned', topicCategory: 'aligned', evidenceSupport, reasons: [sameAsFiled ? 'confirmed_filed_topic' : 'moved_to_better_topic'], sameAsFiled, bestSupport, paperSupport };
     }
-    return { category: 'unclear', reasons, sameAsFiled, bestSupport };
+    const topicCategory = clearMatch && clearMargin ? 'aligned' : 'unclear';
+    return { category: 'unclear', topicCategory, evidenceSupport, reasons, sameAsFiled, bestSupport, paperSupport };
 }
 
 /**

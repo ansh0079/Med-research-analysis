@@ -92,6 +92,8 @@ function examples(questions, category, n = 8) {
         topicSimilarity: Number(q.topicSimilarity.toFixed(3)),
         runnerUpGap: Number((q.topicSimilarity - q.runnerUpSimilarity).toFixed(3)),
         guidelineSupport: Number(q.guidelineSupport.toFixed(3)),
+        paperSupport: Number((q.paperSupport || 0).toFixed(3)),
+        evidenceSupport: q.evidenceSupport,
         reasons: q.reasons,
     }));
 }
@@ -121,6 +123,8 @@ function examples(questions, category, n = 8) {
         similarityBelow: Object.fromEntries([0.58, 0.6, 0.62, 0.64, 0.66, 0.68].map((x) => [x, built.questions.filter((q) => q.topicSimilarity < x).length])),
         topicSimilarity: distribution(built.questions.map((q) => q.topicSimilarity)),
         guidelineSupport: distribution(built.questions.map((q) => q.guidelineSupport)),
+        paperSupport: distribution(built.questions.map((q) => q.paperSupport || 0)),
+        byEvidenceSupport: built.questions.reduce((acc, q) => { acc[q.evidenceSupport] = (acc[q.evidenceSupport] || 0) + 1; return acc; }, {}),
         margin: distribution(built.questions.map((q) => q.topicSimilarity - q.runnerUpSimilarity)),
         examples: {
             aligned: examples(built.questions, 'aligned'),

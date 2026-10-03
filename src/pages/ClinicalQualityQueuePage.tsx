@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { api } from '@services/api';
 import { useAuth } from '@contexts/AuthContext';
 import type { TeachingClaimReviewItem } from '@types';
-import type { SearchGoldJudgment, SearchGoldJudgmentLabel } from '@services/api/knowledgeAdmin';
+import type { QuestionTopicReviewItem, SearchGoldJudgment, SearchGoldJudgmentLabel } from '@services/api/knowledgeAdmin';
 import { VerificationBadge } from '@components/ui/VerificationBadge';
 import { ClaimTrustLadder, trustLadderFromVerificationStatus } from '@components/learning/ClaimTrustLadder';
 
@@ -40,12 +40,13 @@ export function ClinicalQualityQueuePage() {
     reason: '',
   });
   const [savingGold, setSavingGold] = useState(false);
+  const [questionAssignments, setQuestionAssignments] = useState<QuestionTopicReviewItem[]>([]);
 
   const load = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const [data, goldData] = await Promise.all([
+      const [data, goldData, questionData] = await Promise.all([
         api.knowledge.getClinicalQualityQueue({
           queue: activeQueue,
           topic: topicFilter.trim() || undefined,
@@ -55,12 +56,14 @@ export function ClinicalQualityQueuePage() {
           query: topicFilter.trim() || undefined,
           limit: 20,
         }).catch(() => null),
+        api.knowledge.getQuestionTopicReview({ topic: topicFilter.trim() || undefined, limit: 20 }).catch(() => null),
       ]);
       setQueues(data.queues);
       setCounts(data.counts);
       setClaims(data.claims);
       setGoldJudgments(goldData?.judgments ?? []);
       if (goldData?.labels?.length) setGoldLabels(goldData.labels);
+      setQuestionAssignments(questionData?.items ?? []);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to load quality queue');
     } finally {
@@ -119,6 +122,16 @@ export function ClinicalQualityQueuePage() {
       void load();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Metadata update failed');
+    }
+  };
+
+  const reviewQuestion = async (item: QuestionTopicReviewItem, decision: 'approved' | 'needs_revision' | 'retired') => {
+    try {
+      await api.knowledge.reviewQuestionTopic({ objectKey: item.object_key, questionIndex: item.question_index, decision });
+      setQuestionAssignments((prev) => prev.filter((q) => q.object_key !== item.object_key || q.question_index !== item.question_index));
+      setNotice(`Question assignment marked ${decision.replace(/_/g, ' ')}.`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Question review failed');
     }
   };
 
@@ -241,6 +254,29 @@ export function ClinicalQualityQueuePage() {
                 </div>
               ))}
             </div>
+          )}
+        </section>
+
+        <section className="neo-card p-4 space-y-3">
+          <div>
+            <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">Question-to-topic review</h2>
+            <p className="mt-1 text-xs text-slate-500">Prioritised uncertain assignments. Approval makes the assigned topic eligible; retirement removes the question from quizzes.</p>
+          </div>
+          {questionAssignments.length === 0 ? <p className="text-xs text-slate-500">No uncertain assignments in this view.</p> : (
+            <ul className="space-y-3">
+              {questionAssignments.map((item) => (
+                <li key={`${item.object_key}:${item.question_index}`} className="rounded-xl border border-slate-200 p-3 dark:border-slate-700">
+                  <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">{item.question?.question || 'Question text unavailable'}</p>
+                  <p className="mt-1 text-xs text-slate-500">{item.original_topic || 'Unfiled'} → {item.assigned_topic_name || 'No topic'} · topic {(item.topic_similarity * 100).toFixed(0)}% · evidence {item.evidence_support}</p>
+                  <p className="mt-1 text-[11px] text-amber-700 dark:text-amber-300">{item.reasons.join(', ').replace(/_/g, ' ')}</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <button type="button" onClick={() => void reviewQuestion(item, 'approved')} className="rounded-lg bg-emerald-600 px-3 py-1.5 text-[11px] font-bold text-white">Approve</button>
+                    <button type="button" onClick={() => void reviewQuestion(item, 'needs_revision')} className="rounded-lg border border-amber-200 px-3 py-1.5 text-[11px] font-bold text-amber-800">Needs revision</button>
+                    <button type="button" onClick={() => void reviewQuestion(item, 'retired')} className="rounded-lg border border-rose-200 px-3 py-1.5 text-[11px] font-bold text-rose-700">Retire</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
           )}
         </section>
 

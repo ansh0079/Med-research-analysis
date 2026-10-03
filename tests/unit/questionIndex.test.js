@@ -68,10 +68,15 @@ describe('classifying a question', () => {
 
     test('unclear: nothing in the topic\'s guidelines backs it, and the reason says how weak', () => {
         const weak = classify.classifyQuestion({ placement: placement(), support: supportOf(0.6), originalTopicIndex: 0, thresholds: T });
-        expect(weak).toMatchObject({ category: 'unclear', reasons: ['weak_guideline_support'] });
+        expect(weak).toMatchObject({ category: 'unclear', reasons: ['weak_evidence_support'] });
         const none = classify.classifyQuestion({ placement: placement(), support: supportOf(0.3), originalTopicIndex: 0, thresholds: T });
-        expect(none.reasons).toEqual(['no_guideline_support']);
-        expect(classify.classifyQuestion({ placement: placement(), support: [], originalTopicIndex: 0, thresholds: T }).reasons).toEqual(['no_guideline_support']);
+        expect(none.reasons).toEqual(['no_evidence_support']);
+        expect(classify.classifyQuestion({ placement: placement(), support: [], originalTopicIndex: 0, thresholds: T }).reasons).toEqual(['no_evidence_support']);
+    });
+
+    test('a well-matched paper can support a clear topic assignment when no guideline does', () => {
+        const r = classify.classifyQuestion({ placement: placement(), support: [], paperSupport: 0.9, originalTopicIndex: 0, thresholds: T });
+        expect(r).toMatchObject({ category: 'aligned', topicCategory: 'aligned', evidenceSupport: 'paper' });
     });
 
     test('unassignable: not recognisably about any topic', () => {
@@ -207,13 +212,14 @@ describe('writing the index', () => {
     function makeDb() {
         const sqlite = new Sqlite(':memory:');
         sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/109_question_topic_index.sql'), 'utf8'));
+        sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/110_question_topic_review.sql'), 'utf8'));
         return { sqlite, async run(sql, p = []) { return { changes: sqlite.prepare(sql).run(...p).changes }; } };
     }
     const built = () => ({
         questions: [{
             objectKey: 'k', questionIndex: 0, questionHash: 'h', objectType: 'guideline_mcq', originalTopic: 'a', originalCurriculumTopicId: '1',
             assignedCurriculumTopicId: '2', assignedTopicName: 'B', topicSimilarity: 0.9, runnerUpCurriculumTopicId: '3', runnerUpSimilarity: 0.4,
-            guidelineSupport: 0.8, category: 'aligned', reasons: ['moved_to_better_topic'], evidenceGuidelineIds: ['g1'], evidencePaperUids: ['p1'],
+            guidelineSupport: 0.8, paperSupport: 0.7, topicCategory: 'aligned', evidenceSupport: 'both', category: 'aligned', reasons: ['moved_to_better_topic'], evidenceGuidelineIds: ['g1'], evidencePaperUids: ['p1'],
         }],
         guidelines: [{ guidelineId: 'g1', originalTopic: 'a', assignedCurriculumTopicId: '2', assignedTopicName: 'B', topicSimilarity: 0.8, runnerUpSimilarity: 0.3, category: 'aligned' }],
     });

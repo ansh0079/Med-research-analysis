@@ -9,8 +9,59 @@ const { aggregateCollectiveMemory } = require('../services/collectiveMemoryServi
 const { QUALITY_QUEUES } = require('../services/clinicalQualityReviewService');
 const { writeThroughTeachingVerification } = require('../services/claimTrustOverlayService');
 const { evaluateSearchRankerPromotionGate } = require('../services/searchRankerPromotionGateService');
+const { listQuestionReviewQueue, reviewQuestionAssignment, listGuidelineReviewQueue, reviewGuidelineAssignment } = require('../services/questionIndex/questionIndexReviewService');
 
 function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
+    app.get('/api/admin/question-topic-review', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const limit = Math.min(Math.max(parseInt(String(req.query.limit || '40'), 10) || 40, 1), 100);
+            const offset = Math.max(parseInt(String(req.query.offset || '0'), 10) || 0, 0);
+            const result = await listQuestionReviewQueue(db, {
+                category: String(req.query.category || 'unclear'), reason: String(req.query.reason || ''),
+                topic: String(req.query.topic || ''), limit, offset,
+            });
+            res.json({ ...result, limit, offset });
+        } catch (error) {
+            req.log.error({ err: error }, 'Question topic review list error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    app.patch('/api/admin/question-topic-review', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            if (!req.body?.objectKey || !Number.isInteger(req.body?.questionIndex)) return res.status(400).json({ error: 'objectKey and questionIndex are required' });
+            const assignment = await reviewQuestionAssignment(db, { ...req.body, userId: req.user?.id || null });
+            res.json({ assignment });
+        } catch (error) {
+            const status = /not found|Invalid/.test(error.message) ? 400 : 500;
+            req.log.error({ err: error }, 'Question topic review update error');
+            res.status(status).json({ error: status === 400 ? error.message : 'Internal server error' });
+        }
+    });
+
+    app.get('/api/admin/guideline-topic-review', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const limit = Math.min(Math.max(parseInt(String(req.query.limit || '40'), 10) || 40, 1), 100);
+            const offset = Math.max(parseInt(String(req.query.offset || '0'), 10) || 0, 0);
+            const items = await listGuidelineReviewQueue(db, { category: String(req.query.category || 'unclear'), topic: String(req.query.topic || ''), limit, offset });
+            res.json({ items, limit, offset });
+        } catch (error) {
+            req.log.error({ err: error }, 'Guideline topic review list error');
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
+    app.patch('/api/admin/guideline-topic-review', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            if (req.body?.guidelineId == null) return res.status(400).json({ error: 'guidelineId is required' });
+            const assignment = await reviewGuidelineAssignment(db, { ...req.body, userId: req.user?.id || null });
+            res.json({ assignment });
+        } catch (error) {
+            const status = /not found|Invalid/.test(error.message) ? 400 : 500;
+            req.log.error({ err: error }, 'Guideline topic review update error');
+            res.status(status).json({ error: status === 400 ? error.message : 'Internal server error' });
+        }
+    });
     app.get('/api/admin/stats', requireAuthJwt, requireRole('admin'), async (req, res) => {
         try {
             const [users, searches, events, sessions, savedArticles] = await Promise.allSettled([
