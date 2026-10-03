@@ -1,0 +1,39 @@
+name: Refresh Question Topic Index
+
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Rebuild even when no source rows are marked dirty
+        required: false
+        default: false
+        type: boolean
+  schedule:
+    - cron: '20 3 * * *'
+
+concurrency:
+  group: production-question-index
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Rebuild changed question-topic assignments
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 178.105.155.246
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 42m
+          script: |
+            set -e
+            cd /opt/medsearch
+            EXTRA="--if-dirty"
+            if [ "${{ inputs.force }}" = "true" ]; then EXTRA=""; fi
+            docker exec medsearch-web node server/scripts/buildQuestionTopicIndex.js \
+              --write $EXTRA --cache /app/data/question-index-cache \
+              --report /app/data/question-topic-index-report.json
+            docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
+              "SELECT classifier_version, category, evidence_support, COUNT(*) FROM question_topic_index GROUP BY 1,2,3 ORDER BY 1,2,3;"

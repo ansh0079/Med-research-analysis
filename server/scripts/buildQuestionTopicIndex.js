@@ -27,6 +27,7 @@ const flag = (name) => args.includes(name);
 const value = (name, fallback = null) => (args.includes(name) ? args[args.indexOf(name) + 1] : fallback);
 
 const WRITE = flag('--write');
+const IF_DIRTY = flag('--if-dirty');
 const CACHE_DIR = value('--cache');
 const LIMIT = value('--limit') ? parseInt(value('--limit'), 10) : Infinity;
 const REPORT = value('--report', path.join(process.cwd(), 'question-topic-index-report.json'));
@@ -102,6 +103,14 @@ function examples(questions, category, n = 8) {
     await db.connect();
     // A dry run only reads; the tables are created (migration 109) when the index is actually written.
     if (WRITE) await db.runMigrations();
+    if (IF_DIRTY) {
+        const pending = await db.get('SELECT COUNT(*) AS count FROM question_index_dirty WHERE processed_at IS NULL', []).catch(() => ({ count: 0 }));
+        if (!Number(pending?.count || 0)) {
+            console.log('Question index is clean; no rebuild needed.');
+            process.exit(0);
+        }
+        console.log(`Question index has ${pending.count} changed source rows.`);
+    }
 
     const sources = await loadSources(db);
     if (Number.isFinite(LIMIT)) sources.questions = sources.questions.slice(0, LIMIT);
