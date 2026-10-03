@@ -7,6 +7,7 @@ import { AiApi } from './ai';
 import { CollaborationApi } from './collaboration';
 import { LearningApi } from './learning';
 import { RelevanceReviewApi } from './relevanceReview';
+import { McqsApi } from './mcqs';
 
 /**
  * Composite API client.
@@ -27,6 +28,7 @@ export class MedicalResearchAPI {
   collaboration = new CollaborationApi();
   learning = new LearningApi();
   relevanceReview = new RelevanceReviewApi();
+  mcqs = new McqsApi();
 }
 
 export const api = new MedicalResearchAPI();

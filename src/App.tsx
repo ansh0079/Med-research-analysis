@@ -63,6 +63,8 @@ const ClinicalQualityQueuePage = lazyDefault(() => import('./pages/ClinicalQuali
 const RelevanceReviewPage = lazyDefault(() => import('./pages/RelevanceReviewPage'), 'RelevanceReviewPage');
 const PracticePoolPage = lazyDefault(() => import('./pages/PracticePoolPage'), 'PracticePoolPage');
 const AdaptiveCasePage = lazyDefault(() => import('./pages/AdaptiveCasePage'), 'AdaptiveCasePage');
+const McqsTopicsPage = lazyDefault(() => import('./pages/McqsTopicsPage'), 'McqsTopicsPage');
+const CuratedMcqsTopicPage = lazyDefault(() => import('./pages/CuratedMcqsTopicPage'), 'CuratedMcqsTopicPage');
 
 function PageFallback() {
   return (
@@ -192,6 +194,8 @@ const AppContent: React.FC = () => {
             <Route path="/search"    element={<RouteErrorBoundary><SearchPage /></RouteErrorBoundary>} />
             <Route path="/quiz"      element={<RouteErrorBoundary><ProtectedRoute><QuizPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/practice"  element={<RouteErrorBoundary><ProtectedRoute><PracticePoolPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/mcqs"      element={<RouteErrorBoundary><ProtectedRoute><McqsTopicsPage /></ProtectedRoute></RouteErrorBoundary>} />
+            <Route path="/mcqs/:topicKey" element={<RouteErrorBoundary><ProtectedRoute><CuratedMcqsTopicPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/history"   element={<RouteErrorBoundary><ProtectedRoute><HistoryPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/saved"     element={<RouteErrorBoundary><ProtectedRoute><SavedArticlesPage /></ProtectedRoute></RouteErrorBoundary>} />
             <Route path="/analytics" element={<RouteErrorBoundary><ProtectedRoute><AnalyticsPage /></ProtectedRoute></RouteErrorBoundary>} />

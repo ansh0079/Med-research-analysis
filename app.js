@@ -53,6 +53,7 @@ const { registerEmbeddingStatusRoute } = require('./server/routes/embeddings');
 const { registerAgentRoutes } = require('./server/routes/agent');
 const { registerGuidelineRoutes } = require('./server/routes/guidelines');
 const { registerLearningRoutes } = require('./server/routes/learning');
+const { registerCuratedMcqRoutes } = require('./server/routes/curatedMcqs');
 
 const { registerVectorSearchRoutes, registerPdfRoutes } = require('./server/routes/vector');
 const { registerAiRoutes } = require('./server/routes/ai');
@@ -477,6 +478,7 @@ registerEmbeddingStatusRoute(app, { getWorkerStatus, requireAuthJwt });
 registerAgentRoutes(app, routeDeps);
 registerGuidelineRoutes(app, routeDeps);
 registerLearningRoutes(app, routeDeps);
+registerCuratedMcqRoutes(app, routeDeps);
 registerAuthRoutes(app, routeDeps);
 
 registerVectorSearchRoutes(app, routeDeps);
