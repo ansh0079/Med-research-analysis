@@ -31,7 +31,7 @@ const SCORE_STOP = new Set([
     'and','the','of','in','for','with','to','a','an','or','on','at','by','from','as','is','are','be',
     'was','were','been','being','have','has','had','do','does','did','will','would','shall','should',
     'may','might','must','can','could','not','no','nor','but','yet','so',
-    'vs','versus','management','therapy','treatment','disease','syndrome','acute','chronic',
+    'vs','versus','management','therapy','treatment','disease','syndrome','acute','chronic','timing',
     'diagnosis','diagnostic','criteria','guidelines','guideline','patient','patients','clinical','care','use','used',
     'based','associated','related','including','following','due','new','first','also','than',
     'other','more','risk','high','low','type','level','dose','daily','per','each','all',

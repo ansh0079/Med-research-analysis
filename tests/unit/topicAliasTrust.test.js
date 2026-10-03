@@ -30,6 +30,19 @@ describe('topic alias trust boundary', () => {
         expect(db.get).toHaveBeenCalledTimes(1);
     });
 
+    test('resolves TBI wording through the shared traumatic-brain-injury alias set', async () => {
+        const db = new Db();
+        db.get = jest.fn().mockResolvedValueOnce({ curriculum_topic_id: 31 });
+
+        await expect(db.resolveCurriculumTopicId('severe brain injury')).resolves.toBe(31);
+        expect(db.get.mock.calls[0][1]).toEqual(expect.arrayContaining([
+            'tbi',
+            'traumatic brain injury',
+            'severe traumatic brain injury',
+            'severe brain injury',
+        ]));
+    });
+
     test('allows an exact higher-confidence reconciliation to replace a legacy mapping', async () => {
         const db = new Db();
         db.run = jest.fn().mockResolvedValue(true);

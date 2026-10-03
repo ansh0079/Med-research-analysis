@@ -226,6 +226,24 @@ describe('getGuidelinesByTopic', () => {
         expect(out.map((g) => g.sourceBody)).toEqual(['AAN']);
     });
 
+    test.each(['TBI', 'traumatic brain injury', 'severe brain injury'])(
+        '%s reaches guidance filed under severe traumatic brain injury',
+        async (query) => {
+            const db = makeDb([{
+                id: 21,
+                normalized_topic: 'severe traumatic brain injury',
+                topic: 'Severe traumatic brain injury',
+                source_body: 'Brain Trauma Foundation',
+                source_year: 2017,
+                status: 'ai_extracted',
+                superseded_by_id: null,
+                recommendation_text: 'Intracranial pressure should be monitored in salvageable patients with severe traumatic brain injury and an abnormal CT scan.',
+            }]);
+            const out = await db.getGuidelinesByTopic(query);
+            expect(out.map((g) => g.sourceBody)).toEqual(['Brain Trauma Foundation']);
+        },
+    );
+
     test('AKI surfaces a KDIGO rec filed under CKD when the text names AKI', async () => {
         const db = makeDb([
             {

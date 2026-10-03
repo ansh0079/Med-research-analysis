@@ -53,6 +53,19 @@ describe('expandNormalizedTopicKeys', () => {
         expect(keys).toContain('ards');
         expect(keys.some((k) => k.includes('acute respiratory'))).toBe(true);
     });
+
+    it('links RRT timing wording to renal replacement therapy and AKI', () => {
+        const keys = expandNormalizedTopicKeys(norm('RRT timing in AKI'), norm);
+        expect(keys).toContain('rrt');
+        expect(keys).toContain(norm('renal replacement therapy timing in acute kidney injury'));
+    });
+
+    it('links TBI wording to traumatic brain injury variants', () => {
+        const keys = expandNormalizedTopicKeys(norm('TBI'), norm);
+        expect(keys).toContain(norm('traumatic brain injury'));
+        expect(keys).toContain(norm('severe traumatic brain injury'));
+        expect(keys).toContain(norm('severe brain injury'));
+    });
 });
 
 describe('resolveCanonicalNormalized', () => {

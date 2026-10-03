@@ -2,6 +2,7 @@
 
 const { safeJsonParse } = require('../lib/helpers');
 const { applyWritePolicy } = require('../../server/services/policy/writePolicyEngine');
+const { expandNormalizedTopicKeys } = require('../../server/utils/topicSynonyms');
 
 module.exports = (Sup) => class extends Sup {
 // Teaching objects & claims CRUD
@@ -131,15 +132,23 @@ async upsertTeachingObject(object = {}) {
 async resolveCurriculumTopicId(topic) {
     const alias = this.normalizeTopic(topic);
     if (!alias) return null;
+    const aliases = [...new Set([alias, ...expandNormalizedTopicKeys(alias, (value) => this.normalizeTopic(value))].filter(Boolean))];
     const hit = await this.get(
         `SELECT curriculum_topic_id FROM topic_aliases
-         WHERE alias_norm = ?
-           AND NOT (resolution = 'orphan_reconciliation' AND confidence < 0.95)`,
-        [alias],
+         WHERE alias_norm IN (${aliases.map(() => '?').join(',')})
+           AND NOT (resolution = 'orphan_reconciliation' AND confidence < 0.95)
+         ORDER BY confidence DESC
+         LIMIT 1`,
+        aliases,
     );
     if (hit) return hit.curriculum_topic_id;
     // Fall back to the display name so a topic added after the last backfill still resolves.
-    const direct = await this.get('SELECT id FROM curriculum_topics WHERE LOWER(display_name) = ?', [String(topic || '').trim().toLowerCase()]);
+    const direct = await this.get(
+        `SELECT id FROM curriculum_topics
+         WHERE LOWER(display_name) IN (${aliases.map(() => '?').join(',')})
+         LIMIT 1`,
+        aliases.map((value) => String(value).toLowerCase()),
+    );
     return direct ? direct.id : null;
 }
 

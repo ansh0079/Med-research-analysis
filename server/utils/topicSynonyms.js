@@ -11,6 +11,15 @@ const TOPIC_SYNONYM_GROUPS = [
     ['hfpef', 'heart failure preserved ejection fraction', 'heart failure with preserved ejection fraction'],
     ['af', 'atrial fibrillation', 'atrial fibrillation anticoagulation'],
     ['aki', 'acute kidney injury', 'acute renal failure'],
+    // Renal replacement therapy is commonly filed under both the abbreviation
+    // and the longer AKI wording. Keep the timing variant in the same retrieval
+    // cluster so recommendations do not disappear behind two near-duplicate
+    // topic keys.
+    ['rrt', 'renal replacement therapy', 'renal replacement therapy timing in acute kidney injury', 'rrt timing in aki'],
+    // Traumatic brain injury appears in clinical searches as TBI, severe brain
+    // injury, or severe traumatic brain injury. These must share guideline and
+    // question pools without collapsing unrelated head-injury topics.
+    ['tbi', 'traumatic brain injury', 'severe traumatic brain injury', 'severe brain injury'],
     // Clinicians type "alcoholic hepatitis"; AASLD/EASL 2023+ write "alcohol-associated".
     // Without the bridge, "alcoholic" matched nothing filed under the newer wording.
     ['alcoholic', 'alcohol-associated', 'alcohol associated', 'alcohol-related', 'alcohol related'],
