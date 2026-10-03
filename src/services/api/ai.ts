@@ -1,5 +1,5 @@
 import { API_BASE, BaseApiClient } from './core';
-import { evidenceSnapshotIdFor } from '../evidenceSnapshotStore';
+import { evidenceSnapshotIdFor, articlesCoveredBySnapshot } from '../evidenceSnapshotStore';
 import type {
   Article,
   SearchFilters,
@@ -47,11 +47,12 @@ export class AiApi extends BaseApiClient {
     cached?: boolean;
     reusedFromStore?: boolean;
   }> {
+    const searched = articlesCoveredBySnapshot(articles);
     const response = await this.fetchWithSession(`${API_BASE}/api/quiz/from-evidence`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        topic, articles, difficulty, count, evidenceSnapshotId: evidenceSnapshotIdFor(articles),
+        topic, articles: searched, difficulty, count, evidenceSnapshotId: evidenceSnapshotIdFor(searched),
         // A follow-on batch must be new questions, not the stored batch for the same evidence.
         ...(more ? { avoidQuestions: more.avoidQuestions, refresh: true } : {}),
       }),
@@ -371,10 +372,11 @@ export class AiApi extends BaseApiClient {
       seedArticles?: Partial<Article>[];
     } = {}
   ): Promise<CaseModeResult> {
+    const searched = articlesCoveredBySnapshot(options.seedArticles || []);
     const response = await this.fetchWithSession(`${API_BASE}/api/cases/analyze`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ caseText, provider, ...options, evidenceSnapshotId: evidenceSnapshotIdFor(options.seedArticles || []) }),
+      body: JSON.stringify({ caseText, provider, ...options, ...(options.seedArticles ? { seedArticles: searched } : {}), evidenceSnapshotId: evidenceSnapshotIdFor(searched) }),
     });
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
@@ -480,10 +482,11 @@ export class AiApi extends BaseApiClient {
     learningMode: CaseLearningMode = 'resident',
     provider: 'auto' | 'claude' | 'gemini' | 'mistral' = 'auto'
   ): Promise<TeachingVignetteResult> {
+    const searched = articlesCoveredBySnapshot(seedArticles);
     const response = await this.fetchWithSession(`${API_BASE}/api/cases/teaching-vignette`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic, seedArticles, learningMode, provider, evidenceSnapshotId: evidenceSnapshotIdFor(seedArticles) }),
+      body: JSON.stringify({ topic, seedArticles: searched, learningMode, provider, evidenceSnapshotId: evidenceSnapshotIdFor(searched) }),
     });
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();

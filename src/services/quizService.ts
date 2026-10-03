@@ -1,5 +1,5 @@
 import type { QuizQuestion, LearningProfile } from '@types';
-import { evidenceSnapshotIdFor } from './evidenceSnapshotStore';
+import { evidenceSnapshotIdFor, articlesCoveredBySnapshot } from './evidenceSnapshotStore';
 import type { EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
@@ -96,11 +96,12 @@ export async function generateQuizFromEvidence(
   sourceArticles: QuizArticle[];
 }> {
   const csrf = await getCsrfToken();
+  const searched = articlesCoveredBySnapshot(articles as never[]);
   const res = await fetch(`${API_BASE}/api/quiz/from-evidence`, {
     method: 'POST',
     headers: { ...sessionHeaders(), ...(csrf ? { 'X-CSRF-Token': csrf } : {}) },
     credentials: 'include',
-    body: JSON.stringify({ topic, articles, difficulty, count, evidenceSnapshotId: evidenceSnapshotIdFor(articles as never[]) }),
+    body: JSON.stringify({ topic, articles: searched, difficulty, count, evidenceSnapshotId: evidenceSnapshotIdFor(searched) }),
   });
   if (!res.ok) await parseQuizError(res);
   const data = await res.json();
@@ -138,8 +139,9 @@ export async function generateQuiz(
   claimAnchorMode?: string;
   adaptiveClaimCount?: number;
 }> {
-  const body: Record<string, unknown> = { topic, articles, count, difficulty, studyRunId };
-  const snapshotId = evidenceSnapshotIdFor(articles as never[]);
+  const searched = articlesCoveredBySnapshot(articles as never[]);
+  const body: Record<string, unknown> = { topic, articles: searched, count, difficulty, studyRunId };
+  const snapshotId = evidenceSnapshotIdFor(searched);
   if (snapshotId) body.evidenceSnapshotId = snapshotId;
   if (opts?.trainingStage) body.trainingStage = opts.trainingStage;
   if (opts?.explanationDepth) body.explanationDepth = opts.explanationDepth;

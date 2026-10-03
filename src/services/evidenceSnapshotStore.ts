@@ -36,6 +36,18 @@ export function clearCurrentEvidenceSnapshot(): void {
   current = null;
 }
 
+/**
+ * The articles the current search actually saw. The "top papers" list can include papers from the topic's
+ * stored evidence that this search never returned; the server cannot vouch for those and refuses the whole
+ * request, so a generation built on a search sends only the papers its snapshot covers. With no current
+ * snapshot, or none of the articles in it, they are returned unchanged.
+ */
+export function articlesCoveredBySnapshot<T extends Partial<Article>>(articles: T[]): T[] {
+  if (!current) return articles;
+  const covered = articles.filter((article) => current!.uids.has(uidOf(article)));
+  return covered.length > 0 ? covered : articles;
+}
+
 /** The snapshot id to send with a generation request for these articles, or undefined. */
 export function evidenceSnapshotIdFor(articles: Partial<Article>[]): string | undefined {
   if (!current) return undefined;
