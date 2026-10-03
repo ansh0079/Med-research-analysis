@@ -36,9 +36,11 @@ function readJsonFile(filePath) {
   return JSON.parse(raw);
 }
 
-async function run({ apply = false } = {}) {
+// `dir` overrides where the batches are read from. In production /app/data is a persistent volume that hides
+// the copy baked into the image, so the batches are mounted from the server's checkout instead.
+async function run({ apply = false, dir = null } = {}) {
   let db = null;
-  const root = path.join(__dirname, '..', '..', 'data', 'curated-topic-mcqs');
+  const root = dir || path.join(__dirname, '..', '..', 'data', 'curated-topic-mcqs');
   const files = findBatchFiles(root);
   if (!files.length) {
     console.log(`No curated MCQ batches found in ${root}`);
@@ -131,7 +133,9 @@ async function run({ apply = false } = {}) {
 
 if (require.main === module) {
   const apply = process.argv.includes('--apply');
-  run({ apply }).catch((err) => {
+  const dirIndex = process.argv.indexOf('--dir');
+  const dir = dirIndex >= 0 ? process.argv[dirIndex + 1] : null;
+  run({ apply, dir }).catch((err) => {
     console.error('Curated MCQ import failed', err);
     process.exit(1);
   });

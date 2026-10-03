@@ -39,5 +39,9 @@ jobs:
               apply) FLAG=--apply ;;
               *) echo "bad mode $MODE"; exit 1 ;;
             esac
-            docker compose -f docker-compose.hetzner.yml exec -T -e USE_POSTGRES_MAIN=true web \
-              node server/scripts/importCuratedTopicMcqs.js "$FLAG"
+            # /app/data in the container is a persistent volume that hides the batches baked into the
+            # image (the importer then reports "No curated MCQ batches found"), so mount them from this
+            # checkout instead.
+            docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T -e USE_POSTGRES_MAIN=true \
+              -v /opt/medsearch/data/curated-topic-mcqs:/curated:ro web \
+              node server/scripts/importCuratedTopicMcqs.js --dir /curated "$FLAG"

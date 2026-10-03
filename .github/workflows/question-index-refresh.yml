@@ -11,8 +11,10 @@ on:
   schedule:
     - cron: '20 3 * * *'
 
+# Share the deploy's group so a deploy never recreates the web container underneath a rebuild (a manual
+# run on 2026-10-03 was killed that way, exit 137), and the two queue instead of overlapping.
 concurrency:
-  group: production-question-index
+  group: medsearch-production-deploy
   cancel-in-progress: false
 
 jobs:
@@ -32,7 +34,12 @@ jobs:
             cd /opt/medsearch
             EXTRA="--if-dirty"
             if [ "${{ inputs.force }}" = "true" ]; then EXTRA=""; fi
-            docker exec medsearch-web node server/scripts/buildQuestionTopicIndex.js \
+            # A throwaway container, not the live web container: a rebuild embeds ~35k texts, and the host
+            # has 7.7 GB and no swap, shared with Grobid. The Node heap is capped so a fault cannot take
+            # the host down.
+            docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T \
+              -e NODE_OPTIONS=--max-old-space-size=1536 web \
+              node server/scripts/buildQuestionTopicIndex.js \
               --write $EXTRA --cache /app/data/question-index-cache \
               --report /app/data/question-topic-index-report.json
             docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
