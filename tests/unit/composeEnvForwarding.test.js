@@ -59,3 +59,18 @@ describe('compose forwards the keys the app reads', () => {
         for (const name of ['SEMANTIC_SCHOLAR_KEY', 'OPENALEX_KEY', 'GEMINI_API_KEY', 'NCBI_API_KEY']) expect(flat).toContain(name);
     });
 });
+
+describe('the host is protected from its own services', () => {
+    // Grobid's image defaults to a 4 GB heap on a 7.7 GB host with no swap; uncapped, the kernel killed it
+    // for memory (and could have chosen Postgres instead). It must fail inside its own limit.
+    const grobid = compose.services.grobid;
+
+    test('Grobid has a container memory limit and a Java heap that fits inside it', () => {
+        expect(grobid.mem_limit).toBeTruthy();
+        const limitGb = Number(String(grobid.mem_limit).replace(/[^0-9.]/g, '')) * (/m/i.test(grobid.mem_limit) ? 1 / 1024 : 1);
+        const heapGb = Number((/-Xmx(\d+)([gm])/i.exec(grobid.environment.JAVA_OPTS) || [])[1]) / (/m$/i.test(/-Xmx\d+[gm]/i.exec(grobid.environment.JAVA_OPTS)?.[0] || '') ? 1024 : 1);
+        expect(heapGb).toBeGreaterThan(0);
+        expect(heapGb).toBeLessThan(limitGb);
+        expect(limitGb).toBeLessThanOrEqual(4);
+    });
+});

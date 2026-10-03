@@ -47,6 +47,12 @@ services:
     image: grobid/grobid:0.8.0
     container_name: medsearch-grobid
     restart: unless-stopped
+    # The image defaults to a 4 GB Java heap. On this 7.7 GB host (no swap, shared with Postgres, Redis, web
+    # and worker) the kernel killed Grobid for memory on 2026-10-03 (3.7 GB resident, 7 restarts). Capping it
+    # makes Grobid fail inside its own limit and restart, instead of the kernel choosing a victim.
+    environment:
+      JAVA_OPTS: -Xmx2g
+    mem_limit: 3g
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8070/api/isalive"]
       interval: 30s
