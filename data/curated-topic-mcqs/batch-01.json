@@ -8,6 +8,15 @@
   {
    "topicKey": "severe traumatic brain injury icp monitoring cerebral perfusion pressure targets",
    "topicDisplayName": "Severe traumatic brain injury: ICP monitoring, cerebral perfusion pressure targets",
+   "aliases": [
+    "TBI",
+    "severe TBI",
+    "head injury",
+    "traumatic brain injury",
+    "ICP",
+    "CPP",
+    "intracranial pressure"
+   ],
    "storedRowCount": 105,
    "coverageNote": "KEY GAP: the topic title is about ICP monitoring and CPP targets, but no stored source gives ICP or CPP thresholds, and there is no Brain Trauma Foundation guideline. Most of the 100 items are NICE head-injury (NG232) and trauma-rehabilitation recommendations; the NICE rows have no sourceYear. ICP-related content is limited to the CREVICE protocol, decompressive craniectomy statements and a 2021 consensus statement. 18 questions written.",
    "mcqs": [
@@ -548,6 +557,15 @@
   {
    "topicKey": "alcohol withdrawal syndrome and delirium tremens management in icu",
    "topicDisplayName": "Alcohol withdrawal syndrome and delirium tremens management in ICU",
+   "aliases": [
+    "alcohol withdrawal",
+    "AWS",
+    "delirium tremens",
+    "DTs",
+    "Wernicke's",
+    "alcohol detox",
+    "CIWA-Ar"
+   ],
    "storedRowCount": 97,
    "coverageNote": "Well supported, but every source is NICE (CG100 physical complications 2010, amended 2017/2021, and CG115 alcohol-use disorders); none is ICU-specific, and no rows have a sourceYear. 20 questions written.",
    "mcqs": [
@@ -1112,6 +1130,16 @@
   {
    "topicKey": "nutritional support in critical illness enteral vs parenteral protein targets",
    "topicDisplayName": "Nutritional support in critical illness: enteral vs parenteral, protein targets",
+   "aliases": [
+    "ICU nutrition",
+    "enteral nutrition",
+    "parenteral nutrition",
+    "EN",
+    "PN",
+    "TPN",
+    "critical care feeding",
+    "protein targets"
+   ],
    "storedRowCount": 79,
    "coverageNote": "Mainly NICE CG32 (nutrition support in adults, 2006 with updates), with no sourceYear on the rows. No ICU nutrition guideline (ESPEN/ASPEN) is stored, so no ICU-specific protein targets are available; the only protein range stored applies to people who are NOT severely ill. Several postnatal-care rows are misfiled. 20 questions written.",
    "mcqs": [
@@ -1660,6 +1688,14 @@
   {
    "topicKey": "icu-acquired delirium prevention assessment and treatment",
    "topicDisplayName": "ICU-acquired delirium: prevention, assessment, and treatment",
+   "aliases": [
+    "ICU delirium",
+    "delirium",
+    "CAM-ICU",
+    "hyperactive delirium",
+    "hypoactive delirium",
+    "PADIS"
+   ],
    "storedRowCount": 63,
    "coverageNote": "PARTLY MISFILED. Only about 15 of 63 stored items are about delirium: NICE delirium guideline recommendations and committee rationale (2010, amended 2023) plus one truncated 2016 light-therapy trial. The rest are NICE trauma-rehabilitation and pneumonia recommendations. No ICU-specific delirium guideline (e.g. SCCM PADIS) is stored. 12 questions written.",
    "mcqs": [
@@ -1992,6 +2028,14 @@
   {
    "topicKey": "empirical antibiotic selection in sepsis source control cultures before antibiotics de-escalation",
    "topicDisplayName": "Empirical antibiotic selection in sepsis: source control, cultures before antibiotics, de-escalation",
+   "aliases": [
+    "sepsis antibiotics",
+    "septic shock",
+    "empirical antibiotics",
+    "source control",
+    "de-escalation",
+    "Surviving Sepsis"
+   ],
    "storedRowCount": 42,
    "coverageNote": "THIN and partly MISFILED. No Surviving Sepsis Campaign or NICE sepsis guideline is stored. The adult sepsis sources are two Cochrane protocols (2010, 2013, outdated, 'severe sepsis' terminology) and one 2021 review. Most other rows are NICE pneumonia and diabetic-foot recommendations. Nothing stored covers source control. 9 questions written; HAP/CAP items already used in the HAP/VAP topic were avoided.",
    "mcqs": [
@@ -2273,6 +2317,14 @@
   {
    "topicKey": "hospital-acquired and ventilator-associated pneumonia mdr pathogens diagnostic criteria treatment",
    "topicDisplayName": "Hospital-acquired and ventilator-associated pneumonia: MDR pathogens, diagnostic criteria, treatment",
+   "aliases": [
+    "HAP",
+    "VAP",
+    "ventilator-associated pneumonia",
+    "hospital-acquired pneumonia",
+    "nosocomial pneumonia",
+    "MDR pathogens"
+   ],
    "storedRowCount": 30,
    "coverageNote": "About 12 HAP/VAP-relevant items: NICE pneumonia recommendations, IDSA/ATS 2016 and two old trials (2006, 2008). Most other stored items are community-acquired pneumonia recommendations. The NICE rows are stored with sourceYear 2014, but their recommendation tags run 2019–2025, so the year metadata is wrong. 12 questions written.",
    "mcqs": [
@@ -2589,6 +2641,14 @@
   {
    "topicKey": "veno-arterial ecmo indications circuit management weaning",
    "topicDisplayName": "Veno-arterial ECMO: indications, circuit management, weaning",
+   "aliases": [
+    "VA-ECMO",
+    "ECMO",
+    "ECLS",
+    "ECPR",
+    "mechanical circulatory support",
+    "cardiogenic shock ECMO"
+   ],
    "storedRowCount": 30,
    "coverageNote": "27 relevant items, but all come from two 2025 narrative/expert reviews (J Clin Med, J Pers Med) plus one 2015 abstract. There is no society guideline (e.g. ELSO) among the stored sources. 17 questions written.",
    "mcqs": [
@@ -3110,6 +3170,14 @@
   {
    "topicKey": "glycaemic control in the icu insulin infusion protocols and targets",
    "topicDisplayName": "Glycaemic control in the ICU: insulin infusion protocols and targets",
+   "aliases": [
+    "ICU glucose",
+    "glycaemic control",
+    "insulin infusion",
+    "hyperglycaemia ICU",
+    "blood glucose targets",
+    "glycemic control"
+   ],
    "storedRowCount": 27,
    "coverageNote": "MOSTLY MISFILED: of 26 stored sources only one (SCCM 2024) concerns ICU glycaemic control, and it gives no targets or protocol detail. The rest are NICE diabetes-in-pregnancy recommendations and outpatient type 2 diabetes papers. 1 question written.",
    "mcqs": [
@@ -3143,6 +3211,14 @@
   {
    "topicKey": "renal replacement therapy timing in acute kidney injury",
    "topicDisplayName": "Renal replacement therapy timing in acute kidney injury",
+   "aliases": [
+    "RRT",
+    "AKI",
+    "dialysis timing",
+    "CRRT",
+    "haemofiltration",
+    "acute kidney injury"
+   ],
    "storedRowCount": 22,
    "coverageNote": "MISFILED: all 21 stored sources are NICE VTE-prophylaxis and joint-replacement recommendations; none concern RRT timing in AKI. No MCQs written.",
    "mcqs": []
@@ -3150,6 +3226,14 @@
   {
    "topicKey": "liberation from mechanical ventilation weaning protocols",
    "topicDisplayName": "Liberation from mechanical ventilation: weaning protocols",
+   "aliases": [
+    "weaning",
+    "ventilator weaning",
+    "SBT",
+    "spontaneous breathing trial",
+    "extubation",
+    "mechanical ventilation"
+   ],
    "storedRowCount": 32,
    "coverageNote": "Thin: ~14 distinct recommendations (ATS/CHEST 2017, Korean 2024) plus 3 truncated trial abstracts. 12 questions written.",
    "mcqs": [

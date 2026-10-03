@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T16:39:28+01:00",
+ "generatedAt": "2026-10-03T16:49:32+01:00",
  "source": "Signal MD stored topic_guidelines (read-only dump via /api/guidelines/browse, 2026-10-03)",
  "method": "Hand-written single-best-answer MCQs grounded only in stored rows judged relevant to the topic (misfiled rows excluded). Each question cites stored row ids.",
  "reviewState": "unreviewed - needs clinician review before publishing",
@@ -8,6 +8,16 @@
   {
    "topicKey": "tuberculosis active vs latent tb mantoux igra nice guidance contact tracing",
    "topicDisplayName": "Tuberculosis: active vs latent TB, Mantoux, IGRA, NICE guidance, contact tracing",
+   "aliases": [
+    "TB",
+    "tuberculosis",
+    "latent TB",
+    "LTBI",
+    "active TB",
+    "Mantoux",
+    "IGRA",
+    "TB contact tracing"
+   ],
    "mergedTopicKeys": [
     "tb treatment ripe regimen hepatotoxicity monitoring directly observed therapy drug-resistant tb",
     "pulmonary tuberculosis"
@@ -570,6 +580,14 @@
   {
    "topicKey": "thyroid cancer management",
    "topicDisplayName": "Thyroid Cancer Management",
+   "aliases": [
+    "thyroid cancer",
+    "differentiated thyroid cancer",
+    "DTC",
+    "papillary thyroid cancer",
+    "follicular thyroid cancer",
+    "radioiodine"
+   ],
    "mergedTopicKeys": [
     "thyroid function in pregnancy trimester-specific tsh ranges foetal development",
     "thyroid nodules ata risk stratification ultrasound features fna indications",
@@ -1109,6 +1127,13 @@
   {
    "topicKey": "faecal incontinence",
    "topicDisplayName": "Faecal Incontinence",
+   "aliases": [
+    "FI",
+    "bowel incontinence",
+    "anal incontinence",
+    "faecal leakage",
+    "fecal incontinence"
+   ],
    "mergedTopicKeys": [],
    "storedRelevantDistinctItems": 88,
    "newestSourceYear": 2015,
@@ -1647,6 +1672,14 @@
   {
    "topicKey": "atrial fibrillation anticoagulation",
    "topicDisplayName": "Atrial fibrillation anticoagulation",
+   "aliases": [
+    "AF",
+    "atrial fibrillation",
+    "AF anticoagulation",
+    "DOAC",
+    "CHA2DS2-VASc",
+    "stroke prevention in AF"
+   ],
    "mergedTopicKeys": [
     "anticoagulation in atrial fibrillation cha2ds2-vasc scoring and doac selection"
    ],
@@ -2201,6 +2234,13 @@
   {
    "topicKey": "bone metastases and palliative radiotherapy",
    "topicDisplayName": "Bone Metastases and Palliative Radiotherapy",
+   "aliases": [
+    "bone mets",
+    "skeletal metastases",
+    "palliative radiotherapy",
+    "bone pain radiotherapy",
+    "metastatic bone disease"
+   ],
    "mergedTopicKeys": [
     "principles of radiotherapy"
    ],
@@ -2748,6 +2788,14 @@
   {
    "topicKey": "cancer genetics and hereditary syndromes",
    "topicDisplayName": "Cancer Genetics and Hereditary Syndromes",
+   "aliases": [
+    "hereditary cancer",
+    "BRCA",
+    "Lynch syndrome",
+    "familial cancer",
+    "cancer predisposition",
+    "genetic testing cancer"
+   ],
    "mergedTopicKeys": [],
    "storedRelevantDistinctItems": 60,
    "newestSourceYear": 2024,
@@ -3286,6 +3334,13 @@
   {
    "topicKey": "early breast cancer",
    "topicDisplayName": "Early Breast Cancer",
+   "aliases": [
+    "breast cancer",
+    "EBC",
+    "adjuvant breast cancer",
+    "breast cancer surgery",
+    "HER2-positive breast cancer"
+   ],
    "mergedTopicKeys": [
     "male breast cancer",
     "triple-negative breast cancer"
@@ -3820,6 +3875,14 @@
   {
    "topicKey": "early mobilization and physical rehabilitation in icu",
    "topicDisplayName": "Early mobilization and physical rehabilitation in ICU",
+   "aliases": [
+    "ICU mobilisation",
+    "early mobilisation",
+    "ICU rehabilitation",
+    "critical care rehab",
+    "ICU-acquired weakness",
+    "early mobilization"
+   ],
    "mergedTopicKeys": [],
    "storedRelevantDistinctItems": 89,
    "newestSourceYear": null,
@@ -4351,6 +4414,13 @@
   {
    "topicKey": "ovarian cancer",
    "topicDisplayName": "Ovarian Cancer",
+   "aliases": [
+    "epithelial ovarian cancer",
+    "CA125",
+    "ovarian malignancy",
+    "PARP inhibitors ovarian",
+    "ovarian carcinoma"
+   ],
    "mergedTopicKeys": [
     "endometrial cancer"
    ],
@@ -4884,6 +4954,14 @@
   {
    "topicKey": "schizophrenia antipsychotic treatment strategies",
    "topicDisplayName": "Schizophrenia antipsychotic treatment strategies",
+   "aliases": [
+    "schizophrenia",
+    "psychosis",
+    "antipsychotics",
+    "clozapine",
+    "treatment-resistant schizophrenia",
+    "first-episode psychosis"
+   ],
    "mergedTopicKeys": [],
    "storedRelevantDistinctItems": 82,
    "newestSourceYear": null,

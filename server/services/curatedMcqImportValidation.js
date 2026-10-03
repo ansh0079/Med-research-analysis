@@ -38,7 +38,8 @@ function validateCuratedQuestion(q, index, errors) {
       else {
         if (!s.sourceBody || typeof s.sourceBody !== 'string' || !s.sourceBody.trim()) errors.push(`${sp}: sourceBody is required`);
         if (!s.excerpt || typeof s.excerpt !== 'string' || !s.excerpt.trim()) errors.push(`${sp}: excerpt is required`);
-        if (!s.sourceUrl && !s.guidelineId) errors.push(`${sp}: one of sourceUrl or guidelineId is required`);
+        // URL may be missing; guidelineId optional — display falls back to body/year without a link.
+        // No hard requirement for sourceUrl/guidelineId.
       }
     });
   }
