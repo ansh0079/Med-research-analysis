@@ -10,6 +10,7 @@ import { LEARNING_SURFACES, WORKSPACE_TOOLS, STAFF_TOOLS, learningSurfacesByGrou
 // learning surfaces so the topic journey sits next to the dashboard.
 const PRIMARY_NAV = [
   { to: '/search', label: 'Search', icon: 'fa-search' },
+  { to: '/mcqs', label: 'MCQs', icon: 'fa-list-check' },
 ] as const;
 
 const TRAILING_NAV = [

@@ -123,6 +123,9 @@ export function TopicPage() {
   const [guidelineWatch, setGuidelineWatch] = useState<Array<{ message: string; severity: string }>>([]);
   const [roundLoading, setRoundLoading] = useState(false);
   const [evidenceMemoryMessages, setEvidenceMemoryMessages] = useState<EvidenceMemoryMessage[]>([]);
+  // Curated MCQs availability
+  const [curatedTopicKey, setCuratedTopicKey] = useState<string | null>(null);
+  const [curatedCount, setCuratedCount] = useState<number>(0);
 
   // Load overview
   useEffect(() => {
@@ -136,6 +139,20 @@ export function TopicPage() {
       })
       .catch((err) => handleAsyncError(err, 'TopicPage/getTopicOverview'))
       .finally(() => setOverviewLoading(false));
+  }, [topic]);
+
+  // Check for curated MCQs for this topic (404 when none).
+  useEffect(() => {
+    let cancelled = false;
+    if (!topic) return;
+    api.mcqs.getCuratedTopic(topic)
+      .then((r) => {
+        if (cancelled) return;
+        setCuratedTopicKey(r.topicKey);
+        setCuratedCount(r.count || (r.questions?.length || 0));
+      })
+      .catch(() => { if (!cancelled) { setCuratedTopicKey(null); setCuratedCount(0); } });
+    return () => { cancelled = true; };
   }, [topic]);
 
   useEffect(() => {
@@ -256,6 +273,26 @@ export function TopicPage() {
             </div>
           </div>
         </div>
+
+        {/* Curated MCQs entry */}
+        {curatedTopicKey && curatedCount > 0 && (
+          <div className="rounded-2xl border border-indigo-200 dark:border-indigo-800/50 bg-indigo-50/60 dark:bg-indigo-950/20 p-4 flex items-center gap-4">
+            <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center shrink-0">
+              <i className="fas fa-list-check text-indigo-600" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold text-slate-800 dark:text-slate-200">Practice MCQs</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{curatedCount} curated questions for this topic</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate(`/mcqs/${encodeURIComponent(curatedTopicKey)}`)}
+              className="shrink-0 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-2 transition-colors"
+            >
+              Start
+            </button>
+          </div>
+        )}
 
         {evidenceMemoryMessages.length > 0 && (
           <TopicEvidenceMemoryBanner messages={evidenceMemoryMessages} />

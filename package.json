@@ -57,6 +57,7 @@
     "audit:evidence-performance": "node scripts/audit-evidence-performance.js",
     "backfill:pdf-flagship": "node server/scripts/backfillPdfBouquet.js",
     "backfill:pdf-flagship:high": "node server/scripts/backfillPdfBouquet.js --priority=high --force-retry",
+    "seed:curated-mcqs": "node server/scripts/importCuratedTopicMcqs.js",
     "backfill:guideline-refiling": "node scripts/backfill-guideline-refiling.js",
     "compose:hetzner:config": "docker compose -f docker-compose.hetzner.yml config",
     "verify:db-contract": "node tools/check-db-guards.js",
