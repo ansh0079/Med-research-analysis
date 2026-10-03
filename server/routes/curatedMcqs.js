@@ -71,6 +71,7 @@ function registerCuratedMcqRoutes(app, deps) {
       const payload = (() => { try { return JSON.parse(row.object_payload || '{}'); } catch { return {}; } })();
       const topicKeyOut = String(payload.topicKey || row.object_key.replace(/^curated-mcq:/, '') || '').trim();
       const displayName = payload.topicDisplayName || row.topic || topicKeyOut;
+      const coverageNote = payload.coverageNote || null;
 
       // Transform to API shape expected by quiz components
       const letters = ['A', 'B', 'C', 'D', 'E'];
@@ -85,6 +86,7 @@ function registerCuratedMcqRoutes(app, deps) {
           correctAnswer: q.correctAnswer,
           explanation: q.explanation || '',
           difficulty: q.difficulty || 'medium',
+          outdatedSources: Boolean(q.outdatedSources),
           // Surface citations for UI — array with body/year/url/excerpt
           sourceRefs: Array.isArray(q.sourceRefs) ? q.sourceRefs : [],
         }));
@@ -94,6 +96,7 @@ function registerCuratedMcqRoutes(app, deps) {
       res.json({
         topicKey: topicKeyOut,
         displayName,
+        coverageNote,
         count: questions.length,
         ...signed,
       });

@@ -73,6 +73,7 @@ describe('curatedMcqRoutes', () => {
       object_payload: JSON.stringify({
         topicKey: 'ards-management',
         topicDisplayName: 'ARDS management',
+        coverageNote: 'Topic coverage is partial; sources pending update.',
         mcqs: [{
           id: 'q1',
           question: 'Target tidal volume?',
@@ -80,6 +81,7 @@ describe('curatedMcqRoutes', () => {
           correctAnswer: 'A',
           explanation: 'Low VT improves outcomes.',
           difficulty: 'easy',
+          outdatedSources: true,
           sourceRefs: [{ sourceBody: 'NICE', sourceUrl: 'https://example.com', excerpt: 'Use 4–6 ml/kg.' }],
         }],
       }),
@@ -92,6 +94,8 @@ describe('curatedMcqRoutes', () => {
     expect(res.body.questions[0].gradingToken).toBeDefined();
     expect(res.body.questions[0].correctAnswer).toBeUndefined();
     expect(res.body.questions[0].sourceRefs[0].sourceBody).toBe('NICE');
+    expect(res.body.questions[0].outdatedSources).toBe(true);
+    expect(res.body.coverageNote).toMatch(/partial/);
   });
 });
 

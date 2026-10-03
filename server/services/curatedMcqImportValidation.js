@@ -28,6 +28,8 @@ function validateCuratedQuestion(q, index, errors) {
   if (!q.correctAnswer || !/^[A-E]$/.test(String(q.correctAnswer))) addErr('correctAnswer must be one of A–E');
   if (!q.explanation || typeof q.explanation !== 'string' || !q.explanation.trim()) addErr('explanation is required');
   if (!q.difficulty || !['easy', 'medium', 'hard'].includes(String(q.difficulty))) addErr('difficulty must be easy|medium|hard');
+  // Optional: outdatedSources flag
+  if (q.outdatedSources != null && typeof q.outdatedSources !== 'boolean') addErr('outdatedSources must be a boolean when present');
   if (!Array.isArray(q.sourceRefs) || q.sourceRefs.length === 0) addErr('at least one sourceRef is required');
   else {
     q.sourceRefs.forEach((s, i) => {
@@ -62,6 +64,7 @@ function transformCuratedQuestionToStored(q) {
     correctAnswer: String(q.correctAnswer),
     explanation: String(q.explanation || ''),
     difficulty: (q.difficulty === 'easy' || q.difficulty === 'hard') ? q.difficulty : 'medium',
+    outdatedSources: Boolean(q.outdatedSources),
     // Preserve cited stored sources for UI display
     sourceRefs: Array.isArray(q.sourceRefs) ? q.sourceRefs.map((s) => ({
       guidelineId: s.guidelineId || null,

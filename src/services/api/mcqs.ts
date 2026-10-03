@@ -27,6 +27,7 @@ export interface CuratedQuestion {
   correctAnswer?: string;
   explanation: string;
   difficulty: 'easy' | 'medium' | 'hard';
+  outdatedSources?: boolean;
   sourceRefs?: CuratedSourceRef[];
 }
 
@@ -40,6 +41,7 @@ export class McqsApi extends BaseApiClient {
   async getCuratedTopic(topicOrKey: string): Promise<{
     topicKey: string;
     displayName: string;
+    coverageNote?: string | null;
     count: number;
     questions: CuratedQuestion[];
   }> {

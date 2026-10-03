@@ -14,6 +14,7 @@ describe('curatedMcqImportValidation', () => {
         correctAnswer: 'A',
         explanation: 'Low tidal volume ventilation improves outcomes.',
         difficulty: 'easy',
+        outdatedSources: true,
         sourceRefs: [{ sourceBody: 'NICE', sourceUrl: 'https://example.com', excerpt: 'Use 4–6 ml/kg.' }],
       }],
     };
@@ -24,6 +25,7 @@ describe('curatedMcqImportValidation', () => {
     expect(stored.options).toEqual(expect.arrayContaining(['A: 4–6 ml/kg', 'B: 8–10 ml/kg']));
     expect(stored.correctAnswer).toBe('A');
     expect(stored.sourceRefs?.[0]?.excerpt).toContain('4–6 ml/kg');
+    expect(stored.outdatedSources).toBe(true);
   });
 
   test('flags missing fields', () => {

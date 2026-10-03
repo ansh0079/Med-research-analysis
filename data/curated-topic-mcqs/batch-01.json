@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T16:15:02+01:00",
+ "generatedAt": "2026-10-03T16:40:18+01:00",
  "source": "Signal MD stored topic_guidelines (public read API https://signalmd.co/api/guidelines/browse, 23,684 rows across 1,822 topics, dumped 2026-10-03)",
  "method": "Hand-written single-best-answer MCQs grounded only in the stored recommendation text of each topic's linked rows. Every question cites the stored row ids it relies on.",
  "reviewState": "unreviewed - needs clinician review before publishing",
@@ -482,6 +482,64 @@
        "sourceUrl": "https://www.nice.org.uk/guidance/ng232",
        "status": "ai_extracted",
        "excerpt": "Remote advice services (for example, NHS 111) should refer people who have sustained a head injury to a hospital emergency department if there are any of these risk factors (see NICE's guidelines on shared decision making and decision making and mental capacity): any loss of consciousness ('knocked out') because of the injury, from which the person has now recovered; amnesia for events before or after the injury ('problems with memory'; it will not be possible to assess amnesia in children who are preverbal and is unlikely to be possible in children under 5); a persistent headache since the in"
+      }
+     ]
+    },
+    {
+     "id": "severe-traumatic-brain-injury-icp-monitoring-cerebral-perfus-19",
+     "question": "A patient with a head injury is being assessed for clinically important TBI. What does the stored NICE recommendation say about plain skull X-rays?",
+     "options": {
+      "A": "Use them only in patients with GCS 13 or above",
+      "B": "Use them to rule out TBI in anticoagulated patients",
+      "C": "Use them first-line before CT in all adults",
+      "D": "Use them when CT will take more than 1 hour",
+      "E": "Don't use them before discussing with a neuroscience unit"
+     },
+     "correctAnswer": "E",
+     "correctAnswerText": "Don't use them before discussing with a neuroscience unit",
+     "explanation": "NICE (2007): don't use plain skull X-rays to diagnose important TBI before discussing with a neuroscience unit. Children with suspected non-accidental injury may need a skeletal survey.",
+     "difficulty": "easy",
+     "sourceRefs": [
+      {
+       "guidelineId": "ae067540-9864-4655-99c8-801d03136505",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng232",
+       "status": "ai_extracted",
+       "excerpt": "Do not use plain X‑rays of the skull to diagnose important traumatic brain injury before a discussion with a neuroscience unit. However, people under 16 presenting with suspected non-accidental injury may need a skeletal survey. [2007]"
+      }
+     ]
+    },
+    {
+     "id": "severe-traumatic-brain-injury-icp-monitoring-cerebral-perfus-20",
+     "question": "A GP sees a patient with a head injury and is worried about intracranial injury. What does the stored NICE (2023) recommendation say about requesting a scan?",
+     "options": {
+      "A": "Request an outpatient MRI within 2 weeks",
+      "B": "Don't refer for neuroimaging by direct access",
+      "C": "Request a plain skull X-ray first",
+      "D": "Arrange CT only if symptoms last over 24 hours",
+      "E": "Refer for CT by direct access from the community"
+     },
+     "correctAnswer": "B",
+     "correctAnswerText": "Don't refer for neuroimaging by direct access",
+     "explanation": "NICE (2023) says not to refer people with a head injury for neuroimaging by direct access from the community. They should be referred to an emergency department instead.",
+     "difficulty": "medium",
+     "sourceRefs": [
+      {
+       "guidelineId": "019a69b5-2dfb-42da-99f5-7b44e2f630ed",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng232",
+       "status": "ai_extracted",
+       "excerpt": "Do not refer people who have had a head injury for neuroimaging by direct access from the community. [2023]"
+      },
+      {
+       "guidelineId": "67f7fb37-8c1f-4e68-abf2-3b9020242d95",
+       "sourceBody": "NICE",
+       "sourceYear": null,
+       "sourceUrl": "https://www.nice.org.uk/guidance/ng232",
+       "status": "ai_extracted",
+       "excerpt": "Community health services (GPs, ambulance crews, NHS walk-in or minor injury centres, dental practitioners) and inpatient units without an emergency department should refer people who have sustained a head injury to a hospital emergency department, using the ambulance service if necessary, if there are any of these risk factors (see NICE's guidelines on shared decision making and decision making and mental capacity ): a Glasgow Coma Scale (GCS) score of less than 15 on initial assessment; any loss of consciousness because of the injury; any focal neurological deficit since the injury; any susp"
       }
      ]
     }
@@ -3456,6 +3514,6 @@
  ],
  "counts": {
   "topics": 10,
-  "mcqs": 121
+  "mcqs": 123
  }
 }

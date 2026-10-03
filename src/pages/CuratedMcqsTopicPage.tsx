@@ -11,6 +11,7 @@ export const CuratedMcqsTopicPage: React.FC = () => {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
   const [displayName, setDisplayName] = React.useState<string>('');
+  const [coverageNote, setCoverageNote] = React.useState<string | null>(null);
   const [questions, setQuestions] = React.useState<CuratedQuestion[]>([]);
   const [currentIdx, setCurrentIdx] = React.useState(0);
   const [answers, setAnswers] = React.useState<Record<string, string>>({});
@@ -26,6 +27,7 @@ export const CuratedMcqsTopicPage: React.FC = () => {
       .then((r) => {
         if (cancelled) return;
         setDisplayName(r.displayName || r.topicKey);
+        setCoverageNote(r.coverageNote ?? null);
         setQuestions(r.questions || []);
       })
       .catch((e) => { if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load MCQs'); })
@@ -40,6 +42,7 @@ export const CuratedMcqsTopicPage: React.FC = () => {
   const correct = q ? (revealed[q.id] || '') : '';
   const isCorrect = q && correct && userAns?.toUpperCase() === correct.toUpperCase();
   const score = questions.filter(qq => revealed[qq.id] && answers[qq.id]?.toUpperCase() === (revealed[qq.id] || '').toUpperCase()).length;
+  const anyOutdated = React.useMemo(() => questions.some(qq => qq.outdatedSources), [questions]);
 
   const grade = async (letter: string) => {
     if (!q || isAnswered || grading) return;
@@ -120,6 +123,27 @@ export const CuratedMcqsTopicPage: React.FC = () => {
           </button>
         </div>
 
+        {/* Coverage note and warnings */}
+        {(coverageNote || anyOutdated) && (
+          <div className="rounded-xl border border-amber-200 dark:border-amber-800/50 bg-amber-50/70 dark:bg-amber-950/20 px-4 py-3">
+            <div className="flex items-start gap-2">
+              <i className="fas fa-circle-exclamation text-amber-600 dark:text-amber-400 mt-0.5" />
+              <div className="min-w-0">
+                {coverageNote && (
+                  <p className="text-[11px] text-amber-800 dark:text-amber-200 leading-relaxed">
+                    {coverageNote}
+                  </p>
+                )}
+                {anyOutdated && (
+                  <p className="text-[11px] text-amber-700 dark:text-amber-300 mt-1">
+                    Sources may be outdated for some questions.
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Progress */}
         <div className="h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
           <div
@@ -165,6 +189,11 @@ export const CuratedMcqsTopicPage: React.FC = () => {
               <p className={`font-semibold text-xs uppercase tracking-wider ${isCorrect ? 'text-emerald-700 dark:text-emerald-300' : 'text-amber-700 dark:text-amber-300'}`}>
                 {isCorrect ? 'Correct' : `Incorrect — Answer: ${correct}`}
               </p>
+              {q.outdatedSources && (
+                <p className="text-[11px] text-amber-700 dark:text-amber-300">
+                  Sources may be outdated for this question.
+                </p>
+              )}
               {q.explanation && (
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">{q.explanation}</p>
               )}
