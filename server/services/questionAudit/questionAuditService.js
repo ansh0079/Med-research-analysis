@@ -23,12 +23,12 @@ const STAGES = {
     1: {
         provider: () => process.env.QUESTION_AUDIT_STAGE1_PROVIDER || 'claude',
         model: () => process.env.QUESTION_AUDIT_STAGE1_MODEL || 'claude-haiku-4-5-20251001',
-        operation: 'question_audit_stage1',
+        operation: 'question_audit_primary',
     },
     2: {
         provider: () => process.env.QUESTION_AUDIT_STAGE2_PROVIDER || 'gemini',
         model: () => process.env.QUESTION_AUDIT_STAGE2_MODEL || 'gemini-2.5-pro',
-        operation: 'question_audit_stage2',
+        operation: 'question_audit_secondary',
     },
 };
 
@@ -256,11 +256,11 @@ async function runStage(db, ai, {
                 const raw = stage === 1
                     ? await ai.callStructured(prompt, config.provider(), config.model(), {
                         temperature: 0, jsonMode: true, maxOutputTokens: 900,
-                        usage: { operation: 'question_audit_stage1', topic: row.topic },
+                        usage: { operation: 'question_audit_primary', topic: row.topic },
                     })
                     : await ai.callStructured(prompt, config.provider(), config.model(), {
                         temperature: 0, jsonMode: true, maxOutputTokens: 900,
-                        usage: { operation: 'question_audit_stage2', topic: row.topic },
+                        usage: { operation: 'question_audit_secondary', topic: row.topic },
                     });
                 verdict = normaliseVerdict(raw);
             } catch (err) {
