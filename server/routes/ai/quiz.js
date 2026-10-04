@@ -164,7 +164,7 @@ function registerQuizRoutes(app, {
                     // run reaching a user before the next cleanup pass catches them.
                     if (hasSuspectFutureCitation(q)) continue;
                     const assignment = indexed.get(questionIndex.questionHash(q));
-                    if (assignment?.category === 'unassignable') continue;
+                    if (assignment?.category === 'unassignable' || assignment?.auditHold) continue;
                     if (difficulty !== 'all' && q.difficulty !== difficulty) continue;
                     if (questionType !== 'all' && q.questionType !== questionType) continue;
                     const stableHash = crypto

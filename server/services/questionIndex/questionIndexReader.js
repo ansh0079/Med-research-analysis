@@ -64,6 +64,12 @@ async function loadAssignments(db, hashes) {
     } catch {
         return new Map();
     }
+    // Clinical audit (migration 111): questions both AI reviewers flagged as serious, or a clinician retired,
+    // are held out until a clinician has decided.
+    const { loadAuditHolds } = require('../questionAudit/questionAuditService');
+    for (const hash of await loadAuditHolds(db, unique)) {
+        out.set(hash, { ...(out.get(hash) || { category: 'unclear' }), auditHold: true });
+    }
     return out;
 }
 
@@ -73,6 +79,7 @@ async function loadAssignments(db, hashes) {
  */
 function belongsHere(assignment, clusterId) {
     if (!assignment) return true;
+    if (assignment.auditHold) return false;
     if (assignment.reviewState === 'retired') return false;
     if (assignment.category === 'unassignable') return false;
     if (assignment.category === 'aligned') return !clusterId || !assignment.clusterId || assignment.clusterId === clusterId;
@@ -96,6 +103,8 @@ async function loadAlignedForCluster(db, clusterId, { limit = 60 } = {}) {
             byObject.get(r.object_key).push(r);
         }
         const out = [];
+        const candidateHashes = [];
+        const candidates = [];
         for (const [objectKey, wanted] of byObject) {
             const object = await db.get("SELECT object_payload, review_state FROM teaching_objects WHERE object_key = ?", [objectKey]);
             if (!object || object.review_state === 'withdrawn') continue;
@@ -114,9 +123,16 @@ async function loadAlignedForCluster(db, clusterId, { limit = 60 } = {}) {
                     } catch { /* ignore */ }
                     // Do not present a paper-only match as guideline-derived merely because the old batch was named guideline_mcq.
                     const objectType = r.evidence_support === 'paper' ? 'paper_mcq' : r.object_type;
-                    out.push({ question: q, objectType, objectKey });
+                    const hash = questionHash(q);
+                    candidateHashes.push(hash);
+                    candidates.push({ question: q, objectType, objectKey, hash });
                 }
             }
+        }
+        const { loadAuditHolds } = require('../questionAudit/questionAuditService');
+        const held = await loadAuditHolds(db, candidateHashes);
+        for (const candidate of candidates) {
+            if (!held.has(candidate.hash)) out.push({ question: candidate.question, objectType: candidate.objectType, objectKey: candidate.objectKey });
         }
         return out;
     } catch {

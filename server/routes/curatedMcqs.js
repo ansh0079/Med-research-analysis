@@ -2,13 +2,13 @@
 
 // Curated MCQs routes — read-only listing and per-topic retrieval
 
+const { loadAuditHolds } = require('../services/questionAudit/questionAuditService');
+const { questionHash } = require('../services/questionIndex/questionIndexService');
 const { attachQuizGradingTokens } = require('../services/quizGradingToken');
 const { canonicalQuestionType } = require('../utils/questionType');
 const { expandNormalizedTopicKeys } = require('../utils/topicSynonyms');
-const { isIssuingBodyValue } = require('../utils/guidelineAttribution');
 const { normalizeTopic } = require('../utils/topicKey');
 const { loadWithdrawnOverrides } = require('../services/mcqReviewOverrideService');
-const { questionHash } = require('../services/questionIndex/questionIndexService');
 
 /**
  * Curated MCQs API:
@@ -103,15 +103,22 @@ function registerCuratedMcqRoutes(app, deps) {
 
       // Transform to API shape expected by quiz components
       const letters = ['A', 'B', 'C', 'D', 'E'];
-      const questions = (Array.isArray(payload.mcqs) ? payload.mcqs : [])
+      // Clinical audit: hold out questions both AI reviewers flagged as serious, or a clinician retired.
+      const stored = (Array.isArray(payload.mcqs) ? payload.mcqs : []);
+      const held = await loadAuditHolds(db, stored.map((q) => questionHash(q || {})));
+      // Combine: per-question withdrawal overrides (by object index and by hash) AND clinical audit holds.
+      const questions = stored
         .filter((q, i) => {
           if (!q || !q.question || !q.correctAnswer || !Array.isArray(q.options)) return false;
-          // Filter per-question withdrawals by object index and by hash
+          // Withdrawn via explicit override for this object slot
           if (withdrawn.byObjectIndex.has(`${row.object_key}#${i}`)) return false;
           try {
             const h = questionHash(q);
             if (withdrawn.byHash.has(h)) return false;
-          } catch { /* ignore */ }
+            if (held.has(h)) return false;
+          } catch {
+            // If hashing fails, fall through — only objectIndex-based withdrawal applies
+          }
           return true;
         })
         .map((q, i) => ({
