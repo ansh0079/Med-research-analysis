@@ -49,5 +49,28 @@ describe('curatedMcqImportValidation', () => {
     expect(errors.join(' ')).toMatch(/correctAnswer/);
     expect(errors.join(' ')).toMatch(/at least one sourceRef/);
   });
-});
 
+  test('accepts a 4-option question and stores only the provided options', () => {
+    const block = {
+      topicKey: 'four-option-topic',
+      topicDisplayName: 'Four option topic',
+      mcqs: [{
+        id: 'q4', question: 'Pick one?', options: { A: 'a', B: 'b', C: 'c', D: 'd' }, correctAnswer: 'D',
+        explanation: 'Because.', difficulty: 'medium', sourceRefs: [{ sourceBody: 'NICE', excerpt: 'x' }],
+      }],
+    };
+    expect(validateCuratedTopicBlock(block).ok).toBe(true);
+    expect(transformCuratedQuestionToStored(block.mcqs[0]).options).toEqual(['A: a', 'B: b', 'C: c', 'D: d']);
+  });
+
+  test('rejects a 4-option question whose answer is E', () => {
+    const block = {
+      topicKey: 't', topicDisplayName: 'T',
+      mcqs: [{ id: 'q', question: 'Q?', options: { A: 'a', B: 'b', C: 'c', D: 'd' }, correctAnswer: 'E',
+        explanation: 'x', difficulty: 'medium', sourceRefs: [{ sourceBody: 'NICE', excerpt: 'x' }] }],
+    };
+    const { ok, errors } = validateCuratedTopicBlock(block);
+    expect(ok).toBe(false);
+    expect(errors.join(' ')).toMatch(/correctAnswer must match/);
+  });
+});
