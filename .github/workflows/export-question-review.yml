@@ -52,7 +52,8 @@ jobs:
           SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
         run: |
           install -m 700 -d ~/.ssh
-          printf '%s' "$SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          sed -i 's/\r$//' ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H 178.105.155.246 >> ~/.ssh/known_hosts
           scp -r root@178.105.155.246:/tmp/signal-md-question-review ./question-review-data
