@@ -18,10 +18,10 @@ async function upsertGuidelineDocument(doc, now) {
     const text = String(doc.text || '');
     if (!row) {
         await db.run(
-            `INSERT INTO guideline_documents (pmid, doi, title, source_body, source_year, source_url, document_label,
+            `INSERT INTO guideline_documents (pmcid, pmid, doi, title, source_body, source_year, source_url, document_label,
                 evidence_tier, full_text, full_text_source, word_count, fetched_at, created_at, updated_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [doc.pmid || null, doc.doi || null, doc.title || '', doc.source_body || '', doc.source_year || null,
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [doc.pmcid || null, doc.pmid || null, doc.doi || null, doc.title || '', doc.source_body || '', doc.source_year || null,
                 doc.source_url || null, doc.title || doc.source_body || 'Retrieved source', doc.evidence_tier || 'unknown',
                 text, doc.full_text_source || 'retrieved', text.split(/\s+/).filter(Boolean).length, now, now, now],
         );
@@ -32,9 +32,9 @@ async function upsertGuidelineDocument(doc, now) {
     }
     if (text.length > String(row.full_text || '').length) {
         await db.run(
-            `UPDATE guideline_documents SET title = ?, source_body = ?, source_year = ?, source_url = ?, evidence_tier = ?,
+            `UPDATE guideline_documents SET pmcid = ?, title = ?, source_body = ?, source_year = ?, source_url = ?, evidence_tier = ?,
                 full_text = ?, full_text_source = ?, word_count = ?, fetched_at = ?, updated_at = ? WHERE id = ?`,
-            [doc.title || row.title, doc.source_body || row.source_body, doc.source_year || row.source_year,
+            [doc.pmcid || row.pmcid, doc.title || row.title, doc.source_body || row.source_body, doc.source_year || row.source_year,
                 doc.source_url || row.source_url, doc.evidence_tier || row.evidence_tier, text,
                 doc.full_text_source || row.full_text_source, text.split(/\s+/).filter(Boolean).length, now, now, row.id],
         );
