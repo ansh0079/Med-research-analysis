@@ -1,0 +1,600 @@
+{
+  "withdrawals": [
+    {
+      "questionId": "guideline-mcq:Coronary-CT-angiography-for-stable-chest-pain#2",
+      "verdict": "Ambiguous",
+      "reason": "High pretest probability (C) is also a recognised reason not to use CCTA first-line (ESC: functional/invasive testing), and eGFR 30 is only a relative caution. ",
+      "notes": "High pretest probability (C) is also a recognised reason not to use CCTA first-line (ESC: functional/invasive testing), and eGFR 30 is only a relative caution. Two defensible answers."
+    },
+    {
+      "questionId": "guideline-mcq:coronary-ct-angiography-ffrct-plaque-characterisation-clinical-applications#3",
+      "verdict": "Unsupported",
+      "reason": "Single-society (Polish 2025) niche claim on CT-guided stent sizing; stem lacks a question lead-in.",
+      "notes": "Single-society (Polish 2025) niche claim on CT-guided stent sizing; stem lacks a question lead-in."
+    },
+    {
+      "questionId": "guideline-mcq:corticosteroid-induced-osteoporosis-prevention#2",
+      "verdict": "Ambiguous",
+      "reason": "Low-risk 45-year-old on 7.5 mg for 3 months: calcitonin (C) is a pitfall, but delaying all intervention until T <-2.5 (D) is equally a pitfall. More than one de",
+      "notes": "Low-risk 45-year-old on 7.5 mg for 3 months: calcitonin (C) is a pitfall, but delaying all intervention until T <-2.5 (D) is equally a pitfall. More than one defensible answer."
+    },
+    {
+      "questionId": "guideline-mcq:osteoporosis-dexa-frax-t-score-thresholds-fracture-risk-assessment#3",
+      "verdict": "Ambiguous",
+      "reason": "FRAX hip 4.5% already exceeds treatment thresholds, so the 'pitfall' premise is weak; B and C are both arguable.",
+      "notes": "FRAX hip 4.5% already exceeds treatment thresholds, so the 'pitfall' premise is weak; B and C are both arguable."
+    },
+    {
+      "questionId": "paper-mcq:osteoporosis#0",
+      "verdict": "Unsupported",
+      "reason": "Fold-risk figures from the 2022 Clinician's Guide are not in the linked evidence; numeric trivia.",
+      "notes": "Fold-risk figures from the 2022 Clinician's Guide are not in the linked evidence; numeric trivia."
+    },
+    {
+      "questionId": "guideline-mcq:Corticosteroids-in-ARDS#0",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: no option gives the evidence-based regimen (dexamethasone 6 mg daily for up to 10 days, RECOVERY), so changing the key alone cannot fix the question.",
+      "notes": "Withdrawn: no option gives the evidence-based regimen (dexamethasone 6 mg daily for up to 10 days, RECOVERY), so changing the key alone cannot fix the question. Original note: For COVID-19 ARDS the evidence-based steroid is dexamethasone 6 mg daily for up to 10 days (RECOVERY); methylprednisolone (A) isn't the most supported regimen and no option gives the RECOVERY regimen."
+    },
+    {
+      "questionId": "paper-mcq:covid-19-antivirals-and-immunomodulators-nirmatrelvir-ritonavir-remdesivir-dexamethasone-baricitinib#1",
+      "verdict": "Unsupported",
+      "reason": "Characterisation of molnupiravir as preventing death but not hospitalisation comes from one review; MOVe-OUT reported a composite and PANORAMIC showed no reduct",
+      "notes": "Characterisation of molnupiravir as preventing death but not hospitalisation comes from one review; MOVe-OUT reported a composite and PANORAMIC showed no reduction. Not reliable teaching."
+    },
+    {
+      "questionId": "paper-mcq:covid-19-antivirals-and-immunomodulators-nirmatrelvir-ritonavir-remdesivir-dexamethasone-baricitinib#2",
+      "verdict": "Unsupported",
+      "reason": "AT-527 trial trivia from a single review; low clinical value.",
+      "notes": "AT-527 trial trivia from a single review; low clinical value."
+    },
+    {
+      "questionId": "guideline-mcq:covid-19-antivirals-and-immunomodulators-nirmatrelvir-ritonavir-remdesivir-dexamethasone-baricitinib#0",
+      "verdict": "Ambiguous",
+      "reason": "SpO2 93% without stated oxygen requirement: NIH advises remdesivir but not dexamethasone unless oxygen is needed; C (with dexamethasone) and remdesivir-only str",
+      "notes": "SpO2 93% without stated oxygen requirement: NIH advises remdesivir but not dexamethasone unless oxygen is needed; C (with dexamethasone) and remdesivir-only strategies are both arguable."
+    },
+    {
+      "questionId": "guideline-mcq:covid-19-antivirals-and-immunomodulators-nirmatrelvir-ritonavir-remdesivir-dexamethasone-baricitinib#1",
+      "verdict": "Ambiguous",
+      "reason": "CDC lists age >50 as a risk factor, so A and B are both defensible thresholds.",
+      "notes": "CDC lists age >50 as a risk factor, so A and B are both defensible thresholds."
+    },
+    {
+      "questionId": "paper-mcq:craniopharyngioma-suprasellar-location-hypothalamic-obesity-visual-field-defects#2",
+      "verdict": "Ambiguous",
+      "reason": "A non-significant difference in re-operations does not show HSS 'does not increase' recurrence (absence of evidence); D is equally defensible. Flawed key.",
+      "notes": "A non-significant difference in re-operations does not show HSS 'does not increase' recurrence (absence of evidence); D is equally defensible. Flawed key."
+    },
+    {
+      "questionId": "guideline-mcq:creutzfeldt-jakob-disease-cjd-14-3-3-protein-rt-quic-cortical-ribboning#1",
+      "verdict": "Unsupported",
+      "reason": "Specific 14-3-3 sensitivity/specificity figures vary widely across studies; numeric claim not reliably supported.",
+      "notes": "Specific 14-3-3 sensitivity/specificity figures vary widely across studies; numeric claim not reliably supported."
+    },
+    {
+      "questionId": "paper-mcq:cryoglobulinaemic-vasculitis-hcv-association-types-skin-renal-nerve-involvement#4",
+      "verdict": "Unsupported",
+      "reason": "Trial inclusion-criteria trivia; no clinical content.",
+      "notes": "Trial inclusion-criteria trivia; no clinical content."
+    },
+    {
+      "questionId": "guideline-mcq:cryoglobulinaemic-vasculitis-hcv-association-types-skin-renal-nerve-involvement#1",
+      "verdict": "Ambiguous",
+      "reason": "KDIGO advises rituximab with or without plasma exchange; cyclophosphamide (A) is also a recognised option. Rituximab not offered; more than one defensible answe",
+      "notes": "KDIGO advises rituximab with or without plasma exchange; cyclophosphamide (A) is also a recognised option. Rituximab not offered; more than one defensible answer."
+    },
+    {
+      "questionId": "guideline-mcq:tnf-receptor-associated-periodic-syndrome#2",
+      "verdict": "Ambiguous",
+      "reason": "New ulcerating plaques on etanercept could equally be a drug reaction or a separate dermatosis; 'unusual TRAPS phenotype' is not the single best answer.",
+      "notes": "New ulcerating plaques on etanercept could equally be a drug reaction or a separate dermatosis; 'unusual TRAPS phenotype' is not the single best answer."
+    },
+    {
+      "questionId": "guideline-mcq:cryopyrin-associated-periodic-syndromes#2",
+      "verdict": "Ambiguous",
+      "reason": "Paediatric anakinra 1-2 mg/kg/day gives 25-50 mg for 25 kg, so both B and C fall within the cited range.",
+      "notes": "Paediatric anakinra 1-2 mg/kg/day gives 25-50 mg for 25 kg, so both B and C fall within the cited range."
+    },
+    {
+      "questionId": "guideline-mcq:autoinflammatory-syndromes-traps-caps-hids-il-1-pathway-canakinumab#1",
+      "verdict": "Unsupported",
+      "reason": "CAPS is not a primary immunodeficiency; the live-vaccine restriction applies to IL-1 blockade (vaccinate before starting), not the diagnosis itself. Premise uns",
+      "notes": "CAPS is not a primary immunodeficiency; the live-vaccine restriction applies to IL-1 blockade (vaccinate before starting), not the diagnosis itself. Premise unsupported."
+    },
+    {
+      "questionId": "guideline-mcq:cryptococcal-meningitis-induction-therapy#2",
+      "verdict": "Ambiguous",
+      "reason": "Delaying antifungal therapy (C) is at least as serious a pitfall as continuing prednisone; more than one defensible answer.",
+      "notes": "Delaying antifungal therapy (C) is at least as serious a pitfall as continuing prednisone; more than one defensible answer."
+    },
+    {
+      "questionId": "guideline-mcq:cryptogenic-organizing-pneumonia#1",
+      "verdict": "Unsupported",
+      "reason": "The 72-hour threshold is not in the linked evidence; niche numeric claim attributed to an unlinked guideline.",
+      "notes": "The 72-hour threshold is not in the linked evidence; niche numeric claim attributed to an unlinked guideline."
+    },
+    {
+      "questionId": "guideline-mcq:cryptogenic-organizing-pneumonia#2",
+      "verdict": "Ambiguous",
+      "reason": "Once infection is excluded, delaying corticosteroids (A) is equally a pitfall; more than one defensible answer.",
+      "notes": "Once infection is excluded, delaying corticosteroids (A) is equally a pitfall; more than one defensible answer."
+    },
+    {
+      "questionId": "guideline-mcq:cushings-disease-pituitary-source-inferior-petrosal-sinus-sampling-transsphenoidal-surgery#1",
+      "verdict": "Unsupported",
+      "reason": "Usual pituitary criterion after CRH is a central:peripheral ratio >=3; a post-CRH ratio of 2.5 doesn't meet it (and the explanation states this). The key contra",
+      "notes": "Usual pituitary criterion after CRH is a central:peripheral ratio >=3; a post-CRH ratio of 2.5 doesn't meet it (and the explanation states this). The key contradicts its own criteria."
+    },
+    {
+      "questionId": "paper-mcq:cushings-disease-pituitary-source-inferior-petrosal-sinus-sampling-transsphenoidal-surgery#4",
+      "verdict": "Unsupported",
+      "reason": "Sensitivity/specificity figures from one Italian study; numeric trivia not in the linked guideline evidence.",
+      "notes": "Sensitivity/specificity figures from one Italian study; numeric trivia not in the linked guideline evidence."
+    },
+    {
+      "questionId": "guideline-mcq:cutaneous-squamous-cell-carcinoma#3",
+      "verdict": "Unsupported",
+      "reason": "The European EDF/EADO/EORTC guideline cited recommends 5 mm margins for low-risk cSCC (4 mm is BAD/UK practice); 5 mm isn't offered, so the key isn't supported ",
+      "notes": "The European EDF/EADO/EORTC guideline cited recommends 5 mm margins for low-risk cSCC (4 mm is BAD/UK practice); 5 mm isn't offered, so the key isn't supported by the cited source."
+    },
+    {
+      "questionId": "guideline-mcq:cutaneous-t-cell-lymphoma#0",
+      "verdict": "Ambiguous",
+      "reason": "Stem is internally inconsistent (80% BSA patches/plaques is T2, not tumour-stage IIB). ECP mainly suits erythrodermic/blood-involved disease, so the keyed answe",
+      "notes": "Stem is internally inconsistent (80% BSA patches/plaques is T2, not tumour-stage IIB). ECP mainly suits erythrodermic/blood-involved disease, so the keyed answer is debatable."
+    },
+    {
+      "questionId": "guideline-mcq:cystic-fibrosis-in-adults#1",
+      "verdict": "Unsupported",
+      "reason": "Explanation relies on a non-CF bronchiectasis review. In CF, long-term inhaled antibiotics for chronic Pseudomonas are standard (NICE NG78), so 'some guidelines",
+      "notes": "Explanation relies on a non-CF bronchiectasis review. In CF, long-term inhaled antibiotics for chronic Pseudomonas are standard (NICE NG78), so 'some guidelines recommend' isn't supported as the best answer."
+    },
+    {
+      "questionId": "guideline-mcq:Cytomegalovirus-prevention-in-transplant-recipients#0",
+      "verdict": "Ambiguous",
+      "reason": "D+/R+ is intermediate (not high) CMV risk; guidelines accept either universal prophylaxis (B) or pre-emptive monitoring (A).",
+      "notes": "D+/R+ is intermediate (not high) CMV risk; guidelines accept either universal prophylaxis (B) or pre-emptive monitoring (A)."
+    },
+    {
+      "questionId": "paper-mcq:dabigatran-versus-warfarin-atrial-fibrillation-stroke-prevention#4",
+      "verdict": "Ambiguous",
+      "reason": "FRAIL-AF (2023) found switching frail older patients from stable VKA to a DOAC increased bleeding, and ESC 2024 suggests continuing a well-controlled VKA in suc",
+      "notes": "FRAIL-AF (2023) found switching frail older patients from stable VKA to a DOAC increased bleeding, and ESC 2024 suggests continuing a well-controlled VKA in such patients; switching (B) is not clearly best."
+    },
+    {
+      "questionId": "paper-mcq:de-quervain-s-tenosynovitis#1",
+      "verdict": "Unsupported",
+      "reason": "Mean-difference/CI figures are numeric trivia from one NMA.",
+      "notes": "Mean-difference/CI figures are numeric trivia from one NMA."
+    },
+    {
+      "questionId": "guideline-mcq:Degenerative-cervical-myelopathy-management#1",
+      "verdict": "Ambiguous",
+      "reason": "AO Spine/WFNS guidance for mild DCM offers either surgery or a supervised trial of structured rehabilitation, so A and B are both defensible.",
+      "notes": "AO Spine/WFNS guidance for mild DCM offers either surgery or a supervised trial of structured rehabilitation, so A and B are both defensible."
+    },
+    {
+      "questionId": "guideline-mcq:delayed-puberty-constitutional-delay-vs-hypogonadotrophic-vs-hypergonadotrophic-causes#0",
+      "verdict": "Unsupported",
+      "reason": "Linked appraisal (and row 194) says GnRH stimulation can't reliably separate CDGP from IHH; the key contradicts its own source, and observation or a short testo",
+      "notes": "Linked appraisal (and row 194) says GnRH stimulation can't reliably separate CDGP from IHH; the key contradicts its own source, and observation or a short testosterone course is also standard."
+    },
+    {
+      "questionId": "guideline-mcq:delayed-puberty-constitutional-delay-vs-hypogonadotrophic-vs-hypergonadotrophic-causes#3",
+      "verdict": "Unsupported",
+      "reason": "Age-17 threshold from one guideline statement; niche numeric recall.",
+      "notes": "Age-17 threshold from one guideline statement; niche numeric recall."
+    },
+    {
+      "questionId": "paper-mcq:precocious-puberty-central-vs-peripheral-causes-gnrh-agonist-treatment#3",
+      "verdict": "Unsupported",
+      "reason": "Meta-question about why a consensus statement is relevant; no clinical content.",
+      "notes": "Meta-question about why a consensus statement is relevant; no clinical content."
+    },
+    {
+      "questionId": "paper-mcq:delayed-puberty-constitutional-delay-vs-hypogonadotrophic-vs-hypergonadotrophic-causes#3",
+      "verdict": "Unsupported",
+      "reason": "Meta-question about relying on old textbooks; no clinical content.",
+      "notes": "Meta-question about relying on old textbooks; no clinical content."
+    },
+    {
+      "questionId": "cold-start-mcq:delirium#0",
+      "verdict": "Unsupported",
+      "reason": "Single-study association (oxygen saturation in haemorrhagic stroke delirium) not in linked evidence.",
+      "notes": "Single-study association (oxygen saturation in haemorrhagic stroke delirium) not in linked evidence."
+    },
+    {
+      "questionId": "paper-mcq:delirium-and-acute-confusional-states#0",
+      "verdict": "Unsupported",
+      "reason": "Meta-question about a review's stated limitations; no clinical content.",
+      "notes": "Meta-question about a review's stated limitations; no clinical content."
+    },
+    {
+      "questionId": "paper-mcq:delirium-and-acute-confusional-states#4",
+      "verdict": "Unsupported",
+      "reason": "Meta-question on research priorities from one review; no clinical content.",
+      "notes": "Meta-question on research priorities from one review; no clinical content."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-confusion#0",
+      "verdict": "Ambiguous",
+      "reason": "B is also a true distinguishing feature (progressive decline in dementia); two correct statements.",
+      "notes": "B is also a true distinguishing feature (progressive decline in dementia); two correct statements."
+    },
+    {
+      "questionId": "paper-mcq:delirium-vs-dementia-differentiation#2",
+      "verdict": "Unsupported",
+      "reason": "Meta-question about what a review does or doesn't provide; no clinical content.",
+      "notes": "Meta-question about what a review does or doesn't provide; no clinical content."
+    },
+    {
+      "questionId": "guideline-mcq:Lewy-body-dementia-diagnosis-and-symptomatic-therapy#1",
+      "verdict": "Ambiguous",
+      "reason": "Stem asks about dopaminergic therapy but the key is antipsychotics; dopamine agonists (A) are also cautioned in LBD. Flawed stem.",
+      "notes": "Stem asks about dopaminergic therapy but the key is antipsychotics; dopamine agonists (A) are also cautioned in LBD. Flawed stem."
+    },
+    {
+      "questionId": "cold-start-mcq:behavioural-and-psychological-symptoms-of-dementia#3",
+      "verdict": "Unsupported",
+      "reason": "Educational-design question with no clinical evidence base in the linked sources.",
+      "notes": "Educational-design question with no clinical evidence base in the linked sources."
+    },
+    {
+      "questionId": "cold-start-mcq:agitation#1",
+      "verdict": "Unsupported",
+      "reason": "Explanation admits dog-assisted therapy evidence is only emerging, so calling it the 'strongest evidence' is unsupported; NICE favours tailored psychosocial int",
+      "notes": "Explanation admits dog-assisted therapy evidence is only emerging, so calling it the 'strongest evidence' is unsupported; NICE favours tailored psychosocial interventions."
+    },
+    {
+      "questionId": "cold-start-mcq:agitation#3",
+      "verdict": "Unsupported",
+      "reason": "Speculative 'most promise' technology claim; nothing in linked NICE evidence supports it.",
+      "notes": "Speculative 'most promise' technology claim; nothing in linked NICE evidence supports it."
+    },
+    {
+      "questionId": "paper-mcq:dementia-behavioural-and-psychological-symptoms-management#2",
+      "verdict": "Unsupported",
+      "reason": "NICE NG97 advises against routinely offering antidepressants for mild-moderate depression in mild-moderate dementia (HTA-SADD: no benefit); 'sertraline or mirta",
+      "notes": "NICE NG97 advises against routinely offering antidepressants for mild-moderate depression in mild-moderate dementia (HTA-SADD: no benefit); 'sertraline or mirtazapine preferred' contradicts the linked guideline."
+    },
+    {
+      "questionId": "paper-mcq:osteoporosis-dexa-frax-t-score-thresholds-fracture-risk-assessment#0",
+      "verdict": "Unsupported",
+      "reason": "Single-review claim that oestrogen is the primary treatment for postmenopausal osteoporosis; guidelines use bisphosphonates first-line, with HRT for selected yo",
+      "notes": "Single-review claim that oestrogen is the primary treatment for postmenopausal osteoporosis; guidelines use bisphosphonates first-line, with HRT for selected younger women."
+    },
+    {
+      "questionId": "paper-mcq:depression-diagnosis-pharmacotherapy-and-monitoring#2",
+      "verdict": "Unsupported",
+      "reason": "Recall of a single RCT by PMC identifier; pharmacogenomic-guided prescribing trials show only modest benefit. Not reliable teaching.",
+      "notes": "Recall of a single RCT by PMC identifier; pharmacogenomic-guided prescribing trials show only modest benefit. Not reliable teaching."
+    },
+    {
+      "questionId": "paper-mcq:steroids-in-pneumonia#3",
+      "verdict": "Unsupported",
+      "reason": "Cites a specific study (Smith et al 2022) not in the linked evidence and not verifiable; statistics-interpretation item on an unverifiable source.",
+      "notes": "Cites a specific study (Smith et al 2022) not in the linked evidence and not verifiable; statistics-interpretation item on an unverifiable source."
+    },
+    {
+      "questionId": "guideline-mcq:dexamethasone-covid-19-hospitalized-mechanical-ventilation-mortality#4",
+      "verdict": "Ambiguous",
+      "reason": "For patients already ventilated, 'reduction in need for mechanical ventilation' isn't applicable; the key mixes outcomes from different populations. Flawed stem",
+      "notes": "For patients already ventilated, 'reduction in need for mechanical ventilation' isn't applicable; the key mixes outcomes from different populations. Flawed stem/key."
+    },
+    {
+      "questionId": "cold-start-mcq:covid-19-severe-disease-immunomodulation#4",
+      "verdict": "Ambiguous",
+      "reason": "SpO2 92% on room air meets the hypoxaemia criterion the set itself uses (SpO2 <94%, Q281), so C is defensible; viral-phase harm (B) rests on inference, not on t",
+      "notes": "SpO2 92% on room air meets the hypoxaemia criterion the set itself uses (SpO2 <94%, Q281), so C is defensible; viral-phase harm (B) rests on inference, not on the linked evidence."
+    },
+    {
+      "questionId": "paper-mcq:diabetes-insipidus-central-vs-nephrogenic-water-deprivation-test-desmopressin#2",
+      "verdict": "Unsupported",
+      "reason": "Fenske 2018 showed higher accuracy, but 'better safety profile' isn't supported: hypertonic saline needs close sodium monitoring and caused more adverse symptom",
+      "notes": "Fenske 2018 showed higher accuracy, but 'better safety profile' isn't supported: hypertonic saline needs close sodium monitoring and caused more adverse symptoms."
+    },
+    {
+      "questionId": "guideline-mcq:diabetic-amyotrophy-lumbosacral-radiculoplexus-neuropathy-management#1",
+      "verdict": "Unsupported",
+      "reason": "Alpha-lipoic acid 600 mg 'recommended' only by one low-profile 2023 source; not recommended by NICE/ADA. Dose-recall item lacks reliable support.",
+      "notes": "Alpha-lipoic acid 600 mg 'recommended' only by one low-profile 2023 source; not recommended by NICE/ADA. Dose-recall item lacks reliable support."
+    },
+    {
+      "questionId": "cold-start-mcq:cellulitis#4",
+      "verdict": "Ambiguous",
+      "reason": "Ischaemia (reduced ABI/PAD) is an equally strong predictor of amputation; 'most significant' isn't supported over D.",
+      "notes": "Ischaemia (reduced ABI/PAD) is an equally strong predictor of amputation; 'most significant' isn't supported over D."
+    },
+    {
+      "questionId": "paper-mcq:diabetic-foot-infection-osteomyelitis-diagnosis-mdt-approach-antibiotic-duration-bone-biopsy#2",
+      "verdict": "Unsupported",
+      "reason": "Recall of single-centre retrospective outcome percentages; not generalisable teaching.",
+      "notes": "Recall of single-centre retrospective outcome percentages; not generalisable teaching."
+    },
+    {
+      "questionId": "paper-mcq:diabetic-foot-infection-osteomyelitis-diagnosis-mdt-approach-antibiotic-duration-bone-biopsy#4",
+      "verdict": "Unsupported",
+      "reason": "Built on one centre's 23% VRE isolation rate; empirical VRE coverage isn't recommended by IDSA/IWGDF/SPILF. Teaches inappropriate broad-spectrum use.",
+      "notes": "Built on one centre's 23% VRE isolation rate; empirical VRE coverage isn't recommended by IDSA/IWGDF/SPILF. Teaches inappropriate broad-spectrum use."
+    },
+    {
+      "questionId": "guideline-mcq:diabetic-foot-infection-osteomyelitis-diagnosis-mdt-approach-antibiotic-duration-bone-biopsy#0",
+      "verdict": "Unsafe",
+      "reason": "Keys piperacillin-tazobactam (a penicillin) for a patient with documented penicillin allergy, with no mention of the allergy. Unsafe prescribing lesson.",
+      "notes": "Keys piperacillin-tazobactam (a penicillin) for a patient with documented penicillin allergy, with no mention of the allergy. Unsafe prescribing lesson."
+    },
+    {
+      "questionId": "guideline-mcq:infection-prevention-and-control-standard-precautions-contact-isolation-hand-hygiene-evidence#0",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: no option is correct. NICE NG152 advises starting an empirical oral antibiotic for an infected leg ulcer (after taking a sample) rather than waiting ",
+      "notes": "Withdrawn: no option is correct. NICE NG152 advises starting an empirical oral antibiotic for an infected leg ulcer (after taking a sample) rather than waiting for culture, and that option isn't offered. Original note: Leg ulcer with clear signs of infection: NICE NG152 says take a sample and start an empirical oral antibiotic (e.g. flucloxacillin) without waiting for culture. Keyed 'await culture' delays treatment, and no option is correct. Withdraw."
+    },
+    {
+      "questionId": "guideline-mcq:diabetic-foot-infection-and-osteomyelitis#2",
+      "verdict": "Ambiguous",
+      "reason": "IWGDF 2023 recommends about 6 weeks for non-surgical DFO; that sits in both C (4-6) and D (6-12). Oral therapy is non-inferior (OVIVA). The explanation admits t",
+      "notes": "IWGDF 2023 recommends about 6 weeks for non-surgical DFO; that sits in both C (4-6) and D (6-12). Oral therapy is non-inferior (OVIVA). The explanation admits the source doesn't specify a duration."
+    },
+    {
+      "questionId": "paper-mcq:diabetic-foot-wagner-classification-multidisciplinary-care-offloading-osteomyelitis#4",
+      "verdict": "Unsupported",
+      "reason": "Hypothetical meta-question about a biomarker study; no established clinical role.",
+      "notes": "Hypothetical meta-question about a biomarker study; no established clinical role."
+    },
+    {
+      "questionId": "cold-start-mcq:diabetic-ketoacidosis#2",
+      "verdict": "Ambiguous",
+      "reason": "Paradoxical CNS acidosis (B) is also a recognised complication of bicarbonate; the stem's thresholds (pH 6.9) don't match the 2024 consensus (consider if pH <7.",
+      "notes": "Paradoxical CNS acidosis (B) is also a recognised complication of bicarbonate; the stem's thresholds (pH 6.9) don't match the 2024 consensus (consider if pH <7.0)."
+    },
+    {
+      "questionId": "cold-start-mcq:ckd-referral-thresholds#1",
+      "verdict": "Unsupported",
+      "reason": "Niche preclinical pathways from a single review; not established teaching.",
+      "notes": "Niche preclinical pathways from a single review; not established teaching."
+    },
+    {
+      "questionId": "guideline-mcq:mineralocorticoid-receptor-antagonists-spironolactone-eplerenone-finerenone#3",
+      "verdict": "Ambiguous",
+      "reason": "Withholding finerenone at K+ 5.1 is right (KDIGO), but D is also correct: she isn't on an SGLT2 inhibitor, which KDIGO 2022 recommends first-line for T2D with C",
+      "notes": "Withholding finerenone at K+ 5.1 is right (KDIGO), but D is also correct: she isn't on an SGLT2 inhibitor, which KDIGO 2022 recommends first-line for T2D with CKD (eGFR >=20). Stem lacks a question lead-in."
+    },
+    {
+      "questionId": "guideline-mcq:Diabetic-kidney-disease-finerenone#2",
+      "verdict": "Unsupported",
+      "reason": "Keyed option includes type 1 diabetes, but finerenone evidence and licensing (FIDELIO/FIGARO, KDIGO 2022) cover T2D only.",
+      "notes": "Keyed option includes type 1 diabetes, but finerenone evidence and licensing (FIDELIO/FIGARO, KDIGO 2022) cover T2D only."
+    },
+    {
+      "questionId": "cold-start-mcq:peripheral-neuropathy#3",
+      "verdict": "Unsupported",
+      "reason": "ALA trials (ALADIN, SYDNEY) show symptom relief; NATHAN-1 didn't slow progression. 'Strongest evidence for slowing progression' isn't supported, and it isn't in",
+      "notes": "ALA trials (ALADIN, SYDNEY) show symptom relief; NATHAN-1 didn't slow progression. 'Strongest evidence for slowing progression' isn't supported, and it isn't in NICE/ADA guidance."
+    },
+    {
+      "questionId": "paper-mcq:diabetic-peripheral-neuropathy-screening-painful-neuropathy-pharmacotherapy#0",
+      "verdict": "Unsupported",
+      "reason": "Recall of a paper's study design; no clinical content.",
+      "notes": "Recall of a paper's study design; no clinical content."
+    },
+    {
+      "questionId": "paper-mcq:diabetic-peripheral-neuropathy-screening-painful-neuropathy-pharmacotherapy#1",
+      "verdict": "Unsupported",
+      "reason": "Trivia about the scope of a Cochrane review.",
+      "notes": "Trivia about the scope of a Cochrane review."
+    },
+    {
+      "questionId": "paper-mcq:diabetic-peripheral-neuropathy-screening-painful-neuropathy-pharmacotherapy#3",
+      "verdict": "Unsupported",
+      "reason": "Meta-question about the purpose of a systematic review; no clinical content.",
+      "notes": "Meta-question about the purpose of a systematic review; no clinical content."
+    },
+    {
+      "questionId": "paper-mcq:diabetic-peripheral-neuropathy-screening-painful-neuropathy-pharmacotherapy#4",
+      "verdict": "Unsupported",
+      "reason": "Meta-question premised on not having the paper's content.",
+      "notes": "Meta-question premised on not having the paper's content."
+    },
+    {
+      "questionId": "cold-start-mcq:diabetic-retinopathy-anti-vegf-therapy#1",
+      "verdict": "Ambiguous",
+      "reason": "For persistent DMO after 6 ranibizumab injections, switching to aflibercept, adding laser (DRCR Protocol I) or a steroid implant are all accepted; B vs C isn't ",
+      "notes": "For persistent DMO after 6 ranibizumab injections, switching to aflibercept, adding laser (DRCR Protocol I) or a steroid implant are all accepted; B vs C isn't clearly separable."
+    },
+    {
+      "questionId": "guideline-mcq:diagnostic-upper-gi-endoscopy#3",
+      "verdict": "Unsupported",
+      "reason": "BSG/ACG advise against biopsying a normal-appearing or irregular Z-line; Seattle protocol applies only to visible Barrett's segments. The linked '6 biopsies' st",
+      "notes": "BSG/ACG advise against biopsying a normal-appearing or irregular Z-line; Seattle protocol applies only to visible Barrett's segments. The linked '6 biopsies' statement is about EoE. '4 per area' is unsupported, and D is defensible."
+    },
+    {
+      "questionId": "guideline-mcq:dieulafoy-lesion#3",
+      "verdict": "Ambiguous",
+      "reason": "After failed endoscopic therapy, guidance (and the linked source) lists both transarterial embolisation and surgery; embolisation (D) is usually tried first. Ke",
+      "notes": "After failed endoscopic therapy, guidance (and the linked source) lists both transarterial embolisation and surgery; embolisation (D) is usually tried first. Key isn't clearly best."
+    },
+    {
+      "questionId": "paper-mcq:differentiated-thyroid-cancer-papillary-vs-follicular-tnm-staging-rai-ablation#0",
+      "verdict": "Unsupported",
+      "reason": "Meta-question about a guideline's stated purpose; no clinical content.",
+      "notes": "Meta-question about a guideline's stated purpose; no clinical content."
+    },
+    {
+      "questionId": "paper-mcq:differentiated-thyroid-cancer-papillary-vs-follicular-tnm-staging-rai-ablation#3",
+      "verdict": "Unsupported",
+      "reason": "Meta-question about interpreting a paper title without its results; no clinical content.",
+      "notes": "Meta-question about interpreting a paper title without its results; no clinical content."
+    },
+    {
+      "questionId": "paper-mcq:differentiated-thyroid-cancer-papillary-vs-follicular-tnm-staging-rai-ablation#4",
+      "verdict": "Unsupported",
+      "reason": "Meta-question about guideline-development principles; no clinical content.",
+      "notes": "Meta-question about guideline-development principles; no clinical content."
+    },
+    {
+      "questionId": "guideline-mcq:differentiated-thyroid-cancer-papillary-vs-follicular-tnm-staging-rai-ablation#0",
+      "verdict": "Unsupported",
+      "reason": "'Which guideline to refer to' item; also, ATA 2015 publishes a dedicated paediatric DTC guideline. Not clinical teaching.",
+      "notes": "'Which guideline to refer to' item; also, ATA 2015 publishes a dedicated paediatric DTC guideline. Not clinical teaching."
+    },
+    {
+      "questionId": "guideline-mcq:differentiated-thyroid-cancer-papillary-vs-follicular-tnm-staging-rai-ablation#3",
+      "verdict": "Unsupported",
+      "reason": "'Refer to the 2025 Chinese guideline' isn't a clinical answer; RAI-refractory DTC management is TKI (lenvatinib/sorafenib) or local therapy, which isn't offered",
+      "notes": "'Refer to the 2025 Chinese guideline' isn't a clinical answer; RAI-refractory DTC management is TKI (lenvatinib/sorafenib) or local therapy, which isn't offered."
+    },
+    {
+      "questionId": "cold-start-mcq:difficult-airway#0",
+      "verdict": "Ambiguous",
+      "reason": "High-flow nasal oxygen (C, THRIVE) is also designed to prolong safe apnoea time; NO-DESAT and HFNO are both apnoeic-oxygenation techniques.",
+      "notes": "High-flow nasal oxygen (C, THRIVE) is also designed to prolong safe apnoea time; NO-DESAT and HFNO are both apnoeic-oxygenation techniques."
+    },
+    {
+      "questionId": "cold-start-mcq:difficult-airway#1",
+      "verdict": "Unsupported",
+      "reason": "Product-specific backup device claim (ProVu video stylet) isn't in DAS 2020 ATI guidance, which names videolaryngoscopy as plan B.",
+      "notes": "Product-specific backup device claim (ProVu video stylet) isn't in DAS 2020 ATI guidance, which names videolaryngoscopy as plan B."
+    },
+    {
+      "questionId": "cold-start-mcq:airway-management#3",
+      "verdict": "Unsafe",
+      "reason": "Teaches tracheostomy as the initial strategy for dysphagia with aspiration in an alert stroke patient, and 'safe oral intake' after it. Tracheostomy doesn't pre",
+      "notes": "Teaches tracheostomy as the initial strategy for dysphagia with aspiration in an alert stroke patient, and 'safe oral intake' after it. Tracheostomy doesn't prevent aspiration. Standard care is nil by mouth, NG feeding, SLT assessment and reassessment (RCP stroke guideline)."
+    },
+    {
+      "questionId": "guideline-mcq:diffusing-capacity-of-the-lung-for-carbon-monoxide#1",
+      "verdict": "Ambiguous",
+      "reason": "Kco 60% and VA 65% are reduced almost equally (DLCO = Kco x VA), so neither B nor C is clearly the 'primary driver'.",
+      "notes": "Kco 60% and VA 65% are reduced almost equally (DLCO = Kco x VA), so neither B nor C is clearly the 'primary driver'."
+    },
+    {
+      "questionId": "guideline-mcq:dilated-cardiomyopathy-aetiology-workup-genetic-testing-device-therapy#1",
+      "verdict": "Unsupported",
+      "reason": "Veterinary content (Doberman DCM screening); out of scope for a human clinical question bank.",
+      "notes": "Veterinary content (Doberman DCM screening); out of scope for a human clinical question bank."
+    },
+    {
+      "questionId": "guideline-mcq:dilated-cardiomyopathy-aetiology-workup-genetic-testing-device-therapy#2",
+      "verdict": "Unsupported",
+      "reason": "Veterinary content (Doberman DCM screening); out of scope for a human clinical question bank.",
+      "notes": "Veterinary content (Doberman DCM screening); out of scope for a human clinical question bank."
+    },
+    {
+      "questionId": "guideline-mcq:diuretic-resistance-in-volume-overloaded-icu-patients#3",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: no option is cleanly correct. HRS-AKI is treated with a vasoconstrictor plus albumin (option D lacks albumin), and RRT isn't first-line. Original not",
+      "notes": "Withdrawn: no option is cleanly correct. HRS-AKI is treated with a vasoconstrictor plus albumin (option D lacks albumin), and RRT isn't first-line. Original note: HRS-AKI first-line is vasoconstrictor plus albumin (terlipressin, or noradrenaline in ICU; EASL 2018/AASLD 2021), with large-volume paracentesis plus albumin for tense ascites. RRT isn't first-line. Option D lacks albumin, so no option is cleanly correct. Withdraw."
+    },
+    {
+      "questionId": "guideline-mcq:diverticulitis-classifications-hinchey-and-surgical-indications#0",
+      "verdict": "Ambiguous",
+      "reason": "A 3 cm abscess sits at the threshold: WSES 2020 suggests antibiotics alone for small abscesses (<4-5 cm) and drainage for larger ones, so B is defensible.",
+      "notes": "A 3 cm abscess sits at the threshold: WSES 2020 suggests antibiotics alone for small abscesses (<4-5 cm) and drainage for larger ones, so B is defensible."
+    }
+  ],
+  "corrections": [
+    {
+      "questionId": "guideline-mcq:craniopharyngioma-suprasellar-location-hypothalamic-obesity-visual-field-defects#0",
+      "verdict": "Wrong answer",
+      "notes": "A visual field defect means the craniopharyngioma is symptomatic with chiasmal compromise; surgical management is indicated. Observation is only for asymptomatic lesions.",
+      "suggestedAnswer": "A",
+      "source": "Endocrine Society/Pituitary Society craniopharyngioma guidance; European Society of Endocrinology craniopharyngioma consensus (2024)",
+      "stemFix": null,
+      "newExplanation": "A bitemporal visual field defect shows that the lesion is already compressing the optic chiasm, so it is symptomatic even if the patient has not noticed it. Surgical resection, aiming for safe maximal removal and decompression of the chiasm, is indicated, with radiotherapy for any residual tumour. Observation is reserved for small, truly asymptomatic lesions with no visual or endocrine compromise. Source: Endocrine Society/Pituitary Society craniopharyngioma guidance; European Society of Endocrinology craniopharyngioma consensus (2024)"
+    },
+    {
+      "questionId": "guideline-mcq:craniopharyngioma-suprasellar-location-hypothalamic-obesity-visual-field-defects#1",
+      "verdict": "Wrong answer",
+      "notes": "Stereotactic biopsy is not a routine step; histology comes from surgical resection. The crucial pre-treatment step is full endocrine assessment (cortisol, thyroid, DI), as untreated adrenal insufficiency is dangerous perioperatively.",
+      "suggestedAnswer": "A",
+      "source": "European Society of Endocrinology craniopharyngioma consensus (2024); Endocrine Society/Pituitary Society guidance",
+      "stemFix": null,
+      "newExplanation": "Before definitive treatment of a suspected craniopharyngioma, a full pituitary hormone assessment is essential, including cortisol, thyroid function, growth hormone axis, gonadotrophins and assessment for diabetes insipidus. Untreated adrenal insufficiency or hypothyroidism is dangerous around surgery and must be corrected first. Histology is normally obtained at surgical resection; stereotactic biopsy is not a routine step. Source: European Society of Endocrinology craniopharyngioma consensus (2024); Endocrine Society/Pituitary Society guidance"
+    },
+    {
+      "questionId": "guideline-mcq:tnf-receptor-associated-periodic-syndrome#0",
+      "verdict": "Outdated",
+      "notes": "EULAR/ACR 2021 SAID recommendations favour IL-1 blockade (anakinra/canakinumab; CLUSTER) for TRAPS maintenance; etanercept is a second-line alternative. Keyed TNF inhibitor first-line is superseded.",
+      "suggestedAnswer": "D",
+      "source": "EULAR/ACR 2021 points to consider for IL-1-mediated autoinflammatory diseases (Romano et al, Ann Rheum Dis 2022); CLUSTER trial (De Benedetti et al, NEJM 2018)",
+      "stemFix": null,
+      "newExplanation": "For TRAPS with frequent or severe attacks, current EULAR/ACR recommendations favour IL-1 blockade (anakinra or canakinumab) as the targeted treatment of choice; canakinumab is licensed for TRAPS after the CLUSTER trial. Short courses of glucocorticoids can treat individual flares. Etanercept is a second-line alternative, and monoclonal anti-TNF antibodies such as infliximab and adalimumab can paradoxically worsen TRAPS. Source: EULAR/ACR 2021 points to consider for IL-1-mediated autoinflammatory diseases (Romano et al, Ann Rheum Dis 2022); CLUSTER trial (De Benedetti et al, NEJM 2018)"
+    },
+    {
+      "questionId": "guideline-mcq:cryptococcal-meningitis-india-ink-cryptococcal-antigen-amphotericin-b-flucytosine-fluconazole#1",
+      "verdict": "Wrong answer",
+      "notes": "For HIV-negative, non-transplant patients (e.g. haematological malignancy), IDSA 2010 recommends amphotericin B plus flucytosine induction for at least 4 weeks, not 2.",
+      "suggestedAnswer": "C",
+      "source": "IDSA Clinical Practice Guidelines for the Management of Cryptococcal Disease (Perfect et al, 2010)",
+      "stemFix": null,
+      "newExplanation": "For HIV-negative patients who are not transplant recipients, including those with haematological malignancy, IDSA recommends induction with amphotericin B plus flucytosine for at least 4 weeks (extended to 6 weeks with neurological complications), followed by fluconazole consolidation for 8 weeks. The 2-week induction applies to people with HIV and transplant recipients. Source: IDSA Clinical Practice Guidelines for the Management of Cryptococcal Disease (Perfect et al, 2010)"
+    },
+    {
+      "questionId": "guideline-mcq:cryptococcal-meningitis-induction-therapy#1",
+      "verdict": "Wrong answer",
+      "notes": "HIV-negative, non-transplant host (on prednisone): IDSA 2010 induction is at least 4 weeks of amphotericin B plus flucytosine.",
+      "suggestedAnswer": "C",
+      "source": "IDSA Clinical Practice Guidelines for the Management of Cryptococcal Disease (Perfect et al, 2010)",
+      "stemFix": null,
+      "newExplanation": "In HIV-negative, non-transplant hosts, such as a patient on long-term prednisone, IDSA recommends at least 4 weeks of induction with amphotericin B plus flucytosine (6 weeks if there are neurological complications), then fluconazole consolidation for 8 weeks. The shorter 2-week induction is used in people with HIV and in transplant recipients. Source: IDSA Clinical Practice Guidelines for the Management of Cryptococcal Disease (Perfect et al, 2010)"
+    },
+    {
+      "questionId": "paper-mcq:cryptococcal-meningitis-india-ink-cryptococcal-antigen-amphotericin-b-flucytosine-fluconazole#3",
+      "verdict": "Outdated",
+      "notes": "Built on 2000 guidance. IDSA 2010 for HIV-negative non-transplant hosts: AmB plus flucytosine for at least 4 weeks (6 if neurological complications), then fluconazole consolidation for 8 weeks.",
+      "suggestedAnswer": "B",
+      "source": "IDSA Clinical Practice Guidelines for the Management of Cryptococcal Disease (Perfect et al, 2010)",
+      "stemFix": "A 62-year-old immunocompetent male is diagnosed with cryptococcal meningitis after presenting with chronic headache and confusion. CSF India ink stain was positive, and cryptococcal antigen was detected. According to current IDSA guidance, what is the recommended induction and consolidation therapy for this patient?",
+      "newExplanation": "For cryptococcal meningitis in HIV-negative, non-transplant (including immunocompetent) hosts, IDSA recommends induction with amphotericin B plus flucytosine for at least 4 weeks, extended to 6 weeks if there are neurological complications. This is followed by fluconazole 400-800 mg daily for 8 weeks as consolidation, then 200 mg daily for 6-12 months. Lifelong maintenance is not needed in immunocompetent patients. Source: IDSA Clinical Practice Guidelines for the Management of Cryptococcal Disease (Perfect et al, 2010)",
+      "optionEdits": [
+        {
+          "letter": "B",
+          "after": "Amphotericin B plus flucytosine for at least 4 weeks, followed by fluconazole consolidation for 8 weeks."
+        }
+      ]
+    },
+    {
+      "questionId": "guideline-mcq:dexamethasone-covid-19-hospitalized-mechanical-ventilation-mortality#1",
+      "verdict": "Wrong answer",
+      "notes": "RECOVERY and ERS/WHO guidance recommend dexamethasone for hospitalised patients requiring any supplemental oxygen, not only high-flow/ventilated patients. SpO2 92% on 6 L warrants dexamethasone.",
+      "suggestedAnswer": "A",
+      "source": "RECOVERY trial (Horby et al, NEJM 2021); WHO Therapeutics and COVID-19 living guideline; ERS living guideline",
+      "stemFix": null,
+      "newExplanation": "Dexamethasone 6 mg daily for up to 10 days reduces mortality in hospitalised COVID-19 patients who need supplemental oxygen, whether by nasal cannula, high-flow oxygen or mechanical ventilation (RECOVERY). This patient needs 6 L/min of oxygen, so dexamethasone should start now. Steroids are not recommended for patients who do not need oxygen. Source: RECOVERY trial (Horby et al, NEJM 2021); WHO Therapeutics and COVID-19 living guideline; ERS living guideline"
+    },
+    {
+      "questionId": "cold-start-mcq:skin-and-soft-tissue-infection-antibiotic-strategy#1",
+      "verdict": "Wrong answer",
+      "notes": "Afebrile, no systemic signs: moderate DFI at most. Oral co-amoxiclav is the NICE NG19 first choice for moderate DFI; pip-tazo is for severe infection. The explanation also wrongly says pip-tazo covers MRSA.",
+      "suggestedAnswer": "A",
+      "source": "NICE NG19 diabetic foot infection antimicrobial prescribing; IDSA diabetic foot infection guideline 2012",
+      "stemFix": null,
+      "newExplanation": "An afebrile patient with local purulence and erythema but no systemic signs has a mild-to-moderate diabetic foot infection, which can usually be treated orally. NICE suggests co-amoxiclav for moderate infection. Intravenous piperacillin-tazobactam is reserved for severe infection with systemic toxicity or failure of oral therapy, and it does not cover MRSA. Source: NICE NG19 diabetic foot infection antimicrobial prescribing; IDSA diabetic foot infection guideline 2012"
+    },
+    {
+      "questionId": "cold-start-mcq:thyroid-disease#0",
+      "verdict": "Outdated",
+      "notes": "Routine 'total thyroidectomy plus RAI' for all PTC is outdated. ATA 2015/NICE NG230 offer hemithyroidectomy or total thyroidectomy depending on size/risk, with RAI guided by risk stratification. Update option A.",
+      "suggestedAnswer": "A",
+      "source": "2015 ATA Management Guidelines for Thyroid Nodules and Differentiated Thyroid Cancer; NICE NG230 Thyroid cancer (2022)",
+      "stemFix": null,
+      "newExplanation": "Surgery is the primary treatment for papillary thyroid carcinoma. For low-risk tumours of 1-4 cm without nodal or extrathyroidal spread, either hemithyroidectomy or total thyroidectomy is acceptable; larger or higher-risk tumours need total thyroidectomy. Radioactive iodine is no longer routine for every patient: it is guided by postoperative risk (generally for high-risk disease, selectively for intermediate risk). Levothyroxine suppression alone, observation of a confirmed cancer and primary external beam radiotherapy are not appropriate. Source: 2015 ATA Management Guidelines for Thyroid Nodules and Differentiated Thyroid Cancer; NICE NG230 Thyroid cancer (2022)",
+      "optionEdits": [
+        {
+          "letter": "A",
+          "after": "Thyroid surgery (hemithyroidectomy or total thyroidectomy depending on tumour size and risk features), with radioactive iodine decided by postoperative risk stratification"
+        }
+      ]
+    },
+    {
+      "questionId": "guideline-mcq:disseminated-intravascular-coagulation#0",
+      "verdict": "Wrong answer",
+      "notes": "Patient is actively bleeding with platelets 45 and low fibrinogen. BCSH 2009 advises FFP, cryoprecipitate/fibrinogen and platelets in bleeding DIC while the underlying cause is addressed. Treating metastatic cancer isn't an initial ED step.",
+      "suggestedAnswer": "A",
+      "source": "BCSH guidelines for the diagnosis and management of DIC (Levi et al, Br J Haematol 2009); ISTH harmonised DIC guidance 2013",
+      "stemFix": null,
+      "newExplanation": "Treating the underlying cause is the cornerstone of DIC management, but a patient who is actively bleeding needs blood-component support straight away. BCSH advises fresh frozen plasma for bleeding with prolonged PT/APTT, cryoprecipitate or fibrinogen concentrate when fibrinogen is low, and platelet transfusion if platelets are below 50 x 10^9/L. Heparin is for thrombosis-predominant DIC, not active bleeding. Source: BCSH guidelines for the diagnosis and management of DIC (Levi et al, Br J Haematol 2009); ISTH harmonised DIC guidance 2013"
+    }
+  ]
+}
