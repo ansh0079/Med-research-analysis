@@ -129,7 +129,7 @@ function registerQuizRoutes(app, {
             const withdrawn = await loadWithdrawnOverrides(db);
 
             const rows = await db.all(
-                `SELECT topic, object_type, object_payload FROM teaching_objects
+                `SELECT object_key, topic, object_type, object_payload FROM teaching_objects
                  WHERE object_type IN ('cold_start_mcq', 'guideline_mcq', 'paper_mcq')
                    AND review_state != 'withdrawn'
                  ORDER BY RANDOM()`
@@ -147,8 +147,11 @@ function registerQuizRoutes(app, {
                 let payload;
                 try { payload = JSON.parse(row.object_payload || '{}'); } catch { continue; }
                 const mcqs = payload.mcqs || [];
-                for (const q of mcqs) {
+                for (let i = 0; i < mcqs.length; i++) {
+                    const q = mcqs[i];
                     if (!q.question || !q.options || !q.correctAnswer) continue;
+                    // Object-index based block list
+                    if (withdrawn.byObjectIndex.has(`${row.object_key}#${i}`)) continue;
                     // Per-question withdrawals applied by the review workflow: filter even when the index is off.
                     try {
                         const h = questionIndex.questionHash(q);

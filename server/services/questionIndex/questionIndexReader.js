@@ -105,6 +105,8 @@ async function loadAlignedForCluster(db, clusterId, { limit = 60 } = {}) {
             for (const r of wanted) {
                 const q = mcqs[r.question_index];
                 if (q?.question && questionHash(q)) {
+                    // Object-index based block list (survives hash changes)
+                    if (withdrawn.byObjectIndex.has(`${objectKey}#${r.question_index}`)) continue;
                     // Hide per-question withdrawals applied by the review workflow.
                     try {
                         const h = questionHash(q);

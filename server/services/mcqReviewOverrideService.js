@@ -3,25 +3,29 @@
 const { questionHash } = require('./questionIndex/questionIndexService');
 
 /**
- * Load the set of withdrawn question hashes and ids for fast filtering.
- * Returns { byHash: Set<string>, byId: Set<string> }.
+ * Load the set of withdrawn overrides for fast filtering.
+ * Returns { byHash: Set<string>, byId: Set<string>, byObjectIndex: Set<'object_key#index'> }.
  */
 async function loadWithdrawnOverrides(db) {
     try {
         const rows = await db.all(
-            `SELECT question_id, question_hash
+            `SELECT question_id, question_hash, object_key, question_index
              FROM mcq_review_overrides
              WHERE action = 'withdraw'`
         );
         const byHash = new Set();
         const byId = new Set();
+        const byObjectIndex = new Set();
         for (const r of rows || []) {
             if (r?.question_hash) byHash.add(String(r.question_hash));
             if (r?.question_id) byId.add(String(r.question_id));
+            if (r?.object_key != null && Number.isInteger(r?.question_index)) {
+                byObjectIndex.add(`${r.object_key}#${r.question_index}`);
+            }
         }
-        return { byHash, byId };
+        return { byHash, byId, byObjectIndex };
     } catch {
-        return { byHash: new Set(), byId: new Set() };
+        return { byHash: new Set(), byId: new Set(), byObjectIndex: new Set() };
     }
 }
 

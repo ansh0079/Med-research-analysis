@@ -87,10 +87,16 @@ function sanitizeExplanation(notes, source) {
     return text.slice(0, 700); // keep concise
 }
 
+function coerceLetter(value) {
+    const v = String(value || '').trim();
+    if (/^[A-E]$/i.test(v)) return v.toUpperCase();
+    return null;
+}
+
 function ensureOptionContainsCorrectAnswer(options, suggestedAnswer) {
     const letters = ['A', 'B', 'C', 'D', 'E'];
     const opts = Array.isArray(options) ? options.slice() : [];
-    const letter = /^[A-E]$/i.test(String(suggestedAnswer || '')) ? String(suggestedAnswer).toUpperCase() : null;
+    const letter = coerceLetter(suggestedAnswer);
     if (letter && letters.includes(letter)) {
         // Ensure "L: ..." exists and keep other options intact.
         const idx = letters.indexOf(letter);
@@ -153,7 +159,7 @@ async function applyWithdraw(objectKey, index, questionId, verdict, reason, note
     return { matched: true, details: 'ok' };
 }
 
-async function applyCorrection(objectKey, index, questionId, verdict, notes, suggestedAnswer, source, stemFix, { apply }) {
+async function applyCorrection(objectKey, index, questionId, verdict, notes, suggestedAnswer, source, stemFix, { apply, newExplanation = null, optionReplacement = null }) {
     const found = await findTeachingObjectForId(objectKey, index);
     if (!found) return { matched: false, details: 'object_not_found' };
     const mcqs = Array.isArray(found.payload?.mcqs) ? found.payload.mcqs : [];
@@ -162,18 +168,29 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
     if (!before?.question) return { matched: false, details: 'question_missing' };
 
     // New explanation
-    const newExplanation = sanitizeExplanation(notes, source);
+    const computedExplanation = newExplanation && String(newExplanation).trim()
+        ? String(newExplanation).trim().slice(0, 700)
+        : sanitizeExplanation(notes, source);
     // Ensure options carry the suggested answer; coerce non-letter to a letter slot when needed.
-    const { options: fixedOptions, changed: optionsChanged, note: optionChangeNote, coercedLetter } =
-        ensureOptionContainsCorrectAnswer(before.options, suggestedAnswer);
-    const correctLetter = (/^[A-E]$/i.test(String(suggestedAnswer || '')) ? String(suggestedAnswer).toUpperCase() : (coercedLetter || before.correctAnswer || 'A'));
+    let fixed = ensureOptionContainsCorrectAnswer(before.options, suggestedAnswer);
+    // If input specifies an explicit option replacement, prefer that.
+    if (optionReplacement && coerceLetter(optionReplacement.letter) && String(optionReplacement.text || '').trim()) {
+        const L = coerceLetter(optionReplacement.letter);
+        const letters = ['A', 'B', 'C', 'D', 'E'];
+        const opts = Array.isArray(before.options) ? before.options.slice() : [];
+        while (opts.length < 5) opts.push(`${letters[opts.length]}: `);
+        const idx = letters.indexOf(L);
+        opts[idx] = `${L}: ${String(optionReplacement.text).trim()}`;
+        fixed = { options: opts, changed: true, note: `Replaced option ${L} to add suggested answer text`, coercedLetter: L };
+    }
+    const correctLetter = coerceLetter(suggestedAnswer) || fixed.coercedLetter || before.correctAnswer || 'A';
 
     const after = {
         ...before,
         question: stemFix && String(stemFix || '').trim() ? String(stemFix).trim() : before.question,
-        options: fixedOptions,
+        options: fixed.options,
         correctAnswer: correctLetter,
-        explanation: newExplanation || before.explanation || '',
+        explanation: computedExplanation || before.explanation || '',
     };
 
     const qhash = questionHash(before);
@@ -203,7 +220,7 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
             [
                 questionId, found.objectKey, index,
                 verdict || null, (notes || optionChangeNote) || null, null,
-                correctLetter, newExplanation,
+                correctLetter, computedExplanation,
                 JSON.stringify(before), JSON.stringify(after),
                 newQhash, new Date().toISOString(), 'workflow:apply-mcq-review',
             ]

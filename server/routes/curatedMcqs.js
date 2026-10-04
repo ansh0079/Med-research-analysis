@@ -7,6 +7,8 @@ const { canonicalQuestionType } = require('../utils/questionType');
 const { expandNormalizedTopicKeys } = require('../utils/topicSynonyms');
 const { isIssuingBodyValue } = require('../utils/guidelineAttribution');
 const { normalizeTopic } = require('../utils/topicKey');
+const { loadWithdrawnOverrides } = require('../services/mcqReviewOverrideService');
+const { questionHash } = require('../services/questionIndex/questionIndexService');
 
 /**
  * Curated MCQs API:
@@ -55,6 +57,7 @@ function registerCuratedMcqRoutes(app, deps) {
     try {
       const raw = String(req.params.topic || '').trim();
       if (!raw) return res.status(400).json({ error: 'topic is required' });
+      const withdrawn = await loadWithdrawnOverrides(db);
 
       // Try exact curated key first
       const objectKey = raw.startsWith('curated-mcq:') ? raw : `curated-mcq:${raw.toLowerCase()}`;
@@ -101,7 +104,16 @@ function registerCuratedMcqRoutes(app, deps) {
       // Transform to API shape expected by quiz components
       const letters = ['A', 'B', 'C', 'D', 'E'];
       const questions = (Array.isArray(payload.mcqs) ? payload.mcqs : [])
-        .filter((q) => q && q.question && q.correctAnswer && Array.isArray(q.options))
+        .filter((q, i) => {
+          if (!q || !q.question || !q.correctAnswer || !Array.isArray(q.options)) return false;
+          // Filter per-question withdrawals by object index and by hash
+          if (withdrawn.byObjectIndex.has(`${row.object_key}#${i}`)) return false;
+          try {
+            const h = questionHash(q);
+            if (withdrawn.byHash.has(h)) return false;
+          } catch { /* ignore */ }
+          return true;
+        })
         .map((q, i) => ({
           id: q.id || `curated_${row.object_key}_${i}`,
           type: 'multiple_choice',
