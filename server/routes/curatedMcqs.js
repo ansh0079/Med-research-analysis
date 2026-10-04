@@ -2,6 +2,8 @@
 
 // Curated MCQs routes — read-only listing and per-topic retrieval
 
+const { loadAuditHolds } = require('../services/questionAudit/questionAuditService');
+const { questionHash } = require('../services/questionIndex/questionIndexService');
 const { attachQuizGradingTokens } = require('../services/quizGradingToken');
 const { canonicalQuestionType } = require('../utils/questionType');
 const { expandNormalizedTopicKeys } = require('../utils/topicSynonyms');
@@ -100,8 +102,12 @@ function registerCuratedMcqRoutes(app, deps) {
 
       // Transform to API shape expected by quiz components
       const letters = ['A', 'B', 'C', 'D', 'E'];
-      const questions = (Array.isArray(payload.mcqs) ? payload.mcqs : [])
+      // Clinical audit: hold out questions both AI reviewers flagged as serious, or a clinician retired.
+      const stored = (Array.isArray(payload.mcqs) ? payload.mcqs : []);
+      const held = await loadAuditHolds(db, stored.map((q) => questionHash(q || {})));
+      const questions = stored
         .filter((q) => q && q.question && q.correctAnswer && Array.isArray(q.options))
+        .filter((q) => !held.has(questionHash(q)))
         .map((q, i) => ({
           id: q.id || `curated_${row.object_key}_${i}`,
           type: 'multiple_choice',
