@@ -837,7 +837,7 @@
    "reviewFlags": [
     "4 options (importer currently requires 5)"
    ],
-   "decision": "retire",
+  "decision": "retired",
    "reasons": [
     "retire candidate: research-methodology item about an unnamed study; not answerable without the paper"
    ],
@@ -913,7 +913,7 @@
     "4 options (importer currently requires 5)",
     "explanation refers to \"Paper N\"/provided text (learner will see this)"
    ],
-   "decision": "retire",
+  "decision": "retired",
    "reasons": [
     "retire candidate: laboratory research-method item (rabbit colon impedance probe); not clinical"
    ],
@@ -992,7 +992,7 @@
     "4 options (importer currently requires 5)",
     "explanation refers to \"Paper N\"/provided text (learner will see this)"
    ],
-   "decision": "retire",
+  "decision": "retired",
    "reasons": [
     "retire candidate: research-methodology item referring to \"Paper 1\"",
     "context-dependent stem"
@@ -1032,7 +1032,7 @@
     "4 options (importer currently requires 5)",
     "explanation refers to \"Paper N\"/provided text (learner will see this)"
    ],
-   "decision": "retire",
+  "decision": "retired",
    "reasons": [
     "retire candidate: research-methodology item referring to \"Paper 2\"",
     "context-dependent stem"
