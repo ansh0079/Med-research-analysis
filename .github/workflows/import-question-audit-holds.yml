@@ -1,0 +1,28 @@
+name: Import Question Audit Holds
+
+on:
+  workflow_dispatch:
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: medsearch-production-deploy
+      cancel-in-progress: false
+    steps:
+      - name: Import and verify production holds
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 8m
+          script: |
+            set -e
+            cd /opt/medsearch
+            echo "Deployed commit: $(git rev-parse HEAD)"
+            docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T \
+              -e USE_POSTGRES_MAIN=true web node server/scripts/importQuestionAuditHolds.js
+            docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
+              "SELECT status, COUNT(*) FROM question_audit GROUP BY status ORDER BY status;"
