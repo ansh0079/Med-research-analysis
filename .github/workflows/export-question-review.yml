@@ -1,0 +1,63 @@
+name: Export Question Review Workbook Data
+
+on:
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Export production review CSV files
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 178.105.155.246
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          script: |
+            set -e
+            rm -rf /tmp/signal-md-question-review
+            mkdir -p /tmp/signal-md-question-review
+            docker exec medsearch-pg psql -U medsearch -d medsearch -c "\copy (
+              SELECT q.object_key, q.question_index,
+                COALESCE(t.object_payload::jsonb->'mcqs'->q.question_index->>'question','') AS question,
+                q.original_topic, q.assigned_topic_name, q.topic_similarity,
+                q.guideline_support, q.paper_support, q.reasons, q.review_state
+              FROM question_topic_index q JOIN teaching_objects t ON t.object_key=q.object_key
+              WHERE q.category='unclear' AND q.evidence_support='none'
+              ORDER BY q.topic_similarity DESC, q.object_key, q.question_index
+            ) TO STDOUT WITH CSV HEADER" > /tmp/signal-md-question-review/unsupported.csv
+            docker exec medsearch-pg psql -U medsearch -d medsearch -c "\copy (
+              SELECT q.object_key, q.question_index,
+                COALESCE(t.object_payload::jsonb->'mcqs'->q.question_index->>'question','') AS question,
+                q.original_topic, q.assigned_topic_name, q.topic_similarity, q.reasons, q.review_state
+              FROM question_topic_index q JOIN teaching_objects t ON t.object_key=q.object_key
+              WHERE q.category='unassignable'
+              ORDER BY q.object_key, q.question_index
+            ) TO STDOUT WITH CSV HEADER" > /tmp/signal-md-question-review/unassignable.csv
+            docker exec medsearch-pg psql -U medsearch -d medsearch -c "\copy (
+              SELECT c.cluster_id AS canonical_topic_id, ct.display_name AS canonical_topic,
+                COUNT(DISTINCT c.curriculum_topic_id) AS topic_names_in_cluster,
+                COUNT(q.object_key) FILTER (WHERE q.category='unclear') AS unclear_questions,
+                COUNT(q.object_key) FILTER (WHERE q.category='unassignable') AS unassignable_questions
+              FROM topic_cluster_index c
+              JOIN curriculum_topics ct ON CAST(ct.id AS TEXT)=c.cluster_id
+              LEFT JOIN question_topic_index q ON q.assigned_cluster_id=c.cluster_id
+              GROUP BY c.cluster_id, ct.display_name
+              HAVING COUNT(q.object_key) FILTER (WHERE q.category='aligned')=0
+              ORDER BY ct.display_name
+            ) TO STDOUT WITH CSV HEADER" > /tmp/signal-md-question-review/clusters_without_aligned.csv
+      - name: Download exports
+        env:
+          SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s' "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H 178.105.155.246 >> ~/.ssh/known_hosts
+          scp -r root@178.105.155.246:/tmp/signal-md-question-review ./question-review-data
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signal-md-question-review-data
+          path: question-review-data/*.csv
+          retention-days: 7
