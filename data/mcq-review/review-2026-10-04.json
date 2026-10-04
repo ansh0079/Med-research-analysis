@@ -1,0 +1,21 @@
+{
+  "withdrawals": [
+    {
+      "questionId": "guideline-mcq:example-topic#0",
+      "verdict": "Unsupported",
+      "reason": "Example placeholder; replace with real ID from review",
+      "notes": "This is a placeholder entry to document expected shape."
+    }
+  ],
+  "corrections": [
+    {
+      "questionId": "paper-mcq:example-topic#1",
+      "verdict": "Wrong answer",
+      "notes": "Replace with reviewer notes",
+      "suggestedAnswer": "B",
+      "source": "Replace with current source text or URL",
+      "stemFix": null
+    }
+  ]
+}
+

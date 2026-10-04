@@ -11,6 +11,7 @@
 // empty or unreadable, so serving can never fail because of it.
 
 const { questionHash } = require('./questionIndexService');
+const { loadWithdrawnOverrides } = require('../mcqReviewOverrideService');
 
 const CHUNK = 400;
 
@@ -82,6 +83,7 @@ function belongsHere(assignment, clusterId) {
 async function loadAlignedForCluster(db, clusterId, { limit = 60 } = {}) {
     if (!clusterId) return [];
     try {
+        const withdrawn = await loadWithdrawnOverrides(db);
         const rows = await db.all(
             `SELECT * FROM question_topic_index
              WHERE assigned_cluster_id = ? AND category = 'aligned' LIMIT ?`,
@@ -103,6 +105,11 @@ async function loadAlignedForCluster(db, clusterId, { limit = 60 } = {}) {
             for (const r of wanted) {
                 const q = mcqs[r.question_index];
                 if (q?.question && questionHash(q)) {
+                    // Hide per-question withdrawals applied by the review workflow.
+                    try {
+                        const h = questionHash(q);
+                        if (withdrawn.byHash.has(h)) continue;
+                    } catch { /* ignore */ }
                     // Do not present a paper-only match as guideline-derived merely because the old batch was named guideline_mcq.
                     const objectType = r.evidence_support === 'paper' ? 'paper_mcq' : r.object_type;
                     out.push({ question: q, objectType, objectKey });
