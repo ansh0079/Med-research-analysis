@@ -3,8 +3,6 @@
 Source: 455 owner MCQs with topic + citation. Review spreadsheet: Evidence_MCQs_Review.xlsx (shared separately).
 
 - `data/curated-topic-mcqs/batch-08.json`: 245 MCQs, 78 curriculum topics, citation resolved (146 questions) or inferred (99) to PubMed / official guideline pages. Loaded by the existing manual "Import Curated Topic MCQs" workflow.
-- `data/curated-topic-mcqs-pending/batch-09.json`: 168 MCQs with unresolved citations (not loaded).
-- `held-back.json`: 42 items not for import (4 retire, 38 hold) with reasons: answer key conflicts with the cited source, context-dependent stems ("Paper 2"), stem gives the answer, no matching topic (OCD x9, insomnia x3 - new topics proposed).
 - `literature-additions.json`: 84 resolved sources (63 topics) not found in the public guideline/document export, in the `data/curated-literature-corpus.json` topic/documents format used by `scripts/ingest-curated-literature.js`. Not wired in: merge into the corpus file and run `npm run ingest:curated-literature` on the server if wanted.
 
 Answer letters were re-shuffled (deterministically) where safe because the source keys were 95% A-C; `originalCorrectAnswer` keeps the supplied letter.
