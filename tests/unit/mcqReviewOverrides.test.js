@@ -8,7 +8,7 @@ const reader = require('../../server/services/questionIndex/questionIndexReader'
 function makeDb() {
     const sqlite = new Sqlite(':memory:');
     sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/109_question_topic_index.sql'), 'utf8'));
-    sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/111_mcq_review_overrides.sql'), 'utf8'));
+    sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/112_mcq_review_overrides.sql'), 'utf8'));
     sqlite.exec('CREATE TABLE teaching_objects (object_key TEXT PRIMARY KEY, object_type TEXT, review_state TEXT, object_payload TEXT)');
     return {
         sqlite,

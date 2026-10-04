@@ -96,7 +96,8 @@ function main() {
         corrRows.push({
             id: c.questionId,
             change: `${row.old || ''} → ${c.suggestedAnswer}`,
-            reason: oneLine(row.notes || c.notes || '').slice(0, 140),
+            reason: oneLine(c.newExplanation || row.notes || c.notes || '').slice(0, 160),
+            edit: (Array.isArray(c.optionEdits) && c.optionEdits.length) ? `${c.optionEdits.map(e => `${e.letter}: ${e.after}`).join(' | ')}` : (c.optionReplacement ? `${c.optionReplacement.letter}: ${c.optionReplacement.text}` : ''),
         });
     }
     const wdRows = [];
@@ -105,17 +106,21 @@ function main() {
     }
 
     const corrMd = [
-        '| ID | Old → New | Reason |',
-        '|---|---|---|',
-        ...corrRows.map((r) => `| ${r.id} | ${r.change} | ${r.reason} |`),
+        `### Corrections (${(json.corrections || []).length})`,
+        '',
+        '| ID | Old → New | Edited option text | New explanation |',
+        '|---|---|---|---|',
+        ...corrRows.map((r) => `| ${r.id} | ${r.change} | ${r.edit || ''} | ${r.reason} |`),
     ].join('\n');
     const wdMd = [
+        `### Withdrawals (${(json.withdrawals || []).length})`,
+        '',
         '| ID | Verdict |',
         '|---|---|',
         ...wdRows.map((r) => `| ${r.id} | ${r.verdict} |`),
     ].join('\n');
 
-    const md = `### Corrections (17)\n\n${corrMd}\n\n### Withdrawals (65)\n\n${wdMd}\n`;
+    const md = `${corrMd}\n\n${wdMd}\n`;
     fs.mkdirSync(path.dirname(outPath), { recursive: true });
     fs.writeFileSync(outPath, md);
     console.log(`Wrote ${outPath}`);

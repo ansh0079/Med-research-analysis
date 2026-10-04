@@ -159,7 +159,7 @@ async function applyWithdraw(objectKey, index, questionId, verdict, reason, note
     return { matched: true, details: 'ok' };
 }
 
-async function applyCorrection(objectKey, index, questionId, verdict, notes, suggestedAnswer, source, stemFix, { apply, newExplanation = null, optionReplacement = null }) {
+async function applyCorrection(objectKey, index, questionId, verdict, notes, suggestedAnswer, source, stemFix, { apply, newExplanation = null, optionReplacement = null, optionEdits = [] }) {
     const found = await findTeachingObjectForId(objectKey, index);
     if (!found) return { matched: false, details: 'object_not_found' };
     const mcqs = Array.isArray(found.payload?.mcqs) ? found.payload.mcqs : [];
@@ -172,7 +172,20 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
         ? String(newExplanation).trim().slice(0, 700)
         : sanitizeExplanation(notes, source);
     // Ensure options carry the suggested answer; coerce non-letter to a letter slot when needed.
-    let fixed = ensureOptionContainsCorrectAnswer(before.options, suggestedAnswer);
+    // Apply explicit option edits first, then ensure the suggested answer exists.
+    const letters = ['A', 'B', 'C', 'D', 'E'];
+    let workingOptions = Array.isArray(before.options) ? before.options.slice() : [];
+    if (Array.isArray(optionEdits) && optionEdits.length) {
+        for (const edit of optionEdits) {
+            const L = coerceLetter(edit?.letter);
+            const text = String(edit?.after || '').trim();
+            if (!L || !text) continue;
+            while (workingOptions.length < 5) workingOptions.push(`${letters[workingOptions.length]}: `);
+            const idx = letters.indexOf(L);
+            workingOptions[idx] = `${L}: ${text}`;
+        }
+    }
+    let fixed = ensureOptionContainsCorrectAnswer(workingOptions, suggestedAnswer);
     // If input specifies an explicit option replacement, prefer that.
     if (optionReplacement && coerceLetter(optionReplacement.letter) && String(optionReplacement.text || '').trim()) {
         const L = coerceLetter(optionReplacement.letter);

@@ -389,181 +389,162 @@
       "verdict": "Unsupported",
       "reason": "The \"4 weeks\" rationale is borrowed from a NICE IBS probiotic recommendation; no CGM evidence is cited. Not supported.",
       "notes": "The \"4 weeks\" rationale is borrowed from a NICE IBS probiotic recommendation; no CGM evidence is cited. Not supported."
+    },
+    {
+      "questionId": "cold-start-mcq:secondary-stroke-prevention-antiplatelet-anticoagulation#3",
+      "verdict": "Wrong answer – false premise",
+      "reason": "False premise: POINT used clopidogrel + aspirin for 90 days (ticagrelor + aspirin for 30 days was THALES).",
+      "notes": "False premise: POINT used clopidogrel + aspirin for 90 days (ticagrelor + aspirin for 30 days was THALES)."
     }
   ],
   "corrections": [
     {
       "questionId": "guideline-mcq:tissue-plasminogen-activator-acute-ischemic-stroke#1",
       "verdict": "Wrong answer",
-      "notes": "Glucose >400 mg/dL (22 mmol/L) is a label contraindication; AHA/ASA 2019 says thrombolysis may be reasonable only once glucose is normalised. Key B (\"not a contraindication\") is wrong; correct glucose first then treat (closest C).",
+      "notes": "Glucose >400 mg/dL (22 mmol/L) is a label contraindication; AHA/ASA 2019 says thrombolysis may be reasonable only once glucose is normalised.",
       "suggestedAnswer": "C",
       "source": "AHA/ASA 2019 acute ischaemic stroke guideline (PMID 31662037); alteplase SmPC",
       "stemFix": null,
-      "newExplanation": "Glucose >400 mg/dL (22 mmol/L) is a label contraindication; AHA/ASA 2019 says thrombolysis may be reasonable only once glucose is normalised. Key B (\"not a contraindication\") is wrong; correct glucose first then treat (closest C). Source: AHA/ASA 2019 acute ischaemic stroke guideline (PMID 31662037); alteplase SmPC"
+      "newExplanation": "Severe hyperglycaemia (>400 mg/dL) is a contraindication to alteplase. Thrombolysis may be considered once glucose has been corrected. Source: AHA/ASA 2019 acute ischaemic stroke guideline (PMID 31662037); alteplase SmPC"
     },
     {
       "questionId": "guideline-mcq:adrenal-incidentaloma#2",
       "verdict": "Wrong answer",
-      "notes": "ESE 2023 advises NO further imaging or hormonal follow-up for a benign (<10 HU) non-functioning lesion (regardless of size), so omitting follow-up (C) is not a pitfall. The genuine pitfall is D (resection on duration alone). \"NICE 2025\" incidentaloma guidance could not be verified.",
+      "notes": "ESE 2023 advises NO further imaging or hormonal follow-up for a benign (<10 HU) non-functioning lesion (regardless of size).",
       "suggestedAnswer": "D",
       "source": "ESE/ENSAT 2023 (PMID 37318239)",
       "stemFix": null,
-      "newExplanation": "ESE 2023 advises NO further imaging or hormonal follow-up for a benign (<10 HU) non-functioning lesion (regardless of size), so omitting follow-up (C) is not a pitfall. The genuine pitfall is D (resection on duration alone). \"NICE 2025\" incidentaloma guidance could not be verified. Source: ESE/ENSAT 2023 (PMID 37318239)"
+      "newExplanation": "For a homogeneous non-functioning adrenal mass with unenhanced HU <10, no further imaging or hormonal follow‑up is recommended. Unwarranted resection based on duration alone is a pitfall. Source: ESE/ENSAT 2023 (PMID 37318239)"
     },
     {
       "questionId": "cold-start-mcq:adrenal-incidentaloma#4",
       "verdict": "Wrong answer",
-      "notes": "ESE 2023 recommends against further imaging for homogeneous <10 HU masses <4 cm, so A is good practice, not a pitfall. Omitting hormonal assessment (B) is the true pitfall.",
+      "notes": "ESE 2023 recommends against further imaging for homogeneous <10 HU masses <4 cm; the pitfall is omitting hormonal assessment.",
       "suggestedAnswer": "B",
       "source": "ESE/ENSAT 2023",
       "stemFix": null,
-      "newExplanation": "ESE 2023 recommends against further imaging for homogeneous <10 HU masses <4 cm, so A is good practice, not a pitfall. Omitting hormonal assessment (B) is the true pitfall. Source: ESE/ENSAT 2023"
+      "newExplanation": "Homogeneous adrenal masses <4 cm with HU <10 do not require further imaging. The key risk is omitting appropriate hormonal assessment. Source: ESE/ENSAT 2023"
     },
     {
       "questionId": "guideline-mcq:aminoglycoside-dosing-once-daily-dosing-hartford-nomogram-ototoxicity-renal-monitoring#3",
       "verdict": "Wrong answer",
-      "notes": "Taking a pre-dose (trough) level before the next dose is standard monitoring for once-daily gentamicin in UK practice, so A is not a pitfall. Failing to extend the interval in renal impairment (C) is the real pitfall.",
+      "notes": "Taking a pre-dose (trough) level before the next dose is standard monitoring for once-daily gentamicin; the pitfall is failing to extend the interval in renal impairment.",
       "suggestedAnswer": "C",
       "source": "Local/BNF once-daily gentamicin monitoring",
       "stemFix": null,
-      "newExplanation": "Taking a pre-dose (trough) level before the next dose is standard monitoring for once-daily gentamicin in UK practice, so A is not a pitfall. Failing to extend the interval in renal impairment (C) is the real pitfall. Source: Local/BNF once-daily gentamicin monitoring"
+      "newExplanation": "Once‑daily gentamicin monitoring includes a pre‑dose (trough) level. Failing to extend the dosing interval in renal impairment is the error. Source: Local/BNF once‑daily gentamicin monitoring"
     },
     {
       "questionId": "paper-mcq:rapidly-progressive-glomerulonephritis#0",
       "verdict": "Wrong answer",
-      "notes": "Concept (no benefit from PLEX) is right but the keyed figures are wrong: PEXIVAS reported death/ESKD 28.4% vs 31.0%, HR 0.86 (95% CI 0.65-1.13), P=0.27, not HR 1.00 P=0.99. Fix option B. Fits AAV topic.",
-      "suggestedAnswer": "B (corrected figures)",
+      "notes": "PEXIVAS reported death/ESKD 28.4% vs 31.0%, HR 0.86 (95% CI 0.65–1.13), P=0.27 (no benefit of plasmapheresis).",
+      "suggestedAnswer": "B",
       "source": "Walsh NEJM 2020 PEXIVAS (PMID 32053298)",
       "stemFix": null,
-      "newExplanation": "Concept (no benefit from PLEX) is right but the keyed figures are wrong: PEXIVAS reported death/ESKD 28.4% vs 31.0%, HR 0.86 (95% CI 0.65-1.13), P=0.27, not HR 1.00 P=0.99. Fix option B. Fits AAV topic. Source: Walsh NEJM 2020 PEXIVAS (PMID 32053298)",
-      "optionReplacement": {
-        "letter": "E",
-        "text": "B (corrected figures)"
-      }
+      "newExplanation": "PEXIVAS showed no benefit of plasmapheresis: death/ESKD occurred in 28.4% vs 31.0% (HR 0.86, 95% CI 0.65–1.13; P=0.27). Source: Walsh NEJM 2020 PEXIVAS (PMID 32053298)",
+      "optionEdits": [{ "letter": "B", "after": "28.4% vs 31.0% (HR 0.86, 95% CI 0.65–1.13; P=0.27)" }]
     },
     {
       "questionId": "guideline-mcq:total-joint-replacement-in-oa-indications-outcomes-complications-revision-rates#1",
       "verdict": "Wrong answer",
-      "notes": "ADA/AAOS (2015) and the linked ADA/AAOS statement say prophylaxis is generally NOT indicated for joint-replacement patients having dental work; the keyed amoxicillin (B) follows the withdrawn 2009 AAOS statement. Correct A. Topic: prosthetic-joint question misfiled under endocarditis prophylaxis.",
+      "notes": "Routine antibiotic prophylaxis for dental procedures is generally not indicated for patients with joint replacements.",
       "suggestedAnswer": "A",
       "source": "ADA clinical practice guideline 2015 (Sollecito, JADA)",
       "stemFix": null,
-      "newExplanation": "ADA/AAOS (2015) and the linked ADA/AAOS statement say prophylaxis is generally NOT indicated for joint-replacement patients having dental work; the keyed amoxicillin (B) follows the withdrawn 2009 AAOS statement. Correct A. Topic: prosthetic-joint question misfiled under endocarditis prophylaxis. Source: ADA clinical practice guideline 2015 (Sollecito, JADA)"
+      "newExplanation": "For most patients with joint replacements, antibiotic prophylaxis is not recommended for dental procedures. Source: ADA clinical practice guideline 2015 (Sollecito, JADA)"
     },
     {
       "questionId": "guideline-mcq:Antithrombotic-therapy-after-TAVR#0",
       "verdict": "Wrong answer",
-      "notes": "Lifelong single antiplatelet therapy (A) is now recommended after TAVI without an OAC indication (POPular TAVI; ESC/EACTS 2021/2025, matching the linked excerpt). DAPT for 3-6 months (B) is outdated.",
+      "notes": "After TAVI without an indication for oral anticoagulation, single antiplatelet therapy is recommended; DAPT for 3–6 months is outdated.",
       "suggestedAnswer": "A",
       "source": "ESC/EACTS 2025 valvular heart disease guideline; POPular TAVI NEJM 2020",
       "stemFix": null,
-      "newExplanation": "Lifelong single antiplatelet therapy (A) is now recommended after TAVI without an OAC indication (POPular TAVI; ESC/EACTS 2021/2025, matching the linked excerpt). DAPT for 3-6 months (B) is outdated. Source: ESC/EACTS 2025 valvular heart disease guideline; POPular TAVI NEJM 2020"
+      "newExplanation": "After TAVI without an indication for oral anticoagulation, single antiplatelet therapy is recommended; routine DAPT is no longer advised. Source: ESC/EACTS 2025; POPular TAVI NEJM 2020"
     },
     {
       "questionId": "guideline-mcq:Prone-positioning-in-severe-ARDS#0",
       "verdict": "Wrong answer",
-      "notes": "Guidelines/PROSEVA prone early (within 12-36 h, after a short 12-24 h stabilisation), not after a 48 h trial; the explanation itself says early. Best answer A.",
+      "notes": "Guidelines/PROSEVA support early prone positioning (within ~12–36 h after brief stabilisation), not after a 48 h trial.",
       "suggestedAnswer": "A",
       "source": "ESICM 2023; FICM/ICS 2019 ARDS guideline",
       "stemFix": null,
-      "newExplanation": "Guidelines/PROSEVA prone early (within 12-36 h, after a short 12-24 h stabilisation), not after a 48 h trial; the explanation itself says early. Best answer A. Source: ESICM 2023; FICM/ICS 2019 ARDS guideline"
+      "newExplanation": "Evidence and guidelines support early prone positioning in severe ARDS (within ~12–36 hours after a short stabilisation), rather than delaying 48 hours. Source: ESICM 2023; FICM/ICS 2019"
     },
     {
       "questionId": "guideline-mcq:penicillin-allergy-delabeling-and-testing#2",
       "verdict": "Wrong answer",
-      "notes": "NICE NG138: for penicillin allergy in non-severe CAP use doxycycline or clarithromycin; levofloxacin is reserved for moderate/high severity, and MHRA restricts fluoroquinolones. \"Previous FQ exposure\" is not a NICE criterion. Suggest B. Topic: belongs under CAP/penicillin allergy, not atypical pathogens.",
+      "notes": "In non-severe CAP with penicillin allergy, doxycycline or clarithromycin are recommended; levofloxacin is reserved for more severe cases and fluoroquinolones have safety restrictions. \"Previous FQ exposure\" is not a NICE criterion.",
       "suggestedAnswer": "B",
       "source": "NICE NG138 (2019); MHRA fluoroquinolone advice 2024",
       "stemFix": null,
-      "newExplanation": "NICE NG138: for penicillin allergy in non-severe CAP use doxycycline or clarithromycin; levofloxacin is reserved for moderate/high severity, and MHRA restricts fluoroquinolones. \"Previous FQ exposure\" is not a NICE criterion. Suggest B. Topic: belongs under CAP/penicillin allergy, not atypical pathogens. Source: NICE NG138 (2019); MHRA fluoroquinolone advice 2024"
+      "newExplanation": "For non‑severe community‑acquired pneumonia in penicillin allergy, doxycycline or clarithromycin are recommended. Levofloxacin is reserved for higher‑severity cases and carries MHRA safety restrictions. Source: NICE NG138 (2019); MHRA 2024"
     },
     {
       "questionId": "guideline-mcq:axial-spondyloarthritis-biologic-therapy#0",
       "verdict": "Wrong answer",
-      "notes": "In ankylosing spondylitis/axSpA, plain films miss fractures; NICE head/spine injury guidance recommends CT (with MRI as needed) for adults with high-risk features. Keyed X-ray (B) is not best practice and there is no CT option; add CT. Placement: trauma question filed under biologic therapy.",
-      "suggestedAnswer": "CT cervical spine (add option); D closer than B",
+      "notes": "In ankylosing spondylitis/axSpA with suspected cervical injury, CT of the cervical spine is recommended; plain films can miss fractures.",
+      "suggestedAnswer": "E",
       "source": "NICE NG232 head injury (2023)",
       "stemFix": null,
-      "newExplanation": "In ankylosing spondylitis/axSpA, plain films miss fractures; NICE head/spine injury guidance recommends CT (with MRI as needed) for adults with high-risk features. Keyed X-ray (B) is not best practice and there is no CT option; add CT. Placement: trauma question filed under biologic therapy. Source: NICE NG232 head injury (2023)",
-      "optionReplacement": {
-        "letter": "E",
-        "text": "CT cervical spine (add option); D closer than B"
-      }
+      "newExplanation": "In suspected cervical spine injury in ankylosing spondylitis/axSpA, CT of the cervical spine is preferred because plain radiographs can miss fractures. Source: NICE NG232 (2023)",
+      "optionEdits": [{ "letter": "E", "after": "CT of the cervical spine" }]
     },
     {
       "questionId": "guideline-mcq:bartter-and-gitelman-syndromes#2",
       "verdict": "Wrong answer",
-      "notes": "KDIGO Controversies conference on Gitelman (2017) suggests targets of K+ 3.0 mmol/L and Mg2+ 0.6 mmol/L, not >3.5. Suggest B.",
+      "notes": "Suggested targets in Gitelman: potassium ~3.0 mmol/L and magnesium ~0.6 mmol/L.",
       "suggestedAnswer": "B",
       "source": "Blanchard Kidney Int 2017 (PMID 28003083)",
       "stemFix": null,
-      "newExplanation": "KDIGO Controversies conference on Gitelman (2017) suggests targets of K+ 3.0 mmol/L and Mg2+ 0.6 mmol/L, not >3.5. Suggest B. Source: Blanchard Kidney Int 2017 (PMID 28003083)"
+      "newExplanation": "In Gitelman syndrome, pragmatic targets are potassium around 3.0 mmol/L and magnesium around 0.6 mmol/L. Source: Blanchard Kidney Int 2017 (PMID 28003083)"
     },
     {
       "questionId": "guideline-mcq:Cardiac-implantable-electronic-device-infection#2",
       "verdict": "Wrong answer",
-      "notes": "EHRA 2020/AHA 2010: reimplant at a new (contralateral) site once blood cultures have been negative for >=72 h (>=14 days if valvular involvement), not routinely after 4-6 weeks. C is not the recommendation; rewrite options.",
-      "suggestedAnswer": "B (closest)",
+      "notes": "Reimplant at a new (contralateral) site once blood cultures have been negative for at least 72 hours (≥14 days if valvular involvement).",
+      "suggestedAnswer": "B",
       "source": "EHRA 2020 CIED infection consensus; AHA 2010",
       "stemFix": null,
-      "newExplanation": "EHRA 2020/AHA 2010: reimplant at a new (contralateral) site once blood cultures have been negative for >=72 h (>=14 days if valvular involvement), not routinely after 4-6 weeks. C is not the recommendation; rewrite options. Source: EHRA 2020 CIED infection consensus; AHA 2010",
-      "optionReplacement": {
-        "letter": "E",
-        "text": "B (closest)"
-      }
+      "newExplanation": "After device extraction for infection, reimplantation should be at a new contralateral site once blood cultures have been negative for at least 72 hours (≥14 days if valvular involvement). Source: EHRA 2020; AHA 2010",
+      "optionEdits": [{ "letter": "B", "after": "Reimplant at a new contralateral site once blood cultures have been negative for ≥72 hours (≥14 days if valvular involvement)" }]
     },
     {
       "questionId": "guideline-mcq:sglt2-inhibitors-in-ckd-and-nephrology#3",
       "verdict": "Wrong answer",
-      "notes": "ADPKD patients were excluded from SGLT2i outcome trials, and KDIGO 2025 ADPKD guidance does not recommend SGLT2i for kidney protection; the cited \"KANG 2025\" statement is not authoritative. Suggest C.",
+      "notes": "ADPKD patients were excluded from SGLT2 inhibitor outcome trials; KDIGO 2025 ADPKD guidance does not recommend SGLT2 inhibitors for kidney protection.",
       "suggestedAnswer": "C",
       "source": "KDIGO 2025 ADPKD guideline",
       "stemFix": null,
-      "newExplanation": "ADPKD patients were excluded from SGLT2i outcome trials, and KDIGO 2025 ADPKD guidance does not recommend SGLT2i for kidney protection; the cited \"KANG 2025\" statement is not authoritative. Suggest C. Source: KDIGO 2025 ADPKD guideline"
+      "newExplanation": "ADPKD was excluded from SGLT2 inhibitor outcome trials, and current guidance does not recommend their use for kidney protection in ADPKD. Source: KDIGO 2025 ADPKD guideline"
     },
     {
       "questionId": "guideline-mcq:chronic-spontaneous-urticaria-omalizumab#0",
       "verdict": "Wrong answer",
-      "notes": "She has only reached 2x the standard antihistamine dose; EAACI/GA2LEN 2022 says up-dose to 4x (B) before omalizumab, and NICE TA339 needs failure of H1-antihistamine (and LTRA). Suggest B.",
+      "notes": "Before omalizumab, up‑dose H1‑antihistamines to 4× the standard dose if needed; NICE TA339 requires failure of H1‑antihistamine (± LTRA).",
       "suggestedAnswer": "B",
       "source": "EAACI/GA2LEN/EuroGuiDerm/APAAACI urticaria guideline 2022; NICE TA339",
       "stemFix": null,
-      "newExplanation": "She has only reached 2x the standard antihistamine dose; EAACI/GA2LEN 2022 says up-dose to 4x (B) before omalizumab, and NICE TA339 needs failure of H1-antihistamine (and LTRA). Suggest B. Source: EAACI/GA2LEN/EuroGuiDerm/APAAACI urticaria guideline 2022; NICE TA339"
+      "newExplanation": "Escalate H1‑antihistamines up to four times the standard dose before considering omalizumab; NICE TA339 requires failure of H1‑antihistamine (± LTRA). Source: EAACI/GA2LEN 2022; NICE TA339"
     },
     {
       "questionId": "guideline-mcq:ckd-staging-and-progression#2",
       "verdict": "Wrong answer",
-      "notes": "eGFR 32 is G3b (30-44), and UACR 350 mg/g is A3, so the answer is B, not D; the explanation itself gives the correct ranges.",
+      "notes": "eGFR 32 mL/min/1.73m² is G3b (30–44), and UACR 350 mg/g is A3.",
       "suggestedAnswer": "B",
       "source": "KDIGO 2024 CKD guideline",
       "stemFix": null,
-      "newExplanation": "eGFR 32 is G3b (30-44), and UACR 350 mg/g is A3, so the answer is B, not D; the explanation itself gives the correct ranges. Source: KDIGO 2024 CKD guideline"
-    },
-    {
-      "questionId": "cold-start-mcq:secondary-stroke-prevention-antiplatelet-anticoagulation#3",
-      "verdict": "Wrong answer",
-      "notes": "False premise: POINT used clopidogrel + aspirin for 90 days (ticagrelor + aspirin for 30 days was THALES). The keyed explanation about ticagrelor kinetics is wrong; rewrite the question.",
-      "suggestedAnswer": "Rewrite",
-      "source": "Johnston NEJM 2018 (POINT); Johnston NEJM 2020 (THALES)",
-      "stemFix": null,
-      "newExplanation": "False premise: POINT used clopidogrel + aspirin for 90 days (ticagrelor + aspirin for 30 days was THALES). The keyed explanation about ticagrelor kinetics is wrong; rewrite the question. Source: Johnston NEJM 2018 (POINT); Johnston NEJM 2020 (THALES)",
-      "optionReplacement": {
-        "letter": "E",
-        "text": "Rewrite"
-      }
+      "newExplanation": "An eGFR of 32 mL/min/1.73m² classifies as G3b (30–44), and UACR 350 mg/g as A3. Source: KDIGO 2024 CKD guideline"
     },
     {
       "questionId": "guideline-mcq:clostridioides-difficile-infection#0",
       "verdict": "Wrong answer",
-      "notes": "Fulminant/life-threatening CDI (hypotension, AKI): NICE NG199 and IDSA give oral vancomycin 500 mg four times daily plus IV metronidazole; keyed A uses 125 mg, which under-treats. Correct the dose in A. Fits topic.",
-      "suggestedAnswer": "A (with vancomycin 500 mg QDS)",
+      "notes": "Fulminant/life‑threatening CDI (e.g., hypotension, AKI): oral vancomycin 500 mg four times daily plus IV metronidazole.",
+      "suggestedAnswer": "A",
       "source": "NICE NG199; IDSA/SHEA 2017",
       "stemFix": null,
-      "newExplanation": "Fulminant/life-threatening CDI (hypotension, AKI): NICE NG199 and IDSA give oral vancomycin 500 mg four times daily plus IV metronidazole; keyed A uses 125 mg, which under-treats. Correct the dose in A. Fits topic. Source: NICE NG199; IDSA/SHEA 2017",
-      "optionReplacement": {
-        "letter": "E",
-        "text": "A (with vancomycin 500 mg QDS)"
-      }
+      "newExplanation": "For fulminant CDI, recommended therapy is oral vancomycin 500 mg four times daily plus intravenous metronidazole. Source: NICE NG199; IDSA/SHEA 2017",
+      "optionEdits": [{ "letter": "A", "after": "Vancomycin 500 mg orally four times daily plus IV metronidazole" }]
     }
   ]
 }
