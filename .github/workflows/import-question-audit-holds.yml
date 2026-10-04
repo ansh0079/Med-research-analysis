@@ -23,6 +23,8 @@ jobs:
             cd /opt/medsearch
             echo "Deployed commit: $(git rev-parse HEAD)"
             docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T \
-              -e USE_POSTGRES_MAIN=true web node server/scripts/importQuestionAuditHolds.js
+              -e USE_POSTGRES_MAIN=true \
+              -v /opt/medsearch/data/question-audit-holds-2026-10-04.csv:/review/question-holds.csv:ro \
+              web node server/scripts/importQuestionAuditHolds.js /review/question-holds.csv
             docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
               "SELECT status, COUNT(*) FROM question_audit GROUP BY status ORDER BY status;"
