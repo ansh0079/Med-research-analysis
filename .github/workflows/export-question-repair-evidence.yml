@@ -1,0 +1,77 @@
+name: Export Question Repair Evidence
+
+on:
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure production SSH
+        env:
+          SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          sed -i 's/\r$//' ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H 178.105.155.246 >> ~/.ssh/known_hosts
+      - name: Upload review keys
+        run: scp scripts/question-repair-473-keys.csv root@178.105.155.246:/tmp/question-repair-473-keys.csv
+      - name: Export stored evidence
+        run: |
+          ssh root@178.105.155.246 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          rm -rf /tmp/question-repair-evidence
+          mkdir -p /tmp/question-repair-evidence
+          docker cp /tmp/question-repair-473-keys.csv medsearch-pg:/tmp/question-repair-473-keys.csv
+          docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 <<'SQL'
+          DROP TABLE IF EXISTS repair_question_keys;
+          CREATE TABLE repair_question_keys (object_key text, question_index integer);
+          \copy repair_question_keys FROM '/tmp/question-repair-473-keys.csv' WITH CSV HEADER
+          \copy (
+            SELECT k.object_key, k.question_index, q.evidence_guideline_ids, q.evidence_paper_uids,
+                   q.assigned_topic_name, q.category, q.reasons
+            FROM repair_question_keys k
+            LEFT JOIN question_topic_index q USING (object_key, question_index)
+            ORDER BY k.object_key, k.question_index
+          ) TO '/tmp/repair-index.csv' WITH CSV HEADER
+          \copy (
+            SELECT k.object_key, k.question_index, g.id AS guideline_id, g.source_body, g.source_year,
+                   g.source_url, g.recommendation_text, g.population, g.intervention, g.cautions,
+                   g.recommendation_strength, g.recommendation_certainty, g.status, g.reviewed_by,
+                   d.title AS document_title, d.source_url AS document_url,
+                   d.word_count AS document_word_count, d.full_text_source,
+                   LEFT(COALESCE(d.full_text,''), 120000) AS document_text
+            FROM repair_question_keys k
+            JOIN question_topic_index q USING (object_key, question_index)
+            CROSS JOIN LATERAL jsonb_array_elements_text(COALESCE(NULLIF(q.evidence_guideline_ids,''),'[]')::jsonb) ids(id)
+            JOIN topic_guidelines g ON g.id::text=ids.id
+            LEFT JOIN guideline_documents d ON d.id=g.document_id
+            ORDER BY k.object_key, k.question_index, g.id
+          ) TO '/tmp/repair-guidelines.csv' WITH CSV HEADER
+          \copy (
+            SELECT k.object_key, k.question_index, ids.uid AS article_uid, a.title, a.abstract,
+                   a.publication_date, a.journal, a.data, a.quality_score, a.is_retracted,
+                   v.access_state, v.source, v.passages
+            FROM repair_question_keys k
+            JOIN question_topic_index q USING (object_key, question_index)
+            CROSS JOIN LATERAL jsonb_array_elements_text(COALESCE(NULLIF(q.evidence_paper_uids,''),'[]')::jsonb) ids(uid)
+            LEFT JOIN article_cache a ON a.id=ids.uid
+            LEFT JOIN evidence_source_versions v ON v.article_uid=ids.uid
+            ORDER BY k.object_key, k.question_index, ids.uid
+          ) TO '/tmp/repair-papers.csv' WITH CSV HEADER
+          DROP TABLE repair_question_keys;
+          SQL
+          docker cp medsearch-pg:/tmp/repair-index.csv /tmp/question-repair-evidence/
+          docker cp medsearch-pg:/tmp/repair-guidelines.csv /tmp/question-repair-evidence/
+          docker cp medsearch-pg:/tmp/repair-papers.csv /tmp/question-repair-evidence/
+          REMOTE
+          scp -r root@178.105.155.246:/tmp/question-repair-evidence ./question-repair-evidence
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signal-md-question-repair-evidence
+          path: question-repair-evidence/*.csv
+          retention-days: 7
