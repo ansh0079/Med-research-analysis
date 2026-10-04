@@ -106,4 +106,15 @@ describe('serving a topic\'s questions by the index', () => {
         placeDual(database, 'other-batch', 0, q('Close-call item?'), 'C-other', 'C-rrt');
         expect(await stems(database)).toEqual(['When to start dialysis?', 'Close-call item?']);
     });
+
+    test('off: dual-linked questions are included additively (no filtering)', async () => {
+        delete process.env.QUESTION_INDEX_SERVING;
+        const database = makeDatabase({ guidelineQs: [q('When to start dialysis?'), q('Unrelated?')], otherBatchQs: [q('Close-call item?')] });
+        // Mark unrelated as placed elsewhere, but flag is off so it should stay; add a dual-linked item to bring in.
+        place(database, 'x', 1, q('Unrelated?'), 'aligned', 'C-other');
+        placeDual(database, 'other-batch', 0, q('Close-call item?'), 'C-other', 'C-rrt');
+        const out = await stems(database);
+        // Original two plus dual-linked
+        expect(out).toEqual(['When to start dialysis?', 'Unrelated?', 'Close-call item?']);
+    });
 });
