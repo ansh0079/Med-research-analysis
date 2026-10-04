@@ -61,6 +61,7 @@
     "backfill:guideline-refiling": "node scripts/backfill-guideline-refiling.js",
     "review:question-index": "node server/scripts/buildQuestionTopicIndex.js",
     "review:import-question-holds": "node server/scripts/importQuestionAuditHolds.js",
+    "review:import-question-sources": "node server/scripts/importQuestionRepairSources.js",
     "apply:approved-guideline-refiling": "node server/scripts/applyApprovedGuidelineRefiling.js",
     "compose:hetzner:config": "docker compose -f docker-compose.hetzner.yml config",
     "verify:db-contract": "node tools/check-db-guards.js",

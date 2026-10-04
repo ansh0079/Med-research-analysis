@@ -1,0 +1,32 @@
+name: Import Question Repair Sources
+
+on:
+  workflow_dispatch:
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: medsearch-production-deploy
+      cancel-in-progress: false
+    steps:
+      - name: Import retrieved sources and verify links
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 12m
+          script: |
+            set -e
+            cd /opt/medsearch
+            echo "Deployed commit: $(git rev-parse HEAD)"
+            docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T \
+              -e USE_POSTGRES_MAIN=true \
+              -v /opt/medsearch/data/question-repair-source-import.json:/review/source-import.json:ro \
+              web node server/scripts/importQuestionRepairSources.js /review/source-import.json
+            docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
+              "SELECT COUNT(*) AS retrieved_guideline_documents FROM guideline_documents WHERE full_text_source IN ('nice_html','bibliographic_abstract');"
+            docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
+              "SELECT COUNT(*) AS repair_topic_memories FROM topic_evidence_memory WHERE source='question_repair';"
