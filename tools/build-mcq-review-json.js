@@ -58,7 +58,7 @@ function normalizeVerdict(v) {
 
 function coerceStemFix(notes) {
     const n = String(notes || '');
-    const m = n.match(/(?:Stem(?:\s*fix)?|Rewrite|Replace stem)[:\-]\s*([^.;]+.*?)(?:$|[.][\s]|;)/i);
+    const m = n.match(/(?:Stem(?:\s*fix)?|Rewrite|Replace stem)[:-]\s*([^.;]+.*?)(?:$|[.][\s]|;)/i);
     return m ? m[1].trim() : null;
 }
 

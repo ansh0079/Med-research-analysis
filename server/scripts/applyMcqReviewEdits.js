@@ -174,7 +174,7 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
     // Ensure options carry the suggested answer; coerce non-letter to a letter slot when needed.
     // Apply explicit option edits first, then ensure the suggested answer exists.
     const letters = ['A', 'B', 'C', 'D', 'E'];
-    let workingOptions = Array.isArray(before.options) ? before.options.slice() : [];
+    const workingOptions = Array.isArray(before.options) ? before.options.slice() : [];
     if (Array.isArray(optionEdits) && optionEdits.length) {
         for (const edit of optionEdits) {
             const L = coerceLetter(edit?.letter);
@@ -197,6 +197,8 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
         fixed = { options: opts, changed: true, note: `Replaced option ${L} to add suggested answer text`, coercedLetter: L };
     }
     const correctLetter = coerceLetter(suggestedAnswer) || fixed.coercedLetter || before.correctAnswer || 'A';
+    const optionsChanged = Boolean(fixed.changed);
+    const optionChangeNote = fixed.note || null;
 
     const after = {
         ...before,
