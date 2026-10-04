@@ -131,21 +131,21 @@ async function applyWithdraw(objectKey, index, questionId, verdict, reason, note
     const q = mcqs[index];
     if (!q?.question) return { matched: false, details: 'question_missing' };
     const qhash = questionHash(q);
-    // Idempotent insert ignore
-    await db.run(
-        `INSERT INTO mcq_review_overrides
-            (question_id, object_key, question_index, action, verdict, reason, notes, question_hash, applied_at, applied_by)
-         VALUES (?, ?, ?, 'withdraw', ?, ?, ?, ?, ?, ?)
-         ON CONFLICT(question_id) DO NOTHING`,
-        [questionId, found.objectKey, index, verdict || null, reason || null, notes || null, qhash || null, new Date().toISOString(), 'workflow:apply-mcq-review']
-    ).catch(() => null);
-    // Mark the specific assignment as retired when present
-    await db.run(
-        `UPDATE question_topic_index SET review_state = 'retired', category = 'unassignable'
-         WHERE object_key = ? AND question_index = ?`,
-        [found.objectKey, index]
-    ).catch(() => null);
     if (apply) {
+        // Idempotent insert ignore
+        await db.run(
+            `INSERT INTO mcq_review_overrides
+                (question_id, object_key, question_index, action, verdict, reason, notes, question_hash, applied_at, applied_by)
+             VALUES (?, ?, ?, 'withdraw', ?, ?, ?, ?, ?, ?)
+             ON CONFLICT(question_id) DO NOTHING`,
+            [questionId, found.objectKey, index, verdict || null, reason || null, notes || null, qhash || null, new Date().toISOString(), 'workflow:apply-mcq-review']
+        ).catch(() => null);
+        // Mark the specific assignment as retired when present
+        await db.run(
+            `UPDATE question_topic_index SET review_state = 'retired', category = 'unassignable'
+             WHERE object_key = ? AND question_index = ?`,
+            [found.objectKey, index]
+        ).catch(() => null);
         await logAudit(db, {
             userId: null,
             action: AUDIT_ACTIONS.DATA_IMPORTED,
@@ -180,8 +180,11 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
             const L = coerceLetter(edit?.letter);
             const text = String(edit?.after || '').trim();
             if (!L || !text) continue;
-            while (workingOptions.length < 5) workingOptions.push(`${letters[workingOptions.length]}: `);
             const idx = letters.indexOf(L);
+            // Pad only up to the edited index when the slot does not exist; do not append extra options.
+            while (workingOptions.length <= idx) {
+                workingOptions.push(`${letters[workingOptions.length]}: `);
+            }
             workingOptions[idx] = `${L}: ${text}`;
         }
     }
@@ -191,8 +194,11 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
         const L = coerceLetter(optionReplacement.letter);
         const letters = ['A', 'B', 'C', 'D', 'E'];
         const opts = Array.isArray(before.options) ? before.options.slice() : [];
-        while (opts.length < 5) opts.push(`${letters[opts.length]}: `);
         const idx = letters.indexOf(L);
+        // Pad only up to the replacement index when needed.
+        while (opts.length <= idx) {
+            opts.push(`${letters[opts.length]}: `);
+        }
         opts[idx] = `${L}: ${String(optionReplacement.text).trim()}`;
         fixed = { options: opts, changed: true, note: `Replaced option ${L} to add suggested answer text`, coercedLetter: L };
     }
@@ -277,7 +283,17 @@ async function run() {
     for (const c of corrections) {
         const parsed = parseQuestionId(c.questionId);
         if (!parsed) { cMissing++; missingIds.push(c.questionId); continue; }
-        const r = await applyCorrection(parsed.objectKey, parsed.index, c.questionId, c.verdict, c.notes, c.suggestedAnswer, c.source, c.stemFix, { apply });
+        const r = await applyCorrection(
+            parsed.objectKey,
+            parsed.index,
+            c.questionId,
+            c.verdict,
+            c.notes,
+            c.suggestedAnswer,
+            c.source,
+            c.stemFix,
+            { apply, newExplanation: c.newExplanation, optionEdits: c.optionEdits }
+        );
         if (r.matched) {
             cMatched++;
             if (r.details === 'option_adjusted') optionAdjusted.push(c.questionId);
