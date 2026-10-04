@@ -16,6 +16,8 @@ const DEFAULT_THRESHOLDS = Object.freeze({
     minTopicSimilarity: 0.62,       // below this it is not recognisably about any topic: unassignable
     alignedTopicSimilarity: 0.64,   // a clear match to the topic
     alignedMargin: 0.05,            // a MOVE must also beat the best other subject by this much
+    // Close-call margin for dual-linking unclear questions (defaults to alignedMargin if not provided).
+    dualLinkMargin: 0.05,
     // Support from the topic's guideline recommendations.
     alignedSupport: 0.65,           // a recommendation of that topic says what the question asks
     minSupport: 0.55,               // below this no guideline of the topic supports it

@@ -17,6 +17,7 @@ const q = (stem) => ({ question: stem, options: ['A: a', 'B: b'], correctAnswer:
 function makeDatabase({ guidelineQs = [], otherBatchQs = [] } = {}) {
     const sqlite = new Sqlite(':memory:');
     sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/109_question_topic_index.sql'), 'utf8'));
+    sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/111_question_topic_dual_link.sql'), 'utf8'));
     sqlite.exec('CREATE TABLE teaching_objects (object_key TEXT PRIMARY KEY, object_type TEXT, review_state TEXT, object_payload TEXT)');
     sqlite.prepare('INSERT INTO teaching_objects VALUES (?, ?, ?, ?)').run('other-batch', 'guideline_mcq', 'unreviewed', JSON.stringify({ mcqs: otherBatchQs }));
     sqlite.prepare("INSERT INTO topic_cluster_index VALUES ('T-rrt', 'C-rrt', 'v', 'now')").run();
@@ -35,6 +36,15 @@ const place = (db, key, i, question, category, cluster, name = 'Topic') => db.sq
     `INSERT INTO question_topic_index (object_key, question_index, question_hash, object_type, assigned_curriculum_topic_id, assigned_topic_name,
         assigned_cluster_id, category, classifier_version, classified_at) VALUES (?, ?, ?, 'guideline_mcq', 'x', ?, ?, ?, 'v', 'now')`,
 ).run(key, i, questionHash(question), name, cluster, category);
+
+const placeDual = (db, key, i, question, primaryCluster, secondaryCluster, name = 'Topic') => db.sqlite.prepare(
+    `INSERT INTO question_topic_index (
+        object_key, question_index, question_hash, object_type,
+        assigned_curriculum_topic_id, assigned_topic_name, assigned_cluster_id,
+        secondary_curriculum_topic_id, secondary_topic_name, secondary_cluster_id,
+        category, classifier_version, classified_at
+     ) VALUES (?, ?, ?, 'guideline_mcq', 'x', ?, ?, 'y', 'Y', ?, 'dual_linked', 'v', 'now')`
+).run(key, i, questionHash(question), name, primaryCluster, secondaryCluster);
 
 describe('serving a topic\'s questions by the index', () => {
     const saved = process.env.QUESTION_INDEX_SERVING;
@@ -87,5 +97,13 @@ describe('serving a topic\'s questions by the index', () => {
         database.get = async () => { throw new Error('no such table'); };
         database.all = async () => { throw new Error('no such table'); };
         expect(await stems(database)).toEqual(['When to start dialysis?']);
+    });
+
+    test('on: dual-linked questions are included for either topic by cluster (secondary match)', async () => {
+        process.env.QUESTION_INDEX_SERVING = 'on';
+        const database = makeDatabase({ guidelineQs: [q('When to start dialysis?')], otherBatchQs: [q('Close-call item?')] });
+        // Primary cluster elsewhere, secondary is this topic's cluster.
+        placeDual(database, 'other-batch', 0, q('Close-call item?'), 'C-other', 'C-rrt');
+        expect(await stems(database)).toEqual(['When to start dialysis?', 'Close-call item?']);
     });
 });

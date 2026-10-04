@@ -202,7 +202,49 @@ async function buildIndex({ sources, embed, thresholds = classify.DEFAULT_THRESH
         const support = placement.topicIndex >= 0 ? classify.supportFor(vec, clusterOf[placement.topicIndex], recsByCluster, recVecs, 3) : [];
         const decision = classify.classifyQuestion({ placement, support, paperSupport, originalTopicIndex, thresholds });
         const assigned = placement.topicIndex >= 0 && placement.similarity >= thresholds.minTopicSimilarity;
-        return {
+        // Dual-link close-call unclear questions that have adequate evidence support.
+        let dual = null;
+        if (
+            decision.category === 'unclear'
+            && placement.topicIndex >= 0
+            && placement.runnerUpIndex >= 0
+            && (placement.margin <= (thresholds.dualLinkMargin || thresholds.alignedMargin || 0.05))
+            && (decision.evidenceSupport !== 'none')
+        ) {
+            const primaryCluster = clusterOf[placement.topicIndex];
+            const secondaryCluster = clusterOf[placement.runnerUpIndex];
+            const supportPrimary = support.length ? support[0].similarity : 0;
+            const supportSecondaryList = classify.supportFor(vec, secondaryCluster, recsByCluster, recVecs, 3);
+            const supportSecondary = supportSecondaryList.length ? supportSecondaryList[0].similarity : 0;
+            // Pick the better-supported topic as primary; tie-break on similarity.
+            const preferRunnerUp =
+                (supportSecondary > supportPrimary + 1e-6)
+                || (Math.abs(supportSecondary - supportPrimary) <= 1e-6 && placement.runnerUpSimilarity > placement.similarity);
+            const primaryIndex = preferRunnerUp ? placement.runnerUpIndex : placement.topicIndex;
+            const secondaryIndex = preferRunnerUp ? placement.topicIndex : placement.runnerUpIndex;
+            const primarySim = preferRunnerUp ? placement.runnerUpSimilarity : placement.similarity;
+            const secondarySim = preferRunnerUp ? placement.similarity : placement.runnerUpSimilarity;
+            const primarySupp = preferRunnerUp ? supportSecondary : supportPrimary;
+            const secondarySupp = preferRunnerUp ? supportPrimary : supportSecondary;
+            dual = {
+                assignedCurriculumTopicId: topics[canonicalIndexOfTopic(primaryIndex)].id,
+                assignedTopicName: topics[canonicalIndexOfTopic(primaryIndex)].display_name,
+                assignedClusterId: clusterIdOfTopic(primaryIndex),
+                topicSimilarity: primarySim,
+                runnerUpCurriculumTopicId: topics[secondaryIndex].id,
+                runnerUpSimilarity: secondarySim,
+                guidelineSupport: primarySupp,
+                secondaryCurriculumTopicId: topics[secondaryIndex].id,
+                secondaryTopicName: topics[secondaryIndex].display_name,
+                secondaryClusterId: clusterIdOfTopic(secondaryIndex),
+                secondaryGuidelineSupport: secondarySupp,
+                category: 'dual_linked',
+                topicCategory: 'aligned',
+                evidenceSupport: decision.evidenceSupport,
+                dualLinkReason: 'close_runner_up',
+            };
+        }
+        const base = {
             objectKey: q.objectKey,
             questionIndex: q.questionIndex,
             questionHash: q.hash,
@@ -226,6 +268,29 @@ async function buildIndex({ sources, embed, thresholds = classify.DEFAULT_THRESH
             evidenceGuidelineIds: decision.bestSupport >= thresholds.minSupport ? support.map((s) => String(recs[s.recIndex].id)) : [],
             evidencePaperUids: decision.paperSupport >= thresholds.minPaperSupport ? paperLinks : [],
         };
+        if (dual) {
+            return {
+                ...base,
+                assignedCurriculumTopicId: dual.assignedCurriculumTopicId,
+                assignedTopicName: dual.assignedTopicName,
+                assignedClusterId: dual.assignedClusterId,
+                topicSimilarity: dual.topicSimilarity,
+                runnerUpCurriculumTopicId: dual.runnerUpCurriculumTopicId,
+                runnerUpSimilarity: dual.runnerUpSimilarity,
+                guidelineSupport: dual.guidelineSupport,
+                topicCategory: dual.topicCategory,
+                evidenceSupport: dual.evidenceSupport,
+                category: dual.category,
+                reasons: [...new Set([...(base.reasons || []), 'dual_link_close_call'])],
+                secondaryCurriculumTopicId: dual.secondaryCurriculumTopicId,
+                secondaryTopicName: dual.secondaryTopicName,
+                secondaryClusterId: dual.secondaryClusterId,
+                secondarySimilarity: dual.secondarySimilarity,
+                secondaryGuidelineSupport: dual.secondaryGuidelineSupport,
+                dualLinkReason: dual.dualLinkReason,
+            };
+        }
+        return base;
     });
 
     const stats = summarise(results, guidelines);
@@ -291,8 +356,10 @@ async function writeIndex(db, built, { now = new Date().toISOString() } = {}) {
             object_key, question_index, question_hash, object_type, original_topic, original_curriculum_topic_id,
             assigned_curriculum_topic_id, assigned_topic_name, assigned_cluster_id, topic_similarity, runner_up_curriculum_topic_id,
             runner_up_similarity, guideline_support, paper_support, topic_category, evidence_support, category, reasons,
-            evidence_guideline_ids, evidence_paper_uids, classifier_version, classified_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            evidence_guideline_ids, evidence_paper_uids, secondary_curriculum_topic_id, secondary_topic_name, secondary_cluster_id,
+            secondary_similarity, secondary_guideline_support, dual_link_reason,
+            classifier_version, classified_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT (object_key, question_index) DO UPDATE SET
             question_hash = excluded.question_hash, object_type = excluded.object_type,
             original_topic = excluded.original_topic, original_curriculum_topic_id = excluded.original_curriculum_topic_id,
@@ -303,14 +370,24 @@ async function writeIndex(db, built, { now = new Date().toISOString() } = {}) {
             paper_support = excluded.paper_support, topic_category = excluded.topic_category,
             evidence_support = excluded.evidence_support,
             category = excluded.category, reasons = excluded.reasons, evidence_guideline_ids = excluded.evidence_guideline_ids,
-            evidence_paper_uids = excluded.evidence_paper_uids, classifier_version = excluded.classifier_version,
+            evidence_paper_uids = excluded.evidence_paper_uids,
+            secondary_curriculum_topic_id = excluded.secondary_curriculum_topic_id,
+            secondary_topic_name = excluded.secondary_topic_name,
+            secondary_cluster_id = excluded.secondary_cluster_id,
+            secondary_similarity = excluded.secondary_similarity,
+            secondary_guideline_support = excluded.secondary_guideline_support,
+            dual_link_reason = excluded.dual_link_reason,
+            classifier_version = excluded.classifier_version,
             classified_at = excluded.classified_at`;
     for (const q of built.questions) {
         await db.run(upsertQuestion, [
             q.objectKey, q.questionIndex, q.questionHash, q.objectType, q.originalTopic, q.originalCurriculumTopicId,
             q.assignedCurriculumTopicId, q.assignedTopicName, q.assignedClusterId, q.topicSimilarity, q.runnerUpCurriculumTopicId,
-            q.runnerUpSimilarity, q.guidelineSupport, q.paperSupport, q.topicCategory, q.evidenceSupport, q.category, JSON.stringify(q.reasons),
-            JSON.stringify(q.evidenceGuidelineIds), JSON.stringify(q.evidencePaperUids), CLASSIFIER_VERSION, now,
+            q.runnerUpSimilarity, q.guidelineSupport, q.paperSupport, q.topicCategory, q.evidenceSupport, q.category, JSON.stringify(q.reasons || []),
+            JSON.stringify(q.evidenceGuidelineIds || []), JSON.stringify(q.evidencePaperUids || []),
+            q.secondaryCurriculumTopicId || null, q.secondaryTopicName || null, q.secondaryClusterId || null,
+            q.secondarySimilarity || null, q.secondaryGuidelineSupport || null, q.dualLinkReason || null,
+            CLASSIFIER_VERSION, now,
         ]);
     }
     const upsertGuideline = `INSERT INTO guideline_topic_index (

@@ -30,7 +30,11 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
     app.patch('/api/admin/question-topic-review', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
         try {
             if (!req.body?.objectKey || !Number.isInteger(req.body?.questionIndex)) return res.status(400).json({ error: 'objectKey and questionIndex are required' });
-            const assignment = await reviewQuestionAssignment(db, { ...req.body, userId: req.user?.id || null });
+            const assignment = await reviewQuestionAssignment(db, {
+                ...req.body,
+                userId: req.user?.id || null,
+                requestMeta: { sessionId: req.sessionId || null, ip: req.ip || null, ua: req.headers['user-agent'] || null },
+            });
             res.json({ assignment });
         } catch (error) {
             const status = /not found|Invalid/.test(error.message) ? 400 : 500;

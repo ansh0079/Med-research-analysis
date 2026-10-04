@@ -36,7 +36,31 @@ async function listQuestionReviewQueue(db, { category = 'unclear', reason = '', 
     return { items, counts };
 }
 
-async function reviewQuestionAssignment(db, { objectKey, questionIndex, decision, assignedCurriculumTopicId, notes, userId }) {
+async function reviewQuestionAssignment(db, { objectKey, questionIndex, decision, assignedCurriculumTopicId, notes, userId, confirmBoth = false, removeTopicId = null, undoAuditId = null, requestMeta = {} }) {
+    if (undoAuditId) {
+        // Best-effort undo: expect details to contain { before, after } snapshots.
+        const audit = await db.get('SELECT * FROM audit_logs WHERE id = ?', [undoAuditId]).catch(() => null);
+        let details = null;
+        try { details = audit?.details ? JSON.parse(audit.details) : null; } catch { details = null; }
+        const before = details?.before || null;
+        if (!before) throw new Error('Undo payload not found');
+        await db.run(
+            `UPDATE question_topic_index
+             SET assigned_curriculum_topic_id = ?, assigned_topic_name = ?, assigned_cluster_id = ?,
+                 secondary_curriculum_topic_id = ?, secondary_topic_name = ?, secondary_cluster_id = ?,
+                 secondary_similarity = ?, secondary_guideline_support = ?, dual_link_reason = ?,
+                 category = ?, review_state = ?, reviewed_by = ?, reviewed_at = ?, review_notes = ?
+             WHERE object_key = ? AND question_index = ?`,
+            [
+                before.assigned_curriculum_topic_id || null, before.assigned_topic_name || null, before.assigned_cluster_id || null,
+                before.secondary_curriculum_topic_id || null, before.secondary_topic_name || null, before.secondary_cluster_id || null,
+                before.secondary_similarity || null, before.secondary_guideline_support || null, before.dual_link_reason || null,
+                before.category || 'unclear', 'unreviewed', null, null, null,
+                objectKey, questionIndex,
+            ],
+        );
+        return db.get('SELECT * FROM question_topic_index WHERE object_key = ? AND question_index = ?', [objectKey, questionIndex]);
+    }
     if (!REVIEW_STATES.has(decision) || decision === 'unreviewed') throw new Error('Invalid review decision');
     const current = await db.get('SELECT * FROM question_topic_index WHERE object_key = ? AND question_index = ?', [objectKey, questionIndex]);
     if (!current) throw new Error('Question assignment not found');
@@ -51,13 +75,87 @@ async function reviewQuestionAssignment(db, { objectKey, questionIndex, decision
         const cluster = await db.get('SELECT cluster_id FROM topic_cluster_index WHERE curriculum_topic_id = ?', [topicId]);
         clusterId = cluster?.cluster_id || topicId;
     }
-    const category = decision === 'approved' ? 'aligned' : (decision === 'retired' ? 'unassignable' : current.category);
+    // Dual-link review actions
+    let secondaryTopicId = current.secondary_curriculum_topic_id || null;
+    let secondaryTopicName = current.secondary_topic_name || null;
+    let secondaryClusterId = current.secondary_cluster_id || null;
+    let dualLinkReason = current.dual_link_reason || null;
+    if (decision === 'approved' && confirmBoth) {
+        // Keep both links; mark as dual_linked.
+        if (!secondaryTopicId && current.runner_up_curriculum_topic_id) {
+            // Promote runner-up to secondary if not yet populated.
+            secondaryTopicId = current.runner_up_curriculum_topic_id;
+            const st = await db.get('SELECT display_name FROM curriculum_topics WHERE id = ?', [secondaryTopicId]).catch(() => null);
+            secondaryTopicName = st?.display_name || null;
+            const cl = await db.get('SELECT cluster_id FROM topic_cluster_index WHERE curriculum_topic_id = ?', [secondaryTopicId]).catch(() => null);
+            secondaryClusterId = cl?.cluster_id || secondaryTopicId || null;
+        }
+        dualLinkReason = dualLinkReason || 'curator_confirmed_both';
+    }
+    if (removeTopicId) {
+        const removeId = String(removeTopicId);
+        if (removeId === String(topicId)) {
+            // Drop primary: promote secondary to primary if present.
+            topicId = secondaryTopicId;
+            topicName = secondaryTopicName;
+            clusterId = secondaryClusterId;
+            secondaryTopicId = null;
+            secondaryTopicName = null;
+            secondaryClusterId = null;
+            dualLinkReason = null;
+        } else if (removeId === String(secondaryTopicId)) {
+            secondaryTopicId = null;
+            secondaryTopicName = null;
+            secondaryClusterId = null;
+            dualLinkReason = null;
+        }
+    }
+    const category = decision === 'approved'
+        ? (secondaryTopicId ? 'dual_linked' : 'aligned')
+        : (decision === 'retired' ? 'unassignable' : current.category);
     const now = new Date().toISOString();
+    // Record audit with before/after snapshot
+    try {
+        await db.createAuditLog({
+            userId: userId || null,
+            sessionId: requestMeta?.sessionId || null,
+            action: removeTopicId ? 'question_topic_link_remove' : (confirmBoth ? 'question_topic_dual_confirm' : 'question_topic_review_update'),
+            resourceType: 'question_topic_index',
+            resourceId: `${objectKey}:${questionIndex}`,
+            details: {
+                before: {
+                    assigned_curriculum_topic_id: current.assigned_curriculum_topic_id,
+                    assigned_topic_name: current.assigned_topic_name,
+                    assigned_cluster_id: current.assigned_cluster_id,
+                    secondary_curriculum_topic_id: current.secondary_curriculum_topic_id,
+                    secondary_topic_name: current.secondary_topic_name,
+                    secondary_cluster_id: current.secondary_cluster_id,
+                    secondary_similarity: current.secondary_similarity,
+                    secondary_guideline_support: current.secondary_guideline_support,
+                    dual_link_reason: current.dual_link_reason,
+                    category: current.category,
+                },
+                after: {
+                    assigned_curriculum_topic_id: topicId,
+                    assigned_topic_name: topicName,
+                    assigned_cluster_id: clusterId,
+                    secondary_curriculum_topic_id: secondaryTopicId,
+                    secondary_topic_name: secondaryTopicName,
+                    secondary_cluster_id: secondaryClusterId,
+                    dual_link_reason: dualLinkReason,
+                    category,
+                },
+            },
+            ipAddress: requestMeta?.ip || null,
+            userAgent: requestMeta?.ua || null,
+        }).catch(() => null);
+    } catch {}
     await db.run(
         `UPDATE question_topic_index SET review_state = ?, reviewed_by = ?, reviewed_at = ?, review_notes = ?,
-         assigned_curriculum_topic_id = ?, assigned_topic_name = ?, assigned_cluster_id = ?, category = ?
+         assigned_curriculum_topic_id = ?, assigned_topic_name = ?, assigned_cluster_id = ?, category = ?,
+         secondary_curriculum_topic_id = ?, secondary_topic_name = ?, secondary_cluster_id = ?, dual_link_reason = ?
          WHERE object_key = ? AND question_index = ?`,
-        [decision, userId || null, now, notes || null, topicId, topicName, clusterId, category, objectKey, questionIndex],
+        [decision, userId || null, now, notes || null, topicId, topicName, clusterId, category, secondaryTopicId || null, secondaryTopicName || null, secondaryClusterId || null, dualLinkReason || null, objectKey, questionIndex],
     );
     return db.get('SELECT * FROM question_topic_index WHERE object_key = ? AND question_index = ?', [objectKey, questionIndex]);
 }

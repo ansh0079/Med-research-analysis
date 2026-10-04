@@ -84,8 +84,13 @@ async function loadAlignedForCluster(db, clusterId, { limit = 60 } = {}) {
     try {
         const rows = await db.all(
             `SELECT * FROM question_topic_index
-             WHERE assigned_cluster_id = ? AND category = 'aligned' LIMIT ?`,
-            [clusterId, limit],
+             WHERE (
+                (assigned_cluster_id = ? AND category = 'aligned')
+                OR
+                (category = 'dual_linked' AND (assigned_cluster_id = ? OR secondary_cluster_id = ?))
+             )
+             LIMIT ?`,
+            [clusterId, clusterId, clusterId, limit],
         );
         const byObject = new Map();
         for (const r of rows) {
