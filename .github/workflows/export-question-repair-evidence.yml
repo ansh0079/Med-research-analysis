@@ -27,7 +27,7 @@ jobs:
           rm -rf /tmp/question-repair-evidence
           mkdir -p /tmp/question-repair-evidence
           docker cp /tmp/question-repair-473-keys.csv medsearch-pg:/tmp/question-repair-473-keys.csv
-          docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 <<'SQL'
+          docker exec -i medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 <<'SQL'
           DROP TABLE IF EXISTS repair_question_keys;
           CREATE TABLE repair_question_keys (object_key text, question_index integer);
           \copy repair_question_keys FROM '/tmp/question-repair-473-keys.csv' WITH CSV HEADER
